@@ -1,5 +1,6 @@
-//! Conformance harness: runs every vector in `spec-frozen/VECTORS.json` against
-//! the plain implementation in `src/dib.rs`.
+//! Conformance harness: runs every vector in `spec-1.1-frozen/VECTORS.json`
+//! against the decoder in `src/dib.rs`. (The first 214 records are the unchanged
+//! 1.0 fixtures; the appended ones exercise `IcoEntryDibSlack`.)
 //!
 //! Per R16 each vector is `{name, mode, input_hex, expected}` and may add
 //! `input_repeat` (whole-input repetition) or the suffix form
@@ -18,7 +19,7 @@ fn vectors_path() -> PathBuf {
     manifest
         .parent()
         .expect("crate has a parent")
-        .join("spec-frozen/VECTORS.json")
+        .join("spec-1.1-frozen/VECTORS.json")
 }
 
 fn nibble(c: u8) -> u8 {
@@ -89,6 +90,7 @@ fn mode_of(v: &Value) -> Mode {
         "BmpFile" => Mode::BmpFile,
         "BareDib" => Mode::BareDib,
         "IcoEntryDib" => Mode::IcoEntryDib,
+        "IcoEntryDibSlack" => Mode::IcoEntryDibSlack,
         other => panic!("unknown mode {other}"),
     }
 }
@@ -204,6 +206,6 @@ fn conformance_all_vectors() {
         eprintln!("FAIL {f}");
     }
     assert!(failures.is_empty(), "{} vectors failed", failures.len());
-    assert_eq!(vectors.len(), 214, "vector count");
-    assert_eq!(passed, 214, "all vectors pass");
+    assert_eq!(vectors.len(), 302, "vector count");
+    assert_eq!(passed, 302, "all vectors pass");
 }

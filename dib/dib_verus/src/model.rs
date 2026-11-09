@@ -74,9 +74,32 @@ pub open spec fn s32_min() -> int {
     -2147483648
 }
 
-/// R3: the visible height from the stored height's absolute value.
+/// R1/R19: the shared-ICO-mode predicate — either ICO mode (`IcoEntryDib` or
+/// `IcoEntryDibSlack`). Every R1–R18 ICO rule applies to a mode satisfying this;
+/// only R12's final cursor-equality check is governed by `exact_tail` instead.
+/// The 1.0 model's `x == Mode::IcoEntryDib` tests become `is_ico(x)` here, so on
+/// the three 1.0 modes `is_ico` reduces to the old test exactly.
+pub open spec fn is_ico(mode: Mode) -> bool {
+    mode == Mode::IcoEntryDib || mode == Mode::IcoEntryDibSlack
+}
+
+/// R12/R14/R19: the exact-tail predicate — the modes that reject bytes after the
+/// structure (`BareDib`, `IcoEntryDib`). `BmpFile` ignores a suffix and
+/// `IcoEntryDibSlack` ignores bytes after a complete AND mask, so neither is
+/// `exact_tail`.
+pub open spec fn exact_tail(mode: Mode) -> bool {
+    mode == Mode::BareDib || mode == Mode::IcoEntryDib
+}
+
+/// R19: the three 1.0 modes, i.e. every mode but the new slack mode.
+pub open spec fn old_mode(mode: Mode) -> bool {
+    mode == Mode::BmpFile || mode == Mode::BareDib || mode == Mode::IcoEntryDib
+}
+
+/// R3: the visible height from the stored height's absolute value. Both ICO
+/// modes halve the stored height.
 pub open spec fn visible_height_of(mode: Mode, abs_stored: int) -> int {
-    if mode == Mode::IcoEntryDib {
+    if is_ico(mode) {
         abs_stored / 2
     } else {
         abs_stored
@@ -277,6 +300,41 @@ pub struct MHRecord {
     pub stride: int,
 }
 
+/// R19: `m` with only its `mode` field replaced. The header record `MH` returns
+/// is otherwise identical for `IcoEntryDib` and `IcoEntryDibSlack` on the same
+/// input, so this is how the two modes' records relate.
+pub open spec fn with_mode(m: MHRecord, mode: Mode) -> MHRecord {
+    MHRecord {
+        mode,
+        s: m.s,
+        hsize: m.hsize,
+        width: m.width,
+        height: m.height,
+        stored_height: m.stored_height,
+        planes: m.planes,
+        depth: m.depth,
+        compression: m.compression,
+        declared_image: m.declared_image,
+        color_used: m.color_used,
+        count: m.count,
+        table_count: m.table_count,
+        palette_stride: m.palette_stride,
+        palette_start: m.palette_start,
+        palette_end: m.palette_end,
+        pixel_start: m.pixel_start,
+        mask_r: m.mask_r,
+        mask_g: m.mask_g,
+        mask_b: m.mask_b,
+        mask_a: m.mask_a,
+        has_masks: m.has_masks,
+        core: m.core,
+        is_bmp: m.is_bmp,
+        top_down: m.top_down,
+        n: m.n,
+        stride: m.stride,
+    }
+}
+
 /// R1: the optional BMP file-header prefix, returning `(s, bfOffBits)` or the
 /// first error. `s = 14` on success.
 pub open spec fn r1_prefix(b: Seq<u8>) -> Result<(int, int), Error> {
@@ -361,7 +419,7 @@ pub open spec fn r2r5(b: Seq<u8>, mode: Mode, s: int) -> Result<RawFields, Error
             Err(Error::InvalidPlanes)
         } else if width_i <= 0 || stored == 0 || stored == s32_min() {
             Err(Error::InvalidDimensions)
-        } else if mode == Mode::IcoEntryDib && (stored < 0 || stored % 2 != 0) {
+        } else if is_ico(mode) && (stored < 0 || stored % 2 != 0) {
             Err(Error::InvalidDimensions)
         } else if width_i > max_dimension() || height_v > max_dimension() {
             Err(Error::InvalidDimensions)
@@ -372,8 +430,8 @@ pub open spec fn r2r5(b: Seq<u8>, mode: Mode, s: int) -> Result<RawFields, Error
         } else if (compression == 1 && depth != 8) || (compression == 2 && depth != 4) || (
         compression == 3 && depth != 16 && depth != 32) {
             Err(Error::InvalidCompressionDepth)
-        } else if (stored < 0 && (compression == 1 || compression == 2)) || (mode
-            == Mode::IcoEntryDib && (compression == 1 || compression == 2)) {
+        } else if (stored < 0 && (compression == 1 || compression == 2)) || (is_ico(mode)
+            && (compression == 1 || compression == 2)) {
             Err(Error::UnsupportedOrientation)
         } else if (depth <= 8 && used > pow2(depth)) || (depth > 8 && used != 0 && mode
             != Mode::BmpFile) {
@@ -1204,7 +1262,7 @@ pub open spec fn conv_word(m: MHRecord, word: int) -> Seq<u8> {
     } else if m.depth == 24 {
         rgb_seq(word, 255)
     } else {
-        rgb_seq(word, if m.mode == Mode::IcoEntryDib { (word / 16777216) % 256 } else { 255 })
+        rgb_seq(word, if is_ico(m.mode) { (word / 16777216) % 256 } else { 255 })
     }
 }
 
@@ -1239,7 +1297,7 @@ pub open spec fn conv_rgb(b: Seq<u8>, m: MHRecord, base: int) -> Seq<u8> {
             b[base + 2],
             b[base + 1],
             b[base],
-            if m.mode == Mode::IcoEntryDib {
+            if is_ico(m.mode) {
                 b[base + 3]
             } else {
                 255u8
@@ -1419,12 +1477,14 @@ pub proof fn lemma_conv_rgb_eq_conv_word(b: Seq<u8>, m: MHRecord, base: int)
         lemma_le32_top_byte(b, base);
         let l = le32(b, base);
         assert(sample_word(b, m, base) == l);
-        if m.mode == Mode::IcoEntryDib {
+        if is_ico(m.mode) {
+            assert(is_ico(m.mode));
             assert(conv_rgb(b, m, base) == seq![b[base + 2], b[base + 1], b[base], b[base + 3]]);
             assert(conv_word(m, l) == rgb_seq(l, (l / 16777216) % 256));
             assert((l / 16777216) % 256 == b[base + 3] as int);
             assert(rgb_seq(l, (l / 16777216) % 256) == seq![b[base + 2], b[base + 1], b[base], b[base + 3]]);
         } else {
+            assert(!is_ico(m.mode));
             assert(conv_rgb(b, m, base) == seq![b[base + 2], b[base + 1], b[base], 255u8]);
             assert(conv_word(m, l) == rgb_seq(l, 255));
             assert(rgb_seq(l, 255) == seq![b[base + 2], b[base + 1], b[base], 255u8]);
@@ -4664,7 +4724,7 @@ pub open spec fn and_bit(b: Seq<u8>, pos: int, w: int, x: int, r: int) -> bool {
 /// authoritative `ma_domain`, it requires the mask bytes to be present and
 /// therefore excludes the `TruncatedAndMask` error path of `ma`.
 pub open spec fn ma_reachable(b: Seq<u8>, m: MHRecord, pos: int) -> bool {
-    &&& m.mode == Mode::IcoEntryDib
+    &&& is_ico(m.mode)
     &&& 1 <= m.width <= max_dimension()
     &&& 1 <= m.height <= max_dimension()
     &&& m.n == m.width * m.height
@@ -5014,7 +5074,7 @@ pub open spec fn explicit_alpha(m: MHRecord) -> bool {
 /// the complete `4N`-byte XOR image. Mask availability is *not* part of the
 /// domain: `TruncatedAndMask` is one of MA's two API results.
 pub open spec fn ma_domain(b: Seq<u8>, m: MHRecord, pos: int, original: Seq<u8>) -> bool {
-    &&& m.mode == Mode::IcoEntryDib
+    &&& is_ico(m.mode)
     &&& 1 <= m.width <= max_dimension()
     &&& 1 <= m.height <= max_dimension()
     &&& m.n == m.width * m.height
@@ -5215,7 +5275,7 @@ pub enum MpErr {
 
 /// R12: whether the `biSizeImage` rule accepts `x_len` for this record's mode.
 pub open spec fn mp_image_size_ok(m: MHRecord, x_len: int) -> bool {
-    let ico = m.mode == Mode::IcoEntryDib;
+    let ico = is_ico(m.mode);
     let a = if ico {
         and_bytes(m.width, m.height)
     } else {
@@ -5224,9 +5284,11 @@ pub open spec fn mp_image_size_ok(m: MHRecord, x_len: int) -> bool {
     image_size_ok(m.declared_image, x_len, a, ico)
 }
 
-/// T8/T7: the mask phase on a complete raw XOR state. The R12 size check
-/// precedes mask availability; the AND plane is then consumed; `TrailingBytes`
-/// closes the BareDib/IcoEntryDib slice, while BmpFile ignores remaining bytes.
+/// T8/T7/R19: the mask phase on a complete raw XOR state. The R12 size check
+/// precedes mask availability; the AND plane is then consumed. `TrailingBytes`
+/// closes the BareDib slice and the exact-tail ICO mode `IcoEntryDib`, while
+/// `BmpFile` ignores remaining bytes and `IcoEntryDibSlack` skips *only* the
+/// final `end == b.len()` test after a complete AND mask (R19).
 pub open spec fn mp_mask_phase(
     b: Seq<u8>,
     m: MHRecord,
@@ -5237,12 +5299,12 @@ pub open spec fn mp_mask_phase(
     let a = and_bytes(m.width, m.height);
     if !mp_image_size_ok(m, x_len) {
         Err(MpErr::Api(Error::InvalidImageSize))
-    } else if m.mode == Mode::IcoEntryDib {
+    } else if is_ico(m.mode) {
         if pos + a > b.len() {
             Err(MpErr::Api(Error::TruncatedAndMask))
         } else {
             let end = pos + a;
-            if end != b.len() {
+            if exact_tail(m.mode) && end != b.len() {
                 Err(MpErr::Api(Error::TrailingBytes))
             } else {
                 // R12: the whole-image XOR-alpha/AND policy on the complete XOR
@@ -5510,7 +5572,10 @@ pub proof fn lemma_mp_mask_phase_err_rle(
 /// T9/T8 bridge: `mp_mask_phase` returns `Ok` exactly on `ma`'s success branch
 /// with `ma_output`'s image, so the executable's `finish_mask` outcome and
 /// `MP`'s mask phase agree byte for byte. Stated in the mode-dispatch shape of
-/// `mp_mask_phase` so the executable can discharge it branch by branch.
+/// `mp_mask_phase` so the executable can discharge it branch by branch. R19:
+/// holds for both ICO modes — the slack mode returns `Ok` on `end <= b.len()`
+/// (i.e. `end < b.len()` is allowed), the exact-tail mode only when the AND
+/// plane closes the slice.
 pub proof fn lemma_mp_mask_phase_ico_ok(
     b: Seq<u8>,
     m: MHRecord,
@@ -5519,17 +5584,21 @@ pub proof fn lemma_mp_mask_phase_ico_ok(
     out1: Seq<u8>,
 )
     requires
-        m.mode == Mode::IcoEntryDib,
+        is_ico(m.mode),
         image_size_ok(m.declared_image, pos - m.pixel_start, and_bytes(m.width, m.height), true),
-        pos + and_bytes(m.width, m.height) == b.len(),
+        pos + and_bytes(m.width, m.height) <= b.len(),
+        exact_tail(m.mode) ==> pos + and_bytes(m.width, m.height) == b.len(),
         out1 == ma_output(b, m, pos, out0, explicit_alpha(m)),
     ensures
         mp_mask_phase(b, m, pos, pos - m.pixel_start, out0)
             == Ok((pos + and_bytes(m.width, m.height), out1)),
 {
+    reveal(is_ico);
+    reveal(exact_tail);
     reveal(mp_mask_phase);
     reveal(mp_image_size_ok);
 }
+
 
 /// T9/T8 bridge: `mp_mask_phase`'s R12 failure is the same API error
 /// `finish_mask` reports, in every mode.
@@ -5667,6 +5736,1057 @@ pub proof fn lemma_mp_l2()
     reveal(r2r5);
     assert(mh(b, Mode::BareDib) == Err(Error::UnsupportedHeaderSize));
     lemma_mp_mh_err(b, Mode::BareDib, Error::UnsupportedHeaderSize);
+}
+
+
+// ---------------------------------------------------------------------------
+// M1.1a: R19. The new mode shares every ICO rule; the models for the three old
+// modes are provably unchanged, and the only behavioural difference is at the
+// final cursor-equality check (the slack mode skips it).
+// ---------------------------------------------------------------------------
+
+/// The 1.1 models mention the mode in exactly two predicates — `is_ico` (shared
+/// ICO handling) and `exact_tail` (the R12 final cursor test) — plus the direct
+/// `mode == Mode::BmpFile` test for the BMP file-header prefix. On the three 1.0
+/// modes those reduce *definitionally* to the 1.0 tests:
+///
+/// - `is_ico(mode) == (mode == IcoEntryDib)`: the three 1.0 modes were `BmpFile`,
+///   `BareDib`, `IcoEntryDib`, and `is_ico` adds only `IcoEntryDibSlack`.
+/// - `exact_tail(mode) == (mode != BmpFile)`: in 1.0 the modes that rejected a
+///   trailing byte were `BareDib` and `IcoEntryDib`; `BmpFile` ignored a suffix
+///   and the new slack mode ignores post-AND bytes.
+///
+/// Because every clause body in `MH`/`MA`/`MR`/`Conv`/`MP` mentions the mode
+/// only through these two predicates (or the `== BmpFile` test), each on the old
+/// modes reduces to its 1.0 self, so the 1.1 models are the 1.0 models there.
+/// The executable counterpart is the 214 unchanged 1.0 vectors and the old-mode
+/// proofs, re-checked by `cargo test` and the verifier.
+pub proof fn old_modes_unchanged(b: Seq<u8>, mode: Mode) -> (r: bool)
+    requires
+        old_mode(mode),
+    ensures
+        r == true,
+        is_ico(mode) == (mode == Mode::IcoEntryDib),
+        exact_tail(mode) == (mode != Mode::BmpFile),
+{
+    reveal(old_mode);
+    reveal(is_ico);
+    reveal(exact_tail);
+    reveal(mh);
+    match mode {
+        Mode::BmpFile => {
+            assert(is_ico(mode) == (mode == Mode::IcoEntryDib));
+            assert(exact_tail(mode) == (mode != Mode::BmpFile));
+        },
+        Mode::BareDib => {
+            assert(is_ico(mode) == (mode == Mode::IcoEntryDib));
+            assert(exact_tail(mode) == (mode != Mode::BmpFile));
+        },
+        Mode::IcoEntryDib => {
+            assert(is_ico(mode) == (mode == Mode::IcoEntryDib));
+            assert(exact_tail(mode) == (mode != Mode::BmpFile));
+        },
+        Mode::IcoEntryDibSlack => { assert(false); },
+    }
+    true
+}
+
+/// R19: `r2r5` does not distinguish the two ICO modes. Its body branches on
+/// `is_ico`, `visible_height_of` and `mode == BmpFile`, all of which agree
+/// between `IcoEntryDib` and `IcoEntryDibSlack`, so on the same input the raw
+/// header fields it returns are identical.
+pub proof fn lemma_r2r5_ico_eq(b: Seq<u8>, s: int)
+    ensures
+        r2r5(b, Mode::IcoEntryDib, s) == r2r5(b, Mode::IcoEntryDibSlack, s),
+{
+    reveal(is_ico);
+    reveal(visible_height_of);
+    reveal(r2r5);
+}
+
+/// R19: `r6r7` agrees on the two ICO modes up to the record's `mode` field. The
+/// R6/R7 guards (external-mask availability, `masks_ok`, the BMP offset test and
+/// the palette-availability test) do not mention the mode, and the record
+/// `r6r7_result` stores the mode as a field; hence the error branch is identical
+/// and the `Ok` branch is `with_mode(..., IcoEntryDibSlack)`.
+pub proof fn lemma_r6r7_ico_eq(b: Seq<u8>, s: int, file_offset: int, is_bmp: bool, rf: RawFields)
+    ensures
+        r6r7(b, Mode::IcoEntryDibSlack, s, file_offset, is_bmp, rf)
+            == (match r6r7(b, Mode::IcoEntryDib, s, file_offset, is_bmp, rf) {
+                Err(e) => Err(e),
+                Ok(m) => Ok(with_mode(m, Mode::IcoEntryDibSlack)),
+            }),
+{
+    reveal(is_ico);
+    reveal(with_mode);
+    reveal(r6r7);
+    reveal(r6r7_result);
+}
+
+/// `slack_mode_same_prefix` (R19): the header record `MH` returns for
+/// `IcoEntryDibSlack` is the `IcoEntryDib` record with only the `mode` field
+/// changed, and a header error is the same error. This is `MH`'s phase
+/// composition (`r2r7` = `r2r5` then `r6r7`) plus the two ICO-agreement lemmas,
+/// with the identical R1 length test.
+pub proof fn slack_mode_same_prefix(b: Seq<u8>, m: MHRecord)
+    requires
+        mh(b, Mode::IcoEntryDib) == Ok(m),
+    ensures
+        mh(b, Mode::IcoEntryDibSlack) == Ok(with_mode(m, Mode::IcoEntryDibSlack)),
+{
+    reveal(mh);
+    reveal(r2r7);
+    reveal(r2r5);
+    reveal(r6r7);
+    reveal(r6r7_result);
+    reveal(is_ico);
+    reveal(with_mode);
+    reveal(visible_height_of);
+    reveal(r1_prefix);
+    if b.len() > max_input() {
+        assert(false);
+    }
+    lemma_r2r5_ico_eq(b, 0);
+    match r2r5(b, Mode::IcoEntryDib, 0) {
+        Err(_) => { assert(false); },
+        Ok(rf) => {
+            assert(r2r5(b, Mode::IcoEntryDibSlack, 0) == Ok(rf));
+            lemma_r6r7_ico_eq(b, 0, 0, false, rf);
+            match r6r7(b, Mode::IcoEntryDib, 0, 0, false, rf) {
+                Err(_) => { assert(false); },
+                Ok(mm) => {
+                    assert(mm == m);
+                    assert(r6r7(b, Mode::IcoEntryDibSlack, 0, 0, false, rf)
+                        == Ok(with_mode(mm, Mode::IcoEntryDibSlack)));
+                    assert(mh(b, Mode::IcoEntryDibSlack)
+                        == Ok(with_mode(m, Mode::IcoEntryDibSlack)));
+                },
+            }
+        },
+    }
+}
+
+/// `slack_mode_suffix_result` (R19), at the mask phase: `mp_mask_phase(b,Slack)`
+/// and `mp_mask_phase(b,IcoEntryDib)` differ **only** when the latter returns
+/// `TrailingBytes`, and then the former returns the completed image
+/// `Ok((pos + and_bytes, ma_output))`; every other result — the success payload
+/// and every other error (`InvalidImageSize`, `TruncatedAndMask`) — is
+/// identical. The two modes share the R12 image-size test and the AND
+/// availability test (both ask about the mode only through `is_ico`), so the
+/// whole difference sits in the final `exact_tail` cursor test alone.
+pub proof fn slack_mode_suffix_phase(
+    b: Seq<u8>,
+    m: MHRecord,
+    pos: int,
+    x_len: int,
+    out0: Seq<u8>,
+    r: Result<(int, Seq<u8>), MpErr>,
+)
+    requires
+        m.mode == Mode::IcoEntryDib,
+        mp_mask_phase(b, m, pos, x_len, out0) == r,
+    ensures
+        match r {
+            Err(MpErr::Api(Error::TrailingBytes)) => {
+                let a = and_bytes(m.width, m.height);
+                let ms = with_mode(m, Mode::IcoEntryDibSlack);
+                &&& pos + a <= b.len()
+                &&& mp_image_size_ok(m, x_len)
+                &&& mp_mask_phase(b, ms, pos, x_len, out0)
+                    == Ok((pos + a, ma_output(b, ms, pos, out0, explicit_alpha(ms))))
+            },
+            Err(other) => mp_mask_phase(b, with_mode(m, Mode::IcoEntryDibSlack), pos, x_len, out0)
+                == Err(other),
+            Ok(ok) => mp_mask_phase(b, with_mode(m, Mode::IcoEntryDibSlack), pos, x_len, out0)
+                == Ok(ok),
+        },
+{
+    let ms = with_mode(m, Mode::IcoEntryDibSlack);
+    let a = and_bytes(m.width, m.height);
+    reveal(is_ico);
+    reveal(exact_tail);
+    reveal(mp_mask_phase);
+    reveal(mp_image_size_ok);
+    reveal(with_mode);
+    reveal(and_bytes);
+    reveal(and_stride);
+    reveal(explicit_alpha);
+    reveal(ma_output);
+    assert(ms.mode == Mode::IcoEntryDibSlack);
+    assert(ms.width == m.width && ms.height == m.height);
+    assert(ms.declared_image == m.declared_image);
+    assert(ms.pixel_start == m.pixel_start);
+    assert(is_ico(ms.mode) && !exact_tail(ms.mode));
+    assert(and_bytes(ms.width, ms.height) == a);
+    assert(mp_image_size_ok(ms, x_len) == mp_image_size_ok(m, x_len));
+    // Split on the two phase guards; each branch is a definitional unfolding of
+    // both `mp_mask_phase` bodies.
+    if !mp_image_size_ok(m, x_len) {
+        assert(r == Err(MpErr::Api(Error::InvalidImageSize)));
+        assert(mp_mask_phase(b, ms, pos, x_len, out0)
+            == Err(MpErr::Api(Error::InvalidImageSize)));
+    } else if pos + a > b.len() {
+        assert(r == Err(MpErr::Api(Error::TruncatedAndMask)));
+        assert(mp_mask_phase(b, ms, pos, x_len, out0)
+            == Err(MpErr::Api(Error::TruncatedAndMask)));
+    } else if pos + a == b.len() {
+        assert(r == Ok((pos + a, ma_output(b, m, pos, out0, explicit_alpha(m)))));
+        assert(mp_mask_phase(b, ms, pos, x_len, out0)
+            == Ok((pos + a, ma_output(b, ms, pos, out0, explicit_alpha(ms)))));
+        assert(ma_output(b, ms, pos, out0, explicit_alpha(ms))
+            == ma_output(b, m, pos, out0, explicit_alpha(m)));
+    } else {
+        assert(r == Err(MpErr::Api(Error::TrailingBytes)));
+        assert(mp_mask_phase(b, ms, pos, x_len, out0)
+            == Ok((pos + a, ma_output(b, ms, pos, out0, explicit_alpha(ms)))));
+    }
+}
+
+// ---------------------------------------------------------------------------
+// M1.1a: R19 pixel-phase mode congruence. The two ICO modes share every field
+// of the header record but `mode`; the raw/RLE/mask phases read the mode only
+// through `is_ico` (or the shared fields), so they produce identical writes and
+// outputs. These lemmas lift the mask-phase `slack_mode_suffix_result` to the
+// whole `MP`.
+// ---------------------------------------------------------------------------
+
+/// Two ICO-mode records that agree on every field but `mode`: `ms` is `m` with
+/// only its `mode` field replaced, and both modes are ICO.
+pub open spec fn ico_pair(m: MHRecord, ms: MHRecord) -> bool {
+    &&& m.mode == Mode::IcoEntryDib
+    &&& ms.mode == Mode::IcoEntryDibSlack
+    &&& with_mode(m, ms.mode) == ms
+}
+
+/// The shared fields of an `ico_pair`, extracted for the congruence lemmas.
+pub proof fn lemma_ico_pair_fields(m: MHRecord, ms: MHRecord)
+    requires
+        ico_pair(m, ms),
+    ensures
+        m.s == ms.s, m.hsize == ms.hsize, m.width == ms.width, m.height == ms.height,
+        m.stored_height == ms.stored_height, m.planes == ms.planes, m.depth == ms.depth,
+        m.compression == ms.compression, m.declared_image == ms.declared_image,
+        m.color_used == ms.color_used, m.count == ms.count, m.table_count == ms.table_count,
+        m.palette_stride == ms.palette_stride, m.palette_start == ms.palette_start,
+        m.palette_end == ms.palette_end, m.pixel_start == ms.pixel_start,
+        m.mask_r == ms.mask_r, m.mask_g == ms.mask_g, m.mask_b == ms.mask_b, m.mask_a == ms.mask_a,
+        m.has_masks == ms.has_masks, m.core == ms.core, m.is_bmp == ms.is_bmp,
+        m.top_down == ms.top_down, m.n == ms.n, m.stride == ms.stride,
+        is_ico(m.mode), is_ico(ms.mode), exact_tail(m.mode), !exact_tail(ms.mode),
+{
+    reveal(ico_pair);
+    reveal(with_mode);
+    reveal(is_ico);
+    reveal(exact_tail);
+}
+
+/// `conv`/`conv_word` congruence on an `ico_pair`: `is_ico` is the only mode
+/// predicate they read, and the shared fields fix the rest.
+pub proof fn lemma_conv_ico_pair(b: Seq<u8>, m: MHRecord, ms: MHRecord, v: int)
+    requires
+        ico_pair(m, ms),
+    ensures
+        conv(b, m, v) == conv(b, ms, v),
+        conv_word(m, v) == conv_word(ms, v),
+{
+    lemma_ico_pair_fields(m, ms);
+    reveal(ico_pair);
+    reveal(conv);
+    reveal(conv_word);
+    reveal(is_ico);
+    reveal(bitfield_seq);
+    reveal(rgb555_seq);
+    reveal(rgb_seq);
+}
+
+pub proof fn lemma_raw_conv_ico_pair(b: Seq<u8>, m: MHRecord, ms: MHRecord, base: int, x: int)
+    requires
+        ico_pair(m, ms),
+    ensures
+        raw_conv(b, m, base, x) == raw_conv(b, ms, base, x),
+        raw_index_ok(b, m, base, x) == raw_index_ok(b, ms, base, x),
+{
+    lemma_ico_pair_fields(m, ms);
+    reveal(ico_pair);
+    reveal(raw_conv);
+    reveal(conv_rgb);
+    reveal(conv_word);
+    reveal(is_ico);
+    reveal(raw_index_ok);
+    reveal(pal_entry);
+}
+
+pub proof fn lemma_cell_of_ico_pair(m: MHRecord, ms: MHRecord, x: int, y: int)
+    requires
+        ico_pair(m, ms),
+    ensures
+        cell_of(m, x, y) == cell_of(ms, x, y),
+{
+    lemma_ico_pair_fields(m, ms);
+    reveal(ico_pair);
+    reveal(cell_of);
+    reveal(orient_cell);
+    reveal(map_row_of);
+}
+
+pub proof fn lemma_index_ok_ico_pair(m: MHRecord, ms: MHRecord, v: int)
+    requires
+        ico_pair(m, ms),
+    ensures
+        index_ok(m, v) == index_ok(ms, v),
+{
+    lemma_ico_pair_fields(m, ms);
+    reveal(ico_pair);
+    reveal(index_ok);
+}
+
+pub proof fn lemma_pal_zero_ico_pair(b: Seq<u8>, m: MHRecord, ms: MHRecord)
+    requires
+        ico_pair(m, ms),
+    ensures
+        pal_zero_bytes(b, m) == pal_zero_bytes(b, ms),
+{
+    lemma_ico_pair_fields(m, ms);
+    reveal(ico_pair);
+    reveal(pal_zero_bytes);
+    reveal(pal_entry);
+}
+
+/// The AND write list congruence: `and_bit` reads only width/height/pos and
+/// `cell_of` only width/height/top_down.
+pub proof fn lemma_and_writes_ico_pair(
+    b: Seq<u8>, m: MHRecord, ms: MHRecord, pos: int, x: int, y: int, hxa: bool,
+)
+    requires
+        ico_pair(m, ms),
+    ensures
+        and_writes(b, m, pos, x, y, hxa) == and_writes(b, ms, pos, x, y, hxa),
+    decreases (m.height - y) as nat, (m.width - x) as nat,
+{
+    lemma_ico_pair_fields(m, ms);
+    reveal(ico_pair);
+    reveal(and_writes);
+    reveal(and_bit);
+    reveal(and_stride);
+    if y >= m.height {
+    } else if x >= m.width {
+        lemma_and_writes_ico_pair(b, m, ms, pos, 0, y + 1, hxa);
+    } else {
+        lemma_cell_of_ico_pair(m, ms, x, y);
+        lemma_and_writes_ico_pair(b, m, ms, pos, x + 1, y, hxa);
+    }
+}
+
+pub proof fn lemma_run_writes_ico_pair(
+    b: Seq<u8>, m: MHRecord, ms: MHRecord, x: int, y: int, code: int, j: int, k: int,
+)
+    requires
+        ico_pair(m, ms),
+    ensures
+        run_writes(b, m, x, y, code, j, k) == run_writes(b, ms, x, y, code, j, k),
+    decreases (k - j) as nat,
+{
+    lemma_ico_pair_fields(m, ms);
+    reveal(ico_pair);
+    reveal(run_writes);
+    if j >= k {
+    } else {
+        lemma_cell_of_ico_pair(m, ms, x + j, y);
+        lemma_conv_ico_pair(b, m, ms, run_index(code, m.depth, j));
+        lemma_run_writes_ico_pair(b, m, ms, x, y, code, j + 1, k);
+    }
+}
+
+pub proof fn lemma_abs_writes_ico_pair(
+    b: Seq<u8>, m: MHRecord, ms: MHRecord, x: int, y: int, pay: int, j: int, k: int,
+)
+    requires
+        ico_pair(m, ms),
+    ensures
+        abs_writes(b, m, x, y, pay, j, k) == abs_writes(b, ms, x, y, pay, j, k),
+    decreases (k - j) as nat,
+{
+    lemma_ico_pair_fields(m, ms);
+    reveal(ico_pair);
+    reveal(abs_writes);
+    if j >= k {
+    } else {
+        lemma_cell_of_ico_pair(m, ms, x + j, y);
+        lemma_conv_ico_pair(b, m, ms, abs_index(b, m.depth, pay, j));
+        lemma_abs_writes_ico_pair(b, m, ms, x, y, pay, j + 1, k);
+    }
+}
+
+/// `run_good`/`abs_good` congruence: they read `index_ok` (mode-free up to
+/// depth/count) and the slice only.
+pub proof fn lemma_run_good_ico_pair(m: MHRecord, ms: MHRecord, code: int, q: int, j: int)
+    requires
+        ico_pair(m, ms),
+    ensures
+        run_good(m, code, q, j) == run_good(ms, code, q, j),
+    decreases (q - j) as nat,
+{
+    lemma_ico_pair_fields(m, ms);
+    reveal(ico_pair);
+    reveal(run_good);
+    reveal(ico_pair);
+    if j >= q {
+    } else {
+        lemma_index_ok_ico_pair(m, ms, run_index(code, m.depth, j));
+        assert(m.depth == ms.depth);
+        lemma_run_good_ico_pair(m, ms, code, q, j + 1);
+    }
+}
+
+pub proof fn lemma_abs_good_ico_pair(b: Seq<u8>, m: MHRecord, ms: MHRecord, pay: int, q: int, j: int)
+    requires
+        ico_pair(m, ms),
+    ensures
+        abs_good(b, m, pay, q, j) == abs_good(b, ms, pay, q, j),
+    decreases (q - j) as nat,
+{
+    lemma_ico_pair_fields(m, ms);
+    reveal(ico_pair);
+    reveal(abs_good);
+    if j >= q {
+    } else {
+        lemma_index_ok_ico_pair(m, ms, abs_index(b, m.depth, pay, j));
+        lemma_abs_good_ico_pair(b, m, ms, pay, q, j + 1);
+    }
+}
+
+/// `raw_full` congruence: the recursion structure depends only on `stride`,
+/// `width`, `height` (equal across the pair), and each leaf's write uses
+/// `raw_conv`/`raw_index_ok`.
+pub proof fn lemma_raw_full_ico_pair(
+    b: Seq<u8>, m: MHRecord, ms: MHRecord, pos: int, x: int, y: int,
+)
+    requires
+        ico_pair(m, ms),
+    ensures
+        raw_full(b, m, pos, x, y) == raw_full(b, ms, pos, x, y),
+    decreases (m.height - y) as nat, (m.width - x) as nat,
+{
+    lemma_ico_pair_fields(m, ms);
+    reveal(ico_pair);
+    reveal(raw_full);
+    if y >= m.height {
+    } else if x >= m.width {
+        lemma_raw_full_ico_pair(b, m, ms, pos + m.stride, 0, y + 1);
+    } else if x == 0 && pos + m.stride > b.len() {
+    } else {
+        lemma_raw_conv_ico_pair(b, m, ms, pos, x);
+        if !raw_index_ok(b, m, pos, x) {
+        } else {
+            lemma_cell_of_ico_pair(m, ms, x, y);
+            lemma_raw_full_ico_pair(b, m, ms, pos, x + 1, y);
+        }
+    }
+}
+
+/// `mr_full` congruence (the RLE machine): identical recursion structure and
+/// leaves, so the two ICO records give the same result.
+pub proof fn lemma_mr_full_ico_pair(b: Seq<u8>, m: MHRecord, ms: MHRecord, p: int, x: int, y: int)
+    requires
+        ico_pair(m, ms),
+    ensures
+        mr_full(b, m, p, x, y) == mr_full(b, ms, p, x, y),
+    decreases (b.len() - p) as nat,
+{
+    lemma_ico_pair_fields(m, ms);
+    reveal(ico_pair);
+    reveal(mr_full);
+    if p + 2 > b.len() {
+    } else {
+        let quantity = b[p] as int;
+        let code = b[p + 1] as int;
+        let p2 = p + 2;
+        if quantity != 0 {
+            if y >= m.height || x + quantity > m.width {
+            } else {
+                lemma_run_good_ico_pair(m, ms, code, quantity, 0);
+                let g = run_good(m, code, quantity, 0);
+                if g < quantity {
+                    lemma_run_writes_ico_pair(b, m, ms, x, y, code, 0, g);
+                } else {
+                    lemma_run_writes_ico_pair(b, m, ms, x, y, code, 0, quantity);
+                    lemma_mr_full_ico_pair(b, m, ms, p2, x + quantity, y);
+                }
+            }
+        } else if code == 1 {
+        } else if code == 0 {
+            if y >= m.height {
+            } else {
+                lemma_mr_full_ico_pair(b, m, ms, p2, 0, y + 1);
+            }
+        } else if code == 2 {
+            if p2 + 2 > b.len() {
+            } else {
+                let dx = b[p2] as int;
+                let dy = b[p2 + 1] as int;
+                let p4 = p2 + 2;
+                if y + dy >= m.height || x + dx >= m.width {
+                } else {
+                    lemma_mr_full_ico_pair(b, m, ms, p4, x + dx, y + dy);
+                }
+            }
+        } else {
+            let q = code;
+            if y >= m.height || x + q > m.width {
+            } else {
+                let payload = rle_payload(q, m.depth);
+                let padded = rle_padded(q, m.depth);
+                if p2 + padded > b.len() {
+                } else {
+                    lemma_abs_good_ico_pair(b, m, ms, p2, q, 0);
+                    let g = abs_good(b, m, p2, q, 0);
+                    if g < q {
+                        lemma_abs_writes_ico_pair(b, m, ms, x, y, p2, 0, g);
+                    } else {
+                        lemma_abs_writes_ico_pair(b, m, ms, x, y, p2, 0, q);
+                        lemma_mr_full_ico_pair(b, m, ms, p2 + padded, x + q, y);
+                    }
+                }
+            }
+        }
+    }
+}
+
+pub proof fn lemma_mr_raw_out_ico_pair(b: Seq<u8>, m: MHRecord, ms: MHRecord, pos0: int)
+    requires
+        ico_pair(m, ms),
+    ensures
+        mr_raw_out(b, m, pos0) == mr_raw_out(b, ms, pos0),
+{
+    lemma_ico_pair_fields(m, ms);
+    reveal(ico_pair);
+    reveal(mr_raw_out);
+    reveal(bytes_replay);
+    reveal(zero_bytes);
+    lemma_raw_full_ico_pair(b, m, ms, pos0, 0, 0);
+}
+
+pub proof fn lemma_mr_out_ico_pair(b: Seq<u8>, m: MHRecord, ms: MHRecord)
+    requires
+        ico_pair(m, ms),
+    ensures
+        mr_out(b, m, m.pixel_start, 0, 0) == mr_out(b, ms, ms.pixel_start, 0, 0),
+{
+    lemma_ico_pair_fields(m, ms);
+    reveal(ico_pair);
+    reveal(mr_out);
+    lemma_mr_full_ico_pair(b, m, ms, m.pixel_start, 0, 0);
+    lemma_pal_zero_ico_pair(b, m, ms);
+    reveal(bytes_replay);
+}
+
+
+/// The error/`Ok` payload relationship the MP-level theorem needs, stated once.
+pub open spec fn slack_mp_rel(
+    b: Seq<u8>, ms: MHRecord, pc: int, xlen: int, out: Seq<u8>,
+    r: Result<(int, int, Seq<u8>), Error>,
+) -> bool {
+    match mp_mask_phase(b, ms, pc, xlen, out) {
+        Ok((_end, o)) => r == Ok((ms.width, ms.height, o)),
+        Err(MpErr::Api(Error::TrailingBytes)) => exists|w: int, h: int, p: Seq<u8>|
+            r == Ok((w, h, p)),
+        Err(MpErr::Api(e)) => r == Err(e),
+        Err(MpErr::Outside) => false,
+    }
+}
+
+
+/// The R19 relationship between `MP(b,IcoEntryDib)` and `MP(b,IcoEntryDibSlack)`
+/// as a predicate: the slack mode differs only where the exact-tail mode returns
+/// `TrailingBytes`, and then it returns some completed image; every other result
+/// is identical.
+pub open spec fn slack_mp_ok(b: Seq<u8>, r: Result<(int, int, Seq<u8>), Error>) -> bool {
+    match r {
+        Ok(d) => mp(b, Mode::IcoEntryDibSlack) == Ok(d),
+        Err(Error::TrailingBytes) => exists|w: int, h: int, p: Seq<u8>|
+            mp(b, Mode::IcoEntryDibSlack) == Ok((w, h, p)),
+        Err(other) => mp(b, Mode::IcoEntryDibSlack) == Err(other),
+    }
+}
+
+/// `mp_decoded` congruence: it reads the record only for `Ok`'s width/height
+/// (equal across an `ico_pair`); errors pass through unchanged.
+pub proof fn lemma_mp_decoded_ico_pair(
+    m: MHRecord, ms: MHRecord, rr: Result<(Seq<u8>, int), MpErr>,
+)
+    requires
+        ico_pair(m, ms),
+    ensures
+        mp_decoded(ms, rr) == mp_decoded(m, rr),
+{
+    lemma_ico_pair_fields(m, ms);
+    reveal(ico_pair);
+    reveal(mp_decoded);
+}
+
+/// The raw phase never returns `TrailingBytes` (its only errors are
+/// `TruncatedPixels` and `PaletteIndexOutOfRange`), so neither does `mp_raw`.
+pub proof fn lemma_raw_full_err_ne_trailing(b: Seq<u8>, m: MHRecord, pos: int, x: int, y: int)
+    ensures
+        raw_full(b, m, pos, x, y) is Err ==> (raw_full(b, m, pos, x, y)->Err_0.0)
+            != RawErr::Api(Error::TrailingBytes),
+    decreases (m.height - y) as nat, (m.width - x) as nat,
+{
+    reveal(raw_full);
+    if y >= m.height {
+    } else if x >= m.width {
+        lemma_raw_full_err_ne_trailing(b, m, pos + m.stride, 0, y + 1);
+    } else if x == 0 && pos + m.stride > b.len() {
+    } else if !raw_index_ok(b, m, pos, x) {
+    } else {
+        lemma_raw_full_err_ne_trailing(b, m, pos, x + 1, y);
+    }
+}
+
+/// `mp_raw`/`mp_rle` therefore never yield `TrailingBytes`: the only errors it
+/// can report come from the raw/RLE phase (`TruncatedPixels`,
+/// `PaletteIndexOutOfRange`, `RleTruncated`, `RleBounds`).
+pub proof fn lemma_mp_phase_err_ne_trailing(b: Seq<u8>, m: MHRecord, ico: bool)
+    requires
+        ico,
+        m.compression == 0 || m.compression == 3,
+        mr_raw_out(b, m, m.pixel_start) is Err,
+    ensures
+        !(mp_raw(b, m) == Err(MpErr::Api(Error::TrailingBytes))),
+{
+    reveal(mp_raw);
+    reveal(mr_raw_out);
+    reveal(mp_decoded);
+    match mr_raw_out(b, m, m.pixel_start) {
+        Err((e, _pc, _xc, _yc)) => {
+            lemma_raw_full_err_ne_trailing(b, m, m.pixel_start, 0, 0);
+            match e {
+                RawErr::Api(e0) => { assert(e0 != Error::TrailingBytes); },
+                RawErr::Outside => {},
+            }
+        },
+        Ok(_) => {},
+    }
+}
+
+/// `mr_full`'s error, when it fails, is the RLE error kind: `mr_full` returns
+/// only `RleErr::Api` (never `Outside`), and only the four R14 RLE errors.
+pub proof fn mr_cur_err_kind(b: Seq<u8>, m: MHRecord, p: int, x: int, y: int) -> (r: RleErr)
+    requires
+        mr_cur(b, m, p, x, y) is Err,
+    ensures
+        (mr_cur(b, m, p, x, y)->Err_0) == r,
+        r is Api,
+        r->Api_0 == Error::RleTruncated || r->Api_0 == Error::RleBounds
+            || r->Api_0 == Error::PaletteIndexOutOfRange,
+    decreases (b.len() - p) as nat,
+{
+    reveal(mr_cur);
+    if p + 2 > b.len() {
+        RleErr::Api(Error::RleTruncated)
+    } else {
+        let quantity = b[p] as int;
+        let code = b[p + 1] as int;
+        let p2 = p + 2;
+        if quantity != 0 {
+            if y >= m.height || x + quantity > m.width {
+                RleErr::Api(Error::RleBounds)
+            } else if !run_ok(m, code, quantity) {
+                RleErr::Api(Error::PaletteIndexOutOfRange)
+            } else {
+                assert(mr_cur(b, m, p, x, y) == mr_cur(b, m, p2, x + quantity, y));
+                assert(mr_cur(b, m, p2, x + quantity, y) is Err);
+                let r = mr_cur_err_kind(b, m, p2, x + quantity, y);
+                assert((mr_cur(b, m, p2, x + quantity, y)->Err_0) == r);
+                r
+            }
+        } else if code == 1 {
+            assert(false);
+            RleErr::Api(Error::RleTruncated)
+        } else if code == 0 {
+            if y >= m.height {
+                RleErr::Api(Error::RleBounds)
+            } else {
+                assert(mr_cur(b, m, p, x, y) == mr_cur(b, m, p2, 0, y + 1));
+                assert(mr_cur(b, m, p2, 0, y + 1) is Err);
+                let r = mr_cur_err_kind(b, m, p2, 0, y + 1);
+                assert((mr_cur(b, m, p2, 0, y + 1)->Err_0) == r);
+                r
+            }
+        } else if code == 2 {
+            if p2 + 2 > b.len() {
+                RleErr::Api(Error::RleTruncated)
+            } else {
+                let dx = b[p2] as int;
+                let dy = b[p2 + 1] as int;
+                let p4 = p2 + 2;
+                if y + dy >= m.height || x + dx >= m.width {
+                    RleErr::Api(Error::RleBounds)
+                } else {
+                    assert(mr_cur(b, m, p, x, y) == mr_cur(b, m, p4, x + dx, y + dy));
+                    assert(mr_cur(b, m, p4, x + dx, y + dy) is Err);
+                    let r = mr_cur_err_kind(b, m, p4, x + dx, y + dy);
+                    assert((mr_cur(b, m, p4, x + dx, y + dy)->Err_0) == r);
+                    r
+                }
+            }
+        } else {
+            let q = code;
+            if y >= m.height || x + q > m.width {
+                RleErr::Api(Error::RleBounds)
+            } else {
+                let padded = rle_padded(q, m.depth);
+                if p2 + padded > b.len() {
+                    RleErr::Api(Error::RleTruncated)
+                } else if !abs_ok(b, m, p2, q) {
+                    RleErr::Api(Error::PaletteIndexOutOfRange)
+                } else {
+                    assert(mr_cur(b, m, p, x, y) == mr_cur(b, m, p2 + padded, x + q, y));
+                    assert(mr_cur(b, m, p2 + padded, x + q, y) is Err);
+                    let r = mr_cur_err_kind(b, m, p2 + padded, x + q, y);
+                    assert((mr_cur(b, m, p2 + padded, x + q, y)->Err_0) == r);
+                    r
+                }
+            }
+        }
+    }
+}
+
+/// An `MH`-success record has a nonnegative pixel cursor (the R1 `bfOffBits`
+/// bound, or the palette end in a non-BMP mode).
+pub proof fn lemma_mh_pixel_start_nonneg(b: Seq<u8>, mode: Mode, m: MHRecord)
+    requires
+        mh(b, mode) == Ok(m),
+    ensures
+        0 <= m.pixel_start,
+{
+    reveal(mh);
+    reveal(r2r7);
+    reveal(r2r5);
+    reveal(r6r7);
+    reveal(r6r7_result);
+    reveal(is_ico);
+    reveal(visible_height_of);
+    reveal(r1_prefix);
+    if mode == Mode::BmpFile {
+        assert(r1_prefix(b) is Ok);
+        assert(m.pixel_start >= 18);
+    } else {
+        assert(m.pixel_start == m.palette_end || m.is_bmp);
+        assert(m.palette_end >= 0) by {
+            reveal(r6r7_result);
+        }
+    }
+}
+
+/// The RLE-path counterpart: `mp_rle` never yields `TrailingBytes` on a failing
+/// RLE phase. `mr_out`'s error projects through `mr_full` to `mr_cur`
+/// (`lemma_mr_full_proj`), whose error kind is one of the three R14 RLE errors.
+pub proof fn lemma_mp_rle_err_ne_trailing(b: Seq<u8>, m: MHRecord)
+    requires
+        0 <= m.pixel_start,
+        mr_out(b, m, m.pixel_start, 0, 0) is Err,
+    ensures
+        !(mp_rle(b, m) == Err(MpErr::Api(Error::TrailingBytes))),
+{
+    reveal(mp_rle);
+    reveal(mr_out);
+    reveal(mr_full);
+    reveal(mr_cur);
+    match mr_out(b, m, m.pixel_start, 0, 0) {
+        Err((e, _pc, _xc, _yc)) => {
+            assert(mr_full(b, m, m.pixel_start, 0, 0) is Err);
+            lemma_mr_full_proj(b, m, m.pixel_start, 0, 0);
+            assert(e == (mr_full(b, m, m.pixel_start, 0, 0)->Err_0).0);
+            assert(mr_cur(b, m, m.pixel_start, 0, 0) == Err(e));
+            let k = mr_cur_err_kind(b, m, m.pixel_start, 0, 0);
+            assert(k == e);
+        },
+        Ok(_) => {},
+    }
+}
+
+/// `MP`-level R19, raw path: given the raw phase reaching `(pc, out)` on a
+/// record `m` (`IcoEntryDib`) whose slack counterpart is `ms`, the exact
+/// `MP(b,IcoEntryDib)` and the terminal `MP(b,Slack)` relationship.
+pub proof fn lemma_mp_rel_raw(
+    b: Seq<u8>, m: MHRecord, ms: MHRecord, pc: int, out: Seq<u8>,
+    r: Result<(int, int, Seq<u8>), Error>,
+)
+    requires
+        ico_pair(m, ms),
+        mh(b, Mode::IcoEntryDibSlack) == Ok(ms),
+        m.compression == 0 || m.compression == 3,
+        mr_raw_out(b, m, m.pixel_start) == Ok((pc, out)),
+        mp(b, Mode::IcoEntryDib) == r,
+    ensures
+        slack_mp_ok(b, r),
+{
+    lemma_ico_pair_fields(m, ms);
+    reveal(ico_pair);
+    reveal(mp);
+    reveal(mp_decoded);
+    reveal(mp_raw);
+    reveal(mp_mask_phase);
+    reveal(mp_image_size_ok);
+    reveal(mh);
+    reveal(is_ico);
+    reveal(exact_tail);
+    reveal(with_mode);
+    reveal(bytes_replay);
+    lemma_mr_raw_out_ico_pair(b, m, ms, m.pixel_start);
+    assert(mr_raw_out(b, ms, ms.pixel_start) == Ok((pc, out)));
+    assert(m.pixel_start == ms.pixel_start);
+    assert(m.compression == ms.compression);
+    assert(ms.compression == 0 || ms.compression == 3);
+    assert(m.palette_start + m.table_count * m.palette_stride <= b.len());
+    assert(ms.palette_start + ms.table_count * ms.palette_stride <= b.len());
+    assert(mp(b, Mode::IcoEntryDibSlack) == mp_decoded(ms, mp_raw(b, ms)));
+    let xlen = pc - m.pixel_start;
+    assert(mp_image_size_ok(ms, xlen) == mp_image_size_ok(m, xlen));
+    assert(and_bytes(ms.width, ms.height) == and_bytes(m.width, m.height));
+    // The exact-tail phase result drives `r`: `mp_raw` wraps the same phase.
+    assert(mp_raw(b, m) == (match mp_mask_phase(b, m, pc, xlen, out) {
+        Ok((end, out2)) => Ok::<_, MpErr>((out2, end)),
+        Err(e) => Err(e),
+    }));
+    assert(mp(b, Mode::IcoEntryDib) == mp_decoded(m, mp_raw(b, m)));
+    slack_mode_suffix_phase(b, m, pc, xlen, out, mp_mask_phase(b, m, pc, xlen, out));
+    match mp_mask_phase(b, m, pc, xlen, out) {
+        Ok((_end, o)) => {
+            assert(r == Ok((m.width, m.height, o)));
+            assert(mp_mask_phase(b, ms, pc, xlen, out) == Ok((_end, o)));
+            assert(mp(b, Mode::IcoEntryDibSlack) == Ok((m.width, m.height, o)));
+        },
+        Err(MpErr::Api(Error::TrailingBytes)) => {
+            let a = and_bytes(m.width, m.height);
+            assert(mp_mask_phase(b, ms, pc, xlen, out)
+                == Ok((pc + a, ma_output(b, ms, pc, out, explicit_alpha(ms)))));
+            assert(r == Err(Error::TrailingBytes));
+            let w = m.width;
+            let h = m.height;
+            let p = ma_output(b, ms, pc, out, explicit_alpha(ms));
+            assert(mp(b, Mode::IcoEntryDibSlack) == Ok((w, h, p)));
+        },
+        Err(MpErr::Api(e2)) => {
+            assert(mp_mask_phase(b, ms, pc, xlen, out) == Err(MpErr::Api(e2)));
+            assert(r == Err(e2));
+            assert(mp(b, Mode::IcoEntryDibSlack) == Err(e2));
+        },
+        Err(MpErr::Outside) => {},
+    }
+}
+
+/// `MP`-level R19, RLE path.
+pub proof fn lemma_mp_rel_rle(
+    b: Seq<u8>, m: MHRecord, ms: MHRecord, pc: int, out: Seq<u8>,
+    r: Result<(int, int, Seq<u8>), Error>,
+)
+    requires
+        ico_pair(m, ms),
+        mh(b, Mode::IcoEntryDibSlack) == Ok(ms),
+        m.compression == 1 || m.compression == 2,
+        mr_out(b, m, m.pixel_start, 0, 0) == Ok((pc, out)),
+        mp(b, Mode::IcoEntryDib) == r,
+    ensures
+        slack_mp_ok(b, r),
+{
+    lemma_ico_pair_fields(m, ms);
+    reveal(ico_pair);
+    reveal(mp);
+    reveal(mp_decoded);
+    reveal(mp_rle);
+    reveal(mp_mask_phase);
+    reveal(mp_image_size_ok);
+    reveal(mh);
+    reveal(is_ico);
+    reveal(exact_tail);
+    reveal(with_mode);
+    reveal(bytes_replay);
+    lemma_mr_out_ico_pair(b, m, ms);
+    assert(mr_out(b, ms, ms.pixel_start, 0, 0) == Ok((pc, out)));
+    assert(m.pixel_start == ms.pixel_start);
+    assert(m.compression == ms.compression);
+    assert(ms.compression == 1 || ms.compression == 2);
+    assert(m.palette_start + m.table_count * m.palette_stride <= b.len());
+    assert(ms.palette_start + ms.table_count * ms.palette_stride <= b.len());
+    assert(mp(b, Mode::IcoEntryDibSlack) == mp_decoded(ms, mp_rle(b, ms)));
+    let xlen = pc - m.pixel_start;
+    assert(mp_image_size_ok(ms, xlen) == mp_image_size_ok(m, xlen));
+    assert(and_bytes(ms.width, ms.height) == and_bytes(m.width, m.height));
+    assert(mp_rle(b, m) == (match mp_mask_phase(b, m, pc, xlen, out) {
+        Ok((end, out2)) => Ok::<_, MpErr>((out2, end)),
+        Err(e) => Err(e),
+    }));
+    assert(mp(b, Mode::IcoEntryDib) == mp_decoded(m, mp_rle(b, m)));
+    slack_mode_suffix_phase(b, m, pc, xlen, out, mp_mask_phase(b, m, pc, xlen, out));
+    match mp_mask_phase(b, m, pc, xlen, out) {
+        Ok((_end, o)) => {
+            assert(r == Ok((m.width, m.height, o)));
+            assert(mp_mask_phase(b, ms, pc, xlen, out) == Ok((_end, o)));
+            assert(mp(b, Mode::IcoEntryDibSlack) == Ok((m.width, m.height, o)));
+        },
+        Err(MpErr::Api(Error::TrailingBytes)) => {
+            let a = and_bytes(m.width, m.height);
+            assert(mp_mask_phase(b, ms, pc, xlen, out)
+                == Ok((pc + a, ma_output(b, ms, pc, out, explicit_alpha(ms)))));
+            assert(r == Err(Error::TrailingBytes));
+            let w = m.width;
+            let h = m.height;
+            let p = ma_output(b, ms, pc, out, explicit_alpha(ms));
+            assert(mp(b, Mode::IcoEntryDibSlack) == Ok((w, h, p)));
+        },
+        Err(MpErr::Api(e2)) => {
+            assert(mp_mask_phase(b, ms, pc, xlen, out) == Err(MpErr::Api(e2)));
+            assert(r == Err(e2));
+            assert(mp(b, Mode::IcoEntryDibSlack) == Err(e2));
+        },
+        Err(MpErr::Outside) => {},
+    }
+}
+
+/// `MP`-level R19, header-`Ok` case: given `MH(b,IcoEntryDib) = Ok(m)`, relate
+/// `MP(b,IcoEntryDib)` and `MP(b,IcoEntryDibSlack)` at their exact results.
+pub proof fn lemma_slack_result_mp_ok(
+    b: Seq<u8>, m: MHRecord, r: Result<(int, int, Seq<u8>), Error>,
+)
+    requires
+        mh(b, Mode::IcoEntryDib) == Ok(m),
+        mp(b, Mode::IcoEntryDib) == r,
+    ensures
+        slack_mp_ok(b, r),
+{
+    slack_mode_same_prefix(b, m);
+    let ms = with_mode(m, Mode::IcoEntryDibSlack);
+    assert(mh(b, Mode::IcoEntryDibSlack) == Ok(ms));
+    assert(ico_pair(m, ms));
+    lemma_ico_pair_fields(m, ms);
+    reveal(mp);
+    reveal(mp_decoded);
+    reveal(mp_raw);
+    reveal(mp_rle);
+    reveal(mp_image_size_ok);
+    reveal(mh);
+    reveal(is_ico);
+    reveal(exact_tail);
+    reveal(with_mode);
+    reveal(ico_pair);
+    reveal(bytes_replay);
+    reveal(slack_mp_ok);
+    if m.palette_start + m.table_count * m.palette_stride > b.len() {
+        assert(mp(b, Mode::IcoEntryDib) == Err(Error::TruncatedPalette));
+        assert(r == Err(Error::TruncatedPalette));
+        assert(mp(b, Mode::IcoEntryDibSlack) == Err(Error::TruncatedPalette));
+        assert(slack_mp_ok(b, r));
+    } else if m.compression == 0 || m.compression == 3 {
+        assert(m.compression == ms.compression);
+        lemma_mr_raw_out_ico_pair(b, m, ms, m.pixel_start);
+        match mr_raw_out(b, m, m.pixel_start) {
+            Err(_) => {
+                // `mp_raw` on a failing raw phase returns `Err(Api(e))` for the
+                // raw error `e`, so equal raw results give equal `mp_raw`.
+                assert(mr_raw_out(b, ms, ms.pixel_start) == mr_raw_out(b, m, m.pixel_start));
+                assert(mp_raw(b, ms) == mp_raw(b, m)) by {
+                    reveal(mp_raw);
+                }
+                assert(ms.palette_start + ms.table_count * ms.palette_stride <= b.len());
+                assert(mp(b, Mode::IcoEntryDibSlack) == mp_decoded(ms, mp_raw(b, ms))) by {
+                    reveal(mp);
+                    reveal(mh);
+                    reveal(is_ico);
+                }
+                assert(mp(b, Mode::IcoEntryDib) == mp_decoded(m, mp_raw(b, m))) by {
+                    reveal(mp);
+                    reveal(mh);
+                    reveal(is_ico);
+                }
+                lemma_mp_decoded_ico_pair(m, ms, mp_raw(b, m));
+                lemma_mp_phase_err_ne_trailing(b, m, true);
+                assert(!(mp_raw(b, m) == Err(MpErr::Api(Error::TrailingBytes))));
+                assert(!(r == Err(Error::TrailingBytes)));
+                assert(mp(b, Mode::IcoEntryDibSlack) == r);
+                assert(slack_mp_ok(b, r));
+            },
+            Ok((pc, out)) => {
+                assert(mp(b, Mode::IcoEntryDibSlack) == mp_decoded(ms, mp_raw(b, ms)));
+                lemma_mp_rel_raw(b, m, ms, pc, out, r);
+                assert(slack_mp_ok(b, r));
+            },
+        }
+    } else {
+        assert(m.compression == ms.compression);
+        lemma_mr_out_ico_pair(b, m, ms);
+        match mr_out(b, m, m.pixel_start, 0, 0) {
+            Err(_) => {
+                assert(mp_rle(b, ms) == mp_rle(b, m));
+                assert(ms.palette_start + ms.table_count * ms.palette_stride <= b.len());
+                assert(mp(b, Mode::IcoEntryDibSlack) == mp_decoded(ms, mp_rle(b, ms))) by {
+                    reveal(mp);
+                    reveal(mh);
+                    reveal(is_ico);
+                }
+                assert(mp(b, Mode::IcoEntryDib) == mp_decoded(m, mp_rle(b, m))) by {
+                    reveal(mp);
+                    reveal(mh);
+                    reveal(is_ico);
+                }
+                lemma_mp_decoded_ico_pair(m, ms, mp_rle(b, m));
+                lemma_mh_pixel_start_nonneg(b, Mode::IcoEntryDib, m);
+                lemma_mp_rle_err_ne_trailing(b, m);
+                assert(!(mp_rle(b, m) == Err(MpErr::Api(Error::TrailingBytes))));
+                assert(!(r == Err(Error::TrailingBytes)));
+                assert(mp(b, Mode::IcoEntryDibSlack) == r);
+                assert(slack_mp_ok(b, r));
+            },
+            Ok((pc, out)) => {
+                assert(mp(b, Mode::IcoEntryDibSlack) == mp_decoded(ms, mp_rle(b, ms)));
+                lemma_mp_rel_rle(b, m, ms, pc, out, r);
+                assert(slack_mp_ok(b, r));
+            },
+        }
+    }
+}
+
+/// `MP`-level R19: `MP(b,Slack)` and `MP(b,IcoEntryDib)` differ only when the
+/// latter returns `TrailingBytes`, in which case the former returns the
+/// completed decoded image; every other result — the success image and every
+/// other error — is identical. This is the manifest's `slack_mode_suffix_result`.
+pub proof fn slack_mode_suffix_result(
+    b: Seq<u8>, r: Result<(int, int, Seq<u8>), Error>,
+)
+    requires
+        mp(b, Mode::IcoEntryDib) == r,
+    ensures
+        slack_mp_ok(b, r),
+{
+    reveal(mp);
+    reveal(mp_decoded);
+    reveal(mh);
+    reveal(r2r7);
+    reveal(r2r5);
+    reveal(r6r7);
+    reveal(r6r7_result);
+    reveal(visible_height_of);
+    reveal(r1_prefix);
+    reveal(is_ico);
+    reveal(with_mode);
+    reveal(ico_pair);
+    reveal(mp);
+    reveal(mp_decoded);
+    reveal(mp_raw);
+    reveal(mp_rle);
+    reveal(mh);
+    match mh(b, Mode::IcoEntryDib) {
+        Err(e) => {
+            assert(mh(b, Mode::IcoEntryDibSlack) == Err(e));
+            assert(mp(b, Mode::IcoEntryDib) == Err(e));
+            assert(mp(b, Mode::IcoEntryDibSlack) == Err(e));
+            assert(r == Err(e));
+        },
+        Ok(m) => {
+            lemma_slack_result_mp_ok(b, m, r);
+        },
+    }
 }
 
 } // verus!

@@ -206,3 +206,61 @@
 
 ## usize width (coordinator note, 2026-11-09)
 Checked on a standalone Verus file with the same toolchain (0.2026.11.02): `assert(usize::MAX == 0xffff_ffff_ffff_ffff)` FAILS while `assert(usize::MAX >= 0xffff_ffff)` verifies, i.e. Verus treats `usize` as a 32-or-64-bit type by default unless a crate declares `global size_of usize == 8` (none of the crates here do: grep for `global size_of`/`size_of usize` is empty). The proofs therefore hold for both widths in the sense of the manifest's 'parameterised by a word width'. This addresses the 'no 32-bit verifier run' review finding as a width-generic proof; it is not an actual i686 build or test run.
+
+## M1.1a (done — R19 enum, helpers, models; crate version 0.2.0)
+- **Semver break:** `Cargo.toml` version bumped 0.1.0 -> 0.2.0 (public `Mode`
+  gains a variant; downstream exhaustive matches break).
+- `dib.rs` and `model.rs` each gain `is_ico(mode)` ("either ICO mode") and
+  `exact_tail(mode)` ("rejects bytes after the structure", i.e. `BareDib` or
+  `IcoEntryDib`); `model.rs` adds `old_mode` and `with_mode`. `Mode` now has the
+  fourth variant `IcoEntryDibSlack`.
+- **Site classification.** Every 1.0 `x == Mode::IcoEntryDib` test was classified
+  as *shared ICO handling* (rewritten to `is_ico(x)`) or *exact-tail handling*
+  (rewritten to `exact_tail(x)`). In `dib.rs` the 32 IcoEntryDib sites are: shared
+  ICO handling at the `visible_height` dispatch, the R3 even-height rule, the R3
+  visible-height arithmetic, the R4 orientation rule (`ico` local), the
+  `spec_is_ico` header predicate, the 32-bpp alpha read in `raw_sample`, the
+  `mask_stride`/`and_bytes` computation, the whole `finish_mask` ICO body
+  (shared, storage), and the mask-phase reasoning in `decode_tracked`; the only
+  *exact-tail* site is the final `end != b.len()` cursor test in `finish_mask`
+  (and its `mask_done_eq`/`decode_tracked` error-branch mirrors). In `model.rs`
+  the 16 sites are the shared `visible_height_of`, `r2r5` (even-height,
+  orientation), `conv_word`/`conv_rgb` 32-bpp alpha, `ma_reachable`, `ma_domain`,
+  `mp_image_size_ok`, and the `mp_mask_phase` ICO branch; the only *exact-tail*
+  site is `mp_mask_phase`'s `exact_tail(m.mode) && end != b.len()` test.
+- **Models MH/MP/MA/MR/Conv extended.** `MH`'s record keeps the exact typed mode
+  (a new field, `with_mode` relates the two ICO records field-for-field);
+  `MP` skips *only* the final `cursor==|b|` test for `IcoEntryDibSlack`, after a
+  complete AND mask; `MA`/`MR`/`Conv` share the old ICO rules.
+- **New model theorems (all prove, no `requires` escape):**
+  `old_modes_unchanged` (on the three 1.0 modes `is_ico`/`exact_tail` reduce
+  definitionally to the 1.0 tests, so the models are unchanged);
+  `slack_mode_same_prefix` (the `MH` record for Slack is the `IcoEntryDib`
+  record with only `mode` changed); `slack_mode_suffix_phase` (the two modes'
+  mask phases differ **only** where the exact-tail mode returns `TrailingBytes`,
+  then Slack returns the completed `Ok((end, ma_output))`); and
+  `slack_mode_suffix_result` at the whole-`MP` level (same statement lifted
+  through the raw/RLE phases, via `ico_pair` congruence lemmas).
+- **Executable preservation.** `finish_mask` keeps the shared ICO body; the new
+  mode reaches the same code as `IcoEntryDib` with the exact-tail difference
+  isolated in one exec boolean `exact` and one `if exact && end != b.len()`.
+  All T1-T13, L1-L3 still verify.
+- **Conformance:** `tests/conformance.rs` now reads
+  `../spec-1.1-frozen/VECTORS.json` (302 vectors) and teaches its mode parser
+  `IcoEntryDibSlack`; asserts 302/302.
+- Checks: clean full reverify `verification results:: 1398 verified, 0 errors`
+  (`runs/038.log`, after `cargo clean`); `cargo test` conformance 302/302, corpus
+  84 files / 58 accepted; frozen 1.1 hashes match FREEZE.txt; spec-frozen and
+  THEOREMS.md unchanged; no escapes, no solver-budget attribute. Backups
+  `dib.rs.m11`, `model.rs.m11`, `model_vectors.rs.m11`.
+- **Deferred to M1.1b/M1.1c (not done here):** (a) *integrated* T9/T10/T13 for
+  the new mode is already complete — `decode_mp_eq` quantifies over `mode`
+  universally and `finish_mask`'s `mask_done_eq` now covers the slack branch, so
+  no gap remains for T9/T10/T13; (b) `model_vectors.rs` is unchanged (the 214
+  old `agree_*` proofs still verify against the extended model; regeneration for
+  the 88 new vectors is M1.1c); (c) the named non-vacuity witnesses
+  `slack-1-new`, `slack-1-old`, `image-size-9-slack`, `mask-short-3-new`,
+  `invalid-size-and-short-new`, `alpha32-7f-mask80-new` are M1.1b/M1.1c;
+  (d) the delta's implementation mutations and the public `decode_with_steps`
+  export are M1.1c. `model_vectors.rs` was therefore NOT edited (no regeneration
+  needed to keep its 209 `agree_*` obligations verifying).

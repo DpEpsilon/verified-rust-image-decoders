@@ -19,14 +19,30 @@ pub const MAX_OUTPUT: usize = 67_108_864;
 /// R3: each visible dimension is in `[1, MAX_DIMENSION]`.
 pub const MAX_DIMENSION: u32 = 8_192;
 
-/// The three decode modes. R1: the DIB starts at 14 for `BmpFile`, at 0
-/// otherwise; only `IcoEntryDib` doubles the stored height and carries an AND
-/// mask.
+/// The four decode modes. R1: the DIB starts at 14 for `BmpFile`, at 0
+/// otherwise; both ICO modes double the stored height and carry an AND mask.
+/// R19: `IcoEntryDibSlack` is `IcoEntryDib` except that bytes after a complete
+/// AND mask are ignored instead of `TrailingBytes`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Mode {
     BmpFile,
     BareDib,
     IcoEntryDib,
+    IcoEntryDibSlack,
+}
+
+/// R1/R19: the shared-ICO-mode predicate — either ICO mode. Every R1–R18 ICO
+/// rule applies to a mode satisfying this; only R12's final cursor-equality
+/// check is governed by `exact_tail` instead.
+pub open spec fn is_ico(mode: Mode) -> bool {
+    mode == Mode::IcoEntryDib || mode == Mode::IcoEntryDibSlack
+}
+
+/// R12/R14/R19: the exact-tail predicate — the modes that reject bytes after
+/// the structure (`BareDib`, `IcoEntryDib`). `BmpFile` ignores a suffix and
+/// `IcoEntryDibSlack` ignores post-AND bytes, so neither is `exact_tail`.
+pub open spec fn exact_tail(mode: Mode) -> bool {
+    mode == Mode::BareDib || mode == Mode::IcoEntryDib
 }
 
 /// R15: the closed, case-sensitive error set, in the order R15 lists it.
@@ -728,9 +744,9 @@ impl Header {
         self.compression == 1u32 || self.compression == 2u32
     }
 
-    /// R12: whether an ICO AND mask applies.
+    /// R12/R19: whether an ICO AND mask applies — either ICO mode.
     spec fn spec_is_ico(self) -> bool {
-        self.mode == Mode::IcoEntryDib
+        is_ico(self.mode)
     }
 
     /// R3: top-down when the stored height is negative.
@@ -756,7 +772,7 @@ spec fn header_inv_light(h: &Header) -> bool {
     &&& (h.compression == 0u32 || h.compression == 3u32) ==> 0 <= h.spec_stride() <= 32768
     &&& h.spec_top_down() == (h.stored_height < 0)
     &&& h.top_down == h.spec_top_down()
-    &&& (h.mode == Mode::IcoEntryDib ==> !h.spec_top_down())
+    &&& (is_ico(h.mode) ==> !h.spec_top_down())
     &&& h.spec_mask_depth_ok()
 }
 
@@ -1098,7 +1114,7 @@ fn visible_height(mode: Mode, abs_h: u32) -> (r: u32)
         reveal(crate::model::visible_height_of);
     }
     match mode {
-        Mode::IcoEntryDib => {
+        Mode::IcoEntryDib | Mode::IcoEntryDibSlack => {
             abs_h / 2
         }
         _ => {
@@ -1282,7 +1298,7 @@ fn dib_fields(
         return Err(Error::InvalidDimensions);
     }
     match mode {
-        Mode::IcoEntryDib => {
+        Mode::IcoEntryDib | Mode::IcoEntryDibSlack => {
             if signed_height < 0 || signed_height % 2 != 0 {
                 proof {
                     reveal(crate::model::mh);
@@ -1306,7 +1322,7 @@ fn dib_fields(
                 signed_height != i32::MIN,
         ;
         match mode {
-            Mode::IcoEntryDib => {
+            Mode::IcoEntryDib | Mode::IcoEntryDibSlack => {
                 assert((abs_h as int) % 2 == 0) by {
                     assert(signed_height % 2 == 0) by (bit_vector)
                         requires
@@ -1324,7 +1340,7 @@ fn dib_fields(
             }
         }
         match mode {
-            Mode::IcoEntryDib => {
+            Mode::IcoEntryDib | Mode::IcoEntryDibSlack => {
                 assert(abs_h as int >= 2) by (nonlinear_arith)
                     requires
                         abs_h as int % 2 == 0,
@@ -1411,7 +1427,7 @@ fn dib_fields(
         return Err(Error::InvalidCompressionDepth);
     }
     let ico = match mode {
-        Mode::IcoEntryDib => true,
+        Mode::IcoEntryDib | Mode::IcoEntryDibSlack => true,
         _ => false,
     };
     if (signed_height < 0 && rle) || (ico && rle) {
@@ -1782,6 +1798,9 @@ fn dib_finish(
         reveal(crate::model::pow2);
         reveal(crate::model::as_u32);
         reveal(crate::model::stride_of);
+        reveal(crate::model::is_ico);
+        reveal(crate::model::exact_tail);
+        reveal(crate::model::visible_height_of);
         reveal(hdr_matches);
         reveal(header_inv);
         reveal(header_record);
@@ -2443,14 +2462,16 @@ fn raw_sample(b: &[u8], h: &Header, pos: usize, x: usize, line: usize) -> (r: Re
                 assert((p as int) == (pos as int) + (off as int));
             }
             let c = match h.mode {
-                Mode::IcoEntryDib => [rd(b, p + 2), rd(b, p + 1), rd(b, p), rd(b, p + 3)],
+                Mode::IcoEntryDib | Mode::IcoEntryDibSlack => {
+                    [rd(b, p + 2), rd(b, p + 1), rd(b, p), rd(b, p + 3)]
+                },
                 _ => [rd(b, p + 2), rd(b, p + 1), rd(b, p), 255],
             };
             proof {
                 assert(c@ == crate::model::raw_conv(b@, header_record(*h), pos as int, x as int))
                     by {
-                    if h.mode == Mode::IcoEntryDib {
-                        assert(header_record(*h).mode == Mode::IcoEntryDib);
+                    if is_ico(h.mode) {
+                        assert(is_ico(header_record(*h).mode));
                         assert(c@ == seq![
                             b@[p as int + 2],
                             b@[p as int + 1],
@@ -2464,7 +2485,7 @@ fn raw_sample(b: &[u8], h: &Header, pos: usize, x: usize, line: usize) -> (r: Re
                             b@[p as int + 3],
                         ]);
                     } else {
-                        assert(header_record(*h).mode != Mode::IcoEntryDib);
+                        assert(!is_ico(header_record(*h).mode));
                         assert(c@ == seq![
                             b@[p as int + 2],
                             b@[p as int + 1],
@@ -2508,6 +2529,15 @@ proof fn lemma_hrec_top_down(h: &Header)
     reveal(hrec);
     reveal(header_record);
     reveal(header_inv_light);
+}
+
+/// `header_record` keeps the executable's `mode` field verbatim.
+proof fn lemma_hrec_mode(h: &Header)
+    ensures
+        hrec(h).mode == h.mode,
+{
+    reveal(hrec);
+    reveal(header_record);
 }
 
 /// `header_record` keeps every dimension the model's `cell_of` uses.
@@ -4186,7 +4216,7 @@ fn apply_and(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
         b@.len() <= 67108864,
         and_bytes == mask_stride * (h.height as usize),
         mask_stride as int == crate::model::stride_of(h.spec_width(), 1),
-        h.mode == Mode::IcoEntryDib,
+        is_ico(h.mode),
         !h.spec_top_down(),
         has_xor_alpha ==> !crate::model::xor_alpha_present(old(out)@, h.spec_n()),
     ensures
@@ -4221,7 +4251,7 @@ fn apply_and(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
             mask_stride <= 32768,
             mask_stride as int == crate::model::stride_of(h.spec_width(), 1),
             y <= h.spec_height(),
-            h.mode == Mode::IcoEntryDib, !h.spec_top_down(),
+            is_ico(h.mode), !h.spec_top_down(),
             original.len() == 4 * h.spec_n(),
             has_xor_alpha ==> !crate::model::xor_alpha_present(original, h.spec_n()),
             out@ == crate::model::ma_prefix(b@, hrec(h), pos as int, original,
@@ -4269,7 +4299,7 @@ fn apply_and(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
                 row == pos + y * mask_stride,
                 row + mask_stride <= pos + and_bytes,
                 row + mask_stride <= b@.len(),
-                h.mode == Mode::IcoEntryDib, !h.spec_top_down(),
+                is_ico(h.mode), !h.spec_top_down(),
                 original.len() == 4 * h.spec_n(),
                 has_xor_alpha ==> !crate::model::xor_alpha_present(original, h.spec_n()),
                 out@ == crate::model::ma_prefix(b@, hrec(h), pos as int, original,
@@ -4390,10 +4420,10 @@ spec fn mask_done_eq(
     let a = crate::model::and_bytes(m.width, m.height);
     if !crate::model::mp_image_size_ok(m, pos - m.pixel_start) {
         r == Err(Error::InvalidImageSize)
-    } else if m.mode == Mode::IcoEntryDib {
+    } else if is_ico(m.mode) {
         if pos + a > b.len() {
             r == Err(Error::TruncatedAndMask)
-        } else if pos + a != b.len() {
+        } else if exact_tail(m.mode) && pos + a != b.len() {
             r == Err(Error::TrailingBytes)
         } else {
             r == Ok(()) && out1 == crate::model::ma_output(
@@ -4470,15 +4500,22 @@ proof fn lemma_mask_done_ok(
             == Ok((end, out1)),
 {
     reveal(mask_done_eq);
+    reveal(crate::dib::is_ico);
+    reveal(crate::dib::exact_tail);
     if !crate::model::mp_image_size_ok(m, pos - m.pixel_start) {
         assert(false);
     }
-    if m.mode == Mode::IcoEntryDib {
+    if is_ico(m.mode) {
         if pos + crate::model::and_bytes(m.width, m.height) > b.len() {
             assert(false);
         }
-        if pos + crate::model::and_bytes(m.width, m.height) != b.len() {
-            assert(false);
+        assert(exact_tail(m.mode) ==> pos + crate::model::and_bytes(m.width, m.height) == b.len())
+            by {
+            if exact_tail(m.mode) {
+                if pos + crate::model::and_bytes(m.width, m.height) != b.len() {
+                    assert(false);
+                }
+            }
         }
         crate::model::lemma_mp_mask_phase_ico_ok(b, m, pos, out0, out1);
         assert(crate::model::mp_mask_phase(b, m, pos, pos - m.pixel_start, out0)
@@ -4568,8 +4605,10 @@ proof fn lemma_mp_rle_assemble(
 
 /// T9/T8 bridge: on the ICO success branch, the model's `ma` (finish_mask's
 /// contract) and the mask phase `mp_mask_phase` agree on `Ok` payloads when the
-/// AND plane closes the slice — `ma`'s `Ok` image is `ma_output`, the same byte
-/// sequence `mp_mask_phase` returns on its own `end == b.len()` branch.
+/// AND plane is available and, in the exact-tail mode, closes the slice — `ma`'s
+/// `Ok` image is `ma_output`, the same byte sequence `mp_mask_phase` returns on
+/// its own success branch. R19: holds for both ICO modes; the slack mode may
+/// have `end < b.len()`.
 proof fn lemma_ma_mp_mask_phase(
     b: Seq<u8>,
     m: crate::model::MHRecord,
@@ -4580,13 +4619,16 @@ proof fn lemma_ma_mp_mask_phase(
     image: Seq<u8>,
 )
     requires
-        m.mode == Mode::IcoEntryDib,
+        is_ico(m.mode),
         x_len == pos - m.pixel_start,
-        pos + crate::model::and_bytes(m.width, m.height) == b.len(),
+        pos + crate::model::and_bytes(m.width, m.height) <= b.len(),
+        exact_tail(m.mode) ==> pos + crate::model::and_bytes(m.width, m.height) == b.len(),
         crate::model::ma(b, m, pos, out) == Ok((end, image)),
     ensures
         crate::model::mp_mask_phase(b, m, pos, x_len, out) == Ok((end, image)),
 {
+    reveal(crate::dib::is_ico);
+    reveal(crate::dib::exact_tail);
     reveal(crate::model::mp_mask_phase);
     reveal(crate::model::mp_image_size_ok);
     reveal(crate::model::ma);
@@ -4596,6 +4638,13 @@ proof fn lemma_ma_mp_mask_phase(
     reveal(crate::model::and_bytes);
     reveal(crate::model::and_stride);
     if !crate::model::ma_domain(b, m, pos, out) {
+        assert(false);
+    }
+    if !crate::model::image_size_ok(m.declared_image, x_len,
+        crate::model::and_bytes(m.width, m.height), true) {
+        assert(false);
+    }
+    if pos + crate::model::and_bytes(m.width, m.height) > b.len() {
         assert(false);
     }
     assert(crate::model::ma_exact(b, m, pos, out, crate::model::explicit_alpha(m))
@@ -4618,24 +4667,25 @@ fn finish_mask(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
         match r { Ok(()) => true, Err(e) => e == Error::InvalidImageSize
             || e == Error::TruncatedAndMask || e == Error::TrailingBytes },
         // T9/T8: the helper equals the model's order-0 `mp_mask_phase` exactly,
-        // in every mode.
+        // in every mode (R19 included: the slack mode skips only the final
+        // cursor-equality test).
         mask_done_eq(b@, hrec(h), pos as int, old(out)@, final(out)@, r),
-        // T8: in `IcoEntryDib` the helper is `MA` at this reachable complete XOR
+        // T8: in either ICO mode the helper is `MA` at this reachable complete XOR
         // state — the exact error with the buffer untouched, or `MA`'s image and
-        // end cursor (then the R12 `TrailingBytes` closure). `MA`'s `Outside`
-        // marker is impossible here: the state is in `ma_domain`.
-        h.mode == Mode::IcoEntryDib ==> {
+        // end cursor (then the R12 `TrailingBytes` closure, exact-tail mode only).
+        // `MA`'s `Outside` marker is impossible here: the state is in `ma_domain`.
+        is_ico(h.mode) ==> {
             match crate::model::ma(b@, hrec(h), pos as int, old(out)@) {
                 Err(crate::model::MaErr::Api(e)) => r == Err(e) && final(out)@ == old(out)@,
                 Err(crate::model::MaErr::Outside) => false,
                 Ok((end, image)) => final(out)@ == image &&
-                    (if end == b@.len() { r == Ok(()) }
+                    (if end == b@.len() || !exact_tail(h.mode) { r == Ok(()) }
                     else { r == Err(Error::TrailingBytes) }),
             }
         },
         // T8, write-list form: on success with the fallback active, the buffer is
         // `ma_mask`'s AND write list applied to the XOR alpha bytes.
-        h.mode == Mode::IcoEntryDib ==> {
+        is_ico(h.mode) ==> {
             match crate::model::ma(b@, hrec(h), pos as int, old(out)@) {
                 Ok((end, image)) => {
                     let explicit = crate::model::explicit_alpha(hrec(h));
@@ -4658,7 +4708,9 @@ fn finish_mask(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
         reveal(crate::model::ma);
         reveal(crate::model::ma_domain);
         reveal(crate::model::explicit_alpha);
-        if h.mode == Mode::IcoEntryDib {
+        reveal(crate::dib::is_ico);
+        reveal(crate::dib::exact_tail);
+        if is_ico(h.mode) {
             lemma_hrec_dims(h);
             lemma_hrec_top_down(h);
             assert(crate::model::ma_domain(b@, hrec(h), pos as int, original));
@@ -4669,7 +4721,8 @@ fn finish_mask(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
     }
     let image_len = pos - h.pixel_start;
     let mask_stride = match h.mode {
-        Mode::IcoEntryDib => stride(h.width, 1), _ => 0usize,
+        Mode::IcoEntryDib | Mode::IcoEntryDibSlack => stride(h.width, 1),
+        _ => 0usize,
     };
     proof {
         reveal(header_inv_light);
@@ -4686,9 +4739,10 @@ fn finish_mask(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
         reveal(crate::model::image_size_ok);
         reveal(crate::model::and_bytes);
         reveal(crate::model::and_stride);
+        reveal(crate::dib::is_ico);
         assert(hrec(h).declared_image == h.declared as int);
         assert(hrec(h).pixel_start == h.pixel_start as int);
-        if h.mode == Mode::IcoEntryDib {
+        if is_ico(h.mode) {
             assert(mask_stride as int == crate::model::stride_of(h.spec_width(), 1));
             assert(hrec(h).width == h.spec_width());
             assert(hrec(h).height == h.spec_height());
@@ -4713,12 +4767,17 @@ fn finish_mask(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
             requires image_len <= b@.len(), b@.len() <= 67108864,
                 and_bytes <= 268435456;
     }
+    let ico = match h.mode {
+        Mode::IcoEntryDib | Mode::IcoEntryDibSlack => true,
+        _ => false,
+    };
     if h.declared != 0 {
         let valid = h.declared as u64 == image_len as u64 ||
-            (match h.mode { Mode::IcoEntryDib => true, _ => false }
-                && h.declared as u64 == image_len as u64 + and_bytes as u64);
+            (ico && h.declared as u64 == image_len as u64 + and_bytes as u64);
         if !valid {
             proof {
+                reveal(crate::dib::is_ico);
+                assert(ico == is_ico(h.mode));
                 // T9: the model's `mp_mask_phase` fails the same way.
                 reveal(mask_done_eq);
                 reveal(crate::model::mp_image_size_ok);
@@ -4729,11 +4788,12 @@ fn finish_mask(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
                 reveal(crate::model::and_bytes);
                 reveal(crate::model::and_stride);
                 reveal(header_inv_light);
+                reveal(crate::dib::is_ico);
                 assert(image_len as int == pos as int - h.pixel_start as int);
                 assert(hrec(h).declared_image == h.declared as int);
                 assert(hrec(h).pixel_start == h.pixel_start as int);
                 assert(hrec(h).mode == h.mode);
-                if h.mode == Mode::IcoEntryDib {
+                if is_ico(h.mode) {
                     assert((and_bytes as int) == crate::model::and_bytes(
                         hrec(h).width, hrec(h).height)) by (nonlinear_arith)
                         requires
@@ -4759,11 +4819,12 @@ fn finish_mask(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
         reveal(hrec);
         reveal(header_record);
         reveal(header_inv_light);
+        reveal(crate::dib::is_ico);
         assert(image_len as int == pos as int - h.pixel_start as int);
         assert(hrec(h).declared_image == h.declared as int);
         assert(hrec(h).pixel_start == h.pixel_start as int);
         assert(hrec(h).mode == h.mode);
-        if h.mode == Mode::IcoEntryDib {
+        if is_ico(h.mode) {
             assert((and_bytes as int) == crate::model::and_bytes(
                 hrec(h).width, hrec(h).height)) by (nonlinear_arith)
                 requires
@@ -4775,109 +4836,135 @@ fn finish_mask(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
         }
         assert(crate::model::mp_image_size_ok(hrec(h), pos as int - h.pixel_start as int));
     }
-    match h.mode {
-        Mode::IcoEntryDib => {
-            if b.len() - pos < and_bytes {
-                proof {
-                    reveal(mask_done_eq);
-                    reveal(crate::model::mp_mask_phase);
-                    reveal(crate::model::mp_image_size_ok);
-                    assert(pos + crate::model::and_bytes(hrec(h).width, hrec(h).height)
-                        > b@.len());
-                }
-                return Err(Error::TruncatedAndMask);
-            }
-            let has_xor_alpha = h.bits == 32 && (h.compression == 0 || h.masks[3] != 0);
-            let any_alpha = alpha_present(h, out, steps);
-            if !has_xor_alpha || !any_alpha {
-                apply_and(b, h, out, pos, mask_stride, and_bytes, has_xor_alpha, steps);
-            } else {
-                proof {
-                    crate::model::lemma_ma_explicit_alpha_keep(
-                        b@, hrec(h), pos as int, original);
-                    assert(out@ == original);
-                }
-            }
-            proof {
-                reveal(crate::model::ma_exact);
-                reveal(crate::model::explicit_alpha);
-                assert(out@ == crate::model::ma_output(
-                    b@, hrec(h), pos as int, original, has_xor_alpha));
-            }
-            let end = pos + and_bytes;
-            if end != b.len() {
-                proof {
-                    reveal(mask_done_eq);
-                    reveal(crate::model::mp_mask_phase);
-                    reveal(crate::model::mp_image_size_ok);
-                    assert(end as int == pos as int + crate::model::and_bytes(
-                        hrec(h).width, hrec(h).height));
-                    assert(end as int != b@.len());
-                }
-                return Err(Error::TrailingBytes);
-            }
+    let ico = match h.mode {
+        Mode::IcoEntryDib | Mode::IcoEntryDibSlack => true,
+        _ => false,
+    };
+    if ico {
+        if b.len() - pos < and_bytes {
             proof {
                 reveal(mask_done_eq);
                 reveal(crate::model::mp_mask_phase);
                 reveal(crate::model::mp_image_size_ok);
-                reveal(crate::model::explicit_alpha);
-                reveal(crate::model::ma);
-                reveal(crate::model::ma_exact);
-                reveal(crate::model::ma_domain);
+                reveal(crate::dib::is_ico);
+                assert(pos + crate::model::and_bytes(hrec(h).width, hrec(h).height)
+                    > b@.len());
+            }
+            return Err(Error::TruncatedAndMask);
+        }
+        let has_xor_alpha = h.bits == 32 && (h.compression == 0 || h.masks[3] != 0);
+        let any_alpha = alpha_present(h, out, steps);
+        if !has_xor_alpha || !any_alpha {
+            apply_and(b, h, out, pos, mask_stride, and_bytes, has_xor_alpha, steps);
+        } else {
+            proof {
+                crate::model::lemma_ma_explicit_alpha_keep(
+                    b@, hrec(h), pos as int, original);
+                assert(out@ == original);
+            }
+        }
+        proof {
+            reveal(crate::model::ma_exact);
+            reveal(crate::model::explicit_alpha);
+            assert(out@ == crate::model::ma_output(
+                b@, hrec(h), pos as int, original, has_xor_alpha));
+        }
+        let end = pos + and_bytes;
+        let exact = match h.mode {
+            Mode::BareDib | Mode::IcoEntryDib => true,
+            _ => false,
+        };
+        if exact && end != b.len() {
+            proof {
+                reveal(mask_done_eq);
+                reveal(crate::model::mp_mask_phase);
+                reveal(crate::model::mp_image_size_ok);
+                reveal(crate::dib::exact_tail);
+                assert(exact == exact_tail(h.mode));
                 assert(end as int == pos as int + crate::model::and_bytes(
                     hrec(h).width, hrec(h).height));
-                assert(end as int == b@.len());
-                assert(hrec(h).mode == Mode::IcoEntryDib);
-                // The whole policy is `ma_output`; on the closed-slice branch
-                // this is `mp_mask_phase`'s own ICO success payload.
-                assert(out@ == crate::model::ma_output(
-                    b@, hrec(h), pos as int, original, crate::model::explicit_alpha(hrec(h))));
-                assert(crate::model::ma(b@, hrec(h), pos as int, original) == Ok((
-                    end as int,
-                    crate::model::ma_output(
-                        b@, hrec(h), pos as int, original,
-                        crate::model::explicit_alpha(hrec(h))),
-                )));
-                lemma_ma_mp_mask_phase(
-                    b@, hrec(h), pos as int, pos as int - h.pixel_start as int, original,
-                    end as int, out@);
+                assert(end as int != b@.len());
             }
-        },
-        Mode::BareDib => {
-            if pos != b.len() {
+            return Err(Error::TrailingBytes);
+        }
+        proof {
+            reveal(mask_done_eq);
+            reveal(crate::model::mp_mask_phase);
+            reveal(crate::model::mp_image_size_ok);
+            reveal(crate::model::explicit_alpha);
+            reveal(crate::model::ma);
+            reveal(crate::model::ma_exact);
+            reveal(crate::model::ma_domain);
+            reveal(crate::dib::exact_tail);
+            assert(end as int == pos as int + crate::model::and_bytes(
+                hrec(h).width, hrec(h).height));
+            assert(exact ==> end as int == b@.len()) by {
+                if exact {
+                    assert(exact_tail(h.mode));
+                    assert(end as int == b@.len());
+                }
+            }
+            assert(is_ico(hrec(h).mode));
+            assert(is_ico(h.mode) == ico) by { reveal(crate::dib::is_ico); }
+            // The whole policy is `ma_output`; on the success branch this is
+            // `mp_mask_phase`'s own ICO success payload.
+            assert(out@ == crate::model::ma_output(
+                b@, hrec(h), pos as int, original, crate::model::explicit_alpha(hrec(h))));
+            assert(crate::model::ma(b@, hrec(h), pos as int, original) == Ok((
+                end as int,
+                crate::model::ma_output(
+                    b@, hrec(h), pos as int, original,
+                    crate::model::explicit_alpha(hrec(h))),
+            )));
+            lemma_ma_mp_mask_phase(
+                b@, hrec(h), pos as int, pos as int - h.pixel_start as int, original,
+                end as int, out@);
+        }
+    } else {
+        match h.mode {
+            Mode::BareDib => {
+                if pos != b.len() {
+                    proof {
+                        reveal(mask_done_eq);
+                        reveal(crate::model::mp_mask_phase);
+                        reveal(crate::model::mp_image_size_ok);
+                        reveal(hrec);
+                        reveal(header_record);
+                        reveal(header_inv_light);
+                        lemma_hrec_mode(h);
+                        assert(hrec(h).mode == Mode::BareDib);
+                        assert(pos as int != b@.len());
+                    }
+                    return Err(Error::TrailingBytes);
+                }
                 proof {
                     reveal(mask_done_eq);
                     reveal(crate::model::mp_mask_phase);
                     reveal(crate::model::mp_image_size_ok);
                     reveal(hrec);
+                    reveal(header_record);
                     reveal(header_inv_light);
+                    lemma_hrec_mode(h);
                     assert(hrec(h).mode == Mode::BareDib);
-                    assert(pos as int != b@.len());
+                    assert(pos as int == b@.len());
+                    assert(final(out)@ == original);
                 }
-                return Err(Error::TrailingBytes);
-            }
-            proof {
-                reveal(mask_done_eq);
-                reveal(crate::model::mp_mask_phase);
-                reveal(crate::model::mp_image_size_ok);
-                reveal(hrec);
-                reveal(header_inv_light);
-                assert(hrec(h).mode == Mode::BareDib);
-                assert(pos as int == b@.len());
-                assert(final(out)@ == original);
-            }
-        },
-        Mode::BmpFile => {
-            proof {
-                reveal(mask_done_eq);
-                reveal(crate::model::mp_mask_phase);
-                reveal(crate::model::mp_image_size_ok);
-                reveal(hrec);
-                reveal(header_inv_light);
-                assert(hrec(h).mode == Mode::BmpFile);
-                assert(final(out)@ == original);
-            }
-        },
+            },
+            Mode::BmpFile => {
+                proof {
+                    reveal(mask_done_eq);
+                    reveal(crate::model::mp_mask_phase);
+                    reveal(crate::model::mp_image_size_ok);
+                    reveal(hrec);
+                    reveal(header_record);
+                    reveal(header_inv_light);
+                    lemma_hrec_mode(h);
+                    assert(hrec(h).mode == Mode::BmpFile);
+                    assert(final(out)@ == original);
+                }
+            },
+            Mode::IcoEntryDib | Mode::IcoEntryDibSlack => {},
+        }
     }
     Ok(())
 }
@@ -5294,19 +5381,26 @@ fn decode_tracked(bytes: &[u8], mode: Mode, steps: &mut Ghost<nat>) -> (r: Resul
                         == Err(crate::model::MpErr::Api(e)));
                 } else {
                     // The remaining errors are the ICO mask/`TrailingBytes`
-                    // closures; `MP`'s phase reports them the same way.
+                    // closures; `MP`'s phase reports them the same way. R19: the
+                    // slack mode has no `TrailingBytes` site, so on `is_ico` a
+                    // non-truncated failure forces the exact-tail mode.
                     reveal(crate::model::mp_mask_phase);
                     reveal(crate::model::mp_image_size_ok);
+                    reveal(crate::dib::is_ico);
+                    reveal(crate::dib::exact_tail);
                     assert(crate::model::mp_image_size_ok(
                         m, pos as int - m.pixel_start));
                     assert(m.mode == h.mode);
-                    if m.mode == Mode::IcoEntryDib {
+                    assert(is_ico(m.mode) == (m.mode == Mode::IcoEntryDib
+                        || m.mode == Mode::IcoEntryDibSlack)) by { reveal(crate::dib::is_ico); }
+                    if m.mode == Mode::IcoEntryDib || m.mode == Mode::IcoEntryDibSlack {
                         if (pos as int) + crate::model::and_bytes(m.width, m.height) > bytes@.len() {
                             assert(crate::model::mp_mask_phase(
                                 bytes@, m, pos as int, pos as int - m.pixel_start, out_xor)
                                 == Err(crate::model::MpErr::Api(Error::TruncatedAndMask)));
                             assert(e == Error::TruncatedAndMask);
                         } else {
+                            assert(exact_tail(m.mode));
                             assert((pos as int) + crate::model::and_bytes(m.width, m.height)
                                 < bytes@.len());
                             assert(crate::model::mp_mask_phase(

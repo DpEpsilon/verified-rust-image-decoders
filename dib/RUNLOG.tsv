@@ -1003,3 +1003,43 @@
 1015	2026-11-09T04:45:37+00:00	exit=101	113s	mutation 33 [crate=mutation/m33/dib_verus]	verification results:: 1366 verified, 1 errors
 1016	2026-11-09T04:47:29+00:00	exit=101	112s	mutation 34 [crate=mutation/m34/dib_verus]	verification results:: 1366 verified, 1 errors
 1017	2026-11-09T04:49:24+00:00	exit=101	114s	mutation 35 [crate=mutation/m35/dib_verus]	verification results:: 1366 verified, 1 errors
+1	2026-11-09T09:29:14+00:00	exit=101	99s	M1.1a: enum+helpers+models, first pass [crate=dib_verus]	verification results:: 1366 verified, 5 errors
+2	2026-11-09T09:30:43+00:00	exit=101	55s	M1.1a: second pass [crate=dib_verus]	verification results:: 1366 verified, 4 errors
+3	2026-11-09T09:32:59+00:00	exit=101	56s	M1.1a: third pass [crate=dib_verus]	verification results:: 1369 verified, 3 errors
+4	2026-11-09T09:34:17+00:00	exit=101	56s	M1.1a: fourth pass [crate=dib_verus]	verification results:: 1371 verified, 2 errors
+5	2026-11-09T09:36:00+00:00	exit=101	56s	M1.1a: fifth pass [crate=dib_verus]	verification results:: 1371 verified, 2 errors
+6	2026-11-09T09:37:17+00:00	exit=0	57s	M1.1a: sixth pass [crate=dib_verus]	verification results:: 1373 verified, 0 errors
+7	2026-11-09T09:39:02+00:00	exit=101	3s	M1.1a: seventh pass with MP-level suffix theorem [crate=dib_verus]	
+8	2026-11-09T09:40:03+00:00	exit=101	55s	M1.1a: eighth pass [crate=dib_verus]	verification results:: 1383 verified, 3 errors
+9	2026-11-09T09:41:40+00:00	exit=101	56s	M1.1a: ninth pass [crate=dib_verus]	verification results:: 1388 verified, 1 errors
+10	2026-11-09T09:42:03+00:00	exit=101	5s	M1.1a: tenth pass [crate=dib_verus]	
+11	2026-11-09T09:43:10+00:00	exit=101	55s	M1.1a: eleventh pass [crate=dib_verus]	
+12	2026-11-09T09:44:11+00:00	exit=101	55s	M1.1a: twelfth pass [crate=dib_verus]	verification results:: 1388 verified, 3 errors
+13	2026-11-09T09:45:28+00:00	exit=101	55s	M1.1a: thirteenth pass [crate=dib_verus]	verification results:: 1388 verified, 3 errors
+14	2026-11-09T09:46:08+00:00	exit=101	5s	M1.1a: fourteenth pass [crate=dib_verus]	
+15	2026-11-09T09:47:17+00:00	exit=101	56s	M1.1a: fifteenth pass [crate=dib_verus]	verification results:: 1390 verified, 1 errors
+16	2026-11-09T09:48:23+00:00	exit=101	56s	M1.1a: sixteenth pass [crate=dib_verus]	verification results:: 1390 verified, 1 errors
+17	2026-11-09T09:49:31+00:00	exit=101	55s	M1.1a: seventeenth pass [crate=dib_verus]	verification results:: 1390 verified, 2 errors
+18	2026-11-09T09:50:41+00:00	exit=101	56s	M1.1a: eighteenth pass [crate=dib_verus]	verification results:: 1391 verified, 1 errors
+19	2026-11-09T09:51:44+00:00	exit=101	56s	M1.1a: nineteenth pass [crate=dib_verus]	verification results:: 1391 verified, 1 errors
+20	2026-11-09T09:53:15+00:00	exit=101	56s	M1.1a: twentieth pass [crate=dib_verus]	verification results:: 1391 verified, 1 errors
+21	2026-11-09T09:54:25+00:00	exit=101	55s	M1.1a: 21st pass [crate=dib_verus]	verification results:: 1391 verified, 1 errors
+22	2026-11-09T09:55:41+00:00	exit=101	55s	M1.1a: 22nd pass [crate=dib_verus]	verification results:: 1391 verified, 1 errors
+23	2026-11-09T09:56:47+00:00	exit=101	55s	M1.1a: 23rd pass [crate=dib_verus]	verification results:: 1391 verified, 1 errors
+24	2026-11-09T09:57:53+00:00	exit=101	56s	M1.1a: 24th pass [crate=dib_verus]	verification results:: 1391 verified, 1 errors
+25	2026-11-09T09:59:07+00:00	exit=101	55s	M1.1a: 25th pass [crate=dib_verus]	verification results:: 1392 verified, 1 errors
+26	2026-11-09T10:00:30+00:00	exit=101	56s	M1.1a: 26th pass [crate=dib_verus]	verification results:: 1395 verified, 1 errors
+27	2026-11-09T10:01:38+00:00	exit=101	55s	M1.1a: 27th pass [crate=dib_verus]	verification results:: 1395 verified, 1 errors
+28	2026-11-09T10:02:44+00:00	exit=101	56s	M1.1a: 28th pass [crate=dib_verus]	verification results:: 1395 verified, 1 errors
+29	2026-11-09T10:04:10+00:00	exit=101	56s	M1.1a: 29th pass [crate=dib_verus]	verification results:: 1396 verified, 1 errors
+30	2026-11-09T10:04:32+00:00	exit=101	4s	M1.1a: 30th pass [crate=dib_verus]	
+31	2026-11-09T10:05:33+00:00	exit=101	55s	M1.1a: 31st pass [crate=dib_verus]	verification results:: 1396 verified, 1 errors
+32	2026-11-09T10:05:54+00:00	exit=101	6s	M1.1a: 32nd pass [crate=dib_verus]	
+33	2026-11-09T10:06:57+00:00	exit=101	55s	M1.1a: 33rd pass [crate=dib_verus]	verification results:: 1396 verified, 1 errors
+34	2026-11-09T10:07:18+00:00	exit=101	2s	M1.1a: 34th pass [crate=dib_verus]	
+35	2026-11-09T10:07:31+00:00	exit=101	3s	M1.1a: 35th pass [crate=dib_verus]	
+36	2026-11-09T10:08:36+00:00	exit=101	56s	M1.1a: 36th pass [crate=dib_verus]	verification results:: 1396 verified, 1 errors
+37	2026-11-09T10:09:52+00:00	exit=0	57s	M1.1a: 37th pass [crate=dib_verus]	verification results:: 1398 verified, 0 errors
+38	2026-11-09T10:11:45+00:00	exit=0	100s	M1.1a: clean full reverify [crate=dib_verus]	verification results:: 1398 verified, 0 errors
+39	2026-11-09T10:13:41+00:00	exit=0	58s	M1.1a: renamed lemmas [crate=dib_verus]	verification results:: 1398 verified, 0 errors
+40	2026-11-09T10:16:06+00:00	exit=0	105s	M1.1a: final shipped-source reverify [crate=dib_verus]	verification results:: 1398 verified, 0 errors
