@@ -1,0 +1,17 @@
+implementation mutation 20
+crate result: verification results:: 1367 verified, 0 errors
+exit=0
+error diagnostics:
+     --> src/dib.rs:100:17
+     --> src/model_vectors.rs:435:5
+     --> src/model_vectors.rs:437:5
+     --> src/model_vectors.rs:524:5
+     --> src/model_vectors.rs:526:5
+     --> src/model_vectors.rs:613:5
+     --> src/model_vectors.rs:615:5
+     --> src/model_vectors.rs:738:5
+     --> src/model_vectors.rs:740:5
+      --> src/model_vectors.rs:1032:5
+      --> src/model_vectors.rs:1034:5
+      --> src/model_vectors.rs:1122:5
+log: mutation/m20/failure.log

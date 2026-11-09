@@ -6,12 +6,13 @@
 //! `input_repeat` (whole-input repetition) or the suffix form
 //! `repeat_from` + `input_suffix_hex`. Successes carry `{width, height, rgba_runs}`
 //! where the runs are maximal in top-first row-major order and their counts sum to
-//! `width*height`; errors carry `{error}`. Every fixture invokes `decode`.
+//! `width*height`; errors carry `{error}`. Every fixture invokes the exported
+//! tracked decoder `decode_with_steps` (R19/T12; `.0` is `decode`'s result).
 
 use std::fs;
 use std::path::PathBuf;
 
-use dib_verus::dib::{decode, Error, Mode};
+use dib_verus::dib::{decode_with_steps, Error, Mode};
 use serde_json::Value;
 
 fn vectors_path() -> PathBuf {
@@ -116,14 +117,17 @@ fn expand_runs(runs: &Value, total: usize) -> Vec<u8> {
     out
 }
 
-/// Run one vector, returning `Err(message)` on any mismatch.
+/// Run one vector, returning `Err(message)` on any mismatch. The public entry
+/// point is `decode_with_steps` (R19/T12): every fixture is decoded through the
+/// exported tracked decoder, whose `.0` is exactly `decode`'s result (the two
+/// share the body; the ghost counter in `.1` erases).
 fn check_vector(v: &Value) -> Result<(), String> {
     let expected = &v["expected"];
     let mode = mode_of(v);
 
     let want_error = expected.get("error").and_then(|e| e.as_str());
     let result = match input_bytes(v) {
-        Some(bytes) => decode(&bytes, mode),
+        Some(bytes) => decode_with_steps(&bytes, mode).0,
         // R1: over-cap input is `FileTooLarge` in every mode.
         None => return match want_error {
             Some("FileTooLarge") => Ok(()),

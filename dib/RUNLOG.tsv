@@ -1043,3 +1043,64 @@
 38	2026-11-09T10:11:45+00:00	exit=0	100s	M1.1a: clean full reverify [crate=dib_verus]	verification results:: 1398 verified, 0 errors
 39	2026-11-09T10:13:41+00:00	exit=0	58s	M1.1a: renamed lemmas [crate=dib_verus]	verification results:: 1398 verified, 0 errors
 40	2026-11-09T10:16:06+00:00	exit=0	105s	M1.1a: final shipped-source reverify [crate=dib_verus]	verification results:: 1398 verified, 0 errors
+41	2026-11-09T10:34:45+00:00	exit=101	78s	M1.1c: model_vectors regenerated for 302 vectors [crate=dib_verus]	verification results:: 2159 verified, 0 errors
+42	2026-11-09T10:35:31+00:00	exit=101	13s	M1.1c: bisect fields32 term blocks [crate=dib_verus]	
+43	2026-11-09T10:36:38+00:00	exit=0	58s	M1.1c: bisect no new blocks [crate=dib_verus]	verification results:: 1398 verified, 0 errors
+44	2026-11-09T10:37:59+00:00	exit=0	61s	M1.1c: bisect batch A (slack+image-size) [crate=dib_verus]	verification results:: 1441 verified, 0 errors
+45	2026-11-09T10:39:02+00:00	exit=0	59s	M1.1c: bisect batch B (mask-short+errors) [crate=dib_verus]	verification results:: 1410 verified, 0 errors
+46	2026-11-09T10:39:21+00:00	exit=101	12s	M1.1c: bisect batch C (alpha32) [crate=dib_verus]	
+47	2026-11-09T10:39:43+00:00	exit=101	12s	M1.1c: bisect C1 (alpha32-80) [crate=dib_verus]	
+48	2026-11-09T10:39:58+00:00	exit=101	12s	M1.1c: bisect C1a (alpha32-80-new only) [crate=dib_verus]	
+49	2026-11-09T10:42:31+00:00	exit=0	88s	M1.1c: staged slack 32-bit blocks [crate=dib_verus]	verification results:: 1557 verified, 0 errors
+50	2026-11-09T10:45:20+00:00	exit=101	6s	M1.1c: decode_with_steps export + regenerated model_vectors [crate=dib_verus]	
+51	2026-11-09T10:46:39+00:00	exit=0	70s	M1.1c: decode_with_steps public helper [crate=dib_verus]	verification results:: 1557 verified, 0 errors
+52	2026-11-09T10:52:38+00:00	exit=101	111s	mutation 36 [crate=mutation/m36/dib_verus]	verification results:: 1556 verified, 1 errors
+53	2026-11-09T10:54:37+00:00	exit=101	112s	mutation 1 [crate=mutation/m1/dib_verus]	verification results:: 1556 verified, 1 errors
+54	2026-11-09T10:56:28+00:00	exit=101	111s	mutation 2 [crate=mutation/m2/dib_verus]	verification results:: 1556 verified, 1 errors
+55	2026-11-09T10:58:17+00:00	exit=101	109s	mutation 3 [crate=mutation/m3/dib_verus]	verification results:: 1556 verified, 1 errors
+56	2026-11-09T11:00:06+00:00	exit=101	109s	mutation 4 [crate=mutation/m4/dib_verus]	verification results:: 1556 verified, 1 errors
+57	2026-11-09T11:01:56+00:00	exit=101	110s	mutation 5 [crate=mutation/m5/dib_verus]	verification results:: 1556 verified, 1 errors
+58	2026-11-09T11:03:45+00:00	exit=101	109s	mutation 6 [crate=mutation/m6/dib_verus]	verification results:: 1556 verified, 1 errors
+59	2026-11-09T11:05:36+00:00	exit=101	111s	mutation 7 [crate=mutation/m7/dib_verus]	verification results:: 1556 verified, 1 errors
+60	2026-11-09T11:07:27+00:00	exit=101	111s	mutation 8 [crate=mutation/m8/dib_verus]	verification results:: 1556 verified, 1 errors
+61	2026-11-09T11:09:18+00:00	exit=101	110s	mutation 9 [crate=mutation/m9/dib_verus]	verification results:: 1556 verified, 1 errors
+62	2026-11-09T11:11:09+00:00	exit=101	111s	mutation 10 [crate=mutation/m10/dib_verus]	verification results:: 1556 verified, 1 errors
+63	2026-11-09T11:12:59+00:00	exit=101	110s	mutation 11 [crate=mutation/m11/dib_verus]	verification results:: 1556 verified, 1 errors
+64	2026-11-09T11:14:49+00:00	exit=101	110s	mutation 12 [crate=mutation/m12/dib_verus]	verification results:: 1556 verified, 1 errors
+65	2026-11-09T11:16:39+00:00	exit=101	110s	mutation 13 [crate=mutation/m13/dib_verus]	verification results:: 1556 verified, 1 errors
+66	2026-11-09T11:18:29+00:00	exit=101	110s	mutation 14 [crate=mutation/m14/dib_verus]	verification results:: 1556 verified, 1 errors
+67	2026-11-09T11:20:20+00:00	exit=101	111s	mutation 15 [crate=mutation/m15/dib_verus]	verification results:: 1556 verified, 1 errors
+68	2026-11-09T11:22:10+00:00	exit=101	110s	mutation 16 [crate=mutation/m16/dib_verus]	verification results:: 1556 verified, 1 errors
+69	2026-11-09T11:24:00+00:00	exit=101	110s	mutation 17 [crate=mutation/m17/dib_verus]	verification results:: 1556 verified, 1 errors
+70	2026-11-09T11:25:51+00:00	exit=101	111s	mutation 18 [crate=mutation/m18/dib_verus]	verification results:: 1556 verified, 1 errors
+71	2026-11-09T11:27:43+00:00	exit=101	112s	mutation 19 [crate=mutation/m19/dib_verus]	verification results:: 1557 verified, 1 errors
+72	2026-11-09T11:29:35+00:00	exit=0	112s	mutation 20 [crate=mutation/m20/dib_verus]	verification results:: 1557 verified, 0 errors
+73	2026-11-09T11:31:26+00:00	exit=101	111s	mutation 21 [crate=mutation/m21/dib_verus]	verification results:: 1556 verified, 1 errors
+74	2026-11-09T11:33:17+00:00	exit=101	111s	mutation 22 [crate=mutation/m22/dib_verus]	verification results:: 1556 verified, 1 errors
+75	2026-11-09T11:35:08+00:00	exit=101	111s	mutation 23 [crate=mutation/m23/dib_verus]	verification results:: 1556 verified, 1 errors
+76	2026-11-09T11:36:58+00:00	exit=101	110s	mutation 24 [crate=mutation/m24/dib_verus]	verification results:: 1556 verified, 1 errors
+77	2026-11-09T11:38:49+00:00	exit=101	111s	mutation 25 [crate=mutation/m25/dib_verus]	verification results:: 1556 verified, 1 errors
+78	2026-11-09T11:40:40+00:00	exit=101	111s	mutation 26 [crate=mutation/m26/dib_verus]	verification results:: 1556 verified, 1 errors
+79	2026-11-09T11:42:33+00:00	exit=101	113s	mutation 27 [crate=mutation/m27/dib_verus]	verification results:: 1555 verified, 2 errors
+80	2026-11-09T11:44:25+00:00	exit=101	112s	mutation 28 [crate=mutation/m28/dib_verus]	verification results:: 1556 verified, 1 errors
+81	2026-11-09T11:46:41+00:00	exit=101	136s	mutation 29 [crate=mutation/m29/dib_verus]	verification results:: 1556 verified, 1 errors
+82	2026-11-09T11:48:49+00:00	exit=101	127s	mutation 30 [crate=mutation/m30/dib_verus]	verification results:: 1556 verified, 1 errors
+83	2026-11-09T11:50:53+00:00	exit=101	124s	mutation 31 [crate=mutation/m31/dib_verus]	verification results:: 1556 verified, 1 errors
+84	2026-11-09T11:52:58+00:00	exit=101	125s	mutation 32 [crate=mutation/m32/dib_verus]	verification results:: 1556 verified, 1 errors
+85	2026-11-09T11:55:07+00:00	exit=101	129s	mutation 33 [crate=mutation/m33/dib_verus]	verification results:: 1555 verified, 2 errors
+86	2026-11-09T11:57:11+00:00	exit=101	124s	mutation 34 [crate=mutation/m34/dib_verus]	verification results:: 1556 verified, 1 errors
+87	2026-11-09T11:59:20+00:00	exit=101	129s	mutation 35 [crate=mutation/m35/dib_verus]	verification results:: 1556 verified, 1 errors
+88	2026-11-09T12:01:37+00:00	exit=101	137s	mutation 36 [crate=mutation/m36/dib_verus]	verification results:: 1556 verified, 1 errors
+89	2026-11-09T12:03:42+00:00	exit=101	125s	mutation 37 [crate=mutation/m37/dib_verus]	verification results:: 1556 verified, 1 errors
+90	2026-11-09T12:04:42+00:00	exit=101	59s	mutation 38 [crate=mutation/m38/dib_verus]	verification results:: 2159 verified, 0 errors
+91	2026-11-09T12:06:53+00:00	exit=101	130s	mutation 39 [crate=mutation/m39/dib_verus]	verification results:: 1555 verified, 2 errors
+92	2026-11-09T12:08:58+00:00	exit=101	125s	mutation 40 [crate=mutation/m40/dib_verus]	verification results:: 1556 verified, 1 errors
+93	2026-11-09T12:10:50+00:00	exit=101	112s	mutation 41 [crate=mutation/m41/dib_verus]	verification results:: 1556 verified, 1 errors
+94	2026-11-09T12:12:41+00:00	exit=101	111s	mutation 42 [crate=mutation/m42/dib_verus]	verification results:: 1556 verified, 1 errors
+95	2026-11-09T12:14:33+00:00	exit=101	112s	mutation 43 [crate=mutation/m43/dib_verus]	verification results:: 1556 verified, 1 errors
+96	2026-11-09T12:16:25+00:00	exit=101	112s	mutation 44 [crate=mutation/m44/dib_verus]	verification results:: 1556 verified, 2 errors
+97	2026-11-09T12:19:45+00:00	exit=101	135s	mutation 38 [crate=mutation/m38/dib_verus]	verification results:: 1555 verified, 2 errors
+98	2026-11-09T12:22:53+00:00	exit=0	139s	M1.1c: clean full reverify (after cargo clean) [crate=dib_verus]	verification results:: 1557 verified, 0 errors
+99	2026-11-09T12:23:47+00:00	exit=0	1s	M1.1c: final shipped-source reverify [crate=dib_verus]	
+100	2026-11-09T12:23:54+00:00	exit=0	0s	M1.1c: final shipped-source reverify (forced) [crate=dib_verus]	
+101	2026-11-09T12:26:19+00:00	exit=0	138s	M1.1c: second clean full reverify on final source [crate=dib_verus]	verification results:: 1557 verified, 0 errors

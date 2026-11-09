@@ -1,0 +1,61 @@
+    |
+176 | pub open spec fn b_header_52_BareDib() -> Seq<u8> {
+    |                  ^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `b_header_52_bare_dib`
+
+warning: function `agree_header_52_BareDib` should have a snake case name
+   --> src/model_vectors.rs:187:14
+    |
+187 | pub proof fn agree_header_52_BareDib()
+    |              ^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_header_52_bare_dib`
+
+warning: function `b_header_56_BareDib` should have a snake case name
+   --> src/model_vectors.rs:195:18
+    |
+195 | pub open spec fn b_header_56_BareDib() -> Seq<u8> {
+    |                  ^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `b_header_56_bare_dib`
+
+warning: function `agree_header_56_BareDib` should have a snake case name
+   --> src/model_vectors.rs:206:14
+    |
+206 | pub proof fn agree_header_56_BareDib()
+    |              ^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_header_56_bare_dib`
+
+warning: function `b_header_64_BareDib` should have a snake case name
+   --> src/model_vectors.rs:214:18
+    |
+214 | pub open spec fn b_header_64_BareDib() -> Seq<u8> {
+    |                  ^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `b_header_64_bare_dib`
+
+warning: function `agree_header_64_BareDib` should have a snake case name
+   --> src/model_vectors.rs:226:14
+    |
+226 | pub proof fn agree_header_64_BareDib()
+    |              ^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_header_64_bare_dib`
+
+warning: function `b_header_108_BareDib` should have a snake case name
+   --> src/model_vectors.rs:234:18
+    |
+234 | pub open spec fn b_header_108_BareDib() -> Seq<u8> {
+    |                  ^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `b_header_108_bare_dib`
+
+warning: function `agree_header_108_BareDib` should have a snake case name
+   --> src/model_vectors.rs:250:14
+    |
+250 | pub proof fn agree_header_108_BareDib()
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_header_108_bare_dib`
+
+warning: function `b_header_124_BareDib` should have a snake case name
+   --> src/model_vectors.rs:258:18
+    |
+258 | pub open spec fn b_header_124_BareDib() -> Seq<u8> {
+    |                  ^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `b_header_124_bare_dib`
+
+warning: function `agree_header_124_BareDib` should have a snake case name
+   --> src/model_vectors.rs:275:14
+    |
+275 | pub proof fn agree_header_124_BareDib()
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_header_124_bare_dib`
+
+warning: `dib_verus` (lib) generated 101 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1m 52s
+[verify.sh] run 72 exit=0 112s log=runs/072.log

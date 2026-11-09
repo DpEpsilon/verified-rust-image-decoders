@@ -6,7 +6,8 @@ Image-decoder cores in Rust whose behaviour is **proved** (Verus) to equal an in
 |---|---|---|---|---|---|
 | ICNS (container + legacy RLE/mask) | `icns/` | `parse`, `decode_rgb`, `decode_mask`, `combine` | 315 verified | 111 | 10/10 |
 | TGA | `tga/` | `decode` | 642 verified | 169 | 15/15 (executable-side) |
-| DIB / BMP / ICO-entry bitmap | `dib/` | `decode(bytes, mode)` | 1367 verified | 214 | 34/35 + 1 audit kill |
+| DIB / BMP / ICO-entry bitmap | `dib/` | `decode(bytes, mode)`, `decode_with_steps` | 1557 verified (spec 1.1; 1.0 is `dib/spec-frozen`) | 302 | 43/44 verifier kills + 1 audit kill |
+| ICO / CUR container | `ico/` | `parse`, `decode_entry` (spec + oracle only, proofs pending) | - | 217 | - |
 
 `alt/icns-creusot/`: the same ICNS spec proved with Creusot/Why3 (comparison only; Verus won on effort, see `reviews/COMPARISON.md`). `tools/diff-harness/`: differential test of both ICNS cores against a Python oracle.
 
@@ -20,7 +21,7 @@ Image-decoder cores in Rust whose behaviour is **proved** (Verus) to equal an in
 - Lenient (differs from gdk-pixbuf): true-colour/grey images carrying a colour map are accepted (map skipped); 15-bit and 16-bit-indexed supported; 16-bit true-colour with attribute count 1 and bit 15 clear is opaque.
 - Strict: attribute count is authoritative (32-bit with count 0 gets alpha 255, so unmarked alpha is dropped; 24-bit with count 8 and other off-policy counts are `InvalidAttributeBits`); RLE packet past the pixel count is an error (gdk-pixbuf clamps); zero-length colour map flag is `InvalidColorMap`; non-zero interleave rejected; trailing bytes rejected unless a TGA 2.0 footer follows; indexed maps use the absolute `first` index.
 
-**DIB** (`DIB-CORE-SPEC 1.0`). Three modes: `BmpFile`, `BareDib`, `IcoEntryDib` (height/2 + 1-bpp AND mask). Headers 12/16/40/52/56/64/108/124; 1/4/8/16/24/32 bpp; BI_RGB, BI_BITFIELDS, RLE4/RLE8; top-down and bottom-up. Output RGBA8. Limits: 64 MiB, 8192 px per side. The ICO directory/PNG choice is a separate (future) layer.
+**DIB** (`DIB-CORE-SPEC 1.1`; 1.0 = the same without the fourth mode). Four modes: `BmpFile`, `BareDib`, `IcoEntryDib` (height/2 + 1-bpp AND mask) and `IcoEntryDibSlack` (same, but bytes after the AND mask are ignored). Headers 12/16/40/52/56/64/108/124; 1/4/8/16/24/32 bpp; BI_RGB, BI_BITFIELDS, RLE4/RLE8; top-down and bottom-up. Output RGBA8. Limits: 64 MiB, 8192 px per side. The ICO directory/PNG choice is a separate (future) layer.
 - Lenient (`BmpFile` only): `bfSize` 0 or <= file length, bytes after the pixel array ignored (covers V5 profile data); `biClrUsed` > 0 at 16/24/32 bpp skipped. 32-bpp ICO alpha uses the Windows rule (any non-zero XOR alpha -> AND ignored). ICO `biSizeImage` may be 0, XOR or XOR+AND.
 - Strict: BITFIELDS masks must be non-zero, contiguous, disjoint; RLE must end with EOB, runs may not cross rows, deltas must land in-bounds; 2-bpp, BI_ALPHABITFIELDS, JPEG/PNG-in-BMP, OS/2 Huffman/RLE24 unsupported; slack bytes inside an ICO entry or BareDib are `TrailingBytes`; a short last-row pad is `TruncatedPixels`; indexed short palettes give `PaletteIndexOutOfRange`.
 - Measured on 84 Pillow test files (deliberately odd; not redistributed, `dib/tools/fetch_corpus.sh`): 58 accepted, 24 rejected by design, 2 outside the core.

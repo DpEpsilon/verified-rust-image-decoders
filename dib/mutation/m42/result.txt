@@ -1,0 +1,19 @@
+implementation mutation 42
+crate result: verification results:: 1556 verified, 1 errors
+exit=101
+error diagnostics:
+        1 error: could not compile `dib_verus` (lib) due to 2 previous errors; 81 warnings emitted
+        2 error: postcondition not satisfied
+     --> src/dib.rs:116:17
+     --> src/model_vectors.rs:445:5
+     --> src/model_vectors.rs:447:5
+     --> src/model_vectors.rs:534:5
+     --> src/model_vectors.rs:536:5
+     --> src/model_vectors.rs:623:5
+     --> src/model_vectors.rs:625:5
+     --> src/model_vectors.rs:748:5
+     --> src/model_vectors.rs:750:5
+      --> src/model_vectors.rs:1042:5
+      --> src/model_vectors.rs:1044:5
+      --> src/model_vectors.rs:1132:5
+log: mutation/m42/failure.log

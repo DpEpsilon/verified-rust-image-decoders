@@ -2,12 +2,16 @@
 //!
 //! DO NOT EDIT BY HAND.  Regenerate with
 //!     python3 tools/gen_model_vectors.py
-//! The expected values come from `spec-frozen/VECTORS.json` (`expected`), never
-//! from the executable decoder.  Each `agree_<vector>` obligation states that
-//! the formal model `MP` applied to the vector's expanded input yields exactly
-//! the fixture's expected `Result` (`Ok(width, height, rgba)` byte-exact, or
-//! `Err(e)` for the exact error name).  A mismatch makes the obligation
-//! **false**, not vacuous.
+//! The expected values come from `spec-1.1-frozen/VECTORS.json` (`expected`),
+//! never from the executable decoder.  Each `agree_<vector>` obligation states
+//! that the formal model `MP` applied to the vector's expanded input yields
+//! exactly the fixture's expected `Result` (`Ok(width, height, rgba)`
+//! byte-exact, or `Err(e)` for the exact error name).  A mismatch makes the
+//! obligation **false**, not vacuous.
+//!
+//! The first 214 records are the unchanged 1.0 fixtures (both ICO modes appear
+//! for the 88 appended ones); the generator emits one obligation per eligible
+//! vector regardless of mode.
 //!
 //! Two proof forms appear.  Most vectors are closed directly by `by (compute)`.
 //! The 16-bit and BITFIELDS vectors cannot be: their pixels go through the
@@ -16,9 +20,12 @@
 //! step against the model's own `channel_of` terms and a `channel_lit` step
 //! relating each term to its concrete byte, composed inside `agree_<vector>`.
 //!
-//! The five vectors longer than 40,000 bytes are covered by the symbolic lemmas
+//! The vectors longer than 40,000 bytes are covered by the symbolic lemmas
 //! L1-L2 in `src/model.rs` (the three oversized inputs) and by mandatory runtime
-//! conformance tests (`output-exact-64m-rle8`, `height-at-cap-8192`).
+//! conformance tests (`output-exact-64m-rle8`, `height-at-cap-8192`, and the two
+//! 64 MiB R19 boundary fixtures `max-input-slack-IcoEntryDib{,Slack}`); no 64 MiB
+//! input is expanded into verifier terms. The small `slack-*` fixtures cover the
+//! same new-mode branch symbolically.
 use vstd::prelude::*;
 
 verus! {
@@ -68,12 +75,15 @@ pub proof fn channel_lit(word: u32, mask: u32, k: u32, mx: u32, comp: u32, val: 
     assert((mask >> mask.trailing_zeros()) == mx);
 }
 
-// 214 vectors; five are covered symbolically or at runtime:
+// 302 vectors; five are covered symbolically or at runtime:
 //
 /// `input-over-64m` (67108865 bytes, lemma): lemma_mp_l1 (L1).
 /// `input-exact-64m` (67108864 bytes, lemma): lemma_mp_l2 (L2).
 /// `output-exact-64m-rle8` (266290 bytes, runtime): cargo test conformance (R16 output-exact fixture).
 /// `precedence-too-large-bmp-bad-magic` (67108865 bytes, lemma): lemma_mp_l1 (L1).
+/// `max-input-slack-IcoEntryDibSlack` (67108864 bytes, runtime): cargo test conformance (64 MiB boundary, slack success).
+/// `max-input-slack-IcoEntryDib` (67108864 bytes, runtime): cargo test conformance (64 MiB boundary, exact-tail contrast).
+/// `over-max-input-slack-new` (67108865 bytes, lemma): lemma_mp_l1 (L1, over-cap slack).
 
 // ---- header-12-BareDib (16 bytes, BareDib) ----
 pub open spec fn b_header_12_BareDib() -> Seq<u8> {
@@ -8306,6 +8316,2680 @@ pub proof fn agree_header_16_negative_height_topdown()
 {
     assert(mp(b_header_16_negative_height_topdown(), Mode::BareDib) == Ok((1, 2, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)
             + rep_pat(seq![0x00u8, 0x00u8, 0xffu8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-0-new (48 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_0_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_0_new()
+    ensures
+        mp(b_slack_0_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_0_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-1-new (49 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_1_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_1_new()
+    ensures
+        mp(b_slack_1_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_1_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-1-old (49 bytes, IcoEntryDib) ----
+pub open spec fn b_slack_1_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_1_old()
+    ensures
+        mp(b_slack_1_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_slack_1_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- slack-2-new (50 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_2_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_2_new()
+    ensures
+        mp(b_slack_2_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_2_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-2-old (50 bytes, IcoEntryDib) ----
+pub open spec fn b_slack_2_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_2_old()
+    ensures
+        mp(b_slack_2_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_slack_2_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- slack-3-new (51 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_3_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_3_new()
+    ensures
+        mp(b_slack_3_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_3_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-3-old (51 bytes, IcoEntryDib) ----
+pub open spec fn b_slack_3_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_3_old()
+    ensures
+        mp(b_slack_3_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_slack_3_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- slack-4-new (52 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_4_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_4_new()
+    ensures
+        mp(b_slack_4_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_4_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-4-old (52 bytes, IcoEntryDib) ----
+pub open spec fn b_slack_4_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_4_old()
+    ensures
+        mp(b_slack_4_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_slack_4_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- slack-5-new (53 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_5_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_5_new()
+    ensures
+        mp(b_slack_5_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_5_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-5-old (53 bytes, IcoEntryDib) ----
+pub open spec fn b_slack_5_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_5_old()
+    ensures
+        mp(b_slack_5_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_slack_5_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- slack-6-new (54 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_6_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_6_new()
+    ensures
+        mp(b_slack_6_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_6_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-6-old (54 bytes, IcoEntryDib) ----
+pub open spec fn b_slack_6_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_6_old()
+    ensures
+        mp(b_slack_6_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_slack_6_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- slack-7-new (55 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_7_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_7_new()
+    ensures
+        mp(b_slack_7_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_7_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-7-old (55 bytes, IcoEntryDib) ----
+pub open spec fn b_slack_7_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_7_old()
+    ensures
+        mp(b_slack_7_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_slack_7_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- slack-8-new (56 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_8_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_8_new()
+    ensures
+        mp(b_slack_8_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_8_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-8-old (56 bytes, IcoEntryDib) ----
+pub open spec fn b_slack_8_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_8_old()
+    ensures
+        mp(b_slack_8_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_slack_8_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- slack-9-new (57 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_9_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_9_new()
+    ensures
+        mp(b_slack_9_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_9_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-9-old (57 bytes, IcoEntryDib) ----
+pub open spec fn b_slack_9_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_9_old()
+    ensures
+        mp(b_slack_9_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_slack_9_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- slack-16-new (64 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_16_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_16_new()
+    ensures
+        mp(b_slack_16_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_16_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-16-old (64 bytes, IcoEntryDib) ----
+pub open spec fn b_slack_16_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_16_old()
+    ensures
+        mp(b_slack_16_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_slack_16_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- slack-32-new (80 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_32_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_32_new()
+    ensures
+        mp(b_slack_32_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_32_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-32-old (80 bytes, IcoEntryDib) ----
+pub open spec fn b_slack_32_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_32_old()
+    ensures
+        mp(b_slack_32_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_slack_32_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- slack-63-new (111 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_63_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_63_new()
+    ensures
+        mp(b_slack_63_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_63_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-63-old (111 bytes, IcoEntryDib) ----
+pub open spec fn b_slack_63_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_63_old()
+    ensures
+        mp(b_slack_63_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_slack_63_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- slack-64-new (112 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_64_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_64_new()
+    ensures
+        mp(b_slack_64_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_64_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-64-old (112 bytes, IcoEntryDib) ----
+pub open spec fn b_slack_64_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_64_old()
+    ensures
+        mp(b_slack_64_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_slack_64_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- slack-65-new (113 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_65_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_65_new()
+    ensures
+        mp(b_slack_65_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_65_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-65-old (113 bytes, IcoEntryDib) ----
+pub open spec fn b_slack_65_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_65_old()
+    ensures
+        mp(b_slack_65_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_slack_65_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- slack-127-new (175 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_127_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_127_new()
+    ensures
+        mp(b_slack_127_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_127_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-127-old (175 bytes, IcoEntryDib) ----
+pub open spec fn b_slack_127_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_127_old()
+    ensures
+        mp(b_slack_127_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_slack_127_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- slack-128-new (176 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_128_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_128_new()
+    ensures
+        mp(b_slack_128_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_128_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-128-old (176 bytes, IcoEntryDib) ----
+pub open spec fn b_slack_128_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_128_old()
+    ensures
+        mp(b_slack_128_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_slack_128_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- slack-129-new (177 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_slack_129_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_129_new()
+    ensures
+        mp(b_slack_129_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_slack_129_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- slack-129-old (177 bytes, IcoEntryDib) ----
+pub open spec fn b_slack_129_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+        0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_slack_129_old()
+    ensures
+        mp(b_slack_129_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_slack_129_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- image-size-0-slack (49 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_image_size_0_slack() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x42u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_image_size_0_slack()
+    ensures
+        mp(b_image_size_0_slack(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_image_size_0_slack(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- image-size-0-old (49 bytes, IcoEntryDib) ----
+pub open spec fn b_image_size_0_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x42u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_image_size_0_old()
+    ensures
+        mp(b_image_size_0_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_image_size_0_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- image-size-4-slack (49 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_image_size_4_slack() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x04u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x42u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_image_size_4_slack()
+    ensures
+        mp(b_image_size_4_slack(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_image_size_4_slack(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- image-size-4-old (49 bytes, IcoEntryDib) ----
+pub open spec fn b_image_size_4_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x04u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x42u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_image_size_4_old()
+    ensures
+        mp(b_image_size_4_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_image_size_4_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- image-size-8-slack (49 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_image_size_8_slack() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x08u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x42u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_image_size_8_slack()
+    ensures
+        mp(b_image_size_8_slack(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_image_size_8_slack(), Mode::IcoEntryDibSlack) == Ok((1, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- image-size-8-old (49 bytes, IcoEntryDib) ----
+pub open spec fn b_image_size_8_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x08u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x42u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_image_size_8_old()
+    ensures
+        mp(b_image_size_8_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_image_size_8_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- image-size-9-slack (49 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_image_size_9_slack() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x09u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x42u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_image_size_9_slack()
+    ensures
+        mp(b_image_size_9_slack(), Mode::IcoEntryDibSlack) == Err(Error::InvalidImageSize),
+{
+    assert(mp(b_image_size_9_slack(), Mode::IcoEntryDibSlack) == Err(Error::InvalidImageSize)) by (compute);
+}
+
+// ---- image-size-9-old (49 bytes, IcoEntryDib) ----
+pub open spec fn b_image_size_9_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x09u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x42u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_image_size_9_old()
+    ensures
+        mp(b_image_size_9_old(), Mode::IcoEntryDib) == Err(Error::InvalidImageSize),
+{
+    assert(mp(b_image_size_9_old(), Mode::IcoEntryDib) == Err(Error::InvalidImageSize)) by (compute);
+}
+
+// ---- mask-short-0-new (44 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_mask_short_0_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_mask_short_0_new()
+    ensures
+        mp(b_mask_short_0_new(), Mode::IcoEntryDibSlack) == Err(Error::TruncatedAndMask),
+{
+    assert(mp(b_mask_short_0_new(), Mode::IcoEntryDibSlack) == Err(Error::TruncatedAndMask)) by (compute);
+}
+
+// ---- mask-short-0-old (44 bytes, IcoEntryDib) ----
+pub open spec fn b_mask_short_0_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_mask_short_0_old()
+    ensures
+        mp(b_mask_short_0_old(), Mode::IcoEntryDib) == Err(Error::TruncatedAndMask),
+{
+    assert(mp(b_mask_short_0_old(), Mode::IcoEntryDib) == Err(Error::TruncatedAndMask)) by (compute);
+}
+
+// ---- mask-short-1-new (45 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_mask_short_1_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_mask_short_1_new()
+    ensures
+        mp(b_mask_short_1_new(), Mode::IcoEntryDibSlack) == Err(Error::TruncatedAndMask),
+{
+    assert(mp(b_mask_short_1_new(), Mode::IcoEntryDibSlack) == Err(Error::TruncatedAndMask)) by (compute);
+}
+
+// ---- mask-short-1-old (45 bytes, IcoEntryDib) ----
+pub open spec fn b_mask_short_1_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_mask_short_1_old()
+    ensures
+        mp(b_mask_short_1_old(), Mode::IcoEntryDib) == Err(Error::TruncatedAndMask),
+{
+    assert(mp(b_mask_short_1_old(), Mode::IcoEntryDib) == Err(Error::TruncatedAndMask)) by (compute);
+}
+
+// ---- mask-short-2-new (46 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_mask_short_2_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_mask_short_2_new()
+    ensures
+        mp(b_mask_short_2_new(), Mode::IcoEntryDibSlack) == Err(Error::TruncatedAndMask),
+{
+    assert(mp(b_mask_short_2_new(), Mode::IcoEntryDibSlack) == Err(Error::TruncatedAndMask)) by (compute);
+}
+
+// ---- mask-short-2-old (46 bytes, IcoEntryDib) ----
+pub open spec fn b_mask_short_2_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_mask_short_2_old()
+    ensures
+        mp(b_mask_short_2_old(), Mode::IcoEntryDib) == Err(Error::TruncatedAndMask),
+{
+    assert(mp(b_mask_short_2_old(), Mode::IcoEntryDib) == Err(Error::TruncatedAndMask)) by (compute);
+}
+
+// ---- mask-short-3-new (47 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_mask_short_3_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_mask_short_3_new()
+    ensures
+        mp(b_mask_short_3_new(), Mode::IcoEntryDibSlack) == Err(Error::TruncatedAndMask),
+{
+    assert(mp(b_mask_short_3_new(), Mode::IcoEntryDibSlack) == Err(Error::TruncatedAndMask)) by (compute);
+}
+
+// ---- mask-short-3-old (47 bytes, IcoEntryDib) ----
+pub open spec fn b_mask_short_3_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_mask_short_3_old()
+    ensures
+        mp(b_mask_short_3_old(), Mode::IcoEntryDib) == Err(Error::TruncatedAndMask),
+{
+    assert(mp(b_mask_short_3_old(), Mode::IcoEntryDib) == Err(Error::TruncatedAndMask)) by (compute);
+}
+
+// ---- header-short-new (3 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_header_short_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_header_short_new()
+    ensures
+        mp(b_header_short_new(), Mode::IcoEntryDibSlack) == Err(Error::TruncatedDibHeader),
+{
+    assert(mp(b_header_short_new(), Mode::IcoEntryDibSlack) == Err(Error::TruncatedDibHeader)) by (compute);
+}
+
+// ---- pixels-short-new (43 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_pixels_short_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_pixels_short_new()
+    ensures
+        mp(b_pixels_short_new(), Mode::IcoEntryDibSlack) == Err(Error::TruncatedPixels),
+{
+    assert(mp(b_pixels_short_new(), Mode::IcoEntryDibSlack) == Err(Error::TruncatedPixels)) by (compute);
+}
+
+// ---- odd-height-new (48 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_odd_height_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x03u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_odd_height_new()
+    ensures
+        mp(b_odd_height_new(), Mode::IcoEntryDibSlack) == Err(Error::InvalidDimensions),
+{
+    assert(mp(b_odd_height_new(), Mode::IcoEntryDibSlack) == Err(Error::InvalidDimensions)) by (compute);
+}
+
+// ---- invalid-size-and-short-new (46 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_invalid_size_and_short_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x09u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_invalid_size_and_short_new()
+    ensures
+        mp(b_invalid_size_and_short_new(), Mode::IcoEntryDibSlack) == Err(Error::InvalidImageSize),
+{
+    assert(mp(b_invalid_size_and_short_new(), Mode::IcoEntryDibSlack) == Err(Error::InvalidImageSize)) by (compute);
+}
+
+// ---- alpha32-80-mask80-new (49 bytes, IcoEntryDibSlack, depth 32) [staged] ----
+pub open spec fn b_alpha32_80_mask80_new() -> Seq<u8> {
+seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x20u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x80u8, 0x80u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+pub open spec fn rec_alpha32_80_mask80_new() -> crate::model::MHRecord {
+    crate::model::MHRecord {
+        mode: Mode::IcoEntryDibSlack, s: 0, hsize: 40, width: 1, height: 1, stored_height: 2, planes: 1, depth: 32, compression: 0, declared_image: 0, color_used: 0, count: 0, table_count: 0, palette_stride: 4, palette_start: 40, palette_end: 40, pixel_start: 40, mask_r: 0x00000000, mask_g: 0x00000000, mask_b: 0x00000000, mask_a: 0x00000000, has_masks: false, core: false, is_bmp: false, top_down: false, n: 1, stride: 4,
+    }
+}
+
+pub open spec fn xor_alpha32_80_mask80_new() -> Seq<u8> {
+seq![crate::model::rgb_byte(0x80ff0000, 0, 128), crate::model::rgb_byte(0x80ff0000, 1, 128), crate::model::rgb_byte(0x80ff0000, 2, 128), 128u8]
+}
+
+pub open spec fn want_alpha32_80_mask80_new() -> Seq<u8> {
+seq![
+        0xffu8, 0x00u8, 0x00u8, 0x80u8,
+    ]
+}
+
+/// Stage 1: the concrete record is the model's.
+proof fn mh_alpha32_80_mask80_new()
+    ensures
+        crate::model::mh(b_alpha32_80_mask80_new(), Mode::IcoEntryDibSlack) == Ok(rec_alpha32_80_mask80_new()),
+{
+    reveal(crate::model::mh);
+    reveal(crate::model::r1_prefix);
+    reveal(crate::model::r2r7);
+    reveal(crate::model::r2r5);
+    reveal(crate::model::r6r7);
+    reveal(crate::model::r6r7_result);
+    assert(crate::model::mh(b_alpha32_80_mask80_new(), Mode::IcoEntryDibSlack) == Ok(rec_alpha32_80_mask80_new())) by (compute);
+}
+
+/// Stage 2: the raw phase produces exactly `xor_alpha32_80_mask80_new()`.
+proof fn raw_alpha32_80_mask80_new()
+    ensures
+        crate::model::mr_raw_out(b_alpha32_80_mask80_new(), rec_alpha32_80_mask80_new(), 40) == Ok((44, xor_alpha32_80_mask80_new())),
+{
+    reveal(crate::model::mr_raw_out);
+    reveal(crate::model::mr_raw);
+    reveal(crate::model::raw_full);
+    reveal(crate::model::raw_writes);
+    reveal(crate::model::conv);
+    reveal(crate::model::conv_word);
+    reveal(crate::model::bitfield_seq);
+    reveal(crate::model::rgb_seq);
+    reveal(crate::model::zero_bytes);
+    reveal(crate::model::bytes_replay);
+    reveal(crate::model::channel_of);
+    reveal(crate::model::scale_of);
+    reveal(crate::model::mh);
+    reveal(crate::model::r2r7);
+    reveal(crate::model::r6r7);
+    reveal(crate::model::r2r5);
+    reveal(crate::model::r6r7_result);
+    reveal(crate::model::r1_prefix);
+    assert(crate::model::mh(b_alpha32_80_mask80_new(), Mode::IcoEntryDibSlack) == Ok(rec_alpha32_80_mask80_new())) by (compute);
+    assert(crate::model::mr_raw_out(b_alpha32_80_mask80_new(), rec_alpha32_80_mask80_new(), 40) == Ok((44, xor_alpha32_80_mask80_new()))) by (compute);
+}
+
+/// Stage 3: `xor_alpha32_80_mask80_new()` is the plane's model output bytes.
+proof fn xor_bytes_alpha32_80_mask80_new()
+    ensures
+        xor_alpha32_80_mask80_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0x80u8,
+    ],
+{
+    reveal(crate::model::conv_word);
+    reveal(crate::model::bitfield_seq);
+    reveal(crate::model::rgb_seq);
+    reveal(crate::model::rgb_byte);
+    reveal(crate::model::channel_of);
+    reveal(crate::model::scale_of);
+    assert(xor_alpha32_80_mask80_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0x80u8,
+    ]);
+}
+
+/// Stage 4: the AND/alpha policy maps the plane to the fixture's bytes.
+proof fn ma_alpha32_80_mask80_new()
+    ensures
+        crate::model::ma_output(b_alpha32_80_mask80_new(), rec_alpha32_80_mask80_new(), 44, xor_alpha32_80_mask80_new(), true) == want_alpha32_80_mask80_new(),
+{
+    reveal(crate::model::ma_output);
+    reveal(crate::model::ma_byte);
+    reveal(crate::model::and_bit);
+    reveal(crate::model::and_stride);
+    reveal(crate::model::stride_of);
+    reveal(crate::model::xor_alpha_present);
+    xor_bytes_alpha32_80_mask80_new();
+    assert(xor_alpha32_80_mask80_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0x80u8,
+    ]);
+    assert(xor_alpha32_80_mask80_new()[3] == 0x80u8);
+    assert(crate::model::xor_alpha_present(xor_alpha32_80_mask80_new(), 1)) by {
+        assert(xor_alpha32_80_mask80_new()[4 * (0int) + 3] == 0x80u8);
+    };
+    crate::model::lemma_ma_explicit_alpha_keep(b_alpha32_80_mask80_new(), rec_alpha32_80_mask80_new(), 44, xor_alpha32_80_mask80_new());
+}
+
+/// Stage 5: the fixture's result, composing the stages through `mp`.
+#[allow(unused)]
+pub proof fn agree_alpha32_80_mask80_new()
+    ensures
+        mp(b_alpha32_80_mask80_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, want_alpha32_80_mask80_new())),
+{
+    mh_alpha32_80_mask80_new();
+    raw_alpha32_80_mask80_new();
+    xor_bytes_alpha32_80_mask80_new();
+    ma_alpha32_80_mask80_new();
+    assert(crate::model::image_size_ok(rec_alpha32_80_mask80_new().declared_image, 44 - rec_alpha32_80_mask80_new().pixel_start, crate::model::and_bytes(rec_alpha32_80_mask80_new().width, rec_alpha32_80_mask80_new().height), true)) by (compute);
+    assert(crate::model::and_bytes(rec_alpha32_80_mask80_new().width, rec_alpha32_80_mask80_new().height) == 4) by (compute);
+    crate::model::lemma_mp_mask_phase_ico_ok(b_alpha32_80_mask80_new(), rec_alpha32_80_mask80_new(), 44, xor_alpha32_80_mask80_new(), want_alpha32_80_mask80_new());
+    reveal(crate::model::mp);
+    reveal(crate::model::mp_raw);
+    reveal(crate::model::mp_decoded);
+    assert(crate::model::mp_raw(b_alpha32_80_mask80_new(), rec_alpha32_80_mask80_new()) == Ok((want_alpha32_80_mask80_new(), 48)));
+    assert(crate::model::mp_decoded(rec_alpha32_80_mask80_new(), crate::model::mp_raw(b_alpha32_80_mask80_new(), rec_alpha32_80_mask80_new())) == Ok((1, 1, want_alpha32_80_mask80_new())));
+}
+
+// ---- alpha32-80-mask80-old (49 bytes, IcoEntryDib) ----
+pub open spec fn b_alpha32_80_mask80_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x20u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x80u8, 0x80u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_alpha32_80_mask80_old()
+    ensures
+        mp(b_alpha32_80_mask80_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_alpha32_80_mask80_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- alpha32-7f-mask80-new (49 bytes, IcoEntryDibSlack, depth 32) [staged] ----
+pub open spec fn b_alpha32_7f_mask80_new() -> Seq<u8> {
+seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x20u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x7fu8, 0x80u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+pub open spec fn rec_alpha32_7f_mask80_new() -> crate::model::MHRecord {
+    crate::model::MHRecord {
+        mode: Mode::IcoEntryDibSlack, s: 0, hsize: 40, width: 1, height: 1, stored_height: 2, planes: 1, depth: 32, compression: 0, declared_image: 0, color_used: 0, count: 0, table_count: 0, palette_stride: 4, palette_start: 40, palette_end: 40, pixel_start: 40, mask_r: 0x00000000, mask_g: 0x00000000, mask_b: 0x00000000, mask_a: 0x00000000, has_masks: false, core: false, is_bmp: false, top_down: false, n: 1, stride: 4,
+    }
+}
+
+pub open spec fn xor_alpha32_7f_mask80_new() -> Seq<u8> {
+seq![crate::model::rgb_byte(0x7fff0000, 0, 127), crate::model::rgb_byte(0x7fff0000, 1, 127), crate::model::rgb_byte(0x7fff0000, 2, 127), 127u8]
+}
+
+pub open spec fn want_alpha32_7f_mask80_new() -> Seq<u8> {
+seq![
+        0xffu8, 0x00u8, 0x00u8, 0x7fu8,
+    ]
+}
+
+/// Stage 1: the concrete record is the model's.
+proof fn mh_alpha32_7f_mask80_new()
+    ensures
+        crate::model::mh(b_alpha32_7f_mask80_new(), Mode::IcoEntryDibSlack) == Ok(rec_alpha32_7f_mask80_new()),
+{
+    reveal(crate::model::mh);
+    reveal(crate::model::r1_prefix);
+    reveal(crate::model::r2r7);
+    reveal(crate::model::r2r5);
+    reveal(crate::model::r6r7);
+    reveal(crate::model::r6r7_result);
+    assert(crate::model::mh(b_alpha32_7f_mask80_new(), Mode::IcoEntryDibSlack) == Ok(rec_alpha32_7f_mask80_new())) by (compute);
+}
+
+/// Stage 2: the raw phase produces exactly `xor_alpha32_7f_mask80_new()`.
+proof fn raw_alpha32_7f_mask80_new()
+    ensures
+        crate::model::mr_raw_out(b_alpha32_7f_mask80_new(), rec_alpha32_7f_mask80_new(), 40) == Ok((44, xor_alpha32_7f_mask80_new())),
+{
+    reveal(crate::model::mr_raw_out);
+    reveal(crate::model::mr_raw);
+    reveal(crate::model::raw_full);
+    reveal(crate::model::raw_writes);
+    reveal(crate::model::conv);
+    reveal(crate::model::conv_word);
+    reveal(crate::model::bitfield_seq);
+    reveal(crate::model::rgb_seq);
+    reveal(crate::model::zero_bytes);
+    reveal(crate::model::bytes_replay);
+    reveal(crate::model::channel_of);
+    reveal(crate::model::scale_of);
+    reveal(crate::model::mh);
+    reveal(crate::model::r2r7);
+    reveal(crate::model::r6r7);
+    reveal(crate::model::r2r5);
+    reveal(crate::model::r6r7_result);
+    reveal(crate::model::r1_prefix);
+    assert(crate::model::mh(b_alpha32_7f_mask80_new(), Mode::IcoEntryDibSlack) == Ok(rec_alpha32_7f_mask80_new())) by (compute);
+    assert(crate::model::mr_raw_out(b_alpha32_7f_mask80_new(), rec_alpha32_7f_mask80_new(), 40) == Ok((44, xor_alpha32_7f_mask80_new()))) by (compute);
+}
+
+/// Stage 3: `xor_alpha32_7f_mask80_new()` is the plane's model output bytes.
+proof fn xor_bytes_alpha32_7f_mask80_new()
+    ensures
+        xor_alpha32_7f_mask80_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0x7fu8,
+    ],
+{
+    reveal(crate::model::conv_word);
+    reveal(crate::model::bitfield_seq);
+    reveal(crate::model::rgb_seq);
+    reveal(crate::model::rgb_byte);
+    reveal(crate::model::channel_of);
+    reveal(crate::model::scale_of);
+    assert(xor_alpha32_7f_mask80_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0x7fu8,
+    ]);
+}
+
+/// Stage 4: the AND/alpha policy maps the plane to the fixture's bytes.
+proof fn ma_alpha32_7f_mask80_new()
+    ensures
+        crate::model::ma_output(b_alpha32_7f_mask80_new(), rec_alpha32_7f_mask80_new(), 44, xor_alpha32_7f_mask80_new(), true) == want_alpha32_7f_mask80_new(),
+{
+    reveal(crate::model::ma_output);
+    reveal(crate::model::ma_byte);
+    reveal(crate::model::and_bit);
+    reveal(crate::model::and_stride);
+    reveal(crate::model::stride_of);
+    reveal(crate::model::xor_alpha_present);
+    xor_bytes_alpha32_7f_mask80_new();
+    assert(xor_alpha32_7f_mask80_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0x7fu8,
+    ]);
+    assert(xor_alpha32_7f_mask80_new()[3] == 0x7fu8);
+    assert(crate::model::xor_alpha_present(xor_alpha32_7f_mask80_new(), 1)) by {
+        assert(xor_alpha32_7f_mask80_new()[4 * (0int) + 3] == 0x7fu8);
+    };
+    crate::model::lemma_ma_explicit_alpha_keep(b_alpha32_7f_mask80_new(), rec_alpha32_7f_mask80_new(), 44, xor_alpha32_7f_mask80_new());
+}
+
+/// Stage 5: the fixture's result, composing the stages through `mp`.
+#[allow(unused)]
+pub proof fn agree_alpha32_7f_mask80_new()
+    ensures
+        mp(b_alpha32_7f_mask80_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, want_alpha32_7f_mask80_new())),
+{
+    mh_alpha32_7f_mask80_new();
+    raw_alpha32_7f_mask80_new();
+    xor_bytes_alpha32_7f_mask80_new();
+    ma_alpha32_7f_mask80_new();
+    assert(crate::model::image_size_ok(rec_alpha32_7f_mask80_new().declared_image, 44 - rec_alpha32_7f_mask80_new().pixel_start, crate::model::and_bytes(rec_alpha32_7f_mask80_new().width, rec_alpha32_7f_mask80_new().height), true)) by (compute);
+    assert(crate::model::and_bytes(rec_alpha32_7f_mask80_new().width, rec_alpha32_7f_mask80_new().height) == 4) by (compute);
+    crate::model::lemma_mp_mask_phase_ico_ok(b_alpha32_7f_mask80_new(), rec_alpha32_7f_mask80_new(), 44, xor_alpha32_7f_mask80_new(), want_alpha32_7f_mask80_new());
+    reveal(crate::model::mp);
+    reveal(crate::model::mp_raw);
+    reveal(crate::model::mp_decoded);
+    assert(crate::model::mp_raw(b_alpha32_7f_mask80_new(), rec_alpha32_7f_mask80_new()) == Ok((want_alpha32_7f_mask80_new(), 48)));
+    assert(crate::model::mp_decoded(rec_alpha32_7f_mask80_new(), crate::model::mp_raw(b_alpha32_7f_mask80_new(), rec_alpha32_7f_mask80_new())) == Ok((1, 1, want_alpha32_7f_mask80_new())));
+}
+
+// ---- alpha32-7f-mask80-old (49 bytes, IcoEntryDib) ----
+pub open spec fn b_alpha32_7f_mask80_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x20u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x7fu8, 0x80u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_alpha32_7f_mask80_old()
+    ensures
+        mp(b_alpha32_7f_mask80_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_alpha32_7f_mask80_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- alpha32-00-mask80-new (49 bytes, IcoEntryDibSlack, depth 32) [staged] ----
+pub open spec fn b_alpha32_00_mask80_new() -> Seq<u8> {
+seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x20u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x80u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+pub open spec fn rec_alpha32_00_mask80_new() -> crate::model::MHRecord {
+    crate::model::MHRecord {
+        mode: Mode::IcoEntryDibSlack, s: 0, hsize: 40, width: 1, height: 1, stored_height: 2, planes: 1, depth: 32, compression: 0, declared_image: 0, color_used: 0, count: 0, table_count: 0, palette_stride: 4, palette_start: 40, palette_end: 40, pixel_start: 40, mask_r: 0x00000000, mask_g: 0x00000000, mask_b: 0x00000000, mask_a: 0x00000000, has_masks: false, core: false, is_bmp: false, top_down: false, n: 1, stride: 4,
+    }
+}
+
+pub open spec fn xor_alpha32_00_mask80_new() -> Seq<u8> {
+seq![crate::model::rgb_byte(0x00ff0000, 0, 0), crate::model::rgb_byte(0x00ff0000, 1, 0), crate::model::rgb_byte(0x00ff0000, 2, 0), 0u8]
+}
+
+pub open spec fn want_alpha32_00_mask80_new() -> Seq<u8> {
+seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ]
+}
+
+/// Stage 1: the concrete record is the model's.
+proof fn mh_alpha32_00_mask80_new()
+    ensures
+        crate::model::mh(b_alpha32_00_mask80_new(), Mode::IcoEntryDibSlack) == Ok(rec_alpha32_00_mask80_new()),
+{
+    reveal(crate::model::mh);
+    reveal(crate::model::r1_prefix);
+    reveal(crate::model::r2r7);
+    reveal(crate::model::r2r5);
+    reveal(crate::model::r6r7);
+    reveal(crate::model::r6r7_result);
+    assert(crate::model::mh(b_alpha32_00_mask80_new(), Mode::IcoEntryDibSlack) == Ok(rec_alpha32_00_mask80_new())) by (compute);
+}
+
+/// Stage 2: the raw phase produces exactly `xor_alpha32_00_mask80_new()`.
+proof fn raw_alpha32_00_mask80_new()
+    ensures
+        crate::model::mr_raw_out(b_alpha32_00_mask80_new(), rec_alpha32_00_mask80_new(), 40) == Ok((44, xor_alpha32_00_mask80_new())),
+{
+    reveal(crate::model::mr_raw_out);
+    reveal(crate::model::mr_raw);
+    reveal(crate::model::raw_full);
+    reveal(crate::model::raw_writes);
+    reveal(crate::model::conv);
+    reveal(crate::model::conv_word);
+    reveal(crate::model::bitfield_seq);
+    reveal(crate::model::rgb_seq);
+    reveal(crate::model::zero_bytes);
+    reveal(crate::model::bytes_replay);
+    reveal(crate::model::channel_of);
+    reveal(crate::model::scale_of);
+    reveal(crate::model::mh);
+    reveal(crate::model::r2r7);
+    reveal(crate::model::r6r7);
+    reveal(crate::model::r2r5);
+    reveal(crate::model::r6r7_result);
+    reveal(crate::model::r1_prefix);
+    assert(crate::model::mh(b_alpha32_00_mask80_new(), Mode::IcoEntryDibSlack) == Ok(rec_alpha32_00_mask80_new())) by (compute);
+    assert(crate::model::mr_raw_out(b_alpha32_00_mask80_new(), rec_alpha32_00_mask80_new(), 40) == Ok((44, xor_alpha32_00_mask80_new()))) by (compute);
+}
+
+/// Stage 3: `xor_alpha32_00_mask80_new()` is the plane's model output bytes.
+proof fn xor_bytes_alpha32_00_mask80_new()
+    ensures
+        xor_alpha32_00_mask80_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ],
+{
+    reveal(crate::model::conv_word);
+    reveal(crate::model::bitfield_seq);
+    reveal(crate::model::rgb_seq);
+    reveal(crate::model::rgb_byte);
+    reveal(crate::model::channel_of);
+    reveal(crate::model::scale_of);
+    assert(xor_alpha32_00_mask80_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ]);
+}
+
+/// Stage 4: the AND/alpha policy maps the plane to the fixture's bytes.
+proof fn ma_alpha32_00_mask80_new()
+    ensures
+        crate::model::ma_output(b_alpha32_00_mask80_new(), rec_alpha32_00_mask80_new(), 44, xor_alpha32_00_mask80_new(), true) == want_alpha32_00_mask80_new(),
+{
+    reveal(crate::model::ma_output);
+    reveal(crate::model::ma_byte);
+    reveal(crate::model::and_bit);
+    reveal(crate::model::and_stride);
+    reveal(crate::model::stride_of);
+    reveal(crate::model::xor_alpha_present);
+    xor_bytes_alpha32_00_mask80_new();
+    assert(!crate::model::xor_alpha_present(xor_alpha32_00_mask80_new(), 1)) by {
+        if crate::model::xor_alpha_present(xor_alpha32_00_mask80_new(), 1) {
+            let j = choose|j: int| 0 <= j < 1 && #[trigger] xor_alpha32_00_mask80_new()[4 * j + 3] != 0u8;
+            assert(xor_alpha32_00_mask80_new()[4 * j + 3] == 0u8);
+        }
+    };
+    crate::model::lemma_ma_explicit_alpha_zero_fallback(b_alpha32_00_mask80_new(), rec_alpha32_00_mask80_new(), 44, xor_alpha32_00_mask80_new());
+    let f = Seq::new(xor_alpha32_00_mask80_new().len(), |k: int| crate::model::ma_fallback_byte(b_alpha32_00_mask80_new(), rec_alpha32_00_mask80_new(), 44, xor_alpha32_00_mask80_new(), k));
+    assert(f =~= want_alpha32_00_mask80_new()) by {
+        assert forall|k: int| 0 <= k < 4 implies #[trigger] f[k] == want_alpha32_00_mask80_new()[k] by {
+            if k == 0 {
+                assert(crate::model::ma_fallback_byte(b_alpha32_00_mask80_new(), rec_alpha32_00_mask80_new(), 44, seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ], 0) == 0xffu8) by (compute);
+                assert(crate::model::ma_fallback_byte(b_alpha32_00_mask80_new(), rec_alpha32_00_mask80_new(), 44, xor_alpha32_00_mask80_new(), 0) == 0xffu8);
+            }
+            if k == 1 {
+                assert(crate::model::ma_fallback_byte(b_alpha32_00_mask80_new(), rec_alpha32_00_mask80_new(), 44, seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ], 1) == 0x00u8) by (compute);
+                assert(crate::model::ma_fallback_byte(b_alpha32_00_mask80_new(), rec_alpha32_00_mask80_new(), 44, xor_alpha32_00_mask80_new(), 1) == 0x00u8);
+            }
+            if k == 2 {
+                assert(crate::model::ma_fallback_byte(b_alpha32_00_mask80_new(), rec_alpha32_00_mask80_new(), 44, seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ], 2) == 0x00u8) by (compute);
+                assert(crate::model::ma_fallback_byte(b_alpha32_00_mask80_new(), rec_alpha32_00_mask80_new(), 44, xor_alpha32_00_mask80_new(), 2) == 0x00u8);
+            }
+            if k == 3 {
+                assert(crate::model::ma_fallback_byte(b_alpha32_00_mask80_new(), rec_alpha32_00_mask80_new(), 44, seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ], 3) == 0x00u8) by (compute);
+                assert(crate::model::ma_fallback_byte(b_alpha32_00_mask80_new(), rec_alpha32_00_mask80_new(), 44, xor_alpha32_00_mask80_new(), 3) == 0x00u8);
+            }
+        };
+    }
+}
+
+/// Stage 5: the fixture's result, composing the stages through `mp`.
+#[allow(unused)]
+pub proof fn agree_alpha32_00_mask80_new()
+    ensures
+        mp(b_alpha32_00_mask80_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, want_alpha32_00_mask80_new())),
+{
+    mh_alpha32_00_mask80_new();
+    raw_alpha32_00_mask80_new();
+    xor_bytes_alpha32_00_mask80_new();
+    ma_alpha32_00_mask80_new();
+    assert(crate::model::image_size_ok(rec_alpha32_00_mask80_new().declared_image, 44 - rec_alpha32_00_mask80_new().pixel_start, crate::model::and_bytes(rec_alpha32_00_mask80_new().width, rec_alpha32_00_mask80_new().height), true)) by (compute);
+    assert(crate::model::and_bytes(rec_alpha32_00_mask80_new().width, rec_alpha32_00_mask80_new().height) == 4) by (compute);
+    crate::model::lemma_mp_mask_phase_ico_ok(b_alpha32_00_mask80_new(), rec_alpha32_00_mask80_new(), 44, xor_alpha32_00_mask80_new(), want_alpha32_00_mask80_new());
+    reveal(crate::model::mp);
+    reveal(crate::model::mp_raw);
+    reveal(crate::model::mp_decoded);
+    assert(crate::model::mp_raw(b_alpha32_00_mask80_new(), rec_alpha32_00_mask80_new()) == Ok((want_alpha32_00_mask80_new(), 48)));
+    assert(crate::model::mp_decoded(rec_alpha32_00_mask80_new(), crate::model::mp_raw(b_alpha32_00_mask80_new(), rec_alpha32_00_mask80_new())) == Ok((1, 1, want_alpha32_00_mask80_new())));
+}
+
+// ---- alpha32-00-mask80-old (49 bytes, IcoEntryDib) ----
+pub open spec fn b_alpha32_00_mask80_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x20u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x80u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_alpha32_00_mask80_old()
+    ensures
+        mp(b_alpha32_00_mask80_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_alpha32_00_mask80_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- alpha32-00-mask00-new (49 bytes, IcoEntryDibSlack, depth 32) [staged] ----
+pub open spec fn b_alpha32_00_mask00_new() -> Seq<u8> {
+seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x20u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+pub open spec fn rec_alpha32_00_mask00_new() -> crate::model::MHRecord {
+    crate::model::MHRecord {
+        mode: Mode::IcoEntryDibSlack, s: 0, hsize: 40, width: 1, height: 1, stored_height: 2, planes: 1, depth: 32, compression: 0, declared_image: 0, color_used: 0, count: 0, table_count: 0, palette_stride: 4, palette_start: 40, palette_end: 40, pixel_start: 40, mask_r: 0x00000000, mask_g: 0x00000000, mask_b: 0x00000000, mask_a: 0x00000000, has_masks: false, core: false, is_bmp: false, top_down: false, n: 1, stride: 4,
+    }
+}
+
+pub open spec fn xor_alpha32_00_mask00_new() -> Seq<u8> {
+seq![crate::model::rgb_byte(0x00ff0000, 0, 0), crate::model::rgb_byte(0x00ff0000, 1, 0), crate::model::rgb_byte(0x00ff0000, 2, 0), 0u8]
+}
+
+pub open spec fn want_alpha32_00_mask00_new() -> Seq<u8> {
+seq![
+        0xffu8, 0x00u8, 0x00u8, 0xffu8,
+    ]
+}
+
+/// Stage 1: the concrete record is the model's.
+proof fn mh_alpha32_00_mask00_new()
+    ensures
+        crate::model::mh(b_alpha32_00_mask00_new(), Mode::IcoEntryDibSlack) == Ok(rec_alpha32_00_mask00_new()),
+{
+    reveal(crate::model::mh);
+    reveal(crate::model::r1_prefix);
+    reveal(crate::model::r2r7);
+    reveal(crate::model::r2r5);
+    reveal(crate::model::r6r7);
+    reveal(crate::model::r6r7_result);
+    assert(crate::model::mh(b_alpha32_00_mask00_new(), Mode::IcoEntryDibSlack) == Ok(rec_alpha32_00_mask00_new())) by (compute);
+}
+
+/// Stage 2: the raw phase produces exactly `xor_alpha32_00_mask00_new()`.
+proof fn raw_alpha32_00_mask00_new()
+    ensures
+        crate::model::mr_raw_out(b_alpha32_00_mask00_new(), rec_alpha32_00_mask00_new(), 40) == Ok((44, xor_alpha32_00_mask00_new())),
+{
+    reveal(crate::model::mr_raw_out);
+    reveal(crate::model::mr_raw);
+    reveal(crate::model::raw_full);
+    reveal(crate::model::raw_writes);
+    reveal(crate::model::conv);
+    reveal(crate::model::conv_word);
+    reveal(crate::model::bitfield_seq);
+    reveal(crate::model::rgb_seq);
+    reveal(crate::model::zero_bytes);
+    reveal(crate::model::bytes_replay);
+    reveal(crate::model::channel_of);
+    reveal(crate::model::scale_of);
+    reveal(crate::model::mh);
+    reveal(crate::model::r2r7);
+    reveal(crate::model::r6r7);
+    reveal(crate::model::r2r5);
+    reveal(crate::model::r6r7_result);
+    reveal(crate::model::r1_prefix);
+    assert(crate::model::mh(b_alpha32_00_mask00_new(), Mode::IcoEntryDibSlack) == Ok(rec_alpha32_00_mask00_new())) by (compute);
+    assert(crate::model::mr_raw_out(b_alpha32_00_mask00_new(), rec_alpha32_00_mask00_new(), 40) == Ok((44, xor_alpha32_00_mask00_new()))) by (compute);
+}
+
+/// Stage 3: `xor_alpha32_00_mask00_new()` is the plane's model output bytes.
+proof fn xor_bytes_alpha32_00_mask00_new()
+    ensures
+        xor_alpha32_00_mask00_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ],
+{
+    reveal(crate::model::conv_word);
+    reveal(crate::model::bitfield_seq);
+    reveal(crate::model::rgb_seq);
+    reveal(crate::model::rgb_byte);
+    reveal(crate::model::channel_of);
+    reveal(crate::model::scale_of);
+    assert(xor_alpha32_00_mask00_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ]);
+}
+
+/// Stage 4: the AND/alpha policy maps the plane to the fixture's bytes.
+proof fn ma_alpha32_00_mask00_new()
+    ensures
+        crate::model::ma_output(b_alpha32_00_mask00_new(), rec_alpha32_00_mask00_new(), 44, xor_alpha32_00_mask00_new(), true) == want_alpha32_00_mask00_new(),
+{
+    reveal(crate::model::ma_output);
+    reveal(crate::model::ma_byte);
+    reveal(crate::model::and_bit);
+    reveal(crate::model::and_stride);
+    reveal(crate::model::stride_of);
+    reveal(crate::model::xor_alpha_present);
+    xor_bytes_alpha32_00_mask00_new();
+    assert(!crate::model::xor_alpha_present(xor_alpha32_00_mask00_new(), 1)) by {
+        if crate::model::xor_alpha_present(xor_alpha32_00_mask00_new(), 1) {
+            let j = choose|j: int| 0 <= j < 1 && #[trigger] xor_alpha32_00_mask00_new()[4 * j + 3] != 0u8;
+            assert(xor_alpha32_00_mask00_new()[4 * j + 3] == 0u8);
+        }
+    };
+    crate::model::lemma_ma_explicit_alpha_zero_fallback(b_alpha32_00_mask00_new(), rec_alpha32_00_mask00_new(), 44, xor_alpha32_00_mask00_new());
+    let f = Seq::new(xor_alpha32_00_mask00_new().len(), |k: int| crate::model::ma_fallback_byte(b_alpha32_00_mask00_new(), rec_alpha32_00_mask00_new(), 44, xor_alpha32_00_mask00_new(), k));
+    assert(f =~= want_alpha32_00_mask00_new()) by {
+        assert forall|k: int| 0 <= k < 4 implies #[trigger] f[k] == want_alpha32_00_mask00_new()[k] by {
+            if k == 0 {
+                assert(crate::model::ma_fallback_byte(b_alpha32_00_mask00_new(), rec_alpha32_00_mask00_new(), 44, seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ], 0) == 0xffu8) by (compute);
+                assert(crate::model::ma_fallback_byte(b_alpha32_00_mask00_new(), rec_alpha32_00_mask00_new(), 44, xor_alpha32_00_mask00_new(), 0) == 0xffu8);
+            }
+            if k == 1 {
+                assert(crate::model::ma_fallback_byte(b_alpha32_00_mask00_new(), rec_alpha32_00_mask00_new(), 44, seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ], 1) == 0x00u8) by (compute);
+                assert(crate::model::ma_fallback_byte(b_alpha32_00_mask00_new(), rec_alpha32_00_mask00_new(), 44, xor_alpha32_00_mask00_new(), 1) == 0x00u8);
+            }
+            if k == 2 {
+                assert(crate::model::ma_fallback_byte(b_alpha32_00_mask00_new(), rec_alpha32_00_mask00_new(), 44, seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ], 2) == 0x00u8) by (compute);
+                assert(crate::model::ma_fallback_byte(b_alpha32_00_mask00_new(), rec_alpha32_00_mask00_new(), 44, xor_alpha32_00_mask00_new(), 2) == 0x00u8);
+            }
+            if k == 3 {
+                assert(crate::model::ma_fallback_byte(b_alpha32_00_mask00_new(), rec_alpha32_00_mask00_new(), 44, seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ], 3) == 0xffu8) by (compute);
+                assert(crate::model::ma_fallback_byte(b_alpha32_00_mask00_new(), rec_alpha32_00_mask00_new(), 44, xor_alpha32_00_mask00_new(), 3) == 0xffu8);
+            }
+        };
+    }
+}
+
+/// Stage 5: the fixture's result, composing the stages through `mp`.
+#[allow(unused)]
+pub proof fn agree_alpha32_00_mask00_new()
+    ensures
+        mp(b_alpha32_00_mask00_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, want_alpha32_00_mask00_new())),
+{
+    mh_alpha32_00_mask00_new();
+    raw_alpha32_00_mask00_new();
+    xor_bytes_alpha32_00_mask00_new();
+    ma_alpha32_00_mask00_new();
+    assert(crate::model::image_size_ok(rec_alpha32_00_mask00_new().declared_image, 44 - rec_alpha32_00_mask00_new().pixel_start, crate::model::and_bytes(rec_alpha32_00_mask00_new().width, rec_alpha32_00_mask00_new().height), true)) by (compute);
+    assert(crate::model::and_bytes(rec_alpha32_00_mask00_new().width, rec_alpha32_00_mask00_new().height) == 4) by (compute);
+    crate::model::lemma_mp_mask_phase_ico_ok(b_alpha32_00_mask00_new(), rec_alpha32_00_mask00_new(), 44, xor_alpha32_00_mask00_new(), want_alpha32_00_mask00_new());
+    reveal(crate::model::mp);
+    reveal(crate::model::mp_raw);
+    reveal(crate::model::mp_decoded);
+    assert(crate::model::mp_raw(b_alpha32_00_mask00_new(), rec_alpha32_00_mask00_new()) == Ok((want_alpha32_00_mask00_new(), 48)));
+    assert(crate::model::mp_decoded(rec_alpha32_00_mask00_new(), crate::model::mp_raw(b_alpha32_00_mask00_new(), rec_alpha32_00_mask00_new())) == Ok((1, 1, want_alpha32_00_mask00_new())));
+}
+
+// ---- alpha32-00-mask00-old (49 bytes, IcoEntryDib) ----
+pub open spec fn b_alpha32_00_mask00_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x20u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_alpha32_00_mask00_old()
+    ensures
+        mp(b_alpha32_00_mask00_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_alpha32_00_mask00_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- alpha32-global-new (53 bytes, IcoEntryDibSlack, depth 32) [staged] ----
+pub open spec fn b_alpha32_global_new() -> Seq<u8> {
+seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x20u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x80u8,
+        0xc0u8, 0x00u8, 0x00u8, 0x00u8, 0x5au8,
+    ]
+}
+
+pub open spec fn rec_alpha32_global_new() -> crate::model::MHRecord {
+    crate::model::MHRecord {
+        mode: Mode::IcoEntryDibSlack, s: 0, hsize: 40, width: 2, height: 1, stored_height: 2, planes: 1, depth: 32, compression: 0, declared_image: 0, color_used: 0, count: 0, table_count: 0, palette_stride: 4, palette_start: 40, palette_end: 40, pixel_start: 40, mask_r: 0x00000000, mask_g: 0x00000000, mask_b: 0x00000000, mask_a: 0x00000000, has_masks: false, core: false, is_bmp: false, top_down: false, n: 2, stride: 8,
+    }
+}
+
+pub open spec fn xor_alpha32_global_new() -> Seq<u8> {
+seq![crate::model::rgb_byte(0x00ff0000, 0, 0), crate::model::rgb_byte(0x00ff0000, 1, 0), crate::model::rgb_byte(0x00ff0000, 2, 0), 0u8]
+        + seq![crate::model::rgb_byte(0x8000ff00, 0, 128), crate::model::rgb_byte(0x8000ff00, 1, 128), crate::model::rgb_byte(0x8000ff00, 2, 128), 128u8]
+}
+
+pub open spec fn want_alpha32_global_new() -> Seq<u8> {
+seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x80u8,
+    ]
+}
+
+/// Stage 1: the concrete record is the model's.
+proof fn mh_alpha32_global_new()
+    ensures
+        crate::model::mh(b_alpha32_global_new(), Mode::IcoEntryDibSlack) == Ok(rec_alpha32_global_new()),
+{
+    reveal(crate::model::mh);
+    reveal(crate::model::r1_prefix);
+    reveal(crate::model::r2r7);
+    reveal(crate::model::r2r5);
+    reveal(crate::model::r6r7);
+    reveal(crate::model::r6r7_result);
+    assert(crate::model::mh(b_alpha32_global_new(), Mode::IcoEntryDibSlack) == Ok(rec_alpha32_global_new())) by (compute);
+}
+
+/// Stage 2: the raw phase produces exactly `xor_alpha32_global_new()`.
+proof fn raw_alpha32_global_new()
+    ensures
+        crate::model::mr_raw_out(b_alpha32_global_new(), rec_alpha32_global_new(), 40) == Ok((48, xor_alpha32_global_new())),
+{
+    reveal(crate::model::mr_raw_out);
+    reveal(crate::model::mr_raw);
+    reveal(crate::model::raw_full);
+    reveal(crate::model::raw_writes);
+    reveal(crate::model::conv);
+    reveal(crate::model::conv_word);
+    reveal(crate::model::bitfield_seq);
+    reveal(crate::model::rgb_seq);
+    reveal(crate::model::zero_bytes);
+    reveal(crate::model::bytes_replay);
+    reveal(crate::model::channel_of);
+    reveal(crate::model::scale_of);
+    reveal(crate::model::mh);
+    reveal(crate::model::r2r7);
+    reveal(crate::model::r6r7);
+    reveal(crate::model::r2r5);
+    reveal(crate::model::r6r7_result);
+    reveal(crate::model::r1_prefix);
+    assert(crate::model::mh(b_alpha32_global_new(), Mode::IcoEntryDibSlack) == Ok(rec_alpha32_global_new())) by (compute);
+    assert(crate::model::mr_raw_out(b_alpha32_global_new(), rec_alpha32_global_new(), 40) == Ok((48, xor_alpha32_global_new()))) by (compute);
+}
+
+/// Stage 3: `xor_alpha32_global_new()` is the plane's model output bytes.
+proof fn xor_bytes_alpha32_global_new()
+    ensures
+        xor_alpha32_global_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x80u8,
+    ],
+{
+    reveal(crate::model::conv_word);
+    reveal(crate::model::bitfield_seq);
+    reveal(crate::model::rgb_seq);
+    reveal(crate::model::rgb_byte);
+    reveal(crate::model::channel_of);
+    reveal(crate::model::scale_of);
+    assert(xor_alpha32_global_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x80u8,
+    ]);
+}
+
+/// Stage 4: the AND/alpha policy maps the plane to the fixture's bytes.
+proof fn ma_alpha32_global_new()
+    ensures
+        crate::model::ma_output(b_alpha32_global_new(), rec_alpha32_global_new(), 48, xor_alpha32_global_new(), true) == want_alpha32_global_new(),
+{
+    reveal(crate::model::ma_output);
+    reveal(crate::model::ma_byte);
+    reveal(crate::model::and_bit);
+    reveal(crate::model::and_stride);
+    reveal(crate::model::stride_of);
+    reveal(crate::model::xor_alpha_present);
+    xor_bytes_alpha32_global_new();
+    assert(xor_alpha32_global_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x80u8,
+    ]);
+    assert(xor_alpha32_global_new()[7] == 0x80u8);
+    assert(crate::model::xor_alpha_present(xor_alpha32_global_new(), 2)) by {
+        assert(xor_alpha32_global_new()[4 * (1int) + 3] == 0x80u8);
+    };
+    crate::model::lemma_ma_explicit_alpha_keep(b_alpha32_global_new(), rec_alpha32_global_new(), 48, xor_alpha32_global_new());
+}
+
+/// Stage 5: the fixture's result, composing the stages through `mp`.
+#[allow(unused)]
+pub proof fn agree_alpha32_global_new()
+    ensures
+        mp(b_alpha32_global_new(), Mode::IcoEntryDibSlack) == Ok((2, 1, want_alpha32_global_new())),
+{
+    mh_alpha32_global_new();
+    raw_alpha32_global_new();
+    xor_bytes_alpha32_global_new();
+    ma_alpha32_global_new();
+    assert(crate::model::image_size_ok(rec_alpha32_global_new().declared_image, 48 - rec_alpha32_global_new().pixel_start, crate::model::and_bytes(rec_alpha32_global_new().width, rec_alpha32_global_new().height), true)) by (compute);
+    assert(crate::model::and_bytes(rec_alpha32_global_new().width, rec_alpha32_global_new().height) == 4) by (compute);
+    crate::model::lemma_mp_mask_phase_ico_ok(b_alpha32_global_new(), rec_alpha32_global_new(), 48, xor_alpha32_global_new(), want_alpha32_global_new());
+    reveal(crate::model::mp);
+    reveal(crate::model::mp_raw);
+    reveal(crate::model::mp_decoded);
+    assert(crate::model::mp_raw(b_alpha32_global_new(), rec_alpha32_global_new()) == Ok((want_alpha32_global_new(), 52)));
+    assert(crate::model::mp_decoded(rec_alpha32_global_new(), crate::model::mp_raw(b_alpha32_global_new(), rec_alpha32_global_new())) == Ok((2, 1, want_alpha32_global_new())));
+}
+
+// ---- alpha32-global-old (53 bytes, IcoEntryDib) ----
+pub open spec fn b_alpha32_global_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x20u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x80u8,
+        0xc0u8, 0x00u8, 0x00u8, 0x00u8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_alpha32_global_old()
+    ensures
+        mp(b_alpha32_global_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_alpha32_global_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- fields32-no-alpha-new (61 bytes, IcoEntryDibSlack, depth 32) [staged] ----
+pub open spec fn b_fields32_no_alpha_new() -> Seq<u8> {
+seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x20u8, 0x00u8, 0x03u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8,
+        0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x80u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+pub open spec fn rec_fields32_no_alpha_new() -> crate::model::MHRecord {
+    crate::model::MHRecord {
+        mode: Mode::IcoEntryDibSlack, s: 0, hsize: 40, width: 1, height: 1, stored_height: 2, planes: 1, depth: 32, compression: 3, declared_image: 0, color_used: 0, count: 0, table_count: 0, palette_stride: 4, palette_start: 52, palette_end: 52, pixel_start: 52, mask_r: 0x00ff0000, mask_g: 0x0000ff00, mask_b: 0x000000ff, mask_a: 0x00000000, has_masks: true, core: false, is_bmp: false, top_down: false, n: 1, stride: 4,
+    }
+}
+
+pub open spec fn xor_fields32_no_alpha_new() -> Seq<u8> {
+seq![crate::model::channel_of(0x00ff0000u32, 0x00ff0000u32), crate::model::channel_of(0x00ff0000u32, 0x0000ff00u32), crate::model::channel_of(0x00ff0000u32, 0x000000ffu32), crate::model::channel_of(0x00ff0000u32, 0x00000000u32)]
+}
+
+pub open spec fn want_fields32_no_alpha_new() -> Seq<u8> {
+seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ]
+}
+
+/// Stage 1: the concrete record is the model's.
+proof fn mh_fields32_no_alpha_new()
+    ensures
+        crate::model::mh(b_fields32_no_alpha_new(), Mode::IcoEntryDibSlack) == Ok(rec_fields32_no_alpha_new()),
+{
+    reveal(crate::model::mh);
+    reveal(crate::model::r1_prefix);
+    reveal(crate::model::r2r7);
+    reveal(crate::model::r2r5);
+    reveal(crate::model::r6r7);
+    reveal(crate::model::r6r7_result);
+    assert(crate::model::mh(b_fields32_no_alpha_new(), Mode::IcoEntryDibSlack) == Ok(rec_fields32_no_alpha_new())) by (compute);
+}
+
+/// Stage 2: the raw phase produces exactly `xor_fields32_no_alpha_new()`.
+proof fn raw_fields32_no_alpha_new()
+    ensures
+        crate::model::mr_raw_out(b_fields32_no_alpha_new(), rec_fields32_no_alpha_new(), 52) == Ok((56, xor_fields32_no_alpha_new())),
+{
+    reveal(crate::model::mr_raw_out);
+    reveal(crate::model::mr_raw);
+    reveal(crate::model::raw_full);
+    reveal(crate::model::raw_writes);
+    reveal(crate::model::conv);
+    reveal(crate::model::conv_word);
+    reveal(crate::model::bitfield_seq);
+    reveal(crate::model::rgb_seq);
+    reveal(crate::model::zero_bytes);
+    reveal(crate::model::bytes_replay);
+    reveal(crate::model::channel_of);
+    reveal(crate::model::scale_of);
+    reveal(crate::model::mh);
+    reveal(crate::model::r2r7);
+    reveal(crate::model::r6r7);
+    reveal(crate::model::r2r5);
+    reveal(crate::model::r6r7_result);
+    reveal(crate::model::r1_prefix);
+    assert(crate::model::mh(b_fields32_no_alpha_new(), Mode::IcoEntryDibSlack) == Ok(rec_fields32_no_alpha_new())) by (compute);
+    assert(crate::model::mr_raw_out(b_fields32_no_alpha_new(), rec_fields32_no_alpha_new(), 52) == Ok((56, xor_fields32_no_alpha_new()))) by (compute);
+}
+
+/// Stage 3: `xor_fields32_no_alpha_new()` is the plane's model output bytes.
+proof fn xor_bytes_fields32_no_alpha_new()
+    ensures
+        xor_fields32_no_alpha_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0xffu8,
+    ],
+{
+    reveal(crate::model::conv_word);
+    reveal(crate::model::bitfield_seq);
+    reveal(crate::model::rgb_seq);
+    reveal(crate::model::rgb_byte);
+    reveal(crate::model::channel_of);
+    reveal(crate::model::scale_of);
+    assert(0x00ff0000u32 != 0u32) by (bit_vector);
+    assert((0x00ff0000u32 >> 16u32) & 1u32 == 1u32) by (bit_vector);
+    assert forall|j: u32| 0 <= j < 16u32 implies #[trigger] (0x00ff0000u32 >> j) & 1u32 == 0u32 by {
+        assert((0x00ff0000u32 >> j) & 1u32 == 0u32) by (bit_vector) requires 0 <= j < 16u32;
+    };
+    assert(0x00ff0000u32 >> 16u32 == 0x000000ffu32) by (bit_vector);
+    assert((0x00ff0000u32 & 0x00ff0000u32) >> 16u32 == 255u32) by (bit_vector);
+    assert(crate::model::scale_of(255int, 255int) == 255int) by (nonlinear_arith);
+    channel_lit(0x00ff0000u32, 0x00ff0000u32, 16u32, 0x000000ffu32, 255u32, 255u8);
+    assert(0x0000ff00u32 != 0u32) by (bit_vector);
+    assert((0x0000ff00u32 >> 8u32) & 1u32 == 1u32) by (bit_vector);
+    assert forall|j: u32| 0 <= j < 8u32 implies #[trigger] (0x0000ff00u32 >> j) & 1u32 == 0u32 by {
+        assert((0x0000ff00u32 >> j) & 1u32 == 0u32) by (bit_vector) requires 0 <= j < 8u32;
+    };
+    assert(0x0000ff00u32 >> 8u32 == 0x000000ffu32) by (bit_vector);
+    assert((0x00ff0000u32 & 0x0000ff00u32) >> 8u32 == 0u32) by (bit_vector);
+    assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    channel_lit(0x00ff0000u32, 0x0000ff00u32, 8u32, 0x000000ffu32, 0u32, 0u8);
+    assert(0x000000ffu32 != 0u32) by (bit_vector);
+    assert((0x000000ffu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
+    assert forall|j: u32| 0 <= j < 0u32 implies #[trigger] (0x000000ffu32 >> j) & 1u32 == 0u32 by {
+        assert((0x000000ffu32 >> j) & 1u32 == 0u32) by (bit_vector) requires 0 <= j < 0u32;
+    };
+    assert(0x000000ffu32 >> 0u32 == 0x000000ffu32) by (bit_vector);
+    assert((0x00ff0000u32 & 0x000000ffu32) >> 0u32 == 0u32) by (bit_vector);
+    assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    channel_lit(0x00ff0000u32, 0x000000ffu32, 0u32, 0x000000ffu32, 0u32, 0u8);
+    assert(xor_fields32_no_alpha_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0xffu8,
+    ]);
+}
+
+/// Stage 4: the AND/alpha policy maps the plane to the fixture's bytes.
+proof fn ma_fields32_no_alpha_new()
+    ensures
+        crate::model::ma_output(b_fields32_no_alpha_new(), rec_fields32_no_alpha_new(), 56, xor_fields32_no_alpha_new(), false) == want_fields32_no_alpha_new(),
+{
+    reveal(crate::model::ma_output);
+    reveal(crate::model::ma_byte);
+    reveal(crate::model::and_bit);
+    reveal(crate::model::and_stride);
+    reveal(crate::model::stride_of);
+    reveal(crate::model::xor_alpha_present);
+proof fn mb_fields32_no_alpha_new_0()
+    ensures
+        crate::model::ma_byte(b_fields32_no_alpha_new(), rec_fields32_no_alpha_new(), 56, xor_fields32_no_alpha_new(), false, 0) == 0xffu8,
+{
+    reveal(crate::model::ma_byte);
+    reveal(crate::model::and_bit);
+    reveal(crate::model::and_stride);
+    reveal(crate::model::stride_of);
+    reveal(crate::model::xor_alpha_present);
+    xor_bytes_fields32_no_alpha_new();
+    assert(xor_fields32_no_alpha_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0xffu8,
+    ]);
+    assert(xor_fields32_no_alpha_new()[0] == 0xffu8);
+    assert(crate::model::ma_byte(b_fields32_no_alpha_new(), rec_fields32_no_alpha_new(), 56, seq![
+        0xffu8, 0x00u8, 0x00u8, 0xffu8,
+    ], false, 0) == 0xffu8);
+}
+
+proof fn mb_fields32_no_alpha_new_1()
+    ensures
+        crate::model::ma_byte(b_fields32_no_alpha_new(), rec_fields32_no_alpha_new(), 56, xor_fields32_no_alpha_new(), false, 1) == 0x00u8,
+{
+    reveal(crate::model::ma_byte);
+    reveal(crate::model::and_bit);
+    reveal(crate::model::and_stride);
+    reveal(crate::model::stride_of);
+    reveal(crate::model::xor_alpha_present);
+    xor_bytes_fields32_no_alpha_new();
+    assert(xor_fields32_no_alpha_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0xffu8,
+    ]);
+    assert(xor_fields32_no_alpha_new()[1] == 0x00u8);
+    assert(crate::model::ma_byte(b_fields32_no_alpha_new(), rec_fields32_no_alpha_new(), 56, seq![
+        0xffu8, 0x00u8, 0x00u8, 0xffu8,
+    ], false, 1) == 0x00u8);
+}
+
+proof fn mb_fields32_no_alpha_new_2()
+    ensures
+        crate::model::ma_byte(b_fields32_no_alpha_new(), rec_fields32_no_alpha_new(), 56, xor_fields32_no_alpha_new(), false, 2) == 0x00u8,
+{
+    reveal(crate::model::ma_byte);
+    reveal(crate::model::and_bit);
+    reveal(crate::model::and_stride);
+    reveal(crate::model::stride_of);
+    reveal(crate::model::xor_alpha_present);
+    xor_bytes_fields32_no_alpha_new();
+    assert(xor_fields32_no_alpha_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0xffu8,
+    ]);
+    assert(xor_fields32_no_alpha_new()[2] == 0x00u8);
+    assert(crate::model::ma_byte(b_fields32_no_alpha_new(), rec_fields32_no_alpha_new(), 56, seq![
+        0xffu8, 0x00u8, 0x00u8, 0xffu8,
+    ], false, 2) == 0x00u8);
+}
+
+proof fn mb_fields32_no_alpha_new_3()
+    ensures
+        crate::model::ma_byte(b_fields32_no_alpha_new(), rec_fields32_no_alpha_new(), 56, xor_fields32_no_alpha_new(), false, 3) == 0x00u8,
+{
+    reveal(crate::model::ma_byte);
+    reveal(crate::model::and_bit);
+    reveal(crate::model::and_stride);
+    reveal(crate::model::stride_of);
+    reveal(crate::model::xor_alpha_present);
+    xor_bytes_fields32_no_alpha_new();
+    assert(xor_fields32_no_alpha_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0xffu8,
+    ]);
+    assert(b_fields32_no_alpha_new()[56] == 0x80u8) by (compute);
+    assert(crate::model::and_bit(b_fields32_no_alpha_new(), 56, 1, 0, 0)) by (compute);
+    assert(crate::model::ma_byte(b_fields32_no_alpha_new(), rec_fields32_no_alpha_new(), 56, seq![
+        0xffu8, 0x00u8, 0x00u8, 0xffu8,
+    ], false, 3) == 0x00u8);
+}
+
+    assert(crate::model::ma_output(b_fields32_no_alpha_new(), rec_fields32_no_alpha_new(), 56, xor_fields32_no_alpha_new(), false) =~= seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ]) by {
+        assert forall|k: int| 0 <= k < 4 implies #[trigger] crate::model::ma_output(b_fields32_no_alpha_new(), rec_fields32_no_alpha_new(), 56, xor_fields32_no_alpha_new(), false)[k] == seq![
+        0xffu8, 0x00u8, 0x00u8, 0x00u8,
+    ][k] by {
+            if k == 0 { mb_fields32_no_alpha_new_0(); }
+            if k == 1 { mb_fields32_no_alpha_new_1(); }
+            if k == 2 { mb_fields32_no_alpha_new_2(); }
+            if k == 3 { mb_fields32_no_alpha_new_3(); }
+        };
+    }
+}
+
+/// Stage 5: the fixture's result, composing the stages through `mp`.
+#[allow(unused)]
+pub proof fn agree_fields32_no_alpha_new()
+    ensures
+        mp(b_fields32_no_alpha_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, want_fields32_no_alpha_new())),
+{
+    mh_fields32_no_alpha_new();
+    raw_fields32_no_alpha_new();
+    xor_bytes_fields32_no_alpha_new();
+    ma_fields32_no_alpha_new();
+    assert(crate::model::image_size_ok(rec_fields32_no_alpha_new().declared_image, 56 - rec_fields32_no_alpha_new().pixel_start, crate::model::and_bytes(rec_fields32_no_alpha_new().width, rec_fields32_no_alpha_new().height), true)) by (compute);
+    assert(crate::model::and_bytes(rec_fields32_no_alpha_new().width, rec_fields32_no_alpha_new().height) == 4) by (compute);
+    crate::model::lemma_mp_mask_phase_ico_ok(b_fields32_no_alpha_new(), rec_fields32_no_alpha_new(), 56, xor_fields32_no_alpha_new(), want_fields32_no_alpha_new());
+    reveal(crate::model::mp);
+    reveal(crate::model::mp_raw);
+    reveal(crate::model::mp_decoded);
+    assert(crate::model::mp_raw(b_fields32_no_alpha_new(), rec_fields32_no_alpha_new()) == Ok((want_fields32_no_alpha_new(), 60)));
+    assert(crate::model::mp_decoded(rec_fields32_no_alpha_new(), crate::model::mp_raw(b_fields32_no_alpha_new(), rec_fields32_no_alpha_new())) == Ok((1, 1, want_fields32_no_alpha_new())));
+}
+
+// ---- fields32-no-alpha-old (61 bytes, IcoEntryDib) ----
+pub open spec fn b_fields32_no_alpha_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x20u8, 0x00u8, 0x03u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8,
+        0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x80u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_fields32_no_alpha_old()
+    ensures
+        mp(b_fields32_no_alpha_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_fields32_no_alpha_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- fields32-explicit-alpha-new (65 bytes, IcoEntryDibSlack, depth 32) [staged] ----
+pub open spec fn b_fields32_explicit_alpha_new() -> Seq<u8> {
+seq![
+        0x38u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x20u8, 0x00u8, 0x03u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8,
+        0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0xffu8, 0x80u8,
+        0x80u8, 0x00u8, 0x00u8, 0x00u8, 0x5au8,
+    ]
+}
+
+pub open spec fn rec_fields32_explicit_alpha_new() -> crate::model::MHRecord {
+    crate::model::MHRecord {
+        mode: Mode::IcoEntryDibSlack, s: 0, hsize: 56, width: 1, height: 1, stored_height: 2, planes: 1, depth: 32, compression: 3, declared_image: 0, color_used: 0, count: 0, table_count: 0, palette_stride: 4, palette_start: 56, palette_end: 56, pixel_start: 56, mask_r: 0x00ff0000, mask_g: 0x0000ff00, mask_b: 0x000000ff, mask_a: 0xff000000, has_masks: true, core: false, is_bmp: false, top_down: false, n: 1, stride: 4,
+    }
+}
+
+pub open spec fn xor_fields32_explicit_alpha_new() -> Seq<u8> {
+seq![crate::model::channel_of(0x80ff0000u32, 0x00ff0000u32), crate::model::channel_of(0x80ff0000u32, 0x0000ff00u32), crate::model::channel_of(0x80ff0000u32, 0x000000ffu32), crate::model::channel_of(0x80ff0000u32, 0xff000000u32)]
+}
+
+pub open spec fn want_fields32_explicit_alpha_new() -> Seq<u8> {
+seq![
+        0xffu8, 0x00u8, 0x00u8, 0x80u8,
+    ]
+}
+
+/// Stage 1: the concrete record is the model's.
+proof fn mh_fields32_explicit_alpha_new()
+    ensures
+        crate::model::mh(b_fields32_explicit_alpha_new(), Mode::IcoEntryDibSlack) == Ok(rec_fields32_explicit_alpha_new()),
+{
+    reveal(crate::model::mh);
+    reveal(crate::model::r1_prefix);
+    reveal(crate::model::r2r7);
+    reveal(crate::model::r2r5);
+    reveal(crate::model::r6r7);
+    reveal(crate::model::r6r7_result);
+    assert(crate::model::mh(b_fields32_explicit_alpha_new(), Mode::IcoEntryDibSlack) == Ok(rec_fields32_explicit_alpha_new())) by (compute);
+}
+
+/// Stage 2: the raw phase produces exactly `xor_fields32_explicit_alpha_new()`.
+proof fn raw_fields32_explicit_alpha_new()
+    ensures
+        crate::model::mr_raw_out(b_fields32_explicit_alpha_new(), rec_fields32_explicit_alpha_new(), 56) == Ok((60, xor_fields32_explicit_alpha_new())),
+{
+    reveal(crate::model::mr_raw_out);
+    reveal(crate::model::mr_raw);
+    reveal(crate::model::raw_full);
+    reveal(crate::model::raw_writes);
+    reveal(crate::model::conv);
+    reveal(crate::model::conv_word);
+    reveal(crate::model::bitfield_seq);
+    reveal(crate::model::rgb_seq);
+    reveal(crate::model::zero_bytes);
+    reveal(crate::model::bytes_replay);
+    reveal(crate::model::channel_of);
+    reveal(crate::model::scale_of);
+    reveal(crate::model::mh);
+    reveal(crate::model::r2r7);
+    reveal(crate::model::r6r7);
+    reveal(crate::model::r2r5);
+    reveal(crate::model::r6r7_result);
+    reveal(crate::model::r1_prefix);
+    assert(crate::model::mh(b_fields32_explicit_alpha_new(), Mode::IcoEntryDibSlack) == Ok(rec_fields32_explicit_alpha_new())) by (compute);
+    assert(crate::model::mr_raw_out(b_fields32_explicit_alpha_new(), rec_fields32_explicit_alpha_new(), 56) == Ok((60, xor_fields32_explicit_alpha_new()))) by (compute);
+}
+
+/// Stage 3: `xor_fields32_explicit_alpha_new()` is the plane's model output bytes.
+proof fn xor_bytes_fields32_explicit_alpha_new()
+    ensures
+        xor_fields32_explicit_alpha_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0x80u8,
+    ],
+{
+    reveal(crate::model::conv_word);
+    reveal(crate::model::bitfield_seq);
+    reveal(crate::model::rgb_seq);
+    reveal(crate::model::rgb_byte);
+    reveal(crate::model::channel_of);
+    reveal(crate::model::scale_of);
+    assert(0x00ff0000u32 != 0u32) by (bit_vector);
+    assert((0x00ff0000u32 >> 16u32) & 1u32 == 1u32) by (bit_vector);
+    assert forall|j: u32| 0 <= j < 16u32 implies #[trigger] (0x00ff0000u32 >> j) & 1u32 == 0u32 by {
+        assert((0x00ff0000u32 >> j) & 1u32 == 0u32) by (bit_vector) requires 0 <= j < 16u32;
+    };
+    assert(0x00ff0000u32 >> 16u32 == 0x000000ffu32) by (bit_vector);
+    assert((0x80ff0000u32 & 0x00ff0000u32) >> 16u32 == 255u32) by (bit_vector);
+    assert(crate::model::scale_of(255int, 255int) == 255int) by (nonlinear_arith);
+    channel_lit(0x80ff0000u32, 0x00ff0000u32, 16u32, 0x000000ffu32, 255u32, 255u8);
+    assert(0x0000ff00u32 != 0u32) by (bit_vector);
+    assert((0x0000ff00u32 >> 8u32) & 1u32 == 1u32) by (bit_vector);
+    assert forall|j: u32| 0 <= j < 8u32 implies #[trigger] (0x0000ff00u32 >> j) & 1u32 == 0u32 by {
+        assert((0x0000ff00u32 >> j) & 1u32 == 0u32) by (bit_vector) requires 0 <= j < 8u32;
+    };
+    assert(0x0000ff00u32 >> 8u32 == 0x000000ffu32) by (bit_vector);
+    assert((0x80ff0000u32 & 0x0000ff00u32) >> 8u32 == 0u32) by (bit_vector);
+    assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    channel_lit(0x80ff0000u32, 0x0000ff00u32, 8u32, 0x000000ffu32, 0u32, 0u8);
+    assert(0x000000ffu32 != 0u32) by (bit_vector);
+    assert((0x000000ffu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
+    assert forall|j: u32| 0 <= j < 0u32 implies #[trigger] (0x000000ffu32 >> j) & 1u32 == 0u32 by {
+        assert((0x000000ffu32 >> j) & 1u32 == 0u32) by (bit_vector) requires 0 <= j < 0u32;
+    };
+    assert(0x000000ffu32 >> 0u32 == 0x000000ffu32) by (bit_vector);
+    assert((0x80ff0000u32 & 0x000000ffu32) >> 0u32 == 0u32) by (bit_vector);
+    assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    channel_lit(0x80ff0000u32, 0x000000ffu32, 0u32, 0x000000ffu32, 0u32, 0u8);
+    assert(0xff000000u32 != 0u32) by (bit_vector);
+    assert((0xff000000u32 >> 24u32) & 1u32 == 1u32) by (bit_vector);
+    assert forall|j: u32| 0 <= j < 24u32 implies #[trigger] (0xff000000u32 >> j) & 1u32 == 0u32 by {
+        assert((0xff000000u32 >> j) & 1u32 == 0u32) by (bit_vector) requires 0 <= j < 24u32;
+    };
+    assert(0xff000000u32 >> 24u32 == 0x000000ffu32) by (bit_vector);
+    assert((0x80ff0000u32 & 0xff000000u32) >> 24u32 == 128u32) by (bit_vector);
+    assert(crate::model::scale_of(128int, 255int) == 128int) by (nonlinear_arith);
+    channel_lit(0x80ff0000u32, 0xff000000u32, 24u32, 0x000000ffu32, 128u32, 128u8);
+    assert(xor_fields32_explicit_alpha_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0x80u8,
+    ]);
+}
+
+/// Stage 4: the AND/alpha policy maps the plane to the fixture's bytes.
+proof fn ma_fields32_explicit_alpha_new()
+    ensures
+        crate::model::ma_output(b_fields32_explicit_alpha_new(), rec_fields32_explicit_alpha_new(), 60, xor_fields32_explicit_alpha_new(), true) == want_fields32_explicit_alpha_new(),
+{
+    reveal(crate::model::ma_output);
+    reveal(crate::model::ma_byte);
+    reveal(crate::model::and_bit);
+    reveal(crate::model::and_stride);
+    reveal(crate::model::stride_of);
+    reveal(crate::model::xor_alpha_present);
+    xor_bytes_fields32_explicit_alpha_new();
+    assert(xor_fields32_explicit_alpha_new() == seq![
+        0xffu8, 0x00u8, 0x00u8, 0x80u8,
+    ]);
+    assert(xor_fields32_explicit_alpha_new()[3] == 0x80u8);
+    assert(crate::model::xor_alpha_present(xor_fields32_explicit_alpha_new(), 1)) by {
+        assert(xor_fields32_explicit_alpha_new()[4 * (0int) + 3] == 0x80u8);
+    };
+    crate::model::lemma_ma_explicit_alpha_keep(b_fields32_explicit_alpha_new(), rec_fields32_explicit_alpha_new(), 60, xor_fields32_explicit_alpha_new());
+}
+
+/// Stage 5: the fixture's result, composing the stages through `mp`.
+#[allow(unused)]
+pub proof fn agree_fields32_explicit_alpha_new()
+    ensures
+        mp(b_fields32_explicit_alpha_new(), Mode::IcoEntryDibSlack) == Ok((1, 1, want_fields32_explicit_alpha_new())),
+{
+    mh_fields32_explicit_alpha_new();
+    raw_fields32_explicit_alpha_new();
+    xor_bytes_fields32_explicit_alpha_new();
+    ma_fields32_explicit_alpha_new();
+    assert(crate::model::image_size_ok(rec_fields32_explicit_alpha_new().declared_image, 60 - rec_fields32_explicit_alpha_new().pixel_start, crate::model::and_bytes(rec_fields32_explicit_alpha_new().width, rec_fields32_explicit_alpha_new().height), true)) by (compute);
+    assert(crate::model::and_bytes(rec_fields32_explicit_alpha_new().width, rec_fields32_explicit_alpha_new().height) == 4) by (compute);
+    crate::model::lemma_mp_mask_phase_ico_ok(b_fields32_explicit_alpha_new(), rec_fields32_explicit_alpha_new(), 60, xor_fields32_explicit_alpha_new(), want_fields32_explicit_alpha_new());
+    reveal(crate::model::mp);
+    reveal(crate::model::mp_raw);
+    reveal(crate::model::mp_decoded);
+    assert(crate::model::mp_raw(b_fields32_explicit_alpha_new(), rec_fields32_explicit_alpha_new()) == Ok((want_fields32_explicit_alpha_new(), 64)));
+    assert(crate::model::mp_decoded(rec_fields32_explicit_alpha_new(), crate::model::mp_raw(b_fields32_explicit_alpha_new(), rec_fields32_explicit_alpha_new())) == Ok((1, 1, want_fields32_explicit_alpha_new())));
+}
+
+// ---- fields32-explicit-alpha-old (65 bytes, IcoEntryDib) ----
+pub open spec fn b_fields32_explicit_alpha_old() -> Seq<u8> {
+    seq![
+        0x38u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x20u8, 0x00u8, 0x03u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8,
+        0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0xffu8, 0x80u8,
+        0x80u8, 0x00u8, 0x00u8, 0x00u8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_fields32_explicit_alpha_old()
+    ensures
+        mp(b_fields32_explicit_alpha_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_fields32_explicit_alpha_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- indexed1-wide8-new (120 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_indexed1_wide8_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x08u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8,
+        0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_indexed1_wide8_new()
+    ensures
+        mp(b_indexed1_wide8_new(), Mode::IcoEntryDibSlack) == Ok((8, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 8))),
+{
+    assert(mp(b_indexed1_wide8_new(), Mode::IcoEntryDibSlack) == Ok((8, 1, rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 8)))) by (compute);
+}
+
+// ---- indexed1-wide8-old (120 bytes, IcoEntryDib) ----
+pub open spec fn b_indexed1_wide8_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x08u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8,
+        0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_indexed1_wide8_old()
+    ensures
+        mp(b_indexed1_wide8_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_indexed1_wide8_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- indexed8-two-new (57 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_indexed8_two_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x08u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8,
+        0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_indexed8_two_new()
+    ensures
+        mp(b_indexed8_two_new(), Mode::IcoEntryDibSlack) == Ok((2, 1, rep_pat(seq![0x00u8, 0x00u8, 0x00u8, 0xffu8], 1)
+            + rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1))),
+{
+    assert(mp(b_indexed8_two_new(), Mode::IcoEntryDibSlack) == Ok((2, 1, rep_pat(seq![0x00u8, 0x00u8, 0x00u8, 0xffu8], 1)
+            + rep_pat(seq![0xffu8, 0x00u8, 0x00u8, 0xffu8], 1)))) by (compute);
+}
+
+// ---- indexed8-two-old (57 bytes, IcoEntryDib) ----
+pub open spec fn b_indexed8_two_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x08u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8,
+        0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_indexed8_two_old()
+    ensures
+        mp(b_indexed8_two_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes),
+{
+    assert(mp(b_indexed8_two_old(), Mode::IcoEntryDib) == Err(Error::TrailingBytes)) by (compute);
+}
+
+// ---- indexed8-invalid-index-new (57 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_indexed8_invalid_index_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x08u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8,
+        0x03u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_indexed8_invalid_index_new()
+    ensures
+        mp(b_indexed8_invalid_index_new(), Mode::IcoEntryDibSlack) == Err(Error::PaletteIndexOutOfRange),
+{
+    assert(mp(b_indexed8_invalid_index_new(), Mode::IcoEntryDibSlack) == Err(Error::PaletteIndexOutOfRange)) by (compute);
+}
+
+// ---- indexed8-invalid-index-old (57 bytes, IcoEntryDib) ----
+pub open spec fn b_indexed8_invalid_index_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x08u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8,
+        0x03u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_indexed8_invalid_index_old()
+    ensures
+        mp(b_indexed8_invalid_index_old(), Mode::IcoEntryDib) == Err(Error::PaletteIndexOutOfRange),
+{
+    assert(mp(b_indexed8_invalid_index_old(), Mode::IcoEntryDib) == Err(Error::PaletteIndexOutOfRange)) by (compute);
+}
+
+// ---- rle8-forbidden-new (57 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_rle8_forbidden_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x08u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8,
+        0x01u8, 0x01u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_rle8_forbidden_new()
+    ensures
+        mp(b_rle8_forbidden_new(), Mode::IcoEntryDibSlack) == Err(Error::UnsupportedOrientation),
+{
+    assert(mp(b_rle8_forbidden_new(), Mode::IcoEntryDibSlack) == Err(Error::UnsupportedOrientation)) by (compute);
+}
+
+// ---- rle8-forbidden-old (57 bytes, IcoEntryDib) ----
+pub open spec fn b_rle8_forbidden_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x08u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8,
+        0x01u8, 0x01u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_rle8_forbidden_old()
+    ensures
+        mp(b_rle8_forbidden_old(), Mode::IcoEntryDib) == Err(Error::UnsupportedOrientation),
+{
+    assert(mp(b_rle8_forbidden_old(), Mode::IcoEntryDib) == Err(Error::UnsupportedOrientation)) by (compute);
+}
+
+// ---- rle4-forbidden-new (57 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_rle4_forbidden_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x04u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8,
+        0x01u8, 0x01u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_rle4_forbidden_new()
+    ensures
+        mp(b_rle4_forbidden_new(), Mode::IcoEntryDibSlack) == Err(Error::UnsupportedOrientation),
+{
+    assert(mp(b_rle4_forbidden_new(), Mode::IcoEntryDibSlack) == Err(Error::UnsupportedOrientation)) by (compute);
+}
+
+// ---- rle4-forbidden-old (57 bytes, IcoEntryDib) ----
+pub open spec fn b_rle4_forbidden_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x04u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8,
+        0x01u8, 0x01u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_rle4_forbidden_old()
+    ensures
+        mp(b_rle4_forbidden_old(), Mode::IcoEntryDib) == Err(Error::UnsupportedOrientation),
+{
+    assert(mp(b_rle4_forbidden_old(), Mode::IcoEntryDib) == Err(Error::UnsupportedOrientation)) by (compute);
+}
+
+// ---- high-depth-clrused-new (49 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_high_depth_clrused_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_high_depth_clrused_new()
+    ensures
+        mp(b_high_depth_clrused_new(), Mode::IcoEntryDibSlack) == Err(Error::InvalidColorCount),
+{
+    assert(mp(b_high_depth_clrused_new(), Mode::IcoEntryDibSlack) == Err(Error::InvalidColorCount)) by (compute);
+}
+
+// ---- high-depth-clrused-old (49 bytes, IcoEntryDib) ----
+pub open spec fn b_high_depth_clrused_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_high_depth_clrused_old()
+    ensures
+        mp(b_high_depth_clrused_old(), Mode::IcoEntryDib) == Err(Error::InvalidColorCount),
+{
+    assert(mp(b_high_depth_clrused_old(), Mode::IcoEntryDib) == Err(Error::InvalidColorCount)) by (compute);
+}
+
+// ---- negative-height-new (49 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_negative_height_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0xfeu8, 0xffu8, 0xffu8, 0xffu8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_negative_height_new()
+    ensures
+        mp(b_negative_height_new(), Mode::IcoEntryDibSlack) == Err(Error::InvalidDimensions),
+{
+    assert(mp(b_negative_height_new(), Mode::IcoEntryDibSlack) == Err(Error::InvalidDimensions)) by (compute);
+}
+
+// ---- negative-height-old (49 bytes, IcoEntryDib) ----
+pub open spec fn b_negative_height_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0xfeu8, 0xffu8, 0xffu8, 0xffu8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_negative_height_old()
+    ensures
+        mp(b_negative_height_old(), Mode::IcoEntryDib) == Err(Error::InvalidDimensions),
+{
+    assert(mp(b_negative_height_old(), Mode::IcoEntryDib) == Err(Error::InvalidDimensions)) by (compute);
+}
+
+// ---- image-size-includes-slack-new (49 bytes, IcoEntryDibSlack) ----
+pub open spec fn b_image_size_includes_slack_new() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x09u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_image_size_includes_slack_new()
+    ensures
+        mp(b_image_size_includes_slack_new(), Mode::IcoEntryDibSlack) == Err(Error::InvalidImageSize),
+{
+    assert(mp(b_image_size_includes_slack_new(), Mode::IcoEntryDibSlack) == Err(Error::InvalidImageSize)) by (compute);
+}
+
+// ---- image-size-includes-slack-old (49 bytes, IcoEntryDib) ----
+pub open spec fn b_image_size_includes_slack_old() -> Seq<u8> {
+    seq![
+        0x28u8, 0x00u8, 0x00u8, 0x00u8, 0x01u8, 0x00u8, 0x00u8, 0x00u8, 0x02u8, 0x00u8, 0x00u8, 0x00u8,
+        0x01u8, 0x00u8, 0x18u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x09u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0x00u8,
+        0x5au8,
+    ]
+}
+
+#[allow(unused)]
+pub proof fn agree_image_size_includes_slack_old()
+    ensures
+        mp(b_image_size_includes_slack_old(), Mode::IcoEntryDib) == Err(Error::InvalidImageSize),
+{
+    assert(mp(b_image_size_includes_slack_old(), Mode::IcoEntryDib) == Err(Error::InvalidImageSize)) by (compute);
 }
 
 // ---- every small vector has exactly one obligation above ----

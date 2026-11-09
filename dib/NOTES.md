@@ -264,3 +264,33 @@ Checked on a standalone Verus file with the same toolchain (0.2026.11.02): `asse
   (d) the delta's implementation mutations and the public `decode_with_steps`
   export are M1.1c. `model_vectors.rs` was therefore NOT edited (no regeneration
   needed to keep its 209 `agree_*` obligations verifying).
+
+## M1.1c (done — witnesses, tracked-decoder export, mutations)
+- **`model_vectors.rs` regenerated** from `spec-1.1-frozen/VECTORS.json` (the
+  generator now reads the 1.1 file and knows both ICO modes): **294** `agree_*`
+  obligations (254 literal, 24 term-form, 16 staged 32-bpp ICO), up from 209.
+  `tools/gen_ico32.py` is mode-parameterized, so the staged 32-bpp form serves
+  `IcoEntryDib` and `IcoEntryDibSlack`. The 20 proof-gate witnesses are kept; the
+  six new non-vacuity witnesses are proved (`agree_slack_1_new`, `agree_slack_1_old`,
+  `agree_image_size_9_slack`, `agree_mask_short_3_new`,
+  `agree_invalid_size_and_short_new`, `agree_alpha32_7f_mask80_new`). The seven
+  large vectors are covered by L1/L2 or runtime conformance; no 64 MiB input is
+  expanded into verifier terms.
+- **`decode_with_steps` exported** (`dib.rs`): the former private
+  `t12_linear_work` body, with the ghost step result and the proved
+  `decode_mp_eq` and `steps <= 16*(|b|+N)` postconditions; `t12_checked_n` became
+  `pub open spec fn`; `lib.rs` re-exports it; `tests/conformance.rs` decodes
+  through it. `decode` is unchanged and still carries `decode_mp_eq`.
+- **44 implementation mutants** (35 historic + 8 delta items 36-44; item (5) has
+  two arms). Six stale anchors were re-pinned after the M1.1a re-indentation.
+  43 are verifier kills; mutant 20 (second `vec!`) is an **audit** kill
+  (`tools/audit_alloc.sh`). m38 was corrected (it called the spec fn `exact_tail`
+  from exec code, a rustc mode error) and rerun as a verifier kill. Previous
+  campaign preserved in `mutation-1.0/`; `mutation/base` refreshed and byte-identical
+  to the live sources.
+- Checks: clean full reverify `verification results:: 1557 verified, 0 errors`
+  (runs/098.log 139 s; runs/101.log 138 s, both after `cargo clean`); `cargo test`
+  conformance 302/302, corpus 84/58; frozen 1.1 hashes intact; spec-frozen and
+  THEOREMS.md untouched; no escapes, no solver-budget attribute; `audit_alloc.sh` OK.
+  Backups `dib.rs.m11a`, `model.rs.m11a`, `model_vectors.rs.m11a`. See
+  PROOF-REPORT-M1.1c.md.

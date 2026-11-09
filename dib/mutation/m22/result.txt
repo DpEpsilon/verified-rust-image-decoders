@@ -1,19 +1,19 @@
 implementation mutation 22
-crate result: verification results:: 1366 verified, 1 errors
+crate result: verification results:: 1556 verified, 1 errors
 exit=101
 error diagnostics:
         1 error: assertion failed
-        1 error: could not compile `dib_verus` (lib) due to 1 previous error; 67 warnings emitted
-     --> src/dib.rs:100:17
-     --> src/model_vectors.rs:435:5
-     --> src/model_vectors.rs:437:5
-     --> src/model_vectors.rs:524:5
-     --> src/model_vectors.rs:526:5
-     --> src/model_vectors.rs:613:5
-     --> src/model_vectors.rs:615:5
-     --> src/model_vectors.rs:738:5
-     --> src/model_vectors.rs:740:5
-      --> src/model_vectors.rs:1032:5
-      --> src/model_vectors.rs:1034:5
-      --> src/model_vectors.rs:1122:5
+        1 error: could not compile `dib_verus` (lib) due to 1 previous error; 81 warnings emitted
+     --> src/dib.rs:116:17
+     --> src/model_vectors.rs:445:5
+     --> src/model_vectors.rs:447:5
+     --> src/model_vectors.rs:534:5
+     --> src/model_vectors.rs:536:5
+     --> src/model_vectors.rs:623:5
+     --> src/model_vectors.rs:625:5
+     --> src/model_vectors.rs:748:5
+     --> src/model_vectors.rs:750:5
+      --> src/model_vectors.rs:1042:5
+      --> src/model_vectors.rs:1044:5
+      --> src/model_vectors.rs:1132:5
 log: mutation/m22/failure.log

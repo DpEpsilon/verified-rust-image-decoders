@@ -5229,7 +5229,8 @@ fn t11_decode_terminates(b: &[u8], h: &Header, out: &mut Vec<u8>) -> (r: Result<
 }
 
 /// N is zero on a failed header, and the checked visible pixel count otherwise.
-spec fn t12_checked_n(b: Seq<u8>, mode: Mode) -> int {
+/// Public because `decode_with_steps`'s exported T12 bound states it.
+pub open spec fn t12_checked_n(b: Seq<u8>, mode: Mode) -> int {
     match crate::model::mh(b, mode) {
         Ok(m) => m.n,
         Err(_) => 0,
@@ -5477,10 +5478,15 @@ pub fn decode(bytes: &[u8], mode: Mode) -> (r: Result<Decoded, Error>)
     decode_tracked(bytes, mode, &mut steps)
 }
 
-/// T12 witness: the exact public-path body, starting with zero steps, satisfies
-/// the all-input linear bound. The returned ghost value is erased at runtime.
-#[allow(dead_code)]
-fn t12_linear_work(bytes: &[u8], mode: Mode) -> (r: (Result<Decoded, Error>, Ghost<nat>))
+/// The public tracked decoder (R19/T12): the T12 witness body, exported so a
+/// caller (the ICO crate) can invoke the same decode path and receive the ghost
+/// work counter. The result is `decode(bytes, mode)` and the ghost count `r.1@`
+/// is the number of charged concrete steps; the T12 bound
+/// `r.1@ <= 16*(|bytes| + N)`, `N = 0` on a rejected header and the validated
+/// `w*h` otherwise, and `decode_mp_eq` (T9: the result equals the model `MP`)
+/// are its proved postconditions. The ghost return and every counter update
+/// erase, so the executable behaviour is byte-for-byte `decode`'s.
+pub fn decode_with_steps(bytes: &[u8], mode: Mode) -> (r: (Result<Decoded, Error>, Ghost<nat>))
     ensures
         r.1@ as int <= 16 * (bytes@.len() + t12_checked_n(bytes@, mode)),
         decode_mp_eq(r.0, bytes@, mode),

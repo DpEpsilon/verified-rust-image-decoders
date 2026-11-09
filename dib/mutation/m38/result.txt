@@ -1,0 +1,21 @@
+implementation mutation 38
+crate result: verification results:: 1555 verified, 2 errors
+exit=101
+error diagnostics:
+        1 error: assertion failed
+        1 error: could not compile `dib_verus` (lib) due to 3 previous errors; 81 warnings emitted
+        1 error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details
+        1 error: precondition not satisfied
+     --> src/dib.rs:116:17
+     --> src/model_vectors.rs:445:5
+     --> src/model_vectors.rs:447:5
+     --> src/model_vectors.rs:534:5
+     --> src/model_vectors.rs:536:5
+     --> src/model_vectors.rs:623:5
+     --> src/model_vectors.rs:625:5
+     --> src/model_vectors.rs:748:5
+     --> src/model_vectors.rs:750:5
+      --> src/model_vectors.rs:1042:5
+      --> src/model_vectors.rs:1044:5
+      --> src/model_vectors.rs:1132:5
+log: mutation/m38/failure.log

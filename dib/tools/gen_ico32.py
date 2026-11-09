@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Emit the ICO 32-bit success obligations for `src/model_vectors.rs`.
 
-Each of the nine ICO `depth == 32` successes is proved in stages, because the
-model's `ma_output` (a `Seq::new` closure over the whole-image XOR-alpha rule)
-cannot be closed by `by (compute)`:
+Each ICO `depth == 32` success (in either mode: the 1.0 `IcoEntryDib` and the
+1.1 `IcoEntryDibSlack`) is proved in stages, because the model's `ma_output`
+(a `Seq::new` closure over the whole-image XOR-alpha rule) cannot be closed by
+`by (compute)`:
 
-  1. `mh_v()`               : `mh(b_v(), IcoEntryDib) == Ok(rec_v())` by `compute`.
+  1. `mh_v()`               : `mh(b_v(), <mode>) == Ok(rec_v())` by `compute`.
                               This *validates* the concrete record: a wrong field
                               makes the obligation false.
   2. `raw_v()`              : `mr_raw_out(b_v(), rec_v(), ps) == Ok((end, xor_v()))`
@@ -21,6 +22,10 @@ cannot be closed by `by (compute)`:
   5. `agree_v()`            : the fixture statement, composing the above through
                               `mp`'s ladder.
 
+The record's `mode` field and every use of `Mode::<...>` in the emitted blocks are
+the fixture's own mode, so the two ICO modes share this generator; only the final
+cursor test differs between them, and that is inside `mp`.
+
 Usage: tools/gen_ico32.py OUT.rs
 """
 
@@ -30,7 +35,11 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-VECTORS = os.path.join(ROOT, "spec-frozen", "VECTORS.json")
+VECTORS = os.path.join(ROOT, "spec-1.1-frozen", "VECTORS.json")
+
+# R19: the two ICO modes share every R1-R18 rule; only R12's final cursor test
+# is governed by `exact_tail`, which lives in `mp`.
+ICO_MODES = ("IcoEntryDib", "IcoEntryDibSlack")
 
 
 def ident(name):
@@ -50,7 +59,7 @@ def bytes_seq(data, indent=4):
 
 
 def use_ico32(v):
-    if v["mode"] != "IcoEntryDib" or "error" in v["expected"]:
+    if v["mode"] not in ICO_MODES or "error" in v["expected"]:
         return False
     raw = bytes.fromhex(v["input_hex"]) * v.get("input_repeat", 1)
     if len(raw) > 40000 or len(raw) < 20:
@@ -178,7 +187,7 @@ def one(v):
     exp_alpha = explicit_alpha(v, f, words)
     alpha_present = any(xbytes[4 * j + 3] != 0 for j in range(n)) if exp_alpha else False
     keep = exp_alpha and alpha_present
-    rec_fields = ("mode: Mode::IcoEntryDib, s: 0, hsize: %d, width: %d, height: %d, "
+    rec_fields = ("mode: Mode::%s, s: 0, hsize: %d, width: %d, height: %d, "
                   "stored_height: %d, planes: 1, depth: 32, compression: %d, "
                   "declared_image: %d, color_used: %d, count: 0, table_count: 0, "
                   "palette_stride: %d, palette_start: %d, palette_end: %d, pixel_start: %d, "
@@ -186,13 +195,13 @@ def one(v):
                   "core: false, is_bmp: false, top_down: false, n: %d, stride: %d")
     pal_stride = 3 if f["H"] == 12 else 4
     rec = rec_fields % (
-        f["H"], f["w"], f["h"], f["sh"], f["c"], f["dec"], f["used"],
+        v["mode"], f["H"], f["w"], f["h"], f["sh"], f["c"], f["dec"], f["used"],
         pal_stride, f["ps"], f["ps"], f["ps"],
         "0x%08x" % masks[0], "0x%08x" % masks[1], "0x%08x" % masks[2], "0x%08x" % masks[3],
         "true" if f["c"] == 3 else "false", n, ((f["w"] * 32 + 31) // 32) * 4,
     )
     b = []
-    b.append("// ---- %s (%d bytes, IcoEntryDib, depth 32) [staged] ----\n" % (name, len(raw)))
+    b.append("// ---- %s (%d bytes, %s, depth 32) [staged] ----\n" % (name, len(raw), v["mode"]))
     b.append("pub open spec fn b_%s() -> Seq<u8> {\n%s\n}\n\n" % (i, bytes_seq(raw)))
     b.append("pub open spec fn rec_%s() -> crate::model::MHRecord {\n"
              "    crate::model::MHRecord {\n        %s,\n    }\n}\n\n" % (i, rec))
@@ -201,13 +210,13 @@ def one(v):
     b.append("pub open spec fn want_%s() -> Seq<u8> {\n%s\n}\n\n" % (i, bytes_seq(want)))
     # stage 1
     b.append("/// Stage 1: the concrete record is the model's.\n")
-    b.append("proof fn mh_%s()\n    ensures\n        crate::model::mh(b_%s(), Mode::IcoEntryDib) == Ok(rec_%s()),\n{\n"
-             % (i, i, i))
+    b.append("proof fn mh_%s()\n    ensures\n        crate::model::mh(b_%s(), Mode::%s) == Ok(rec_%s()),\n{\n"
+             % (i, i, v["mode"], i))
     b.append("    reveal(crate::model::mh);\n    reveal(crate::model::r1_prefix);\n"
              "    reveal(crate::model::r2r7);\n    reveal(crate::model::r2r5);\n"
              "    reveal(crate::model::r6r7);\n    reveal(crate::model::r6r7_result);\n")
-    b.append("    assert(crate::model::mh(b_%s(), Mode::IcoEntryDib) == Ok(rec_%s())) by (compute);\n}\n\n"
-             % (i, i))
+    b.append("    assert(crate::model::mh(b_%s(), Mode::%s) == Ok(rec_%s())) by (compute);\n}\n\n"
+             % (i, v["mode"], i))
     # stage 2
     b.append("/// Stage 2: the raw phase produces exactly `xor_%s()`.\n" % i)
     b.append("proof fn raw_%s()\n    ensures\n        crate::model::mr_raw_out(b_%s(), rec_%s(), %d) == Ok((%d, xor_%s())),\n{\n"
@@ -221,7 +230,8 @@ def one(v):
     b.append("    reveal(crate::model::mh);\n    reveal(crate::model::r2r7);\n"
              "    reveal(crate::model::r6r7);\n    reveal(crate::model::r2r5);\n"
              "    reveal(crate::model::r6r7_result);\n    reveal(crate::model::r1_prefix);\n")
-    b.append("    assert(crate::model::mh(b_%s(), Mode::IcoEntryDib) == Ok(rec_%s())) by (compute);\n" % (i, i))
+    b.append("    assert(crate::model::mh(b_%s(), Mode::%s) == Ok(rec_%s())) by (compute);\n"
+             % (i, v["mode"], i))
     b.append("    assert(crate::model::mr_raw_out(b_%s(), rec_%s(), %d) == Ok((%d, xor_%s()))) by (compute);\n}\n\n"
              % (i, i, f["ps"], end, i))
     # stage 3: xor_ == xbytes
@@ -333,8 +343,8 @@ def one(v):
     # stage 5: agree
     b.append("/// Stage 5: the fixture's result, composing the stages through `mp`.\n")
     b.append("#[allow(unused)]\n")
-    b.append("pub proof fn agree_%s()\n    ensures\n        mp(b_%s(), Mode::IcoEntryDib) == Ok((%d, %d, want_%s())),\n{\n"
-             % (i, i, f["w"], f["h"], i))
+    b.append("pub proof fn agree_%s()\n    ensures\n        mp(b_%s(), Mode::%s) == Ok((%d, %d, want_%s())),\n{\n"
+             % (i, i, v["mode"], f["w"], f["h"], i))
     b.append("    mh_%s();\n    raw_%s();\n    xor_bytes_%s();\n    ma_%s();\n" % (i, i, i, i))
     b.append("    assert(crate::model::image_size_ok(rec_%s().declared_image, %d - rec_%s().pixel_start, "
              "crate::model::and_bytes(rec_%s().width, rec_%s().height), true)) by (compute);\n"

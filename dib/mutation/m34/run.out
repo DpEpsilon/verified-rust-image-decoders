@@ -1,0 +1,61 @@
+    --> src/model.rs:2293:9
+     |
+2293 |         forall|m: MHRecord| #[trigger] mh(b, mode) == Ok(m) ==> mh_bounds(m),
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/model.rs:2293:65
+     |
+2293 |         forall|m: MHRecord| #[trigger] mh(b, mode) == Ok(m) ==> mh_bounds(m),
+     |                                                                 ^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/model.rs:2295:5
+     |
+2295 |     assert forall|m: MHRecord| #[trigger] mh(b, mode) == Ok(m) implies mh_bounds(m) by {
+     |     ^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/model.rs:2295:72
+     |
+2295 |     assert forall|m: MHRecord| #[trigger] mh(b, mode) == Ok(m) implies mh_bounds(m) by {
+     |                                                                        ^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/dib.rs:5295:19
+     |
+5295 |       let ghost m = choose|m: crate::model::MHRecord| crate::model::mh(bytes@, mode) == Ok(m)
+     |  ___________________^
+5296 | |         && hdr_matches(m, h);
+     | |____________________________^
+
+note:   trigger 1 of 1:
+    --> src/dib.rs:5296:12
+     |
+5296 |         && hdr_matches(m, h);
+     |            ^^^^^^^^^^^^^^^^^
+
+note: Verus printed one or more automatically chosen quantifier triggers
+      because it had low confidence in the chosen triggers.
+      To suppress these messages, do one of the following:
+        (1) manually annotate a single desired trigger using `#[trigger]`
+            (example: `forall|i: int, j: int| f(i) && #[trigger] g(i) && #[trigger] h(j)`),
+        (2) manually annotate multiple desired triggers using `#![trigger ...]`
+            (example: `forall|i: int| #![trigger f(i)] #![trigger g(i)] f(i) && g(i)`),
+        (3) accept the automatically chosen trigger using `#![auto]`
+            (example: `forall|i: int, j: int| #![auto] f(i) && g(i) && h(j)`)
+        (4) use the `--triggers-mode silent` command-line option to suppress all printing of triggers.
+      (Note: triggers are used by the underlying SMT theorem prover to instantiate quantifiers;
+      the theorem prover instantiates a quantifier whenever some expression matches the
+      pattern specified by one of the quantifier's triggers.)
+    --> src/dib.rs:5295:19
+     |
+5295 |       let ghost m = choose|m: crate::model::MHRecord| crate::model::mh(bytes@, mode) == Ok(m)
+     |  ___________________^
+5296 | |         && hdr_matches(m, h);
+     | |____________________________^
+
+verification results:: 1556 verified, 1 errors
+warning: `dib_verus` (lib) generated 81 warnings
+error: could not compile `dib_verus` (lib) due to 2 previous errors; 81 warnings emitted
+[verify.sh] run 86 exit=101 124s log=runs/086.log

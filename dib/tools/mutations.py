@@ -76,7 +76,7 @@ MUTATIONS = {
     ),
     10: dict(
         what="ignore AND on an all-zero explicit ICO XOR alpha plane",
-        edits=[("dib.rs", "            if !has_xor_alpha || !any_alpha {", "            if !has_xor_alpha {")],
+        edits=[("dib.rs", "        if !has_xor_alpha || !any_alpha {", "        if !has_xor_alpha {")],
         expect="T8/T9 (ico-alpha-zero-fallback-mask)",
     ),
     11: dict(
@@ -164,7 +164,7 @@ MUTATIONS = {
     ),
     17: dict(
         what="omit the full ICO mask availability check before mask reads",
-        edits=[("dib.rs", "            if b.len() - pos < and_bytes {", "            if false && b.len() - pos < and_bytes {")],
+        edits=[("dib.rs", "        if b.len() - pos < and_bytes {", "        if false && b.len() - pos < and_bytes {")],
         expect="T1/T8 (ico-truncated-and)",
     ),
     18: dict(
@@ -180,14 +180,14 @@ MUTATIONS = {
     ),
     21: dict(
         what="accept arbitrary trailing bytes in bare DIB",
-        edits=[("dib.rs", "        Mode::BareDib => {\n            if pos != b.len() {\n                proof {",
-                "        Mode::BareDib => {\n            if false && pos != b.len() {\n                proof {")],
+        edits=[("dib.rs", "            Mode::BareDib => {\n                if pos != b.len() {\n                    proof {",
+                "            Mode::BareDib => {\n                if false && pos != b.len() {\n                    proof {")],
         expect="T9/T10 (rle8-early-eob-trailing)",
     ),
     22: dict(
         what="discard the ICO BI_RGB32 pixel alpha byte",
-        edits=[("dib.rs", "                Mode::IcoEntryDib => [rd(b, p + 2), rd(b, p + 1), rd(b, p), rd(b, p + 3)],",
-                "                Mode::IcoEntryDib => [rd(b, p + 2), rd(b, p + 1), rd(b, p), 255],")],
+        edits=[("dib.rs", "                Mode::IcoEntryDib | Mode::IcoEntryDibSlack => {\n                    [rd(b, p + 2), rd(b, p + 1), rd(b, p), rd(b, p + 3)]\n                },",
+                "                Mode::IcoEntryDib | Mode::IcoEntryDibSlack => {\n                    [rd(b, p + 2), rd(b, p + 1), rd(b, p), 255]\n                },")],
         expect="T4/T9 (ico-32-and-0)",
     ),
     28: dict(
@@ -197,13 +197,13 @@ MUTATIONS = {
     ),
     30: dict(
         what="reject ICO image size declared as X+A",
-        edits=[("dib.rs", "(match h.mode { Mode::IcoEntryDib => true, _ => false }",
-                "(match h.mode { Mode::IcoEntryDib => false, _ => false }")],
+        edits=[("dib.rs", "        let valid = h.declared as u64 == image_len as u64 ||\n            (ico && h.declared as u64 == image_len as u64 + and_bytes as u64);",
+                "        let valid = h.declared as u64 == image_len as u64;")],
         expect="T8/T9/T10 (ico-image-size-xor-and)",
     ),
     31: dict(
         what="apply AND as veto despite nonzero explicit XOR alpha",
-        edits=[("dib.rs", "            if !has_xor_alpha || !any_alpha {", "            if true {")],
+        edits=[("dib.rs", "        if !has_xor_alpha || !any_alpha {", "        if true {")],
         expect="T8/T9 (ico-alpha-nonzero-ignores-and)",
     ),
     32: dict(
@@ -219,9 +219,63 @@ MUTATIONS = {
     ),
     35: dict(
         what="treat BITFIELDS without an A mask as explicit ICO alpha",
-        edits=[("dib.rs", "            let has_xor_alpha = h.bits == 32 && (h.compression == 0 || h.masks[3] != 0);",
-                "            let has_xor_alpha = h.bits == 32;")],
+        edits=[("dib.rs", "        let has_xor_alpha = h.bits == 32 && (h.compression == 0 || h.masks[3] != 0);",
+                "        let has_xor_alpha = h.bits == 32;")],
         expect="T8/T9 (ico-fields-32-no-alpha-and-veto)",
+    ),
+    # ---- M1.1c: the delta's implementation-side mutants (36)-(43).  Each is
+    # faithful to THEOREMS-DELTA.md's named mutant; the target vector is noted.
+    36: dict(
+        what="R19 mut (1): treat the new slack mode like BareDib at the final cursor check",
+        edits=[("dib.rs", "        let exact = match h.mode {\n            Mode::BareDib | Mode::IcoEntryDib => true,\n            _ => false,\n        };",
+                "        let exact = match h.mode {\n            Mode::BareDib | Mode::IcoEntryDib | Mode::IcoEntryDibSlack => true,\n            _ => false,\n        };")],
+        expect="T9/T10 (slack-1-new / max-input-slack-IcoEntryDibSlack become TrailingBytes)",
+    ),
+    37: dict(
+        what="R19 mut (2): apply the slack policy to the old ICO mode too",
+        edits=[("dib.rs", "        let exact = match h.mode {\n            Mode::BareDib | Mode::IcoEntryDib => true,\n            _ => false,\n        };",
+                "        let exact = match h.mode {\n            Mode::BareDib => true,\n            _ => false,\n        };")],
+        expect="T9/T10 (slack-1-old / ico-* stop reporting TrailingBytes)",
+    ),
+    38: dict(
+        what="R19 mut (3): skip the AND-mask availability check when a suffix exists (in either ICO mode)",
+        edits=[("dib.rs", "        if b.len() - pos < and_bytes {", "        if b.len() - pos < and_bytes && h.mode == Mode::IcoEntryDib {")],
+        expect="T1/T8/T9 (mask-short-3-new / ico-truncated-and: reads past the slice)",
+    ),
+    39: dict(
+        what="R19 mut (4): accept any nonzero biSizeImage in the slack mode (no X / X+A rule)",
+        edits=[("dib.rs", "        let valid = h.declared as u64 == image_len as u64 ||\n            (ico && h.declared as u64 == image_len as u64 + and_bytes as u64);",
+                "        let valid = h.declared as u64 == image_len as u64\n            || (h.mode == Mode::IcoEntryDibSlack) || (ico && h.declared as u64 == image_len as u64 + and_bytes as u64);")],
+        expect="T8/T10 (image-size-9-slack / image-size-includes-slack-new become Ok)",
+    ),
+    40: dict(
+        what="R19 mut (5a): omit the doubled-height rule for the slack mode (use the raw stored height)",
+        edits=[("dib.rs", "        Mode::IcoEntryDib | Mode::IcoEntryDibSlack => {\n            if signed_height < 0 || signed_height % 2 != 0 {\n                proof {\n                    reveal(crate::model::mh);\n                }\n                return Err(Error::InvalidDimensions);\n            }\n        }",
+                "        Mode::IcoEntryDib => {\n            if signed_height < 0 || signed_height % 2 != 0 {\n                proof {\n                    reveal(crate::model::mh);\n                }\n                return Err(Error::InvalidDimensions);\n            }\n        }\n        Mode::IcoEntryDibSlack => {}")],
+        expect="T2/T8/T9 (odd-height-new becomes Ok)",
+    ),
+    41: dict(
+        what="R19 mut (5b): ignore the BI_RGB32 XOR alpha in the slack mode (always apply the AND fallback)",
+        edits=[("dib.rs", "        let has_xor_alpha = h.bits == 32 && (h.compression == 0 || h.masks[3] != 0);\n        let any_alpha = alpha_present(h, out, steps);\n        if !has_xor_alpha || !any_alpha {",
+                "        let has_xor_alpha = h.bits == 32 && (h.compression == 0 || h.masks[3] != 0)\n            && h.mode != Mode::IcoEntryDibSlack;\n        let any_alpha = alpha_present(h, out, steps);\n        if !has_xor_alpha || !any_alpha {")],
+        expect="T8/T9 (alpha32-7f-mask80-new / alpha32-00-mask00-new bytes change)",
+    ),
+    42: dict(
+        what="R19 mut (6): allow RLE8/RLE4 in the slack ICO mode",
+        edits=[("dib.rs", "    if (signed_height < 0 && rle) || (ico && rle) {",
+                "    if (signed_height < 0 && rle) || (ico && mode != Mode::IcoEntryDibSlack && rle) {")],
+        expect="T2/T7 (rle8-forbidden-new / rle4-forbidden-new stop reporting UnsupportedOrientation)",
+    ),
+    43: dict(
+        what="R19 mut (7): change the input cap test from `>` to `>=` (one byte off)",
+        edits=[("dib.rs", "    if len > MAX_INPUT {", "    if len >= MAX_INPUT {")],
+        expect="T1 (max-input-slack-IcoEntryDibSlack / input-exact-64m become FileTooLarge)",
+    ),
+    44: dict(
+        what="R19 mut (8): rescan the entire remaining suffix on every slack-mode return",
+        edits=[("dib.rs", "        let end = pos + and_bytes;\n        let exact = match h.mode {",
+                "        let end = pos + and_bytes;\n        if h.mode == Mode::IcoEntryDibSlack {\n            let mut scan = end;\n            while scan < b.len()\n                invariant end <= scan <= b.len(),\n                decreases b.len() - scan,\n            {\n                let _byte = rd(b, scan);\n                scan += 1;\n                proof { *steps = Ghost(steps@ + 1); }\n            }\n        }\n        let exact = match h.mode {")],
+        expect="T12 (only when the loop is charged; otherwise a source audit)",
     ),
 }
 

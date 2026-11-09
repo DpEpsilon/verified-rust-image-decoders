@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
-"""Generate Verus model-vs-vector agreement proofs from spec-frozen/VECTORS.json.
+"""Generate Verus model-vs-vector agreement proofs from
+spec-1.1-frozen/VECTORS.json.
 
-For each vector whose expanded input is at most 4216 bytes, emit a `proof fn`
+For every vector whose expanded input is at most 40,000 bytes, emit a `proof fn`
 whose statement is
 
     mp(<the vector's expanded input>, <mode>) == <the fixture's expected result>
 
 Every expected value is read from the fixture's `expected` field; nothing is
-taken from the production decoder.
+taken from the production decoder.  The generator reads the 302-vector 1.1 file:
+the first 214 records are the unchanged 1.0 fixtures, the appended 88 exercise
+`IcoEntryDibSlack` and the shared ICO handling, so both modes produce the same
+`agree_<vector>` obligations against the extended `MP`.
 
 Two forms are emitted:
 
@@ -30,10 +34,10 @@ Two forms are emitted:
   `agree_<name>` composes the two, so the named obligation is exactly the
   fixture's expected `Result`.
 
-The five vectors longer than 4216 bytes are covered by the symbolic lemmas L1-L2
-in `src/model.rs` (the three oversized inputs) and by mandatory runtime
-conformance tests (`output-exact-64m-rle8`, `height-at-cap-8192`); the generator
-checks each of the five against the manifest's symbolic construction.
+The vectors longer than 40,000 bytes are covered by the symbolic lemmas L1-L2 in
+`src/model.rs` (the oversized inputs) and by mandatory runtime conformance tests;
+the generator checks each of them against the manifest's symbolic construction, so
+no 64 MiB input is ever expanded into verifier terms.
 
 Usage: tools/gen_model_vectors.py [--out PATH] [--check]
 """
@@ -44,7 +48,7 @@ import os
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VECTORS = os.path.join(ROOT, "spec-frozen", "VECTORS.json")
+VECTORS = os.path.join(ROOT, "spec-1.1-frozen", "VECTORS.json")
 DEFAULT_OUT = os.path.join(ROOT, "dib_verus", "src", "model_vectors.rs")
 
 # The largest input expanded as a literal: the two 32 KiB height fixtures
@@ -58,9 +62,25 @@ LARGE = {
     "input-exact-64m": ("lemma", "lemma_mp_l2 (L2)"),
     "output-exact-64m-rle8": ("runtime", "cargo test conformance (R16 output-exact fixture)"),
     "height-at-cap-8192": ("runtime", "cargo test conformance (8192-row height boundary)"),
+    # R19: the exact 64 MiB boundary in the two ICO modes and one byte over it.
+    # These are kept out of the verifier for the same reason as the 1.0 64 MiB
+    # fixtures: they are 64 MiB slices, covered by the runtime conformance test
+    # with the frozen oracle.  The small slack-* vectors cover the same branch
+    # symbolically (see `slack-1-new`/`slack-1-old`).
+    "max-input-slack-IcoEntryDibSlack": ("runtime", "cargo test conformance (64 MiB boundary, slack success)"),
+    "max-input-slack-IcoEntryDib": ("runtime", "cargo test conformance (64 MiB boundary, exact-tail contrast)"),
+    "over-max-input-slack-new": ("lemma", "lemma_mp_l1 (L1, over-cap slack)"),
 }
 
 TZ = "vstd::std_specs::bits::u32_trailing_zeros"
+
+# R19: the two modes that share every ICO rule (R1-R18) and differ only at the
+# final cursor test.  The generators treat them alike for geometry and colour.
+ICO_MODES = ("IcoEntryDib", "IcoEntryDibSlack")
+
+
+def is_ico_mode(mode):
+    return mode in ICO_MODES
 
 
 def expanded(v):
@@ -95,6 +115,24 @@ def check_large(vectors):
             assert [(r["count"], r["hex"]) for r in exp["rgba_runs"]] == [(16777216, "ff0000ff")], name
         elif name == "height-at-cap-8192":
             assert exp["width"] == 1 and exp["height"] == 8192, name
+        elif name == "max-input-slack-IcoEntryDibSlack":
+            # R19: the exact cap in the slack mode — 48-byte preamble, one
+            # pixel and mask, then 0x5a repeated to 64 MiB. The bytes after the
+            # complete AND mask are ignored, so this is a success.
+            assert len(got) == 67108864, name
+            assert got[:48] == bytes.fromhex(
+                "280000000100000002000000010018000000000000000000000000000000000000000000000000000000ff0000000000")
+            assert got[48:] == bytes([0x5A]) * (67108864 - 48), name
+            assert exp["width"] == 1 and exp["height"] == 1, name
+            assert [(r["count"], r["hex"]) for r in exp["rgba_runs"]] == [(1, "ff0000ff")], name
+        elif name == "max-input-slack-IcoEntryDib":
+            # The same bytes in the exact-tail mode: the same complete mask but
+            # a non-empty suffix, so the 1.0 mode reports TrailingBytes.
+            assert len(got) == 67108864, name
+            assert exp.get("error") == "TrailingBytes", name
+        elif name == "over-max-input-slack-new":
+            assert len(got) == 67108865, name
+            assert exp.get("error") == "FileTooLarge", name
         out.append((name, kind, cover, len(got)))
     return out
 
@@ -156,8 +194,8 @@ def channel_terms(v):
     s, H, ps = g["s"], g["H"], g["ps"]
     if not (1 <= w <= 8192 and sh != 0):
         return None
-    top_down = (mode != "IcoEntryDib") and sh < 0
-    h = (sh // 2) if mode == "IcoEntryDib" else abs(sh)
+    top_down = (not is_ico_mode(mode)) and sh < 0
+    h = (sh // 2) if is_ico_mode(mode) else abs(sh)
     if not (1 <= h <= 8192):
         return None
 
@@ -294,12 +332,16 @@ HEADER = '''//! Model-vs-vector agreement, generated by `tools/gen_model_vectors
 //!
 //! DO NOT EDIT BY HAND.  Regenerate with
 //!     python3 tools/gen_model_vectors.py
-//! The expected values come from `spec-frozen/VECTORS.json` (`expected`), never
-//! from the executable decoder.  Each `agree_<vector>` obligation states that
-//! the formal model `MP` applied to the vector's expanded input yields exactly
-//! the fixture's expected `Result` (`Ok(width, height, rgba)` byte-exact, or
-//! `Err(e)` for the exact error name).  A mismatch makes the obligation
-//! **false**, not vacuous.
+//! The expected values come from `spec-1.1-frozen/VECTORS.json` (`expected`),
+//! never from the executable decoder.  Each `agree_<vector>` obligation states
+//! that the formal model `MP` applied to the vector's expanded input yields
+//! exactly the fixture's expected `Result` (`Ok(width, height, rgba)`
+//! byte-exact, or `Err(e)` for the exact error name).  A mismatch makes the
+//! obligation **false**, not vacuous.
+//!
+//! The first 214 records are the unchanged 1.0 fixtures (both ICO modes appear
+//! for the 88 appended ones); the generator emits one obligation per eligible
+//! vector regardless of mode.
 //!
 //! Two proof forms appear.  Most vectors are closed directly by `by (compute)`.
 //! The 16-bit and BITFIELDS vectors cannot be: their pixels go through the
@@ -308,9 +350,12 @@ HEADER = '''//! Model-vs-vector agreement, generated by `tools/gen_model_vectors
 //! step against the model's own `channel_of` terms and a `channel_lit` step
 //! relating each term to its concrete byte, composed inside `agree_<vector>`.
 //!
-//! The five vectors longer than 40,000 bytes are covered by the symbolic lemmas
+//! The vectors longer than 40,000 bytes are covered by the symbolic lemmas
 //! L1-L2 in `src/model.rs` (the three oversized inputs) and by mandatory runtime
-//! conformance tests (`output-exact-64m-rle8`, `height-at-cap-8192`).
+//! conformance tests (`output-exact-64m-rle8`, `height-at-cap-8192`, and the two
+//! 64 MiB R19 boundary fixtures `max-input-slack-IcoEntryDib{,Slack}`); no 64 MiB
+//! input is expanded into verifier terms. The small `slack-*` fixtures cover the
+//! same new-mode branch symbolically.
 use vstd::prelude::*;
 
 verus! {
@@ -394,8 +439,8 @@ def gen():
         if tz_path(v):
             info = channel_terms(v)
             if info is not None:
-                terms = compose_terms(info["pixels"], mode == "IcoEntryDib")
-                lits = literal_bytes(info["pixels"], mode == "IcoEntryDib")
+                terms = compose_terms(info["pixels"], is_ico_mode(mode))
+                lits = literal_bytes(info["pixels"], is_ico_mode(mode))
                 flat = [x for comps in lits for x in comps]
                 # The bytes the model's terms reduce to must equal the fixture's
                 # own expected pixels (so `agree` states the fixture's result).
@@ -441,7 +486,7 @@ def gen():
                 # emit per-pixel facts
                 for pi, (word, mr, mg, mb, ma, a) in enumerate(info["pixels"]):
                     r, gv, b, av = lits[pi]
-                    ico = mode == "IcoEntryDib"
+                    ico = is_ico_mode(mode)
                     for mask, val in ((mr, r), (mg, gv), (mb, b), (ma, av)):
                         if mask == 0:
                             continue
