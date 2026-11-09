@@ -1,6 +1,10 @@
 # verified-decoders
 
-Image-decoder cores in Rust whose behaviour is **proved** (Verus) to equal an independent reference model, for every input. Pure functions, bytes in and pixels (or byte ranges) out: no I/O, no `unsafe`, no dependencies except `vstd`. Written largely by AI agents under a frozen spec; every claim below is backed by a checked artifact in this repo.
+Image-decoder cores in Rust whose behaviour is **proved** (using Verus) to equal an independent reference model, for every input.
+
+Pure functions, bytes in and pixels (or byte ranges) out: no I/O, no `unsafe`, no dependencies except `vstd`. Written largely by AI agents under a frozen spec; every claim below is backed by a checked artifact in this repo.
+
+Starting with simpler file formats, the eventual goal is to implement everything that already exists in GtkPixbuf, and then get decoders merged, somehow make it usable from within Glycin, and/or get it into the `image` crate.
 
 | Format | Dir | API | Verus result | Vectors | Mutations that break the proof |
 |---|---|---|---|---|---|
