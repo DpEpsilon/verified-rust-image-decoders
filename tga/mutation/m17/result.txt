@@ -1,0 +1,6 @@
+mutation 17
+crate result: 577 verified, 1 errors
+error diagnostics: 2
+  postcondition not satisfied at src/tga.rs:1557:9
+  could not compile `tga_verus` (lib) due to 1 previous error; 1 warning emitted
+log: mutation/m17/failure.log

@@ -1,0 +1,1 @@
+| 1 | diff | claude-sonnet-5-5 | differential test, two crates + Python oracle | 90403 | 22 | 17m44s | 0 divergences in ~35.5M Rust-vs-Rust cases and ~39k oracle cases; harness self-test caught an injected fault |

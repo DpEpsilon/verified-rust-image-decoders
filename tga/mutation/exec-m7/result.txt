@@ -1,0 +1,18 @@
+executable mutation 7
+crate result: verification results:: 641 verified, 1 errors
+exit=101
+error diagnostics:
+        1 error: could not compile `tga_verus` (lib) due to 1 previous error; 1 warning emitted
+        1 error: postcondition not satisfied
+    --> src/tga.rs:85:17
+      --> src/tga.rs:3757:9
+      --> src/tga.rs:2506:42
+      --> src/tga.rs:2508:19
+      --> src/model.rs:4564:5
+      --> src/model.rs:4565:12
+      --> src/model.rs:4565:39
+      --> src/model.rs:4708:13
+      --> src/model.rs:4709:12
+      --> src/model.rs:4709:39
+      --> src/model.rs:4708:13
+log: mutation/exec-m7/failure.log

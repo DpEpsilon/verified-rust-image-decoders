@@ -1,0 +1,145 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling verus_prettyplease v0.0.0-2026-11-01-0251
+   Compiling equivalent v1.0.3
+   Compiling hashbrown v0.17.1
+   Compiling convert_case v0.4.0
+   Compiling vstd v0.0.0-2026-11-01-0251
+    Checking verus_builtin v0.0.0-2026-11-01-0251
+   Compiling indexmap v2.14.2
+   Compiling verus_syn v0.0.0-2026-11-01-0251
+   Compiling syn v2.0.119
+   Compiling synstructure v0.13.2
+   Compiling verus_builtin_macros v0.0.0-2026-11-01-0251
+   Compiling verus_state_machines_macros v0.0.0-2026-11-01-0251
+verification results:: 2159 verified, 0 errors
+    Checking icns_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/icns-verus/mutation/m10/icns_verus)
+warning: Verus does not currently support autoderive Clone impl when the clone is not a copy; continuing, but without adding a specification for the derived Clone impl
+  --> src/icns.rs:72:17
+   |
+72 | #[derive(Debug, Clone, PartialEq, Eq)]
+   |                 ^^^^^
+   |
+   = help: to suppress this warning, use `#[verifier::allow(autoderive_clone_without_spec)]` on the surrounding function, datatype, or module or `#![verifier::allow(autoderive_clone_without_spec)]` in the module or crate
+
+warning: Verus does not currently support autoderive Clone impl when the clone is not a copy; continuing, but without adding a specification for the derived Clone impl
+   --> src/icns.rs:164:17
+    |
+164 | #[derive(Debug, Clone, PartialEq, Eq)]
+    |                 ^^^^^
+    |
+    = help: to suppress this warning, use `#[verifier::allow(autoderive_clone_without_spec)]` on the surrounding function, datatype, or module or `#![verifier::allow(autoderive_clone_without_spec)]` in the module or crate
+
+error: precondition not satisfied
+    --> src/icns.rs:1276:9
+     |
+1276 |         crate::model::lemma_interleave_rgba_exact(rgb.data@, mask.data@, d.data@);
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+    ::: src/model.rs:3748:9
+     |
+3748 |         forall|k: int| 0 <= k < alpha.len() ==> #[trigger] out[4 * k + 3] == alpha[k],
+     |         ----------------------------------------------------------------------------- failed precondition
+
+note: automatically chose triggers for this expression:
+    --> src/model.rs:2250:9
+     |
+2250 |       &&& forall|i: int| 0 <= i < a.len() ==> {
+     |  _________^
+2251 | |         &&& a[i].type_hex@ == b[i].type_hex@
+2252 | |         &&& a[i].payload[0] == b[i].payload[0]
+2253 | |         &&& a[i].payload[1] == b[i].payload[1]
+2254 | |         &&& a[i].opaque_candidate == b[i].opaque_candidate
+2255 | |         &&& a[i].nominal_side == b[i].nominal_side
+2256 | |     }
+     | |_____^
+
+note:   trigger 1 of 2:
+    --> src/model.rs:2251:13
+     |
+2251 |         &&& a[i].type_hex@ == b[i].type_hex@
+     |             ^^^^
+
+note:   trigger 2 of 2:
+    --> src/model.rs:2251:31
+     |
+2251 |         &&& a[i].type_hex@ == b[i].type_hex@
+     |                               ^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/icns.rs:410:13
+    |
+410 |             assert forall|i: int| 0 <= i < 4 implies
+    |             ^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/icns.rs:411:45
+    |
+411 |                 bytes@.subrange(0, 4)[i] == crate::model::icns_magic()[i] by {
+    |                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/icns.rs:1378:9
+     |
+1378 | /         forall|es: Seq<Entry>| crate::model::parse_returned(r, es)
+1379 | |             <==> crate::model::p_exec(bytes@, es),
+     | |_________________________________________________^
+
+note:   trigger 1 of 1:
+    --> src/icns.rs:1378:32
+     |
+1378 |         forall|es: Seq<Entry>| crate::model::parse_returned(r, es)
+     |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/icns.rs:1383:9
+     |
+1383 |         assert forall|es: Seq<Entry>| crate::model::parse_returned(r, es)
+     |         ^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/icns.rs:1383:39
+     |
+1383 |         assert forall|es: Seq<Entry>| crate::model::parse_returned(r, es)
+     |                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/model.rs:2286:9
+     |
+2286 |         assert forall|i: int| 0 <= i < a.len() implies {
+     |         ^^^^^^
+
+note:   trigger 1 of 2:
+    --> src/model.rs:2287:17
+     |
+2287 |             &&& a[i].type_hex@ == es[i].type_hex@
+     |                 ^^^^
+
+note:   trigger 2 of 2:
+    --> src/model.rs:2287:35
+     |
+2287 |             &&& a[i].type_hex@ == es[i].type_hex@
+     |                                   ^^^^^
+
+note: Verus printed one or more automatically chosen quantifier triggers
+      because it had low confidence in the chosen triggers.
+      To suppress these messages, do one of the following:
+        (1) manually annotate a single desired trigger using `#[trigger]`
+            (example: `forall|i: int, j: int| f(i) && #[trigger] g(i) && #[trigger] h(j)`),
+        (2) manually annotate multiple desired triggers using `#![trigger ...]`
+            (example: `forall|i: int| #![trigger f(i)] #![trigger g(i)] f(i) && g(i)`),
+        (3) accept the automatically chosen trigger using `#![auto]`
+            (example: `forall|i: int, j: int| #![auto] f(i) && g(i) && h(j)`)
+        (4) use the `--triggers-mode silent` command-line option to suppress all printing of triggers.
+      (Note: triggers are used by the underlying SMT theorem prover to instantiate quantifiers;
+      the theorem prover instantiates a quantifier whenever some expression matches the
+      pattern specified by one of the quantifier's triggers.)
+    --> src/model.rs:2286:9
+     |
+2286 |         assert forall|i: int| 0 <= i < a.len() implies {
+     |         ^^^^^^
+
+verification results:: 314 verified, 1 errors
+warning: `icns_verus` (lib) generated 2 warnings
+error: could not compile `icns_verus` (lib) due to 1 previous error; 2 warnings emitted

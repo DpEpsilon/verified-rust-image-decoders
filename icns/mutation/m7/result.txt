@@ -1,0 +1,7 @@
+mutation 7
+crate result: no verification summary (the crate failed to compile, so no obligation was checked)
+error diagnostics: 3
+  error: postcondition not satisfied
+  error: expression simplifies to false
+  error: could not compile `icns_verus` (lib) due to 2 previous errors; 2 warnings emitted
+log: mutation/m7/failure.log

@@ -1,0 +1,11 @@
+mutation 1
+crate result: 309 verified, 6 errors
+error diagnostics: 7
+  error: postcondition not satisfied
+  error: postcondition not satisfied
+  error: postcondition not satisfied
+  error: postcondition not satisfied
+  error: postcondition not satisfied
+  error: postcondition not satisfied
+  error: could not compile `icns_verus` (lib) due to 6 previous errors; 2 warnings emitted
+log: mutation/m1/failure.log

@@ -1,0 +1,8 @@
+executable mutation 7
+crate result: verification results:: 635 verified, 1 errors
+exit=101
+error diagnostics:
+      1 error: assertion failed
+      1 error: could not compile `tga_verus` (lib) due to 2 previous errors; 1 warning emitted
+      1 error: postcondition not satisfied
+log: mutation/exec-m7/failure.log

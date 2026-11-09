@@ -1,0 +1,8 @@
+mutation 19
+crate result: no verification summary (the crate failed to compile, so no obligation was checked)
+error diagnostics: 4
+  expression simplifies to `Ok((1, 1, array_view([127, 127, 127, 35]))) == Ok((1, 1, array_view([127, 127, 127, 255])))`, which evaluates to false at src/model_vectors.rs:1153:12
+  postcondition not satisfied at src/tga.rs:1157:9
+  postcondition not satisfied at src/model.rs:1164:9
+  could not compile `tga_verus` (lib) due to 3 previous errors; 1 warning emitted
+log: mutation/m19/failure.log

@@ -1,0 +1,1 @@
+mutation 8 direct: run 223, exit=1, log=runs/223.log, failed goals=['vc_strip4_prog']

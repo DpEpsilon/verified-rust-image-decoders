@@ -1,0 +1,8 @@
+mutation 4
+crate result: no verification summary (the crate failed to compile, so no obligation was checked)
+error diagnostics: 4
+  error: postcondition not satisfied
+  error: assertion failed
+  error: expression simplifies to `Ok(empty().push(MpEntry { type_hex: array_view(['7', '3', '3', '8', '6', 'd', '6', 'b']), payload: (16, 272), opaque_candidate: true, nominal_side: None })) == Ok(empty().push(MpEntry { type_hex: array_view(['7', '3', '3', '8', '6', 'd', '6', 'b']), payload: (16, 272), opaque_candidate: false, nominal_side: None }))`, which evaluates to false
+  error: could not compile `icns_verus` (lib) due to 3 previous errors; 2 warnings emitted
+log: mutation/m4/failure.log

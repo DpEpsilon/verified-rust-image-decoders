@@ -1,0 +1,6 @@
+mutation 10
+crate result: 314 verified, 1 errors
+error diagnostics: 2
+  error: precondition not satisfied
+  error: could not compile `icns_verus` (lib) due to 1 previous error; 2 warnings emitted
+log: mutation/m10/failure.log

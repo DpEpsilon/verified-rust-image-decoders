@@ -1,0 +1,317 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling libc v0.2.191
+   Compiling getrandom v0.4.3
+   Compiling cfg-if v1.0.5
+   Compiling syn v2.0.119
+   Compiling uuid v1.29.1
+   Compiling pearlite-syn v0.14.0
+   Compiling creusot-std-proc v0.14.0
+    Checking creusot-std v0.14.0
+    Checking icns_creusot v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/icns-creusot/mutation/m8/icns_creusot)
+warning: function `h_byte` is never used
+    --> src/lib.rs:1608:4
+     |
+1608 | fn h_byte(i: u32, k: u32, total: u32, s: &[u8]) -> u8 {
+     |    ^^^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `build_h` is never used
+    --> src/lib.rs:1649:4
+     |
+1649 | fn build_h(k: u32, s: &[u8]) -> Vec<u8> {
+     |    ^^^^^^^
+
+warning: function `witness_entry_count_exactly_4096` is never used
+    --> src/lib.rs:1669:4
+     |
+1669 | fn witness_entry_count_exactly_4096() -> Vec<u8> {
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `witness_entry_count_limit` is never used
+    --> src/lib.rs:1679:4
+     |
+1679 | fn witness_entry_count_limit() -> Vec<u8> {
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `witness_count_limit_before_stray_suffix` is never used
+    --> src/lib.rs:1689:4
+     |
+1689 | fn witness_count_limit_before_stray_suffix() -> Vec<u8> {
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `witness_entry_count_before_later_malformed_entry` is never used
+    --> src/lib.rs:1699:4
+     |
+1699 | fn witness_entry_count_before_later_malformed_entry() -> Vec<u8> {
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `build_b` is never used
+    --> src/lib.rs:1708:4
+     |
+1708 | fn build_b(q: u32) -> Vec<u8> {
+     |    ^^^^^^^
+
+warning: function `witness_invalid_4097th_entry_before_limit` is never used
+    --> src/lib.rs:1727:4
+     |
+1727 | fn witness_invalid_4097th_entry_before_limit() -> Vec<u8> {
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `witness_entry_count_followed_by_overflowing_4097th` is never used
+    --> src/lib.rs:1737:4
+     |
+1737 | fn witness_entry_count_followed_by_overflowing_4097th() -> Vec<u8> {
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `a3_byte_prog` is never used
+    --> src/lib.rs:1765:4
+     |
+1765 | fn a3_byte_prog(i: u32) -> u8 {
+     |    ^^^^^^^^^^^^
+
+warning: function `build_a3` is never used
+    --> src/lib.rs:1791:4
+     |
+1791 | fn build_a3() -> Vec<u8> {
+     |    ^^^^^^^^
+
+warning: function `witness_mask_t8mk` is never used
+    --> src/lib.rs:1809:4
+     |
+1809 | fn witness_mask_t8mk() -> Vec<u8> {
+     |    ^^^^^^^^^^^^^^^^^
+
+warning: function `rgb_at_parse` is never used
+    --> src/lib.rs:2854:4
+     |
+2854 | fn rgb_at_parse(bytes: &[u8], i: u32) -> Result<(u32, u32, Vec<u8>), Error> {
+     |    ^^^^^^^^^^^^
+
+warning: function `mask_at_parse` is never used
+    --> src/lib.rs:2865:4
+     |
+2865 | fn mask_at_parse(bytes: &[u8], i: u32) -> Result<(u32, u32, Vec<u8>), Error> {
+     |    ^^^^^^^^^^^^^
+
+warning: function `combine_at_parse` is never used
+    --> src/lib.rs:2876:4
+     |
+2876 | fn combine_at_parse(
+     |    ^^^^^^^^^^^^^^^^
+
+warning: function `witness_t12_p_realisable` is never used
+    --> src/lib.rs:2998:4
+     |
+2998 | fn witness_t12_p_realisable() -> Vec<u8> {
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `witness_t13_parse_succeeds` is never used
+    --> src/lib.rs:3011:4
+     |
+3011 | fn witness_t13_parse_succeeds() -> Vec<u8> {
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `b_opaque_icsB` should have a snake case name
+     --> src/lib.rs:19316:12
+      |
+19316 |     pub fn b_opaque_icsB() -> Seq<u8> {
+      |            ^^^^^^^^^^^^^ help: convert the identifier to snake case: `b_opaque_ics_b`
+      |
+      = note: `#[warn(non_snake_case)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: function `blen_opaque_icsB` should have a snake case name
+     --> src/lib.rs:19325:12
+      |
+19325 |     pub fn blen_opaque_icsB() {}
+      |            ^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `blen_opaque_ics_b`
+
+warning: function `e_opaque_icsB_0` should have a snake case name
+     --> src/lib.rs:19328:12
+      |
+19328 |     pub fn e_opaque_icsB_0() -> Seq<MEntry> {
+      |            ^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `e_opaque_ics_b_0`
+
+warning: function `me_opaque_icsB_0` should have a snake case name
+     --> src/lib.rs:19333:12
+      |
+19333 |     pub fn me_opaque_icsB_0() -> MEntry {
+      |            ^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `me_opaque_ics_b_0`
+
+warning: function `e_opaque_icsB_1` should have a snake case name
+     --> src/lib.rs:19343:12
+      |
+19343 |     pub fn e_opaque_icsB_1() -> Seq<MEntry> {
+      |            ^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `e_opaque_ics_b_1`
+
+warning: function `m_opaque_icsB` should have a snake case name
+     --> src/lib.rs:19349:12
+      |
+19349 |     pub fn m_opaque_icsB() {}
+      |            ^^^^^^^^^^^^^ help: convert the identifier to snake case: `m_opaque_ics_b`
+
+warning: function `h_opaque_icsB` should have a snake case name
+     --> src/lib.rs:19353:12
+      |
+19353 |     pub fn h_opaque_icsB() {}
+      |            ^^^^^^^^^^^^^ help: convert the identifier to snake case: `h_opaque_ics_b`
+
+warning: function `q_opaque_icsB_8` should have a snake case name
+     --> src/lib.rs:19357:12
+      |
+19357 |     pub fn q_opaque_icsB_8() {}
+      |            ^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `q_opaque_ics_b_8`
+
+warning: function `k_opaque_icsB_8` should have a snake case name
+     --> src/lib.rs:19366:12
+      |
+19366 |     pub fn k_opaque_icsB_8() {}
+      |            ^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `k_opaque_ics_b_8`
+
+warning: function `agree_opaque_icsB` should have a snake case name
+     --> src/lib.rs:19370:12
+      |
+19370 |     pub fn agree_opaque_icsB() {
+      |            ^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_opaque_ics_b`
+
+warning: function `b_opaque_SB24` should have a snake case name
+     --> src/lib.rs:19448:12
+      |
+19448 |     pub fn b_opaque_SB24() -> Seq<u8> {
+      |            ^^^^^^^^^^^^^ help: convert the identifier to snake case: `b_opaque_sb24`
+
+warning: function `blen_opaque_SB24` should have a snake case name
+     --> src/lib.rs:19457:12
+      |
+19457 |     pub fn blen_opaque_SB24() {}
+      |            ^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `blen_opaque_sb24`
+
+warning: function `e_opaque_SB24_0` should have a snake case name
+     --> src/lib.rs:19460:12
+      |
+19460 |     pub fn e_opaque_SB24_0() -> Seq<MEntry> {
+      |            ^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `e_opaque_sb24_0`
+
+warning: function `me_opaque_SB24_0` should have a snake case name
+     --> src/lib.rs:19465:12
+      |
+19465 |     pub fn me_opaque_SB24_0() -> MEntry {
+      |            ^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `me_opaque_sb24_0`
+
+warning: function `e_opaque_SB24_1` should have a snake case name
+     --> src/lib.rs:19475:12
+      |
+19475 |     pub fn e_opaque_SB24_1() -> Seq<MEntry> {
+      |            ^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `e_opaque_sb24_1`
+
+warning: function `m_opaque_SB24` should have a snake case name
+     --> src/lib.rs:19481:12
+      |
+19481 |     pub fn m_opaque_SB24() {}
+      |            ^^^^^^^^^^^^^ help: convert the identifier to snake case: `m_opaque_sb24`
+
+warning: function `h_opaque_SB24` should have a snake case name
+     --> src/lib.rs:19485:12
+      |
+19485 |     pub fn h_opaque_SB24() {}
+      |            ^^^^^^^^^^^^^ help: convert the identifier to snake case: `h_opaque_sb24`
+
+warning: function `q_opaque_SB24_8` should have a snake case name
+     --> src/lib.rs:19489:12
+      |
+19489 |     pub fn q_opaque_SB24_8() {}
+      |            ^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `q_opaque_sb24_8`
+
+warning: function `k_opaque_SB24_8` should have a snake case name
+     --> src/lib.rs:19498:12
+      |
+19498 |     pub fn k_opaque_SB24_8() {}
+      |            ^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `k_opaque_sb24_8`
+
+warning: function `agree_opaque_SB24` should have a snake case name
+     --> src/lib.rs:19502:12
+      |
+19502 |     pub fn agree_opaque_SB24() {
+      |            ^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_opaque_sb24`
+
+warning: `icns_creusot` (lib) generated 37 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2m 36s
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/alloc/src/vec/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/alloc/src/vec/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/slice/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/clone.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/slice/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/slice/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/clone.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/clone.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/alloc/src/string.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/array/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/array/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/clone.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/clone.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/fmt/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/fmt/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/fmt/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/cmp.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/cmp.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/cmp.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/cmp.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/cmp.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/cmp.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/cmp.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/cmp.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/alloc/src/vec/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/alloc/src/vec/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/cmp.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/cmp.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/alloc/src/vec/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/alloc/src/vec/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/alloc/src/vec/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/alloc/src/vec/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/alloc/src/vec/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/alloc/src/vec/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/slice/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/slice/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/alloc/src/vec/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/alloc/src/vec/mod.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/alloc/src/string.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/alloc/src/string.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/array/iter.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/array/iter.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+Warning: inexistent file in source location: No resolved file among [/rustc/11177f2235f0c842b00f82c558ad9480c0c3a895/library/core/src/num/uint_macros.rs]
+File "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/icns-creusot/mutation/m8/icns_creusot/src/lib.rs", line 2393, characters 1-34: proof failed
+Goal Coma.vc_strip4_prog: ✘ (3/4)
+Error: 1 unproved file
+Error: 'why3find prove' failed

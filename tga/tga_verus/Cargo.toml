@@ -1,0 +1,21 @@
+[package]
+name = "tga_verus"
+version = "0.1.0"
+license = "MIT"
+description = "Formally verified (Verus) TGA decoder core"
+edition = "2021"
+
+[dependencies]
+vstd = "=0.0.0-2026-11-01-0251"
+
+[dev-dependencies]
+# Test-only: reads spec-frozen/VECTORS.json in tests/conformance.rs.
+serde_json = "1"
+
+[package.metadata.verus]
+verify = true
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = [
+  'cfg(verus_only)',
+] }

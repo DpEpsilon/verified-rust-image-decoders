@@ -1,0 +1,20 @@
+executable mutation 4
+crate result: verification results:: 641 verified, 1 errors
+exit=101
+error diagnostics:
+        1 error: assertion failed
+        1 error: could not compile `tga_verus` (lib) due to 2 previous errors; 1 warning emitted
+        1 error: possible arithmetic underflow/overflow
+    --> src/tga.rs:85:17
+      --> src/tga.rs:2027:1
+      --> src/tga.rs:2074:17
+      --> src/tga.rs:2078:16
+      --> src/tga.rs:2506:42
+      --> src/tga.rs:2508:19
+      --> src/model.rs:4564:5
+      --> src/model.rs:4565:12
+      --> src/model.rs:4565:39
+      --> src/model.rs:4708:13
+      --> src/model.rs:4709:12
+      --> src/model.rs:4709:39
+log: mutation/exec-m4/failure.log

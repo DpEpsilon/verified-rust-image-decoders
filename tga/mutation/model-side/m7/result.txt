@@ -1,0 +1,8 @@
+mutation 7
+crate result: no verification summary (the crate failed to compile, so no obligation was checked)
+error diagnostics: 4
+  expression simplifies to `Err(RleTruncated) == Err(RleOverrun)`, which evaluates to false at src/model_vectors.rs:692:12
+  postcondition not satisfied at src/model.rs:3963:9
+  function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details at src/model.rs:4536:1
+  could not compile `tga_verus` (lib) due to 3 previous errors; 1 warning emitted
+log: mutation/m7/failure.log

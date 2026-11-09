@@ -1,0 +1,7 @@
+mutation 8
+crate result: 577 verified, 1 errors
+error diagnostics: 3
+  assertion failed at src/tga.rs:3522:28
+  assertion failed at src/tga.rs:3592:28
+  could not compile `tga_verus` (lib) due to 2 previous errors; 1 warning emitted
+log: mutation/m8/failure.log

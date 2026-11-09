@@ -1,0 +1,20 @@
+executable mutation 17
+crate result: verification results:: 635 verified, 1 errors
+exit=101
+error diagnostics:
+        1 error: could not compile `tga_verus` (lib) due to 2 previous errors; 1 warning emitted
+        1 error: postcondition not satisfied
+        1 error: precondition not satisfied
+    --> src/tga.rs:85:17
+      --> src/tga.rs:2007:1
+      --> src/tga.rs:2028:9
+      --> src/tga.rs:2063:12
+      --> src/tga.rs:2118:42
+      --> src/tga.rs:2120:19
+      --> src/model.rs:4492:5
+      --> src/model.rs:4493:12
+      --> src/model.rs:4493:39
+      --> src/model.rs:4636:13
+      --> src/model.rs:4637:12
+      --> src/model.rs:4637:39
+log: mutation/exec-m17/failure.log

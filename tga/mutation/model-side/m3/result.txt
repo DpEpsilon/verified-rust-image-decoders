@@ -1,0 +1,9 @@
+mutation 3
+crate result: no verification summary (the crate failed to compile, so no obligation was checked)
+error diagnostics: 5
+  expression simplifies to `Err(UnsupportedPixelDepth) == Err(InvalidDimensions)`, which evaluates to false at src/model_vectors.rs:164:12
+  assertion failed at src/model.rs:340:12
+  assertion failed at src/model.rs:341:12
+  postcondition not satisfied at src/tga.rs:632:9
+  could not compile `tga_verus` (lib) due to 4 previous errors; 1 warning emitted
+log: mutation/m3/failure.log

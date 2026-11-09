@@ -1,0 +1,8 @@
+mutation 9
+crate result: 312 verified, 3 errors
+error diagnostics: 4
+  error: assertion failed
+  error: postcondition not satisfied
+  error: postcondition not satisfied
+  error: could not compile `icns_verus` (lib) due to 3 previous errors; 2 warnings emitted
+log: mutation/m9/failure.log

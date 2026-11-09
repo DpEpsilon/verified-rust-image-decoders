@@ -1,0 +1,1005 @@
+1	2026-11-08T12:42:01+00:00	exit=0	4s	M1: skeleton still verifies [crate=dib_verus]	verification results:: 1 verified, 0 errors
+2	2026-11-08T12:46:38+00:00	exit=101	61s	probe: basic verus capabilities [crate=probe]	verification results:: 2159 verified, 0 errors
+3	2026-11-08T12:46:48+00:00	exit=101	3s	probe: basic verus capabilities v2 [crate=probe]	
+4	2026-11-08T12:47:47+00:00	exit=101	3s	probe: spec structs, bit ops, vec writes [crate=probe]	
+5	2026-11-08T12:48:22+00:00	exit=101	1s	probe: bit ops and arcs [crate=probe]	
+6	2026-11-08T12:48:27+00:00	exit=101	1s	probe: bit ops and arcs v2 [crate=probe]	
+7	2026-11-08T12:48:36+00:00	exit=101	0s	probe: bit ops and arcs v3 [crate=probe]	
+8	2026-11-08T12:48:43+00:00	exit=101	3s	probe: bit ops and arcs v4 [crate=probe]	
+9	2026-11-08T12:48:54+00:00	exit=101	3s	probe: bit ops v5 [crate=probe]	
+10	2026-11-08T12:49:04+00:00	exit=101	1s	probe: LE models, guards, products [crate=probe]	
+11	2026-11-08T12:49:08+00:00	exit=101	1s	probe: LE models v2 [crate=probe]	
+12	2026-11-08T12:49:16+00:00	exit=101	1s	probe: LE models v3 [crate=probe]	
+13	2026-11-08T12:49:26+00:00	exit=101	0s	probe: u32 op support [crate=probe]	
+14	2026-11-08T12:49:34+00:00	exit=101	4s	probe: u32 op support v2 [crate=probe]	
+15	2026-11-08T12:49:41+00:00	exit=101	1s	probe: model record + exec match [crate=probe]	
+16	2026-11-08T12:49:48+00:00	exit=0	3s	probe: model record + exec match v2 [crate=probe]	verification results:: 2 verified, 0 errors
+17	2026-11-08T12:50:13+00:00	exit=101	4s	probe: u32 spec ops [crate=probe]	
+18	2026-11-08T12:50:23+00:00	exit=0	4s	probe: operator result types [crate=probe]	verification results:: 3 verified, 0 errors
+19	2026-11-08T12:50:33+00:00	exit=101	4s	probe: wrapping ops in spec [crate=probe]	
+20	2026-11-08T12:50:47+00:00	exit=101	4s	probe: lowbit forms [crate=probe]	
+21	2026-11-08T12:50:55+00:00	exit=101	3s	probe: wrapping_sub lowbit [crate=probe]	
+22	2026-11-08T12:51:30+00:00	exit=101	3s	probe: lowbit contig division [crate=probe]	
+23	2026-11-08T12:51:37+00:00	exit=101	4s	probe: lowbit contig division v2 [crate=probe]	verification results:: 3 verified, 4 errors
+24	2026-11-08T12:52:05+00:00	exit=101	4s	probe: exec op support matrix [crate=probe]	
+25	2026-11-08T12:52:13+00:00	exit=101	4s	probe: exec op support matrix v2 [crate=probe]	verification results:: 11 verified, 1 errors
+26	2026-11-08T12:52:56+00:00	exit=101	0s	probe: batch constructs [crate=probe]	
+27	2026-11-08T12:53:05+00:00	exit=101	4s	probe: batch constructs v2 [crate=probe]	
+28	2026-11-08T12:53:18+00:00	exit=101	1s	probe: run/disjoint/ghost [crate=probe]	
+29	2026-11-08T12:53:23+00:00	exit=101	1s	probe: ghost return [crate=probe]	
+30	2026-11-08T12:53:30+00:00	exit=101	3s	probe: tuple return [crate=probe]	verification results:: 2 verified, 2 errors
+31	2026-11-08T12:53:39+00:00	exit=101	1s	probe: ghost return syntax [crate=probe]	
+32	2026-11-08T12:55:30+00:00	exit=101	0s	M2: model.rs (MH, MMode, MError) verifies [crate=dib_verus]	
+33	2026-11-08T12:55:38+00:00	exit=101	4s	M2: model.rs verifies (M1 dib untouched) [crate=dib_verus]	
+34	2026-11-08T12:55:54+00:00	exit=101	4s	M2: model.rs int masks [crate=dib_verus]	
+35	2026-11-08T12:56:02+00:00	exit=0	4s	M2: model.rs as_u32 wraps [crate=dib_verus]	verification results:: 4 verified, 0 errors
+36	2026-11-08T12:56:32+00:00	exit=101	1s	probe: ghost tuple return forms [crate=probe]	
+37	2026-11-08T12:56:36+00:00	exit=101	0s	probe: tuple return forms 2 [crate=probe]	
+38	2026-11-08T12:56:43+00:00	exit=101	0s	probe: named tuple ret [crate=probe]	
+39	2026-11-08T12:56:48+00:00	exit=101	1s	probe: anonymous tuple ret [crate=probe]	
+40	2026-11-08T12:56:54+00:00	exit=101	1s	probe: minimal 2 named ret [crate=probe]	
+41	2026-11-08T12:57:01+00:00	exit=0	4s	probe: tuple type returns [crate=probe]	verification results:: 3 verified, 0 errors
+42	2026-11-08T12:57:36+00:00	exit=101	3s	M2: model bounds lemma [crate=dib_verus]	
+43	2026-11-08T12:58:20+00:00	exit=101	1s	M2: model mask section reworked [crate=dib_verus]	
+44	2026-11-08T12:59:11+00:00	exit=101	0s	M2: readers, mask guard, colour helpers [crate=dib_verus]	
+45	2026-11-08T12:59:32+00:00	exit=101	0s	M2: Header struct + T2 correspondence specs [crate=dib_verus]	
+46	2026-11-08T13:00:00+00:00	exit=0	4s	probe: out-of-range Seq index totality [crate=probe]	verification results:: 1 verified, 0 errors
+47	2026-11-08T13:00:27+00:00	exit=101	4s	M2: parse_header first attempt [crate=dib_verus]	
+48	2026-11-08T13:00:47+00:00	exit=101	4s	M2: parse_header attempt 2 [crate=dib_verus]	
+49	2026-11-08T13:01:10+00:00	exit=101	3s	probe: cast semantics [crate=probe]	
+50	2026-11-08T13:01:23+00:00	exit=101	4s	probe: u64 let-bound division spec [crate=probe]	
+51	2026-11-08T13:01:32+00:00	exit=101	5s	probe: u64 division bridging [crate=probe]	
+52	2026-11-08T13:01:46+00:00	exit=101	3s	probe: trailing_zeros broadcast [crate=probe]	verification results:: 0 verified, 1 errors
+53	2026-11-08T13:01:56+00:00	exit=101	3s	probe: channel_of same-form equality [crate=probe]	
+54	2026-11-08T13:02:07+00:00	exit=101	4s	probe: int-typed channel bridging [crate=probe]	
+55	2026-11-08T13:02:13+00:00	exit=101	1s	probe: channel with u32_trailing_zeros [crate=probe]	
+56	2026-11-08T13:02:21+00:00	exit=101	4s	probe: channel with u32_trailing_zeros v2 [crate=probe]	
+57	2026-11-08T13:02:27+00:00	exit=101	0s	probe: tz axiom nonzero facts [crate=probe]	
+58	2026-11-08T13:02:35+00:00	exit=101	4s	probe: tz axiom nonzero facts v2 [crate=probe]	verification results:: 2 verified, 1 errors
+59	2026-11-08T13:02:45+00:00	exit=101	4s	probe: tz axiom v3 [crate=probe]	verification results:: 2 verified, 1 errors
+60	2026-11-08T13:02:53+00:00	exit=0	4s	probe: tz axiom v4 [crate=probe]	verification results:: 4 verified, 0 errors
+61	2026-11-08T13:03:08+00:00	exit=101	4s	M2: parse_header attempt 3 [crate=dib_verus]	
+62	2026-11-08T13:03:19+00:00	exit=101	6s	M2: parse_header attempt 4 [crate=dib_verus]	
+63	2026-11-08T13:03:34+00:00	exit=101	7s	M2: parse_header attempt 5 [crate=dib_verus]	
+64	2026-11-08T13:03:51+00:00	exit=101	7s	M2: parse_header attempt 6 [crate=dib_verus]	
+65	2026-11-08T13:04:11+00:00	exit=101	8s	M2: parse_header attempt 7 [crate=dib_verus]	verification results:: 61 verified, 5 errors
+66	2026-11-08T13:04:29+00:00	exit=101	6s	M2: parse_header attempt 8 [crate=dib_verus]	
+67	2026-11-08T13:04:42+00:00	exit=101	8s	M2: parse_header attempt 9 [crate=dib_verus]	verification results:: 70 verified, 3 errors
+68	2026-11-08T13:04:59+00:00	exit=101	4s	probe: slice len <= usize::MAX [crate=probe]	verification results:: 1 verified, 2 errors
+69	2026-11-08T13:05:07+00:00	exit=0	3s	probe: len eq [crate=probe]	verification results:: 2 verified, 0 errors
+70	2026-11-08T13:05:25+00:00	exit=101	8s	M2: parse_header attempt 10 [crate=dib_verus]	verification results:: 74 verified, 1 errors
+71	2026-11-08T13:05:40+00:00	exit=101	8s	M2: parse_header attempt 11 [crate=dib_verus]	verification results:: 74 verified, 1 errors
+72	2026-11-08T13:05:59+00:00	exit=101	8s	M2: parse_header attempt 12 [crate=dib_verus]	verification results:: 74 verified, 1 errors
+73	2026-11-08T13:06:15+00:00	exit=101	9s	M2: parse_header attempt 13 [crate=dib_verus]	verification results:: 75 verified, 1 errors
+74	2026-11-08T13:06:25+00:00	exit=101	3s	M2: parse_header attempt 14 [crate=dib_verus]	
+75	2026-11-08T13:06:37+00:00	exit=101	7s	M2: parse_header attempt 15 [crate=dib_verus]	verification results:: 71 verified, 3 errors
+76	2026-11-08T13:07:01+00:00	exit=101	8s	M2: parse_header attempt 16 [crate=dib_verus]	verification results:: 71 verified, 3 errors
+77	2026-11-08T13:07:19+00:00	exit=101	8s	M2: parse_header attempt 17 [crate=dib_verus]	verification results:: 71 verified, 3 errors
+78	2026-11-08T13:07:27+00:00	exit=101	1s	probe: enum eq in branch [crate=probe]	
+79	2026-11-08T13:07:42+00:00	exit=101	7s	M2: parse_header attempt 18 [crate=dib_verus]	verification results:: 71 verified, 3 errors
+80	2026-11-08T13:07:54+00:00	exit=101	3s	probe: enum eq facts [crate=probe]	verification results:: 1 verified, 2 errors
+81	2026-11-08T13:08:05+00:00	exit=101	5s	probe: match-based mode test [crate=probe]	
+82	2026-11-08T13:08:15+00:00	exit=101	4s	probe: plain enum eq [crate=probe]	verification results:: 1 verified, 1 errors
+83	2026-11-08T13:08:23+00:00	exit=0	4s	probe: match branch facts [crate=probe]	verification results:: 3 verified, 0 errors
+84	2026-11-08T13:08:54+00:00	exit=101	9s	M2: parse_header attempt 19 [crate=dib_verus]	verification results:: 73 verified, 2 errors
+85	2026-11-08T13:09:18+00:00	exit=101	13s	M2: parse_header attempt 20 [crate=dib_verus]	verification results:: 76 verified, 2 errors
+86	2026-11-08T13:09:36+00:00	exit=101	11s	M2: parse_header attempt 21 [crate=dib_verus]	verification results:: 79 verified, 1 errors
+87	2026-11-08T13:09:56+00:00	exit=101	11s	M2: parse_header attempt 22 [crate=dib_verus]	verification results:: 84 verified, 1 errors
+88	2026-11-08T13:10:21+00:00	exit=101	12s	M2: isolate rlimit hotspot (final proof removed) [crate=dib_verus]	verification results:: 84 verified, 1 errors
+89	2026-11-08T13:11:00+00:00	exit=101	14s	M2: model split into r1_prefix/r2r7 [crate=dib_verus]	verification results:: 84 verified, 1 errors
+90	2026-11-08T13:11:47+00:00	exit=101	15s	M2: parse split into bmp_prefix/dib_prefix [crate=dib_verus]	verification results:: 86 verified, 1 errors
+91	2026-11-08T13:12:12+00:00	exit=101	16s	M2: isolate dib_prefix rlimit [crate=dib_verus]	verification results:: 86 verified, 1 errors
+92	2026-11-08T13:12:41+00:00	exit=101	12s	M2: model r2r5/r6r7 split [crate=dib_verus]	verification results:: 86 verified, 1 errors
+93	2026-11-08T13:13:52+00:00	exit=101	1s	M2: split parse into fields/finish [crate=dib_verus]	
+94	2026-11-08T13:14:10+00:00	exit=101	1s	M2: split functions compile [crate=dib_verus]	
+95	2026-11-08T13:14:51+00:00	exit=101	0s	M2: split functions recompiled [crate=dib_verus]	
+96	2026-11-08T13:14:58+00:00	exit=101	1s	M2: split functions recompiled 2 [crate=dib_verus]	
+97	2026-11-08T13:15:59+00:00	exit=101	5s	M2: rebuilt split compile [crate=dib_verus]	
+98	2026-11-08T13:16:21+00:00	exit=101	16s	M2: rebuilt split compile 2 [crate=dib_verus]	verification results:: 86 verified, 2 errors
+99	2026-11-08T13:16:43+00:00	exit=101	15s	M2: rebuilt split compile 3 [crate=dib_verus]	verification results:: 87 verified, 1 errors
+100	2026-11-08T13:17:04+00:00	exit=101	12s	M2: rebuilt split compile 4 [crate=dib_verus]	verification results:: 89 verified, 2 errors
+101	2026-11-08T13:17:26+00:00	exit=101	14s	M2: rebuilt split compile 5 [crate=dib_verus]	verification results:: 89 verified, 2 errors
+102	2026-11-08T13:17:57+00:00	exit=101	12s	M2: rebuilt split compile 6 [crate=dib_verus]	verification results:: 89 verified, 2 errors
+103	2026-11-08T13:18:18+00:00	exit=101	3s	M2: opaque model fns [crate=dib_verus]	
+104	2026-11-08T13:18:30+00:00	exit=101	7s	M2: opaque attrs [crate=dib_verus]	verification results:: 80 verified, 11 errors
+105	2026-11-08T13:19:01+00:00	exit=101	8s	M2: opaque attrs rerun [crate=dib_verus]	verification results:: 80 verified, 11 errors
+106	2026-11-08T13:19:22+00:00	exit=101	8s	M2: selective opacity [crate=dib_verus]	verification results:: 86 verified, 5 errors
+107	2026-11-08T13:19:46+00:00	exit=101	12s	M2: mask predicates opaque [crate=dib_verus]	verification results:: 89 verified, 2 errors
+108	2026-11-08T13:20:09+00:00	exit=101	11s	M2: bind RawFields literal [crate=dib_verus]	verification results:: 89 verified, 2 errors
+109	2026-11-08T13:20:26+00:00	exit=101	9s	M2: explicit field facts [crate=dib_verus]	verification results:: 89 verified, 2 errors
+110	2026-11-08T13:20:48+00:00	exit=101	10s	M2: trim mh_bounds to manifest T3 [crate=dib_verus]	verification results:: 90 verified, 1 errors
+111	2026-11-08T13:21:09+00:00	exit=101	10s	M2: all model fns open after split [crate=dib_verus]	verification results:: 90 verified, 1 errors
+112	2026-11-08T13:21:36+00:00	exit=101	10s	M2: remove ext helper assert [crate=dib_verus]	verification results:: 90 verified, 1 errors
+113	2026-11-08T13:21:57+00:00	exit=101	11s	M2: guard facts for r6r7 [crate=dib_verus]	verification results:: 90 verified, 1 errors
+114	2026-11-08T13:22:24+00:00	exit=101	10s	M2: bridging facts [crate=dib_verus]	verification results:: 90 verified, 1 errors
+115	2026-11-08T13:22:48+00:00	exit=101	11s	M2: u64->int palette bridge [crate=dib_verus]	verification results:: 90 verified, 1 errors
+116	2026-11-08T13:23:06+00:00	exit=101	11s	M2: palette_start relation [crate=dib_verus]	verification results:: 90 verified, 1 errors
+117	2026-11-08T13:23:28+00:00	exit=101	12s	M2: palette_end64 rel [crate=dib_verus]	verification results:: 90 verified, 1 errors
+118	2026-11-08T13:23:50+00:00	exit=101	11s	M2: capture palette facts pre-reassign [crate=dib_verus]	verification results:: 90 verified, 1 errors
+119	2026-11-08T13:24:09+00:00	exit=101	11s	M2: pixel_start fact [crate=dib_verus]	verification results:: 90 verified, 1 errors
+120	2026-11-08T13:24:30+00:00	exit=101	12s	M2: pixel_start fact 2 [crate=dib_verus]	verification results:: 91 verified, 1 errors
+121	2026-11-08T13:24:49+00:00	exit=101	12s	M2: file_offset fits usize [crate=dib_verus]	verification results:: 93 verified, 1 errors
+122	2026-11-08T13:25:09+00:00	exit=101	12s	M2: file_offset requires [crate=dib_verus]	verification results:: 93 verified, 1 errors
+123	2026-11-08T13:25:18+00:00	exit=101	1s	M2: mask value correspondences [crate=dib_verus]	
+124	2026-11-08T13:25:36+00:00	exit=101	11s	M2: mask correspondences 2 [crate=dib_verus]	verification results:: 93 verified, 1 errors
+125	2026-11-08T13:26:16+00:00	exit=101	12s	M2: mask correspondence clean [crate=dib_verus]	verification results:: 93 verified, 1 errors
+126	2026-11-08T13:26:26+00:00	exit=101	0s	M2: reconstruct r6r7 result [crate=dib_verus]	
+127	2026-11-08T13:26:44+00:00	exit=101	11s	M2: reconstruct r6r7 v2 [crate=dib_verus]	verification results:: 93 verified, 1 errors
+128	2026-11-08T13:27:07+00:00	exit=101	3s	M2: model-side r6r7 guard lemma [crate=dib_verus]	
+129	2026-11-08T13:27:16+00:00	exit=101	4s	M2: model guard lemma 2 [crate=dib_verus]	
+130	2026-11-08T13:27:50+00:00	exit=101	11s	M2: r6r7 via r6r7_result [crate=dib_verus]	verification results:: 93 verified, 1 errors
+131	2026-11-08T13:28:24+00:00	exit=101	13s	M2: r6r7_result membership [crate=dib_verus]	verification results:: 93 verified, 1 errors
+132	2026-11-08T13:28:35+00:00	exit=101	3s	M2: model r6r7 guard lemma [crate=dib_verus]	
+133	2026-11-08T13:28:47+00:00	exit=101	3s	M2: helper spec fns for palette [crate=dib_verus]	
+134	2026-11-08T13:29:06+00:00	exit=101	12s	M2: typed palette helpers [crate=dib_verus]	verification results:: 94 verified, 1 errors
+135	2026-11-08T13:29:25+00:00	exit=101	12s	M2: call r6r7 guard lemma [crate=dib_verus]	verification results:: 94 verified, 1 errors
+136	2026-11-08T13:29:53+00:00	exit=101	12s	M2: m as r6r7_result [crate=dib_verus]	verification results:: 94 verified, 1 errors
+137	2026-11-08T13:30:04+00:00	exit=101	1s	M2: field facts + guard lemma [crate=dib_verus]	
+138	2026-11-08T13:30:22+00:00	exit=101	11s	M2: field facts v2 [crate=dib_verus]	verification results:: 94 verified, 1 errors
+139	2026-11-08T13:30:41+00:00	exit=101	11s	M2: n relation via postcondition [crate=dib_verus]	verification results:: 94 verified, 1 errors
+140	2026-11-08T13:30:58+00:00	exit=101	10s	M2: n link at header [crate=dib_verus]	verification results:: 94 verified, 1 errors
+141	2026-11-08T13:31:19+00:00	exit=101	14s	M2: n as precondition [crate=dib_verus]	verification results:: 94 verified, 1 errors
+142	2026-11-08T13:31:40+00:00	exit=101	13s	M2: header_inv conjuncts [crate=dib_verus]	verification results:: 94 verified, 1 errors
+143	2026-11-08T13:32:04+00:00	exit=101	14s	M2: header_inv reveal [crate=dib_verus]	verification results:: 94 verified, 1 errors
+144	2026-11-08T13:32:23+00:00	exit=101	13s	M2: header_inv one block [crate=dib_verus]	verification results:: 94 verified, 1 errors
+145	2026-11-08T13:32:45+00:00	exit=101	14s	M2: header_inv by blocks [crate=dib_verus]	verification results:: 95 verified, 1 errors
+146	2026-11-08T13:32:58+00:00	exit=101	3s	M2: header_inv reveal again [crate=dib_verus]	
+147	2026-11-08T13:33:22+00:00	exit=101	14s	M2: len bound conjunct [crate=dib_verus]	verification results:: 95 verified, 1 errors
+148	2026-11-08T13:33:41+00:00	exit=101	13s	M2: trim proof block [crate=dib_verus]	verification results:: 95 verified, 1 errors
+149	2026-11-08T13:34:09+00:00	exit=101	14s	M2: trim reveals [crate=dib_verus]	verification results:: 95 verified, 1 errors
+150	2026-11-08T13:34:21+00:00	exit=101	1s	M2: extract dib_finish_eq proof fn [crate=dib_verus]	
+151	2026-11-08T13:34:29+00:00	exit=101	3s	M2: extract proof fn v2 [crate=dib_verus]	
+152	2026-11-08T13:34:44+00:00	exit=101	3s	M2: max_input precondition [crate=dib_verus]	
+153	2026-11-08T13:35:04+00:00	exit=101	14s	M2: deref f [crate=dib_verus]	verification results:: 95 verified, 1 errors
+154	2026-11-08T13:35:33+00:00	exit=101	12s	M2: probe dib_finish without proof block [crate=dib_verus]	verification results:: 95 verified, 1 errors
+155	2026-11-08T13:35:48+00:00	exit=101	0s	M2: parse_masks extracted [crate=dib_verus]	
+156	2026-11-08T13:36:02+00:00	exit=101	0s	M2: parse_masks extracted v2 [crate=dib_verus]	
+157	2026-11-08T13:37:03+00:00	exit=101	1s	M2: dib_finish calls parse_masks [crate=dib_verus]	
+158	2026-11-08T13:37:19+00:00	exit=101	9s	M2: parse_masks len fix [crate=dib_verus]	verification results:: 95 verified, 2 errors
+159	2026-11-08T13:37:41+00:00	exit=101	11s	M2: parse_masks preconditions [crate=dib_verus]	verification results:: 96 verified, 3 errors
+160	2026-11-08T13:38:02+00:00	exit=101	10s	M2: weakened parse_masks preconditions [crate=dib_verus]	verification results:: 96 verified, 3 errors
+161	2026-11-08T13:38:23+00:00	exit=101	9s	M2: size facts [crate=dib_verus]	verification results:: 96 verified, 3 errors
+162	2026-11-08T13:38:45+00:00	exit=101	10s	M2: inner mask bounds [crate=dib_verus]	verification results:: 98 verified, 4 errors
+163	2026-11-08T13:39:13+00:00	exit=101	10s	M2: size>=52 formulation [crate=dib_verus]	verification results:: 98 verified, 3 errors
+164	2026-11-08T13:39:35+00:00	exit=101	9s	M2: r6r7 opaque [crate=dib_verus]	verification results:: 97 verified, 3 errors
+165	2026-11-08T13:39:56+00:00	exit=101	9s	M2: revert opacity, size disj [crate=dib_verus]	verification results:: 98 verified, 2 errors
+166	2026-11-08T13:40:17+00:00	exit=101	9s	M2: size bound in dib_fields post [crate=dib_verus]	verification results:: 98 verified, 2 errors
+167	2026-11-08T13:40:37+00:00	exit=101	9s	M2: size case analysis [crate=dib_verus]	verification results:: 98 verified, 2 errors
+168	2026-11-08T13:40:54+00:00	exit=101	1s	M2: r6r7 opaque + accepted size lemma [crate=dib_verus]	
+169	2026-11-08T13:41:58+00:00	exit=101	4s	M2: rebuild check [crate=dib_verus]	
+170	2026-11-08T13:42:18+00:00	exit=101	10s	M2: rebuild size cast [crate=dib_verus]	verification results:: 90 verified, 3 errors
+171	2026-11-08T13:42:46+00:00	exit=101	15s	M2: model clean [crate=dib_verus]	verification results:: 91 verified, 1 errors
+172	2026-11-08T13:43:18+00:00	exit=101	10s	M2: r6r7_result proof restored [crate=dib_verus]	verification results:: 90 verified, 2 errors
+173	2026-11-08T13:43:45+00:00	exit=101	12s	M2: three assertion fixes [crate=dib_verus]	verification results:: 90 verified, 2 errors
+174	2026-11-08T13:44:06+00:00	exit=101	10s	M2: pixel_start case + precond [crate=dib_verus]	verification results:: 92 verified, 1 errors
+175	2026-11-08T13:44:30+00:00	exit=0	10s	M2: corrected mask precondition [crate=dib_verus]	verification results:: 93 verified, 0 errors
+176	2026-11-08T13:45:18+00:00	exit=101	0s	M2: orientation helper [crate=dib_verus]	
+177	2026-11-08T13:45:35+00:00	exit=101	3s	M2: orientation helper v2 [crate=dib_verus]	
+178	2026-11-08T13:45:51+00:00	exit=101	12s	M2: orientation helper v3 [crate=dib_verus]	verification results:: 101 verified, 1 errors
+179	2026-11-08T13:46:14+00:00	exit=101	13s	M2: orientation helper v4 [crate=dib_verus]	verification results:: 101 verified, 1 errors
+180	2026-11-08T13:46:38+00:00	exit=0	13s	M2: out_offset bound fix [crate=dib_verus]	verification results:: 102 verified, 0 errors
+181	2026-11-08T13:46:55+00:00	exit=101	11s	M2: alloc_output [crate=dib_verus]	verification results:: 104 verified, 1 errors
+182	2026-11-08T13:47:16+00:00	exit=0	13s	M2: alloc_output v2 [crate=dib_verus]	verification results:: 106 verified, 0 errors
+183	2026-11-08T13:47:24+00:00	exit=101	1s	M2: decode_raw draft [crate=dib_verus]	
+184	2026-11-08T13:47:43+00:00	exit=101	3s	M2: decode_raw attempt [crate=dib_verus]	
+185	2026-11-08T13:47:56+00:00	exit=101	1s	M2: decode_raw attempt 2 [crate=dib_verus]	
+186	2026-11-08T13:48:09+00:00	exit=101	4s	M2: decode_raw attempt 3 [crate=dib_verus]	
+187	2026-11-08T13:48:31+00:00	exit=101	14s	M2: decode_raw attempt 4 [crate=dib_verus]	verification results:: 112 verified, 8 errors
+188	2026-11-08T13:48:50+00:00	exit=101	0s	M2: decode_raw rewrite [crate=dib_verus]	
+189	2026-11-08T13:49:17+00:00	exit=101	15s	M2: dedup helpers [crate=dib_verus]	verification results:: 112 verified, 8 errors
+190	2026-11-08T13:49:40+00:00	exit=101	14s	M2: depth facts in inv [crate=dib_verus]	verification results:: 112 verified, 8 errors
+191	2026-11-08T13:50:02+00:00	exit=101	15s	M2: decode_raw fixes [crate=dib_verus]	verification results:: 112 verified, 8 errors
+192	2026-11-08T13:50:24+00:00	exit=101	15s	M2: stride lemmas wired [crate=dib_verus]	verification results:: 114 verified, 10 errors
+193	2026-11-08T13:50:53+00:00	exit=101	14s	M2: stride lemmas fixed [crate=dib_verus]	verification results:: 118 verified, 10 errors
+194	2026-11-08T13:51:12+00:00	exit=101	14s	M2: stride lemmas debug [crate=dib_verus]	verification results:: 118 verified, 10 errors
+195	2026-11-08T13:51:30+00:00	exit=101	1s	M2: revert decode_raw, keep header proofs [crate=dib_verus]	
+196	2026-11-08T13:51:58+00:00	exit=101	15s	M2: cleanup check [crate=dib_verus]	verification results:: 120 verified, 9 errors
+197	2026-11-08T13:52:25+00:00	exit=101	15s	M2: tail cleanup [crate=dib_verus]	verification results:: 120 verified, 9 errors
+198	2026-11-08T13:52:58+00:00	exit=101	12s	M2: header layer + alloc, pixel helpers pending [crate=dib_verus]	verification results:: 114 verified, 1 errors
+199	2026-11-08T13:53:19+00:00	exit=101	11s	M2: subbyte lemma fix [crate=dib_verus]	verification results:: 114 verified, 2 errors
+200	2026-11-08T13:53:42+00:00	exit=101	12s	M2: subbyte lemma fix 2 [crate=dib_verus]	verification results:: 116 verified, 1 errors
+201	2026-11-08T13:54:03+00:00	exit=101	12s	M2: subbyte lemma v3 [crate=dib_verus]	verification results:: 115 verified, 1 errors
+202	2026-11-08T13:54:21+00:00	exit=101	13s	M2: subbyte lemma v4 [crate=dib_verus]	verification results:: 117 verified, 1 errors
+203	2026-11-08T13:54:42+00:00	exit=0	12s	M2: subbyte ensure form [crate=dib_verus]	verification results:: 118 verified, 0 errors
+204	2026-11-08T13:54:56+00:00	exit=101	4s	M2: decode_raw final form [crate=dib_verus]	
+205	2026-11-08T13:55:09+00:00	exit=101	3s	M2: decode_raw final v2 [crate=dib_verus]	
+206	2026-11-08T13:55:32+00:00	exit=101	14s	M2: decode_raw final v3 [crate=dib_verus]	verification results:: 132 verified, 5 errors
+207	2026-11-08T13:55:59+00:00	exit=101	15s	M2: subbyte shift lemma [crate=dib_verus]	verification results:: 138 verified, 5 errors
+208	2026-11-08T13:56:08+00:00	exit=101	2s	M2: raw_index lemma [crate=dib_verus]	
+209	2026-11-08T13:56:28+00:00	exit=101	16s	M2: raw_index lemma v2 [crate=dib_verus]	verification results:: 140 verified, 4 errors
+210	2026-11-08T13:56:38+00:00	exit=101	1s	M2: raw_index shift [crate=dib_verus]	
+211	2026-11-08T13:56:48+00:00	exit=101	1s	M2: raw_index v3 [crate=dib_verus]	
+212	2026-11-08T13:56:56+00:00	exit=101	3s	M2: raw_index v4 [crate=dib_verus]	
+213	2026-11-08T13:57:17+00:00	exit=101	16s	M2: raw_index v5 [crate=dib_verus]	verification results:: 140 verified, 4 errors
+214	2026-11-08T13:57:40+00:00	exit=101	17s	M2: bitfields branch [crate=dib_verus]	verification results:: 141 verified, 6 errors
+215	2026-11-08T13:57:58+00:00	exit=0	13s	M2: drop decode_raw, keep green header layer [crate=dib_verus]	verification results:: 124 verified, 0 errors
+216	2026-11-08T13:58:22+00:00	exit=101	5s	M2: decode_raw + raw_index [crate=dib_verus]	
+217	2026-11-08T13:58:32+00:00	exit=101	1s	M2: pow2 in raw_index [crate=dib_verus]	
+218	2026-11-08T13:58:51+00:00	exit=101	15s	M2: pow2 parens [crate=dib_verus]	verification results:: 138 verified, 4 errors
+219	2026-11-08T13:59:10+00:00	exit=101	13s	M2: bitfields fixes [crate=dib_verus]	verification results:: 139 verified, 4 errors
+220	2026-11-08T13:59:28+00:00	exit=0	12s	M2: green header layer restored [crate=dib_verus]	verification results:: 124 verified, 0 errors
+221	2026-11-08T14:01:40+00:00	exit=0	73s	M2: final clean full reverify (header/model/alloc layer) [crate=dib_verus]	verification results:: 124 verified, 0 errors
+222	2026-11-08T14:02:27+00:00	exit=101	12s	M2: raw_index standalone [crate=dib_verus]	verification results:: 130 verified, 3 errors
+223	2026-11-08T14:02:44+00:00	exit=101	11s	M2: raw_index standalone 2 [crate=dib_verus]	verification results:: 130 verified, 3 errors
+224	2026-11-08T14:02:52+00:00	exit=101	1s	M2: raw_index standalone 3 [crate=dib_verus]	
+225	2026-11-08T14:03:12+00:00	exit=101	13s	M2: raw_index standalone 4 [crate=dib_verus]	verification results:: 134 verified, 3 errors
+226	2026-11-08T14:03:30+00:00	exit=101	13s	M2: raw_index standalone 5 [crate=dib_verus]	verification results:: 133 verified, 3 errors
+227	2026-11-08T14:03:47+00:00	exit=0	12s	M2: final state green [crate=dib_verus]	verification results:: 124 verified, 0 errors
+228	2026-11-08T14:05:03+00:00	exit=0	71s	M2: final clean full reverify [crate=dib_verus]	verification results:: 124 verified, 0 errors
+229	2026-11-08T14:11:47+00:00	exit=101	1s	M2b public decoder first integration [crate=dib_verus]	
+230	2026-11-08T14:12:19+00:00	exit=101	19s	M2b typecheck integrated functions [crate=dib_verus]	verification results:: 135 verified, 10 errors
+231	2026-11-08T14:14:29+00:00	exit=101	3s	M2b bound and loop-invariant repairs [crate=dib_verus]	
+232	2026-11-08T14:14:56+00:00	exit=101	15s	M2b verify after fixing borrowed alpha scan [crate=dib_verus]	verification results:: 141 verified, 6 errors
+233	2026-11-08T14:17:23+00:00	exit=101	15s	M2b check explicit arithmetic bounds [crate=dib_verus]	verification results:: 147 verified, 2 errors
+234	2026-11-08T14:18:05+00:00	exit=0	16s	M2b prove AND row bounds [crate=dib_verus]	verification results:: 151 verified, 0 errors
+235	2026-11-08T14:21:04+00:00	exit=0	74s	M2b clean full public decoder verification [crate=dib_verus]	verification results:: 151 verified, 0 errors
+236	2026-11-08T14:26:47+00:00	exit=101	1s	M3: close read_at guard on raw/RLE/AND paths [crate=dib_verus]	
+237	2026-11-08T14:26:59+00:00	exit=101	1s	M3: close read_at guard on raw/RLE/AND paths [crate=dib_verus]	
+238	2026-11-08T14:27:07+00:00	exit=101	3s	M3: close read_at guard on raw/RLE/AND paths [crate=dib_verus]	
+239	2026-11-08T14:27:15+00:00	exit=101	1s	M3: close read_at guard on raw/RLE/AND paths [crate=dib_verus]	
+240	2026-11-08T14:27:37+00:00	exit=101	16s	M3: close read_at guard on raw/RLE/AND paths [crate=dib_verus]	verification results:: 165 verified, 6 errors
+241	2026-11-08T14:28:51+00:00	exit=101	16s	M3: close read_at guard on raw/RLE/AND paths [crate=dib_verus]	verification results:: 168 verified, 6 errors
+242	2026-11-08T14:29:58+00:00	exit=101	18s	M3: close read_at guard on raw/RLE/AND paths [crate=dib_verus]	verification results:: 175 verified, 6 errors
+243	2026-11-08T14:30:27+00:00	exit=101	18s	M3: close read_at guard on raw/RLE/AND paths [crate=dib_verus]	verification results:: 177 verified, 5 errors
+244	2026-11-08T14:31:07+00:00	exit=101	19s	M3: close read_at guard on raw/RLE/AND paths [crate=dib_verus]	verification results:: 180 verified, 4 errors
+245	2026-11-08T14:31:33+00:00	exit=101	0s	M3: close read_at guard on raw/RLE/AND paths [crate=dib_verus]	
+246	2026-11-08T14:31:57+00:00	exit=101	17s	M3: close read_at guard on raw/RLE/AND paths [crate=dib_verus]	verification results:: 183 verified, 2 errors
+247	2026-11-08T14:32:21+00:00	exit=101	18s	M3: close read_at guard on raw/RLE/AND paths [crate=dib_verus]	verification results:: 183 verified, 2 errors
+248	2026-11-08T14:32:51+00:00	exit=101	17s	M3: close read_at guard on raw/RLE/AND paths [crate=dib_verus]	verification results:: 186 verified, 1 errors
+249	2026-11-08T14:33:16+00:00	exit=0	17s	M3: close read_at guard on raw/RLE/AND paths [crate=dib_verus]	verification results:: 188 verified, 0 errors
+250	2026-11-08T14:34:26+00:00	exit=101	3s	M3: model T4/T5/T11 colour-orientation-stride lemmas [crate=dib_verus]	
+251	2026-11-08T14:34:41+00:00	exit=101	4s	M3: model T4/T5/T11 colour-orientation-stride lemmas [crate=dib_verus]	
+252	2026-11-08T14:35:08+00:00	exit=101	19s	M3: model T4/T5/T11 colour-orientation-stride lemmas [crate=dib_verus]	
+253	2026-11-08T14:35:31+00:00	exit=101	18s	M3: model T4/T5/T11 colour-orientation-stride lemmas [crate=dib_verus]	verification results:: 220 verified, 4 errors
+254	2026-11-08T14:35:56+00:00	exit=101	18s	M3: model T4/T5/T11 colour-orientation-stride lemmas [crate=dib_verus]	verification results:: 222 verified, 2 errors
+255	2026-11-08T14:36:26+00:00	exit=0	19s	M3: model T4/T5/T11 colour-orientation-stride lemmas [crate=dib_verus]	verification results:: 225 verified, 0 errors
+256	2026-11-08T14:36:58+00:00	exit=101	17s	M3: model T4/T5/T11 lemmas + cell bijection [crate=dib_verus]	verification results:: 231 verified, 2 errors
+257	2026-11-08T14:37:23+00:00	exit=0	18s	M3: model T4/T5/T11 lemmas + cell bijection [crate=dib_verus]	verification results:: 233 verified, 0 errors
+258	2026-11-08T14:38:55+00:00	exit=0	17s	M3: connect colour to model Conv [crate=dib_verus]	verification results:: 233 verified, 0 errors
+259	2026-11-08T14:39:49+00:00	exit=101	19s	M3: connect raw_sample to model raw_conv [crate=dib_verus]	verification results:: 232 verified, 1 errors
+260	2026-11-08T14:40:45+00:00	exit=0	19s	M3: connect raw_sample to model raw_conv [crate=dib_verus]	verification results:: 233 verified, 0 errors
+261	2026-11-08T14:41:38+00:00	exit=0	20s	M3: connect out_offset to model orient_cell [crate=dib_verus]	verification results:: 233 verified, 0 errors
+262	2026-11-08T14:42:02+00:00	exit=101	4s	M3: model T11 RLE command termination [crate=dib_verus]	
+263	2026-11-08T14:42:30+00:00	exit=101	20s	M3: model T11 RLE command termination [crate=dib_verus]	
+264	2026-11-08T14:42:57+00:00	exit=101	21s	M3: model T11 RLE command termination [crate=dib_verus]	verification results:: 241 verified, 1 errors
+265	2026-11-08T14:43:24+00:00	exit=101	21s	M3: model T11 RLE command termination [crate=dib_verus]	verification results:: 243 verified, 1 errors
+266	2026-11-08T14:43:51+00:00	exit=101	20s	M3: model T11 RLE command termination [crate=dib_verus]	verification results:: 243 verified, 1 errors
+267	2026-11-08T14:44:18+00:00	exit=101	20s	M3: model T11 RLE command termination [crate=dib_verus]	verification results:: 244 verified, 1 errors
+268	2026-11-08T14:44:47+00:00	exit=101	19s	M3: model T11 RLE command termination [crate=dib_verus]	verification results:: 243 verified, 1 errors
+269	2026-11-08T14:45:15+00:00	exit=0	22s	M3: model T11 RLE command termination [crate=dib_verus]	verification results:: 244 verified, 0 errors
+270	2026-11-08T14:45:34+00:00	exit=101	1s	M3: connect conv_rgb to conv_word [crate=dib_verus]	
+271	2026-11-08T14:45:44+00:00	exit=101	1s	M3: connect conv_rgb to conv_word [crate=dib_verus]	
+272	2026-11-08T14:45:54+00:00	exit=101	1s	M3: connect conv_rgb to conv_word [crate=dib_verus]	
+273	2026-11-08T14:46:05+00:00	exit=101	1s	M3: connect conv_rgb to conv_word [crate=dib_verus]	
+274	2026-11-08T14:46:31+00:00	exit=0	21s	M3: connect conv_rgb to conv_word [crate=dib_verus]	verification results:: 254 verified, 0 errors
+275	2026-11-08T14:47:12+00:00	exit=101	21s	M3: lemma raw_conv = conv [crate=dib_verus]	verification results:: 254 verified, 2 errors
+276	2026-11-08T14:47:43+00:00	exit=101	21s	M3: lemma raw_conv = conv [crate=dib_verus]	verification results:: 256 verified, 1 errors
+277	2026-11-08T14:48:08+00:00	exit=101	19s	M3: lemma raw_conv = conv [crate=dib_verus]	verification results:: 257 verified, 1 errors
+278	2026-11-08T14:48:35+00:00	exit=101	20s	M3: lemma raw_conv = conv [crate=dib_verus]	verification results:: 257 verified, 1 errors
+279	2026-11-08T14:49:03+00:00	exit=0	21s	M3: lemma raw_conv = conv [crate=dib_verus]	verification results:: 258 verified, 0 errors
+280	2026-11-08T14:49:33+00:00	exit=101	20s	M3: raw_sample Conv postcondition [crate=dib_verus]	verification results:: 257 verified, 1 errors
+281	2026-11-08T14:49:54+00:00	exit=101	2s	M3: T4/T5/T11 witnesses [crate=dib_verus]	
+282	2026-11-08T14:50:19+00:00	exit=101	19s	M3: T4/T5/T11 witnesses [crate=dib_verus]	verification results:: 260 verified, 3 errors
+283	2026-11-08T14:50:57+00:00	exit=0	20s	M3: T4/T5/T11 witnesses [crate=dib_verus]	verification results:: 263 verified, 0 errors
+284	2026-11-08T14:51:44+00:00	exit=101	19s	M3: T11 concrete decoder witness [crate=dib_verus]	verification results:: 263 verified, 1 errors
+285	2026-11-08T14:52:12+00:00	exit=0	20s	M3: T11 concrete decoder witness [crate=dib_verus]	verification results:: 264 verified, 0 errors
+286	2026-11-08T14:53:48+00:00	exit=0	84s	M3: clean full reverify (T4,T5,T11; read_at guard closed) [crate=dib_verus]	verification results:: 264 verified, 0 errors
+287	2026-11-08T14:56:37+00:00	exit=0	87s	M3: final clean full reverify [crate=dib_verus]	verification results:: 264 verified, 0 errors
+288	2026-11-08T15:08:02+00:00	exit=0	88s	T6 failure postcondition and indexed literal partial pixels [crate=dib_verus]	verification results:: 264 verified, 0 errors
+289	2026-11-08T15:13:35+00:00	exit=101	1s	M4a: model MR/MA/MP definitions first compile [crate=dib_verus]	
+290	2026-11-08T15:13:45+00:00	exit=101	4s	M4a: model MR/MA/MP definitions compile [crate=dib_verus]	
+291	2026-11-08T15:13:57+00:00	exit=101	4s	M4a: model MR/MA/MP definitions compile [crate=dib_verus]	
+292	2026-11-08T15:14:24+00:00	exit=101	20s	M4a: model MR/MA/MP definitions compile [crate=dib_verus]	verification results:: 283 verified, 1 errors
+293	2026-11-08T15:15:00+00:00	exit=101	19s	M4a: model defs + projection lemma [crate=dib_verus]	verification results:: 285 verified, 3 errors
+294	2026-11-08T15:15:39+00:00	exit=0	20s	M4a: model defs + projection lemma [crate=dib_verus]	verification results:: 294 verified, 0 errors
+295	2026-11-08T15:17:16+00:00	exit=101	2s	M4a: model write-replay lemmas [crate=dib_verus]	
+296	2026-11-08T15:17:30+00:00	exit=101	1s	M4a: model write-replay lemmas [crate=dib_verus]	
+297	2026-11-08T15:17:56+00:00	exit=101	20s	M4a: model write-replay lemmas [crate=dib_verus]	
+298	2026-11-08T15:18:22+00:00	exit=101	19s	M4a: model write-replay lemmas [crate=dib_verus]	verification results:: 305 verified, 6 errors
+299	2026-11-08T15:19:59+00:00	exit=101	2s	M4a: byte-oriented model compiles [crate=dib_verus]	
+300	2026-11-08T15:20:13+00:00	exit=101	2s	M4a: byte-oriented model compiles [crate=dib_verus]	
+301	2026-11-08T15:20:41+00:00	exit=101	19s	M4a: byte-oriented model compiles [crate=dib_verus]	verification results:: 288 verified, 1 errors
+302	2026-11-08T15:21:33+00:00	exit=101	20s	M4a: byte-oriented model compiles [crate=dib_verus]	verification results:: 288 verified, 1 errors
+303	2026-11-08T15:22:03+00:00	exit=101	20s	M4a: byte-oriented model compiles [crate=dib_verus]	verification results:: 288 verified, 1 errors
+304	2026-11-08T15:22:30+00:00	exit=101	20s	M4a: byte-oriented model compiles [crate=dib_verus]	verification results:: 288 verified, 1 errors
+305	2026-11-08T15:23:00+00:00	exit=0	20s	M4a: byte-oriented model compiles [crate=dib_verus]	verification results:: 289 verified, 0 errors
+306	2026-11-08T15:24:03+00:00	exit=101	4s	M4a: model well_formed helpers [crate=dib_verus]	
+307	2026-11-08T15:24:16+00:00	exit=101	5s	M4a: model well_formed helpers [crate=dib_verus]	
+308	2026-11-08T15:24:44+00:00	exit=0	20s	M4a: model well_formed helpers [crate=dib_verus]	verification results:: 291 verified, 0 errors
+309	2026-11-08T15:25:27+00:00	exit=0	20s	M4a: model raw projections [crate=dib_verus]	verification results:: 293 verified, 0 errors
+310	2026-11-08T15:26:06+00:00	exit=0	22s	M4a: put frame condition [crate=dib_verus]	verification results:: 293 verified, 0 errors
+311	2026-11-08T15:26:55+00:00	exit=101	1s	M4a: T6 raw_loop [crate=dib_verus]	
+312	2026-11-08T15:27:22+00:00	exit=101	2s	M4a: T6 raw_loop [crate=dib_verus]	
+313	2026-11-08T15:27:32+00:00	exit=101	5s	M4a: T6 raw_loop [crate=dib_verus]	
+314	2026-11-08T15:28:02+00:00	exit=101	21s	M4a: T6 raw_loop [crate=dib_verus]	verification results:: 290 verified, 3 errors
+315	2026-11-08T15:28:34+00:00	exit=101	21s	M4a: T6 raw_loop [crate=dib_verus]	verification results:: 290 verified, 3 errors
+316	2026-11-08T15:29:44+00:00	exit=101	23s	M4a: T6 raw_loop v2 [crate=dib_verus]	verification results:: 288 verified, 5 errors
+317	2026-11-08T15:30:12+00:00	exit=101	3s	M4a: T6 raw_loop v3 [crate=dib_verus]	
+318	2026-11-08T15:30:41+00:00	exit=101	22s	M4a: T6 raw_loop v3 [crate=dib_verus]	verification results:: 288 verified, 5 errors
+319	2026-11-08T15:32:14+00:00	exit=101	24s	M4a: T6 raw_loop v4 [crate=dib_verus]	verification results:: 287 verified, 6 errors
+320	2026-11-08T15:33:03+00:00	exit=101	23s	M4a: T6 raw_loop v5 [crate=dib_verus]	verification results:: 290 verified, 3 errors
+321	2026-11-08T15:33:58+00:00	exit=101	23s	M4a: T6 raw_loop v6 [crate=dib_verus]	verification results:: 290 verified, 3 errors
+322	2026-11-08T15:34:44+00:00	exit=101	23s	M4a: T6 raw_loop v7 [crate=dib_verus]	verification results:: 291 verified, 4 errors
+323	2026-11-08T15:35:20+00:00	exit=101	24s	M4a: T6 raw_loop v8 [crate=dib_verus]	verification results:: 292 verified, 3 errors
+324	2026-11-08T15:35:55+00:00	exit=101	23s	M4a: T6 raw_loop v9 [crate=dib_verus]	verification results:: 292 verified, 3 errors
+325	2026-11-08T15:36:37+00:00	exit=101	22s	M4a: T6 raw_loop v10 [crate=dib_verus]	verification results:: 292 verified, 3 errors
+326	2026-11-08T15:37:10+00:00	exit=101	23s	M4a: T6 raw_loop v11 [crate=dib_verus]	verification results:: 292 verified, 3 errors
+327	2026-11-08T15:37:50+00:00	exit=101	23s	M4a: T6 raw_loop v12 [crate=dib_verus]	verification results:: 292 verified, 3 errors
+328	2026-11-08T15:38:07+00:00	exit=101	1s	M4a: T6 raw_loop v13 [crate=dib_verus]	
+329	2026-11-08T15:38:19+00:00	exit=101	1s	M4a: T6 raw_loop v13 [crate=dib_verus]	
+330	2026-11-08T15:38:30+00:00	exit=101	5s	M4a: T6 raw_loop v13 [crate=dib_verus]	
+331	2026-11-08T15:39:07+00:00	exit=101	24s	M4a: T6 raw_loop v14 [crate=dib_verus]	verification results:: 293 verified, 3 errors
+332	2026-11-08T15:39:41+00:00	exit=101	23s	M4a: T6 raw_loop v15 [crate=dib_verus]	verification results:: 293 verified, 3 errors
+333	2026-11-08T15:40:32+00:00	exit=101	24s	M4a: T6 raw_loop v16 [crate=dib_verus]	verification results:: 293 verified, 3 errors
+334	2026-11-08T15:41:16+00:00	exit=101	23s	M4a: T6 raw_loop v17 [crate=dib_verus]	verification results:: 293 verified, 3 errors
+335	2026-11-08T15:41:46+00:00	exit=101	22s	M4a: T6 raw_loop v18 [crate=dib_verus]	verification results:: 293 verified, 3 errors
+336	2026-11-08T15:42:22+00:00	exit=101	22s	M4a: T6 raw_loop v19 [crate=dib_verus]	verification results:: 294 verified, 2 errors
+337	2026-11-08T15:42:53+00:00	exit=101	21s	M4a: T6 raw_loop v20 [crate=dib_verus]	verification results:: 295 verified, 1 errors
+338	2026-11-08T15:43:25+00:00	exit=101	22s	M4a: T6 raw_loop v21 [crate=dib_verus]	verification results:: 295 verified, 1 errors
+339	2026-11-08T15:43:53+00:00	exit=0	22s	M4a: T6 raw_loop v22 [crate=dib_verus]	verification results:: 296 verified, 0 errors
+340	2026-11-08T15:44:49+00:00	exit=0	22s	M4a: model rle step lemmas [crate=dib_verus]	verification results:: 299 verified, 0 errors
+341	2026-11-08T15:45:33+00:00	exit=101	21s	M4a: model run_good lemmas [crate=dib_verus]	verification results:: 301 verified, 2 errors
+342	2026-11-08T15:46:06+00:00	exit=101	23s	M4a: model run_good lemmas v2 [crate=dib_verus]	verification results:: 301 verified, 2 errors
+343	2026-11-08T15:46:41+00:00	exit=0	22s	M4a: model run_good lemmas v3 [crate=dib_verus]	verification results:: 305 verified, 0 errors
+344	2026-11-08T15:47:07+00:00	exit=101	2s	M4a: paint_run [crate=dib_verus]	
+345	2026-11-08T15:47:37+00:00	exit=101	23s	M4a: paint_run [crate=dib_verus]	verification results:: 305 verified, 2 errors
+346	2026-11-08T15:48:17+00:00	exit=101	21s	M4a: paint_run v2 [crate=dib_verus]	verification results:: 305 verified, 2 errors
+347	2026-11-08T15:48:46+00:00	exit=101	23s	M4a: paint_run v3 [crate=dib_verus]	verification results:: 305 verified, 2 errors
+348	2026-11-08T15:49:24+00:00	exit=101	23s	M4a: header_inv rle depth [crate=dib_verus]	verification results:: 305 verified, 2 errors
+349	2026-11-08T15:49:55+00:00	exit=101	21s	M4a: paint_run v4 [crate=dib_verus]	verification results:: 305 verified, 2 errors
+350	2026-11-08T15:50:27+00:00	exit=101	24s	M4a: paint_run v5 [crate=dib_verus]	verification results:: 306 verified, 1 errors
+351	2026-11-08T15:51:17+00:00	exit=101	24s	M4a: paint_run v6 [crate=dib_verus]	verification results:: 306 verified, 2 errors
+352	2026-11-08T15:51:57+00:00	exit=101	23s	M4a: paint_run v7 [crate=dib_verus]	verification results:: 310 verified, 3 errors
+353	2026-11-08T15:52:36+00:00	exit=101	22s	M4a: paint_run v8 [crate=dib_verus]	verification results:: 310 verified, 3 errors
+354	2026-11-08T15:53:11+00:00	exit=101	23s	M4a: paint_run v9 [crate=dib_verus]	verification results:: 310 verified, 3 errors
+355	2026-11-08T15:53:47+00:00	exit=101	22s	M4a: paint_run v10 [crate=dib_verus]	verification results:: 311 verified, 3 errors
+356	2026-11-08T15:54:33+00:00	exit=101	22s	M4a: paint_run v11 [crate=dib_verus]	verification results:: 311 verified, 3 errors
+357	2026-11-08T15:55:05+00:00	exit=101	22s	M4a: paint_run v12 [crate=dib_verus]	verification results:: 313 verified, 3 errors
+358	2026-11-08T15:55:42+00:00	exit=101	22s	M4a: paint_run v13 [crate=dib_verus]	verification results:: 314 verified, 2 errors
+359	2026-11-08T15:56:12+00:00	exit=101	23s	M4a: paint_run v14 [crate=dib_verus]	verification results:: 314 verified, 2 errors
+360	2026-11-08T15:56:39+00:00	exit=101	21s	M4a: paint_run v14 [crate=dib_verus]	verification results:: 314 verified, 1 errors
+361	2026-11-08T15:57:14+00:00	exit=101	25s	M4a: paint_run v15 [crate=dib_verus]	verification results:: 314 verified, 1 errors
+362	2026-11-08T15:57:59+00:00	exit=101	22s	M4a: paint_run v16 [crate=dib_verus]	verification results:: 314 verified, 1 errors
+363	2026-11-08T15:58:28+00:00	exit=101	21s	M4a: paint_run v17 [crate=dib_verus]	verification results:: 314 verified, 1 errors
+364	2026-11-08T15:58:59+00:00	exit=101	22s	M4a: paint_run v18 [crate=dib_verus]	verification results:: 315 verified, 1 errors
+365	2026-11-08T15:59:42+00:00	exit=101	23s	M4a: paint_run v19 [crate=dib_verus]	verification results:: 315 verified, 1 errors
+366	2026-11-08T16:00:17+00:00	exit=101	23s	M4a: paint_run v20 [crate=dib_verus]	verification results:: 315 verified, 1 errors
+367	2026-11-08T16:00:56+00:00	exit=101	23s	M4a: paint_run v21 [crate=dib_verus]	verification results:: 315 verified, 1 errors
+368	2026-11-08T16:01:29+00:00	exit=101	21s	M4a: paint_run v22 [crate=dib_verus]	verification results:: 314 verified, 1 errors
+369	2026-11-08T16:01:59+00:00	exit=101	21s	M4a: paint_run v23 [crate=dib_verus]	verification results:: 314 verified, 1 errors
+370	2026-11-08T16:02:29+00:00	exit=101	23s	M4a: paint_run v24 [crate=dib_verus]	verification results:: 315 verified, 1 errors
+371	2026-11-08T16:03:00+00:00	exit=101	21s	M4a: paint_run v25 [crate=dib_verus]	verification results:: 315 verified, 2 errors
+372	2026-11-08T16:03:31+00:00	exit=101	22s	M4a: rerun flaky check [crate=dib_verus]	verification results:: 315 verified, 2 errors
+373	2026-11-08T16:03:59+00:00	exit=101	22s	M4a: paint_run v26 [crate=dib_verus]	verification results:: 314 verified, 3 errors
+374	2026-11-08T16:04:40+00:00	exit=101	21s	M4a: paint_run v27 [crate=dib_verus]	verification results:: 315 verified, 3 errors
+375	2026-11-08T16:05:17+00:00	exit=101	24s	M4a: paint_run v28 [crate=dib_verus]	verification results:: 314 verified, 3 errors
+376	2026-11-08T16:05:59+00:00	exit=101	20s	M4a: paint_run v29 [crate=dib_verus]	verification results:: 316 verified, 2 errors
+377	2026-11-08T16:06:31+00:00	exit=101	24s	M4a: paint_run v30 [crate=dib_verus]	verification results:: 316 verified, 2 errors
+378	2026-11-08T16:07:00+00:00	exit=101	22s	M4a: paint_run v31 [crate=dib_verus]	verification results:: 317 verified, 1 errors
+379	2026-11-08T16:07:30+00:00	exit=101	22s	M4a: paint_run v32 [crate=dib_verus]	verification results:: 317 verified, 1 errors
+380	2026-11-08T16:07:57+00:00	exit=0	21s	M4a: paint_run v33 [crate=dib_verus]	verification results:: 320 verified, 0 errors
+381	2026-11-08T16:09:12+00:00	exit=0	22s	M4a: model abs_writes helpers [crate=dib_verus]	verification results:: 325 verified, 0 errors
+382	2026-11-08T16:09:53+00:00	exit=101	4s	M4a: T7 rle_loop [crate=dib_verus]	
+383	2026-11-08T16:10:04+00:00	exit=101	4s	M4a: T7 rle_loop [crate=dib_verus]	
+384	2026-11-08T16:10:19+00:00	exit=101	4s	M4a: T7 rle_loop [crate=dib_verus]	
+385	2026-11-08T16:10:51+00:00	exit=101	19s	M4a: T7 rle_loop v2 [crate=dib_verus]	
+386	2026-11-08T16:11:07+00:00	exit=101	5s	M4a: T7 rle_loop v3 [crate=dib_verus]	
+387	2026-11-08T16:11:40+00:00	exit=101	23s	M4a: T7 rle_loop v4 [crate=dib_verus]	verification results:: 313 verified, 5 errors
+388	2026-11-08T16:12:47+00:00	exit=101	26s	M4a: T7 rle_loop v5 [crate=dib_verus]	verification results:: 314 verified, 6 errors
+389	2026-11-08T16:13:47+00:00	exit=101	25s	M4a: T7 rle_loop v6 [crate=dib_verus]	verification results:: 315 verified, 7 errors
+390	2026-11-08T16:14:32+00:00	exit=101	23s	M4a: T7 rle_loop v7 [crate=dib_verus]	verification results:: 316 verified, 6 errors
+391	2026-11-08T16:15:04+00:00	exit=101	26s	M4a: T7 rle_loop v8 [crate=dib_verus]	verification results:: 316 verified, 4 errors
+392	2026-11-08T16:15:33+00:00	exit=101	2s	M4a: T7 v9 [crate=dib_verus]	
+393	2026-11-08T16:15:49+00:00	exit=101	4s	M4a: T7 v10 [crate=dib_verus]	
+394	2026-11-08T16:16:21+00:00	exit=101	24s	M4a: T7 v11 [crate=dib_verus]	verification results:: 319 verified, 5 errors
+395	2026-11-08T16:16:57+00:00	exit=101	26s	M4a: T7 v12 [crate=dib_verus]	verification results:: 320 verified, 5 errors
+396	2026-11-08T16:17:44+00:00	exit=101	27s	M4a: model fill_n [crate=dib_verus]	verification results:: 326 verified, 8 errors
+397	2026-11-08T16:18:38+00:00	exit=101	25s	M4a: fill_rle rewrite [crate=dib_verus]	verification results:: 325 verified, 8 errors
+398	2026-11-08T16:19:30+00:00	exit=101	19s	M4a: restore green T6 state [crate=dib_verus]	verification results:: 334 verified, 2 errors
+399	2026-11-08T16:20:02+00:00	exit=101	21s	M4a: restore green T6 state v2 [crate=dib_verus]	verification results:: 334 verified, 2 errors
+400	2026-11-08T16:20:30+00:00	exit=101	20s	M4a: restore green T6 state v3 [crate=dib_verus]	verification results:: 335 verified, 1 errors
+401	2026-11-08T16:20:59+00:00	exit=101	20s	M4a: restore green T6 state v4 [crate=dib_verus]	verification results:: 335 verified, 1 errors
+402	2026-11-08T16:21:31+00:00	exit=0	23s	M4a: restore green T6 state v5 [crate=dib_verus]	verification results:: 336 verified, 0 errors
+403	2026-11-08T16:23:35+00:00	exit=0	88s	M4a: final clean full reverify (T6 proved; T7/T8 partial) [crate=dib_verus]	verification results:: 336 verified, 0 errors
+404	2026-11-08T16:29:37+00:00	exit=0	88s	M4a2 prove recursive MR command steps [crate=dib_verus]	verification results:: 338 verified, 0 errors
+405	2026-11-08T16:30:54+00:00	exit=101	17s	M4a2 connect XOR alpha detection to MA model [crate=dib_verus]	
+406	2026-11-08T16:31:21+00:00	exit=101	18s	M4a2 prove alpha scan exact predicate [crate=dib_verus]	
+407	2026-11-08T16:31:54+00:00	exit=0	23s	M4a2 prove XOR alpha existential equivalence [crate=dib_verus]	verification results:: 338 verified, 0 errors
+408	2026-11-08T16:33:22+00:00	exit=101	23s	M4a2 prove AND prefix pixel-step and endpoints [crate=dib_verus]	verification results:: 343 verified, 5 errors
+409	2026-11-08T16:34:24+00:00	exit=101	23s	M4a2 discharge AND prefix geometry [crate=dib_verus]	verification results:: 351 verified, 2 errors
+410	2026-11-08T16:35:22+00:00	exit=101	22s	M4a2 use existing orientation bijection for AND indices [crate=dib_verus]	verification results:: 351 verified, 2 errors
+411	2026-11-08T16:36:04+00:00	exit=0	23s	M4a2 bound AND inverse row with quotient inequality [crate=dib_verus]	verification results:: 354 verified, 0 errors
+412	2026-11-08T16:38:04+00:00	exit=101	23s	M4a2 connect concrete AND loop to byte-exact MA output [crate=dib_verus]	verification results:: 351 verified, 7 errors
+413	2026-11-08T16:39:30+00:00	exit=101	23s	M4a2 prove mask loop frame and ICO orientation [crate=dib_verus]	verification results:: 360 verified, 3 errors
+414	2026-11-08T16:40:46+00:00	exit=0	25s	M4a2 prove exact bit equality and mask alpha write [crate=dib_verus]	verification results:: 360 verified, 0 errors
+415	2026-11-08T16:42:00+00:00	exit=101	22s	M4a2 establish ICO AND error precedence and exact image [crate=dib_verus]	verification results:: 360 verified, 1 errors
+416	2026-11-08T16:43:08+00:00	exit=101	23s	M4a2 align checked mask-byte product with MA [crate=dib_verus]	verification results:: 361 verified, 1 errors
+417	2026-11-08T16:43:46+00:00	exit=101	24s	M4a2 unfold MA mask size and stride equality [crate=dib_verus]	verification results:: 361 verified, 1 errors
+418	2026-11-08T16:44:26+00:00	exit=0	24s	M4a2 discharge MA mask product from explicit equalities [crate=dib_verus]	verification results:: 363 verified, 0 errors
+419	2026-11-08T16:45:37+00:00	exit=101	25s	M4a2 prove MA outside-domain marker and ICO execution [crate=dib_verus]	verification results:: 362 verified, 1 errors
+420	2026-11-08T16:46:29+00:00	exit=0	23s	M4a2 final clean full reverify after budget-limit stop [crate=dib_verus]	verification results:: 363 verified, 0 errors
+421	2026-11-08T16:48:08+00:00	exit=0	90s	M4a2 clean full reverify 363 obligations [crate=dib_verus]	verification results:: 363 verified, 0 errors
+422	2026-11-08T17:04:17+00:00	exit=101	70s	M4a3: T7 command loop (rle_command/rle_abs_packet/paint_abs/decode_rle) + T8 ma/Outside + ma_mask connection, first attempt [crate=dib_verus]	verification results:: 2159 verified, 0 errors
+423	2026-11-08T17:05:01+00:00	exit=101	28s	M4a3: T7/T8 first attempt, parse fix [crate=dib_verus]	verification results:: 376 verified, 1 errors
+424	2026-11-08T17:05:47+00:00	exit=0	28s	M4a3: T7/T8, update_same bound scoping fix [crate=dib_verus]	verification results:: 378 verified, 0 errors
+425	2026-11-08T17:08:36+00:00	exit=101	28s	M4a3: T7 rle_loop from arbitrary reachable start state (ghost start/accumulator), decode_rle instantiates it; dead paint removed [crate=dib_verus]	verification results:: 377 verified, 1 errors
+426	2026-11-08T17:09:19+00:00	exit=101	28s	M4a3: rle_loop invariant ties p_start to *old(pos) [crate=dib_verus]	verification results:: 377 verified, 1 errors
+427	2026-11-08T17:09:57+00:00	exit=0	28s	M4a3: rle_loop invariant ties x_start/y_start to *old(x)/*old(y) [crate=dib_verus]	verification results:: 378 verified, 0 errors
+428	2026-11-08T17:11:53+00:00	exit=0	95s	M4a3: final clean full reverify (T7 rle_loop/decode_rle exact; T8 ma with Outside + ma_mask connection) [crate=dib_verus]	verification results:: 378 verified, 0 errors
+429	2026-11-08T17:19:37+00:00	exit=0	99s	M4b: baseline reverify before starting [crate=dib_verus]	verification results:: 378 verified, 0 errors
+430	2026-11-08T17:29:29+00:00	exit=101	6s	M4b: model bridges lemma_mp_mh_err/palette_end/ok_shape, L1/L2 [crate=dib_verus]	
+431	2026-11-08T17:30:13+00:00	exit=101	29s	M4b: model bridges (match form), L1/L2 [crate=dib_verus]	verification results:: 384 verified, 3 errors
+432	2026-11-08T17:31:01+00:00	exit=0	29s	M4b: model bridges, fixed match form and mr_out_len [crate=dib_verus]	verification results:: 387 verified, 0 errors
+433	2026-11-08T17:32:10+00:00	exit=0	26s	M4b: T9 bridge raw_done_eq [crate=dib_verus]	verification results:: 387 verified, 0 errors
+434	2026-11-08T17:32:54+00:00	exit=101	5s	M4b: finish_mask mask_done_eq [crate=dib_verus]	
+435	2026-11-08T17:33:34+00:00	exit=101	28s	M4b: finish_mask mask_done_eq, hdr_is removed [crate=dib_verus]	verification results:: 389 verified, 1 errors
+436	2026-11-08T17:34:26+00:00	exit=0	31s	M4b: finish_mask mask_done_eq with ma bridge in success branch [crate=dib_verus]	verification results:: 390 verified, 0 errors
+437	2026-11-08T17:37:01+00:00	exit=101	2s	M4b: T9 decode_mp_eq postcondition, assemble lemmas [crate=dib_verus]	
+438	2026-11-08T17:37:13+00:00	exit=101	2s	M4b: T9 decode_mp_eq, qualified calls [crate=dib_verus]	
+439	2026-11-08T17:37:29+00:00	exit=101	6s	M4b: T9 decode_mp_eq, no dups [crate=dib_verus]	
+440	2026-11-08T17:38:12+00:00	exit=101	33s	M4b: T9 decode_mp_eq [crate=dib_verus]	verification results:: 393 verified, 3 errors
+441	2026-11-08T17:39:06+00:00	exit=101	30s	M4b: T9 decode_mp_eq, mask_done_ok ico bridge [crate=dib_verus]	verification results:: 396 verified, 1 errors
+442	2026-11-08T17:39:46+00:00	exit=0	30s	M4b: T9 decode_mp_eq, ico_ok with end==blen [crate=dib_verus]	verification results:: 397 verified, 0 errors
+443	2026-11-08T17:40:10+00:00	exit=101	1s	M4b: T9 error paths in decode [crate=dib_verus]	
+444	2026-11-08T17:40:23+00:00	exit=101	2s	M4b: T9 error paths, name fix [crate=dib_verus]	
+445	2026-11-08T17:40:37+00:00	exit=101	2s	M4b: T9 error paths in decode [crate=dib_verus]	
+446	2026-11-08T17:41:15+00:00	exit=101	26s	M4b: T9 error paths in decode [crate=dib_verus]	verification results:: 399 verified, 1 errors
+447	2026-11-08T17:41:57+00:00	exit=0	28s	M4b: T9 error paths, mask phase err raw/rle [crate=dib_verus]	verification results:: 401 verified, 0 errors
+448	2026-11-08T17:42:54+00:00	exit=0	29s	M4b: T10 and T13 witnesses [crate=dib_verus]	verification results:: 403 verified, 0 errors
+449	2026-11-08T17:43:08+00:00	exit=0	0s	checkpoint [crate=dib_verus]	
+450	2026-11-08T17:43:43+00:00	exit=0	0s	T12 probe A: ghost &mut nat [crate=dib_verus]	
+451	2026-11-08T17:45:02+00:00	exit=0	75s	T12 probe A: ghost &mut nat [crate=probe_t12]	verification results:: 2 verified, 0 errors
+452	2026-11-08T17:46:47+00:00	exit=101	71s	T12 probe B: ghost counter threading [crate=probe_t12]	verification results:: 2159 verified, 0 errors
+453	2026-11-08T17:46:59+00:00	exit=101	4s	T12 probe B: ghost counter threading [crate=probe_t12]	
+454	2026-11-08T17:47:08+00:00	exit=101	4s	T12 probe B: ghost counter threading [crate=probe_t12]	
+455	2026-11-08T17:50:13+00:00	exit=101	73s	T12 probe C: &mut Ghost nat with budget invariant [crate=probe_t12]	verification results:: 2 verified, 1 errors
+456	2026-11-08T17:50:22+00:00	exit=101	5s	T12 probe C2 [crate=probe_t12]	verification results:: 2 verified, 1 errors
+457	2026-11-08T17:50:31+00:00	exit=0	5s	T12 probe D: Ghost return counter [crate=probe_t12]	verification results:: 3 verified, 0 errors
+458	2026-11-08T17:50:40+00:00	exit=101	4s	T12 probe E: &mut Ghost with final() [crate=probe_t12]	
+459	2026-11-08T17:50:48+00:00	exit=101	4s	T12 probe F: Ghost in and out [crate=probe_t12]	
+460	2026-11-08T17:50:57+00:00	exit=0	5s	T12 probe F2: Ghost in and out [crate=probe_t12]	verification results:: 3 verified, 0 errors
+461	2026-11-08T17:51:10+00:00	exit=101	4s	T12 probe G: &mut Ghost budget with start capture [crate=probe_t12]	
+462	2026-11-08T17:51:18+00:00	exit=101	4s	T12 probe G2 [crate=probe_t12]	
+463	2026-11-08T17:52:49+00:00	exit=101	73s	T12 probe H: exec local Ghost with &mut [crate=probe_t12]	verification results:: 2159 verified, 0 errors
+464	2026-11-08T17:52:59+00:00	exit=101	4s	T12 probe I [crate=probe_t12]	verification results:: 2 verified, 1 errors
+465	2026-11-08T17:53:09+00:00	exit=0	4s	T12 probe J [crate=probe_t12]	verification results:: 3 verified, 0 errors
+466	2026-11-08T17:54:20+00:00	exit=101	2s	T12: alloc_output + fill_rle counters [crate=dib_verus]	
+467	2026-11-08T17:54:34+00:00	exit=101	5s	T12: alloc_output + fill_rle counters [crate=dib_verus]	
+468	2026-11-08T17:55:37+00:00	exit=101	2s	T12: raw_loop counter [crate=dib_verus]	
+469	2026-11-08T17:55:51+00:00	exit=101	6s	T12: raw_loop counter [crate=dib_verus]	
+470	2026-11-08T17:57:32+00:00	exit=101	6s	T12: counters through paint/RLE chain [crate=dib_verus]	
+471	2026-11-08T17:58:17+00:00	exit=101	6s	T12: RLE chain counters [crate=dib_verus]	
+472	2026-11-08T17:59:15+00:00	exit=101	6s	T12: full counter threading, first attempt [crate=dib_verus]	
+473	2026-11-08T17:59:30+00:00	exit=101	6s	T12: full counter threading [crate=dib_verus]	
+474	2026-11-08T18:00:34+00:00	exit=101	48s	T12: full counter threading [crate=dib_verus]	verification results:: 388 verified, 16 errors
+475	2026-11-08T18:01:33+00:00	exit=101	42s	T12: invariants use current steps [crate=dib_verus]	verification results:: 397 verified, 7 errors
+476	2026-11-08T18:02:19+00:00	exit=101	2s	T12: raw_loop invariant [crate=dib_verus]	
+477	2026-11-08T18:02:30+00:00	exit=101	1s	T12: raw_loop invariant [crate=dib_verus]	
+478	2026-11-08T18:03:21+00:00	exit=101	39s	T12: raw_loop invariant [crate=dib_verus]	verification results:: 398 verified, 8 errors
+479	2026-11-08T18:04:26+00:00	exit=101	44s	T12: raw_loop invariant v2 [crate=dib_verus]	verification results:: 398 verified, 8 errors
+480	2026-11-08T18:05:24+00:00	exit=101	44s	T12: raw_loop invariant v3 [crate=dib_verus]	verification results:: 399 verified, 7 errors
+481	2026-11-08T18:06:30+00:00	exit=101	48s	T12: raw_loop v4 [crate=dib_verus]	verification results:: 398 verified, 7 errors
+482	2026-11-08T18:07:21+00:00	exit=101	44s	T12: raw_loop v5 [crate=dib_verus]	verification results:: 398 verified, 7 errors
+483	2026-11-08T18:08:14+00:00	exit=101	43s	T12: raw_loop exits [crate=dib_verus]	verification results:: 400 verified, 7 errors
+484	2026-11-08T18:09:19+00:00	exit=101	51s	T12: raw_loop exits v2 [crate=dib_verus]	verification results:: 400 verified, 7 errors
+485	2026-11-08T18:10:08+00:00	exit=101	44s	T12: raw_loop M bound conjunct [crate=dib_verus]	verification results:: 400 verified, 7 errors
+486	2026-11-08T18:11:07+00:00	exit=101	50s	T12: raw_loop asserts current [crate=dib_verus]	verification results:: 401 verified, 7 errors
+487	2026-11-08T18:12:16+00:00	exit=101	53s	T12: raw_loop M maintenance [crate=dib_verus]	verification results:: 403 verified, 7 errors
+488	2026-11-08T18:13:16+00:00	exit=101	44s	T12: raw_loop old(steps) [crate=dib_verus]	verification results:: 403 verified, 7 errors
+489	2026-11-08T18:14:22+00:00	exit=101	54s	T12: raw_loop s_start [crate=dib_verus]	verification results:: 403 verified, 7 errors
+490	2026-11-08T18:15:24+00:00	exit=101	51s	T12: raw_loop s_start = old [crate=dib_verus]	verification results:: 403 verified, 7 errors
+491	2026-11-08T18:16:24+00:00	exit=101	48s	T12: raw_loop int arith [crate=dib_verus]	verification results:: 403 verified, 7 errors
+492	2026-11-08T18:16:51+00:00	exit=101	7s	T12: raw_loop final(steps) [crate=dib_verus]	
+493	2026-11-08T18:17:58+00:00	exit=101	52s	T12: raw_loop final removal [crate=dib_verus]	verification results:: 403 verified, 7 errors
+494	2026-11-08T18:18:52+00:00	exit=101	46s	T12: raw_loop with s_start eq [crate=dib_verus]	verification results:: 403 verified, 7 errors
+495	2026-11-08T18:19:48+00:00	exit=101	43s	T12: raw_loop cleanup [crate=dib_verus]	verification results:: 403 verified, 7 errors
+496	2026-11-08T18:20:50+00:00	exit=101	43s	T12: raw_loop monotonic [crate=dib_verus]	verification results:: 403 verified, 7 errors
+497	2026-11-08T18:21:50+00:00	exit=101	46s	T12: raw_loop M conjunct [crate=dib_verus]	verification results:: 400 verified, 10 errors
+498	2026-11-08T18:22:53+00:00	exit=101	49s	T12: raw_loop invariant direct bound [crate=dib_verus]	verification results:: 401 verified, 10 errors
+499	2026-11-08T18:23:50+00:00	exit=101	45s	T12: raw_loop exact eq invariant [crate=dib_verus]	verification results:: 404 verified, 7 errors
+500	2026-11-08T18:24:57+00:00	exit=101	49s	T12: raw_loop final==steps at exits [crate=dib_verus]	verification results:: 404 verified, 7 errors
+501	2026-11-08T18:25:59+00:00	exit=101	48s	T12: paint_run exit [crate=dib_verus]	verification results:: 405 verified, 7 errors
+502	2026-11-08T18:27:07+00:00	exit=101	45s	T12: direct old(steps) at exits [crate=dib_verus]	verification results:: 405 verified, 7 errors
+503	2026-11-08T18:28:05+00:00	exit=101	47s	T12: remove bad final asserts [crate=dib_verus]	verification results:: 405 verified, 7 errors
+504	2026-11-08T18:29:04+00:00	exit=101	49s	T12: s_start==old invariant [crate=dib_verus]	verification results:: 405 verified, 7 errors
+505	2026-11-08T18:29:25+00:00	exit=101	7s	T12: raw row + painted exits [crate=dib_verus]	
+506	2026-11-08T18:30:15+00:00	exit=101	45s	T12 [crate=dib_verus]	verification results:: 407 verified, 6 errors
+507	2026-11-08T18:31:22+00:00	exit=101	48s	T12: painted invariant [crate=dib_verus]	verification results:: 408 verified, 4 errors
+508	2026-11-08T18:32:27+00:00	exit=101	43s	T12: abs_packet q budget [crate=dib_verus]	verification results:: 408 verified, 4 errors
+509	2026-11-08T18:33:24+00:00	exit=101	47s	T12: abs_packet accounting [crate=dib_verus]	verification results:: 408 verified, 4 errors
+510	2026-11-08T18:34:24+00:00	exit=101	48s	T12: paint_abs exact [crate=dib_verus]	verification results:: 408 verified, 4 errors
+511	2026-11-08T18:35:24+00:00	exit=101	47s	T12: paint_abs exact-on-success [crate=dib_verus]	verification results:: 408 verified, 4 errors
+512	2026-11-08T18:36:18+00:00	exit=101	45s	T12: remove abs asserts [crate=dib_verus]	verification results:: 408 verified, 4 errors
+513	2026-11-08T18:37:16+00:00	exit=101	46s	T12: abs_packet explicit asserts [crate=dib_verus]	verification results:: 408 verified, 4 errors
+514	2026-11-08T18:38:08+00:00	exit=101	43s	T12: try no abs asserts [crate=dib_verus]	verification results:: 408 verified, 4 errors
+515	2026-11-08T18:39:01+00:00	exit=101	44s	T12 [crate=dib_verus]	verification results:: 408 verified, 4 errors
+516	2026-11-08T18:40:03+00:00	exit=101	45s	T12: paint_abs ensures restored [crate=dib_verus]	verification results:: 409 verified, 3 errors
+517	2026-11-08T18:41:13+00:00	exit=101	48s	T12: rle_command painted measure [crate=dib_verus]	verification results:: 408 verified, 4 errors
+518	2026-11-08T18:41:36+00:00	exit=101	7s	T12: painted position measure [crate=dib_verus]	
+519	2026-11-08T18:42:30+00:00	exit=101	49s	T12: painted final deref [crate=dib_verus]	verification results:: 408 verified, 4 errors
+520	2026-11-08T18:43:22+00:00	exit=101	42s	T12: rle_command painted requires [crate=dib_verus]	verification results:: 408 verified, 4 errors
+521	2026-11-08T18:44:16+00:00	exit=101	44s	T12: eol/delta painted measure [crate=dib_verus]	verification results:: 411 verified, 4 errors
+522	2026-11-08T18:45:12+00:00	exit=101	44s	T12: rle_command painted<=N [crate=dib_verus]	verification results:: 411 verified, 4 errors
+523	2026-11-08T18:46:02+00:00	exit=101	46s	T12: rle_command painted reqs [crate=dib_verus]	verification results:: 411 verified, 4 errors
+524	2026-11-08T18:46:20+00:00	exit=101	5s	T12: run exits painted<=N [crate=dib_verus]	
+525	2026-11-08T18:46:29+00:00	exit=101	5s	T12: run exits fix deref [crate=dib_verus]	
+526	2026-11-08T18:46:45+00:00	exit=101	7s	T12: run exits fix2 [crate=dib_verus]	
+527	2026-11-08T18:46:58+00:00	exit=101	7s	T12: run exits painted<=N v2 [crate=dib_verus]	
+528	2026-11-08T18:47:13+00:00	exit=101	6s	T12: run exits painted<=N v3 [crate=dib_verus]	
+529	2026-11-08T18:48:14+00:00	exit=101	49s	T12: capture gp0 [crate=dib_verus]	verification results:: 413 verified, 4 errors
+530	2026-11-08T18:49:11+00:00	exit=101	43s	T12: run gp0+q<=N [crate=dib_verus]	verification results:: 414 verified, 4 errors
+531	2026-11-08T18:49:29+00:00	exit=101	2s	T12: abs/q path + loop invariant [crate=dib_verus]	
+532	2026-11-08T18:50:27+00:00	exit=101	50s	T12: gp0 in abs_packet [crate=dib_verus]	verification results:: 414 verified, 5 errors
+533	2026-11-08T18:50:42+00:00	exit=101	3s	T12: painted<=N requires [crate=dib_verus]	
+534	2026-11-08T18:51:41+00:00	exit=101	45s	T12: painted<=N requires v2 [crate=dib_verus]	verification results:: 414 verified, 5 errors
+535	2026-11-08T18:52:02+00:00	exit=101	6s	T12: abs requires gp0+q<=N [crate=dib_verus]	
+536	2026-11-08T18:52:54+00:00	exit=101	47s	T12: abs gp0 [crate=dib_verus]	verification results:: 414 verified, 6 errors
+537	2026-11-08T18:54:02+00:00	exit=101	47s	T12: abs position link [crate=dib_verus]	verification results:: 414 verified, 5 errors
+538	2026-11-08T18:55:01+00:00	exit=101	45s	T12: abs RleBounds exit [crate=dib_verus]	verification results:: 414 verified, 6 errors
+539	2026-11-08T18:55:57+00:00	exit=101	46s	T12: rle_command coupling [crate=dib_verus]	verification results:: 413 verified, 7 errors
+540	2026-11-08T18:56:48+00:00	exit=101	41s	T12: rle_command exact [crate=dib_verus]	verification results:: 413 verified, 7 errors
+541	2026-11-08T18:57:39+00:00	exit=101	39s	T12: rle_command coupling v2 [crate=dib_verus]	verification results:: 413 verified, 7 errors
+542	2026-11-08T18:58:38+00:00	exit=101	49s	T12: rle_command 1+painted [crate=dib_verus]	verification results:: 413 verified, 7 errors
+543	2026-11-08T18:59:40+00:00	exit=101	49s	T12: run exit accounting asserts [crate=dib_verus]	verification results:: 413 verified, 7 errors
+544	2026-11-08T19:00:40+00:00	exit=101	47s	T12: run exit with gs0/gp0 [crate=dib_verus]	verification results:: 413 verified, 7 errors
+545	2026-11-08T19:01:41+00:00	exit=101	50s	T12: abs_packet exact [crate=dib_verus]	verification results:: 413 verified, 7 errors
+546	2026-11-08T19:02:34+00:00	exit=101	41s	T12: rle_loop slack invariant [crate=dib_verus]	verification results:: 412 verified, 8 errors
+547	2026-11-08T19:02:41+00:00	exit=101	2s	T12: rle_loop invariant v2 [crate=dib_verus]	
+548	2026-11-08T19:03:28+00:00	exit=101	41s	T12: rle_loop invariant v3 [crate=dib_verus]	verification results:: 412 verified, 8 errors
+549	2026-11-08T19:04:23+00:00	exit=101	45s	T12: abs_packet y==h hypo [crate=dib_verus]	verification results:: 412 verified, 8 errors
+550	2026-11-08T19:05:25+00:00	exit=101	51s	T12: abs exact2 [crate=dib_verus]	verification results:: 412 verified, 8 errors
+551	2026-11-08T19:06:21+00:00	exit=101	44s	T12: paint_abs eq [crate=dib_verus]	verification results:: 413 verified, 7 errors
+552	2026-11-08T19:07:17+00:00	exit=101	39s	T12: run exit exact [crate=dib_verus]	verification results:: 413 verified, 7 errors
+553	2026-11-08T19:08:09+00:00	exit=101	39s	T12: run exit 1+form [crate=dib_verus]	verification results:: 413 verified, 7 errors
+554	2026-11-08T19:09:03+00:00	exit=101	39s	T12: run exit simplify [crate=dib_verus]	verification results:: 413 verified, 7 errors
+555	2026-11-08T19:10:01+00:00	exit=101	42s	T12: additive coupling [crate=dib_verus]	verification results:: 413 verified, 7 errors
+556	2026-11-08T19:10:53+00:00	exit=101	44s	T12: run err additive [crate=dib_verus]	verification results:: 413 verified, 7 errors
+557	2026-11-08T19:12:00+00:00	exit=101	51s	T12: gs1 capture [crate=dib_verus]	verification results:: 413 verified, 7 errors
+558	2026-11-08T19:13:03+00:00	exit=101	51s	T12: gpr0 capture [crate=dib_verus]	verification results:: 413 verified, 7 errors
+559	2026-11-08T19:13:16+00:00	exit=101	1s	T12 probe: additive coupling propagation [crate=probe_t12]	
+560	2026-11-08T19:13:25+00:00	exit=101	5s	T12 probe C [crate=probe_t12]	verification results:: 1 verified, 2 errors
+561	2026-11-08T19:13:34+00:00	exit=0	4s	T12 probe D [crate=probe_t12]	verification results:: 3 verified, 0 errors
+562	2026-11-08T19:14:54+00:00	exit=101	51s	M4b: T12 current state [crate=dib_verus]	verification results:: 413 verified, 7 errors
+563	2026-11-08T19:15:47+00:00	exit=101	46s	T12: run exit gpr0 fix [crate=dib_verus]	verification results:: 413 verified, 7 errors
+564	2026-11-08T19:16:46+00:00	exit=101	50s	T12: call-site direct [crate=dib_verus]	verification results:: 413 verified, 7 errors
+565	2026-11-08T19:18:16+00:00	exit=101	74s	T12 probe exact paint shape [crate=probe_t12]	verification results:: 2159 verified, 0 errors
+566	2026-11-08T19:18:28+00:00	exit=101	7s	T12 probe exact paint shape [crate=probe_t12]	
+567	2026-11-08T19:18:43+00:00	exit=0	5s	T12 probe exact paint shape v2 [crate=probe_t12]	verification results:: 3 verified, 0 errors
+568	2026-11-08T19:19:49+00:00	exit=101	49s	T12: int-cast assert [crate=dib_verus]	verification results:: 413 verified, 7 errors
+569	2026-11-08T19:20:53+00:00	exit=101	47s	T12: branch-specific exact [crate=dib_verus]	verification results:: 412 verified, 8 errors
+570	2026-11-08T19:21:55+00:00	exit=101	49s	T12: abs_packet no coupling [crate=dib_verus]	verification results:: 413 verified, 7 errors
+571	2026-11-08T19:23:02+00:00	exit=101	47s	T12: paint_run coupling [crate=dib_verus]	verification results:: 413 verified, 7 errors
+572	2026-11-08T19:24:08+00:00	exit=101	49s	T12: exact run_good branch [crate=dib_verus]	verification results:: 413 verified, 7 errors
+573	2026-11-08T19:25:09+00:00	exit=101	49s	T12: abs_packet coupling [crate=dib_verus]	verification results:: 413 verified, 7 errors
+574	2026-11-08T19:26:14+00:00	exit=101	52s	T12: abs gp0<=N [crate=dib_verus]	verification results:: 412 verified, 7 errors
+575	2026-11-08T19:27:16+00:00	exit=101	44s	T12: abs_packet branch asserts [crate=dib_verus]	verification results:: 412 verified, 7 errors
+576	2026-11-08T19:28:16+00:00	exit=101	47s	T12: drop painted<=N in abs [crate=dib_verus]	verification results:: 411 verified, 8 errors
+577	2026-11-08T19:29:22+00:00	exit=101	50s	T12: removed bad abs assert [crate=dib_verus]	verification results:: 411 verified, 7 errors
+578	2026-11-08T19:29:45+00:00	exit=101	5s	T12: pos-based RLE invariant [crate=dib_verus]	
+579	2026-11-08T19:30:43+00:00	exit=101	53s	T12: pos-based RLE invariant v2 [crate=dib_verus]	verification results:: 411 verified, 7 errors
+580	2026-11-08T19:31:48+00:00	exit=101	54s	T12: painted position coupling [crate=dib_verus]	verification results:: 411 verified, 7 errors
+581	2026-11-08T19:32:48+00:00	exit=101	45s	T12: paint err-branch exact [crate=dib_verus]	verification results:: 411 verified, 7 errors
+582	2026-11-08T19:33:56+00:00	exit=101	52s	T12: paint_abs err exit assert [crate=dib_verus]	verification results:: 411 verified, 7 errors
+583	2026-11-08T19:34:56+00:00	exit=101	43s	T12: paint_abs err exit s_start [crate=dib_verus]	verification results:: 411 verified, 7 errors
+584	2026-11-08T19:36:00+00:00	exit=101	49s	T12: paint_abs bump at bottom [crate=dib_verus]	verification results:: 412 verified, 6 errors
+585	2026-11-08T19:36:55+00:00	exit=101	45s	T12: painted<=N + room req [crate=dib_verus]	verification results:: 412 verified, 6 errors
+586	2026-11-08T19:37:55+00:00	exit=101	49s	T12: painted<=y*w+x [crate=dib_verus]	verification results:: 412 verified, 6 errors
+587	2026-11-08T19:39:00+00:00	exit=101	47s	T12: painted<=N simple [crate=dib_verus]	verification results:: 412 verified, 6 errors
+588	2026-11-08T19:40:05+00:00	exit=101	46s	T12: rle_loop invariant assert [crate=dib_verus]	verification results:: 412 verified, 6 errors
+589	2026-11-08T19:40:58+00:00	exit=101	42s	T12: abs painted<=N pre/post [crate=dib_verus]	verification results:: 412 verified, 6 errors
+590	2026-11-08T19:41:14+00:00	exit=101	7s	T12: abs q<=N-room assert [crate=dib_verus]	
+591	2026-11-08T19:42:05+00:00	exit=101	46s	T12: abs gp0 room [crate=dib_verus]	verification results:: 413 verified, 6 errors
+592	2026-11-08T19:43:02+00:00	exit=101	47s	T12: revert position link [crate=dib_verus]	verification results:: 412 verified, 6 errors
+593	2026-11-08T19:44:00+00:00	exit=101	45s	T12: comprehensive painted<=N [crate=dib_verus]	verification results:: 413 verified, 6 errors
+594	2026-11-08T19:44:58+00:00	exit=101	41s	T12: painted@gp0 assert [crate=dib_verus]	verification results:: 415 verified, 4 errors
+595	2026-11-08T19:46:05+00:00	exit=101	50s	T12: rle_loop invariant reestablish [crate=dib_verus]	verification results:: 416 verified, 4 errors
+596	2026-11-08T19:47:08+00:00	exit=101	53s	T12: rle_loop remove assert [crate=dib_verus]	verification results:: 415 verified, 4 errors
+597	2026-11-08T19:48:05+00:00	exit=101	44s	T12: rle_command exact +1 [crate=dib_verus]	verification results:: 415 verified, 4 errors
+598	2026-11-08T19:49:01+00:00	exit=101	44s	T12: gcmds counter [crate=dib_verus]	verification results:: 415 verified, 4 errors
+599	2026-11-08T19:50:08+00:00	exit=101	51s	T12: gcmds +2 slack [crate=dib_verus]	verification results:: 416 verified, 3 errors
+600	2026-11-08T19:51:07+00:00	exit=101	48s	T12: loop reestablish [crate=dib_verus]	verification results:: 416 verified, 3 errors
+601	2026-11-08T19:52:01+00:00	exit=101	40s	T12: loop reestablish v2 [crate=dib_verus]	verification results:: 416 verified, 3 errors
+602	2026-11-08T19:52:56+00:00	exit=101	45s	T12: int cast coupling [crate=dib_verus]	verification results:: 416 verified, 3 errors
+603	2026-11-08T19:53:51+00:00	exit=101	45s	T12: gcmds <= |b| [crate=dib_verus]	verification results:: 416 verified, 3 errors
+604	2026-11-08T19:54:44+00:00	exit=101	41s	T12: gcmds<=|b| [crate=dib_verus]	verification results:: 416 verified, 3 errors
+605	2026-11-08T19:55:41+00:00	exit=101	46s	T12: loop reestablish int [crate=dib_verus]	verification results:: 417 verified, 3 errors
+606	2026-11-08T19:57:03+00:00	exit=101	71s	T12 probe temporary alias [crate=probe_t12]	verification results:: 2159 verified, 0 errors
+607	2026-11-08T19:57:13+00:00	exit=101	4s	T12 probe temporary alias v2 [crate=probe_t12]	verification results:: 1 verified, 2 errors
+608	2026-11-08T19:57:20+00:00	exit=101	1s	T12 probe mutable ghost local [crate=probe_t12]	
+609	2026-11-08T19:57:28+00:00	exit=101	4s	T12 probe mutable ghost local v2 [crate=probe_t12]	
+610	2026-11-08T19:58:48+00:00	exit=101	70s	T12 probe Ghost local thread [crate=probe_t12]	verification results:: 2159 verified, 0 errors
+611	2026-11-08T19:59:03+00:00	exit=101	4s	T12 probe Ghost local thread v2 [crate=probe_t12]	
+612	2026-11-08T19:59:24+00:00	exit=101	6s	T12: gpaint as Ghost local [crate=dib_verus]	
+613	2026-11-08T20:00:36+00:00	exit=101	45s	T12: back to WIP [crate=dib_verus]	verification results:: 417 verified, 3 errors
+614	2026-11-08T20:00:47+00:00	exit=101	4s	T12: painted as loop param [crate=dib_verus]	
+615	2026-11-08T20:01:00+00:00	exit=101	4s	T12: decode_rle painted param [crate=dib_verus]	
+616	2026-11-08T20:01:55+00:00	exit=101	46s	T12: callers pass painted [crate=dib_verus]	verification results:: 416 verified, 4 errors
+617	2026-11-08T20:02:45+00:00	exit=101	40s	T12: rle_loop painted requires [crate=dib_verus]	verification results:: 416 verified, 4 errors
+618	2026-11-08T20:03:35+00:00	exit=101	38s	T12: gpaint init assert [crate=dib_verus]	verification results:: 416 verified, 4 errors
+619	2026-11-08T20:04:34+00:00	exit=101	46s	T12: rle_loop painted<=N req [crate=dib_verus]	verification results:: 416 verified, 4 errors
+620	2026-11-08T20:05:29+00:00	exit=101	46s	T12: position link everywhere [crate=dib_verus]	verification results:: 416 verified, 4 errors
+621	2026-11-08T20:06:23+00:00	exit=101	43s	T12: use painted@ directly [crate=dib_verus]	verification results:: 415 verified, 5 errors
+622	2026-11-08T20:07:12+00:00	exit=101	39s	T12: decode_rle painted init [crate=dib_verus]	verification results:: 415 verified, 5 errors
+623	2026-11-08T20:08:02+00:00	exit=101	39s	T12: gp_before fix [crate=dib_verus]	verification results:: 416 verified, 4 errors
+624	2026-11-08T20:09:14+00:00	exit=101	48s	T12: simple additive invariant [crate=dib_verus]	verification results:: 415 verified, 4 errors
+625	2026-11-08T20:09:50+00:00	exit=0	27s	M4b: revert to T9/T10/T13 green state [crate=dib_verus]	verification results:: 403 verified, 0 errors
+626	2026-11-08T20:11:30+00:00	exit=0	87s	M4b FINAL: clean full reverify (T9,T10,T13 + L1/L2) [crate=dib_verus]	verification results:: 403 verified, 0 errors
+627	2026-11-08T20:14:06+00:00	exit=0	91s	M4b FINAL CONFIRMATION: clean reverify after removing target [crate=dib_verus]	verification results:: 403 verified, 0 errors
+628	2026-11-08T20:20:36+00:00	exit=0	92s	T12 syntax: mutable ghost counter probe [crate=dib_verus]	verification results:: 404 verified, 0 errors
+629	2026-11-08T20:22:00+00:00	exit=101	5s	T12 raw loop and output fill counters [crate=dib_verus]	
+630	2026-11-08T20:22:39+00:00	exit=101	28s	T12 raw counter invariant and output fill [crate=dib_verus]	verification results:: 404 verified, 1 errors
+631	2026-11-08T20:23:34+00:00	exit=0	28s	T12 raw-row potential algebra [crate=dib_verus]	verification results:: 406 verified, 0 errors
+632	2026-11-08T20:29:02+00:00	exit=101	2s	T12 RLE command potential and painted-pixel charges [crate=dib_verus]	
+633	2026-11-08T20:29:51+00:00	exit=101	31s	T12 RLE command potential with threaded counter [crate=dib_verus]	verification results:: 406 verified, 2 errors
+634	2026-11-08T20:32:21+00:00	exit=101	33s	T12 RLE potential branch and exit arithmetic [crate=dib_verus]	verification results:: 411 verified, 2 errors
+635	2026-11-08T20:33:27+00:00	exit=101	32s	T12 RLE absolute-failure budget and loop bound [crate=dib_verus]	verification results:: 411 verified, 2 errors
+636	2026-11-08T20:35:00+00:00	exit=101	30s	T12 RLE packet result and phase potential [crate=dib_verus]	verification results:: 412 verified, 1 errors
+637	2026-11-08T20:35:59+00:00	exit=0	29s	T12 RLE loop isolated potential arithmetic [crate=dib_verus]	verification results:: 415 verified, 0 errors
+638	2026-11-08T20:38:04+00:00	exit=101	29s	T12 ICO alpha scan and AND row-pixel charges [crate=dib_verus]	verification results:: 415 verified, 1 errors
+639	2026-11-08T20:38:28+00:00	exit=101	6s	T12 AND nested-loop final arithmetic [crate=dib_verus]	
+640	2026-11-08T20:39:15+00:00	exit=0	30s	T12 ICO mask counter closed [crate=dib_verus]	verification results:: 417 verified, 0 errors
+641	2026-11-08T20:41:23+00:00	exit=101	32s	T12 public decoder tracked wrapper and global bound [crate=dib_verus]	verification results:: 420 verified, 1 errors
+642	2026-11-08T20:42:18+00:00	exit=101	5s	T12 compose charged phases into public linear ceiling [crate=dib_verus]	
+643	2026-11-08T20:42:56+00:00	exit=0	28s	T12 global bound with integer slice length [crate=dib_verus]	verification results:: 423 verified, 0 errors
+644	2026-11-08T20:46:03+00:00	exit=0	87s	T12 full clean reverify: all concrete loop charges and MP correctness [crate=dib_verus]	verification results:: 422 verified, 0 errors
+645	2026-11-08T20:49:12+00:00	exit=0	89s	T12 RLE command preserves height-bound paint invariant [crate=dib_verus]	verification results:: 422 verified, 0 errors
+646	2026-11-08T20:50:09+00:00	exit=101	5s	T12 tracked RLE painted-count invariant [crate=dib_verus]	
+647	2026-11-08T20:50:49+00:00	exit=0	28s	T12 RLE painted invariant with nat narrowing [crate=dib_verus]	verification results:: 422 verified, 0 errors
+648	2026-11-08T20:51:43+00:00	exit=101	30s	T12 rejected RLE packet painted-at-most-N [crate=dib_verus]	verification results:: 422 verified, 1 errors
+649	2026-11-08T20:52:34+00:00	exit=0	30s	T12 isolated bound for failed palette pixel [crate=dib_verus]	verification results:: 424 verified, 0 errors
+650	2026-11-08T20:53:51+00:00	exit=0	33s	T12 RLE public-start bound with painted <= N [crate=dib_verus]	verification results:: 424 verified, 0 errors
+651	2026-11-08T20:55:08+00:00	exit=0	30s	T12 sharpen RLE budget to N paints plus N fill [crate=dib_verus]	verification results:: 424 verified, 0 errors
+652	2026-11-08T20:56:36+00:00	exit=0	30s	T12 count final complete RLE commands [crate=dib_verus]	verification results:: 426 verified, 0 errors
+653	2026-11-08T20:58:25+00:00	exit=0	91s	T12 final clean proof: public decode exact MP and 16(|b|+N) work [crate=dib_verus]	verification results:: 426 verified, 0 errors
+654	2026-11-08T21:08:25+00:00	exit=101	74s	M4c: 209 small-vector model agreement obligations by compute [crate=dib_verus]	verification results:: 2159 verified, 0 errors
+655	2026-11-08T21:09:03+00:00	exit=0	30s	M4c probe: one compute obligation [crate=dib_verus]	verification results:: 427 verified, 0 errors
+656	2026-11-08T21:09:18+00:00	exit=101	11s	M4c probe: first half of obligations [crate=dib_verus]	
+657	2026-11-08T21:09:38+00:00	exit=101	9s	M4c probe: ICO obligations only [crate=dib_verus]	
+658	2026-11-08T21:10:13+00:00	exit=0	31s	probe err-only [crate=dib_verus]	verification results:: 519 verified, 0 errors
+659	2026-11-08T21:10:29+00:00	exit=101	13s	probe success-only [crate=dib_verus]	
+660	2026-11-08T21:11:04+00:00	exit=101	30s	probe ok-BmpFile [crate=dib_verus]	verification results:: 440 verified, 5 errors
+661	2026-11-08T21:11:35+00:00	exit=101	31s	probe ok-BareDib [crate=dib_verus]	verification results:: 480 verified, 16 errors
+662	2026-11-08T21:11:43+00:00	exit=101	8s	probe ok-IcoEntryDib [crate=dib_verus]	
+663	2026-11-08T21:12:18+00:00	exit=0	30s	probe ok-first-1 [crate=dib_verus]	verification results:: 427 verified, 0 errors
+664	2026-11-08T21:12:49+00:00	exit=0	31s	probe ok-first-2 [crate=dib_verus]	verification results:: 428 verified, 0 errors
+665	2026-11-08T21:13:19+00:00	exit=0	30s	probe ok-first-3 [crate=dib_verus]	verification results:: 429 verified, 0 errors
+666	2026-11-08T21:13:52+00:00	exit=0	33s	probe ok-first-4 [crate=dib_verus]	verification results:: 430 verified, 0 errors
+667	2026-11-08T21:14:22+00:00	exit=0	30s	probe ok-first-5 [crate=dib_verus]	verification results:: 431 verified, 0 errors
+669	2026-11-08T21:14:56+00:00	exit=0	30s	bisect [crate=dib_verus]	verification results:: 427 verified, 0 errors
+670	2026-11-08T21:15:06+00:00	exit=101	10s	bisect [crate=dib_verus]	
+671	2026-11-08T21:15:35+00:00	exit=101	28s	bisect [crate=dib_verus]	verification results:: 447 verified, 8 errors
+672	2026-11-08T21:16:03+00:00	exit=101	55s	M4c: 20 gate witnesses by compute [crate=dib_verus]	verification results:: 439 verified, 2 errors
+673	2026-11-08T21:16:32+00:00	exit=101	57s	bisect [crate=dib_verus]	verification results:: 439 verified, 2 errors
+674	2026-11-08T21:17:02+00:00	exit=0	43s	probe trailing_zeros compute [crate=dib_verus]	verification results:: 434 verified, 0 errors
+675	2026-11-08T21:17:02+00:00	exit=0	30s	bisect [crate=dib_verus]	
+676	2026-11-08T21:17:32+00:00	exit=0	30s	bisect [crate=dib_verus]	verification results:: 438 verified, 0 errors
+677	2026-11-08T21:17:32+00:00	exit=0	27s	probe trailing_zeros compute [crate=dib_verus]	
+679	2026-11-08T21:18:11+00:00	exit=101	28s	probe tz+channel compute [crate=dib_verus]	verification results:: 426 verified, 2 errors
+680	2026-11-08T21:18:57+00:00	exit=101	32s	M4c: non-ICO compute obligations [crate=dib_verus]	verification results:: 579 verified, 21 errors
+681	2026-11-08T21:19:39+00:00	exit=101	29s	probe tz small compute [crate=dib_verus]	
+682	2026-11-08T21:20:12+00:00	exit=101	28s	probe tz values [crate=dib_verus]	verification results:: 426 verified, 5 errors
+683	2026-11-08T21:20:31+00:00	exit=101	6s	probe local closed compute [crate=dib_verus]	
+684	2026-11-08T21:21:08+00:00	exit=0	30s	probe local closed compute [crate=dib_verus]	verification results:: 430 verified, 0 errors
+685	2026-11-08T21:21:19+00:00	exit=101	2s	probe tz axiom [crate=dib_verus]	
+686	2026-11-08T21:21:27+00:00	exit=101	2s	probe tz axiom [crate=dib_verus]	
+687	2026-11-08T21:21:40+00:00	exit=101	7s	probe tz reveal [crate=dib_verus]	
+688	2026-11-08T21:22:18+00:00	exit=101	28s	probe tz value 4 [crate=dib_verus]	verification results:: 429 verified, 1 errors
+689	2026-11-08T21:22:36+00:00	exit=101	2s	probe lemma_tz then compute [crate=dib_verus]	
+690	2026-11-08T21:23:14+00:00	exit=101	30s	probe wrap and direct [crate=dib_verus]	
+691	2026-11-08T21:24:02+00:00	exit=101	29s	probe tz pre-facts + compute [crate=dib_verus]	
+692	2026-11-08T21:24:36+00:00	exit=101	30s	probe method tz compute [crate=dib_verus]	verification results:: 426 verified, 1 errors
+693	2026-11-08T21:25:11+00:00	exit=101	29s	probe tz=0 compute [crate=dib_verus]	verification results:: 426 verified, 2 errors
+694	2026-11-08T21:25:27+00:00	exit=101	2s	probe methods [crate=dib_verus]	
+695	2026-11-08T21:26:01+00:00	exit=101	30s	probe method compute [crate=dib_verus]	verification results:: 426 verified, 1 errors
+696	2026-11-08T21:26:11+00:00	exit=101	2s	probe channel via tz lemma [crate=dib_verus]	
+697	2026-11-08T21:26:45+00:00	exit=101	28s	probe hypo [crate=dib_verus]	verification results:: 426 verified, 1 errors
+698	2026-11-08T21:27:23+00:00	exit=101	29s	probe tz_test [crate=dib_verus]	verification results:: 429 verified, 1 errors
+699	2026-11-08T21:27:29+00:00	exit=101	2s	probe lemma_tz [crate=dib_verus]	
+700	2026-11-08T21:28:04+00:00	exit=101	29s	probe plain assert with tz facts [crate=dib_verus]	verification results:: 427 verified, 1 errors
+701	2026-11-08T21:28:15+00:00	exit=101	2s	probe lemma_tz v2 [crate=dib_verus]	
+702	2026-11-08T21:29:02+00:00	exit=0	31s	probe forall bitvector syntax [crate=dib_verus]	verification results:: 428 verified, 0 errors
+703	2026-11-08T21:29:36+00:00	exit=0	30s	probe lemma_tz_7c00 [crate=dib_verus]	verification results:: 431 verified, 0 errors
+704	2026-11-08T21:30:11+00:00	exit=101	29s	probe b16 with tz facts [crate=dib_verus]	verification results:: 436 verified, 1 errors
+705	2026-11-08T21:30:23+00:00	exit=101	2s	probe vstd compute [crate=dib_verus]	
+706	2026-11-08T21:30:55+00:00	exit=101	29s	probe vstd compute2 [crate=dib_verus]	verification results:: 427 verified, 1 errors
+707	2026-11-08T21:31:33+00:00	exit=101	29s	probe b16 reveal assert [crate=dib_verus]	verification results:: 426 verified, 1 errors
+708	2026-11-08T21:31:43+00:00	exit=101	2s	probe b16 reveal all [crate=dib_verus]	
+709	2026-11-08T21:32:16+00:00	exit=101	30s	probe b16 reveal all [crate=dib_verus]	verification results:: 428 verified, 1 errors
+710	2026-11-08T21:32:56+00:00	exit=101	30s	probe compute with tz hyp [crate=dib_verus]	verification results:: 430 verified, 3 errors
+711	2026-11-08T21:33:31+00:00	exit=101	29s	probe ch_red [crate=dib_verus]	
+712	2026-11-08T21:34:10+00:00	exit=0	30s	probe mytz deep [crate=dib_verus]	verification results:: 429 verified, 0 errors
+713	2026-11-08T21:34:50+00:00	exit=101	32s	probe b16 full proof [crate=dib_verus]	verification results:: 435 verified, 1 errors
+714	2026-11-08T21:35:02+00:00	exit=101	2s	probe ch_try plain [crate=dib_verus]	
+715	2026-11-08T21:35:46+00:00	exit=101	32s	probe A/B/C [crate=dib_verus]	verification results:: 428 verified, 2 errors
+716	2026-11-08T21:36:19+00:00	exit=101	29s	probe ch_4404 [crate=dib_verus]	
+717	2026-11-08T21:36:57+00:00	exit=101	32s	probe ch_4404 hypothesis [crate=dib_verus]	verification results:: 427 verified, 2 errors
+718	2026-11-08T21:37:36+00:00	exit=0	30s	probe ch_0444 hyp [crate=dib_verus]	verification results:: 436 verified, 0 errors
+719	2026-11-08T21:38:11+00:00	exit=101	29s	probe b16 with ch_m facts [crate=dib_verus]	verification results:: 443 verified, 2 errors
+720	2026-11-08T21:38:49+00:00	exit=101	29s	probe ch_m minimal [crate=dib_verus]	verification results:: 426 verified, 2 errors
+721	2026-11-08T21:39:29+00:00	exit=0	30s	probe ch_m 2 [crate=dib_verus]	verification results:: 430 verified, 0 errors
+722	2026-11-08T21:40:09+00:00	exit=101	30s	probe b16 via want16 [crate=dib_verus]	verification results:: 441 verified, 1 errors
+723	2026-11-08T21:40:46+00:00	exit=101	29s	probe b16 via want16 v2 [crate=dib_verus]	verification results:: 442 verified, 1 errors
+724	2026-11-08T21:41:26+00:00	exit=0	32s	probe b16 via want16 v3 [crate=dib_verus]	verification results:: 445 verified, 0 errors
+725	2026-11-08T21:42:25+00:00	exit=101	31s	probe ico-1-and-1 [crate=dib_verus]	
+726	2026-11-08T21:43:05+00:00	exit=0	32s	probe ico-1-and-1 fixed [crate=dib_verus]	verification results:: 427 verified, 0 errors
+727	2026-11-08T21:43:42+00:00	exit=0	32s	probe first ICO [crate=dib_verus]	verification results:: 427 verified, 0 errors
+728	2026-11-08T21:43:46+00:00	exit=0	0s	ico bisect [crate=dib_verus]	
+729	2026-11-08T21:44:17+00:00	exit=0	31s	ico bisect [crate=dib_verus]	verification results:: 427 verified, 0 errors
+730	2026-11-08T21:44:47+00:00	exit=0	30s	ico bisect [crate=dib_verus]	verification results:: 427 verified, 0 errors
+731	2026-11-08T21:45:18+00:00	exit=0	31s	ico bisect [crate=dib_verus]	verification results:: 427 verified, 0 errors
+732	2026-11-08T21:45:51+00:00	exit=0	33s	ico bisect [crate=dib_verus]	verification results:: 427 verified, 0 errors
+733	2026-11-08T21:46:22+00:00	exit=0	31s	ico bisect [crate=dib_verus]	verification results:: 427 verified, 0 errors
+734	2026-11-08T21:46:53+00:00	exit=0	30s	ico bisect [crate=dib_verus]	verification results:: 427 verified, 0 errors
+735	2026-11-08T21:47:23+00:00	exit=101	30s	ico bisect [crate=dib_verus]	verification results:: 426 verified, 1 errors
+736	2026-11-08T21:47:52+00:00	exit=101	29s	ico bisect [crate=dib_verus]	verification results:: 426 verified, 1 errors
+737	2026-11-08T21:48:21+00:00	exit=0	44s	probe p555 pattern [crate=dib_verus]	verification results:: 427 verified, 0 errors
+738	2026-11-08T21:48:22+00:00	exit=0	30s	ico bisect [crate=dib_verus]	
+740	2026-11-08T21:49:09+00:00	exit=0	31s	ico bisect [crate=dib_verus]	verification results:: 427 verified, 0 errors
+741	2026-11-08T21:49:18+00:00	exit=101	8s	ico bisect [crate=dib_verus]	
+742	2026-11-08T21:49:25+00:00	exit=101	11s	probe ico-16-and-0 compute [crate=dib_verus]	
+743	2026-11-08T21:49:33+00:00	exit=101	15s	ico bisect [crate=dib_verus]	
+744	2026-11-08T21:50:03+00:00	exit=101	30s	ico bisect [crate=dib_verus]	
+745	2026-11-08T21:50:35+00:00	exit=0	62s	probe ico16 reveal compute_only [crate=dib_verus]	verification results:: 427 verified, 0 errors
+746	2026-11-08T21:50:35+00:00	exit=0	32s	ico bisect [crate=dib_verus]	
+747	2026-11-08T21:51:08+00:00	exit=0	33s	ico bisect [crate=dib_verus]	verification results:: 427 verified, 0 errors
+748	2026-11-08T21:51:08+00:00	exit=0	29s	M4c: ICO vectors patched [crate=dib_verus]	
+750	2026-11-08T21:51:41+00:00	exit=101	14s	M4c: all small with reveals [crate=dib_verus]	
+751	2026-11-08T21:52:29+00:00	exit=101	31s	probe b16 compute_only broadcast [crate=dib_verus]	
+752	2026-11-08T21:53:12+00:00	exit=101	30s	M4c: ICO reveals+compute_only [crate=dib_verus]	
+753	2026-11-08T21:53:57+00:00	exit=101	29s	probe rep_pat model pixel [crate=dib_verus]	verification results:: 426 verified, 1 errors
+754	2026-11-08T21:54:45+00:00	exit=0	30s	probe split structure [crate=dib_verus]	verification results:: 447 verified, 0 errors
+755	2026-11-08T21:55:04+00:00	exit=101	8s	probe ico32 reveals+compute [crate=dib_verus]	
+756	2026-11-08T21:55:40+00:00	exit=101	29s	M4c: 2 ICO gate witnesses [crate=dib_verus]	
+757	2026-11-08T21:57:27+00:00	exit=0	31s	probe model-term forms [crate=dib_verus]	verification results:: 428 verified, 0 errors
+758	2026-11-08T21:58:16+00:00	exit=101	32s	M4c: all small reveals+compute_only [crate=dib_verus]	
+759	2026-11-08T21:59:08+00:00	exit=101	30s	probe plain assert ico32 [crate=dib_verus]	verification results:: 426 verified, 1 errors
+760	2026-11-08T21:59:55+00:00	exit=101	31s	M4c: 5 tz gate witnesses reveals+compute_only [crate=dib_verus]	
+761	2026-11-08T22:00:48+00:00	exit=101	32s	M4c: all small reveals+compute_only recount [crate=dib_verus]	
+762	2026-11-08T22:01:34+00:00	exit=101	32s	M4c: ready batch count [crate=dib_verus]	
+763	2026-11-08T22:02:14+00:00	exit=0	31s	probe user term [crate=dib_verus]	verification results:: 427 verified, 0 errors
+764	2026-11-08T22:03:11+00:00	exit=0	30s	probe pat16 term [crate=dib_verus]	verification results:: 427 verified, 0 errors
+765	2026-11-08T22:03:57+00:00	exit=0	32s	probe ico term form [crate=dib_verus]	verification results:: 427 verified, 0 errors
+766	2026-11-08T22:04:56+00:00	exit=101	29s	M4c: 20 gate reveals+compute_only [crate=dib_verus]	
+767	2026-11-08T22:06:04+00:00	exit=101	31s	probe bf model-term half1 [crate=dib_verus]	verification results:: 426 verified, 1 errors
+768	2026-11-08T22:06:44+00:00	exit=0	31s	probe bf literal word [crate=dib_verus]	verification results:: 427 verified, 0 errors
+769	2026-11-08T22:07:28+00:00	exit=101	30s	probe ico-veto term [crate=dib_verus]	
+770	2026-11-08T22:09:58+00:00	exit=101	16s	M4c: full generated vector package [crate=dib_verus]	
+771	2026-11-08T22:10:15+00:00	exit=101	11s	M4c half A [crate=dib_verus]	
+772	2026-11-08T22:10:28+00:00	exit=101	13s	M4c half B [crate=dib_verus]	
+773	2026-11-08T22:10:44+00:00	exit=101	11s	bis [crate=dib_verus]	
+774	2026-11-08T22:11:13+00:00	exit=101	32s	M4c: 6 ICO compute_only [crate=dib_verus]	verification results:: 688 verified, 10 errors
+776	2026-11-08T22:12:11+00:00	exit=101	15s	M4c: 209 vector obligations [crate=dib_verus]	
+777	2026-11-08T22:12:26+00:00	exit=101	8s	M4c: 20 gate witnesses (generated) [crate=dib_verus]	
+778	2026-11-08T22:13:01+00:00	exit=0	30s	gbis [crate=dib_verus]	verification results:: 428 verified, 0 errors
+780	2026-11-08T22:13:56+00:00	exit=0	31s	M4c: 2 ICO gate term form [crate=dib_verus]	verification results:: 428 verified, 0 errors
+781	2026-11-08T22:14:35+00:00	exit=0	31s	M4c: 18 non-ICO gate [crate=dib_verus]	verification results:: 523 verified, 0 errors
+782	2026-11-08T22:14:49+00:00	exit=101	9s	M4c: all ICO obligations [crate=dib_verus]	
+783	2026-11-08T22:15:23+00:00	exit=0	30s	M4c: ICO prefix 2 [crate=dib_verus]	verification results:: 429 verified, 0 errors
+784	2026-11-08T22:15:54+00:00	exit=0	31s	M4c: ICO prefix 4 [crate=dib_verus]	verification results:: 431 verified, 0 errors
+785	2026-11-08T22:16:23+00:00	exit=0	29s	M4c: ICO prefix 6 [crate=dib_verus]	verification results:: 433 verified, 0 errors
+786	2026-11-08T22:16:54+00:00	exit=0	31s	M4c: ICO prefix 8 [crate=dib_verus]	verification results:: 455 verified, 0 errors
+788	2026-11-08T22:17:49+00:00	exit=101	16s	M4c: clean full 209 vector obligations [crate=dib_verus]	
+789	2026-11-08T22:18:24+00:00	exit=0	31s	M4c: ICO 10 [crate=dib_verus]	verification results:: 477 verified, 0 errors
+790	2026-11-08T22:18:33+00:00	exit=101	9s	M4c: ICO 12 [crate=dib_verus]	
+791	2026-11-08T22:19:10+00:00	exit=0	32s	M4c: ICO 11 [crate=dib_verus]	verification results:: 478 verified, 0 errors
+792	2026-11-08T22:19:18+00:00	exit=101	8s	M4c: ICO 12 [crate=dib_verus]	
+793	2026-11-08T22:19:36+00:00	exit=101	9s	M4c: ico-32-and-0 alone [crate=dib_verus]	
+794	2026-11-08T22:19:53+00:00	exit=101	9s	M4c: 20 gate clean [crate=dib_verus]	
+795	2026-11-08T22:20:10+00:00	exit=101	8s	M4c: ico-32-and-0 compute only [crate=dib_verus]	
+796	2026-11-08T22:20:44+00:00	exit=101	29s	M4c: ico-32-and-0 reveals+compute_only [crate=dib_verus]	
+797	2026-11-08T22:20:57+00:00	exit=101	5s	M4c: ico-32-and-0 exists witness [crate=dib_verus]	
+798	2026-11-08T22:21:34+00:00	exit=101	29s	M4c: ico-32-and-0 exists witness v2 [crate=dib_verus]	
+799	2026-11-08T22:22:35+00:00	exit=0	31s	M4c: chunk 00 [crate=dib_verus]	verification results:: 527 verified, 0 errors
+800	2026-11-08T22:23:08+00:00	exit=0	33s	M4c: chunk 01 [crate=dib_verus]	verification results:: 585 verified, 0 errors
+801	2026-11-08T22:23:39+00:00	exit=0	31s	M4c: chunk 02 [crate=dib_verus]	verification results:: 447 verified, 0 errors
+802	2026-11-08T22:23:47+00:00	exit=101	8s	M4c: chunk 03 [crate=dib_verus]	
+803	2026-11-08T22:23:56+00:00	exit=101	9s	M4c: chunk 04 [crate=dib_verus]	
+804	2026-11-08T22:24:16+00:00	exit=101	9s	x [crate=dib_verus]	
+805	2026-11-08T22:24:24+00:00	exit=101	8s	x [crate=dib_verus]	
+806	2026-11-08T22:24:33+00:00	exit=101	9s	x [crate=dib_verus]	
+807	2026-11-08T22:24:43+00:00	exit=101	10s	x [crate=dib_verus]	
+808	2026-11-08T22:24:52+00:00	exit=101	9s	x [crate=dib_verus]	
+809	2026-11-08T22:25:01+00:00	exit=101	9s	x [crate=dib_verus]	
+810	2026-11-08T22:25:10+00:00	exit=101	9s	x [crate=dib_verus]	
+811	2026-11-08T22:25:19+00:00	exit=101	9s	x [crate=dib_verus]	
+812	2026-11-08T22:25:28+00:00	exit=101	9s	x [crate=dib_verus]	
+813	2026-11-08T22:25:40+00:00	exit=101	12s	x [crate=dib_verus]	
+814	2026-11-08T22:25:49+00:00	exit=101	9s	x [crate=dib_verus]	
+815	2026-11-08T22:25:58+00:00	exit=101	9s	x [crate=dib_verus]	
+816	2026-11-08T22:26:06+00:00	exit=101	8s	x [crate=dib_verus]	
+818	2026-11-08T22:26:59+00:00	exit=101	17s	M4c: 207 vectors minus ico-32 [crate=dib_verus]	
+819	2026-11-08T22:27:28+00:00	exit=101	9s	M4c: ico-32-and-0 clean alone [crate=dib_verus]	
+820	2026-11-08T22:27:38+00:00	exit=101	4s	M4c: ico32 want-term [crate=dib_verus]	
+821	2026-11-08T22:27:56+00:00	exit=101	9s	M4c: ico32 symbolic ma_output [crate=dib_verus]	
+823	2026-11-08T22:29:13+00:00	exit=101	30s	M4c: ico32 compute_only term [crate=dib_verus]	
+824	2026-11-08T22:30:12+00:00	exit=101	30s	M4c: probe xor_alpha_present negation [crate=dib_verus]	
+825	2026-11-08T22:30:48+00:00	exit=0	31s	M4c: probe alpha negation v2 [crate=dib_verus]	verification results:: 427 verified, 0 errors
+826	2026-11-08T22:31:23+00:00	exit=101	29s	M4c: probe concrete rec [crate=dib_verus]	
+827	2026-11-08T22:32:06+00:00	exit=101	10s	M4c: 20 gate retest [crate=dib_verus]	
+828	2026-11-08T22:32:25+00:00	exit=101	10s	M4c: 20 gate fresh [crate=dib_verus]	
+829	2026-11-08T22:33:03+00:00	exit=0	32s	M4c: one ico-fields-32-no-alpha-and-veto [crate=dib_verus]	verification results:: 448 verified, 0 errors
+830	2026-11-08T22:33:12+00:00	exit=101	9s	M4c: one ico-fields-32-explicit-alpha-zero-and-fallback [crate=dib_verus]	
+831	2026-11-08T22:33:46+00:00	exit=0	34s	M4c: one bi-rgb-16-4404 [crate=dib_verus]	verification results:: 448 verified, 0 errors
+832	2026-11-08T22:34:17+00:00	exit=0	31s	M4c: one ico-mask-msb-and-padding [crate=dib_verus]	verification results:: 428 verified, 0 errors
+833	2026-11-08T22:34:37+00:00	exit=101	9s	M4c: one alpha-fallback [crate=dib_verus]	
+834	2026-11-08T22:35:23+00:00	exit=0	30s	M4c: probe plane zero [crate=dib_verus]	verification results:: 427 verified, 0 errors
+835	2026-11-08T22:36:00+00:00	exit=101	31s	M4c: probe raw plane concrete [crate=dib_verus]	
+836	2026-11-08T22:36:38+00:00	exit=101	30s	M4c: one fallback compute_only [crate=dib_verus]	
+837	2026-11-08T22:37:21+00:00	exit=101	29s	M4c: plain SMT fallback [crate=dib_verus]	verification results:: 426 verified, 1 errors
+838	2026-11-08T22:37:43+00:00	exit=101	9s	M4c: probe ma_byte index 3 [crate=dib_verus]	
+839	2026-11-08T22:38:20+00:00	exit=101	30s	M4c: probe ma_byte3 plain [crate=dib_verus]	verification results:: 426 verified, 1 errors
+840	2026-11-08T22:38:59+00:00	exit=101	29s	M4c: probe mh rec correct [crate=dib_verus]	
+841	2026-11-08T22:39:32+00:00	exit=101	29s	M4c: probe mh rec fixed [crate=dib_verus]	verification results:: 427 verified, 1 errors
+842	2026-11-08T22:39:47+00:00	exit=101	5s	M4c: step1 with rec [crate=dib_verus]	
+843	2026-11-08T22:40:21+00:00	exit=101	30s	M4c: step1 rec v2 [crate=dib_verus]	verification results:: 426 verified, 1 errors
+844	2026-11-08T22:40:59+00:00	exit=101	30s	M4c: step1 rec compute_only [crate=dib_verus]	
+845	2026-11-08T22:41:39+00:00	exit=101	30s	M4c: probe ma_output extensional [crate=dib_verus]	verification results:: 427 verified, 1 errors
+846	2026-11-08T22:41:55+00:00	exit=101	8s	M4c: probe ma_output per-index [crate=dib_verus]	
+847	2026-11-08T22:42:07+00:00	exit=101	8s	M4c: probe ma_byte_lit [crate=dib_verus]	
+848	2026-11-08T22:42:41+00:00	exit=101	30s	M4c: probe ma_byte_lit plain [crate=dib_verus]	verification results:: 428 verified, 1 errors
+849	2026-11-08T22:42:51+00:00	exit=101	5s	M4c: probe chv closed [crate=dib_verus]	
+850	2026-11-08T22:43:00+00:00	exit=101	5s	M4c: probe chv closed v2 [crate=dib_verus]	
+851	2026-11-08T22:44:00+00:00	exit=0	47s	M4c: all but ICO-32 successes [crate=dib_verus]	verification results:: 1185 verified, 0 errors
+852	2026-11-08T22:44:42+00:00	exit=101	33s	M4c: ico32 keep via lemma [crate=dib_verus]	verification results:: 427 verified, 1 errors
+853	2026-11-08T22:44:55+00:00	exit=101	5s	M4c: ico32 keep v2 [crate=dib_verus]	
+854	2026-11-08T22:45:08+00:00	exit=101	5s	M4c: probe alpha_true [crate=dib_verus]	
+855	2026-11-08T22:45:46+00:00	exit=0	31s	M4c: probe alpha_true v2 [crate=dib_verus]	verification results:: 427 verified, 0 errors
+856	2026-11-08T22:46:22+00:00	exit=101	31s	M4c: ico32-and-0 keep SMT [crate=dib_verus]	verification results:: 427 verified, 1 errors
+857	2026-11-08T22:47:05+00:00	exit=101	32s	M4c: ico32-and-0 staged [crate=dib_verus]	
+858	2026-11-08T22:47:17+00:00	exit=101	8s	M4c: ico32-and-0 staged v2 [crate=dib_verus]	
+859	2026-11-08T22:47:32+00:00	exit=101	9s	M4c: ico32-and-0 staged v3 [crate=dib_verus]	
+860	2026-11-08T22:48:06+00:00	exit=101	31s	M4c: ico32-and-0 staged v4 [crate=dib_verus]	verification results:: 429 verified, 1 errors
+861	2026-11-08T22:48:46+00:00	exit=101	31s	M4c: ico32-and-0 staged v5 [crate=dib_verus]	verification results:: 429 verified, 1 errors
+862	2026-11-08T22:49:27+00:00	exit=0	31s	M4c: ico32-and-0 staged v6 [crate=dib_verus]	verification results:: 430 verified, 0 errors
+863	2026-11-08T22:50:08+00:00	exit=101	29s	M4c: fallback ma_output eq [crate=dib_verus]	verification results:: 428 verified, 1 errors
+864	2026-11-08T22:50:52+00:00	exit=0	31s	M4c: mb3 fallback [crate=dib_verus]	verification results:: 428 verified, 0 errors
+865	2026-11-08T22:51:28+00:00	exit=101	31s	M4c: staged agree full [crate=dib_verus]	verification results:: 431 verified, 1 errors
+866	2026-11-08T22:52:15+00:00	exit=0	30s	M4c: staged p4 preconds [crate=dib_verus]	verification results:: 432 verified, 0 errors
+867	2026-11-08T22:52:56+00:00	exit=101	29s	M4c: fallback ma_out_eq v2 [crate=dib_verus]	verification results:: 428 verified, 1 errors
+868	2026-11-08T22:53:16+00:00	exit=101	8s	M4c: fallback mb compute [crate=dib_verus]	
+869	2026-11-08T22:53:52+00:00	exit=101	31s	M4c: fallback ma_out_eq v3 [crate=dib_verus]	verification results:: 431 verified, 1 errors
+870	2026-11-08T22:54:31+00:00	exit=101	30s	M4c: fallback ma_out_eq v4 [crate=dib_verus]	verification results:: 430 verified, 1 errors
+871	2026-11-08T22:55:21+00:00	exit=0	30s	M4c: fallback ma_out_eq v5 [crate=dib_verus]	verification results:: 431 verified, 0 errors
+872	2026-11-08T22:55:52+00:00	exit=101	1s	M4c: full model_vectors (209 + 9 staged ICO-32) [crate=dib_verus]	
+873	2026-11-08T22:56:21+00:00	exit=101	2s	M4c: full model_vectors v2 [crate=dib_verus]	
+874	2026-11-08T22:56:55+00:00	exit=101	6s	M4c: full v3 [crate=dib_verus]	
+875	2026-11-08T22:57:14+00:00	exit=101	7s	M4c: full v4 [crate=dib_verus]	
+876	2026-11-08T22:57:34+00:00	exit=101	7s	M4c: full v5 [crate=dib_verus]	
+877	2026-11-08T22:58:00+00:00	exit=101	8s	M4c: full v6 [crate=dib_verus]	
+878	2026-11-08T22:59:00+00:00	exit=101	35s	M4c: full v7 [crate=dib_verus]	
+879	2026-11-08T23:00:04+00:00	exit=101	56s	M4c: full v8 [crate=dib_verus]	verification results:: 1316 verified, 12 errors
+880	2026-11-08T23:01:17+00:00	exit=101	56s	M4c: full v9 [crate=dib_verus]	verification results:: 1339 verified, 13 errors
+881	2026-11-08T23:02:31+00:00	exit=101	58s	M4c: full v10 [crate=dib_verus]	verification results:: 1339 verified, 13 errors
+882	2026-11-08T23:03:44+00:00	exit=101	56s	M4c: full v11 [crate=dib_verus]	verification results:: 1339 verified, 13 errors
+883	2026-11-08T23:04:41+00:00	exit=101	6s	M4c: full v12 [crate=dib_verus]	
+884	2026-11-08T23:04:56+00:00	exit=101	6s	M4c: full v13 [crate=dib_verus]	
+885	2026-11-08T23:06:02+00:00	exit=101	57s	M4c: full v14 [crate=dib_verus]	verification results:: 1338 verified, 14 errors
+886	2026-11-08T23:07:18+00:00	exit=101	58s	M4c: full v15 [crate=dib_verus]	verification results:: 1338 verified, 14 errors
+887	2026-11-08T23:08:01+00:00	exit=101	6s	M4c: full v16 [crate=dib_verus]	
+888	2026-11-08T23:08:12+00:00	exit=101	6s	M4c: full v17 [crate=dib_verus]	
+889	2026-11-08T23:09:16+00:00	exit=101	55s	M4c: full v18 [crate=dib_verus]	verification results:: 1341 verified, 11 errors
+890	2026-11-08T23:10:09+00:00	exit=101	17s	M4c: full v19 [crate=dib_verus]	
+891	2026-11-08T23:11:14+00:00	exit=101	58s	M4c: full v20 [crate=dib_verus]	verification results:: 1349 verified, 19 errors
+892	2026-11-08T23:12:40+00:00	exit=101	57s	M4c: full v21 [crate=dib_verus]	verification results:: 1349 verified, 19 errors
+893	2026-11-08T23:14:04+00:00	exit=101	60s	M4c: full v22 [crate=dib_verus]	verification results:: 1354 verified, 14 errors
+894	2026-11-08T23:15:26+00:00	exit=101	59s	M4c: full v23 [crate=dib_verus]	verification results:: 1354 verified, 14 errors
+895	2026-11-08T23:16:40+00:00	exit=101	55s	M4c: full v24 [crate=dib_verus]	verification results:: 1363 verified, 5 errors
+896	2026-11-08T23:18:02+00:00	exit=101	55s	M4c: full v25 [crate=dib_verus]	verification results:: 1367 verified, 1 errors
+897	2026-11-08T23:19:15+00:00	exit=101	56s	M4c: full v26 [crate=dib_verus]	verification results:: 1359 verified, 9 errors
+898	2026-11-08T23:20:38+00:00	exit=101	59s	M4c: full v27 [crate=dib_verus]	verification results:: 1358 verified, 10 errors
+899	2026-11-08T23:21:43+00:00	exit=101	57s	M4c: full v28 [crate=dib_verus]	verification results:: 1367 verified, 1 errors
+900	2026-11-08T23:22:29+00:00	exit=101	34s	M4c: full v29 [crate=dib_verus]	
+901	2026-11-08T23:23:29+00:00	exit=101	56s	M4c: full v30 [crate=dib_verus]	verification results:: 1366 verified, 2 errors
+902	2026-11-08T23:23:50+00:00	exit=101	8s	M4c: probe fallback mb3 [crate=dib_verus]	
+903	2026-11-08T23:24:22+00:00	exit=101	28s	M4c: probe fallback mb3 plain [crate=dib_verus]	verification results:: 426 verified, 1 errors
+904	2026-11-08T23:25:02+00:00	exit=101	29s	M4c: probe fallback with exists [crate=dib_verus]	
+905	2026-11-08T23:25:35+00:00	exit=101	29s	M4c: probe fallback with exists2 [crate=dib_verus]	
+906	2026-11-08T23:26:08+00:00	exit=101	28s	M4c: probe exists v3 [crate=dib_verus]	
+907	2026-11-08T23:26:42+00:00	exit=101	29s	M4c: probe exists v4 [crate=dib_verus]	verification results:: 427 verified, 1 errors
+908	2026-11-08T23:27:19+00:00	exit=101	29s	M4c: probe exists v5 [crate=dib_verus]	verification results:: 427 verified, 1 errors
+909	2026-11-08T23:28:07+00:00	exit=0	30s	M4c: probe exists v6 [crate=dib_verus]	verification results:: 427 verified, 0 errors
+910	2026-11-08T23:29:18+00:00	exit=101	56s	M4c: full v31 [crate=dib_verus]	verification results:: 1365 verified, 3 errors
+911	2026-11-08T23:30:29+00:00	exit=101	57s	M4c: full v32 [crate=dib_verus]	verification results:: 1365 verified, 3 errors
+912	2026-11-08T23:31:30+00:00	exit=101	55s	M4c: full v33 [crate=dib_verus]	verification results:: 1364 verified, 4 errors
+913	2026-11-08T23:32:06+00:00	exit=0	30s	one ico-fields-32-no-alpha-and-veto [crate=dib_verus]	verification results:: 454 verified, 0 errors
+914	2026-11-08T23:32:35+00:00	exit=101	29s	one ico-fields-32-explicit-alpha-zero-and-fallback [crate=dib_verus]	verification results:: 487 verified, 1 errors
+915	2026-11-08T23:33:09+00:00	exit=101	30s	one fallback [crate=dib_verus]	verification results:: 487 verified, 1 errors
+916	2026-11-08T23:34:15+00:00	exit=101	57s	M4c: full v34 [crate=dib_verus]	verification results:: 1365 verified, 3 errors
+917	2026-11-08T23:34:36+00:00	exit=101	1s	M4c: full minus 2 fallback [crate=dib_verus]	
+918	2026-11-08T23:37:44+00:00	exit=0	50s	M4c: full minus 2 fallback v2 [crate=dib_verus]	verification results:: 1294 verified, 0 errors
+919	2026-11-08T23:38:52+00:00	exit=0	29s	probe fb mb3 only [crate=dib_verus]	verification results:: 426 verified, 0 errors
+920	2026-11-08T23:39:30+00:00	exit=101	29s	probe ico-alpha-zero-fallback-mask [crate=dib_verus]	verification results:: 437 verified, 2 errors
+921	2026-11-08T23:39:32+00:00	exit=101	2s	probe ico-fields-32-explicit-alpha-zero-and-fallback [crate=dib_verus]	
+922	2026-11-08T23:43:35+00:00	exit=101	114s	mutation 1 [crate=mutation/m1/dib_verus]	verification results:: 1293 verified, 1 errors
+924	2026-11-08T23:45:32+00:00	exit=101	98s	mutation 13 [crate=mutation/m13/dib_verus]	verification results:: 1293 verified, 1 errors
+926	2026-11-08T23:47:20+00:00	exit=101	108s	mutation 19 [crate=mutation/m19/dib_verus]	verification results:: 1293 verified, 1 errors
+928	2026-11-08T23:49:07+00:00	exit=101	107s	mutation 23 [crate=mutation/m23/dib_verus]	verification results:: 1293 verified, 1 errors
+929	2026-11-08T23:50:24+00:00	exit=101	77s	mutation 24 [crate=mutation/m24/dib_verus]	verification results:: 2159 verified, 0 errors
+930	2026-11-08T23:50:24+00:00	exit=101	67s	mutation 16 [crate=mutation/m16/dib_verus]	verification results:: 2159 verified, 0 errors
+931	2026-11-08T23:50:32+00:00	exit=101	31s	mutation 16 [crate=mutation/m16/dib_verus]	
+932	2026-11-08T23:51:22+00:00	exit=101	68s	mutation 16 [crate=mutation/m16/dib_verus]	verification results:: 1293 verified, 1 errors
+933	2026-11-08T23:52:09+00:00	exit=101	94s	mutation 16 [crate=mutation/m16/dib_verus]	verification results:: 1293 verified, 1 errors
+934	2026-11-08T23:52:58+00:00	exit=101	48s	mutation 24 [crate=mutation/m24/dib_verus]	verification results:: 1293 verified, 1 errors
+935	2026-11-08T23:54:45+00:00	exit=101	107s	mutation 25 [crate=mutation/m25/dib_verus]	verification results:: 2159 verified, 0 errors
+936	2026-11-08T23:56:54+00:00	exit=0	108s	M4c FINAL: clean full reverify (209 vector agreements) [crate=dib_verus]	verification results:: 1294 verified, 0 errors
+937	2026-11-09T00:08:08+00:00	exit=101	115s	mutation 2 [crate=mutation/m2/dib_verus]	verification results:: 1293 verified, 1 errors
+938	2026-11-09T00:10:02+00:00	exit=101	114s	mutation 3 [crate=mutation/m3/dib_verus]	verification results:: 1293 verified, 1 errors
+939	2026-11-09T00:10:12+00:00	exit=0	120s	M4c2: all 209 small vector witnesses with staged alpha-zero fallback [crate=dib_verus]	verification results:: 1349 verified, 0 errors
+941	2026-11-09T00:10:27+00:00	exit=0	1s	M4c2: generic L3 two-pixel row transition and complete vector agreements [crate=dib_verus]	
+940	2026-11-09T00:11:57+00:00	exit=101	115s	mutation 4 [crate=mutation/m4/dib_verus]	verification results:: 1293 verified, 1 errors
+942	2026-11-09T00:12:13+00:00	exit=0	56s	M4c2: induction over one to sixteen RLE8 red rows [crate=dib_verus]	verification results:: 1352 verified, 0 errors
+943	2026-11-09T00:13:52+00:00	exit=101	115s	mutation 5 [crate=mutation/m5/dib_verus]	verification results:: 1293 verified, 1 errors
+945	2026-11-09T00:15:40+00:00	exit=101	108s	mutation 6 [crate=mutation/m6/dib_verus]	verification results:: 1293 verified, 1 errors
+944	2026-11-09T00:16:39+00:00	exit=101	184s	M4c2: concrete H_k P^k E header and row induction [crate=dib_verus]	
+946	2026-11-09T00:17:30+00:00	exit=101	110s	mutation 7 [crate=mutation/m7/dib_verus]	verification results:: 1293 verified, 1 errors
+947	2026-11-09T00:18:25+00:00	exit=0	58s	M4c2: staged symbolic RLE header without compute over k [crate=dib_verus]	verification results:: 1355 verified, 0 errors
+948	2026-11-09T00:19:17+00:00	exit=101	107s	mutation 8 [crate=mutation/m8/dib_verus]	verification results:: 1293 verified, 1 errors
+949	2026-11-09T00:21:11+00:00	exit=101	114s	mutation 9 [crate=mutation/m9/dib_verus]	verification results:: 1293 verified, 1 errors
+950	2026-11-09T00:23:05+00:00	exit=101	114s	mutation 10 [crate=mutation/m10/dib_verus]	verification results:: 1293 verified, 1 errors
+951	2026-11-09T00:25:02+00:00	exit=101	117s	mutation 11 [crate=mutation/m11/dib_verus]	verification results:: 1293 verified, 1 errors
+952	2026-11-09T00:26:57+00:00	exit=101	115s	mutation 12 [crate=mutation/m12/dib_verus]	verification results:: 1293 verified, 1 errors
+953	2026-11-09T00:28:52+00:00	exit=101	115s	mutation 14 [crate=mutation/m14/dib_verus]	verification results:: 1293 verified, 1 errors
+954	2026-11-09T00:30:47+00:00	exit=101	115s	mutation 15 [crate=mutation/m15/dib_verus]	verification results:: 1293 verified, 1 errors
+955	2026-11-09T00:32:41+00:00	exit=101	113s	mutation 17 [crate=mutation/m17/dib_verus]	verification results:: 1293 verified, 1 errors
+956	2026-11-09T00:34:34+00:00	exit=101	113s	mutation 18 [crate=mutation/m18/dib_verus]	verification results:: 1293 verified, 1 errors
+957	2026-11-09T00:36:30+00:00	exit=0	115s	mutation 20 [crate=mutation/m20/dib_verus]	verification results:: 1294 verified, 0 errors
+958	2026-11-09T00:38:21+00:00	exit=101	111s	mutation 21 [crate=mutation/m21/dib_verus]	verification results:: 1293 verified, 1 errors
+959	2026-11-09T00:40:10+00:00	exit=101	109s	mutation 22 [crate=mutation/m22/dib_verus]	verification results:: 1293 verified, 1 errors
+960	2026-11-09T00:41:59+00:00	exit=101	109s	mutation 25 [crate=mutation/m25/dib_verus]	verification results:: 1293 verified, 1 errors
+961	2026-11-09T00:43:50+00:00	exit=101	110s	mutation 26 [crate=mutation/m26/dib_verus]	verification results:: 1293 verified, 1 errors
+962	2026-11-09T00:45:37+00:00	exit=101	107s	mutation 27 [crate=mutation/m27/dib_verus]	verification results:: 1293 verified, 1 errors
+963	2026-11-09T00:47:30+00:00	exit=101	113s	mutation 28 [crate=mutation/m28/dib_verus]	verification results:: 1293 verified, 1 errors
+964	2026-11-09T00:49:26+00:00	exit=101	116s	mutation 29 [crate=mutation/m29/dib_verus]	verification results:: 1293 verified, 1 errors
+965	2026-11-09T00:51:23+00:00	exit=101	117s	mutation 30 [crate=mutation/m30/dib_verus]	verification results:: 1293 verified, 1 errors
+966	2026-11-09T00:53:14+00:00	exit=101	111s	mutation 31 [crate=mutation/m31/dib_verus]	verification results:: 1293 verified, 1 errors
+967	2026-11-09T00:55:04+00:00	exit=101	110s	mutation 32 [crate=mutation/m32/dib_verus]	verification results:: 1293 verified, 1 errors
+968	2026-11-09T00:56:54+00:00	exit=101	110s	mutation 33 [crate=mutation/m33/dib_verus]	verification results:: 1293 verified, 1 errors
+969	2026-11-09T00:58:48+00:00	exit=101	113s	mutation 34 [crate=mutation/m34/dib_verus]	verification results:: 1293 verified, 1 errors
+970	2026-11-09T01:00:41+00:00	exit=101	112s	mutation 35 [crate=mutation/m35/dib_verus]	verification results:: 1293 verified, 1 errors
+971	2026-11-09T03:06:30+00:00	exit=101	57s	M4c2: red suffix after each symbolic RLE row [crate=dib_verus]	verification results:: 1357 verified, 4 errors
+972	2026-11-09T03:09:19+00:00	exit=101	56s	M4c2: red-prefix replay second proof shape [crate=dib_verus]	verification results:: 1362 verified, 1 errors
+973	2026-11-09T03:10:39+00:00	exit=101	109s	mutation 2-exec [crate=mutation/m2-exec/dib_verus]	verification results:: 1293 verified, 1 errors
+974	2026-11-09T03:10:58+00:00	exit=0	60s	M4c2: red-prefix replay list push normalization [crate=dib_verus]	verification results:: 1363 verified, 0 errors
+975	2026-11-09T03:12:32+00:00	exit=101	113s	mutation 16-exec [crate=mutation/m16-exec/dib_verus]	verification results:: 1293 verified, 1 errors
+976	2026-11-09T03:13:25+00:00	exit=0	56s	M4c2: full L3 H_k plus red pixel output [crate=dib_verus]	verification results:: 1366 verified, 0 errors
+977	2026-11-09T03:14:17+00:00	exit=101	105s	mutation 19-exec [crate=mutation/m19-exec/dib_verus]	verification results:: 1294 verified, 1 errors
+978	2026-11-09T03:15:44+00:00	exit=0	115s	M4c2: clean final L3 and 209-vector reverify [crate=dib_verus]	verification results:: 1367 verified, 0 errors
+979	2026-11-09T03:16:05+00:00	exit=101	108s	mutation 26-exec [crate=mutation/m26-exec/dib_verus]	verification results:: 1293 verified, 1 errors
+980	2026-11-09T03:17:54+00:00	exit=101	109s	mutation 34-exec [crate=mutation/m34-exec/dib_verus]	verification results:: 1293 verified, 1 errors
+981	2026-11-09T03:20:16+00:00	exit=101	113s	mutation 27-exec [crate=mutation/m27-exec/dib_verus]	verification results:: 1293 verified, 1 errors
+982	2026-11-09T03:39:04+00:00	exit=0	124s	M4d clean full verification after guarded mask reads [crate=dib_verus]	verification results:: 1367 verified, 0 errors
+983	2026-11-09T03:43:30+00:00	exit=101	123s	mutation 1 [crate=mutation/m1/dib_verus]	verification results:: 1366 verified, 1 errors
+984	2026-11-09T03:45:30+00:00	exit=101	120s	mutation 2 [crate=mutation/m2/dib_verus]	verification results:: 1366 verified, 1 errors
+985	2026-11-09T03:47:29+00:00	exit=101	119s	mutation 3 [crate=mutation/m3/dib_verus]	verification results:: 1366 verified, 1 errors
+986	2026-11-09T03:49:32+00:00	exit=101	123s	mutation 4 [crate=mutation/m4/dib_verus]	verification results:: 1366 verified, 1 errors
+987	2026-11-09T03:51:32+00:00	exit=101	120s	mutation 5 [crate=mutation/m5/dib_verus]	verification results:: 1366 verified, 1 errors
+988	2026-11-09T03:53:33+00:00	exit=101	121s	mutation 6 [crate=mutation/m6/dib_verus]	verification results:: 1366 verified, 1 errors
+989	2026-11-09T03:55:32+00:00	exit=101	119s	mutation 7 [crate=mutation/m7/dib_verus]	verification results:: 1366 verified, 1 errors
+990	2026-11-09T03:57:28+00:00	exit=101	116s	mutation 8 [crate=mutation/m8/dib_verus]	verification results:: 1366 verified, 1 errors
+991	2026-11-09T03:59:28+00:00	exit=101	120s	mutation 9 [crate=mutation/m9/dib_verus]	verification results:: 1366 verified, 1 errors
+992	2026-11-09T04:01:27+00:00	exit=101	119s	mutation 10 [crate=mutation/m10/dib_verus]	verification results:: 1366 verified, 1 errors
+993	2026-11-09T04:03:25+00:00	exit=101	118s	mutation 11 [crate=mutation/m11/dib_verus]	verification results:: 1366 verified, 1 errors
+994	2026-11-09T04:05:20+00:00	exit=101	115s	mutation 12 [crate=mutation/m12/dib_verus]	verification results:: 1366 verified, 1 errors
+995	2026-11-09T04:07:12+00:00	exit=101	112s	mutation 13 [crate=mutation/m13/dib_verus]	verification results:: 1366 verified, 1 errors
+996	2026-11-09T04:09:04+00:00	exit=101	111s	mutation 14 [crate=mutation/m14/dib_verus]	verification results:: 1366 verified, 1 errors
+997	2026-11-09T04:10:55+00:00	exit=101	111s	mutation 15 [crate=mutation/m15/dib_verus]	verification results:: 1366 verified, 1 errors
+998	2026-11-09T04:12:52+00:00	exit=101	117s	mutation 16 [crate=mutation/m16/dib_verus]	verification results:: 1366 verified, 1 errors
+999	2026-11-09T04:14:49+00:00	exit=101	117s	mutation 17 [crate=mutation/m17/dib_verus]	verification results:: 1366 verified, 1 errors
+1000	2026-11-09T04:16:46+00:00	exit=101	117s	mutation 18 [crate=mutation/m18/dib_verus]	verification results:: 1366 verified, 1 errors
+1001	2026-11-09T04:18:38+00:00	exit=101	112s	mutation 19 [crate=mutation/m19/dib_verus]	verification results:: 1367 verified, 1 errors
+1002	2026-11-09T04:20:33+00:00	exit=0	115s	mutation 20 [crate=mutation/m20/dib_verus]	verification results:: 1367 verified, 0 errors
+1003	2026-11-09T04:22:28+00:00	exit=101	115s	mutation 21 [crate=mutation/m21/dib_verus]	verification results:: 1366 verified, 1 errors
+1004	2026-11-09T04:24:22+00:00	exit=101	113s	mutation 22 [crate=mutation/m22/dib_verus]	verification results:: 1366 verified, 1 errors
+1005	2026-11-09T04:26:14+00:00	exit=101	112s	mutation 23 [crate=mutation/m23/dib_verus]	verification results:: 1366 verified, 1 errors
+1006	2026-11-09T04:28:06+00:00	exit=101	111s	mutation 24 [crate=mutation/m24/dib_verus]	verification results:: 1366 verified, 1 errors
+1007	2026-11-09T04:29:58+00:00	exit=101	112s	mutation 25 [crate=mutation/m25/dib_verus]	verification results:: 1366 verified, 1 errors
+1008	2026-11-09T04:31:57+00:00	exit=101	119s	mutation 26 [crate=mutation/m26/dib_verus]	verification results:: 1366 verified, 1 errors
+1009	2026-11-09T04:33:59+00:00	exit=101	122s	mutation 27 [crate=mutation/m27/dib_verus]	verification results:: 1366 verified, 1 errors
+1010	2026-11-09T04:35:56+00:00	exit=101	117s	mutation 28 [crate=mutation/m28/dib_verus]	verification results:: 1366 verified, 1 errors
+1011	2026-11-09T04:37:54+00:00	exit=101	118s	mutation 29 [crate=mutation/m29/dib_verus]	verification results:: 1366 verified, 1 errors
+1012	2026-11-09T04:39:55+00:00	exit=101	121s	mutation 30 [crate=mutation/m30/dib_verus]	verification results:: 1366 verified, 1 errors
+1013	2026-11-09T04:41:51+00:00	exit=101	116s	mutation 31 [crate=mutation/m31/dib_verus]	verification results:: 1366 verified, 1 errors
+1014	2026-11-09T04:43:44+00:00	exit=101	113s	mutation 32 [crate=mutation/m32/dib_verus]	verification results:: 1366 verified, 1 errors
+1015	2026-11-09T04:45:37+00:00	exit=101	113s	mutation 33 [crate=mutation/m33/dib_verus]	verification results:: 1366 verified, 1 errors
+1016	2026-11-09T04:47:29+00:00	exit=101	112s	mutation 34 [crate=mutation/m34/dib_verus]	verification results:: 1366 verified, 1 errors
+1017	2026-11-09T04:49:24+00:00	exit=101	114s	mutation 35 [crate=mutation/m35/dib_verus]	verification results:: 1366 verified, 1 errors

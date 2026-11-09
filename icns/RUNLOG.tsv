@@ -1,0 +1,208 @@
+1	2026-11-07T13:24:56+00:00	exit=0	4s	M2 baseline: skeleton verification	verification results:: 1 verified, 0 errors
+2	2026-11-07T13:28:16+00:00	exit=101	4s	lab: discover Verus facilities	
+3	2026-11-07T13:28:27+00:00	exit=101	3s	lab2: facilities round 2	
+4	2026-11-07T13:28:38+00:00	exit=101	4s	lab3: facilities round 3	verification results:: 11 verified, 1 errors
+5	2026-11-07T13:29:11+00:00	exit=101	3s	lab4: proof-call/equational facilities	
+6	2026-11-07T13:30:00+00:00	exit=101	5s	lab5: format! postcondition	verification results:: 1 verified, 1 errors
+7	2026-11-07T13:30:34+00:00	exit=0	5s	lab6: facilities round 6	verification results:: 14 verified, 0 errors
+8	2026-11-07T13:32:18+00:00	exit=101	4s	lab7: spec-level contract constructs	
+9	2026-11-07T13:32:26+00:00	exit=101	4s	lab8: fix spec arith + Debug	verification results:: 5 verified, 1 errors
+10	2026-11-07T13:32:41+00:00	exit=101	4s	lab9: byte-string literal in spec	verification results:: 1 verified, 2 errors
+11	2026-11-07T13:32:52+00:00	exit=101	0s	lab10: u32 code tables + when_used_as_spec	
+12	2026-11-07T13:33:03+00:00	exit=0	4s	lab11: when_used_as_spec resolution	verification results:: 4 verified, 0 errors
+13	2026-11-07T13:33:27+00:00	exit=101	4s	lab12: parse-invariant -> decoder call site	
+14	2026-11-07T13:33:39+00:00	exit=101	5s	lab13: trigger annotation	verification results:: 4 verified, 1 errors
+15	2026-11-07T13:33:54+00:00	exit=0	6s	lab14: fix stub postcondition	verification results:: 5 verified, 0 errors
+16	2026-11-07T13:35:45+00:00	exit=0	5s	lab15: char/hex4 reasoning	verification results:: 4 verified, 0 errors
+17	2026-11-07T13:36:35+00:00	exit=101	0s	M2: wrap impl in verus!, add model module	
+18	2026-11-07T13:36:48+00:00	exit=101	4s	M2: model module compiles	
+19	2026-11-07T13:37:01+00:00	exit=101	4s	lab: std substitutes	
+20	2026-11-07T13:37:09+00:00	exit=101	4s	lab: std substitutes take 2	
+21	2026-11-07T13:37:56+00:00	exit=101	4s	lab: string->code bridge	
+22	2026-11-07T13:38:10+00:00	exit=101	1s	lab: string->code bridge 2	
+23	2026-11-07T13:38:17+00:00	exit=101	3s	lab: string->code bridge 3	
+24	2026-11-07T13:38:25+00:00	exit=101	3s	lab: string->code bridge 4	
+25	2026-11-07T13:38:33+00:00	exit=101	4s	lab: string->code bridge 5	
+26	2026-11-07T13:38:42+00:00	exit=101	4s	lab: deref coercion for String	
+27	2026-11-07T13:38:59+00:00	exit=101	4s	lab: as_str/as_bytes/len	
+28	2026-11-07T13:39:15+00:00	exit=101	4s	lab-only: as_str/as_bytes/len	
+29	2026-11-07T13:39:43+00:00	exit=101	5s	lab-only: hex + type_code bridge	verification results:: 11 verified, 1 errors
+30	2026-11-07T13:40:02+00:00	exit=101	3s	lab-only: type_code bridge with lemma	
+31	2026-11-07T13:40:11+00:00	exit=101	4s	lab-only: type_code bridge v2	
+32	2026-11-07T13:40:23+00:00	exit=101	5s	lab-only: type_code bridge v3	
+33	2026-11-07T13:40:31+00:00	exit=101	4s	lab-only: type_code bridge v4	
+34	2026-11-07T13:40:37+00:00	exit=101	0s	lab-only: type_code bridge v5	
+35	2026-11-07T13:40:50+00:00	exit=101	5s	lab-only: type_code bridge v6	verification results:: 12 verified, 2 errors
+36	2026-11-07T13:41:00+00:00	exit=101	5s	lab-only: type_code bridge v7	verification results:: 13 verified, 2 errors
+37	2026-11-07T13:41:18+00:00	exit=101	5s	lab-only: type_code bridge v8	verification results:: 14 verified, 2 errors
+38	2026-11-07T13:41:28+00:00	exit=101	4s	lab-only: type_code bridge v9	verification results:: 14 verified, 4 errors
+39	2026-11-07T13:41:39+00:00	exit=101	5s	lab-only: type_code bridge v10	verification results:: 14 verified, 1 errors
+40	2026-11-07T13:41:48+00:00	exit=0	5s	lab-only: type_code bridge v11	verification results:: 15 verified, 0 errors
+41	2026-11-07T13:42:52+00:00	exit=0	4s	lab: cast obligations	verification results:: 4 verified, 0 errors
+42	2026-11-07T13:43:40+00:00	exit=101	6s	lab: std constructs in verus	verification results:: 6 verified, 1 errors
+43	2026-11-07T13:44:56+00:00	exit=101	5s	M2 build 1: full impl compiles	verification results:: 6 verified, 1 errors
+44	2026-11-07T13:45:05+00:00	exit=101	1s	M2 build 2: impl + model	
+45	2026-11-07T13:45:14+00:00	exit=101	4s	M2 build 3: constant added	
+46	2026-11-07T13:45:27+00:00	exit=101	3s	M2 build 4: fix refs	
+47	2026-11-07T13:46:06+00:00	exit=101	3s	M2 build 5: ascii bridge	
+48	2026-11-07T13:46:26+00:00	exit=101	8s	M2 build 6: broadcast use	verification results:: 37 verified, 5 errors
+49	2026-11-07T13:46:50+00:00	exit=101	4s	lab: array eq in ensures	verification results:: 1 verified, 1 errors
+50	2026-11-07T13:47:02+00:00	exit=0	4s	lab: explicit index codes	verification results:: 3 verified, 0 errors
+51	2026-11-07T13:47:18+00:00	exit=101	4s	lab: as_bytes spec bridge	verification results:: 1 verified, 1 errors
+52	2026-11-07T13:47:24+00:00	exit=101	1s	lab: as_bytes bridge 2	
+53	2026-11-07T13:47:32+00:00	exit=101	4s	lab: as_bytes bridge 3	verification results:: 1 verified, 1 errors
+54	2026-11-07T13:47:44+00:00	exit=101	7s	M2 build 7: tables fixed	verification results:: 39 verified, 3 errors
+55	2026-11-07T13:48:09+00:00	exit=101	7s	M2 build 8: rle loop invariants	verification results:: 39 verified, 3 errors
+56	2026-11-07T13:48:23+00:00	exit=101	7s	M2 build 9: rle inner invariants	verification results:: 39 verified, 3 errors
+57	2026-11-07T13:48:48+00:00	exit=101	8s	M2 build 10: rle_copy helper	verification results:: 39 verified, 4 errors
+58	2026-11-07T13:49:04+00:00	exit=101	8s	M2 build 11: simplified rle_copy	verification results:: 39 verified, 4 errors
+59	2026-11-07T13:49:21+00:00	exit=101	4s	lab: mut array elem call	verification results:: 3 verified, 2 errors
+60	2026-11-07T13:49:31+00:00	exit=101	4s	lab: mut array elem call 2	verification results:: 2 verified, 3 errors
+61	2026-11-07T13:49:42+00:00	exit=101	4s	lab: mut array elem call 3	verification results:: 3 verified, 2 errors
+62	2026-11-07T13:49:59+00:00	exit=101	4s	lab: copy via exec len	verification results:: 1 verified, 2 errors
+63	2026-11-07T13:50:15+00:00	exit=0	5s	lab: copy bounds explicit	verification results:: 3 verified, 0 errors
+64	2026-11-07T13:50:29+00:00	exit=101	8s	M2 build 12: rle_copy exec bounds	verification results:: 40 verified, 3 errors
+65	2026-11-07T13:50:49+00:00	exit=101	7s	M2 build 13: channel length asserts	verification results:: 41 verified, 2 errors
+66	2026-11-07T13:51:14+00:00	exit=0	8s	M2 build 14: ascii order + ci invariant	verification results:: 43 verified, 0 errors
+67	2026-11-07T13:53:07+00:00	exit=0	7s	M2 build 15: T6 call-site witnesses	verification results:: 47 verified, 0 errors
+68	2026-11-07T13:54:04+00:00	exit=0	7s	M2 build 16: cleanup imports	verification results:: 47 verified, 0 errors
+69	2026-11-07T13:54:24+00:00	exit=0	7s	M2 build 17: verus_only import guard	verification results:: 47 verified, 0 errors
+70	2026-11-07T13:55:14+00:00	exit=0	0s	M2 final: all of T1-T6 obligations	
+71	2026-11-07T13:55:22+00:00	exit=0	0s	M2 final full: T1-T6 (forced reverify)	
+72	2026-11-07T13:55:38+00:00	exit=0	7s	M2 final full: T1-T6 (content change)	verification results:: 47 verified, 0 errors
+73	2026-11-07T13:57:13+00:00	exit=0	7s	M2: explicit u32-no-truncation proofs	verification results:: 47 verified, 0 errors
+74	2026-11-07T13:58:10+00:00	exit=0	7s	M2 FINAL: T1-T6	verification results:: 47 verified, 0 errors
+75	2026-11-07T13:58:32+00:00	exit=0	6s	M2 FINAL (frozen source): T1-T6	verification results:: 47 verified, 0 errors
+76	2026-11-07T13:58:43+00:00	exit=0	6s	M2 FINAL 2: T1-T6	verification results:: 47 verified, 0 errors
+77	2026-11-07T15:47:53+00:00	exit=0	7s	M3: port MP reference model (T7/L1-L6 scaffolding)	verification results:: 94 verified, 0 errors
+78	2026-11-07T15:50:29+00:00	exit=0	0s	M3 FINAL: MP reference model + L1-L6 scaffolding, parse unchanged (94 verified)	
+79	2026-11-07T16:06:07+00:00	exit=0	8s	M3b: L1, L2 stated + instantiated	verification results:: 102 verified, 0 errors
+80	2026-11-07T16:07:43+00:00	exit=101	4s	M3b: T7 ok/err bridge lemmas, T8	
+81	2026-11-07T16:08:03+00:00	exit=101	4s	M3b: T7 ok/err bridge lemmas, T8	
+82	2026-11-07T16:08:26+00:00	exit=101	3s	M3b: T7 ok/err bridge lemmas, T8	
+83	2026-11-07T16:08:42+00:00	exit=101	8s	M3b: T7 ok/err bridge lemmas, T8	verification results:: 113 verified, 3 errors
+84	2026-11-07T16:09:08+00:00	exit=101	7s	M3b: T7 ok/err bridge lemmas, T8	verification results:: 115 verified, 1 errors
+85	2026-11-07T16:09:25+00:00	exit=101	7s	M3b: T7/T8 bridge lemmas	verification results:: 115 verified, 1 errors
+86	2026-11-07T16:09:47+00:00	exit=101	7s	M3b: T7/T8 bridge lemmas	verification results:: 116 verified, 1 errors
+87	2026-11-07T16:10:02+00:00	exit=101	7s	M3b: T7/T8 bridge lemmas	verification results:: 117 verified, 2 errors
+88	2026-11-07T16:10:17+00:00	exit=101	7s	M3b: T7/T8 bridge lemmas	verification results:: 117 verified, 2 errors
+89	2026-11-07T16:10:33+00:00	exit=101	6s	M3b: T7/T8 bridge lemmas	verification results:: 117 verified, 1 errors
+90	2026-11-07T16:10:47+00:00	exit=0	7s	M3b: T7/T8 bridge lemmas	verification results:: 118 verified, 0 errors
+91	2026-11-07T16:11:02+00:00	exit=0	7s	M3b: T7/T8 bridge lemmas	verification results:: 118 verified, 0 errors
+92	2026-11-07T16:17:37+00:00	exit=101	3s	M3b: experiment view facts	
+93	2026-11-07T16:17:48+00:00	exit=101	3s	M3b: experiment view facts	
+94	2026-11-07T16:18:02+00:00	exit=101	4s	M3b: experiment view facts	
+95	2026-11-07T16:18:23+00:00	exit=101	3s	M3b: experiment view facts	
+96	2026-11-07T16:18:35+00:00	exit=101	7s	M3b: experiment view facts	verification results:: 118 verified, 3 errors
+97	2026-11-07T16:18:57+00:00	exit=101	4s	M3b: experiment views v2	
+98	2026-11-07T16:19:11+00:00	exit=101	8s	M3b: experiment views v2	verification results:: 120 verified, 1 errors
+99	2026-11-07T16:19:28+00:00	exit=101	8s	M3b: experiment views v2	verification results:: 120 verified, 1 errors
+100	2026-11-07T16:19:51+00:00	exit=101	7s	M3b: experiment views v2	verification results:: 120 verified, 1 errors
+101	2026-11-07T16:20:09+00:00	exit=0	8s	M3b: experiment views v2	verification results:: 121 verified, 0 errors
+102	2026-11-07T16:20:28+00:00	exit=0	9s	M3b: experiment views v2	verification results:: 121 verified, 0 errors
+103	2026-11-07T16:25:13+00:00	exit=101	1s	M3b: mp-direct bridge lemmas	
+104	2026-11-07T16:26:44+00:00	exit=0	8s	M3b: restore M2 icns + current model	verification results:: 123 verified, 0 errors
+105	2026-11-07T16:26:59+00:00	exit=0	1s	M3b: restore M2 icns + current model (rerun)	
+106	2026-11-07T16:28:33+00:00	exit=101	1s	M3b: parse carries ghost offsets, T7 postcondition	
+107	2026-11-07T16:28:41+00:00	exit=101	3s	M3b: parse carries ghost offsets, T7 postcondition	
+108	2026-11-07T16:28:54+00:00	exit=101	3s	M3b: parse ghost offsets v2	
+109	2026-11-07T16:29:03+00:00	exit=101	4s	M3b: parse ghost offsets v3	
+110	2026-11-07T16:29:17+00:00	exit=101	8s	M3b: parse ghost offsets v4	verification results:: 118 verified, 6 errors
+111	2026-11-07T16:30:54+00:00	exit=0	7s	orchestrator: restore last green state (M2 icns.rs + M3 model.rs), keep wip in icns.rs.wip-m3b	verification results:: 124 verified, 0 errors
+112	2026-11-07T16:32:28+00:00	exit=101	8s	M3c: repair magic bridge and T7 parser loop	verification results:: 119 verified, 5 errors
+113	2026-11-07T16:33:30+00:00	exit=101	8s	M3c: prove T7 and model-derived T8 decoder preconditions	verification results:: 124 verified, 1 errors
+114	2026-11-07T16:33:51+00:00	exit=0	8s	M3c: establish T7 and T8 with exact entry matching	verification results:: 125 verified, 0 errors
+115	2026-11-07T16:34:57+00:00	exit=0	8s	M3c: prove repeated-entry prefix and L4	verification results:: 130 verified, 0 errors
+116	2026-11-07T16:35:24+00:00	exit=101	3s	M3c: prove L5 count-limit precedence and three witnesses	
+117	2026-11-07T16:35:42+00:00	exit=0	8s	M3c: type-correct L5 proof and vector instantiations	verification results:: 133 verified, 0 errors
+118	2026-11-07T16:36:23+00:00	exit=101	8s	M3c: prove malformed 4097th entry precedence and L6 vectors	verification results:: 137 verified, 1 errors
+119	2026-11-07T16:36:54+00:00	exit=0	8s	M3c: complete L6 with fixed-length q=8 boundary	verification results:: 139 verified, 0 errors
+120	2026-11-07T16:37:45+00:00	exit=0	7s	M3c: quantify T8 over arbitrary candidate entry lists	verification results:: 141 verified, 0 errors
+121	2026-11-07T16:38:09+00:00	exit=0	8s	M3c: prove T8 at a concrete parse call for every E	verification results:: 142 verified, 0 errors
+122	2026-11-07T16:55:49+00:00	exit=101	4s	M4a: MR/MC/MA model definitions	
+123	2026-11-07T16:56:07+00:00	exit=0	7s	M4a: MR/MC/MA model definitions (type fixes)	verification results:: 145 verified, 0 errors
+124	2026-11-07T16:57:23+00:00	exit=0	9s	M4a: MC/MA over Entry and MpEntry model lists	verification results:: 145 verified, 0 errors
+125	2026-11-07T17:01:50+00:00	exit=101	4s	M4a: RLE model + MC/MA definitions	
+126	2026-11-07T17:02:07+00:00	exit=101	4s	M4a: RLE model int/nat fixes	
+127	2026-11-07T17:02:28+00:00	exit=101	4s	M4a: RLE model clean reinstall	
+128	2026-11-07T17:02:39+00:00	exit=101	3s	M4a: RLE model type fixes v2	
+129	2026-11-07T17:03:58+00:00	exit=101	3s	M4a: RLE model with rle_pref loop invariant	
+130	2026-11-07T17:04:36+00:00	exit=101	3s	M4a: RLE model v2 with acc-based rle_pref	
+131	2026-11-07T17:05:06+00:00	exit=101	10s	M4a: RLE model v2 type fixes	verification results:: 153 verified, 4 errors
+132	2026-11-07T17:05:39+00:00	exit=101	10s	M4a: RLE model v2 lemma fixes	verification results:: 153 verified, 4 errors
+133	2026-11-07T17:06:24+00:00	exit=101	9s	M4a: RLE model v2 cur-bounds	verification results:: 154 verified, 3 errors
+134	2026-11-07T17:06:44+00:00	exit=101	9s	M4a: RLE model v2 cursor bounds	verification results:: 155 verified, 2 errors
+135	2026-11-07T17:07:16+00:00	exit=101	9s	M4a: RLE model v2 rest_step flip	verification results:: 156 verified, 1 errors
+136	2026-11-07T17:07:41+00:00	exit=0	8s	M4a: RLE model v2 all-channels-len	verification results:: 157 verified, 0 errors
+137	2026-11-07T17:09:21+00:00	exit=0	8s	M4a: write_seq prefix lemma	verification results:: 159 verified, 0 errors
+138	2026-11-07T17:10:23+00:00	exit=101	1s	M4a: write_seq push lemma	
+139	2026-11-07T17:10:31+00:00	exit=101	4s	M4a: write_seq push lemma v2	
+140	2026-11-07T17:10:47+00:00	exit=101	4s	M4a: write_seq push lemma v3	
+141	2026-11-07T17:11:06+00:00	exit=0	11s	M4a: write_seq push lemma v4	verification results:: 160 verified, 0 errors
+142	2026-11-07T17:11:11+00:00	exit=0	1s	M4a: write_seq push lemma v5	
+143	2026-11-07T17:11:43+00:00	exit=101	12s	M4a: rle_bytes push and write step lemmas	verification results:: 161 verified, 1 errors
+144	2026-11-07T17:12:11+00:00	exit=0	19s	M4a: rle_bytes push requires	verification results:: 162 verified, 0 errors
+145	2026-11-07T17:12:59+00:00	exit=0	19s	M4a: rle_copy model postcondition	verification results:: 162 verified, 0 errors
+146	2026-11-07T17:13:26+00:00	exit=0	10s	M4a: RLE error branch model lemmas	verification results:: 166 verified, 0 errors
+147	2026-11-07T17:14:08+00:00	exit=101	11s	M4a: rle_decode carries rle_pref	verification results:: 165 verified, 1 errors
+148	2026-11-07T17:14:32+00:00	exit=101	9s	M4a: rle_decode use saved cursor	verification results:: 165 verified, 1 errors
+149	2026-11-07T17:15:05+00:00	exit=101	9s	M4a: rle_decode pref rewrite bridge	verification results:: 166 verified, 1 errors
+150	2026-11-07T17:15:24+00:00	exit=101	10s	M4a: rle_pref_write subrange bounds	verification results:: 166 verified, 1 errors
+151	2026-11-07T17:15:44+00:00	exit=0	9s	M4a: rle_pref_write strengthen	verification results:: 167 verified, 0 errors
+152	2026-11-07T17:16:36+00:00	exit=101	1s	M4a: MA lemmas and T11 decode_mask	
+153	2026-11-07T17:16:55+00:00	exit=101	1s	M4a: MA lemmas len casts	
+154	2026-11-07T17:17:19+00:00	exit=0	9s	M4a: MA lemmas parens	verification results:: 173 verified, 0 errors
+155	2026-11-07T17:17:59+00:00	exit=101	9s	M4a: T10 decode_rgb postcondition	verification results:: 181 verified, 2 errors
+156	2026-11-07T17:18:18+00:00	exit=101	10s	M4a: interleave k bound	verification results:: 182 verified, 2 errors
+157	2026-11-07T17:18:42+00:00	exit=0	12s	M4a: rgb out invariant pointwise	verification results:: 183 verified, 0 errors
+158	2026-11-07T17:19:46+00:00	exit=101	1s	M4a: L3 large exact mask	
+159	2026-11-07T17:20:08+00:00	exit=101	4s	M4a: L3 via ma_ms	
+160	2026-11-07T17:20:28+00:00	exit=101	11s	M4a: L3 remove bad assert	verification results:: 184 verified, 1 errors
+161	2026-11-07T17:20:48+00:00	exit=101	4s	M4a: L3 scan unfolding	
+162	2026-11-07T17:21:07+00:00	exit=0	11s	M4a: L3 be32 nat fix	verification results:: 185 verified, 0 errors
+163	2026-11-07T17:21:45+00:00	exit=0	12s	M4a: T9/T10/T11 wrappers	verification results:: 193 verified, 0 errors
+164	2026-11-07T17:23:07+00:00	exit=0	67s	M4a: full reverify after cargo clean (T9,T10,T11,L3)	verification results:: 193 verified, 0 errors
+165	2026-11-07T17:24:54+00:00	exit=0	1s	M4a: final confirmation of T9,T10,T11,L3	
+166	2026-11-07T17:35:27+00:00	exit=101	0s	M4b: MJ model + T12/T13 combine postcondition	
+167	2026-11-07T17:35:55+00:00	exit=101	1s	M4b: MJ model + T12/T13 combine postcondition	
+168	2026-11-07T17:36:11+00:00	exit=101	1s	M4b: MJ model + T12/T13 combine postcondition	
+169	2026-11-07T17:36:38+00:00	exit=101	1s	M4b: MJ model + T12/T13 combine postcondition	
+170	2026-11-07T17:36:51+00:00	exit=101	1s	M4b: MJ model + T12/T13 combine postcondition	
+171	2026-11-07T17:37:14+00:00	exit=101	13s	M4b: MJ model + T12/T13 combine postcondition	verification results:: 208 verified, 1 errors
+172	2026-11-07T17:37:43+00:00	exit=0	12s	M4b: MJ model + T12/T13 combine postcondition	verification results:: 212 verified, 0 errors
+173	2026-11-07T17:38:20+00:00	exit=0	12s	M4b: MJ model + T12/T13 combine postcondition	verification results:: 212 verified, 0 errors
+174	2026-11-07T17:39:43+00:00	exit=0	12s	M4b: T13 statement simplification	verification results:: 212 verified, 0 errors
+175	2026-11-07T17:40:55+00:00	exit=0	64s	M4b: full reverify after cargo clean (MJ, T12, T13)	verification results:: 212 verified, 0 errors
+176	2026-11-07T17:46:05+00:00	exit=1	0s	throwaway: probe compute [crate=mutation/_exp/icns_verus]	
+177	2026-11-07T17:47:25+00:00	exit=0	76s	throwaway: compute-on-model probe [crate=mutation/_exp]	verification results:: 215 verified, 0 errors
+178	2026-11-07T17:48:24+00:00	exit=101	12s	throwaway: probe compute on model calls [crate=mutation/_exp]	
+179	2026-11-07T17:49:32+00:00	exit=101	12s	throwaway: probe compute, corrected model [crate=mutation/_exp]	
+180	2026-11-07T17:49:49+00:00	exit=101	11s	throwaway: probe compute, hex type_hex [crate=mutation/_exp]	
+181	2026-11-07T17:51:55+00:00	exit=101	1s	throwaway: String spec constructors [crate=mutation/_exp]	
+182	2026-11-07T17:52:07+00:00	exit=101	4s	throwaway: String spec constructor candidate [crate=mutation/_exp]	
+183	2026-11-07T17:54:32+00:00	exit=101	11s	throwaway: compute on mp and mc_ms [crate=mutation/_exp]	
+184	2026-11-07T17:55:09+00:00	exit=101	4s	throwaway: compute match-form [crate=mutation/_exp]	
+185	2026-11-07T17:55:17+00:00	exit=101	4s	throwaway: compute match-form [crate=mutation/_exp]	
+186	2026-11-07T17:55:35+00:00	exit=0	12s	throwaway: compute match-form [crate=mutation/_exp]	verification results:: 213 verified, 0 errors
+187	2026-11-07T17:57:58+00:00	exit=0	12s	throwaway: compute mask-h8mk [crate=mutation/_exp]	verification results:: 213 verified, 0 errors
+188	2026-11-07T17:58:38+00:00	exit=101	12s	throwaway: compute rgb-it32 49152-byte output [crate=mutation/_exp]	
+189	2026-11-07T18:00:21+00:00	exit=101	11s	throwaway: compute rgb-it32 verbatim [crate=mutation/_exp]	
+190	2026-11-07T18:01:57+00:00	exit=101	2s	M4c: generated 102 model-vector obligations [crate=icns_verus]	
+191	2026-11-07T18:02:15+00:00	exit=101	13s	M4c: generated 102 model-vector obligations [crate=icns_verus]	
+192	2026-11-07T18:06:46+00:00	exit=0	256s	M4c: generated 102 model-vector obligations [crate=icns_verus]	verification results:: 315 verified, 0 errors
+193	2026-11-07T18:20:29+00:00	exit=101	311s	mutation 1: MP size check >= breaks L2 exact-limit BadMagic [crate=mutation/m1/icns_verus]	verification results:: 309 verified, 6 errors
+195	2026-11-07T18:21:32+00:00	exit=101	33s	M4c: 102-vector file with large-vector lemma cross-check (regenerated) [crate=icns_verus]	
+194	2026-11-07T18:21:32+00:00	exit=101	44s	mutation 2: the entry bound check changed from q>L-off to q>L-off-8 [crate=mutation/m2/icns_verus]	
+196	2026-11-07T18:23:04+00:00	exit=101	79s	mutation 2: the entry bound check changed from q>L-off to q>L-off-8 [crate=mutation/m2/icns_verus]	verification results:: 2159 verified, 0 errors
+197	2026-11-07T18:28:23+00:00	exit=101	318s	mutation 3: TooManyEntries moved ahead of the 4,097th entry's length check [crate=mutation/m3/icns_verus]	verification results:: 314 verified, 1 errors
+198	2026-11-07T18:33:42+00:00	exit=101	319s	mutation 4: the legacy [crate=mutation/m4/icns_verus]	verification results:: 2159 verified, 0 errors
+199	2026-11-07T18:38:46+00:00	exit=101	304s	mutation 5: the range conjunct deleted from entry_inv, i.e. the parse-success range/provenance postcondition weakened [crate=mutation/m5/icns_verus]	verification results:: 313 verified, 2 errors
+200	2026-11-07T18:39:57+00:00	exit=101	71s	mutation 6: a repeat run count changed from control-125 to control-124 [crate=mutation/m6/icns_verus]	verification results:: 2159 verified, 0 errors
+201	2026-11-07T18:43:46+00:00	exit=101	229s	mutation 7: MR's overrun and payload-availability checks swapped, so a missing data byte is reported before the overrun [crate=mutation/m7/icns_verus]	verification results:: 2159 verified, 0 errors
+202	2026-11-07T18:44:57+00:00	exit=101	71s	mutation 8: R11's it32 prefix removal strips eight zero bytes rather than exactly four [crate=mutation/m8/icns_verus]	verification results:: 2159 verified, 0 errors
+203	2026-11-07T18:50:18+00:00	exit=101	321s	mutation 9: MJ's absent-index priority reversed: the mask index is tested before the colour index [crate=mutation/m9/icns_verus]	verification results:: 312 verified, 3 errors
+204	2026-11-07T18:55:25+00:00	exit=101	307s	mutation 10: the RGBA alpha-byte equality removed from combine's modular loop postcondition [crate=mutation/m10/icns_verus]	verification results:: 314 verified, 1 errors
+205	2026-11-07T19:00:54+00:00	exit=101	318s	mutation 3: TooManyEntries moved ahead of the 4,097th entry's length check [crate=mutation/m3/icns_verus]	verification results:: 313 verified, 2 errors
+206	2026-11-07T19:07:34+00:00	exit=0	252s	M4c: final — 102 model-vector obligations plus T1-T13 and L1-L6 [crate=icns_verus]	verification results:: 315 verified, 0 errors
+207	2026-11-07T19:09:26+00:00	exit=0	0s	M4c: final confirmation after cleanup [crate=icns_verus]	
+208	2026-11-07T19:15:01+00:00	exit=0	317s	M4c: definitive full reverify after cargo clean [crate=icns_verus]	verification results:: 315 verified, 0 errors

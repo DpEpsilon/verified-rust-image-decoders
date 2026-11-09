@@ -1,0 +1,7 @@
+mutation 13
+crate result: 577 verified, 1 errors
+error diagnostics: 3
+  assertion failed at src/tga.rs:1927:20
+  function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details at src/tga.rs:1753:1
+  could not compile `tga_verus` (lib) due to 2 previous errors; 1 warning emitted
+log: mutation/m13/failure.log

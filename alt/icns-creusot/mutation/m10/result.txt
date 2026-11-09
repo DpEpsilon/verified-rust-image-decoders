@@ -1,0 +1,1 @@
+mutation 10 direct: run 225, exit=1, log=runs/225.log, failed goals=['vc_t12_combine', 'vc_t13_combine_at_parse']

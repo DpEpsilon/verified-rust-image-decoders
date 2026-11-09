@@ -1,0 +1,1 @@
+mutation 5 direct: run 220, exit=1, log=runs/220.log, failed goals=['vc_map_push', 'vc_combine_at_parse', 'vc_mask_at_parse', 'vc_rgb_at_parse']

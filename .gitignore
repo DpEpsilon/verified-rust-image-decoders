@@ -1,0 +1,10 @@
+target/
+verif/
+.why3find/
+.verus/
+corpus/
+**/tests/corpus_expected.json
+**/runs/*.log
+**/rustc-ice-*.txt
+*.pyc
+__pycache__/

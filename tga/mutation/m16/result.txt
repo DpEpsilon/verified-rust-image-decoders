@@ -1,0 +1,6 @@
+mutation 16
+crate result: 577 verified, 1 errors
+error diagnostics: 2
+  possible arithmetic underflow/overflow at src/tga.rs:1833:13
+  could not compile `tga_verus` (lib) due to 1 previous error; 1 warning emitted
+log: mutation/m16/failure.log

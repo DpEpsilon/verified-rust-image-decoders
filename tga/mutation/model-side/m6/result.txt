@@ -1,0 +1,7 @@
+mutation 6
+crate result: no verification summary (the crate failed to compile, so no obligation was checked)
+error diagnostics: 3
+  expression simplifies to `Err(RleTruncated) == Err(RleOverrun)`, which evaluates to false at src/model_vectors.rs:708:12
+  expression simplifies to false at src/model.rs:6529:12
+  could not compile `tga_verus` (lib) due to 2 previous errors; 1 warning emitted
+log: mutation/m6/failure.log

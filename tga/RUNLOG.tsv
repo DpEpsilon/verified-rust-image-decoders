@@ -1,0 +1,490 @@
+1	2026-11-08T06:29:40+00:00	exit=0	4s	M1: skeleton still verifies [crate=tga_verus]	verification results:: 1 verified, 0 errors
+2	2026-11-08T06:41:24+00:00	exit=101	62s	probe: verus constructs [crate=probe]	verification results:: 2159 verified, 0 errors
+3	2026-11-08T06:41:31+00:00	exit=101	5s	probe2: verus constructs [crate=probe]	verification results:: 10 verified, 3 errors
+4	2026-11-08T06:44:19+00:00	exit=101	4s	probe: mut refs, ghost, struct spec, byte literal [crate=probe]	
+5	2026-11-08T06:44:25+00:00	exit=101	4s	probe: mut refs 2 [crate=probe]	
+6	2026-11-08T06:44:31+00:00	exit=101	4s	probe: mut refs old [crate=probe]	verification results:: 11 verified, 1 errors
+7	2026-11-08T06:44:42+00:00	exit=101	7s	probe: byte literal arrays + subrange eq loop [crate=probe]	verification results:: 3 verified, 1 errors
+8	2026-11-08T06:44:55+00:00	exit=101	4s	probe: refs, struct spec fns, cursor, usize::MAX [crate=probe]	
+9	2026-11-08T06:45:02+00:00	exit=101	3s	probe: refs, struct spec fns, cursor [crate=probe]	
+10	2026-11-08T06:45:09+00:00	exit=101	3s	probe: refs, struct spec fns [crate=probe]	
+11	2026-11-08T06:45:15+00:00	exit=101	4s	probe: refs, struct spec fns 2 [crate=probe]	
+12	2026-11-08T06:45:20+00:00	exit=101	3s	probe: refs, struct spec fns 3 [crate=probe]	
+13	2026-11-08T06:45:28+00:00	exit=101	5s	probe: refs, struct spec fns 4 [crate=probe]	verification results:: 5 verified, 3 errors
+14	2026-11-08T06:46:15+00:00	exit=101	4s	probe: slice len isize bound, vec index write [crate=probe]	verification results:: 4 verified, 5 errors
+15	2026-11-08T06:46:32+00:00	exit=101	4s	probe: sub guards, nonlinear bounds, vec alloc [crate=probe]	verification results:: 6 verified, 2 errors
+16	2026-11-08T06:47:22+00:00	exit=101	3s	probe: visibility, Vec::set, nonlinear, bit_vector, array view [crate=probe]	
+17	2026-11-08T06:47:29+00:00	exit=101	1s	M2 initial: T1/T2/T5 header path [crate=tga_verus]	
+18	2026-11-08T06:47:33+00:00	exit=101	1s	M2 initial: T1/T2/T5 header path [crate=tga_verus]	
+19	2026-11-08T06:47:38+00:00	exit=101	1s	M2 initial: T1/T2/T5 header path [crate=tga_verus]	
+20	2026-11-08T06:47:47+00:00	exit=0	4s	probe: chained cmp in requires [crate=probe]	verification results:: 3 verified, 0 errors
+21	2026-11-08T06:47:55+00:00	exit=101	1s	probe: reproduce requires parse [crate=probe]	
+22	2026-11-08T06:47:58+00:00	exit=101	0s	probe: bisect requires parse [crate=probe]	
+23	2026-11-08T06:48:03+00:00	exit=101	1s	probe: paren-cast in requires [crate=probe]	
+24	2026-11-08T06:48:07+00:00	exit=101	1s	probe variant [crate=probe]	
+25	2026-11-08T06:48:10+00:00	exit=0	3s	probe variant [crate=probe]	verification results:: 1 verified, 0 errors
+26	2026-11-08T06:48:14+00:00	exit=0	4s	probe variant [crate=probe]	verification results:: 1 verified, 0 errors
+27	2026-11-08T06:48:18+00:00	exit=0	4s	probe variant [crate=probe]	verification results:: 1 verified, 0 errors
+28	2026-11-08T06:48:23+00:00	exit=101	0s	M2: header path T1/T2/T5 [crate=tga_verus]	
+29	2026-11-08T06:48:31+00:00	exit=0	4s	probe variant [crate=probe]	verification results:: 1 verified, 0 errors
+30	2026-11-08T06:48:35+00:00	exit=0	4s	probe variant [crate=probe]	verification results:: 1 verified, 0 errors
+31	2026-11-08T06:48:39+00:00	exit=0	4s	probe variant [crate=probe]	verification results:: 1 verified, 0 errors
+32	2026-11-08T06:48:45+00:00	exit=0	3s	probe ml call [crate=probe]	verification results:: 1 verified, 0 errors
+33	2026-11-08T06:48:49+00:00	exit=101	1s	probe spec method in requires [crate=probe]	
+34	2026-11-08T06:48:52+00:00	exit=101	1s	probe: free spec fn in requires [crate=probe]	
+35	2026-11-08T06:48:59+00:00	exit=0	3s	probe t1 alone [crate=probe]	verification results:: 1 verified, 0 errors
+36	2026-11-08T06:49:03+00:00	exit=0	4s	probe t2 alone [crate=probe]	verification results:: 1 verified, 0 errors
+37	2026-11-08T06:49:07+00:00	exit=101	0s	probe exact convert_index [crate=probe]	
+38	2026-11-08T06:49:15+00:00	exit=0	3s	probe method call in requires [crate=probe]	verification results:: 1 verified, 0 errors
+39	2026-11-08T06:49:18+00:00	exit=0	3s	probe method call requires 2 [crate=probe]	verification results:: 1 verified, 0 errors
+40	2026-11-08T06:49:25+00:00	exit=0	4s	probe literal stride [crate=probe]	verification results:: 1 verified, 0 errors
+41	2026-11-08T06:49:28+00:00	exit=0	3s	probe nested method [crate=probe]	verification results:: 1 verified, 0 errors
+42	2026-11-08T06:49:35+00:00	exit=101	1s	M2: header path T1/T2/T5 [crate=tga_verus]	
+43	2026-11-08T06:49:39+00:00	exit=101	1s	M2: header path T1/T2/T5 [crate=tga_verus]	
+44	2026-11-08T06:49:44+00:00	exit=101	1s	M2: header path T1/T2/T5 [crate=tga_verus]	
+45	2026-11-08T06:49:47+00:00	exit=101	1s	M2: header path T1/T2/T5 [crate=tga_verus]	
+46	2026-11-08T06:49:50+00:00	exit=101	1s	M2: header path T1/T2/T5 [crate=tga_verus]	
+47	2026-11-08T06:49:54+00:00	exit=101	2s	M2: header path T1/T2/T5 [crate=tga_verus]	
+48	2026-11-08T06:50:06+00:00	exit=101	0s	M2: header path T1/T2/T5 [crate=tga_verus]	
+49	2026-11-08T06:50:10+00:00	exit=101	1s	M2: header path T1/T2/T5 [crate=tga_verus]	
+50	2026-11-08T06:50:18+00:00	exit=101	1s	M2: header path T1/T2/T5 [crate=tga_verus]	
+51	2026-11-08T06:50:28+00:00	exit=101	4s	M2: header path T1/T2/T5 [crate=tga_verus]	
+52	2026-11-08T06:50:39+00:00	exit=101	5s	M2: header path T1/T2/T5 [crate=tga_verus]	
+53	2026-11-08T06:50:46+00:00	exit=101	4s	M2: header path T1/T2/T5 [crate=tga_verus]	
+54	2026-11-08T06:50:53+00:00	exit=101	4s	M2: header path T1/T2/T5 [crate=tga_verus]	
+55	2026-11-08T06:51:13+00:00	exit=101	8s	M2: header path T1/T2/T5 [crate=tga_verus]	verification results:: 49 verified, 14 errors
+56	2026-11-08T06:52:03+00:00	exit=101	4s	M2: header path T1/T2/T5 [crate=tga_verus]	
+57	2026-11-08T06:52:18+00:00	exit=101	8s	M2: header path T1/T2/T5 [crate=tga_verus]	verification results:: 54 verified, 12 errors
+58	2026-11-08T06:52:47+00:00	exit=101	3s	probe: mut vec loop, bit_vector, bounds [crate=probe]	verification results:: 6 verified, 5 errors
+59	2026-11-08T06:53:00+00:00	exit=101	4s	probe round 2 [crate=probe]	verification results:: 9 verified, 1 errors
+60	2026-11-08T06:53:08+00:00	exit=101	4s	probe: vec final len early return [crate=probe]	verification results:: 3 verified, 1 errors
+61	2026-11-08T06:53:18+00:00	exit=0	3s	probe: final len via 4n, cursor [crate=probe]	verification results:: 3 verified, 0 errors
+62	2026-11-08T06:53:33+00:00	exit=101	11s	M2: header path T1/T2/T5 [crate=tga_verus]	verification results:: 54 verified, 12 errors
+63	2026-11-08T06:53:49+00:00	exit=101	4s	probe: sig literal, bounds [crate=probe]	verification results:: 0 verified, 4 errors
+64	2026-11-08T06:53:57+00:00	exit=101	0s	probe: spec fn call in exec, bounds [crate=probe]	
+65	2026-11-08T06:54:01+00:00	exit=101	0s	probe: spec fn index in exec [crate=probe]	
+66	2026-11-08T06:54:10+00:00	exit=101	3s	probe: byte literal forms [crate=probe]	verification results:: 2 verified, 2 errors
+67	2026-11-08T06:54:28+00:00	exit=101	4s	probe: model alone [crate=probe]	verification results:: 13 verified, 1 errors
+68	2026-11-08T06:54:39+00:00	exit=0	4s	probe: ok/record reveal [crate=probe]	verification results:: 1 verified, 0 errors
+69	2026-11-08T06:54:49+00:00	exit=101	4s	probe: model lemma bisect [crate=probe]	verification results:: 1 verified, 1 errors
+70	2026-11-08T06:54:57+00:00	exit=101	1s	probe: le16_lt and sbo [crate=probe]	
+71	2026-11-08T06:55:04+00:00	exit=0	4s	probe: le16_lt and sbo 2 [crate=probe]	verification results:: 3 verified, 0 errors
+72	2026-11-08T06:55:16+00:00	exit=101	4s	probe: full model [crate=probe]	verification results:: 18 verified, 1 errors
+73	2026-11-08T06:55:24+00:00	exit=101	5s	probe: model conjuncts [crate=probe]	verification results:: 18 verified, 1 errors
+74	2026-11-08T06:55:33+00:00	exit=0	5s	probe: model conjuncts 2 [crate=probe]	verification results:: 20 verified, 0 errors
+75	2026-11-08T06:55:43+00:00	exit=101	8s	M2: header path T1/T2/T5 [crate=tga_verus]	verification results:: 61 verified, 11 errors
+76	2026-11-08T06:55:58+00:00	exit=101	4s	probe: expand5 bitvec, div lemma, mul [crate=probe]	verification results:: 6 verified, 1 errors
+77	2026-11-08T06:56:06+00:00	exit=101	4s	probe: expand5 bitvec v2 [crate=probe]	verification results:: 4 verified, 4 errors
+78	2026-11-08T06:56:14+00:00	exit=0	4s	probe: div_lt fund lemma [crate=probe]	verification results:: 6 verified, 0 errors
+79	2026-11-08T06:56:29+00:00	exit=101	8s	M2: header path T1/T2/T5 [crate=tga_verus]	verification results:: 68 verified, 9 errors
+80	2026-11-08T06:56:53+00:00	exit=101	9s	M2: header path T1/T2/T5 [crate=tga_verus]	verification results:: 74 verified, 8 errors
+81	2026-11-08T06:57:04+00:00	exit=101	1s	M2: header path T1/T2/T5 [crate=tga_verus]	
+82	2026-11-08T06:57:09+00:00	exit=101	0s	M2: header path T1/T2/T5 [crate=tga_verus]	
+83	2026-11-08T06:57:23+00:00	exit=101	9s	M2: header path T1/T2/T5 [crate=tga_verus]	verification results:: 76 verified, 8 errors
+84	2026-11-08T06:57:43+00:00	exit=101	9s	M2: header path T1/T2/T5 [crate=tga_verus]	verification results:: 77 verified, 7 errors
+85	2026-11-08T06:58:04+00:00	exit=101	9s	M2: header path T1/T2/T5 [crate=tga_verus]	verification results:: 80 verified, 5 errors
+86	2026-11-08T06:58:21+00:00	exit=101	8s	M2: header path T1/T2/T5 [crate=tga_verus]	verification results:: 87 verified, 3 errors
+87	2026-11-08T06:58:38+00:00	exit=101	8s	M2: header path T1/T2/T5 [crate=tga_verus]	verification results:: 91 verified, 1 errors
+88	2026-11-08T06:58:52+00:00	exit=101	9s	M2: header path T1/T2/T5 [crate=tga_verus]	verification results:: 92 verified, 1 errors
+89	2026-11-08T06:59:02+00:00	exit=101	4s	probe: slice len max [crate=probe]	verification results:: 2 verified, 1 errors
+90	2026-11-08T06:59:09+00:00	exit=101	3s	probe: index with start+i [crate=probe]	verification results:: 0 verified, 2 errors
+91	2026-11-08T06:59:16+00:00	exit=0	3s	probe: base+i index [crate=probe]	verification results:: 2 verified, 0 errors
+92	2026-11-08T06:59:28+00:00	exit=101	9s	M2: header path T1/T2/T5 [crate=tga_verus]	verification results:: 92 verified, 1 errors
+93	2026-11-08T06:59:41+00:00	exit=101	8s	M2: header path T1/T2/T5 [crate=tga_verus]	verification results:: 91 verified, 1 errors
+94	2026-11-08T06:59:48+00:00	exit=101	3s	probe: start+i concrete [crate=probe]	
+95	2026-11-08T06:59:55+00:00	exit=101	4s	probe: start+i bounds variant [crate=probe]	verification results:: 2 verified, 2 errors
+96	2026-11-08T07:00:04+00:00	exit=101	4s	M2: header path T1/T2/T5 [crate=tga_verus]	
+97	2026-11-08T07:00:13+00:00	exit=101	3s	M2: header path T1/T2/T5 [crate=tga_verus]	
+98	2026-11-08T07:00:25+00:00	exit=0	8s	M2: header path T1/T2/T5 [crate=tga_verus]	verification results:: 91 verified, 0 errors
+99	2026-11-08T07:01:19+00:00	exit=0	8s	M2: header path T1/T2/T5 (final) [crate=tga_verus]	verification results:: 92 verified, 0 errors
+100	2026-11-08T07:01:30+00:00	exit=101	4s	probe: model positions [crate=probe]	verification results:: 2 verified, 2 errors
+101	2026-11-08T07:01:37+00:00	exit=0	5s	probe: model positions [crate=probe]	verification results:: 25 verified, 0 errors
+102	2026-11-08T07:01:50+00:00	exit=0	8s	M2: model positions conjunct [crate=tga_verus]	verification results:: 93 verified, 0 errors
+103	2026-11-08T07:03:02+00:00	exit=101	63s	M2 sensitivity: swapped type/flag check (expect failure) [crate=sensitivity]	verification results:: 92 verified, 1 errors
+104	2026-11-08T07:03:15+00:00	exit=101	8s	M2 sensitivity: no dimension cap (expect failure) [crate=sensitivity]	verification results:: 92 verified, 1 errors
+105	2026-11-08T07:03:28+00:00	exit=101	8s	M2 sensitivity: input cap >= (expect failure) [crate=sensitivity]	verification results:: 92 verified, 1 errors
+106	2026-11-08T07:03:41+00:00	exit=101	8s	M2 sensitivity: attribute check dropped (expect failure) [crate=sensitivity]	verification results:: 92 verified, 1 errors
+107	2026-11-08T07:05:22+00:00	exit=0	68s	M2 final: T1/T2/T5 header path, full crate [crate=tga_verus]	verification results:: 93 verified, 0 errors
+108	2026-11-08T07:06:17+00:00	exit=0	0s	M2 confirmation: T1/T2/T5 [crate=tga_verus]	
+109	2026-11-08T07:06:37+00:00	exit=0	1s	M2 confirmation: T1/T2/T5 (recheck) [crate=tga_verus]	
+110	2026-11-08T07:49:43+00:00	exit=0	11s	M3 first full-crate run: T3, T4, T10 + bijection/conversion/packet-repetition lemmas [crate=tga_verus]	verification results:: 189 verified, 0 errors
+111	2026-11-08T07:51:24+00:00	exit=0	63s	M3 final full reverify after cargo clean [crate=tga_verus]	verification results:: 189 verified, 0 errors
+112	2026-11-08T08:01:02+00:00	exit=101	4s	M4a step 1: MP and the MR state fields in model.rs [crate=tga_verus]	
+113	2026-11-08T08:01:50+00:00	exit=101	11s	M4a step 2: MP skeleton compiles [crate=tga_verus]	verification results:: 192 verified, 1 errors
+114	2026-11-08T08:02:07+00:00	exit=101	10s	M4a step 3: MP skeleton, raw decreases [crate=tga_verus]	verification results:: 192 verified, 1 errors
+115	2026-11-08T08:02:30+00:00	exit=0	10s	M4a step 4: MP skeleton, raw termination by k [crate=tga_verus]	verification results:: 193 verified, 0 errors
+116	2026-11-08T08:03:04+00:00	exit=101	13s	M4a step 5: mp_raw over PktH with acc_conv lemmas [crate=tga_verus]	verification results:: 194 verified, 2 errors
+117	2026-11-08T08:03:46+00:00	exit=101	13s	M4a step 6: raw step lemmas split by branch [crate=tga_verus]	verification results:: 198 verified, 2 errors
+118	2026-11-08T08:04:16+00:00	exit=0	10s	M4a step 7: raw step/len lemmas [crate=tga_verus]	verification results:: 202 verified, 0 errors
+119	2026-11-08T08:05:00+00:00	exit=101	4s	M4a step 8: MP structural lemmas [crate=tga_verus]	
+120	2026-11-08T08:05:24+00:00	exit=101	10s	M4a step 9: MP structural lemmas (kind literal types) [crate=tga_verus]	verification results:: 207 verified, 1 errors
+121	2026-11-08T08:05:41+00:00	exit=0	11s	M4a step 10: mh_selfcons map sum bound [crate=tga_verus]	verification results:: 208 verified, 0 errors
+122	2026-11-08T08:06:36+00:00	exit=101	10s	M4a step 11: MP raw-phase first-error lemmas + executable relation predicates [crate=tga_verus]	verification results:: 210 verified, 2 errors
+123	2026-11-08T08:07:12+00:00	exit=101	11s	M4a step 12: raw-phase lemmas with total-ok premise [crate=tga_verus]	verification results:: 211 verified, 2 errors
+124	2026-11-08T08:07:43+00:00	exit=0	11s	M4a step 13: raw-phase lemmas, direct branch proofs [crate=tga_verus]	verification results:: 216 verified, 0 errors
+125	2026-11-08T08:08:22+00:00	exit=0	11s	M4a step 14: prefix-ok raw lemmas [crate=tga_verus]	verification results:: 220 verified, 0 errors
+126	2026-11-08T08:08:50+00:00	exit=0	11s	M4a step 15: raw_sample_ok_at decomp, framed [crate=tga_verus]	verification results:: 220 verified, 0 errors
+127	2026-11-08T08:09:17+00:00	exit=101	12s	M4a step 16: decode_raw carries raw_result_eq (first attempt) [crate=tga_verus]	verification results:: 218 verified, 2 errors
+128	2026-11-08T08:09:52+00:00	exit=101	12s	M4a step 17: raw truncation branch model link [crate=tga_verus]	verification results:: 219 verified, 2 errors
+129	2026-11-08T08:10:12+00:00	exit=101	12s	M4a step 18: raw loop entry invariant [crate=tga_verus]	verification results:: 220 verified, 1 errors
+130	2026-11-08T08:10:32+00:00	exit=101	1s	M4a step 19: raw index-error branch + success branch [crate=tga_verus]	
+131	2026-11-08T08:10:38+00:00	exit=101	1s	M4a step 20: raw index branch fixed syntax [crate=tga_verus]	
+132	2026-11-08T08:10:57+00:00	exit=101	13s	M4a step 21: raw path complete [crate=tga_verus]	verification results:: 220 verified, 1 errors
+133	2026-11-08T08:12:20+00:00	exit=101	12s	M4a step 22: raw path via mp_raw_cur projection [crate=tga_verus]	verification results:: 224 verified, 4 errors
+134	2026-11-08T08:12:55+00:00	exit=101	12s	M4a step 23: raw_result_eq on mp_raw_cur [crate=tga_verus]	verification results:: 227 verified, 1 errors
+135	2026-11-08T08:13:20+00:00	exit=101	12s	M4a step 24: raw error branches carry k=0 equation [crate=tga_verus]	verification results:: 227 verified, 1 errors
+136	2026-11-08T08:13:44+00:00	exit=101	12s	M4a step 25: reveal raw_result_eq in error branches [crate=tga_verus]	verification results:: 227 verified, 1 errors
+137	2026-11-08T08:14:13+00:00	exit=101	12s	M4a step 26: raw_result_eq asserted at error exits [crate=tga_verus]	verification results:: 227 verified, 1 errors
+138	2026-11-08T08:14:51+00:00	exit=101	13s	M4a step 27: raw error exits with k=0 equation [crate=tga_verus]	verification results:: 227 verified, 1 errors
+139	2026-11-08T08:15:18+00:00	exit=101	11s	M4a step 28: c0 equals function-entry cursor [crate=tga_verus]	verification results:: 227 verified, 1 errors
+140	2026-11-08T08:15:53+00:00	exit=101	1s	M4a step 29: decode_raw ghost entry cursor [crate=tga_verus]	
+141	2026-11-08T08:16:09+00:00	exit=101	5s	M4a step 30: proof-attribute ghost param syntax [crate=tga_verus]	
+142	2026-11-08T08:16:24+00:00	exit=101	5s	M4a step 31: decode_raw ghost c0_dec [crate=tga_verus]	
+143	2026-11-08T08:16:41+00:00	exit=101	12s	M4a step 32: decode_raw exec entry-cursor param [crate=tga_verus]	verification results:: 227 verified, 1 errors
+144	2026-11-08T08:17:06+00:00	exit=0	11s	M4a step 33: raw loop carries c0==c0g [crate=tga_verus]	verification results:: 228 verified, 0 errors
+145	2026-11-08T08:17:50+00:00	exit=101	12s	M4a step 34: mr_cur/mr_pix projections and packet lemmas [crate=tga_verus]	verification results:: 233 verified, 2 errors
+146	2026-11-08T08:18:10+00:00	exit=101	12s	M4a step 35: lit_out index + mr proj sample_bytes premise [crate=tga_verus]	verification results:: 234 verified, 2 errors
+147	2026-11-08T08:18:56+00:00	exit=101	12s	M4a step 36: lit_out_index explicit seq lemmas [crate=tga_verus]	verification results:: 233 verified, 2 errors
+148	2026-11-08T08:19:20+00:00	exit=101	11s	M4a step 37: lit_out_index simplified; g length bound [crate=tga_verus]	verification results:: 235 verified, 1 errors
+149	2026-11-08T08:19:50+00:00	exit=101	12s	M4a step 38: lit_out_index with alt seq lemmas [crate=tga_verus]	verification results:: 235 verified, 1 errors
+150	2026-11-08T08:20:17+00:00	exit=101	13s	M4a step 39: lit_out_index via explicit seq lemmas [crate=tga_verus]	verification results:: 234 verified, 1 errors
+151	2026-11-08T08:20:34+00:00	exit=0	12s	M4a step 40: lit_out_index with alt index lemmas [crate=tga_verus]	verification results:: 235 verified, 0 errors
+152	2026-11-08T08:21:07+00:00	exit=101	4s	M4a step 41: orient_bytes + rle_quad_ok [crate=tga_verus]	
+153	2026-11-08T08:21:25+00:00	exit=101	11s	M4a step 42: orient_bytes len cast [crate=tga_verus]	verification results:: 238 verified, 2 errors
+154	2026-11-08T08:21:48+00:00	exit=101	12s	M4a step 43: orient byte equality in w*hgt form [crate=tga_verus]	verification results:: 237 verified, 2 errors
+155	2026-11-08T08:21:59+00:00	exit=101	1s	M4a step 44: orient/quad lemmas with div4 fact [crate=tga_verus]	
+156	2026-11-08T08:22:17+00:00	exit=0	11s	M4a step 45: rle_quad_ok defined [crate=tga_verus]	verification results:: 242 verified, 0 errors
+157	2026-11-08T08:23:02+00:00	exit=101	3s	M4a step 46: wrote_px and lit_good helper lemmas [crate=tga_verus]	
+158	2026-11-08T08:23:17+00:00	exit=101	11s	M4a step 47: wrote_px/rle_quad_ok cast [crate=tga_verus]	verification results:: 251 verified, 1 errors
+159	2026-11-08T08:24:00+00:00	exit=101	12s	M4a step 48: lit_pref infrastructure [crate=tga_verus]	verification results:: 256 verified, 2 errors
+160	2026-11-08T08:24:20+00:00	exit=101	12s	M4a step 49: lit_pref/lit_good fixes [crate=tga_verus]	verification results:: 258 verified, 1 errors
+161	2026-11-08T08:24:39+00:00	exit=0	12s	M4a step 50: lit_pref_bad base case [crate=tga_verus]	verification results:: 259 verified, 0 errors
+162	2026-11-08T08:25:58+00:00	exit=101	1s	M4a step 51: MR failure-branch lemmas [crate=tga_verus]	
+163	2026-11-08T08:26:09+00:00	exit=101	4s	M4a step 52: rle_pixels_eq relation defined [crate=tga_verus]	
+164	2026-11-08T08:26:26+00:00	exit=101	13s	M4a step 53: decode_rle call sites [crate=tga_verus]	verification results:: 264 verified, 3 errors
+165	2026-11-08T08:27:21+00:00	exit=101	13s	M4a step 54: current-packet pixel index lemmas [crate=tga_verus]	verification results:: 268 verified, 3 errors
+166	2026-11-08T08:27:52+00:00	exit=101	13s	M4a step 55: subrange-of-subrange lemma [crate=tga_verus]	
+167	2026-11-08T08:28:08+00:00	exit=101	12s	M4a step 56: subrange trigger [crate=tga_verus]	verification results:: 269 verified, 4 errors
+168	2026-11-08T08:28:28+00:00	exit=101	2s	M4a step 57: mr_pix_len + loop ghost relation [crate=tga_verus]	
+169	2026-11-08T08:28:37+00:00	exit=101	1s	M4a step 58: mr_pix_root_prefix single definition [crate=tga_verus]	
+170	2026-11-08T08:29:01+00:00	exit=101	13s	M4a step 59: invariant path fixed [crate=tga_verus]	verification results:: 269 verified, 6 errors
+171	2026-11-08T08:29:36+00:00	exit=101	13s	M4a step 60: wrote_px step/split model lemmas [crate=tga_verus]	verification results:: 274 verified, 7 errors
+172	2026-11-08T08:29:58+00:00	exit=101	13s	M4a step 61: model fixes; tga.rs RLE proof pending [crate=tga_verus]	verification results:: 278 verified, 3 errors
+173	2026-11-08T08:30:27+00:00	exit=101	2s	M4a step 62: lit_pix decomposition lemmas [crate=tga_verus]	
+174	2026-11-08T08:30:49+00:00	exit=101	18s	M4a step 63: fix broadcast group path [crate=tga_verus]	verification results:: 283 verified, 5 errors
+175	2026-11-08T08:31:12+00:00	exit=101	13s	M4a step 64: lit_pix_step with full availability [crate=tga_verus]	verification results:: 284 verified, 4 errors
+176	2026-11-08T08:31:33+00:00	exit=101	13s	M4a step 65: lit_pix arithmetic hint [crate=tga_verus]	verification results:: 286 verified, 3 errors
+177	2026-11-08T08:32:06+00:00	exit=101	13s	M4a step 66: lit_ok implies in_range [crate=tga_verus]	verification results:: 287 verified, 4 errors
+178	2026-11-08T08:32:27+00:00	exit=101	13s	M4a step 67: lit_ok_implies with kind premise [crate=tga_verus]	verification results:: 288 verified, 3 errors
+179	2026-11-08T08:32:54+00:00	exit=101	14s	M4a step 68: write-step packaging lemma [crate=tga_verus]	verification results:: 293 verified, 3 errors
+180	2026-11-08T08:33:28+00:00	exit=101	1s	M4a step 69: decode_rle model-relation proof (first attempt) [crate=tga_verus]	
+181	2026-11-08T08:33:38+00:00	exit=101	1s	M4a step 70: cast-parenthesise fix [crate=tga_verus]	
+182	2026-11-08T08:33:57+00:00	exit=101	15s	M4a step 71: qualify rle_quad_ok [crate=tga_verus]	verification results:: 298 verified, 5 errors
+183	2026-11-08T08:34:46+00:00	exit=101	15s	M4a step 72: write-step with out.len()=4*w*h premise [crate=tga_verus]	verification results:: 300 verified, 6 errors
+184	2026-11-08T08:35:11+00:00	exit=101	15s	M4a step 73: quad_unchanged rewritten [crate=tga_verus]	verification results:: 302 verified, 6 errors
+185	2026-11-08T08:35:32+00:00	exit=101	14s	M4a step 74: quad_unchanged with explicit offsets [crate=tga_verus]	verification results:: 308 verified, 6 errors
+186	2026-11-08T08:35:55+00:00	exit=101	15s	M4a step 75: outside-write helper [crate=tga_verus]	verification results:: 309 verified, 6 errors
+187	2026-11-08T08:36:15+00:00	exit=101	15s	M4a step 76: quad_unchanged index bounds [crate=tga_verus]	verification results:: 311 verified, 6 errors
+188	2026-11-08T08:36:39+00:00	exit=101	15s	M4a step 77: quad_unchanged nonneg prems [crate=tga_verus]	verification results:: 311 verified, 5 errors
+189	2026-11-08T08:37:30+00:00	exit=101	15s	M4a step 78: lit_pix_peel and pix_pow_peel [crate=tga_verus]	verification results:: 315 verified, 6 errors
+190	2026-11-08T08:38:21+00:00	exit=101	16s	M4a step 79: write steps with appended pixel [crate=tga_verus]	verification results:: 317 verified, 6 errors
+191	2026-11-08T08:38:53+00:00	exit=101	15s	M4a step 80: both write blocks with appended pixel [crate=tga_verus]	verification results:: 316 verified, 6 errors
+192	2026-11-08T08:39:24+00:00	exit=101	16s	M4a step 81: packet subrange + lit_pref invariant [crate=tga_verus]	verification results:: 317 verified, 8 errors
+193	2026-11-08T08:39:47+00:00	exit=101	17s	M4a step 82: model fixes for quad/prefix [crate=tga_verus]	verification results:: 320 verified, 8 errors
+194	2026-11-08T08:40:08+00:00	exit=101	16s	M4a step 83: out len nonneg + nonindexed branch [crate=tga_verus]	verification results:: 320 verified, 8 errors
+195	2026-11-08T08:40:36+00:00	exit=101	16s	M4a step 84: write_step out.len premise; peel nonindexed [crate=tga_verus]	verification results:: 321 verified, 7 errors
+196	2026-11-08T08:41:08+00:00	exit=101	17s	M4a step 85: packet split lemmas (concrete shape) [crate=tga_verus]	verification results:: 323 verified, 7 errors
+197	2026-11-08T08:41:56+00:00	exit=101	18s	M4a step 86: decode_rle full rewrite [crate=tga_verus]	verification results:: 322 verified, 6 errors
+198	2026-11-08T08:42:22+00:00	exit=101	16s	M4a step 87: end-bound hypotheses [crate=tga_verus]	verification results:: 326 verified, 4 errors
+199	2026-11-08T08:42:53+00:00	exit=101	17s	M4a step 88: snoc lemma + explicit rel lemmas [crate=tga_verus]	verification results:: 327 verified, 6 errors
+200	2026-11-08T08:43:11+00:00	exit=101	1s	M4a step 89: explicit rle_result_eq at all error exits [crate=tga_verus]	
+201	2026-11-08T08:43:36+00:00	exit=101	19s	M4a step 90: control-absent exit cursor [crate=tga_verus]	verification results:: 327 verified, 7 errors
+202	2026-11-08T08:44:01+00:00	exit=101	17s	M4a step 91: snoc base + inline first-good [crate=tga_verus]	verification results:: 328 verified, 5 errors
+203	2026-11-08T08:44:27+00:00	exit=101	17s	M4a step 92: pend bound + control-absent reveal [crate=tga_verus]	verification results:: 329 verified, 4 errors
+204	2026-11-08T08:44:51+00:00	exit=101	18s	M4a step 93: pend in literal inner invariant [crate=tga_verus]	verification results:: 328 verified, 4 errors
+205	2026-11-08T08:45:54+00:00	exit=101	17s	M4a step 94: rle_err/rle_ok bridges [crate=tga_verus]	verification results:: 329 verified, 5 errors
+206	2026-11-08T08:46:17+00:00	exit=101	17s	M4a step 95: bridges with c0>=0 [crate=tga_verus]	verification results:: 330 verified, 4 errors
+207	2026-11-08T08:46:41+00:00	exit=101	17s	M4a step 96: literal index premises [crate=tga_verus]	verification results:: 331 verified, 5 errors
+208	2026-11-08T08:47:06+00:00	exit=101	18s	M4a step 97: g0==pg0 in inner invariants [crate=tga_verus]	verification results:: 331 verified, 5 errors
+209	2026-11-08T08:47:30+00:00	exit=101	17s	M4a step 98: rle_count int comparison [crate=tga_verus]	verification results:: 331 verified, 5 errors
+210	2026-11-08T08:48:03+00:00	exit=101	18s	M4a step 99: corrected outer-split association [crate=tga_verus]	verification results:: 332 verified, 4 errors
+211	2026-11-08T08:48:32+00:00	exit=101	18s	M4a step 100: int-form rle_count bound [crate=tga_verus]	verification results:: 333 verified, 4 errors
+212	2026-11-08T08:48:56+00:00	exit=101	17s	M4a step 101: int form of the overrun guard [crate=tga_verus]	verification results:: 334 verified, 4 errors
+213	2026-11-08T08:49:20+00:00	exit=101	17s	M4a step 102: lit_index at the packet boundary [crate=tga_verus]	verification results:: 332 verified, 3 errors
+214	2026-11-08T08:49:35+00:00	exit=101	4s	M4a step 103: control facts in literal loop [crate=tga_verus]	
+215	2026-11-08T08:49:58+00:00	exit=101	17s	M4a step 104: control fact fixed [crate=tga_verus]	verification results:: 332 verified, 3 errors
+216	2026-11-08T08:50:25+00:00	exit=101	15s	M4a step 105: c0g==mr_cur(cur0,pg0) invariant + lit_good [crate=tga_verus]	verification results:: 335 verified, 1 errors
+217	2026-11-08T08:50:47+00:00	exit=0	16s	M4a step 106: rle_ok with n==p.n [crate=tga_verus]	verification results:: 336 verified, 0 errors
+218	2026-11-08T08:52:04+00:00	exit=101	16s	M4a step 107: decode_raw exposes raw_prefix_ok [crate=tga_verus]	verification results:: 338 verified, 1 errors
+219	2026-11-08T08:52:39+00:00	exit=101	16s	M4a step 108: acc_conv len as premise [crate=tga_verus]	verification results:: 339 verified, 1 errors
+220	2026-11-08T08:53:03+00:00	exit=0	18s	M4a step 109: quantify over k directly [crate=tga_verus]	verification results:: 339 verified, 0 errors
+221	2026-11-08T08:53:38+00:00	exit=101	17s	M4a step 110: model error/pixel projection reversals [crate=tga_verus]	verification results:: 342 verified, 1 errors
+222	2026-11-08T08:54:01+00:00	exit=101	17s	M4a step 111: n>=0 premises on projections [crate=tga_verus]	verification results:: 342 verified, 1 errors
+223	2026-11-08T08:54:23+00:00	exit=0	16s	M4a step 112: c0>=0 on MR projections [crate=tga_verus]	verification results:: 343 verified, 0 errors
+224	2026-11-08T08:55:00+00:00	exit=101	16s	M4a step 113: MP result lemmas [crate=tga_verus]	verification results:: 349 verified, 1 errors
+225	2026-11-08T08:55:26+00:00	exit=0	17s	M4a step 114: trailing split by phase [crate=tga_verus]	verification results:: 351 verified, 0 errors
+226	2026-11-08T08:55:43+00:00	exit=101	5s	M4a step 115: pkt_of hdr_matches bridge [crate=tga_verus]	
+227	2026-11-08T08:55:54+00:00	exit=101	5s	M4a step 116: Header by value [crate=tga_verus]	
+228	2026-11-08T08:56:15+00:00	exit=101	16s	M4a step 117: pkt_of(&h) [crate=tga_verus]	verification results:: 351 verified, 1 errors
+229	2026-11-08T08:56:40+00:00	exit=101	18s	M4a step 118: map_end bridge [crate=tga_verus]	verification results:: 351 verified, 1 errors
+230	2026-11-08T08:57:04+00:00	exit=101	17s	M4a step 119: drop map_length==0 [crate=tga_verus]	verification results:: 351 verified, 1 errors
+231	2026-11-08T08:57:37+00:00	exit=101	18s	M4a step 120: map_end_of definitional bridge [crate=tga_verus]	verification results:: 351 verified, 1 errors
+232	2026-11-08T08:58:03+00:00	exit=0	19s	M4a step 121: bridge done [crate=tga_verus]	verification results:: 352 verified, 0 errors
+233	2026-11-08T08:58:20+00:00	exit=101	5s	M4a step 122: suffix lemmas [crate=tga_verus]	
+234	2026-11-08T08:58:45+00:00	exit=0	19s	M4a step 123: suffix tail casts [crate=tga_verus]	verification results:: 359 verified, 0 errors
+235	2026-11-08T08:59:15+00:00	exit=101	2s	M4a step 124: decode-level decode_eq proof [crate=tga_verus]	
+236	2026-11-08T08:59:27+00:00	exit=101	6s	M4a step 125: qualify rle_quad_ok [crate=tga_verus]	
+237	2026-11-08T08:59:38+00:00	exit=101	2s	M4a step 126: pub decode_eq [crate=tga_verus]	
+238	2026-11-08T08:59:49+00:00	exit=101	6s	M4a step 127: pub open spec [crate=tga_verus]	
+239	2026-11-08T09:00:13+00:00	exit=101	17s	M4a step 128: spec_is_rle in proof blocks [crate=tga_verus]	verification results:: 362 verified, 2 errors
+240	2026-11-08T09:00:49+00:00	exit=101	18s	M4a step 129: bridge before id_end; mr_at lemmas [crate=tga_verus]	verification results:: 366 verified, 2 errors
+241	2026-11-08T09:01:13+00:00	exit=101	17s	M4a step 130: id_end int equality [crate=tga_verus]	verification results:: 366 verified, 1 errors
+242	2026-11-08T09:01:42+00:00	exit=101	17s	M4a step 131: result-to-model projection helpers [crate=tga_verus]	verification results:: 370 verified, 1 errors
+243	2026-11-08T09:02:12+00:00	exit=101	17s	M4a step 132: pixel-length facts [crate=tga_verus]	verification results:: 372 verified, 1 errors
+244	2026-11-08T09:02:35+00:00	exit=101	17s	M4a step 133: mr_pix length via match [crate=tga_verus]	verification results:: 372 verified, 1 errors
+245	2026-11-08T09:03:01+00:00	exit=0	18s	M4a step 134: lemma_mr_at_ok in match [crate=tga_verus]	verification results:: 373 verified, 0 errors
+246	2026-11-08T09:03:49+00:00	exit=0	19s	M4a step 135: rle_full_eq combined relation [crate=tga_verus]	verification results:: 373 verified, 0 errors
+247	2026-11-08T09:04:23+00:00	exit=0	19s	M4a step 136: T6/T7/T9 witnesses [crate=tga_verus]	verification results:: 376 verified, 0 errors
+248	2026-11-08T09:04:41+00:00	exit=101	5s	M4a step 137: T8 witness (draft) [crate=tga_verus]	
+249	2026-11-08T09:05:06+00:00	exit=101	17s	M4a step 138: T8 witness over the model record [crate=tga_verus]	verification results:: 376 verified, 1 errors
+250	2026-11-08T09:05:40+00:00	exit=0	18s	M4a step 139: T8 witness with mp_ok_shape [crate=tga_verus]	verification results:: 377 verified, 0 errors
+251	2026-11-08T09:06:39+00:00	exit=0	18s	M4a step 141: drop placeholder lemmas [crate=tga_verus]	verification results:: 373 verified, 0 errors
+252	2026-11-08T09:06:52+00:00	exit=101	1s	M4a step 142: drop unused assoc lemma [crate=tga_verus]	
+253	2026-11-08T09:07:17+00:00	exit=0	18s	M4a step 143: restore mr_pix_assoc [crate=tga_verus]	verification results:: 373 verified, 0 errors
+254	2026-11-08T09:08:45+00:00	exit=0	79s	M4a final full reverify after cargo clean: T6-T9, T11, MP/MR-models, decode=MP [crate=tga_verus]	verification results:: 373 verified, 0 errors
+255	2026-11-08T09:08:51+00:00	exit=0	1s	M4a confirmation reverify [crate=tga_verus]	
+256	2026-11-08T09:20:33+00:00	exit=0	18s	M4b step 1: generated 165 model-vs-vector obligations (probe) [crate=tga_verus]	verification results:: 538 verified, 0 errors
+257	2026-11-08T09:29:05+00:00	exit=101	6s	M4b step 2: L1/L2 symbolic lemmas [crate=tga_verus]	
+258	2026-11-08T09:29:34+00:00	exit=0	19s	M4b step 2b: L1/L2 symbolic lemmas [crate=tga_verus]	verification results:: 551 verified, 0 errors
+259	2026-11-08T09:31:02+00:00	exit=101	5s	M4b step 3: L3 maximum greyscale output [crate=tga_verus]	
+260	2026-11-08T09:31:30+00:00	exit=101	5s	M4b step 3b: L3 maximum greyscale output [crate=tga_verus]	
+261	2026-11-08T09:32:21+00:00	exit=101	31s	M4b step 3c: L3 maximum greyscale output [crate=tga_verus]	verification results:: 562 verified, 11 errors
+262	2026-11-08T09:35:09+00:00	exit=101	2s	M4b step 3d: L3+L4 maximum-output lemmas [crate=tga_verus]	
+263	2026-11-08T09:35:49+00:00	exit=101	28s	M4b step 3e: L3+L4 maximum-output lemmas [crate=tga_verus]	verification results:: 569 verified, 6 errors
+264	2026-11-08T09:37:23+00:00	exit=101	22s	M4b step 3f: L3+L4 maximum-output lemmas [crate=tga_verus]	verification results:: 576 verified, 2 errors
+265	2026-11-08T09:37:59+00:00	exit=0	24s	M4b step 3g: L3+L4 maximum-output lemmas [crate=tga_verus]	verification results:: 578 verified, 0 errors
+266	2026-11-08T09:49:30+00:00	exit=101	85s	mutation 1: input cap > to >= [crate=mutation/m1/tga_verus]	verification results:: 576 verified, 2 errors
+267	2026-11-08T09:51:23+00:00	exit=101	81s	mutation 1: model input cap > to >= [crate=mutation/m1/tga_verus]	verification results:: 575 verified, 3 errors
+268	2026-11-08T09:52:57+00:00	exit=101	81s	mutation 1: R1's input cap changed from |b|>67,108,864 to |b|>=67,108,864 in the model [crate=mutation/m1/tga_verus]	verification results:: 575 verified, 3 errors
+269	2026-11-08T09:55:30+00:00	exit=101	79s	mutation 7 [crate=mutation/m7/tga_verus]	verification results:: 2159 verified, 0 errors
+270	2026-11-08T09:57:17+00:00	exit=101	76s	mutation 1: R1's input cap changed from |b|>67,108,864 to |b|>=67,108,864 in the model [crate=mutation/m1/tga_verus]	verification results:: 575 verified, 3 errors
+271	2026-11-08T09:58:34+00:00	exit=101	77s	mutation 2: the image-type and map-flag checks swapped in the model [crate=mutation/m2/tga_verus]	verification results:: 2159 verified, 0 errors
+272	2026-11-08T09:59:51+00:00	exit=101	77s	mutation 3: the R2 dimension cap removed from the model [crate=mutation/m3/tga_verus]	verification results:: 2159 verified, 0 errors
+273	2026-11-08T10:01:11+00:00	exit=101	80s	mutation 4: the colour-map first index ignored in the model's conv_map [crate=mutation/m4/tga_verus]	verification results:: 564 verified, 14 errors
+274	2026-11-08T10:02:27+00:00	exit=101	76s	mutation 5: bit 15 used as alpha even when the 16-bit true-colour attribute count is zero [crate=mutation/m5/tga_verus]	verification results:: 2159 verified, 0 errors
+275	2026-11-08T10:03:44+00:00	exit=101	77s	mutation 6: R11's repeat count changed from [crate=mutation/m6/tga_verus]	verification results:: 2159 verified, 0 errors
+276	2026-11-08T10:05:03+00:00	exit=101	79s	mutation 7: the model's packet availability and overrun checks swapped [crate=mutation/m7/tga_verus]	verification results:: 2159 verified, 0 errors
+277	2026-11-08T10:05:30+00:00	exit=101	26s	mutation 8: the RLE produced count reset at each row in the executable's decode_rle [crate=mutation/m8/tga_verus]	
+279	2026-11-08T10:07:27+00:00	exit=101	80s	mutation 8: the RLE produced count reset at each row in the executable's decode_rle [crate=mutation/m8/tga_verus]	verification results:: 577 verified, 1 errors
+280	2026-11-08T10:08:49+00:00	exit=101	82s	mutation 9: the vertical flip reversed in the model [crate=mutation/m9/tga_verus]	verification results:: 2159 verified, 0 errors
+281	2026-11-08T10:10:13+00:00	exit=101	84s	mutation 10: the R12 suffix rule weakened in the model [crate=mutation/m10/tga_verus]	verification results:: 2159 verified, 0 errors
+282	2026-11-08T10:11:32+00:00	exit=101	79s	mutation 11: a footer offset dereferenced instead of treated as opaque in the executable [crate=mutation/m11/tga_verus]	verification results:: 577 verified, 1 errors
+283	2026-11-08T10:12:53+00:00	exit=101	81s	mutation 12: R8's bit replication [crate=mutation/m12/tga_verus]	verification results:: 2159 verified, 0 errors
+284	2026-11-08T10:13:59+00:00	exit=101	66s	mutation 13: the map started at byte 18 rather than 18+ID_length in the executable's decode [crate=mutation/m13/tga_verus]	verification results:: 2159 verified, 0 errors
+285	2026-11-08T10:15:21+00:00	exit=101	81s	mutation 14: a fixed three-byte entry stride in the executable's convert_index [crate=mutation/m14/tga_verus]	verification results:: 577 verified, 1 errors
+286	2026-11-08T10:16:42+00:00	exit=101	81s	mutation 15: the whole-literal availability guard removed before reading a literal packet [crate=mutation/m15/tga_verus]	verification results:: 577 verified, 1 errors
+287	2026-11-08T10:16:46+00:00	exit=101	78s	mutation 13: map starts at 18 [crate=mutation/m13/tga_verus]	verification results:: 577 verified, 1 errors
+288	2026-11-08T10:18:00+00:00	exit=101	78s	mutation 16: N = width*height computed without widening in the executable's decode [crate=mutation/m16/tga_verus]	verification results:: 577 verified, 1 errors
+289	2026-11-08T10:19:16+00:00	exit=101	75s	mutation 17: the palette range guard removed before indexing in the executable [crate=mutation/m17/tga_verus]	verification results:: 577 verified, 1 errors
+290	2026-11-08T10:20:36+00:00	exit=101	80s	mutation 18: the stored A byte used even when the 32-bit true-colour attribute count is zero [crate=mutation/m18/tga_verus]	verification results:: 2159 verified, 0 errors
+291	2026-11-08T10:21:59+00:00	exit=101	83s	mutation 19: the stored second byte of 16-bit greyscale used when the attribute count is zero [crate=mutation/m19/tga_verus]	verification results:: 2159 verified, 0 errors
+292	2026-11-08T10:23:20+00:00	exit=101	81s	mutation 20: bit 15 clear treated as transparent for 16-bit true-colour attribute count one [crate=mutation/m20/tga_verus]	verification results:: 2159 verified, 0 errors
+293	2026-11-08T10:25:00+00:00	exit=101	84s	mutation 5: bit 15 as alpha for 16-bit attr 0 [crate=mutation/m5/tga_verus]	verification results:: 2159 verified, 0 errors
+294	2026-11-08T10:27:09+00:00	exit=0	78s	M4b final full reverify after cargo clean: L1-L4, 165 vector obligations, all T1-T11 [crate=tga_verus]	verification results:: 578 verified, 0 errors
+295	2026-11-08T10:32:12+00:00	exit=0	23s	M4b final reverify after doc-comment fix [crate=tga_verus]	verification results:: 578 verified, 0 errors
+296	2026-11-08T10:33:42+00:00	exit=0	82s	M4b definitive full reverify after cargo clean (final source) [crate=tga_verus]	verification results:: 578 verified, 0 errors
+297	2026-11-08T12:18:48+00:00	exit=0	26s	M4c finding 6: x/y origin in MH, Header, hdr_matches [crate=tga_verus]	verification results:: 578 verified, 0 errors
+298	2026-11-08T12:20:32+00:00	exit=101	27s	M4c finding 3: lemma_mp_accepted_shape [crate=tga_verus]	verification results:: 579 verified, 1 errors
+299	2026-11-08T12:21:46+00:00	exit=101	25s	M4c finding 3: lemma_mp_accepted_shape v2 [crate=tga_verus]	verification results:: 579 verified, 1 errors
+300	2026-11-08T12:22:31+00:00	exit=0	24s	M4c finding 3: lemma_mp_accepted_shape v3 [crate=tga_verus]	verification results:: 580 verified, 0 errors
+301	2026-11-08T12:23:45+00:00	exit=0	25s	M4c finding 3: lemma_mp_t8_cell [crate=tga_verus]	verification results:: 592 verified, 0 errors
+302	2026-11-08T12:24:16+00:00	exit=0	25s	M4c finding 3: t8_output_cells restated [crate=tga_verus]	verification results:: 592 verified, 0 errors
+303	2026-11-08T12:24:35+00:00	exit=101	6s	M4c finding 3: t7 carries t8_cell [crate=tga_verus]	
+304	2026-11-08T12:25:08+00:00	exit=0	27s	M4c finding 3: t7 carries t8_cell v2 [crate=tga_verus]	verification results:: 592 verified, 0 errors
+305	2026-11-08T12:26:53+00:00	exit=101	8s	M4c finding 4: MrErr type, mr_at/mr_cur wip [crate=tga_verus]	
+306	2026-11-08T12:27:28+00:00	exit=101	7s	M4c finding 4: MrErr model wip2 [crate=tga_verus]	
+307	2026-11-08T12:27:57+00:00	exit=101	7s	M4c finding 4: mp_after unwrap MrErr [crate=tga_verus]	
+308	2026-11-08T12:28:36+00:00	exit=101	6s	M4c finding 4: tga.rs MrErr wip3 [crate=tga_verus]	
+309	2026-11-08T12:29:22+00:00	exit=0	28s	M4c finding 4: tga.rs MrErr wip4 [crate=tga_verus]	verification results:: 592 verified, 0 errors
+310	2026-11-08T12:30:50+00:00	exit=101	2s	M4c finding 1: wrote_px_from lemmas [crate=tga_verus]	
+311	2026-11-08T12:31:24+00:00	exit=101	29s	M4c finding 1: wrote_px_from lemmas v2 [crate=tga_verus]	verification results:: 601 verified, 2 errors
+312	2026-11-08T12:32:00+00:00	exit=101	26s	M4c finding 1: wrote_px_from lemmas v3 [crate=tga_verus]	verification results:: 603 verified, 2 errors
+313	2026-11-08T12:32:35+00:00	exit=101	27s	M4c finding 1: wrote_px_from lemmas v4 [crate=tga_verus]	verification results:: 605 verified, 2 errors
+314	2026-11-08T12:33:06+00:00	exit=101	27s	M4c finding 1: wrote_px_from lemmas v5 [crate=tga_verus]	verification results:: 605 verified, 2 errors
+315	2026-11-08T12:33:38+00:00	exit=101	27s	M4c finding 1: wrote_px_from lemmas v6 [crate=tga_verus]	verification results:: 605 verified, 2 errors
+316	2026-11-08T12:34:23+00:00	exit=101	3s	M4c finding 1: wrote_px_off defs [crate=tga_verus]	
+317	2026-11-08T12:35:24+00:00	exit=101	26s	M4c finding 1: wrote_px_off defs restored [crate=tga_verus]	verification results:: 604 verified, 1 errors
+318	2026-11-08T12:35:56+00:00	exit=101	26s	M4c finding 1: wrote_px_off defs v2 [crate=tga_verus]	verification results:: 604 verified, 1 errors
+319	2026-11-08T12:36:34+00:00	exit=0	24s	M4c finding 1: wrote_px_off defs v3 [crate=tga_verus]	verification results:: 606 verified, 0 errors
+320	2026-11-08T12:39:25+00:00	exit=101	26s	M4c finding 1: more off lemmas [crate=tga_verus]	verification results:: 608 verified, 1 errors
+321	2026-11-08T12:39:56+00:00	exit=0	26s	M4c finding 1: off lemmas v2 [crate=tga_verus]	verification results:: 611 verified, 0 errors
+322	2026-11-08T12:43:58+00:00	exit=101	3s	M4c finding 1: decode_rle generalized wip [crate=tga_verus]	
+323	2026-11-08T12:44:12+00:00	exit=101	5s	M4c finding 1: _from predicates [crate=tga_verus]	
+324	2026-11-08T12:44:40+00:00	exit=101	25s	M4c finding 1: call sites [crate=tga_verus]	verification results:: 609 verified, 6 errors
+325	2026-11-08T12:45:16+00:00	exit=101	25s	M4c finding 1: acc len [crate=tga_verus]	verification results:: 608 verified, 7 errors
+326	2026-11-08T12:45:56+00:00	exit=101	5s	M4c finding 1: err_from [crate=tga_verus]	
+327	2026-11-08T12:46:27+00:00	exit=101	27s	M4c finding 1: final proof [crate=tga_verus]	verification results:: 612 verified, 5 errors
+328	2026-11-08T12:47:23+00:00	exit=101	26s	M4c finding 1: t6 witness wip [crate=tga_verus]	verification results:: 616 verified, 1 errors
+329	2026-11-08T12:47:59+00:00	exit=0	27s	M4c finding 1: decode success bridge [crate=tga_verus]	verification results:: 617 verified, 0 errors
+330	2026-11-08T12:48:55+00:00	exit=0	27s	M4c finding 1: verify after Error path fix [crate=tga_verus]	verification results:: 617 verified, 0 errors
+331	2026-11-08T12:49:27+00:00	exit=101	26s	M4c finding 1: drop max_input from decode_rle [crate=tga_verus]	verification results:: 616 verified, 1 errors
+332	2026-11-08T12:50:08+00:00	exit=0	26s	M4c finding 1: restore cap [crate=tga_verus]	verification results:: 617 verified, 0 errors
+333	2026-11-08T12:51:36+00:00	exit=101	27s	M4c finding 1: error partial pixels [crate=tga_verus]	verification results:: 614 verified, 3 errors
+334	2026-11-08T12:53:20+00:00	exit=0	29s	M4c finding 1: ghost model lemmas [crate=tga_verus]	verification results:: 623 verified, 0 errors
+335	2026-11-08T12:53:49+00:00	exit=101	25s	M4c finding 1: ghost ctrl exit [crate=tga_verus]	verification results:: 622 verified, 1 errors
+336	2026-11-08T12:54:09+00:00	exit=101	3s	M4c finding 1: revert inline ghost [crate=tga_verus]	
+337	2026-11-08T12:55:35+00:00	exit=0	29s	M4c finding 1: after cleanup [crate=tga_verus]	verification results:: 623 verified, 0 errors
+338	2026-11-08T12:56:59+00:00	exit=101	27s	M4c finding 1: ghost split invariant [crate=tga_verus]	verification results:: 623 verified, 2 errors
+339	2026-11-08T12:57:44+00:00	exit=101	27s	M4c finding 1: mr err tuple lemmas [crate=tga_verus]	verification results:: 629 verified, 2 errors
+340	2026-11-08T12:58:26+00:00	exit=101	28s	M4c finding 1: ghost_from_split [crate=tga_verus]	verification results:: 630 verified, 2 errors
+341	2026-11-08T12:59:01+00:00	exit=101	26s	M4c finding 1: restore result_eq_from [crate=tga_verus]	verification results:: 630 verified, 2 errors
+342	2026-11-08T12:59:38+00:00	exit=101	27s	M4c finding 1: restore full_eq_from [crate=tga_verus]	verification results:: 630 verified, 2 errors
+343	2026-11-08T12:59:50+00:00	exit=101	1s	M4c finding 1: restore [crate=tga_verus]	
+344	2026-11-08T13:00:29+00:00	exit=101	28s	M4c finding 1: restore2 [crate=tga_verus]	verification results:: 630 verified, 2 errors
+345	2026-11-08T13:01:11+00:00	exit=101	27s	M4c finding 1: restore3 [crate=tga_verus]	verification results:: 630 verified, 2 errors
+346	2026-11-08T13:01:58+00:00	exit=101	27s	M4c finding 1: ctrl exit fail [crate=tga_verus]	verification results:: 631 verified, 2 errors
+347	2026-11-08T13:03:24+00:00	exit=101	28s	M4c finding 1: fail call sites [crate=tga_verus]	verification results:: 631 verified, 2 errors
+348	2026-11-08T13:05:20+00:00	exit=101	30s	M4c finding 1: ghost_split_of_cur_pix [crate=tga_verus]	verification results:: 637 verified, 3 errors
+349	2026-11-08T13:05:38+00:00	exit=101	2s	M4c finding 1: ghost split via projection [crate=tga_verus]	
+350	2026-11-08T13:06:15+00:00	exit=101	27s	M4c finding 1: ghost from split re-added [crate=tga_verus]	verification results:: 630 verified, 3 errors
+351	2026-11-08T13:06:51+00:00	exit=101	27s	M4c finding 1: ghost split v2 [crate=tga_verus]	verification results:: 630 verified, 3 errors
+352	2026-11-08T13:07:24+00:00	exit=101	28s	M4c finding 1: ghost split v3 [crate=tga_verus]	verification results:: 630 verified, 3 errors
+353	2026-11-08T13:08:02+00:00	exit=101	27s	M4c finding 1: ghost split v4 [crate=tga_verus]	verification results:: 630 verified, 3 errors
+354	2026-11-08T13:08:48+00:00	exit=101	27s	M4c finding 1: lean ghost split induction [crate=tga_verus]	verification results:: 630 verified, 5 errors
+355	2026-11-08T13:09:22+00:00	exit=101	6s	M4c finding 1: ghost split step lemmas [crate=tga_verus]	
+356	2026-11-08T13:09:56+00:00	exit=101	28s	M4c finding 1: step lemmas v2 [crate=tga_verus]	verification results:: 630 verified, 4 errors
+357	2026-11-08T13:10:36+00:00	exit=101	29s	M4c finding 1: step lemmas v3 [crate=tga_verus]	verification results:: 630 verified, 4 errors
+358	2026-11-08T13:11:25+00:00	exit=101	28s	M4c finding 1: ghost split of cur/pix v2 [crate=tga_verus]	verification results:: 630 verified, 2 errors
+359	2026-11-08T13:11:40+00:00	exit=101	2s	M4c finding 1: mr_gcur [crate=tga_verus]	
+360	2026-11-08T13:12:02+00:00	exit=101	3s	M4c finding 1: fail predicate restated [crate=tga_verus]	
+361	2026-11-08T13:12:15+00:00	exit=101	2s	M4c finding 1: re-add full_eq_from [crate=tga_verus]	
+362	2026-11-08T13:12:22+00:00	exit=101	2s	M4c finding 1: gcur invariant [crate=tga_verus]	
+363	2026-11-08T13:12:30+00:00	exit=101	3s	M4c finding 1: remove from_split [crate=tga_verus]	
+364	2026-11-08T13:13:05+00:00	exit=101	28s	M4c finding 1: dedup ghost [crate=tga_verus]	verification results:: 633 verified, 5 errors
+365	2026-11-08T13:14:06+00:00	exit=101	28s	M4c finding 1: new fail calls [crate=tga_verus]	verification results:: 633 verified, 5 errors
+366	2026-11-08T13:14:39+00:00	exit=101	27s	M4c finding 1: drop is_ghost [crate=tga_verus]	verification results:: 631 verified, 2 errors
+367	2026-11-08T13:15:37+00:00	exit=101	27s	M4c finding 1: ctrl exit facts [crate=tga_verus]	verification results:: 631 verified, 2 errors
+368	2026-11-08T13:16:03+00:00	exit=101	2s	M4c finding 1: reveal fail [crate=tga_verus]	
+369	2026-11-08T13:16:56+00:00	exit=101	25s	M4c finding 1: reveal fail v2 [crate=tga_verus]	verification results:: 631 verified, 2 errors
+370	2026-11-08T13:17:47+00:00	exit=101	26s	M4c finding 1: ctrl transitivity [crate=tga_verus]	verification results:: 631 verified, 2 errors
+371	2026-11-08T13:18:35+00:00	exit=101	27s	M4c finding 1: rlimit isolation [crate=tga_verus]	verification results:: 631 verified, 2 errors
+372	2026-11-08T13:19:09+00:00	exit=101	26s	M4c finding 1: without gcur invariant [crate=tga_verus]	verification results:: 631 verified, 2 errors
+373	2026-11-08T13:19:58+00:00	exit=101	26s	M4c finding 1: gcur steps [crate=tga_verus]	verification results:: 631 verified, 2 errors
+374	2026-11-08T13:20:36+00:00	exit=101	26s	M4c finding 1: gcur steps v2 [crate=tga_verus]	verification results:: 631 verified, 2 errors
+375	2026-11-08T13:21:39+00:00	exit=101	27s	M4c finding 1: lit gcur neq [crate=tga_verus]	verification results:: 633 verified, 2 errors
+376	2026-11-08T13:22:22+00:00	exit=101	26s	M4c finding 1: lit neq v2 [crate=tga_verus]	verification results:: 633 verified, 2 errors
+377	2026-11-08T13:22:38+00:00	exit=101	2s	M4c finding 1: lit neq v3 [crate=tga_verus]	
+378	2026-11-08T13:23:09+00:00	exit=101	27s	M4c finding 1: lit neq v4 [crate=tga_verus]	verification results:: 633 verified, 2 errors
+379	2026-11-08T13:23:47+00:00	exit=101	26s	M4c finding 1: lit neq v5 [crate=tga_verus]	verification results:: 632 verified, 2 errors
+380	2026-11-08T13:24:18+00:00	exit=101	26s	M4c finding 1: lit neq v6 [crate=tga_verus]	verification results:: 632 verified, 2 errors
+381	2026-11-08T13:24:52+00:00	exit=101	27s	M4c finding 1: lit neq v7 [crate=tga_verus]	verification results:: 633 verified, 2 errors
+382	2026-11-08T13:25:26+00:00	exit=101	25s	M4c finding 1: lit neq v8 [crate=tga_verus]	verification results:: 632 verified, 3 errors
+383	2026-11-08T13:26:06+00:00	exit=101	26s	M4c finding 1: lit neq v9 [crate=tga_verus]	verification results:: 632 verified, 2 errors
+384	2026-11-08T13:26:39+00:00	exit=101	27s	M4c finding 1: lit neq v10 [crate=tga_verus]	verification results:: 632 verified, 4 errors
+385	2026-11-08T13:27:10+00:00	exit=101	27s	M4c finding 1: lit neq v11 [crate=tga_verus]	verification results:: 633 verified, 3 errors
+386	2026-11-08T13:28:05+00:00	exit=101	24s	M4c finding 1: lit step placed [crate=tga_verus]	verification results:: 632 verified, 3 errors
+387	2026-11-08T13:28:51+00:00	exit=101	27s	M4c finding 1: ctrl mid mr_pix [crate=tga_verus]	verification results:: 632 verified, 3 errors
+388	2026-11-08T13:29:29+00:00	exit=101	26s	M4c finding 1: repeat_clear fix [crate=tga_verus]	verification results:: 633 verified, 2 errors
+389	2026-11-08T13:30:07+00:00	exit=101	1s	M4c finding 1: fail calls clean [crate=tga_verus]	
+390	2026-11-08T13:30:49+00:00	exit=101	26s	M4c finding 1: clean2 [crate=tga_verus]	verification results:: 633 verified, 2 errors
+391	2026-11-08T13:31:46+00:00	exit=101	27s	M4c finding 1: ctrl quad_ok bridge [crate=tga_verus]	verification results:: 633 verified, 2 errors
+392	2026-11-08T13:32:23+00:00	exit=101	26s	M4c finding 1: explicit assert [crate=tga_verus]	verification results:: 633 verified, 2 errors
+393	2026-11-08T13:33:16+00:00	exit=101	25s	M4c finding 1: final() assert [crate=tga_verus]	verification results:: 633 verified, 2 errors
+394	2026-11-08T13:33:48+00:00	exit=101	27s	M4c finding 1: revert final [crate=tga_verus]	verification results:: 633 verified, 2 errors
+395	2026-11-08T13:34:30+00:00	exit=101	27s	M4c finding 1: final bridge ctrl only [crate=tga_verus]	verification results:: 633 verified, 2 errors
+396	2026-11-08T13:35:03+00:00	exit=101	26s	M4c finding 1: reverted to gcur_ok [crate=tga_verus]	verification results:: 633 verified, 2 errors
+397	2026-11-08T13:35:42+00:00	exit=101	25s	M4c finding 1: overrun exit facts [crate=tga_verus]	verification results:: 633 verified, 2 errors
+398	2026-11-08T13:36:12+00:00	exit=101	25s	M4c finding 1: final bridges all [crate=tga_verus]	verification results:: 633 verified, 2 errors
+399	2026-11-08T13:36:46+00:00	exit=101	26s	M4c finding 1: bridges removed [crate=tga_verus]	verification results:: 633 verified, 2 errors
+400	2026-11-08T13:37:18+00:00	exit=101	26s	M4c finding 1: bridges simple [crate=tga_verus]	verification results:: 633 verified, 2 errors
+401	2026-11-08T13:38:02+00:00	exit=101	26s	M4c finding 1: baseline 5 fails [crate=tga_verus]	verification results:: 633 verified, 2 errors
+402	2026-11-08T13:38:34+00:00	exit=101	25s	M4c finding 1: ctrl post-block assert [crate=tga_verus]	verification results:: 633 verified, 2 errors
+403	2026-11-08T13:39:06+00:00	exit=101	26s	M4c finding 1: probe final equality [crate=tga_verus]	verification results:: 633 verified, 2 errors
+404	2026-11-08T13:39:51+00:00	exit=101	26s	M4c finding 1: no fail post [crate=tga_verus]	verification results:: 633 verified, 2 errors
+405	2026-11-08T13:39:58+00:00	exit=101	1s	M4c finding 1: no fail post v2 [crate=tga_verus]	
+406	2026-11-08T13:40:12+00:00	exit=101	0s	M4c finding 1: brace fix [crate=tga_verus]	
+407	2026-11-08T13:40:21+00:00	exit=101	1s	M4c finding 1: brace fix v2 [crate=tga_verus]	
+408	2026-11-08T13:40:57+00:00	exit=0	26s	M4c finding 1: restore decode_rle body [crate=tga_verus]	verification results:: 635 verified, 0 errors
+409	2026-11-08T13:41:30+00:00	exit=101	27s	M4c finding 1: fail post + exit asserts [crate=tga_verus]	verification results:: 633 verified, 2 errors
+410	2026-11-08T13:42:05+00:00	exit=101	29s	M4c finding 1: ctrl bridge only [crate=tga_verus]	verification results:: 633 verified, 2 errors
+411	2026-11-08T13:42:41+00:00	exit=0	26s	M4c finding 1: restore 635/0 [crate=tga_verus]	verification results:: 635 verified, 0 errors
+412	2026-11-08T13:43:22+00:00	exit=101	27s	M4c finding 1: gcur post probe [crate=tga_verus]	verification results:: 634 verified, 1 errors
+413	2026-11-08T13:44:03+00:00	exit=101	25s	M4c finding 1: gcur lit err step [crate=tga_verus]	verification results:: 635 verified, 1 errors
+414	2026-11-08T13:44:37+00:00	exit=101	26s	M4c finding 1: lit err assert [crate=tga_verus]	verification results:: 635 verified, 1 errors
+415	2026-11-08T13:45:10+00:00	exit=101	26s	M4c finding 1: capture gcur at loop top [crate=tga_verus]	verification results:: 635 verified, 1 errors
+416	2026-11-08T13:45:46+00:00	exit=101	26s	M4c finding 1: literal inner gcur inv [crate=tga_verus]	verification results:: 635 verified, 1 errors
+417	2026-11-08T13:46:23+00:00	exit=101	26s	M4c finding 1: lit pend [crate=tga_verus]	verification results:: 635 verified, 1 errors
+418	2026-11-08T13:46:54+00:00	exit=101	26s	M4c finding 1: revert lit asserts [crate=tga_verus]	verification results:: 635 verified, 1 errors
+419	2026-11-08T13:47:34+00:00	exit=0	26s	M4c finding 1: cursor invariant [crate=tga_verus]	verification results:: 636 verified, 0 errors
+420	2026-11-08T13:48:03+00:00	exit=101	24s	M4c finding 1: partial pixels post [crate=tga_verus]	verification results:: 634 verified, 2 errors
+421	2026-11-08T13:48:35+00:00	exit=101	26s	M4c finding 1: bridge exit partials [crate=tga_verus]	verification results:: 634 verified, 2 errors
+422	2026-11-08T13:49:07+00:00	exit=0	27s	M4c finding 1: gcur clause [crate=tga_verus]	verification results:: 636 verified, 0 errors
+423	2026-11-08T13:49:42+00:00	exit=101	26s	M4c finding 1: partial clause [crate=tga_verus]	verification results:: 634 verified, 2 errors
+424	2026-11-08T13:50:14+00:00	exit=101	27s	M4c finding 1: bridges per exit [crate=tga_verus]	verification results:: 634 verified, 2 errors
+425	2026-11-08T13:51:01+00:00	exit=101	27s	M4c finding 1: lit-index bridges [crate=tga_verus]	verification results:: 634 verified, 2 errors
+426	2026-11-08T13:51:34+00:00	exit=101	26s	M4c finding 1: lit index mr_pix lemma [crate=tga_verus]	verification results:: 634 verified, 3 errors
+427	2026-11-08T13:52:09+00:00	exit=101	26s	M4c finding 1: lit index bridge [crate=tga_verus]	verification results:: 634 verified, 3 errors
+428	2026-11-08T13:52:41+00:00	exit=101	25s	M4c finding 1: final state 636gcur [crate=tga_verus]	verification results:: 636 verified, 1 errors
+429	2026-11-08T13:53:22+00:00	exit=101	26s	M4c finding 1: mr_pix lit idx fix [crate=tga_verus]	verification results:: 636 verified, 1 errors
+430	2026-11-08T13:53:57+00:00	exit=0	27s	M4c: remove dead lemma [crate=tga_verus]	verification results:: 636 verified, 0 errors
+431	2026-11-08T13:54:08+00:00	exit=0	1s	M4c finding 1: gcur folded in [crate=tga_verus]	
+432	2026-11-08T13:54:46+00:00	exit=101	26s	M4c finding 1: gcur in result_eq_from [crate=tga_verus]	verification results:: 634 verified, 2 errors
+433	2026-11-08T13:55:26+00:00	exit=0	28s	M4c finding 1: revert gcur-in-result [crate=tga_verus]	verification results:: 636 verified, 0 errors
+434	2026-11-08T13:56:02+00:00	exit=101	28s	M4c finding 1: quad conjunct [crate=tga_verus]	verification results:: 634 verified, 2 errors
+435	2026-11-08T13:56:43+00:00	exit=101	26s	M4c finding 1: bridge via wrote_px_off [crate=tga_verus]	verification results:: 634 verified, 2 errors
+436	2026-11-08T13:57:21+00:00	exit=0	26s	M4c finding 1: final verify source [crate=tga_verus]	verification results:: 636 verified, 0 errors
+437	2026-11-08T14:00:00+00:00	exit=101	82s	exec mutation 1 [crate=mutation/exec-m1/tga_verus]	verification results:: 635 verified, 1 errors
+438	2026-11-08T14:01:27+00:00	exit=101	87s	exec mutation 2 [crate=mutation/exec-m2/tga_verus]	verification results:: 635 verified, 1 errors
+439	2026-11-08T14:02:53+00:00	exit=101	86s	exec mutation 3 [crate=mutation/exec-m3/tga_verus]	verification results:: 635 verified, 1 errors
+440	2026-11-08T14:04:27+00:00	exit=101	82s	exec mutation 4 [crate=mutation/exec-m4/tga_verus]	verification results:: 635 verified, 1 errors
+441	2026-11-08T14:06:01+00:00	exit=101	94s	exec mutation 5 [crate=mutation/exec-m5/tga_verus]	verification results:: 635 verified, 1 errors
+442	2026-11-08T14:07:32+00:00	exit=101	91s	exec mutation 6 [crate=mutation/exec-m6/tga_verus]	verification results:: 635 verified, 1 errors
+443	2026-11-08T14:09:03+00:00	exit=101	91s	exec mutation 7 [crate=mutation/exec-m7/tga_verus]	verification results:: 635 verified, 1 errors
+444	2026-11-08T14:10:32+00:00	exit=101	89s	exec mutation 9 [crate=mutation/exec-m9/tga_verus]	verification results:: 635 verified, 1 errors
+445	2026-11-08T14:12:02+00:00	exit=101	90s	exec mutation 10 [crate=mutation/exec-m10/tga_verus]	verification results:: 635 verified, 1 errors
+446	2026-11-08T14:13:33+00:00	exit=101	91s	exec mutation 12 [crate=mutation/exec-m12/tga_verus]	verification results:: 635 verified, 1 errors
+447	2026-11-08T14:15:03+00:00	exit=101	90s	exec mutation 18 [crate=mutation/exec-m18/tga_verus]	verification results:: 635 verified, 1 errors
+448	2026-11-08T14:16:34+00:00	exit=101	91s	exec mutation 19 [crate=mutation/exec-m19/tga_verus]	verification results:: 635 verified, 1 errors
+449	2026-11-08T14:18:07+00:00	exit=101	92s	exec mutation 20 [crate=mutation/exec-m20/tga_verus]	verification results:: 635 verified, 1 errors
+450	2026-11-08T14:19:47+00:00	exit=101	89s	exec mutation 15 [crate=mutation/exec-m15/tga_verus]	verification results:: 635 verified, 1 errors
+451	2026-11-08T14:21:13+00:00	exit=101	86s	exec mutation 17 [crate=mutation/exec-m17/tga_verus]	verification results:: 635 verified, 1 errors
+452	2026-11-08T14:22:55+00:00	exit=101	89s	exec mutation 17 [crate=mutation/exec-m17/tga_verus]	verification results:: 635 verified, 1 errors
+453	2026-11-08T14:24:45+00:00	exit=0	88s	M4c final full reverify after cargo clean [crate=tga_verus]	verification results:: 636 verified, 0 errors
+454	2026-11-08T14:25:50+00:00	exit=101	27s	M4c finding 1: fail_eq_from in post [crate=tga_verus]	verification results:: 634 verified, 2 errors
+455	2026-11-08T14:25:57+00:00	exit=101	2s	M4c finding 1: final bridges to fail [crate=tga_verus]	
+456	2026-11-08T14:26:05+00:00	exit=101	1s	M4c finding 1: fix trailing [crate=tga_verus]	
+457	2026-11-08T14:26:48+00:00	exit=0	28s	M4c: restore 636 final [crate=tga_verus]	verification results:: 636 verified, 0 errors
+458	2026-11-08T14:27:27+00:00	exit=101	26s	M4c finding 1: fail post + ctrl bridge [crate=tga_verus]	verification results:: 634 verified, 2 errors
+459	2026-11-08T14:28:00+00:00	exit=0	27s	M4c: restore final 636 [crate=tga_verus]	verification results:: 636 verified, 0 errors
+460	2026-11-08T14:29:43+00:00	exit=0	85s	M4c definitive full reverify after cargo clean [crate=tga_verus]	verification results:: 636 verified, 0 errors
+461	2026-11-08T14:32:04+00:00	exit=0	85s	M4c closing confirmation [crate=tga_verus]	verification results:: 636 verified, 0 errors
+462	2026-11-08T15:09:45+00:00	exit=101	95s	T6 failure postcondition and indexed literal partial pixels [crate=tga_verus]	verification results:: 634 verified, 2 errors
+463	2026-11-08T15:10:59+00:00	exit=101	27s	T6 isolate literal prefix and failure postconditions [crate=tga_verus]	verification results:: 634 verified, 2 errors
+464	2026-11-08T15:12:19+00:00	exit=101	27s	T6 reduce redundant RLE helper postconditions [crate=tga_verus]	verification results:: 634 verified, 2 errors
+465	2026-11-08T15:14:02+00:00	exit=101	27s	T6 identity error return bridges final output state [crate=tga_verus]	verification results:: 635 verified, 2 errors
+466	2026-11-08T15:17:43+00:00	exit=101	90s	exec mutation 5 [crate=mutation/exec-m5/tga_verus]	verification results:: 635 verified, 1 errors
+467	2026-11-08T15:19:07+00:00	exit=101	84s	exec mutation 7 [crate=mutation/exec-m7/tga_verus]	verification results:: 635 verified, 1 errors
+468	2026-11-08T15:20:37+00:00	exit=101	90s	exec mutation 20 [crate=mutation/exec-m20/tga_verus]	verification results:: 635 verified, 1 errors
+469	2026-11-08T15:21:39+00:00	exit=101	84s	exec mutation 7 swapped packet availability and overrun [crate=mutation/exec-m7/tga_verus]	verification results:: 635 verified, 1 errors
+470	2026-11-08T15:23:28+00:00	exit=101	85s	exec mutation 7 [crate=mutation/exec-m7/tga_verus]	verification results:: 635 verified, 1 errors
+471	2026-11-08T15:25:16+00:00	exit=0	82s	clean full reverify after T6 attempts and mutation repairs [crate=tga_verus]	verification results:: 636 verified, 0 errors
+472	2026-11-08T15:45:25+00:00	exit=101	87s	M4e: T6 failure clause via rle_packet split, rle_exact_from postcondition, produced as &mut [crate=tga_verus]	verification results:: 642 verified, 1 errors
+473	2026-11-08T15:47:07+00:00	exit=101	27s	M4e diag: assert pkt_out/pkt_post before the literal index exit [crate=tga_verus]	verification results:: 642 verified, 1 errors
+474	2026-11-08T15:48:09+00:00	exit=101	27s	M4e: literal loop invariant width/height == h fields for the index exit [crate=tga_verus]	verification results:: 642 verified, 1 errors
+475	2026-11-08T15:49:41+00:00	exit=0	29s	M4e: cur0/pg0 as ghost params of the packet sub-functions [crate=tga_verus]	verification results:: 643 verified, 0 errors
+476	2026-11-08T15:53:10+00:00	exit=0	91s	M4e: clean full reverify after cargo clean (T6 failure clause closed, dead M4c exit predicates removed) [crate=tga_verus]	verification results:: 642 verified, 0 errors
+477	2026-11-08T15:55:27+00:00	exit=101	87s	exec mutation 1 [crate=mutation/exec-m1/tga_verus]	verification results:: 641 verified, 1 errors
+478	2026-11-08T15:56:51+00:00	exit=101	84s	exec mutation 2 [crate=mutation/exec-m2/tga_verus]	verification results:: 641 verified, 1 errors
+479	2026-11-08T15:58:23+00:00	exit=101	92s	exec mutation 3 [crate=mutation/exec-m3/tga_verus]	verification results:: 641 verified, 1 errors
+480	2026-11-08T15:59:54+00:00	exit=101	90s	exec mutation 4 [crate=mutation/exec-m4/tga_verus]	verification results:: 641 verified, 1 errors
+481	2026-11-08T16:01:26+00:00	exit=101	92s	exec mutation 5 [crate=mutation/exec-m5/tga_verus]	verification results:: 641 verified, 1 errors
+482	2026-11-08T16:02:55+00:00	exit=101	89s	exec mutation 6 [crate=mutation/exec-m6/tga_verus]	verification results:: 641 verified, 1 errors
+483	2026-11-08T16:04:26+00:00	exit=101	91s	exec mutation 7 [crate=mutation/exec-m7/tga_verus]	verification results:: 641 verified, 1 errors
+484	2026-11-08T16:05:55+00:00	exit=101	89s	exec mutation 9 [crate=mutation/exec-m9/tga_verus]	verification results:: 641 verified, 1 errors
+485	2026-11-08T16:07:21+00:00	exit=101	86s	exec mutation 10 [crate=mutation/exec-m10/tga_verus]	verification results:: 641 verified, 1 errors
+486	2026-11-08T16:08:46+00:00	exit=101	85s	exec mutation 12 [crate=mutation/exec-m12/tga_verus]	verification results:: 641 verified, 1 errors
+487	2026-11-08T16:10:15+00:00	exit=101	89s	exec mutation 15 [crate=mutation/exec-m15/tga_verus]	verification results:: 641 verified, 1 errors
+488	2026-11-08T16:11:40+00:00	exit=101	85s	exec mutation 17 [crate=mutation/exec-m17/tga_verus]	verification results:: 641 verified, 1 errors
+489	2026-11-08T16:13:12+00:00	exit=101	91s	exec mutation 18 [crate=mutation/exec-m18/tga_verus]	verification results:: 641 verified, 1 errors
+490	2026-11-08T16:14:39+00:00	exit=101	87s	exec mutation 19 [crate=mutation/exec-m19/tga_verus]	verification results:: 641 verified, 1 errors
+491	2026-11-08T16:16:06+00:00	exit=101	87s	exec mutation 20 [crate=mutation/exec-m20/tga_verus]	verification results:: 641 verified, 1 errors

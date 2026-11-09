@@ -1,0 +1,14 @@
+[package]
+name = "icns_diff"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+icns_verus = { path = "../../icns/icns_verus" }
+icns_creusot = { path = "../../alt/icns-creusot/icns_creusot" }
+serde_json = "1"
+
+[profile.release]
+opt-level = 3
+debug-assertions = true
+overflow-checks = true

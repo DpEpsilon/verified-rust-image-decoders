@@ -1,0 +1,227 @@
+1	2026-11-07T12:48:48+00:00	exit=1	1s	M1: plain spec implementation translates cleanly	error: could not compile `icns_creusot` (lib) due to 1 previous error
+2	2026-11-07T12:48:55+00:00	exit=1	0s	M1: plain spec implementation translates cleanly	error: could not compile `icns_creusot` (lib) due to 11 previous errors
+3	2026-11-07T12:49:13+00:00	exit=1	1s	M1: plain spec implementation translates cleanly	error: could not compile `icns_creusot` (lib) due to 2 previous errors
+4	2026-11-07T12:49:30+00:00	exit=1	1s	M1: plain spec implementation translates cleanly	  process didn't exit successfully: `/home/ws/.local/share/creusot/toolchains/nightly-2026-08-03/bin/creusot-rustc --crate-name icns_creusot --edition=2024 src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata -C embed-bitcode=no -C debuginfo=2 --warn=unexpected_cfgs --check-cfg 'cfg(creusot)' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=032f4c5a98731e9f -C extra-filename=-ab946967e90835ac --out-dir /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/icns-creusot/icns_creusot/target/creusot/debug/build/icns_creusot/ab946967e90835ac/out -L dependency=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/icns-creusot/icns_creusot/target/creusot/debug/build/creusot-std/66c08b28ed0b5f3d/out -L dependency=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/icns-creusot/icns_creusot/target/creusot/debug/build/creusot-std-proc/e73bcb246830f211/out --extern creusot_std=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/icns-creusot/icns_creusot/target/creusot/debug/build/creusot-std/66c08b28ed0b5f3d/out/libcreusot_std-66c08b28ed0b5f3d.rmeta` (exit status: 101)
+5	2026-11-07T12:50:01+00:00	exit=1	1s	M1: plain spec implementation translates cleanly	error: could not compile `icns_creusot` (lib) due to 1 previous error; 6 warnings emitted
+6	2026-11-07T12:52:31+00:00	exit=1	132s	M1: plain spec implementation translates cleanly	
+7	2026-11-07T14:24:22+00:00	exit=1	2s	M2: T1-T6 contracts and model, first full run	error: could not compile `icns_creusot` (lib) due to 2 previous errors
+8	2026-11-07T14:24:56+00:00	exit=1	30s	M2: T1-T6 contracts and model	
+9	2026-11-07T14:27:14+00:00	exit=0	51s	M2: T1-T6 contracts and model, clean rerun	Proved (34 files) ✔
+10	2026-11-07T14:29:00+00:00	exit=0	47s	M2: T1-T6 final contracts, wrappers, model	Proved (34 files) ✔
+11	2026-11-07T14:31:02+00:00	exit=0	50s	M2: T1-T6 frozen design (private helpers, parse-bound call sites)	Proved (34 files) ✔
+12	2026-11-07T14:34:52+00:00	exit=0	46s	M2: T1-T6 final (T5 combine wrapper, private helpers)	Proved (34 files) ✔
+13	2026-11-07T14:38:47+00:00	exit=0	46s	M2: T1-T6, rle_decode bound removed (more general)	Proved (34 files) ✔
+14	2026-11-07T16:43:26+00:00	exit=0	26s	M3: T7/T8 model MP + good_* lemmas, first attempt	Proved (47 files) ✔
+15	2026-11-07T16:54:34+00:00	exit=0	4s	M3: T7, T8, L1, L2 with model module and good_* lemmas	Proved (51 files) ✔
+16	2026-11-07T17:18:06+00:00	exit=1	23s	M3: T7,T8,L1,L2,L4,L5 with model module; prover budget raised to t=10 d=14	
+17	2026-11-07T17:33:10+00:00	exit=0	4s	M3: T7, T8, L1, L2 restored to default budget (L4-L6 pending)	Proved (51 files) ✔
+18	2026-11-07T17:35:29+00:00	exit=0	3s	M3 final: T7, T8, L1, L2 (L4-L6 in STUCK.md)	Proved (51 files) ✔
+19	2026-11-07T17:39:19+00:00	exit=0	4s	symbolic repeated-entry constructors and lengths	Proved (55 files) ✔
+20	2026-11-07T17:40:19+00:00	exit=1	35s	prove entry bytes and classification symbolically	
+21	2026-11-07T17:40:50+00:00	exit=1	17s	prove fixed-length entry header indexing	
+22	2026-11-07T17:41:38+00:00	exit=1	24s	isolate big endian entry length from classification	
+23	2026-11-07T17:42:30+00:00	exit=1	30s	prove model entry classification from isolated header	
+24	2026-11-07T17:43:31+00:00	exit=1	35s	split literal type classification and entry equality	
+25	2026-11-07T17:43:48+00:00	exit=0	4s	restore prior proven crate after stalled entry classification	Proved (51 files) ✔
+26	2026-11-07T17:58:01+00:00	exit=1	32s	L4-L6: arithmetic byte model, per-fact lemmas, induction outside model [crate=icns_creusot]	
+27	2026-11-07T18:00:27+00:00	exit=0	6s	L4-L6: L6 over Int value of q so witness triggers match [crate=icns_creusot]	Proved (96 files) ✔
+28	2026-11-07T18:03:27+00:00	exit=0	69s	clean-cache reproduction of run 27 in disposable copy [crate=clean-check]	Proved (96 files) ✔
+29	2026-11-07T18:03:43+00:00	exit=0	6s	L4-L6 final: witness builders private (no VC change) [crate=icns_creusot]	Proved (96 files) ✔
+30	2026-11-07T19:00:26+00:00	exit=0	6s	M4a: MR model (mr_ch) added, translation check [crate=icns_creusot]	Proved (104 files) ✔
+31	2026-11-07T19:02:40+00:00	exit=1	1s	M4a: T9 rle_channel model equality, first attempt [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 2 previous errors
+32	2026-11-07T19:03:06+00:00	exit=1	19s	M4a: T9 rle_channel model equality, attempt 2 [crate=icns_creusot]	
+33	2026-11-07T19:03:25+00:00	exit=0	7s	M4a: T9 rle_channel model equality, attempt 3 [crate=icns_creusot]	Proved (106 files) ✔
+34	2026-11-07T19:03:47+00:00	exit=0	7s	M4a: T9 rle_decode model equality [crate=icns_creusot]	Proved (106 files) ✔
+35	2026-11-07T19:05:30+00:00	exit=1	38s	M4a: P->parser_ok bridge lemmas [crate=icns_creusot]	
+36	2026-11-07T19:06:20+00:00	exit=1	33s	M4a: P->parser_ok bridge, len bound + pointwise fix [crate=icns_creusot]	
+37	2026-11-07T19:07:00+00:00	exit=1	26s	M4a: bridge, len_bound in module + pointwise helpers [crate=icns_creusot]	
+38	2026-11-07T19:07:17+00:00	exit=1	1s	M4a: bridge, pointwise via unfold_last + index lemmas [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 2 previous errors
+39	2026-11-07T19:08:00+00:00	exit=1	32s	M4a: bridge, generic push_back_index [crate=icns_creusot]	
+40	2026-11-07T19:08:23+00:00	exit=0	7s	M4a: bridge, forall-form index lemmas [crate=icns_creusot]	Proved (120 files) ✔
+41	2026-11-07T19:10:04+00:00	exit=1	1s	M4a: decode_rgb MC model + interleave [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 8 previous errors
+42	2026-11-07T19:10:13+00:00	exit=1	1s	M4a: decode_rgb MC model, Int fix [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 1 previous error
+43	2026-11-07T19:10:39+00:00	exit=1	1s	M4a: strip helpers + decode_rgb prefix model [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 15 previous errors; 12 warnings emitted
+44	2026-11-07T19:11:51+00:00	exit=1	61s	M4a: decode_rgb model, logic marker fix [crate=icns_creusot]	
+45	2026-11-07T19:12:21+00:00	exit=1	1s	M4a: decode_rgb split mc_entry + bridge asserts [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 2 previous errors
+46	2026-11-07T19:12:34+00:00	exit=1	1s	M4a: decode_rgb split mc_entry + bridge asserts v2 [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 1 previous error
+47	2026-11-07T19:13:11+00:00	exit=1	31s	M4a: decode_rgb split mc_entry + bridge asserts v3 [crate=icns_creusot]	
+48	2026-11-07T19:14:04+00:00	exit=1	30s	M4a: decode_rgb bridge lemma calls added [crate=icns_creusot]	
+49	2026-11-07T19:14:22+00:00	exit=1	10s	M4a: decode_rgb with map_len [crate=icns_creusot]	
+50	2026-11-07T19:16:03+00:00	exit=1	32s	M4a: decode_rgb branch asserts for MC model [crate=icns_creusot]	
+51	2026-11-07T19:17:01+00:00	exit=1	27s	M4a: decode_rgb rle_decode explicit match [crate=icns_creusot]	
+52	2026-11-07T19:18:00+00:00	exit=1	28s	M4a: decode_rgb final mc_model assert [crate=icns_creusot]	
+53	2026-11-07T19:18:53+00:00	exit=1	13s	M4a: decode_rgb interleave index hints [crate=icns_creusot]	
+54	2026-11-07T19:19:22+00:00	exit=1	1s	M4a: decode_rgb via rle_interleave helper [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 1 previous error
+55	2026-11-07T19:20:15+00:00	exit=1	46s	M4a: rle_interleave with pix_res_model [crate=icns_creusot]	
+56	2026-11-07T19:20:58+00:00	exit=1	27s	M4a: decode_rgb with colour_side_bound [crate=icns_creusot]	
+57	2026-11-07T19:21:46+00:00	exit=1	2s	M4a: decode_rgb via mc_model_at + entry_view [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 6 previous errors
+58	2026-11-07T19:22:50+00:00	exit=1	53s	M4a: decode_rgb ty@ fix [crate=icns_creusot]	
+59	2026-11-07T19:24:08+00:00	exit=1	36s	M4a: decode_rgb postcondition via mc_entry_c [crate=icns_creusot]	
+60	2026-11-07T19:24:47+00:00	exit=1	17s	M4a: decode_rgb simplified postcondition [crate=icns_creusot]	
+61	2026-11-07T19:24:58+00:00	exit=1	1s	M4a: decode_rgb entry index assert [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 1 previous error
+62	2026-11-07T19:25:14+00:00	exit=1	7s	M4a: decode_rgb, locate single failing subgoal [crate=icns_creusot]	
+63	2026-11-07T19:25:43+00:00	exit=1	18s	M4a: decode_rgb entry==entries[i] assert [crate=icns_creusot]	
+64	2026-11-07T19:25:52+00:00	exit=1	2s	M4a: decode_rgb len bridge asserts [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 2 previous errors; 12 warnings emitted
+65	2026-11-07T19:25:59+00:00	exit=1	2s	M4a: decode_rgb elen snapshot bridge [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 1 previous error; 12 warnings emitted
+66	2026-11-07T19:26:22+00:00	exit=1	18s	M4a: decode_rgb out_of_range local [crate=icns_creusot]	
+67	2026-11-07T19:26:44+00:00	exit=1	7s	M4a: decode_rgb index branch assert [crate=icns_creusot]	
+68	2026-11-07T19:27:17+00:00	exit=1	1s	M4a: decode_rgb_sel helper split [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 3 previous errors
+69	2026-11-07T19:27:31+00:00	exit=1	1s	M4a: decode_rgb_sel by-value Entry [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 1 previous error
+70	2026-11-07T19:28:27+00:00	exit=1	51s	M4a: decode_rgb_sel &Entry [crate=icns_creusot]	
+71	2026-11-07T19:28:44+00:00	exit=1	8s	M4a: decode_rgb_sel split ensures [crate=icns_creusot]	
+72	2026-11-07T19:29:16+00:00	exit=1	18s	M4a: decode_rgb_sel with strip_model assert [crate=icns_creusot]	
+73	2026-11-07T19:29:36+00:00	exit=1	7s	M4a: decode_rgb_sel explicit out bounds assert [crate=icns_creusot]	
+74	2026-11-07T19:30:07+00:00	exit=1	8s	M4a: decode_rgb_sel width bound asserts [crate=icns_creusot]	
+75	2026-11-07T19:30:35+00:00	exit=1	8s	M4a: decode_rgb_sel split ok/err ensures [crate=icns_creusot]	
+76	2026-11-07T19:30:57+00:00	exit=1	8s	M4a: decode_rgb_sel pix_res_model assert [crate=icns_creusot]	
+77	2026-11-07T19:31:33+00:00	exit=1	8s	M4a: decode_rgb_sel n bound asserts [crate=icns_creusot]	
+78	2026-11-07T19:32:09+00:00	exit=1	19s	M4a: decode_rgb_sel bounds assert [crate=icns_creusot]	
+79	2026-11-07T19:32:37+00:00	exit=1	9s	M4a: decode_rgb_sel width/height tie [crate=icns_creusot]	
+80	2026-11-07T19:32:57+00:00	exit=1	8s	M4a: total interleave3/zero_buf [crate=icns_creusot]	
+81	2026-11-07T19:33:39+00:00	exit=1	19s	M4a: decode_rgb_sel type_of_mentry call [crate=icns_creusot]	
+82	2026-11-07T19:34:21+00:00	exit=1	22s	M4a: decode_rgb_sel uses mc_entry_c_bounds [crate=icns_creusot]	
+83	2026-11-07T19:34:53+00:00	exit=1	8s	M4a: decode_rgb bounds via lemma [crate=icns_creusot]	
+84	2026-11-07T19:35:13+00:00	exit=1	8s	M4a: decode_rgb_sel trimmed body [crate=icns_creusot]	
+85	2026-11-07T19:35:32+00:00	exit=1	8s	M4a: decode_rgb_sel no type_of_mentry [crate=icns_creusot]	
+86	2026-11-07T19:35:59+00:00	exit=1	20s	M4a: decode_rgb_sel only Ok ensures [crate=icns_creusot]	
+87	2026-11-07T19:36:54+00:00	exit=1	19s	M4a: decode_rgb_sel Err-only ensures (bisect) [crate=icns_creusot]	
+88	2026-11-07T19:37:19+00:00	exit=1	8s	M4a: type_of_entry postcondition + full ensures [crate=icns_creusot]	
+89	2026-11-07T19:37:37+00:00	exit=1	8s	M4a: decode_rgb entries[i] unwind [crate=icns_creusot]	
+90	2026-11-07T19:37:55+00:00	exit=1	8s	M4a: decode_rgb numeric bounds from lemma [crate=icns_creusot]	
+91	2026-11-07T19:38:11+00:00	exit=1	9s	M4a: decode_rgb split ensures by index range [crate=icns_creusot]	
+92	2026-11-07T19:38:24+00:00	exit=1	7s	M4a: bisect decode_rgb model-only ensures [crate=icns_creusot]	
+93	2026-11-07T19:38:41+00:00	exit=1	9s	M4a: bisect without model ensures [crate=icns_creusot]	
+94	2026-11-07T19:38:54+00:00	exit=1	9s	M4a: bisect numeric-only ensures [crate=icns_creusot]	
+95	2026-11-07T19:39:18+00:00	exit=1	9s	M4a: bisect split numeric ensures [crate=icns_creusot]	
+96	2026-11-07T19:39:31+00:00	exit=0	8s	M4a: bisect body asserts removed [crate=icns_creusot]	Proved (133 files) ✔
+97	2026-11-07T19:39:56+00:00	exit=1	20s	M4a: decode_rgb ensures without body asserts [crate=icns_creusot]	
+98	2026-11-07T19:40:29+00:00	exit=1	21s	M4a: decode_rgb model assert only [crate=icns_creusot]	
+99	2026-11-07T19:40:47+00:00	exit=1	14s	M4a: decode_rgb single model assert [crate=icns_creusot]	
+100	2026-11-07T19:41:04+00:00	exit=0	12s	M4a: decode_rgb_sel Err ensures restored [crate=icns_creusot]	Proved (133 files) ✔
+101	2026-11-07T19:41:56+00:00	exit=1	33s	M4a: decode_mask MA model + T10/T11 wrappers [crate=icns_creusot]	
+102	2026-11-07T19:42:23+00:00	exit=0	12s	M4a: decode_mask to_vec assert [crate=icns_creusot]	Proved (135 files) ✔
+103	2026-11-07T19:44:04+00:00	exit=1	31s	M4a: L3 model + lemmas first attempt [crate=icns_creusot]	
+104	2026-11-07T19:44:15+00:00	exit=1	2s	M4a: L3 step_l3 branch hints [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 2 previous errors
+105	2026-11-07T19:44:31+00:00	exit=0	12s	M4a: L3 step_l3 qualified [crate=icns_creusot]	Proved (148 files) ✔
+106	2026-11-07T19:44:45+00:00	exit=1	1s	M4a: L3 witness builder + instantiation [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 1 previous error
+107	2026-11-07T19:45:01+00:00	exit=0	9s	M4a: L3 witness variant fix [crate=icns_creusot]	Proved (152 files) ✔
+108	2026-11-07T19:46:19+00:00	exit=1	49s	M4a clean-cache reproduction [crate=clean-check]	
+109	2026-11-07T19:47:00+00:00	exit=0	35s	M4a clean-cache reproduction with why3find.json [crate=clean-check]	Proved (152 files) ✔
+110	2026-11-07T19:48:47+00:00	exit=0	80s	M4a non-vacuity: T10 must fail if decode_rgb err-equality dropped [crate=vac-check]	Proved (152 files) ✔
+111	2026-11-07T19:49:21+00:00	exit=1	27s	M4a non-vacuity: T10 must fail if decode_rgb err-equality dropped [crate=vac-check]	
+112	2026-11-07T19:51:04+00:00	exit=1	97s	M4a non-vacuity: T10 must fail if decode_rgb loses mc_entry_c equality [crate=vac-check]	
+113	2026-11-07T19:52:46+00:00	exit=1	96s	M4a non-vacuity: T11 must fail if decode_mask loses ma_entry_c equality [crate=vac-check]	
+114	2026-11-07T19:53:07+00:00	exit=0	10s	M4a final: T9, T10, T11, L3 proved at default budget [crate=icns_creusot]	Proved (152 files) ✔
+115	2026-11-07T20:05:02+00:00	exit=1	47s	M4b: T12/T13 combine = MJ [crate=icns_creusot]	
+116	2026-11-07T20:09:04+00:00	exit=1	10s	M4b: T12/T13 combine = MJ (zip_rgba bound) [crate=icns_creusot]	
+117	2026-11-07T20:10:15+00:00	exit=0	9s	M4b: T12/T13 (drop stray entries_view assert) [crate=icns_creusot]	Proved (160 files) ✔
+118	2026-11-07T20:12:26+00:00	exit=1	103s	M4b non-vacuity: T12 must fail if combine_pair loses the Ok equality [crate=vac-check]	
+119	2026-11-07T20:13:18+00:00	exit=1	45s	M4b non-vacuity: T12/T13 must fail if combine loses the Ok model equality [crate=vac-check]	
+120	2026-11-07T20:13:54+00:00	exit=1	28s	M4b non-vacuity: T12 must fail if missing-mask precedes missing-colour [crate=vac-check]	
+121	2026-11-07T20:14:35+00:00	exit=1	35s	M4b non-vacuity: T12 must fail if the mask index is checked before the RGB decode [crate=vac-check]	
+122	2026-11-07T20:15:11+00:00	exit=1	31s	M4b non-vacuity: T12 must fail if the side mismatch is not reported [crate=vac-check]	
+123	2026-11-07T20:17:08+00:00	exit=0	105s	M4b clean-cache reproduction (no proof cache) [crate=clean-repro]	Proved (160 files) ✔
+124	2026-11-07T20:18:02+00:00	exit=1	2s	M4b: T12/T13 + non-vacuity witnesses [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 1 previous error
+125	2026-11-07T20:18:11+00:00	exit=1	2s	M4b: T12/T13 + non-vacuity witnesses [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 1 previous error
+126	2026-11-07T20:19:21+00:00	exit=1	51s	M4b: T12/T13 + non-vacuity witnesses [crate=icns_creusot]	
+127	2026-11-07T20:19:48+00:00	exit=0	15s	M4b: T12/T13 + non-vacuity witnesses v2 [crate=icns_creusot]	Proved (162 files) ✔
+128	2026-11-07T20:21:33+00:00	exit=0	97s	M4b final clean-cache reproduction [crate=clean-repro]	Proved (162 files) ✔
+129	2026-11-07T20:39:41+00:00	exit=1	98s	probe: can why3 evaluate mp on a concrete literal vector [crate=probe]	
+130	2026-11-07T20:41:51+00:00	exit=1	24s	probe: are the small obligations decidable at default budget [crate=probe]	
+131	2026-11-07T20:42:54+00:00	exit=1	31s	probe: sub-step bisection for the entry-loop case [crate=probe]	
+132	2026-11-07T20:43:07+00:00	exit=1	2s	probe: generic step_acc lemma instantiated [crate=probe]	error: could not compile `icns_creusot` (lib) due to 1 previous error; 1 warning emitted
+133	2026-11-07T20:43:18+00:00	exit=1	9s	probe: generic step_acc lemma instantiated [crate=probe]	
+134	2026-11-07T20:43:44+00:00	exit=1	23s	probe: loop_done closes the finished case [crate=probe]	
+135	2026-11-07T20:44:37+00:00	exit=1	2s	probe 2: root-level module with known step/done lemmas [crate=probe]	error: could not compile `icns_creusot` (lib) due to 8 previous errors; 1 warning emitted
+136	2026-11-07T20:45:03+00:00	exit=1	22s	probe 2: root-level module with known step/done lemmas [crate=probe]	
+137	2026-11-07T20:45:23+00:00	exit=0	9s	probe 3: expected entries as a push_back chain [crate=probe]	Proved (173 files) ✔
+138	2026-11-07T20:45:49+00:00	exit=1	2s	probe 3: RLE channel step chain [crate=probe]	error: could not compile `icns_creusot` (lib) due to 3 previous errors; 1 warning emitted
+139	2026-11-07T20:46:54+00:00	exit=1	20s	probe 4: recursion reducibility battery [crate=probe]	
+140	2026-11-07T20:47:08+00:00	exit=1	2s	probe 5: in-module mr_ch reduction [crate=probe]	error: could not compile `icns_creusot` (lib) due to 2 previous errors; 2 warnings emitted
+141	2026-11-07T20:47:30+00:00	exit=1	16s	probe 5: in-module mr_ch reduction [crate=probe]	
+142	2026-11-07T20:48:09+00:00	exit=1	31s	probe 6: ch_step concrete chain [crate=probe]	
+143	2026-11-07T20:49:40+00:00	exit=1	16s	probe 7: full RLE channel chain [crate=probe]	
+144	2026-11-07T20:50:01+00:00	exit=0	9s	probe 7b: corrected channel chain [crate=probe]	Proved (169 files) ✔
+145	2026-11-07T20:51:49+00:00	exit=0	20s	M4c: generic RLE machinery [crate=probe]	Proved (170 files) ✔
+146	2026-11-07T20:56:57+00:00	exit=1	15s	M4c probe: transparent mr_ch inside rmodel for rgb-is32 [crate=icns_creusot]	
+147	2026-11-07T20:57:40+00:00	exit=1	28s	M4c: composition structure at root [crate=icns_creusot]	
+148	2026-11-07T20:58:38+00:00	exit=1	34s	M4c: forall over constant channel + ch chain [crate=icns_creusot]	
+149	2026-11-07T20:58:56+00:00	exit=1	2s	M4c: rep_run long uniform chain [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 1 previous error; 1 warning emitted
+150	2026-11-07T20:59:34+00:00	exit=1	34s	M4c: rep_run long uniform chain [crate=icns_creusot]	
+151	2026-11-07T20:59:53+00:00	exit=1	1s	M4c: Seq::create-table payload repeat chain [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 2 previous errors; 1 warning emitted
+152	2026-11-07T20:59:59+00:00	exit=1	1s	M4c: Seq::create-table payload repeat chain [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 1 previous error; 1 warning emitted
+153	2026-11-07T21:00:08+00:00	exit=1	2s	M4c: shared helpers + create-table repeat chain [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 1 previous error; 1 warning emitted
+154	2026-11-07T21:00:54+00:00	exit=1	40s	M4c: shared helpers + create-table repeat chain [crate=icns_creusot]	
+155	2026-11-07T21:01:36+00:00	exit=1	23s	M4c: constant-abstracted repeat chain [crate=icns_creusot]	
+156	2026-11-07T21:01:55+00:00	exit=1	1s	M4c: flat per-packet chain [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 3 previous errors; 1 warning emitted
+157	2026-11-07T21:02:10+00:00	exit=0	10s	M4c: flat per-packet chain [crate=icns_creusot]	Proved (180 files) ✔
+158	2026-11-07T21:02:56+00:00	exit=1	34s	M4c: equality-based repeat recursion [crate=icns_creusot]	
+159	2026-11-07T21:03:31+00:00	exit=1	22s	M4c: literal-size equality recursion [crate=icns_creusot]	
+160	2026-11-07T21:04:02+00:00	exit=1	22s	M4c: literal-size equality recursion v2 [crate=icns_creusot]	
+161	2026-11-07T21:04:45+00:00	exit=1	22s	M4c: rec with literal k [crate=icns_creusot]	
+162	2026-11-07T21:06:07+00:00	exit=1	29s	M4c: hand chain rgb-is32 [crate=icns_creusot]	
+163	2026-11-07T21:07:02+00:00	exit=1	30s	M4c: factored pstep + repn [crate=icns_creusot]	
+164	2026-11-07T21:07:34+00:00	exit=1	23s	M4c: repn with explicit base case [crate=icns_creusot]	
+165	2026-11-07T21:08:02+00:00	exit=1	2s	M4c: generic group recursion with forall hyps [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 2 previous errors
+166	2026-11-07T21:08:15+00:00	exit=0	10s	M4c: generic group recursion [crate=icns_creusot]	Proved (169 files) ✔
+167	2026-11-07T21:09:07+00:00	exit=0	19s	M4c: flat chain scaling 4/8/16/32 [crate=icns_creusot]	Proved (468 files) ✔
+168	2026-11-07T21:10:04+00:00	exit=0	50s	M4c: flat chain K=64 and 127 [crate=icns_creusot]	Proved (1425 files) ✔
+169	2026-11-07T21:11:01+00:00	exit=0	13s	M4c: grp call-site probe [crate=icns_creusot]	Proved (169 files) ✔
+170	2026-11-07T21:11:43+00:00	exit=1	37s	M4c: grp instantiated on create table [crate=icns_creusot]	
+171	2026-11-07T21:11:53+00:00	exit=1	0s	M4c: grp instantiated with explicit foralls [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 1 previous error
+172	2026-11-07T21:12:20+00:00	exit=1	24s	M4c: grp instantiated with explicit foralls [crate=icns_creusot]	
+173	2026-11-07T21:12:41+00:00	exit=0	12s	M4c: forall over create table [crate=icns_creusot]	Proved (170 files) ✔
+174	2026-11-07T21:13:18+00:00	exit=1	19s	M4c: rgb-is32 composition sub-facts [crate=icns_creusot]	
+175	2026-11-07T21:13:53+00:00	exit=1	31s	M4c: rgb-is32 with RLE chains given [crate=icns_creusot]	
+176	2026-11-07T21:16:12+00:00	exit=0	12s	M4c: general-buffer channel chain [crate=icns_creusot]	Proved (172 files) ✔
+177	2026-11-07T21:16:26+00:00	exit=1	1s	M4c: grp with table-derived foralls [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 1 previous error
+178	2026-11-07T21:16:54+00:00	exit=0	24s	M4c: grp with table-derived foralls [crate=icns_creusot]	Proved (171 files) ✔
+179	2026-11-07T21:19:24+00:00	exit=1	0s	M4c: parse-only vector agreement [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 2 previous errors
+180	2026-11-07T21:19:37+00:00	exit=1	3s	M4c: parse-only vector agreement [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 54 previous errors; 1 warning emitted
+181	2026-11-07T21:19:50+00:00	exit=1	4s	M4c: parse-only vector agreement [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 108 previous errors; 2 warnings emitted
+182	2026-11-07T21:20:02+00:00	exit=1	2s	M4c: parse-only vector agreement [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 53 previous errors; 1 warning emitted
+183	2026-11-07T21:20:10+00:00	exit=1	3s	M4c: parse-only vector agreement [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 1 previous error; 1 warning emitted
+184	2026-11-07T21:22:11+00:00	exit=1	113s	M4c: parse-only vector agreement [crate=icns_creusot]	
+185	2026-11-07T21:24:02+00:00	exit=1	95s	M4c: parse-only with literal inputs [crate=icns_creusot]	
+186	2026-11-07T21:24:30+00:00	exit=1	20s	M4c: parse-only, fixed declared-length [crate=icns_creusot]	
+187	2026-11-07T21:25:06+00:00	exit=1	19s	M4c: parse-only v3 [crate=icns_creusot]	
+188	2026-11-07T21:25:36+00:00	exit=1	18s	M4c: parse-only v4 [crate=icns_creusot]	
+189	2026-11-07T21:26:30+00:00	exit=1	44s	M4c: parse-only v5 [crate=icns_creusot]	
+190	2026-11-07T21:27:26+00:00	exit=1	43s	M4c: parse-only v6 [crate=icns_creusot]	
+191	2026-11-07T21:28:17+00:00	exit=1	44s	M4c: parse-only v7 [crate=icns_creusot]	
+192	2026-11-07T21:28:42+00:00	exit=0	19s	M4c: parse-only, grp removed [crate=icns_creusot]	Proved (472 files) ✔
+193	2026-11-07T21:29:37+00:00	exit=1	3s	M4c: parse-only after refactor [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 54 previous errors; 1 warning emitted
+194	2026-11-07T21:29:45+00:00	exit=1	2s	M4c: parse-only after refactor v2 [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 1 previous error; 1 warning emitted
+195	2026-11-07T21:30:16+00:00	exit=1	21s	M4c: parse-only after refactor v3 [crate=icns_creusot]	
+196	2026-11-07T21:30:40+00:00	exit=1	19s	M4c: parse-only after refactor v4 [crate=icns_creusot]	
+197	2026-11-07T21:31:19+00:00	exit=1	27s	M4c: parse-only v9 [crate=icns_creusot]	
+198	2026-11-07T21:31:44+00:00	exit=0	18s	M4c: parse-only v10 [crate=icns_creusot]	Proved (472 files) ✔
+199	2026-11-07T21:32:03+00:00	exit=1	2s	M4c: rgb-is32 alone [crate=icns_creusot]	  process didn't exit successfully: `/home/ws/.local/share/creusot/toolchains/nightly-2026-08-03/bin/creusot-rustc --crate-name icns_creusot --edition=2024 src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata -C embed-bitcode=no -C debuginfo=2 --warn=unexpected_cfgs --check-cfg 'cfg(creusot)' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=032f4c5a98731e9f -C extra-filename=-ab946967e90835ac --out-dir /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/icns-creusot/icns_creusot/target/creusot/debug/build/icns_creusot/ab946967e90835ac/out -L dependency=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/icns-creusot/icns_creusot/target/creusot/debug/build/creusot-std/66c08b28ed0b5f3d/out -L dependency=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/icns-creusot/icns_creusot/target/creusot/debug/build/creusot-std-proc/e73bcb246830f211/out --extern creusot_std=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/icns-creusot/icns_creusot/target/creusot/debug/build/creusot-std/66c08b28ed0b5f3d/out/libcreusot_std-66c08b28ed0b5f3d.rmeta` (signal: 6, SIGABRT: process abort signal)
+200	2026-11-07T21:32:20+00:00	exit=1	2s	M4c: rgb-is32 alone v2 [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 7 previous errors; 1 warning emitted
+201	2026-11-07T21:32:30+00:00	exit=1	2s	M4c: rgb-is32 alone v3 [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 1 previous error; 1 warning emitted
+202	2026-11-07T21:32:51+00:00	exit=0	15s	M4c: rgb-is32 alone v4 [crate=icns_creusot]	Proved (216 files) ✔
+204	2026-11-07T21:39:18+00:00	exit=1	40s	M4c: all 102 vector obligations [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 43 previous errors
+205	2026-11-07T21:40:22+00:00	exit=1	41s	M4c: all 102 v2 [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 3 previous errors; 3 warnings emitted
+206	2026-11-07T21:41:19+00:00	exit=1	42s	M4c: all 102 v3 [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 3 previous errors
+209	2026-11-07T22:17:57+00:00	exit=1	436s	M4c: all 102 vector obligations (final) [crate=icns_creusot]	
+209	2026-11-07T22:19:36+00:00	exit=1	43s	M4c: all 102 v6 [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 48 previous errors
+209	2026-11-07T22:31:59+00:00	exit=1	410s	M4c: all 102 v7 [crate=icns_creusot]	
+209	2026-11-07T22:34:12+00:00	exit=1	2s	M4c: parse-only agreement (54 obligations) final [crate=icns_creusot]	error: could not compile `icns_creusot` (lib) due to 42 previous errors; 1 warning emitted
+209	2026-11-07T22:36:57+00:00	exit=0	34s	M4c: parse-only 54 obligations (final green state) [crate=icns_creusot]	Proved (472 files) ✔
+209	2026-11-07T22:49:30+00:00	exit=1	395s	M4d baseline all 102 regenerated vector obligations [crate=icns_creusot]	
+210	2026-11-07T22:57:00+00:00	exit=1	427s	M4d split colour proofs, correct RLE failure branches, compose MJ [crate=icns_creusot]	
+211	2026-11-07T23:02:45+00:00	exit=0	327s	M4d compact nonuniform alpha table and all 102 agreements [crate=icns_creusot]	Proved (7065 files) ✔
+212	2026-11-07T23:13:58+00:00	exit=0	622s	M4d clean-cache all 102 vector proof obligations [crate=mutation/clean/icns_creusot]	Proved (7065 files) ✔
+213	2026-11-07T23:23:21+00:00	exit=1	490s	mutation 1 direct [crate=mutation/m1/icns_creusot]	
+214	2026-11-07T23:29:25+00:00	exit=0	343s	M4d exact fixture RGB bytes and all 102 model-agreement obligations [crate=icns_creusot]	Proved (7077 files) ✔
+215	2026-11-07T23:41:12+00:00	exit=0	657s	M4d clean-cache exact 102 frozen expected model outputs [crate=mutation/clean-exact/icns_creusot]	Proved (7077 files) ✔
+216	2026-11-07T23:50:21+00:00	exit=1	473s	mutation 1 recheck [crate=mutation/m1/icns_creusot]	
+217	2026-11-07T23:58:55+00:00	exit=1	452s	mutation 2 direct [crate=mutation/m2/icns_creusot]	
+218	2026-11-08T00:07:18+00:00	exit=1	441s	mutation 3 direct [crate=mutation/m3/icns_creusot]	
+219	2026-11-08T00:15:55+00:00	exit=1	457s	mutation 4 direct [crate=mutation/m4/icns_creusot]	
+220	2026-11-08T00:24:40+00:00	exit=1	463s	mutation 5 direct [crate=mutation/m5/icns_creusot]	
+221	2026-11-08T00:33:31+00:00	exit=1	468s	mutation 6 direct [crate=mutation/m6/icns_creusot]	
+222	2026-11-08T00:42:17+00:00	exit=1	465s	mutation 7 direct [crate=mutation/m7/icns_creusot]	
+223	2026-11-08T00:50:18+00:00	exit=1	417s	mutation 8 direct [crate=mutation/m8/icns_creusot]	
+224	2026-11-08T00:58:20+00:00	exit=1	420s	mutation 9 direct [crate=mutation/m9/icns_creusot]	
+225	2026-11-08T01:12:52+00:00	exit=1	433s	mutation 10 direct [crate=mutation/m10/icns_creusot]	

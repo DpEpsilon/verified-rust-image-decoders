@@ -1,0 +1,7 @@
+mutation 11
+crate result: 577 verified, 1 errors
+error diagnostics: 3
+  postcondition not satisfied at src/tga.rs:1765:9
+  precondition not met: index in bounds for this access at src/tga.rs:2146:85
+  could not compile `tga_verus` (lib) due to 2 previous errors; 1 warning emitted
+log: mutation/m11/failure.log

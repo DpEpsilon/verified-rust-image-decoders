@@ -1,0 +1,18 @@
+mutation 4
+crate result: 564 verified, 14 errors
+error diagnostics: 15
+  assertion failed at src/model_vectors.rs:1297:12
+  assertion failed at src/model_vectors.rs:1315:12
+  assertion failed at src/model_vectors.rs:1335:12
+  assertion failed at src/model_vectors.rs:1562:12
+  assertion failed at src/model_vectors.rs:1582:12
+  assertion failed at src/model_vectors.rs:2593:12
+  assertion failed at src/model_vectors.rs:2611:12
+  assertion failed at src/model_vectors.rs:2629:12
+  assertion failed at src/model_vectors.rs:2647:12
+  assertion failed at src/model_vectors.rs:2666:12
+  assertion failed at src/model_vectors.rs:2685:12
+  assertion failed at src/model_vectors.rs:2703:12
+  function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details at src/tga.rs:1314:1
+  function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details at src/model.rs:1112:1
+log: mutation/m4/failure.log

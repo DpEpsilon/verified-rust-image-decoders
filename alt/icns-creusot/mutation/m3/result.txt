@@ -1,0 +1,1 @@
+mutation 3 direct: run 218, exit=1, log=runs/218.log, failed goals=['vc_loop_short', 'vc_loop_oob', 'vc_good_len', 'vc_map_push', 'vc_good_bounds']

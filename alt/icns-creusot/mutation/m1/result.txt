@@ -1,0 +1,2 @@
+mutation 1 preflight: run 213, exit=1; symbolic vc_l2 failed; run log /home/ws/projects/icns-creusot/runs/213.log; before explicit RGB fixture equality was added; rerun required after final green.
+mutation 1 recheck: run 216, exit=1, log=runs/216.log, failed goals=['vc_l2', 'vc_map_push', 'vc_l5', 'vc_parse']

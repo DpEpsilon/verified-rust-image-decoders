@@ -1,0 +1,9 @@
+mutation 1
+crate result: 575 verified, 3 errors
+error diagnostics: 5
+  postcondition not satisfied at src/tga.rs:632:9
+  assertion failed at src/tga.rs:968:16
+  postcondition not satisfied at src/model.rs:5972:9
+  postcondition not satisfied at src/model.rs:6081:9
+  could not compile `tga_verus` (lib) due to 4 previous errors; 1 warning emitted
+log: mutation/m1/failure.log

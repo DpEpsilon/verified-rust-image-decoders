@@ -1,0 +1,1 @@
+mutation 7 direct: run 222, exit=1, log=runs/222.log, failed goals=['vc_map_push', 'vc_rle_channel']

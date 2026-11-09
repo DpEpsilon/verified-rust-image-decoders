@@ -1,0 +1,7 @@
+mutation 5
+crate result: 313 verified, 2 errors
+error diagnostics: 3
+  error: precondition not satisfied
+  error: precondition not satisfied
+  error: could not compile `icns_verus` (lib) due to 2 previous errors; 2 warnings emitted
+log: mutation/m5/failure.log
