@@ -13,6 +13,7 @@ Starting with simpler file formats, the eventual goal is to implement everything
 | DIB / BMP / ICO-entry bitmap | `dib/` | `decode(bytes, mode)`, `decode_with_steps` | 1557 verified (spec 1.1; 1.0 is `dib/spec-frozen`) | 302 | 43/44 verifier kills + 1 audit kill |
 | ICO / CUR container | `ico/` | `parse`, `decode_entry` (spec + oracle only, proofs pending) | - | 217 | - |
 
+`leniency/`: differential harness comparing our cores with gdk-pixbuf, the `image` crate, glycin's loaders and other crates, and the BMP/DIB leniency matrix (`leniency/bmp/LENIENCY.md`); TGA, ICNS and ICO results follow.
 `alt/icns-creusot/`: the same ICNS spec proved with Creusot/Why3 (comparison only; Verus won on effort, see `reviews/COMPARISON.md`). `tools/diff-harness/`: differential test of both ICNS cores against a Python oracle.
 
 ## What each decoder accepts

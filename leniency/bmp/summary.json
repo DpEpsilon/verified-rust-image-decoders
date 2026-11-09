@@ -1,0 +1,2052 @@
+{
+  "seed": 731,
+  "inputs": 10000,
+  "base_inputs": 260,
+  "seed_variants": 42,
+  "changed_mutations": 6279,
+  "decoders": [
+    "verified",
+    "image-explicit",
+    "image-guess",
+    "glycin-image-rs",
+    "gdk-file",
+    "gdk-stream",
+    "gdk-whole",
+    "gdk-byte",
+    "gdk-chunk"
+  ],
+  "counts": {
+    "all-accept-identical-pixels": 1522,
+    "accept-vs-reject": 3699,
+    "accept-different-pixels": 282,
+    "all-reject": 4497
+  },
+  "all_reject_error_agreement": {
+    "different": 4497
+  },
+  "elapsed_seconds": 109.41,
+  "gdk_disagreements": [
+    2345,
+    2451,
+    3165
+  ],
+  "anomalies": [],
+  "anomaly_count": 0,
+  "rows": [
+    {
+      "rule": "planes",
+      "count": 560,
+      "patterns": 10,
+      "witness": "witnesses/01-planes.bmp",
+      "original_id": 4046,
+      "mutation": {
+        "rule": "planes",
+        "field": "planes",
+        "value": 0,
+        "old": 1,
+        "source": "mutation",
+        "seed": "header-40-BareDib"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "InvalidPlanes",
+          "message": "InvalidPlanes"
+        },
+        "image-explicit": {
+          "status": "error",
+          "error_class": "Format error decoding Bmp",
+          "message": "Format error decoding Bmp: More than one plane"
+        },
+        "image-guess": {
+          "status": "error",
+          "error_class": "Format error decoding Bmp",
+          "message": "Format error decoding Bmp: More than one plane"
+        },
+        "glycin-image-rs": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:342:52: Format error decoding Bmp: More than one plane"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 58,
+      "witness_length": 58
+    },
+    {
+      "rule": "biSizeImage",
+      "count": 476,
+      "patterns": 10,
+      "witness": "witnesses/02-biSizeImage.bmp",
+      "original_id": 2366,
+      "mutation": {
+        "rule": "biSizeImage",
+        "field": "biSizeImage",
+        "value": 1,
+        "old": 0,
+        "source": "mutation",
+        "seed": "header-40-BareDib"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "InvalidImageSize",
+          "message": "InvalidImageSize"
+        },
+        "image-explicit": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "image-guess": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "glycin-image-rs": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 58,
+      "witness_length": 58
+    },
+    {
+      "rule": "height",
+      "count": 475,
+      "patterns": 424,
+      "witness": "/tmp/claude-0/leniency-bmp/witnesses/03-height.bmp",
+      "original_id": 5220,
+      "mutation": {
+        "rule": "height",
+        "field": "height",
+        "value": 1,
+        "old": 64,
+        "source": "mutation",
+        "seed": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/corpus/pal8os2v2.bmp"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "InvalidImageSize",
+          "message": "InvalidImageSize"
+        },
+        "image-explicit": {
+          "status": "error",
+          "error_class": "The decoder for Bmp does not support the format features Unknown bitmap header type ",
+          "message": "The decoder for Bmp does not support the format features Unknown bitmap header type (size=64)"
+        },
+        "image-guess": {
+          "status": "error",
+          "error_class": "The decoder for Bmp does not support the format features Unknown bitmap header type ",
+          "message": "The decoder for Bmp does not support the format features Unknown bitmap header type (size=64)"
+        },
+        "glycin-image-rs": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:342:52: The decoder for Bmp does not support the format features Unknown bitmap header type (size=64)"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 127,
+          "height": 1,
+          "rgba_sha256": "d8aa451d5b456f90f76dbef896224fa97b1af23a147b4c1e79ae7df7e92a7b8c",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 127,
+          "height": 1,
+          "rgba_sha256": "d8aa451d5b456f90f76dbef896224fa97b1af23a147b4c1e79ae7df7e92a7b8c",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 127,
+          "height": 1,
+          "rgba_sha256": "d8aa451d5b456f90f76dbef896224fa97b1af23a147b4c1e79ae7df7e92a7b8c",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 127,
+          "height": 1,
+          "rgba_sha256": "d8aa451d5b456f90f76dbef896224fa97b1af23a147b4c1e79ae7df7e92a7b8c",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 127,
+          "height": 1,
+          "rgba_sha256": "d8aa451d5b456f90f76dbef896224fa97b1af23a147b4c1e79ae7df7e92a7b8c",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 9278,
+      "witness_length": 2320
+    },
+    {
+      "rule": "bfOffBits",
+      "count": 426,
+      "patterns": 137,
+      "witness": "/tmp/claude-0/leniency-bmp/witnesses/04-bfOffBits.bmp",
+      "original_id": 3372,
+      "mutation": {
+        "rule": "bfOffBits",
+        "field": "bfOffBits",
+        "value": 0,
+        "old": 1086,
+        "source": "mutation",
+        "seed": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/corpus/pal8os2v2.bmp"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "InvalidPixelOffset",
+          "message": "InvalidPixelOffset"
+        },
+        "image-explicit": {
+          "status": "error",
+          "error_class": "The decoder for Bmp does not support the format features Unknown bitmap header type ",
+          "message": "The decoder for Bmp does not support the format features Unknown bitmap header type (size=64)"
+        },
+        "image-guess": {
+          "status": "error",
+          "error_class": "The decoder for Bmp does not support the format features Unknown bitmap header type ",
+          "message": "The decoder for Bmp does not support the format features Unknown bitmap header type (size=64)"
+        },
+        "glycin-image-rs": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:342:52: The decoder for Bmp does not support the format features Unknown bitmap header type (size=64)"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 127,
+          "height": 64,
+          "rgba_sha256": "ba4b375b2e312a37bfe06dcc6264a7db9e0f2592c289d941f4bcfd3989603882",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 127,
+          "height": 64,
+          "rgba_sha256": "ba4b375b2e312a37bfe06dcc6264a7db9e0f2592c289d941f4bcfd3989603882",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 127,
+          "height": 64,
+          "rgba_sha256": "ba4b375b2e312a37bfe06dcc6264a7db9e0f2592c289d941f4bcfd3989603882",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 127,
+          "height": 64,
+          "rgba_sha256": "ba4b375b2e312a37bfe06dcc6264a7db9e0f2592c289d941f4bcfd3989603882",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 127,
+          "height": 64,
+          "rgba_sha256": "ba4b375b2e312a37bfe06dcc6264a7db9e0f2592c289d941f4bcfd3989603882",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 9278,
+      "witness_length": 580
+    },
+    {
+      "rule": "width",
+      "count": 330,
+      "patterns": 133,
+      "witness": "witnesses/05-width.bmp",
+      "original_id": 2726,
+      "mutation": {
+        "rule": "width",
+        "field": "width",
+        "value": 39,
+        "old": 1,
+        "source": "mutation",
+        "seed": "indexed-1-header-12"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "TruncatedPixels",
+          "message": "TruncatedPixels"
+        },
+        "image-explicit": {
+          "status": "error",
+          "error_class": "failed to fill whole buffer",
+          "message": "failed to fill whole buffer"
+        },
+        "image-guess": {
+          "status": "error",
+          "error_class": "failed to fill whole buffer",
+          "message": "failed to fill whole buffer"
+        },
+        "glycin-image-rs": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: failed to fill whole buffer"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 39,
+          "height": 1,
+          "rgba_sha256": "dc1a5f0baca9d03c4c79c4b07b702b9706aee7c01fa1fd734fa8ec70ad2b0f4c",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 39,
+          "height": 1,
+          "rgba_sha256": "dc1a5f0baca9d03c4c79c4b07b702b9706aee7c01fa1fd734fa8ec70ad2b0f4c",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 39,
+          "height": 1,
+          "rgba_sha256": "dc1a5f0baca9d03c4c79c4b07b702b9706aee7c01fa1fd734fa8ec70ad2b0f4c",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 39,
+          "height": 1,
+          "rgba_sha256": "dc1a5f0baca9d03c4c79c4b07b702b9706aee7c01fa1fd734fa8ec70ad2b0f4c",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 39,
+          "height": 1,
+          "rgba_sha256": "dc1a5f0baca9d03c4c79c4b07b702b9706aee7c01fa1fd734fa8ec70ad2b0f4c",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 36,
+      "witness_length": 27
+    },
+    {
+      "rule": "biClrUsed",
+      "count": 199,
+      "patterns": 30,
+      "witness": "witnesses/06-biClrUsed.bmp",
+      "original_id": 6687,
+      "mutation": {
+        "rule": "biClrUsed",
+        "field": "biClrUsed",
+        "value": 1,
+        "old": 0,
+        "source": "mutation",
+        "seed": "masks-40-16"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "InvalidPixelOffset",
+          "message": "InvalidPixelOffset"
+        },
+        "image-explicit": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "7a7bf454c5f3cb1b9d9a20f81417f98d976fe3b3dd52c1b9968f02e89e7e8a2f",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "image-guess": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "7a7bf454c5f3cb1b9d9a20f81417f98d976fe3b3dd52c1b9968f02e89e7e8a2f",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "glycin-image-rs": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "7a7bf454c5f3cb1b9d9a20f81417f98d976fe3b3dd52c1b9968f02e89e7e8a2f",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "7a7bf454c5f3cb1b9d9a20f81417f98d976fe3b3dd52c1b9968f02e89e7e8a2f",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "7a7bf454c5f3cb1b9d9a20f81417f98d976fe3b3dd52c1b9968f02e89e7e8a2f",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "7a7bf454c5f3cb1b9d9a20f81417f98d976fe3b3dd52c1b9968f02e89e7e8a2f",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "7a7bf454c5f3cb1b9d9a20f81417f98d976fe3b3dd52c1b9968f02e89e7e8a2f",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "7a7bf454c5f3cb1b9d9a20f81417f98d976fe3b3dd52c1b9968f02e89e7e8a2f",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 70,
+      "witness_length": 70
+    },
+    {
+      "rule": "random-bitflip",
+      "count": 180,
+      "patterns": 83,
+      "witness": "witnesses/07-random-bitflip.bmp",
+      "original_id": 1348,
+      "mutation": {
+        "rule": "random-bitflip",
+        "field": "offset",
+        "value": 4,
+        "source": "mutation",
+        "seed": "header-12-BareDib"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "InvalidFileSize",
+          "message": "InvalidFileSize"
+        },
+        "image-explicit": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "image-guess": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "glycin-image-rs": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 30,
+      "witness_length": 30
+    },
+    {
+      "rule": "bitfield-mask",
+      "count": 168,
+      "patterns": 89,
+      "witness": "witnesses/08-bitfield-mask.bmp",
+      "original_id": 273,
+      "mutation": {
+        "rule": "bitfield-mask",
+        "field": "redMask",
+        "value": 0,
+        "source": "mutation",
+        "seed": "masks-108-32"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "InvalidBitfields",
+          "message": "InvalidBitfields"
+        },
+        "image-explicit": {
+          "status": "error",
+          "error_class": "Format error decoding Bmp",
+          "message": "Format error decoding Bmp: Missing 32-bit bitfield mask"
+        },
+        "image-guess": {
+          "status": "error",
+          "error_class": "Format error decoding Bmp",
+          "message": "Format error decoding Bmp: Missing 32-bit bitfield mask"
+        },
+        "glycin-image-rs": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:342:52: Format error decoding Bmp: Missing 32-bit bitfield mask"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "48f7fc19a2c1886f127eda8ddedd787f6684c47b5af351885911d21e1bb75aa9",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "48f7fc19a2c1886f127eda8ddedd787f6684c47b5af351885911d21e1bb75aa9",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "48f7fc19a2c1886f127eda8ddedd787f6684c47b5af351885911d21e1bb75aa9",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "48f7fc19a2c1886f127eda8ddedd787f6684c47b5af351885911d21e1bb75aa9",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "48f7fc19a2c1886f127eda8ddedd787f6684c47b5af351885911d21e1bb75aa9",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 126,
+      "witness_length": 126
+    },
+    {
+      "rule": "bfSize",
+      "count": 124,
+      "patterns": 8,
+      "witness": "witnesses/09-bfSize.bmp",
+      "original_id": 8540,
+      "mutation": {
+        "rule": "bfSize",
+        "field": "bfSize",
+        "value": 63,
+        "old": 58,
+        "source": "mutation",
+        "seed": "header-40-BareDib"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "InvalidFileSize",
+          "message": "InvalidFileSize"
+        },
+        "image-explicit": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "image-guess": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "glycin-image-rs": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 58,
+      "witness_length": 58
+    },
+    {
+      "rule": "truncation",
+      "count": 118,
+      "patterns": 15,
+      "witness": "witnesses/10-truncation.bmp",
+      "original_id": 794,
+      "mutation": {
+        "rule": "truncation",
+        "field": "fileLength",
+        "value": 26,
+        "source": "mutation",
+        "seed": "indexed-1-header-12"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "InvalidFileSize",
+          "message": "InvalidFileSize"
+        },
+        "image-explicit": {
+          "status": "error",
+          "error_class": "failed to fill whole buffer",
+          "message": "failed to fill whole buffer"
+        },
+        "image-guess": {
+          "status": "error",
+          "error_class": "failed to fill whole buffer",
+          "message": "failed to fill whole buffer"
+        },
+        "glycin-image-rs": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:342:52: failed to fill whole buffer"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 26,
+      "witness_length": 26
+    },
+    {
+      "rule": "biSize",
+      "count": 60,
+      "patterns": 36,
+      "witness": "witnesses/11-biSize.bmp",
+      "original_id": 2869,
+      "mutation": {
+        "rule": "biSize",
+        "field": "biSize",
+        "value": 40,
+        "old": 16,
+        "source": "mutation",
+        "seed": "indexed-4-header-16"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "InvalidPixelOffset",
+          "message": "InvalidPixelOffset"
+        },
+        "image-explicit": {
+          "status": "error",
+          "error_class": "failed to fill whole buffer",
+          "message": "failed to fill whole buffer"
+        },
+        "image-guess": {
+          "status": "error",
+          "error_class": "failed to fill whole buffer",
+          "message": "failed to fill whole buffer"
+        },
+        "glycin-image-rs": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:342:52: failed to fill whole buffer"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 98,
+      "witness_length": 73
+    },
+    {
+      "rule": "frozen:BareDib",
+      "count": 54,
+      "patterns": 25,
+      "witness": "witnesses/12-frozen-BareDib.bmp",
+      "original_id": 27,
+      "mutation": {
+        "source": "frozen",
+        "name": "palette-truncated-8",
+        "mode": "BareDib",
+        "expected_ok": false,
+        "rule": "frozen:BareDib"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "InvalidPixelOffset",
+          "message": "InvalidPixelOffset"
+        },
+        "image-explicit": {
+          "status": "error",
+          "error_class": "failed to fill whole buffer",
+          "message": "failed to fill whole buffer"
+        },
+        "image-guess": {
+          "status": "error",
+          "error_class": "failed to fill whole buffer",
+          "message": "failed to fill whole buffer"
+        },
+        "glycin-image-rs": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:342:52: failed to fill whole buffer"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 57,
+      "witness_length": 57
+    },
+    {
+      "rule": "inconsistent-pair",
+      "count": 49,
+      "patterns": 29,
+      "witness": "witnesses/13-inconsistent-pair.bmp",
+      "original_id": 2324,
+      "mutation": {
+        "rule": "inconsistent-pair",
+        "field": "34+bfSize",
+        "value": 59,
+        "source": "mutation",
+        "seed": "header-40-BareDib"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "InvalidImageSize",
+          "message": "InvalidImageSize"
+        },
+        "image-explicit": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "image-guess": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "glycin-image-rs": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "34aaa746c25a0f105c4316bbb1f009aa359f49582656ee97d73c58132d563423",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 58,
+      "witness_length": 58
+    },
+    {
+      "rule": "rle-escape",
+      "count": 32,
+      "patterns": 14,
+      "witness": "/tmp/claude-0/leniency-bmp/witnesses/14-rle-escape.bmp",
+      "original_id": 1556,
+      "mutation": {
+        "rule": "rle-escape",
+        "field": "escape@6286",
+        "value": 0,
+        "source": "mutation",
+        "seed": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/corpus/hopper_rle8_grayscale.bmp"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "RleBounds",
+          "message": "RleBounds"
+        },
+        "image-explicit": {
+          "status": "ok",
+          "width": 256,
+          "height": 10,
+          "rgba_sha256": "79c0e2de15c289d35ec0077659c31ec569b8ff655d2c849841d302d4221382b1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "image-guess": {
+          "status": "ok",
+          "width": 256,
+          "height": 10,
+          "rgba_sha256": "79c0e2de15c289d35ec0077659c31ec569b8ff655d2c849841d302d4221382b1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "glycin-image-rs": {
+          "status": "ok",
+          "width": 256,
+          "height": 10,
+          "rgba_sha256": "79c0e2de15c289d35ec0077659c31ec569b8ff655d2c849841d302d4221382b1",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 256,
+          "height": 10,
+          "rgba_sha256": "79c0e2de15c289d35ec0077659c31ec569b8ff655d2c849841d302d4221382b1",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 256,
+          "height": 10,
+          "rgba_sha256": "79c0e2de15c289d35ec0077659c31ec569b8ff655d2c849841d302d4221382b1",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 256,
+          "height": 10,
+          "rgba_sha256": "79c0e2de15c289d35ec0077659c31ec569b8ff655d2c849841d302d4221382b1",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 256,
+          "height": 10,
+          "rgba_sha256": "79c0e2de15c289d35ec0077659c31ec569b8ff655d2c849841d302d4221382b1",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 256,
+          "height": 10,
+          "rgba_sha256": "79c0e2de15c289d35ec0077659c31ec569b8ff655d2c849841d302d4221382b1",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 6288,
+      "witness_length": 6288
+    },
+    {
+      "rule": "frozen:BmpFile",
+      "count": 24,
+      "patterns": 16,
+      "witness": "witnesses/15-frozen-BmpFile.bmp",
+      "original_id": 67,
+      "mutation": {
+        "source": "frozen",
+        "name": "file-size-mismatch",
+        "mode": "BmpFile",
+        "expected_ok": false,
+        "rule": "frozen:BmpFile"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "TruncatedPixels",
+          "message": "TruncatedPixels"
+        },
+        "image-explicit": {
+          "status": "error",
+          "error_class": "failed to fill whole buffer",
+          "message": "failed to fill whole buffer"
+        },
+        "image-guess": {
+          "status": "error",
+          "error_class": "failed to fill whole buffer",
+          "message": "failed to fill whole buffer"
+        },
+        "glycin-image-rs": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: failed to fill whole buffer"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 58,
+      "witness_length": 58
+    },
+    {
+      "rule": "local-corpus",
+      "count": 21,
+      "patterns": 20,
+      "witness": "/tmp/claude-0/leniency-bmp/witnesses/16-local-corpus.bmp",
+      "original_id": 181,
+      "mutation": {
+        "source": "local-corpus",
+        "name": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/corpus/badbitssize.bmp",
+        "rule": "local-corpus"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "InvalidImageSize",
+          "message": "InvalidImageSize"
+        },
+        "image-explicit": {
+          "status": "ok",
+          "width": 127,
+          "height": 64,
+          "rgba_sha256": "54483daf3c817e923ab0c4fa54f15b81e8d515522319e616be5477542ad9ae8a",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "image-guess": {
+          "status": "ok",
+          "width": 127,
+          "height": 64,
+          "rgba_sha256": "54483daf3c817e923ab0c4fa54f15b81e8d515522319e616be5477542ad9ae8a",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "glycin-image-rs": {
+          "status": "ok",
+          "width": 127,
+          "height": 64,
+          "rgba_sha256": "54483daf3c817e923ab0c4fa54f15b81e8d515522319e616be5477542ad9ae8a",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 127,
+          "height": 64,
+          "rgba_sha256": "54483daf3c817e923ab0c4fa54f15b81e8d515522319e616be5477542ad9ae8a",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 127,
+          "height": 64,
+          "rgba_sha256": "54483daf3c817e923ab0c4fa54f15b81e8d515522319e616be5477542ad9ae8a",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 127,
+          "height": 64,
+          "rgba_sha256": "54483daf3c817e923ab0c4fa54f15b81e8d515522319e616be5477542ad9ae8a",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 127,
+          "height": 64,
+          "rgba_sha256": "54483daf3c817e923ab0c4fa54f15b81e8d515522319e616be5477542ad9ae8a",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 127,
+          "height": 64,
+          "rgba_sha256": "54483daf3c817e923ab0c4fa54f15b81e8d515522319e616be5477542ad9ae8a",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 1086,
+      "witness_length": 1086
+    },
+    {
+      "rule": "bitCount",
+      "count": 11,
+      "patterns": 7,
+      "witness": "witnesses/17-bitCount.bmp",
+      "original_id": 3421,
+      "mutation": {
+        "rule": "bitCount",
+        "field": "bitCount",
+        "value": 1,
+        "old": 24,
+        "source": "mutation",
+        "seed": "header-124-BareDib"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "InvalidPixelOffset",
+          "message": "InvalidPixelOffset"
+        },
+        "image-explicit": {
+          "status": "error",
+          "error_class": "failed to fill whole buffer",
+          "message": "failed to fill whole buffer"
+        },
+        "image-guess": {
+          "status": "error",
+          "error_class": "failed to fill whole buffer",
+          "message": "failed to fill whole buffer"
+        },
+        "glycin-image-rs": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:342:52: failed to fill whole buffer"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 142,
+      "witness_length": 142
+    },
+    {
+      "rule": "compression",
+      "count": 7,
+      "patterns": 7,
+      "witness": "/tmp/claude-0/leniency-bmp/witnesses/18-compression.bmp",
+      "original_id": 3908,
+      "mutation": {
+        "rule": "compression",
+        "field": "compression",
+        "value": 0,
+        "old": 1,
+        "source": "mutation",
+        "seed": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/corpus/hopper_rle8_grayscale.bmp"
+      },
+      "classification": "accept-vs-reject",
+      "pixel_difference": "",
+      "results": {
+        "verified": {
+          "status": "error",
+          "error_class": "InvalidImageSize",
+          "message": "InvalidImageSize"
+        },
+        "image-explicit": {
+          "status": "ok",
+          "width": 256,
+          "height": 10,
+          "rgba_sha256": "9e2271776500ee8ade5541080d45ef979d1ad17b93432019272e6032529c0ed0",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "image-guess": {
+          "status": "ok",
+          "width": 256,
+          "height": 10,
+          "rgba_sha256": "9e2271776500ee8ade5541080d45ef979d1ad17b93432019272e6032529c0ed0",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "glycin-image-rs": {
+          "status": "ok",
+          "width": 256,
+          "height": 10,
+          "rgba_sha256": "9e2271776500ee8ade5541080d45ef979d1ad17b93432019272e6032529c0ed0",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 256,
+          "height": 10,
+          "rgba_sha256": "9e2271776500ee8ade5541080d45ef979d1ad17b93432019272e6032529c0ed0",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 256,
+          "height": 10,
+          "rgba_sha256": "9e2271776500ee8ade5541080d45ef979d1ad17b93432019272e6032529c0ed0",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 256,
+          "height": 10,
+          "rgba_sha256": "9e2271776500ee8ade5541080d45ef979d1ad17b93432019272e6032529c0ed0",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 256,
+          "height": 10,
+          "rgba_sha256": "9e2271776500ee8ade5541080d45ef979d1ad17b93432019272e6032529c0ed0",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 256,
+          "height": 10,
+          "rgba_sha256": "9e2271776500ee8ade5541080d45ef979d1ad17b93432019272e6032529c0ed0",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 8,
+      "original_length": 6288,
+      "witness_length": 4716
+    }
+  ],
+  "manifest": "/tmp/claude-0/leniency-bmp/manifest.jsonl",
+  "raw_results": "/tmp/claude-0/leniency-bmp/results.jsonl",
+  "pixel_witnesses": [
+    {
+      "rule": "frozen:BareDib",
+      "id": 13,
+      "mutation": {
+        "id": 13,
+        "sha256": "f5fbca9fc5b8cd06ae825fca1dd0e58187749dbaf0058dc97f4a07ee4403e6be",
+        "length": 58,
+        "source": "frozen",
+        "name": "bi-rgb-16-630c",
+        "mode": "BareDib",
+        "expected_ok": true,
+        "rule": "frozen:BareDib"
+      },
+      "difference": "5-bit-scaling",
+      "witness": "witnesses/pixel-01-frozen-BareDib.bmp",
+      "length": 58,
+      "results": {
+        "verified": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "5fa6a5d9d94d4697db273743722397dda1863d295e7e9e76f81cfad1ff8fb81d",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        },
+        "image-explicit": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "5fa6a5d9d94d4697db273743722397dda1863d295e7e9e76f81cfad1ff8fb81d",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "image-guess": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "5fa6a5d9d94d4697db273743722397dda1863d295e7e9e76f81cfad1ff8fb81d",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "glycin-image-rs": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "5fa6a5d9d94d4697db273743722397dda1863d295e7e9e76f81cfad1ff8fb81d",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "2cf801955508d6a04e52760e7fb87f2eddfff73e7e529f42dd4693b7f4580247",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "2cf801955508d6a04e52760e7fb87f2eddfff73e7e529f42dd4693b7f4580247",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "2cf801955508d6a04e52760e7fb87f2eddfff73e7e529f42dd4693b7f4580247",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "2cf801955508d6a04e52760e7fb87f2eddfff73e7e529f42dd4693b7f4580247",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "2cf801955508d6a04e52760e7fb87f2eddfff73e7e529f42dd4693b7f4580247",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      }
+    },
+    {
+      "rule": "frozen:BmpFile",
+      "id": 125,
+      "mutation": {
+        "id": 125,
+        "sha256": "da00ce86ed0bfcf95361a077857de7f64a217c019cc2ac4d034b4a92f7d66c3d",
+        "length": 68,
+        "source": "frozen",
+        "name": "bmp-indexed-gap-1",
+        "mode": "BmpFile",
+        "expected_ok": true,
+        "rule": "frozen:BmpFile"
+      },
+      "difference": "color-values-or-layout",
+      "witness": "witnesses/pixel-02-frozen-BmpFile.bmp",
+      "length": 68,
+      "results": {
+        "verified": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "e40be0f0c1103f9ec8568c960ce1d66d791cdefa3122194c84bec5734b551216",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        },
+        "image-explicit": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "e40be0f0c1103f9ec8568c960ce1d66d791cdefa3122194c84bec5734b551216",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "image-guess": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "e40be0f0c1103f9ec8568c960ce1d66d791cdefa3122194c84bec5734b551216",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "glycin-image-rs": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "e40be0f0c1103f9ec8568c960ce1d66d791cdefa3122194c84bec5734b551216",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "b3b2d5134015add24c74d6028369974341840cabf2602d0fabbc26068e99f562",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "b3b2d5134015add24c74d6028369974341840cabf2602d0fabbc26068e99f562",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "b3b2d5134015add24c74d6028369974341840cabf2602d0fabbc26068e99f562",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "b3b2d5134015add24c74d6028369974341840cabf2602d0fabbc26068e99f562",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "b3b2d5134015add24c74d6028369974341840cabf2602d0fabbc26068e99f562",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      }
+    },
+    {
+      "rule": "rle-escape",
+      "id": 262,
+      "mutation": {
+        "id": 262,
+        "sha256": "e8936cd776ee0a085eba58bb02ee0b59e4c65f07bde08231c36254cd7e67b5a7",
+        "length": 74,
+        "rule": "rle-escape",
+        "field": "escape@70",
+        "value": 0,
+        "source": "mutation",
+        "seed": "rle8-encoded"
+      },
+      "difference": "alpha-only",
+      "witness": "witnesses/pixel-03-rle-escape.bmp",
+      "length": 74,
+      "results": {
+        "verified": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "b3b2d5134015add24c74d6028369974341840cabf2602d0fabbc26068e99f562",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        },
+        "image-explicit": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "b3b2d5134015add24c74d6028369974341840cabf2602d0fabbc26068e99f562",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "image-guess": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "b3b2d5134015add24c74d6028369974341840cabf2602d0fabbc26068e99f562",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "glycin-image-rs": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "b3b2d5134015add24c74d6028369974341840cabf2602d0fabbc26068e99f562",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        }
+      }
+    },
+    {
+      "rule": "bitfield-mask",
+      "id": 819,
+      "mutation": {
+        "id": 819,
+        "sha256": "9cd369767ee35bf6ec52fa8ec0f80439be31d89362ffe31b3b465442641164f4",
+        "length": 126,
+        "rule": "bitfield-mask",
+        "field": "blueMask",
+        "value": 1,
+        "source": "mutation",
+        "seed": "masks-108-32"
+      },
+      "difference": "color-values-or-layout",
+      "witness": "witnesses/pixel-04-bitfield-mask.bmp",
+      "length": 126,
+      "results": {
+        "verified": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "1eb1feba10b0b19463e78296ca369de2c9504f247b8a3825293a7e61aa3956fe",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        },
+        "image-explicit": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "1eb1feba10b0b19463e78296ca369de2c9504f247b8a3825293a7e61aa3956fe",
+          "alpha_present": true,
+          "orig_color_type": "Rgba8"
+        },
+        "image-guess": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "1eb1feba10b0b19463e78296ca369de2c9504f247b8a3825293a7e61aa3956fe",
+          "alpha_present": true,
+          "orig_color_type": "Rgba8"
+        },
+        "glycin-image-rs": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "1eb1feba10b0b19463e78296ca369de2c9504f247b8a3825293a7e61aa3956fe",
+          "alpha_present": true,
+          "orig_color_type": "R8g8b8a8"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "4bb8e4ac1a45bc3d74be70b4214c2deb9b8d59a6accdc78ea4d442f5e644afb8",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "4bb8e4ac1a45bc3d74be70b4214c2deb9b8d59a6accdc78ea4d442f5e644afb8",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "4bb8e4ac1a45bc3d74be70b4214c2deb9b8d59a6accdc78ea4d442f5e644afb8",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "4bb8e4ac1a45bc3d74be70b4214c2deb9b8d59a6accdc78ea4d442f5e644afb8",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "4bb8e4ac1a45bc3d74be70b4214c2deb9b8d59a6accdc78ea4d442f5e644afb8",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        }
+      }
+    },
+    {
+      "rule": "width",
+      "id": 8299,
+      "mutation": {
+        "id": 8299,
+        "sha256": "0f38b61b35a2b7b1ff6e8e158d52d63398186610b63e566b2e07813b2321f51d",
+        "length": 74,
+        "rule": "width",
+        "field": "width",
+        "value": 7,
+        "old": 3,
+        "source": "mutation",
+        "seed": "rle4-encoded"
+      },
+      "difference": "alpha-only",
+      "witness": "witnesses/pixel-05-width.bmp",
+      "length": 74,
+      "results": {
+        "verified": {
+          "status": "ok",
+          "width": 7,
+          "height": 1,
+          "rgba_sha256": "68f48b45aacf8ce866b42bb6f871e442371609059ac836496b43a5a59e3ef8e3",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        },
+        "image-explicit": {
+          "status": "ok",
+          "width": 7,
+          "height": 1,
+          "rgba_sha256": "68f48b45aacf8ce866b42bb6f871e442371609059ac836496b43a5a59e3ef8e3",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "image-guess": {
+          "status": "ok",
+          "width": 7,
+          "height": 1,
+          "rgba_sha256": "68f48b45aacf8ce866b42bb6f871e442371609059ac836496b43a5a59e3ef8e3",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "glycin-image-rs": {
+          "status": "ok",
+          "width": 7,
+          "height": 1,
+          "rgba_sha256": "68f48b45aacf8ce866b42bb6f871e442371609059ac836496b43a5a59e3ef8e3",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8"
+        },
+        "gdk-file": {
+          "status": "ok",
+          "width": 7,
+          "height": 1,
+          "rgba_sha256": "2f638cf446a8196afbc04c66f0d522ec217a93f96861f52628f7faf354570366",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-stream": {
+          "status": "ok",
+          "width": 7,
+          "height": 1,
+          "rgba_sha256": "2f638cf446a8196afbc04c66f0d522ec217a93f96861f52628f7faf354570366",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-whole": {
+          "status": "ok",
+          "width": 7,
+          "height": 1,
+          "rgba_sha256": "2f638cf446a8196afbc04c66f0d522ec217a93f96861f52628f7faf354570366",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-byte": {
+          "status": "ok",
+          "width": 7,
+          "height": 1,
+          "rgba_sha256": "2f638cf446a8196afbc04c66f0d522ec217a93f96861f52628f7faf354570366",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        },
+        "gdk-chunk": {
+          "status": "ok",
+          "width": 7,
+          "height": 1,
+          "rgba_sha256": "2f638cf446a8196afbc04c66f0d522ec217a93f96861f52628f7faf354570366",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        }
+      }
+    }
+  ],
+  "gdk_path_witnesses": [
+    {
+      "id": 2345,
+      "witness": "witnesses/gdk-path-01.bmp",
+      "sha256": "8e75e91a1d8582450e241515c1a8cea389aecdcc39671d4d4df93f71fccdcb84"
+    },
+    {
+      "id": 2451,
+      "witness": "witnesses/gdk-path-02.bmp",
+      "sha256": "efbdd7a1e8898ce610732b4019adb057883e1de863e06d403465b798e17f0766"
+    }
+  ],
+  "verified_lenient_witness": {
+    "id": 1,
+    "witness": "witnesses/verified-only-header16.bmp"
+  },
+  "image_glycin_disagreements": 0
+}
