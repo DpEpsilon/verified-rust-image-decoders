@@ -1,0 +1,2406 @@
+[
+  {
+    "name": "file_size-AtMostFileLength-bfSize-greater-than-slice",
+    "mode": "BmpFile",
+    "input_hex": "424de803000000000000360000002800000001000000010000000100200000000000000000000000000000000000000000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "InvalidFileSize"
+    }
+  },
+  {
+    "name": "file_size-Ignore-bfSize-greater-than-slice",
+    "mode": "BmpFile",
+    "input_hex": "424de803000000000000360000002800000001000000010000000100200000000000000000000000000000000000000000000000000011223300",
+    "policy": {
+      "file_size": "Ignore",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "332211ff"
+        }
+      ],
+      "recovered": false
+    }
+  },
+  {
+    "name": "offset-Declared-bfOffBits-zero",
+    "mode": "BmpFile",
+    "input_hex": "424d3a00000000000000000000002800000001000000010000000100200000000000000000000000000000000000000000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "InvalidPixelOffset"
+    }
+  },
+  {
+    "name": "offset-AllowAny-base-file-offset-small",
+    "mode": "BmpFile",
+    "input_hex": "424d3a000000000000000c000000280000000100000001000000010018000000000000000000000000000000000000000000000000000000ff00",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "AllowAny",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "280000ff"
+        }
+      ],
+      "recovered": true
+    }
+  },
+  {
+    "name": "offset-Gdk-base-file-offset-small",
+    "mode": "BmpFile",
+    "input_hex": "424d3a000000000000000c000000280000000100000001000000010018000000000000000000000000000000000000000000000000000000ff00",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Gdk",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "ff0000ff"
+        }
+      ],
+      "recovered": true
+    }
+  },
+  {
+    "name": "image_size-Exact-biSizeImage-wrong",
+    "mode": "BmpFile",
+    "input_hex": "424d3a00000000000000360000002800000001000000010000000100200000000000010000000000000000000000000000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "InvalidImageSize"
+    }
+  },
+  {
+    "name": "image_size-Ignore-biSizeImage-wrong",
+    "mode": "BmpFile",
+    "input_hex": "424d3a00000000000000360000002800000001000000010000000100200000000000010000000000000000000000000000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Ignore",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "332211ff"
+        }
+      ],
+      "recovered": false
+    }
+  },
+  {
+    "name": "planes-Must1-planes-zero",
+    "mode": "BmpFile",
+    "input_hex": "424d3a00000000000000360000002800000001000000010000000000200000000000000000000000000000000000000000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "InvalidPlanes"
+    }
+  },
+  {
+    "name": "planes-Ignore-planes-zero",
+    "mode": "BmpFile",
+    "input_hex": "424d3a00000000000000360000002800000001000000010000000000200000000000000000000000000000000000000000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Ignore",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "332211ff"
+        }
+      ],
+      "recovered": false
+    }
+  },
+  {
+    "name": "high_count-BmpTable-high-count-one",
+    "mode": "BmpFile",
+    "input_hex": "424d3a00000000000000360000002800000001000000010000000100200000000000000000000000000000000000010000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "InvalidPixelOffset"
+    }
+  },
+  {
+    "name": "high_count-Ignore-high-count-one",
+    "mode": "BmpFile",
+    "input_hex": "424d3a00000000000000360000002800000001000000010000000100200000000000000000000000000000000000010000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "Ignore",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "332211ff"
+        }
+      ],
+      "recovered": false
+    }
+  },
+  {
+    "name": "high_count-GdkBound-high-count-one",
+    "mode": "BmpFile",
+    "input_hex": "424d3a00000000000000360000002800000001000000010000000100200000000000000000000000000000000000010000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "GdkBound",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "InvalidColorCount"
+    }
+  },
+  {
+    "name": "short_pixels-Reject-short-last-row",
+    "mode": "BmpFile",
+    "input_hex": "424d3a000000000000003600000028000000010000000100000001002000000000000000000000000000000000000000000000000000112233",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "InvalidFileSize"
+    }
+  },
+  {
+    "name": "short_pixels-ZeroFill-base-file-size-mismatch",
+    "mode": "BmpFile",
+    "input_hex": "424d00000000000000003a000000280000000100000001000000010018000000000000000000000000000000000000000000000000000000ff00",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "ZeroFill",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "000000ff"
+        }
+      ],
+      "recovered": true
+    }
+  },
+  {
+    "name": "rle_eol-OnlyFinal-rle-terminal-eol",
+    "mode": "BmpFile",
+    "input_hex": "424d3e000000000000003a000000280000000100000001000000010008000100000000000000000000000000000001000000000000000000000001000000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "RleTruncated"
+    }
+  },
+  {
+    "name": "rle_eol-StopAtHeight-base-rle8-last-eol-no-eob",
+    "mode": "BmpFile",
+    "input_hex": "424d3e000000000000003a000000280000000100000001000000010008000100000000000000000000000000000001000000000000000000000001000000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "StopAtHeight",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "000000ff"
+        }
+      ],
+      "recovered": false
+    }
+  },
+  {
+    "name": "rle_overrun-Reject-base-rle8-run-over-row",
+    "mode": "BmpFile",
+    "input_hex": "424d48000000000000004600000028000000010000000100000001000800010000000000000000000000000000000400000000000000000000000000ff0000ff0000ff0000000201",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "RleBounds"
+    }
+  },
+  {
+    "name": "rle_overrun-Clip-base-rle8-run-over-row",
+    "mode": "BmpFile",
+    "input_hex": "424d48000000000000004600000028000000010000000100000001000800010000000000000000000000000000000400000000000000000000000000ff0000ff0000ff0000000201",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Clip",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "RleTruncated"
+    }
+  },
+  {
+    "name": "rle_overrun-Image-base-rle8-run-over-row",
+    "mode": "BmpFile",
+    "input_hex": "424d48000000000000004600000028000000010000000100000001000800010000000000000000000000000000000400000000000000000000000000ff0000ff0000ff0000000201",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Image",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "RleTruncated"
+    }
+  },
+  {
+    "name": "rle_delta-Inside-base-rle8-delta-bounds",
+    "mode": "BmpFile",
+    "input_hex": "424d4a000000000000004600000028000000020000000200000001000800010000000000000000000000000000000400000000000000000000000000ff0000ff0000ff00000000020200",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "RleBounds"
+    }
+  },
+  {
+    "name": "rle_delta-ClampStop-base-rle8-delta-bounds",
+    "mode": "BmpFile",
+    "input_hex": "424d4a000000000000004600000028000000020000000200000001000800010000000000000000000000000000000400000000000000000000000000ff0000ff0000ff00000000020200",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "ClampStop",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "RleTruncated"
+    }
+  },
+  {
+    "name": "rle_eob-Required-base-rle8-missing-end",
+    "mode": "BmpFile",
+    "input_hex": "424d48000000000000004600000028000000010000000100000001000800010000000000000000000000000000000400000000000000000000000000ff0000ff0000ff0000000101",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "RleTruncated"
+    }
+  },
+  {
+    "name": "rle_eob-AtInputEnd-base-rle8-missing-end",
+    "mode": "BmpFile",
+    "input_hex": "424d48000000000000004600000028000000010000000100000001000800010000000000000000000000000000000400000000000000000000000000ff0000ff0000ff0000000101",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "AtInputEnd",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "ff0000ff"
+        }
+      ],
+      "recovered": false
+    }
+  },
+  {
+    "name": "rle_fill-Palette0-rle-early-eob-gap",
+    "mode": "BmpFile",
+    "input_hex": "424d4a000000000000004600000028000000020000000100000001000800010000000000000000000000000000000400000000000000000000000000ff0000ff0000ff00000001010001",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 2,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "ff0000ff"
+        },
+        {
+          "count": 1,
+          "hex": "000000ff"
+        }
+      ],
+      "recovered": false
+    }
+  },
+  {
+    "name": "rle_fill-OpaqueBlack-rle-early-end-nonblack-palette-zero",
+    "mode": "BmpFile",
+    "input_hex": "424d4a0000000000000046000000280000000200000001000000010008000100000000000000000000000000000004000000000000000000ff000000ff0000ff0000ff00000001010001",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "OpaqueBlack",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 2,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "ff0000ff"
+        },
+        {
+          "count": 1,
+          "hex": "000000ff"
+        }
+      ],
+      "recovered": true
+    }
+  },
+  {
+    "name": "rle_fill-TransparentBlack-base-rle8-early-end",
+    "mode": "BmpFile",
+    "input_hex": "424d4a000000000000004600000028000000020000000100000001000800010000000000000000000000000000000400000000000000000000000000ff0000ff0000ff00000001010001",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "TransparentBlack",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 2,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "ff0000ff"
+        },
+        {
+          "count": 1,
+          "hex": "00000000"
+        }
+      ],
+      "recovered": true
+    }
+  },
+  {
+    "name": "palette_index-Reject-base-palette-short-invalid-index-4",
+    "mode": "BmpFile",
+    "input_hex": "424d3e000000000000003a00000028000000010000000100000001000400000000000000000000000000000000000100000000000000030201fe10000000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "PaletteIndexOutOfRange"
+    }
+  },
+  {
+    "name": "palette_index-Black-base-palette-short-invalid-index-4",
+    "mode": "BmpFile",
+    "input_hex": "424d3e000000000000003a00000028000000010000000100000001000400000000000000000000000000000000000100000000000000030201fe10000000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Black",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "000000ff"
+        }
+      ],
+      "recovered": true
+    }
+  },
+  {
+    "name": "masks-Reject-base-masks-zero",
+    "mode": "BmpFile",
+    "input_hex": "424d4200000000000000420000002800000001000000010000000100100003000000000000000000000000000000000000000000000000000000e00300001f000000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "InvalidBitfields"
+    }
+  },
+  {
+    "name": "masks-DefaultRGB-base-masks-zero",
+    "mode": "BmpFile",
+    "input_hex": "424d4200000000000000420000002800000001000000010000000100100003000000000000000000000000000000000000000000000000000000e00300001f000000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "DefaultRGB",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "TruncatedPixels"
+    }
+  },
+  {
+    "name": "masks-Independent-base-masks-overlap",
+    "mode": "BmpFile",
+    "input_hex": "424d42000000000000004200000028000000010000000100000001001000030000000000000000000000000000000000000000000000007c0000e0030000e0030000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Independent",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "TruncatedPixels"
+    }
+  },
+  {
+    "name": "scaling-Round-base-bi-rgb-16-630c",
+    "mode": "BmpFile",
+    "input_hex": "424d3a000000000000003600000028000000010000000100000001001000000000000000000000000000000000000000000000000000630c0000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "191919ff"
+        }
+      ],
+      "recovered": false
+    }
+  },
+  {
+    "name": "scaling-Image-wide-ten-bit-mask-image-scaling",
+    "mode": "BmpFile",
+    "input_hex": "424d46000000000000004200000028000000010000000100000001001000030000000000000000000000000000000000000000000000ff030000001c000000e0000003000000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Image",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "000000ff"
+        }
+      ],
+      "recovered": false
+    }
+  },
+  {
+    "name": "scaling-Gdk-base-bi-rgb-16-630c",
+    "mode": "BmpFile",
+    "input_hex": "424d3a000000000000003600000028000000010000000100000001001000000000000000000000000000000000000000000000000000630c0000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Gdk",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "181818ff"
+        }
+      ],
+      "recovered": false
+    }
+  },
+  {
+    "name": "headers-All1_1-base-header-16-BareDib",
+    "mode": "BmpFile",
+    "input_hex": "424d22000000000000001e000000100000000100000001000000010018000000ff00",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "ff0000ff"
+        }
+      ],
+      "recovered": false
+    }
+  },
+  {
+    "name": "headers-No16-base-header-16-BareDib",
+    "mode": "BmpFile",
+    "input_hex": "424d22000000000000001e000000100000000100000001000000010018000000ff00",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "No16",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "UnsupportedHeaderSize"
+    }
+  },
+  {
+    "name": "headers-No16No64-base-header-16-BareDib",
+    "mode": "BmpFile",
+    "input_hex": "424d22000000000000001e000000100000000100000001000000010018000000ff00",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "No16No64",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "UnsupportedHeaderSize"
+    }
+  },
+  {
+    "name": "unsupported-Reject-unsupported-depth-two",
+    "mode": "BmpFile",
+    "input_hex": "424d3a00000000000000360000002800000001000000010000000100020000000000000000000000000000000000000000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "UnsupportedPixelDepth"
+    }
+  },
+  {
+    "name": "unsupported-Rgb2-unsupported-depth-two",
+    "mode": "BmpFile",
+    "input_hex": "424d3a00000000000000360000002800000001000000010000000100020000000000000000000000000000000000000000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Rgb2",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "InvalidPixelOffset"
+    }
+  },
+  {
+    "name": "reserved-Zero-reserved-nonzero",
+    "mode": "BmpFile",
+    "input_hex": "424d3a00000001000000360000002800000001000000010000000100200000000000000000000000000000000000000000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "InvalidFileSize"
+    }
+  },
+  {
+    "name": "reserved-Ignore-base-file-reserved",
+    "mode": "BmpFile",
+    "input_hex": "424d3a000000010000003a000000280000000100000001000000010018000000000000000000000000000000000000000000000000000000ff00",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Ignore",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "TruncatedPixels"
+    }
+  },
+  {
+    "name": "bitfield_offset-DeclaredOffset-base-masks-40-16",
+    "mode": "BmpFile",
+    "input_hex": "424d4600000000000000420000002800000001000000010000000100100003000000000000000000000000000000000000000000000000f80000e00700001f000000e0070000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "00ff00ff"
+        }
+      ],
+      "recovered": false
+    }
+  },
+  {
+    "name": "bitfield_offset-MetadataEnd-base-bmp-fields-40-masks-then-optimal-table-gap",
+    "mode": "BmpFile",
+    "input_hex": "424d50000000000000004c0000002800000001000000010000000100100003000000000000000000000000000000020000000000000000f80000e00700001f0000001020304050607080aabb00f80000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "MetadataEnd",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "bd7552ff"
+        }
+      ],
+      "recovered": true
+    }
+  },
+  {
+    "name": "bitfield16_alpha-Mask-base-fields-16-alpha-nonzero",
+    "mode": "BmpFile",
+    "input_hex": "424d4a000000000000004600000038000000010000000100000001001000030000000000000000000000000000000000000000000000000f0000f00000000f00000000f000000f880000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "8800ff88"
+        }
+      ],
+      "recovered": false
+    }
+  },
+  {
+    "name": "bitfield16_alpha-Opaque-base-fields-16-alpha-nonzero",
+    "mode": "BmpFile",
+    "input_hex": "424d4a000000000000004600000038000000010000000100000001001000030000000000000000000000000000000000000000000000000f0000f00000000f00000000f000000f880000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Opaque",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "8800ffff"
+        }
+      ],
+      "recovered": false
+    }
+  },
+  {
+    "name": "incomplete_metadata-Reject-base-palette-truncated-8",
+    "mode": "BmpFile",
+    "input_hex": "424d39000000000000003900000028000000010000000100000001000800000000000000000000000000000000000100000000000000030201",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "InvalidPixelOffset"
+    }
+  },
+  {
+    "name": "incomplete_metadata-Blank-bare-incomplete-indexed-palette",
+    "mode": "BareDib",
+    "input_hex": "28000000010000000100000001000800000000000000000000000000000000000100000000000000030201",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Blank",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "000000ff"
+        }
+      ],
+      "recovered": true
+    }
+  },
+  {
+    "name": "short_indexed_gap-Decode-base-bmp-indexed-gap-4",
+    "mode": "BmpFile",
+    "input_hex": "424d440000000000000040000000280000000300000001000000010004000000000000000000000000000000000002000000000000000000ff0000ff0000978310105a5a",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 3,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "00ff00ff"
+        },
+        {
+          "count": 1,
+          "hex": "ff0000ff"
+        },
+        {
+          "count": 1,
+          "hex": "00ff00ff"
+        }
+      ],
+      "recovered": false
+    }
+  },
+  {
+    "name": "short_indexed_gap-Blank-base-bmp-indexed-gap-4",
+    "mode": "BmpFile",
+    "input_hex": "424d440000000000000040000000280000000300000001000000010004000000000000000000000000000000000002000000000000000000ff0000ff0000978310105a5a",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Blank",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 3,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 3,
+          "hex": "000000ff"
+        }
+      ],
+      "recovered": true
+    }
+  },
+  {
+    "name": "header_bytes-Full-base-masks-108-32",
+    "mode": "BmpFile",
+    "input_hex": "424d7e000000000000007a0000006c0000000100000001000000010020000300000000000000000000000000000000000000000000000000ff0000ff0000ff000000000000ff0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000011223344",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "33221144"
+        }
+      ],
+      "recovered": false
+    }
+  },
+  {
+    "name": "header_bytes-ParsedFields-parsed-fields-past-eof-empty-table",
+    "mode": "BmpFile",
+    "input_hex": "424d3a00000000000000360000007c00000001000000010000000100200000000000000000000000000000000000000000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "ParsedFields"
+    },
+    "expected": {
+      "error": "InvalidPixelOffset"
+    }
+  },
+  {
+    "name": "coupled-short-raster-logical-image-size",
+    "mode": "BmpFile",
+    "input_hex": "424d3e0000000000000036000000280000000200000002000000010018000000000010000000000000000000000000000000000000000000ff00ff000000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "ZeroFill",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 2,
+      "height": 2,
+      "rgba_runs": [
+        {
+          "count": 2,
+          "hex": "000000ff"
+        },
+        {
+          "count": 1,
+          "hex": "ff0000ff"
+        },
+        {
+          "count": 1,
+          "hex": "00ff00ff"
+        }
+      ],
+      "recovered": true
+    }
+  },
+  {
+    "name": "coupled-short-raster-physical-image-size",
+    "mode": "BmpFile",
+    "input_hex": "424d3e0000000000000036000000280000000200000002000000010018000000000008000000000000000000000000000000000000000000ff00ff000000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "ZeroFill",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "InvalidImageSize"
+    }
+  },
+  {
+    "name": "coupled-rgb2-header16-combination",
+    "mode": "BmpFile",
+    "input_hex": "424d3a00000000000000360000001000000001000000010000000100020000000000000000000000000000000000000000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Rgb2",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "UnsupportedPixelDepth"
+    }
+  },
+  {
+    "name": "coupled-incomplete-high-depth-optional-table",
+    "mode": "BmpFile",
+    "input_hex": "424d3a00000000000000360000002800000001000000010000000100200000000000000000000000000000000000020000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "AllowAny",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Blank",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "00000000"
+        }
+      ],
+      "recovered": true
+    }
+  },
+  {
+    "name": "coupled-gdk-indexed-offset-at-eof",
+    "mode": "BmpFile",
+    "input_hex": "424d440000000000000044000000280000000300000001000000010004000000000000000000000000000000000002000000000000000000ff0000ff0000978310105a5a",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Gdk",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "TruncatedPixels"
+    }
+  },
+  {
+    "name": "coupled-gdk-indexed-offset-past-eof",
+    "mode": "BmpFile",
+    "input_hex": "424d440000000000000045000000280000000300000001000000010004000000000000000000000000000000000002000000000000000000ff0000ff0000978310105a5a",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Gdk",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 3,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 3,
+          "hex": "000000ff"
+        }
+      ],
+      "recovered": true
+    }
+  },
+  {
+    "name": "coupled-gdk-bitfield-declared-offset-with-gap",
+    "mode": "BmpFile",
+    "input_hex": "424d4800000000000000440000002800000001000000010000000100100003000000000000000000000000000000000000000000000000f80000e00700001f0000001122e0070000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Gdk",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "00ff00ff"
+        }
+      ],
+      "recovered": false
+    }
+  },
+  {
+    "name": "coupled-gdk-bitfield-invalid-offset-metadata-start",
+    "mode": "BmpFile",
+    "input_hex": "424d4600000000000000000000002800000001000000010000000100100003000000000000000000000000000000000000000000000000f80000e00700001f000000e0070000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Gdk",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 1,
+      "height": 1,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "4aaa10ff"
+        }
+      ],
+      "recovered": true
+    }
+  },
+  {
+    "name": "coupled-rgb2-unknown-compression-first-error",
+    "mode": "BmpFile",
+    "input_hex": "424d3a00000000000000360000002800000001000000010000000100020005000000000000000000000000000000000000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Rgb2",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "UnsupportedCompression"
+    }
+  },
+  {
+    "name": "coupled-bare-high-count-all-profiles",
+    "mode": "BareDib",
+    "input_hex": "2800000001000000010000000100200000000000000000000000000000000000010000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "GdkBound",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "InvalidColorCount"
+    }
+  },
+  {
+    "name": "coupled-bare-gdk-bound-positive-count-24",
+    "mode": "BareDib",
+    "input_hex": "2800000001000000010000000100180000000000000000000000000000000000010000000000000011223300",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "GdkBound",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "InvalidColorCount"
+    }
+  },
+  {
+    "name": "coupled-bare-short-logical-cursor",
+    "mode": "BareDib",
+    "input_hex": "280000000200000002000000010018000000000010000000000000000000000000000000000000000000ff00ff000000",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "ZeroFill",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 2,
+      "height": 2,
+      "rgba_runs": [
+        {
+          "count": 2,
+          "hex": "000000ff"
+        },
+        {
+          "count": 1,
+          "hex": "ff0000ff"
+        },
+        {
+          "count": 1,
+          "hex": "00ff00ff"
+        }
+      ],
+      "recovered": true
+    }
+  },
+  {
+    "name": "coupled-parsed-internal-mask-short-even-with-blank",
+    "mode": "BmpFile",
+    "input_hex": "424d3a0000000000000046000000340000000100000001000000010020000300000000000000000000000000000000000000000000000000ff00",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "AllowAny",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "Inside",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Blank",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "ParsedFields"
+    },
+    "expected": {
+      "error": "TruncatedMasks"
+    }
+  },
+  {
+    "name": "coupled-clamped-height-then-explicit-eob",
+    "mode": "BmpFile",
+    "input_hex": "424d4c000000000000004600000028000000020000000200000001000800010000000600000000000000000000000400000000000000000000000000ff0000ff0000ff000000000200050001",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "OnlyFinal",
+      "rle_overrun": "Reject",
+      "rle_delta": "ClampStop",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "width": 2,
+      "height": 2,
+      "rgba_runs": [
+        {
+          "count": 4,
+          "hex": "000000ff"
+        }
+      ],
+      "recovered": true
+    }
+  },
+  {
+    "name": "coupled-clamped-delta-eol-at-height",
+    "mode": "BmpFile",
+    "input_hex": "424d4e000000000000004600000028000000020000000200000001000800010000000000000000000000000000000400000000000000000000000000ff0000ff0000ff0000000002000500000001",
+    "policy": {
+      "file_size": "AtMostFileLength",
+      "offset": "Declared",
+      "image_size": "Exact",
+      "planes": "Must1",
+      "high_count": "BmpTable",
+      "short_pixels": "Reject",
+      "rle_eol": "StopAtHeight",
+      "rle_overrun": "Reject",
+      "rle_delta": "ClampStop",
+      "rle_eob": "Required",
+      "rle_fill": "Palette0",
+      "palette_index": "Reject",
+      "masks": "Reject",
+      "scaling": "Round",
+      "headers": "All1_1",
+      "unsupported": "Reject",
+      "reserved": "Zero",
+      "bitfield_offset": "DeclaredOffset",
+      "bitfield16_alpha": "Mask",
+      "incomplete_metadata": "Reject",
+      "short_indexed_gap": "Decode",
+      "header_bytes": "Full"
+    },
+    "expected": {
+      "error": "RleBounds"
+    }
+  }
+]
