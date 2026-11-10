@@ -13,7 +13,10 @@ pub mod dib;
 pub mod model;
 pub mod model_vectors;
 
-pub use dib::{decode, decode_with_steps, Decoded, Error, Mode};
+pub use dib::{
+    decode, decode_with_policy, decode_with_steps, BmpMode, BmpProfile, Decoded, Error,
+    MetadataOptions, Mode, Policy,
+};
 
 use vstd::prelude::*;
 

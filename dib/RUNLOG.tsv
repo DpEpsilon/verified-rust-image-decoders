@@ -1104,3 +1104,23 @@
 99	2026-11-09T12:23:47+00:00	exit=0	1s	M1.1c: final shipped-source reverify [crate=dib_verus]	
 100	2026-11-09T12:23:54+00:00	exit=0	0s	M1.1c: final shipped-source reverify (forced) [crate=dib_verus]	
 101	2026-11-09T12:26:19+00:00	exit=0	138s	M1.1c: second clean full reverify on final source [crate=dib_verus]	verification results:: 1557 verified, 0 errors
+102	2026-11-10T05:11:59+00:00	exit=101	255s	P1 inc1: policy types added, no behavioural change [crate=dib_verus]	verification results:: 1561 verified, 0 errors
+103	2026-11-10T05:13:44+00:00	exit=101	4s	P1 inc2: policy model + bridge lemmas [crate=dib_verus]	
+104	2026-11-10T05:14:43+00:00	exit=101	5s	P1 inc2b: policy model + bridge, bare paths [crate=dib_verus]	
+105	2026-11-10T05:16:18+00:00	exit=101	85s	P1 inc2c: policy model + bridge lemmas [crate=dib_verus]	verification results:: 1585 verified, 1 errors
+106	2026-11-10T05:19:06+00:00	exit=101	6s	P1 inc3: policy model lemmas + parser + entry point [crate=dib_verus]	
+107	2026-11-10T05:19:33+00:00	exit=101	6s	P1 inc3b: policy entry point, fixed paths [crate=dib_verus]	
+108	2026-11-10T05:20:03+00:00	exit=101	8s	P1 inc3c: policy entry point, name fixes [crate=dib_verus]	
+109	2026-11-10T05:20:26+00:00	exit=101	10s	P1 inc3d [crate=dib_verus]	
+110	2026-11-10T05:21:05+00:00	exit=101	8s	P1 inc3e: policy entry point [crate=dib_verus]	
+111	2026-11-10T05:21:51+00:00	exit=101	10s	P1 inc3f [crate=dib_verus]	
+112	2026-11-10T05:23:28+00:00	exit=101	86s	P1 inc3g [crate=dib_verus]	verification results:: 1590 verified, 3 errors
+113	2026-11-10T05:24:45+00:00	exit=101	5s	P1 inc3h: fixed lemmas, inlined palette, recovered_ok [crate=dib_verus]	
+114	2026-11-10T05:26:41+00:00	exit=101	109s	P1 inc3i [crate=dib_verus]	verification results:: 1588 verified, 1 errors
+115	2026-11-10T05:28:56+00:00	exit=0	115s	P1 inc3j: drop recovered_ok [crate=dib_verus]	verification results:: 1589 verified, 0 errors
+116	2026-11-10T05:32:42+00:00	exit=0	185s	P1: clean full reverify on final source [crate=dib_verus]	verification results:: 1589 verified, 0 errors
+117	2026-11-10T05:34:55+00:00	exit=0	110s	P1 inc4: T9/T10/T13/T1 policy witnesses [crate=dib_verus]	verification results:: 1593 verified, 0 errors
+118	2026-11-10T05:36:49+00:00	exit=101	87s	P1: final clean full reverify (with witnesses, private Policy) [crate=dib_verus]	verification results:: 2159 verified, 0 errors
+119	2026-11-10T05:39:50+00:00	exit=101	8s	P1: reverify after pub(crate) Policy fields [crate=dib_verus]	
+120	2026-11-10T05:44:12+00:00	exit=0	83s	P1: reverify after Policy pub-field revert [crate=dib_verus]	verification results:: 1594 verified, 0 errors
+121	2026-11-10T05:46:53+00:00	exit=0	136s	P1: FINAL clean full reverify on shipped source [crate=dib_verus]	verification results:: 1594 verified, 0 errors

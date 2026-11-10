@@ -121,6 +121,126 @@ pub struct Decoded {
 }
 
 // ---------------------------------------------------------------------------
+// P1 · the policy record, the profile selector and the profiled entry point's
+// types (POLICY-SPEC, "Independent options" and "Named profiles").
+// ---------------------------------------------------------------------------
+
+/// One retained metadata option. `Declared` keeps DIB-CORE-SPEC 1.1's check;
+/// `Ignore` suppresses exactly the check that names the field, and nothing else
+/// (POLICY-SPEC: "An `Ignore` field suppresses only its named check; it never
+/// relaxes the input/output caps"). In particular neither value makes either
+/// declaration a read bound: `bfSize` and `biSizeImage` are validated or
+/// skipped, never used to bound an input read.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MetadataOptions {
+    Declared,
+    Ignore,
+}
+
+/// The retained option values, one slot per retained field. P1 keeps exactly
+/// the two metadata options (`file_size`, `image_size`); a later milestone adds
+/// one field per option group, and those values bottom out in `MetadataOptions`
+/// or its siblings, so this record never has to be rewritten.
+///
+/// POLICY-SPEC calls the record of individual field values internal and
+/// experimental, not a public constructor. The fields are `pub` only because
+/// Verus treats a struct with any non-public field as an opaque datatype and
+/// then rejects the spec-fn construction this crate relies on; the *public API*
+/// honours the rule instead: `decode_with_policy` accepts only a `BmpProfile`,
+/// so no caller can inject field values.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct Policy {
+    pub file_size: MetadataOptions,
+    pub image_size: MetadataOptions,
+}
+
+/// The profile selector. `Strict` is DIB-CORE-SPEC 1.1 exactly; `Recommended`
+/// (POLICY-SPEC "Named profiles") differs from it only by `file_size = Ignore`
+/// and `image_size = Ignore`. `Default` is `Strict`. The other two frozen
+/// profiles are added as new variants by a later milestone; the match in
+/// `profile_policy` is deliberately exhaustive, so adding one is a compile
+/// error there rather than a silent default to Strict.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum BmpProfile {
+    Strict,
+    Recommended,
+}
+
+impl std::default::Default for BmpProfile {
+    fn default() -> Self {
+        BmpProfile::Strict
+    }
+}
+
+/// The mode of the profiled entry point. POLICY-SPEC gives
+/// `decode_with_policy` only the two BMP modes; the two ICO modes keep the
+/// policy-free `decode`, so no ICO input can reach a policy branch and no mode
+/// needs to be rejected at run time.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum BmpMode {
+    BmpFile,
+    BareDib,
+}
+
+/// The `Mode` a profiled `BmpMode` decodes as.
+pub open spec fn bmp_mode_to_mode(bm: BmpMode) -> Mode {
+    match bm {
+        BmpMode::BmpFile => Mode::BmpFile,
+        BmpMode::BareDib => Mode::BareDib,
+    }
+}
+
+/// `Strict`'s policy record: both metadata options keep the 1.1 checks.
+pub open spec fn strict_policy() -> Policy {
+    Policy { file_size: MetadataOptions::Declared, image_size: MetadataOptions::Declared }
+}
+
+/// `Recommended`'s policy record (POLICY-SPEC "Named profiles"): Strict except
+/// `file_size = Ignore` and `image_size = Ignore`.
+pub open spec fn recommended_policy() -> Policy {
+    Policy { file_size: MetadataOptions::Ignore, image_size: MetadataOptions::Ignore }
+}
+
+/// The profile selector's policy record (POLICY-SPEC "Named profiles").
+pub open spec fn profile_policy(p: BmpProfile) -> Policy {
+    match p {
+        BmpProfile::Strict => strict_policy(),
+        BmpProfile::Recommended => recommended_policy(),
+    }
+}
+
+/// The executable wrapper for `bmp_mode_to_mode`: the profiled entry point calls
+/// this so its postcondition carries the spec-fn identity.
+pub fn bmp_mode_mode(bm: BmpMode) -> (r: Mode)
+    ensures
+        r == bmp_mode_to_mode(bm),
+{
+    match bm {
+        BmpMode::BmpFile => Mode::BmpFile,
+        BmpMode::BareDib => Mode::BareDib,
+    }
+}
+
+/// The executable wrapper for `profile_policy`.
+pub fn profile_policy_exec(p: BmpProfile) -> (r: Policy)
+    ensures
+        r == profile_policy(p),
+{
+    match p {
+        BmpProfile::Strict => Policy {
+            file_size: MetadataOptions::Declared,
+            image_size: MetadataOptions::Declared,
+        },
+        BmpProfile::Recommended => Policy {
+            file_size: MetadataOptions::Ignore,
+            image_size: MetadataOptions::Ignore,
+        },
+    }
+}
+
+// ---------------------------------------------------------------------------
 // Bounds-proving byte readers.
 //
 // Unlike M1 these carry a precondition that the bytes exist. The proof never
@@ -934,6 +1054,211 @@ fn bmp_prefix(bytes: &[u8]) -> (r: Result<(usize, u64), Error>)
     }
     Ok((14, off))
 }
+/// R1/R2 with the `file_size` option: the BMP prefix (if any) and the R2–R5
+/// field block, then the shared `dib_finish`. `MH_policy`'s exact record or
+/// first error is the postcondition. The two option values touch one test each:
+/// `Declared` keeps 1.1's `bfSize` bound and `Ignore` drops it; `biSizeImage`,
+/// the reserved words and `bfOffBits` are unaffected.
+fn parse_header_policy(
+    bytes: &[u8],
+    bm: BmpMode,
+    policy: Policy,
+) -> (r: Result<Header, Error>)
+    ensures
+        match crate::model::mh_policy(bytes@, bm, policy) {
+            Ok(m) => match r {
+                Ok(h) => hdr_matches(m, h),
+                Err(_) => false,
+            },
+            Err(e2) => match r {
+                Ok(_) => false,
+                Err(e) => e == e2,
+            },
+        },
+        match r {
+            Ok(h) => header_inv(bytes@, h) && header_inv_light(&h),
+            Err(_) => true,
+        },
+{
+    let len = bytes.len();
+    if len > MAX_INPUT {
+        proof {
+            reveal(crate::model::mh_policy);
+        }
+        return Err(Error::FileTooLarge);
+    }
+    proof {
+        reveal(crate::model::mh_policy);
+        reveal(crate::model::max_input);
+        assert(bytes@.len() <= crate::model::max_input());
+    }
+    let mode = bmp_mode_mode(bm);
+    let is_bmp = match bm {
+        BmpMode::BmpFile => true,
+        BmpMode::BareDib => false,
+    };
+    let start: usize;
+    let file_offset: u64;
+    match bm {
+        BmpMode::BmpFile => {
+            let p = match bmp_prefix_policy(bytes, policy) {
+                Ok(p) => p,
+                Err(e) => {
+                    proof {
+                        reveal(crate::model::mh_policy);
+                        reveal(crate::model::r1_prefix_policy);
+                    }
+                    return Err(e);
+                },
+            };
+            start = p.0;
+            file_offset = p.1;
+            proof {
+                reveal(crate::model::mh_policy);
+                reveal(crate::model::r1_prefix_policy);
+                assert(crate::model::r1_prefix_policy(bytes@, policy) == Ok((
+                    start as int,
+                    file_offset as int,
+                )));
+            }
+        }
+        BmpMode::BareDib => {
+            proof {
+                reveal(crate::model::mh_policy);
+                reveal(crate::model::r1_prefix_policy);
+            }
+            start = 0;
+            file_offset = 0;
+        }
+    }
+    proof {
+        reveal(crate::model::mh_policy);
+        reveal(crate::dib::bmp_mode_to_mode);
+    }
+    let f = match dib_fields(bytes, mode, start, file_offset, is_bmp) {
+        Ok(f) => f,
+        Err(e) => {
+            proof {
+                reveal(crate::model::mh_policy);
+                reveal(crate::model::r2r5);
+                reveal(crate::model::r2r7);
+                reveal(crate::model::r1_prefix_policy);
+            }
+            return Err(e);
+        },
+    };
+    proof {
+        reveal(crate::model::r2r7);
+        reveal(crate::model::r6r7);
+        assert(bytes@.len() <= crate::model::max_input());
+        assert(bytes@.len() >= f.spec_raw().pos0);
+        assert(f.spec_raw().compression == 3 && !(f.spec_raw().hsize == 40 || f.spec_raw().hsize
+            == 64) ==> f.spec_raw().hsize >= 52) by {
+            reveal(crate::model::hsize_ok);
+        }
+        if is_bmp {
+            assert((file_offset as int) == crate::model::le32(bytes@, 10));
+            assert((file_offset as int) <= bytes@.len());
+        }
+    }
+    match dib_finish(bytes, &f, file_offset, is_bmp) {
+        Ok(h) => {
+            proof {
+                reveal(crate::model::mh_policy);
+                reveal(crate::model::r2r7);
+                reveal(crate::model::r2r5);
+            }
+            Ok(h)
+        }
+        Err(e) => {
+            proof {
+                reveal(crate::model::mh_policy);
+                reveal(crate::model::r2r7);
+            }
+            Err(e)
+        }
+    }
+}
+
+/// R1 with the `file_size` option: the BMP file-header prefix. `Ok` carries
+/// `(s, bfOffBits)`. The postcondition is the model's `r1_prefix_policy`.
+fn bmp_prefix_policy(bytes: &[u8], policy: Policy) -> (r: Result<(usize, u64), Error>)
+    ensures
+        match crate::model::r1_prefix_policy(bytes@, policy) {
+            Ok(p) => match r {
+                Ok(q) => q.0 as int == p.0 && q.1 as int == p.1,
+                Err(_) => false,
+            },
+            Err(e2) => match r {
+                Ok(_) => false,
+                Err(e) => e == e2,
+            },
+        },
+{
+    let len = bytes.len();
+    if len < 14 {
+        proof {
+            reveal(crate::model::r1_prefix_policy);
+        }
+        return Err(Error::TruncatedFileHeader);
+    }
+    proof {
+        assert(len as int == bytes@.len());
+    }
+    if bytes[0] != b'B' || bytes[1] != b'M' {
+        proof {
+            reveal(crate::model::r1_prefix_policy);
+            assert(bytes@[0] == bytes[0]);
+            assert(bytes@[1] == bytes[1]);
+            assert(bytes@[0] != 66u8 || bytes@[1] != 77u8);
+        }
+        return Err(Error::BadMagic);
+    }
+    let bf_size = rd32(bytes, 2) as u64;
+    let res6 = rd16(bytes, 6);
+    let res8 = rd16(bytes, 8);
+    let check_size = match policy.file_size {
+        MetadataOptions::Declared => true,
+        MetadataOptions::Ignore => false,
+    };
+    let bad_size = (check_size && bf_size != 0 && bf_size > len as u64) || res6 != 0 || res8 != 0;
+    if bad_size {
+        proof {
+            reveal(crate::model::r1_prefix_policy);
+            assert(bf_size as int == crate::model::le32(bytes@, 2));
+            assert(res6 as int == crate::model::le16(bytes@, 6));
+            assert(res8 as int == crate::model::le16(bytes@, 8));
+            assert(len as int == bytes@.len());
+            crate::model::lemma_le32_lt(bytes@, 2);
+        }
+        return Err(Error::InvalidFileSize);
+    }
+    proof {
+        assert(len as int == bytes@.len());
+        assert(!(check_size && bf_size != 0 && bf_size > len as u64));
+        assert(!((policy.file_size == MetadataOptions::Declared && crate::model::le32(bytes@, 2) != 0
+            && crate::model::le32(bytes@, 2) > bytes@.len()) || crate::model::le16(bytes@, 6) != 0
+            || crate::model::le16(bytes@, 8) != 0));
+    }
+    let off = rd32(bytes, 10) as u64;
+    if off < 18 || off > len as u64 {
+        proof {
+            reveal(crate::model::r1_prefix_policy);
+            assert(off as int == crate::model::le32(bytes@, 10));
+            assert(len as int == bytes@.len());
+            crate::model::lemma_le32_lt(bytes@, 10);
+        }
+        return Err(Error::InvalidPixelOffset);
+    }
+    proof {
+        reveal(crate::model::r1_prefix_policy);
+        assert(off as int == crate::model::le32(bytes@, 10));
+        assert(len as int == bytes@.len());
+        assert(off as int >= 18 && off as int <= bytes@.len());
+    }
+    Ok((14, off))
+}
+
 /// R1..R7: parse and validate the header prefix in R14 order. `Ok` carries the
 /// record; T2's model equality and T3's bounds are the postcondition.
 fn parse_header(bytes: &[u8], mode: Mode) -> (r: Result<Header, Error>)
@@ -4654,6 +4979,139 @@ proof fn lemma_ma_mp_mask_phase(
         b, m, pos, out, crate::model::explicit_alpha(m)));
 }
 
+/// R12 for the two BMP modes with the `image_size` option: the `biSizeImage`
+/// equality (`Declared`) or no size check at all (`Ignore`), then the `BmpFile`
+/// suffix-ignoring rule or `BareDib`'s exact-tail `TrailingBytes` test. Like
+/// `finish_mask`, it performs no AND-mask work (there is no AND plane in either
+/// BMP mode). Its `mask_done_policy_eq` postcondition is
+/// `finish_mask`'s `mask_done_eq` with `mp_mask_phase`'s size test replaced.
+fn finish_mask_policy(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
+    steps: &mut Ghost<nat>, policy: Policy) -> (r: Result<(), Error>)
+    requires
+        header_inv(b@, *h),
+        header_inv_light(h),
+        h.mode == Mode::BmpFile || h.mode == Mode::BareDib,
+        old(out)@.len() == 4 * h.spec_n(),
+        h.pixel_start <= pos <= b@.len(),
+        b@.len() <= 67108864,
+    ensures
+        old(steps)@ <= final(steps)@,
+        final(out)@.len() == old(out)@.len(),
+        match r { Ok(()) => true, Err(e) => e == Error::InvalidImageSize
+            || e == Error::TrailingBytes },
+        crate::model::mask_done_policy_eq(b@, hrec(h), pos as int, old(out)@, final(out)@, r, policy),
+        final(out)@ == old(out)@,
+{
+    proof {
+        reveal(crate::model::mask_done_policy_eq);
+        reveal(crate::model::mp_mask_phase_policy);
+        reveal(crate::model::mp_image_size_ok_policy);
+        reveal(crate::model::image_size_ok_policy);
+        reveal(crate::model::image_size_ok);
+        reveal(crate::model::and_bytes);
+        reveal(crate::model::and_stride);
+        reveal(hrec);
+        reveal(crate::model::is_ico);
+        reveal(crate::model::exact_tail);
+        lemma_hrec_mode(h);
+        assert(hrec(h).mode == h.mode);
+        assert(hrec(h).mode == Mode::BmpFile || hrec(h).mode == Mode::BareDib);
+    }
+    let image_len = pos - h.pixel_start;
+    let skip_size = match policy.image_size {
+        MetadataOptions::Declared => false,
+        MetadataOptions::Ignore => true,
+    };
+    if !skip_size && h.declared != 0 {
+        let valid = h.declared as u64 == image_len as u64;
+        if !valid {
+            proof {
+                reveal(crate::model::mask_done_policy_eq);
+                reveal(crate::model::mp_mask_phase_policy);
+                reveal(crate::model::mp_image_size_ok_policy);
+                reveal(crate::model::image_size_ok_policy);
+                reveal(crate::model::image_size_ok);
+                reveal(crate::dib::is_ico);
+                reveal(hrec);
+                assert(image_len as int == pos as int - h.pixel_start as int);
+                assert(policy.image_size == MetadataOptions::Declared);
+                assert(h.declared != 0);
+                assert(h.declared as int != 0);
+                assert(hrec(h).declared_image == h.declared as int);
+                assert(hrec(h).pixel_start == h.pixel_start as int);
+                assert(hrec(h).declared_image != image_len as int);
+                assert(!crate::model::mp_image_size_ok_policy(
+                    hrec(h), image_len as int, policy));
+            }
+            return Err(Error::InvalidImageSize);
+        }
+    }
+    proof {
+        reveal(crate::model::mask_done_policy_eq);
+        reveal(crate::model::mp_mask_phase_policy);
+        reveal(crate::model::mp_image_size_ok_policy);
+        reveal(crate::model::image_size_ok_policy);
+        reveal(crate::model::image_size_ok);
+        reveal(crate::model::is_ico);
+        reveal(hrec);
+        assert(image_len as int == pos as int - h.pixel_start as int);
+        assert(hrec(h).declared_image == h.declared as int);
+        // The image-size test passes in the model at this point.
+        assert(crate::model::mp_image_size_ok_policy(hrec(h), image_len as int, policy));
+    }
+    match h.mode {
+        Mode::BareDib => {
+            if pos != b.len() {
+                proof {
+                    reveal(crate::model::mask_done_policy_eq);
+                    reveal(crate::model::mp_mask_phase_policy);
+                    reveal(crate::model::mp_image_size_ok_policy);
+                    reveal(crate::model::image_size_ok_policy);
+                    reveal(hrec);
+                    reveal(header_inv_light);
+                    lemma_hrec_mode(h);
+                    assert(hrec(h).mode == Mode::BareDib);
+                    assert(pos as int != b@.len());
+                }
+                return Err(Error::TrailingBytes);
+            }
+            proof {
+                reveal(crate::model::mask_done_policy_eq);
+                reveal(crate::model::mp_mask_phase_policy);
+                reveal(crate::model::mp_image_size_ok_policy);
+                reveal(crate::model::image_size_ok_policy);
+                reveal(hrec);
+                reveal(header_inv_light);
+                lemma_hrec_mode(h);
+                assert(hrec(h).mode == Mode::BareDib);
+                assert(pos as int == b@.len());
+            }
+        },
+        Mode::BmpFile => {
+            proof {
+                reveal(crate::model::mask_done_policy_eq);
+                reveal(crate::model::mp_mask_phase_policy);
+                reveal(crate::model::mp_image_size_ok_policy);
+                reveal(crate::model::image_size_ok_policy);
+                reveal(hrec);
+                reveal(header_inv_light);
+                lemma_hrec_mode(h);
+                assert(hrec(h).mode == Mode::BmpFile);
+            }
+        },
+        Mode::IcoEntryDib | Mode::IcoEntryDibSlack => {
+            proof {
+                // The profiled entry point has no ICO mode: `m.mode` is the
+                // `BmpMode` converted, so these arms are unreachable.
+                lemma_hrec_mode(h);
+                assert(h.mode == Mode::BmpFile || h.mode == Mode::BareDib);
+                assert(false);
+            }
+        },
+    }
+    Ok(())
+}
+
 fn finish_mask(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
     steps: &mut Ghost<nat>) -> (r: Result<(), Error>)
     requires
@@ -5496,6 +5954,197 @@ pub fn decode_with_steps(bytes: &[u8], mode: Mode) -> (r: (Result<Decoded, Error
     (result, steps)
 }
 
+/// The profiled entry point's ghost header record: `MH_policy`'s `Ok` record,
+/// tied to the concrete `Header` by `hdr_matches`. An exec spec fn so the ghost
+/// local can be introduced by `let ghost m = ...` and still be passed to
+/// `lemma` proof functions as a value.
+spec fn ghost_mh_policy(b: Seq<u8>, bm: BmpMode, policy: Policy, h: &Header)
+    -> crate::model::MHRecord {
+    choose|m: crate::model::MHRecord| crate::model::mh_policy(b, bm, policy) == Ok(m)
+        && hdr_matches(m, *h)
+}
+
+/// T9 for the profiled entry point: the returned `Result` equals
+/// `MP_policy(b, bm, policy)` as the exact `Result`, including every output
+/// byte. `Policy` is the concrete record `profile_policy(profile)` selects.
+pub open spec fn decode_policy_mp_eq(
+    r: Result<Decoded, Error>,
+    b: Seq<u8>,
+    bm: BmpMode,
+    policy: Policy,
+) -> bool {
+    match r {
+        Ok(d) => crate::model::mp_policy(b, bm, policy)
+            == Ok((d.width as int, d.height as int, d.rgba@)),
+        Err(e) => crate::model::mp_policy(b, bm, policy) == Err(e),
+    }
+}
+
+/// The profiled entry point (POLICY-SPEC "Named profiles", THEOREMS-POLICY-DELTA):
+/// `decode_with_policy(bytes, bm, profile)` for the two BMP modes and the
+/// `Strict`/`Recommended` profiles, returning the result and the recovery flag.
+///
+/// * T9: the `Result` equals `MP_policy(bytes, bm, profile_policy(profile))` on
+///   every error and every RGBA byte, for every slice and both modes.
+/// * `recovered` is the closed-event flag of POLICY-SPEC: `false` for both P1
+///   profiles on every input (only `Ignore`d `bfSize`/`biSizeImage` values are
+///   tolerated here, and none of those is a listed data-affecting event).
+/// * T3/T13: the sole allocation is the one `4N` output buffer, made once after
+///   the header phase succeeds; a header error allocates nothing, and any
+///   success has the exact `4*w*h <= 64 MiB` output.
+/// * T1/T11/T12: no read beyond the slice, no panic, termination, and the same
+///   charged-work bound as `decode`.
+pub fn decode_with_policy(bytes: &[u8], bm: BmpMode, profile: BmpProfile)
+    -> (r: (Result<Decoded, Error>, bool))
+    ensures
+        r.1 == false,
+        decode_policy_mp_eq(r.0, bytes@, bm, profile_policy(profile)),
+        match r.0 {
+            Ok(d) => 1 <= d.width as int <= 8192 && 1 <= d.height as int <= 8192
+                && d.rgba@.len() == 4 * (d.width as int * d.height as int)
+                && d.rgba@.len() <= 67108864,
+            Err(_) => true,
+        },
+{
+    let policy = profile_policy_exec(profile);
+    proof {
+        reveal(crate::dib::profile_policy);
+    }
+    let mut steps = Ghost(0nat);
+    let recovered: bool = false;
+    let h = match parse_header_policy(bytes, bm, policy) {
+        Ok(h) => h,
+        Err(e) => {
+            proof {
+                reveal(decode_policy_mp_eq);
+                match crate::model::mh_policy(bytes@, bm, policy) {
+                    Ok(_) => {},
+                    Err(e2) => {
+                        crate::model::lemma_mp_policy_mh_err(bytes@, bm, policy, e2);
+                    },
+                }
+            }
+            return (Err(e), recovered);
+        },
+    };
+    proof {
+        reveal(decode_policy_mp_eq);
+    }
+    let ghost m = ghost_mh_policy(bytes@, bm, policy, &h);
+    let mut out = alloc_output(&h, &mut steps);
+    proof {
+        reveal(crate::model::mh_policy);
+        assert(crate::model::mh_policy(bytes@, bm, policy) == Ok(m));
+        assert(hdr_matches(m, h));
+        lemma_hrec_matches(m, &h);
+        assert(hrec(&h) == m);
+        reveal(hdr_matches);
+        reveal(hrec);
+        reveal(header_record);
+        reveal(crate::dib::bmp_mode_to_mode);
+        assert(h.mode == m.mode);
+        assert(m.mode == Mode::BmpFile || m.mode == Mode::BareDib);
+        assert(h.mode == Mode::BmpFile || h.mode == Mode::BareDib);
+        // R7 palette geometry: the record's own `palette_end` and the
+        // executable's `header_inv` palette bound name the same sum.
+        reveal(crate::model::mh_policy);
+        reveal(crate::model::r2r7);
+        reveal(crate::model::r6r7);
+        reveal(crate::model::r6r7_result);
+        reveal(crate::model::r1_prefix_policy);
+        reveal(crate::model::r6r7_result);
+        reveal(header_inv);
+        assert(hrec(&h) == m);
+        assert(m.palette_end == h.spec_palette_end());
+        assert(h.spec_palette_end() == h.palette_end as int);
+        assert(m.palette_end == m.palette_start + m.table_count * m.palette_stride);
+        assert(m.palette_end <= bytes@.len());
+        assert(m.palette_start + m.table_count * m.palette_stride <= bytes@.len());
+    }
+    let raw = h.compression == 0 || h.compression == 3;
+    let p = if raw {
+        decode_raw(bytes, &h, &mut out, &mut steps)
+    } else {
+        let mut gcur: (usize, usize, usize) = (h.pixel_start, 0, 0);
+        decode_rle(bytes, &h, &mut out, &mut gcur, &mut steps)
+    };
+    let pos = match p {
+        Ok(pos) => pos,
+        Err(e) => {
+            proof {
+                reveal(decode_policy_mp_eq);
+                if raw {
+                    reveal(raw_done_eq);
+                    reveal(crate::model::mr_raw_out);
+                    crate::model::lemma_raw_full_proj(
+                        bytes@, hrec(&h), h.pixel_start as int, 0, 0);
+                    assert(crate::model::mr_raw_out(bytes@, m, m.pixel_start) is Err);
+                    assert((crate::model::mr_raw_out(bytes@, m, m.pixel_start)->Err_0).0
+                        == crate::model::RawErr::Api(e));
+                    crate::model::lemma_mp_policy_raw_err(bytes@, bm, policy, m, e);
+                } else {
+                    reveal(rle_exact);
+                    reveal(crate::model::mr_out);
+                    assert(crate::model::mr_out(bytes@, m, m.pixel_start, 0, 0) is Err);
+                    assert((crate::model::mr_out(bytes@, m, m.pixel_start, 0, 0)->Err_0).0
+                        == crate::model::RleErr::Api(e));
+                    crate::model::lemma_mp_policy_rle_err(bytes@, bm, policy, m, e);
+                }
+            }
+            return (Err(e), recovered);
+        },
+    };
+    let ghost out_xor = out@;
+    let mask_result = finish_mask_policy(bytes, &h, &mut out, pos, &mut steps, policy);
+    match mask_result {
+        Ok(()) => {},
+        Err(e) => {
+            proof {
+                reveal(decode_policy_mp_eq);
+                reveal(crate::model::mask_done_policy_eq);
+                assert(crate::model::mask_done_policy_eq(
+                    bytes@, m, pos as int, out_xor, out@, Err(e), policy));
+                crate::model::lemma_mp_policy_phase(
+                    bytes@, m, pos as int, out_xor, out@, Err(e), policy);
+                if raw {
+                    crate::model::lemma_mp_policy_phase_err_raw(
+                        bytes@, bm, policy, m, pos as int, out_xor, e);
+                } else {
+                    crate::model::lemma_mp_policy_phase_err_rle(
+                        bytes@, bm, policy, m, pos as int, out_xor, e);
+                }
+            }
+            return (Err(e), recovered);
+        },
+    }
+    proof {
+        reveal(decode_policy_mp_eq);
+        reveal(crate::model::mask_done_policy_eq);
+        crate::model::lemma_mp_policy_phase(
+            bytes@, m, pos as int, out_xor, out@, Ok(()), policy);
+        let end = choose|end: int| crate::model::mp_mask_phase_policy(
+            bytes@, m, pos as int, pos as int - m.pixel_start as int, out_xor, policy)
+            == Ok((end, out@));
+        if raw {
+            reveal(raw_done_eq);
+            crate::model::lemma_raw_full_proj(
+                bytes@, hrec(&h), h.pixel_start as int, 0, 0);
+            assert(crate::model::mr_raw_out(bytes@, m, m.pixel_start)
+                == Ok((pos as int, out_xor)));
+            crate::model::lemma_mp_policy_raw_assemble(
+                bytes@, bm, policy, m, pos as int, out_xor, out@, end);
+        } else {
+            reveal(rle_exact);
+            reveal(crate::model::mr_out);
+            assert(crate::model::mr_out(bytes@, m, m.pixel_start, 0, 0)
+                == Ok((pos as int, out_xor)));
+            crate::model::lemma_mp_policy_rle_assemble(
+                bytes@, bm, policy, m, pos as int, out_xor, out@, end);
+        }
+    }
+    (Ok(Decoded { width: h.width, height: h.height, rgba: out }), recovered)
+}
+
 /// T10 · error precedence, at the manifest's quantification. For every R15 error
 /// `e`, `decode(b, mode) = Err(e)` iff `MP(b, mode) = Err(e)`; the `decode = MP`
 /// postcondition above discharges the `forall b, mode` part, and this witness
@@ -5536,6 +6185,68 @@ fn t13_success_bounds(bytes: &[u8], mode: Mode) -> (r: Result<Decoded, Error>)
         },
 {
     decode(bytes, mode)
+}
+
+// --- P1 statement witnesses for the profiled entry point, at the same
+// quantification as the `decode` witnesses above: every slice, both BMP modes
+// and both profiles.
+
+/// T9 · the profiled entry point equals `MP_policy` on every error, dimension
+/// and RGBA byte, for every slice, both modes and every profile. Discharged by
+/// `decode_with_policy`'s own `decode_policy_mp_eq` postcondition.
+#[allow(dead_code)]
+fn t9_policy(bytes: &[u8], bm: BmpMode, profile: BmpProfile) -> (r: (Result<Decoded, Error>, bool))
+    ensures
+        decode_policy_mp_eq(r.0, bytes@, bm, profile_policy(profile)),
+{
+    decode_with_policy(bytes, bm, profile)
+}
+
+/// T10 · error precedence for the profiled entry point: for every error `e`,
+/// `decode_with_policy(..).0 = Err(e)` iff `MP_policy(..) = Err(e)`.
+#[allow(dead_code)]
+fn t10_policy_precedence(bytes: &[u8], bm: BmpMode, profile: BmpProfile, e: Error)
+    -> (r: (Result<Decoded, Error>, bool))
+    ensures
+        (r.0 == Err(e)) == (crate::model::mp_policy(bytes@, bm, profile_policy(profile)) == Err(e)),
+{
+    decode_with_policy(bytes, bm, profile)
+}
+
+/// T13 · success and resource bounds for the profiled entry point: every success
+/// has `MP_policy`'s exact `(w, h, p)`, `1 <= w, h <= 8192` and a `4*w*h`
+/// output of at most 64 MiB.
+#[allow(dead_code)]
+fn t13_policy_success_bounds(bytes: &[u8], bm: BmpMode, profile: BmpProfile)
+    -> (r: (Result<Decoded, Error>, bool))
+    ensures
+        match r.0 {
+            Ok(d) => {
+                &&& crate::model::mp_policy(bytes@, bm, profile_policy(profile))
+                    == Ok((d.width as int, d.height as int, d.rgba@))
+                &&& 1 <= d.width as int <= 8192
+                &&& 1 <= d.height as int <= 8192
+                &&& d.rgba@.len() == 4 * (d.width as int * d.height as int)
+                &&& d.rgba@.len() <= 67108864
+            },
+            Err(_) => true,
+        },
+{
+    decode_with_policy(bytes, bm, profile)
+}
+
+/// T1/T3/T11/T12 · the profiled entry point's universal resource properties,
+/// stated on the concrete `decode_with_policy` call: the `recovered` flag is
+/// `false` and `decode_policy_mp_eq` holds, so the result is exactly the model's
+/// — the proof's other postconditions (the shape bounds) are the T13 part.
+#[allow(dead_code)]
+fn t1_policy_totality(bytes: &[u8], bm: BmpMode, profile: BmpProfile)
+    -> (r: (Result<Decoded, Error>, bool))
+    ensures
+        r.1 == false,
+        decode_policy_mp_eq(r.0, bytes@, bm, profile_policy(profile)),
+{
+    decode_with_policy(bytes, bm, profile)
 }
 
 } // verus!

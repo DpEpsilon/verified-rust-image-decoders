@@ -294,3 +294,44 @@ Checked on a standalone Verus file with the same toolchain (0.2026.11.02): `asse
   THEOREMS.md untouched; no escapes, no solver-budget attribute; `audit_alloc.sh` OK.
   Backups `dib.rs.m11a`, `model.rs.m11a`, `model_vectors.rs.m11a`. See
   PROOF-REPORT-M1.1c.md.
+
+## P1 (policy refactor, first slice; crate version 0.3.0)
+- **`dib.rs` policy types.** `MetadataOptions {Declared, Ignore}`, a two-field
+  `Policy {file_size, image_size}` (room for later option groups), the
+  `BmpProfile {Strict, Recommended}` selector (`Default` is `Strict`, the match in
+  `profile_policy` is exhaustive so a new profile is a compile error, not a silent
+  Strict default), and `BmpMode {BmpFile, BareDib}` (POLICY-SPEC gives the
+  profiled entry point only the two BMP modes, so no ICO input can reach a policy
+  branch and no mode is rejected at run time). Spec fns `strict_policy`,
+  `recommended_policy`, `profile_policy`; exec wrappers `bmp_mode_mode`,
+  `profile_policy_exec`.
+- **`model.rs` policy layer.** `r1_prefix_policy` (R1's `bfSize` test governed by
+  `file_size`), `mh_policy` (the R1–R7 model with that prefix, same `r2r7` chain
+  and the same `MHRecord` type), `image_size_ok_policy`/`mp_image_size_ok_policy`
+  (R12 with `image_size`), `mp_mask_phase_policy`, `mp_raw_policy`/`mp_rle_policy`,
+  and `mp_policy`. `recovered` is not a model field: it is `false` for both P1
+  profiles, so it cannot depend on input. `mask_done_policy_eq` and the lemmas
+  `lemma_mp_policy_{mh_err,raw_err,rle_err,phase_err_raw,phase_err_rle,
+  raw_assemble,rle_assemble,ok_shape}`, `lemma_mh_policy_bounds`,
+  `lemma_mp_mask_phase_policy_len`, `lemma_mp_policy_phase`, plus the Strict bridge
+  `lemma_{r1_prefix_policy_strict, mh_policy_strict, image_size_ok_policy_strict,
+  mp_image_size_ok_policy_strict, mp_mask_phase_policy_strict, mp_raw_policy_strict,
+  mp_rle_policy_strict, mp_policy_strict}` (each a definitional reduction at
+  `strict_policy()`; no existing theorem is weakened).
+- **`dib.rs` executable.** `bmp_prefix_policy` (R1 with the option) and
+  `parse_header_policy` (reuse `dib_fields` + `dib_finish`, so they generalize to
+  any policy and the record is `MH_policy`'s); `finish_mask_policy` (R12 with the
+  option; no AND work in either BMP mode; unknown modes are unreachable and the
+  proof says so); the public `decode_with_policy(bytes, bm, profile) ->
+  (Result<Decoded, Error>, bool)` with `recovered == false`, `recovered_ok`,
+  `decode_policy_mp_eq` (T9 = `MP_policy` on every byte) and the T3/T13 shape
+  bounds. Its body reuses the existing `alloc_output`/`decode_raw`/`decode_rle`.
+  `decode`, `decode_with_steps`, every existing theorem and the 302 vectors are
+  untouched; `lib.rs` re-exports the new names.
+- **Conformance.** `tests/policy_conformance.rs` runs `policy/POLICY-VECTORS.json`
+  for `Strict` and `Recommended` (102 each, `recovered` checked); it sits next to
+  the unchanged `tests/conformance.rs` (302) and `tests/corpus.rs`.
+- **Deferred to later milestones (not P1).** GdkCompat-2.42.12 and
+  ImageCrateCompat-0.25.10 (and the other sixteen options); any input that sets
+  `recovered = true` (P1 proves `false` for both profiles); `#[cfg(test)]` custom
+  records.

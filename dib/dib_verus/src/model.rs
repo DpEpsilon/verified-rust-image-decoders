@@ -12,7 +12,7 @@
 //! `MP`/`MR`/`MA` and the pixel models are later milestones.
 use vstd::prelude::*;
 
-use crate::dib::{Error, Mode};
+use crate::dib::{BmpMode, Error, MetadataOptions, Mode, Policy};
 
 verus! {
 
@@ -6787,6 +6787,663 @@ pub proof fn slack_mode_suffix_result(
             lemma_slack_result_mp_ok(b, m, r);
         },
     }
+}
+
+// ---------------------------------------------------------------------------
+// P1 · the policy-indexed model (POLICY-SPEC "Independent options",
+// THEOREMS-POLICY-DELTA "Model and executable boundary").
+//
+// `MH_policy` differs from `MH` in exactly one place: R1's `bfSize` test, which
+// is skipped when `file_size = Ignore`. `MP_policy` differs from `MP` in exactly
+// one place: R12's `biSizeImage` equality, skipped when `image_size = Ignore`.
+// Every other guard and every byte-producing transition is `MH`/`MP`'s own
+// function, and the derived header record `MH_policy` hands to `MP_policy` is
+// one of the two `MHRecord`s unchanged — not a new record type — so the pixel
+// phases cannot drift between the strict and profiled models.
+// ---------------------------------------------------------------------------
+
+/// `MH_policy`'s R1 prefix: `r1_prefix` with exactly the `file_size` test
+/// governed by the option. `Declared` keeps 1.1's test
+/// (`le32(b,2) != 0 && le32(b,2) > |b|`); `Ignore` drops that test and keeps the
+/// reserved-words test, which belongs to the separate `reserved` field alone.
+/// Neither value makes `bfSize` a read bound: the field is validated or skipped,
+/// never used to compute an offset or a length.
+pub open spec fn r1_prefix_policy(b: Seq<u8>, p: Policy) -> Result<(int, int), Error> {
+    if b.len() < 14 {
+        Err(Error::TruncatedFileHeader)
+    } else if b[0] != 66u8 || b[1] != 77u8 {
+        Err(Error::BadMagic)
+    } else if (p.file_size == MetadataOptions::Declared && le32(b, 2) != 0 && le32(b, 2) > b.len())
+        || le16(b, 6) != 0 || le16(b, 8) != 0
+    {
+        Err(Error::InvalidFileSize)
+    } else if le32(b, 10) < 18 || le32(b, 10) > b.len() {
+        Err(Error::InvalidPixelOffset)
+    } else {
+        Ok((14int, le32(b, 10)))
+    }
+}
+
+/// `MH_policy(b, bm, p)`: the R1–R7 header model with the `file_size` option.
+/// With `file_size = Declared` the prefix reduces to `r1_prefix`, so
+/// `MH_policy(Strict)` is `MH` on both BMP modes; with `Ignore` only the
+/// `bfSize` test is dropped. The returned record is `MH`'s own `MHRecord`.
+pub open spec fn mh_policy(b: Seq<u8>, bm: BmpMode, p: Policy) -> Result<MHRecord, Error> {
+    let mode: Mode = match bm {
+        BmpMode::BmpFile => Mode::BmpFile,
+        BmpMode::BareDib => Mode::BareDib,
+    };
+    if b.len() > max_input() {
+        Err(Error::FileTooLarge)
+    } else if bm == BmpMode::BmpFile {
+        match r1_prefix_policy(b, p) {
+            Err(e) => Err(e),
+            Ok(q) => r2r7(b, mode, q.0, q.1, true),
+        }
+    } else {
+        r2r7(b, mode, 0, 0, false)
+    }
+}
+
+/// R12's permitted `biSizeImage` values, with the `image_size` option.
+/// `Declared` is `image_size_ok` verbatim; `Ignore` skips the equality.
+/// **Neither value uses the declaration to bound a read**: `x_len` is always
+/// supplied by the caller from the cursor the pixel phase actually reached,
+/// never from `biSizeImage`.
+pub open spec fn image_size_ok_policy(
+    declared: int,
+    x_len: int,
+    a_bytes: int,
+    ico: bool,
+    p: Policy,
+) -> bool {
+    match p.image_size {
+        MetadataOptions::Declared => image_size_ok(declared, x_len, a_bytes, ico),
+        MetadataOptions::Ignore => true,
+    }
+}
+
+/// R12's rule lifted to a record, with the `image_size` option.
+pub open spec fn mp_image_size_ok_policy(m: MHRecord, x_len: int, p: Policy) -> bool {
+    let ico = is_ico(m.mode);
+    let a = if ico {
+        and_bytes(m.width, m.height)
+    } else {
+        0
+    };
+    image_size_ok_policy(m.declared_image, x_len, a, ico, p)
+}
+
+/// T7/T9/R19 with the `image_size` option: `mp_mask_phase` with its R12 test
+/// replaced. The AND-plane availability, the ICO whole-image XOR-alpha policy,
+/// and the `BmpFile`/`BareDib` suffix rules are unchanged.
+pub open spec fn mp_mask_phase_policy(
+    b: Seq<u8>,
+    m: MHRecord,
+    pos: int,
+    x_len: int,
+    out: Seq<u8>,
+    p: Policy,
+) -> Result<(int, Seq<u8>), MpErr> {
+    let a = and_bytes(m.width, m.height);
+    if !mp_image_size_ok_policy(m, x_len, p) {
+        Err(MpErr::Api(Error::InvalidImageSize))
+    } else if is_ico(m.mode) {
+        if pos + a > b.len() {
+            Err(MpErr::Api(Error::TruncatedAndMask))
+        } else {
+            let end = pos + a;
+            if exact_tail(m.mode) && end != b.len() {
+                Err(MpErr::Api(Error::TrailingBytes))
+            } else {
+                Ok((end, ma_output(b, m, pos, out, explicit_alpha(m))))
+            }
+        }
+    } else if m.mode == Mode::BmpFile {
+        Ok((pos, out))
+    } else if pos != b.len() {
+        Err(MpErr::Api(Error::TrailingBytes))
+    } else {
+        Ok((pos, out))
+    }
+}
+
+/// The executable `finish_mask_policy` outcome against `mp_mask_phase_policy`,
+/// in the executable's own shape: `Ok(())` iff the phase is `Ok`, with the
+/// buffer equal to the phase's `Ok` payload, and an error naming the phase's
+/// exact API error.
+pub open spec fn mask_done_policy_eq(
+    b: Seq<u8>,
+    m: MHRecord,
+    pos: int,
+    out0: Seq<u8>,
+    out1: Seq<u8>,
+    r: Result<(), Error>,
+    p: Policy,
+) -> bool {
+    match mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p) {
+        Ok((_end, img)) => r == Ok(()) && out1 == img,
+        Err(MpErr::Api(e)) => r == Err(e),
+        Err(MpErr::Outside) => false,
+    }
+}
+
+/// T9 (phase bridge): the executable phase outcome equals
+/// `mp_mask_phase_policy`'s exact result on both exits.
+pub proof fn lemma_mp_policy_phase(
+    b: Seq<u8>, m: MHRecord, pos: int, out0: Seq<u8>, out1: Seq<u8>, r: Result<(), Error>, p: Policy,
+)
+    requires
+        m.mode == Mode::BmpFile || m.mode == Mode::BareDib,
+        mask_done_policy_eq(b, m, pos, out0, out1, r, p),
+    ensures
+        match mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p) {
+            Ok((_end, img)) => r == Ok(()) && out1 == img,
+            Err(MpErr::Api(e)) => r == Err(e),
+            Err(MpErr::Outside) => false,
+        },
+        !(mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p) is Err
+            && mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p)->Err_0 is Outside)
+            || r != Ok(()),
+{
+    reveal(mask_done_policy_eq);
+    reveal(mp_mask_phase_policy);
+}
+
+/// `MP_policy` for a raw/BITFIELDS record: `MR`'s raw transition, then the
+/// policy mask phase. Identical to `mp_raw` but for the phase's option.
+pub open spec fn mp_raw_policy(b: Seq<u8>, m: MHRecord, p: Policy) -> Result<(Seq<u8>, int), MpErr> {
+    match mr_raw_out(b, m, m.pixel_start) {
+        Err((RawErr::Api(e), _pc, _xc, _yc)) => Err(MpErr::Api(e)),
+        Err((RawErr::Outside, _pc, _xc, _yc)) => Err(MpErr::Outside),
+        Ok((pc, out)) => match mp_mask_phase_policy(b, m, pc, pc - m.pixel_start, out, p) {
+            Ok((end, out2)) => Ok((out2, end)),
+            Err(e) => Err(e),
+        },
+    }
+}
+
+/// `MP_policy` for an RLE4/RLE8 record: `MR`'s RLE transition, then the policy
+/// mask phase. Identical to `mp_rle` but for the phase's option.
+pub open spec fn mp_rle_policy(b: Seq<u8>, m: MHRecord, p: Policy) -> Result<(Seq<u8>, int), MpErr> {
+    match mr_out(b, m, m.pixel_start, 0, 0) {
+        Err((RleErr::Api(e), _pc, _xc, _yc)) => Err(MpErr::Api(e)),
+        Err((RleErr::Outside, _pc, _xc, _yc)) => Err(MpErr::Outside),
+        Ok((pc, out)) => match mp_mask_phase_policy(b, m, pc, pc - m.pixel_start, out, p) {
+            Ok((end, out2)) => Ok((out2, end)),
+            Err(e) => Err(e),
+        },
+    }
+}
+
+/// `MP_policy(b, bm, p)`: the total policy-indexed reference model for the two
+/// BMP modes. It calls `MH_policy`, requires the palette to fit, then performs
+/// the R8 fill, the R9 raw or R10–R11 RLE transition, and the policy R12
+/// phase, returning the exact `Ok(w, h, rgba)` or the exact first `Err(e)`.
+/// Only the `file_size` and `image_size` options differ from `MP`; `recovered`
+/// is `false` for both P1 profiles, so it is not a field of this model.
+pub open spec fn mp_policy(
+    b: Seq<u8>,
+    bm: BmpMode,
+    p: Policy,
+) -> Result<(int, int, Seq<u8>), Error> {
+    match mh_policy(b, bm, p) {
+        Err(e) => Err(e),
+        Ok(m) => {
+            if m.palette_start + m.table_count * m.palette_stride > b.len() {
+                Err(Error::TruncatedPalette)
+            } else if m.compression == 0 || m.compression == 3 {
+                mp_decoded(m, mp_raw_policy(b, m, p))
+            } else {
+                mp_decoded(m, mp_rle_policy(b, m, p))
+            }
+        },
+    }
+}
+
+// --- The spec-level Strict bridge (THEOREMS-POLICY-DELTA: `MH_1_1 :=
+// MH(Strict)`, `MP_1_1 := MP(Strict)`). Each lemma is a definitional reduction
+// of the policy-indexed function at `crate::dib::strict_policy()`, so no existing
+// T-statement loses anything and no policy function is proved against an
+// independently written strict decoder.
+
+/// `r1_prefix_policy` at `Strict` is `r1_prefix` verbatim.
+pub proof fn lemma_r1_prefix_policy_strict(b: Seq<u8>)
+    ensures
+        r1_prefix_policy(b, crate::dib::strict_policy()) == r1_prefix(b),
+{
+    reveal(r1_prefix);
+    reveal(r1_prefix_policy);
+    reveal(crate::dib::strict_policy);
+}
+
+/// `MH_policy(Strict)` is `MH(_)` for both BMP modes.
+pub proof fn lemma_mh_policy_strict(b: Seq<u8>, bm: BmpMode)
+    ensures
+        mh_policy(b, bm, crate::dib::strict_policy()) == mh(b, crate::dib::bmp_mode_to_mode(bm)),
+{
+    reveal(mh_policy);
+    reveal(mh);
+    reveal(r1_prefix_policy);
+    reveal(r1_prefix);
+    reveal(crate::dib::strict_policy);
+    reveal(crate::dib::bmp_mode_to_mode);
+    if b.len() <= max_input() {
+        lemma_r1_prefix_policy_strict(b);
+    }
+}
+
+/// `image_size_ok_policy` at `Strict` is `image_size_ok` verbatim.
+pub proof fn lemma_image_size_ok_policy_strict(declared: int, x_len: int, a_bytes: int, ico: bool)
+    ensures
+        image_size_ok_policy(declared, x_len, a_bytes, ico, crate::dib::strict_policy())
+            == image_size_ok(declared, x_len, a_bytes, ico),
+{
+    reveal(image_size_ok_policy);
+    reveal(image_size_ok);
+    reveal(crate::dib::strict_policy);
+}
+
+/// `mp_image_size_ok_policy` at `Strict` is `mp_image_size_ok`.
+pub proof fn lemma_mp_image_size_ok_policy_strict(m: MHRecord, x_len: int)
+    ensures
+        mp_image_size_ok_policy(m, x_len, crate::dib::strict_policy())
+            == mp_image_size_ok(m, x_len),
+{
+    reveal(mp_image_size_ok_policy);
+    reveal(mp_image_size_ok);
+    reveal(crate::dib::strict_policy);
+    lemma_image_size_ok_policy_strict(
+        m.declared_image,
+        x_len,
+        if is_ico(m.mode) {
+            and_bytes(m.width, m.height)
+        } else {
+            0
+        },
+        is_ico(m.mode),
+    );
+}
+
+/// `mp_mask_phase_policy` at `Strict` is `mp_mask_phase`.
+pub proof fn lemma_mp_mask_phase_policy_strict(
+    b: Seq<u8>, m: MHRecord, pos: int, x_len: int, out: Seq<u8>,
+)
+    ensures
+        mp_mask_phase_policy(b, m, pos, x_len, out, crate::dib::strict_policy())
+            == mp_mask_phase(b, m, pos, x_len, out),
+{
+    reveal(mp_mask_phase_policy);
+    reveal(mp_mask_phase);
+    reveal(crate::dib::strict_policy);
+    lemma_mp_image_size_ok_policy_strict(m, x_len);
+}
+
+/// `mp_raw_policy` at `Strict` is `mp_raw`.
+pub proof fn lemma_mp_raw_policy_strict(b: Seq<u8>, m: MHRecord)
+    ensures
+        mp_raw_policy(b, m, crate::dib::strict_policy()) == mp_raw(b, m),
+{
+    reveal(mp_raw_policy);
+    reveal(mp_raw);
+    reveal(crate::dib::strict_policy);
+    match mr_raw_out(b, m, m.pixel_start) {
+        Ok((pc, out)) => {
+            lemma_mp_mask_phase_policy_strict(b, m, pc, pc - m.pixel_start, out);
+        },
+        Err(_) => {},
+    }
+}
+
+/// `mp_rle_policy` at `Strict` is `mp_rle`.
+pub proof fn lemma_mp_rle_policy_strict(b: Seq<u8>, m: MHRecord)
+    ensures
+        mp_rle_policy(b, m, crate::dib::strict_policy()) == mp_rle(b, m),
+{
+    reveal(mp_rle_policy);
+    reveal(mp_rle);
+    reveal(crate::dib::strict_policy);
+    match mr_out(b, m, m.pixel_start, 0, 0) {
+        Ok((pc, out)) => {
+            lemma_mp_mask_phase_policy_strict(b, m, pc, pc - m.pixel_start, out);
+        },
+        Err(_) => {},
+    }
+}
+
+/// The spec-level Strict bridge: for every byte sequence and both BMP modes,
+/// `MP_policy(·, Strict)` is `MP(·, mode)` — equal first errors, equal
+/// dimensions and equal RGBA bytes. Using the two `MP`s' own functions, as the
+/// delta specifies, rather than proving an equality between independently
+/// written decoders.
+pub proof fn lemma_mp_policy_strict(b: Seq<u8>, bm: BmpMode)
+    ensures
+        mp_policy(b, bm, crate::dib::strict_policy()) == mp(b, crate::dib::bmp_mode_to_mode(bm)),
+{
+    reveal(mp_policy);
+    reveal(mp);
+    reveal(mp_decoded);
+    reveal(mh_policy);
+    reveal(mh);
+    reveal(crate::dib::strict_policy);
+    lemma_mh_policy_strict(b, bm);
+    match mh_policy(b, bm, crate::dib::strict_policy()) {
+        Ok(m) => {
+            lemma_mp_raw_policy_strict(b, m);
+            lemma_mp_rle_policy_strict(b, m);
+        },
+        Err(_) => {},
+    }
+}
+
+// --- P1 · the lemmas the profiled executable entry point discharges against.
+// `MH_policy`/`MP_policy` reuse `MH`/`MP`'s own records and transitions, so the
+// bridge to the strict model is a case on which option value changed.
+
+/// T9 (phase bridge, raw path, success): the `Header`-level policy phase result
+/// assembles `MP_policy`'s exact `Ok`, given the model's own header and the
+/// caller's palette bound.
+pub proof fn lemma_mp_policy_raw_ok(
+    b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRecord, pos: int, out0: Seq<u8>, out1: Seq<u8>,
+)
+    requires
+        mh_policy(b, bm, p) == Ok(m),
+        m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        m.compression == 0 || m.compression == 3,
+        mr_raw_out(b, m, m.pixel_start) == Ok((pos, out0)),
+        mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p)
+            == Ok((pos, out1)),
+    ensures
+        mp_policy(b, bm, p) == Ok((m.width, m.height, out1)),
+{
+    lemma_mp_policy_raw_assemble(b, bm, p, m, pos, out0, out1, pos);
+}
+
+/// Any `MH_policy` error is the exact `MP_policy` error.
+pub proof fn lemma_mp_policy_mh_err(b: Seq<u8>, bm: BmpMode, p: Policy, e: Error)
+    requires
+        mh_policy(b, bm, p) == Err(e),
+    ensures
+        mp_policy(b, bm, p) == Err(e),
+{
+    reveal(mp_policy);
+}
+
+/// T9/T10 (raw path, error): the raw transition's exact first error is
+/// `MP_policy`'s.
+pub proof fn lemma_mp_policy_raw_err(b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRecord, e: Error)
+    requires
+        mh_policy(b, bm, p) == Ok(m),
+        m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        m.compression == 0 || m.compression == 3,
+        mr_raw_out(b, m, m.pixel_start) is Err,
+        (mr_raw_out(b, m, m.pixel_start)->Err_0).0 == RawErr::Api(e),
+    ensures
+        mp_policy(b, bm, p) == Err(e),
+{
+    reveal(mp_policy);
+    reveal(mp_raw_policy);
+    reveal(mp_decoded);
+    assert(mp_raw_policy(b, m, p) == Err(MpErr::Api(e)));
+    assert(mp_decoded(m, mp_raw_policy(b, m, p)) == Err(e));
+}
+
+/// T9/T10 (RLE path, error): the RLE transition's exact first error is
+/// `MP_policy`'s.
+pub proof fn lemma_mp_policy_rle_err(b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRecord, e: Error)
+    requires
+        mh_policy(b, bm, p) == Ok(m),
+        m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        m.compression == 1 || m.compression == 2,
+        mr_out(b, m, m.pixel_start, 0, 0) is Err,
+        (mr_out(b, m, m.pixel_start, 0, 0)->Err_0).0 == RleErr::Api(e),
+    ensures
+        mp_policy(b, bm, p) == Err(e),
+{
+    reveal(mp_policy);
+    reveal(mp_rle_policy);
+    reveal(mp_decoded);
+    assert(mp_rle_policy(b, m, p) == Err(MpErr::Api(e)));
+    assert(mp_decoded(m, mp_rle_policy(b, m, p)) == Err(e));
+}
+
+/// T9/T10 (mask path, error, raw dispatch): the policy mask phase's exact error
+/// is `MP_policy`'s.
+pub proof fn lemma_mp_policy_phase_err_raw(
+    b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRecord, pos: int, out0: Seq<u8>, e: Error,
+)
+    requires
+        mh_policy(b, bm, p) == Ok(m),
+        m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        m.compression == 0 || m.compression == 3,
+        mr_raw_out(b, m, m.pixel_start) == Ok((pos, out0)),
+        mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p) == Err(MpErr::Api(e)),
+    ensures
+        mp_policy(b, bm, p) == Err(e),
+{
+    reveal(mp_policy);
+    reveal(mp_raw_policy);
+    reveal(mp_decoded);
+    assert(mp_raw_policy(b, m, p) == Err(MpErr::Api(e)));
+}
+
+/// T9/T10 (mask path, error, RLE dispatch): the same for the RLE path.
+pub proof fn lemma_mp_policy_phase_err_rle(
+    b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRecord, pos: int, out0: Seq<u8>, e: Error,
+)
+    requires
+        mh_policy(b, bm, p) == Ok(m),
+        m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        m.compression == 1 || m.compression == 2,
+        mr_out(b, m, m.pixel_start, 0, 0) == Ok((pos, out0)),
+        mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p) == Err(MpErr::Api(e)),
+    ensures
+        mp_policy(b, bm, p) == Err(e),
+{
+    reveal(mp_policy);
+    reveal(mp_rle_policy);
+    reveal(mp_decoded);
+    assert(mp_rle_policy(b, m, p) == Err(MpErr::Api(e)));
+}
+
+/// T9 (raw path, success): the raw transition and the policy mask phase
+/// assemble `MP_policy`'s exact `Ok`. The palette bound is supplied by the
+/// caller (the executable's own header invariant).
+pub proof fn lemma_mp_policy_raw_assemble(
+    b: Seq<u8>,
+    bm: BmpMode,
+    p: Policy,
+    m: MHRecord,
+    pos: int,
+    out0: Seq<u8>,
+    out1: Seq<u8>,
+    end: int,
+)
+    requires
+        mh_policy(b, bm, p) == Ok(m),
+        m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        m.compression == 0 || m.compression == 3,
+        mr_raw_out(b, m, m.pixel_start) == Ok((pos, out0)),
+        mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p) == Ok((end, out1)),
+    ensures
+        mp_policy(b, bm, p) == Ok((m.width, m.height, out1)),
+{
+    reveal(mp_policy);
+    reveal(mp_raw_policy);
+    reveal(mp_decoded);
+    assert(mp_raw_policy(b, m, p) == Ok((out1, end)));
+    assert(mp_decoded(m, mp_raw_policy(b, m, p)) == Ok((m.width, m.height, out1)));
+}
+
+/// T9 (RLE path, success): the same for the RLE path.
+pub proof fn lemma_mp_policy_rle_assemble(
+    b: Seq<u8>,
+    bm: BmpMode,
+    p: Policy,
+    m: MHRecord,
+    pos: int,
+    out0: Seq<u8>,
+    out1: Seq<u8>,
+    end: int,
+)
+    requires
+        mh_policy(b, bm, p) == Ok(m),
+        m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        m.compression == 1 || m.compression == 2,
+        mr_out(b, m, m.pixel_start, 0, 0) == Ok((pos, out0)),
+        mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p) == Ok((end, out1)),
+    ensures
+        mp_policy(b, bm, p) == Ok((m.width, m.height, out1)),
+{
+    reveal(mp_policy);
+    reveal(mp_rle_policy);
+    reveal(mp_decoded);
+    assert(mp_rle_policy(b, m, p) == Ok((out1, end)));
+    assert(mp_decoded(m, mp_rle_policy(b, m, p)) == Ok((m.width, m.height, out1)));
+}
+
+/// T13/T9 for the profiled model: an `Ok` `MP_policy` result has the exact
+/// `4*w*h` output length and the visibility bounds. The record is `MH_policy`'s,
+/// whose bounds are `MH`'s (`lemma_mh_ok_bounds` applies to `MH_policy` too
+/// because the two share the R2–R7 chain — proved here by transferring the
+/// record's geometry rather than re-deriving it).
+pub proof fn lemma_mp_policy_ok_shape(b: Seq<u8>, bm: BmpMode, p: Policy, w: int, h: int, s: Seq<u8>)
+    requires
+        mp_policy(b, bm, p) == Ok((w, h, s)),
+    ensures
+        1 <= w <= max_dimension(),
+        1 <= h <= max_dimension(),
+        s.len() == 4 * (w * h),
+        4 * (w * h) <= max_output(),
+{
+    reveal(mp_policy);
+    let m = choose|m: MHRecord| mh_policy(b, bm, p) == Ok(m);
+    assert(mh_policy(b, bm, p) is Ok);
+    assert(m.width == w);
+    assert(m.height == h);
+    lemma_mh_policy_bounds(b, bm, p, m);
+    assert(m.n == w * h);
+    assert(4 * (w * h) <= max_output());
+    assert(1 <= w <= max_dimension());
+    assert(1 <= h <= max_dimension());
+    reveal(mp_decoded);
+    reveal(mp_raw_policy);
+    reveal(mp_rle_policy);
+    reveal(mp_mask_phase_policy);
+    if m.compression == 0 || m.compression == 3 {
+        assert(mp_decoded(m, mp_raw_policy(b, m, p)) == Ok((w, h, s)));
+        match mp_raw_policy(b, m, p) {
+            Ok((out, _end)) => {
+                assert(s == out);
+                match mr_raw_out(b, m, m.pixel_start) {
+                    Ok((pc, out0)) => {
+                        lemma_mr_raw_out_len(b, m, m.pixel_start, pc, out0);
+                        assert(out0.len() == 4 * m.n);
+                        match mp_mask_phase_policy(b, m, pc, pc - m.pixel_start, out0, p) {
+                            Ok((_e2, out2)) => {
+                                assert(out == out2);
+                                lemma_mp_mask_phase_policy_len(
+                                    b, m, pc, pc - m.pixel_start, out0, p, _e2, out2,
+                                );
+                                assert(s.len() == out0.len());
+                            },
+                            Err(_) => {},
+                        }
+                    },
+                    Err(_) => {},
+                }
+            },
+            Err(_) => {},
+        }
+    } else {
+        assert(mp_decoded(m, mp_rle_policy(b, m, p)) == Ok((w, h, s)));
+        match mp_rle_policy(b, m, p) {
+            Ok((out, _end)) => {
+                assert(s == out);
+                match mr_out(b, m, m.pixel_start, 0, 0) {
+                    Ok((pc, out0)) => {
+                        lemma_mr_out_len(b, m, m.pixel_start, pc, out0);
+                        assert(out0.len() == 4 * m.n);
+                        match mp_mask_phase_policy(b, m, pc, pc - m.pixel_start, out0, p) {
+                            Ok((_e2, out2)) => {
+                                assert(out == out2);
+                                lemma_mp_mask_phase_policy_len(
+                                    b, m, pc, pc - m.pixel_start, out0, p, _e2, out2,
+                                );
+                                assert(s.len() == out0.len());
+                            },
+                            Err(_) => {},
+                        }
+                    },
+                    Err(_) => {},
+                }
+            },
+            Err(_) => {},
+        }
+    }
+    assert(s.len() == 4 * (w * h));
+}
+
+/// The `Ok` output of the policy mask phase keeps the XOR plane's length:
+/// the two BMP modes return it unchanged.
+pub proof fn lemma_mp_mask_phase_policy_len(
+    b: Seq<u8>, m: MHRecord, pos: int, x_len: int, out: Seq<u8>, p: Policy, end: int, out2: Seq<u8>,
+)
+    requires
+        mp_mask_phase_policy(b, m, pos, x_len, out, p) == Ok((end, out2)),
+    ensures
+        out2.len() == out.len(),
+{
+    reveal(mp_mask_phase_policy);
+}
+
+/// The visibility and output caps hold for every `MH_policy` success: the
+/// guard chain's width/height rules and the output cap, read off the record's
+/// construction the same way `lemma_mh_ok_bounds` reads `MH`'s. The policy
+/// prefix is unfolded in place of `r1_prefix`; the R2–R7 chain is shared.
+pub proof fn lemma_mh_policy_bounds(b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRecord)
+    requires
+        mh_policy(b, bm, p) == Ok(m),
+    ensures
+        mh_bounds(m),
+{
+    reveal(mh_policy);
+    reveal(r2r7);
+    reveal(r1_prefix_policy);
+    reveal(crate::dib::bmp_mode_to_mode);
+    reveal(mh_bounds);
+    reveal(visible_height_of);
+    reveal(stride_of);
+    reveal(pow2);
+    reveal(abs_int);
+    reveal(depth_ok);
+    reveal(hsize_ok);
+    reveal(within_bits);
+    reveal(contiguous);
+    reveal(low_of);
+    reveal(masks_ok);
+    assert(m.stride == 0 || m.stride == stride_of(m.width, m.depth));
+    if m.stride != 0 {
+        lemma_stride_bound(m.width, m.depth);
+    }
+    assert(1 <= m.width <= max_dimension());
+    assert(1 <= m.height <= max_dimension());
+    assert(m.n == m.width * m.height);
+    assert(1 <= m.n) by (nonlinear_arith)
+        requires
+            m.n == m.width * m.height,
+            1 <= m.width,
+            1 <= m.height,
+    ;
+    assert(4 * m.n <= max_output());
+    assert(m.n <= 16777216) by (nonlinear_arith)
+        requires
+            m.n == m.width * m.height,
+            1 <= m.width,
+            1 <= m.height,
+            4 * m.n <= max_output(),
+    ;
+    assert(0 <= m.stride <= 32768);
 }
 
 } // verus!
