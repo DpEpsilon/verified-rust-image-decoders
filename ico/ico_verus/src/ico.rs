@@ -1,18 +1,18 @@
-//! Verified implementation of ICO-CORE-SPEC 1.0, milestone M2.
+//! Verified implementation of ICO-CORE-SPEC 1.0, milestone M3.
 //!
-//! Everything here is inside `verus!`: the M1 plain implementation now carries
+//! Everything here is inside `verus!`: the M1 plain implementation carries
 //! contracts and proofs. `src/ico.rs.m1` preserves the M1 plain file, and
 //! `tests/conformance.rs` still runs all 217 frozen vectors. The reference model
-//! `MC`/`ME`/`H` lives in `crate::model`, written from the spec text and
+//! `MC`/`ME`/`H`/`MD` lives in `crate::model`, written from the spec text and
 //! independent of this code.
 //!
-//! Proved here: T1 (safety of `parse` and of the ICO side of `decode_entry`),
-//! T2 (`parse` equals `MC` as the complete `Result`), T3 (record validity),
-//! T4 (signature classification) and T7 (arithmetic and output bounds). The DIB
-//! composition — T5, T6, T8, `MD` and the exact `decode_entry` result — is M3;
-//! `decode_entry` here proves its ICO-side decision (`model::decode_pre`), which
-//! fixes every ICO-controlled outcome and the DIB-result *shape* but not yet the
-//! DIB bytes.
+//! Proved across the milestones: T1 (safety of `parse` and of the ICO side of
+//! `decode_entry`), T2 (`parse` equals `MC` as the complete `Result`), T3 (record
+//! validity), T4 (signature classification), T5 (exact total `decode_entry`,
+//! including the composition with the DIB 1.1 model on the validated declared
+//! slice through the public `decode_with_steps` contract), T6 (exact precedence)
+//! and T7 (arithmetic and output bounds). T8 (termination) is stated by the model
+//! variance lemmas. T9/T10/T11 are M4a.
 //!
 //! Rules followed throughout:
 //!
@@ -24,7 +24,8 @@
 //! - No `unsafe`, no `unwrap`, `expect`, `panic!`, `unreachable!`, `todo!` or
 //!   `unwrap_or` path is reachable from any input.
 //! - `parse` makes at most one entry-list reservation; `decode_entry` allocates
-//!   nothing of its own and calls the DIB core at most once.
+//!   nothing of its own and calls the DIB core at most once, through
+//!   `decode_with_steps` on exactly the validated `[start, end)` slice.
 
 use dib_verus::{Decoded, Error as DibError, Mode};
 use vstd::prelude::*;
@@ -866,24 +867,29 @@ fn record_eq(a: &Entry, b: &Entry) -> (r: bool)
 }
 
 /// R1/R8: total for every byte slice, every typed `Entry` slice and every `u32`
-/// index. The postcondition is the ICO side of R8 exactly — the R2/R3 guards,
-/// the index check before the list check, the selected-record mismatch, the
-/// selected defect and PNG delegation in R10 order (`model::md_ico`) — and, on
-/// the selected DIB path, the DIB core's own public contract applied to the exact
-/// declared slice. The model `MD` and the theorem T5 that names it are M3.
+/// index. T5: the postcondition is `model::md_eq` — the complete `Result` equals
+/// the total model `MD(b,E,i)`, including header/guard errors,
+/// `IndexOutOfRange`, the forged-record `InvalidEntryRecord` check, the selected
+/// entry defect, `PngDelegation`, and for a selected valid DIB entry the
+/// **composition**: the result equals the DIB model on the validated declared
+/// slice `[start, end)`, obtained from the DIB core's public `decode_with_steps`
+/// on exactly that slice and wrapped as R9's typed `Dib(e)`, with the `Decoded`
+/// passed through unchanged.
 pub fn decode_entry(bytes: &[u8], entries: &[Entry], index: u32) -> (r: Result<Decoded, Error>)
     ensures
-        crate::model::decode_pre(bytes@, entries@, index, r),
+        crate::model::md_eq(bytes@, entries@, index, r),
 {
     // R8: the R2/R3 guards first, without allocating an entry list.
     let header = match directory_guard(bytes) {
         Ok(h) => h,
         Err(e) => {
             proof {
-                reveal(crate::model::decode_pre);
                 reveal(crate::model::md_ico);
+                reveal(crate::model::md);
                 assert(crate::model::md_ico(bytes@, entries@, index)
                     == crate::model::IcoDecision::DirErr(e));
+                assert(crate::model::md(bytes@, entries@, index) == Err(e));
+                crate::model::lemma_md_eq_err(bytes@, entries@, index, e);
             }
             return Err(e);
         },
@@ -902,12 +908,14 @@ pub fn decode_entry(bytes: &[u8], entries: &[Entry], index: u32) -> (r: Result<D
     // R8/R10: index before list length, and the index is kept `u32`-wide.
     if index >= header.count as u32 {
         proof {
-            reveal(crate::model::decode_pre);
             reveal(crate::model::md_ico);
+            reveal(crate::model::md);
             assert(index as int >= hr.count);
             assert(header.count as u32 == hr.count);
             assert(crate::model::md_ico(bytes@, entries@, index)
                 == crate::model::IcoDecision::IndexOOR);
+            assert(crate::model::md(bytes@, entries@, index) == Err(Error::IndexOutOfRange));
+            crate::model::lemma_md_eq_err(bytes@, entries@, index, Error::IndexOutOfRange);
         }
         return Err(Error::IndexOutOfRange);
     }
@@ -917,12 +925,14 @@ pub fn decode_entry(bytes: &[u8], entries: &[Entry], index: u32) -> (r: Result<D
     }
     if entries.len() != header.count {
         proof {
-            reveal(crate::model::decode_pre);
             reveal(crate::model::md_ico);
+            reveal(crate::model::md);
             assert((index as int) < hr.count);
             assert(entries@.len() != hr.count);
             assert(crate::model::md_ico(bytes@, entries@, index)
                 == crate::model::IcoDecision::BadList);
+            assert(crate::model::md(bytes@, entries@, index) == Err(Error::InvalidEntryRecord));
+            crate::model::lemma_md_eq_err(bytes@, entries@, index, Error::InvalidEntryRecord);
         }
         return Err(Error::InvalidEntryRecord);
     }
@@ -948,8 +958,8 @@ pub fn decode_entry(bytes: &[u8], entries: &[Entry], index: u32) -> (r: Result<D
     let record_matches = record_eq(&selected, &reconstructed);
     if !record_matches {
         proof {
-            reveal(crate::model::decode_pre);
             reveal(crate::model::md_ico);
+            reveal(crate::model::md);
             assert((index as int) < hr.count);
             assert(entries@.len() == hr.count);
             assert(selected == entries@[index as int]);
@@ -978,6 +988,8 @@ pub fn decode_entry(bytes: &[u8], entries: &[Entry], index: u32) -> (r: Result<D
             }
             assert(crate::model::md_ico(bytes@, entries@, index)
                 == crate::model::IcoDecision::BadList);
+            assert(crate::model::md(bytes@, entries@, index) == Err(Error::InvalidEntryRecord));
+            crate::model::lemma_md_eq_err(bytes@, entries@, index, Error::InvalidEntryRecord);
         }
         return Err(Error::InvalidEntryRecord);
     }
@@ -988,7 +1000,6 @@ pub fn decode_entry(bytes: &[u8], entries: &[Entry], index: u32) -> (r: Result<D
         assert(selected == crate::model::me(bytes@, hr, index as int));
         assert(selected == entries@[index as int]);
         assert(entries@[index as int] == crate::model::me(bytes@, hr, index as int));
-        reveal(crate::model::decode_pre);
         reveal(crate::model::md_ico);
         assert((index as int) < hr.count);
         assert(entries@.len() == hr.count);
@@ -998,36 +1009,67 @@ pub fn decode_entry(bytes: &[u8], entries: &[Entry], index: u32) -> (r: Result<D
         EntryStatus::Invalid(defect) => {
             proof {
                 reveal(crate::model::error_of_defect);
+                reveal(crate::model::md_ico);
+                reveal(crate::model::md);
                 assert(selected.status == crate::model::me(bytes@, hr, index as int).status);
                 assert(crate::model::md_ico(bytes@, entries@, index)
                     == crate::model::IcoDecision::Defect(defect));
+                assert(crate::model::md(bytes@, entries@, index)
+                    == Err(crate::model::error_of_defect(defect)));
+                crate::model::lemma_md_eq_err(
+                    bytes@,
+                    entries@,
+                    index,
+                    crate::model::error_of_defect(defect),
+                );
             }
             Err(defect_to_error(defect))
         },
         EntryStatus::Valid { kind: EntryKind::Png, .. } => {
             proof {
+                reveal(crate::model::md_ico);
+                reveal(crate::model::md);
                 assert(selected.status == crate::model::me(bytes@, hr, index as int).status);
                 assert(crate::model::md_ico(bytes@, entries@, index)
                     == crate::model::IcoDecision::Png);
+                assert(crate::model::md(bytes@, entries@, index) == Err(Error::PngDelegation));
+                crate::model::lemma_md_eq_err(bytes@, entries@, index, Error::PngDelegation);
             }
             Err(Error::PngDelegation)
         },
         EntryStatus::Valid { kind: EntryKind::Dib, payload } => {
-            // R8: exactly `s = &bytes[start..end)`, called once. The range was
-            // checked by `reconstruct` for this very `bytes`.
+            // R8: exactly `s = &bytes[start..end)`, called once through the DIB
+            // 1.1 public tracked `decode_with_steps`. The range was checked by
+            // `reconstruct` for this very `bytes`.
             let start = payload[0] as usize;
             let end = payload[1] as usize;
             proof {
                 assert(selected.status == crate::model::me(bytes@, hr, index as int).status);
                 crate::model::lemma_valid_payload_in_bounds(bytes@, hr, index as int);
                 assert(start <= end <= bytes@.len());
+                reveal(crate::model::md_ico);
                 assert(crate::model::md_ico(bytes@, entries@, index)
                     == crate::model::IcoDecision::DibSlice(payload[0] as int, payload[1] as int));
             }
             match bytes.get(start..end) {
-                Some(slice) => match dib_verus::decode(slice, Mode::IcoEntryDibSlack) {
-                    Ok(d) => Ok(d),
-                    Err(e) => Err(Error::Dib(e)),
+                Some(slice) => {
+                    let (r0, _steps) = dib_verus::decode_with_steps(slice, Mode::IcoEntryDibSlack);
+                    proof {
+                        assert(slice@ == bytes@.subrange(start as int, end as int));
+                        crate::model::lemma_md_eq_dib(
+                            bytes@,
+                            entries@,
+                            index,
+                            r0,
+                            start as int,
+                            end as int,
+                            slice@,
+                        );
+                    }
+                    match r0 {
+                        Ok(d) => Ok(d),
+                        Err(e) => Err(Error::Dib(e)),
+                    }
                 },
                 None => {
                     proof {
@@ -1157,12 +1199,24 @@ pub proof fn t4_signature_classification(b: Seq<u8>, v: Vec<Entry>)
     crate::model::lemma_parse_ok_classified(b, v@);
 }
 
-/// T1 (safety of the ICO side of `decode_entry`): the whole ICO-controlled result
-/// is fixed by R8/R10 order, and on the selected-DIB branch the result is a DIB
-/// success or a DIB error and nothing else. (The DIB bytes themselves are M3.)
+/// T5 (exact total decode): the complete statement on the public call. For every
+/// representable byte slice, every typed `Entry` slice and every `u32` index,
+/// `decode_entry` equals the total model `MD` as the whole `Result`, including
+/// the composition with the DIB model on the validated declared slice.
+pub fn t5_decode_exact(b: &[u8], es: &[Entry], index: u32) -> (r: Result<Decoded, Error>)
+    ensures
+        crate::model::md_eq(b@, es@, index, r),
+{
+    decode_entry(b, es, index)
+}
+
+/// T1 (safety of the ICO side of `decode_entry`), discharged from the stronger
+/// public postcondition `md_eq`: the whole ICO-controlled result is fixed by
+/// R8/R10 order, and on the selected-DIB branch the result is a DIB success or a
+/// DIB error and nothing else. (The exact DIB bytes and errors are T5's.)
 pub proof fn t1_decode_ico(b: Seq<u8>, es: Seq<Entry>, index: u32, r: Result<Decoded, Error>)
     requires
-        crate::model::decode_pre(b, es, index, r),
+        crate::model::md_eq(b, es, index, r),
     ensures
         match crate::model::md_ico(b, es, index) {
             crate::model::IcoDecision::DirErr(e) => r == Err(e),
@@ -1177,7 +1231,150 @@ pub proof fn t1_decode_ico(b: Seq<u8>, es: Seq<Entry>, index: u32, r: Result<Dec
             },
         },
 {
+    crate::model::lemma_md_eq_implies_decode_pre(b, es, index, r);
     reveal(crate::model::decode_pre);
+}
+
+/// T6 (exact precedence) on the public call: `decode_entry` revalidates only the
+/// selected record, so an unselected bogus supplied record cannot change the
+/// result; on the parse side record defects are statuses, not errors. Stated as
+/// the `MD`'s ordering lemmas composed (see `model::lemma_t6_*`).
+pub proof fn t6_precedence(
+    b: Seq<u8>,
+    es1: Seq<Entry>,
+    es2: Seq<Entry>,
+    index: u32,
+    r: Result<Decoded, Error>,
+)
+    requires
+        crate::model::md_eq(b, es1, index, r),
+        es1.len() == es2.len(),
+        (index as int) < es1.len() ==> es1[index as int] == es2[index as int],
+    ensures
+        // decode checks only entries.len() and entries[index]: the same decision
+        crate::model::md_ico(b, es1, index) == crate::model::md_ico(b, es2, index),
+        // and the same model result, so a bogus unselected element is ignored
+        crate::model::md(b, es1, index) == crate::model::md(b, es2, index),
+{
+    crate::model::lemma_t6_decode_reads_only_selected(b, es1, es2, index);
+    reveal(crate::model::md);
+}
+
+/// T6 (exact precedence): the full priority chain, stated on the public result
+/// `r` of `decode_entry` for every `b`, `es` and `u32` index. R2/R3 first on both
+/// calls; then decode's index check before the list check; the list/selected
+/// mismatch before the selected defect; the selected defect before PNG/DIB; PNG
+/// before any DIB error; the selected DIB's own R14 priority is delegated
+/// unchanged. The predicate `model::t6_full_prec` names that chain; the proof
+/// composes the `model::lemma_t6_*` facts through the public `md_eq`.
+pub proof fn t6_precedence_full(b: Seq<u8>, es: Seq<Entry>, index: u32, r: Result<Decoded, Error>)
+    requires
+        crate::model::md_eq(b, es, index, r),
+    ensures
+        crate::model::t6_full_prec(b, es, index, r),
+{
+    crate::model::lemma_t6_full_prec(b, es, index, r);
+}
+
+/// T6 (exact precedence): the R2/R3 directory error has priority on **both**
+/// public calls. On `parse` a directory-wide error is the whole result; on
+/// `decode_entry` it precedes the index, list, record and defect checks. Stated
+/// on the two public entry points.
+pub fn t6_parse_directory_priority(b: &[u8]) -> (r: Result<Vec<Entry>, Error>)
+    ensures
+        crate::model::parse_eq(b@, r),
+        match crate::model::h(b@) {
+            Err(e) => r == Err(e),
+            Ok(_) => true,
+        },
+{
+    let r = parse(b);
+    proof {
+        match crate::model::h(b@) {
+            Err(e) => {
+                crate::model::lemma_mc_err(b@, e);
+                crate::model::lemma_parse_eq_err(b@, e);
+            },
+            Ok(_) => {},
+        }
+    }
+    r
+}
+
+/// T6 (exact precedence): on `decode_entry` the directory guard precedes every
+/// subsequent check, and the index check precedes the list-length check. These
+/// are the `md_ico`/`md` orderings, restated for the public call.
+pub fn t6_decode_ordering(b: &[u8], es: &[Entry], index: u32) -> (r: Result<Decoded, Error>)
+    ensures
+        crate::model::md_eq(b@, es@, index, r),
+        match crate::model::h(b@) {
+            Err(e) => r == Err(e),
+            Ok(hr) => {
+                if hr.count <= index as int {
+                    r == Err(Error::IndexOutOfRange)
+                } else {
+                    true
+                }
+            },
+        },
+{
+    let r = decode_entry(b, es, index);
+    proof {
+        match crate::model::h(b@) {
+            Err(e) => {
+                crate::model::lemma_t6_directory_priority(b@, es@, index, e);
+            },
+            Ok(hr) => {
+                if hr.count <= index as int {
+                    reveal(crate::model::md_eq);
+                    reveal(crate::model::md);
+                    crate::model::lemma_t6_index_before_list(b@, hr, es@, index);
+                }
+            },
+        }
+    }
+    r
+}
+
+/// T8 (termination): the parse variant `count - i` strictly decreases for each
+/// complete record, valid or invalid; the eight-byte signature comparison's
+/// variant `8 - k` is bounded and strictly decreases; the decode wrapper has no
+/// loop of its own and revalidates exactly one record, then calls the terminating
+/// DIB 1.1 decoder once. Stated at the manifest's quantification for `count`,
+/// `i` and `k`.
+pub proof fn t8_termination(count: int, i: int, k: int)
+    requires
+        0 <= i < count,
+        0 <= k <= 8,
+    ensures
+        count - (i + 1) < count - i,
+        0 < count - i,
+        8 - (k + 1) < 8 - k,
+        0 <= 8 - k,
+{
+}
+
+/// T7 (the clause M2 deferred): a successful `decode_entry` returns a `Decoded`
+/// obeying the DIB dependency's own `4*w*h <= 67,108,864` output contract (and
+/// `1 <= w,h <= 8,192`), discharged from the public `md_eq` postcondition.
+pub fn t7_dib_output_bound(b: &[u8], es: &[Entry], index: u32) -> (r: Result<Decoded, Error>)
+    ensures
+        crate::model::md_eq(b@, es@, index, r),
+        match r {
+            Ok(d) => {
+                &&& 1 <= d.width as int <= dib_verus::model::max_dimension()
+                &&& 1 <= d.height as int <= dib_verus::model::max_dimension()
+                &&& d.rgba@.len() == 4 * (d.width as int * d.height as int)
+                &&& d.rgba@.len() <= dib_verus::model::max_output()
+            },
+            Err(_) => true,
+        },
+{
+    let r = decode_entry(b, es, index);
+    proof {
+        crate::model::lemma_t7_dib_output_bound(b@, es@, index, r);
+    }
+    r
 }
 
 /// T1 (safety) also states that a forged range, kind, list length or index

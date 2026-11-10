@@ -52,3 +52,41 @@ returns `Entry` and `parse` has no unreachable arm.
 
 Clean full reverify: `verification results:: 79 verified, 0 errors` (after
 `rm -rf ico_verus/target`). See `PROOF-REPORT-M2.md`.
+
+## M3 (T5, T6, T8)
+
+`ico_verus/src/model.rs` gains the total decode model `MD(b,E,i)` (R8/R11: the
+ICO-controlled `md_ico` plus, on the selected valid DIB branch,
+`dib_verus::model::mp(b.subrange(start,end), IcoEntryDibSlack)` mapped to
+`Ok(dib_wrap)`/`Err`), the exact statement `md_eq`, the composition discharger
+`lemma_md_eq_dib`, the T6 precedence predicates/lemmas and the T8/T7 lemmas.
+
+`decode_entry`'s postcondition is now `model::md_eq`: exact for header/guard
+errors, `IndexOutOfRange`, the forged-record `InvalidEntryRecord` check, the
+entry defects, `PngDelegation`, and the composition with the DIB model on the
+validated declared slice. The selected-DIB branch slices exactly
+`[payload[0], payload[1])`, proves `slice@ == bytes@.subrange(start,end)`, calls
+
+    let (r0, _steps) = dib_verus::decode_with_steps(slice, Mode::IcoEntryDibSlack);
+
+once, and discharges `md_eq` from the returned `decode_mp_eq`. This is the DIB
+1.1 public tracked call M4a's bound needs, called now so M4a leaves the executable
+alone; `_steps` (a `Ghost<nat>`) is discarded and erases, so behaviour is
+byte-identical.
+
+Proved: T5 (exact total `decode_entry` incl. the composition), T6 (exact
+precedence on both public calls; decode reads only `entries.len()` and
+`entries[index]`), T8 (variants and the count-cap-returns-before-loop fact), plus
+the T7 clause M2 deferred (`4*w*h <= 67,108,864` on a DIB success). Witnesses:
+`t5_decode_exact`, `t6_precedence`, `t6_precedence_full`,
+`t6_parse_directory_priority`, `t6_decode_ordering`, `t7_dib_output_bound`,
+`t8_termination`; `t1_decode_ico` now discharges from `md_eq` via
+`lemma_md_eq_implies_decode_pre`.
+
+Three clean sensitivity kills (disposable copies): skip the selected-record
+comparison, skip the list-length check, and pass `bytes[start..]` instead of the
+declared slice. See `PROOF-REPORT-M3.md`.
+
+Clean full reverify: `verification results:: 101 verified, 0 errors` (after
+`cargo clean`). Executable behaviour byte-identical (`cargo test --release` →
+`conformance: 217/217 vectors passed`).

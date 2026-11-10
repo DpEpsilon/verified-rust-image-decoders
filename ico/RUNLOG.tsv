@@ -75,3 +75,16 @@
 76	2026-11-10T08:35:24+00:00	exit=101	85s	M2 sensitivity M1: cap > to >= (T2/T7) [crate=sens]	verification results:: 78 verified, 1 errors
 77	2026-11-10T08:36:59+00:00	exit=101	87s	M2 sensitivity M13: seven-byte prefix (T4) [crate=sens]	verification results:: 77 verified, 2 errors
 78	2026-11-10T08:38:59+00:00	exit=0	90s	M2 FINAL: cargo clean + full reverify [crate=ico_verus]	verification results:: 79 verified, 0 errors
+79	2026-11-10T08:57:54+00:00	exit=0	85s	M3 step 1: MD model + md_eq postcondition + witnesses [crate=ico_verus]	verification results:: 95 verified, 0 errors
+80	2026-11-10T08:59:02+00:00	exit=0	5s	M3 step 2: T8 parse-iterates-count lemma [crate=ico_verus]	verification results:: 95 verified, 0 errors
+81	2026-11-10T08:59:51+00:00	exit=0	5s	M3 step 3: T7 DIB output bound [crate=ico_verus]	verification results:: 96 verified, 0 errors
+82	2026-11-10T09:00:18+00:00	exit=0	5s	M3 step 4: T7 witness, docs [crate=ico_verus]	verification results:: 97 verified, 0 errors
+83	2026-11-10T09:00:35+00:00	exit=0	6s	M3 step 5: T6 public-call precedence witnesses [crate=ico_verus]	verification results:: 99 verified, 0 errors
+84	2026-11-10T09:01:07+00:00	exit=101	1s	M3 step 6: T6 full precedence witness [crate=ico_verus]	
+85	2026-11-10T09:01:31+00:00	exit=101	1s	M3 step 7: T6 full precedence via model predicate [crate=ico_verus]	
+86	2026-11-10T09:01:47+00:00	exit=0	5s	M3 step 8: parens in T6 predicate [crate=ico_verus]	verification results:: 101 verified, 0 errors
+87	2026-11-10T09:03:34+00:00	exit=101	94s	M3 sensitivity M17: offset-to-EOF slice instead of declared [crate=sens17]	verification results:: 100 verified, 1 errors
+88	2026-11-10T09:05:10+00:00	exit=101	85s	M3 sensitivity M30: IcoEntryDib not Slack [crate=sens30]	verification results:: 100 verified, 1 errors
+89	2026-11-10T09:06:46+00:00	exit=101	85s	M3 sensitivity M31: skip selected-record comparison [crate=sens28]	verification results:: 100 verified, 1 errors
+90	2026-11-10T09:08:19+00:00	exit=101	86s	M3 sensitivity M-list: skip list-length check [crate=sensl]	verification results:: 100 verified, 1 errors
+91	2026-11-10T09:09:51+00:00	exit=0	85s	M3 FINAL: cargo clean + full reverify [crate=ico_verus]	verification results:: 101 verified, 0 errors

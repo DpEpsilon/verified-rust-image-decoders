@@ -1,16 +1,17 @@
-//! Formal reference model for ICO-CORE-SPEC 1.0 (milestone M2).
+//! Formal reference model for ICO-CORE-SPEC 1.0 (milestones M2/M3).
 //!
 //! This file is written *independently of the executable code*: every definition
 //! below is a transcription of the frozen specification text (`spec-frozen/SPEC.md`,
-//! R2..R7, R11) over `Seq<u8>` and mathematical integers. Nothing here calls,
+//! R2..R11) over `Seq<u8>` and mathematical integers. Nothing here calls,
 //! mirrors the control flow of, or is derived from `crate::ico`. The executable
 //! carries postconditions phrased in terms of these definitions; the definitions
 //! themselves are never justified by running the executable.
 //!
-//! M2 needs exactly the total directory model `H`, the selected-record model
-//! `ME` and the parse model `MC` of `THEOREMS.md` ("Total mathematical models"),
-//! plus the arithmetic lemmas that bound a successful directory. `MD` and the
-//! DIB composition are M3.
+//! M2 supplies the total directory model `H`, the selected-record model `ME`, the
+//! parse model `MC`, the equality model and the arithmetic lemmas. M3 adds the
+//! total decode model `MD` (R8/R11: the ICO-controlled `md_ico` plus the
+//! composition with the DIB 1.1 model `dib_verus::model::mp` on the validated
+//! declared slice), the exact statement `md_eq`, and the T5/T6/T8 lemmas.
 use vstd::prelude::*;
 #[cfg(verus_only)]
 use vstd::seq::{lemma_seq_new_index, lemma_seq_new_len, lemma_seq_push_index_different, lemma_seq_push_index_same, lemma_seq_push_len};
@@ -18,7 +19,7 @@ use vstd::seq::{lemma_seq_new_index, lemma_seq_new_len, lemma_seq_push_index_dif
 #[allow(unused_imports)]
 use crate::ico::{Entry, EntryDefect, EntryKind, EntryStatus, Error};
 #[allow(unused_imports)]
-use dib_verus::Decoded;
+use dib_verus::{Decoded, Mode};
 
 verus! {
 
@@ -893,6 +894,531 @@ pub proof fn lemma_eq_implies_entry_eq(a: Entry, b: Entry)
     reveal(opt_u16_eq);
     lemma_status_eq_of_eq(a.status, b.status);
     assert(a == b);
+}
+
+// ---------------------------------------------------------------------------
+// R11/R8: the total decode model MD, and the composition statement.
+// ---------------------------------------------------------------------------
+
+/// R8: the exact `Error` the ICO core returns when the selected DIB call fails:
+/// the DIB crate's error, wrapped as R9's typed `Dib(e)`.
+pub open spec fn dib_wrap(r: Result<Decoded, dib_verus::Error>) -> Result<Decoded, Error> {
+    match r {
+        Ok(d) => Ok(d),
+        Err(e) => Err(Error::Dib(e)),
+    }
+}
+
+/// R8/R11: `MD(b,E,i)` — R8 in R10 order, total for every typed `E` and every
+/// `u32` index. The ICO-controlled branches are `md_ico`; the selected valid DIB
+/// branch calls the **mathematical DIB 1.1** `MP_1.1(b.subrange(start,end),
+/// IcoEntryDibSlack)` and maps its exact result: a success `(w,h,rgba)` to the
+/// public `Decoded`, and every DIB error to the typed `Dib(e)`. The result is
+/// the manifest's `Result<Decoded, Error>` re-encoded as the tuple `(w,h,rgba)`
+/// on success, so the statement names every decoded dimension and RGBA byte.
+pub open spec fn md(b: Seq<u8>, es: Seq<Entry>, index: u32) -> Result<
+    (int, int, Seq<u8>),
+    Error,
+> {
+    match md_ico(b, es, index) {
+        IcoDecision::DirErr(e) => Err(e),
+        IcoDecision::IndexOOR => Err(Error::IndexOutOfRange),
+        IcoDecision::BadList => Err(Error::InvalidEntryRecord),
+        IcoDecision::Defect(d) => Err(error_of_defect(d)),
+        IcoDecision::Png => Err(Error::PngDelegation),
+        IcoDecision::DibSlice(start, end) => match dib_verus::model::mp(
+            b.subrange(start, end),
+            Mode::IcoEntryDibSlack,
+        ) {
+            Ok(t) => Ok(t),
+            Err(e) => Err(Error::Dib(e)),
+        },
+    }
+}
+
+/// T5: does the decoded image `d` equal the model tuple `t = (w,h,rgba)` field for
+/// field, including every RGBA byte? `Decoded`'s `Vec<u8>` payload is viewed as
+/// the `Seq<u8>` `d.rgba@`.
+pub open spec fn decoded_matches(d: Decoded, t: (int, int, Seq<u8>)) -> bool {
+    d.width as int == t.0 && d.height as int == t.1 && d.rgba@ == t.2
+}
+
+/// T5: the exact statement — `decode_entry(b,E,i) = MD(b,E,i)` as the complete
+/// `Result`, on every byte slice, every typed record list and every `u32` index,
+/// with the success carrying every decoded dimension and RGBA byte.
+pub open spec fn md_eq(b: Seq<u8>, es: Seq<Entry>, index: u32, r: Result<Decoded, Error>) -> bool {
+    match md(b, es, index) {
+        Ok(t) => match r {
+            Ok(d) => decoded_matches(d, t),
+            Err(_) => false,
+        },
+        Err(e) => match r {
+            Ok(_) => false,
+            Err(e2) => e2 == e,
+        },
+    }
+}
+
+/// T5 (composition): if the ICO-side decision is the selected DIB declared slice,
+/// the DIB public contract holds on that exact slice, and `r0` is the DIB call's
+/// raw result, then the wrapped result satisfies `md_eq` — the DIB model's exact
+/// `Ok(w,h,rgba)`/`Err(e)` mapped into `MD`'s type. This is the discharge of the
+/// composition statement from `decode_mp_eq`, stated on the same slice.
+pub proof fn lemma_md_eq_dib(
+    b: Seq<u8>,
+    es: Seq<Entry>,
+    index: u32,
+    r0: Result<Decoded, dib_verus::Error>,
+    start: int,
+    end: int,
+    slice: Seq<u8>,
+)
+    requires
+        md_ico(b, es, index) == IcoDecision::DibSlice(start, end),
+        slice == b.subrange(start, end),
+        dib_verus::dib::decode_mp_eq(r0, slice, Mode::IcoEntryDibSlack),
+    ensures
+        md_eq(b, es, index, dib_wrap(r0)),
+{
+    reveal(md_eq);
+    reveal(md);
+    reveal(dib_wrap);
+    reveal(dib_verus::dib::decode_mp_eq);
+    assert(md(b, es, index) == match dib_verus::model::mp(slice, Mode::IcoEntryDibSlack) {
+        Ok(t) => Ok(t),
+        Err(e) => Err(Error::Dib(e)),
+    });
+    match dib_verus::model::mp(slice, Mode::IcoEntryDibSlack) {
+        Ok(t) => {
+            match r0 {
+                Ok(d) => {
+                    assert(t == (d.width as int, d.height as int, d.rgba@));
+                    reveal(decoded_matches);
+                },
+                Err(_) => {},
+            }
+        },
+        Err(e) => {
+            match r0 {
+                Ok(_) => {},
+                Err(e2) => {
+                    assert(e2 == e);
+                },
+            }
+        },
+    }
+}
+
+/// T5: on the `Err` branch, if `MD(b,E,i) = Err(e)` then the executable's
+/// `Err(e)` satisfies `md_eq`. Used by `decode_entry` for its four ICO-controlled
+/// error branches (directory guard, index, list/record mismatch, defect, PNG).
+pub proof fn lemma_md_eq_err(b: Seq<u8>, es: Seq<Entry>, index: u32, e: Error)
+    requires
+        md(b, es, index) == Err(e),
+    ensures
+        md_eq(b, es, index, Err(e)),
+{
+    reveal(md_eq);
+}
+
+/// T6 (exact precedence): the full priority chain of R10, as a predicate on the
+/// public `decode_entry` result `r`. Naming the chain once keeps the statement in
+/// one place: R2/R3 first on both calls; then decode's index check before the
+/// list check; the list/selected mismatch before the selected defect; the
+/// selected defect before PNG/DIB; PNG before any DIB error. The selected DIB's
+/// own R14 internal precedence is delegated unchanged to the DIB call.
+pub open spec fn t6_full_prec(b: Seq<u8>, es: Seq<Entry>, index: u32, r: Result<Decoded, Error>)
+    -> bool {
+    match h(b) {
+        Err(e) => r == Err(e),
+        Ok(hr) => {
+            &&& (hr.count <= index as int ==> r == Err(Error::IndexOutOfRange))
+            &&& ((index as int) < hr.count && es.len() != hr.count ==> r == Err(
+                Error::InvalidEntryRecord,
+            ))
+            &&& ((index as int) < hr.count && es.len() == hr.count && !entry_eq(
+                es[index as int],
+                me(b, hr, index as int),
+            ) ==> r == Err(Error::InvalidEntryRecord))
+            &&& ((index as int) < hr.count && es.len() == hr.count && entry_eq(
+                es[index as int],
+                me(b, hr, index as int),
+            ) ==> match me(b, hr, index as int).status {
+                EntryStatus::Invalid(d) => r == Err(error_of_defect(d)),
+                EntryStatus::Valid { kind: EntryKind::Png, .. } => r == Err(Error::PngDelegation),
+                EntryStatus::Valid { kind: EntryKind::Dib, .. } => match r {
+                    Ok(_) => true,
+                    Err(Error::Dib(_)) => true,
+                    Err(_) => false,
+                },
+            })
+        },
+    }
+}
+
+/// T6: `md_eq` gives the full precedence chain `t6_full_prec`.
+pub proof fn lemma_t6_full_prec(b: Seq<u8>, es: Seq<Entry>, index: u32, r: Result<Decoded, Error>)
+    requires
+        md_eq(b, es, index, r),
+    ensures
+        t6_full_prec(b, es, index, r),
+{
+    reveal(md_eq);
+    reveal(md);
+    reveal(md_ico);
+    reveal(t6_full_prec);
+    match h(b) {
+        Err(e) => {
+            assert(md(b, es, index) == Err(e));
+        },
+        Ok(hr) => {
+            if hr.count <= index as int {
+                assert(md_ico(b, es, index) == IcoDecision::IndexOOR);
+                assert(md(b, es, index) == Err(Error::IndexOutOfRange));
+            } else if es.len() != hr.count {
+                assert(md_ico(b, es, index) == IcoDecision::BadList);
+                assert(md(b, es, index) == Err(Error::InvalidEntryRecord));
+            } else if !entry_eq(es[index as int], me(b, hr, index as int)) {
+                assert(md_ico(b, es, index) == IcoDecision::BadList);
+                assert(md(b, es, index) == Err(Error::InvalidEntryRecord));
+            } else {
+                match me(b, hr, index as int).status {
+                    EntryStatus::Invalid(d) => {
+                        assert(md_ico(b, es, index) == IcoDecision::Defect(d));
+                        assert(md(b, es, index) == Err(error_of_defect(d)));
+                    },
+                    EntryStatus::Valid { kind: EntryKind::Png, .. } => {
+                        assert(md_ico(b, es, index) == IcoDecision::Png);
+                        assert(md(b, es, index) == Err(Error::PngDelegation));
+                    },
+                    EntryStatus::Valid { kind: EntryKind::Dib, payload } => {
+                        assert(md_ico(b, es, index) == IcoDecision::DibSlice(
+                            payload[0] as int,
+                            payload[1] as int,
+                        ));
+                        match dib_verus::model::mp(
+                            b.subrange(payload[0] as int, payload[1] as int),
+                            Mode::IcoEntryDibSlack,
+                        ) {
+                            Ok(t) => {
+                                match r {
+                                    Ok(_) => {},
+                                    Err(_) => {},
+                                }
+                            },
+                            Err(e) => {
+                                match r {
+                                    Ok(_) => {},
+                                    Err(e2) => {
+                                        assert(e2 == Error::Dib(e));
+                                    },
+                                }
+                            },
+                        }
+                    },
+                }
+            }
+        },
+    }
+}
+
+/// T1/T5: `md_eq` implies the M2 postcondition `decode_pre` (the ICO-side
+/// decision and the DIB-result shape), so the M2 T1 witness keeps its exact
+/// hypothesis while the public postcondition is the stronger `md_eq`.
+pub proof fn lemma_md_eq_implies_decode_pre(
+    b: Seq<u8>,
+    es: Seq<Entry>,
+    index: u32,
+    r: Result<Decoded, Error>,
+)
+    requires
+        md_eq(b, es, index, r),
+    ensures
+        decode_pre(b, es, index, r),
+{
+    reveal(md_eq);
+    reveal(md);
+    reveal(decode_pre);
+    reveal(md_ico);
+    match md_ico(b, es, index) {
+        IcoDecision::DirErr(e) => {},
+        IcoDecision::IndexOOR => {},
+        IcoDecision::BadList => {},
+        IcoDecision::Defect(d) => {},
+        IcoDecision::Png => {},
+        IcoDecision::DibSlice(start, end) => {
+            match dib_verus::model::mp(b.subrange(start, end), Mode::IcoEntryDibSlack) {
+                Ok(t) => {
+                    match r {
+                        Ok(_) => {},
+                        Err(_) => {},
+                    }
+                },
+                Err(e) => {
+                    match r {
+                        Ok(_) => {},
+                        Err(e2) => {
+                            assert(e2 == Error::Dib(e));
+                        },
+                    }
+                },
+            }
+        },
+    }
+}
+
+/// T7 (the clause M2 deferred): a successful `decode_entry` obeys the DIB
+/// dependency's own output contract — the `Decoded` has exactly `4*w*h` RGBA
+/// bytes with `4*w*h <= max_output()` (67,108,864), and its dimensions are within
+/// `1..=8192`. Discharged from `md_eq` through the DIB model's public
+/// `lemma_mp_ok_shape` on the same validated slice.
+pub proof fn lemma_t7_dib_output_bound(
+    b: Seq<u8>,
+    es: Seq<Entry>,
+    index: u32,
+    r: Result<Decoded, Error>,
+)
+    requires
+        md_eq(b, es, index, r),
+    ensures
+        match r {
+            Ok(d) => {
+                &&& 1 <= d.width as int <= dib_verus::model::max_dimension()
+                &&& 1 <= d.height as int <= dib_verus::model::max_dimension()
+                &&& d.rgba@.len() == 4 * (d.width as int * d.height as int)
+                &&& d.rgba@.len() <= dib_verus::model::max_output()
+            },
+            Err(_) => true,
+        },
+{
+    reveal(md_eq);
+    reveal(md);
+    reveal(md_ico);
+    reveal(decoded_matches);
+    match r {
+        Ok(d) => {
+            assert(md(b, es, index) is Ok);
+            let t = match md(b, es, index) {
+                Ok(t) => t,
+                Err(_) => (0, 0, Seq::empty()),
+            };
+            assert(decoded_matches(d, t));
+            assert(d.width as int == t.0);
+            assert(d.height as int == t.1);
+            assert(d.rgba@ == t.2);
+            // `md` is `Ok` only through the DIB branch, whose value is
+            // `mp(subrange, Slack)`.
+            assert(md_ico(b, es, index) is DibSlice);
+            let (start, end) = match md_ico(b, es, index) {
+                IcoDecision::DibSlice(s, e) => (s, e),
+                _ => (0, 0),
+            };
+            assert(dib_verus::model::mp(b.subrange(start, end), Mode::IcoEntryDibSlack) == Ok(t));
+            dib_verus::model::lemma_mp_ok_shape(
+                b.subrange(start, end),
+                Mode::IcoEntryDibSlack,
+                t.0,
+                t.1,
+                t.2,
+            );
+        },
+        Err(_) => {},
+    }
+}
+
+// ---------------------------------------------------------------------------
+// T6: exact precedence, as properties of the model.
+// ---------------------------------------------------------------------------
+
+/// T6: the R2/R3 directory guard has priority on **both** public calls — an `H`
+/// error is `MC`'s error and `decode_entry`'s directory error, before any record,
+/// index or list is examined.
+pub proof fn lemma_t6_directory_priority(b: Seq<u8>, es: Seq<Entry>, index: u32, e: Error)
+    requires
+        h(b) == Err(e),
+    ensures
+        mc(b) == Err(e),
+        md_ico(b, es, index) == IcoDecision::DirErr(e),
+        md(b, es, index) == Err(e),
+{
+    reveal(mc);
+    reveal(md_ico);
+    reveal(md);
+}
+
+/// T6: decode checks the index against `count` before the supplied list length.
+/// Whatever the list is, an out-of-range index is `IndexOutOfRange`.
+pub proof fn lemma_t6_index_before_list(b: Seq<u8>, hr: HRec, es: Seq<Entry>, index: u32)
+    requires
+        h(b) == Ok(hr),
+        hr.count <= index as int,
+    ensures
+        md_ico(b, es, index) == IcoDecision::IndexOOR,
+{
+    reveal(md_ico);
+}
+
+/// T6: the list-length check precedes the selected-record comparison and the
+/// selected defect. A list whose length differs from `count` is
+/// `InvalidEntryRecord` no matter what its elements are.
+pub proof fn lemma_t6_list_before_record(b: Seq<u8>, hr: HRec, es: Seq<Entry>, index: u32)
+    requires
+        h(b) == Ok(hr),
+        (index as int) < hr.count,
+        es.len() != hr.count,
+    ensures
+        md_ico(b, es, index) == IcoDecision::BadList,
+{
+    reveal(md_ico);
+}
+
+/// T6: the selected-record comparison precedes the selected defect, PNG
+/// delegation and the DIB call. A selected record that is not exactly `ME` is
+/// `InvalidEntryRecord`, whatever its status.
+pub proof fn lemma_t6_record_before_defect(b: Seq<u8>, hr: HRec, es: Seq<Entry>, index: u32)
+    requires
+        h(b) == Ok(hr),
+        (index as int) < hr.count,
+        es.len() == hr.count,
+        !entry_eq(es[index as int], me(b, hr, index as int)),
+    ensures
+        md_ico(b, es, index) == IcoDecision::BadList,
+{
+    reveal(md_ico);
+}
+
+/// T6: with the guards passed and the selected record equal, a selected defect
+/// wins over PNG classification and the DIB call: the decision names the defect.
+pub proof fn lemma_t6_defect_before_png_dib(b: Seq<u8>, hr: HRec, es: Seq<Entry>, index: u32)
+    requires
+        h(b) == Ok(hr),
+        (index as int) < hr.count,
+        es.len() == hr.count,
+        entry_eq(es[index as int], me(b, hr, index as int)),
+    ensures
+        match me(b, hr, index as int).status {
+            EntryStatus::Invalid(d) => md_ico(b, es, index) == IcoDecision::Defect(d),
+            EntryStatus::Valid { kind: EntryKind::Png, .. } => md_ico(b, es, index)
+                == IcoDecision::Png,
+            EntryStatus::Valid { kind: EntryKind::Dib, payload } => md_ico(b, es, index)
+                == IcoDecision::DibSlice(payload[0] as int, payload[1] as int),
+        },
+{
+    reveal(md_ico);
+}
+
+/// T6: `decode_entry` inspects **only** `entries.len()` and `entries[index]`. Two
+/// lists of the same length whose selected element agrees produce the same
+/// decision, so a bogus *unselected* supplied or wire record cannot change the
+/// selected result.
+pub proof fn lemma_t6_decode_reads_only_selected(
+    b: Seq<u8>,
+    es1: Seq<Entry>,
+    es2: Seq<Entry>,
+    index: u32,
+)
+    requires
+        es1.len() == es2.len(),
+        (index as int) < es1.len() ==> es1[index as int] == es2[index as int],
+    ensures
+        md_ico(b, es1, index) == md_ico(b, es2, index),
+{
+    reveal(md_ico);
+    match h(b) {
+        Err(e) => {
+            assert(md_ico(b, es1, index) == IcoDecision::DirErr(e));
+            assert(md_ico(b, es2, index) == IcoDecision::DirErr(e));
+        },
+        Ok(hr) => {
+            if index as int >= hr.count {
+            } else if es1.len() != hr.count {
+                assert(es2.len() != hr.count);
+            } else {
+                assert((index as int) < es1.len());
+                assert(es1[index as int] == es2[index as int]);
+                assert(entry_eq(es1[index as int], me(b, hr, index as int)) == entry_eq(
+                    es2[index as int],
+                    me(b, hr, index as int),
+                ));
+            }
+        },
+    }
+}
+
+/// T6: `parse` reports record defects as statuses, never as parse errors — a
+/// valid directory with defective records still returns `Ok` with all `count`
+/// records. (The defect itself is R4's, and `MC` fails only on `H`.)
+pub proof fn lemma_t6_parse_defects_are_statuses(b: Seq<u8>, hr: HRec, j: int)
+    requires
+        h(b) == Ok(hr),
+        0 <= j < hr.count,
+    ensures
+        mc(b) == Ok(Seq::new(hr.count as nat, |i: int| me(b, hr, i))),
+{
+    reveal(mc);
+    reveal(h);
+}
+
+// ---------------------------------------------------------------------------
+// T8: termination.
+// ---------------------------------------------------------------------------
+
+/// T8: the parse loop's variant. For each complete record the iteration index
+/// `i` advances to `i+1` and `count - i` strictly decreases and stays positive,
+/// whether the record was valid or invalid (`reconstruct` never fails). Also the
+/// eight-byte signature comparison's variant `8 - k` is bounded and strictly
+/// decreases. Stated for the parse loop and the signature loop as the manifest
+/// quantifies them.
+pub proof fn lemma_t8_variants(count: int, i: int, k: int)
+    requires
+        0 <= i < count,
+        0 <= k <= 8,
+    ensures
+        count - (i + 1) < count - i,
+        0 < count - i,
+        8 - (k + 1) < 8 - k,
+        0 <= 8 - k,
+{
+}
+
+/// T8: an input whose wire count exceeds `MAX_ENTRIES` is `TooManyEntries`, so
+/// `parse` returns from the directory guard before the record loop is entered —
+/// an input with a count of 65,535 never iterates a record. (The count cap is
+/// checked before the whole-table guard, so it wins over a short table.)
+pub proof fn lemma_t8_count_cap_before_loop(b: Seq<u8>)
+    requires
+        b.len() <= max_input(),
+        b.len() >= dir_header_len(),
+        le16(b, 0) == 0,
+        le16(b, 2) == 1 || le16(b, 2) == 2,
+        le16(b, 4) > max_entries(),
+    ensures
+        h(b) == Err(Error::TooManyEntries),
+        mc(b) == Err(Error::TooManyEntries),
+{
+    reveal(h);
+    reveal(mc);
+}
+
+/// T8: `parse` completes exactly `count` iterations — the model list `MC` has
+/// length `count`, every record present with its status (valid or invalid). This
+/// is the loop's own invariant `acc.len() == i` restated on the model, so it
+/// captures that no record, valid or invalid, aborts the iteration. `decode_entry`
+/// revalidates exactly one record and has no loop of its own; the one bounded loop
+/// in the ICO decode path is the eight-byte signature test bounded by
+/// `lemma_t8_variants`.
+pub proof fn lemma_t8_parse_iterates_count(b: Seq<u8>, hr: HRec)
+    requires
+        h(b) == Ok(hr),
+    ensures
+        mc(b) == Ok(Seq::new(hr.count as nat, |i: int| me(b, hr, i))),
+        match mc(b) {
+            Ok(es) => es.len() == hr.count,
+            Err(_) => false,
+        },
+{
+    reveal(mc);
+    reveal(h);
 }
 
 } // verus!
