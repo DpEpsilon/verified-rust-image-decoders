@@ -12,7 +12,8 @@
 //! including the composition with the DIB 1.1 model on the validated declared
 //! slice through the public `decode_with_steps` contract), T6 (exact precedence)
 //! and T7 (arithmetic and output bounds). T8 (termination) is stated by the model
-//! variance lemmas. T9/T10/T11 are M4a.
+//! variance lemmas. M4a adds T9 (ICO-side linear work), T10 (allocation-call
+//! bound) and T11 (the witness bridge in `crate::witnesses`/`crate::model_vectors`).
 //!
 //! Rules followed throughout:
 //!
@@ -394,13 +395,18 @@ fn directory_guard(bytes: &[u8]) -> (r: Result<Header, Error>)
 
 /// R6: `true` iff the payload `[start, end)` is at least eight bytes long and its
 /// first eight bytes equal [`PNG_SIGNATURE`]. Reads only bytes below `end`.
-fn has_png_signature(bytes: &[u8], start: usize, end: usize) -> (r: bool)
+/// R13/T9: the eight-byte comparison is a real ICO-controlled loop; each of its
+/// (at most eight) iterations charges one ghost step, so the helper adds at most
+/// eight to the caller's counter.
+fn has_png_signature(bytes: &[u8], start: usize, end: usize, steps: &mut Ghost<nat>) -> (r: bool)
     requires
         start <= end <= bytes@.len(),
     ensures
         r == (end - start >= 8 && bytes@.subrange(start as int, start as int + 8)
             == crate::model::png_signature()),
+        final(steps)@ <= old(steps)@ + 8,
 {
+    let ghost s0: nat = steps@;
     if end - start < 8 {
         proof {
             assert(crate::model::png_signature().len() == 8);
@@ -416,12 +422,18 @@ fn has_png_signature(bytes: &[u8], start: usize, end: usize) -> (r: bool)
             start <= end <= bytes@.len(),
             end - start >= 8,
             k <= 8,
+            s0 == old(steps)@,
+            steps@ <= s0 + k,
             forall|j: int| 0 <= j < k ==> #[trigger] bytes@[start as int + j]
                 == crate::model::png_signature()[j],
         decreases 8 - k,
     {
+        proof {
+            *steps = Ghost(steps@ + 1);
+        }
         if bytes[start + k] != PNG_SIGNATURE[k] {
             proof {
+                assert(steps@ <= s0 + 8);
                 assert(bytes@[start as int + k as int] != crate::model::png_signature()[k as int]);
                 assert(bytes@.subrange(start as int, start as int + 8)
                     != crate::model::png_signature()) by {
@@ -437,6 +449,7 @@ fn has_png_signature(bytes: &[u8], start: usize, end: usize) -> (r: bool)
         k += 1;
     }
     proof {
+        assert(steps@ <= s0 + 8);
         assert(bytes@.subrange(start as int, start as int + 8) == crate::model::png_signature()) by {
             assert(crate::model::png_signature().len() == 8);
             assert forall|j: int| 0 <= j < 8 implies
@@ -460,6 +473,7 @@ fn record_status(
     len_word: u32,
     Ghost(hr): Ghost<crate::model::HRec>,
     Ghost(i): Ghost<int>,
+    steps: &mut Ghost<nat>,
 ) -> (r: EntryStatus)
     requires
         hr.dir_end == dir_end as int,
@@ -472,6 +486,7 @@ fn record_status(
         crate::model::le32(bytes@, 6 + 16 * i + 12) == offset_word as int,
     ensures
         r == crate::model::me(bytes@, hr, i).status,
+        final(steps)@ <= old(steps)@ + 8,
 {
     reveal(crate::model::me);
     reveal(crate::model::defect_of);
@@ -530,7 +545,7 @@ fn record_status(
         assert(end_usize as int == end as int);
         assert(end_usize <= bytes@.len());
     }
-    let png = has_png_signature(bytes, off as usize, end_usize);
+    let png = has_png_signature(bytes, off as usize, end_usize, steps);
     proof {
         assert(png == (end_usize as int - off as int >= 8 && bytes@.subrange(off as int, off as int
             + 8) == crate::model::png_signature()));
@@ -569,6 +584,7 @@ fn reconstruct(
     dir_end: u32,
     i: usize,
     Ghost(hr): Ghost<crate::model::HRec>,
+    steps: &mut Ghost<nat>,
 ) -> (r: Entry)
     requires
         hr.typ == typ as int,
@@ -581,8 +597,14 @@ fn reconstruct(
         bytes@.len() <= crate::model::max_input(),
     ensures
         r == crate::model::me(bytes@, hr, i as int),
+        final(steps)@ <= old(steps)@ + 9,
 {
     let p = DIRECTORY_HEADER_LEN + ENTRY_RECORD_LEN * i;
+    proof {
+        // R13/T9: the record iteration body charges one step (the list-loop
+        // initialisation charges once in `parse`).
+        *steps = Ghost(steps@ + 1);
+    }
     proof {
         assert(6 + 16 * i + 16 <= 6 + 16 * hr.count) by (nonlinear_arith)
             requires
@@ -636,7 +658,7 @@ fn reconstruct(
         }
         EntryStatus::Invalid(EntryDefect::InvalidEntryReserved)
     } else {
-        let st = record_status(bytes, dir_end, offset, size, Ghost(hr), Ghost(i as int));
+        let st = record_status(bytes, dir_end, offset, size, Ghost(hr), Ghost(i as int), steps);
         proof {
             assert(crate::model::defect_of(bytes@, hr.dir_end, reserved as int, size as int,
                 offset as int) == crate::model::defect_of(bytes@, hr.dir_end, 0, size as int,
@@ -691,10 +713,9 @@ fn reconstruct(
 // parse (R1, R3, R4, R10)
 // ---------------------------------------------------------------------------
 
-/// R1: `parse(bytes) = MC(bytes)`. `Err` only for the R2/R3 directory-wide
-/// errors; otherwise every `count` records in wire order, invalid ones included.
-/// The postcondition also carries T3 and T4 on the success branch, discharged by
-/// the model lemmas `lemma_parse_ok_well_formed` / `lemma_parse_ok_classified`.
+/// R13/T9: the ordinary public `parse` — the tracked body with a disposable
+/// ghost counter. The ghost argument and its updates erase, so behaviour is
+/// byte-identical to `parse_tracked`.
 pub fn parse(bytes: &[u8]) -> (r: Result<Vec<Entry>, Error>)
     ensures
         crate::model::parse_eq(bytes@, r),
@@ -706,11 +727,33 @@ pub fn parse(bytes: &[u8]) -> (r: Result<Vec<Entry>, Error>)
             Err(_) => true,
         },
 {
+    let mut steps = Ghost(0nat);
+    let mut alloc = Ghost(0nat);
+    parse_tracked(bytes, &mut steps, &mut alloc)
+}
+
+/// R13/T9/R15: the tracked `parse`. Its charged steps are at most
+/// `model::parse_step_bound(bytes)`, and its charged allocation-call count is
+/// exactly `model::parse_alloc_calls(bytes)` — zero on a directory-wide error
+/// (the guard returns before the single reservation), one on success, for the
+/// one bounded `Vec::with_capacity(count)` with `count <= 1,024`.
+fn parse_tracked(
+    bytes: &[u8],
+    steps: &mut Ghost<nat>,
+    alloc: &mut Ghost<nat>,
+) -> (r: Result<Vec<Entry>, Error>)
+    ensures
+        crate::model::parse_eq(bytes@, r),
+        final(steps)@ <= old(steps)@ + crate::model::parse_step_bound(bytes@),
+        final(alloc)@ == old(alloc)@ + crate::model::parse_alloc_calls(bytes@),
+{
     let header = match directory_guard(bytes) {
         Ok(h) => h,
         Err(e) => {
             proof {
                 crate::model::lemma_mc_err(bytes@, e);
+                reveal(crate::model::parse_alloc_calls);
+                assert(crate::model::parse_alloc_calls(bytes@) == 0);
             }
             return Err(e);
         },
@@ -728,6 +771,20 @@ pub fn parse(bytes: &[u8]) -> (r: Result<Vec<Entry>, Error>)
     }
     // R2/R13: one bounded reservation, only after directory/count/table guards.
     let mut entries: Vec<Entry> = Vec::with_capacity(header.count);
+    let ghost s0: nat = steps@;
+    let ghost a0: nat = alloc@;
+    proof {
+        // R13/T9: the bounded list initialisation charges one step.
+        *steps = Ghost(steps@ + 1);
+        // R15/T10: the single bounded entry-list allocation is charged here.
+        *alloc = Ghost(alloc@ + 1);
+        reveal(crate::model::parse_alloc_calls);
+        assert(crate::model::parse_alloc_calls(bytes@) == 1);
+        assert(crate::model::parse_step_bound(bytes@) == 1 + 9 * hr.count);
+        assert(steps@ == s0 + 1);
+        assert(alloc@ == a0 + 1);
+        assert(a0 == old(alloc)@);
+    }
     let mut i = 0usize;
     let ghost mut acc: Seq<Entry> = Seq::empty();
     proof {
@@ -747,9 +804,16 @@ pub fn parse(bytes: &[u8]) -> (r: Result<Vec<Entry>, Error>)
             entries@ == acc,
             acc.len() == i,
             acc == Seq::new(i as nat, |j: int| crate::model::me(bytes@, hr, j)),
+            // R13/T9: the list initialisation charged once; each record body
+            // charges at most nine (one body plus the eight-step comparison).
+            s0 == old(steps)@,
+            steps@ <= s0 + 1 + 9 * (i as int),
+            // R15/T10: no further allocation in the record loop.
+            a0 == old(alloc)@,
+            alloc@ == a0 + 1,
         decreases header.count - i,
     {
-        let e = reconstruct(bytes, header.kind, header.dir_end, i, Ghost(hr));
+        let e = reconstruct(bytes, header.kind, header.dir_end, i, Ghost(hr), steps);
         entries.push(e);
         proof {
             acc = acc.push(e);
@@ -764,8 +828,35 @@ pub fn parse(bytes: &[u8]) -> (r: Result<Vec<Entry>, Error>)
         assert(crate::model::parse_eq(bytes@, Ok(entries)));
         crate::model::lemma_parse_ok_well_formed(bytes@, entries@);
         crate::model::lemma_parse_ok_classified(bytes@, entries@);
+        assert(final(steps)@ <= old(steps)@ + 1 + 9 * hr.count);
+        assert(crate::model::parse_step_bound(bytes@) == 1 + 9 * hr.count);
+        assert(final(alloc)@ == old(alloc)@ + 1);
+        assert(crate::model::parse_alloc_calls(bytes@) == 1);
     }
     Ok(entries)
+}
+
+/// R13/T9/R15: the public tracked entry point. The ordinary `parse` is
+/// `parse_with_steps(bytes).0`; the ghost step count `r.1@` is at most
+/// `16*(|b|+1)` for every slice (and at most `parse_step_bound`), and the ghost
+/// allocation-call count `r.2@` is `0` on a directory error and `1` on success
+/// (one bounded reservation).
+pub fn parse_with_steps(bytes: &[u8]) -> (r: (Result<Vec<Entry>, Error>, Ghost<nat>, Ghost<nat>))
+    ensures
+        crate::model::parse_eq(bytes@, r.0),
+        r.1@ <= 16 * (bytes@.len() + 1),
+        r.1@ <= crate::model::parse_step_bound(bytes@),
+        r.2@ == crate::model::parse_alloc_calls(bytes@),
+        r.2@ <= 1,
+{
+    let mut steps = Ghost(0nat);
+    let mut alloc = Ghost(0nat);
+    let result = parse_tracked(bytes, &mut steps, &mut alloc);
+    proof {
+        crate::model::lemma_t9_parse_bound(bytes@);
+        reveal(crate::model::parse_alloc_calls);
+    }
+    (result, steps, alloc)
 }
 
 // ---------------------------------------------------------------------------
@@ -879,6 +970,38 @@ pub fn decode_entry(bytes: &[u8], entries: &[Entry], index: u32) -> (r: Result<D
     ensures
         crate::model::md_eq(bytes@, entries@, index, r),
 {
+    let mut steps = Ghost(0nat);
+    let mut dib_steps = Ghost(0nat);
+    let mut alloc = Ghost(0nat);
+    decode_entry_impl(bytes, entries, index, &mut steps, &mut dib_steps, &mut alloc)
+}
+
+/// R13/T9/R15/R8: the tracked body of `decode_entry`, shared by the ordinary
+/// public call and the public `decode_entry_with_steps`. It charges one step for
+/// the eight-byte signature comparison the selected-record revalidation runs (at
+/// most eight, but one suffices for the constant wrapper bound) and the DIB
+/// call's steps on the selected-DIB branch. It never scans `E` or parses all
+/// records, and it makes no allocation (`alloc` stays fixed). `dib_steps` is set
+/// to the DIB call's returned ghost count on the selected-DIB branch (so the
+/// combined T9 bound can be stated on the executable) and stays `0` otherwise.
+fn decode_entry_impl(
+    bytes: &[u8],
+    entries: &[Entry],
+    index: u32,
+    steps: &mut Ghost<nat>,
+    dib_steps: &mut Ghost<nat>,
+    alloc: &mut Ghost<nat>,
+) -> (r: Result<Decoded, Error>)
+    ensures
+        crate::model::md_eq(bytes@, entries@, index, r),
+        final(steps)@ <= old(steps)@ + crate::model::wrapper_own_bound(),
+        final(dib_steps)@ <= old(dib_steps)@ + crate::model::dib_steps_bound(
+            bytes@,
+            entries@,
+            index,
+        ),
+        final(alloc)@ == old(alloc)@,
+{
     // R8: the R2/R3 guards first, without allocating an entry list.
     let header = match directory_guard(bytes) {
         Ok(h) => h,
@@ -949,7 +1072,14 @@ pub fn decode_entry(bytes: &[u8], entries: &[Entry], index: u32) -> (r: Result<D
     }
     // R8/R10: reconstruct the selected record from the current wire bytes and
     // require field-for-field, status-for-status equality.
-    let reconstructed = reconstruct(bytes, header.kind, header.dir_end, index as usize, Ghost(hr));
+    let reconstructed = reconstruct(
+        bytes,
+        header.kind,
+        header.dir_end,
+        index as usize,
+        Ghost(hr),
+        steps,
+    );
     proof {
         assert((index as usize) as int == index as int);
         assert(reconstructed == crate::model::me(bytes@, hr, (index as usize) as int));
@@ -1005,6 +1135,12 @@ pub fn decode_entry(bytes: &[u8], entries: &[Entry], index: u32) -> (r: Result<D
         assert(entries@.len() == hr.count);
         assert(crate::model::entry_eq(entries@[index as int], crate::model::me(bytes@, hr, index as int)));
     }
+    // R13/T9: the selected-record revalidation ran one eight-byte signature
+    // comparison; charge one step for it (the manifest's "at most eight
+    // signature-byte checks"; charging one keeps the wrapper's constant bound).
+    proof {
+        *steps = Ghost(steps@ + 1);
+    }
     match selected.status {
         EntryStatus::Invalid(defect) => {
             proof {
@@ -1053,7 +1189,10 @@ pub fn decode_entry(bytes: &[u8], entries: &[Entry], index: u32) -> (r: Result<D
             }
             match bytes.get(start..end) {
                 Some(slice) => {
-                    let (r0, _steps) = dib_verus::decode_with_steps(slice, Mode::IcoEntryDibSlack);
+                    let (r0, dsteps) = dib_verus::decode_with_steps(
+                        slice,
+                        Mode::IcoEntryDibSlack,
+                    );
                     proof {
                         assert(slice@ == bytes@.subrange(start as int, end as int));
                         crate::model::lemma_md_eq_dib(
@@ -1065,6 +1204,27 @@ pub fn decode_entry(bytes: &[u8], entries: &[Entry], index: u32) -> (r: Result<D
                             end as int,
                             slice@,
                         );
+                        // R13/T9: record the DIB call's returned ghost count and
+                        // its proved bound; the decision is `DibSlice(start,end)`,
+                        // so `dib_steps_bound` is this very `16*(|slice|+N)`.
+                        *dib_steps = dsteps;
+                        assert(start as int == payload[0] as int);
+                        assert(end as int == payload[1] as int);
+                        assert(crate::model::md_ico(bytes@, entries@, index)
+                            == crate::model::IcoDecision::DibSlice(start as int, end as int));
+                        assert(slice@ == bytes@.subrange(start as int, end as int));
+                        reveal(crate::model::dib_steps_bound);
+                        assert(crate::model::dib_steps_bound(bytes@, entries@, index) == 16 * (
+                            bytes@.subrange(start as int, end as int).len()
+                                + dib_verus::dib::t12_checked_n(
+                                bytes@.subrange(start as int, end as int),
+                                Mode::IcoEntryDibSlack,
+                            )
+                        ));
+                        assert(dsteps@ <= 16 * (slice@.len() + dib_verus::dib::t12_checked_n(
+                            slice@,
+                            Mode::IcoEntryDibSlack,
+                        )));
                     }
                     match r0 {
                         Ok(d) => Ok(d),
@@ -1080,6 +1240,51 @@ pub fn decode_entry(bytes: &[u8], entries: &[Entry], index: u32) -> (r: Result<D
             }
         },
     }
+}
+
+/// R13/T9/R15: the public tracked wrapper. The ordinary `decode_entry` is
+/// `decode_entry_with_steps(bytes, entries, index).0`. Its ghost outputs are:
+///
+/// * `r.1@`, the wrapper's total charged steps — at most
+///   `model::t9_step_cap(...)` = the wrapper's constant own work plus the DIB
+///   call's own bound on a selected DIB, at most `16` off it — and at most
+///   `16*(|b|+1)` in every case (`lemma_t9_wrapper_bound`);
+/// * `r.2@`, the DIB call's returned ghost count — `0` off the selected-DIB
+///   decision (every other branch makes no DIB call) and otherwise bounded by the
+///   DIB 1.1 `decode_with_steps` postcondition `steps_DIB <= 16*(|slice|+N)`;
+/// * `r.3@`, the allocation-call count, `0`.
+pub fn decode_entry_with_steps(bytes: &[u8], entries: &[Entry], index: u32) -> (r: (Result<
+    Decoded,
+    Error,
+>, Ghost<nat>, Ghost<nat>, Ghost<nat>))
+    ensures
+        crate::model::md_eq(bytes@, entries@, index, r.0),
+        r.1@ <= crate::model::t9_step_cap(bytes@, entries@, index),
+        r.1@ <= 16 * (bytes@.len() + 1),
+        r.2@ <= crate::model::dib_steps_bound(bytes@, entries@, index),
+        !(crate::model::md_ico(bytes@, entries@, index) is DibSlice) ==> r.2@ == 0,
+        r.3@ == 0,
+{
+    let mut steps = Ghost(0nat);
+    let mut dib_steps = Ghost(0nat);
+    let mut alloc = Ghost(0nat);
+    let result = decode_entry_impl(bytes, entries, index, &mut steps, &mut dib_steps, &mut alloc);
+    proof {
+        // The wrapper's charged steps are bounded by the constant
+        // `wrapper_own_bound() = 16`, which is at most `16*(|b|+1)` and at most
+        // `t9_step_cap = 16 + dib_steps_bound` since the DIB term is never
+        // negative.
+        crate::model::lemma_t9_wrapper_bound(bytes@);
+        crate::model::lemma_dib_steps_bound_nonneg(bytes@, entries@, index);
+        reveal(crate::model::t9_step_cap);
+        // Off the selected-DIB decision the DIB call is never made, so
+        // `dib_steps_bound` is `0` and `dib_steps` stayed `0`.
+        if !(crate::model::md_ico(bytes@, entries@, index) is DibSlice) {
+            crate::model::lemma_dib_steps_bound_zero_off_dib(bytes@, entries@, index);
+        }
+        assert(alloc@ == 0);
+    }
+    (result, steps, dib_steps, alloc)
 }
 
 // ---------------------------------------------------------------------------
@@ -1386,6 +1591,85 @@ pub proof fn t1_index_u32(index: u32)
         (index as int) <= 4294967295,
         (index as int) < 4294967296,
 {
+}
+
+// ---------------------------------------------------------------------------
+// T9/T10/T11: the public witnesses (the model obligations, stated on the two
+// public entry points and on the tracked exports).
+// ---------------------------------------------------------------------------
+
+/// T9 (ICO-side linear work), stated at the manifest's quantification: the
+/// tracked `parse` charges at most `16*(|b|+1)` ghost steps for every slice, on
+/// **every** exit — the directory-error path charges nothing (the guard has no
+/// loop) and the success path charges the bounded list initialisation and at most
+/// nine per record.
+pub fn t9_parse_linear_work(b: &[u8]) -> (r: (Result<Vec<Entry>, Error>, Ghost<nat>, Ghost<nat>))
+    ensures
+        crate::model::parse_eq(b@, r.0),
+        r.1@ <= 16 * (b@.len() + 1),
+        r.1@ <= crate::model::parse_step_bound(b@),
+        r.2@ == crate::model::parse_alloc_calls(b@),
+{
+    parse_with_steps(b)
+}
+
+/// T9 (ICO-side linear work) + T10 (allocation-call bound) on the wrapper: the
+/// tracked `decode_entry` charges at most `16*(|b|+1)` steps for every `b, E, i`,
+/// its own work is the constant wrapper bound plus the DIB call's own proved
+/// bound (`t9_step_cap`), it never scans `E` (the count is a function of the
+/// decision alone), and it requests no allocation.
+pub fn t9_wrapper_linear_work(
+    b: &[u8],
+    es: &[Entry],
+    index: u32,
+) -> (r: (Result<Decoded, Error>, Ghost<nat>, Ghost<nat>, Ghost<nat>))
+    ensures
+        crate::model::md_eq(b@, es@, index, r.0),
+        r.1@ <= 16 * (b@.len() + 1),
+        r.1@ <= crate::model::t9_step_cap(b@, es@, index),
+        // The wrapper's own steps are a constant: off the selected-DIB decision
+        // they are at most `wrapper_own_bound()`.
+        !(crate::model::md_ico(b@, es@, index) is DibSlice) ==> r.1@ <= crate::model::wrapper_own_bound(),
+        // The DIB call happens at most once (on the selected-DIB decision) and
+        // its count obeys the dependency's published bound.
+        r.2@ <= crate::model::dib_steps_bound(b@, es@, index),
+        !(crate::model::md_ico(b@, es@, index) is DibSlice) ==> r.2@ == 0,
+        r.3@ == 0,
+{
+    decode_entry_with_steps(b, es, index)
+}
+
+/// T9 ("never scans `E`"): the wrapper's step count depends only on the ICO
+/// decision, and `md_ico` reads only `|E|` and `E[index]`. Two lists of equal
+/// length with equal selected element take the same decision, hence the same
+/// wrapper work; the wrapper never iterates the entry list.
+pub proof fn t9_wrapper_ignores_list(b: Seq<u8>, es1: Seq<Entry>, es2: Seq<Entry>, index: u32)
+    requires
+        es1.len() == es2.len(),
+        (index as int) < es1.len() ==> es1[index as int] == es2[index as int],
+    ensures
+        crate::model::md_ico(b, es1, index) == crate::model::md_ico(b, es2, index),
+        crate::model::t9_step_cap(b, es1, index) == crate::model::t9_step_cap(b, es2, index),
+{
+    crate::model::lemma_t9_wrapper_ignores_list(b, es1, es2, index);
+    reveal(crate::model::t9_step_cap);
+    reveal(crate::model::dib_steps_bound);
+}
+
+/// T10 (allocation-call bound): the tracked `parse` requests exactly
+/// `model::parse_alloc_calls(b)` allocations — zero on every directory-wide
+/// error, one bounded reservation for at most 1,024 records otherwise — and the
+/// tracked `decode_entry` requests none.
+pub proof fn t10_allocation_bound(b: Seq<u8>, es: Seq<Entry>, index: u32, hr: crate::model::HRec)
+    requires
+        crate::model::h(b) == Ok(hr),
+    ensures
+        crate::model::parse_alloc_calls(b) == 1,
+        1 <= hr.count <= crate::model::max_entries(),
+        crate::model::decode_alloc_calls(b, es, index) == 0,
+{
+    crate::model::lemma_t10_parse_one_bounded(b, hr);
+    crate::model::lemma_t10_decode_no_alloc(b, es, index);
 }
 
 } // verus!

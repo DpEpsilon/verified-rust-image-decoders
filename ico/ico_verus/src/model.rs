@@ -1021,6 +1021,39 @@ pub proof fn lemma_md_eq_err(b: Seq<u8>, es: Seq<Entry>, index: u32, e: Error)
     reveal(md_eq);
 }
 
+/// T11: the converse direction used by the concrete witness bridge — if
+/// `md_eq(b,E,i,r)` holds and `MD(b,E,i) = Err(e)`, then the executable result
+/// is exactly `Err(e)`.
+pub proof fn lemma_md_eq_to_err(b: Seq<u8>, es: Seq<Entry>, index: u32, e: Error, r: Result<
+    Decoded,
+    Error,
+>)
+    requires
+        md(b, es, index) == Err(e),
+        md_eq(b, es, index, r),
+    ensures
+        r == Err(e),
+{
+    reveal(md_eq);
+}
+
+/// T11: if `md_eq(b,E,i,r)` holds and `MD(b,E,i) = Ok(t)`, then the executable
+/// result is a success whose dimensions and RGBA bytes are exactly `t`.
+pub proof fn lemma_md_eq_to_ok(b: Seq<u8>, es: Seq<Entry>, index: u32, t: (int, int, Seq<u8>), r:
+    Result<Decoded, Error>)
+    requires
+        md(b, es, index) == Ok(t),
+        md_eq(b, es, index, r),
+    ensures
+        r is Ok,
+        match r {
+            Ok(d) => decoded_matches(d, t),
+            Err(_) => false,
+        },
+{
+    reveal(md_eq);
+}
+
 /// T6 (exact precedence): the full priority chain of R10, as a predicate on the
 /// public `decode_entry` result `r`. Naming the chain once keeps the statement in
 /// one place: R2/R3 first on both calls; then decode's index check before the
@@ -1419,6 +1452,449 @@ pub proof fn lemma_t8_parse_iterates_count(b: Seq<u8>, hr: HRec)
 {
     reveal(mc);
     reveal(h);
+}
+
+// ---------------------------------------------------------------------------
+// M4a · R2/R13: the ICO-side linear-work model (T9)
+// ---------------------------------------------------------------------------
+//
+// THEOREMS.md T9: attach a ghost step to **every ICO-controlled real loop
+// iteration** — the directory loop, the record loop, the eight-byte signature
+// comparison, and any library bulk fill — with `steps(parse) <= 16*(|b|+1)` and
+// `steps(wrapper) <= 16*(|b|+1)` for every `b,E,i`. The wrapper's constant
+// selected-record work counts at most eight signature-byte checks and never
+// scans `E` or parses all records. On the shipped DIB 1.0 the manifest permits
+// only the separately proved DIB T12 as external evidence; the DIB 1.1 crate
+// this core depends on exports the tracked `decode_with_steps` whose bound
+// `steps_DIB <= 16*(|slice|+N)` is a proved postcondition, so ICO **does**
+// derive the combined bound from both counters (see `t9_combined_steps`).
+
+/// R13: the parse path charges one step for the bounded entry-list
+/// initialisation (`Vec::with_capacity`, the "list initialisation" the manifest
+/// names) and, per record, one for the record body plus up to eight for the
+/// record/signature interior loop — but only after the directory guard success.
+/// The directory guard itself has no loop (its word reads are straight-line), so
+/// a directory-wide failure charges nothing. `parse_step_bound` is the ceiling
+/// the executable charges on a slice `b`: `0` on `H`'s error, else
+/// `1 + 9*count`.
+pub open spec fn parse_step_bound(b: Seq<u8>) -> int {
+    match h(b) {
+        Err(_) => 0,
+        Ok(hr) => 1 + 9 * hr.count,
+    }
+}
+
+/// R13/T9: the wrapper's own ICO-controlled steps — everything `decode_entry`
+/// charges that is not the DIB call's `steps_DIB`. It is bounded by 16 for every
+/// decision: the directory guard has no loop (zero), the selected-record
+/// revalidation runs one record body whose only loop is the eight-byte signature
+/// comparison (at most eight), and the wrapper charges one further step for that
+/// comparison, so the actual own work is at most ten and 16 is a safe constant
+/// ceiling. It never scans `E` and never parses all records: at most one record
+/// is revalidated, so the count does not grow with `count`.
+pub open spec fn wrapper_own_bound() -> int {
+    16
+}
+
+/// R13/T9: the DIB call's own published bound `steps_DIB <= 16*(|slice|+N)`,
+/// evaluated on the selected-DIB decision; `0` on every other decision (no DIB
+/// call is made). `N` is the DIB crate's `t12_checked_n`, exported for exactly
+/// this purpose.
+pub open spec fn dib_steps_bound(b: Seq<u8>, es: Seq<Entry>, index: u32) -> int {
+    match md_ico(b, es, index) {
+        IcoDecision::DibSlice(start, end) => 16 * (b.subrange(start, end).len()
+            + dib_verus::dib::t12_checked_n(b.subrange(start, end), Mode::IcoEntryDibSlack)),
+        _ => 0,
+    }
+}
+
+/// `dib_steps_bound` is never negative (it is `16*(...)` or `0`).
+pub proof fn lemma_dib_steps_bound_nonneg(b: Seq<u8>, es: Seq<Entry>, index: u32)
+    ensures
+        0 <= dib_steps_bound(b, es, index),
+{
+    reveal(dib_steps_bound);
+    reveal(md_ico);
+    match md_ico(b, es, index) {
+        IcoDecision::DibSlice(start, end) => {
+            assert(b.subrange(start, end).len() >= 0);
+            assert(dib_verus::dib::t12_checked_n(b.subrange(start, end), Mode::IcoEntryDibSlack)
+                >= 0);
+        },
+        _ => {},
+    }
+}
+
+/// On a selected-DIB decision `dib_steps_bound` is the DIB call's own bound; on
+/// every other decision it is `0`.
+pub proof fn lemma_dib_steps_bound_zero_off_dib(b: Seq<u8>, es: Seq<Entry>, index: u32)
+    requires
+        !(md_ico(b, es, index) is DibSlice),
+    ensures
+        dib_steps_bound(b, es, index) == 0,
+{
+    reveal(dib_steps_bound);
+    reveal(md_ico);
+}
+
+/// R13/T9: the wrapper's total charged steps — its own constant work plus the
+/// DIB call when a selected DIB is decoded — are within the wrapper ceiling plus
+/// the DIB call's own proved bound. `t9_step_cap` is that ceiling; on every
+/// non-DIB decision the DIB term is `0` and the cap is the constant wrapper
+/// bound. This is the manifest's combined statement: the ICO-side counter summed
+/// with the DIB `decode_with_steps` counter stays within the sum of their two
+/// proved bounds.
+pub open spec fn t9_step_cap(b: Seq<u8>, es: Seq<Entry>, index: u32) -> int {
+    wrapper_own_bound() + dib_steps_bound(b, es, index)
+}
+
+/// T9 (ICO-side linear work): `parse`'s charged steps are within `16*(|b|+1)` for
+/// every slice. On the directory-error path the guard charged at most seven; on
+/// success `count` is in `[1, 1024]` and `6 + 16*count <= |b|`, so
+/// `8 + 25*count <= 16*(6 + 16*count + 1) <= 16*(|b|+1)`.
+pub proof fn lemma_t9_parse_bound(b: Seq<u8>)
+    ensures
+        parse_step_bound(b) <= 16 * (b.len() + 1),
+{
+    reveal(h);
+    match h(b) {
+        Err(_) => {},
+        Ok(hr) => {
+            assert(hr.count >= 1);
+            assert(hr.dir_end == 6 + 16 * hr.count);
+            assert(hr.count <= max_entries());
+            assert(1 + 9 * hr.count <= 16 * (6 + 16 * hr.count + 1)) by (nonlinear_arith)
+                requires
+                    1 <= hr.count <= max_entries(),
+                    max_entries() == 1024,
+            ;
+            assert(16 * (6 + 16 * hr.count + 1) <= 16 * (b.len() + 1)) by (nonlinear_arith)
+                requires
+                    hr.dir_end == 6 + 16 * hr.count,
+                    hr.dir_end <= b.len(),
+            ;
+        },
+    }
+}
+
+/// T9 (wrapper): the wrapper's own steps are at most `16*(|b|+1)` for every
+/// slice, and its eight-byte signature comparison charges at most eight, for
+/// every decision `decode_entry` can take. The count does not depend on `count`
+/// nor on `es`: `md_ico` is a function of `|es|`, `es[index]` and the wire.
+pub proof fn lemma_t9_wrapper_bound(b: Seq<u8>)
+    ensures
+        wrapper_own_bound() <= 16 * (b.len() + 1),
+        wrapper_own_bound() == 16,
+{
+    assert(wrapper_own_bound() == 16);
+    assert(16 <= 16 * (b.len() + 1)) by (nonlinear_arith)
+        requires
+            b.len() >= 0,
+    ;
+}
+
+/// T9 (wrapper, "never scans `E`"): the charged wrapper count is a function of
+/// the ICO decision alone, and `md_ico` reads only `|E|` and `E[index]`
+/// (`lemma_t6_decode_reads_only_selected`). Two lists of equal length with equal
+/// selected element therefore charge the same wrapper steps; the wrapper never
+/// iterates the entry list.
+pub proof fn lemma_t9_wrapper_ignores_list(b: Seq<u8>, es1: Seq<Entry>, es2: Seq<Entry>, index: u32)
+    requires
+        es1.len() == es2.len(),
+        (index as int) < es1.len() ==> es1[index as int] == es2[index as int],
+    ensures
+        md_ico(b, es1, index) == md_ico(b, es2, index),
+{
+    lemma_t6_decode_reads_only_selected(b, es1, es2, index);
+}
+
+/// T9 (the combined statement): the DIB 1.1 `decode_with_steps` postcondition
+/// `steps_DIB <= 16*(|slice|+N)` on the selected slice, composed with the
+/// wrapper's constant own-work bound, gives `t9_step_cap`. This is the
+/// manifest's "combined bound from both counters" — the DIB half is the
+/// dependency's own proved contract on the very function ICO calls.
+pub proof fn lemma_t9_total(
+    b: Seq<u8>,
+    es: Seq<Entry>,
+    index: u32,
+    steps: int,
+    dib_steps: int,
+)
+    requires
+        steps <= wrapper_own_bound() + dib_steps,
+        match md_ico(b, es, index) {
+            IcoDecision::DibSlice(start, end) => dib_steps <= 16 * (b.subrange(start, end).len()
+                + dib_verus::dib::t12_checked_n(
+                b.subrange(start, end),
+                Mode::IcoEntryDibSlack,
+            )),
+            _ => dib_steps == 0,
+        },
+    ensures
+        steps <= t9_step_cap(b, es, index),
+{
+    reveal(t9_step_cap);
+    reveal(dib_steps_bound);
+    reveal(md_ico);
+    match md_ico(b, es, index) {
+        IcoDecision::DibSlice(start, end) => {
+            assert(dib_steps <= dib_steps_bound(b, es, index));
+            assert(steps <= wrapper_own_bound() + dib_steps_bound(b, es, index))
+                by (nonlinear_arith)
+                requires
+                    steps <= wrapper_own_bound() + dib_steps,
+                    dib_steps <= dib_steps_bound(b, es, index),
+            ;
+        },
+        _ => {
+            assert(dib_steps_bound(b, es, index) == 0);
+        },
+    }
+}
+
+// ---------------------------------------------------------------------------
+// M4a · R2/R13/R15: the allocation-call model (T10)
+// ---------------------------------------------------------------------------
+//
+// THEOREMS.md T10: header-error paths request no entry-list allocation; after
+// the directory/count/table guards request at most one bounded allocation for at
+// most 1,024 records; the decode wrapper makes no allocation and invokes DIB at
+// most once. A ghost call counter charged at the documented sites expresses the
+// shape; it cannot detect a new uncharged `vec!`/clone/collect, so the source
+// audit `tools/audit_alloc.sh` is the enforcement (see the report).
+
+/// R15/T10: the number of entry-list allocations `parse` requests — zero on
+/// every directory-wide error (the guard returns before the one reservation),
+/// one on a successful directory guard.
+pub open spec fn parse_alloc_calls(b: Seq<u8>) -> int {
+    match h(b) {
+        Err(_) => 0,
+        Ok(_) => 1,
+    }
+}
+
+/// R15/T10: the wrapper (`decode_entry`) requests no allocation.
+pub open spec fn decode_alloc_calls(b: Seq<u8>, es: Seq<Entry>, index: u32) -> int {
+    0
+}
+
+/// T10: the header-error paths request no entry-list allocation.
+pub proof fn lemma_t10_parse_header_error_no_alloc(b: Seq<u8>, e: Error)
+    requires
+        h(b) == Err(e),
+    ensures
+        parse_alloc_calls(b) == 0,
+        mc(b) == Err(e),
+{
+    reveal(h);
+    reveal(parse_alloc_calls);
+    reveal(mc);
+}
+
+/// T10: after the guards `parse` requests at most one bounded allocation, and its
+/// size is at most `max_entries` records.
+pub proof fn lemma_t10_parse_one_bounded(b: Seq<u8>, hr: HRec)
+    requires
+        h(b) == Ok(hr),
+    ensures
+        parse_alloc_calls(b) == 1,
+        1 <= hr.count <= max_entries(),
+{
+    reveal(h);
+    reveal(parse_alloc_calls);
+}
+
+/// T10: `decode_entry` requests no allocation.
+pub proof fn lemma_t10_decode_no_alloc(b: Seq<u8>, es: Seq<Entry>, index: u32)
+    ensures
+        decode_alloc_calls(b, es, index) == 0,
+{
+    reveal(decode_alloc_calls);
+}
+
+// ---------------------------------------------------------------------------
+// M4a · the symbolic boundary lemmas L1-L4 (spec-frozen "Non-vacuity and
+// symbolic boundaries"; never by expanding a 64 MiB verifier term)
+// ---------------------------------------------------------------------------
+
+/// L1: every slice longer than `MAX_INPUT` is `FileTooLarge` on `parse` **and**
+/// on `decode_entry` for every `E` and every `i`, decided by the length alone
+/// before any read. (`too-large-before-bad-header` is the worst case: a
+/// single-byte seed repeated to 67,108,865 bytes.)
+pub proof fn lemma_l1_over_cap(b: Seq<u8>, es: Seq<Entry>, index: u32)
+    requires
+        b.len() > max_input(),
+    ensures
+        h(b) == Err(Error::FileTooLarge),
+        mc(b) == Err(Error::FileTooLarge),
+        md_ico(b, es, index) == IcoDecision::DirErr(Error::FileTooLarge),
+        md(b, es, index) == Err(Error::FileTooLarge),
+{
+    reveal(h);
+    reveal(mc);
+    reveal(md_ico);
+    reveal(md);
+}
+
+/// The 30-byte prefix of `file-size-67108864`: a one-record ICO directory whose
+/// single record is a valid 8-byte PNG at `[22, 30)`, followed by the signature.
+pub open spec fn l2_prefix() -> Seq<u8> {
+    seq![
+        0x00u8, 0x00, 0x01, 0x00, 0x01, 0x00, // reserved=0, type=1, count=1
+        0x01, 0x01, 0x00, 0x00, 0x01, 0x00, 0x18, 0x00, // w=1,h=1,cc=0,res=0,planes=1,bits=24
+        0x08, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00, // size=8, offset=22
+        0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, // PNG signature
+    ]
+}
+
+/// The one validated PNG record `file-size-67108864` parses to.
+pub open spec fn l2_record() -> Entry {
+    Entry {
+        width: 1,
+        height: 1,
+        color_count: 0,
+        raw_offset: 22,
+        raw_size: 8,
+        planes: Some(1),
+        bit_count: Some(24),
+        hotspot_x: None,
+        hotspot_y: None,
+        status: EntryStatus::Valid { kind: EntryKind::Png, payload: [22, 30] },
+    }
+}
+
+/// `b[start + i] == lit[i]` for `i < len` whenever `b`'s subrange at `start` is
+/// `lit` — the fact that lets L2 read the fixture's own bytes from its prefix.
+pub proof fn lemma_subrange_index_at(b: Seq<u8>, start: int, len: int, lit: Seq<u8>)
+    requires
+        0 <= start,
+        start + len <= b.len(),
+        lit.len() == len,
+        b.subrange(start, start + len) == lit,
+    ensures
+        forall|i: int| 0 <= i < len ==> #[trigger] b[start + i] == lit[i],
+{
+    broadcast use vstd::seq::group_seq_axioms;
+
+    assert forall|i: int| 0 <= i < len implies #[trigger] b[start + i] == lit[i] by {
+        assert(b.subrange(start, start + len)[i] == b[start + i]);
+    }
+}
+
+/// The reverse: if `b`'s bytes at `start` equal `lit`, the subrange equals `lit`.
+pub proof fn lemma_subrange_eq_lit(b: Seq<u8>, start: int, lit: Seq<u8>)
+    requires
+        0 <= start,
+        start + lit.len() <= b.len(),
+        forall|i: int| 0 <= i < lit.len() ==> #[trigger] b[start + i] == lit[i],
+    ensures
+        b.subrange(start, start + lit.len()) == lit,
+{
+    broadcast use vstd::seq::group_seq_axioms;
+
+    assert(b.subrange(start, start + lit.len()) =~= lit) by {
+        assert forall|i: int| 0 <= i < lit.len() implies
+            b.subrange(start, start + lit.len())[i] == lit[i] by {
+            assert(b.subrange(start, start + lit.len())[i] == b[start + i]);
+        }
+    }
+}
+
+/// L2: the exact `file-size-67108864` length, a 30-byte one-PNG-entry prefix and
+/// zero suffix: it passes the cap and yields exactly one validated PNG range
+/// `[22, 30)`. Stated for every slice of that length whose first 30 bytes are the
+/// prefix (the suffix — zero bytes in the fixture — cannot change the result,
+/// since `H` and `ME` read only bytes below 30). This is the symbolic length
+/// lemma, not a 64 MiB verifier expansion.
+pub proof fn lemma_l2_exact_cap(b: Seq<u8>)
+    requires
+        b.len() == 67108864,
+        b.subrange(0, 30) == l2_prefix(),
+    ensures
+        mc(b) == Ok(seq![l2_record()]),
+{
+    reveal(h);
+    reveal(mc);
+    reveal(me);
+    reveal(defect_of);
+    reveal(kind_of);
+    reveal(nom_dim);
+    lemma_subrange_index_at(b, 0, 30, l2_prefix());
+    assert(b[0] == 0u8);
+    assert(b[1] == 0u8);
+    assert(b[2] == 1u8);
+    assert(b[3] == 0u8);
+    assert(b[4] == 1u8);
+    assert(b[5] == 0u8);
+    assert(b[8] == 0u8);
+    assert(b[9] == 0u8);
+    // The declared range `[22, 30)` holds the eight signature bytes.
+    assert(forall|k: int| 0 <= k < 8 ==> #[trigger] b[22 + k] == png_signature()[k]) by {
+        assert forall|k: int| 0 <= k < 8 implies #[trigger] b[22 + k] == png_signature()[k] by {
+            assert(b[22 + k] == l2_prefix()[22 + k]);
+        }
+    }
+    lemma_subrange_eq_lit(b, 22, png_signature());
+    assert(b.subrange(22, 30) == png_signature());
+    assert(le16(b, 0) == 0);
+    assert(le16(b, 2) == 1);
+    assert(le16(b, 4) == 1);
+    // Record 0 at p = 6: `size = le32(b, 14) = 8`, `offset = le32(b, 18) = 22`.
+    assert(le32(b, 14) == 8);
+    assert(le32(b, 18) == 22);
+    let hr0 = HRec { typ: 1, count: 1, dir_end: 22 };
+    assert(h(b) == Ok(hr0));
+    assert(mc(b) == Ok(Seq::new(hr0.count as nat, |i: int| me(b, hr0, i))));
+    assert(me(b, hr0, 0) == l2_record()) by {
+        assert(le32(b, 14) == 8);
+        assert(le32(b, 18) == 22);
+    }
+    assert(Seq::new(hr0.count as nat, |i: int| me(b, hr0, i)) == seq![l2_record()]) by {
+        assert(Seq::new(hr0.count as nat, |i: int| me(b, hr0, i))[0] == me(b, hr0, 0));
+        assert(Seq::new(hr0.count as nat, |i: int| me(b, hr0, i)).len() == 1);
+        assert(Seq::new(hr0.count as nat, |i: int| me(b, hr0, i)) =~= seq![l2_record()]);
+    }
+}
+
+/// L3: `parse`'s record-loop induction. `MC` on a successful directory is the
+/// complete ordered list of `count` records, each exactly its mathematical `ME`;
+/// its `j`-th element is `ME(b,H,j)` for every `j < count`, including invalid
+/// statuses — irrespective of any record defect, so a bad record never aborts
+/// the list. (The executable proves the same prefix equality as its loop
+/// invariant `acc == Seq::new(i, ME)`; the runtime `count-exact-1024` fixture
+/// exercises 1,024 distinct records without a verifier term.)
+pub proof fn lemma_l3_record_induction(b: Seq<u8>, hr: HRec, j: int)
+    requires
+        h(b) == Ok(hr),
+        0 <= j < hr.count,
+    ensures
+        mc(b) == Ok(Seq::new(hr.count as nat, |i: int| me(b, hr, i))),
+        Seq::new(hr.count as nat, |i: int| me(b, hr, i))[j] == me(b, hr, j),
+{
+    reveal(mc);
+    lemma_seq_new_index(hr.count as nat, |i: int| me(b, hr, i), j);
+}
+
+/// L4: for every valid record the range satisfies `offset >= dir_end`,
+/// `size > 0`, `offset <= |b|` and `size <= |b| - offset`, so the end fits the
+/// file; the invalid records assert no range. This distinguishes a 16-bit
+/// narrowing and a u32 wrap (`wide-size-10000`, `wide-offset-10016`,
+/// `wide-sum-wrap`), which are exercised as parse vectors.
+pub proof fn lemma_l4_valid_range(b: Seq<u8>, hr: HRec, i: int)
+    requires
+        h(b) == Ok(hr),
+        0 <= i < hr.count,
+        me(b, hr, i).status is Valid,
+    ensures
+        hr.dir_end <= (me(b, hr, i).raw_offset as int),
+        (me(b, hr, i).raw_size as int) > 0,
+        (me(b, hr, i).raw_offset as int) <= b.len(),
+        (me(b, hr, i).raw_size as int) <= b.len() - (me(b, hr, i).raw_offset as int),
+{
+    lemma_valid_payload_in_bounds(b, hr, i);
+    reveal(me);
+    reveal(defect_of);
+    assert(me(b, hr, i).status is Valid);
 }
 
 } // verus!

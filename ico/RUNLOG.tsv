@@ -88,3 +88,38 @@
 89	2026-11-10T09:06:46+00:00	exit=101	85s	M3 sensitivity M31: skip selected-record comparison [crate=sens28]	verification results:: 100 verified, 1 errors
 90	2026-11-10T09:08:19+00:00	exit=101	86s	M3 sensitivity M-list: skip list-length check [crate=sensl]	verification results:: 100 verified, 1 errors
 91	2026-11-10T09:09:51+00:00	exit=0	85s	M3 FINAL: cargo clean + full reverify [crate=ico_verus]	verification results:: 101 verified, 0 errors
+92	2026-11-10T09:33:15+00:00	exit=101	83s	probe: compute on Entry equality [crate=probe]	verification results:: 1594 verified, 0 errors
+93	2026-11-10T09:33:23+00:00	exit=0	3s	probe: compute on Entry equality [crate=probe]	verification results:: 5 verified, 0 errors
+94	2026-11-10T09:33:34+00:00	exit=101	2s	probe: compute on mc Err [crate=probe]	
+95	2026-11-10T09:33:40+00:00	exit=101	2s	probe: compute on mc Err [crate=probe]	
+96	2026-11-10T09:33:46+00:00	exit=101	2s	probe: compute on mc Err [crate=probe]	
+97	2026-11-10T09:33:57+00:00	exit=101	2s	probe: compute on mc Err and one-record Ok [crate=probe]	
+98	2026-11-10T09:34:12+00:00	exit=0	3s	probe: compute on mc Err and one-record Ok [crate=probe]	verification results:: 2 verified, 0 errors
+99	2026-11-10T09:37:44+00:00	exit=101	84s	M4a model: T9/T10 step and alloc model [crate=ico_verus]	verification results:: 1594 verified, 0 errors
+100	2026-11-10T09:37:55+00:00	exit=0	6s	M4a model: T9/T10 step and alloc model [crate=ico_verus]	verification results:: 112 verified, 0 errors
+101	2026-11-10T09:39:10+00:00	exit=0	8s	M4a: model_vectors agreement (all small vectors) [crate=ico_verus]	verification results:: 323 verified, 0 errors
+102	2026-11-10T09:41:35+00:00	exit=101	7s	M4a: T9 step plumbing (parse/tracked/wrapper) [crate=ico_verus]	verification results:: 325 verified, 2 errors
+103	2026-11-10T09:42:14+00:00	exit=0	8s	M4a: T9 step plumbing [crate=ico_verus]	verification results:: 327 verified, 0 errors
+104	2026-11-10T09:43:10+00:00	exit=0	8s	M4a: T10 alloc counter + T9/T10 public tracked fns [crate=ico_verus]	verification results:: 327 verified, 0 errors
+105	2026-11-10T09:44:51+00:00	exit=0	7s	M4a: model_vectors (no concrete DIB MP) [crate=ico_verus]	verification results:: 286 verified, 0 errors
+106	2026-11-10T09:45:31+00:00	exit=101	3s	M4a: symbolic boundary lemmas L1-L4 [crate=ico_verus]	
+107	2026-11-10T09:45:46+00:00	exit=101	7s	M4a: symbolic boundary lemmas L1-L4 [crate=ico_verus]	verification results:: 289 verified, 2 errors
+108	2026-11-10T09:46:19+00:00	exit=101	7s	M4a: L2 refinement [crate=ico_verus]	verification results:: 289 verified, 2 errors
+109	2026-11-10T09:49:13+00:00	exit=0	7s	M4a: L2/L4 with subrange lemmas [crate=ico_verus]	verification results:: 292 verified, 0 errors
+110	2026-11-10T09:52:02+00:00	exit=101	1s	M4a: T11 witness bridge (2 public calls) [crate=ico_verus]	
+111	2026-11-10T09:52:12+00:00	exit=101	4s	M4a: T11 witness bridge (2 public calls) [crate=ico_verus]	
+112	2026-11-10T09:52:31+00:00	exit=101	4s	M4a: T11 witnesses via slices [crate=ico_verus]	
+113	2026-11-10T09:53:08+00:00	exit=101	4s	M4a: T11 witnesses (param-pinned fixtures) [crate=ico_verus]	
+114	2026-11-10T09:53:25+00:00	exit=0	8s	M4a: T11 witnesses compute-on-literal [crate=ico_verus]	verification results:: 296 verified, 0 errors
+115	2026-11-10T09:55:24+00:00	exit=101	10s	M4a: T9 combined bound on the exec wrapper [crate=ico_verus]	verification results:: 294 verified, 2 errors
+116	2026-11-10T09:57:14+00:00	exit=0	8s	M4a: T9 combined bound on exec [crate=ico_verus]	verification results:: 298 verified, 0 errors
+117	2026-11-10T09:57:47+00:00	exit=101	7s	M4a: T9/T10/T11 public witnesses [crate=ico_verus]	verification results:: 301 verified, 1 errors
+118	2026-11-10T09:58:06+00:00	exit=0	7s	M4a: witnesses + parse_with_steps step bound [crate=ico_verus]	verification results:: 302 verified, 0 errors
+119	2026-11-10T09:59:59+00:00	exit=0	89s	M4a: clean full reverify [crate=ico_verus]	verification results:: 302 verified, 0 errors
+120	2026-11-10T10:01:43+00:00	exit=101	88s	M4a sensitivity: T9 charged rescan (expect kill) [crate=t9probe]	verification results:: 301 verified, 1 errors
+121	2026-11-10T10:03:18+00:00	exit=0	87s	M4a sensitivity: M21 uncharged vec (expect verifier PASS, audit FAIL) [crate=t10probe]	verification results:: 302 verified, 0 errors
+122	2026-11-10T10:05:17+00:00	exit=0	87s	M4a: final green before clean reverify [crate=ico_verus]	verification results:: 302 verified, 0 errors
+123	2026-11-10T10:06:48+00:00	exit=0	87s	M4a: FINAL clean full reverify [crate=ico_verus]	verification results:: 302 verified, 0 errors
+124	2026-11-10T10:09:11+00:00	exit=0	88s	M4a: add forged-unselected-ignored witness [crate=ico_verus]	verification results:: 303 verified, 0 errors
+125	2026-11-10T10:10:43+00:00	exit=0	87s	M4a: FINAL clean reverify (all 31 witnesses) [crate=ico_verus]	verification results:: 303 verified, 0 errors
+126	2026-11-10T10:12:30+00:00	exit=0	88s	M4a: FINAL clean full reverify (report) [crate=ico_verus]	verification results:: 303 verified, 0 errors
