@@ -11,7 +11,7 @@ Starting with simpler file formats, the eventual goal is to implement everything
 | ICNS (container + legacy RLE/mask) | `icns/` | `parse`, `decode_rgb`, `decode_mask`, `combine` | 315 verified | 111 | 10/10 |
 | TGA | `tga/` | `decode` | 642 verified | 169 | 15/15 (executable-side) |
 | DIB / BMP / ICO-entry bitmap | `dib/` | `decode(bytes, mode)`, `decode_with_steps` | 1557 verified (spec 1.1; 1.0 is `dib/spec-frozen`) | 302 | 43/44 verifier kills + 1 audit kill |
-| ICO / CUR container | `ico/` | `parse`, `decode_entry` (spec + oracle only, proofs pending) | - | 217 | - |
+| ICO / CUR container (calls the DIB core) | `ico/` | `parse`, `decode_entry` (+ `parse_with_steps`, `decode_entry_with_steps`) | 303 verified (+ the DIB core) | 217 | 32 verifier kills + 1 weak kill reworked + 1 audit kill (34 mutants) |
 
 `leniency/`: differential harness comparing decoders (gdk-pixbuf, the `image` crate, glycin's loaders, other crates and C libraries) on identical inputs, with synthetic-input leniency matrices (`<format>/LENIENCY-PUBLIC.md`) for BMP, PNM, QOI, farbfeld, XBM, XPM, GIF, PNG/APNG, DDS, HDR, JPEG, TIFF, WebP, JPEG 2000, JPEG XL, EXR, HEIF/AVIF, SVG and DNG. Inputs on which a decoder crashed are excluded and only counted; TGA, ICNS and ICO results will follow.
 `alt/icns-creusot/`: the same ICNS spec proved with Creusot/Why3 (comparison only; Verus won on effort, see `reviews/COMPARISON.md`). `tools/diff-harness/`: differential test of both ICNS cores against a Python oracle.
