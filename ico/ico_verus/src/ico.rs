@@ -1253,6 +1253,13 @@ fn decode_entry_impl(
 ///   decision (every other branch makes no DIB call) and otherwise bounded by the
 ///   DIB 1.1 `decode_with_steps` postcondition `steps_DIB <= 16*(|slice|+N)`;
 /// * `r.3@`, the allocation-call count, `0`.
+///
+/// The two step counters are separate: `r.1@` is this crate's own charged work
+/// and `r.2@` is the DIB call's returned count, which this crate does not add to
+/// its own. The postcondition `r.1@ + r.2@ <= 16 + dib_steps_bound(...)` states
+/// their sum directly — the combined bound the manifest's T9 row claims — since
+/// the two per-counter bounds alone would permit `16 + dib_steps_bound` for one
+/// and `dib_steps_bound` for the other.
 pub fn decode_entry_with_steps(bytes: &[u8], entries: &[Entry], index: u32) -> (r: (Result<
     Decoded,
     Error,
@@ -1262,6 +1269,13 @@ pub fn decode_entry_with_steps(bytes: &[u8], entries: &[Entry], index: u32) -> (
         r.1@ <= crate::model::t9_step_cap(bytes@, entries@, index),
         r.1@ <= 16 * (bytes@.len() + 1),
         r.2@ <= crate::model::dib_steps_bound(bytes@, entries@, index),
+        // R13/T9 combined sum: the wrapper's own charged steps (`r.1`) plus the
+        // DIB call's returned count (`r.2`) stay within the constant wrapper
+        // ceiling plus the DIB call's own published bound — the sum the
+        // manifest's T9 row claims. The two counters are separate: the wrapper
+        // never adds the DIB count into its own, so the two per-counter bounds
+        // above do not by themselves give this.
+        r.1@ + r.2@ <= 16 + crate::model::dib_steps_bound(bytes@, entries@, index),
         !(crate::model::md_ico(bytes@, entries@, index) is DibSlice) ==> r.2@ == 0,
         r.3@ == 0,
 {
@@ -1277,6 +1291,18 @@ pub fn decode_entry_with_steps(bytes: &[u8], entries: &[Entry], index: u32) -> (
         crate::model::lemma_t9_wrapper_bound(bytes@);
         crate::model::lemma_dib_steps_bound_nonneg(bytes@, entries@, index);
         reveal(crate::model::t9_step_cap);
+        // R13/T9 combined sum. `decode_entry_impl`'s postcondition, from the
+        // zero start `steps = 0`, gives `steps@ <= wrapper_own_bound() = 16` for
+        // the wrapper's own counter, and `dib_steps@ <= dib_steps_bound` for the
+        // DIB counter it returns; the two are separate counters, so their sum is
+        // within `16 + dib_steps_bound`.
+        assert(steps@ <= crate::model::wrapper_own_bound());
+        assert(dib_steps@ <= crate::model::dib_steps_bound(bytes@, entries@, index));
+        assert(steps@ + dib_steps@ <= 16 + crate::model::dib_steps_bound(
+            bytes@,
+            entries@,
+            index,
+        ));
         // Off the selected-DIB decision the DIB call is never made, so
         // `dib_steps_bound` is `0` and `dib_steps` stayed `0`.
         if !(crate::model::md_ico(bytes@, entries@, index) is DibSlice) {
@@ -1616,8 +1642,8 @@ pub fn t9_parse_linear_work(b: &[u8]) -> (r: (Result<Vec<Entry>, Error>, Ghost<n
 /// T9 (ICO-side linear work) + T10 (allocation-call bound) on the wrapper: the
 /// tracked `decode_entry` charges at most `16*(|b|+1)` steps for every `b, E, i`,
 /// its own work is the constant wrapper bound plus the DIB call's own proved
-/// bound (`t9_step_cap`), it never scans `E` (the count is a function of the
-/// decision alone), and it requests no allocation.
+/// bound (`t9_step_cap`), it never scans `E` (the step **bound** is a function of
+/// the decision alone), and it requests no allocation.
 pub fn t9_wrapper_linear_work(
     b: &[u8],
     es: &[Entry],
@@ -1633,16 +1659,22 @@ pub fn t9_wrapper_linear_work(
         // The DIB call happens at most once (on the selected-DIB decision) and
         // its count obeys the dependency's published bound.
         r.2@ <= crate::model::dib_steps_bound(b@, es@, index),
+        // R13/T9 combined sum: own charged steps plus the DIB call's returned
+        // count, within the constant wrapper ceiling plus the DIB bound.
+        r.1@ + r.2@ <= 16 + crate::model::dib_steps_bound(b@, es@, index),
         !(crate::model::md_ico(b@, es@, index) is DibSlice) ==> r.2@ == 0,
         r.3@ == 0,
 {
     decode_entry_with_steps(b, es, index)
 }
 
-/// T9 ("never scans `E`"): the wrapper's step count depends only on the ICO
-/// decision, and `md_ico` reads only `|E|` and `E[index]`. Two lists of equal
-/// length with equal selected element take the same decision, hence the same
-/// wrapper work; the wrapper never iterates the entry list.
+/// T9 ("never scans `E`"): the wrapper's step **bound** `t9_step_cap` is a
+/// function of the ICO decision, and `md_ico` reads only `|E|` and `E[index]`.
+/// Two lists of equal length with equal selected element take the same decision,
+/// hence the same step **ceiling**; the wrapper never iterates the entry list.
+/// The equality proved is of the bound `t9_step_cap`, not of a real step count:
+/// no charged count appears here, so the two lists are not shown to charge the
+/// same number of steps.
 pub proof fn t9_wrapper_ignores_list(b: Seq<u8>, es1: Seq<Entry>, es2: Seq<Entry>, index: u32)
     requires
         es1.len() == es2.len(),

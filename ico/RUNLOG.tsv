@@ -159,3 +159,4 @@
 160	2026-11-10T11:40:48+00:00	exit=101	88s	mutation 33 [crate=mutation/m33/ico_verus]	verification results:: 302 verified, 1 errors
 161	2026-11-10T11:43:40+00:00	exit=101	93s	mutation 34 [crate=mutation/m34/ico_verus]	verification results:: 302 verified, 1 errors
 162	2026-11-10T11:45:20+00:00	exit=0	87s	M4b: FINAL clean full reverify of the live crate after the mutation campaign [crate=ico_verus]	verification results:: 303 verified, 0 errors
+163	2026-11-10T12:02:45+00:00	exit=0	89s	T9 review fix (finding 1): add and prove the combined-sum postcondition r.1@ + r.2@ <= 16 + dib_steps_bound on decode_entry_with_steps; finding 2 comments say bound, not count [crate=ico_verus]	verification results:: 303 verified, 0 errors

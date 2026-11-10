@@ -1593,11 +1593,14 @@ pub proof fn lemma_t9_wrapper_bound(b: Seq<u8>)
     ;
 }
 
-/// T9 (wrapper, "never scans `E`"): the charged wrapper count is a function of
-/// the ICO decision alone, and `md_ico` reads only `|E|` and `E[index]`
+/// T9 (wrapper, "never scans `E`"): the wrapper's step **bound** is a function
+/// of the ICO decision alone, and `md_ico` reads only `|E|` and `E[index]`
 /// (`lemma_t6_decode_reads_only_selected`). Two lists of equal length with equal
-/// selected element therefore charge the same wrapper steps; the wrapper never
-/// iterates the entry list.
+/// selected element therefore take the same decision, hence the same step
+/// **ceiling** (`t9_step_cap`); the wrapper never iterates the entry list. This
+/// proves equality of the bound `t9_step_cap`, not of a real step count: the
+/// charged count is not observable here, and the two lists need not charge the
+/// same number of steps.
 pub proof fn lemma_t9_wrapper_ignores_list(b: Seq<u8>, es1: Seq<Entry>, es2: Seq<Entry>, index: u32)
     requires
         es1.len() == es2.len(),

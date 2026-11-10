@@ -8,3 +8,7 @@ corpus/
 **/rustc-ice-*.txt
 *.pyc
 __pycache__/
+
+# ICO mutation copies (regenerate with mutation/refresh_base.sh + tools/mutations.py)
+ico/mutation/*/ico_verus/
+ico/ico_verus/src/*.m[0-9]*

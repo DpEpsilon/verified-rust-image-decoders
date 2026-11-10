@@ -17,11 +17,14 @@ if [ ! -f "$f" ]; then echo "no such file: $f"; exit 2; fi
 # Strip line comments: the doc comments name the allowed reservation, which must
 # not be counted as a real occurrence.
 body=$(sed -E 's#//.*$##' "$f")
-nres=$(printf '%s\n' "$body" | grep -cE 'Vec::with_capacity')
+# The single permitted expression is matched exactly and REMOVED from the text before the
+# other-allocation scan (so extra code on the same line cannot hide).
+nres=$(printf '%s\n' "$body" | grep -oE 'Vec::with_capacity\(header\.count\)' | wc -l)
+body2=$(printf '%s\n' "$body" | sed -E 's/Vec::with_capacity\(header\.count\)//g')
 nv=$(printf '%s\n' "$body" | grep -cE '\bvec!\[')
 # Any `Vec::` other than the single allowed `Vec::with_capacity`, plus every other
 # allocating construct (clones, growing vectors, formatting, boxed/refcounted).
-bad=$(printf '%s\n' "$body" | grep -nE 'Vec::|\.to_vec\(|\.clone\(|\.to_owned\(|String::|format!|Box::new|from_iter|iter::repeat|repeat_n\(|\.into_boxed|\.resize\(|\.reserve\(|\.extend\(|\.collect|Rc::|Arc::|to_string\(' | grep -vE 'Vec::with_capacity' | grep -v '^\s*$')
+bad=$(printf '%s\n' "$body2" | grep -nE 'Vec::|\.to_vec\(|\.clone\(|\.to_owned\(|String::|format!|Box::new|from_iter|iter::repeat|repeat_n\(|\.into_boxed|\.resize\(|\.reserve\(|\.extend\(|\.collect|Rc::|Arc::|to_string\(' | grep -v '^\s*$')
 echo "Vec::with_capacity reservations: $nres (expected exactly 1, in parse_tracked)"
 echo "vec! allocations: $nv (expected 0)"
 if [ -n "$bad" ]; then echo "other allocating constructs:"; echo "$bad"; fi
