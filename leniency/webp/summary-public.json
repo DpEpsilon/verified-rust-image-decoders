@@ -1,0 +1,2890 @@
+{
+ "acceptance_disagreements": {
+  "glycin": {
+   "glycin": 0,
+   "image-webp": 0,
+   "libwebp-anim": 1760,
+   "libwebp-simple": 771
+  },
+  "image-webp": {
+   "glycin": 0,
+   "image-webp": 0,
+   "libwebp-anim": 1760,
+   "libwebp-simple": 771
+  },
+  "libwebp-anim": {
+   "glycin": 1760,
+   "image-webp": 1760,
+   "libwebp-anim": 0,
+   "libwebp-simple": 194
+  },
+  "libwebp-simple": {
+   "glycin": 771,
+   "image-webp": 771,
+   "libwebp-anim": 194,
+   "libwebp-simple": 0
+  }
+ },
+ "anomaly_counts": {},
+ "changed_relations": 5537,
+ "classes": {
+  "accept-different-pixels": 739,
+  "accept-vs-reject": 1824,
+  "all-accept-identical-pixels": 1249,
+  "all-accept-within-tolerance": 292,
+  "all-reject": 2875
+ },
+ "decoders": {
+  "glycin": {
+   "doc": "glycin-image-rs `ImgLoader` for `image/webp` (image::WebPDecoder, image-webp 0.2.4), frames pulled with `specific_frame` until `NoMoreFrames`",
+   "group": "image-webp",
+   "status_counts": {
+    "error": 3240,
+    "ok": 3739
+   }
+  },
+  "image-webp": {
+   "doc": "`image::codecs::webp::WebPDecoder` called directly (same code as glycin; `into_frames()` for animation)",
+   "group": "image-webp",
+   "status_counts": {
+    "error": 3240,
+    "ok": 3739
+   }
+  },
+  "libwebp-anim": {
+   "doc": "system libwebp 1.5.0 `WebPAnimDecoder` (demux validation + canvas composition, every frame; also used for stills)",
+   "group": "libwebp",
+   "status_counts": {
+    "error": 4398,
+    "ok": 2581
+   }
+  },
+  "libwebp-simple": {
+   "doc": "system libwebp 1.5.0 `WebPDecodeRGBA` (still images; animated files unsupported by this API)",
+   "group": "libwebp",
+   "status_counts": {
+    "error": 2864,
+    "ok": 1277,
+    "skip": 2838
+   }
+  }
+ },
+ "distinct_seeds": 30,
+ "format": "webp",
+ "inputs": 6979,
+ "lone_acceptor_by_group": {},
+ "lone_rejecter_by_group": {},
+ "partitions": [
+  {
+   "accepting": [
+    "glycin",
+    "image-webp"
+   ],
+   "cells": {
+    "glycin": "20\u00d712 `2239df38`",
+    "image-webp": "20\u00d712 `2239df38`",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "n/a"
+   },
+   "count": 723,
+   "rejecting": [
+    "libwebp-anim"
+   ],
+   "top_rules": [
+    [
+     "field:anmf_x",
+     78
+    ],
+    [
+     "field:anmf_y",
+     72
+    ],
+    [
+     "field:vp8l_signature",
+     70
+    ],
+    [
+     "field:VP8L_size",
+     64
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "20\u00d712 `2239df38`",
+     "image-webp": "20\u00d712 `2239df38`",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "n/a"
+    },
+    "file": "lenient-01-6273.webp",
+    "minimised_length": 112,
+    "original_length": 113,
+    "same_signature_as_original": true
+   },
+   "witness_id": 6273
+  },
+  {
+   "accepting": [
+    "glycin",
+    "image-webp"
+   ],
+   "cells": {
+    "glycin": "1\u00d71 `e3820096`",
+    "image-webp": "1\u00d71 `e3820096`",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `NOT_ENOUGH_DATA`"
+   },
+   "count": 606,
+   "rejecting": [
+    "libwebp-simple",
+    "libwebp-anim"
+   ],
+   "top_rules": [
+    [
+     "riff-size-delta",
+     213
+    ],
+    [
+     "field:riff_size",
+     148
+    ],
+    [
+     "field:VP8_size",
+     47
+    ],
+    [
+     "chunk-size-delta",
+     47
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "1\u00d71 `e3820096`",
+     "image-webp": "1\u00d71 `e3820096`",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "reject `NOT_ENOUGH_DATA`"
+    },
+    "file": "lenient-02-456.webp",
+    "minimised_length": 34,
+    "original_length": 34,
+    "same_signature_as_original": true
+   },
+   "witness_id": 456
+  },
+  {
+   "accepting": [
+    "libwebp-anim"
+   ],
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "8\u00d78 `b34e94dd`",
+    "libwebp-simple": "n/a"
+   },
+   "count": 200,
+   "rejecting": [
+    "glycin",
+    "image-webp"
+   ],
+   "top_rules": [
+    [
+     "field:anmf_w_minus1",
+     42
+    ],
+    [
+     "field:anmf_h_minus1",
+     42
+    ],
+    [
+     "field:VP8L_fourcc",
+     35
+    ],
+    [
+     "chunk-size-delta",
+     15
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "image-webp": "reject `Format error decoding `",
+     "libwebp-anim": "8\u00d78 `b34e94dd`",
+     "libwebp-simple": "n/a"
+    },
+    "file": "lenient-03-32.webp",
+    "minimised_length": 154,
+    "original_length": 154,
+    "same_signature_as_original": true
+   },
+   "witness_id": 32
+  },
+  {
+   "accepting": [
+    "glycin",
+    "image-webp",
+    "libwebp-simple"
+   ],
+   "cells": {
+    "glycin": "1\u00d71 `e3820096`",
+    "image-webp": "1\u00d71 `e3820096`",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "1\u00d71 `e3820096`"
+   },
+   "count": 130,
+   "rejecting": [
+    "libwebp-anim"
+   ],
+   "top_rules": [
+    [
+     "chunk-insert",
+     26
+    ],
+    [
+     "padding-extra",
+     19
+    ],
+    [
+     "chunk-duplicate",
+     19
+    ],
+    [
+     "vp8x-flag-bit",
+     17
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "1\u00d71 `e3820096`",
+     "image-webp": "1\u00d71 `e3820096`",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "1\u00d71 `e3820096`"
+    },
+    "file": "lenient-04-1303.webp",
+    "minimised_length": 35,
+    "original_length": 35,
+    "same_signature_as_original": true
+   },
+   "witness_id": 1303
+  },
+  {
+   "accepting": [
+    "libwebp-simple",
+    "libwebp-anim"
+   ],
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "1\u00d71 `e3820096`",
+    "libwebp-simple": "1\u00d71 `e3820096`"
+   },
+   "count": 101,
+   "rejecting": [
+    "glycin",
+    "image-webp"
+   ],
+   "top_rules": [
+    [
+     "field:ALPH_fourcc",
+     35
+    ],
+    [
+     "field:EXIF_fourcc",
+     14
+    ],
+    [
+     "vp8x-flag-bit",
+     12
+    ],
+    [
+     "wrap-vp8x",
+     8
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "image-webp": "reject `Format error decoding `",
+     "libwebp-anim": "1\u00d71 `e3820096`",
+     "libwebp-simple": "1\u00d71 `e3820096`"
+    },
+    "file": "lenient-05-1941.webp",
+    "minimised_length": 34,
+    "original_length": 34,
+    "same_signature_as_original": true
+   },
+   "witness_id": 1941
+  },
+  {
+   "accepting": [
+    "libwebp-simple"
+   ],
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "1\u00d71 `e3820096`"
+   },
+   "count": 64,
+   "rejecting": [
+    "glycin",
+    "image-webp",
+    "libwebp-anim"
+   ],
+   "top_rules": [
+    [
+     "field:VP8L_size",
+     35
+    ],
+    [
+     "field:VP8_size",
+     13
+    ],
+    [
+     "field:EXIF_size",
+     7
+    ],
+    [
+     "chunk-size-delta",
+     5
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "image-webp": "reject `Format error decoding `",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "1\u00d71 `e3820096`"
+    },
+    "file": "lenient-06-1533.webp",
+    "minimised_length": 34,
+    "original_length": 34,
+    "same_signature_as_original": true
+   },
+   "witness_id": 1533
+  }
+ ],
+ "pixel_rows": [
+  {
+   "cells": {
+    "glycin": "8\u00d78\u00d72f `a63a2ebd`",
+    "image-webp": "8\u00d78\u00d72f `a63a2ebd`",
+    "libwebp-anim": "8\u00d78\u00d72f `3c0d1396`",
+    "libwebp-simple": "n/a"
+   },
+   "class": "all-accept-within-tolerance",
+   "count": 292,
+   "differing_pairs": [
+    [
+     "glycin",
+     "libwebp-anim",
+     "within-tol"
+    ],
+    [
+     "image-webp",
+     "libwebp-anim",
+     "within-tol"
+    ]
+   ],
+   "max_abs_diff": 1,
+   "rules": [
+    [
+     "field:anmf_duration",
+     42
+    ],
+    [
+     "field:anmf_flags",
+     38
+    ],
+    [
+     "field:ANMF_fourcc",
+     28
+    ],
+    [
+     "trailing-bytes",
+     20
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "8\u00d78\u00d72f `a63a2ebd`",
+     "image-webp": "8\u00d78\u00d72f `a63a2ebd`",
+     "libwebp-anim": "8\u00d78\u00d72f `3c0d1396`",
+     "libwebp-simple": "n/a"
+    },
+    "file": "pixel-01-926.webp",
+    "minimised_length": 216,
+    "original_length": 216,
+    "same_signature_as_original": true
+   },
+   "witness_id": 926
+  },
+  {
+   "cells": {
+    "glycin": "20\u00d712\u00d72f `2239df38`",
+    "image-webp": "20\u00d712\u00d72f `2239df38`",
+    "libwebp-anim": "20\u00d712\u00d72f `2239df38`",
+    "libwebp-simple": "n/a"
+   },
+   "class": "accept-different-pixels",
+   "count": 291,
+   "differing_pairs": [
+    [
+     "glycin",
+     "image-webp",
+     "different-pixels"
+    ],
+    [
+     "image-webp",
+     "libwebp-anim",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 255,
+   "rules": [
+    [
+     "field:anmf_duration",
+     49
+    ],
+    [
+     "field:anmf_flags",
+     27
+    ],
+    [
+     "field:ANMF_fourcc",
+     21
+    ],
+    [
+     "trailing-bytes",
+     20
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "20\u00d712\u00d72f `2239df38`",
+     "image-webp": "20\u00d712\u00d72f `2239df38`",
+     "libwebp-anim": "20\u00d712\u00d72f `2239df38`",
+     "libwebp-simple": "n/a"
+    },
+    "file": "pixel-02-1827.webp",
+    "minimised_length": 182,
+    "original_length": 182,
+    "same_signature_as_original": true
+   },
+   "witness_id": 1827
+  },
+  {
+   "cells": {
+    "glycin": "8\u00d78 `3c0d1396`",
+    "image-webp": "8\u00d78 `3c0d1396`",
+    "libwebp-anim": "8\u00d78\u00d72f `3c0d1396`",
+    "libwebp-simple": "n/a"
+   },
+   "class": "accept-different-pixels",
+   "count": 280,
+   "differing_pairs": [
+    [
+     "glycin",
+     "libwebp-anim",
+     "different-frame-count"
+    ],
+    [
+     "image-webp",
+     "libwebp-anim",
+     "different-frame-count"
+    ]
+   ],
+   "max_abs_diff": 0,
+   "rules": [
+    [
+     "field:anmf_h_minus1",
+     63
+    ],
+    [
+     "field:anmf_w_minus1",
+     63
+    ],
+    [
+     "field:ANMF_fourcc",
+     35
+    ],
+    [
+     "field:VP8L_fourcc",
+     28
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "8\u00d78 `3c0d1396`",
+     "image-webp": "8\u00d78 `3c0d1396`",
+     "libwebp-anim": "8\u00d78\u00d72f `3c0d1396`",
+     "libwebp-simple": "n/a"
+    },
+    "file": "pixel-03-197.webp",
+    "minimised_length": 216,
+    "original_length": 216,
+    "same_signature_as_original": true
+   },
+   "witness_id": 197
+  },
+  {
+   "cells": {
+    "glycin": "20\u00d712\u00d72f `2239df38`",
+    "image-webp": "20\u00d712\u00d72f `2239df38`",
+    "libwebp-anim": "20\u00d712\u00d73f `2239df38`",
+    "libwebp-simple": "n/a"
+   },
+   "class": "accept-different-pixels",
+   "count": 81,
+   "differing_pairs": [
+    [
+     "glycin",
+     "image-webp",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "libwebp-anim",
+     "different-frame-count"
+    ],
+    [
+     "image-webp",
+     "libwebp-anim",
+     "different-frame-count"
+    ]
+   ],
+   "max_abs_diff": 255,
+   "rules": [
+    [
+     "field:anmf_w_minus1",
+     21
+    ],
+    [
+     "field:anmf_h_minus1",
+     21
+    ],
+    [
+     "chunk-size-delta",
+     8
+    ],
+    [
+     "chunk-insert",
+     7
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "20\u00d712\u00d72f `2239df38`",
+     "image-webp": "20\u00d712\u00d72f `2239df38`",
+     "libwebp-anim": "20\u00d712\u00d73f `2239df38`",
+     "libwebp-simple": "n/a"
+    },
+    "file": "pixel-04-133.webp",
+    "minimised_length": 266,
+    "original_length": 266,
+    "same_signature_as_original": true
+   },
+   "witness_id": 133
+  },
+  {
+   "cells": {
+    "glycin": "20\u00d712\u00d73f `2239df38`",
+    "image-webp": "20\u00d712\u00d73f `2239df38`",
+    "libwebp-anim": "20\u00d712\u00d73f `2239df38`",
+    "libwebp-simple": "n/a"
+   },
+   "class": "accept-different-pixels",
+   "count": 25,
+   "differing_pairs": [
+    [
+     "glycin",
+     "image-webp",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "libwebp-anim",
+     "within-tol"
+    ],
+    [
+     "image-webp",
+     "libwebp-anim",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 255,
+   "rules": [
+    [
+     "field:anmf_flags",
+     25
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "20\u00d712\u00d73f `2239df38`",
+     "image-webp": "20\u00d712\u00d73f `2239df38`",
+     "libwebp-anim": "20\u00d712\u00d73f `2239df38`",
+     "libwebp-simple": "n/a"
+    },
+    "file": "pixel-05-66.webp",
+    "minimised_length": 266,
+    "original_length": 266,
+    "same_signature_as_original": true
+   },
+   "witness_id": 66
+  },
+  {
+   "cells": {
+    "glycin": "8\u00d715\u00d72f `96102f5f`",
+    "image-webp": "8\u00d715\u00d72f `96102f5f`",
+    "libwebp-anim": "8\u00d715\u00d72f `60be3f37`",
+    "libwebp-simple": "n/a"
+   },
+   "class": "accept-different-pixels",
+   "count": 25,
+   "differing_pairs": [
+    [
+     "glycin",
+     "libwebp-anim",
+     "different-pixels"
+    ],
+    [
+     "image-webp",
+     "libwebp-anim",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 255,
+   "rules": [
+    [
+     "field:vp8x_canvas_h_minus1",
+     7
+    ],
+    [
+     "field:vp8x_canvas_w_minus1",
+     7
+    ],
+    [
+     "field:ANMF_fourcc",
+     7
+    ],
+    [
+     "chunk-delete",
+     1
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "8\u00d715\u00d72f `96102f5f`",
+     "image-webp": "8\u00d715\u00d72f `96102f5f`",
+     "libwebp-anim": "8\u00d715\u00d72f `60be3f37`",
+     "libwebp-simple": "n/a"
+    },
+    "file": "pixel-06-143.webp",
+    "minimised_length": 216,
+    "original_length": 216,
+    "same_signature_as_original": true
+   },
+   "witness_id": 143
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `2be86413`",
+    "image-webp": "16\u00d716 `2be86413`",
+    "libwebp-anim": "16\u00d716 `8fc3e9d2`",
+    "libwebp-simple": "16\u00d716 `8fc3e9d2`"
+   },
+   "class": "accept-different-pixels",
+   "count": 24,
+   "differing_pairs": [
+    [
+     "glycin",
+     "libwebp-anim",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "libwebp-simple",
+     "different-pixels"
+    ],
+    [
+     "image-webp",
+     "libwebp-anim",
+     "different-pixels"
+    ],
+    [
+     "image-webp",
+     "libwebp-simple",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 255,
+   "rules": [
+    [
+     "wrap-vp8x",
+     8
+    ],
+    [
+     "field:vp8l_dims_flags",
+     8
+    ],
+    [
+     "vp8l-header-bits",
+     4
+    ],
+    [
+     "byte-replace",
+     2
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "16\u00d716 `2be86413`",
+     "image-webp": "16\u00d716 `2be86413`",
+     "libwebp-anim": "16\u00d716 `8fc3e9d2`",
+     "libwebp-simple": "16\u00d716 `8fc3e9d2`"
+    },
+    "file": "pixel-07-3333.webp",
+    "minimised_length": 174,
+    "original_length": 174,
+    "same_signature_as_original": true
+   },
+   "witness_id": 3333
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `24137068`",
+    "image-webp": "16\u00d716 `24137068`",
+    "libwebp-anim": "16\u00d716 `24137068`",
+    "libwebp-simple": "16\u00d716 `9b1fa175`"
+   },
+   "class": "accept-different-pixels",
+   "count": 7,
+   "differing_pairs": [
+    [
+     "glycin",
+     "libwebp-simple",
+     "different-pixels"
+    ],
+    [
+     "image-webp",
+     "libwebp-simple",
+     "different-pixels"
+    ],
+    [
+     "libwebp-simple",
+     "libwebp-anim",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 255,
+   "rules": [
+    [
+     "field:vp8x_flags",
+     5
+    ],
+    [
+     "vp8x-flag-bit",
+     2
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "16\u00d716 `24137068`",
+     "image-webp": "16\u00d716 `24137068`",
+     "libwebp-anim": "16\u00d716 `24137068`",
+     "libwebp-simple": "16\u00d716 `9b1fa175`"
+    },
+    "file": "pixel-08-1709.webp",
+    "minimised_length": 340,
+    "original_length": 340,
+    "same_signature_as_original": true
+   },
+   "witness_id": 1709
+  },
+  {
+   "cells": {
+    "glycin": "20\u00d712\u00d73f `57f7914a`",
+    "image-webp": "20\u00d712\u00d73f `57f7914a`",
+    "libwebp-anim": "20\u00d712\u00d73f `2239df38`",
+    "libwebp-simple": "n/a"
+   },
+   "class": "accept-different-pixels",
+   "count": 6,
+   "differing_pairs": [
+    [
+     "glycin",
+     "image-webp",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "libwebp-anim",
+     "different-pixels"
+    ],
+    [
+     "image-webp",
+     "libwebp-anim",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 255,
+   "rules": [
+    [
+     "field:anmf_flags",
+     4
+    ],
+    [
+     "field:vp8x_flags",
+     2
+    ]
+   ],
+   "witness_id": 709
+  }
+ ],
+ "public": true,
+ "rule_pool": {
+  "alph-header-byte": 232,
+  "anmf-geometry": 16,
+  "anmf-inner-empty": 6,
+  "anmf-inner-extra": 18,
+  "anmf-only-first": 5,
+  "anmf-reorder": 5,
+  "anmf-repeat": 12,
+  "bit-flip": 425,
+  "byte-replace": 289,
+  "chunk-delete": 54,
+  "chunk-duplicate": 72,
+  "chunk-insert": 714,
+  "chunk-size-delta": 171,
+  "chunk-swap": 42,
+  "field:ALPH_fourcc": 35,
+  "field:ALPH_size": 35,
+  "field:ANIM_fourcc": 42,
+  "field:ANIM_size": 42,
+  "field:ANMF_fourcc": 126,
+  "field:ANMF_size": 126,
+  "field:EXIF_fourcc": 14,
+  "field:EXIF_size": 14,
+  "field:ICCP_fourcc": 14,
+  "field:ICCP_size": 14,
+  "field:VP8L_fourcc": 175,
+  "field:VP8L_size": 175,
+  "field:VP8X_fourcc": 91,
+  "field:VP8X_size": 91,
+  "field:VP8_fourcc": 119,
+  "field:VP8_size": 119,
+  "field:XMP_fourcc": 14,
+  "field:XMP_size": 14,
+  "field:alph_header": 35,
+  "field:anim_bgcolor": 42,
+  "field:anim_loop_count": 42,
+  "field:anmf_duration": 126,
+  "field:anmf_flags": 126,
+  "field:anmf_h_minus1": 126,
+  "field:anmf_w_minus1": 126,
+  "field:anmf_x": 126,
+  "field:anmf_y": 126,
+  "field:riff_size": 210,
+  "field:vp8_frame_tag": 119,
+  "field:vp8_height_scale": 119,
+  "field:vp8_start_code": 119,
+  "field:vp8_width_scale": 119,
+  "field:vp8l_dims_flags": 175,
+  "field:vp8l_signature": 175,
+  "field:vp8x_canvas_h_minus1": 91,
+  "field:vp8x_canvas_w_minus1": 91,
+  "field:vp8x_flags": 91,
+  "field:vp8x_reserved": 91,
+  "padding-extra": 64,
+  "padding-missing": 8,
+  "padding-nonzero": 8,
+  "riff-magic": 180,
+  "riff-size-delta": 276,
+  "trailing-bytes": 300,
+  "truncation": 1276,
+  "vp8-dimension": 83,
+  "vp8-frame-tag": 125,
+  "vp8-scale-bits": 101,
+  "vp8l-header-bits": 238,
+  "vp8x-flag-bit": 88,
+  "wrap-vp8x": 98
+ },
+ "rules": [
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `failed to fill whole b`",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `NOT_ENOUGH_DATA`"
+   },
+   "changed": 314,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 56,
+    "all-reject": 258
+   },
+   "patterns": 14,
+   "prov": {
+    "field": "length",
+    "new": 1,
+    "old": 216,
+    "rule": "truncation",
+    "seed": "anim-ll-2f-8x8"
+   },
+   "rule": "truncation",
+   "top_pattern_count": 186,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "image-webp": "reject `failed to fill whole b`",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "reject `NOT_ENOUGH_DATA`"
+    },
+    "file": "rule-01-6300.webp",
+    "minimised_length": 1,
+    "original_length": 1,
+    "same_signature_as_original": true
+   },
+   "witness_id": 6300
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `bb04a0ea`",
+    "image-webp": "16\u00d716 `bb04a0ea`",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 276,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 276
+   },
+   "patterns": 17,
+   "prov": {
+    "field": "-9",
+    "new": 129,
+    "old": 138,
+    "rule": "riff-size-delta",
+    "seed": "lossy-16x16-sharp"
+   },
+   "rule": "riff-size-delta",
+   "top_pattern_count": 112,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "16\u00d716 `fe9771d7`",
+     "image-webp": "16\u00d716 `fe9771d7`",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "reject `BITSTREAM_ERROR`"
+    },
+    "file": "rule-02-533.webp",
+    "minimised_length": 63,
+    "original_length": 146,
+    "same_signature_as_original": true
+   },
+   "witness_id": 533
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `decode`",
+    "libwebp-simple": "reject `OUT_OF_MEMORY`"
+   },
+   "changed": 227,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 22,
+    "all-reject": 205
+   },
+   "patterns": 4,
+   "prov": {
+    "field": "0x4f",
+    "new": 79,
+    "old": 1,
+    "rule": "alph-header-byte",
+    "seed": "lossy-alpha-filter-16x16"
+   },
+   "rule": "alph-header-byte",
+   "top_pattern_count": 205,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "image-webp": "reject `failed to fill whole b`",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "reject `NOT_ENOUGH_DATA`"
+    },
+    "file": "rule-03-30.webp",
+    "minimised_length": 1,
+    "original_length": 340,
+    "same_signature_as_original": true
+   },
+   "witness_id": 30
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 217,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 18,
+    "accept-vs-reject": 52,
+    "all-accept-identical-pixels": 38,
+    "all-accept-within-tolerance": 6,
+    "all-reject": 103
+   },
+   "patterns": 38,
+   "prov": {
+    "field": "version=7",
+    "new": 3758096384,
+    "old": 0,
+    "rule": "vp8l-header-bits",
+    "seed": "ll-1x1"
+   },
+   "rule": "vp8l-header-bits",
+   "top_pattern_count": 63,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "image-webp": "reject `failed to fill whole b`",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "reject `NOT_ENOUGH_DATA`"
+    },
+    "file": "rule-04-5230.webp",
+    "minimised_length": 1,
+    "original_length": 34,
+    "same_signature_as_original": true
+   },
+   "witness_id": 5230
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `bb04a0ea`",
+    "image-webp": "16\u00d716 `bb04a0ea`",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 210,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 178,
+    "all-reject": 32
+   },
+   "patterns": 23,
+   "prov": {
+    "field": "riff_size",
+    "new": 15,
+    "offset": 4,
+    "old": 138,
+    "rule": "field:riff_size",
+    "seed": "lossy-16x16-sharp"
+   },
+   "rule": "field:riff_size",
+   "top_pattern_count": 74,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "16\u00d716 `fe9771d7`",
+     "image-webp": "16\u00d716 `fe9771d7`",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "reject `BITSTREAM_ERROR`"
+    },
+    "file": "rule-05-1088.webp",
+    "minimised_length": 63,
+    "original_length": 146,
+    "same_signature_as_original": true
+   },
+   "witness_id": 1088
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 196,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 7,
+    "accept-vs-reject": 44,
+    "all-accept-identical-pixels": 5,
+    "all-accept-within-tolerance": 3,
+    "all-reject": 137
+   },
+   "patterns": 30,
+   "prov": {
+    "field": "byte15",
+    "new": 72,
+    "offset": 15,
+    "old": 76,
+    "rule": "bit-flip",
+    "seed": "ll-1x1"
+   },
+   "rule": "bit-flip",
+   "top_pattern_count": 123,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "image-webp": "reject `failed to fill whole b`",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "reject `NOT_ENOUGH_DATA`"
+    },
+    "file": "rule-06-4974.webp",
+    "minimised_length": 1,
+    "original_length": 34,
+    "same_signature_as_original": true
+   },
+   "witness_id": 4974
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 185,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 9,
+    "accept-vs-reject": 34,
+    "all-accept-identical-pixels": 6,
+    "all-accept-within-tolerance": 3,
+    "all-reject": 133
+   },
+   "patterns": 29,
+   "prov": {
+    "field": "byte11",
+    "new": 116,
+    "offset": 11,
+    "old": 80,
+    "rule": "byte-replace",
+    "seed": "ll-1x1"
+   },
+   "rule": "byte-replace",
+   "top_pattern_count": 122,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "image-webp": "reject `failed to fill whole b`",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "reject `NOT_ENOUGH_DATA`"
+    },
+    "file": "rule-07-1724.webp",
+    "minimised_length": 1,
+    "original_length": 34,
+    "same_signature_as_original": true
+   },
+   "witness_id": 1724
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 180,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 180
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "riff_magic",
+    "new": "RF64",
+    "old": null,
+    "rule": "riff-magic",
+    "seed": "ll-1x1"
+   },
+   "rule": "riff-magic",
+   "top_pattern_count": 180,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "image-webp": "reject `failed to fill whole b`",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "reject `NOT_ENOUGH_DATA`"
+    },
+    "file": "rule-08-215.webp",
+    "minimised_length": 1,
+    "original_length": 34,
+    "same_signature_as_original": true
+   },
+   "witness_id": 215
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 175,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 49,
+    "accept-vs-reject": 35,
+    "all-accept-identical-pixels": 7,
+    "all-accept-within-tolerance": 14,
+    "all-reject": 70
+   },
+   "patterns": 13,
+   "prov": {
+    "field": "VP8L_fourcc",
+    "new": 127,
+    "offset": 12,
+    "old": 1448097868,
+    "rule": "field:VP8L_fourcc",
+    "seed": "ll-1x1"
+   },
+   "rule": "field:VP8L_fourcc",
+   "top_pattern_count": 70,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "image-webp": "reject `failed to fill whole b`",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "reject `NOT_ENOUGH_DATA`"
+    },
+    "file": "rule-09-314.webp",
+    "minimised_length": 1,
+    "original_length": 34,
+    "same_signature_as_original": true
+   },
+   "witness_id": 314
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 175,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 23,
+    "accept-vs-reject": 54,
+    "all-accept-identical-pixels": 15,
+    "all-accept-within-tolerance": 3,
+    "all-reject": 80
+   },
+   "patterns": 38,
+   "prov": {
+    "field": "vp8l_dims_flags",
+    "new": 2147483647,
+    "offset": 21,
+    "old": 0,
+    "rule": "field:vp8l_dims_flags",
+    "seed": "ll-1x1"
+   },
+   "rule": "field:vp8l_dims_flags",
+   "top_pattern_count": 52,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "image-webp": "reject `failed to fill whole b`",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "reject `NOT_ENOUGH_DATA`"
+    },
+    "file": "rule-10-5115.webp",
+    "minimised_length": 1,
+    "original_length": 34,
+    "same_signature_as_original": true
+   },
+   "witness_id": 5115
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 175,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 70,
+    "all-reject": 105
+   },
+   "patterns": 10,
+   "prov": {
+    "field": "vp8l_signature",
+    "new": 0,
+    "offset": 20,
+    "old": 47,
+    "rule": "field:vp8l_signature",
+    "seed": "ll-1x1"
+   },
+   "rule": "field:vp8l_signature",
+   "top_pattern_count": 70,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "image-webp": "reject `failed to fill whole b`",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "reject `NOT_ENOUGH_DATA`"
+    },
+    "file": "rule-11-272.webp",
+    "minimised_length": 1,
+    "original_length": 34,
+    "same_signature_as_original": true
+   },
+   "witness_id": 272
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 173,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 5,
+    "accept-vs-reject": 133,
+    "all-reject": 35
+   },
+   "patterns": 27,
+   "prov": {
+    "field": "VP8L_size",
+    "new": 2147483647,
+    "offset": 72,
+    "old": 54,
+    "rule": "field:VP8L_size",
+    "seed": "anim-ll-2f-8x8"
+   },
+   "rule": "field:VP8L_size",
+   "top_pattern_count": 35,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "image-webp": "reject `Format error decoding `",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "n/a"
+    },
+    "file": "rule-12-1227.webp",
+    "minimised_length": 30,
+    "original_length": 216,
+    "same_signature_as_original": true
+   },
+   "witness_id": 1227
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 170,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 32,
+    "accept-vs-reject": 38,
+    "all-reject": 100
+   },
+   "patterns": 20,
+   "prov": {
+    "field": "XMP @0",
+    "new": null,
+    "old": null,
+    "rule": "chunk-insert",
+    "seed": "ll-1x1"
+   },
+   "rule": "chunk-insert",
+   "top_pattern_count": 100,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "image-webp": "reject `failed to fill whole b`",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "reject `NOT_ENOUGH_DATA`"
+    },
+    "file": "rule-13-1574.webp",
+    "minimised_length": 1,
+    "original_length": 46,
+    "same_signature_as_original": true
+   },
+   "witness_id": 1574
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 151,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 22,
+    "accept-vs-reject": 88,
+    "all-reject": 41
+   },
+   "patterns": 37,
+   "prov": {
+    "field": "VP8X+1",
+    "new": 11,
+    "old": 10,
+    "rule": "chunk-size-delta",
+    "seed": "anim-ll-2f-8x8"
+   },
+   "rule": "chunk-size-delta",
+   "top_pattern_count": 34,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "image-webp": "reject `failed to fill whole b`",
+     "libwebp-anim": "reject `AnimDecoderNew`",
+     "libwebp-simple": "reject `NOT_ENOUGH_DATA`"
+    },
+    "file": "rule-14-107.webp",
+    "minimised_length": 1,
+    "original_length": 216,
+    "same_signature_as_original": true
+   },
+   "witness_id": 107
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716\u00d72f `46fdd627`",
+    "image-webp": "16\u00d716\u00d72f `46fdd627`",
+    "libwebp-anim": "16\u00d716\u00d72f `2974ed8f`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 126,
+   "class": "all-accept-within-tolerance",
+   "classes": {
+    "accept-different-pixels": 70,
+    "all-accept-identical-pixels": 28,
+    "all-accept-within-tolerance": 28
+   },
+   "patterns": 11,
+   "prov": {
+    "field": "ANMF_fourcc",
+    "new": 1095650629,
+    "offset": 44,
+    "old": 1095650630,
+    "rule": "field:ANMF_fourcc",
+    "seed": "anim-ll-3f-16x16"
+   },
+   "rule": "field:ANMF_fourcc",
+   "top_pattern_count": 28,
+   "witness_id": 737
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 126,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 19,
+    "accept-vs-reject": 53,
+    "all-reject": 54
+   },
+   "patterns": 21,
+   "prov": {
+    "field": "ANMF_size",
+    "new": 16,
+    "offset": 48,
+    "old": 78,
+    "rule": "field:ANMF_size",
+    "seed": "anim-ll-2f-8x8"
+   },
+   "rule": "field:ANMF_size",
+   "top_pattern_count": 54,
+   "witness_id": 1378
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `fb7b3c25`",
+    "image-webp": "16\u00d716 `fb7b3c25`",
+    "libwebp-anim": "16\u00d716\u00d73f `fb7b3c25`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 126,
+   "class": "accept-different-pixels",
+   "classes": {
+    "accept-different-pixels": 84,
+    "accept-vs-reject": 42
+   },
+   "patterns": 12,
+   "prov": {
+    "field": "anmf_h_minus1",
+    "new": 18,
+    "offset": 135,
+    "old": 9,
+    "rule": "field:anmf_h_minus1",
+    "seed": "anim-lossy-3f-16x16"
+   },
+   "rule": "field:anmf_h_minus1",
+   "top_pattern_count": 21,
+   "witness_id": 696
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "16\u00d716\u00d73f `fb7b3c25`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 126,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-different-pixels": 84,
+    "accept-vs-reject": 42
+   },
+   "patterns": 12,
+   "prov": {
+    "field": "anmf_w_minus1",
+    "new": 0,
+    "offset": 58,
+    "old": 15,
+    "rule": "field:anmf_w_minus1",
+    "seed": "anim-lossy-3f-16x16"
+   },
+   "rule": "field:anmf_w_minus1",
+   "top_pattern_count": 21,
+   "witness_id": 1442
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 119,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 7,
+    "accept-vs-reject": 7,
+    "all-accept-identical-pixels": 7,
+    "all-reject": 98
+   },
+   "patterns": 4,
+   "prov": {
+    "field": "VP8_fourcc",
+    "new": 0,
+    "offset": 12,
+    "old": 1448097824,
+    "rule": "field:VP8_fourcc",
+    "seed": "lossy-1x1"
+   },
+   "rule": "field:VP8_fourcc",
+   "top_pattern_count": 98,
+   "witness_id": 58
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 119,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 16,
+    "all-accept-identical-pixels": 1,
+    "all-reject": 102
+   },
+   "patterns": 8,
+   "prov": {
+    "field": "vp8_frame_tag",
+    "new": 255,
+    "offset": 20,
+    "old": 304,
+    "rule": "field:vp8_frame_tag",
+    "seed": "lossy-1x1"
+   },
+   "rule": "field:vp8_frame_tag",
+   "top_pattern_count": 95,
+   "witness_id": 761
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `decode`",
+    "libwebp-simple": "reject `NOT_ENOUGH_DATA`"
+   },
+   "changed": 119,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 6,
+    "accept-vs-reject": 10,
+    "all-accept-identical-pixels": 20,
+    "all-reject": 83
+   },
+   "patterns": 24,
+   "prov": {
+    "field": "vp8_height_scale",
+    "new": 255,
+    "offset": 28,
+    "old": 1,
+    "rule": "field:vp8_height_scale",
+    "seed": "lossy-1x1"
+   },
+   "rule": "field:vp8_height_scale",
+   "top_pattern_count": 78,
+   "witness_id": 986
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 119,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 14,
+    "all-reject": 105
+   },
+   "patterns": 4,
+   "prov": {
+    "field": "vp8_start_code",
+    "new": 256,
+    "offset": 23,
+    "old": 10289450,
+    "rule": "field:vp8_start_code",
+    "seed": "lossy-1x1"
+   },
+   "rule": "field:vp8_start_code",
+   "top_pattern_count": 98,
+   "witness_id": 139
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `decode`",
+    "libwebp-simple": "reject `NOT_ENOUGH_DATA`"
+   },
+   "changed": 119,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 9,
+    "accept-vs-reject": 8,
+    "all-accept-identical-pixels": 20,
+    "all-reject": 82
+   },
+   "patterns": 22,
+   "prov": {
+    "field": "vp8_width_scale",
+    "new": 255,
+    "offset": 26,
+    "old": 1,
+    "rule": "field:vp8_width_scale",
+    "seed": "lossy-1x1"
+   },
+   "rule": "field:vp8_width_scale",
+   "top_pattern_count": 78,
+   "witness_id": 75
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 118,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 78,
+    "all-reject": 40
+   },
+   "patterns": 9,
+   "prov": {
+    "field": "anmf_x",
+    "new": 255,
+    "offset": 52,
+    "old": 0,
+    "rule": "field:anmf_x",
+    "seed": "anim-ll-2f-8x8"
+   },
+   "rule": "field:anmf_x",
+   "top_pattern_count": 40,
+   "witness_id": 1494
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `failed to fill whole b`",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 116,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 75,
+    "all-reject": 41
+   },
+   "patterns": 17,
+   "prov": {
+    "field": "VP8_size",
+    "new": 1,
+    "offset": 16,
+    "old": 24,
+    "rule": "field:VP8_size",
+    "seed": "lossy-1x1"
+   },
+   "rule": "field:VP8_size",
+   "top_pattern_count": 34,
+   "witness_id": 189
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 112,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 72,
+    "all-reject": 40
+   },
+   "patterns": 9,
+   "prov": {
+    "field": "anmf_y",
+    "new": 7,
+    "offset": 55,
+    "old": 0,
+    "rule": "field:anmf_y",
+    "seed": "anim-ll-2f-8x8"
+   },
+   "rule": "field:anmf_y",
+   "top_pattern_count": 40,
+   "witness_id": 639
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 91,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 91
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "VP8X_fourcc",
+    "new": 127,
+    "offset": 12,
+    "old": 1448097880,
+    "rule": "field:VP8X_fourcc",
+    "seed": "anim-ll-2f-8x8"
+   },
+   "rule": "field:VP8X_fourcc",
+   "top_pattern_count": 91,
+   "witness_id": 503
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 91,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 1,
+    "all-reject": 90
+   },
+   "patterns": 2,
+   "prov": {
+    "field": "VP8X_size",
+    "new": 8,
+    "offset": 16,
+    "old": 10,
+    "rule": "field:VP8X_size",
+    "seed": "anim-ll-2f-8x8"
+   },
+   "rule": "field:VP8X_size",
+   "top_pattern_count": 90,
+   "witness_id": 1024
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 87,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 8,
+    "accept-vs-reject": 20,
+    "all-reject": 59
+   },
+   "patterns": 16,
+   "prov": {
+    "field": "vp8x_flags",
+    "new": 7,
+    "offset": 20,
+    "old": 2,
+    "rule": "field:vp8x_flags",
+    "seed": "anim-ll-2f-8x8"
+   },
+   "rule": "field:vp8x_flags",
+   "top_pattern_count": 39,
+   "witness_id": 3110
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 84,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 14,
+    "accept-vs-reject": 4,
+    "all-accept-within-tolerance": 8,
+    "all-reject": 58
+   },
+   "patterns": 26,
+   "prov": {
+    "field": "vp8x_canvas_h_minus1",
+    "new": 30,
+    "offset": 27,
+    "old": 15,
+    "rule": "field:vp8x_canvas_h_minus1",
+    "seed": "lossy-alpha-filter-16x16"
+   },
+   "rule": "field:vp8x_canvas_h_minus1",
+   "top_pattern_count": 44,
+   "witness_id": 647
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 83,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 15,
+    "accept-vs-reject": 1,
+    "all-accept-within-tolerance": 9,
+    "all-reject": 58
+   },
+   "patterns": 26,
+   "prov": {
+    "field": "vp8x_canvas_w_minus1",
+    "new": 3,
+    "offset": 24,
+    "old": 15,
+    "rule": "field:vp8x_canvas_w_minus1",
+    "seed": "lossy-alpha-filter-16x16"
+   },
+   "rule": "field:vp8x_canvas_w_minus1",
+   "top_pattern_count": 45,
+   "witness_id": 1759
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `decode`",
+    "libwebp-simple": "reject `NOT_ENOUGH_DATA`"
+   },
+   "changed": 83,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 4,
+    "accept-vs-reject": 7,
+    "all-accept-identical-pixels": 14,
+    "all-reject": 58
+   },
+   "patterns": 16,
+   "prov": {
+    "field": "w=16383",
+    "new": 16383,
+    "old": 1,
+    "rule": "vp8-dimension",
+    "seed": "lossy-1x1"
+   },
+   "rule": "vp8-dimension",
+   "top_pattern_count": 53,
+   "witness_id": 2350
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `failed to fill whole b`",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 74,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 38,
+    "all-accept-identical-pixels": 1,
+    "all-reject": 35
+   },
+   "patterns": 12,
+   "prov": {
+    "field": "first-part-size=max",
+    "new": 16777200,
+    "old": 304,
+    "rule": "vp8-frame-tag",
+    "seed": "lossy-1x1"
+   },
+   "rule": "vp8-frame-tag",
+   "top_pattern_count": 33,
+   "witness_id": 1156
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `9b1fa175`",
+    "image-webp": "16\u00d716 `9b1fa175`",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "16\u00d716 `9b1fa175`"
+   },
+   "changed": 69,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-different-pixels": 3,
+    "accept-vs-reject": 53,
+    "all-reject": 13
+   },
+   "patterns": 19,
+   "prov": {
+    "field": "bit7",
+    "new": 144,
+    "old": 16,
+    "rule": "vp8x-flag-bit",
+    "seed": "lossy-alpha-filter-16x16"
+   },
+   "rule": "vp8x-flag-bit",
+   "top_pattern_count": 12,
+   "witness_id": 3615
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 65,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 8,
+    "accept-vs-reject": 8,
+    "all-reject": 49
+   },
+   "patterns": 10,
+   "prov": {
+    "field": "canvas-larger",
+    "new": null,
+    "old": null,
+    "rule": "wrap-vp8x",
+    "seed": "ll-1x1"
+   },
+   "rule": "wrap-vp8x",
+   "top_pattern_count": 32,
+   "witness_id": 3776
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 64,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 37,
+    "all-reject": 27
+   },
+   "patterns": 22,
+   "prov": {
+    "field": "VP8X",
+    "new": null,
+    "old": null,
+    "rule": "padding-extra",
+    "seed": "anim-ll-2f-8x8"
+   },
+   "rule": "padding-extra",
+   "top_pattern_count": 15,
+   "witness_id": 2860
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `failed to fill whole b`",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 52,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 6,
+    "accept-vs-reject": 7,
+    "all-accept-identical-pixels": 8,
+    "all-accept-within-tolerance": 4,
+    "all-reject": 27
+   },
+   "patterns": 12,
+   "prov": {
+    "field": "VP8L",
+    "new": null,
+    "old": null,
+    "rule": "chunk-delete",
+    "seed": "ll-16x16-exact-alpha"
+   },
+   "rule": "chunk-delete",
+   "top_pattern_count": 21,
+   "witness_id": 1215
+  },
+  {
+   "cells": {
+    "glycin": "20\u00d712\u00d73f `2239df38`",
+    "image-webp": "20\u00d712\u00d73f `2239df38`",
+    "libwebp-anim": "20\u00d712\u00d73f `2239df38`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 51,
+   "class": "accept-different-pixels",
+   "classes": {
+    "accept-different-pixels": 29,
+    "all-accept-identical-pixels": 10,
+    "all-accept-within-tolerance": 12
+   },
+   "patterns": 8,
+   "prov": {
+    "field": "anmf_flags",
+    "new": 8,
+    "offset": 135,
+    "old": 3,
+    "rule": "field:anmf_flags",
+    "seed": "anim-ll-alpha-3f-20x12"
+   },
+   "rule": "field:anmf_flags",
+   "top_pattern_count": 10,
+   "witness_id": 66
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `9b1fa175`",
+    "image-webp": "16\u00d716 `9b1fa175`",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "16\u00d716 `9b1fa175`"
+   },
+   "changed": 43,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-different-pixels": 7,
+    "accept-vs-reject": 25,
+    "all-accept-identical-pixels": 5,
+    "all-accept-within-tolerance": 6
+   },
+   "patterns": 12,
+   "prov": {
+    "field": "VP8X",
+    "new": null,
+    "old": null,
+    "rule": "chunk-duplicate",
+    "seed": "lossy-alpha-filter-16x16"
+   },
+   "rule": "chunk-duplicate",
+   "top_pattern_count": 13,
+   "witness_id": 2661
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 42,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 42
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "ANIM_fourcc",
+    "new": 32767,
+    "offset": 30,
+    "old": 1095649613,
+    "rule": "field:ANIM_fourcc",
+    "seed": "anim-ll-2f-8x8"
+   },
+   "rule": "field:ANIM_fourcc",
+   "top_pattern_count": 42,
+   "witness_id": 369
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 42,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 3,
+    "all-reject": 39
+   },
+   "patterns": 4,
+   "prov": {
+    "field": "ANIM_size",
+    "new": 32767,
+    "offset": 34,
+    "old": 6,
+    "rule": "field:ANIM_size",
+    "seed": "anim-ll-2f-8x8"
+   },
+   "rule": "field:ANIM_size",
+   "top_pattern_count": 39,
+   "witness_id": 177
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "16\u00d716 `24137068`",
+    "libwebp-simple": "16\u00d716 `24137068`"
+   },
+   "changed": 35,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 35
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "ALPH_fourcc",
+    "new": 2191040656,
+    "offset": 30,
+    "old": 1095520328,
+    "rule": "field:ALPH_fourcc",
+    "seed": "lossy-alpha-filter-16x16"
+   },
+   "rule": "field:ALPH_fourcc",
+   "top_pattern_count": 21,
+   "witness_id": 429
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 34,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 34
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "ALPH_size",
+    "new": 1,
+    "offset": 34,
+    "old": 110,
+    "rule": "field:ALPH_size",
+    "seed": "lossy-alpha-filter-16x16"
+   },
+   "rule": "field:ALPH_size",
+   "top_pattern_count": 34,
+   "witness_id": 110
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `failed to fill whole b`",
+    "libwebp-anim": "reject `decode`",
+    "libwebp-simple": "reject `OUT_OF_MEMORY`"
+   },
+   "changed": 34,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 1,
+    "all-reject": 33
+   },
+   "patterns": 2,
+   "prov": {
+    "field": "alph_header",
+    "new": 8,
+    "offset": 38,
+    "old": 1,
+    "rule": "field:alph_header",
+    "seed": "lossy-alpha-filter-16x16"
+   },
+   "rule": "field:alph_header",
+   "top_pattern_count": 33,
+   "witness_id": 751
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 27,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 2,
+    "accept-vs-reject": 12,
+    "all-reject": 13
+   },
+   "patterns": 11,
+   "prov": {
+    "field": "VP8X<->ANIM",
+    "new": null,
+    "old": null,
+    "rule": "chunk-swap",
+    "seed": "anim-ll-2f-8x8"
+   },
+   "rule": "chunk-swap",
+   "top_pattern_count": 13,
+   "witness_id": 1627
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 15,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 5,
+    "all-reject": 10
+   },
+   "patterns": 5,
+   "prov": {
+    "field": "x-offset-big",
+    "new": 16777214,
+    "old": null,
+    "rule": "anmf-geometry",
+    "seed": "anim-ll-2f-8x8"
+   },
+   "rule": "anmf-geometry",
+   "top_pattern_count": 10,
+   "witness_id": 419
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "16\u00d716 `ef0ffe4b`",
+    "libwebp-simple": "16\u00d716 `ef0ffe4b`"
+   },
+   "changed": 14,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 14
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "EXIF_fourcc",
+    "new": 16,
+    "offset": 342,
+    "old": 1163413830,
+    "rule": "field:EXIF_fourcc",
+    "seed": "meta-lossy-alpha-exif"
+   },
+   "rule": "field:EXIF_fourcc",
+   "top_pattern_count": 14,
+   "witness_id": 115
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "16\u00d716 `66337ad2`",
+    "libwebp-simple": "16\u00d716 `66337ad2`"
+   },
+   "changed": 14,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 14
+   },
+   "patterns": 2,
+   "prov": {
+    "field": "XMP_fourcc",
+    "new": 256,
+    "offset": 332,
+    "old": 1481461792,
+    "rule": "field:XMP_fourcc",
+    "seed": "meta-lossy-icc-exif-xmp"
+   },
+   "rule": "field:XMP_fourcc",
+   "top_pattern_count": 7,
+   "witness_id": 60
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "16\u00d716 `66337ad2`"
+   },
+   "changed": 13,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 13
+   },
+   "patterns": 2,
+   "prov": {
+    "field": "EXIF_size",
+    "new": 1,
+    "offset": 314,
+    "old": 14,
+    "rule": "field:EXIF_size",
+    "seed": "meta-lossy-icc-exif-xmp"
+   },
+   "rule": "field:EXIF_size",
+   "top_pattern_count": 7,
+   "witness_id": 116
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 13,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 13
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "ICCP_size",
+    "new": 256,
+    "offset": 34,
+    "old": 132,
+    "rule": "field:ICCP_size",
+    "seed": "meta-lossy-icc-exif-xmp"
+   },
+   "rule": "field:ICCP_size",
+   "top_pattern_count": 13,
+   "witness_id": 376
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716\u00d77f `f2304f5f`",
+    "image-webp": "16\u00d716\u00d77f `f2304f5f`",
+    "libwebp-anim": "16\u00d716\u00d77f `f2304f5f`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 12,
+   "class": "all-accept-within-tolerance",
+   "classes": {
+    "accept-different-pixels": 4,
+    "all-accept-identical-pixels": 4,
+    "all-accept-within-tolerance": 4
+   },
+   "patterns": 10,
+   "prov": {
+    "field": "x4",
+    "new": null,
+    "old": null,
+    "rule": "anmf-repeat",
+    "seed": "anim-ll-3f-16x16"
+   },
+   "rule": "anmf-repeat",
+   "top_pattern_count": 2,
+   "witness_id": 421
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716\u00d73f `f2304f5f`",
+    "image-webp": "16\u00d716\u00d73f `f2304f5f`",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 11,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 11
+   },
+   "patterns": 2,
+   "prov": {
+    "field": "XMP_size",
+    "new": 65536,
+    "offset": 362,
+    "old": 37,
+    "rule": "field:XMP_size",
+    "seed": "meta-anim-xmp"
+   },
+   "rule": "field:XMP_size",
+   "top_pattern_count": 6,
+   "witness_id": 191
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "reject `BITSTREAM_ERROR`"
+   },
+   "changed": 8,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 6,
+    "all-reject": 2
+   },
+   "patterns": 6,
+   "prov": {
+    "field": "ALPH",
+    "new": null,
+    "old": null,
+    "rule": "padding-missing",
+    "seed": "lossy-alpha-16x16"
+   },
+   "rule": "padding-missing",
+   "top_pattern_count": 2,
+   "witness_id": 530
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "image-webp": "reject `Format error decoding `",
+    "libwebp-anim": "16\u00d716\u00d72f `544ca9a5`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 6,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 6
+   },
+   "patterns": 4,
+   "prov": {
+    "field": "no-image-data",
+    "new": null,
+    "old": null,
+    "rule": "anmf-inner-empty",
+    "seed": "anim-lossy-3f-16x16"
+   },
+   "rule": "anmf-inner-empty",
+   "top_pattern_count": 3,
+   "witness_id": 162
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716\u00d73f `fb7b3c25`",
+    "image-webp": "16\u00d716\u00d73f `fb7b3c25`",
+    "libwebp-anim": "reject `AnimDecoderNew`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 6,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 6
+   },
+   "patterns": 4,
+   "prov": {
+    "field": "second-frame-data",
+    "new": null,
+    "old": null,
+    "rule": "anmf-inner-extra",
+    "seed": "anim-lossy-3f-16x16"
+   },
+   "rule": "anmf-inner-extra",
+   "top_pattern_count": 3,
+   "witness_id": 1007
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `fb7b3c25`",
+    "image-webp": "16\u00d716 `fb7b3c25`",
+    "libwebp-anim": "16\u00d716 `fb7b3c25`",
+    "libwebp-simple": "n/a"
+   },
+   "changed": 5,
+   "class": "all-accept-identical-pixels",
+   "classes": {
+    "all-accept-identical-pixels": 5
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "keep1",
+    "new": null,
+    "old": null,
+    "rule": "anmf-only-first",
+    "seed": "anim-lossy-3f-16x16"
+   },
+   "rule": "anmf-only-first",
+   "top_pattern_count": 3,
+   "witness_id": 164
+  }
+ ],
+ "same_group_divergence": {
+  "glycin/image-webp:different-pixels": 592,
+  "libwebp-simple/libwebp-anim:different-pixels": 11,
+  "libwebp-simple/libwebp-anim:status": 194
+ },
+ "seed": 731,
+ "seed_inputs": 30,
+ "seed_outcomes": [
+  {
+   "cells": {
+    "glycin": "8\u00d78\u00d72f `3c0d1396`",
+    "image-webp": "8\u00d78\u00d72f `3c0d1396`",
+    "libwebp-anim": "8\u00d78\u00d72f `3c0d1396`",
+    "libwebp-simple": "n/a"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "anim-ll-2f-8x8"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716\u00d73f `f2304f5f`",
+    "image-webp": "16\u00d716\u00d73f `f2304f5f`",
+    "libwebp-anim": "16\u00d716\u00d73f `f2304f5f`",
+    "libwebp-simple": "n/a"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "anim-ll-3f-16x16"
+  },
+  {
+   "cells": {
+    "glycin": "20\u00d712\u00d73f `2239df38`",
+    "image-webp": "20\u00d712\u00d73f `2239df38`",
+    "libwebp-anim": "20\u00d712\u00d73f `2239df38`",
+    "libwebp-simple": "n/a"
+   },
+   "class": "accept-different-pixels",
+   "seed": "anim-ll-alpha-3f-20x12"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716\u00d73f `fb7b3c25`",
+    "image-webp": "16\u00d716\u00d73f `fb7b3c25`",
+    "libwebp-anim": "16\u00d716\u00d73f `fb7b3c25`",
+    "libwebp-simple": "n/a"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "anim-lossy-3f-16x16"
+  },
+  {
+   "cells": {
+    "glycin": "24\u00d716\u00d74f `2c50dd97`",
+    "image-webp": "24\u00d716\u00d74f `2c50dd97`",
+    "libwebp-anim": "24\u00d716\u00d74f `2c50dd97`",
+    "libwebp-simple": "n/a"
+   },
+   "class": "accept-different-pixels",
+   "seed": "anim-mixed-alpha-4f-24x16"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `d3d53d4b`",
+    "image-webp": "16\u00d716 `d3d53d4b`",
+    "libwebp-anim": "16\u00d716 `d3d53d4b`",
+    "libwebp-simple": "16\u00d716 `d3d53d4b`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ll-16x16-exact-alpha"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `579eab5e`",
+    "image-webp": "16\u00d716 `579eab5e`",
+    "libwebp-anim": "16\u00d716 `579eab5e`",
+    "libwebp-simple": "16\u00d716 `579eab5e`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ll-16x16-nearlossless"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `2e67fad2`",
+    "image-webp": "16\u00d716 `2e67fad2`",
+    "libwebp-anim": "16\u00d716 `2e67fad2`",
+    "libwebp-simple": "16\u00d716 `2e67fad2`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ll-16x16-rgb"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4badb2c2`",
+    "image-webp": "16\u00d716 `4badb2c2`",
+    "libwebp-anim": "16\u00d716 `4badb2c2`",
+    "libwebp-simple": "16\u00d716 `4badb2c2`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ll-16x16-rgba"
+  },
+  {
+   "cells": {
+    "glycin": "17\u00d713 `f13b82fd`",
+    "image-webp": "17\u00d713 `f13b82fd`",
+    "libwebp-anim": "17\u00d713 `f13b82fd`",
+    "libwebp-simple": "17\u00d713 `f13b82fd`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ll-17x13-rgba"
+  },
+  {
+   "cells": {
+    "glycin": "1\u00d71 `e3820096`",
+    "image-webp": "1\u00d71 `e3820096`",
+    "libwebp-anim": "1\u00d71 `e3820096`",
+    "libwebp-simple": "1\u00d71 `e3820096`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ll-1x1"
+  },
+  {
+   "cells": {
+    "glycin": "24\u00d78 `22e0a2ef`",
+    "image-webp": "24\u00d78 `22e0a2ef`",
+    "libwebp-anim": "24\u00d78 `22e0a2ef`",
+    "libwebp-simple": "24\u00d78 `22e0a2ef`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ll-24x8-m0"
+  },
+  {
+   "cells": {
+    "glycin": "2\u00d72 `384f7c86`",
+    "image-webp": "2\u00d72 `384f7c86`",
+    "libwebp-anim": "2\u00d72 `384f7c86`",
+    "libwebp-simple": "2\u00d72 `384f7c86`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ll-2x2-rgb"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `f27b17bc`",
+    "image-webp": "32\u00d732 `f27b17bc`",
+    "libwebp-anim": "32\u00d732 `f27b17bc`",
+    "libwebp-simple": "32\u00d732 `f27b17bc`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ll-32x32-m6"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `ae1525f8`",
+    "image-webp": "16\u00d716 `ae1525f8`",
+    "libwebp-anim": "16\u00d716 `ae1525f8`",
+    "libwebp-simple": "16\u00d716 `ae1525f8`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "lossy-16x16-nofilter"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `66337ad2`",
+    "image-webp": "16\u00d716 `66337ad2`",
+    "libwebp-anim": "16\u00d716 `66337ad2`",
+    "libwebp-simple": "16\u00d716 `66337ad2`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "lossy-16x16-q75"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `bb04a0ea`",
+    "image-webp": "16\u00d716 `bb04a0ea`",
+    "libwebp-anim": "16\u00d716 `bb04a0ea`",
+    "libwebp-simple": "16\u00d716 `bb04a0ea`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "lossy-16x16-sharp"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `a563ed57`",
+    "image-webp": "16\u00d716 `a563ed57`",
+    "libwebp-anim": "16\u00d716 `a563ed57`",
+    "libwebp-simple": "16\u00d716 `a563ed57`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "lossy-16x16-strongfilter"
+  },
+  {
+   "cells": {
+    "glycin": "17\u00d713 `1aa46bb4`",
+    "image-webp": "17\u00d713 `1aa46bb4`",
+    "libwebp-anim": "17\u00d713 `1aa46bb4`",
+    "libwebp-simple": "17\u00d713 `1aa46bb4`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "lossy-17x13-q50"
+  },
+  {
+   "cells": {
+    "glycin": "1\u00d71 `e3820096`",
+    "image-webp": "1\u00d71 `e3820096`",
+    "libwebp-anim": "1\u00d71 `e3820096`",
+    "libwebp-simple": "1\u00d71 `e3820096`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "lossy-1x1"
+  },
+  {
+   "cells": {
+    "glycin": "33\u00d733 `a1f67453`",
+    "image-webp": "33\u00d733 `a1f67453`",
+    "libwebp-anim": "33\u00d733 `a1f67453`",
+    "libwebp-simple": "33\u00d733 `a1f67453`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "lossy-33x33-q10"
+  },
+  {
+   "cells": {
+    "glycin": "64\u00d748 `627d030c`",
+    "image-webp": "64\u00d748 `627d030c`",
+    "libwebp-anim": "64\u00d748 `627d030c`",
+    "libwebp-simple": "64\u00d748 `627d030c`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "lossy-64x48-parts"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `ef0ffe4b`",
+    "image-webp": "16\u00d716 `ef0ffe4b`",
+    "libwebp-anim": "16\u00d716 `ef0ffe4b`",
+    "libwebp-simple": "16\u00d716 `ef0ffe4b`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "lossy-alpha-16x16"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `9b1fa175`",
+    "image-webp": "16\u00d716 `9b1fa175`",
+    "libwebp-anim": "16\u00d716 `9b1fa175`",
+    "libwebp-simple": "16\u00d716 `9b1fa175`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "lossy-alpha-filter-16x16"
+  },
+  {
+   "cells": {
+    "glycin": "24\u00d724 `95276b28`",
+    "image-webp": "24\u00d724 `95276b28`",
+    "libwebp-anim": "24\u00d724 `95276b28`",
+    "libwebp-simple": "24\u00d724 `95276b28`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "lossy-alpha-q20-24x24"
+  },
+  {
+   "cells": {
+    "glycin": "17\u00d713 `5348a174`",
+    "image-webp": "17\u00d713 `5348a174`",
+    "libwebp-anim": "17\u00d713 `5348a174`",
+    "libwebp-simple": "17\u00d713 `5348a174`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "lossy-alpha-raw-17x13"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716\u00d73f `f2304f5f`",
+    "image-webp": "16\u00d716\u00d73f `f2304f5f`",
+    "libwebp-anim": "16\u00d716\u00d73f `f2304f5f`",
+    "libwebp-simple": "n/a"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "meta-anim-xmp"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4badb2c2`",
+    "image-webp": "16\u00d716 `4badb2c2`",
+    "libwebp-anim": "16\u00d716 `4badb2c2`",
+    "libwebp-simple": "16\u00d716 `4badb2c2`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "meta-ll-icc"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `ef0ffe4b`",
+    "image-webp": "16\u00d716 `ef0ffe4b`",
+    "libwebp-anim": "16\u00d716 `ef0ffe4b`",
+    "libwebp-simple": "16\u00d716 `ef0ffe4b`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "meta-lossy-alpha-exif"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `66337ad2`",
+    "image-webp": "16\u00d716 `66337ad2`",
+    "libwebp-anim": "16\u00d716 `66337ad2`",
+    "libwebp-simple": "16\u00d716 `66337ad2`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "meta-lossy-icc-exif-xmp"
+  }
+ ],
+ "timing": {
+  "comparison_seconds": 180.3,
+  "generation_seconds": 2.3,
+  "total_seconds": 238.6
+ },
+ "tolerance_max_abs_channel_diff": 2,
+ "unavailable": [
+  [
+   "gdk-pixbuf WebP module",
+   "not installed (module list: ani bmp gif icns ico pnm qtif tga tiff xbm xpm)"
+  ],
+  [
+   "`webp` crate",
+   "wraps libwebp-sys, i.e. the same libwebp code: not an independent vote, not built"
+  ],
+  [
+   "independent Rust WebP decoder other than image-webp",
+   "none found among the crates reachable in this survey; see SURVEY.md"
+  ]
+ ],
+ "visible_diff_histogram_pairs": {
+  "1": 609,
+  "8": 2,
+  "17": 4,
+  "33": 4,
+  "64": 1101
+ },
+ "witnesses": {}
+}

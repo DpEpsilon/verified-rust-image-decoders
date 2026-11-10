@@ -1,0 +1,6 @@
+#?RADIANCE
+# syic
+FORMAT=32-bit_rle_rgbe
+
+-Y 2 +X 16
+»d2Å»d2Å

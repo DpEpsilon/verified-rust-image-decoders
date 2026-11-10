@@ -1,0 +1,10 @@
+/* XPM */
+s* img[] = {
+"5 4 3 3",
+"Xcc c #84E34B",
+"aaX c RED",
+".XX c None",
+"XccaaX.XX.XX.XX",
+".XX.XXaaX.XX.XX",
+"aaX.XXaaXXcc.XX",
+"Xcc.XXaaXaaX.XX"

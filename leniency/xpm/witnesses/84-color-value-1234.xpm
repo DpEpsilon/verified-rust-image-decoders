@@ -1,0 +1,23 @@
+/* XPM */
+static char * img[] = {
+"5 4 16 1",
+") c #805C98",
+"@ c blue",
+"+ c None",
+"q c #187219",
+"x c Red",
+"m c None",
+"e c #7B9D4A",
+": c gray",
+"% c #1234",
+"> c #B5CBED",
+"9 c black",
+"* c None",
+"] c #F63E4E",
+"p c navy",
+". c None",
+"i c #E22545",
+"i%...",
+"x9p%@",
+")>ixx",
+"i+me."

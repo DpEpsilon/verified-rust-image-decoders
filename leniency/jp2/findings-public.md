@@ -1,0 +1,11 @@
+## Significant observations (seed 731, 7,000 inputs; witnesses linked above)
+
+1. Lossy 9/7 pixels: hayro (and so glycin) differs from both OpenJPEG and JasPer on 8-bit lossy seeds by up to 10 (gray, 10:1) and 42 (RGB, 8:1) levels, mean 3.5 to 5.5, while OpenJPEG and JasPer agree within 1. For 12/16-bit lossy gray glycin matches OpenJPEG within 1; hayro's 8-bit path is the outlier.
+2. hayro non-strict accepts 721 inputs (plus those hayro-strict rejects: 893 glycin/strict status differences) where hayro-strict rejects: marker and segment-length mutations (SOT TPsot, COD Lseg, unknown segment markers) are tolerated by default in glycin's path.
+3. A 4-component bare codestream without cdef: hayro non-strict and OpenJPEG (runner policy) treat the fourth component as alpha; hayro-strict rejects; JasPer ignores it (different pixels, max 255).
+4. JP2 colour-space declaration: an unspecified 3-component JP2 (jp2-unspec-3c) is rejected by glycin/hayro and decoded by OpenJPEG; a gray codestream declared sRGB (py-jp2-gray-as-srgb) is decoded by glycin/hayro and rejected by JasPer.
+5. Box-layer leniency: jp2c before jp2h, bpcc/res boxes, and a junk ICC colr box (method 2) are accepted by glycin/hayro and OpenJPEG but rejected by JasPer in the seed set; the colr enumCS sweep (60 + 40 inputs) is accepted only by OpenJPEG in its partition (155 inputs).
+6. Glycin/hayro accept ihdr width/height/bpc/colr-TBox inconsistencies that other decoders reject (390 inputs accepted by hayro and OpenJPEG; 274 by hayro and JasPer): the ihdr box is largely ignored in favour of the codestream SIZ.
+7. OpenJPEG alone (strict and non-strict) accepts 155 + 126 inputs the other families reject (marker-insert, COD levels, jp2c LBox); OpenJPEG strict and non-strict differ on 167 inputs (truncated codestreams).
+8. Lone votes per implementation family on accept/reject: hayro 1,027 lone acceptances and 119 lone rejections; OpenJPEG 223 and 315; JasPer 87 and 654 (JasPer is the strictest).
+9. Pixel disagreements among accepting decoders: 191 inputs different, 82 within tolerance; the largest are SIZ Xsiz/Ysiz mutations (hayro vs the other two, up to 255) and subsampling (XRsiz/YRsiz) where the runners replicate nearest-neighbour.

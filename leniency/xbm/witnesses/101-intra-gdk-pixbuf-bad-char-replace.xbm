@@ -1,0 +1,6 @@
+// limment
+#define img_width 8ÿ
+#define img_height 7
+static unsigned char img_bits[] = {
+ 0xf4,0x40,0x03,0x32,
+ 0xe1,0xeb,0x52

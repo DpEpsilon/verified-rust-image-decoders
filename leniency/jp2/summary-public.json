@@ -1,0 +1,6778 @@
+{
+ "acceptance_disagreements": {
+  "glycin": {
+   "glycin": 0,
+   "hayro": 82,
+   "hayro-strict": 893,
+   "jasper": 2020,
+   "openjpeg": 1850,
+   "openjpeg-nonstrict": 1874
+  },
+  "hayro": {
+   "glycin": 82,
+   "hayro": 0,
+   "hayro-strict": 811,
+   "jasper": 1992,
+   "openjpeg": 1830,
+   "openjpeg-nonstrict": 1856
+  },
+  "hayro-strict": {
+   "glycin": 893,
+   "hayro": 811,
+   "hayro-strict": 0,
+   "jasper": 1649,
+   "openjpeg": 1813,
+   "openjpeg-nonstrict": 1980
+  },
+  "jasper": {
+   "glycin": 2020,
+   "hayro": 1992,
+   "hayro-strict": 1649,
+   "jasper": 0,
+   "openjpeg": 1112,
+   "openjpeg-nonstrict": 1279
+  },
+  "openjpeg": {
+   "glycin": 1850,
+   "hayro": 1830,
+   "hayro-strict": 1813,
+   "jasper": 1112,
+   "openjpeg": 0,
+   "openjpeg-nonstrict": 167
+  },
+  "openjpeg-nonstrict": {
+   "glycin": 1874,
+   "hayro": 1856,
+   "hayro-strict": 1980,
+   "jasper": 1279,
+   "openjpeg": 167,
+   "openjpeg-nonstrict": 0
+  }
+ },
+ "anomaly_counts": {},
+ "changed_relations": 5423,
+ "classes": {
+  "accept-different-pixels": 191,
+  "accept-vs-reject": 2987,
+  "all-accept-identical-pixels": 845,
+  "all-accept-within-tolerance": 82,
+  "all-reject": 2881
+ },
+ "decoders": {
+  "glycin": {
+   "doc": "glycin-image-rs `ImgLoader` for `image/jp2` / `image/x-jp2-codestream` (hayro_jpeg2000 0.3.5 `integration::Jp2Decoder`, default settings)",
+   "group": "hayro_jpeg2000",
+   "status_counts": {
+    "error": 3490,
+    "ok": 3496
+   }
+  },
+  "hayro": {
+   "doc": "hayro-jpeg2000 0.3.5 called directly, `strict=false` (glycin default)",
+   "group": "hayro_jpeg2000",
+   "status_counts": {
+    "error": 3572,
+    "ok": 3414
+   }
+  },
+  "hayro-strict": {
+   "doc": "hayro-jpeg2000 with `strict=true`",
+   "group": "hayro_jpeg2000",
+   "status_counts": {
+    "error": 4383,
+    "ok": 2603
+   }
+  },
+  "jasper": {
+   "doc": "JasPer 4.2.9 `jas_image_decode`, gray/RGB(+opacity) only; runner-side RGBA8 normalisation",
+   "group": "jasper",
+   "status_counts": {
+    "error": 4827,
+    "ok": 1751,
+    "skip": 408
+   }
+  },
+  "openjpeg": {
+   "doc": "OpenJPEG 2.5.x (github master, built with gcc/cmake) `opj_decode`, default strict mode; runner-side RGBA8 normalisation",
+   "group": "openjpeg",
+   "status_counts": {
+    "error": 4455,
+    "ok": 2240,
+    "skip": 291
+   }
+  },
+  "openjpeg-nonstrict": {
+   "doc": "OpenJPEG with `opj_decoder_set_strict_mode(false)` (accepts truncated codestreams)",
+   "group": "openjpeg",
+   "status_counts": {
+    "error": 4271,
+    "ok": 2407,
+    "skip": 308
+   }
+  }
+ },
+ "distinct_seeds": 53,
+ "format": "jp2",
+ "inputs": 6986,
+ "lone_acceptor_by_group": {
+  "hayro_jpeg2000": 1027,
+  "jasper": 87,
+  "openjpeg": 223
+ },
+ "lone_rejecter_by_group": {
+  "hayro_jpeg2000": 119,
+  "jasper": 654,
+  "openjpeg": 315
+ },
+ "partitions": [
+  {
+   "accepting": [
+    "glycin",
+    "hayro",
+    "hayro-strict"
+   ],
+   "cells": {
+    "glycin": "1\u00d71 `e3820096`",
+    "hayro": "1\u00d71 `e3820096`",
+    "hayro-strict": "1\u00d71 `e3820096`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "count": 721,
+   "rejecting": [
+    "openjpeg",
+    "openjpeg-nonstrict",
+    "jasper"
+   ],
+   "top_rules": [
+    [
+     "field:\u0000)\u0000\u0000_TBox",
+     78
+    ],
+    [
+     "field:SOT_TPsot",
+     71
+    ],
+    [
+     "field:COD_Lseg",
+     70
+    ],
+    [
+     "field:SIZ_Lseg",
+     68
+    ]
+   ],
+   "unchanged_seed": 1,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "1\u00d71 `e3820096`",
+     "hayro": "1\u00d71 `e3820096`",
+     "hayro-strict": "1\u00d71 `e3820096`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `decode`",
+     "openjpeg-nonstrict": "reject `decode`"
+    },
+    "file": "lenient-01-1006.jp2",
+    "minimised_length": 124,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 1006
+  },
+  {
+   "accepting": [
+    "glycin",
+    "hayro",
+    "hayro-strict",
+    "openjpeg",
+    "openjpeg-nonstrict"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `b3d08689`",
+    "hayro": "16\u00d716 `b3d08689`",
+    "hayro-strict": "16\u00d716 `b3d08689`",
+    "jasper": "reject `decode`",
+    "openjpeg": "16\u00d716 `b3d08689`",
+    "openjpeg-nonstrict": "16\u00d716 `b3d08689`"
+   },
+   "count": 390,
+   "rejecting": [
+    "jasper"
+   ],
+   "top_rules": [
+    [
+     "field:colr_TBox",
+     69
+    ],
+    [
+     "field:ihdr_bpc",
+     57
+    ],
+    [
+     "field:ihdr_c",
+     55
+    ],
+    [
+     "field:ihdr_nc",
+     41
+    ]
+   ],
+   "unchanged_seed": 3,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "16\u00d716 `b3d08689`",
+     "hayro": "16\u00d716 `b3d08689`",
+     "hayro-strict": "16\u00d716 `b3d08689`",
+     "jasper": "reject `decode`",
+     "openjpeg": "16\u00d716 `b3d08689`",
+     "openjpeg-nonstrict": "16\u00d716 `b3d08689`"
+    },
+    "file": "lenient-02-1913.jp2",
+    "minimised_length": 142,
+    "original_length": 142,
+    "same_signature_as_original": true
+   },
+   "witness_id": 1913
+  },
+  {
+   "accepting": [
+    "glycin",
+    "hayro"
+   ],
+   "cells": {
+    "glycin": "1\u00d71 `79dfad35`",
+    "hayro": "1\u00d71 `79dfad35`",
+    "hayro-strict": "reject `Tile`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "count": 294,
+   "rejecting": [
+    "hayro-strict",
+    "openjpeg",
+    "openjpeg-nonstrict",
+    "jasper"
+   ],
+   "top_rules": [
+    [
+     "field:Mff93_marker",
+     61
+    ],
+    [
+     "field:SIZ_XRsiz",
+     26
+    ],
+    [
+     "field:SIZ_YRsiz",
+     25
+    ],
+    [
+     "field:COD_cbstyle",
+     23
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "1\u00d71 `79dfad35`",
+     "hayro": "1\u00d71 `79dfad35`",
+     "hayro-strict": "reject `Marker`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `read_header`",
+     "openjpeg-nonstrict": "reject `read_header`"
+    },
+    "file": "lenient-03-427.jp2",
+    "minimised_length": 117,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 427
+  },
+  {
+   "accepting": [
+    "glycin",
+    "hayro",
+    "hayro-strict",
+    "jasper"
+   ],
+   "cells": {
+    "glycin": "1\u00d71 `e3820096`",
+    "hayro": "1\u00d71 `e3820096`",
+    "hayro-strict": "1\u00d71 `e3820096`",
+    "jasper": "1\u00d71 `e3820096`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "count": 274,
+   "rejecting": [
+    "openjpeg",
+    "openjpeg-nonstrict"
+   ],
+   "top_rules": [
+    [
+     "field:ihdr_width",
+     45
+    ],
+    [
+     "field:ihdr_height",
+     44
+    ],
+    [
+     "field:COD_cbh",
+     33
+    ],
+    [
+     "field:COD_cbw",
+     27
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "1\u00d71 `e3820096`",
+     "hayro": "1\u00d71 `e3820096`",
+     "hayro-strict": "1\u00d71 `e3820096`",
+     "jasper": "1\u00d71 `e3820096`",
+     "openjpeg": "reject `read_header`",
+     "openjpeg-nonstrict": "reject `read_header`"
+    },
+    "file": "lenient-04-6083.jp2",
+    "minimised_length": 124,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 6083
+  },
+  {
+   "accepting": [
+    "glycin",
+    "hayro",
+    "openjpeg",
+    "openjpeg-nonstrict"
+   ],
+   "cells": {
+    "glycin": "1\u00d71 `79dfad35`",
+    "hayro": "1\u00d71 `79dfad35`",
+    "hayro-strict": "reject `Tile`",
+    "jasper": "reject `decode`",
+    "openjpeg": "1\u00d71 `79dfad35`",
+    "openjpeg-nonstrict": "1\u00d71 `79dfad35`"
+   },
+   "count": 192,
+   "rejecting": [
+    "hayro-strict",
+    "jasper"
+   ],
+   "top_rules": [
+    [
+     "field:SIZ_YRsiz",
+     18
+    ],
+    [
+     "sot-psot",
+     16
+    ],
+    [
+     "field:COD_levels",
+     16
+    ],
+    [
+     "field:cdef_typ0",
+     15
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "1\u00d71 `79dfad35`",
+     "hayro": "1\u00d71 `79dfad35`",
+     "hayro-strict": "reject `Tile`",
+     "jasper": "reject `decode`",
+     "openjpeg": "1\u00d71 `79dfad35`",
+     "openjpeg-nonstrict": "1\u00d71 `79dfad35`"
+    },
+    "file": "lenient-05-2261.jp2",
+    "minimised_length": 124,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 2261
+  },
+  {
+   "accepting": [
+    "glycin",
+    "hayro",
+    "openjpeg",
+    "openjpeg-nonstrict",
+    "jasper"
+   ],
+   "cells": {
+    "glycin": "1\u00d71 `79dfad35`",
+    "hayro": "1\u00d71 `79dfad35`",
+    "hayro-strict": "reject `Decoding`",
+    "jasper": "1\u00d71 `79dfad35`",
+    "openjpeg": "1\u00d71 `79dfad35`",
+    "openjpeg-nonstrict": "1\u00d71 `79dfad35`"
+   },
+   "count": 188,
+   "rejecting": [
+    "hayro-strict"
+   ],
+   "top_rules": [
+    [
+     "field:QCD_SPqcd0",
+     37
+    ],
+    [
+     "field:QCD_SPqcd1",
+     29
+    ],
+    [
+     "trailing-bytes",
+     18
+    ],
+    [
+     "eoc",
+     15
+    ]
+   ],
+   "unchanged_seed": 3,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "1\u00d71 `79dfad35`",
+     "hayro": "1\u00d71 `79dfad35`",
+     "hayro-strict": "reject `Decoding`",
+     "jasper": "1\u00d71 `79dfad35`",
+     "openjpeg": "1\u00d71 `79dfad35`",
+     "openjpeg-nonstrict": "1\u00d71 `79dfad35`"
+    },
+    "file": "lenient-06-1277.jp2",
+    "minimised_length": 124,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 1277
+  },
+  {
+   "accepting": [
+    "openjpeg",
+    "openjpeg-nonstrict"
+   ],
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "n/a",
+    "openjpeg": "1\u00d71 `e3820096`",
+    "openjpeg-nonstrict": "1\u00d71 `e3820096`"
+   },
+   "count": 155,
+   "rejecting": [
+    "glycin",
+    "hayro",
+    "hayro-strict"
+   ],
+   "top_rules": [
+    [
+     "field:colr_enumcs",
+     60
+    ],
+    [
+     "wrap-colr-enumcs",
+     40
+    ],
+    [
+     "field:ihdr_ipr",
+     6
+    ],
+    [
+     "box-insert",
+     6
+    ]
+   ],
+   "unchanged_seed": 1,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "hayro": "reject `Format`",
+     "hayro-strict": "reject `Format`",
+     "jasper": "n/a",
+     "openjpeg": "1\u00d71 `e3820096`",
+     "openjpeg-nonstrict": "1\u00d71 `e3820096`"
+    },
+    "file": "lenient-07-2180.jp2",
+    "minimised_length": 209,
+    "original_length": 209,
+    "same_signature_as_original": true
+   },
+   "witness_id": 2180
+  },
+  {
+   "accepting": [
+    "openjpeg",
+    "openjpeg-nonstrict"
+   ],
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Validation`",
+    "hayro-strict": "reject `Validation`",
+    "jasper": "reject `decode`",
+    "openjpeg": "1\u00d71 `e3820096`",
+    "openjpeg-nonstrict": "1\u00d71 `e3820096`"
+   },
+   "count": 126,
+   "rejecting": [
+    "glycin",
+    "hayro",
+    "hayro-strict",
+    "jasper"
+   ],
+   "top_rules": [
+    [
+     "marker-insert",
+     29
+    ],
+    [
+     "field:COD_levels",
+     20
+    ],
+    [
+     "field:jp2c_LBox",
+     15
+    ],
+    [
+     "field:QCD_Sqcd",
+     15
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "hayro": "reject `Validation`",
+     "hayro-strict": "reject `Validation`",
+     "jasper": "reject `decode`",
+     "openjpeg": "1\u00d71 `e3820096`",
+     "openjpeg-nonstrict": "1\u00d71 `e3820096`"
+    },
+    "file": "lenient-08-5349.jp2",
+    "minimised_length": 124,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 5349
+  },
+  {
+   "accepting": [
+    "openjpeg",
+    "openjpeg-nonstrict",
+    "jasper"
+   ],
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "1\u00d71 `e3820096`",
+    "openjpeg": "1\u00d71 `e3820096`",
+    "openjpeg-nonstrict": "1\u00d71 `e3820096`"
+   },
+   "count": 119,
+   "rejecting": [
+    "glycin",
+    "hayro",
+    "hayro-strict"
+   ],
+   "top_rules": [
+    [
+     "field:jp2c_LBox",
+     35
+    ],
+    [
+     "field:COD_layers",
+     30
+    ],
+    [
+     "marker-insert",
+     27
+    ],
+    [
+     "marker-duplicate",
+     12
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "hayro": "reject `Marker`",
+     "hayro-strict": "reject `Marker`",
+     "jasper": "1\u00d71 `e3820096`",
+     "openjpeg": "1\u00d71 `e3820096`",
+     "openjpeg-nonstrict": "1\u00d71 `e3820096`"
+    },
+    "file": "lenient-09-4396.jp2",
+    "minimised_length": 130,
+    "original_length": 130,
+    "same_signature_as_original": true
+   },
+   "witness_id": 4396
+  },
+  {
+   "accepting": [
+    "openjpeg-nonstrict"
+   ],
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Tile`",
+    "hayro-strict": "reject `Tile`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "1\u00d71 `e3820096`"
+   },
+   "count": 97,
+   "rejecting": [
+    "glycin",
+    "hayro",
+    "hayro-strict",
+    "openjpeg",
+    "jasper"
+   ],
+   "top_rules": [
+    [
+     "tile-data-truncate",
+     48
+    ],
+    [
+     "field:SOT_Psot",
+     23
+    ],
+    [
+     "truncation",
+     14
+    ],
+    [
+     "field:COD_levels",
+     3
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "hayro": "reject `Tile`",
+     "hayro-strict": "reject `Tile`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `decode`",
+     "openjpeg-nonstrict": "1\u00d71 `79dfad35`"
+    },
+    "file": "lenient-10-2613.jp2",
+    "minimised_length": 120,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 2613
+  },
+  {
+   "accepting": [
+    "jasper"
+   ],
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Validation`",
+    "hayro-strict": "reject `Validation`",
+    "jasper": "1\u00d71572865 `3125ac5b`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "count": 87,
+   "rejecting": [
+    "glycin",
+    "hayro",
+    "hayro-strict",
+    "openjpeg",
+    "openjpeg-nonstrict"
+   ],
+   "top_rules": [
+    [
+     "field:jp2h_LBox",
+     36
+    ],
+    [
+     "box-length-zero",
+     11
+    ],
+    [
+     "box-duplicate",
+     10
+    ],
+    [
+     "field:QCD_Sqcd",
+     9
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "hayro": "reject `Validation`",
+     "hayro-strict": "reject `Validation`",
+     "jasper": "1\u00d71572865 `3125ac5b`",
+     "openjpeg": "reject `read_header`",
+     "openjpeg-nonstrict": "reject `read_header`"
+    },
+    "file": "lenient-11-5338.jp2",
+    "minimised_length": 124,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 5338
+  },
+  {
+   "accepting": [
+    "glycin",
+    "hayro",
+    "hayro-strict"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "reject `layout`",
+    "openjpeg": "n/a",
+    "openjpeg-nonstrict": "n/a"
+   },
+   "count": 75,
+   "rejecting": [
+    "jasper"
+   ],
+   "top_rules": [
+    [
+     "field:ihdr_bpc",
+     9
+    ],
+    [
+     "field:ihdr_c",
+     8
+    ],
+    [
+     "wrap-bare",
+     8
+    ],
+    [
+     "field:cmap_TBox",
+     6
+    ]
+   ],
+   "unchanged_seed": 1,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "16\u00d716 `4102f1f4`",
+     "hayro": "16\u00d716 `4102f1f4`",
+     "hayro-strict": "16\u00d716 `4102f1f4`",
+     "jasper": "reject `layout`",
+     "openjpeg": "n/a",
+     "openjpeg-nonstrict": "n/a"
+    },
+    "file": "lenient-12-4657.jp2",
+    "minimised_length": 240,
+    "original_length": 240,
+    "same_signature_as_original": true
+   },
+   "witness_id": 4657
+  },
+  {
+   "accepting": [
+    "glycin",
+    "hayro",
+    "openjpeg-nonstrict"
+   ],
+   "cells": {
+    "glycin": "1\u00d71 `e3820096`",
+    "hayro": "1\u00d71 `e3820096`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "1\u00d71 `e3820096`"
+   },
+   "count": 70,
+   "rejecting": [
+    "hayro-strict",
+    "openjpeg",
+    "jasper"
+   ],
+   "top_rules": [
+    [
+     "tile-data-truncate",
+     19
+    ],
+    [
+     "field:COD_cbstyle",
+     13
+    ],
+    [
+     "sot-psot",
+     11
+    ],
+    [
+     "field:SIZ_XRsiz",
+     7
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "1\u00d71 `e3820096`",
+     "hayro": "1\u00d71 `e3820096`",
+     "hayro-strict": "reject `Marker`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `decode`",
+     "openjpeg-nonstrict": "1\u00d71 `e3820096`"
+    },
+    "file": "lenient-13-5128.jp2",
+    "minimised_length": 124,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 5128
+  },
+  {
+   "accepting": [
+    "glycin",
+    "hayro",
+    "jasper"
+   ],
+   "cells": {
+    "glycin": "1\u00d71 `79dfad35`",
+    "hayro": "1\u00d71 `79dfad35`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "1\u00d71 `e3820096`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "count": 40,
+   "rejecting": [
+    "hayro-strict",
+    "openjpeg",
+    "openjpeg-nonstrict"
+   ],
+   "top_rules": [
+    [
+     "sot-psot",
+     18
+    ],
+    [
+     "field:SOT_Psot",
+     5
+    ],
+    [
+     "field:COD_cbw",
+     4
+    ],
+    [
+     "wrap-inconsistent",
+     3
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "1\u00d71 `79dfad35`",
+     "hayro": "1\u00d71 `79dfad35`",
+     "hayro-strict": "reject `Marker`",
+     "jasper": "1\u00d71 `e3820096`",
+     "openjpeg": "reject `decode`",
+     "openjpeg-nonstrict": "reject `decode`"
+    },
+    "file": "lenient-14-6311.jp2",
+    "minimised_length": 124,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 6311
+  },
+  {
+   "accepting": [
+    "glycin"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `97830e72`",
+    "hayro": "reject `unsupported channel la`",
+    "hayro-strict": "reject `unsupported channel la`",
+    "jasper": "n/a",
+    "openjpeg": "n/a",
+    "openjpeg-nonstrict": "n/a"
+   },
+   "count": 34,
+   "rejecting": [
+    "hayro",
+    "hayro-strict"
+   ],
+   "top_rules": [
+    [
+     "field:ihdr_ipr",
+     5
+    ],
+    [
+     "box-insert",
+     5
+    ],
+    [
+     "field:colr_prec",
+     4
+    ],
+    [
+     "box-duplicate",
+     2
+    ]
+   ],
+   "unchanged_seed": 1,
+   "witness_id": 31
+  },
+  {
+   "accepting": [
+    "jasper"
+   ],
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Validation`",
+    "hayro-strict": "reject `Validation`",
+    "jasper": "16\u00d716 `3e9a9ba0`",
+    "openjpeg": "n/a",
+    "openjpeg-nonstrict": "n/a"
+   },
+   "count": 25,
+   "rejecting": [
+    "glycin",
+    "hayro",
+    "hayro-strict"
+   ],
+   "top_rules": [
+    [
+     "field:COD_layers",
+     3
+    ],
+    [
+     "packet-data-byte",
+     2
+    ],
+    [
+     "bit-flip",
+     2
+    ],
+    [
+     "field:SIZ_Rsiz",
+     2
+    ]
+   ],
+   "unchanged_seed": 1,
+   "witness_id": 3459
+  },
+  {
+   "accepting": [
+    "glycin",
+    "hayro",
+    "hayro-strict"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `9b71770b`",
+    "hayro": "16\u00d716 `9b71770b`",
+    "hayro-strict": "16\u00d716 `9b71770b`",
+    "jasper": "n/a",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "count": 25,
+   "rejecting": [
+    "openjpeg",
+    "openjpeg-nonstrict"
+   ],
+   "top_rules": [
+    [
+     "field:ihdr_width",
+     7
+    ],
+    [
+     "field:ihdr_height",
+     6
+    ],
+    [
+     "field:COD_cbh",
+     4
+    ],
+    [
+     "field:COD_mct",
+     3
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness_id": 544
+  },
+  {
+   "accepting": [
+    "glycin"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `7af360d2`",
+    "hayro": "reject `unsupported channel la`",
+    "hayro-strict": "reject `Tile`",
+    "jasper": "reject `decode`",
+    "openjpeg": "n/a",
+    "openjpeg-nonstrict": "n/a"
+   },
+   "count": 19,
+   "rejecting": [
+    "hayro",
+    "hayro-strict",
+    "jasper"
+   ],
+   "top_rules": [
+    [
+     "field:SIZ_YRsiz",
+     4
+    ],
+    [
+     "field:ihdr_nc",
+     4
+    ],
+    [
+     "field:ihdr_c",
+     2
+    ],
+    [
+     "field:SIZ_Ssiz",
+     2
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness_id": 101
+  },
+  {
+   "accepting": [
+    "glycin",
+    "hayro"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `4ccc172f`",
+    "hayro": "16\u00d716 `4ccc172f`",
+    "hayro-strict": "reject `Tile`",
+    "jasper": "reject `decode`",
+    "openjpeg": "n/a",
+    "openjpeg-nonstrict": "n/a"
+   },
+   "count": 14,
+   "rejecting": [
+    "hayro-strict",
+    "jasper"
+   ],
+   "top_rules": [
+    [
+     "field:SIZ_XRsiz",
+     3
+    ],
+    [
+     "field:QCD_SPqcd1",
+     3
+    ],
+    [
+     "field:QCD_SPqcd0",
+     2
+    ],
+    [
+     "field:COD_cbh",
+     1
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness_id": 973
+  },
+  {
+   "accepting": [
+    "glycin"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `97830e72`",
+    "hayro": "reject `unsupported channel la`",
+    "hayro-strict": "reject `unsupported channel la`",
+    "jasper": "n/a",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "count": 12,
+   "rejecting": [
+    "hayro",
+    "hayro-strict",
+    "openjpeg",
+    "openjpeg-nonstrict"
+   ],
+   "top_rules": [
+    [
+     "field:ihdr_width",
+     2
+    ],
+    [
+     "field:ihdr_height",
+     2
+    ],
+    [
+     "field:SIZ_Ysiz",
+     2
+    ],
+    [
+     "field:jp2h_LBox",
+     1
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness_id": 150
+  },
+  {
+   "accepting": [
+    "glycin"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `97830e72`",
+    "hayro": "reject `unsupported channel la`",
+    "hayro-strict": "reject `unsupported channel la`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "count": 9,
+   "rejecting": [
+    "hayro",
+    "hayro-strict",
+    "openjpeg",
+    "openjpeg-nonstrict",
+    "jasper"
+   ],
+   "top_rules": [
+    [
+     "field:ihdr_TBox",
+     5
+    ],
+    [
+     "field:SOT_TPsot",
+     2
+    ],
+    [
+     "field:COD_cbstyle",
+     1
+    ],
+    [
+     "field:SIZ_Lseg",
+     1
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness_id": 110
+  },
+  {
+   "accepting": [
+    "glycin",
+    "hayro",
+    "openjpeg",
+    "openjpeg-nonstrict"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `8fc72ce4`",
+    "hayro": "16\u00d716 `9426fe4f`",
+    "hayro-strict": "reject `unsupported channel la`",
+    "jasper": "n/a",
+    "openjpeg": "16\u00d716 `0a2cc235`",
+    "openjpeg-nonstrict": "16\u00d716 `0a2cc235`"
+   },
+   "count": 9,
+   "rejecting": [
+    "hayro-strict"
+   ],
+   "top_rules": [
+    [
+     "wrap-colr-enumcs",
+     6
+    ],
+    [
+     "field:QCD_SPqcd1",
+     1
+    ],
+    [
+     "eoc",
+     1
+    ],
+    [
+     "field:QCD_SPqcd0",
+     1
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness_id": 1631
+  },
+  {
+   "accepting": [
+    "glycin"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `5bb853d0`",
+    "hayro": "reject `unsupported channel la`",
+    "hayro-strict": "reject `Tile`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "n/a"
+   },
+   "count": 2,
+   "rejecting": [
+    "hayro",
+    "hayro-strict",
+    "openjpeg",
+    "jasper"
+   ],
+   "top_rules": [
+    [
+     "field:COD_cbstyle",
+     1
+    ],
+    [
+     "sot-psot",
+     1
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness_id": 1166
+  },
+  {
+   "accepting": [
+    "glycin",
+    "openjpeg",
+    "openjpeg-nonstrict",
+    "jasper"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `97830e72`",
+    "hayro": "reject `unsupported channel la`",
+    "hayro-strict": "reject `unsupported channel la`",
+    "jasper": "16\u00d716 `3e9a9ba0`",
+    "openjpeg": "16\u00d716 `0a2cc235`",
+    "openjpeg-nonstrict": "16\u00d716 `0a2cc235`"
+   },
+   "count": 2,
+   "rejecting": [
+    "hayro",
+    "hayro-strict"
+   ],
+   "top_rules": [
+    [
+     "field:colr_meth",
+     2
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness_id": 2239
+  },
+  {
+   "accepting": [
+    "glycin",
+    "hayro"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `9b71770b`",
+    "hayro": "16\u00d716 `9b71770b`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "n/a",
+    "openjpeg": "n/a",
+    "openjpeg-nonstrict": "n/a"
+   },
+   "count": 2,
+   "rejecting": [
+    "hayro-strict"
+   ],
+   "top_rules": [
+    [
+     "eoc",
+     1
+    ],
+    [
+     "wrap-bare",
+     1
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness_id": 4750
+  },
+  {
+   "accepting": [
+    "glycin",
+    "openjpeg",
+    "openjpeg-nonstrict"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `97830e72`",
+    "hayro": "reject `unsupported channel la`",
+    "hayro-strict": "reject `unsupported channel la`",
+    "jasper": "reject `decode`",
+    "openjpeg": "16\u00d716 `0a2cc235`",
+    "openjpeg-nonstrict": "16\u00d716 `0a2cc235`"
+   },
+   "count": 2,
+   "rejecting": [
+    "hayro",
+    "hayro-strict",
+    "jasper"
+   ],
+   "top_rules": [
+    [
+     "field:colr_TBox",
+     2
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness_id": 5217
+  },
+  {
+   "accepting": [
+    "glycin",
+    "hayro"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `08fa144b`",
+    "hayro": "16\u00d716 `08fa144b`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "n/a",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "count": 1,
+   "rejecting": [
+    "hayro-strict",
+    "openjpeg",
+    "openjpeg-nonstrict"
+   ],
+   "top_rules": [
+    [
+     "field:SOT_Psot",
+     1
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness_id": 1394
+  },
+  {
+   "accepting": [
+    "glycin",
+    "hayro"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "n/a"
+   },
+   "count": 1,
+   "rejecting": [
+    "hayro-strict",
+    "openjpeg",
+    "jasper"
+   ],
+   "top_rules": [
+    [
+     "sot-psot",
+     1
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness_id": 3122
+  },
+  {
+   "accepting": [
+    "glycin",
+    "jasper"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `51a85245`",
+    "hayro": "reject `unsupported channel la`",
+    "hayro-strict": "reject `unsupported channel la`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "n/a",
+    "openjpeg-nonstrict": "n/a"
+   },
+   "count": 1,
+   "rejecting": [
+    "hayro",
+    "hayro-strict"
+   ],
+   "top_rules": [
+    [
+     "wrap-bare",
+     1
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness_id": 5581
+  },
+  {
+   "accepting": [
+    "glycin",
+    "jasper"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `51a85245`",
+    "hayro": "reject `unsupported channel la`",
+    "hayro-strict": "reject `unsupported channel la`",
+    "jasper": "16\u00d716 `2fa147b9`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "count": 1,
+   "rejecting": [
+    "hayro",
+    "hayro-strict",
+    "openjpeg",
+    "openjpeg-nonstrict"
+   ],
+   "top_rules": [
+    [
+     "field:jp2h_LBox",
+     1
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness_id": 5981
+  }
+ ],
+ "pixel_rows": [
+  {
+   "cells": {
+    "glycin": "16\u00d716 `f27d332f`",
+    "hayro": "16\u00d716 `f27d332f`",
+    "hayro-strict": "16\u00d716 `f27d332f`",
+    "jasper": "16\u00d716 `9503245a`",
+    "openjpeg": "16\u00d716 `9503245a`",
+    "openjpeg-nonstrict": "16\u00d716 `9503245a`"
+   },
+   "class": "accept-different-pixels",
+   "count": 88,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "openjpeg",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "openjpeg-nonstrict",
+     "different-pixels"
+    ],
+    [
+     "hayro",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "hayro",
+     "openjpeg",
+     "different-pixels"
+    ],
+    [
+     "hayro",
+     "openjpeg-nonstrict",
+     "different-pixels"
+    ],
+    [
+     "hayro-strict",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg",
+     "different-pixels"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg-nonstrict",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 255,
+   "rules": [
+    [
+     "field:SIZ_Ysiz",
+     14
+    ],
+    [
+     "field:SIZ_Xsiz",
+     11
+    ],
+    [
+     "field:SIZ_XTsiz",
+     8
+    ],
+    [
+     "field:QCD_SPqcd1",
+     7
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "16\u00d716 `f27d332f`",
+     "hayro": "16\u00d716 `f27d332f`",
+     "hayro-strict": "16\u00d716 `f27d332f`",
+     "jasper": "16\u00d716 `9503245a`",
+     "openjpeg": "16\u00d716 `9503245a`",
+     "openjpeg-nonstrict": "16\u00d716 `9503245a`"
+    },
+    "file": "pixel-01-568.jp2",
+    "minimised_length": 142,
+    "original_length": 142,
+    "same_signature_as_original": true
+   },
+   "witness_id": 568
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `d307b31b`",
+    "hayro": "16\u00d716 `d307b31b`",
+    "hayro-strict": "16\u00d716 `d307b31b`",
+    "jasper": "16\u00d716 `56e4792c`",
+    "openjpeg": "16\u00d716 `56e4792c`",
+    "openjpeg-nonstrict": "16\u00d716 `56e4792c`"
+   },
+   "class": "all-accept-within-tolerance",
+   "count": 60,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jasper",
+     "within-tol"
+    ],
+    [
+     "glycin",
+     "openjpeg",
+     "within-tol"
+    ],
+    [
+     "glycin",
+     "openjpeg-nonstrict",
+     "within-tol"
+    ],
+    [
+     "hayro",
+     "jasper",
+     "within-tol"
+    ],
+    [
+     "hayro",
+     "openjpeg",
+     "within-tol"
+    ],
+    [
+     "hayro",
+     "openjpeg-nonstrict",
+     "within-tol"
+    ],
+    [
+     "hayro-strict",
+     "jasper",
+     "within-tol"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg",
+     "within-tol"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg-nonstrict",
+     "within-tol"
+    ]
+   ],
+   "max_abs_diff": 1,
+   "rules": [
+    [
+     "field:SOT_TNsot",
+     6
+    ],
+    [
+     "field:ihdr_ipr",
+     4
+    ],
+    [
+     "field:QCD_SPqcd1",
+     4
+    ],
+    [
+     "field:SIZ_Rsiz",
+     4
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "16\u00d716 `d307b31b`",
+     "hayro": "16\u00d716 `d307b31b`",
+     "hayro-strict": "16\u00d716 `d307b31b`",
+     "jasper": "16\u00d716 `56e4792c`",
+     "openjpeg": "16\u00d716 `56e4792c`",
+     "openjpeg-nonstrict": "16\u00d716 `56e4792c`"
+    },
+    "file": "pixel-02-4171.jp2",
+    "minimised_length": 179,
+    "original_length": 179,
+    "same_signature_as_original": true
+   },
+   "witness_id": 4171
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `5d977c50`",
+    "hayro": "32\u00d732 `5d977c50`",
+    "hayro-strict": "32\u00d732 `5d977c50`",
+    "jasper": "32\u00d732 `e039989e`",
+    "openjpeg": "32\u00d732 `967b0f26`",
+    "openjpeg-nonstrict": "32\u00d732 `967b0f26`"
+   },
+   "class": "accept-different-pixels",
+   "count": 44,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "openjpeg",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "openjpeg-nonstrict",
+     "different-pixels"
+    ],
+    [
+     "hayro",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "hayro",
+     "openjpeg",
+     "different-pixels"
+    ],
+    [
+     "hayro",
+     "openjpeg-nonstrict",
+     "different-pixels"
+    ],
+    [
+     "hayro-strict",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg",
+     "different-pixels"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg-nonstrict",
+     "different-pixels"
+    ],
+    [
+     "openjpeg",
+     "jasper",
+     "within-tol"
+    ],
+    [
+     "openjpeg-nonstrict",
+     "jasper",
+     "within-tol"
+    ]
+   ],
+   "max_abs_diff": 11,
+   "rules": [
+    [
+     "field:QCD_SPqcd1",
+     5
+    ],
+    [
+     "field:SIZ_YTsiz",
+     4
+    ],
+    [
+     "trailing-bytes",
+     3
+    ],
+    [
+     "packet-data-byte",
+     3
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "32\u00d732 `5d977c50`",
+     "hayro": "32\u00d732 `5d977c50`",
+     "hayro-strict": "32\u00d732 `5d977c50`",
+     "jasper": "32\u00d732 `e039989e`",
+     "openjpeg": "32\u00d732 `967b0f26`",
+     "openjpeg-nonstrict": "32\u00d732 `967b0f26`"
+    },
+    "file": "pixel-03-16.jp2",
+    "minimised_length": 179,
+    "original_length": 179,
+    "same_signature_as_original": true
+   },
+   "witness_id": 16
+  },
+  {
+   "cells": {
+    "glycin": "24\u00d724 `4ef1a708`",
+    "hayro": "24\u00d724 `4ef1a708`",
+    "hayro-strict": "24\u00d724 `4ef1a708`",
+    "jasper": "24\u00d724 `fb8120a9`",
+    "openjpeg": "24\u00d724 `4791a645`",
+    "openjpeg-nonstrict": "24\u00d724 `4791a645`"
+   },
+   "class": "accept-different-pixels",
+   "count": 26,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "openjpeg",
+     "within-tol"
+    ],
+    [
+     "glycin",
+     "openjpeg-nonstrict",
+     "within-tol"
+    ],
+    [
+     "hayro",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "hayro",
+     "openjpeg",
+     "within-tol"
+    ],
+    [
+     "hayro",
+     "openjpeg-nonstrict",
+     "within-tol"
+    ],
+    [
+     "hayro-strict",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg",
+     "within-tol"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg-nonstrict",
+     "within-tol"
+    ],
+    [
+     "openjpeg",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "openjpeg-nonstrict",
+     "jasper",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 128,
+   "rules": [
+    [
+     "field:SIZ_Rsiz",
+     3
+    ],
+    [
+     "field:QCD_SPqcd0",
+     2
+    ],
+    [
+     "trailing-bytes",
+     2
+    ],
+    [
+     "marker-duplicate",
+     2
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "24\u00d724 `4ef1a708`",
+     "hayro": "24\u00d724 `4ef1a708`",
+     "hayro-strict": "24\u00d724 `4ef1a708`",
+     "jasper": "24\u00d724 `fb8120a9`",
+     "openjpeg": "24\u00d724 `4791a645`",
+     "openjpeg-nonstrict": "24\u00d724 `4791a645`"
+    },
+    "file": "pixel-04-1526.jp2",
+    "minimised_length": 167,
+    "original_length": 167,
+    "same_signature_as_original": true
+   },
+   "witness_id": 1526
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `e96962ba`",
+    "hayro": "32\u00d732 `e96962ba`",
+    "hayro-strict": "32\u00d732 `e96962ba`",
+    "jasper": "32\u00d732 `8161cafb`",
+    "openjpeg": "32\u00d732 `c8c89f1e`",
+    "openjpeg-nonstrict": "32\u00d732 `c8c89f1e`"
+   },
+   "class": "all-accept-within-tolerance",
+   "count": 19,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jasper",
+     "within-tol"
+    ],
+    [
+     "glycin",
+     "openjpeg",
+     "within-tol"
+    ],
+    [
+     "glycin",
+     "openjpeg-nonstrict",
+     "within-tol"
+    ],
+    [
+     "hayro",
+     "jasper",
+     "within-tol"
+    ],
+    [
+     "hayro",
+     "openjpeg",
+     "within-tol"
+    ],
+    [
+     "hayro",
+     "openjpeg-nonstrict",
+     "within-tol"
+    ],
+    [
+     "hayro-strict",
+     "jasper",
+     "within-tol"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg",
+     "within-tol"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg-nonstrict",
+     "within-tol"
+    ],
+    [
+     "openjpeg",
+     "jasper",
+     "within-tol"
+    ],
+    [
+     "openjpeg-nonstrict",
+     "jasper",
+     "within-tol"
+    ]
+   ],
+   "max_abs_diff": 2,
+   "rules": [
+    [
+     "field:QCD_SPqcd1",
+     2
+    ],
+    [
+     "field:SIZ_XTsiz",
+     2
+    ],
+    [
+     "field:COD_cbstyle",
+     2
+    ],
+    [
+     "field:SIZ_YOsiz",
+     2
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "32\u00d732 `e96962ba`",
+     "hayro": "32\u00d732 `e96962ba`",
+     "hayro-strict": "32\u00d732 `e96962ba`",
+     "jasper": "32\u00d732 `8161cafb`",
+     "openjpeg": "32\u00d732 `c8c89f1e`",
+     "openjpeg-nonstrict": "32\u00d732 `c8c89f1e`"
+    },
+    "file": "pixel-05-3057.jp2",
+    "minimised_length": 184,
+    "original_length": 184,
+    "same_signature_as_original": true
+   },
+   "witness_id": 3057
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `01e93020`",
+    "hayro": "16\u00d716 `01e93020`",
+    "hayro-strict": "16\u00d716 `01e93020`",
+    "jasper": "16\u00d716 `bbe5236a`",
+    "openjpeg": "16\u00d716 `01e93020`",
+    "openjpeg-nonstrict": "16\u00d716 `01e93020`"
+   },
+   "class": "accept-different-pixels",
+   "count": 7,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "hayro",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "hayro-strict",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "openjpeg",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "openjpeg-nonstrict",
+     "jasper",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 158,
+   "rules": [
+    [
+     "field:pclr_b0",
+     3
+    ],
+    [
+     "field:colr_meth",
+     2
+    ],
+    [
+     "field:cdef_asoclast",
+     1
+    ],
+    [
+     "field:COD_transform",
+     1
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "16\u00d716 `01e93020`",
+     "hayro": "16\u00d716 `01e93020`",
+     "hayro-strict": "16\u00d716 `01e93020`",
+     "jasper": "16\u00d716 `bbe5236a`",
+     "openjpeg": "16\u00d716 `01e93020`",
+     "openjpeg-nonstrict": "16\u00d716 `01e93020`"
+    },
+    "file": "pixel-06-2205.jp2",
+    "minimised_length": 276,
+    "original_length": 276,
+    "same_signature_as_original": true
+   },
+   "witness_id": 2205
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `41f76705`",
+    "hayro": "16\u00d716 `41f76705`",
+    "hayro-strict": "16\u00d716 `41f76705`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "n/a",
+    "openjpeg-nonstrict": "n/a"
+   },
+   "class": "accept-different-pixels",
+   "count": 6,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "hayro",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "hayro-strict",
+     "jasper",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 255,
+   "rules": [
+    [
+     "wrap-bare",
+     4
+    ],
+    [
+     "field:colr_enumcs",
+     1
+    ],
+    [
+     "wrap-colr-enumcs",
+     1
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "16\u00d716 `41f76705`",
+     "hayro": "16\u00d716 `41f76705`",
+     "hayro-strict": "16\u00d716 `41f76705`",
+     "jasper": "16\u00d716 `4102f1f4`",
+     "openjpeg": "n/a",
+     "openjpeg-nonstrict": "n/a"
+    },
+    "file": "pixel-07-4742.jp2",
+    "minimised_length": 874,
+    "original_length": 874,
+    "same_signature_as_original": true
+   },
+   "witness_id": 4742
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `6b6193b9`",
+    "hayro": "16\u00d716 `6b6193b9`",
+    "hayro-strict": "16\u00d716 `6b6193b9`",
+    "jasper": "16\u00d716 `b3d08689`",
+    "openjpeg": "16\u00d716 `9503245a`",
+    "openjpeg-nonstrict": "16\u00d716 `9503245a`"
+   },
+   "class": "accept-different-pixels",
+   "count": 5,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "openjpeg",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "openjpeg-nonstrict",
+     "different-pixels"
+    ],
+    [
+     "hayro",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "hayro",
+     "openjpeg",
+     "different-pixels"
+    ],
+    [
+     "hayro",
+     "openjpeg-nonstrict",
+     "different-pixels"
+    ],
+    [
+     "hayro-strict",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg",
+     "different-pixels"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg-nonstrict",
+     "different-pixels"
+    ],
+    [
+     "openjpeg",
+     "jasper",
+     "different-pixels"
+    ],
+    [
+     "openjpeg-nonstrict",
+     "jasper",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 255,
+   "rules": [
+    [
+     "field:QCD_SPqcd0",
+     1
+    ],
+    [
+     "field:SIZ_Xsiz",
+     1
+    ],
+    [
+     "field:COD_transform",
+     1
+    ],
+    [
+     "field:SIZ_YTsiz",
+     1
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "16\u00d716 `6b6193b9`",
+     "hayro": "16\u00d716 `6b6193b9`",
+     "hayro-strict": "16\u00d716 `6b6193b9`",
+     "jasper": "16\u00d716 `b3d08689`",
+     "openjpeg": "16\u00d716 `9503245a`",
+     "openjpeg-nonstrict": "16\u00d716 `9503245a`"
+    },
+    "file": "pixel-08-3746.jp2",
+    "minimised_length": 142,
+    "original_length": 142,
+    "same_signature_as_original": true
+   },
+   "witness_id": 3746
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `5a961c18`",
+    "hayro": "32\u00d732 `c101fef4`",
+    "hayro-strict": "32\u00d732 `c101fef4`",
+    "jasper": "n/a",
+    "openjpeg": "32\u00d732 `d65b6475`",
+    "openjpeg-nonstrict": "32\u00d732 `d65b6475`"
+   },
+   "class": "accept-different-pixels",
+   "count": 3,
+   "differing_pairs": [
+    [
+     "glycin",
+     "hayro",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "hayro-strict",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "openjpeg",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "openjpeg-nonstrict",
+     "different-pixels"
+    ],
+    [
+     "hayro",
+     "openjpeg",
+     "different-pixels"
+    ],
+    [
+     "hayro",
+     "openjpeg-nonstrict",
+     "different-pixels"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg",
+     "different-pixels"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg-nonstrict",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 91,
+   "rules": [
+    [
+     "wrap-colr-enumcs",
+     3
+    ]
+   ],
+   "witness_id": 5164
+  },
+  {
+   "cells": {
+    "glycin": "3\u00d713 `dc1a5f0b`",
+    "hayro": "3\u00d713 `dc1a5f0b`",
+    "hayro-strict": "3\u00d713 `dc1a5f0b`",
+    "jasper": "15\u00d713 `229622db`",
+    "openjpeg": "17\u00d713 `ef5a59df`",
+    "openjpeg-nonstrict": "17\u00d713 `ef5a59df`"
+   },
+   "class": "accept-different-pixels",
+   "count": 3,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jasper",
+     "different-dimensions"
+    ],
+    [
+     "glycin",
+     "openjpeg",
+     "different-dimensions"
+    ],
+    [
+     "glycin",
+     "openjpeg-nonstrict",
+     "different-dimensions"
+    ],
+    [
+     "hayro",
+     "jasper",
+     "different-dimensions"
+    ],
+    [
+     "hayro",
+     "openjpeg",
+     "different-dimensions"
+    ],
+    [
+     "hayro",
+     "openjpeg-nonstrict",
+     "different-dimensions"
+    ],
+    [
+     "hayro-strict",
+     "jasper",
+     "different-dimensions"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg",
+     "different-dimensions"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg-nonstrict",
+     "different-dimensions"
+    ],
+    [
+     "openjpeg",
+     "jasper",
+     "different-dimensions"
+    ],
+    [
+     "openjpeg-nonstrict",
+     "jasper",
+     "different-dimensions"
+    ]
+   ],
+   "max_abs_diff": 0,
+   "rules": [
+    [
+     "field:SIZ_XRsiz",
+     2
+    ],
+    [
+     "field:SIZ_YRsiz",
+     1
+    ]
+   ],
+   "witness_id": 796
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `715f7abc`",
+    "hayro": "16\u00d716 `3e9a9ba0`",
+    "hayro-strict": "16\u00d716 `3e9a9ba0`",
+    "jasper": "n/a",
+    "openjpeg": "16\u00d716 `3e9a9ba0`",
+    "openjpeg-nonstrict": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "accept-different-pixels",
+   "count": 3,
+   "differing_pairs": [
+    [
+     "glycin",
+     "hayro",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "hayro-strict",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "openjpeg",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "openjpeg-nonstrict",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 136,
+   "rules": [
+    [
+     "wrap-colr-enumcs",
+     3
+    ]
+   ],
+   "witness_id": 3893
+  },
+  {
+   "cells": {
+    "glycin": "24\u00d724 `97d36c0b`",
+    "hayro": "24\u00d724 `97d36c0b`",
+    "hayro-strict": "24\u00d724 `97d36c0b`",
+    "jasper": "n/a",
+    "openjpeg": "24\u00d724 `3c61b977`",
+    "openjpeg-nonstrict": "24\u00d724 `3c61b977`"
+   },
+   "class": "accept-different-pixels",
+   "count": 2,
+   "differing_pairs": [
+    [
+     "glycin",
+     "openjpeg",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "openjpeg-nonstrict",
+     "different-pixels"
+    ],
+    [
+     "hayro",
+     "openjpeg",
+     "different-pixels"
+    ],
+    [
+     "hayro",
+     "openjpeg-nonstrict",
+     "different-pixels"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg",
+     "different-pixels"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg-nonstrict",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 7,
+   "rules": [
+    [
+     "wrap-colr-enumcs",
+     2
+    ]
+   ],
+   "witness_id": 1147
+  },
+  {
+   "cells": {
+    "glycin": "1\u00d716 `05922607`",
+    "hayro": "1\u00d716 `05922607`",
+    "hayro-strict": "1\u00d716 `05922607`",
+    "jasper": "1\u00d716 `05922607`",
+    "openjpeg": "16\u00d716 `0b6476c9`",
+    "openjpeg-nonstrict": "16\u00d716 `0b6476c9`"
+   },
+   "class": "accept-different-pixels",
+   "count": 2,
+   "differing_pairs": [
+    [
+     "glycin",
+     "openjpeg",
+     "different-dimensions"
+    ],
+    [
+     "glycin",
+     "openjpeg-nonstrict",
+     "different-dimensions"
+    ],
+    [
+     "hayro",
+     "openjpeg",
+     "different-dimensions"
+    ],
+    [
+     "hayro",
+     "openjpeg-nonstrict",
+     "different-dimensions"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg",
+     "different-dimensions"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg-nonstrict",
+     "different-dimensions"
+    ],
+    [
+     "openjpeg",
+     "jasper",
+     "different-dimensions"
+    ],
+    [
+     "openjpeg-nonstrict",
+     "jasper",
+     "different-dimensions"
+    ]
+   ],
+   "max_abs_diff": 0,
+   "rules": [
+    [
+     "field:SIZ_XRsiz",
+     2
+    ]
+   ],
+   "witness_id": 4780
+  },
+  {
+   "cells": {
+    "glycin": "17\u00d713 `c0b9d969`",
+    "hayro": "17\u00d713 `c0b9d969`",
+    "hayro-strict": "17\u00d713 `c0b9d969`",
+    "jasper": "17\u00d713 `c0b9d969`",
+    "openjpeg": "17\u00d713 `38a0c526`",
+    "openjpeg-nonstrict": "17\u00d713 `38a0c526`"
+   },
+   "class": "all-accept-within-tolerance",
+   "count": 2,
+   "differing_pairs": [
+    [
+     "glycin",
+     "openjpeg",
+     "within-tol"
+    ],
+    [
+     "glycin",
+     "openjpeg-nonstrict",
+     "within-tol"
+    ],
+    [
+     "hayro",
+     "openjpeg",
+     "within-tol"
+    ],
+    [
+     "hayro",
+     "openjpeg-nonstrict",
+     "within-tol"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg",
+     "within-tol"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg-nonstrict",
+     "within-tol"
+    ],
+    [
+     "openjpeg",
+     "jasper",
+     "within-tol"
+    ],
+    [
+     "openjpeg-nonstrict",
+     "jasper",
+     "within-tol"
+    ]
+   ],
+   "max_abs_diff": 1,
+   "rules": [
+    [
+     "field:COD_transform",
+     2
+    ]
+   ],
+   "witness_id": 5602
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `d4919cd3`",
+    "hayro": "32\u00d732 `bdea49a5`",
+    "hayro-strict": "32\u00d732 `bdea49a5`",
+    "jasper": "n/a",
+    "openjpeg": "32\u00d732 `d65b6475`",
+    "openjpeg-nonstrict": "32\u00d732 `d65b6475`"
+   },
+   "class": "accept-different-pixels",
+   "count": 1,
+   "differing_pairs": [
+    [
+     "glycin",
+     "hayro",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "hayro-strict",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "openjpeg",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "openjpeg-nonstrict",
+     "different-pixels"
+    ],
+    [
+     "hayro",
+     "openjpeg",
+     "within-tol"
+    ],
+    [
+     "hayro",
+     "openjpeg-nonstrict",
+     "within-tol"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg",
+     "within-tol"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg-nonstrict",
+     "within-tol"
+    ]
+   ],
+   "max_abs_diff": 21,
+   "rules": [
+    [
+     "wrap-colr-enumcs",
+     1
+    ]
+   ],
+   "witness_id": 755
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d71 `2cf307cc`",
+    "hayro": "32\u00d71 `2cf307cc`",
+    "hayro-strict": "32\u00d71 `2cf307cc`",
+    "jasper": "32\u00d71 `deacc9e1`",
+    "openjpeg": "32\u00d732 `6a5e1dde`",
+    "openjpeg-nonstrict": "32\u00d732 `6a5e1dde`"
+   },
+   "class": "accept-different-pixels",
+   "count": 1,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jasper",
+     "within-tol"
+    ],
+    [
+     "glycin",
+     "openjpeg",
+     "different-dimensions"
+    ],
+    [
+     "glycin",
+     "openjpeg-nonstrict",
+     "different-dimensions"
+    ],
+    [
+     "hayro",
+     "jasper",
+     "within-tol"
+    ],
+    [
+     "hayro",
+     "openjpeg",
+     "different-dimensions"
+    ],
+    [
+     "hayro",
+     "openjpeg-nonstrict",
+     "different-dimensions"
+    ],
+    [
+     "hayro-strict",
+     "jasper",
+     "within-tol"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg",
+     "different-dimensions"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg-nonstrict",
+     "different-dimensions"
+    ],
+    [
+     "openjpeg",
+     "jasper",
+     "different-dimensions"
+    ],
+    [
+     "openjpeg-nonstrict",
+     "jasper",
+     "different-dimensions"
+    ]
+   ],
+   "max_abs_diff": 1,
+   "rules": [
+    [
+     "field:SIZ_YRsiz",
+     1
+    ]
+   ],
+   "witness_id": 1291
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `bdea49a5`",
+    "hayro": "32\u00d732 `bdea49a5`",
+    "hayro-strict": "32\u00d732 `bdea49a5`",
+    "jasper": "n/a",
+    "openjpeg": "32\u00d732 `d65b6475`",
+    "openjpeg-nonstrict": "32\u00d732 `d65b6475`"
+   },
+   "class": "all-accept-within-tolerance",
+   "count": 1,
+   "differing_pairs": [
+    [
+     "glycin",
+     "openjpeg",
+     "within-tol"
+    ],
+    [
+     "glycin",
+     "openjpeg-nonstrict",
+     "within-tol"
+    ],
+    [
+     "hayro",
+     "openjpeg",
+     "within-tol"
+    ],
+    [
+     "hayro",
+     "openjpeg-nonstrict",
+     "within-tol"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg",
+     "within-tol"
+    ],
+    [
+     "hayro-strict",
+     "openjpeg-nonstrict",
+     "within-tol"
+    ]
+   ],
+   "max_abs_diff": 3,
+   "rules": [
+    [
+     "wrap-colr-enumcs",
+     1
+    ]
+   ],
+   "witness_id": 2783
+  }
+ ],
+ "public": true,
+ "rule_pool": {
+  "bit-flip": 676,
+  "box-delete": 96,
+  "box-duplicate": 138,
+  "box-insert": 132,
+  "box-length-zero": 66,
+  "box-xlbox": 22,
+  "byte-replace": 474,
+  "eoc": 52,
+  "field:\u0000)\u0000\u0000_LBox": 102,
+  "field:\u0000)\u0000\u0000_TBox": 102,
+  "field:\u0000,\u0000\u0000_LBox": 6,
+  "field:\u0000,\u0000\u0000_TBox": 6,
+  "field:\u0000/\u0000\u0000_LBox": 60,
+  "field:\u0000/\u0000\u0000_TBox": 60,
+  "field:\u00002\u0000\u0000_LBox": 12,
+  "field:\u00002\u0000\u0000_TBox": 12,
+  "field:\u00005\u0000\u0000_LBox": 6,
+  "field:\u00005\u0000\u0000_TBox": 6,
+  "field:COD_Lseg": 320,
+  "field:COD_Scod": 322,
+  "field:COD_cbh": 323,
+  "field:COD_cbstyle": 322,
+  "field:COD_cbw": 322,
+  "field:COD_layers": 322,
+  "field:COD_levels": 322,
+  "field:COD_marker": 322,
+  "field:COD_mct": 319,
+  "field:COD_precinct0": 321,
+  "field:COD_prog": 318,
+  "field:COD_transform": 321,
+  "field:COM_Lseg": 321,
+  "field:COM_marker": 323,
+  "field:Mff93_marker": 322,
+  "field:QCD_Lseg": 322,
+  "field:QCD_SPqcd0": 321,
+  "field:QCD_SPqcd1": 321,
+  "field:QCD_Sqcd": 323,
+  "field:QCD_marker": 323,
+  "field:SIZ_Csiz": 321,
+  "field:SIZ_Lseg": 317,
+  "field:SIZ_Rsiz": 321,
+  "field:SIZ_Ssiz": 643,
+  "field:SIZ_XOsiz": 324,
+  "field:SIZ_XRsiz": 645,
+  "field:SIZ_XTOsiz": 323,
+  "field:SIZ_XTsiz": 321,
+  "field:SIZ_Xsiz": 324,
+  "field:SIZ_YOsiz": 324,
+  "field:SIZ_YRsiz": 643,
+  "field:SIZ_YTOsiz": 322,
+  "field:SIZ_YTsiz": 322,
+  "field:SIZ_Ysiz": 323,
+  "field:SIZ_marker": 318,
+  "field:SOT_Isot": 320,
+  "field:SOT_Lseg": 322,
+  "field:SOT_Psot": 322,
+  "field:SOT_TNsot": 320,
+  "field:SOT_TPsot": 320,
+  "field:SOT_marker": 323,
+  "field:bpcc_LBox": 6,
+  "field:bpcc_TBox": 6,
+  "field:bpcc_b0": 6,
+  "field:cdef_LBox": 18,
+  "field:cdef_TBox": 18,
+  "field:cdef_asoc0": 18,
+  "field:cdef_asoclast": 18,
+  "field:cdef_cn0": 18,
+  "field:cdef_cnlast": 18,
+  "field:cdef_n": 18,
+  "field:cdef_typ0": 18,
+  "field:cdef_typlast": 18,
+  "field:cmap_LBox": 6,
+  "field:cmap_TBox": 6,
+  "field:cmap_cmp0": 6,
+  "field:cmap_mtyp0": 6,
+  "field:cmap_pcol0": 6,
+  "field:colr_LBox": 135,
+  "field:colr_TBox": 135,
+  "field:colr_approx": 134,
+  "field:colr_enumcs": 108,
+  "field:colr_meth": 136,
+  "field:colr_prec": 135,
+  "field:ftyp_LBox": 131,
+  "field:ftyp_TBox": 130,
+  "field:ihdr_LBox": 138,
+  "field:ihdr_TBox": 137,
+  "field:ihdr_bpc": 135,
+  "field:ihdr_c": 135,
+  "field:ihdr_height": 137,
+  "field:ihdr_ipr": 135,
+  "field:ihdr_nc": 131,
+  "field:ihdr_unkc": 136,
+  "field:ihdr_width": 134,
+  "field:jP_LBox": 138,
+  "field:jP_TBox": 137,
+  "field:jp2c_LBox": 135,
+  "field:jp2c_TBox": 137,
+  "field:jp2h_LBox": 136,
+  "field:jp2h_TBox": 136,
+  "field:pclr_LBox": 6,
+  "field:pclr_TBox": 6,
+  "field:pclr_b0": 6,
+  "field:pclr_ne": 6,
+  "field:pclr_npc": 6,
+  "field:res_LBox": 6,
+  "field:res_TBox": 6,
+  "marker-delete": 211,
+  "marker-duplicate": 212,
+  "marker-insert": 159,
+  "packet-data-byte": 431,
+  "sot-psot": 171,
+  "tile-data-truncate": 206,
+  "trailing-bytes": 530,
+  "truncation": 2368,
+  "unwrap": 2,
+  "wrap-bare": 177,
+  "wrap-colr-enumcs": 85,
+  "wrap-inconsistent": 32
+ },
+ "rules": [
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 79,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 79
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "\u0000)\u0000\u0000_LBox",
+    "new": 4294967295,
+    "offset": 0,
+    "old": 4283432785,
+    "rule": "field:\u0000)\u0000\u0000_LBox",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:\u0000)\u0000\u0000_LBox",
+   "top_pattern_count": 79,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "hayro": "reject `Format`",
+     "hayro-strict": "reject `Format`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `read_header`",
+     "openjpeg-nonstrict": "reject `read_header`"
+    },
+    "file": "rule-01-2706.jp2",
+    "minimised_length": 1,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 2706
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 79,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 1,
+    "accept-vs-reject": 17,
+    "all-accept-identical-pixels": 1,
+    "all-accept-within-tolerance": 1,
+    "all-reject": 59
+   },
+   "patterns": 16,
+   "prov": {
+    "field": "SIZ_XOsiz",
+    "new": 255,
+    "offset": 16,
+    "old": 0,
+    "rule": "field:SIZ_XOsiz",
+    "seed": "j2k-gray1-ll"
+   },
+   "rule": "field:SIZ_XOsiz",
+   "top_pattern_count": 58,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "hayro": "reject `Format`",
+     "hayro-strict": "reject `Format`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `read_header`",
+     "openjpeg-nonstrict": "reject `read_header`"
+    },
+    "file": "rule-02-331.jp2",
+    "minimised_length": 1,
+    "original_length": 142,
+    "same_signature_as_original": true
+   },
+   "witness_id": 331
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `b3d08689`",
+    "hayro": "16\u00d716 `b3d08689`",
+    "hayro-strict": "16\u00d716 `b3d08689`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 78,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 78
+   },
+   "patterns": 6,
+   "prov": {
+    "field": "\u0000)\u0000\u0000_TBox",
+    "new": 15,
+    "offset": 4,
+    "old": 2686976,
+    "rule": "field:\u0000)\u0000\u0000_TBox",
+    "seed": "j2k-gray1-ll"
+   },
+   "rule": "field:\u0000)\u0000\u0000_TBox",
+   "top_pattern_count": 33,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "16\u00d716 `b3d08689`",
+     "hayro": "16\u00d716 `b3d08689`",
+     "hayro-strict": "16\u00d716 `b3d08689`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `read_header`",
+     "openjpeg-nonstrict": "reject `read_header`"
+    },
+    "file": "rule-03-3392.jp2",
+    "minimised_length": 142,
+    "original_length": 142,
+    "same_signature_as_original": true
+   },
+   "witness_id": 3392
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 78,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 78
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "COD_marker",
+    "new": 2,
+    "offset": 45,
+    "old": 65362,
+    "rule": "field:COD_marker",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:COD_marker",
+   "top_pattern_count": 78,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "hayro": "reject `Format`",
+     "hayro-strict": "reject `Format`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `read_header`",
+     "openjpeg-nonstrict": "reject `read_header`"
+    },
+    "file": "rule-04-1268.jp2",
+    "minimised_length": 1,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 1268
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 78,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 12,
+    "all-reject": 66
+   },
+   "patterns": 5,
+   "prov": {
+    "field": "COM_marker",
+    "new": 32690,
+    "offset": 65,
+    "old": 65380,
+    "rule": "field:COM_marker",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:COM_marker",
+   "top_pattern_count": 66,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "hayro": "reject `Format`",
+     "hayro-strict": "reject `Format`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `read_header`",
+     "openjpeg-nonstrict": "reject `read_header`"
+    },
+    "file": "rule-05-6094.jp2",
+    "minimised_length": 1,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 6094
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 78,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 78
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "QCD_Lseg",
+    "new": 0,
+    "offset": 61,
+    "old": 4,
+    "rule": "field:QCD_Lseg",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:QCD_Lseg",
+   "top_pattern_count": 78,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "hayro": "reject `Format`",
+     "hayro-strict": "reject `Format`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `read_header`",
+     "openjpeg-nonstrict": "reject `read_header`"
+    },
+    "file": "rule-06-6015.jp2",
+    "minimised_length": 1,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 6015
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 78,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 78
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "SIZ_Csiz",
+    "new": 255,
+    "offset": 40,
+    "old": 1,
+    "rule": "field:SIZ_Csiz",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:SIZ_Csiz",
+   "top_pattern_count": 78,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "hayro": "reject `Format`",
+     "hayro-strict": "reject `Format`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `read_header`",
+     "openjpeg-nonstrict": "reject `read_header`"
+    },
+    "file": "rule-07-444.jp2",
+    "minimised_length": 1,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 444
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Validation`",
+    "hayro-strict": "reject `Validation`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 78,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 78
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "SIZ_XTOsiz",
+    "new": 4294967294,
+    "offset": 32,
+    "old": 0,
+    "rule": "field:SIZ_XTOsiz",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:SIZ_XTOsiz",
+   "top_pattern_count": 78,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "hayro": "reject `Format`",
+     "hayro-strict": "reject `Format`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `read_header`",
+     "openjpeg-nonstrict": "reject `read_header`"
+    },
+    "file": "rule-08-5781.jp2",
+    "minimised_length": 1,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 5781
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 78,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 1,
+    "accept-vs-reject": 18,
+    "all-accept-identical-pixels": 3,
+    "all-accept-within-tolerance": 2,
+    "all-reject": 54
+   },
+   "patterns": 19,
+   "prov": {
+    "field": "SIZ_YOsiz",
+    "new": 4294967295,
+    "offset": 20,
+    "old": 0,
+    "rule": "field:SIZ_YOsiz",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:SIZ_YOsiz",
+   "top_pattern_count": 54,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "hayro": "reject `Format`",
+     "hayro-strict": "reject `Format`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `read_header`",
+     "openjpeg-nonstrict": "reject `read_header`"
+    },
+    "file": "rule-09-2997.jp2",
+    "minimised_length": 1,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 2997
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 78,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 78
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "SIZ_marker",
+    "new": 7,
+    "offset": 2,
+    "old": 65361,
+    "rule": "field:SIZ_marker",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:SIZ_marker",
+   "top_pattern_count": 78,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "hayro": "reject `Format`",
+     "hayro-strict": "reject `Format`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `read_header`",
+     "openjpeg-nonstrict": "reject `read_header`"
+    },
+    "file": "rule-10-4024.jp2",
+    "minimised_length": 1,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 4024
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 78,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 78
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "ftyp_LBox",
+    "new": 16,
+    "offset": 12,
+    "old": 20,
+    "rule": "field:ftyp_LBox",
+    "seed": "jp2-gray8-1x1"
+   },
+   "rule": "field:ftyp_LBox",
+   "top_pattern_count": 78,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "hayro": "reject `Format`",
+     "hayro-strict": "reject `Format`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `read_header`",
+     "openjpeg-nonstrict": "reject `read_header`"
+    },
+    "file": "rule-11-3272.jp2",
+    "minimised_length": 1,
+    "original_length": 209,
+    "same_signature_as_original": true
+   },
+   "witness_id": 3272
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 78,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 78
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "ftyp_TBox",
+    "new": 257,
+    "offset": 16,
+    "old": 1718909296,
+    "rule": "field:ftyp_TBox",
+    "seed": "jp2-gray8-1x1"
+   },
+   "rule": "field:ftyp_TBox",
+   "top_pattern_count": 78,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "hayro": "reject `Format`",
+     "hayro-strict": "reject `Format`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `read_header`",
+     "openjpeg-nonstrict": "reject `read_header`"
+    },
+    "file": "rule-12-254.jp2",
+    "minimised_length": 1,
+    "original_length": 209,
+    "same_signature_as_original": true
+   },
+   "witness_id": 254
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Tile`",
+    "hayro-strict": "reject `Tile`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "16\u00d716 `da573f3d`"
+   },
+   "changed": 78,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 67,
+    "all-reject": 11
+   },
+   "patterns": 12,
+   "prov": {
+    "field": "-5",
+    "new": null,
+    "old": null,
+    "rule": "tile-data-truncate",
+    "seed": "j2k-gray4-ll"
+   },
+   "rule": "tile-data-truncate",
+   "top_pattern_count": 33,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "hayro": "reject `Tile`",
+     "hayro-strict": "reject `Tile`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `decode`",
+     "openjpeg-nonstrict": "16\u00d716 `b894b5a9`"
+    },
+    "file": "rule-13-3804.jp2",
+    "minimised_length": 144,
+    "original_length": 150,
+    "same_signature_as_original": true
+   },
+   "witness_id": 3804
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `b3d08689`",
+    "hayro": "16\u00d716 `b3d08689`",
+    "hayro-strict": "16\u00d716 `b3d08689`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 77,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 75,
+    "all-reject": 2
+   },
+   "patterns": 7,
+   "prov": {
+    "field": "COD_Lseg",
+    "new": 65534,
+    "offset": 47,
+    "old": 12,
+    "rule": "field:COD_Lseg",
+    "seed": "j2k-gray1-ll"
+   },
+   "rule": "field:COD_Lseg",
+   "top_pattern_count": 46,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "16\u00d716 `b3d08689`",
+     "hayro": "16\u00d716 `b3d08689`",
+     "hayro-strict": "16\u00d716 `b3d08689`",
+     "jasper": "reject `decode`",
+     "openjpeg": "reject `read_header`",
+     "openjpeg-nonstrict": "reject `read_header`"
+    },
+    "file": "rule-14-71.jp2",
+    "minimised_length": 142,
+    "original_length": 142,
+    "same_signature_as_original": true
+   },
+   "witness_id": 71
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 77,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 77
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "COM_Lseg",
+    "new": 257,
+    "offset": 67,
+    "old": 37,
+    "rule": "field:COM_Lseg",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:COM_Lseg",
+   "top_pattern_count": 77,
+   "witness_id": 436
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 77,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 77
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "QCD_marker",
+    "new": 32686,
+    "offset": 59,
+    "old": 65372,
+    "rule": "field:QCD_marker",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:QCD_marker",
+   "top_pattern_count": 77,
+   "witness_id": 5194
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `91903e99`",
+    "hayro": "16\u00d716 `91903e99`",
+    "hayro-strict": "reject `Tile`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "changed": 77,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-different-pixels": 4,
+    "accept-vs-reject": 63,
+    "all-reject": 10
+   },
+   "patterns": 22,
+   "prov": {
+    "field": "SIZ_XRsiz",
+    "new": 16,
+    "offset": 43,
+    "old": 1,
+    "rule": "field:SIZ_XRsiz",
+    "seed": "j2k-rgb12-ll"
+   },
+   "rule": "field:SIZ_XRsiz",
+   "top_pattern_count": 17,
+   "witness_id": 3675
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 77,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 77
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "SOT_marker",
+    "new": 65534,
+    "offset": 104,
+    "old": 65424,
+    "rule": "field:SOT_marker",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:SOT_marker",
+   "top_pattern_count": 77,
+   "witness_id": 2836
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "n/a",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "changed": 77,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-different-pixels": 10,
+    "accept-vs-reject": 46,
+    "all-accept-identical-pixels": 10,
+    "all-accept-within-tolerance": 1,
+    "all-reject": 10
+   },
+   "patterns": 22,
+   "prov": {
+    "field": "enumCS=15",
+    "new": null,
+    "old": null,
+    "rule": "wrap-colr-enumcs",
+    "seed": "jp2-gray8-ll"
+   },
+   "rule": "wrap-colr-enumcs",
+   "top_pattern_count": 28,
+   "witness_id": 1823
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 76,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 7,
+    "all-reject": 69
+   },
+   "patterns": 4,
+   "prov": {
+    "field": "COD_precinct0",
+    "new": 8,
+    "offset": 59,
+    "old": 255,
+    "rule": "field:COD_precinct0",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:COD_precinct0",
+   "top_pattern_count": 69,
+   "witness_id": 1654
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `5f4ecdb7`",
+    "hayro": "16\u00d716 `5f4ecdb7`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "changed": 76,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 61,
+    "all-reject": 15
+   },
+   "patterns": 8,
+   "prov": {
+    "field": "Mff93_marker",
+    "new": 3,
+    "offset": 128,
+    "old": 65427,
+    "rule": "field:Mff93_marker",
+    "seed": "j2k-gray1-ll"
+   },
+   "rule": "field:Mff93_marker",
+   "top_pattern_count": 37,
+   "witness_id": 2810
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 76,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 73,
+    "all-reject": 3
+   },
+   "patterns": 9,
+   "prov": {
+    "field": "SIZ_Lseg",
+    "new": 127,
+    "offset": 4,
+    "old": 41,
+    "rule": "field:SIZ_Lseg",
+    "seed": "j2k-gray4-ll"
+   },
+   "rule": "field:SIZ_Lseg",
+   "top_pattern_count": 40,
+   "witness_id": 5776
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Validation`",
+    "hayro-strict": "reject `Validation`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 76,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 76
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "SIZ_YTOsiz",
+    "new": 2147483648,
+    "offset": 36,
+    "old": 0,
+    "rule": "field:SIZ_YTOsiz",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:SIZ_YTOsiz",
+   "top_pattern_count": 76,
+   "witness_id": 6598
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Tile`",
+    "hayro-strict": "reject `Tile`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "changed": 76,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 3,
+    "all-reject": 73
+   },
+   "patterns": 2,
+   "prov": {
+    "field": "SOT_Isot",
+    "new": 255,
+    "offset": 108,
+    "old": 0,
+    "rule": "field:SOT_Isot",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:SOT_Isot",
+   "top_pattern_count": 73,
+   "witness_id": 4025
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Tile`",
+    "hayro-strict": "reject `Tile`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "changed": 76,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 37,
+    "all-reject": 39
+   },
+   "patterns": 16,
+   "prov": {
+    "field": "SOT_Psot",
+    "new": 2147483647,
+    "offset": 122,
+    "old": 24,
+    "rule": "field:SOT_Psot",
+    "seed": "j2k-gray1-ll"
+   },
+   "rule": "field:SOT_Psot",
+   "top_pattern_count": 37,
+   "witness_id": 3857
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 76,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 76
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "jP_LBox",
+    "new": 3,
+    "offset": 0,
+    "old": 12,
+    "rule": "field:jP_LBox",
+    "seed": "jp2-gray8-1x1"
+   },
+   "rule": "field:jP_LBox",
+   "top_pattern_count": 76,
+   "witness_id": 838
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 76,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 76
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "jp2c_TBox",
+    "new": 65535,
+    "offset": 81,
+    "old": 1785737827,
+    "rule": "field:jp2c_TBox",
+    "seed": "jp2-gray8-1x1"
+   },
+   "rule": "field:jp2c_TBox",
+   "top_pattern_count": 76,
+   "witness_id": 1233
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 76,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 15,
+    "all-reject": 61
+   },
+   "patterns": 6,
+   "prov": {
+    "field": "length",
+    "new": 12,
+    "old": 506,
+    "rule": "truncation",
+    "seed": "j2k-ga8-ll"
+   },
+   "rule": "truncation",
+   "top_pattern_count": 59,
+   "witness_id": 519
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 75,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 3,
+    "all-reject": 72
+   },
+   "patterns": 2,
+   "prov": {
+    "field": "jp2h",
+    "new": null,
+    "old": null,
+    "rule": "box-delete",
+    "seed": "jp2-gray8-1x1"
+   },
+   "rule": "box-delete",
+   "top_pattern_count": 72,
+   "witness_id": 2442
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 75,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 41,
+    "all-reject": 34
+   },
+   "patterns": 13,
+   "prov": {
+    "field": "COD_levels",
+    "new": 128,
+    "offset": 54,
+    "old": 4,
+    "rule": "field:COD_levels",
+    "seed": "j2k-gray4-ll"
+   },
+   "rule": "field:COD_levels",
+   "top_pattern_count": 33,
+   "witness_id": 5013
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 75,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 6,
+    "all-reject": 69
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "colr_LBox",
+    "new": 128,
+    "offset": 62,
+    "old": 15,
+    "rule": "field:colr_LBox",
+    "seed": "jp2-gray8-1x1"
+   },
+   "rule": "field:colr_LBox",
+   "top_pattern_count": 69,
+   "witness_id": 4201
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 75,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 7,
+    "all-reject": 68
+   },
+   "patterns": 5,
+   "prov": {
+    "field": "ihdr_LBox",
+    "new": 257,
+    "offset": 40,
+    "old": 22,
+    "rule": "field:ihdr_LBox",
+    "seed": "jp2-gray8-1x1"
+   },
+   "rule": "field:ihdr_LBox",
+   "top_pattern_count": 68,
+   "witness_id": 3954
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Tile`",
+    "hayro-strict": "reject `Tile`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "changed": 75,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 53,
+    "all-reject": 22
+   },
+   "patterns": 26,
+   "prov": {
+    "field": "huge",
+    "new": null,
+    "old": null,
+    "rule": "sot-psot",
+    "seed": "j2k-gray8-17x13"
+   },
+   "rule": "sot-psot",
+   "top_pattern_count": 20,
+   "witness_id": 3633
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 75,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 6,
+    "all-accept-within-tolerance": 3,
+    "all-reject": 66
+   },
+   "patterns": 8,
+   "prov": {
+    "field": "COD_transform",
+    "new": 255,
+    "offset": 58,
+    "old": 1,
+    "rule": "field:COD_transform",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:COD_transform",
+   "top_pattern_count": 66,
+   "witness_id": 1752
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 74,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 2,
+    "accept-vs-reject": 34,
+    "all-accept-within-tolerance": 4,
+    "all-reject": 34
+   },
+   "patterns": 18,
+   "prov": {
+    "field": "QCD_Sqcd",
+    "new": 15,
+    "offset": 63,
+    "old": 64,
+    "rule": "field:QCD_Sqcd",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:QCD_Sqcd",
+   "top_pattern_count": 33,
+   "witness_id": 2986
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `b3d08689`",
+    "hayro": "16\u00d716 `b3d08689`",
+    "hayro-strict": "16\u00d716 `b3d08689`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "changed": 74,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 72,
+    "all-reject": 2
+   },
+   "patterns": 9,
+   "prov": {
+    "field": "SOT_Lseg",
+    "new": 32768,
+    "offset": 118,
+    "old": 10,
+    "rule": "field:SOT_Lseg",
+    "seed": "j2k-gray1-ll"
+   },
+   "rule": "field:SOT_Lseg",
+   "top_pattern_count": 43,
+   "witness_id": 3004
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `b3d08689`",
+    "hayro": "16\u00d716 `b3d08689`",
+    "hayro-strict": "16\u00d716 `b3d08689`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "changed": 74,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 72,
+    "all-reject": 2
+   },
+   "patterns": 9,
+   "prov": {
+    "field": "SOT_TPsot",
+    "new": 16,
+    "offset": 126,
+    "old": 0,
+    "rule": "field:SOT_TPsot",
+    "seed": "j2k-gray1-ll"
+   },
+   "rule": "field:SOT_TPsot",
+   "top_pattern_count": 44,
+   "witness_id": 1780
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 74,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 69,
+    "all-reject": 5
+   },
+   "patterns": 9,
+   "prov": {
+    "field": "ihdr_width",
+    "new": 2147483648,
+    "offset": 52,
+    "old": 16,
+    "rule": "field:ihdr_width",
+    "seed": "py-jp2-colr-meth3"
+   },
+   "rule": "field:ihdr_width",
+   "top_pattern_count": 33,
+   "witness_id": 145
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 74,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 74
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "jp2h_TBox",
+    "new": 32767,
+    "offset": 36,
+    "old": 1785737832,
+    "rule": "field:jp2h_TBox",
+    "seed": "jp2-gray8-1x1"
+   },
+   "rule": "field:jp2h_TBox",
+   "top_pattern_count": 74,
+   "witness_id": 621
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 73,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 73
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "jP_TBox",
+    "new": 4294967295,
+    "offset": 4,
+    "old": 1783636000,
+    "rule": "field:jP_TBox",
+    "seed": "jp2-gray8-1x1"
+   },
+   "rule": "field:jP_TBox",
+   "top_pattern_count": 73,
+   "witness_id": 2166
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 73,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 39,
+    "all-reject": 34
+   },
+   "patterns": 10,
+   "prov": {
+    "field": "jp2h_LBox",
+    "new": 3,
+    "offset": 32,
+    "old": 45,
+    "rule": "field:jp2h_LBox",
+    "seed": "jp2-gray8-1x1"
+   },
+   "rule": "field:jp2h_LBox",
+   "top_pattern_count": 26,
+   "witness_id": 842
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `b3d08689`",
+    "hayro": "16\u00d716 `b3d08689`",
+    "hayro-strict": "16\u00d716 `b3d08689`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 72,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 71,
+    "all-reject": 1
+   },
+   "patterns": 15,
+   "prov": {
+    "field": "COD_mct",
+    "new": 2,
+    "offset": 53,
+    "old": 0,
+    "rule": "field:COD_mct",
+    "seed": "j2k-gray1-ll"
+   },
+   "rule": "field:COD_mct",
+   "top_pattern_count": 21,
+   "witness_id": 2288
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `19a239df`",
+    "hayro": "16\u00d716 `19a239df`",
+    "hayro-strict": "reject `Tile`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "changed": 72,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-different-pixels": 3,
+    "accept-vs-reject": 62,
+    "all-reject": 7
+   },
+   "patterns": 24,
+   "prov": {
+    "field": "SIZ_YRsiz",
+    "new": 255,
+    "offset": 50,
+    "old": 1,
+    "rule": "field:SIZ_YRsiz",
+    "seed": "j2k-rgb8-ll-mct"
+   },
+   "rule": "field:SIZ_YRsiz",
+   "top_pattern_count": 20,
+   "witness_id": 5457
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 72,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 68,
+    "all-reject": 4
+   },
+   "patterns": 7,
+   "prov": {
+    "field": "ihdr_TBox",
+    "new": 16777215,
+    "offset": 44,
+    "old": 1768449138,
+    "rule": "field:ihdr_TBox",
+    "seed": "py-jp2-colr-meth3"
+   },
+   "rule": "field:ihdr_TBox",
+   "top_pattern_count": 49,
+   "witness_id": 2157
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "changed": 71,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 55,
+    "all-reject": 16
+   },
+   "patterns": 16,
+   "prov": {
+    "field": "jp2c_LBox",
+    "new": 257,
+    "offset": 77,
+    "old": 178,
+    "rule": "field:jp2c_LBox",
+    "seed": "py-jp2-colr-meth3"
+   },
+   "rule": "field:jp2c_LBox",
+   "top_pattern_count": 27,
+   "witness_id": 1522
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Validation`",
+    "hayro-strict": "reject `Validation`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 70,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 17,
+    "accept-vs-reject": 34,
+    "all-accept-identical-pixels": 4,
+    "all-reject": 15
+   },
+   "patterns": 52,
+   "prov": {
+    "field": "SIZ_Ysiz",
+    "new": 4294967294,
+    "offset": 12,
+    "old": 1,
+    "rule": "field:SIZ_Ysiz",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:SIZ_Ysiz",
+   "top_pattern_count": 15,
+   "witness_id": 4533
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 69,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 13,
+    "accept-vs-reject": 35,
+    "all-reject": 21
+   },
+   "patterns": 44,
+   "prov": {
+    "field": "SIZ_Xsiz",
+    "new": 0,
+    "offset": 8,
+    "old": 1,
+    "rule": "field:SIZ_Xsiz",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:SIZ_Xsiz",
+   "top_pattern_count": 21,
+   "witness_id": 2566
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "n/a",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "changed": 69,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-different-pixels": 1,
+    "accept-vs-reject": 65,
+    "all-reject": 3
+   },
+   "patterns": 9,
+   "prov": {
+    "field": "colr_enumcs",
+    "new": 4294967295,
+    "offset": 73,
+    "old": 17,
+    "rule": "field:colr_enumcs",
+    "seed": "jp2-gray8-ll"
+   },
+   "rule": "field:colr_enumcs",
+   "top_pattern_count": 41,
+   "witness_id": 368
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 69,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 64,
+    "all-reject": 5
+   },
+   "patterns": 9,
+   "prov": {
+    "field": "ihdr_height",
+    "new": 4294967295,
+    "offset": 48,
+    "old": 16,
+    "rule": "field:ihdr_height",
+    "seed": "py-jp2-gray-colr-enum17"
+   },
+   "rule": "field:ihdr_height",
+   "top_pattern_count": 30,
+   "witness_id": 259
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 68,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 27,
+    "all-reject": 41
+   },
+   "patterns": 13,
+   "prov": {
+    "field": "COD_Scod",
+    "new": 7,
+    "offset": 49,
+    "old": 0,
+    "rule": "field:COD_Scod",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:COD_Scod",
+   "top_pattern_count": 41,
+   "witness_id": 3481
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Color`",
+    "hayro-strict": "reject `Color`",
+    "jasper": "n/a",
+    "openjpeg": "n/a",
+    "openjpeg-nonstrict": "n/a"
+   },
+   "changed": 67,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 4,
+    "accept-vs-reject": 27,
+    "all-accept-identical-pixels": 14,
+    "all-reject": 22
+   },
+   "patterns": 23,
+   "prov": {
+    "field": "colr-sycc",
+    "new": null,
+    "old": null,
+    "rule": "wrap-bare",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "wrap-bare",
+   "top_pattern_count": 12,
+   "witness_id": 6882
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 66,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 4,
+    "all-reject": 62
+   },
+   "patterns": 4,
+   "prov": {
+    "field": "ff52",
+    "new": null,
+    "old": null,
+    "rule": "marker-delete",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "marker-delete",
+   "top_pattern_count": 61,
+   "witness_id": 5901
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "16\u00d716 `b3d08689`",
+    "openjpeg": "16\u00d716 `b3d08689`",
+    "openjpeg-nonstrict": "16\u00d716 `b3d08689`"
+   },
+   "changed": 63,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 58,
+    "all-reject": 5
+   },
+   "patterns": 19,
+   "prov": {
+    "field": "reserved-FF4E-seg",
+    "new": null,
+    "old": null,
+    "rule": "marker-insert",
+    "seed": "j2k-gray1-ll"
+   },
+   "rule": "marker-insert",
+   "top_pattern_count": 16,
+   "witness_id": 4651
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `93ec4388`",
+    "hayro": "16\u00d716 `93ec4388`",
+    "hayro-strict": "reject `Tile`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 62,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 60,
+    "all-accept-within-tolerance": 2
+   },
+   "patterns": 25,
+   "prov": {
+    "field": "COD_cbstyle",
+    "new": 254,
+    "offset": 57,
+    "old": 0,
+    "rule": "field:COD_cbstyle",
+    "seed": "j2k-gray4-ll"
+   },
+   "rule": "field:COD_cbstyle",
+   "top_pattern_count": 14,
+   "witness_id": 1936
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 60,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 60
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "\u0000/\u0000\u0000_LBox",
+    "new": 128,
+    "offset": 0,
+    "old": 4283432785,
+    "rule": "field:\u0000/\u0000\u0000_LBox",
+    "seed": "j2k-rgb8-lossy-r30"
+   },
+   "rule": "field:\u0000/\u0000\u0000_LBox",
+   "top_pattern_count": 60,
+   "witness_id": 2794
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "reject `decode`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "changed": 60,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 59,
+    "all-reject": 1
+   },
+   "patterns": 14,
+   "prov": {
+    "field": "ihdr_nc",
+    "new": 127,
+    "offset": 56,
+    "old": 1,
+    "rule": "field:ihdr_nc",
+    "seed": "py-jp2-gray-colr-enum17"
+   },
+   "rule": "field:ihdr_nc",
+   "top_pattern_count": 27,
+   "witness_id": 730
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "hayro": "16\u00d716 `3e9a9ba0`",
+    "hayro-strict": "16\u00d716 `3e9a9ba0`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 59,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 59
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "\u0000/\u0000\u0000_TBox",
+    "new": 4294967294,
+    "offset": 4,
+    "old": 3080192,
+    "rule": "field:\u0000/\u0000\u0000_TBox",
+    "seed": "j2k-rgb8-ll-nomct"
+   },
+   "rule": "field:\u0000/\u0000\u0000_TBox",
+   "top_pattern_count": 35,
+   "witness_id": 66
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `b3d08689`",
+    "hayro": "16\u00d716 `b3d08689`",
+    "hayro-strict": "16\u00d716 `b3d08689`",
+    "jasper": "16\u00d716 `b3d08689`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 59,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 47,
+    "all-reject": 12
+   },
+   "patterns": 18,
+   "prov": {
+    "field": "COD_cbw",
+    "new": 16,
+    "offset": 55,
+    "old": 4,
+    "rule": "field:COD_cbw",
+    "seed": "j2k-gray1-ll"
+   },
+   "rule": "field:COD_cbw",
+   "top_pattern_count": 14,
+   "witness_id": 2714
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "reject `decode`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "changed": 59,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 59
+   },
+   "patterns": 5,
+   "prov": {
+    "field": "colr_TBox",
+    "new": 16777215,
+    "offset": 66,
+    "old": 1668246642,
+    "rule": "field:colr_TBox",
+    "seed": "py-jp2-gray-colr-enum17"
+   },
+   "rule": "field:colr_TBox",
+   "top_pattern_count": 44,
+   "witness_id": 1888
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "changed": 58,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 5,
+    "all-reject": 53
+   },
+   "patterns": 4,
+   "prov": {
+    "field": "COD_prog",
+    "new": 8,
+    "offset": 50,
+    "old": 0,
+    "rule": "field:COD_prog",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:COD_prog",
+   "top_pattern_count": 53,
+   "witness_id": 5519
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "reject `decode`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "changed": 58,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 57,
+    "all-accept-identical-pixels": 1
+   },
+   "patterns": 9,
+   "prov": {
+    "field": "ihdr_bpc",
+    "new": 6,
+    "offset": 58,
+    "old": 7,
+    "rule": "field:ihdr_bpc",
+    "seed": "py-jp2-gray-colr-enum17"
+   },
+   "rule": "field:ihdr_bpc",
+   "top_pattern_count": 34,
+   "witness_id": 257
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 57,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 48,
+    "all-reject": 9
+   },
+   "patterns": 19,
+   "prov": {
+    "field": "COD_cbh",
+    "new": 16,
+    "offset": 56,
+    "old": 4,
+    "rule": "field:COD_cbh",
+    "seed": "j2k-gray4-ll"
+   },
+   "rule": "field:COD_cbh",
+   "top_pattern_count": 18,
+   "witness_id": 2454
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "reject `decode`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "changed": 56,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 56
+   },
+   "patterns": 8,
+   "prov": {
+    "field": "ihdr_c",
+    "new": 8,
+    "offset": 59,
+    "old": 7,
+    "rule": "field:ihdr_c",
+    "seed": "py-jp2-colr-meth3"
+   },
+   "rule": "field:ihdr_c",
+   "top_pattern_count": 33,
+   "witness_id": 610
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 54,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 1,
+    "accept-vs-reject": 24,
+    "all-accept-identical-pixels": 1,
+    "all-reject": 28
+   },
+   "patterns": 20,
+   "prov": {
+    "field": "byte3",
+    "new": 30,
+    "offset": 3,
+    "old": 81,
+    "rule": "byte-replace",
+    "seed": "j2k-gray8-17x13"
+   },
+   "rule": "byte-replace",
+   "top_pattern_count": 28,
+   "witness_id": 6969
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `0ac05b6d`",
+    "hayro": "16\u00d716 `0ac05b6d`",
+    "hayro-strict": "reject `Decoding`",
+    "jasper": "16\u00d716 `0ac05b6d`",
+    "openjpeg": "16\u00d716 `0ac05b6d`",
+    "openjpeg-nonstrict": "16\u00d716 `0ac05b6d`"
+   },
+   "changed": 53,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-different-pixels": 6,
+    "accept-vs-reject": 36,
+    "all-accept-within-tolerance": 1,
+    "all-reject": 10
+   },
+   "patterns": 12,
+   "prov": {
+    "field": "QCD_SPqcd1",
+    "new": 2,
+    "offset": 65,
+    "old": 40,
+    "rule": "field:QCD_SPqcd1",
+    "seed": "j2k-gray4-ll"
+   },
+   "rule": "field:QCD_SPqcd1",
+   "top_pattern_count": 22,
+   "witness_id": 3752
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "16\u00d716 `b3d08689`",
+    "openjpeg": "16\u00d716 `b3d08689`",
+    "openjpeg-nonstrict": "16\u00d716 `b3d08689`"
+   },
+   "changed": 51,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 43,
+    "all-reject": 8
+   },
+   "patterns": 17,
+   "prov": {
+    "field": "COD_layers",
+    "new": 255,
+    "offset": 51,
+    "old": 1,
+    "rule": "field:COD_layers",
+    "seed": "j2k-gray1-ll"
+   },
+   "rule": "field:COD_layers",
+   "top_pattern_count": 20,
+   "witness_id": 429
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `5f4ecdb7`",
+    "hayro": "16\u00d716 `5f4ecdb7`",
+    "hayro-strict": "reject `Decoding`",
+    "jasper": "16\u00d716 `5f4ecdb7`",
+    "openjpeg": "16\u00d716 `5f4ecdb7`",
+    "openjpeg-nonstrict": "16\u00d716 `5f4ecdb7`"
+   },
+   "changed": 50,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-different-pixels": 3,
+    "accept-vs-reject": 47
+   },
+   "patterns": 16,
+   "prov": {
+    "field": "QCD_SPqcd0",
+    "new": 7,
+    "offset": 64,
+    "old": 8,
+    "rule": "field:QCD_SPqcd0",
+    "seed": "j2k-gray1-ll"
+   },
+   "rule": "field:QCD_SPqcd0",
+   "top_pattern_count": 13,
+   "witness_id": 2210
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 47,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 11,
+    "all-reject": 36
+   },
+   "patterns": 6,
+   "prov": {
+    "field": "jP",
+    "new": null,
+    "old": null,
+    "rule": "box-length-zero",
+    "seed": "py-jp2-jp2c-before-jp2h"
+   },
+   "rule": "box-length-zero",
+   "top_pattern_count": 33,
+   "witness_id": 2012
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 45,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 23,
+    "all-reject": 22
+   },
+   "patterns": 12,
+   "prov": {
+    "field": "jP",
+    "new": null,
+    "old": null,
+    "rule": "box-duplicate",
+    "seed": "jp2-gray8-ll"
+   },
+   "rule": "box-duplicate",
+   "top_pattern_count": 18,
+   "witness_id": 173
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 42,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 15,
+    "all-accept-identical-pixels": 1,
+    "all-reject": 26
+   },
+   "patterns": 16,
+   "prov": {
+    "field": "byte18",
+    "new": 16,
+    "offset": 18,
+    "old": 0,
+    "rule": "bit-flip",
+    "seed": "j2k-gray1-ll"
+   },
+   "rule": "bit-flip",
+   "top_pattern_count": 26,
+   "witness_id": 4319
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 40,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 3,
+    "accept-vs-reject": 16,
+    "all-reject": 21
+   },
+   "patterns": 11,
+   "prov": {
+    "field": "SIZ_Ssiz",
+    "new": 255,
+    "offset": 42,
+    "old": 7,
+    "rule": "field:SIZ_Ssiz",
+    "seed": "j2k-gray8-1x1"
+   },
+   "rule": "field:SIZ_Ssiz",
+   "top_pattern_count": 21,
+   "witness_id": 6671
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Marker`",
+    "hayro-strict": "reject `Marker`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "changed": 37,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 21,
+    "all-reject": 16
+   },
+   "patterns": 10,
+   "prov": {
+    "field": "ff90",
+    "new": null,
+    "old": null,
+    "rule": "marker-duplicate",
+    "seed": "j2k-gray10-ll"
+   },
+   "rule": "marker-duplicate",
+   "top_pattern_count": 11,
+   "witness_id": 6146
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "reject `decode`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "changed": 32,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 31,
+    "all-reject": 1
+   },
+   "patterns": 13,
+   "prov": {
+    "field": "ihdr-bpc-8->12",
+    "new": null,
+    "old": null,
+    "rule": "wrap-inconsistent",
+    "seed": "jp2-gray8-ll"
+   },
+   "rule": "wrap-inconsistent",
+   "top_pattern_count": 7,
+   "witness_id": 1050
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `460f5070`",
+    "hayro": "16\u00d716 `460f5070`",
+    "hayro-strict": "reject `Tile`",
+    "jasper": "reject `decode`",
+    "openjpeg": "16\u00d716 `7979ec9e`",
+    "openjpeg-nonstrict": "16\u00d716 `7979ec9e`"
+   },
+   "changed": 31,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-different-pixels": 8,
+    "accept-vs-reject": 16,
+    "all-accept-identical-pixels": 1,
+    "all-reject": 6
+   },
+   "patterns": 12,
+   "prov": {
+    "field": "SIZ_XTsiz",
+    "new": 1,
+    "offset": 24,
+    "old": 16,
+    "rule": "field:SIZ_XTsiz",
+    "seed": "j2k-rgb8-ll-nomct"
+   },
+   "rule": "field:SIZ_XTsiz",
+   "top_pattern_count": 7,
+   "witness_id": 98
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "changed": 31,
+   "class": "all-accept-identical-pixels",
+   "classes": {
+    "accept-different-pixels": 2,
+    "accept-vs-reject": 10,
+    "all-accept-identical-pixels": 19
+   },
+   "patterns": 7,
+   "prov": {
+    "field": "colr_meth",
+    "new": 254,
+    "offset": 70,
+    "old": 1,
+    "rule": "field:colr_meth",
+    "seed": "py-jp2-gray-colr-enum17"
+   },
+   "rule": "field:colr_meth",
+   "top_pattern_count": 19,
+   "witness_id": 3440
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `14d526ac`",
+    "hayro": "16\u00d716 `14d526ac`",
+    "hayro-strict": "reject `Tile`",
+    "jasper": "reject `decode`",
+    "openjpeg": "16\u00d716 `ec74cfd8`",
+    "openjpeg-nonstrict": "16\u00d716 `ec74cfd8`"
+   },
+   "changed": 24,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-different-pixels": 6,
+    "accept-vs-reject": 15,
+    "all-reject": 3
+   },
+   "patterns": 13,
+   "prov": {
+    "field": "SIZ_YTsiz",
+    "new": 3,
+    "offset": 113,
+    "old": 16,
+    "rule": "field:SIZ_YTsiz",
+    "seed": "jp2-gray16-ll"
+   },
+   "rule": "field:SIZ_YTsiz",
+   "top_pattern_count": 6,
+   "witness_id": 1965
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `04133827`",
+    "hayro": "16\u00d716 `04133827`",
+    "hayro-strict": "reject `Tile`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "16\u00d716 `04133827`"
+   },
+   "changed": 23,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-different-pixels": 2,
+    "accept-vs-reject": 20,
+    "all-accept-identical-pixels": 1
+   },
+   "patterns": 18,
+   "prov": {
+    "field": "off16",
+    "new": null,
+    "old": 4,
+    "rule": "packet-data-byte",
+    "seed": "j2k-gray8-ll"
+   },
+   "rule": "packet-data-byte",
+   "top_pattern_count": 3,
+   "witness_id": 3462
+  },
+  {
+   "cells": {
+    "glycin": "1\u00d71 `e3820096`",
+    "hayro": "1\u00d71 `e3820096`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "1\u00d71 `e3820096`",
+    "openjpeg": "1\u00d71 `e3820096`",
+    "openjpeg-nonstrict": "1\u00d71 `e3820096`"
+   },
+   "changed": 22,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 21,
+    "all-reject": 1
+   },
+   "patterns": 12,
+   "prov": {
+    "field": "ff1",
+    "new": 210,
+    "old": 209,
+    "rule": "trailing-bytes",
+    "seed": "jp2-gray8-1x1"
+   },
+   "rule": "trailing-bytes",
+   "top_pattern_count": 4,
+   "witness_id": 1916
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 18,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 18
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "cdef_LBox",
+    "new": 2147483648,
+    "offset": 77,
+    "old": 22,
+    "rule": "field:cdef_LBox",
+    "seed": "jp2-ga8-cdef"
+   },
+   "rule": "field:cdef_LBox",
+   "top_pattern_count": 18,
+   "witness_id": 115
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `7157c8a1`",
+    "hayro": "16\u00d716 `7157c8a1`",
+    "hayro-strict": "16\u00d716 `7157c8a1`",
+    "jasper": "reject `layout`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "changed": 18,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 18
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "cdef_asoc0",
+    "new": 8,
+    "offset": 91,
+    "old": 1,
+    "rule": "field:cdef_asoc0",
+    "seed": "jp2-ga8-cdef"
+   },
+   "rule": "field:cdef_asoc0",
+   "top_pattern_count": 15,
+   "witness_id": 704
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `7157c8a1`",
+    "hayro": "16\u00d716 `7157c8a1`",
+    "hayro-strict": "16\u00d716 `7157c8a1`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "changed": 18,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-different-pixels": 1,
+    "accept-vs-reject": 17
+   },
+   "patterns": 5,
+   "prov": {
+    "field": "cdef_asoclast",
+    "new": 128,
+    "offset": 97,
+    "old": 0,
+    "rule": "field:cdef_asoclast",
+    "seed": "jp2-ga8-cdef"
+   },
+   "rule": "field:cdef_asoclast",
+   "top_pattern_count": 10,
+   "witness_id": 471
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `7157c8a1`",
+    "hayro": "16\u00d716 `7157c8a1`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "changed": 18,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 18
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "cdef_cn0",
+    "new": 65535,
+    "offset": 87,
+    "old": 0,
+    "rule": "field:cdef_cn0",
+    "seed": "jp2-ga8-cdef"
+   },
+   "rule": "field:cdef_cn0",
+   "top_pattern_count": 18,
+   "witness_id": 816
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `7157c8a1`",
+    "hayro": "16\u00d716 `7157c8a1`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "changed": 18,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 18
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "cdef_cnlast",
+    "new": 128,
+    "offset": 93,
+    "old": 1,
+    "rule": "field:cdef_cnlast",
+    "seed": "jp2-ga8-cdef"
+   },
+   "rule": "field:cdef_cnlast",
+   "top_pattern_count": 18,
+   "witness_id": 590
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `7157c8a1`",
+    "hayro": "16\u00d716 `7157c8a1`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 18,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 18
+   },
+   "patterns": 2,
+   "prov": {
+    "field": "cdef_n",
+    "new": 32767,
+    "offset": 85,
+    "old": 2,
+    "rule": "field:cdef_n",
+    "seed": "jp2-ga8-cdef"
+   },
+   "rule": "field:cdef_n",
+   "top_pattern_count": 17,
+   "witness_id": 474
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `7157c8a1`",
+    "hayro": "16\u00d716 `7157c8a1`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `layout`",
+    "openjpeg": "16\u00d716 `7157c8a1`",
+    "openjpeg-nonstrict": "16\u00d716 `7157c8a1`"
+   },
+   "changed": 18,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 18
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "cdef_typ0",
+    "new": 16,
+    "offset": 89,
+    "old": 0,
+    "rule": "field:cdef_typ0",
+    "seed": "jp2-ga8-cdef"
+   },
+   "rule": "field:cdef_typ0",
+   "top_pattern_count": 10,
+   "witness_id": 709
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `7157c8a1`",
+    "hayro": "16\u00d716 `7157c8a1`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `7157c8a1`",
+    "openjpeg-nonstrict": "16\u00d716 `7157c8a1`"
+   },
+   "changed": 18,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 18
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "cdef_typlast",
+    "new": 256,
+    "offset": 95,
+    "old": 1,
+    "rule": "field:cdef_typlast",
+    "seed": "jp2-ga8-cdef"
+   },
+   "rule": "field:cdef_typlast",
+   "top_pattern_count": 12,
+   "witness_id": 710
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "changed": 18,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 18
+   },
+   "patterns": 9,
+   "prov": {
+    "field": "double-EOC",
+    "new": null,
+    "old": null,
+    "rule": "eoc",
+    "seed": "py-jp2-colr-meth3"
+   },
+   "rule": "eoc",
+   "top_pattern_count": 8,
+   "witness_id": 2791
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 12,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 12
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "\u00002\u0000\u0000_LBox",
+    "new": 16777215,
+    "offset": 0,
+    "old": 4283432785,
+    "rule": "field:\u00002\u0000\u0000_LBox",
+    "seed": "j2k-cmyk8-ll"
+   },
+   "rule": "field:\u00002\u0000\u0000_LBox",
+   "top_pattern_count": 12,
+   "witness_id": 67
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `7157c8a1`",
+    "hayro": "16\u00d716 `7157c8a1`",
+    "hayro-strict": "reject `Validation`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `7157c8a1`",
+    "openjpeg-nonstrict": "16\u00d716 `7157c8a1`"
+   },
+   "changed": 12,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 12
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "cdef_TBox",
+    "new": 4294967295,
+    "offset": 81,
+    "old": 1667523942,
+    "rule": "field:cdef_TBox",
+    "seed": "jp2-ga8-cdef"
+   },
+   "rule": "field:cdef_TBox",
+   "top_pattern_count": 12,
+   "witness_id": 469
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `0a2cc235`",
+    "hayro": "16\u00d716 `0a2cc235`",
+    "hayro-strict": "reject `unsupported channel la`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 11,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 11
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "\u00002\u0000\u0000_TBox",
+    "new": 1638400,
+    "offset": 4,
+    "old": 3276800,
+    "rule": "field:\u00002\u0000\u0000_TBox",
+    "seed": "j2k-cmyk8-ll"
+   },
+   "rule": "field:\u00002\u0000\u0000_TBox",
+   "top_pattern_count": 11,
+   "witness_id": 186
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 6,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 6
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "\u0000,\u0000\u0000_LBox",
+    "new": 7,
+    "offset": 0,
+    "old": 4283432785,
+    "rule": "field:\u0000,\u0000\u0000_LBox",
+    "seed": "j2k-ga8-ll"
+   },
+   "rule": "field:\u0000,\u0000\u0000_LBox",
+   "top_pattern_count": 6,
+   "witness_id": 63
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `7157c8a1`",
+    "hayro": "16\u00d716 `7157c8a1`",
+    "hayro-strict": "reject `Validation`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 6,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 6
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "\u0000,\u0000\u0000_TBox",
+    "new": 2147483647,
+    "offset": 4,
+    "old": 2883584,
+    "rule": "field:\u0000,\u0000\u0000_TBox",
+    "seed": "j2k-ga8-ll"
+   },
+   "rule": "field:\u0000,\u0000\u0000_TBox",
+   "top_pattern_count": 6,
+   "witness_id": 64
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 6,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 6
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "\u00005\u0000\u0000_LBox",
+    "new": 8,
+    "offset": 0,
+    "old": 4283432785,
+    "rule": "field:\u00005\u0000\u0000_LBox",
+    "seed": "j2k-5comp-unspec"
+   },
+   "rule": "field:\u00005\u0000\u0000_LBox",
+   "top_pattern_count": 6,
+   "witness_id": 69
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Validation`",
+    "hayro-strict": "reject `Validation`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 6,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 6
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "\u00005\u0000\u0000_TBox",
+    "new": 65536,
+    "offset": 4,
+    "old": 3473408,
+    "rule": "field:\u00005\u0000\u0000_TBox",
+    "seed": "j2k-5comp-unspec"
+   },
+   "rule": "field:\u00005\u0000\u0000_TBox",
+   "top_pattern_count": 6,
+   "witness_id": 70
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 6,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 6
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "bpcc_LBox",
+    "new": 2147483648,
+    "offset": 77,
+    "old": 9,
+    "rule": "field:bpcc_LBox",
+    "seed": "py-jp2-bpcc-res"
+   },
+   "rule": "field:bpcc_LBox",
+   "top_pattern_count": 6,
+   "witness_id": 112
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 6,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 6
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "cmap_LBox",
+    "new": 257,
+    "offset": 859,
+    "old": 20,
+    "rule": "field:cmap_LBox",
+    "seed": "py-jp2-palette-gray8"
+   },
+   "rule": "field:cmap_LBox",
+   "top_pattern_count": 6,
+   "witness_id": 124
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `25e9ae4e`",
+    "hayro": "16\u00d716 `25e9ae4e`",
+    "hayro-strict": "16\u00d716 `25e9ae4e`",
+    "jasper": "reject `layout`",
+    "openjpeg": "n/a",
+    "openjpeg-nonstrict": "n/a"
+   },
+   "changed": 6,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 6
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "cmap_TBox",
+    "new": 128,
+    "offset": 863,
+    "old": 1668112752,
+    "rule": "field:cmap_TBox",
+    "seed": "py-jp2-palette-gray8"
+   },
+   "rule": "field:cmap_TBox",
+   "top_pattern_count": 6,
+   "witness_id": 125
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Color`",
+    "hayro-strict": "reject `Color`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "changed": 6,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 6
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "cmap_cmp0",
+    "new": 255,
+    "offset": 867,
+    "old": 0,
+    "rule": "field:cmap_cmp0",
+    "seed": "py-jp2-palette-gray8"
+   },
+   "rule": "field:cmap_cmp0",
+   "top_pattern_count": 6,
+   "witness_id": 126
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "changed": 6,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 6
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "cmap_mtyp0",
+    "new": 2,
+    "offset": 869,
+    "old": 1,
+    "rule": "field:cmap_mtyp0",
+    "seed": "py-jp2-palette-gray8"
+   },
+   "rule": "field:cmap_mtyp0",
+   "top_pattern_count": 6,
+   "witness_id": 127
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Color`",
+    "hayro-strict": "reject `Color`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `decode`",
+    "openjpeg-nonstrict": "reject `decode`"
+   },
+   "changed": 6,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 1,
+    "all-reject": 5
+   },
+   "patterns": 2,
+   "prov": {
+    "field": "cmap_pcol0",
+    "new": 127,
+    "offset": 870,
+    "old": 0,
+    "rule": "field:cmap_pcol0",
+    "seed": "py-jp2-palette-gray8"
+   },
+   "rule": "field:cmap_pcol0",
+   "top_pattern_count": 5,
+   "witness_id": 246
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 6,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 6
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "pclr_LBox",
+    "new": 781,
+    "offset": 77,
+    "old": 782,
+    "rule": "field:pclr_LBox",
+    "seed": "py-jp2-palette-gray8"
+   },
+   "rule": "field:pclr_LBox",
+   "top_pattern_count": 6,
+   "witness_id": 152
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "reject `layout`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 6,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 6
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "pclr_TBox",
+    "new": 7,
+    "offset": 81,
+    "old": 1885564018,
+    "rule": "field:pclr_TBox",
+    "seed": "py-jp2-palette-gray8"
+   },
+   "rule": "field:pclr_TBox",
+   "top_pattern_count": 6,
+   "witness_id": 153
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `49a3548d`",
+    "hayro": "16\u00d716 `49a3548d`",
+    "hayro-strict": "16\u00d716 `49a3548d`",
+    "jasper": "16\u00d716 `d4f134b5`",
+    "openjpeg": "16\u00d716 `49a3548d`",
+    "openjpeg-nonstrict": "16\u00d716 `49a3548d`"
+   },
+   "changed": 6,
+   "class": "accept-different-pixels",
+   "classes": {
+    "accept-different-pixels": 3,
+    "accept-vs-reject": 3
+   },
+   "patterns": 2,
+   "prov": {
+    "field": "pclr_b0",
+    "new": 6,
+    "offset": 88,
+    "old": 7,
+    "rule": "field:pclr_b0",
+    "seed": "py-jp2-palette-gray8"
+   },
+   "rule": "field:pclr_b0",
+   "top_pattern_count": 3,
+   "witness_id": 154
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 6,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 6
+   },
+   "patterns": 2,
+   "prov": {
+    "field": "pclr_ne",
+    "new": 32767,
+    "offset": 85,
+    "old": 256,
+    "rule": "field:pclr_ne",
+    "seed": "py-jp2-palette-gray8"
+   },
+   "rule": "field:pclr_ne",
+   "top_pattern_count": 3,
+   "witness_id": 155
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 6,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 5,
+    "all-reject": 1
+   },
+   "patterns": 2,
+   "prov": {
+    "field": "pclr_npc",
+    "new": 7,
+    "offset": 87,
+    "old": 3,
+    "rule": "field:pclr_npc",
+    "seed": "py-jp2-palette-gray8"
+   },
+   "rule": "field:pclr_npc",
+   "top_pattern_count": 5,
+   "witness_id": 274
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "changed": 6,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 6
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "res_LBox",
+    "new": 7,
+    "offset": 86,
+    "old": 26,
+    "rule": "field:res_LBox",
+    "seed": "py-jp2-bpcc-res"
+   },
+   "rule": "field:res_LBox",
+   "top_pattern_count": 6,
+   "witness_id": 157
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "changed": 2,
+   "class": "all-accept-identical-pixels",
+   "classes": {
+    "all-accept-identical-pixels": 2
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "ihdr_unkc",
+    "new": 3,
+    "offset": 60,
+    "old": 0,
+    "rule": "field:ihdr_unkc",
+    "seed": "py-jp2-gray-colr-enum17"
+   },
+   "rule": "field:ihdr_unkc",
+   "top_pattern_count": 2,
+   "witness_id": 2508
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "changed": 1,
+   "class": "all-accept-identical-pixels",
+   "classes": {
+    "all-accept-identical-pixels": 1
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "colr_prec",
+    "new": 1,
+    "offset": 71,
+    "old": 0,
+    "rule": "field:colr_prec",
+    "seed": "py-jp2-gray-colr-enum17"
+   },
+   "rule": "field:colr_prec",
+   "top_pattern_count": 1,
+   "witness_id": 2670
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "changed": 1,
+   "class": "all-accept-identical-pixels",
+   "classes": {
+    "all-accept-identical-pixels": 1
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "ihdr_ipr",
+    "new": 1,
+    "offset": 61,
+    "old": 0,
+    "rule": "field:ihdr_ipr",
+    "seed": "py-jp2-gray-colr-enum17"
+   },
+   "rule": "field:ihdr_ipr",
+   "top_pattern_count": 1,
+   "witness_id": 3108
+  }
+ ],
+ "same_group_divergence": {
+  "glycin/hayro-strict:different-pixels": 7,
+  "glycin/hayro-strict:status": 893,
+  "glycin/hayro:different-pixels": 11,
+  "glycin/hayro:status": 82,
+  "hayro/hayro-strict:status": 811,
+  "openjpeg/openjpeg-nonstrict:status": 167
+ },
+ "seed": 731,
+ "seed_inputs": 53,
+ "seed_outcomes": [
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Validation`",
+    "hayro-strict": "reject `Validation`",
+    "jasper": "16\u00d716 `3e9a9ba0`",
+    "openjpeg": "n/a",
+    "openjpeg-nonstrict": "n/a"
+   },
+   "class": "accept-vs-reject",
+   "seed": "j2k-5comp-unspec"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `0a2cc235`",
+    "hayro": "16\u00d716 `0a2cc235`",
+    "hayro-strict": "reject `unsupported channel la`",
+    "jasper": "16\u00d716 `3e9a9ba0`",
+    "openjpeg": "16\u00d716 `0a2cc235`",
+    "openjpeg-nonstrict": "16\u00d716 `0a2cc235`"
+   },
+   "class": "accept-vs-reject",
+   "seed": "j2k-cmyk8-ll"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `7157c8a1`",
+    "hayro": "16\u00d716 `7157c8a1`",
+    "hayro-strict": "reject `Validation`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `7157c8a1`",
+    "openjpeg-nonstrict": "16\u00d716 `7157c8a1`"
+   },
+   "class": "accept-vs-reject",
+   "seed": "j2k-ga8-ll"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `b3d08689`",
+    "hayro": "16\u00d716 `b3d08689`",
+    "hayro-strict": "16\u00d716 `b3d08689`",
+    "jasper": "16\u00d716 `b3d08689`",
+    "openjpeg": "16\u00d716 `b3d08689`",
+    "openjpeg-nonstrict": "16\u00d716 `b3d08689`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-gray1-ll"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-gray10-ll"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-gray12-ll"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-gray16-ll"
+  },
+  {
+   "cells": {
+    "glycin": "24\u00d724 `4ef1a708`",
+    "hayro": "24\u00d724 `4ef1a708`",
+    "hayro-strict": "24\u00d724 `4ef1a708`",
+    "jasper": "24\u00d724 `fb8120a9`",
+    "openjpeg": "24\u00d724 `4791a645`",
+    "openjpeg-nonstrict": "24\u00d724 `4791a645`"
+   },
+   "class": "accept-different-pixels",
+   "seed": "j2k-gray16-lossy"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-gray4-ll"
+  },
+  {
+   "cells": {
+    "glycin": "17\u00d713 `ca40751a`",
+    "hayro": "17\u00d713 `ca40751a`",
+    "hayro-strict": "17\u00d713 `ca40751a`",
+    "jasper": "17\u00d713 `ca40751a`",
+    "openjpeg": "17\u00d713 `ca40751a`",
+    "openjpeg-nonstrict": "17\u00d713 `ca40751a`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-gray8-17x13"
+  },
+  {
+   "cells": {
+    "glycin": "1\u00d71 `e3820096`",
+    "hayro": "1\u00d71 `e3820096`",
+    "hayro-strict": "1\u00d71 `e3820096`",
+    "jasper": "1\u00d71 `e3820096`",
+    "openjpeg": "1\u00d71 `e3820096`",
+    "openjpeg-nonstrict": "1\u00d71 `e3820096`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-gray8-1x1"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `596605d7`",
+    "hayro": "32\u00d732 `596605d7`",
+    "hayro-strict": "32\u00d732 `596605d7`",
+    "jasper": "32\u00d732 `596605d7`",
+    "openjpeg": "32\u00d732 `596605d7`",
+    "openjpeg-nonstrict": "32\u00d732 `596605d7`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-gray8-bypass"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `596605d7`",
+    "hayro": "32\u00d732 `596605d7`",
+    "hayro-strict": "32\u00d732 `596605d7`",
+    "jasper": "32\u00d732 `596605d7`",
+    "openjpeg": "32\u00d732 `596605d7`",
+    "openjpeg-nonstrict": "32\u00d732 `596605d7`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-gray8-cblk4x4"
+  },
+  {
+   "cells": {
+    "glycin": "64\u00d764 `746e3133`",
+    "hayro": "64\u00d764 `746e3133`",
+    "hayro-strict": "64\u00d764 `746e3133`",
+    "jasper": "64\u00d764 `746e3133`",
+    "openjpeg": "64\u00d764 `746e3133`",
+    "openjpeg-nonstrict": "64\u00d764 `746e3133`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-gray8-cblk64x64-nres1"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `f69bac4b`",
+    "hayro": "32\u00d732 `f69bac4b`",
+    "hayro-strict": "32\u00d732 `f69bac4b`",
+    "jasper": "32\u00d732 `8586403f`",
+    "openjpeg": "32\u00d732 `5dcf09ab`",
+    "openjpeg-nonstrict": "32\u00d732 `5dcf09ab`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "j2k-gray8-layers3-lossy"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-gray8-ll"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `5d977c50`",
+    "hayro": "32\u00d732 `5d977c50`",
+    "hayro-strict": "32\u00d732 `5d977c50`",
+    "jasper": "32\u00d732 `e039989e`",
+    "openjpeg": "32\u00d732 `967b0f26`",
+    "openjpeg-nonstrict": "32\u00d732 `967b0f26`"
+   },
+   "class": "accept-different-pixels",
+   "seed": "j2k-gray8-lossy-r10"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `596605d7`",
+    "hayro": "32\u00d732 `596605d7`",
+    "hayro-strict": "32\u00d732 `596605d7`",
+    "jasper": "32\u00d732 `596605d7`",
+    "openjpeg": "32\u00d732 `596605d7`",
+    "openjpeg-nonstrict": "32\u00d732 `596605d7`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-gray8-pcrl"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `596605d7`",
+    "hayro": "32\u00d732 `596605d7`",
+    "hayro-strict": "32\u00d732 `596605d7`",
+    "jasper": "32\u00d732 `596605d7`",
+    "openjpeg": "32\u00d732 `596605d7`",
+    "openjpeg-nonstrict": "32\u00d732 `596605d7`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-gray8-rpcl"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-gray8-signed-ll"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `41f76705`",
+    "hayro": "16\u00d716 `41f76705`",
+    "hayro-strict": "16\u00d716 `41f76705`",
+    "jasper": "16\u00d716 `41f76705`",
+    "openjpeg": "16\u00d716 `41f76705`",
+    "openjpeg-nonstrict": "16\u00d716 `41f76705`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-rgb12-ll"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `ccb19b2e`",
+    "hayro": "16\u00d716 `ccb19b2e`",
+    "hayro-strict": "16\u00d716 `ccb19b2e`",
+    "jasper": "16\u00d716 `ccb19b2e`",
+    "openjpeg": "16\u00d716 `ccb19b2e`",
+    "openjpeg-nonstrict": "16\u00d716 `ccb19b2e`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-rgb16-ll"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "hayro": "16\u00d716 `3e9a9ba0`",
+    "hayro-strict": "16\u00d716 `3e9a9ba0`",
+    "jasper": "16\u00d716 `3e9a9ba0`",
+    "openjpeg": "16\u00d716 `3e9a9ba0`",
+    "openjpeg-nonstrict": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-rgb8-cprl"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "hayro": "16\u00d716 `3e9a9ba0`",
+    "hayro-strict": "16\u00d716 `3e9a9ba0`",
+    "jasper": "16\u00d716 `3e9a9ba0`",
+    "openjpeg": "16\u00d716 `3e9a9ba0`",
+    "openjpeg-nonstrict": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-rgb8-ll-mct"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "hayro": "16\u00d716 `3e9a9ba0`",
+    "hayro-strict": "16\u00d716 `3e9a9ba0`",
+    "jasper": "16\u00d716 `3e9a9ba0`",
+    "openjpeg": "16\u00d716 `3e9a9ba0`",
+    "openjpeg-nonstrict": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-rgb8-ll-nomct"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `bdea49a5`",
+    "hayro": "32\u00d732 `bdea49a5`",
+    "hayro-strict": "32\u00d732 `bdea49a5`",
+    "jasper": "32\u00d732 `d65b6475`",
+    "openjpeg": "32\u00d732 `d65b6475`",
+    "openjpeg-nonstrict": "32\u00d732 `d65b6475`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "j2k-rgb8-lossy-r30"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `a9d8dfb1`",
+    "hayro": "32\u00d732 `a9d8dfb1`",
+    "hayro-strict": "32\u00d732 `a9d8dfb1`",
+    "jasper": "32\u00d732 `52ac6144`",
+    "openjpeg": "32\u00d732 `b5ce0ce4`",
+    "openjpeg-nonstrict": "32\u00d732 `b5ce0ce4`"
+   },
+   "class": "accept-different-pixels",
+   "seed": "j2k-rgb8-lossy-r8"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `a0edf012`",
+    "hayro": "32\u00d732 `a0edf012`",
+    "hayro-strict": "32\u00d732 `a0edf012`",
+    "jasper": "32\u00d732 `a0edf012`",
+    "openjpeg": "32\u00d732 `a0edf012`",
+    "openjpeg-nonstrict": "32\u00d732 `a0edf012`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-rgb8-prec-sop-eph"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "hayro": "16\u00d716 `3e9a9ba0`",
+    "hayro-strict": "16\u00d716 `3e9a9ba0`",
+    "jasper": "16\u00d716 `3e9a9ba0`",
+    "openjpeg": "16\u00d716 `3e9a9ba0`",
+    "openjpeg-nonstrict": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-rgb8-rlcp"
+  },
+  {
+   "cells": {
+    "glycin": "24\u00d716 `1f06785c`",
+    "hayro": "24\u00d716 `1f06785c`",
+    "hayro-strict": "24\u00d716 `1f06785c`",
+    "jasper": "24\u00d716 `1f06785c`",
+    "openjpeg": "24\u00d716 `1f06785c`",
+    "openjpeg-nonstrict": "24\u00d716 `1f06785c`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "j2k-rgb8-tiles8"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `2fa147b9`",
+    "hayro": "16\u00d716 `2fa147b9`",
+    "hayro-strict": "reject `unsupported channel la`",
+    "jasper": "16\u00d716 `3e9a9ba0`",
+    "openjpeg": "16\u00d716 `2fa147b9`",
+    "openjpeg-nonstrict": "16\u00d716 `2fa147b9`"
+   },
+   "class": "accept-vs-reject",
+   "seed": "j2k-rgba8-ll"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `97830e72`",
+    "hayro": "reject `unsupported channel la`",
+    "hayro-strict": "reject `unsupported channel la`",
+    "jasper": "n/a",
+    "openjpeg": "n/a",
+    "openjpeg-nonstrict": "n/a"
+   },
+   "class": "accept-vs-reject",
+   "seed": "jp2-cmyk8"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `7157c8a1`",
+    "hayro": "16\u00d716 `7157c8a1`",
+    "hayro-strict": "16\u00d716 `7157c8a1`",
+    "jasper": "16\u00d716 `7157c8a1`",
+    "openjpeg": "16\u00d716 `7157c8a1`",
+    "openjpeg-nonstrict": "16\u00d716 `7157c8a1`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "jp2-ga8-cdef"
+  },
+  {
+   "cells": {
+    "glycin": "24\u00d724 `97d36c0b`",
+    "hayro": "24\u00d724 `97d36c0b`",
+    "hayro-strict": "24\u00d724 `97d36c0b`",
+    "jasper": "24\u00d724 `3c61b977`",
+    "openjpeg": "24\u00d724 `3c61b977`",
+    "openjpeg-nonstrict": "24\u00d724 `3c61b977`"
+   },
+   "class": "accept-different-pixels",
+   "seed": "jp2-gray12-lossy"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "jp2-gray16-ll"
+  },
+  {
+   "cells": {
+    "glycin": "1\u00d71 `e3820096`",
+    "hayro": "1\u00d71 `e3820096`",
+    "hayro-strict": "1\u00d71 `e3820096`",
+    "jasper": "1\u00d71 `e3820096`",
+    "openjpeg": "1\u00d71 `e3820096`",
+    "openjpeg-nonstrict": "1\u00d71 `e3820096`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "jp2-gray8-1x1"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "jp2-gray8-ll"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "hayro": "16\u00d716 `3e9a9ba0`",
+    "hayro-strict": "16\u00d716 `3e9a9ba0`",
+    "jasper": "n/a",
+    "openjpeg": "16\u00d716 `3e9a9ba0`",
+    "openjpeg-nonstrict": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "jp2-rgb8-icc"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "hayro": "16\u00d716 `3e9a9ba0`",
+    "hayro-strict": "16\u00d716 `3e9a9ba0`",
+    "jasper": "16\u00d716 `3e9a9ba0`",
+    "openjpeg": "16\u00d716 `3e9a9ba0`",
+    "openjpeg-nonstrict": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "jp2-rgb8-ll"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `bdea49a5`",
+    "hayro": "32\u00d732 `bdea49a5`",
+    "hayro-strict": "32\u00d732 `bdea49a5`",
+    "jasper": "32\u00d732 `d65b6475`",
+    "openjpeg": "32\u00d732 `d65b6475`",
+    "openjpeg-nonstrict": "32\u00d732 `d65b6475`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "jp2-rgb8-lossy"
+  },
+  {
+   "cells": {
+    "glycin": "24\u00d716 `1f06785c`",
+    "hayro": "24\u00d716 `1f06785c`",
+    "hayro-strict": "24\u00d716 `1f06785c`",
+    "jasper": "24\u00d716 `1f06785c`",
+    "openjpeg": "24\u00d716 `1f06785c`",
+    "openjpeg-nonstrict": "24\u00d716 `1f06785c`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "jp2-rgb8-tiles-sop"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `2fa147b9`",
+    "hayro": "16\u00d716 `2fa147b9`",
+    "hayro-strict": "16\u00d716 `2fa147b9`",
+    "jasper": "16\u00d716 `2fa147b9`",
+    "openjpeg": "16\u00d716 `2fa147b9`",
+    "openjpeg-nonstrict": "16\u00d716 `2fa147b9`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "jp2-rgba8-ll-cdef"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `9b71770b`",
+    "hayro": "16\u00d716 `9b71770b`",
+    "hayro-strict": "16\u00d716 `9b71770b`",
+    "jasper": "n/a",
+    "openjpeg": "n/a",
+    "openjpeg-nonstrict": "n/a"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "jp2-sycc8"
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "n/a",
+    "openjpeg": "16\u00d716 `3e9a9ba0`",
+    "openjpeg-nonstrict": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "accept-vs-reject",
+   "seed": "jp2-unspec-3c"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `25e9ae4e`",
+    "hayro": "16\u00d716 `25e9ae4e`",
+    "hayro-strict": "16\u00d716 `25e9ae4e`",
+    "jasper": "16\u00d716 `25e9ae4e`",
+    "openjpeg": "16\u00d716 `25e9ae4e`",
+    "openjpeg-nonstrict": "16\u00d716 `25e9ae4e`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "py-jp2-palette-gray8"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "reject `layout`",
+    "openjpeg": "n/a",
+    "openjpeg-nonstrict": "n/a"
+   },
+   "class": "accept-vs-reject",
+   "seed": "py-jp2-gray-as-srgb"
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "hayro": "reject `Format`",
+    "hayro-strict": "reject `Format`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "class": "all-reject",
+   "seed": "py-jp2-no-ftyp"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "reject `decode`",
+    "openjpeg": "reject `read_header`",
+    "openjpeg-nonstrict": "reject `read_header`"
+   },
+   "class": "accept-vs-reject",
+   "seed": "py-jp2-jp2c-before-jp2h"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "reject `decode`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "class": "accept-vs-reject",
+   "seed": "py-jp2-bpcc-res"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "reject `decode`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "class": "accept-vs-reject",
+   "seed": "py-jp2-colr-icc-junk"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "hayro": "16\u00d716 `4102f1f4`",
+    "hayro-strict": "16\u00d716 `4102f1f4`",
+    "jasper": "16\u00d716 `4102f1f4`",
+    "openjpeg": "16\u00d716 `4102f1f4`",
+    "openjpeg-nonstrict": "16\u00d716 `4102f1f4`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "py-jp2-colr-meth3"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `8f40594e`",
+    "hayro": "16\u00d716 `8f40594e`",
+    "hayro-strict": "16\u00d716 `8f40594e`",
+    "jasper": "16\u00d716 `8f40594e`",
+    "openjpeg": "16\u00d716 `8f40594e`",
+    "openjpeg-nonstrict": "16\u00d716 `8f40594e`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "py-jp2-rgb-cdef-reversed"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "hayro": "16\u00d716 `3e9a9ba0`",
+    "hayro-strict": "16\u00d716 `3e9a9ba0`",
+    "jasper": "reject `decode`",
+    "openjpeg": "16\u00d716 `3e9a9ba0`",
+    "openjpeg-nonstrict": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "accept-vs-reject",
+   "seed": "py-jp2-rgb-ihdr-wrong-nc"
+  }
+ ],
+ "timing": {
+  "comparison_seconds": 360.7,
+  "generation_seconds": 0.6,
+  "total_seconds": 571.5
+ },
+ "tolerance_max_abs_channel_diff": 3,
+ "unavailable": [
+  [
+   "gdk-pixbuf JP2/J2K module",
+   "not installed"
+  ],
+  [
+   "subsampled/YCC/CMYK colour conversion in the native runners",
+   "OpenJPEG and JasPer rows report `skip` (n/a) for sYCC/eYCC/CMYK/ICC-only/>4-component outputs: no colour conversion is implemented in the runners, so those inputs do not vote for those columns"
+  ],
+  [
+   "`jpeg2k` / `openjp2` Rust crates",
+   "wrap or port OpenJPEG: not independent of the OpenJPEG column, not built"
+  ]
+ ],
+ "visible_diff_histogram_pairs": {
+  "1": 385,
+  "2": 193,
+  "3": 706,
+  "4": 23,
+  "5": 19,
+  "6": 24,
+  "7": 469,
+  "8": 26,
+  "9": 8,
+  "10": 135,
+  "11": 73,
+  "13": 16,
+  "16": 13,
+  "17": 2,
+  "19": 2,
+  "20": 27,
+  "21": 2,
+  "22": 4,
+  "24": 28,
+  "26": 4,
+  "32": 8,
+  "34": 4,
+  "36": 3,
+  "38": 2,
+  "39": 5,
+  "40": 2,
+  "41": 13,
+  "42": 163,
+  "43": 4,
+  "44": 4,
+  "45": 9,
+  "46": 6,
+  "47": 21,
+  "48": 19,
+  "49": 20,
+  "50": 22,
+  "54": 4,
+  "59": 3,
+  "63": 2,
+  "64": 1472
+ },
+ "witnesses": {}
+}

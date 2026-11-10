@@ -1,0 +1,21 @@
+[package]
+name = "leniency-jt-runner"
+version = "0.1.0"
+edition = "2021"
+
+# Shared by the jpeg/ and tiff/ adapters. Versions are pinned to the glycin clone's
+# Cargo.lock (image 0.25.10 -> zune-jpeg 0.5.15 and tiff 0.11.3, the same libraries
+# glycin-image-rs uses), so `image` is not an independent vote for either format.
+[dependencies]
+image = { version = "=0.25.10", default-features = false, features = ["jpeg", "tiff"] }
+glycin-image-rs = { path = "../../../glycin-plan/glycin/glycin-loaders/glycin-image-rs", default-features = false, features = ["builtin"] }
+glycin-utils = { path = "../../../glycin-plan/glycin/glycin-utils", default-features = false, features = ["builtin", "loader-utils"] }
+gufo-exif = "=0.5.5"
+gufo-common = "=2.0.0"
+jpeg-decoder = { version = "=0.3.2", default-features = false }
+tiff = "=0.11.3"
+serde_json = "1.0"
+sha2 = "0.10"
+
+[profile.release]
+debug = false

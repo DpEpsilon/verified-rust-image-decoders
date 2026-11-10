@@ -1,0 +1,10 @@
+/* XPM */
+const [] = {
+"5 4 3 1",
+"c c #3F6D56",
+"# c NONE",
+"b c None",
+"bbccc",
+"bbc#c",
+"#b##b",
+"b#bcc"

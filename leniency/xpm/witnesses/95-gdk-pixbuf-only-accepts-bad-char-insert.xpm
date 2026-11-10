@@ -1,0 +1,22 @@
+/* XPM */
+static char * img[] = {
+"5 16 3 4", /* c */
+"a##b c rebeccapurple", /* c */
+"Xaac c indigo", /* c */
+"c#ba c WebGreen", /* c */
+"c#baXaacXaaca##bc#ba", /* c */
+"a##bc#baXaaca##ba##b", /* c €*/
+"a##bc#baa##ba##bc#ba", /* c */
+"Xaacc#bac#baXaacXaac", /* c */
+"Xaaca##ba##ba##ba##b", /* c */
+"c#bac#baXaacXaaca##b", /* c */
+"Xaaca##bc#baXaacXaac", /* c */
+"a##bc#bac#baXaacc#ba", /* c */
+"a##bXaaca##bXaacc#ba", /* c */
+"XaacXaacXaacc#baa##b", /* c */
+"Xaacc#baXaacc#baXaac", /* c */
+"a##bXaaca##bc#bac#ba", /* c */
+"XaacXaaca##ba##bc#ba", /* c */
+"c#bac#baa##ba##bXaac", /* c */
+"XaacXaacc#bac#baa##b", /* c */
+"XaacXaacc#baXaaca##b" /* c */

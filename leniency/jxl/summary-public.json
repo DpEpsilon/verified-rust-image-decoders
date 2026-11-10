@@ -1,0 +1,2606 @@
+{
+ "acceptance_disagreements": {
+  "glycin": {
+   "glycin": 0,
+   "jxl-oxide": 573,
+   "libjxl": 298
+  },
+  "jxl-oxide": {
+   "glycin": 573,
+   "jxl-oxide": 0,
+   "libjxl": 405
+  },
+  "libjxl": {
+   "glycin": 298,
+   "jxl-oxide": 405,
+   "libjxl": 0
+  }
+ },
+ "anomaly_counts": {},
+ "changed_relations": 5884,
+ "classes": {
+  "accept-different-pixels": 16,
+  "accept-vs-reject": 638,
+  "all-accept-identical-pixels": 576,
+  "all-accept-within-tolerance": 615,
+  "all-reject": 5155
+ },
+ "decoders": {
+  "glycin": {
+   "doc": "glycin-image-rs `ImgLoader` for `image/jxl` (special loader::jxl -> `jxl` crate 0.8.0 = jxl-rs), frames via `specific_frame` until `NoMoreFrames`",
+   "group": "jxl-rs",
+   "status_counts": {
+    "error": 5758,
+    "ok": 1242
+   }
+  },
+  "jxl-oxide": {
+   "doc": "jxl-oxide 0.12.6 `JxlImage::render_frame` for every keyframe; f32 -> RGBA8 by round(clamp*255); independent of jxl-rs",
+   "group": "jxl-oxide",
+   "status_counts": {
+    "error": 5249,
+    "ok": 1751
+   }
+  },
+  "libjxl": {
+   "doc": "libjxl (github master 0.13.0-dev, built with cmake, single-threaded) `JxlDecoder`, float RGBA output, unpremultiplied alpha, orientation applied, round(clamp*255)",
+   "group": "libjxl",
+   "status_counts": {
+    "error": 5466,
+    "ok": 1534
+   }
+  }
+ },
+ "distinct_seeds": 39,
+ "format": "jxl",
+ "inputs": 7000,
+ "lone_acceptor_by_group": {
+  "jxl-oxide": 308,
+  "libjxl": 62
+ },
+ "lone_rejecter_by_group": {
+  "jxl-oxide": 32,
+  "jxl-rs": 233,
+  "libjxl": 3
+ },
+ "partitions": [
+  {
+   "accepting": [
+    "jxl-oxide"
+   ],
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "1\u00d71 `9b24e70d`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "count": 308,
+   "rejecting": [
+    "glycin",
+    "libjxl"
+   ],
+   "top_rules": [
+    [
+     "field:ftyp_TBox",
+     60
+    ],
+    [
+     "field:ftyp_brand",
+     60
+    ],
+    [
+     "field:ftyp_minor",
+     57
+    ],
+    [
+     "ftyp-brand",
+     30
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "jxl-oxide": "1\u00d71 `9b24e70d`",
+     "libjxl": "reject `decoder-error`"
+    },
+    "file": "lenient-01-3250.jxl",
+    "minimised_length": 46,
+    "original_length": 46,
+    "same_signature_as_original": true
+   },
+   "witness_id": 3250
+  },
+  {
+   "accepting": [
+    "jxl-oxide",
+    "libjxl"
+   ],
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "16\u00d716 `4102f1f4`",
+    "libjxl": "16\u00d716 `4102f1f4`"
+   },
+   "count": 233,
+   "rejecting": [
+    "glycin"
+   ],
+   "top_rules": [
+    [
+     "truncation",
+     69
+    ],
+    [
+     "trailing-bytes",
+     60
+    ],
+    [
+     "field:xml_LBox",
+     22
+    ],
+    [
+     "field:jxlc_LBox",
+     19
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "jxl-oxide": "16\u00d716 `4102f1f4`",
+     "libjxl": "16\u00d716 `4102f1f4`"
+    },
+    "file": "lenient-02-248.jxl",
+    "minimised_length": 124,
+    "original_length": 124,
+    "same_signature_as_original": true
+   },
+   "witness_id": 248
+  },
+  {
+   "accepting": [
+    "libjxl"
+   ],
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `invalid container`",
+    "libjxl": "16\u00d716 `4102f1f4`"
+   },
+   "count": 62,
+   "rejecting": [
+    "glycin",
+    "jxl-oxide"
+   ],
+   "top_rules": [
+    [
+     "field:brob_LBox",
+     12
+    ],
+    [
+     "field:jxlp_index",
+     12
+    ],
+    [
+     "trailing-bytes",
+     10
+    ],
+    [
+     "field:jxlp_LBox",
+     7
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "jxl-oxide": "reject `invalid container`",
+     "libjxl": "16\u00d716 `4102f1f4`"
+    },
+    "file": "lenient-03-6009.jxl",
+    "minimised_length": 180,
+    "original_length": 248,
+    "same_signature_as_original": true
+   },
+   "witness_id": 6009
+  },
+  {
+   "accepting": [
+    "glycin",
+    "libjxl"
+   ],
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "jxl-oxide": "reject `Invalid Data`",
+    "libjxl": "16\u00d716 `4102f1f4`"
+   },
+   "count": 32,
+   "rejecting": [
+    "jxl-oxide"
+   ],
+   "top_rules": [
+    [
+     "box-insert",
+     20
+    ],
+    [
+     "box-duplicate",
+     9
+    ],
+    [
+     "box-length-zero",
+     2
+    ],
+    [
+     "field:cs_byte7",
+     1
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "16\u00d716 `4102f1f4`",
+     "jxl-oxide": "reject `Invalid Data`",
+     "libjxl": "16\u00d716 `4102f1f4`"
+    },
+    "file": "lenient-04-560.jxl",
+    "minimised_length": 144,
+    "original_length": 144,
+    "same_signature_as_original": true
+   },
+   "witness_id": 560
+  },
+  {
+   "accepting": [
+    "glycin",
+    "jxl-oxide"
+   ],
+   "cells": {
+    "glycin": "32\u00d732 `d53fb63e`",
+    "jxl-oxide": "32\u00d732 `56b4d6e8`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "count": 3,
+   "rejecting": [
+    "libjxl"
+   ],
+   "top_rules": [
+    [
+     "field:cs_byte6",
+     1
+    ],
+    [
+     "cs-header-byte-sweep",
+     1
+    ],
+    [
+     "field:cs_byte7",
+     1
+    ]
+   ],
+   "unchanged_seed": 0,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "32\u00d732 `d53fb63e`",
+     "jxl-oxide": "32\u00d732 `56b4d6e8`",
+     "libjxl": "reject `decoder-error`"
+    },
+    "file": "lenient-05-5152.jxl",
+    "minimised_length": 213,
+    "original_length": 213,
+    "same_signature_as_original": true
+   },
+   "witness_id": 5152
+  }
+ ],
+ "pixel_rows": [
+  {
+   "cells": {
+    "glycin": "32\u00d732 `63f58ab7`",
+    "jxl-oxide": "32\u00d732 `a6b0de38`",
+    "libjxl": "32\u00d732 `36c8c0ea`"
+   },
+   "class": "all-accept-within-tolerance",
+   "count": 585,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jxl-oxide",
+     "within-tol"
+    ],
+    [
+     "glycin",
+     "libjxl",
+     "within-tol"
+    ],
+    [
+     "jxl-oxide",
+     "libjxl",
+     "within-tol"
+    ]
+   ],
+   "max_abs_diff": 1,
+   "rules": [
+    [
+     "trailing-bytes",
+     156
+    ],
+    [
+     "wrap",
+     59
+    ],
+    [
+     "bit-flip",
+     51
+    ],
+    [
+     "field:cs_byte5",
+     40
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "32\u00d732 `63f58ab7`",
+     "jxl-oxide": "32\u00d732 `a6b0de38`",
+     "libjxl": "32\u00d732 `36c8c0ea`"
+    },
+    "file": "pixel-01-24.jxl",
+    "minimised_length": 125,
+    "original_length": 125,
+    "same_signature_as_original": true
+   },
+   "witness_id": 24
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `36c8c0ea`",
+    "jxl-oxide": "32\u00d732 `a6b0de38`",
+    "libjxl": "32\u00d732 `36c8c0ea`"
+   },
+   "class": "all-accept-within-tolerance",
+   "count": 21,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jxl-oxide",
+     "within-tol"
+    ],
+    [
+     "jxl-oxide",
+     "libjxl",
+     "within-tol"
+    ]
+   ],
+   "max_abs_diff": 1,
+   "rules": [
+    [
+     "field:cs_byte14",
+     6
+    ],
+    [
+     "field:cs_byte7",
+     5
+    ],
+    [
+     "byte-replace",
+     4
+    ],
+    [
+     "field:cs_byte15",
+     2
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "32\u00d732 `36c8c0ea`",
+     "jxl-oxide": "32\u00d732 `a6b0de38`",
+     "libjxl": "32\u00d732 `36c8c0ea`"
+    },
+    "file": "pixel-02-4554.jxl",
+    "minimised_length": 125,
+    "original_length": 125,
+    "same_signature_as_original": true
+   },
+   "witness_id": 4554
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `3ddcbde1`",
+    "jxl-oxide": "32\u00d732 `170b31df`",
+    "libjxl": "32\u00d732 `170b31df`"
+   },
+   "class": "all-accept-within-tolerance",
+   "count": 9,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jxl-oxide",
+     "within-tol"
+    ],
+    [
+     "glycin",
+     "libjxl",
+     "within-tol"
+    ]
+   ],
+   "max_abs_diff": 1,
+   "rules": [
+    [
+     "field:cs_byte15",
+     6
+    ],
+    [
+     "field:cs_byte14",
+     1
+    ],
+    [
+     "field:cs_byte11",
+     1
+    ],
+    [
+     "field:cs_byte9",
+     1
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "32\u00d732 `3ddcbde1`",
+     "jxl-oxide": "32\u00d732 `170b31df`",
+     "libjxl": "32\u00d732 `170b31df`"
+    },
+    "file": "pixel-03-2645.jxl",
+    "minimised_length": 125,
+    "original_length": 125,
+    "same_signature_as_original": true
+   },
+   "witness_id": 2645
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `44402a4a`",
+    "jxl-oxide": "16\u00d716 `647d369e`",
+    "libjxl": "16\u00d716 `647d369e`"
+   },
+   "class": "accept-different-pixels",
+   "count": 7,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jxl-oxide",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "libjxl",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 240,
+   "rules": [
+    [
+     "byte-replace",
+     4
+    ],
+    [
+     "bit-flip",
+     2
+    ],
+    [
+     "field:cs_byte6",
+     1
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "16\u00d716 `44402a4a`",
+     "jxl-oxide": "16\u00d716 `647d369e`",
+     "libjxl": "16\u00d716 `647d369e`"
+    },
+    "file": "pixel-04-1927.jxl",
+    "minimised_length": 398,
+    "original_length": 398,
+    "same_signature_as_original": true
+   },
+   "witness_id": 1927
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `6ce21a0b`",
+    "jxl-oxide": "16\u00d716 `6ce21a0b`",
+    "libjxl": "16\u00d716 `9b6ace11`"
+   },
+   "class": "accept-different-pixels",
+   "count": 4,
+   "differing_pairs": [
+    [
+     "glycin",
+     "libjxl",
+     "different-pixels"
+    ],
+    [
+     "jxl-oxide",
+     "libjxl",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 255,
+   "rules": [
+    [
+     "bit-flip",
+     3
+    ],
+    [
+     "byte-replace",
+     1
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "16\u00d716 `6ce21a0b`",
+     "jxl-oxide": "16\u00d716 `6ce21a0b`",
+     "libjxl": "16\u00d716 `9b6ace11`"
+    },
+    "file": "pixel-05-5416.jxl",
+    "minimised_length": 460,
+    "original_length": 460,
+    "same_signature_as_original": true
+   },
+   "witness_id": 5416
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `e29aa260`",
+    "jxl-oxide": "32\u00d732 `14a6dd57`",
+    "libjxl": "32\u00d732 `32a91278`"
+   },
+   "class": "accept-different-pixels",
+   "count": 2,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jxl-oxide",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "libjxl",
+     "within-tol"
+    ],
+    [
+     "jxl-oxide",
+     "libjxl",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 57,
+   "rules": [
+    [
+     "byte-replace",
+     2
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "32\u00d732 `e29aa260`",
+     "jxl-oxide": "32\u00d732 `14a6dd57`",
+     "libjxl": "32\u00d732 `32a91278`"
+    },
+    "file": "pixel-06-888.jxl",
+    "minimised_length": 125,
+    "original_length": 125,
+    "same_signature_as_original": true
+   },
+   "witness_id": 888
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `ff5710ba`",
+    "jxl-oxide": "16\u00d716\u00d73f `ff5710ba`",
+    "libjxl": "16\u00d716 `ff5710ba`"
+   },
+   "class": "accept-different-pixels",
+   "count": 1,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jxl-oxide",
+     "different-frame-count"
+    ],
+    [
+     "jxl-oxide",
+     "libjxl",
+     "different-frame-count"
+    ]
+   ],
+   "max_abs_diff": 0,
+   "rules": [
+    [
+     "field:cs_byte9",
+     1
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "16\u00d716 `ff5710ba`",
+     "jxl-oxide": "16\u00d716\u00d73f `ff5710ba`",
+     "libjxl": "16\u00d716 `ff5710ba`"
+    },
+    "file": "pixel-07-3174.jxl",
+    "minimised_length": 1730,
+    "original_length": 1730,
+    "same_signature_as_original": true
+   },
+   "witness_id": 3174
+  },
+  {
+   "cells": {
+    "glycin": "24\u00d724 `8b95c503`",
+    "jxl-oxide": "24\u00d724 `cc4d40ce`",
+    "libjxl": "24\u00d724 `8b95c503`"
+   },
+   "class": "accept-different-pixels",
+   "count": 1,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jxl-oxide",
+     "different-pixels"
+    ],
+    [
+     "jxl-oxide",
+     "libjxl",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 245,
+   "rules": [
+    [
+     "field:cs_byte13",
+     1
+    ]
+   ],
+   "witness": {
+    "cells_minimised": {
+     "glycin": "24\u00d724 `8b95c503`",
+     "jxl-oxide": "24\u00d724 `cc4d40ce`",
+     "libjxl": "24\u00d724 `8b95c503`"
+    },
+    "file": "pixel-08-3560.jxl",
+    "minimised_length": 565,
+    "original_length": 565,
+    "same_signature_as_original": true
+   },
+   "witness_id": 3560
+  },
+  {
+   "cells": {
+    "glycin": "12\u00d716 `852a07fd`",
+    "jxl-oxide": "12\u00d716 `9fdedeeb`",
+    "libjxl": "12\u00d716 `5772afc0`"
+   },
+   "class": "accept-different-pixels",
+   "count": 1,
+   "differing_pairs": [
+    [
+     "glycin",
+     "jxl-oxide",
+     "different-pixels"
+    ],
+    [
+     "glycin",
+     "libjxl",
+     "different-pixels"
+    ],
+    [
+     "jxl-oxide",
+     "libjxl",
+     "different-pixels"
+    ]
+   ],
+   "max_abs_diff": 160,
+   "rules": [
+    [
+     "byte-replace",
+     1
+    ]
+   ],
+   "witness_id": 3949
+  }
+ ],
+ "public": true,
+ "rule_pool": {
+  "bit-flip": 608,
+  "box-delete": 28,
+  "box-duplicate": 44,
+  "box-insert": 90,
+  "box-length-zero": 35,
+  "box-swap": 34,
+  "box-xlbox": 44,
+  "byte-replace": 408,
+  "cs-header-byte-sweep": 3894,
+  "field:Exif_LBox": 12,
+  "field:Exif_TBox": 12,
+  "field:JXL_LBox": 60,
+  "field:JXL_TBox": 60,
+  "field:brob_LBox": 12,
+  "field:brob_TBox": 12,
+  "field:cs_byte0": 178,
+  "field:cs_byte1": 177,
+  "field:cs_byte10": 176,
+  "field:cs_byte11": 178,
+  "field:cs_byte12": 176,
+  "field:cs_byte13": 178,
+  "field:cs_byte14": 177,
+  "field:cs_byte15": 179,
+  "field:cs_byte2": 178,
+  "field:cs_byte3": 178,
+  "field:cs_byte4": 178,
+  "field:cs_byte5": 178,
+  "field:cs_byte6": 176,
+  "field:cs_byte7": 176,
+  "field:cs_byte8": 176,
+  "field:cs_byte9": 178,
+  "field:ftyp_LBox": 60,
+  "field:ftyp_TBox": 60,
+  "field:ftyp_brand": 60,
+  "field:ftyp_minor": 60,
+  "field:jxlc_LBox": 54,
+  "field:jxlc_TBox": 54,
+  "field:jxlc_cs_byte0": 54,
+  "field:jxlc_cs_byte1": 54,
+  "field:jxlc_cs_byte2": 54,
+  "field:jxlc_cs_byte3": 54,
+  "field:jxll_LBox": 24,
+  "field:jxll_TBox": 24,
+  "field:jxlp_LBox": 18,
+  "field:jxlp_TBox": 18,
+  "field:jxlp_index": 18,
+  "field:xml_LBox": 24,
+  "field:xml_TBox": 24,
+  "ftyp-brand": 30,
+  "jxlc-plus-jxlp": 9,
+  "jxlp-split": 89,
+  "prefix": 58,
+  "signature": 50,
+  "signature-box": 25,
+  "trailing-bytes": 390,
+  "truncation": 837,
+  "unwrap": 5,
+  "wrap": 172
+ },
+ "rules": [
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `reader ended before pa`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 573,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 71,
+    "all-reject": 502
+   },
+   "patterns": 9,
+   "prov": {
+    "field": "length",
+    "new": 0,
+    "old": 904,
+    "rule": "truncation",
+    "seed": "anim-ml-rgb8-2f"
+   },
+   "rule": "truncation",
+   "top_pattern_count": 502,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "jxl-oxide": "reject `reader ended before pa`",
+     "libjxl": "reject `decoder-error`"
+    },
+    "file": "rule-01-6245.jxl",
+    "minimised_length": 0,
+    "original_length": 0,
+    "same_signature_as_original": true
+   },
+   "witness_id": 6245
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `bitstream validation f`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 569,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 1,
+    "all-reject": 568
+   },
+   "patterns": 2,
+   "prov": {
+    "field": "byte0",
+    "new": 21,
+    "old": 255,
+    "rule": "cs-header-byte-sweep",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "cs-header-byte-sweep",
+   "top_pattern_count": 568,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "jxl-oxide": "reject `reader ended before pa`",
+     "libjxl": "reject `decoder-error`"
+    },
+    "file": "rule-02-451.jxl",
+    "minimised_length": 1,
+    "original_length": 26,
+    "same_signature_as_original": true
+   },
+   "witness_id": 451
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `bitstream validation f`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 490,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 5,
+    "accept-vs-reject": 26,
+    "all-accept-identical-pixels": 14,
+    "all-accept-within-tolerance": 10,
+    "all-reject": 435
+   },
+   "patterns": 18,
+   "prov": {
+    "field": "byte1",
+    "new": 138,
+    "offset": 1,
+    "old": 10,
+    "rule": "bit-flip",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "bit-flip",
+   "top_pattern_count": 435,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "jxl-oxide": "reject `reader ended before pa`",
+     "libjxl": "reject `decoder-error`"
+    },
+    "file": "rule-03-3395.jxl",
+    "minimised_length": 1,
+    "original_length": 26,
+    "same_signature_as_original": true
+   },
+   "witness_id": 3395
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `frame error`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 370,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 8,
+    "accept-vs-reject": 17,
+    "all-accept-identical-pixels": 13,
+    "all-accept-within-tolerance": 6,
+    "all-reject": 326
+   },
+   "patterns": 16,
+   "prov": {
+    "field": "byte22",
+    "new": 73,
+    "offset": 22,
+    "old": 0,
+    "rule": "byte-replace",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "byte-replace",
+   "top_pattern_count": 326,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "jxl-oxide": "reject `reader ended before pa`",
+     "libjxl": "reject `decoder-error`"
+    },
+    "file": "rule-04-4917.jxl",
+    "minimised_length": 1,
+    "original_length": 26,
+    "same_signature_as_original": true
+   },
+   "witness_id": 4917
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `bitstream validation f`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 178,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 178
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "cs_byte0",
+    "new": 15,
+    "offset": 0,
+    "old": 255,
+    "rule": "field:cs_byte0",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "field:cs_byte0",
+   "top_pattern_count": 178,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "jxl-oxide": "reject `reader ended before pa`",
+     "libjxl": "reject `decoder-error`"
+    },
+    "file": "rule-05-112.jxl",
+    "minimised_length": 1,
+    "original_length": 26,
+    "same_signature_as_original": true
+   },
+   "witness_id": 112
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `Enum`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 178,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 178
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "cs_byte2",
+    "new": 127,
+    "offset": 2,
+    "old": 0,
+    "rule": "field:cs_byte2",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "field:cs_byte2",
+   "top_pattern_count": 178,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "jxl-oxide": "reject `reader ended before pa`",
+     "libjxl": "reject `decoder-error`"
+    },
+    "file": "rule-06-2615.jxl",
+    "minimised_length": 1,
+    "original_length": 26,
+    "same_signature_as_original": true
+   },
+   "witness_id": 2615
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `bitstream validation f`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 177,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 177
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "cs_byte1",
+    "new": 3,
+    "offset": 1,
+    "old": 10,
+    "rule": "field:cs_byte1",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "field:cs_byte1",
+   "top_pattern_count": 177,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "jxl-oxide": "reject `reader ended before pa`",
+     "libjxl": "reject `decoder-error`"
+    },
+    "file": "rule-07-345.jxl",
+    "minimised_length": 1,
+    "original_length": 26,
+    "same_signature_as_original": true
+   },
+   "witness_id": 345
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `frame error`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 175,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 1,
+    "all-accept-identical-pixels": 1,
+    "all-accept-within-tolerance": 1,
+    "all-reject": 172
+   },
+   "patterns": 4,
+   "prov": {
+    "field": "cs_byte9",
+    "new": 8,
+    "offset": 9,
+    "old": 0,
+    "rule": "field:cs_byte9",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "field:cs_byte9",
+   "top_pattern_count": 172,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "jxl-oxide": "reject `reader ended before pa`",
+     "libjxl": "reject `decoder-error`"
+    },
+    "file": "rule-08-2653.jxl",
+    "minimised_length": 1,
+    "original_length": 26,
+    "same_signature_as_original": true
+   },
+   "witness_id": 2653
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `Enum`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 174,
+   "class": "all-reject",
+   "classes": {
+    "all-accept-identical-pixels": 2,
+    "all-reject": 172
+   },
+   "patterns": 2,
+   "prov": {
+    "field": "cs_byte4",
+    "new": 3,
+    "offset": 4,
+    "old": 16,
+    "rule": "field:cs_byte4",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "field:cs_byte4",
+   "top_pattern_count": 172,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "jxl-oxide": "reject `reader ended before pa`",
+     "libjxl": "reject `decoder-error`"
+    },
+    "file": "rule-09-411.jxl",
+    "minimised_length": 1,
+    "original_length": 26,
+    "same_signature_as_original": true
+   },
+   "witness_id": 411
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `no frames decoded`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 170,
+   "class": "all-reject",
+   "classes": {
+    "all-accept-identical-pixels": 1,
+    "all-accept-within-tolerance": 1,
+    "all-reject": 168
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "cs_byte3",
+    "new": 127,
+    "offset": 3,
+    "old": 16,
+    "rule": "field:cs_byte3",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "field:cs_byte3",
+   "top_pattern_count": 168,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "jxl-oxide": "reject `reader ended before pa`",
+     "libjxl": "reject `decoder-error`"
+    },
+    "file": "rule-10-179.jxl",
+    "minimised_length": 1,
+    "original_length": 26,
+    "same_signature_as_original": true
+   },
+   "witness_id": 179
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `frame error`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 162,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 4,
+    "all-accept-within-tolerance": 7,
+    "all-reject": 151
+   },
+   "patterns": 6,
+   "prov": {
+    "field": "cs_byte14",
+    "new": 198,
+    "offset": 14,
+    "old": 197,
+    "rule": "field:cs_byte14",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "field:cs_byte14",
+   "top_pattern_count": 151,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "jxl-oxide": "reject `reader ended before pa`",
+     "libjxl": "reject `decoder-error`"
+    },
+    "file": "rule-11-1777.jxl",
+    "minimised_length": 1,
+    "original_length": 26,
+    "same_signature_as_original": true
+   },
+   "witness_id": 1777
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `frame error`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 162,
+   "class": "all-reject",
+   "classes": {
+    "all-accept-identical-pixels": 1,
+    "all-accept-within-tolerance": 8,
+    "all-reject": 153
+   },
+   "patterns": 4,
+   "prov": {
+    "field": "cs_byte15",
+    "new": 131,
+    "offset": 15,
+    "old": 130,
+    "rule": "field:cs_byte15",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "field:cs_byte15",
+   "top_pattern_count": 153,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "jxl-oxide": "reject `reader ended before pa`",
+     "libjxl": "reject `decoder-error`"
+    },
+    "file": "rule-12-1055.jxl",
+    "minimised_length": 1,
+    "original_length": 26,
+    "same_signature_as_original": true
+   },
+   "witness_id": 1055
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `no frames decoded`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 160,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 160
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "cs_byte8",
+    "new": 2,
+    "offset": 8,
+    "old": 1,
+    "rule": "field:cs_byte8",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "field:cs_byte8",
+   "top_pattern_count": 160,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "jxl-oxide": "reject `reader ended before pa`",
+     "libjxl": "reject `decoder-error`"
+    },
+    "file": "rule-13-750.jxl",
+    "minimised_length": 1,
+    "original_length": 26,
+    "same_signature_as_original": true
+   },
+   "witness_id": 750
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `no frames decoded`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 159,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 2,
+    "all-accept-identical-pixels": 3,
+    "all-reject": 154
+   },
+   "patterns": 5,
+   "prov": {
+    "field": "cs_byte10",
+    "new": 255,
+    "offset": 10,
+    "old": 56,
+    "rule": "field:cs_byte10",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "field:cs_byte10",
+   "top_pattern_count": 154,
+   "witness": {
+    "cells_minimised": {
+     "glycin": "reject `ExpectedError`",
+     "jxl-oxide": "reject `reader ended before pa`",
+     "libjxl": "reject `decoder-error`"
+    },
+    "file": "rule-14-403.jxl",
+    "minimised_length": 1,
+    "original_length": 26,
+    "same_signature_as_original": true
+   },
+   "witness_id": 403
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `frame error`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 159,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 1,
+    "accept-vs-reject": 1,
+    "all-reject": 157
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "cs_byte6",
+    "new": 3,
+    "offset": 6,
+    "old": 8,
+    "rule": "field:cs_byte6",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "field:cs_byte6",
+   "top_pattern_count": 157,
+   "witness_id": 1863
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `frame error`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 158,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 4,
+    "all-accept-within-tolerance": 5,
+    "all-reject": 149
+   },
+   "patterns": 5,
+   "prov": {
+    "field": "cs_byte7",
+    "new": 8,
+    "offset": 7,
+    "old": 0,
+    "rule": "field:cs_byte7",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "field:cs_byte7",
+   "top_pattern_count": 149,
+   "witness_id": 67
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `frame error`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 153,
+   "class": "all-reject",
+   "classes": {
+    "accept-different-pixels": 1,
+    "all-accept-within-tolerance": 1,
+    "all-reject": 151
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "cs_byte13",
+    "new": 254,
+    "offset": 13,
+    "old": 18,
+    "rule": "field:cs_byte13",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "field:cs_byte13",
+   "top_pattern_count": 151,
+   "witness_id": 1523
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `frame error`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 142,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 1,
+    "all-accept-within-tolerance": 1,
+    "all-reject": 140
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "cs_byte11",
+    "new": 255,
+    "offset": 11,
+    "old": 0,
+    "rule": "field:cs_byte11",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "field:cs_byte11",
+   "top_pattern_count": 140,
+   "witness_id": 289
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `Enum`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 136,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 136
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "cs_byte5",
+    "new": 4,
+    "offset": 5,
+    "old": 9,
+    "rule": "field:cs_byte5",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "field:cs_byte5",
+   "top_pattern_count": 136,
+   "witness_id": 903
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `frame error`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 133,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 133
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "cs_byte12",
+    "new": 2,
+    "offset": 12,
+    "old": 75,
+    "rule": "field:cs_byte12",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "field:cs_byte12",
+   "top_pattern_count": 133,
+   "witness_id": 1815
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `invalid container`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 72,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 18,
+    "all-reject": 54
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "3-parts-last-flag-early",
+    "new": null,
+    "old": null,
+    "rule": "jxlp-split",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "jxlp-split",
+   "top_pattern_count": 54,
+   "witness_id": 770
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "16\u00d716 `4102f1f4`",
+    "libjxl": "16\u00d716 `4102f1f4`"
+   },
+   "changed": 70,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 70
+   },
+   "patterns": 6,
+   "prov": {
+    "field": "zero1",
+    "new": 125,
+    "old": 124,
+    "rule": "trailing-bytes",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "trailing-bytes",
+   "top_pattern_count": 42,
+   "witness_id": 5023
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `bitstream validation f`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 60,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 60
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "JXL_LBox",
+    "new": 127,
+    "offset": 0,
+    "old": 12,
+    "rule": "field:JXL_LBox",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "field:JXL_LBox",
+   "top_pattern_count": 60,
+   "witness_id": 568
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `bitstream validation f`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 60,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 60
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "JXL_TBox",
+    "new": 32767,
+    "offset": 4,
+    "old": 1247300640,
+    "rule": "field:JXL_TBox",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "field:JXL_TBox",
+   "top_pattern_count": 60,
+   "witness_id": 455
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `reader ended before pa`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 60,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 60
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "ftyp_LBox",
+    "new": 2147483647,
+    "offset": 12,
+    "old": 20,
+    "rule": "field:ftyp_LBox",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "field:ftyp_LBox",
+   "top_pattern_count": 60,
+   "witness_id": 128
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "16\u00d716 `4102f1f4`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 60,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 60
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "ftyp_TBox",
+    "new": 7,
+    "offset": 16,
+    "old": 1718909296,
+    "rule": "field:ftyp_TBox",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "field:ftyp_TBox",
+   "top_pattern_count": 42,
+   "witness_id": 857
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "16\u00d716 `4102f1f4`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 60,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 60
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "ftyp_brand",
+    "new": 65536,
+    "offset": 20,
+    "old": 1786276896,
+    "rule": "field:ftyp_brand",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "field:ftyp_brand",
+   "top_pattern_count": 42,
+   "witness_id": 646
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `bitstream validation f`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 58,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 58
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "leading-zero-byte",
+    "new": null,
+    "old": null,
+    "rule": "prefix",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "prefix",
+   "top_pattern_count": 58,
+   "witness_id": 1715
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `bitstream validation f`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 58,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 29,
+    "all-reject": 29
+   },
+   "patterns": 11,
+   "prov": {
+    "field": "jxlc-no-signature",
+    "new": null,
+    "old": null,
+    "rule": "wrap",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "wrap",
+   "top_pattern_count": 29,
+   "witness_id": 1330
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "16\u00d716 `4102f1f4`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 57,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 57
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "ftyp_minor",
+    "new": 32768,
+    "offset": 24,
+    "old": 0,
+    "rule": "field:ftyp_minor",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "field:ftyp_minor",
+   "top_pattern_count": 40,
+   "witness_id": 73
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `reader ended before pa`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 54,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 54
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "jxlc_TBox",
+    "new": 16,
+    "offset": 45,
+    "old": 1786276963,
+    "rule": "field:jxlc_TBox",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "field:jxlc_TBox",
+   "top_pattern_count": 54,
+   "witness_id": 365
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `bitstream validation f`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 54,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 54
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "jxlc_cs_byte0",
+    "new": 254,
+    "offset": 49,
+    "old": 255,
+    "rule": "field:jxlc_cs_byte0",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "field:jxlc_cs_byte0",
+   "top_pattern_count": 54,
+   "witness_id": 480
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `bitstream validation f`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 54,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 54
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "jxlc_cs_byte1",
+    "new": 20,
+    "offset": 50,
+    "old": 10,
+    "rule": "field:jxlc_cs_byte1",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "field:jxlc_cs_byte1",
+   "top_pattern_count": 54,
+   "witness_id": 251
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `frame error`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 54,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 54
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "jxlc_cs_byte2",
+    "new": 15,
+    "offset": 51,
+    "old": 67,
+    "rule": "field:jxlc_cs_byte2",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "field:jxlc_cs_byte2",
+   "top_pattern_count": 54,
+   "witness_id": 1170
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `no frames decoded`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 52,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 19,
+    "all-reject": 33
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "jxlc_LBox",
+    "new": 41,
+    "offset": 41,
+    "old": 83,
+    "rule": "field:jxlc_LBox",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "field:jxlc_LBox",
+   "top_pattern_count": 33,
+   "witness_id": 1708
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `bitstream validation f`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 50,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 50
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "ff0a-dropped",
+    "new": null,
+    "old": null,
+    "rule": "signature",
+    "seed": "ml-rgb8-1x1"
+   },
+   "rule": "signature",
+   "top_pattern_count": 50,
+   "witness_id": 2159
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `frame error`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 49,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 49
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "jxlc_cs_byte3",
+    "new": 7,
+    "offset": 52,
+    "old": 240,
+    "rule": "field:jxlc_cs_byte3",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "field:jxlc_cs_byte3",
+   "top_pattern_count": 49,
+   "witness_id": 137
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "16\u00d716 `4102f1f4`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 36,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 36
+   },
+   "patterns": 9,
+   "prov": {
+    "field": "JXL",
+    "new": null,
+    "old": null,
+    "rule": "box-duplicate",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "box-duplicate",
+   "top_pattern_count": 14,
+   "witness_id": 1595
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "16\u00d716 `4102f1f4`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 30,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 30
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "XXXX",
+    "new": null,
+    "old": null,
+    "rule": "ftyp-brand",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "ftyp-brand",
+   "top_pattern_count": 21,
+   "witness_id": 491
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `bitstream validation f`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 26,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 15,
+    "all-reject": 11
+   },
+   "patterns": 6,
+   "prov": {
+    "field": "JXL<->ftyp",
+    "new": null,
+    "old": null,
+    "rule": "box-swap",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "box-swap",
+   "top_pattern_count": 11,
+   "witness_id": 1512
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `bitstream validation f`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 25,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 25
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "short-sig",
+    "new": null,
+    "old": null,
+    "rule": "signature-box",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "signature-box",
+   "top_pattern_count": 25,
+   "witness_id": 1229
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `reader ended before pa`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 24,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 4,
+    "all-reject": 20
+   },
+   "patterns": 5,
+   "prov": {
+    "field": "ftyp",
+    "new": null,
+    "old": null,
+    "rule": "box-length-zero",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "box-length-zero",
+   "top_pattern_count": 20,
+   "witness_id": 1041
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `reader ended before pa`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 24,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 24
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "jxll_LBox",
+    "new": 2147483648,
+    "offset": 32,
+    "old": 9,
+    "rule": "field:jxll_LBox",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "field:jxll_LBox",
+   "top_pattern_count": 24,
+   "witness_id": 138
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "16\u00d716 `3e9a9ba0`",
+    "libjxl": "16\u00d716 `3e9a9ba0`"
+   },
+   "changed": 23,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 23
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "xml_LBox",
+    "new": 2147483647,
+    "offset": 526,
+    "old": 45,
+    "rule": "field:xml_LBox",
+    "seed": "ml-rgb8-exif-xmp"
+   },
+   "rule": "field:xml_LBox",
+   "top_pattern_count": 11,
+   "witness_id": 85
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `reader ended before pa`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 22,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 10,
+    "all-reject": 12
+   },
+   "patterns": 5,
+   "prov": {
+    "field": "jxlc",
+    "new": null,
+    "old": null,
+    "rule": "box-delete",
+    "seed": "ml-rgb8-exif-xmp"
+   },
+   "rule": "box-delete",
+   "top_pattern_count": 12,
+   "witness_id": 1421
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "jxl-oxide": "reject `Invalid Data`",
+    "libjxl": "16\u00d716 `4102f1f4`"
+   },
+   "changed": 20,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 20
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "brob-before-codestream",
+    "new": null,
+    "old": null,
+    "rule": "box-insert",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "box-insert",
+   "top_pattern_count": 14,
+   "witness_id": 560
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `invalid container`",
+    "libjxl": "16\u00d716 `3e9a9ba0`"
+   },
+   "changed": 18,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 15,
+    "all-reject": 3
+   },
+   "patterns": 6,
+   "prov": {
+    "field": "jxlp_LBox",
+    "new": 8,
+    "offset": 507,
+    "old": 470,
+    "rule": "field:jxlp_LBox",
+    "seed": "anim-ml-rgb8-3f-container"
+   },
+   "rule": "field:jxlp_LBox",
+   "top_pattern_count": 4,
+   "witness_id": 82
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `invalid container`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 18,
+   "class": "all-reject",
+   "classes": {
+    "accept-vs-reject": 12,
+    "all-reject": 6
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "jxlp_TBox",
+    "new": 32767,
+    "offset": 36,
+    "old": 1786276976,
+    "rule": "field:jxlp_TBox",
+    "seed": "anim-ml-rgb8-3f-container"
+   },
+   "rule": "field:jxlp_TBox",
+   "top_pattern_count": 6,
+   "witness_id": 83
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `invalid container`",
+    "libjxl": "16\u00d716 `3e9a9ba0`"
+   },
+   "changed": 18,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 12,
+    "all-reject": 6
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "jxlp_index",
+    "new": 16,
+    "offset": 515,
+    "old": 1,
+    "rule": "field:jxlp_index",
+    "seed": "anim-ml-rgb8-3f-container"
+   },
+   "rule": "field:jxlp_index",
+   "top_pattern_count": 6,
+   "witness_id": 84
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `Invalid Data`",
+    "libjxl": "32\u00d732 `fda760be`"
+   },
+   "changed": 12,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 12
+   },
+   "patterns": 2,
+   "prov": {
+    "field": "brob_LBox",
+    "new": 15,
+    "offset": 576,
+    "old": 28,
+    "rule": "field:brob_LBox",
+    "seed": "vd-rgb8-d1-resamp2"
+   },
+   "rule": "field:brob_LBox",
+   "top_pattern_count": 6,
+   "witness_id": 52
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `bitstream validation f`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 10,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 10
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "JXL",
+    "new": null,
+    "old": null,
+    "rule": "box-xlbox",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "box-xlbox",
+   "top_pattern_count": 10,
+   "witness_id": 1966
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "16\u00d716 `3e9a9ba0`",
+    "libjxl": "16\u00d716 `3e9a9ba0`"
+   },
+   "changed": 9,
+   "class": "accept-vs-reject",
+   "classes": {
+    "accept-vs-reject": 9
+   },
+   "patterns": 3,
+   "prov": {
+    "field": "Exif_LBox",
+    "new": 4294967295,
+    "offset": 500,
+    "old": 26,
+    "rule": "field:Exif_LBox",
+    "seed": "ml-rgb8-exif-xmp"
+   },
+   "rule": "field:Exif_LBox",
+   "top_pattern_count": 5,
+   "witness_id": 48
+  },
+  {
+   "cells": {
+    "glycin": "reject `ExpectedError`",
+    "jxl-oxide": "reject `invalid container`",
+    "libjxl": "reject `decoder-error`"
+   },
+   "changed": 9,
+   "class": "all-reject",
+   "classes": {
+    "all-reject": 9
+   },
+   "patterns": 1,
+   "prov": {
+    "field": "both",
+    "new": null,
+    "old": null,
+    "rule": "jxlc-plus-jxlp",
+    "seed": "ml-gray16-16x16"
+   },
+   "rule": "jxlc-plus-jxlp",
+   "top_pattern_count": 9,
+   "witness_id": 378
+  }
+ ],
+ "same_group_divergence": {},
+ "seed": 731,
+ "seed_inputs": 39,
+ "seed_outcomes": [
+  {
+   "cells": {
+    "glycin": "12\u00d712\u00d72f `e8224d4b`",
+    "jxl-oxide": "12\u00d712\u00d72f `e8224d4b`",
+    "libjxl": "12\u00d712\u00d72f `e8224d4b`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "anim-ml-rgb8-2f"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716\u00d73f `3e9a9ba0`",
+    "jxl-oxide": "16\u00d716\u00d73f `3e9a9ba0`",
+    "libjxl": "16\u00d716\u00d73f `3e9a9ba0`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "anim-ml-rgb8-3f-container"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716\u00d73f `ff5710ba`",
+    "jxl-oxide": "16\u00d716\u00d73f `ff5710ba`",
+    "libjxl": "16\u00d716\u00d73f `ff5710ba`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "anim-ml-rgba8-3f"
+  },
+  {
+   "cells": {
+    "glycin": "24\u00d724\u00d73f `f7309f1e`",
+    "jxl-oxide": "24\u00d724\u00d73f `7e075a00`",
+    "libjxl": "24\u00d724\u00d73f `3fd7ff8d`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "anim-vd-rgb8-3f"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `1beac8cc`",
+    "jxl-oxide": "16\u00d716 `1beac8cc`",
+    "libjxl": "16\u00d716 `1beac8cc`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-ga8-16x16"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "jxl-oxide": "16\u00d716 `4102f1f4`",
+    "libjxl": "16\u00d716 `4102f1f4`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-gray16-16x16"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `4102f1f4`",
+    "jxl-oxide": "16\u00d716 `4102f1f4`",
+    "libjxl": "16\u00d716 `4102f1f4`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-gray8-16x16"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "jxl-oxide": "16\u00d716 `3e9a9ba0`",
+    "libjxl": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-rgb16-16x16"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "jxl-oxide": "16\u00d716 `3e9a9ba0`",
+    "libjxl": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-rgb16-pq"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "jxl-oxide": "16\u00d716 `3e9a9ba0`",
+    "libjxl": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-rgb8-16x16"
+  },
+  {
+   "cells": {
+    "glycin": "17\u00d713 `8b7ce752`",
+    "jxl-oxide": "17\u00d713 `8b7ce752`",
+    "libjxl": "17\u00d713 `8b7ce752`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-rgb8-17x13"
+  },
+  {
+   "cells": {
+    "glycin": "1\u00d71 `9b24e70d`",
+    "jxl-oxide": "1\u00d71 `9b24e70d`",
+    "libjxl": "1\u00d71 `9b24e70d`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-rgb8-1x1"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "jxl-oxide": "16\u00d716 `3e9a9ba0`",
+    "libjxl": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-rgb8-container"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "jxl-oxide": "16\u00d716 `3e9a9ba0`",
+    "libjxl": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-rgb8-effort1"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "jxl-oxide": "16\u00d716 `3e9a9ba0`",
+    "libjxl": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-rgb8-effort7"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "jxl-oxide": "16\u00d716 `3e9a9ba0`",
+    "libjxl": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-rgb8-exif-brob"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "jxl-oxide": "16\u00d716 `3e9a9ba0`",
+    "libjxl": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-rgb8-exif-xmp"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "jxl-oxide": "16\u00d716 `3e9a9ba0`",
+    "libjxl": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-rgb8-linear"
+  },
+  {
+   "cells": {
+    "glycin": "12\u00d716 `b00615c1`",
+    "jxl-oxide": "12\u00d716 `b00615c1`",
+    "libjxl": "12\u00d716 `b00615c1`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-rgb8-orient6"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `3e9a9ba0`",
+    "jxl-oxide": "16\u00d716 `3e9a9ba0`",
+    "libjxl": "16\u00d716 `3e9a9ba0`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-rgb8-p3"
+  },
+  {
+   "cells": {
+    "glycin": "24\u00d724 `fabe0c38`",
+    "jxl-oxide": "24\u00d724 `fabe0c38`",
+    "libjxl": "24\u00d724 `fabe0c38`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-rgb8-squeeze"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `8a76a27a`",
+    "jxl-oxide": "16\u00d716 `8a76a27a`",
+    "libjxl": "16\u00d716 `8a76a27a`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-rgba16-16x16"
+  },
+  {
+   "cells": {
+    "glycin": "16\u00d716 `ff5710ba`",
+    "jxl-oxide": "16\u00d716 `ff5710ba`",
+    "libjxl": "16\u00d716 `ff5710ba`"
+   },
+   "class": "all-accept-identical-pixels",
+   "seed": "ml-rgba8-16x16"
+  },
+  {
+   "cells": {
+    "glycin": "24\u00d724 `5540d56a`",
+    "jxl-oxide": "24\u00d724 `49361c81`",
+    "libjxl": "24\u00d724 `928bcece`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "mlossy-rgb8-d2"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `63f58ab7`",
+    "jxl-oxide": "32\u00d732 `a6b0de38`",
+    "libjxl": "32\u00d732 `36c8c0ea`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "vd-gray8-d1"
+  },
+  {
+   "cells": {
+    "glycin": "24\u00d724 `a4b33847`",
+    "jxl-oxide": "24\u00d724 `e69f1164`",
+    "libjxl": "24\u00d724 `85a696b5`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "vd-rgb16-d1"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `d5c1240c`",
+    "jxl-oxide": "32\u00d732 `1d98ca9e`",
+    "libjxl": "32\u00d732 `9334f16f`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "vd-rgb8-d0p3-e7"
+  },
+  {
+   "cells": {
+    "glycin": "17\u00d713 `ff67f5e8`",
+    "jxl-oxide": "17\u00d713 `c65d68ff`",
+    "libjxl": "17\u00d713 `630e93c5`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "vd-rgb8-d1-17x13"
+  },
+  {
+   "cells": {
+    "glycin": "80\u00d772 `c54f2e04`",
+    "jxl-oxide": "80\u00d772 `47a580cc`",
+    "libjxl": "80\u00d772 `50d581c9`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "vd-rgb8-d1-80x72"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `cced147d`",
+    "jxl-oxide": "32\u00d732 `cc1cd32f`",
+    "libjxl": "32\u00d732 `fda760be`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "vd-rgb8-d1-decspeed4"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `cced147d`",
+    "jxl-oxide": "32\u00d732 `cc1cd32f`",
+    "libjxl": "32\u00d732 `fda760be`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "vd-rgb8-d1-effort1"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `d0f4ee92`",
+    "jxl-oxide": "32\u00d732 `41a44846`",
+    "libjxl": "32\u00d732 `c3036f08`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "vd-rgb8-d1-effort9"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `cced147d`",
+    "jxl-oxide": "32\u00d732 `cc1cd32f`",
+    "libjxl": "32\u00d732 `fda760be`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "vd-rgb8-d1-exif"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `a24a16a4`",
+    "jxl-oxide": "32\u00d732 `1ec0bcdd`",
+    "libjxl": "32\u00d732 `7fa5e0ad`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "vd-rgb8-d1-noise"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `cced147d`",
+    "jxl-oxide": "32\u00d732 `cc1cd32f`",
+    "libjxl": "32\u00d732 `fda760be`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "vd-rgb8-d1-prog"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `cced147d`",
+    "jxl-oxide": "32\u00d732 `cc1cd32f`",
+    "libjxl": "32\u00d732 `fda760be`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "vd-rgb8-d1-resamp2"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `cced147d`",
+    "jxl-oxide": "32\u00d732 `cc1cd32f`",
+    "libjxl": "32\u00d732 `fda760be`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "vd-rgb8-d1"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `a398358d`",
+    "jxl-oxide": "32\u00d732 `d59fa81f`",
+    "libjxl": "32\u00d732 `cd899bf6`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "vd-rgb8-d4"
+  },
+  {
+   "cells": {
+    "glycin": "32\u00d732 `061817a6`",
+    "jxl-oxide": "32\u00d732 `4f21cd47`",
+    "libjxl": "32\u00d732 `06d9591e`"
+   },
+   "class": "all-accept-within-tolerance",
+   "seed": "vd-rgba8-d1"
+  }
+ ],
+ "timing": {
+  "comparison_seconds": 151.9,
+  "generation_seconds": 2.0,
+  "total_seconds": 201.6
+ },
+ "tolerance_max_abs_channel_diff": 2,
+ "unavailable": [
+  [
+   "gdk-pixbuf JXL module",
+   "not installed"
+  ],
+  [
+   "`jpegxl-rs` / `jpegxl-sys` crates",
+   "bind libjxl: not independent of the libjxl column, not built"
+  ],
+  [
+   "CMYK and spot-colour output in the native/oxide runners",
+   "reported as `skip` (n/a); no colour conversion is implemented"
+  ]
+ ],
+ "visible_diff_histogram_pairs": {
+  "1": 1895,
+  "8": 2,
+  "45": 3,
+  "55": 2,
+  "56": 1,
+  "57": 1,
+  "64": 22
+ },
+ "witnesses": {}
+}

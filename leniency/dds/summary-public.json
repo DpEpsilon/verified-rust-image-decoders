@@ -1,0 +1,3168 @@
+{
+  "format": "dds",
+  "inputs": 9986,
+  "seed_variants": 84,
+  "seed": 731,
+  "counts": {
+    "accept-different-pixels": 1580,
+    "accept-vs-reject": 5521,
+    "all-reject": 2809,
+    "all-accept-identical-pixels": 76
+  },
+  "counts_convention_adjusted": {
+    "all-accept-identical-pixels": 1578,
+    "accept-vs-reject": 5521,
+    "all-reject": 2809,
+    "accept-different-pixels": 78
+  },
+  "elapsed_seconds": 278.6,
+  "decoders": [
+    "image",
+    "glycin",
+    "image-dds",
+    "ddsfile-bcdec",
+    "ddsfile-texpresso"
+  ],
+  "unavailable": {
+    "gdk-pixbuf DDS module": "not installed (gdk-pixbuf-query-loaders lists none)",
+    "DirectXTex": "C++ library not fetched; would need a CMake build",
+    "stb_image": "has no DDS support"
+  },
+  "decoder_status": {
+    "image": {
+      "ok": 1829,
+      "error": 8157
+    },
+    "glycin": {
+      "ok": 1829,
+      "error": 8157
+    },
+    "image-dds": {
+      "ok": 5606,
+      "error": 4380,
+      "only-acceptor": 184,
+      "only-rejector": 6
+    },
+    "ddsfile-bcdec": {
+      "ok": 6826,
+      "only-acceptor": 1552,
+      "error": 3160
+    },
+    "ddsfile-texpresso": {
+      "ok": 3662,
+      "na": 3632,
+      "error": 2692
+    }
+  },
+  "families": {
+    "array": {
+      "accept-different-pixels": 68,
+      "accept-vs-reject": 106,
+      "all-reject": 64
+    },
+    "cube": {
+      "accept-different-pixels": 299,
+      "all-reject": 117,
+      "accept-vs-reject": 57
+    },
+    "dx10": {
+      "accept-different-pixels": 213,
+      "accept-vs-reject": 1257,
+      "all-reject": 551
+    },
+    "dx10-random-blocks": {
+      "accept-vs-reject": 87,
+      "all-reject": 32
+    },
+    "legacy-bc45": {
+      "accept-vs-reject": 363,
+      "all-reject": 113
+    },
+    "legacy-bcn": {
+      "accept-different-pixels": 543,
+      "accept-vs-reject": 902,
+      "all-accept-identical-pixels": 76,
+      "all-reject": 500
+    },
+    "legacy-random-blocks": {
+      "accept-different-pixels": 235,
+      "accept-vs-reject": 221,
+      "all-reject": 138
+    },
+    "mipmaps": {
+      "accept-different-pixels": 149,
+      "accept-vs-reject": 211,
+      "all-reject": 116
+    },
+    "uncompressed-bitmask": {
+      "accept-vs-reject": 2146,
+      "all-reject": 1067
+    },
+    "volume": {
+      "accept-vs-reject": 171,
+      "accept-different-pixels": 73,
+      "all-reject": 111
+    }
+  },
+  "seed_acceptance": {
+    "array": {
+      "image": {
+        "ok": 1,
+        "error": 1
+      },
+      "glycin": {
+        "ok": 1,
+        "error": 1
+      },
+      "image-dds": {
+        "ok": 2
+      },
+      "ddsfile-bcdec": {
+        "ok": 2
+      },
+      "ddsfile-texpresso": {
+        "ok": 1,
+        "na": 1
+      }
+    },
+    "cube": {
+      "image": {
+        "ok": 4
+      },
+      "glycin": {
+        "ok": 4
+      },
+      "image-dds": {
+        "ok": 4
+      },
+      "ddsfile-bcdec": {
+        "ok": 4
+      },
+      "ddsfile-texpresso": {
+        "ok": 4
+      }
+    },
+    "dx10": {
+      "image": {
+        "ok": 3,
+        "error": 14
+      },
+      "glycin": {
+        "ok": 3,
+        "error": 14
+      },
+      "image-dds": {
+        "ok": 15,
+        "error": 2
+      },
+      "ddsfile-bcdec": {
+        "ok": 17
+      },
+      "ddsfile-texpresso": {
+        "ok": 10,
+        "na": 7
+      }
+    },
+    "dx10-random-blocks": {
+      "image": {
+        "error": 1
+      },
+      "glycin": {
+        "error": 1
+      },
+      "image-dds": {
+        "ok": 1
+      },
+      "ddsfile-bcdec": {
+        "ok": 1
+      },
+      "ddsfile-texpresso": {
+        "na": 1
+      }
+    },
+    "legacy-bc45": {
+      "image": {
+        "error": 4
+      },
+      "glycin": {
+        "error": 4
+      },
+      "image-dds": {
+        "ok": 4
+      },
+      "ddsfile-bcdec": {
+        "ok": 4
+      },
+      "ddsfile-texpresso": {
+        "ok": 4
+      }
+    },
+    "legacy-bcn": {
+      "image": {
+        "ok": 9,
+        "error": 8
+      },
+      "glycin": {
+        "ok": 9,
+        "error": 8
+      },
+      "image-dds": {
+        "ok": 17
+      },
+      "ddsfile-bcdec": {
+        "ok": 16,
+        "error": 1
+      },
+      "ddsfile-texpresso": {
+        "ok": 16,
+        "error": 1
+      }
+    },
+    "legacy-random-blocks": {
+      "image": {
+        "ok": 3,
+        "error": 2
+      },
+      "glycin": {
+        "ok": 3,
+        "error": 2
+      },
+      "image-dds": {
+        "ok": 5
+      },
+      "ddsfile-bcdec": {
+        "ok": 5
+      },
+      "ddsfile-texpresso": {
+        "ok": 5
+      }
+    },
+    "mipmaps": {
+      "image": {
+        "ok": 2,
+        "error": 2
+      },
+      "glycin": {
+        "ok": 2,
+        "error": 2
+      },
+      "image-dds": {
+        "ok": 4
+      },
+      "ddsfile-bcdec": {
+        "ok": 4
+      },
+      "ddsfile-texpresso": {
+        "ok": 2,
+        "na": 2
+      }
+    },
+    "uncompressed-bitmask": {
+      "image": {
+        "error": 27
+      },
+      "glycin": {
+        "error": 27
+      },
+      "image-dds": {
+        "ok": 11,
+        "error": 16
+      },
+      "ddsfile-bcdec": {
+        "ok": 25,
+        "error": 2
+      },
+      "ddsfile-texpresso": {
+        "na": 25,
+        "error": 2
+      }
+    },
+    "volume": {
+      "image": {
+        "error": 2,
+        "ok": 1
+      },
+      "glycin": {
+        "error": 2,
+        "ok": 1
+      },
+      "image-dds": {
+        "ok": 3
+      },
+      "ddsfile-bcdec": {
+        "ok": 2,
+        "error": 1
+      },
+      "ddsfile-texpresso": {
+        "na": 2,
+        "ok": 1
+      }
+    }
+  },
+  "rows": [
+    {
+      "rule": "pitch_or_linear_size",
+      "count": 163,
+      "patterns": 47,
+      "original_id": 93,
+      "witness": "witnesses/01-pitch_or_linear_size.dds",
+      "mutation": {
+        "rule": "pitch_or_linear_size",
+        "field": "pitch_or_linear_size",
+        "value": 32,
+        "old": 64,
+        "source": "mutation",
+        "seed": "legacy-dxt5-7x5",
+        "family": "legacy-bcn"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The Image's dimensions are either too small or too large",
+          "message": "The Image's dimensions are either too small or too large"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The Image's dimensions are either too small or too large"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 7,
+          "height": 5,
+          "rgba_sha256": "ecdce5f85b65c0f093d7d7bcc3fd5ca2a840e6359d80b768db1cda1cc1b33020",
+          "alpha_present": true,
+          "orig_color_type": "BC3RgbaUnorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "ecdce5f85b65c0f093d7d7bcc3fd5ca2a840e6359d80b768db1cda1cc1b33020"
+        },
+        "ddsfile-bcdec": {
+          "status": "error",
+          "error_class": "Truncated",
+          "message": "mip level 0 data shorter than block count"
+        },
+        "ddsfile-texpresso": {
+          "status": "error",
+          "error_class": "Truncated",
+          "message": "mip level 0 data shorter than block count"
+        }
+      },
+      "description": "image: reject (The Image's dimensions are eit); glycin: reject (ExpectedError); image-dds: accept 7x5 `ecdce5f8`; ddsfile-bcdec, ddsfile-texpresso: reject (Truncated)",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 192,
+      "witness_length": 192
+    },
+    {
+      "rule": "flags-bit",
+      "count": 92,
+      "patterns": 35,
+      "original_id": 298,
+      "witness": "witnesses/02-flags-bit.dds",
+      "mutation": {
+        "rule": "flags-bit",
+        "field": "flags",
+        "value": 27,
+        "old": 528391,
+        "source": "mutation",
+        "seed": "dx10-bc2-8x8",
+        "family": "dx10"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Dds",
+          "message": "Format error decoding Dds: Invalid DDS header flags: 0x08081007"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: Format error decoding Dds: Invalid DDS header flags: 0x08081007"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "f1099aedab6f68bd3b27ddeba6855b58968d0760f47f941ae0950a7575804bd3",
+          "alpha_present": true,
+          "orig_color_type": "BC2RgbaUnorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "f1099aedab6f68bd3b27ddeba6855b58968d0760f47f941ae0950a7575804bd3"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "f1099aedab6f68bd3b27ddeba6855b58968d0760f47f941ae0950a7575804bd3",
+          "alpha_present": true,
+          "orig_color_type": "DX10:BC2_UNorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "f1099aedab6f68bd3b27ddeba6855b58968d0760f47f941ae0950a7575804bd3"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "02310379af4c59cc62ef10db1b86177f09a30dfa9f00639b5ea626366cc2f562",
+          "alpha_present": true,
+          "orig_color_type": "DX10:BC2_UNorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "f1099aedab6f68bd3b27ddeba6855b58968d0760f47f941ae0950a7575804bd3"
+        }
+      },
+      "description": "image: reject (Format error decoding Dds); glycin: reject (ExpectedError); image-dds, ddsfile-bcdec: accept 8x8 `f1099aed`; ddsfile-texpresso: accept 8x8 `02310379`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 212,
+      "witness_length": 212
+    },
+    {
+      "rule": "flags",
+      "count": 90,
+      "patterns": 30,
+      "original_id": 502,
+      "witness": "witnesses/03-flags.dds",
+      "mutation": {
+        "rule": "flags",
+        "field": "flags",
+        "value": 33,
+        "old": 528391,
+        "source": "mutation",
+        "seed": "zeros-dxt1",
+        "family": "legacy-bcn"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Dds",
+          "message": "Format error decoding Dds: Invalid DDS header flags: 0x00000021"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: Format error decoding Dds: Invalid DDS header flags: 0x00000021"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2c893cd47b6757133987906e00c55e6dcce3c567b9df9e7f91ffecd3604cc6a6",
+          "alpha_present": false,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "2c893cd47b6757133987906e00c55e6dcce3c567b9df9e7f91ffecd3604cc6a6"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2c893cd47b6757133987906e00c55e6dcce3c567b9df9e7f91ffecd3604cc6a6",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "2c893cd47b6757133987906e00c55e6dcce3c567b9df9e7f91ffecd3604cc6a6"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2c893cd47b6757133987906e00c55e6dcce3c567b9df9e7f91ffecd3604cc6a6",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "2c893cd47b6757133987906e00c55e6dcce3c567b9df9e7f91ffecd3604cc6a6"
+        }
+      },
+      "description": "image: reject (Format error decoding Dds); glycin: reject (ExpectedError); image-dds, ddsfile-bcdec, ddsfile-texpresso: accept 8x8 `2c893cd4`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 160,
+      "witness_length": 160
+    },
+    {
+      "rule": "pf_b_mask",
+      "count": 47,
+      "patterns": 46,
+      "original_id": 954,
+      "witness": "witnesses/04-pf_b_mask.dds",
+      "mutation": {
+        "rule": "pf_b_mask",
+        "field": "pf_b_mask",
+        "value": 65536,
+        "old": 31,
+        "source": "mutation",
+        "seed": "mask-argb1555-8x8",
+        "family": "uncompressed-bitmask"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The image format `DDS` is not supported",
+          "message": "The image format `DDS` is not supported"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The image format `DDS` is not supported"
+        },
+        "image-dds": {
+          "status": "error",
+          "error_class": "Surface",
+          "message": "Surface: DDS image format DdsFormatInfo { dxgi: None, d3d: None, fourcc: None } is not supported"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "8e99a8ee3dcd698b1f8b21e5872a43c248ff041b322e5dfbe5face3a1aad73cb",
+          "alpha_present": true,
+          "orig_color_type": "Mask16:7c00/3e0/10000/8000",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "8e99a8ee3dcd698b1f8b21e5872a43c248ff041b322e5dfbe5face3a1aad73cb"
+        },
+        "ddsfile-texpresso": {
+          "status": "na",
+          "error_class": "UnsupportedByCandidate",
+          "message": "texpresso column covers BC1-BC5 only: Mask16:7c00/3e0/10000/8000"
+        }
+      },
+      "description": "image: reject (The image format `DDS` is not ); glycin: reject (ExpectedError); image-dds: reject (Surface); ddsfile-bcdec: accept 8x8 `8e99a8ee`; ddsfile-texpresso: na",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 256,
+      "witness_length": 256
+    },
+    {
+      "rule": "pf_g_mask",
+      "count": 47,
+      "patterns": 46,
+      "original_id": 4482,
+      "witness": "witnesses/05-pf_g_mask.dds",
+      "mutation": {
+        "rule": "pf_g_mask",
+        "field": "pf_g_mask",
+        "value": 0,
+        "old": 992,
+        "source": "mutation",
+        "seed": "mask-argb1555-8x8",
+        "family": "uncompressed-bitmask"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The image format `DDS` is not supported",
+          "message": "The image format `DDS` is not supported"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The image format `DDS` is not supported"
+        },
+        "image-dds": {
+          "status": "error",
+          "error_class": "Surface",
+          "message": "Surface: DDS image format DdsFormatInfo { dxgi: None, d3d: None, fourcc: None } is not supported"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "05d3c6ca1adb6c921b64b51b73dd7aa6367cbf33f7853b9c41509b17f35294e4",
+          "alpha_present": true,
+          "orig_color_type": "Mask16:7c00/0/1f/8000",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "05d3c6ca1adb6c921b64b51b73dd7aa6367cbf33f7853b9c41509b17f35294e4"
+        },
+        "ddsfile-texpresso": {
+          "status": "na",
+          "error_class": "UnsupportedByCandidate",
+          "message": "texpresso column covers BC1-BC5 only: Mask16:7c00/0/1f/8000"
+        }
+      },
+      "description": "image: reject (The image format `DDS` is not ); glycin: reject (ExpectedError); image-dds: reject (Surface); ddsfile-bcdec: accept 8x8 `05d3c6ca`; ddsfile-texpresso: na",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 256,
+      "witness_length": 256
+    },
+    {
+      "rule": "pf_r_mask",
+      "count": 44,
+      "patterns": 44,
+      "original_id": 445,
+      "witness": "witnesses/06-pf_r_mask.dds",
+      "mutation": {
+        "rule": "pf_r_mask",
+        "field": "pf_r_mask",
+        "value": 60,
+        "old": 255,
+        "source": "mutation",
+        "seed": "mask-abgr32-5x3",
+        "family": "uncompressed-bitmask"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The image format `DDS` is not supported",
+          "message": "The image format `DDS` is not supported"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The image format `DDS` is not supported"
+        },
+        "image-dds": {
+          "status": "error",
+          "error_class": "Surface",
+          "message": "Surface: DDS image format DdsFormatInfo { dxgi: None, d3d: None, fourcc: None } is not supported"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "b981666e3e3cbdda7270128e5a69b077dd1c80d536c2765ab57d53bf84be27d9",
+          "alpha_present": true,
+          "orig_color_type": "Mask32:3c/ff00/ff0000/ff000000",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "b981666e3e3cbdda7270128e5a69b077dd1c80d536c2765ab57d53bf84be27d9"
+        },
+        "ddsfile-texpresso": {
+          "status": "na",
+          "error_class": "UnsupportedByCandidate",
+          "message": "texpresso column covers BC1-BC5 only: Mask32:3c/ff00/ff0000/ff000000"
+        }
+      },
+      "description": "image: reject (The image format `DDS` is not ); glycin: reject (ExpectedError); image-dds: reject (Surface); ddsfile-bcdec: accept 5x3 `b981666e`; ddsfile-texpresso: na",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 188,
+      "witness_length": 188
+    },
+    {
+      "rule": "pf_a_mask",
+      "count": 38,
+      "patterns": 38,
+      "original_id": 619,
+      "witness": "witnesses/07-pf_a_mask.dds",
+      "mutation": {
+        "rule": "pf_a_mask",
+        "field": "pf_a_mask",
+        "value": 127,
+        "old": 32768,
+        "source": "mutation",
+        "seed": "mask-argb1555-5x3",
+        "family": "uncompressed-bitmask"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The image format `DDS` is not supported",
+          "message": "The image format `DDS` is not supported"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The image format `DDS` is not supported"
+        },
+        "image-dds": {
+          "status": "error",
+          "error_class": "Surface",
+          "message": "Surface: DDS image format DdsFormatInfo { dxgi: None, d3d: None, fourcc: None } is not supported"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "85aa482f35873c6c79e8c9986626c18f948bcd3aaf20d7beb81b30c6ceaaffc5",
+          "alpha_present": true,
+          "orig_color_type": "Mask16:7c00/3e0/1f/7f",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "85aa482f35873c6c79e8c9986626c18f948bcd3aaf20d7beb81b30c6ceaaffc5"
+        },
+        "ddsfile-texpresso": {
+          "status": "na",
+          "error_class": "UnsupportedByCandidate",
+          "message": "texpresso column covers BC1-BC5 only: Mask16:7c00/3e0/1f/7f"
+        }
+      },
+      "description": "image: reject (The image format `DDS` is not ); glycin: reject (ExpectedError); image-dds: reject (Surface); ddsfile-bcdec: accept 5x3 `85aa482f`; ddsfile-texpresso: na",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 158,
+      "witness_length": 158
+    },
+    {
+      "rule": "seed:uncompressed-bitmask",
+      "count": 25,
+      "patterns": 23,
+      "original_id": 34,
+      "witness": "witnesses/08-seed-uncompressed-bitmask.dds",
+      "mutation": {
+        "source": "seed",
+        "name": "mask-l8-8x8",
+        "family": "uncompressed-bitmask",
+        "rule": "seed:uncompressed-bitmask",
+        "expected_ok": true
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The image format `DDS` is not supported",
+          "message": "The image format `DDS` is not supported"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The image format `DDS` is not supported"
+        },
+        "image-dds": {
+          "status": "error",
+          "error_class": "Surface",
+          "message": "Surface: DDS image format DdsFormatInfo { dxgi: None, d3d: None, fourcc: None } is not supported"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2c893cd47b6757133987906e00c55e6dcce3c567b9df9e7f91ffecd3604cc6a6",
+          "alpha_present": false,
+          "orig_color_type": "Mask8:0/0/0/0",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "2c893cd47b6757133987906e00c55e6dcce3c567b9df9e7f91ffecd3604cc6a6"
+        },
+        "ddsfile-texpresso": {
+          "status": "na",
+          "error_class": "UnsupportedByCandidate",
+          "message": "texpresso column covers BC1-BC5 only: Mask8:0/0/0/0"
+        }
+      },
+      "description": "image: reject (The image format `DDS` is not ); glycin: reject (ExpectedError); image-dds: reject (Surface); ddsfile-bcdec: accept 8x8 `2c893cd4`; ddsfile-texpresso: na",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 192,
+      "witness_length": 192
+    },
+    {
+      "rule": "dx10_misc_flag-bit",
+      "count": 21,
+      "patterns": 6,
+      "original_id": 151,
+      "witness": "witnesses/09-dx10_misc_flag-bit.dds",
+      "mutation": {
+        "rule": "dx10_misc_flag-bit",
+        "field": "dx10_misc_flag",
+        "value": 24,
+        "old": 4,
+        "source": "mutation",
+        "seed": "cube-dx10-bc1-8x8",
+        "family": "cube"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Dds",
+          "message": "Format error decoding Dds: Invalid DDS DX10 header flags: 0x01000004"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: Format error decoding Dds: Invalid DDS DX10 header flags: 0x01000004"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "dc1bccb4f733cc5adab788e8723bb2adbac4122e36b12f4a6dec476f46c3c5d3",
+          "alpha_present": false,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": true,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "dc1bccb4f733cc5adab788e8723bb2adbac4122e36b12f4a6dec476f46c3c5d3"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "dc1bccb4f733cc5adab788e8723bb2adbac4122e36b12f4a6dec476f46c3c5d3",
+          "alpha_present": false,
+          "orig_color_type": "DX10:BC1_UNorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": true,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "dc1bccb4f733cc5adab788e8723bb2adbac4122e36b12f4a6dec476f46c3c5d3"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "ef7a753eb9de7e6d9434d8d4851a3c1aa69277d41f457f2257d3e7c8e15a5637",
+          "alpha_present": false,
+          "orig_color_type": "DX10:BC1_UNorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": true,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "dc1bccb4f733cc5adab788e8723bb2adbac4122e36b12f4a6dec476f46c3c5d3"
+        }
+      },
+      "description": "image: reject (Format error decoding Dds); glycin: reject (ExpectedError); image-dds, ddsfile-bcdec: accept 8x8 `dc1bccb4`; ddsfile-texpresso: accept 8x8 `ef7a753e`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 340,
+      "witness_length": 215
+    },
+    {
+      "rule": "width",
+      "count": 20,
+      "patterns": 20,
+      "original_id": 429,
+      "witness": "witnesses/10-width.dds",
+      "mutation": {
+        "rule": "width",
+        "field": "width",
+        "value": 4,
+        "old": 7,
+        "source": "mutation",
+        "seed": "legacy-dxt5-7x5",
+        "family": "legacy-bcn"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The Image's dimensions are either too small or too large",
+          "message": "The Image's dimensions are either too small or too large"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The Image's dimensions are either too small or too large"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 4,
+          "height": 5,
+          "rgba_sha256": "4d84201d4c85965adc692b2decb7d48ef6c2c0a71e01f3f0308939f8c31b41da",
+          "alpha_present": true,
+          "orig_color_type": "BC3RgbaUnorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "4d84201d4c85965adc692b2decb7d48ef6c2c0a71e01f3f0308939f8c31b41da"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 4,
+          "height": 5,
+          "rgba_sha256": "4d84201d4c85965adc692b2decb7d48ef6c2c0a71e01f3f0308939f8c31b41da",
+          "alpha_present": true,
+          "orig_color_type": "FourCC:DXT5",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "4d84201d4c85965adc692b2decb7d48ef6c2c0a71e01f3f0308939f8c31b41da"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 4,
+          "height": 5,
+          "rgba_sha256": "4d84201d4c85965adc692b2decb7d48ef6c2c0a71e01f3f0308939f8c31b41da",
+          "alpha_present": true,
+          "orig_color_type": "FourCC:DXT5",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "4d84201d4c85965adc692b2decb7d48ef6c2c0a71e01f3f0308939f8c31b41da"
+        }
+      },
+      "description": "image: reject (The Image's dimensions are eit); glycin: reject (ExpectedError); image-dds, ddsfile-bcdec, ddsfile-texpresso: accept 4x5 `4d84201d`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 192,
+      "witness_length": 192
+    },
+    {
+      "rule": "height",
+      "count": 20,
+      "patterns": 20,
+      "original_id": 580,
+      "witness": "witnesses/11-height.dds",
+      "mutation": {
+        "rule": "height",
+        "field": "height",
+        "value": 1,
+        "old": 8,
+        "source": "mutation",
+        "seed": "random-dxt5-8x8",
+        "family": "legacy-random-blocks"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The Image's dimensions are either too small or too large",
+          "message": "The Image's dimensions are either too small or too large"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The Image's dimensions are either too small or too large"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 1,
+          "rgba_sha256": "dc335345496726bf1eb6f8123a7984fd3d55450c5f4a95a2bf10dda26303590d",
+          "alpha_present": true,
+          "orig_color_type": "BC3RgbaUnorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "dc335345496726bf1eb6f8123a7984fd3d55450c5f4a95a2bf10dda26303590d"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 1,
+          "rgba_sha256": "dc335345496726bf1eb6f8123a7984fd3d55450c5f4a95a2bf10dda26303590d",
+          "alpha_present": true,
+          "orig_color_type": "FourCC:DXT5",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "dc335345496726bf1eb6f8123a7984fd3d55450c5f4a95a2bf10dda26303590d"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 1,
+          "rgba_sha256": "d8651ca40ad35f8eccc0df9877fc58f31cbfac08f606622fd457991f07e3704a",
+          "alpha_present": true,
+          "orig_color_type": "FourCC:DXT5",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "dc335345496726bf1eb6f8123a7984fd3d55450c5f4a95a2bf10dda26303590d"
+        }
+      },
+      "description": "image: reject (The Image's dimensions are eit); glycin: reject (ExpectedError); image-dds, ddsfile-bcdec: accept 8x1 `dc335345`; ddsfile-texpresso: accept 8x1 `d8651ca4`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 192,
+      "witness_length": 192
+    },
+    {
+      "rule": "dx10_misc_flag",
+      "count": 18,
+      "patterns": 6,
+      "original_id": 576,
+      "witness": "witnesses/12-dx10_misc_flag.dds",
+      "mutation": {
+        "rule": "dx10_misc_flag",
+        "field": "dx10_misc_flag",
+        "value": 5,
+        "old": 0,
+        "source": "mutation",
+        "seed": "array-dx10-bc1-3-8x8",
+        "family": "array"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Dds",
+          "message": "Format error decoding Dds: Invalid DDS DX10 header flags: 0x00000005"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: Format error decoding Dds: Invalid DDS DX10 header flags: 0x00000005"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "427dededc5bb2610a90c0444574dfcf73587bcc60c480c46961d4784e5d2b6f0",
+          "alpha_present": false,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 1,
+          "layers": 3,
+          "cube": true,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "427dededc5bb2610a90c0444574dfcf73587bcc60c480c46961d4784e5d2b6f0"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "427dededc5bb2610a90c0444574dfcf73587bcc60c480c46961d4784e5d2b6f0",
+          "alpha_present": false,
+          "orig_color_type": "DX10:BC1_UNorm",
+          "mips": 1,
+          "layers": 3,
+          "cube": true,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "427dededc5bb2610a90c0444574dfcf73587bcc60c480c46961d4784e5d2b6f0"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "0219bbe7826b654838042c9a6fde7c1b3af4b487416a5bee6f61e97297742ae3",
+          "alpha_present": false,
+          "orig_color_type": "DX10:BC1_UNorm",
+          "mips": 1,
+          "layers": 3,
+          "cube": true,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "427dededc5bb2610a90c0444574dfcf73587bcc60c480c46961d4784e5d2b6f0"
+        }
+      },
+      "description": "image: reject (Format error decoding Dds); glycin: reject (ExpectedError); image-dds, ddsfile-bcdec: accept 8x8 `427deded`; ddsfile-texpresso: accept 8x8 `0219bbe7`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 244,
+      "witness_length": 183
+    },
+    {
+      "rule": "seed:dx10",
+      "count": 17,
+      "patterns": 17,
+      "original_id": 44,
+      "witness": "witnesses/13-seed-dx10.dds",
+      "mutation": {
+        "source": "seed",
+        "name": "dx10-bc1-8x8",
+        "family": "dx10",
+        "rule": "seed:dx10",
+        "expected_ok": true
+      },
+      "classification": "accept-different-pixels",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "1db92e618b3e0cfc856dee6668ffe5e906f7bd19f651465c0af359720eecf592",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "1db92e618b3e0cfc856dee6668ffe5e906f7bd19f651465c0af359720eecf592"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "1db92e618b3e0cfc856dee6668ffe5e906f7bd19f651465c0af359720eecf592",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "1db92e618b3e0cfc856dee6668ffe5e906f7bd19f651465c0af359720eecf592"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "cfc7705956f7accad1ebdb6bdb59fa65b49cac4b0c98fec3bde34582222303df",
+          "alpha_present": false,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "1db92e618b3e0cfc856dee6668ffe5e906f7bd19f651465c0af359720eecf592"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "cfc7705956f7accad1ebdb6bdb59fa65b49cac4b0c98fec3bde34582222303df",
+          "alpha_present": false,
+          "orig_color_type": "DX10:BC1_UNorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "1db92e618b3e0cfc856dee6668ffe5e906f7bd19f651465c0af359720eecf592"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2f3fc90ef9780c9856233c3c37f265e7714f9ba980183a135fed072faecdc387",
+          "alpha_present": false,
+          "orig_color_type": "DX10:BC1_UNorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "1db92e618b3e0cfc856dee6668ffe5e906f7bd19f651465c0af359720eecf592"
+        }
+      },
+      "description": "image, glycin: accept 8x8 `1db92e61`; image-dds, ddsfile-bcdec: accept 8x8 `cfc77059`; ddsfile-texpresso: accept 8x8 `2f3fc90e`",
+      "pixel_difference": "rgb-only(max 1)",
+      "min_checks": 24,
+      "original_length": 180,
+      "witness_length": 180
+    },
+    {
+      "rule": "seed:legacy-bcn",
+      "count": 16,
+      "patterns": 16,
+      "original_id": 0,
+      "witness": "witnesses/14-seed-legacy-bcn.dds",
+      "mutation": {
+        "source": "seed",
+        "name": "legacy-dxt1-8x8",
+        "family": "legacy-bcn",
+        "rule": "seed:legacy-bcn",
+        "expected_ok": true
+      },
+      "classification": "accept-different-pixels",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "8e0e05cd1c6c6f6241097ab81be69cb4b0b2b4b7a2631674845ff0658a2ec1f1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "8e0e05cd1c6c6f6241097ab81be69cb4b0b2b4b7a2631674845ff0658a2ec1f1"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "8e0e05cd1c6c6f6241097ab81be69cb4b0b2b4b7a2631674845ff0658a2ec1f1",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "8e0e05cd1c6c6f6241097ab81be69cb4b0b2b4b7a2631674845ff0658a2ec1f1"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "550d132134a08d9687285f97f6d29c500cfa1cc4524db93b68174362755afdc4",
+          "alpha_present": false,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "8e0e05cd1c6c6f6241097ab81be69cb4b0b2b4b7a2631674845ff0658a2ec1f1"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "550d132134a08d9687285f97f6d29c500cfa1cc4524db93b68174362755afdc4",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "8e0e05cd1c6c6f6241097ab81be69cb4b0b2b4b7a2631674845ff0658a2ec1f1"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "93515b139f6c56f8e0b8d348d89d24da9b4fb6b876962d62b1ccba0f38d5a4e2",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "8e0e05cd1c6c6f6241097ab81be69cb4b0b2b4b7a2631674845ff0658a2ec1f1"
+        }
+      },
+      "description": "image, glycin: accept 8x8 `8e0e05cd`; image-dds, ddsfile-bcdec: accept 8x8 `550d1321`; ddsfile-texpresso: accept 8x8 `93515b13`",
+      "pixel_difference": "rgb-only(max 1)",
+      "min_checks": 24,
+      "original_length": 160,
+      "witness_length": 160
+    },
+    {
+      "rule": "byte-flip-header",
+      "count": 14,
+      "patterns": 14,
+      "original_id": 358,
+      "witness": "witnesses/15-byte-flip-header.dds",
+      "mutation": {
+        "rule": "byte-flip-header",
+        "field": "offset",
+        "value": 92,
+        "source": "mutation",
+        "seed": "mask-argb32-8x8",
+        "family": "uncompressed-bitmask"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The image format `DDS` is not supported",
+          "message": "The image format `DDS` is not supported"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The image format `DDS` is not supported"
+        },
+        "image-dds": {
+          "status": "error",
+          "error_class": "Surface",
+          "message": "Surface: DDS image format DdsFormatInfo { dxgi: None, d3d: None, fourcc: None } is not supported"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "8a4babfdec1f7c4239e734fa83a5c62825e909ad81ef34b215c29f984f8341a2",
+          "alpha_present": true,
+          "orig_color_type": "Mask32:ff0001/ff00/ff/ff000000",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "8a4babfdec1f7c4239e734fa83a5c62825e909ad81ef34b215c29f984f8341a2"
+        },
+        "ddsfile-texpresso": {
+          "status": "na",
+          "error_class": "UnsupportedByCandidate",
+          "message": "texpresso column covers BC1-BC5 only: Mask32:ff0001/ff00/ff/ff000000"
+        }
+      },
+      "description": "image: reject (The image format `DDS` is not ); glycin: reject (ExpectedError); image-dds: reject (Surface); ddsfile-bcdec: accept 8x8 `8a4babfd`; ddsfile-texpresso: na",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 384,
+      "witness_length": 384
+    },
+    {
+      "rule": "mip_count",
+      "count": 11,
+      "patterns": 7,
+      "original_id": 398,
+      "witness": "witnesses/16-mip_count.dds",
+      "mutation": {
+        "rule": "mip_count",
+        "field": "mip_count",
+        "value": 64,
+        "old": 5,
+        "source": "mutation",
+        "seed": "mips-dxt5-16x16",
+        "family": "mipmaps"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "92ae9785bbbbc20e3fab23c6139e5a5586833af3029a999254e17c7e7068d893",
+          "alpha_present": true,
+          "orig_color_type": "Rgba8",
+          "policy": "first-mip-only",
+          "alt_sha256": "92ae9785bbbbc20e3fab23c6139e5a5586833af3029a999254e17c7e7068d893"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "92ae9785bbbbc20e3fab23c6139e5a5586833af3029a999254e17c7e7068d893",
+          "alpha_present": true,
+          "orig_color_type": "R8g8b8a8",
+          "policy": "first-mip-only",
+          "alt_sha256": "92ae9785bbbbc20e3fab23c6139e5a5586833af3029a999254e17c7e7068d893"
+        },
+        "image-dds": {
+          "status": "error",
+          "error_class": "Decode",
+          "message": "Decode: 64 mipmaps exceeds the maximum expected mipmap count of 5"
+        },
+        "ddsfile-bcdec": {
+          "status": "error",
+          "error_class": "DdsfileLayout",
+          "message": "DdsfileLayout: Request is out of bounds"
+        },
+        "ddsfile-texpresso": {
+          "status": "error",
+          "error_class": "DdsfileLayout",
+          "message": "DdsfileLayout: Request is out of bounds"
+        }
+      },
+      "description": "image, glycin: accept 16x16 `92ae9785`; image-dds: reject (Decode); ddsfile-bcdec, ddsfile-texpresso: reject (DdsfileLayout)",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 496,
+      "witness_length": 434
+    },
+    {
+      "rule": "seed:legacy-random-blocks",
+      "count": 5,
+      "patterns": 5,
+      "original_id": 74,
+      "witness": "witnesses/17-seed-legacy-random-blocks.dds",
+      "mutation": {
+        "source": "seed",
+        "name": "random-dxt1-8x8",
+        "family": "legacy-random-blocks",
+        "rule": "seed:legacy-random-blocks",
+        "expected_ok": true
+      },
+      "classification": "accept-different-pixels",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2518d062959cab39c82f8140c80c90bfef651f82c48e58e8c2c439ad01dc8f9e",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "2518d062959cab39c82f8140c80c90bfef651f82c48e58e8c2c439ad01dc8f9e"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2518d062959cab39c82f8140c80c90bfef651f82c48e58e8c2c439ad01dc8f9e",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "2518d062959cab39c82f8140c80c90bfef651f82c48e58e8c2c439ad01dc8f9e"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "5fb5e3370ae9c8cd89614926282afece47bb772267fd3a6c3a6fd8eb0c7370ac",
+          "alpha_present": true,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 255,
+          "alt_sha256": "5fb5e3370ae9c8cd89614926282afece47bb772267fd3a6c3a6fd8eb0c7370ac"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "5fb5e3370ae9c8cd89614926282afece47bb772267fd3a6c3a6fd8eb0c7370ac",
+          "alpha_present": true,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 255,
+          "alt_sha256": "5fb5e3370ae9c8cd89614926282afece47bb772267fd3a6c3a6fd8eb0c7370ac"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "158def82bfdbb3b321d6ff7ca2fc3d07a7bfe9d3a77c80c45a1fdd24a091804c",
+          "alpha_present": true,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 255,
+          "alt_sha256": "5fb5e3370ae9c8cd89614926282afece47bb772267fd3a6c3a6fd8eb0c7370ac"
+        }
+      },
+      "description": "image, glycin: accept 8x8 `2518d062`; image-dds, ddsfile-bcdec: accept 8x8 `5fb5e337`; ddsfile-texpresso: accept 8x8 `158def82`",
+      "pixel_difference": "rgb(max 1)+alpha(max 255)",
+      "min_checks": 24,
+      "original_length": 160,
+      "witness_length": 160
+    },
+    {
+      "rule": "dx10_dxgi_format",
+      "count": 5,
+      "patterns": 5,
+      "original_id": 1571,
+      "witness": "witnesses/18-dx10_dxgi_format.dds",
+      "mutation": {
+        "rule": "dx10_dxgi_format",
+        "field": "dx10_dxgi_format",
+        "value": 63,
+        "old": 65,
+        "source": "mutation",
+        "seed": "dx10-a8-8x8",
+        "family": "dx10"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The decoder for Dds does not support the format features DDS DXGI Format 63",
+          "message": "The decoder for Dds does not support the format features DDS DXGI Format 63"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The decoder for Dds does not support the format features DDS DXGI Format 63"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "ac5254667f6f7d821df719efb9ddd577d14b44e3f6c55ca931b931f888e72ac2",
+          "alpha_present": false,
+          "orig_color_type": "R8Snorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "ac5254667f6f7d821df719efb9ddd577d14b44e3f6c55ca931b931f888e72ac2"
+        },
+        "ddsfile-bcdec": {
+          "status": "error",
+          "error_class": "UnsupportedDxgi",
+          "message": "UnsupportedDxgi: R8_SNorm"
+        },
+        "ddsfile-texpresso": {
+          "status": "error",
+          "error_class": "UnsupportedDxgi",
+          "message": "UnsupportedDxgi: R8_SNorm"
+        }
+      },
+      "description": "image: reject (The decoder for Dds does not s); glycin: reject (ExpectedError); image-dds: accept 8x8 `ac525466`; ddsfile-bcdec, ddsfile-texpresso: reject (UnsupportedDxgi)",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 212,
+      "witness_length": 212
+    },
+    {
+      "rule": "seed:legacy-bc45",
+      "count": 4,
+      "patterns": 4,
+      "original_id": 14,
+      "witness": "witnesses/19-seed-legacy-bc45.dds",
+      "mutation": {
+        "source": "seed",
+        "name": "legacy-ati1-8x8",
+        "family": "legacy-bc45",
+        "rule": "seed:legacy-bc45",
+        "expected_ok": true
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The decoder for Dds does not support the format features DDS FourCC [65, 84, 73, 49]",
+          "message": "The decoder for Dds does not support the format features DDS FourCC [65, 84, 73, 49]"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The decoder for Dds does not support the format features DDS FourCC [65, 84, 73, 49]"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2caea0bf04705cff6902bd599f3fa7036b2318b732747a7aeeb79c2cda89f0fd",
+          "alpha_present": false,
+          "orig_color_type": "BC4RUnorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "2caea0bf04705cff6902bd599f3fa7036b2318b732747a7aeeb79c2cda89f0fd"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "a88f1099602bbcdb76908dbd3037b8ec22c141d4d12cd30354e4c9e369ac48e4",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:ATI1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 230,
+          "alt_sha256": "a88f1099602bbcdb76908dbd3037b8ec22c141d4d12cd30354e4c9e369ac48e4"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2caea0bf04705cff6902bd599f3fa7036b2318b732747a7aeeb79c2cda89f0fd",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:ATI1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "2caea0bf04705cff6902bd599f3fa7036b2318b732747a7aeeb79c2cda89f0fd"
+        }
+      },
+      "description": "image: reject (The decoder for Dds does not s); glycin: reject (ExpectedError); image-dds, ddsfile-texpresso: accept 8x8 `2caea0bf`; ddsfile-bcdec: accept 8x8 `a88f1099`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 160,
+      "witness_length": 160
+    },
+    {
+      "rule": "seed:mipmaps",
+      "count": 4,
+      "patterns": 4,
+      "original_id": 61,
+      "witness": "witnesses/20-seed-mipmaps.dds",
+      "mutation": {
+        "source": "seed",
+        "name": "mips-dxt1-16x16",
+        "family": "mipmaps",
+        "rule": "seed:mipmaps",
+        "expected_ok": true
+      },
+      "classification": "accept-different-pixels",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "e7ff2122aab727b456d93afc7c1228cbfbb0f7d4e2a7a70714a6737710159585",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "e7ff2122aab727b456d93afc7c1228cbfbb0f7d4e2a7a70714a6737710159585"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "e7ff2122aab727b456d93afc7c1228cbfbb0f7d4e2a7a70714a6737710159585",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "e7ff2122aab727b456d93afc7c1228cbfbb0f7d4e2a7a70714a6737710159585"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "936d318a23b8dec7b16f03ee967868be1d4220d17358232ff63e4111b9c6678f",
+          "alpha_present": false,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 5,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "e7ff2122aab727b456d93afc7c1228cbfbb0f7d4e2a7a70714a6737710159585"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "936d318a23b8dec7b16f03ee967868be1d4220d17358232ff63e4111b9c6678f",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 5,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "e7ff2122aab727b456d93afc7c1228cbfbb0f7d4e2a7a70714a6737710159585"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "e5af22ea5b5230ac53ffa437cd7767867abe13dd9f40671b535895e2130ebe62",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 5,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "e7ff2122aab727b456d93afc7c1228cbfbb0f7d4e2a7a70714a6737710159585"
+        }
+      },
+      "description": "image, glycin: accept 16x16 `e7ff2122`; image-dds, ddsfile-bcdec: accept 16x16 `936d318a`; ddsfile-texpresso: accept 16x16 `e5af22ea`",
+      "pixel_difference": "rgb-only(max 1)",
+      "min_checks": 24,
+      "original_length": 312,
+      "witness_length": 312
+    },
+    {
+      "rule": "seed:cube",
+      "count": 4,
+      "patterns": 4,
+      "original_id": 65,
+      "witness": "witnesses/21-seed-cube.dds",
+      "mutation": {
+        "source": "seed",
+        "name": "cube-dxt1-8x8",
+        "family": "cube",
+        "rule": "seed:cube",
+        "expected_ok": true
+      },
+      "classification": "accept-different-pixels",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "0c05bb9dd0303964ae4443a5d4909568049b73dff33168af98eebafd21a28a83",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "0c05bb9dd0303964ae4443a5d4909568049b73dff33168af98eebafd21a28a83"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "0c05bb9dd0303964ae4443a5d4909568049b73dff33168af98eebafd21a28a83",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "0c05bb9dd0303964ae4443a5d4909568049b73dff33168af98eebafd21a28a83"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "19f7a6445b57b38f16b98795e036ae11401012020846958b7d975ffa8dc70b94",
+          "alpha_present": false,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 1,
+          "layers": 6,
+          "cube": true,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "0c05bb9dd0303964ae4443a5d4909568049b73dff33168af98eebafd21a28a83"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "19f7a6445b57b38f16b98795e036ae11401012020846958b7d975ffa8dc70b94",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 6,
+          "cube": true,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "0c05bb9dd0303964ae4443a5d4909568049b73dff33168af98eebafd21a28a83"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "4bf3cbc6b1ae5f62d5107ff9c0c4ae8aaeb8dee8d9686489dc5149ae38523d51",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 6,
+          "cube": true,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "0c05bb9dd0303964ae4443a5d4909568049b73dff33168af98eebafd21a28a83"
+        }
+      },
+      "description": "image, glycin: accept 8x8 `0c05bb9d`; image-dds, ddsfile-bcdec: accept 8x8 `19f7a644`; ddsfile-texpresso: accept 8x8 `4bf3cbc6`",
+      "pixel_difference": "rgb-only(max 1)",
+      "min_checks": 24,
+      "original_length": 320,
+      "witness_length": 160
+    },
+    {
+      "rule": "depth",
+      "count": 4,
+      "patterns": 1,
+      "original_id": 995,
+      "witness": "witnesses/22-depth.dds",
+      "mutation": {
+        "rule": "depth",
+        "field": "depth",
+        "value": 4,
+        "old": 2,
+        "source": "mutation",
+        "seed": "volume-dxt1-8x8x2",
+        "family": "volume"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "7504f71f1970570deaecd1e6921d01a6ced3c3278c735d517c64c21675f20d7f",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "7504f71f1970570deaecd1e6921d01a6ced3c3278c735d517c64c21675f20d7f"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "7504f71f1970570deaecd1e6921d01a6ced3c3278c735d517c64c21675f20d7f",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "7504f71f1970570deaecd1e6921d01a6ced3c3278c735d517c64c21675f20d7f"
+        },
+        "image-dds": {
+          "status": "error",
+          "error_class": "Decode",
+          "message": "Decode: expected surface to have at least 128 bytes but found 64"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "3e5994c0b4ab5210adc3efdf2facee35c30c7e73b6101dc2c676cc6ab3b391a0",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 4,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "7504f71f1970570deaecd1e6921d01a6ced3c3278c735d517c64c21675f20d7f"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "30a9709769dae617e2580e462c9f55b2e05d8b15f450851f88ae016ac0fa6f5d",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 4,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "7504f71f1970570deaecd1e6921d01a6ced3c3278c735d517c64c21675f20d7f"
+        }
+      },
+      "description": "image, glycin: accept 8x8 `7504f71f`; image-dds: reject (Decode); ddsfile-bcdec: accept 8x8 `3e5994c0`; ddsfile-texpresso: accept 8x8 `30a97097`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 192,
+      "witness_length": 168
+    },
+    {
+      "rule": "seed:volume",
+      "count": 3,
+      "patterns": 3,
+      "original_id": 69,
+      "witness": "witnesses/23-seed-volume.dds",
+      "mutation": {
+        "source": "seed",
+        "name": "volume-argb32-4x4x4",
+        "family": "volume",
+        "rule": "seed:volume",
+        "expected_ok": true
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The image format `DDS` is not supported",
+          "message": "The image format `DDS` is not supported"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The image format `DDS` is not supported"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 4,
+          "height": 4,
+          "rgba_sha256": "1aae7d58078504831305288a6f24899beeff977225a53ac309024eef0ae2da3a",
+          "alpha_present": true,
+          "orig_color_type": "Bgra8Unorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 4,
+          "alt_sha256": "1aae7d58078504831305288a6f24899beeff977225a53ac309024eef0ae2da3a"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 4,
+          "height": 4,
+          "rgba_sha256": "1aae7d58078504831305288a6f24899beeff977225a53ac309024eef0ae2da3a",
+          "alpha_present": true,
+          "orig_color_type": "Mask32:ff0000/ff00/ff/ff000000",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 4,
+          "alt_sha256": "1aae7d58078504831305288a6f24899beeff977225a53ac309024eef0ae2da3a"
+        },
+        "ddsfile-texpresso": {
+          "status": "na",
+          "error_class": "UnsupportedByCandidate",
+          "message": "texpresso column covers BC1-BC5 only: Mask32:ff0000/ff00/ff/ff000000"
+        }
+      },
+      "description": "image: reject (The image format `DDS` is not ); glycin: reject (ExpectedError); image-dds, ddsfile-bcdec: accept 4x4 `1aae7d58`; ddsfile-texpresso: na",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 384,
+      "witness_length": 384
+    },
+    {
+      "rule": "dx10_array_size",
+      "count": 3,
+      "patterns": 3,
+      "original_id": 997,
+      "witness": "witnesses/24-dx10_array_size.dds",
+      "mutation": {
+        "rule": "dx10_array_size",
+        "field": "dx10_array_size",
+        "value": 0,
+        "old": 2,
+        "source": "mutation",
+        "seed": "array-dx10-rgba8-mips-2",
+        "family": "array"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The decoder for Dds does not support the format features DDS DXGI Format 28",
+          "message": "The decoder for Dds does not support the format features DDS DXGI Format 28"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The decoder for Dds does not support the format features DDS DXGI Format 28"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "3a40acf77ea6c39b8d81db14fcdd92cc48dd66145b99f864956136ce8c5e1189",
+          "alpha_present": true,
+          "orig_color_type": "Rgba8Unorm",
+          "mips": 3,
+          "layers": 0,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "3a40acf77ea6c39b8d81db14fcdd92cc48dd66145b99f864956136ce8c5e1189"
+        },
+        "ddsfile-bcdec": {
+          "status": "error",
+          "error_class": "DdsfileLayout",
+          "message": "DdsfileLayout: Request is out of bounds"
+        },
+        "ddsfile-texpresso": {
+          "status": "na",
+          "error_class": "UnsupportedByCandidate",
+          "message": "texpresso column covers BC1-BC5 only: DX10:R8G8B8A8_UNorm"
+        }
+      },
+      "description": "image: reject (The decoder for Dds does not s); glycin: reject (ExpectedError); image-dds: accept 8x8 `3a40acf7`; ddsfile-bcdec: reject (DdsfileLayout); ddsfile-texpresso: na",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 820,
+      "witness_length": 410
+    },
+    {
+      "rule": "pf_flags-bit",
+      "count": 3,
+      "patterns": 3,
+      "original_id": 1876,
+      "witness": "witnesses/25-pf_flags-bit.dds",
+      "mutation": {
+        "rule": "pf_flags-bit",
+        "field": "pf_flags",
+        "value": 0,
+        "old": 65,
+        "source": "mutation",
+        "seed": "mask-argb4444-8x8",
+        "family": "uncompressed-bitmask"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The image format `DDS` is not supported",
+          "message": "The image format `DDS` is not supported"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The image format `DDS` is not supported"
+        },
+        "image-dds": {
+          "status": "error",
+          "error_class": "Surface",
+          "message": "Surface: DDS image format DdsFormatInfo { dxgi: None, d3d: Some(X4R4G4B4), fourcc: None } is not supported"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "3151ec1556f9d2448e904ed9248cdb7e6a65d2636e0d51d997ee4501d4094cf3",
+          "alpha_present": false,
+          "orig_color_type": "Mask16:f00/f0/f/0",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "3151ec1556f9d2448e904ed9248cdb7e6a65d2636e0d51d997ee4501d4094cf3"
+        },
+        "ddsfile-texpresso": {
+          "status": "na",
+          "error_class": "UnsupportedByCandidate",
+          "message": "texpresso column covers BC1-BC5 only: Mask16:f00/f0/f/0"
+        }
+      },
+      "description": "image: reject (The image format `DDS` is not ); glycin: reject (ExpectedError); image-dds: reject (Surface); ddsfile-bcdec: accept 8x8 `3151ec15`; ddsfile-texpresso: na",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 256,
+      "witness_length": 256
+    },
+    {
+      "rule": "truncation",
+      "count": 3,
+      "patterns": 2,
+      "original_id": 4767,
+      "witness": "witnesses/26-truncation.dds",
+      "mutation": {
+        "rule": "truncation",
+        "field": "length",
+        "value": 466,
+        "source": "mutation",
+        "seed": "mips-argb32-8x8",
+        "family": "mipmaps"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The image format `DDS` is not supported",
+          "message": "The image format `DDS` is not supported"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The image format `DDS` is not supported"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "1de75bfe81030555fdc4fb008dea7b4da478b8d5f3bf3e3eb99ad54a21517e20",
+          "alpha_present": true,
+          "orig_color_type": "Bgra8Unorm",
+          "mips": 4,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "1de75bfe81030555fdc4fb008dea7b4da478b8d5f3bf3e3eb99ad54a21517e20"
+        },
+        "ddsfile-bcdec": {
+          "status": "error",
+          "error_class": "DdsfileLayout",
+          "message": "DdsfileLayout: Request is out of bounds"
+        },
+        "ddsfile-texpresso": {
+          "status": "na",
+          "error_class": "UnsupportedByCandidate",
+          "message": "texpresso column covers BC1-BC5 only: Mask32:ff0000/ff00/ff/ff000000"
+        }
+      },
+      "description": "image: reject (The image format `DDS` is not ); glycin: reject (ExpectedError); image-dds: accept 8x8 `1de75bfe`; ddsfile-bcdec: reject (DdsfileLayout); ddsfile-texpresso: na",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 466,
+      "witness_length": 413
+    },
+    {
+      "rule": "seed:array",
+      "count": 2,
+      "patterns": 2,
+      "original_id": 72,
+      "witness": "witnesses/27-seed-array.dds",
+      "mutation": {
+        "source": "seed",
+        "name": "array-dx10-bc1-3-8x8",
+        "family": "array",
+        "rule": "seed:array",
+        "expected_ok": true
+      },
+      "classification": "accept-different-pixels",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "a7f7546a117067dee4ab5072e57011aad7c925101f1e583b6728d85318ba50be",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "a7f7546a117067dee4ab5072e57011aad7c925101f1e583b6728d85318ba50be"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "a7f7546a117067dee4ab5072e57011aad7c925101f1e583b6728d85318ba50be",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "a7f7546a117067dee4ab5072e57011aad7c925101f1e583b6728d85318ba50be"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "427dededc5bb2610a90c0444574dfcf73587bcc60c480c46961d4784e5d2b6f0",
+          "alpha_present": false,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 1,
+          "layers": 3,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "a7f7546a117067dee4ab5072e57011aad7c925101f1e583b6728d85318ba50be"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "427dededc5bb2610a90c0444574dfcf73587bcc60c480c46961d4784e5d2b6f0",
+          "alpha_present": false,
+          "orig_color_type": "DX10:BC1_UNorm",
+          "mips": 1,
+          "layers": 3,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "a7f7546a117067dee4ab5072e57011aad7c925101f1e583b6728d85318ba50be"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "0219bbe7826b654838042c9a6fde7c1b3af4b487416a5bee6f61e97297742ae3",
+          "alpha_present": false,
+          "orig_color_type": "DX10:BC1_UNorm",
+          "mips": 1,
+          "layers": 3,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "a7f7546a117067dee4ab5072e57011aad7c925101f1e583b6728d85318ba50be"
+        }
+      },
+      "description": "image, glycin: accept 8x8 `a7f7546a`; image-dds, ddsfile-bcdec: accept 8x8 `427deded`; ddsfile-texpresso: accept 8x8 `0219bbe7`",
+      "pixel_difference": "rgb-only(max 1)",
+      "min_checks": 24,
+      "original_length": 244,
+      "witness_length": 183
+    },
+    {
+      "rule": "trailing-bytes",
+      "count": 2,
+      "patterns": 1,
+      "original_id": 3682,
+      "witness": "witnesses/28-trailing-bytes.dds",
+      "mutation": {
+        "rule": "trailing-bytes",
+        "field": "tail",
+        "value": 64,
+        "source": "mutation",
+        "seed": "volume-argb32-mips-4x4x4",
+        "family": "volume"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The image format `DDS` is not supported",
+          "message": "The image format `DDS` is not supported"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The image format `DDS` is not supported"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 4,
+          "height": 4,
+          "rgba_sha256": "e16f3a1b03329ac2a0a90dd86775f018e36c738582765cd9ddb2e1500b47e53e",
+          "alpha_present": true,
+          "orig_color_type": "Bgra8Unorm",
+          "mips": 3,
+          "layers": 1,
+          "cube": false,
+          "depth": 4,
+          "alt_sha256": "e16f3a1b03329ac2a0a90dd86775f018e36c738582765cd9ddb2e1500b47e53e"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 4,
+          "height": 4,
+          "rgba_sha256": "e16f3a1b03329ac2a0a90dd86775f018e36c738582765cd9ddb2e1500b47e53e",
+          "alpha_present": true,
+          "orig_color_type": "Mask32:ff0000/ff00/ff/ff000000",
+          "mips": 3,
+          "layers": 1,
+          "cube": false,
+          "depth": 4,
+          "alt_sha256": "e16f3a1b03329ac2a0a90dd86775f018e36c738582765cd9ddb2e1500b47e53e"
+        },
+        "ddsfile-texpresso": {
+          "status": "na",
+          "error_class": "UnsupportedByCandidate",
+          "message": "texpresso column covers BC1-BC5 only: Mask32:ff0000/ff00/ff/ff000000"
+        }
+      },
+      "description": "image: reject (The image format `DDS` is not ); glycin: reject (ExpectedError); image-dds, ddsfile-bcdec: accept 4x4 `e16f3a1b`; ddsfile-texpresso: na",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 484,
+      "witness_length": 484
+    },
+    {
+      "rule": "dx10_resource_dimension",
+      "count": 2,
+      "patterns": 2,
+      "original_id": 6960,
+      "witness": "witnesses/29-dx10_resource_dimension.dds",
+      "mutation": {
+        "rule": "dx10_resource_dimension",
+        "field": "dx10_resource_dimension",
+        "value": 1,
+        "old": 3,
+        "source": "mutation",
+        "seed": "array-dx10-bc1-3-8x8",
+        "family": "array"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Dds",
+          "message": "Format error decoding Dds: Invalid DDS resource dimension: 1"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: Format error decoding Dds: Invalid DDS resource dimension: 1"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "427dededc5bb2610a90c0444574dfcf73587bcc60c480c46961d4784e5d2b6f0",
+          "alpha_present": false,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 1,
+          "layers": 3,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "427dededc5bb2610a90c0444574dfcf73587bcc60c480c46961d4784e5d2b6f0"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "427dededc5bb2610a90c0444574dfcf73587bcc60c480c46961d4784e5d2b6f0",
+          "alpha_present": false,
+          "orig_color_type": "DX10:BC1_UNorm",
+          "mips": 1,
+          "layers": 3,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "427dededc5bb2610a90c0444574dfcf73587bcc60c480c46961d4784e5d2b6f0"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "0219bbe7826b654838042c9a6fde7c1b3af4b487416a5bee6f61e97297742ae3",
+          "alpha_present": false,
+          "orig_color_type": "DX10:BC1_UNorm",
+          "mips": 1,
+          "layers": 3,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "427dededc5bb2610a90c0444574dfcf73587bcc60c480c46961d4784e5d2b6f0"
+        }
+      },
+      "description": "image: reject (Format error decoding Dds); glycin: reject (ExpectedError); image-dds, ddsfile-bcdec: accept 8x8 `427deded`; ddsfile-texpresso: accept 8x8 `0219bbe7`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 244,
+      "witness_length": 183
+    },
+    {
+      "rule": "seed:dx10-random-blocks",
+      "count": 1,
+      "patterns": 1,
+      "original_id": 79,
+      "witness": "witnesses/30-seed-dx10-random-blocks.dds",
+      "mutation": {
+        "source": "seed",
+        "name": "random-dx10-bc7-8x8",
+        "family": "dx10-random-blocks",
+        "rule": "seed:dx10-random-blocks",
+        "expected_ok": true
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The decoder for Dds does not support the format features DDS DXGI Format 98",
+          "message": "The decoder for Dds does not support the format features DDS DXGI Format 98"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The decoder for Dds does not support the format features DDS DXGI Format 98"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "f336ce0ba6b792fdb2bd20b9f6fd6bfe4f84593d0107cda6c4ebe15b668665ea",
+          "alpha_present": true,
+          "orig_color_type": "BC7RgbaUnorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "f336ce0ba6b792fdb2bd20b9f6fd6bfe4f84593d0107cda6c4ebe15b668665ea"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "f336ce0ba6b792fdb2bd20b9f6fd6bfe4f84593d0107cda6c4ebe15b668665ea",
+          "alpha_present": true,
+          "orig_color_type": "DX10:BC7_UNorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "f336ce0ba6b792fdb2bd20b9f6fd6bfe4f84593d0107cda6c4ebe15b668665ea"
+        },
+        "ddsfile-texpresso": {
+          "status": "na",
+          "error_class": "UnsupportedByCandidate",
+          "message": "texpresso column covers BC1-BC5 only: DX10:BC7_UNorm"
+        }
+      },
+      "description": "image: reject (The decoder for Dds does not s); glycin: reject (ExpectedError); image-dds, ddsfile-bcdec: accept 8x8 `f336ce0b`; ddsfile-texpresso: na",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 212,
+      "witness_length": 212
+    },
+    {
+      "rule": "pf_bit_count",
+      "count": 1,
+      "patterns": 1,
+      "original_id": 5825,
+      "witness": "witnesses/31-pf_bit_count.dds",
+      "mutation": {
+        "rule": "pf_bit_count",
+        "field": "pf_bit_count",
+        "value": 8,
+        "old": 16,
+        "source": "mutation",
+        "seed": "mask-argb4444-5x3",
+        "family": "uncompressed-bitmask"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The image format `DDS` is not supported",
+          "message": "The image format `DDS` is not supported"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The image format `DDS` is not supported"
+        },
+        "image-dds": {
+          "status": "error",
+          "error_class": "Surface",
+          "message": "Surface: DDS image format DdsFormatInfo { dxgi: None, d3d: None, fourcc: None } is not supported"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "485baeec4b85618a712d55f6752bfe88f58b7b89d470c0e4a8b60a5a8a2978dd",
+          "alpha_present": true,
+          "orig_color_type": "Mask8:f00/f0/f/f000",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "485baeec4b85618a712d55f6752bfe88f58b7b89d470c0e4a8b60a5a8a2978dd"
+        },
+        "ddsfile-texpresso": {
+          "status": "na",
+          "error_class": "UnsupportedByCandidate",
+          "message": "texpresso column covers BC1-BC5 only: Mask8:f00/f0/f/f000"
+        }
+      },
+      "description": "image: reject (The image format `DDS` is not ); glycin: reject (ExpectedError); image-dds: reject (Surface); ddsfile-bcdec: accept 5x3 `485baeec`; ddsfile-texpresso: na",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 158,
+      "witness_length": 158
+    },
+    {
+      "rule": "pf_flags",
+      "count": 1,
+      "patterns": 1,
+      "original_id": 6783,
+      "witness": "witnesses/32-pf_flags.dds",
+      "mutation": {
+        "rule": "pf_flags",
+        "field": "pf_flags",
+        "value": 64,
+        "old": 65,
+        "source": "mutation",
+        "seed": "mips-argb32-8x8",
+        "family": "mipmaps"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The image format `DDS` is not supported",
+          "message": "The image format `DDS` is not supported"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:348:52: The image format `DDS` is not supported"
+        },
+        "image-dds": {
+          "status": "error",
+          "error_class": "Surface",
+          "message": "Surface: DDS image format DdsFormatInfo { dxgi: None, d3d: Some(X8R8G8B8), fourcc: None } is not supported"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "c8c9e3d582655e9b49d4e9d7c4ffe40ff4a96d87c2464da2e57a3934b96a7440",
+          "alpha_present": false,
+          "orig_color_type": "Mask32:ff0000/ff00/ff/0",
+          "mips": 4,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "alt_sha256": "c8c9e3d582655e9b49d4e9d7c4ffe40ff4a96d87c2464da2e57a3934b96a7440"
+        },
+        "ddsfile-texpresso": {
+          "status": "na",
+          "error_class": "UnsupportedByCandidate",
+          "message": "texpresso column covers BC1-BC5 only: Mask32:ff0000/ff00/ff/0"
+        }
+      },
+      "description": "image: reject (The image format `DDS` is not ); glycin: reject (ExpectedError); image-dds: reject (Surface); ddsfile-bcdec: accept 8x8 `c8c9e3d5`; ddsfile-texpresso: na",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 468,
+      "witness_length": 468
+    },
+    {
+      "rule": "byte-flip-payload",
+      "count": 1,
+      "patterns": 1,
+      "original_id": 7474,
+      "witness": "witnesses/33-byte-flip-payload.dds",
+      "mutation": {
+        "rule": "byte-flip-payload",
+        "field": "offset",
+        "value": 129,
+        "source": "mutation",
+        "seed": "zeros-dxt1",
+        "family": "legacy-bcn"
+      },
+      "classification": "accept-different-pixels",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "67450faff6debd8c121d41538cd493065112217b1d73c2c27b262550ff58cecb",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "67450faff6debd8c121d41538cd493065112217b1d73c2c27b262550ff58cecb"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "67450faff6debd8c121d41538cd493065112217b1d73c2c27b262550ff58cecb",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "67450faff6debd8c121d41538cd493065112217b1d73c2c27b262550ff58cecb"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "5a1c3d22026d4a700d4a20c7a4689bc19fd200746caffd27b3f80a6f148c95b5",
+          "alpha_present": false,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "67450faff6debd8c121d41538cd493065112217b1d73c2c27b262550ff58cecb"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "5a1c3d22026d4a700d4a20c7a4689bc19fd200746caffd27b3f80a6f148c95b5",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "67450faff6debd8c121d41538cd493065112217b1d73c2c27b262550ff58cecb"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "5a1c3d22026d4a700d4a20c7a4689bc19fd200746caffd27b3f80a6f148c95b5",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "67450faff6debd8c121d41538cd493065112217b1d73c2c27b262550ff58cecb"
+        }
+      },
+      "description": "image, glycin: accept 8x8 `67450faf`; image-dds, ddsfile-bcdec, ddsfile-texpresso: accept 8x8 `5a1c3d22`",
+      "pixel_difference": "rgb-only(max 1)",
+      "min_checks": 24,
+      "original_length": 160,
+      "witness_length": 160
+    }
+  ],
+  "pixel_rows": [
+    {
+      "rule": "seed:legacy-bcn",
+      "count": 7,
+      "id": 0,
+      "witness": "witnesses/pixel-01.dds",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "8e0e05cd1c6c6f6241097ab81be69cb4b0b2b4b7a2631674845ff0658a2ec1f1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "8e0e05cd1c6c6f6241097ab81be69cb4b0b2b4b7a2631674845ff0658a2ec1f1"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "8e0e05cd1c6c6f6241097ab81be69cb4b0b2b4b7a2631674845ff0658a2ec1f1",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "8e0e05cd1c6c6f6241097ab81be69cb4b0b2b4b7a2631674845ff0658a2ec1f1"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "550d132134a08d9687285f97f6d29c500cfa1cc4524db93b68174362755afdc4",
+          "alpha_present": false,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "8e0e05cd1c6c6f6241097ab81be69cb4b0b2b4b7a2631674845ff0658a2ec1f1"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "550d132134a08d9687285f97f6d29c500cfa1cc4524db93b68174362755afdc4",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "8e0e05cd1c6c6f6241097ab81be69cb4b0b2b4b7a2631674845ff0658a2ec1f1"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "93515b139f6c56f8e0b8d348d89d24da9b4fb6b876962d62b1ccba0f38d5a4e2",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "8e0e05cd1c6c6f6241097ab81be69cb4b0b2b4b7a2631674845ff0658a2ec1f1"
+        }
+      },
+      "description": "image, glycin: accept 8x8 `8e0e05cd`; image-dds, ddsfile-bcdec: accept 8x8 `550d1321`; ddsfile-texpresso: accept 8x8 `93515b13`",
+      "difference": "rgb-only(max 1)"
+    },
+    {
+      "rule": "seed:cube",
+      "count": 4,
+      "id": 65,
+      "witness": "witnesses/pixel-02.dds",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "0c05bb9dd0303964ae4443a5d4909568049b73dff33168af98eebafd21a28a83",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "0c05bb9dd0303964ae4443a5d4909568049b73dff33168af98eebafd21a28a83"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "0c05bb9dd0303964ae4443a5d4909568049b73dff33168af98eebafd21a28a83",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "0c05bb9dd0303964ae4443a5d4909568049b73dff33168af98eebafd21a28a83"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "19f7a6445b57b38f16b98795e036ae11401012020846958b7d975ffa8dc70b94",
+          "alpha_present": false,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 1,
+          "layers": 6,
+          "cube": true,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "0c05bb9dd0303964ae4443a5d4909568049b73dff33168af98eebafd21a28a83"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "19f7a6445b57b38f16b98795e036ae11401012020846958b7d975ffa8dc70b94",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 6,
+          "cube": true,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "0c05bb9dd0303964ae4443a5d4909568049b73dff33168af98eebafd21a28a83"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "4bf3cbc6b1ae5f62d5107ff9c0c4ae8aaeb8dee8d9686489dc5149ae38523d51",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 6,
+          "cube": true,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "0c05bb9dd0303964ae4443a5d4909568049b73dff33168af98eebafd21a28a83"
+        }
+      },
+      "description": "image, glycin: accept 8x8 `0c05bb9d`; image-dds, ddsfile-bcdec: accept 8x8 `19f7a644`; ddsfile-texpresso: accept 8x8 `4bf3cbc6`",
+      "difference": "rgb-only(max 1)"
+    },
+    {
+      "rule": "seed:dx10",
+      "count": 3,
+      "id": 44,
+      "witness": "witnesses/pixel-03.dds",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "1db92e618b3e0cfc856dee6668ffe5e906f7bd19f651465c0af359720eecf592",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "1db92e618b3e0cfc856dee6668ffe5e906f7bd19f651465c0af359720eecf592"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "1db92e618b3e0cfc856dee6668ffe5e906f7bd19f651465c0af359720eecf592",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "1db92e618b3e0cfc856dee6668ffe5e906f7bd19f651465c0af359720eecf592"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "cfc7705956f7accad1ebdb6bdb59fa65b49cac4b0c98fec3bde34582222303df",
+          "alpha_present": false,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "1db92e618b3e0cfc856dee6668ffe5e906f7bd19f651465c0af359720eecf592"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "cfc7705956f7accad1ebdb6bdb59fa65b49cac4b0c98fec3bde34582222303df",
+          "alpha_present": false,
+          "orig_color_type": "DX10:BC1_UNorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "1db92e618b3e0cfc856dee6668ffe5e906f7bd19f651465c0af359720eecf592"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2f3fc90ef9780c9856233c3c37f265e7714f9ba980183a135fed072faecdc387",
+          "alpha_present": false,
+          "orig_color_type": "DX10:BC1_UNorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "1db92e618b3e0cfc856dee6668ffe5e906f7bd19f651465c0af359720eecf592"
+        }
+      },
+      "description": "image, glycin: accept 8x8 `1db92e61`; image-dds, ddsfile-bcdec: accept 8x8 `cfc77059`; ddsfile-texpresso: accept 8x8 `2f3fc90e`",
+      "difference": "rgb-only(max 1)"
+    },
+    {
+      "rule": "seed:legacy-random-blocks",
+      "count": 3,
+      "id": 74,
+      "witness": "witnesses/pixel-04.dds",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2518d062959cab39c82f8140c80c90bfef651f82c48e58e8c2c439ad01dc8f9e",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "2518d062959cab39c82f8140c80c90bfef651f82c48e58e8c2c439ad01dc8f9e"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2518d062959cab39c82f8140c80c90bfef651f82c48e58e8c2c439ad01dc8f9e",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "2518d062959cab39c82f8140c80c90bfef651f82c48e58e8c2c439ad01dc8f9e"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "5fb5e3370ae9c8cd89614926282afece47bb772267fd3a6c3a6fd8eb0c7370ac",
+          "alpha_present": true,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 255,
+          "alt_sha256": "5fb5e3370ae9c8cd89614926282afece47bb772267fd3a6c3a6fd8eb0c7370ac"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "5fb5e3370ae9c8cd89614926282afece47bb772267fd3a6c3a6fd8eb0c7370ac",
+          "alpha_present": true,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 255,
+          "alt_sha256": "5fb5e3370ae9c8cd89614926282afece47bb772267fd3a6c3a6fd8eb0c7370ac"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "158def82bfdbb3b321d6ff7ca2fc3d07a7bfe9d3a77c80c45a1fdd24a091804c",
+          "alpha_present": true,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 255,
+          "alt_sha256": "5fb5e3370ae9c8cd89614926282afece47bb772267fd3a6c3a6fd8eb0c7370ac"
+        }
+      },
+      "description": "image, glycin: accept 8x8 `2518d062`; image-dds, ddsfile-bcdec: accept 8x8 `5fb5e337`; ddsfile-texpresso: accept 8x8 `158def82`",
+      "difference": "rgb(max 1)+alpha(max 255)"
+    },
+    {
+      "rule": "seed:mipmaps",
+      "count": 2,
+      "id": 61,
+      "witness": "witnesses/pixel-05.dds",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "e7ff2122aab727b456d93afc7c1228cbfbb0f7d4e2a7a70714a6737710159585",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "e7ff2122aab727b456d93afc7c1228cbfbb0f7d4e2a7a70714a6737710159585"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "e7ff2122aab727b456d93afc7c1228cbfbb0f7d4e2a7a70714a6737710159585",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "e7ff2122aab727b456d93afc7c1228cbfbb0f7d4e2a7a70714a6737710159585"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "936d318a23b8dec7b16f03ee967868be1d4220d17358232ff63e4111b9c6678f",
+          "alpha_present": false,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 5,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "e7ff2122aab727b456d93afc7c1228cbfbb0f7d4e2a7a70714a6737710159585"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "936d318a23b8dec7b16f03ee967868be1d4220d17358232ff63e4111b9c6678f",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 5,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "e7ff2122aab727b456d93afc7c1228cbfbb0f7d4e2a7a70714a6737710159585"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "e5af22ea5b5230ac53ffa437cd7767867abe13dd9f40671b535895e2130ebe62",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 5,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "e7ff2122aab727b456d93afc7c1228cbfbb0f7d4e2a7a70714a6737710159585"
+        }
+      },
+      "description": "image, glycin: accept 16x16 `e7ff2122`; image-dds, ddsfile-bcdec: accept 16x16 `936d318a`; ddsfile-texpresso: accept 16x16 `e5af22ea`",
+      "difference": "rgb-only(max 1)"
+    },
+    {
+      "rule": "seed:volume",
+      "count": 1,
+      "id": 71,
+      "witness": "witnesses/pixel-06.dds",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "7504f71f1970570deaecd1e6921d01a6ced3c3278c735d517c64c21675f20d7f",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "7504f71f1970570deaecd1e6921d01a6ced3c3278c735d517c64c21675f20d7f"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "7504f71f1970570deaecd1e6921d01a6ced3c3278c735d517c64c21675f20d7f",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "7504f71f1970570deaecd1e6921d01a6ced3c3278c735d517c64c21675f20d7f"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "3e5994c0b4ab5210adc3efdf2facee35c30c7e73b6101dc2c676cc6ab3b391a0",
+          "alpha_present": false,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 2,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "7504f71f1970570deaecd1e6921d01a6ced3c3278c735d517c64c21675f20d7f"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "3e5994c0b4ab5210adc3efdf2facee35c30c7e73b6101dc2c676cc6ab3b391a0",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 2,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "7504f71f1970570deaecd1e6921d01a6ced3c3278c735d517c64c21675f20d7f"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "30a9709769dae617e2580e462c9f55b2e05d8b15f450851f88ae016ac0fa6f5d",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 2,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "7504f71f1970570deaecd1e6921d01a6ced3c3278c735d517c64c21675f20d7f"
+        }
+      },
+      "description": "image, glycin: accept 8x8 `7504f71f`; image-dds, ddsfile-bcdec: accept 8x8 `3e5994c0`; ddsfile-texpresso: accept 8x8 `30a97097`",
+      "difference": "rgb-only(max 1)"
+    },
+    {
+      "rule": "seed:array",
+      "count": 1,
+      "id": 72,
+      "witness": "witnesses/pixel-07.dds",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "a7f7546a117067dee4ab5072e57011aad7c925101f1e583b6728d85318ba50be",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "a7f7546a117067dee4ab5072e57011aad7c925101f1e583b6728d85318ba50be"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "a7f7546a117067dee4ab5072e57011aad7c925101f1e583b6728d85318ba50be",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "a7f7546a117067dee4ab5072e57011aad7c925101f1e583b6728d85318ba50be"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "427dededc5bb2610a90c0444574dfcf73587bcc60c480c46961d4784e5d2b6f0",
+          "alpha_present": false,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 1,
+          "layers": 3,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "a7f7546a117067dee4ab5072e57011aad7c925101f1e583b6728d85318ba50be"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "427dededc5bb2610a90c0444574dfcf73587bcc60c480c46961d4784e5d2b6f0",
+          "alpha_present": false,
+          "orig_color_type": "DX10:BC1_UNorm",
+          "mips": 1,
+          "layers": 3,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "a7f7546a117067dee4ab5072e57011aad7c925101f1e583b6728d85318ba50be"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "0219bbe7826b654838042c9a6fde7c1b3af4b487416a5bee6f61e97297742ae3",
+          "alpha_present": false,
+          "orig_color_type": "DX10:BC1_UNorm",
+          "mips": 1,
+          "layers": 3,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "a7f7546a117067dee4ab5072e57011aad7c925101f1e583b6728d85318ba50be"
+        }
+      },
+      "description": "image, glycin: accept 8x8 `a7f7546a`; image-dds, ddsfile-bcdec: accept 8x8 `427deded`; ddsfile-texpresso: accept 8x8 `0219bbe7`",
+      "difference": "rgb-only(max 1)"
+    },
+    {
+      "rule": "byte-flip-payload",
+      "count": 1,
+      "id": 7474,
+      "witness": "witnesses/pixel-08.dds",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "67450faff6debd8c121d41538cd493065112217b1d73c2c27b262550ff58cecb",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "67450faff6debd8c121d41538cd493065112217b1d73c2c27b262550ff58cecb"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "67450faff6debd8c121d41538cd493065112217b1d73c2c27b262550ff58cecb",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8",
+          "policy": "first-mip-only",
+          "max_abs_diff_vs_ref": 0,
+          "alt_sha256": "67450faff6debd8c121d41538cd493065112217b1d73c2c27b262550ff58cecb"
+        },
+        "image-dds": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "5a1c3d22026d4a700d4a20c7a4689bc19fd200746caffd27b3f80a6f148c95b5",
+          "alpha_present": false,
+          "orig_color_type": "BC1RgbaUnorm",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "67450faff6debd8c121d41538cd493065112217b1d73c2c27b262550ff58cecb"
+        },
+        "ddsfile-bcdec": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "5a1c3d22026d4a700d4a20c7a4689bc19fd200746caffd27b3f80a6f148c95b5",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "67450faff6debd8c121d41538cd493065112217b1d73c2c27b262550ff58cecb"
+        },
+        "ddsfile-texpresso": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "5a1c3d22026d4a700d4a20c7a4689bc19fd200746caffd27b3f80a6f148c95b5",
+          "alpha_present": false,
+          "orig_color_type": "FourCC:DXT1",
+          "mips": 1,
+          "layers": 1,
+          "cube": false,
+          "depth": 1,
+          "max_abs_diff_vs_ref": 1,
+          "alt_sha256": "67450faff6debd8c121d41538cd493065112217b1d73c2c27b262550ff58cecb"
+        }
+      },
+      "description": "image, glycin: accept 8x8 `67450faf`; image-dds, ddsfile-bcdec, ddsfile-texpresso: accept 8x8 `5a1c3d22`",
+      "difference": "rgb-only(max 1)"
+    }
+  ],
+  "public_subset": true,
+  "excluded_crash_or_timeout_inputs": 14
+}

@@ -1,0 +1,8563 @@
+{
+ "format": "tiff",
+ "seed": 731,
+ "inputs": 10000,
+ "base_inputs": 89,
+ "seed_variants": 89,
+ "generation_seconds": 0.4,
+ "elapsed_seconds": 325.3,
+ "jobs": 5,
+ "timeout_seconds": 5.0,
+ "tolerance": {
+  "max_abs": 4,
+  "mean_abs": 1.0,
+  "near_max": 48,
+  "near_mean": 4.0
+ },
+ "decoders": [
+  "glycin",
+  "image",
+  "tiff-crate",
+  "libtiff",
+  "gdk-file",
+  "gdk-chunk"
+ ],
+ "families": {
+  "tiff crate 0.11.3": [
+   "glycin",
+   "image",
+   "tiff-crate"
+  ],
+  "libtiff 4.7.0": [
+   "libtiff",
+   "gdk-file",
+   "gdk-chunk"
+  ]
+ },
+ "unavailable": {
+  "second independent TIFF reader (Pillow, ImageMagick, tifffile)": "none installed; PyPI is outside the allowed network",
+  "libtiff tools (tiffinfo/tiffcp)": "not installed; the libtiff C API runner covers libtiff"
+ },
+ "counts": {
+  "all-accept-identical-pixels": 831,
+  "all-accept-within-tolerance": 249,
+  "all-accept-orientation-differs": 238,
+  "accept-different-pixels": 277,
+  "accept-vs-reject": 2308,
+  "all-reject": 6064,
+  "crash-or-timeout": 33
+ },
+ "exact_counts": {
+  "all-accept-identical-pixels": 831,
+  "accept-different-pixels": 764,
+  "accept-vs-reject": 2308,
+  "crash-or-timeout": 33,
+  "all-reject": 6064
+ },
+ "changed_mutations": 7118,
+ "per_decoder_status": {
+  "glycin": {
+   "ok": 2003,
+   "error": 7964,
+   "crash": 33
+  },
+  "image": {
+   "ok": 2129,
+   "error": 7839,
+   "crash": 32
+  },
+  "tiff-crate": {
+   "ok": 2943,
+   "error": 7024,
+   "crash": 33
+  },
+  "libtiff": {
+   "ok": 3119,
+   "error": 6881
+  },
+  "gdk-file": {
+   "ok": 3035,
+   "error": 6965
+  },
+  "gdk-chunk": {
+   "ok": 3265,
+   "error": 6735
+  }
+ },
+ "anomaly_count": 33,
+ "anomaly_by_decoder": {
+  "glycin": 33,
+  "image": 32,
+  "tiff-crate": 33
+ },
+ "rows": [
+  {
+   "rule": "field-Photometric",
+   "count": 151,
+   "patterns": 14,
+   "id": 1605,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "field-Photometric",
+    "field": "Photometric",
+    "value": 0,
+    "ifd": 0,
+    "old": 2,
+    "source": "mutation",
+    "seed": "one-pixel"
+   },
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: unsupported error: unknown photometric interpretation",
+     "message": "<path>/tiff.rs:52:10: unsupported error: unknown photometric interpretation"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "The encoder or decoder for Tiff does not support the color type `Unknown",
+     "message": "The encoder or decoder for Tiff does not support the color type `Unknown(24)`"
+    },
+    "tiff-crate": {
+     "status": "error",
+     "error_class": "unsupported error",
+     "message": "unsupported error: unknown photometric interpretation"
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 1,
+     "height": 1,
+     "rgba_sha256": "11f32df4fbfdf2dc",
+     "alpha_present": false,
+     "orig_color_type": "photometric0/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 1,
+     "first_warning": "Sum of Photometric type-related color channels and ExtraSamples doesn't match SamplesPerPixel. Defining non-color channels as ExtraSamples.",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 1,
+     "height": 1,
+     "rgba_sha256": "11f32df4fbfdf2dc",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 1,
+     "oriented_sha256": "11f32df4fbfdf2dc",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 1,
+     "height": 1,
+     "rgba_sha256": "11f32df4fbfdf2dc",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 1,
+     "oriented_sha256": "11f32df4fbfdf2dc",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "groups": {
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 147,
+    "accept-different-pixels": 4
+   },
+   "witness": "witnesses/01-field-Photometric.tif",
+   "original_length": 196,
+   "witness_length": 196,
+   "min_checks": 24
+  },
+  {
+   "rule": "ifd-next-offset",
+   "count": 138,
+   "patterns": 4,
+   "id": 626,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "ifd-next-offset",
+    "field": "next",
+    "value": "self",
+    "ifd": 0,
+    "source": "mutation",
+    "seed": "one-pixel"
+   },
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: format error: file contained a cycle in the list of IFDs",
+     "message": "<path>/tiff.rs:17:70: format error: file contained a cycle in the list of IFDs"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "Format error decoding Tiff",
+     "message": "Format error decoding Tiff: format error: file contained a cycle in the list of IFDs"
+    },
+    "tiff-crate": {
+     "status": "error",
+     "error_class": "format error",
+     "message": "format error: file contained a cycle in the list of IFDs"
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 1,
+     "height": 1,
+     "rgba_sha256": "dd31c81732764e6d",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 2,
+     "first_warning": "TIFF directory 0 has IFD looping to directory 0 at offset 0x22 (34)",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 1,
+     "height": 1,
+     "rgba_sha256": "dd31c81732764e6d",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 1,
+     "oriented_sha256": "dd31c81732764e6d",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 1,
+     "height": 1,
+     "rgba_sha256": "dd31c81732764e6d",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 1,
+     "oriented_sha256": "dd31c81732764e6d",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "groups": {
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 138
+   },
+   "witness": "witnesses/02-ifd-next-offset.tif",
+   "original_length": 196,
+   "witness_length": 196,
+   "min_checks": 24
+  },
+  {
+   "rule": "field-ImageLength",
+   "count": 125,
+   "patterns": 5,
+   "id": 5254,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "field-ImageLength",
+    "field": "ImageLength",
+    "value": 2,
+    "ifd": 0,
+    "old": 1,
+    "source": "mutation",
+    "seed": "one-pixel"
+   },
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: format error: inconsistent sizes encountered",
+     "message": "<path>/tiff.rs:17:70: format error: inconsistent sizes encountered"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "Format error decoding Tiff",
+     "message": "Format error decoding Tiff: format error: inconsistent sizes encountered"
+    },
+    "tiff-crate": {
+     "status": "error",
+     "error_class": "format error",
+     "message": "format error: inconsistent sizes encountered"
+    },
+    "libtiff": {
+     "status": "error",
+     "error_class": "TIFFReadRGBAImage",
+     "message": "Invalid strip byte count 0, strip 1"
+    },
+    "gdk-file": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load image \u00e2\u0080\u009c<path>/05254.tif\u00e2\u0080\u009d: Failed to load RGB data from TIFF file"
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 1,
+     "height": 2,
+     "rgba_sha256": "7e169baef889a2ea",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 2,
+     "oriented_sha256": "7e169baef889a2ea",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "groups": {
+    "gdk-chunk": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 125
+   },
+   "witness": "witnesses/03-field-ImageLength.tif",
+   "original_length": 196,
+   "witness_length": 196,
+   "min_checks": 24
+  },
+  {
+   "rule": "field-RowsPerStrip",
+   "count": 97,
+   "patterns": 2,
+   "id": 3843,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "field-RowsPerStrip",
+    "field": "RowsPerStrip",
+    "value": 1,
+    "ifd": 0,
+    "old": 7,
+    "source": "mutation",
+    "seed": "gray1-minisblack"
+   },
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: format error: inconsistent sizes encountered",
+     "message": "<path>/tiff.rs:17:70: format error: inconsistent sizes encountered"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "Format error decoding Tiff",
+     "message": "Format error decoding Tiff: format error: inconsistent sizes encountered"
+    },
+    "tiff-crate": {
+     "status": "error",
+     "error_class": "format error",
+     "message": "format error: inconsistent sizes encountered"
+    },
+    "libtiff": {
+     "status": "error",
+     "error_class": "TIFFReadRGBAImage",
+     "message": "Invalid strip byte count 0, strip 1"
+    },
+    "gdk-file": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load image \u00e2\u0080\u009c<path>/03843.tif\u00e2\u0080\u009d: Failed to load RGB data from TIFF file"
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "ebdcc09da57ab6a4",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "ebdcc09da57ab6a4",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "groups": {
+    "gdk-chunk": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 97
+   },
+   "witness": "witnesses/04-field-RowsPerStrip.tif",
+   "original_length": 200,
+   "witness_length": 200,
+   "min_checks": 24
+  },
+  {
+   "rule": "tag-removed",
+   "count": 93,
+   "patterns": 11,
+   "id": 8725,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "tag-removed",
+    "field": "Photometric",
+    "value": 65000,
+    "ifd": 0,
+    "old": 262,
+    "source": "mutation",
+    "seed": "one-pixel"
+   },
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: unsupported error: unknown photometric interpretation",
+     "message": "<path>/tiff.rs:17:70: unsupported error: unknown photometric interpretation"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "The decoder for Tiff does not support the format features unknown photometric in",
+     "message": "The decoder for Tiff does not support the format features unknown photometric interpretation"
+    },
+    "tiff-crate": {
+     "status": "error",
+     "error_class": "unsupported error",
+     "message": "unsupported error: unknown photometric interpretation"
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 1,
+     "height": 1,
+     "rgba_sha256": "65561831ae12f6ec",
+     "alpha_present": false,
+     "orig_color_type": "photometric0/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 3,
+     "first_warning": "Invalid TIFF directory; tags are not sorted in ascending order",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 1,
+     "height": 1,
+     "rgba_sha256": "65561831ae12f6ec",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 1,
+     "oriented_sha256": "65561831ae12f6ec",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 1,
+     "height": 1,
+     "rgba_sha256": "65561831ae12f6ec",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 1,
+     "oriented_sha256": "65561831ae12f6ec",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "groups": {
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 89,
+    "accept-different-pixels": 4
+   },
+   "witness": "witnesses/05-tag-removed.tif",
+   "original_length": 196,
+   "witness_length": 196,
+   "min_checks": 24
+  },
+  {
+   "rule": "field-BitsPerSample",
+   "count": 72,
+   "patterns": 8,
+   "id": 5356,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "field-BitsPerSample",
+    "field": "BitsPerSample",
+    "value": 3,
+    "ifd": 0,
+    "old": 1,
+    "source": "mutation",
+    "seed": "gray1-minisblack"
+   },
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: ColorType Gray",
+     "message": "<path>/tiff.rs:89:24: ColorType Gray(3) with SampleFormat Uint and ExtraSamples Unspecif"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "The encoder or decoder for Tiff does not support the color type `Unknown",
+     "message": "The encoder or decoder for Tiff does not support the color type `Unknown(3)`"
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "37831d9989ada941",
+     "alpha_present": false,
+     "orig_color_type": "Gray(3)/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 3,
+     "components": 1
+    },
+    "libtiff": {
+     "status": "error",
+     "error_class": "TIFFRGBAImageOK",
+     "message": "Sorry, can not handle images with 3-bit samples"
+    },
+    "gdk-file": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load image \u00e2\u0080\u009c<path>/05356.tif\u00e2\u0080\u009d: Failed to load RGB data from TIFF file"
+    },
+    "gdk-chunk": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load RGB data from TIFF file"
+    }
+   },
+   "groups": {
+    "tiff-crate": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 72
+   },
+   "witness": "witnesses/06-field-BitsPerSample.tif",
+   "original_length": 200,
+   "witness_length": 200,
+   "min_checks": 24
+  },
+  {
+   "rule": "seed",
+   "count": 53,
+   "patterns": 20,
+   "id": 27,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "source": "synthetic",
+    "name": "palette1",
+    "rule": "seed",
+    "generator": "tiffgen",
+    "pages": [
+     {
+      "w": 13,
+      "h": 7,
+      "photometric": 3,
+      "bps": 1,
+      "spp": 1,
+      "fmt": "uint",
+      "compression": 1,
+      "predictor": 1,
+      "planar": 1,
+      "seed": 21
+     }
+    ],
+    "byte_order": "II",
+    "bigtiff": false
+   },
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: unsupported error: Photometric interpretation RGBPalette wit",
+     "message": "<path>/tiff.rs:37:42: unsupported error: Photometric interpretation RGBPalette with bits"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "The decoder for Tiff does not support the format features Photometric interpreta",
+     "message": "The decoder for Tiff does not support the format features Photometric interpretation RGBPalette with bits per sample [1] is unsupported"
+    },
+    "tiff-crate": {
+     "status": "error",
+     "error_class": "unsupported error",
+     "message": "unsupported error: Photometric interpretation RGBPalette with bits per sample [1] is unsupported"
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "3cbe073a04631a13",
+     "alpha_present": false,
+     "orig_color_type": "photometric3/1bit/1spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 1,
+     "components": 1
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "3cbe073a04631a13",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "3cbe073a04631a13",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "3cbe073a04631a13",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "3cbe073a04631a13",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "groups": {
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 38,
+    "accept-different-pixels": 8,
+    "all-accept-orientation-differs": 7
+   },
+   "witness": "witnesses/07-seed.tif",
+   "original_length": 224,
+   "witness_length": 224,
+   "min_checks": 24
+  },
+  {
+   "rule": "strip-bytecount",
+   "count": 53,
+   "patterns": 4,
+   "id": 4147,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "strip-bytecount",
+    "field": "StripByteCounts[0]",
+    "value": 1,
+    "ifd": 0,
+    "old": 242,
+    "source": "mutation",
+    "seed": "rgb8-deflate-pred2"
+   },
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "aff831af8c2c6649",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "aff831af8c2c6649",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "aff831af8c2c6649",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "aff831af8c2c6649",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "error",
+     "error_class": "TIFFReadRGBAImage",
+     "message": "Decoding error at scanline 0"
+    },
+    "gdk-file": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load image \u00e2\u0080\u009c<path>/04147.tif\u00e2\u0080\u009d: Failed to load RGB data from TIFF file"
+    },
+    "gdk-chunk": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load RGB data from TIFF file"
+    }
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 53
+   },
+   "witness": "witnesses/08-strip-bytecount.tif",
+   "original_length": 446,
+   "witness_length": 446,
+   "min_checks": 24
+  },
+  {
+   "rule": "field-ImageWidth",
+   "count": 46,
+   "patterns": 9,
+   "id": 3253,
+   "classification": "accept-different-pixels",
+   "mutation": {
+    "rule": "field-ImageWidth",
+    "field": "ImageWidth",
+    "value": 1,
+    "ifd": 0,
+    "old": 13,
+    "source": "mutation",
+    "seed": "rgb8-deflate-MM"
+   },
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "ca49255dec0f1da2",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 7,
+     "oriented_sha256": "ca49255dec0f1da2",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "ca49255dec0f1da2",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "ca49255dec0f1da2",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "3a782872e28f7090",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp8/planar1/strips/MM",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "3a782872e28f7090",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 7,
+     "oriented_sha256": "3a782872e28f7090",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "3a782872e28f7090",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 7,
+     "oriented_sha256": "3a782872e28f7090",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     248,
+     36.857,
+     "large"
+    ]
+   ],
+   "classes": {
+    "accept-vs-reject": 32,
+    "accept-different-pixels": 14
+   },
+   "witness": "witnesses/09-field-ImageWidth.tif",
+   "original_length": 522,
+   "witness_length": 522,
+   "min_checks": 24
+  },
+  {
+   "rule": "byte-flip-ifd",
+   "count": 44,
+   "patterns": 8,
+   "id": 4275,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "byte-flip-ifd",
+    "field": "offset",
+    "value": 132,
+    "ifd": 0,
+    "source": "mutation",
+    "seed": "one-pixel"
+   },
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: format error: file should contain either ",
+     "message": "<path>/tiff.rs:17:70: format error: file should contain either (StripByteCounts and Stri"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "Format error decoding Tiff",
+     "message": "Format error decoding Tiff: format error: file should contain either (StripByteCounts and StripOffsets) or (TileByteCounts and TileOffsets), other combination w"
+    },
+    "tiff-crate": {
+     "status": "error",
+     "error_class": "format error",
+     "message": "format error: file should contain either (StripByteCounts and StripOffsets) or (TileByteCounts and TileOffsets), other combination was found"
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 1,
+     "height": 1,
+     "rgba_sha256": "dd31c81732764e6d",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 2,
+     "first_warning": "Invalid TIFF directory; tags are not sorted in ascending order",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 1,
+     "height": 1,
+     "rgba_sha256": "dd31c81732764e6d",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 1,
+     "oriented_sha256": "dd31c81732764e6d",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 1,
+     "height": 1,
+     "rgba_sha256": "dd31c81732764e6d",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 1,
+     "oriented_sha256": "dd31c81732764e6d",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "groups": {
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 43,
+    "all-accept-orientation-differs": 1
+   },
+   "witness": "witnesses/10-byte-flip-ifd.tif",
+   "original_length": 196,
+   "witness_length": 196,
+   "min_checks": 24
+  },
+  {
+   "rule": "field-ExtraSamples",
+   "count": 36,
+   "patterns": 10,
+   "id": 6336,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "field-ExtraSamples",
+    "field": "ExtraSamples",
+    "value": 3,
+    "ifd": 0,
+    "old": 0,
+    "source": "mutation",
+    "seed": "rgba8-unspecified"
+   },
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "71eb51c7c6cfe21f",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "71eb51c7c6cfe21f",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "71eb51c7c6cfe21f",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "71eb51c7c6cfe21f",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "error",
+     "error_class": "TIFFOpen",
+     "message": "<path>/06336.tif: Bad value 1 for \"ExtraSamples\" tag"
+    },
+    "gdk-file": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-0",
+     "message": "Failed to load image \u00e2\u0080\u009c<path>/06336.tif\u00e2\u0080\u009d: Failed to open TIFF image"
+    },
+    "gdk-chunk": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load TIFF image"
+    }
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 26,
+    "accept-different-pixels": 10
+   },
+   "witness": "witnesses/11-field-ExtraSamples.tif",
+   "original_length": 570,
+   "witness_length": 570,
+   "min_checks": 24
+  },
+  {
+   "rule": "field-PlanarConfig",
+   "count": 28,
+   "patterns": 3,
+   "id": 4097,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "field-PlanarConfig",
+    "field": "PlanarConfig",
+    "value": 2,
+    "ifd": 0,
+    "old": 1,
+    "source": "mutation",
+    "seed": "one-pixel"
+   },
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: format error: inconsistent sizes encountered",
+     "message": "<path>/tiff.rs:17:70: format error: inconsistent sizes encountered"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "Format error decoding Tiff",
+     "message": "Format error decoding Tiff: format error: inconsistent sizes encountered"
+    },
+    "tiff-crate": {
+     "status": "error",
+     "error_class": "format error",
+     "message": "format error: inconsistent sizes encountered"
+    },
+    "libtiff": {
+     "status": "error",
+     "error_class": "TIFFReadRGBAImage",
+     "message": "Invalid strip byte count 0, strip 1"
+    },
+    "gdk-file": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load image \u00e2\u0080\u009c<path>/04097.tif\u00e2\u0080\u009d: Failed to load RGB data from TIFF file"
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 1,
+     "height": 1,
+     "rgba_sha256": "2939cf27609d8a9b",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 1,
+     "oriented_sha256": "2939cf27609d8a9b",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "groups": {
+    "gdk-chunk": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 28
+   },
+   "witness": "witnesses/12-field-PlanarConfig.tif",
+   "original_length": 196,
+   "witness_length": 196,
+   "min_checks": 24
+  },
+  {
+   "rule": "byte-flip",
+   "count": 23,
+   "patterns": 7,
+   "id": 8102,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "byte-flip",
+    "field": "offset",
+    "value": 138,
+    "ifd": 0,
+    "source": "mutation",
+    "seed": "one-pixel"
+   },
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: decoder limits exceeded",
+     "message": "<path>/tiff.rs:17:70: decoder limits exceeded"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "Memory limit exceeded",
+     "message": "Memory limit exceeded"
+    },
+    "tiff-crate": {
+     "status": "error",
+     "error_class": "decoder limits exceeded",
+     "message": "decoder limits exceeded"
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 1,
+     "height": 1,
+     "rgba_sha256": "dd31c81732764e6d",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 1,
+     "first_warning": "Bogus \"StripByteCounts\" field, ignoring and calculating from imagelength",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 1,
+     "height": 1,
+     "rgba_sha256": "dd31c81732764e6d",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 1,
+     "oriented_sha256": "dd31c81732764e6d",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 1,
+     "height": 1,
+     "rgba_sha256": "dd31c81732764e6d",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 1,
+     "oriented_sha256": "dd31c81732764e6d",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "groups": {
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 23
+   },
+   "witness": "witnesses/13-byte-flip.tif",
+   "original_length": 196,
+   "witness_length": 196,
+   "min_checks": 24
+  },
+  {
+   "rule": "field-SamplesPerPixel",
+   "count": 21,
+   "patterns": 3,
+   "id": 3754,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "field-SamplesPerPixel",
+    "field": "SamplesPerPixel",
+    "value": 2,
+    "ifd": 0,
+    "old": 1,
+    "source": "mutation",
+    "seed": "gray1-minisblack"
+   },
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: ColorType Multiband { bit_depth: 1",
+     "message": "<path>/tiff.rs:89:24: ColorType Multiband { bit_depth: 1, num_samples: 2 } with SampleFo"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "The encoder or decoder for Tiff does not support the color type `Unknown",
+     "message": "The encoder or decoder for Tiff does not support the color type `Unknown(2)`"
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "f1b6a7237d57835b",
+     "alpha_present": true,
+     "orig_color_type": "Multiband { bit_depth: 1, num_samples: 2 }/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 1,
+     "components": 2
+    },
+    "libtiff": {
+     "status": "error",
+     "error_class": "TIFFRGBAImageOK",
+     "message": "Sorry, can not handle contiguous data with PhotometricInterpretation=1, and Samples/pixel=2 and Bits/Sample=1"
+    },
+    "gdk-file": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load image \u00e2\u0080\u009c<path>/03754.tif\u00e2\u0080\u009d: Failed to load RGB data from TIFF file"
+    },
+    "gdk-chunk": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load RGB data from TIFF file"
+    }
+   },
+   "groups": {
+    "tiff-crate": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 21
+   },
+   "witness": "witnesses/14-field-SamplesPerPixel.tif",
+   "original_length": 200,
+   "witness_length": 200,
+   "min_checks": 24
+  },
+  {
+   "rule": "field-YCbCrSubSampling",
+   "count": 14,
+   "patterns": 2,
+   "id": 2183,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "field-YCbCrSubSampling",
+    "field": "YCbCrSubSampling",
+    "value": 0,
+    "ifd": 0,
+    "old": 2,
+    "source": "mutation",
+    "seed": "jpeg-ycbcr-2x2"
+   },
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: ColorType YCbCr",
+     "message": "<path>/tiff.rs:89:24: ColorType YCbCr(8) with SampleFormat Uint and ExtraSamples Unspeci"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "The encoder or decoder for Tiff does not support the color type `Unknown",
+     "message": "The encoder or decoder for Tiff does not support the color type `Unknown(24)`"
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 32,
+     "height": 16,
+     "rgba_sha256": "006d1d8e1f524053",
+     "alpha_present": false,
+     "orig_color_type": "YCbCr(8)/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "error",
+     "error_class": "TIFFOpen",
+     "message": "Cannot handle zero scanline size"
+    },
+    "gdk-file": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-0",
+     "message": "Failed to load image \u00e2\u0080\u009c<path>/02183.tif\u00e2\u0080\u009d: Failed to open TIFF image"
+    },
+    "gdk-chunk": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load TIFF image"
+    }
+   },
+   "groups": {
+    "tiff-crate": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 14
+   },
+   "witness": "witnesses/15-field-YCbCrSubSampling.tif",
+   "original_length": 1012,
+   "witness_length": 1012,
+   "min_checks": 24
+  },
+  {
+   "rule": "strip-offset",
+   "count": 13,
+   "patterns": 4,
+   "id": 1763,
+   "classification": "accept-different-pixels",
+   "mutation": {
+    "rule": "strip-offset",
+    "field": "StripOffsets[0]",
+    "value": 0,
+    "ifd": 0,
+    "old": 8,
+    "source": "mutation",
+    "seed": "rgba8-unassociated"
+   },
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "11e15633b2d5a4eb",
+     "alpha_present": true,
+     "orig_color_type": "R8g8b8a8",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "11e15633b2d5a4eb",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "11e15633b2d5a4eb",
+     "alpha_present": true,
+     "orig_color_type": "Rgba8",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "11e15633b2d5a4eb",
+     "alpha_present": true,
+     "orig_color_type": "RGBA(8)/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 4
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "d54b9b215177433e",
+     "alpha_present": true,
+     "orig_color_type": "photometric2/8bit/4spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2f810dd6b2d9bc8c",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "2f810dd6b2d9bc8c",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2f810dd6b2d9bc8c",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "2f810dd6b2d9bc8c",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 1,
+    "gdk-file": 2,
+    "gdk-chunk": 2
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     140,
+     1.266,
+     "large"
+    ],
+    [
+     "glycin",
+     "gdk-file",
+     140,
+     34.291,
+     "large"
+    ],
+    [
+     "libtiff",
+     "gdk-file",
+     132,
+     33.393,
+     "large"
+    ]
+   ],
+   "classes": {
+    "accept-different-pixels": 11,
+    "accept-vs-reject": 2
+   },
+   "witness": "witnesses/16-strip-offset.tif",
+   "original_length": 570,
+   "witness_length": 570,
+   "min_checks": 24
+  },
+  {
+   "rule": "field-Compression",
+   "count": 13,
+   "patterns": 6,
+   "id": 3487,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "field-Compression",
+    "field": "Compression",
+    "value": 2,
+    "ifd": 0,
+    "old": 1,
+    "source": "mutation",
+    "seed": "gray1-minisblack"
+   },
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: unsupported error: compression method Huffman is unsupported",
+     "message": "<path>/tiff.rs:52:10: unsupported error: compression method Huffman is unsupported"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "The decoder for Tiff does not support the format features compression method Huf",
+     "message": "The decoder for Tiff does not support the format features compression method Huffman is unsupported"
+    },
+    "tiff-crate": {
+     "status": "error",
+     "error_class": "unsupported error",
+     "message": "unsupported error: compression method Huffman is unsupported"
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "18db79e76140ad9a",
+     "alpha_present": false,
+     "orig_color_type": "photometric1/1bit/1spp/fmt1/comp2/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 7,
+     "first_warning": "Premature EOL at line 0 of strip 0 (got 0, expected 13)",
+     "pages": 1,
+     "bit_depth": 1,
+     "components": 1
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "18db79e76140ad9a",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "18db79e76140ad9a",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "18db79e76140ad9a",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "18db79e76140ad9a",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "groups": {
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 9,
+    "accept-different-pixels": 4
+   },
+   "witness": "witnesses/17-field-Compression.tif",
+   "original_length": 200,
+   "witness_length": 200,
+   "min_checks": 24
+  },
+  {
+   "rule": "field-SampleFormat",
+   "count": 11,
+   "patterns": 3,
+   "id": 6339,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "field-SampleFormat",
+    "field": "SampleFormat",
+    "value": 3,
+    "ifd": 0,
+    "old": 2,
+    "source": "mutation",
+    "seed": "gray-int16"
+   },
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: ColorType Gray",
+     "message": "<path>/tiff.rs:89:24: ColorType Gray(16) with SampleFormat IEEEFP and ExtraSamples Unspe"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "The decoder for Tiff does not support the format features Unhandled TIFF sample ",
+     "message": "The decoder for Tiff does not support the format features Unhandled TIFF sample format 3 for 16 bits"
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "4252465fd43c52d3",
+     "alpha_present": false,
+     "orig_color_type": "Gray(16)/IEEEFP/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 16,
+     "components": 1
+    },
+    "libtiff": {
+     "status": "error",
+     "error_class": "TIFFRGBAImageOK",
+     "message": "Sorry, can not handle images with IEEE floating-point samples"
+    },
+    "gdk-file": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load image \u00e2\u0080\u009c<path>/06339.tif\u00e2\u0080\u009d: Failed to load RGB data from TIFF file"
+    },
+    "gdk-chunk": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load RGB data from TIFF file"
+    }
+   },
+   "groups": {
+    "tiff-crate": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 11
+   },
+   "witness": "witnesses/18-field-SampleFormat.tif",
+   "original_length": 380,
+   "witness_length": 380,
+   "min_checks": 24
+  },
+  {
+   "rule": "ifd-entry-count",
+   "count": 9,
+   "patterns": 4,
+   "id": 4912,
+   "classification": "accept-different-pixels",
+   "mutation": {
+    "rule": "ifd-entry-count",
+    "field": "count",
+    "value": 13,
+    "ifd": 0,
+    "old": 14,
+    "source": "mutation",
+    "seed": "rgba8-unspecified"
+   },
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "dd13e7c0d8162761",
+     "alpha_present": true,
+     "orig_color_type": "R8g8b8a8",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "dd13e7c0d8162761",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "dd13e7c0d8162761",
+     "alpha_present": true,
+     "orig_color_type": "Rgba8",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "dd13e7c0d8162761",
+     "alpha_present": true,
+     "orig_color_type": "RGBA(8)/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 4
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "cec10aa9b52de5fe",
+     "alpha_present": true,
+     "orig_color_type": "photometric2/8bit/4spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 1,
+     "first_warning": "Sum of Photometric type-related color channels and ExtraSamples doesn't match SamplesPerPixel. Defining non-color channels as ExtraSamples.",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "dd13e7c0d8162761",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "dd13e7c0d8162761",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "dd13e7c0d8162761",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "dd13e7c0d8162761",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0,
+    "libtiff": 1
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     189,
+     48.962,
+     "large"
+    ]
+   ],
+   "classes": {
+    "accept-vs-reject": 4,
+    "accept-different-pixels": 5
+   },
+   "witness": "witnesses/19-ifd-entry-count.tif",
+   "original_length": 570,
+   "witness_length": 570,
+   "min_checks": 24
+  },
+  {
+   "rule": "field-InkSet",
+   "count": 6,
+   "patterns": 2,
+   "id": 2164,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "field-InkSet",
+    "field": "InkSet",
+    "value": 0,
+    "ifd": 0,
+    "old": 1,
+    "source": "mutation",
+    "seed": "cmyk8"
+   },
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "98abe0763cfaa87d",
+     "alpha_present": false,
+     "orig_color_type": "C8m8y8k8",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "98abe0763cfaa87d",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "c5e528ff21858b18",
+     "alpha_present": false,
+     "orig_color_type": "Cmyk8",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "98abe0763cfaa87d",
+     "alpha_present": false,
+     "orig_color_type": "CMYK(8)/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 4
+    },
+    "libtiff": {
+     "status": "error",
+     "error_class": "TIFFRGBAImageOK",
+     "message": "Sorry, can not handle separated image with InkSet=0"
+    },
+    "gdk-file": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load image \u00e2\u0080\u009c<path>/02164.tif\u00e2\u0080\u009d: Failed to load RGB data from TIFF file"
+    },
+    "gdk-chunk": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load RGB data from TIFF file"
+    }
+   },
+   "groups": {
+    "glycin": 0,
+    "tiff-crate": 0,
+    "image": 0
+   },
+   "pairs": [
+    [
+     "glycin",
+     "image",
+     1,
+     0.371,
+     "within-tolerance"
+    ]
+   ],
+   "classes": {
+    "accept-vs-reject": 6
+   },
+   "witness": "witnesses/20-field-InkSet.tif",
+   "original_length": 570,
+   "witness_length": 570,
+   "min_checks": 24
+  },
+  {
+   "rule": "field-Orientation",
+   "count": 6,
+   "patterns": 1,
+   "id": 3923,
+   "classification": "all-accept-orientation-differs",
+   "mutation": {
+    "rule": "field-Orientation",
+    "field": "Orientation",
+    "value": 2,
+    "ifd": 0,
+    "old": 1,
+    "source": "mutation",
+    "seed": "orientation-1"
+   },
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Mirrored",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "2d2e619fd2f2ea3b",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "FlipHorizontal",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": 2,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2d2e619fd2f2ea3b",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 2,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2d2e619fd2f2ea3b",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "2d2e619fd2f2ea3b",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2d2e619fd2f2ea3b",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "2d2e619fd2f2ea3b",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     247,
+     53.582,
+     "orientation-2"
+    ]
+   ],
+   "classes": {
+    "all-accept-orientation-differs": 6
+   },
+   "witness": "witnesses/21-field-Orientation.tif",
+   "original_length": 478,
+   "witness_length": 478,
+   "min_checks": 24
+  },
+  {
+   "rule": "field-FillOrder",
+   "count": 3,
+   "patterns": 1,
+   "id": 1680,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "field-FillOrder",
+    "field": "FillOrder",
+    "value": 0,
+    "ifd": 0,
+    "old": 2,
+    "source": "mutation",
+    "seed": "bilevel-miniswhite-fillorder2"
+   },
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: ColorType Gray",
+     "message": "<path>/tiff.rs:89:24: ColorType Gray(1) with SampleFormat Uint and ExtraSamples Unspecif"
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "d49c34779c5f243f",
+     "alpha_present": false,
+     "orig_color_type": "L1",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "d49c34779c5f243f",
+     "alpha_present": false,
+     "orig_color_type": "Gray(1)/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 1,
+     "components": 1
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "d49c34779c5f243f",
+     "alpha_present": false,
+     "orig_color_type": "photometric0/1bit/1spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 1,
+     "components": 1
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "d49c34779c5f243f",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "d49c34779c5f243f",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "d49c34779c5f243f",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "d49c34779c5f243f",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "groups": {
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 3
+   },
+   "witness": "witnesses/22-field-FillOrder.tif",
+   "original_length": 212,
+   "witness_length": 212,
+   "min_checks": 24
+  },
+  {
+   "rule": "field-TileWidth",
+   "count": 3,
+   "patterns": 2,
+   "id": 8103,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "field-TileWidth",
+    "field": "TileWidth",
+    "value": 15,
+    "ifd": 0,
+    "old": 16,
+    "source": "mutation",
+    "seed": "tiled-rgb8"
+   },
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 40,
+     "height": 24,
+     "rgba_sha256": "ee4c5fda87c8f9fe",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 40,
+     "oriented_height": 24,
+     "oriented_sha256": "ee4c5fda87c8f9fe",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 40,
+     "height": 24,
+     "rgba_sha256": "ee4c5fda87c8f9fe",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 40,
+     "height": 24,
+     "rgba_sha256": "ee4c5fda87c8f9fe",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "error",
+     "error_class": "TIFFReadRGBAImage",
+     "message": "Invalid tile byte count for tile 0. Expected 720, got 768"
+    },
+    "gdk-file": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load image \u00e2\u0080\u009c<path>/08103.tif\u00e2\u0080\u009d: Failed to load RGB data from TIFF file"
+    },
+    "gdk-chunk": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load RGB data from TIFF file"
+    }
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 2,
+    "accept-different-pixels": 1
+   },
+   "witness": "witnesses/23-field-TileWidth.tif",
+   "original_length": 4860,
+   "witness_length": 4860,
+   "min_checks": 24
+  },
+  {
+   "rule": "field-Predictor",
+   "count": 2,
+   "patterns": 1,
+   "id": 4449,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "field-Predictor",
+    "field": "Predictor",
+    "value": 1,
+    "ifd": 0,
+    "old": 3,
+    "source": "mutation",
+    "seed": "rgb-float32-pred3-II"
+   },
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "8f2bd12ea8a24035",
+     "alpha_present": false,
+     "orig_color_type": "R32g32b32Float",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "8f2bd12ea8a24035",
+     "bit_depth": 32,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "28146fb557fa3ab3",
+     "alpha_present": false,
+     "orig_color_type": "Rgb32F",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "8f2bd12ea8a24035",
+     "alpha_present": false,
+     "orig_color_type": "RGB(32)/IEEEFP/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 32,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "error",
+     "error_class": "TIFFRGBAImageOK",
+     "message": "Sorry, can not handle images with 32-bit samples"
+    },
+    "gdk-file": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load image \u00e2\u0080\u009c<path>/04449.tif\u00e2\u0080\u009d: Failed to load RGB data from TIFF file"
+    },
+    "gdk-chunk": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load RGB data from TIFF file"
+    }
+   },
+   "groups": {
+    "glycin": 0,
+    "tiff-crate": 0,
+    "image": 1
+   },
+   "pairs": [
+    [
+     "glycin",
+     "image",
+     255,
+     0.701,
+     "large"
+    ]
+   ],
+   "classes": {
+    "accept-vs-reject": 2
+   },
+   "witness": "witnesses/24-field-Predictor.tif",
+   "original_length": 1168,
+   "witness_length": 1168,
+   "min_checks": 24
+  },
+  {
+   "rule": "field-TileLength",
+   "count": 2,
+   "patterns": 2,
+   "id": 8192,
+   "classification": "accept-vs-reject",
+   "mutation": {
+    "rule": "field-TileLength",
+    "field": "TileLength",
+    "value": 15,
+    "ifd": 0,
+    "old": 16,
+    "source": "mutation",
+    "seed": "tiled-rgb8"
+   },
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 40,
+     "height": 24,
+     "rgba_sha256": "633d7dc35e829e41",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 40,
+     "oriented_height": 24,
+     "oriented_sha256": "633d7dc35e829e41",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 40,
+     "height": 24,
+     "rgba_sha256": "633d7dc35e829e41",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 40,
+     "height": 24,
+     "rgba_sha256": "633d7dc35e829e41",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "error",
+     "error_class": "TIFFReadRGBAImage",
+     "message": "Invalid tile byte count for tile 0. Expected 720, got 768"
+    },
+    "gdk-file": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load image \u00e2\u0080\u009c<path>/08192.tif\u00e2\u0080\u009d: Failed to load RGB data from TIFF file"
+    },
+    "gdk-chunk": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load RGB data from TIFF file"
+    }
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0
+   },
+   "pairs": [],
+   "classes": {
+    "accept-vs-reject": 1,
+    "accept-different-pixels": 1
+   },
+   "witness": "witnesses/25-field-TileLength.tif",
+   "original_length": 4860,
+   "witness_length": 4860,
+   "min_checks": 24
+  }
+ ],
+ "pixel_rows": [
+  {
+   "rule": "field-Photometric",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "libtiff"
+    ],
+    [
+     "tiff-crate"
+    ]
+   ],
+   "count": 45,
+   "id": 3795,
+   "mutation": {
+    "rule": "field-Photometric",
+    "field": "Photometric",
+    "value": 1,
+    "ifd": 0,
+    "old": 6,
+    "source": "mutation",
+    "seed": "ycbcr8-2x2"
+   },
+   "pairs": [
+    [
+     "tiff-crate",
+     "libtiff",
+     255,
+     14.743,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: ColorType Multiband { bit_depth: 8",
+     "message": "<path>/tiff.rs:89:24: ColorType Multiband { bit_depth: 8, num_samples: 3 } with SampleFo"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "The encoder or decoder for Tiff does not support the color type `Unknown",
+     "message": "The encoder or decoder for Tiff does not support the color type `Unknown(24)`"
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 14,
+     "height": 8,
+     "rgba_sha256": "a78a597af621791c",
+     "alpha_present": false,
+     "orig_color_type": "Multiband { bit_depth: 8, num_samples: 3 }/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 14,
+     "height": 8,
+     "rgba_sha256": "683ec1ed57ff95c9",
+     "alpha_present": false,
+     "orig_color_type": "photometric1/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 2,
+     "first_warning": "Sum of Photometric type-related color channels and ExtraSamples doesn't match SamplesPerPixel. Defining non-color channels as ExtraSamples.",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 14,
+     "height": 8,
+     "rgba_sha256": "683ec1ed57ff95c9",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 14,
+     "oriented_height": 8,
+     "oriented_sha256": "683ec1ed57ff95c9",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 14,
+     "height": 8,
+     "rgba_sha256": "683ec1ed57ff95c9",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 14,
+     "oriented_height": 8,
+     "oriented_sha256": "683ec1ed57ff95c9",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "witness": "witnesses/pixel-01.tif"
+  },
+  {
+   "rule": "ifd-next-offset",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file"
+    ],
+    [
+     "libtiff"
+    ]
+   ],
+   "count": 14,
+   "id": 629,
+   "mutation": {
+    "rule": "ifd-next-offset",
+    "field": "next",
+    "value": "self",
+    "ifd": 0,
+    "source": "mutation",
+    "seed": "graya8-unassociated"
+   },
+   "pairs": [
+    [
+     "libtiff",
+     "gdk-file",
+     237,
+     55.83,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: format error: file contained a cycle in the list of IFDs",
+     "message": "<path>/tiff.rs:17:70: format error: file contained a cycle in the list of IFDs"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "Format error decoding Tiff",
+     "message": "Format error decoding Tiff: format error: file contained a cycle in the list of IFDs"
+    },
+    "tiff-crate": {
+     "status": "error",
+     "error_class": "format error",
+     "message": "format error: file contained a cycle in the list of IFDs"
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb6b82c38d49c143",
+     "alpha_present": true,
+     "orig_color_type": "photometric1/8bit/2spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 2,
+     "first_warning": "TIFF directory 0 has IFD looping to directory 0 at offset 0xce (206)",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 2
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "e5d25b10380e9c1c",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "e5d25b10380e9c1c",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "e5d25b10380e9c1c",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "e5d25b10380e9c1c",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "witness": "witnesses/pixel-02.tif"
+  },
+  {
+   "rule": "strip-bytecount",
+   "difference": "large",
+   "split": [
+    [
+     "glycin"
+    ],
+    [
+     "image",
+     "tiff-crate"
+    ]
+   ],
+   "count": 13,
+   "id": 2035,
+   "mutation": {
+    "rule": "strip-bytecount",
+    "field": "StripByteCounts[0]",
+    "value": 0,
+    "ifd": 0,
+    "old": 91,
+    "source": "mutation",
+    "seed": "planar-rgb8"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "image",
+     241,
+     50.275,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "9989696d062c52a4",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "9989696d062c52a4",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b651b832f3afe545",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b651b832f3afe545",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes3",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "error",
+     "error_class": "TIFFReadRGBAImage",
+     "message": "Invalid strip byte count 0, strip 0"
+    },
+    "gdk-file": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load image \u00e2\u0080\u009c<path>/02035.tif\u00e2\u0080\u009d: Failed to load RGB data from TIFF file"
+    },
+    "gdk-chunk": {
+     "status": "error",
+     "error_class": "gdk-gdk-pixbuf-error-quark-5",
+     "message": "Failed to load RGB data from TIFF file"
+    }
+   },
+   "witness": "witnesses/pixel-03.tif"
+  },
+  {
+   "rule": "trailing-bytes",
+   "difference": "orientation-2",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "libtiff"
+    ],
+    [
+     "glycin",
+     "image",
+     "tiff-crate"
+    ]
+   ],
+   "count": 12,
+   "id": 476,
+   "mutation": {
+    "rule": "trailing-bytes",
+    "field": "zeros",
+    "value": 1,
+    "ifd": 0,
+    "source": "mutation",
+    "seed": "orientation-6"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     247,
+     53.582,
+     "orientation-2"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Rotation270",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "a4ee0abda065a5dc",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "Rotate90",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": 6,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2d2e619fd2f2ea3b",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 6,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2d2e619fd2f2ea3b",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "a4ee0abda065a5dc",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2d2e619fd2f2ea3b",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "a4ee0abda065a5dc",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "witness": "witnesses/pixel-04.tif"
+  },
+  {
+   "rule": "trailing-bytes",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "image",
+     "libtiff",
+     "tiff-crate"
+    ],
+    [
+     "glycin"
+    ]
+   ],
+   "count": 12,
+   "id": 522,
+   "mutation": {
+    "rule": "trailing-bytes",
+    "field": "zeros",
+    "value": 1,
+    "ifd": 0,
+    "source": "mutation",
+    "seed": "planar-rgb8"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "image",
+     241,
+     50.275,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "9989696d062c52a4",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "9989696d062c52a4",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b651b832f3afe545",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b651b832f3afe545",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes3",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b651b832f3afe545",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar2/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b651b832f3afe545",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "b651b832f3afe545",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b651b832f3afe545",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "b651b832f3afe545",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "witness": "witnesses/pixel-05.tif"
+  },
+  {
+   "rule": "field-ImageWidth",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "libtiff"
+    ],
+    [
+     "glycin",
+     "image",
+     "tiff-crate"
+    ]
+   ],
+   "count": 12,
+   "id": 3253,
+   "mutation": {
+    "rule": "field-ImageWidth",
+    "field": "ImageWidth",
+    "value": 1,
+    "ifd": 0,
+    "old": 13,
+    "source": "mutation",
+    "seed": "rgb8-deflate-MM"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     248,
+     36.857,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "ca49255dec0f1da2",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 7,
+     "oriented_sha256": "ca49255dec0f1da2",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "ca49255dec0f1da2",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "ca49255dec0f1da2",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "3a782872e28f7090",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp8/planar1/strips/MM",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "3a782872e28f7090",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 7,
+     "oriented_sha256": "3a782872e28f7090",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "3a782872e28f7090",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 7,
+     "oriented_sha256": "3a782872e28f7090",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "witness": "witnesses/pixel-06.tif"
+  },
+  {
+   "rule": "strip-bytecount",
+   "difference": "orientation-2",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "libtiff"
+    ],
+    [
+     "glycin",
+     "image",
+     "tiff-crate"
+    ]
+   ],
+   "count": 10,
+   "id": 2078,
+   "mutation": {
+    "rule": "strip-bytecount",
+    "field": "StripByteCounts[0]",
+    "value": 0,
+    "ifd": 0,
+    "old": 273,
+    "source": "mutation",
+    "seed": "orientation-6"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     247,
+     53.582,
+     "orientation-2"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Rotation270",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "a4ee0abda065a5dc",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "Rotate90",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": 6,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2d2e619fd2f2ea3b",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 6,
+     "orientation_applied": true,
+     "warnings": 1,
+     "first_warning": "Bogus \"StripByteCounts\" field, ignoring and calculating from imagelength",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2d2e619fd2f2ea3b",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "a4ee0abda065a5dc",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2d2e619fd2f2ea3b",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "a4ee0abda065a5dc",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "witness": "witnesses/pixel-07.tif"
+  },
+  {
+   "rule": "byte-flip",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "image",
+     "libtiff",
+     "tiff-crate"
+    ],
+    [
+     "glycin"
+    ]
+   ],
+   "count": 10,
+   "id": 2213,
+   "mutation": {
+    "rule": "byte-flip",
+    "field": "offset",
+    "value": 60,
+    "ifd": 0,
+    "source": "mutation",
+    "seed": "planar-rgb8"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "image",
+     241,
+     50.275,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "572d81d49aa70ca7",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "572d81d49aa70ca7",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "c5e15927bda1f7c4",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "c5e15927bda1f7c4",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes3",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "c5e15927bda1f7c4",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar2/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "c5e15927bda1f7c4",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "c5e15927bda1f7c4",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "c5e15927bda1f7c4",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "c5e15927bda1f7c4",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "witness": "witnesses/pixel-08.tif"
+  },
+  {
+   "rule": "field-ImageWidth",
+   "difference": "orientation-3",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "libtiff"
+    ],
+    [
+     "glycin",
+     "image",
+     "tiff-crate"
+    ]
+   ],
+   "count": 10,
+   "id": 3293,
+   "mutation": {
+    "rule": "field-ImageWidth",
+    "field": "ImageWidth",
+    "value": 1,
+    "ifd": 0,
+    "old": 13,
+    "source": "mutation",
+    "seed": "orientation-8"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     93,
+     21.0,
+     "orientation-3"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "31dd4607857131ac",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Rotation90",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 1,
+     "oriented_sha256": "31dd4607857131ac",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "31dd4607857131ac",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "Rotate270",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "31dd4607857131ac",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": 8,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "222fb87194ed5c51",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 8,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "222fb87194ed5c51",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 1,
+     "oriented_sha256": "31dd4607857131ac",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "222fb87194ed5c51",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 1,
+     "oriented_sha256": "31dd4607857131ac",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "witness": "witnesses/pixel-09.tif"
+  },
+  {
+   "rule": "byte-flip",
+   "difference": "orientation-2",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "libtiff"
+    ],
+    [
+     "glycin",
+     "image",
+     "tiff-crate"
+    ]
+   ],
+   "count": 9,
+   "id": 2256,
+   "mutation": {
+    "rule": "byte-flip",
+    "field": "offset",
+    "value": 403,
+    "ifd": 0,
+    "source": "mutation",
+    "seed": "orientation-6"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     247,
+     53.582,
+     "orientation-2"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Rotation270",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "a4ee0abda065a5dc",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "Rotate90",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": 6,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2d2e619fd2f2ea3b",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 6,
+     "orientation_applied": true,
+     "warnings": 2,
+     "first_warning": "Invalid TIFF directory; tags are not sorted in ascending order",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2d2e619fd2f2ea3b",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "a4ee0abda065a5dc",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2d2e619fd2f2ea3b",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "a4ee0abda065a5dc",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "witness": "witnesses/pixel-10.tif"
+  },
+  {
+   "rule": "field-ImageWidth",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "image",
+     "libtiff",
+     "tiff-crate"
+    ],
+    [
+     "glycin"
+    ]
+   ],
+   "count": 9,
+   "id": 3281,
+   "mutation": {
+    "rule": "field-ImageWidth",
+    "field": "ImageWidth",
+    "value": 1,
+    "ifd": 0,
+    "old": 13,
+    "source": "mutation",
+    "seed": "planar-rgb8"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "image",
+     68,
+     23.786,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "d79ddbd784292844",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 7,
+     "oriented_sha256": "d79ddbd784292844",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "a278800876ce4870",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "a278800876ce4870",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes3",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "a278800876ce4870",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar2/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "a278800876ce4870",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 7,
+     "oriented_sha256": "a278800876ce4870",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 1,
+     "height": 7,
+     "rgba_sha256": "a278800876ce4870",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 1,
+     "oriented_height": 7,
+     "oriented_sha256": "a278800876ce4870",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "witness": "witnesses/pixel-11.tif"
+  },
+  {
+   "rule": "ifd-next-offset",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "image",
+     "libtiff",
+     "tiff-crate"
+    ],
+    [
+     "glycin"
+    ]
+   ],
+   "count": 9,
+   "id": 4883,
+   "mutation": {
+    "rule": "ifd-next-offset",
+    "field": "next",
+    "value": 1,
+    "ifd": 0,
+    "source": "mutation",
+    "seed": "planar-rgb8"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "image",
+     241,
+     50.275,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "9989696d062c52a4",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "9989696d062c52a4",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b651b832f3afe545",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b651b832f3afe545",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes3",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b651b832f3afe545",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar2/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b651b832f3afe545",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "b651b832f3afe545",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b651b832f3afe545",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "b651b832f3afe545",
+     "bit_depth": 8,
+     "components": 4
+    }
+   },
+   "witness": "witnesses/pixel-12.tif"
+  },
+  {
+   "rule": "ifd-next-offset",
+   "difference": "orientation-2",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "libtiff"
+    ],
+    [
+     "glycin",
+     "image",
+     "tiff-crate"
+    ]
+   ],
+   "count": 9,
+   "id": 5015,
+   "mutation": {
+    "rule": "ifd-next-offset",
+    "field": "next",
+    "value": 1,
+    "ifd": 0,
+    "source": "mutation",
+    "seed": "orientation-6"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     247,
+     53.582,
+     "orientation-2"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Rotation270",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "a4ee0abda065a5dc",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "Rotate90",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": 6,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2d2e619fd2f2ea3b",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 6,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2d2e619fd2f2ea3b",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "a4ee0abda065a5dc",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2d2e619fd2f2ea3b",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "a4ee0abda065a5dc",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  },
+  {
+   "rule": "trailing-bytes",
+   "difference": "orientation-4",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "libtiff"
+    ],
+    [
+     "glycin",
+     "image",
+     "tiff-crate"
+    ]
+   ],
+   "count": 8,
+   "id": 445,
+   "mutation": {
+    "rule": "trailing-bytes",
+    "field": "zeros",
+    "value": 1,
+    "ifd": 0,
+    "source": "mutation",
+    "seed": "orientation-8"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     247,
+     61.555,
+     "orientation-4"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Rotation90",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "d25b49adfdd0c757",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "Rotate270",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": 8,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2ed74902c080acce",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 8,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2ed74902c080acce",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "d25b49adfdd0c757",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2ed74902c080acce",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "d25b49adfdd0c757",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  },
+  {
+   "rule": "trailing-bytes",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "tiff-crate"
+    ],
+    [
+     "libtiff"
+    ]
+   ],
+   "count": 8,
+   "id": 451,
+   "mutation": {
+    "rule": "trailing-bytes",
+    "field": "zeros",
+    "value": 1,
+    "ifd": 0,
+    "source": "mutation",
+    "seed": "graya8-unassociated"
+   },
+   "pairs": [
+    [
+     "tiff-crate",
+     "libtiff",
+     237,
+     55.83,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: ColorType Multiband { bit_depth: 8",
+     "message": "<path>/tiff.rs:89:24: ColorType Multiband { bit_depth: 8, num_samples: 2 } with SampleFo"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "The encoder or decoder for Tiff does not support the color type `Unknown",
+     "message": "The encoder or decoder for Tiff does not support the color type `Unknown(16)`"
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "e5d25b10380e9c1c",
+     "alpha_present": true,
+     "orig_color_type": "Multiband { bit_depth: 8, num_samples: 2 }/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 2
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb6b82c38d49c143",
+     "alpha_present": true,
+     "orig_color_type": "photometric1/8bit/2spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 2
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "e5d25b10380e9c1c",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "e5d25b10380e9c1c",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "e5d25b10380e9c1c",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "e5d25b10380e9c1c",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  },
+  {
+   "rule": "trailing-bytes",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "libtiff"
+    ],
+    [
+     "tiff-crate"
+    ]
+   ],
+   "count": 8,
+   "id": 489,
+   "mutation": {
+    "rule": "trailing-bytes",
+    "field": "zeros",
+    "value": 1,
+    "ifd": 0,
+    "source": "mutation",
+    "seed": "gray-int8"
+   },
+   "pairs": [
+    [
+     "tiff-crate",
+     "libtiff",
+     128,
+     96.0,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: ColorType Gray",
+     "message": "<path>/tiff.rs:89:24: ColorType Gray(8) with SampleFormat Int and ExtraSamples Unspecifi"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "The decoder for Tiff does not support the format features Unhandled TIFF sample ",
+     "message": "The decoder for Tiff does not support the format features Unhandled TIFF sample format 2 for 8 bits"
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "9a211465e8e954a4",
+     "alpha_present": false,
+     "orig_color_type": "Gray(8)/Int/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 1
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "18279746d956fc2f",
+     "alpha_present": false,
+     "orig_color_type": "photometric1/8bit/1spp/fmt2/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 1
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "18279746d956fc2f",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "18279746d956fc2f",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "18279746d956fc2f",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "18279746d956fc2f",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  },
+  {
+   "rule": "trailing-bytes",
+   "difference": "orientation-3",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "libtiff"
+    ],
+    [
+     "glycin",
+     "image",
+     "tiff-crate"
+    ]
+   ],
+   "count": 8,
+   "id": 475,
+   "mutation": {
+    "rule": "trailing-bytes",
+    "field": "zeros",
+    "value": 1,
+    "ifd": 0,
+    "source": "mutation",
+    "seed": "orientation-7"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     247,
+     84.016,
+     "orientation-3"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "MirroredRotation270",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "bf3a8f8aa90f9327",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "Rotate270FlipH",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": 7,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "0d5ea54fe489985f",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 7,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "0d5ea54fe489985f",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "5",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "bf3a8f8aa90f9327",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "0d5ea54fe489985f",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "5",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "bf3a8f8aa90f9327",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  },
+  {
+   "rule": "trailing-bytes",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file"
+    ],
+    [
+     "glycin",
+     "image",
+     "libtiff",
+     "tiff-crate"
+    ]
+   ],
+   "count": 8,
+   "id": 517,
+   "mutation": {
+    "rule": "trailing-bytes",
+    "field": "zeros",
+    "value": 1,
+    "ifd": 0,
+    "source": "mutation",
+    "seed": "rgba8-unassociated"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     2,
+     0.368,
+     "within-tolerance"
+    ],
+    [
+     "glycin",
+     "gdk-file",
+     133,
+     35.085,
+     "large"
+    ],
+    [
+     "libtiff",
+     "gdk-file",
+     132,
+     35.091,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "ad0780493fe2a3ec",
+     "alpha_present": true,
+     "orig_color_type": "R8g8b8a8",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "ad0780493fe2a3ec",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "ad0780493fe2a3ec",
+     "alpha_present": true,
+     "orig_color_type": "Rgba8",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "ad0780493fe2a3ec",
+     "alpha_present": true,
+     "orig_color_type": "RGBA(8)/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 4
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "87c8a296f5fff5a7",
+     "alpha_present": true,
+     "orig_color_type": "photometric2/8bit/4spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "23d84d24e90a9f20",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "23d84d24e90a9f20",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "23d84d24e90a9f20",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "23d84d24e90a9f20",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  },
+  {
+   "rule": "strip-offset",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "tiff-crate"
+    ],
+    [
+     "libtiff"
+    ]
+   ],
+   "count": 8,
+   "id": 1608,
+   "mutation": {
+    "rule": "strip-offset",
+    "field": "StripOffsets[0]",
+    "value": 0,
+    "ifd": 0,
+    "old": 8,
+    "source": "mutation",
+    "seed": "graya8-unassociated"
+   },
+   "pairs": [
+    [
+     "tiff-crate",
+     "libtiff",
+     237,
+     57.288,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: ColorType Multiband { bit_depth: 8",
+     "message": "<path>/tiff.rs:89:24: ColorType Multiband { bit_depth: 8, num_samples: 2 } with SampleFo"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "The encoder or decoder for Tiff does not support the color type `Unknown",
+     "message": "The encoder or decoder for Tiff does not support the color type `Unknown(16)`"
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b374f195c9730fc4",
+     "alpha_present": true,
+     "orig_color_type": "Multiband { bit_depth: 8, num_samples: 2 }/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 2
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "105c2d9132e1a212",
+     "alpha_present": true,
+     "orig_color_type": "photometric1/8bit/2spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 2
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b374f195c9730fc4",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "b374f195c9730fc4",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b374f195c9730fc4",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "b374f195c9730fc4",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  },
+  {
+   "rule": "strip-offset",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "libtiff"
+    ],
+    [
+     "tiff-crate"
+    ]
+   ],
+   "count": 8,
+   "id": 1646,
+   "mutation": {
+    "rule": "strip-offset",
+    "field": "StripOffsets[0]",
+    "value": 0,
+    "ifd": 0,
+    "old": 8,
+    "source": "mutation",
+    "seed": "gray-int8"
+   },
+   "pairs": [
+    [
+     "tiff-crate",
+     "libtiff",
+     128,
+     96.0,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: ColorType Gray",
+     "message": "<path>/tiff.rs:89:24: ColorType Gray(8) with SampleFormat Int and ExtraSamples Unspecifi"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "The decoder for Tiff does not support the format features Unhandled TIFF sample ",
+     "message": "The decoder for Tiff does not support the format features Unhandled TIFF sample format 2 for 8 bits"
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "f25a7a928d94bca1",
+     "alpha_present": false,
+     "orig_color_type": "Gray(8)/Int/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 1
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b22885c23347e713",
+     "alpha_present": false,
+     "orig_color_type": "photometric1/8bit/1spp/fmt2/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 1
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b22885c23347e713",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "b22885c23347e713",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b22885c23347e713",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "b22885c23347e713",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  },
+  {
+   "rule": "strip-offset",
+   "difference": "orientation-4",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "libtiff"
+    ],
+    [
+     "glycin",
+     "image",
+     "tiff-crate"
+    ]
+   ],
+   "count": 8,
+   "id": 1691,
+   "mutation": {
+    "rule": "strip-offset",
+    "field": "StripOffsets[0]",
+    "value": 0,
+    "ifd": 0,
+    "old": 8,
+    "source": "mutation",
+    "seed": "orientation-8"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     247,
+     64.566,
+     "orientation-4"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "285a9bef64f94be3",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Rotation90",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "8f585214618cc20b",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "285a9bef64f94be3",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "Rotate270",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "285a9bef64f94be3",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": 8,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b8299daadfd0b1be",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 8,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b8299daadfd0b1be",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "8f585214618cc20b",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "b8299daadfd0b1be",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "8f585214618cc20b",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  },
+  {
+   "rule": "strip-offset",
+   "difference": "orientation-3",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "libtiff"
+    ],
+    [
+     "glycin",
+     "image",
+     "tiff-crate"
+    ]
+   ],
+   "count": 8,
+   "id": 1721,
+   "mutation": {
+    "rule": "strip-offset",
+    "field": "StripOffsets[0]",
+    "value": 0,
+    "ifd": 0,
+    "old": 8,
+    "source": "mutation",
+    "seed": "orientation-7"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     247,
+     71.093,
+     "orientation-3"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "285a9bef64f94be3",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "MirroredRotation270",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "69ef20c1ab6887ef",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "285a9bef64f94be3",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "Rotate270FlipH",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "285a9bef64f94be3",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": 7,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "33a994ff4b84fc1a",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 7,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "33a994ff4b84fc1a",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "5",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "69ef20c1ab6887ef",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "33a994ff4b84fc1a",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "5",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "69ef20c1ab6887ef",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  },
+  {
+   "rule": "strip-offset",
+   "difference": "orientation-2",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "libtiff"
+    ],
+    [
+     "glycin",
+     "image",
+     "tiff-crate"
+    ]
+   ],
+   "count": 8,
+   "id": 1722,
+   "mutation": {
+    "rule": "strip-offset",
+    "field": "StripOffsets[0]",
+    "value": 0,
+    "ifd": 0,
+    "old": 8,
+    "source": "mutation",
+    "seed": "orientation-6"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     201,
+     31.516,
+     "orientation-2"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "285a9bef64f94be3",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Rotation270",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "995ad8a419e99840",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "285a9bef64f94be3",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "Rotate90",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "285a9bef64f94be3",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": 6,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "c819725909189de6",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 6,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "c819725909189de6",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "995ad8a419e99840",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "c819725909189de6",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "995ad8a419e99840",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  },
+  {
+   "rule": "strip-offset",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "image",
+     "libtiff",
+     "tiff-crate"
+    ],
+    [
+     "glycin"
+    ]
+   ],
+   "count": 8,
+   "id": 1768,
+   "mutation": {
+    "rule": "strip-offset",
+    "field": "StripOffsets[0]",
+    "value": 0,
+    "ifd": 0,
+    "old": 8,
+    "source": "mutation",
+    "seed": "planar-rgb8"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "image",
+     241,
+     51.319,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "8afe8d98dec60725",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "8afe8d98dec60725",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "585dc825dacfed26",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "585dc825dacfed26",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes3",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "585dc825dacfed26",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar2/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "585dc825dacfed26",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "585dc825dacfed26",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "585dc825dacfed26",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "585dc825dacfed26",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  },
+  {
+   "rule": "strip-bytecount",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "tiff-crate"
+    ],
+    [
+     "libtiff"
+    ]
+   ],
+   "count": 8,
+   "id": 1875,
+   "mutation": {
+    "rule": "strip-bytecount",
+    "field": "StripByteCounts[0]",
+    "value": 0,
+    "ifd": 0,
+    "old": 182,
+    "source": "mutation",
+    "seed": "graya8-unassociated"
+   },
+   "pairs": [
+    [
+     "tiff-crate",
+     "libtiff",
+     237,
+     55.83,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: ColorType Multiband { bit_depth: 8",
+     "message": "<path>/tiff.rs:89:24: ColorType Multiband { bit_depth: 8, num_samples: 2 } with SampleFo"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "The encoder or decoder for Tiff does not support the color type `Unknown",
+     "message": "The encoder or decoder for Tiff does not support the color type `Unknown(16)`"
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "e5d25b10380e9c1c",
+     "alpha_present": true,
+     "orig_color_type": "Multiband { bit_depth: 8, num_samples: 2 }/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 2
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb6b82c38d49c143",
+     "alpha_present": true,
+     "orig_color_type": "photometric1/8bit/2spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 1,
+     "first_warning": "Bogus \"StripByteCounts\" field, ignoring and calculating from imagelength",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 2
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "e5d25b10380e9c1c",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "e5d25b10380e9c1c",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "e5d25b10380e9c1c",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "e5d25b10380e9c1c",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  },
+  {
+   "rule": "strip-bytecount",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "libtiff"
+    ],
+    [
+     "tiff-crate"
+    ]
+   ],
+   "count": 8,
+   "id": 1913,
+   "mutation": {
+    "rule": "strip-bytecount",
+    "field": "StripByteCounts[0]",
+    "value": 0,
+    "ifd": 0,
+    "old": 91,
+    "source": "mutation",
+    "seed": "gray-int8"
+   },
+   "pairs": [
+    [
+     "tiff-crate",
+     "libtiff",
+     128,
+     96.0,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: ColorType Gray",
+     "message": "<path>/tiff.rs:89:24: ColorType Gray(8) with SampleFormat Int and ExtraSamples Unspecifi"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "The decoder for Tiff does not support the format features Unhandled TIFF sample ",
+     "message": "The decoder for Tiff does not support the format features Unhandled TIFF sample format 2 for 8 bits"
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "9a211465e8e954a4",
+     "alpha_present": false,
+     "orig_color_type": "Gray(8)/Int/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 1
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "18279746d956fc2f",
+     "alpha_present": false,
+     "orig_color_type": "photometric1/8bit/1spp/fmt2/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 1,
+     "first_warning": "Bogus \"StripByteCounts\" field, ignoring and calculating from imagelength",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 1
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "18279746d956fc2f",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "18279746d956fc2f",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "18279746d956fc2f",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "18279746d956fc2f",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  },
+  {
+   "rule": "value-offset",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "tiff-crate"
+    ],
+    [
+     "libtiff"
+    ]
+   ],
+   "count": 8,
+   "id": 1964,
+   "mutation": {
+    "rule": "value-offset",
+    "field": "XResolution",
+    "value": 0,
+    "ifd": 0,
+    "source": "mutation",
+    "seed": "graya8-unassociated"
+   },
+   "pairs": [
+    [
+     "tiff-crate",
+     "libtiff",
+     237,
+     55.83,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: ColorType Multiband { bit_depth: 8",
+     "message": "<path>/tiff.rs:89:24: ColorType Multiband { bit_depth: 8, num_samples: 2 } with SampleFo"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "The encoder or decoder for Tiff does not support the color type `Unknown",
+     "message": "The encoder or decoder for Tiff does not support the color type `Unknown(16)`"
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "e5d25b10380e9c1c",
+     "alpha_present": true,
+     "orig_color_type": "Multiband { bit_depth: 8, num_samples: 2 }/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 2
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb6b82c38d49c143",
+     "alpha_present": true,
+     "orig_color_type": "photometric1/8bit/2spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 2
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "e5d25b10380e9c1c",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "e5d25b10380e9c1c",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "e5d25b10380e9c1c",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "e5d25b10380e9c1c",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  },
+  {
+   "rule": "value-offset",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "libtiff"
+    ],
+    [
+     "tiff-crate"
+    ]
+   ],
+   "count": 8,
+   "id": 2002,
+   "mutation": {
+    "rule": "value-offset",
+    "field": "XResolution",
+    "value": 0,
+    "ifd": 0,
+    "source": "mutation",
+    "seed": "gray-int8"
+   },
+   "pairs": [
+    [
+     "tiff-crate",
+     "libtiff",
+     128,
+     96.0,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "error",
+     "error_class": "ExpectedError: ColorType Gray",
+     "message": "<path>/tiff.rs:89:24: ColorType Gray(8) with SampleFormat Int and ExtraSamples Unspecifi"
+    },
+    "image": {
+     "status": "error",
+     "error_class": "The decoder for Tiff does not support the format features Unhandled TIFF sample ",
+     "message": "The decoder for Tiff does not support the format features Unhandled TIFF sample format 2 for 8 bits"
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "9a211465e8e954a4",
+     "alpha_present": false,
+     "orig_color_type": "Gray(8)/Int/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 1
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "18279746d956fc2f",
+     "alpha_present": false,
+     "orig_color_type": "photometric1/8bit/1spp/fmt2/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 0,
+     "first_warning": "",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 1
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "18279746d956fc2f",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "18279746d956fc2f",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "18279746d956fc2f",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "18279746d956fc2f",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  },
+  {
+   "rule": "strip-bytecount",
+   "difference": "large",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file"
+    ],
+    [
+     "glycin",
+     "image",
+     "libtiff",
+     "tiff-crate"
+    ]
+   ],
+   "count": 8,
+   "id": 2030,
+   "mutation": {
+    "rule": "strip-bytecount",
+    "field": "StripByteCounts[0]",
+    "value": 0,
+    "ifd": 0,
+    "old": 364,
+    "source": "mutation",
+    "seed": "rgba8-unassociated"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     2,
+     0.368,
+     "within-tolerance"
+    ],
+    [
+     "glycin",
+     "gdk-file",
+     133,
+     35.085,
+     "large"
+    ],
+    [
+     "libtiff",
+     "gdk-file",
+     132,
+     35.091,
+     "large"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "ad0780493fe2a3ec",
+     "alpha_present": true,
+     "orig_color_type": "R8g8b8a8",
+     "orientation": "Id",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "ad0780493fe2a3ec",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "ad0780493fe2a3ec",
+     "alpha_present": true,
+     "orig_color_type": "Rgba8",
+     "orientation": "NoTransforms",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "ad0780493fe2a3ec",
+     "alpha_present": true,
+     "orig_color_type": "RGBA(8)/Uint/planes1",
+     "orientation": null,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 4
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "87c8a296f5fff5a7",
+     "alpha_present": true,
+     "orig_color_type": "photometric2/8bit/4spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 1,
+     "orientation_applied": true,
+     "warnings": 1,
+     "first_warning": "Bogus \"StripByteCounts\" field, ignoring and calculating from imagelength",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "23d84d24e90a9f20",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "23d84d24e90a9f20",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "23d84d24e90a9f20",
+     "alpha_present": true,
+     "orig_color_type": "RGBA8",
+     "orientation": "none",
+     "orientation_applied": false,
+     "oriented_width": 13,
+     "oriented_height": 7,
+     "oriented_sha256": "23d84d24e90a9f20",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  },
+  {
+   "rule": "strip-bytecount",
+   "difference": "orientation-4",
+   "split": [
+    [
+     "gdk-chunk",
+     "gdk-file",
+     "libtiff"
+    ],
+    [
+     "glycin",
+     "image",
+     "tiff-crate"
+    ]
+   ],
+   "count": 8,
+   "id": 2047,
+   "mutation": {
+    "rule": "strip-bytecount",
+    "field": "StripByteCounts[0]",
+    "value": 0,
+    "ifd": 0,
+    "old": 273,
+    "source": "mutation",
+    "seed": "orientation-8"
+   },
+   "pairs": [
+    [
+     "glycin",
+     "libtiff",
+     247,
+     61.555,
+     "orientation-4"
+    ]
+   ],
+   "results": {
+    "glycin": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "R8g8b8",
+     "orientation": "Rotation90",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "d25b49adfdd0c757",
+     "bit_depth": 8,
+     "components": 3
+    },
+    "image": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "Rgb8",
+     "orientation": "Rotate270",
+     "orientation_applied": false
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "fb711e30ed21506a",
+     "alpha_present": false,
+     "orig_color_type": "RGB(8)/Uint/planes1",
+     "orientation": 8,
+     "orientation_applied": false,
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "libtiff": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2ed74902c080acce",
+     "alpha_present": false,
+     "orig_color_type": "photometric2/8bit/3spp/fmt1/comp1/planar1/strips/II",
+     "orientation": 8,
+     "orientation_applied": true,
+     "warnings": 1,
+     "first_warning": "Bogus \"StripByteCounts\" field, ignoring and calculating from imagelength",
+     "pages": 1,
+     "bit_depth": 8,
+     "components": 3
+    },
+    "gdk-file": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2ed74902c080acce",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "d25b49adfdd0c757",
+     "bit_depth": 8,
+     "components": 4
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "width": 13,
+     "height": 7,
+     "rgba_sha256": "2ed74902c080acce",
+     "alpha_present": false,
+     "orig_color_type": "RGBA8",
+     "orientation": "7",
+     "orientation_applied": false,
+     "oriented_width": 7,
+     "oriented_height": 13,
+     "oriented_sha256": "d25b49adfdd0c757",
+     "bit_depth": 8,
+     "components": 4
+    }
+   }
+  }
+ ],
+ "seed_table": [
+  {
+   "id": 0,
+   "name": "rgb8-none-II",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 1,
+   "name": "rgb8-packbits-II",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 2,
+   "name": "rgb8-lzw-II",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 3,
+   "name": "rgb8-deflate-II",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 4,
+   "name": "rgb8-deflate-old-II",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 5,
+   "name": "gray8-none-II",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 6,
+   "name": "gray16-none-II",
+   "classification": "all-accept-within-tolerance",
+   "max_abs": 1,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": [
+    "within-tolerance"
+   ]
+  },
+  {
+   "id": 7,
+   "name": "rgb16-lzw-pred2-II",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 8,
+   "name": "rgb-float32-pred3-II",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "reject",
+    "gdk-file": "reject",
+    "gdk-chunk": "reject"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 9,
+   "name": "bigtiff-rgb8-none-II",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 10,
+   "name": "bigtiff-gray8-lzw-II",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 11,
+   "name": "rgb8-none-MM",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 12,
+   "name": "rgb8-packbits-MM",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 13,
+   "name": "rgb8-lzw-MM",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 14,
+   "name": "rgb8-deflate-MM",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 15,
+   "name": "rgb8-deflate-old-MM",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 16,
+   "name": "gray8-none-MM",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 17,
+   "name": "gray16-none-MM",
+   "classification": "all-accept-within-tolerance",
+   "max_abs": 1,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": [
+    "within-tolerance"
+   ]
+  },
+  {
+   "id": 18,
+   "name": "rgb16-lzw-pred2-MM",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 19,
+   "name": "rgb-float32-pred3-MM",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "reject",
+    "gdk-file": "reject",
+    "gdk-chunk": "reject"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 20,
+   "name": "bigtiff-rgb8-none-MM",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "reject",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 21,
+   "name": "bigtiff-gray8-lzw-MM",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "reject",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 22,
+   "name": "rgb8-lzw-pred2",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 23,
+   "name": "rgb8-deflate-pred2",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 24,
+   "name": "rgb8-lzw-big-48x40",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 25,
+   "name": "rgb8-rows1",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 26,
+   "name": "gray1-minisblack",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 27,
+   "name": "palette1",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "reject",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 28,
+   "name": "gray2-minisblack",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 29,
+   "name": "palette2",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "reject",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 30,
+   "name": "gray4-minisblack",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 31,
+   "name": "palette4",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "reject",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 32,
+   "name": "bilevel-miniswhite-packbits",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 33,
+   "name": "bilevel-miniswhite-fillorder2",
+   "classification": "accept-vs-reject",
+   "max_abs": 255,
+   "status": {
+    "glycin": "reject",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "large"
+   ]
+  },
+  {
+   "id": 34,
+   "name": "gray8-miniswhite",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 35,
+   "name": "palette8",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "reject",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 36,
+   "name": "palette8-lzw",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "reject",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 37,
+   "name": "gray32-uint",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "reject",
+    "gdk-file": "reject",
+    "gdk-chunk": "reject"
+   },
+   "groups": {
+    "tiff-crate": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 38,
+   "name": "gray-float16",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "reject",
+    "gdk-file": "reject",
+    "gdk-chunk": "reject"
+   },
+   "groups": {
+    "tiff-crate": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 39,
+   "name": "gray-float32",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "reject",
+    "gdk-file": "reject",
+    "gdk-chunk": "reject"
+   },
+   "groups": {
+    "tiff-crate": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 40,
+   "name": "gray-float64",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "reject",
+    "gdk-file": "reject",
+    "gdk-chunk": "reject"
+   },
+   "groups": {
+    "tiff-crate": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 41,
+   "name": "gray-int8",
+   "classification": "accept-vs-reject",
+   "max_abs": 128,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "tiff-crate": 0,
+    "libtiff": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "large"
+   ]
+  },
+  {
+   "id": 42,
+   "name": "gray-int16",
+   "classification": "accept-vs-reject",
+   "max_abs": 128,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "tiff-crate": 0,
+    "libtiff": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "large"
+   ]
+  },
+  {
+   "id": 43,
+   "name": "rgb32-uint",
+   "classification": "accept-vs-reject",
+   "max_abs": 252,
+   "status": {
+    "glycin": "reject",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "reject",
+    "gdk-file": "reject",
+    "gdk-chunk": "reject"
+   },
+   "groups": {
+    "image": 0,
+    "tiff-crate": 1
+   },
+   "kinds": [
+    "large"
+   ]
+  },
+  {
+   "id": 44,
+   "name": "rgb-float32",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "reject",
+    "gdk-file": "reject",
+    "gdk-chunk": "reject"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 45,
+   "name": "rgb-float16",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "reject",
+    "gdk-file": "reject",
+    "gdk-chunk": "reject"
+   },
+   "groups": {
+    "glycin": 0,
+    "tiff-crate": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 46,
+   "name": "rgb-float64-pred3",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "reject",
+    "gdk-file": "reject",
+    "gdk-chunk": "reject"
+   },
+   "groups": {
+    "tiff-crate": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 47,
+   "name": "rgba8-unspecified",
+   "classification": "accept-different-pixels",
+   "max_abs": 201,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 1,
+    "gdk-file": 2,
+    "gdk-chunk": 2
+   },
+   "kinds": [
+    "alpha-only",
+    "large"
+   ]
+  },
+  {
+   "id": 48,
+   "name": "graya8-unspecified",
+   "classification": "accept-vs-reject",
+   "max_abs": 253,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "tiff-crate": 0,
+    "libtiff": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "alpha-only"
+   ]
+  },
+  {
+   "id": 49,
+   "name": "rgba8-associated",
+   "classification": "accept-different-pixels",
+   "max_abs": 134,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "libtiff": 0,
+    "image": 1,
+    "tiff-crate": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "large"
+   ]
+  },
+  {
+   "id": 50,
+   "name": "graya8-associated",
+   "classification": "accept-vs-reject",
+   "max_abs": 186,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "tiff-crate": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0,
+    "libtiff": 1
+   },
+   "kinds": [
+    "large"
+   ]
+  },
+  {
+   "id": 51,
+   "name": "rgba8-unassociated",
+   "classification": "accept-different-pixels",
+   "max_abs": 133,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "large",
+    "within-tolerance"
+   ]
+  },
+  {
+   "id": 52,
+   "name": "graya8-unassociated",
+   "classification": "accept-vs-reject",
+   "max_abs": 237,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "tiff-crate": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0,
+    "libtiff": 1
+   },
+   "kinds": [
+    "large"
+   ]
+  },
+  {
+   "id": 53,
+   "name": "rgba16-unassociated",
+   "classification": "accept-different-pixels",
+   "max_abs": 133,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "large",
+    "within-tolerance"
+   ]
+  },
+  {
+   "id": 54,
+   "name": "rgba-float32-associated",
+   "classification": "accept-vs-reject",
+   "max_abs": 134,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "reject",
+    "gdk-file": "reject",
+    "gdk-chunk": "reject"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 1,
+    "tiff-crate": 1
+   },
+   "kinds": [
+    "large"
+   ]
+  },
+  {
+   "id": 55,
+   "name": "cmyk8",
+   "classification": "all-accept-within-tolerance",
+   "max_abs": 1,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "tiff-crate": 0,
+    "image": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": [
+    "within-tolerance"
+   ]
+  },
+  {
+   "id": 56,
+   "name": "cmyk16",
+   "classification": "accept-vs-reject",
+   "max_abs": 1,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "reject",
+    "gdk-file": "reject",
+    "gdk-chunk": "reject"
+   },
+   "groups": {
+    "glycin": 0,
+    "tiff-crate": 0,
+    "image": 0
+   },
+   "kinds": [
+    "within-tolerance"
+   ]
+  },
+  {
+   "id": 57,
+   "name": "cmyka8",
+   "classification": "accept-vs-reject",
+   "max_abs": 253,
+   "status": {
+    "glycin": "ok",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "tiff-crate": 0,
+    "libtiff": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "large"
+   ]
+  },
+  {
+   "id": 58,
+   "name": "cmyk8-lzw",
+   "classification": "all-accept-within-tolerance",
+   "max_abs": 1,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "tiff-crate": 0,
+    "image": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": [
+    "within-tolerance"
+   ]
+  },
+  {
+   "id": 59,
+   "name": "ycbcr8-1x1",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 60,
+   "name": "ycbcr8-2x2",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "reject",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 61,
+   "name": "cielab8",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "reject",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 62,
+   "name": "jpeg-ycbcr-2x2",
+   "classification": "accept-vs-reject",
+   "max_abs": 4,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": [
+    "within-tolerance"
+   ]
+  },
+  {
+   "id": 63,
+   "name": "jpeg-ycbcr-2x2-strips16",
+   "classification": "accept-vs-reject",
+   "max_abs": 3,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": [
+    "within-tolerance"
+   ]
+  },
+  {
+   "id": 64,
+   "name": "jpeg-gray",
+   "classification": "all-accept-within-tolerance",
+   "max_abs": 1,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": [
+    "within-tolerance"
+   ]
+  },
+  {
+   "id": 65,
+   "name": "jpeg-rgb",
+   "classification": "all-accept-within-tolerance",
+   "max_abs": 1,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": [
+    "within-tolerance"
+   ]
+  },
+  {
+   "id": 66,
+   "name": "jpeg-ycbcr-tiled",
+   "classification": "accept-vs-reject",
+   "max_abs": 3,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": [
+    "within-tolerance"
+   ]
+  },
+  {
+   "id": 67,
+   "name": "planar-rgb8",
+   "classification": "accept-different-pixels",
+   "max_abs": 241,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 1,
+    "tiff-crate": 1,
+    "libtiff": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "large"
+   ]
+  },
+  {
+   "id": 68,
+   "name": "planar-rgb16-lzw",
+   "classification": "accept-different-pixels",
+   "max_abs": 242,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 1,
+    "tiff-crate": 1,
+    "libtiff": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "large"
+   ]
+  },
+  {
+   "id": 69,
+   "name": "planar-rgba8",
+   "classification": "accept-different-pixels",
+   "max_abs": 251,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 1,
+    "tiff-crate": 1,
+    "libtiff": 1,
+    "gdk-file": 2,
+    "gdk-chunk": 2
+   },
+   "kinds": [
+    "large",
+    "within-tolerance"
+   ]
+  },
+  {
+   "id": 70,
+   "name": "planar-rgb8-rows3",
+   "classification": "accept-different-pixels",
+   "max_abs": 245,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 1,
+    "tiff-crate": 1,
+    "libtiff": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "large"
+   ]
+  },
+  {
+   "id": 71,
+   "name": "tiled-rgb8",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "reject"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 72,
+   "name": "tiled-gray8-lzw",
+   "classification": "accept-vs-reject",
+   "max_abs": 0,
+   "status": {
+    "glycin": "reject",
+    "image": "reject",
+    "tiff-crate": "reject",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 73,
+   "name": "tiled-planar-rgb8",
+   "classification": "crash-or-timeout",
+   "max_abs": 0,
+   "status": {
+    "glycin": "crash",
+    "image": "crash",
+    "tiff-crate": "crash",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "reject"
+   },
+   "groups": {
+    "libtiff": 0,
+    "gdk-file": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 74,
+   "name": "tiled-rgb16-deflate-MM",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 75,
+   "name": "orientation-1",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 76,
+   "name": "orientation-2",
+   "classification": "all-accept-orientation-differs",
+   "max_abs": 247,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "orientation-2"
+   ]
+  },
+  {
+   "id": 77,
+   "name": "orientation-3",
+   "classification": "all-accept-orientation-differs",
+   "max_abs": 247,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "orientation-3"
+   ]
+  },
+  {
+   "id": 78,
+   "name": "orientation-4",
+   "classification": "all-accept-orientation-differs",
+   "max_abs": 247,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "orientation-4"
+   ]
+  },
+  {
+   "id": 79,
+   "name": "orientation-5",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 80,
+   "name": "orientation-6",
+   "classification": "all-accept-orientation-differs",
+   "max_abs": 247,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "orientation-2"
+   ]
+  },
+  {
+   "id": 81,
+   "name": "orientation-7",
+   "classification": "all-accept-orientation-differs",
+   "max_abs": 247,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "orientation-3"
+   ]
+  },
+  {
+   "id": 82,
+   "name": "orientation-8",
+   "classification": "all-accept-orientation-differs",
+   "max_abs": 247,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "orientation-4"
+   ]
+  },
+  {
+   "id": 83,
+   "name": "orientation-6-MM-lzw",
+   "classification": "all-accept-orientation-differs",
+   "max_abs": 249,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 1,
+    "gdk-file": 1,
+    "gdk-chunk": 1
+   },
+   "kinds": [
+    "orientation-2"
+   ]
+  },
+  {
+   "id": 84,
+   "name": "multipage-2",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 85,
+   "name": "multipage-thumbnail-first",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 86,
+   "name": "multipage-3-mixed-MM",
+   "classification": "all-accept-within-tolerance",
+   "max_abs": 1,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": [
+    "within-tolerance"
+   ]
+  },
+  {
+   "id": 87,
+   "name": "bigtiff-multipage",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  },
+  {
+   "id": 88,
+   "name": "one-pixel",
+   "classification": "all-accept-identical-pixels",
+   "max_abs": 0,
+   "status": {
+    "glycin": "ok",
+    "image": "ok",
+    "tiff-crate": "ok",
+    "libtiff": "ok",
+    "gdk-file": "ok",
+    "gdk-chunk": "ok"
+   },
+   "groups": {
+    "glycin": 0,
+    "image": 0,
+    "tiff-crate": 0,
+    "libtiff": 0,
+    "gdk-file": 0,
+    "gdk-chunk": 0
+   },
+   "kinds": []
+  }
+ ],
+ "orientation_table": [
+  {
+   "id": 76,
+   "name": "orientation-2",
+   "tag": 2,
+   "decoders": {
+    "glycin": {
+     "status": "ok",
+     "reported": "Mirrored",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "13x7"
+    },
+    "image": {
+     "status": "ok",
+     "reported": "FlipHorizontal",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "reported": 2,
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "libtiff": {
+     "status": "ok",
+     "reported": 2,
+     "applied": true,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "gdk-file": {
+     "status": "ok",
+     "reported": "none",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "13x7"
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "reported": "none",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "13x7"
+    }
+   }
+  },
+  {
+   "id": 77,
+   "name": "orientation-3",
+   "tag": 3,
+   "decoders": {
+    "glycin": {
+     "status": "ok",
+     "reported": "Rotation180",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "13x7"
+    },
+    "image": {
+     "status": "ok",
+     "reported": "Rotate180",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "reported": 3,
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "libtiff": {
+     "status": "ok",
+     "reported": 3,
+     "applied": true,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "gdk-file": {
+     "status": "ok",
+     "reported": "none",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "13x7"
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "reported": "none",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "13x7"
+    }
+   }
+  },
+  {
+   "id": 78,
+   "name": "orientation-4",
+   "tag": 4,
+   "decoders": {
+    "glycin": {
+     "status": "ok",
+     "reported": "MirroredRotation180",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "13x7"
+    },
+    "image": {
+     "status": "ok",
+     "reported": "FlipVertical",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "reported": 4,
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "libtiff": {
+     "status": "ok",
+     "reported": 4,
+     "applied": true,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "gdk-file": {
+     "status": "ok",
+     "reported": "none",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "13x7"
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "reported": "none",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "13x7"
+    }
+   }
+  },
+  {
+   "id": 79,
+   "name": "orientation-5",
+   "tag": 5,
+   "decoders": {
+    "glycin": {
+     "status": "ok",
+     "reported": "MirroredRotation90",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "7x13"
+    },
+    "image": {
+     "status": "ok",
+     "reported": "Rotate90FlipH",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "reported": 5,
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "libtiff": {
+     "status": "ok",
+     "reported": 5,
+     "applied": true,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "gdk-file": {
+     "status": "ok",
+     "reported": "5",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "7x13"
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "reported": "5",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "7x13"
+    }
+   }
+  },
+  {
+   "id": 80,
+   "name": "orientation-6",
+   "tag": 6,
+   "decoders": {
+    "glycin": {
+     "status": "ok",
+     "reported": "Rotation270",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "7x13"
+    },
+    "image": {
+     "status": "ok",
+     "reported": "Rotate90",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "reported": 6,
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "libtiff": {
+     "status": "ok",
+     "reported": 6,
+     "applied": true,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "gdk-file": {
+     "status": "ok",
+     "reported": "7",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "7x13"
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "reported": "7",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "7x13"
+    }
+   }
+  },
+  {
+   "id": 81,
+   "name": "orientation-7",
+   "tag": 7,
+   "decoders": {
+    "glycin": {
+     "status": "ok",
+     "reported": "MirroredRotation270",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "7x13"
+    },
+    "image": {
+     "status": "ok",
+     "reported": "Rotate270FlipH",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "reported": 7,
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "libtiff": {
+     "status": "ok",
+     "reported": 7,
+     "applied": true,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "gdk-file": {
+     "status": "ok",
+     "reported": "5",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "7x13"
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "reported": "5",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "7x13"
+    }
+   }
+  },
+  {
+   "id": 82,
+   "name": "orientation-8",
+   "tag": 8,
+   "decoders": {
+    "glycin": {
+     "status": "ok",
+     "reported": "Rotation90",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "7x13"
+    },
+    "image": {
+     "status": "ok",
+     "reported": "Rotate270",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "reported": 8,
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "libtiff": {
+     "status": "ok",
+     "reported": 8,
+     "applied": true,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "gdk-file": {
+     "status": "ok",
+     "reported": "7",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "7x13"
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "reported": "7",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "7x13"
+    }
+   }
+  },
+  {
+   "id": 83,
+   "name": "orientation-6-MM-lzw",
+   "tag": 6,
+   "decoders": {
+    "glycin": {
+     "status": "ok",
+     "reported": "Rotation270",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "7x13"
+    },
+    "image": {
+     "status": "ok",
+     "reported": "Rotate90",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "tiff-crate": {
+     "status": "ok",
+     "reported": 6,
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "libtiff": {
+     "status": "ok",
+     "reported": 6,
+     "applied": true,
+     "size": "13x7",
+     "oriented_size": null
+    },
+    "gdk-file": {
+     "status": "ok",
+     "reported": "7",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "7x13"
+    },
+    "gdk-chunk": {
+     "status": "ok",
+     "reported": "7",
+     "applied": false,
+     "size": "13x7",
+     "oriented_size": "7x13"
+    }
+   }
+  }
+ ],
+ "acceptance_by_rule": {
+  "bigtiff-offset-size": {
+   "inputs": 15,
+   "glycin": 0,
+   "image": 0,
+   "tiff-crate": 0,
+   "libtiff": 0,
+   "gdk-file": 0,
+   "gdk-chunk": 0
+  },
+  "byte-flip": {
+   "inputs": 397,
+   "glycin": 183,
+   "image": 188,
+   "tiff-crate": 244,
+   "libtiff": 245,
+   "gdk-file": 236,
+   "gdk-chunk": 239
+  },
+  "byte-flip-ifd": {
+   "inputs": 371,
+   "glycin": 86,
+   "image": 91,
+   "tiff-crate": 132,
+   "libtiff": 156,
+   "gdk-file": 148,
+   "gdk-chunk": 157
+  },
+  "field-BitsPerSample": {
+   "inputs": 445,
+   "glycin": 0,
+   "image": 13,
+   "tiff-crate": 69,
+   "libtiff": 44,
+   "gdk-file": 41,
+   "gdk-chunk": 44
+  },
+  "field-Compression": {
+   "inputs": 439,
+   "glycin": 22,
+   "image": 25,
+   "tiff-crate": 25,
+   "libtiff": 31,
+   "gdk-file": 30,
+   "gdk-chunk": 29
+  },
+  "field-ExtraSamples": {
+   "inputs": 40,
+   "glycin": 28,
+   "image": 27,
+   "tiff-crate": 40,
+   "libtiff": 18,
+   "gdk-file": 18,
+   "gdk-chunk": 18
+  },
+  "field-FillOrder": {
+   "inputs": 3,
+   "glycin": 0,
+   "image": 3,
+   "tiff-crate": 3,
+   "libtiff": 3,
+   "gdk-file": 3,
+   "gdk-chunk": 3
+  },
+  "field-ImageLength": {
+   "inputs": 445,
+   "glycin": 97,
+   "image": 101,
+   "tiff-crate": 135,
+   "libtiff": 155,
+   "gdk-file": 151,
+   "gdk-chunk": 246
+  },
+  "field-ImageWidth": {
+   "inputs": 445,
+   "glycin": 213,
+   "image": 221,
+   "tiff-crate": 287,
+   "libtiff": 268,
+   "gdk-file": 261,
+   "gdk-chunk": 260
+  },
+  "field-InkSet": {
+   "inputs": 9,
+   "glycin": 9,
+   "image": 6,
+   "tiff-crate": 9,
+   "libtiff": 0,
+   "gdk-file": 0,
+   "gdk-chunk": 0
+  },
+  "field-NewSubfileType": {
+   "inputs": 5,
+   "glycin": 5,
+   "image": 5,
+   "tiff-crate": 5,
+   "libtiff": 5,
+   "gdk-file": 5,
+   "gdk-chunk": 5
+  },
+  "field-Orientation": {
+   "inputs": 41,
+   "glycin": 41,
+   "image": 41,
+   "tiff-crate": 41,
+   "libtiff": 41,
+   "gdk-file": 41,
+   "gdk-chunk": 41
+  },
+  "field-Photometric": {
+   "inputs": 438,
+   "glycin": 23,
+   "image": 28,
+   "tiff-crate": 96,
+   "libtiff": 165,
+   "gdk-file": 161,
+   "gdk-chunk": 161
+  },
+  "field-PlanarConfig": {
+   "inputs": 357,
+   "glycin": 10,
+   "image": 13,
+   "tiff-crate": 21,
+   "libtiff": 26,
+   "gdk-file": 25,
+   "gdk-chunk": 51
+  },
+  "field-Predictor": {
+   "inputs": 28,
+   "glycin": 8,
+   "image": 8,
+   "tiff-crate": 10,
+   "libtiff": 4,
+   "gdk-file": 4,
+   "gdk-chunk": 4
+  },
+  "field-RowsPerStrip": {
+   "inputs": 384,
+   "glycin": 66,
+   "image": 72,
+   "tiff-crate": 95,
+   "libtiff": 98,
+   "gdk-file": 94,
+   "gdk-chunk": 190
+  },
+  "field-SampleFormat": {
+   "inputs": 44,
+   "glycin": 4,
+   "image": 4,
+   "tiff-crate": 15,
+   "libtiff": 10,
+   "gdk-file": 10,
+   "gdk-chunk": 10
+  },
+  "field-SamplesPerPixel": {
+   "inputs": 419,
+   "glycin": 0,
+   "image": 0,
+   "tiff-crate": 21,
+   "libtiff": 17,
+   "gdk-file": 17,
+   "gdk-chunk": 17
+  },
+  "field-TileLength": {
+   "inputs": 20,
+   "glycin": 3,
+   "image": 3,
+   "tiff-crate": 3,
+   "libtiff": 2,
+   "gdk-file": 2,
+   "gdk-chunk": 2
+  },
+  "field-TileWidth": {
+   "inputs": 21,
+   "glycin": 4,
+   "image": 4,
+   "tiff-crate": 4,
+   "libtiff": 2,
+   "gdk-file": 2,
+   "gdk-chunk": 2
+  },
+  "field-YCbCrSubSampling": {
+   "inputs": 20,
+   "glycin": 0,
+   "image": 0,
+   "tiff-crate": 12,
+   "libtiff": 4,
+   "gdk-file": 4,
+   "gdk-chunk": 4
+  },
+  "header-byte-order": {
+   "inputs": 178,
+   "glycin": 0,
+   "image": 0,
+   "tiff-crate": 0,
+   "libtiff": 0,
+   "gdk-file": 0,
+   "gdk-chunk": 0
+  },
+  "header-ifd-offset": {
+   "inputs": 449,
+   "glycin": 1,
+   "image": 1,
+   "tiff-crate": 1,
+   "libtiff": 1,
+   "gdk-file": 1,
+   "gdk-chunk": 1
+  },
+  "header-magic": {
+   "inputs": 435,
+   "glycin": 0,
+   "image": 0,
+   "tiff-crate": 0,
+   "libtiff": 0,
+   "gdk-file": 0,
+   "gdk-chunk": 0
+  },
+  "ifd-duplicate-tag": {
+   "inputs": 94,
+   "glycin": 5,
+   "image": 5,
+   "tiff-crate": 5,
+   "libtiff": 5,
+   "gdk-file": 5,
+   "gdk-chunk": 5
+  },
+  "ifd-entry-count": {
+   "inputs": 449,
+   "glycin": 65,
+   "image": 70,
+   "tiff-crate": 83,
+   "libtiff": 80,
+   "gdk-file": 78,
+   "gdk-chunk": 80
+  },
+  "ifd-next-offset": {
+   "inputs": 447,
+   "glycin": 182,
+   "image": 188,
+   "tiff-crate": 242,
+   "libtiff": 387,
+   "gdk-file": 376,
+   "gdk-chunk": 377
+  },
+  "ifd-unsorted": {
+   "inputs": 94,
+   "glycin": 65,
+   "image": 67,
+   "tiff-crate": 85,
+   "libtiff": 79,
+   "gdk-file": 77,
+   "gdk-chunk": 77
+  },
+  "seed": {
+   "inputs": 89,
+   "glycin": 60,
+   "image": 62,
+   "tiff-crate": 80,
+   "libtiff": 77,
+   "gdk-file": 75,
+   "gdk-chunk": 75
+  },
+  "strip-bytecount": {
+   "inputs": 398,
+   "glycin": 238,
+   "image": 246,
+   "tiff-crate": 315,
+   "libtiff": 271,
+   "gdk-file": 262,
+   "gdk-chunk": 268
+  },
+  "strip-offset": {
+   "inputs": 434,
+   "glycin": 151,
+   "image": 159,
+   "tiff-crate": 215,
+   "libtiff": 207,
+   "gdk-file": 203,
+   "gdk-chunk": 199
+  },
+  "tag-count": {
+   "inputs": 445,
+   "glycin": 5,
+   "image": 5,
+   "tiff-crate": 5,
+   "libtiff": 5,
+   "gdk-file": 5,
+   "gdk-chunk": 5
+  },
+  "tag-removed": {
+   "inputs": 445,
+   "glycin": 60,
+   "image": 78,
+   "tiff-crate": 95,
+   "libtiff": 166,
+   "gdk-file": 161,
+   "gdk-chunk": 160
+  },
+  "tag-type": {
+   "inputs": 445,
+   "glycin": 95,
+   "image": 99,
+   "tiff-crate": 135,
+   "libtiff": 131,
+   "gdk-file": 131,
+   "gdk-chunk": 127
+  },
+  "trailing-bytes": {
+   "inputs": 356,
+   "glycin": 240,
+   "image": 248,
+   "tiff-crate": 320,
+   "libtiff": 308,
+   "gdk-file": 300,
+   "gdk-chunk": 300
+  },
+  "truncation": {
+   "inputs": 449,
+   "glycin": 0,
+   "image": 0,
+   "tiff-crate": 0,
+   "libtiff": 0,
+   "gdk-file": 0,
+   "gdk-chunk": 0
+  },
+  "value-offset": {
+   "inputs": 407,
+   "glycin": 34,
+   "image": 48,
+   "tiff-crate": 95,
+   "libtiff": 108,
+   "gdk-file": 108,
+   "gdk-chunk": 108
+  }
+ },
+ "public_subset": true
+}

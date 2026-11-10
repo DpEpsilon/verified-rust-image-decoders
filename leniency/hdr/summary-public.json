@@ -1,0 +1,3104 @@
+{
+  "format": "hdr",
+  "inputs": 9855,
+  "seed_variants": 52,
+  "seed": 731,
+  "counts": {
+    "accept-different-pixels": 2892,
+    "all-reject": 3923,
+    "accept-vs-reject": 3039,
+    "all-accept-identical-pixels": 1
+  },
+  "counts_convention_adjusted": {
+    "all-accept-identical-pixels": 2256,
+    "accept-different-pixels": 637,
+    "all-reject": 3923,
+    "accept-vs-reject": 3039
+  },
+  "elapsed_seconds": 370.8,
+  "decoders": [
+    "image",
+    "image-nonstrict",
+    "glycin",
+    "radiant",
+    "hdrldr",
+    "stb"
+  ],
+  "unavailable": {
+    "gdk-pixbuf Radiance module": "not installed (gdk-pixbuf-query-loaders lists none)",
+    "Radiance reference tools (ra_*)": "not fetched",
+    "DirectXTex": "does not read Radiance HDR"
+  },
+  "decoder_status": {
+    "image": {
+      "ok": 3910,
+      "error": 5945,
+      "only-rejector": 205
+    },
+    "image-nonstrict": {
+      "ok": 4835,
+      "error": 5020
+    },
+    "glycin": {
+      "ok": 4835,
+      "error": 5020
+    },
+    "radiant": {
+      "ok": 4602,
+      "error": 5253,
+      "only-acceptor": 11,
+      "only-rejector": 55
+    },
+    "hdrldr": {
+      "ok": 4613,
+      "error": 5242,
+      "only-acceptor": 46
+    },
+    "stb": {
+      "ok": 4038,
+      "error": 5817,
+      "only-rejector": 800,
+      "only-acceptor": 490
+    }
+  },
+  "families": {
+    "exponent-extremes": {
+      "accept-different-pixels": 180,
+      "accept-vs-reject": 109,
+      "all-reject": 92
+    },
+    "flat-scanlines": {
+      "accept-different-pixels": 569,
+      "accept-vs-reject": 381,
+      "all-reject": 314,
+      "all-accept-identical-pixels": 1
+    },
+    "header-lines": {
+      "accept-different-pixels": 1426,
+      "accept-vs-reject": 1993,
+      "all-reject": 1343
+    },
+    "orientation": {
+      "all-reject": 1844,
+      "accept-different-pixels": 26,
+      "accept-vs-reject": 41
+    },
+    "rle-new": {
+      "accept-different-pixels": 530,
+      "all-reject": 261,
+      "accept-vs-reject": 361
+    },
+    "rle-old": {
+      "accept-different-pixels": 161,
+      "accept-vs-reject": 154,
+      "all-reject": 69
+    }
+  },
+  "seed_acceptance": {
+    "exponent-extremes": {
+      "image": {
+        "ok": 2
+      },
+      "image-nonstrict": {
+        "ok": 2
+      },
+      "glycin": {
+        "ok": 2
+      },
+      "radiant": {
+        "ok": 2
+      },
+      "hdrldr": {
+        "ok": 2
+      },
+      "stb": {
+        "ok": 2
+      }
+    },
+    "flat-scanlines": {
+      "image": {
+        "ok": 7
+      },
+      "image-nonstrict": {
+        "ok": 7
+      },
+      "glycin": {
+        "ok": 7
+      },
+      "radiant": {
+        "ok": 7
+      },
+      "hdrldr": {
+        "ok": 7
+      },
+      "stb": {
+        "ok": 7
+      }
+    },
+    "header-lines": {
+      "image": {
+        "ok": 20,
+        "error": 5
+      },
+      "image-nonstrict": {
+        "ok": 22,
+        "error": 3
+      },
+      "glycin": {
+        "ok": 22,
+        "error": 3
+      },
+      "radiant": {
+        "ok": 22,
+        "error": 3
+      },
+      "hdrldr": {
+        "ok": 20,
+        "error": 5
+      },
+      "stb": {
+        "ok": 17,
+        "error": 8
+      }
+    },
+    "orientation": {
+      "image": {
+        "error": 10
+      },
+      "image-nonstrict": {
+        "error": 10
+      },
+      "glycin": {
+        "error": 10
+      },
+      "radiant": {
+        "error": 10
+      },
+      "hdrldr": {
+        "error": 10
+      },
+      "stb": {
+        "error": 10
+      }
+    },
+    "rle-new": {
+      "image": {
+        "ok": 6
+      },
+      "image-nonstrict": {
+        "ok": 6
+      },
+      "glycin": {
+        "ok": 6
+      },
+      "radiant": {
+        "ok": 6
+      },
+      "hdrldr": {
+        "ok": 6
+      },
+      "stb": {
+        "ok": 6
+      }
+    },
+    "rle-old": {
+      "image": {
+        "ok": 2
+      },
+      "image-nonstrict": {
+        "ok": 2
+      },
+      "glycin": {
+        "ok": 2
+      },
+      "radiant": {
+        "ok": 2
+      },
+      "hdrldr": {
+        "ok": 2
+      },
+      "stb": {
+        "ok": 2
+      }
+    }
+  },
+  "rows": [
+    {
+      "rule": "magic",
+      "count": 449,
+      "patterns": 54,
+      "original_id": 85,
+      "witness": "witnesses/01-magic.hdr",
+      "mutation": {
+        "rule": "magic",
+        "field": "magic",
+        "value": "?RADIANCE",
+        "source": "mutation",
+        "seed": "header-exposure-twice-rle",
+        "family": "header-lines"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Hdr",
+          "message": "Format error decoding Hdr: Radiance HDR signature not found"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "radiant": {
+          "status": "error",
+          "error_class": "the file is not a Radiance HDR image",
+          "message": "the file is not a Radiance HDR image"
+        },
+        "hdrldr": {
+          "status": "error",
+          "error_class": "FileFormat",
+          "message": "FileFormat"
+        },
+        "stb": {
+          "status": "error",
+          "error_class": "unknown image type",
+          "message": "unknown image type"
+        }
+      },
+      "description": "image: reject (Format error decoding Hdr); image-nonstrict, glycin: accept 8x4 `d19d3168`; radiant: reject (the file is not a Radiance HDR); hdrldr: reject (FileFormat); stb: reject (unknown image type)",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 210,
+      "witness_length": 157
+    },
+    {
+      "rule": "truncation",
+      "count": 336,
+      "patterns": 78,
+      "original_id": 2316,
+      "witness": "witnesses/02-truncation.hdr",
+      "mutation": {
+        "rule": "truncation",
+        "field": "length",
+        "value": 47,
+        "source": "mutation",
+        "seed": "header-no-comment-flat",
+        "family": "header-lines"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "failed to fill whole buffer",
+          "message": "failed to fill whole buffer"
+        },
+        "image-nonstrict": {
+          "status": "error",
+          "error_class": "failed to fill whole buffer",
+          "message": "failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: failed to fill whole buffer"
+        },
+        "radiant": {
+          "status": "error",
+          "error_class": "failed to fill whole buffer",
+          "message": "failed to fill whole buffer"
+        },
+        "hdrldr": {
+          "status": "error",
+          "error_class": "Io",
+          "message": "Io(Error { kind: UnexpectedEof, message: \"failed to fill whole buffer\" })"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "10b2a66888c58a54b277fe2e68fb6e87150c3cd2c537b7f6a2d84559017438c7",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "alt_sha256": "10b2a66888c58a54b277fe2e68fb6e87150c3cd2c537b7f6a2d84559017438c7"
+        }
+      },
+      "description": "image, image-nonstrict, radiant: reject (failed to fill whole buffer); glycin: reject (ExpectedError); hdrldr: reject (Io); stb: accept 5x3 `10b2a668`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 47,
+      "witness_length": 47
+    },
+    {
+      "rule": "rle-width-field",
+      "count": 271,
+      "patterns": 39,
+      "original_id": 99,
+      "witness": "witnesses/03-rle-width-field.hdr",
+      "mutation": {
+        "rule": "rle-width-field",
+        "field": "scanline-width",
+        "value": 1,
+        "source": "mutation",
+        "seed": "header-unknown-attr-rle",
+        "family": "header-lines"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "stb": {
+          "status": "error",
+          "error_class": "invalid decoded scanline length",
+          "message": "invalid decoded scanline length"
+        }
+      },
+      "description": "image, image-nonstrict, glycin: accept 8x4 `d19d3168`; radiant, hdrldr: accept 8x4 `2592e096`; stb: reject (invalid decoded scanline lengt)",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 197,
+      "witness_length": 171
+    },
+    {
+      "rule": "dims-line",
+      "count": 259,
+      "patterns": 99,
+      "original_id": 1108,
+      "witness": "witnesses/04-dims-line.hdr",
+      "mutation": {
+        "rule": "dims-line",
+        "field": "dims",
+        "value": "-Y +3 +X 5",
+        "source": "mutation",
+        "seed": "orient-1-flat-5x3",
+        "family": "orientation"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d"
+        },
+        "radiant": {
+          "status": "error",
+          "error_class": "the image header is invalid",
+          "message": "the image header is invalid"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "8207b5d9665cdf3cc6f59faa617be2cf856b65eb6234913b9e0a54402810e3f9",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d"
+        }
+      },
+      "description": "image, image-nonstrict, glycin, stb: accept 5x3 `4235d79b`; radiant: reject (the image header is invalid); hdrldr: accept 5x3 `8207b5d9`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 118,
+      "witness_length": 118
+    },
+    {
+      "rule": "rle-marker-bytes",
+      "count": 238,
+      "patterns": 126,
+      "original_id": 397,
+      "witness": "witnesses/05-rle-marker-bytes.hdr",
+      "mutation": {
+        "rule": "rle-marker-bytes",
+        "field": "byte0",
+        "value": 1,
+        "source": "mutation",
+        "seed": "header-exposure-twice-rle",
+        "family": "header-lines"
+      },
+      "classification": "accept-different-pixels",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "3560b6d26d2d6a71876968c64df7f6859a0ce9c33fc37a664edac0e84ba41ee5",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "3560b6d26d2d6a71876968c64df7f6859a0ce9c33fc37a664edac0e84ba41ee5"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "3560b6d26d2d6a71876968c64df7f6859a0ce9c33fc37a664edac0e84ba41ee5",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "3560b6d26d2d6a71876968c64df7f6859a0ce9c33fc37a664edac0e84ba41ee5"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "3560b6d26d2d6a71876968c64df7f6859a0ce9c33fc37a664edac0e84ba41ee5",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "3560b6d26d2d6a71876968c64df7f6859a0ce9c33fc37a664edac0e84ba41ee5"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "1b73b9a211cca0722e6e85b8e67b7c35ae25fe0a508d02c5d28fd2ea9cddea22",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003921330212481381,
+          "alt_sha256": "1b73b9a211cca0722e6e85b8e67b7c35ae25fe0a508d02c5d28fd2ea9cddea22"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "97a99abe788341d0ed6fcb8d9070338bf38fca5484107bbae536ba570f8f1ced",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "3560b6d26d2d6a71876968c64df7f6859a0ce9c33fc37a664edac0e84ba41ee5"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "a202151a31c992bea49fb8f8290e44b5dd54dce15be588f26bd7594f9313c7a7",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 1.0,
+          "alt_sha256": "a202151a31c992bea49fb8f8290e44b5dd54dce15be588f26bd7594f9313c7a7"
+        }
+      },
+      "description": "image, image-nonstrict, glycin: accept 8x4 `3560b6d2`; radiant: accept 8x4 `1b73b9a2`; hdrldr: accept 8x4 `97a99abe`; stb: accept 8x4 `a202151a`",
+      "pixel_difference": "image vs radiant: sample values (max rel err 0.00392); image vs hdrldr: uniform scale x1.003922; image vs stb: sample values (max rel err 1)",
+      "min_checks": 24,
+      "original_length": 211,
+      "witness_length": 197
+    },
+    {
+      "rule": "byte-flip-header",
+      "count": 209,
+      "patterns": 55,
+      "original_id": 706,
+      "witness": "witnesses/06-byte-flip-header.hdr",
+      "mutation": {
+        "rule": "byte-flip-header",
+        "field": "offset",
+        "value": 26,
+        "source": "mutation",
+        "seed": "header-comments-flat",
+        "family": "header-lines"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The image format `3\"-bit_rle_rgbe` is not supported",
+          "message": "The image format `3\"-bit_rle_rgbe` is not supported"
+        },
+        "image-nonstrict": {
+          "status": "error",
+          "error_class": "The image format `3\"-bit_rle_rgbe` is not supported",
+          "message": "The image format `3\"-bit_rle_rgbe` is not supported"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:439:62: The image format `3\"-bit_rle_rgbe` is not supported"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "212bfe7a83d88bbde307d68d403026e100fefa5a62dfa20790e7d901fe8da258",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "212bfe7a83d88bbde307d68d403026e100fefa5a62dfa20790e7d901fe8da258"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "212bfe7a83d88bbde307d68d403026e100fefa5a62dfa20790e7d901fe8da258",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 7.916241102738718e-08,
+          "alt_sha256": "212bfe7a83d88bbde307d68d403026e100fefa5a62dfa20790e7d901fe8da258"
+        },
+        "stb": {
+          "status": "error",
+          "error_class": "unsupported format",
+          "message": "unsupported format"
+        }
+      },
+      "description": "image, image-nonstrict: reject (The image format `3\"-bit_rle_r); glycin: reject (ExpectedError); radiant, hdrldr: accept 5x3 `212bfe7a`; stb: reject (unsupported format)",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 116,
+      "witness_length": 108
+    },
+    {
+      "rule": "format-line",
+      "count": 168,
+      "patterns": 25,
+      "original_id": 495,
+      "witness": "witnesses/07-format-line.hdr",
+      "mutation": {
+        "rule": "format-line",
+        "field": "FORMAT",
+        "value": "FORMAT=rgbe",
+        "source": "mutation",
+        "seed": "header-no-comment-rle",
+        "family": "header-lines"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "The image format `rgbe` is not supported",
+          "message": "The image format `rgbe` is not supported"
+        },
+        "image-nonstrict": {
+          "status": "error",
+          "error_class": "The image format `rgbe` is not supported",
+          "message": "The image format `rgbe` is not supported"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:439:62: The image format `rgbe` is not supported"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 7.916241102738718e-08,
+          "alt_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b"
+        }
+      },
+      "description": "image, image-nonstrict: reject (The image format `rgbe` is not); glycin: reject (ExpectedError); radiant, hdrldr: accept 8x4 `2592e096`; stb: accept 8x4 `d19d3168`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 197,
+      "witness_length": 197
+    },
+    {
+      "rule": "colorcorr-line",
+      "count": 156,
+      "patterns": 22,
+      "original_id": 151,
+      "witness": "witnesses/08-colorcorr-line.hdr",
+      "mutation": {
+        "rule": "colorcorr-line",
+        "field": "COLORCORR",
+        "value": "COLORCORR=a b c",
+        "source": "mutation",
+        "seed": "header-unknown-attr-rle",
+        "family": "header-lines"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Hdr",
+          "message": "Format error decoding Hdr: Cannot parse COLORCORR value as f32: invalid float literal"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        }
+      },
+      "description": "image: reject (Format error decoding Hdr); image-nonstrict, glycin, stb: accept 8x4 `d19d3168`; radiant, hdrldr: accept 8x4 `2592e096`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 213,
+      "witness_length": 213
+    },
+    {
+      "rule": "byte-value",
+      "count": 118,
+      "patterns": 33,
+      "original_id": 391,
+      "witness": "witnesses/09-byte-value.hdr",
+      "mutation": {
+        "rule": "byte-value",
+        "field": "+3",
+        "value": 255,
+        "source": "mutation",
+        "seed": "header-no-comment-rle",
+        "family": "header-lines"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "stb": {
+          "status": "error",
+          "error_class": "invalid decoded scanline length",
+          "message": "invalid decoded scanline length"
+        }
+      },
+      "description": "image, image-nonstrict, glycin: accept 8x4 `d19d3168`; radiant, hdrldr: accept 8x4 `2592e096`; stb: reject (invalid decoded scanline lengt)",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 185,
+      "witness_length": 173
+    },
+    {
+      "rule": "exponent-byte-flat",
+      "count": 98,
+      "patterns": 56,
+      "original_id": 142,
+      "witness": "witnesses/10-exponent-byte-flat.hdr",
+      "mutation": {
+        "rule": "exponent-byte-flat",
+        "field": "+11",
+        "value": 1,
+        "source": "mutation",
+        "seed": "header-primaries-flat",
+        "family": "header-lines"
+      },
+      "classification": "accept-different-pixels",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "e29a51b990c975b69856bc27610352c95180301f882080df8fcadb0dc0b63e8c",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "e29a51b990c975b69856bc27610352c95180301f882080df8fcadb0dc0b63e8c"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "01c57d4aa082a167eaac4c448fa28095471b2a55262a380676a5115cb16920c1",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906447235140095,
+          "alt_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504"
+        }
+      },
+      "description": "image, image-nonstrict, glycin, stb: accept 5x3 `43d4a618`; radiant: accept 5x3 `e29a51b9`; hdrldr: accept 5x3 `01c57d4a`",
+      "pixel_difference": "image vs radiant: sample values (max rel err 0.00391); image vs hdrldr: uniform scale x1.003922",
+      "min_checks": 24,
+      "original_length": 163,
+      "witness_length": 122
+    },
+    {
+      "rule": "exposure-line",
+      "count": 96,
+      "patterns": 22,
+      "original_id": 235,
+      "witness": "witnesses/11-exposure-line.hdr",
+      "mutation": {
+        "rule": "exposure-line",
+        "field": "EXPOSURE",
+        "value": "EXPOSURE=1.0 2.0",
+        "source": "mutation",
+        "seed": "header-no-comment-rle",
+        "family": "header-lines"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Hdr",
+          "message": "Format error decoding Hdr: Cannot parse EXPOSURE value as f32: invalid float literal"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        }
+      },
+      "description": "image: reject (Format error decoding Hdr); image-nonstrict, glycin, stb: accept 8x4 `d19d3168`; radiant, hdrldr: accept 8x4 `2592e096`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 202,
+      "witness_length": 202
+    },
+    {
+      "rule": "flat-first-pixel-rle-lookalike",
+      "count": 62,
+      "patterns": 34,
+      "original_id": 100,
+      "witness": "witnesses/12-flat-first-pixel-rle-lookalike.hdr",
+      "mutation": {
+        "rule": "flat-first-pixel-rle-lookalike",
+        "field": "row0",
+        "value": [
+          2,
+          2,
+          0,
+          128
+        ],
+        "source": "mutation",
+        "seed": "header-unknown-attr-flat",
+        "family": "header-lines"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Hdr",
+          "message": "Format error decoding Hdr: Wrong length of decoded scanline: got 109, expected 5"
+        },
+        "image-nonstrict": {
+          "status": "error",
+          "error_class": "Format error decoding Hdr",
+          "message": "Format error decoding Hdr: Wrong length of decoded scanline: got 109, expected 5"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Hdr: Wrong length of decoded scanline: got 109, expected 5"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "60492ec708621660bd801eaf12209b7e72a285df4814815f5258a6a6870747c5",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "60492ec708621660bd801eaf12209b7e72a285df4814815f5258a6a6870747c5"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "60492ec708621660bd801eaf12209b7e72a285df4814815f5258a6a6870747c5",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 7.916241102738718e-08,
+          "alt_sha256": "60492ec708621660bd801eaf12209b7e72a285df4814815f5258a6a6870747c5"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "70cd509ac1ee21e9dd897aa5f36dd2ae6ea25078b085548d38237824f53461f7",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "60492ec708621660bd801eaf12209b7e72a285df4814815f5258a6a6870747c5"
+        }
+      },
+      "description": "image, image-nonstrict: reject (Format error decoding Hdr); glycin: reject (ExpectedError); radiant, hdrldr: accept 5x3 `60492ec7`; stb: accept 5x3 `70cd509a`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 117,
+      "witness_length": 117
+    },
+    {
+      "rule": "header-end",
+      "count": 42,
+      "patterns": 19,
+      "original_id": 761,
+      "witness": "witnesses/13-header-end.hdr",
+      "mutation": {
+        "rule": "header-end",
+        "field": "blank-line",
+        "value": "blank-after-magic",
+        "source": "mutation",
+        "seed": "header-exposure-twice-rle",
+        "family": "header-lines"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Hdr",
+          "message": "Format error decoding Hdr: Dimensions line too short: have 1 elements, expected 4"
+        },
+        "image-nonstrict": {
+          "status": "error",
+          "error_class": "Format error decoding Hdr",
+          "message": "Format error decoding Hdr: Dimensions line too short: have 1 elements, expected 4"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:439:62: Format error decoding Hdr: Dimensions line too short: have 1 elements, expected 4"
+        },
+        "radiant": {
+          "status": "error",
+          "error_class": "the image header is invalid",
+          "message": "the image header is invalid"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "3782a00f68ee92b6b9dbc26f585ccfad2a0d8c628ef6644db06a9f7a4a089c98",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "alt_sha256": "3782a00f68ee92b6b9dbc26f585ccfad2a0d8c628ef6644db06a9f7a4a089c98"
+        },
+        "stb": {
+          "status": "error",
+          "error_class": "unsupported format",
+          "message": "unsupported format"
+        }
+      },
+      "description": "image, image-nonstrict: reject (Format error decoding Hdr); glycin: reject (ExpectedError); radiant: reject (the image header is invalid); hdrldr: accept 8x4 `3782a00f`; stb: reject (unsupported format)",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 212,
+      "witness_length": 171
+    },
+    {
+      "rule": "flat-first-pixel-old-rle-marker",
+      "count": 36,
+      "patterns": 18,
+      "original_id": 186,
+      "witness": "witnesses/14-flat-first-pixel-old-rle-marker.hdr",
+      "mutation": {
+        "rule": "flat-first-pixel-old-rle-marker",
+        "field": "row0",
+        "value": [
+          1,
+          1,
+          1,
+          3
+        ],
+        "source": "mutation",
+        "seed": "header-comments-flat",
+        "family": "header-lines"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Hdr",
+          "message": "Format error decoding Hdr: First pixel of a scanline shouldn't be run length marker"
+        },
+        "image-nonstrict": {
+          "status": "error",
+          "error_class": "Format error decoding Hdr",
+          "message": "Format error decoding Hdr: First pixel of a scanline shouldn't be run length marker"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Hdr: First pixel of a scanline shouldn't be run length marker"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "a39ffd725b10538d1cea4c84437f6f7c924043837cf532a2b350e4c1ee937f2c",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "a39ffd725b10538d1cea4c84437f6f7c924043837cf532a2b350e4c1ee937f2c"
+        },
+        "hdrldr": {
+          "status": "error",
+          "error_class": "Rle",
+          "message": "Rle"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "f4d500a794c3b935c47bf8c604b7f90a1ea44994d9c86139f21b13a057c80419",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "a39ffd725b10538d1cea4c84437f6f7c924043837cf532a2b350e4c1ee937f2c"
+        }
+      },
+      "description": "image, image-nonstrict: reject (Format error decoding Hdr); glycin: reject (ExpectedError); radiant: accept 5x3 `a39ffd72`; hdrldr: reject (Rle); stb: accept 5x3 `f4d500a7`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 116,
+      "witness_length": 116
+    },
+    {
+      "rule": "rle-insert-byte",
+      "count": 32,
+      "patterns": 8,
+      "original_id": 131,
+      "witness": "witnesses/15-rle-insert-byte.hdr",
+      "mutation": {
+        "rule": "rle-insert-byte",
+        "field": "row",
+        "value": 49,
+        "source": "mutation",
+        "seed": "header-no-comment-rle",
+        "family": "header-lines"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "stb": {
+          "status": "error",
+          "error_class": "corrupt",
+          "message": "corrupt"
+        }
+      },
+      "description": "image, image-nonstrict, glycin: accept 8x4 `d19d3168`; radiant, hdrldr: accept 8x4 `2592e096`; stb: reject (corrupt)",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 186,
+      "witness_length": 174
+    },
+    {
+      "rule": "extra-header-line",
+      "count": 32,
+      "patterns": 2,
+      "original_id": 149,
+      "witness": "witnesses/16-extra-header-line.hdr",
+      "mutation": {
+        "rule": "extra-header-line",
+        "field": "line",
+        "value": "GAMMA=2.2",
+        "source": "mutation",
+        "seed": "header-empty-header-rle",
+        "family": "header-lines"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "stb": {
+          "status": "error",
+          "error_class": "unsupported format",
+          "message": "unsupported format"
+        }
+      },
+      "description": "image, image-nonstrict, glycin: accept 8x4 `d19d3168`; radiant, hdrldr: accept 8x4 `2592e096`; stb: reject (unsupported format)",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 172,
+      "witness_length": 172
+    },
+    {
+      "rule": "old-rle-count",
+      "count": 30,
+      "patterns": 29,
+      "original_id": 8382,
+      "witness": "witnesses/17-old-rle-count.hdr",
+      "mutation": {
+        "rule": "old-rle-count",
+        "field": "row0+11",
+        "value": 0,
+        "source": "mutation",
+        "seed": "rle-old-16x2",
+        "family": "rle-old"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "failed to fill whole buffer",
+          "message": "failed to fill whole buffer"
+        },
+        "image-nonstrict": {
+          "status": "error",
+          "error_class": "failed to fill whole buffer",
+          "message": "failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: failed to fill whole buffer"
+        },
+        "radiant": {
+          "status": "error",
+          "error_class": "unexpected end of file",
+          "message": "unexpected end of file"
+        },
+        "hdrldr": {
+          "status": "error",
+          "error_class": "Io",
+          "message": "Io(Error { kind: UnexpectedEof, message: \"failed to fill whole buffer\" })"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 16,
+          "height": 2,
+          "rgba_sha256": "bd5721cd94c6b1847720eb22eca783b1faae0786c0c7fc420971106af04d6281",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "alt_sha256": "bd5721cd94c6b1847720eb22eca783b1faae0786c0c7fc420971106af04d6281"
+        }
+      },
+      "description": "image, image-nonstrict: reject (failed to fill whole buffer); glycin: reject (ExpectedError); radiant: reject (unexpected end of file); hdrldr: reject (Io); stb: accept 16x2 `bd5721cd`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 74,
+      "witness_length": 69
+    },
+    {
+      "rule": "seed:header-lines",
+      "count": 24,
+      "patterns": 10,
+      "original_id": 27,
+      "witness": "witnesses/18-seed-header-lines.hdr",
+      "mutation": {
+        "source": "seed",
+        "name": "header-no-comment-rle",
+        "family": "header-lines",
+        "rule": "seed:header-lines",
+        "expected_ok": true
+      },
+      "classification": "accept-different-pixels",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        }
+      },
+      "description": "image, image-nonstrict, glycin, stb: accept 8x4 `d19d3168`; radiant, hdrldr: accept 8x4 `2592e096`",
+      "pixel_difference": "image vs radiant: uniform scale x1.003922",
+      "min_checks": 24,
+      "original_length": 185,
+      "witness_length": 185
+    },
+    {
+      "rule": "byte-flip-data",
+      "count": 11,
+      "patterns": 8,
+      "original_id": 969,
+      "witness": "witnesses/19-byte-flip-data.hdr",
+      "mutation": {
+        "rule": "byte-flip-data",
+        "field": "offset",
+        "value": 178,
+        "source": "mutation",
+        "seed": "header-exposure-twice-rle",
+        "family": "header-lines"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "stb": {
+          "status": "error",
+          "error_class": "invalid decoded scanline length",
+          "message": "invalid decoded scanline length"
+        }
+      },
+      "description": "image, image-nonstrict, glycin: accept 8x4 `d19d3168`; radiant, hdrldr: accept 8x4 `2592e096`; stb: reject (invalid decoded scanline lengt)",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 211,
+      "witness_length": 169
+    },
+    {
+      "rule": "seed:flat-scanlines",
+      "count": 7,
+      "patterns": 7,
+      "original_id": 0,
+      "witness": "witnesses/20-seed-flat-scanlines.hdr",
+      "mutation": {
+        "source": "seed",
+        "name": "flat-1x1",
+        "family": "flat-scanlines",
+        "rule": "seed:flat-scanlines",
+        "expected_ok": true
+      },
+      "classification": "accept-different-pixels",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "729f30ba182a8c97f549a1eacb5f3a5e1fe991adbf8274e805d30bdb11442c7d",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906333456599665,
+          "alt_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "729f30ba182a8c97f549a1eacb5f3a5e1fe991adbf8274e805d30bdb11442c7d",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490"
+        }
+      },
+      "description": "image, image-nonstrict, glycin, stb: accept 1x1 `a2c33d48`; radiant, hdrldr: accept 1x1 `729f30ba`",
+      "pixel_difference": "image vs radiant: uniform scale x1.003922",
+      "min_checks": 24,
+      "original_length": 61,
+      "witness_length": 53
+    },
+    {
+      "rule": "seed:rle-new",
+      "count": 6,
+      "patterns": 6,
+      "original_id": 7,
+      "witness": "witnesses/21-seed-rle-new.hdr",
+      "mutation": {
+        "source": "seed",
+        "name": "rle-new-8x4-smooth",
+        "family": "rle-new",
+        "rule": "seed:rle-new",
+        "expected_ok": true
+      },
+      "classification": "accept-different-pixels",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        }
+      },
+      "description": "image, image-nonstrict, glycin, stb: accept 8x4 `d19d3168`; radiant, hdrldr: accept 8x4 `2592e096`",
+      "pixel_difference": "image vs radiant: uniform scale x1.003922",
+      "min_checks": 24,
+      "original_length": 197,
+      "witness_length": 197
+    },
+    {
+      "rule": "many-header-lines",
+      "count": 6,
+      "patterns": 2,
+      "original_id": 358,
+      "witness": "witnesses/22-many-header-lines.hdr",
+      "mutation": {
+        "rule": "many-header-lines",
+        "field": "count",
+        "value": 100,
+        "source": "mutation",
+        "seed": "header-empty-header-flat",
+        "family": "header-lines"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "212bfe7a83d88bbde307d68d403026e100fefa5a62dfa20790e7d901fe8da258",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "212bfe7a83d88bbde307d68d403026e100fefa5a62dfa20790e7d901fe8da258",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d"
+        },
+        "stb": {
+          "status": "error",
+          "error_class": "unsupported format",
+          "message": "unsupported format"
+        }
+      },
+      "description": "image, image-nonstrict, glycin: accept 5x3 `4235d79b`; radiant, hdrldr: accept 5x3 `212bfe7a`; stb: reject (unsupported format)",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 482,
+      "witness_length": 105
+    },
+    {
+      "rule": "old-rle-first-pixel-marker",
+      "count": 4,
+      "patterns": 4,
+      "original_id": 221,
+      "witness": "witnesses/23-old-rle-first-pixel-marker.hdr",
+      "mutation": {
+        "rule": "old-rle-first-pixel-marker",
+        "field": "row",
+        "value": 5,
+        "source": "mutation",
+        "seed": "rle-old-16x2",
+        "family": "rle-old"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Hdr",
+          "message": "Format error decoding Hdr: First pixel of a scanline shouldn't be run length marker"
+        },
+        "image-nonstrict": {
+          "status": "error",
+          "error_class": "Format error decoding Hdr",
+          "message": "Format error decoding Hdr: First pixel of a scanline shouldn't be run length marker"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Hdr: First pixel of a scanline shouldn't be run length marker"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 16,
+          "height": 2,
+          "rgba_sha256": "e6de595fac6a975557c57e320d2aeaffa534af1aa0f31885a15e81f665b45c26",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "e6de595fac6a975557c57e320d2aeaffa534af1aa0f31885a15e81f665b45c26"
+        },
+        "hdrldr": {
+          "status": "error",
+          "error_class": "Rle",
+          "message": "Rle"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 16,
+          "height": 2,
+          "rgba_sha256": "0287342079069bccf64c60e8b72b6910b9079ae6544b6c4adefc280ee4469a96",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 1.0,
+          "alt_sha256": "0287342079069bccf64c60e8b72b6910b9079ae6544b6c4adefc280ee4469a96"
+        }
+      },
+      "description": "image, image-nonstrict: reject (Format error decoding Hdr); glycin: reject (ExpectedError); radiant: accept 16x2 `e6de595f`; hdrldr: reject (Rle); stb: accept 16x2 `02873420`",
+      "pixel_difference": "",
+      "min_checks": 24,
+      "original_length": 74,
+      "witness_length": 69
+    },
+    {
+      "rule": "seed:rle-old",
+      "count": 2,
+      "patterns": 2,
+      "original_id": 13,
+      "witness": "witnesses/24-seed-rle-old.hdr",
+      "mutation": {
+        "source": "seed",
+        "name": "rle-old-16x2",
+        "family": "rle-old",
+        "rule": "seed:rle-old",
+        "expected_ok": true
+      },
+      "classification": "accept-different-pixels",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 16,
+          "height": 2,
+          "rgba_sha256": "94507a92e215fe7edcb4ef8c33a092d95fb6614e003a8a837837d98ec040e7b9",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "94507a92e215fe7edcb4ef8c33a092d95fb6614e003a8a837837d98ec040e7b9"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 16,
+          "height": 2,
+          "rgba_sha256": "94507a92e215fe7edcb4ef8c33a092d95fb6614e003a8a837837d98ec040e7b9",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "94507a92e215fe7edcb4ef8c33a092d95fb6614e003a8a837837d98ec040e7b9"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 16,
+          "height": 2,
+          "rgba_sha256": "94507a92e215fe7edcb4ef8c33a092d95fb6614e003a8a837837d98ec040e7b9",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "94507a92e215fe7edcb4ef8c33a092d95fb6614e003a8a837837d98ec040e7b9"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 16,
+          "height": 2,
+          "rgba_sha256": "958c47de61e125c59a63efc0f810acc203fba29b9d7d03114fd677ac10405cdd",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906342026303402,
+          "alt_sha256": "94507a92e215fe7edcb4ef8c33a092d95fb6614e003a8a837837d98ec040e7b9"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 16,
+          "height": 2,
+          "rgba_sha256": "958c47de61e125c59a63efc0f810acc203fba29b9d7d03114fd677ac10405cdd",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906266327248618,
+          "alt_sha256": "94507a92e215fe7edcb4ef8c33a092d95fb6614e003a8a837837d98ec040e7b9"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 16,
+          "height": 2,
+          "rgba_sha256": "c5a5cb19e2dc8095fc420137e835a6617634e473bb915f3625ce997f45edee21",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 1.0,
+          "alt_sha256": "c5a5cb19e2dc8095fc420137e835a6617634e473bb915f3625ce997f45edee21"
+        }
+      },
+      "description": "image, image-nonstrict, glycin: accept 16x2 `94507a92`; radiant, hdrldr: accept 16x2 `958c47de`; stb: accept 16x2 `c5a5cb19`",
+      "pixel_difference": "image vs radiant: uniform scale x1.003922; image vs stb: sample values (max rel err 1)",
+      "min_checks": 24,
+      "original_length": 74,
+      "witness_length": 69
+    },
+    {
+      "rule": "seed:exponent-extremes",
+      "count": 2,
+      "patterns": 2,
+      "original_id": 25,
+      "witness": "witnesses/25-seed-exponent-extremes.hdr",
+      "mutation": {
+        "source": "seed",
+        "name": "extremes-flat-8x4",
+        "family": "exponent-extremes",
+        "rule": "seed:exponent-extremes",
+        "expected_ok": true
+      },
+      "classification": "accept-different-pixels",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "4830899248a3bc0ac403bf3a25b12e1ee43d7e27356bede8d18462ab6635f31c",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "4830899248a3bc0ac403bf3a25b12e1ee43d7e27356bede8d18462ab6635f31c"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "4830899248a3bc0ac403bf3a25b12e1ee43d7e27356bede8d18462ab6635f31c",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "4830899248a3bc0ac403bf3a25b12e1ee43d7e27356bede8d18462ab6635f31c"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "4830899248a3bc0ac403bf3a25b12e1ee43d7e27356bede8d18462ab6635f31c",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "4830899248a3bc0ac403bf3a25b12e1ee43d7e27356bede8d18462ab6635f31c"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "359fe533c55ecf0bc291aa578602dcf9e23f5d9916e7529e51ff50ff9b9807d4",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "359fe533c55ecf0bc291aa578602dcf9e23f5d9916e7529e51ff50ff9b9807d4"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "c2b7ebe561a5a537c50eb8767006aed11dd3e60ef1af587215d9f99b686d8ba4",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "4830899248a3bc0ac403bf3a25b12e1ee43d7e27356bede8d18462ab6635f31c"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "4830899248a3bc0ac403bf3a25b12e1ee43d7e27356bede8d18462ab6635f31c",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "4830899248a3bc0ac403bf3a25b12e1ee43d7e27356bede8d18462ab6635f31c"
+        }
+      },
+      "description": "image, image-nonstrict, glycin, stb: accept 8x4 `48308992`; radiant: accept 8x4 `359fe533`; hdrldr: accept 8x4 `c2b7ebe5`",
+      "pixel_difference": "image vs radiant: sample values (max rel err 0.00391); image vs hdrldr: uniform scale x1.003922",
+      "min_checks": 24,
+      "original_length": 185,
+      "witness_length": 185
+    }
+  ],
+  "pixel_rows": [
+    {
+      "rule": "rle-marker-bytes",
+      "count": 175,
+      "id": 320,
+      "witness": "witnesses/pixel-01.hdr",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "72c1497d2e681a93d30dbadde93d437420715bdd8e9f6dbdb9c901457850f28d",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "72c1497d2e681a93d30dbadde93d437420715bdd8e9f6dbdb9c901457850f28d"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "72c1497d2e681a93d30dbadde93d437420715bdd8e9f6dbdb9c901457850f28d",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "72c1497d2e681a93d30dbadde93d437420715bdd8e9f6dbdb9c901457850f28d"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "72c1497d2e681a93d30dbadde93d437420715bdd8e9f6dbdb9c901457850f28d",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "72c1497d2e681a93d30dbadde93d437420715bdd8e9f6dbdb9c901457850f28d"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "479f837a39c61288d59edb1b5a1e5cfbf3a82d3881c11a17c26421ca81dd7d6e",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "72c1497d2e681a93d30dbadde93d437420715bdd8e9f6dbdb9c901457850f28d"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "479f837a39c61288d59edb1b5a1e5cfbf3a82d3881c11a17c26421ca81dd7d6e",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "72c1497d2e681a93d30dbadde93d437420715bdd8e9f6dbdb9c901457850f28d"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 16,
+          "height": 16,
+          "rgba_sha256": "33ef2cea636d61c3445dad47a4afa756b311df7100db365aadc8d66c8850247c",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 1.0,
+          "alt_sha256": "33ef2cea636d61c3445dad47a4afa756b311df7100db365aadc8d66c8850247c"
+        }
+      },
+      "description": "image, image-nonstrict, glycin: accept 16x16 `72c1497d`; radiant, hdrldr: accept 16x16 `479f837a`; stb: accept 16x16 `33ef2cea`",
+      "difference": "image vs radiant: uniform scale x1.003922; image vs stb: sample values (max rel err 1)"
+    },
+    {
+      "rule": "exponent-byte-flat",
+      "count": 86,
+      "id": 142,
+      "witness": "witnesses/pixel-02.hdr",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "e29a51b990c975b69856bc27610352c95180301f882080df8fcadb0dc0b63e8c",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "e29a51b990c975b69856bc27610352c95180301f882080df8fcadb0dc0b63e8c"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "01c57d4aa082a167eaac4c448fa28095471b2a55262a380676a5115cb16920c1",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906447235140095,
+          "alt_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "43d4a6181e3fd0c91c4abc3d0711f69a227b29d386981cf16364d8094af3b504"
+        }
+      },
+      "description": "image, image-nonstrict, glycin, stb: accept 5x3 `43d4a618`; radiant: accept 5x3 `e29a51b9`; hdrldr: accept 5x3 `01c57d4a`",
+      "difference": "image vs radiant: sample values (max rel err 0.00391); image vs hdrldr: uniform scale x1.003922"
+    },
+    {
+      "rule": "rle-width-field",
+      "count": 39,
+      "id": 705,
+      "witness": "witnesses/pixel-03.hdr",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "0d65762897ad48595ccded9b1a87e5c9aa992b4b4689ee7a55c37a84e25ace27",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "0d65762897ad48595ccded9b1a87e5c9aa992b4b4689ee7a55c37a84e25ace27"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "0d65762897ad48595ccded9b1a87e5c9aa992b4b4689ee7a55c37a84e25ace27",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "0d65762897ad48595ccded9b1a87e5c9aa992b4b4689ee7a55c37a84e25ace27"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "0d65762897ad48595ccded9b1a87e5c9aa992b4b4689ee7a55c37a84e25ace27",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "0d65762897ad48595ccded9b1a87e5c9aa992b4b4689ee7a55c37a84e25ace27"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "0dbf9502606ce4ecc863579fab1eacec0befcaa72ea30c25defbff42ad8316fe",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003921330212481381,
+          "alt_sha256": "0dbf9502606ce4ecc863579fab1eacec0befcaa72ea30c25defbff42ad8316fe"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "c4f169cf541527a8d8c17ee716026cd8e1510554465c4ab001311cbf7f220508",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "0d65762897ad48595ccded9b1a87e5c9aa992b4b4689ee7a55c37a84e25ace27"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "af46f51b0978b3cbf55ebcf575031d98c61f3da5f91fcf75a824a39180abc51e",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 1.0,
+          "alt_sha256": "af46f51b0978b3cbf55ebcf575031d98c61f3da5f91fcf75a824a39180abc51e"
+        }
+      },
+      "description": "image, image-nonstrict, glycin: accept 8x4 `0d657628`; radiant: accept 8x4 `0dbf9502`; hdrldr: accept 8x4 `c4f169cf`; stb: accept 8x4 `af46f51b`",
+      "difference": "image vs radiant: sample values (max rel err 0.00392); image vs hdrldr: uniform scale x1.003922; image vs stb: sample values (max rel err 1)"
+    },
+    {
+      "rule": "dims-line",
+      "count": 26,
+      "id": 281,
+      "witness": "witnesses/pixel-04.hdr",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 4,
+          "height": 3,
+          "rgba_sha256": "0f539f75762f17f67c1ec6d5a6fe3344e1f9ce37404abc049f755dfdce8cfc31",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "0f539f75762f17f67c1ec6d5a6fe3344e1f9ce37404abc049f755dfdce8cfc31"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 4,
+          "height": 3,
+          "rgba_sha256": "0f539f75762f17f67c1ec6d5a6fe3344e1f9ce37404abc049f755dfdce8cfc31",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "0f539f75762f17f67c1ec6d5a6fe3344e1f9ce37404abc049f755dfdce8cfc31"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 4,
+          "height": 3,
+          "rgba_sha256": "0f539f75762f17f67c1ec6d5a6fe3344e1f9ce37404abc049f755dfdce8cfc31",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "0f539f75762f17f67c1ec6d5a6fe3344e1f9ce37404abc049f755dfdce8cfc31"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 4,
+          "height": 3,
+          "rgba_sha256": "9b2d804d433f85b91925ddddfa5b2d941d1ef06f85519ca474e39333ba82c484",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "0f539f75762f17f67c1ec6d5a6fe3344e1f9ce37404abc049f755dfdce8cfc31"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 4,
+          "height": 3,
+          "rgba_sha256": "9b2d804d433f85b91925ddddfa5b2d941d1ef06f85519ca474e39333ba82c484",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "0f539f75762f17f67c1ec6d5a6fe3344e1f9ce37404abc049f755dfdce8cfc31"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 4,
+          "height": 3,
+          "rgba_sha256": "0f539f75762f17f67c1ec6d5a6fe3344e1f9ce37404abc049f755dfdce8cfc31",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "0f539f75762f17f67c1ec6d5a6fe3344e1f9ce37404abc049f755dfdce8cfc31"
+        }
+      },
+      "description": "image, image-nonstrict, glycin, stb: accept 4x3 `0f539f75`; radiant, hdrldr: accept 4x3 `9b2d804d`",
+      "difference": "image vs radiant: uniform scale x1.003922"
+    },
+    {
+      "rule": "seed:header-lines",
+      "count": 16,
+      "id": 27,
+      "witness": "witnesses/pixel-05.hdr",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        }
+      },
+      "description": "image, image-nonstrict, glycin, stb: accept 8x4 `d19d3168`; radiant, hdrldr: accept 8x4 `2592e096`",
+      "difference": "image vs radiant: uniform scale x1.003922"
+    },
+    {
+      "rule": "byte-value",
+      "count": 9,
+      "id": 3498,
+      "witness": "witnesses/pixel-06.hdr",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 20,
+          "height": 3,
+          "rgba_sha256": "0d8b89a2c9d4f99eb575de257efdf37ff88c235645d0b88eb1d9d5e0693b99b6",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "0d8b89a2c9d4f99eb575de257efdf37ff88c235645d0b88eb1d9d5e0693b99b6"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 20,
+          "height": 3,
+          "rgba_sha256": "0d8b89a2c9d4f99eb575de257efdf37ff88c235645d0b88eb1d9d5e0693b99b6",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "0d8b89a2c9d4f99eb575de257efdf37ff88c235645d0b88eb1d9d5e0693b99b6"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 20,
+          "height": 3,
+          "rgba_sha256": "0d8b89a2c9d4f99eb575de257efdf37ff88c235645d0b88eb1d9d5e0693b99b6",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "0d8b89a2c9d4f99eb575de257efdf37ff88c235645d0b88eb1d9d5e0693b99b6"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 20,
+          "height": 3,
+          "rgba_sha256": "bed0bac5264d8407dc824cf7172489817a91ff6502cb04d85a30edeb232c2c54",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003921330212481381,
+          "alt_sha256": "bed0bac5264d8407dc824cf7172489817a91ff6502cb04d85a30edeb232c2c54"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 20,
+          "height": 3,
+          "rgba_sha256": "54910881aa55a61b01c3cd8285a58fee06f4fc6ff28a3eb7166995ca3f66bfb0",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906266327248618,
+          "alt_sha256": "0d8b89a2c9d4f99eb575de257efdf37ff88c235645d0b88eb1d9d5e0693b99b6"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 20,
+          "height": 3,
+          "rgba_sha256": "2f343e8b646ddf83df19f4d206e0027d4a7c0f31e6943de324db1af696374cf9",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 1.0,
+          "alt_sha256": "2f343e8b646ddf83df19f4d206e0027d4a7c0f31e6943de324db1af696374cf9"
+        }
+      },
+      "description": "image, image-nonstrict, glycin: accept 20x3 `0d8b89a2`; radiant: accept 20x3 `bed0bac5`; hdrldr: accept 20x3 `54910881`; stb: accept 20x3 `2f343e8b`",
+      "difference": "image vs radiant: sample values (max rel err 0.00392); image vs hdrldr: uniform scale x1.003922; image vs stb: sample values (max rel err 1)"
+    },
+    {
+      "rule": "seed:flat-scanlines",
+      "count": 7,
+      "id": 0,
+      "witness": "witnesses/pixel-07.hdr",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "729f30ba182a8c97f549a1eacb5f3a5e1fe991adbf8274e805d30bdb11442c7d",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906333456599665,
+          "alt_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "729f30ba182a8c97f549a1eacb5f3a5e1fe991adbf8274e805d30bdb11442c7d",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "a2c33d48003d3a0c8925545465606cfa454f0e81aa58202527fa4b34004b6490"
+        }
+      },
+      "description": "image, image-nonstrict, glycin, stb: accept 1x1 `a2c33d48`; radiant, hdrldr: accept 1x1 `729f30ba`",
+      "difference": "image vs radiant: uniform scale x1.003922"
+    },
+    {
+      "rule": "seed:rle-new",
+      "count": 6,
+      "id": 7,
+      "witness": "witnesses/pixel-08.hdr",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "2592e0963c898e6de2f5322d395cd4084592ee3a079876382004913284441b9b",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 8,
+          "height": 4,
+          "rgba_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "d19d316809efe4ef9dd8dc62da9a512e61bb830d8a973d547ca29813f14746a1"
+        }
+      },
+      "description": "image, image-nonstrict, glycin, stb: accept 8x4 `d19d3168`; radiant, hdrldr: accept 8x4 `2592e096`",
+      "difference": "image vs radiant: uniform scale x1.003922"
+    },
+    {
+      "rule": "old-rle-count",
+      "count": 5,
+      "id": 1782,
+      "witness": "witnesses/pixel-09.hdr",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 20,
+          "height": 3,
+          "rgba_sha256": "0d8b89a2c9d4f99eb575de257efdf37ff88c235645d0b88eb1d9d5e0693b99b6",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "0d8b89a2c9d4f99eb575de257efdf37ff88c235645d0b88eb1d9d5e0693b99b6"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 20,
+          "height": 3,
+          "rgba_sha256": "0d8b89a2c9d4f99eb575de257efdf37ff88c235645d0b88eb1d9d5e0693b99b6",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "0d8b89a2c9d4f99eb575de257efdf37ff88c235645d0b88eb1d9d5e0693b99b6"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 20,
+          "height": 3,
+          "rgba_sha256": "0d8b89a2c9d4f99eb575de257efdf37ff88c235645d0b88eb1d9d5e0693b99b6",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "0d8b89a2c9d4f99eb575de257efdf37ff88c235645d0b88eb1d9d5e0693b99b6"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 20,
+          "height": 3,
+          "rgba_sha256": "bed0bac5264d8407dc824cf7172489817a91ff6502cb04d85a30edeb232c2c54",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003921330212481381,
+          "alt_sha256": "bed0bac5264d8407dc824cf7172489817a91ff6502cb04d85a30edeb232c2c54"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 20,
+          "height": 3,
+          "rgba_sha256": "54910881aa55a61b01c3cd8285a58fee06f4fc6ff28a3eb7166995ca3f66bfb0",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906266327248618,
+          "alt_sha256": "0d8b89a2c9d4f99eb575de257efdf37ff88c235645d0b88eb1d9d5e0693b99b6"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 20,
+          "height": 3,
+          "rgba_sha256": "2f343e8b646ddf83df19f4d206e0027d4a7c0f31e6943de324db1af696374cf9",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 1.0,
+          "alt_sha256": "2f343e8b646ddf83df19f4d206e0027d4a7c0f31e6943de324db1af696374cf9"
+        }
+      },
+      "description": "image, image-nonstrict, glycin: accept 20x3 `0d8b89a2`; radiant: accept 20x3 `bed0bac5`; hdrldr: accept 20x3 `54910881`; stb: accept 20x3 `2f343e8b`",
+      "difference": "image vs radiant: sample values (max rel err 0.00392); image vs hdrldr: uniform scale x1.003922; image vs stb: sample values (max rel err 1)"
+    },
+    {
+      "rule": "format-line",
+      "count": 4,
+      "id": 4152,
+      "witness": "witnesses/pixel-10.hdr",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d"
+        },
+        "image-nonstrict": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d",
+          "alpha_present": false,
+          "orig_color_type": "Rgb32F",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d",
+          "alpha_present": false,
+          "orig_color_type": "R32g32b32Float cicp=Some([1, 8, 0, 1])",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d"
+        },
+        "radiant": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "212bfe7a83d88bbde307d68d403026e100fefa5a62dfa20790e7d901fe8da258",
+          "alpha_present": false,
+          "orig_color_type": "Rgb<f32> (radiant)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.003906348334557448,
+          "alt_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d"
+        },
+        "hdrldr": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "212bfe7a83d88bbde307d68d403026e100fefa5a62dfa20790e7d901fe8da258",
+          "alpha_present": false,
+          "orig_color_type": "RGB<f32> (hdrldr)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0039063089079683505,
+          "alt_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d"
+        },
+        "stb": {
+          "status": "ok",
+          "width": 5,
+          "height": 3,
+          "rgba_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d",
+          "alpha_present": false,
+          "orig_color_type": "stb float x3 (file comps 3)",
+          "channels": 3,
+          "nan_inf": 0,
+          "max_rel_err_vs_ref": 0.0,
+          "alt_sha256": "4235d79b077584e2af6e5133b75b356081dd40e158fe66d0e0361c3984734d5d"
+        }
+      },
+      "description": "image, image-nonstrict, glycin, stb: accept 5x3 `4235d79b`; radiant, hdrldr: accept 5x3 `212bfe7a`",
+      "difference": "image vs radiant: uniform scale x1.003922"
+    }
+  ],
+  "public_subset": true,
+  "excluded_crash_or_timeout_inputs": 145
+}

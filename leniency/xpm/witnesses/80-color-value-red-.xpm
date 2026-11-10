@@ -1,0 +1,15 @@
+/* XPM */
+static char * img[] = {
+"5 8 3 1",
+"X c #149C75",
+"a c red ",
+"c c None",
+"Xcccc",
+"accaX",
+"caaXc",
+"aXcaX",
+"ccccX",
+"XcacX",
+"XXaaX",
+"XcXaa"
+};

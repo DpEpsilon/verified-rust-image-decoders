@@ -1,0 +1,10 @@
+/* XPM */
+static char * img[] = {
+"40 4 3 1",
+"# c #D8374B",
+"b c transparent",
+"X c None",
+"X#X#b#X###XXbbbX###X#bX#XXb#X###bXXXX#XX",
+"#X#Xbbb#bbXXXbXbbXbbb#X##XXb##b####bXX#X",
+"#bXbbXXX#X#bbXXXXbXX##b##bbb##XXbb##X#bX",
+"X#bXbXbXbXXX#b##XX##X###bXXXbXb#bb###b##"

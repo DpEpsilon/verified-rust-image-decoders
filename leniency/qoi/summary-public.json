@@ -1,0 +1,3412 @@
+{
+  "format": "qoi",
+  "inputs": 9968,
+  "seed_files": 68,
+  "seed": 731,
+  "counts": {
+    "all-accept-identical-pixels": 1147,
+    "accept-vs-reject": 6097,
+    "all-reject": 2723,
+    "accept-different-pixels": 1
+  },
+  "changed_mutations": 8692,
+  "elapsed_seconds": 192.0,
+  "decoders": [
+    "image",
+    "glycin",
+    "qoi-crate",
+    "rapid-qoi",
+    "zune-qoi",
+    "ref-c"
+  ],
+  "unavailable": {
+    "gdk-pixbuf": "no QOI module installed (loaders: ani bmp gif icns ico pnm qtif tga tiff xbm xpm)"
+  },
+  "groups": {
+    "image": "image-rs",
+    "glycin": "image-rs",
+    "qoi-crate": "image-rs"
+  },
+  "per_decoder": {
+    "image": {
+      "ok": 1233,
+      "error": 8735
+    },
+    "glycin": {
+      "ok": 1233,
+      "error": 8735
+    },
+    "qoi-crate": {
+      "ok": 1148,
+      "error": 8820
+    },
+    "rapid-qoi": {
+      "ok": 5794,
+      "error": 4174
+    },
+    "zune-qoi": {
+      "ok": 4995,
+      "error": 4973
+    },
+    "ref-c": {
+      "ok": 6880,
+      "error": 3088
+    }
+  },
+  "lone": {
+    "image": {
+      "lone-reject": 3517
+    },
+    "glycin": {
+      "lone-reject": 3517
+    },
+    "qoi-crate": {
+      "lone-reject": 3553
+    },
+    "rapid-qoi": {
+      "lone-accept": 71
+    },
+    "zune-qoi": {
+      "lone-reject": 25,
+      "lone-accept": 294
+    },
+    "ref-c": {
+      "lone-accept": 1133
+    }
+  },
+  "rows": [
+    {
+      "rule": "end-marker:marker byte N",
+      "count": 1584,
+      "rule_total": 1584,
+      "patterns": 1,
+      "original_id": 68,
+      "witness": "witnesses/001-end-marker-marker_byte_N.qoi",
+      "mutation": {
+        "id": 68,
+        "length": 26,
+        "sha256": "5f7c8d4a4155f98115e25ed7351c2288bb9258e7b69a134fa22558e3f4f5163e",
+        "rule": "end-marker",
+        "field": "marker byte 2",
+        "old": 0,
+        "new": 255,
+        "source": "mutation",
+        "seed": "flat-1x1-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid padding",
+          "message": "invalid padding (stream end marker mismatch)"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "1f14bd8e308ebe9dc78751dce7a329816030429b5a647e0299bf7f1060422d31",
+          "rgba16_sha256": "54f041c855911922c4fdc1bb298f1e63cabe03234ec5a11c3b7545b8b8cdfba8",
+          "alpha_present": false,
+          "orig_color_type": "Rgb"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "1f14bd8e308ebe9dc78751dce7a329816030429b5a647e0299bf7f1060422d31",
+          "rgba16_sha256": "54f041c855911922c4fdc1bb298f1e63cabe03234ec5a11c3b7545b8b8cdfba8",
+          "alpha_present": false,
+          "orig_color_type": "RGB"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "1f14bd8e308ebe9dc78751dce7a329816030429b5a647e0299bf7f1060422d31",
+          "rgba16_sha256": "54f041c855911922c4fdc1bb298f1e63cabe03234ec5a11c3b7545b8b8cdfba8",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 26,
+      "witness_length": 26,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-op-tag:op N",
+      "count": 757,
+      "rule_total": 1317,
+      "patterns": 10,
+      "original_id": 70,
+      "witness": "witnesses/002-stream-op-tag-op_N.qoi",
+      "mutation": {
+        "id": 70,
+        "length": 26,
+        "sha256": "89ccec490d81464521df0b1d542f04d1e1903dd6c385b95f5a65e29226e3d018",
+        "rule": "stream-op-tag",
+        "field": "op 0",
+        "old": 254,
+        "new": 253,
+        "source": "mutation",
+        "seed": "noise-1x1-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid padding",
+          "message": "invalid padding (stream end marker mismatch)"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "rgba16_sha256": "6186530e872ac29959a0c223aed23944f12c6b609e64a0a8bd1be20b5006a8b2",
+          "alpha_present": false,
+          "orig_color_type": "Srgb"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "rgba16_sha256": "6186530e872ac29959a0c223aed23944f12c6b609e64a0a8bd1be20b5006a8b2",
+          "alpha_present": false,
+          "orig_color_type": "RGB"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "rgba16_sha256": "6186530e872ac29959a0c223aed23944f12c6b609e64a0a8bd1be20b5006a8b2",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 26,
+      "witness_length": 26,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "header-height:height",
+      "count": 327,
+      "rule_total": 484,
+      "patterns": 5,
+      "original_id": 137,
+      "witness": "witnesses/003-header-height-height.qoi",
+      "mutation": {
+        "id": 137,
+        "length": 23,
+        "sha256": "3678ba5f3a99e95803d4976f6a97b9ce77fe5e98b2443732eb64c6e65ba43521",
+        "rule": "header-height",
+        "field": "height",
+        "old": 1,
+        "new": 255,
+        "source": "mutation",
+        "seed": "gradient-1x1-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "error",
+          "error_class": "NotEnoughData",
+          "message": "NotEnoughData"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 0",
+          "message": "I/O error Not enough bytes, expected 8 but found 0\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 1,
+          "height": 255,
+          "rgba_sha256": "e435dd026aefddeb757671ea9dc90c72fb2076a244b205c1c6f507a7a644c6d2",
+          "rgba16_sha256": "d767494c2cd06acf6892686bd8e6b1d66d2ef28db76c3cdd5643cd76666ec8ec",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 23,
+      "witness_length": 23,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "header-width:width",
+      "count": 317,
+      "rule_total": 536,
+      "patterns": 5,
+      "original_id": 71,
+      "witness": "witnesses/004-header-width-width.qoi",
+      "mutation": {
+        "id": 71,
+        "length": 26,
+        "sha256": "7f087fe8014aad1196c774207cd2d2be4418afc60dfee251e99b908e9e8ad13b",
+        "rule": "header-width",
+        "field": "width",
+        "old": 1,
+        "new": 65535,
+        "source": "mutation",
+        "seed": "flat-1x1-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "error",
+          "error_class": "NotEnoughData",
+          "message": "NotEnoughData"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "Width 65535 greater than max configured width 16384",
+          "message": "Width 65535 greater than max configured width 16384\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 65535,
+          "height": 1,
+          "rgba_sha256": "6cc3c4a63c4a31bf64d139552142db49651eba6f61795ff26a1c3dd8c5c63d72",
+          "rgba16_sha256": "b9e78b56bba6a9a376c65d25e9f584f638711fb1e6f615042b834822366608da",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 26,
+      "witness_length": 26,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "header-colorspace:colorspace",
+      "count": 272,
+      "rule_total": 272,
+      "patterns": 1,
+      "original_id": 156,
+      "witness": "witnesses/005-header-colorspace-colorspace.qoi",
+      "mutation": {
+        "id": 156,
+        "length": 30,
+        "sha256": "492da066c06f1a0d46a9e9fcb2602c40a56d8649423b42869b69190455859656",
+        "rule": "header-colorspace",
+        "field": "colorspace",
+        "old": 1,
+        "new": 3,
+        "source": "mutation",
+        "seed": "transparent-3x2-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: invalid color space: 3 (expected 0 or 1)"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:405:52: Format error decoding Qoi: invalid color space: 3 (expected 0 or 1)"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid color space",
+          "message": "invalid color space: 3 (expected 0 or 1)"
+        },
+        "rapid-qoi": {
+          "status": "error",
+          "error_class": "InvalidColorSpaceValue",
+          "message": "InvalidColorSpaceValue"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "e14c3d33309edaeebf006c73362121d8e5d1bdaada96e033bbddbf1390ca081d",
+          "rgba16_sha256": "4989377a942eecf9abb1a6c16fbea1b1a62a51ad8e1af246bcb6158216c1490f",
+          "alpha_present": true,
+          "orig_color_type": "RGBA"
+        },
+        "ref-c": {
+          "status": "error",
+          "error_class": "QoiRejected",
+          "message": "qoi_decode returned NULL"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 30,
+      "witness_length": 30,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-padding:zero bytes before marker",
+      "count": 198,
+      "rule_total": 198,
+      "patterns": 1,
+      "original_id": 152,
+      "witness": "witnesses/006-stream-padding-zero_bytes_before_marker.qoi",
+      "mutation": {
+        "id": 152,
+        "length": 53,
+        "sha256": "ce28976d1db91a52df0ada399a412d4ad861f9c436031c5641869a5706b8d554",
+        "rule": "stream-padding",
+        "field": "zero bytes before marker",
+        "old": 0,
+        "new": 1,
+        "source": "mutation",
+        "seed": "noise-3x2-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid padding",
+          "message": "invalid padding (stream end marker mismatch)"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "ce47787d9357692220230b544cc71e03647fc69c7cc77e1370aabc7d7d7d14ea",
+          "rgba16_sha256": "aebfa788a1b66266baac1aca963fc15bd44791aab9c40acc73e621e903396738",
+          "alpha_present": true,
+          "orig_color_type": "SrgbLinA"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "ce47787d9357692220230b544cc71e03647fc69c7cc77e1370aabc7d7d7d14ea",
+          "rgba16_sha256": "aebfa788a1b66266baac1aca963fc15bd44791aab9c40acc73e621e903396738",
+          "alpha_present": true,
+          "orig_color_type": "RGBA"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "ce47787d9357692220230b544cc71e03647fc69c7cc77e1370aabc7d7d7d14ea",
+          "rgba16_sha256": "aebfa788a1b66266baac1aca963fc15bd44791aab9c40acc73e621e903396738",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 53,
+      "witness_length": 53,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-op-tag:op N",
+      "count": 196,
+      "rule_total": 1317,
+      "patterns": 10,
+      "original_id": 96,
+      "witness": "witnesses/007-stream-op-tag-op_N.qoi",
+      "mutation": {
+        "id": 96,
+        "length": 30,
+        "sha256": "e0208d424178fdce0e158f1af47581b994cdea26cffce62dec0421c3f6a87674",
+        "rule": "stream-op-tag",
+        "field": "op 3",
+        "old": 222,
+        "new": 128,
+        "source": "mutation",
+        "seed": "transparent-8x8-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid padding",
+          "message": "invalid padding (stream end marker mismatch)"
+        },
+        "rapid-qoi": {
+          "status": "error",
+          "error_class": "NotEnoughData",
+          "message": "NotEnoughData"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 0",
+          "message": "I/O error Not enough bytes, expected 8 but found 0\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "de445379b4d954c6c659dbe35473855925854b71ab4cd4ee171b3ad553c65902",
+          "rgba16_sha256": "9b6d762cb9817336abcca2ba0b5b3b4d2e9c50b641c68d742c626d83eda14bca",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 30,
+      "witness_length": 30,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "random-flip:byte N",
+      "count": 160,
+      "rule_total": 250,
+      "patterns": 6,
+      "original_id": 9226,
+      "witness": "witnesses/008-random-flip-byte_N.qoi",
+      "mutation": {
+        "id": 9226,
+        "length": 25,
+        "sha256": "96c664e45e47e454805d88af8abdc10c6edac4a474eb8b61bf614e473b82c8a2",
+        "rule": "random-flip",
+        "field": "byte 9",
+        "old": 0,
+        "new": 60,
+        "source": "mutation",
+        "seed": "runs-3x2-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "error",
+          "error_class": "NotEnoughData",
+          "message": "NotEnoughData"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "Height 3932162 greater than max configured height 16384",
+          "message": "Height 3932162 greater than max configured height 16384\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 3,
+          "height": 3932162,
+          "rgba_sha256": "87ed06c5f8ebed4872f21583d7117bc460630d8e93843e9f068881d64972c58b",
+          "rgba16_sha256": "26169907bdb70afad457c36b32bec06c0d63d2b0ba6eabcba6cee463df97a8c9",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 25,
+      "witness_length": 25,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-op-tag:op N",
+      "count": 145,
+      "rule_total": 1317,
+      "patterns": 10,
+      "original_id": 74,
+      "witness": "witnesses/009-stream-op-tag-op_N.qoi",
+      "mutation": {
+        "id": 74,
+        "length": 27,
+        "sha256": "e169578e08ff8f0fb944aec4f7bbc5d94081804fa73066f04754153bc5083f55",
+        "rule": "stream-op-tag",
+        "field": "op 1",
+        "old": 196,
+        "new": 64,
+        "source": "mutation",
+        "seed": "flat-3x2-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "1c9573297df8502f48efd4db95cdff819cff559a7568be97d4a37b0ad463728a",
+          "rgba16_sha256": "32f353cf905897e99fa93515eabc931cc60a99cecb771ebef8a1560d2fd5c6b7",
+          "alpha_present": false,
+          "orig_color_type": "Srgb"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 4",
+          "message": "I/O error Not enough bytes, expected 8 but found 4\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "c16e2b67e2f14bb54c36f64265a9aa43e20ab1e5a64d0d7043c00468d751dc49",
+          "rgba16_sha256": "07737e7c2615711a63014cd9ddb01f0fc27a65c21585dae996a77fc7c47ca00e",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 27,
+      "witness_length": 27,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-op-duplicated:op N",
+      "count": 145,
+      "rule_total": 145,
+      "patterns": 1,
+      "original_id": 102,
+      "witness": "witnesses/010-stream-op-duplicated-op_N.qoi",
+      "mutation": {
+        "id": 102,
+        "length": 347,
+        "sha256": "fcd6c8ccbb9e7303f30d98689ff0584bd34e982a5e78c437ece547bf31695021",
+        "rule": "stream-op-duplicated",
+        "field": "op 63",
+        "old": 255,
+        "new": "duplicated",
+        "source": "mutation",
+        "seed": "alpha-8x8-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid padding",
+          "message": "invalid padding (stream end marker mismatch)"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "dba20b471718309b41fb1f924f33e108e45c3d73d1ffa458c96bdf3b081b773b",
+          "rgba16_sha256": "af33cd49008d706ef48a13e4cedbe64dd09391678b8c32ece2ea0179aeb16211",
+          "alpha_present": true,
+          "orig_color_type": "SrgbLinA"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "dba20b471718309b41fb1f924f33e108e45c3d73d1ffa458c96bdf3b081b773b",
+          "rgba16_sha256": "af33cd49008d706ef48a13e4cedbe64dd09391678b8c32ece2ea0179aeb16211",
+          "alpha_present": true,
+          "orig_color_type": "RGBA"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "dba20b471718309b41fb1f924f33e108e45c3d73d1ffa458c96bdf3b081b773b",
+          "rgba16_sha256": "af33cd49008d706ef48a13e4cedbe64dd09391678b8c32ece2ea0179aeb16211",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 347,
+      "witness_length": 347,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "header-width:width",
+      "count": 134,
+      "rule_total": 536,
+      "patterns": 5,
+      "original_id": 135,
+      "witness": "witnesses/011-header-width-width.qoi",
+      "mutation": {
+        "id": 135,
+        "length": 31,
+        "sha256": "453dff094462cddade717d58242b717663f42e81a1aabcac2f3aedec630d4dbb",
+        "rule": "header-width",
+        "field": "width",
+        "old": 3,
+        "new": 1,
+        "source": "mutation",
+        "seed": "hand-index-hit",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid padding",
+          "message": "invalid padding (stream end marker mismatch)"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "3e6f9aae16382bf563d8991b6da1b92213911f0dd5deea3ecaccf2f35a56794a",
+          "rgba16_sha256": "9a1613380cdfb8357ea113fa776b8e777f91476b800e3e67691470ffbd1e6af1",
+          "alpha_present": false,
+          "orig_color_type": "SrgbLinA"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "3e6f9aae16382bf563d8991b6da1b92213911f0dd5deea3ecaccf2f35a56794a",
+          "rgba16_sha256": "9a1613380cdfb8357ea113fa776b8e777f91476b800e3e67691470ffbd1e6af1",
+          "alpha_present": false,
+          "orig_color_type": "RGBA"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "3e6f9aae16382bf563d8991b6da1b92213911f0dd5deea3ecaccf2f35a56794a",
+          "rgba16_sha256": "9a1613380cdfb8357ea113fa776b8e777f91476b800e3e67691470ffbd1e6af1",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 31,
+      "witness_length": 31,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "end-marker:marker",
+      "count": 132,
+      "rule_total": 374,
+      "patterns": 5,
+      "original_id": 98,
+      "witness": "witnesses/012-end-marker-marker.qoi",
+      "mutation": {
+        "id": 98,
+        "length": 28,
+        "sha256": "92f99d6b061cdb9b9e43cc5d5bfc067009e80272c402b45f14877190517eca4b",
+        "rule": "end-marker",
+        "field": "marker",
+        "old": "00*7 01",
+        "new": "reversed",
+        "source": "mutation",
+        "seed": "flat-8x8-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid padding",
+          "message": "invalid padding (stream end marker mismatch)"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "adb87b02c2ec284eaa0d1ebdc30edf4d7928d89d6587c6dc97cca121f3b0fd6c",
+          "rgba16_sha256": "7f6ec47ba0465802294e1371b150f2ea7a1f3f85bde3af20255e30e908931082",
+          "alpha_present": false,
+          "orig_color_type": "SrgbLinA"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "adb87b02c2ec284eaa0d1ebdc30edf4d7928d89d6587c6dc97cca121f3b0fd6c",
+          "rgba16_sha256": "7f6ec47ba0465802294e1371b150f2ea7a1f3f85bde3af20255e30e908931082",
+          "alpha_present": false,
+          "orig_color_type": "RGBA"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "adb87b02c2ec284eaa0d1ebdc30edf4d7928d89d6587c6dc97cca121f3b0fd6c",
+          "rgba16_sha256": "7f6ec47ba0465802294e1371b150f2ea7a1f3f85bde3af20255e30e908931082",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 28,
+      "witness_length": 28,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "truncation:length",
+      "count": 117,
+      "rule_total": 251,
+      "patterns": 4,
+      "original_id": 6868,
+      "witness": "witnesses/013-truncation-length.qoi",
+      "mutation": {
+        "id": 6868,
+        "length": 23,
+        "sha256": "6d18269a99fecf67c83c2af053bf1a7f94137f974b6e741f341de6c656d887aa",
+        "rule": "truncation",
+        "field": "length",
+        "old": 26,
+        "new": 23,
+        "source": "mutation",
+        "seed": "flat-1x1-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "1f14bd8e308ebe9dc78751dce7a329816030429b5a647e0299bf7f1060422d31",
+          "rgba16_sha256": "54f041c855911922c4fdc1bb298f1e63cabe03234ec5a11c3b7545b8b8cdfba8",
+          "alpha_present": false,
+          "orig_color_type": "Rgb"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 5",
+          "message": "I/O error Not enough bytes, expected 8 but found 5\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "1f14bd8e308ebe9dc78751dce7a329816030429b5a647e0299bf7f1060422d31",
+          "rgba16_sha256": "54f041c855911922c4fdc1bb298f1e63cabe03234ec5a11c3b7545b8b8cdfba8",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 23,
+      "witness_length": 23,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-op-deleted:op N",
+      "count": 100,
+      "rule_total": 132,
+      "patterns": 4,
+      "original_id": 76,
+      "witness": "witnesses/014-stream-op-deleted-op_N.qoi",
+      "mutation": {
+        "id": 76,
+        "length": 42,
+        "sha256": "7aeda8c189bf8dffb2359412a1429975ddb4b3c053d5e6a3ddb890afb944ddbd",
+        "rule": "stream-op-deleted",
+        "field": "op 0",
+        "old": 254,
+        "new": "deleted",
+        "source": "mutation",
+        "seed": "noise-3x2-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "c834cfab24f32261bd9d9750d4859af82e0985ff64ded87eaaafe9daa8b41bf4",
+          "rgba16_sha256": "f3e873946e9c22dfd8d82566aa0754d97a674b0f53b34516c9c9b9c57ae4127b",
+          "alpha_present": false,
+          "orig_color_type": "Srgb"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 7",
+          "message": "I/O error Not enough bytes, expected 8 but found 7\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "4bc6804e85a7c51ab8dfa57d36c72eb0832f2fa42ede39c35df8aa2242dc15a6",
+          "rgba16_sha256": "cf315039d246e3e6094a25770682ee1e2e47addc36358fe12a4954ef6b143749",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 42,
+      "witness_length": 42,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "header-height:height",
+      "count": 90,
+      "rule_total": 484,
+      "patterns": 5,
+      "original_id": 101,
+      "witness": "witnesses/015-header-height-height.qoi",
+      "mutation": {
+        "id": 101,
+        "length": 158,
+        "sha256": "f0e0f0e1ded3c12e703f834b231086b6ba15b285c3062e13d895babede38c139",
+        "rule": "header-height",
+        "field": "height",
+        "old": 8,
+        "new": 7,
+        "source": "mutation",
+        "seed": "palette-8x8-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid padding",
+          "message": "invalid padding (stream end marker mismatch)"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 8,
+          "height": 7,
+          "rgba_sha256": "9ae1e8f821c5ad9003af91d3600b1c262d30003b0a43f0b70f0fd1853f22497e",
+          "rgba16_sha256": "777f9562808fba3b1c5a3c57eaaa18cdebdb07247960b2f1978fffd565e38d76",
+          "alpha_present": false,
+          "orig_color_type": "SrgbLinA"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 8,
+          "height": 7,
+          "rgba_sha256": "9ae1e8f821c5ad9003af91d3600b1c262d30003b0a43f0b70f0fd1853f22497e",
+          "rgba16_sha256": "777f9562808fba3b1c5a3c57eaaa18cdebdb07247960b2f1978fffd565e38d76",
+          "alpha_present": false,
+          "orig_color_type": "RGBA"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 8,
+          "height": 7,
+          "rgba_sha256": "9ae1e8f821c5ad9003af91d3600b1c262d30003b0a43f0b70f0fd1853f22497e",
+          "rgba16_sha256": "777f9562808fba3b1c5a3c57eaaa18cdebdb07247960b2f1978fffd565e38d76",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 158,
+      "witness_length": 158,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "end-marker:marker",
+      "count": 87,
+      "rule_total": 374,
+      "patterns": 5,
+      "original_id": 107,
+      "witness": "witnesses/016-end-marker-marker.qoi",
+      "mutation": {
+        "id": 107,
+        "length": 295,
+        "sha256": "2da52ea21e236a0788aa1ec87ab8639bb471e507fe63a4e6e175d014bf277f01",
+        "rule": "end-marker",
+        "field": "marker",
+        "old": "00*7 01",
+        "new": "removed",
+        "source": "mutation",
+        "seed": "gradient-70x2-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 70,
+          "height": 2,
+          "rgba_sha256": "92bd6ede94d4ebb682681074827a89fa6b84662448b08e94ed12e869dbf26c23",
+          "rgba16_sha256": "beec82b32bf5cde1722335fff56ffb2756dde5f83e148b80cf4547fea754bf9b",
+          "alpha_present": false,
+          "orig_color_type": "Rgb"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 0",
+          "message": "I/O error Not enough bytes, expected 8 but found 0\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 70,
+          "height": 2,
+          "rgba_sha256": "1eee68f103003a238c957bc2e56b3be7c0d75020b1b5c833fda1ef9e40462321",
+          "rgba16_sha256": "5cecd35560ffc399979022d6f525b00bc9308404fbea282087af1edde8685eeb",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 295,
+      "witness_length": 295,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "header-width:width",
+      "count": 80,
+      "rule_total": 536,
+      "patterns": 5,
+      "original_id": 494,
+      "witness": "witnesses/017-header-width-width.qoi",
+      "mutation": {
+        "id": 494,
+        "length": 52,
+        "sha256": "3d4c1c3673c95473948df7c8989570d02d163c113956f37ea3e13a14c9a24a28",
+        "rule": "header-width",
+        "field": "width",
+        "old": 3,
+        "new": 4,
+        "source": "mutation",
+        "seed": "alpha-3x2-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 4,
+          "height": 2,
+          "rgba_sha256": "d0189ad9ebd133fc84c1c1c2ea67f35b7a75f92241b0a6b9c63d36f83441bf18",
+          "rgba16_sha256": "6b9c60dd02878337da8bb09df657a8bb15538f6b2946359e73b8f443b8fa1944",
+          "alpha_present": true,
+          "orig_color_type": "SrgbLinA"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 6",
+          "message": "I/O error Not enough bytes, expected 8 but found 6\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 4,
+          "height": 2,
+          "rgba_sha256": "3c2252f032f746ad1c24d8f46b71c2dc17e3aceed3ec701f632c331caa7b2017",
+          "rgba16_sha256": "155f38e6c5a7d17605a42b5c42968fef7279fc670b87692a3777dafb034dd105",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 52,
+      "witness_length": 52,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "truncation:length",
+      "count": 75,
+      "rule_total": 251,
+      "patterns": 4,
+      "original_id": 6800,
+      "witness": "witnesses/018-truncation-length.qoi",
+      "mutation": {
+        "id": 6800,
+        "length": 22,
+        "sha256": "a8239e553ba1b6121e833a1dddb856de044e7bc775732a95aafc115e07a8812f",
+        "rule": "truncation",
+        "field": "length",
+        "old": 26,
+        "new": 22,
+        "source": "mutation",
+        "seed": "flat-1x1-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "1f14bd8e308ebe9dc78751dce7a329816030429b5a647e0299bf7f1060422d31",
+          "rgba16_sha256": "54f041c855911922c4fdc1bb298f1e63cabe03234ec5a11c3b7545b8b8cdfba8",
+          "alpha_present": false,
+          "orig_color_type": "Rgb"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 4",
+          "message": "I/O error Not enough bytes, expected 8 but found 4\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "rgba16_sha256": "6186530e872ac29959a0c223aed23944f12c6b609e64a0a8bd1be20b5006a8b2",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 22,
+      "witness_length": 22,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "end-marker:marker",
+      "count": 68,
+      "rule_total": 374,
+      "patterns": 5,
+      "original_id": 173,
+      "witness": "witnesses/019-end-marker-marker.qoi",
+      "mutation": {
+        "id": 173,
+        "length": 148,
+        "sha256": "dfa0ac432e7849cbb708edac21f1b4a6a98ca9d3be94178aaa2adb85e5dbd898",
+        "rule": "end-marker",
+        "field": "marker",
+        "old": "00*7 01",
+        "new": "last byte removed",
+        "source": "mutation",
+        "seed": "wrap-8x8-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "e0be1c3103032f120b2767516e7c781c49b499bc1f871cdf401c97ccc0a8deff",
+          "rgba16_sha256": "f75a4577dd79885191ae2ed6780a00e034ee05e0cfd13595740735acfc1ef3c4",
+          "alpha_present": false,
+          "orig_color_type": "Rgba"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 7",
+          "message": "I/O error Not enough bytes, expected 8 but found 7\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "e0be1c3103032f120b2767516e7c781c49b499bc1f871cdf401c97ccc0a8deff",
+          "rgba16_sha256": "f75a4577dd79885191ae2ed6780a00e034ee05e0cfd13595740735acfc1ef3c4",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 148,
+      "witness_length": 148,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-excess:extra runs",
+      "count": 66,
+      "rule_total": 66,
+      "patterns": 1,
+      "original_id": 88,
+      "witness": "witnesses/020-stream-excess-extra_runs.qoi",
+      "mutation": {
+        "id": 88,
+        "length": 33,
+        "sha256": "b22bf97c0c10d891f5c074a96c4c60795eca6586db052d0408b9c7eb8c40c903",
+        "rule": "stream-excess",
+        "field": "extra runs",
+        "old": 0,
+        "new": 3,
+        "source": "mutation",
+        "seed": "transparent-3x2-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid padding",
+          "message": "invalid padding (stream end marker mismatch)"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "e14c3d33309edaeebf006c73362121d8e5d1bdaada96e033bbddbf1390ca081d",
+          "rgba16_sha256": "4989377a942eecf9abb1a6c16fbea1b1a62a51ad8e1af246bcb6158216c1490f",
+          "alpha_present": true,
+          "orig_color_type": "Rgba"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "e14c3d33309edaeebf006c73362121d8e5d1bdaada96e033bbddbf1390ca081d",
+          "rgba16_sha256": "4989377a942eecf9abb1a6c16fbea1b1a62a51ad8e1af246bcb6158216c1490f",
+          "alpha_present": true,
+          "orig_color_type": "RGBA"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "e14c3d33309edaeebf006c73362121d8e5d1bdaada96e033bbddbf1390ca081d",
+          "rgba16_sha256": "4989377a942eecf9abb1a6c16fbea1b1a62a51ad8e1af246bcb6158216c1490f",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 33,
+      "witness_length": 33,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-excess:extra rgb op",
+      "count": 66,
+      "rule_total": 66,
+      "patterns": 1,
+      "original_id": 116,
+      "witness": "witnesses/021-stream-excess-extra_rgb_op.qoi",
+      "mutation": {
+        "id": 116,
+        "length": 726,
+        "sha256": "280e64443e57b2e8c15cbfc10caa10787101d47c1a36f050dc29bc95e3e9435b",
+        "rule": "stream-excess",
+        "field": "extra rgb op",
+        "old": 0,
+        "new": 1,
+        "source": "mutation",
+        "seed": "noise-70x2-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid padding",
+          "message": "invalid padding (stream end marker mismatch)"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 70,
+          "height": 2,
+          "rgba_sha256": "ad8638e2be2dc1449040a88d6f704d5fcd88bfa4e0a8c85d12ac4673c1e0e3da",
+          "rgba16_sha256": "4a37d1224dbc6652a262a0219a941b76230fa9357724e84d1a0aa96edac3e091",
+          "alpha_present": true,
+          "orig_color_type": "SrgbLinA"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 70,
+          "height": 2,
+          "rgba_sha256": "ad8638e2be2dc1449040a88d6f704d5fcd88bfa4e0a8c85d12ac4673c1e0e3da",
+          "rgba16_sha256": "4a37d1224dbc6652a262a0219a941b76230fa9357724e84d1a0aa96edac3e091",
+          "alpha_present": true,
+          "orig_color_type": "RGBA"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 70,
+          "height": 2,
+          "rgba_sha256": "ad8638e2be2dc1449040a88d6f704d5fcd88bfa4e0a8c85d12ac4673c1e0e3da",
+          "rgba16_sha256": "4a37d1224dbc6652a262a0219a941b76230fa9357724e84d1a0aa96edac3e091",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 726,
+      "witness_length": 726,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-excess:extra run",
+      "count": 65,
+      "rule_total": 65,
+      "patterns": 1,
+      "original_id": 83,
+      "witness": "witnesses/022-stream-excess-extra_run.qoi",
+      "mutation": {
+        "id": 83,
+        "length": 34,
+        "sha256": "52c928065f493922003491949a66e72d21569ad471c298978789678dd71bc827",
+        "rule": "stream-excess",
+        "field": "extra run",
+        "old": 0,
+        "new": "62 extra pixels",
+        "source": "mutation",
+        "seed": "gradient-3x2-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid padding",
+          "message": "invalid padding (stream end marker mismatch)"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "a78af401e72c04b74aead4428e42036bf1abd4cf6c493d1e5079e2904a46011a",
+          "rgba16_sha256": "68a35aec8d364adc9285740edfbfaa7dc9c759adeec60de64083de1ecd0b96c9",
+          "alpha_present": false,
+          "orig_color_type": "Rgba"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "a78af401e72c04b74aead4428e42036bf1abd4cf6c493d1e5079e2904a46011a",
+          "rgba16_sha256": "68a35aec8d364adc9285740edfbfaa7dc9c759adeec60de64083de1ecd0b96c9",
+          "alpha_present": false,
+          "orig_color_type": "RGBA"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "a78af401e72c04b74aead4428e42036bf1abd4cf6c493d1e5079e2904a46011a",
+          "rgba16_sha256": "68a35aec8d364adc9285740edfbfaa7dc9c759adeec60de64083de1ecd0b96c9",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 34,
+      "witness_length": 34,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "header-height:height",
+      "count": 63,
+      "rule_total": 484,
+      "patterns": 5,
+      "original_id": 227,
+      "witness": "witnesses/023-header-height-height.qoi",
+      "mutation": {
+        "id": 227,
+        "length": 163,
+        "sha256": "9493d6324d7c8a583dcd44b0a221e930f00a338cc526624e7dfe213f1abedf01",
+        "rule": "header-height",
+        "field": "height",
+        "old": 8,
+        "new": 9,
+        "source": "mutation",
+        "seed": "gradient-8x8-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 8,
+          "height": 9,
+          "rgba_sha256": "0ba7b6420060069f9472bc683bdd09122a98e4e08facdb1daf564bb1c684062a",
+          "rgba16_sha256": "5942b4353773611c9b2557ce885f6be62e8f2b3f73bf196109bc52b0663ec7bd",
+          "alpha_present": false,
+          "orig_color_type": "Rgb"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 0",
+          "message": "I/O error Not enough bytes, expected 8 but found 0\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 8,
+          "height": 9,
+          "rgba_sha256": "8bebe5fe6dbb89e066376f02ec74b8666620e990d1b3462a05c5197d72ee73c2",
+          "rgba16_sha256": "650236596931d9779acbf74f1ad67615c1d3ae8395ef1d1fa7d011c6c6e22c9c",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 163,
+      "witness_length": 163,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "random-flip:byte N",
+      "count": 58,
+      "rule_total": 250,
+      "patterns": 6,
+      "original_id": 9217,
+      "witness": "witnesses/024-random-flip-byte_N.qoi",
+      "mutation": {
+        "id": 9217,
+        "length": 26,
+        "sha256": "981faeef68fabac9556c7ebfb8ca7e037165e042cbbfdcccd06702daa5c9b044",
+        "rule": "random-flip",
+        "field": "byte 23",
+        "old": 0,
+        "new": 22,
+        "source": "mutation",
+        "seed": "noise-1x1-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid padding",
+          "message": "invalid padding (stream end marker mismatch)"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "8ac55ad6042ce2366b8c0183c0f5d8aabebb4ba3e573a4d02ff44a240b938222",
+          "rgba16_sha256": "28d9132f75fa028b4ff0de28a47d16e186677b3aa689b16a285ba81f17e0c82c",
+          "alpha_present": false,
+          "orig_color_type": "Srgb"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "8ac55ad6042ce2366b8c0183c0f5d8aabebb4ba3e573a4d02ff44a240b938222",
+          "rgba16_sha256": "28d9132f75fa028b4ff0de28a47d16e186677b3aa689b16a285ba81f17e0c82c",
+          "alpha_present": false,
+          "orig_color_type": "RGB"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "8ac55ad6042ce2366b8c0183c0f5d8aabebb4ba3e573a4d02ff44a240b938222",
+          "rgba16_sha256": "28d9132f75fa028b4ff0de28a47d16e186677b3aa689b16a285ba81f17e0c82c",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 26,
+      "witness_length": 26,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "truncation:length",
+      "count": 47,
+      "rule_total": 251,
+      "patterns": 4,
+      "original_id": 8621,
+      "witness": "witnesses/025-truncation-length.qoi",
+      "mutation": {
+        "id": 8621,
+        "length": 26,
+        "sha256": "c92a3a55371a38e9b6a50bc3950a91654cd0602a9d0195394d32f6f3ab4967de",
+        "rule": "truncation",
+        "field": "length",
+        "old": 52,
+        "new": 26,
+        "source": "mutation",
+        "seed": "alpha-3x2-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "error",
+          "error_class": "NotEnoughData",
+          "message": "NotEnoughData"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 0",
+          "message": "I/O error Not enough bytes, expected 8 but found 0\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "88c122bade6dff67aa395b355c37810529d0847af28de0778f869e39db91089e",
+          "rgba16_sha256": "5556ccef1697581ce90057111754463f93060b289790effa73b80487eda19a73",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 26,
+      "witness_length": 26,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-op-cut:op N",
+      "count": 38,
+      "rule_total": 85,
+      "patterns": 7,
+      "original_id": 75,
+      "witness": "witnesses/026-stream-op-cut-op_N.qoi",
+      "mutation": {
+        "id": 75,
+        "length": 32,
+        "sha256": "9a0d0e1d7713005f6d2db85d27d78e8490466a430c9dfd67674e6e0572135038",
+        "rule": "stream-op-cut",
+        "field": "op 5",
+        "old": 2,
+        "new": 1,
+        "source": "mutation",
+        "seed": "gradient-3x2-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "2d09358513900a1777740dbee19f2450c42402ee06d285ce3dd40b644768bad1",
+          "rgba16_sha256": "9712866b3485c6382d6406ed71d49ecf2a983855cf0300ef4cdf19f2162cc69c",
+          "alpha_present": false,
+          "orig_color_type": "Srgb"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 7",
+          "message": "I/O error Not enough bytes, expected 8 but found 7\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "2d09358513900a1777740dbee19f2450c42402ee06d285ce3dd40b644768bad1",
+          "rgba16_sha256": "9712866b3485c6382d6406ed71d49ecf2a983855cf0300ef4cdf19f2162cc69c",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 32,
+      "witness_length": 32,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-short:last op",
+      "count": 30,
+      "rule_total": 35,
+      "patterns": 3,
+      "original_id": 249,
+      "witness": "witnesses/027-stream-short-last_op.qoi",
+      "mutation": {
+        "id": 249,
+        "length": 299,
+        "sha256": "3d518e3719702e00ea0af555e83b2dc884e1afba020f8b6d59ad021893688fd7",
+        "rule": "stream-short",
+        "field": "last op",
+        "old": "present",
+        "new": "removed, marker kept",
+        "source": "mutation",
+        "seed": "wrap-70x2-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 70,
+          "height": 2,
+          "rgba_sha256": "65d04e97371cba44e526f8a0f57e5e25c31ac81a0ccd354a5d39d890c8ed827f",
+          "rgba16_sha256": "e3b4e2272fc0666b6f03762781b9f2d7ea50c9c33089260fe378f0b5d629f387",
+          "alpha_present": false,
+          "orig_color_type": "Rgb"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 7",
+          "message": "I/O error Not enough bytes, expected 8 but found 7\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 70,
+          "height": 2,
+          "rgba_sha256": "a43c8e3e8a6cb9722ba07678243b1e702afc3e83ea84d03d9c8ff18482fa0ff9",
+          "rgba16_sha256": "2cbf5f621576e303952057e841a95c659e693b6e0e11fae493ee4ccf277b15c9",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 299,
+      "witness_length": 299,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-short:ops zeroed, no marker",
+      "count": 26,
+      "rule_total": 50,
+      "patterns": 5,
+      "original_id": 243,
+      "witness": "witnesses/028-stream-short-ops_zeroed,_no_marker.qoi",
+      "mutation": {
+        "id": 243,
+        "length": 295,
+        "sha256": "0835a37c1ba58c60a5e22acc70d068bfffc778967966159b829f66168b50fd8e",
+        "rule": "stream-short",
+        "field": "ops zeroed, no marker",
+        "old": 281,
+        "new": "INDEX 0 only",
+        "source": "mutation",
+        "seed": "gradient-70x2-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid padding",
+          "message": "invalid padding (stream end marker mismatch)"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 70,
+          "height": 2,
+          "rgba_sha256": "c69cf33ff3cf147373088bdf24f137a7b756a6e38801ca2ef8b740266ccb70f2",
+          "rgba16_sha256": "c90f22b2655b54d27a06cb547b056c1b0324dc5f2f874875dea24136613757cf",
+          "alpha_present": false,
+          "orig_color_type": "Rgb"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 70,
+          "height": 2,
+          "rgba_sha256": "c69cf33ff3cf147373088bdf24f137a7b756a6e38801ca2ef8b740266ccb70f2",
+          "rgba16_sha256": "c90f22b2655b54d27a06cb547b056c1b0324dc5f2f874875dea24136613757cf",
+          "alpha_present": false,
+          "orig_color_type": "RGB"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 70,
+          "height": 2,
+          "rgba_sha256": "c69cf33ff3cf147373088bdf24f137a7b756a6e38801ca2ef8b740266ccb70f2",
+          "rgba16_sha256": "c90f22b2655b54d27a06cb547b056c1b0324dc5f2f874875dea24136613757cf",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 295,
+      "witness_length": 184,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "random-flip:byte N",
+      "count": 22,
+      "rule_total": 250,
+      "patterns": 6,
+      "original_id": 9313,
+      "witness": "witnesses/029-random-flip-byte_N.qoi",
+      "mutation": {
+        "id": 9313,
+        "length": 28,
+        "sha256": "36c36b92155e77525f47cf1074b81693ad28ae7cbf9a69de4ee932da1c9a2ebb",
+        "rule": "random-flip",
+        "field": "byte 13",
+        "old": 0,
+        "new": 89,
+        "source": "mutation",
+        "seed": "flat-8x8-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: invalid color space: 89 (expected 0 or 1)"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:405:52: Format error decoding Qoi: invalid color space: 89 (expected 0 or 1)"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid color space",
+          "message": "invalid color space: 89 (expected 0 or 1)"
+        },
+        "rapid-qoi": {
+          "status": "error",
+          "error_class": "InvalidColorSpaceValue",
+          "message": "InvalidColorSpaceValue"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "adb87b02c2ec284eaa0d1ebdc30edf4d7928d89d6587c6dc97cca121f3b0fd6c",
+          "rgba16_sha256": "7f6ec47ba0465802294e1371b150f2ea7a1f3f85bde3af20255e30e908931082",
+          "alpha_present": false,
+          "orig_color_type": "RGBA"
+        },
+        "ref-c": {
+          "status": "error",
+          "error_class": "QoiRejected",
+          "message": "qoi_decode returned NULL"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 28,
+      "witness_length": 28,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-op-cut:op N",
+      "count": 18,
+      "rule_total": 85,
+      "patterns": 7,
+      "original_id": 848,
+      "witness": "witnesses/030-stream-op-cut-op_N.qoi",
+      "mutation": {
+        "id": 848,
+        "length": 338,
+        "sha256": "92e098ccd7a265f22a71a8478630b6e6296d5941ba7235f56bf83d84b9a06dc2",
+        "rule": "stream-op-cut",
+        "field": "op 0",
+        "old": 5,
+        "new": 1,
+        "source": "mutation",
+        "seed": "noise-8x8-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid padding",
+          "message": "invalid padding (stream end marker mismatch)"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "aa540718dcbc512e65cc667ef7802e8d3fa5e51185d3e584a1bd806e32f5c880",
+          "rgba16_sha256": "5a74dbb400a1b5c6343fcb4964df7fb5987df4c4d148e22b3649e65f3f837d4c",
+          "alpha_present": true,
+          "orig_color_type": "Rgba"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "aa540718dcbc512e65cc667ef7802e8d3fa5e51185d3e584a1bd806e32f5c880",
+          "rgba16_sha256": "5a74dbb400a1b5c6343fcb4964df7fb5987df4c4d148e22b3649e65f3f837d4c",
+          "alpha_present": true,
+          "orig_color_type": "RGBA"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "aa540718dcbc512e65cc667ef7802e8d3fa5e51185d3e584a1bd806e32f5c880",
+          "rgba16_sha256": "5a74dbb400a1b5c6343fcb4964df7fb5987df4c4d148e22b3649e65f3f837d4c",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 338,
+      "witness_length": 169,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-op-deleted:op N",
+      "count": 17,
+      "rule_total": 132,
+      "patterns": 4,
+      "original_id": 430,
+      "witness": "witnesses/031-stream-op-deleted-op_N.qoi",
+      "mutation": {
+        "id": 430,
+        "length": 24,
+        "sha256": "901416e13e351eff22b0866e01711f5b3253e601afb44ae0ed9653df3e5b843e",
+        "rule": "stream-op-deleted",
+        "field": "op 0",
+        "old": 254,
+        "new": "deleted",
+        "source": "mutation",
+        "seed": "flat-8x8-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2c893cd47b6757133987906e00c55e6dcce3c567b9df9e7f91ffecd3604cc6a6",
+          "rgba16_sha256": "5aa9f5ad9e24b25db82181d40c223314235311175b28698bda3d80cd60fe329c",
+          "alpha_present": false,
+          "orig_color_type": "Srgb"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 7",
+          "message": "I/O error Not enough bytes, expected 8 but found 7\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2c893cd47b6757133987906e00c55e6dcce3c567b9df9e7f91ffecd3604cc6a6",
+          "rgba16_sha256": "5aa9f5ad9e24b25db82181d40c223314235311175b28698bda3d80cd60fe329c",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 24,
+      "witness_length": 24,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-op-cut:op N",
+      "count": 14,
+      "rule_total": 85,
+      "patterns": 7,
+      "original_id": 574,
+      "witness": "witnesses/032-stream-op-cut-op_N.qoi",
+      "mutation": {
+        "id": 574,
+        "length": 25,
+        "sha256": "dfef2c45ac577650a4bb7bf2c17b266ea27841657d50cc62678023b20be6f617",
+        "rule": "stream-op-cut",
+        "field": "op 0",
+        "old": 4,
+        "new": 1,
+        "source": "mutation",
+        "seed": "flat-8x8-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "error",
+          "error_class": "NotEnoughData",
+          "message": "NotEnoughData"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 0",
+          "message": "I/O error Not enough bytes, expected 8 but found 0\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "c8ca8bb67dab9f54319289f92c74a68fca5a40733c26c0bc7387bfd2874d2ad7",
+          "rgba16_sha256": "0f7c5caf1df86c41da500fde7f825573eab510d0faaf6d4cba0ba80b88b0e1b7",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 25,
+      "witness_length": 25,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-op-deleted:op N",
+      "count": 13,
+      "rule_total": 132,
+      "patterns": 4,
+      "original_id": 258,
+      "witness": "witnesses/033-stream-op-deleted-op_N.qoi",
+      "mutation": {
+        "id": 258,
+        "length": 27,
+        "sha256": "86bad4a5cdf6c306116fc6e379303016800b5a96b718b854b5d02e47c909d6dc",
+        "rule": "stream-op-deleted",
+        "field": "op 1",
+        "old": 253,
+        "new": "deleted",
+        "source": "mutation",
+        "seed": "flat-5x13-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "error",
+          "error_class": "NotEnoughData",
+          "message": "NotEnoughData"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 0",
+          "message": "I/O error Not enough bytes, expected 8 but found 0\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 5,
+          "height": 13,
+          "rgba_sha256": "3a5a872e69913c6ff97169205e04b1da13ef40567dca948f041ff8e56e5ba863",
+          "rgba16_sha256": "6164d98f50f1d4d4980d65511e90bd10805c198f7efe9a3e902e0c5878580476",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 27,
+      "witness_length": 27,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-short:all ops",
+      "count": 12,
+      "rule_total": 19,
+      "patterns": 3,
+      "original_id": 458,
+      "witness": "witnesses/034-stream-short-all_ops.qoi",
+      "mutation": {
+        "id": 458,
+        "length": 22,
+        "sha256": "e4d916a6a26da43855fa586c49b43b1f06706f9f434806bcfe862c16daaf6360",
+        "rule": "stream-short",
+        "field": "all ops",
+        "old": 700,
+        "new": 0,
+        "source": "mutation",
+        "seed": "alpha-70x2-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "error",
+          "error_class": "NotEnoughData",
+          "message": "NotEnoughData"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 0",
+          "message": "I/O error Not enough bytes, expected 8 but found 0\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 70,
+          "height": 2,
+          "rgba_sha256": "c69cf33ff3cf147373088bdf24f137a7b756a6e38801ca2ef8b740266ccb70f2",
+          "rgba16_sha256": "c90f22b2655b54d27a06cb547b056c1b0324dc5f2f874875dea24136613757cf",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 22,
+      "witness_length": 22,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-short:ops zeroed, no marker",
+      "count": 10,
+      "rule_total": 50,
+      "patterns": 5,
+      "original_id": 878,
+      "witness": "witnesses/035-stream-short-ops_zeroed,_no_marker.qoi",
+      "mutation": {
+        "id": 878,
+        "length": 19,
+        "sha256": "b51b206b379bfa329c0e660f6b7a5e481aedd14193ceb9875804c64317a32c2c",
+        "rule": "stream-short",
+        "field": "ops zeroed, no marker",
+        "old": 5,
+        "new": "INDEX 0 only",
+        "source": "mutation",
+        "seed": "hand-run-then-rgb",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 3,
+          "height": 1,
+          "rgba_sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+          "rgba16_sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+          "alpha_present": true,
+          "orig_color_type": "SrgbLinA"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 2",
+          "message": "I/O error Not enough bytes, expected 8 but found 2\n\n"
+        },
+        "ref-c": {
+          "status": "error",
+          "error_class": "QoiRejected",
+          "message": "qoi_decode returned NULL"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 19,
+      "witness_length": 19,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "header-channels:channels",
+      "count": 8,
+      "rule_total": 8,
+      "patterns": 1,
+      "original_id": 2099,
+      "witness": "witnesses/036-header-channels-channels.qoi",
+      "mutation": {
+        "id": 2099,
+        "length": 347,
+        "sha256": "2dc4611290540b8dbd5162c76f09fdc38f0646747d7c60820b9732008b8de792",
+        "rule": "header-channels",
+        "field": "channels",
+        "old": 4,
+        "new": 3,
+        "source": "mutation",
+        "seed": "noise-5x13-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid padding",
+          "message": "invalid padding (stream end marker mismatch)"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 5,
+          "height": 13,
+          "rgba_sha256": "7d52fca05cf73b258446fcaad8afe38ba16a5a49d511faf4c41a6a28d9c3d604",
+          "rgba16_sha256": "f467331cdfe106fe0e6969cad19a296e72e2c3c604912324d8afdb3d3a2331f5",
+          "alpha_present": false,
+          "orig_color_type": "Rgb"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 5,
+          "height": 13,
+          "rgba_sha256": "7d52fca05cf73b258446fcaad8afe38ba16a5a49d511faf4c41a6a28d9c3d604",
+          "rgba16_sha256": "f467331cdfe106fe0e6969cad19a296e72e2c3c604912324d8afdb3d3a2331f5",
+          "alpha_present": false,
+          "orig_color_type": "RGB"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 5,
+          "height": 13,
+          "rgba_sha256": "7d52fca05cf73b258446fcaad8afe38ba16a5a49d511faf4c41a6a28d9c3d604",
+          "rgba16_sha256": "f467331cdfe106fe0e6969cad19a296e72e2c3c604912324d8afdb3d3a2331f5",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 347,
+      "witness_length": 347,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-short:ops zeroed, no marker",
+      "count": 7,
+      "rule_total": 50,
+      "patterns": 5,
+      "original_id": 151,
+      "witness": "witnesses/037-stream-short-ops_zeroed,_no_marker.qoi",
+      "mutation": {
+        "id": 151,
+        "length": 25,
+        "sha256": "672d45e8a4347c6bc26de7ebc1a81fb0305dc8ddf1892d9ded337aa88d4eced7",
+        "rule": "stream-short",
+        "field": "ops zeroed, no marker",
+        "old": 11,
+        "new": "INDEX 0 only",
+        "source": "mutation",
+        "seed": "gradient-3x2-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+          "rgba16_sha256": "17b0761f87b081d5cf10757ccc89f12be355c70e2e29df288b65b30710dcbcd1",
+          "alpha_present": true,
+          "orig_color_type": "Rgba"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 5",
+          "message": "I/O error Not enough bytes, expected 8 but found 5\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+          "rgba16_sha256": "17b0761f87b081d5cf10757ccc89f12be355c70e2e29df288b65b30710dcbcd1",
+          "alpha_present": true,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 25,
+      "witness_length": 25,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-short:all ops",
+      "count": 4,
+      "rule_total": 19,
+      "patterns": 3,
+      "original_id": 84,
+      "witness": "witnesses/038-stream-short-all_ops.qoi",
+      "mutation": {
+        "id": 84,
+        "length": 22,
+        "sha256": "f97570483e7cafb01daa9f8fb3a266b731749a78d236316dcac5ab3822fc1cf4",
+        "rule": "stream-short",
+        "field": "all ops",
+        "old": 30,
+        "new": 0,
+        "source": "mutation",
+        "seed": "noise-3x2-c4",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+          "rgba16_sha256": "17b0761f87b081d5cf10757ccc89f12be355c70e2e29df288b65b30710dcbcd1",
+          "alpha_present": true,
+          "orig_color_type": "SrgbLinA"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 2",
+          "message": "I/O error Not enough bytes, expected 8 but found 2\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "c773395b224984566fc1c2a1bc01ed83f5e89ea97e9c035b75d1a1c5ef48ff48",
+          "rgba16_sha256": "0960870f596ad2bcf64d5145d6035de8ea3d0ed95d1d5c1097ae8a74189dddcf",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 22,
+      "witness_length": 22,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-short:all ops",
+      "count": 3,
+      "rule_total": 19,
+      "patterns": 3,
+      "original_id": 216,
+      "witness": "witnesses/039-stream-short-all_ops.qoi",
+      "mutation": {
+        "id": 216,
+        "length": 22,
+        "sha256": "28ebc7de3e0cb2f274161903d379739c91bbf521061e79c5a0c17eb1219084a2",
+        "rule": "stream-short",
+        "field": "all ops",
+        "old": 8,
+        "new": 0,
+        "source": "mutation",
+        "seed": "transparent-3x2-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "c773395b224984566fc1c2a1bc01ed83f5e89ea97e9c035b75d1a1c5ef48ff48",
+          "rgba16_sha256": "0960870f596ad2bcf64d5145d6035de8ea3d0ed95d1d5c1097ae8a74189dddcf",
+          "alpha_present": false,
+          "orig_color_type": "Rgb"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 2",
+          "message": "I/O error Not enough bytes, expected 8 but found 2\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "c773395b224984566fc1c2a1bc01ed83f5e89ea97e9c035b75d1a1c5ef48ff48",
+          "rgba16_sha256": "0960870f596ad2bcf64d5145d6035de8ea3d0ed95d1d5c1097ae8a74189dddcf",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 22,
+      "witness_length": 22,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-short:last op",
+      "count": 3,
+      "rule_total": 35,
+      "patterns": 3,
+      "original_id": 605,
+      "witness": "witnesses/040-stream-short-last_op.qoi",
+      "mutation": {
+        "id": 605,
+        "length": 22,
+        "sha256": "824b58ed437c8b52f3dc0e5ece6c0f07cd72cb7d39312f6395cbce07cc7f78fb",
+        "rule": "stream-short",
+        "field": "last op",
+        "old": "present",
+        "new": "removed, marker kept",
+        "source": "mutation",
+        "seed": "hand-run62",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "error",
+          "error_class": "NotEnoughData",
+          "message": "NotEnoughData"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 0",
+          "message": "I/O error Not enough bytes, expected 8 but found 0\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 62,
+          "height": 1,
+          "rgba_sha256": "f1fd9a52ae5f43332efbbe151315e1b34aaf8bdbd83c02fc3331bb21f392cc6f",
+          "rgba16_sha256": "0d02325c0ccf20a6a67ab588109a9db4aa7a9f2278b58475257cd38f30b067da",
+          "alpha_present": false,
+          "orig_color_type": "RGBA8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 22,
+      "witness_length": 22,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "seed",
+      "count": 2,
+      "rule_total": 4,
+      "patterns": 2,
+      "original_id": 12,
+      "witness": "witnesses/041-seed.qoi",
+      "mutation": {
+        "id": 12,
+        "length": 30,
+        "sha256": "f1f6ed5e5f395d12934c75c95344838c047b4131d3e0fd5e11c6887aa77aed03",
+        "name": "transparent-3x2-c3",
+        "w": 3,
+        "h": 2,
+        "ch": 3,
+        "source": "seed",
+        "rule": "seed",
+        "seed": "transparent-3x2-c3"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: invalid padding (stream end marker mismatch)"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid padding",
+          "message": "invalid padding (stream end marker mismatch)"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "c773395b224984566fc1c2a1bc01ed83f5e89ea97e9c035b75d1a1c5ef48ff48",
+          "rgba16_sha256": "0960870f596ad2bcf64d5145d6035de8ea3d0ed95d1d5c1097ae8a74189dddcf",
+          "alpha_present": false,
+          "orig_color_type": "Rgb"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "c773395b224984566fc1c2a1bc01ed83f5e89ea97e9c035b75d1a1c5ef48ff48",
+          "rgba16_sha256": "0960870f596ad2bcf64d5145d6035de8ea3d0ed95d1d5c1097ae8a74189dddcf",
+          "alpha_present": false,
+          "orig_color_type": "RGB"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 3,
+          "height": 2,
+          "rgba_sha256": "c773395b224984566fc1c2a1bc01ed83f5e89ea97e9c035b75d1a1c5ef48ff48",
+          "rgba16_sha256": "0960870f596ad2bcf64d5145d6035de8ea3d0ed95d1d5c1097ae8a74189dddcf",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 30,
+      "witness_length": 30,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "seed",
+      "count": 2,
+      "rule_total": 4,
+      "patterns": 2,
+      "original_id": 28,
+      "witness": "witnesses/042-seed.qoi",
+      "mutation": {
+        "id": 28,
+        "length": 30,
+        "sha256": "128192fd7a8039ae46d1de7547e2fbf8d81b8cb58c49fcae407e0a1c52e316dc",
+        "name": "transparent-8x8-c3",
+        "w": 8,
+        "h": 8,
+        "ch": 3,
+        "source": "seed",
+        "rule": "seed",
+        "seed": "transparent-8x8-c3"
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2c893cd47b6757133987906e00c55e6dcce3c567b9df9e7f91ffecd3604cc6a6",
+          "rgba16_sha256": "5aa9f5ad9e24b25db82181d40c223314235311175b28698bda3d80cd60fe329c",
+          "alpha_present": false,
+          "orig_color_type": "Rgb8"
+        },
+        "glycin": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2c893cd47b6757133987906e00c55e6dcce3c567b9df9e7f91ffecd3604cc6a6",
+          "rgba16_sha256": "5aa9f5ad9e24b25db82181d40c223314235311175b28698bda3d80cd60fe329c",
+          "alpha_present": false,
+          "orig_color_type": "R8g8b8"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "invalid padding",
+          "message": "invalid padding (stream end marker mismatch)"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2c893cd47b6757133987906e00c55e6dcce3c567b9df9e7f91ffecd3604cc6a6",
+          "rgba16_sha256": "5aa9f5ad9e24b25db82181d40c223314235311175b28698bda3d80cd60fe329c",
+          "alpha_present": false,
+          "orig_color_type": "Srgb"
+        },
+        "zune-qoi": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2c893cd47b6757133987906e00c55e6dcce3c567b9df9e7f91ffecd3604cc6a6",
+          "rgba16_sha256": "5aa9f5ad9e24b25db82181d40c223314235311175b28698bda3d80cd60fe329c",
+          "alpha_present": false,
+          "orig_color_type": "RGB"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 8,
+          "height": 8,
+          "rgba_sha256": "2c893cd47b6757133987906e00c55e6dcce3c567b9df9e7f91ffecd3604cc6a6",
+          "rgba16_sha256": "5aa9f5ad9e24b25db82181d40c223314235311175b28698bda3d80cd60fe329c",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 30,
+      "witness_length": 30,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    },
+    {
+      "rule": "stream-short:last op",
+      "count": 2,
+      "rule_total": 35,
+      "patterns": 3,
+      "original_id": 750,
+      "witness": "witnesses/043-stream-short-last_op.qoi",
+      "mutation": {
+        "id": 750,
+        "length": 22,
+        "sha256": "c6a7391aeea6044fb61e7a3f1b98250222fbcf7ee98243c0d5ceab9005b70e2a",
+        "rule": "stream-short",
+        "field": "last op",
+        "old": "present",
+        "new": "removed, marker kept",
+        "source": "mutation",
+        "seed": "noise-1x1-c3",
+        "seed_header": 14
+      },
+      "classification": "accept-vs-reject",
+      "results": {
+        "image": {
+          "status": "error",
+          "error_class": "Format error decoding Qoi",
+          "message": "Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "glycin": {
+          "status": "error",
+          "error_class": "ExpectedError",
+          "message": "/home/ws/projects/glycin-plan/glycin/glycin-loaders/glycin-image-rs/src/lib.rs:258:33: /home/ws/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error decoding Qoi: i/o error: failed to fill whole buffer"
+        },
+        "qoi-crate": {
+          "status": "error",
+          "error_class": "unexpected input buffer end while decoding",
+          "message": "unexpected input buffer end while decoding"
+        },
+        "rapid-qoi": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "rgba16_sha256": "6186530e872ac29959a0c223aed23944f12c6b609e64a0a8bd1be20b5006a8b2",
+          "alpha_present": false,
+          "orig_color_type": "Srgb"
+        },
+        "zune-qoi": {
+          "status": "error",
+          "error_class": "I/O error Not enough bytes, expected 8 but found 7",
+          "message": "I/O error Not enough bytes, expected 8 but found 7\n\n"
+        },
+        "ref-c": {
+          "status": "ok",
+          "width": 1,
+          "height": 1,
+          "rgba_sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+          "rgba16_sha256": "6186530e872ac29959a0c223aed23944f12c6b609e64a0a8bd1be20b5006a8b2",
+          "alpha_present": false,
+          "orig_color_type": "RGB8"
+        }
+      },
+      "min_checks": 10,
+      "original_length": 22,
+      "witness_length": 22,
+      "crash_in_row": false,
+      "pixel_difference": ""
+    }
+  ],
+  "rule_acceptance": {
+    "end-marker": {
+      "image": [
+        66,
+        2108
+      ],
+      "glycin": [
+        66,
+        2108
+      ],
+      "qoi-crate": [
+        64,
+        2108
+      ],
+      "rapid-qoi": [
+        2040,
+        2108
+      ],
+      "zune-qoi": [
+        1836,
+        2108
+      ],
+      "ref-c": [
+        2029,
+        2108
+      ]
+    },
+    "header-channels": {
+      "image": [
+        28,
+        421
+      ],
+      "glycin": [
+        28,
+        421
+      ],
+      "qoi-crate": [
+        28,
+        421
+      ],
+      "rapid-qoi": [
+        36,
+        421
+      ],
+      "zune-qoi": [
+        36,
+        421
+      ],
+      "ref-c": [
+        36,
+        421
+      ]
+    },
+    "stream-op-tag": {
+      "image": [
+        371,
+        1674
+      ],
+      "glycin": [
+        371,
+        1674
+      ],
+      "qoi-crate": [
+        320,
+        1674
+      ],
+      "rapid-qoi": [
+        1456,
+        1674
+      ],
+      "zune-qoi": [
+        1156,
+        1674
+      ],
+      "ref-c": [
+        1674,
+        1674
+      ]
+    },
+    "header-width": {
+      "image": [
+        22,
+        935
+      ],
+      "glycin": [
+        22,
+        935
+      ],
+      "qoi-crate": [
+        19,
+        935
+      ],
+      "rapid-qoi": [
+        243,
+        935
+      ],
+      "zune-qoi": [
+        158,
+        935
+      ],
+      "ref-c": [
+        560,
+        935
+      ]
+    },
+    "stream-op-cut": {
+      "image": [
+        25,
+        105
+      ],
+      "glycin": [
+        25,
+        105
+      ],
+      "qoi-crate": [
+        21,
+        105
+      ],
+      "rapid-qoi": [
+        89,
+        105
+      ],
+      "zune-qoi": [
+        39,
+        105
+      ],
+      "ref-c": [
+        105,
+        105
+      ]
+    },
+    "stream-op-deleted": {
+      "image": [
+        2,
+        132
+      ],
+      "glycin": [
+        2,
+        132
+      ],
+      "qoi-crate": [
+        0,
+        132
+      ],
+      "rapid-qoi": [
+        119,
+        132
+      ],
+      "zune-qoi": [
+        0,
+        132
+      ],
+      "ref-c": [
+        132,
+        132
+      ]
+    },
+    "header-both": {
+      "image": [
+        0,
+        460
+      ],
+      "glycin": [
+        0,
+        460
+      ],
+      "qoi-crate": [
+        0,
+        460
+      ],
+      "rapid-qoi": [
+        0,
+        460
+      ],
+      "zune-qoi": [
+        0,
+        460
+      ],
+      "ref-c": [
+        0,
+        460
+      ]
+    },
+    "stream-excess": {
+      "image": [
+        0,
+        203
+      ],
+      "glycin": [
+        0,
+        203
+      ],
+      "qoi-crate": [
+        0,
+        203
+      ],
+      "rapid-qoi": [
+        203,
+        203
+      ],
+      "zune-qoi": [
+        203,
+        203
+      ],
+      "ref-c": [
+        203,
+        203
+      ]
+    },
+    "stream-short": {
+      "image": [
+        0,
+        117
+      ],
+      "glycin": [
+        0,
+        117
+      ],
+      "qoi-crate": [
+        0,
+        117
+      ],
+      "rapid-qoi": [
+        83,
+        117
+      ],
+      "zune-qoi": [
+        26,
+        117
+      ],
+      "ref-c": [
+        94,
+        117
+      ]
+    },
+    "header-height": {
+      "image": [
+        8,
+        894
+      ],
+      "glycin": [
+        8,
+        894
+      ],
+      "qoi-crate": [
+        6,
+        894
+      ],
+      "rapid-qoi": [
+        165,
+        894
+      ],
+      "zune-qoi": [
+        98,
+        894
+      ],
+      "ref-c": [
+        492,
+        894
+      ]
+    },
+    "magic": {
+      "image": [
+        0,
+        476
+      ],
+      "glycin": [
+        0,
+        476
+      ],
+      "qoi-crate": [
+        0,
+        476
+      ],
+      "rapid-qoi": [
+        0,
+        476
+      ],
+      "zune-qoi": [
+        0,
+        476
+      ],
+      "ref-c": [
+        0,
+        476
+      ]
+    },
+    "stream-op-duplicated": {
+      "image": [
+        23,
+        173
+      ],
+      "glycin": [
+        23,
+        173
+      ],
+      "qoi-crate": [
+        20,
+        173
+      ],
+      "rapid-qoi": [
+        173,
+        173
+      ],
+      "zune-qoi": [
+        173,
+        173
+      ],
+      "ref-c": [
+        173,
+        173
+      ]
+    },
+    "header-colorspace": {
+      "image": [
+        58,
+        332
+      ],
+      "glycin": [
+        58,
+        332
+      ],
+      "qoi-crate": [
+        56,
+        332
+      ],
+      "rapid-qoi": [
+        60,
+        332
+      ],
+      "zune-qoi": [
+        332,
+        332
+      ],
+      "ref-c": [
+        60,
+        332
+      ]
+    },
+    "stream-padding": {
+      "image": [
+        0,
+        204
+      ],
+      "glycin": [
+        0,
+        204
+      ],
+      "qoi-crate": [
+        0,
+        204
+      ],
+      "rapid-qoi": [
+        204,
+        204
+      ],
+      "zune-qoi": [
+        204,
+        204
+      ],
+      "ref-c": [
+        204,
+        204
+      ]
+    },
+    "stream-run-overrun": {
+      "image": [
+        43,
+        44
+      ],
+      "glycin": [
+        43,
+        44
+      ],
+      "qoi-crate": [
+        43,
+        44
+      ],
+      "rapid-qoi": [
+        44,
+        44
+      ],
+      "zune-qoi": [
+        44,
+        44
+      ],
+      "ref-c": [
+        44,
+        44
+      ]
+    },
+    "truncation": {
+      "image": [
+        0,
+        370
+      ],
+      "glycin": [
+        0,
+        370
+      ],
+      "qoi-crate": [
+        0,
+        370
+      ],
+      "rapid-qoi": [
+        204,
+        370
+      ],
+      "zune-qoi": [
+        0,
+        370
+      ],
+      "ref-c": [
+        239,
+        370
+      ]
+    },
+    "trailing-bytes": {
+      "image": [
+        462,
+        476
+      ],
+      "glycin": [
+        462,
+        476
+      ],
+      "qoi-crate": [
+        448,
+        476
+      ],
+      "rapid-qoi": [
+        476,
+        476
+      ],
+      "zune-qoi": [
+        476,
+        476
+      ],
+      "ref-c": [
+        476,
+        476
+      ]
+    },
+    "random-flip": {
+      "image": [
+        59,
+        776
+      ],
+      "glycin": [
+        59,
+        776
+      ],
+      "qoi-crate": [
+        59,
+        776
+      ],
+      "rapid-qoi": [
+        131,
+        776
+      ],
+      "zune-qoi": [
+        146,
+        776
+      ],
+      "ref-c": [
+        291,
+        776
+      ]
+    }
+  },
+  "public_subset": true
+}

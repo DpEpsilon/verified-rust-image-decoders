@@ -1,0 +1,6 @@
+#?RADIANCE
+#etic
+FORMAT=32-bit_rle_rgbe
+
+-Y 3 +X 20
+»d2Å»d2»d2Å

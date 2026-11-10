@@ -1,0 +1,253 @@
+{
+  "format": "farbfeld",
+  "inputs": 9228,
+  "seed_files": 28,
+  "seed": 731,
+  "counts": {
+    "all-accept-identical-pixels": 1953,
+    "all-reject": 7275
+  },
+  "changed_mutations": 8047,
+  "elapsed_seconds": 379.4,
+  "decoders": [
+    "image",
+    "glycin",
+    "farbfeld-crate",
+    "oracle-spec"
+  ],
+  "unavailable": {
+    "zune-farbfeld 0.5.2": "unusable as published: decode() always fails with \"Too small output buffer size\" (it allocates width*height*4 u16 but requires twice that), and decode_into with a doubled buffer consumes twice the body; runner selector farbfeld:zune is kept in ext/src/main.rs but not counted",
+    "gdk-pixbuf": "no farbfeld module installed (loaders: ani bmp gif icns ico pnm qtif tga tiff xbm xpm)",
+    "suckless farbfeld tools": "not installed; source is git.suckless.org, outside the allowed network"
+  },
+  "groups": {
+    "image": "image-rs",
+    "glycin": "image-rs"
+  },
+  "per_decoder": {
+    "image": {
+      "ok": 1953,
+      "error": 7275
+    },
+    "glycin": {
+      "ok": 1953,
+      "error": 7275
+    },
+    "farbfeld-crate": {
+      "ok": 1953,
+      "error": 7275
+    },
+    "oracle-spec": {
+      "ok": 1953,
+      "error": 7275
+    }
+  },
+  "lone": {
+    "image": {},
+    "glycin": {},
+    "farbfeld-crate": {},
+    "oracle-spec": {}
+  },
+  "rows": [],
+  "rule_acceptance": {
+    "header-width": {
+      "image": [
+        34,
+        325
+      ],
+      "glycin": [
+        34,
+        325
+      ],
+      "farbfeld-crate": [
+        34,
+        325
+      ],
+      "oracle-spec": [
+        34,
+        325
+      ]
+    },
+    "header-both": {
+      "image": [
+        0,
+        113
+      ],
+      "glycin": [
+        0,
+        113
+      ],
+      "farbfeld-crate": [
+        0,
+        113
+      ],
+      "oracle-spec": [
+        0,
+        113
+      ]
+    },
+    "header-height": {
+      "image": [
+        35,
+        238
+      ],
+      "glycin": [
+        35,
+        238
+      ],
+      "farbfeld-crate": [
+        35,
+        238
+      ],
+      "oracle-spec": [
+        35,
+        238
+      ]
+    },
+    "body-long": {
+      "image": [
+        74,
+        74
+      ],
+      "glycin": [
+        74,
+        74
+      ],
+      "farbfeld-crate": [
+        74,
+        74
+      ],
+      "oracle-spec": [
+        74,
+        74
+      ]
+    },
+    "body-short": {
+      "image": [
+        0,
+        72
+      ],
+      "glycin": [
+        0,
+        72
+      ],
+      "farbfeld-crate": [
+        0,
+        72
+      ],
+      "oracle-spec": [
+        0,
+        72
+      ]
+    },
+    "magic": {
+      "image": [
+        0,
+        308
+      ],
+      "glycin": [
+        0,
+        308
+      ],
+      "farbfeld-crate": [
+        0,
+        308
+      ],
+      "oracle-spec": [
+        0,
+        308
+      ]
+    },
+    "alpha-forced": {
+      "image": [
+        92,
+        92
+      ],
+      "glycin": [
+        92,
+        92
+      ],
+      "farbfeld-crate": [
+        92,
+        92
+      ],
+      "oracle-spec": [
+        92,
+        92
+      ]
+    },
+    "swap-width-height": {
+      "image": [
+        8,
+        8
+      ],
+      "glycin": [
+        8,
+        8
+      ],
+      "farbfeld-crate": [
+        8,
+        8
+      ],
+      "oracle-spec": [
+        8,
+        8
+      ]
+    },
+    "truncation": {
+      "image": [
+        0,
+        190
+      ],
+      "glycin": [
+        0,
+        190
+      ],
+      "farbfeld-crate": [
+        0,
+        190
+      ],
+      "oracle-spec": [
+        0,
+        190
+      ]
+    },
+    "trailing-bytes": {
+      "image": [
+        224,
+        224
+      ],
+      "glycin": [
+        224,
+        224
+      ],
+      "farbfeld-crate": [
+        224,
+        224
+      ],
+      "oracle-spec": [
+        224,
+        224
+      ]
+    },
+    "random-flip": {
+      "image": [
+        1458,
+        7556
+      ],
+      "glycin": [
+        1458,
+        7556
+      ],
+      "farbfeld-crate": [
+        1458,
+        7556
+      ],
+      "oracle-spec": [
+        1458,
+        7556
+      ]
+    }
+  },
+  "public_subset": true
+}

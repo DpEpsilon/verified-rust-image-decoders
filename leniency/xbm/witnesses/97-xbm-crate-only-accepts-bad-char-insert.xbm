@@ -1,0 +1,5 @@
+#define img_width 13
+#define img_height 1
+static unsigned char img_bits[] = {
+ 0x0c,0x35
+};

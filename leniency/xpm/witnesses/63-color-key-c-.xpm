@@ -1,0 +1,11 @@
+/* XPM */
+static const char *img[] = {
+"40 4 3 1",
+"b c #69211A",
+". c  green",
+"a c None",
+"..aa.babb...a.....aaab...babbba....bbbaa",
+"b..babbaab.a..b..aabaa..a..bbb..abbb.b.b",
+".b..b.bb..a.abb...aa.aaaa..aa..b..bb.aa.",
+"abb.aba..bba..ab...b..aaabbb.bb.b.abab.."
+};

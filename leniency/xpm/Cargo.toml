@@ -1,0 +1,13 @@
+[package]
+name = "leniency-xpm-runner"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+image = { version = "=0.25.10", default-features = false }
+image-extras = { version = "=0.1.1", default-features = false, features = ["xpm"] }
+ez-pixmap = "=0.2.2"
+glycin-image-rs = { path = "../../glycin-plan/glycin/glycin-loaders/glycin-image-rs", default-features = false, features = ["builtin"] }
+glycin-utils = { path = "../../glycin-plan/glycin/glycin-utils", default-features = false, features = ["builtin", "loader-utils"] }
+serde_json = "1.0"
+sha2 = "0.10"
