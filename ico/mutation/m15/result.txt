@@ -1,0 +1,10 @@
+implementation mutation 15
+what changed: parse_tracked: reject any two valid records whose payload ranges overlap
+expected obligation/fixture: T2 (two-identical-range, straddling-ranges: valid overlapping ranges are rejected)
+run number: 142 (runs/142.log)
+crate result: verification results:: 304 verified, 1 errors
+classification: verifier kill
+first verifier diagnostic: error: postcondition not satisfied --> src/ico.rs:746:9
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m15/failure.log

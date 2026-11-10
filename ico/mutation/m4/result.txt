@@ -1,0 +1,10 @@
+implementation mutation 4
+what changed: directory_guard: the count-zero guard `count_word == 0` becomes `false && count_word == 0`
+expected obligation/fixture: T2 (empty-directory-1: an empty directory is accepted)
+run number: 131 (runs/131.log)
+crate result: verification results:: 302 verified, 1 errors
+classification: verifier kill
+first verifier diagnostic: error: assertion failed --> src/ico.rs:367:16
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m4/failure.log

@@ -1,0 +1,10 @@
+implementation mutation 29
+what changed: decode_entry_impl: return the reconstructed wire record's defect before the selected-record mismatch check
+expected obligation/fixture: T5/T6 (wire-invalid-forged-valid, wire-invalid-forged-defect: the defect precedes InvalidEntryRecord)
+run number: 156 (runs/156.log)
+crate result: verification results:: 302 verified, 1 errors
+classification: verifier kill
+first verifier diagnostic: error: postcondition not satisfied --> src/ico.rs:996:9
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m29/failure.log

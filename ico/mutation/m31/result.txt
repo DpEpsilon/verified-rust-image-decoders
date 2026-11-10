@@ -1,0 +1,11 @@
+implementation mutation 31
+what changed: record_eq: compare only width and status (drop height, colour count, offset, size, optional words)
+expected obligation/fixture: T5/T6 (forged-wrong-height, forged-wrong-color-count, forged-wrong-planes, forged-wrong-bit-count,
+         forged-hotspot-x, forged-hotspot-y, forged-wrong-raw-size: a partially forged record is accepted)
+run number: 158 (runs/158.log)
+crate result: verification results:: 302 verified, 1 errors
+classification: verifier kill
+first verifier diagnostic: error: postcondition not satisfied --> src/ico.rs:946:9
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m31/failure.log

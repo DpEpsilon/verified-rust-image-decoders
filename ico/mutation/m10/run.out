@@ -1,0 +1,61 @@
+warning: function `agree_header_124_BareDib` should have a snake case name
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/ico/mutation/dib/dib_verus/src/model_vectors.rs:275:14
+    |
+275 | pub proof fn agree_header_124_BareDib()
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_header_124_bare_dib`
+
+warning: `dib_verus` (lib) generated 101 warnings
+    Checking ico_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/ico/mutation/m10/ico_verus)
+error: assertion failed
+   --> src/ico.rs:538:16
+    |
+538 |           assert(crate::model::defect_of(bytes@, hr.dir_end, 0, len_word as int, offset_word as int)
+    |  ________________^
+539 | |             is None);
+    | |___________________^ assertion failed
+
+note: automatically chose triggers for this expression:
+    --> src/ico.rs:1021:9
+     |
+1021 |         choose|hr: crate::model::HRec| crate::model::h(bytes@) == Ok(hr) && hdr_matches(hr, header);
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/ico.rs:1021:77
+     |
+1021 |         choose|hr: crate::model::HRec| crate::model::h(bytes@) == Ok(hr) && hdr_matches(hr, header);
+     |                                                                             ^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/ico.rs:762:9
+    |
+762 |         choose|hr: crate::model::HRec| crate::model::h(bytes@) == Ok(hr) && hdr_matches(hr, header);
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/ico.rs:762:77
+    |
+762 |         choose|hr: crate::model::HRec| crate::model::h(bytes@) == Ok(hr) && hdr_matches(hr, header);
+    |                                                                             ^^^^^^^^^^^^^^^^^^^^^^^
+
+note: Verus printed one or more automatically chosen quantifier triggers
+      because it had low confidence in the chosen triggers.
+      To suppress these messages, do one of the following:
+        (1) manually annotate a single desired trigger using `#[trigger]`
+            (example: `forall|i: int, j: int| f(i) && #[trigger] g(i) && #[trigger] h(j)`),
+        (2) manually annotate multiple desired triggers using `#![trigger ...]`
+            (example: `forall|i: int| #![trigger f(i)] #![trigger g(i)] f(i) && g(i)`),
+        (3) accept the automatically chosen trigger using `#![auto]`
+            (example: `forall|i: int, j: int| #![auto] f(i) && g(i) && h(j)`)
+        (4) use the `--triggers-mode silent` command-line option to suppress all printing of triggers.
+      (Note: triggers are used by the underlying SMT theorem prover to instantiate quantifiers;
+      the theorem prover instantiates a quantifier whenever some expression matches the
+      pattern specified by one of the quantifier's triggers.)
+   --> src/ico.rs:762:9
+    |
+762 |         choose|hr: crate::model::HRec| crate::model::h(bytes@) == Ok(hr) && hdr_matches(hr, header);
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+verification results:: 302 verified, 1 errors
+error: could not compile `ico_verus` (lib) due to 1 previous error
+[verify.sh] run 137 exit=101 89s log=runs/137.log

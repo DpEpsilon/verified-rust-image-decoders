@@ -1,0 +1,10 @@
+implementation mutation 32
+what changed: decode_entry_impl: validate every supplied record against its wire reconstruction instead of only the selected one
+expected obligation/fixture: T5/T6 (forged-unselected-ignored: a forged unselected record changes the selected result)
+run number: 159 (runs/159.log)
+crate result: verification results:: 302 verified, 2 errors
+classification: verifier kill
+first verifier diagnostic: error: postcondition not satisfied --> src/ico.rs:996:9
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m32/failure.log

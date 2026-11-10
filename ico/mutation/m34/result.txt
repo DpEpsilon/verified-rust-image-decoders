@@ -1,0 +1,10 @@
+implementation mutation 34
+what changed: decode_entry_impl: the DIB slice ends at EOF (`end = bytes.len()`) instead of the declared payload end
+expected obligation/fixture: T5 (entry-size-truncates-dib: the DIB slice end is EOF, not the declared end)
+run number: 161 (runs/161.log)
+crate result: verification results:: 302 verified, 1 errors
+classification: verifier kill
+first verifier diagnostic: error: precondition not satisfied --> src/ico.rs:1198:25
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m34/failure.log

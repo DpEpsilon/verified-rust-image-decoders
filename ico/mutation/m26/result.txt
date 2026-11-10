@@ -1,0 +1,10 @@
+implementation mutation 26
+what changed: reconstruct: the record cursor resets after 256 records (`6 + 16*(i & 255)`)
+expected obligation/fixture: T2/T5 (count-exact-1024: records past 256 reread the first 256)
+run number: 153 (runs/153.log)
+crate result: verification results:: 302 verified, 1 errors
+classification: verifier kill
+first verifier diagnostic: error: assertion failed --> src/ico.rs:613:16
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m26/failure.log

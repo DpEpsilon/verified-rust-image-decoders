@@ -1,0 +1,10 @@
+implementation mutation 21
+what changed: decode_entry_impl: allocate an extra uncharged scratch vector at entry
+expected obligation/fixture: T10 AUDIT only (dib-basic-parse: the ghost count cannot see this; tools/audit_alloc.sh FAILS)
+run number: 148 (runs/148.log)
+crate result: verification results:: 303 verified, 0 errors
+classification: audit kill (verifier passes; audit_alloc FAILS)
+first verifier diagnostic: (none) 
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 1 (expected 0) | FAIL
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m21/failure.log

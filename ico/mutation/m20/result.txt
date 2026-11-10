@@ -1,0 +1,10 @@
+implementation mutation 20
+what changed: parse_tracked: rescan all previous records on each iteration, charging one step per scanned record
+expected obligation/fixture: T9 (count-exact-1024: the charged step bound is no longer linear)
+run number: 147 (runs/147.log)
+crate result: verification results:: 302 verified, 2 errors
+classification: verifier kill
+first verifier diagnostic: error: invariant not satisfied at end of loop body --> src/ico.rs:810:13
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m20/failure.log

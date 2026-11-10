@@ -1,0 +1,10 @@
+implementation mutation 3
+what changed: rd16: build the word as `hi | (lo << 8)` (big-endian) instead of `lo | (hi << 8)`
+expected obligation/fixture: T2 (dib-basic-parse: the type/reserved/count/size/offset words all misread)
+run number: 130 (runs/130.log)
+crate result: verification results:: 302 verified, 1 errors
+classification: verifier kill
+first verifier diagnostic: error: postcondition not satisfied --> src/ico.rs:189:9
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m3/failure.log

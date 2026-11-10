@@ -1,0 +1,10 @@
+implementation mutation 25
+what changed: decode_entry_impl: compare the index against the count after narrowing both to u16
+expected obligation/fixture: T5/T7 (index-narrow-65536: a narrowed index defeats the IndexOutOfRange guard)
+run number: 152 (runs/152.log)
+crate result: verification results:: 302 verified, 1 errors
+classification: verifier kill
+first verifier diagnostic: error: assertion failed --> src/ico.rs:1046:16
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m25/failure.log

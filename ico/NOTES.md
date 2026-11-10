@@ -123,3 +123,16 @@ forged unselected ignored). All 31 named non-vacuity witnesses have proof items;
 Clean full reverify: `verification results:: 303 verified, 0 errors` (after
 `cargo clean`). Executable behaviour byte-identical (`cargo test --release` →
 `conformance: 217/217 vectors passed`). See `PROOF-REPORT-M4a.md`.
+
+## M4b (executable-only mutation campaign)
+
+All 33 manifest mutations (M1-M33) were run on the implementation
+(`tools/mutations.py` edits ONLY `src/ico.rs` in a disposable copy rebuilt from
+`mutation/base/ico_verus`, a pristine byte-identical copy of the live crate;
+driver `tools/run_mutations.sh`; one unattended background batch). Result:
+**32 verifier kills** (postcondition / precondition / assertion / loop
+invariant, never a rustc error), **1 audit kill** (m21: an uncharged `vec!` the
+verifier accepts at 303/0 but `tools/audit_alloc.sh` fails), and **1 weak kill**
+(m17: rlimit-only). M17 was reworked as m34 (a concrete wrong DIB slice end),
+killed on a real precondition. Live crate unchanged; clean reverify 303/0; tests
+217/217. See `PROOF-REPORT-M4b.md`.

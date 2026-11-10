@@ -1,0 +1,10 @@
+implementation mutation 12
+what changed: record_status: the range guard forms `(offset + size)` in u32 (truncating) instead of u64 subtraction
+expected obligation/fixture: T1/T2/T7 (wide-sum-wrap, size-4294967295: offset+size wraps in u32)
+run number: 139 (runs/139.log)
+crate result: verification results:: 302 verified, 1 errors
+classification: verifier kill
+first verifier diagnostic: error: assertion failed --> src/ico.rs:526:16
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m12/failure.log

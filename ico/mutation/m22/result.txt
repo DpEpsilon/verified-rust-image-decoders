@@ -1,0 +1,10 @@
+implementation mutation 22
+what changed: has_png_signature: drop the `end - start < 8` short-circuit, so the eight-byte comparison runs on short payloads
+expected obligation/fixture: T4 (png-prefix-followed-by-rest-7: the classifier reads past the declared range)
+run number: 149 (runs/149.log)
+crate result: verification results:: 302 verified, 1 errors
+classification: verifier kill
+first verifier diagnostic: error: invariant not satisfied before loop --> src/ico.rs:423:13
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m22/failure.log

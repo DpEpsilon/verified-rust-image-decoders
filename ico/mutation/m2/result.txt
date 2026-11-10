@@ -1,0 +1,10 @@
+implementation mutation 2
+what changed: directory_guard: read the reserved word before the six-byte length guard
+expected obligation/fixture: T1/T2 (short-dir-0: the guarded read's precondition is no longer provable)
+run number: 129 (runs/129.log)
+crate result: verification results:: 302 verified, 1 errors
+classification: verifier kill
+first verifier diagnostic: error: precondition not satisfied --> src/ico.rs:293:20
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m2/failure.log

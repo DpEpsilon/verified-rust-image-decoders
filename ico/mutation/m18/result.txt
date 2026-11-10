@@ -1,0 +1,10 @@
+implementation mutation 18
+what changed: decode_entry_impl: reject a DIB result whose dimensions differ from the directory record
+expected obligation/fixture: T5 (dib-mismatch-decode: a valid DIB whose dimensions differ from the record is rejected)
+run number: 145 (runs/145.log)
+crate result: verification results:: 302 verified, 1 errors
+classification: verifier kill
+first verifier diagnostic: error: postcondition not satisfied --> src/ico.rs:996:9
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m18/failure.log

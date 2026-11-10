@@ -1,0 +1,10 @@
+implementation mutation 13
+what changed: has_png_signature: the length guard `end - start < 8` becomes `< 7`
+expected obligation/fixture: T4 (signature-prefix-7: a seven-byte prefix is classified Png)
+run number: 140 (runs/140.log)
+crate result: verification results:: 302 verified, 1 errors
+classification: verifier kill
+first verifier diagnostic: error: invariant not satisfied before loop --> src/ico.rs:423:13
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m13/failure.log

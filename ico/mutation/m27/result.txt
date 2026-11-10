@@ -1,0 +1,10 @@
+implementation mutation 27
+what changed: parse_tracked: sort the record list by descending raw_size as it is built
+expected obligation/fixture: T2 (directory-order-large-first, directory-order-small-first: the record order changes)
+run number: 154 (runs/154.log)
+crate result: verification results:: 303 verified, 1 errors
+classification: verifier kill
+first verifier diagnostic: error: invariant not satisfied at end of loop body --> src/ico.rs:804:13
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m27/failure.log

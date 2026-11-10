@@ -1,0 +1,61 @@
+     |
+1036 |             assert(index as int >= hr.count);
+     |                    ^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed
+
+error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details
+   --> src/ico.rs:987:1
+    |
+987 | / fn decode_entry_impl(
+988 | |     bytes: &[u8],
+989 | |     entries: &[Entry],
+990 | |     index: u32,
+...   |
+993 | |     alloc: &mut Ghost<nat>,
+994 | | ) -> (r: Result<Decoded, Error>)
+    | |_______________________________^
+
+note: automatically chose triggers for this expression:
+    --> src/ico.rs:1021:9
+     |
+1021 |         choose|hr: crate::model::HRec| crate::model::h(bytes@) == Ok(hr) && hdr_matches(hr, header);
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/ico.rs:1021:77
+     |
+1021 |         choose|hr: crate::model::HRec| crate::model::h(bytes@) == Ok(hr) && hdr_matches(hr, header);
+     |                                                                             ^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/ico.rs:762:9
+    |
+762 |         choose|hr: crate::model::HRec| crate::model::h(bytes@) == Ok(hr) && hdr_matches(hr, header);
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/ico.rs:762:77
+    |
+762 |         choose|hr: crate::model::HRec| crate::model::h(bytes@) == Ok(hr) && hdr_matches(hr, header);
+    |                                                                             ^^^^^^^^^^^^^^^^^^^^^^^
+
+note: Verus printed one or more automatically chosen quantifier triggers
+      because it had low confidence in the chosen triggers.
+      To suppress these messages, do one of the following:
+        (1) manually annotate a single desired trigger using `#[trigger]`
+            (example: `forall|i: int, j: int| f(i) && #[trigger] g(i) && #[trigger] h(j)`),
+        (2) manually annotate multiple desired triggers using `#![trigger ...]`
+            (example: `forall|i: int| #![trigger f(i)] #![trigger g(i)] f(i) && g(i)`),
+        (3) accept the automatically chosen trigger using `#![auto]`
+            (example: `forall|i: int, j: int| #![auto] f(i) && g(i) && h(j)`)
+        (4) use the `--triggers-mode silent` command-line option to suppress all printing of triggers.
+      (Note: triggers are used by the underlying SMT theorem prover to instantiate quantifiers;
+      the theorem prover instantiates a quantifier whenever some expression matches the
+      pattern specified by one of the quantifier's triggers.)
+   --> src/ico.rs:762:9
+    |
+762 |         choose|hr: crate::model::HRec| crate::model::h(bytes@) == Ok(hr) && hdr_matches(hr, header);
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+verification results:: 302 verified, 1 errors
+error: could not compile `ico_verus` (lib) due to 2 previous errors
+[verify.sh] run 143 exit=101 89s log=runs/143.log

@@ -1,0 +1,10 @@
+implementation mutation 30
+what changed: decode_entry_impl: call the DIB core in `Mode::IcoEntryDib` (exact slice) instead of `IcoEntryDibSlack`
+expected obligation/fixture: T5 (dib-slack-64-decode: a payload with slack is rejected by exact mode)
+run number: 157 (runs/157.log)
+crate result: verification results:: 302 verified, 1 errors
+classification: verifier kill
+first verifier diagnostic: error: precondition not satisfied --> src/ico.rs:1198:25
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m30/failure.log

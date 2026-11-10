@@ -1,0 +1,10 @@
+implementation mutation 17
+what changed: decode_entry_impl: the DIB call gets `bytes[start..]` (offset to EOF) instead of `bytes[start..end]`
+expected obligation/fixture: T5 (entry-size-truncates-dib: the trailing file bytes join the DIB slice)
+run number: 144 (runs/144.log)
+crate result: verification results:: 302 verified, 1 errors
+classification: WEAK KILL (rlimit-only)
+first verifier diagnostic: error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details --> src/ico.rs:987:1
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m17/failure.log

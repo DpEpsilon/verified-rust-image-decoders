@@ -1,0 +1,10 @@
+implementation mutation 16
+what changed: decode_entry_impl: the index/count guard compares `index as u8` against `header.count as u8`
+expected obligation/fixture: T1/T5/T7 (index-narrow-256: the guard no longer bounds the u32 index)
+run number: 143 (runs/143.log)
+crate result: verification results:: 302 verified, 1 errors
+classification: verifier kill
+first verifier diagnostic: error: assertion failed --> src/ico.rs:1036:20
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m16/failure.log

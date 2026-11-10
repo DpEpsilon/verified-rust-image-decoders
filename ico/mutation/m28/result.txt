@@ -1,0 +1,10 @@
+implementation mutation 28
+what changed: decode_entry_impl: accept the supplied record without comparing it to the wire reconstruction
+expected obligation/fixture: T1/T5 (forged-wrong-kind, forged-wrong-end, forged-empty: a forged record is trusted)
+run number: 155 (runs/155.log)
+crate result: verification results:: 302 verified, 1 errors
+classification: verifier kill
+first verifier diagnostic: error: assertion failed --> src/ico.rs:1129:16
+audit_alloc.sh on the mutated source: Vec::with_capacity reservations: 1 (expected exactly 1, in parse_tracked) | vec! allocations: 0 (expected 0) | OK
+verifier-error check: no rustc diagnostics (no error[E...], no type/borrow error) in failure.log; the error is a Verus obligation diagnostic above.
+log: mutation/m28/failure.log
