@@ -1,0 +1,77 @@
+2	2026-11-10T08:06:46+00:00	exit=101	82s	probe: Seq::new snoc, exec enum records, Vec loop, nonlin [crate=probe]	verification results:: 1594 verified, 0 errors
+3	2026-11-10T08:06:55+00:00	exit=101	1s	probe 2: imports fixed [crate=probe]	
+4	2026-11-10T08:07:01+00:00	exit=101	2s	probe 3: spec-only int [crate=probe]	
+5	2026-11-10T08:07:18+00:00	exit=101	3s	probe 5 [crate=probe]	verification results:: 9 verified, 2 errors
+6	2026-11-10T08:07:39+00:00	exit=0	2s	probe 6 [crate=probe]	verification results:: 11 verified, 0 errors
+7	2026-11-10T08:08:47+00:00	exit=101	3s	probe 7: casts, slice get, indexing, sig loop [crate=probe]	verification results:: 12 verified, 2 errors
+8	2026-11-10T08:08:57+00:00	exit=101	2s	probe 8 [crate=probe]	
+9	2026-11-10T08:09:02+00:00	exit=101	2s	probe 9 [crate=probe]	verification results:: 13 verified, 1 errors
+10	2026-11-10T08:09:13+00:00	exit=101	3s	probe 10 [crate=probe]	verification results:: 13 verified, 1 errors
+11	2026-11-10T08:09:27+00:00	exit=0	2s	probe 11 [crate=probe]	verification results:: 16 verified, 0 errors
+12	2026-11-10T08:12:05+00:00	exit=101	84s	M2 step 1: model.rs compiles [crate=ico_verus]	verification results:: 1594 verified, 0 errors
+13	2026-11-10T08:14:51+00:00	exit=101	1s	M2 step 2: compile+rules [crate=ico_verus]	
+14	2026-11-10T08:14:56+00:00	exit=101	0s	M2 step 3 [crate=ico_verus]	
+15	2026-11-10T08:15:04+00:00	exit=101	1s	M2 step 4 [crate=ico_verus]	
+16	2026-11-10T08:15:10+00:00	exit=101	1s	M2 step 5 [crate=ico_verus]	
+17	2026-11-10T08:15:16+00:00	exit=101	2s	M2 step 6 [crate=ico_verus]	
+18	2026-11-10T08:15:24+00:00	exit=101	3s	M2 step 7 [crate=ico_verus]	
+19	2026-11-10T08:15:33+00:00	exit=101	2s	M2 step 8 [crate=ico_verus]	
+20	2026-11-10T08:15:57+00:00	exit=101	4s	M2 step 9 [crate=ico_verus]	verification results:: 54 verified, 6 errors
+21	2026-11-10T08:16:15+00:00	exit=101	4s	M2 step 10 [crate=ico_verus]	verification results:: 57 verified, 3 errors
+22	2026-11-10T08:16:34+00:00	exit=101	4s	M2 step 11 [crate=ico_verus]	verification results:: 57 verified, 2 errors
+23	2026-11-10T08:16:49+00:00	exit=101	1s	probe 12: Vec index + choose pattern [crate=probe]	
+24	2026-11-10T08:16:58+00:00	exit=101	1s	probe 13 [crate=probe]	
+25	2026-11-10T08:17:07+00:00	exit=101	1s	probe 14 [crate=probe]	
+26	2026-11-10T08:17:19+00:00	exit=101	4s	M2 step 12 [crate=ico_verus]	verification results:: 57 verified, 2 errors
+27	2026-11-10T08:17:35+00:00	exit=101	4s	M2 step 13 [crate=ico_verus]	verification results:: 57 verified, 2 errors
+28	2026-11-10T08:17:47+00:00	exit=101	2s	probe 15: partialeq vs spec eq [crate=probe]	
+29	2026-11-10T08:17:53+00:00	exit=101	0s	probe 16 [crate=probe]	
+30	2026-11-10T08:18:02+00:00	exit=101	3s	probe 17: does == unfold [crate=probe]	verification results:: 4 verified, 1 errors
+31	2026-11-10T08:18:08+00:00	exit=101	2s	probe 17 [crate=probe]	verification results:: 4 verified, 1 errors
+32	2026-11-10T08:18:18+00:00	exit=101	2s	probe 18: directions of derived == [crate=probe]	verification results:: 4 verified, 1 errors
+33	2026-11-10T08:18:31+00:00	exit=101	1s	probe 19: equality directions [crate=probe]	
+34	2026-11-10T08:18:36+00:00	exit=101	0s	probe 20 [crate=probe]	
+35	2026-11-10T08:18:42+00:00	exit=101	2s	probe 21 [crate=probe]	
+36	2026-11-10T08:18:51+00:00	exit=101	3s	probe 22 [crate=probe]	verification results:: 3 verified, 2 errors
+37	2026-11-10T08:19:05+00:00	exit=101	2s	probe 23: reveal eq [crate=probe]	
+38	2026-11-10T08:19:11+00:00	exit=101	2s	probe 24 [crate=probe]	verification results:: 1 verified, 2 errors
+39	2026-11-10T08:19:25+00:00	exit=101	0s	probe 25: Vec index spec eq [crate=probe]	
+40	2026-11-10T08:19:44+00:00	exit=0	2s	probe 26: match-based record equality [crate=probe]	verification results:: 6 verified, 0 errors
+41	2026-11-10T08:20:09+00:00	exit=0	3s	probe 27: entry_eq <==> == [crate=probe]	verification results:: 9 verified, 0 errors
+42	2026-11-10T08:20:22+00:00	exit=101	4s	M2 step 14: model equality lemmas [crate=ico_verus]	verification results:: 63 verified, 2 errors
+43	2026-11-10T08:20:33+00:00	exit=101	2s	M2 step 15 [crate=ico_verus]	
+44	2026-11-10T08:20:43+00:00	exit=101	2s	M2 step 16 [crate=ico_verus]	
+45	2026-11-10T08:20:56+00:00	exit=101	4s	M2 step 17 [crate=ico_verus]	verification results:: 66 verified, 2 errors
+46	2026-11-10T08:21:12+00:00	exit=101	4s	M2 step 18 [crate=ico_verus]	verification results:: 66 verified, 2 errors
+47	2026-11-10T08:21:37+00:00	exit=101	5s	M2 step 19 [crate=ico_verus]	verification results:: 68 verified, 1 errors
+48	2026-11-10T08:21:52+00:00	exit=101	5s	M2 step 20 [crate=ico_verus]	verification results:: 68 verified, 1 errors
+49	2026-11-10T08:22:07+00:00	exit=101	3s	probe 28: status eq exec direct [crate=probe]	verification results:: 3 verified, 1 errors
+50	2026-11-10T08:22:16+00:00	exit=101	3s	probe 29: reveal in exec [crate=probe]	verification results:: 3 verified, 1 errors
+51	2026-11-10T08:22:24+00:00	exit=101	3s	probe 30 [crate=probe]	verification results:: 3 verified, 1 errors
+52	2026-11-10T08:22:33+00:00	exit=101	2s	probe 31 [crate=probe]	verification results:: 3 verified, 1 errors
+53	2026-11-10T08:22:44+00:00	exit=0	2s	probe 32: nested match [crate=probe]	verification results:: 2 verified, 0 errors
+54	2026-11-10T08:22:54+00:00	exit=101	5s	M2 step 21 [crate=ico_verus]	verification results:: 68 verified, 1 errors
+55	2026-11-10T08:23:12+00:00	exit=101	5s	M2 step 22 [crate=ico_verus]	verification results:: 68 verified, 1 errors
+56	2026-11-10T08:23:25+00:00	exit=101	4s	M2 step 23 [crate=ico_verus]	verification results:: 68 verified, 1 errors
+57	2026-11-10T08:23:34+00:00	exit=101	4s	M2 step 24 [crate=ico_verus]	verification results:: 68 verified, 1 errors
+58	2026-11-10T08:23:46+00:00	exit=101	3s	probe 33: exact shape [crate=probe]	verification results:: 3 verified, 1 errors
+59	2026-11-10T08:23:55+00:00	exit=101	2s	probe 34: enum spec eq vs exec [crate=probe]	verification results:: 2 verified, 2 errors
+60	2026-11-10T08:24:17+00:00	exit=101	2s	probe 35: Structural/StructuralEq derive [crate=probe]	
+61	2026-11-10T08:24:25+00:00	exit=101	3s	probe 36: == vs st_eq direct [crate=probe]	verification results:: 3 verified, 1 errors
+62	2026-11-10T08:24:35+00:00	exit=101	3s	probe 37: array == not elementwise [crate=probe]	verification results:: 3 verified, 1 errors
+63	2026-11-10T08:24:45+00:00	exit=101	2s	probe 38: code-based status compare [crate=probe]	verification results:: 5 verified, 1 errors
+64	2026-11-10T08:25:04+00:00	exit=101	3s	probe 39: enum eq basics [crate=probe]	verification results:: 3 verified, 1 errors
+65	2026-11-10T08:25:12+00:00	exit=0	2s	probe 40 [crate=probe]	verification results:: 4 verified, 0 errors
+66	2026-11-10T08:25:37+00:00	exit=101	2s	M2 step 25 [crate=ico_verus]	
+67	2026-11-10T08:25:47+00:00	exit=0	5s	M2 step 26 [crate=ico_verus]	verification results:: 71 verified, 0 errors
+68	2026-11-10T08:26:47+00:00	exit=101	0s	M2 step 27: witnesses [crate=ico_verus]	
+69	2026-11-10T08:26:56+00:00	exit=0	5s	M2 step 28 [crate=ico_verus]	verification results:: 77 verified, 0 errors
+70	2026-11-10T08:28:26+00:00	exit=0	84s	M2 FINAL: clean full reverify [crate=ico_verus]	verification results:: 77 verified, 0 errors
+71	2026-11-10T08:31:13+00:00	exit=0	85s	M2 FINAL: clean full reverify after cargo clean [crate=ico_verus]	verification results:: 77 verified, 0 errors
+72	2026-11-10T08:31:32+00:00	exit=101	3s	M2 step 29: witnesses take parse_eq [crate=ico_verus]	
+73	2026-11-10T08:31:46+00:00	exit=0	5s	M2 step 30 [crate=ico_verus]	verification results:: 79 verified, 0 errors
+74	2026-11-10T08:33:18+00:00	exit=0	85s	M2 FINAL: clean full reverify (canonical) [crate=ico_verus]	verification results:: 79 verified, 0 errors
+75	2026-11-10T08:33:55+00:00	exit=1	0s	M2 sensitivity M1: cap > to >= (T2/T7) [crate=sens]	
+76	2026-11-10T08:35:24+00:00	exit=101	85s	M2 sensitivity M1: cap > to >= (T2/T7) [crate=sens]	verification results:: 78 verified, 1 errors
+77	2026-11-10T08:36:59+00:00	exit=101	87s	M2 sensitivity M13: seven-byte prefix (T4) [crate=sens]	verification results:: 77 verified, 2 errors
+78	2026-11-10T08:38:59+00:00	exit=0	90s	M2 FINAL: cargo clean + full reverify [crate=ico_verus]	verification results:: 79 verified, 0 errors

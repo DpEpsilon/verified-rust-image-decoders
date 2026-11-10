@@ -1,3 +1,5 @@
+pub mod model;
+
 use vstd::prelude::*;
 use dib_verus::{decode_with_steps, Decoded, Error, Mode};
 
