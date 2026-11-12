@@ -1,5 +1,7 @@
 # Sol review of the fallible-allocation delta: findings and resolutions
 
+Status after the tenth revision: **READY FOR OWNER FREEZE**, not frozen. Sol's last short read of the ninth revision found one blocking wording defect, corrected under "Tenth revision (inventory completeness)"; the freeze is the owner's act.
+
 An independent Sol review of the first draft of `SPEC.md`, `THEOREMS-ALLOC-DELTA.md` and `TABLE.md` raised nine findings: four HIGH, four MEDIUM, one LOW. All nine are resolved in the revised texts. The largest change is to the theorem shape: the reservation log is now sealed in the guard module and records each reservation's actual result, so every `OutOfMemory` is tied by verification, not by the audit, to a reservation that failed. The second is an honest accounting of the frozen-named functions: they are now unverified wrappers, and their verified theorems are retired rather than "kept". Line references in the first column are to the first draft.
 
 ## 1. HIGH: the OOM theorem did not tie `OutOfMemory` to a failed reservation
@@ -199,7 +201,7 @@ Recorded as decided defaults in `SPEC.md` §7 and `TABLE.md`:
 
 Sequencing: the guard module and tooling come first; the TGA policy implementation (separate ongoing work editing `tga.rs`) must finish before the TGA allocation pilot.
 
-Open items after the second review were F1–F3; the current list is at the end of this document.
+Open items after the second review were F1–F3. F2 and F3 passed in the fourth revision; F1 was reopened by the final read (fifth revision), passed with the audit fix (sixth revision), and was reopened again by Sol's final read of that fix (seventh revision). The current list is at the end of this document.
 
 ## Third revision: owner decisions of 2026-11-12
 
@@ -215,9 +217,262 @@ No new review findings; these changes follow from owner decisions and are applie
 - **D8 revised.** No upstreaming to glycin or libglycin; glycin-report wording removed. The fork loader mapping (`ProcessError::out_of_memory()`) stays; libglycin's C API keeps `GLY_LOADER_ERROR_FAILED`, documented.
 - D3 (C-API shims without an error channel: fixed non-allocating message, then `process::abort()`) and D4 (push-loop fills under A-STD) are unchanged.
 
+## Fourth revision (prototype gates)
+
+No new review findings; the three pre-freeze gates ran as prototypes under `alloc-delta/proto/` and all passed, F1 and F2 on x86_64 only. (F1 was reopened by the final read and passed again after the audit fix; see "Fifth revision" and "Sixth revision".) The theorem shape is unchanged. The gates forced clause changes in `SPEC.md` §1, §3, §3.1, §6 and §8, mirrored in `THEOREMS-ALLOC-DELTA.md` (§0, A-DIB-8, A-ICO-2, §5, §6, §7) and `TABLE.md`. These changed passages are what the final Sol read should cover.
+
+- **F3 (sealed log): passed.** `proto/guard_proto` (44 verified) and `proto/guard_proto_dep` (22 verified, cross-crate `import_dib`), 0 errors; four negative checks fail at the predicted gate (`proto/NOTES.md`, `NEGATIVE.tsv`). Clause changes:
+  - `OutOfMemory`'s spec counterparts are `pub closed spec fn site_spec(&self)`/`elements_spec(&self)`, same-`impl` siblings of the exec accessors. Verus rejects an `open` body over a private field and a receiver-less counterpart (§1).
+  - Three `tracked`-struct mechanics: `Tracked(log): Tracked<&mut AllocLog>` destructured in the parameter list; the append is `proof { log.ev = log.ev.push(..) }`; that one statement is repeated per reservation function, with no shared helper (§3).
+  - A `global layout` axiom is usable only in its declaring module, so `sites.rs` exports `lemma_entry_layout` (§3).
+  - `import_dib` consumes `r` and the DIB log, so it carries the DIB-arm part of A-ICO-2 in its own `ensures` over `out` and the final log. It is proved arm by arm, and the `OutOfMemory` literal is built only in ICO's `sites.rs` (§3.1). It now also requires DIB's exported `g_logged` (A-DIB-8).
+  - The guard listing matches the prototype, which is the reference implementation, with its four SHA-256 values recorded in §3 (not the D6 production hashes).
+- **F2 (`Entry` layout): passed on x86_64.** 28 B (ICNS) and 44 B (ICO), alignment 4, checked by rustc (`E0080` on a wrong size). The fallback was not needed. These are prototype struct shapes; each core's step re-declares its real `Entry`. i686 has no std, so it has no layout and no frozen i686 byte bound.
+- **F1 (call-graph audit): passed on x86_64 release.** All 15 negative controls fail and the clean control passes. On DIB the tool reports exactly the one allocation site via `alloc_output_n` plus deallocation, and passes with a 21-entry allowlist (`proto/alloc_audit/NOTES.md`). The six edits proposed there are applied in §6/§8:
+  - The audit is release-profile specific, because `share_generics()` is on below `opt-level=3` and the reachable set differs by profile.
+  - The allowlist records the profile, and its tool-printed SHA-256 goes into the proof report.
+  - Panic citations are enumerated per function.
+  - `finish_grow` is reworded as "such as". The leaf set is toolchain-determined: `handle_error` is the observed leaf, and `finish_grow` was walked.
+  - The tool is target-agnostic.
+  - F1 requires a per-(target, profile) allowlist, and the DIB control's expected output is stated.
+  - §6 also records the DIB review burden (21 entries; 19 panic edges over 18 functions needing T1/`Safe'` citations) and the blind spots: const-eval and static-initialiser allocations, panic-path allocation admitted by human citation, precompiled std without MIR pinned only by the commit hash, indirect-call candidate sets, and allocator identity. i686 is unaudited.
+- **Caveat on F1's "named reviewer".** The F1 allowlist is a fixture with `reviewer = "prototype-fixture"`, not a human signature. §8 now reads F1 as producing a hash-recorded allowlist *for* a named reviewer to sign. The signed production allowlist arrives with DIB's step, after `try_zeroed` replaces the `vec!`. This is a reading of the original gate text that the final review should accept or reject.
+- **Post-freeze hardening** (§8; not freeze blockers):
+  - an automatic per-function panic-edge diff between reports, failing on a new edge;
+  - an allowlist hash pinned in the tool instead of `sha256sum`;
+  - a full TOML reader;
+  - the profile field and its mismatch check;
+  - i686 once its std is installed.
+
+## Fifth revision (final read)
+
+Sol's final read of the fourth-revision text raised one HIGH and two MEDIUM findings plus two notes. All are applied in `SPEC.md`, `THEOREMS-ALLOC-DELTA.md` and `TABLE.md`. Gate F1 is reopened; F2 and F3 stand. The theorem shape is unchanged. `proto/` was not edited.
+
+### 5.1 HIGH: the audit's authorisation is path-insensitive
+
+The F1 prototype records one BFS parent per monomorphised instance (`proto/alloc_audit/src/walk.rs:253–256`) and authorises an allocation-capable instance by that one path. Instances are shared: `Vec::<u8>::try_reserve_exact` called from an unapproved helper is the same instance `try_zeroed` calls, so the helper is authorised through the guard's path. None of F1's fifteen negative controls calls a shared instance, so none exposed this.
+
+Resolution:
+
+- F1 is marked **NOT YET PASSED** in all three documents; the fix is in progress in `proto/alloc_audit`.
+- `SPEC.md` §6 drops the claim that a typed call graph by itself establishes absence. The tool records every edge, and a new paragraph, *Authorisation on every path*, requires every reachable incoming path to an allocation-capable instance to pass through an admitted caller, failing closed otherwise. The allowlist rule for `try_reserve_exact`/`push` and the "anything unlisted fails" sentence say the same.
+- F1's control set gains the same-instance negative control: a function outside `alloc_guard` calls the instance `try_zeroed` calls; the audit must fail and print that function's path.
+- `TABLE.md`'s README text now says the audit shows every call path to an allocating std function passes through the guard, and that it rests on the signed allowlist.
+
+### 5.2 MEDIUM: profile check and provenance validation are prerequisites, not hardening
+
+Resolution: both move out of `SPEC.md` §8's post-freeze hardening into a new list, *Prerequisites for assurance claims*, which gates any DIB proof report and any README "proved"/"audit shows" text. The list is: corrected audit; production allowlist signed by a named human reviewer; profile-mismatch refusal; provenance validation (`source_hash` equals the audited sources' hash, `reviewer` non-empty and not a fixture value); production `try_zeroed` path with `#[inline(never)]` in the production guard. `SPEC.md` §6 states the provenance check in the allowlist contract. Post-freeze hardening keeps the panic-edge diff, the in-tool hash pin, the full TOML reader and i686.
+
+### 5.3 MEDIUM: "header errors are never `OutOfMemory`" is false for ICNS
+
+ICNS `try_parse` reserves the entry list before its loop, so a file with one complete entry and a trailing partial entry header can return `OutOfMemory` in place of `TruncatedEntryHeader`.
+
+Resolution: `SPEC.md` §2, `THEOREMS-ALLOC-DELTA.md` §0 and the README text in `TABLE.md` now say "errors detected before the first reservation". The README text gives the ICNS example and names the assumptions behind "proved" and "audit shows": the reviewed, hash-checked guard body, A-STD and the signed allowlist.
+
+### 5.4 Note: F1's gate wording and two unexercised obligations
+
+- The revised F1 wording ("hash-recorded allowlist awaiting a named reviewer") is accepted as a **prototype feasibility** gate only. The human-signed production allowlist is required in the DIB step, before any assurance claim (§5.2).
+- `import_dib`'s production signature returns the nested `Result<Result<dib::Decoded, dib::Error>, OutOfMemory>`; F3 returned ICO's `TryError` directly. The nested form adds a result-mapping step and a `g_dib_arm` proof over it that F3 did not exercise. It is listed in `SPEC.md` §8 as an implementation obligation of the DIB import; the code lands in ICO's step (`THEOREMS-ALLOC-DELTA.md` §7, step 4), which consumes DIB's export.
+- F2 checked toy x86_64 struct shapes, not production `Entry` definitions. Each core's step re-declares and re-checks its real layout (`SPEC.md` §3, §8).
+
+### 5.5 Note: F3 negative table
+
+`neg2_edit_log_outside_guard`'s second route failed with an unrelated method-resolution error (`E0599`, `borrow_mut` not in scope; `proto/runs/123.log`) alongside the predicted `E0616` on the first route. The first route carries the evidence. The table entry in `proto/NOTES.md` should read "predicted failure plus an unrelated error in the second route, to be removed"; that file belongs to the agents working in `proto/` and was not edited here. `SPEC.md` §8 F3 records the caveat.
+
+## Sixth revision (audit fix)
+
+No new review findings. The fix for §5.1 landed in `proto/alloc_audit` (`NOTES.md`, "What this revision changed"), and this revision records it in `SPEC.md`, `THEOREMS-ALLOC-DELTA.md` and `TABLE.md`. Gate F1 is marked **PASSED** as a prototype feasibility gate on x86_64 release. The delta is **not frozen**. The theorem shape and every non-audit clause are unchanged.
+
+What the prototype now does:
+
+- Every-path authorisation: `authorize_allocations` (`proto/alloc_audit/src/walk.rs:789`) enumerates every simple root-to-entry path, bounded at 20,000 paths per root and depth 80, failing closed with `path-bound` past either bound. Each path is judged by its last allocation-capable item and the nearest audited-crate function before it.
+- Same-instance control `testcases/n11_shared_instance.rs`: passed (exit 0) before the fix; fails after it (exit 1, 12 `unauthorized-alloc-path` findings naming `unapproved_reserve` and `unapproved_grow`).
+- Profile detection and mismatch refusal (`opt-level`, `debug-assertions`, `share-generics`), control `c1_prof_mismatch` plus a recorded-opt-level fixture.
+- Provenance validation: `source_hash` recomputed from the audited sources; `reviewer` non-empty; `prototype-fixture` rejected unless `--prototype` / `ALLOC_AUDIT_PROTOTYPE`, which prints `mode: PROTOTYPE`.
+- 21 negative controls fail and both toy positive controls pass; DIB passes at 91 instances, 277 edges, 0 findings, allowlist SHA-256 `1f9739e4d339ef2cbd8e4b41a54a72833fdf6196e9e18c16d3ae044eebcef2c8` (was `295c8bf4…`; the fixture gained `profile` and `source_hash`).
+- Three new blind spots: the path-enumeration bound (fails closed), the source hash covering the crate's own files only, and authorisation constraining crate-local callers only.
+
+Consequential edits: the profile check and provenance validation move out of §5.2's prerequisite list, since the prototype implements them; the prerequisites now read "production tool keeping those checks", "signed allowlist passing without `--prototype`", and "production `try_zeroed` with `#[inline(never)]`", none of which holds yet. The fourth revision's hardening item "the profile field and its mismatch check" (above) was already moved by §5.2 and is now done.
+
+**Passages for the final Sol read** (changed audit text only):
+
+- `SPEC.md` §6, *1. Call-graph audit*, first paragraph: the last sentence (the prototype as reference for edge resolution and authorisation).
+- `SPEC.md` §6, *Authorisation on every path*: the new second paragraph (how the prototype realises the rule; bounds; std callers not judged). The first paragraph is unchanged.
+- `SPEC.md` §6, *The allowlist*: the `[meta]` sentence, the four enforcement bullets (commit/target, profile, `source_hash`, reviewer and `--prototype`) and the fixture sentence that follows them.
+- `SPEC.md` §6, *Review burden*: "identical before and after the every-path fix".
+- `SPEC.md` §6, *What the audit cannot see*: the last three bullets (path-enumeration bound, source hash scope, authorisation scope).
+- `SPEC.md` §7, O2.
+- `SPEC.md` §8: the opening sentence, the F1 entry, *Before the delta is frozen*, and *Prerequisites for assurance claims*.
+- `THEOREMS-ALLOC-DELTA.md` §7: the sequencing paragraph, step 0's table row, and the risk bullets "Path-insensitive authorisation" and "The audit's blind spots".
+- `TABLE.md`: the last two sentences of the README text's first paragraph, the note after the README text, O2, the F1 gate entry, and the two paragraphs after the gate list.
+
+Evidence Sol may check against the text: `proto/alloc_audit/NOTES.md` (control table, before/after table, blind spots 11–13), `reports/n11_shared_instance.txt`, `reports/dib_verus.txt`, `reports/c1_*.txt`.
+
+## Seventh revision (final read of the audit fix)
+
+Sol's final read of the sixth-revision text raised one HIGH, three MEDIUM and one LOW finding. All are applied to the text of `SPEC.md`, `THEOREMS-ALLOC-DELTA.md` and `TABLE.md`. Gate F1 is **REOPENED, not passed**; F2 and F3 stand. The delta is **not frozen**. The theorem shape is unchanged. The tool fix is in progress in `proto/alloc_audit` by another agent; this revision did not touch `proto/`.
+
+### 7.1 HIGH: allowlist caller matching by string suffix and prefix
+
+The prototype admits a path's caller if the caller's path and the entry's `allow` value end with one another (`proto/alloc_audit/src/allowlist.rs:198`), and matches items by `starts_with`/`ends_with` (`:185`, `:197`). A lookalike local function, such as `not_alloc_guard::try_zeroed`, is then authorised by an entry for `alloc_guard::try_zeroed`. Every-path enumeration does not help when each path's judgement is loose.
+
+Resolution:
+
+- F1 is marked **REOPENED** in all three documents, until the fix and its controls land.
+- `SPEC.md` §6 gains *Caller and item identity*: `allow` and item values match the fully qualified local def-path component by component with `::` boundaries (or by resolved `DefId`), never by suffix, prefix or substring; generic items name their generic arguments, so distinct instantiations are distinct entries; `"*"` is the only wildcard; an unresolvable or ambiguous value is a finding.
+- Required controls: (a) a local function whose def-path ends with an admitted path; (b) a prefix or suffix fragment of an admitted path in another module. Both must fail with `unauthorized-alloc-path`.
+- §6's prototype sentence now says the prototype is the reference for path enumeration, not for path matching.
+
+### 7.2 MEDIUM: provenance fields not all required or validated
+
+The prototype skips the commit, target and profile checks when the field is missing, accepts a commit prefix in either direction (`allowlist.rs:137`), and never reads `vstd_version`.
+
+Resolution (`SPEC.md` §6, *The allowlist*; §8):
+
+- All six `[meta]` fields (`rustc_commit`, `vstd_version`, `target`, `profile`, `source_hash`, `reviewer`) are REQUIRED; a missing or empty field is `allowlist-missing-<field>`.
+- `rustc_commit`: exact, or an abbreviation of the running hash of at least 9 hex digits, recorded-is-prefix-of-running only.
+- `vstd_version`: must equal the linked vstd's version, or the run fails (`allowlist-vstd`); a vstd change invalidates the allowlist.
+- New required controls: one missing-field fixture per field, a vstd-change fixture, and a short-commit fixture.
+- §8's prerequisites and the TABLE/THEOREMS step-0 text no longer describe provenance validation as implemented; they say it is incomplete until the fix lands.
+
+### 7.3 MEDIUM: several admitted callers of one shared instance
+
+Resolution (`SPEC.md` §6, *Caller and item identity*; allocation-capable bullet): one entry per (item instantiation, admitted caller); every path must match one of them, and an admitted caller admits no caller it does not name. Required control: two admitted callers of one shared instance pass, and an unapproved third caller of that instance fails with its path named.
+
+### 7.4 MEDIUM: source-hash scope overstated
+
+Resolution: `SPEC.md` §6 (the `source_hash` enforcement bullet and *What the audit cannot see*), `THEOREMS-ALLOC-DELTA.md` (preamble, §7 blind-spots risk) and `TABLE.md` (README first paragraph and the note after it) now say the hash covers source-map text only. It binds no `include_bytes!`/`include_str!` payload, environment or build input, `build.rs` or proc-macro output, or dependency. The production proof-report process pins or accounts for each, or the audit fails; that process is a new item under *Prerequisites for assurance claims*.
+
+### 7.5 LOW: n11's `unapproved_grow` path
+
+`unapproved_grow` reaches `resize -> extend_with -> reserve -> do_reserve_and_handle -> grow_amortized -> finish_grow`, not the guard's `push_mut` (`reports/n11_shared_instance.txt`). `SPEC.md` §8 F1 and `TABLE.md`'s F1 entry are corrected, and both now separate the archived post-fix report from the pre-fix exit 0, which is an observation recorded in `NOTES.md` with no archived report. The sixth-revision section above keeps its original wording as history.
+
+**Passages for Sol to re-read after the tool fix lands** (changed audit contract text only):
+
+- `SPEC.md` §6, *1. Call-graph audit*, first paragraph: the last two sentences (prototype as reference for enumeration, not matching).
+- `SPEC.md` §6, *Caller and item identity*, its four bullets and the required-controls paragraph (all new).
+- `SPEC.md` §6, *The allowlist*: the "every one of the six fields is required" sentence; the `rustc_commit`, `vstd_version` and `source_hash` bullets; the paragraph on what the prototype checks and the new controls; the allocation-capable `try_reserve_exact`/`push` bullet; the last sentence of "Anything reachable…".
+- `SPEC.md` §6, *What the audit cannot see*: the source-hash-scope bullet.
+- `SPEC.md` §7, O2.
+- `SPEC.md` §8: the opening paragraph, the F1 entry (status, requirement, reopening paragraph, same-instance control bullet, the sentence after the evidence list), *Before the delta is frozen*, and the first three *Prerequisites for assurance claims* bullets.
+- `THEOREMS-ALLOC-DELTA.md`: the preamble's trust-item sentences; §7 sequencing paragraph, step 0 row, and the risk bullets "Path-insensitive authorisation" and "The audit's blind spots".
+- `TABLE.md`: the README text's allowlist and hash sentences in the first paragraph, the note after the README text, O2, the F1 gate entry, and the two paragraphs after the gate list.
+
+Sol should check these against the fixed tool's code (`proto/alloc_audit/src/allowlist.rs`, `walk.rs`), its `NOTES.md` and the new collision, several-callers and provenance control reports.
+
+## Eighth revision (audit fix landed)
+
+No new review findings. The fix for §7.1–§7.5 landed in `proto/alloc_audit` (`NOTES.md`, "What the second revision changed"). This revision matches the audit contract in `SPEC.md`, `THEOREMS-ALLOC-DELTA.md` and `TABLE.md` to the implemented rules, applies the prototype's proposed SPEC edits 9–12, and marks gate F1 **PASSED** again as a prototype feasibility gate (x86_64, release). The delta is **not frozen**. The theorem shape and every non-audit clause are unchanged; this revision did not touch `proto/`.
+
+Evidence: `run_tests.sh` runs 38 controls, 4 positive (`c1_clean`, `c1_rev_named`, `c2_two_guards`, `c3_vstd_ok`) and 34 negative; every archived verdict in `reports/` matches its expectation. DIB passes on `pinned-dib/`, a copy of the audited revision (91 instances, 277 edges, 0 findings, allowlist SHA-256 `1f9739e4…` unchanged); the live DIB crate is being rewritten by the `try_*` implementation, so the production DIB run is a later step. The pre-fix `n11` pass is archived as a labelled reconstruction (`reports/n11_pre_fix.txt`, `prefix-reconstruction/reproduce.sh`), which `SPEC.md` §8 now accepts as evidence (proposed edit 12).
+
+Where the contract text changed to match the code rather than the other way round, Sol should judge whether the implemented rule is acceptable:
+
+- **Generic arguments are optional in an entry.** The seventh revision required them and made an entry without them a finding. The tool instead lets an entry without generic arguments match every instantiation reached from its admitted caller (`RawVecInner::<A>::reserve_exact` covers `…<Global>`). The text now says so and requires the entry's contract to hold for each instantiation.
+- **No `allowlist-entry` finding for an `allow` naming no function.** Such an entry admits nothing, so the paths it was meant to cover fail with `unauthorized-alloc-path` (still fail-closed), but the unused entry itself is not reported. Reporting it is now a post-freeze hardening item.
+- **Commit rule.** The seventh revision said "a prefix of at least 9 hex digits". The tool accepts the compiler's 9-hex version-string token (`58cf8f9c3`) only by exact equality, the full 40-hex hash, or a prefix of that hash of at least 12 hex digits.
+- **vstd version source.** The seventh revision said "read from the loaded crate's metadata". The tool reads `Cargo.lock` via `CARGO_MANIFEST_DIR`, or the `ALLOC_AUDIT_VSTD_VERSION` override, which takes precedence and is unchecked. Both limits are now listed under *What the audit cannot see*.
+- **Missing-field finding names** are `allowlist-<field>-missing` (and `allowlist-reviewer` for the reviewer), not `allowlist-missing-<field>`.
+
+**Passages for Sol to re-read** (changed audit contract text only):
+
+- `SPEC.md` §6, *1. Call-graph audit*, first paragraph: the last sentence (the prototype as reference for matching and provenance).
+- `SPEC.md` §6, *Authorisation on every path*, second paragraph: the sentence beginning "The tool consults every `alloc` entry".
+- `SPEC.md` §6, *Caller and item identity*: the whole section (rewritten: six bullets and the controls paragraph).
+- `SPEC.md` §6, *The allowlist*: the "Every `[meta]` field is required" sentence; the `rustc_commit` and `vstd_version` bullets; the scope-line clause added to the `source_hash` bullet; the new *Build inputs* bullet; the paragraph on the prototype's controls (replacing "Provenance validation is therefore not complete"); the last clause of the allocation-capable `try_reserve_exact`/`push` bullet.
+- `SPEC.md` §6, *What the audit cannot see*: the two new bullets (build-input detection; vstd version source).
+- `SPEC.md` §7, O2.
+- `SPEC.md` §8: the opening sentence, the F1 entry (rewritten in full), *Before the delta is frozen*, the first *Prerequisites for assurance claims* bullet, and the new last post-freeze hardening item.
+- `THEOREMS-ALLOC-DELTA.md`: the preamble's trust-item sentences; §7 sequencing paragraph; step 0 row; risk bullets "Path-insensitive authorisation" (last three sentences) and "The audit's blind spots" (the build-input-detection and vstd clauses).
+- `TABLE.md`: the README text's hash sentence in the first paragraph; the note after the README text (prerequisite parenthesis and the audit-limit sentence); O2; the F1 gate entry (rewritten); the two paragraphs after the gate list.
+
+Sol should check these against `proto/alloc_audit/src/allowlist.rs` (`def_path_matches`, `caller_matches`, the `[meta]` checks, `detect_build_inputs`), `src/walk.rs` (`judge_path`, finding names), `NOTES.md` (control table, items 13–14) and the reports for `n11`–`n15`, `c2_two_guards`, `c1_commit_*`, `c1_*_missing`, `c3_vstd_*`, `c1_vstd_undeclared`, `bs_build_script` and `dib_verus`.
+
+## Ninth revision (contract narrowed)
+
+Sol's re-read of the eighth revision found four defects in the prototype audit (two HIGH, two MEDIUM) and two further points (the vstd override; the meaning of "pins or lists" versus "accounts for"). Each is resolved by **narrowing** the contract, so the text no longer promises what the prototype does not do, and by making the fix a mandatory requirement of the production tool or the proof-report process. `proto/` was not touched (a parallel agent is finishing controls there), no Verus run was made, and no gate verdict changed: F1 stays PASSED, now stated as "a fail-closed transitive allocation audit is feasible, and these are its demonstrated mechanisms". The theorem shape and every non-audit clause are unchanged. The document set is **READY FOR OWNER FREEZE** after a last short Sol read; it is not frozen.
+
+### 9.1 HIGH: node identity by printed def-path string
+
+The prototype keys nodes, edges and paths by `def_path_str` plus printed generic arguments (`walk.rs:83–95`, `:446–457`, `:1186–1202`); local paths lack the crate prefix that external ones carry, so a local `guard::try_zeroed` and an external crate `guard`'s `try_zeroed` merge, and `allow = "guard::try_zeroed"` admits the external one (`allowlist.rs:480–523`, `judge_path` `walk.rs:1096–1122`).
+
+Resolution: the production tool MUST key by `Instance`/`DefId`, use printed paths for display only, resolve each allowlist value to `DefId`s before the walk, and reject an ambiguous value (`allowlist-ambiguous`); local items are written `crate::…`. The prototype's def-path identity claim is limited to the single-crate toy setting. Required control `x1_extern_namesake` (local module plus same-named external crate). `SPEC.md` §6 *Caller and item identity*, §8 defect 1.
+
+### 9.2 HIGH: `//` inside a string literal hides an include
+
+`strip_line_comments` (`allowlist.rs:645–659`, used at `:673–685`) blanks from the first `//` on a line, so `let u = "https://x"; include_bytes!("p.bin")` is missed.
+
+Resolution: production detection is compiler-resolved (expansion spans or the session's loaded-file list), and the proof-report process carries an independent build-input inventory (below). The categorical "undeclared include sites fail the audit" is removed for the prototype: it fails only on inputs its scan detects. The omission is added to the disclosed blind spots. Required control `x2_include_after_url` (plus renamed-import and foreign-`macro_rules!` variants). `SPEC.md` §6 *Build inputs*, *What the audit cannot see*; §8 defect 2.
+
+### 9.3 MEDIUM: wildcard build-input declarations; `verus*` name prefix
+
+`item = "*"` is accepted for build-script, proc-macro and include declarations (`allowlist.rs:335–342`, `:300–309`, `:709–713`), and `name.starts_with("verus")` admits `verus_evil` (`allowlist.rs:617–625`).
+
+Resolution: `*` is only an `allow` value for allocation-caller authorisation; every build-input declaration names its exact input (`allowlist-wildcard-build-input` otherwise); production binds the actual Verus macro crates by name and artifact hash. `TABLE.md`'s README sentence ("each procedural-macro dependency must be declared") is rewritten as the production requirement, and the note after the README states what the prototype does instead. Required controls `x3_wildcard_build_input`, `x4_verus_prefix`. §8 defect 3.
+
+### 9.4 MEDIUM: an absent allowlist does not fail
+
+No allowlist yields `Allowlist::empty()` (`walk.rs:101–105`), skips every provenance check (`:123–313`), and `passed()` (`report.rs:153–159`) can return `Pass`.
+
+Resolution: a proof-report run requires an allowlist file with every `[meta]` field; the production tool fails with `allowlist-absent` and prints `diagnostic: no allowlist`. Prototype runs without an allowlist are diagnostics only. `SPEC.md` §6's "every field is required" is qualified to runs that have an allowlist. Required control `x5_no_allowlist`. §8 defect 4.
+
+### 9.5 vstd override and version binding
+
+The override `ALLOC_AUDIT_VSTD_VERSION` is prohibited in proof-report runs (production refuses it outside `--prototype`, `vstd-override-forbidden`), and the version is bound to the linked rlib and its locked source checksum. The eighth revision's alternative ("or the report must record its value") is deleted: recording an override cannot show which vstd was linked. `c3_vstd_ok`, `c3_vstd_change` and `c3_vstd_missing` all set the override and are described as parser and comparison controls only. Required controls `x6_vstd_override`, `x7_vstd_artifact`. §8 defect 5.
+
+### 9.6 "Pins or lists" versus "accounts for"
+
+One enforceable meaning replaces both: the proof report lists every build input with a content hash (source-map files, `include_*!` targets, `env!` variables with values, the rustc command line, `build.rs` and its outputs, every dependency artifact with its locked checksum), and that list must equal an independent inventory built without the audit tool's detection code: rustc's `--emit=dep-info` file (every file read, plus `# env-dep:` lines), the cargo command line (`cargo build -v`), and `cargo metadata` with `Cargo.lock`. Any difference blocks the proof report. This assumes rustc's dep-info is complete for the pinned compiler, which the process tests with the `x2` controls. `SPEC.md` §6 *Build-input inventory*; `TABLE.md` README and note; `THEOREMS-ALLOC-DELTA.md` preamble.
+
+### 9.7 F1 framing, known defects and prerequisites
+
+`SPEC.md` §8 now lists **Known prototype defects the production tool must fix**: the four findings above, the vstd override, the build-script control injecting `OUT_DIR` into a crate with no `build.rs` (no real build script under cargo), and dylibs over-reported as proc-macros. *Prerequisites for assurance claims* (none met): the production tool fixing those defects and passing the required controls; the independent build-input inventory; a named-human-signed post-change allowlist passing without `--prototype` and without the vstd override; the production DIB guard path with `#[inline(never)]`. Production implementation may start now; claims may not. The missing `source_hash`/`reviewer` key fixtures no longer block the freeze, because the frozen text does not claim them of the prototype; they are on the production tool's required-control list.
+
+**Passages for a last short Sol read** (changed text only):
+
+- `SPEC.md` header line.
+- `SPEC.md` §6, *1. Call-graph audit*, first paragraph: the last three sentences (prototype as reference for edge resolution and enumeration only; "the tool" means production).
+- `SPEC.md` §6, *Caller and item identity*: the two new opening paragraphs (production `DefId` requirement; the prototype's string keying and single-crate limit) and the last two sentences of the controls paragraph (`x1_extern_namesake`).
+- `SPEC.md` §6, *The allowlist*: the `allowlist-absent` sentences before "Within a run that has an allowlist"; the `vstd_version` bullet's first four sentences; the last two sentences of the `source_hash` bullet; the new *Build-input inventory* bullet; the *Build inputs* bullet (rewritten in full); the sentence beginning "The F1 prototype implements the commit"; the new *Required controls for the production tool* paragraph.
+- `SPEC.md` §6, *What the audit cannot see*: the last sentence of the source-hash-scope bullet; the build-input-detection bullet (rewritten); the vstd bullet (rewritten); the new node-identity bullet.
+- `SPEC.md` §7, O2.
+- `SPEC.md` §8: the second and third sentences of the opening paragraph; the F1 entry's first paragraph (meaning and requirement); the caller-identity, provenance and build-input control bullets (their last sentences); the paragraph after the DIB control; *Known prototype defects the production tool must fix*; *Before the delta is frozen*; *Production implementation may start now; claims may not*; *Prerequisites for assurance claims*.
+- `THEOREMS-ALLOC-DELTA.md`: header line; the preamble's trust-item sentences; §7 sequencing paragraph; step 0 row; the last three sentences of the "Path-insensitive authorisation" risk; the source-hash, build-input-detection and vstd clauses of "The audit's blind spots".
+- `TABLE.md`: header line; README first paragraph, the two sentences after "That hash does not cover"; the note after the README text (prerequisite list and the sentences on what the prototype does); O2; the F1 gate entry (rewritten); the two paragraphs after the gate list.
+
+Sol should check the defect descriptions against `proto/alloc_audit/src/{walk.rs,allowlist.rs,report.rs}` at the cited lines, and check that no passage still claims for the prototype what §8 lists as a defect.
+
+## Tenth revision (inventory completeness)
+
+Sol's last short read of the ninth revision raised one blocking wording defect. `SPEC.md` §6, *Build-input inventory*, said rustc's dep-info names every file the compilation read, and that dep-info, `cargo build -v`, `cargo metadata` and `Cargo.lock` together form a complete independent inventory of every build input (§9.6 above repeated it). They do not:
+
+- a build script or proc macro can read files and environment variables through `std::fs`/`std::env` without any dep-info entry;
+- `cargo metadata` describes packages, not the build units cargo executed or the outputs they generated;
+- `cargo build -v` prints command lines, not the reads those commands perform;
+- `Cargo.lock` content-hashes neither a mutable `path` dependency nor an already-built dependency artifact;
+- comparing two incomplete lists does not make either complete.
+
+Resolution, wording only (no gate verdict, theorem or `proto/` change; no Verus run). Dep-info is qualified as covering the file and macro-environment dependencies rustc **tracks**. The proof-report process must capture or prohibit every other read: build scripts and rustc (hosting the proc macros) run under sandboxed read tracing that records every file and environment read, with the environment reduced to the declared variables and unrecorded reads denied. It records the actual build-unit command lines and outputs, hashes every linked artifact and the source tree of every `path`/`git` dependency, and fails the report on any input it cannot account for. The mechanical comparison is restated as checking the report against that captured inventory, not as proving completeness. New required proof-report controls: `x9_build_script_untracked_read` and `x10_proc_macro_untracked_read`. In each, a real build script (or proc macro) reads an undeclared file and an undeclared environment variable through ordinary I/O. Each control must block the report, or the build must fail on the denied reads, and it must pass once both reads are declared. This supersedes §9.6's description of dep-info.
+
+Changed passages: `SPEC.md` header; §6 *Build-input inventory* (rewritten from the dependency-crate clause on), the *Required controls* paragraph (new last two sentences), the *What the audit cannot see* source-hash-scope bullet's last sentence; §8 *Before the delta is frozen* and the inventory prerequisite. `THEOREMS-ALLOC-DELTA.md`: header; the preamble's inventory sentence; the source-hash clause of "The audit's blind spots". `TABLE.md`: header; the README's inventory sentence; the inventory item of the note after the README; the pre-freeze paragraph and the inventory prerequisite after the gate list.
+
+The document set is **READY FOR OWNER FREEZE**, not frozen.
+
 ## Remaining open items
 
-- F1: audit prototype on DIB, x86_64, with a reviewed allowlist; i686 unaudited until its std component is installed.
-- F2: per-target `Entry` layout declarations checked by rustc.
-- F3: Verus accepts the sealed log across modules and ICO's cross-crate `import_dib`.
+Before the freeze:
+
+1. Done: Sol's last read of the ninth revision; its one blocking correction is applied in the tenth revision. The document set is READY FOR OWNER FREEZE; the freeze is the owner's act.
+2. Rerun `prefix-reconstruction/reproduce.sh` against the final tool source: `reports/n11_pre_fix.txt` was written at 07:01:42, before the last `src/` edit at 07:04:44, while every other archived report postdates that edit. (Evidence hygiene; it does not change the F1 meaning stated in the ninth revision.)
+
+The prototype controls still missing at the eighth revision (absent `source_hash` key, absent `reviewer` key, `allowlist-vstd-undetermined`, `undeclared-proc-macro`) no longer block the freeze; the first two are on the production tool's required-control list, and controls added in `proto/` after the eighth revision are evidence for the prototype only.
+
+After the freeze (production implementation may start now; claims may not):
+
+- Prerequisites before any DIB proof report or README assurance claim (`SPEC.md` §8), none of which holds yet: the production audit tool fixing the seven known prototype defects and passing §6's required controls (`x1`–`x8` and the missing-key fixtures); the independently captured build-input inventory in the proof-report process (dep-info for rustc-tracked dependencies, read tracing with denial for build scripts and proc macros, build-unit records, artifact and source-tree hashes), passing `x9`/`x10`; a production allowlist signed by a named human reviewer, with every `[meta]` field and the post-change DIB `source_hash`, passing without `--prototype` and without the vstd override; production `try_zeroed` with `#[inline(never)]`.
+- Implementation obligations (`SPEC.md` §8): nested-`Result` `import_dib` mapping and `g_dib_arm` proof; per-core production `Entry` layout re-check.
+- `neg2`'s second route fixed or removed in `proto/`.
+- Post-freeze audit hardening (`SPEC.md` §8), now including a report of unused allowlist entries.
+- The production DIB audit run on the `try_*` roots, once the live `dib/dib_verus` rewrite builds, with a signed allowlist (the F1 DIB run used `pinned-dib/`).
+- i686: install `rust-std-i686-unknown-linux-gnu` for 1.99.1, then audit and declare layouts for that target; until then i686 is unaudited.
 - Consumer migration to `try_*` or a `<core>_abort_shim` crate (`SPEC.md` §1.4): gdkpixbuf-loaders `bmp.rs`; glycin fork `glycin-dib`, `glycin-tga`, `glycin-icns` and their tests; DIB/TGA/ICNS/ICO conformance and corpus tests; `leniency/bmp`, `leniency/shared`; `tools/diff-harness`.

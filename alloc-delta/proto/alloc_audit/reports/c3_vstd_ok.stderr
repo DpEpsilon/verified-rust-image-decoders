@@ -1,0 +1,13 @@
+=== alloc_audit report ===
+verdict: Pass
+profile: opt-level=2,debug-assertions=off,share-generics=off [release]
+source_hash (audited crate): 421c566ef65ad46de5198a337ceca4d7119e620fbd40b102593b62c4e2b61727
+source-hash scope: source-map text only (crate's own files; excludes include_bytes!/include_str! payloads, build-script and proc-macro output, and dependency sources)
+  source 2ebfe84fa1c765d1abf107d9b825b0b144a21d94f3923bc1db86765aa127c77d  /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/proto/alloc_audit/testcases/c3_vstd_linked.rs
+mode: PROTOTYPE (--prototype given; the `prototype-fixture` reviewer is accepted)
+nodes (monomorphised instances walked): 1
+edges: 0
+allocator entry points reachable: 0 (0 allowlisted, 0 unexplained)
+fail-closed findings: 0
+unexplained leaves: 0
+allowlist: /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/proto/alloc_audit/allowlist/c3_vstd_ok.toml sha256=f38b4bbf56bc025f49169f3d6b80952fbc4ac2059f41ca90affefde453f9fcb5 : 11 entries, reviewer Some("prototype-fixture"), commit Some("58cf8f9c3") (running "58cf8f9c3", full Some("58cf8f9c35b355199727627d07ae34a4e2846d67")), target Some("x86_64-unknown-linux-gnu"), profile Some("opt-level=2,debug-assertions=off,share-generics=off") (detected "opt-level=2,debug-assertions=off,share-generics=off" [release]), vstd Some("0.0.0-2026-11-01-0251") (linked true, actual Some("0.0.0-2026-11-01-0251")), source_hash Some("421c566ef65ad46de5198a337ceca4d7119e620fbd40b102593b62c4e2b61727") (actual Some("421c566ef65ad46de5198a337ceca4d7119e620fbd40b102593b62c4e2b61727"))

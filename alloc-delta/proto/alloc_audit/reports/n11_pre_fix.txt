@@ -1,0 +1,39 @@
+# PRE-FIX RECONSTRUCTION (not the original binary).
+# The original tool's walk.rs was not archived and is not in git history.
+# This report is produced by reproduce.sh, which rebuilds the
+# first-BFS-parent authorization rule described in NOTES.md, then runs it
+# against the pre-fix N11 testcase (unapproved_grow uses resize).
+# Reproduced: the shared-instance defect shows as Pass / exit 0.
+#
+# testcase: n11_prefix (guard::try_zeroed admitted; unapproved_reserve and
+#           unapproved_grow reach shared instances); the allowlist admits
+#           the guard only.
+# exit status: 0 (0 = Pass) -- the defect
+
+=== alloc_audit report ===
+verdict: Pass
+profile: opt-level=2,debug-assertions=off,share-generics=off [release]
+source_hash (audited crate): 17d945bb9ee8dabca84bc1e7e46761e7bd0c793fc00df2c3d556dcb7a9353d6f
+source-hash scope: source-map text only (crate's own files; excludes include_bytes!/include_str! payloads, build-script and proc-macro output, and dependency sources)
+  source 9f93ab708ccbed38e94a47c0c0d08a597fd3bf1240551ff5a566dc162ee38d25  /tmp/claude-0/prefix-repro/testcases/n11_prefix.rs
+mode: PROTOTYPE (--prototype given; the `prototype-fixture` reviewer is accepted)
+nodes (monomorphised instances walked): 62
+edges: 111
+allocator entry points reachable: 4 (4 allowlisted, 0 unexplained)
+fail-closed findings: 0
+unexplained leaves: 0
+allowlist: /tmp/claude-0/prefix-repro/allowlist.toml sha256=864b4bc19e71cf2443b6c0827662314d79cac159c50029b2b8a3df79b0692a06 : 11 entries, reviewer Some("prototype-fixture"), commit Some("58cf8f9c3") (running "58cf8f9c3", full Some("58cf8f9c35b355199727627d07ae34a4e2846d67")), target Some("x86_64-unknown-linux-gnu"), profile Some("opt-level=2,debug-assertions=off,share-generics=off") (detected "opt-level=2,debug-assertions=off,share-generics=off" [release]), vstd Some("0.0.0-2026-11-01-0251") (linked false, actual None), source_hash Some("17d945bb9ee8dabca84bc1e7e46761e7bd0c793fc00df2c3d556dcb7a9353d6f") (actual Some("17d945bb9ee8dabca84bc1e7e46761e7bd0c793fc00df2c3d556dcb7a9353d6f"))
+
+-- allocator entry points --
+  OK alloc::alloc::__rust_alloc
+      path: n11_shared_instance -> guard::try_zeroed -> alloc::raw_vec::RawVecInner::<A>::reserve_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::grow_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::finish_grow<std::alloc::Global> -> <std::alloc::Global as std::alloc::Allocator>::allocate -> std::alloc::Global::alloc_impl_runtime -> alloc::alloc::__rust_alloc
+      via alloc::raw_vec::RawVecInner::<A>::reserve_exact (allowlist caller guard::try_zeroed)
+  OK alloc::alloc::__rust_alloc_zeroed
+      path: n11_shared_instance -> guard::try_zeroed -> alloc::raw_vec::RawVecInner::<A>::reserve_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::grow_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::finish_grow<std::alloc::Global> -> <std::alloc::Global as std::alloc::Allocator>::allocate -> std::alloc::Global::alloc_impl_runtime -> alloc::alloc::__rust_alloc_zeroed
+      via alloc::raw_vec::RawVecInner::<A>::reserve_exact (allowlist caller guard::try_zeroed)
+  OK alloc::alloc::__rust_dealloc
+      path: n11_shared_instance -> std::ptr::drop_glue<std::vec::Vec<u32>> -> std::ptr::drop_glue<alloc::raw_vec::RawVec<u32>> -> <alloc::raw_vec::RawVec<T, A> as std::ops::Drop>::drop<u32,std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::deallocate<std::alloc::Global> -> <std::alloc::Global as std::alloc::Allocator>::deallocate -> alloc::alloc::__rust_dealloc
+      via alloc::raw_vec::RawVecInner::<A>::deallocate (allowlist caller n11_shared_instance)
+  OK alloc::alloc::__rust_realloc
+      path: n11_shared_instance -> guard::try_zeroed -> alloc::raw_vec::RawVecInner::<A>::reserve_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::grow_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::finish_grow<std::alloc::Global> -> <std::alloc::Global as std::alloc::Allocator>::grow -> std::alloc::Global::grow_impl_runtime -> alloc::alloc::__rust_realloc
+      via alloc::raw_vec::RawVecInner::<A>::reserve_exact (allowlist caller guard::try_zeroed)

@@ -1,0 +1,312 @@
+warning: unused imports: `BitfieldOffsetOptions`, `BmpMode`, `HeadersOptions`, `HighCountOptions`, `MasksOptions`, `MetadataOptions`, `OffsetOptions`, `PlanesOptions`, `Policy`, `ReservedOptions`, `ShortIndexedGapOptions`, and `UnsupportedOptions`
+  --> src/model.rs:16:5
+   |
+16 |     BitfieldOffsetOptions, BmpMode, Error, HeadersOptions, HighCountOptions, MasksOptions,
+   |     ^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^         ^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^
+17 |     MetadataOptions, Mode, OffsetOptions, PlanesOptions, Policy, ReservedOptions,
+   |     ^^^^^^^^^^^^^^^        ^^^^^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^  ^^^^^^^^^^^^^^^
+18 |     ShortIndexedGapOptions, UnsupportedOptions,
+   |     ^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `file_offset`
+    --> src/dib.rs:2149:5
+     |
+2149 |     file_offset: u64,
+     |     ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_file_offset`
+     |
+     = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `bytes`
+    --> src/dib.rs:2340:5
+     |
+2340 |     bytes: &[u8], mode: Mode, start: usize, is_bmp: bool, policy: Policy,
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_bytes`
+
+warning: variable `masks_okv` is assigned to, but never used
+    --> src/dib.rs:2842:9
+     |
+2842 |     let mut masks_okv: bool = true;
+     |         ^^^^^^^^^^^^^
+     |
+     = note: consider using `_masks_okv` instead
+
+warning: unused variable: `ms0v`
+    --> src/dib.rs:2935:13
+     |
+2935 |         let ms0v: u32 = mask_fields[0];
+     |             ^^^^ help: if this is intentional, prefix it with an underscore: `_ms0v`
+
+warning: unused variable: `ms1v`
+    --> src/dib.rs:2936:13
+     |
+2936 |         let ms1v: u32 = mask_fields[1];
+     |             ^^^^ help: if this is intentional, prefix it with an underscore: `_ms1v`
+
+warning: unused variable: `ms2v`
+    --> src/dib.rs:2937:13
+     |
+2937 |         let ms2v: u32 = mask_fields[2];
+     |             ^^^^ help: if this is intentional, prefix it with an underscore: `_ms2v`
+
+warning: unused variable: `ms3v`
+    --> src/dib.rs:2938:13
+     |
+2938 |         let ms3v: u32 = mask_fields[3];
+     |             ^^^^ help: if this is intentional, prefix it with an underscore: `_ms3v`
+
+warning: value assigned to `masks_okv` is never read
+    --> src/dib.rs:2946:9
+     |
+2946 |         masks_okv = ok;
+     |         ^^^^^^^^^^^^^^
+     |
+     = help: maybe it is overwritten before being read?
+     = note: `#[warn(unused_assignments)]` (part of `#[warn(unused)]`) on by default
+
+warning: value assigned to `pos` is never read
+    --> src/dib.rs:3193:5
+     |
+3193 |     pos = pixel_start;
+     |     ^^^^^^^^^^^^^^^^^
+     |
+     = help: maybe it is overwritten before being read?
+
+warning: unused variable: `steps`
+    --> src/dib.rs:3612:53
+     |
+3612 | fn fill_blank(out: &mut Vec<u8>, transparent: bool, steps: &mut Ghost<nat>)
+     |                                                     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `fill`
+    --> src/dib.rs:3629:9
+     |
+3629 |     let fill: u8 = if transparent {
+     |         ^^^^ help: if this is intentional, prefix it with an underscore: `_fill`
+
+warning: unused variable: `line`
+    --> src/dib.rs:3688:59
+     |
+3688 | fn raw_sample(b: &[u8], h: &Header, pos: usize, x: usize, line: usize) -> (r: Result<[u8; 4], Error>)
+     |                                                           ^^^^ help: if this is intentional, prefix it with an underscore: `_line`
+
+warning: unused variable: `steps`
+    --> src/dib.rs:4112:5
+     |
+4112 |     steps: &mut Ghost<nat>,
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `steps`
+    --> src/dib.rs:4473:54
+     |
+4473 | fn fill_rle(b: &[u8], h: &Header, out: &mut Vec<u8>, steps: &mut Ghost<nat>)
+     |                                                      ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `steps`
+    --> src/dib.rs:4570:5
+     |
+4570 |     steps: &mut Ghost<nat>,
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `steps`
+    --> src/dib.rs:4837:5
+     |
+4837 |     steps: &mut Ghost<nat>,
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `g`
+    --> src/dib.rs:5501:18
+     |
+5501 |         let (pr, g) = rle_command(b, h, out, pos, x, y, Ghost(gw), steps);
+     |                  ^ help: if this is intentional, prefix it with an underscore: `_g`
+
+warning: unused variable: `line`
+    --> src/dib.rs:5682:64
+     |
+5682 | fn raw_policy_word(b: &[u8], h: &Header, pos: usize, x: usize, line: usize) -> (word: u32)
+     |                                                                ^^^^ help: if this is intentional, prefix it with an underscore: `_line`
+
+warning: unused variable: `q`
+    --> src/dib.rs:5866:85
+     |
+5866 | fn policy_packet_index(b: &[u8], bits: u32, absolute: bool, value: usize, j: usize, q: usize)
+     |                                                                                     ^ help: if this is intentional, prefix it with an underscore: `_q`
+
+warning: unused variable: `steps`
+    --> src/dib.rs:5901:49
+     |
+5901 |     Ghost(gw): Ghost<Seq<crate::model::Write>>, steps: &mut Ghost<nat>, Ghost(initial): Ghost<Seq<u8>>) -> (event: bool)
+     |                                                 ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `eol`
+    --> src/dib.rs:6014:33
+     |
+6014 |     overrun: RleOverrunOptions, eol: RleEolOptions, eob: RleEobOptions, black: bool, delta: RleDeltaOptions, Ghost(gw): Ghost<Seq<...
+     |                                 ^^^ help: if this is intentional, prefix it with an underscore: `_eol`
+
+warning: unused variable: `eob`
+    --> src/dib.rs:6014:53
+     |
+6014 |     overrun: RleOverrunOptions, eol: RleEolOptions, eob: RleEobOptions, black: bool, delta: RleDeltaOptions, Ghost(gw): Ghost<Seq<...
+     |                                                     ^^^ help: if this is intentional, prefix it with an underscore: `_eob`
+
+warning: unused variable: `delta`
+    --> src/dib.rs:6014:86
+     |
+6014 | ...eEobOptions, black: bool, delta: RleDeltaOptions, Ghost(gw): Ghost<Seq<crate::model::Write>>, steps: &mut Ghost<nat>, Ghost(ini...
+     |                              ^^^^^ help: if this is intentional, prefix it with an underscore: `_delta`
+
+warning: unused variable: `eol`
+    --> src/dib.rs:6107:33
+     |
+6107 |     overrun: RleOverrunOptions, eol: RleEolOptions, eob: RleEobOptions, black: bool, delta: RleDeltaOptions, Ghost(gw): Ghost<Seq<...
+     |                                 ^^^ help: if this is intentional, prefix it with an underscore: `_eol`
+
+warning: unused variable: `eob`
+    --> src/dib.rs:6107:53
+     |
+6107 |     overrun: RleOverrunOptions, eol: RleEolOptions, eob: RleEobOptions, black: bool, delta: RleDeltaOptions, Ghost(gw): Ghost<Seq<...
+     |                                                     ^^^ help: if this is intentional, prefix it with an underscore: `_eob`
+
+warning: unused variable: `delta`
+    --> src/dib.rs:6107:86
+     |
+6107 | ...eEobOptions, black: bool, delta: RleDeltaOptions, Ghost(gw): Ghost<Seq<crate::model::Write>>, steps: &mut Ghost<nat>, Ghost(ini...
+     |                              ^^^^^ help: if this is intentional, prefix it with an underscore: `_delta`
+
+warning: unused variable: `g`
+    --> src/dib.rs:6476:13
+     |
+6476 |     let (r, g) = rle_loop(b, h, out, &mut pos, &mut x, &mut y, Ghost(Seq::empty()), steps);
+     |             ^ help: if this is intentional, prefix it with an underscore: `_g`
+
+warning: unused variable: `steps`
+    --> src/dib.rs:6501:45
+     |
+6501 | fn alpha_present(h: &Header, out: &Vec<u8>, steps: &mut Ghost<nat>) -> (r: bool)
+     |                                             ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `and_bytes`
+    --> src/dib.rs:6541:25
+     |
+6541 |     mask_stride: usize, and_bytes: usize, has_xor_alpha: bool,
+     |                         ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_and_bytes`
+
+warning: unused variable: `steps`
+    --> src/dib.rs:6542:5
+     |
+6542 |     steps: &mut Ghost<nat>)
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `out`
+    --> src/dib.rs:6996:45
+     |
+6996 | fn finish_mask_policy(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize, p0: usize,
+     |                                             ^^^ help: if this is intentional, prefix it with an underscore: `_out`
+
+warning: unused variable: `steps`
+    --> src/dib.rs:6997:5
+     |
+6997 |     steps: &mut Ghost<nat>, policy: Policy) -> (r: Result<(), Error>)
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `steps`
+    --> src/dib.rs:8205:29
+     |
+8205 | fn alloc_output_n(n: usize, steps: &mut Ghost<nat>) -> (out: Vec<u8>)
+     |                             ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `bm`
+    --> src/dib.rs:8281:30
+     |
+8281 | fn finish_raw_zero(b: &[u8], bm: BmpMode, h: &Header, mut out: Vec<u8>, start: usize,
+     |                              ^^ help: if this is intentional, prefix it with an underscore: `_bm`
+
+warning: unused variable: `bm`
+    --> src/dib.rs:8343:33
+     |
+8343 | fn finish_rle_clipped(b: &[u8], bm: BmpMode, h: &Header, mut out: Vec<u8>, policy: Policy,
+     |                                 ^^ help: if this is intentional, prefix it with an underscore: `_bm`
+
+warning: unused variable: `e`
+    --> src/dib.rs:8811:51
+     |
+8811 | fn t10_error_precedence(bytes: &[u8], mode: Mode, e: Error) -> (r: Result<Decoded, Error>)
+     |                                                   ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `e`
+    --> src/dib.rs:8890:74
+     |
+8890 | fn t10_policy_precedence(bytes: &[u8], bm: BmpMode, profile: BmpProfile, e: Error)
+     |                                                                          ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: function `skeleton` is never used
+  --> src/lib.rs:27:4
+   |
+27 | fn skeleton() {
+   |    ^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `rem` is never used
+   --> src/dib.rs:866:4
+    |
+866 | fn rem(len: usize, pos: usize) -> (r: usize)
+    |    ^^^
+
+warning: fields `planes`, `table_count`, `core`, and `top_down` are never read
+    --> src/dib.rs:1335:5
+     |
+1326 | struct Header {
+     |        ------ fields in this struct
+...
+1335 |     planes: u32,
+     |     ^^^^^^
+...
+1343 |     table_count: u32,
+     |     ^^^^^^^^^^^
+...
+1352 |     core: bool,
+     |     ^^^^
+1353 |     top_down: bool,
+     |     ^^^^^^^^
+
+warning: field `is_bmp` is never read
+    --> src/dib.rs:2063:5
+     |
+2049 | struct Fields {
+     |        ------ field in this struct
+...
+2063 |     is_bmp: bool,
+     |     ^^^^^^
+
+=== alloc_audit report ===
+verdict: Pass
+profile: opt-level=3,debug-assertions=off,share-generics=off [release]
+source_hash (audited crate): cacb25c6fa40b84dd21335516d65bd57d744a42f25257a47355033e5b6280b42
+source-hash scope: source-map text only (crate's own files; excludes include_bytes!/include_str! payloads, build-script and proc-macro output, and dependency sources)
+  source 6cef9186bc7a2165ebd0656cc1371b5d2051b6afa7abb644c43718c26890f68b  src/dib.rs
+  source 4795ab60884153b5a456f0604f8485ed6546e9f9aa296d47a1cf9ae0f30c5460  src/lib.rs
+  source f3dd49ca95b325ab7ee5c4a89746871c8b62f6f32c48a63f217dc29262288845  src/model.rs
+  source e80eafc58dd3591328b93c3044c51ae9ebd637b16f23abd015daa0ce98305346  src/model_vectors.rs
+mode: PROTOTYPE (--prototype given; the `prototype-fixture` reviewer is accepted)
+nodes (monomorphised instances walked): 91
+edges: 277
+allocator entry points reachable: 3 (3 allowlisted, 0 unexplained)
+fail-closed findings: 0
+unexplained leaves: 0
+allowlist: /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/proto/alloc_audit/allowlist/dib_verus.toml sha256=1f9739e4d339ef2cbd8e4b41a54a72833fdf6196e9e18c16d3ae044eebcef2c8 : 21 entries, reviewer Some("prototype-fixture"), commit Some("58cf8f9c3") (running "58cf8f9c3", full Some("58cf8f9c35b355199727627d07ae34a4e2846d67")), target Some("x86_64-unknown-linux-gnu"), profile Some("opt-level=3,debug-assertions=off,share-generics=off") (detected "opt-level=3,debug-assertions=off,share-generics=off" [release]), vstd Some("0.0.0-2026-11-01-0251") (linked true, actual Some("0.0.0-2026-11-01-0251")), source_hash Some("cacb25c6fa40b84dd21335516d65bd57d744a42f25257a47355033e5b6280b42") (actual Some("cacb25c6fa40b84dd21335516d65bd57d744a42f25257a47355033e5b6280b42"))
+
+-- allocator entry points --
+  OK alloc::alloc::__rust_alloc
+      path: dib::decode -> dib::decode_tracked -> dib::alloc_output -> dib::alloc_output_n -> <u8 as std::vec::spec_from_elem::SpecFromElem>::from_elem<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_allocate_in<std::alloc::Global> -> <std::alloc::Global as std::alloc::Allocator>::allocate -> std::alloc::Global::alloc_impl_runtime -> alloc::alloc::__rust_alloc
+      via <u8 as std::vec::spec_from_elem::SpecFromElem>::from_elem (allowlist caller dib::alloc_output_n)
+  OK alloc::alloc::__rust_alloc_zeroed
+      path: dib::decode -> dib::decode_tracked -> dib::alloc_output -> dib::alloc_output_n -> <u8 as std::vec::spec_from_elem::SpecFromElem>::from_elem<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_allocate_in<std::alloc::Global> -> <std::alloc::Global as std::alloc::Allocator>::allocate -> std::alloc::Global::alloc_impl_runtime -> alloc::alloc::__rust_alloc_zeroed
+      via <u8 as std::vec::spec_from_elem::SpecFromElem>::from_elem (allowlist caller dib::alloc_output_n)
+  OK alloc::alloc::__rust_dealloc
+      path: dib::decode -> dib::decode_tracked -> std::ptr::drop_glue<std::vec::Vec<u8>> -> std::ptr::drop_glue<alloc::raw_vec::RawVec<u8>> -> <alloc::raw_vec::RawVec<T, A> as std::ops::Drop>::drop<u8,std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::deallocate<std::alloc::Global> -> <std::alloc::Global as std::alloc::Allocator>::deallocate -> alloc::alloc::__rust_dealloc
+      via alloc::raw_vec::RawVecInner::<A>::deallocate (allowlist caller dib::decode_tracked)
+warning: `dib_verus` (lib) generated 42 warnings (run `cargo fix --lib -p dib_verus` to apply 35 suggestions)
+    Finished `release` profile [optimized] target(s) in 0.26s

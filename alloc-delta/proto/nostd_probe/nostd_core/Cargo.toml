@@ -1,0 +1,15 @@
+[package]
+name = "nostd_core"
+version = "0.1.0"
+license = "MIT"
+description = "Probe: what a no_std core crate looks like for the decoder patterns"
+edition = "2021"
+
+[dependencies]
+vstd = { version = "=0.0.0-2026-11-01-0251", default-features = false, features = ["alloc"] }
+
+[package.metadata.verus]
+verify = true
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(verus_only)'] }

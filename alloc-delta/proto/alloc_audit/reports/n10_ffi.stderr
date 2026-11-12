@@ -1,0 +1,16 @@
+=== alloc_audit report ===
+verdict: Fail
+profile: opt-level=2,debug-assertions=off,share-generics=off [release]
+source_hash (audited crate): 08f9303d936714c76b1f4cd266c073e4eccb5e26041618a5e42109e9e0a13241
+source-hash scope: source-map text only (crate's own files; excludes include_bytes!/include_str! payloads, build-script and proc-macro output, and dependency sources)
+  source 938beed12386f7d25d4ddb9b9f79b6dd351eccd6ec3933db565f4386f1d89d2a  /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/proto/alloc_audit/testcases/n10_ffi.rs
+mode: PROTOTYPE (--prototype given; the `prototype-fixture` reviewer is accepted)
+nodes (monomorphised instances walked): 2
+edges: 1
+allocator entry points reachable: 0 (0 allowlisted, 0 unexplained)
+fail-closed findings: 0
+unexplained leaves: 1
+allowlist: <none> sha256=<none> : 0 entries, reviewer None, commit None (running "", full None), target None, profile None (detected "" []), vstd None (linked false, actual None), source_hash None (actual None)
+
+-- unexplained leaves (need an allowlist entry) --
+  [ffi] getpid (identity getpid)

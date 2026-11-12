@@ -1,0 +1,16 @@
+=== alloc_audit report ===
+verdict: Fail
+profile: opt-level=2,debug-assertions=off,share-generics=off [release]
+source_hash (audited crate): fb43273c1033ccf153812e32e4644f32e0ad836f6e92cb1a8eca71af84070d65
+source-hash scope: source-map text only (crate's own files; excludes include_bytes!/include_str! payloads, build-script and proc-macro output, and dependency sources)
+  source c84709413c4d96558d366004ddf8c64b591350e9382f349da97efe0732701918  /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/proto/alloc_audit/testcases/n7_dyn.rs
+mode: PROTOTYPE (--prototype given; the `prototype-fixture` reviewer is accepted)
+nodes (monomorphised instances walked): 2
+edges: 1
+allocator entry points reachable: 0 (0 allowlisted, 0 unexplained)
+fail-closed findings: 1
+unexplained leaves: 0
+allowlist: <none> sha256=<none> : 0 entries, reviewer None, commit None (running "", full None), target None, profile None (detected "" []), vstd None (linked false, actual None), source_hash None (actual None)
+
+-- fail-closed findings --
+  [virtual-dispatch] trait-object (virtual) call reached: Make::make<dyn Make> from n7_dyn

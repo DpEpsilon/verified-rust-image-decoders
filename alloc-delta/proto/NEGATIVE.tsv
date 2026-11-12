@@ -1,0 +1,29 @@
+check	crate	expectation	run	exit	summary	verdict
+neg1_construct_oom_outside_guard	guard_proto	OutOfMemory has private fields; constructing one outside alloc_guard is a compile error	109	101		PASS-rustc
+neg2_edit_log_outside_guard	guard_proto	AllocLog.ev is private; editing the log outside alloc_guard is a compile error	110	101		PASS-rustc
+neg3_return_oom_after_ok	guard_proto	returning OutOfMemory after an Ok reservation violates G clause 2 (Verus error)	111	101		PASS-rustc
+neg4_skip_import	guard_proto_dep	skipping import_dib leaves req(L) != Req_D and has no OOM constructor (Verus error)	112	101	verification results:: 22 verified, 1 errors	PASS-verifier
+neg1_construct_oom_outside_guard	guard_proto	OutOfMemory has private fields; constructing one outside alloc_guard is a compile error	113	101		PASS-rustc
+neg2_edit_log_outside_guard	guard_proto	AllocLog.ev is private; editing the log outside alloc_guard is a compile error	114	101		PASS-rustc
+neg3_return_oom_after_ok	guard_proto	returning OutOfMemory after an Ok reservation violates G clause 2 (Verus error)	115	101		PASS-rustc
+neg4_skip_import	guard_proto_dep	skipping import_dib leaves req(L) != Req_D and has no OOM constructor (Verus error)	116	101	verification results:: 22 verified, 1 errors	PASS-verifier
+neg1_construct_oom_outside_guard	guard_proto	OutOfMemory has private fields; constructing one outside alloc_guard is a compile error	117	101		PASS-rustc
+neg2_edit_log_outside_guard	guard_proto	AllocLog.ev is private; editing the log outside alloc_guard is a compile error	118	101		PASS-rustc
+neg3_return_oom_after_ok	guard_proto	returning OutOfMemory after an Ok reservation violates G clause 2 (Verus error)	119	101	verification results:: 44 verified, 1 errors	PASS-verifier
+neg4_skip_import	guard_proto_dep	skipping import_dib leaves req(L) != Req_D and has no OOM constructor (Verus error)	120	101	verification results:: 22 verified, 1 errors	PASS-verifier
+neg1_construct_oom_outside_guard	guard_proto	OutOfMemory has private fields; constructing one outside alloc_guard is a compile error	122	101		PASS-rustc
+neg2_edit_log_outside_guard	guard_proto	AllocLog.ev is private; editing the log outside alloc_guard is a compile error	123	101		PASS-rustc
+neg3_return_oom_after_ok	guard_proto	returning OutOfMemory after an Ok reservation violates G clause 2 (Verus error)	124	101	verification results:: 44 verified, 1 errors	PASS-verifier
+neg4_skip_import	guard_proto_dep	skipping import_dib leaves req(L) != Req_D and has no OOM constructor (Verus error)	125	101	verification results:: 22 verified, 1 errors	PASS-verifier
+neg1_construct_oom_outside_guard	guard_proto	OutOfMemory has private fields; constructing one outside alloc_guard is a compile error	126	101		PASS-rustc
+neg2_edit_log_outside_guard	guard_proto	AllocLog.ev is private; editing the log outside alloc_guard is a compile error	127	101		PASS-rustc
+neg3_return_oom_after_ok	guard_proto	returning OutOfMemory after an Ok reservation violates G clause 2 (Verus error)	128	101	verification results:: 44 verified, 1 errors	PASS-verifier
+neg4_skip_import	guard_proto_dep	skipping import_dib leaves req(L) != Req_D and has no OOM constructor (Verus error)	129	101	verification results:: 22 verified, 1 errors	PASS-verifier
+neg1_construct_oom_outside_guard	guard_proto	OutOfMemory has private fields; constructing one outside alloc_guard is a compile error	139	101		PASS-rustc
+neg2_edit_log_outside_guard	guard_proto	AllocLog.ev is private; editing the log outside alloc_guard is a compile error	140	101		PASS-rustc
+neg3_return_oom_after_ok	guard_proto	returning OutOfMemory after an Ok reservation violates G clause 2 (Verus error)	141	101	verification results:: 44 verified, 1 errors	PASS-verifier
+neg4_skip_import	guard_proto_dep	skipping import_dib leaves req(L) != Req_D and has no OOM constructor (Verus error)	142	101	verification results:: 22 verified, 1 errors	PASS-verifier
+neg1_construct_oom_outside_guard	guard_proto	OutOfMemory has private fields; constructing one outside alloc_guard is a compile error	145	101		PASS-rustc
+neg2_edit_log_outside_guard	guard_proto	AllocLog.ev is private; editing the log outside alloc_guard is a compile error	146	101	rustc: 1 error, E0616 field `ev` of struct `AllocLog` is private (no other errors)	PASS-rustc
+neg3_return_oom_after_ok	guard_proto	returning OutOfMemory after an Ok reservation violates G clause 2 (Verus error)	147	101	verification results:: 44 verified, 1 errors	PASS-verifier
+neg4_skip_import	guard_proto_dep	skipping import_dib leaves req(L) != Req_D and has no OOM constructor (Verus error)	148	101	verification results:: 22 verified, 1 errors	PASS-verifier

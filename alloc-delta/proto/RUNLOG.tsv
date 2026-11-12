@@ -1,0 +1,148 @@
+1	2026-11-12T04:21:09+00:00	exit=0	70s	smoke: toolchain builds offline [crate=guard_proto]	verification results:: 1 verified, 0 errors
+2	2026-11-12T04:24:27+00:00	exit=0	0s	guard module: types, sealed log, reservation functions, layout [crate=guard_proto]	
+3	2026-11-12T04:25:17+00:00	exit=0	0s	guard: sealed log + reservation fns + import_dib + layout [crate=guard_proto]	
+4	2026-11-12T04:25:25+00:00	exit=101	1s	guard: sealed log + reservation fns + import_dib + layout [crate=guard_proto]	
+5	2026-11-12T04:25:47+00:00	exit=101	1s	toy decoder: G, Prog, PreAlloc [crate=guard_proto]	
+6	2026-11-12T04:25:57+00:00	exit=101	1s	toy decoder: G, Prog, PreAlloc [crate=guard_proto]	
+7	2026-11-12T04:26:09+00:00	exit=101	3s	toy decoder: G, Prog, PreAlloc [crate=guard_proto]	
+8	2026-11-12T04:26:14+00:00	exit=101	0s	toy decoder: G, Prog, PreAlloc [crate=guard_proto]	
+9	2026-11-12T04:26:21+00:00	exit=101	1s	toy decoder: G, Prog, PreAlloc [crate=guard_proto]	
+10	2026-11-12T04:26:26+00:00	exit=101	1s	toy decoder: G, Prog, PreAlloc [crate=guard_proto]	
+11	2026-11-12T04:26:38+00:00	exit=101	4s	toy decoder: G, Prog, PreAlloc [crate=guard_proto]	
+12	2026-11-12T04:27:11+00:00	exit=101	1s	guard: sealed log + reservations + import_dib + layout [crate=guard_proto]	
+13	2026-11-12T04:27:19+00:00	exit=101	3s	guard: sealed log + reservations + import_dib + layout [crate=guard_proto]	
+14	2026-11-12T04:27:36+00:00	exit=101	3s	guard: sealed log + reservations + import_dib + layout [crate=guard_proto]	
+15	2026-11-12T04:28:27+00:00	exit=101	4s	probe: ghost-field mutation spellings [crate=guard_proto]	
+16	2026-11-12T04:28:36+00:00	exit=101	4s	probe: ghost-field mutation spellings [crate=guard_proto]	
+17	2026-11-12T04:28:42+00:00	exit=101	1s	probe: ghost-field mutation spellings, inside sites.rs [crate=guard_proto]	
+18	2026-11-12T04:28:52+00:00	exit=101	4s	probe: pb/pe/pf spellings [crate=guard_proto]	
+19	2026-11-12T04:29:08+00:00	exit=101	3s	probe: pe/pf, private field visible [crate=guard_proto]	
+20	2026-11-12T04:29:32+00:00	exit=101	4s	probe: Tracked<&mut> spellings 3-7 [crate=guard_proto]	
+21	2026-11-12T04:29:54+00:00	exit=101	1s	probe: mutation spellings v1-v4 [crate=guard_proto]	
+22	2026-11-12T04:30:04+00:00	exit=101	4s	probe: mutation spellings w1-w3 [crate=guard_proto]	
+23	2026-11-12T04:30:18+00:00	exit=101	4s	probe: x1-x3 [crate=guard_proto]	
+24	2026-11-12T04:30:27+00:00	exit=101	4s	probe: x1, y1-y4 [crate=guard_proto]	
+25	2026-11-12T04:30:43+00:00	exit=101	4s	guard: sealed log + reservations + import_dib + layout [crate=guard_proto]	
+26	2026-11-12T04:31:05+00:00	exit=101	5s	guard: sealed log + reservations + import_dib + layout [crate=guard_proto]	
+27	2026-11-12T04:31:24+00:00	exit=101	3s	guard: sealed log + reservations + import_dib + layout [crate=guard_proto]	
+28	2026-11-12T04:31:40+00:00	exit=101	4s	guard: sealed log + reservations + import_dib + layout [crate=guard_proto]	
+29	2026-11-12T04:31:47+00:00	exit=101	0s	guard: sealed log + reservations + import_dib + layout [crate=guard_proto]	
+30	2026-11-12T04:32:00+00:00	exit=101	4s	guard: sealed log + reservations + import_dib + layout [crate=guard_proto]	
+31	2026-11-12T04:32:08+00:00	exit=101	4s	guard: sealed log + reservations + import_dib + layout [crate=guard_proto]	
+32	2026-11-12T04:32:23+00:00	exit=101	1s	guard: sealed log + reservations + import_dib + layout [crate=guard_proto]	
+33	2026-11-12T04:32:31+00:00	exit=101	4s	guard: sealed log + reservations + import_dib + layout [crate=guard_proto]	
+34	2026-11-12T04:32:45+00:00	exit=101	4s	toy: G, Prog, PreAlloc [crate=guard_proto]	verification results:: 25 verified, 2 errors
+35	2026-11-12T04:33:41+00:00	exit=101	1s	toy: G, Prog, PreAlloc [crate=guard_proto]	
+36	2026-11-12T04:33:47+00:00	exit=101	1s	toy: G, Prog, PreAlloc [crate=guard_proto]	
+37	2026-11-12T04:34:00+00:00	exit=101	0s	toy: G, Prog, PreAlloc [crate=guard_proto]	
+38	2026-11-12T04:34:08+00:00	exit=101	4s	toy: G, Prog, PreAlloc [crate=guard_proto]	
+39	2026-11-12T04:34:19+00:00	exit=101	3s	toy: G, Prog, PreAlloc [crate=guard_proto]	
+40	2026-11-12T04:34:28+00:00	exit=101	5s	toy: G, Prog, PreAlloc [crate=guard_proto]	verification results:: 26 verified, 4 errors
+41	2026-11-12T04:35:22+00:00	exit=101	4s	toy: G, Prog, PreAlloc [crate=guard_proto]	verification results:: 28 verified, 3 errors
+42	2026-11-12T04:35:36+00:00	exit=0	4s	toy: G, Prog, PreAlloc [crate=guard_proto]	verification results:: 31 verified, 0 errors
+43	2026-11-12T04:36:00+00:00	exit=101	4s	toy_entries: try_with_room + Reserved::push, A-ICNS-1/2 [crate=guard_proto]	
+44	2026-11-12T04:36:13+00:00	exit=101	4s	toy_entries [crate=guard_proto]	
+45	2026-11-12T04:36:22+00:00	exit=101	4s	toy_entries [crate=guard_proto]	
+46	2026-11-12T04:36:31+00:00	exit=101	4s	toy_entries [crate=guard_proto]	verification results:: 37 verified, 4 errors
+47	2026-11-12T04:36:43+00:00	exit=101	4s	toy_entries: room layout [crate=guard_proto]	verification results:: 37 verified, 4 errors
+48	2026-11-12T04:36:53+00:00	exit=101	5s	probe: layout axiom [crate=guard_proto]	verification results:: 37 verified, 4 errors
+49	2026-11-12T04:37:03+00:00	exit=101	1s	probe: layout axiom in sites.rs [crate=guard_proto]	
+50	2026-11-12T04:37:25+00:00	exit=101	5s	probe: layout axiom in sites.rs [crate=guard_proto]	verification results:: 38 verified, 4 errors
+51	2026-11-12T04:37:36+00:00	exit=101	1s	probe: is the layout axiom visible in toy_entries? [crate=guard_proto]	
+52	2026-11-12T04:37:47+00:00	exit=101	4s	probe: is the layout axiom visible in toy_entries? [crate=guard_proto]	verification results:: 38 verified, 5 errors
+53	2026-11-12T04:38:11+00:00	exit=101	4s	probe: layout axiom in another module [crate=guard_proto]	verification results:: 38 verified, 5 errors
+54	2026-11-12T04:38:30+00:00	exit=101	5s	probe: layout assertion inside the declaring module [crate=guard_proto]	verification results:: 38 verified, 5 errors
+55	2026-11-12T04:38:46+00:00	exit=101	4s	probe: exported layout lemma [crate=guard_proto]	verification results:: 38 verified, 5 errors
+56	2026-11-12T04:39:03+00:00	exit=101	5s	toy_entries: layout bound [crate=guard_proto]	verification results:: 38 verified, 4 errors
+57	2026-11-12T04:39:32+00:00	exit=101	0s	toy_entries: layout lemma [crate=guard_proto]	
+58	2026-11-12T04:39:52+00:00	exit=101	5s	toy_entries: exported layout lemma [crate=guard_proto]	
+59	2026-11-12T04:40:03+00:00	exit=101	5s	toy_entries: layout lemma [crate=guard_proto]	verification results:: 41 verified, 1 errors
+60	2026-11-12T04:40:34+00:00	exit=101	6s	toy_entries: push ensures [crate=guard_proto]	verification results:: 41 verified, 1 errors
+61	2026-11-12T04:41:00+00:00	exit=101	1s	toy_entries: loop invariant via push lemma [crate=guard_proto]	
+62	2026-11-12T04:41:08+00:00	exit=101	4s	toy_entries: loop invariant via push lemma [crate=guard_proto]	verification results:: 42 verified, 1 errors
+63	2026-11-12T04:41:31+00:00	exit=101	5s	toy_entries: entry equality [crate=guard_proto]	verification results:: 42 verified, 1 errors
+64	2026-11-12T04:41:51+00:00	exit=0	5s	toy_entries: mk_entry [crate=guard_proto]	verification results:: 44 verified, 0 errors
+65	2026-11-12T04:42:27+00:00	exit=0	4s	guard_proto: export log_tied (A-DIB-8) [crate=guard_proto]	verification results:: 44 verified, 0 errors
+66	2026-11-12T04:43:58+00:00	exit=101	67s	F3c: import_dib across the crate boundary [crate=guard_proto_dep]	verification results:: 44 verified, 0 errors
+67	2026-11-12T04:44:07+00:00	exit=0	4s	F3c: import_dib [crate=guard_proto_dep]	verification results:: 9 verified, 0 errors
+68	2026-11-12T04:44:35+00:00	exit=101	4s	F3c: A-ICO-2 wrapper theorem [crate=guard_proto_dep]	
+69	2026-11-12T04:44:42+00:00	exit=101	1s	F3c: A-ICO-2 wrapper [crate=guard_proto_dep]	
+70	2026-11-12T04:44:51+00:00	exit=101	3s	F3c: A-ICO-2 wrapper [crate=guard_proto_dep]	
+71	2026-11-12T04:45:04+00:00	exit=101	5s	F3c: A-ICO-2 wrapper [crate=guard_proto_dep]	verification results:: 10 verified, 2 errors
+72	2026-11-12T04:45:35+00:00	exit=101	5s	F3c: map_dib lemmas [crate=guard_proto_dep]	verification results:: 13 verified, 2 errors
+73	2026-11-12T04:46:19+00:00	exit=101	3s	F3c: revert [crate=guard_proto_dep]	
+74	2026-11-12T04:46:44+00:00	exit=101	0s	F3c: lemma_g_ico [crate=guard_proto_dep]	
+75	2026-11-12T04:46:50+00:00	exit=101	0s	F3c: lemma_g_ico [crate=guard_proto_dep]	
+76	2026-11-12T04:47:02+00:00	exit=101	5s	F3c: lemma_g_ico [crate=guard_proto_dep]	verification results:: 13 verified, 3 errors
+77	2026-11-12T04:47:16+00:00	exit=101	1s	F3c: isolate Ok case [crate=guard_proto_dep]	
+78	2026-11-12T04:47:22+00:00	exit=101	1s	F3c: futures [crate=guard_proto_dep]	
+79	2026-11-12T04:47:33+00:00	exit=101	5s	F3c: fmt_part path [crate=guard_proto_dep]	verification results:: 13 verified, 3 errors
+80	2026-11-12T04:47:51+00:00	exit=101	4s	F3c: bisect 1 [crate=guard_proto_dep]	verification results:: 14 verified, 2 errors
+81	2026-11-12T04:48:05+00:00	exit=101	3s	F3c: diagnose conjuncts [crate=guard_proto_dep]	verification results:: 13 verified, 3 errors
+82	2026-11-12T04:48:24+00:00	exit=101	6s	F3c: per-branch conj [crate=guard_proto_dep]	verification results:: 13 verified, 3 errors
+83	2026-11-12T04:48:40+00:00	exit=101	5s	F3c: precise Format arm [crate=guard_proto_dep]	verification results:: 14 verified, 2 errors
+84	2026-11-12T04:48:50+00:00	exit=101	1s	F3c: call lemma_g_ico [crate=guard_proto_dep]	
+85	2026-11-12T04:48:55+00:00	exit=101	0s	F3c: move lemma [crate=guard_proto_dep]	
+86	2026-11-12T04:49:03+00:00	exit=101	4s	F3c: local lemma call [crate=guard_proto_dep]	
+87	2026-11-12T04:49:14+00:00	exit=101	3s	F3c: lemma call with @ [crate=guard_proto_dep]	
+88	2026-11-12T04:49:21+00:00	exit=101	3s	F3c: lemma call with @ [crate=guard_proto_dep]	
+89	2026-11-12T04:50:01+00:00	exit=101	1s	F3c: import_dib with G contract [crate=guard_proto_dep]	
+90	2026-11-12T04:50:08+00:00	exit=101	1s	F3c: import_dib with G contract [crate=guard_proto_dep]	
+91	2026-11-12T04:50:18+00:00	exit=101	3s	F3c: import_dib G contract [crate=guard_proto_dep]	
+92	2026-11-12T04:50:27+00:00	exit=101	5s	F3c: corrected call [crate=guard_proto_dep]	
+93	2026-11-12T04:53:59+00:00	exit=101	4s	F3c: import_dib call corrected [crate=guard_proto_dep]	verification results:: 14 verified, 2 errors
+94	2026-11-12T04:54:11+00:00	exit=101	4s	F3c: reveal import_ok [crate=guard_proto_dep]	verification results:: 14 verified, 2 errors
+95	2026-11-12T04:54:24+00:00	exit=101	4s	F3c: assert import_ok [crate=guard_proto_dep]	verification results:: 14 verified, 2 errors
+96	2026-11-12T04:54:40+00:00	exit=101	5s	F3c: lemma_import_shaped [crate=guard_proto_dep]	verification results:: 15 verified, 2 errors
+97	2026-11-12T04:57:28+00:00	exit=101	0s	F3c: arm lemmas [crate=guard_proto_dep]	
+98	2026-11-12T04:57:41+00:00	exit=101	1s	F3c: arm lemmas [crate=guard_proto_dep]	
+99	2026-11-12T04:57:50+00:00	exit=101	3s	F3c: arm lemmas [crate=guard_proto_dep]	
+100	2026-11-12T04:58:05+00:00	exit=101	0s	F3c: arm lemmas in sites.rs [crate=guard_proto_dep]	
+101	2026-11-12T04:58:13+00:00	exit=101	4s	F3c: arm lemmas in sites.rs [crate=guard_proto_dep]	
+102	2026-11-12T04:58:49+00:00	exit=101	4s	F3c: sites.rs arm lemmas [crate=guard_proto_dep]	
+103	2026-11-12T04:58:56+00:00	exit=101	4s	F3c: sites.rs arm lemmas [crate=guard_proto_dep]	
+104	2026-11-12T04:59:05+00:00	exit=101	4s	F3c: oom lemma via accessors [crate=guard_proto_dep]	verification results:: 20 verified, 1 errors
+105	2026-11-12T04:59:19+00:00	exit=101	5s	F3c: public corollary [crate=guard_proto_dep]	verification results:: 20 verified, 1 errors
+106	2026-11-12T04:59:30+00:00	exit=101	1s	F3c: lemma_oom_site_is_dib [crate=guard_proto_dep]	
+107	2026-11-12T04:59:41+00:00	exit=0	5s	F3c: lemma_oom_site_is_dib [crate=guard_proto_dep]	verification results:: 22 verified, 0 errors
+108	2026-11-12T04:59:45+00:00	exit=0	0s	guard_proto final [crate=guard_proto]	
+109	2026-11-12T05:00:20+00:00	exit=101	3s	negative check neg1_construct_oom_outside_guard (must FAIL) [crate=guard_proto]	
+110	2026-11-12T05:00:23+00:00	exit=101	3s	negative check neg2_edit_log_outside_guard (must FAIL) [crate=guard_proto]	
+111	2026-11-12T05:00:24+00:00	exit=101	1s	negative check neg3_return_oom_after_ok (must FAIL) [crate=guard_proto]	
+112	2026-11-12T05:00:29+00:00	exit=101	5s	negative check neg4_skip_import (must FAIL) [crate=guard_proto_dep]	verification results:: 22 verified, 1 errors
+113	2026-11-12T05:00:40+00:00	exit=101	3s	negative check neg1_construct_oom_outside_guard (must FAIL) [crate=guard_proto]	
+114	2026-11-12T05:00:43+00:00	exit=101	3s	negative check neg2_edit_log_outside_guard (must FAIL) [crate=guard_proto]	
+115	2026-11-12T05:00:47+00:00	exit=101	4s	negative check neg3_return_oom_after_ok (must FAIL) [crate=guard_proto]	
+116	2026-11-12T05:00:50+00:00	exit=101	3s	negative check neg4_skip_import (must FAIL) [crate=guard_proto_dep]	verification results:: 22 verified, 1 errors
+117	2026-11-12T05:01:00+00:00	exit=101	3s	negative check neg1_construct_oom_outside_guard (must FAIL) [crate=guard_proto]	
+118	2026-11-12T05:01:03+00:00	exit=101	3s	negative check neg2_edit_log_outside_guard (must FAIL) [crate=guard_proto]	
+119	2026-11-12T05:01:08+00:00	exit=101	5s	negative check neg3_return_oom_after_ok (must FAIL) [crate=guard_proto]	verification results:: 44 verified, 1 errors
+120	2026-11-12T05:01:13+00:00	exit=101	5s	negative check neg4_skip_import (must FAIL) [crate=guard_proto_dep]	verification results:: 22 verified, 1 errors
+121	2026-11-12T05:01:26+00:00	exit=0	6s	negative check neg3 (must FAIL) [crate=guard_proto]	verification results:: 44 verified, 0 errors
+122	2026-11-12T05:01:34+00:00	exit=101	4s	negative check neg1_construct_oom_outside_guard (must FAIL) [crate=guard_proto]	
+123	2026-11-12T05:01:38+00:00	exit=101	4s	negative check neg2_edit_log_outside_guard (must FAIL) [crate=guard_proto]	
+124	2026-11-12T05:01:43+00:00	exit=101	5s	negative check neg3_return_oom_after_ok (must FAIL) [crate=guard_proto]	verification results:: 44 verified, 1 errors
+125	2026-11-12T05:01:48+00:00	exit=101	5s	negative check neg4_skip_import (must FAIL) [crate=guard_proto_dep]	verification results:: 22 verified, 1 errors
+126	2026-11-12T05:02:09+00:00	exit=101	4s	negative check neg1_construct_oom_outside_guard (must FAIL) [crate=guard_proto]	
+127	2026-11-12T05:02:12+00:00	exit=101	3s	negative check neg2_edit_log_outside_guard (must FAIL) [crate=guard_proto]	
+128	2026-11-12T05:02:17+00:00	exit=101	5s	negative check neg3_return_oom_after_ok (must FAIL) [crate=guard_proto]	verification results:: 44 verified, 1 errors
+129	2026-11-12T05:02:22+00:00	exit=101	4s	negative check neg4_skip_import (must FAIL) [crate=guard_proto_dep]	verification results:: 22 verified, 1 errors
+130	2026-11-12T05:02:37+00:00	exit=101	5s	F2 probe: WRONG layout declaration (size 32 vs real 28) [crate=guard_proto]	verification results:: 43 verified, 1 errors
+131	2026-11-12T05:04:58+00:00	exit=0	4s	final: guard_proto clean [crate=guard_proto]	verification results:: 44 verified, 0 errors
+132	2026-11-12T05:05:02+00:00	exit=0	4s	final: guard_proto_dep clean [crate=guard_proto_dep]	verification results:: 22 verified, 0 errors
+133	2026-11-12T05:05:39+00:00	exit=0	4s	probe: o.site() in spec position [crate=guard_proto]	verification results:: 44 verified, 0 errors
+134	2026-11-12T05:05:51+00:00	exit=0	7s	probe: o.site() cross-crate in spec position [crate=guard_proto_dep]	verification results:: 22 verified, 0 errors
+135	2026-11-12T05:06:09+00:00	exit=0	4s	final clean guard_proto [crate=guard_proto]	verification results:: 44 verified, 0 errors
+136	2026-11-12T05:06:17+00:00	exit=0	8s	final clean guard_proto_dep [crate=guard_proto_dep]	verification results:: 22 verified, 0 errors
+137	2026-11-12T05:06:49+00:00	exit=0	0s	final: guard_proto (44 verified) [crate=guard_proto]	
+138	2026-11-12T05:06:50+00:00	exit=0	1s	final: guard_proto_dep (22 verified) [crate=guard_proto_dep]	
+139	2026-11-12T05:06:53+00:00	exit=101	3s	negative check neg1_construct_oom_outside_guard (must FAIL) [crate=guard_proto]	
+140	2026-11-12T05:06:56+00:00	exit=101	3s	negative check neg2_edit_log_outside_guard (must FAIL) [crate=guard_proto]	
+141	2026-11-12T05:07:00+00:00	exit=101	4s	negative check neg3_return_oom_after_ok (must FAIL) [crate=guard_proto]	verification results:: 44 verified, 1 errors
+142	2026-11-12T05:07:04+00:00	exit=101	4s	negative check neg4_skip_import (must FAIL) [crate=guard_proto_dep]	verification results:: 22 verified, 1 errors
+143	2026-11-12T05:07:32+00:00	exit=0	4s	final confirm guard_proto [crate=guard_proto]	verification results:: 44 verified, 0 errors
+144	2026-11-12T05:07:44+00:00	exit=0	5s	final confirm guard_proto_dep [crate=guard_proto_dep]	verification results:: 22 verified, 0 errors
+145	2026-11-12T06:12:05+00:00	exit=101	3s	negative check neg1_construct_oom_outside_guard (must FAIL) [crate=guard_proto]	
+146	2026-11-12T06:12:08+00:00	exit=101	3s	negative check neg2_edit_log_outside_guard (must FAIL) [crate=guard_proto]	
+147	2026-11-12T06:12:12+00:00	exit=101	4s	negative check neg3_return_oom_after_ok (must FAIL) [crate=guard_proto]	verification results:: 44 verified, 1 errors
+148	2026-11-12T06:12:17+00:00	exit=101	5s	negative check neg4_skip_import (must FAIL) [crate=guard_proto_dep]	verification results:: 22 verified, 1 errors

@@ -1,0 +1,177 @@
+# Prototype allowlist for dib_verus on x86_64 (gate F1 positive control).
+#
+# This is a *fixture* that shows the format and the review burden. A production
+# allowlist would carry DIB's real source hash and a named human reviewer.
+#
+# The one allocation this admits is the current `vec![0u8; 4*n]` in
+# `dib::alloc_output_n` (dib.rs:8210). Before freeze it is replaced by the
+# guard's `try_zeroed`, at which point `allow` changes to the guard function and
+# the growth-path analysis is recorded here.
+
+[meta]
+rustc_commit = "58cf8f9c3"
+vstd_version = "0.0.0-2026-11-01-0251"
+target = "x86_64-unknown-linux-gnu"
+profile = "opt-level=3,debug-assertions=off,share-generics=off"
+reviewer = "prototype-fixture"
+source_hash = "cacb25c6fa40b84dd21335516d65bd57d744a42f25257a47355033e5b6280b42"
+
+# --- allocation-capable items, enumerated per caller ---------------------
+
+# The output-buffer reservation, reached only from alloc_output_n. In the
+# current build this is `vec![0u8; 4*n]`; after the delta it is the guard's
+# try_zeroed(4*n). The from_elem path is exact-size (no growth), so the only
+# allocator entries reached are alloc/alloc_zeroed via try_allocate_in.
+[[entry]]
+item = "<u8 as std::vec::spec_from_elem::SpecFromElem>::from_elem"
+kind = "alloc"
+allow = "dib::alloc_output_n"
+reason = "the single output-buffer site; exact reservation of 4*n bytes"
+reviewer = "prototype-fixture"
+
+# Deallocation of that buffer. Cannot fail.
+[[entry]]
+item = "alloc::raw_vec::RawVecInner::<A>::deallocate"
+kind = "alloc"
+allow = "*"
+reason = "deallocation cannot fail"
+reviewer = "prototype-fixture"
+
+# --- non-allocating leaves the walk cannot enter -------------------------
+
+[[entry]]
+item = "alloc::alloc::__rust_no_alloc_shim_is_unstable_v2"
+kind = "ffi"
+allow = "*"
+reason = "std alloc-shim stability probe; declares, does not allocate"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "alloc::raw_vec::handle_error"
+kind = "no-mir"
+allow = "*"
+reason = "capacity-overflow abort; excluded by the guard's n <= isize::MAX precondition (A-STD-3)"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "core::panicking::panic_fmt"
+kind = "no-mir"
+allow = "*"
+reason = "panic entry point; unreachable by T1/Safe' on the audited roots"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "core::panicking::panic_nounwind_fmt"
+kind = "no-mir"
+allow = "*"
+reason = "panic entry point; unreachable by T1/Safe' on the audited roots"
+reviewer = "prototype-fixture"
+
+# Panic entry points. Each needs its T1/Safe' citation in a production file;
+# here one entry covers the name, and the per-function edge counts are in the
+# report so a new edge shows up as a diff.
+[[entry]]
+item = "panic::PanicBoundsCheck"
+kind = "panic"
+allow = "*"
+reason = "bounds check; unreachable by the verified index preconditions (T1)"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "panic::PanicDivZero"
+kind = "panic"
+allow = "*"
+reason = "divide by zero; unreachable by the verified preconditions (T1)"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "panic::PanicAddOverflow"
+kind = "panic"
+allow = "*"
+reason = "checked add; unreachable by the verified preconditions (T1)"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "panic::PanicSubOverflow"
+kind = "panic"
+allow = "*"
+reason = "checked sub; unreachable by the verified preconditions (T1)"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "panic::PanicMulOverflow"
+kind = "panic"
+allow = "*"
+reason = "checked mul; unreachable by the verified preconditions (T1)"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "panic::PanicNegOverflow"
+kind = "panic"
+allow = "*"
+reason = "checked neg; unreachable by the verified preconditions (T1)"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "panic::PanicShlOverflow"
+kind = "panic"
+allow = "*"
+reason = "checked shl; unreachable by the verified preconditions (T1)"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "panic::PanicShrOverflow"
+kind = "panic"
+allow = "*"
+reason = "checked shr; unreachable by the verified preconditions (T1)"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "panic::PanicRemZero"
+kind = "panic"
+allow = "*"
+reason = "remainder by zero; unreachable by the verified preconditions (T1)"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "panic::PanicRemOverflow"
+kind = "panic"
+allow = "*"
+reason = "checked rem; unreachable by the verified preconditions (T1)"
+reviewer = "prototype-fixture"
+
+# Intrinsics, allowed per name.
+[[entry]]
+item = "std::intrinsics::cold_path"
+kind = "intrinsic"
+allow = "*"
+reason = "codegen hint; no allocation"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "std::intrinsics::ctlz"
+kind = "intrinsic"
+allow = "*"
+reason = "leading-zero count; no allocation"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "std::intrinsics::cttz"
+kind = "intrinsic"
+allow = "*"
+reason = "trailing-zero count; no allocation"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "std::intrinsics::ctpop"
+kind = "intrinsic"
+allow = "*"
+reason = "population count; no allocation"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "std::intrinsics::write_bytes"
+kind = "intrinsic"
+allow = "*"
+reason = "memset used by the zero fill; no allocation"
+reviewer = "prototype-fixture"

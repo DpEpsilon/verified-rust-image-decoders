@@ -1,0 +1,32 @@
+=== alloc_audit report ===
+verdict: Fail
+profile: opt-level=2,debug-assertions=off,share-generics=off [release]
+source_hash (audited crate): f28e4a34d1fdbce146a7b20e88635985ae1eb6450bf8b5066dc35522aa168796
+source-hash scope: source-map text only (crate's own files; excludes include_bytes!/include_str! payloads, build-script and proc-macro output, and dependency sources)
+  source b3ab237cd1d9c41a61cacfe1dad2129fa650e75c25a065ff69232ea7d5b74007  /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/proto/alloc_audit/testcases/n4_box.rs
+mode: PROTOTYPE (--prototype given; the `prototype-fixture` reviewer is accepted)
+nodes (monomorphised instances walked): 11
+edges: 13
+allocator entry points reachable: 2 (0 allowlisted, 2 unexplained)
+fail-closed findings: 2
+unexplained leaves: 3
+allowlist: <none> sha256=<none> : 0 entries, reviewer None, commit None (running "", full None), target None, profile None (detected "" []), vstd None (linked false, actual None), source_hash None (actual None)
+
+-- allocator entry points --
+  !! alloc::alloc::__rust_alloc
+      path: n4_box -> std::boxed::Box::<T>::new<u64> -> std::boxed::box_new_uninit -> std::alloc::Global::alloc_impl_runtime -> alloc::alloc::__rust_alloc
+      !!! unauthorized path: n4_box -> std::boxed::Box::<T>::new<u64> -> std::boxed::box_new_uninit -> std::alloc::Global::alloc_impl_runtime -> alloc::alloc::__rust_alloc
+          (allocation-capable item <none>, audited-crate caller <none>)
+  !! alloc::alloc::__rust_alloc_zeroed
+      path: n4_box -> std::boxed::Box::<T>::new<u64> -> std::boxed::box_new_uninit -> std::alloc::Global::alloc_impl_runtime -> alloc::alloc::__rust_alloc_zeroed
+      !!! unauthorized path: n4_box -> std::boxed::Box::<T>::new<u64> -> std::boxed::box_new_uninit -> std::alloc::Global::alloc_impl_runtime -> alloc::alloc::__rust_alloc_zeroed
+          (allocation-capable item <none>, audited-crate caller <none>)
+
+-- fail-closed findings --
+  [unauthorized-alloc-path] alloc::alloc::__rust_alloc is reachable on an unauthorized path: n4_box -> std::boxed::Box::<T>::new<u64> -> std::boxed::box_new_uninit -> std::alloc::Global::alloc_impl_runtime -> alloc::alloc::__rust_alloc (allocation-capable item <none>, audited-crate caller <none>)
+  [unauthorized-alloc-path] alloc::alloc::__rust_alloc_zeroed is reachable on an unauthorized path: n4_box -> std::boxed::Box::<T>::new<u64> -> std::boxed::box_new_uninit -> std::alloc::Global::alloc_impl_runtime -> alloc::alloc::__rust_alloc_zeroed (allocation-capable item <none>, audited-crate caller <none>)
+
+-- unexplained leaves (need an allowlist entry) --
+  [ffi] alloc::alloc::__rust_no_alloc_shim_is_unstable_v2 (identity alloc::alloc::__rust_no_alloc_shim_is_unstable_v2)
+  [no-mir] core::panicking::panic_nounwind_fmt (identity core::panicking::panic_nounwind_fmt)
+  [no-mir] std::alloc::handle_alloc_error (identity std::alloc::handle_alloc_error)
