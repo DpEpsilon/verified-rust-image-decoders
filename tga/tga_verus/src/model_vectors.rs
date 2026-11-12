@@ -2951,4 +2951,85 @@ pub proof fn agree_attribute_rle_indexed_24_one()
 }
 
 // ---- every small vector has exactly one obligation above ----
+// ---- policy header acceptance witnesses (generated) ----
+// Strict: frozen vector depth-true15.
+pub open spec fn policy_bytes_strict_depth_true15() -> Seq<u8> {
+    seq![0u8, 0u8, 2u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 2u8, 0u8, 1u8, 0u8, 15u8, 0u8, 99u8, 12u8, 38u8, 244u8]
+}
+pub proof fn policy_header_strict_depth_true15()
+    ensures crate::policy_model::mh_policy(policy_bytes_strict_depth_true15(), crate::policy::strict_policy()) is Ok,
+{ assert(crate::policy_model::mh_policy(policy_bytes_strict_depth_true15(), crate::policy::strict_policy()) is Ok) by (compute); }
+
+// Recommended: frozen vector attr-32-count4.
+pub open spec fn policy_bytes_recommended_attr_32_count4() -> Seq<u8> {
+    seq![0u8, 0u8, 2u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 2u8, 0u8, 1u8, 0u8, 32u8, 36u8, 16u8, 32u8, 48u8, 64u8, 80u8, 96u8, 112u8, 0u8]
+}
+pub proof fn policy_header_recommended_attr_32_count4()
+    ensures crate::policy_model::mh_policy(policy_bytes_recommended_attr_32_count4(), crate::policy::recommended_policy()) is Ok,
+{ assert(crate::policy_model::mh_policy(policy_bytes_recommended_attr_32_count4(), crate::policy::recommended_policy()) is Ok) by (compute); }
+
+// Recommended: frozen vector map-absent-stray-depth.
+pub open spec fn policy_bytes_recommended_map_absent_stray_depth() -> Seq<u8> {
+    seq![0u8, 0u8, 2u8, 0u8, 0u8, 0u8, 0u8, 24u8, 0u8, 0u8, 0u8, 0u8, 2u8, 0u8, 1u8, 0u8, 24u8, 0u8, 16u8, 32u8, 48u8, 64u8, 80u8, 96u8]
+}
+pub proof fn policy_header_recommended_map_absent_stray_depth()
+    ensures crate::policy_model::mh_policy(policy_bytes_recommended_map_absent_stray_depth(), crate::policy::recommended_policy()) is Ok,
+{ assert(crate::policy_model::mh_policy(policy_bytes_recommended_map_absent_stray_depth(), crate::policy::recommended_policy()) is Ok) by (compute); }
+
+// GdkCompat-2.42.12: frozen vector map-flag2-truecolour.
+pub open spec fn policy_bytes_gdk_compat_map_flag2_truecolour() -> Seq<u8> {
+    seq![0u8, 2u8, 2u8, 0u8, 0u8, 1u8, 0u8, 24u8, 0u8, 0u8, 0u8, 0u8, 2u8, 0u8, 1u8, 0u8, 24u8, 0u8, 1u8, 2u8, 3u8, 16u8, 32u8, 48u8, 64u8, 80u8, 96u8]
+}
+pub proof fn policy_header_gdk_compat_map_flag2_truecolour()
+    ensures crate::policy_model::mh_policy(policy_bytes_gdk_compat_map_flag2_truecolour(), crate::policy::gdk_compat_policy()) is Ok,
+{ assert(crate::policy_model::mh_policy(policy_bytes_gdk_compat_map_flag2_truecolour(), crate::policy::gdk_compat_policy()) is Ok) by (compute); }
+
+// GdkCompat-2.42.12: frozen vector map-present-length0-baddepth.
+pub open spec fn policy_bytes_gdk_compat_map_present_length0_baddepth() -> Seq<u8> {
+    seq![0u8, 1u8, 2u8, 0u8, 0u8, 0u8, 0u8, 8u8, 0u8, 0u8, 0u8, 0u8, 2u8, 0u8, 1u8, 0u8, 24u8, 0u8, 16u8, 32u8, 48u8, 64u8, 80u8, 96u8]
+}
+pub proof fn policy_header_gdk_compat_map_present_length0_baddepth()
+    ensures crate::policy_model::mh_policy(policy_bytes_gdk_compat_map_present_length0_baddepth(), crate::policy::gdk_compat_policy()) is Ok,
+{ assert(crate::policy_model::mh_policy(policy_bytes_gdk_compat_map_present_length0_baddepth(), crate::policy::gdk_compat_policy()) is Ok) by (compute); }
+
+// GdkCompat-2.42.12: frozen vector depth-true15.
+pub open spec fn policy_bytes_gdk_compat_depth_true15() -> Seq<u8> {
+    seq![0u8, 0u8, 2u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 2u8, 0u8, 1u8, 0u8, 15u8, 0u8, 99u8, 12u8, 38u8, 244u8]
+}
+pub proof fn policy_header_gdk_compat_depth_true15()
+    ensures crate::policy_model::mh_policy(policy_bytes_gdk_compat_depth_true15(), crate::policy::gdk_compat_policy()) == Err(Error::UnsupportedPixelDepth),
+{ assert(crate::policy_model::mh_policy(policy_bytes_gdk_compat_depth_true15(), crate::policy::gdk_compat_policy()) == Err(Error::UnsupportedPixelDepth)) by (compute); }
+
+// ImageCrateCompat-0.25.10: frozen vector map-flag2-truecolour.
+pub open spec fn policy_bytes_image_crate_compat_map_flag2_truecolour() -> Seq<u8> {
+    seq![0u8, 2u8, 2u8, 0u8, 0u8, 1u8, 0u8, 24u8, 0u8, 0u8, 0u8, 0u8, 2u8, 0u8, 1u8, 0u8, 24u8, 0u8, 1u8, 2u8, 3u8, 16u8, 32u8, 48u8, 64u8, 80u8, 96u8]
+}
+pub proof fn policy_header_image_crate_compat_map_flag2_truecolour()
+    ensures crate::policy_model::mh_policy(policy_bytes_image_crate_compat_map_flag2_truecolour(), crate::policy::image_crate_compat_policy()) is Ok,
+{ assert(crate::policy_model::mh_policy(policy_bytes_image_crate_compat_map_flag2_truecolour(), crate::policy::image_crate_compat_policy()) is Ok) by (compute); }
+
+// ImageCrateCompat-0.25.10: frozen vector attr-grey8-count8.
+pub open spec fn policy_bytes_image_crate_compat_attr_grey8_count8() -> Seq<u8> {
+    seq![0u8, 0u8, 3u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 2u8, 0u8, 1u8, 0u8, 8u8, 8u8, 17u8, 34u8]
+}
+pub proof fn policy_header_image_crate_compat_attr_grey8_count8()
+    ensures crate::policy_model::mh_policy(policy_bytes_image_crate_compat_attr_grey8_count8(), crate::policy::image_crate_compat_policy()) is Ok,
+{ assert(crate::policy_model::mh_policy(policy_bytes_image_crate_compat_attr_grey8_count8(), crate::policy::image_crate_compat_policy()) is Ok) by (compute); }
+
+// ImageCrateCompat-0.25.10: frozen vector depth-index16-map24.
+pub open spec fn policy_bytes_image_crate_compat_depth_index16_map24() -> Seq<u8> {
+    seq![0u8, 1u8, 1u8, 0u8, 0u8, 3u8, 0u8, 24u8, 0u8, 0u8, 0u8, 0u8, 2u8, 0u8, 1u8, 0u8, 16u8, 0u8, 0u8, 0u8, 255u8, 0u8, 255u8, 0u8, 255u8, 0u8, 0u8, 0u8, 0u8, 2u8, 0u8]
+}
+pub proof fn policy_header_image_crate_compat_depth_index16_map24()
+    ensures crate::policy_model::mh_policy(policy_bytes_image_crate_compat_depth_index16_map24(), crate::policy::image_crate_compat_policy()) is Ok,
+{ assert(crate::policy_model::mh_policy(policy_bytes_image_crate_compat_depth_index16_map24(), crate::policy::image_crate_compat_policy()) is Ok) by (compute); }
+
+// ImageCrateCompat-0.25.10: frozen vector depth-index16-map15.
+pub open spec fn policy_bytes_image_crate_compat_depth_index16_map15() -> Seq<u8> {
+    seq![0u8, 1u8, 1u8, 0u8, 0u8, 2u8, 0u8, 15u8, 0u8, 0u8, 0u8, 0u8, 2u8, 0u8, 1u8, 0u8, 16u8, 0u8, 254u8, 12u8, 0u8, 252u8, 0u8, 0u8, 1u8, 0u8]
+}
+pub proof fn policy_header_image_crate_compat_depth_index16_map15()
+    ensures crate::policy_model::mh_policy(policy_bytes_image_crate_compat_depth_index16_map15(), crate::policy::image_crate_compat_policy()) == Err(Error::UnsupportedPixelDepth),
+{ assert(crate::policy_model::mh_policy(policy_bytes_image_crate_compat_depth_index16_map15(), crate::policy::image_crate_compat_policy()) == Err(Error::UnsupportedPixelDepth)) by (compute); }
+
 } // verus!

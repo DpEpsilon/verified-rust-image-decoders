@@ -1,3 +1,128 @@
+## Strict-to-1.0 full bridge — run 205 (2026-11-12)
+
+The model theorem `policy_model::lemma_mp_policy_strict_is_mp(b)` proves, for every finite byte sequence, `mp_policy(b, strict_policy()) == model::mp(b)` as the exact `Result`: the same first error, or the same dimensions and every oriented RGBA byte. This closes Sol finding 1 and transfers the frozen 1.0 T7 to Strict. The verified public executable witness `tga::t7_strict_is_1_0(bytes)` calls both `decode_with_policy(bytes, Strict)` and `decode(bytes)` and proves that their results agree and that the Strict `recovered` flag is false.
+
+The proof follows R14's header, ID, map, pixel, suffix and assembly order. The packet-field bridge uses the successful 1.0 header's actual fields; the raw induction compares the first error before conversion (so it needs no all-samples-in-range precondition); the RLE induction compares API error or the full successful tuple (ghost partial pixels on error are irrelevant). On success, the existing cursor/pixel projections and a raw-sample extensionality proof equate the separate assembly pixel sequences. The phase argument needs no `rlimit` attribute or proof escape. Runs 201–205 were sequential through `./verify.sh`; final run 205: **947 verified, 0 errors**, up from run 199's 936. Backups `src/{model.rs,policy_model.rs,tga.rs}.pol-c1` capture the verified sources; frozen files remain unchanged.
+
+## Errata against frozen POLICY-SPEC (2026-11-12)
+
+Recorded, not edited: no frozen file (`spec-frozen/*`, `THEOREMS.md`,
+`policy/{POLICY-SPEC.md,THEOREMS-POLICY-DELTA.md,policy_oracle.py,
+gen_policy_vectors.py,POLICY-VECTORS.json,QUESTIONS.md}`) was touched. The full
+entry with the revision text is the new file `policy/ERRATA.md` (not covered by
+`FREEZE.txt`). Summary:
+
+**E1 — 8-bit greyscale, descriptor attribute count 8.** `POLICY-SPEC.md:24`
+says `ImageTable` "8-bit grey allows {0, 8} (8 is treated like 0)". The oracle
+(`policy_oracle.py:59-61,153-162`), the model (`policy_model.rs:285-335,1085-1087`)
+and the executable (`tga.rs:5148-5165`) all retain effective count 8 rather than
+0. There is no public-output difference: 8-bit grey is `kind = 2`, `depth = 8`,
+`sample_bytes = 1`, so `conv_sample_policy` writes R=G=B=sample and alpha 255
+without reading an attribute byte, and the stored-alpha rules consult `eff` only
+for 32-bit true-colour, 32-bit palette entries and 16-bit grey. The controlling
+text is line 24's own acceptance sentence ("allows {0, 8}") plus the three
+consistent layers; the parenthetical "(8 is treated like 0)" is the defect. A
+revision should strike that parenthetical and state that an accepted count is
+kept as the effective count. Separately, `THEOREMS-POLICY-DELTA.md:9-12`
+describes `eff` as a new header-record field; `MHModel` has no such field and the
+effective count is derived from the record's own fields (`eff_count_img`), carried
+only in the conversion projection `PktH.attr`; a revision should say so.
+
+## Astra policy completion — final clean run 194 (2026-11-12)
+
+The complete policy executable and its witnesses verify: **927 verified, 0
+errors**, from a clean target directory in `runs/194.log`. Runs 179–194 contain
+15 verifier invocations (8 successful, 7 failed); there is no run 192 because
+`verify.sh` counts directory entries and the retained test log
+`runs/policy-tests-astra-191.txt` occupied that count. Every invocation used
+`verify.sh` with `CARGO_NET_OFFLINE=true`, one verifier at a time.
+
+- `rle_packet_policy`, its repeat/literal helpers and `decode_rle_policy` are
+  proved, including MR's full success/error tuple and partial oriented pixels.
+- One-layer literal unfold lemmas and scalar stride identities close the failed
+  prefix inductions; the literal error branch now returns its current ghost
+  accumulator rather than its entry accumulator.
+- `decode_policy_tracked` has no preconditions and proves the exact policy MP
+  result plus `steps <= 16*(|bytes|+N)` for every Policy value and every outcome;
+  N is the validated header's pixel count, or zero on a header error.
+- The charged work counts capped header inspection, 4N output initialization,
+  sample attempts, four output-byte writes per painted pixel, packet dispatch
+  and capped suffix inspection; neither clipping mode loops over discarded
+  positions.
+- `decode_with_policy(bytes, profile)` returns `(Result<Decoded, Error>, bool)`;
+  every successful flag equals the closed clip/substitution model, and every
+  error returns false with fresh state on the next call.
+- Universal witnesses cover header/map addressing, conversion, packet safety,
+  bounds, termination, work, allocation-call counts and event exactness; named
+  profiles have exact T5–T7/T9 witnesses and executable Recommended
+  conservativity (`r_recommended_conservative`).
+- Ten small frozen-vector header witnesses extend the existing
+  `model_vectors.rs`; regenerate them with `tools/gen_policy_header_witnesses.py`
+  after regenerating the original core vector module.
+
+`alloc_output` contains the sole `vec![0u8; 4*n]` site. The only executable edit
+to the 1.0 `decode` body replaces that same expression with the shared helper
+call; its signature, decoding logic and exact-model contract are unchanged.
+`signature_tail` gained an explicit representable-length invariant. The ghost
+allocation counter proves one call after a successful header and zero after a
+header error; `tools/audit_alloc.sh` independently checks that no other
+input-dependent allocation construct appears. This is not a physical allocator
+trace or an allocation-failure theorem; the separate allocation delta remains
+future work.
+
+The final test command was `cargo --offline test --release -- --nocapture
+--test-threads=1` (full output `notes/policy-tests-final.txt`): 302/302 policy
+vectors for each of Strict, Recommended, GdkCompat and ImageCrateCompat; 28/28
+custom frozen vectors; 169/169 original core vectors; and **52,348 oracle
+comparisons, zero mismatches**. The differential test includes all 169 original
+inputs under every profile, all 7,578 proper prefixes per profile, all 32 option
+values on 398 inputs each, coupled palette/header/RLE groups and 512 generated
+all-field records. Arbitrary executable records and their decoder entry exist
+only under `cfg(test)`.
+
+Corpus measurement (`notes/policy-corpus-astra.txt`) used
+`/home/ws/corpora/tga/MANIFEST.tsv`, SHA-256
+`0f8a8a41ea00caf25d480cb4f9ca9bc1c30572007f6e880e9ca2876e2520584c`.
+The manifest was unchanged across the run; all 294 listed files were present
+and independently SHA-256-matched. Acceptance: Strict **252/294**, Recommended
+**266/294**, GdkCompat **264/294**, ImageCrateCompat **259/294**. Successful
+recovery flags: 0, 2, 4 and 2 respectively. The runner reads corpus bytes in
+place; no corpus bytes were copied into the project.
+
+All six policy freeze hashes and all six referenced 1.0 freeze hashes match
+(the historical `check_vectors.py` is in `spec-history/spec`, not
+`spec-frozen`). The source audit reports one allocation site. The inherited
+M3 `#[verifier::rlimit(80)]` in `model.rs` was still present despite the earlier
+handoff's claim; it was removed, and runs 193/194 prove that lemma at the
+default budget. No proof escapes or budget attributes remain in active source.
+Green backups: `src/*.pol-a7` is the final source; earlier `.pol-a0` through
+`.pol-a6` retain the verified checkpoints. No Git state-changing command was
+run. The target directory is removed after the final checks.
+
+The earlier status entries below are historical; their outstanding policy
+items are closed by this section.
+
+## Sol policy RLE attempt — stalled (runs 173–178)
+
+The 1.0 and policy-model source is green at run 178: **865 verified, 0 errors**.
+The executable policy RLE packet draft from `.pol-rc1` failed five consecutive
+verifier runs (173–177); its updated, still-unproved version is saved as
+`src/{tga.rs,policy_model.rs}.pol-s1`, and the real source was restored from
+`src/tga.rs.pol-s0` and `src/policy_model.rs.pol-w5`. `STUCK.md` gives the
+remaining literal-prefix and slice-composition failures and the run-177
+messages. No `decode_rle_policy` was present in the recovered draft, and
+`decode_policy_tracked`, the public policy decoder, W/executable witnesses and
+policy conformance tests remain unimplemented. Do not count the 883 verified
+obligations in failed run 177 as delivered.
+
+The final full verification is run 178 (`865 verified, 0 errors`). The existing
+169-vector 1.0 conformance test passes (`cargo --offline test --test
+conformance`). `tools/audit_alloc.sh` reports one `vec!`; all six policy frozen
+hashes match `policy/FREEZE.txt`. `/home/ws/corpora/tga/files` exists with 296
+files, but per-profile corpus acceptance was not measured because there is no
+public policy decoder; no policy fixture count is claimed. The five-failure
+escalation rule stops work on this obligation here.
+
 # Notes
 
 T6 (exact packet semantics), T7 (total functional correctness), T8
@@ -358,3 +483,107 @@ type are unchanged); `src/lib.rs` gains the two modules.
 run-041 state; `policy.rs`/`policy_model.rs` `.pol-7` (and the identical
 `policy.rs`/`policy_model.rs`/`tga.rs` `.pol-7`) are the 739-obligation run-062
 state (`tga.rs.pol-7` == `tga.rs.pol-4`).
+
+### Stage 2/3 — piece B1/B2 (policy header parser + conversion layer) DONE
+
+- Final state run 105, **801 verified, 0 errors**. `tga.rs` gains the policy
+  header parser and conversion layer; the 1.0 `decode`/`parse_header` are
+  unchanged (behaviour and proofs), so the 739-obligation results stand.
+- B1 (`parse_header_policy`, `header_verdict`, `header_inv_policy`,
+  `mh_of_header`, `pkt_of_policy`): the 18 header fields are read once, the
+  eleven exec guard wrappers (`type_ok_hdr_exec`, `kind_hdr_exec`,
+  `flag_ok_hdr_exec`, `flag_present_hdr_exec`, `depth_ok_hdr_exec`,
+  `core_attr_ok_exec`, `image_attr_ok_exec`, `attr_ok_hdr_exec`,
+  `eff_attr_exec`, `coherence_bad_hdr_exec`, `range_bad_hdr_exec`,
+  `index_depth_bad_hdr_exec`) each prove equality with the matching
+  `policy_model` predicate, and `header_verdict` returns the model's exact
+  first error. T5: `mh_policy(bytes@, p) == Ok(mh_of_header(h, p))` (or the
+  exact error) via `policy_model::lemma_mh_policy_eq_of_header`. The header
+  `Header` struct and its spec accessors became `pub(crate)` so the model-facing
+  spec functions could be `pub(crate) open`; the 1.0 readers are unchanged.
+- B2 (`convert_sample_policy`, `convert_index_policy`, `convert_one_policy`):
+  the policy `conv2`, guard by guard: `rgb5`/`map5` channel rules
+  (`rgb5_chan_exec`/`map5_chan_exec`, `GdkSwapShift` swapping the outer fields),
+  `map16_alpha` (`map_entry_alpha_exec`), `alpha=Stored`
+  (`stored_alpha_exec`), `map_index` (`entry_j_exec`/`index_in_range_policy`)
+  and `index_range=Black` (`black_substitute_exec`). Each proves its result
+  equals `policy_model::conv2_policy` for the accepted header.
+- Design fixes along the way: `pkt_of_policy` now builds the attribute count
+  through `policy_model::eff_count_img` (the effective count on the governing
+  depth) so the record's `attr` is what the conversion reads; a comparison
+  whose operands have mixed integer types must be bridged by an explicit
+  `==`-of-`bool` assert or a `match`, because Verus does not reduce
+  `attr == 1u8` into `(attr as int) == 1` on its own.
+
+
+### Stage 2/3 — piece B3 raw loop DONE (run 148, 837 verified, 0 errors)
+
+- `decode_raw_policy(bytes, h, map, indexed, out, cursor, n, c0g, p)`: the policy
+  raw loop, parameterised by `Policy` exactly as `decode_raw` is by nothing.
+  Loop invariants: `*cursor == c0 + k*sb`, `wrote_samples_policy` (the policy
+  analog of `wrote_samples`, over `conv2_policy`), `raw_prefix_ok_policy` (every
+  sample `j<k` present and its index in range or substituted), and
+  `mp_raw_cur_policy(c0,0) == mp_raw_cur_policy(c0,k)`. Postconditions: on success
+  the final cursor is `c0 + N*sb`, every sample written at its oriented cell, and
+  `raw_result_eq_policy` (the result equals the policy model's raw phase as the
+  exact `Result`). On `Err` the model's exact first error.
+- New model lemmas in `policy_model.rs`: `raw_sample_ok_policy`,
+  `raw_prefix_ok_policy` and their step/at/intro/zero lemmas;
+  `lemma_raw_sample_ok_policy_of_loop`; `mp_raw_cur_policy`'s three branch
+  lemmas (`_trunc`, `_index`, `_ok_guard`) and `_mono`;
+  `lemma_write_preserves_policy_quads` (a single `write_pixel` preserves every
+  earlier quad, since `fcoord` is injective).
+- `header_inv_policy` gained `h.map_length as int <= 65535`, proved by
+  `parse_header_policy` from the `u16` read (`lemma_le16_lt`); the map-entry
+  stride `1..=4` is derived inside `convert_index_policy` from
+  `map_entry_depth_ok` rather than carried as a precondition.
+- The governing depth of the indexed path is the **map entry depth**
+  (`h.map_entry_depth`): an earlier draft used the image depth, which was wrong
+  for indexed images (this was also a real bug in `convert_sample_policy`'s
+  precondition; the depth table now takes `h.pixel_depth` for the
+  `kind = 1|2` records and the entry depth for `kind = 0`).
+
+### Stage 2/3 — handback state (run 172, 865 verified, 0 errors)
+
+Verified and in the tree: B1 (policy header parser), B2 (policy conversion
+layer) and B3-raw (`decode_raw_policy`). `cargo test --test conformance`
+169/169; `tools/audit_alloc.sh` OK (one `vec!`); frozen hashes OK; no
+assume/admit/external_body/trusted/unsafe/todo/rlimit anywhere in the new code.
+
+Model side, additionally verified: the policy packet-stream cursor projection
+`mr_cur_policy` and its `lemma_mr_cur_policy_proj`; the eight packet-step
+lemmas (`_ctrl_absent`, `_overrun`, `_rep_missing`, `_rep_index`, `_lit_missing`,
+`_lit_index`, `_rep_ok`, `_lit_ok`); `mr_gcur_policy`; `pkt_post_policy` and its
+six exit lemmas plus the two `Ok` arms (`lemma_pkt_policy_rep_ok`,
+`lemma_pkt_policy_lit_ok`, both taking the model's own pixel split as a
+hypothesis); `lemma_mr_pix_policy_rep`/`_lit`; `lemma_mr_pix_policy_len`;
+`lit_seq_policy` with its peel and length lemmas; `lemma_write_preserves_policy_
+quads`.
+
+STILL OPEN (the exact continuation point):
+1. `decode_rle_policy`, `rle_packet_policy`, `rle_repeat_packet_policy`,
+   `rle_literal_packet_policy` in `tga.rs` — a full draft existed but did not
+   verify; it was removed to keep the tree green. The two helper postconditions
+   already exist as `policy_model::pkt_post_policy` and the local
+   `pkt_out_policy`, and every packet exit they need is proved, so the port is
+   now a matter of the loop bodies. Watch items found in the draft: the literal
+   helper's `paint <= need` needs the `ClipSamples`/other case split spelled out
+   (`match`-derived `need` does not reduce on its own); the loop's
+   `map@.len() == map_bytes_flags(...)` must be re-asserted after `reveal` in the
+   loop body or the `convert_one_policy` precondition is not discharged; the
+   literal loop must carry `lit_ok_policy` (as the 1.0 loop carries `lit_pref`)
+   to close `lemma_mr_pix_policy_lit`/`lemma_pkt_policy_lit_ok`; and the packet
+   helper's `reject_overrun` must be computed by the same `match` shape the
+   model uses, not by `&&`/`==`, so their equality asserts go through.
+2. `decode_policy_tracked` (the charged-step bound `steps <= c*(|b|+N)`),
+   `decode_with_policy(bytes, profile) -> (Result<Decoded, Error>, recovered)`,
+   the universal T1-T4/T8/T10/A/E statements and the witness functions.
+3. C: the Rust harness over `POLICY-VECTORS.json` (302 per profile), the
+   per-profile corpus counts (the corpus bytes are absent; `policy/validate.py`
+   reads `/tmp/claude-0/corpora/tga`, and the repo-side fetch helpers are not
+   present in this sandbox — the fetch needs tooling I do not have here) and the
+   `cfg(test)` differential harness against `policy_oracle.py`.
+
+Green backups: `src/*.pol-w5` is this state (865); `*.pol-w4` (863),
+`*.pol-w3` (828/837), `*.pol-w2` (801), `*.pol-w1` (775), `*.pol-w0` (739,
+the pre-B baseline).

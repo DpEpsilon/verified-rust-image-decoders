@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Explain corpus pixel differences by matching native RGBA hashes to oracle rules.
 
-Reads the local corpus (/tmp/claude-0/corpora/tga: files/, results.jsonl,
+Reads the local corpus ($CORPUS_DIR/tga (default ~/corpora/tga): files/, results.jsonl,
 pixdiff.tsv) and never copies its bytes.  For every (file, decoder) pair that
 pixdiff.tsv lists, it decodes the file under the decoder's candidate rule
 record and checks the SHA-256 of the RGBA output against the native hash
@@ -17,6 +17,7 @@ runner converts to Rgb888) and descriptor bit 4 ignored (no horizontal flip).
 import collections
 import hashlib
 import json
+import os
 from pathlib import Path
 import sys
 sys.dont_write_bytecode = True
@@ -24,7 +25,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import policy_oracle as O
 
-CORPUS = Path('/tmp/claude-0/corpora/tga')
+CORPUS = Path(os.environ.get('CORPUS_DIR', str(Path.home() / 'corpora'))).expanduser() / 'tga'
 OUT = Path('/tmp/claude-0/tga-policy/pixdiff-explained.json')
 TINY = dict(O.STRICT, trailing='Ignore', rle_overrun='ClipSamples', attribute_bits='Lenient',
             map_header='IgnoreAbsent', rgb5='Round', map5='Round', map_index='ZeroBased')

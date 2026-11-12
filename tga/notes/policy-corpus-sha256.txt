@@ -1,0 +1,46 @@
+# Policy corpus check with SHA-256 digest verification (2026-11-12)
+
+Second item of the Sol soundness dispatch: `examples/policy_corpus.rs` checked
+each file's byte length against manifest column 8 but not its SHA-256 (column 2).
+The example now compares the digest of every file it reads against the manifest
+and panics, naming the file, on a mismatch.
+
+## What changed
+
+- `tga_verus/examples/policy_corpus.rs` gains a std-only SHA-256
+  (FIPS 180-4, no dependencies) and a `sha256_self_test` that runs first, over
+  the two published short vectors (`""`, `"abc"`, the 56-byte two-block message)
+  and the one-million-`a` vector. A wrong digest implementation fails the
+  self-test before it can pass any corpus file.
+- The per-row check is now `assert_eq!(sha256_hex(&bytes), columns[1], ...)`,
+  in addition to the existing length check; the summary line prints
+  `sha256=verified`.
+- The corpus is read in place at `/home/ws/corpora/tga`; no corpus bytes are
+  copied into the repo or `~/projects`.
+
+## Result
+
+`./target/release/examples/policy_corpus /home/ws/corpora/tga/MANIFEST.tsv`:
+
+```
+manifest=/home/ws/corpora/tga/MANIFEST.tsv rows=294 available=294 missing=0 sha256=verified
+Strict: accepted=252/294 recovered=0 rejected=42
+Recommended: accepted=266/294 recovered=2 rejected=28
+GdkCompat-2.42.12: accepted=264/294 recovered=4 rejected=30
+ImageCrateCompat-0.25.10: accepted=259/294 recovered=2 rejected=35
+```
+
+All **294** listed files are present, hash-match the manifest (`rows=294
+available=294 missing=0`), and the acceptance counts are **unchanged** from run
+194: 252 / 266 / 264 / 259 of 294 (Strict / Recommended / GdkCompat /
+ImageCrateCompat), recovered 0 / 2 / 4 / 2. Error taxonomies are byte-identical
+to `notes/policy-corpus-astra.txt`.
+
+Manifest SHA-256 (whole file): `0f8a8a41ea00caf25d480cb4f9ca9bc1c30572007f6e880e9ca2876e2520584c`,
+the same value recorded in `LEDGER.md` row pol-5.
+
+## Verified
+
+The SHA-256 routine is a test-harness example, not part of the verified library
+(`src/`) and not an obligation. The library and the Verus proof are unchanged;
+this does not consume a verifier run and the run-194 green state stands.

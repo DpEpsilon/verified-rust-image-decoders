@@ -912,6 +912,2684 @@ pub open spec fn pkt_of_mh_policy(m: MHModel, p: Policy) -> PktH {
     }
 }
 
+/// R5's alpha rule on the *effective* attribute count, as a plain predicate the
+/// executable's `stored_alpha_exec` proves equal to `stored_alpha_policy`.
+pub open spec fn stored_alpha_policy_attr(attr: int, p: Policy) -> bool {
+    p.alpha == AlphaOptions::Stored || attr == 8
+}
+
+/// R8's five-bit expansion of one channel under the `rgb5` rule, as the byte
+/// the executable writes.
+pub open spec fn rgb5_chan(c: int, rule: Rgb5Options) -> u8 {
+    match rule {
+        Rgb5Options::Replicate => rep5(c) as u8,
+        Rgb5Options::Round => round5(c) as u8,
+    }
+}
+
+/// R8's five-bit expansion of one channel under the `map5` rule, as the byte
+/// the executable writes.
+pub open spec fn map5_chan(c: int, rule: Map5Options) -> u8 {
+    match rule {
+        Map5Options::Replicate => rep5(c) as u8,
+        Map5Options::Round => round5(c) as u8,
+        Map5Options::GdkSwapShift => (c * 8) as u8,
+    }
+}
+
+/// `rgb555_policy` is `rgb5_chan` on the three fields.
+pub proof fn lemma_rgb555_policy_chan(v: int, rule: Rgb5Options)
+    ensures
+        rgb555_policy(v, rule) == seq![
+            rgb5_chan(red5(v), rule),
+            rgb5_chan(green5(v), rule),
+            rgb5_chan(blue5(v), rule),
+        ],
+{
+    reveal(rgb555_policy);
+    reveal(rgb555);
+    reveal(rep5);
+    reveal(round5);
+    reveal(rgb5_chan);
+    match rule {
+        Rgb5Options::Replicate => {},
+        Rgb5Options::Round => {},
+    }
+}
+
+/// The five-bit field `map555_policy` puts in output slot 0: `GdkSwapShift`
+/// takes the low five bits (the blue field) as red, the other rules the high
+/// five bits.
+pub open spec fn map5_field0(v: int, rule: Map5Options) -> int {
+    match rule {
+        Map5Options::GdkSwapShift => blue5(v),
+        _ => red5(v),
+    }
+}
+
+/// The field `map555_policy` puts in output slot 2 (the mirror of
+/// `map5_field0`).
+pub open spec fn map5_field2(v: int, rule: Map5Options) -> int {
+    match rule {
+        Map5Options::GdkSwapShift => red5(v),
+        _ => blue5(v),
+    }
+}
+
+/// `map555_policy` is `map5_chan` on the three fields, in the policy's output
+/// order (`GdkSwapShift` swaps the outer two).
+pub proof fn lemma_map555_policy_chan(v: int, rule: Map5Options)
+    ensures
+        map555_policy(v, rule) == seq![
+            map5_chan(map5_field0(v, rule), rule),
+            map5_chan(green5(v), rule),
+            map5_chan(map5_field2(v, rule), rule),
+        ],
+{
+    reveal(map555_policy);
+    reveal(rgb555);
+    reveal(rep5);
+    reveal(round5);
+    reveal(map5_chan);
+    reveal(map5_field0);
+    reveal(map5_field2);
+    match rule {
+        Map5Options::Replicate => {},
+        Map5Options::Round => {},
+        Map5Options::GdkSwapShift => {},
+    }
+}
+
+
+
+/// `map_entry_alpha_exec`'s four cases, one lemma each: a single unfold per
+/// lemma keeps the solver inside its budget, and the executable's nested `if`s
+/// supply each lemma's preconditions by construction.
+pub proof fn lemma_alpha_bit15_set(edepth: u8, attr: u8, v: u16, p: Policy)
+    requires
+        edepth == 16u8,
+        attr == 1u8,
+        p.map16_alpha == Map16AlphaOptions::Bit15,
+        bit15(v as int),
+    ensures
+        map_entry_alpha_exec(edepth, attr as int, v as int, 0, p) == 255u8,
+{
+    reveal(map_entry_alpha_exec);
+    assert((attr == 1u8) == (attr as int == 1));
+}
+
+pub proof fn lemma_alpha_bit15_clear(edepth: u8, attr: u8, v: u16, p: Policy)
+    requires
+        edepth == 16u8,
+        attr == 1u8,
+        p.map16_alpha == Map16AlphaOptions::Bit15,
+        !bit15(v as int),
+    ensures
+        map_entry_alpha_exec(edepth, attr as int, v as int, 0, p) == 0u8,
+{
+    reveal(map_entry_alpha_exec);
+    assert((attr == 1u8) == (attr as int == 1));
+}
+
+pub proof fn lemma_alpha_depth_not16(edepth: u8, attr: u8, v: u16, p: Policy)
+    requires
+        edepth != 16u8,
+    ensures
+        map_entry_alpha_exec(edepth, attr as int, v as int, 0, p) == 255u8,
+{
+    reveal(map_entry_alpha_exec);
+}
+
+pub proof fn lemma_alpha_attr_not1(edepth: u8, attr: u8, v: u16, p: Policy)
+    requires
+        attr != 1u8,
+    ensures
+        map_entry_alpha_exec(edepth, attr as int, v as int, 0, p) == 255u8,
+{
+    reveal(map_entry_alpha_exec);
+    assert((attr == 1u8) == (attr as int == 1));
+    assert(attr as int != 1);
+}
+
+pub proof fn lemma_alpha_not_bit15rule(edepth: u8, attr: u8, v: u16, p: Policy)
+    requires
+        p.map16_alpha != Map16AlphaOptions::Bit15,
+    ensures
+        map_entry_alpha_exec(edepth, attr as int, v as int, 0, p) == 255u8,
+{
+    reveal(map_entry_alpha_exec);
+}
+
+
+
+
+
+
+
+/// R5's alpha rule on the effective attribute count, as a plain predicate.
+pub open spec fn stored_alpha_img_attr(attr: int, p: Policy) -> bool {
+    p.alpha == AlphaOptions::Stored || attr == 8
+}
+
+/// R8/R5's governing depth for an image pixel: the map entry depth for an
+/// indexed image, the image depth otherwise.
+pub open spec fn gov_depth(t: u8, depth: u8, edepth: u8, p: Policy) -> int {
+    if kind_policy(t, p) == 0 {
+        edepth as int
+    } else {
+        depth as int
+    }
+}
+
+/// R5's effective attribute count of an image pixel.
+pub open spec fn eff_count_img(t: u8, depth: u8, edepth: u8, count: int, p: Policy) -> int {
+    eff_attr(kind_policy(t, p), gov_depth(t, depth, edepth, p), count, p.attribute_bits)
+}
+
+/// R8's `stored_alpha` on the effective count of an image pixel.
+pub open spec fn stored_alpha_img(t: u8, depth: u8, edepth: u8, count: int, p: Policy) -> bool {
+    p.alpha == AlphaOptions::Stored || eff_count_img(t, depth, edepth, count, p) == 8
+}
+
+/// A true-colour or greyscale depth that the table accepts is one of the five
+/// supported depths, and never the 8-bit depth for true colour.
+pub proof fn lemma_depth_ok_pixel(kind: int, d: u8, o: DepthsOptions)
+    requires
+        depth_ok_policy(kind, d, o),
+        kind == 1 || kind == 2,
+    ensures
+        d == 8u8 || d == 15u8 || d == 16u8 || d == 24u8 || d == 32u8,
+        kind == 1 ==> d != 8u8,
+        kind == 2 ==> (d == 8u8 || d == 16u8),
+{
+    reveal(depth_ok_policy);
+    if o == DepthsOptions::Gdk {
+        if kind == 1 {
+            assert(d == 16u8 || d == 24u8 || d == 32u8);
+        } else {
+            assert(d == 8u8 || d == 16u8);
+        }
+    } else {
+        if kind == 1 {
+            assert(d == 15u8 || d == 16u8 || d == 24u8 || d == 32u8);
+        } else {
+            assert(d == 8u8 || d == 16u8);
+        }
+    }
+}
+
+
+/// The alpha rule the executable tests on the effective count is the record's
+/// `stored_alpha_policy`.
+pub proof fn lemma_stored_alpha_img(h: PktH, p: Policy)
+    ensures
+        stored_alpha_policy(h, p) == (p.alpha == AlphaOptions::Stored || h.attr == 8),
+{
+    reveal(stored_alpha_policy);
+}
+
+/// `map_bytes_flags` on a present, non-empty map: `length * ceil(edepth/8)`.
+pub proof fn lemma_map_bytes_flags_present(flag: u8, length: int, edepth: u8, p: Policy)
+    requires
+        map_present_policy_flags(flag, p),
+        length > 0,
+    ensures
+        map_bytes_flags(flag, length, edepth, p) == length * sample_bytes_of(edepth),
+{
+    reveal(map_bytes_flags);
+    reveal(map_present_policy_flags);
+}
+
+/// `sample_bytes_of` is `stride_of` (the executable's `ceil(d/8)`).
+pub proof fn lemma_sample_bytes_of_stride(d: u8)
+    ensures
+        sample_bytes_of(d) == stride_of(d as int),
+{
+    crate::model::lemma_stride_eq(d);
+}
+
+
+
+/// `stored_alpha_policy` is `stored_alpha_policy_attr` on the record's count.
+pub proof fn lemma_stored_alpha_policy_attr(h: PktH, p: Policy)
+    ensures
+        stored_alpha_policy(h, p) == stored_alpha_policy_attr(h.attr, p),
+{
+    reveal(stored_alpha_policy);
+    reveal(stored_alpha_policy_attr);
+}
+
+// ---------------------------------------------------------------------------
+// The exec-facing conversion specs: what the profiled executable's
+// `convert_sample_policy_exec`/`convert_index_policy`/`convert_one_policy`
+// prove their results equal. They are the policy `conv2` restricted to the
+// indices the caller has already range-checked, so the `Black` branch of
+// `conv_map_policy` is unreachable from them.
+// ---------------------------------------------------------------------------
+
+/// The policy `conv_map` on an in-range index: `0 <= j < map_len`, so the
+/// `Black` substitute is not taken.
+pub open spec fn conv_map_policy_ok(h: PktH, map: Seq<u8>, index: int, p: Policy) -> Seq<u8> {
+    let j = entry_j(index, h.map_first, p);
+    let off = j * stride_of(h.map_depth);
+    if h.map_depth == 15 || h.map_depth == 16 {
+        let v = le16s(map, off);
+        map555_policy(v, p.map5).push(map_entry_alpha_policy(h, v, h.map_depth, p))
+    } else if h.map_depth == 24 {
+        seq![map[off + 2], map[off + 1], map[off], 255u8]
+    } else if h.map_depth == 32 {
+        seq![
+            map[off + 2],
+            map[off + 1],
+            map[off],
+            (if stored_alpha_policy(h, p) { map[off + 3] } else { 255u8 }),
+        ]
+    } else {
+        seq![0u8, 0, 0, 255]
+    }
+}
+
+/// `conv_map_policy` on an in-range index is `conv_map_policy_ok`.
+pub proof fn lemma_conv_map_policy_in_range(h: PktH, map: Seq<u8>, index: int, p: Policy)
+    requires
+        0 <= entry_j(index, h.map_first, p) < h.map_len,
+        0 <= h.map_depth,
+    ensures
+        conv_map_policy(h, map, index, p) == conv_map_policy_ok(h, map, index, p),
+{
+    reveal(conv_map_policy);
+    reveal(conv_map_policy_ok);
+    reveal(entry_j);
+    if h.map_depth != 15 && h.map_depth != 16 {
+        assert(0 <= stride_of(h.map_depth)) by (nonlinear_arith)
+            requires
+                stride_of(h.map_depth) == (h.map_depth + 7) / 8,
+                h.map_depth >= 0,
+        ;
+    }
+}
+
+/// The policy 5-bit triple under `map5`, executably: gdk-pixbuf's red/blue
+/// swap (`GdkSwapShift`), image-rs's rounding (`Round`) or 1.0's replication.
+pub open spec fn map555_exec(b0: int, b1: int, rule: Map5Options) -> Seq<u8> {
+    let v = b0 + 256 * b1;
+    match rule {
+        Map5Options::Replicate => seq![
+            rep5(red5(v)) as u8,
+            rep5(green5(v)) as u8,
+            rep5(blue5(v)) as u8,
+        ],
+        Map5Options::Round => seq![
+            round5(red5(v)) as u8,
+            round5(green5(v)) as u8,
+            round5(blue5(v)) as u8,
+        ],
+        Map5Options::GdkSwapShift => seq![
+            (blue5(v) * 8) as u8,
+            (green5(v) * 8) as u8,
+            (red5(v) * 8) as u8,
+        ],
+    }
+}
+
+/// `map555_policy(le16s(map, off), rule)` is `map555_exec` on the entry's two
+/// bytes.
+pub proof fn lemma_map555_policy_eq(map: Seq<u8>, off: int, rule: Map5Options)
+    requires
+        0 <= off,
+        off + 2 <= map.len(),
+    ensures
+        map555_policy(le16s(map, off), rule) == map555_exec(map[off] as int, map[off + 1] as int, rule),
+{
+    reveal(map555_policy);
+    reveal(map555_exec);
+    reveal(le16s);
+    reveal(round5);
+    assert(le16s(map, off) == map[off] as int + 256 * (map[off + 1] as int));
+}
+
+/// The policy 15/16-bit true-colour pixel under `rgb5`.
+pub open spec fn rgb5_exec(b0: int, b1: int, rule: Rgb5Options) -> Seq<u8> {
+    let v = b0 + 256 * b1;
+    match rule {
+        Rgb5Options::Replicate => rgb555(v),
+        Rgb5Options::Round => seq![
+            round5(red5(v)) as u8,
+            round5(green5(v)) as u8,
+            round5(blue5(v)) as u8,
+        ],
+    }
+}
+
+/// `rgb555_policy(le16s(s, 0), rule)` is `rgb5_exec` on the sample's bytes.
+pub proof fn lemma_rgb5_policy_eq(s: Seq<u8>, rule: Rgb5Options)
+    requires
+        s.len() >= 2,
+    ensures
+        rgb555_policy(le16s(s, 0), rule) == rgb5_exec(s[0] as int, s[1] as int, rule),
+{
+    reveal(rgb555_policy);
+    reveal(rgb5_exec);
+    reveal(le16s);
+    reveal(round5);
+    assert(le16s(s, 0) == s[0] as int + 256 * (s[1] as int));
+}
+
+/// The 15/16-bit palette entry's alpha under `map16_alpha` (only bit 15 is
+/// read) and, for a 32-bit entry, the stored-byte rule.
+pub open spec fn map_entry_alpha_exec(
+    edepth: u8,
+    attr: int,
+    v: int,
+    a: int,
+    p: Policy,
+) -> u8 {
+    if edepth == 16u8 && attr == 1 && p.map16_alpha == Map16AlphaOptions::Bit15 {
+        if bit15(v) {
+            255u8
+        } else {
+            0u8
+        }
+    } else {
+        255u8
+    }
+}
+
+/// `map_entry_alpha_policy(h, le16s(map,off), depth, p)` is
+/// `map_entry_alpha_exec` on the entry's two bytes.
+pub proof fn lemma_map_entry_alpha_policy_eq(
+    h: PktH,
+    map: Seq<u8>,
+    off: int,
+    edepth: u8,
+    p: Policy,
+)
+    requires
+        edepth as int == h.map_depth,
+        0 <= off,
+        off + 2 <= map.len(),
+    ensures
+        map_entry_alpha_policy(h, le16s(map, off), edepth as int, p) == map_entry_alpha_exec(
+            edepth,
+            h.attr,
+            le16s(map, off),
+            0,
+            p,
+        ),
+{
+    reveal(map_entry_alpha_policy);
+    reveal(map_entry_alpha_exec);
+    reveal(le16s);
+}
+
+/// The map-entry stride the executable multiplies by, as an `int`.
+pub open spec fn map_stride_of(depth: u8) -> int {
+    sample_bytes_of(depth)
+}
+
+// ---------------------------------------------------------------------------
+// The policy raw phase: a cursor projection and the write invariants the
+// profiled executable's raw loop carries.
+// ---------------------------------------------------------------------------
+
+/// The cursor-and-error projection of `mp_raw_acc_policy`: the same ordered
+/// checks and the same final cursor, without the pixel bookkeeping.
+pub open spec fn mp_raw_cur_policy(b: Seq<u8>, p: PktH, pol: Policy, c0: int, k: int)
+    -> Result<int, Error>
+    decreases (p.n - k) as nat
+{
+    if k < 0 || k > p.n || p.sample_bytes <= 0 {
+        Err(Error::ColorIndexOutOfRange)
+    } else if k == p.n {
+        Ok(c0 + k * p.sample_bytes)
+    } else if c0 + k * p.sample_bytes + p.sample_bytes > b.len() {
+        Err(Error::TruncatedPixels)
+    } else {
+        let smp = b.subrange(c0 + k * p.sample_bytes, c0 + k * p.sample_bytes + p.sample_bytes);
+        if p.kind == 0 && !in_range_policy(p, sindex(smp, p.sample_bytes), pol) && pol.index_range
+            == IndexRangeOptions::Reject {
+            Err(Error::ColorIndexOutOfRange)
+        } else {
+            mp_raw_cur_policy(b, p, pol, c0, k + 1)
+        }
+    }
+}
+
+/// `mp_raw_cur_policy` is exactly the cursor/error projection of
+/// `mp_raw_acc_policy`, for every starting `k` and accumulator.
+pub proof fn lemma_mp_raw_cur_policy_proj(
+    b: Seq<u8>,
+    p: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    c0: int,
+    k: int,
+    acc: Seq<Seq<u8>>,
+)
+    ensures
+        match mp_raw_acc_policy(b, p, map, pol, c0, k, acc) {
+            Ok(r) => mp_raw_cur_policy(b, p, pol, c0, k) == Ok(r.1),
+            Err((e, _c, _pr, _px)) => mp_raw_cur_policy(b, p, pol, c0, k) == Err(e),
+        },
+    decreases (p.n - k) as nat,
+{
+    if k < 0 || k > p.n || p.sample_bytes <= 0 {
+        reveal(mp_raw_acc_policy);
+        reveal(mp_raw_cur_policy);
+    } else if k == p.n {
+        reveal(mp_raw_acc_policy);
+        reveal(mp_raw_cur_policy);
+    } else if c0 + k * p.sample_bytes + p.sample_bytes > b.len() {
+        reveal(mp_raw_acc_policy);
+        reveal(mp_raw_cur_policy);
+    } else {
+        reveal(mp_raw_acc_policy);
+        reveal(mp_raw_cur_policy);
+        let smp = b.subrange(c0 + k * p.sample_bytes, c0 + k * p.sample_bytes + p.sample_bytes);
+        if p.kind == 0 && !in_range_policy(p, sindex(smp, p.sample_bytes), pol) && pol.index_range
+            == IndexRangeOptions::Reject {
+        } else {
+            lemma_mp_raw_cur_policy_proj(
+                b,
+                p,
+                map,
+                pol,
+                c0,
+                k + 1,
+                acc + seq![conv2_policy(p, map, smp, pol)],
+            );
+        }
+    }
+}
+
+/// The guard facts a policy raw-cursor `Ok` at `k < n` supplies.
+pub proof fn lemma_raw_cur_policy_ok_guard(b: Seq<u8>, p: PktH, pol: Policy, c0: int, k: int)
+    requires
+        0 <= k < p.n,
+        mp_raw_cur_policy(b, p, pol, c0, k) == Ok(c0 + p.n * p.sample_bytes),
+    ensures
+        p.sample_bytes >= 1,
+        c0 + k * p.sample_bytes + p.sample_bytes <= b.len(),
+        p.kind == 0 ==> in_range_policy(
+            p,
+            sindex(
+                b.subrange(c0 + k * p.sample_bytes, c0 + k * p.sample_bytes + p.sample_bytes),
+                p.sample_bytes,
+            ),
+            pol,
+        ) || pol.index_range == IndexRangeOptions::Black,
+{
+    reveal(mp_raw_cur_policy);
+    if p.sample_bytes <= 0 {
+        assert(mp_raw_cur_policy(b, p, pol, c0, k) == Err(Error::ColorIndexOutOfRange));
+    }
+    if c0 + k * p.sample_bytes + p.sample_bytes > b.len() {
+        assert(mp_raw_cur_policy(b, p, pol, c0, k) == Err(Error::TruncatedPixels));
+    }
+    let smp = b.subrange(c0 + k * p.sample_bytes, c0 + k * p.sample_bytes + p.sample_bytes);
+    if p.kind == 0 {
+        if !in_range_policy(p, sindex(smp, p.sample_bytes), pol) {
+            if pol.index_range == IndexRangeOptions::Reject {
+                assert(mp_raw_cur_policy(b, p, pol, c0, k) == Err(Error::ColorIndexOutOfRange));
+            }
+        }
+    }
+}
+
+
+/// The raw-cursor model over an in-domain record is `Ok` at `n` exactly when
+/// the full policy raw model accepts with `n` pixels.
+pub proof fn lemma_mp_raw_policy_cur(b: Seq<u8>, p: PktH, map: Seq<u8>, pol: Policy, c0: int)
+    ensures
+        match mp_raw_policy(b, p, map, pol, c0) {
+            Ok(r) => mp_raw_cur_policy(b, p, pol, c0, 0) == Ok(r.1),
+            Err((e, _c, _pr, _px)) => mp_raw_cur_policy(b, p, pol, c0, 0) == Err(e),
+        },
+{
+    reveal(mp_raw_policy);
+    lemma_mp_raw_cur_policy_proj(b, p, map, pol, c0, 0, Seq::<Seq<u8>>::empty());
+}
+
+/// `pkt_of_policy`'s `n` is the header's `width*height` — placed here so the
+/// raw loop can keep it as an invariant fact.
+pub open spec fn pkt_of_policy_n_of(h_n: int, w: int, hgt: int) -> bool {
+    w * hgt == h_n
+}
+
+/// Every sample `j < k` is present and its policy index is in range (or
+/// substituted under `Black`): the raw loop's per-sample guard, as a policy
+/// predicate.
+pub open spec fn raw_sample_ok_policy(b: Seq<u8>, p: PktH, pol: Policy, c0: int, j: int) -> bool {
+    &&& c0 + j * p.sample_bytes + p.sample_bytes <= b.len()
+    &&& (p.kind == 0 ==> (in_range_policy(
+        p,
+        sindex(
+            b.subrange(c0 + j * p.sample_bytes, c0 + j * p.sample_bytes + p.sample_bytes),
+            p.sample_bytes,
+        ),
+        pol,
+    ) || pol.index_range == IndexRangeOptions::Black))
+}
+
+/// Every sample `j < k` passes the policy raw guard.
+pub open spec fn raw_prefix_ok_policy(b: Seq<u8>, p: PktH, pol: Policy, c0: int, k: int) -> bool {
+    0 <= k && forall|j: int| 0 <= j < k ==> #[trigger] raw_sample_ok_policy(b, p, pol, c0, j)
+}
+
+/// Assemble `raw_prefix_ok_policy` from its conjuncts.
+pub proof fn lemma_raw_prefix_ok_policy_intro(
+    b: Seq<u8>,
+    p: PktH,
+    pol: Policy,
+    c0: int,
+    k: int,
+)
+    requires
+        0 <= k,
+        forall|j: int| 0 <= j < k ==> #[trigger] raw_sample_ok_policy(b, p, pol, c0, j),
+    ensures
+        raw_prefix_ok_policy(b, p, pol, c0, k),
+{
+    reveal(raw_prefix_ok_policy);
+}
+
+/// `map_entry_depth_ok` gives the entry stride.
+pub proof fn lemma_map_entry_depth_stride(edepth: u8)
+    requires
+        crate::model::map_entry_depth_ok(edepth),
+    ensures
+        1 <= sample_bytes_of(edepth) <= 4,
+{
+    reveal(crate::model::map_entry_depth_ok);
+    assert(edepth == 15u8 || edepth == 16u8 || edepth == 24u8 || edepth == 32u8);
+    crate::model::lemma_sample_bytes_le_4(edepth);
+}
+
+/// `in_range_policy` implies a non-empty map.
+pub proof fn lemma_in_range_policy_pos(h: PktH, index: int, pol: Policy)
+    requires
+        in_range_policy(h, index, pol),
+    ensures
+        h.map_len > 0,
+{
+    reveal(in_range_policy);
+    reveal(entry_j);
+}
+
+
+
+/// The raw loop's current sample guard, from the `convert_one_policy` `Ok`
+/// postcondition and the header: the sample is present (the loop checked it)
+/// and its policy index is in range or substituted.
+pub proof fn lemma_raw_sample_ok_policy_of_loop(
+    b: Seq<u8>,
+    p: PktH,
+    pol: Policy,
+    c0: int,
+    k: int,
+    indexed: bool,
+)
+    requires
+        indexed == (p.kind == 0),
+        0 <= k,
+        c0 + k * p.sample_bytes + p.sample_bytes <= b.len(),
+        p.sample_bytes >= 1,
+        indexed ==> in_range_policy(
+            p,
+            sindex(
+                b.subrange(c0 + k * p.sample_bytes, c0 + k * p.sample_bytes + p.sample_bytes),
+                p.sample_bytes,
+            ),
+            pol,
+        ) || pol.index_range == IndexRangeOptions::Black,
+    ensures
+        raw_sample_ok_policy(b, p, pol, c0, k),
+{
+    reveal(raw_sample_ok_policy);
+    reveal(in_range_policy);
+    reveal(entry_j);
+}
+
+/// Unpack `raw_prefix_ok_policy` at one index.
+pub proof fn lemma_raw_prefix_ok_policy_at(
+    b: Seq<u8>,
+    p: PktH,
+    pol: Policy,
+    c0: int,
+    k: int,
+    j: int,
+)
+    requires
+        raw_prefix_ok_policy(b, p, pol, c0, k),
+        0 <= j < k,
+    ensures
+        raw_sample_ok_policy(b, p, pol, c0, j),
+{
+    reveal(raw_prefix_ok_policy);
+}
+
+/// One decodable sample extends `raw_prefix_ok_policy`.
+pub proof fn lemma_raw_prefix_ok_policy_step(b: Seq<u8>, p: PktH, pol: Policy, c0: int, k: int)
+    requires
+        raw_prefix_ok_policy(b, p, pol, c0, k),
+        0 <= k,
+        raw_sample_ok_policy(b, p, pol, c0, k),
+    ensures
+        raw_prefix_ok_policy(b, p, pol, c0, k + 1),
+{
+    reveal(raw_prefix_ok_policy);
+    assert forall|j: int| 0 <= j < k + 1 implies #[trigger] raw_sample_ok_policy(b, p, pol, c0, j) by {
+        if j < k {
+            lemma_raw_prefix_ok_policy_at(b, p, pol, c0, k, j);
+        }
+    }
+}
+
+/// The loop-entry state: `k = 0` is vacuous.
+pub proof fn lemma_raw_prefix_ok_policy_zero(b: Seq<u8>, p: PktH, pol: Policy, c0: int)
+    ensures
+        raw_prefix_ok_policy(b, p, pol, c0, 0),
+{
+    reveal(raw_prefix_ok_policy);
+}
+
+/// `mp_raw_acc_policy` on a decodable sample `k` appends one converted pixel.
+pub proof fn lemma_mp_raw_acc_policy_step(
+    b: Seq<u8>,
+    p: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    c0: int,
+    k: int,
+    acc: Seq<Seq<u8>>,
+)
+    requires
+        raw_sample_ok_policy(b, p, pol, c0, k),
+        0 <= k < p.n,
+        p.sample_bytes >= 1,
+    ensures
+        mp_raw_acc_policy(b, p, map, pol, c0, k, acc) == mp_raw_acc_policy(
+            b,
+            p,
+            map,
+            pol,
+            c0,
+            k + 1,
+            acc + seq![conv2_policy(p, map, b.subrange(
+                c0 + k * p.sample_bytes,
+                c0 + k * p.sample_bytes + p.sample_bytes,
+            ), pol)],
+        ),
+{
+    reveal(mp_raw_acc_policy);
+    reveal(raw_sample_ok_policy);
+    let smp = b.subrange(c0 + k * p.sample_bytes, c0 + k * p.sample_bytes + p.sample_bytes);
+    if p.kind == 0 {
+        if !in_range_policy(p, sindex(smp, p.sample_bytes), pol) {
+            assert(pol.index_range == IndexRangeOptions::Black);
+        }
+    }
+}
+
+/// One policy raw iteration's branch: sample `k` missing.
+pub proof fn lemma_mp_raw_cur_policy_trunc(b: Seq<u8>, p: PktH, pol: Policy, c0: int, k: int)
+    requires
+        0 <= k < p.n,
+        p.sample_bytes >= 1,
+        c0 + k * p.sample_bytes + p.sample_bytes > b.len(),
+    ensures
+        mp_raw_cur_policy(b, p, pol, c0, k) == Err(Error::TruncatedPixels),
+{
+    reveal(mp_raw_cur_policy);
+}
+
+/// One policy raw iteration's branch: sample `k`'s index is rejected.
+pub proof fn lemma_mp_raw_cur_policy_index(b: Seq<u8>, p: PktH, pol: Policy, c0: int, k: int)
+    requires
+        0 <= k < p.n,
+        p.sample_bytes >= 1,
+        c0 + k * p.sample_bytes + p.sample_bytes <= b.len(),
+        p.kind == 0,
+        !in_range_policy(
+            p,
+            sindex(
+                b.subrange(c0 + k * p.sample_bytes, c0 + k * p.sample_bytes + p.sample_bytes),
+                p.sample_bytes,
+            ),
+            pol,
+        ),
+        pol.index_range == IndexRangeOptions::Reject,
+    ensures
+        mp_raw_cur_policy(b, p, pol, c0, k) == Err(Error::ColorIndexOutOfRange),
+{
+    reveal(mp_raw_cur_policy);
+}
+
+/// `mp_raw_cur_policy` is `Ok` at every `k <= n` once it is `Ok` at 0.
+pub proof fn lemma_mp_raw_cur_policy_mono(b: Seq<u8>, p: PktH, pol: Policy, c0: int, k: int)
+    requires
+        mp_raw_cur_policy(b, p, pol, c0, 0) == Ok(c0 + p.n * p.sample_bytes),
+        0 <= k <= p.n,
+    ensures
+        mp_raw_cur_policy(b, p, pol, c0, k) == Ok(c0 + p.n * p.sample_bytes),
+    decreases k as nat,
+{
+    if k > 0 {
+        lemma_mp_raw_cur_policy_mono(b, p, pol, c0, k - 1);
+        assert(0 <= k - 1 < p.n) by (nonlinear_arith)
+            requires
+                k > 0,
+                k <= p.n,
+        ;
+        lemma_mp_raw_cur_policy_ok_guard(b, p, pol, c0, k - 1);
+        reveal(mp_raw_cur_policy);
+    }
+}
+
+/// The guard facts a policy raw-cursor `Ok` at `k < n` supplies.
+pub proof fn lemma_mp_raw_cur_policy_ok_guard(b: Seq<u8>, p: PktH, pol: Policy, c0: int, k: int)
+    requires
+        0 <= k < p.n,
+        mp_raw_cur_policy(b, p, pol, c0, k) == Ok(c0 + p.n * p.sample_bytes),
+    ensures
+        p.sample_bytes >= 1,
+        c0 + k * p.sample_bytes + p.sample_bytes <= b.len(),
+        p.kind == 0 ==> in_range_policy(
+            p,
+            sindex(
+                b.subrange(c0 + k * p.sample_bytes, c0 + k * p.sample_bytes + p.sample_bytes),
+                p.sample_bytes,
+            ),
+            pol,
+        ) || pol.index_range == IndexRangeOptions::Black,
+{
+    reveal(mp_raw_cur_policy);
+    if p.sample_bytes <= 0 {
+        assert(mp_raw_cur_policy(b, p, pol, c0, k) == Err(Error::ColorIndexOutOfRange));
+    }
+    if c0 + k * p.sample_bytes + p.sample_bytes > b.len() {
+        assert(mp_raw_cur_policy(b, p, pol, c0, k) == Err(Error::TruncatedPixels));
+    }
+    let smp = b.subrange(c0 + k * p.sample_bytes, c0 + k * p.sample_bytes + p.sample_bytes);
+    if p.kind == 0 {
+        if !in_range_policy(p, sindex(smp, p.sample_bytes), pol) {
+            if pol.index_range == IndexRangeOptions::Reject {
+                assert(mp_raw_cur_policy(b, p, pol, c0, k) == Err(Error::ColorIndexOutOfRange));
+            }
+        }
+    }
+}
+
+/// `raw_prefix_ok_policy` for every prefix of a successful policy raw run.
+pub proof fn lemma_raw_prefix_ok_policy_all(b: Seq<u8>, p: PktH, pol: Policy, c0: int, k: int)
+    requires
+        mp_raw_cur_policy(b, p, pol, c0, 0) == Ok(c0 + p.n * p.sample_bytes),
+        0 <= k <= p.n,
+    ensures
+        raw_prefix_ok_policy(b, p, pol, c0, k),
+    decreases k as nat,
+{
+    if k == 0 {
+        reveal(raw_prefix_ok_policy);
+    } else {
+        // k-1's guard holds (the run is Ok), so `k-1`'s prefix extends.
+        lemma_raw_prefix_ok_policy_all(b, p, pol, c0, k - 1);
+        assert(0 <= k - 1 < p.n) by (nonlinear_arith)
+            requires
+                k > 0,
+                k <= p.n,
+        ;
+        lemma_mp_raw_cur_policy_mono(b, p, pol, c0, k - 1);
+        lemma_mp_raw_cur_policy_ok_guard(b, p, pol, c0, k - 1);
+        assert(raw_sample_ok_policy(b, p, pol, c0, k - 1)) by {
+            reveal(raw_sample_ok_policy);
+            if p.kind == 0 {
+                let smp = b.subrange(
+                    c0 + (k - 1) * p.sample_bytes,
+                    c0 + (k - 1) * p.sample_bytes + p.sample_bytes,
+                );
+                if !in_range_policy(p, sindex(smp, p.sample_bytes), pol) {
+                    assert(pol.index_range == IndexRangeOptions::Black);
+                }
+            }
+        }
+        lemma_raw_prefix_ok_policy_step(b, p, pol, c0, k - 1);
+    }
+}
+
+/// One `write_pixel` at the oriented offset of sample `kk` preserves every
+/// earlier sample's quad: the offsets are distinct (R9's `fcoord` is a
+/// bijection), so the four written bytes never overlap an earlier quad.
+pub proof fn lemma_write_preserves_policy_quads(
+    out0: Seq<u8>,
+    out1: Seq<u8>,
+    bytes: Seq<u8>,
+    pkt: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    w: int,
+    hgt: int,
+    fx: bool,
+    fy: bool,
+    c0: int,
+    sb: int,
+    kk: int,
+    off: int,
+)
+    requires
+        1 <= w,
+        1 <= hgt,
+        0 <= kk < w * hgt,
+        off == 4 * crate::model::fcoord(w, hgt, fx, fy, kk),
+        wrote_samples_policy(out0, bytes, pkt, map, pol, w, hgt, fx, fy, c0, sb, kk),
+        out0.len() == 4 * (w * hgt),
+        out1.len() == out0.len(),
+        forall|i: int| 0 <= i < out0.len() && !(off <= i < off + 4) ==> out1[i] == out0[i],
+    ensures
+        forall|j: int| 0 <= j < kk ==> #[trigger] crate::model::quad_at(
+            out1,
+            4 * crate::model::fcoord(w, hgt, fx, fy, j),
+            conv2_policy(pkt, map, bytes.subrange(c0 + j * sb, c0 + j * sb + sb), pol),
+        ),
+{
+    reveal(wrote_samples_policy);
+    reveal(crate::model::quad_at);
+    assert forall|j: int| 0 <= j < kk implies #[trigger] crate::model::quad_at(
+        out1,
+        4 * crate::model::fcoord(w, hgt, fx, fy, j),
+        conv2_policy(pkt, map, bytes.subrange(c0 + j * sb, c0 + j * sb + sb), pol),
+    ) by {
+        {
+            let fj = crate::model::fcoord(w, hgt, fx, fy, j);
+            let fk = crate::model::fcoord(w, hgt, fx, fy, kk);
+            crate::model::lemma_offset_injective(w, hgt, fx, fy, j, kk);
+            assert(fj != fk);
+            if fj < fk {
+                assert(4 * fj + 4 <= 4 * fk) by (nonlinear_arith)
+                    requires
+                        fj < fk,
+                ;
+            } else {
+                assert(fj > fk);
+                assert(4 * fk + 4 <= 4 * fj) by (nonlinear_arith)
+                    requires
+                        fj > fk,
+                ;
+            }
+            crate::model::lemma_fcoord_range(w, hgt, fx, fy, j);
+            assert(0 <= fj < w * hgt);
+            assert(crate::model::quad_at(
+                out0,
+                4 * fj,
+                conv2_policy(pkt, map, bytes.subrange(c0 + j * sb, c0 + j * sb + sb), pol),
+            ));
+            assert forall|i: int| 0 <= i < 4 implies out1[4 * fj + i] == #[trigger] out0[4 * fj
+                + i] by {
+                assert(off == 4 * fk);
+                assert(!(off <= 4 * fj + i < off + 4));
+                if fj < fk {
+                    assert(4 * fj + i < 4 * fk);
+                } else {
+                    assert(4 * fj + i >= 4 * fk + 4);
+                }
+            }
+        }
+    }
+}
+
+/// `wrote_samples_policy` holds vacuously at `k=0`.
+pub proof fn lemma_wrote_samples_policy_none(
+    out: Seq<u8>,
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    w: int,
+    hgt: int,
+    fx: bool,
+    fy: bool,
+    start: int,
+    sb: int,
+)
+    ensures
+        wrote_samples_policy(out, s, h, map, pol, w, hgt, fx, fy, start, sb, 0),
+{
+    reveal(wrote_samples_policy);
+}
+
+/// `mp_raw_acc_policy`'s pixel accumulator starts empty.
+pub proof fn lemma_mp_raw_acc_policy_start(
+    b: Seq<u8>,
+    p: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    c0: int,
+)
+    ensures
+        mp_raw_acc_policy(b, p, map, pol, c0, 0, Seq::<Seq<u8>>::empty()) == mp_raw_acc_policy(
+            b,
+            p,
+            map,
+            pol,
+            c0,
+            0,
+            Seq::<Seq<u8>>::empty(),
+        ),
+{
+}
+
+/// The pixel accumulator at `k` is the `k` input-order conversions.
+pub proof fn lemma_acc_conv_policy_len(b: Seq<u8>, p: PktH, map: Seq<u8>, pol: Policy, c0: int)
+    requires
+        p.n >= 0,
+    ensures
+        acc_conv_policy(b, p, map, pol, c0, p.n).len() == p.n,
+{
+    reveal(acc_conv_policy);
+    broadcast use vstd::seq::group_seq_lemmas;
+}
+
+/// `wrote_samples_policy` at `N` gives the oriented output bytes of the raw
+/// phase's pixel sequence.
+pub proof fn lemma_wrote_to_orient_policy(
+    out: Seq<u8>,
+    b: Seq<u8>,
+    p: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    w: int,
+    hgt: int,
+    fx: bool,
+    fy: bool,
+    c0: int,
+)
+    requires
+        1 <= w,
+        1 <= hgt,
+        w * hgt == p.n,
+        out.len() == 4 * (w * hgt),
+        wrote_samples_policy(out, b, p, map, pol, w, hgt, fx, fy, c0, p.sample_bytes, p.n),
+    ensures
+        out == crate::model::orient_bytes(
+            acc_conv_policy(b, p, map, pol, c0, p.n),
+            w,
+            hgt,
+            fx,
+            fy,
+            w * hgt,
+        ),
+{
+    reveal(wrote_samples_policy);
+    reveal(acc_conv_policy);
+    reveal(crate::model::orient_bytes);
+    broadcast use vstd::seq::group_seq_lemmas;
+    assert(out =~= crate::model::orient_bytes(
+        acc_conv_policy(b, p, map, pol, c0, p.n),
+        w,
+        hgt,
+        fx,
+        fy,
+        w * hgt,
+    )) by {
+        assert forall|i: int| 0 <= i < 4 * (w * hgt) implies out[i] == #[trigger] crate::model::orient_bytes(
+            acc_conv_policy(b, p, map, pol, c0, p.n),
+            w,
+            hgt,
+            fx,
+            fy,
+            w * hgt,
+        )[i] by {
+            crate::model::lemma_div4_lt(i, w * hgt);
+            crate::model::lemma_fcoord_inverse(w, hgt, fx, fy, i / 4);
+            let k = crate::model::gcoord(w, hgt, fx, fy, i / 4);
+            assert(0 <= k < w * hgt);
+            assert(crate::model::quad_at(
+                out,
+                4 * crate::model::fcoord(w, hgt, fx, fy, k),
+                conv2_policy(
+                    p,
+                    map,
+                    b.subrange(c0 + k * p.sample_bytes, c0 + k * p.sample_bytes + p.sample_bytes),
+                    pol,
+                ),
+            ));
+            assert(acc_conv_policy(b, p, map, pol, c0, p.n)[k] == conv2_policy(
+                p,
+                map,
+                b.subrange(c0 + k * p.sample_bytes, c0 + k * p.sample_bytes + p.sample_bytes),
+                pol,
+            )) by {
+                reveal(acc_conv_policy);
+            }
+            assert(crate::model::fcoord(w, hgt, fx, fy, k) == i / 4);
+            assert(4 * (i / 4) + i % 4 == i) by (nonlinear_arith)
+                requires
+                    i >= 0,
+            ;
+            reveal(crate::model::quad_at);
+            reveal(crate::model::px_byte);
+            if i % 4 == 0 {
+            } else if i % 4 == 1 {
+            } else if i % 4 == 2 {
+            } else {
+            }
+        }
+    }
+}
+
+/// A policy RLE stream's pixel quads give the oriented output bytes.
+pub proof fn lemma_rle_quad_to_orient_policy(
+    out: Seq<u8>,
+    px: Seq<Seq<u8>>,
+    w: int,
+    hgt: int,
+    fx: bool,
+    fy: bool,
+)
+    requires
+        1 <= w,
+        1 <= hgt,
+        px.len() == w * hgt,
+        out.len() == 4 * (w * hgt),
+        crate::model::rle_quad_ok(out, px, w, hgt, fx, fy),
+    ensures
+        out == crate::model::orient_bytes(px, w, hgt, fx, fy, w * hgt),
+{
+    crate::model::lemma_quad_ok_to_orient(out, px, w, hgt, fx, fy);
+}
+
+// ---------------------------------------------------------------------------
+// The policy packet stream's cursor projection (the policy analog of 1.0's
+// `mr_cur`; `mr_pix_policy` is the pixel projection, and the clip/substitution
+// bits are `mr_flags_policy`).
+// ---------------------------------------------------------------------------
+
+/// R11: the cursor-and-produced projection of `mr_at_policy`: the same ordered
+/// checks, the clip/`Black` decisions and the same final `(cursor, produced)`,
+/// without the pixel bookkeeping.
+pub open spec fn mr_cur_policy(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur: int,
+    prod: int,
+) -> Result<(int, int), MrErr>
+    decreases (h.n - prod) as nat
+{
+    if cur < 0 || cur > s.len() || prod < 0 || prod > h.n {
+        Err(MrErr::Outside)
+    } else if prod == h.n {
+        Ok((cur, prod))
+    } else if cur >= s.len() {
+        Err(MrErr::Api(Error::RleTruncated))
+    } else {
+        let control = s[cur] as int;
+        let count = rle_count(control);
+        let remaining = h.n - prod;
+        let start = cur + 1;
+        if count > remaining && pol.rle_overrun == RleOverrunOptions::Reject {
+            Err(MrErr::Api(Error::RleOverrun))
+        } else {
+            let paint = if count < remaining { count } else { remaining };
+            if rle_repeat(control) {
+                let pe = start + h.sample_bytes;
+                if s.len() < pe {
+                    Err(MrErr::Api(Error::RleTruncated))
+                } else {
+                    let smp = s.subrange(start, pe);
+                    if h.kind == 0 && pkt_reject(h, sindex(smp, h.sample_bytes), pol) {
+                        Err(MrErr::Api(Error::ColorIndexOutOfRange))
+                    } else {
+                        mr_cur_policy(s, h, map, pol, pe, prod + paint)
+                    }
+                }
+            } else {
+                let need = if pol.rle_overrun == RleOverrunOptions::ClipSamples {
+                    paint * h.sample_bytes
+                } else {
+                    count * h.sample_bytes
+                };
+                let pe = start + need;
+                if s.len() < pe {
+                    Err(MrErr::Api(Error::RleTruncated))
+                } else if !lit_ok_policy(s, h, start, paint, pol) {
+                    Err(MrErr::Api(Error::ColorIndexOutOfRange))
+                } else {
+                    mr_cur_policy(s, h, map, pol, pe, prod + paint)
+                }
+            }
+        }
+    }
+}
+
+/// `mr_cur_policy`'s `Error` arm as a plain equality (the loop's exits).
+pub proof fn lemma_mr_cur_policy_ctrl_absent(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur: int,
+    prod: int,
+)
+    requires
+        0 <= prod < h.n,
+        cur == s.len(),
+    ensures
+        mr_cur_policy(s, h, map, pol, cur, prod) == Err(MrErr::Api(Error::RleTruncated)),
+{
+    reveal(mr_cur_policy);
+}
+
+/// The `Reject` overrun exit.
+pub proof fn lemma_mr_cur_policy_overrun(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur: int,
+    prod: int,
+)
+    requires
+        0 <= cur < s.len(),
+        0 <= prod < h.n,
+        rle_count(s[cur] as int) > h.n - prod,
+        pol.rle_overrun == RleOverrunOptions::Reject,
+    ensures
+        mr_cur_policy(s, h, map, pol, cur, prod) == Err(MrErr::Api(Error::RleOverrun)),
+{
+    reveal(mr_cur_policy);
+}
+
+/// A repeat packet whose single sample is missing.
+pub proof fn lemma_mr_cur_policy_rep_missing(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur: int,
+    prod: int,
+)
+    requires
+        0 <= cur < s.len(),
+        0 <= prod < h.n,
+        rle_repeat(s[cur] as int),
+        !(rle_count(s[cur] as int) > h.n - prod && pol.rle_overrun == RleOverrunOptions::Reject),
+        s.len() < cur + 1 + h.sample_bytes,
+    ensures
+        mr_cur_policy(s, h, map, pol, cur, prod) == Err(MrErr::Api(Error::RleTruncated)),
+{
+    reveal(mr_cur_policy);
+}
+
+/// A repeat packet whose sample's index is rejected.
+pub proof fn lemma_mr_cur_policy_rep_index(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur: int,
+    prod: int,
+)
+    requires
+        0 <= cur < s.len(),
+        0 <= prod < h.n,
+        rle_repeat(s[cur] as int),
+        !(rle_count(s[cur] as int) > h.n - prod && pol.rle_overrun == RleOverrunOptions::Reject),
+        s.len() >= cur + 1 + h.sample_bytes,
+        h.kind == 0,
+        pkt_reject(h, sindex(s.subrange(cur + 1, cur + 1 + h.sample_bytes), h.sample_bytes), pol),
+    ensures
+        mr_cur_policy(s, h, map, pol, cur, prod) == Err(MrErr::Api(Error::ColorIndexOutOfRange)),
+{
+    reveal(mr_cur_policy);
+}
+
+/// A literal packet whose bytes are missing (whole packet under `Reject` and
+/// `ClipPacket`, painted samples only under `ClipSamples`).
+pub proof fn lemma_mr_cur_policy_lit_missing(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur: int,
+    prod: int,
+)
+    requires
+        0 <= cur < s.len(),
+        0 <= prod < h.n,
+        !rle_repeat(s[cur] as int),
+        !(rle_count(s[cur] as int) > h.n - prod && pol.rle_overrun == RleOverrunOptions::Reject),
+        s.len() < cur + 1 + (if pol.rle_overrun == RleOverrunOptions::ClipSamples {
+            (if rle_count(s[cur] as int) < h.n - prod {
+                rle_count(s[cur] as int)
+            } else {
+                h.n - prod
+            }) * h.sample_bytes
+        } else {
+            rle_count(s[cur] as int) * h.sample_bytes
+        }),
+    ensures
+        mr_cur_policy(s, h, map, pol, cur, prod) == Err(MrErr::Api(Error::RleTruncated)),
+{
+    reveal(mr_cur_policy);
+}
+
+/// A literal packet whose sample `i` index is rejected.
+pub proof fn lemma_mr_cur_policy_lit_index(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur: int,
+    prod: int,
+)
+    requires
+        0 <= cur < s.len(),
+        0 <= prod < h.n,
+        !rle_repeat(s[cur] as int),
+        !(rle_count(s[cur] as int) > h.n - prod && pol.rle_overrun == RleOverrunOptions::Reject),
+        s.len() >= cur + 1 + (if pol.rle_overrun == RleOverrunOptions::ClipSamples {
+            (if rle_count(s[cur] as int) < h.n - prod {
+                rle_count(s[cur] as int)
+            } else {
+                h.n - prod
+            }) * h.sample_bytes
+        } else {
+            rle_count(s[cur] as int) * h.sample_bytes
+        }),
+        !lit_ok_policy(
+            s,
+            h,
+            cur + 1,
+            if rle_count(s[cur] as int) < h.n - prod {
+                rle_count(s[cur] as int)
+            } else {
+                h.n - prod
+            },
+            pol,
+        ),
+    ensures
+        mr_cur_policy(s, h, map, pol, cur, prod) == Err(MrErr::Api(Error::ColorIndexOutOfRange)),
+{
+    reveal(mr_cur_policy);
+}
+
+/// A repeat packet that decodes: the cursor and produced count advance.
+pub proof fn lemma_mr_cur_policy_rep_ok(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur: int,
+    prod: int,
+)
+    requires
+        0 <= cur < s.len(),
+        0 <= prod < h.n,
+        rle_repeat(s[cur] as int),
+        !(rle_count(s[cur] as int) > h.n - prod && pol.rle_overrun == RleOverrunOptions::Reject),
+        s.len() >= cur + 1 + h.sample_bytes,
+        h.kind == 0 ==> !pkt_reject(
+            h,
+            sindex(s.subrange(cur + 1, cur + 1 + h.sample_bytes), h.sample_bytes),
+            pol,
+        ),
+    ensures
+        mr_cur_policy(s, h, map, pol, cur, prod) == mr_cur_policy(
+            s,
+            h,
+            map,
+            pol,
+            cur + 1 + h.sample_bytes,
+            prod + (if rle_count(s[cur] as int) < h.n - prod {
+                rle_count(s[cur] as int)
+            } else {
+                h.n - prod
+            }),
+        ),
+{
+    reveal(mr_cur_policy);
+}
+
+/// A literal packet that decodes.
+pub proof fn lemma_mr_cur_policy_lit_ok(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur: int,
+    prod: int,
+)
+    requires
+        0 <= cur < s.len(),
+        0 <= prod < h.n,
+        !rle_repeat(s[cur] as int),
+        !(rle_count(s[cur] as int) > h.n - prod && pol.rle_overrun == RleOverrunOptions::Reject),
+        s.len() >= cur + 1 + (if pol.rle_overrun == RleOverrunOptions::ClipSamples {
+            (if rle_count(s[cur] as int) < h.n - prod {
+                rle_count(s[cur] as int)
+            } else {
+                h.n - prod
+            }) * h.sample_bytes
+        } else {
+            rle_count(s[cur] as int) * h.sample_bytes
+        }),
+        lit_ok_policy(
+            s,
+            h,
+            cur + 1,
+            if rle_count(s[cur] as int) < h.n - prod {
+                rle_count(s[cur] as int)
+            } else {
+                h.n - prod
+            },
+            pol,
+        ),
+    ensures
+        mr_cur_policy(s, h, map, pol, cur, prod) == mr_cur_policy(
+            s,
+            h,
+            map,
+            pol,
+            cur + 1 + (if pol.rle_overrun == RleOverrunOptions::ClipSamples {
+                (if rle_count(s[cur] as int) < h.n - prod {
+                    rle_count(s[cur] as int)
+                } else {
+                    h.n - prod
+                }) * h.sample_bytes
+            } else {
+                rle_count(s[cur] as int) * h.sample_bytes
+            }),
+            prod + (if rle_count(s[cur] as int) < h.n - prod {
+                rle_count(s[cur] as int)
+            } else {
+                h.n - prod
+            }),
+        ),
+{
+    reveal(mr_cur_policy);
+}
+
+/// R11: the ghost error cursor of `mr_at_policy` — where the stream stops.
+pub open spec fn mr_gcur_policy(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur: int,
+    prod: int,
+) -> Result<int, MrErr>
+    decreases (h.n - prod) as nat
+{
+    if cur < 0 || cur > s.len() || prod < 0 || prod > h.n {
+        Err(MrErr::Outside)
+    } else if prod == h.n {
+        Ok(cur)
+    } else if cur >= s.len() {
+        Ok(cur)
+    } else {
+        let control = s[cur] as int;
+        let count = rle_count(control);
+        let remaining = h.n - prod;
+        let start = cur + 1;
+        if count > remaining && pol.rle_overrun == RleOverrunOptions::Reject {
+            Ok(cur + 1)
+        } else {
+            let paint = if count < remaining { count } else { remaining };
+            if rle_repeat(control) {
+                let pe = start + h.sample_bytes;
+                if s.len() < pe {
+                    Ok(start)
+                } else {
+                    let smp = s.subrange(start, pe);
+                    if h.kind == 0 && pkt_reject(h, sindex(smp, h.sample_bytes), pol) {
+                        Ok(pe)
+                    } else {
+                        mr_gcur_policy(s, h, map, pol, pe, prod + paint)
+                    }
+                }
+            } else {
+                let need = if pol.rle_overrun == RleOverrunOptions::ClipSamples {
+                    paint * h.sample_bytes
+                } else {
+                    count * h.sample_bytes
+                };
+                let pe = start + need;
+                if s.len() < pe {
+                    Ok(start)
+                } else if !lit_ok_policy(s, h, start, paint, pol) {
+                    Ok(pe)
+                } else {
+                    mr_gcur_policy(s, h, map, pol, pe, prod + paint)
+                }
+            }
+        }
+    }
+}
+
+/// R11's packet split under `pol`, a repeat packet: the pixel stream is the
+/// packet's repeated conversions followed by the rest.
+pub proof fn lemma_mr_pix_policy_rep(
+    b: Seq<u8>,
+    p: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur0: int,
+    prod: int,
+)
+    requires
+        0 <= cur0 < b.len(),
+        0 <= prod < p.n,
+        0 <= p.sample_bytes,
+        rle_repeat(b[cur0] as int),
+        !(rle_count(b[cur0] as int) > p.n - prod && pol.rle_overrun == RleOverrunOptions::Reject),
+        b.len() >= cur0 + 1 + p.sample_bytes,
+        p.kind == 0 ==> !pkt_reject(
+            p,
+            sindex(b.subrange(cur0 + 1, cur0 + 1 + p.sample_bytes), p.sample_bytes),
+            pol,
+        ),
+    ensures
+        mr_pix_policy(b, p, map, pol, cur0, prod) == pix_pow(
+            conv2_policy(p, map, b.subrange(cur0 + 1, cur0 + 1 + p.sample_bytes), pol),
+            if rle_count(b[cur0] as int) < p.n - prod {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod
+            },
+        ) + mr_pix_policy(
+            b,
+            p,
+            map,
+            pol,
+            cur0 + 1 + p.sample_bytes,
+            prod + (if rle_count(b[cur0] as int) < p.n - prod {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod
+            }),
+        ),
+{
+    reveal(mr_pix_policy);
+}
+
+/// R11's packet split under `pol`, a literal packet.
+pub proof fn lemma_mr_pix_policy_lit(
+    b: Seq<u8>,
+    p: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur0: int,
+    prod: int,
+)
+    requires
+        0 <= cur0 < b.len(),
+        0 <= prod < p.n,
+        0 <= p.sample_bytes,
+        !rle_repeat(b[cur0] as int),
+        !(rle_count(b[cur0] as int) > p.n - prod && pol.rle_overrun == RleOverrunOptions::Reject),
+        b.len() >= cur0 + 1 + (if pol.rle_overrun == RleOverrunOptions::ClipSamples {
+            (if rle_count(b[cur0] as int) < p.n - prod {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod
+            }) * p.sample_bytes
+        } else {
+            rle_count(b[cur0] as int) * p.sample_bytes
+        }),
+        lit_ok_policy(
+            b,
+            p,
+            cur0 + 1,
+            if rle_count(b[cur0] as int) < p.n - prod {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod
+            },
+            pol,
+        ),
+    ensures
+        mr_pix_policy(b, p, map, pol, cur0, prod) == lit_out_policy(
+            b,
+            p,
+            map,
+            pol,
+            cur0 + 1,
+            if rle_count(b[cur0] as int) < p.n - prod {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod
+            },
+        ) + mr_pix_policy(
+            b,
+            p,
+            map,
+            pol,
+            cur0 + 1 + (if pol.rle_overrun == RleOverrunOptions::ClipSamples {
+                (if rle_count(b[cur0] as int) < p.n - prod {
+                    rle_count(b[cur0] as int)
+                } else {
+                    p.n - prod
+                }) * p.sample_bytes
+            } else {
+                rle_count(b[cur0] as int) * p.sample_bytes
+            }),
+            prod + (if rle_count(b[cur0] as int) < p.n - prod {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod
+            }),
+        ),
+{
+    reveal(mr_pix_policy);
+}
+
+/// Expose exactly one recursive layer; callers need no conversion unfolding.
+proof fn lemma_lit_ok_policy_step(s: Seq<u8>, h: PktH, pol: Policy, start: int, count: int)
+    ensures lit_ok_policy(s, h, start, count, pol) == (count <= 0 || (
+        (h.kind != 0 || pol.index_range == IndexRangeOptions::Black
+            || in_range_policy(h, sindex(s.subrange(start, start + h.sample_bytes), h.sample_bytes), pol))
+        && lit_ok_policy(s, h, start + h.sample_bytes, count - 1, pol))),
+{ reveal(lit_ok_policy); }
+
+proof fn lemma_lit_good_policy_step(s: Seq<u8>, h: PktH, pol: Policy, start: int, count: int)
+    requires count > 0, h.kind == 0, pol.index_range == IndexRangeOptions::Reject,
+    ensures lit_good_policy(s, h, start, count, pol) ==
+        (if in_range_policy(h, sindex(s.subrange(start, start + h.sample_bytes), h.sample_bytes), pol) {
+            1 + lit_good_policy(s, h, start + h.sample_bytes, count - 1, pol)
+        } else { 0 }),
+{ reveal(lit_good_policy); }
+
+proof fn lemma_lit_out_policy_step(s: Seq<u8>, h: PktH, map: Seq<u8>, pol: Policy, start: int, count: int)
+    ensures lit_out_policy(s, h, map, pol, start, count) ==
+        (if count <= 0 { Seq::<Seq<u8>>::empty() } else {
+            seq![conv2_policy(h, map, s.subrange(start, start + h.sample_bytes), pol)]
+                + lit_out_policy(s, h, map, pol, start + h.sample_bytes, count - 1)
+        }),
+{ reveal(lit_out_policy); }
+
+proof fn lemma_literal_shift(start: int, stride: int, i: int)
+    ensures
+        start + stride + (i - 1) * stride == start + i * stride,
+        start + stride + i * stride == start + (i + 1) * stride,
+        start + i * stride + stride == start + (i + 1) * stride,
+{
+    assert(start + stride + (i - 1) * stride == start + i * stride) by (nonlinear_arith);
+    assert(start + stride + i * stride == start + (i + 1) * stride) by (nonlinear_arith);
+    assert(start + i * stride + stride == start + (i + 1) * stride) by (nonlinear_arith);
+}
+
+pub proof fn lemma_lit_ok_policy_extend(
+    s: Seq<u8>, h: PktH, pol: Policy, start: int, i: int,
+)
+    requires
+        0 <= i,
+        lit_ok_policy(s, h, start, i, pol),
+        h.kind != 0 || pol.index_range == IndexRangeOptions::Black
+            || in_range_policy(h, sindex(s.subrange(
+                start + i * h.sample_bytes,
+                start + (i + 1) * h.sample_bytes,
+            ), h.sample_bytes), pol),
+    ensures lit_ok_policy(s, h, start, i + 1, pol),
+    decreases i,
+{
+    hide(lit_ok_policy);
+    hide(in_range_policy);
+    lemma_literal_shift(start, h.sample_bytes, i);
+    lemma_lit_ok_policy_step(s, h, pol, start, i);
+    lemma_lit_ok_policy_step(s, h, pol, start, i + 1);
+    if i > 0 {
+        lemma_lit_ok_policy_extend(s, h, pol, start + h.sample_bytes, i - 1);
+    } else {
+        lemma_lit_ok_policy_step(s, h, pol, start + h.sample_bytes, 0);
+    }
+}
+
+pub proof fn lemma_lit_good_policy_first_bad(
+    s: Seq<u8>, h: PktH, pol: Policy, start: int, count: int, i: int,
+)
+    requires
+        0 <= i < count,
+        h.kind == 0,
+        pol.index_range == IndexRangeOptions::Reject,
+        lit_ok_policy(s, h, start, i, pol),
+        !in_range_policy(h, sindex(s.subrange(
+            start + i * h.sample_bytes,
+            start + (i + 1) * h.sample_bytes,
+        ), h.sample_bytes), pol),
+    ensures
+        lit_good_policy(s, h, start, count, pol) == i,
+        !lit_ok_policy(s, h, start, count, pol),
+    decreases i,
+{
+    hide(lit_ok_policy);
+    hide(lit_good_policy);
+    hide(in_range_policy);
+    lemma_literal_shift(start, h.sample_bytes, i);
+    lemma_lit_ok_policy_step(s, h, pol, start, i);
+    lemma_lit_ok_policy_step(s, h, pol, start, count);
+    lemma_lit_good_policy_step(s, h, pol, start, count);
+    if i > 0 {
+        assert(in_range_policy(h, sindex(s.subrange(start, start + h.sample_bytes), h.sample_bytes), pol));
+        lemma_lit_good_policy_first_bad(s, h, pol, start + h.sample_bytes, count - 1, i - 1);
+        assert(lit_good_policy(s, h, start + h.sample_bytes, count - 1, pol) == i - 1);
+        assert(!lit_ok_policy(s, h, start + h.sample_bytes, count - 1, pol));
+        assert(lit_good_policy(s, h, start, count, pol) == i);
+        assert(!lit_ok_policy(s, h, start, count, pol));
+    } else {
+        assert(start + i * h.sample_bytes == start) by (nonlinear_arith)
+            requires i == 0;
+        assert(start + (i + 1) * h.sample_bytes == start + h.sample_bytes) by (nonlinear_arith)
+            requires i == 0;
+        assert(!in_range_policy(h, sindex(s.subrange(start, start + h.sample_bytes), h.sample_bytes), pol));
+        assert(lit_good_policy(s, h, start, count, pol) == 0);
+        assert(!lit_ok_policy(s, h, start, count, pol));
+    }
+}
+
+/// Append one literal sample to the recursively defined pixel prefix.
+pub proof fn lemma_lit_out_policy_peel(
+    s: Seq<u8>, h: PktH, map: Seq<u8>, pol: Policy, start: int, i: int,
+)
+    requires 0 <= i,
+    ensures lit_out_policy(s, h, map, pol, start, i + 1)
+        == lit_out_policy(s, h, map, pol, start, i)
+            + seq![conv2_policy(h, map, s.subrange(
+                start + i * h.sample_bytes,
+                start + (i + 1) * h.sample_bytes,
+            ), pol)],
+    decreases i,
+{
+    hide(lit_out_policy);
+    hide(conv2_policy);
+    lemma_literal_shift(start, h.sample_bytes, i);
+    lemma_lit_out_policy_step(s, h, map, pol, start, i);
+    lemma_lit_out_policy_step(s, h, map, pol, start, i + 1);
+    if i > 0 {
+        lemma_lit_out_policy_peel(s, h, map, pol, start + h.sample_bytes, i - 1);
+        vstd::seq_lib::lemma_concat_associative(
+            seq![conv2_policy(h, map, s.subrange(start, start + h.sample_bytes), pol)],
+            lit_out_policy(s, h, map, pol, start + h.sample_bytes, i - 1),
+            seq![conv2_policy(h, map, s.subrange(start + i * h.sample_bytes, start + (i + 1) * h.sample_bytes), pol)],
+        );
+    } else {
+        lemma_lit_out_policy_step(s, h, map, pol, start + h.sample_bytes, 0);
+        broadcast use vstd::seq_lib::group_seq_lib_default;
+    }
+}
+
+/// `lit_out_policy`'s prefix form, indexed by sample: equals `lit_out_policy`
+/// on the same range but has a definitional `Seq::new`, so the executable loop
+/// can peel one sample without a recursive proof.
+pub open spec fn lit_seq_policy(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    start: int,
+    count: int,
+) -> Seq<Seq<u8>> {
+    Seq::new(count as nat, |j: int| conv2_policy(h, map, s.subrange(
+        start + j * h.sample_bytes,
+        start + j * h.sample_bytes + h.sample_bytes,
+    ), pol))
+}
+
+
+
+/// `lit_seq_policy`'s `i+1` prefix is the `i` prefix plus the `i`-th sample.
+pub proof fn lemma_lit_seq_policy_peel(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    start: int,
+    i: int,
+)
+    requires
+        0 <= i,
+    ensures
+        lit_seq_policy(s, h, map, pol, start, i + 1) == lit_seq_policy(
+            s,
+            h,
+            map,
+            pol,
+            start,
+            i,
+        ) + seq![conv2_policy(h, map, s.subrange(
+            start + i * h.sample_bytes,
+            start + i * h.sample_bytes + h.sample_bytes,
+        ), pol)],
+{
+    reveal(lit_seq_policy);
+    assert(lit_seq_policy(s, h, map, pol, start, i + 1) =~= lit_seq_policy(
+        s,
+        h,
+        map,
+        pol,
+        start,
+        i,
+    ) + seq![conv2_policy(h, map, s.subrange(
+        start + i * h.sample_bytes,
+        start + i * h.sample_bytes + h.sample_bytes,
+    ), pol)]) by {
+        assert forall|j: int| 0 <= j < i + 1 implies #[trigger] lit_seq_policy(
+            s,
+            h,
+            map,
+            pol,
+            start,
+            i + 1,
+        )[j] == (lit_seq_policy(s, h, map, pol, start, i) + seq![conv2_policy(
+            h,
+            map,
+            s.subrange(start + i * h.sample_bytes, start + i * h.sample_bytes + h.sample_bytes),
+            pol,
+        )])[j] by {
+            if j < i {
+                assert(lit_seq_policy(s, h, map, pol, start, i)[j] == lit_seq_policy(
+                    s,
+                    h,
+                    map,
+                    pol,
+                    start,
+                    i + 1,
+                )[j]);
+            }
+        }
+    }
+}
+
+/// `lit_seq_policy` has `count` entries.
+pub proof fn lemma_lit_seq_policy_len(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    start: int,
+    count: int,
+)
+    requires
+        0 <= count,
+    ensures
+        lit_seq_policy(s, h, map, pol, start, count).len() == count,
+{
+    reveal(lit_seq_policy);
+    broadcast use vstd::seq::group_seq_lemmas;
+}
+
+/// `lit_out_policy` has one entry per sample; `pix_pow` one per copy.
+pub proof fn lemma_lit_out_policy_len(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    start: int,
+    count: int,
+)
+    requires
+        0 <= count,
+    ensures
+        lit_out_policy(s, h, map, pol, start, count).len() == count,
+    decreases count,
+{
+    reveal(lit_out_policy);
+    if count <= 0 {
+    } else {
+        lemma_lit_out_policy_len(s, h, map, pol, start + h.sample_bytes, count - 1);
+        broadcast use vstd::seq::group_seq_lemmas;
+    }
+}
+
+/// `lit_good_policy` is at most the count it scans.
+pub proof fn lemma_lit_good_policy_le(
+    s: Seq<u8>,
+    h: PktH,
+    start: int,
+    count: int,
+    pol: Policy,
+)
+    requires
+        0 <= count,
+    ensures
+        0 <= lit_good_policy(s, h, start, count, pol) <= count,
+    decreases count,
+{
+    reveal(lit_good_policy);
+    if count <= 0 {
+    } else if h.kind != 0 || pol.index_range == IndexRangeOptions::Black {
+    } else {
+        lemma_lit_good_policy_le(s, h, start + h.sample_bytes, count - 1, pol);
+    }
+}
+/// `mr_pix_policy` never overruns `N`.
+pub proof fn lemma_mr_pix_policy_len(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    c0: int,
+    prod0: int,
+)
+    requires
+        0 <= prod0 <= h.n,
+        0 <= h.sample_bytes,
+    ensures
+        mr_pix_policy(s, h, map, pol, c0, prod0).len() + prod0 <= h.n,
+        mr_pix_policy(s, h, map, pol, c0, prod0).len() <= h.n,
+    decreases (h.n - prod0) as nat,
+{
+    reveal(mr_pix_policy);
+    if prod0 == h.n {
+        broadcast use vstd::seq_lib::group_seq_lib_default;
+    } else if c0 < 0 || c0 > s.len() {
+    } else if c0 >= s.len() {
+    } else {
+        let control = s[c0] as int;
+        let count = rle_count(control);
+        if count > h.n - prod0 && pol.rle_overrun == RleOverrunOptions::Reject {
+        } else {
+            let paint = if count < h.n - prod0 { count } else { h.n - prod0 };
+            let start = c0 + 1;
+            if rle_repeat(control) {
+                let pe = start + h.sample_bytes;
+                if s.len() < pe {
+                } else {
+                    let smp = s.subrange(start, pe);
+                    if h.kind == 0 && pkt_reject(h, sindex(smp, h.sample_bytes), pol) {
+                    } else {
+                        crate::model::lemma_pix_pow_len(conv2_policy(h, map, smp, pol), paint);
+                        lemma_mr_pix_policy_len(s, h, map, pol, pe, prod0 + paint);
+                        broadcast use vstd::seq::group_seq_lemmas;
+                    }
+                }
+            } else {
+                let need = if pol.rle_overrun == RleOverrunOptions::ClipSamples {
+                    paint * h.sample_bytes
+                } else {
+                    count * h.sample_bytes
+                };
+                let pe = start + need;
+                lemma_lit_good_policy_le(s, h, start, paint, pol);
+                if s.len() < pe {
+                } else if !lit_ok_policy(s, h, start, paint, pol) {
+                    lemma_lit_out_policy_len(s, h, map, pol, start, lit_good_policy(
+                        s,
+                        h,
+                        start,
+                        paint,
+                        pol,
+                    ));
+                    assert(lit_good_policy(s, h, start, paint, pol) <= paint);
+                } else {
+                    lemma_lit_out_policy_len(s, h, map, pol, start, paint);
+                    lemma_mr_pix_policy_len(s, h, map, pol, pe, prod0 + paint);
+                    broadcast use vstd::seq::group_seq_lemmas;
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+/// `pkt_post_policy`'s success arm for a repeat packet: the exit `Ok` state,
+/// with the model's own split of the stream as the hypothesis.
+pub proof fn lemma_pkt_policy_rep_ok(
+    b: Seq<u8>,
+    p: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur0: int,
+    prod0: int,
+    acc0: Seq<Seq<u8>>,
+    acc1: Seq<Seq<u8>>,
+)
+    requires
+        0 <= cur0 < b.len(),
+        0 <= prod0 < p.n,
+        p.sample_bytes >= 1,
+        rle_repeat(b[cur0] as int),
+        !(rle_count(b[cur0] as int) > p.n - prod0 && pol.rle_overrun == RleOverrunOptions::Reject),
+        b.len() >= cur0 + 1 + p.sample_bytes,
+        p.kind == 0 ==> !pkt_reject(
+            p,
+            sindex(b.subrange(cur0 + 1, cur0 + 1 + p.sample_bytes), p.sample_bytes),
+            pol,
+        ),
+        mr_pix_policy(b, p, map, pol, cur0, prod0) == pix_pow(
+            conv2_policy(p, map, b.subrange(cur0 + 1, cur0 + 1 + p.sample_bytes), pol),
+            if rle_count(b[cur0] as int) < p.n - prod0 {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod0
+            },
+        ) + mr_pix_policy(
+            b,
+            p,
+            map,
+            pol,
+            cur0 + 1 + p.sample_bytes,
+            prod0 + (if rle_count(b[cur0] as int) < p.n - prod0 {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod0
+            }),
+        ),
+        acc1 == acc0 + pix_pow(conv2_policy(p, map, b.subrange(cur0 + 1, cur0 + 1
+            + p.sample_bytes), pol), if rle_count(b[cur0] as int) < p.n - prod0 {
+            rle_count(b[cur0] as int)
+        } else {
+            p.n - prod0
+        }),
+    ensures
+        pkt_post_policy(b, p, map, pol, cur0, prod0, cur0 + 1 + p.sample_bytes, prod0 + (if rle_count(
+            b[cur0] as int,
+        ) < p.n - prod0 {
+            rle_count(b[cur0] as int)
+        } else {
+            p.n - prod0
+        }), acc0, acc1, Ok(())),
+{
+    reveal(pkt_post_policy);
+    reveal(mr_flags_policy);
+    lemma_mr_cur_policy_rep_ok(b, p, map, pol, cur0, prod0);
+    reveal(mr_gcur_policy);
+    vstd::seq_lib::lemma_concat_associative(
+        acc0,
+        pix_pow(conv2_policy(p, map, b.subrange(cur0 + 1, cur0 + 1 + p.sample_bytes), pol), if rle_count(
+            b[cur0] as int,
+        ) < p.n - prod0 {
+            rle_count(b[cur0] as int)
+        } else {
+            p.n - prod0
+        }),
+        mr_pix_policy(b, p, map, pol, cur0 + 1 + p.sample_bytes, prod0 + (if rle_count(
+            b[cur0] as int,
+        ) < p.n - prod0 {
+            rle_count(b[cur0] as int)
+        } else {
+            p.n - prod0
+        })),
+    );
+}
+
+/// `pkt_post_policy`'s success arm for a literal packet.
+pub proof fn lemma_pkt_policy_lit_ok(
+    b: Seq<u8>,
+    p: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur0: int,
+    prod0: int,
+    acc0: Seq<Seq<u8>>,
+    acc1: Seq<Seq<u8>>,
+)
+    requires
+        0 <= cur0 < b.len(),
+        0 <= prod0 < p.n,
+        p.sample_bytes >= 1,
+        !rle_repeat(b[cur0] as int),
+        !(rle_count(b[cur0] as int) > p.n - prod0 && pol.rle_overrun == RleOverrunOptions::Reject),
+        b.len() >= cur0 + 1 + (if pol.rle_overrun == RleOverrunOptions::ClipSamples {
+            (if rle_count(b[cur0] as int) < p.n - prod0 {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod0
+            }) * p.sample_bytes
+        } else {
+            rle_count(b[cur0] as int) * p.sample_bytes
+        }),
+        lit_ok_policy(
+            b,
+            p,
+            cur0 + 1,
+            if rle_count(b[cur0] as int) < p.n - prod0 {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod0
+            },
+            pol,
+        ),
+        mr_pix_policy(b, p, map, pol, cur0, prod0) == lit_out_policy(
+            b,
+            p,
+            map,
+            pol,
+            cur0 + 1,
+            if rle_count(b[cur0] as int) < p.n - prod0 {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod0
+            },
+        ) + mr_pix_policy(
+            b,
+            p,
+            map,
+            pol,
+            cur0 + 1 + (if pol.rle_overrun == RleOverrunOptions::ClipSamples {
+                (if rle_count(b[cur0] as int) < p.n - prod0 {
+                    rle_count(b[cur0] as int)
+                } else {
+                    p.n - prod0
+                }) * p.sample_bytes
+            } else {
+                rle_count(b[cur0] as int) * p.sample_bytes
+            }),
+            prod0 + (if rle_count(b[cur0] as int) < p.n - prod0 {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod0
+            }),
+        ),
+        acc1 == acc0 + lit_out_policy(
+            b,
+            p,
+            map,
+            pol,
+            cur0 + 1,
+            if rle_count(b[cur0] as int) < p.n - prod0 {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod0
+            },
+        ),
+    ensures
+        pkt_post_policy(b, p, map, pol, cur0, prod0, cur0 + 1 + (if pol.rle_overrun
+            == RleOverrunOptions::ClipSamples {
+            (if rle_count(b[cur0] as int) < p.n - prod0 {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod0
+            }) * p.sample_bytes
+        } else {
+            rle_count(b[cur0] as int) * p.sample_bytes
+        }), prod0 + (if rle_count(b[cur0] as int) < p.n - prod0 {
+            rle_count(b[cur0] as int)
+        } else {
+            p.n - prod0
+        }), acc0, acc1, Ok(())),
+{
+    reveal(pkt_post_policy);
+    reveal(mr_flags_policy);
+    lemma_mr_cur_policy_lit_ok(b, p, map, pol, cur0, prod0);
+    reveal(mr_gcur_policy);
+    vstd::seq_lib::lemma_concat_associative(
+        acc0,
+        lit_out_policy(b, p, map, pol, cur0 + 1, if rle_count(b[cur0] as int) < p.n - prod0 {
+            rle_count(b[cur0] as int)
+        } else {
+            p.n - prod0
+        }),
+        mr_pix_policy(b, p, map, pol, cur0 + 1 + (if pol.rle_overrun
+            == RleOverrunOptions::ClipSamples {
+            (if rle_count(b[cur0] as int) < p.n - prod0 {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod0
+            }) * p.sample_bytes
+        } else {
+            rle_count(b[cur0] as int) * p.sample_bytes
+        }), prod0 + (if rle_count(b[cur0] as int) < p.n - prod0 {
+            rle_count(b[cur0] as int)
+        } else {
+            p.n - prod0
+        })),
+    );
+}
+
+/// The five exit lemmas for `pkt_post_policy`, each closing one branch of
+/// `mr_cur_policy`/`mr_gcur_policy` from the same entry state.
+pub proof fn lemma_pkt_policy_ctrl_absent(
+    b: Seq<u8>,
+    p: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur0: int,
+    prod0: int,
+    acc0: Seq<Seq<u8>>,
+)
+    requires
+        0 <= cur0 <= b.len(),
+        cur0 >= b.len(),
+        0 <= prod0 < p.n,
+    ensures
+        pkt_post_policy(b, p, map, pol, cur0, prod0, cur0, prod0, acc0, acc0, Err(
+            Error::RleTruncated,
+        )),
+{
+    reveal(pkt_post_policy);
+    reveal(mr_pix_policy);
+    reveal(mr_flags_policy);
+    reveal(mr_subst_policy);
+    reveal(mr_clip_policy);
+    lemma_mr_cur_policy_ctrl_absent(b, p, map, pol, cur0, prod0);
+    reveal(mr_gcur_policy);
+    broadcast use vstd::seq_lib::group_seq_lib_default;
+}
+
+pub proof fn lemma_pkt_policy_overrun(
+    b: Seq<u8>,
+    p: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur0: int,
+    prod0: int,
+    acc0: Seq<Seq<u8>>,
+)
+    requires
+        0 <= cur0 < b.len(),
+        0 <= prod0 < p.n,
+        rle_count(b[cur0] as int) > p.n - prod0,
+        pol.rle_overrun == RleOverrunOptions::Reject,
+    ensures
+        pkt_post_policy(b, p, map, pol, cur0, prod0, cur0 + 1, prod0, acc0, acc0, Err(
+            Error::RleOverrun,
+        )),
+{
+    reveal(pkt_post_policy);
+    reveal(mr_pix_policy);
+    reveal(mr_flags_policy);
+    reveal(mr_subst_policy);
+    reveal(mr_clip_policy);
+    lemma_mr_cur_policy_overrun(b, p, map, pol, cur0, prod0);
+    reveal(mr_gcur_policy);
+    broadcast use vstd::seq_lib::group_seq_lib_default;
+}
+
+pub proof fn lemma_pkt_policy_rep_missing(
+    b: Seq<u8>,
+    p: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur0: int,
+    prod0: int,
+    acc0: Seq<Seq<u8>>,
+)
+    requires
+        0 <= cur0 < b.len(),
+        0 <= prod0 < p.n,
+        rle_repeat(b[cur0] as int),
+        !(rle_count(b[cur0] as int) > p.n - prod0 && pol.rle_overrun == RleOverrunOptions::Reject),
+        b.len() < cur0 + 1 + p.sample_bytes,
+    ensures
+        pkt_post_policy(b, p, map, pol, cur0, prod0, cur0 + 1, prod0, acc0, acc0, Err(
+            Error::RleTruncated,
+        )),
+{
+    reveal(pkt_post_policy);
+    reveal(mr_flags_policy);
+    reveal(mr_subst_policy);
+    reveal(mr_clip_policy);
+    lemma_mr_cur_policy_rep_missing(b, p, map, pol, cur0, prod0);
+    reveal(mr_gcur_policy);
+    reveal(mr_pix_policy);
+    broadcast use vstd::seq_lib::group_seq_lib_default;
+}
+
+pub proof fn lemma_pkt_policy_rep_index(
+    b: Seq<u8>,
+    p: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur0: int,
+    prod0: int,
+    acc0: Seq<Seq<u8>>,
+)
+    requires
+        0 <= cur0 < b.len(),
+        0 <= prod0 < p.n,
+        rle_repeat(b[cur0] as int),
+        !(rle_count(b[cur0] as int) > p.n - prod0 && pol.rle_overrun == RleOverrunOptions::Reject),
+        b.len() >= cur0 + 1 + p.sample_bytes,
+        p.kind == 0,
+        pkt_reject(p,
+            sindex(b.subrange(cur0 + 1, cur0 + 1 + p.sample_bytes), p.sample_bytes),
+            pol),
+    ensures
+        pkt_post_policy(b, p, map, pol, cur0, prod0, cur0 + 1 + p.sample_bytes, prod0, acc0, acc0, Err(
+            Error::ColorIndexOutOfRange,
+        )),
+{
+    reveal(pkt_post_policy);
+    reveal(mr_flags_policy);
+    reveal(mr_subst_policy);
+    reveal(mr_clip_policy);
+    lemma_mr_cur_policy_rep_index(b, p, map, pol, cur0, prod0);
+    reveal(mr_gcur_policy);
+    reveal(mr_pix_policy);
+    broadcast use vstd::seq_lib::group_seq_lib_default;
+}
+
+pub proof fn lemma_pkt_policy_lit_missing(
+    b: Seq<u8>,
+    p: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur0: int,
+    prod0: int,
+    acc0: Seq<Seq<u8>>,
+)
+    requires
+        0 <= cur0 < b.len(),
+        0 <= prod0 < p.n,
+        !rle_repeat(b[cur0] as int),
+        !(rle_count(b[cur0] as int) > p.n - prod0 && pol.rle_overrun == RleOverrunOptions::Reject),
+        b.len() < cur0 + 1 + (if pol.rle_overrun == RleOverrunOptions::ClipSamples {
+            (if rle_count(b[cur0] as int) < p.n - prod0 {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod0
+            }) * p.sample_bytes
+        } else {
+            rle_count(b[cur0] as int) * p.sample_bytes
+        }),
+    ensures
+        pkt_post_policy(b, p, map, pol, cur0, prod0, cur0 + 1, prod0, acc0, acc0, Err(
+            Error::RleTruncated,
+        )),
+{
+    reveal(pkt_post_policy);
+    reveal(mr_flags_policy);
+    reveal(mr_subst_policy);
+    reveal(mr_clip_policy);
+    lemma_mr_cur_policy_lit_missing(b, p, map, pol, cur0, prod0);
+    reveal(mr_gcur_policy);
+    reveal(mr_pix_policy);
+    broadcast use vstd::seq_lib::group_seq_lib_default;
+}
+
+pub proof fn lemma_pkt_policy_lit_index(
+    b: Seq<u8>,
+    p: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur0: int,
+    prod0: int,
+    acc0: Seq<Seq<u8>>,
+    acc1: Seq<Seq<u8>>,
+)
+    requires
+        0 <= cur0 < b.len(),
+        0 <= prod0 < p.n,
+        !rle_repeat(b[cur0] as int),
+        !(rle_count(b[cur0] as int) > p.n - prod0 && pol.rle_overrun == RleOverrunOptions::Reject),
+        b.len() >= cur0 + 1 + (if pol.rle_overrun == RleOverrunOptions::ClipSamples {
+            (if rle_count(b[cur0] as int) < p.n - prod0 {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod0
+            }) * p.sample_bytes
+        } else {
+            rle_count(b[cur0] as int) * p.sample_bytes
+        }),
+        !lit_ok_policy(
+            b,
+            p,
+            cur0 + 1,
+            if rle_count(b[cur0] as int) < p.n - prod0 {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod0
+            },
+            pol,
+        ),
+        acc1 == acc0 + lit_out_policy(
+            b,
+            p,
+            map,
+            pol,
+            cur0 + 1,
+            lit_good_policy(
+                b,
+                p,
+                cur0 + 1,
+                if rle_count(b[cur0] as int) < p.n - prod0 {
+                    rle_count(b[cur0] as int)
+                } else {
+                    p.n - prod0
+                },
+                pol,
+            ),
+        ),
+    ensures
+        pkt_post_policy(b, p, map, pol, cur0, prod0, cur0 + 1 + (if pol.rle_overrun
+            == RleOverrunOptions::ClipSamples {
+            (if rle_count(b[cur0] as int) < p.n - prod0 {
+                rle_count(b[cur0] as int)
+            } else {
+                p.n - prod0
+            }) * p.sample_bytes
+        } else {
+            rle_count(b[cur0] as int) * p.sample_bytes
+        }), prod0, acc0, acc1, Err(Error::ColorIndexOutOfRange)),
+{
+    reveal(pkt_post_policy);
+    reveal(mr_flags_policy);
+    reveal(mr_subst_policy);
+    reveal(mr_clip_policy);
+    lemma_mr_cur_policy_lit_index(b, p, map, pol, cur0, prod0);
+    reveal(mr_gcur_policy);
+    reveal(mr_pix_policy);
+    broadcast use vstd::seq_lib::group_seq_lib_default;
+}
+
+
+
+/// The packet-helper postcondition under `pol`: on `Ok` the produced count grew
+/// and the cursor, ghost cursor and pixel stream continue; on `Err` the model
+/// fails with that error from the entry state, its ghost cursor is the exit
+/// cursor, and the accumulator is the entry accumulator plus the pixels up to
+/// the failure.
+pub open spec fn pkt_post_policy(
+    b: Seq<u8>,
+    p: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur0: int,
+    prod0: int,
+    cur1: int,
+    prod1: int,
+    acc0: Seq<Seq<u8>>,
+    acc1: Seq<Seq<u8>>,
+    r: Result<(), Error>,
+) -> bool {
+    match r {
+        Ok(_) => {
+            &&& prod0 < prod1
+            &&& mr_cur_policy(b, p, map, pol, cur0, prod0) == mr_cur_policy(
+                b,
+                p,
+                map,
+                pol,
+                cur1,
+                prod1,
+            )
+            &&& mr_gcur_policy(b, p, map, pol, cur0, prod0) == mr_gcur_policy(
+                b,
+                p,
+                map,
+                pol,
+                cur1,
+                prod1,
+            )
+            &&& acc0 + mr_pix_policy(b, p, map, pol, cur0, prod0) == acc1 + mr_pix_policy(
+                b,
+                p,
+                map,
+                pol,
+                cur1,
+                prod1,
+            )
+        },
+        Err(e) => {
+            &&& mr_cur_policy(b, p, map, pol, cur0, prod0) == Err(MrErr::Api(e))
+            &&& mr_gcur_policy(b, p, map, pol, cur0, prod0) == Ok(cur1)
+            &&& acc0 + mr_pix_policy(b, p, map, pol, cur0, prod0) == acc1
+        },
+    }
+}
+
+/// The loop's clip/substitution flags are the entry stream's, carried step by
+/// step; the packet helper's `Err` arm freezes them at the failing packet's
+/// own decision.
+pub open spec fn pkt_flags_policy(
+    b: Seq<u8>,
+    p: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur0: int,
+    prod0: int,
+    cur1: int,
+    prod1: int,
+    clip: bool,
+    subst: bool,
+) -> bool {
+    &&& clip == mr_clip_policy(b, p, map, pol, cur0, prod0)
+    &&& subst == mr_subst_policy(b, p, map, pol, cur0, prod0)
+}
+
+/// The pixel accumulator of a policy RLE stream from `(cur, prod)`.
+pub open spec fn mr_pix_policy_at(s: Seq<u8>, h: PktH, map: Seq<u8>, pol: Policy, cur: int, prod: int)
+    -> Seq<Seq<u8>> {
+    mr_pix_policy(s, h, map, pol, cur, prod)
+}
+
+/// `mr_pix_policy`'s own recursion at one packet, as the packet helper's
+/// postcondition needs it.
+pub proof fn lemma_mr_pix_policy_rec(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur: int,
+    prod: int,
+)
+    requires
+        0 <= cur <= s.len(),
+        0 <= prod <= h.n,
+    ensures
+        mr_pix_policy(s, h, map, pol, cur, prod) == mr_pix_policy(s, h, map, pol, cur, prod),
+{
+}
+
+/// The policy clip event of a stream from `(cur, prod)`: some `Clip*` packet
+/// exceeds the remaining pixels.
+pub open spec fn mr_clip_policy(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur: int,
+    prod: int,
+) -> bool {
+    mr_flags_policy(s, h, map, pol, cur, prod).0
+}
+
+/// The policy substitution event of a stream from `(cur, prod)`.
+pub open spec fn mr_subst_policy(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur: int,
+    prod: int,
+) -> bool {
+    mr_flags_policy(s, h, map, pol, cur, prod).1
+}
+
+/// `mr_flags_policy`'s tuple is the pair of the two projections.
+pub proof fn lemma_mr_flags_policy_pair(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur: int,
+    prod: int,
+)
+    ensures
+        mr_flags_policy(s, h, map, pol, cur, prod).0 == mr_clip_policy(s, h, map, pol, cur, prod),
+        mr_flags_policy(s, h, map, pol, cur, prod).1 == mr_subst_policy(s, h, map, pol, cur, prod),
+{
+}
+
+/// `mr_cur_policy` is the cursor/error projection of `mr_at_policy`.
+pub proof fn lemma_mr_cur_policy_proj(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    cur: int,
+    prod: int,
+    px: Seq<Seq<u8>>,
+)
+    ensures
+        match mr_at_policy(s, h, map, pol, cur, prod, px) {
+            Ok(r) => mr_cur_policy(s, h, map, pol, cur, prod) == Ok((r.0, r.1)),
+            Err((e, _c, _pr, _px)) => mr_cur_policy(s, h, map, pol, cur, prod) == Err(e),
+        },
+    decreases (h.n - prod) as nat,
+{
+    if cur < 0 || cur > s.len() || prod < 0 || prod > h.n {
+        reveal(mr_at_policy);
+        reveal(mr_cur_policy);
+    } else if prod == h.n {
+        reveal(mr_at_policy);
+        reveal(mr_cur_policy);
+    } else if cur >= s.len() {
+        reveal(mr_at_policy);
+        reveal(mr_cur_policy);
+    } else {
+        reveal(mr_at_policy);
+        reveal(mr_cur_policy);
+        let control = s[cur] as int;
+        let count = rle_count(control);
+        let remaining = h.n - prod;
+        let start = cur + 1;
+        if count > remaining && pol.rle_overrun == RleOverrunOptions::Reject {
+        } else {
+            let paint = if count < remaining { count } else { remaining };
+            if rle_repeat(control) {
+                let pe = start + h.sample_bytes;
+                if s.len() < pe {
+                } else {
+                    let smp = s.subrange(start, pe);
+                    if h.kind == 0 && pkt_reject(h, sindex(smp, h.sample_bytes), pol) {
+                    } else {
+                        lemma_mr_cur_policy_proj(
+                            s,
+                            h,
+                            map,
+                            pol,
+                            pe,
+                            prod + paint,
+                            px + pix_pow(conv2_policy(h, map, smp, pol), paint),
+                        );
+                    }
+                }
+            } else {
+                let need = if pol.rle_overrun == RleOverrunOptions::ClipSamples {
+                    paint * h.sample_bytes
+                } else {
+                    count * h.sample_bytes
+                };
+                let pe = start + need;
+                if s.len() < pe {
+                } else if !lit_ok_policy(s, h, start, paint, pol) {
+                } else {
+                    lemma_mr_cur_policy_proj(
+                        s,
+                        h,
+                        map,
+                        pol,
+                        pe,
+                        prod + paint,
+                        px + lit_out_policy(s, h, map, pol, start, paint),
+                    );
+                }
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// The policy output-write invariants: what the profiled raw and RLE loops prove
+// their writes establish, as the policy `conv2_policy` analog of the 1.0
+// `wrote_samples`/`rle_quad_ok`.
+// ---------------------------------------------------------------------------
+
+/// After `k` samples, each converted pixel `j<k` sits at R9's oriented byte
+/// offset, converted under `pol`.
+pub open spec fn wrote_samples_policy(
+    out: Seq<u8>,
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    w: int,
+    hgt: int,
+    fx: bool,
+    fy: bool,
+    start: int,
+    sb: int,
+    k: int,
+) -> bool {
+    forall|j: int| 0 <= j < k ==> #[trigger] crate::model::quad_at(
+        out,
+        4 * crate::model::fcoord(w, hgt, fx, fy, j),
+        conv2_policy(h, map, s.subrange(start + j * sb, start + j * sb + sb), pol),
+    )
+}
+
+/// Unpack `wrote_samples_policy` at one index.
+pub proof fn lemma_wrote_samples_policy_at(
+    out: Seq<u8>,
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    w: int,
+    hgt: int,
+    fx: bool,
+    fy: bool,
+    start: int,
+    sb: int,
+    k: int,
+    j: int,
+)
+    requires
+        wrote_samples_policy(out, s, h, map, pol, w, hgt, fx, fy, start, sb, k),
+        0 <= j < k,
+    ensures
+        crate::model::quad_at(
+            out,
+            4 * crate::model::fcoord(w, hgt, fx, fy, j),
+            conv2_policy(h, map, s.subrange(start + j * sb, start + j * sb + sb), pol),
+        ),
+{
+    reveal(wrote_samples_policy);
+}
+
+/// One write of a new pixel at index `k` extends `wrote_samples_policy`.
+pub proof fn lemma_wrote_samples_policy_step(
+    out1: Seq<u8>,
+    out0: Seq<u8>,
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    pol: Policy,
+    w: int,
+    hgt: int,
+    fx: bool,
+    fy: bool,
+    start: int,
+    sb: int,
+    k: int,
+)
+    requires
+        wrote_samples_policy(out0, s, h, map, pol, w, hgt, fx, fy, start, sb, k),
+        crate::model::quad_at(
+            out1,
+            4 * crate::model::fcoord(w, hgt, fx, fy, k),
+            conv2_policy(h, map, s.subrange(start + k * sb, start + k * sb + sb), pol),
+        ),
+        forall|j: int| 0 <= j < k ==> #[trigger] crate::model::quad_at(
+            out1,
+            4 * crate::model::fcoord(w, hgt, fx, fy, j),
+            conv2_policy(h, map, s.subrange(start + j * sb, start + j * sb + sb), pol),
+        ),
+    ensures
+        wrote_samples_policy(out1, s, h, map, pol, w, hgt, fx, fy, start, sb, k + 1),
+{
+    reveal(wrote_samples_policy);
+}
+
+
+
+
 // ---------------------------------------------------------------------------
 // The Strict bridges: the policy model at Strict is the 1.0 model.
 // ---------------------------------------------------------------------------
@@ -1950,7 +4628,335 @@ pub proof fn lemma_mp_raw_acc_policy_strict(
 // The Strict bridges for the packet phase and the full model.
 // ---------------------------------------------------------------------------
 
+/// The successful 1.0 header and the Strict policy have identical packet fields.
+pub proof fn lemma_pkt_of_mh_policy_strict(b: Seq<u8>, m: MHModel)
+    requires mh(b) == Ok(m),
+    ensures pkt_of_mh_policy(m, strict_policy()) == pkt_of_mh(m),
+{
+    crate::model::lemma_mh_fields(b, m);
+    reveal(pkt_of_mh_policy);
+    reveal(pkt_of_mh);
+    reveal(strict_policy);
+    reveal(kind_policy);
+    reveal(kind_of_type);
+    reveal(is_indexed);
+    reveal(eff_attr);
+    reveal(attr_table_allowed);
+    reveal(core_attr_allowed);
+    reveal(map_attr_ok);
+    reveal(attr_ok);
+    if is_indexed(m.image_type) {
+        assert(m.color_map_flag == 1u8) by {
+            reveal(cm_bad);
+            reveal(mh);
+        }
+    }
+}
+
+/// The R11 selector and R12 suffix test agree on every Strict input.
+pub proof fn lemma_strict_scalar_sites(b: Seq<u8>, t: u8, cursor: int)
+    ensures
+        rle_policy(t, strict_policy()) == (t == 9u8 || t == 10u8 || t == 11u8),
+        mp_suffix_ok_policy(b, strict_policy(), cursor) == mp_suffix_ok(b, cursor),
+{
+    reveal(rle_policy);
+    reveal(strict_policy);
+    reveal(mp_suffix_ok_policy);
+}
+
+/// The two R10 recursions have the same first error, cursor, and pixels, even
+/// when a later sample is truncated or indexed outside the map.
+pub proof fn lemma_mp_raw_acc_strict_all(
+    b: Seq<u8>, p: PktH, map: Seq<u8>, c0: int, k: int, acc: Seq<Seq<u8>>,
+)
+    requires
+        0 <= p.sample_bytes,
+        0 <= p.map_depth,
+        p.kind == 0 ==> map.len() == p.map_len * stride_of(p.map_depth),
+    ensures
+        mp_raw_acc_policy(b, p, map, strict_policy(), c0, k, acc)
+            == mp_raw_acc(b, p, map, c0, k, acc),
+    decreases (p.n - k) as nat,
+{
+    reveal(mp_raw_acc_policy);
+    reveal(mp_raw_acc);
+    reveal(strict_policy);
+    if k < 0 || k > p.n || p.sample_bytes <= 0 {
+    } else if k == p.n {
+    } else if c0 + k * p.sample_bytes + p.sample_bytes > b.len() {
+    } else {
+        let smp = b.subrange(c0 + k * p.sample_bytes, c0 + k * p.sample_bytes + p.sample_bytes);
+        lemma_in_range_policy_strict(p, sindex(smp, p.sample_bytes), strict_policy());
+        reveal(pkt_reject);
+        if p.kind != 0 || in_range(p, sindex(smp, p.sample_bytes)) {
+            lemma_conv2_policy_strict(p, map, smp, strict_policy());
+            lemma_mp_raw_acc_strict_all(b, p, map, c0, k + 1, acc + seq![conv2(p, map, smp)]);
+        }
+    }
+}
+
+pub proof fn lemma_mp_raw_strict_all(b: Seq<u8>, p: PktH, map: Seq<u8>, c0: int)
+    requires
+        0 <= p.sample_bytes,
+        0 <= p.map_depth,
+        p.kind == 0 ==> map.len() == p.map_len * stride_of(p.map_depth),
+    ensures
+        mp_raw_policy(b, p, map, strict_policy(), c0) == mp_raw(b, p, map, c0),
+{
+    lemma_mp_raw_acc_strict_all(b, p, map, c0, 0, Seq::empty());
+    reveal(mp_raw_policy);
+    reveal(mp_raw);
+}
+
+/// The API view drops only the ghost cursor, produced count and partial pixels
+/// carried by an error; success retains the exact cursor and pixel sequence.
+pub open spec fn mr_api_result(
+    r: Result<(int, int, Seq<Seq<u8>>), (MrErr, int, int, Seq<Seq<u8>>)>,
+) -> Result<(int, int, Seq<Seq<u8>>), MrErr> {
+    match r { Ok(v) => Ok(v), Err(t) => Err(t.0) }
+}
+
+/// At Strict, both packet models agree on their API error or entire success
+/// tuple. This covers errors without demanding equality of unused ghost pixels.
+pub proof fn lemma_mr_at_strict_api(
+    s: Seq<u8>, h: PktH, map: Seq<u8>, cur: int, prod: int, out: Seq<Seq<u8>>,
+)
+    requires
+        0 <= h.sample_bytes,
+        0 <= h.map_depth,
+        h.kind == 0 ==> map.len() == h.map_len * stride_of(h.map_depth),
+    ensures
+        mr_api_result(mr_at_policy(s, h, map, strict_policy(), cur, prod, out))
+            == mr_api_result(mr_at(s, h, map, cur, prod, out)),
+    decreases (h.n - prod) as nat,
+{
+    reveal(mr_at_policy);
+    reveal(mr_at);
+    reveal(mr_api_result);
+    reveal(strict_policy);
+    reveal(pkt_reject);
+    if cur < 0 || cur > s.len() || prod < 0 || prod > h.n {
+    } else if prod == h.n {
+    } else if cur >= s.len() {
+    } else {
+        let count = rle_count(s[cur] as int);
+        let remaining = h.n - prod;
+        let start = cur + 1;
+        if count > remaining {
+        } else {
+            let paint = if count < remaining { count } else { remaining };
+            assert(paint == count);
+            if rle_repeat(s[cur] as int) {
+                let pe = start + h.sample_bytes;
+                if pe <= s.len() {
+                    let smp = s.subrange(start, pe);
+                    lemma_in_range_policy_strict(h, sindex(smp, h.sample_bytes), strict_policy());
+                    if h.kind != 0 || in_range(h, sindex(smp, h.sample_bytes)) {
+                        lemma_conv2_policy_strict(h, map, smp, strict_policy());
+                        lemma_mr_at_strict_api(s, h, map, pe, prod + count,
+                            out + pix_pow(conv2(h, map, smp), count));
+                    }
+                }
+            } else {
+                let pe = start + count * h.sample_bytes;
+                if pe <= s.len() {
+                    lemma_lit_ok_policy_strict(s, h, start, count, strict_policy());
+                    if lit_ok(s, h, start, count) {
+                        assert(h.kind == 0 ==> forall|j: int|
+                            0 <= j < count ==> #[trigger] in_range(h, sindex(
+                                s.subrange(start + j * h.sample_bytes,
+                                    start + j * h.sample_bytes + h.sample_bytes), h.sample_bytes))) by {
+                            if h.kind == 0 {
+                                assert forall|j: int| 0 <= j < count implies #[trigger] in_range(h,
+                                    sindex(s.subrange(start + j * h.sample_bytes,
+                                        start + j * h.sample_bytes + h.sample_bytes), h.sample_bytes)) by {
+                                    crate::model::lemma_lit_ok_implies_in_range(s, h, start, count, j);
+                                }
+                            }
+                        }
+                        lemma_lit_out_policy_strict(s, h, map, strict_policy(), start, count);
+                        lemma_mr_at_strict_api(s, h, map, pe, prod + count,
+                            out + lit_out(s, h, map, start, count));
+                    } else {
+                        lemma_lit_good_policy_strict(s, h, start, count, strict_policy());
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+/// On a successful RLE stream, agreement of the complete MR success tuple
+/// forces agreement of the separate pixel sequences used by MP assembly.
+pub proof fn lemma_rle_pixels_strict_on_ok(
+    b: Seq<u8>, m: MHModel, c0: int, r: (int, int, Seq<Seq<u8>>),
+)
+    requires
+        mh(b) == Ok(m),
+        c0 == 18 + m.id_length as int + m.map_bytes,
+        c0 <= b.len(),
+        mr(b, pkt_of_mh(m), b.subrange(18 + m.id_length as int, c0), c0, 0) == Ok(r),
+        mr_policy(b, pkt_of_mh(m), b.subrange(18 + m.id_length as int, c0),
+            strict_policy(), c0, 0) == Ok(r),
+    ensures
+        mr_pix_policy(b, pkt_of_mh(m), b.subrange(18 + m.id_length as int, c0),
+            strict_policy(), c0, 0)
+            == mr_pix(b, pkt_of_mh(m), b.subrange(18 + m.id_length as int, c0), c0, 0),
+{
+    let p = pkt_of_mh(m);
+    let map = b.subrange(18 + m.id_length as int, c0);
+    lemma_strict_phase_domain(b, m);
+    crate::model::lemma_mp_conv_domain(b, m);
+    reveal(crate::model::mp_conv_domain);
+    reveal(crate::model::pkt_of_domain);
+    reveal(mr);
+    reveal(mr_policy);
+    crate::model::lemma_mr_ok_shape(b, p, map, c0, 0, Seq::empty(), r);
+    lemma_mr_state_policy_proj(b, p, map, strict_policy(), c0, 0, Seq::empty());
+    broadcast use vstd::seq_lib::group_seq_lib_default;
+}
+
+/// A checked 1.0 map has exactly the stride required by the conversion lemma.
+pub proof fn lemma_strict_phase_domain(b: Seq<u8>, m: MHModel)
+    requires
+        mh(b) == Ok(m),
+        18 + m.id_length as int + m.map_bytes <= b.len(),
+    ensures
+        1 <= pkt_of_mh(m).sample_bytes,
+        0 <= pkt_of_mh(m).map_depth,
+        pkt_of_mh(m).kind == 0 ==> b.subrange(18 + m.id_length as int,
+            18 + m.id_length as int + m.map_bytes).len()
+                == pkt_of_mh(m).map_len * stride_of(pkt_of_mh(m).map_depth),
+{
+    crate::model::lemma_mp_conv_domain(b, m);
+    crate::model::lemma_mp_map_len(b, m);
+    reveal(crate::model::mh_selfcons);
+    reveal(crate::model::pkt_of_domain);
+    reveal(crate::model::mp_conv_domain);
+    reveal(pkt_of_mh);
+    if is_indexed(m.image_type) {
+        crate::model::lemma_stride_eq(m.map_entry_depth);
+    }
+}
+
+/// Successful raw decoding implies every converted sample is in range, so both
+/// model assemblies use exactly the same sequence of converted pixels.
+pub proof fn lemma_raw_pixels_strict_on_ok(b: Seq<u8>, m: MHModel, c0: int)
+    requires
+        mh(b) == Ok(m),
+        c0 == 18 + m.id_length as int + m.map_bytes,
+        c0 <= b.len(),
+        mp_raw(b, pkt_of_mh(m), b.subrange(18 + m.id_length as int, c0), c0) is Ok,
+    ensures
+        acc_conv_policy(b, pkt_of_mh(m), b.subrange(18 + m.id_length as int, c0),
+            strict_policy(), c0, m.n)
+            == acc_conv(b, pkt_of_mh(m), b.subrange(18 + m.id_length as int, c0), c0, m.n),
+{
+    let p = pkt_of_mh(m);
+    let map = b.subrange(18 + m.id_length as int, c0);
+    lemma_strict_phase_domain(b, m);
+    crate::model::lemma_mp_raw_cur_proj(b, p, map, c0, 0, Seq::empty());
+    match mp_raw(b, p, map, c0) {
+        Ok((_, end)) => {
+            crate::model::lemma_raw_prefix_ok_of_cur_ok(b, p, map, c0, m.n, end);
+            reveal(crate::model::raw_prefix_ok);
+            reveal(crate::model::raw_sample_ok);
+            reveal(acc_conv_policy);
+            reveal(acc_conv);
+            broadcast use vstd::seq::group_seq_lemmas;
+            assert(acc_conv_policy(b, p, map, strict_policy(), c0, m.n)
+                =~= acc_conv(b, p, map, c0, m.n)) by {
+                assert forall|j: int| 0 <= j < m.n implies
+                    acc_conv_policy(b, p, map, strict_policy(), c0, m.n)[j]
+                        == acc_conv(b, p, map, c0, m.n)[j] by {
+                    let smp = b.subrange(c0 + j * p.sample_bytes,
+                        c0 + j * p.sample_bytes + p.sample_bytes);
+                    assert(crate::model::raw_sample_ok(b, p, map, c0, j));
+                    lemma_conv2_policy_strict(p, map, smp, strict_policy());
+                }
+            }
+        },
+        Err(_) => { assert(false); },
+    }
+}
+
+/// The Strict policy follows 1.0's R14 phase order, including every error arm.
+pub proof fn lemma_mp_after_policy_strict(b: Seq<u8>, m: MHModel)
+    requires mh(b) == Ok(m),
+    ensures mp_after_policy(b, m, strict_policy()) == mp_after(b, m),
+{
+    lemma_pkt_of_mh_policy_strict(b, m);
+    lemma_mh_policy_strict(b, strict_policy());
+    let id = 18 + m.id_length as int;
+    let c0 = id + m.map_bytes;
+    lemma_strict_scalar_sites(b, m.image_type, c0);
+    reveal(mp_after_policy);
+    reveal(mp_after);
+    if id > b.len() {
+    } else if c0 > b.len() {
+    } else {
+        let p = pkt_of_mh(m);
+        let map = b.subrange(id, c0);
+        lemma_strict_phase_domain(b, m);
+        if m.image_type == 9u8 || m.image_type == 10u8 || m.image_type == 11u8 {
+            lemma_mr_at_strict_api(b, p, map, c0, 0, Seq::empty());
+            reveal(mr);
+            reveal(mr_policy);
+            match mr(b, p, map, c0, 0) {
+                Err(_) => {
+                    match mr_policy(b, p, map, strict_policy(), c0, 0) {
+                        Err(_) => {},
+                        Ok(_) => { assert(false); },
+                    }
+                },
+                Ok(r) => {
+                    assert(mr_policy(b, p, map, strict_policy(), c0, 0) == Ok(r));
+                    lemma_strict_scalar_sites(b, m.image_type, r.0);
+                    if mp_suffix_ok(b, r.0) {
+                        lemma_rle_pixels_strict_on_ok(b, m, c0, r);
+                        reveal(mp_assemble_policy);
+                        reveal(mp_assemble);
+                        reveal(mp_pixels_policy);
+                        reveal(mp_pixels);
+                    }
+                },
+            }
+        } else {
+            lemma_mp_raw_strict_all(b, p, map, c0);
+            match mp_raw(b, p, map, c0) {
+                Err(_) => {},
+                Ok((pixels, cursor)) => {
+                    lemma_strict_scalar_sites(b, m.image_type, cursor);
+                    if mp_suffix_ok(b, cursor) {
+                        lemma_raw_pixels_strict_on_ok(b, m, c0);
+                        reveal(mp_assemble_policy);
+                        reveal(mp_assemble);
+                        reveal(mp_pixels_policy);
+                        reveal(mp_pixels);
+                    }
+                },
+            }
+        }
+    }
+}
+
+/// The complete Strict model is the original 1.0 model on every finite byte
+/// sequence: identical first error or identical dimensions and every RGBA byte.
+pub proof fn lemma_mp_policy_strict_is_mp(b: Seq<u8>)
+    ensures mp_policy(b, strict_policy()) == mp(b),
+{
+    lemma_mh_policy_strict(b, strict_policy());
+    reveal(mp_policy);
+    reveal(mp);
+    match mh(b) {
+        Err(_) => {},
+        Ok(m) => { lemma_mp_after_policy_strict(b, m); },
+    }
+}
+
 /// At Strict, the policy `lit_ok` is 1.0's `lit_ok`.
+
 pub proof fn lemma_lit_ok_policy_strict(s: Seq<u8>, h: PktH, start: int, count: int, pol: Policy)
     requires
         pol == strict_policy(),
@@ -3464,6 +6470,178 @@ pub proof fn lemma_mp_policy_recommended_on_strict_ok(b: Seq<u8>, r: (int, int, 
             lemma_mp_after_policy_rec_eq_strict_on_ok(b, m, r);
         },
     }
+}
+
+/// OR-composition of the two closed events over one successful packet.
+pub open spec fn event_step_policy(
+    b: Seq<u8>, h: PktH, map: Seq<u8>, pol: Policy, c0: int, p0: int, c1: int, p1: int,
+    clip0: bool, sub0: bool, clip1: bool, sub1: bool,
+) -> bool {
+    &&& (clip0 || mr_flags_policy(b, h, map, pol, c0, p0).0)
+        == (clip1 || mr_flags_policy(b, h, map, pol, c1, p1).0)
+    &&& (sub0 || mr_flags_policy(b, h, map, pol, c0, p0).1)
+        == (sub1 || mr_flags_policy(b, h, map, pol, c1, p1).1)
+}
+
+pub proof fn lemma_packet_events(
+    b: Seq<u8>, h: PktH, map: Seq<u8>, pol: Policy, cur: int, prod: int,
+    count: int, paint: int, end: int, sub: bool,
+)
+    requires
+        0 <= cur < b.len(), 0 <= prod < h.n, 0 <= h.sample_bytes,
+        count == rle_count(b[cur] as int),
+        !(count > h.n - prod && pol.rle_overrun == RleOverrunOptions::Reject),
+        paint == (if count < h.n - prod { count } else { h.n - prod }),
+        end == cur + 1 + (if rle_repeat(b[cur] as int) { h.sample_bytes }
+            else if pol.rle_overrun == RleOverrunOptions::ClipSamples { paint * h.sample_bytes }
+            else { count * h.sample_bytes }),
+        end <= b.len(),
+        rle_repeat(b[cur] as int) ==> (h.kind != 0 || !pkt_reject(h,
+            sindex(b.subrange(cur + 1, end), h.sample_bytes), pol)),
+        sub == (if rle_repeat(b[cur] as int) {
+            h.kind == 0 && pkt_subst(h, sindex(b.subrange(cur + 1, end), h.sample_bytes), pol)
+        } else { lit_flags_policy(b, h, pol, cur + 1, paint).0 }),
+    ensures
+        mr_flags_policy(b, h, map, pol, cur, prod).0 ==
+            (count > h.n - prod || mr_flags_policy(b, h, map, pol, end, prod + paint).0),
+        mr_flags_policy(b, h, map, pol, cur, prod).1 ==
+            (sub || mr_flags_policy(b, h, map, pol, end, prod + paint).1),
+{ reveal(mr_flags_policy); }
+
+proof fn lemma_lit_flags_step(b: Seq<u8>, h: PktH, pol: Policy, start: int, count: int)
+    ensures lit_flags_policy(b, h, pol, start, count).0 == (count > 0 && (
+        (h.kind == 0 && pkt_subst(h, sindex(b.subrange(start, start + h.sample_bytes), h.sample_bytes), pol))
+        || lit_flags_policy(b, h, pol, start + h.sample_bytes, count - 1).0)),
+{ reveal(lit_flags_policy); }
+
+pub proof fn lemma_lit_flags_extend(b: Seq<u8>, h: PktH, pol: Policy, start: int, i: int)
+    requires i >= 0,
+    ensures lit_flags_policy(b, h, pol, start, i + 1).0 ==
+        (lit_flags_policy(b, h, pol, start, i).0 ||
+            (h.kind == 0 && pkt_subst(h, sindex(b.subrange(start + i * h.sample_bytes,
+                start + (i + 1) * h.sample_bytes), h.sample_bytes), pol))),
+    decreases i,
+{
+    hide(lit_flags_policy);
+    hide(pkt_subst);
+    lemma_literal_shift(start, h.sample_bytes, i);
+    lemma_lit_flags_step(b, h, pol, start, i);
+    lemma_lit_flags_step(b, h, pol, start, i + 1);
+    if i > 0 {
+        lemma_lit_flags_extend(b, h, pol, start + h.sample_bytes, i - 1);
+    } else {
+        lemma_lit_flags_step(b, h, pol, start + h.sample_bytes, 0);
+    }
+}
+
+/// Cursor/error projection used to connect the executable pixel phases to MP.
+pub open spec fn policy_phase(b: Seq<u8>, m: MHModel, pol: Policy) -> Result<int, Error> {
+    let id = 18 + m.id_length as int;
+    let c0 = id + m.map_bytes;
+    let map = b.subrange(id, c0);
+    let h = pkt_of_mh_policy(m, pol);
+    if rle_policy(m.image_type, pol) {
+        match mr_cur_policy(b, h, map, pol, c0, 0) {
+            Ok((c, _)) => Ok(c),
+            Err(MrErr::Api(e)) => Err(e),
+            Err(MrErr::Outside) => Err(Error::ColorIndexOutOfRange),
+        }
+    } else { mp_raw_cur_policy(b, h, pol, c0, 0) }
+}
+
+pub proof fn lemma_policy_phase(b: Seq<u8>, m: MHModel, pol: Policy)
+    requires
+        18 + m.id_length as int <= b.len(),
+        0 <= m.map_bytes,
+        18 + m.id_length as int + m.map_bytes <= b.len(),
+    ensures mp_after_policy(b, m, pol) == match policy_phase(b, m, pol) {
+        Err(e) => Err(e),
+        Ok(c) => if mp_suffix_ok_policy(b, pol, c) {
+            Ok((m.width as int, m.height as int, mp_assemble_policy(b, m, pol, 18 + m.id_length as int)))
+        } else { Err(Error::TrailingBytes) },
+    },
+{
+    let id = 18 + m.id_length as int;
+    let c0 = id + m.map_bytes;
+    let map = b.subrange(id, c0);
+    let h = pkt_of_mh_policy(m, pol);
+    if rle_policy(m.image_type, pol) {
+        lemma_mr_cur_policy_proj(b, h, map, pol, c0, 0, Seq::empty());
+        reveal(mr_policy);
+    } else { lemma_mp_raw_policy_cur(b, h, map, pol, c0); }
+    reveal(policy_phase);
+    reveal(mp_after_policy);
+}
+
+/// The full MR tuple agrees with its cursor, partial-pixel and error-cursor projections.
+pub proof fn lemma_mr_state_policy_proj(
+    s: Seq<u8>, h: PktH, map: Seq<u8>, pol: Policy, cur: int, prod: int, acc: Seq<Seq<u8>>,
+)
+    requires 0 <= cur <= s.len(), 0 <= prod <= h.n, 1 <= h.sample_bytes,
+    ensures match mr_at_policy(s, h, map, pol, cur, prod, acc) {
+        Ok((c, pr, px)) => mr_cur_policy(s, h, map, pol, cur, prod) == Ok((c, pr))
+            && px == acc + mr_pix_policy(s, h, map, pol, cur, prod)
+            && pr == prod + mr_pix_policy(s, h, map, pol, cur, prod).len(),
+        Err((e, c, pr, px)) => mr_cur_policy(s, h, map, pol, cur, prod) == Err(e)
+            && mr_gcur_policy(s, h, map, pol, cur, prod) == Ok(c)
+            && px == acc + mr_pix_policy(s, h, map, pol, cur, prod)
+            && pr == prod + mr_pix_policy(s, h, map, pol, cur, prod).len(),
+    },
+    decreases h.n - prod,
+{
+    hide(conv2_policy);
+    lemma_mr_cur_policy_proj(s, h, map, pol, cur, prod, acc);
+    reveal(mr_at_policy); reveal(mr_pix_policy); reveal(mr_gcur_policy);
+    broadcast use vstd::seq_lib::group_seq_lib_default;
+    if prod < h.n && cur < s.len() {
+        let count = rle_count(s[cur] as int);
+        let paint = if count < h.n - prod { count } else { h.n - prod };
+        let start = cur + 1;
+        if !(count > h.n - prod && pol.rle_overrun == RleOverrunOptions::Reject) {
+            if rle_repeat(s[cur] as int) {
+                let end = start + h.sample_bytes;
+                if end <= s.len() {
+                    let sample = s.subrange(start, end);
+                    if h.kind != 0 || !pkt_reject(h, sindex(sample, h.sample_bytes), pol) {
+                        let here = pix_pow(conv2_policy(h, map, sample, pol), paint);
+                        crate::model::lemma_pix_pow_len(conv2_policy(h, map, sample, pol), paint);
+                        lemma_mr_state_policy_proj(s, h, map, pol, end, prod + paint, acc + here);
+                        vstd::seq_lib::lemma_concat_associative(acc, here, mr_pix_policy(s, h, map, pol, end, prod + paint));
+                    }
+                }
+            } else {
+                let need = if pol.rle_overrun == RleOverrunOptions::ClipSamples { paint } else { count };
+                let end = start + need * h.sample_bytes;
+                if end <= s.len() {
+                    if !lit_ok_policy(s, h, start, paint, pol) {
+                        lemma_lit_good_policy_le(s, h, start, paint, pol);
+                        lemma_lit_out_policy_len(s, h, map, pol, start, lit_good_policy(s, h, start, paint, pol));
+                    } else {
+                        let here = lit_out_policy(s, h, map, pol, start, paint);
+                        lemma_lit_out_policy_len(s, h, map, pol, start, paint);
+                        lemma_mr_state_policy_proj(s, h, map, pol, end, prod + paint, acc + here);
+                        vstd::seq_lib::lemma_concat_associative(acc, here, mr_pix_policy(s, h, map, pol, end, prod + paint));
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// T2/T4 map-address bounds for every retained policy, including ZeroBased.
+pub proof fn t2_t4_policy_map_address(h: PktH, pol: Policy, index: int, stride: int)
+    requires in_range_policy(h, index, pol), 0 <= h.map_len <= 65535, 1 <= stride <= 4,
+    ensures
+        0 <= entry_j(index, h.map_first, pol) * stride,
+        (entry_j(index, h.map_first, pol) + 1) * stride <= h.map_len * stride <= 262140,
+        pol.map_index == MapIndexOptions::ZeroBased ==> entry_j(index, h.map_first, pol) == index,
+        pol.map_index == MapIndexOptions::Absolute ==> index >= h.map_first
+            && entry_j(index, h.map_first, pol) == index - h.map_first,
+{
+    reveal(in_range_policy);
+    let j = entry_j(index, h.map_first, pol);
+    assert(0 <= j * stride && (j + 1) * stride <= h.map_len * stride && h.map_len * stride <= 262140)
+        by (nonlinear_arith) requires 0 <= j < h.map_len, h.map_len <= 65535, 1 <= stride <= 4;
 }
 
 } // verus!

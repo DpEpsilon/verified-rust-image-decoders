@@ -3,7 +3,7 @@
 
 Three input sets, all compared on accept/reject plus (width, height, SHA-256 of
 RGBA8) for accepted results; error names are never compared:
-  1. the local real-file corpus (/tmp/claude-0/corpora/tga; 300 measured files),
+  1. the local real-file corpus ($CORPUS_DIR/tga (default ~/corpora/tga); 300 measured files),
      using the native results already recorded in results.jsonl;
   2. the synthetic POLICY-VECTORS.json inputs (natives invoked here);
   3. seeded mutation sets from ~/projects/leniency/format_harness.generate:
@@ -20,6 +20,7 @@ import argparse
 import collections
 import hashlib
 import json
+import os
 from pathlib import Path
 import sys
 sys.dont_write_bytecode = True
@@ -28,7 +29,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, '/home/ws/projects/leniency')
 import policy_oracle as O
 
-CORPUS = Path('/tmp/claude-0/corpora/tga')
+CORPUS = Path(os.environ.get('CORPUS_DIR', str(Path.home() / 'corpora'))).expanduser() / 'tga'
 WORK = Path('/tmp/claude-0/tga-policy')
 TARGETS = {'Strict': ['verified'], 'GdkCompat-2.42.12': ['gdk-forced-whole'],
            'ImageCrateCompat-0.25.10': ['image']}

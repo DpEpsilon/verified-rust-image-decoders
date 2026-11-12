@@ -5299,7 +5299,6 @@ pub proof fn lemma_mr_packet_step(
 /// empty word) and reads no packet; the step uses `count=128` and the remaining
 /// pixels `>= 128`. Stated with an initial pixel prefix `out0`, so it composes;
 /// `lemma_packet_repetition_mr` is the `MR` form of the manifest.
-#[verifier::rlimit(80)]
 pub proof fn lemma_packet_repetition(
     s: Seq<u8>,
     h: PktH,
@@ -6159,6 +6158,107 @@ pub proof fn lemma_mp_conv_domain(b: Seq<u8>, m: MHModel)
     assert(1 <= p.sample_bytes <= 4);
 }
 
+/// A successful `MH` record's raw header fields, read back from the input at
+/// the R1 offsets, plus `attr_ok`. The Strict policy bridge needs the raw
+/// fields (to compare `pkt_of_mh(m)` with `pkt_of_mh_policy(m, Strict)` field
+/// by field) and the attribute-count fact (Strict's `Exact` acceptance agrees
+/// with `mh`'s).
+pub proof fn lemma_mh_fields(b: Seq<u8>, m: MHModel)
+    requires
+        mh(b) == Ok(m),
+    ensures
+        18 <= b.len(),
+        m.id_length == b[0],
+        m.color_map_flag == b[1],
+        m.image_type == b[2],
+        m.map_first == le16(b, 3) as u32,
+        m.map_length == le16(b, 5) as u32,
+        m.map_entry_depth == b[7],
+        m.width == le16(b, 12) as u32,
+        m.height == le16(b, 14) as u32,
+        m.pixel_depth == b[16],
+        m.descriptor == b[17],
+        m.n == le16(b, 12) * le16(b, 14),
+        m.sample_bytes == sample_bytes_of(b[16]),
+        attr_ok(b),
+{
+    reveal(mh);
+    reveal(mh_selfcons);
+    lemma_mh_selfcons(b, m);
+}
+
+/// A successful raw cursor at the start stays `Ok` at every later `k <= N`: the
+/// recursion only advances on decodable samples and stops at `N`.
+pub proof fn lemma_mp_raw_cur_mono_ok(b: Seq<u8>, p: PktH, c0: int, k: int, cend: int)
+    requires
+        mp_raw_cur(b, p, c0, 0) == Ok(cend),
+        0 <= k <= p.n,
+    ensures
+        mp_raw_cur(b, p, c0, k) == Ok(cend),
+    decreases k,
+{
+    if k > 0 {
+        lemma_mp_raw_cur_mono_ok(b, p, c0, k - 1, cend);
+        assert(0 <= k - 1 < p.n) by (nonlinear_arith)
+            requires
+                k > 0,
+                k <= p.n,
+        ;
+        reveal(mp_raw_cur);
+        if p.sample_bytes <= 0 {
+            assert(mp_raw_cur(b, p, c0, k - 1) == Err(Error::ColorIndexOutOfRange));
+        }
+        if c0 + (k - 1) * p.sample_bytes + p.sample_bytes > b.len() {
+            assert(mp_raw_cur(b, p, c0, k - 1) == Err(Error::TruncatedPixels));
+        }
+        if p.kind == 0 {
+            let smp = b.subrange(c0 + (k - 1) * p.sample_bytes, c0 + (k - 1) * p.sample_bytes
+                + p.sample_bytes);
+            if !in_range(p, sindex(smp, p.sample_bytes)) {
+                assert(mp_raw_cur(b, p, c0, k - 1) == Err(Error::ColorIndexOutOfRange));
+            }
+        }
+    }
+}
+
+/// A successful 1.0 raw run makes every sample up to `N` decodable (present and
+/// in range for an indexed image): `raw_prefix_ok` for every prefix.
+pub proof fn lemma_raw_prefix_ok_of_cur_ok(b: Seq<u8>, p: PktH, map: Seq<u8>, c0: int, k: int, cend: int)
+    requires
+        mp_raw_cur(b, p, c0, 0) == Ok(cend),
+        0 <= k <= p.n,
+    ensures
+        raw_prefix_ok(b, p, map, c0, k),
+{
+    reveal(raw_prefix_ok);
+    reveal(raw_sample_ok);
+    if p.n >= 0 {
+        assert forall|j: int| 0 <= j < k implies #[trigger] raw_sample_ok(b, p, map, c0, j) by {
+            assert(0 <= j < p.n) by (nonlinear_arith)
+                requires
+                    0 <= j,
+                    j < k,
+                    k <= p.n,
+            ;
+            lemma_mp_raw_cur_mono_ok(b, p, c0, j, cend);
+            reveal(mp_raw_cur);
+            if p.sample_bytes <= 0 {
+                assert(mp_raw_cur(b, p, c0, j) == Err(Error::ColorIndexOutOfRange));
+            }
+            if c0 + j * p.sample_bytes + p.sample_bytes > b.len() {
+                assert(mp_raw_cur(b, p, c0, j) == Err(Error::TruncatedPixels));
+            }
+            if p.kind == 0 {
+                let smp = b.subrange(c0 + j * p.sample_bytes, c0 + j * p.sample_bytes
+                    + p.sample_bytes);
+                if !in_range(p, sindex(smp, p.sample_bytes)) {
+                    assert(mp_raw_cur(b, p, c0, j) == Err(Error::ColorIndexOutOfRange));
+                }
+            }
+        }
+    }
+}
+
 /// One raw sample is decodable at absolute offset `c0 + j*sample_bytes`: its
 /// `sample_bytes` bytes are present and, for an indexed image, its index is in
 /// range. These are exactly the two guards the executable's raw loop passes
@@ -6270,6 +6370,143 @@ pub proof fn lemma_mp_raw_err(b: Seq<u8>, p: PktH, map: Seq<u8>, c0: int, e: Err
             assert(t.0 == e);
         },
     }
+}
+
+// ---------------------------------------------------------------------------
+// The packet stream's success shape: 1.0-only facts about a successful
+// `MR`/`mr_at` at `(cur, prod)`, used by the Strict policy bridge. A success
+// at a present control byte with a fitting packet (`count <= N-prod`, the one
+// place `MR` and `mr_cur` differ) fixes the next cursor, and each branch fixes
+// the pixel sequence, from the recursion's own shape.
+// ---------------------------------------------------------------------------
+
+/// `MR(s,h,map,cur,prod,out0) == Ok r` at a fitting packet gives the produced
+/// count and the pixel sequence. The final cursor `r.0` is the whole stream's,
+/// carried unchanged by the caller.
+pub proof fn lemma_mr_ok_shape(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    cur: int,
+    prod: int,
+    out0: Seq<Seq<u8>>,
+    r: (int, int, Seq<Seq<u8>>),
+)
+    requires
+        mr_at(s, h, map, cur, prod, out0) == Ok(r),
+        0 <= h.sample_bytes,
+    ensures
+        r.1 == prod + mr_pix(s, h, map, cur, prod).len(),
+        r.2 == out0 + mr_pix(s, h, map, cur, prod),
+{
+    lemma_mr_cur_pix_proj(s, h, map, cur, prod, out0);
+}
+
+/// The pixels `MR` produces from `(cur, prod)` at a fitting repeat packet: the
+/// converted sample repeated `count` times, then the continuation.
+pub proof fn lemma_mr_pix_ok_rep(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    cur: int,
+    prod: int,
+    c: Seq<u8>,
+    count: int,
+)
+    requires
+        0 <= cur < s.len(),
+        0 <= prod < h.n,
+        rle_count(s[cur] as int) == count,
+        count <= h.n - prod,
+        rle_repeat(s[cur] as int),
+        s.len() >= cur + 1 + h.sample_bytes,
+        c == conv2(h, map, s.subrange(cur + 1, cur + 1 + h.sample_bytes)),
+        h.kind == 0 ==> in_range(
+            h,
+            sindex(s.subrange(cur + 1, cur + 1 + h.sample_bytes), h.sample_bytes),
+        ),
+    ensures
+        mr_pix(s, h, map, cur, prod) == pix_pow(c, count) + mr_pix(
+            s,
+            h,
+            map,
+            cur + 1 + h.sample_bytes,
+            prod + count,
+        ),
+{
+    reveal(mr_pix);
+    reveal(rle_repeat);
+}
+
+/// The pixels `MR` produces at a fitting literal packet whose every sample has
+/// an in-range index: the conversions of all `count` samples, then the
+/// continuation.
+pub proof fn lemma_mr_pix_ok_lit(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    cur: int,
+    prod: int,
+    count: int,
+)
+    requires
+        0 <= cur < s.len(),
+        0 <= prod < h.n,
+        rle_count(s[cur] as int) == count,
+        count <= h.n - prod,
+        !rle_repeat(s[cur] as int),
+        s.len() >= cur + 1 + count * h.sample_bytes,
+        lit_ok(s, h, cur + 1, count),
+        0 <= h.sample_bytes,
+    ensures
+        mr_pix(s, h, map, cur, prod) == lit_out(s, h, map, cur + 1, count) + mr_pix(
+            s,
+            h,
+            map,
+            cur + 1 + count * h.sample_bytes,
+            prod + count,
+        ),
+        lit_good(s, h, cur + 1, count) == count,
+{
+    reveal(mr_pix);
+    reveal(rle_repeat);
+    lemma_rle_repeat_clear(s[cur]);
+    if h.kind == 0 {
+        lemma_lit_good_good_all(s, h, cur + 1, count);
+    } else {
+        lemma_lit_good_nonindexed(s, h, cur + 1, count);
+    }
+}
+
+/// The pixels `MR` produces at a fitting literal packet with an out-of-range
+/// index: only the good prefix. `g` is `lit_good`, the sample at which the
+/// index check fails, so `MR`'s pixel sequence stops there.
+pub proof fn lemma_mr_pix_ok_lit_prefix(
+    s: Seq<u8>,
+    h: PktH,
+    map: Seq<u8>,
+    cur: int,
+    prod: int,
+    count: int,
+    g: int,
+)
+    requires
+        0 <= cur < s.len(),
+        0 <= prod < h.n,
+        rle_count(s[cur] as int) == count,
+        count <= h.n - prod,
+        !rle_repeat(s[cur] as int),
+        s.len() >= cur + 1 + count * h.sample_bytes,
+        lit_good(s, h, cur + 1, count) == g,
+        0 <= h.sample_bytes,
+        h.kind == 0,
+        !lit_ok(s, h, cur + 1, count),
+    ensures
+        mr_pix(s, h, map, cur, prod) == lit_out(s, h, map, cur + 1, g),
+{
+    reveal(mr_pix);
+    reveal(rle_repeat);
+    lemma_rle_repeat_clear(s[cur]);
 }
 
 /// The success projection of `MP`'s raw phase: if the cursor-only model accepts,
