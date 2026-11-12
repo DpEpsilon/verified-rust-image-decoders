@@ -223,3 +223,138 @@ append; mutation 9's definitive run is 280.
 
 ## usize width (coordinator note, 2026-11-09)
 Checked on a standalone Verus file with the same toolchain (0.2026.11.02): `assert(usize::MAX == 0xffff_ffff_ffff_ffff)` FAILS while `assert(usize::MAX >= 0xffff_ffff)` verifies, i.e. Verus treats `usize` as a 32-or-64-bit type by default unless a crate declares `global size_of usize == 8` (none of the crates here do: grep for `global size_of`/`size_of usize` is empty). The proofs therefore hold for both widths in the sense of the manifest's 'parameterised by a word width'. This addresses the 'no 32-bit verifier run' review finding as a width-generic proof; it is not an actual i686 build or test run.
+
+## TGA policy (POLICY-SPEC.md / THEOREMS-POLICY-DELTA.md)
+
+The frozen policy layer. New crate modules `src/policy.rs` (the 13 option enums,
+the `Policy` record, the four named profile records, the `Profile` selector, the
+`pub(crate)` constructors) and `src/policy_model.rs` (the policy-indexed models
+and their lemmas). `src/tga.rs`, `src/model.rs` and `src/model_vectors.rs` are
+byte-identical to the 642-obligation 1.0 state (the `decode` arity and result
+type are unchanged); `src/lib.rs` gains the two modules.
+
+### Stage 1 — policy-indexed models with Strict as the definitional instance (DONE)
+
+- `policy.rs`: 13 `#[non_exhaustive]` option enums with Strict's value first;
+  `Policy` with `pub` fields (Verus needs them public for the model's spec fns to
+  be well-formed) but `#[non_exhaustive]` and `pub(crate)` constructors
+  `strict_policy_exec`/`profile_policy_exec`, so no external literal or mutation;
+  `Profile {Strict, Recommended}` (`#[non_exhaustive]`, `Default = Strict`); the
+  spec records `strict_policy`, `recommended_policy`, `gdk_compat_policy`,
+  `image_crate_compat_policy` and `profile_policy`. The two compat records are
+  present (frozen field values) but the compat `Profile` variants are added when
+  their nine pixel-rule fields are implemented.
+- `policy_model.rs`: `mh_policy` (R1–R7 with the option branches), `conv2_policy`
+  (`conv_sample_policy`/`conv_map_policy` with `rgb5`, `map5`, `alpha`,
+  `map16_alpha`, `map_index`, `index_range`), and the packet/raw/full model
+  `mr_at_policy`, `mr_pix_policy`, `mp_raw_acc_policy`, `mp_pixels_policy`,
+  `mp_assemble_policy`, `mp_after_policy`, `mp_policy`, `recovered_policy`. Also
+  `map_bytes_policy`, `attr_ok_policy`, `eff_attr`, `pkt_of_mh_policy`,
+  `image_index_depth_bad`.
+- Strict is the definitional instance: `lemma_mh_policy_strict`,
+  `lemma_conv2_policy_strict`, `lemma_lit_{ok,good,out}_policy_strict`,
+  `lemma_mp_raw_acc_policy_strict`, plus the per-check bridges
+  (`lemma_{type_ok,map,depth_ok,map_coherence,attr_ok,map_bytes}_policy_strict`,
+  `lemma_in_range_policy_strict`) — each a definitional reduction at
+  `strict_policy()`, no existing theorem weakened.
+- `policy_strict` bridge for the packet stream is stated on the 1.0 domain
+  (every sample's index in range): `lemma_mp_raw_acc_policy_strict` takes that
+  as a hypothesis, split into a small step lemma to stay inside the default
+  solver budget (no `#[verifier::rlimit]`).
+- Real-crate run 025: **698 verified, 0 errors** (was 642); `cargo test --test
+  conformance` 169/169; `spec-frozen/*` and `policy/{POLICY-SPEC.md,
+  THEOREMS-POLICY-DELTA.md, policy_oracle.py, gen_policy_vectors.py,
+  POLICY-VECTORS.json, QUESTIONS.md}` hashes match `policy/FREEZE.txt`.
+
+### Stage 2/3 — model-level obligations E and R (E DONE; R partial)
+
+- Final delivered state: real-crate run 040, **722 verified, 0 errors**; `cargo
+  test --test conformance` 169/169; `tools/audit_alloc.sh` OK (one `vec!`); the
+  frozen policy and spec-frozen hashes all match.
+
+- **E (flag exactness)** DONE. `recovered_policy` is *defined* as the closed
+  two-event disjunction (clip bit OR substitution bit), so E's "iff" is by
+  construction. The named corollaries are proved: `lemma_pkt_clip_reject`,
+  `lemma_pkt_subst_reject`, `lemma_mr_flags_no_events`,
+  `lemma_lit_flags_no_events`, `lemma_raw_subst_no_events`,
+  `lemma_recovered_policy_reject`, `lemma_recovered_policy_strict` (every record
+  with `rle_overrun=Reject` and `index_range=Reject`, Strict included, has
+  `recovered=false`). Probe run 026.
+- **R (Recommended conservativity)** partial. Proved: the four site lemmas
+  (`lemma_suffix_ignore_on_footer`, `lemma_eff_attr_lenient_accepted`,
+  `lemma_map_recommended_on_strict`, `lemma_map_coherence_recommended`), the
+  header record equality `lemma_mh_policy_recommended_on_strict_ok`
+  (`mh_policy(b,Recommended) = Ok(m)` on a Strict-accepted input), the conversion
+  equality `lemma_conv2_policy_recommended_on_strict` and the record-indexed
+  equalities `lemma_conv2_policy_rec_eq_strict`, `lemma_in_range_rec_eq_strict`,
+  `lemma_raw_subst_rec_eq_strict`, `lemma_lit_{ok,good,out}_rec_eq_strict`,
+  `lemma_mp_raw_acc_rec_eq_strict` (the raw phase is identical under the two
+  records for *every* input), and the packet-phase induction
+  `lemma_mr_at_rec_eq_strict_on_ok` (Strict-ok implies the Recommended stream
+  returns the same `Ok`). NOT done: the end-to-end `mp_policy` conservativity
+  (`mp_policy(b,Recommended) = mp_policy(b,Strict)` with `recovered=false`), which
+  needs the pixel-sequence/assembly equality `mr_pix_policy(Recommended) =
+  mr_pix_policy(Strict)` glued into `mp_assemble_policy` and an induction for the
+  Recommended flag scan; the intermediate stubs for these failed (a
+  pixel-sequence equality and an rlimit on the assembled lemma) and were removed
+  rather than left unproved.
+- Obligation **A** (allocation): `tools/audit_alloc.sh` (the DIB script adapted
+  to `src/tga.rs`) reports exactly one `vec!` and no other allocating construct.
+
+### Stage 2/3 — model-level obligation R (DONE, run 062)
+
+- Final delivered state: real-crate run 062, **739 verified, 0 errors**; `cargo
+  test --test conformance` 169/169; `tools/audit_alloc.sh` OK (one `vec!`); the
+  frozen policy and spec-frozen hashes all match `policy/FREEZE.txt`.
+- **R (Recommended conservativity) DONE** at the model level:
+  `lemma_mp_policy_recommended_on_strict_ok` proves `forall b, r:
+  mp_policy(b, Strict) = Ok(r) ==> mp_policy(b, Recommended) = Ok(r)` and
+  `recovered_policy(b, Recommended) = false`. Chain (all in `policy_model.rs`):
+  the four site lemmas and header equality (above); `pkt_of_mh_policy` record
+  equality; the packet-phase pixel equality
+  `lemma_mr_pix_rec_eq_strict_on_ok` and the flag-scan zero
+  `lemma_mr_flags_rec_false_on_strict_ok`, each a per-packet induction fed by
+  `lemma_strict_mr_ok_no_overrun` (a Strict-`Ok` packet's count fits the
+  remaining pixels, so Recommended's `ClipPacket` never fires); the raw-phase
+  equality `lemma_mp_raw_acc_rec_eq_strict` and
+  `lemma_raw_subst_no_events`; `orient` equality from the pixel-sequence
+  equality; and the RLE/raw `mp_after` case lemmas behind one dispatch.
+- The rlimit hazard was avoided by factoring, not by any budget attribute: the
+  single `mp_after` body and its RLE case both exceeded the default solver
+  budget, so each was split into small non-recursive shape lemmas
+  (`lemma_after_rle_shape`, `_recommended`, `lemma_after_rle_ok_suffix`,
+  `lemma_recovered_rle_false`) called in sequence. No `#[verifier::rlimit]`.
+- `policy.rs` now carries the four-variant `Profile` (`Strict`, `Recommended`,
+  `GdkCompat`, `ImageCrateCompat`) and the compatibility records in
+  `profile_policy_exec`; the `Profile` extension is compiling and verifying but
+  has **no executable effect** yet (nothing calls it).
+- `policy_model.rs` additionally carries the header-indexed spec helpers
+  (`mh_policy_of`, `*_flags` map/attr/depth predicates,
+  `lemma_mh_policy_eq_of_header`) and `conv_domain`, all verified. These are the
+  spec side of the policy header parser (piece B1) and are currently unused.
+
+### Stage 2/3 — NOT done (see STUCK.md)
+
+- **B (executable)**: `decode_with_policy(bytes, profile) -> result + recovered`
+  is not implemented. The policy-parameterised `parse_header`, `decode_one`,
+  `convert_sample`/`convert_index`, `decode_raw`, `decode_rle` and the
+  `decode_policy_tracked` charged-step bound `steps <= c*(|b|+N)` are not
+  present. `tga.rs` is byte-identical to the 722-obligation state
+  (`tga.rs.pol-4` == `tga.rs`); a full draft of `parse_header_policy`,
+  `header_verdict`, `header_inv_policy`, `pkt_of_policy` and the eight guard
+  wrappers existed and compiled but was **reverted** to the green tree on the
+  sandbox-restart request; its design is recorded in STUCK.md for continuation.
+- **C (tests)**: the Rust conformance harness over `POLICY-VECTORS.json`, the
+  corpus acceptance counts and the `cfg(test)` differential harness against
+  `policy_oracle.py` are not written. The corpus bytes are at
+  `/tmp/claude-0/corpora/tga/` per `policy/validate.py` (absent in this sandbox;
+  regenerate or re-fetch before the corpus counts).
+- The compat-profile exact semantics and the universal T1-T4/T8/T10/W
+  obligations on the policy-indexed executable are not stated (they need B).
+
+### Green backups
+
+`src/*.pol-<n>`: `tga.rs`/`model.rs`/`lib.rs` `.pol-4` are the 722-obligation
+run-041 state; `policy.rs`/`policy_model.rs` `.pol-7` (and the identical
+`policy.rs`/`policy_model.rs`/`tga.rs` `.pol-7`) are the 739-obligation run-062
+state (`tga.rs.pol-7` == `tga.rs.pol-4`).

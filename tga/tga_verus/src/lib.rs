@@ -2,6 +2,8 @@ use vstd::prelude::*;
 
 pub mod model;
 pub mod model_vectors;
+pub mod policy;
+pub mod policy_model;
 pub mod tga;
 
 verus! {
