@@ -1,0 +1,52 @@
+gitlab.gnome.org/GNOME/gdk-pixbuf	TOO-LARGE-OR-EMPTY	tests/test-images/fail/empty-file.tga	0
+gitlab.gnome.org/GNOME/gdk-pixbuf	OK	commit=ff4acb5b5c9a8ac29667235ec1626c996dec84de	candidates=43	stored=42	typecheck_ok=40	duplicates=0	failed=0
+KDE/kimageformats	OK	commit=7f260d005ffa0cd91341205683b76bef263e20b0	candidates=55	stored=38	typecheck_ok=55	duplicates=17	failed=0
+python-pillow/Pillow	OK	commit=393a155d8db29dc53ac33cc045d01c8a82098dd4	candidates=35	stored=34	typecheck_ok=35	duplicates=1	failed=0
+image-rs/image	OK	commit=e70e9fe5073f4b298a33b72993847241a8eaaca6	candidates=26	stored=26	typecheck_ok=18	duplicates=0	failed=0
+AcademySoftwareFoundation/OpenImageIO	OK	commit=2fb57aa7b8895540310957f4a455597384ce4b34	candidates=13	stored=13	typecheck_ok=11	duplicates=0	failed=0
+libgd/libgd	OK	commit=3e04b12b67e91bd60528421bbff490eb4b181247	candidates=31	stored=12	typecheck_ok=28	duplicates=19	failed=0
+assimp/assimp	OK	commit=3f1e307a60b0d4f5d4ed22f879c52ace20739472	candidates=10	stored=6	typecheck_ok=8	duplicates=2	failed=0
+bluescan/tacentview	OK	commit=e78dd2117de64bcec4689a10d778d83f0268bafa	candidates=0	stored=0	typecheck_ok=0	duplicates=0	failed=0
+cerviDOS/cursed-vga	TOO-LARGE-OR-EMPTY	sample images/glass.tga	5701284
+cerviDOS/cursed-vga	OK	commit=7ded15f2f4ef5c50a5ca364550f4515e49bd7439	candidates=13	stored=8	typecheck_ok=8	duplicates=0	failed=0
+gitmike81/jack-cs2-sticker-kit	OK	commit=f4cf9abf5a92a91987c63d48e00beab2dbc1f93c	candidates=10	stored=8	typecheck_ok=8	duplicates=0	failed=0
+jaloji/tga-viewer	OK	commit=e7de61b8ca1451e0e5f86aa2245e8c17bed1a5ad	candidates=32	stored=8	typecheck_ok=8	duplicates=0	failed=0
+lennartstolz/TGAImage	OK	commit=e11cbcf60455385d9ceafb2b13cbb52cfa4b7d2e	candidates=8	stored=8	typecheck_ok=8	duplicates=0	failed=0
+nameless323/Cookbook	OK	commit=6a3376b9fdf0d692cf6a2a72d4256855b8a697fa	candidates=14	stored=8	typecheck_ok=8	duplicates=0	failed=0
+npedotnet/TGAReader	OK	commit=3817d1cf63c5cba36fd4f909d6397ad4456808bd	candidates=48	stored=8	typecheck_ok=8	duplicates=0	failed=0
+HappySeaFox/sail	OK	commit=4e8fb7a2be7fc28199038cf24bd799e6cedd544c	candidates=17	stored=7	typecheck_ok=8	duplicates=1	failed=0
+OxideAV/oxideav-tga	OK	commit=2533a21d5aa5c29a433a47f81a06c84e4fc34f2c	candidates=11	stored=7	typecheck_ok=8	duplicates=1	failed=0
+DEF7/TGA2STL	OK	commit=a3c1a4e3273c59e0a42ca31a49b28e3810d72a95	candidates=5	stored=5	typecheck_ok=5	duplicates=0	failed=0
+UnmovableLibrary/lab5	OK	commit=b20a7ae584c7ccd4cd3e3b13413103eee80eea19	candidates=5	stored=5	typecheck_ok=5	duplicates=0	failed=0
+dimao8/libtgaloader	OK	commit=7373169aaa20eaa184f56c9e0793a5fc40ef5468	candidates=5	stored=5	typecheck_ok=5	duplicates=0	failed=0
+nickbabcock/Pfim	OK	commit=f758f3cdb3cb5063cf4609358dd82a119ea3e128	candidates=27	stored=5	typecheck_ok=8	duplicates=3	failed=0
+OpenImageIO/oiio-images	OK	commit=d13e98f92b4e75ae7cd949cc5aa1df219560fb93	candidates=11	stored=1	typecheck_ok=8	duplicates=7	failed=0
+google/wuffs	OK	commit=b36a81d3352604fee1fee3661f39909706b1b966	candidates=3	stored=3	typecheck_ok=3	duplicates=0	failed=0
+chux0519/tgaimage	OK	commit=4fb266c9fe583e171f2f01f7d27be0ce04b322a0	candidates=22	stored=3	typecheck_ok=8	duplicates=5	failed=0
+ftrvxmtrx/tga	OK	commit=bd8e8d5be13a2bda61c29a47ca41ecc8f20ee731	candidates=20	stored=3	typecheck_ok=8	duplicates=5	failed=0
+Shervanator/SOIL	OK	commit=602d0c36173fcacc37764e8b1cd3765ed5e13527	candidates=2	stored=2	typecheck_ok=2	duplicates=0	failed=0
+haraldk/TwelveMonkeys	OK	commit=57750b651f278aac3dd970804123d7f72ee4c75c	candidates=28	stored=2	typecheck_ok=8	duplicates=6	failed=0
+i9or/more-primitive-obj-loader	OK	commit=731b21e5f30d16efda71303efa5216a4df3a5e0a	candidates=2	stored=2	typecheck_ok=2	duplicates=0	failed=0
+josh-english-2k18/tga-loader	OK	commit=0b11003fefff380d4472043865a47dd8985a4648	candidates=2	stored=2	typecheck_ok=2	duplicates=0	failed=0
+m1nuz/file2header	OK	commit=6a8861f29b2c477b83b95b274313f1637ce54b05	candidates=2	stored=2	typecheck_ok=2	duplicates=0	failed=0
+r-lyeh-archived/spot	OK	commit=171c208314d413330973cfefe5d14b7908621f42	candidates=4	stored=2	typecheck_ok=4	duplicates=2	failed=0
+raydelto/tga_loader	OK	commit=ddbfec8c0297fc4f4841f9af6ecefc11541b5a3c	candidates=2	stored=2	typecheck_ok=2	duplicates=0	failed=0
+ImageMagick/ImageMagick	OK	commit=faec693f0ce3c9615fdc6093e9385c149699a39d	candidates=1	stored=1	typecheck_ok=1	duplicates=0	failed=0
+qt/qtimageformats	OK	commit=b451ac1af8290504df04a4f34c33c756ed2290a2	candidates=1	stored=1	typecheck_ok=1	duplicates=0	failed=0
+libsdl-org/SDL_image	OK	commit=4f023e210f1ab9989d24fe2c86c1370a27badd27	candidates=1	stored=1	typecheck_ok=1	duplicates=0	failed=0
+gitlab.gnome.org/sophie-h/test-images	OK	commit=538f2ab9c9a2ef32877c9451d884b20163ef39c7	candidates=1	stored=1	typecheck_ok=1	duplicates=0	failed=0
+godotengine/godot	OK	commit=069458825a8e4a01938a176372c0709ab6fd9dc3	candidates=1	stored=1	typecheck_ok=1	duplicates=0	failed=0
+libvips/libvips	OK	commit=93042c1a639117254657b3d7dfdf7d20c91e9b6b	candidates=1	stored=1	typecheck_ok=1	duplicates=0	failed=0
+AM-young-fun/TgaLoader	OK	commit=540d651d1061579fb9cacba19023ff56646d3c19	candidates=1	stored=1	typecheck_ok=1	duplicates=0	failed=0
+SuperIlu/DosView	TOO-LARGE-OR-EMPTY	images/IMG_1940.tga	13831658
+SuperIlu/DosView	OK	commit=1757e236a9424f173bdc58c923c1ea7d13d9c816	candidates=2	stored=1	typecheck_ok=1	duplicates=0	failed=0
+WTFTrick/gl_tga_viewer	OK	commit=d680c5be9dc4b77bf6b633ded521d70057abb6c7	candidates=1	stored=1	typecheck_ok=1	duplicates=0	failed=0
+Zi7ar21/C-Path-Tracer	OK	commit=9a542cd7b072a486193e7cdcfba6949ce6c10f6e	candidates=1	stored=1	typecheck_ok=1	duplicates=0	failed=0
+aspose-imaging/Aspose.Imaging-for-Java	OK	commit=bcc55f8931aeb116fc6cd44f46ab3aa112384703	candidates=1	stored=1	typecheck_ok=1	duplicates=0	failed=0
+delphi-pascal-archive/targa	OK	commit=b2629527436295a939cf7ec3c838e7cdaf3f869e	candidates=1	stored=1	typecheck_ok=1	duplicates=0	failed=0
+ksiazeblaznow/tga2png	OK	commit=3e648d28852f918a4e3ad2c3183ff8f6ee99ea6e	candidates=1	stored=1	typecheck_ok=1	duplicates=0	failed=0
+ksm2/targa-service-worker	TOO-LARGE-OR-EMPTY	assets/cappuccino.tga	72480812
+ksm2/targa-service-worker	OK	commit=de86ed3f5841696aea219543bb4fa675a3da9ab6	candidates=2	stored=1	typecheck_ok=1	duplicates=0	failed=0
+paulusmas/TGA	OK	commit=255572a20abb0844cdafc0c096d4bbe7b694ec63	candidates=1	stored=1	typecheck_ok=1	duplicates=0	failed=0
+vthibault/tga.js	OK	commit=4877572f33058053adb3a892684fb3f822885bd9	candidates=1	stored=1	typecheck_ok=1	duplicates=0	failed=0
+xiaozhuai/imageinfo	OK	commit=fcdb6e8fd8106305577a762de25b990db9858141	candidates=1	stored=1	typecheck_ok=1	duplicates=0	failed=0
