@@ -335,3 +335,197 @@ Checked on a standalone Verus file with the same toolchain (0.2026.11.02): `asse
   ImageCrateCompat-0.25.10 (and the other sixteen options); any input that sets
   `recovered = true` (P1 proves `false` for both profiles); `#[cfg(test)]` custom
   records.
+
+## P2a (policy refactor, second slice; INCOMPLETE)
+- **Delivered tree is the P1 baseline.** `dib_verus/src/dib.rs` and `model.rs`
+  are byte-identical to the P1 sources (verified run 280: 1594 verified, 0
+  errors). The P2a work is preserved in `dib_verus/src/dib.rs.p2a-wip2` and
+  `model.rs.p2a-wip2` (best state: 1633 verified, 3 errors) and the earlier
+  `*.p2a-wip` (1724 verified, 10 errors).
+- **Built in `*.p2a-wip2`.** Six new option enums (`PlanesOptions`,
+  `ReservedOptions`, `OffsetOptions`, `HighCountOptions`, `HeadersOptions`,
+  `MasksOptions`) and their `pub` fields on `Policy`; `strict_policy`/
+  `recommended_policy`/`profile_policy`/`profile_policy_exec` carrying all
+  eight fields; the model's `r1_prefix_policy` (reserved, offset), the
+  accessors `width_i_of`/`stored_of`/`planes_of`/`depth_of`/`compression_of`/
+  `used_of`/`comp_of`, `hsize_ok_policy`, `gdk_high_bound`,
+  `table_count_of_policy`, `masks_ok_policy`/`default_rgb_masks`/
+  `masks_after_policy`/`raw_masks_policy`, a new `r2r5_policy` (planes,
+  headers, high_count) and `r6r7_policy`/`r6r7_result_policy` (masks,
+  high_count, offset), `offset_effective`/`gdk_blank`/`gdk_rgb_reject`,
+  `mh_recovered_so_far`/`recovered_policy`, and the Gdk branches in
+  `mp_raw_policy`/`mp_rle_policy`/`mp_policy`; the executable's
+  `dib_fields`/`dib_finish`/`bmp_prefix_policy` honouring the options,
+  `policy_masks`, `decode_raw` parameterised by the pixel start `p0`,
+  `fill_blank`, and `decode_with_policy` returning the model's
+  `recovered_policy`. All the Strict-bridge lemmas for R1/R2–R5, the
+  `r2r5_policy` per-branch error lemmas, `lemma_mp_policy_gdk_rgb`, the
+  truncation lemmas and the new `lemma_mp_policy_ok_shape` verify.
+- **Not done.** `dib_finish` → `r6r7_policy` on the success path and
+  `lemma_r6r7_policy_strict` did not close; two per-function resource-limit
+  failures on `dib_fields`/`dib_finish` accompany them. The P2a conformance
+  extension (per-option oracle probes, generated vectors, per-option corpus
+  acceptance) was not written. See `STUCK.md` and `PROOF-REPORT-P2a.md`.
+- **Checks on the delivered baseline.** clean reverify 1594 verified, 0 errors
+  (runs 276 and 280); `cargo test --release` 302/302, corpus 84/58, policy
+  Strict/Recommended 102/102; `tools/audit_alloc.sh` OK; frozen inputs intact;
+  no escapes, no `#[verifier::rlimit]`.
+
+## P2b (policy refactor, third slice; INCOMPLETE — stopped at the escalation budget)
+- **Delivered tree is the run-387 green state** (`dib_verus/src/dib.rs`,
+  `model.rs`, `lib.rs`; backups `*.p2b-base2`): the P2a baseline (1658 verified,
+  0 errors) plus the reviewer-note exposure fix and the fourteen new option
+  enums with their `Policy` fields, every one at its Strict (bold) value. **No
+  option beyond the P2a six is behaviourally implemented.**
+- **Exposure fix (reviewer note).** `Policy`'s fields must stay `pub` for
+  `model.rs`'s `pub open spec fn`s to be well-formed outside the crate (Verus
+  treats any non-`pub` field as opaque and then rejects the spec-fn field
+  expressions the public entry point's own `ensures` mentions — tried
+  `pub(crate)`, 26 errors, run 295). The actual restriction is the constructors:
+  `strict_policy_exec` and `profile_policy_exec` are now `pub(crate)`, and
+  `Policy`/`MetadataOptions` are dropped from `lib.rs`'s exports, so no release
+  caller can obtain or build a custom record; `#[non_exhaustive]` still blocks
+  external literals. Flagged in `PROOF-REPORT`.
+- **New types.** `ShortPixelsOptions`, `RleEolOptions`, `RleOverrunOptions`,
+  `RleDeltaOptions`, `RleEobOptions`, `RleFillOptions`, `PaletteIndexOptions`,
+  `ScalingOptions`, `UnsupportedOptions`, `BitfieldOffsetOptions`,
+  `Bitfield16AlphaOptions`, `IncompleteMetadataOptions`, `ShortIndexedGapOptions`,
+  `HeaderBytesOptions`, each `#[non_exhaustive]`, plus the fourteen matching
+  `Policy` fields. All four `Policy` constructors carry them at the Strict value,
+  so `strict_policy()`/`recommended_policy()`/`profile_policy_exec` are unchanged
+  and `parse_header`'s Strict instance is byte-identical.
+- **rlimit recovery.** The fourteen extra fields pushed `parse_header` over the
+  per-function solver limit through its five redundant `reveal(strict_policy)`
+  calls (the strict-bridge lemmas redo those reveals); removing the redundant
+  reveals restored green (runs 297→298). The `model::strict_policy` spec-fn
+  gaining fourteen fields is what widened those terms.
+- **Not done.** `bitfield_offset = MetadataEnd` (the first of the fourteen) was
+  attempted across runs 299–388 and is **not** proved: the `&Header`-reference
+  field reads inside exec `if` conditions would not reduce to the same term as
+  the `as int` projections the record asserts use, and the whole
+  `decode_policy_tracked` then exceeded the per-function resource limit. See
+  `STUCK.md` (P2b section) for the ten-plus variants and the suggested fix
+  (compute the start from four plain values, or fold the option into the
+  record's own `pixel_start` at construction). The other thirteen options are
+  unimplemented. The `cfg(test)` oracle harness, the 26 unused
+  `CUSTOM-VECTORS` rows, and per-option corpus counts are likewise not extended.
+- **Checks on the delivered state.** clean reverify 1658 verified, 0 errors
+  (run 387); `cargo test --release` 302/302 vectors, corpus 84 files / 58
+  accepted, policy Strict/Recommended 102/102, the P2a `custom_policies_match_
+  python_oracle` harness green; frozen inputs intact; no escapes, no
+  `#[verifier::rlimit]`.
+
+## P2c (policy refactor, fourth slice — the two compatibility profiles)
+- **Delivered tree** (`dib_verus/src/dib.rs`, `model.rs` unchanged, `lib.rs`,
+  `src/policy_tests.rs`, `tests/policy_conformance.rs`; backups `*.p2c-final`):
+  run-442 green state, **1714 verified, 0 errors** (was 1712). All four frozen
+  named profiles are selectable from release code.
+- **`BmpProfile`.** `GdkCompat` and `ImageCrateCompat` variants added after
+  `Recommended`; the enum was already `#[non_exhaustive]`, `Default` stays
+  `Strict`.
+- **Spec records.** `gdk_compat_policy()` and `image_crate_compat_policy()` carry
+  every one of the twenty-two retained fields from the frozen POLICY-SPEC "Named
+  profiles" table; `profile_policy` gained the two arms. `profile_policy_exec`
+  gained the matching two arms with the same field values; the `Strict` and
+  `Recommended` arms are **byte-identical** to the run-437 file (checked), so the
+  P1 behaviour and its proofs are untouched. Six new verified obligations: the
+  two spec-fn bodies and the two `profile_policy_exec` arms each discharge their
+  `ensures` against `profile_policy` (the exec-constructor-equals-model equality,
+  as for `Strict`/`Recommended`). The constructors stay `pub(crate)`.
+- **Witness fix (task 3).** `t1_policy_totality` claimed `r.1 == false` for
+  *every* profile; that is false for the two compatibility profiles, which carry
+  recovery-producing options. Split into `t1_policy_recovery_flag` (all four,
+  `r.1 == recovered_policy(..)`, the frozen closed-event semantics) plus
+  `t1_policy_recovery_strict`/`_recommended` (concrete `BmpProfile::Strict` /
+  `Recommended`, `r.1 == false`, the original P1 claim at its original
+  quantification). No `model.rs` change was needed: `recovered_policy`,
+  `mh_recovered_so_far`, `pixel_recovered`, `gdk_blank` were already written over
+  an arbitrary `Policy`, and `lemma_mh_recovered_so_far_strict` stays as is.
+- **Conformance (`tests/policy_conformance.rs`).** `policy_conformance_all_profiles`
+  runs all four `POLICY-VECTORS.json` profiles, **102/102 each**, RGBA and
+  `recovered` checked. `policy_conformance_corpus_acceptance` checks the 71-file
+  BMP corpus per profile — **Strict 50, Recommended 52, GdkCompat-2.42.12 58,
+  ImageCrateCompat-0.25.10 55** — and, for Strict, the frozen
+  `corpus_expected.json` answer byte for byte.
+- **Public-vs-custom equality (task 3, the fixture half).** In
+  `policy_tests::custom_policies_match_python_oracle`, every oracle row whose
+  group is `profile-fixtures/*`, `profile-prefixes/*` or `profile-corpus/*`
+  (26,238 rows over the two compatibility profiles) asserts both that
+  `profile_policy_exec(profile)` equals the record `policy_of` builds from the
+  oracle's own assignment (so the release and test-only full assignments cannot
+  diverge) and that `decode_with_policy(bytes, mode, profile)` equals
+  `decode_custom_policy(bytes, mode, that_record)`. This is a crate unit test, not
+  an integration test: `decode_custom_policy` and the constructors are
+  `pub(crate)` + `#[cfg(test)]`.
+- **Task 4, flagged not done.** The `(Result<Decoded, Error>, bool)` return shape
+  is unchanged; a note on `decode_with_policy` records that folding `recovered`
+  into a `ProfiledDecoded` struct is a proof-neutral API-shape change.
+- **Checks on the delivered state.** clean reverify **1714 verified, 0 errors**
+  (runs 438/440/441/442); `cargo test --release` 302/302 vectors, corpus 84 files
+  / 58 accepted (Strict's answer), the four-profile policy conformance above, and
+  the extended `custom_policies_match_python_oracle` harness green;
+  `tools/audit_alloc.sh` OK (one `vec!`); frozen policy hashes match
+  `policy/FREEZE.txt`; no escapes, no `#[verifier::rlimit]`. `model.rs` and
+  `lib.rs` sources are unchanged from the run-437 green state.
+
+## P2d (the loader's `has_alpha` field on the verified result)
+- **What the loader needs.** Stock gdk-pixbuf 2.42.12 sets `has_alpha` from the
+  header alone: TRUE exactly when `biBitCount == 32` or `biCompression` is RLE8
+  (1) or RLE4 (2); it never inspects a pixel. `gdkpixbuf-loaders/src/bmp.rs`
+  currently derives `has_alpha` from `d.rgba` (any non-255 alpha) because
+  `Decoded` carried no header field.
+- **Delivered tree** (`dib_verus/src/dib.rs`, `model.rs`, `src/policy_tests.rs`,
+  `tests/conformance.rs`, `tests/policy_conformance.rs`; backups `*.p2d-0`
+  pre-change, `*.p2d-1` green): run-469 clean state, **1722 verified, 0 errors**
+  (was 1714, +8).
+- **The field.** `Decoded` gains `pub rle_or_32bpp: bool`. It is the small change
+  the brief asks for: `model.rs`'s `gdk_blank`/`partial_fill` already select the
+  transparent fill with `bits == 32 || compression == 1 || compression == 2`, so
+  the same predicate is now also a returned value. The Strict/Recommended/Gdk/
+  Image RGBA bytes are untouched: no pixel path reads the field, and every
+  existing postcondition (`decode_mp_eq`, `decode_policy_mp_eq`,
+  `recovered_policy`, the T12 work bound, the one-`vec!` allocation) is kept.
+- **Model predicates.** `rle_or_32bpp(depth, compression)`,
+  `mh_rle_or_32bpp(b, mode)` (the policy-free tie) and
+  `mh_policy_rle_or_32bpp(b, bm, p)` (the profiled selection: the partial
+  `RawFields` under `incomplete_metadata = Blank`, else the complete `MH_policy`
+  record, `false` on error). The two branch unfolds are named lemmas
+  (`lemma_mh_policy_rle_or_32bpp_partial`/`_complete`), as is
+  `lemma_mh_partial_none`.
+- **Postconditions.**
+  `decode`: `Ok(d) => d.rle_or_32bpp == mh_rle_or_32bpp(bytes@, mode)`.
+  `decode_with_policy` and its helpers: the new spec fn
+  `decode_policy_alpha_eq(r.0, b, bm, p)`; the profiled entry point, the tracked
+  and complete helpers, `decode_partial_metadata`, the two `finish_*` helpers,
+  and `decode_custom_policy` all carry it. Witnesses `t13_alpha_field` (policy
+  free) and `t9_policy_alpha` (all four profiles) state the same clauses at the
+  manifest's full quantification; `t13_policy_success_bounds` gained the clause.
+- **One budget note (no `#[verifier::rlimit]`).** Naming
+  `mh_policy_rle_or_32bpp` directly in `decode_complete_policy`'s `ensures` made
+  the solver unfold `mh_policy` at every return site and pushed that
+  (already-large) body past its default rlimit. The fix keeps the model tie but
+  moves it: `decode_policy_tracked` computes `alpha = header_alpha(&h)` and runs
+  `lemma_alpha_value` (with `lemma_complete_alpha`) to get
+  `alpha == mh_policy_rle_or_32bpp(...)`, then passes `alpha: bool` into
+  `decode_complete_policy` and the two `finish_*` helpers, whose clauses read
+  `d.rle_or_32bpp == alpha`. So the model predicate appears only in the small
+  functions, the .rs has exactly one `reveal` of it, and no function needs a
+  larger solver budget.
+- **Conformance.** `tests/conformance.rs` (302 vectors) and
+  `tests/policy_conformance.rs` (102 per profile) each recompute the rule from
+  the input's own `biBitCount`/`biCompression` bytes (DIB start 14/0; CORE and
+  16-byte layouts imply `biCompression = 0`) and assert it equals
+  `d.rle_or_32bpp` on every success. `src/policy_tests.rs`'s `check` does the
+  same on every custom-oracle row. The new
+  `gdkcompat_alpha_field_matches_header_rule_on_corpus` decodes all 71 BMP
+  corpus files under `GdkCompat` and asserts the field matches the independently
+  read rule on each of the 58 the profile accepts (the other 13 return no
+  `Decoded`).
+- **Checks on the delivered state.** clean reverify run 469 **1722 verified, 0
+  errors**; `cargo test --release` 302/302 vectors, four-profile policy
+  conformance 102/102 each, corpus acceptance Strict 50 / Recommended 52 / Gdk
+  58 / ImageCrate 55, `custom_policies_match_python_oracle` 26,238 profile rows
+  green; `tools/audit_alloc.sh` OK (one `vec!`); frozen policy hashes match
+  `policy/FREEZE.txt`; no escapes, no `#[verifier::rlimit]`.
+  `gdkpixbuf-loaders/` was not touched (a later step wires the module to the
+  field).

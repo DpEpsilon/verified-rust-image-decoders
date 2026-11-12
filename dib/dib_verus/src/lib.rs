@@ -13,9 +13,11 @@ pub mod dib;
 pub mod model;
 pub mod model_vectors;
 
+#[cfg(test)]
+mod policy_tests;
+
 pub use dib::{
-    decode, decode_with_policy, decode_with_steps, BmpMode, BmpProfile, Decoded, Error,
-    MetadataOptions, Mode, Policy,
+    decode, decode_with_policy, decode_with_steps, BmpMode, BmpProfile, Decoded, Error, Mode,
 };
 
 use vstd::prelude::*;

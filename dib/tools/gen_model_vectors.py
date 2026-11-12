@@ -383,7 +383,7 @@ pub proof fn channel_lit(word: u32, mask: u32, k: u32, mx: u32, comp: u32, val: 
         forall|j: u32| 0 <= j < k ==> #[trigger] (mask >> j) & 1u32 == 0u32,
         mask >> k == mx,
         (word & mask) >> k == comp,
-        crate::model::scale_of(comp as int, mx as int) == val as int,
+        crate::model::scale_of(comp as int, crate::model::channel_span(mx) as int) == val as int,
     ensures
         crate::model::channel_of(word, mask) == val,
 {
@@ -512,6 +512,8 @@ def gen():
                                      % (hex32(word), hex32(mask), k, comp))
                         block.append("    assert(crate::model::scale_of(%dint, %dint) == %dint) by (nonlinear_arith);\n"
                                      % (comp, mx, v2))
+                        block.append("    assert(crate::model::channel_span(%s) == %s) by (compute);\n"
+                                     % (hex32(mx), hex32(mx)))
                         block.append("    channel_lit(%s, %s, %du32, %s, %su32, %du8);\n"
                                      % (hex32(word), hex32(mask), k, hex32(mx), comp, v2))
                 block.append("    assert(want_%s() == %s);\n" % (i, seq_of_bytes(flat)))

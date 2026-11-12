@@ -293,3 +293,261 @@ work is the RLE command/loop ghost-counter threading with R18's per-command
 resource limit (the likely fix is to move the per-pixel charge into the
 already-proved painters' `painted` parameter and to keep `rle_command`'s
 coupling as a named `proof fn` so the exec body stays small).
+
+---
+
+# P2a · the `r6r7_policy` connection (unfinished; work preserved)
+
+Status: **stopped after far more than the 5-failed-run escalation budget.** The
+delivered `dib_verus/src/dib.rs` and `model.rs` are the P1 baseline (run 276:
+1594 verified, 0 errors); all P2a work is preserved in
+`dib_verus/src/dib.rs.p2a-wip2` and `dib_verus/src/model.rs.p2a-wip2`
+(state: 1633 verified, 3 errors) plus the earlier `*.p2a-wip` (1724 verified,
+10 errors).
+
+## The obligation
+
+`fn dib_finish` (`dib.rs`, the two exit proofs at `dib.rs:2919` and the
+`hdr_matches` bridge at `dib.rs:2919`/`model.rs:8644`) plus the spec-level
+Strict bridge `lemma_r6r7_policy_strict`. The stubborn part is that the
+executable's `dib_finish` returns `Header`-shaped data with mask words that read
+BITFIELDS masks from **two different offsets** depending on `hsize`:
+
+* `hsize == 40 || hsize == 64`: three external masks immediately after the
+  header, at `start + size` (`s + rf.hsize`) — four-byte words with alpha zero;
+* `hsize >= 56`: four internal masks at `start + 40 .. start + 56`;
+* `hsize == 52`: three internal masks at `start + 40 .. start + 52`, alpha zero.
+
+The model's `raw_masks_policy` duplicates those offsets, and the initial version
+used `rf.pos0` (which is `s + hsize`) for the external case and `s + 40` for the
+internal case. The mismatch (external words computed from `rf.pos0` vs the
+executable's `start + size`) produced silent word-difference assertion failures
+whenever the two coincided numerically but the prover could not see it.
+
+## Attempts (all after the model was restructured to expose *exactly* the
+## executable's raw words)
+
+1. `lemma_r6r7_policy_record` with `ms0..ms3` hypotheses — 2 errors, the mask
+   words did not line up.
+2. `lemma_r6r7_policy_none` with a `raw_masks_policy` hypothesis — 4 errors,
+   the `okv` validity flag could not be tied to the substituted words.
+3. `lemma_r6r7_policy_none_raw` with the raw words as parameters and the
+   `masks_after_policy`/`masks_ok_policy` pair — the record equation held but
+   the guard hypotheses (`rf.compression == 3`, `is_bmp`, `p.offset == …`) kept
+   failing to instantiate on the executable side.
+4. `lemma_r6r7_policy_trunc_masks`/`_masks_err`/`_offset_err`/`_palette_err`/
+   `_ok`, one per branch, with `pe` (the palette end) passed explicitly —
+   offset and palette branches now pass; the `ok` branch (2 errors) and
+   `lemma_r6r7_policy_strict` remain.
+5. `if`-nesting of the guard conjunctions in `dib_finish` to expose each
+   conjunct — worked for the planes/dimensions/colour-count guards (`dib_fields`
+   now proves, 1594→1633 verified), did **not** close the last two.
+
+## Diagnostics (last run, `runs/276`-adjacent WIP state, 1633 verified, 3 errors)
+
+```
+error: assertion failed                 src/dib.rs:2919  (the r6r7_policy == Ok(m) assert)
+error: precondition not satisfied       src/dib.rs:2752  (lemma_r6r7_policy_ok: a guard hypothesis)
+error: assertion failed                 src/model.rs:8644 (lemma_r6r7_policy_strict)
+```
+
+## Likely fix (for the next tier)
+
+`lemma_r6r7_policy_strict` is the load-bearing one. The clean route is to prove
+it **by the same `r6r7`-guard decomposition the executable uses**, with
+`r6r7_policy` re-stated as `if r6r7_policy_err(..).is_Some then Err(..) else Ok(r6r7_result_policy(..))`,
+and to prove `r6r7_result_policy` equal to `r6r7_result` **given** the four mask
+words and the table count as hypotheses (`raw_masks_policy(..) ==
+(r6r7_result's own raw words)`), rather than trying to normalize both sides. The
+executable side then discharges those four equalities from its own `rd32` reads
+at `start + 40`, `start + 44`, `start + 48`, `start + 52` (or `start + size` for
+the external case), each an `as_u32(le32(..)) == mask_fields[i]` bridge of the
+kind the other fields already use (`hdr_matches`'s `m.hsize == h.spec_hsize()`
+pattern). The per-function resource-limit failures on `dib_finish`/`dib_fields`
+(surfaced repeatedly) also point at shrinking each proof block into a named
+`proof fn`, as `decode_tracked` did for T9.
+
+## Escalation
+
+Per BRIEF-POLICY (P2a). Implementer deepseek-v4.1-flash. Hand to gpt-6-sol.
+Nothing weaker is labelled: the six options' `Policy` fields, their enum types,
+the model's `r2r5_policy`/`r6r7_policy`/`mp_policy` extensions and the
+`dib_fields` proof (all in `*.p2a-wip2`) are working; only the `dib_finish` →
+`r6r7_policy` connection and its Strict bridge are open.
+
+---
+
+# P2a escalation · Sol handoff (runs 281–287)
+
+Status: **incomplete**. The new `dib.rs.p2a-wip3` and `model.rs.p2a-wip3`
+preserve this continuation; the live `src/dib.rs` and `src/model.rs` were
+restored to the verified P1 baseline. Run 287 reports **1634 verified, 2
+errors**, both per-function resource-limit failures on `dib_fields` and
+`dib_finish`. There are no remaining reported assertion or precondition
+failures. Do not call that a completed verification: a resource-limit failure
+leaves the function unproved.
+
+The earlier strict bridge was in fact false for arbitrary `RawFields`:
+`raw_masks_policy` read external masks at `s + rf.hsize`, whereas the frozen
+`r6r7` reads at `rf.pos0`; the lemma has no precondition tying those two
+positions together. Reading at `rf.pos0` restores the exact Strict bridge
+without weakening its quantification. The executable's `f.spec_raw().pos0`
+equals `start + size`, so the external-mask proof also has the concrete offset
+it needs. `lemma_r6r7_policy_strict` now verifies.
+
+A separate real model mismatch surfaced in the `hdr_matches` proof:
+`masks_of_policy_rf` applied `DefaultRGB` to zero masks even when
+`compression != 3`, but the executable applies mask substitution only for
+BITFIELDS. The model now returns zero masks outside BITFIELDS. The exact
+`dib_finish` header/mask correspondence verifies. The policy success-output
+length lemma now proves both Gdk blank and ordinary raw/RLE paths. Replacing
+the declared-offset executable equality test with an exhaustive variant match
+removed the offset guard failures; the extra model unfolding shifts the two
+large functions over the solver resource limit. Runs 281–287 were serial and
+went exclusively through `./verify.sh`; neither frozen spec nor hash changed.
+
+Next proof work: split the `dib_finish` R6 mask read/validation from the R7
+palette/record assembly as already done in the original M2 parser, and move
+its large success-path field-by-field `hdr_matches` proof into a small named
+proof function. Likewise move `dib_fields`'s large R2–R5 proof block into
+per-branch lemmas, or trim redundant unfolding. Do not increase solver budget.
+After both functions verify, check `mh_recovered_so_far` against the frozen
+closed events: its `DefaultRGB` condition currently tests post-substitution
+`m.mask_r/g/b == 0`, which misses the fallback event after replacing a zero
+raw RGB mask. Also test each option against `CUSTOM-VECTORS.json` and the
+universal resource/work bounds; neither was established by these runs.
+
+---
+
+# P2b · the `bitfield_offset` (and the `offset_effective` refactor) — stopped at the escalation budget
+
+Status: **stopped after far more than the 5-failed-run escalation budget.** The
+delivered `dib_verus/src/dib.rs` and `model.rs` are the run-387 green state
+(`1658 verified, 0 errors`): the P2a baseline plus (a) the reviewer-note exposure
+fix and (b) the fourteen new option enums and their `Policy` fields, every one at
+its Strict (bold) value. No option is behaviourally implemented yet; `decode`
+and `decode_with_policy` are byte-identical to P2a.
+
+## The obligation
+
+The first option of the fourteen, `bitfield_offset = MetadataEnd`: for a BITFIELDS
+record the pixel cursor starts at the metadata end (`palette_end`) instead of the
+declared `bfOffBits`, and any case where that differs is a `recovered = true`
+event. In the model this is `offset_effective` gaining one pre-layer:
+
+```
+let start = if p.bitfield_offset == MetadataEnd && m.has_masks { m.palette_end } else { m.pixel_start };
+match p.offset { Declared|AllowAny => start, Gdk => if m.compression == 0 && start < m.palette_end { m.palette_end } else { start } }
+```
+
+and the executable's `decode_policy_tracked` must compute the same `start`
+(`bstart`) and pass it to `decode_raw` as `p0`.
+
+## What was tried (runs 296–388; every run through `./verify.sh`, all in `RUNLOG.tsv`)
+
+Every variant below either left an `assertion failed` on a record/field equality
+or a per-function `rlimit exceeded` on `decode_policy_tracked`/the helper:
+
+1. **Inline in `decode_policy_tracked`** with `hdr_matches(m, h)` projections
+   (`m.has_masks == (h.compression == 3u32)` etc.). The record asserts and the
+   `bstart == offset_start` assert **passed** (run 363), but the whole function
+   then hit `rlimit exceeded`.
+2. **Extracted `policy_pixel_starts` helpers** (runs 364–377): took `m` as a
+   value (rejected: "cannot access spec-mode place in executable context"),
+   then as `Ghost<MHRecord>` with `hdr_matches(gm@, h)` as a precondition. The
+   helper still failed its own assertions: `assert(bstart == h.palette_end)`
+   failed inside the taken `if` branch even though the branch condition is
+   exactly `meta && c3` and the identical condition outside a `proof` block
+   reduced fine. Reading `h.pixel_start`/`h.palette_end` through the `&Header`
+   reference inside the *exec* `if` condition does not produce the same term as
+   the `as int` projection used in the `assert`, and Verus did not accept the
+   equality even after binding the values to `let` locals first.
+3. **Enum `==` vs `match`**: the codebase never uses `==` on the option enums;
+   every branch is a `match`. `h.compression == 3u32` (a `u32`) is compared with
+   `==` elsewhere and works, but `p.bitfield_offset == BitfieldOffsetOptions::MetadataEnd`
+   inside an exec `if` did not reduce the way the `match p.offset` branches do.
+4. **Model primitive split**: `offset_start_of(meta, has_masks, ps, pe)` on
+   `int` (run 344), on `usize` `offset_start_of_bool` (run 378 verified in
+   isolation, 0 errors, but failed once wired into the helper), and an `of`-form
+   plus an `if`-expansion lemma. A minimal standalone probe of the exact idiom
+   (`fn probe(b: bool, x: usize, y: usize) -> (r: usize) ensures r == (if b { x } else { y })`)
+   verified (run 378); the same idiom instantiated with the enum condition and
+   `&Header` field reads did not.
+5. **`lemma_offset_start_fields` / `lemma_offset_start_branches`** implication
+   lemmas (runs 366, 384): the lemmas themselves are fine; the caller could not
+   supply their `m.pixel_start == ps` / `m.has_masks == hm` preconditions because
+   the exec-side `bstart` computation and the spec-side `m` projection would not
+   be brought to a common term.
+
+## Honest statement
+
+The fourteen option enums and their `Policy` fields, the exposure fix
+(`policy_header_recovered`… no; `Policy` fields kept `pub` for Verus opacity,
+`strict_policy_exec`/`profile_policy_exec` narrowed to `pub(crate)`, `Policy`
+and `MetadataOptions` dropped from `lib.rs`), and the `parse_header` rlimit
+recovery all verify (run 387: 1658 verified, 0 errors; `cargo test --release`
+302/302 vectors, corpus 84/58, policy Strict/Recommended 102/102, and the P2a
+`cfg(test)` oracle harness green). **No option beyond the P2a six is
+behaviourally implemented.** `bitfield_offset` is the one that was attempted and
+it is **not** proved.
+
+## Likely fix (for the next tier)
+
+The `&Header`-reference reads inside exec conditions are the recurring friction.
+The clean route is to compute `bstart` in a helper that takes the four plain
+values (`meta: bool, has_masks: bool, ps: usize, pe: usize`) and returns a value
+whose postcondition is a *model spec function over those same four plain values*
+(the isolated probe of exactly this shape verified, run 378), and to have
+`decode_policy_tracked` pass `h.pixel_start`/`h.palette_end` copied into `let`
+locals first, with the `m.* == local as int` equalities asserted in a proof
+block *before* the call. The alternative that avoids the whole class is to fold
+`bitfield_offset` into the record's own `pixel_start` at `r6r7_policy`/
+`r6r7_result_policy` construction time (model) and into the `Header`'s
+`pixel_start` at `dib_finish` construction time (exec), leaving
+`offset_effective` and `decode_policy_tracked` byte-for-byte as P2a; that keeps
+every existing proof about `offset_effective`, `mp_raw_policy`, `mr_raw_out` and
+the truncation lemmas untouched, at the cost of proving the record's
+`pixel_start` field separately.
+
+## Escalation
+
+Per BRIEF-POLICY P2b. Implementer deepseek-v4.1-flash. Hand to gpt-6-sol (then
+Astra 6 if Sol also stops). Nothing weaker is labelled: no option-11
+`bitfield_offset` witness exists.
+
+---
+
+# P2b · Sol escalation: `unsupported=Rgb2` header proof
+
+Stopped after five failed verifier runs (395–399) on the same two-bit-depth
+extension. The latest WIP sources are `dib_verus/src/dib.rs.p2b-sol-rgb2-wip`
+and `dib_verus/src/model.rs.p2b-sol-rgb2-wip`; the live sources are restored
+byte-for-byte to the run-394 green checkpoint (`*.p2b-sol-two`, 1662 verified,
+0 errors). **No new option is verified or shipped by this attempt.**
+
+The WIP adds `Rgb2` to the policy header model's depth guard only for H>=40,
+updates the executable depth check, permits two-bit indexed samples in the
+pixel helper, derives the four-colour mask, and extends sub-byte shifts and
+palette counts. The frozen Strict `depth_ok` and original `decode` depth check
+remain unchanged. Runs 395–397 exposed concrete proof obligations in the
+palette count, `header_inv` and raw conversion and those were discharged.
+Trimming eager model reveals in `validate_dib_fields` and `parse_header`
+removed their resource-limit failures. Run 399 reaches 1664 verified, one
+error: `fn dib_finish` exceeds its per-function solver resource limit at
+`src/dib.rs:2843`. No solver-budget attribute was added. These intermediate
+numbers do not constitute a verified option.
+
+The model's policy-specific R2–R5 guard introduces an additional successful
+indexed depth into `dib_finish`'s already-large R6/R7 and record-equivalence
+proof. The next step is to split `dib_finish`'s palette geometry from its
+success-record construction, or extract the final `hdr_matches` field proof
+into a named proof function, without increasing solver budget. Then check
+`Rgb2` against the oracle's 2-bpp successes and compression error order,
+including test-only custom records. Other eleven requested options remain
+untouched. The 66-vector harness has not been extended, and neither
+compatibility profile has been wired into release code.
+
+An independent oracle calculation on the 71 BMP corpus files accepts 50 under
+Strict, 51 with `unsupported=Rgb2` alone, 58 under full GdkCompat-2.42.12,
+and 55 under full ImageCrateCompat-0.25.10. These are reference-model counts,
+not executable acceptance measurements.

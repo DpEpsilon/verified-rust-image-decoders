@@ -96,6 +96,36 @@ fn mode_of(v: &Value) -> Mode {
     }
 }
 
+fn le16(b: &[u8], o: usize) -> u32 {
+    b[o] as u32 | ((b[o + 1] as u32) << 8)
+}
+
+fn le32(b: &[u8], o: usize) -> u32 {
+    b[o] as u32 | ((b[o + 1] as u32) << 8) | ((b[o + 2] as u32) << 16) | ((b[o + 3] as u32) << 24)
+}
+
+/// Stock gdk-pixbuf's `has_alpha` rule, computed independently of the decoder:
+/// it reads `biBitCount` and `biCompression` straight from the DIB header bytes
+/// (start 14 for `BmpFile`, 0 for the DIB/ICO modes). The CORE (12-byte) and
+/// 16-byte layouts imply `biCompression = 0`, so the rule reduces to the depth
+/// test; every other accepted layout carries `biCompression` at offset 16. The
+/// rule depends on the header alone, never on a pixel value.
+fn header_rule(bytes: &[u8], mode: Mode) -> bool {
+    let s = match mode {
+        Mode::BmpFile => 14,
+        _ => 0,
+    };
+    let hsize = le32(bytes, s);
+    let (bits, compression) = if hsize == 12 {
+        (le16(bytes, s + 10), 0)
+    } else if hsize == 16 {
+        (le16(bytes, s + 14), 0)
+    } else {
+        (le16(bytes, s + 14), le32(bytes, s + 16))
+    };
+    bits == 32 || compression == 1 || compression == 2
+}
+
 /// Expand a `{count, hex}` run list into the full RGBA byte sequence, checking
 /// that each `hex` is four bytes and that the counts sum to `total`.
 fn expand_runs(runs: &Value, total: usize) -> Vec<u8> {
@@ -124,10 +154,11 @@ fn expand_runs(runs: &Value, total: usize) -> Vec<u8> {
 fn check_vector(v: &Value) -> Result<(), String> {
     let expected = &v["expected"];
     let mode = mode_of(v);
+    let bytes = input_bytes(v);
 
     let want_error = expected.get("error").and_then(|e| e.as_str());
-    let result = match input_bytes(v) {
-        Some(bytes) => decode_with_steps(&bytes, mode).0,
+    let result = match &bytes {
+        Some(bytes) => decode_with_steps(bytes, mode).0,
         // R1: over-cap input is `FileTooLarge` in every mode.
         None => return match want_error {
             Some("FileTooLarge") => Ok(()),
@@ -161,6 +192,16 @@ fn check_vector(v: &Value) -> Result<(), String> {
     let n = width as usize * height as usize;
     if decoded.rgba.len() != 4 * n {
         return Err(format!("rgba length {} != 4*{n} = {}", decoded.rgba.len(), 4 * n));
+    }
+    // `rle_or_32bpp` is the gdk-pixbuf header rule; check it against the header
+    // bytes read independently here (start 14 for BmpFile, 0 for the DIB modes).
+    let bytes = bytes.expect("an accepted vector materializes its input");
+    let want_alpha = header_rule(&bytes, mode);
+    if decoded.rle_or_32bpp != want_alpha {
+        return Err(format!(
+            "rle_or_32bpp {} != header rule {want_alpha}",
+            decoded.rle_or_32bpp
+        ));
     }
     let want = expand_runs(&expected["rgba_runs"], n);
     if decoded.rgba != want {
