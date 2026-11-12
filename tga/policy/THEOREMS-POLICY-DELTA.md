@@ -1,4 +1,4 @@
-# TGA policy theorem delta (candidate, not frozen)
+# TGA policy theorem delta (frozen 2026-11-12)
 
 This extends `/home/ws/projects/verified-decoders/tga/THEOREMS.md` (TGA-CORE-SPEC 1.0, T1–T11) for `POLICY-SPEC.md` in this directory. It is a list of obligations, **not a completed proof**. Nothing here weakens a 1.0 obligation or reinterprets the shipped `decode(bytes)`.
 

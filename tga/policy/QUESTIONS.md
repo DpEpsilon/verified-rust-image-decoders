@@ -39,3 +39,7 @@ Each item names the decision, the options, and a recommendation. Q1–Q6 block a
 - **`map_header=Image` with flag ≥ 2.** image-rs treats such a map as absent and reads the map bytes as pixels (`decoder.rs:193`); synthetic evidence only.
 - **Error names on new paths.** The compatibility profiles reuse 1.0 names (for example `UnsupportedPixelDepth` for image-rs's 16-bit index over a 15-bit palette). Native error strings are never compared, so these names are spec choices, not measured.
 - **GDK filename sniffing.** One corpus file decodes under `gdk-forced-whole` but not `gdk-file`; the bytes-only profile follows the forced-TGA loader.
+
+## Owner decisions (2026-11-12)
+
+Q1, Q2, Q4, Q5, Q6 accepted as recommended (Q2 as a documented guess, Q5 compatibility profiles opt-in and never glycin's default, Q6 an integration decision with Recommended as the proposed default). Q3 deferred to its default: keep `recovered` as the closed two-event list. Q9 deferred: Strict and Recommended unchanged (1.0 R8, obligation R); bit-15-opaque behaviour goes to a future separately versioned opt-in profile. Q7, Q8, Q10-Q13 keep their recorded recommendations. Spec frozen as of this date; hashes in FREEZE.txt.

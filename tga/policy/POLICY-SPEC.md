@@ -1,4 +1,4 @@
-# TGA policy specification (frozen candidate, not frozen)
+# TGA policy specification (frozen 2026-11-12)
 
 This document defines a byte-only extension of frozen TGA-CORE-SPEC 1.0 (`../spec-frozen/SPEC.md`, R1–R17). The 1.0 rules, error names, R14 precedence, RGBA8 layout and limits remain the default. The stable `decode(bytes)` keeps its result type and behaviour. A separate `decode_with_policy(bytes, profile)` takes one of four named profiles and returns width, height, RGBA8 and `recovered: bool`. `Policy::default()` is Strict; the profile selector is `#[non_exhaustive]`. The record of individual field values is internal: Rust code may construct an arbitrary record only under `#[cfg(test)]`, and the Python oracle's `EXPERIMENTAL_OPTIONS` switch controls the equivalent reference-model probes. This candidate does not choose glycin's default profile (QUESTIONS.md Q6).
 
@@ -84,4 +84,4 @@ No difference involves gamma, premultiplication, vertical orientation or palette
 - D3: Truncated raw pixels (R10) and the 1.0 caps remain errors in every profile.
 - D4: `recovered` is the closed two-event list above.
 - D5: Profile names carry the library version they were measured against and are immutable once frozen; a changed table needs a new name.
-- Open, awaiting owner decisions: Q1–Q6 (reviewer recommendations recorded in QUESTIONS.md) and Q9 (16-bit palette alpha; proposed default: defer, with Strict and Recommended unchanged and any bit-15-opaque behaviour in a future, separately versioned opt-in profile).
+- Decided by the owner 2026-11-12: Q1, Q2, Q4, Q5, Q6 accepted as recommended in QUESTIONS.md; Q3 and Q9 deferred to their defaults (Q3: a repaired attribute count does not set `recovered`; Q9: Strict and Recommended unchanged, any bit-15-opaque behaviour goes to a future, separately versioned opt-in profile). Compatibility profiles stay opt-in.
