@@ -1472,3 +1472,53 @@
 467	2026-11-11T15:24:47+00:00	exit=0	74s	P2d: thread alpha through finish helpers; model form only in tracked [crate=dib_verus]	verification results:: 1722 verified, 0 errors
 468	2026-11-11T15:29:24+00:00	exit=0	0s	P2d final: verified rle_or_32bpp (gdk has_alpha) field on Decoded and the profiled result [crate=dib_verus]	
 469	2026-11-11T15:31:43+00:00	exit=0	127s	P2d clean reverify: rle_or_32bpp field, all 1722 obligations [crate=dib_verus]	verification results:: 1722 verified, 0 errors
+470	2026-11-12T06:29:45+00:00	exit=101	64s	probe: tracked log threading through pass-through [crate=probe_alloc]	verification results:: 2159 verified, 0 errors
+471	2026-11-12T06:30:02+00:00	exit=0	4s	probe: retry threading, early exits [crate=probe_alloc]	verification results:: 8 verified, 0 errors
+472	2026-11-12T06:31:01+00:00	exit=101	4s	probe: production guard text + TryError in sites [crate=probe_alloc]	
+473	2026-11-12T06:31:13+00:00	exit=101	3s	probe: TryError name spec counterparts [crate=probe_alloc]	verification results:: 13 verified, 2 errors
+474	2026-11-12T06:31:26+00:00	exit=0	4s	probe: open spec name fn [crate=probe_alloc]	verification results:: 15 verified, 0 errors
+475	2026-11-12T06:31:41+00:00	exit=101	5s	probe: reuse tracked &mut across calls [crate=probe_alloc]	verification results:: 14 verified, 1 errors
+476	2026-11-12T06:31:57+00:00	exit=0	5s	probe: sites re-exports crate::error_ty::Error [crate=probe_alloc]	verification results:: 16 verified, 0 errors
+477	2026-11-12T06:32:02+00:00	exit=101	1s	probe: sites.rs resolves by relative path [crate=probe_alloc]	
+478	2026-11-12T06:32:12+00:00	exit=0	5s	probe: sites.rs uses super::super::error_ty::Error [crate=probe_alloc]	verification results:: 15 verified, 0 errors
+479	2026-11-12T06:34:55+00:00	exit=101	70s	alloc step: guard module + TryError in sites + Error name spec counterpart (expect errors: sites Decoded import) [crate=dib_verus]	verification results:: 2159 verified, 0 errors
+480	2026-11-12T06:36:28+00:00	exit=0	79s	alloc step: guard + sites with same-impl name_spec counterparts [crate=dib_verus]	verification results:: 1732 verified, 0 errors
+481	2026-11-12T06:44:03+00:00	exit=101	5s	alloc step: core+policy threading WIP (expect many errors) [crate=dib_verus]	
+482	2026-11-12T06:44:20+00:00	exit=101	4s	alloc step: compile check 2 [crate=dib_verus]	
+483	2026-11-12T06:44:32+00:00	exit=101	4s	alloc step: compile check 3 [crate=dib_verus]	
+484	2026-11-12T06:44:40+00:00	exit=101	4s	alloc step: compile check 4 [crate=dib_verus]	
+485	2026-11-12T06:44:48+00:00	exit=101	4s	alloc step: compile check 5 [crate=dib_verus]	
+486	2026-11-12T06:45:01+00:00	exit=101	5s	alloc step: compile check 6 [crate=dib_verus]	
+487	2026-11-12T06:45:28+00:00	exit=101	5s	alloc step: compile check 7 [crate=dib_verus]	
+488	2026-11-12T06:46:13+00:00	exit=101	8s	alloc step: compile check 8 [crate=dib_verus]	
+489	2026-11-12T06:46:30+00:00	exit=101	8s	alloc step: compile check 9 [crate=dib_verus]	
+490	2026-11-12T06:47:16+00:00	exit=101	12s	alloc step: compile check 10 [crate=dib_verus]	
+491	2026-11-12T06:47:32+00:00	exit=101	11s	alloc step: compile check 11 [crate=dib_verus]	
+492	2026-11-12T06:49:36+00:00	exit=101	119s	alloc step: compile check 12 [crate=dib_verus]	verification results:: 1728 verified, 12 errors
+493	2026-11-12T06:51:36+00:00	exit=101	11s	alloc step: proof iteration 1 [crate=dib_verus]	
+494	2026-11-12T06:54:00+00:00	exit=101	137s	alloc step: proof iteration 2 [crate=dib_verus]	verification results:: 1730 verified, 11 errors
+495	2026-11-12T06:56:27+00:00	exit=101	127s	alloc step: proof iteration 3 [crate=dib_verus]	verification results:: 1731 verified, 10 errors
+496	2026-11-12T06:57:02+00:00	exit=101	5s	alloc step: proof iteration 4 [crate=dib_verus]	
+497	2026-11-12T07:04:04+00:00	exit=101	130s	alloc step: proof iteration 5 [crate=dib_verus]	verification results:: 1731 verified, 10 errors
+498	2026-11-12T07:05:22+00:00	exit=101	8s	alloc step: proof iteration 6 [crate=dib_verus]	
+499	2026-11-12T07:09:30+00:00	exit=101	147s	alloc step: proof iteration 7 [crate=dib_verus]	verification results:: 1732 verified, 9 errors
+500	2026-11-12T07:11:52+00:00	exit=101	145s	alloc step: proof iteration 8 [crate=dib_verus]	verification results:: 1733 verified, 9 errors
+501	2026-11-12T07:12:58+00:00	exit=101	14s	alloc step: proof iteration 9 (split complete policy) [crate=dib_verus]	
+502	2026-11-12T07:17:23+00:00	exit=101	12s	alloc step: proof iteration 10 [crate=dib_verus]	
+503	2026-11-12T07:21:23+00:00	exit=101	6s	alloc step: proof iteration 11 [crate=dib_verus]	
+504	2026-11-12T07:27:38+00:00	exit=101	135s	alloc step: proof iteration 12 [crate=dib_verus]	verification results:: 1736 verified, 11 errors
+505	2026-11-12T07:28:54+00:00	exit=101	5s	alloc step: proof iteration 13 (policy_shape) [crate=dib_verus]	
+506	2026-11-12T07:30:51+00:00	exit=101	4s	alloc step: proof iteration 14 [crate=dib_verus]	
+507	2026-11-12T07:32:51+00:00	exit=101	4s	alloc step: proof iteration 15 [crate=dib_verus]	
+508	2026-11-12T07:36:51+00:00	exit=101	126s	alloc step: proof iteration 16 [crate=dib_verus]	verification results:: 1735 verified, 13 errors
+509	2026-11-12T07:37:27+00:00	exit=101	5s	alloc step: proof iteration 17 [crate=dib_verus]	
+510	2026-11-12T07:41:52+00:00	exit=101	138s	alloc step: proof iteration 18 [crate=dib_verus]	verification results:: 1734 verified, 17 errors
+511	2026-11-12T07:44:31+00:00	exit=101	138s	alloc step: proof iteration 19 [crate=dib_verus]	verification results:: 1735 verified, 16 errors
+512	2026-11-12T07:46:58+00:00	exit=101	150s	alloc step: proof iteration 20 [crate=dib_verus]	verification results:: 1740 verified, 11 errors
+513	2026-11-12T07:47:31+00:00	exit=101	5s	alloc step: proof iteration 21 [crate=dib_verus]	
+514	2026-11-12T07:52:31+00:00	exit=101	175s	alloc step: proof iteration 22 [crate=dib_verus]	verification results:: 1738 verified, 13 errors
+515	2026-11-12T07:55:28+00:00	exit=101	213s	alloc step: proof iteration 23 [crate=dib_verus]	verification results:: 1739 verified, 12 errors
+516	2026-11-12T07:58:05+00:00	exit=101	235s	alloc step: proof iteration 24 [crate=dib_verus]	verification results:: 1739 verified, 12 errors
+517	2026-11-12T08:03:00+00:00	exit=101	187s	alloc step: proof iteration 25 [crate=dib_verus]	verification results:: 1737 verified, 14 errors
+518	2026-11-12T08:03:06+00:00	exit=101	47s	alloc step: proof iteration 26 [crate=dib_verus]	
+519	2026-11-12T08:08:03+00:00	exit=0	95s	alloc step: RESTORE green baseline after WIP set aside (alloc-wip-1) [crate=dib_verus]	verification results:: 1722 verified, 0 errors

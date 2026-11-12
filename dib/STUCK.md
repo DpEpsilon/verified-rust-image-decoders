@@ -551,3 +551,62 @@ An independent oracle calculation on the 71 BMP corpus files accepts 50 under
 Strict, 51 with `unsupported=Rgb2` alone, 58 under full GdkCompat-2.42.12,
 and 55 under full ImageCrateCompat-0.25.10. These are reference-model counts,
 not executable acceptance measurements.
+# STUCK — alloc-delta DIB step, policy half (2026-11-12)
+
+Status: **not green; the live tree is the P2d baseline and green.** The WIP is in
+`dib/alloc-wip-1/`. No `#[verifier::rlimit]` was added, and none is needed — the
+failed bodies fail their postconditions, they do not need a bigger budget for a
+true statement.
+
+## Obligation that would not discharge
+
+`decode_policy_tracked` → `decode_complete_policy` → `finish_policy_after_alloc`
+and the two clipping helpers `finish_raw_zero` / `finish_rle_clipped`, i.e. the
+A-DIB-2 policy half of the theorem shape `G`/`Prog` (THEOREMS-ALLOC-DELTA.md §1).
+The decode half (A-DIB-1 for the four policy-free modes) is through.
+
+The remaining failures in the best WIP run (517, 1737 verified, 14 errors) are:
+
+1. `try_decode_with_steps`'s `OutOfMemory` postcondition: `o.elements_spec() ==
+   4 * t12_checked_n(..)` is not derivable at the wrapper. Fixed in the newest
+   WIP edit (state the site only; `t12_checked_n` is provably the request size
+   only through `hdr_matches`); not yet re-run.
+2. `finish_raw_zero` / `finish_rle_clipped`'s `policy_shape(.., false, ..)`
+   postcondition at their `InvalidImageSize` / `TrailingBytes` format-error
+   exits: the log is the single `Ok` entry (the reservation succeeded, and the
+   error is a later phase error), so `policy_shape`'s `false` case holds with
+   `all_ok`, but the exit's proof block does not yet establish it. The
+   `old(log) == final(log)` assert and the `AllocSite::Output` reveal are in;
+   what is missing is the `req_of_log(l) == req_dibp` step, which needs
+   `policy_checked_n(b, bm, p) == h.spec_n()` (from `hdr_matches` and
+   `mh_partial is None`).
+3. `finish_policy_after_alloc`'s precondition
+   `alpha == mh_policy_rle_or_32bpp(bytes@, bm, policy)` and its `steps`
+   arithmetic. The `alpha` tie is what P2d solved with the `alpha: bool`
+   threading; the WIP still states the model predicate in this helper's
+   `requires`, which is the P2d rlimit trap.
+
+## The one substantive hazard
+
+Adding `#[verifier::when_used_as_spec]` to `Error::name` (needed so
+`TryError::name`'s postcondition can name the `Error` spelling) appears to have
+disturbed the crate-wide encoding: `fn raw_sample_scaled`, whose body is
+byte-identical to the baseline (verified by `diff`), began reporting
+`function body check: resource limit (rlimit) exceeded` from the run where the
+attribute first appeared (run 504 onward), and only there. The baseline runs it
+in the same configuration with no such error. Next agent: try removing the
+attribute and writing `Error::name`'s postcondition from `sites.rs` with the
+spelling table inlined, or give the two `name` functions no spec clause at all
+(the tests call `name()` in exec position only).
+
+## What to do next
+
+See `NOTES.md`, "alloc-delta (fallible allocation) — FIRST SLICE", for the
+ordered continuation steps. The short version: copy `alloc-wip-1/*` back over
+the live sources and `alloc-wip-1/alloc_guard/` to `dib_verus/src/alloc_guard/`,
+`./verify.sh`, and work the list above; the resource-limit note in `NOTES.md`
+P2d is binding for the policy half.
+
+Not attempted at all: A-DIB-4..A-DIB-8 as separate obligations beyond what
+`decode_tracked`'s `ensures` already states, the test migration to `try_*`, the
+fault-injection tests, and the `tools/audit_alloc.sh` extension.

@@ -529,3 +529,112 @@ Checked on a standalone Verus file with the same toolchain (0.2026.11.02): `asse
   `policy/FREEZE.txt`; no escapes, no `#[verifier::rlimit]`.
   `gdkpixbuf-loaders/` was not touched (a later step wires the module to the
   field).
+
+## alloc-delta (fallible allocation) — FIRST SLICE, **INCOMPLETE / NOT GREEN** (2026-11-12)
+
+The coordinator restarted the sandbox mid-step; this section records exactly
+what is done, what is not, and the next step. **The live tree is the P2d
+baseline (green).** The `try_*` rewrite described below is set aside in
+`dib/alloc-wip-1/` (not built, not verified).
+
+### Tree state right now
+
+- `dib_verus/src/{dib.rs,model.rs,lib.rs,policy_tests.rs}` and
+  `dib_verus/tests/{conformance.rs,corpus.rs,policy_conformance.rs}` are the
+  P2d baseline, restored from the `.alloc-0` backups (SHA-256
+  `dib.rs = 6cef9186bc7a2165ebd0656cc1371b5d2051b6afa7abb644c43718c26890f68b`,
+  `model.rs = f3dd49ca95b325ab7ee5c4a89746871c8b62f6f32c48a63f217dc29262288845`).
+- `dib_verus/src/alloc_guard/` does **not** exist in the live tree (it lives in
+  `alloc-wip-1/alloc_guard/`).
+- Clean reverify of the restored tree: **run 519, 1722 verified, 0 errors, exit 0**.
+- `cargo test` on the restored tree: 302/302 frozen vectors, four policy
+  profiles 102/102 each, corpus 84 files / 58 accepted Strict, `66/66` custom
+  vectors, `custom_policies_match_python_oracle` 26,238 profile rows, GdkCompat
+  corpus alpha check — all pass. `tools/audit_alloc.sh` OK (exactly one `vec!`).
+- The tree therefore compiles, verifies and passes its tests: any other agent
+  and the audit prototype see a working DIB.
+- Backups: `*.alloc-0` beside each source is the frozen P2d baseline. The WIP
+  set is `alloc-wip-1/`.
+
+### What the WIP implements (in `alloc-wip-1/`)
+
+Part (1) of the task — the production `alloc_guard` — is written and **verifies
+in isolation**: `alloc-wip-1/alloc_guard/mod.rs` (sealed `AllocLog`, `new_log`,
+`OutOfMemory` with private fields and `when_used_as_spec` accessors, `all_ok`,
+`req_of_log`, `MAX_BYTES`, `#[inline(never)] try_zeroed` with the prototype's
+exact push-fill body) and `alloc-wip-1/alloc_guard/sites.rs` (DIB `AllocSite
+{ Output }`, `TryError { Format(Error), OutOfMemory(..) }` with matching
+`name_spec`, `fmt_part`, `log_tied`, reaching `Error`/`Decoded` through
+`super::super::dib`). The `mod.rs` is DIB-adapted from the prototype: DIB has one
+site, so `Reserved`/`try_copy`/`try_with_room`/`MAX_ROOM` are dropped, and the
+per-core `Error`-carrying items live in `sites.rs` so `mod.rs` stays
+core-independent (SPEC §3, D6). SHA-256 of the WIP set:
+
+```
+5d145f45adcf8d1c5ab398f2ac2ec0d50eb3bcbd54a542b277d7b86a41ae33b1  alloc-wip-1/alloc_guard/mod.rs
+21455401aefc2fbdacf5cae33c28e8ede4ac609d0b42f684932ae638be8e4875  alloc-wip-1/alloc_guard/sites.rs
+ea1345c6370f70401256b174e4877b8fb7b2a5b6442f20f6e948051cd0b83eb0  alloc-wip-1/dib.rs
+20d864d667dda63b811ac66c50b739f558226ef6b76b7c2b08ec5f0c1f254b58  alloc-wip-1/lib.rs
+6b6489263221f1b7021accd9cbda4d75738032dadd677950882b90506c2db628  alloc-wip-1/policy_tests.rs
+d848d2132d53c0fee90d8bab2dd928d1c66d776152ee2e15d0dab8e0a9f3f019  alloc-wip-1/conformance.rs
+8f771e50ff23b3b980021d2189d5ce1fb320372e0342bec713dc205fa4f4f3fc  alloc-wip-1/corpus.rs
+8369fd590e00ae5753bfc5ac81fcac2bbdfa34009db115bf8febd5b99a96fa85  alloc-wip-1/policy_conformance.rs
+```
+
+The live `dib_verus/src/alloc_guard/` and the live sources are the P2d baseline;
+the WIP files above are the continuation's starting point.
+
+Part (2) — the `try_*` rewrite — is **partial**:
+- `decode_tracked` takes the log, calls `try_zeroed` through a guarded
+  `alloc_output`, and returns `Result<Decoded, TryError>`. The `vec!` site is
+  gone from the WIP.
+- `try_decode_with_steps_logged` / `try_decode_with_steps` / `try_decode`
+  replace `decode_with_steps` / `decode`; the log is created with `new_log`,
+  returned from the `_logged` form.
+- The DIB spec surface (`req_dib`, `g`, `prog`, `pre_alloc`, `log_tied`,
+  `at_site_log` with helper lemmas) is written.
+- **Not done:** the policy path is only half rewritten (`alloc_output_n` and
+  `decode_partial_metadata` are threaded and the `_policy` spec surface
+  `policy_shape`/`g_policy`/`prog_policy`/`req_dibp`/`policy_reach`/
+  `partial_revalidated`/`lemma_blank_second_pass` is written, but
+  `decode_policy_tracked`, `decode_complete_policy` and
+  `finish_policy_after_alloc` do not yet discharge their contracts), and the
+  witness section is only partly retargeted.
+
+### Exact verifier state of the WIP
+
+Best WIP run: **run 517 — 1737 verified, 14 errors** (log `runs/517.log`).
+`runs/518` is a one-line compile slip on top of 517. The remaining errors are
+all in the policy half and are enumerated from `runs/517.log`; the decode half
+(1 site, `G`, `Prog`, `PreAlloc`, `log_tied`) is essentially through.
+
+### Next step for a continuation agent
+
+1. Copy `alloc-wip-1/*` back over the live sources, and
+   `alloc-wip-1/alloc_guard/` back to `dib_verus/src/alloc_guard/`.
+2. `./verify.sh` and read `runs/517.log` (or the newest log) for the current
+   error list. It is: `finish_raw_zero`/`finish_rle_clipped` (add the
+   `policy_shape` discharge at their `InvalidImageSize`/`TrailingBytes` exits),
+   `finish_policy_after_alloc` (the precondition `alpha == mh_policy_rle_or_32bpp`
+   and the `steps` arithmetic), and `try_decode_with_steps`'s `OutOfMemory`
+   clause (state the site only, as it now does).
+3. **Watch the per-function resource limit.** Naming a model predicate in a
+   `_policy` helper's `ensures` made the body exceed its default rlimit. The
+   fix, applied in P2d and needed again here, is the `alpha: bool` threading
+   pattern (NOTES.md P2d): compute the model value in a small function, pass the
+   concrete value into the large one. `raw_sample_scaled` also reports an rlimit
+   in the WIP runs although its body is byte-identical to the baseline; the
+   likely cause is the `#[verifier::when_used_as_spec]` added to `Error::name`
+   changing the crate-wide encoding. Try dropping that attribute and stating
+   `TryError::name`'s postcondition with the `Error` spelling table inlined in
+   `sites.rs` instead.
+4. Parts (3)–(5) — the full A-DIB-1..8 obligations, the test migration to
+   `try_*`, the fault-injection tests and the `audit_alloc.sh` extension — are
+   **not started** beyond the partial witness retargeting in the WIP.
+
+`alloc-delta/SPEC.md`, `THEOREMS-ALLOC-DELTA.md` and `TABLE.md` were read and
+were **not** edited, as instructed. No spec edit was found necessary; the one
+divergence worth reporting is that DIB's per-core `AllocSite` had to live in
+`sites.rs` (not `mod.rs`) so that `mod.rs` stays byte-identical across cores,
+which is what SPEC §3/D6 wants but `SPEC.md` §3's prototype listing does not say
+explicitly.
