@@ -1,0 +1,661 @@
+{
+ "format": "ico",
+ "part": "corpus",
+ "n_files": 1277,
+ "passes": 7,
+ "warmup": 2,
+ "rounds": 5,
+ "agreement": {
+  "ico-crate": {
+   "counts": {
+    "both-ok-equal": 238,
+    "both-error": 939,
+    "incumbent-only-ok": 97,
+    "verified-only-ok": 2,
+    "both-ok-DIFFERENT": 1
+   },
+   "examples": [
+    {
+     "file": "53ba9e358222e4ff.bin",
+     "ver": [
+      256,
+      256
+     ],
+     "inc": [
+      1024,
+      1024
+     ]
+    }
+   ]
+  },
+  "ico-image": {
+   "counts": {
+    "both-ok-equal": 209,
+    "both-error": 941,
+    "incumbent-only-ok": 95,
+    "verified-only-ok": 5,
+    "both-ok-DIFFERENT": 27
+   },
+   "examples": [
+    {
+     "file": "05a323d33d3dd3c2.bin",
+     "ver": [
+      16,
+      16
+     ],
+     "inc": [
+      16,
+      16
+     ]
+    },
+    {
+     "file": "077c3ebe35feb1e7.bin",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      32,
+      32
+     ]
+    },
+    {
+     "file": "07ef9c98a6ec8b47.bin",
+     "ver": [
+      64,
+      64
+     ],
+     "inc": [
+      64,
+      64
+     ]
+    },
+    {
+     "file": "0fcea12270000126.bin",
+     "ver": [
+      256,
+      256
+     ],
+     "inc": [
+      256,
+      256
+     ]
+    },
+    {
+     "file": "1bdf47ac75a847c5.bin",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      32,
+      32
+     ]
+    }
+   ]
+  },
+  "gdk:ico": {
+   "counts": {
+    "both-ok-equal": 231,
+    "both-error": 988,
+    "verified-only-ok": 4,
+    "incumbent-only-ok": 48,
+    "both-ok-DIFFERENT": 6
+   },
+   "examples": [
+    {
+     "file": "2fdf1b727be91d48.bin",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      32,
+      32
+     ]
+    },
+    {
+     "file": "46c80fb6c20bd00b.bin",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      16,
+      16
+     ]
+    },
+    {
+     "file": "4e728b78c7f28c02.bin",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      16,
+      16
+     ]
+    },
+    {
+     "file": "53ba9e358222e4ff.bin",
+     "ver": [
+      256,
+      256
+     ],
+     "inc": [
+      256,
+      256
+     ]
+    },
+    {
+     "file": "bd087804a266ec54.bin",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      32,
+      32
+     ]
+    }
+   ]
+  }
+ },
+ "timing": {
+  "ico-crate": {
+   "decoders": {
+    "ico-verified": {
+     "pixels": 30322600,
+     "files": 238,
+     "samples": 35,
+     "median_ns": 98571428.57142857,
+     "min_ns": 97142857.14285715,
+     "max_ns": 100000000.0,
+     "ns_per_px": 3.250757803467663,
+     "min_ns_per_px": 3.2036453715333497,
+     "mbps": 1230.4823188405799,
+     "cpu_over_wall": 0.9605645072224797,
+     "wall_ns_per_px": 3.3842160302876403,
+     "wall_min_ns_per_px": 3.3719361136578,
+     "wall_spread": 0.013005077294795254,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.02898550724637675,
+     "round_spread": 0.02941176470588225,
+     "hwm_mb": 22.0859375,
+     "base_mb": 22.0859375
+    },
+    "ico-crate": {
+     "pixels": 10829500,
+     "files": 238,
+     "samples": 35,
+     "median_ns": 114285714.28571428,
+     "min_ns": 95714285.71428572,
+     "max_ns": 118571428.57142857,
+     "ns_per_px": 10.553184753286327,
+     "min_ns_per_px": 8.8382922308773,
+     "mbps": 379.03249999999997,
+     "cpu_over_wall": 0.9974533942582189,
+     "wall_ns_per_px": 10.580128168428828,
+     "wall_min_ns_per_px": 8.888172953506626,
+     "wall_spread": 0.2554239751334071,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.19999999999999996,
+     "round_spread": 0.23880597014925375,
+     "hwm_mb": 22.0859375,
+     "base_mb": 22.0859375
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [],
+   "n_files": 238,
+   "bytes": 12300417
+  },
+  "ico-image": {
+   "decoders": {
+    "ico-verified": {
+     "pixels": 30617612,
+     "files": 209,
+     "samples": 35,
+     "median_ns": 101428571.42857143,
+     "min_ns": 101428571.42857143,
+     "max_ns": 104285714.28571428,
+     "ns_per_px": 3.312752523892831,
+     "min_ns_per_px": 3.312752523892831,
+     "mbps": 1207.4551211267606,
+     "cpu_over_wall": 0.9653266627357477,
+     "wall_ns_per_px": 3.431742488604271,
+     "wall_min_ns_per_px": 3.4213331202969064,
+     "wall_spread": 0.06964486937308369,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ]
+     ],
+     "spread": 0.028169014084506977,
+     "round_spread": 0.028169014084507005,
+     "hwm_mb": 22.0859375,
+     "base_mb": 22.0859375
+    },
+    "ico-image": {
+     "pixels": 39622792,
+     "files": 209,
+     "samples": 35,
+     "median_ns": 98571428.57142857,
+     "min_ns": 97142857.14285715,
+     "max_ns": 98571428.57142857,
+     "ns_per_px": 2.487745653345897,
+     "min_ns_per_px": 2.451691368514797,
+     "mbps": 1607.8814144927537,
+     "cpu_over_wall": 0.9733133105576044,
+     "wall_ns_per_px": 2.5559556479513104,
+     "wall_min_ns_per_px": 2.5418117683377788,
+     "wall_spread": 0.009904111810463996,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.014492753623188298,
+     "round_spread": 0.014705882352941124,
+     "hwm_mb": 22.0859375,
+     "base_mb": 22.0859375
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [],
+   "n_files": 209,
+   "bytes": 10933922
+  },
+  "gdk:ico": {
+   "decoders": {
+    "ico-verified": {
+     "pixels": 30233000,
+     "files": 231,
+     "samples": 35,
+     "median_ns": 100000000.0,
+     "min_ns": 100000000.0,
+     "max_ns": 100000000.0,
+     "ns_per_px": 3.3076439652035856,
+     "min_ns_per_px": 3.3076439652035856,
+     "mbps": 1209.32,
+     "cpu_over_wall": 0.9761159079073686,
+     "wall_ns_per_px": 3.3885770515661693,
+     "wall_min_ns_per_px": 3.3732272351404093,
+     "wall_spread": 0.012319949320062062,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ]
+     ],
+     "spread": 0.0,
+     "round_spread": 0.0,
+     "hwm_mb": 22.0859375,
+     "base_mb": 22.0859375
+    },
+    "gdk:ico": {
+     "pixels": 36711500,
+     "files": 231,
+     "samples": 35,
+     "median_ns": 100000000.0,
+     "min_ns": 94285714.28571428,
+     "max_ns": 101428571.42857143,
+     "ns_per_px": 2.723942088991188,
+     "min_ns_per_px": 2.5682882553345485,
+     "mbps": 1468.46,
+     "cpu_over_wall": 0.9695827446228904,
+     "wall_ns_per_px": 2.809396210996554,
+     "wall_min_ns_per_px": 2.644409762608447,
+     "wall_spread": 0.07144972564638179,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ]
+     ],
+     "spread": 0.0714285714285715,
+     "round_spread": 0.07575757575757591,
+     "hwm_mb": 22.640625,
+     "base_mb": 22.0859375
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [
+    "round 3 ico-verified: other CPU load: 28048 97.5 python3 -I -B validate.py",
+    "round 3 gdk:ico: other CPU load: 28048 97.3 python3 -I -B validate.py",
+    "round 4 ico-verified: other CPU load: 28048 97.1 python3 -I -B validate.py",
+    "round 4 gdk:ico: other CPU load: 28048 97.0 python3 -I -B validate.py",
+    "round 5 ico-verified: other CPU load: 28048 97.0 python3 -I -B validate.py",
+    "round 5 gdk:ico: other CPU load: 28048 96.8 python3 -I -B validate.py"
+   ],
+   "n_files": 231,
+   "bytes": 12292392
+  }
+ },
+ "verified_ok": 241,
+ "verified_errors": {
+  "InvalidReserved": 905,
+  "PngDelegation": 99,
+  "InvalidImageSize": 9,
+  "EntryOutOfBounds": 7,
+  "InvalidDimensions": 4,
+  "InvalidEntryReserved": 4,
+  "TruncatedEntries": 3,
+  "TruncatedHeader": 2
+ }
+}

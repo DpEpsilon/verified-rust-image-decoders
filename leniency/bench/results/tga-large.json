@@ -1,0 +1,1316 @@
+{
+ "format": "tga",
+ "part": "large",
+ "n_files": 5,
+ "passes": 5,
+ "warmup": 1,
+ "rounds": 5,
+ "agreement": {
+  "tga-image": {
+   "counts": {
+    "incumbent-only-ok": 1,
+    "both-ok-equal": 4
+   },
+   "examples": []
+  },
+  "tga-tinytga": {
+   "counts": {
+    "both-error": 1,
+    "both-ok-equal": 2,
+    "verified-only-ok": 2
+   },
+   "examples": []
+  },
+  "gdk:tga": {
+   "counts": {
+    "incumbent-only-ok": 1,
+    "both-ok-equal": 4
+   },
+   "examples": []
+  }
+ },
+ "timing": {
+  "probe_tga24_8192x8192.tga": {
+   "decoders": {
+    "tga-image": {
+     "pixels": 67108864,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 230000000.0,
+     "min_ns": 140000000.0,
+     "max_ns": 498000000.0,
+     "ns_per_px": 3.427267074584961,
+     "min_ns_per_px": 2.086162567138672,
+     "mbps": 1167.1106782608695,
+     "cpu_over_wall": 1.2938619336132042,
+     "wall_ns_per_px": 2.648866146802902,
+     "wall_min_ns_per_px": 2.1309306919574738,
+     "wall_spread": 2.324655836382225,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 1.5565217391304347,
+     "round_spread": 2.557142857142857,
+     "hwm_mb": 644.10546875,
+     "base_mb": 196.09375
+    },
+    "gdk:tga": {
+     "pixels": 67108864,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 1138000000.0,
+     "min_ns": 1130000000.0,
+     "max_ns": 1278000000.0,
+     "ns_per_px": 16.957521438598633,
+     "min_ns_per_px": 16.83831214904785,
+     "mbps": 235.88352899824253,
+     "cpu_over_wall": 0.9547099837255422,
+     "wall_ns_per_px": 17.761960938572884,
+     "wall_min_ns_per_px": 16.925372004508972,
+     "wall_spread": 0.22372585586375418,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ]
+     ],
+     "spread": 0.13005272407732865,
+     "round_spread": 0.13097345132743365,
+     "hwm_mb": 586.55859375,
+     "base_mb": 201.92578125
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [
+    "round 1 tga-image: other CPU load: 57322 96.9 python3 -I -B investigate_pixdiff.py",
+    "round 1 gdk:tga: other CPU load: 57322 96.8 python3 -I -B investigate_pixdiff.py",
+    "round 2 tga-image: other CPU load: 57322 96.9 python3 -I -B investigate_pixdiff.py",
+    "round 2 gdk:tga: other CPU load: 57623 50.0 bash /home/ws/.claude/plugins/cache/agent-sanitizer/agent-sanitizer/2.70.4/scripts/safe-launch.sh P"
+   ],
+   "size": 201326610,
+   "verified_ok": false,
+   "ver_msg": "FileTooLarge",
+   "skipped_disagree": []
+  },
+  "tga24_4096x4096.tga": {
+   "decoders": {
+    "tga-verified": {
+     "pixels": 16777216,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 138000000.0,
+     "min_ns": 106000000.0,
+     "max_ns": 148000000.0,
+     "ns_per_px": 8.225440979003906,
+     "min_ns_per_px": 6.318092346191406,
+     "mbps": 486.29611594202896,
+     "cpu_over_wall": 0.9885166669174968,
+     "wall_ns_per_px": 8.320993721485138,
+     "wall_min_ns_per_px": 6.503426969051361,
+     "wall_spread": 0.38894111591741126,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.30434782608695654,
+     "round_spread": 0.39622641509433953,
+     "hwm_mb": 116.6953125,
+     "base_mb": 52.6875
+    },
+    "tga-image": {
+     "pixels": 33554432,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 148000000.0,
+     "min_ns": 80000000.0,
+     "max_ns": 222000000.0,
+     "ns_per_px": 4.410743713378906,
+     "min_ns_per_px": 2.384185791015625,
+     "mbps": 906.8765405405405,
+     "cpu_over_wall": 1.0972340900815991,
+     "wall_ns_per_px": 4.019874840974808,
+     "wall_min_ns_per_px": 2.111597001552582,
+     "wall_spread": 1.3756054183702802,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.9594594594594594,
+     "round_spread": 1.775,
+     "hwm_mb": 164.3203125,
+     "base_mb": 52.30859375
+    },
+    "tga-tinytga": {
+     "pixels": 16777216,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 280000000.0,
+     "min_ns": 262000000.0,
+     "max_ns": 302000000.0,
+     "ns_per_px": 16.689300537109375,
+     "min_ns_per_px": 15.616416931152344,
+     "mbps": 239.67451428571428,
+     "cpu_over_wall": 0.9503044498850958,
+     "wall_ns_per_px": 17.562056601047516,
+     "wall_min_ns_per_px": 15.94895875453949,
+     "wall_spread": 0.16920710706768333,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.14285714285714285,
+     "round_spread": 0.15267175572519087,
+     "hwm_mb": 116.2578125,
+     "base_mb": 52.25
+    },
+    "gdk:tga": {
+     "pixels": 16777216,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 304000000.0,
+     "min_ns": 282000000.0,
+     "max_ns": 314000000.0,
+     "ns_per_px": 18.11981201171875,
+     "min_ns_per_px": 16.808509826660156,
+     "mbps": 220.75284210526317,
+     "cpu_over_wall": 0.9678489339358893,
+     "wall_ns_per_px": 18.721735775470734,
+     "wall_min_ns_per_px": 17.07725328207016,
+     "wall_spread": 0.17347167778729866,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.10526315789473684,
+     "round_spread": 0.11347517730496448,
+     "hwm_mb": 153.3671875,
+     "base_mb": 56.734375
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [],
+   "size": 50331666,
+   "verified_ok": true,
+   "ver_msg": "",
+   "skipped_disagree": []
+  },
+  "tga24rle_4096x4096.tga": {
+   "decoders": {
+    "tga-verified": {
+     "pixels": 33554432,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 160000000.0,
+     "min_ns": 96000000.0,
+     "max_ns": 186000000.0,
+     "ns_per_px": 4.76837158203125,
+     "min_ns_per_px": 2.86102294921875,
+     "mbps": 838.8607999999999,
+     "cpu_over_wall": 0.9606218412577451,
+     "wall_ns_per_px": 4.9638383984565735,
+     "wall_min_ns_per_px": 2.643074631690979,
+     "wall_spread": 0.9010200531130218,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 3
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 5
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 4
+       }
+      ]
+     ],
+     "spread": 0.5625,
+     "round_spread": 0.9375,
+     "hwm_mb": 83.5078125,
+     "base_mb": 19.5
+    },
+    "tga-image": {
+     "pixels": 16777216,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 138000000.0,
+     "min_ns": 122000000.0,
+     "max_ns": 162000000.0,
+     "ns_per_px": 8.225440979003906,
+     "min_ns_per_px": 7.271766662597656,
+     "mbps": 486.29611594202896,
+     "cpu_over_wall": 0.9909706061602036,
+     "wall_ns_per_px": 8.30038845539093,
+     "wall_min_ns_per_px": 4.734027922153473,
+     "wall_spread": 0.771020292564683,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.2898550724637681,
+     "round_spread": 0.3278688524590163,
+     "hwm_mb": 130.984375,
+     "base_mb": 18.97265625
+    },
+    "tga-tinytga": {
+     "pixels": 16777216,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 304000000.0,
+     "min_ns": 286000000.0,
+     "max_ns": 316000000.0,
+     "ns_per_px": 18.11981201171875,
+     "min_ns_per_px": 17.04692840576172,
+     "mbps": 220.75284210526317,
+     "cpu_over_wall": 0.9747696679396143,
+     "wall_ns_per_px": 18.588813960552216,
+     "wall_min_ns_per_px": 17.18385684490204,
+     "wall_spread": 0.16030515254236266,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ]
+     ],
+     "spread": 0.09868421052631579,
+     "round_spread": 0.10489510489510478,
+     "hwm_mb": 83.44140625,
+     "base_mb": 19.43359375
+    },
+    "gdk:tga": {
+     "pixels": 16777216,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 302000000.0,
+     "min_ns": 284000000.0,
+     "max_ns": 310000000.0,
+     "ns_per_px": 18.00060272216797,
+     "min_ns_per_px": 16.927719116210938,
+     "mbps": 222.21478145695363,
+     "cpu_over_wall": 0.9909715047226667,
+     "wall_ns_per_px": 18.164601743221283,
+     "wall_min_ns_per_px": 17.1369246840477,
+     "wall_spread": 0.146133711384806,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ]
+     ],
+     "spread": 0.08609271523178808,
+     "round_spread": 0.09154929577464799,
+     "hwm_mb": 88.8125,
+     "base_mb": 24.94921875
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [
+    "round 1 tga-tinytga: other CPU load: 60582 96.3 python3 -I -B policy_oracle.py",
+    "round 3 tga-tinytga: other CPU load: 61539 33.3 sleep 5",
+    "round 3 gdk:tga: other CPU load: 61593 97.3 python3 -I -B policy_oracle.py",
+    "round 4 tga-verified: other CPU load: 62503 77.7 /opt/verus/rust_verify /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc --crate-nam",
+    "round 4 tga-image: other CPU load: 62503 89.6 /opt/verus/rust_verify /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc --crate-nam",
+    "round 4 tga-tinytga: other CPU load: 62503 93.2 /opt/verus/rust_verify /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc --crate-nam",
+    "round 4 gdk:tga: other CPU load: 62503 92.0 /opt/verus/rust_verify /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc --crate-nam",
+    "round 5 tga-verified: other CPU load: 63243  200 /opt/verus/./z3 -smt2 -in",
+    "round 5 tga-image: other CPU load: 62503  294 /opt/verus/rust_verify /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc --crate-nam",
+    "round 5 tga-tinytga: other CPU load: 62503  261 /opt/verus/rust_verify /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc --crate-nam",
+    "round 5 gdk:tga: other CPU load: 65161 96.4 python3 -I -B validate.py"
+   ],
+   "size": 15902891,
+   "verified_ok": true,
+   "ver_msg": "",
+   "skipped_disagree": []
+  },
+  "tga32_4096x3840.tga": {
+   "decoders": {
+    "tga-verified": {
+     "pixels": 15728640,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 136000000.0,
+     "min_ns": 106000000.0,
+     "max_ns": 142000000.0,
+     "ns_per_px": 8.646647135416666,
+     "min_ns_per_px": 6.739298502604167,
+     "mbps": 462.6070588235294,
+     "cpu_over_wall": 1.023244750032142,
+     "wall_ns_per_px": 8.450223795572917,
+     "wall_min_ns_per_px": 6.780622418721517,
+     "wall_spread": 0.4048361616620769,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 5
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 4
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 4
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 3
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ]
+     ],
+     "spread": 0.2647058823529412,
+     "round_spread": 0.3396226415094339,
+     "hwm_mb": 123.859375,
+     "base_mb": 63.8515625
+    },
+    "tga-image": {
+     "pixels": 62914560,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 120000000.0,
+     "min_ns": 84000000.0,
+     "max_ns": 142000000.0,
+     "ns_per_px": 1.9073486328125,
+     "min_ns_per_px": 1.33514404296875,
+     "mbps": 2097.152,
+     "cpu_over_wall": 1.0355774443258678,
+     "wall_ns_per_px": 1.8418213367462157,
+     "wall_min_ns_per_px": 0.8887529214223225,
+     "wall_spread": 1.5652866811908128,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 4
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 5
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 3
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ]
+     ],
+     "spread": 0.48333333333333334,
+     "round_spread": 0.6904761904761905,
+     "hwm_mb": 124.30078125,
+     "base_mb": 64.29296875
+    },
+    "gdk:tga": {
+     "pixels": 15728640,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 310000000.0,
+     "min_ns": 302000000.0,
+     "max_ns": 344000000.0,
+     "ns_per_px": 19.709269205729168,
+     "min_ns_per_px": 19.200642903645832,
+     "mbps": 202.9501935483871,
+     "cpu_over_wall": 0.9335283066425595,
+     "wall_ns_per_px": 21.11266371409098,
+     "wall_min_ns_per_px": 17.974323018391928,
+     "wall_spread": 0.2765400418733219,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 5
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 4
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ]
+     ],
+     "spread": 0.13548387096774195,
+     "round_spread": 0.13907284768211925,
+     "hwm_mb": 190.2890625,
+     "base_mb": 69.65625
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [
+    "round 1 tga-verified: other CPU load: 65132  134 /opt/verus/rust_verify /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc --crate-nam",
+    "round 1 tga-image: other CPU load: 65132  109 /opt/verus/rust_verify /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc --crate-nam",
+    "round 1 gdk:tga: other CPU load: 5641  125 /opt/verus/./z3 -smt2 -in",
+    "round 2 tga-verified: other CPU load: 6321  100 /usr/bin/node /home/ws/.claude/plugins/cache/agent-sanitizer/agent-sanitizer/2.70.4/dist/hooks/plugi",
+    "round 2 tga-image: other CPU load: 7222  100 /opt/verus/./z3 -smt2 -in",
+    "round 2 gdk:tga: other CPU load: 65161 79.3 python3 -I -B validate.py",
+    "round 3 tga-verified: other CPU load: 8665 96.5 /tmp/claude-0/glycin-target/debug/leniency-format-runner tga:image /tmp/claude-0/tga-policy/seed-202",
+    "round 3 tga-image: other CPU load: 65161 66.2 python3 -I -B validate.py",
+    "round 3 gdk:tga: other CPU load: 65161 61.3 python3 -I -B validate.py",
+    "round 4 tga-verified: other CPU load: 65161 56.3 python3 -I -B validate.py",
+    "round 4 tga-image: other CPU load: 11888  100 /tmp/claude-0/glycin-target/debug/leniency-format-runner tga:verified /tmp/claude-0/tga-policy/seed",
+    "round 4 gdk:tga: other CPU load: 65161 50.1 python3 -I -B validate.py",
+    "round 5 tga-verified: other CPU load: 65161 47.2 python3 -I -B validate.py",
+    "round 5 tga-image: other CPU load: 65161 45.1 python3 -I -B validate.py",
+    "round 5 gdk:tga: other CPU load: 65161 43.8 python3 -I -B validate.py"
+   ],
+   "size": 62914578,
+   "verified_ok": true,
+   "ver_msg": "",
+   "skipped_disagree": []
+  },
+  "tga32rle_4096x3840.tga": {
+   "decoders": {
+    "tga-verified": {
+     "pixels": 31457280,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 138000000.0,
+     "min_ns": 92000000.0,
+     "max_ns": 198000000.0,
+     "ns_per_px": 4.38690185546875,
+     "min_ns_per_px": 2.9246012369791665,
+     "mbps": 911.8052173913044,
+     "cpu_over_wall": 1.1157455065027386,
+     "wall_ns_per_px": 3.9318122545878094,
+     "wall_min_ns_per_px": 2.773191452026367,
+     "wall_spread": 1.0454109148806727,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.7681159420289855,
+     "round_spread": 1.152173913043478,
+     "hwm_mb": 83.48046875,
+     "base_mb": 23.47265625
+    },
+    "tga-image": {
+     "pixels": 15728640,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 100000000.0,
+     "min_ns": 94000000.0,
+     "max_ns": 180000000.0,
+     "ns_per_px": 6.357828776041667,
+     "min_ns_per_px": 5.976359049479167,
+     "mbps": 629.1456,
+     "cpu_over_wall": 0.9037332497560824,
+     "wall_ns_per_px": 7.035072326660156,
+     "wall_min_ns_per_px": 5.264610862731933,
+     "wall_spread": 1.1009893981245005,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.86,
+     "round_spread": 0.9148936170212767,
+     "hwm_mb": 83.109375,
+     "base_mb": 23.1015625
+    },
+    "gdk:tga": {
+     "pixels": 15728640,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 302000000.0,
+     "min_ns": 290000000.0,
+     "max_ns": 314000000.0,
+     "ns_per_px": 19.200642903645832,
+     "min_ns_per_px": 18.437703450520832,
+     "mbps": 208.32635761589404,
+     "cpu_over_wall": 0.9682737817330771,
+     "wall_ns_per_px": 19.82976640065511,
+     "wall_min_ns_per_px": 17.59960479736328,
+     "wall_spread": 0.25633464185702576,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.07947019867549669,
+     "round_spread": 0.08275862068965512,
+     "hwm_mb": 108.18359375,
+     "base_mb": 28.6171875
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [
+    "round 1 tga-verified: other CPU load: 16091  100 [leniency-format]",
+    "round 1 tga-image: other CPU load: 65161 40.2 python3 -I -B validate.py",
+    "round 1 gdk:tga: other CPU load: 65161 39.1 python3 -I -B validate.py",
+    "round 2 tga-verified: other CPU load: 18586  100 /tmp/claude-0/glycin-target/debug/leniency-format-runner tga:verified /tmp/claude-0/tga-policy/seed",
+    "round 2 tga-image: other CPU load: 65161 36.4 python3 -I -B validate.py",
+    "round 2 gdk:tga: other CPU load: 65161 35.4 python3 -I -B validate.py",
+    "round 3 tga-verified: other CPU load: 65161 34.4 python3 -I -B validate.py",
+    "round 3 tga-image: other CPU load: 65161 33.6 python3 -I -B validate.py",
+    "round 3 gdk:tga: other CPU load: 65161 32.8 python3 -I -B validate.py",
+    "round 4 tga-verified: other CPU load: 65161 32.1 python3 -I -B validate.py",
+    "round 4 tga-image: other CPU load: 23927  100 [leniency-format]",
+    "round 4 gdk:tga: other CPU load: 65161 31.0 python3 -I -B validate.py",
+    "round 5 tga-verified: other CPU load: 65161 30.3 python3 -I -B validate.py"
+   ],
+   "size": 19785586,
+   "verified_ok": true,
+   "ver_msg": "",
+   "skipped_disagree": []
+  }
+ },
+ "verified_ok": 4,
+ "verified_errors": {
+  "FileTooLarge": 1
+ }
+}

@@ -1,0 +1,594 @@
+{
+ "format": "icns",
+ "part": "large",
+ "n_files": 3,
+ "passes": 5,
+ "warmup": 1,
+ "rounds": 5,
+ "agreement": {
+  "icns-crate": {
+   "counts": {
+    "both-ok-equal": 2,
+    "incumbent-only-ok": 1
+   },
+   "examples": []
+  },
+  "gdk:icns": {
+   "counts": {
+    "both-ok-equal": 2,
+    "both-error": 1
+   },
+   "examples": []
+  }
+ },
+ "timing": {
+  "icns_legacy128.icns": {
+   "decoders": {
+    "icns-verified": {
+     "pixels": 13533184,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 86000000.0,
+     "min_ns": 80000000.0,
+     "max_ns": 96000000.0,
+     "ns_per_px": 6.354749924334141,
+     "min_ns_per_px": 5.911395278450363,
+     "mbps": 629.4504186046511,
+     "cpu_over_wall": 0.9810681230889136,
+     "wall_ns_per_px": 6.477378863687954,
+     "wall_min_ns_per_px": 5.7668054317446655,
+     "wall_spread": 0.31792596266739187,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.18604651162790697,
+     "round_spread": 0.19999999999999996,
+     "hwm_mb": 19.7890625,
+     "base_mb": 19.7890625
+    },
+    "icns-crate": {
+     "pixels": 9551872,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 102000000.0,
+     "min_ns": 88000000.0,
+     "max_ns": 106000000.0,
+     "ns_per_px": 10.67853505574614,
+     "min_ns_per_px": 9.212853773584905,
+     "mbps": 374.5832156862745,
+     "cpu_over_wall": 0.9953584095343625,
+     "wall_ns_per_px": 10.728331577307568,
+     "wall_min_ns_per_px": 8.944470780177959,
+     "wall_spread": 0.32503379095424134,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.17647058823529413,
+     "round_spread": 0.20454545454545459,
+     "hwm_mb": 19.7890625,
+     "base_mb": 19.7890625
+    },
+    "gdk:icns": {
+     "pixels": 13713408,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 20000000.0,
+     "min_ns": 8000000.0,
+     "max_ns": 22000000.0,
+     "ns_per_px": 1.4584266726403823,
+     "min_ns_per_px": 0.583370669056153,
+     "mbps": 2742.6816,
+     "cpu_over_wall": 0.9873018176720114,
+     "wall_ns_per_px": 1.4771842272905467,
+     "wall_min_ns_per_px": 0.5918193347707587,
+     "wall_spread": 0.8145003043357854,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.7,
+     "round_spread": 1.75,
+     "hwm_mb": 19.7890625,
+     "base_mb": 19.7890625
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [
+    "round 4 gdk:icns: other CPU load: 26665 96.0 python3 -I -B policy_oracle.py"
+   ],
+   "size": 41830,
+   "verified_ok": true,
+   "ver_msg": "",
+   "skipped_disagree": []
+  },
+  "icns_legacy128_pad32M.icns": {
+   "decoders": {
+    "icns-verified": {
+     "pixels": 14352384,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 90000000.0,
+     "min_ns": 78000000.0,
+     "max_ns": 92000000.0,
+     "ns_per_px": 6.270735231164384,
+     "min_ns_per_px": 5.434637200342466,
+     "mbps": 637.8837333333333,
+     "cpu_over_wall": 1.0115466817385623,
+     "wall_ns_per_px": 6.199155554923837,
+     "wall_min_ns_per_px": 5.285243134520369,
+     "wall_spread": 0.21695878018080184,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.15555555555555556,
+     "round_spread": 0.17948717948717952,
+     "hwm_mb": 36.76953125,
+     "base_mb": 36.60546875
+    },
+    "icns-crate": {
+     "pixels": 65536,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 80000000.0,
+     "min_ns": 38000000.0,
+     "max_ns": 98000000.0,
+     "ns_per_px": 1220.703125,
+     "min_ns_per_px": 579.833984375,
+     "mbps": 3.2767999999999997,
+     "cpu_over_wall": 1.038775961462139,
+     "wall_ns_per_px": 1175.1360931396484,
+     "wall_min_ns_per_px": 418.6735534667969,
+     "wall_spread": 1.7384169955485465,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ]
+     ],
+     "spread": 0.75,
+     "round_spread": 1.5789473684210527,
+     "hwm_mb": 68.23046875,
+     "base_mb": 36.0546875
+    },
+    "gdk:icns": {
+     "pixels": 114688,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 82000000.0,
+     "min_ns": 66000000.0,
+     "max_ns": 212000000.0,
+     "ns_per_px": 714.9832589285714,
+     "min_ns_per_px": 575.4743303571429,
+     "mbps": 5.594536585365853,
+     "cpu_over_wall": 0.9307194252312679,
+     "wall_ns_per_px": 768.2049386160714,
+     "wall_min_ns_per_px": 296.8668910435268,
+     "wall_spread": 2.535414986453265,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ]
+     ],
+     "spread": 1.7804878048780488,
+     "round_spread": 2.212121212121212,
+     "hwm_mb": 75.29296875,
+     "base_mb": 41.26953125
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [
+    "round 5 gdk:icns: other CPU load: 26883 97.2 python3 -I -B investigate_pixdiff.py"
+   ],
+   "size": 33596270,
+   "verified_ok": true,
+   "ver_msg": "",
+   "skipped_disagree": []
+  },
+  "icns_png1024.icns": {
+   "decoders": {
+    "icns-crate": {
+     "pixels": 6291456,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 82000000.0,
+     "min_ns": 70000000.0,
+     "max_ns": 94000000.0,
+     "ns_per_px": 13.033548990885416,
+     "min_ns_per_px": 11.126200358072916,
+     "mbps": 306.9002926829268,
+     "cpu_over_wall": 1.010747338076705,
+     "wall_ns_per_px": 12.894962469736734,
+     "wall_min_ns_per_px": 10.327083269755045,
+     "wall_spread": 0.5145529682080888,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       }
+      ]
+     ],
+     "spread": 0.2926829268292683,
+     "round_spread": 0.34285714285714275,
+     "hwm_mb": 24.6328125,
+     "base_mb": 20.01171875
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [
+    "round 1 icns-crate: other CPU load: 26883 97.2 python3 -I -B investigate_pixdiff.py",
+    "round 2 icns-crate: other CPU load: 26883 97.1 python3 -I -B investigate_pixdiff.py",
+    "round 3 icns-crate: other CPU load: 26883 97.0 python3 -I -B investigate_pixdiff.py",
+    "round 4 icns-crate: other CPU load: 26883 97.0 python3 -I -B investigate_pixdiff.py",
+    "round 5 icns-crate: other CPU load: 26883 97.0 python3 -I -B investigate_pixdiff.py"
+   ],
+   "size": 4195732,
+   "verified_ok": false,
+   "ver_msg": "NoLegacyPair",
+   "skipped_disagree": []
+  }
+ },
+ "verified_ok": 2,
+ "verified_errors": {
+  "NoLegacyPair": 1
+ }
+}
