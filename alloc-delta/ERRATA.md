@@ -112,3 +112,30 @@ The production tool lives at `alloc-delta/audit/tool`, not `tools/alloc_audit`, 
 9. **The 42 prototype controls** are ported as `no_std` crates with the same items, so that §9's crate-origin rule does not fail them for an unrelated reason. Their fixtures are rewritten in the new allowlist format (`alloc-audit/2`, TOML parsed by the `toml` crate, unknown keys rejected). The controls run with every exported function as a root rather than the prototype's single named root, so some negative controls report more paths than the prototype archived. Every expected verdict is unchanged.
 
 The build-input inventory (§6, §8 prerequisite 2) is implemented by detection plus blocking, which §6 allows as the alternative to denial. It does not deny reads. It attributes environment reads made inside a proc macro to the rustc process that hosts it. These limits are in the README's prerequisite table.
+
+## E8 — 2026-11-13: SPEC §6's simple-path argument does not cover caller authorisation; the audit's scope reductions stated plainly
+
+**Correction to `SPEC.md` §6, *What the audit cannot see*, "Path-enumeration bound".** The frozen text says that restricting to simple paths loses nothing, because a node reached through a cycle is also reached by the simple path that first enters it. That holds for **reachability** and fails for **caller authorisation**. A path is judged by the most recent crate-local caller before its last allowlisted allocation-capable item. A cycle can carry a different caller into a shared instance: a private generic `Clone` impl that calls `to_vec()` again, entered from a guard admitted for `to_vec`. The simple-path enumeration refuses to revisit the shared instance, so it never judges the walk on which the callback is the caller. Sol's review reproduced this as a PASS with zero findings (`alloc-delta/audit/controls/sol-repro/cycle-admitted.txt`). The production tool no longer enumerates paths. It computes a fixpoint over authorisation states: node, most recent crate-local caller, and the verdict of the last allowlisted item. Every walk is judged, including walks that repeat a node; the control is `x27_callback_cycle`. The 20,000-path and depth-80 bounds no longer exist; a 5,000,000-state cap fails closed (`state-bound`). The same review found that caller-side generic arguments in an `allow` value were dropped, so `allow = "crate::guard<u8>"` also admitted `guard::<u16>`. They are now compared exactly (control `x28_generic_caller_args`). Neither fix has been re-reviewed.
+
+**Scope reductions (not proofs).** The draft allowlists make three choices that narrow what a passing audit would cover. A reader must not read past them:
+
+- **`root-exclude` of `Decoded::clone`** (DIB, TGA, ICNS). Cloning a returned image allocates with an infallible `Vec::clone` and is **not covered**.
+- **`root-exclude` of every `derive(Debug)` `fmt`.** Formatting a core type goes through the caller's `dyn fmt::Write`, and whatever that writer allocates is **not covered**.
+- **`generic-export` of `try_with_room<T>`, `Reserved::<T>::push` and `Reserved::<T>::into_vec`** (ICNS, ICO). Only the instantiations the cores' own roots reach (`T = Entry`) are audited. The behaviour of these public guard functions at any other `T`, or when a downstream crate calls them, is **not covered**. In particular, `Reserved::push` relies on a Verus precondition (`len < room`), not a runtime capacity check. An unverified downstream caller that violates the precondition would reach `Vec::push`'s growth path, which allocates infallibly.
+
+The assurance a signed, passing audit would give is therefore limited to the audited, verified root call paths: the `try_*` and `*_logged` entry points and the other exported non-generic functions not excluded. It does not cover every allocation reachable through the public API, cloning a returned image, the public guard API's behaviour, or arbitrary downstream monomorphisations. Each exclusion and declaration needs the owner's explicit acceptance before any allowlist is signed.
+
+## E9 — 2026-11-13: an admitted item no longer lends its authorisation to crate code it calls back into; corrects E8 and the audit README
+
+E8 says authorisation is decided by "the last allowlisted allocation-capable item" on a walk, judged against the crate caller before it. Sol's re-check showed that rule is too weak whenever an admitted std item calls back into crate code. A guard admitted for `to_vec` reaches `Vec::clone`, which calls a private crate `Clone` impl. That impl calls `alloc::alloc::alloc` directly. The verdict "admitted" from `to_vec` stayed in force across the callback, so the direct allocation inherited it, and the tool returned PRODUCTION, PASS and zero findings (`alloc-delta/audit/controls/sol-repro/recheck/callback-admitted.txt`).
+
+Correction: entering any crate-local function now starts a new authorisation scope. The tool discards the inherited verdict, and an allocation that originates in that function needs its own admission: an `alloc` entry naming an item it calls, with that function as `allow`. Deallocation stays admitted only through explicit `allow = "*"` entries on deallocation items. Pinned std that invokes crate code under a callback-capable admission (`to_vec`, `clone`, iterator adaptors) therefore authorises nothing in that crate code.
+
+- `x33_callback_direct_alloc` must FAIL, naming the callback.
+- `x33b_callback_no_alloc` has the same shape with a non-allocating callback and must PASS.
+
+Leaf and panic entries were checked and did not have this problem: each is matched against the immediate (inlining-undone) caller of the leaf or panic edge, not against an inherited state. `x34_leafpanic_caller_args` is a regression control for their caller-argument restriction. It instantiates a private generic at `u8` and `u16`, with intrinsic and bounds-panic admissions restricted to `u8`, and it must leave exactly the two `u16` edges unexplained.
+
+The controls runner now also fails a run that selects no control (`x35_empty_selection_fails`). It keeps the separate exact full-suite count (98).
+
+None of this has been re-reviewed.
