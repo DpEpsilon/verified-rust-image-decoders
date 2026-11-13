@@ -488,3 +488,233 @@
 489	2026-11-08T16:13:12+00:00	exit=101	91s	exec mutation 18 [crate=mutation/exec-m18/tga_verus]	verification results:: 641 verified, 1 errors
 490	2026-11-08T16:14:39+00:00	exit=101	87s	exec mutation 19 [crate=mutation/exec-m19/tga_verus]	verification results:: 641 verified, 1 errors
 491	2026-11-08T16:16:06+00:00	exit=101	87s	exec mutation 20 [crate=mutation/exec-m20/tga_verus]	verification results:: 641 verified, 1 errors
+1	2026-11-12T02:50:48+00:00	exit=0	89s	baseline: 1.0 crate unchanged, frozen 642 verified [crate=tga_verus]	verification results:: 642 verified, 0 errors
+2	2026-11-12T03:00:39+00:00	exit=101	51s	S1 probe: policy types + mh_policy + strict bridges [crate=probe/tga_verus]	verification results:: 2159 verified, 0 errors
+3	2026-11-12T03:01:19+00:00	exit=101	25s	S1 probe: policy types + mh_policy + strict bridges [crate=probe/tga_verus]	verification results:: 507 verified, 6 errors
+4	2026-11-12T03:02:18+00:00	exit=101	1s	S1 probe: mh_policy bounds + strict bridges [crate=probe/tga_verus]	
+5	2026-11-12T03:03:01+00:00	exit=101	24s	S1 probe: mh_policy bounds + strict bridges [crate=probe/tga_verus]	verification results:: 509 verified, 4 errors
+6	2026-11-12T03:03:48+00:00	exit=101	24s	S1 probe: r2: map coherence elementwise [crate=probe/tga_verus]	verification results:: 510 verified, 3 errors
+7	2026-11-12T03:04:12+00:00	exit=101	36s	S1 probe: attr strict r2 [crate=probe/tga_verus]	verification results:: 510 verified, 3 errors
+8	2026-11-12T03:04:36+00:00	exit=101	26s	S1 probe: r3 [crate=probe/tga_verus]	verification results:: 511 verified, 2 errors
+9	2026-11-12T03:05:22+00:00	exit=0	25s	S1 probe: r4 [crate=probe/tga_verus]	verification results:: 513 verified, 0 errors
+10	2026-11-12T03:07:16+00:00	exit=101	23s	S1+S2 model: mr_at_policy etc [crate=probe/tga_verus]	
+11	2026-11-12T03:07:40+00:00	exit=101	36s	S1+S2 model r2 [crate=probe/tga_verus]	verification results:: 522 verified, 1 errors
+12	2026-11-12T03:07:43+00:00	exit=101	2s	S1+S2 model r3 [crate=probe/tga_verus]	
+13	2026-11-12T03:07:54+00:00	exit=101	5s	S1+S2 model r4 [crate=probe/tga_verus]	
+14	2026-11-12T03:08:08+00:00	exit=101	5s	S1+S2 model r5 [crate=probe/tga_verus]	
+15	2026-11-12T03:08:37+00:00	exit=101	24s	S1+S2 model r6 [crate=probe/tga_verus]	verification results:: 524 verified, 2 errors
+16	2026-11-12T03:08:41+00:00	exit=101	10s	S1+S2 model r7 [crate=probe/tga_verus]	
+17	2026-11-12T03:09:14+00:00	exit=101	24s	S1+S2 model r8 [crate=probe/tga_verus]	verification results:: 525 verified, 1 errors
+18	2026-11-12T03:09:42+00:00	exit=101	24s	S1+S2 model r9 [crate=probe/tga_verus]	verification results:: 525 verified, 1 errors
+19	2026-11-12T03:10:07+00:00	exit=0	31s	S1+S2 model r10 [crate=probe/tga_verus]	verification results:: 526 verified, 0 errors
+20	2026-11-12T03:10:48+00:00	exit=0	27s	S1: policy types + policy_indexed models (mh/conv/mr/mp/recovered) + Strict bridges; 1.0 decode unchanged [crate=tga_verus]	verification results:: 691 verified, 0 errors
+21	2026-11-12T03:12:58+00:00	exit=101	27s	S1b: lit strict bridges [crate=probe/tga_verus]	verification results:: 528 verified, 1 errors
+22	2026-11-12T03:13:27+00:00	exit=101	25s	S1b: lit strict bridges r2 [crate=probe/tga_verus]	verification results:: 528 verified, 1 errors
+23	2026-11-12T03:13:51+00:00	exit=101	34s	S1b: lit strict bridges r3 [crate=probe/tga_verus]	verification results:: 528 verified, 1 errors
+24	2026-11-12T03:14:16+00:00	exit=0	42s	S1b: lit strict bridges r4 [crate=probe/tga_verus]	verification results:: 533 verified, 0 errors
+25	2026-11-12T03:15:02+00:00	exit=0	27s	S1b: lit_out/lit_ok/lit_good Strict bridges; full policy model at Strict = 1.0 [crate=tga_verus]	verification results:: 698 verified, 0 errors
+26	2026-11-12T03:17:48+00:00	exit=0	25s	S2 model: obligation E (recovered exact) [crate=probe/tga_verus]	verification results:: 540 verified, 0 errors
+27	2026-11-12T03:18:44+00:00	exit=0	25s	S2 model: obligation R header/conversion lemmas [crate=probe/tga_verus]	verification results:: 547 verified, 0 errors
+28	2026-11-12T03:19:46+00:00	exit=0	26s	S2 model R: raw phase + conv equality [crate=probe/tga_verus]	verification results:: 551 verified, 0 errors
+29	2026-11-12T03:20:29+00:00	exit=101	25s	S2 model R: packet phase + mp conservativity [crate=probe/tga_verus]	verification results:: 554 verified, 3 errors
+30	2026-11-12T03:20:52+00:00	exit=101	32s	S2 model R: packet phase r2 [crate=probe/tga_verus]	verification results:: 555 verified, 2 errors
+31	2026-11-12T03:21:17+00:00	exit=101	27s	S2 model R: packet phase r3 [crate=probe/tga_verus]	verification results:: 555 verified, 2 errors
+32	2026-11-12T03:21:40+00:00	exit=101	29s	S2 model R: packet phase r4 [crate=probe/tga_verus]	verification results:: 556 verified, 2 errors
+33	2026-11-12T03:22:04+00:00	exit=101	28s	S2 model R: packet phase r5 [crate=probe/tga_verus]	verification results:: 559 verified, 5 errors
+34	2026-11-12T03:23:34+00:00	exit=0	25s	S2 model R: packet phase r6 [crate=probe/tga_verus]	verification results:: 557 verified, 0 errors
+35	2026-11-12T03:24:14+00:00	exit=0	26s	S2 model: obligation E (recovered exact) + obligation R (site lemmas, header/conversion/packet conservativity) [crate=tga_verus]	verification results:: 722 verified, 0 errors
+36	2026-11-12T03:24:43+00:00	exit=101	24s	S2 model R: end-to-end mp conservativity [crate=probe/tga_verus]	verification results:: 561 verified, 4 errors
+37	2026-11-12T03:25:10+00:00	exit=0	26s	S2 model: E + R (reverted to run-035 green source) [crate=probe/tga_verus]	verification results:: 557 verified, 0 errors
+38	2026-11-12T03:25:40+00:00	exit=0	26s	S2 final: Stage 1 policy models (Strict definitional) + obligation E + obligation R (sites/header/conversion/packet) [crate=tga_verus]	verification results:: 722 verified, 0 errors
+39	2026-11-12T03:27:27+00:00	exit=101	71s	S2 model R: end-to-end v2 (factored) [crate=probe/tga_verus]	verification results:: 563 verified, 3 errors
+40	2026-11-12T03:27:52+00:00	exit=0	26s	S2 delivered: reverted to run-038 green source (Stage 1 + E + R sites/header/conversion/packet) [crate=tga_verus]	verification results:: 722 verified, 0 errors
+41	2026-11-12T03:29:40+00:00	exit=0	75s	S2 final clean reverify: delivered policy tree, 722 verified [crate=tga_verus]	verification results:: 722 verified, 0 errors
+42	2026-11-12T03:44:07+00:00	exit=101	76s	S2 R end-to-end (factored, piece 1) [crate=tga_verus]	verification results:: 730 verified, 1 errors
+43	2026-11-12T03:44:54+00:00	exit=101	25s	S2 R end-to-end: per-case after lemmas [crate=tga_verus]	verification results:: 733 verified, 1 errors
+44	2026-11-12T03:45:45+00:00	exit=101	26s	S2 R: rle micro-lemmas [crate=tga_verus]	verification results:: 736 verified, 1 errors
+45	2026-11-12T03:46:33+00:00	exit=0	27s	S2 R: rle suffix fix [crate=tga_verus]	verification results:: 738 verified, 0 errors
+46	2026-11-12T03:50:04+00:00	exit=101	25s	S2 R done; header-indexed spec helpers [crate=tga_verus]	verification results:: 738 verified, 1 errors
+47	2026-11-12T03:50:50+00:00	exit=101	26s	S2 header-indexed lemma case analysis [crate=tga_verus]	verification results:: 738 verified, 1 errors
+48	2026-11-12T03:51:46+00:00	exit=101	26s	S2 header-indexed lemma v3 [crate=tga_verus]	verification results:: 738 verified, 1 errors
+49	2026-11-12T03:52:23+00:00	exit=101	26s	S2 header-indexed lemma v4 [crate=tga_verus]	verification results:: 738 verified, 1 errors
+50	2026-11-12T03:53:05+00:00	exit=0	26s	S2 header-indexed lemma v5 (ladder) [crate=tga_verus]	verification results:: 739 verified, 0 errors
+51	2026-11-12T03:54:37+00:00	exit=101	2s	S2 B1 policy header parser (partial) [crate=tga_verus]	
+52	2026-11-12T03:54:51+00:00	exit=101	2s	S2 B1 header parser fixes [crate=tga_verus]	
+53	2026-11-12T03:55:02+00:00	exit=101	5s	S2 B1 header parser fixes 2 [crate=tga_verus]	
+54	2026-11-12T03:55:32+00:00	exit=101	26s	S2 B1 header parser fixes 3 [crate=tga_verus]	verification results:: 744 verified, 1 errors
+55	2026-11-12T03:56:14+00:00	exit=101	3s	S2 B1 header verdict restructure [crate=tga_verus]	
+56	2026-11-12T03:56:20+00:00	exit=101	2s	S2 B1 header verdict exec fixes [crate=tga_verus]	
+57	2026-11-12T03:56:36+00:00	exit=101	6s	S2 B1 header verdict exec wrappers [crate=tga_verus]	
+58	2026-11-12T03:57:20+00:00	exit=101	25s	S2 B1 header verdict inline guards [crate=tga_verus]	verification results:: 746 verified, 1 errors
+59	2026-11-12T03:58:13+00:00	exit=101	25s	S2 B1 header verdict via exec wrappers [crate=tga_verus]	verification results:: 753 verified, 5 errors
+60	2026-11-12T03:58:51+00:00	exit=101	25s	S2 B1 wrapper asserts [crate=tga_verus]	verification results:: 754 verified, 4 errors
+61	2026-11-12T03:59:29+00:00	exit=101	2s	S2 B1 wrapper asserts 2 [crate=tga_verus]	
+62	2026-11-12T04:00:54+00:00	exit=0	75s	S2 FINAL: R end-to-end done (738+ verified); header parser work reverted to green [crate=tga_verus]	verification results:: 739 verified, 0 errors
+63	2026-11-12T04:27:48+00:00	exit=101	68s	S2 B1: policy header parser (parse_header_policy/header_verdict/header_inv_policy/pkt_of_policy) [crate=tga_verus]	verification results:: 2159 verified, 0 errors
+64	2026-11-12T04:28:05+00:00	exit=101	8s	S2 B1: policy header parser, take 2 [crate=tga_verus]	
+65	2026-11-12T04:28:17+00:00	exit=101	5s	S2 B1: policy header parser, take 3 [crate=tga_verus]	
+66	2026-11-12T04:28:49+00:00	exit=101	8s	S2 B1: policy header parser, take 4 (pub(crate) Header) [crate=tga_verus]	
+67	2026-11-12T04:29:26+00:00	exit=101	32s	S2 B1: policy header parser, take 5 [crate=tga_verus]	verification results:: 761 verified, 2 errors
+68	2026-11-12T04:30:33+00:00	exit=0	33s	S2 B1: policy header parser, take 6 [crate=tga_verus]	verification results:: 762 verified, 0 errors
+69	2026-11-12T04:34:31+00:00	exit=101	3s	S2 B2: policy conversion layer (convert_sample_policy/convert_index_policy/convert_one_policy) [crate=tga_verus]	
+70	2026-11-12T04:34:47+00:00	exit=101	3s	S2 B2: policy conversion layer, take 2 [crate=tga_verus]	
+71	2026-11-12T04:35:01+00:00	exit=101	3s	S2 B2: policy conversion layer, take 3 [crate=tga_verus]	
+72	2026-11-12T04:35:34+00:00	exit=101	28s	S2 B2: policy conversion layer, take 4 [crate=tga_verus]	verification results:: 784 verified, 8 errors
+73	2026-11-12T04:36:50+00:00	exit=101	29s	S2 B2: conversion layer, take 5 [crate=tga_verus]	verification results:: 784 verified, 8 errors
+74	2026-11-12T04:38:30+00:00	exit=101	31s	S2 B2: conversion layer, take 6 [crate=tga_verus]	verification results:: 772 verified, 1 errors
+75	2026-11-12T04:39:28+00:00	exit=101	4s	S2 B2: conversion layer, take 7 [crate=tga_verus]	
+76	2026-11-12T04:40:10+00:00	exit=101	3s	S2 B2: conversion layer, take 8 [crate=tga_verus]	
+77	2026-11-12T04:40:28+00:00	exit=101	7s	S2 B2: conversion layer, take 9 [crate=tga_verus]	
+78	2026-11-12T04:41:13+00:00	exit=101	30s	S2 B2: conversion layer, take 10 [crate=tga_verus]	verification results:: 788 verified, 6 errors
+79	2026-11-12T04:42:48+00:00	exit=101	27s	S2 B2: conversion layer, take 11 [crate=tga_verus]	verification results:: 791 verified, 6 errors
+80	2026-11-12T04:43:51+00:00	exit=101	29s	S2 B2: conversion layer, take 12 [crate=tga_verus]	verification results:: 791 verified, 6 errors
+81	2026-11-12T04:45:43+00:00	exit=101	2s	S2 B1 recheck (pkt_of_policy via eff_count_img) [crate=tga_verus]	
+82	2026-11-12T04:46:33+00:00	exit=0	32s	S2 B1 recheck (pkt_of_policy via eff_count_img), take 2 [crate=tga_verus]	verification results:: 775 verified, 0 errors
+83	2026-11-12T04:47:40+00:00	exit=101	7s	S2 B2: conversion layer rewrite [crate=tga_verus]	
+84	2026-11-12T04:48:16+00:00	exit=101	30s	S2 B2: conversion layer rewrite, 2 [crate=tga_verus]	verification results:: 791 verified, 5 errors
+85	2026-11-12T04:48:52+00:00	exit=101	3s	S2 B2: conversion layer rewrite, 3 [crate=tga_verus]	
+86	2026-11-12T04:49:28+00:00	exit=101	30s	S2 B2: conversion layer rewrite, 4 [crate=tga_verus]	verification results:: 794 verified, 3 errors
+87	2026-11-12T04:50:19+00:00	exit=101	30s	S2 B2: conversion layer rewrite, 5 [crate=tga_verus]	verification results:: 796 verified, 1 errors
+88	2026-11-12T04:51:01+00:00	exit=101	30s	S2 B2: conversion layer rewrite, 6 [crate=tga_verus]	verification results:: 795 verified, 1 errors
+89	2026-11-12T04:51:42+00:00	exit=101	30s	S2 B2: conversion layer rewrite, 7 [crate=tga_verus]	verification results:: 795 verified, 1 errors
+90	2026-11-12T04:51:52+00:00	exit=101	3s	S2 B2: conversion layer rewrite, 8 [crate=tga_verus]	
+91	2026-11-12T04:52:30+00:00	exit=101	30s	S2 B2: conversion layer rewrite, 9 [crate=tga_verus]	verification results:: 795 verified, 1 errors
+92	2026-11-12T04:53:07+00:00	exit=101	29s	S2 B2: conversion layer, 10 [crate=tga_verus]	verification results:: 795 verified, 1 errors
+93	2026-11-12T04:53:51+00:00	exit=101	31s	S2 B2: conversion layer, 11 [crate=tga_verus]	verification results:: 796 verified, 1 errors
+94	2026-11-12T04:54:30+00:00	exit=101	30s	S2 B2: conversion layer, 12 [crate=tga_verus]	verification results:: 796 verified, 1 errors
+95	2026-11-12T04:55:12+00:00	exit=101	31s	S2 B2: conversion layer, 13 [crate=tga_verus]	verification results:: 796 verified, 1 errors
+96	2026-11-12T04:55:52+00:00	exit=101	31s	S2 B2: conversion layer, 14 [crate=tga_verus]	verification results:: 796 verified, 1 errors
+97	2026-11-12T04:56:36+00:00	exit=101	31s	S2 B2: conversion layer, 15 [crate=tga_verus]	verification results:: 795 verified, 2 errors
+98	2026-11-12T04:57:19+00:00	exit=101	30s	S2 B2: conversion layer, 16 [crate=tga_verus]	verification results:: 800 verified, 1 errors
+99	2026-11-12T04:58:03+00:00	exit=101	29s	S2 B2: conversion layer, 17 [crate=tga_verus]	verification results:: 800 verified, 1 errors
+100	2026-11-12T04:58:41+00:00	exit=101	29s	S2 B2: conversion layer, 18 [crate=tga_verus]	verification results:: 800 verified, 1 errors
+101	2026-11-12T04:59:15+00:00	exit=101	27s	S2 B2: conversion layer, 19 [crate=tga_verus]	verification results:: 800 verified, 1 errors
+102	2026-11-12T04:59:30+00:00	exit=101	3s	S2 B2: conversion layer, 20 [crate=tga_verus]	
+103	2026-11-12T04:59:43+00:00	exit=101	3s	S2 B2: conversion layer, 21 [crate=tga_verus]	
+104	2026-11-12T05:00:24+00:00	exit=101	30s	S2 B2: conversion layer, 22 [crate=tga_verus]	verification results:: 800 verified, 1 errors
+105	2026-11-12T05:01:03+00:00	exit=0	31s	S2 B2: conversion layer, 23 [crate=tga_verus]	verification results:: 801 verified, 0 errors
+106	2026-11-12T05:03:07+00:00	exit=101	29s	S2 B3 model helpers (policy raw cursor/prefix/output specs) [crate=tga_verus]	verification results:: 815 verified, 2 errors
+107	2026-11-12T05:03:51+00:00	exit=101	30s	S2 B3 model helpers, 2 [crate=tga_verus]	verification results:: 816 verified, 2 errors
+108	2026-11-12T05:04:31+00:00	exit=101	29s	S2 B3 model helpers, 3 [crate=tga_verus]	verification results:: 816 verified, 2 errors
+109	2026-11-12T05:05:10+00:00	exit=101	28s	S2 B3 model helpers, 4 [crate=tga_verus]	verification results:: 817 verified, 1 errors
+110	2026-11-12T05:05:51+00:00	exit=101	30s	S2 B3 model helpers, 5 [crate=tga_verus]	verification results:: 818 verified, 2 errors
+111	2026-11-12T05:06:26+00:00	exit=101	28s	S2 B3 model helpers, 6 [crate=tga_verus]	verification results:: 819 verified, 1 errors
+112	2026-11-12T05:07:03+00:00	exit=101	30s	S2 B3 model helpers, 7 [crate=tga_verus]	verification results:: 819 verified, 1 errors
+113	2026-11-12T05:07:38+00:00	exit=101	29s	S2 B3 model helpers, 8 [crate=tga_verus]	verification results:: 819 verified, 2 errors
+114	2026-11-12T05:08:03+00:00	exit=101	3s	S2 B3 model helpers, 9 [crate=tga_verus]	
+115	2026-11-12T05:08:51+00:00	exit=0	30s	S2 B3 model helpers, 10 [crate=tga_verus]	verification results:: 812 verified, 0 errors
+116	2026-11-12T05:09:45+00:00	exit=101	3s	S2 B3: policy raw loop [crate=tga_verus]	
+117	2026-11-12T05:10:21+00:00	exit=101	30s	S2 B3: policy raw loop, 2 [crate=tga_verus]	verification results:: 821 verified, 3 errors
+118	2026-11-12T05:11:21+00:00	exit=101	30s	S2 B3: policy raw loop, 3 [crate=tga_verus]	verification results:: 822 verified, 3 errors
+119	2026-11-12T05:11:59+00:00	exit=101	32s	S2 B3: policy raw loop, 4 [crate=tga_verus]	verification results:: 822 verified, 2 errors
+120	2026-11-12T05:12:54+00:00	exit=101	30s	S2 B3: policy raw loop, 5 [crate=tga_verus]	
+121	2026-11-12T05:13:34+00:00	exit=101	30s	S2 B3: policy raw loop, 6 [crate=tga_verus]	verification results:: 823 verified, 3 errors
+122	2026-11-12T05:14:02+00:00	exit=101	3s	S2 B3: policy raw loop, 7 [crate=tga_verus]	
+123	2026-11-12T05:14:17+00:00	exit=101	9s	S2 B3: policy raw loop, 8 [crate=tga_verus]	
+124	2026-11-12T05:15:01+00:00	exit=101	32s	S2 B3: policy raw loop, 9 [crate=tga_verus]	verification results:: 824 verified, 1 errors
+125	2026-11-12T05:15:37+00:00	exit=101	30s	S2 B3: policy raw loop, 10 [crate=tga_verus]	verification results:: 824 verified, 1 errors
+126	2026-11-12T05:15:54+00:00	exit=101	3s	S2 B3: policy raw loop, 11 [crate=tga_verus]	
+127	2026-11-12T05:16:32+00:00	exit=101	32s	S2 B3: policy raw loop, 12 [crate=tga_verus]	verification results:: 824 verified, 1 errors
+128	2026-11-12T05:17:08+00:00	exit=101	29s	S2 B3: policy raw loop, 13 [crate=tga_verus]	verification results:: 824 verified, 1 errors
+129	2026-11-12T05:17:26+00:00	exit=101	2s	S2 B3: policy raw loop, 14 [crate=tga_verus]	
+130	2026-11-12T05:18:10+00:00	exit=0	30s	S2 B3 restore check (should be green w3) [crate=tga_verus]	verification results:: 812 verified, 0 errors
+131	2026-11-12T05:18:30+00:00	exit=101	4s	S2 B3 model helpers, 11 (light) [crate=tga_verus]	
+132	2026-11-12T05:19:07+00:00	exit=0	32s	S2 B3 model helpers, 12 [crate=tga_verus]	verification results:: 814 verified, 0 errors
+133	2026-11-12T05:19:48+00:00	exit=101	30s	S2 B3 preservation lemma [crate=tga_verus]	verification results:: 816 verified, 1 errors
+134	2026-11-12T05:20:26+00:00	exit=0	31s	S2 B3 preservation lemma, 2 [crate=tga_verus]	verification results:: 817 verified, 0 errors
+135	2026-11-12T05:20:50+00:00	exit=101	3s	S2 B3 prefix helpers [crate=tga_verus]	
+136	2026-11-12T05:21:26+00:00	exit=101	30s	S2 B3 prefix helpers, 2 [crate=tga_verus]	verification results:: 825 verified, 1 errors
+137	2026-11-12T05:22:02+00:00	exit=101	30s	S2 B3 prefix helpers, 3 [crate=tga_verus]	verification results:: 825 verified, 1 errors
+138	2026-11-12T05:22:39+00:00	exit=101	30s	S2 B3 prefix helpers, 4 [crate=tga_verus]	verification results:: 825 verified, 1 errors
+139	2026-11-12T05:23:14+00:00	exit=101	29s	S2 B3 prefix helpers, 5 [crate=tga_verus]	verification results:: 826 verified, 1 errors
+140	2026-11-12T05:23:55+00:00	exit=0	31s	S2 B3 prefix helpers, 6 [crate=tga_verus]	verification results:: 828 verified, 0 errors
+141	2026-11-12T05:24:49+00:00	exit=101	30s	S2 B3: policy raw loop v2 [crate=tga_verus]	verification results:: 832 verified, 2 errors
+142	2026-11-12T05:25:29+00:00	exit=101	30s	S2 B3: policy raw loop v3 [crate=tga_verus]	verification results:: 834 verified, 1 errors
+143	2026-11-12T05:26:11+00:00	exit=101	31s	S2 B3: policy raw loop v4 [crate=tga_verus]	verification results:: 833 verified, 2 errors
+144	2026-11-12T05:26:59+00:00	exit=101	29s	S2 B3: policy raw loop v5 [crate=tga_verus]	verification results:: 834 verified, 2 errors
+145	2026-11-12T05:27:51+00:00	exit=101	29s	S2 B3: policy raw loop v6 [crate=tga_verus]	verification results:: 836 verified, 1 errors
+146	2026-11-12T05:28:26+00:00	exit=101	29s	S2 B3: policy raw loop v7 [crate=tga_verus]	verification results:: 836 verified, 1 errors
+147	2026-11-12T05:29:05+00:00	exit=101	29s	S2 B3: policy raw loop v8 [crate=tga_verus]	verification results:: 836 verified, 1 errors
+148	2026-11-12T05:30:02+00:00	exit=0	30s	S2 B3: header_inv_policy map_length bound [crate=tga_verus]	verification results:: 837 verified, 0 errors
+149	2026-11-12T05:31:27+00:00	exit=101	30s	S2 B3 RLE reducers [crate=tga_verus]	verification results:: 843 verified, 2 errors
+150	2026-11-12T05:32:11+00:00	exit=0	32s	S2 B3 RLE reducers v2 [crate=tga_verus]	verification results:: 839 verified, 0 errors
+151	2026-11-12T05:33:40+00:00	exit=0	0s	S2 B3 FINAL STATE A: header+conv+raw (RLE and entry point pending) [crate=tga_verus]	
+152	2026-11-12T05:34:27+00:00	exit=0	31s	S2 B3 RLE exit lemmas [crate=tga_verus]	verification results:: 847 verified, 0 errors
+153	2026-11-12T05:35:27+00:00	exit=0	34s	S2 B3 RLE pkt_post_policy [crate=tga_verus]	verification results:: 850 verified, 0 errors
+154	2026-11-12T05:36:19+00:00	exit=101	31s	S2 B3 RLE pix lemmas [crate=tga_verus]	verification results:: 854 verified, 1 errors
+155	2026-11-12T05:36:57+00:00	exit=0	31s	S2 B3 RLE pix lemmas, 2 [crate=tga_verus]	verification results:: 855 verified, 0 errors
+156	2026-11-12T05:37:22+00:00	exit=101	6s	S2 B3 RLE pkt_post lemmas [crate=tga_verus]	
+157	2026-11-12T05:38:02+00:00	exit=101	33s	S2 B3 RLE pkt_post lemmas, 2 [crate=tga_verus]	verification results:: 856 verified, 7 errors
+158	2026-11-12T05:38:57+00:00	exit=101	32s	S2 B3 RLE pkt_post lemmas, 3 [crate=tga_verus]	verification results:: 856 verified, 7 errors
+159	2026-11-12T05:39:44+00:00	exit=101	30s	S2 B3 RLE pkt_post lemmas, 4 [crate=tga_verus]	verification results:: 860 verified, 3 errors
+160	2026-11-12T05:40:26+00:00	exit=101	32s	S2 B3 RLE pkt_post lemmas, 5 [crate=tga_verus]	verification results:: 861 verified, 2 errors
+161	2026-11-12T05:41:12+00:00	exit=101	31s	S2 B3 RLE pkt_post lemmas, 6 [crate=tga_verus]	verification results:: 861 verified, 2 errors
+162	2026-11-12T05:41:57+00:00	exit=0	33s	S2 B3 RLE pkt_post lemmas, 7 [crate=tga_verus]	verification results:: 863 verified, 0 errors
+163	2026-11-12T05:43:12+00:00	exit=101	7s	S2 B3 RLE packet helpers [crate=tga_verus]	
+164	2026-11-12T05:43:52+00:00	exit=101	31s	S2 B3 RLE packet helpers, 2 [crate=tga_verus]	verification results:: 872 verified, 4 errors
+165	2026-11-12T05:44:38+00:00	exit=101	35s	S2 B3 RLE packet helpers, 3 [crate=tga_verus]	verification results:: 873 verified, 4 errors
+166	2026-11-12T05:45:23+00:00	exit=101	35s	S2 B3 RLE peel lemma [crate=tga_verus]	verification results:: 873 verified, 4 errors
+167	2026-11-12T05:46:06+00:00	exit=101	35s	S2 B3 RLE peel lemma, 2 [crate=tga_verus]	verification results:: 873 verified, 4 errors
+168	2026-11-12T05:46:54+00:00	exit=101	36s	S2 B3 RLE peel lemma, 3 [crate=tga_verus]	verification results:: 873 verified, 4 errors
+169	2026-11-12T05:47:51+00:00	exit=101	34s	S2 B3 RLE packet helpers, 4 [crate=tga_verus]	
+170	2026-11-12T05:48:39+00:00	exit=101	32s	S2 B3 RLE packet helpers, 5 [crate=tga_verus]	
+171	2026-11-12T05:49:19+00:00	exit=101	31s	S2 B3 consolidated (RLE helpers pending) [crate=tga_verus]	verification results:: 865 verified, 1 errors
+172	2026-11-12T05:49:58+00:00	exit=0	32s	S2 B3 consolidated, 2 [crate=tga_verus]	verification results:: 865 verified, 0 errors
+173	2026-11-12T05:52:43+00:00	exit=101	4s	RLE packet draft restored for mechanical repairs [crate=tga_verus]	
+174	2026-11-12T05:54:18+00:00	exit=101	31s	RLE draft first proof pass after control and append fixes [crate=tga_verus]	verification results:: 878 verified, 3 errors
+175	2026-11-12T05:56:09+00:00	exit=101	30s	prove policy literal prefix and packet checks [crate=tga_verus]	verification results:: 883 verified, 4 errors
+176	2026-11-12T05:57:39+00:00	exit=101	30s	close literal induction and prefix conversion checks [crate=tga_verus]	verification results:: 883 verified, 4 errors
+177	2026-11-12T05:59:21+00:00	exit=101	29s	isolate literal append and index induction [crate=tga_verus]	verification results:: 883 verified, 4 errors
+178	2026-11-12T06:00:41+00:00	exit=0	32s	full green reverify after RLE stall rollback [crate=tga_verus]	verification results:: 865 verified, 0 errors
+179	2026-11-12T06:06:53+00:00	exit=101	62s	Astra RLE attempt 1: one-layer literal lemmas and explicit packet slice bounds [crate=tga_verus]	verification results:: 2159 verified, 0 errors
+180	2026-11-12T06:07:43+00:00	exit=101	33s	Astra RLE attempt 2: parenthesize conditional loop invariants [crate=tga_verus]	verification results:: 888 verified, 1 errors
+181	2026-11-12T06:08:44+00:00	exit=0	34s	Astra RLE attempt 3: explicit first-sample and recursive first-bad bridges [crate=tga_verus]	verification results:: 891 verified, 0 errors
+182	2026-11-12T06:10:32+00:00	exit=0	32s	Astra RLE stream: packet composition, termination and partial output [crate=tga_verus]	verification results:: 893 verified, 0 errors
+183	2026-11-12T06:12:15+00:00	exit=101	31s	Astra charged work: raw samples, RLE dispatch/conversion and output-byte writes [crate=tga_verus]	verification results:: 890 verified, 3 errors
+184	2026-11-12T06:13:12+00:00	exit=0	32s	Astra charged work attempt 2: retain function-entry counters across isolated loops [crate=tga_verus]	verification results:: 893 verified, 0 errors
+185	2026-11-12T06:16:20+00:00	exit=101	33s	Astra recovery events: carry clip and substitution bits through conversions and packets [crate=tga_verus]	verification results:: 895 verified, 1 errors
+186	2026-11-12T06:17:21+00:00	exit=0	34s	Astra recovery events attempt 2: retain representable slice bound in footer loop [crate=tga_verus]	verification results:: 896 verified, 0 errors
+187	2026-11-12T06:19:45+00:00	exit=101	6s	Astra total policy decoder: projected phase, one allocation site, recovery and linear work [crate=tga_verus]	
+188	2026-11-12T06:20:09+00:00	exit=101	7s	Astra total decoder attempt 2: natural-valued allocation charge [crate=tga_verus]	
+189	2026-11-12T06:21:00+00:00	exit=101	33s	Astra total decoder attempt 3: export bounds predicate used by public contract [crate=tga_verus]	verification results:: 903 verified, 3 errors
+190	2026-11-12T06:22:41+00:00	exit=0	36s	Astra total decoder attempt 4: zero map, suffix slice, and oriented-write bridges [crate=tga_verus]	verification results:: 907 verified, 0 errors
+191	2026-11-12T06:25:54+00:00	exit=0	35s	Astra theorem witnesses: full MR tuple, universal work/allocation/events, executable Recommended conservativity [crate=tga_verus]	verification results:: 915 verified, 0 errors
+193	2026-11-12T06:35:01+00:00	exit=0	38s	Astra final witnesses: profile header vectors, universal map addressing, remove inherited rlimit [crate=tga_verus]	verification results:: 927 verified, 0 errors
+194	2026-11-12T06:37:49+00:00	exit=0	96s	Astra final clean reverify: complete policy implementation, witnesses and tests [crate=tga_verus]	verification results:: 927 verified, 0 errors
+195	2026-11-12T07:20:39+00:00	exit=101	105s	Strict bridge helpers: 1.0 mr success-shape lemmas [crate=tga_verus]	verification results:: 928 verified, 3 errors
+196	2026-11-12T07:21:31+00:00	exit=101	34s	Strict bridge helpers: 1.0 mr success-shape lemmas, take 2 [crate=tga_verus]	verification results:: 929 verified, 2 errors
+197	2026-11-12T07:22:26+00:00	exit=0	37s	Strict bridge helpers: 1.0 mr success-shape lemmas, take 3 [crate=tga_verus]	verification results:: 931 verified, 0 errors
+198	2026-11-12T07:24:43+00:00	exit=101	34s	Strict bridge helpers: mh field exposure, raw-cur prefix, cur mono [crate=tga_verus]	verification results:: 935 verified, 1 errors
+199	2026-11-12T07:25:26+00:00	exit=0	35s	Strict bridge helpers: mh field exposure, raw-cur prefix, cur mono (fix bound) [crate=tga_verus]	verification results:: 936 verified, 0 errors
+200	2026-11-12T07:25:56+00:00	exit=0	0s	restore green after Strict-bridge handback (936-green backups) [crate=tga_verus]	
+201	2026-11-12T07:30:40+00:00	exit=0	100s	Strict packet fields and raw phase exact all inputs [crate=tga_verus]	verification results:: 940 verified, 0 errors
+202	2026-11-12T07:31:58+00:00	exit=0	37s	Strict RLE API result equality [crate=tga_verus]	verification results:: 941 verified, 0 errors
+203	2026-11-12T07:33:27+00:00	exit=0	37s	Strict phase domain and raw output bytes [crate=tga_verus]	verification results:: 943 verified, 0 errors
+204	2026-11-12T07:34:57+00:00	exit=0	36s	Complete Strict model equality with 1.0 [crate=tga_verus]	verification results:: 946 verified, 0 errors
+205	2026-11-12T07:36:27+00:00	exit=0	34s	Public executable Strict 1.0 result and flag witness [crate=tga_verus]	verification results:: 947 verified, 0 errors
+206	2026-11-12T09:15:56+00:00	exit=0	105s	no_std+alloc conversion (vstd alloc-only), baseline 947 [crate=tga_verus]	verification results:: 947 verified, 0 errors
+207	2026-11-12T09:18:52+00:00	exit=0	37s	no_std final: lib.rs cfg(test) macro_use std; baseline 947 [crate=tga_verus]	verification results:: 947 verified, 0 errors
+208	2026-11-12T09:57:17+00:00	exit=101	70s	alloc-delta: guard module compiles in no_std [crate=tga_verus]	verification results:: 1950 verified, 0 errors
+209	2026-11-12T09:57:54+00:00	exit=101	9s	alloc-delta: guard module with alloc Vec import [crate=tga_verus]	
+210	2026-11-12T10:03:41+00:00	exit=101	7s	alloc-delta: guard + try_decode + policy entry points [crate=tga_verus]	
+211	2026-11-12T10:04:00+00:00	exit=101	12s	alloc-delta: compile fix for dec_vals [crate=tga_verus]	
+212	2026-11-12T10:04:23+00:00	exit=101	13s	alloc-delta: public checked_n [crate=tga_verus]	
+213	2026-11-12T10:05:18+00:00	exit=101	50s	alloc-delta: borrow fix [crate=tga_verus]	verification results:: 966 verified, 7 errors
+214	2026-11-12T10:06:49+00:00	exit=101	47s	alloc-delta: OOM guards + recovered tie [crate=tga_verus]	verification results:: 969 verified, 4 errors
+215	2026-11-12T10:08:09+00:00	exit=101	43s	alloc-delta: policy naming + try_decode rlimit [crate=tga_verus]	verification results:: 970 verified, 3 errors
+216	2026-11-12T10:09:09+00:00	exit=101	48s	alloc-delta: propagate naming and steps bound [crate=tga_verus]	verification results:: 971 verified, 2 errors
+217	2026-11-12T10:10:13+00:00	exit=101	46s	alloc-delta: policy naming lemma + witness splits [crate=tga_verus]	verification results:: 973 verified, 1 errors
+218	2026-11-12T10:11:12+00:00	exit=0	44s	alloc-delta: t7_t9 ensures split [crate=tga_verus]	verification results:: 974 verified, 0 errors
+219	2026-11-12T10:19:12+00:00	exit=101	4s	alloc-delta: full-path spec fns + tests migrated [crate=tga_verus]	
+220	2026-11-12T10:20:05+00:00	exit=0	43s	alloc-delta: qualify log_tied reveal [crate=tga_verus]	verification results:: 974 verified, 0 errors
+221	2026-11-12T10:24:27+00:00	exit=0	42s	alloc-delta: FINAL (doc tidy; guard + try_* + A-TGA-1..4) [crate=tga_verus]	verification results:: 974 verified, 0 errors
+222	2026-11-12T10:27:41+00:00	exit=0	98s	alloc-delta: FINAL guard text one line over DIB [crate=tga_verus]	verification results:: 974 verified, 0 errors
+223	2026-11-12T10:31:03+00:00	exit=0	97s	alloc-delta: FINAL after doc/test tidy [crate=tga_verus]	verification results:: 974 verified, 0 errors
+224	2026-11-12T11:09:52+00:00	exit=101	70s	alloc-delta: fix Sol defects 1-3 (charge arm, policy_result clause, PreAlloc corollary, verified custom-policy core) [crate=tga_verus]	verification results:: 1950 verified, 0 errors
+225	2026-11-12T11:10:40+00:00	exit=101	40s	alloc-delta: fix Sol defects 1-3 (charge arm, policy_result clause, PreAlloc corollary, verified custom-policy core) [crate=tga_verus]	verification results:: 974 verified, 1 errors
+226	2026-11-12T11:11:32+00:00	exit=0	39s	alloc-delta: fix Sol defects 1-3 (charge arm, policy_result clause, PreAlloc corollary, verified custom-policy core) [crate=tga_verus]	verification results:: 975 verified, 0 errors
+227	2026-11-12T11:18:23+00:00	exit=0	40s	alloc-delta: Sol defects 1-3 + A-TGA-5 naming + verified custom-policy core [crate=tga_verus]	verification results:: 975 verified, 0 errors
+228	2026-11-12T11:23:35+00:00	exit=0	39s	alloc-delta: doc tidy on g_policy_clause1 (Sol finding 3 statement) [crate=tga_verus]	verification results:: 975 verified, 0 errors
+229	2026-11-12T11:31:44+00:00	exit=0	97s	alloc-delta FINAL: Sol findings 1-8 fixed (run from clean target) [crate=tga_verus]	verification results:: 975 verified, 0 errors
+230	2026-11-12T11:34:40+00:00	exit=0	97s	alloc-delta FINAL: Sol findings 1-8 fixed (wording tidy) [crate=tga_verus]	verification results:: 975 verified, 0 errors
+231	2026-11-13T03:17:53+00:00	exit=0	87s	 [crate=tga_verus]	verification results:: 974 verified, 0 errors	peak_rss_sum_mb=3646	peak_rss_max_proc_mb=2538:rust_verify

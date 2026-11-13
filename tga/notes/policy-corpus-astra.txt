@@ -1,0 +1,264 @@
+warning: unused import: `crate::model::*`
+  --> src/policy_model.rs:15:5
+   |
+15 | use crate::model::*;
+   |     ^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `AlphaOptions`, `AttributeBitsOptions`, `DepthsOptions`, `ImageTypeOptions`, `IndexRangeOptions`, `InterleaveOptions`, `Map16AlphaOptions`, `Map5Options`, `MapHeaderOptions`, `MapIndexOptions`, `Policy`, and `Rgb5Options`
+  --> src/policy_model.rs:17:5
+   |
+17 |     AlphaOptions, AttributeBitsOptions, DepthsOptions, ImageTypeOptions, IndexRangeOptions,
+   |     ^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
+18 |     InterleaveOptions, Map16AlphaOptions, Map5Options, MapHeaderOptions, MapIndexOptions, Policy,
+   |     ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^^^^
+19 |     Rgb5Options,
+   |     ^^^^^^^^^^^
+
+warning: unused imports: `MHModel` and `PktH`
+  --> src/tga.rs:23:20
+   |
+23 | use crate::model::{MHModel, PktH};
+   |                    ^^^^^^^  ^^^^
+
+warning: unused import: `RleOverrunOptions`
+  --> src/tga.rs:27:26
+   |
+27 |     Policy, Rgb5Options, RleOverrunOptions,
+   |                          ^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `c0g`
+    --> src/tga.rs:3059:5
+     |
+3059 |     c0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_c0g`
+     |
+     = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `c0g`
+    --> src/tga.rs:3491:5
+     |
+3491 |     c0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_c0g`
+
+warning: unused variable: `width`
+    --> src/tga.rs:3562:9
+     |
+3562 |     let width = h.width;
+     |         ^^^^^ help: if this is intentional, prefix it with an underscore: `_width`
+
+warning: unused variable: `height`
+    --> src/tga.rs:3563:9
+     |
+3563 |     let height = h.height;
+     |         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_height`
+
+warning: unused variable: `fx`
+    --> src/tga.rs:3564:10
+     |
+3564 |     let (fx, fy) = (h.flip_x(), h.flip_y());
+     |          ^^ help: if this is intentional, prefix it with an underscore: `_fx`
+
+warning: unused variable: `fy`
+    --> src/tga.rs:3564:14
+     |
+3564 |     let (fx, fy) = (h.flip_x(), h.flip_y());
+     |              ^^ help: if this is intentional, prefix it with an underscore: `_fy`
+
+warning: unused variable: `g`
+    --> src/tga.rs:3627:18
+     |
+3627 |         let (pr, g) = rle_packet(bytes, h, map, indexed, out, cursor, produced, n, p0g, Ghost(acc));
+     |                  ^ help: if this is intentional, prefix it with an underscore: `_g`
+
+warning: unused variable: `n`
+    --> src/tga.rs:3848:5
+     |
+3848 |     n: usize,
+     |     ^ help: if this is intentional, prefix it with an underscore: `_n`
+
+warning: unused variable: `p0g`
+    --> src/tga.rs:3849:5
+     |
+3849 |     p0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_p0g`
+
+warning: unused variable: `control`
+    --> src/tga.rs:3850:5
+     |
+3850 |     control: u8,
+     |     ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_control`
+
+warning: unused variable: `n`
+    --> src/tga.rs:4126:5
+     |
+4126 |     n: usize,
+     |     ^ help: if this is intentional, prefix it with an underscore: `_n`
+
+warning: unused variable: `p0g`
+    --> src/tga.rs:4127:5
+     |
+4127 |     p0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_p0g`
+
+warning: unused variable: `control`
+    --> src/tga.rs:4128:5
+     |
+4128 |     control: u8,
+     |     ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_control`
+
+warning: unused variable: `out_len`
+    --> src/tga.rs:4551:9
+     |
+4551 |     let out_len: usize = out.len();
+     |         ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_out_len`
+
+warning: unused variable: `p`
+    --> src/tga.rs:4982:25
+     |
+4982 | fn kind_hdr_exec(t: u8, p: Policy) -> (r: u8)
+     |                         ^ help: if this is intentional, prefix it with an underscore: `_p`
+
+warning: unused variable: `c0g`
+    --> src/tga.rs:6796:5
+     |
+6796 |     c0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_c0g`
+
+warning: unused variable: `steps`
+    --> src/tga.rs:6798:5
+     |
+6798 |     steps: &mut Ghost<nat>,
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `p0g`
+    --> src/tga.rs:7371:5
+     |
+7371 |     p0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_p0g`
+
+warning: unused variable: `control`
+    --> src/tga.rs:7373:5
+     |
+7373 |     control: u8,
+     |     ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_control`
+
+warning: unused variable: `steps`
+    --> src/tga.rs:7378:5
+     |
+7378 |     steps: &mut Ghost<nat>,
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `p0g`
+    --> src/tga.rs:7690:5
+     |
+7690 |     p0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_p0g`
+
+warning: unused variable: `control`
+    --> src/tga.rs:7692:5
+     |
+7692 |     control: u8,
+     |     ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_control`
+
+warning: unused variable: `steps`
+    --> src/tga.rs:7697:5
+     |
+7697 |     steps: &mut Ghost<nat>,
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `c0g`
+    --> src/tga.rs:8086:15
+     |
+8086 |     n: usize, c0g: usize, p0g: usize, p: Policy,
+     |               ^^^ help: if this is intentional, prefix it with an underscore: `_c0g`
+
+warning: unused variable: `pixels`
+    --> src/tga.rs:8168:22
+     |
+8168 | ...   let (result, pixels) = rle_packet_policy(bytes, h, map, indexed, out, cursor, produced, n, p0g, p, Ghost(acc), steps, clip, ...
+     |                    ^^^^^^ help: if this is intentional, prefix it with an underscore: `_pixels`
+
+warning: unused variable: `allocations`
+    --> src/tga.rs:8340:87
+     |
+8340 | fn decode_complete_policy(bytes: &[u8], h: Header, p: Policy, steps: &mut Ghost<nat>, allocations: &mut Ghost<nat>)
+     |                                                                                       ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_allocations`
+
+warning: function `skeleton` is never used
+  --> src/lib.rs:14:4
+   |
+14 | fn skeleton() { assert(1 == 0 + 1); }
+   |    ^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `strict_policy_exec` is never used
+   --> src/policy.rs:306:15
+    |
+306 | pub(crate) fn strict_policy_exec() -> (r: Policy)
+    |               ^^^^^^^^^^^^^^^^^^
+
+warning: fields `x_origin` and `y_origin` are never read
+   --> src/tga.rs:108:16
+    |
+101 | pub(crate) struct Header {
+    |                   ------ fields in this struct
+...
+108 |     pub(crate) x_origin: u32,
+    |                ^^^^^^^^
+109 |     pub(crate) y_origin: u32,
+    |                ^^^^^^^^
+
+warning: function `t2_t5_policy_header` is never used
+    --> src/tga.rs:8421:4
+     |
+8421 | fn t2_t5_policy_header(b: &[u8], p: Policy) -> (r: Result<Header, Error>)
+     |    ^^^^^^^^^^^^^^^^^^^
+
+warning: function `t4_policy_conversion` is never used
+    --> src/tga.rs:8439:4
+     |
+8439 | fn t4_policy_conversion(h: &Header, map: &[u8], indexed: bool, s: &[u8], p: Policy, subst: &mut bool)
+     |    ^^^^^^^^^^^^^^^^^^^^
+
+warning: function `t3_t6_policy_packets` is never used
+    --> src/tga.rs:8495:4
+     |
+8495 | fn t3_t6_policy_packets(
+     |    ^^^^^^^^^^^^^^^^^^^^
+
+warning: function `t1_t8_t10_w_a_e_policy` is never used
+    --> src/tga.rs:8548:4
+     |
+8548 | fn t1_t8_t10_w_a_e_policy(bytes: &[u8], p: Policy)
+     |    ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `t7_t9_policy_exact` is never used
+    --> src/tga.rs:8566:4
+     |
+8566 | fn t7_t9_policy_exact(bytes: &[u8], profile: crate::policy::Profile)
+     |    ^^^^^^^^^^^^^^^^^^
+
+warning: function `r_recommended_conservative` is never used
+    --> src/tga.rs:8575:4
+     |
+8575 | fn r_recommended_conservative(bytes: &[u8])
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `e_policy_no_events` is never used
+    --> src/tga.rs:8592:4
+     |
+8592 | fn e_policy_no_events(bytes: &[u8], p: Policy) -> (r: (Result<Decoded, Error>, bool))
+     |    ^^^^^^^^^^^^^^^^^^
+
+warning: `tga_verus` (lib) generated 40 warnings (run `cargo fix --lib -p tga_verus` to apply 30 suggestions)
+   Compiling tga_verus v0.1.0 (/home/ws/projects/verified-decoders/tga/tga_verus)
+    Finished `release` profile [optimized] target(s) in 0.59s
+     Running `/home/ws/projects/verified-decoders/tga/tga_verus/target/release/examples/policy_corpus /home/ws/corpora/tga/MANIFEST.tsv`
+manifest=/home/ws/corpora/tga/MANIFEST.tsv rows=294 available=294 missing=0
+Strict: accepted=252/294 recovered=0 rejected=42 errors={"ColorIndexOutOfRange": 1, "InvalidAttributeBits": 5, "InvalidColorMap": 7, "InvalidDimensions": 9, "RleOverrun": 2, "RleTruncated": 1, "TrailingBytes": 4, "TruncatedPixels": 2, "UnsupportedImageType": 4, "UnsupportedInterleave": 5, "UnsupportedPixelDepth": 2}
+Recommended: accepted=266/294 recovered=2 rejected=28 errors={"ColorIndexOutOfRange": 1, "InvalidColorMap": 3, "InvalidDimensions": 9, "RleTruncated": 2, "TruncatedPixels": 2, "UnsupportedImageType": 4, "UnsupportedInterleave": 5, "UnsupportedPixelDepth": 2}
+GdkCompat-2.42.12: accepted=264/294 recovered=4 rejected=30 errors={"InvalidColorMap": 3, "InvalidDimensions": 9, "RleTruncated": 2, "TruncatedPixels": 2, "UnsupportedImageType": 4, "UnsupportedInterleave": 5, "UnsupportedPixelDepth": 5}
+ImageCrateCompat-0.25.10: accepted=259/294 recovered=2 rejected=35 errors={"ColorIndexOutOfRange": 1, "InvalidAttributeBits": 7, "InvalidColorMap": 3, "InvalidDimensions": 13, "RleTruncated": 4, "TruncatedPixels": 2, "UnsupportedPixelDepth": 5}

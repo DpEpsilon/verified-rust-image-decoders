@@ -1,0 +1,356 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling verus_prettyplease v0.0.0-2026-11-01-0251
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.3
+   Compiling zmij v1.0.23
+   Compiling vstd v0.0.0-2026-11-01-0251
+   Compiling serde_core v1.0.229
+   Compiling convert_case v0.4.0
+   Compiling verus_builtin v0.0.0-2026-11-01-0251
+   Compiling serde_json v1.0.154
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling indexmap v2.14.2
+   Compiling verus_syn v0.0.0-2026-11-01-0251
+   Compiling syn v2.0.119
+   Compiling synstructure v0.13.2
+   Compiling verus_state_machines_macros v0.0.0-2026-11-01-0251
+   Compiling verus_builtin_macros v0.0.0-2026-11-01-0251
+   Compiling tga_verus v0.1.0 (/home/ws/projects/verified-decoders/tga/tga_verus)
+warning: unused import: `crate::model::*`
+  --> src/policy_model.rs:15:5
+   |
+15 | use crate::model::*;
+   |     ^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `AlphaOptions`, `AttributeBitsOptions`, `DepthsOptions`, `ImageTypeOptions`, `IndexRangeOptions`, `InterleaveOptions`, `Map16AlphaOptions`, `Map5Options`, `MapHeaderOptions`, `MapIndexOptions`, `Policy`, and `Rgb5Options`
+  --> src/policy_model.rs:17:5
+   |
+17 |     AlphaOptions, AttributeBitsOptions, DepthsOptions, ImageTypeOptions, IndexRangeOptions,
+   |     ^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
+18 |     InterleaveOptions, Map16AlphaOptions, Map5Options, MapHeaderOptions, MapIndexOptions, Policy,
+   |     ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^^^^
+19 |     Rgb5Options,
+   |     ^^^^^^^^^^^
+
+warning: unused imports: `MHModel` and `PktH`
+  --> src/tga.rs:23:20
+   |
+23 | use crate::model::{MHModel, PktH};
+   |                    ^^^^^^^  ^^^^
+
+warning: unused import: `RleOverrunOptions`
+  --> src/tga.rs:27:26
+   |
+27 |     Policy, Rgb5Options, RleOverrunOptions,
+   |                          ^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `c0g`
+    --> src/tga.rs:3059:5
+     |
+3059 |     c0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_c0g`
+     |
+     = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `c0g`
+    --> src/tga.rs:3491:5
+     |
+3491 |     c0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_c0g`
+
+warning: unused variable: `width`
+    --> src/tga.rs:3562:9
+     |
+3562 |     let width = h.width;
+     |         ^^^^^ help: if this is intentional, prefix it with an underscore: `_width`
+
+warning: unused variable: `height`
+    --> src/tga.rs:3563:9
+     |
+3563 |     let height = h.height;
+     |         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_height`
+
+warning: unused variable: `fx`
+    --> src/tga.rs:3564:10
+     |
+3564 |     let (fx, fy) = (h.flip_x(), h.flip_y());
+     |          ^^ help: if this is intentional, prefix it with an underscore: `_fx`
+
+warning: unused variable: `fy`
+    --> src/tga.rs:3564:14
+     |
+3564 |     let (fx, fy) = (h.flip_x(), h.flip_y());
+     |              ^^ help: if this is intentional, prefix it with an underscore: `_fy`
+
+warning: unused variable: `g`
+    --> src/tga.rs:3627:18
+     |
+3627 |         let (pr, g) = rle_packet(bytes, h, map, indexed, out, cursor, produced, n, p0g, Ghost(acc));
+     |                  ^ help: if this is intentional, prefix it with an underscore: `_g`
+
+warning: unused variable: `n`
+    --> src/tga.rs:3848:5
+     |
+3848 |     n: usize,
+     |     ^ help: if this is intentional, prefix it with an underscore: `_n`
+
+warning: unused variable: `p0g`
+    --> src/tga.rs:3849:5
+     |
+3849 |     p0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_p0g`
+
+warning: unused variable: `control`
+    --> src/tga.rs:3850:5
+     |
+3850 |     control: u8,
+     |     ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_control`
+
+warning: unused variable: `n`
+    --> src/tga.rs:4126:5
+     |
+4126 |     n: usize,
+     |     ^ help: if this is intentional, prefix it with an underscore: `_n`
+
+warning: unused variable: `p0g`
+    --> src/tga.rs:4127:5
+     |
+4127 |     p0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_p0g`
+
+warning: unused variable: `control`
+    --> src/tga.rs:4128:5
+     |
+4128 |     control: u8,
+     |     ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_control`
+
+warning: unused variable: `out_len`
+    --> src/tga.rs:4551:9
+     |
+4551 |     let out_len: usize = out.len();
+     |         ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_out_len`
+
+warning: unused variable: `p`
+    --> src/tga.rs:4982:25
+     |
+4982 | fn kind_hdr_exec(t: u8, p: Policy) -> (r: u8)
+     |                         ^ help: if this is intentional, prefix it with an underscore: `_p`
+
+warning: unused variable: `c0g`
+    --> src/tga.rs:6796:5
+     |
+6796 |     c0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_c0g`
+
+warning: unused variable: `steps`
+    --> src/tga.rs:6798:5
+     |
+6798 |     steps: &mut Ghost<nat>,
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `p0g`
+    --> src/tga.rs:7371:5
+     |
+7371 |     p0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_p0g`
+
+warning: unused variable: `control`
+    --> src/tga.rs:7373:5
+     |
+7373 |     control: u8,
+     |     ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_control`
+
+warning: unused variable: `steps`
+    --> src/tga.rs:7378:5
+     |
+7378 |     steps: &mut Ghost<nat>,
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `p0g`
+    --> src/tga.rs:7690:5
+     |
+7690 |     p0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_p0g`
+
+warning: unused variable: `control`
+    --> src/tga.rs:7692:5
+     |
+7692 |     control: u8,
+     |     ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_control`
+
+warning: unused variable: `steps`
+    --> src/tga.rs:7697:5
+     |
+7697 |     steps: &mut Ghost<nat>,
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `c0g`
+    --> src/tga.rs:8086:15
+     |
+8086 |     n: usize, c0g: usize, p0g: usize, p: Policy,
+     |               ^^^ help: if this is intentional, prefix it with an underscore: `_c0g`
+
+warning: unused variable: `pixels`
+    --> src/tga.rs:8168:22
+     |
+8168 | ...   let (result, pixels) = rle_packet_policy(bytes, h, map, indexed, out, cursor, produced, n, p0g, p, Ghost(acc), steps, clip, ...
+     |                    ^^^^^^ help: if this is intentional, prefix it with an underscore: `_pixels`
+
+warning: unused variable: `allocations`
+    --> src/tga.rs:8340:87
+     |
+8340 | fn decode_complete_policy(bytes: &[u8], h: Header, p: Policy, steps: &mut Ghost<nat>, allocations: &mut Ghost<nat>)
+     |                                                                                       ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_allocations`
+
+warning: function `skeleton` is never used
+  --> src/lib.rs:14:4
+   |
+14 | fn skeleton() { assert(1 == 0 + 1); }
+   |    ^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `strict_policy_exec` is never used
+   --> src/policy.rs:306:15
+    |
+306 | pub(crate) fn strict_policy_exec() -> (r: Policy)
+    |               ^^^^^^^^^^^^^^^^^^
+
+warning: fields `x_origin` and `y_origin` are never read
+   --> src/tga.rs:108:16
+    |
+101 | pub(crate) struct Header {
+    |                   ------ fields in this struct
+...
+108 |     pub(crate) x_origin: u32,
+    |                ^^^^^^^^
+109 |     pub(crate) y_origin: u32,
+    |                ^^^^^^^^
+
+warning: function `t2_t5_policy_header` is never used
+    --> src/tga.rs:8421:4
+     |
+8421 | fn t2_t5_policy_header(b: &[u8], p: Policy) -> (r: Result<Header, Error>)
+     |    ^^^^^^^^^^^^^^^^^^^
+
+warning: function `t4_policy_conversion` is never used
+    --> src/tga.rs:8439:4
+     |
+8439 | fn t4_policy_conversion(h: &Header, map: &[u8], indexed: bool, s: &[u8], p: Policy, subst: &mut bool)
+     |    ^^^^^^^^^^^^^^^^^^^^
+
+warning: function `t3_t6_policy_packets` is never used
+    --> src/tga.rs:8495:4
+     |
+8495 | fn t3_t6_policy_packets(
+     |    ^^^^^^^^^^^^^^^^^^^^
+
+warning: function `t1_t8_t10_w_a_e_policy` is never used
+    --> src/tga.rs:8548:4
+     |
+8548 | fn t1_t8_t10_w_a_e_policy(bytes: &[u8], p: Policy)
+     |    ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `t7_t9_policy_exact` is never used
+    --> src/tga.rs:8566:4
+     |
+8566 | fn t7_t9_policy_exact(bytes: &[u8], profile: crate::policy::Profile)
+     |    ^^^^^^^^^^^^^^^^^^
+
+warning: function `r_recommended_conservative` is never used
+    --> src/tga.rs:8575:4
+     |
+8575 | fn r_recommended_conservative(bytes: &[u8])
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `e_policy_no_events` is never used
+    --> src/tga.rs:8592:4
+     |
+8592 | fn e_policy_no_events(bytes: &[u8], p: Policy) -> (r: (Result<Decoded, Error>, bool))
+     |    ^^^^^^^^^^^^^^^^^^
+
+warning: `tga_verus` (lib) generated 40 warnings (run `cargo fix --lib -p tga_verus` to apply 30 suggestions)
+warning: `tga_verus` (lib test) generated 40 warnings (40 duplicates)
+    Finished `release` profile [optimized] target(s) in 10.78s
+     Running unittests src/lib.rs (/home/ws/projects/verified-decoders/tga/tga_verus/target/release/deps/tga_verus-b504074e7bc6697c)
+
+running 2 tests
+test policy_tests::frozen_policy_vectors ... policy conformance GdkCompat-2.42.12: 302/302
+policy conformance ImageCrateCompat-0.25.10: 302/302
+policy conformance Recommended: 302/302
+policy conformance Strict: 302/302
+custom frozen conformance: 28/28
+ok
+test policy_tests::policies_match_independent_oracle ... oracle coupled/header: 1152 checked, 116 accepted
+oracle coupled/palette: 4608 checked, 696 accepted
+oracle coupled/rle: 1116 checked, 112 accepted
+oracle custom-frozen: 28 checked, 23 accepted
+oracle generated/all-fields: 512 checked, 97 accepted
+oracle option/alpha/AttributeBits: 398 checked, 110 accepted
+oracle option/alpha/Stored: 398 checked, 110 accepted
+oracle option/attribute_bits/Exact: 398 checked, 110 accepted
+oracle option/attribute_bits/ImageTable: 398 checked, 108 accepted
+oracle option/attribute_bits/Lenient: 398 checked, 144 accepted
+oracle option/depths/Core: 398 checked, 110 accepted
+oracle option/depths/Gdk: 398 checked, 95 accepted
+oracle option/depths/Image: 398 checked, 109 accepted
+oracle option/image_type/Core: 398 checked, 110 accepted
+oracle option/image_type/GreyFallback: 398 checked, 112 accepted
+oracle option/index_range/Black: 398 checked, 125 accepted
+oracle option/index_range/Reject: 398 checked, 110 accepted
+oracle option/interleave/Ignore: 398 checked, 111 accepted
+oracle option/interleave/Reject: 398 checked, 110 accepted
+oracle option/map16_alpha/Bit15: 398 checked, 110 accepted
+oracle option/map16_alpha/Opaque: 398 checked, 110 accepted
+oracle option/map5/GdkSwapShift: 398 checked, 110 accepted
+oracle option/map5/Replicate: 398 checked, 110 accepted
+oracle option/map5/Round: 398 checked, 110 accepted
+oracle option/map_header/Core: 398 checked, 110 accepted
+oracle option/map_header/Gdk: 398 checked, 134 accepted
+oracle option/map_header/IgnoreAbsent: 398 checked, 120 accepted
+oracle option/map_header/Image: 398 checked, 127 accepted
+oracle option/map_index/Absolute: 398 checked, 110 accepted
+oracle option/map_index/ZeroBased: 398 checked, 99 accepted
+oracle option/rgb5/Replicate: 398 checked, 110 accepted
+oracle option/rgb5/Round: 398 checked, 110 accepted
+oracle option/rle_overrun/ClipPacket: 398 checked, 124 accepted
+oracle option/rle_overrun/ClipSamples: 398 checked, 123 accepted
+oracle option/rle_overrun/Reject: 398 checked, 110 accepted
+oracle option/trailing/FooterOnly: 398 checked, 110 accepted
+oracle option/trailing/Ignore: 398 checked, 134 accepted
+oracle profile-core/GdkCompat-2.42.12: 169 checked, 84 accepted
+oracle profile-core/ImageCrateCompat-0.25.10: 169 checked, 86 accepted
+oracle profile-core/Recommended: 169 checked, 88 accepted
+oracle profile-core/Strict: 169 checked, 81 accepted
+oracle profile-fixtures/GdkCompat-2.42.12: 302 checked, 174 accepted
+oracle profile-fixtures/ImageCrateCompat-0.25.10: 302 checked, 160 accepted
+oracle profile-fixtures/Recommended: 302 checked, 167 accepted
+oracle profile-fixtures/Strict: 302 checked, 105 accepted
+oracle profile-prefixes/GdkCompat-2.42.12: 7578 checked, 516 accepted
+oracle profile-prefixes/ImageCrateCompat-0.25.10: 7578 checked, 538 accepted
+oracle profile-prefixes/Recommended: 7578 checked, 523 accepted
+oracle profile-prefixes/Strict: 7578 checked, 30 accepted
+oracle total: 52348 checked, 0 mismatches
+ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 27.01s
+
+     Running tests/conformance.rs (/home/ws/projects/verified-decoders/tga/tga_verus/target/release/deps/conformance-53aacc6ebafef527)
+
+running 1 test
+test conformance_all_vectors ... conformance: 169/169 vectors passed
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.58s
+
+   Doc-tests tga_verus
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

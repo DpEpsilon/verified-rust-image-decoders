@@ -4,13 +4,26 @@
 //! Per R16 each vector is `{name, input_hex, expected}`, optionally with
 //! `input_repeat`. Successes carry `{width, height, rgba_runs}` where the runs
 //! are maximal in top-first row-major order and their counts sum to
-//! `width*height`; errors carry `{error}`. Every fixture invokes `decode`.
+//! `width*height`; errors carry `{error}`. Every fixture invokes `try_decode`.
 
 use std::fs;
 use std::path::PathBuf;
 
 use serde_json::Value;
-use tga_verus::tga::{decode, Error};
+use tga_verus::tga::{try_decode, Decoded, Error, TryError};
+
+/// Fold a `try_*` result into the frozen-typed result: `Format(e)` is the frozen
+/// error, and `OutOfMemory` is a test failure (the tests run without a
+/// fault-injecting allocator, so it never occurs).
+fn fmt_part(r: Result<Decoded, TryError>) -> Result<Decoded, Error> {
+    match r {
+        Ok(d) => Ok(d),
+        Err(TryError::Format(e)) => Err(e),
+        Err(TryError::OutOfMemory(o)) => {
+            panic!("unexpected OutOfMemory: site {:?}, elements {}", o.site(), o.elements())
+        }
+    }
+}
 
 fn vectors_path() -> PathBuf {
     let manifest = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
@@ -82,7 +95,7 @@ fn expand_runs(runs: &Value, total: usize) -> Vec<u8> {
 fn check_vector(v: &Value) -> Result<(), String> {
     let expected = &v["expected"];
     let bytes = input_bytes(v);
-    let result = decode(&bytes);
+    let result = fmt_part(try_decode(&bytes));
 
     if let Some(want) = expected.get("error").and_then(|e| e.as_str()) {
         return match result {

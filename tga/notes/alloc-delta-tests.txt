@@ -1,0 +1,10 @@
+test policy_tests::frozen_policy_vectors ... policy conformance GdkCompat-2.42.12: 302/302
+policy conformance ImageCrateCompat-0.25.10: 302/302
+policy conformance Recommended: 302/302
+policy conformance Strict: 302/302
+custom frozen conformance: 28/28
+oracle total: 52348 checked, 0 mismatches
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 28.15s
+test conformance_all_vectors ... conformance: 169/169 vectors passed
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.72s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

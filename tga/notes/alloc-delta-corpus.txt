@@ -1,0 +1,8 @@
+warning: `tga_verus` (lib) generated 43 warnings (run `cargo fix --lib -p tga_verus` to apply 32 suggestions)
+    Finished `release` profile [optimized] target(s) in 0.17s
+     Running `target/release/examples/policy_corpus /home/ws/corpora/tga/MANIFEST.tsv`
+manifest=/home/ws/corpora/tga/MANIFEST.tsv rows=294 available=294 missing=0 sha256=verified
+Strict: accepted=252/294 recovered=0 rejected=42 errors={"ColorIndexOutOfRange": 1, "InvalidAttributeBits": 5, "InvalidColorMap": 7, "InvalidDimensions": 9, "RleOverrun": 2, "RleTruncated": 1, "TrailingBytes": 4, "TruncatedPixels": 2, "UnsupportedImageType": 4, "UnsupportedInterleave": 5, "UnsupportedPixelDepth": 2}
+Recommended: accepted=266/294 recovered=2 rejected=28 errors={"ColorIndexOutOfRange": 1, "InvalidColorMap": 3, "InvalidDimensions": 9, "RleTruncated": 2, "TruncatedPixels": 2, "UnsupportedImageType": 4, "UnsupportedInterleave": 5, "UnsupportedPixelDepth": 2}
+GdkCompat-2.42.12: accepted=264/294 recovered=4 rejected=30 errors={"InvalidColorMap": 3, "InvalidDimensions": 9, "RleTruncated": 2, "TruncatedPixels": 2, "UnsupportedImageType": 4, "UnsupportedInterleave": 5, "UnsupportedPixelDepth": 5}
+ImageCrateCompat-0.25.10: accepted=259/294 recovered=2 rejected=35 errors={"ColorIndexOutOfRange": 1, "InvalidAttributeBits": 7, "InvalidColorMap": 3, "InvalidDimensions": 13, "RleTruncated": 4, "TruncatedPixels": 2, "UnsupportedPixelDepth": 5}

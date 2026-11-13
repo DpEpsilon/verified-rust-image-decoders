@@ -19,6 +19,15 @@
 //!     successful RGBA request is exactly `4*N <= 67,108,864`.
 
 use vstd::prelude::*;
+use alloc::vec;
+use alloc::vec::Vec;
+
+use crate::model::{MHModel, PktH};
+use crate::policy::{
+    AlphaOptions, AttributeBitsOptions, DepthsOptions, ImageTypeOptions, IndexRangeOptions,
+    InterleaveOptions, Map16AlphaOptions, Map5Options, MapHeaderOptions, MapIndexOptions,
+    Policy, Rgb5Options, RleOverrunOptions,
+};
 
 verus! {
 
@@ -56,6 +65,41 @@ pub enum Error {
 }
 
 impl Error {
+    /// R15's spelling table, in spec position: the `open` same-`impl` sibling
+    /// that `alloc_guard::sites::TryError::name_spec` reads. `open` and
+    /// field-free, so it is well-formed everywhere, including in the guard's
+    /// `sites.rs`.
+    pub open spec fn name_spec(&self) -> &'static str {
+        match self {
+            Error::FileTooLarge => "FileTooLarge",
+            Error::TruncatedHeader => "TruncatedHeader",
+            Error::UnsupportedImageType => "UnsupportedImageType",
+            Error::InvalidColorMapFlag => "InvalidColorMapFlag",
+            Error::InvalidDimensions => "InvalidDimensions",
+            Error::UnsupportedInterleave => "UnsupportedInterleave",
+            Error::UnsupportedPixelDepth => "UnsupportedPixelDepth",
+            Error::InvalidColorMap => "InvalidColorMap",
+            Error::ColorMapRange => "ColorMapRange",
+            Error::InvalidAttributeBits => "InvalidAttributeBits",
+            Error::OutputTooLarge => "OutputTooLarge",
+            Error::TruncatedImageId => "TruncatedImageId",
+            Error::TruncatedColorMap => "TruncatedColorMap",
+            Error::TruncatedPixels => "TruncatedPixels",
+            Error::RleTruncated => "RleTruncated",
+            Error::RleOverrun => "RleOverrun",
+            Error::ColorIndexOutOfRange => "ColorIndexOutOfRange",
+            Error::TrailingBytes => "TrailingBytes",
+        }
+    }
+
+    /// The exact R15 spelling, as used by `VECTORS.json` expectations.
+    ///
+    /// No spec clause and no `#[verifier::when_used_as_spec]`, matching DIB's
+    /// shipped guard: the attribute disturbs the crate-wide encoding and makes
+    /// an unrelated function report a resource-limit failure (dib
+    /// `alloc-wip-1` run 504 onward). `name()` is called in exec position only
+    /// (the test binaries); the spelling table `name_spec` above and
+    /// `TryError::name_spec` are the spec-position statements of R15's names.
     pub fn name(&self) -> &'static str {
         match self {
             Error::FileTooLarge => "FileTooLarge",
@@ -91,50 +135,50 @@ pub struct Decoded {
 
 /// The R1 header fields, at the exact offsets named in R1. All fields are the
 /// raw little-endian `LE16` values; the parser does not narrow them.
-struct Header {
-    id_length: u8,
-    color_map_flag: u8,
-    image_type: u8,
-    map_first: u32,
-    map_length: u32,
-    map_entry_depth: u8,
-    x_origin: u32,
-    y_origin: u32,
-    width: u32,
-    height: u32,
-    pixel_depth: u8,
-    descriptor: u8,
+pub(crate) struct Header {
+    pub(crate) id_length: u8,
+    pub(crate) color_map_flag: u8,
+    pub(crate) image_type: u8,
+    pub(crate) map_first: u32,
+    pub(crate) map_length: u32,
+    pub(crate) map_entry_depth: u8,
+    pub(crate) x_origin: u32,
+    pub(crate) y_origin: u32,
+    pub(crate) width: u32,
+    pub(crate) height: u32,
+    pub(crate) pixel_depth: u8,
+    pub(crate) descriptor: u8,
 }
 
 impl Header {
-    spec fn spec_is_indexed(self) -> bool {
+    pub(crate) open spec fn spec_is_indexed(self) -> bool {
         crate::model::is_indexed(self.image_type)
     }
 
-    spec fn spec_is_rle(self) -> bool {
+    pub(crate) open spec fn spec_is_rle(self) -> bool {
         self.image_type == 9u8 || self.image_type == 10u8 || self.image_type == 11u8
     }
 
     /// R3: `ceil(depth/8)`, one of 1, 2, 3, 4 for supported image depths.
-    spec fn spec_sample_bytes(self) -> int {
+    pub(crate) open spec fn spec_sample_bytes(self) -> int {
         crate::model::sample_bytes_of(self.pixel_depth)
     }
 
     /// R4/R7: `ceil(map_entry_depth/8)`, one of 1, 2, 3, 4 for a valid map.
-    spec fn spec_map_stride(self) -> int {
+    pub(crate) open spec fn spec_map_stride(self) -> int {
         crate::model::sample_bytes_of(self.map_entry_depth)
     }
 
     /// R5: the attribute count of descriptor bits 0..3.
-    spec fn spec_attr(self) -> u8 {
+    pub(crate) open spec fn spec_attr(self) -> u8 {
         self.descriptor & 0x0fu8
     }
 
-    spec fn spec_flip_x(self) -> bool {
+    pub(crate) open spec fn spec_flip_x(self) -> bool {
         self.descriptor & 0x10u8 != 0u8
     }
 
-    spec fn spec_flip_y(self) -> bool {
+    pub(crate) open spec fn spec_flip_y(self) -> bool {
         self.descriptor & 0x20u8 != 0u8
     }
 
@@ -275,7 +319,7 @@ pub open spec fn dec_vals(d: Decoded) -> (int, int, Seq<u8>) {
     (d.width as int, d.height as int, d.rgba@)
 }
 
-/// T7/T9: `decode(bytes)` equals `MP(bytes)` as the exact `Result` — the exact
+/// T7/T9: `try_decode(bytes)` equals `MP(bytes)` as the exact `Result` — the exact
 /// three-tuple, or the exact error. This is the relation the public entry
 /// carries; `MP` is the model's definition, not a call to any executable code.
 pub open spec fn decode_eq(r: Result<Decoded, Error>, b: Seq<u8>) -> bool {
@@ -1302,6 +1346,7 @@ fn signature_tail(b: &[u8]) -> (r: bool)
             i <= 18,
             base == b@.len() - 18,
             base as int + 18 == b@.len(),
+            b@.len() <= usize::MAX,
             sig@ == crate::model::tga_signature(),
             forall|k: int| 0 <= k < i ==> b@[base as int + k] == sig@[k],
         decreases 18 - i,
@@ -2461,10 +2506,16 @@ fn decode_one(h: &Header, map: &[u8], indexed: bool, s: &[u8]) -> (r: Result<[u8
     }
 }
 
-/// R1..R14: decode one TGA byte slice. Total on every representable slice (T1).
-/// On success the allocation requested is exactly `4*N <= 67,108,864` (T2/T1).
-pub fn decode(bytes: &[u8]) -> (r: Result<Decoded, Error>)
+/// R1..R14: decode one TGA byte slice through the sealed reservation log. Total
+/// on every representable slice (T1). On success the allocation requested is
+/// exactly `4*N <= 67,108,864` (T2/T1); on a failed reservation the result is
+/// `OutOfMemory(Output, 4N)`, never a partial output.
+fn decode_tracked(bytes: &[u8], steps: &mut Ghost<nat>,
+    Tracked(log): Tracked<&mut AllocLog>) -> (r: Result<Decoded, TryError>)
+    requires
+        old(log).view() == Seq::<(AllocSite, nat, bool)>::empty(),
     ensures
+        // T8's success bounds and T10's termination surface unchanged.
         match r {
             Ok(d) => {
                 &&& 1 <= (d.width as int) <= 8192
@@ -2474,8 +2525,27 @@ pub fn decode(bytes: &[u8]) -> (r: Result<Decoded, Error>)
             },
             Err(_) => true,
         },
-        // T7/T9/T11: `decode(bytes)` equals `MP(bytes)` exactly.
-        decode_eq(r, bytes@),
+        // T7/T9/T11: the frozen predicate on `crate::alloc_guard::sites::fmt_part(r)` (A-TGA-1 clause 1).
+        !matches!(r, Err(TryError::OutOfMemory(_))) ==> decode_eq(crate::alloc_guard::sites::fmt_part(r), bytes@),
+        // A-TGA-5 (charge bound, the added TGA obligation; frozen A-TGA-4 is
+        // termination): the only counter charge on this path is the `4N` output
+        // initialisation, charged after a *successful* reservation. On success
+        // `steps` is exactly `4*model_checked_n`; an `OutOfMemory` result did no
+        // zeroing, so it charges nothing beyond what was spent before its failed
+        // reservation. Both arms stay below `16*(|b|+N)`.
+        final(steps)@ as int
+            == old(steps)@ as int
+                + (if matches!(r, Err(TryError::OutOfMemory(_))) { 0 } else { 4 * model_checked_n(bytes@) }),
+        // A-TGA-1/2: the one-reservation log shape.
+        at_site_log(bytes@, matches!(r, Err(TryError::OutOfMemory(_))), final(log).view()),
+        // The `PreAlloc` corollary: a rejected header never reserves.
+        pre_alloc(bytes@) ==> final(log).view().len() == 0,
+        // The failure names `Req_TGA`'s one `(Output, 4N)` request.
+        match r {
+            Err(TryError::OutOfMemory(o)) =>
+                (o.site_spec(), o.elements_spec() as nat) == req_tga(bytes@)[0],
+            _ => true,
+        },
 {
     // R1/R2/R6: every header check, including the input cap, runs before any
     // input-dependent allocation (inside `parse_header`).
@@ -2483,11 +2553,17 @@ pub fn decode(bytes: &[u8]) -> (r: Result<Decoded, Error>)
         Ok(h) => h,
         Err(e) => {
             proof {
-                // T7/T9: an `MH` error is `MP`'s error, in the same R14 order.
-                crate::model::lemma_mp_mh_err(bytes@, e);
+                // No reservation: the log is empty and `MH` failed, so
+                // `req(L) == [] == Req_TGA`.
+                reveal(pre_alloc);
+                reveal(crate::model::mh);
                 reveal(decode_eq);
+                reveal(crate::alloc_guard::sites::fmt_part);
+                reveal(req_tga);
+                lemma_at_site_log_prealloc(bytes@, log.view());
+                crate::model::lemma_mp_mh_err(bytes@, e);
             }
-            return Err(e);
+            return Err(TryError::Format(e));
         },
     };
     proof {
@@ -2557,9 +2633,28 @@ pub fn decode(bytes: &[u8]) -> (r: Result<Decoded, Error>)
         assert(4 * n <= usize::MAX);
     }
 
-    // R6: allocate exactly `4*N` bytes, bounded by MAX_OUTPUT.
-    let mut out = vec![0u8; 4 * n];
+    // R6: allocate exactly `4*N` bytes, bounded by MAX_OUTPUT, through the
+    // guard. The failed reservation returns `OutOfMemory`; nothing else is
+    // built and no partial output escapes (A-TGA-1 clause 2).
+    let mut out = match alloc_output_guarded(n, steps, Tracked(log)) {
+        Ok(o) => o,
+        Err(o) => {
+            proof {
+                reveal(req_tga);
+                reveal(crate::model::mh);
+                reveal(crate::alloc_guard::sites::fmt_part);
+                assert(crate::model::mh(bytes@) == Ok(m));
+                lemma_at_site_log_oom(bytes@, m, log.view());
+                assert(crate::alloc_guard::req_of_log(log.view()) == req_tga(bytes@));
+                assert(log.view().len() == 1 && !log.view()[0].2);
+                assert((o.site_spec(), o.elements_spec() as nat) == req_tga(bytes@)[0]);
+            }
+            return Err(TryError::OutOfMemory(o));
+        },
+    };
     proof {
+        reveal(req_tga);
+        lemma_at_site_log_ok(bytes@, m, log.view());
         assert(out@.len() == 4 * n);
     }
 
@@ -2574,7 +2669,7 @@ pub fn decode(bytes: &[u8]) -> (r: Result<Decoded, Error>)
             crate::model::lemma_mp_trunc_id(bytes@, m);
             reveal(decode_eq);
         }
-        return Err(Error::TruncatedImageId);
+        return Err(TryError::Format(Error::TruncatedImageId));
     }
     let mut cursor = id_end;
 
@@ -2665,7 +2760,7 @@ pub fn decode(bytes: &[u8]) -> (r: Result<Decoded, Error>)
             crate::model::lemma_mp_trunc_map(bytes@, m);
             reveal(decode_eq);
         }
-        return Err(Error::TruncatedColorMap);
+        return Err(TryError::Format(Error::TruncatedColorMap));
     }
     let map = &bytes[map_start..map_end];
     proof {
@@ -2861,7 +2956,7 @@ pub fn decode(bytes: &[u8]) -> (r: Result<Decoded, Error>)
                         }
                         assert(crate::model::mp(bytes@) == Err(Error::TrailingBytes));
                     }
-                    return Err(Error::TrailingBytes);
+                    return Err(TryError::Format(Error::TrailingBytes));
                 }
                 proof {
                     assert(bytes.len() - 18 >= cursor + 8) by {
@@ -2881,7 +2976,7 @@ pub fn decode(bytes: &[u8]) -> (r: Result<Decoded, Error>)
                         }
                         assert(crate::model::mp(bytes@) == Err(Error::TrailingBytes));
                     }
-                    return Err(Error::TrailingBytes);
+                    return Err(TryError::Format(Error::TrailingBytes));
                 }
                 proof {
                     crate::model::lemma_mp_suffix_footer(bytes@, cursor as int);
@@ -3000,10 +3095,97 @@ pub fn decode(bytes: &[u8]) -> (r: Result<Decoded, Error>)
                 assert(crate::model::mp(bytes@) == Err(e));
                 reveal(decode_eq);
             }
-            Err(e)
+            Err(TryError::Format(e))
         },
     };
     r
+}
+
+/// The logged entry point: creates the one log with `new_log`, threads it
+/// through `decode_tracked`, and returns it with the work counter. A-TGA-1's
+/// `G`/`Prog`, the `PreAlloc` corollary, the A-TGA-5 charge bound and the
+/// failure naming are its postconditions. (Frozen A-TGA-4 is termination; the
+/// charge bound is the added A-TGA-5 — see alloc-delta/ERRATA.md.)
+pub fn try_decode_with_steps_logged(bytes: &[u8])
+    -> (r: (Result<Decoded, TryError>, Ghost<nat>, Tracked<AllocLog>))
+    ensures
+        r.1@ as int <= 16 * (bytes@.len() + model_checked_n(bytes@)),
+        g(bytes@, r.0, r.2@.view()),
+        prog(bytes@, r.0, r.2@.view()),
+        crate::alloc_guard::sites::log_tied(r.0, r.2@.view()),
+        pre_alloc(bytes@) ==> !matches!(r.0, Err(TryError::OutOfMemory(_)))
+            && decode_eq(crate::alloc_guard::sites::fmt_part(r.0), bytes@) && r.2@.view().len() == 0,
+        match r.0 {
+            Err(TryError::OutOfMemory(o)) =>
+                (o.site_spec(), o.elements_spec() as nat) == req_tga(bytes@)[0],
+            _ => true,
+        },
+{
+    let tracked mut log = crate::alloc_guard::new_log();
+    let mut steps = Ghost(0nat);
+    let result = decode_tracked(bytes, &mut steps, Tracked(&mut log));
+    proof {
+        reveal(g);
+        reveal(g_clause1);
+        reveal(g_clause2);
+        reveal(g_clause3);
+        reveal(prog);
+        reveal(prog_concl);
+        reveal(crate::alloc_guard::sites::log_tied);
+        reveal(pre_alloc);
+        reveal(req_tga);
+        reveal(crate::alloc_guard::sites::fmt_part);
+        reveal(at_site_log);
+        reveal(crate::alloc_guard::req_of_log);
+        reveal(crate::alloc_guard::all_ok);
+        // A-TGA-5: the charged work never exceeds `16*(|b|+N)`.
+        assert(steps@ as int <= 16 * (bytes@.len() + model_checked_n(bytes@))) by {
+            reveal(model_checked_n);
+            reveal(crate::model::mh);
+        }
+        lemma_req_tga_len(bytes@);
+        lemma_req_tga_clause3(bytes@);
+    }
+    (result, steps, Tracked(log))
+}
+
+/// The public 1.0 decoder: `try_decode_with_steps_logged` with the counter and
+/// the log discarded. Its result relation is `decode_eq` on `crate::alloc_guard::sites::fmt_part(r)` for
+/// every non-`OutOfMemory` result, and `OutOfMemory` names the failed
+/// `(Output, 4N)` reservation.
+pub fn try_decode(bytes: &[u8]) -> (r: Result<Decoded, TryError>)
+    ensures
+        match r {
+            Ok(d) => {
+                &&& 1 <= (d.width as int) <= 8192
+                &&& 1 <= (d.height as int) <= 8192
+                &&& d.rgba@.len() == 4 * (d.width as int * (d.height as int))
+                &&& 4 * (d.width as int * (d.height as int)) <= 67108864
+            },
+            Err(_) => true,
+        },
+        !matches!(r, Err(TryError::OutOfMemory(_))) ==> decode_eq(crate::alloc_guard::sites::fmt_part(r), bytes@),
+        match r {
+            Err(TryError::OutOfMemory(o)) => o.site_spec() == AllocSite::Output
+                && o.elements_spec() as int == 4 * model_checked_n(bytes@),
+            _ => true,
+        },
+{
+    let r = try_decode_with_steps_logged(bytes);
+    proof {
+        reveal(crate::alloc_guard::sites::fmt_part);
+        reveal(req_tga);
+        reveal(model_checked_n);
+        reveal(crate::model::mh);
+        reveal(crate::alloc_guard::req_of_log);
+        reveal(crate::alloc_guard::all_ok);
+        if let Err(TryError::OutOfMemory(o)) = r.0 {
+            assert((o.site_spec(), o.elements_spec() as nat) == req_tga(bytes@)[0]);
+            assert(req_tga(bytes@)[0].1 == 4 * model_checked_n(bytes@) as nat);
+            assert(o.site_spec() == AllocSite::Output);
+        }
+    }
+    r.0
 }
 
 /// T7/T11: a model record `m` matching the executable header gives the same
@@ -4556,33 +4738,35 @@ fn t6_rle_exact(
 }
 
 /// T9 · precedence, at the manifest's quantification: for every representable
-/// input, `decode(b) = Err(e) iff MP(b) = Err(e)` for each R15 error, with the
+/// input, `try_decode(b) = Err(e) iff MP(b) = Err(e)` for each R15 error, with the
 /// header check order and the RLE control/overrun/full-packet/index order
 /// explicit; `decode` returns neither pixels nor a second error. This is the
-/// `Err` half of `decode_eq`, stated as a witness over `decode` itself.
+/// `Err` half of `decode_eq`, stated as a witness over `try_decode` itself.
 #[allow(dead_code)]
-fn t9_precedence(bytes: &[u8]) -> (r: Result<Decoded, Error>)
+fn t9_precedence(bytes: &[u8]) -> (r: Result<Decoded, TryError>)
     ensures
-        match r {
-            Ok(d) => crate::model::mp(bytes@) == Ok((d.width as int, d.height as int, d.rgba@)),
-            Err(e) => crate::model::mp(bytes@) == Err(e),
-        },
+        !matches!(r, Err(TryError::OutOfMemory(_))) ==> decode_eq(crate::alloc_guard::sites::fmt_part(r), bytes@),
 {
-    decode(bytes)
+    let r = try_decode(bytes);
+    proof {
+        reveal(crate::alloc_guard::sites::fmt_part);
+        reveal(decode_eq);
+    }
+    r
 }
 
 /// T7/T8/T11 · total functional correctness, success and resource bounds, and
 /// the integrated call path, at the manifest's quantification: for every byte
-/// slice representable on either target, `decode(bytes)` equals `MP(bytes)` as
+/// slice representable on either target, `try_decode(bytes)` equals `MP(bytes)` as
 /// the exact `Result` — all output bytes, both flips, alpha, map offsets, footer
 /// behavior and first error — and on success `1 <= w,h <= 8192`,
 /// `|p| = 4*w*h <= 67,108,864`, and every output cell `q < N` satisfies
 /// `t8_cell` (the per-pixel clause, proved alongside the public result, not left
 /// as an orphan witness).
 #[allow(dead_code)]
-fn t7_decode_exact(bytes: &[u8]) -> (r: Result<Decoded, Error>)
+fn t7_decode_exact(bytes: &[u8]) -> (r: Result<Decoded, TryError>)
     ensures
-        decode_eq(r, bytes@),
+        !matches!(r, Err(TryError::OutOfMemory(_))) ==> decode_eq(crate::alloc_guard::sites::fmt_part(r), bytes@),
         match r {
             Ok(d) => {
                 &&& 1 <= (d.width as int) <= 8192
@@ -4600,14 +4784,18 @@ fn t7_decode_exact(bytes: &[u8]) -> (r: Result<Decoded, Error>)
             },
             Err(_) => true,
         },
-        // T8's "iff": `MP` accepts exactly when `decode` does, with the same triple.
+        // T8's "iff": `MP` accepts exactly when the decoder does, with the same triple.
         match r {
             Ok(d) => crate::model::mp(bytes@) == Ok((d.width as int, d.height as int, d.rgba@)),
-            Err(e) => crate::model::mp(bytes@) == Err(e),
+            Err(e) => match e {
+                TryError::Format(e) => crate::model::mp(bytes@) == Err(e),
+                TryError::OutOfMemory(_) => true,
+            },
         },
 {
-    let r = decode(bytes);
+    let r = try_decode(bytes);
     proof {
+        reveal(crate::alloc_guard::sites::fmt_part);
         if let Ok(d) = &r {
             assert forall|q: int|
                 0 <= q < d.width as int * (d.height as int) implies #[trigger] crate::model::t8_cell(
@@ -4924,7 +5112,7 @@ fn t2_header_bounds(b: &[u8]) -> (r: Result<Header, Error>)
 /// `requires`), rejects an over-long input before any input-dependent
 /// allocation, and on success requests exactly `4*N <= 67,108,864` bytes.
 #[allow(dead_code)]
-fn t1_decode_safe(bytes: &[u8]) -> (r: Result<Decoded, Error>)
+fn t1_decode_safe(bytes: &[u8]) -> (r: Result<Decoded, TryError>)
     ensures
         match r {
             Ok(d) => {
@@ -4936,7 +5124,4470 @@ fn t1_decode_safe(bytes: &[u8]) -> (r: Result<Decoded, Error>)
             Err(_) => true,
         },
 {
-    decode(bytes)
+    try_decode(bytes)
+}
+
+// ---------------------------------------------------------------------------
+// Piece B: the profiled decoder (POLICY-SPEC.md / THEOREMS-POLICY-DELTA.md).
+//
+// Everything below is additive: the 1.0 `decode`/`parse_header` and every
+// helper they call are unchanged, so the 1.0 obligations keep their proofs and
+// `decode_with_policy` is the only new public surface.
+// ---------------------------------------------------------------------------
+
+// --- B1: the exec guard wrappers -------------------------------------------
+
+/// R1 `image_type` under `p`: the executable test of `type_ok_policy`.
+fn type_ok_hdr_exec(t: u8, p: Policy) -> (r: bool)
+    ensures
+        r == crate::policy_model::type_ok_policy(t, p),
+{
+    let core = t == 1u8 || t == 2u8 || t == 3u8 || t == 9u8 || t == 10u8 || t == 11u8;
+    let fallback = match p.image_type {
+        ImageTypeOptions::GreyFallback => true,
+        _ => false,
+    };
+    let r = core || fallback;
+    proof {
+        reveal(crate::model::type_ok);
+        reveal(crate::policy_model::type_ok_policy);
+        assert(core == crate::model::type_ok(t));
+        assert(r == crate::policy_model::type_ok_policy(t, p));
+    }
+    r
+}
+
+/// R1: the executable image kind of a type byte (0 indexed, 1 true-colour,
+/// 2 greyscale). Equals the model's `kind_policy`.
+fn kind_hdr_exec(t: u8, p: Policy) -> (r: u8)
+    ensures
+        r as int == crate::policy_model::kind_policy(t, p),
+{
+    let core = t == 1u8 || t == 2u8 || t == 3u8 || t == 9u8 || t == 10u8 || t == 11u8;
+    let r = if core {
+        if t == 1u8 || t == 9u8 {
+            0u8
+        } else if t == 2u8 || t == 10u8 {
+            1u8
+        } else {
+            2u8
+        }
+    } else {
+        2u8
+    };
+    proof {
+        reveal(crate::model::type_ok);
+        reveal(crate::model::is_indexed);
+        reveal(crate::policy_model::kind_policy);
+        reveal(crate::policy_model::kind_of_type);
+        assert(core == crate::model::type_ok(t));
+        if core {
+            assert(crate::policy_model::kind_of_type(t) == r as int);
+            assert(crate::policy_model::kind_policy(t, p) == r as int);
+        } else {
+            assert(crate::policy_model::kind_policy(t, p) == 2);
+            assert(r == 2u8);
+        }
+    }
+    r
+}
+
+/// R2 `map_header`: the executable flag test of `map_flag_ok_policy_flags`.
+fn flag_ok_hdr_exec(flag: u8, p: Policy) -> (r: bool)
+    ensures
+        r == crate::policy_model::map_flag_ok_policy_flags(flag, p),
+{
+    let r = match p.map_header {
+        MapHeaderOptions::Core | MapHeaderOptions::IgnoreAbsent => flag <= 1u8,
+        MapHeaderOptions::Gdk | MapHeaderOptions::Image => true,
+    };
+    proof {
+        reveal(crate::policy_model::map_flag_ok_policy_flags);
+        assert(r == crate::policy_model::map_flag_ok_policy_flags(flag, p));
+    }
+    r
+}
+
+/// R2 `map_header`: the executable "is a map present" test.
+fn flag_present_hdr_exec(flag: u8, p: Policy) -> (r: bool)
+    ensures
+        r == crate::policy_model::map_present_policy_flags(flag, p),
+{
+    let r = match p.map_header {
+        MapHeaderOptions::Core | MapHeaderOptions::IgnoreAbsent => flag == 1u8,
+        MapHeaderOptions::Gdk => flag != 0u8,
+        MapHeaderOptions::Image => flag == 1u8,
+    };
+    proof {
+        reveal(crate::policy_model::map_present_policy_flags);
+        assert(r == crate::policy_model::map_present_policy_flags(flag, p));
+    }
+    r
+}
+
+/// R3 `depths`: the executable depth test under `o`.
+fn depth_ok_hdr_exec(kind: u8, d: u8, o: DepthsOptions) -> (r: bool)
+    ensures
+        r == crate::policy_model::depth_ok_policy(kind as int, d, o),
+{
+    let r = match o {
+        DepthsOptions::Core | DepthsOptions::Image => {
+            if kind == 0u8 {
+                d == 8u8 || d == 16u8
+            } else if kind == 1u8 {
+                d == 15u8 || d == 16u8 || d == 24u8 || d == 32u8
+            } else {
+                d == 8u8 || d == 16u8
+            }
+        },
+        DepthsOptions::Gdk => {
+            if kind == 0u8 {
+                d == 8u8
+            } else if kind == 1u8 {
+                d == 16u8 || d == 24u8 || d == 32u8
+            } else {
+                d == 8u8 || d == 16u8
+            }
+        },
+    };
+    proof {
+        reveal(crate::policy_model::depth_ok_policy);
+        assert(r == crate::policy_model::depth_ok_policy(kind as int, d, o));
+    }
+    r
+}
+
+/// R5: the CORE attribute-count set, executably.
+fn core_attr_ok_exec(kind: u8, d: u8, count: u8) -> (r: bool)
+    ensures
+        r == crate::policy_model::core_attr_allowed(kind as int, d as int, count as int),
+{
+    let r = if kind == 2u8 {
+        if d == 8u8 {
+            count == 0u8
+        } else if d == 16u8 {
+            count == 0u8 || count == 8u8
+        } else {
+            count == 0u8
+        }
+    } else {
+        if d == 15u8 || d == 24u8 {
+            count == 0u8
+        } else if d == 16u8 {
+            count == 0u8 || count == 1u8
+        } else if d == 32u8 {
+            count == 0u8 || count == 8u8
+        } else {
+            count == 0u8
+        }
+    };
+    proof {
+        reveal(crate::policy_model::core_attr_allowed);
+        assert(r == crate::policy_model::core_attr_allowed(kind as int, d as int, count as int));
+    }
+    r
+}
+
+/// R5: the ImageTable attribute-count set, executably.
+fn image_attr_ok_exec(kind: u8, d: u8, count: u8) -> (r: bool)
+    ensures
+        r == crate::policy_model::image_attr_allowed(kind as int, d as int, count as int),
+{
+    let r = if kind == 2u8 && d == 8u8 {
+        count == 0u8 || count == 8u8
+    } else if kind == 2u8 && d == 16u8 {
+        count == 8u8
+    } else {
+        core_attr_ok_exec(kind, d, count)
+    };
+    proof {
+        reveal(crate::policy_model::image_attr_allowed);
+        assert(r == crate::policy_model::image_attr_allowed(kind as int, d as int, count as int));
+    }
+    r
+}
+
+/// R5: the option's acceptance test, executably.
+fn attr_ok_hdr_exec(kind: u8, d: u8, count: u8, o: AttributeBitsOptions) -> (r: bool)
+    ensures
+        r == crate::policy_model::attr_ok_policy(kind as int, d as int, count as int, o),
+{
+    let r = match o {
+        AttributeBitsOptions::Lenient => true,
+        AttributeBitsOptions::Exact => core_attr_ok_exec(kind, d, count),
+        AttributeBitsOptions::ImageTable => image_attr_ok_exec(kind, d, count),
+    };
+    proof {
+        reveal(crate::policy_model::attr_ok_policy);
+        assert(r == crate::policy_model::attr_ok_policy(kind as int, d as int, count as int, o));
+    }
+    r
+}
+
+/// R5: the effective attribute count after the acceptance test, executably.
+fn eff_attr_exec(kind: u8, d: u8, count: u8, o: AttributeBitsOptions) -> (r: u8)
+    ensures
+        r as int == crate::policy_model::eff_attr(kind as int, d as int, count as int, o),
+{
+    let table = match o {
+        AttributeBitsOptions::ImageTable => image_attr_ok_exec(kind, d, count),
+        _ => core_attr_ok_exec(kind, d, count),
+    };
+    let table8 = match o {
+        AttributeBitsOptions::ImageTable => image_attr_ok_exec(kind, d, 8u8),
+        _ => core_attr_ok_exec(kind, d, 8u8),
+    };
+    let r = if table {
+        count
+    } else if table8 {
+        8u8
+    } else {
+        0u8
+    };
+    proof {
+        reveal(crate::policy_model::eff_attr);
+        reveal(crate::policy_model::attr_table_allowed);
+        assert(table == crate::policy_model::attr_table_allowed(
+            kind as int,
+            d as int,
+            count as int,
+            o,
+        ));
+        assert(table8 == crate::policy_model::attr_table_allowed(kind as int, d as int, 8, o));
+        assert(r as int == crate::policy_model::eff_attr(kind as int, d as int, count as int, o));
+    }
+    r
+}
+
+/// R4: the coherence/entry-depth failure, executably.
+fn coherence_bad_hdr_exec(
+    first: u32,
+    length: u32,
+    edepth: u8,
+    present: bool,
+    kind: u8,
+    o: MapHeaderOptions,
+) -> (r: bool)
+    ensures
+        r == crate::policy_model::map_coherence_bad_flags(
+            first as int,
+            length as int,
+            edepth,
+            present,
+            kind as int,
+            o,
+        ),
+{
+    let md_ok = edepth == 15u8 || edepth == 16u8 || edepth == 24u8 || edepth == 32u8;
+    let r = match o {
+        MapHeaderOptions::Core => {
+            if !present {
+                first != 0u32 || length != 0u32 || edepth != 0u8 || kind == 0u8
+            } else {
+                length == 0u32 || !md_ok
+            }
+        },
+        MapHeaderOptions::IgnoreAbsent => {
+            if !present {
+                kind == 0u8
+            } else {
+                length == 0u32 || !md_ok
+            }
+        },
+        MapHeaderOptions::Gdk => {
+            if !present {
+                kind == 0u8
+            } else {
+                length != 0u32 && !md_ok
+            }
+        },
+        MapHeaderOptions::Image => {
+            if !present {
+                kind == 0u8
+            } else {
+                !md_ok
+            }
+        },
+    };
+    proof {
+        reveal(crate::policy_model::map_coherence_bad_flags);
+        reveal(crate::model::map_entry_depth_ok);
+        assert(md_ok == crate::model::map_entry_depth_ok(edepth));
+        assert(r == crate::policy_model::map_coherence_bad_flags(
+            first as int,
+            length as int,
+            edepth,
+            present,
+            kind as int,
+            o,
+        ));
+    }
+    r
+}
+
+/// R4: the map range failure, executably.
+fn range_bad_hdr_exec(first: u32, length: u32, present: bool, o: MapHeaderOptions) -> (r: bool)
+    ensures
+        r == crate::policy_model::map_range_bad_flags(first as int, length as int, present, o),
+{
+    let r = match o {
+        MapHeaderOptions::Core | MapHeaderOptions::IgnoreAbsent => {
+            present && first as u64 + length as u64 > 65536u64
+        },
+        MapHeaderOptions::Gdk | MapHeaderOptions::Image => false,
+    };
+    proof {
+        reveal(crate::policy_model::map_range_bad_flags);
+        assert(r == crate::policy_model::map_range_bad_flags(
+            first as int,
+            length as int,
+            present,
+            o,
+        ));
+    }
+    r
+}
+
+/// R3 `depths = Image`: the index-depth-over-entry-depth failure, executably.
+fn index_depth_bad_hdr_exec(
+    present: bool,
+    kind: u8,
+    depth: u8,
+    edepth: u8,
+    o: DepthsOptions,
+) -> (r: bool)
+    ensures
+        r == crate::policy_model::image_index_depth_bad_flags(
+            present,
+            kind as int,
+            depth,
+            edepth,
+            o,
+        ),
+{
+    let r = match o {
+        DepthsOptions::Image => present && kind == 0u8 && depth > edepth,
+        _ => false,
+    };
+    proof {
+        reveal(crate::policy_model::image_index_depth_bad_flags);
+        assert(r == crate::policy_model::image_index_depth_bad_flags(
+            present,
+            kind as int,
+            depth,
+            edepth,
+            o,
+        ));
+    }
+    r
+}
+
+// --- B1: the verdict and the parser -----------------------------------------
+
+/// The `Result<(), Error>` projection of a header model result: `Ok` for any
+/// accepted record, the error otherwise.
+pub open spec fn of_mh(r: Result<MHModel, Error>) -> Result<(), Error> {
+    match r {
+        Ok(_) => Ok(()),
+        Err(e) => Err(e),
+    }
+}
+
+/// `mh_policy_of` on a parsed header's own fields.
+pub(crate) open spec fn mh_policy_of_hdr(h: Header, p: Policy) -> Result<MHModel, Error> {
+    crate::policy_model::mh_policy_of(
+        h.id_length,
+        h.color_map_flag,
+        h.image_type,
+        h.map_first as int,
+        h.map_length as int,
+        h.map_entry_depth,
+        h.x_origin as int,
+        h.y_origin as int,
+        h.width as int,
+        h.height as int,
+        h.pixel_depth,
+        h.descriptor,
+        p,
+    )
+}
+
+/// The verdict `header_verdict` decides: the error of `mh_policy_of` on the
+/// header's fields, or `Ok(())` when it accepts.
+pub(crate) open spec fn verdict_of_header(h: Header, p: Policy) -> Result<(), Error> {
+    of_mh(mh_policy_of_hdr(h, p))
+}
+
+proof fn lemma_of_mh_ok(r: Result<MHModel, Error>)
+    requires
+        of_mh(r) == Ok(()),
+    ensures
+        r is Ok,
+{
+    reveal(of_mh);
+    match r {
+        Ok(_) => {},
+        Err(_) => {},
+    }
+}
+
+proof fn lemma_of_mh_err(r: Result<MHModel, Error>, e: Error)
+    requires
+        of_mh(r) == Err(e),
+    ensures
+        r == Err(e),
+{
+    reveal(of_mh);
+    match r {
+        Ok(_) => {},
+        Err(e2) => {
+            assert(e2 == e);
+        },
+    }
+}
+
+proof fn lemma_u32_roundtrip(x: u32)
+    ensures
+        x as int as u32 == x,
+{
+}
+
+proof fn lemma_u8_roundtrip(x: u8)
+    ensures
+        x as int as u8 == x,
+{
+}
+
+/// `mh_of_header(h,p)`: the model record a parsed policy header reconstructs —
+/// the header's own raw values with the policy `map_bytes` formula. T5 for the
+/// parser is `mh_policy(bytes@,p) == Ok(mh_of_header(h,p))`.
+pub(crate) open spec fn mh_of_header(h: Header, p: Policy) -> MHModel {
+    MHModel {
+        id_length: h.id_length,
+        color_map_flag: h.color_map_flag,
+        image_type: h.image_type,
+        map_first: h.map_first,
+        map_length: h.map_length,
+        map_entry_depth: h.map_entry_depth,
+        x_origin: h.x_origin,
+        y_origin: h.y_origin,
+        width: h.width,
+        height: h.height,
+        pixel_depth: h.pixel_depth,
+        descriptor: h.descriptor,
+        n: h.width as int * (h.height as int),
+        sample_bytes: crate::model::sample_bytes_of(h.pixel_depth),
+        map_bytes: crate::policy_model::map_bytes_flags(
+            h.color_map_flag,
+            h.map_length as int,
+            h.map_entry_depth,
+            p,
+        ),
+    }
+}
+
+/// The parser's invariant on an accepted policy header. Every clause holds for
+/// all four `map_header` and `depths` values; `lemma_mh_policy_of_ok_facts`
+/// supplies them from the accepted verdict.
+pub(crate) open spec fn header_inv_policy(h: Header, p: Policy) -> bool {
+    &&& crate::policy_model::type_ok_policy(h.image_type, p)
+    &&& crate::policy_model::map_flag_ok_policy_flags(h.color_map_flag, p)
+    &&& 1 <= (h.width as int) <= 8192
+    &&& 1 <= (h.height as int) <= 8192
+    &&& (h.descriptor & 0xc0u8 == 0u8 || p.interleave == InterleaveOptions::Ignore)
+    &&& crate::policy_model::depth_ok_policy(
+        crate::policy_model::kind_policy(h.image_type, p),
+        h.pixel_depth,
+        p.depths,
+    )
+    &&& 1 <= h.spec_sample_bytes() <= 4
+    &&& 4 * (h.width as int * (h.height as int)) <= 67108864
+    &&& (crate::policy_model::kind_policy(h.image_type, p) == 0
+        ==> crate::policy_model::map_present_policy_flags(h.color_map_flag, p))
+    &&& (crate::policy_model::map_present_policy_flags(h.color_map_flag, p) && (h.map_length
+        as int) > 0 ==> crate::model::map_entry_depth_ok(h.map_entry_depth))
+    &&& (h.map_length as int) <= 65535
+    &&& crate::policy_model::map_bytes_flags(
+        h.color_map_flag,
+        h.map_length as int,
+        h.map_entry_depth,
+        p,
+    ) <= 262140
+}
+
+/// R1..R7 under `p`: validate a parsed header's fields in the model's R14
+/// order, returning the model's exact first error. Every guard is an exec
+/// wrapper proved equal to the matching `*_flags` predicate, so the result
+/// equals `verdict_of_header`.
+fn header_verdict(h: &Header, p: Policy) -> (r: Result<(), Error>)
+    ensures
+        r == verdict_of_header(*h, p),
+{
+    let t_ok = type_ok_hdr_exec(h.image_type, p);
+    if !t_ok {
+        proof {
+            reveal(crate::policy_model::mh_policy_of);
+            assert(!crate::policy_model::type_ok_policy(h.image_type, p));
+            reveal(of_mh);
+            assert(verdict_of_header(*h, p) == Err(Error::UnsupportedImageType));
+        }
+        return Err(Error::UnsupportedImageType);
+    }
+    let kind = kind_hdr_exec(h.image_type, p);
+    let f_ok = flag_ok_hdr_exec(h.color_map_flag, p);
+    if !f_ok {
+        proof {
+            reveal(crate::policy_model::mh_policy_of);
+            reveal(of_mh);
+            assert(verdict_of_header(*h, p) == Err(Error::InvalidColorMapFlag));
+        }
+        return Err(Error::InvalidColorMapFlag);
+    }
+    let present = flag_present_hdr_exec(h.color_map_flag, p);
+    let dims_ok = h.width >= 1u32 && h.width <= MAX_DIMENSION && h.height >= 1u32
+        && h.height <= MAX_DIMENSION;
+    if !dims_ok {
+        proof {
+            reveal(crate::policy_model::mh_policy_of);
+            reveal(crate::model::max_dimension);
+            reveal(of_mh);
+            assert(!(1 <= h.width as int && h.width as int <= crate::model::max_dimension())
+                || !(1 <= h.height as int && h.height as int <= crate::model::max_dimension()));
+            assert(verdict_of_header(*h, p) == Err(Error::InvalidDimensions));
+        }
+        return Err(Error::InvalidDimensions);
+    }
+    let il_ok = match p.interleave {
+        InterleaveOptions::Reject => h.descriptor & 0xc0u8 == 0u8,
+        InterleaveOptions::Ignore => true,
+    };
+    if !il_ok {
+        proof {
+            reveal(crate::policy_model::mh_policy_of);
+            reveal(crate::model::max_dimension);
+            reveal(of_mh);
+            assert(h.descriptor & 0xc0u8 != 0u8);
+            assert(p.interleave == InterleaveOptions::Reject);
+            assert(verdict_of_header(*h, p) == Err(Error::UnsupportedInterleave));
+        }
+        return Err(Error::UnsupportedInterleave);
+    }
+    let d_ok = depth_ok_hdr_exec(kind, h.pixel_depth, p.depths);
+    if !d_ok {
+        proof {
+            reveal(crate::policy_model::mh_policy_of);
+            reveal(crate::model::max_dimension);
+            reveal(of_mh);
+            assert(kind as int == crate::policy_model::kind_policy(h.image_type, p));
+            assert(verdict_of_header(*h, p) == Err(Error::UnsupportedPixelDepth));
+        }
+        return Err(Error::UnsupportedPixelDepth);
+    }
+    let coh_bad = coherence_bad_hdr_exec(
+        h.map_first,
+        h.map_length,
+        h.map_entry_depth,
+        present,
+        kind,
+        p.map_header,
+    );
+    if coh_bad {
+        proof {
+            reveal(crate::policy_model::mh_policy_of);
+            reveal(crate::model::max_dimension);
+            reveal(of_mh);
+            assert(kind as int == crate::policy_model::kind_policy(h.image_type, p));
+            assert(present == crate::policy_model::map_present_policy_flags(
+                h.color_map_flag,
+                p,
+            ));
+            assert(verdict_of_header(*h, p) == Err(Error::InvalidColorMap));
+        }
+        return Err(Error::InvalidColorMap);
+    }
+    let rng_bad = range_bad_hdr_exec(h.map_first, h.map_length, present, p.map_header);
+    if rng_bad {
+        proof {
+            reveal(crate::policy_model::mh_policy_of);
+            reveal(crate::model::max_dimension);
+            reveal(of_mh);
+            assert(kind as int == crate::policy_model::kind_policy(h.image_type, p));
+            assert(!crate::policy_model::map_coherence_bad_flags(
+                h.map_first as int,
+                h.map_length as int,
+                h.map_entry_depth,
+                present,
+                kind as int,
+                p.map_header,
+            ));
+            assert(verdict_of_header(*h, p) == Err(Error::ColorMapRange));
+        }
+        return Err(Error::ColorMapRange);
+    }
+    let idx_bad = index_depth_bad_hdr_exec(present, kind, h.pixel_depth, h.map_entry_depth, p.depths);
+    if idx_bad {
+        proof {
+            reveal(crate::policy_model::mh_policy_of);
+            reveal(crate::model::max_dimension);
+            reveal(of_mh);
+            assert(kind as int == crate::policy_model::kind_policy(h.image_type, p));
+            assert(!crate::policy_model::map_range_bad_flags(
+                h.map_first as int,
+                h.map_length as int,
+                present,
+                p.map_header,
+            ));
+            assert(verdict_of_header(*h, p) == Err(Error::UnsupportedPixelDepth));
+        }
+        return Err(Error::UnsupportedPixelDepth);
+    }
+    let adepth = if kind == 0u8 {
+        h.map_entry_depth
+    } else {
+        h.pixel_depth
+    };
+    let attr = h.attribute_count();
+    let a_ok = attr_ok_hdr_exec(kind, adepth, attr, p.attribute_bits);
+    if !a_ok {
+        proof {
+            reveal(crate::policy_model::mh_policy_of);
+            reveal(crate::model::max_dimension);
+            reveal(of_mh);
+            assert(kind as int == crate::policy_model::kind_policy(h.image_type, p));
+            assert(adepth as int == (if kind as int == 0 {
+                h.map_entry_depth as int
+            } else {
+                h.pixel_depth as int
+            }));
+            assert(attr as int == (h.descriptor & 0x0fu8) as int);
+            assert(verdict_of_header(*h, p) == Err(Error::InvalidAttributeBits));
+        }
+        return Err(Error::InvalidAttributeBits);
+    }
+    proof {
+        assert((h.width as u64) * (h.height as u64) <= 67108864) by (nonlinear_arith)
+            requires
+                h.width <= 8192u32,
+                h.height <= 8192u32,
+        ;
+    }
+    let n64 = h.width as u64 * h.height as u64;
+    proof {
+        assert(4 * n64 <= u64::MAX) by (nonlinear_arith)
+            requires
+                n64 <= 67108864,
+        ;
+    }
+    if 4 * n64 > MAX_OUTPUT as u64 {
+        proof {
+            reveal(crate::policy_model::mh_policy_of);
+            reveal(crate::model::max_dimension);
+            reveal(crate::model::max_output);
+            reveal(of_mh);
+            assert(attr as int == (h.descriptor & 0x0fu8) as int);
+            assert(!(4 * (h.width as int * (h.height as int)) <= crate::model::max_output()));
+            assert(verdict_of_header(*h, p) == Err(Error::OutputTooLarge));
+        }
+        return Err(Error::OutputTooLarge);
+    }
+    proof {
+        reveal(crate::policy_model::mh_policy_of);
+        reveal(crate::model::max_dimension);
+        reveal(crate::model::max_output);
+        reveal(of_mh);
+        // The guards above passed, so `mh_policy_of` takes its accepting branch
+        // and returns its own `Ok` literal; the literal is `mh_of_header`.
+        assert(mh_policy_of_hdr(*h, p) == Ok(mh_of_header(*h, p))) by {
+            reveal(mh_of_header);
+            assert(h.map_first as int as u32 == h.map_first) by {
+                lemma_u32_roundtrip(h.map_first);
+            }
+            assert(h.map_length as int as u32 == h.map_length) by {
+                lemma_u32_roundtrip(h.map_length);
+            }
+            assert(h.x_origin as int as u32 == h.x_origin) by {
+                lemma_u32_roundtrip(h.x_origin);
+            }
+            assert(h.y_origin as int as u32 == h.y_origin) by {
+                lemma_u32_roundtrip(h.y_origin);
+            }
+            assert(h.width as int as u32 == h.width) by {
+                lemma_u32_roundtrip(h.width);
+            }
+            assert(h.height as int as u32 == h.height) by {
+                lemma_u32_roundtrip(h.height);
+            }
+        }
+        assert(verdict_of_header(*h, p) == Ok(()));
+    }
+    Ok(())
+}
+
+/// Either `mh_of_header` or the model's own error, from the accepted verdict.
+proof fn lemma_mh_of_header_of_verdict(h: &Header, p: Policy)
+    requires
+        verdict_of_header(*h, p) == Ok(()),
+    ensures
+        mh_policy_of_hdr(*h, p) == Ok(mh_of_header(*h, p)),
+{
+    reveal(verdict_of_header);
+    reveal(of_mh);
+    assert(mh_policy_of_hdr(*h, p) is Ok);
+    reveal(crate::policy_model::mh_policy_of);
+    reveal(mh_of_header);
+    assert(mh_policy_of_hdr(*h, p) == Ok(mh_of_header(*h, p))) by {
+        assert(h.map_first as int as u32 == h.map_first) by {
+            lemma_u32_roundtrip(h.map_first);
+        }
+        assert(h.map_length as int as u32 == h.map_length) by {
+            lemma_u32_roundtrip(h.map_length);
+        }
+        assert(h.x_origin as int as u32 == h.x_origin) by {
+            lemma_u32_roundtrip(h.x_origin);
+        }
+        assert(h.y_origin as int as u32 == h.y_origin) by {
+            lemma_u32_roundtrip(h.y_origin);
+        }
+        assert(h.width as int as u32 == h.width) by {
+            lemma_u32_roundtrip(h.width);
+        }
+        assert(h.height as int as u32 == h.height) by {
+            lemma_u32_roundtrip(h.height);
+        }
+    }
+}
+
+/// The facts `header_inv_policy` collects, from the accepted verdict.
+proof fn lemma_mh_of_header_inv(b: Seq<u8>, h: &Header, p: Policy)
+    requires
+        crate::policy_model::mh_policy(b, p) == Ok(mh_of_header(*h, p)),
+    ensures
+        header_inv_policy(*h, p),
+{
+    crate::policy_model::lemma_mh_policy_ok_bounds(b, mh_of_header(*h, p), p);
+    assert(mh_of_header(*h, p).map_bytes <= 262140);
+    reveal(crate::policy_model::mh_policy_of);
+    reveal(crate::model::max_dimension);
+    reveal(crate::model::max_output);
+    reveal(crate::model::map_entry_depth_ok);
+    reveal(crate::model::sample_bytes_of);
+    reveal(crate::policy_model::map_bytes_flags);
+    reveal(crate::policy_model::map_present_policy_flags);
+    reveal(header_inv_policy);
+    reveal(crate::policy_model::depth_ok_policy);
+    reveal(crate::policy_model::kind_policy);
+    reveal(crate::policy_model::kind_of_type);
+    reveal(crate::model::is_indexed);
+    reveal(crate::model::type_ok);
+    assert(crate::policy_model::type_ok_policy(h.image_type, p));
+    assert(crate::policy_model::map_flag_ok_policy_flags(h.color_map_flag, p));
+    assert(1 <= h.width as int <= 8192);
+    assert(1 <= h.height as int <= 8192);
+    assert(h.descriptor & 0xc0u8 == 0u8 || p.interleave == InterleaveOptions::Ignore);
+    assert(crate::policy_model::depth_ok_policy(
+        crate::policy_model::kind_policy(h.image_type, p),
+        h.pixel_depth,
+        p.depths,
+    ));
+    assert(!crate::policy_model::map_coherence_bad_flags(
+        h.map_first as int,
+        h.map_length as int,
+        h.map_entry_depth,
+        crate::policy_model::map_present_policy_flags(h.color_map_flag, p),
+        crate::policy_model::kind_policy(h.image_type, p),
+        p.map_header,
+    ));
+    assert(!crate::policy_model::map_range_bad_flags(
+        h.map_first as int,
+        h.map_length as int,
+        crate::policy_model::map_present_policy_flags(h.color_map_flag, p),
+        p.map_header,
+    ));
+    assert(!crate::policy_model::image_index_depth_bad_flags(
+        crate::policy_model::map_present_policy_flags(h.color_map_flag, p),
+        crate::policy_model::kind_policy(h.image_type, p),
+        h.pixel_depth,
+        h.map_entry_depth,
+        p.depths,
+    ));
+    assert(4 * (h.width as int * (h.height as int)) <= 67108864);
+    // the indexed-image needs a present map
+    if crate::policy_model::kind_policy(h.image_type, p) == 0 {
+        assert(crate::policy_model::map_present_policy_flags(h.color_map_flag, p));
+    }
+    // the sample width
+    if crate::policy_model::kind_policy(h.image_type, p) == 0 {
+        assert(h.pixel_depth == 8u8 || h.pixel_depth == 16u8);
+    } else if crate::policy_model::kind_policy(h.image_type, p) == 1 {
+        assert(h.pixel_depth == 15u8 || h.pixel_depth == 16u8 || h.pixel_depth == 24u8
+            || h.pixel_depth == 32u8);
+    } else {
+        assert(h.pixel_depth == 8u8 || h.pixel_depth == 16u8);
+    }
+    crate::model::lemma_sample_bytes_le_4(h.pixel_depth);
+    assert(1 <= h.spec_sample_bytes() <= 4);
+    // the map-entry depth and the map-slice bound
+    if crate::policy_model::map_present_policy_flags(h.color_map_flag, p)
+        && (h.map_length as int) > 0 {
+        assert(crate::model::map_entry_depth_ok(h.map_entry_depth));
+        crate::model::lemma_sample_bytes_le_4(h.map_entry_depth);
+        assert(crate::model::sample_bytes_of(h.map_entry_depth) <= 4);
+    }
+    // the map-slice bound: from `mh_of_header`'s own `map_bytes` equation and
+    // the model's `lemma_mh_policy_ok_bounds` on the accepted record.
+    assert(crate::policy_model::map_bytes_flags(
+        h.color_map_flag,
+        h.map_length as int,
+        h.map_entry_depth,
+        p,
+    ) <= 262140);
+    assert(header_inv_policy(*h, p));
+}
+
+/// R1..R7 under `p`: the 18-byte header prefix, validated by `header_verdict`.
+/// T5: on `Ok`, `mh_policy(bytes@,p)` is exactly `Ok(mh_of_header(h,p))`; on
+/// `Err`, it is exactly that error. The 1.0 `parse_header` is untouched.
+fn parse_header_policy(b: &[u8], p: Policy) -> (r: Result<Header, Error>)
+    ensures
+        match crate::policy_model::mh_policy(b@, p) {
+            Ok(m) => match r {
+                Ok(h) => m == mh_of_header(h, p),
+                Err(_) => false,
+            },
+            Err(e2) => match r {
+                Ok(_) => false,
+                Err(e) => e == e2,
+            },
+        },
+        match r {
+            Ok(h) => 18 <= b@.len() <= crate::model::max_input() && header_inv_policy(h, p),
+            Err(_) => true,
+        },
+{
+    if b.len() > MAX_INPUT {
+        proof {
+            reveal(crate::policy_model::mh_policy);
+            reveal(crate::model::max_input);
+        }
+        return Err(Error::FileTooLarge);
+    }
+    proof {
+        reveal(crate::policy_model::mh_policy);
+        reveal(crate::model::max_input);
+        assert(b@.len() <= crate::model::max_input());
+    }
+    if b.len() < 18 {
+        proof {
+            reveal(crate::policy_model::mh_policy);
+            reveal(crate::model::max_input);
+        }
+        return Err(Error::TruncatedHeader);
+    }
+    proof {
+        reveal(crate::policy_model::mh_policy);
+        assert(b@.len() >= 18);
+    }
+    let h = Header {
+        id_length: b[0],
+        color_map_flag: b[1],
+        image_type: b[2],
+        map_first: le16(b, 3),
+        map_length: le16(b, 5),
+        map_entry_depth: b[7],
+        x_origin: le16(b, 8),
+        y_origin: le16(b, 10),
+        width: le16(b, 12),
+        height: le16(b, 14),
+        pixel_depth: b[16],
+        descriptor: b[17],
+    };
+    let v = header_verdict(&h, p);
+    proof {
+        // T5: tie the executable fields to the input slice, then rewrite
+        // `mh_policy` through the proved `lemma_mh_policy_eq_of_header`.
+        crate::policy_model::lemma_mh_policy_eq_of_header(
+            b@,
+            b@[0],
+            b@[1],
+            b@[2],
+            crate::model::le16(b@, 3),
+            crate::model::le16(b@, 5),
+            b@[7],
+            crate::model::le16(b@, 8),
+            crate::model::le16(b@, 10),
+            crate::model::le16(b@, 12),
+            crate::model::le16(b@, 14),
+            b@[16],
+            b@[17],
+            p,
+        );
+        reveal(crate::model::le16);
+        assert(h.id_length == b@[0]);
+        assert(h.color_map_flag == b@[1]);
+        assert(h.image_type == b@[2]);
+        assert(h.map_entry_depth == b@[7]);
+        assert(h.pixel_depth == b@[16]);
+        assert(h.descriptor == b@[17]);
+        assert(h.map_first as int == crate::model::le16(b@, 3));
+        assert(h.map_length as int == crate::model::le16(b@, 5));
+        assert(h.x_origin as int == crate::model::le16(b@, 8));
+        assert(h.y_origin as int == crate::model::le16(b@, 10));
+        assert(h.width as int == crate::model::le16(b@, 12));
+        assert(h.height as int == crate::model::le16(b@, 14));
+        assert(crate::policy_model::mh_policy(b@, p) == mh_policy_of_hdr(h, p));
+        assert(v == verdict_of_header(h, p));
+    }
+    match v {
+        Ok(()) => {
+            proof {
+                assert(mh_policy_of_hdr(h, p) == Ok(mh_of_header(h, p)));
+                assert(crate::policy_model::mh_policy(b@, p) == Ok(mh_of_header(h, p)));
+                lemma_mh_of_header_inv(b@, &h, p);
+                assert(18 <= b@.len() <= crate::model::max_input());
+            }
+            Ok(h)
+        },
+        Err(e) => {
+            proof {
+                lemma_of_mh_err(mh_policy_of_hdr(h, p), e);
+                assert(mh_policy_of_hdr(h, p) == Err(e));
+                assert(crate::policy_model::mh_policy(b@, p) == Err(e));
+            }
+            Err(e)
+        },
+    }
+}
+
+/// The conversion-relevant projection of a *policy* accepted header: the
+/// kind under `p`, the **effective** attribute count, and the surviving map
+/// fields. `pkt_of_policy(h,p) == policy_model::pkt_of_mh_policy(mh_of_header(h,p), p)`.
+pub(crate) open spec fn pkt_of_policy(h: &Header, p: Policy) -> crate::model::PktH {
+    crate::model::PktH {
+        kind: crate::policy_model::kind_policy(h.image_type, p),
+        depth: h.pixel_depth as int,
+        attr: crate::policy_model::eff_count_img(
+            h.image_type,
+            h.pixel_depth,
+            h.map_entry_depth,
+            (h.descriptor & 0x0fu8) as int,
+            p,
+        ),
+        map_first: h.map_first as int,
+        map_len: h.map_length as int,
+        map_depth: h.map_entry_depth as int,
+        n: h.width as int * (h.height as int),
+        sample_bytes: h.spec_sample_bytes(),
+    }
+}
+
+/// `pkt_of_policy` equals the model's policy projection on the accepted record.
+proof fn lemma_pkt_of_policy_eq(h: &Header, p: Policy, m: MHModel)
+    requires
+        m == mh_of_header(*h, p),
+    ensures
+        pkt_of_policy(h, p) == crate::policy_model::pkt_of_mh_policy(m, p),
+{
+    reveal(pkt_of_policy);
+    reveal(mh_of_header);
+    reveal(crate::policy_model::pkt_of_mh_policy);
+    reveal(crate::policy_model::kind_policy);
+    reveal(crate::policy_model::eff_count_img);
+    reveal(crate::policy_model::eff_attr);
+    reveal(crate::policy_model::attr_table_allowed);
+    reveal(crate::model::sample_bytes_of);
+    reveal(crate::model::stride_of);
+    crate::model::lemma_stride_eq(h.pixel_depth);
+}
+
+
+// --- B2: the policy conversion layer ---------------------------------------
+
+/// R5: the executable alpha rule on the effective attribute count.
+fn stored_alpha_exec(attr: u8, p: Policy) -> (r: bool)
+    ensures
+        r == crate::policy_model::stored_alpha_img_attr(attr as int, p),
+{
+    let r = match p.alpha {
+        AlphaOptions::Stored => true,
+        AlphaOptions::AttributeBits => attr == 8u8,
+    };
+    proof {
+        reveal(crate::policy_model::stored_alpha_img_attr);
+    }
+    r
+}
+
+/// R8 `rgb5`: one five-bit channel under the policy rule, as a byte.
+fn rgb5_chan_exec(c: u16, rule: Rgb5Options) -> (r: u8)
+    requires
+        c < 32,
+    ensures
+        r == crate::policy_model::rgb5_chan(c as int, rule),
+{
+    match rule {
+        Rgb5Options::Replicate => {
+            proof {
+                crate::model::lemma_rep5(c as u32);
+                reveal(crate::policy_model::rgb5_chan);
+                assert(0 <= crate::model::rep5(c as int) < 256);
+                assert(((c << 3) | (c >> 2)) as int == crate::model::rep5(c as int)) by (bit_vector)
+                    requires
+                        c < 32,
+                ;
+            }
+            ((c << 3) | (c >> 2)) as u8
+        },
+        Rgb5Options::Round => {
+            proof {
+                reveal(crate::policy_model::rgb5_chan);
+                reveal(crate::policy_model::round5);
+                assert(0 <= (255 * (c as int) + 15) / 31 < 256) by (nonlinear_arith)
+                    requires
+                        c < 32,
+                ;
+            }
+            ((255u32 * (c as u32) + 15) / 31) as u8
+        },
+    }
+}
+
+/// R8 `map5`: one five-bit channel under the policy rule, as a byte.
+fn map5_chan_exec(c: u16, rule: Map5Options) -> (r: u8)
+    requires
+        c < 32,
+    ensures
+        r == crate::policy_model::map5_chan(c as int, rule),
+{
+    match rule {
+        Map5Options::Replicate => {
+            proof {
+                crate::model::lemma_rep5(c as u32);
+                reveal(crate::policy_model::map5_chan);
+                assert(0 <= crate::model::rep5(c as int) < 256);
+                assert(((c << 3) | (c >> 2)) as int == crate::model::rep5(c as int)) by (bit_vector)
+                    requires
+                        c < 32,
+                ;
+            }
+            ((c << 3) | (c >> 2)) as u8
+        },
+        Map5Options::Round => {
+            proof {
+                reveal(crate::policy_model::map5_chan);
+                reveal(crate::policy_model::round5);
+                assert(0 <= (255 * (c as int) + 15) / 31 < 256) by (nonlinear_arith)
+                    requires
+                        c < 32,
+                ;
+            }
+            ((255u32 * (c as u32) + 15) / 31) as u8
+        },
+        Map5Options::GdkSwapShift => {
+            proof {
+                reveal(crate::policy_model::map5_chan);
+                assert(0 <= (c as int) * 8 < 256) by (nonlinear_arith)
+                    requires
+                        c < 32,
+                ;
+                assert(((c as u32) * 8) as int == (c as int) * 8) by (nonlinear_arith)
+                    requires
+                        c < 32,
+                ;
+            }
+            ((c as u32) * 8) as u8
+        },
+    }
+}
+
+/// R8: a 15/16-bit true-colour word's three channels plus `alpha`.
+fn conv555_policy(v: u16, rule: Rgb5Options, alpha: u8) -> (r: [u8; 4])
+    ensures
+        r@.len() == 4,
+        r@[3] == alpha,
+        r@ =~= crate::policy_model::rgb555_policy(v as int, rule).push(alpha),
+{
+    proof {
+        reveal(crate::policy_model::rgb555_policy);
+        crate::model::lemma_rgb_fields(v as u32);
+        crate::policy_model::lemma_rgb555_policy_chan(v as int, rule);
+    }
+    let rr = [
+        rgb5_chan_exec((v >> 10) & 31, rule),
+        rgb5_chan_exec((v >> 5) & 31, rule),
+        rgb5_chan_exec(v & 31, rule),
+        alpha,
+    ];
+    proof {
+        assert(rr@[0] == crate::policy_model::rgb5_chan(crate::model::red5(v as int), rule));
+        assert(rr@[1] == crate::policy_model::rgb5_chan(crate::model::green5(v as int), rule));
+        assert(rr@[2] == crate::policy_model::rgb5_chan(crate::model::blue5(v as int), rule));
+        assert(rr@ =~= crate::policy_model::rgb555_policy(v as int, rule).push(alpha)) by {
+            assert(rr@.len() == 4);
+            assert(rr@[3] == alpha);
+        }
+    }
+    rr
+}
+
+/// R8: a 15/16-bit palette word's three channels under `map5`.
+fn map555_exec(v: u16, rule: Map5Options) -> (r: [u8; 3])
+    ensures
+        r@.len() == 3,
+        r@ =~= crate::policy_model::map555_policy(v as int, rule),
+{
+    proof {
+        reveal(crate::policy_model::map555_policy);
+        crate::model::lemma_rgb_fields(v as u32);
+        crate::policy_model::lemma_map555_policy_chan(v as int, rule);
+    }
+    let f0 = match rule {
+        Map5Options::GdkSwapShift => v & 31,
+        _ => (v >> 10) & 31,
+    };
+    let f2 = match rule {
+        Map5Options::GdkSwapShift => (v >> 10) & 31,
+        _ => v & 31,
+    };
+    let rr = [
+        map5_chan_exec(f0, rule),
+        map5_chan_exec((v >> 5) & 31, rule),
+        map5_chan_exec(f2, rule),
+    ];
+    proof {
+        assert(rr@[0] == crate::policy_model::map5_chan(
+            crate::policy_model::map5_field0(v as int, rule),
+            rule,
+        ));
+        assert(rr@[1] == crate::policy_model::map5_chan(crate::model::green5(v as int), rule));
+        assert(rr@[2] == crate::policy_model::map5_chan(
+            crate::policy_model::map5_field2(v as int, rule),
+            rule,
+        ));
+        assert(rr@ =~= crate::policy_model::map555_policy(v as int, rule)) by {
+            assert(rr@.len() == 3);
+        }
+    }
+    rr
+}
+
+/// R8 `map16_alpha`: the 16-bit palette entry's alpha under the policy. The
+/// rule bit is taken by `match` (so the exec condition is a plain `bool`) and
+/// its equality with the spec comparison is asserted for the case lemmas.
+fn map_entry_alpha_exec(edepth: u8, attr: u8, v: u16, p: Policy) -> (r: u8)
+    ensures
+        r == crate::policy_model::map_entry_alpha_exec(edepth, attr as int, v as int, 0, p),
+{
+    let rule15 = match p.map16_alpha {
+        Map16AlphaOptions::Bit15 => true,
+        _ => false,
+    };
+    proof {
+        reveal(crate::model::bit15);
+        assert(rule15 == (p.map16_alpha == Map16AlphaOptions::Bit15));
+    }
+    if edepth == 16u8 {
+        if attr == 1u8 {
+            if rule15 {
+                let set15 = (v as u32) & 0x8000u32 != 0u32;
+                if set15 {
+                    proof {
+                        crate::model::lemma_bit15(v as u32);
+                        assert(crate::model::bit15(v as int)) by {
+                            assert(set15 == crate::model::bit15(v as int));
+                        }
+                        crate::policy_model::lemma_alpha_bit15_set(edepth, attr, v, p);
+                    }
+                    255u8
+                } else {
+                    proof {
+                        crate::model::lemma_bit15(v as u32);
+                        assert(!crate::model::bit15(v as int)) by {
+                            assert(set15 == crate::model::bit15(v as int));
+                        }
+                        crate::policy_model::lemma_alpha_bit15_clear(edepth, attr, v, p);
+                    }
+                    0u8
+                }
+            } else {
+                proof {
+                    assert(p.map16_alpha != Map16AlphaOptions::Bit15);
+                    crate::policy_model::lemma_alpha_not_bit15rule(edepth, attr, v, p);
+                }
+                255u8
+            }
+        } else {
+            proof {
+                crate::policy_model::lemma_alpha_attr_not1(edepth, attr, v, p);
+            }
+            255u8
+        }
+    } else {
+        proof {
+            crate::policy_model::lemma_alpha_depth_not16(edepth, attr, v, p);
+        }
+        255u8
+    }
+}
+
+/// R8 `index_range = Black`: the substitute of an out-of-range index.
+fn black_substitute_exec(map_depth: u8) -> (r: [u8; 4])
+    ensures
+        r@ =~= crate::policy_model::black_substitute(map_depth as int),
+{
+    let r = if map_depth == 32u8 {
+        [0u8, 0u8, 0u8, 0u8]
+    } else {
+        [0u8, 0u8, 0u8, 255u8]
+    };
+    proof {
+        reveal(crate::policy_model::black_substitute);
+    }
+    r
+}
+
+/// R8: convert one non-indexed sample under `p` into RGBA. The record's `attr`
+/// is the effective count, so the alpha rule below is `stored_alpha_policy` on
+/// the record, and the depth table is the one the header's kind selects.
+fn convert_sample_policy(h: &Header, s: &[u8], p: Policy) -> (r: [u8; 4])
+    requires
+        s@.len() == h.spec_sample_bytes(),
+        crate::policy_model::type_ok_policy(h.image_type, p),
+        crate::policy_model::kind_policy(h.image_type, p) != 0,
+        crate::policy_model::depth_ok_policy(
+            crate::policy_model::kind_policy(h.image_type, p),
+            h.pixel_depth,
+            p.depths,
+        ),
+        1 <= h.spec_sample_bytes() <= 4,
+        h.spec_sample_bytes() == crate::model::stride_of(h.pixel_depth as int),
+    ensures
+        r@.len() == 4,
+        r@ == crate::policy_model::conv_sample_policy(pkt_of_policy(h, p), s@, p),
+{
+    let kind = kind_hdr_exec(h.image_type, p);
+    let raw_count = h.attribute_count();
+    let attr = eff_attr_exec(kind, h.pixel_depth, raw_count, p.attribute_bits);
+    proof {
+        reveal(crate::policy_model::conv_sample_policy);
+        reveal(pkt_of_policy);
+        reveal(crate::policy_model::eff_count_img);
+        reveal(crate::policy_model::eff_attr);
+        reveal(crate::policy_model::attr_table_allowed);
+        reveal(crate::policy_model::stored_alpha_policy);
+        reveal(crate::policy_model::stored_alpha_img_attr);
+        reveal(crate::policy_model::gov_depth);
+        reveal(crate::model::sample_bytes_of);
+        reveal(crate::model::stride_of);
+        crate::policy_model::lemma_depth_ok_pixel(
+            crate::policy_model::kind_policy(h.image_type, p),
+            h.pixel_depth,
+            p.depths,
+        );
+        assert(kind as int == crate::policy_model::kind_policy(h.image_type, p));
+        assert(pkt_of_policy(h, p).kind == kind as int);
+        assert(pkt_of_policy(h, p).depth == h.pixel_depth as int);
+        assert(pkt_of_policy(h, p).sample_bytes == h.spec_sample_bytes());
+        assert(raw_count == h.descriptor & 0x0fu8);
+        assert(raw_count as int == (h.descriptor & 0x0fu8) as int) by {
+            assert(raw_count == h.descriptor & 0x0fu8);
+        }
+        assert(pkt_of_policy(h, p).attr == attr as int);
+    }
+    let r: [u8; 4] = if kind == 1u8 {
+        if h.pixel_depth == 15 || h.pixel_depth == 16 {
+            proof {
+                assert(crate::policy_model::depth_ok_policy(1, h.pixel_depth, p.depths));
+                assert(h.spec_sample_bytes() == 2);
+                assert(pkt_of_policy(h, p).kind == 1);
+                assert(pkt_of_policy(h, p).depth == 15 || pkt_of_policy(h, p).depth == 16);
+            }
+            let b0 = s[0];
+            let b1 = s[1];
+            let v = b0 as u16 | (b1 as u16) << 8;
+            proof {
+                reveal(crate::model::le16s);
+                assert(v as int == (b0 as int) + 256 * (b1 as int)) by (bit_vector)
+                    requires
+                        v == (b0 as u16) | ((b1 as u16) << 8),
+                ;
+                assert(crate::model::le16s(s@, 0) == (b0 as int) + 256 * (b1 as int));
+            }
+            conv555_policy(v, p.rgb5, 255)
+        } else if h.pixel_depth == 24 {
+            proof {
+                assert(crate::policy_model::depth_ok_policy(1, h.pixel_depth, p.depths));
+                assert(h.spec_sample_bytes() == 3);
+                assert(pkt_of_policy(h, p).kind == 1);
+                assert(pkt_of_policy(h, p).depth == 24);
+            }
+            let rr = [s[2], s[1], s[0], 255];
+            proof {
+                assert(rr@ =~= seq![s@[2], s@[1], s@[0], 255u8]) by {
+                    assert(rr@.len() == 4);
+                }
+            }
+            rr
+        } else {
+            proof {
+                assert(crate::policy_model::depth_ok_policy(1, h.pixel_depth, p.depths));
+                assert(h.pixel_depth == 32u8);
+                assert(h.spec_sample_bytes() == 4);
+                assert(pkt_of_policy(h, p).kind == 1);
+                assert(pkt_of_policy(h, p).depth == 32);
+            }
+            let take = stored_alpha_exec(attr, p);
+            let alpha = if take {
+                s[3]
+            } else {
+                255u8
+            };
+            let rr = [s[2], s[1], s[0], alpha];
+            proof {
+                if take {
+                    assert(alpha == s@[3]);
+                } else {
+                    assert(alpha == 255u8);
+                }
+                assert(rr@ =~= seq![
+                    s@[2],
+                    s@[1],
+                    s@[0],
+                    (if crate::policy_model::stored_alpha_policy(pkt_of_policy(h, p), p) {
+                        s@[3]
+                    } else {
+                        255u8
+                    }),
+                ]) by {
+                    assert(rr@.len() == 4);
+                }
+            }
+            rr
+        }
+    } else {
+        if h.pixel_depth == 8 {
+            proof {
+                assert(crate::policy_model::depth_ok_policy(2, h.pixel_depth, p.depths));
+                assert(h.spec_sample_bytes() == 1);
+                assert(pkt_of_policy(h, p).kind == 2);
+                assert(pkt_of_policy(h, p).depth == 8);
+            }
+            [s[0], s[0], s[0], 255]
+        } else {
+            proof {
+                assert(h.pixel_depth != 8u8);
+                reveal(crate::policy_model::depth_ok_policy);
+                assert(crate::policy_model::depth_ok_policy(2, h.pixel_depth, p.depths));
+                assert(h.pixel_depth == 16u8);
+                assert(h.spec_sample_bytes() == 2);
+                assert(pkt_of_policy(h, p).kind == 2);
+                assert(pkt_of_policy(h, p).depth == 16);
+            }
+            let take = stored_alpha_exec(attr, p);
+            let alpha = if take {
+                s[1]
+            } else {
+                255u8
+            };
+            let rr = [s[0], s[0], s[0], alpha];
+            proof {
+                if take {
+                    assert(alpha == s@[1]);
+                } else {
+                    assert(alpha == 255u8);
+                }
+                assert(rr@ =~= seq![
+                    s@[0],
+                    s@[0],
+                    s@[0],
+                    (if crate::policy_model::stored_alpha_policy(pkt_of_policy(h, p), p) {
+                        s@[1]
+                    } else {
+                        255u8
+                    }),
+                ]) by {
+                    assert(rr@.len() == 4);
+                }
+            }
+            rr
+        }
+    };
+    r
+}
+
+/// R4/R8 `map_index`: the entry number `j` a raw index selects, executably.
+fn entry_j_exec(h: &Header, index: u32, p: Policy) -> (r: u32)
+    requires
+        crate::policy_model::entry_j(index as int, h.map_first as int, p) >= 0,
+    ensures
+        r as int == crate::policy_model::entry_j(index as int, h.map_first as int, p),
+{
+    let r = match p.map_index {
+        MapIndexOptions::Absolute => index - h.map_first,
+        MapIndexOptions::ZeroBased => index,
+    };
+    proof {
+        reveal(crate::policy_model::entry_j);
+        if p.map_index == MapIndexOptions::Absolute {
+            assert((index as int) - h.map_first as int >= 0);
+            assert((index - h.map_first) as int == (index as int) - h.map_first as int);
+        }
+    }
+    r
+}
+
+/// R8/R4: the executable policy index-range test.
+fn index_in_range_policy(h: &Header, index: u32, p: Policy) -> (r: bool)
+    ensures
+        r == crate::policy_model::in_range_policy(pkt_of_policy(h, p), index as int, p),
+{
+    let r = match p.map_index {
+        MapIndexOptions::Absolute => {
+            index >= h.map_first && (index - h.map_first) < h.map_length
+        },
+        MapIndexOptions::ZeroBased => index < h.map_length,
+    };
+    proof {
+        reveal(crate::policy_model::in_range_policy);
+        reveal(crate::policy_model::entry_j);
+        reveal(pkt_of_policy);
+        assert(pkt_of_policy(h, p).map_first == h.map_first as int);
+        assert(pkt_of_policy(h, p).map_len == h.map_length as int);
+        if p.map_index == MapIndexOptions::Absolute {
+            assert(crate::policy_model::entry_j(index as int, h.map_first as int, p) == (index
+                as int) - h.map_first as int);
+            if index >= h.map_first {
+                assert((index - h.map_first) as int == (index as int) - h.map_first as int);
+            }
+        } else {
+            assert(crate::policy_model::entry_j(index as int, h.map_first as int, p) == index
+                as int);
+        }
+    }
+    r
+}
+
+/// R4/R8: convert map entry `index` under `p`. The caller has validated the
+/// index, so it lies in `0 <= j < length` and the `Black` substitute is not
+/// reachable here.
+fn convert_index_policy(h: &Header, map: &[u8], index: u32, p: Policy) -> (r: [u8; 4])
+    requires
+        crate::policy_model::type_ok_policy(h.image_type, p),
+        crate::policy_model::kind_policy(h.image_type, p) == 0,
+        crate::policy_model::map_present_policy_flags(h.color_map_flag, p),
+        crate::policy_model::in_range_policy(pkt_of_policy(h, p), index as int, p),
+        map@.len() == crate::policy_model::map_bytes_flags(
+            h.color_map_flag,
+            h.map_length as int,
+            h.map_entry_depth,
+            p,
+        ),
+        1 <= h.spec_map_stride() <= 4,
+        h.map_length as int <= 65535,
+        crate::model::map_entry_depth_ok(h.map_entry_depth),
+    ensures
+        r@.len() == 4,
+        r@ == crate::policy_model::conv_map_policy_ok(pkt_of_policy(h, p), map@, index as int, p),
+{
+    let stride = h.map_bytes_per_entry();
+    proof {
+        reveal(crate::policy_model::in_range_policy);
+        reveal(crate::policy_model::entry_j);
+        reveal(pkt_of_policy);
+        reveal(crate::policy_model::map_bytes_flags);
+        reveal(crate::policy_model::map_present_policy_flags);
+        reveal(crate::policy_model::conv_map_policy_ok);
+        reveal(crate::model::sample_bytes_of);
+        reveal(crate::model::stride_of);
+        crate::model::lemma_stride_eq(h.map_entry_depth);
+        assert(crate::policy_model::kind_policy(h.image_type, p) == 0);
+        assert(pkt_of_policy(h, p).kind == 0);
+        assert(pkt_of_policy(h, p).map_depth == h.map_entry_depth as int);
+        assert(pkt_of_policy(h, p).map_len == h.map_length as int);
+        assert(0 <= crate::policy_model::entry_j(index as int, h.map_first as int, p));
+        assert(crate::policy_model::entry_j(index as int, h.map_first as int, p) < h.map_length as int);
+        assert(h.map_length as int > 0);
+        assert(crate::policy_model::map_bytes_flags(
+            h.color_map_flag,
+            h.map_length as int,
+            h.map_entry_depth,
+            p,
+        ) == h.map_length as int * crate::model::sample_bytes_of(h.map_entry_depth));
+        assert(map@.len() == h.map_length as int * h.spec_map_stride());
+        assert(1 <= h.spec_map_stride() <= 4);
+        reveal(crate::model::map_entry_depth_ok);
+        assert(h.map_entry_depth == 15u8 || h.map_entry_depth == 16u8 || h.map_entry_depth == 24u8
+            || h.map_entry_depth == 32u8);
+    }
+    let j = entry_j_exec(h, index, p);
+    proof {
+        assert(j as int == crate::policy_model::entry_j(index as int, h.map_first as int, p));
+        assert((j as int) < h.map_length as int);
+        assert((j as int) * (stride as int) + stride <= usize::MAX) by (nonlinear_arith)
+            requires
+                (j as int) < h.map_length as int,
+                h.map_length as int <= 65535,
+                stride as int == h.spec_map_stride(),
+                1 <= h.spec_map_stride() <= 4,
+        ;
+        assert((j as int) * (stride as int) + stride <= map@.len()) by (nonlinear_arith)
+            requires
+                (j as int) < h.map_length as int,
+                stride as int == h.spec_map_stride(),
+                map@.len() == h.map_length as int * h.spec_map_stride(),
+                h.spec_map_stride() >= 1,
+        ;
+    }
+    let start = j as usize * stride;
+    proof {
+        assert(start as int == (j as int) * h.spec_map_stride());
+        assert((start as int) + (stride as int) <= map@.len());
+    }
+    let s = &map[start..start + stride];
+    proof {
+        assert(s@ == map@.subrange(start as int, start as int + stride as int));
+        assert(s@.len() == stride as int);
+    }
+    let raw_count = h.attribute_count();
+    let attr = eff_attr_exec(kind_hdr_exec(h.image_type, p), h.map_entry_depth, raw_count, p.attribute_bits);
+    proof {
+        reveal(crate::policy_model::eff_count_img);
+        reveal(crate::policy_model::eff_attr);
+        reveal(crate::policy_model::stored_alpha_policy);
+        reveal(crate::policy_model::stored_alpha_img_attr);
+        reveal(crate::policy_model::stored_alpha_policy_attr);
+        assert(raw_count as int == (h.descriptor & 0x0fu8) as int) by {
+            assert(raw_count == h.descriptor & 0x0fu8);
+        }
+        assert(pkt_of_policy(h, p).attr == attr as int);
+        crate::policy_model::lemma_stored_alpha_policy_attr(pkt_of_policy(h, p), p);
+    }
+    let r: [u8; 4] = match h.map_entry_depth {
+        15 | 16 => {
+            proof {
+                assert(h.spec_map_stride() == 2);
+                assert(pkt_of_policy(h, p).map_depth == 15 || pkt_of_policy(h, p).map_depth == 16);
+                assert(pkt_of_policy(h, p).attr == attr as int);
+                crate::policy_model::lemma_map555_policy_eq(map@, start as int, p.map5);
+                crate::policy_model::lemma_map_entry_alpha_policy_eq(
+                    pkt_of_policy(h, p),
+                    map@,
+                    start as int,
+                    h.map_entry_depth,
+                    p,
+                );
+            }
+            let b0 = s[0];
+            let b1 = s[1];
+            let v = b0 as u16 | (b1 as u16) << 8;
+            proof {
+                reveal(crate::model::le16s);
+                assert(v as int == (b0 as int) + 256 * (b1 as int)) by (bit_vector)
+                    requires
+                        v == (b0 as u16) | ((b1 as u16) << 8),
+                ;
+                assert(crate::model::le16s(map@, start as int) == (b0 as int) + 256 * (b1 as int));
+                assert(crate::model::le16s(s@, 0) == crate::model::le16s(map@, start as int));
+            }
+            let three = map555_exec(v, p.map5);
+            let alpha = map_entry_alpha_exec(h.map_entry_depth, attr, v, p);
+            proof {
+                reveal(crate::policy_model::conv_map_policy_ok);
+                reveal(crate::policy_model::map_entry_alpha_policy);
+                assert(three@ =~= crate::policy_model::map555_policy(v as int, p.map5));
+                assert(alpha == crate::policy_model::map_entry_alpha_policy(
+                    pkt_of_policy(h, p),
+                    v as int,
+                    h.map_entry_depth as int,
+                    p,
+                ));
+            }
+            let rr = [three[0], three[1], three[2], alpha];
+            proof {
+                assert(rr@ =~= three@.push(alpha)) by {
+                    assert(rr@.len() == 4);
+                    assert(rr@[3] == alpha);
+                }
+                assert(crate::policy_model::map555_policy(v as int, p.map5).push(alpha)
+                    =~= crate::policy_model::conv_map_policy_ok(
+                    pkt_of_policy(h, p),
+                    map@,
+                    index as int,
+                    p,
+                ));
+            }
+            rr
+        },
+        24 => {
+            proof {
+                assert(h.spec_map_stride() == 3);
+                assert(pkt_of_policy(h, p).map_depth == 24);
+            }
+            let rr = [s[2], s[1], s[0], 255];
+            proof {
+                reveal(crate::policy_model::conv_map_policy_ok);
+                assert(rr@ =~= seq![
+                    map@[start as int + 2],
+                    map@[start as int + 1],
+                    map@[start as int],
+                    255u8,
+                ]) by {
+                    assert(rr@.len() == 4);
+                }
+            }
+            rr
+        },
+        _ => {
+            proof {
+                reveal(crate::model::map_entry_depth_ok);
+                assert(h.map_entry_depth == 32u8);
+                assert(h.spec_map_stride() == 4);
+                assert(pkt_of_policy(h, p).map_depth == 32);
+                assert(pkt_of_policy(h, p).attr == attr as int);
+            }
+            let take = stored_alpha_exec(attr, p);
+            let alpha = if take {
+                s[3]
+            } else {
+                255u8
+            };
+            let rr = [s[2], s[1], s[0], alpha];
+            proof {
+                reveal(crate::policy_model::conv_map_policy_ok);
+                if take {
+                    assert(alpha == map@[start as int + 3]);
+                } else {
+                    assert(alpha == 255u8);
+                }
+                assert(rr@ =~= seq![
+                    map@[start as int + 2],
+                    map@[start as int + 1],
+                    map@[start as int],
+                    (if crate::policy_model::stored_alpha_policy(pkt_of_policy(h, p), p) {
+                        map@[start as int + 3]
+                    } else {
+                        255u8
+                    }),
+                ]) by {
+                    assert(rr@.len() == 4);
+                }
+            }
+            rr
+        },
+    };
+    r
+}
+
+/// R8/R11 under `p`: convert one validated sample, checking the policy index
+/// range for indexed samples before any map read and substituting black under
+/// `index_range = Black`.
+fn convert_one_policy(h: &Header, map: &[u8], indexed: bool, s: &[u8], p: Policy, subst: &mut bool)
+    -> (r: Result<[u8; 4], Error>)
+    requires
+        crate::policy_model::type_ok_policy(h.image_type, p),
+        indexed == (crate::policy_model::kind_policy(h.image_type, p) == 0),
+        crate::policy_model::depth_ok_policy(
+            crate::policy_model::kind_policy(h.image_type, p),
+            h.pixel_depth,
+            p.depths,
+        ),
+        indexed ==> crate::policy_model::map_present_policy_flags(h.color_map_flag, p),
+        indexed ==> (h.map_length as int) > 0 ==> crate::model::map_entry_depth_ok(
+            h.map_entry_depth,
+        ),
+        indexed ==> (h.spec_sample_bytes() == 1 || h.spec_sample_bytes() == 2),
+        !indexed ==> 1 <= h.spec_sample_bytes() <= 4,
+        !indexed ==> h.spec_sample_bytes() == crate::model::stride_of(h.pixel_depth as int),
+        s@.len() == h.spec_sample_bytes(),
+        s@.len() >= 1,
+        map@.len() == crate::policy_model::map_bytes_flags(
+            h.color_map_flag,
+            h.map_length as int,
+            h.map_entry_depth,
+            p,
+        ),
+        h.map_length as int <= 65535,
+    ensures
+        *final(subst) == (*old(subst) || (indexed && crate::policy_model::pkt_subst(
+            pkt_of_policy(h, p), crate::model::sindex(s@, h.spec_sample_bytes()), p))),
+        match r {
+            Ok(px) => px@.len() == 4,
+            Err(_) => true,
+        },
+        match r {
+            Ok(px) => px@ == crate::policy_model::conv2_policy(
+                pkt_of_policy(h, p),
+                map@,
+                s@,
+                p,
+            ),
+            Err(_) => true,
+        },
+        match r {
+            Ok(_) => !indexed || crate::policy_model::in_range_policy(
+                pkt_of_policy(h, p),
+                crate::model::sindex(s@, h.spec_sample_bytes()),
+                p,
+            ) || p.index_range == IndexRangeOptions::Black,
+            Err(e) => indexed && !crate::policy_model::in_range_policy(
+                pkt_of_policy(h, p),
+                crate::model::sindex(s@, h.spec_sample_bytes()),
+                p,
+            ) && p.index_range == IndexRangeOptions::Reject && e == Error::ColorIndexOutOfRange,
+        },
+{
+    if indexed {
+        proof {
+            reveal(pkt_of_policy);
+            reveal(crate::policy_model::conv2_policy);
+            reveal(crate::policy_model::in_range_policy);
+            reveal(crate::policy_model::entry_j);
+            reveal(crate::model::stride_of);
+            reveal(crate::model::sample_bytes_of);
+            assert(crate::policy_model::kind_policy(h.image_type, p) == 0);
+            assert(pkt_of_policy(h, p).kind == 0);
+            assert(pkt_of_policy(h, p).sample_bytes == h.spec_sample_bytes());
+        }
+        let idx = sample_index(s);
+        proof {
+            assert(idx as int == crate::model::sindex(s@, h.spec_sample_bytes()));
+        }
+        let in_range = index_in_range_policy(h, idx, p);
+        let black = match p.index_range {
+            IndexRangeOptions::Black => true,
+            IndexRangeOptions::Reject => false,
+        };
+        if !in_range && !black {
+            proof {
+                assert(!crate::policy_model::in_range_policy(
+                    pkt_of_policy(h, p),
+                    crate::model::sindex(s@, h.spec_sample_bytes()),
+                    p,
+                ));
+            }
+            Err(Error::ColorIndexOutOfRange)
+        } else if !in_range {
+            proof {
+                reveal(crate::policy_model::conv2_policy);
+                reveal(crate::policy_model::conv_map_policy);
+                reveal(crate::policy_model::entry_j);
+                reveal(crate::policy_model::black_substitute);
+                assert(!crate::policy_model::in_range_policy(
+                    pkt_of_policy(h, p),
+                    crate::model::sindex(s@, h.spec_sample_bytes()),
+                    p,
+                ));
+                assert(p.index_range == IndexRangeOptions::Black);
+                assert(crate::policy_model::conv_map_policy(
+                    pkt_of_policy(h, p),
+                    map@,
+                    crate::model::sindex(s@, h.spec_sample_bytes()),
+                    p,
+                ) == crate::policy_model::black_substitute(pkt_of_policy(h, p).map_depth));
+            }
+            *subst = true;
+            Ok(black_substitute_exec(h.map_entry_depth))
+        } else {
+            proof {
+                assert(crate::policy_model::in_range_policy(
+                    pkt_of_policy(h, p),
+                    crate::model::sindex(s@, h.spec_sample_bytes()),
+                    p,
+                ));
+                reveal(pkt_of_policy);
+                crate::policy_model::lemma_in_range_policy_pos(
+                    pkt_of_policy(h, p),
+                    crate::model::sindex(s@, h.spec_sample_bytes()),
+                    p,
+                );
+                assert(h.map_length as int > 0);
+                reveal(crate::model::map_entry_depth_ok);
+                assert((h.map_length as int) > 0);
+                assert(crate::model::map_entry_depth_ok(h.map_entry_depth));
+                crate::policy_model::lemma_map_entry_depth_stride(h.map_entry_depth);
+                assert(1 <= h.spec_map_stride() <= 4) by {
+                    crate::policy_model::lemma_sample_bytes_of_stride(h.map_entry_depth);
+                }
+                crate::policy_model::lemma_conv_map_policy_in_range(
+                    pkt_of_policy(h, p),
+                    map@,
+                    crate::model::sindex(s@, h.spec_sample_bytes()),
+                    p,
+                );
+                assert(crate::policy_model::conv_map_policy(
+                    pkt_of_policy(h, p),
+                    map@,
+                    crate::model::sindex(s@, h.spec_sample_bytes()),
+                    p,
+                ) == crate::policy_model::conv_map_policy_ok(
+                    pkt_of_policy(h, p),
+                    map@,
+                    crate::model::sindex(s@, h.spec_sample_bytes()),
+                    p,
+                ));
+            }
+            Ok(convert_index_policy(h, map, idx, p))
+        }
+    } else {
+        proof {
+            reveal(crate::policy_model::conv2_policy);
+            assert(crate::policy_model::kind_policy(h.image_type, p) != 0);
+        }
+        Ok(convert_sample_policy(h, s, p))
+    }
+}
+
+
+// --- B3: the policy pixel phase (raw loop) ---------------------------------
+
+/// T7 at the policy raw helper: the executable result equals `MP_policy`'s raw
+/// phase as the exact `Result` — on `Ok` the final cursor; on `Err` the model's
+/// exact first error. Stated on `mp_raw_cur_policy`, which carries the same
+/// ordered checks as `mp_raw_acc_policy`.
+spec fn raw_result_eq_policy(
+    b: Seq<u8>,
+    p: PktH,
+    pol: Policy,
+    c0: int,
+    cur_final: int,
+    r: Result<(), Error>,
+) -> bool {
+    match crate::policy_model::mp_raw_cur_policy(b, p, pol, c0, 0) {
+        Ok(cend) => match r {
+            Ok(_) => cur_final == cend,
+            Err(_) => false,
+        },
+        Err(e) => match r {
+            Ok(_) => false,
+            Err(e2) => e2 == e,
+        },
+    }
+}
+
+/// The policy raw loop: `N` samples converted under `p`, each written at its
+/// oriented cell. `c0g` is the function-entry cursor.
+fn decode_raw_policy(
+    bytes: &[u8],
+    h: &Header,
+    map: &[u8],
+    indexed: bool,
+    out: &mut Vec<u8>,
+    cursor: &mut usize,
+    n: usize,
+    c0g: usize,
+    p: Policy,
+    steps: &mut Ghost<nat>,
+    subst: &mut bool,
+) -> (r: Result<(), Error>)
+    requires
+        header_inv_policy(*h, p),
+        n == h.width as int * (h.height as int),
+        *cursor == c0g,
+        indexed == (crate::policy_model::kind_policy(h.image_type, p) == 0),
+        indexed ==> crate::policy_model::map_present_policy_flags(h.color_map_flag, p),
+        indexed ==> (h.map_length as int) > 0 ==> crate::model::map_entry_depth_ok(
+            h.map_entry_depth,
+        ),
+        old(out)@.len() == 4 * n,
+        bytes@.len() >= 18,
+        bytes@.len() <= crate::model::max_input(),
+        *cursor <= bytes@.len(),
+        map@.len() == crate::policy_model::map_bytes_flags(
+            h.color_map_flag,
+            h.map_length as int,
+            h.map_entry_depth,
+            p,
+        ),
+        crate::policy_model::map_bytes_flags(
+            h.color_map_flag,
+            h.map_length as int,
+            h.map_entry_depth,
+            p,
+        ) <= 262140,
+    ensures
+        r is Ok ==> *final(subst) == (*old(subst) || crate::policy_model::raw_subst_policy(
+            bytes@, pkt_of_policy(h, p), p, c0g as int, n as int)),
+        final(steps)@ <= old(steps)@ + 5 * n,
+        final(out)@.len() == 4 * n,
+        *final(cursor) <= bytes@.len(),
+        match r {
+            Ok(_) => *final(cursor) == *old(cursor) + n * (h.spec_sample_bytes() as usize),
+            Err(_) => true,
+        },
+        match r {
+            Ok(_) => crate::policy_model::wrote_samples_policy(
+                final(out)@,
+                bytes@,
+                pkt_of_policy(h, p),
+                map@,
+                p,
+                h.width as int,
+                h.height as int,
+                h.spec_flip_x(),
+                h.spec_flip_y(),
+                *old(cursor) as int,
+                h.spec_sample_bytes(),
+                n as int,
+            ),
+            Err(_) => true,
+        },
+        raw_result_eq_policy(
+            bytes@,
+            pkt_of_policy(h, p),
+            p,
+            c0g as int,
+            *final(cursor) as int,
+            r,
+        ),
+{
+    let ghost start_steps = steps@;
+    let sb = h.sample_bytes();
+    let width = h.width;
+    let height = h.height;
+    let (fx, fy) = (h.flip_x(), h.flip_y());
+    let ghost pkt = pkt_of_policy(h, p);
+    let ghost c0: usize = c0g;
+    proof {
+        reveal(header_inv_policy);
+        crate::policy_model::lemma_sample_bytes_of_stride(h.pixel_depth);
+        reveal(pkt_of_policy);
+        assert(sb as int == h.spec_sample_bytes());
+        assert(sb >= 1);
+        assert(pkt.n == n as int);
+        assert(pkt.sample_bytes == sb as int);
+        assert(pkt.kind == (if indexed {
+            0
+        } else {
+            crate::policy_model::kind_policy(h.image_type, p)
+        }));
+        crate::policy_model::lemma_wrote_samples_policy_none(
+            out@,
+            bytes@,
+            pkt,
+            map@,
+            p,
+            width as int,
+            height as int,
+            fx,
+            fy,
+            c0 as int,
+            sb as int,
+        );
+        crate::policy_model::lemma_raw_prefix_ok_policy_zero(bytes@, pkt, p, c0 as int);
+        reveal(crate::policy_model::mp_raw_cur_policy);
+    }
+    let mut k: usize = 0;
+    while k < n
+        invariant
+            k <= n,
+            *subst == (*old(subst) || crate::policy_model::raw_subst_policy(bytes@, pkt, p, c0 as int, k as int)),
+            start_steps == old(steps)@,
+            steps@ == start_steps + 5 * k,
+            n <= 16777216,
+            *cursor == c0 + k * sb,
+            c0 == c0g,
+            crate::policy_model::wrote_samples_policy(
+                out@,
+                bytes@,
+                pkt,
+                map@,
+                p,
+                width as int,
+                height as int,
+                fx,
+                fy,
+                c0 as int,
+                sb as int,
+                k as int,
+            ),
+            crate::policy_model::raw_prefix_ok_policy(bytes@, pkt, p, c0 as int, k as int),
+            crate::policy_model::mp_raw_cur_policy(bytes@, pkt, p, c0 as int, 0)
+                == crate::policy_model::mp_raw_cur_policy(bytes@, pkt, p, c0 as int, k as int),
+            header_inv_policy(*h, p),
+            indexed == (crate::policy_model::kind_policy(h.image_type, p) == 0),
+            indexed ==> crate::policy_model::map_present_policy_flags(h.color_map_flag, p),
+            out@.len() == 4 * n,
+            sb as int == h.spec_sample_bytes(),
+            sb >= 1,
+            sb <= 4,
+            1 <= (width as int) <= 8192,
+            1 <= (height as int) <= 8192,
+            width as int * (height as int) == n,
+            fx == h.spec_flip_x(),
+            fy == h.spec_flip_y(),
+            *cursor <= bytes@.len(),
+            bytes@.len() <= crate::model::max_input(),
+            map@.len() == crate::policy_model::map_bytes_flags(
+                h.color_map_flag,
+                h.map_length as int,
+                h.map_entry_depth,
+                p,
+            ),
+            map@.len() <= 262140,
+            pkt == pkt_of_policy(h, p),
+            pkt.n == n as int,
+        decreases n - k,
+    {
+        proof { *steps = Ghost(steps@ + 1); }
+        if bytes.len() - *cursor < sb {
+            proof {
+                reveal(raw_result_eq_policy);
+                assert(c0 as int + k as int * sb as int + sb as int > bytes@.len())
+                    by (nonlinear_arith)
+                    requires
+                        *cursor == c0 + k * sb,
+                        bytes.len() - *cursor < sb,
+                ;
+                crate::policy_model::lemma_mp_raw_cur_policy_trunc(
+                    bytes@,
+                    pkt,
+                    p,
+                    c0 as int,
+                    k as int,
+                );
+                assert(crate::policy_model::mp_raw_cur_policy(bytes@, pkt, p, c0 as int, k as int)
+                    == Err(Error::TruncatedPixels));
+                assert(crate::policy_model::mp_raw_cur_policy(bytes@, pkt, p, c0 as int, 0) == Err(
+                    Error::TruncatedPixels,
+                ));
+                assert(raw_result_eq_policy(
+                    bytes@,
+                    pkt,
+                    p,
+                    c0 as int,
+                    *cursor as int,
+                    Err(Error::TruncatedPixels),
+                ));
+            }
+            return Err(Error::TruncatedPixels);
+        }
+        let end = *cursor + sb;
+        proof {
+            assert(end <= bytes@.len());
+            assert(end <= usize::MAX);
+        }
+        let s = &bytes[*cursor..end];
+        proof {
+            assert(s@.len() == sb as int);
+            assert(s@.len() == h.spec_sample_bytes());
+            assert(s@ == bytes@.subrange(
+                c0 as int + k as int * sb as int,
+                c0 as int + k as int * sb as int + sb as int,
+            ));
+            assert(c0 as int + k as int * sb as int + sb as int <= bytes@.len()) by (nonlinear_arith)
+                requires
+                    *cursor == c0 + k * sb,
+                    end == *cursor + sb,
+                    end <= bytes@.len(),
+            ;
+        }
+        proof {
+            reveal(header_inv_policy);
+            reveal(crate::policy_model::gov_depth);
+            reveal(crate::policy_model::kind_policy);
+        }
+        let rgba = match convert_one_policy(h, map, indexed, s, p, subst) {
+            Ok(px) => px,
+            Err(e) => {
+                proof {
+                    reveal(raw_result_eq_policy);
+                    assert(indexed);
+                    assert(pkt.kind == 0);
+                    crate::policy_model::lemma_mp_raw_cur_policy_index(
+                        bytes@,
+                        pkt,
+                        p,
+                        c0 as int,
+                        k as int,
+                    );
+                    assert(crate::policy_model::mp_raw_cur_policy(bytes@, pkt, p, c0 as int, k as int)
+                        == Err(Error::ColorIndexOutOfRange));
+                    assert(crate::policy_model::mp_raw_cur_policy(bytes@, pkt, p, c0 as int, 0) == Err(
+                        Error::ColorIndexOutOfRange,
+                    ));
+                    assert(e == Error::ColorIndexOutOfRange);
+                    assert(raw_result_eq_policy(
+                        bytes@,
+                        pkt,
+                        p,
+                        c0 as int,
+                        *cursor as int,
+                        Err(Error::ColorIndexOutOfRange),
+                    ));
+                }
+                return Err(e);
+            },
+        };
+        let off = output_offset(width, height, fx, fy, k);
+        proof {
+            assert(width as int * (height as int) == n);
+            assert(off + 4 <= 4 * n) by (nonlinear_arith)
+                requires
+                    (off as int) <= 4 * (n - 1),
+                    1 <= n,
+                    n <= 16777216,
+            ;
+        }
+        let ghost out_before = out@;
+        write_pixel(out, off, &rgba);
+        proof { *steps = Ghost(steps@ + 4); }
+        proof {
+            reveal(crate::policy_model::wrote_samples_policy);
+            reveal(crate::model::quad_at);
+            assert(rgba@ == crate::policy_model::conv2_policy(pkt, map@, s@, p));
+            assert(s@ == bytes@.subrange(
+                c0 as int + k as int * sb as int,
+                c0 as int + k as int * sb as int + sb as int,
+            ));
+            // the new write is the `j = k` case
+            assert(crate::model::quad_at(
+                out@,
+                4 * crate::model::fcoord(width as int, height as int, fx, fy, k as int),
+                crate::policy_model::conv2_policy(pkt, map@, bytes@.subrange(
+                    c0 as int + k as int * sb as int,
+                    c0 as int + k as int * sb as int + sb as int,
+                ), p),
+            )) by {
+                assert(crate::model::oxr(width as int, fx, k as int % (width as int))
+                    == spec_ox(width, fx, k as int % (width as int))) by {
+                    reveal(crate::model::oxr);
+                    reveal(spec_ox);
+                }
+                assert(crate::model::oyr(height as int, fy, k as int / (width as int))
+                    == spec_oy(height, fy, k as int / (width as int))) by {
+                    reveal(crate::model::oyr);
+                    reveal(spec_oy);
+                }
+                assert(4 * crate::model::fcoord(width as int, height as int, fx, fy, k as int)
+                    == off as int) by {
+                    reveal(crate::model::fcoord);
+                }
+                assert forall|i: int| 0 <= i < 4 implies out@[off as int + i] == #[trigger] rgba@[i] by {}
+            }
+            crate::policy_model::lemma_write_preserves_policy_quads(
+                out_before,
+                out@,
+                bytes@,
+                pkt,
+                map@,
+                p,
+                width as int,
+                height as int,
+                fx,
+                fy,
+                c0 as int,
+                sb as int,
+                k as int,
+                off as int,
+            );
+            crate::policy_model::lemma_wrote_samples_policy_step(
+                out@,
+                out_before,
+                bytes@,
+                pkt,
+                map@,
+                p,
+                width as int,
+                height as int,
+                fx,
+                fy,
+                c0 as int,
+                sb as int,
+                k as int,
+            );
+            // the sample is decodable, so the raw prefix extends
+            crate::policy_model::lemma_raw_sample_ok_policy_of_loop(
+                bytes@,
+                pkt,
+                p,
+                c0 as int,
+                k as int,
+                indexed,
+            );
+            crate::policy_model::lemma_raw_prefix_ok_policy_step(
+                bytes@,
+                pkt,
+                p,
+                c0 as int,
+                k as int,
+            );
+            // and the model's cursor recursion is unchanged
+            reveal(crate::policy_model::mp_raw_cur_policy);
+        }
+        proof {
+            assert(c0 + (k + 1) * sb == end) by (nonlinear_arith)
+                requires
+                    c0 + k * sb + sb == end,
+            ;
+        }
+        *cursor = end;
+        k = k + 1;
+        proof { reveal(crate::policy_model::raw_subst_policy); }
+    }
+    proof {
+        reveal(raw_result_eq_policy);
+        assert(k == n);
+        assert(crate::policy_model::mp_raw_cur_policy(bytes@, pkt, p, c0 as int, n as int) == Ok(
+            c0 as int + n as int * sb as int,
+        )) by {
+            reveal(crate::policy_model::mp_raw_cur_policy);
+        }
+        assert(crate::policy_model::mp_raw_cur_policy(bytes@, pkt, p, c0 as int, 0) == Ok(c0 as int
+            + n as int * sb as int));
+        assert(raw_result_eq_policy(bytes@, pkt, p, c0 as int, *cursor as int, Ok(())));
+    }
+    Ok(())
+}
+
+
+// --- B3: the policy RLE packet stream ---------------------------------------
+
+/// `pkt_out` under `pol`: the accumulator is the pixels produced since `p0`,
+/// written at their oriented cells.
+spec fn pkt_out_policy(
+    out: Seq<u8>,
+    acc: Seq<Seq<u8>>,
+    w: int,
+    hgt: int,
+    fx: bool,
+    fy: bool,
+    p0: int,
+    prod: int,
+) -> bool {
+    &&& acc.len() == prod - p0
+    &&& crate::model::wrote_px_off(out, acc, w, hgt, fx, fy, p0, prod - p0)
+}
+
+/// One packet of the policy stream: control presence, the overrun rule, then the
+/// repeat or literal helper. The packet's availability and cursor advance follow
+/// `rle_overrun`.
+fn rle_packet_policy(
+    bytes: &[u8],
+    h: &Header,
+    map: &[u8],
+    indexed: bool,
+    out: &mut Vec<u8>,
+    cursor: &mut usize,
+    produced: &mut usize,
+    n: usize,
+    p0g: usize,
+    p: Policy,
+    Ghost(acc0): Ghost<Seq<Seq<u8>>>,
+    steps: &mut Ghost<nat>,
+    clip: &mut bool, subst: &mut bool,
+) -> (r: (Result<(), Error>, Ghost<Seq<Seq<u8>>>))
+    requires
+        header_inv_policy(*h, p),
+        n == h.width as int * (h.height as int),
+        indexed == (crate::policy_model::kind_policy(h.image_type, p) == 0),
+        indexed ==> crate::policy_model::map_present_policy_flags(h.color_map_flag, p),
+        old(out)@.len() == 4 * n,
+        *old(cursor) <= bytes@.len(),
+        p0g <= *old(produced) < n,
+        bytes@.len() <= crate::model::max_input(),
+        map@.len() == crate::policy_model::map_bytes_flags(
+            h.color_map_flag,
+            h.map_length as int,
+            h.map_entry_depth,
+            p,
+        ),
+        map@.len() <= 262140,
+        pkt_out_policy(
+            old(out)@,
+            acc0,
+            h.width as int,
+            h.height as int,
+            h.spec_flip_x(),
+            h.spec_flip_y(),
+            p0g as int,
+            *old(produced) as int,
+        ),
+    ensures
+        r.0 is Ok ==> crate::policy_model::event_step_policy(bytes@, pkt_of_policy(h, p), map@, p,
+            *old(cursor) as int, *old(produced) as int, *final(cursor) as int, *final(produced) as int,
+            *old(clip), *old(subst), *final(clip), *final(subst)),
+        *old(produced) <= *final(produced),
+        final(steps)@ as int <= old(steps)@ as int + 5 * (*final(produced) as int - *old(produced) as int) + 2,
+        final(out)@.len() == 4 * n,
+        *final(cursor) <= bytes@.len(),
+        *final(produced) <= n,
+        pkt_out_policy(
+            final(out)@,
+            r.1@,
+            h.width as int,
+            h.height as int,
+            h.spec_flip_x(),
+            h.spec_flip_y(),
+            p0g as int,
+            *final(produced) as int,
+        ),
+        crate::policy_model::pkt_post_policy(
+            bytes@,
+            pkt_of_policy(h, p),
+            map@,
+            p,
+            *old(cursor) as int,
+            *old(produced) as int,
+            *final(cursor) as int,
+            *final(produced) as int,
+            acc0,
+            r.1@,
+            r.0,
+        ),
+{
+    proof { *steps = Ghost(steps@ + 1); }
+    let ghost pkt = pkt_of_policy(h, p);
+    proof {
+        reveal(header_inv_policy);
+        reveal(pkt_of_policy);
+        crate::policy_model::lemma_sample_bytes_of_stride(h.pixel_depth);
+        assert(pkt.n == n as int);
+        assert(pkt.sample_bytes == h.spec_sample_bytes());
+    }
+    // Control presence.
+    if *cursor >= bytes.len() {
+        proof {
+            crate::policy_model::lemma_pkt_policy_ctrl_absent(
+                bytes@,
+                pkt,
+                map@,
+                p,
+                *cursor as int,
+                *produced as int,
+                acc0,
+            );
+        }
+        return (Err(Error::RleTruncated), Ghost(acc0));
+    }
+    let ghost cur0: usize = *cursor;
+    let control = bytes[*cursor];
+    *cursor = *cursor + 1;
+    let count = (control & 0x7f) as usize + 1;
+    proof {
+        assert(bytes@[cur0 as int] == control);
+        assert(control & 0x7f <= 127u8) by (bit_vector);
+        assert(count <= 128);
+        assert(count >= 1);
+        reveal(crate::model::rle_count);
+        crate::model::lemma_rle_count_bit(control);
+        assert(count as int == crate::model::rle_count(control as int));
+        assert(crate::model::rle_repeat(control as int) == (control & 0x80 != 0)) by (bit_vector);
+        assert(*cursor == cur0 + 1);
+    }
+    // Overrun under `Reject`.
+    let reject_overrun = match p.rle_overrun {
+        crate::policy::RleOverrunOptions::Reject => count > n - *produced,
+        _ => false,
+    };
+    proof {
+        assert(reject_overrun == (count as int > n as int - *produced as int && p.rle_overrun
+            == crate::policy::RleOverrunOptions::Reject));
+    }
+    if reject_overrun {
+        proof {
+            crate::policy_model::lemma_pkt_policy_overrun(
+                bytes@,
+                pkt,
+                map@,
+                p,
+                cur0 as int,
+                *produced as int,
+                acc0,
+            );
+        }
+        return (Err(Error::RleOverrun), Ghost(acc0));
+    }
+    if control & 0x80 != 0 {
+        rle_repeat_packet_policy(
+            bytes,
+            h,
+            map,
+            indexed,
+            out,
+            cursor,
+            produced,
+            n,
+            p0g,
+            p,
+            control,
+            count,
+            Ghost(cur0 as int),
+            Ghost(*produced as int),
+            Ghost(acc0),
+            steps, clip, subst,
+        )
+    } else {
+        rle_literal_packet_policy(
+            bytes,
+            h,
+            map,
+            indexed,
+            out,
+            cursor,
+            produced,
+            n,
+            p0g,
+            p,
+            control,
+            count,
+            Ghost(cur0 as int),
+            Ghost(*produced as int),
+            Ghost(acc0),
+            steps, clip, subst,
+        )
+    }
+}
+
+/// A policy repeat packet: exactly one complete sample, painted `self.paint`
+/// times, the cursor advancing one sample past the control byte.
+fn rle_repeat_packet_policy(
+    bytes: &[u8],
+    h: &Header,
+    map: &[u8],
+    indexed: bool,
+    out: &mut Vec<u8>,
+    cursor: &mut usize,
+    produced: &mut usize,
+    n: usize,
+    p0g: usize,
+    p: Policy,
+    control: u8,
+    count: usize,
+    Ghost(cur0): Ghost<int>,
+    Ghost(pg0): Ghost<int>,
+    Ghost(acc0): Ghost<Seq<Seq<u8>>>,
+    steps: &mut Ghost<nat>,
+    clip: &mut bool, subst: &mut bool,
+) -> (r: (Result<(), Error>, Ghost<Seq<Seq<u8>>>))
+    requires
+        header_inv_policy(*h, p),
+        n == h.width as int * (h.height as int),
+        indexed == (crate::policy_model::kind_policy(h.image_type, p) == 0),
+        indexed ==> crate::policy_model::map_present_policy_flags(h.color_map_flag, p),
+        old(out)@.len() == 4 * n,
+        0 <= cur0 < bytes@.len(),
+        *old(cursor) as int == cur0 + 1,
+        *old(produced) as int == pg0,
+        bytes@[cur0] == control,
+        crate::model::rle_repeat(control as int),
+        count as int == crate::model::rle_count(control as int),
+        1 <= count <= 128,
+        p0g <= *old(produced) < n,
+        !(count as int > n as int - *old(produced) as int && p.rle_overrun
+            == crate::policy::RleOverrunOptions::Reject),
+        bytes@.len() <= crate::model::max_input(),
+        map@.len() == crate::policy_model::map_bytes_flags(
+            h.color_map_flag,
+            h.map_length as int,
+            h.map_entry_depth,
+            p,
+        ),
+        map@.len() <= 262140,
+        pkt_out_policy(
+            old(out)@,
+            acc0,
+            h.width as int,
+            h.height as int,
+            h.spec_flip_x(),
+            h.spec_flip_y(),
+            p0g as int,
+            *old(produced) as int,
+        ),
+    ensures
+        r.0 is Ok ==> crate::policy_model::event_step_policy(bytes@, pkt_of_policy(h, p), map@, p,
+            cur0, pg0, *final(cursor) as int, *final(produced) as int,
+            *old(clip), *old(subst), *final(clip), *final(subst)),
+        *old(produced) <= *final(produced),
+        final(steps)@ as int <= old(steps)@ as int + 5 * (*final(produced) as int - *old(produced) as int) + 1,
+        final(out)@.len() == 4 * n,
+        *final(cursor) <= bytes@.len(),
+        *final(produced) <= n,
+        pkt_out_policy(
+            final(out)@,
+            r.1@,
+            h.width as int,
+            h.height as int,
+            h.spec_flip_x(),
+            h.spec_flip_y(),
+            p0g as int,
+            *final(produced) as int,
+        ),
+        crate::policy_model::pkt_post_policy(
+            bytes@,
+            pkt_of_policy(h, p),
+            map@,
+            p,
+            cur0,
+            pg0,
+            *final(cursor) as int,
+            *final(produced) as int,
+            acc0,
+            r.1@,
+            r.0,
+        ),
+{
+    let ghost sub0 = *subst;
+    let clipped = count > n - *produced;
+    let ghost start_steps = steps@;
+    let ghost start_produced = *produced;
+    let ghost pkt = pkt_of_policy(h, p);
+    let sb = h.sample_bytes();
+    let width = h.width;
+    let height = h.height;
+    let (fx, fy) = (h.flip_x(), h.flip_y());
+    proof {
+        reveal(pkt_out_policy);
+        reveal(pkt_of_policy);
+        crate::policy_model::lemma_sample_bytes_of_stride(h.pixel_depth);
+        reveal(header_inv_policy);
+        assert(sb as int == h.spec_sample_bytes());
+        assert(sb >= 1);
+        assert(sb <= 4);
+        assert(pkt.n == n as int);
+        assert(pkt.sample_bytes == sb as int);
+        assert(bytes@[cur0] == control);
+        assert(acc0.len() == pg0 - p0g as int);
+    }
+    // Repeat packet: exactly one complete sample.
+    if bytes.len() - *cursor < sb {
+        proof {
+            crate::policy_model::lemma_pkt_policy_rep_missing(
+                bytes@,
+                pkt,
+                map@,
+                p,
+                cur0,
+                pg0,
+                acc0,
+            );
+        }
+        return (Err(Error::RleTruncated), Ghost(acc0));
+    }
+    let end = *cursor + sb;
+    let s = &bytes[*cursor..end];
+    *cursor = end;
+    proof {
+        assert(s@.len() == sb as int);
+        assert(s@ == bytes@.subrange(cur0 + 1, cur0 + 1 + sb as int));
+        assert(*cursor as int == cur0 + 1 + sb as int);
+    }
+    proof { *steps = Ghost(steps@ + 1); }
+    let rgba = match convert_one_policy(h, map, indexed, s, p, subst) {
+        Ok(px) => px,
+        Err(e) => {
+            proof {
+                assert(indexed);
+                assert(pkt.kind == 0);
+                assert(e == Error::ColorIndexOutOfRange);
+                crate::policy_model::lemma_pkt_policy_rep_index(
+                    bytes@,
+                    pkt,
+                    map@,
+                    p,
+                    cur0,
+                    pg0,
+                    acc0,
+                );
+            }
+            return (Err(e), Ghost(acc0));
+        },
+    };
+    proof {
+        assert(rgba@ == crate::policy_model::conv2_policy(
+            pkt,
+            map@,
+            bytes@.subrange(cur0 + 1, cur0 + 1 + sb as int),
+            p,
+        ));
+    }
+    let ghost here = pkt.kind == 0 && crate::policy_model::pkt_subst(pkt, crate::model::sindex(s@, sb as int), p);
+    let paint = if count < n - *produced {
+        count
+    } else {
+        n - *produced
+    };
+    let ghost g0: usize = *produced;
+    let ghost mut acc: Seq<Seq<u8>> = acc0;
+    proof {
+        crate::model::lemma_pix_pow_zero(rgba@);
+        assert(acc == acc0 + crate::model::pix_pow(rgba@, 0)) by {
+            broadcast use vstd::seq_lib::group_seq_lib_default;
+        }
+    }
+    let mut i: usize = 0;
+    while i < paint
+        invariant
+            i <= paint,
+            sub0 == *old(subst),
+            *subst == (sub0 || here),
+            start_produced == g0,
+            start_produced == *old(produced),
+            start_steps == old(steps)@,
+            steps@ == start_steps + 1 + 4 * i,
+            paint <= count,
+            *produced == g0 + i,
+            g0 + paint <= n,
+            *produced <= n,
+            count >= 1,
+            out@.len() == 4 * n,
+            rgba@.len() == 4,
+            n <= 16777216,
+            width as int * (height as int) == n,
+            1 <= (width as int) <= 8192,
+            1 <= (height as int) <= 8192,
+            fx == h.spec_flip_x(),
+            fy == h.spec_flip_y(),
+            p0g <= g0,
+            acc == acc0 + crate::model::pix_pow(rgba@, i as int),
+            acc.len() == *produced as int - p0g as int,
+            crate::model::wrote_px_off(
+                out@,
+                acc,
+                width as int,
+                height as int,
+                fx,
+                fy,
+                p0g as int,
+                *produced as int - p0g as int,
+            ),
+            header_inv_policy(*h, p),
+            pkt == pkt_of_policy(h, p),
+            sb as int == h.spec_sample_bytes(),
+            *cursor as int == cur0 + 1 + sb as int,
+            bytes@.len() <= crate::model::max_input(),
+        decreases paint - i,
+    {
+        let off = output_offset(width, height, fx, fy, *produced);
+        proof {
+            assert(*produced < n) by (nonlinear_arith)
+                requires
+                    *produced == g0 + i,
+                    i < paint,
+                    g0 + paint <= n,
+            ;
+            assert(off + 4 <= 4 * n) by (nonlinear_arith)
+                requires
+                    (off as int) <= 4 * (n - 1),
+                    1 <= n,
+                    n <= 16777216,
+            ;
+        }
+        let ghost out_before = out@;
+        write_pixel(out, off, &rgba);
+        proof { *steps = Ghost(steps@ + 4); }
+        proof {
+            assert(4 * crate::model::fcoord(width as int, height as int, fx, fy, *produced as int)
+                == off as int) by {
+                reveal(crate::model::fcoord);
+                assert(crate::model::oxr(width as int, fx, *produced as int % (width as int))
+                    == spec_ox(width, fx, *produced as int % (width as int))) by {
+                    reveal(crate::model::oxr);
+                    reveal(spec_ox);
+                }
+                assert(crate::model::oyr(height as int, fy, *produced as int / (width as int))
+                    == spec_oy(height, fy, *produced as int / (width as int))) by {
+                    reveal(crate::model::oyr);
+                    reveal(spec_oy);
+                }
+            }
+            assert((acc + seq![rgba@])[*produced as int - p0g as int] == rgba@) by {
+                broadcast use vstd::seq::group_seq_lemmas;
+            }
+            crate::model::lemma_wrote_px_off_write_step(
+                out@,
+                out_before,
+                acc + seq![rgba@],
+                width as int,
+                height as int,
+                fx,
+                fy,
+                p0g as int,
+                *produced as int - p0g as int,
+            );
+        }
+        *produced = *produced + 1;
+        i = i + 1;
+        proof {
+            crate::model::lemma_pix_pow_peel(rgba@, i as int);
+            vstd::seq_lib::lemma_concat_associative(
+                acc0,
+                crate::model::pix_pow(rgba@, i as int - 1),
+                seq![rgba@],
+            );
+            assert(crate::model::pix_pow(rgba@, i as int) == crate::model::pix_pow(
+                rgba@,
+                i as int - 1,
+            ) + seq![rgba@]);
+            acc = acc + seq![rgba@];
+            assert(acc == acc0 + crate::model::pix_pow(rgba@, i as int));
+            assert(acc.len() == *produced as int - p0g as int) by {
+                crate::model::lemma_pix_pow_len(rgba@, i as int);
+                broadcast use vstd::seq::group_seq_lemmas;
+            }
+        }
+    }
+    proof {
+        reveal(pkt_out_policy);
+        assert(*produced == g0 + paint);
+        assert(acc == acc0 + crate::model::pix_pow(rgba@, paint as int));
+        crate::policy_model::lemma_mr_pix_policy_rep(bytes@, pkt, map@, p, cur0, pg0);
+        crate::policy_model::lemma_packet_events(bytes@, pkt, map@, p, cur0, pg0, count as int, paint as int, *cursor as int, here);
+        assert(crate::policy_model::mr_pix_policy(bytes@, pkt, map@, p, cur0, pg0)
+            == crate::model::pix_pow(rgba@, paint as int) + crate::policy_model::mr_pix_policy(
+            bytes@,
+            pkt,
+            map@,
+            p,
+            cur0 + 1 + sb as int,
+            pg0 + paint as int,
+        ));
+        crate::policy_model::lemma_pkt_policy_rep_ok(
+            bytes@,
+            pkt,
+            map@,
+            p,
+            cur0,
+            pg0,
+            acc0,
+            acc,
+        );
+    }
+    *clip = *clip || clipped;
+    (Ok(()), Ghost(acc))
+}
+
+/// A policy literal packet: under `Reject`/`ClipPacket` the whole packet's bytes
+/// are present, under `ClipSamples` only the painted samples; each sample's index
+/// is checked in output order and the cursor advances by the consumed bytes.
+fn rle_literal_packet_policy(
+    bytes: &[u8],
+    h: &Header,
+    map: &[u8],
+    indexed: bool,
+    out: &mut Vec<u8>,
+    cursor: &mut usize,
+    produced: &mut usize,
+    n: usize,
+    p0g: usize,
+    p: Policy,
+    control: u8,
+    count: usize,
+    Ghost(cur0): Ghost<int>,
+    Ghost(pg0): Ghost<int>,
+    Ghost(acc0): Ghost<Seq<Seq<u8>>>,
+    steps: &mut Ghost<nat>,
+    clip: &mut bool, subst: &mut bool,
+) -> (r: (Result<(), Error>, Ghost<Seq<Seq<u8>>>))
+    requires
+        header_inv_policy(*h, p),
+        n == h.width as int * (h.height as int),
+        indexed == (crate::policy_model::kind_policy(h.image_type, p) == 0),
+        indexed ==> crate::policy_model::map_present_policy_flags(h.color_map_flag, p),
+        old(out)@.len() == 4 * n,
+        0 <= cur0 < bytes@.len(),
+        *old(cursor) as int == cur0 + 1,
+        *old(produced) as int == pg0,
+        bytes@[cur0] == control,
+        !crate::model::rle_repeat(control as int),
+        count as int == crate::model::rle_count(control as int),
+        1 <= count <= 128,
+        p0g <= *old(produced) < n,
+        !(count as int > n as int - *old(produced) as int && p.rle_overrun
+            == crate::policy::RleOverrunOptions::Reject),
+        bytes@.len() <= crate::model::max_input(),
+        map@.len() == crate::policy_model::map_bytes_flags(
+            h.color_map_flag,
+            h.map_length as int,
+            h.map_entry_depth,
+            p,
+        ),
+        map@.len() <= 262140,
+        pkt_out_policy(
+            old(out)@,
+            acc0,
+            h.width as int,
+            h.height as int,
+            h.spec_flip_x(),
+            h.spec_flip_y(),
+            p0g as int,
+            *old(produced) as int,
+        ),
+    ensures
+        r.0 is Ok ==> crate::policy_model::event_step_policy(bytes@, pkt_of_policy(h, p), map@, p,
+            cur0, pg0, *final(cursor) as int, *final(produced) as int,
+            *old(clip), *old(subst), *final(clip), *final(subst)),
+        *old(produced) <= *final(produced),
+        final(steps)@ as int <= old(steps)@ as int + 5 * (*final(produced) as int - *old(produced) as int) + 1,
+        final(out)@.len() == 4 * n,
+        *final(cursor) <= bytes@.len(),
+        *final(produced) <= n,
+        pkt_out_policy(
+            final(out)@,
+            r.1@,
+            h.width as int,
+            h.height as int,
+            h.spec_flip_x(),
+            h.spec_flip_y(),
+            p0g as int,
+            *final(produced) as int,
+        ),
+        crate::policy_model::pkt_post_policy(
+            bytes@,
+            pkt_of_policy(h, p),
+            map@,
+            p,
+            cur0,
+            pg0,
+            *final(cursor) as int,
+            *final(produced) as int,
+            acc0,
+            r.1@,
+            r.0,
+        ),
+{
+    let ghost sub0 = *subst;
+    let clipped = count > n - *produced;
+    let ghost start_steps = steps@;
+    let ghost start_produced = *produced;
+    let ghost pkt = pkt_of_policy(h, p);
+    let sb = h.sample_bytes();
+    let width = h.width;
+    let height = h.height;
+    let (fx, fy) = (h.flip_x(), h.flip_y());
+    proof {
+        reveal(pkt_out_policy);
+        reveal(pkt_of_policy);
+        crate::policy_model::lemma_sample_bytes_of_stride(h.pixel_depth);
+        reveal(header_inv_policy);
+        assert(sb as int == h.spec_sample_bytes());
+        assert(sb >= 1);
+        assert(sb <= 4);
+        assert(pkt.n == n as int);
+        assert(pkt.sample_bytes == sb as int);
+        assert(acc0.len() == pg0 - p0g as int);
+    }
+    let paint = if count < n - *produced {
+        count
+    } else {
+        n - *produced
+    };
+    let need = match p.rle_overrun {
+        crate::policy::RleOverrunOptions::ClipSamples => paint,
+        _ => count,
+    };
+    proof {
+        if p.rle_overrun == crate::policy::RleOverrunOptions::ClipSamples {
+            assert(need == paint);
+        } else {
+            assert(need == count);
+            assert(paint <= count);
+        }
+        assert(paint <= need);
+        assert(need <= count);
+        assert(need * sb <= 512) by (nonlinear_arith)
+            requires
+                need <= count,
+                count <= 128,
+                sb <= 4,
+        ;
+    }
+    let total = need * sb;
+    if bytes.len() - *cursor < total {
+        proof {
+            crate::policy_model::lemma_pkt_policy_lit_missing(
+                bytes@,
+                pkt,
+                map@,
+                p,
+                cur0,
+                pg0,
+                acc0,
+            );
+        }
+        return (Err(Error::RleTruncated), Ghost(acc0));
+    }
+    let end = *cursor + total;
+    let packet = &bytes[*cursor..end];
+    *cursor = end;
+    proof {
+        assert(packet@.len() == need * sb);
+        assert(packet@ == bytes@.subrange(cur0 + 1, cur0 + 1 + need as int * sb as int));
+        assert(*cursor as int == cur0 + 1 + need as int * sb as int);
+    }
+    let ghost g0: usize = *produced;
+    let ghost mut acc: Seq<Seq<u8>> = acc0;
+    proof {
+        assert(crate::policy_model::lit_out_policy(bytes@, pkt, map@, p, cur0 + 1, 0)
+            == Seq::<Seq<u8>>::empty()) by {
+            reveal(crate::policy_model::lit_out_policy);
+        }
+        assert(acc == acc0 + crate::policy_model::lit_out_policy(bytes@, pkt, map@, p, cur0 + 1, 0))
+            by {
+            broadcast use vstd::seq_lib::group_seq_lib_default;
+        }
+    }
+    let mut i: usize = 0;
+    while i < paint
+        invariant
+            i <= paint,
+            sub0 == *old(subst),
+            *subst == (sub0 || crate::policy_model::lit_flags_policy(bytes@, pkt, p, cur0 + 1, i as int).0),
+            start_produced == g0,
+            start_produced == *old(produced),
+            start_steps == old(steps)@,
+            steps@ == start_steps + 5 * i,
+            paint <= count,
+            paint <= need,
+            *produced == g0 + i,
+            g0 + paint <= n,
+            *produced <= n,
+            count >= 1,
+            packet@.len() == need * sb,
+            cur0 + 1 + need as int * sb as int <= bytes@.len(),
+            width == h.width,
+            height == h.height,
+            paint as int == (if (count as int) < n as int - pg0 { count as int } else { n as int - pg0 }),
+            need == (if p.rle_overrun == crate::policy::RleOverrunOptions::ClipSamples { paint } else { count }),
+            !(count as int > n as int - pg0 && p.rle_overrun == crate::policy::RleOverrunOptions::Reject),
+            *cursor as int == cur0 + 1 + need as int * sb as int,
+            sb as int == h.spec_sample_bytes(),
+            pkt == pkt_of_policy(h, p),
+            pkt.n == n as int,
+            sb >= 1,
+            sb <= 4,
+            out@.len() == 4 * n,
+            n <= 16777216,
+            width as int * (height as int) == n,
+            1 <= (width as int) <= 8192,
+            1 <= (height as int) <= 8192,
+            header_inv_policy(*h, p),
+            map@.len() == crate::policy_model::map_bytes_flags(
+                h.color_map_flag, h.map_length as int, h.map_entry_depth, p,
+            ),
+            indexed == (crate::policy_model::kind_policy(h.image_type, p) == 0),
+            fx == h.spec_flip_x(),
+            fy == h.spec_flip_y(),
+            0 <= cur0 < bytes@.len(),
+            packet@ == bytes@.subrange(cur0 + 1, cur0 + 1 + need as int * sb as int),
+            p0g <= g0,
+            g0 as int == pg0,
+            acc == acc0 + crate::policy_model::lit_out_policy(bytes@, pkt, map@, p, cur0 + 1, i as int),
+            crate::policy_model::lit_ok_policy(bytes@, pkt, cur0 + 1, i as int, p),
+            acc.len() == *produced as int - p0g as int,
+            crate::model::wrote_px_off(
+                out@,
+                acc,
+                width as int,
+                height as int,
+                fx,
+                fy,
+                p0g as int,
+                *produced as int - p0g as int,
+            ),
+            count as int == crate::model::rle_count(bytes@[cur0] as int),
+            !crate::model::rle_repeat(bytes@[cur0] as int),
+            bytes@.len() <= crate::model::max_input(),
+        decreases paint - i,
+    {
+        proof {
+            assert(i * sb + sb <= need * sb) by (nonlinear_arith)
+                requires
+                    i < paint,
+                    paint <= need,
+                    sb >= 0,
+            ;
+            assert(i * sb + sb <= packet@.len());
+        }
+        let s = &packet[i * sb..i * sb + sb];
+        proof {
+            reveal(header_inv_policy);
+            reveal(crate::policy_model::gov_depth);
+            reveal(crate::policy_model::kind_policy);
+            reveal(pkt_of_policy);
+            assert(map@.len() == crate::policy_model::map_bytes_flags(
+                h.color_map_flag,
+                h.map_length as int,
+                h.map_entry_depth,
+                p,
+            ));
+            assert(h.map_length as int <= 65535);
+            assert(pkt.sample_bytes == sb as int);
+            assert(i as int * sb as int + sb as int == (i as int + 1) * sb as int) by (nonlinear_arith);
+            assert(s@ == packet@.subrange(i as int * sb as int, (i as int + 1) * sb as int));
+            vstd::seq::lemma_seq_subrange_composition(
+                bytes@,
+                cur0 + 1,
+                cur0 + 1 + need as int * sb as int,
+                (i * sb) as int,
+                ((i + 1) * sb) as int,
+            );
+            assert(s@ == bytes@.subrange(
+                cur0 + 1 + i as int * pkt.sample_bytes,
+                cur0 + 1 + (i + 1) as int * pkt.sample_bytes,
+            ));
+        }
+        proof { *steps = Ghost(steps@ + 1); }
+        let rgba = match convert_one_policy(h, map, indexed, s, p, subst) {
+            Ok(px) => px,
+            Err(e) => {
+                proof {
+                    assert(indexed);
+                    assert(pkt.kind == 0);
+                    assert(e == Error::ColorIndexOutOfRange);
+                    crate::policy_model::lemma_lit_good_policy_first_bad(
+                        bytes@, pkt, p, cur0 + 1, paint as int, i as int,
+                    );
+                    assert(crate::policy_model::lit_good_policy(
+                        bytes@, pkt, cur0 + 1, paint as int, p,
+                    ) == i as int);
+                    crate::policy_model::lemma_pkt_policy_lit_index(
+                        bytes@,
+                        pkt,
+                        map@,
+                        p,
+                        cur0,
+                        pg0,
+                        acc0,
+                        acc,
+                    );
+                }
+                return (Err(e), Ghost(acc));
+            },
+        };
+        let off = output_offset(width, height, fx, fy, *produced);
+        proof {
+            assert(*produced < n) by (nonlinear_arith)
+                requires
+                    *produced == g0 + i,
+                    i < paint,
+                    g0 + paint <= n,
+            ;
+            assert(off + 4 <= 4 * n) by (nonlinear_arith)
+                requires
+                    (off as int) <= 4 * (n - 1),
+                    1 <= n,
+                    n <= 16777216,
+            ;
+        }
+        let ghost out_before = out@;
+        write_pixel(out, off, &rgba);
+        proof { *steps = Ghost(steps@ + 4); }
+        proof {
+            assert(4 * crate::model::fcoord(width as int, height as int, fx, fy, *produced as int)
+                == off as int) by {
+                reveal(crate::model::fcoord);
+                assert(crate::model::oxr(width as int, fx, *produced as int % (width as int))
+                    == spec_ox(width, fx, *produced as int % (width as int))) by {
+                    reveal(crate::model::oxr);
+                    reveal(spec_ox);
+                }
+                assert(crate::model::oyr(height as int, fy, *produced as int / (width as int))
+                    == spec_oy(height, fy, *produced as int / (width as int))) by {
+                    reveal(crate::model::oyr);
+                    reveal(spec_oy);
+                }
+            }
+            assert((acc + seq![rgba@])[*produced as int - p0g as int] == rgba@) by {
+                broadcast use vstd::seq::group_seq_lemmas;
+            }
+            crate::model::lemma_wrote_px_off_write_step(
+                out@,
+                out_before,
+                acc + seq![rgba@],
+                width as int,
+                height as int,
+                fx,
+                fy,
+                p0g as int,
+                *produced as int - p0g as int,
+            );
+        }
+        *produced = *produced + 1;
+        i = i + 1;
+        proof {
+            assert(s@ == bytes@.subrange(
+                cur0 + 1 + (i - 1) as int * pkt.sample_bytes,
+                cur0 + 1 + i as int * pkt.sample_bytes,
+            ));
+            crate::policy_model::lemma_lit_flags_extend(bytes@, pkt, p, cur0 + 1, i as int - 1);
+            crate::policy_model::lemma_lit_ok_policy_extend(
+                bytes@, pkt, p, cur0 + 1, i as int - 1,
+            );
+            crate::policy_model::lemma_lit_out_policy_peel(bytes@, pkt, map@, p, cur0 + 1, i as int - 1);
+            assert(crate::policy_model::lit_out_policy(bytes@, pkt, map@, p, cur0 + 1, i as int)
+                == crate::policy_model::lit_out_policy(bytes@, pkt, map@, p, cur0 + 1, i as int - 1)
+                + seq![rgba@]);
+            vstd::seq_lib::lemma_concat_associative(
+                acc0,
+                crate::policy_model::lit_out_policy(bytes@, pkt, map@, p, cur0 + 1, i as int - 1),
+                seq![rgba@],
+            );
+            acc = acc + seq![rgba@];
+            assert(acc == acc0 + crate::policy_model::lit_out_policy(
+                bytes@,
+                pkt,
+                map@,
+                p,
+                cur0 + 1,
+                i as int,
+            ));
+            assert(acc.len() == *produced as int - p0g as int) by {
+                crate::policy_model::lemma_lit_out_policy_len(bytes@, pkt, map@, p, cur0 + 1, i as int);
+                broadcast use vstd::seq::group_seq_lemmas;
+            }
+        }
+    }
+    proof {
+        reveal(pkt_out_policy);
+        assert(*produced == g0 + paint);
+        assert(acc == acc0 + crate::policy_model::lit_out_policy(bytes@, pkt, map@, p, cur0 + 1, paint
+            as int));
+        crate::policy_model::lemma_mr_pix_policy_lit(bytes@, pkt, map@, p, cur0, pg0);
+        crate::policy_model::lemma_packet_events(bytes@, pkt, map@, p, cur0, pg0, count as int, paint as int, *cursor as int,
+            crate::policy_model::lit_flags_policy(bytes@, pkt, p, cur0 + 1, paint as int).0);
+        crate::policy_model::lemma_pkt_policy_lit_ok(
+            bytes@,
+            pkt,
+            map@,
+            p,
+            cur0,
+            pg0,
+            acc0,
+            acc,
+        );
+    }
+    *clip = *clip || clipped;
+    (Ok(()), Ghost(acc))
+}
+
+/// Execute the policy packet stream without iterating over discarded samples.
+fn decode_rle_policy(
+    bytes: &[u8], h: &Header, map: &[u8], indexed: bool,
+    out: &mut Vec<u8>, cursor: &mut usize, produced: &mut usize,
+    n: usize, c0g: usize, p0g: usize, p: Policy,
+    steps: &mut Ghost<nat>,
+    clip: &mut bool, subst: &mut bool,
+) -> (r: Result<(), Error>)
+    requires
+        header_inv_policy(*h, p),
+        n == h.width as int * h.height as int,
+        indexed == (crate::policy_model::kind_policy(h.image_type, p) == 0),
+        indexed ==> crate::policy_model::map_present_policy_flags(h.color_map_flag, p),
+        old(out)@.len() == 4 * n,
+        *old(cursor) == c0g, c0g <= bytes@.len(),
+        *old(produced) == p0g, p0g <= n,
+        bytes@.len() <= crate::model::max_input(),
+        map@.len() == crate::policy_model::map_bytes_flags(h.color_map_flag, h.map_length as int, h.map_entry_depth, p),
+        map@.len() <= 262140,
+    ensures
+        match crate::policy_model::mr_policy(bytes@, pkt_of_policy(h, p), map@, p, c0g as int, p0g as int) {
+            Ok((c, pr, px)) => r is Ok && *final(cursor) == c && *final(produced) == pr
+                && crate::model::wrote_px_off(final(out)@, px, h.width as int, h.height as int,
+                    h.spec_flip_x(), h.spec_flip_y(), p0g as int, px.len() as int),
+            Err((e, c, pr, px)) => e == crate::model::MrErr::Api(r->Err_0) && r is Err
+                && *final(cursor) == c && *final(produced) == pr
+                && crate::model::wrote_px_off(final(out)@, px, h.width as int, h.height as int,
+                    h.spec_flip_x(), h.spec_flip_y(), p0g as int, px.len() as int),
+        },
+        r is Ok ==> *final(clip) == (*old(clip) || crate::policy_model::mr_flags_policy(bytes@, pkt_of_policy(h, p), map@, p, c0g as int, p0g as int).0),
+        r is Ok ==> *final(subst) == (*old(subst) || crate::policy_model::mr_flags_policy(bytes@, pkt_of_policy(h, p), map@, p, c0g as int, p0g as int).1),
+        final(steps)@ as int <= old(steps)@ as int + 7 * (n as int - p0g as int) + 2,
+        final(out)@.len() == 4 * n,
+        *final(cursor) <= bytes@.len(),
+        p0g <= *final(produced) <= n,
+        crate::policy_model::mr_pix_policy(bytes@, pkt_of_policy(h, p), map@, p, c0g as int, p0g as int).len()
+            == *final(produced) as int - p0g as int,
+        crate::model::wrote_px_off(final(out)@,
+            crate::policy_model::mr_pix_policy(bytes@, pkt_of_policy(h, p), map@, p, c0g as int, p0g as int),
+            h.width as int, h.height as int, h.spec_flip_x(), h.spec_flip_y(),
+            p0g as int, *final(produced) as int - p0g as int),
+        match r {
+            Ok(()) => *final(produced) == n &&
+                crate::policy_model::mr_cur_policy(bytes@, pkt_of_policy(h, p), map@, p, c0g as int, p0g as int)
+                    == Ok((*final(cursor) as int, n as int)),
+            Err(e) => crate::policy_model::mr_cur_policy(bytes@, pkt_of_policy(h, p), map@, p, c0g as int, p0g as int)
+                    == Err(crate::model::MrErr::Api(e)) &&
+                crate::policy_model::mr_gcur_policy(bytes@, pkt_of_policy(h, p), map@, p, c0g as int, p0g as int)
+                    == Ok(*final(cursor) as int),
+        },
+{
+    let ghost start_steps = steps@;
+    let ghost pkt = pkt_of_policy(h, p);
+    let ghost mut acc: Seq<Seq<u8>> = Seq::empty();
+    proof {
+        reveal(pkt_out_policy);
+        reveal(crate::model::wrote_px_off);
+        broadcast use vstd::seq_lib::group_seq_lib_default;
+    }
+    while *produced < n
+        invariant
+            crate::policy_model::event_step_policy(bytes@, pkt, map@, p, c0g as int, p0g as int,
+                *cursor as int, *produced as int, *old(clip), *old(subst), *clip, *subst),
+            start_steps == old(steps)@,
+            steps@ as int <= start_steps as int + 7 * (*produced as int - p0g as int),
+            header_inv_policy(*h, p),
+            pkt == pkt_of_policy(h, p),
+            n == h.width as int * h.height as int,
+            indexed == (crate::policy_model::kind_policy(h.image_type, p) == 0),
+            indexed ==> crate::policy_model::map_present_policy_flags(h.color_map_flag, p),
+            out@.len() == 4 * n,
+            *cursor <= bytes@.len(), p0g <= *produced <= n,
+            bytes@.len() <= crate::model::max_input(),
+            map@.len() == crate::policy_model::map_bytes_flags(h.color_map_flag, h.map_length as int, h.map_entry_depth, p),
+            map@.len() <= 262140,
+            c0g <= bytes@.len(), p0g <= n,
+            pkt.n == n as int, 1 <= pkt.sample_bytes,
+            pkt_out_policy(out@, acc, h.width as int, h.height as int, h.spec_flip_x(), h.spec_flip_y(), p0g as int, *produced as int),
+            crate::policy_model::mr_pix_policy(bytes@, pkt, map@, p, c0g as int, p0g as int)
+                == acc + crate::policy_model::mr_pix_policy(bytes@, pkt, map@, p, *cursor as int, *produced as int),
+            crate::policy_model::mr_cur_policy(bytes@, pkt, map@, p, c0g as int, p0g as int)
+                == crate::policy_model::mr_cur_policy(bytes@, pkt, map@, p, *cursor as int, *produced as int),
+            crate::policy_model::mr_gcur_policy(bytes@, pkt, map@, p, c0g as int, p0g as int)
+                == crate::policy_model::mr_gcur_policy(bytes@, pkt, map@, p, *cursor as int, *produced as int),
+        decreases n - *produced,
+    {
+        let (result, pixels) = rle_packet_policy(bytes, h, map, indexed, out, cursor, produced, n, p0g, p, Ghost(acc), steps, clip, subst);
+        proof {
+            acc = pixels@;
+            reveal(crate::policy_model::pkt_post_policy);
+            reveal(crate::policy_model::event_step_policy);
+            reveal(pkt_out_policy);
+        }
+        match result {
+            Ok(()) => {},
+            Err(e) => {
+                proof {
+                    crate::policy_model::lemma_mr_state_policy_proj(bytes@, pkt, map@, p, c0g as int, p0g as int, Seq::empty());
+                    reveal(crate::policy_model::mr_policy);
+                    broadcast use vstd::seq_lib::group_seq_lib_default;
+                }
+ return Err(e); },
+        }
+    }
+    proof {
+        reveal(pkt_out_policy);
+        reveal(crate::policy_model::event_step_policy);
+        reveal(crate::policy_model::mr_flags_policy);
+        reveal(pkt_of_policy);
+        assert(pkt.n == n as int);
+        reveal(crate::policy_model::mr_cur_policy);
+        reveal(crate::policy_model::mr_pix_policy);
+        assert(crate::policy_model::mr_pix_policy(bytes@, pkt, map@, p, *cursor as int, *produced as int) == Seq::<Seq<u8>>::empty());
+        broadcast use vstd::seq_lib::group_seq_lib_default;
+    }
+    proof {
+        crate::policy_model::lemma_mr_state_policy_proj(bytes@, pkt, map@, p, c0g as int, p0g as int, Seq::empty());
+        reveal(crate::policy_model::mr_policy);
+        broadcast use vstd::seq_lib::group_seq_lib_default;
+    }
+    Ok(())
+}
+
+// ---------------------------------------------------------------------------
+// alloc-delta: guard threading and the `try_*` API (SPEC.md §1-§4,
+// THEOREMS-ALLOC-DELTA.md §0/§2, A-TGA-1..3 and the added A-TGA-5; frozen
+// A-TGA-4 is termination).
+// ---------------------------------------------------------------------------
+
+pub use crate::alloc_guard::sites::TryError;
+use crate::alloc_guard::{AllocSite, AllocLog, OutOfMemory};
+
+
+/// `Req_TGA(b)`: the ordered requests the `decode` family issues when every
+/// reservation succeeds (SPEC.md §4): the one `(Output, 4N)` request iff
+/// `MH(b)` is `Ok`, else `[]`. `N` is `0` on a rejected header, so `req_tga` is
+/// then empty.
+pub open spec fn req_tga(b: Seq<u8>) -> Seq<(AllocSite, nat)> {
+    match crate::model::mh(b) {
+        Ok(m) => seq![(AllocSite::Output, 4 * m.n as nat)],
+        Err(_) => Seq::empty(),
+    }
+}
+
+/// The same requests for the policy entry point, whose header model is
+/// `mh_policy` (the policy `Reach` is `MH_policy(b, p)` is `Ok`).
+pub open spec fn req_tga_policy(b: Seq<u8>, p: Policy) -> Seq<(AllocSite, nat)> {
+    match crate::policy_model::mh_policy(b, p) {
+        Ok(m) => seq![(AllocSite::Output, 4 * m.n as nat)],
+        Err(_) => Seq::empty(),
+    }
+}
+
+/// Clause 1 of `G` (THEOREMS-ALLOC-DELTA.md §0): a non-`OutOfMemory` result
+/// satisfies the frozen predicate on `crate::alloc_guard::sites::fmt_part(r)`, has exactly the requests of
+/// `Req_TGA`, and every log entry is `Ok`.
+pub open spec fn g_clause1(
+    b: Seq<u8>,
+    r: Result<Decoded, TryError>,
+    l: Seq<(AllocSite, nat, bool)>,
+) -> bool {
+    match r {
+        Err(TryError::OutOfMemory(_)) => true,
+        _ => decode_eq(crate::alloc_guard::sites::fmt_part(r), b)
+            && crate::alloc_guard::req_of_log(l) == req_tga(b)
+            && crate::alloc_guard::all_ok(l),
+    }
+}
+
+/// Clause 2 of `G`: an `OutOfMemory` result has a non-empty log whose requests
+/// are a prefix of `Req_TGA`, every entry but the last `Ok`, and the last entry
+/// not `Ok` and equal to the returned `(site, elements)`.
+pub open spec fn g_clause2(
+    b: Seq<u8>,
+    r: Result<Decoded, TryError>,
+    l: Seq<(AllocSite, nat, bool)>,
+) -> bool {
+    match r {
+        Err(TryError::OutOfMemory(o)) =>
+            l.len() >= 1
+            && crate::alloc_guard::req_of_log(l).is_prefix_of(req_tga(b))
+            && (forall|j: int| 0 <= j < l.len() - 1 ==> l[j].2)
+            && !l[l.len() - 1].2
+            && l[l.len() - 1].0 == o.site_spec()
+            && l[l.len() - 1].1 == o.elements_spec() as nat,
+        _ => true,
+    }
+}
+
+/// Clause 3 of `G`: every request is within its site's maximum, proved from the
+/// checked header before the guard call.
+pub open spec fn g_clause3(b: Seq<u8>) -> bool {
+    forall|j: int| 0 <= j < req_tga(b).len() ==> req_tga(b)[j].1 <= crate::alloc_guard::MAX_BYTES
+}
+
+/// Theorem shape `G` for TGA's `decode` family (THEOREMS-ALLOC-DELTA.md
+/// A-TGA-1), proved on the logged entry point `try_decode_with_steps_logged`.
+pub open spec fn g(
+    b: Seq<u8>,
+    r: Result<Decoded, TryError>,
+    l: Seq<(AllocSite, nat, bool)>,
+) -> bool {
+    g_clause1(b, r, l) && g_clause2(b, r, l) && g_clause3(b)
+}
+
+/// `Prog` (THEOREMS-ALLOC-DELTA.md §0): if every log entry is `Ok`, the result
+/// is not `OutOfMemory`, `decode_eq` holds, and `req(L) == Req_TGA`.
+pub open spec fn prog(
+    b: Seq<u8>,
+    r: Result<Decoded, TryError>,
+    l: Seq<(AllocSite, nat, bool)>,
+) -> bool {
+    crate::alloc_guard::all_ok(l) ==> prog_concl(b, r, l)
+}
+
+/// The `Prog` conclusion, split out so `prog` reveals to the solver as
+/// `all_ok(l) ==> prog_concl(..)`.
+pub open spec fn prog_concl(
+    b: Seq<u8>,
+    r: Result<Decoded, TryError>,
+    l: Seq<(AllocSite, nat, bool)>,
+) -> bool {
+    !matches!(r, Err(TryError::OutOfMemory(_)))
+        && decode_eq(crate::alloc_guard::sites::fmt_part(r), b)
+        && crate::alloc_guard::req_of_log(l) == req_tga(b)
+}
+
+/// The `PreAlloc` corollary (THEOREMS-ALLOC-DELTA.md §0): `Req_TGA` empty means
+/// the header was rejected before any reservation, so the log is empty and the
+/// result is a format error satisfying `decode_eq`.
+pub open spec fn pre_alloc(b: Seq<u8>) -> bool {
+    req_tga(b).len() == 0
+}
+
+/// The log-only facts `at_site_log` gives, in the shape the entry points' proof
+/// blocks consume: `req(L)` is `Req_TGA`, which has at most one element, so `L`
+/// has at most one element, and a failure is the log's last (only) entry.
+pub open spec fn at_site_log(
+    b: Seq<u8>,
+    r_is_oom: bool,
+    l: Seq<(AllocSite, nat, bool)>,
+) -> bool {
+    crate::alloc_guard::req_of_log(l) == req_tga(b)
+        && (if r_is_oom {
+            l.len() >= 1 && !l[l.len() - 1].2
+        } else {
+            crate::alloc_guard::all_ok(l)
+        })
+}
+
+/// The `Ok`-exit `at_site_log`: after the one successful `(Output, 4N)`
+/// reservation on an empty log, `req(L)` is exactly `Req_TGA`.
+pub proof fn lemma_at_site_log_ok(
+    b: Seq<u8>,
+    m: crate::model::MHModel,
+    l: Seq<(AllocSite, nat, bool)>,
+)
+    requires
+        crate::model::mh(b) == Ok(m),
+        l == Seq::<(AllocSite, nat, bool)>::empty().push(
+            (AllocSite::Output, 4 * m.n as nat, true)),
+    ensures at_site_log(b, false, l),
+{
+    reveal(at_site_log);
+    reveal(req_tga);
+    reveal(crate::alloc_guard::req_of_log);
+    reveal(crate::alloc_guard::all_ok);
+    assert(crate::alloc_guard::req_of_log(l) =~= req_tga(b));
+}
+
+/// The `OutOfMemory`-exit `at_site_log`.
+pub proof fn lemma_at_site_log_oom(
+    b: Seq<u8>,
+    m: crate::model::MHModel,
+    l: Seq<(AllocSite, nat, bool)>,
+)
+    requires
+        crate::model::mh(b) == Ok(m),
+        l == Seq::<(AllocSite, nat, bool)>::empty().push(
+            (AllocSite::Output, 4 * m.n as nat, false)),
+    ensures at_site_log(b, true, l),
+{
+    reveal(at_site_log);
+    reveal(req_tga);
+    reveal(crate::alloc_guard::req_of_log);
+    reveal(crate::alloc_guard::all_ok);
+    assert(crate::alloc_guard::req_of_log(l) =~= req_tga(b));
+}
+
+/// The pre-reservation `at_site_log`.
+pub proof fn lemma_at_site_log_prealloc(
+    b: Seq<u8>,
+    l: Seq<(AllocSite, nat, bool)>,
+)
+    requires
+        l.len() == 0,
+        crate::model::mh(b) is Err,
+    ensures at_site_log(b, false, l),
+{
+    reveal(at_site_log);
+    reveal(req_tga);
+    reveal(crate::alloc_guard::req_of_log);
+    reveal(crate::alloc_guard::all_ok);
+    assert(crate::alloc_guard::req_of_log(l) =~= req_tga(b));
+}
+
+/// Clause 3's content, as a named lemma: `Req_TGA`'s single element is `4N`
+/// with `1 <= N <= 16,777,216`, so it is within `MAX_BYTES`. Proved from the
+/// model's `mh_bounds`, never from an executable read.
+pub proof fn lemma_req_tga_clause3(b: Seq<u8>)
+    ensures g_clause3(b),
+{
+    reveal(req_tga);
+    reveal(g_clause3);
+    if req_tga(b).len() > 0 {
+        let m = choose|m: crate::model::MHModel| crate::model::mh(b) == Ok(m);
+        assert(crate::model::mh(b) == Ok(m));
+        crate::model::lemma_mh_ok_bounds(b, m);
+        reveal(crate::model::mh_bounds);
+        assert(req_tga(b)[0].1 == 4 * m.n as nat);
+        assert(m.n <= 16777216);
+        assert(4 * m.n <= 67108864);
+    }
+}
+
+/// The one-request shape, as a lemma: `Req_TGA` has at most one element, so
+/// `req(L) == Req_TGA` plus the last-entry equality gives the prefix clause on
+/// the `Err` arm.
+pub proof fn lemma_req_tga_len(b: Seq<u8>)
+    ensures req_tga(b).len() <= 1,
+{
+    reveal(req_tga);
+}
+
+/// The log-only facts `at_site_log` gives: `req(L)` is `Req_TGA`, which has at
+/// most one element, so `L` has at most one element, and a failure is the log's
+/// last (only) entry.
+pub proof fn lemma_at_site_log_parts(
+    b: Seq<u8>,
+    r_is_oom: bool,
+    l: Seq<(AllocSite, nat, bool)>,
+)
+    requires at_site_log(b, r_is_oom, l),
+    ensures
+        crate::alloc_guard::req_of_log(l) == req_tga(b),
+        req_tga(b).len() <= 1,
+        l.len() <= 1,
+        r_is_oom ==> (l.len() == 1 && !l[0].2),
+        !r_is_oom ==> crate::alloc_guard::all_ok(l),
+{
+    reveal(at_site_log);
+    reveal(req_tga);
+    reveal(crate::alloc_guard::req_of_log);
+    reveal(crate::alloc_guard::all_ok);
+}
+
+/// The policy path's `at_site_log`, whose request set is `Req_TGA_policy`.
+pub open spec fn at_site_log_policy(
+    b: Seq<u8>,
+    p: Policy,
+    r_is_oom: bool,
+    l: Seq<(AllocSite, nat, bool)>,
+) -> bool {
+    crate::alloc_guard::req_of_log(l) == req_tga_policy(b, p)
+        && (if r_is_oom {
+            l.len() == 1 && !l[0].2
+        } else {
+            crate::alloc_guard::all_ok(l)
+        })
+}
+
+pub proof fn lemma_at_site_log_policy_ok(
+    b: Seq<u8>,
+    p: Policy,
+    m: crate::model::MHModel,
+    l: Seq<(AllocSite, nat, bool)>,
+)
+    requires
+        crate::policy_model::mh_policy(b, p) == Ok(m),
+        l == Seq::<(AllocSite, nat, bool)>::empty().push(
+            (AllocSite::Output, 4 * m.n as nat, true)),
+    ensures at_site_log_policy(b, p, false, l),
+{
+    reveal(at_site_log_policy);
+    reveal(req_tga_policy);
+    reveal(crate::alloc_guard::req_of_log);
+    reveal(crate::alloc_guard::all_ok);
+    assert(crate::alloc_guard::req_of_log(l) =~= req_tga_policy(b, p));
+}
+
+pub proof fn lemma_at_site_log_policy_oom(
+    b: Seq<u8>,
+    p: Policy,
+    m: crate::model::MHModel,
+    l: Seq<(AllocSite, nat, bool)>,
+)
+    requires
+        crate::policy_model::mh_policy(b, p) == Ok(m),
+        l == Seq::<(AllocSite, nat, bool)>::empty().push(
+            (AllocSite::Output, 4 * m.n as nat, false)),
+    ensures at_site_log_policy(b, p, true, l),
+{
+    reveal(at_site_log_policy);
+    reveal(req_tga_policy);
+    reveal(crate::alloc_guard::req_of_log);
+    reveal(crate::alloc_guard::all_ok);
+    assert(crate::alloc_guard::req_of_log(l) =~= req_tga_policy(b, p));
+}
+
+pub proof fn lemma_at_site_log_policy_prealloc(
+    b: Seq<u8>,
+    p: Policy,
+    l: Seq<(AllocSite, nat, bool)>,
+)
+    requires
+        l.len() == 0,
+        crate::policy_model::mh_policy(b, p) is Err,
+    ensures at_site_log_policy(b, p, false, l),
+{
+    reveal(at_site_log_policy);
+    reveal(req_tga_policy);
+    reveal(crate::alloc_guard::req_of_log);
+    reveal(crate::alloc_guard::all_ok);
+    assert(crate::alloc_guard::req_of_log(l) =~= req_tga_policy(b, p));
+}
+
+pub proof fn lemma_req_tga_policy_clause3(b: Seq<u8>, p: Policy)
+    ensures forall|j: int| 0 <= j < req_tga_policy(b, p).len()
+        ==> req_tga_policy(b, p)[j].1 <= crate::alloc_guard::MAX_BYTES,
+{
+    reveal(req_tga_policy);
+    if req_tga_policy(b, p).len() > 0 {
+        let m = choose|m: crate::model::MHModel| crate::policy_model::mh_policy(b, p) == Ok(m);
+        assert(crate::policy_model::mh_policy(b, p) == Ok(m));
+        crate::policy_model::lemma_mh_policy_ok_bounds(b, m, p);
+        reveal(crate::model::mh_bounds);
+        assert(req_tga_policy(b, p)[0].1 == 4 * m.n as nat);
+        assert(m.n <= 16777216);
+        assert(4 * m.n <= 67108864);
+    }
+}
+
+/// `Req_TGA_policy`'s single element, when it exists, is `(Output, 4N)` with
+/// `N = policy_checked_n`.
+pub proof fn lemma_req_tga_policy_elem(b: Seq<u8>, p: Policy)
+    ensures req_tga_policy(b, p).len() == 1
+        ==> req_tga_policy(b, p)[0].1 == 4 * policy_checked_n(b, p) as nat,
+{
+    reveal(req_tga_policy);
+    reveal(policy_checked_n);
+}
+
+pub proof fn lemma_req_tga_policy_len(b: Seq<u8>, p: Policy)
+    ensures req_tga_policy(b, p).len() <= 1,
+{
+    reveal(req_tga_policy);
+}
+
+/// Clause 1 of the policy path's `G`: a non-`OutOfMemory` result satisfies the
+/// policy `mp_policy` on `crate::alloc_guard::sites::fmt_part(r)`, has exactly
+/// `Req_TGA_policy`'s requests and every entry `Ok`. This is the policy twin of
+/// `g_clause1`'s `decode_eq` disjunct (`policy_result` is `decode_eq`'s policy
+/// analogue). The `recovered` component is not part of this clause: the frozen
+/// `Eq_f` for TGA is `decode_eq`/`mp_policy` alone, and the flag is stated
+/// separately as `r is Ok ==> r.1 == recovered_policy(b, p)` together with
+/// `r is Err ==> !r.1`, on the entry points and in `pre_alloc_policy_concl`.
+pub open spec fn g_policy_clause1(
+    b: Seq<u8>,
+    p: Policy,
+    r: Result<Decoded, TryError>,
+    l: Seq<(AllocSite, nat, bool)>,
+) -> bool {
+    match r {
+        Err(TryError::OutOfMemory(_)) => true,
+        _ => policy_result(crate::alloc_guard::sites::fmt_part(r)) == crate::policy_model::mp_policy(b, p)
+            && crate::alloc_guard::req_of_log(l) == req_tga_policy(b, p)
+            && crate::alloc_guard::all_ok(l),
+    }
+}
+
+/// Clause 2 of the policy path's `G`.
+pub open spec fn g_policy_clause2(
+    b: Seq<u8>,
+    p: Policy,
+    r: Result<Decoded, TryError>,
+    l: Seq<(AllocSite, nat, bool)>,
+) -> bool {
+    match r {
+        Err(TryError::OutOfMemory(o)) =>
+            l.len() >= 1
+            && crate::alloc_guard::req_of_log(l).is_prefix_of(req_tga_policy(b, p))
+            && (forall|j: int| 0 <= j < l.len() - 1 ==> l[j].2)
+            && !l[l.len() - 1].2
+            && l[l.len() - 1].0 == o.site_spec()
+            && l[l.len() - 1].1 == o.elements_spec() as nat,
+        _ => true,
+    }
+}
+
+pub open spec fn g_policy_clause3(b: Seq<u8>, p: Policy) -> bool {
+    forall|j: int| 0 <= j < req_tga_policy(b, p).len()
+        ==> req_tga_policy(b, p)[j].1 <= crate::alloc_guard::MAX_BYTES
+}
+
+/// Theorem shape `G` for the policy entry point.
+pub open spec fn g_policy(
+    b: Seq<u8>,
+    p: Policy,
+    r: Result<Decoded, TryError>,
+    l: Seq<(AllocSite, nat, bool)>,
+) -> bool {
+    g_policy_clause1(b, p, r, l) && g_policy_clause2(b, p, r, l) && g_policy_clause3(b, p)
+}
+
+pub open spec fn prog_policy(
+    b: Seq<u8>,
+    p: Policy,
+    r: Result<Decoded, TryError>,
+    l: Seq<(AllocSite, nat, bool)>,
+) -> bool {
+    crate::alloc_guard::all_ok(l) ==> prog_policy_concl(b, p, r, l)
+}
+
+/// The `Prog` conclusion of the policy path, split out so `prog_policy` reveals
+/// to the solver as `all_ok(l) ==> prog_policy_concl(..)`. Like `prog_concl` it
+/// carries the functional relation, here `mp_policy` on
+/// `crate::alloc_guard::sites::fmt_part(r)`, alongside the request equality.
+pub open spec fn prog_policy_concl(
+    b: Seq<u8>,
+    p: Policy,
+    r: Result<Decoded, TryError>,
+    l: Seq<(AllocSite, nat, bool)>,
+) -> bool {
+    !matches!(r, Err(TryError::OutOfMemory(_)))
+        && policy_result(crate::alloc_guard::sites::fmt_part(r)) == crate::policy_model::mp_policy(b, p)
+        && crate::alloc_guard::req_of_log(l) == req_tga_policy(b, p)
+}
+
+/// The policy path's `PreAlloc` corollary over the returned log:
+/// `Req_TGA_policy` empty means the header was rejected before any reservation,
+/// so the log is empty, the result is a format error satisfying `mp_policy`, and
+/// `recovered` is false. The policy twin of `pre_alloc`, strengthened with the
+/// functional relation and the flag component of `g_policy_clause1`. Its
+/// `r.1 == false` is `r.0 is Err ==> !r.1` for the only non-`Ok` outcome here.
+pub open spec fn pre_alloc_policy_concl(
+    b: Seq<u8>,
+    p: Policy,
+    r: (Result<Decoded, TryError>, bool),
+    l: Seq<(AllocSite, nat, bool)>,
+) -> bool {
+    req_tga_policy(b, p).len() == 0
+        ==> l.len() == 0
+            && !matches!(r.0, Err(TryError::OutOfMemory(_)))
+            && policy_result(crate::alloc_guard::sites::fmt_part(r.0)) == crate::policy_model::mp_policy(b, p)
+            && !r.1
+}
+
+/// The policy path's `G` and `Prog`, derived from `at_site_log_policy` and the
+/// helper's own `mp_policy` postcondition. The `OutOfMemory` naming clause is
+/// the helper's, so `lemma_req_tga_policy_len` supplies the prefix clause.
+/// `r.1 == recovered_policy(b, p)` on `Ok`, `false` on `Format`, carries the
+/// flag component of `g_policy_clause1`. The `PreAlloc` corollary
+/// `pre_alloc_policy_concl` is a separate `ensures` from the same hypotheses.
+pub proof fn lemma_g_policy_of_shape(
+    b: Seq<u8>,
+    p: Policy,
+    r: (Result<Decoded, TryError>, bool),
+    l: Seq<(AllocSite, nat, bool)>,
+)
+    requires
+        at_site_log_policy(b, p, matches!(r.0, Err(TryError::OutOfMemory(_))), l),
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            policy_result(crate::alloc_guard::sites::fmt_part(r.0)) == crate::policy_model::mp_policy(b, p),
+        match r.0 {
+            Ok(_) => r.1 == crate::policy_model::recovered_policy(b, p),
+            Err(_) => !r.1,
+        },
+        match r.0 {
+            Err(TryError::OutOfMemory(o)) =>
+                (o.site_spec(), o.elements_spec() as nat) == req_tga_policy(b, p)[0],
+            _ => true,
+        },
+    ensures
+        g_policy(b, p, r.0, l),
+        prog_policy(b, p, r.0, l),
+        pre_alloc_policy_concl(b, p, r, l),
+{
+    reveal(g_policy);
+    reveal(g_policy_clause1);
+    reveal(g_policy_clause2);
+    reveal(g_policy_clause3);
+    reveal(prog_policy);
+    reveal(prog_policy_concl);
+    reveal(pre_alloc_policy_concl);
+    reveal(at_site_log_policy);
+    reveal(req_tga_policy);
+    reveal(crate::alloc_guard::req_of_log);
+    reveal(crate::alloc_guard::all_ok);
+    lemma_req_tga_policy_len(b, p);
+    lemma_req_tga_policy_clause3(b, p);
+    match r.0 {
+        Err(TryError::OutOfMemory(o)) => {
+            assert(crate::alloc_guard::req_of_log(l).is_prefix_of(req_tga_policy(b, p)));
+            assert(crate::alloc_guard::req_of_log(l)[0] == (o.site_spec(), o.elements_spec() as nat));
+            assert(l[0].0 == o.site_spec());
+            assert(l[0].1 == o.elements_spec() as nat);
+            assert(l.len() - 1 == 0);
+        },
+        _ => {
+            // `PreAlloc` corollary: an empty request set means no reservation, so
+            // an empty log, a non-`OutOfMemory` result and `recovered == false`.
+            if req_tga_policy(b, p).len() == 0 {
+                assert(crate::alloc_guard::req_of_log(l).len() == 0);
+                assert(l.len() == 0);
+            }
+        },
+    }
+}
+
+/// The `#[inline(never)]` guarded output reservation: `try_zeroed` on an empty
+/// log, `4N` zero bytes, the sole allocation site. Replaces the `vec![0u8; 4n]`
+/// of `alloc_output`.
+///
+/// The `4N` initialisation is charged to `steps` only on the `Ok` arm, when the
+/// reservation succeeded and the zeroing loop actually ran. A failed
+/// reservation did no allocator work and zeroed nothing, so its charge is zero
+/// beyond whatever was spent before the call: the counter is left unchanged.
+fn alloc_output_guarded(
+    n: usize,
+    steps: &mut Ghost<nat>,
+    Tracked(log): Tracked<&mut AllocLog>,
+) -> (r: Result<Vec<u8>, OutOfMemory>)
+    requires 1 <= n <= 16777216,
+    ensures
+        match r {
+            Ok(out) => {
+                &&& final(steps)@ == old(steps)@ + 4 * n
+                &&& out@.len() == 4 * n
+            },
+            Err(o) => {
+                &&& final(steps)@ == old(steps)@
+                &&& o.elements_spec() == 4 * n && o.site_spec() == AllocSite::Output
+            },
+        },
+        final(log).view() == old(log).view().push((AllocSite::Output, 4 * n as nat, r is Ok)),
+{
+    proof {
+        assert(n * 1 <= crate::alloc_guard::MAX_BYTES) by (nonlinear_arith)
+            requires n <= 16777216;
+    }
+    match crate::alloc_guard::try_zeroed(AllocSite::Output, 4 * n, Tracked(log)) {
+        Ok(v) => {
+            *steps = Ghost(steps@ + (4 * n) as nat);
+            Ok(v)
+        },
+        Err(o) => Err(o),
+    }
+}
+
+pub open spec fn policy_result(r: Result<Decoded, Error>) -> Result<(int, int, Seq<u8>), Error> {
+    match r { Ok(d) => Ok((d.width as int, d.height as int, d.rgba@)), Err(e) => Err(e) }
+}
+
+/// `N` from the 1.0 header model: `mh`'s record on success, else `0`.
+pub open spec fn model_checked_n(b: Seq<u8>) -> int {
+    match crate::model::mh(b) { Ok(m) => m.n, Err(_) => 0 }
+}
+
+
+/// The policy path's `PreAlloc` corollary: `Req_TGA_policy` empty means the
+/// header was rejected before any reservation.
+pub open spec fn pre_alloc_policy(b: Seq<u8>, p: Policy) -> bool {
+    req_tga_policy(b, p).len() == 0
+}
+
+pub open spec fn policy_checked_n(b: Seq<u8>, p: Policy) -> int {
+    match crate::policy_model::mh_policy(b, p) { Ok(m) => m.n, Err(_) => 0 }
+}
+
+pub open spec fn decoded_bounds(r: Result<Decoded, Error>) -> bool {
+    match r {
+        Ok(d) => 1 <= d.width as int <= 8192 && 1 <= d.height as int <= 8192
+            && d.rgba@.len() == 4 * (d.width as int * d.height as int) && d.rgba@.len() <= 67108864,
+        Err(_) => true,
+    }
+}
+
+fn map_bytes_policy_exec(h: &Header, p: Policy) -> (r: usize)
+    requires header_inv_policy(*h, p),
+    ensures r as int == crate::policy_model::map_bytes_flags(h.color_map_flag, h.map_length as int, h.map_entry_depth, p), r <= 262140,
+{
+    if !flag_present_hdr_exec(h.color_map_flag, p) { return 0; }
+    if h.map_length == 0 {
+        proof {
+            assert(h.map_length as int * crate::model::sample_bytes_of(h.map_entry_depth) == 0) by (nonlinear_arith)
+                requires h.map_length == 0;
+            reveal(crate::policy_model::map_bytes_flags);
+        }
+        return 0;
+    }
+    let stride = h.map_bytes_per_entry();
+    proof {
+        reveal(header_inv_policy);
+        crate::policy_model::lemma_sample_bytes_of_stride(h.map_entry_depth);
+        crate::policy_model::lemma_map_entry_depth_stride(h.map_entry_depth);
+        assert(h.map_length as int * stride as int <= 262140) by (nonlinear_arith)
+            requires h.map_length as int <= 65535, 0 <= stride <= 4;
+    }
+    h.map_length as usize * stride
+}
+
+fn suffix_policy_exec(bytes: &[u8], cursor: usize, p: Policy) -> (ok: bool)
+    requires cursor <= bytes@.len(), bytes@.len() >= 18,
+    ensures ok == crate::policy_model::mp_suffix_ok_policy(bytes@, p, cursor as int),
+{
+    if matches!(p.trailing, crate::policy::TrailingOptions::Ignore) { return true; }
+    if cursor == bytes.len() { return true; }
+    if bytes.len() - cursor < 26 { return false; }
+    let ok = signature_tail(bytes);
+    proof {
+        crate::model::lemma_suffix_tail(bytes@, cursor as int);
+        reveal(crate::model::mp_suffix_ok); reveal(crate::model::footer);
+    }
+    ok
+}
+
+/// Pixel decoding and suffix validation, after the checked ID and map slices.
+fn finish_policy(bytes: &[u8], h: &Header, map: &[u8], mut out: Vec<u8>, c0: usize,
+    n: usize, p: Policy, steps: &mut Ghost<nat>) -> (r: (Result<Decoded, Error>, bool))
+    requires
+        header_inv_policy(*h, p),
+        crate::policy_model::mh_policy(bytes@, p) == Ok(mh_of_header(*h, p)),
+        18 <= bytes@.len() <= crate::model::max_input(),
+        n == h.width as int * h.height as int, out@.len() == 4 * n,
+        c0 as int == 18 + h.id_length as int + mh_of_header(*h, p).map_bytes,
+        18 + h.id_length as int <= c0 <= bytes@.len(),
+        map@ == bytes@.subrange(18 + h.id_length as int, c0 as int),
+    ensures
+        policy_result(r.0) == crate::policy_model::mp_after_policy(bytes@, mh_of_header(*h, p), p),
+        r.0 is Ok ==> r.1 == crate::policy_model::recovered_policy(bytes@, p),
+        r.0 is Err ==> !r.1,
+        decoded_bounds(r.0),
+        final(steps)@ as int <= old(steps)@ as int + 7 * n + 20,
+{
+    let ghost m = mh_of_header(*h, p);
+    let ghost pkt = pkt_of_policy(h, p);
+    proof {
+        reveal(header_inv_policy); reveal(mh_of_header);
+        lemma_pkt_of_policy_eq(h, p, m);
+        crate::policy_model::lemma_sample_bytes_of_stride(h.pixel_depth);
+        crate::policy_model::lemma_policy_phase(bytes@, m, p);
+    }
+    let indexed = kind_hdr_exec(h.image_type, p) == 0;
+    let rle = h.image_type == 9 || h.image_type == 10 || h.image_type == 11;
+    let mut cursor = c0;
+    let mut produced = 0usize;
+    let mut clip = false;
+    let mut subst = false;
+    let result = if rle {
+        let result = decode_rle_policy(bytes, h, map, indexed, &mut out, &mut cursor, &mut produced,
+            n, c0, 0, p, steps, &mut clip, &mut subst);
+        proof {
+            reveal(crate::policy_model::policy_phase);
+            if result is Ok {
+                let px = crate::policy_model::mr_pix_policy(bytes@, pkt, map@, p, c0 as int, 0);
+                crate::model::lemma_wrote_px_off_full(out@, px, h.width as int, h.height as int,
+                    h.spec_flip_x(), h.spec_flip_y(), 0);
+                crate::model::lemma_wrote_px_off_zero_is_quad_ok(out@, px, h.width as int, h.height as int,
+                    h.spec_flip_x(), h.spec_flip_y());
+                crate::policy_model::lemma_rle_quad_to_orient_policy(out@,
+                    crate::policy_model::mr_pix_policy(bytes@, pkt, map@, p, c0 as int, 0),
+                    h.width as int, h.height as int, h.spec_flip_x(), h.spec_flip_y());
+            }
+        }
+        result
+    } else {
+        let result = decode_raw_policy(bytes, h, map, indexed, &mut out, &mut cursor, n, c0, p, steps, &mut subst);
+        proof {
+            reveal(raw_result_eq_policy); reveal(crate::policy_model::policy_phase);
+            if result is Ok {
+                crate::policy_model::lemma_wrote_to_orient_policy(out@, bytes@, pkt, map@, p,
+                    h.width as int, h.height as int, h.spec_flip_x(), h.spec_flip_y(), c0 as int);
+            }
+        }
+        result
+    };
+    match result { Err(e) => { return (Err(e), false); }, Ok(()) => {} }
+    proof { *steps = Ghost(steps@ + 18); }
+    if !suffix_policy_exec(bytes, cursor, p) { return (Err(Error::TrailingBytes), false); }
+    proof {
+        reveal(crate::policy_model::mp_assemble_policy);
+        reveal(crate::policy_model::mp_pixels_policy);
+        reveal(crate::policy_model::recovered_policy);
+    }
+    (Ok(Decoded { width: h.width, height: h.height, rgba: out }), clip || subst)
+}
+
+/// Header-accepted path; every allocation follows the full header checks. The
+/// one reservation is the guarded output; on `OutOfMemory` the call returns
+/// `Err(TryError::OutOfMemory)`, and nothing after the reservation runs.
+fn decode_complete_policy(bytes: &[u8], h: Header, p: Policy, steps: &mut Ghost<nat>,
+    Tracked(log): Tracked<&mut AllocLog>)
+    -> (r: (Result<Decoded, TryError>, bool))
+    requires
+        18 <= bytes@.len() <= crate::model::max_input(), header_inv_policy(h, p),
+        crate::policy_model::mh_policy(bytes@, p) == Ok(mh_of_header(h, p)),
+        old(log).view() == Seq::<(AllocSite, nat, bool)>::empty(),
+    ensures
+        // Clause 1 for a non-`OutOfMemory` result, clause 2 for one.
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            policy_result(crate::alloc_guard::sites::fmt_part(r.0)) == crate::policy_model::mp_after_policy(bytes@, mh_of_header(h, p), p)
+            && crate::alloc_guard::req_of_log(final(log).view()) == req_tga_policy(bytes@, p)
+            && crate::alloc_guard::all_ok(final(log).view()),
+        match r.0 {
+            Err(TryError::OutOfMemory(o)) =>
+                final(log).view().len() == 1 && !final(log).view()[0].2
+                && final(log).view()[0].0 == o.site_spec()
+                && final(log).view()[0].1 == o.elements_spec() as nat
+                && crate::alloc_guard::req_of_log(final(log).view()) == req_tga_policy(bytes@, p)
+                && r.1 == false,
+            _ => true,
+        },
+        r.0 is Ok ==> r.1 == crate::policy_model::recovered_policy(bytes@, p),
+        r.0 is Err ==> !r.1,
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==> decoded_bounds(crate::alloc_guard::sites::fmt_part(r.0)),
+        final(steps)@ as int <= old(steps)@ as int + 11 * mh_of_header(h, p).n + 20,
+{
+    proof {
+        reveal(header_inv_policy);
+        assert(1 <= h.width as int * h.height as int <= 16777216) by (nonlinear_arith)
+            requires 1 <= h.width as int <= 8192, 1 <= h.height as int <= 8192,
+                4 * (h.width as int * h.height as int) <= 67108864;
+    }
+    let n = h.width as usize * h.height as usize;
+    let ghost m0 = mh_of_header(h, p);
+    let out = match alloc_output_guarded(n, steps, Tracked(log)) {
+        Ok(o) => o,
+        Err(o) => {
+            proof {
+                reveal(req_tga_policy);
+                reveal(header_inv_policy);
+                assert(crate::policy_model::mh_policy(bytes@, p) == Ok(m0));
+                lemma_at_site_log_policy_oom(bytes@, p, m0, log.view());
+                assert(crate::alloc_guard::req_of_log(log.view()) == req_tga_policy(bytes@, p));
+                assert(log.view().len() == 1 && !log.view()[0].2);
+                assert((o.site_spec(), o.elements_spec() as nat) == req_tga_policy(bytes@, p)[0]);
+            }
+            return (Err(TryError::OutOfMemory(o)), false);
+        },
+    };
+    proof {
+        reveal(req_tga_policy);
+        lemma_at_site_log_policy_ok(bytes@, p, m0, log.view());
+        assert(out@.len() == 4 * n);
+    }
+    let id_end = 18usize + h.id_length as usize;
+    if id_end > bytes.len() {
+        proof { reveal(crate::policy_model::mp_after_policy); }
+        return (Err(TryError::Format(Error::TruncatedImageId)), false);
+    }
+    let map_bytes = map_bytes_policy_exec(&h, p);
+    let map_end = id_end + map_bytes;
+    if map_end > bytes.len() {
+        proof { reveal(crate::policy_model::mp_after_policy); }
+        return (Err(TryError::Format(Error::TruncatedColorMap)), false);
+    }
+    let map = &bytes[id_end..map_end];
+    let (r, flag) = finish_policy(bytes, &h, map, out, map_end, n, p, steps);
+    proof {
+        reveal(crate::alloc_guard::sites::fmt_part);
+        reveal(crate::alloc_guard::req_of_log);
+        reveal(crate::alloc_guard::all_ok);
+        if r is Err {
+            assert(crate::policy_model::mh_policy(bytes@, p) == Ok(m0));
+        }
+    }
+    (match r { Ok(d) => Ok(d), Err(e) => Err(TryError::Format(e)) }, flag)
+}
+
+/// Charged units: header bytes inspected (capped at 18), 4N zeroed output bytes,
+/// one sample attempt plus four output-byte writes, one RLE dispatch per packet,
+/// and at most 18 suffix-signature bytes. Fixed-size scalar work belongs to the
+/// corresponding attempt or dispatch; discarded packet positions have no charge.
+fn decode_policy_tracked(bytes: &[u8], p: Policy, steps: &mut Ghost<nat>,
+    Tracked(log): Tracked<&mut AllocLog>)
+    -> (r: (Result<Decoded, TryError>, bool))
+    requires
+        old(log).view() == Seq::<(AllocSite, nat, bool)>::empty(),
+    ensures
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            policy_result(crate::alloc_guard::sites::fmt_part(r.0)) == crate::policy_model::mp_policy(bytes@, p)
+            && at_site_log_policy(bytes@, p, false, final(log).view()),
+        match r.0 {
+            Err(TryError::OutOfMemory(o)) =>
+                at_site_log_policy(bytes@, p, true, final(log).view())
+                && (o.site_spec(), o.elements_spec() as nat) == req_tga_policy(bytes@, p)[0]
+                && r.1 == false,
+            _ => true,
+        },
+        r.0 is Ok ==> r.1 == crate::policy_model::recovered_policy(bytes@, p),
+        r.0 is Err ==> !r.1,
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==> decoded_bounds(crate::alloc_guard::sites::fmt_part(r.0)),
+        // The policy `PreAlloc` corollary over the returned log: a rejected
+        // header reserves nothing and returns a format error with `recovered`
+        // false and the exact `mp_policy` result.
+        pre_alloc_policy_concl(bytes@, p, r, final(log).view()),
+        final(steps)@ as int <= old(steps)@ as int + 16 * (bytes@.len() + policy_checked_n(bytes@, p)),
+{
+    proof { *steps = Ghost(steps@ + if bytes@.len() < 18 { bytes@.len() } else { 18nat }); }
+    // `PreAlloc`: a header error reserves nothing.
+    proof {
+        reveal(pre_alloc_policy);
+        reveal(req_tga_policy);
+        reveal(at_site_log_policy);
+        reveal(crate::alloc_guard::req_of_log);
+        reveal(crate::alloc_guard::all_ok);
+    }
+    let h = match parse_header_policy(bytes, p) {
+        Ok(h) => h,
+        Err(e) => {
+            proof {
+                reveal(crate::policy_model::mp_policy);
+                reveal(pre_alloc_policy_concl);
+                reveal(policy_checked_n);
+                reveal(req_tga_policy);
+                reveal(at_site_log_policy);
+                reveal(crate::alloc_guard::req_of_log);
+                reveal(crate::alloc_guard::all_ok);
+                reveal(crate::alloc_guard::sites::fmt_part);
+                lemma_at_site_log_policy_prealloc(bytes@, p, log.view());
+                // `mp_policy`'s header phase: the same first error.
+                assert(crate::policy_model::mh_policy(bytes@, p) == Err(e));
+                assert(crate::policy_model::mp_policy(bytes@, p) == Err(e));
+            }
+            return (Err(TryError::Format(e)), false);
+        },
+    };
+    let result = decode_complete_policy(bytes, h, p, steps, Tracked(log));
+    proof { reveal(crate::policy_model::mp_policy); reveal(policy_checked_n); }
+    result
+}
+
+/// The logged policy entry point: creates the one log, threads it through
+/// `decode_policy_tracked`, and returns the result with the log. Proves the
+/// policy path's `G`/`Prog` from the helper's `at_site_log_policy`.
+pub(crate) fn try_decode_policy_tracked(bytes: &[u8], p: Policy, steps: &mut Ghost<nat>)
+    -> (r: (Result<Decoded, TryError>, bool, Tracked<AllocLog>))
+    ensures
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            policy_result(crate::alloc_guard::sites::fmt_part(r.0)) == crate::policy_model::mp_policy(bytes@, p)
+            && decoded_bounds(crate::alloc_guard::sites::fmt_part(r.0)),
+        g_policy(bytes@, p, r.0, r.2@.view()),
+        prog_policy(bytes@, p, r.0, r.2@.view()),
+        pre_alloc_policy_concl(bytes@, p, (r.0, r.1), r.2@.view()),
+        match r.0 {
+            Err(TryError::OutOfMemory(o)) => r.1 == false
+                && (o.site_spec(), o.elements_spec() as nat) == req_tga_policy(bytes@, p)[0],
+            Ok(_) => r.1 == crate::policy_model::recovered_policy(bytes@, p),
+            Err(TryError::Format(_)) => !r.1,
+        },
+        final(steps)@ as int <= old(steps)@ as int + 16 * (bytes@.len() + policy_checked_n(bytes@, p)),
+{
+    let tracked mut log = crate::alloc_guard::new_log();
+    let result = decode_policy_tracked(bytes, p, steps, Tracked(&mut log));
+    proof {
+        reveal(g_policy);
+        reveal(g_policy_clause1);
+        reveal(g_policy_clause2);
+        reveal(g_policy_clause3);
+        reveal(prog_policy);
+        reveal(prog_policy_concl);
+        reveal(pre_alloc_policy_concl);
+        reveal(req_tga_policy);
+        reveal(crate::alloc_guard::sites::fmt_part);
+        reveal(crate::alloc_guard::req_of_log);
+        reveal(crate::alloc_guard::all_ok);
+        lemma_req_tga_policy_len(bytes@, p);
+        lemma_req_tga_policy_clause3(bytes@, p);
+        lemma_g_policy_of_shape(bytes@, p, result, log.view());
+    }
+    (result.0, result.1, Tracked(log))
+}
+
+/// The public policy decoder for named profiles: `try_decode_policy_tracked`
+/// with the log discarded. Its result relation is `mp_policy` on `crate::alloc_guard::sites::fmt_part(r.0)`
+/// for every non-`OutOfMemory` result, and `OutOfMemory` names the failed
+/// `(Output, 4N)` reservation.
+pub fn try_decode_with_policy(bytes: &[u8], profile: crate::policy::Profile)
+    -> (r: (Result<Decoded, TryError>, bool))
+    ensures
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            policy_result(crate::alloc_guard::sites::fmt_part(r.0)) == crate::policy_model::mp_policy(bytes@, crate::policy::profile_policy(profile))
+            && decoded_bounds(crate::alloc_guard::sites::fmt_part(r.0)),
+        match r.0 {
+            Err(TryError::OutOfMemory(o)) => r.1 == false
+                && o.site_spec() == AllocSite::Output
+                && o.elements_spec() as int == 4 * policy_checked_n(bytes@, crate::policy::profile_policy(profile)),
+            Ok(_) => r.1 == crate::policy_model::recovered_policy(bytes@, crate::policy::profile_policy(profile)),
+            Err(TryError::Format(_)) => !r.1,
+        },
+{
+    let p = crate::policy::profile_policy_exec(profile);
+    let mut steps = Ghost(0nat);
+    let r = try_decode_policy_tracked(bytes, p, &mut steps);
+    proof {
+        reveal(crate::policy::profile_policy);
+        reveal(crate::alloc_guard::sites::fmt_part);
+        reveal(policy_checked_n);
+        reveal(req_tga_policy);
+        if let Err(TryError::OutOfMemory(o)) = r.0 {
+            assert(policy_checked_n(bytes@, p)
+                == policy_checked_n(bytes@, crate::policy::profile_policy(profile)));
+            lemma_req_tga_policy_elem(bytes@, p);
+            assert(req_tga_policy(bytes@, p).len() == 1);
+            assert(o.elements_spec() as int
+                == req_tga_policy(bytes@, p)[0].1);
+            assert(o.site_spec() == AllocSite::Output);
+        }
+    }
+    (r.0, r.1)
+}
+
+/// Public executable witness that Strict is exactly the 1.0 decoder: for
+/// every input the two calls produce the same error or identical dimensions
+/// and RGBA bytes, and Strict never reports recovery.
+pub fn t7_strict_is_1_0(bytes: &[u8])
+    -> (r: ((Result<Decoded, TryError>, bool), Result<Decoded, TryError>))
+    ensures
+        r.0.1 == false,
+        // Agreement on every outcome: `OutOfMemory` is the sole case where the
+        // two independent reservations may differ, and even then each names its
+        // own failed `(Output, 4N)`.
+        match (r.0.0, r.1) {
+            (Err(TryError::OutOfMemory(o1)), Err(TryError::OutOfMemory(o2))) =>
+                o1.site_spec() == AllocSite::Output && o2.site_spec() == AllocSite::Output
+                && o1.elements_spec() == o2.elements_spec(),
+            (Err(TryError::OutOfMemory(_)), _) => true,
+            (_, Err(TryError::OutOfMemory(_))) => true,
+            _ => policy_result(crate::alloc_guard::sites::fmt_part(r.0.0)) == policy_result(crate::alloc_guard::sites::fmt_part(r.1)),
+        },
+        match (r.0.0, r.1) {
+            (Err(TryError::OutOfMemory(_)), _) => true,
+            (_, Err(TryError::OutOfMemory(_))) => true,
+            (Ok(strict), Ok(original)) =>
+                strict.width == original.width && strict.height == original.height
+                    && strict.rgba@ == original.rgba@,
+            (Err(TryError::Format(e1)), Err(TryError::Format(e2))) => e1 == e2,
+            _ => false,
+        },
+        !matches!(r.1, Err(TryError::OutOfMemory(_))) ==> decode_eq(crate::alloc_guard::sites::fmt_part(r.1), bytes@),
+{
+    let original = try_decode(bytes);
+    let strict = try_decode_with_policy(bytes, crate::policy::Profile::Strict);
+    proof {
+        crate::policy_model::lemma_mp_policy_strict_is_mp(bytes@);
+        crate::policy_model::lemma_recovered_policy_strict(bytes@);
+        reveal(crate::policy::profile_policy);
+        reveal(policy_result);
+        reveal(decode_eq);
+        reveal(crate::alloc_guard::sites::fmt_part);
+        reveal(crate::policy_model::mp_policy);
+        reveal(crate::model::mp);
+    }
+    (strict, original)
+}
+
+fn t2_t5_policy_header(b: &[u8], p: Policy) -> (r: Result<Header, Error>)
+    ensures
+        match crate::policy_model::mh_policy(b@, p) {
+            Ok(m) => match r {
+                Ok(h) => m == mh_of_header(h, p),
+                Err(_) => false,
+            },
+            Err(e2) => match r {
+                Ok(_) => false,
+                Err(e) => e == e2,
+            },
+        },
+        match r {
+            Ok(h) => 18 <= b@.len() <= crate::model::max_input() && header_inv_policy(h, p),
+            Err(_) => true,
+        },
+{ parse_header_policy(b, p) }
+
+fn t4_policy_conversion(h: &Header, map: &[u8], indexed: bool, s: &[u8], p: Policy, subst: &mut bool)
+    -> (r: Result<[u8; 4], Error>)
+    requires
+        crate::policy_model::type_ok_policy(h.image_type, p),
+        indexed == (crate::policy_model::kind_policy(h.image_type, p) == 0),
+        crate::policy_model::depth_ok_policy(
+            crate::policy_model::kind_policy(h.image_type, p),
+            h.pixel_depth,
+            p.depths,
+        ),
+        indexed ==> crate::policy_model::map_present_policy_flags(h.color_map_flag, p),
+        indexed ==> (h.map_length as int) > 0 ==> crate::model::map_entry_depth_ok(
+            h.map_entry_depth,
+        ),
+        indexed ==> (h.spec_sample_bytes() == 1 || h.spec_sample_bytes() == 2),
+        !indexed ==> 1 <= h.spec_sample_bytes() <= 4,
+        !indexed ==> h.spec_sample_bytes() == crate::model::stride_of(h.pixel_depth as int),
+        s@.len() == h.spec_sample_bytes(),
+        s@.len() >= 1,
+        map@.len() == crate::policy_model::map_bytes_flags(
+            h.color_map_flag,
+            h.map_length as int,
+            h.map_entry_depth,
+            p,
+        ),
+        h.map_length as int <= 65535,
+    ensures
+        *final(subst) == (*old(subst) || (indexed && crate::policy_model::pkt_subst(
+            pkt_of_policy(h, p), crate::model::sindex(s@, h.spec_sample_bytes()), p))),
+        match r {
+            Ok(px) => px@.len() == 4,
+            Err(_) => true,
+        },
+        match r {
+            Ok(px) => px@ == crate::policy_model::conv2_policy(
+                pkt_of_policy(h, p),
+                map@,
+                s@,
+                p,
+            ),
+            Err(_) => true,
+        },
+        match r {
+            Ok(_) => !indexed || crate::policy_model::in_range_policy(
+                pkt_of_policy(h, p),
+                crate::model::sindex(s@, h.spec_sample_bytes()),
+                p,
+            ) || p.index_range == IndexRangeOptions::Black,
+            Err(e) => indexed && !crate::policy_model::in_range_policy(
+                pkt_of_policy(h, p),
+                crate::model::sindex(s@, h.spec_sample_bytes()),
+                p,
+            ) && p.index_range == IndexRangeOptions::Reject && e == Error::ColorIndexOutOfRange,
+        },
+{ convert_one_policy(h, map, indexed, s, p, subst) }
+
+fn t3_t6_policy_packets(
+    bytes: &[u8], h: &Header, map: &[u8], indexed: bool,
+    out: &mut Vec<u8>, cursor: &mut usize, produced: &mut usize,
+    n: usize, c0g: usize, p0g: usize, p: Policy,
+    steps: &mut Ghost<nat>,
+    clip: &mut bool, subst: &mut bool,
+) -> (r: Result<(), Error>)
+    requires
+        header_inv_policy(*h, p),
+        n == h.width as int * h.height as int,
+        indexed == (crate::policy_model::kind_policy(h.image_type, p) == 0),
+        indexed ==> crate::policy_model::map_present_policy_flags(h.color_map_flag, p),
+        old(out)@.len() == 4 * n,
+        *old(cursor) == c0g, c0g <= bytes@.len(),
+        *old(produced) == p0g, p0g <= n,
+        bytes@.len() <= crate::model::max_input(),
+        map@.len() == crate::policy_model::map_bytes_flags(h.color_map_flag, h.map_length as int, h.map_entry_depth, p),
+        map@.len() <= 262140,
+    ensures
+        match crate::policy_model::mr_policy(bytes@, pkt_of_policy(h, p), map@, p, c0g as int, p0g as int) {
+            Ok((c, pr, px)) => r is Ok && *final(cursor) == c && *final(produced) == pr
+                && crate::model::wrote_px_off(final(out)@, px, h.width as int, h.height as int,
+                    h.spec_flip_x(), h.spec_flip_y(), p0g as int, px.len() as int),
+            Err((e, c, pr, px)) => e == crate::model::MrErr::Api(r->Err_0) && r is Err
+                && *final(cursor) == c && *final(produced) == pr
+                && crate::model::wrote_px_off(final(out)@, px, h.width as int, h.height as int,
+                    h.spec_flip_x(), h.spec_flip_y(), p0g as int, px.len() as int),
+        },
+        r is Ok ==> *final(clip) == (*old(clip) || crate::policy_model::mr_flags_policy(bytes@, pkt_of_policy(h, p), map@, p, c0g as int, p0g as int).0),
+        r is Ok ==> *final(subst) == (*old(subst) || crate::policy_model::mr_flags_policy(bytes@, pkt_of_policy(h, p), map@, p, c0g as int, p0g as int).1),
+        final(steps)@ as int <= old(steps)@ as int + 7 * (n as int - p0g as int) + 2,
+        final(out)@.len() == 4 * n,
+        *final(cursor) <= bytes@.len(),
+        p0g <= *final(produced) <= n,
+        crate::policy_model::mr_pix_policy(bytes@, pkt_of_policy(h, p), map@, p, c0g as int, p0g as int).len()
+            == *final(produced) as int - p0g as int,
+        crate::model::wrote_px_off(final(out)@,
+            crate::policy_model::mr_pix_policy(bytes@, pkt_of_policy(h, p), map@, p, c0g as int, p0g as int),
+            h.width as int, h.height as int, h.spec_flip_x(), h.spec_flip_y(),
+            p0g as int, *final(produced) as int - p0g as int),
+        match r {
+            Ok(()) => *final(produced) == n &&
+                crate::policy_model::mr_cur_policy(bytes@, pkt_of_policy(h, p), map@, p, c0g as int, p0g as int)
+                    == Ok((*final(cursor) as int, n as int)),
+            Err(e) => crate::policy_model::mr_cur_policy(bytes@, pkt_of_policy(h, p), map@, p, c0g as int, p0g as int)
+                    == Err(crate::model::MrErr::Api(e)) &&
+                crate::policy_model::mr_gcur_policy(bytes@, pkt_of_policy(h, p), map@, p, c0g as int, p0g as int)
+                    == Ok(*final(cursor) as int),
+        },
+{ decode_rle_policy(bytes, h, map, indexed, out, cursor, produced, n, c0g, p0g, p, steps, clip, subst) }
+
+/// Universal safety, output bounds, termination, recovery exactness and work.
+/// The counters observe the executable called by the public profile API; the
+/// allocation count is the guard log's length (`G` clause 1/2 replaces the old
+/// ghost `allocations` counter).
+fn t1_t8_t10_w_a_e_policy(bytes: &[u8], p: Policy)
+    -> (r: (Result<Decoded, TryError>, bool, Ghost<nat>))
+    ensures
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            decoded_bounds(crate::alloc_guard::sites::fmt_part(r.0))
+            && policy_result(crate::alloc_guard::sites::fmt_part(r.0)) == crate::policy_model::mp_policy(bytes@, p),
+        r.0 is Ok ==> r.1 == crate::policy_model::recovered_policy(bytes@, p),
+        r.0 is Err ==> !r.1,
+        match r.0 {
+            Err(TryError::OutOfMemory(o)) => o.site_spec() == AllocSite::Output
+                && o.elements_spec() as int == 4 * policy_checked_n(bytes@, p),
+            _ => true,
+        },
+        r.2@ as int <= 16 * (bytes@.len() + policy_checked_n(bytes@, p)),
+{
+    let mut steps = Ghost(0nat);
+    let r = try_decode_policy_tracked(bytes, p, &mut steps);
+    proof {
+        reveal(crate::alloc_guard::sites::fmt_part);
+        reveal(policy_checked_n);
+        reveal(decoded_bounds);
+        reveal(req_tga_policy);
+        reveal(crate::alloc_guard::req_of_log);
+        reveal(crate::alloc_guard::all_ok);
+        reveal(crate::policy_model::mp_policy);
+        if let Err(TryError::OutOfMemory(o)) = r.0 {
+            assert((o.site_spec(), o.elements_spec() as nat) == req_tga_policy(bytes@, p)[0]);
+            assert(o.site_spec() == AllocSite::Output);
+        }
+    }
+    (r.0, r.1, steps)
+}
+
+/// T5/T7/T9: exact RGBA, recovery and first error for each named profile.
+fn t7_t9_policy_exact(bytes: &[u8], profile: crate::policy::Profile)
+    -> (r: (Result<Decoded, TryError>, bool))
+    ensures
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            policy_result(crate::alloc_guard::sites::fmt_part(r.0)) == crate::policy_model::mp_policy(bytes@, crate::policy::profile_policy(profile)),
+        r.0 is Ok ==> r.1 == crate::policy_model::recovered_policy(bytes@, crate::policy::profile_policy(profile)),
+        r.0 is Err ==> !r.1,
+{ try_decode_with_policy(bytes, profile) }
+
+/// R transfers the model's four error-site argument to both executable calls.
+fn r_recommended_conservative(bytes: &[u8])
+    -> (r: ((Result<Decoded, TryError>, bool), (Result<Decoded, TryError>, bool)))
+    ensures
+        match (r.0.0, r.1.0) {
+            (Ok(strict), Ok(recommended)) =>
+                policy_result(crate::alloc_guard::sites::fmt_part(Ok(recommended))) == policy_result(crate::alloc_guard::sites::fmt_part(Ok(strict)))
+                && !r.1.1,
+            _ => true,
+        },
+{
+    let strict = try_decode_with_policy(bytes, crate::policy::Profile::Strict);
+    let recommended = try_decode_with_policy(bytes, crate::policy::Profile::Recommended);
+    proof {
+        reveal(crate::alloc_guard::sites::fmt_part);
+        if let Ok(ref d) = strict.0 {
+            crate::policy_model::lemma_mp_policy_recommended_on_strict_ok(bytes@, dec_vals(*d));
+        }
+    }
+    (strict, recommended)
+}
+
+/// E's no-event corollary applies to every record with both event sites disabled.
+fn e_policy_no_events(bytes: &[u8], p: Policy) -> (r: (Result<Decoded, TryError>, bool))
+    requires p.rle_overrun == crate::policy::RleOverrunOptions::Reject,
+        p.index_range == crate::policy::IndexRangeOptions::Reject,
+    ensures !r.1,
+{
+    let mut steps = Ghost(0nat);
+    let r = try_decode_policy_tracked(bytes, p, &mut steps);
+    proof {
+        reveal(crate::policy_model::recovered_policy);
+        reveal(crate::alloc_guard::sites::fmt_part);
+        crate::policy_model::lemma_recovered_policy_reject(bytes@, p);
+        match r.0 {
+            Err(TryError::OutOfMemory(_)) => { assert(r.1 == false); },
+            Ok(_) => {
+                assert(r.1 == crate::policy_model::recovered_policy(bytes@, p));
+                assert(!r.1);
+            },
+            Err(TryError::Format(_)) => {},
+        }
+    }
+    (r.0, r.1)
+}
+
+/// The custom-record decoder's own contract, stated on a `pub(crate)` function
+/// that every build verifies, so the contract counts in the verified total.
+/// `try_decode_custom_policy` (`#[cfg(test)]`, below) is the only caller, and it
+/// only forwards this contract; the wrapper's own `ensures` is not what the
+/// verifier checked, this is.
+///
+/// The `recovered` equality holds only on `Ok`. On either error variant the
+/// flag is `false`, and `false` is not `recovered_policy(bytes, p)` in general: a
+/// format error can follow a completed clip or substitution event. The smallest
+/// case is a one-pixel true-colour RLE image — `image_type = 10`,
+/// `width = height = 1`, `pixel_depth = 24`, `rle_overrun = ClipPacket` —
+/// carrying a repeat packet whose count is 2 (one more than `N = 1`) and one
+/// trailing byte: the packet clips (setting the clip event), then the suffix
+/// check returns `TrailingBytes`. The executable returns
+/// `Err(Format(TrailingBytes))` with `recovered == false`, while
+/// `recovered_policy` is `true` because the clip event occurred. The exact
+/// `mp_policy` result still matches on that arm, which is why the `policy_result`
+/// equality keeps both error variants.
+#[allow(dead_code)] // called only from `#[cfg(test)]` code, so the lib build sees no caller
+pub(crate) fn decode_custom_policy_core(bytes: &[u8], p: Policy)
+    -> (r: (Result<Decoded, TryError>, bool))
+    ensures
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            policy_result(crate::alloc_guard::sites::fmt_part(r.0)) == crate::policy_model::mp_policy(bytes@, p),
+        r.0 is Ok ==> r.1 == crate::policy_model::recovered_policy(bytes@, p),
+        r.0 is Err ==> !r.1,
+{
+    let mut steps = Ghost(0nat);
+    let r = try_decode_policy_tracked(bytes, p, &mut steps);
+    proof { reveal(crate::alloc_guard::sites::fmt_part); }
+    (r.0, r.1)
+}
+
+/// Arbitrary executable records are reachable only in unit tests, through this
+/// wrapper over the verified `decode_custom_policy_core`.
+#[cfg(test)]
+pub(crate) fn try_decode_custom_policy(bytes: &[u8], p: Policy)
+    -> (r: (Result<Decoded, TryError>, bool))
+    ensures
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            policy_result(crate::alloc_guard::sites::fmt_part(r.0)) == crate::policy_model::mp_policy(bytes@, p),
+        r.0 is Ok ==> r.1 == crate::policy_model::recovered_policy(bytes@, p),
+        r.0 is Err ==> !r.1,
+{
+    decode_custom_policy_core(bytes, p)
 }
 
 } // verus!
