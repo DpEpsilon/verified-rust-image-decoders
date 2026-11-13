@@ -45,6 +45,10 @@ def main():
     if seed == "none":
         return
     fname, anchor = ANCHORS[core]
+    if os.environ.get("ALLOC_AUDIT_SEED_SELFTEST_BAD_ANCHOR") == "1":
+        # Self-test of the controls runner: simulate an anchor that no longer
+        # exists in the core, so generation must fail and be counted.
+        anchor = anchor + "  /* anchor that does not exist */"
     p = os.path.join(dst, "src", fname)
     text = open(p).read()
     if text.count(anchor) != 1:

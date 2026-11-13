@@ -1,0 +1,60 @@
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: PASS
+findings: 0
+finding-tags: -
+findings-other-than-unsigned-reviewer: 0
+mode: PROTOTYPE (--prototype; fixture reviewer accepted; cannot back a proof report)
+crate: helperdep
+crate-svh: 8a7cfecbb209bc0eecf9cee9864ca3c3
+invocation: direct
+rustc: 1.99.1 (58cf8f9c3 2026-10-13)
+rustc-commit: 58cf8f9c3 (full 58cf8f9c35b355199727627d07ae34a4e2846d67)
+target: x86_64-unknown-linux-gnu
+profile: opt-level=2,debug-assertions=off,share-generics=off
+profile-class: custom
+features: []
+cfgs: ["panic=\"unwind\"", "target_abi=\"\"", "target_arch=\"x86_64\"", "target_endian=\"little\"", "target_env=\"gnu\"", "target_family=\"unix\"", "target_feature=\"fxsr\"", "target_feature=\"sse\"", "target_feature=\"sse2\"", "target_has_atomic=\"16\"", "target_has_atomic=\"32\"", "target_has_atomic=\"64\"", "target_has_atomic=\"8\"", "target_has_atomic=\"ptr\"", "target_has_atomic_load_store=\"16\"", "target_has_atomic_load_store=\"32\"", "target_has_atomic_load_store=\"64\"", "target_has_atomic_load_store=\"8\"", "target_has_atomic_load_store=\"ptr\"", "target_has_atomic_primitive_alignment=\"16\"", "target_has_atomic_primitive_alignment=\"32\"", "target_has_atomic_primitive_alignment=\"64\"", "target_has_atomic_primitive_alignment=\"8\"", "target_has_atomic_primitive_alignment=\"ptr\"", "target_has_reliable_f128", "target_has_reliable_f16", "target_has_reliable_f16_math", "target_has_threads", "target_object_format=\"elf\"", "target_os=\"linux\"", "target_pointer_width=\"64\"", "target_thread_local", "target_vendor=\"unknown\"", "unix"]
+source_hash: 126eb460804356a33ca8240fab5b73f8288ca335b33901f5599717d7a2e780e6
+source-hash-scope: sha256 over sorted per-file sha256 of every non-imported source-map file outside the sysroot (module files and loaded include targets); dependency crates are bound by crate hash, vstd additionally by its locked source checksum
+allowlist: /home/ws/projects/verified-decoders/alloc-delta/audit/controls/fixtures/x12_helperdep.toml sha256=dd6ada1984f8a8c670fcee9bc0d88a30a21ed815c8b261388a3c578d331f04d8 entries=0 reviewer="A. Fixture-Reviewer (control fixture, not a review)" drafted_by="draft_allowlist.py (Claude agent), 2026-11-13; unsigned"
+vstd: linked=false version=None svh=None locked_checksum=None linked_artifact_sha256=None source_dir=None
+vstd-binding-problems: none
+roots: crate::helper
+roots-excluded: 
+generic-exports: 
+instances: 2
+edges: 1
+crates-reached: core 1, helperdep 1
+allocator-sinks: 0
+mono-items: 0 in local codegen units; 0 not reached by the walk
+
+-- findings (0) --
+
+-- source files (2) --
+  combined 126eb460804356a33ca8240fab5b73f8288ca335b33901f5599717d7a2e780e6
+  77e4a438df654a15f26b80ab32058dae5482987657ee240f4131ab4b99f8119d  x/x12_helperdep.rs
+
+-- build inputs (compiler-resolved) (4) --
+  build-script: none
+  include: none (no file loaded other than module files)
+  env: none (no env!/option_env!/tracked env read)
+  proc-macro: none
+
+-- linked artifacts and command line (4) --
+  rustc command line: /tmp/claude-0/alloc-audit/tool-target/release/alloc_audit --crate-name helperdep --edition 2021 --crate-type lib -Copt-level=2 --out-dir /tmp/claude-0/alloc-audit/control-out -L /tmp/claude-0/alloc-audit/control-deps -C metadata=one /home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases/x/x12_helperdep.rs
+  env CARGO_MANIFEST_DIR=/home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases
+  crate core svh=cbc12955c475a0d98147c7ede674d8a8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcore-1d288395a3394ed3.rmeta sha256=f991bfdb98d878590ba8a11da984bc230a078ee8079e27fcfd65854803b436f5
+  crate compiler_builtins svh=608975982fce69540ecd1b8bed34a3d8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcompiler_builtins-2d9557d6e902a200.rmeta sha256=9462f23a8789d047933fc26cbdff2172961ee5c9bf994690b196ff9c3de5a5cf
+
+-- allocator sinks (every root-to-sink path judged) (0) --
+
+-- leaves (0) --
+
+-- panic edges (per function) (0) --
+
+-- guard call sites and generic exports (0) --
+
+-- dependency contracts (0) --
+
+-- edges (1) --
+  crate::helper -> core::num::<impl usize>::wrapping_mul [inlined] @ /home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases/x/x12_helperdep.rs:4:7: 4:22

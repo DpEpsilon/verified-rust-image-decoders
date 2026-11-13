@@ -1,0 +1,2 @@
+control	expected	verdict	exit	result	finding-tags	failed-checks
+s_selftest_bad_anchor	FAIL	-	2	FAILED	-	no report (exit 2)

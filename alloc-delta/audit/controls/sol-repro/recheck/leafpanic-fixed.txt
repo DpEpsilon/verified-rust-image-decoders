@@ -1,0 +1,73 @@
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 2
+finding-tags: unexplained-leaf
+findings-other-than-unsigned-reviewer: 2
+mode: PRODUCTION
+crate: leafpanic
+crate-svh: 34abb1262073cb8d11420088530b43f4
+invocation: direct
+rustc: 1.99.1 (58cf8f9c3 2026-10-13)
+rustc-commit: 58cf8f9c3 (full 58cf8f9c35b355199727627d07ae34a4e2846d67)
+target: x86_64-unknown-linux-gnu
+profile: opt-level=3,debug-assertions=off,share-generics=off
+profile-class: release
+features: []
+cfgs: ["fmt_debug=\"full\"", "panic=\"unwind\"", "relocation_model=\"pic\"", "target_abi=\"\"", "target_arch=\"x86_64\"", "target_endian=\"little\"", "target_env=\"gnu\"", "target_family=\"unix\"", "target_feature=\"fxsr\"", "target_feature=\"sse\"", "target_feature=\"sse2\"", "target_feature=\"x87\"", "target_has_atomic", "target_has_atomic=\"16\"", "target_has_atomic=\"32\"", "target_has_atomic=\"64\"", "target_has_atomic=\"8\"", "target_has_atomic=\"ptr\"", "target_has_atomic_load_store", "target_has_atomic_load_store=\"16\"", "target_has_atomic_load_store=\"32\"", "target_has_atomic_load_store=\"64\"", "target_has_atomic_load_store=\"8\"", "target_has_atomic_load_store=\"ptr\"", "target_has_atomic_primitive_alignment=\"16\"", "target_has_atomic_primitive_alignment=\"32\"", "target_has_atomic_primitive_alignment=\"64\"", "target_has_atomic_primitive_alignment=\"8\"", "target_has_atomic_primitive_alignment=\"ptr\"", "target_has_reliable_f128", "target_has_reliable_f16", "target_has_reliable_f16_math", "target_has_threads", "target_object_format=\"elf\"", "target_os=\"linux\"", "target_pointer_width=\"64\"", "target_thread_local", "target_vendor=\"unknown\"", "unix"]
+source_hash: 5fb49153825e5a2a626e98b2b8968cbceb4ac7e962f50397c0f014a82d3bfd71
+source-hash-scope: sha256 over sorted per-file sha256 of every non-imported source-map file outside the sysroot (module files and loaded include targets); dependency crates are bound by crate hash, vstd additionally by its locked source checksum
+allowlist: /tmp/claude-0/sol-audit-recheck/leafpanic.toml sha256=6977753185c86dcc0b05e59552ea484aba5fd538df4809cd2249b8eee9a252a2 entries=2 reviewer="synthetic-review-control" drafted_by=""
+vstd: linked=false version=None svh=None locked_checksum=None linked_artifact_sha256=None source_dir=None
+vstd-binding-problems: none
+roots: crate::root
+roots-excluded: 
+generic-exports: 
+instances: 7
+edges: 7
+crates-reached: core 4, leafpanic 3
+allocator-sinks: 0
+mono-items: 3 in local codegen units; 0 not reached by the walk
+
+-- findings (2) --
+  [unexplained-leaf] [intrinsic] core::intrinsics::black_box<u8> [intrinsic] reached from crate::guard<u16> has no allowlist entry
+  [unexplained-leaf] [panic] PanicBoundsCheck in crate::guard<u16> at /tmp/claude-0/sol-audit-recheck/leafpanic.rs:6:33: 6:38 has no per-function allowlist entry (T1/Safe' citation)
+
+-- source files (2) --
+  combined 5fb49153825e5a2a626e98b2b8968cbceb4ac7e962f50397c0f014a82d3bfd71
+  a54f8ee1ec94012aed5b6973ab620178e5847fd5edfa55790e2bd191e0973252  /tmp/claude-0/sol-audit-recheck/leafpanic.rs
+
+-- build inputs (compiler-resolved) (4) --
+  build-script: none
+  include: none (no file loaded other than module files)
+  env: none (no env!/option_env!/tracked env read)
+  proc-macro: none
+
+-- linked artifacts and command line (5) --
+  rustc command line: /tmp/claude-0/sol-audit-recheck/tool-target/release/alloc_audit --crate-name leafpanic --edition 2021 --crate-type lib -Copt-level=3 --out-dir /tmp/claude-0/sol-audit-recheck /tmp/claude-0/sol-audit-recheck/leafpanic.rs
+  env CARGO_MANIFEST_DIR=/home/ws/projects/verified-decoders/alloc-delta/audit/controls/toy-manifest
+  env RUSTC_BOOTSTRAP=1
+  crate core svh=cbc12955c475a0d98147c7ede674d8a8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcore-1d288395a3394ed3.rmeta sha256=f991bfdb98d878590ba8a11da984bc230a078ee8079e27fcfd65854803b436f5
+  crate compiler_builtins svh=608975982fce69540ecd1b8bed34a3d8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcompiler_builtins-2d9557d6e902a200.rmeta sha256=9462f23a8789d047933fc26cbdff2172961ee5c9bf994690b196ff9c3de5a5cf
+
+-- allocator sinks (every root-to-sink path judged) (0) --
+
+-- leaves (2) --
+  ok [intrinsic] core::intrinsics::black_box<u8> [intrinsic] <- crate::guard<u8>
+  !! [intrinsic] core::intrinsics::black_box<u8> [intrinsic] <- crate::guard<u16>
+
+-- panic edges (per function) (2) --
+  ok PanicBoundsCheck in crate::guard<u8>
+  !! PanicBoundsCheck in crate::guard<u16> at /tmp/claude-0/sol-audit-recheck/leafpanic.rs:6:33: 6:38
+
+-- guard call sites and generic exports (0) --
+
+-- dependency contracts (0) --
+
+-- edges (7) --
+  crate::root -> crate::guard<u8> [call] @ /tmp/claude-0/sol-audit-recheck/leafpanic.rs:8:30: 8:44
+  crate::root -> crate::guard<u16> [call] @ /tmp/claude-0/sol-audit-recheck/leafpanic.rs:8:47: 8:62
+  crate::guard<u8> -> core::mem::size_of<u8> [inlined] @ /tmp/claude-0/sol-audit-recheck/leafpanic.rs:5:15: 5:40
+  crate::guard<u8> -> core::intrinsics::black_box<u8> [intrinsic] [call] @ /tmp/claude-0/sol-audit-recheck/leafpanic.rs:6:5: 6:39
+  crate::guard<u16> -> core::mem::size_of<u16> [inlined] @ /tmp/claude-0/sol-audit-recheck/leafpanic.rs:5:15: 5:40
+  crate::guard<u16> -> core::intrinsics::black_box<u8> [intrinsic] [call] @ /tmp/claude-0/sol-audit-recheck/leafpanic.rs:6:5: 6:39
+  core::intrinsics::black_box<u8> [intrinsic] -> core::intrinsics::black_box<u8> [intrinsic-fallback] @ <no span>

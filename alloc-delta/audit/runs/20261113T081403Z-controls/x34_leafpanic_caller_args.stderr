@@ -1,0 +1,17 @@
+warning: the feature `core_intrinsics` is internal to the compiler or standard library
+ --> /home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases/x/x34_leafpanic_caller_args.rs:2:12
+  |
+2 | #![feature(core_intrinsics)]
+  |            ^^^^^^^^^^^^^^^
+  |
+  = note: using it is strongly discouraged
+  = note: `#[warn(internal_features)]` on by default
+
+warning: 1 warning emitted
+
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 2
+finding-tags: unexplained-leaf
+findings-other-than-unsigned-reviewer: 2
+mode: PRODUCTION

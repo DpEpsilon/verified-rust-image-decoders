@@ -69,7 +69,17 @@ pub fn classify(raw: &[String]) -> Result<Invocation, String> {
         return Ok(pass(args));
     };
     let env = |k: &str| std::env::var(k).ok().filter(|v| !v.is_empty());
-    let prototype_mode = std::env::var_os("ALLOC_AUDIT_PROTOTYPE").is_some();
+    // Prototype mode is on only for the exact value "1"; any other value is a
+    // configuration error (exit 2), never silently read as on or off.
+    let flag = |k: &str| -> Result<bool, String> {
+        match std::env::var(k) {
+            Err(std::env::VarError::NotPresent) => Ok(false),
+            Ok(v) if v == "1" => Ok(true),
+            Ok(v) => Err(format!("{k}={v:?}: the only accepted value is 1 (unset it to turn the switch off)")),
+            Err(e) => Err(format!("{k}: {e}")),
+        }
+    };
+    let prototype_mode = flag("ALLOC_AUDIT_PROTOTYPE")?;
     let roots: Vec<String> = env("ALLOC_AUDIT_ROOTS")
         .map(|s| s.split(',').map(|x| x.trim().to_string()).filter(|x| !x.is_empty()).collect())
         .unwrap_or_default();
@@ -79,8 +89,8 @@ pub fn classify(raw: &[String]) -> Result<Invocation, String> {
         report_path: None,
         roots,
         prototype_mode,
-        continue_on_fail: std::env::var_os("ALLOC_AUDIT_CONTINUE").is_some(),
-        emit_edges: std::env::var_os("ALLOC_AUDIT_EDGES").is_some(),
+        continue_on_fail: flag("ALLOC_AUDIT_CONTINUE")?,
+        emit_edges: flag("ALLOC_AUDIT_EDGES")?,
         vstd_override: std::env::var("ALLOC_AUDIT_VSTD_VERSION").ok(),
         rustc_args: args.clone(),
         invocation: if wrapper { "wrapper" } else { "direct" },

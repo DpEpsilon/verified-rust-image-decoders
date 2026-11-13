@@ -1,0 +1,145 @@
+# CONTROL VARIANT x33b: x33's fixture for the non-allocating callback
+[meta]
+format="alloc-audit/2"
+crate_name="callback"
+rustc_commit="58cf8f9c35b355199727627d07ae34a4e2846d67"
+target="x86_64-unknown-linux-gnu"
+profile="opt-level=3,debug-assertions=off,share-generics=off"
+features=[]
+source_hash="6ff163e7b1fd43c89e83d5fc18327d1faabd41855fcc1f8396aecf8cc1867f22"
+vstd_version="none"
+reviewer="synthetic-review-control"
+
+[[entry]]
+kind="alloc"
+item="alloc::slice::<impl [T]>::to_vec"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+allow="crate::guard"
+
+[[entry]]
+kind="alloc"
+item="alloc::alloc::dealloc_nonnull"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+allow="*"
+
+[[entry]]
+kind="intrinsic"
+item="core::intrinsics::black_box<usize>"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+
+[[entry]]
+kind="intrinsic"
+item="core::intrinsics::assert_inhabited<crate::X<false>>"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+
+[[entry]]
+kind="ffi"
+item="alloc::alloc::__rust_no_alloc_shim_is_unstable_v2"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+
+[[entry]]
+kind="intrinsic"
+item="core::intrinsics::black_box<u8>"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+
+[[entry]]
+kind="no-mir"
+item="core::panicking::panic_nounwind_fmt"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+allow="core::slice::raw::from_raw_parts_mut::precondition_check"
+
+[[entry]]
+kind="no-mir"
+item="core::panicking::panic_nounwind_fmt"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+allow="alloc::vec::Vec::<T, A>::set_len::precondition_check"
+
+[[entry]]
+kind="no-mir"
+item="core::panicking::panic_nounwind_fmt"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+allow="core::hint::assert_unchecked::precondition_check"
+
+[[entry]]
+kind="no-mir"
+item="core::panicking::panic_nounwind_fmt"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+allow="core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check"
+
+[[entry]]
+kind="no-mir"
+item="core::panicking::panic_nounwind_fmt"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+allow="core::num::<impl usize>::unchecked_sub::precondition_check"
+
+[[entry]]
+kind="no-mir"
+item="core::panicking::panic_nounwind_fmt"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+allow="core::alloc::layout::Layout::from_size_alignment_unchecked::precondition_check"
+
+[[entry]]
+kind="no-mir"
+item="core::panicking::panic_nounwind_fmt"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+allow="core::num::<impl usize>::unchecked_mul::precondition_check"
+
+[[entry]]
+kind="no-mir"
+item="core::panicking::panic_nounwind_fmt"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+allow="core::alloc::layout::Layout::from_size_align_unchecked::precondition_check"
+
+[[entry]]
+kind="no-mir"
+item="core::panicking::panic_nounwind_fmt"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+allow="core::mem::alignment::Alignment::new_unchecked::precondition_check"
+
+[[entry]]
+kind="intrinsic"
+item="core::intrinsics::cold_path"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+
+[[entry]]
+kind="intrinsic"
+item="core::intrinsics::ctpop<usize>"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+
+[[entry]]
+kind="no-mir"
+item="core::panicking::panic_fmt"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+allow="core::ptr::const_ptr::<impl *const T>::is_aligned_to<()>"
+
+[[entry]]
+kind="panic"
+item="PanicBoundsCheck"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+allow="<T as alloc::slice::<impl [T]>::to_vec_in::ConvertVec>::to_vec<crate::X<false>,alloc::alloc::Global>"
+
+[[entry]]
+kind="panic"
+item="PanicAddOverflow"
+contract="synthetic control: standard nonallocating leaf or explicitly admitted allocation"
+citation="synthetic control"
+allow="<core::iter::adapters::enumerate::Enumerate<I> as core::iter::traits::iterator::Iterator>::next<core::slice::iter::Iter<'_, crate::X<false>>>"

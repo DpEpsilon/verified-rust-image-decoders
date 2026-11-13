@@ -1,0 +1,82 @@
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 3
+finding-tags: allowlist-absent,dylib-dependency,foreign-crate-instance
+findings-other-than-unsigned-reviewer: 3
+mode: PRODUCTION
+diagnostic: no allowlist
+crate: x13
+crate-svh: ce0145d4d77e959d8db6b852be4159c1
+invocation: direct
+rustc: 1.99.1 (58cf8f9c3 2026-10-13)
+rustc-commit: 58cf8f9c3 (full 58cf8f9c35b355199727627d07ae34a4e2846d67)
+target: x86_64-unknown-linux-gnu
+profile: opt-level=2,debug-assertions=off,share-generics=off
+profile-class: custom
+features: []
+cfgs: ["panic=\"unwind\"", "target_abi=\"\"", "target_arch=\"x86_64\"", "target_endian=\"little\"", "target_env=\"gnu\"", "target_family=\"unix\"", "target_feature=\"fxsr\"", "target_feature=\"sse\"", "target_feature=\"sse2\"", "target_has_atomic=\"16\"", "target_has_atomic=\"32\"", "target_has_atomic=\"64\"", "target_has_atomic=\"8\"", "target_has_atomic=\"ptr\"", "target_has_atomic_load_store=\"16\"", "target_has_atomic_load_store=\"32\"", "target_has_atomic_load_store=\"64\"", "target_has_atomic_load_store=\"8\"", "target_has_atomic_load_store=\"ptr\"", "target_has_atomic_primitive_alignment=\"16\"", "target_has_atomic_primitive_alignment=\"32\"", "target_has_atomic_primitive_alignment=\"64\"", "target_has_atomic_primitive_alignment=\"8\"", "target_has_atomic_primitive_alignment=\"ptr\"", "target_has_reliable_f128", "target_has_reliable_f16", "target_has_reliable_f16_math", "target_has_threads", "target_object_format=\"elf\"", "target_os=\"linux\"", "target_pointer_width=\"64\"", "target_thread_local", "target_vendor=\"unknown\"", "unix"]
+source_hash: ab813f48f6ffa21388bf78577d1cbe202460074901e9ab8b89c01afa1a71c490
+source-hash-scope: sha256 over sorted per-file sha256 of every non-imported source-map file outside the sysroot (module files and loaded include targets); dependency crates are bound by crate hash, vstd additionally by its locked source checksum
+allowlist: <none>
+vstd: linked=false version=None svh=None locked_checksum=None linked_artifact_sha256=None source_dir=None
+vstd-binding-problems: none
+roots: crate::x13_root
+roots-excluded: 
+generic-exports: 
+instances: 2
+edges: 1
+crates-reached: dyldep 1, x13 1
+allocator-sinks: 0
+mono-items: 0 in local codegen units; 0 not reached by the walk
+
+-- findings (3) --
+  [allowlist-absent] no allowlist was supplied: this run is a diagnostic and can never pass
+  [dylib-dependency] crate dyldep is linked as a dylib and is not a proc-macro crate
+  [foreign-crate-instance] an instance from crate dyldep (not core/alloc/vstd/verus_builtin/compiler_builtins from their bound sources, and not admitted) is reachable: dyldep::plain
+
+-- source files (2) --
+  combined ab813f48f6ffa21388bf78577d1cbe202460074901e9ab8b89c01afa1a71c490
+  d4c7057402f485b65b3024689fb98052c24437cd7b503a15afa6bf01189d2afc  x/x13_dylib_not_proc_macro.rs
+
+-- build inputs (compiler-resolved) (4) --
+  build-script: none
+  include: none (no file loaded other than module files)
+  env: none (no env!/option_env!/tracked env read)
+  proc-macro: none
+
+-- linked artifacts and command line (22) --
+  rustc command line: /tmp/claude-0/alloc-audit/tool-target/release/alloc_audit --crate-name x13 --edition 2021 --crate-type lib -Copt-level=2 --out-dir /tmp/claude-0/alloc-audit/control-out -L /tmp/claude-0/alloc-audit/control-deps --extern dyldep=/tmp/claude-0/alloc-audit/control-deps/libdyldep.so /home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases/x/x13_dylib_not_proc_macro.rs
+  env CARGO_MANIFEST_DIR=/home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases
+  crate core svh=cbc12955c475a0d98147c7ede674d8a8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcore-1d288395a3394ed3.rmeta sha256=f991bfdb98d878590ba8a11da984bc230a078ee8079e27fcfd65854803b436f5
+  crate dyldep svh=83e2f576c77fb20ace521e4ed6657ae2 kind=Unconditional sysroot=false artifact /tmp/claude-0/alloc-audit/control-deps/libdyldep.so sha256=dffcf431bab38eadd53e6cde3c4b8ba2f223f4a42140da573676f78cbc07ba17
+  crate std svh=acc8c2c13a7c272682da01bcc189e6d5 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libstd-7e719de9c4abc98f.rmeta sha256=46c7a0a3626c5ed88986058f8d9fb4d312526c441feaffed0ed375b2073b2466
+  crate alloc svh=3e16574379d685a1d1b3318e7fc12518 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/liballoc-3988244237fec6ee.rmeta sha256=92fa3a38f8b43981aeb810e6be09f9b0a66f38439272f8ee1b7ddb832a8aa065
+  crate compiler_builtins svh=608975982fce69540ecd1b8bed34a3d8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcompiler_builtins-2d9557d6e902a200.rmeta sha256=9462f23a8789d047933fc26cbdff2172961ee5c9bf994690b196ff9c3de5a5cf
+  crate libc svh=8569c669b0c560cc45acf64a44daa9b0 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/liblibc-6cf0fcd942b0e793.rmeta sha256=aa43a4c7ea0c31d3d8bc7a06e73c9337c087062889fd12844396e0b0883d2814
+  crate rustc_std_workspace_core svh=a9e9a6195467b14d66f424c6614c8df8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_core-fb3f24e4abf4be88.rmeta sha256=a25350da83feb41b7746e08a8dd337f1b8d44b2035067fe03c16f05d8b3d24a9
+  crate unwind svh=6bcb47b2693575d4716618cf904f481c kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libunwind-87f8da15080ba246.rmeta sha256=a23dac32843307a2afb45bfb864817d596bd184a2a29d7aadc600f628401fe84
+  crate miniz_oxide svh=070a9bda135a87569d6e8e818c1937d9 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libminiz_oxide-4ee1421476c1c513.rmeta sha256=62205ba0666ad889eff95ecacdab5b7214ef4358f16ca572bfe2a2678e801a7a
+  crate adler2 svh=4553fa201ee7f82d6696c4f7ec2f0646 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libadler2-e749a99f48dba5bc.rmeta sha256=1d99f767899aa7df2c8fbecfde416351882c8504982ea95d3fb2cdb5a1ee196a
+  crate hashbrown svh=61d617d5bcfc659cfac8c1c9b882dad7 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libhashbrown-bd00bf133bcf4229.rmeta sha256=ad0c77a408d20acc61c380aa60380d895759b0e6c8de69560986b38771f91198
+  crate rustc_std_workspace_alloc svh=d61d955ae235941d0e402c97f048f89f kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_alloc-e4d7e1d94de777fa.rmeta sha256=c1ef731629952508d01d0c00fbdc230ebb151bd1e1882215885cd673d59af3ce
+  crate std_detect svh=439fcae14d44af5b36acd44e9a6f86ce kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libstd_detect-ce90372c8b94015d.rmeta sha256=f13f7415af81f7a310c149b9575eaa8d387822776b2fdd646a73cea227318bd1
+  crate rustc_demangle svh=033dbc7f46d734951affa140e24e003f kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_demangle-23edf219dcb73297.rmeta sha256=eb1566de09f4d2c5566f4cf4242e5d81516667483a2d89418cedfb112eb7d6a9
+  crate cfg_if svh=c462e68103de2c7257ce63ba9962e30f kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcfg_if-77a19c181a6f6522.rmeta sha256=47a8cc35d0e9288f5b737703a0ae5a143cfffa7bd09a53692e9d79073a1075dd
+  crate addr2line svh=3f7d167537e50f6728ddbc90a216cb9e kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libaddr2line-b2546485fb156a81.rmeta sha256=22f49702a2d9639b7e43bfee87f30e52abc47d5ed145a981a56b91aae1d9d056
+  crate gimli svh=5b90a2c0ca6af8a0defbb5a4e3ddb2eb kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libgimli-a024a39c5ca178d0.rmeta sha256=fcb2f1c6f19201fd77e2ccc7857ebd6d3a46ab56c9939a8b27e0f67a9fb1ba44
+  crate object svh=acf1f59896034fb7b305ea1b937f6806 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libobject-9ab214bf508f4fb2.rmeta sha256=8e1b829cb0e637f49a695216ce178bef299c0956be8ab7c55bb5816dd0e33eba
+  crate memchr svh=19e0afaceb1b8143d52f6857421f21e8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libmemchr-e57d23b4cf2c7093.rmeta sha256=ab14125435c028eb23dc9959b4eaab4bf810ea9cc9971aa541964370ae06d5da
+  crate panic_unwind svh=fecfcc78fc00a90df7ab12e0d870436d kind=Conditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libpanic_unwind-4c962e8757b7fd52.rmeta sha256=ee7fd8068a9fe4b3b05e167d94dd5bb17cefa60722da0f7ed14e1c2d400f6ccc
+
+-- allocator sinks (every root-to-sink path judged) (0) --
+
+-- leaves (0) --
+
+-- panic edges (per function) (0) --
+
+-- guard call sites and generic exports (0) --
+
+-- dependency contracts (0) --
+
+-- edges (1) --
+  crate::x13_root -> dyldep::plain [inlined] @ /home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases/x/x13_dylib_not_proc_macro.rs:6:5: 6:21

@@ -1,0 +1,6 @@
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 1
+finding-tags: allowlist-unused-entry
+findings-other-than-unsigned-reviewer: 1
+mode: PRODUCTION

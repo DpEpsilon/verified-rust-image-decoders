@@ -1,0 +1,69 @@
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 3
+finding-tags: allowlist-absent,undeclared-build-script,undeclared-env
+findings-other-than-unsigned-reviewer: 3
+mode: PRODUCTION
+diagnostic: no allowlist
+crate: x26_concurrent_untracked_read
+crate-svh: d9e437cbef5afac72f906123436150b7
+invocation: wrapper
+rustc: 1.99.1 (58cf8f9c3 2026-10-13)
+rustc-commit: 58cf8f9c3 (full 58cf8f9c35b355199727627d07ae34a4e2846d67)
+target: x86_64-unknown-linux-gnu
+profile: opt-level=3,debug-assertions=off,share-generics=off
+profile-class: release
+features: []
+cfgs: ["panic=\"unwind\"", "target_abi=\"\"", "target_arch=\"x86_64\"", "target_endian=\"little\"", "target_env=\"gnu\"", "target_family=\"unix\"", "target_feature=\"fxsr\"", "target_feature=\"sse\"", "target_feature=\"sse2\"", "target_has_atomic=\"16\"", "target_has_atomic=\"32\"", "target_has_atomic=\"64\"", "target_has_atomic=\"8\"", "target_has_atomic=\"ptr\"", "target_has_atomic_load_store=\"16\"", "target_has_atomic_load_store=\"32\"", "target_has_atomic_load_store=\"64\"", "target_has_atomic_load_store=\"8\"", "target_has_atomic_load_store=\"ptr\"", "target_has_atomic_primitive_alignment=\"16\"", "target_has_atomic_primitive_alignment=\"32\"", "target_has_atomic_primitive_alignment=\"64\"", "target_has_atomic_primitive_alignment=\"8\"", "target_has_atomic_primitive_alignment=\"ptr\"", "target_has_reliable_f128", "target_has_reliable_f16", "target_has_reliable_f16_math", "target_has_threads", "target_object_format=\"elf\"", "target_os=\"linux\"", "target_pointer_width=\"64\"", "target_thread_local", "target_vendor=\"unknown\"", "unix"]
+source_hash: e6c57fa27cf4a9ca7c4dbb060e92110c10e261567d1f6c1a3444fe57f61bbdf0
+source-hash-scope: sha256 over sorted per-file sha256 of every non-imported source-map file outside the sysroot (module files and loaded include targets); dependency crates are bound by crate hash, vstd additionally by its locked source checksum
+allowlist: <none>
+vstd: linked=false version=None svh=None locked_checksum=None linked_artifact_sha256=None source_dir=None
+vstd-binding-problems: none
+roots: crate::x26_root
+roots-excluded: 
+generic-exports: 
+instances: 3
+edges: 2
+crates-reached: core 2, x26_concurrent_untracked_read 1
+allocator-sinks: 0
+mono-items: 0 in local codegen units; 0 not reached by the walk
+
+-- findings (3) --
+  [allowlist-absent] no allowlist was supplied: this run is a diagnostic and can never pass
+  [undeclared-build-script] the package has a build script (OUT_DIR is set (cargo sets it only for a package with a build script); build.rs exists at the package root (cargo auto-detects it)); declare kind = "build-script", item = "build.rs" with its sha256
+  [undeclared-env] the compilation read environment variable X26_LEN (env!/option_env!/tracked); declare kind = "env", item = "X26_LEN"
+
+-- source files (2) --
+  combined e6c57fa27cf4a9ca7c4dbb060e92110c10e261567d1f6c1a3444fe57f61bbdf0
+  19a40937c7d527dcd039ac494be07fbf76c92a20c457059d64acf1baf0822cf3  src/lib.rs
+
+-- build inputs (compiler-resolved) (4) --
+  build-script /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/controls/cargo/x26/build.rs sha256=Some("f7af1716561e372ab10d436c194b590f7a0f8b9987066569714684f7b8225ca4") (OUT_DIR is set (cargo sets it only for a package with a build script); build.rs exists at the package root (cargo auto-detects it))
+  include: none (no file loaded other than module files)
+  env X26_LEN=Some("3")
+  proc-macro: none
+
+-- linked artifacts and command line (8) --
+  rustc command line: /tmp/claude-0/alloc-audit/tool-target/release/alloc_audit --crate-name x26_concurrent_untracked_read --edition=2021 src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata,link -C opt-level=3 -C embed-bitcode=no --check-cfg cfg(docsrs,test) --check-cfg cfg(feature, values()) -C metadata=c8a397de9b424cf1 -C extra-filename=-553de790976a7cd6 --out-dir /tmp/claude-0/alloc-audit/inventory/x26-target/x86_64-unknown-linux-gnu/release/deps --target x86_64-unknown-linux-gnu -C strip=debuginfo -L dependency=/tmp/claude-0/alloc-audit/inventory/x26-target/x86_64-unknown-linux-gnu/release/deps -L dependency=/tmp/claude-0/alloc-audit/inventory/x26-target/release/deps
+  env CARGO_MANIFEST_DIR=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/controls/cargo/x26
+  env CARGO_PKG_NAME=x26_concurrent_untracked_read
+  env CARGO_PKG_VERSION=0.0.0
+  env OUT_DIR=/tmp/claude-0/alloc-audit/inventory/x26-target/x86_64-unknown-linux-gnu/release/build/x26_concurrent_untracked_read-b52b405b9ba152d4/out
+  Cargo.lock /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/controls/cargo/x26/Cargo.lock sha256=44ae92635a570eb0f242d3a98dac4bcc414ec0eaac0626f33b200154f5f06375
+  crate core svh=cbc12955c475a0d98147c7ede674d8a8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcore-1d288395a3394ed3.rmeta sha256=f991bfdb98d878590ba8a11da984bc230a078ee8079e27fcfd65854803b436f5
+  crate compiler_builtins svh=608975982fce69540ecd1b8bed34a3d8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcompiler_builtins-2d9557d6e902a200.rmeta sha256=9462f23a8789d047933fc26cbdff2172961ee5c9bf994690b196ff9c3de5a5cf
+
+-- allocator sinks (every root-to-sink path judged) (0) --
+
+-- leaves (0) --
+
+-- panic edges (per function) (0) --
+
+-- guard call sites and generic exports (0) --
+
+-- dependency contracts (0) --
+
+-- edges (2) --
+  crate::x26_root -> core::str::<impl str>::len [inlined] @ src/lib.rs:3:21: 3:26
+  core::str::<impl str>::len -> core::str::<impl str>::as_bytes [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:156:14: 156:24

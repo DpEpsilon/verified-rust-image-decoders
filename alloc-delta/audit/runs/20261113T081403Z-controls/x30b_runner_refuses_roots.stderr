@@ -1,0 +1,1 @@
+run_audit: refusing to run with ALLOC_AUDIT_ROOTS set in the environment (value 'crate::tga::try_decode'); unset it

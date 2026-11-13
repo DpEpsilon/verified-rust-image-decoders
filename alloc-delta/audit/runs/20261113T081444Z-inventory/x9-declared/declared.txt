@@ -1,0 +1,2 @@
+file x9-undeclared-input.txt
+env X9_SECRET=declared-value

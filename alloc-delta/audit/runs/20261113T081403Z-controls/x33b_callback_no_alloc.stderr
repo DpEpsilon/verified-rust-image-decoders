@@ -1,0 +1,6 @@
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: PASS
+findings: 0
+finding-tags: -
+findings-other-than-unsigned-reviewer: 0
+mode: PRODUCTION

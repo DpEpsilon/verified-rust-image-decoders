@@ -107,10 +107,42 @@ execs, opens = [], []
 rx_exec = re.compile(r'^(\d+)\s+execve\("([^"]*)", \[(.*)\], .*\) = 0')
 rx_chdir = re.compile(r'^(\d+)\s+chdir\("([^"]*)"\) = 0')
 rx_clone = re.compile(r'^(\d+)\s+(?:(?:clone3?|v?fork)\(.*\)|<\.\.\. (?:clone3?|v?fork) resumed>.*) = (\d+)')
-rx_open = re.compile(r'^(\d+)\s+(?:openat\(([^,]+), |open\()"([^"]*)", ([A-Z_|]+)[^)]*\) = (-?\d+\S*)')
+rx_open = re.compile(r'^(\d+)\s+(?:openat\(([^,]+), |open\()"((?:[^"\\]|\\.)*)", ([A-Z_|]+)[^)]*\)\s*=\s*(-?\d+\S*)')
+rx_open_any = re.compile(r'^\d+\s+(open|openat|openat2|creat|open_by_handle_at|name_to_handle_at)\(')
 cwd_of = {}
 first_pid = None
-for l in open(os.path.join(out, "strace.log"), errors="replace"):
+def reassembled(path):
+    """Join strace's `<unfinished ...>` / `<... NAME resumed>` pairs per task
+    (strace -f prints the pid of the task, which is the TID for threads), so
+    a syscall interrupted by another task's output is parsed whole. An
+    unmatched half is a finding (fail closed)."""
+    pending = {}
+    for raw in open(path, errors="replace"):
+        raw = raw.rstrip("\n")
+        m = re.match(r"^(\d+)\s+(.*) <unfinished \.\.\.>$", raw)
+        if m:
+            if m.group(1) in pending:
+                F("strace-unmatched", f"task {m.group(1)} has two unfinished syscalls: {pending[m.group(1)]!r} and {m.group(2)!r}")
+            pending[m.group(1)] = m.group(2)
+            continue
+        m = re.match(r"^(\d+)\s+<\.\.\. (\w+) resumed>(.*)$", raw)
+        if m:
+            head = pending.pop(m.group(1), None)
+            if head is None:
+                F("strace-unmatched", f"task {m.group(1)}: '{m.group(2)} resumed' without its unfinished start: {raw[:200]!r}")
+                continue
+            if not head.startswith(m.group(2) + "("):
+                F("strace-unmatched", f"task {m.group(1)}: resumed {m.group(2)} does not match unfinished {head[:120]!r}")
+                continue
+            yield f"{m.group(1)} {head}{m.group(3)}"
+            continue
+        yield raw
+    for pid, head in pending.items():
+        if rx_open_any.match(f"{pid} {head}"):
+            F("strace-unmatched", f"task {pid}: open never resumed: {head[:200]!r}")
+
+n_open_lines = 0
+for l in reassembled(os.path.join(out, "strace.log")):
     pm = re.match(r"^(\d+)\s", l)
     if pm and first_pid is None:
         first_pid = pm.group(1)
@@ -131,15 +163,26 @@ for l in open(os.path.join(out, "strace.log"), errors="replace"):
         exe_of[pid] = exe
         execs.append((pid, exe, argv))
         continue
+    if rx_open_any.match(l):
+        n_open_lines += 1
+    else:
+        continue
     m = rx_open.match(l)
-    if m and int(m.group(5).split("<")[0]) >= 0 and "O_DIRECTORY" not in m.group(4):
+    if not m:
+        F("unparsed-open", f"an open record was not understood, so its file cannot be classified: {l[:240]!r}")
+        continue
+    rv = m.group(5).split("<")[0]
+    if not re.match(r"^-?\d+$", rv):
+        F("unparsed-open", f"open record with an unreadable result: {l[:240]!r}")
+        continue
+    if int(rv) >= 0 and "O_DIRECTORY" not in m.group(4) and "O_WRONLY" not in m.group(4):
         dirfd, path = m.group(2), m.group(3)
         if not path.startswith("/"):
-            dm = re.match(r"^\d+<(.*)>$", dirfd or "")
+            dm = re.match(r"^(?:\d+|AT_FDCWD)<(.*)>$", dirfd or "")
             base = dm.group(1) if dm else cwd_of.get(m.group(1), os.path.realpath(crate_dir))
             path = os.path.join(base, path)
         opens.append((m.group(1), path, m.group(4)))
-lines.append(f"processes exec'd: {len(execs)}; successful file opens: {len(opens)}")
+lines.append(f"processes exec'd: {len(execs)}; open records: {n_open_lines}; successful read opens classified: {len(opens)}")
 
 reg = os.path.join(environment.get("CARGO_HOME", home + "/.cargo"), "registry")
 allowed_prefixes = [

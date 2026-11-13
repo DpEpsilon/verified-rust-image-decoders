@@ -1,0 +1,6 @@
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 3
+finding-tags: unauthorized-alloc-path
+findings-other-than-unsigned-reviewer: 3
+mode: PRODUCTION

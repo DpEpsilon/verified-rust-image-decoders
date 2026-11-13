@@ -49,7 +49,7 @@ else
 fi
 printf '%s\n' "${envs[@]}" > "$out/environment.txt"
 rm -f "$out/getenv.log"
-(cd "$dir" && timeout 3600 env -i "${envs[@]}" strace -f -qq -y -s 4096 -v -e trace=execve,openat,open,chdir,clone,clone3,fork,vfork -o "$out/strace.log" \
+(cd "$dir" && timeout 3600 env -i "${envs[@]}" strace -f -qq -y -s 4096 -v -e trace=execve,openat,open,openat2,chdir,clone,clone3,fork,vfork -o "$out/strace.log" \
    cargo build --offline -j1 --release --lib --target x86_64-unknown-linux-gnu --message-format=json \
    >"$out/cargo.json" 2>"$out/cargo.stderr")
 echo "cargo exit $?" > "$out/cargo.exit"

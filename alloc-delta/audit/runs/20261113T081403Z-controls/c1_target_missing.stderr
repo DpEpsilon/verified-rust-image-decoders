@@ -1,0 +1,6 @@
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 1
+finding-tags: allowlist-target-missing
+findings-other-than-unsigned-reviewer: 1
+mode: PROTOTYPE (--prototype; fixture reviewer accepted; cannot back a proof report)
