@@ -174,6 +174,8 @@ It carries the sealed `AllocLog`, `new_log`, `OutOfMemory` with private fields
 and `when_used_as_spec` accessors, `all_ok`, `req_of_log`, `MAX_BYTES`, and
 `#[inline(never)] try_zeroed`.
 
+> Superseded by ERRATA E6 (2026-11-13): `alloc_guard/mod.rs` now has SHA-256 `26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7` (fill by `resize`; see the E6 section of this file).
+
 `src/alloc_guard/sites.rs` is ICO's per-core child module. It carries
 `AllocSite { EntryList, Dib(dib::AllocSite) }`, `TryError { Format(Error),
 OutOfMemory(..) }` with `name_spec`/`name`, `fmt_part`/`fmt_part_decoded`,
@@ -384,6 +386,8 @@ The hash pin in `tools/audit_alloc.sh` moved with the two edits to `sites.rs`:
 The old sites hash remains recorded in `alloc-delta/ERRATA.md` E5 (frozen-adjacent,
 append-only, not edited here).
 
+> Superseded by ERRATA E6 (2026-11-13): `alloc_guard/mod.rs` now has SHA-256 `26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7` (fill by `resize`; see the E6 section of this file).
+
 Green-state backups (this session's `*.alloc-f<n>` convention, `n` = the green
 run): `src/ico.rs.alloc-f172` (sha256
 `6b60b834e53c75b62453860cf92a4887672a70916d148ac2df48419e6ec24025`) and
@@ -391,3 +395,11 @@ run): `src/ico.rs.alloc-f172` (sha256
 `ico.rs` changes only in the `Error::name` doc and `ensures`: the exec body is
 byte-identical to the pre-fix tree, and the alloc-delta `try_*` bodies are
 untouched.
+
+## ERRATA E6 update (2026-11-13): `try_zeroed` fills with `resize`
+
+`alloc-delta/ERRATA.md` E6 changed the guard body in all four cores: `try_zeroed` now calls `try_reserve_exact(n)` and, on `Ok`, `v.resize(n, 0u8)`, instead of a `push` loop. `alloc_guard/mod.rs` is byte-identical in the four cores with SHA-256 `26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7`; the pin in `tools/audit_alloc.*` was updated. The trusted list gains A-STD-4: `Vec::<u8>::resize(n, 0)` on a `Vec` with `len == 0` and `capacity() >= n` does not allocate or reallocate. It is observed behaviour of std 1.99.1 (pinned source, counting-allocator and fault-injection tests: one allocation, zero reallocations), not a documented guarantee; `Vec`'s docs say bulk insertion methods "may reallocate, even when not necessary". A reallocation inside `resize` would be infallible and would abort, so it cannot be detected after the fact. The reason is cost: for a 64 MiB buffer the `push` loop takes 47.8 ms and `resize(n, 0)` 6.6 ms (`bench/fillbench/RESULTS.md`).
+
+Latest verifier result: run 175, **346 verified, 0 errors** (before E6: 347 (run 172)). `alloc_guard/sites.rs` is unchanged (SHA-256 `5c7b24a05052823eb33fdc22576dc97a84faa6aac2e17c742790b239e0767bc1`). A-STD-2 is still used, by `try_with_room`/`Reserved` in `sites.rs` for the entry list; it is no longer used by `try_zeroed`, which `dib_verus` calls for the pixel buffer (ICO delegates DIB entries and has no `try_zeroed` call of its own).
+
+Statements elsewhere in this file that describe the guard as a `push` loop, that use A-STD-2 for `try_zeroed`, that quote the old `mod.rs` hash `018ed17a...` or that give the pre-E6 verified count describe the cores before E6 and are superseded by this section. Test and lint results recorded in this file predate E6 unless dated 2026-11-13; a post-E6 rerun of them is not recorded here.

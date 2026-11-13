@@ -249,6 +249,8 @@ here. Applied by the coordinator:
 `alloc_guard/mod.rs` is unchanged:
 `018ed17a077916108c5d2aead35f4d493207a633d0c69cc806a8627e08cf22e6`.
 
+> Superseded by ERRATA E6 (2026-11-13): `alloc_guard/mod.rs` now has SHA-256 `26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7` (fill by `resize`; see the E6 section of this file).
+
 ## alloc-delta migration — result (2026-11-12)
 
 `./verify.sh` reports **406 verified, 0 errors** (`runs/041.log`, exit 0). The
@@ -382,3 +384,11 @@ still the pre-change value `c48050e7...` and the script passed against the curre
 `sites.rs` at the time of writing; when the other agent changes `sites.rs`, update
 that one line to the new `sha256sum`.
 - 2026-11-12T16:27:22+00:00: coordinator re-pinned EXPECTED_SITES_SHA c48050e7... -> adcc09be... after proof-contract fixes (run 50, 413/0)
+
+## ERRATA E6 update (2026-11-13): `try_zeroed` fills with `resize`
+
+`alloc-delta/ERRATA.md` E6 changed the guard body in all four cores: `try_zeroed` now calls `try_reserve_exact(n)` and, on `Ok`, `v.resize(n, 0u8)`, instead of a `push` loop. `alloc_guard/mod.rs` is byte-identical in the four cores with SHA-256 `26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7`; the pin in `tools/audit_alloc.*` was updated. The trusted list gains A-STD-4: `Vec::<u8>::resize(n, 0)` on a `Vec` with `len == 0` and `capacity() >= n` does not allocate or reallocate. It is observed behaviour of std 1.99.1 (pinned source, counting-allocator and fault-injection tests: one allocation, zero reallocations), not a documented guarantee; `Vec`'s docs say bulk insertion methods "may reallocate, even when not necessary". A reallocation inside `resize` would be infallible and would abort, so it cannot be detected after the fact. The reason is cost: for a 64 MiB buffer the `push` loop takes 47.8 ms and `resize(n, 0)` 6.6 ms (`bench/fillbench/RESULTS.md`).
+
+Latest verifier result: run 51, **412 verified, 0 errors** (before E6: 413 (run 50)). `alloc_guard/sites.rs` is unchanged (SHA-256 `adcc09bed170a230216248e1c3898dcc1b32af392b45032352ed717044c88c41`). A-STD-2 is still used, by `try_with_room`/`Reserved` in `sites.rs` for the entry list (the `push` of each entry below `room`); it is no longer used by `try_zeroed`, which serves the three channel buffers, the RGB output and the combined output. `tests/fault_injection.rs` labels its no-`realloc` assertions A-STD-2; for the `try_zeroed` buffers the property they check is the one A-STD-4 states.
+
+Statements elsewhere in this file that describe the guard as a `push` loop, that use A-STD-2 for `try_zeroed`, that quote the old `mod.rs` hash `018ed17a...` or that give the pre-E6 verified count describe the cores before E6 and are superseded by this section. Test and lint results recorded in this file predate E6 unless dated 2026-11-13; a post-E6 rerun of them is not recorded here.

@@ -58,3 +58,7 @@ no-op re-run on the main crate). `tools/audit_alloc.sh` is clean except the
 `sites.rs` hash pin, which `tools/` (owned by another agent) must update:
 `c48050e7…` -> `adcc09be…`; `mod.rs` unchanged at `018ed17a…`. Backups
 `src/*.alloc-f44`, `alloc-wip-1/alloc_guard.green-f44/`, `alloc-wip-1/*.f44.rs`.
+
+> Superseded by ERRATA E6 (2026-11-13): `mod.rs` is now `26e4c832...`.
+
+E6 (2026-11-13, ERRATA E6, `try_zeroed` fills with `resize(n, 0)`, trusted item A-STD-4): run 51, 412 verified, 0 errors (previous total 413 (run 50)). Agent, tokens and tool counts are not recorded here.

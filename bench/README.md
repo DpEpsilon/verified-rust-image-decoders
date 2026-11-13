@@ -4,6 +4,8 @@ Decode-only, in-process timing of the verified cores (`dib_verus`, `tga_verus`, 
 
 ## Headline
 
+> Update 2026-11-13 (ERRATA E6): every verified-core number in the Headline and the Results tables was measured with the `push`-loop guard. After the guard changed to `resize(n, 0)` the zero-fill regression disappeared on BMP, TGA and ICO in the A/B at the end of this file; the tables were not re-measured against the incumbents.
+
 Post-migration run, 2026-11-12: the cores are the `try_*`/`no_std` versions (fallible allocation guard). 4 CPUs, each benchmark process pinned to core 2 with `taskset -c 2`, no other job running (process check below), 5 interleaved rounds. Numbers are CPU ns/px, best of 5 rounds (the least contended estimate; spreads are in the tables) unless stated. "x slower" divides the incumbent's CPU time into the verified decoder's.
 
 - **The verified decoders are now slower than the incumbents on most rows that they were comparable on before the migration.** Large files, best CPU ns/px: BMP 24/32-bit 6.6 (verified) vs 3.1 (`image`, 2.1x slower) vs 1.5 (gdk-pixbuf, 4.3x slower); BMP 8-bit 7.9 vs 1.6-2.4 (`image`; its rounds vary 74%) vs 2.2 (gdk-pixbuf); TGA uncompressed 9.2-9.5 vs 1.2-1.7 (`image`, 5-8x slower, rounds vary 36-42%) vs 18 (gdk-pixbuf) and 17 (`tinytga`) (verified about 1.9x faster than both); TGA RLE 6.1-6.2 vs 4.0-4.9 (`image`, 1.3-1.5x slower) vs 18-19 (gdk-pixbuf, `tinytga`; verified 3x faster).
@@ -94,6 +96,8 @@ Reading it:
 - Peak RSS is identical (same 64 MiB output delta on 4096x4096), as expected: the guard reserves exactly 4N bytes, as the old `vec![0u8; 4*n]` did.
 
 ### Does the guard's push-fill cost time on 64 MiB outputs?
+
+> Superseded by ERRATA E6 (2026-11-13): the guard now fills with `resize(n, 0)`; see "A/B after A-STD-4" at the end. The text below describes the `push` loop.
 
 Yes, measurably. `try_zeroed` reserves with `try_reserve_exact` and then writes the zeros with a `push` loop; the old code asked the allocator for zeroed memory (`vec![0u8; 4*n]`, a calloc), which for an allocation this large is fresh pages the kernel zeroes on first touch. In the same-session A/B (same decode, output bytes identical) the new core is 1.53x slower on bmp24_4096x4096 (4.29 -> 6.56 ns/px median, 4.23 -> 6.32 min; spreads 4% old, 13% new), 1.58x on bmp24_8192x2048, 1.41x on bmp32_4096x3840, 1.31x on tga24_4096x4096 (7.03 -> 9.18) and 1.34x on tga32_4096x3840. The added time is about 2.2-2.3 ns per pixel on the 24-bit files, which is 37 ms per 4096x4096 decode (16.8 million pixels) or about 0.55 ns per output byte, i.e. a fill rate of roughly 1.8 GB/s. That is the order of magnitude of one byte-at-a-time store loop with a capacity check per push, but this run did not profile it or replace the fill with a bulk write (`resize`/`memset`) to measure the difference, and the migrated cores differ from the old ones in other ways (policy plumbing and step/log accounting around every allocation), so the measured slowdown is an upper bound on the fill's cost. Peak RSS: no difference.
 

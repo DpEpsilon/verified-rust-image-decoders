@@ -38,8 +38,9 @@ srcdir="$root/icns_verus/src"
 scanner="$root/tools/alloc_scan.py"
 status=0
 
-# D6: the guard text is byte-identical across the four cores, modulo the one
-# no_std `use alloc::vec::Vec;` line (recorded in alloc-delta/ERRATA.md E1).
+# D6: the guard `mod.rs` is byte-identical across the four cores (the `use
+# alloc::vec::Vec;` line is part of the common text, ERRATA E1; the fill is
+# `resize(n, 0u8)` after `try_reserve_exact(n)`, ERRATA E6, trusted item A-STD-4).
 # `mod.rs` is pinned to the reviewed cross-core hash; `sites.rs` is ICNS's own.
 #
 # PIN TO UPDATE when `alloc_guard/sites.rs` changes: EXPECTED_SITES_SHA below is

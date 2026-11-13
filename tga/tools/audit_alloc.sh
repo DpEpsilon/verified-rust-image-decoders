@@ -25,10 +25,11 @@ srcdir="$root/tga_verus/src"
 scanner="$root/tools/alloc_scan.py"
 status=0
 
-# D6: the guard text is byte-identical across the four cores, modulo TGA's one
-# no_std `use alloc::vec::Vec;` line (recorded in alloc-delta/ERRATA.md). Both
-# guard files are pinned: `mod.rs` to the reviewed cross-core hash, `sites.rs` to
-# TGA's own.
+# D6: the guard `mod.rs` is byte-identical across the four cores (the `use
+# alloc::vec::Vec;` line is part of the common text, ERRATA E1; the fill is
+# `resize(n, 0u8)` after `try_reserve_exact(n)`, ERRATA E6, trusted item A-STD-4).
+# Both guard files are pinned: `mod.rs` to the reviewed cross-core hash,
+# `sites.rs` to TGA's own.
 EXPECTED_MOD_SHA=26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7
 EXPECTED_SITES_SHA=58e1fb285124557080dde6a6bc01c0d6e839cd5402b804b08b240de43750c885
 

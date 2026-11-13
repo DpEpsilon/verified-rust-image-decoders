@@ -570,6 +570,8 @@ site, so `Reserved`/`try_copy`/`try_with_room`/`MAX_ROOM` are dropped, and the
 per-core `Error`-carrying items live in `sites.rs` so `mod.rs` stays
 core-independent (SPEC §3, D6). SHA-256 of the WIP set:
 
+> Superseded by ERRATA E6 (2026-11-13): the guard fill is now `resize(n, 0u8)`, not a `push` loop; see the E6 section at the end of this file.
+
 ```
 5d145f45adcf8d1c5ab398f2ac2ec0d50eb3bcbd54a542b277d7b86a41ae33b1  alloc-wip-1/alloc_guard/mod.rs
 21455401aefc2fbdacf5cae33c28e8ede4ac609d0b42f684932ae638be8e4875  alloc-wip-1/alloc_guard/sites.rs
@@ -836,3 +838,11 @@ Test and lint tooling only. No file under `dib_verus/src` changed except the cfg
 **3. Suite-level coverage.** `fault_alloc::assert_suite_exercised()` runs at the end of the fault test, prints per-schedule counts, and asserts: at least one case allocates; the control injects nothing; the allocation-2 schedule is reached by allocating cases and injects nothing (the decoder makes at most one allocation, so it cannot fire); thresholds 1, 4096, 65536 each injected at least once; and the 64 MiB threshold either injected or the test prints that the corpus cannot reach it. Observed: 1131 cases, 820 allocate; injections: nth=1 820, threshold 1 820, 4096 281, 65536 26, 67108864 1 (a frozen vector reserves exactly 64 MiB, so that threshold is reachable). Log: `tooling-hardening-tests.log`.
 
 Results unchanged: 302/302 frozen vectors; four profiles 102/102; corpus 50/52/58/55 of 71; custom 66/66; 26,238-row oracle comparison; fault injection green. TGA copies not touched (see the report: `tga_verus/tests/fault_injection.rs` was modified minutes earlier).
+
+## ERRATA E6 update (2026-11-13): `try_zeroed` fills with `resize`
+
+`alloc-delta/ERRATA.md` E6 changed the guard body in all four cores: `try_zeroed` now calls `try_reserve_exact(n)` and, on `Ok`, `v.resize(n, 0u8)`, instead of a `push` loop. `alloc_guard/mod.rs` is byte-identical in the four cores with SHA-256 `26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7`; the pin in `tools/audit_alloc.*` was updated. The trusted list gains A-STD-4: `Vec::<u8>::resize(n, 0)` on a `Vec` with `len == 0` and `capacity() >= n` does not allocate or reallocate. It is observed behaviour of std 1.99.1 (pinned source, counting-allocator and fault-injection tests: one allocation, zero reallocations), not a documented guarantee; `Vec`'s docs say bulk insertion methods "may reallocate, even when not necessary". A reallocation inside `resize` would be infallible and would abort, so it cannot be detected after the fact. The reason is cost: for a 64 MiB buffer the `push` loop takes 47.8 ms and `resize(n, 0)` 6.6 ms (`bench/fillbench/RESULTS.md`).
+
+Latest verifier result: run 556, **1,764 verified, 0 errors** (before E6: 1,765 (run 552)). The live source now carries two `#[verifier::rlimit(20)]` attributes, on `parse_header` and `dib_finish` (RUNLOG runs 555-556); statements in this file that no solver-budget attribute was added describe run 552 only. `alloc_guard/sites.rs` is unchanged (SHA-256 `33465c740e10162d0d6634afd0a6033e26f3d0f523b40e375f4b1d46bcdf000a`). DIB has no other use of A-STD-2: its guard makes one byte reservation and has no element list.
+
+Statements elsewhere in this file that describe the guard as a `push` loop, that use A-STD-2 for `try_zeroed`, that quote the old `mod.rs` hash `018ed17a...` or that give the pre-E6 verified count describe the cores before E6 and are superseded by this section. Test and lint results recorded in this file predate E6 unless dated 2026-11-13; a post-E6 rerun of them is not recorded here.

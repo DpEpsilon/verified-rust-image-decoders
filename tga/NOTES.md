@@ -1,3 +1,11 @@
+## ERRATA E6 update (2026-11-13): `try_zeroed` fills with `resize`
+
+`alloc-delta/ERRATA.md` E6 changed the guard body in all four cores: `try_zeroed` now calls `try_reserve_exact(n)` and, on `Ok`, `v.resize(n, 0u8)`, instead of a `push` loop. `alloc_guard/mod.rs` is byte-identical in the four cores with SHA-256 `26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7`; the pin in `tools/audit_alloc.*` was updated. The trusted list gains A-STD-4: `Vec::<u8>::resize(n, 0)` on a `Vec` with `len == 0` and `capacity() >= n` does not allocate or reallocate. It is observed behaviour of std 1.99.1 (pinned source, counting-allocator and fault-injection tests: one allocation, zero reallocations), not a documented guarantee; `Vec`'s docs say bulk insertion methods "may reallocate, even when not necessary". A reallocation inside `resize` would be infallible and would abort, so it cannot be detected after the fact. The reason is cost: for a 64 MiB buffer the `push` loop takes 47.8 ms and `resize(n, 0)` 6.6 ms (`bench/fillbench/RESULTS.md`).
+
+Latest verifier result: run 231, **974 verified, 0 errors** (before E6: 975 (run 230)). The live TGA source has no `rlimit` attribute. `alloc_guard/sites.rs` is unchanged (SHA-256 `58e1fb285124557080dde6a6bc01c0d6e839cd5402b804b08b240de43750c885`). TGA has no other use of A-STD-2: its guard makes one byte reservation and has no element list. `tests/fault_injection.rs` still labels its no-`realloc` assertions A-STD-2; the property they check is the one A-STD-4 states.
+
+Statements elsewhere in this file that describe the guard as a `push` loop, that use A-STD-2 for `try_zeroed`, that quote the old `mod.rs` hash `018ed17a...` or that give the pre-E6 verified count describe the cores before E6 and are superseded by this section. Test and lint results recorded in this file predate E6 unless dated 2026-11-13; a post-E6 rerun of them is not recorded here.
+
 ## alloc-delta: guard + `try_*` API landed — green run 230 (2026-11-12)
 
 The fallible-allocation delta for TGA is implemented and green after Sol's
@@ -106,6 +114,8 @@ on the ones it recognises; it cannot prove the list is exhaustive.
   `try_zeroed` call site and zero `vec!`, and has its own self-test mode
   (`--self-test`) with a negative control (a temporary unguarded exec
   `v.push(x)` must fail).
+
+> Superseded by ERRATA E6 (2026-11-13): `alloc_guard/mod.rs` now has SHA-256 `26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7` (fill by `resize`; see the E6 section of this file).
 
 ### Verified obligations
 

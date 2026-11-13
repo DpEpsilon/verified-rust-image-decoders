@@ -1,5 +1,7 @@
 # Differential test: icns_verus vs icns_creusot vs Python oracle
 
+> Note 2026-11-13: this report predates the allocation change. The harness source (`src/main.rs`) calls `icns_verus::parse`, `decode_rgb`, `decode_mask` and `combine`, which were removed in favour of `try_parse`, `try_decode_rgb`, `try_decode_mask` and `try_combine` (returning `TryError`); it does not build against the current core until ported.
+
 Result: 0 divergence groups. Written by a Sonnet agent (its Write tool refused to create this
 file, so the report text was saved here from its reply). Logs: out/. Reproduce:
 `PATH=/opt/cargo/bin:$PATH cargo build --release && ./target/release/icns_diff [seed] [structured] [bases]`

@@ -2,6 +2,14 @@
 
 The live `dib_verus` 0.4.0 library builds without a `std` dependency in the configurations below. It still requires `alloc`. Host verification run **552** completed with **1,765 verified, 0 errors** on 2026-11-12. Cross-target compilation is separate evidence; no target-side verifier or executable was run.
 
+## ERRATA E6 update (2026-11-13): `try_zeroed` fills with `resize`
+
+`alloc-delta/ERRATA.md` E6 changed the guard body in all four cores: `try_zeroed` now calls `try_reserve_exact(n)` and, on `Ok`, `v.resize(n, 0u8)`, instead of a `push` loop. `alloc_guard/mod.rs` is byte-identical in the four cores with SHA-256 `26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7`; the pin in `tools/audit_alloc.*` was updated. The trusted list gains A-STD-4: `Vec::<u8>::resize(n, 0)` on a `Vec` with `len == 0` and `capacity() >= n` does not allocate or reallocate. It is observed behaviour of std 1.99.1 (pinned source, counting-allocator and fault-injection tests: one allocation, zero reallocations), not a documented guarantee; `Vec`'s docs say bulk insertion methods "may reallocate, even when not necessary". A reallocation inside `resize` would be infallible and would abort, so it cannot be detected after the fact. The reason is cost: for a 64 MiB buffer the `push` loop takes 47.8 ms and `resize(n, 0)` 6.6 ms (`bench/fillbench/RESULTS.md`).
+
+Latest verifier result: run 556, **1,764 verified, 0 errors** (before E6: 1,765 (run 552)). The live source now carries two `#[verifier::rlimit(20)]` attributes, on `parse_header` and `dib_finish` (RUNLOG runs 555-556); statements in this file that no solver-budget attribute was added describe run 552 only. `alloc_guard/sites.rs` is unchanged (SHA-256 `33465c740e10162d0d6634afd0a6033e26f3d0f523b40e375f4b1d46bcdf000a`). DIB has no other use of A-STD-2: its guard makes one byte reservation and has no element list.
+
+Statements elsewhere in this file that describe the guard as a `push` loop, that use A-STD-2 for `try_zeroed`, that quote the old `mod.rs` hash `018ed17a...` or that give the pre-E6 verified count describe the cores before E6 and are superseded by this section. Test and lint results recorded in this file predate E6 unless dated 2026-11-13; a post-E6 rerun of them is not recorded here.
+
 ## Configuration
 
 `dib_verus/src/lib.rs` declares `#![no_std]` and `extern crate alloc`. Production vector users import `alloc::vec::Vec`; `BmpProfile` implements `core::default::Default`. The crate enables `std` only under `cfg(test)`, for the host test harness, filesystem access, Python oracle subprocess, and fault-injecting allocator.
@@ -71,6 +79,8 @@ The verified implementation exposes the logical-log contracts for A-DIB-1 throug
 018ed17a077916108c5d2aead35f4d493207a633d0c69cc806a8627e08cf22e6  alloc_guard/mod.rs
 33465c740e10162d0d6634afd0a6033e26f3d0f523b40e375f4b1d46bcdf000a  alloc_guard/sites.rs
 ```
+
+> Superseded by ERRATA E6 (2026-11-13): `alloc_guard/mod.rs` now has SHA-256 `26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7` (fill by `resize`; see the E6 section of this file).
 
 The lint passed, but it is not a typed or transitive call-graph analysis. It recognizes this source tree's Verus syntax and formatting, not every possible Rust program. The sealed ghost log is verified; its correspondence to physical reservations is tested and depends on the hash-pinned guard text. The frozen A-STD assumptions about reservation capacity and no-growth vector writes remain assumptions about the Rust allocation implementation. Neither the source lint nor the fault tests discharge that trust boundary.
 
