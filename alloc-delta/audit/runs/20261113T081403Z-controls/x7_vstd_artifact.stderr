@@ -1,0 +1,6 @@
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 5
+finding-tags: allowlist-vstd-artifact,allowlist-vstd-undetermined
+findings-other-than-unsigned-reviewer: 5
+mode: PRODUCTION

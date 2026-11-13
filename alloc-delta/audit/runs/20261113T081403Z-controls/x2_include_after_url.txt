@@ -1,0 +1,63 @@
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 1
+finding-tags: undeclared-include
+findings-other-than-unsigned-reviewer: 1
+mode: PRODUCTION
+crate: x2
+crate-svh: 928a8db758294ea7d6c65325989a0798
+invocation: direct
+rustc: 1.99.1 (58cf8f9c3 2026-10-13)
+rustc-commit: 58cf8f9c3 (full 58cf8f9c35b355199727627d07ae34a4e2846d67)
+target: x86_64-unknown-linux-gnu
+profile: opt-level=2,debug-assertions=off,share-generics=off
+profile-class: custom
+features: []
+cfgs: ["panic=\"unwind\"", "target_abi=\"\"", "target_arch=\"x86_64\"", "target_endian=\"little\"", "target_env=\"gnu\"", "target_family=\"unix\"", "target_feature=\"fxsr\"", "target_feature=\"sse\"", "target_feature=\"sse2\"", "target_has_atomic=\"16\"", "target_has_atomic=\"32\"", "target_has_atomic=\"64\"", "target_has_atomic=\"8\"", "target_has_atomic=\"ptr\"", "target_has_atomic_load_store=\"16\"", "target_has_atomic_load_store=\"32\"", "target_has_atomic_load_store=\"64\"", "target_has_atomic_load_store=\"8\"", "target_has_atomic_load_store=\"ptr\"", "target_has_atomic_primitive_alignment=\"16\"", "target_has_atomic_primitive_alignment=\"32\"", "target_has_atomic_primitive_alignment=\"64\"", "target_has_atomic_primitive_alignment=\"8\"", "target_has_atomic_primitive_alignment=\"ptr\"", "target_has_reliable_f128", "target_has_reliable_f16", "target_has_reliable_f16_math", "target_has_threads", "target_object_format=\"elf\"", "target_os=\"linux\"", "target_pointer_width=\"64\"", "target_thread_local", "target_vendor=\"unknown\"", "unix"]
+source_hash: 50ec953fe6a2aab2eaa29b8b8009c23653c9a6e78ace9e0bcd1357b3b5c14afa
+source-hash-scope: sha256 over sorted per-file sha256 of every non-imported source-map file outside the sysroot (module files and loaded include targets); dependency crates are bound by crate hash, vstd additionally by its locked source checksum
+allowlist: /home/ws/projects/verified-decoders/alloc-delta/audit/controls/fixtures/x2_include_after_url.toml sha256=df40ba4e673cf613fcda81d6ab74f73f9eff4fdb89a3412d55751a46099df76a entries=0 reviewer="A. Fixture-Reviewer (control fixture, not a review)" drafted_by="draft_allowlist.py (Claude agent), 2026-11-13; unsigned"
+vstd: linked=false version=None svh=None locked_checksum=None linked_artifact_sha256=None source_dir=None
+vstd-binding-problems: none
+roots: crate::x2_root
+roots-excluded: 
+generic-exports: 
+instances: 3
+edges: 2
+crates-reached: core 2, x2 1
+allocator-sinks: 0
+mono-items: 0 in local codegen units; 0 not reached by the walk
+
+-- findings (1) --
+  [undeclared-include] the compilation loaded x/p.bin (include!/include_str!/include_bytes!), which is not a module file; declare kind = "include", item = "x/p.bin" with its sha256
+
+-- source files (3) --
+  combined 50ec953fe6a2aab2eaa29b8b8009c23653c9a6e78ace9e0bcd1357b3b5c14afa
+  1ac30fd677168dffa8e69a4c83256bc951fd9d50ab6d8774f60d279f84ee6406  x/p.bin  (non-module: include target)
+  03deb6070cd87a0a057bff491dd8b9081ac624a851bd1380f2baa14cabb2fc1d  x/x2_include_after_url.rs
+
+-- build inputs (compiler-resolved) (4) --
+  build-script: none
+  include x/p.bin sha256=Some("1ac30fd677168dffa8e69a4c83256bc951fd9d50ab6d8774f60d279f84ee6406")
+  env: none (no env!/option_env!/tracked env read)
+  proc-macro: none
+
+-- linked artifacts and command line (4) --
+  rustc command line: /tmp/claude-0/alloc-audit/tool-target/release/alloc_audit --crate-name x2 --edition 2021 --crate-type lib -Copt-level=2 --out-dir /tmp/claude-0/alloc-audit/control-out -L /tmp/claude-0/alloc-audit/control-deps /home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases/x/x2_include_after_url.rs
+  env CARGO_MANIFEST_DIR=/home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases
+  crate core svh=cbc12955c475a0d98147c7ede674d8a8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcore-1d288395a3394ed3.rmeta sha256=f991bfdb98d878590ba8a11da984bc230a078ee8079e27fcfd65854803b436f5
+  crate compiler_builtins svh=608975982fce69540ecd1b8bed34a3d8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcompiler_builtins-2d9557d6e902a200.rmeta sha256=9462f23a8789d047933fc26cbdff2172961ee5c9bf994690b196ff9c3de5a5cf
+
+-- allocator sinks (every root-to-sink path judged) (0) --
+
+-- leaves (0) --
+
+-- panic edges (per function) (0) --
+
+-- guard call sites and generic exports (0) --
+
+-- dependency contracts (0) --
+
+-- edges (2) --
+  crate::x2_root -> core::str::<impl str>::len [inlined] @ /home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases/x/x2_include_after_url.rs:5:92: 5:97
+  core::str::<impl str>::len -> core::str::<impl str>::as_bytes [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:156:14: 156:24

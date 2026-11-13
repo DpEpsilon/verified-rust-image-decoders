@@ -20,8 +20,6 @@ use crate::names;
 use crate::report::{Finding, Report};
 
 const MAX_NODES: usize = 200_000;
-const MAX_PATHS: usize = 20_000;
-const MAX_DEPTH: usize = 80;
 const MAX_SHOWN: usize = 8;
 
 /// Allocator sinks, by exact canonical def-path in the sysroot `alloc` crate.
@@ -916,7 +914,7 @@ pub fn run_audit<'tcx>(tcx: TyCtxt<'tcx>, cfg: &AuditConfig) -> Report {
                     && r.args.as_ref().is_none_or(|a| *a == args)
                     && match &r.allow {
                         None => !diverging,
-                        Some(Resolved::Did(a, _)) => *a == cdid,
+                        Some(Resolved::Did(a, aa)) => *a == cdid && caller_args_ok(tcx, aa, g.nodes[c].inst),
                         _ => false,
                     }
             });
@@ -945,7 +943,7 @@ pub fn run_audit<'tcx>(tcx: TyCtxt<'tcx>, cfg: &AuditConfig) -> Report {
         let hit = leaf_rules.iter().find(|r| {
             r.kind == "panic"
                 && r.panic_name.as_deref() == Some(name.as_str())
-                && matches!(&r.allow, Some(Resolved::Did(a, _)) if *a == cdid)
+                && matches!(&r.allow, Some(Resolved::Did(a, aa)) if *a == cdid && caller_args_ok(tcx, aa, g.nodes[*c].inst))
         });
         match hit {
             Some(r) => {
@@ -967,66 +965,75 @@ pub fn run_audit<'tcx>(tcx: TyCtxt<'tcx>, cfg: &AuditConfig) -> Report {
         .enumerate()
         .filter_map(|(i, n)| if let Class::Sink(k) = n.class { Some((i, k)) } else { None })
         .collect();
-    for &(s, sk) in &sinks {
-        // Nodes that can reach `s` (reverse BFS), to prune the path search.
-        let mut can: Vec<bool> = vec![false; g.nodes.len()];
-        let mut q = VecDeque::from([s]);
-        can[s] = true;
+    // Authorisation is decided over (node, most recent crate-local caller,
+    // verdict of the last allowlisted allocation-capable item) states, explored
+    // to a fixpoint from every root. Every walk through the call graph -- not
+    // only simple paths -- is covered, so a cycle (for example a callback that
+    // re-enters a shared instance) cannot hide the caller that a simple-path
+    // enumeration would drop when it refuses to revisit a node on the path.
+    let mut reach_any_sink: Vec<bool> = vec![false; g.nodes.len()];
+    {
+        let mut q: VecDeque<usize> = sinks.iter().map(|(s, _)| *s).collect();
+        for &(s, _) in &sinks {
+            reach_any_sink[s] = true;
+        }
         while let Some(x) = q.pop_front() {
             for &p in &callers[x] {
-                if !can[p] {
-                    can[p] = true;
+                if !reach_any_sink[p] {
+                    reach_any_sink[p] = true;
                     q.push_back(p);
                 }
             }
         }
-        let mut justified = 0usize;
-        let mut bad_total = 0usize;
-        let mut shown: Vec<String> = Vec::new();
-        let mut first_ok: Option<String> = None;
-        let mut truncated = false;
-        for &r in &root_ids {
-            if !can[r] {
-                continue;
-            }
-            let mut paths: Vec<Vec<usize>> = Vec::new();
-            let mut budget = MAX_PATHS;
-            let mut stack = vec![r];
-            let mut on: Vec<bool> = vec![false; g.nodes.len()];
-            on[r] = true;
-            dfs(r, s, &g.adj, &can, &mut stack, &mut on, &mut paths, &mut budget, &mut truncated);
-            for p in &paths {
-                let (ok, why) = judge(&g, p, sk, &alloc_rules, &mut used);
-                let rendered = render(&g, p);
-                if ok {
-                    justified += 1;
-                    if first_ok.is_none() {
-                        first_ok = Some(format!("{rendered}  [{why}]"));
-                    }
-                } else {
-                    bad_total += 1;
-                    if shown.len() < MAX_SHOWN {
-                        shown.push(format!("{rendered}  [{why}]"));
-                    }
-                }
-            }
-        }
+    }
+    let rule_of: Vec<Vec<usize>> = g
+        .nodes
+        .iter()
+        .map(|n| {
+            let did = n.inst.def.def_id();
+            let a = names::args_str(tcx, n.inst);
+            alloc_rules
+                .iter()
+                .enumerate()
+                .filter(|(_, r)| r.item == did && r.args.as_ref().is_none_or(|x| *x == a))
+                .map(|(i, _)| i)
+                .collect()
+        })
+        .collect();
+    let auth = authorize(&g, &root_ids, &rule_of, &alloc_rules, &reach_any_sink, &mut used);
+    if auth.capped {
+        f.push(Finding::new("state-bound", format!("the authorisation analysis exceeded {MAX_STATES} states; failing closed")));
+    }
+    for &(s, sk) in &sinks {
         let label = &g.nodes[s].label;
-        if truncated {
-            f.push(Finding::new("path-bound", format!("path enumeration to {label} exceeded {MAX_PATHS} paths per root or depth {MAX_DEPTH}; failing closed")));
+        let mut justified = 0usize;
+        let mut bad: Vec<String> = Vec::new();
+        let mut first_ok: Option<String> = None;
+        for st in auth.states_at.get(&s).into_iter().flatten() {
+            let ok = st.v == V_OK || (st.v == V_OK_IF_DEALLOC && sk == SinkKind::Dealloc);
+            let w = auth.witness(&g, *st);
+            let why = describe(&g, &rule_of, *st, sk);
+            if ok {
+                justified += 1;
+                if first_ok.is_none() {
+                    first_ok = Some(format!("{w}  [{why}]"));
+                }
+            } else {
+                bad.push(format!("{w}  [{why}]"));
+            }
         }
-        for p in &shown {
+        for p in bad.iter().take(MAX_SHOWN) {
             f.push(Finding::new("unauthorized-alloc-path", format!("{label} ({sk:?}) is reachable on an unauthorized path: {p}")));
         }
-        if bad_total > shown.len() {
-            f.push(Finding::new("unauthorized-alloc-path", format!("{label}: {} further unauthorized path(s) not shown", bad_total - shown.len())));
+        if bad.len() > MAX_SHOWN {
+            f.push(Finding::new("unauthorized-alloc-path", format!("{label}: {} further unauthorized authorisation state(s) not shown", bad.len() - MAX_SHOWN)));
         }
-        let ok = bad_total == 0 && justified > 0 && !truncated;
-        sink_lines.push(format!("{} {label} ({sk:?}): {justified} justified path(s), {bad_total} unauthorized", if ok { "OK" } else { "!!" }));
+        let ok = bad.is_empty() && justified > 0 && !auth.capped;
+        sink_lines.push(format!("{} {label} ({sk:?}): {justified} justified authorisation state(s), {} unauthorized", if ok { "OK" } else { "!!" }, bad.len()));
         if let Some(p) = first_ok {
             sink_lines.push(format!("    e.g. {p}"));
         }
-        for p in &shown {
+        for p in bad.iter().take(MAX_SHOWN) {
             sink_lines.push(format!("    UNAUTHORIZED {p}"));
         }
     }
@@ -1088,6 +1095,9 @@ pub fn run_audit<'tcx>(tcx: TyCtxt<'tcx>, cfg: &AuditConfig) -> Report {
                 Some(h) => {
                     let get = |k: &str| h.get(k).cloned().unwrap_or_default();
                     dep_lines.push(format!("{name}: report {} verdict={} crate-svh={} linked-svh={} source_hash={} findings-other-than-unsigned-reviewer={}", rp.display(), get("verdict"), get("crate-svh"), c.svh, get("source_hash"), get("findings-other-than-unsigned-reviewer")));
+                    if !cfg.prototype_mode && get("mode") != "PRODUCTION" {
+                        f.push(Finding::new("dependency-contract", format!("dependency {name}: its report {} was not produced in production mode (mode {:?})", rp.display(), get("mode"))));
+                    }
                     if get("verdict") != "PASS" {
                         f.push(Finding::new("dependency-contract", format!("dependency {name}: its own audit report {} does not PASS (verdict {:?}, finding tags {:?})", rp.display(), get("verdict"), get("finding-tags"))));
                     }
@@ -1303,86 +1313,158 @@ fn make_resolver(tcx: TyCtxt<'_>, universe: &HashSet<DefId>) -> Resolver {
     Resolver { by_canon }
 }
 
-#[allow(clippy::too_many_arguments)]
-fn dfs(
-    cur: usize,
-    target: usize,
-    adj: &[BTreeSet<usize>],
-    can: &[bool],
-    stack: &mut Vec<usize>,
-    on: &mut [bool],
-    out: &mut Vec<Vec<usize>>,
-    budget: &mut usize,
-    truncated: &mut bool,
-) {
-    if *budget == 0 {
-        *truncated = true;
-        return;
-    }
-    if cur == target {
-        out.push(stack.clone());
-        *budget -= 1;
-        return;
-    }
-    if stack.len() >= MAX_DEPTH {
-        *truncated = true;
-        return;
-    }
-    for &n in &adj[cur] {
-        if on[n] || !can[n] {
-            continue;
+const V_NONE: u8 = 0;
+const V_OK: u8 = 1;
+const V_OK_IF_DEALLOC: u8 = 2;
+const V_BAD: u8 = 3;
+const NO_LOCAL: u32 = u32::MAX;
+
+/// One authorisation state: at `node`, the most recent crate-local function
+/// on the walk so far is `l` (or none), and the last allowlisted
+/// allocation-capable item on the walk gave verdict `v`.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
+struct St {
+    node: u32,
+    l: u32,
+    v: u8,
+}
+
+struct Auth {
+    parent: HashMap<St, Option<St>>,
+    states_at: HashMap<usize, Vec<St>>,
+    capped: bool,
+}
+
+impl Auth {
+    fn witness(&self, g: &Graph<'_>, st: St) -> String {
+        let mut path = vec![st.node as usize];
+        let mut cur = st;
+        let mut guard = 0;
+        while let Some(Some(p)) = self.parent.get(&cur) {
+            path.push(p.node as usize);
+            cur = *p;
+            guard += 1;
+            if guard > 10_000 {
+                break;
+            }
         }
-        on[n] = true;
-        stack.push(n);
-        dfs(n, target, adj, can, stack, on, out, budget, truncated);
-        stack.pop();
-        on[n] = false;
-        if *budget == 0 {
-            *truncated = true;
-            return;
-        }
+        path.reverse();
+        render(g, &path)
     }
 }
 
-/// Judge one root-to-sink path: the last node on it that an `alloc` entry
-/// names (by DefId, and generic arguments if the entry writes them) is the
-/// allocation-capable item; the nearest node at or before it that is defined
-/// in the audited crate is the caller, which must be the entry's `allow`
-/// (DefId equality). `allow = "*"` admits deallocation sinks only.
-fn judge(g: &Graph<'_>, path: &[usize], sk: SinkKind, rules: &[AllocRule], used: &mut BTreeSet<usize>) -> (bool, String) {
-    let body = &path[..path.len().saturating_sub(1)];
-    for i in (0..body.len()).rev() {
-        let n = &g.nodes[body[i]];
-        let did = n.inst.def.def_id();
-        let matching: Vec<&AllocRule> = rules
-            .iter()
-            .filter(|r| r.item == did && r.args.as_ref().is_none_or(|a| *a == names::args_str(g.tcx, n.inst)))
-            .collect();
-        if matching.is_empty() {
-            continue;
+/// Does an allowlist caller value with optional generic arguments admit this
+/// caller instance? Arguments, when written, must equal the caller's printed
+/// arguments exactly; they are never dropped.
+fn caller_args_ok<'tcx>(tcx: TyCtxt<'tcx>, aa: &Option<String>, caller: Instance<'tcx>) -> bool {
+    match aa {
+        None => true,
+        Some(x) => *x == names::args_str(tcx, caller),
+    }
+}
+
+fn verdict_at(g: &Graph<'_>, rules: &[usize], all: &[AllocRule], l: u32) -> (u8, Option<usize>) {
+    let mut star = None;
+    for &ri in rules {
+        let r = &all[ri];
+        match &r.allow {
+            Resolved::Did(a, aa) => {
+                if l != NO_LOCAL {
+                    let c = &g.nodes[l as usize];
+                    if c.inst.def.def_id() == *a && caller_args_ok(g.tcx, aa, c.inst) {
+                        return (V_OK, Some(r.idx));
+                    }
+                }
+            }
+            Resolved::Star => star = Some(r.idx),
+            Resolved::Bad => {}
         }
-        let caller = (0..=i).rev().find(|&j| g.is_local(body[j])).map(|j| body[j]);
-        for r in &matching {
-            let ok = match &r.allow {
-                Resolved::Star => sk == SinkKind::Dealloc,
-                Resolved::Did(a, _) => caller.is_some_and(|c| g.nodes[c].inst.def.def_id() == *a),
-                Resolved::Bad => false,
-            };
-            if ok {
-                used.insert(r.idx);
-                return (true, format!("item {} admitted for caller {}", n.label, caller.map(|c| g.nodes[c].label.clone()).unwrap_or_else(|| "* (deallocation)".into())));
+    }
+    match star {
+        Some(i) => (V_OK_IF_DEALLOC, Some(i)),
+        None => (V_BAD, None),
+    }
+}
+
+const MAX_STATES: usize = 5_000_000;
+
+fn authorize(
+    g: &Graph<'_>,
+    roots: &[usize],
+    rule_of: &[Vec<usize>],
+    all: &[AllocRule],
+    reach_sink: &[bool],
+    used: &mut BTreeSet<usize>,
+) -> Auth {
+    let mut parent: HashMap<St, Option<St>> = HashMap::new();
+    let mut q: VecDeque<St> = VecDeque::new();
+    let enter = |node: usize, l: u32, v: u8, used: &mut BTreeSet<usize>| -> St {
+        // Entering crate code (including a callback that pinned std calls
+        // from inside an admitted item) starts a new authorisation scope: the
+        // verdict inherited from an allocation-capable item admitted for an
+        // earlier caller is discarded, so whatever this function allocates
+        // needs its own admission (ERRATA E9).
+        let local = g.is_local(node);
+        let l2 = if local { node as u32 } else { l };
+        let v_in = if local { V_NONE } else { v };
+        let v2 = if rule_of[node].is_empty() {
+            v_in
+        } else {
+            let (v2, ri) = verdict_at(g, &rule_of[node], all, l2);
+            if let Some(ri) = ri {
+                if reach_sink[node] {
+                    used.insert(ri);
+                }
+            }
+            v2
+        };
+        St { node: node as u32, l: l2, v: v2 }
+    };
+    for &r in roots {
+        let st = enter(r, NO_LOCAL, V_NONE, used);
+        if !parent.contains_key(&st) {
+            parent.insert(st, None);
+            q.push_back(st);
+        }
+    }
+    let mut capped = false;
+    while let Some(st) = q.pop_front() {
+        if parent.len() > MAX_STATES {
+            capped = true;
+            break;
+        }
+        for &n in &g.adj[st.node as usize] {
+            if !reach_sink[n] {
+                continue; // states that can reach no sink decide nothing
+            }
+            let nx = enter(n, st.l, st.v, used);
+            if !parent.contains_key(&nx) {
+                parent.insert(nx, Some(st));
+                q.push_back(nx);
             }
         }
-        return (
-            false,
-            format!(
-                "item {} is allowlisted, but not for crate caller {}",
-                n.label,
-                caller.map(|c| g.nodes[c].label.clone()).unwrap_or_else(|| "<none>".into())
-            ),
-        );
     }
-    (false, "no allocation-capable item on this path is allowlisted".into())
+    let mut states_at: HashMap<usize, Vec<St>> = HashMap::new();
+    for st in parent.keys() {
+        if matches!(g.nodes[st.node as usize].class, Class::Sink(_)) {
+            states_at.entry(st.node as usize).or_default().push(*st);
+        }
+    }
+    for v in states_at.values_mut() {
+        v.sort_by_key(|s| (s.l, s.v));
+    }
+    Auth { parent, states_at, capped }
+}
+
+fn describe(g: &Graph<'_>, _rule_of: &[Vec<usize>], st: St, sk: SinkKind) -> String {
+    let caller = if st.l == NO_LOCAL { "<none>".to_string() } else { g.nodes[st.l as usize].label.clone() };
+    match st.v {
+        V_OK => format!("last allowlisted item admitted for crate caller {caller}"),
+        V_OK_IF_DEALLOC if sk == SinkKind::Dealloc => "admitted by allow = \"*\" (deallocation)".to_string(),
+        V_OK_IF_DEALLOC => format!("only allow = \"*\" admits it, which covers deallocation sinks only (crate caller {caller})"),
+        V_BAD => format!("last allowlisted item is not admitted for crate caller {caller}"),
+        _ => format!("no allowlisted allocation-capable item since entering crate function {caller}"),
+    }
 }
 
 fn render(g: &Graph<'_>, p: &[usize]) -> String {

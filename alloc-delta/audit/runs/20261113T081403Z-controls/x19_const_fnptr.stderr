@@ -1,0 +1,6 @@
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 11
+finding-tags: allowlist-absent,fn-ptr-call,mono-item-unwalked
+findings-other-than-unsigned-reviewer: 11
+mode: PRODUCTION

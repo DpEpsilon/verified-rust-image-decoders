@@ -26,7 +26,11 @@ build_deps 2>"$out/deps-build.stderr" || { echo "control dependency build failed
 FX="$ctl/fixtures"
 summary="$out/CONTROLS.tsv"
 printf 'control\texpected\tverdict\texit\tresult\tfinding-tags\tfailed-checks\n' > "$summary"
-n_ok=0; n_bad=0
+n_ok=0; n_bad=0; n_sel=0
+# Every control below is counted when selected; the full suite must produce
+# exactly this many result rows, so a control that silently disappears (for
+# example a seed generator that fails before running anything) fails the run.
+EXPECTED_TOTAL=98
 
 # check <tag> <exit> <expect PASS|FAIL> <required tags, comma> <needles, |-sep> <forbidden tags, comma>
 check() {
@@ -61,6 +65,7 @@ check() {
 d() {
   local tag="$1" expect="$2" req="$3" needles="$4" forbid="$5" crate="$6" src="$7" al="$8" opt="$9" proto="${10}"; shift 10
   [[ "$tag" =~ $only ]] || return 0
+  n_sel=$((n_sel+1))
   rm -f "$out/$tag.txt"
   run_direct "$out/$tag.txt" "$crate" "$src" "$al" "$opt" "$proto" - "$@" >"$out/$tag.stdout" 2>"$out/$tag.stderr"
   check "$tag" $? "$expect" "$req" "$needles" "$forbid"
@@ -71,6 +76,7 @@ d() {
 cargo_ctl() {
   local tag="$1" expect="$2" req="$3" needles="$4" forbid="$5" dir="$6" crate="$7" al="$8" T="$9"
   [[ "$tag" =~ $only ]] || return 0
+  n_sel=$((n_sel+1))
   cargo_audit "$out/$tag.txt" "$dir" "$crate" "$al" "$T"
   check "$tag" $? "$expect" "$req" "$needles" "$forbid"
 }
@@ -165,13 +171,61 @@ d x24_env_declared PASS "" "env ALLOC_AUDIT_X24" "" x24 "$X/x24_env.rs" "$FX/x24
 ENVS=(ALLOC_AUDIT_X24=x24value)
 d x24_env_undeclared FAIL undeclared-env "ALLOC_AUDIT_X24" "" x24 "$X/x24_env.rs" "$FX/x24_env_undeclared.toml" 2 0
 
+echo "== controls added for Sol's review (2026-11-13) =="
+d x27_callback_cycle FAIL unauthorized-alloc-path "crate caller <crate::X<K> as core::clone::Clone>::clone<false>" "" cycle "$X/x27_callback_cycle.rs" "$FX/x27_callback_cycle.toml" 3 0
+d x27b_cycle_admitted PASS "" "" "" cycle "$X/x27_callback_cycle.rs" "$FX/x27b_cycle_admitted.toml" 3 0
+d x28_generic_caller_args FAIL unauthorized-alloc-path "crate::root -> crate::guard<u16> -> " "" generic "$X/x28_generic_caller.rs" "$FX/x28_generic_caller.toml" 3 0
+d x28b_both_instantiations PASS "" "" "" generic "$X/x28_generic_caller.rs" "$FX/x28b_both_admitted.toml" 3 0
+d x12_helperdep_proto PASS "" "mode: PROTOTYPE" "" helperdep "$X/x12_helperdep.rs" "$FX/x12_helperdep.toml" 2 1 -C metadata=one
+d x31_dependency_not_production FAIL dependency-contract "was not produced in production mode" "" x12 "$X/x12_foreign_crate.rs" "$FX/x31_dependency_not_production.toml" 2 0 --extern helperdep="$scratch/control-out/libhelperdep.rlib"
+echo "== controls added for Sol's re-check (2026-11-13) =="
+d x33_callback_direct_alloc FAIL unauthorized-alloc-path "since entering crate function <crate::X<K> as core::clone::Clone>::clone<false>" "" callback "$X/x33_callback_direct_alloc.rs" "$FX/x33_callback_direct_alloc.toml" 3 0
+d x33b_callback_no_alloc PASS "" "" "" callback "$X/x33b_callback_no_alloc.rs" "$FX/x33b_callback_no_alloc.toml" 3 0
+ENVS=(RUSTC_BOOTSTRAP=1)
+d x34_leafpanic_caller_args FAIL unexplained-leaf "findings: 2|[intrinsic] core::intrinsics::black_box<u8> [intrinsic] reached from crate::guard<u16>|[panic] PanicBoundsCheck in crate::guard<u16>" "" leafpanic "$X/x34_leafpanic_caller_args.rs" "$FX/x34_leafpanic_caller_args.toml" 3 0
+# meta <tag> <expected exit> <needle> -- <command...>: a control on a command's
+# exit status and output rather than on an audit report.
+meta() {
+  local tag="$1" want="$2" needle="$3"; shift 4
+  [[ "$tag" =~ $only ]] || return 0
+  n_sel=$((n_sel+1))
+  "$@" >"$out/$tag.stdout" 2>"$out/$tag.stderr"
+  local rc=$? why=()
+  [ "$rc" = "$want" ] || why+=("exit $rc, expected $want")
+  grep -qF -- "$needle" "$out/$tag.stdout" "$out/$tag.stderr" || why+=("output lacks: $needle")
+  local res=OK; if [ ${#why[@]} -gt 0 ]; then res=FAILED; n_bad=$((n_bad+1)); else n_ok=$((n_ok+1)); fi
+  printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$tag" "exit=$want" "-" "$rc" "$res" "-" "$(IFS=';'; echo "${why[*]:-}")" >> "$summary"
+  printf '%-32s %-6s      exit=%s  %s\n' "$tag" "$res" "$rc" "$([ $res = OK ] || (IFS=';'; echo "${why[*]}"))"
+}
+meta x29_prototype_flag_value 2 "the only accepted value is 1" -- env ALLOC_AUDIT_PROTOTYPE=0 ALLOC_AUDIT_REPORT="$out/x29.txt" CARGO_MANIFEST_DIR="$TC" "$TOOL" --crate-name c1 --edition 2021 --crate-type lib -Copt-level=2 --out-dir "$scratch/control-out" "$L/c1_clean.rs"
+meta x30_runner_refuses_prototype 2 "refusing to run with ALLOC_AUDIT_PROTOTYPE set" -- env ALLOC_AUDIT_PROTOTYPE=1 "$audit/run_audit.sh" --out "$out/x30-run" tga
+meta x30b_runner_refuses_roots 2 "refusing to run with ALLOC_AUDIT_ROOTS set" -- env ALLOC_AUDIT_ROOTS=crate::tga::try_decode "$audit/run_audit.sh" --out "$out/x30b-run" tga
+if [ "${ALLOC_AUDIT_CONTROLS_SELFTEST:-}" != 1 ]; then
+  # Self-test: a targeted run that selects nothing (a renamed or mistyped
+  # control) must fail, not report "0 FAILED".
+  meta x35_empty_selection_fails 1 "no control selected" -- \
+    "$ctl/run_controls.sh" --out "$out/x35-selftest" --only '^no_such_control$'
+fi
+if [ "${ALLOC_AUDIT_CONTROLS_SELFTEST:-}" != 1 ]; then
+  # Self-test of this runner: a nested run whose only control has a seed
+  # generator that fails must exit nonzero and record that control as FAILED.
+  meta x32_failing_seed_generator_counted 1 "s_selftest_bad_anchor	FAIL	-	2	FAILED" -- \
+    bash -c "ALLOC_AUDIT_CONTROLS_SELFTEST=1 '$ctl/run_controls.sh' --out '$out/x32-selftest' --only '^s_selftest_bad_anchor\$' >/dev/null 2>&1; rc=\$?; cat '$out/x32-selftest/CONTROLS.tsv'; exit \$rc"
+fi
+
 echo "== seeded violations in copies of the real cores (production allowlists) =="
 AL="$audit/allowlist/x86_64-unknown-linux-gnu/release"
 seed() { # seed <tag> <core> <seed> <expect> <req> <needles>
   local tag="$1" core="$2" s="$3" expect="$4" req="$5" needles="$6"
   [[ "$tag" =~ $only ]] || return 0
   local dst="$scratch/seeded/$tag"
-  python3 "$ctl/seed_core.py" "$core" "$s" "$dst" || { echo "$tag: seeding failed"; return; }
+  if ! python3 "$ctl/seed_core.py" "$core" "$s" "$dst" >"$out/$tag.seed.log" 2>&1; then
+    # A seed that cannot be generated is a FAILED control, never a skipped one.
+    n_sel=$((n_sel+1)); rm -f "$out/$tag.txt"
+    echo "seed generation failed: $(tail -1 "$out/$tag.seed.log")" > "$out/$tag.stderr"
+    check "$tag" 2 "$expect" "$req" "$needles" ""
+    return
+  fi
   cargo_ctl "$tag" "$expect" "$req" "$needles" "" "$dst/${core}_verus" "${core}_verus" "$AL/${core}_verus.toml" "$scratch/control-seeded-$core"
 }
 seed s0_tga_unseeded_copy tga none FAIL allowlist-reviewer "findings-other-than-unsigned-reviewer: 0"
@@ -180,7 +234,17 @@ for s in vec_zeroed with_capacity box_new push string_from format to_vec collect
 done
 seed s_dib_vec_zeroed dib vec_zeroed FAIL unauthorized-alloc-path,allowlist-source-hash "crate::dib::alloc_output_n -> crate::dib::seeded_alloc -> "
 seed s_icns_push icns push FAIL unauthorized-alloc-path,allowlist-source-hash "crate::icns::seeded_alloc -> "
+if [ "${ALLOC_AUDIT_CONTROLS_SELFTEST:-}" = 1 ]; then
+  ALLOC_AUDIT_SEED_SELFTEST_BAD_ANCHOR=1 seed s_selftest_bad_anchor tga push FAIL unauthorized-alloc-path "crate::tga::seeded_alloc -> "
+fi
 
+rows=$(( $(wc -l < "$summary") - 1 ))
 echo
-echo "controls: $n_ok as expected, $n_bad FAILED  (table: $summary)"
-[ $n_bad = 0 ]
+echo "controls: $n_ok as expected, $n_bad FAILED, $rows result rows for $n_sel selected  (table: $summary)"
+count_ok=1
+[ "$n_sel" -ge 1 ] || { echo "no control selected (check --only); a run that tests nothing is a failure"; count_ok=0; }
+[ "$rows" = "$n_sel" ] || { echo "COUNT MISMATCH: $n_sel controls selected but $rows results recorded"; count_ok=0; }
+if [ "$only" = "." ] && [ "${ALLOC_AUDIT_CONTROLS_SELFTEST:-}" != 1 ] && [ "$rows" != "$EXPECTED_TOTAL" ]; then
+  echo "COUNT MISMATCH: the full suite must record exactly $EXPECTED_TOTAL controls, recorded $rows"; count_ok=0
+fi
+[ $n_bad = 0 ] && [ $count_ok = 1 ]

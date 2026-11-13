@@ -1,0 +1,61 @@
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: PASS
+findings: 0
+finding-tags: -
+findings-other-than-unsigned-reviewer: 0
+mode: PRODUCTION
+crate: x24
+crate-svh: 70ddbb448f719c0fe22ee292d969bf08
+invocation: direct
+rustc: 1.99.1 (58cf8f9c3 2026-10-13)
+rustc-commit: 58cf8f9c3 (full 58cf8f9c35b355199727627d07ae34a4e2846d67)
+target: x86_64-unknown-linux-gnu
+profile: opt-level=2,debug-assertions=off,share-generics=off
+profile-class: custom
+features: []
+cfgs: ["panic=\"unwind\"", "target_abi=\"\"", "target_arch=\"x86_64\"", "target_endian=\"little\"", "target_env=\"gnu\"", "target_family=\"unix\"", "target_feature=\"fxsr\"", "target_feature=\"sse\"", "target_feature=\"sse2\"", "target_has_atomic=\"16\"", "target_has_atomic=\"32\"", "target_has_atomic=\"64\"", "target_has_atomic=\"8\"", "target_has_atomic=\"ptr\"", "target_has_atomic_load_store=\"16\"", "target_has_atomic_load_store=\"32\"", "target_has_atomic_load_store=\"64\"", "target_has_atomic_load_store=\"8\"", "target_has_atomic_load_store=\"ptr\"", "target_has_atomic_primitive_alignment=\"16\"", "target_has_atomic_primitive_alignment=\"32\"", "target_has_atomic_primitive_alignment=\"64\"", "target_has_atomic_primitive_alignment=\"8\"", "target_has_atomic_primitive_alignment=\"ptr\"", "target_has_reliable_f128", "target_has_reliable_f16", "target_has_reliable_f16_math", "target_has_threads", "target_object_format=\"elf\"", "target_os=\"linux\"", "target_pointer_width=\"64\"", "target_thread_local", "target_vendor=\"unknown\"", "unix"]
+source_hash: fc5c547f8e59cf5d1b1c97f7fbc8deac6fe0b8c4ab19f3e296a0062cc2f36eca
+source-hash-scope: sha256 over sorted per-file sha256 of every non-imported source-map file outside the sysroot (module files and loaded include targets); dependency crates are bound by crate hash, vstd additionally by its locked source checksum
+allowlist: /home/ws/projects/verified-decoders/alloc-delta/audit/controls/fixtures/x24_env.toml sha256=9b31b1dfaef4cfb8d181a8f4e02cc0872452e8c130076077318fdce5fa195b3a entries=1 reviewer="A. Fixture-Reviewer (control fixture, not a review)" drafted_by="draft_allowlist.py (Claude agent), 2026-11-13; unsigned"
+vstd: linked=false version=None svh=None locked_checksum=None linked_artifact_sha256=None source_dir=None
+vstd-binding-problems: none
+roots: crate::x24_root
+roots-excluded: 
+generic-exports: 
+instances: 3
+edges: 2
+crates-reached: core 2, x24 1
+allocator-sinks: 0
+mono-items: 0 in local codegen units; 0 not reached by the walk
+
+-- findings (0) --
+
+-- source files (2) --
+  combined fc5c547f8e59cf5d1b1c97f7fbc8deac6fe0b8c4ab19f3e296a0062cc2f36eca
+  91a016bf7df88340a6a379984635b9892b2321c340f05e083288adbec95c881d  x/x24_env.rs
+
+-- build inputs (compiler-resolved) (4) --
+  build-script: none
+  include: none (no file loaded other than module files)
+  env ALLOC_AUDIT_X24=Some("x24value")
+  proc-macro: none
+
+-- linked artifacts and command line (4) --
+  rustc command line: /tmp/claude-0/alloc-audit/tool-target/release/alloc_audit --crate-name x24 --edition 2021 --crate-type lib -Copt-level=2 --out-dir /tmp/claude-0/alloc-audit/control-out -L /tmp/claude-0/alloc-audit/control-deps /home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases/x/x24_env.rs
+  env CARGO_MANIFEST_DIR=/home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases
+  crate core svh=cbc12955c475a0d98147c7ede674d8a8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcore-1d288395a3394ed3.rmeta sha256=f991bfdb98d878590ba8a11da984bc230a078ee8079e27fcfd65854803b436f5
+  crate compiler_builtins svh=608975982fce69540ecd1b8bed34a3d8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcompiler_builtins-2d9557d6e902a200.rmeta sha256=9462f23a8789d047933fc26cbdff2172961ee5c9bf994690b196ff9c3de5a5cf
+
+-- allocator sinks (every root-to-sink path judged) (0) --
+
+-- leaves (0) --
+
+-- panic edges (per function) (0) --
+
+-- guard call sites and generic exports (0) --
+
+-- dependency contracts (0) --
+
+-- edges (2) --
+  crate::x24_root -> core::str::<impl str>::len [inlined] @ /home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases/x/x24_env.rs:5:29: 5:34
+  core::str::<impl str>::len -> core::str::<impl str>::as_bytes [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:156:14: 156:24

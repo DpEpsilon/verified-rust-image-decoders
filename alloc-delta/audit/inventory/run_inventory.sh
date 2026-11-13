@@ -31,6 +31,7 @@ ctl x9_build_script_untracked_read BLOCK "x9-undeclared-input.txt was opened by 
 ctl x9_declared PASS "" "$X/x9" x9_build_script_untracked_read - "$out/x9-declared" "$X/x9/INVENTORY-DECLARED.txt"
 ctl x10_proc_macro_untracked_read BLOCK "x10-undeclared-input.txt was opened by|variable X10_SECRET" "$X/x10/x10_lib" x10_lib - "$out/x10"
 ctl x10_declared PASS "" "$X/x10/x10_lib" x10_lib - "$out/x10-declared" "$X/x10/x10_lib/INVENTORY-DECLARED.txt"
+ctl x26_concurrent_untracked_read BLOCK "x26-undeclared-concurrent.fifo was opened by ['build-script-build']" "$X/x26" x26_concurrent_untracked_read - "$out/x26"
 } | tee -a "$out/SUMMARY.txt"
 grep -q FAILED "$out/SUMMARY.txt" && status=1
 grep -q ': BLOCK' "$out/SUMMARY.txt" && status=1

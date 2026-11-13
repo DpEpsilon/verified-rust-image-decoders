@@ -1,0 +1,22 @@
+[meta]
+format="alloc-audit/2"
+crate_name="leafpanic"
+rustc_commit="58cf8f9c35b355199727627d07ae34a4e2846d67"
+target="x86_64-unknown-linux-gnu"
+profile="opt-level=3,debug-assertions=off,share-generics=off"
+features=[]
+source_hash="5fb49153825e5a2a626e98b2b8968cbceb4ac7e962f50397c0f014a82d3bfd71"
+vstd_version="none"
+reviewer="synthetic-review-control"
+[[entry]]
+kind="intrinsic"
+item="core::intrinsics::black_box<u8>"
+allow="crate::guard<u8>"
+contract="none"
+citation="synthetic control"
+[[entry]]
+kind="panic"
+item="PanicBoundsCheck"
+allow="crate::guard<u8>"
+contract="synthetic unreachable assertion"
+citation="synthetic control"

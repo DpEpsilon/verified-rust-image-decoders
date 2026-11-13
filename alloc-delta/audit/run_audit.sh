@@ -34,6 +34,20 @@ tmo="${ALLOC_AUDIT_TIMEOUT:-1800}"
 target_triple=x86_64-unknown-linux-gnu
 aldir="$here/allowlist/$target_triple/release"
 
+# Variables that change what the tool audits or how it judges are refused, not
+# inherited: a production run sets its own and accepts none from the caller.
+refused=(ALLOC_AUDIT_PROTOTYPE ALLOC_AUDIT_ROOTS ALLOC_AUDIT_VSTD_VERSION ALLOC_AUDIT_ALLOWLIST
+         ALLOC_AUDIT_REPORT ALLOC_AUDIT_PLAN ALLOC_AUDIT_CONTINUE ALLOC_AUDIT_EDGES ALLOC_AUDIT_RUN_DIR
+         RUSTC_WRAPPER RUSTC_WORKSPACE_WRAPPER RUSTFLAGS CARGO_ENCODED_RUSTFLAGS CARGO_BUILD_RUSTFLAGS
+         CARGO_BUILD_RUSTC_WRAPPER CARGO_BUILD_RUSTC RUSTC)
+for v in "${refused[@]}"; do
+  if [ -n "${!v+x}" ]; then
+    echo "run_audit: refusing to run with $v set in the environment (value ${!v@Q}); unset it" >&2
+    exit 2
+  fi
+done
+unset_args=(); for v in "${refused[@]}"; do unset_args+=(-u "$v"); done
+
 diagnostic=0
 out=""
 cores=()
@@ -98,7 +112,7 @@ for core in "${cores[@]}"; do
   # Force the audited crates to be recompiled under the wrapper.
   (cd "$dir" && cargo clean --offline -p "$crate" --release --target "$target_triple" --target-dir "$T" >/dev/null 2>&1)
   [ "$core" = ico ] && (cd "$dir" && cargo clean --offline -p dib_verus --release --target "$target_triple" --target-dir "$T" >/dev/null 2>&1)
-  (cd "$dir" && timeout "$tmo" env \
+  (cd "$dir" && timeout "$tmo" env "${unset_args[@]}" \
       ALLOC_AUDIT_PLAN="$plan" ALLOC_AUDIT_CONTINUE=1 ALLOC_AUDIT_RUN_DIR="$out" ALLOC_AUDIT_EDGES=1 \
       CARGO_TARGET_DIR="$T" RUSTC_WRAPPER="$tool" \
       cargo build --offline -j1 --release --lib --target "$target_triple" --message-format=json \
@@ -116,7 +130,11 @@ for core in "${cores[@]}"; do
     nr=$(sed -n 's/^findings-other-than-unsigned-reviewer: //p' "$rep" | head -1)
     tags=$(sed -n 's/^finding-tags: //p' "$rep" | head -1)
     log "$core: $(basename "$rep"): verdict ${v:-<none>}, findings ${n:-?} (other than the unsigned reviewer: ${nr:-?}), tags ${tags:-?}"
-    [ "$v" = PASS ] || status=1
+    md=$(sed -n 's/^mode: //p' "$rep" | head -1)
+    if [ "$md" != PRODUCTION ] && [ $diagnostic = 0 ]; then
+      log "$core: $(basename "$rep"): REFUSED: report mode is '${md:-<none>}', not PRODUCTION"; status=1
+    fi
+    [ "$v" = PASS ] && [ "$md" = PRODUCTION ] || status=1
   done
 done
 log "exit status: $status"

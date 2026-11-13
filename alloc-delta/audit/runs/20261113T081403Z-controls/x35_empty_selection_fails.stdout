@@ -1,0 +1,8 @@
+== the 42 F1 prototype controls, ported (expected verdicts unchanged) ==
+== required production controls (SPEC §6, §9) and one per fixed prototype defect ==
+== controls added for Sol's review (2026-11-13) ==
+== controls added for Sol's re-check (2026-11-13) ==
+== seeded violations in copies of the real cores (production allowlists) ==
+
+controls: 0 as expected, 0 FAILED, 0 result rows for 0 selected  (table: /home/ws/projects/verified-decoders/alloc-delta/audit/runs/20261113T081403Z-controls/x35-selftest/CONTROLS.tsv)
+no control selected (check --only); a run that tests nothing is a failure

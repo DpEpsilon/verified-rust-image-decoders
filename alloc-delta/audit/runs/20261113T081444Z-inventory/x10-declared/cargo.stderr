@@ -1,0 +1,9 @@
+   Compiling x10_pm v0.0.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/controls/cargo/x10/x10_pm)
+   Compiling x10_lib v0.0.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/controls/cargo/x10/x10_lib)
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 2
+finding-tags: allowlist-absent,undeclared-proc-macro
+findings-other-than-unsigned-reviewer: 2
+mode: PRODUCTION
+    Finished `release` profile [optimized] target(s) in 1.51s

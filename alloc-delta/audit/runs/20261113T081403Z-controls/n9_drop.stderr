@@ -1,0 +1,6 @@
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 23
+finding-tags: allowlist-absent,unauthorized-alloc-path,unexplained-leaf
+findings-other-than-unsigned-reviewer: 23
+mode: PROTOTYPE (--prototype; fixture reviewer accepted; cannot back a proof report)
