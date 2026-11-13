@@ -372,10 +372,11 @@ def plain_chan(word, m, k, mx, comp, val):
             "    assert(%s >> %du32 == %s) by (bit_vector);\n"
             "    assert((%s & %s) >> %du32 == %su32) by (bit_vector);\n"
             "    assert(crate::model::scale_of(%dint, %dint) == %dint) by (nonlinear_arith);\n"
+            "    assert(crate::model::channel_span(%s) == %s) by (compute);\n"
             "    channel_lit(%s, %s, %du32, %s, %su32, %du8);\n"
             % (hex32(m), hex32(m), k, k, hex32(m), hex32(m), k,
                hex32(m), k, hex32(mx), hex32(word), hex32(m), k, comp, comp, mx, val,
-               hex32(word), hex32(m), k, hex32(mx), comp, val))
+               hex32(mx), hex32(mx), hex32(word), hex32(m), k, hex32(mx), comp, val))
 
 
 if __name__ == "__main__":

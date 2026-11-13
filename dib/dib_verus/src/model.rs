@@ -12,7 +12,11 @@
 //! `MP`/`MR`/`MA` and the pixel models are later milestones.
 use vstd::prelude::*;
 
-use crate::dib::{BmpMode, Error, MetadataOptions, Mode, Policy};
+use crate::dib::{
+    BitfieldOffsetOptions, BmpMode, Error, HeadersOptions, HighCountOptions, MasksOptions,
+    MetadataOptions, Mode, OffsetOptions, PlanesOptions, Policy, ReservedOptions,
+    ShortIndexedGapOptions, UnsupportedOptions,
+};
 
 verus! {
 
@@ -218,8 +222,35 @@ pub open spec fn stride_of(width: int, depth: int) -> int {
     ((width * depth + 31) / 32) * 4
 }
 
+/// All ones through the highest set bit: `(1 << bit_length(x)) - 1`.
+/// The fixed shifts fill holes without a loop or a shift by the word width.
+pub open spec fn channel_span(x: u32) -> u32 {
+    let x = x | (x >> 1u32);
+    let x = x | (x >> 2u32);
+    let x = x | (x >> 4u32);
+    let x = x | (x >> 8u32);
+    x | (x >> 16u32)
+}
+
+pub proof fn lemma_channel_span_bounds(x: u32)
+    ensures x <= channel_span(x),
+        (channel_span(x) & channel_span(x).wrapping_add(1u32)) == 0u32,
+        (x & x.wrapping_add(1u32)) == 0u32 ==> channel_span(x) == x,
+{
+    let a = x | (x >> 1u32);
+    let b = a | (a >> 2u32);
+    let c = b | (b >> 4u32);
+    let d = c | (c >> 8u32);
+    let r = d | (d >> 16u32);
+    assert(r == channel_span(x));
+    assert(x <= r && (r & r.wrapping_add(1u32)) == 0u32
+        && ((x & x.wrapping_add(1u32)) == 0u32 ==> r == x)) by (bit_vector)
+        requires a == x | (x >> 1u32), b == a | (a >> 2u32),
+            c == b | (b >> 4u32), d == c | (c >> 8u32), r == d | (d >> 16u32);
+}
+
 /// R6: the interpreted value of component mask `mask` applied to `word`:
-/// `shift = trailing_zeros(mask)`, `max = mask >> shift`,
+/// `shift = trailing_zeros(mask)`, `max = (1 << bit_length(mask >> shift)) - 1`,
 /// `component = (word & mask) >> shift`,
 /// `scale = (255*component + max/2) / max`. A zero mask yields the opaque 255.
 /// Stated over `u32`/`u64` because the executable's rounding is a word-level
@@ -229,7 +260,7 @@ pub open spec fn channel_of(word: u32, mask: u32) -> u8 {
         255u8
     } else {
         let shift = mask.trailing_zeros();
-        let max = mask >> shift;
+        let max = channel_span(mask >> shift);
         let component = (word & mask) >> shift;
         scale_of(component as int, max as int) as u8
     }
@@ -1052,9 +1083,17 @@ pub proof fn lemma_subbyte_within_stride(width: int, depth: int, x: int)
 /// R8: the sub-byte sample shift `8 - depth - (x*depth mod 8)` is in `[0,8)`
 /// for `depth in {1,4,8}` (each divides 8, so `x*depth mod 8` is a multiple of
 /// `depth` bounded by `8-depth`).
+proof fn lemma_two_bit_shift(x: int)
+    requires x >= 0,
+    ensures 0 <= 6 - x * 2 % 8 <= 7,
+{
+    assert((x * 2) % 8 == (x % 4) * 2) by (nonlinear_arith) requires x >= 0;
+    assert(0 <= x % 4 < 4);
+}
+
 pub proof fn lemma_subbyte_shift(depth: int, x: int)
     requires
-        depth == 1 || depth == 4 || depth == 8,
+        depth == 1 || depth == 2 || depth == 4 || depth == 8,
         x >= 0,
     ensures
         0 <= 8 - depth - (x * depth % 8) <= 7,
@@ -1070,6 +1109,8 @@ pub proof fn lemma_subbyte_shift(depth: int, x: int)
                 x % 8 < 8,
                 x * 1 % 8 == x % 8,
         ;
+    } else if depth == 2 {
+        lemma_two_bit_shift(x);
     } else if depth == 4 {
         assert((x * 4) % 8 == 0 || (x * 4) % 8 == 4) by (nonlinear_arith)
             requires
@@ -1315,6 +1356,8 @@ pub open spec fn sub_shift(depth: int, x: int) -> int {
 pub open spec fn sub_mask(depth: int) -> u32 {
     if depth == 1 {
         1u32
+    } else if depth == 2 {
+        3u32
     } else if depth == 4 {
         15u32
     } else {
@@ -1530,7 +1573,7 @@ pub proof fn lemma_raw_conv_eq_conv(
         m.compression == 0 || m.compression == 3,
         m.compression == 3 ==> (m.depth == 16 || m.depth == 32),
         row_stride == stride_of(m.width, m.depth),
-        depth_ok(m.depth),
+        depth_ok(m.depth) || m.depth == 2,
         base + row_stride <= b.len(),
     ensures
         {
@@ -2286,6 +2329,99 @@ pub proof fn lemma_r6r7_ok_bounds(
     assert(0 <= m.stride <= 32768);
 }
 
+/// The same bounds for a record built by `r6r7_policy` from `r2r5_policy`'s
+/// validated fields: the geometry rules are `r2r5`'s own, so the bounds are
+/// unchanged by any option.
+pub proof fn lemma_r6r7_policy_ok_bounds(
+    b: Seq<u8>,
+    mode: Mode,
+    s: int,
+    file_offset: int,
+    is_bmp: bool,
+    rf: RawFields,
+    p: Policy,
+    m: MHRecord,
+)
+    requires
+        r2r5_policy(b, mode, s, p) == Ok(rf),
+        r6r7_policy(b, mode, s, file_offset, is_bmp, rf, p) == Ok(m),
+    ensures
+        mh_bounds(m),
+{
+    reveal(r6r7_policy);
+    reveal(r6r7_result_policy);
+    reveal(r2r5_policy);
+    reveal(r2r5);
+    reveal(hsize_ok_policy);
+    reveal(hsize_ok);
+    lemma_r2r5_policy_strict(b, mode, s);
+    assert(1 <= rf.width <= max_dimension());
+    assert(1 <= rf.height <= max_dimension());
+    assert(4 * (rf.width * rf.height) <= max_output());
+    assert(m.width == rf.width);
+    assert(m.height == rf.height);
+    assert(m.n == rf.width * rf.height);
+    assert(m.stride == 0 || m.stride == stride_of(m.width, m.depth));
+    assert(1 <= m.width <= max_dimension());
+    assert(1 <= m.height <= max_dimension());
+    assert(1 <= m.n) by (nonlinear_arith)
+        requires
+            m.n == m.width * m.height,
+            1 <= m.width,
+            1 <= m.height,
+    ;
+    assert(4 * m.n <= max_output());
+    assert(m.n <= 16777216) by (nonlinear_arith)
+        requires
+            m.n == m.width * m.height,
+            1 <= m.width,
+            1 <= m.height,
+            4 * m.n <= max_output(),
+    ;
+    reveal(mh_bounds);
+    reveal(stride_of);
+    reveal(visible_height_of);
+    if m.stride != 0 {
+        lemma_stride_bound(m.width, m.depth);
+    }
+    assert(0 <= m.stride <= 32768);
+}
+
+/// `r2r7_policy(Strict)` agrees with `r2r7` on success: the same record.
+pub proof fn lemma_r2r7_policy_bridge(b: Seq<u8>, mode: Mode, s: int, file_offset: int, is_bmp: bool, m: MHRecord)
+    requires
+        r2r7(b, mode, s, file_offset, is_bmp) == Ok(m),
+    ensures
+        r2r7_policy(b, mode, s, file_offset, is_bmp, crate::dib::strict_policy()) == Ok(m),
+{
+    reveal(r2r7);
+    reveal(r2r7_policy);
+    lemma_r2r7_policy_strict(b, mode, s, file_offset, is_bmp);
+}
+
+/// `r2r5_policy`'s success gives the R2–R5 geometry facts the R7 record build
+/// relies on: the width/height caps, the output cap and the `pos0` bound.
+pub proof fn lemma_r2r5_policy_ok(b: Seq<u8>, mode: Mode, s: int, p: Policy, rf: RawFields)
+    requires
+        r2r5_policy(b, mode, s, p) == Ok(rf),
+    ensures
+        1 <= rf.width <= max_dimension(),
+        1 <= rf.height <= max_dimension(),
+        4 * (rf.width * rf.height) <= max_output(),
+        rf.pos0 == s + rf.hsize,
+        depth_ok(rf.depth) || rf.depth == 2,
+        b.len() >= s + header_bytes_needed(rf.hsize, p),
+        p.header_bytes == crate::dib::HeaderBytesOptions::Full ==> b.len() >= rf.pos0,
+        rf.compression >= 0 && rf.compression <= 3,
+{
+    reveal(r2r5_policy);
+    reveal(r2r5);
+    reveal(hsize_ok_policy);
+    reveal(hsize_ok);
+    reveal(depth_ok);
+    reveal(visible_height_of);
+}
+
 /// The `forall` form, so the solver can apply the bounds wherever
 /// `mh(b,mode) == Ok(m)` is in context.
 pub proof fn lemma_mh_ok_bounds_auto(b: Seq<u8>, mode: Mode)
@@ -2579,7 +2715,7 @@ pub open spec fn raw_reachable(b: Seq<u8>, m: MHRecord, pos: int, x: int, y: int
     &&& (m.compression == 3 ==> (m.depth == 16 || m.depth == 32))
     &&& m.stride == stride_of(m.width, m.depth)
     &&& 0 <= m.stride
-    &&& m.pixel_start <= pos <= b.len()
+    &&& 0 <= pos <= b.len()
     &&& 0 <= x <= m.width
     &&& 0 <= y <= m.height
 }
@@ -6808,26 +6944,1394 @@ pub proof fn slack_mode_suffix_result(
 /// reserved-words test, which belongs to the separate `reserved` field alone.
 /// Neither value makes `bfSize` a read bound: the field is validated or skipped,
 /// never used to compute an offset or a length.
+pub open spec fn r1_size_bad(b: Seq<u8>, p: Policy) -> bool {
+    (p.file_size == MetadataOptions::Declared && le32(b, 2) != 0 && le32(b, 2) > b.len())
+        || (p.reserved == ReservedOptions::Zero && (le16(b, 6) != 0 || le16(b, 8) != 0))
+}
+
+/// R1: whether the declared pixel offset is one the option rejects.
+pub open spec fn r1_offset_bad(b: Seq<u8>, p: Policy) -> bool {
+    p.offset == OffsetOptions::Declared && (le32(b, 10) < 18 || le32(b, 10) > b.len())
+}
+
 pub open spec fn r1_prefix_policy(b: Seq<u8>, p: Policy) -> Result<(int, int), Error> {
     if b.len() < 14 {
         Err(Error::TruncatedFileHeader)
     } else if b[0] != 66u8 || b[1] != 77u8 {
         Err(Error::BadMagic)
-    } else if (p.file_size == MetadataOptions::Declared && le32(b, 2) != 0 && le32(b, 2) > b.len())
-        || le16(b, 6) != 0 || le16(b, 8) != 0
-    {
+    } else if r1_size_bad(b, p) {
         Err(Error::InvalidFileSize)
-    } else if le32(b, 10) < 18 || le32(b, 10) > b.len() {
+    } else if r1_offset_bad(b, p) {
         Err(Error::InvalidPixelOffset)
     } else {
         Ok((14int, le32(b, 10)))
     }
 }
 
-/// `MH_policy(b, bm, p)`: the R1–R7 header model with the `file_size` option.
-/// With `file_size = Declared` the prefix reduces to `r1_prefix`, so
-/// `MH_policy(Strict)` is `MH` on both BMP modes; with `Ignore` only the
-/// `bfSize` test is dropped. The returned record is `MH`'s own `MHRecord`.
+/// R1/R7 `offset`: whether the declared `bfOffBits` is one R1 rejects. Only
+/// `Declared` rejects; `AllowAny`/`Gdk` accept and repair later.
+pub open spec fn offset_rejects_r1(b: Seq<u8>, p: Policy) -> bool {
+    p.offset == OffsetOptions::Declared && (le32(b, 10) < 18 || le32(b, 10) > b.len())
+}
+
+/// R2 `headers`: the accepted DIB header size set per option value.
+/// `All1_1` is `hsize_ok` verbatim, so `Strict` reduces definitionally.
+pub open spec fn hsize_ok_policy(h: int, o: HeadersOptions) -> bool {
+    match o {
+        HeadersOptions::All1_1 => hsize_ok(h),
+        HeadersOptions::No16 => h == 12 || h == 40 || h == 52 || h == 56 || h == 64 || h == 108
+            || h == 124,
+        HeadersOptions::No16No64 => h == 12 || h == 40 || h == 52 || h == 56 || h == 108 || h == 124,
+    }
+}
+
+/// R5/R7 `high_count`: the number of optional high-depth table entries R7 skips.
+/// `BmpTable` skips `used`; `Ignore` and `GdkBound` skip none.
+pub open spec fn table_count_of_policy(rf: RawFields, o: HighCountOptions) -> int {
+    if rf.depth <= 8 {
+        table_count_of(rf)
+    } else {
+        match o {
+            HighCountOptions::BmpTable => rf.used,
+            HighCountOptions::Ignore => 0,
+            HighCountOptions::GdkBound => 0,
+        }
+    }
+}
+
+/// R6 `masks`: the three-value validity rule over the four `u32` words.
+/// `Reject` is `masks_ok`; `Independent` checks each mask's own run and depth
+/// but not overlap and requires the three RGB masks nonzero; `DefaultRGB`
+/// rejects only a bit above depth.
+pub open spec fn masks_ok_policy(m0: u32, m1: u32, m2: u32, m3: u32, bits: int, o: MasksOptions)
+    -> bool {
+    match o {
+        MasksOptions::Reject => masks_ok(m0, m1, m2, m3, bits),
+        MasksOptions::Independent => {
+            &&& m0 != 0u32
+            &&& m1 != 0u32
+            &&& m2 != 0u32
+            &&& contiguous(m0)
+            &&& contiguous(m1)
+            &&& contiguous(m2)
+            &&& contiguous(m3)
+            &&& within_bits(m0, bits)
+            &&& within_bits(m1, bits)
+            &&& within_bits(m2, bits)
+            &&& within_bits(m3, bits)
+        },
+        MasksOptions::DefaultRGB => {
+            &&& within_bits(m0, bits)
+            &&& within_bits(m1, bits)
+            &&& within_bits(m2, bits)
+            &&& within_bits(m3, bits)
+        },
+    }
+}
+
+/// R6 `masks = DefaultRGB`: the default mask quadruple substituted when any RGB
+/// mask is zero — 5:5:5 opaque at 16 bpp, BGRA 8888 with alpha `0xff000000` at
+/// 32 bpp.
+pub open spec fn default_rgb_masks(bits: int) -> (u32, u32, u32, u32) {
+    if bits == 16 {
+        (0x7c00u32, 0x03e0u32, 0x001fu32, 0u32)
+    } else {
+        (0x00ff0000u32, 0x0000ff00u32, 0x000000ffu32, 0xff000000u32)
+    }
+}
+
+/// R6: the four mask words after the `masks` option's substitution step. For
+/// `DefaultRGB` a zero RGB mask replaces all four; the other two values leave
+/// them unchanged.
+pub open spec fn masks_after_policy(
+    m0: u32,
+    m1: u32,
+    m2: u32,
+    m3: u32,
+    bits: int,
+    o: MasksOptions,
+) -> (u32, u32, u32, u32) {
+    match o {
+        MasksOptions::DefaultRGB => {
+            if !(m0 != 0u32 && m1 != 0u32 && m2 != 0u32) {
+                default_rgb_masks(bits)
+            } else {
+                (m0, m1, m2, m3)
+            }
+        },
+        _ => (m0, m1, m2, m3),
+    }
+}
+
+/// R5/R7 `high_count = GdkBound`: the modeled acceptance threshold on a
+/// nonzero high-depth `biClrUsed` — the low 32 bits of `2^depth`, so 65536 at
+/// 16 bpp, 16777216 at 24 bpp and **zero** at 32 bpp (POLICY-SPEC's "the modeled
+/// 32-bpp threshold is zero").
+pub open spec fn gdk_high_bound(depth: int) -> int {
+    if depth == 16 {
+        65536
+    } else if depth == 24 {
+        16777216
+    } else {
+        0
+    }
+}
+
+/// R2..R5 with the `planes` and `headers` options: `r2r5` with R2's accepted
+/// size set selected by `headers` and R3's `planes == 1` governed by `planes`.
+/// Every other guard, and the `RawFields` it builds, are `r2r5`'s own.
+pub open spec fn width_i_of(b: Seq<u8>, s: int) -> int {
+    if le32(b, s) == 12 {
+        le16(b, s + 4)
+    } else {
+        s32(b, s + 4)
+    }
+}
+
+pub open spec fn stored_of(b: Seq<u8>, s: int) -> int {
+    if le32(b, s) == 12 {
+        le16(b, s + 6)
+    } else {
+        s32(b, s + 8)
+    }
+}
+
+pub open spec fn planes_of(b: Seq<u8>, s: int) -> int {
+    if le32(b, s) == 12 {
+        le16(b, s + 8)
+    } else {
+        le16(b, s + 12)
+    }
+}
+
+pub open spec fn depth_of(b: Seq<u8>, s: int) -> int {
+    if le32(b, s) == 12 {
+        le16(b, s + 10)
+    } else {
+        le16(b, s + 14)
+    }
+}
+
+pub open spec fn compression_of(b: Seq<u8>, s: int) -> int {
+    if le32(b, s) == 12 || le32(b, s) == 16 {
+        0
+    } else {
+        le32(b, s + 16)
+    }
+}
+
+pub open spec fn used_of(b: Seq<u8>, s: int) -> int {
+    if le32(b, s) == 12 || le32(b, s) == 16 {
+        0
+    } else {
+        le32(b, s + 32)
+    }
+}
+
+pub open spec fn declared_of(b: Seq<u8>, s: int) -> int {
+    if le32(b, s) == 12 || le32(b, s) == 16 {
+        0
+    } else {
+        le32(b, s + 20)
+    }
+}
+
+/// The R4 depth/compression pairing rejection.
+pub open spec fn comp_of(b: Seq<u8>, s: int) -> bool {
+    (compression_of(b, s) == 1 && depth_of(b, s) != 8) || (compression_of(b, s) == 2 && depth_of(b, s)
+        != 4) || (compression_of(b, s) == 3 && depth_of(b, s) != 16 && depth_of(b, s) != 32)
+}
+
+pub open spec fn header_bytes_needed(h: int, p: Policy) -> int {
+    if p.header_bytes == crate::dib::HeaderBytesOptions::ParsedFields && h >= 40 { 40 } else { h }
+}
+
+pub open spec fn policy_masks_missing(b: Seq<u8>, s: int, rf: RawFields, p: Policy) -> bool {
+    rf.compression == 3 && (
+        if rf.hsize == 40 || rf.hsize == 64 { b.len() - rf.pos0 < 12 }
+        else { p.header_bytes == crate::dib::HeaderBytesOptions::ParsedFields
+            && b.len() < s + (if rf.hsize >= 56 { 56int } else { 52int }) })
+}
+
+pub open spec fn r2r5_policy(
+    b: Seq<u8>,
+    mode: Mode,
+    s: int,
+    p: Policy,
+) -> Result<RawFields, Error> {
+    if b.len() < s + 4 {
+        Err(Error::TruncatedDibHeader)
+    } else if !hsize_ok_policy(le32(b, s), p.headers) {
+        Err(Error::UnsupportedHeaderSize)
+    } else if b.len() < s + header_bytes_needed(le32(b, s), p) {
+        Err(Error::TruncatedHeader)
+    } else {
+        let hsize: int = le32(b, s);
+        let core: bool = hsize == 12;
+        let width_i: int = if core {
+            le16(b, s + 4)
+        } else {
+            s32(b, s + 4)
+        };
+        let stored: int = if core {
+            le16(b, s + 6)
+        } else {
+            s32(b, s + 8)
+        };
+        let planes: int = if core {
+            le16(b, s + 8)
+        } else {
+            le16(b, s + 12)
+        };
+        let depth: int = if core {
+            le16(b, s + 10)
+        } else {
+            le16(b, s + 14)
+        };
+        let compression: int = if core || hsize == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        };
+        let declared: int = if core || hsize == 16 {
+            0
+        } else {
+            le32(b, s + 20)
+        };
+        let used: int = if core || hsize == 16 {
+            0
+        } else {
+            le32(b, s + 32)
+        };
+        let height_v: int = visible_height_of(mode, abs_int(stored));
+        if p.planes == PlanesOptions::Must1 && planes_of(b, s) != 1 {
+            Err(Error::InvalidPlanes)
+        } else if width_i_of(b, s) <= 0 || stored_of(b, s) == 0 || stored_of(b, s) == s32_min() {
+            Err(Error::InvalidDimensions)
+        } else if is_ico(mode) && (stored_of(b, s) < 0 || stored_of(b, s) % 2 != 0) {
+            Err(Error::InvalidDimensions)
+        } else if width_i_of(b, s) > max_dimension() || visible_height_of(mode, abs_int(stored_of(
+            b,
+            s,
+        ))) > max_dimension() {
+            Err(Error::InvalidDimensions)
+        } else if !(depth_ok(depth_of(b, s)) || (p.unsupported == UnsupportedOptions::Rgb2
+            && le32(b, s) >= 40 && depth_of(b, s) == 2)) {
+            Err(Error::UnsupportedPixelDepth)
+        } else if compression_of(b, s) > 3 {
+            Err(Error::UnsupportedCompression)
+        } else if comp_of(b, s) {
+            Err(Error::InvalidCompressionDepth)
+        } else if (stored_of(b, s) < 0 && (compression_of(b, s) == 1 || compression_of(b, s)
+            == 2)) || (is_ico(mode) && (compression_of(b, s) == 1 || compression_of(b, s) == 2)) {
+            Err(Error::UnsupportedOrientation)
+        } else if (depth_of(b, s) <= 8 && used_of(b, s) > pow2(depth_of(b, s))) || (depth_of(b, s)
+            > 8 && used_of(b, s) != 0 && mode != Mode::BmpFile) {
+            Err(Error::InvalidColorCount)
+        } else if depth_of(b, s) > 8 && used_of(b, s) != 0 && mode == Mode::BmpFile
+            && p.high_count == HighCountOptions::GdkBound {
+            if used_of(b, s) > gdk_high_bound(depth_of(b, s)) {
+                Err(Error::InvalidColorCount)
+            } else {
+                r2r5_policy_tail(b, mode, s, hsize, core, width_i, stored, planes, depth, compression, declared, used, height_v)
+            }
+        } else if 4 * (width_i_of(b, s) * visible_height_of(mode, abs_int(stored_of(b, s))))
+            > max_output() {
+            Err(Error::OutputTooLarge)
+        } else {
+            Ok(
+                RawFields {
+                    hsize,
+                    core,
+                    width: width_i,
+                    stored,
+                    planes,
+                    depth,
+                    compression,
+                    declared,
+                    used,
+                    height: height_v,
+                    pos0: s + hsize,
+                },
+            )
+        }
+    }
+}
+
+/// `r2r5_policy`'s tail from the output cap on, with no policy bracket (the
+/// `planes`, `headers` and `high_count` guards have all been decided).
+pub open spec fn r2r5_policy_tail(
+    b: Seq<u8>,
+    mode: Mode,
+    s: int,
+    hsize: int,
+    core: bool,
+    width_i: int,
+    stored: int,
+    planes: int,
+    depth: int,
+    compression: int,
+    declared: int,
+    used: int,
+    height_v: int,
+) -> Result<RawFields, Error> {
+    if 4 * (width_i * height_v) > max_output() {
+        Err(Error::OutputTooLarge)
+    } else {
+        Ok(
+            RawFields {
+                hsize,
+                core,
+                width: width_i,
+                stored,
+                planes,
+                depth,
+                compression,
+                declared,
+                used,
+                height: height_v,
+                pos0: s + hsize,
+            },
+        )
+    }
+}
+
+/// `r2r5_policy`'s `bits <= 8` colour-count guard.
+pub proof fn lemma_r2r5_policy_low_count_err(b: Seq<u8>, mode: Mode, s: int, p: Policy)
+    requires
+        b.len() >= s + 4,
+        hsize_ok_policy(le32(b, s), p.headers),
+        b.len() >= s + header_bytes_needed(le32(b, s), p),
+        !(p.planes == PlanesOptions::Must1 && (if le32(b, s) == 12 {
+            le16(b, s + 8)
+        } else {
+            le16(b, s + 12)
+        }) != 1),
+        !((if le32(b, s) == 12 {
+            le16(b, s + 4) as int
+        } else {
+            s32(b, s + 4)
+        }) <= 0 || (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) == 0 || (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) == s32_min()),
+        !(is_ico(mode) && ((if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) < 0 || (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) % 2 != 0)),
+        (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) <= 8,
+        (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 32)
+        }) > pow2((if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        })),
+        (if le32(b, s) == 12 {
+            le16(b, s + 4) as int
+        } else {
+            s32(b, s + 4)
+        }) <= max_dimension(),
+        visible_height_of(mode, abs_int(if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        })) <= max_dimension(),
+        (depth_ok(if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) || (p.unsupported == UnsupportedOptions::Rgb2 && le32(b, s) >= 40
+            && le16(b, s + 14) == 2)),
+        (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) <= 3,
+        !((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 1 && (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) != 8),
+        !((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 2 && (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) != 4),
+        !((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 3 && (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) != 16 && (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) != 32),
+        !((if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) < 0 && ((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 1 || (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 2)),
+        !(is_ico(mode) && ((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 1 || (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 2)),
+    ensures
+        r2r5_policy(b, mode, s, p) == Err(Error::InvalidColorCount),
+{
+    reveal(r2r5_policy);
+    reveal(hsize_ok_policy);
+    reveal(hsize_ok);
+    reveal(pow2);
+    reveal(is_ico);
+    reveal(visible_height_of);
+    reveal(depth_ok);
+}
+
+/// `r2r5_policy`'s `bits > 8 && !BmpFile` colour-count guard.
+pub proof fn lemma_r2r5_policy_bare_high_err(b: Seq<u8>, mode: Mode, s: int, p: Policy)
+    requires
+        b.len() >= s + 4,
+        hsize_ok_policy(le32(b, s), p.headers),
+        b.len() >= s + header_bytes_needed(le32(b, s), p),
+        !(p.planes == PlanesOptions::Must1 && (if le32(b, s) == 12 {
+            le16(b, s + 8)
+        } else {
+            le16(b, s + 12)
+        }) != 1),
+        !((if le32(b, s) == 12 {
+            le16(b, s + 4) as int
+        } else {
+            s32(b, s + 4)
+        }) <= 0 || (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) == 0 || (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) == s32_min()),
+        !(is_ico(mode) && ((if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) < 0 || (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) % 2 != 0)),
+        (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) > 8,
+        (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 32)
+        }) != 0,
+        mode != Mode::BmpFile,
+        (if le32(b, s) == 12 {
+            le16(b, s + 4) as int
+        } else {
+            s32(b, s + 4)
+        }) <= max_dimension(),
+        visible_height_of(mode, abs_int(if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        })) <= max_dimension(),
+        (depth_ok(if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) || (p.unsupported == UnsupportedOptions::Rgb2 && le32(b, s) >= 40
+            && le16(b, s + 14) == 2)),
+        (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) <= 3,
+        !((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 1 && (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) != 8),
+        !((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 2 && (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) != 4),
+        !((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 3 && (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) != 16 && (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) != 32),
+        !((if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) < 0 && ((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 1 || (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 2)),
+        !(is_ico(mode) && ((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 1 || (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 2)),
+    ensures
+        r2r5_policy(b, mode, s, p) == Err(Error::InvalidColorCount),
+{
+    reveal(r2r5_policy);
+    reveal(hsize_ok_policy);
+    reveal(hsize_ok);
+    reveal(pow2);
+    reveal(is_ico);
+    reveal(visible_height_of);
+}
+
+/// `r2r5_policy`'s `high_count = GdkBound` guard.
+pub proof fn lemma_r2r5_policy_gdk_count_err(b: Seq<u8>, mode: Mode, s: int, p: Policy)
+    requires
+        b.len() >= s + 4,
+        hsize_ok_policy(le32(b, s), p.headers),
+        b.len() >= s + header_bytes_needed(le32(b, s), p),
+        !(p.planes == PlanesOptions::Must1 && (if le32(b, s) == 12 {
+            le16(b, s + 8)
+        } else {
+            le16(b, s + 12)
+        }) != 1),
+        !((if le32(b, s) == 12 {
+            le16(b, s + 4) as int
+        } else {
+            s32(b, s + 4)
+        }) <= 0 || (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) == 0 || (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) == s32_min()),
+        !(is_ico(mode) && ((if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) < 0 || (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) % 2 != 0)),
+        (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) > 8,
+        (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 32)
+        }) != 0,
+        mode == Mode::BmpFile,
+        p.high_count == HighCountOptions::GdkBound,
+        (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 32)
+        }) > gdk_high_bound((if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        })),
+        (if le32(b, s) == 12 {
+            le16(b, s + 4) as int
+        } else {
+            s32(b, s + 4)
+        }) <= max_dimension(),
+        visible_height_of(mode, abs_int(if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        })) <= max_dimension(),
+        (depth_ok(if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) || (p.unsupported == UnsupportedOptions::Rgb2 && le32(b, s) >= 40
+            && le16(b, s + 14) == 2)),
+        (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) <= 3,
+        !((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 1 && (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) != 8),
+        !((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 2 && (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) != 4),
+        !((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 3 && (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) != 16 && (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) != 32),
+        !((if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) < 0 && ((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 1 || (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 2)),
+        !(is_ico(mode) && ((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 1 || (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 2)),
+    ensures
+        r2r5_policy(b, mode, s, p) == Err(Error::InvalidColorCount),
+{
+    reveal(r2r5_policy);
+    reveal(hsize_ok_policy);
+    reveal(hsize_ok);
+    reveal(pow2);
+    reveal(is_ico);
+    reveal(visible_height_of);
+    reveal(gdk_high_bound);
+}
+
+/// `r2r5_policy`'s output cap.
+pub proof fn lemma_r2r5_policy_output_err(b: Seq<u8>, mode: Mode, s: int, p: Policy)
+    requires
+        b.len() >= s + 4,
+        hsize_ok_policy(le32(b, s), p.headers),
+        b.len() >= s + header_bytes_needed(le32(b, s), p),
+        !(p.planes == PlanesOptions::Must1 && (if le32(b, s) == 12 {
+            le16(b, s + 8)
+        } else {
+            le16(b, s + 12)
+        }) != 1),
+        !((if le32(b, s) == 12 {
+            le16(b, s + 4) as int
+        } else {
+            s32(b, s + 4)
+        }) <= 0 || (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) == 0 || (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) == s32_min()),
+        !(is_ico(mode) && ((if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) < 0 || (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) % 2 != 0)),
+        !((if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) <= 8 && (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 32)
+        }) > pow2((if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }))),
+        !((if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) > 8 && (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 32)
+        }) != 0 && mode != Mode::BmpFile),
+        !((if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) > 8 && (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 32)
+        }) != 0 && mode == Mode::BmpFile && p.high_count == HighCountOptions::GdkBound
+            && (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 32)
+        }) > gdk_high_bound((if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }))),
+        4 * ((if le32(b, s) == 12 {
+            le16(b, s + 4) as int
+        } else {
+            s32(b, s + 4)
+        }) * visible_height_of(mode, abs_int(if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }))) > max_output(),
+        (if le32(b, s) == 12 {
+            le16(b, s + 4) as int
+        } else {
+            s32(b, s + 4)
+        }) <= max_dimension(),
+        visible_height_of(mode, abs_int(if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        })) <= max_dimension(),
+        (depth_ok(if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) || (p.unsupported == UnsupportedOptions::Rgb2 && le32(b, s) >= 40
+            && le16(b, s + 14) == 2)),
+        (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) <= 3,
+        !((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 1 && (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) != 8),
+        !((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 2 && (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) != 4),
+        !((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 3 && (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) != 16 && (if le32(b, s) == 12 {
+            le16(b, s + 10) as int
+        } else {
+            le16(b, s + 14)
+        }) != 32),
+        !((if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) < 0 && ((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 1 || (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 2)),
+        !(is_ico(mode) && ((if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 1 || (if le32(b, s) == 12 || le32(b, s) == 16 {
+            0
+        } else {
+            le32(b, s + 16)
+        }) == 2)),
+    ensures
+        r2r5_policy(b, mode, s, p) == Err(Error::OutputTooLarge),
+{
+    reveal(r2r5_policy);
+    reveal(hsize_ok_policy);
+    reveal(hsize_ok);
+    reveal(pow2);
+    reveal(is_ico);
+    reveal(visible_height_of);
+    reveal(gdk_high_bound);
+    reveal(abs_int);
+}
+
+/// The `masks`-option validity verdict for a `RawFields`' four raw words.
+pub open spec fn masks_ok_policy_rf(b: Seq<u8>, s: int, rf: RawFields, o: MasksOptions) -> bool {
+    let ms = masks_after_policy(
+        raw_masks_policy(b, s, rf).0,
+        raw_masks_policy(b, s, rf).1,
+        raw_masks_policy(b, s, rf).2,
+        raw_masks_policy(b, s, rf).3,
+        rf.depth,
+        o,
+    );
+    masks_ok_policy(ms.0, ms.1, ms.2, ms.3, rf.depth, o)
+}
+
+/// The `high_count`-selected table count for a `RawFields`.
+pub open spec fn table_count_of_policy_rf(rf: RawFields, o: HighCountOptions) -> int {
+    table_count_of_policy(rf, o)
+}
+
+/// The `masks`-selected four words for a `RawFields`.
+pub open spec fn masks_of_policy_rf(b: Seq<u8>, s: int, rf: RawFields, o: MasksOptions)
+    -> (u32, u32, u32, u32) {
+    if rf.compression != 3 {
+        (0u32, 0u32, 0u32, 0u32)
+    } else {
+        let ms = masks_after_policy(
+        raw_masks_policy(b, s, rf).0,
+        raw_masks_policy(b, s, rf).1,
+        raw_masks_policy(b, s, rf).2,
+        raw_masks_policy(b, s, rf).3,
+        rf.depth,
+        o,
+    );
+    (ms.0, ms.1, ms.2, ms.3)
+    }
+}
+
+/// The `r6r7_policy` guard chain, as one predicate over a validated
+/// `RawFields`. `r6r7_policy` returns exactly the error this names, or its
+/// `Ok` record.
+pub open spec fn r6r7_policy_err(b: Seq<u8>, s: int, file_offset: int, is_bmp: bool, rf: RawFields, p: Policy)
+    -> Option<Error> {
+    if policy_masks_missing(b, s, rf, p) {
+        Some(Error::TruncatedMasks)
+    } else if rf.compression == 3 && !masks_ok_policy_rf(b, s, rf, p.masks) {
+        Some(Error::InvalidBitfields)
+    } else if is_bmp && p.offset == OffsetOptions::Declared && file_offset < palette_start_of(rf)
+        + table_count_of_policy_rf(rf, p.high_count) * palette_stride_of(rf) {
+        Some(Error::InvalidPixelOffset)
+    } else if (p.header_bytes == crate::dib::HeaderBytesOptions::Full || table_count_of_policy_rf(rf, p.high_count) != 0) && b.len() < palette_start_of(rf) + table_count_of_policy_rf(rf, p.high_count)
+        * palette_stride_of(rf) {
+        Some(Error::TruncatedPalette)
+    } else {
+        None
+    }
+}
+
+/// `r6r7_policy` returns exactly `r6r7_policy_err`'s error, or the record;
+/// stated as the single equality the two-phase lemma needs.
+pub proof fn lemma_r6r7_policy_exact(
+    b: Seq<u8>, mode: Mode, s: int, file_offset: int, is_bmp: bool, rf: RawFields, p: Policy,
+)
+    requires
+        b.len() >= s + 4,
+    ensures
+        match r6r7_policy_err(b, s, file_offset, is_bmp, rf, p) {
+            Some(e) => r6r7_policy(b, mode, s, file_offset, is_bmp, rf, p) == Err(e),
+            None => r6r7_policy(b, mode, s, file_offset, is_bmp, rf, p)
+                == Ok(r6r7_result_policy(
+                b,
+                mode,
+                s,
+                file_offset,
+                is_bmp,
+                rf,
+                masks_of_policy_rf(b, s, rf, p.masks),
+                table_count_of_policy_rf(rf, p.high_count),
+            )),
+        },
+{
+    reveal(r6r7_policy);
+    reveal(r6r7_result_policy);
+    reveal(masks_after_policy);
+    reveal(masks_ok_policy);
+    reveal(masks_ok_policy_rf);
+    reveal(masks_of_policy_rf);
+    reveal(raw_masks_policy);
+    reveal(table_count_of_policy_rf);
+    reveal(table_count_of_policy);
+    reveal(palette_start_of);
+    reveal(palette_stride_of);
+    reveal(r6r7_policy_err);
+}
+
+/// The four raw BITFIELDS mask words a `RawFields` names, before the `masks`
+/// option's substitution.
+pub open spec fn raw_masks_policy(b: Seq<u8>, s: int, rf: RawFields) -> (u32, u32, u32, u32) {
+    if rf.compression == 3 {
+        if rf.hsize == 40 || rf.hsize == 64 {
+            // External masks start at the validated raw field's header end.
+            (as_u32(le32(b, rf.pos0)), as_u32(le32(b, rf.pos0 + 4)),
+                as_u32(le32(b, rf.pos0 + 8)), 0u32)
+        } else if rf.hsize >= 56 {
+            // Internal masks: R,G,B,A at `s+40 .. s+56`.
+            (as_u32(le32(b, s + 40)), as_u32(le32(b, s + 44)), as_u32(le32(b, s + 48)),
+                as_u32(le32(b, s + 52)))
+        } else {
+            (as_u32(le32(b, s + 40)), as_u32(le32(b, s + 44)), as_u32(le32(b, s + 48)), 0u32)
+        }
+    } else {
+        (0u32, 0u32, 0u32, 0u32)
+    }
+}
+
+/// `r6r7_policy` success: given the executable's concrete phase facts, the
+/// model returns the same record.
+pub proof fn lemma_r6r7_policy_record(
+    b: Seq<u8>,
+    mode: Mode,
+    s0: int,
+    file_offset: int,
+    is_bmp: bool,
+    rf: RawFields,
+    p: Policy,
+    m: MHRecord,
+    ms0: u32,
+    ms1: u32,
+    ms2: u32,
+    ms3: u32,
+    tc: int,
+)
+    requires
+        !(policy_masks_missing(b, s0, rf, p)),
+        r6r7_policy_err(b, s0, file_offset, is_bmp, rf, p) == None,
+        (ms0, ms1, ms2, ms3) == masks_of_policy_rf(b, s0, rf, p.masks),
+        tc == table_count_of_policy_rf(rf, p.high_count),
+        m == r6r7_result_policy(b, mode, s0, file_offset, is_bmp, rf, (
+            ms0,
+            ms1,
+            ms2,
+            ms3,
+        ), tc),
+    ensures
+        r6r7_policy(b, mode, s0, file_offset, is_bmp, rf, p) == Ok(m),
+{
+    reveal(r6r7_policy);
+    reveal(r6r7_result_policy);
+    reveal(masks_of_policy_rf);
+    reveal(table_count_of_policy_rf);
+}
+
+pub proof fn lemma_r6r7_policy_offset_err(
+    b: Seq<u8>, mode: Mode, s: int, file_offset: int, is_bmp: bool, rf: RawFields, p: Policy,
+    pe: int, pe_ico: bool,
+)
+    requires
+        !(policy_masks_missing(b, s, rf, p)),
+        !(rf.compression == 3 && !masks_ok_policy_rf(b, s, rf, p.masks)),
+        palette_start_of(rf) + table_count_of_policy_rf(rf, p.high_count) * palette_stride_of(rf)
+            == pe,
+        pe_ico == (is_bmp && p.offset == OffsetOptions::Declared),
+        pe_ico,
+        file_offset < pe,
+    ensures
+        r6r7_policy(b, mode, s, file_offset, is_bmp, rf, p) == Err(Error::InvalidPixelOffset),
+{
+    reveal(r6r7_policy);
+    reveal(palette_start_of);
+    reveal(palette_stride_of);
+    reveal(table_count_of_policy_rf);
+}
+
+pub proof fn lemma_r6r7_policy_palette_err(
+    b: Seq<u8>, mode: Mode, s: int, file_offset: int, is_bmp: bool, rf: RawFields, p: Policy,
+    pe: int,
+)
+    requires
+        !(policy_masks_missing(b, s, rf, p)),
+        !(rf.compression == 3 && !masks_ok_policy_rf(b, s, rf, p.masks)),
+        palette_start_of(rf) + table_count_of_policy_rf(rf, p.high_count) * palette_stride_of(rf)
+            == pe,
+        !(is_bmp && p.offset == OffsetOptions::Declared && file_offset < pe),
+        b.len() < pe,
+        p.header_bytes == crate::dib::HeaderBytesOptions::Full || table_count_of_policy_rf(rf, p.high_count) != 0,
+    ensures
+        r6r7_policy(b, mode, s, file_offset, is_bmp, rf, p) == Err(Error::TruncatedPalette),
+{
+    reveal(r6r7_policy);
+    reveal(palette_start_of);
+    reveal(palette_stride_of);
+    reveal(table_count_of_policy_rf);
+}
+
+pub proof fn lemma_r6r7_policy_ok(
+    b: Seq<u8>, mode: Mode, s: int, file_offset: int, is_bmp: bool, rf: RawFields, p: Policy,
+    m: MHRecord,
+)
+    requires
+        !(policy_masks_missing(b, s, rf, p)),
+        !(rf.compression == 3 && !masks_ok_policy_rf(b, s, rf, p.masks)),
+        !(is_bmp && p.offset == OffsetOptions::Declared && file_offset < palette_start_of(rf)
+            + table_count_of_policy_rf(rf, p.high_count) * palette_stride_of(rf)),
+        (p.header_bytes == crate::dib::HeaderBytesOptions::ParsedFields && table_count_of_policy_rf(rf, p.high_count) == 0) || b.len() >= palette_start_of(rf) + table_count_of_policy_rf(rf, p.high_count)
+            * palette_stride_of(rf),
+        m == r6r7_result_policy(
+            b,
+            mode,
+            s,
+            file_offset,
+            is_bmp,
+            rf,
+            masks_of_policy_rf(b, s, rf, p.masks),
+            table_count_of_policy_rf(rf, p.high_count),
+        ),
+    ensures
+        r6r7_policy(b, mode, s, file_offset, is_bmp, rf, p) == Ok(m),
+{
+    reveal(r6r7_policy);
+    reveal(r6r7_result_policy);
+    reveal(palette_start_of);
+    reveal(palette_stride_of);
+    reveal(table_count_of_policy_rf);
+}
+
+/// `r2r5_policy`'s early guards as a lemma taking the executable's concrete/// `r2r5_policy`'s early guards as a lemma taking the executable's concrete
+/// facts: the size test, the header-size test and the header availability test
+/// have all passed, so the model reaches its R3 `planes` test with the
+/// executable's own `planes` value.
+pub proof fn lemma_r2r5_policy_planes_err(b: Seq<u8>, mode: Mode, s: int, p: Policy)
+    requires
+        b.len() >= s + 4,
+        hsize_ok_policy(le32(b, s), p.headers),
+        b.len() >= s + header_bytes_needed(le32(b, s), p),
+        p.planes == PlanesOptions::Must1,
+        (if le32(b, s) == 12 {
+            le16(b, s + 8)
+        } else {
+            le16(b, s + 12)
+        }) != 1,
+    ensures
+        r2r5_policy(b, mode, s, p) == Err(Error::InvalidPlanes),
+{
+    reveal(r2r5_policy);
+    reveal(hsize_ok_policy);
+    reveal(hsize_ok);
+}
+
+/// `r2r5_policy`'s R3 dimension guard: the header fields are as read, and the
+/// executable's dimension test has failed.
+pub proof fn lemma_r2r5_policy_dims_err(b: Seq<u8>, mode: Mode, s: int, p: Policy)
+    requires
+        b.len() >= s + 4,
+        hsize_ok_policy(le32(b, s), p.headers),
+        b.len() >= s + header_bytes_needed(le32(b, s), p),
+        !(p.planes == PlanesOptions::Must1 && (if le32(b, s) == 12 {
+            le16(b, s + 8)
+        } else {
+            le16(b, s + 12)
+        }) != 1),
+        (if le32(b, s) == 12 {
+            le16(b, s + 4) as int
+        } else {
+            s32(b, s + 4)
+        }) <= 0 || (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) == 0 || (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) == s32_min(),
+    ensures
+        r2r5_policy(b, mode, s, p) == Err(Error::InvalidDimensions),
+{
+    reveal(r2r5_policy);
+    reveal(hsize_ok_policy);
+    reveal(hsize_ok);
+}
+
+/// `r2r5_policy`'s R3 ICO stored-height guard.
+pub proof fn lemma_r2r5_policy_ico_err(b: Seq<u8>, mode: Mode, s: int, p: Policy)
+    requires
+        b.len() >= s + 4,
+        hsize_ok_policy(le32(b, s), p.headers),
+        b.len() >= s + header_bytes_needed(le32(b, s), p),
+        !(p.planes == PlanesOptions::Must1 && (if le32(b, s) == 12 {
+            le16(b, s + 8)
+        } else {
+            le16(b, s + 12)
+        }) != 1),
+        !((if le32(b, s) == 12 {
+            le16(b, s + 4) as int
+        } else {
+            s32(b, s + 4)
+        }) <= 0 || (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) == 0 || (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) == s32_min()),
+        is_ico(mode),
+        (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) < 0 || (if le32(b, s) == 12 {
+            le16(b, s + 6) as int
+        } else {
+            s32(b, s + 8)
+        }) % 2 != 0,
+    ensures
+        r2r5_policy(b, mode, s, p) == Err(Error::InvalidDimensions),
+{
+    reveal(r2r5_policy);
+    reveal(hsize_ok_policy);
+    reveal(hsize_ok);
+    reveal(is_ico);
+    reveal(visible_height_of);
+}
+
+/// R6..R7 with the `high_count`, `masks` and `offset` options, over a `RawFields`
+/// validated by `r2r5_policy`. The record is `r6r7_result_policy`'s: the same
+/// `r6r7_result` with the `masks = DefaultRGB` substitution applied to the four
+/// mask words, and the palette table size selected by `high_count`.
+pub open spec fn r6r7_policy(
+    b: Seq<u8>,
+    mode: Mode,
+    s: int,
+    file_offset: int,
+    is_bmp: bool,
+    rf: RawFields,
+    p: Policy,
+) -> Result<MHRecord, Error> {
+    let compression: int = rf.compression;
+    let depth: int = rf.depth;
+    let pos0: int = rf.pos0;
+    let external_masks: bool = rf.hsize == 40 || rf.hsize == 64;
+    if policy_masks_missing(b, s, rf, p) {
+        Err(Error::TruncatedMasks)
+    } else if compression == 3 && !masks_ok_policy_rf(b, s, rf, p.masks) {
+        Err(Error::InvalidBitfields)
+    } else {
+        let pos: int = if compression == 3 && external_masks {
+            pos0 + 12
+        } else {
+            pos0
+        };
+        let tc: int = table_count_of_policy_rf(rf, p.high_count);
+        let palette_end: int = palette_start_of(rf) + tc * palette_stride_of(rf);
+        if is_bmp && p.offset == OffsetOptions::Declared && file_offset < palette_end {
+            Err(Error::InvalidPixelOffset)
+        } else if (p.header_bytes == crate::dib::HeaderBytesOptions::Full || tc != 0) && b.len() < palette_end {
+            Err(Error::TruncatedPalette)
+        } else {
+            Ok(
+                r6r7_result_policy(
+                    b,
+                    mode,
+                    s,
+                    file_offset,
+                    is_bmp,
+                    rf,
+                    masks_of_policy_rf(b, s, rf, p.masks),
+                    tc,
+                ),
+            )
+        }
+    }
+}
+
+/// The record `r6r7_policy` builds: `r6r7_result` with the four post-substitution
+/// mask words and the option-selected `table_count`.
+pub open spec fn r6r7_result_policy(
+    b: Seq<u8>,
+    mode: Mode,
+    s: int,
+    file_offset: int,
+    is_bmp: bool,
+    rf: RawFields,
+    ms: (u32, u32, u32, u32),
+    table_count: int,
+) -> MHRecord {
+    let depth: int = rf.depth;
+    let used: int = rf.used;
+    let pal_stride: int = if rf.core {
+        3
+    } else {
+        4
+    };
+    let pos: int = if rf.compression == 3 && (rf.hsize == 40 || rf.hsize == 64) {
+        rf.pos0 + 12
+    } else {
+        rf.pos0
+    };
+    let count: int = if depth <= 8 {
+        if used != 0 {
+            used
+        } else {
+            pow2(depth)
+        }
+    } else {
+        0
+    };
+    let palette_end: int = pos + table_count * pal_stride;
+    MHRecord {
+        mode,
+        s,
+        hsize: rf.hsize,
+        width: rf.width,
+        height: rf.height,
+        stored_height: rf.stored,
+        planes: rf.planes,
+        depth,
+        compression: rf.compression,
+        declared_image: rf.declared,
+        color_used: used,
+        count,
+        table_count,
+        palette_stride: pal_stride,
+        palette_start: pos,
+        palette_end,
+        pixel_start: if is_bmp {
+            file_offset
+        } else {
+            palette_end
+        },
+        mask_r: ms.0 as int,
+        mask_g: ms.1 as int,
+        mask_b: ms.2 as int,
+        mask_a: ms.3 as int,
+        has_masks: rf.compression == 3,
+        core: rf.core,
+        is_bmp,
+        top_down: rf.stored < 0,
+        n: rf.width * rf.height,
+        stride: if rf.compression == 0 || rf.compression == 3 {
+            stride_of(rf.width, depth)
+        } else {
+            0
+        },
+    }
+}
+
+/// R2..R7 with every option: `r2r5_policy`, then `r6r7_policy`.
+/// `r2r7_policy`'s success record, given the `RawFields` and the phase facts.
+pub open spec fn r2r7_policy(
+    b: Seq<u8>,
+    mode: Mode,
+    s: int,
+    file_offset: int,
+    is_bmp: bool,
+    p: Policy,
+) -> Result<MHRecord, Error> {
+    match r2r5_policy(b, mode, s, p) {
+        Err(e) => Err(e),
+        Ok(rf) => r6r7_policy(b, mode, s, file_offset, is_bmp, rf, p),
+    }
+}
+
+/// `MH_policy(b, bm, p)`: the R1–R7 header model with every option of this
+/// milestone. With `p = Strict` each option sits at its 1.1 value, so the whole
+/// chain reduces to `r1_prefix`/`r2r5`/`r6r7` and `MH_policy(Strict)` is `MH`.
 pub open spec fn mh_policy(b: Seq<u8>, bm: BmpMode, p: Policy) -> Result<MHRecord, Error> {
     let mode: Mode = match bm {
         BmpMode::BmpFile => Mode::BmpFile,
@@ -6838,10 +8342,10 @@ pub open spec fn mh_policy(b: Seq<u8>, bm: BmpMode, p: Policy) -> Result<MHRecor
     } else if bm == BmpMode::BmpFile {
         match r1_prefix_policy(b, p) {
             Err(e) => Err(e),
-            Ok(q) => r2r7(b, mode, q.0, q.1, true),
+            Ok(q) => r2r7_policy(b, mode, q.0, q.1, true, p),
         }
     } else {
-        r2r7(b, mode, 0, 0, false)
+        r2r7_policy(b, mode, 0, 0, false, p)
     }
 }
 
@@ -6901,7 +8405,7 @@ pub open spec fn mp_mask_phase_policy(
         }
     } else if m.mode == Mode::BmpFile {
         Ok((pos, out))
-    } else if pos != b.len() {
+    } else if pos < b.len() || (pos > b.len() && p.short_pixels == crate::dib::ShortPixelsOptions::Reject) {
         Err(MpErr::Api(Error::TrailingBytes))
     } else {
         Ok((pos, out))
@@ -6921,7 +8425,7 @@ pub open spec fn mask_done_policy_eq(
     r: Result<(), Error>,
     p: Policy,
 ) -> bool {
-    match mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p) {
+    match mp_mask_phase_policy(b, m, pos, pos - offset_effective(m, p), out0, p) {
         Ok((_end, img)) => r == Ok(()) && out1 == img,
         Err(MpErr::Api(e)) => r == Err(e),
         Err(MpErr::Outside) => false,
@@ -6937,35 +8441,299 @@ pub proof fn lemma_mp_policy_phase(
         m.mode == Mode::BmpFile || m.mode == Mode::BareDib,
         mask_done_policy_eq(b, m, pos, out0, out1, r, p),
     ensures
-        match mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p) {
+        match mp_mask_phase_policy(b, m, pos, pos - offset_effective(m, p), out0, p) {
             Ok((_end, img)) => r == Ok(()) && out1 == img,
             Err(MpErr::Api(e)) => r == Err(e),
             Err(MpErr::Outside) => false,
         },
-        !(mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p) is Err
-            && mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p)->Err_0 is Outside)
+        !(mp_mask_phase_policy(b, m, pos, pos - offset_effective(m, p), out0, p) is Err
+            && mp_mask_phase_policy(b, m, pos, pos - offset_effective(m, p), out0, p)->Err_0 is Outside)
             || r != Ok(()),
 {
     reveal(mask_done_policy_eq);
     reveal(mp_mask_phase_policy);
 }
 
+pub open spec fn popcount_byte(v: u8) -> u32 {
+    ((v & 1) as u32 + ((v >> 1) & 1) as u32 + ((v >> 2) & 1) as u32 + ((v >> 3) & 1) as u32
+        + ((v >> 4) & 1) as u32 + ((v >> 5) & 1) as u32 + ((v >> 6) & 1) as u32 + ((v >> 7) & 1) as u32) as u32
+}
+
+pub open spec fn popcount_word(v: u32) -> u32 {
+    (popcount_byte(v as u8) + popcount_byte((v >> 8) as u8)
+        + popcount_byte((v >> 16) as u8) + popcount_byte((v >> 24) as u8)) as u32
+}
+
+pub open spec fn channel_scaled(word: u32, mask: u32, scaling: crate::dib::ScalingOptions) -> u8 {
+    if mask == 0 { 255u8 } else {
+        let shift = vstd::std_specs::bits::u32_trailing_zeros(mask);
+        let compact = mask >> shift;
+        let width = (32u32 - vstd::std_specs::bits::u32_leading_zeros(compact)) as u32;
+        match scaling {
+            crate::dib::ScalingOptions::Round => channel_of(word, mask),
+            crate::dib::ScalingOptions::Image => if width <= 8 { channel_of(word, mask) }
+                else { (((word & mask) >> shift) >> (width - 8)) as u8 },
+            crate::dib::ScalingOptions::Gdk => {
+                let count = popcount_word(mask);
+                let n = if count > 8 { 8u32 } else { count };
+                let skip = if count > 8 { (count - 8) as u32 } else { 0u32 };
+                let value = (word & mask) as u64 >> (shift + skip);
+                ((value << (8 - n)) | (if n >= 4 { value >> (2 * n - 8) } else { 0u64 })) as u8
+            },
+        }
+    }
+}
+
+pub open spec fn raw_scaled_conv(b: Seq<u8>, m: MHRecord, pos: int, x: int,
+    scaling: crate::dib::ScalingOptions, opaque: bool) -> Seq<u8> {
+    if m.compression == 3 || m.depth == 16 {
+        let base = pos + x * m.depth / 8;
+        let word = if m.depth == 16 { le16(b, base) as u32 } else { le32(b, base) as u32 };
+        if m.compression == 3 {
+            seq![channel_scaled(word, m.mask_r as u32, scaling), channel_scaled(word, m.mask_g as u32, scaling),
+                channel_scaled(word, m.mask_b as u32, scaling), if opaque && m.depth == 16 { 255u8 } else { channel_scaled(word, m.mask_a as u32, scaling) }]
+        } else {
+            seq![channel_scaled(word, 0x7c00u32, scaling), channel_scaled(word, 0x3e0u32, scaling),
+                channel_scaled(word, 0x1fu32, scaling), 255u8]
+        }
+    } else { raw_conv(b, m, pos, x) }
+}
+
+pub open spec fn raw_legacy(p: Policy) -> bool {
+    p.short_pixels == crate::dib::ShortPixelsOptions::Reject
+        && p.scaling == crate::dib::ScalingOptions::Round
+        && p.bitfield16_alpha == crate::dib::Bitfield16AlphaOptions::Mask
+        && p.palette_index == crate::dib::PaletteIndexOptions::Reject
+}
+
+pub type RawPolicyFull = (Result<int, Error>, Seq<Write>, bool);
+
+// ZeroFill advances the logical cursor without reading any partial row.
+#[verifier::opaque]
+pub open spec fn raw_zero_full(b: Seq<u8>, m: MHRecord, pos: int, x: int, y: int, zero: bool, black: bool, scaling: crate::dib::ScalingOptions, opaque: bool)
+    -> RawPolicyFull
+    decreases (m.height - y) as nat, (m.width - x) as nat,
+{
+    if y >= m.height { (Ok(pos), Seq::<Write>::empty(), false) }
+    else if x >= m.width { raw_zero_full(b, m, pos + m.stride, 0, y + 1, zero, black, scaling, opaque) }
+    else if pos + m.stride > b.len() && !zero {
+        (Err(Error::TruncatedPixels), Seq::<Write>::empty(), false)
+    } else if pos + m.stride > b.len() {
+        let next = raw_zero_full(b, m, pos + m.stride, 0, y + 1, zero, black, scaling, opaque);
+        (next.0, next.1, true)
+    } else if !raw_index_ok(b, m, pos, x) && !black {
+        (Err(Error::PaletteIndexOutOfRange), Seq::<Write>::empty(), false)
+    } else {
+        let next = raw_zero_full(b, m, pos, x + 1, y, zero, black, scaling, opaque);
+        (next.0, seq![Write { cell: cell_of(m, x, y), px: if raw_index_ok(b, m, pos, x) { raw_scaled_conv(b, m, pos, x, scaling, opaque) }
+            else { seq![0u8, 0u8, 0u8, 255u8] } }] + next.1, !raw_index_ok(b, m, pos, x) || next.2)
+    }
+}
+
+pub open spec fn raw_zero_fill(m: MHRecord, zero: bool) -> Seq<u8> {
+    if !zero || m.depth == 32 { zero_bytes(4 * m.n) } else { opaque_fill(4 * m.n) }
+}
+
+pub open spec fn raw_zero_out(b: Seq<u8>, m: MHRecord, p0: int, zero: bool, black: bool, scaling: crate::dib::ScalingOptions, opaque: bool) -> (Result<(int, Seq<u8>), Error>, bool) {
+    let full = raw_zero_full(b, m, p0, 0, 0, zero, black, scaling, opaque);
+    (match full.0 {
+        Err(e) => Err(e),
+        Ok(pos) => Ok((pos, bytes_replay(raw_zero_fill(m, zero), full.1))),
+    }, full.2)
+}
+
 /// `MP_policy` for a raw/BITFIELDS record: `MR`'s raw transition, then the
 /// policy mask phase. Identical to `mp_raw` but for the phase's option.
 pub open spec fn mp_raw_policy(b: Seq<u8>, m: MHRecord, p: Policy) -> Result<(Seq<u8>, int), MpErr> {
-    match mr_raw_out(b, m, m.pixel_start) {
+    if !raw_legacy(p) {
+        match raw_zero_out(b, m, offset_effective(m, p), p.short_pixels == crate::dib::ShortPixelsOptions::ZeroFill, p.palette_index == crate::dib::PaletteIndexOptions::Black, p.scaling, p.bitfield16_alpha == crate::dib::Bitfield16AlphaOptions::Opaque).0 {
+            Err(e) => Err(MpErr::Api(e)),
+            Ok((pc, out)) => match mp_mask_phase_policy(b, m, pc, pc - offset_effective(m, p), out, p) {
+                Ok((end, out2)) => Ok((out2, end)), Err(e) => Err(e),
+            },
+        }
+    } else {
+    match mr_raw_out(b, m, offset_effective(m, p)) {
         Err((RawErr::Api(e), _pc, _xc, _yc)) => Err(MpErr::Api(e)),
         Err((RawErr::Outside, _pc, _xc, _yc)) => Err(MpErr::Outside),
-        Ok((pc, out)) => match mp_mask_phase_policy(b, m, pc, pc - m.pixel_start, out, p) {
+        Ok((pc, out)) => match mp_mask_phase_policy(b, m, pc, pc - offset_effective(m, p), out, p)
+        {
             Ok((end, out2)) => Ok((out2, end)),
             Err(e) => Err(e),
         },
     }
 }
+}
+
+pub open spec fn packet_index(b: Seq<u8>, depth: int, absolute: bool, value: int, j: int) -> int {
+    if absolute { abs_index(b, depth, value, j) } else { run_index(value, depth, j) }
+}
+
+pub open spec fn black_packet_writes(b: Seq<u8>, m: MHRecord, absolute: bool, value: int,
+    x: int, y: int, q: int) -> Seq<Write> {
+    Seq::new(q as nat, |j: int| {
+        let ix = packet_index(b, m.depth, absolute, value, j);
+        Write { cell: cell_of(m, x + j, y),
+            px: if ix >= m.count { seq![0u8, 0u8, 0u8, 255u8] }
+                else { pal_entry(b, m.palette_start, m.palette_stride, ix) } }
+    })
+}
+
+pub open spec fn black_packet_event(b: Seq<u8>, m: MHRecord, absolute: bool, value: int, q: int) -> bool {
+    exists|j: int| 0 <= j < q && packet_index(b, m.depth, absolute, value, j) >= m.count
+}
+
+pub proof fn lemma_packet_write_lengths(b: Seq<u8>, m: MHRecord, x: int, y: int, value: int, j: int, q: int)
+    requires 0 <= j <= q,
+    ensures run_writes(b, m, x, y, value, j, q).len() == q - j,
+        abs_writes(b, m, x, y, value, j, q).len() == q - j,
+    decreases q - j,
+{
+    reveal(run_writes); reveal(abs_writes);
+    if j < q { lemma_packet_write_lengths(b, m, x, y, value, j + 1, q); }
+}
+
+pub open spec fn rle_initial(b: Seq<u8>, m: MHRecord, fill: crate::dib::RleFillOptions) -> Seq<u8> {
+    match fill {
+        crate::dib::RleFillOptions::Palette0 => pal_zero_bytes(b, m),
+        crate::dib::RleFillOptions::OpaqueBlack => opaque_fill(4 * m.n),
+        crate::dib::RleFillOptions::TransparentBlack => zero_bytes(4 * m.n),
+    }
+}
+
+pub open spec fn rle_legacy(p: Policy) -> bool {
+    p.rle_overrun == crate::dib::RleOverrunOptions::Reject
+        && p.rle_eol == crate::dib::RleEolOptions::OnlyFinal
+        && p.rle_delta == crate::dib::RleDeltaOptions::Inside
+        && p.rle_fill == crate::dib::RleFillOptions::Palette0
+        && p.rle_eob == crate::dib::RleEobOptions::Required
+        && p.palette_index == crate::dib::PaletteIndexOptions::Reject
+}
+
+// Policy RLE command transition. Clipped indices never enter a painter.
+pub type ClipStep = (Result<bool, Error>, int, int, int, Seq<Write>, bool);
+
+pub open spec fn clip_paint_count(width: int, x: int, q: int) -> int {
+    if q > width - x { width - x } else { q }
+}
+
+#[verifier::opaque]
+pub open spec fn rle_clip_step(b: Seq<u8>, m: MHRecord, p: int, x: int, y: int,
+    overrun: crate::dib::RleOverrunOptions, eol: crate::dib::RleEolOptions, eob: crate::dib::RleEobOptions, black: bool, delta: crate::dib::RleDeltaOptions) -> ClipStep {
+    let empty = Seq::<Write>::empty();
+    if eob == crate::dib::RleEobOptions::AtInputEnd && p >= 0
+        && (y >= m.height || p + 2 > b.len()) {
+        (Ok(true), p, x, y, empty, false)
+    } else if p < 0 || p + 2 > b.len() {
+        (Err(Error::RleTruncated), p, x, y, empty, false)
+    } else {
+        let q = b[p] as int;
+        let code = b[p + 1] as int;
+        if q != 0 {
+            if y >= m.height || (x + q > m.width && (overrun == crate::dib::RleOverrunOptions::Reject
+                || (overrun == crate::dib::RleOverrunOptions::Image && m.depth == 4))) {
+                (Err(Error::RleBounds), p + 2, x, y, empty, false)
+            } else {
+                let count = clip_paint_count(m.width, x, q);
+                let good = run_good(m, code, count, 0);
+                if black {
+                    (Ok(false), p + 2, x + count, y, black_packet_writes(b, m, false, code, x, y, count),
+                        x + q > m.width || black_packet_event(b, m, false, code, count))
+                } else if good == count {
+                    (Ok(false), p + 2, x + count, y,
+                        run_writes(b, m, x, y, code, 0, count), x + q > m.width)
+                } else {
+                    (Err(Error::PaletteIndexOutOfRange), p + 2, x, y,
+                        run_writes(b, m, x, y, code, 0, good), x + q > m.width)
+                }
+            }
+        } else if code == 1 {
+            (Ok(true), p + 2, x, y, empty, false)
+        } else if code == 0 {
+            if y >= m.height { (Err(Error::RleBounds), p + 2, x, y, empty, false) }
+            else { (Ok(eol == crate::dib::RleEolOptions::StopAtHeight && y + 1 == m.height), p + 2, 0, y + 1, empty, false) }
+        } else if code == 2 {
+            if p + 4 > b.len() { (Err(Error::RleTruncated), p + 2, x, y, empty, false) }
+            else if x + b[p + 2] as int >= m.width || y + b[p + 3] as int >= m.height {
+                if delta == crate::dib::RleDeltaOptions::Inside {
+                    (Err(Error::RleBounds), p + 4, x, y, empty, false)
+                } else {
+                    let dx = x + b[p + 2] as int;
+                    let dy = y + b[p + 3] as int;
+                    (Ok(false), p + 4, if dx > m.width { m.width } else { dx },
+                        if dy > m.height { m.height } else { dy }, empty, dx > m.width || dy > m.height)
+                }
+            } else {
+                (Ok(false), p + 4, x + b[p + 2] as int, y + b[p + 3] as int, empty, false)
+            }
+        } else {
+            if y >= m.height || (x + code > m.width && overrun != crate::dib::RleOverrunOptions::Clip) {
+                (Err(Error::RleBounds), p + 2, x, y, empty, false)
+            } else if p + 2 + rle_padded(code, m.depth) > b.len() {
+                (Err(Error::RleTruncated), p + 2, x, y, empty, x + code > m.width)
+            } else {
+                let count = clip_paint_count(m.width, x, code);
+                let good = abs_good(b, m, p + 2, count, 0);
+                if black {
+                    (Ok(false), p + 2 + rle_padded(code, m.depth), x + count, y,
+                        black_packet_writes(b, m, true, p + 2, x, y, count),
+                        x + code > m.width || black_packet_event(b, m, true, p + 2, count))
+                } else if good == count {
+                    (Ok(false), p + 2 + rle_padded(code, m.depth), x + count, y,
+                        abs_writes(b, m, x, y, p + 2, 0, count), x + code > m.width)
+                } else {
+                    (Err(Error::PaletteIndexOutOfRange), p + 2 + rle_padded(code, m.depth), x, y,
+                        abs_writes(b, m, x, y, p + 2, 0, good), x + code > m.width)
+                }
+            }
+        }
+    }
+}
+
+pub type ClipFull = (Result<int, Error>, Seq<Write>, bool);
+
+#[verifier::opaque]
+pub open spec fn rle_clip_full(b: Seq<u8>, m: MHRecord, p: int, x: int, y: int,
+    overrun: crate::dib::RleOverrunOptions, eol: crate::dib::RleEolOptions, eob: crate::dib::RleEobOptions, black: bool, delta: crate::dib::RleDeltaOptions) -> ClipFull
+    decreases b.len() - p,
+{
+    let s = rle_clip_step(b, m, p, x, y, overrun, eol, eob, black, delta);
+    match s.0 {
+        Err(e) => (Err(e), s.4, s.5),
+        Ok(true) => (Ok(s.1), s.4, s.5),
+        Ok(false) => {
+            if s.1 > p && s.1 <= b.len() {
+                let tail = rle_clip_full(b, m, s.1, s.2, s.3, overrun, eol, eob, black, delta);
+                (tail.0, s.4 + tail.1, s.5 || tail.2)
+            } else { (Err(Error::RleTruncated), s.4, s.5) }
+        },
+    }
+}
+
+pub open spec fn rle_clip_out(b: Seq<u8>, m: MHRecord, overrun: crate::dib::RleOverrunOptions, eol: crate::dib::RleEolOptions, eob: crate::dib::RleEobOptions, black: bool, delta: crate::dib::RleDeltaOptions, fill: crate::dib::RleFillOptions)
+    -> (Result<(int, Seq<u8>), Error>, bool) {
+    let r = rle_clip_full(b, m, m.pixel_start, 0, 0, overrun, eol, eob, black, delta);
+    (match r.0 {
+        Err(e) => Err(e),
+        Ok(pos) => Ok((pos, bytes_replay(rle_initial(b, m, fill), r.1))),
+    }, r.2 || (r.0 is Ok && fill != crate::dib::RleFillOptions::Palette0 && r.1.len() < m.n))
+}
 
 /// `MP_policy` for an RLE4/RLE8 record: `MR`'s RLE transition, then the policy
-/// mask phase. Identical to `mp_rle` but for the phase's option.
+/// mask phase. Identical to `mp_rle` but for the phase's option. RLE pixels
+/// start at the record's own `pixel_start` (the declared `bfOffBits` in
+/// `BmpFile`, the palette end in `BareDib`); the `Gdk` blank repair of an
+/// invalid indexed offset is applied in `mp_policy` before this call.
 pub open spec fn mp_rle_policy(b: Seq<u8>, m: MHRecord, p: Policy) -> Result<(Seq<u8>, int), MpErr> {
+    if !rle_legacy(p) {
+        match rle_clip_out(b, m, p.rle_overrun, p.rle_eol, p.rle_eob, p.palette_index == crate::dib::PaletteIndexOptions::Black, p.rle_delta, p.rle_fill).0 {
+            Err(e) => Err(MpErr::Api(e)),
+            Ok((pc, out)) => match mp_mask_phase_policy(b, m, pc, pc - m.pixel_start, out, p) {
+                Ok((end, out2)) => Ok((out2, end)),
+                Err(e) => Err(e),
+            },
+        }
+    } else {
     match mr_out(b, m, m.pixel_start, 0, 0) {
         Err((RleErr::Api(e), _pc, _xc, _yc)) => Err(MpErr::Api(e)),
         Err((RleErr::Outside, _pc, _xc, _yc)) => Err(MpErr::Outside),
@@ -6975,23 +8743,245 @@ pub open spec fn mp_rle_policy(b: Seq<u8>, m: MHRecord, p: Policy) -> Result<(Se
         },
     }
 }
+}
+
+/// R1/R7 `offset`: the effective raw pixel start for a record and option under
+/// the two BMP modes. `Declared` and `AllowAny` start at the declared
+/// `bfOffBits`. `Gdk` clamps a BI_RGB (`compression == 0`) offset below the
+/// palette end up to the palette end; BITFIELDS is left at the declared offset
+/// (POLICY-SPEC: "Gdk does not clamp this BITFIELDS value to metadata end").
+pub open spec fn bitfield_pixel_start(meta: bool, masks: bool, ps: int, pe: int) -> int {
+    if meta && masks { pe } else { ps }
+}
+
+pub open spec fn offset_effective(m: MHRecord, p: Policy) -> int {
+    let start = bitfield_pixel_start(
+        p.bitfield_offset == BitfieldOffsetOptions::MetadataEnd,
+        m.has_masks, m.pixel_start, m.palette_end);
+    match p.offset {
+        OffsetOptions::Declared => start,
+        OffsetOptions::AllowAny => start,
+        OffsetOptions::Gdk => if m.compression == 0 && start < m.palette_end {
+            m.palette_end
+        } else {
+            start
+        },
+    }
+}
+
+/// R1/R12 Gdk blank: a transparent-black or opaque-black initialized image, the
+/// two initialized fills POLICY-SPEC's `offset = Gdk` repair returns.
+pub open spec fn opaque_fill(k: int) -> Seq<u8> {
+    Seq::new(k as nat, |i: int| if i % 4 == 3 {
+        255u8
+    } else {
+        0u8
+    })
+}
+
+/// R1/R7 `offset = Gdk` blank guard: an indexed record (depth <= 8) whose
+/// declared offset is below the palette end or past EOF yields initialized
+/// blank output instead of pixels.
+/// A short indexed palette followed by a BMP pixel-offset gap selects blank output.
+pub open spec fn indexed_gap_blank(m: MHRecord, p: Policy) -> bool {
+    p.short_indexed_gap == ShortIndexedGapOptions::Blank && m.is_bmp && m.depth <= 8
+        && 0 < m.color_used < pow2(m.depth) && m.pixel_start > m.palette_end
+}
+
+/// Both initialized-blank header policies use the same opaque/RLE-transparent fill.
+pub open spec fn gdk_blank(b: Seq<u8>, m: MHRecord, p: Policy) -> bool {
+    (m.is_bmp && p.offset == OffsetOptions::Gdk && m.depth <= 8 && (m.pixel_start < m.palette_end
+        || m.pixel_start > b.len())) || indexed_gap_blank(m, p)
+}
+
+/// R1/R7 `offset = Gdk` BI_RGB past-EOF guard: a high-depth BI_RGB offset past
+/// EOF rejects with `InvalidPixelOffset` (POLICY-SPEC).
+pub open spec fn gdk_rgb_reject(b: Seq<u8>, m: MHRecord, p: Policy) -> bool {
+    m.is_bmp && p.offset == OffsetOptions::Gdk && m.depth > 8 && m.compression == 0 && m.pixel_start > b.len()
+}
+
+/// R1/R6 `recovered_so_far`: whether the header phase performed a
+/// data-affecting recovery (POLICY-SPEC's closed list): an invalid declared
+/// pixel offset accepted rather than rejected, a Gdk indexed offset repaired to
+/// a blank image or a Gdk BI_RGB offset clamped to the palette end, or a
+/// `masks = DefaultRGB` substitution (any RGB mask zero).
+/// The original RGB words, not the substituted output masks, determine fallback.
+pub open spec fn masks_defaulted(b: Seq<u8>, m: MHRecord, p: Policy) -> bool {
+    let q = m.s + (if m.hsize == 40 || m.hsize == 64 { m.hsize } else { 40 });
+    p.masks == MasksOptions::DefaultRGB && m.compression == 3
+        && 0 <= q && q + 12 <= b.len()
+        && (le32(b, q) == 0 || le32(b, q + 4) == 0 || le32(b, q + 8) == 0)
+}
+
+pub open spec fn mh_recovered_so_far(b: Seq<u8>, m: MHRecord, p: Policy) -> bool {
+    ||| (m.is_bmp && gdk_blank(b, m, p))
+    ||| (m.is_bmp && p.offset == OffsetOptions::Gdk && m.compression == 0
+        && m.pixel_start < m.palette_end)
+    ||| (m.is_bmp && p.offset != OffsetOptions::Declared
+        && (m.pixel_start < 18 || m.pixel_start > b.len()))
+    ||| (m.is_bmp && p.bitfield_offset == BitfieldOffsetOptions::MetadataEnd
+        && m.has_masks && m.pixel_start != m.palette_end)
+    ||| masks_defaulted(b, m, p)
+    ||| (p.header_bytes == crate::dib::HeaderBytesOptions::ParsedFields && m.s + m.hsize > b.len())
+}
+
+// A partial header carries only dimensions validated before R6/R7 failed.
+pub open spec fn mh_partial(b: Seq<u8>, bm: BmpMode, p: Policy) -> Option<RawFields> {
+    if p.incomplete_metadata != crate::dib::IncompleteMetadataOptions::Blank { None }
+    else {
+        let s = if bm == BmpMode::BmpFile { 14int } else { 0int };
+        match mh_policy(b, bm, p) {
+            Err(e) => if e == Error::TruncatedMasks || e == Error::TruncatedPalette {
+                match r2r5_policy(b, crate::dib::bmp_mode_to_mode(bm), s, p) {
+                    Ok(rf) => if e == Error::TruncatedPalette || rf.hsize == 40 || rf.hsize == 64 {
+                        Some(rf)
+                    } else { None },
+                    Err(_) => None,
+                }
+            } else { None },
+            Ok(_) => None,
+        }
+    }
+}
+
+pub enum PolicyHeader {
+    Complete(MHRecord),
+    Partial(RawFields),
+}
+
+pub open spec fn mh_selected(b: Seq<u8>, bm: BmpMode, p: Policy) -> Result<PolicyHeader, Error> {
+    match mh_partial(b, bm, p) {
+        Some(rf) => Ok(PolicyHeader::Partial(rf)),
+        None => match mh_policy(b, bm, p) {
+            Ok(m) => Ok(PolicyHeader::Complete(m)), Err(e) => Err(e),
+        },
+    }
+}
+
+pub open spec fn partial_fill(rf: RawFields) -> Seq<u8> {
+    if rf.depth == 32 || rf.compression == 1 || rf.compression == 2 {
+        zero_bytes(4 * (rf.width * rf.height))
+    } else { opaque_fill(4 * (rf.width * rf.height)) }
+}
+
+/// The gdk-pixbuf 2.42.12 `has_alpha` rule on a validated header's
+/// `(biBitCount, biCompression)`: true exactly when the depth is 32 or the
+/// compression is RLE8 (1) or RLE4 (2). It reads no pixel value, so it is a
+/// function of the header record alone. This is the same condition `partial_fill`
+/// and the `offset = Gdk` blank branch above select the transparent fill with,
+/// restated over the raw integers so a returned image field can be tied to it.
+pub open spec fn rle_or_32bpp(depth: int, compression: int) -> bool {
+    depth == 32 || compression == 1 || compression == 2
+}
+
+/// `rle_or_32bpp` on the record the policy-free header model `MH` returns. An
+/// error yields `false`, a value no successful `Decoded` ever carries.
+pub open spec fn mh_rle_or_32bpp(b: Seq<u8>, mode: Mode) -> bool {
+    match mh(b, mode) {
+        Ok(m) => rle_or_32bpp(m.depth, m.compression),
+        Err(_) => false,
+    }
+}
+
+/// `rle_or_32bpp` on the profiled header selection: the partial `RawFields`
+/// record when `MH_policy` fails as `TruncatedMasks`/`TruncatedPalette` under
+/// `incomplete_metadata = Blank` (R2..R5 validated `depth` and `compression`
+/// before that failure, so both are exact), else the complete `MH_policy`
+/// record. An error yields `false`. Kept a separate predicate so the two unfolds
+/// are named lemmas (`lemma_mh_policy_rle_or_32bpp_partial`/`_complete`): a proof
+/// that needs the model tie can call the lemma, and a proof that only needs a
+/// `Decoded` field can use the cheap concrete-header form on the executable
+/// `Header` instead, so the large header/pixel functions do not unfold
+/// `mh_policy` merely to type-check an `ensures`.
+pub open spec fn mh_policy_rle_or_32bpp(b: Seq<u8>, bm: BmpMode, p: Policy) -> bool {
+    match mh_partial(b, bm, p) {
+        Some(rf) => rle_or_32bpp(rf.depth, rf.compression),
+        None => match mh_policy(b, bm, p) {
+            Ok(m) => rle_or_32bpp(m.depth, m.compression),
+            Err(_) => false,
+        },
+    }
+}
+
+/// A successful `MH_policy` record forces `MH_policy`'s partial fallback to
+/// `None`: `mh_partial` returns `Some` only on the two recoverable failures.
+pub proof fn lemma_mh_partial_none(b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRecord)
+    requires crate::model::mh_policy(b, bm, p) == Ok(m),
+    ensures crate::model::mh_partial(b, bm, p) is None,
+{
+    reveal(mh_partial);
+}
+
+/// The partial branch of the profiled indicator: on a validated partial record it
+/// is `rle_or_32bpp` of that record's `depth`/`compression`.
+pub proof fn lemma_mh_policy_rle_or_32bpp_partial(b: Seq<u8>, bm: BmpMode, p: Policy, rf: RawFields)
+    requires crate::model::mh_partial(b, bm, p) == Some(rf),
+    ensures crate::model::mh_policy_rle_or_32bpp(b, bm, p) == rle_or_32bpp(rf.depth, rf.compression),
+{
+    reveal(mh_policy_rle_or_32bpp);
+}
+
+/// The complete branch of the profiled indicator: on a validated `MH_policy`
+/// record it is `rle_or_32bpp` of that record's `depth`/`compression`.
+pub proof fn lemma_mh_policy_rle_or_32bpp_complete(b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRecord)
+    requires
+        crate::model::mh_partial(b, bm, p) is None,
+        crate::model::mh_policy(b, bm, p) == Ok(m),
+    ensures crate::model::mh_policy_rle_or_32bpp(b, bm, p) == rle_or_32bpp(m.depth, m.compression),
+{
+    reveal(mh_policy_rle_or_32bpp);
+}
+
+/// The whole-image `recovered` flag for a policy result: `true` exactly on a
+/// successful decode whose header phase reported a recovery. An error never
+/// reports the flag (POLICY-SPEC: it is a property of the returned image).
+pub open spec fn pixel_recovered(b: Seq<u8>, m: MHRecord, p: Policy) -> bool {
+    !gdk_blank(b, m, p) && (
+        ((m.compression == 1 || m.compression == 2) && !rle_legacy(p)
+            && rle_clip_out(b, m, p.rle_overrun, p.rle_eol, p.rle_eob, p.palette_index == crate::dib::PaletteIndexOptions::Black, p.rle_delta, p.rle_fill).1)
+        || ((m.compression == 0 || m.compression == 3)
+            && !raw_legacy(p)
+            && raw_zero_out(b, m, offset_effective(m, p), p.short_pixels == crate::dib::ShortPixelsOptions::ZeroFill, p.palette_index == crate::dib::PaletteIndexOptions::Black, p.scaling, p.bitfield16_alpha == crate::dib::Bitfield16AlphaOptions::Opaque).1))
+}
+
+pub open spec fn recovered_policy(b: Seq<u8>, bm: BmpMode, p: Policy) -> bool {
+    match mp_policy(b, bm, p) {
+        Err(_) => false,
+        Ok(_) => if mh_partial(b, bm, p) is Some { true } else { match mh_policy(b, bm, p) {
+            Ok(m) => mh_recovered_so_far(b, m, p) || pixel_recovered(b, m, p),
+            Err(_) => false,
+        } },
+    }
+}
 
 /// `MP_policy(b, bm, p)`: the total policy-indexed reference model for the two
-/// BMP modes. It calls `MH_policy`, requires the palette to fit, then performs
-/// the R8 fill, the R9 raw or R10–R11 RLE transition, and the policy R12
-/// phase, returning the exact `Ok(w, h, rgba)` or the exact first `Err(e)`.
-/// Only the `file_size` and `image_size` options differ from `MP`; `recovered`
-/// is `false` for both P1 profiles, so it is not a field of this model.
+/// BMP modes. It calls `MH_policy`, checks required palette bytes, applies the
+/// `offset = Gdk` repairs, then performs the R8 fill, the R9 raw or R10–R11 RLE
+/// transition, and the policy R12 phase, returning the exact `Ok(w, h, rgba)`
+/// or the exact first `Err(e)`.
 pub open spec fn mp_policy(
     b: Seq<u8>,
     bm: BmpMode,
     p: Policy,
 ) -> Result<(int, int, Seq<u8>), Error> {
+    if let Some(rf) = mh_partial(b, bm, p) {
+        Ok((rf.width, rf.height, partial_fill(rf)))
+    } else {
     match mh_policy(b, bm, p) {
         Err(e) => Err(e),
         Ok(m) => {
-            if m.palette_start + m.table_count * m.palette_stride > b.len() {
+            if (p.header_bytes == crate::dib::HeaderBytesOptions::Full || m.table_count != 0) && m.palette_start + m.table_count * m.palette_stride > b.len() {
                 Err(Error::TruncatedPalette)
+            } else if gdk_blank(b, m, p) {
+                // POLICY-SPEC `offset = Gdk`: an invalid indexed offset selects
+                // initialized blank output (transparent for RLE, else opaque).
+                if m.compression == 1 || m.compression == 2 {
+                    Ok((m.width, m.height, zero_bytes(4 * m.n)))
+                } else {
+                    Ok((m.width, m.height, opaque_fill(4 * m.n)))
+                }
+            } else if gdk_rgb_reject(b, m, p) {
+                Err(Error::InvalidPixelOffset)
             } else if m.compression == 0 || m.compression == 3 {
                 mp_decoded(m, mp_raw_policy(b, m, p))
             } else {
@@ -6999,6 +8989,8 @@ pub open spec fn mp_policy(
             }
         },
     }
+}
+
 }
 
 // --- The spec-level Strict bridge (THEOREMS-POLICY-DELTA: `MH_1_1 :=
@@ -7017,6 +9009,153 @@ pub proof fn lemma_r1_prefix_policy_strict(b: Seq<u8>)
     reveal(crate::dib::strict_policy);
 }
 
+/// `hsize_ok_policy` at `All1_1` is `hsize_ok` verbatim.
+pub proof fn lemma_hsize_ok_policy_strict(h: int)
+    ensures
+        hsize_ok_policy(h, HeadersOptions::All1_1) == hsize_ok(h),
+{
+    reveal(hsize_ok_policy);
+    reveal(hsize_ok);
+}
+
+/// `table_count_of_policy` at `BmpTable` is `table_count_of` verbatim.
+pub proof fn lemma_table_count_of_policy_strict(rf: RawFields)
+    ensures
+        table_count_of_policy(rf, HighCountOptions::BmpTable) == table_count_of(rf),
+{
+    reveal(table_count_of_policy);
+    reveal(table_count_of);
+}
+
+/// `masks_ok_policy` at `Reject` is `masks_ok` verbatim.
+pub proof fn lemma_masks_ok_policy_reject(m0: u32, m1: u32, m2: u32, m3: u32, bits: int)
+    ensures
+        masks_ok_policy(m0, m1, m2, m3, bits, MasksOptions::Reject) == masks_ok(m0, m1, m2, m3, bits),
+{
+    reveal(masks_ok_policy);
+    reveal(masks_ok);
+}
+
+/// `masks_after_policy` at `Reject`/`Independent` leaves the masks unchanged.
+pub proof fn lemma_masks_after_policy_strict(m0: u32, m1: u32, m2: u32, m3: u32, bits: int)
+    ensures
+        masks_after_policy(m0, m1, m2, m3, bits, MasksOptions::Reject) == (m0, m1, m2, m3),
+        masks_after_policy(m0, m1, m2, m3, bits, MasksOptions::Independent) == (m0, m1, m2, m3),
+{
+    reveal(masks_after_policy);
+}
+
+/// `r2r5_policy` at `Strict` is `r2r5` verbatim.
+pub proof fn lemma_r2r5_policy_strict(b: Seq<u8>, mode: Mode, s: int)
+    ensures
+        r2r5_policy(b, mode, s, crate::dib::strict_policy()) == r2r5(b, mode, s),
+{
+    reveal(r2r5_policy);
+    reveal(r2r5);
+    reveal(hsize_ok_policy);
+    reveal(hsize_ok);
+    reveal(crate::dib::strict_policy);
+    reveal(crate::model::pow2);
+    lemma_hsize_ok_policy_strict(le32(b, s));
+}
+
+/// `r6r7_policy` at `Strict` is `r6r7` verbatim, given the same validated
+/// `RawFields`. The mask words pass through unchanged, the table count is
+/// `BmpTable`'s and the offset check is `Declared`'s.
+pub proof fn lemma_r6r7_policy_strict(
+    b: Seq<u8>, mode: Mode, s: int, file_offset: int, is_bmp: bool, rf: RawFields,
+)
+    ensures
+        r6r7_policy(b, mode, s, file_offset, is_bmp, rf, crate::dib::strict_policy())
+            == r6r7(b, mode, s, file_offset, is_bmp, rf),
+{
+    reveal(r6r7_policy);
+    reveal(r6r7);
+    reveal(crate::model::hsize_ok);
+    reveal(r6r7_result);
+    reveal(r6r7_result_policy);
+    reveal(masks_ok_policy_rf);
+    reveal(masks_of_policy_rf);
+    reveal(masks_after_policy);
+    reveal(masks_ok_policy);
+    reveal(masks_ok);
+    reveal(raw_masks_policy);
+    reveal(table_count_of_policy_rf);
+    reveal(table_count_of_policy);
+    reveal(table_count_of);
+    reveal(palette_start_of);
+    reveal(palette_stride_of);
+    reveal(palette_length_of);
+    reveal(palette_end_of);
+    reveal(crate::dib::strict_policy);
+    reveal(contiguous);
+    reveal(within_bits);
+    reveal(low_of);
+    reveal(pow2);
+    assert(table_count_of_policy(rf, HighCountOptions::BmpTable) == table_count_of(rf));
+    assert(masks_after_policy(
+        raw_masks_policy(b, s, rf).0,
+        raw_masks_policy(b, s, rf).1,
+        raw_masks_policy(b, s, rf).2,
+        raw_masks_policy(b, s, rf).3,
+        rf.depth,
+        MasksOptions::Reject,
+    ) == (raw_masks_policy(b, s, rf).0, raw_masks_policy(b, s, rf).1, raw_masks_policy(b, s, rf).2,
+        raw_masks_policy(b, s, rf).3));
+    if rf.compression == 3 {
+        assert(masks_ok_policy(raw_masks_policy(b, s, rf).0, raw_masks_policy(b, s, rf).1,
+            raw_masks_policy(b, s, rf).2, raw_masks_policy(b, s, rf).3, rf.depth,
+            MasksOptions::Reject) == masks_ok(raw_masks_policy(b, s, rf).0, raw_masks_policy(b, s,
+            rf).1, raw_masks_policy(b, s, rf).2, raw_masks_policy(b, s, rf).3, rf.depth));
+    }
+    assert(palette_start_of(rf) + table_count_of_policy_rf(rf, HighCountOptions::BmpTable)
+        * palette_stride_of(rf) == palette_end_of(rf));
+    assert(r6r7_policy(b, mode, s, file_offset, is_bmp, rf, crate::dib::strict_policy()) == r6r7(
+        b, mode, s, file_offset, is_bmp, rf)) by {
+        reveal(r6r7_policy);
+        reveal(r6r7);
+        reveal(masks_ok_policy_rf);
+        reveal(masks_of_policy_rf);
+        reveal(raw_masks_policy);
+        reveal(r6r7_result);
+        reveal(r6r7_result_policy);
+        reveal(palette_start_of);
+        reveal(palette_stride_of);
+        reveal(table_count_of_policy_rf);
+        reveal(table_count_of_policy);
+        reveal(table_count_of);
+        reveal(palette_end_of);
+        reveal(palette_length_of);
+    }
+}
+
+/// `r2r7_policy` at `Strict` is `r2r7` verbatim.
+pub proof fn lemma_r2r7_policy_strict(b: Seq<u8>, mode: Mode, s: int, file_offset: int, is_bmp: bool)
+    ensures
+        r2r7_policy(b, mode, s, file_offset, is_bmp, crate::dib::strict_policy())
+            == r2r7(b, mode, s, file_offset, is_bmp),
+{
+    reveal(r2r7_policy);
+    reveal(r2r7);
+    reveal(r2r5_policy);
+    reveal(r2r5);
+    reveal(r6r7_policy);
+    lemma_r2r5_policy_strict(b, mode, s);
+    if r2r5(b, mode, s) is Ok {
+        let rf = r2r5(b, mode, s)->Ok_0;
+        lemma_r6r7_policy_strict(b, mode, s, file_offset, is_bmp, rf);
+    }
+}
+
+/// `offset_effective` at `Declared` is `m.pixel_start`.
+pub proof fn lemma_offset_effective_declared(m: MHRecord)
+    ensures
+        offset_effective(m, crate::dib::strict_policy()) == m.pixel_start,
+{
+    reveal(offset_effective);
+    reveal(crate::dib::strict_policy);
+}
+
 /// `MH_policy(Strict)` is `MH(_)` for both BMP modes.
 pub proof fn lemma_mh_policy_strict(b: Seq<u8>, bm: BmpMode)
     ensures
@@ -7026,10 +9165,19 @@ pub proof fn lemma_mh_policy_strict(b: Seq<u8>, bm: BmpMode)
     reveal(mh);
     reveal(r1_prefix_policy);
     reveal(r1_prefix);
+    reveal(r2r7_policy);
     reveal(crate::dib::strict_policy);
     reveal(crate::dib::bmp_mode_to_mode);
     if b.len() <= max_input() {
         lemma_r1_prefix_policy_strict(b);
+        if bm == BmpMode::BmpFile {
+            if r1_prefix(b) is Ok {
+                let q = r1_prefix(b)->Ok_0;
+                lemma_r2r7_policy_strict(b, Mode::BmpFile, q.0, q.1, true);
+            }
+        } else {
+            lemma_r2r7_policy_strict(b, Mode::BareDib, 0, 0, false);
+        }
     }
 }
 
@@ -7086,6 +9234,7 @@ pub proof fn lemma_mp_raw_policy_strict(b: Seq<u8>, m: MHRecord)
 {
     reveal(mp_raw_policy);
     reveal(mp_raw);
+    reveal(offset_effective);
     reveal(crate::dib::strict_policy);
     match mr_raw_out(b, m, m.pixel_start) {
         Ok((pc, out)) => {
@@ -7095,7 +9244,120 @@ pub proof fn lemma_mp_raw_policy_strict(b: Seq<u8>, m: MHRecord)
     }
 }
 
-/// `mp_rle_policy` at `Strict` is `mp_rle`.
+/// `mh_recovered_so_far` at `Strict` is `false`: no option is at a
+/// recovery-producing value.
+pub proof fn lemma_mh_recovered_so_far_strict(b: Seq<u8>, m: MHRecord)
+    ensures
+        !mh_recovered_so_far(b, m, crate::dib::strict_policy()),
+{
+    reveal(mh_recovered_so_far);
+    reveal(gdk_blank);
+    reveal(crate::dib::strict_policy);
+}
+
+/// A raw record whose pixel cursor is past EOF is `TruncatedPixels` at once:
+/// the first row's whole stride is unavailable.
+pub proof fn lemma_raw_truncated(b: Seq<u8>, m: MHRecord, pos0: int)
+    requires
+        1 <= m.height,
+        1 <= m.width,
+        0 <= m.stride,
+        pos0 > b.len(),
+    ensures
+        raw_full(b, m, pos0, 0, 0) == Err((
+            RawErr::Api(Error::TruncatedPixels),
+            pos0,
+            0,
+            0,
+            Seq::<Write>::empty(),
+        )),
+        mr_raw_out(b, m, pos0) == Err((RawErr::Api(Error::TruncatedPixels), pos0, 0, 0)),
+{
+    reveal(raw_full);
+    reveal(mr_raw_out);
+}
+
+/// An RLE record whose pixel cursor is past EOF is `RleTruncated` at once: the
+/// first two-byte command is unavailable.
+pub proof fn lemma_rle_truncated(b: Seq<u8>, m: MHRecord, p0: int)
+    requires
+        p0 > b.len(),
+    ensures
+        mr_out(b, m, p0, 0, 0) == Err((RleErr::Api(Error::RleTruncated), p0, 0, 0)),
+{
+    reveal(mr_full);
+    reveal(mr_out);
+}
+
+/// A raw record whose effective pixel start is past EOF: `MP_policy` is
+/// `TruncatedPixels` (after the two Gdk guards are ruled out).
+pub proof fn lemma_mp_policy_raw_trunc(b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRecord)
+    requires
+        raw_legacy(p),
+        mh_policy(b, bm, p) == Ok(m),
+        (p.header_bytes == crate::dib::HeaderBytesOptions::ParsedFields && m.table_count == 0) || m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        m.compression == 0 || m.compression == 3,
+        !gdk_blank(b, m, p),
+        !gdk_rgb_reject(b, m, p),
+        offset_effective(m, p) > b.len(),
+    ensures
+        mp_policy(b, bm, p) == Err(Error::TruncatedPixels),
+{
+    reveal(mp_policy);
+    reveal(mp_raw_policy);
+    reveal(mp_decoded);
+    reveal(offset_effective);
+    reveal(gdk_blank);
+    reveal(gdk_rgb_reject);
+    reveal(raw_full);
+    reveal(mr_raw_out);
+    assert(mr_raw_out(b, m, offset_effective(m, p)) is Err);
+    assert((mr_raw_out(b, m, offset_effective(m, p))->Err_0).0
+        == RawErr::Api(Error::TruncatedPixels));
+}
+
+/// An RLE record whose pixel cursor is past EOF: `MP_policy` is `RleTruncated`
+/// (after the Gdk indexed-blank guard is ruled out).
+pub proof fn lemma_mp_policy_rle_trunc(b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRecord)
+    requires
+        p.rle_eob == crate::dib::RleEobOptions::Required,
+        mh_policy(b, bm, p) == Ok(m),
+        (p.header_bytes == crate::dib::HeaderBytesOptions::ParsedFields && m.table_count == 0) || m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        m.compression == 1 || m.compression == 2,
+        !gdk_blank(b, m, p),
+        m.pixel_start > b.len(),
+    ensures
+        mp_policy(b, bm, p) == Err(Error::RleTruncated),
+{
+    reveal(rle_clip_out);
+    reveal(rle_clip_full);
+    reveal(rle_clip_step);
+    reveal(mp_policy);
+    reveal(mp_rle_policy);
+    reveal(mp_decoded);
+    reveal(gdk_blank);
+    reveal(mr_full);
+    reveal(mr_out);
+    assert(mr_out(b, m, m.pixel_start, 0, 0) is Err);
+    assert((mr_out(b, m, m.pixel_start, 0, 0)->Err_0).0 == RleErr::Api(Error::RleTruncated));
+}
+
+/// A Gdk BI_RGB high-depth offset past EOF: `MP_policy` is `InvalidPixelOffset`.
+pub proof fn lemma_mp_policy_gdk_rgb(b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRecord)
+    requires
+        mh_policy(b, bm, p) == Ok(m),
+        (p.header_bytes == crate::dib::HeaderBytesOptions::ParsedFields && m.table_count == 0) || m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        gdk_rgb_reject(b, m, p),
+    ensures
+        mp_policy(b, bm, p) == Err(Error::InvalidPixelOffset),
+{
+    reveal(mp_policy);
+    reveal(gdk_rgb_reject);
+    reveal(gdk_blank);
+}
+
+/// `mp_rle_policy` at `Strict` is `mp_rle` (the RLE start is the record's own
+/// `pixel_start`, which equals the palette end for an RLE record).
 pub proof fn lemma_mp_rle_policy_strict(b: Seq<u8>, m: MHRecord)
     ensures
         mp_rle_policy(b, m, crate::dib::strict_policy()) == mp_rle(b, m),
@@ -7126,10 +9388,15 @@ pub proof fn lemma_mp_policy_strict(b: Seq<u8>, bm: BmpMode)
     reveal(mh_policy);
     reveal(mh);
     reveal(crate::dib::strict_policy);
+    reveal(gdk_blank);
+    reveal(gdk_rgb_reject);
+    reveal(offset_effective);
     lemma_mh_policy_strict(b, bm);
     match mh_policy(b, bm, crate::dib::strict_policy()) {
         Ok(m) => {
             lemma_mp_raw_policy_strict(b, m);
+            assert(!gdk_blank(b, m, crate::dib::strict_policy()));
+            assert(!gdk_rgb_reject(b, m, crate::dib::strict_policy()));
             lemma_mp_rle_policy_strict(b, m);
         },
         Err(_) => {},
@@ -7147,11 +9414,14 @@ pub proof fn lemma_mp_policy_raw_ok(
     b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRecord, pos: int, out0: Seq<u8>, out1: Seq<u8>,
 )
     requires
+        raw_legacy(p),
         mh_policy(b, bm, p) == Ok(m),
-        m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        (p.header_bytes == crate::dib::HeaderBytesOptions::ParsedFields && m.table_count == 0) || m.palette_start + m.table_count * m.palette_stride <= b.len(),
         m.compression == 0 || m.compression == 3,
-        mr_raw_out(b, m, m.pixel_start) == Ok((pos, out0)),
-        mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p)
+        !gdk_blank(b, m, p),
+        !gdk_rgb_reject(b, m, p),
+        mr_raw_out(b, m, offset_effective(m, p)) == Ok((pos, out0)),
+        mp_mask_phase_policy(b, m, pos, pos - offset_effective(m, p), out0, p)
             == Ok((pos, out1)),
     ensures
         mp_policy(b, bm, p) == Ok((m.width, m.height, out1)),
@@ -7162,6 +9432,7 @@ pub proof fn lemma_mp_policy_raw_ok(
 /// Any `MH_policy` error is the exact `MP_policy` error.
 pub proof fn lemma_mp_policy_mh_err(b: Seq<u8>, bm: BmpMode, p: Policy, e: Error)
     requires
+        mh_partial(b, bm, p) is None,
         mh_policy(b, bm, p) == Err(e),
     ensures
         mp_policy(b, bm, p) == Err(e),
@@ -7173,17 +9444,22 @@ pub proof fn lemma_mp_policy_mh_err(b: Seq<u8>, bm: BmpMode, p: Policy, e: Error
 /// `MP_policy`'s.
 pub proof fn lemma_mp_policy_raw_err(b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRecord, e: Error)
     requires
+        raw_legacy(p),
         mh_policy(b, bm, p) == Ok(m),
-        m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        (p.header_bytes == crate::dib::HeaderBytesOptions::ParsedFields && m.table_count == 0) || m.palette_start + m.table_count * m.palette_stride <= b.len(),
         m.compression == 0 || m.compression == 3,
-        mr_raw_out(b, m, m.pixel_start) is Err,
-        (mr_raw_out(b, m, m.pixel_start)->Err_0).0 == RawErr::Api(e),
+        !gdk_blank(b, m, p),
+        !gdk_rgb_reject(b, m, p),
+        mr_raw_out(b, m, offset_effective(m, p)) is Err,
+        (mr_raw_out(b, m, offset_effective(m, p))->Err_0).0 == RawErr::Api(e),
     ensures
         mp_policy(b, bm, p) == Err(e),
 {
     reveal(mp_policy);
     reveal(mp_raw_policy);
     reveal(mp_decoded);
+    reveal(gdk_blank);
+    reveal(gdk_rgb_reject);
     assert(mp_raw_policy(b, m, p) == Err(MpErr::Api(e)));
     assert(mp_decoded(m, mp_raw_policy(b, m, p)) == Err(e));
 }
@@ -7192,9 +9468,11 @@ pub proof fn lemma_mp_policy_raw_err(b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRe
 /// `MP_policy`'s.
 pub proof fn lemma_mp_policy_rle_err(b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRecord, e: Error)
     requires
+        rle_legacy(p),
         mh_policy(b, bm, p) == Ok(m),
-        m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        (p.header_bytes == crate::dib::HeaderBytesOptions::ParsedFields && m.table_count == 0) || m.palette_start + m.table_count * m.palette_stride <= b.len(),
         m.compression == 1 || m.compression == 2,
+        !gdk_blank(b, m, p),
         mr_out(b, m, m.pixel_start, 0, 0) is Err,
         (mr_out(b, m, m.pixel_start, 0, 0)->Err_0).0 == RleErr::Api(e),
     ensures
@@ -7203,6 +9481,7 @@ pub proof fn lemma_mp_policy_rle_err(b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRe
     reveal(mp_policy);
     reveal(mp_rle_policy);
     reveal(mp_decoded);
+    reveal(gdk_blank);
     assert(mp_rle_policy(b, m, p) == Err(MpErr::Api(e)));
     assert(mp_decoded(m, mp_rle_policy(b, m, p)) == Err(e));
 }
@@ -7213,17 +9492,24 @@ pub proof fn lemma_mp_policy_phase_err_raw(
     b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRecord, pos: int, out0: Seq<u8>, e: Error,
 )
     requires
+        raw_legacy(p),
         mh_policy(b, bm, p) == Ok(m),
-        m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        (p.header_bytes == crate::dib::HeaderBytesOptions::ParsedFields && m.table_count == 0) || m.palette_start + m.table_count * m.palette_stride <= b.len(),
         m.compression == 0 || m.compression == 3,
-        mr_raw_out(b, m, m.pixel_start) == Ok((pos, out0)),
-        mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p) == Err(MpErr::Api(e)),
+        !gdk_blank(b, m, p),
+        !gdk_rgb_reject(b, m, p),
+        mr_raw_out(b, m, offset_effective(m, p)) == Ok((pos, out0)),
+        mp_mask_phase_policy(b, m, pos, pos - offset_effective(m, p), out0, p)
+            == Err(MpErr::Api(e)),
     ensures
         mp_policy(b, bm, p) == Err(e),
 {
     reveal(mp_policy);
     reveal(mp_raw_policy);
     reveal(mp_decoded);
+    reveal(gdk_blank);
+    reveal(gdk_rgb_reject);
+    reveal(offset_effective);
     assert(mp_raw_policy(b, m, p) == Err(MpErr::Api(e)));
 }
 
@@ -7232,9 +9518,11 @@ pub proof fn lemma_mp_policy_phase_err_rle(
     b: Seq<u8>, bm: BmpMode, p: Policy, m: MHRecord, pos: int, out0: Seq<u8>, e: Error,
 )
     requires
+        rle_legacy(p),
         mh_policy(b, bm, p) == Ok(m),
-        m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        (p.header_bytes == crate::dib::HeaderBytesOptions::ParsedFields && m.table_count == 0) || m.palette_start + m.table_count * m.palette_stride <= b.len(),
         m.compression == 1 || m.compression == 2,
+        !gdk_blank(b, m, p),
         mr_out(b, m, m.pixel_start, 0, 0) == Ok((pos, out0)),
         mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p) == Err(MpErr::Api(e)),
     ensures
@@ -7243,6 +9531,7 @@ pub proof fn lemma_mp_policy_phase_err_rle(
     reveal(mp_policy);
     reveal(mp_rle_policy);
     reveal(mp_decoded);
+    reveal(gdk_blank);
     assert(mp_rle_policy(b, m, p) == Err(MpErr::Api(e)));
 }
 
@@ -7260,17 +9549,24 @@ pub proof fn lemma_mp_policy_raw_assemble(
     end: int,
 )
     requires
+        raw_legacy(p),
         mh_policy(b, bm, p) == Ok(m),
-        m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        (p.header_bytes == crate::dib::HeaderBytesOptions::ParsedFields && m.table_count == 0) || m.palette_start + m.table_count * m.palette_stride <= b.len(),
         m.compression == 0 || m.compression == 3,
-        mr_raw_out(b, m, m.pixel_start) == Ok((pos, out0)),
-        mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p) == Ok((end, out1)),
+        !gdk_blank(b, m, p),
+        !gdk_rgb_reject(b, m, p),
+        mr_raw_out(b, m, offset_effective(m, p)) == Ok((pos, out0)),
+        mp_mask_phase_policy(b, m, pos, pos - offset_effective(m, p), out0, p)
+            == Ok((end, out1)),
     ensures
         mp_policy(b, bm, p) == Ok((m.width, m.height, out1)),
 {
     reveal(mp_policy);
     reveal(mp_raw_policy);
     reveal(mp_decoded);
+    reveal(gdk_blank);
+    reveal(gdk_rgb_reject);
+    reveal(offset_effective);
     assert(mp_raw_policy(b, m, p) == Ok((out1, end)));
     assert(mp_decoded(m, mp_raw_policy(b, m, p)) == Ok((m.width, m.height, out1)));
 }
@@ -7287,9 +9583,11 @@ pub proof fn lemma_mp_policy_rle_assemble(
     end: int,
 )
     requires
+        rle_legacy(p),
         mh_policy(b, bm, p) == Ok(m),
-        m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        (p.header_bytes == crate::dib::HeaderBytesOptions::ParsedFields && m.table_count == 0) || m.palette_start + m.table_count * m.palette_stride <= b.len(),
         m.compression == 1 || m.compression == 2,
+        !gdk_blank(b, m, p),
         mr_out(b, m, m.pixel_start, 0, 0) == Ok((pos, out0)),
         mp_mask_phase_policy(b, m, pos, pos - m.pixel_start, out0, p) == Ok((end, out1)),
     ensures
@@ -7298,6 +9596,7 @@ pub proof fn lemma_mp_policy_rle_assemble(
     reveal(mp_policy);
     reveal(mp_rle_policy);
     reveal(mp_decoded);
+    reveal(gdk_blank);
     assert(mp_rle_policy(b, m, p) == Ok((out1, end)));
     assert(mp_decoded(m, mp_rle_policy(b, m, p)) == Ok((m.width, m.height, out1)));
 }
@@ -7317,6 +9616,15 @@ pub proof fn lemma_mp_policy_ok_shape(b: Seq<u8>, bm: BmpMode, p: Policy, w: int
         4 * (w * h) <= max_output(),
 {
     reveal(mp_policy);
+    if let Some(rf) = mh_partial(b, bm, p) {
+        reveal(mh_partial); reveal(partial_fill); reveal(zero_bytes); reveal(opaque_fill);
+        let start = if bm == BmpMode::BmpFile { 14int } else { 0int };
+        lemma_r2r5_policy_ok(b, crate::dib::bmp_mode_to_mode(bm), start, p, rf);
+        return;
+    }
+
+    reveal(gdk_blank);
+    reveal(gdk_rgb_reject);
     let m = choose|m: MHRecord| mh_policy(b, bm, p) == Ok(m);
     assert(mh_policy(b, bm, p) is Ok);
     assert(m.width == w);
@@ -7326,62 +9634,77 @@ pub proof fn lemma_mp_policy_ok_shape(b: Seq<u8>, bm: BmpMode, p: Policy, w: int
     assert(4 * (w * h) <= max_output());
     assert(1 <= w <= max_dimension());
     assert(1 <= h <= max_dimension());
-    reveal(mp_decoded);
-    reveal(mp_raw_policy);
-    reveal(mp_rle_policy);
-    reveal(mp_mask_phase_policy);
-    if m.compression == 0 || m.compression == 3 {
-        assert(mp_decoded(m, mp_raw_policy(b, m, p)) == Ok((w, h, s)));
-        match mp_raw_policy(b, m, p) {
-            Ok((out, _end)) => {
-                assert(s == out);
-                match mr_raw_out(b, m, m.pixel_start) {
+    assert(s.len() == 4 * (w * h)) by {
+        if gdk_blank(b, m, p) {
+            reveal(zero_bytes);
+            reveal(opaque_fill);
+            if m.compression == 1 || m.compression == 2 {
+                assert(s == zero_bytes(4 * m.n));
+            } else {
+                assert(s == opaque_fill(4 * m.n));
+            }
+        } else {
+            reveal(mp_decoded);
+            reveal(mp_raw_policy);
+            reveal(mp_rle_policy);
+            if (m.compression == 0 || m.compression == 3)
+                && !raw_legacy(p) {
+                reveal(raw_zero_out); reveal(raw_zero_fill);
+                let ws = raw_zero_full(b, m, offset_effective(m, p), 0, 0, p.short_pixels == crate::dib::ShortPixelsOptions::ZeroFill, p.palette_index == crate::dib::PaletteIndexOptions::Black, p.scaling, p.bitfield16_alpha == crate::dib::Bitfield16AlphaOptions::Opaque).1;
+                lemma_bytes_replay_len(raw_zero_fill(m, p.short_pixels == crate::dib::ShortPixelsOptions::ZeroFill), ws);
+                match raw_zero_out(b, m, offset_effective(m, p), p.short_pixels == crate::dib::ShortPixelsOptions::ZeroFill, p.palette_index == crate::dib::PaletteIndexOptions::Black, p.scaling, p.bitfield16_alpha == crate::dib::Bitfield16AlphaOptions::Opaque).0 {
+                    Ok((pc, out0)) => match mp_mask_phase_policy(b, m, pc, pc - offset_effective(m, p), out0, p) {
+                        Ok((end, out2)) => { lemma_mp_mask_phase_policy_len(b, m, pc, pc - offset_effective(m, p), out0, p, end, out2); },
+                        Err(_) => {},
+                    },
+                    Err(_) => {},
+                }
+            } else if m.compression == 0 || m.compression == 3 {
+                match mr_raw_out(b, m, offset_effective(m, p)) {
                     Ok((pc, out0)) => {
-                        lemma_mr_raw_out_len(b, m, m.pixel_start, pc, out0);
-                        assert(out0.len() == 4 * m.n);
-                        match mp_mask_phase_policy(b, m, pc, pc - m.pixel_start, out0, p) {
-                            Ok((_e2, out2)) => {
-                                assert(out == out2);
-                                lemma_mp_mask_phase_policy_len(
-                                    b, m, pc, pc - m.pixel_start, out0, p, _e2, out2,
-                                );
-                                assert(s.len() == out0.len());
+                        lemma_mr_raw_out_len(b, m, offset_effective(m, p), pc, out0);
+                        match mp_mask_phase_policy(b, m, pc, pc - offset_effective(m, p), out0, p) {
+                            Ok((end, out2)) => {
+                                lemma_mp_mask_phase_policy_len(b, m, pc,
+                                    pc - offset_effective(m, p), out0, p, end, out2);
+                                assert(s == out2);
                             },
                             Err(_) => {},
                         }
                     },
                     Err(_) => {},
                 }
-            },
-            Err(_) => {},
-        }
-    } else {
-        assert(mp_decoded(m, mp_rle_policy(b, m, p)) == Ok((w, h, s)));
-        match mp_rle_policy(b, m, p) {
-            Ok((out, _end)) => {
-                assert(s == out);
+            } else if !rle_legacy(p) {
+                reveal(rle_clip_out);
+                let ws = rle_clip_full(b, m, m.pixel_start, 0, 0, p.rle_overrun, p.rle_eol, p.rle_eob, p.palette_index == crate::dib::PaletteIndexOptions::Black, p.rle_delta).1;
+                lemma_bytes_replay_len(rle_initial(b, m, p.rle_fill), ws);
+                reveal(rle_initial);
+                reveal(pal_zero_bytes);
+                match rle_clip_out(b, m, p.rle_overrun, p.rle_eol, p.rle_eob, p.palette_index == crate::dib::PaletteIndexOptions::Black, p.rle_delta, p.rle_fill).0 {
+                    Ok((pc, out0)) => match mp_mask_phase_policy(b, m, pc, pc - m.pixel_start, out0, p) {
+                        Ok((end, out2)) => { lemma_mp_mask_phase_policy_len(b, m, pc, pc - m.pixel_start, out0, p, end, out2); },
+                        Err(_) => {},
+                    },
+                    Err(_) => {},
+                }
+            } else {
                 match mr_out(b, m, m.pixel_start, 0, 0) {
                     Ok((pc, out0)) => {
                         lemma_mr_out_len(b, m, m.pixel_start, pc, out0);
-                        assert(out0.len() == 4 * m.n);
                         match mp_mask_phase_policy(b, m, pc, pc - m.pixel_start, out0, p) {
-                            Ok((_e2, out2)) => {
-                                assert(out == out2);
-                                lemma_mp_mask_phase_policy_len(
-                                    b, m, pc, pc - m.pixel_start, out0, p, _e2, out2,
-                                );
-                                assert(s.len() == out0.len());
+                            Ok((end, out2)) => {
+                                lemma_mp_mask_phase_policy_len(b, m, pc,
+                                    pc - m.pixel_start, out0, p, end, out2);
+                                assert(s == out2);
                             },
                             Err(_) => {},
                         }
                     },
                     Err(_) => {},
                 }
-            },
-            Err(_) => {},
+            }
         }
     }
-    assert(s.len() == 4 * (w * h));
 }
 
 /// The `Ok` output of the policy mask phase keeps the XOR plane's length:

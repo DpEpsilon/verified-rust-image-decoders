@@ -1124,3 +1124,437 @@
 119	2026-11-10T05:39:50+00:00	exit=101	8s	P1: reverify after pub(crate) Policy fields [crate=dib_verus]	
 120	2026-11-10T05:44:12+00:00	exit=0	83s	P1: reverify after Policy pub-field revert [crate=dib_verus]	verification results:: 1594 verified, 0 errors
 121	2026-11-10T05:46:53+00:00	exit=0	136s	P1: FINAL clean full reverify on shipped source [crate=dib_verus]	verification results:: 1594 verified, 0 errors
+122	2026-11-11T05:14:20+00:00	exit=0	115s	P2a baseline: P1 state verifies unchanged [crate=dib_verus]	verification results:: 1594 verified, 0 errors
+123	2026-11-11T05:20:46+00:00	exit=101	5s	P2a step 1-2: option enums, Policy fields, model policy extensions (Strict unchanged) [crate=dib_verus]	
+124	2026-11-11T05:21:56+00:00	exit=101	62s	P2a step 1-2: option enums, Policy fields, model policy extensions (Strict unchanged) [crate=dib_verus]	verification results:: 1598 verified, 10 errors
+125	2026-11-11T05:24:46+00:00	exit=101	3s	P2a: executable policy variants (fields/finish/prefix), model extensions [crate=dib_verus]	
+126	2026-11-11T05:25:15+00:00	exit=101	7s	P2a: executable policy variants, model extensions [crate=dib_verus]	
+127	2026-11-11T05:26:35+00:00	exit=101	71s	P2a: executable policy variants, model extensions [crate=dib_verus]	verification results:: 1598 verified, 12 errors
+128	2026-11-11T05:28:16+00:00	exit=101	67s	P2a: hsize_ok_policy per-arm asserts; masks/prefix fixes [crate=dib_verus]	verification results:: 1598 verified, 12 errors
+129	2026-11-11T05:30:18+00:00	exit=101	11s	P2a: masks/hsize/prefix proof fixes; header_inv pixel_start [crate=dib_verus]	
+130	2026-11-11T05:30:47+00:00	exit=101	11s	P2a: rerun after worker panic [crate=dib_verus]	
+131	2026-11-11T05:32:03+00:00	exit=101	61s	P2a: masks proof without bit_vector [crate=dib_verus]	verification results:: 1596 verified, 14 errors
+132	2026-11-11T05:33:33+00:00	exit=101	61s	P2a: hsize nested-match, prefix/bounds fixes [crate=dib_verus]	verification results:: 1596 verified, 14 errors
+133	2026-11-11T05:35:22+00:00	exit=101	62s	P2a: prefix direct asserts [crate=dib_verus]	verification results:: 1596 verified, 14 errors
+134	2026-11-11T05:39:07+00:00	exit=101	0s	P2a: offset Gdk branch, recovered_policy, fill_blank [crate=dib_verus]	
+135	2026-11-11T05:39:36+00:00	exit=101	6s	P2a: recovered + Gdk branches (syntax fixed) [crate=dib_verus]	
+136	2026-11-11T05:39:56+00:00	exit=101	4s	P2a: type fixes fill_blank and from_gdk [crate=dib_verus]	
+137	2026-11-11T05:40:12+00:00	exit=101	6s	P2a: exec from_gdk via Header fields [crate=dib_verus]	
+138	2026-11-11T05:41:22+00:00	exit=101	64s	P2a: decode_raw p0 from Header [crate=dib_verus]	verification results:: 1602 verified, 10 errors
+139	2026-11-11T05:44:18+00:00	exit=101	3s	P2a: prefix via skip flags; model bridge lemmas [crate=dib_verus]	
+140	2026-11-11T05:45:41+00:00	exit=101	67s	P2a: prefix syntax [crate=dib_verus]	verification results:: 1609 verified, 9 errors
+141	2026-11-11T05:47:07+00:00	exit=101	66s	P2a: prefix single-if form [crate=dib_verus]	verification results:: 1609 verified, 9 errors
+142	2026-11-11T05:48:59+00:00	exit=101	63s	P2a: bounds lemma, fill_blank, ok_shape [crate=dib_verus]	verification results:: 1611 verified, 7 errors
+143	2026-11-11T05:50:28+00:00	exit=101	62s	P2a: raw_loop gcur>=pos0 [crate=dib_verus]	verification results:: 1611 verified, 7 errors
+144	2026-11-11T05:52:59+00:00	exit=101	62s	P2a: conditional pixel_start bound [crate=dib_verus]	verification results:: 1611 verified, 7 errors
+145	2026-11-11T05:54:20+00:00	exit=101	62s	P2a: masks ms per-compression [crate=dib_verus]	verification results:: 1611 verified, 7 errors
+146	2026-11-11T05:56:25+00:00	exit=101	62s	P2a: prefix combined bad_size [crate=dib_verus]	verification results:: 1611 verified, 7 errors
+147	2026-11-11T05:57:50+00:00	exit=101	62s	P2a: prefix inline bad_size [crate=dib_verus]	verification results:: 1611 verified, 7 errors
+148	2026-11-11T05:59:17+00:00	exit=101	62s	P2a: prefix bridging asserts [crate=dib_verus]	verification results:: 1611 verified, 7 errors
+149	2026-11-11T06:01:54+00:00	exit=101	61s	P2a: exec guard-past-EOF branches + model lemmas [crate=dib_verus]	verification results:: 1616 verified, 7 errors
+150	2026-11-11T06:03:32+00:00	exit=101	65s	P2a: bf_size bridging [crate=dib_verus]	verification results:: 1616 verified, 7 errors
+151	2026-11-11T06:05:02+00:00	exit=101	62s	P2a: prefix case split [crate=dib_verus]	verification results:: 1616 verified, 7 errors
+152	2026-11-11T06:06:49+00:00	exit=101	60s	P2a: named R1 spec conditions [crate=dib_verus]	verification results:: 1616 verified, 7 errors
+153	2026-11-11T06:08:07+00:00	exit=101	61s	P2a: prefix component equalities [crate=dib_verus]	verification results:: 1616 verified, 7 errors
+154	2026-11-11T06:09:29+00:00	exit=101	62s	P2a: prefix clean rewrite [crate=dib_verus]	verification results:: 1615 verified, 8 errors
+155	2026-11-11T06:11:03+00:00	exit=101	62s	P2a: prefix case-split proof [crate=dib_verus]	verification results:: 1616 verified, 7 errors
+156	2026-11-11T06:12:30+00:00	exit=101	67s	P2a: prefix nested guards [crate=dib_verus]	verification results:: 1615 verified, 8 errors
+157	2026-11-11T06:13:51+00:00	exit=101	3s	P2a: prefix bool-equality bridging [crate=dib_verus]	
+158	2026-11-11T06:15:07+00:00	exit=101	63s	P2a: prefix parens [crate=dib_verus]	verification results:: 1616 verified, 7 errors
+159	2026-11-11T06:16:24+00:00	exit=101	62s	P2a: prefix bitvector bridging [crate=dib_verus]	verification results:: 1621 verified, 8 errors
+160	2026-11-11T06:17:47+00:00	exit=101	63s	P2a: prefix bitvector with requires [crate=dib_verus]	
+161	2026-11-11T06:19:18+00:00	exit=101	62s	P2a: prefix policy case split [crate=dib_verus]	verification results:: 1617 verified, 6 errors
+162	2026-11-11T06:20:54+00:00	exit=101	63s	P2a: planes nested guard [crate=dib_verus]	verification results:: 1616 verified, 7 errors
+163	2026-11-11T06:22:46+00:00	exit=101	62s	P2a: r2r5_policy tail + high_count [crate=dib_verus]	verification results:: 1617 verified, 6 errors
+164	2026-11-11T06:24:37+00:00	exit=101	62s	P2a: planes flat + bridge [crate=dib_verus]	verification results:: 1617 verified, 6 errors
+165	2026-11-11T06:26:09+00:00	exit=101	62s	P2a: planes nested both sides [crate=dib_verus]	verification results:: 1612 verified, 11 errors
+166	2026-11-11T06:27:34+00:00	exit=101	62s	P2a: revert to flat planes [crate=dib_verus]	verification results:: 1616 verified, 7 errors
+167	2026-11-11T06:28:50+00:00	exit=101	11s	P2a: policy_masks helper [crate=dib_verus]	
+168	2026-11-11T06:29:29+00:00	exit=101	4s	P2a: mask word bridging via locals [crate=dib_verus]	
+169	2026-11-11T06:29:50+00:00	exit=101	12s	P2a: policy_masks call restored [crate=dib_verus]	
+170	2026-11-11T06:30:20+00:00	exit=101	3s	P2a: mask word locals [crate=dib_verus]	
+171	2026-11-11T06:31:32+00:00	exit=101	67s	P2a: policy_masks call restored 2 [crate=dib_verus]	
+172	2026-11-11T06:32:51+00:00	exit=101	65s	P2a: as_u32 via reveal [crate=dib_verus]	verification results:: 1618 verified, 6 errors
+173	2026-11-11T06:33:19+00:00	exit=101	8s	P2a: dimension exits use r2r5_policy [crate=dib_verus]	
+174	2026-11-11T06:34:30+00:00	exit=101	66s	P2a: ico_mode local [crate=dib_verus]	verification results:: 1617 verified, 7 errors
+175	2026-11-11T06:35:50+00:00	exit=101	66s	P2a: ico guard nested if [crate=dib_verus]	verification results:: 1617 verified, 7 errors
+176	2026-11-11T06:37:07+00:00	exit=101	65s	P2a: restore match mode guard [crate=dib_verus]	verification results:: 1618 verified, 6 errors
+177	2026-11-11T06:38:48+00:00	exit=101	66s	P2a: pin early r2r5 guards [crate=dib_verus]	verification results:: 1617 verified, 7 errors
+178	2026-11-11T06:40:34+00:00	exit=101	67s	P2a: direct planes model assert [crate=dib_verus]	verification results:: 1617 verified, 7 errors
+179	2026-11-11T06:42:51+00:00	exit=101	63s	P2a: r2r5 error lemmas [crate=dib_verus]	verification results:: 1621 verified, 6 errors
+180	2026-11-11T06:44:19+00:00	exit=101	63s	P2a: lemma bridge asserts [crate=dib_verus]	verification results:: 1621 verified, 6 errors
+181	2026-11-11T06:45:52+00:00	exit=101	63s	P2a: planes nested guard for lemma [crate=dib_verus]	verification results:: 1621 verified, 6 errors
+182	2026-11-11T06:47:13+00:00	exit=101	61s	P2a: planes lemma assert [crate=dib_verus]	verification results:: 1621 verified, 6 errors
+183	2026-11-11T06:48:24+00:00	exit=101	64s	P2a: planes split asserts [crate=dib_verus]	verification results:: 1620 verified, 7 errors
+184	2026-11-11T06:50:02+00:00	exit=101	63s	P2a: planes lemma no assert [crate=dib_verus]	verification results:: 1621 verified, 6 errors
+185	2026-11-11T06:50:19+00:00	exit=101	3s	P2a: planes first assert [crate=dib_verus]	
+186	2026-11-11T06:51:25+00:00	exit=101	61s	P2a: revert [crate=dib_verus]	verification results:: 1621 verified, 6 errors
+187	2026-11-11T06:52:48+00:00	exit=101	63s	P2a: planes via match [crate=dib_verus]	verification results:: 1620 verified, 7 errors
+188	2026-11-11T06:54:16+00:00	exit=101	69s	P2a: dims/ico lemma disjunctions [crate=dib_verus]	verification results:: 1621 verified, 6 errors
+189	2026-11-11T06:56:10+00:00	exit=101	66s	P2a: colour-count/output lemmas [crate=dib_verus]	verification results:: 1620 verified, 11 errors
+190	2026-11-11T06:57:41+00:00	exit=101	66s	P2a: gdk count via match [crate=dib_verus]	verification results:: 1621 verified, 10 errors
+191	2026-11-11T06:59:33+00:00	exit=101	66s	P2a: lemma compression facts [crate=dib_verus]	verification results:: 1621 verified, 10 errors
+192	2026-11-11T07:01:11+00:00	exit=101	67s	P2a: guard diagnostics [crate=dib_verus]	verification results:: 1621 verified, 10 errors
+193	2026-11-11T07:02:57+00:00	exit=101	67s	P2a: r2r5_policy via accessors [crate=dib_verus]	verification results:: 1621 verified, 10 errors
+194	2026-11-11T07:04:37+00:00	exit=101	67s	P2a: complete lemma hyps [crate=dib_verus]	verification results:: 1625 verified, 6 errors
+195	2026-11-11T07:05:55+00:00	exit=101	63s	P2a: trim dib_fields top reveals [crate=dib_verus]	verification results:: 1624 verified, 7 errors
+196	2026-11-11T07:07:09+00:00	exit=101	65s	P2a: simplify dib_fields postcondition [crate=dib_verus]	verification results:: 1625 verified, 6 errors
+197	2026-11-11T07:08:27+00:00	exit=101	63s	P2a: decode_raw/rle preconditions [crate=dib_verus]	verification results:: 1626 verified, 5 errors
+198	2026-11-11T07:09:41+00:00	exit=101	64s	P2a: raw_loop pos0 + unify entry branch [crate=dib_verus]	verification results:: 1627 verified, 4 errors
+199	2026-11-11T07:10:53+00:00	exit=101	64s	P2a: preconditions for pixel_start [crate=dib_verus]	verification results:: 1628 verified, 3 errors
+200	2026-11-11T07:12:36+00:00	exit=101	66s	P2a: r6r7 policy lemmas [crate=dib_verus]	verification results:: 1629 verified, 5 errors
+201	2026-11-11T07:13:54+00:00	exit=101	65s	P2a: raw_masks external via pos0 [crate=dib_verus]	verification results:: 1629 verified, 5 errors
+202	2026-11-11T07:15:06+00:00	exit=101	63s	P2a: ms conditionals [crate=dib_verus]	verification results:: 1630 verified, 4 errors
+203	2026-11-11T07:16:30+00:00	exit=101	68s	P2a: r6r7_policy_err exact [crate=dib_verus]	verification results:: 1630 verified, 5 errors
+204	2026-11-11T07:18:02+00:00	exit=101	66s	P2a: r6r7_policy via helpers definitional [crate=dib_verus]	verification results:: 1629 verified, 6 errors
+205	2026-11-11T07:19:13+00:00	exit=101	64s	P2a: lemmas via r6r7_policy_err [crate=dib_verus]	verification results:: 1632 verified, 3 errors
+206	2026-11-11T07:20:21+00:00	exit=101	63s	P2a: dib_finish via err predicate [crate=dib_verus]	verification results:: 1632 verified, 3 errors
+207	2026-11-11T07:20:38+00:00	exit=101	3s	P2a: err None facts [crate=dib_verus]	
+208	2026-11-11T07:21:45+00:00	exit=101	62s	P2a: err None facts 2 [crate=dib_verus]	verification results:: 1632 verified, 3 errors
+209	2026-11-11T07:21:59+00:00	exit=101	4s	P2a: masks_ok_policy_rf with ok [crate=dib_verus]	
+210	2026-11-11T07:22:21+00:00	exit=101	4s	P2a: r6r7_policy_none lemma [crate=dib_verus]	
+211	2026-11-11T07:23:27+00:00	exit=101	62s	P2a: remove stray ok [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+212	2026-11-11T07:24:48+00:00	exit=101	65s	P2a: masks_ok_policy_rf conditional [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+213	2026-11-11T07:26:08+00:00	exit=101	63s	P2a: palette_start bridging [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+214	2026-11-11T07:27:19+00:00	exit=101	63s	P2a: palette_end equation [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+215	2026-11-11T07:28:31+00:00	exit=101	63s	P2a: u64 palette_end facts [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+216	2026-11-11T07:29:45+00:00	exit=101	65s	P2a: int palette_end facts [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+217	2026-11-11T07:30:59+00:00	exit=101	65s	P2a: drop premature asserts [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+218	2026-11-11T07:32:23+00:00	exit=101	63s	P2a: u64/int bridging [crate=dib_verus]	
+219	2026-11-11T07:33:30+00:00	exit=101	62s	P2a: bitvector via bytes.len() [crate=dib_verus]	
+220	2026-11-11T07:33:41+00:00	exit=101	6s	P2a: bound blen [crate=dib_verus]	
+221	2026-11-11T07:34:49+00:00	exit=101	63s	P2a: blen int [crate=dib_verus]	
+222	2026-11-11T07:36:01+00:00	exit=101	65s	P2a: len>=palette_end int [crate=dib_verus]	verification results:: 1636 verified, 3 errors
+223	2026-11-11T07:37:19+00:00	exit=101	64s	P2a: r6r7 err lemmas for exits [crate=dib_verus]	verification results:: 1636 verified, 3 errors
+224	2026-11-11T07:38:37+00:00	exit=101	63s	P2a: offset/palette err hypotheses [crate=dib_verus]	verification results:: 1636 verified, 3 errors
+225	2026-11-11T07:39:57+00:00	exit=101	67s	P2a: reorder offset guard [crate=dib_verus]	verification results:: 1636 verified, 3 errors
+226	2026-11-11T07:41:15+00:00	exit=101	66s	P2a: mask_fields non-3 [crate=dib_verus]	verification results:: 1636 verified, 3 errors
+227	2026-11-11T07:41:32+00:00	exit=101	4s	P2a: none_raw lemma [crate=dib_verus]	
+228	2026-11-11T07:41:47+00:00	exit=101	4s	P2a: dedupe prelude [crate=dib_verus]	
+229	2026-11-11T07:43:02+00:00	exit=101	66s	P2a: masks_okv local [crate=dib_verus]	verification results:: 1633 verified, 4 errors
+230	2026-11-11T07:44:21+00:00	exit=101	65s	P2a: ms0v record [crate=dib_verus]	verification results:: 1633 verified, 4 errors
+231	2026-11-11T07:45:47+00:00	exit=101	66s	P2a: clean dib_finish tail [crate=dib_verus]	verification results:: 1634 verified, 4 errors
+232	2026-11-11T07:46:01+00:00	exit=101	1s	P2a: use policy_masks postcondition [crate=dib_verus]	
+233	2026-11-11T07:46:14+00:00	exit=101	4s	P2a: fix duplicate proof [crate=dib_verus]	
+234	2026-11-11T07:47:23+00:00	exit=101	64s	P2a: ms eq rawv [crate=dib_verus]	verification results:: 1634 verified, 4 errors
+235	2026-11-11T07:48:34+00:00	exit=101	63s	P2a: r6r7_policy inline [crate=dib_verus]	verification results:: 1634 verified, 4 errors
+236	2026-11-11T07:48:50+00:00	exit=101	3s	P2a: concrete r6r7 lemmas [crate=dib_verus]	
+237	2026-11-11T07:50:06+00:00	exit=101	66s	P2a: dedupe lemmas [crate=dib_verus]	verification results:: 1634 verified, 2 errors
+238	2026-11-11T07:51:22+00:00	exit=101	62s	P2a: guard hypotheses [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+239	2026-11-11T07:51:36+00:00	exit=101	4s	P2a: reorder palette facts [crate=dib_verus]	
+240	2026-11-11T07:52:47+00:00	exit=101	64s	P2a: palette_start pos [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+241	2026-11-11T07:54:03+00:00	exit=101	63s	P2a: offset_declared local [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+242	2026-11-11T07:55:12+00:00	exit=101	63s	P2a: assert before call [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+243	2026-11-11T07:56:34+00:00	exit=101	62s	P2a: offset_declared in right block [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+244	2026-11-11T07:57:52+00:00	exit=101	62s	P2a: asserts right before call [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+245	2026-11-11T07:59:14+00:00	exit=101	63s	P2a: direct offset assert [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+246	2026-11-11T08:00:52+00:00	exit=101	62s	P2a: fix palette call site [crate=dib_verus]	verification results:: 1634 verified, 2 errors
+247	2026-11-11T08:02:11+00:00	exit=101	62s	P2a: direct offset expr [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+248	2026-11-11T08:03:49+00:00	exit=101	66s	P2a: raw_masks_policy offsets [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+249	2026-11-11T08:05:03+00:00	exit=101	65s	P2a: strict bridge via helpers [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+250	2026-11-11T08:06:15+00:00	exit=101	62s	P2a: offset-negation placement [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+251	2026-11-11T08:06:30+00:00	exit=101	4s	P2a: bad_offset local [crate=dib_verus]	
+252	2026-11-11T08:06:45+00:00	exit=101	4s	P2a: bad_offset defined [crate=dib_verus]	
+253	2026-11-11T08:07:54+00:00	exit=101	62s	P2a: bad_offset clean [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+254	2026-11-11T08:09:14+00:00	exit=101	62s	P2a: remove bad asserts [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+255	2026-11-11T08:10:32+00:00	exit=101	62s	P2a: bad_offset unfold [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+256	2026-11-11T08:11:47+00:00	exit=101	62s	P2a: nested offset guard [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+257	2026-11-11T08:12:58+00:00	exit=101	62s	P2a: bad_offset unfold after [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+258	2026-11-11T08:14:05+00:00	exit=101	62s	P2a: bad_offset contradiction [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+259	2026-11-11T08:14:14+00:00	exit=101	4s	P2a: drop bad_offset [crate=dib_verus]	
+260	2026-11-11T08:15:25+00:00	exit=101	64s	P2a: palette guard nested [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+261	2026-11-11T08:16:40+00:00	exit=101	62s	P2a: pe_ico parameter [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+262	2026-11-11T08:17:53+00:00	exit=101	63s	P2a: pe_ico + masks eq [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+263	2026-11-11T08:19:06+00:00	exit=101	63s	P2a: pe_ico unfold [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+264	2026-11-11T08:20:20+00:00	exit=101	62s	P2a: inline pe_ico [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+265	2026-11-11T08:21:34+00:00	exit=101	62s	P2a: pe_ico assert before [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+266	2026-11-11T08:22:50+00:00	exit=101	62s	P2a: pe_ico conj [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+267	2026-11-11T08:24:08+00:00	exit=101	65s	P2a: flat offset conjunction [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+268	2026-11-11T08:25:23+00:00	exit=101	65s	P2a: mask bridging + strict [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+269	2026-11-11T08:26:39+00:00	exit=101	66s	P2a: strict bridge asserts [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+270	2026-11-11T08:28:00+00:00	exit=101	63s	P2a: strict by-block [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+271	2026-11-11T08:29:38+00:00	exit=101	64s	P2a: ok_shape restored [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+272	2026-11-11T08:30:53+00:00	exit=101	64s	P2a: drop neg assert [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+273	2026-11-11T08:32:02+00:00	exit=101	63s	P2a: palette negation via false [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+274	2026-11-11T08:33:18+00:00	exit=101	65s	P2a: off_guard local [crate=dib_verus]	
+275	2026-11-11T08:34:29+00:00	exit=101	66s	P2a: off_guard minus bitvector [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+276	2026-11-11T08:35:40+00:00	exit=0	65s	P2a: FINAL restored P1 baseline (work in *.p2a-wip2) [crate=dib_verus]	verification results:: 1594 verified, 0 errors
+277	2026-11-11T08:37:22+00:00	exit=101	64s	P2a: strict bridge rewrite [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+278	2026-11-11T08:38:44+00:00	exit=101	68s	P2a: r6r7_result uses raw_masks_policy [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+279	2026-11-11T08:39:55+00:00	exit=101	66s	P2a: cast parens [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+280	2026-11-11T08:41:14+00:00	exit=0	62s	P2a: FINAL green baseline (P2a WIP preserved in *.p2a-wip2) [crate=dib_verus]	verification results:: 1594 verified, 0 errors
+281	2026-11-11T08:46:09+00:00	exit=101	112s	P2a escalation: reproduce WIP2 obligations [crate=dib_verus]	verification results:: 1632 verified, 4 errors
+282	2026-11-11T08:47:36+00:00	exit=101	64s	P2a: align external masks with raw-field position [crate=dib_verus]	verification results:: 1633 verified, 3 errors
+283	2026-11-11T08:49:56+00:00	exit=101	63s	P2a: prove result length and concrete mask words [crate=dib_verus]	verification results:: 1634 verified, 2 errors
+284	2026-11-11T08:51:22+00:00	exit=101	6s	P2a: prevent non-BITFIELDS default masks and relate concrete masks [crate=dib_verus]	
+285	2026-11-11T08:52:34+00:00	exit=101	63s	P2a: check mask tuple and policy bridge [crate=dib_verus]	verification results:: 1635 verified, 1 errors
+286	2026-11-11T08:54:13+00:00	exit=101	62s	P2a: separate declared-offset guards and close header model [crate=dib_verus]	verification results:: 1635 verified, 1 errors
+287	2026-11-11T08:55:56+00:00	exit=101	63s	P2a: use variant matching for declared offset branch [crate=dib_verus]	verification results:: 1634 verified, 2 errors
+288	2026-11-11T09:02:28+00:00	exit=0	122s	P2a Astra split field reads from validation and R6 masks from R7 assembly [crate=dib_verus]	verification results:: 1638 verified, 0 errors
+289	2026-11-11T09:07:01+00:00	exit=0	66s	P2a Astra quantify decoder over Policy and fix offset, recovery, blank work charges [crate=dib_verus]	verification results:: 1642 verified, 0 errors
+290	2026-11-11T09:10:05+00:00	exit=101	69s	P2a Astra correct holey-mask Round denominator and retain Strict literal witnesses [crate=dib_verus]	
+291	2026-11-11T09:12:30+00:00	exit=101	69s	P2a Astra discharge bit-span bounds and preserve all Strict channel witnesses [crate=dib_verus]	verification results:: 1614 verified, 30 errors
+292	2026-11-11T09:13:54+00:00	exit=0	66s	P2a Astra evaluate literal bit spans without changing witness quantification [crate=dib_verus]	verification results:: 1644 verified, 0 errors
+293	2026-11-11T09:22:52+00:00	exit=0	68s	P2a Astra final universal-policy proof with Gdk RGB rejection before allocation and test-only constructor [crate=dib_verus]	verification results:: 1644 verified, 0 errors
+294	2026-11-11T09:33:38+00:00	exit=0	120s	P2b baseline: confirm run-293 state [crate=dib_verus]	verification results:: 1644 verified, 0 errors
+295	2026-11-11T09:35:34+00:00	exit=101	8s	P2b: restrict Policy fields to pub(crate), strict_policy_exec/profile_policy_exec to pub(crate), drop Policy from lib exports [crate=dib_verus]	
+296	2026-11-11T09:37:14+00:00	exit=0	68s	P2b: Policy fields stay pub (Verus opacity), constructors pub(crate), Policy/MetadataOptions dropped from lib exports [crate=dib_verus]	verification results:: 1644 verified, 0 errors
+297	2026-11-11T09:38:54+00:00	exit=101	67s	P2b base: 14 option enums + Strict-valued Policy fields, all constructors updated [crate=dib_verus]	verification results:: 1657 verified, 1 errors
+298	2026-11-11T09:40:40+00:00	exit=0	71s	P2b: trim redundant reveals in parse_header (rlimit recovery) [crate=dib_verus]	verification results:: 1658 verified, 0 errors
+299	2026-11-11T09:43:30+00:00	exit=101	4s	P2b: bitfield_offset option (MetadataEnd) in model+exec [crate=dib_verus]	
+300	2026-11-11T09:44:43+00:00	exit=101	67s	P2b: bitfield_offset option (MetadataEnd) in model+exec [crate=dib_verus]	verification results:: 1656 verified, 2 errors
+301	2026-11-11T09:46:19+00:00	exit=101	66s	P2b: bitfield_offset option (MetadataEnd) in model+exec, reduced parse_header proof [crate=dib_verus]	verification results:: 1656 verified, 2 errors
+302	2026-11-11T09:47:47+00:00	exit=101	65s	P2b: bitfield_offset option, direct assert on bitfield_offset_recovered [crate=dib_verus]	verification results:: 1656 verified, 2 errors
+303	2026-11-11T09:49:13+00:00	exit=101	66s	P2b: policy_header_recovered as explicit five-disjunct boolean [crate=dib_verus]	verification results:: 1656 verified, 2 errors
+304	2026-11-11T09:50:27+00:00	exit=101	65s	P2b: fix gdk_blank relation (no is_bmp in model fn) [crate=dib_verus]	verification results:: 1656 verified, 2 errors
+305	2026-11-11T09:51:51+00:00	exit=101	65s	P2b: unfold mh_recovered_so_far into the five booleans [crate=dib_verus]	verification results:: 1656 verified, 2 errors
+306	2026-11-11T09:53:09+00:00	exit=101	66s	P2b: relate every disjunct's model form to the boolean [crate=dib_verus]	verification results:: 1656 verified, 2 errors
+307	2026-11-11T09:54:48+00:00	exit=101	65s	P2b: recovered with P2a structure plus named bitfield disjunct [crate=dib_verus]	verification results:: 1656 verified, 2 errors
+308	2026-11-11T09:56:13+00:00	exit=101	66s	P2b: recovered with single final postcondition assert [crate=dib_verus]	verification results:: 1656 verified, 2 errors
+309	2026-11-11T09:57:36+00:00	exit=101	65s	P2b: recovered bare (P2a shape + bitfield clause) [crate=dib_verus]	verification results:: 1656 verified, 2 errors
+310	2026-11-11T09:58:58+00:00	exit=101	64s	P2b: diagnostic, bitfield recovered clause removed [crate=dib_verus]	verification results:: 1657 verified, 1 errors
+311	2026-11-11T10:00:22+00:00	exit=101	65s	P2b: bitfield_offset with hdr_matches projections at bstart [crate=dib_verus]	verification results:: 1656 verified, 2 errors
+312	2026-11-11T10:00:55+00:00	exit=101	7s	P2b: policy_header_recovered = model predicate directly [crate=dib_verus]	
+313	2026-11-11T10:01:28+00:00	exit=101	6s	P2b: recovered split into base + bitfield, model predicate computed [crate=dib_verus]	
+314	2026-11-11T10:02:43+00:00	exit=101	66s	P2b: recovered split, lighter base proof [crate=dib_verus]	verification results:: 1658 verified, 2 errors
+315	2026-11-11T10:04:00+00:00	exit=101	65s	P2b: bitfield recovered helper with explicit local assert [crate=dib_verus]	verification results:: 1658 verified, 2 errors
+316	2026-11-11T10:05:16+00:00	exit=101	65s	P2b: bitfield recovered helper as let-bound boolean [crate=dib_verus]	verification results:: 1658 verified, 2 errors
+317	2026-11-11T10:06:33+00:00	exit=101	66s	P2b: helper with concrete unfold of bitfield_offset_recovered [crate=dib_verus]	verification results:: 1659 verified, 2 errors
+318	2026-11-11T10:08:12+00:00	exit=101	66s	P2b: bitfield recovered helper via eq lemma [crate=dib_verus]	verification results:: 1659 verified, 2 errors
+319	2026-11-11T10:09:31+00:00	exit=101	66s	P2b: helper with bit_vector cast and eq lemma [crate=dib_verus]	
+320	2026-11-11T10:10:45+00:00	exit=101	65s	P2b: helper bit_vector on header field only [crate=dib_verus]	verification results:: 1660 verified, 2 errors
+321	2026-11-11T10:12:06+00:00	exit=101	66s	P2b: helper intermediate literal assert [crate=dib_verus]	verification results:: 1660 verified, 2 errors
+322	2026-11-11T10:13:34+00:00	exit=101	65s	P2b: rename local r to res [crate=dib_verus]	verification results:: 1660 verified, 2 errors
+323	2026-11-11T10:13:55+00:00	exit=101	6s	P2b: bitfield helper on MHRecord, verbatim model body [crate=dib_verus]	
+324	2026-11-11T10:14:06+00:00	exit=101	6s	P2b: m-based bitfield helper, int literal [crate=dib_verus]	
+325	2026-11-11T10:16:23+00:00	exit=101	66s	P2b: bitfield_offset exec (bstart, recovered clause), model has_masks [crate=dib_verus]	verification results:: 1656 verified, 2 errors
+326	2026-11-11T10:17:41+00:00	exit=101	64s	P2b: recovered proof block via has_masks field equality [crate=dib_verus]	verification results:: 1656 verified, 2 errors
+327	2026-11-11T10:19:10+00:00	exit=101	65s	P2b: recovered split base/bitfield/full; mh_recovered_so_far = OR [crate=dib_verus]	verification results:: 1658 verified, 2 errors
+328	2026-11-11T10:20:28+00:00	exit=101	64s	P2b: bitfield helper with per-conjunct bool equalities [crate=dib_verus]	verification results:: 1658 verified, 2 errors
+329	2026-11-11T10:20:56+00:00	exit=101	8s	P2b: bitfield helper on MHRecord verbatim [crate=dib_verus]	
+330	2026-11-11T10:21:18+00:00	exit=101	8s	P2b: bitfield recovered helper via of-form lemma [crate=dib_verus]	
+331	2026-11-11T10:22:32+00:00	exit=101	66s	P2b: bitfield helper with exec of-form wrapper [crate=dib_verus]	verification results:: 1660 verified, 2 errors
+332	2026-11-11T10:24:04+00:00	exit=101	65s	P2b: explicit field equalities for bstart and helper [crate=dib_verus]	verification results:: 1660 verified, 2 errors
+333	2026-11-11T10:25:33+00:00	exit=101	66s	P2b: case split for bstart; reveal of-form [crate=dib_verus]	verification results:: 1660 verified, 2 errors
+334	2026-11-11T10:26:53+00:00	exit=101	67s	P2b: offset_start via exec-shape lemma [crate=dib_verus]	verification results:: 1661 verified, 2 errors
+335	2026-11-11T10:28:25+00:00	exit=101	68s	P2b: bitfield_offset (offset layer only), recovered reverted to P2a [crate=dib_verus]	verification results:: 1660 verified, 1 errors
+336	2026-11-11T10:28:43+00:00	exit=101	7s	P2b: extract policy_pixel_start helper [crate=dib_verus]	
+337	2026-11-11T10:29:57+00:00	exit=101	65s	P2b: policy_pixel_start over hrec(h) only [crate=dib_verus]	verification results:: 1660 verified, 2 errors
+338	2026-11-11T10:31:19+00:00	exit=101	66s	P2b: clean explicit offset_start/effective proofs in helper [crate=dib_verus]	verification results:: 1660 verified, 2 errors
+339	2026-11-11T10:32:48+00:00	exit=101	65s	P2b: explicit cast-over-if distribution in policy_pixel_start [crate=dib_verus]	verification results:: 1661 verified, 2 errors
+340	2026-11-11T10:34:10+00:00	exit=101	66s	P2b: policy_pixel_start with branch-local asserts [crate=dib_verus]	verification results:: 1660 verified, 2 errors
+341	2026-11-11T10:35:49+00:00	exit=101	66s	P2b: offset_start exec helper with bool-equal if conditions [crate=dib_verus]	verification results:: 1661 verified, 2 errors
+342	2026-11-11T10:37:00+00:00	exit=101	65s	P2b: offset_start helper branch-local model reductions [crate=dib_verus]	verification results:: 1661 verified, 2 errors
+343	2026-11-11T10:38:12+00:00	exit=101	65s	P2b: reveal offset_start inside branches [crate=dib_verus]	verification results:: 1661 verified, 2 errors
+344	2026-11-11T10:39:44+00:00	exit=101	64s	P2b: offset_start_of_exec primitive [crate=dib_verus]	verification results:: 1664 verified, 2 errors
+345	2026-11-11T10:40:57+00:00	exit=101	65s	P2b: offset_start helper explicit chain [crate=dib_verus]	verification results:: 1664 verified, 2 errors
+346	2026-11-11T10:42:17+00:00	exit=101	65s	P2b: offset_start helper via direct record unfold [crate=dib_verus]	verification results:: 1664 verified, 2 errors
+347	2026-11-11T10:43:31+00:00	exit=101	66s	P2b: assert via meta local [crate=dib_verus]	verification results:: 1664 verified, 2 errors
+348	2026-11-11T10:44:46+00:00	exit=101	66s	P2b: reveal offset_start_of in helper proof [crate=dib_verus]	verification results:: 1664 verified, 2 errors
+349	2026-11-11T10:46:15+00:00	exit=101	65s	P2b: offset_start helper with shared meta/c3 locals and of-eq lemma [crate=dib_verus]	verification results:: 1663 verified, 2 errors
+350	2026-11-11T10:47:32+00:00	exit=101	65s	P2b: offset_start helper via arg-equal congruence [crate=dib_verus]	verification results:: 1663 verified, 2 errors
+351	2026-11-11T10:48:47+00:00	exit=101	65s	P2b: explicit condition equality [crate=dib_verus]	verification results:: 1663 verified, 2 errors
+352	2026-11-11T10:50:05+00:00	exit=101	66s	P2b: policy_offset_start postcondition = offset_start_of only [crate=dib_verus]	verification results:: 1663 verified, 2 errors
+353	2026-11-11T10:51:20+00:00	exit=101	65s	P2b: offset_start_of with let-bound locals and closing assert [crate=dib_verus]	verification results:: 1663 verified, 2 errors
+354	2026-11-11T10:52:34+00:00	exit=101	66s	P2b: cast-distribution identity assert [crate=dib_verus]	verification results:: 1663 verified, 2 errors
+355	2026-11-11T10:53:54+00:00	exit=101	66s	P2b: offset_start_of_u usize model + int bridge lemma [crate=dib_verus]	verification results:: 1664 verified, 2 errors
+356	2026-11-11T10:55:12+00:00	exit=101	66s	P2b: decode_raw p0 <= len (re-applied) [crate=dib_verus]	verification results:: 1665 verified, 1 errors
+357	2026-11-11T10:56:32+00:00	exit=101	66s	P2b: offset_start_u helper + int wrapper [crate=dib_verus]	verification results:: 1666 verified, 1 errors
+358	2026-11-11T10:57:45+00:00	exit=101	65s	P2b: policy_offset_start postcondition = the if itself [crate=dib_verus]	verification results:: 1665 verified, 1 errors
+359	2026-11-11T10:59:00+00:00	exit=101	66s	P2b: minimal probe of if-postcondition idiom [crate=dib_verus]	verification results:: 1666 verified, 1 errors
+360	2026-11-11T11:00:12+00:00	exit=101	66s	P2b: probe with the exact enum condition [crate=dib_verus]	verification results:: 1665 verified, 2 errors
+361	2026-11-11T11:01:36+00:00	exit=101	66s	P2b: offset_start_of_exec plain-arg helper [crate=dib_verus]	verification results:: 1666 verified, 1 errors
+362	2026-11-11T11:02:54+00:00	exit=101	66s	P2b: probe bool-arg offset_start_of_u [crate=dib_verus]	verification results:: 1667 verified, 1 errors
+363	2026-11-11T11:05:26+00:00	exit=101	65s	P2b: bitfield_offset via hdr_matches + m (P2a idiom) [crate=dib_verus]	verification results:: 1659 verified, 1 errors
+364	2026-11-11T11:06:42+00:00	exit=101	65s	P2b: extract policy_pixel_starts helper (P2a idiom) [crate=dib_verus]	verification results:: 1659 verified, 2 errors
+365	2026-11-11T11:08:09+00:00	exit=101	65s	P2b: helper with meta/c3 bool locals [crate=dib_verus]	verification results:: 1659 verified, 2 errors
+366	2026-11-11T11:09:22+00:00	exit=101	66s	P2b: use lemma_offset_start_fields in helper [crate=dib_verus]	verification results:: 1659 verified, 2 errors
+367	2026-11-11T11:10:37+00:00	exit=101	67s	P2b: lemma without meta precondition [crate=dib_verus]	verification results:: 1659 verified, 2 errors
+368	2026-11-11T11:11:52+00:00	exit=101	65s	P2b: explicit offset_start_of if-expansion [crate=dib_verus]	verification results:: 1659 verified, 2 errors
+369	2026-11-11T11:13:18+00:00	exit=101	66s	P2b: policy_pixel_starts helper, literal conditions, split proof blocks [crate=dib_verus]	verification results:: 1659 verified, 2 errors
+370	2026-11-11T11:14:35+00:00	exit=101	65s	P2b: split bstart into its own tiny helper [crate=dib_verus]	verification results:: 1660 verified, 2 errors
+371	2026-11-11T11:15:50+00:00	exit=101	66s	P2b: bstart assigned inside if branches [crate=dib_verus]	verification results:: 1660 verified, 2 errors
+372	2026-11-11T11:16:09+00:00	exit=101	8s	P2b: policy_pixel_starts takes m + hdr_matches (run-363 asserts) [crate=dib_verus]	
+373	2026-11-11T11:16:24+00:00	exit=101	8s	P2b: helper takes Ghost<MHRecord> [crate=dib_verus]	
+374	2026-11-11T11:16:31+00:00	exit=101	4s	P2b: helper Ghost param, remove stray let [crate=dib_verus]	
+375	2026-11-11T11:17:40+00:00	exit=101	65s	P2b: helper ghost m binding [crate=dib_verus]	verification results:: 1659 verified, 2 errors
+376	2026-11-11T11:18:14+00:00	exit=101	3s	P2b: policy_pixel_starts helper, Ghost m, run-363 asserts [crate=dib_verus]	
+377	2026-11-11T11:19:22+00:00	exit=101	64s	P2b: helper postcondition folded form [crate=dib_verus]	verification results:: 1657 verified, 2 errors
+378	2026-11-11T11:20:46+00:00	exit=0	66s	P2b: isolated probe of bool-arg if-primitive on clean base [crate=dib_verus]	verification results:: 1659 verified, 0 errors
+379	2026-11-11T11:21:08+00:00	exit=101	4s	P2b: policy_pixel_starts helper (unwired) with usize offset_start [crate=dib_verus]	
+380	2026-11-11T11:22:17+00:00	exit=101	65s	P2b: import BitfieldOffsetOptions in model [crate=dib_verus]	verification results:: 1655 verified, 4 errors
+381	2026-11-11T11:23:42+00:00	exit=101	66s	P2b: int offset_start + usize bridge lemma in helper [crate=dib_verus]	verification results:: 1658 verified, 2 errors
+382	2026-11-11T11:24:58+00:00	exit=101	65s	P2b: helper bstart proof via explicit branches (P2a idiom) [crate=dib_verus]	verification results:: 1658 verified, 2 errors
+383	2026-11-11T11:26:21+00:00	exit=101	65s	P2b: policy_pixel_starts with field-copy-to-locals idiom [crate=dib_verus]	verification results:: 1658 verified, 2 errors
+384	2026-11-11T11:27:37+00:00	exit=101	64s	P2b: offset_start branches via implication lemma [crate=dib_verus]	verification results:: 1659 verified, 2 errors
+385	2026-11-11T11:28:49+00:00	exit=101	66s	P2b: repeat field equalities in each proof block [crate=dib_verus]	verification results:: 1659 verified, 2 errors
+386	2026-11-11T11:30:03+00:00	exit=101	66s	P2b: assert local definitions explicitly [crate=dib_verus]	verification results:: 1659 verified, 2 errors
+387	2026-11-11T11:31:39+00:00	exit=0	68s	P2b: confirm restored P2b base2 green (exposure fix + 14 option fields, Strict-valued) [crate=dib_verus]	verification results:: 1658 verified, 0 errors
+388	2026-11-11T11:34:38+00:00	exit=101	69s	P2b: bitfield_offset inline (run-363 asserts) + folded model + strict-lemma reveals [crate=dib_verus]	verification results:: 1657 verified, 1 errors
+389	2026-11-11T11:38:32+00:00	exit=0	115s	P2b FINAL: delivered tree = base2 (exposure fix + 14 option fields), P2a behaviour [crate=dib_verus]	verification results:: 1658 verified, 0 errors
+390	2026-11-11T11:42:51+00:00	exit=101	116s	P2b bitfield metadata start via scalar helper [crate=dib_verus]	verification results:: 1658 verified, 1 errors
+391	2026-11-11T11:45:09+00:00	exit=0	68s	P2b scalar pixel-start helper and generalized raw cursor [crate=dib_verus]	verification results:: 1660 verified, 0 errors
+392	2026-11-11T11:49:15+00:00	exit=101	67s	P2b short indexed palette gap blank [crate=dib_verus]	verification results:: 1658 verified, 2 errors
+393	2026-11-11T11:51:28+00:00	exit=101	66s	P2b indexed gap scalar guard and recovered flag [crate=dib_verus]	
+394	2026-11-11T11:52:54+00:00	exit=0	66s	P2b indexed gap proof with copied bit depth [crate=dib_verus]	verification results:: 1662 verified, 0 errors
+395	2026-11-11T12:03:03+00:00	exit=101	117s	P2b unsupported Rgb2 first model and executable pass [crate=dib_verus]	verification results:: 1662 verified, 3 errors
+396	2026-11-11T12:05:10+00:00	exit=101	66s	P2b Rgb2 adjust palette and raw index proofs [crate=dib_verus]	verification results:: 1662 verified, 3 errors
+397	2026-11-11T12:07:00+00:00	exit=101	65s	P2b Rgb2 widen policy lemma guards [crate=dib_verus]	verification results:: 1663 verified, 2 errors
+398	2026-11-11T12:09:11+00:00	exit=101	64s	P2b Rgb2 limit model unfolding in header validator [crate=dib_verus]	verification results:: 1663 verified, 2 errors
+399	2026-11-11T12:10:40+00:00	exit=101	64s	P2b Rgb2 contain strict bridge unfolding [crate=dib_verus]	verification results:: 1664 verified, 1 errors
+400	2026-11-11T12:15:20+00:00	exit=0	116s	P2b Astra Rgb2: isolate scalar palette-count arithmetic [crate=dib_verus]	verification results:: 1666 verified, 0 errors
+401	2026-11-11T12:21:36+00:00	exit=101	66s	P2b Astra rle_overrun: bounded clipped command model and charged loop [crate=dib_verus]	verification results:: 1673 verified, 2 errors
+402	2026-11-11T12:23:24+00:00	exit=101	64s	P2b Astra clipped RLE: discharge loop exit budget and isolate header reveals [crate=dib_verus]	verification results:: 1674 verified, 2 errors
+403	2026-11-11T12:25:00+00:00	exit=0	65s	P2b Astra clipped RLE: explicit terminal-row potential bound [crate=dib_verus]	verification results:: 1677 verified, 0 errors
+404	2026-11-11T12:27:19+00:00	exit=0	67s	P2b Astra rle_overrun: integrate Clip and Image model, recovery and universal work [crate=dib_verus]	verification results:: 1678 verified, 0 errors
+405	2026-11-11T12:29:29+00:00	exit=0	66s	P2b Astra rle_eol: StopAtHeight with complete EOL consumption [crate=dib_verus]	verification results:: 1678 verified, 0 errors
+406	2026-11-11T12:31:28+00:00	exit=0	68s	P2b Astra rle_eob: AtInputEnd including empty source beyond declared offset [crate=dib_verus]	verification results:: 1678 verified, 0 errors
+407	2026-11-11T12:34:10+00:00	exit=101	6s	P2b Astra short_pixels: bounded logical row cursor and ZeroFill model [crate=dib_verus]	
+408	2026-11-11T12:35:24+00:00	exit=0	66s	P2b Astra ZeroFill: align stride types with u64 relative advancement [crate=dib_verus]	verification results:: 1686 verified, 0 errors
+409	2026-11-11T12:36:36+00:00	exit=101	3s	P2b Astra short_pixels: integrate ZeroFill, logical image size and BareDib exhausted tail [crate=dib_verus]	
+410	2026-11-11T12:37:59+00:00	exit=0	65s	P2b Astra ZeroFill: retain policy-free Strict tail check [crate=dib_verus]	verification results:: 1687 verified, 0 errors
+411	2026-11-11T12:40:39+00:00	exit=101	65s	P2b Astra palette_index: checked Black packet painter and substitution event [crate=dib_verus]	verification results:: 1691 verified, 2 errors
+412	2026-11-11T12:42:08+00:00	exit=0	66s	P2b Astra Black painter: explicit input cap and palette geometry [crate=dib_verus]	verification results:: 1694 verified, 0 errors
+413	2026-11-11T12:44:37+00:00	exit=101	65s	P2b Astra palette_index: integrate Black in raw and RLE pixels [crate=dib_verus]	verification results:: 1694 verified, 1 errors
+414	2026-11-11T12:46:25+00:00	exit=0	69s	P2b Astra palette_index: isolate two-bit modulo proof from dispatch [crate=dib_verus]	verification results:: 1694 verified, 0 errors
+415	2026-11-11T12:49:48+00:00	exit=101	65s	P2b Astra rle_delta: ClampStop with capped pixel-work potential [crate=dib_verus]	verification results:: 1693 verified, 2 errors
+416	2026-11-11T12:50:44+00:00	exit=101	6s	P2b Astra ClampStop: extract scalar delta target and align capped potential [crate=dib_verus]	
+417	2026-11-11T12:52:09+00:00	exit=101	65s	P2b Astra ClampStop: scalar target specification uses mathematical sums [crate=dib_verus]	verification results:: 1694 verified, 1 errors
+418	2026-11-11T12:54:05+00:00	exit=101	65s	P2b Astra ClampStop: split absolute packets and prove capped final EOL potential [crate=dib_verus]	verification results:: 1696 verified, 1 errors
+419	2026-11-11T12:55:38+00:00	exit=0	67s	P2b Astra ClampStop: split encoded packets from command dispatch [crate=dib_verus]	verification results:: 1698 verified, 0 errors
+420	2026-11-11T12:59:06+00:00	exit=0	67s	P2b Astra rle_fill: generalize painter base and expose exact successful paint counts [crate=dib_verus]	verification results:: 1699 verified, 0 errors
+421	2026-11-11T13:01:12+00:00	exit=0	66s	P2b Astra rle_fill: initialized black fills and exact unpainted-pixel recovery [crate=dib_verus]	verification results:: 1700 verified, 0 errors
+422	2026-11-11T13:04:17+00:00	exit=101	6s	P2b Astra scaling: constant-work popcount, Gdk replication and Image truncation [crate=dib_verus]	
+423	2026-11-11T13:05:41+00:00	exit=101	74s	P2b Astra scaling: cast mathematical mask words at scalar channel boundary [crate=dib_verus]	verification results:: 1707 verified, 1 errors
+424	2026-11-11T13:07:09+00:00	exit=101	68s	P2b Astra scaling: state raw compression at word-reader boundary [crate=dib_verus]	verification results:: 1706 verified, 2 errors
+425	2026-11-11T13:09:00+00:00	exit=101	67s	P2b Astra scaling: limit integration model unfolding to exit proofs [crate=dib_verus]	verification results:: 1707 verified, 1 errors
+426	2026-11-11T13:10:53+00:00	exit=0	67s	P2b Astra scaling: extract RLE loop potential and error arithmetic [crate=dib_verus]	verification results:: 1708 verified, 0 errors
+427	2026-11-11T13:12:24+00:00	exit=0	68s	P2b Astra scaling: integrate Image and Gdk into raw policy output [crate=dib_verus]	verification results:: 1708 verified, 0 errors
+428	2026-11-11T13:13:59+00:00	exit=0	70s	P2b Astra bitfield16_alpha: Opaque affects only 16-bit BITFIELDS alpha [crate=dib_verus]	verification results:: 1708 verified, 0 errors
+429	2026-11-11T13:18:06+00:00	exit=101	74s	P2b Astra incomplete_metadata: tagged validated partial header and capped Blank allocation [crate=dib_verus]	verification results:: 1709 verified, 2 errors
+430	2026-11-11T13:19:35+00:00	exit=101	68s	P2b Astra incomplete_metadata: use enum matches at recovery dispatch [crate=dib_verus]	verification results:: 1710 verified, 1 errors
+431	2026-11-11T13:21:06+00:00	exit=0	67s	P2b Astra incomplete_metadata: reuse existing Strict header bridge facts [crate=dib_verus]	verification results:: 1711 verified, 0 errors
+432	2026-11-11T13:32:10+00:00	exit=101	72s	ParsedFields: guarded fields, masks and empty-table geometry [crate=dib_verus]	verification results:: 1708 verified, 2 errors
+433	2026-11-11T13:34:02+00:00	exit=101	67s	ParsedFields: propagate empty-table alternatives through assembly [crate=dib_verus]	verification results:: 1709 verified, 1 errors
+434	2026-11-11T13:35:57+00:00	exit=101	72s	ParsedFields: isolate header geometry from decoder integration [crate=dib_verus]	verification results:: 1710 verified, 1 errors
+435	2026-11-11T13:37:44+00:00	exit=0	68s	ParsedFields: split validated-header decode from error recovery [crate=dib_verus]	verification results:: 1712 verified, 0 errors
+436	2026-11-11T13:41:50+00:00	exit=0	70s	ParsedFields oracle coupling: restrict Gdk offset errors to BMP files [crate=dib_verus]	verification results:: 1712 verified, 0 errors
+437	2026-11-11T13:45:53+00:00	exit=0	69s	P2b final: all retained options, exact policy model and universal work bound [crate=dib_verus]	verification results:: 1712 verified, 0 errors
+438	2026-11-11T14:12:24+00:00	exit=0	118s	P2c: add GdkCompat/ImageCrateCompat profiles to BmpProfile, profile_policy and exec; narrow the false-flag witness [crate=dib_verus]	verification results:: 1714 verified, 0 errors
+439	2026-11-11T14:17:49+00:00	exit=0	1s	P2c: four-profile conformance and public==custom differential test [crate=dib_verus]	
+440	2026-11-11T14:19:50+00:00	exit=0	117s	P2c final: four named profiles, constructors, witnesses (clean reverify) [crate=dib_verus]	verification results:: 1714 verified, 0 errors
+441	2026-11-11T14:22:37+00:00	exit=0	68s	P2c: restore untouched Strict/Recommended exec arms [crate=dib_verus]	verification results:: 1714 verified, 0 errors
+442	2026-11-11T14:25:54+00:00	exit=0	69s	P2c: flag the (Result,bool) shape in the entry-point doc; keep the type [crate=dib_verus]	verification results:: 1714 verified, 0 errors
+443	2026-11-11T14:47:40+00:00	exit=101	58s	P2d: add verified rle_or_32bpp (gdk has_alpha) field to Decoded and the policy result [crate=dib_verus]	verification results:: 2159 verified, 0 errors
+444	2026-11-11T14:48:17+00:00	exit=101	8s	P2d: rle_or_32bpp field, executable header_alpha, model predicates [crate=dib_verus]	
+445	2026-11-11T14:48:45+00:00	exit=101	8s	P2d: rle_or_32bpp field, executable header_alpha, model predicates [crate=dib_verus]	
+446	2026-11-11T14:50:08+00:00	exit=101	74s	P2d: rle_or_32bpp field, executable header_alpha, model predicates [crate=dib_verus]	verification results:: 1719 verified, 1 errors
+447	2026-11-11T14:50:47+00:00	exit=101	8s	P2d: rle_or_32bpp field, executable header_alpha, model predicates [crate=dib_verus]	
+448	2026-11-11T14:52:07+00:00	exit=101	73s	P2d: rle_or_32bpp field, executable header_alpha, model predicates [crate=dib_verus]	verification results:: 1720 verified, 1 errors
+449	2026-11-11T14:53:44+00:00	exit=101	74s	P2d: rle_or_32bpp field, executable header_alpha, model predicates [crate=dib_verus]	verification results:: 1720 verified, 1 errors
+450	2026-11-11T14:54:48+00:00	exit=101	8s	P2d: rle_or_32bpp field, executable header_alpha, model predicates [crate=dib_verus]	
+451	2026-11-11T14:55:18+00:00	exit=101	9s	P2d: rle_or_32bpp field, executable header_alpha, model predicates [crate=dib_verus]	
+452	2026-11-11T14:56:52+00:00	exit=101	74s	P2d: rle_or_32bpp field, executable header_alpha, model predicates [crate=dib_verus]	verification results:: 1721 verified, 1 errors
+453	2026-11-11T14:59:58+00:00	exit=101	73s	P2d probe: drop early alpha reveal [crate=dib_verus]	verification results:: 1721 verified, 1 errors
+454	2026-11-11T15:01:25+00:00	exit=101	72s	P2d probe: alpha ensures removed from decode_complete_policy [crate=dib_verus]	verification results:: 1720 verified, 2 errors
+455	2026-11-11T15:02:48+00:00	exit=101	72s	P2d probe: from_gdk alpha assert removed [crate=dib_verus]	verification results:: 1721 verified, 1 errors
+456	2026-11-11T15:04:12+00:00	exit=101	73s	P2d probe: inline header_alpha + proof block [crate=dib_verus]	verification results:: 1721 verified, 1 errors
+457	2026-11-11T15:05:29+00:00	exit=101	72s	P2d probe: only ensures removed (alpha local kept) [crate=dib_verus]	verification results:: 1720 verified, 2 errors
+458	2026-11-11T15:06:52+00:00	exit=101	72s	P2d probe: bare alpha literal, no proof [crate=dib_verus]	verification results:: 1721 verified, 1 errors
+459	2026-11-11T15:07:23+00:00	exit=101	8s	P2d: close mh_policy_rle_or_32bpp to keep the near-budget proofs in rlimit [crate=dib_verus]	
+460	2026-11-11T15:09:04+00:00	exit=101	78s	P2d: opaque mh_policy_rle_or_32bpp; expect 1721+ green [crate=dib_verus]	verification results:: 1720 verified, 2 errors
+461	2026-11-11T15:12:14+00:00	exit=101	74s	P2d probe: no alpha asserts, ensures+alpha_complete kept [crate=dib_verus]	verification results:: 1721 verified, 1 errors
+462	2026-11-11T15:15:07+00:00	exit=101	6s	P2d: concrete-header alpha clause in decode_complete_policy, model tie in tracked [crate=dib_verus]	
+463	2026-11-11T15:16:38+00:00	exit=101	80s	P2d: concrete-header alpha clause in decode_complete_policy, model tie in tracked [crate=dib_verus]	verification results:: 1720 verified, 3 errors
+464	2026-11-11T15:19:42+00:00	exit=101	8s	P2d: alpha param into decode_complete_policy; model tie in tracked [crate=dib_verus]	
+465	2026-11-11T15:21:03+00:00	exit=101	74s	P2d: alpha param into decode_complete_policy; model tie in tracked [crate=dib_verus]	verification results:: 1721 verified, 1 errors
+466	2026-11-11T15:22:39+00:00	exit=101	76s	P2d: alpha param, no requires tie [crate=dib_verus]	verification results:: 1721 verified, 1 errors
+467	2026-11-11T15:24:47+00:00	exit=0	74s	P2d: thread alpha through finish helpers; model form only in tracked [crate=dib_verus]	verification results:: 1722 verified, 0 errors
+468	2026-11-11T15:29:24+00:00	exit=0	0s	P2d final: verified rle_or_32bpp (gdk has_alpha) field on Decoded and the profiled result [crate=dib_verus]	
+469	2026-11-11T15:31:43+00:00	exit=0	127s	P2d clean reverify: rle_or_32bpp field, all 1722 obligations [crate=dib_verus]	verification results:: 1722 verified, 0 errors
+470	2026-11-12T06:29:45+00:00	exit=101	64s	probe: tracked log threading through pass-through [crate=probe_alloc]	verification results:: 2159 verified, 0 errors
+471	2026-11-12T06:30:02+00:00	exit=0	4s	probe: retry threading, early exits [crate=probe_alloc]	verification results:: 8 verified, 0 errors
+472	2026-11-12T06:31:01+00:00	exit=101	4s	probe: production guard text + TryError in sites [crate=probe_alloc]	
+473	2026-11-12T06:31:13+00:00	exit=101	3s	probe: TryError name spec counterparts [crate=probe_alloc]	verification results:: 13 verified, 2 errors
+474	2026-11-12T06:31:26+00:00	exit=0	4s	probe: open spec name fn [crate=probe_alloc]	verification results:: 15 verified, 0 errors
+475	2026-11-12T06:31:41+00:00	exit=101	5s	probe: reuse tracked &mut across calls [crate=probe_alloc]	verification results:: 14 verified, 1 errors
+476	2026-11-12T06:31:57+00:00	exit=0	5s	probe: sites re-exports crate::error_ty::Error [crate=probe_alloc]	verification results:: 16 verified, 0 errors
+477	2026-11-12T06:32:02+00:00	exit=101	1s	probe: sites.rs resolves by relative path [crate=probe_alloc]	
+478	2026-11-12T06:32:12+00:00	exit=0	5s	probe: sites.rs uses super::super::error_ty::Error [crate=probe_alloc]	verification results:: 15 verified, 0 errors
+479	2026-11-12T06:34:55+00:00	exit=101	70s	alloc step: guard module + TryError in sites + Error name spec counterpart (expect errors: sites Decoded import) [crate=dib_verus]	verification results:: 2159 verified, 0 errors
+480	2026-11-12T06:36:28+00:00	exit=0	79s	alloc step: guard + sites with same-impl name_spec counterparts [crate=dib_verus]	verification results:: 1732 verified, 0 errors
+481	2026-11-12T06:44:03+00:00	exit=101	5s	alloc step: core+policy threading WIP (expect many errors) [crate=dib_verus]	
+482	2026-11-12T06:44:20+00:00	exit=101	4s	alloc step: compile check 2 [crate=dib_verus]	
+483	2026-11-12T06:44:32+00:00	exit=101	4s	alloc step: compile check 3 [crate=dib_verus]	
+484	2026-11-12T06:44:40+00:00	exit=101	4s	alloc step: compile check 4 [crate=dib_verus]	
+485	2026-11-12T06:44:48+00:00	exit=101	4s	alloc step: compile check 5 [crate=dib_verus]	
+486	2026-11-12T06:45:01+00:00	exit=101	5s	alloc step: compile check 6 [crate=dib_verus]	
+487	2026-11-12T06:45:28+00:00	exit=101	5s	alloc step: compile check 7 [crate=dib_verus]	
+488	2026-11-12T06:46:13+00:00	exit=101	8s	alloc step: compile check 8 [crate=dib_verus]	
+489	2026-11-12T06:46:30+00:00	exit=101	8s	alloc step: compile check 9 [crate=dib_verus]	
+490	2026-11-12T06:47:16+00:00	exit=101	12s	alloc step: compile check 10 [crate=dib_verus]	
+491	2026-11-12T06:47:32+00:00	exit=101	11s	alloc step: compile check 11 [crate=dib_verus]	
+492	2026-11-12T06:49:36+00:00	exit=101	119s	alloc step: compile check 12 [crate=dib_verus]	verification results:: 1728 verified, 12 errors
+493	2026-11-12T06:51:36+00:00	exit=101	11s	alloc step: proof iteration 1 [crate=dib_verus]	
+494	2026-11-12T06:54:00+00:00	exit=101	137s	alloc step: proof iteration 2 [crate=dib_verus]	verification results:: 1730 verified, 11 errors
+495	2026-11-12T06:56:27+00:00	exit=101	127s	alloc step: proof iteration 3 [crate=dib_verus]	verification results:: 1731 verified, 10 errors
+496	2026-11-12T06:57:02+00:00	exit=101	5s	alloc step: proof iteration 4 [crate=dib_verus]	
+497	2026-11-12T07:04:04+00:00	exit=101	130s	alloc step: proof iteration 5 [crate=dib_verus]	verification results:: 1731 verified, 10 errors
+498	2026-11-12T07:05:22+00:00	exit=101	8s	alloc step: proof iteration 6 [crate=dib_verus]	
+499	2026-11-12T07:09:30+00:00	exit=101	147s	alloc step: proof iteration 7 [crate=dib_verus]	verification results:: 1732 verified, 9 errors
+500	2026-11-12T07:11:52+00:00	exit=101	145s	alloc step: proof iteration 8 [crate=dib_verus]	verification results:: 1733 verified, 9 errors
+501	2026-11-12T07:12:58+00:00	exit=101	14s	alloc step: proof iteration 9 (split complete policy) [crate=dib_verus]	
+502	2026-11-12T07:17:23+00:00	exit=101	12s	alloc step: proof iteration 10 [crate=dib_verus]	
+503	2026-11-12T07:21:23+00:00	exit=101	6s	alloc step: proof iteration 11 [crate=dib_verus]	
+504	2026-11-12T07:27:38+00:00	exit=101	135s	alloc step: proof iteration 12 [crate=dib_verus]	verification results:: 1736 verified, 11 errors
+505	2026-11-12T07:28:54+00:00	exit=101	5s	alloc step: proof iteration 13 (policy_shape) [crate=dib_verus]	
+506	2026-11-12T07:30:51+00:00	exit=101	4s	alloc step: proof iteration 14 [crate=dib_verus]	
+507	2026-11-12T07:32:51+00:00	exit=101	4s	alloc step: proof iteration 15 [crate=dib_verus]	
+508	2026-11-12T07:36:51+00:00	exit=101	126s	alloc step: proof iteration 16 [crate=dib_verus]	verification results:: 1735 verified, 13 errors
+509	2026-11-12T07:37:27+00:00	exit=101	5s	alloc step: proof iteration 17 [crate=dib_verus]	
+510	2026-11-12T07:41:52+00:00	exit=101	138s	alloc step: proof iteration 18 [crate=dib_verus]	verification results:: 1734 verified, 17 errors
+511	2026-11-12T07:44:31+00:00	exit=101	138s	alloc step: proof iteration 19 [crate=dib_verus]	verification results:: 1735 verified, 16 errors
+512	2026-11-12T07:46:58+00:00	exit=101	150s	alloc step: proof iteration 20 [crate=dib_verus]	verification results:: 1740 verified, 11 errors
+513	2026-11-12T07:47:31+00:00	exit=101	5s	alloc step: proof iteration 21 [crate=dib_verus]	
+514	2026-11-12T07:52:31+00:00	exit=101	175s	alloc step: proof iteration 22 [crate=dib_verus]	verification results:: 1738 verified, 13 errors
+515	2026-11-12T07:55:28+00:00	exit=101	213s	alloc step: proof iteration 23 [crate=dib_verus]	verification results:: 1739 verified, 12 errors
+516	2026-11-12T07:58:05+00:00	exit=101	235s	alloc step: proof iteration 24 [crate=dib_verus]	verification results:: 1739 verified, 12 errors
+517	2026-11-12T08:03:00+00:00	exit=101	187s	alloc step: proof iteration 25 [crate=dib_verus]	verification results:: 1737 verified, 14 errors
+518	2026-11-12T08:03:06+00:00	exit=101	47s	alloc step: proof iteration 26 [crate=dib_verus]	
+519	2026-11-12T08:08:03+00:00	exit=0	95s	alloc step: RESTORE green baseline after WIP set aside (alloc-wip-1) [crate=dib_verus]	verification results:: 1722 verified, 0 errors
+520	2026-11-12T09:17:00+00:00	exit=101	72s	alloc step: apply alloc-wip-1 + drop when_used_as_spec on Error::name/TryError::name (hazard fix) [crate=dib_verus]	verification results:: 2159 verified, 0 errors
+521	2026-11-12T09:19:56+00:00	exit=101	159s	alloc step: run 2 after E0423 fix (reveal AllocSite is not a path) [crate=dib_verus]	verification results:: 1740 verified, 11 errors
+522	2026-11-12T09:31:57+00:00	exit=101	108s	alloc step: policy_shape at exit + policy_checked_n tie + revalidate_partial postcondition [crate=dib_verus]	verification results:: 1744 verified, 7 errors
+523	2026-11-12T09:35:19+00:00	exit=101	111s	alloc step: witness OOM antecedents, finish_policy_after_alloc log precond, decode_complete_policy log precond [crate=dib_verus]	verification results:: 1746 verified, 5 errors
+524	2026-11-12T09:37:24+00:00	exit=101	8s	alloc step: alpha tie via concrete value, header-error exit policy_shape, steps arithmetic via pre [crate=dib_verus]	
+525	2026-11-12T09:38:10+00:00	exit=101	14s	alloc step: witnesses, alpha tie, header-error exit [crate=dib_verus]	
+526	2026-11-12T09:40:32+00:00	exit=101	102s	alloc step: witness case-split by reference [crate=dib_verus]	verification results:: 1747 verified, 4 errors
+527	2026-11-12T09:43:35+00:00	exit=101	93s	alloc step: FINAL state capture (policy_shape at InvalidPixelOffset exit, witnesses case-split) [crate=dib_verus]	verification results:: 1747 verified, 4 errors
+528	2026-11-12T09:44:36+00:00	exit=101	11s	alloc step: T13+alpha on try_decode surfaces, alpha precond on decode_complete_policy, shape at InvalidPixelOffset [crate=dib_verus]	
+529	2026-11-12T09:44:56+00:00	exit=101	13s	alloc step: fix clone in try_decode witness proof [crate=dib_verus]	
+530	2026-11-12T09:46:46+00:00	exit=101	99s	alloc step: try_decode witness fix [crate=dib_verus]	verification results:: 1749 verified, 2 errors
+531	2026-11-12T09:49:32+00:00	exit=101	96s	alloc step: split finish_policy_blank out of finish_policy_after_alloc (rlimit) [crate=dib_verus]	verification results:: 1750 verified, 2 errors
+532	2026-11-12T09:52:14+00:00	exit=101	122s	alloc step: extract policy_gdk_flags, split finish_policy_blank (rlimit recovery) [crate=dib_verus]	verification results:: 1750 verified, 3 errors
+533	2026-11-12T09:53:48+00:00	exit=101	9s	alloc step: named lemma_policy_phase_success, fix policy_gdk_flags precond [crate=dib_verus]	
+534	2026-11-12T09:56:05+00:00	exit=101	127s	alloc step: cast pos to usize in lemma preconditions [crate=dib_verus]	verification results:: 1751 verified, 3 errors
+535	2026-11-12T10:00:06+00:00	exit=101	150s	alloc step: extract finish_policy_plain (rlimit recovery, split only) [crate=dib_verus]	verification results:: 1751 verified, 4 errors
+536	2026-11-12T10:08:19+00:00	exit=101	191s	alloc-wip-2 reconstructed WIP state check [crate=alloc-verify-1]	verification results:: 1750 verified, 2 errors
+537	2026-11-12T10:11:00+00:00	exit=0	100s	alloc step: RESTORE green P2d baseline after WIP set aside (alloc-wip-2) [crate=dib_verus]	verification results:: 1722 verified, 0 errors
+538	2026-11-12T10:20:01+00:00	exit=101	188s	Extract complete policy header geometry lemma [crate=dib_verus]	verification results:: 1751 verified, 2 errors
+539	2026-11-12T10:24:17+00:00	exit=101	126s	Split policy plain phase with geometry contract [crate=dib_verus]	verification results:: 1751 verified, 3 errors
+540	2026-11-12T10:27:52+00:00	exit=101	116s	Isolate Gdk flags and pushed-log proof [crate=dib_verus]	verification results:: 1755 verified, 2 errors
+541	2026-11-12T10:31:07+00:00	exit=101	119s	Simplify OOM proof and account special path [crate=dib_verus]	verification results:: 1757 verified, 2 errors
+542	2026-11-12T10:34:01+00:00	exit=101	109s	Reduce eager model unfolding and correct special work [crate=dib_verus]	verification results:: 1757 verified, 2 errors
+543	2026-11-12T10:36:10+00:00	exit=0	95s	Restore P2d baseline after five failed policy runs [crate=dib_verus]	verification results:: 1722 verified, 0 errors
+545	2026-11-12T10:45:25+00:00	exit=0	160s	Astra 1: split reservation and pixel dispatch; explicit no-OOM and successful-only fill charge [crate=alloc-verify-a1]	verification results:: 1761 verified, 0 errors
+546	2026-11-12T10:48:29+00:00	exit=101	90s	Astra 2: production quantified policy G/Prog/PreAlloc, OOM naming and ICO export, single guard site [crate=alloc-verify-a1]	verification results:: 1761 verified, 1 errors
+547	2026-11-12T10:50:54+00:00	exit=101	88s	Astra 3: explicit OOM request projection and conditional Strict bridge [crate=alloc-verify-a1]	verification results:: 1764 verified, 1 errors
+548	2026-11-12T10:53:13+00:00	exit=0	89s	Astra 4: extensional equality of all-Ok Strict logs [crate=alloc-verify-a1]	verification results:: 1765 verified, 0 errors
+549	2026-11-12T10:58:51+00:00	exit=0	159s	Astra 5: live try API and runtime-erased spec export wrappers [crate=dib_verus]	verification results:: 1765 verified, 0 errors
+550	2026-11-12T11:01:33+00:00	exit=101	145s	Astra 6: no_std plus alloc-only vstd; unchanged allocation contracts [crate=dib_verus]	verification results:: 1764 verified, 1 errors
+551	2026-11-12T11:04:00+00:00	exit=0	100s	Astra 7: replace eager header-model unfolding with r2r5 fact lemma under alloc-only vstd [crate=dib_verus]	verification results:: 1765 verified, 0 errors
+552	2026-11-12T11:15:31+00:00	exit=0	96s	Astra 8: full policy G cleanup, explicit all-outcome work assertion, serial fault harness [crate=dib_verus]	verification results:: 1765 verified, 0 errors
+553	2026-11-12T15:16:48+00:00	exit=0	163s	peak memory measurement: unchanged tree [crate=dib_verus]	verification results:: 1765 verified, 0 errors	peak_rss_sum_mb=3098	peak_rss_max_proc_mb=2516:rust_verify
+554	2026-11-13T03:16:26+00:00	exit=101	103s	 [crate=dib_verus]	verification results:: 1763 verified, 1 errors	peak_rss_sum_mb=2069	peak_rss_max_proc_mb=1518:rust_verify
+555	2026-11-13T03:27:35+00:00	exit=101	91s	A-STD-4: resize fill; dib_finish rlimit 30 [crate=dib_verus]	verification results:: 1763 verified, 1 errors	peak_rss_sum_mb=2079	peak_rss_max_proc_mb=1531:rust_verify
+556	2026-11-13T03:34:30+00:00	exit=0	90s	A-STD-4 resize fill; rlimit 20 on dib_finish, parse_header [crate=dib_verus]	verification results:: 1764 verified, 0 errors	peak_rss_sum_mb=2075	peak_rss_max_proc_mb=1518:rust_verify

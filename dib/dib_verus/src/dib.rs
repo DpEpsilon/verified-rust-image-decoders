@@ -7,6 +7,11 @@
 //! each RLE command/painter body, and each ICO alpha/AND row/pixel body.
 
 use vstd::prelude::*;
+use alloc::vec::Vec;
+
+// alloc-delta (SPEC.md §1): the sealed log, the site enum, the failure value and
+// the `TryError` the public `try_*` functions return.
+pub use crate::alloc_guard::{AllocLog, AllocSite, OutOfMemory, TryError};
 
 verus! {
 
@@ -77,8 +82,51 @@ pub enum Error {
 }
 
 impl Error {
+    /// R15's spelling table, in spec position: the `open` same-`impl` sibling
+    /// the exec `Error::name` is tied to by `#[verifier::when_used_as_spec]`.
+    /// `open` and field-free, so it is well-formed everywhere, including in
+    /// `alloc_guard::sites`.
+    pub open spec fn name_spec(&self) -> &'static str {
+        match self {
+            Error::FileTooLarge => "FileTooLarge",
+            Error::TruncatedFileHeader => "TruncatedFileHeader",
+            Error::BadMagic => "BadMagic",
+            Error::InvalidFileSize => "InvalidFileSize",
+            Error::InvalidPixelOffset => "InvalidPixelOffset",
+            Error::TruncatedDibHeader => "TruncatedDibHeader",
+            Error::UnsupportedHeaderSize => "UnsupportedHeaderSize",
+            Error::TruncatedHeader => "TruncatedHeader",
+            Error::InvalidPlanes => "InvalidPlanes",
+            Error::InvalidDimensions => "InvalidDimensions",
+            Error::UnsupportedPixelDepth => "UnsupportedPixelDepth",
+            Error::UnsupportedCompression => "UnsupportedCompression",
+            Error::InvalidCompressionDepth => "InvalidCompressionDepth",
+            Error::UnsupportedOrientation => "UnsupportedOrientation",
+            Error::InvalidColorCount => "InvalidColorCount",
+            Error::OutputTooLarge => "OutputTooLarge",
+            Error::TruncatedMasks => "TruncatedMasks",
+            Error::InvalidBitfields => "InvalidBitfields",
+            Error::TruncatedPalette => "TruncatedPalette",
+            Error::TruncatedPixels => "TruncatedPixels",
+            Error::PaletteIndexOutOfRange => "PaletteIndexOutOfRange",
+            Error::RleTruncated => "RleTruncated",
+            Error::RleBounds => "RleBounds",
+            Error::InvalidImageSize => "InvalidImageSize",
+            Error::TruncatedAndMask => "TruncatedAndMask",
+            Error::TrailingBytes => "TrailingBytes",
+        }
+    }
+
     /// The exact R15 spelling, as used by `VECTORS.json` expectations.
-    pub fn name(&self) -> &'static str {
+    ///
+    /// No spec clause and no `#[verifier::when_used_as_spec]`: the attribute
+    /// changed the crate-wide encoding and produced an unrelated per-function
+    /// resource-limit failure in `raw_sample_scaled` (see STUCK.md and NOTES.md
+    /// alloc-delta). `name()` is called in exec position only (the test
+    /// binaries), so the spelling table `name_spec` above stands alone as the
+    /// spec-position statement of R15's names.
+    pub fn name(&self) -> (s: &'static str)
+    {
         match self {
             Error::FileTooLarge => "FileTooLarge",
             Error::TruncatedFileHeader => "TruncatedFileHeader",
@@ -113,11 +161,17 @@ impl Error {
 /// A decoded image: exact visible `u32` dimensions and exactly `4*width*height`
 /// bytes of tightly packed, non-premultiplied RGBA8, left-to-right, top row
 /// first (SPEC preamble).
+///
+/// `rle_or_32bpp` is the gdk-pixbuf 2.42.12 `has_alpha` rule, computed from the
+/// validated header (depth 32, or RLE8/RLE4 compression) and never from a pixel
+/// value. The profiled entry point ties it to the header record (T9's companion
+/// postcondition below); the policy-free `decode` fills it from `MH`'s record.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Decoded {
     pub width: u32,
     pub height: u32,
     pub rgba: Vec<u8>,
+    pub rle_or_32bpp: bool,
 }
 
 // ---------------------------------------------------------------------------
@@ -137,37 +191,299 @@ pub enum MetadataOptions {
     Ignore,
 }
 
-/// The retained option values, one slot per retained field. P1 keeps exactly
-/// the two metadata options (`file_size`, `image_size`); a later milestone adds
-/// one field per option group, and those values bottom out in `MetadataOptions`
-/// or its siblings, so this record never has to be rewritten.
+/// R3 `planes`. `Must1` is 1.1's rule (`planes == 1`); `Ignore` accepts any
+/// LE16 value including zero, and `planes` is never used in a stride or an
+/// offset (POLICY-SPEC: "accept any LE16 value, including zero, without using it
+/// in stride").
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum PlanesOptions {
+    Must1,
+    Ignore,
+}
+
+/// R1 `reserved`. `Zero` is 1.1's rule (both LE16 reserved words zero);
+/// `Ignore` suppresses exactly those two tests and nothing else.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum ReservedOptions {
+    Zero,
+    Ignore,
+}
+
+/// R1/R7 `offset`. `Declared` is 1.1: R1's `[18,|b|]`, then R7's
+/// `bfOffBits >= palette_end`, then pixels start at `bfOffBits`. `AllowAny`
+/// seeks to the declared offset even when it falls inside metadata or beyond
+/// EOF, leaving the guarded reads to fail on short data. `Gdk` repairs an
+/// invalid offset on GDK's indexed and BI_RGB paths (POLICY-SPEC "Independent
+/// options", `offset`).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum OffsetOptions {
+    Declared,
+    AllowAny,
+    Gdk,
+}
+
+/// R5/R7 `high_count`, the high-depth `biClrUsed` table rule. `BmpTable`
+/// skips four bytes per `biClrUsed` at depth 16/24/32; `Ignore` skips no
+/// optional table; `GdkBound` skips no table but rejects a count above the low
+/// 32 bits of `2^depth`. All three reject a nonzero high-depth count in
+/// `BareDib` (that check is R5's and is not a `high_count` value).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum HighCountOptions {
+    BmpTable,
+    Ignore,
+    GdkBound,
+}
+
+/// R2 `headers`, the accepted DIB header sizes. `All1_1` is 1.1's set
+/// `{12,16,40,52,56,64,108,124}`; `No16` removes 16; `No16No64` removes 16 and
+/// 64. Rejection precedes any read of the remaining header.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum HeadersOptions {
+    All1_1,
+    No16,
+    No16No64,
+}
+
+/// R6 `masks`, the BITFIELDS mask validity rule. `Reject` is 1.1: R,G,B
+/// nonzero, contiguous and disjoint R/G/B/A, wholly inside depth. `Independent`
+/// requires each RGB mask nonzero/contiguous/inside depth and checks the
+/// optional alpha mask for contiguity/inside-depth too, but allows overlaps
+/// between channels. `DefaultRGB` substitutes 555 opaque for 16-bit or BGRA
+/// 8888 for 32-bit when any RGB mask is zero, otherwise accepts overlaps and
+/// holes but rejects any bit above depth.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum MasksOptions {
+    Reject,
+    Independent,
+    DefaultRGB,
+}
+
+/// R9 `short_pixels`. `Reject` is 1.1: each entire padded row must be present.
+/// `ZeroFill` keeps the R8-initialized black in a short row and every later row,
+/// advancing the cursor logically by the stride without reading absent bytes.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum ShortPixelsOptions {
+    Reject,
+    ZeroFill,
+}
+
+/// R11 `rle_eol`. `OnlyFinal` is 1.1: one final EOL raising `y` to `height`,
+/// then EOB required. `StopAtHeight` ends decoding when an EOL starting at
+/// `y < height` raises `y` to `height`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum RleEolOptions {
+    OnlyFinal,
+    StopAtHeight,
+}
+
+/// R10/R11 `rle_overrun`. `Reject` is 1.1; `Clip` consumes the complete packet
+/// and paints only positions with `x < width`; `Image` clips encoded RLE8 runs
+/// only and rejects RLE4 encoded and both absolute overrun packets.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum RleOverrunOptions {
+    Reject,
+    Clip,
+    Image,
+}
+
+/// R11 `rle_delta`. `Inside` is 1.1: a delta must stay strictly inside the
+/// image. `ClampStop` clamps each coordinate to `[0,width]`/`[0,height]`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum RleDeltaOptions {
+    Inside,
+    ClampStop,
+}
+
+/// R10 `rle_eob`. `Required` is 1.1: an explicit `00 01`. `AtInputEnd` also
+/// stops when an EOL/delta reached height or when fewer than two bytes remain.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum RleEobOptions {
+    Required,
+    AtInputEnd,
+}
+
+/// R8 `rle_fill`: the pixel an RLE image is prefilled with. `Palette0` is 1.1
+/// (palette entry zero, alpha 255); `OpaqueBlack`/`TransparentBlack` are
+/// `(0,0,0,255)`/`(0,0,0,0)`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum RleFillOptions {
+    Palette0,
+    OpaqueBlack,
+    TransparentBlack,
+}
+
+/// R7/R8/R10/R11 `palette_index`. `Reject` is 1.1: an index `>= count` is
+/// `PaletteIndexOutOfRange`. `Black` substitutes `(0,0,0,255)` without a read.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum PaletteIndexOptions {
+    Reject,
+    Black,
+}
+
+/// R6 `scaling`: how a component value is scaled to 8 bits. `Round` is 1.1's
+/// exact integer rounding; `Image` keeps the most significant 8 extracted bits
+/// for masks wider than 8; `Gdk` follows GDK's bounded popcount shifts.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum ScalingOptions {
+    Round,
+    Image,
+    Gdk,
+}
+
+/// R4 `unsupported`. `Reject` is 1.1's six depths; `Rgb2` adds 2 bpp for
+/// headers of at least 40 bytes.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum UnsupportedOptions {
+    Reject,
+    Rgb2,
+}
+
+/// R1/R7 `bitfield_offset`: where BITFIELDS pixels start. `DeclaredOffset` is
+/// 1.1 (the raw `bfOffBits`); `MetadataEnd` starts immediately after the
+/// masks/optional table, ignoring `bfOffBits` after header validation.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum BitfieldOffsetOptions {
+    DeclaredOffset,
+    MetadataEnd,
+}
+
+/// R8 `bitfield16_alpha`: 16-bit BITFIELDS alpha. `Mask` is 1.1 (expose a
+/// nonzero alpha mask); `Opaque` writes 255 regardless of that mask.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum Bitfield16AlphaOptions {
+    Mask,
+    Opaque,
+}
+
+/// R6/R7 `incomplete_metadata`. `Reject` is 1.1. `Blank` returns initialized
+/// black output for a short external mask or nonempty palette/table after
+/// validated dimensions and the output cap, bypassing later pixel/size checks.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum IncompleteMetadataOptions {
+    Reject,
+    Blank,
+}
+
+/// R7 `short_indexed_gap`. `Decode` is 1.1. `Blank` returns initialized black
+/// raw (opaque) or RLE (transparent) pixels when `0 < biClrUsed < 2^depth` and
+/// `bfOffBits > palette_end`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum ShortIndexedGapOptions {
+    Decode,
+    Blank,
+}
+
+/// R2 `header_bytes`. `Full` is 1.1: all `H` declared bytes must be present.
+/// `ParsedFields` requires only the fields actually read (12/16 for those
+/// headers, the first 40 bytes for `H >= 40`), then guards each later read.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum HeaderBytesOptions {
+    Full,
+    ParsedFields,
+}
+
+/// All twenty-two retained policy fields, including metadata and pixel recovery.
+/// Every combination has the same safety, termination, allocation and work bounds.
 ///
 /// POLICY-SPEC calls the record of individual field values internal and
-/// experimental, not a public constructor. The fields are `pub` only because
-/// Verus treats a struct with any non-public field as an opaque datatype and
-/// then rejects the spec-fn construction this crate relies on; the *public API*
-/// honours the rule instead: `decode_with_policy` accepts only a `BmpProfile`,
-/// so no caller can inject field values.
+/// experimental, not a public constructor. The fields must be `pub` for
+/// `model.rs`'s `pub open spec fn`s to be well-formed outside the crate: Verus
+/// treats a struct with any non-`pub` field as opaque everywhere and then rejects
+/// the spec-fn field expressions this crate relies on (a `pub(crate)` field is
+/// not enough — the public entry point's own `ensures` clause mentions the model).
+/// Cross-crate construction is still impossible: `#[non_exhaustive]` rejects an
+/// external literal, and the only constructors, `strict_policy_exec`,
+/// `profile_policy_exec`, are `pub(crate)`. A release caller therefore cannot
+/// obtain a record with custom field values nor mutate one; the only release
+/// decoder is `decode_with_policy`, which takes a `BmpProfile`, and the
+/// custom-record decoder `decode_custom_policy` exists only under `cfg(test)`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub struct Policy {
     pub file_size: MetadataOptions,
     pub image_size: MetadataOptions,
+    /// R3: `Must1` keeps 1.1's `planes == 1`; `Ignore` accepts any LE16 value.
+    pub planes: PlanesOptions,
+    /// R1: `Zero` keeps 1.1's two reserved words; `Ignore` suppresses only those.
+    pub reserved: ReservedOptions,
+    /// R1/R7: `Declared` keeps 1.1's `bfOffBits` rules; `AllowAny` seeks to the
+    /// declared offset; `Gdk` repairs an invalid offset the way GDK's indexed /
+    /// BI_RGB paths do.
+    pub offset: OffsetOptions,
+    /// R5/R7: the high-depth `biClrUsed` table rule.
+    pub high_count: HighCountOptions,
+    /// R2: the accepted DIB header sizes.
+    pub headers: HeadersOptions,
+    /// R6: the BITFIELDS mask validity rule.
+    pub masks: MasksOptions,
+    /// R9: the short-row rule.
+    pub short_pixels: ShortPixelsOptions,
+    /// R11: the terminal-EOL rule.
+    pub rle_eol: RleEolOptions,
+    /// R10/R11: the over-long-run rule.
+    pub rle_overrun: RleOverrunOptions,
+    /// R11: the delta coordinate rule.
+    pub rle_delta: RleDeltaOptions,
+    /// R10: the explicit-end-of-bitmap rule.
+    pub rle_eob: RleEobOptions,
+    /// R8: the RLE prefill pixel.
+    pub rle_fill: RleFillOptions,
+    /// R7/R8/R10/R11: the out-of-range palette index rule.
+    pub palette_index: PaletteIndexOptions,
+    /// R6: the component-scaling rule.
+    pub scaling: ScalingOptions,
+    /// R4: the accepted pixel depths.
+    pub unsupported: UnsupportedOptions,
+    /// R1/R7: where BITFIELDS pixels start.
+    pub bitfield_offset: BitfieldOffsetOptions,
+    /// R8: the 16-bit BITFIELDS alpha rule.
+    pub bitfield16_alpha: Bitfield16AlphaOptions,
+    /// R6/R7: the short external-mask / nonempty-palette rule.
+    pub incomplete_metadata: IncompleteMetadataOptions,
+    /// R7: the short-indexed-palette gap rule.
+    pub short_indexed_gap: ShortIndexedGapOptions,
+    /// R2: the declared-header-bytes rule.
+    pub header_bytes: HeaderBytesOptions,
 }
 
-/// The profile selector. `Strict` is DIB-CORE-SPEC 1.1 exactly; `Recommended`
-/// (POLICY-SPEC "Named profiles") differs from it only by `file_size = Ignore`
-/// and `image_size = Ignore`. `Default` is `Strict`. The other two frozen
-/// profiles are added as new variants by a later milestone; the match in
-/// `profile_policy` is deliberately exhaustive, so adding one is a compile
-/// error there rather than a silent default to Strict.
+/// The profile selector. All four frozen named profiles of POLICY-SPEC
+/// "Named profiles". `Strict` is DIB-CORE-SPEC 1.1 exactly; `Recommended`
+/// differs from it only by `file_size = Ignore` and `image_size = Ignore`;
+/// `GdkCompat` and `ImageCrateCompat` are the measured gdk-pixbuf 2.42.12 and
+/// image 0.25.10 assignments. `Default` is `Strict`. The matches in
+/// `profile_policy` and `profile_policy_exec` are deliberately exhaustive, so a
+/// future variant is a compile error there rather than a silent default to
+/// Strict.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum BmpProfile {
     Strict,
     Recommended,
+    GdkCompat,
+    ImageCrateCompat,
 }
 
-impl std::default::Default for BmpProfile {
+impl core::default::Default for BmpProfile {
     fn default() -> Self {
         BmpProfile::Strict
     }
@@ -192,15 +508,119 @@ pub open spec fn bmp_mode_to_mode(bm: BmpMode) -> Mode {
     }
 }
 
-/// `Strict`'s policy record: both metadata options keep the 1.1 checks.
-pub open spec fn strict_policy() -> Policy {
-    Policy { file_size: MetadataOptions::Declared, image_size: MetadataOptions::Declared }
-}
-
 /// `Recommended`'s policy record (POLICY-SPEC "Named profiles"): Strict except
 /// `file_size = Ignore` and `image_size = Ignore`.
 pub open spec fn recommended_policy() -> Policy {
-    Policy { file_size: MetadataOptions::Ignore, image_size: MetadataOptions::Ignore }
+    Policy {
+        file_size: MetadataOptions::Ignore,
+        image_size: MetadataOptions::Ignore,
+        planes: PlanesOptions::Must1,
+        reserved: ReservedOptions::Zero,
+        offset: OffsetOptions::Declared,
+        high_count: HighCountOptions::BmpTable,
+        headers: HeadersOptions::All1_1,
+        masks: MasksOptions::Reject,
+        short_pixels: ShortPixelsOptions::Reject,
+        rle_eol: RleEolOptions::OnlyFinal,
+        rle_overrun: RleOverrunOptions::Reject,
+        rle_delta: RleDeltaOptions::Inside,
+        rle_eob: RleEobOptions::Required,
+        rle_fill: RleFillOptions::Palette0,
+        palette_index: PaletteIndexOptions::Reject,
+        scaling: ScalingOptions::Round,
+        unsupported: UnsupportedOptions::Reject,
+        bitfield_offset: BitfieldOffsetOptions::DeclaredOffset,
+        bitfield16_alpha: Bitfield16AlphaOptions::Mask,
+        incomplete_metadata: IncompleteMetadataOptions::Reject,
+        short_indexed_gap: ShortIndexedGapOptions::Decode,
+        header_bytes: HeaderBytesOptions::Full,
+    }
+}
+
+/// `Strict`'s policy record: every option group keeps its 1.1 value.
+pub open spec fn strict_policy() -> Policy {
+    Policy {
+        file_size: MetadataOptions::Declared,
+        image_size: MetadataOptions::Declared,
+        planes: PlanesOptions::Must1,
+        reserved: ReservedOptions::Zero,
+        offset: OffsetOptions::Declared,
+        high_count: HighCountOptions::BmpTable,
+        headers: HeadersOptions::All1_1,
+        masks: MasksOptions::Reject,
+        short_pixels: ShortPixelsOptions::Reject,
+        rle_eol: RleEolOptions::OnlyFinal,
+        rle_overrun: RleOverrunOptions::Reject,
+        rle_delta: RleDeltaOptions::Inside,
+        rle_eob: RleEobOptions::Required,
+        rle_fill: RleFillOptions::Palette0,
+        palette_index: PaletteIndexOptions::Reject,
+        scaling: ScalingOptions::Round,
+        unsupported: UnsupportedOptions::Reject,
+        bitfield_offset: BitfieldOffsetOptions::DeclaredOffset,
+        bitfield16_alpha: Bitfield16AlphaOptions::Mask,
+        incomplete_metadata: IncompleteMetadataOptions::Reject,
+        short_indexed_gap: ShortIndexedGapOptions::Decode,
+        header_bytes: HeaderBytesOptions::Full,
+    }
+}
+
+/// `GdkCompat-2.42.12`'s policy record (POLICY-SPEC "Named profiles"): the
+/// measured gdk-pixbuf 2.42.12 assignment on all twenty-two retained fields.
+pub open spec fn gdk_compat_policy() -> Policy {
+    Policy {
+        file_size: MetadataOptions::Ignore,
+        image_size: MetadataOptions::Ignore,
+        planes: PlanesOptions::Ignore,
+        reserved: ReservedOptions::Ignore,
+        offset: OffsetOptions::Gdk,
+        high_count: HighCountOptions::GdkBound,
+        headers: HeadersOptions::No16,
+        masks: MasksOptions::DefaultRGB,
+        short_pixels: ShortPixelsOptions::ZeroFill,
+        rle_eol: RleEolOptions::StopAtHeight,
+        rle_overrun: RleOverrunOptions::Clip,
+        rle_delta: RleDeltaOptions::ClampStop,
+        rle_eob: RleEobOptions::AtInputEnd,
+        rle_fill: RleFillOptions::TransparentBlack,
+        palette_index: PaletteIndexOptions::Black,
+        scaling: ScalingOptions::Gdk,
+        unsupported: UnsupportedOptions::Reject,
+        bitfield_offset: BitfieldOffsetOptions::MetadataEnd,
+        bitfield16_alpha: Bitfield16AlphaOptions::Opaque,
+        incomplete_metadata: IncompleteMetadataOptions::Blank,
+        short_indexed_gap: ShortIndexedGapOptions::Blank,
+        header_bytes: HeaderBytesOptions::Full,
+    }
+}
+
+/// `ImageCrateCompat-0.25.10`'s policy record (POLICY-SPEC "Named profiles"):
+/// the measured image 0.25.10 assignment on all twenty-two retained fields.
+pub open spec fn image_crate_compat_policy() -> Policy {
+    Policy {
+        file_size: MetadataOptions::Ignore,
+        image_size: MetadataOptions::Ignore,
+        planes: PlanesOptions::Must1,
+        reserved: ReservedOptions::Ignore,
+        offset: OffsetOptions::AllowAny,
+        high_count: HighCountOptions::Ignore,
+        headers: HeadersOptions::No16No64,
+        masks: MasksOptions::Independent,
+        short_pixels: ShortPixelsOptions::Reject,
+        rle_eol: RleEolOptions::StopAtHeight,
+        rle_overrun: RleOverrunOptions::Image,
+        rle_delta: RleDeltaOptions::Inside,
+        rle_eob: RleEobOptions::Required,
+        rle_fill: RleFillOptions::OpaqueBlack,
+        palette_index: PaletteIndexOptions::Black,
+        scaling: ScalingOptions::Image,
+        unsupported: UnsupportedOptions::Rgb2,
+        bitfield_offset: BitfieldOffsetOptions::DeclaredOffset,
+        bitfield16_alpha: Bitfield16AlphaOptions::Mask,
+        incomplete_metadata: IncompleteMetadataOptions::Reject,
+        short_indexed_gap: ShortIndexedGapOptions::Decode,
+        header_bytes: HeaderBytesOptions::ParsedFields,
+    }
 }
 
 /// The profile selector's policy record (POLICY-SPEC "Named profiles").
@@ -208,6 +628,8 @@ pub open spec fn profile_policy(p: BmpProfile) -> Policy {
     match p {
         BmpProfile::Strict => strict_policy(),
         BmpProfile::Recommended => recommended_policy(),
+        BmpProfile::GdkCompat => gdk_compat_policy(),
+        BmpProfile::ImageCrateCompat => image_crate_compat_policy(),
     }
 }
 
@@ -223,8 +645,47 @@ pub fn bmp_mode_mode(bm: BmpMode) -> (r: Mode)
     }
 }
 
-/// The executable wrapper for `profile_policy`.
-pub fn profile_policy_exec(p: BmpProfile) -> (r: Policy)
+/// The executable wrapper for `strict_policy`: `parse_header` calls this so its
+/// calls to the policy-parameterised field helpers carry the spec-fn identity.
+/// Not part of the release API: `pub(crate)` so the `cfg(test)` custom-record
+/// harness can start from the Strict record (POLICY-SPEC: the field record is
+/// internal and experimental, not a public constructor).
+pub(crate) fn strict_policy_exec() -> (r: Policy)
+    ensures
+        r == strict_policy(),
+{
+    Policy {
+        file_size: MetadataOptions::Declared,
+        image_size: MetadataOptions::Declared,
+        planes: PlanesOptions::Must1,
+        reserved: ReservedOptions::Zero,
+        offset: OffsetOptions::Declared,
+        high_count: HighCountOptions::BmpTable,
+        headers: HeadersOptions::All1_1,
+        masks: MasksOptions::Reject,
+        short_pixels: ShortPixelsOptions::Reject,
+        rle_eol: RleEolOptions::OnlyFinal,
+        rle_overrun: RleOverrunOptions::Reject,
+        rle_delta: RleDeltaOptions::Inside,
+        rle_eob: RleEobOptions::Required,
+        rle_fill: RleFillOptions::Palette0,
+        palette_index: PaletteIndexOptions::Reject,
+        scaling: ScalingOptions::Round,
+        unsupported: UnsupportedOptions::Reject,
+        bitfield_offset: BitfieldOffsetOptions::DeclaredOffset,
+        bitfield16_alpha: Bitfield16AlphaOptions::Mask,
+        incomplete_metadata: IncompleteMetadataOptions::Reject,
+        short_indexed_gap: ShortIndexedGapOptions::Decode,
+        header_bytes: HeaderBytesOptions::Full,
+    }
+}
+
+/// The executable wrapper for `profile_policy`. Not public: only
+/// `decode_with_policy` calls it, so the record never escapes the crate. The two
+/// original named-profile arms are unchanged; the two compatibility profiles
+/// carry every field of the frozen table. Each arm's value must equal its
+/// `profile_policy` arm term for the `ensures` clause to close.
+pub(crate) fn profile_policy_exec(p: BmpProfile) -> (r: Policy)
     ensures
         r == profile_policy(p),
 {
@@ -232,10 +693,98 @@ pub fn profile_policy_exec(p: BmpProfile) -> (r: Policy)
         BmpProfile::Strict => Policy {
             file_size: MetadataOptions::Declared,
             image_size: MetadataOptions::Declared,
+            planes: PlanesOptions::Must1,
+            reserved: ReservedOptions::Zero,
+            offset: OffsetOptions::Declared,
+            high_count: HighCountOptions::BmpTable,
+            headers: HeadersOptions::All1_1,
+            masks: MasksOptions::Reject,
+        short_pixels: ShortPixelsOptions::Reject,
+        rle_eol: RleEolOptions::OnlyFinal,
+        rle_overrun: RleOverrunOptions::Reject,
+        rle_delta: RleDeltaOptions::Inside,
+        rle_eob: RleEobOptions::Required,
+        rle_fill: RleFillOptions::Palette0,
+        palette_index: PaletteIndexOptions::Reject,
+        scaling: ScalingOptions::Round,
+        unsupported: UnsupportedOptions::Reject,
+        bitfield_offset: BitfieldOffsetOptions::DeclaredOffset,
+        bitfield16_alpha: Bitfield16AlphaOptions::Mask,
+        incomplete_metadata: IncompleteMetadataOptions::Reject,
+        short_indexed_gap: ShortIndexedGapOptions::Decode,
+        header_bytes: HeaderBytesOptions::Full,
         },
         BmpProfile::Recommended => Policy {
             file_size: MetadataOptions::Ignore,
             image_size: MetadataOptions::Ignore,
+            planes: PlanesOptions::Must1,
+            reserved: ReservedOptions::Zero,
+            offset: OffsetOptions::Declared,
+            high_count: HighCountOptions::BmpTable,
+            headers: HeadersOptions::All1_1,
+            masks: MasksOptions::Reject,
+        short_pixels: ShortPixelsOptions::Reject,
+        rle_eol: RleEolOptions::OnlyFinal,
+        rle_overrun: RleOverrunOptions::Reject,
+        rle_delta: RleDeltaOptions::Inside,
+        rle_eob: RleEobOptions::Required,
+        rle_fill: RleFillOptions::Palette0,
+        palette_index: PaletteIndexOptions::Reject,
+        scaling: ScalingOptions::Round,
+        unsupported: UnsupportedOptions::Reject,
+        bitfield_offset: BitfieldOffsetOptions::DeclaredOffset,
+        bitfield16_alpha: Bitfield16AlphaOptions::Mask,
+        incomplete_metadata: IncompleteMetadataOptions::Reject,
+        short_indexed_gap: ShortIndexedGapOptions::Decode,
+        header_bytes: HeaderBytesOptions::Full,
+        },
+        BmpProfile::GdkCompat => Policy {
+            file_size: MetadataOptions::Ignore,
+            image_size: MetadataOptions::Ignore,
+            planes: PlanesOptions::Ignore,
+            reserved: ReservedOptions::Ignore,
+            offset: OffsetOptions::Gdk,
+            high_count: HighCountOptions::GdkBound,
+            headers: HeadersOptions::No16,
+            masks: MasksOptions::DefaultRGB,
+            short_pixels: ShortPixelsOptions::ZeroFill,
+            rle_eol: RleEolOptions::StopAtHeight,
+            rle_overrun: RleOverrunOptions::Clip,
+            rle_delta: RleDeltaOptions::ClampStop,
+            rle_eob: RleEobOptions::AtInputEnd,
+            rle_fill: RleFillOptions::TransparentBlack,
+            palette_index: PaletteIndexOptions::Black,
+            scaling: ScalingOptions::Gdk,
+            unsupported: UnsupportedOptions::Reject,
+            bitfield_offset: BitfieldOffsetOptions::MetadataEnd,
+            bitfield16_alpha: Bitfield16AlphaOptions::Opaque,
+            incomplete_metadata: IncompleteMetadataOptions::Blank,
+            short_indexed_gap: ShortIndexedGapOptions::Blank,
+            header_bytes: HeaderBytesOptions::Full,
+        },
+        BmpProfile::ImageCrateCompat => Policy {
+            file_size: MetadataOptions::Ignore,
+            image_size: MetadataOptions::Ignore,
+            planes: PlanesOptions::Must1,
+            reserved: ReservedOptions::Ignore,
+            offset: OffsetOptions::AllowAny,
+            high_count: HighCountOptions::Ignore,
+            headers: HeadersOptions::No16No64,
+            masks: MasksOptions::Independent,
+            short_pixels: ShortPixelsOptions::Reject,
+            rle_eol: RleEolOptions::StopAtHeight,
+            rle_overrun: RleOverrunOptions::Image,
+            rle_delta: RleDeltaOptions::Inside,
+            rle_eob: RleEobOptions::Required,
+            rle_fill: RleFillOptions::OpaqueBlack,
+            palette_index: PaletteIndexOptions::Black,
+            scaling: ScalingOptions::Image,
+            unsupported: UnsupportedOptions::Rgb2,
+            bitfield_offset: BitfieldOffsetOptions::DeclaredOffset,
+            bitfield16_alpha: Bitfield16AlphaOptions::Mask,
+            incomplete_metadata: IncompleteMetadataOptions::Reject,
+            short_indexed_gap: ShortIndexedGapOptions::Decode,
+            header_bytes: HeaderBytesOptions::ParsedFields,
         },
     }
 }
@@ -406,7 +955,8 @@ fn stride(width: u32, bits: u32) -> (r: usize)
 
 /// R6: a component mask `m != 0` is interpreted as
 /// `scale(component, m) = floor((255*component + floor(max/2)) / max)` where
-/// `shift = trailing_zeros(m)`, `max = m >> shift`, `component = (word & m) >> shift`.
+/// `shift = trailing_zeros(m)`, `max = (1 << bit_length(m >> shift)) - 1`,
+/// `component = (word & m) >> shift`. Contiguous Strict masks retain their values.
 /// A zero A mask means opaque (255).
 fn channel(word: u32, mask: u32) -> (r: u8)
     ensures
@@ -422,25 +972,27 @@ fn channel(word: u32, mask: u32) -> (r: u8)
         return 255;
     }
     let shift = mask.trailing_zeros();
-    let max = mask >> shift;
+    let compact = mask >> shift;
+    let x = compact | (compact >> 1);
+    let x = x | (x >> 2);
+    let x = x | (x >> 4);
+    let x = x | (x >> 8);
+    let max = x | (x >> 16);
     let component = (word & mask) >> shift;
     proof {
         use vstd::std_specs::bits::u32_trailing_zeros;
         assert(shift == u32_trailing_zeros(mask));
         assert(shift < 32u32);
-        assert((mask >> shift) & 1u32 == 1u32);
-        assert((max & 1u32) == 1u32);
-        assert(max != 0u32) by (bit_vector)
-            requires
-                (max & 1u32) == 1u32,
-        ;
+        assert((compact & 1u32) == 1u32);
+        assert(compact != 0u32) by (bit_vector)
+            requires (compact & 1u32) == 1u32;
+        assert(max == crate::model::channel_span(compact));
+        crate::model::lemma_channel_span_bounds(compact);
         assert((word & mask) <= mask) by (bit_vector);
-        assert(component <= max) by (bit_vector)
-            requires
-                (word & mask) <= mask,
-                component == (word & mask) >> shift,
-                max == mask >> shift,
-        ;
+        assert(component <= compact) by (bit_vector)
+            requires (word & mask) <= mask,
+                component == (word & mask) >> shift, compact == mask >> shift;
+        assert(component <= max && max != 0u32);
     }
     let num: u64 = 255u64 * (component as u64) + (max as u64) / 2;
     let den: u64 = max as u64;
@@ -512,6 +1064,93 @@ fn masks_valid(m0: u32, m1: u32, m2: u32, m3: u32, bits: u32) -> (r: bool)
         return false;
     }
     true
+}
+
+/// R6 `masks` validity, one arm per option value. `Reject` is `masks_valid`;
+/// `Independent` drops the pairwise-disjoint tests only; `DefaultRGB` keeps the
+/// within-depth test only (the RGB masks are already defaulted when zero, so the
+/// nonzero/contiguous/overlap rules no longer apply).
+fn masks_valid_policy(m0: u32, m1: u32, m2: u32, m3: u32, bits: u32, o: MasksOptions) -> (r: bool)
+    ensures
+        r == crate::model::masks_ok_policy(m0, m1, m2, m3, bits as int, o),
+{
+    proof {
+        reveal(crate::model::masks_ok_policy);
+        reveal(crate::model::masks_ok);
+        reveal(crate::model::within_bits);
+        reveal(crate::model::contiguous);
+        reveal(crate::model::low_of);
+    }
+    match o {
+        MasksOptions::Reject => masks_valid(m0, m1, m2, m3, bits),
+        MasksOptions::Independent => {
+            if m0 == 0 || m1 == 0 || m2 == 0 {
+                return false;
+            }
+            if !single_run(m0) || !single_run(m1) || !single_run(m2) {
+                return false;
+            }
+            if m3 != 0 && !single_run(m3) {
+                return false;
+            }
+            if !inside(m0, bits) || !inside(m1, bits) || !inside(m2, bits) || !inside(m3, bits) {
+                return false;
+            }
+            true
+        },
+        MasksOptions::DefaultRGB => {
+            inside(m0, bits) && inside(m1, bits) && inside(m2, bits) && inside(m3, bits)
+        },
+    }
+}
+
+/// R6 `masks`: the four post-substitution mask words and the policy validity
+/// verdict, as one function. `DefaultRGB` replaces all four when any RGB mask
+/// is zero; the other two values leave them unchanged. The postcondition is the
+/// model's `masks_after_policy` and `masks_ok_policy`.
+fn policy_masks(
+    raw0: u32,
+    raw1: u32,
+    raw2: u32,
+    raw3: u32,
+    bits: u32,
+    o: MasksOptions,
+) -> (r: ([u32; 4], bool))
+    ensures
+        (r.0[0], r.0[1], r.0[2], r.0[3]) == crate::model::masks_after_policy(
+            raw0, raw1, raw2, raw3, bits as int, o,
+        ),
+        r.1 == crate::model::masks_ok_policy(r.0[0], r.0[1], r.0[2], r.0[3], bits as int, o),
+{
+    proof {
+        reveal(crate::model::masks_after_policy);
+        reveal(crate::model::masks_ok_policy);
+        reveal(crate::model::default_rgb_masks);
+        reveal(crate::model::masks_ok);
+    }
+    let sub: [u32; 4] = match o {
+        MasksOptions::DefaultRGB => {
+            if raw0 == 0 || raw1 == 0 || raw2 == 0 {
+                if bits == 16u32 {
+                    [0x7c00u32, 0x03e0u32, 0x001fu32, 0u32]
+                } else {
+                    [0x00ff0000u32, 0x0000ff00u32, 0x000000ffu32, 0xff000000u32]
+                }
+            } else {
+                [raw0, raw1, raw2, raw3]
+            }
+        },
+        _ => [raw0, raw1, raw2, raw3],
+    };
+    proof {
+        reveal(crate::model::masks_after_policy);
+        reveal(crate::model::default_rgb_masks);
+    }
+    let ok = masks_valid_policy(sub[0], sub[1], sub[2], sub[3], bits, o);
+    proof {
+        reveal(crate::model::masks_ok_policy);
+    }
+    (sub, ok)
 }
 
 /// R6: `m != 0` and its lowest set bit shifted down yields a single run.
@@ -654,7 +1293,7 @@ spec fn palette_end_valid(
     count: u32,
 ) -> bool {
     &&& (pal_stride == 3 || pal_stride == 4)
-    &&& (palette_start as int) + (count as int) * (pal_stride as int) <= b@.len()
+    &&& (count > 0 ==> (palette_start as int) + (count as int) * (pal_stride as int) <= b@.len())
 }
 
 /// Write four RGBA bytes at `o`; the caller proves `o + 4 <= out.len()`. The
@@ -880,12 +1519,22 @@ impl Header {
     }
 }
 
+/// The gdk-pixbuf `has_alpha` rule on the parsed header, as an executable `bool`:
+/// the same condition `fill_blank`'s `transparent` uses. The postcondition ties it
+/// to the record-level predicate `model::rle_or_32bpp`.
+fn header_alpha(h: &Header) -> (r: bool)
+    ensures r == crate::model::rle_or_32bpp(h.spec_depth(), h.spec_compression()),
+{
+    proof { reveal(crate::model::rle_or_32bpp); }
+    h.bits == 32u32 || h.compression == 1u32 || h.compression == 2u32
+}
+
 /// The success invariant `parse_header` establishes, specialised to the bounds
 /// the pixel decoder needs (T2/T3 for the concrete `Header`).
 spec fn header_inv_light(h: &Header) -> bool {
     &&& 1 <= h.spec_width() <= 8192
     &&& 1 <= h.spec_height() <= 8192
-    &&& crate::model::depth_ok(h.spec_depth())
+    &&& (crate::model::depth_ok(h.spec_depth()) || h.spec_depth() == 2)
     &&& 0 <= h.spec_depth() <= 32
     &&& h.spec_n() == h.spec_width() * h.spec_height()
     &&& 4 * h.spec_n() <= 67108864
@@ -933,16 +1582,15 @@ spec fn hdr_matches(m: crate::model::MHRecord, h: Header) -> bool {
 spec fn header_inv(b: Seq<u8>, h: Header) -> bool {
     &&& b.len() <= crate::model::max_input()
     &&& crate::model::mh_bounds(header_record(h))
-    &&& h.palette_end <= b.len()
-    &&& h.pixel_start <= b.len()
-    &&& h.palette_start + (h.count as int) * (h.pal_stride as int) <= b.len()
+    &&& (h.table_count > 0 ==> h.palette_end <= b.len())
+    &&& (h.count > 0 ==> h.palette_start + (h.count as int) * (h.pal_stride as int) <= b.len())
     &&& (h.pal_stride == 3 || h.pal_stride == 4)
     &&& h.n as int == h.spec_width() * h.spec_height()
     &&& (h.compression == 0u32 || h.compression == 3u32) ==> h.spec_stride() <= 32768
     &&& (h.compression == 1u32 ==> h.spec_depth() == 8)
     &&& (h.compression == 2u32 ==> h.spec_depth() == 4)
     &&& (h.compression == 1u32 || h.compression == 2u32) ==> h.count >= 1u32
-    &&& h.bits == 1u32 || h.bits == 4u32 || h.bits == 8u32 || h.bits == 16u32 || h.bits == 24u32
+    &&& h.bits == 1u32 || h.bits == 2u32 || h.bits == 4u32 || h.bits == 8u32 || h.bits == 16u32 || h.bits == 24u32
         || h.bits == 32u32
     &&& h.spec_mask_depth_ok()
 }
@@ -1027,8 +1675,8 @@ fn bmp_prefix(bytes: &[u8]) -> (r: Result<(usize, u64), Error>)
             assert(res8 as int == crate::model::le16(bytes@, 8));
             assert(len as int == bytes@.len());
             crate::model::lemma_le32_lt(bytes@, 2);
-            assert((bf_size != 0 && bf_size > len as u64) == (crate::model::le32(bytes@, 2) != 0
-                && crate::model::le32(bytes@, 2) > bytes@.len()));
+            assert((bf_size != 0 && bf_size > (len as u64)) == (crate::model::le32(bytes@, 2) != 0
+                && crate::model::le32(bytes@, 2) > bytes@.len())) by { reveal(crate::model::le32); };
         }
         return Err(Error::InvalidFileSize);
     }
@@ -1106,8 +1754,7 @@ fn parse_header_policy(
                 Err(e) => {
                     proof {
                         reveal(crate::model::mh_policy);
-                        reveal(crate::model::r1_prefix_policy);
-                    }
+                            }
                     return Err(e);
                 },
             };
@@ -1115,7 +1762,6 @@ fn parse_header_policy(
             file_offset = p.1;
             proof {
                 reveal(crate::model::mh_policy);
-                reveal(crate::model::r1_prefix_policy);
                 assert(crate::model::r1_prefix_policy(bytes@, policy) == Ok((
                     start as int,
                     file_offset as int,
@@ -1125,7 +1771,6 @@ fn parse_header_policy(
         BmpMode::BareDib => {
             proof {
                 reveal(crate::model::mh_policy);
-                reveal(crate::model::r1_prefix_policy);
             }
             start = 0;
             file_offset = 0;
@@ -1135,45 +1780,42 @@ fn parse_header_policy(
         reveal(crate::model::mh_policy);
         reveal(crate::dib::bmp_mode_to_mode);
     }
-    let f = match dib_fields(bytes, mode, start, file_offset, is_bmp) {
+    let f = match dib_fields(bytes, mode, start, file_offset, is_bmp, policy) {
         Ok(f) => f,
         Err(e) => {
             proof {
                 reveal(crate::model::mh_policy);
-                reveal(crate::model::r2r5);
-                reveal(crate::model::r2r7);
-                reveal(crate::model::r1_prefix_policy);
             }
             return Err(e);
         },
     };
     proof {
-        reveal(crate::model::r2r7);
-        reveal(crate::model::r6r7);
+        reveal(crate::model::r2r7_policy);
+        reveal(crate::model::r6r7_policy);
         assert(bytes@.len() <= crate::model::max_input());
-        assert(bytes@.len() >= f.spec_raw().pos0);
+        assert(bytes@.len() >= f.start as int + crate::model::header_bytes_needed(f.size as int, policy));
         assert(f.spec_raw().compression == 3 && !(f.spec_raw().hsize == 40 || f.spec_raw().hsize
             == 64) ==> f.spec_raw().hsize >= 52) by {
+            reveal(crate::model::hsize_ok_policy);
             reveal(crate::model::hsize_ok);
         }
         if is_bmp {
             assert((file_offset as int) == crate::model::le32(bytes@, 10));
-            assert((file_offset as int) <= bytes@.len());
+            if policy.offset == OffsetOptions::Declared {
+                assert((file_offset as int) <= bytes@.len());
+            }
         }
     }
-    match dib_finish(bytes, &f, file_offset, is_bmp) {
+    match dib_finish(bytes, &f, file_offset, is_bmp, policy) {
         Ok(h) => {
             proof {
                 reveal(crate::model::mh_policy);
-                reveal(crate::model::r2r7);
-                reveal(crate::model::r2r5);
             }
             Ok(h)
         }
         Err(e) => {
             proof {
                 reveal(crate::model::mh_policy);
-                reveal(crate::model::r2r7);
             }
             Err(e)
         }
@@ -1217,50 +1859,123 @@ fn bmp_prefix_policy(bytes: &[u8], policy: Policy) -> (r: Result<(usize, u64), E
     let bf_size = rd32(bytes, 2) as u64;
     let res6 = rd16(bytes, 6);
     let res8 = rd16(bytes, 8);
-    let check_size = match policy.file_size {
-        MetadataOptions::Declared => true,
-        MetadataOptions::Ignore => false,
-    };
-    let bad_size = (check_size && bf_size != 0 && bf_size > len as u64) || res6 != 0 || res8 != 0;
-    if bad_size {
-        proof {
-            reveal(crate::model::r1_prefix_policy);
-            assert(bf_size as int == crate::model::le32(bytes@, 2));
-            assert(res6 as int == crate::model::le16(bytes@, 6));
-            assert(res8 as int == crate::model::le16(bytes@, 8));
-            assert(len as int == bytes@.len());
-            crate::model::lemma_le32_lt(bytes@, 2);
-        }
-        return Err(Error::InvalidFileSize);
-    }
     proof {
         assert(len as int == bytes@.len());
-        assert(!(check_size && bf_size != 0 && bf_size > len as u64));
-        assert(!((policy.file_size == MetadataOptions::Declared && crate::model::le32(bytes@, 2) != 0
-            && crate::model::le32(bytes@, 2) > bytes@.len()) || crate::model::le16(bytes@, 6) != 0
-            || crate::model::le16(bytes@, 8) != 0));
+        assert((len as u64) as int == len as int);
+        assert(bf_size as int == crate::model::le32(bytes@, 2));
+        assert(res6 as int == crate::model::le16(bytes@, 6));
+        assert(res8 as int == crate::model::le16(bytes@, 8));
+        crate::model::lemma_le32_lt(bytes@, 2);
     }
-    let off = rd32(bytes, 10) as u64;
-    if off < 18 || off > len as u64 {
-        proof {
-            reveal(crate::model::r1_prefix_policy);
-            assert(off as int == crate::model::le32(bytes@, 10));
-            assert(len as int == bytes@.len());
-            crate::model::lemma_le32_lt(bytes@, 10);
-        }
-        return Err(Error::InvalidPixelOffset);
+    proof {
+        reveal(crate::model::r1_size_bad);
+        reveal(crate::model::r1_offset_bad);
+        reveal(crate::model::le32);
+        reveal(crate::model::le16);
+    }
+    // R1 `file_size`/`reserved`: four combinations, each with the model's own
+    // expression for that combination.
+    match policy.file_size {
+        MetadataOptions::Declared => {
+            match policy.reserved {
+                ReservedOptions::Zero => {
+                    if (bf_size != 0 && bf_size > len as u64) || res6 != 0 || res8 != 0 {
+                        proof {
+                                        assert(crate::model::r1_size_bad(bytes@, policy));
+                            assert(crate::model::r1_prefix_policy(bytes@, policy) == Err(
+                                Error::InvalidFileSize));
+                        }
+                        return Err(Error::InvalidFileSize);
+                    }
+                    proof {
+                        assert(!crate::model::r1_size_bad(bytes@, policy));
+                    }
+                },
+                ReservedOptions::Ignore => {
+                    if bf_size != 0 && bf_size > len as u64 {
+                        proof {
+                                        assert(crate::model::r1_size_bad(bytes@, policy));
+                            assert(crate::model::r1_prefix_policy(bytes@, policy) == Err(
+                                Error::InvalidFileSize));
+                        }
+                        return Err(Error::InvalidFileSize);
+                    }
+                    proof {
+                        assert(!crate::model::r1_size_bad(bytes@, policy));
+                    }
+                },
+            }
+        },
+        MetadataOptions::Ignore => {
+            match policy.reserved {
+                ReservedOptions::Zero => {
+                    if res6 != 0 || res8 != 0 {
+                        proof {
+                                        assert(crate::model::r1_size_bad(bytes@, policy));
+                            assert(crate::model::r1_prefix_policy(bytes@, policy) == Err(
+                                Error::InvalidFileSize));
+                        }
+                        return Err(Error::InvalidFileSize);
+                    }
+                    proof {
+                        assert(!crate::model::r1_size_bad(bytes@, policy));
+                    }
+                },
+                ReservedOptions::Ignore => {
+                    proof {
+                        assert(!crate::model::r1_size_bad(bytes@, policy));
+                    }
+                },
+            }
+        },
     }
     proof {
         reveal(crate::model::r1_prefix_policy);
+        assert(!crate::model::r1_size_bad(bytes@, policy));
+    }
+    let off = rd32(bytes, 10) as u64;
+    proof {
         assert(off as int == crate::model::le32(bytes@, 10));
-        assert(len as int == bytes@.len());
-        assert(off as int >= 18 && off as int <= bytes@.len());
+        assert((len as u64) as int == len as int);
+        reveal(crate::model::r1_offset_bad);
+        reveal(crate::model::le32);
+    }
+    match policy.offset {
+        OffsetOptions::Declared => {
+            if off < 18 || off > len as u64 {
+                proof {
+                        assert(crate::model::r1_offset_bad(bytes@, policy)) by {
+                        reveal(crate::model::r1_offset_bad);
+                    }
+                    assert(crate::model::r1_prefix_policy(bytes@, policy) == Err(
+                        Error::InvalidPixelOffset));
+                }
+                return Err(Error::InvalidPixelOffset);
+            }
+            proof {
+                assert(!crate::model::r1_offset_bad(bytes@, policy));
+            }
+        },
+        _ => {
+            proof {
+                assert(!crate::model::r1_offset_bad(bytes@, policy));
+            }
+        },
+    }
+    proof {
+        reveal(crate::model::r1_prefix_policy);
+        assert(!crate::model::r1_offset_bad(bytes@, policy));
+        assert(crate::model::r1_prefix_policy(bytes@, policy) == Ok((
+            14int,
+            crate::model::le32(bytes@, 10),
+        )));
     }
     Ok((14, off))
 }
 
 /// R1..R7: parse and validate the header prefix in R14 order. `Ok` carries the
 /// record; T2's model equality and T3's bounds are the postcondition.
+#[verifier::rlimit(20)]
 fn parse_header(bytes: &[u8], mode: Mode) -> (r: Result<Header, Error>)
     ensures
         match crate::model::mh(bytes@, mode) {
@@ -1303,8 +2018,7 @@ fn parse_header(bytes: &[u8], mode: Mode) -> (r: Result<Header, Error>)
                 Err(e) => {
                     proof {
                         reveal(crate::model::mh);
-                        reveal(crate::model::r1_prefix);
-                    }
+                            }
                     return Err(e);
                 },
             };
@@ -1312,41 +2026,47 @@ fn parse_header(bytes: &[u8], mode: Mode) -> (r: Result<Header, Error>)
             file_offset = p.1;
             proof {
                 reveal(crate::model::mh);
-                reveal(crate::model::r1_prefix);
                 assert(crate::model::r1_prefix(bytes@) == Ok((start as int, file_offset as int)));
             }
         }
         _ => {
             proof {
                 reveal(crate::model::mh);
-                reveal(crate::model::r1_prefix);
             }
             start = 0;
             file_offset = 0;
         }
     }
+    let sp = strict_policy_exec();
     proof {
         reveal(crate::model::mh);
     }
-    let f = match dib_fields(bytes, mode, start, file_offset, is_bmp) {
+    let f = match dib_fields(bytes, mode, start, file_offset, is_bmp, sp) {
         Ok(f) => f,
         Err(e) => {
             proof {
                 reveal(crate::model::mh);
-                reveal(crate::model::r2r5);
                 reveal(crate::model::r2r7);
-                reveal(crate::model::r1_prefix);
+                crate::model::lemma_r1_prefix_policy_strict(bytes@);
+                crate::model::lemma_r2r5_policy_strict(bytes@, mode, start as int);
+                crate::model::lemma_r2r7_policy_strict(bytes@, mode, start as int, file_offset as int, is_bmp);
             }
             return Err(e);
         },
     };
     proof {
+        reveal(crate::model::mh);
         reveal(crate::model::r2r7);
-        reveal(crate::model::r6r7);
+        reveal(crate::model::r1_prefix);
+        crate::model::lemma_r1_prefix_policy_strict(bytes@);
+        crate::model::lemma_r2r5_policy_strict(bytes@, mode, start as int);
+        crate::model::lemma_r2r7_policy_strict(bytes@, mode, start as int, file_offset as int, is_bmp);
+        assert(crate::model::r2r5(bytes@, mode, start as int) == Ok(f.spec_raw()));
         assert(bytes@.len() <= crate::model::max_input());
         assert(bytes@.len() >= f.spec_raw().pos0);
         assert(f.spec_raw().compression == 3 && !(f.spec_raw().hsize == 40 || f.spec_raw().hsize
             == 64) ==> f.spec_raw().hsize >= 52) by {
+            reveal(crate::model::hsize_ok_policy);
             reveal(crate::model::hsize_ok);
         }
         if is_bmp {
@@ -1354,12 +2074,11 @@ fn parse_header(bytes: &[u8], mode: Mode) -> (r: Result<Header, Error>)
             assert((file_offset as int) <= bytes@.len());
         }
     }
-    match dib_finish(bytes, &f, file_offset, is_bmp) {
+    match dib_finish(bytes, &f, file_offset, is_bmp, sp) {
         Ok(h) => {
             proof {
                 reveal(crate::model::mh);
                 reveal(crate::model::r2r7);
-                reveal(crate::model::r2r5);
             }
             Ok(h)
         }
@@ -1468,26 +2187,29 @@ fn abs_i32(x: i32) -> (r: u32)
     }
 }
 
-/// R2..R5: parse and validate the header fields up to the output cap. The
-/// postcondition is the model's `r2r5`.
+/// R2..R5: parse and validate the header fields up to the output cap, under the
+/// `planes`, `headers` and `high_count` options. The postcondition is the
+/// model's `r2r5_policy`; at `strict_policy()` the options sit at their 1.1
+/// values, so this is `r2r5` (the caller uses the bridge lemma).
 fn dib_fields(
     bytes: &[u8],
     mode: Mode,
     start: usize,
     file_offset: u64,
     is_bmp: bool,
+    policy: Policy,
 ) -> (r: Result<Fields, Error>)
     requires
         is_bmp == (mode == Mode::BmpFile),
         is_bmp ==> start == 14,
         !is_bmp ==> start == 0 && file_offset == 0,
     ensures
-        match crate::model::r2r5(bytes@, mode, start as int) {
+        match crate::model::r2r5_policy(bytes@, mode, start as int, policy) {
             Ok(m) => match r {
                 Ok(f) => f.mode == mode && f.is_bmp == (mode == Mode::BmpFile) && fields_matches(m, f)
                     && f.spec_n() == f.width_i as int * (f.height_v as int) && crate::model::hsize_ok(
                     f.size as int,
-                ) && m.pos0 == f.start as int + f.size as int && bytes@.len() >= m.pos0,
+                ) && m.pos0 == f.start as int + f.size as int && bytes@.len() >= f.start as int + crate::model::header_bytes_needed(f.size as int, policy),
                 Err(_) => false,
             },
             Err(e2) => match r {
@@ -1497,13 +2219,28 @@ fn dib_fields(
         },
 {
     let len = bytes.len();
+    proof {
+        reveal(crate::model::r2r5_policy);
+        reveal(crate::model::hsize_ok_policy);
+        reveal(crate::model::hsize_ok);
+        reveal(crate::model::visible_height_of);
+        reveal(crate::model::pow2);
+        reveal(crate::model::depth_ok);
+        reveal(crate::model::is_ico);
+        reveal(crate::model::s32_min);
+        reveal(crate::model::abs_int);
+        reveal(crate::model::max_dimension);
+        reveal(crate::model::max_output);
+        reveal(crate::model::gdk_high_bound);
+    }
 
     // -----------------------------------------------------------------------
     // R2: DIB header size and layout.
     // -----------------------------------------------------------------------
     if len < start + 4 {
         proof {
-            reveal(crate::model::r2r7);
+            reveal(crate::model::r2r7_policy);
+            reveal(crate::model::r2r5_policy);
         }
         return Err(Error::TruncatedDibHeader);
     }
@@ -1513,28 +2250,67 @@ fn dib_fields(
     }
     let core = match size {
         12 => true,
-        16 | 40 | 52 | 56 | 64 | 108 | 124 => false,
+        16 => {
+            match policy.headers {
+                HeadersOptions::All1_1 => false,
+                _ => {
+                    proof {
+                                        assert(!crate::model::hsize_ok_policy(16, HeadersOptions::No16) && !
+                            crate::model::hsize_ok_policy(16, HeadersOptions::No16No64));
+                        reveal(crate::model::mh_policy);
+                                    }
+                    return Err(Error::UnsupportedHeaderSize);
+                },
+            }
+        },
+        64 => {
+            match policy.headers {
+                HeadersOptions::No16No64 => {
+                    proof {
+                                        assert(!crate::model::hsize_ok_policy(64, HeadersOptions::No16No64));
+                        reveal(crate::model::mh_policy);
+                                    }
+                    return Err(Error::UnsupportedHeaderSize);
+                },
+                _ => false,
+            }
+        },
+        40 | 52 | 56 | 108 | 124 => false,
         _ => {
             proof {
-                reveal(crate::model::mh);
-                reveal(crate::model::hsize_ok);
-                assert(!crate::model::hsize_ok(size as int));
+                assert(size != 12u32 && size != 16u32 && size != 40u32 && size != 52u32 && size
+                    != 56u32 && size != 64u32 && size != 108u32 && size != 124u32);
+                assert(!crate::model::hsize_ok_policy(size as int, policy.headers));
+                reveal(crate::model::mh_policy);
             }
             return Err(Error::UnsupportedHeaderSize);
         },
     };
     proof {
+        reveal(crate::model::hsize_ok_policy);
         reveal(crate::model::hsize_ok);
-        assert(crate::model::hsize_ok(size as int));
+        assert(crate::model::hsize_ok_policy(size as int, policy.headers));
     }
-    if len < start + size as usize {
+    let needed = match policy.header_bytes { HeaderBytesOptions::ParsedFields => if size >= 40 { 40 } else { size }, _ => size };
+    if len < start + needed as usize {
         proof {
-            reveal(crate::model::mh);
+            reveal(crate::model::mh_policy);
+            reveal(crate::model::r2r7_policy);
+            reveal(crate::model::r2r5_policy);
         }
         return Err(Error::TruncatedHeader);
     }
     proof {
-        assert(bytes@.len() >= start + size as int);
+        assert(bytes@.len() >= start as int + crate::model::header_bytes_needed(size as int, policy));
+        // Pin `r2r5_policy`'s three early guards as decided, so every later exit
+        // sees only the guard it is actually about.
+        reveal(crate::model::r2r5_policy);
+        reveal(crate::model::hsize_ok_policy);
+        reveal(crate::model::hsize_ok);
+        assert(size as int == crate::model::le32(bytes@, start as int));
+        assert(!(bytes@.len() < start as int + 4));
+        assert(!(bytes@.len() < start as int + crate::model::header_bytes_needed(crate::model::le32(bytes@, start as int), policy)));
+        assert(crate::model::hsize_ok_policy(size as int, policy.headers));
     }
 
     // Fields; compression/declared/used are zero for the layouts that imply them.
@@ -1570,7 +2346,7 @@ fn dib_fields(
         used = 0u32;
     } else {
         proof {
-            assert(bytes@.len() >= start + size as int);
+            assert(bytes@.len() >= start as int + crate::model::header_bytes_needed(size as int, policy));
             assert(size >= 40);
         }
         width_i = rd32s(bytes, start + 4);
@@ -1604,21 +2380,123 @@ fn dib_fields(
         }
     }
 
+    validate_dib_fields(bytes, mode, start, is_bmp, policy, size, core,
+        width_i, signed_height, planes, bits, compression, declared_image, used)
+}
+
+/// Validate the already-read R3–R5 fields without carrying the reader branches.
+fn validate_dib_fields(
+    bytes: &[u8], mode: Mode, start: usize, is_bmp: bool, policy: Policy,
+    size: u32, core: bool, width_i: i32, signed_height: i32, planes: u32,
+    bits: u32, compression: u32, declared_image: u32, used: u32,
+) -> (r: Result<Fields, Error>)
+    requires
+        is_bmp == (mode == Mode::BmpFile),
+        is_bmp ==> start == 14,
+        !is_bmp ==> start == 0,
+        bytes@.len() >= start as int + 4,
+        size as int == crate::model::le32(bytes@, start as int),
+        crate::model::hsize_ok_policy(size as int, policy.headers),
+        bytes@.len() >= start as int + crate::model::header_bytes_needed(size as int, policy),
+        core == (size == 12),
+        width_i as int == crate::model::width_i_of(bytes@, start as int),
+        signed_height as int == crate::model::stored_of(bytes@, start as int),
+        planes as int == crate::model::planes_of(bytes@, start as int),
+        bits as int == crate::model::depth_of(bytes@, start as int),
+        compression as int == crate::model::compression_of(bytes@, start as int),
+        declared_image as int == crate::model::declared_of(bytes@, start as int),
+        used as int == crate::model::used_of(bytes@, start as int),
+    ensures
+        match crate::model::r2r5_policy(bytes@, mode, start as int, policy) {
+            Ok(m) => match r {
+                Ok(f) => f.mode == mode && f.is_bmp == (mode == Mode::BmpFile) && fields_matches(m, f)
+                    && f.spec_n() == f.width_i as int * (f.height_v as int) && crate::model::hsize_ok(
+                    f.size as int,
+                ) && m.pos0 == f.start as int + f.size as int && bytes@.len() >= f.start as int + crate::model::header_bytes_needed(f.size as int, policy),
+                Err(_) => false,
+            },
+            Err(e2) => match r {
+                Ok(_) => false,
+                Err(e) => e == e2,
+            },
+        },
+{
+    proof {
+        reveal(crate::model::hsize_ok_policy);
+        reveal(crate::model::hsize_ok);
+        reveal(crate::model::visible_height_of);
+        reveal(crate::model::pow2);
+        reveal(crate::model::is_ico);
+        reveal(crate::model::s32_min);
+        reveal(crate::model::abs_int);
+        reveal(crate::model::max_dimension);
+        reveal(crate::model::max_output);
+        reveal(crate::model::gdk_high_bound);
+    }
+
     // -----------------------------------------------------------------------
     // R3: planes, dimensions, ICO stored-height rule, dimension caps.
     // -----------------------------------------------------------------------
-    if planes != 1 {
+    match policy.planes {
+      PlanesOptions::Must1 => {
+      if planes != 1 {
         proof {
-            reveal(crate::model::mh);
+            reveal(crate::model::r2r5_policy);
+            reveal(crate::model::hsize_ok_policy);
+            reveal(crate::model::hsize_ok);
+            reveal(crate::model::visible_height_of);
+            reveal(crate::model::pow2);
+            reveal(crate::model::depth_ok);
+            assert(planes as int == (if core {
+                crate::model::le16(bytes@, start as int + 8)
+            } else {
+                crate::model::le16(bytes@, start as int + 12)
+            }));
+            assert((if crate::model::le32(bytes@, start as int) == 12 {
+                crate::model::le16(bytes@, start as int + 8)
+            } else {
+                crate::model::le16(bytes@, start as int + 12)
+            }) == planes as int);
+            assert((if crate::model::le32(bytes@, start as int) == 12 {
+                crate::model::le16(bytes@, start as int + 4) as int
+            } else {
+                crate::model::s32(bytes@, start as int + 4)
+            }) == width_i as int);
+            assert((if crate::model::le32(bytes@, start as int) == 12 {
+                crate::model::le16(bytes@, start as int + 6) as int
+            } else {
+                crate::model::s32(bytes@, start as int + 8)
+            }) == signed_height as int);
+            crate::model::lemma_r2r5_policy_planes_err(bytes@, mode, start as int, policy);
         }
         return Err(Error::InvalidPlanes);
+      }
+      },
+      PlanesOptions::Ignore => {},
     }
     if width_i <= 0 || signed_height == 0 || signed_height == i32::MIN {
         proof {
-            reveal(crate::model::mh);
+            reveal(crate::model::r2r5_policy);
             reveal(crate::model::s32_min);
             assert(signed_height as int == 0 || signed_height as int == crate::model::s32_min()
                 || width_i <= 0);
+            assert((if crate::model::le32(bytes@, start as int) == 12 {
+                crate::model::le16(bytes@, start as int + 8)
+            } else {
+                crate::model::le16(bytes@, start as int + 12)
+            }) == planes as int);
+            assert((if crate::model::le32(bytes@, start as int) == 12 {
+                crate::model::le16(bytes@, start as int + 4) as int
+            } else {
+                crate::model::s32(bytes@, start as int + 4)
+            }) == width_i as int);
+            assert((if crate::model::le32(bytes@, start as int) == 12 {
+                crate::model::le16(bytes@, start as int + 6) as int
+            } else {
+                crate::model::s32(bytes@, start as int + 8)
+            }) == signed_height as int);
+            assert(width_i <= 0 || signed_height == 0 || signed_height == i32::MIN);
+            crate::model::lemma_r2r5_policy_dims_err(bytes@, mode, start as int, policy);
         }
         return Err(Error::InvalidDimensions);
     }
@@ -1626,11 +2504,28 @@ fn dib_fields(
         Mode::IcoEntryDib | Mode::IcoEntryDibSlack => {
             if signed_height < 0 || signed_height % 2 != 0 {
                 proof {
-                    reveal(crate::model::mh);
+                        reveal(crate::model::is_ico);
+            assert((if crate::model::le32(bytes@, start as int) == 12 {
+                crate::model::le16(bytes@, start as int + 8)
+            } else {
+                crate::model::le16(bytes@, start as int + 12)
+            }) == planes as int);
+            assert((if crate::model::le32(bytes@, start as int) == 12 {
+                crate::model::le16(bytes@, start as int + 4) as int
+            } else {
+                crate::model::s32(bytes@, start as int + 4)
+            }) == width_i as int);
+            assert((if crate::model::le32(bytes@, start as int) == 12 {
+                crate::model::le16(bytes@, start as int + 6) as int
+            } else {
+                crate::model::s32(bytes@, start as int + 8)
+            }) == signed_height as int);
+                    assert(signed_height < 0 || signed_height % 2 != 0);
+                    crate::model::lemma_r2r5_policy_ico_err(bytes@, mode, start as int, policy);
                 }
                 return Err(Error::InvalidDimensions);
             }
-        }
+        },
         _ => {},
     }
     let abs_h = abs_i32(signed_height);
@@ -1688,7 +2583,9 @@ fn dib_fields(
     }
     if width_i as u32 > MAX_DIMENSION || height_v as u32 > MAX_DIMENSION {
         proof {
-            reveal(crate::model::mh);
+            reveal(crate::model::mh_policy);
+            reveal(crate::model::r2r7_policy);
+            reveal(crate::model::r2r5_policy);
             assert(width_i as int > crate::model::max_dimension() || height_v as int
                 > crate::model::max_dimension());
         }
@@ -1730,16 +2627,25 @@ fn dib_fields(
     proof {
         reveal(crate::model::depth_ok);
     }
-    if bits != 1 && bits != 4 && bits != 8 && bits != 16 && bits != 24 && bits != 32 {
+    let rgb2 = match policy.unsupported {
+        UnsupportedOptions::Rgb2 => size >= 40,
+        UnsupportedOptions::Reject => false,
+    };
+    if bits != 1 && bits != 4 && bits != 8 && bits != 16 && bits != 24 && bits != 32
+        && !(rgb2 && bits == 2) {
         proof {
-            reveal(crate::model::mh);
+            reveal(crate::model::mh_policy);
+            reveal(crate::model::r2r7_policy);
+            reveal(crate::model::r2r5_policy);
             reveal(crate::model::depth_ok);
         }
         return Err(Error::UnsupportedPixelDepth);
     }
     if compression > 3 {
         proof {
-            reveal(crate::model::mh);
+            reveal(crate::model::mh_policy);
+            reveal(crate::model::r2r7_policy);
+            reveal(crate::model::r2r5_policy);
         }
         return Err(Error::UnsupportedCompression);
     }
@@ -1747,7 +2653,9 @@ fn dib_fields(
     if (compression == 1 && bits != 8) || (compression == 2 && bits != 4) || (compression == 3
         && bits != 16 && bits != 32) {
         proof {
-            reveal(crate::model::mh);
+            reveal(crate::model::mh_policy);
+            reveal(crate::model::r2r7_policy);
+            reveal(crate::model::r2r5_policy);
         }
         return Err(Error::InvalidCompressionDepth);
     }
@@ -1757,7 +2665,9 @@ fn dib_fields(
     };
     if (signed_height < 0 && rle) || (ico && rle) {
         proof {
-            reveal(crate::model::mh);
+            reveal(crate::model::mh_policy);
+            reveal(crate::model::r2r7_policy);
+            reveal(crate::model::r2r5_policy);
         }
         return Err(Error::UnsupportedOrientation);
     }
@@ -1772,6 +2682,8 @@ fn dib_fields(
             crate::model::lemma_pow2_pos(bits as int);
             if bits == 1u32 {
                 assert(crate::model::pow2(bits as int) == 2);
+            } else if bits == 2u32 {
+                assert(crate::model::pow2(bits as int) == 4);
             } else if bits == 4u32 {
                 assert(crate::model::pow2(bits as int) == 16);
             } else {
@@ -1780,13 +2692,18 @@ fn dib_fields(
             }
             assert(limit as int == crate::model::pow2(bits as int)) by (bit_vector)
                 requires
-                    bits == 1u32 || bits == 4u32 || bits == 8u32,
+                    bits == 1u32 || bits == 2u32 || bits == 4u32 || bits == 8u32,
                     limit == 1u32 << bits,
             ;
         }
         if used > limit {
             proof {
-                reveal(crate::model::mh);
+                reveal(crate::model::pow2);
+                assert((bits as int) == (if core { crate::model::le16(bytes@, start as int + 10) }
+                    else { crate::model::le16(bytes@, start as int + 14) }));
+                assert((used as int) == (if size == 12 || size == 16 { 0 }
+                    else { crate::model::le32(bytes@, start as int + 32) }));
+                crate::model::lemma_r2r5_policy_low_count_err(bytes@, mode, start as int, policy);
             }
             return Err(Error::InvalidColorCount);
         }
@@ -1797,10 +2714,54 @@ fn dib_fields(
         };
         if used != 0 && !bmp {
             proof {
-                reveal(crate::model::mh);
+                reveal(crate::model::pow2);
+                assert((bits as int) == (if core { crate::model::le16(bytes@, start as int + 10) }
+                    else { crate::model::le16(bytes@, start as int + 14) }));
+                assert((used as int) == (if size == 12 || size == 16 { 0 }
+                    else { crate::model::le32(bytes@, start as int + 32) }));
                 assert(mode != Mode::BmpFile);
+                crate::model::lemma_r2r5_policy_bare_high_err(bytes@, mode, start as int, policy);
             }
             return Err(Error::InvalidColorCount);
+        }
+        // R7 `high_count = GdkBound`: a nonzero BMP high-depth count above the
+        // low 32 bits of `2^depth` is rejected (the 32-bpp threshold is zero).
+        match policy.high_count {
+            HighCountOptions::GdkBound => {
+                if used != 0 && bmp {
+                    let bound: u64 = if bits == 16 {
+                        65536u64
+                    } else if bits == 24 {
+                        16777216u64
+                    } else {
+                        0u64
+                    };
+                    proof {
+                        reveal(crate::model::gdk_high_bound);
+                        assert(bound as int == crate::model::gdk_high_bound(bits as int));
+                    }
+                    if (used as u64) > bound {
+                        proof {
+                                        reveal(crate::model::gdk_high_bound);
+                            assert((bits as int) == (if core {
+                                crate::model::le16(bytes@, start as int + 10)
+                            } else {
+                                crate::model::le16(bytes@, start as int + 14)
+                            }));
+                            assert((used as int) == (if size == 12 || size == 16 {
+                                0
+                            } else {
+                                crate::model::le32(bytes@, start as int + 32)
+                            }));
+                            assert(used as int > crate::model::gdk_high_bound(bits as int));
+                            crate::model::lemma_r2r5_policy_gdk_count_err(
+                                bytes@, mode, start as int, policy);
+                        }
+                        return Err(Error::InvalidColorCount);
+                    }
+                }
+            },
+            _ => {},
         }
     }
 
@@ -1837,8 +2798,16 @@ fn dib_fields(
     }
     if 4 * n64 > MAX_OUTPUT as u64 {
         proof {
-            reveal(crate::model::mh);
+            reveal(crate::model::r2r5_policy);
+            reveal(crate::model::pow2);
+            reveal(crate::model::visible_height_of);
+            reveal(crate::model::abs_int);
             assert(4 * n64 as int == 4 * (width_i as int * (height_v as int)));
+            assert((width_i as int) == (if core { crate::model::le16(bytes@, start as int + 4)
+                as int } else { crate::model::s32(bytes@, start as int + 4) }));
+            assert((signed_height as int) == (if core { crate::model::le16(bytes@, start as int + 6)
+                as int } else { crate::model::s32(bytes@, start as int + 8) }));
+            crate::model::lemma_r2r5_policy_output_err(bytes@, mode, start as int, policy);
         }
         return Err(Error::OutputTooLarge);
     }
@@ -1883,65 +2852,47 @@ fn dib_fields(
     )
 }
 
-/// R6..R7: parse masks and palette geometry, then build the record. Given a
-/// `Fields` that is exactly the model's `r2r5` record, the postcondition is the
-/// model's `r2r7`.
-fn dib_finish(
-    bytes: &[u8],
-    f: &Fields,
-    file_offset: u64,
-    is_bmp: bool,
-) -> (r: Result<Header, Error>)
+/// R6..R7: parse masks and palette geometry, then build the record, under the
+/// `masks`, `high_count` and `offset` options. Given a `Fields` that is exactly
+/// the model's `r2r5_policy` record, the postcondition is the model's
+/// `r6r7_policy`.
+/// Read and validate R6 masks before assembling the palette/header record.
+fn dib_policy_masks(bytes: &[u8], f: &Fields, policy: Policy)
+    -> (r: Result<(usize, [u32; 4]), Error>)
     requires
-        f.is_bmp == is_bmp,
-        f.is_bmp ==> f.start == 14,
-        !f.is_bmp ==> f.start == 0 && file_offset == 0,
-        is_bmp == (f.mode == Mode::BmpFile),
-        crate::model::r2r5(bytes@, f.mode, f.start as int) == Ok(f.spec_raw()),
-        f.spec_n() == f.width_i as int * (f.height_v as int),
-        bytes@.len() <= crate::model::max_input(),
-        is_bmp ==> (file_offset as int) == crate::model::le32(bytes@, 10),
-        is_bmp ==> (file_offset as int) <= bytes@.len(),
-        bytes@.len() >= f.spec_raw().pos0,
+        crate::model::r2r5_policy(bytes@, f.mode, f.start as int, policy) == Ok(f.spec_raw()),
+        f.start <= 14,
+        crate::model::hsize_ok(f.size as int),
         f.spec_raw().compression == 3 && !(f.spec_raw().hsize == 40 || f.spec_raw().hsize == 64)
             ==> f.spec_raw().hsize >= 52,
     ensures
-        match crate::model::r6r7(bytes@, f.mode, f.start as int, file_offset as int, is_bmp, f.spec_raw()) {
-            Ok(m) => match r {
-                Ok(h) => hdr_matches(m, h),
-                Err(_) => false,
-            },
-            Err(e2) => match r {
-                Ok(_) => false,
-                Err(e) => e == e2,
-            },
-        },
         match r {
-            Ok(h) => header_inv(bytes@, h) && header_inv_light(&h),
-            Err(_) => true,
+            Ok((pos, masks)) => {
+                &&& pos as int == crate::model::palette_start_of(f.spec_raw())
+                &&& pos <= 150
+                &&& (masks[0], masks[1], masks[2], masks[3])
+                    == crate::model::masks_of_policy_rf(bytes@, f.start as int, f.spec_raw(), policy.masks)
+                &&& !crate::model::policy_masks_missing(bytes@, f.start as int, f.spec_raw(), policy)
+                &&& !(f.spec_raw().compression == 3
+                    && !crate::model::masks_ok_policy_rf(bytes@, f.start as int, f.spec_raw(), policy.masks))
+            },
+            Err(e) => forall|off: int, bmp: bool| crate::model::r6r7_policy(
+                bytes@, f.mode, f.start as int, off, bmp, f.spec_raw(), policy) == Err(e),
         },
 {
     let len = bytes.len();
     let start = f.start;
     let size = f.size;
-    let core = f.core;
-    let width_i = f.width_i;
-    let signed_height = f.signed_height;
-    let planes = f.planes;
-    let bits = f.bits;
     let compression = f.compression;
-    let declared_image = f.declared;
-    let used = f.used;
-    let height_v = f.height_v;
-    let n = f.n;
-    let mode = f.mode;
+    let bits = f.bits;
     let mut pos = start + size as usize;
     let mut masks = [0u32; 4];
     let mut mask_fields: [u32; 4] = [0u32; 4];
+    let mut masks_okv: bool = true;
     if compression == 3 {
         if size == 40 || size == 64 {
             // R6: three external masks immediately after the header.
-            if len - pos < 12 {
+            if pos > len || len - pos < 12 {
                 proof {
                     reveal(crate::model::mh);
                     assert(bytes@.len() - (start + size as int) < 12);
@@ -1961,6 +2912,12 @@ fn dib_finish(
             mask_fields[3] = 0;
             pos += 12;
         } else {
+            // Internal masks still require their complete physical span.
+            let span = if size >= 56 { 56usize } else { 52usize };
+            if len < start + span {
+                proof { reveal(crate::model::r6r7_policy); reveal(crate::model::r2r5_policy); }
+                return Err(Error::TruncatedMasks);
+            }
             // R6: masks inside the header: 52 has three (alpha zero), 56/108/124 four.
             proof {
                 assert(bytes@.len() >= start + 40);
@@ -1984,102 +2941,298 @@ fn dib_finish(
         }
         proof {
             reveal(crate::model::as_u32);
+            let mf0: u32 = mask_fields[0];
+            let mf1: u32 = mask_fields[1];
+            let mf2: u32 = mask_fields[2];
+            let mf3: u32 = mask_fields[3];
             if size == 40 || size == 64 {
-                assert(mask_fields[0] as int == crate::model::le32(bytes@, start as int + size as int));
-                assert(mask_fields[1] as int == crate::model::le32(bytes@, start as int + size
-                    as int + 4));
-                assert(mask_fields[2] as int == crate::model::le32(bytes@, start as int + size
-                    as int + 8));
-                assert(mask_fields[3] == 0);
+                let mw0: int = crate::model::le32(bytes@, start as int + size as int);
+                let mw1: int = crate::model::le32(bytes@, start as int + size as int + 4);
+                let mw2: int = crate::model::le32(bytes@, start as int + size as int + 8);
+                assert(mf0 as int == mw0);
+                assert(mf1 as int == mw1);
+                assert(mf2 as int == mw2);
+                assert(crate::model::as_u32(mw0) == mf0) by { reveal(crate::model::as_u32); };
+                assert(crate::model::as_u32(mw1) == mf1) by { reveal(crate::model::as_u32); };
+                assert(crate::model::as_u32(mw2) == mf2) by { reveal(crate::model::as_u32); };
+                assert(mask_fields[0] == crate::model::as_u32(mw0));
+                assert(mask_fields[1] == crate::model::as_u32(mw1));
+                assert(mask_fields[2] == crate::model::as_u32(mw2));
             } else {
-                assert(mask_fields[0] as int == crate::model::le32(bytes@, start as int + 40));
-                assert(mask_fields[1] as int == crate::model::le32(bytes@, start as int + 44));
-                assert(mask_fields[2] as int == crate::model::le32(bytes@, start as int + 48));
+                let mw0: int = crate::model::le32(bytes@, start as int + 40);
+                let mw1: int = crate::model::le32(bytes@, start as int + 44);
+                let mw2: int = crate::model::le32(bytes@, start as int + 48);
+                assert(mf0 as int == mw0);
+                assert(mf1 as int == mw1);
+                assert(mf2 as int == mw2);
+                assert(crate::model::as_u32(mw0) == mf0) by { reveal(crate::model::as_u32); };
+                assert(crate::model::as_u32(mw1) == mf1) by { reveal(crate::model::as_u32); };
+                assert(crate::model::as_u32(mw2) == mf2) by { reveal(crate::model::as_u32); };
+                assert(mask_fields[0] == crate::model::as_u32(mw0));
+                assert(mask_fields[1] == crate::model::as_u32(mw1));
+                assert(mask_fields[2] == crate::model::as_u32(mw2));
                 if size >= 56 {
-                    assert(mask_fields[3] as int == crate::model::le32(bytes@, start as int + 52));
+                    let mw3: int = crate::model::le32(bytes@, start as int + 52);
+                    assert(mf3 as int == mw3);
+                    assert(crate::model::as_u32(mw3) == mf3) by { reveal(crate::model::as_u32); };
+                    assert(mask_fields[3] == crate::model::as_u32(mw3));
                 } else {
-                    assert(mask_fields[3] == 0);
+                    assert(mf3 == 0u32);
                 }
             }
         }
-        let ok = masks_valid(masks[0], masks[1], masks[2], masks[3], bits);
+        let ms0v: u32 = mask_fields[0];
+        let ms1v: u32 = mask_fields[1];
+        let ms2v: u32 = mask_fields[2];
+        let ms3v: u32 = mask_fields[3];
+        let (sub_masks, ok) = policy_masks(mask_fields[0], mask_fields[1], mask_fields[2],
+            mask_fields[3], bits, policy.masks);
         proof {
-            reveal(crate::model::masks_ok);
+            reveal(crate::model::masks_after_policy);
+            reveal(crate::model::masks_ok_policy);
+        }
+        mask_fields = sub_masks;
+        masks_okv = ok;
+        proof {
+            reveal(crate::model::masks_of_policy_rf);
+            reveal(crate::model::raw_masks_policy);
+            reveal(crate::model::masks_after_policy);
+            reveal(crate::model::masks_ok_policy);
+            assert(f.spec_raw().pos0 == start as int + size as int);
+            assert(crate::model::raw_masks_policy(bytes@, start as int, f.spec_raw())
+                == (ms0v, ms1v, ms2v, ms3v));
+            assert((sub_masks[0], sub_masks[1], sub_masks[2], sub_masks[3])
+                == crate::model::masks_after_policy(
+                ms0v, ms1v, ms2v, ms3v, bits as int, policy.masks,
+            ));
+            assert(ok == crate::model::masks_ok_policy(sub_masks[0], sub_masks[1], sub_masks[2],
+                sub_masks[3], bits as int, policy.masks));
         }
         if !ok {
             proof {
-                reveal(crate::model::mh);
+                reveal(crate::model::mh_policy);
             }
             return Err(Error::InvalidBitfields);
         }
     }
 
+    Ok((pos, mask_fields))
+}
+
+// Keep sub-byte count arithmetic separate from R6/R7 record assembly.
+fn policy_palette_counts(bits: u32, used: u32, high_count: HighCountOptions)
+    -> (r: (u32, u32))
+    requires bits == 1 || bits == 2 || bits == 4 || bits == 8
+        || bits == 16 || bits == 24 || bits == 32,
+    ensures
+        r.0 as int == if bits <= 8 {
+            if used != 0 { used as int } else { crate::model::pow2(bits as int) }
+        } else { 0int },
+        r.1 == if bits <= 8 { r.0 } else {
+            if high_count == HighCountOptions::BmpTable { used } else { 0u32 }
+        },
+{
+    let count = if bits <= 8 { if used != 0 { used } else { 1u32 << bits } } else { 0u32 };
+    proof {
+        reveal(crate::model::pow2);
+        if bits <= 8 && used == 0 {
+            assert(count as int == crate::model::pow2(bits as int)) by (bit_vector)
+                requires bits == 1u32 || bits == 2u32 || bits == 4u32 || bits == 8u32,
+                    count == 1u32 << bits;
+        }
+    }
+    let table_count = if bits <= 8 { count } else {
+        match high_count {
+            HighCountOptions::BmpTable => used,
+            HighCountOptions::Ignore | HighCountOptions::GdkBound => 0u32,
+        }
+    };
+    (count, table_count)
+}
+
+#[verifier::rlimit(20)]
+fn dib_finish(
+    bytes: &[u8],
+    f: &Fields,
+    file_offset: u64,
+    is_bmp: bool,
+    policy: Policy,
+) -> (r: Result<Header, Error>)
+    requires
+        f.is_bmp == is_bmp,
+        f.is_bmp ==> f.start == 14,
+        !f.is_bmp ==> f.start == 0 && file_offset == 0,
+        is_bmp == (f.mode == Mode::BmpFile),
+        crate::model::r2r5_policy(bytes@, f.mode, f.start as int, policy) == Ok(f.spec_raw()),
+        f.spec_n() == f.width_i as int * (f.height_v as int),
+        bytes@.len() <= crate::model::max_input(),
+        is_bmp ==> (file_offset as int) == crate::model::le32(bytes@, 10),
+        is_bmp ==> (file_offset as int) <= usize::MAX,
+        (policy.offset == OffsetOptions::Declared && is_bmp) ==> (file_offset as int)
+            <= bytes@.len(),
+        f.start <= 14,
+        crate::model::hsize_ok(f.size as int),
+        f.spec_raw().compression == 3 && !(f.spec_raw().hsize == 40 || f.spec_raw().hsize == 64)
+            ==> f.spec_raw().hsize >= 52,
+    ensures
+        match crate::model::r6r7_policy(bytes@, f.mode, f.start as int, file_offset as int, is_bmp, f.spec_raw(), policy) {
+            Ok(m) => match r {
+                Ok(h) => hdr_matches(m, h),
+                Err(_) => false,
+            },
+            Err(e2) => match r {
+                Ok(_) => false,
+                Err(e) => e == e2,
+            },
+        },
+        match r {
+            Ok(h) => header_inv(bytes@, h) && header_inv_light(&h),
+            Err(_) => true,
+        },
+        match r {
+            Ok(h) => policy.header_bytes != HeaderBytesOptions::Full || policy.offset != OffsetOptions::Declared || h.pixel_start <= bytes@.len(),
+            Err(_) => true,
+        },
+{
+    proof { crate::model::lemma_r2r5_policy_ok(bytes@, f.mode, f.start as int, policy, f.spec_raw()); }
+    let len = bytes.len();
+    let start = f.start;
+    let size = f.size;
+    let core = f.core;
+    let width_i = f.width_i;
+    let signed_height = f.signed_height;
+    let planes = f.planes;
+    let bits = f.bits;
+    let compression = f.compression;
+    let declared_image = f.declared;
+    let used = f.used;
+    let height_v = f.height_v;
+    let n = f.n;
+    let mode = f.mode;
+    let (mut pos, mask_fields) = match dib_policy_masks(bytes, f, policy) {
+        Ok(v) => v,
+        Err(e) => return Err(e),
+    };
+    let ghost masks_okv = true;
     // -----------------------------------------------------------------------
     // R7: palette geometry (computed in u64), offset check, availability.
     // -----------------------------------------------------------------------
-    let count: u32 = if bits <= 8 {
-        if used != 0 {
-            used
-        } else {
-            1u32 << bits
-        }
-    } else {
-        0
-    };
-    let pal_stride: usize = if core {
-        3
-    } else {
-        4
-    };
-    let table_count: u32 = if bits <= 8 {
-        count
-    } else {
-        used
-    };
+    let (count, table_count) = policy_palette_counts(bits, used, policy.high_count);
+    let pal_stride: usize = if core { 3 } else { 4 };
     proof {
-        reveal(crate::model::pow2);
-        if bits <= 8 {
-            if used != 0 {
-                assert(count == used);
-                assert(count as int == used as int);
-            } else {
-                assert(count == 1u32 << bits);
-                assert(count as int == crate::model::pow2(bits as int)) by (bit_vector)
-                    requires
-                        bits == 1u32 || bits == 4u32 || bits == 8u32,
-                        count == 1u32 << bits,
-                ;
-            }
-            assert(table_count == count);
-        } else {
-            assert(count == 0);
-            assert(table_count == used);
-        }
+        reveal(crate::model::table_count_of_policy);
+        reveal(crate::model::table_count_of);
+        assert(table_count as int == crate::model::table_count_of_policy(f.spec_raw(), policy.high_count));
     }
     let palette_length: u64 = table_count as u64 * pal_stride as u64;
     let palette_end64: u64 = pos as u64 + palette_length;
-    if is_bmp && (file_offset as u64) < palette_end64 {
+    proof {
+        reveal(crate::model::palette_start_of);
+        reveal(crate::model::palette_stride_of);
+        reveal(crate::model::table_count_of_policy_rf);
+        reveal(crate::model::table_count_of_policy);
+        assert(crate::model::palette_start_of(f.spec_raw()) == pos as int);
+        assert(crate::model::palette_stride_of(f.spec_raw()) == pal_stride as int);
+        assert(crate::model::table_count_of_policy_rf(f.spec_raw(), policy.high_count)
+            == table_count as int);
+        assert(crate::model::palette_start_of(f.spec_raw()) + crate::model::table_count_of_policy_rf(
+            f.spec_raw(), policy.high_count) * crate::model::palette_stride_of(f.spec_raw())
+            == palette_end64 as int);
+        reveal(crate::model::masks_ok_policy_rf);
+        reveal(crate::model::masks_of_policy_rf);
+        reveal(crate::model::raw_masks_policy);
+        reveal(crate::model::masks_after_policy);
+        assert(!(f.spec_raw().compression == 3 && !crate::model::masks_ok_policy_rf(bytes@, start
+            as int, f.spec_raw(), policy.masks))) by {
+            if compression == 3 {
+                assert(masks_okv);
+            }
+        };
+        assert(!(f.spec_raw().compression == 3 && (f.spec_raw().hsize == 40 || f.spec_raw().hsize
+            == 64) && bytes@.len() - f.spec_raw().pos0 < 12));
+    }
+    match policy.offset {
+     OffsetOptions::Declared => {
+      if is_bmp {
+       if (file_offset as u64) < palette_end64 {
         proof {
-            reveal(crate::model::mh);
+            
+            
+            reveal(crate::model::r6r7_policy);
+            reveal(crate::model::masks_ok_policy_rf);
+            reveal(crate::model::masks_of_policy_rf);
+            reveal(crate::model::raw_masks_policy);
+            assert(crate::model::palette_start_of(f.spec_raw()) + crate::model::table_count_of_policy_rf(
+                f.spec_raw(), policy.high_count) * crate::model::palette_stride_of(f.spec_raw())
+                == palette_end64 as int) by {
+                reveal(crate::model::palette_start_of);
+                reveal(crate::model::palette_stride_of);
+                reveal(crate::model::table_count_of_policy_rf);
+                reveal(crate::model::table_count_of_policy);
+            };
+            assert(!(f.spec_raw().compression == 3 && !crate::model::masks_ok_policy_rf(bytes@,
+                start as int, f.spec_raw(), policy.masks))) by {
+                reveal(crate::model::masks_ok_policy_rf);
+                reveal(crate::model::masks_of_policy_rf);
+                reveal(crate::model::raw_masks_policy);
+                reveal(crate::model::masks_after_policy);
+            };
+            assert(!(f.spec_raw().compression == 3 && (f.spec_raw().hsize == 40 || f.spec_raw().hsize
+                == 64) && bytes@.len() - f.spec_raw().pos0 < 12));
+            assert((file_offset as int) < palette_end64 as int);
+            assert(is_bmp && policy.offset == OffsetOptions::Declared);
+            let pe_ico: bool = is_bmp && policy.offset == OffsetOptions::Declared;
+            assert(pe_ico);
+            crate::model::lemma_r6r7_policy_offset_err(
+                bytes@, mode, start as int, file_offset as int, is_bmp, f.spec_raw(),
+                policy, palette_end64 as int, pe_ico);
         }
         return Err(Error::InvalidPixelOffset);
+       }
+      }
+     },
+     OffsetOptions::AllowAny | OffsetOptions::Gdk => {},
     }
-    if (len as u64) < palette_end64 {
+    proof {
+        assert(!(is_bmp && policy.offset == OffsetOptions::Declared && (file_offset as u64)
+            < palette_end64));
+    }
+    let full = match policy.header_bytes { HeaderBytesOptions::Full => true, _ => false };
+    if (full || table_count != 0) && (len as u64) < palette_end64 {
         proof {
-            reveal(crate::model::mh);
+            
+            
+            reveal(crate::model::r6r7_policy_err);
+            reveal(crate::model::r6r7_policy);
+            assert(crate::model::palette_start_of(f.spec_raw()) + crate::model::table_count_of_policy_rf(
+                f.spec_raw(), policy.high_count) * crate::model::palette_stride_of(f.spec_raw())
+                == palette_end64 as int) by {
+                reveal(crate::model::palette_start_of);
+                reveal(crate::model::palette_stride_of);
+                reveal(crate::model::table_count_of_policy_rf);
+                reveal(crate::model::table_count_of_policy);
+            };
+            assert(!(f.spec_raw().compression == 3 && !crate::model::masks_ok_policy_rf(bytes@,
+                start as int, f.spec_raw(), policy.masks))) by {
+                reveal(crate::model::masks_ok_policy_rf);
+                reveal(crate::model::masks_of_policy_rf);
+                reveal(crate::model::raw_masks_policy);
+                reveal(crate::model::masks_after_policy);
+            };
+            assert(!(f.spec_raw().compression == 3 && (f.spec_raw().hsize == 40 || f.spec_raw().hsize
+                == 64) && bytes@.len() - f.spec_raw().pos0 < 12));
+            crate::model::lemma_r6r7_policy_palette_err(
+                bytes@, mode, start as int, file_offset as int, is_bmp, f.spec_raw(),
+                policy, palette_end64 as int);
         }
         return Err(Error::TruncatedPalette);
     }
     proof {
-        assert(palette_end64 <= len as u64) by (nonlinear_arith)
-            requires
-                (len as u64) >= palette_end64,
-        ;
+        assert(table_count == 0 || palette_end64 <= len as u64);
         assert(palette_end64 <= usize::MAX as u64) by (nonlinear_arith)
-            requires
-                palette_end64 <= len as u64,
-                len as u64 <= usize::MAX as u64,
-        ;
+            requires table_count == 0 || palette_end64 <= len as u64,
+                palette_end64 as int == pos as int + table_count as int * pal_stride as int,
+                pos <= 150, len as u64 <= usize::MAX as u64;
     }
     let palette_end = palette_end64 as usize;
     let palette_start = pos;
@@ -2116,16 +3269,24 @@ fn dib_finish(
         n,
     };
     proof {
-        reveal(crate::model::mh);
-        reveal(crate::model::r2r5);
-        reveal(crate::model::r2r7);
-        reveal(crate::model::r6r7_result);
+        
+        
+        reveal(crate::model::r6r7_policy);
+        reveal(crate::model::r6r7_result_policy);
+        
         reveal(crate::model::pow2);
         reveal(crate::model::as_u32);
         reveal(crate::model::stride_of);
         reveal(crate::model::is_ico);
         reveal(crate::model::exact_tail);
         reveal(crate::model::visible_height_of);
+        reveal(crate::model::masks_ok_policy);
+        reveal(crate::model::masks_after_policy);
+        reveal(crate::model::masks_ok);
+        reveal(crate::model::table_count_of_policy);
+        reveal(crate::model::table_count_of);
+        reveal(crate::model::palette_start_of);
+        reveal(crate::model::palette_stride_of);
         reveal(hdr_matches);
         reveal(header_inv);
         reveal(header_record);
@@ -2143,50 +3304,66 @@ fn dib_finish(
             pos0: start as int + size as int,
         };
         assert(f.spec_raw() == rf);
-        let m = crate::model::r6r7_result(bytes@, mode, start as int, file_offset as int, is_bmp, rf);
-        assert(crate::model::r6r7(bytes@, mode, start as int, file_offset as int, is_bmp, rf) == Ok(m)) by {
-            crate::model::lemma_r6r7_eq_result(bytes@, mode, start as int, file_offset as int, is_bmp, rf);
-            assert(!(rf.compression == 3 && (rf.hsize == 40 || rf.hsize == 64) && bytes@.len() - rf.pos0
-                < 12));
-            assert(rf.compression != 3 || crate::model::masks_ok(
-                crate::model::as_u32(if rf.compression == 3 && (rf.hsize == 40 || rf.hsize == 64) {
-                    crate::model::le32(bytes@, rf.pos0)
-                } else if rf.compression == 3 {
-                    crate::model::le32(bytes@, start as int + 40)
-                } else {
-                    0
-                }),
-                crate::model::as_u32(if rf.compression == 3 && (rf.hsize == 40 || rf.hsize == 64) {
-                    crate::model::le32(bytes@, rf.pos0 + 4)
-                } else if rf.compression == 3 {
-                    crate::model::le32(bytes@, start as int + 44)
-                } else {
-                    0
-                }),
-                crate::model::as_u32(if rf.compression == 3 && (rf.hsize == 40 || rf.hsize == 64) {
-                    crate::model::le32(bytes@, rf.pos0 + 8)
-                } else if rf.compression == 3 {
-                    crate::model::le32(bytes@, start as int + 48)
-                } else {
-                    0
-                }),
-                crate::model::as_u32(if rf.compression == 3 && (rf.hsize == 40 || rf.hsize == 64) {
-                    0
-                } else if rf.compression == 3 && rf.hsize >= 56 {
-                    crate::model::le32(bytes@, start as int + 52)
-                } else {
-                    0
-                }),
-                rf.depth,
-            ));
-            assert(!(is_bmp && (file_offset as int) < crate::model::palette_end_of(rf)));
-            assert(!(bytes@.len() < crate::model::palette_end_of(rf)));
-        }
-        reveal(crate::model::r6r7_result);
-        assert(m == crate::model::r6r7_result(bytes@, mode, start as int, file_offset as int, is_bmp, rf));
+        let rawv: (u32, u32, u32, u32) = crate::model::raw_masks_policy(bytes@, start as int, rf);
+        assert(rawv == (0u32, 0u32, 0u32, 0u32) || compression == 3);
+        assert(compression != 3 || masks_okv);
+        let ms: (u32, u32, u32, u32) = crate::model::masks_of_policy_rf(bytes@,
+            start as int, rf, policy.masks);
+        assert(ms == (mask_fields[0], mask_fields[1], mask_fields[2], mask_fields[3])) by {
+            reveal(crate::model::masks_of_policy_rf);
+            if compression == 3 {
+                reveal(crate::model::raw_masks_policy);
+                reveal(crate::model::masks_after_policy);
+            } else {
+                assert((mask_fields[0], mask_fields[1], mask_fields[2], mask_fields[3])
+                    == (0u32, 0u32, 0u32, 0u32));
+            }
+        };
+        let m = crate::model::r6r7_result_policy(
+            bytes@,
+            mode,
+            start as int,
+            file_offset as int,
+            is_bmp,
+            rf,
+            ms,
+            table_count as int,
+        );
+        assert(!(rf.compression == 3 && (rf.hsize == 40 || rf.hsize == 64) && bytes@.len() - rf.pos0
+            < 12));
+        assert(compression == 3 ==> ms == crate::model::masks_after_policy(rawv.0, rawv.1, rawv.2,
+            rawv.3, rf.depth, policy.masks));
+        assert(compression != 3 ==> masks_okv);
+        assert(compression == 3 ==> masks_okv == crate::model::masks_ok_policy(ms.0, ms.1, ms.2,
+            ms.3, rf.depth, policy.masks));
+        assert((table_count as int) == crate::model::table_count_of_policy_rf(rf, policy.high_count)) by {
+            reveal(crate::model::table_count_of_policy_rf);
+            reveal(crate::model::table_count_of_policy);
+        };
+        assert(crate::model::palette_start_of(rf) + crate::model::table_count_of_policy_rf(rf,
+            policy.high_count) * crate::model::palette_stride_of(rf) == palette_end64 as int) by {
+            reveal(crate::model::palette_start_of);
+            reveal(crate::model::palette_stride_of);
+            reveal(crate::model::table_count_of_policy_rf);
+        };
+        assert(!(is_bmp && policy.offset == OffsetOptions::Declared && (file_offset as u64)
+            < palette_end64));
+        assert((policy.header_bytes == HeaderBytesOptions::ParsedFields && table_count == 0) || (len as u64) >= palette_end64);
+        assert(!(is_bmp && policy.offset == OffsetOptions::Declared && (file_offset as int)
+            < crate::model::palette_start_of(rf) + crate::model::table_count_of_policy_rf(rf,
+            policy.high_count) * crate::model::palette_stride_of(rf)));
+        assert((policy.header_bytes == HeaderBytesOptions::ParsedFields && table_count == 0) || !((len as int) < crate::model::palette_start_of(rf)
+            + crate::model::table_count_of_policy_rf(rf, policy.high_count)
+            * crate::model::palette_stride_of(rf)));
+        crate::model::lemma_r6r7_policy_ok(
+            bytes@, mode, start as int, file_offset as int, is_bmp, rf, policy, m,
+        );
+        assert(crate::model::r6r7_policy(bytes@, mode, start as int, file_offset as int, is_bmp, rf, policy)
+            == Ok(m));
+        reveal(hdr_matches);
+        reveal(crate::model::r6r7_result_policy);
         assert(hdr_matches(m, h)) by {
-            reveal(hdr_matches);
-            reveal(crate::model::r6r7_result);
+            reveal(crate::model::r6r7_result_policy);
             assert(m.mode == h.mode);
             assert(m.hsize == h.spec_hsize());
             assert(m.width == h.spec_width());
@@ -2203,24 +3380,33 @@ fn dib_finish(
             assert(m.palette_start == h.spec_palette_start());
             assert(m.palette_end == h.spec_palette_end());
             assert(m.pixel_start == h.spec_pixel_start()) by {
-                reveal(crate::model::r6r7_result);
+                reveal(crate::model::r6r7_result_policy);
                 if is_bmp {
-                    assert(m.pixel_start == file_offset as int);
-                    assert(h.pixel_start == file_offset as usize);
                     assert((file_offset as usize) as int == file_offset as int) by (nonlinear_arith)
                         requires
-                            file_offset as int <= bytes@.len(),
-                            bytes@.len() <= usize::MAX,
+                            file_offset as int <= usize::MAX,
                     ;
+                    assert(m.pixel_start == file_offset as int);
+                    assert(h.pixel_start == file_offset as usize);
                 } else {
                     assert(m.pixel_start == m.palette_end);
                     assert(h.pixel_start == h.palette_end);
                 }
             }
-            assert(m.mask_r == h.spec_mask_r());
-            assert(m.mask_g == h.spec_mask_g());
-            assert(m.mask_b == h.spec_mask_b());
-            assert(m.mask_a == h.spec_mask_a());
+            reveal(crate::model::masks_of_policy_rf);
+            reveal(crate::model::raw_masks_policy);
+            assert(m.mask_r == h.spec_mask_r()) by {
+                reveal(crate::model::raw_masks_policy);
+            }
+            assert(m.mask_g == h.spec_mask_g()) by {
+                reveal(crate::model::raw_masks_policy);
+            }
+            assert(m.mask_b == h.spec_mask_b()) by {
+                reveal(crate::model::raw_masks_policy);
+            }
+            assert(m.mask_a == h.spec_mask_a()) by {
+                reveal(crate::model::raw_masks_policy);
+            }
             assert(m.has_masks == (h.compression == 3u32));
             assert(m.core == h.core);
             assert(m.is_bmp == h.is_bmp);
@@ -2228,13 +3414,14 @@ fn dib_finish(
             assert(m.n == h.spec_n());
             assert(m.stride == h.spec_stride());
         }
-        crate::model::lemma_r6r7_ok_bounds(
+        crate::model::lemma_r6r7_policy_ok_bounds(
             bytes@,
             mode,
             start as int,
             file_offset as int,
             is_bmp,
             rf,
+            policy,
             m,
         );
         assert(crate::model::mh_bounds(m));
@@ -2242,18 +3429,12 @@ fn dib_finish(
             reveal(header_inv);
             reveal(header_record);
             assert(crate::model::mh_bounds(header_record(h)));
-            assert(h.palette_end <= bytes@.len());
-            assert(h.pixel_start <= bytes@.len()) by {
-                if is_bmp {
-                    assert(h.pixel_start == file_offset as usize);
-                    assert((file_offset as int) <= bytes@.len());
-                } else {
-                    assert(h.pixel_start == palette_start + (table_count as usize) * pal_stride);
-                    assert(h.palette_end == h.pixel_start);
-                    assert(h.palette_end <= bytes@.len());
-                }
-            }
-            assert(h.palette_start + (h.count as int) * (h.pal_stride as int) <= bytes@.len());
+            assert(h.table_count == 0 || h.palette_end <= bytes@.len());
+            assert(h.count <= h.table_count);
+            assert(h.count > 0 ==> h.palette_start + (h.count as int) * (h.pal_stride as int) <= bytes@.len()) by (nonlinear_arith)
+                requires h.count <= h.table_count, h.pal_stride >= 0,
+                    h.palette_start as int + h.table_count as int * h.pal_stride as int == h.palette_end as int,
+                    h.table_count == 0 || h.palette_end <= bytes@.len();
             assert(h.pal_stride == 3 || h.pal_stride == 4);
             assert(h.n as int == h.spec_width() * h.spec_height());
             assert((h.compression == 0u32 || h.compression == 3u32) ==> h.spec_stride() <= 32768) by {
@@ -2268,7 +3449,7 @@ fn dib_finish(
             reveal(crate::model::mh_bounds);
             reveal(crate::model::depth_ok);
             assert(crate::model::mh_bounds(header_record(h)));
-            assert(crate::model::depth_ok(bits as int));
+            assert(crate::model::depth_ok(bits as int) || bits == 2u32);
             assert(h.spec_n() == h.spec_width() * h.spec_height());
             assert(h.spec_top_down() == (h.stored_height < 0));
             assert(h.spec_mask_depth_ok()) by {
@@ -2279,6 +3460,18 @@ fn dib_finish(
             }
             if compression == 0 || compression == 3 {
                 crate::model::lemma_stride_bound(width_i as int, bits as int);
+            }
+        }
+        assert(policy.header_bytes != HeaderBytesOptions::Full || policy.offset != OffsetOptions::Declared || h.pixel_start <= bytes@.len()) by {
+            if is_bmp {
+                assert(h.pixel_start == file_offset as usize);
+                if policy.offset == OffsetOptions::Declared {
+                    assert((file_offset as int) <= bytes@.len());
+                }
+            } else {
+                assert(h.pixel_start == palette_start + (table_count as usize) * pal_stride);
+                assert(h.pixel_start == h.palette_end);
+                assert(h.table_count == 0 || h.palette_end <= bytes@.len());
             }
         }
     }
@@ -2426,15 +3619,289 @@ fn out_offset(h: &Header, x: usize, y: usize) -> (r: usize)
 // T3: the single allocation, and the proof that no other path allocates.
 // ---------------------------------------------------------------------------
 
-/// T3: the one output allocation. `header_inv_light` gives `4*N <= 67,108,864`,
-/// so the request is exactly `4*N` bytes and fits every target `usize`.
-fn alloc_output(h: &Header, steps: &mut Ghost<nat>) -> (r: Vec<u8>)
+// ---------------------------------------------------------------------------
+// alloc-delta: the reservation log's spec surface for DIB (SPEC.md §2,
+// THEOREMS-ALLOC-DELTA.md §0). Re-exported so that `log_tied` reaches ICO.
+// ---------------------------------------------------------------------------
+
+pub open spec fn fmt_part(r: Result<Decoded, TryError>) -> Result<Decoded, Error> {
+    crate::alloc_guard::sites::fmt_part(r)
+}
+
+pub open spec fn log_tied(r: Result<Decoded, TryError>, l: Seq<(AllocSite, nat, bool)>) -> bool {
+    crate::alloc_guard::sites::log_tied(r, l)
+}
+
+/// `Req_DIB(b, mode)`: the ordered requests the `decode` family issues when
+/// every reservation succeeds (SPEC.md §2, §4): the one `(Output, 4N)` request
+/// iff `Reach(b, mode)`, i.e. iff `MH` accepts the header. `N` is `0` on a
+/// rejected header, so `req_dib` is then empty.
+pub open spec fn req_dib(b: Seq<u8>, mode: Mode) -> Seq<(crate::alloc_guard::AllocSite, nat)> {
+    match crate::model::mh(b, mode) {
+        Ok(m) => seq![(crate::alloc_guard::AllocSite::Output, 4 * m.n as nat)],
+        Err(_) => Seq::empty(),
+    }
+}
+
+/// Clause 1 of `G` (THEOREMS-ALLOC-DELTA.md §0): a non-`OutOfMemory` result
+/// satisfies the frozen predicate `decode_mp_eq` on `fmt_part(r)`, has exactly
+/// the requests of `Req_DIB`, and every log entry is `Ok`.
+pub open spec fn g_clause1(
+    b: Seq<u8>,
+    mode: Mode,
+    r: Result<Decoded, TryError>,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+) -> bool {
+    match r {
+        Err(TryError::OutOfMemory(_)) => true,
+        _ => decode_mp_eq(fmt_part(r), b, mode)
+            && crate::alloc_guard::req_of_log(l) == req_dib(b, mode)
+            && crate::alloc_guard::all_ok(l),
+    }
+}
+
+/// Clause 2 of `G`: an `OutOfMemory` result has a non-empty log whose requests
+/// are a prefix of `Req_DIB`, every entry but the last `Ok`, and the last entry
+/// not `Ok` and equal to the returned `(site, elements)`.
+pub open spec fn g_clause2(
+    b: Seq<u8>,
+    mode: Mode,
+    r: Result<Decoded, TryError>,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+) -> bool {
+    match r {
+        Err(TryError::OutOfMemory(o)) =>
+            l.len() >= 1
+            && crate::alloc_guard::req_of_log(l).is_prefix_of(req_dib(b, mode))
+            && (forall|j: int| 0 <= j < l.len() - 1 ==> l[j].2)
+            && !l[l.len() - 1].2
+            && l[l.len() - 1].0 == o.site_spec()
+            && l[l.len() - 1].1 == o.elements_spec() as nat,
+        _ => true,
+    }
+}
+
+/// Clause 3 of `G`: every request is within its site's maximum, proved from the
+/// checked header before the guard call.
+pub open spec fn g_clause3(b: Seq<u8>, mode: Mode) -> bool {
+    forall|j: int| 0 <= j < req_dib(b, mode).len()
+        ==> req_dib(b, mode)[j].1 <= crate::alloc_guard::MAX_BYTES
+}
+
+/// Theorem shape `G` for DIB's `decode` family (THEOREMS-ALLOC-DELTA.md
+/// A-DIB-1), proved on the logged entry point `try_decode_logged`.
+pub open spec fn g(
+    b: Seq<u8>,
+    mode: Mode,
+    r: Result<Decoded, TryError>,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+) -> bool {
+    g_clause1(b, mode, r, l) && g_clause2(b, mode, r, l) && g_clause3(b, mode)
+}
+
+/// `Prog` (THEOREMS-ALLOC-DELTA.md §0): if every log entry is `Ok`, the result
+/// is not `OutOfMemory`, `decode_mp_eq` holds, and `req(L) == Req_DIB`.
+pub open spec fn prog(
+    b: Seq<u8>,
+    mode: Mode,
+    r: Result<Decoded, TryError>,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+) -> bool {
+    crate::alloc_guard::all_ok(l) ==> prog_concl(b, mode, r, l)
+}
+
+/// The `Prog` conclusion, split out so `prog` reveals to the solver as
+/// `all_ok(l) ==> prog_concl(..)`, whose `matches!` disjunct is then directly
+/// usable at the `OutOfMemory` exits (`g_prog` bundles this, `g` and `prog`).
+pub open spec fn prog_concl(
+    b: Seq<u8>,
+    mode: Mode,
+    r: Result<Decoded, TryError>,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+) -> bool {
+    !matches!(r, Err(TryError::OutOfMemory(_)))
+        && decode_mp_eq(fmt_part(r), b, mode)
+        && crate::alloc_guard::req_of_log(l) == req_dib(b, mode)
+}
+
+/// The `PreAlloc` corollary (THEOREMS-ALLOC-DELTA.md §0): `Req_DIB` empty means
+/// the header was rejected before any reservation, so the log is empty and the
+/// result is a format error satisfying `decode_mp_eq`.
+pub open spec fn pre_alloc(b: Seq<u8>, mode: Mode) -> bool {
+    req_dib(b, mode).len() == 0
+}
+
+/// A-DIB-8's exported `G`, so ICO's `import_dib` can cite it across the crate
+/// boundary (SPEC.md §3.1). Same shape as `g`, named for the export.
+pub open spec fn g_logged(
+    b: Seq<u8>,
+    r: Result<Decoded, TryError>,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+) -> bool {
+    g(b, Mode::IcoEntryDibSlack, r, l)
+}
+
+/// A-DIB-8's exported `Prog`, alongside `g_logged`.
+pub open spec fn prog_logged(
+    b: Seq<u8>,
+    r: Result<Decoded, TryError>,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+) -> bool {
+    prog(b, Mode::IcoEntryDibSlack, r, l)
+}
+
+/// Clause 3's content, as a named lemma: `Req_DIB`'s single element is `4N`
+/// with `1 <= N <= 16,777,216`, so it is within `MAX_BYTES`. Proved from the
+/// model's `mh_bounds`, never from an executable read.
+pub proof fn lemma_req_dib_clause3(b: Seq<u8>, mode: Mode)
+    ensures g_clause3(b, mode),
+{
+    reveal(req_dib);
+    reveal(g_clause3);
+    if req_dib(b, mode).len() > 0 {
+        let m = choose|m: crate::model::MHRecord| crate::model::mh(b, mode) == Ok(m);
+        assert(crate::model::mh(b, mode) == Ok(m));
+        crate::model::lemma_mh_ok_bounds(b, mode, m);
+        reveal(crate::model::mh_bounds);
+        assert(req_dib(b, mode)[0].1 == 4 * m.n as nat);
+        assert(m.n <= 16777216);
+        assert(4 * m.n <= 67108864);
+    }
+}
+
+/// The one-request shape, as a lemma: `Req_DIB` has at most one element, so
+/// `req(L) == Req_DIB` follows from the last-entry equality on the `Err` arm
+/// (THEOREMS-ALLOC-DELTA.md A-DIB-3, A-DIB-7(a)).
+pub proof fn lemma_req_dib_len(b: Seq<u8>, mode: Mode)
+    ensures req_dib(b, mode).len() <= 1,
+{
+    reveal(req_dib);
+}
+
+/// A-DIB-1/3: the `decode` family's one-reservation log shape, keyed on whether
+/// the result is `OutOfMemory` rather than on the moved `Decoded`. `req(L)` is
+/// exactly `Req_DIB` on both arms; a success has every entry `Ok`; a failure has
+/// a non-empty log whose last entry is not `Ok`.
+pub open spec fn at_site_log(
+    b: Seq<u8>,
+    mode: Mode,
+    r_is_oom: bool,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+) -> bool {
+    crate::alloc_guard::req_of_log(l) == req_dib(b, mode)
+        && (if r_is_oom {
+            l.len() >= 1 && !l[l.len() - 1].2
+        } else {
+            crate::alloc_guard::all_ok(l)
+        })
+}
+
+/// The `Ok`-exit `at_site_log`: after the one successful `(Output, 4N)`
+/// reservation on an empty log, `req(L)` is exactly `Req_DIB`.
+pub proof fn lemma_at_site_log_ok(
+    b: Seq<u8>,
+    mode: Mode,
+    m: crate::model::MHRecord,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+)
+    requires
+        crate::model::mh(b, mode) == Ok(m),
+        l == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+            (crate::alloc_guard::AllocSite::Output, 4 * m.n as nat, true)),
+    ensures at_site_log(b, mode, false, l),
+{
+    reveal(at_site_log);
+    reveal(req_dib);
+    reveal(crate::alloc_guard::req_of_log);
+    reveal(crate::alloc_guard::all_ok);
+    assert(crate::alloc_guard::req_of_log(l) =~= req_dib(b, mode));
+}
+
+/// The `OutOfMemory`-exit `at_site_log`.
+pub proof fn lemma_at_site_log_oom(
+    b: Seq<u8>,
+    mode: Mode,
+    m: crate::model::MHRecord,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+)
+    requires
+        crate::model::mh(b, mode) == Ok(m),
+        l == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+            (crate::alloc_guard::AllocSite::Output, 4 * m.n as nat, false)),
+    ensures at_site_log(b, mode, true, l),
+{
+    reveal(at_site_log);
+    reveal(req_dib);
+    reveal(crate::alloc_guard::req_of_log);
+    reveal(crate::alloc_guard::all_ok);
+    assert(crate::alloc_guard::req_of_log(l) =~= req_dib(b, mode));
+}
+
+/// The pre-reservation `at_site_log`.
+pub proof fn lemma_at_site_log_prealloc(
+    b: Seq<u8>,
+    mode: Mode,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+)
+    requires
+        l.len() == 0,
+        crate::model::mh(b, mode) is Err,
+    ensures at_site_log(b, mode, false, l),
+{
+    reveal(at_site_log);
+    reveal(req_dib);
+    reveal(crate::alloc_guard::req_of_log);
+    reveal(crate::alloc_guard::all_ok);
+    assert(crate::alloc_guard::req_of_log(l) =~= req_dib(b, mode));
+}
+
+/// The log-only facts `at_site_log` gives, in the shape the entry points' proof
+/// blocks consume: `req(L)` is `Req_DIB`, which has at most one element, so `L`
+/// has at most one element, and a failure is the log's last (only) entry.
+pub proof fn lemma_at_site_log_parts(
+    b: Seq<u8>,
+    mode: Mode,
+    r_is_oom: bool,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+)
+    requires at_site_log(b, mode, r_is_oom, l),
+    ensures
+        crate::alloc_guard::req_of_log(l) == req_dib(b, mode),
+        req_dib(b, mode).len() <= 1,
+        l.len() <= 1,
+        r_is_oom ==> (l.len() == 1 && !l[0].2),
+        !r_is_oom ==> crate::alloc_guard::all_ok(l),
+{
+    reveal(at_site_log);
+    reveal(req_dib);
+    reveal(crate::alloc_guard::req_of_log);
+    reveal(crate::alloc_guard::all_ok);
+}
+
+/// T3 / alloc-delta A-DIB-3: the one output allocation, through the guard. It
+/// is reached once, after `parse_header` succeeded. `header_inv_light` gives
+/// `1 <= N` and `4*N <= 67,108,864`, so the request is exactly `4*N` bytes,
+/// within `MAX_BYTES`; `try_zeroed` supplies the `4N` zero bytes, so the work
+/// charge is added here only on the `Ok` path.
+///
+/// Failed reservations leave the work counter unchanged; only successful
+/// reservations initialize bytes and incur the `4N` charge.
+fn alloc_output(h: &Header, steps: &mut Ghost<nat>,
+    Tracked(log): Tracked<&mut crate::alloc_guard::AllocLog>)
+    -> (r: Result<Vec<u8>, crate::alloc_guard::OutOfMemory>)
     requires
         header_inv_light(h),
+        old(log).view() == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty(),
     ensures
-        r@.len() == 4 * h.spec_n(),
-        r@ == crate::model::zero_bytes(4 * h.spec_n()),
-        final(steps)@ == old(steps)@ + 4 * h.spec_n(),
+        final(steps)@ == old(steps)@ + if r is Ok { 4 * h.spec_n() } else { 0 },
+        match r {
+            Ok(v) => v@.len() == 4 * h.spec_n()
+                && v@ == crate::model::zero_bytes(4 * h.spec_n()),
+            Err(o) => o.elements_spec() == 4 * h.spec_n()
+                && o.site_spec() == crate::alloc_guard::AllocSite::Output,
+        },
+        final(log).view() == old(log).view().push(
+            (crate::alloc_guard::AllocSite::Output, 4 * h.spec_n() as nat, r is Ok)),
 {
     proof {
         reveal(header_inv_light);
@@ -2454,23 +3921,84 @@ fn alloc_output(h: &Header, steps: &mut Ghost<nat>) -> (r: Vec<u8>)
                 4 * h.spec_n() <= 67108864,
         ;
         assert(h.n == h.spec_n());
-        assert(4 * h.n <= usize::MAX) by (nonlinear_arith)
-            requires
-                h.n <= 16777216,
+        assert(h.n * 1 <= crate::alloc_guard::MAX_BYTES) by (nonlinear_arith)
+            requires h.n <= 16777216, 4 * h.spec_n() <= 67108864, h.n == h.spec_n(),
         ;
     }
-    let out = vec![0u8; 4 * h.n];
-    // A library bulk fill touches every output byte, even though the call is one expression.
-    proof { *steps = Ghost(steps@ + (4 * h.spec_n()) as nat); }
+    alloc_output_n(h.n, steps, Tracked(log))
+}
+
+/// R8 `offset = Gdk` blank fill: overwrite every output pixel with an
+/// initialized black — transparent (alpha 0) when `transparent`, else opaque
+/// (alpha 255). The result is exactly the model's `zero_bytes` (transparent) or
+/// `opaque_fill` (opaque) over the `4N` buffer, and the write is charged to the
+/// same ghost counter as the rest of the fill work.
+fn fill_blank(out: &mut Vec<u8>, transparent: bool, steps: &mut Ghost<nat>)
+    requires
+        old(out)@.len() % 4 == 0,
+    ensures
+        final(out)@.len() == old(out)@.len(),
+        final(out)@ == (if transparent {
+            crate::model::zero_bytes(old(out)@.len() as int)
+        } else {
+            crate::model::opaque_fill(old(out)@.len() as int)
+        }),
+        old(steps)@ <= final(steps)@ <= old(steps)@ + old(out)@.len(),
+{
+    let n = out.len();
     proof {
-        assert(out@.len() == 4 * h.n);
-        assert(out@ == crate::model::zero_bytes(4 * h.n)) by {
-            reveal(crate::model::zero_bytes);
-            broadcast use vstd::seq::group_seq_lemmas;
-            assert(out@ =~= crate::model::zero_bytes(4 * h.n));
+        reveal(crate::model::zero_bytes);
+        reveal(crate::model::opaque_fill);
+    }
+    let fill: u8 = if transparent {
+        0u8
+    } else {
+        255u8
+    };
+    let mut i: usize = 0;
+    while i < n
+        invariant
+            i <= n,
+            n == out@.len(),
+            old(out)@.len() == n,
+            forall|k: int| 0 <= k < i ==> #[trigger] out@[k] == (if transparent {
+                0u8
+            } else if k % 4 == 3 {
+                255u8
+            } else {
+                0u8
+            }),
+            forall|k: int| i <= k < n ==> out@[k] == old(out)@[k],
+            old(steps)@ <= steps@ <= old(steps)@ + i,
+        decreases n - i,
+    {
+        if transparent {
+            out.set(i, 0u8);
+        } else if i % 4 == 3 {
+            out.set(i, 255u8);
+        } else {
+            out.set(i, 0u8);
+        }
+        proof { steps@ = steps@ + 1; }
+        i = i + 1;
+    }
+    proof {
+        broadcast use vstd::seq::group_seq_lemmas;
+        assert(final(out)@ =~= (if transparent {
+            crate::model::zero_bytes(n as int)
+        } else {
+            crate::model::opaque_fill(n as int)
+        })) by {
+            assert forall|k: int| 0 <= k < n implies #[trigger] final(out)@[k] == (if transparent {
+                crate::model::zero_bytes(n as int)
+            } else {
+                crate::model::opaque_fill(n as int)
+            })[k] by {
+                reveal(crate::model::zero_bytes);
+                reveal(crate::model::opaque_fill);
+            }
         }
     }
-    out
 }
 
 // The public decoder tracks the call-site count as a ghost local; the only
@@ -2507,7 +4035,7 @@ fn raw_sample(b: &[u8], h: &Header, pos: usize, x: usize, line: usize) -> (r: Re
     }
     let bits = h.bits;
     proof {
-        assert(bits == 1u32 || bits == 4u32 || bits == 8u32 || bits == 16u32 || bits == 24u32
+        assert(bits == 1u32 || bits == 2u32 || bits == 4u32 || bits == 8u32 || bits == 16u32 || bits == 24u32
             || bits == 32u32);
         assert((bits as int) <= 32);
         assert((bits as usize) as int == bits as int);
@@ -2549,7 +4077,7 @@ fn raw_sample(b: &[u8], h: &Header, pos: usize, x: usize, line: usize) -> (r: Re
             crate::model::lemma_subbyte_shift(bits as int, x as int);
         }
         let shift = 8 - bits - (bit_index % 8) as u32;
-        let mask = if bits == 1 { 1u32 } else if bits == 4 { 15u32 } else { 255u32 };
+        let mask = if bits == 1 { 1u32 } else if bits == 2 { 3u32 } else if bits == 4 { 15u32 } else { 255u32 };
         let byte = rd(b, p);
         let ix = ((byte as u32) >> shift) & mask;
         proof {
@@ -2558,10 +4086,12 @@ fn raw_sample(b: &[u8], h: &Header, pos: usize, x: usize, line: usize) -> (r: Re
             reveal(crate::model::sub_index);
             reveal(crate::model::sub_shift);
             reveal(crate::model::sub_mask);
-            assert(bits == 1u32 || bits == 4u32 || bits == 8u32);
+            assert(bits == 1u32 || bits == 2u32 || bits == 4u32 || bits == 8u32);
             assert(crate::model::sub_mask(bits as int) == mask) by {
                 if bits == 1 {
                     assert(crate::model::sub_mask(bits as int) == 1u32);
+                } else if bits == 2 {
+                    assert(crate::model::sub_mask(bits as int) == 3u32);
                 } else if bits == 4 {
                     assert(crate::model::sub_mask(bits as int) == 15u32);
                 } else {
@@ -2917,7 +4447,7 @@ fn raw_loop(
         final(steps)@ <= old(steps)@ + h.spec_n() + h.spec_height() + 1,
         final(out)@.len() == 4 * h.spec_n(),
         final(gcur).0 as int <= b@.len(),
-        final(gcur).0 as int >= h.pixel_start as int,
+        final(gcur).0 as int >= pos0 as int,
         // T6, error half: on `Err(e)` the returned error is the model's exact
         // first error and the ghost state `*final(gcur)` is the model's final
         // cursor/position (through the failing check).
@@ -2966,7 +4496,7 @@ fn raw_loop(
             out@.len() == 4 * h.spec_n(),
             h.compression == 0 || h.compression == 3,
             0 <= x <= h.spec_width(), 0 <= y <= h.spec_height(),
-            pos as int <= b@.len(), pos as int >= h.pixel_start as int,
+            pos as int <= b@.len(), pos as int >= pos0 as int,
             line as int == h.spec_stride(),
             s0 == old(steps)@,
             steps@ == s0 + (y as nat) * (h.spec_width() + 1) + (x as nat),
@@ -3154,19 +4684,21 @@ spec fn raw_done_eq(
     }
 }
 
-fn decode_raw(b: &[u8], h: &Header, out: &mut Vec<u8>, steps: &mut Ghost<nat>) -> (r: Result<usize, Error>)
+fn decode_raw(b: &[u8], h: &Header, out: &mut Vec<u8>, p0: usize, steps: &mut Ghost<nat>) -> (r: Result<usize, Error>)
     requires
         header_inv(b@, *h), header_inv_light(h),
         old(out)@.len() == 4 * h.spec_n(),
         old(out)@ == crate::model::zero_bytes(4 * h.spec_n()),
         h.compression == 0 || h.compression == 3,
+        0 <= p0 <= b@.len(),
+        crate::model::raw_reachable(b@, hrec(h), p0 as int, 0, 0),
     ensures
         final(steps)@ <= old(steps)@ + h.spec_n() + h.spec_height() + 1,
         final(out)@.len() == 4 * h.spec_n(),
-        match r { Ok(p) => h.pixel_start <= p <= b@.len(), Err(_) => true },
+        match r { Ok(p) => p0 <= p <= b@.len(), Err(_) => true },
         // T9/T6: the returned result and buffer are exactly `MR`'s raw
         // transition replayed onto the zero fill.
-        raw_done_eq(b@, hrec(h), h.pixel_start as int, final(out)@, r),
+        raw_done_eq(b@, hrec(h), p0 as int, final(out)@, r),
         // T6 on the whole image, at the manifest's quantification (start state
         // `(pixel_start, 0, 0)`): the exact first error and ghost cursor/position
         // or the exact success cursor, and the exact pixels.
@@ -3174,12 +4706,12 @@ fn decode_raw(b: &[u8], h: &Header, out: &mut Vec<u8>, steps: &mut Ghost<nat>) -
             Ok(p) => crate::model::raw_gcur(
                 b@,
                 hrec(h),
-                h.pixel_start as int,
+                p0 as int,
                 0,
                 0,
             ) == Ok((p as int, 0, h.spec_height())) && p as int <= b@.len(),
             Err(e) => exists|gp: int, gx: int, gy: int|
-                crate::model::raw_gcur(b@, hrec(h), h.pixel_start as int, 0, 0) == Err((
+                crate::model::raw_gcur(b@, hrec(h), p0 as int, 0, 0) == Err((
                     crate::model::RawErr::Api(e),
                     gp,
                     gx,
@@ -3188,7 +4720,7 @@ fn decode_raw(b: &[u8], h: &Header, out: &mut Vec<u8>, steps: &mut Ghost<nat>) -
         },
         final(out)@ == crate::model::bytes_replay(
             crate::model::zero_bytes(4 * h.spec_n()),
-            crate::model::raw_writes(b@, hrec(h), h.pixel_start as int, 0, 0),
+            crate::model::raw_writes(b@, hrec(h), p0 as int, 0, 0),
         ),
 {
     proof {
@@ -3199,29 +4731,39 @@ fn decode_raw(b: &[u8], h: &Header, out: &mut Vec<u8>, steps: &mut Ghost<nat>) -
         reveal(crate::model::raw_gcur);
         reveal(crate::model::raw_full);
         assert(h.n == h.spec_n());
-        assert(crate::model::raw_reachable(b@, hrec(h), h.pixel_start as int, 0, 0));
+        reveal(header_inv);
+        reveal(header_inv_light);
+        reveal(header_record);
+        assert(crate::model::raw_reachable(b@, hrec(h), p0 as int, 0, 0)) by {
+            reveal(crate::model::raw_reachable);
+            reveal(crate::model::stride_of);
+            reveal(crate::model::mask_depth_ok);
+            assert(hrec(h).stride == h.spec_stride());
+            assert(hrec(h).pixel_start == h.spec_pixel_start());
+            assert(p0 as int <= b@.len());
+        };
     }
-    let mut gcur: (usize, usize, usize) = (h.pixel_start, 0, 0);
-    let r = raw_loop(b, h, out, h.pixel_start, &mut gcur, steps);
+    let mut gcur: (usize, usize, usize) = (p0, 0, 0);
+    let r = raw_loop(b, h, out, p0, &mut gcur, steps);
     proof {
         reveal(crate::model::raw_full);
         reveal(crate::model::raw_gcur);
         match r {
             Ok(()) => {
-                assert(crate::model::raw_gcur(b@, hrec(h), h.pixel_start as int, 0, 0) == Ok((
+                assert(crate::model::raw_gcur(b@, hrec(h), p0 as int, 0, 0) == Ok((
                     gcur.0 as int,
                     gcur.1 as int,
                     gcur.2 as int,
                 )));
-                crate::model::lemma_raw_gcur_ok_shape(b@, hrec(h), h.pixel_start as int, 0, 0);
+                crate::model::lemma_raw_gcur_ok_shape(b@, hrec(h), p0 as int, 0, 0);
                 assert(exists|pc: int| crate::model::raw_gcur(
                     b@,
                     hrec(h),
-                    h.pixel_start as int,
+                    p0 as int,
                     0,
                     0,
                 ) == Ok((pc, 0, h.spec_height())));
-                assert(crate::model::raw_gcur(b@, hrec(h), h.pixel_start as int, 0, 0) == Ok((
+                assert(crate::model::raw_gcur(b@, hrec(h), p0 as int, 0, 0) == Ok((
                     gcur.0 as int,
                     0,
                     h.spec_height(),
@@ -3234,14 +4776,14 @@ fn decode_raw(b: &[u8], h: &Header, out: &mut Vec<u8>, steps: &mut Ghost<nat>) -
     }
     proof {
         assert(gcur.0 as int <= b@.len());
-        assert(gcur.0 as int >= h.pixel_start as int);
+        assert(gcur.0 as int >= p0 as int);
     }
     proof {
         // T9/T6 bridge: fold `raw_loop`'s two projections back into `mr_raw_out`.
         reveal(raw_done_eq);
         reveal(crate::model::mr_raw_out);
         reveal(crate::model::raw_full);
-        crate::model::lemma_raw_full_proj(b@, hrec(h), h.pixel_start as int, 0, 0);
+        crate::model::lemma_raw_full_proj(b@, hrec(h), p0 as int, 0, 0);
     }
     match r {
         Ok(()) => Ok(gcur.0),
@@ -3350,13 +4892,14 @@ fn paint_run(
     q: usize,
     Ghost(gw): Ghost<Seq<crate::model::Write>>,
     steps: &mut Ghost<nat>,
+    Ghost(base): Ghost<Seq<u8>>,
 ) -> (r: Result<(), Error>)
     requires
         header_inv(b@, *h), header_inv_light(h),
         (y as int) < h.spec_height(),
         x + q <= h.spec_width(), q <= 255,
         old(out)@.len() == 4 * h.spec_n(),
-        old(out)@ == crate::model::bytes_replay(crate::model::pal_zero_bytes(b@, hrec(h)), gw),
+        old(out)@ == crate::model::bytes_replay(base, gw),
         h.spec_depth() == 4 || h.spec_depth() == 8,
         h.spec_compression() == 1 || h.spec_compression() == 2,
         (code as int) <= 255,
@@ -3367,7 +4910,7 @@ fn paint_run(
         match r {
             Ok(()) => {
                 &&& final(out)@ == crate::model::bytes_replay(
-                    crate::model::pal_zero_bytes(b@, hrec(h)),
+                    base,
                     gw + crate::model::run_writes(
                         b@,
                         hrec(h),
@@ -3384,7 +4927,7 @@ fn paint_run(
                 &&& e == Error::PaletteIndexOutOfRange
                 &&& crate::model::run_good(hrec(h), code as int, q as int, 0) < q as int
                 &&& final(out)@ == crate::model::bytes_replay(
-                    crate::model::pal_zero_bytes(b@, hrec(h)),
+                    base,
                     gw + crate::model::run_writes(
                         b@,
                         hrec(h),
@@ -3430,7 +4973,7 @@ fn paint_run(
             h.spec_depth() == 4 || h.spec_depth() == 8,
             out@.len() == 4 * h.spec_n(),
             out@ == crate::model::bytes_replay(
-                crate::model::pal_zero_bytes(b@, hrec(h)),
+                base,
                 gj,
             ),
             gj == gw + crate::model::run_writes(
@@ -3553,7 +5096,7 @@ fn paint_run(
         proof {
             reveal(crate::model::run_writes);
             crate::model::lemma_bytes_replay_push(
-                crate::model::pal_zero_bytes(b@, hrec(h)),
+                base,
                 gj,
                 crate::model::Write {
                     cell: crate::model::cell_of(hrec(h), (x + j) as int, y as int),
@@ -3616,13 +5159,14 @@ fn paint_abs(
     q: usize,
     Ghost(gw): Ghost<Seq<crate::model::Write>>,
     steps: &mut Ghost<nat>,
+    Ghost(base): Ghost<Seq<u8>>,
 ) -> (r: Result<(), Error>)
     requires
         header_inv(b@, *h), header_inv_light(h),
         (y as int) < h.spec_height(),
         x + q <= h.spec_width(), 1 <= q <= 255,
         old(out)@.len() == 4 * h.spec_n(),
-        old(out)@ == crate::model::bytes_replay(crate::model::pal_zero_bytes(b@, hrec(h)), gw),
+        old(out)@ == crate::model::bytes_replay(base, gw),
         h.spec_depth() == 4 || h.spec_depth() == 8,
         h.spec_compression() == 1 || h.spec_compression() == 2,
         (pay as int) + crate::model::rle_payload(q as int, h.spec_depth()) <= b@.len(),
@@ -3633,7 +5177,7 @@ fn paint_abs(
         match r {
             Ok(()) => {
                 &&& final(out)@ == crate::model::bytes_replay(
-                    crate::model::pal_zero_bytes(b@, hrec(h)),
+                    base,
                     gw + crate::model::abs_writes(
                         b@, hrec(h), x as int, y as int, pay as int, 0, q as int,
                     ),
@@ -3644,7 +5188,7 @@ fn paint_abs(
                 &&& e == Error::PaletteIndexOutOfRange
                 &&& crate::model::abs_good(b@, hrec(h), pay as int, q as int, 0) < q as int
                 &&& final(out)@ == crate::model::bytes_replay(
-                    crate::model::pal_zero_bytes(b@, hrec(h)),
+                    base,
                     gw + crate::model::abs_writes(
                         b@, hrec(h), x as int, y as int, pay as int, 0,
                         crate::model::abs_good(b@, hrec(h), pay as int, q as int, 0),
@@ -3684,7 +5228,7 @@ fn paint_abs(
             h.spec_depth() == 4 || h.spec_depth() == 8,
             (pay as int) + crate::model::rle_payload(q as int, h.spec_depth()) <= b@.len(),
             out@.len() == 4 * h.spec_n(),
-            out@ == crate::model::bytes_replay(crate::model::pal_zero_bytes(b@, m), gj),
+            out@ == crate::model::bytes_replay(base, gj),
             gj == gw + crate::model::abs_writes(b@, m, x as int, y as int, pay as int, 0, j as int),
             forall|t: int| 0 <= t < j ==> #[trigger] crate::model::index_ok(
                 m,
@@ -3776,7 +5320,7 @@ fn paint_abs(
                 cell: crate::model::cell_of(m, (x + j) as int, y as int),
                 px: c@,
             };
-            crate::model::lemma_bytes_replay_push(crate::model::pal_zero_bytes(b@, m), gj, w);
+            crate::model::lemma_bytes_replay_push(base, gj, w);
             assert(c@ == crate::model::conv(b@, m, crate::model::abs_index(b@, m.depth, pay as int, j as int)));
             crate::model::lemma_abs_writes_snoc_at(b@, m, x as int, y as int, pay as int, j as int, 0);
             gj = gj.push(w);
@@ -3914,7 +5458,7 @@ fn rle_abs_packet(
         assert(*pos <= b@.len());
         assert((pay as int) + crate::model::rle_payload(q as int, h.spec_depth()) <= b@.len());
     }
-    let pr = paint_abs(b, h, out, pay, *x, *y, q, Ghost(gw0), steps);
+    let pr = paint_abs(b, h, out, pay, *x, *y, q, Ghost(gw0), steps, Ghost(crate::model::pal_zero_bytes(b@, hrec(h))));
     match pr {
         Ok(()) => {
             proof {
@@ -4024,7 +5568,7 @@ fn rle_command(
             }
             return (Err(Error::RleBounds), Ghost(gw0));
         }
-        let pr = paint_run(b, h, out, code, *x, *y, quantity, Ghost(gw0), steps);
+        let pr = paint_run(b, h, out, code, *x, *y, quantity, Ghost(gw0), steps, Ghost(crate::model::pal_zero_bytes(b@, hrec(h))));
         match pr {
             Ok(()) => {
                 proof {
@@ -4403,6 +5947,792 @@ fn rle_loop(
     }
 }
 
+fn count_byte_bits(v: u8) -> (r: u32)
+    ensures r == crate::model::popcount_byte(v), r <= 8, (r == 0) == (v == 0),
+{
+    let r = (v & 1) as u32 + ((v >> 1) & 1) as u32 + ((v >> 2) & 1) as u32 + ((v >> 3) & 1) as u32
+        + ((v >> 4) & 1) as u32 + ((v >> 5) & 1) as u32 + ((v >> 6) & 1) as u32 + ((v >> 7) & 1) as u32;
+    proof {
+        reveal(crate::model::popcount_byte);
+        assert(r <= 8 && (r == 0) == (v == 0)) by (bit_vector)
+            requires r == (v & 1) as u32 + ((v >> 1) & 1) as u32 + ((v >> 2) & 1) as u32 + ((v >> 3) & 1) as u32
+                + ((v >> 4) & 1) as u32 + ((v >> 5) & 1) as u32 + ((v >> 6) & 1) as u32 + ((v >> 7) & 1) as u32;
+    }
+    r
+}
+
+fn count_mask_bits(mask: u32) -> (r: u32)
+    ensures r == crate::model::popcount_word(mask), r <= 32, (r == 0) == (mask == 0),
+{
+    let a = count_byte_bits(mask as u8);
+    let b = count_byte_bits((mask >> 8) as u8);
+    let c = count_byte_bits((mask >> 16) as u8);
+    let d = count_byte_bits((mask >> 24) as u8);
+    proof {
+        reveal(crate::model::popcount_word);
+        assert(((mask as u8) == 0 && ((mask >> 8) as u8) == 0
+            && ((mask >> 16) as u8) == 0 && ((mask >> 24) as u8) == 0) == (mask == 0)) by (bit_vector);
+    }
+    a + b + c + d
+}
+
+fn channel_policy(word: u32, mask: u32, scaling: ScalingOptions) -> (r: u8)
+    ensures r == crate::model::channel_scaled(word, mask, scaling),
+{
+    proof { reveal(crate::model::channel_scaled); }
+    if mask == 0 { return 255; }
+    match scaling {
+        ScalingOptions::Round => channel(word, mask),
+        ScalingOptions::Image => {
+            let shift = mask.trailing_zeros();
+            let compact = mask >> shift;
+            let width = 32 - compact.leading_zeros();
+            if width <= 8 { channel(word, mask) }
+            else { (((word & mask) >> shift) >> (width - 8)) as u8 }
+        },
+        ScalingOptions::Gdk => {
+            let shift = mask.trailing_zeros();
+            let count = count_mask_bits(mask);
+            let n = if count > 8 { 8u32 } else { count };
+            let skip = if count > 8 { count - 8 } else { 0u32 };
+            let value = ((word & mask) as u64) >> (shift + skip);
+            let high = value << (8 - n);
+            let low = if n >= 4 { value >> (2 * n - 8) } else { 0u64 };
+            (high | low) as u8
+        },
+    }
+}
+
+fn raw_policy_word(b: &[u8], h: &Header, pos: usize, x: usize, line: usize) -> (word: u32)
+    requires header_inv(b@, *h), header_inv_light(h), h.bits == 16 || h.bits == 32,
+        h.compression == 0 || h.compression == 3,
+        x < h.spec_width(), pos + line <= b@.len(), line as int == h.spec_stride(),
+    ensures word as int == if h.bits == 16 {
+        crate::model::le16(b@, pos as int + x as int * h.spec_depth() / 8)
+    } else { crate::model::le32(b@, pos as int + x as int * h.spec_depth() / 8) },
+{
+    proof {
+        reveal(header_inv_light);
+        crate::model::lemma_sample_within_stride(h.spec_width(), h.spec_depth(), x as int);
+        assert(x as int * (h.bits as int / 8) == x as int * h.spec_depth() / 8) by (nonlinear_arith)
+            requires h.bits == 16 || h.bits == 32;
+        assert(x as int * (h.bits as int / 8) + h.bits as int / 8 <= line as int);
+    }
+    let at = pos + x * (h.bits as usize / 8);
+    if h.bits == 16 { rd16(b, at) as u32 } else { rd32(b, at) }
+}
+
+fn raw_sample_scaled(b: &[u8], h: &Header, pos: usize, x: usize, line: usize, scaling: ScalingOptions, opaque: bool)
+    -> (r: Result<[u8; 4], Error>)
+    requires header_inv(b@, *h), header_inv_light(h), h.compression == 0 || h.compression == 3,
+        x < h.spec_width(), pos + line <= b@.len(), line as int == h.spec_stride(),
+    ensures match r {
+        Ok(c) => c@ == crate::model::raw_scaled_conv(b@, hrec(h), pos as int, x as int, scaling, opaque)
+            && crate::model::raw_index_ok(b@, hrec(h), pos as int, x as int),
+        Err(e) => e == Error::PaletteIndexOutOfRange && !crate::model::raw_index_ok(b@, hrec(h), pos as int, x as int),
+    },
+{
+    proof { reveal(crate::model::raw_scaled_conv); reveal(hrec); reveal(header_record); reveal(header_inv_light); }
+    if h.compression == 3 || h.bits == 16 {
+        proof { reveal(crate::model::raw_index_ok); }
+        let word = raw_policy_word(b, h, pos, x, line);
+        let c = if h.compression == 3 {
+            [channel_policy(word, h.masks[0], scaling), channel_policy(word, h.masks[1], scaling),
+                channel_policy(word, h.masks[2], scaling), if opaque && h.bits == 16 { 255u8 } else { channel_policy(word, h.masks[3], scaling) }]
+        } else {
+            [channel_policy(word, 0x7c00, scaling), channel_policy(word, 0x3e0, scaling),
+                channel_policy(word, 0x1f, scaling), 255u8]
+        };
+        proof {
+            let want = crate::model::raw_scaled_conv(b@, hrec(h), pos as int, x as int, scaling, opaque);
+            assert(c@ =~= want);
+        }
+        Ok(c)
+    } else { raw_sample(b, h, pos, x, line) }
+}
+
+// Locate a complete source row without adding a possibly out-of-file offset.
+fn policy_row_start(len: usize, start: usize, advance: u64, line: usize) -> (r: Option<usize>)
+    ensures match r {
+        Some(pos) => pos as int == start as int + advance as int && pos + line <= len,
+        None => start as int + advance as int + line as int > len,
+    },
+{
+    if start > len { return None; }
+    let remaining = len - start;
+    if advance > remaining as u64 { return None; }
+    let used = advance as usize;
+    if line > remaining - used { return None; }
+    Some(start + used)
+}
+
+fn decode_raw_zero(b: &[u8], h: &Header, out: &mut Vec<u8>, start: usize, zero: bool, black: bool, scaling: ScalingOptions, opaque: bool, steps: &mut Ghost<nat>)
+    -> (r: (Result<u64, Error>, bool))
+    requires header_inv(b@, *h), header_inv_light(h),
+        h.compression == 0 || h.compression == 3, old(out)@.len() == 4 * h.spec_n(),
+    ensures
+        final(out)@.len() == 4 * h.spec_n(),
+        final(steps)@ as int <= old(steps)@ as int + 4 * h.spec_n() + h.spec_n() + h.spec_height() + 1,
+        r.1 == crate::model::raw_zero_out(b@, hrec(h), start as int, zero, black, scaling, opaque).1,
+        match r.0 {
+            Ok(advance) => advance <= 268435456
+                && crate::model::raw_zero_out(b@, hrec(h), start as int, zero, black, scaling, opaque).0
+                    == Ok((start as int + advance as int, final(out)@)),
+            Err(e) => crate::model::raw_zero_out(b@, hrec(h), start as int, zero, black, scaling, opaque).0 == Err(e),
+        },
+{
+    let ghost s0 = steps@;
+    let ghost m = hrec(h);
+    fill_blank(out, !zero || h.bits == 32, steps);
+    let line = stride(h.width, h.bits);
+    let ghost initial = crate::model::raw_zero_fill(m, zero);
+    let ghost full = crate::model::raw_zero_full(b@, m, start as int, 0, 0, zero, black, scaling, opaque);
+    let ghost mut gw = Seq::<crate::model::Write>::empty();
+    let mut x = 0usize;
+    let mut y = 0usize;
+    let mut advance = 0u64;
+    let mut recovered = false;
+    proof {
+        reveal(hrec); reveal(header_record); reveal(header_inv_light);
+        reveal(crate::model::raw_zero_fill);
+        assert(initial == out@);
+        assert(gw + full.1 == full.1) by { broadcast use vstd::seq_lib::group_seq_lib_default; }
+    }
+    loop
+        invariant
+            header_inv(b@, *h), header_inv_light(h), m == hrec(h),
+            h.compression == 0 || h.compression == 3,
+            line as int == h.spec_stride(), line <= 32768,
+            x <= h.spec_width(), y <= h.spec_height(),
+            advance as int == y as int * line as int,
+            advance <= 268435456,
+            s0 == old(steps)@,
+            steps@ as int <= s0 as int + 4 * h.spec_n() + y as int * (h.spec_width() + 1) + x as int,
+            out@.len() == 4 * h.spec_n(),
+            out@ == crate::model::bytes_replay(initial, gw),
+            initial == crate::model::raw_zero_fill(m, zero),
+            full == crate::model::raw_zero_full(b@, m, start as int, 0, 0, zero, black, scaling, opaque),
+            full.0 == crate::model::raw_zero_full(b@, m, start as int + advance as int, x as int, y as int, zero, black, scaling, opaque).0,
+            full.1 == gw + crate::model::raw_zero_full(b@, m, start as int + advance as int, x as int, y as int, zero, black, scaling, opaque).1,
+            full.2 == (recovered || crate::model::raw_zero_full(b@, m, start as int + advance as int, x as int, y as int, zero, black, scaling, opaque).2),
+            y == h.spec_height() ==> x == 0,
+        decreases h.spec_height() - y, h.spec_width() - x,
+    {
+        proof {
+            reveal_with_fuel(crate::model::raw_zero_full, 1);
+            reveal(crate::model::raw_zero_out);
+            reveal(header_inv_light);
+            *steps = Ghost(steps@ + 1);
+            assert(steps@ as int <= s0 as int + 4 * h.spec_n() + h.spec_n() + h.spec_height() + 1)
+                by (nonlinear_arith) requires
+                    steps@ as int <= s0 as int + 4 * h.spec_n() + y as int * (h.spec_width() + 1) + x as int + 1,
+                    y <= h.spec_height(), x <= h.spec_width(),
+                    y == h.spec_height() ==> x == 0,
+                    h.spec_width() >= 1, h.spec_n() == h.spec_width() * h.spec_height();
+        }
+        if y >= h.height as usize { return (Ok(advance), recovered); }
+        let row = policy_row_start(b.len(), start, advance, line as usize);
+        if x >= h.width as usize || row.is_none() {
+            if x < h.width as usize {
+                if !zero { return (Err(Error::TruncatedPixels), recovered); }
+                recovered = true;
+            }
+            proof {
+                assert(advance as int + line as int == (y as int + 1) * line as int) by (nonlinear_arith)
+                    requires advance as int == y as int * line as int;
+                assert(advance as int + line as int <= 268435456) by (nonlinear_arith)
+                    requires y < h.spec_height(), h.spec_height() <= 8192, line <= 32768,
+                        advance as int == y as int * line as int;
+                assert(y as int * (h.spec_width() + 1) + x as int + 1
+                    <= (y as int + 1) * (h.spec_width() + 1)) by (nonlinear_arith)
+                    requires x <= h.spec_width();
+            }
+            advance = advance + line as u64;
+            y = y + 1; x = 0;
+        } else {
+            let pos = row.unwrap();
+            let c = match raw_sample_scaled(b, h, pos, x, line as usize, scaling, opaque) {
+                Ok(c) => c,
+                Err(e) => {
+                    if !black { return (Err(e), recovered); }
+                    recovered = true;
+                    [0u8, 0u8, 0u8, 255u8]
+                },
+            };
+            let offset = out_offset(h, x, y);
+            let ghost w = crate::model::Write {
+                cell: crate::model::cell_of(m, x as int, y as int), px: c@,
+            };
+            let ghost tail = crate::model::raw_zero_full(b@, m, start as int + advance as int, x as int + 1, y as int, zero, black, scaling, opaque);
+            put(out, offset, c);
+            proof {
+                reveal(crate::model::replay_one); reveal(crate::model::replay_bytes_at);
+                reveal(crate::model::cell_of); reveal(crate::model::orient_cell); reveal(map_row_spec);
+                crate::model::lemma_bytes_replay_push(initial, gw, w);
+                vstd::seq_lib::lemma_concat_associative(gw, seq![w], tail.1);
+                assert(gw.push(w) == gw + seq![w]) by { broadcast use vstd::seq_lib::group_seq_lib_default; }
+                gw = gw.push(w);
+            }
+            x = x + 1;
+        }
+    }
+}
+
+// A scalar quantity bound keeps clipped positions out of all painter loops.
+fn rle_clip_count(width: usize, x: usize, q: usize) -> (r: usize)
+    requires x <= width,
+    ensures r <= q, x + r <= width,
+        r as int == crate::model::clip_paint_count(width as int, x as int, q as int),
+{
+    if q > width - x { width - x } else { q }
+}
+
+fn policy_packet_index(b: &[u8], bits: u32, absolute: bool, value: usize, j: usize, q: usize)
+    -> (r: u32)
+    requires bits == 4 || bits == 8, j < q <= 255, b@.len() <= 67108864,
+        !absolute ==> value <= 255,
+        absolute ==> value as int + crate::model::rle_payload(q as int, bits as int) <= b@.len(),
+    ensures r <= 255,
+        r as int == crate::model::packet_index(b@, bits as int, absolute, value as int, j as int),
+{
+    proof { reveal(crate::model::rle_payload); reveal(crate::model::packet_index); }
+    let byte = if absolute {
+        if bits == 8 { rd(b, value + j) } else {
+            proof {
+                assert(j / 2 < (q + 1) / 2) by (nonlinear_arith) requires j < q;
+            }
+            rd(b, value + j / 2)
+        }
+    } else { value as u8 };
+    let ix = if bits == 8 { byte as u32 } else {
+        ((byte >> (if j % 2 == 0 { 4 } else { 0 })) & 15) as u32
+    };
+    proof {
+        reveal(crate::model::abs_index); reveal(crate::model::run_index);
+        if bits == 4 {
+            if j % 2 == 0 {
+                assert(((byte >> 4) & 15) as int == byte as int / 16) by (bit_vector);
+            } else {
+                assert(((byte >> 0) & 15) as int == byte as int % 16) by (bit_vector);
+            }
+        }
+    }
+    ix
+}
+
+fn paint_black_packet(b: &[u8], h: &Header, out: &mut Vec<u8>, absolute: bool,
+    value: usize, x: usize, y: usize, q: usize,
+    Ghost(gw): Ghost<Seq<crate::model::Write>>, steps: &mut Ghost<nat>, Ghost(initial): Ghost<Seq<u8>>) -> (event: bool)
+    requires header_inv(b@, *h), header_inv_light(h),
+        h.bits == 4 || h.bits == 8, x + q <= h.spec_width(), y < h.spec_height(), q <= 255,
+        !absolute ==> value <= 255,
+        absolute ==> value as int + crate::model::rle_payload(q as int, h.spec_depth()) <= b@.len(),
+        old(out)@.len() == 4 * h.spec_n(),
+        old(out)@ == crate::model::bytes_replay(initial, gw),
+    ensures
+        final(out)@.len() == 4 * h.spec_n(), final(steps)@ == old(steps)@ + q,
+        event == crate::model::black_packet_event(b@, hrec(h), absolute, value as int, q as int),
+        final(out)@ == crate::model::bytes_replay(initial,
+            gw + crate::model::black_packet_writes(b@, hrec(h), absolute, value as int, x as int, y as int, q as int)),
+{
+    let ghost m = hrec(h);
+    let ghost base = initial;
+    let ghost s0 = steps@;
+    let mut j = 0usize;
+    let mut recovered = false;
+    proof { reveal(crate::model::black_packet_writes); reveal(crate::model::black_packet_event); }
+    while j < q
+        invariant
+            header_inv(b@, *h), header_inv_light(h), m == hrec(h),
+            h.bits == 4 || h.bits == 8, x + q <= h.spec_width(), y < h.spec_height(), q <= 255,
+            !absolute ==> value <= 255,
+            absolute ==> value as int + crate::model::rle_payload(q as int, h.spec_depth()) <= b@.len(),
+            j <= q, out@.len() == 4 * h.spec_n(), s0 == old(steps)@, steps@ == s0 + j,
+            base == initial,
+            recovered == crate::model::black_packet_event(b@, m, absolute, value as int, j as int),
+            out@ == crate::model::bytes_replay(base,
+                gw + crate::model::black_packet_writes(b@, m, absolute, value as int, x as int, y as int, j as int)),
+        decreases q - j,
+    {
+        proof { *steps = Ghost(steps@ + 1); reveal(hrec); reveal(header_record); }
+        let ix = policy_packet_index(b, h.bits, absolute, value, j, q);
+        let c = match colour(b, h.palette_start, h.pal_stride, h.count, ix) {
+            Ok(c) => c,
+            Err(_) => { recovered = true; [0u8, 0u8, 0u8, 255u8] },
+        };
+        let offset = out_offset(h, x + j, y);
+        let ghost w = crate::model::Write { cell: crate::model::cell_of(m, x as int + j as int, y as int), px: c@ };
+        let ghost before = crate::model::black_packet_writes(b@, m, absolute, value as int, x as int, y as int, j as int);
+        put(out, offset, c);
+        proof {
+            reveal(crate::model::black_packet_writes); reveal(crate::model::black_packet_event);
+            reveal(crate::model::replay_one); reveal(crate::model::cell_of);
+            reveal(crate::model::orient_cell); reveal(map_row_spec);
+            let after = crate::model::black_packet_writes(b@, m, absolute, value as int, x as int, y as int, j as int + 1);
+            assert(after == before.push(w)) by {
+                assert forall|k: int| 0 <= k < after.len() implies after[k] == #[trigger] before.push(w)[k] by {
+                    if k == j as int {} else {}
+                }
+                vstd::seq::lemma_seq_ext_equal(after, before.push(w));
+            }
+            assert((gw + before).push(w) == gw + after) by { broadcast use vstd::seq_lib::group_seq_lib_default; }
+            crate::model::lemma_bytes_replay_push(base, gw + before, w);
+            assert(recovered == crate::model::black_packet_event(b@, m, absolute, value as int, j as int + 1)) by {
+                if ix >= h.count {
+                    assert(crate::model::packet_index(b@, m.depth, absolute, value as int, j as int) >= m.count);
+                } else {
+                    assert forall|k: int| 0 <= k < j as int + 1 && crate::model::packet_index(b@, m.depth, absolute, value as int, k) >= m.count
+                        implies k < j by { }
+                }
+            }
+        }
+        j = j + 1;
+    }
+    recovered
+}
+
+spec fn rle_position(width: int, height: int, x: int, y: int) -> int {
+    if y >= height { width * height } else { y * width + x }
+}
+
+fn policy_delta_target(width: usize, height: usize, x: usize, y: usize, dx: usize, dy: usize,
+    delta: RleDeltaOptions) -> (r: Result<(usize, usize, bool), Error>)
+    requires 1 <= width <= 8192, 1 <= height <= 8192, x <= width, y <= height, dx <= 255, dy <= 255,
+    ensures match r {
+        Err(e) => e == Error::RleBounds && delta == RleDeltaOptions::Inside
+            && (x + dx >= width || y + dy >= height),
+        Ok((nx, ny, event)) => {
+            &&& x <= nx <= width && y <= ny <= height
+            &&& nx as int == if x + dx > width { width as int } else { x + dx }
+            &&& ny as int == if y + dy > height { height as int } else { y + dy }
+            &&& (delta == RleDeltaOptions::Inside ==> nx < width && ny < height)
+            &&& event == (x + dx > width || y + dy > height)
+            &&& rle_position(width as int, height as int, x as int, y as int)
+                <= rle_position(width as int, height as int, nx as int, ny as int)
+        },
+    },
+{
+    match delta {
+        RleDeltaOptions::Inside => {
+            if x + dx >= width || y + dy >= height { return Err(Error::RleBounds); }
+        },
+        RleDeltaOptions::ClampStop => {},
+    }
+    let nx = if x + dx > width { width } else { x + dx };
+    let ny = if y + dy > height { height } else { y + dy };
+    let event = x + dx > width || y + dy > height;
+    proof {
+        reveal(rle_position);
+        assert(rle_position(width as int, height as int, x as int, y as int)
+            <= rle_position(width as int, height as int, nx as int, ny as int)) by (nonlinear_arith)
+            requires x <= nx <= width, y <= ny <= height, width >= 1,
+                rle_position(width as int, height as int, x as int, y as int)
+                    == if y >= height { width as int * height as int } else { y as int * width as int + x as int },
+                rle_position(width as int, height as int, nx as int, ny as int)
+                    == if ny >= height { width as int * height as int } else { ny as int * width as int + nx as int };
+    }
+    Ok((nx, ny, event))
+}
+
+fn rle_clip_absolute(b: &[u8], h: &Header, out: &mut Vec<u8>, p: usize, x: usize, y: usize,
+    overrun: RleOverrunOptions, eol: RleEolOptions, eob: RleEobOptions, black: bool, delta: RleDeltaOptions, Ghost(gw): Ghost<Seq<crate::model::Write>>, steps: &mut Ghost<nat>, Ghost(initial): Ghost<Seq<u8>>)
+    -> (r: (Result<bool, Error>, usize, usize, usize, bool, Ghost<Seq<crate::model::Write>>, usize))
+    requires
+        p + 2 <= b@.len(), b@[p as int] == 0, b@[p as int + 1] >= 3,
+        eob == RleEobOptions::AtInputEnd ==> y < h.spec_height(),
+        header_inv(b@, *h), header_inv_light(h),
+        h.compression == 1 || h.compression == 2,
+        p <= b@.len(), x <= h.spec_width(), y <= h.spec_height(),
+        old(out)@.len() == 4 * h.spec_n(),
+        old(out)@ == crate::model::bytes_replay(initial, gw),
+    ensures
+        r.0 is Ok ==> r.6 as int == r.5@.len(),
+        r.0 == Ok(true) ==> r.6 == 0,
+        r.0 is Ok ==> r.6 as int + rle_position(h.spec_width(), h.spec_height(), x as int, y as int)
+            <= rle_position(h.spec_width(), h.spec_height(), r.2 as int, r.3 as int),
+        p <= r.1 <= b@.len(), r.2 <= h.spec_width(), r.3 <= h.spec_height(),
+        r.0 == Ok(false) ==> r.1 >= p + 2,
+        old(steps)@ <= final(steps)@,
+        y == h.spec_height() ==> final(steps)@ == old(steps)@,
+        match r.0 {
+            Ok(true) => final(steps)@ == old(steps)@,
+            Ok(false) => final(steps)@ as int + rle_position(h.spec_width(), h.spec_height(), x as int, y as int)
+                <= old(steps)@ as int + rle_position(h.spec_width(), h.spec_height(), r.2 as int, r.3 as int),
+            Err(_) => final(steps)@ as int <= old(steps)@ as int + h.spec_width() - x as int,
+        },
+        final(out)@.len() == 4 * h.spec_n(),
+        final(out)@ == crate::model::bytes_replay(initial, gw + r.5@),
+        crate::model::rle_clip_step(b@, hrec(h), p as int, x as int, y as int, overrun, eol, eob, black, delta)
+            == (r.0, r.1 as int, r.2 as int, r.3 as int, r.5@, r.4),
+{
+    let ghost m = hrec(h);
+    let ghost empty = Seq::<crate::model::Write>::empty();
+    proof {
+        reveal(header_inv_light); reveal(hrec); reveal(header_record);
+        reveal(crate::model::rle_clip_step); reveal(rle_position);
+        assert(gw + empty == gw) by { broadcast use vstd::seq_lib::group_seq_lib_default; }
+    }
+    let code = rd(b, p + 1) as usize;
+    let pos = p + 2;
+        let reject = match overrun {
+            RleOverrunOptions::Clip => false,
+            RleOverrunOptions::Reject | RleOverrunOptions::Image => true,
+        };
+        if y >= h.height as usize || (x + code > h.width as usize && reject) {
+            return (Err(Error::RleBounds), pos, x, y, false, Ghost(empty), 0);
+        }
+        let recovered = x + code > h.width as usize;
+        let payload = if h.bits == 8 { code } else { (code + 1) / 2 };
+        let padded = payload + payload % 2;
+        proof { reveal(crate::model::rle_payload); reveal(crate::model::rle_padded); }
+        if b.len() - pos < padded {
+            return (Err(Error::RleTruncated), pos, x, y, recovered, Ghost(empty), 0);
+        }
+        let count = rle_clip_count(h.width as usize, x, code);
+        if black {
+            proof {
+                reveal(crate::model::rle_payload);
+                assert((count as int + 1) / 2 <= (code as int + 1) / 2) by (nonlinear_arith) requires count <= code;
+            }
+            proof { reveal(crate::model::black_packet_writes); }
+            let event = paint_black_packet(b, h, out, true, pos, x, y, count, Ghost(gw), steps, Ghost(initial));
+            let ghost ws = crate::model::black_packet_writes(b@, m, true, pos as int, x as int, y as int, count as int);
+            return (Ok(false), pos + padded, x + count, y, recovered || event, Ghost(ws), count);
+        }
+        if count == 0 {
+            proof {
+                reveal(crate::model::abs_good); reveal(crate::model::abs_writes);
+            }
+            return (Ok(false), pos + padded, x, y, recovered, Ghost(empty), 0);
+        }
+        proof {
+            assert((count as int + 1) / 2 <= (code as int + 1) / 2) by (nonlinear_arith)
+                requires count <= code;
+        }
+        let pr = paint_abs(b, h, out, pos, x, y, count, Ghost(gw), steps, Ghost(initial));
+        match pr {
+            Ok(()) => {
+                proof {
+                    crate::model::lemma_abs_good_all_ok(b@, m, pos as int, count as int);
+                    crate::model::lemma_packet_write_lengths(b@, m, x as int, y as int, pos as int, 0, count as int);
+                }
+                let ghost ws = crate::model::abs_writes(b@, m, x as int, y as int, pos as int, 0, count as int);
+                (Ok(false), pos + padded, x + count, y, recovered, Ghost(ws), count)
+            },
+            Err(e) => {
+                let ghost ws = crate::model::abs_writes(b@, m, x as int, y as int, pos as int,
+                    0, crate::model::abs_good(b@, m, pos as int, count as int, 0));
+                (Err(e), pos + padded, x, y, recovered, Ghost(ws), 0)
+            },
+        }
+}
+
+fn rle_clip_encoded(b: &[u8], h: &Header, out: &mut Vec<u8>, p: usize, x: usize, y: usize,
+    overrun: RleOverrunOptions, eol: RleEolOptions, eob: RleEobOptions, black: bool, delta: RleDeltaOptions, Ghost(gw): Ghost<Seq<crate::model::Write>>, steps: &mut Ghost<nat>, Ghost(initial): Ghost<Seq<u8>>)
+    -> (r: (Result<bool, Error>, usize, usize, usize, bool, Ghost<Seq<crate::model::Write>>, usize))
+    requires
+        p + 2 <= b@.len(), b@[p as int] != 0,
+        eob == RleEobOptions::AtInputEnd ==> y < h.spec_height(),
+        header_inv(b@, *h), header_inv_light(h),
+        h.compression == 1 || h.compression == 2,
+        p <= b@.len(), x <= h.spec_width(), y <= h.spec_height(),
+        old(out)@.len() == 4 * h.spec_n(),
+        old(out)@ == crate::model::bytes_replay(initial, gw),
+    ensures
+        r.0 is Ok ==> r.6 as int == r.5@.len(),
+        r.0 == Ok(true) ==> r.6 == 0,
+        r.0 is Ok ==> r.6 as int + rle_position(h.spec_width(), h.spec_height(), x as int, y as int)
+            <= rle_position(h.spec_width(), h.spec_height(), r.2 as int, r.3 as int),
+        p <= r.1 <= b@.len(), r.2 <= h.spec_width(), r.3 <= h.spec_height(),
+        r.0 == Ok(false) ==> r.1 >= p + 2,
+        old(steps)@ <= final(steps)@,
+        y == h.spec_height() ==> final(steps)@ == old(steps)@,
+        match r.0 {
+            Ok(true) => final(steps)@ == old(steps)@,
+            Ok(false) => final(steps)@ as int + rle_position(h.spec_width(), h.spec_height(), x as int, y as int)
+                <= old(steps)@ as int + rle_position(h.spec_width(), h.spec_height(), r.2 as int, r.3 as int),
+            Err(_) => final(steps)@ as int <= old(steps)@ as int + h.spec_width() - x as int,
+        },
+        final(out)@.len() == 4 * h.spec_n(),
+        final(out)@ == crate::model::bytes_replay(initial, gw + r.5@),
+        crate::model::rle_clip_step(b@, hrec(h), p as int, x as int, y as int, overrun, eol, eob, black, delta)
+            == (r.0, r.1 as int, r.2 as int, r.3 as int, r.5@, r.4),
+{
+    let ghost m = hrec(h);
+    let ghost empty = Seq::<crate::model::Write>::empty();
+    proof {
+        reveal(header_inv_light); reveal(hrec); reveal(header_record);
+        reveal(crate::model::rle_clip_step); reveal(rle_position);
+        assert(gw + empty == gw) by { broadcast use vstd::seq_lib::group_seq_lib_default; }
+    }
+    let q = rd(b, p) as usize;
+    let code = rd(b, p + 1) as usize;
+    let pos = p + 2;
+        let reject = match overrun {
+            RleOverrunOptions::Reject => true,
+            RleOverrunOptions::Clip => false,
+            RleOverrunOptions::Image => h.bits == 4,
+        };
+        if y >= h.height as usize || (x + q > h.width as usize && reject) {
+            return (Err(Error::RleBounds), pos, x, y, false, Ghost(empty), 0);
+        }
+        let count = rle_clip_count(h.width as usize, x, q);
+        let recovered = x + q > h.width as usize;
+        if black {
+            proof { reveal(crate::model::black_packet_writes); }
+            let event = paint_black_packet(b, h, out, false, code, x, y, count, Ghost(gw), steps, Ghost(initial));
+            let ghost ws = crate::model::black_packet_writes(b@, m, false, code as int, x as int, y as int, count as int);
+            return (Ok(false), pos, x + count, y, recovered || event, Ghost(ws), count);
+        }
+        let pr = paint_run(b, h, out, code, x, y, count, Ghost(gw), steps, Ghost(initial));
+        match pr {
+            Ok(()) => {
+                proof {
+                    crate::model::lemma_run_good_all_ok(m, code as int, count as int);
+                    crate::model::lemma_packet_write_lengths(b@, m, x as int, y as int, code as int, 0, count as int);
+                }
+                let ghost ws = crate::model::run_writes(b@, m, x as int, y as int, code as int, 0, count as int);
+                (Ok(false), pos, x + count, y, recovered, Ghost(ws), count)
+            },
+            Err(e) => {
+                let ghost ws = crate::model::run_writes(b@, m, x as int, y as int, code as int,
+                    0, crate::model::run_good(m, code as int, count as int, 0));
+                (Err(e), pos, x, y, recovered, Ghost(ws), 0)
+            },
+        }
+}
+
+fn rle_clip_command(b: &[u8], h: &Header, out: &mut Vec<u8>, p: usize, x: usize, y: usize,
+    overrun: RleOverrunOptions, eol: RleEolOptions, eob: RleEobOptions, black: bool, delta: RleDeltaOptions, Ghost(gw): Ghost<Seq<crate::model::Write>>, steps: &mut Ghost<nat>, Ghost(initial): Ghost<Seq<u8>>)
+    -> (r: (Result<bool, Error>, usize, usize, usize, bool, Ghost<Seq<crate::model::Write>>, usize))
+    requires
+        header_inv(b@, *h), header_inv_light(h),
+        h.compression == 1 || h.compression == 2,
+        p <= b@.len(), x <= h.spec_width(), y <= h.spec_height(),
+        old(out)@.len() == 4 * h.spec_n(),
+        old(out)@ == crate::model::bytes_replay(initial, gw),
+    ensures
+        r.0 is Ok ==> r.6 as int == r.5@.len(),
+        r.0 == Ok(true) ==> r.6 == 0,
+        r.0 is Ok ==> r.6 as int + rle_position(h.spec_width(), h.spec_height(), x as int, y as int)
+            <= rle_position(h.spec_width(), h.spec_height(), r.2 as int, r.3 as int),
+        p <= r.1 <= b@.len(), r.2 <= h.spec_width(), r.3 <= h.spec_height(),
+        r.0 == Ok(false) ==> r.1 >= p + 2,
+        old(steps)@ + 1 <= final(steps)@,
+        y == h.spec_height() ==> final(steps)@ == old(steps)@ + 1,
+        match r.0 {
+            Ok(true) => final(steps)@ == old(steps)@ + 1,
+            Ok(false) => final(steps)@ as int + rle_position(h.spec_width(), h.spec_height(), x as int, y as int)
+                <= old(steps)@ as int + 1 + rle_position(h.spec_width(), h.spec_height(), r.2 as int, r.3 as int),
+            Err(_) => final(steps)@ as int <= old(steps)@ as int + 1 + h.spec_width() - x as int,
+        },
+        final(out)@.len() == 4 * h.spec_n(),
+        final(out)@ == crate::model::bytes_replay(initial, gw + r.5@),
+        crate::model::rle_clip_step(b@, hrec(h), p as int, x as int, y as int, overrun, eol, eob, black, delta)
+            == (r.0, r.1 as int, r.2 as int, r.3 as int, r.5@, r.4),
+{
+    let ghost m = hrec(h);
+    let ghost empty = Seq::<crate::model::Write>::empty();
+    proof {
+        reveal(header_inv_light); reveal(hrec); reveal(header_record);
+        reveal(crate::model::rle_clip_step); reveal(rle_position);
+        assert(gw + empty == gw) by { broadcast use vstd::seq_lib::group_seq_lib_default; }
+        *steps = Ghost(steps@ + 1);
+    }
+    let allow_end = match eob {
+        RleEobOptions::Required => false,
+        RleEobOptions::AtInputEnd => true,
+    };
+    if allow_end && (y >= h.height as usize || b.len() - p < 2) {
+        return (Ok(true), p, x, y, false, Ghost(empty), 0);
+    }
+    if b.len() - p < 2 {
+        return (Err(Error::RleTruncated), p, x, y, false, Ghost(empty), 0);
+    }
+    let q = rd(b, p) as usize;
+    let code = rd(b, p + 1) as usize;
+    let pos = p + 2;
+    if q != 0 {
+        rle_clip_encoded(b, h, out, p, x, y, overrun, eol, eob, black, delta, Ghost(gw), steps, Ghost(initial))
+    } else if code == 1 {
+        (Ok(true), pos, x, y, false, Ghost(empty), 0)
+    } else if code == 0 {
+        if y >= h.height as usize {
+            return (Err(Error::RleBounds), pos, x, y, false, Ghost(empty), 0);
+        }
+        proof {
+            assert(y as int * h.spec_width() + x as int <= (y + 1) as int * h.spec_width())
+                by (nonlinear_arith) requires x <= h.spec_width();
+        }
+        proof {
+            assert(rle_position(h.spec_width(), h.spec_height(), x as int, y as int)
+                <= rle_position(h.spec_width(), h.spec_height(), 0, y as int + 1)) by (nonlinear_arith)
+                requires y < h.spec_height(), x <= h.spec_width(), h.spec_width() >= 1,
+                    rle_position(h.spec_width(), h.spec_height(), x as int, y as int) == y as int * h.spec_width() + x as int,
+                    rle_position(h.spec_width(), h.spec_height(), 0, y as int + 1)
+                        == if y as int + 1 >= h.spec_height() { h.spec_width() * h.spec_height() } else { (y as int + 1) * h.spec_width() };
+        }
+        let stop = match eol {
+            RleEolOptions::OnlyFinal => false,
+            RleEolOptions::StopAtHeight => y + 1 == h.height as usize,
+        };
+        (Ok(stop), pos, 0, y + 1, false, Ghost(empty), 0)
+    } else if code == 2 {
+        if b.len() - pos < 2 {
+            return (Err(Error::RleTruncated), pos, x, y, false, Ghost(empty), 0);
+        }
+        let dx = rd(b, pos) as usize;
+        let dy = rd(b, pos + 1) as usize;
+        match policy_delta_target(h.width as usize, h.height as usize, x, y, dx, dy, delta) {
+            Err(e) => (Err(e), pos + 2, x, y, false, Ghost(empty), 0),
+            Ok((nx, ny, event)) => (Ok(false), pos + 2, nx, ny, event, Ghost(empty), 0),
+        }
+    } else {
+        rle_clip_absolute(b, h, out, p, x, y, overrun, eol, eob, black, delta, Ghost(gw), steps, Ghost(initial))
+    }
+}
+
+proof fn lemma_policy_rle_position(width: int, height: int, x: int, y: int)
+    requires width >= 1, height >= 1, 0 <= x <= width, 0 <= y <= height,
+    ensures 0 <= rle_position(width, height, x, y) <= width * height,
+{
+    reveal(rle_position);
+    assert(0 <= rle_position(width, height, x, y) <= width * height) by (nonlinear_arith)
+        requires width >= 1, height >= 1, 0 <= x <= width, 0 <= y <= height,
+            rle_position(width, height, x, y) == if y >= height { width * height } else { y * width + x };
+}
+
+proof fn lemma_policy_rle_error_budget(width: int, height: int, x: int, y: int,
+    start: int, before: int, after: int, commands: int, len: int)
+    requires width >= 1, height >= 1, 0 <= x <= width, 0 <= y <= height,
+        commands <= len,
+        before <= start + 4 * (width * height) + commands + rle_position(width, height, x, y),
+        after <= before + 1 + width - x,
+        y == height ==> after == before + 1,
+    ensures after <= start + 5 * (width * height) + len + 1,
+{
+    reveal(rle_position);
+    assert(after <= start + 5 * (width * height) + len + 1) by (nonlinear_arith)
+        requires width >= 1, height >= 1, 0 <= x <= width, 0 <= y <= height,
+            commands <= len,
+            before <= start + 4 * (width * height) + commands + rle_position(width, height, x, y),
+            after <= before + 1 + width - x,
+            y == height ==> after == before + 1,
+            rle_position(width, height, x, y) == if y >= height { width * height } else { y * width + x };
+}
+
+fn decode_rle_clipped(b: &[u8], h: &Header, out: &mut Vec<u8>, overrun: RleOverrunOptions, eol: RleEolOptions, eob: RleEobOptions, black: bool, delta: RleDeltaOptions,
+    steps: &mut Ghost<nat>, fill: RleFillOptions) -> (r: (Result<usize, Error>, bool))
+    requires header_inv(b@, *h), header_inv_light(h),
+        h.compression == 1 || h.compression == 2,
+        old(out)@.len() == 4 * h.spec_n(),
+    ensures
+        final(out)@.len() == old(out)@.len(),
+        final(steps)@ as int <= old(steps)@ as int + 5 * h.spec_n() + b@.len() + 1,
+        match r.0 { Ok(pos) => h.pixel_start <= pos && (h.pixel_start <= b@.len() ==> pos <= b@.len()), Err(_) => true },
+        r.1 == crate::model::rle_clip_out(b@, hrec(h), overrun, eol, eob, black, delta, fill).1,
+        match r.0 {
+            Ok(pos) => crate::model::rle_clip_out(b@, hrec(h), overrun, eol, eob, black, delta, fill).0 == Ok((pos as int, final(out)@)),
+            Err(e) => crate::model::rle_clip_out(b@, hrec(h), overrun, eol, eob, black, delta, fill).0 == Err(e),
+        },
+{
+    let ghost s0 = steps@;
+    let nonpalette = match fill { RleFillOptions::Palette0 => false, _ => true };
+    match fill {
+        RleFillOptions::Palette0 => fill_rle(b, h, out, steps),
+        RleFillOptions::OpaqueBlack => fill_blank(out, false, steps),
+        RleFillOptions::TransparentBlack => fill_blank(out, true, steps),
+    }
+    let ghost m = hrec(h);
+    let ghost initial = crate::model::rle_initial(b@, m, fill);
+    proof { reveal(crate::model::rle_initial); reveal(header_inv_light); reveal(hrec); reveal(header_record); }
+    let ghost full = crate::model::rle_clip_full(b@, m, h.pixel_start as int, 0, 0, overrun, eol, eob, black, delta);
+    if h.pixel_start > b.len() {
+        proof {
+            reveal(crate::model::rle_clip_out); reveal(crate::model::rle_clip_full);
+            reveal(crate::model::rle_clip_step); reveal(rle_position); reveal(crate::model::bytes_replay);
+        }
+        return match eob {
+            RleEobOptions::Required => (Err(Error::RleTruncated), false),
+            RleEobOptions::AtInputEnd => (Ok(h.pixel_start), nonpalette),
+        };
+    }
+    let mut pos = h.pixel_start;
+    let mut x = 0usize;
+    let mut y = 0usize;
+    let mut recovered = false;
+    let mut painted = 0usize;
+    let ghost mut gw = Seq::<crate::model::Write>::empty();
+    let ghost mut commands: nat = 0;
+    proof {
+        reveal(header_inv_light); reveal(hrec); reveal(header_record);
+        assert(gw + full.1 == full.1) by { broadcast use vstd::seq_lib::group_seq_lib_default; }
+    }
+    loop
+        invariant
+            header_inv(b@, *h), header_inv_light(h), m == hrec(h),
+            h.compression == 1 || h.compression == 2,
+            out@.len() == 4 * h.spec_n(), old(out)@.len() == 4 * h.spec_n(),
+            h.pixel_start <= pos <= b@.len(), x <= h.spec_width(), y <= h.spec_height(),
+            s0 == old(steps)@,
+            initial == crate::model::rle_initial(b@, m, fill),
+            nonpalette == (fill != RleFillOptions::Palette0),
+            painted as int == gw.len(),
+            painted as int <= rle_position(h.spec_width(), h.spec_height(), x as int, y as int),
+            commands <= pos - h.pixel_start,
+            steps@ as int <= s0 as int + 4 * h.spec_n() + commands as int + rle_position(h.spec_width(), h.spec_height(), x as int, y as int),
+            full == crate::model::rle_clip_full(b@, m, h.pixel_start as int, 0, 0, overrun, eol, eob, black, delta),
+            full.0 == crate::model::rle_clip_full(b@, m, pos as int, x as int, y as int, overrun, eol, eob, black, delta).0,
+            full.1 == gw + crate::model::rle_clip_full(b@, m, pos as int, x as int, y as int, overrun, eol, eob, black, delta).1,
+            full.2 == (recovered || crate::model::rle_clip_full(b@, m, pos as int, x as int, y as int, overrun, eol, eob, black, delta).2),
+            out@ == crate::model::bytes_replay(initial, gw),
+        decreases b@.len() - pos,
+    {
+        let ghost sb = steps@;
+        let ghost gwb = gw;
+        let ghost previous = crate::model::rle_clip_full(b@, m, pos as int, x as int, y as int, overrun, eol, eob, black, delta);
+        proof {
+            reveal_with_fuel(crate::model::rle_clip_full, 1);
+            reveal(header_inv_light);
+            lemma_policy_rle_position(h.spec_width(), h.spec_height(), x as int, y as int);
+        }
+        let (result, next, nx, ny, event, Ghost(ws), count) = rle_clip_command(b, h, out,
+            pos, x, y, overrun, eol, eob, black, delta, Ghost(gw), steps, Ghost(initial));
+        recovered = recovered || event;
+        proof {
+            gw = gw + ws;
+        }
+        match result {
+            Err(e) => {
+                proof {
+                    reveal(crate::model::rle_clip_out);
+                    lemma_policy_rle_error_budget(h.spec_width(), h.spec_height(), x as int, y as int,
+                        s0 as int, sb as int, steps@ as int, commands as int, b@.len() as int);
+                }
+                return (Err(e), recovered);
+            },
+            Ok(true) => { proof { reveal(crate::model::rle_clip_out); } return (Ok(next), recovered || (nonpalette && painted < h.n)); },
+            Ok(false) => {
+                proof {
+                    let tail = crate::model::rle_clip_full(b@, m, next as int, nx as int, ny as int, overrun, eol, eob, black, delta);
+                    vstd::seq_lib::lemma_concat_associative(gwb, ws, tail.1);
+                    // Associativity relates the consumed packet to the remaining write list.
+                    assert(full.1 == gw + tail.1) by {
+                        broadcast use vstd::seq_lib::group_seq_lib_default;
+                    }
+                    commands = commands + 1;
+                }
+                proof {
+                    reveal(header_inv_light);
+                    lemma_policy_rle_position(h.spec_width(), h.spec_height(), nx as int, ny as int);
+                }
+                painted = painted + count;
+                pos = next; x = nx; y = ny;
+            },
+        }
+    }
+}
+
 /// T7 on the whole image: `rle_exact_from` at the public start state
 /// `(pixel_start, 0, 0)` with an empty accumulator, so the buffer is `MR`'s
 /// write list replayed onto the palette-zero fill.
@@ -4443,6 +6773,7 @@ fn decode_rle(
         header_inv(b@, *h), header_inv_light(h),
         old(out)@.len() == 4 * h.spec_n(),
         h.compression == 1 || h.compression == 2,
+        h.pixel_start <= b@.len(),
     ensures
         final(steps)@ as int <= old(steps)@ as int + h.spec_n()
             + (b@.len() - h.pixel_start as int) / 2 + 1 + h.spec_n(),
@@ -4793,6 +7124,7 @@ proof fn lemma_mp_palette_fits(b: Seq<u8>, mode: Mode, m: crate::model::MHRecord
     assert(m.palette_end == h.spec_palette_end());
     assert(h.spec_palette_end() == h.palette_end as int);
     assert(m.palette_start + m.table_count * m.palette_stride == m.palette_end);
+    reveal(crate::model::mh); reveal(crate::model::r2r7); reveal(crate::model::r6r7);
     assert(m.palette_end <= b.len());
 }
 
@@ -4985,17 +7317,18 @@ proof fn lemma_ma_mp_mask_phase(
 /// `finish_mask`, it performs no AND-mask work (there is no AND plane in either
 /// BMP mode). Its `mask_done_policy_eq` postcondition is
 /// `finish_mask`'s `mask_done_eq` with `mp_mask_phase`'s size test replaced.
-fn finish_mask_policy(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
+fn finish_mask_policy(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize, p0: usize,
     steps: &mut Ghost<nat>, policy: Policy) -> (r: Result<(), Error>)
     requires
         header_inv(b@, *h),
         header_inv_light(h),
         h.mode == Mode::BmpFile || h.mode == Mode::BareDib,
         old(out)@.len() == 4 * h.spec_n(),
-        h.pixel_start <= pos <= b@.len(),
+        p0 <= pos,
+        p0 as int == crate::model::offset_effective(hrec(h), policy),
         b@.len() <= 67108864,
     ensures
-        old(steps)@ <= final(steps)@,
+        old(steps)@ == final(steps)@,
         final(out)@.len() == old(out)@.len(),
         match r { Ok(()) => true, Err(e) => e == Error::InvalidImageSize
             || e == Error::TrailingBytes },
@@ -5017,7 +7350,7 @@ fn finish_mask_policy(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
         assert(hrec(h).mode == h.mode);
         assert(hrec(h).mode == Mode::BmpFile || hrec(h).mode == Mode::BareDib);
     }
-    let image_len = pos - h.pixel_start;
+    let image_len = pos - p0;
     let skip_size = match policy.image_size {
         MetadataOptions::Declared => false,
         MetadataOptions::Ignore => true,
@@ -5033,7 +7366,7 @@ fn finish_mask_policy(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
                 reveal(crate::model::image_size_ok);
                 reveal(crate::dib::is_ico);
                 reveal(hrec);
-                assert(image_len as int == pos as int - h.pixel_start as int);
+                assert(image_len as int == pos as int - p0 as int);
                 assert(policy.image_size == MetadataOptions::Declared);
                 assert(h.declared != 0);
                 assert(h.declared as int != 0);
@@ -5054,14 +7387,18 @@ fn finish_mask_policy(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
         reveal(crate::model::image_size_ok);
         reveal(crate::model::is_ico);
         reveal(hrec);
-        assert(image_len as int == pos as int - h.pixel_start as int);
+        assert(image_len as int == pos as int - p0 as int);
         assert(hrec(h).declared_image == h.declared as int);
         // The image-size test passes in the model at this point.
         assert(crate::model::mp_image_size_ok_policy(hrec(h), image_len as int, policy));
     }
     match h.mode {
         Mode::BareDib => {
-            if pos != b.len() {
+            let reject_short = match policy.short_pixels {
+                ShortPixelsOptions::Reject => true,
+                ShortPixelsOptions::ZeroFill => false,
+            };
+            if pos < b.len() || (pos > b.len() && reject_short) {
                 proof {
                     reveal(crate::model::mask_done_policy_eq);
                     reveal(crate::model::mp_mask_phase_policy);
@@ -5084,7 +7421,7 @@ fn finish_mask_policy(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize,
                 reveal(header_inv_light);
                 lemma_hrec_mode(h);
                 assert(hrec(h).mode == Mode::BareDib);
-                assert(pos as int == b@.len());
+                assert(pos >= b.len());
             }
         },
         Mode::BmpFile => {
@@ -5456,7 +7793,7 @@ proof fn t4_conversion(b: Seq<u8>, h: Header)
     reveal(header_inv);
     reveal(header_inv_light);
     assert(crate::model::mh_bounds(header_record(h)));
-    assert(h.spec_palette_start() + h.spec_count() * h.spec_pal_stride() <= b.len());
+    assert(h.spec_count() > 0 ==> h.spec_palette_start() + h.spec_count() * h.spec_pal_stride() <= b.len());
     assert(h.spec_pal_stride() == 3 || h.spec_pal_stride() == 4);
     assert forall|ix: int|
         #![trigger crate::model::pal_entry(b, h.spec_palette_start(), h.spec_pal_stride(), ix)]
@@ -5669,13 +8006,14 @@ fn t11_decode_terminates(b: &[u8], h: &Header, out: &mut Vec<u8>) -> (r: Result<
         old(out)@.len() == 4 * h.spec_n(),
         old(out)@ == crate::model::zero_bytes(4 * h.spec_n()),
         h.compression <= 3,
+        h.pixel_start <= b@.len(),
     ensures
         final(out)@.len() == 4 * h.spec_n(),
         match r { Ok(p) => h.pixel_start <= p <= b@.len(), Err(_) => true },
 {
     if h.compression == 0 || h.compression == 3 {
         let mut steps = Ghost(0nat);
-        decode_raw(b, h, out, &mut steps)
+        decode_raw(b, h, out, h.pixel_start, &mut steps)
     } else {
         proof {
             assert(h.compression == 1u32 || h.compression == 2u32);
@@ -5706,8 +8044,19 @@ proof fn lemma_t12_phase_budget(l: int, n: int, h: int)
 
 /// T1: all inputs and all three modes; no precondition on the public API.
 /// T2: the actual first call is the MH-exact parser, not a parallel parser.
-/// T3: the only allocating call is reached once after that parser succeeds.
-fn decode_tracked(bytes: &[u8], mode: Mode, steps: &mut Ghost<nat>) -> (r: Result<Decoded, Error>)
+/// T3: the only allocating call is reached once after that parser succeeds; it
+/// is the guard's single `try_zeroed(Output, 4N)` call (alloc-delta A-DIB-1/3),
+/// whose request is `4N` from `header_inv_light`, proved before the call.
+///
+/// The reservation log threads through as `Tracked(log): Tracked<&mut
+/// AllocLog>`. Every exit returns `TryError`. The `4N` initialisation is charged
+/// to `steps` only after the guard returns `Ok` (`try_zeroed` writes the `4N`
+/// zero bytes itself), so the `OutOfMemory` branch carries no initialisation
+/// charge and the T12 bound holds on that branch too.
+fn decode_tracked(bytes: &[u8], mode: Mode, steps: &mut Ghost<nat>,
+    Tracked(log): Tracked<&mut crate::alloc_guard::AllocLog>) -> (r: Result<Decoded, TryError>)
+    requires
+        old(log).view() == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty(),
     ensures
         final(steps)@ as int <= old(steps)@ as int
             + 16 * (bytes@.len() + t12_checked_n(bytes@, mode)),
@@ -5719,22 +8068,86 @@ fn decode_tracked(bytes: &[u8], mode: Mode, steps: &mut Ghost<nat>) -> (r: Resul
             Err(_) => true,
         },
         // T9: `decode(bytes, mode)` equals `MP(bytes, mode)` as the exact
-        // `Result`, including every output byte, for every slice and mode.
-        decode_mp_eq(r, bytes@, mode),
+        // `Result`, including every output byte, for every slice and mode; the
+        // frozen predicate on `fmt_part(r)` (A-DIB-1 clause 1).
+        !matches!(r, Err(TryError::OutOfMemory(_)))
+            ==> decode_mp_eq(fmt_part(r), bytes@, mode),
+        // The gdk-pixbuf `has_alpha` field: on a success it is the 32-bpp/RLE
+        // rule on `MH`'s validated record, an error carries no image.
+        match r {
+            Ok(d) => d.rle_or_32bpp == crate::model::mh_rle_or_32bpp(bytes@, mode),
+            Err(_) => true,
+        },
         match crate::model::mh(bytes@, mode) {
-            Err(e) => r == Err(e),
+            Err(e) => fmt_part(r) == Err(e),
             Ok(_) => true,
+        },
+        // A-DIB-1/3/8: the one-reservation log shape, exported for `G`,
+        // `Prog` and ICO. `at_site` gives `req(L) == Req_DIB` on both arms and,
+        // on the `Err` arm, that the last entry is the failed `(Output, 4N)`.
+        at_site_log(bytes@, mode, matches!(r, Err(TryError::OutOfMemory(_))), final(log).view()),
+        // The `PreAlloc` corollary: a rejected header never reserves.
+        pre_alloc(bytes@, mode) ==> final(log).view().len() == 0,
+        // The failure names `Req_DIB`'s one `(Output, 4N)` request.
+        match r {
+            Err(TryError::OutOfMemory(o)) =>
+                (o.site_spec(), o.elements_spec() as nat) == req_dib(bytes@, mode)[0],
+            _ => true,
         },
 {
     let ghost start_steps: nat = steps@;
-    let ghost mut alloc_count: nat = 0;
     let h = match parse_header(bytes, mode) {
         Ok(h) => h,
         Err(e) => {
-            proof { assert(alloc_count == 0); }
-            return Err(e);
+            proof {
+                // No reservation: the log is empty and `MH` failed, so
+                // `req(L) == [] == Req_DIB`: `at_site_log` and the `PreAlloc`
+                // corollary hold.
+                reveal(pre_alloc);
+                reveal(crate::model::mh);
+                reveal(decode_mp_eq);
+                reveal(fmt_part);
+                reveal(req_dib);
+                lemma_at_site_log_prealloc(bytes@, mode, log.view());
+                match crate::model::mh(bytes@, mode) {
+                    Ok(_) => {},
+                    Err(e2) => {
+                        crate::model::lemma_mp_mh_err(bytes@, mode, e2);
+                        assert(decode_mp_eq(fmt_part(Err::<Decoded, TryError>(TryError::Format(e2))),
+                            bytes@, mode));
+                    },
+                }
+            }
+            return Err(TryError::Format(e));
         },
     };
+    proof {
+        // `req(L) == []`, so the `PreAlloc` corollary's three clauses hold at
+        // this exit: `MH` rejected the header, hence `MP` reports the same
+        // error (`lemma_mp_mh_err`), the log is empty, and no reservation was
+        // made. `alloc_output`'s exit below is the only other one before the
+        // pixel phase.
+        reveal(g_clause1);
+        reveal(g_clause2);
+        reveal(g_clause3);
+        reveal(prog);
+        reveal(pre_alloc);
+        reveal(req_dib);
+        reveal(crate::alloc_guard::all_ok);
+        reveal(crate::alloc_guard::req_of_log);
+        lemma_req_dib_len(bytes@, mode);
+        lemma_req_dib_clause3(bytes@, mode);
+        match crate::model::mh(bytes@, mode) {
+            Ok(_) => {},
+            Err(e2) => {
+                assert(req_dib(bytes@, mode).len() == 0);
+                reveal(decode_mp_eq);
+                crate::model::lemma_mp_mh_err(bytes@, mode, e2);
+                assert(decode_mp_eq(fmt_part(Err::<Decoded, TryError>(TryError::Format(e2))),
+                    bytes@, mode));
+            },
+        }
+    }
     proof {
         // T9/T10: the header error half — the record `parse_header` returns is
         // `MH`'s, so a failure here fails `MP` with the same error.
@@ -5744,14 +8157,42 @@ fn decode_tracked(bytes: &[u8], mode: Mode, steps: &mut Ghost<nat>) -> (r: Resul
             Err(e) => { crate::model::lemma_mp_mh_err(bytes@, mode, e); },
         }
     }
-    let mut out = alloc_output(&h, steps);
-    proof {
-        alloc_count = alloc_count + 1;
-        assert(0 <= alloc_count <= 1);
-    }
     // T9: record `MH`'s `Ok` record, which `parse_header` proves `hdr_matches`.
     let ghost m = choose|m: crate::model::MHRecord| crate::model::mh(bytes@, mode) == Ok(m)
         && hdr_matches(m, h);
+    let out = match alloc_output(&h, steps, Tracked(log)) {
+        Ok(o) => o,
+        Err(o) => {
+            proof {
+                // A-DIB-1 clause 2: `alloc_output` appended exactly one failed
+                // entry, the `(Output, 4N)` request, and `Req_DIB` is that one
+                // element, so the prefix and last-entry clauses hold.
+                reveal(crate::alloc_guard::all_ok);
+                reveal(crate::alloc_guard::req_of_log);
+                reveal(pre_alloc);
+                reveal(req_dib);
+                reveal(crate::model::mh);
+                assert(crate::model::mh(bytes@, mode) == Ok(m));
+                assert(t12_checked_n(bytes@, mode) == m.n);
+                reveal(hdr_matches);
+                assert(m.n == h.spec_n());
+                assert(!pre_alloc(bytes@, mode));
+                lemma_at_site_log_oom(bytes@, mode, m, log.view());
+                // `req(L) == Req_DIB` and the one entry is the failed request.
+                assert(crate::alloc_guard::req_of_log(log.view())
+                    == req_dib(bytes@, mode));
+                assert(log.view().len() == 1 && !log.view()[0].2);
+                assert((o.site_spec(), o.elements_spec() as nat) == req_dib(bytes@, mode)[0]);
+            }
+            return Err(TryError::OutOfMemory(o));
+        },
+    };
+    let mut out = out;
+    proof {
+        // `alloc_output`'s `r.1` names the model's `t12_checked_n` and its
+        // `r.0` the `4N` charge, so the phase budget below is unchanged.
+        assert(steps@ == start_steps + 4 * h.spec_n());
+    }
     proof {
         reveal(crate::model::mh);
         assert(crate::model::mh(bytes@, mode) == Ok(m));
@@ -5771,7 +8212,7 @@ fn decode_tracked(bytes: &[u8], mode: Mode, steps: &mut Ghost<nat>) -> (r: Resul
     let mut gcur: (usize, usize, usize) = (h.pixel_start, 0, 0);
     let raw = h.compression == 0 || h.compression == 3;
     let p = if raw {
-        decode_raw(bytes, &h, &mut out, steps)
+        decode_raw(bytes, &h, &mut out, h.pixel_start, steps)
     } else {
         decode_rle(bytes, &h, &mut out, &mut gcur, steps)
     };
@@ -5813,8 +8254,13 @@ fn decode_tracked(bytes: &[u8], mode: Mode, steps: &mut Ghost<nat>) -> (r: Resul
                         == crate::model::RleErr::Api(e));
                     crate::model::lemma_mp_rle_err(bytes@, mode, m, e);
                 }
+                reveal(crate::model::mh);
+                reveal(hdr_matches);
+                assert(crate::model::mh(bytes@, mode) == Ok(m));
+                assert(m.n == h.spec_n());
+                lemma_at_site_log_ok(bytes@, mode, m, log.view());
             }
-            return Err(e);
+            return Err(TryError::Format(e));
         },
     };
     let ghost out_xor = out@;
@@ -5882,11 +8328,28 @@ fn decode_tracked(bytes: &[u8], mode: Mode, steps: &mut Ghost<nat>) -> (r: Resul
                     crate::model::lemma_mp_mask_phase_err_rle(
                         bytes@, mode, m, pos as int, out_xor, e);
                 }
+                reveal(crate::model::mh);
+                reveal(hdr_matches);
+                assert(crate::model::mh(bytes@, mode) == Ok(m));
+                assert(m.n == h.spec_n());
+                lemma_at_site_log_ok(bytes@, mode, m, log.view());
             }
-            return Err(e);
+            return Err(TryError::Format(e));
         },
     }
-    proof { assert(alloc_count == 1); }
+    proof {
+        // The `Ok` exit: the one entry is `Ok`, so `at_site_log`; `g`/`prog`/
+        // `log_tied` are the entry point's `ensures`.
+        reveal(pre_alloc);
+        reveal(req_dib);
+        reveal(crate::alloc_guard::all_ok);
+        reveal(crate::alloc_guard::req_of_log);
+        assert(crate::model::mh(bytes@, mode) == Ok(m));
+        assert(t12_checked_n(bytes@, mode) == m.n);
+        reveal(hdr_matches);
+        assert(m.n == h.spec_n());
+        lemma_at_site_log_ok(bytes@, mode, m, log.view());
+    }
     proof {
         // T9: assemble `MP`'s exact `Ok` from the two helpers' results.
         reveal(decode_mp_eq);
@@ -5912,46 +8375,176 @@ fn decode_tracked(bytes: &[u8], mode: Mode, steps: &mut Ghost<nat>) -> (r: Resul
             reveal(mask_done_eq);
             lemma_mp_rle_assemble(bytes@, mode, m, &h, pos as int, out_xor, out@);
         }
+        reveal(crate::model::mh_rle_or_32bpp);
+        assert((h.bits == 32u32 || h.compression == 1u32 || h.compression == 2u32)
+            == crate::model::mh_rle_or_32bpp(bytes@, mode));
     }
-    Ok(Decoded { width: h.width, height: h.height, rgba: out })
+    Ok(Decoded { width: h.width, height: h.height, rgba: out, rle_or_32bpp: header_alpha(&h) })
 }
 
-/// The public decoder executes the same tracked body with a zeroed ghost counter.
-/// The ghost argument and its updates erase; they add no executable operations.
-pub fn decode(bytes: &[u8], mode: Mode) -> (r: Result<Decoded, Error>)
+/// The public logged decoder (alloc-delta A-DIB-1, A-DIB-8). It creates the
+/// sealed log with `new_log()`, runs the tracked body, and returns the log so a
+/// caller (the ICO crate, through `import_dib`) can cite `G`, `Prog` and
+/// `log_tied` across the crate boundary.
+///
+/// The frozen `decode` name is gone from the crate (decision D1). `try_decode`
+/// is this function with the log discarded; `try_decode_with_steps` keeps the
+/// work counter.
+pub fn try_decode_with_steps_logged(
+    bytes: &[u8],
+    mode: Mode,
+) -> (r: (Result<Decoded, TryError>, Ghost<nat>, Tracked<AllocLog>))
     ensures
-        decode_mp_eq(r, bytes@, mode),
-        match crate::model::mh(bytes@, mode) {
-            Err(e) => r == Err(e),
-            Ok(_) => true,
+        mode == Mode::IcoEntryDibSlack ==> g_logged(bytes@, r.0, r.2@.view())
+            && prog_logged(bytes@, r.0, r.2@.view()),
+        r.2@.view().len() <= 1,
+        crate::alloc_guard::req_of_log(r.2@.view()) == req_dib(bytes@, mode),
+        r.1@ as int <= 16 * (bytes@.len() + t12_checked_n(bytes@, mode)),
+        // T13 on the logged surface: a success has `1 <= w, h <= 8192` and a
+        // `4wh <= 67,108,864` output length, and the `has_alpha` field is the
+        // 32-bpp/RLE rule on `MH`'s validated record.
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==> match r.0 {
+            Ok(d) => 1 <= d.width as int <= 8192 && 1 <= d.height as int <= 8192
+                && d.rgba@.len() == 4 * (d.width as int * d.height as int)
+                && d.rgba@.len() <= 67108864
+                && d.rle_or_32bpp == crate::model::mh_rle_or_32bpp(bytes@, mode),
+            Err(_) => true,
         },
-        match r {
+        // A-DIB-1: theorem shape `G` and `Prog` over the returned result and log.
+        g(bytes@, mode, r.0, r.2@.view()),
+        prog(bytes@, mode, r.0, r.2@.view()),
+        // A-DIB-8: the log-only part of clauses 1-2, exported for ICO.
+        log_tied(r.0, r.2@.view()),
+        // A-DIB-3: at most one request, at `(Output, 4N)` with `1 <= 4N <=
+        // MAX_BYTES`; `req_dib`'s element is exactly that.
+        // The `PreAlloc` corollary: a rejected header never reserves.
+        pre_alloc(bytes@, mode) ==> !matches!(r.0, Err(TryError::OutOfMemory(_)))
+            && decode_mp_eq(fmt_part(r.0), bytes@, mode) && r.2@.view().len() == 0,
+        // The failure names the one request's `(site, elements)`.
+        match r.0 {
+            Err(TryError::OutOfMemory(o)) =>
+                (o.site_spec(), o.elements_spec() as nat) == req_dib(bytes@, mode)[0],
+            _ => true,
+        },
+{
+    let tracked mut log = crate::alloc_guard::new_log();
+    let mut steps = Ghost(0nat);
+    let result = decode_tracked(bytes, mode, &mut steps, Tracked(&mut log));
+    proof {
+        // `decode_tracked` returned `at_site_log`: `req(L) == Req_DIB` with at
+        // most one element, all-`Ok` exactly when the result is not
+        // `OutOfMemory`. From it, `G`, `Prog`, `log_tied`, clause 3 and the
+        // failure naming all follow.
+        reveal(at_site_log);
+        reveal(g);
+        reveal(g_clause1);
+        reveal(g_clause2);
+        reveal(g_clause3);
+        reveal(prog);
+        reveal(prog_concl);
+        reveal(log_tied);
+        reveal(pre_alloc);
+        reveal(req_dib);
+        reveal(fmt_part);
+        reveal(decode_mp_eq);
+        reveal(t12_checked_n);
+        reveal(crate::model::mh);
+        reveal(crate::alloc_guard::req_of_log);
+        reveal(crate::alloc_guard::all_ok);
+        reveal(crate::model::mh_rle_or_32bpp);
+        reveal(crate::model::rle_or_32bpp);
+        lemma_req_dib_len(bytes@, mode);
+        lemma_req_dib_clause3(bytes@, mode);
+        if let Err(TryError::OutOfMemory(o)) = result {
+            assert(log.view().len() == 1);
+            assert(!log.view()[0].2);
+            assert(log.view()[0].0 == o.site_spec());
+            assert(log.view()[0].1 == o.elements_spec() as nat);
+        }
+    }
+    (result, steps, Tracked(log))
+}
+
+/// The public decoder: `try_decode_with_steps_logged` with the log discarded.
+/// The ghost counter and the log erase; they add no executable operations.
+pub fn try_decode_with_steps(
+    bytes: &[u8],
+    mode: Mode,
+) -> (r: (Result<Decoded, TryError>, Ghost<nat>))
+    ensures
+        r.1@ as int <= 16 * (bytes@.len() + t12_checked_n(bytes@, mode)),
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==> decode_mp_eq(fmt_part(r.0), bytes@, mode),
+        match r.0 {
+            Err(TryError::OutOfMemory(o)) => o.site_spec() == AllocSite::Output,
+            _ => true,
+        },
+{
+    let r = try_decode_with_steps_logged(bytes, mode);
+    proof {
+        reveal(fmt_part);
+        reveal(req_dib);
+        reveal(g);
+        reveal(g_clause1);
+        reveal(g_clause2);
+        reveal(g_clause3);
+        reveal(prog);
+        reveal(prog_concl);
+        reveal(crate::alloc_guard::all_ok);
+        reveal(crate::alloc_guard::req_of_log);
+        if let Err(TryError::OutOfMemory(o)) = r.0 {
+            assert((o.site_spec(), o.elements_spec() as nat) == req_dib(bytes@, mode)[0]);
+            assert(o.site_spec() == AllocSite::Output);
+        }
+    }
+    (r.0, r.1)
+}
+
+/// The public decoder. Its result relation is `decode_mp_eq` on `fmt_part(r)`
+/// for every non-`OutOfMemory` result, and `OutOfMemory` names the failed
+/// `(Output, 4N)` reservation.
+pub fn try_decode(bytes: &[u8], mode: Mode) -> (r: Result<Decoded, TryError>)
+    ensures
+        !matches!(r, Err(TryError::OutOfMemory(_))) ==> decode_mp_eq(fmt_part(r), bytes@, mode),
+        // T13 on the public surface: a success has `MP`'s exact `(w, h, p)`,
+        // `1 <= w, h <= 8192` and a `4wh <= 67,108,864` output length. The
+        // antecedent's `decode_mp_eq` clause gives the `MP` triple; the bounds
+        // are the returned `Decoded`'s own fields.
+        !matches!(r, Err(TryError::OutOfMemory(_))) ==> match r {
             Ok(d) => 1 <= d.width as int <= 8192 && 1 <= d.height as int <= 8192
                 && d.rgba@.len() == 4 * (d.width as int * d.height as int)
                 && d.rgba@.len() <= 67108864,
             Err(_) => true,
         },
+        // The policy-free `has_alpha` field on `MH`'s validated record.
+        !matches!(r, Err(TryError::OutOfMemory(_))) ==> match r {
+            Ok(d) => d.rle_or_32bpp == crate::model::mh_rle_or_32bpp(bytes@, mode),
+            Err(_) => true,
+        },
+        match r {
+            Err(TryError::OutOfMemory(o)) => o.site_spec() == AllocSite::Output
+                && o.elements_spec() as int == 4 * t12_checked_n(bytes@, mode),
+            _ => true,
+        },
 {
-    let mut steps = Ghost(0nat);
-    decode_tracked(bytes, mode, &mut steps)
-}
-
-/// The public tracked decoder (R19/T12): the T12 witness body, exported so a
-/// caller (the ICO crate) can invoke the same decode path and receive the ghost
-/// work counter. The result is `decode(bytes, mode)` and the ghost count `r.1@`
-/// is the number of charged concrete steps; the T12 bound
-/// `r.1@ <= 16*(|bytes| + N)`, `N = 0` on a rejected header and the validated
-/// `w*h` otherwise, and `decode_mp_eq` (T9: the result equals the model `MP`)
-/// are its proved postconditions. The ghost return and every counter update
-/// erase, so the executable behaviour is byte-for-byte `decode`'s.
-pub fn decode_with_steps(bytes: &[u8], mode: Mode) -> (r: (Result<Decoded, Error>, Ghost<nat>))
-    ensures
-        r.1@ as int <= 16 * (bytes@.len() + t12_checked_n(bytes@, mode)),
-        decode_mp_eq(r.0, bytes@, mode),
-{
-    let mut steps = Ghost(0nat);
-    let result = decode_tracked(bytes, mode, &mut steps);
-    (result, steps)
+    let r = try_decode_with_steps_logged(bytes, mode);
+    proof {
+        reveal(fmt_part);
+        reveal(decode_mp_eq);
+        reveal(crate::model::mh_rle_or_32bpp);
+        reveal(crate::model::rle_or_32bpp);
+        // A non-`OutOfMemory` result is `Ok(d)` or `Err(Format(e))`; on the `Ok`
+        // arm `decode_tracked`'s own T13 bounds and alpha-field postcondition
+        // (carried through `try_decode_with_steps_logged`) are what the clauses
+        // above restate. Case-split by reference so `r` survives.
+        match r.0 {
+            Ok(ref d) => {
+                assert(fmt_part(r.0) is Ok);
+            },
+            Err(TryError::Format(_)) => {},
+            Err(TryError::OutOfMemory(_)) => {},
+        }
+    }
+    r.0
 }
 
 /// The profiled entry point's ghost header record: `MH_policy`'s `Ok` record,
@@ -5980,25 +8573,190 @@ pub open spec fn decode_policy_mp_eq(
     }
 }
 
+/// The `has_alpha` postcondition of the profiled entry point and its helpers: on
+/// a success the `Decoded.rle_or_32bpp` field equals the gdk-pixbuf 32-bpp/RLE
+/// rule on the validated header selection `MH_policy` (or its `MH_policy`-backed
+/// partial fallback). An error carries no image, so the clause is vacuous.
+pub open spec fn decode_policy_alpha_eq(
+    r: Result<Decoded, Error>,
+    b: Seq<u8>,
+    bm: BmpMode,
+    policy: Policy,
+) -> bool {
+    match r {
+        Ok(d) => d.rle_or_32bpp == crate::model::mh_policy_rle_or_32bpp(b, bm, policy),
+        Err(_) => true,
+    }
+}
+
+/// Select the BITFIELDS pixel location from copied scalar header fields.
+fn bitfield_pixel_start(meta: bool, masks: bool, ps: usize, pe: usize) -> (r: usize)
+    ensures r as int == crate::model::bitfield_pixel_start(meta, masks, ps as int, pe as int),
+{
+    if meta && masks { pe } else { ps }
+}
+
+/// Keep executable field reads and the model's record projections in one small proof.
+fn policy_pixel_start(h: &Header, policy: Policy, Ghost(m): Ghost<crate::model::MHRecord>)
+    -> (r: usize)
+    requires hdr_matches(m, *h),
+    ensures r as int == crate::model::offset_effective(m, policy),
+{
+    let ps = h.pixel_start;
+    let pe = h.palette_end;
+    let compression = h.compression;
+    let masks = compression == 3u32;
+    let meta = match policy.bitfield_offset {
+        BitfieldOffsetOptions::MetadataEnd => true,
+        _ => false,
+    };
+    proof {
+        reveal(hdr_matches);
+        assert(m.has_masks == masks);
+        assert(m.pixel_start == ps as int);
+        assert(m.palette_end == pe as int);
+        assert(m.compression == compression as int);
+        assert(meta == (policy.bitfield_offset == BitfieldOffsetOptions::MetadataEnd));
+    }
+    let start = bitfield_pixel_start(meta, masks, ps, pe);
+    let result = match policy.offset {
+        OffsetOptions::Gdk => if compression == 0u32 && start < pe { pe } else { start },
+        _ => start,
+    };
+    proof {
+        reveal(crate::model::offset_effective);
+        assert(result as int == crate::model::offset_effective(m, policy));
+    }
+    result
+}
+
+/// A short indexed table followed by an offset gap selects initialized output.
+fn policy_indexed_gap(h: &Header, p: Policy) -> (r: bool)
+    requires header_inv_light(h),
+    ensures r == crate::model::indexed_gap_blank(hrec(h), p),
+{
+    let bits = h.bits;
+    let gap = match p.short_indexed_gap {
+        ShortIndexedGapOptions::Blank => h.is_bmp && bits <= 8u32 && h.used > 0u32
+            && h.used < (1u32 << bits) && h.pixel_start > h.palette_end,
+        _ => false,
+    };
+    proof {
+        reveal(hrec);
+        reveal(header_record);
+        reveal(crate::model::indexed_gap_blank);
+        reveal(crate::model::pow2);
+        reveal(header_inv_light);
+        if bits <= 8u32 {
+            assert(bits == 1u32 || bits == 2u32 || bits == 4u32 || bits == 8u32);
+            assert((1u32 << bits) as int == crate::model::pow2(bits as int))
+                by (bit_vector) requires bits == 1u32 || bits == 2u32 || bits == 4u32 || bits == 8u32;
+        }
+    }
+    gap
+}
+
+/// Inspect the raw RGB words before substitution; do not infer fallback from output masks.
+fn policy_header_recovered(b: &[u8], h: &Header, p: Policy) -> (r: bool)
+    requires header_inv_light(h),
+    ensures r == crate::model::mh_recovered_so_far(b@, hrec(h), p),
+{
+    let mut recovered = false;
+    if h.is_bmp {
+        match p.offset {
+            OffsetOptions::Declared => {},
+            OffsetOptions::AllowAny => {
+                recovered = h.pixel_start < 18 || h.pixel_start > b.len();
+            },
+            OffsetOptions::Gdk => {
+                recovered = h.pixel_start < 18 || h.pixel_start > b.len()
+                    || (h.bits <= 8 && h.pixel_start < h.palette_end)
+                    || (h.compression == 0 && h.pixel_start < h.palette_end);
+            },
+        }
+    }
+    match p.bitfield_offset {
+        BitfieldOffsetOptions::MetadataEnd => {
+            if h.is_bmp && h.compression == 3 && h.pixel_start != h.palette_end {
+                recovered = true;
+            }
+        },
+        _ => {},
+    }
+    recovered = recovered || policy_indexed_gap(h, p);
+    match p.masks {
+        MasksOptions::DefaultRGB => {
+            if h.compression == 3 {
+                let off = if h.hsize == 40 || h.hsize == 64 { h.hsize } else { 40 };
+                if h.s <= b.len() && off <= b.len() - h.s {
+                    let q = h.s + off;
+                    if b.len() - q >= 12 {
+                        let r = rd32(b, q);
+                        let g = rd32(b, q + 4);
+                        let blue = rd32(b, q + 8);
+                        recovered = recovered || r == 0 || g == 0 || blue == 0;
+                    }
+                }
+            }
+        },
+        _ => {},
+    }
+    match p.header_bytes {
+        HeaderBytesOptions::ParsedFields => {
+            recovered = recovered || h.s > b.len() || h.hsize > b.len() - h.s;
+        },
+        _ => {},
+    }
+    recovered
+}
+
 /// The profiled entry point (POLICY-SPEC "Named profiles", THEOREMS-POLICY-DELTA):
-/// `decode_with_policy(bytes, bm, profile)` for the two BMP modes and the
-/// `Strict`/`Recommended` profiles, returning the result and the recovery flag.
+/// `decode_with_policy(bytes, bm, profile)` for the two BMP modes and all four
+/// named profiles, returning the result and the recovery flag.
 ///
 /// * T9: the `Result` equals `MP_policy(bytes, bm, profile_policy(profile))` on
-///   every error and every RGBA byte, for every slice and both modes.
-/// * `recovered` is the closed-event flag of POLICY-SPEC: `false` for both P1
-///   profiles on every input (only `Ignore`d `bfSize`/`biSizeImage` values are
-///   tolerated here, and none of those is a listed data-affecting event).
+///   every error and every RGBA byte, for every slice, both modes and every
+///   profile.
+/// * The gdk-pixbuf `has_alpha` field: on a success `d.rle_or_32bpp` is the
+///   frozen predicate `bits == 32 || compression == 1 || compression == 2` on the
+///   validated header record (`MH_policy`, or the `MH_policy`-backed partial
+///   fallback), the same predicate the `offset = Gdk` blank fill selects. It never
+///   reads a pixel value.
+/// * `recovered` is the closed-event flag of POLICY-SPEC on the selected record.
+///   For `Strict` and `Recommended` it is `false` on every input (only `Ignore`d
+///   `bfSize`/`biSizeImage` values are tolerated there, and none of those is a
+///   listed data-affecting event). `GdkCompat` and `ImageCrateCompat` carry
+///   recovery-producing options, so their flag follows `recovered_policy`.
 /// * T3/T13: the sole allocation is the one `4N` output buffer, made once after
 ///   the header phase succeeds; a header error allocates nothing, and any
 ///   success has the exact `4*w*h <= 64 MiB` output.
 /// * T1/T11/T12: no read beyond the slice, no panic, termination, and the same
 ///   charged-work bound as `decode`.
-pub fn decode_with_policy(bytes: &[u8], bm: BmpMode, profile: BmpProfile)
-    -> (r: (Result<Decoded, Error>, bool))
+///
+/// Flagged, not changed: the return type is the tuple `(Result<Decoded, Error>,
+/// bool)`. THEOREMS-POLICY-DELTA sketches a named `ProfiledDecoded` record
+/// carrying dimensions, RGBA bytes and `recovered`. Folding the flag into a
+/// struct is a pure API shape change with no proof content — the two
+/// postconditions above are stated on `r.0`/`r.1` and would read the same
+/// through field projections — so it is left for whichever milestone fixes the
+/// public surface, at which point every caller and the `t*_policy*` witnesses
+/// update mechanically.
+pub fn try_decode_with_policy(bytes: &[u8], bm: BmpMode, profile: BmpProfile)
+    -> (r: (Result<Decoded, TryError>, bool))
     ensures
-        r.1 == false,
-        decode_policy_mp_eq(r.0, bytes@, bm, profile_policy(profile)),
+        match r.0 {
+            Err(TryError::OutOfMemory(o)) =>
+                (o.site_spec(), o.elements_spec() as nat)
+                    == req_dibp(bytes@, bm, profile_policy(profile))[0],
+            _ => true,
+        },
+        match r.0 {
+            Err(TryError::OutOfMemory(_)) => r.1 == false,
+            _ => r.1 == crate::model::recovered_policy(bytes@, bm, profile_policy(profile)),
+        },
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            decode_policy_mp_eq(fmt_part(r.0), bytes@, bm, profile_policy(profile))
+            && decode_policy_alpha_eq(fmt_part(r.0), bytes@, bm, profile_policy(profile)),
         match r.0 {
             Ok(d) => 1 <= d.width as int <= 8192 && 1 <= d.height as int <= 8192
                 && d.rgba@.len() == 4 * (d.width as int * d.height as int)
@@ -6007,172 +8765,1617 @@ pub fn decode_with_policy(bytes: &[u8], bm: BmpMode, profile: BmpProfile)
         },
 {
     let policy = profile_policy_exec(profile);
-    proof {
-        reveal(crate::dib::profile_policy);
+    let r = try_decode_policy_tracked(bytes, bm, policy);
+    (r.0, r.1)
+}
+
+/// The header-validated pixel count, zero precisely on a failed header.
+/// The policy helpers' one-reservation log shape. `at_site(r_is_oom, l, k,
+/// reach)` names the log `l` after the one `try_zeroed(Output, k)` call, keyed
+/// on whether the helper's result is `OutOfMemory` (not on the moved `Decoded`,
+/// so a helper's `ensures` can name it without moving its result):
+///
+/// - `!reach`: no reservation was made, so `l` is empty and `r_is_oom` is false;
+/// - `reach`: one entry `(Output, k)`, `Ok` exactly when `!r_is_oom`, and when
+///   `r_is_oom` the helper's `OutOfMemory` names `(Output, k)`.
+pub open spec fn at_site(
+    r_is_oom: bool,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+    k: int,
+    reach: bool,
+) -> bool {
+    if !reach {
+        l.len() == 0 && !r_is_oom
+    } else {
+        l.len() == 1 && l[0].0 == crate::alloc_guard::AllocSite::Output && l[0].1 == k as nat
+            && l[0].2 == !r_is_oom
     }
-    let mut steps = Ghost(0nat);
+}
+
+/// `at_site`, discharged from the guard's `ensures` for the one call: an empty
+/// entry log, a single `try_zeroed(Output, k)`, and a result that is
+/// `OutOfMemory` exactly when the guard returned `Err`.
+pub proof fn lemma_at_site_one(
+    k: int,
+    r_is_oom: bool,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+)
+    requires
+        1 <= k <= crate::alloc_guard::MAX_BYTES,
+        l == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+            (crate::alloc_guard::AllocSite::Output, k as nat, !r_is_oom)),
+    ensures at_site(r_is_oom, l, k, true),
+{
+    reveal(at_site);
+}
+
+/// `at_site` for a path that returned before any reservation.
+pub proof fn lemma_at_site_prealloc(
+    k: int,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+    r_is_oom: bool,
+)
+    requires
+        l.len() == 0,
+        !r_is_oom,
+    ensures at_site(r_is_oom, l, k, false),
+{
+    reveal(at_site);
+}
+
+/// N for the policy path: the validated pixel count, `0` on a rejected header.
+/// It equals `policy_checked_n`'s value on every input, and drives both the
+/// policy work bound and the guard's request size.
+pub open spec fn policy_checked_n(b: Seq<u8>, bm: BmpMode, p: Policy) -> int {
+    match crate::model::mh_partial(b, bm, p) {
+        Some(rf) => rf.width * rf.height,
+        None => match crate::model::mh_policy(b, bm, p) { Ok(m) => m.n, Err(_) => 0 },
+    }
+}
+
+// ---------------------------------------------------------------------------
+// alloc-delta: the policy path's spec surface (THEOREMS-ALLOC-DELTA.md A-DIB-2,
+// SPEC.md §2). One reservation, reached on the complete path unless the `Gdk`
+// RGB offset rejection fires, or on the `Blank` second pass when `mh_partial`
+// yields a checked field record.
+// ---------------------------------------------------------------------------
+
+/// `Reach(b, bm, p)` (SPEC.md §2): the executable reaches the one reservation
+/// iff the complete path passed `mh_policy` and `¬gdk_rgb_reject`, or the
+/// `Blank` second pass reached `alloc_output_n`. The second case is exactly
+/// `mh_partial(b, bm, p) is Some` (gate: `lemma_blank_second_pass`).
+pub open spec fn policy_reach(b: Seq<u8>, bm: BmpMode, p: Policy) -> bool {
+    match crate::model::mh_policy(b, bm, p) {
+        Ok(m) => !crate::model::gdk_rgb_reject(b, m, p),
+        Err(_) => crate::model::mh_partial(b, bm, p) is Some,
+    }
+}
+
+/// `Req_DIBp(b, bm, p)`: the one `(Output, 4N)` request iff `policy_reach`, else
+/// empty (SPEC.md §4).
+pub open spec fn req_dibp(b: Seq<u8>, bm: BmpMode, p: Policy)
+    -> Seq<(crate::alloc_guard::AllocSite, nat)> {
+    if policy_reach(b, bm, p) {
+        seq![(crate::alloc_guard::AllocSite::Output, 4 * policy_checked_n(b, bm, p) as nat)]
+    } else {
+        Seq::empty()
+    }
+}
+
+/// The policy path's `PreAlloc` corollary: `Req_DIBp` empty means the input is
+/// rejected before any reservation, so no `OutOfMemory` is returned and the log
+/// is empty. This is the lemma behind the Blank second-pass early returns
+/// (THEOREMS-ALLOC-DELTA.md A-DIB-2, A-DIB-20, SPEC.md §2).
+pub open spec fn pre_alloc_policy(b: Seq<u8>, bm: BmpMode, p: Policy) -> bool {
+    req_dibp(b, bm, p).len() == 0
+}
+
+/// Full policy `G`: exact non-OOM format result, alpha and recovery; the
+/// failed-prefix rule for OOM; and the maximum size of every requested buffer.
+pub open spec fn g_policy(
+    b: Seq<u8>,
+    bm: BmpMode,
+    p: Policy,
+    r: Result<Decoded, TryError>,
+    recovered: bool,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+) -> bool {
+    g_policy_clause3(b, bm, p) && match r {
+        Err(TryError::OutOfMemory(o)) =>
+            // Clause 2: a non-empty log whose requests are a prefix of
+            // `Req_DIBp`, every entry but the last `Ok`, the last not `Ok` and
+            // equal to the returned `(site, elements)`.
+            !recovered && l.len() >= 1
+            && crate::alloc_guard::req_of_log(l).is_prefix_of(req_dibp(b, bm, p))
+            && (forall|j: int| 0 <= j < l.len() - 1 ==> l[j].2)
+            && !l[l.len() - 1].2
+            && l[l.len() - 1].0 == o.site_spec()
+            && l[l.len() - 1].1 == o.elements_spec() as nat,
+        _ =>
+            // Clause 1 includes the full frozen functional relation.
+            policy_result(fmt_part(r)) == crate::model::mp_policy(b, bm, p)
+            && decode_policy_mp_eq(fmt_part(r), b, bm, p)
+            && decode_policy_alpha_eq(fmt_part(r), b, bm, p)
+            && recovered == crate::model::recovered_policy(b, bm, p)
+            && crate::alloc_guard::req_of_log(l) == req_dibp(b, bm, p)
+            && crate::alloc_guard::all_ok(l),
+    }
+}
+
+/// `Prog` for the policy path (THEOREMS-ALLOC-DELTA.md §0): if every entry is
+/// `Ok` the result is not `OutOfMemory` and `req(L) == Req_DIBp`.
+pub open spec fn prog_policy(
+    b: Seq<u8>,
+    bm: BmpMode,
+    p: Policy,
+    r: Result<Decoded, TryError>,
+    recovered: bool,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+) -> bool {
+    crate::alloc_guard::all_ok(l) ==> prog_policy_concl(b, bm, p, r, recovered, l)
+}
+
+/// The `Prog` conclusion for the policy path, split out for the same reason as
+/// `prog_concl`.
+pub open spec fn prog_policy_concl(
+    b: Seq<u8>,
+    bm: BmpMode,
+    p: Policy,
+    r: Result<Decoded, TryError>,
+    recovered: bool,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+) -> bool {
+    !matches!(r, Err(TryError::OutOfMemory(_)))
+        && policy_result(fmt_part(r)) == crate::model::mp_policy(b, bm, p)
+        && decode_policy_mp_eq(fmt_part(r), b, bm, p)
+        && decode_policy_alpha_eq(fmt_part(r), b, bm, p)
+        && recovered == crate::model::recovered_policy(b, bm, p)
+        && crate::alloc_guard::req_of_log(l) == req_dibp(b, bm, p)
+}
+
+/// Clause 3 of the policy path's `G`: every request is within its site's
+/// maximum, proved before the guard call.
+pub open spec fn g_policy_clause3(b: Seq<u8>, bm: BmpMode, p: Policy) -> bool {
+    forall|j: int| 0 <= j < req_dibp(b, bm, p).len()
+        ==> req_dibp(b, bm, p)[j].1 <= crate::alloc_guard::MAX_BYTES
+}
+
+/// The clause-3 content for the policy path, from the model's caps. On the
+/// complete path the record is `mh_policy`'s, bounded by `mh_bounds`; on the
+/// second pass it is `mh_partial`'s, bounded by `lemma_r2r5_policy_ok` on the
+/// R2-R5 record it re-parses.
+pub proof fn lemma_req_dibp_clause3(b: Seq<u8>, bm: BmpMode, p: Policy)
+    ensures g_policy_clause3(b, bm, p),
+{
+    reveal(req_dibp);
+    reveal(policy_reach);
+    reveal(policy_checked_n);
+    reveal(g_policy_clause3);
+    reveal(crate::model::mh_partial);
+    if policy_reach(b, bm, p) {
+        match crate::model::mh_policy(b, bm, p) {
+            Ok(m) => {
+                crate::model::lemma_mh_policy_bounds(b, bm, p, m);
+                reveal(crate::model::mh_bounds);
+                assert(4 * m.n <= 67108864);
+            },
+            Err(e) => {
+                assert(crate::model::mh_partial(b, bm, p) is Some);
+                let s: int = if bm == BmpMode::BmpFile { 14 } else { 0 };
+                match crate::model::r2r5_policy(b, bmp_mode_to_mode(bm), s, p) {
+                    Ok(rf2) => {
+                        crate::model::lemma_r2r5_policy_ok(b, bmp_mode_to_mode(bm), s, p, rf2);
+                        assert(policy_checked_n(b, bm, p) == rf2.width * rf2.height);
+                        assert(4 * (rf2.width * rf2.height) <= 67108864);
+                    },
+                    Err(_) => {},
+                }
+            },
+        }
+    }
+}
+
+/// The policy path's one-reservation log shape, keyed on whether the result is
+/// `OutOfMemory` rather than on the moved `Decoded`: `req(L)` is exactly
+/// `Req_DIBp`, `L` has at most one entry, and a failure has a non-`Ok` last
+/// entry while a non-failure has every entry `Ok`. This is what each policy
+/// helper's `ensures` carries; `lemma_g_policy_of_shape` turns it into `G` and
+/// `Prog`.
+pub open spec fn policy_shape(
+    b: Seq<u8>,
+    bm: BmpMode,
+    p: Policy,
+    r_is_oom: bool,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+) -> bool {
+    l.len() <= 1
+        && crate::alloc_guard::req_of_log(l) == req_dibp(b, bm, p)
+        && (if r_is_oom {
+            l.len() == 1 && !l[0].2
+        } else {
+            crate::alloc_guard::all_ok(l)
+        })
+}
+
+/// The policy path's `G` and `Prog`, derived from `policy_shape`, the helper's
+/// own `decode_policy_mp_eq`/`decode_policy_alpha_eq` postconditions and the
+/// `OutOfMemory` naming clause. Every policy helper proves `policy_shape`; the
+/// logged entry point calls this once.
+pub proof fn lemma_g_policy_of_shape(
+    b: Seq<u8>,
+    bm: BmpMode,
+    p: Policy,
+    r: Result<Decoded, TryError>,
+    recovered: bool,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+)
+    requires
+        recovered == (if matches!(r, Err(TryError::OutOfMemory(_))) { false }
+            else { crate::model::recovered_policy(b, bm, p) }),
+        policy_shape(b, bm, p, matches!(r, Err(TryError::OutOfMemory(_))), l),
+        !matches!(r, Err(TryError::OutOfMemory(_))) ==>
+            policy_result(fmt_part(r)) == crate::model::mp_policy(b, bm, p)
+            && policy_result(fmt_part(r)) == crate::model::mp_policy(b, bm, p)
+        && decode_policy_mp_eq(fmt_part(r), b, bm, p)
+            && decode_policy_alpha_eq(fmt_part(r), b, bm, p),
+        match r {
+            Err(TryError::OutOfMemory(o)) =>
+                (o.site_spec(), o.elements_spec() as nat) == req_dibp(b, bm, p)[0],
+            _ => true,
+        },
+    ensures
+        g_policy(b, bm, p, r, recovered, l),
+        prog_policy(b, bm, p, r, recovered, l),
+{
+    reveal(policy_shape);
+    reveal(g_policy_clause3);
+    reveal(prog_policy);
+    reveal(prog_policy_concl);
+    reveal(log_tied);
+    reveal(req_dibp);
+    reveal(fmt_part);
+    reveal(crate::alloc_guard::req_of_log);
+    reveal(crate::alloc_guard::all_ok);
+    lemma_req_dibp_len(b, bm, p);
+    lemma_req_dibp_clause3(b, bm, p);
+    assert(l.len() == req_dibp(b, bm, p).len());
+    if let Err(TryError::OutOfMemory(o)) = r {
+        // `l.len() == 1 == Req_DIBp.len()`, and `req_of_log(l) == Req_DIBp`, so
+        // the only entry is `Req_DIBp`'s one element, which equals the returned
+        // `(site, elements)`.
+        assert(l.len() == 1);
+        assert(l[0].0 == o.site_spec());
+        assert(l[0].1 == o.elements_spec() as nat);
+    }
+}
+
+/// The post-reservation exits all share `policy_shape` for the pushed `Ok`
+/// entry, so a helper can state it after `alloc_output_n` returns `Ok` or after
+/// `fill_blank`.
+pub proof fn lemma_shape_pushed_ok(
+    b: Seq<u8>,
+    bm: BmpMode,
+    p: Policy,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+)
+    requires
+        policy_reach(b, bm, p),
+        l == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+            (crate::alloc_guard::AllocSite::Output,
+             4 * policy_checked_n(b, bm, p) as nat, true)),
+    ensures policy_shape(b, bm, p, false, l),
+{
+    reveal(policy_shape);
+    reveal(req_dibp);
+    reveal(crate::alloc_guard::req_of_log);
+    reveal(crate::alloc_guard::all_ok);
+    assert(crate::alloc_guard::req_of_log(l) =~= req_dibp(b, bm, p));
+    assert(l.len() <= 1);
+}
+
+/// The failed-reservation exit's `policy_shape`.
+pub proof fn lemma_shape_pushed_oom(
+    b: Seq<u8>,
+    bm: BmpMode,
+    p: Policy,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+)
+    requires
+        policy_reach(b, bm, p),
+        l == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+            (crate::alloc_guard::AllocSite::Output,
+             4 * policy_checked_n(b, bm, p) as nat, false)),
+    ensures policy_shape(b, bm, p, true, l),
+{
+    reveal(policy_shape);
+    reveal(req_dibp);
+    reveal(crate::alloc_guard::req_of_log);
+    reveal(crate::alloc_guard::all_ok);
+    assert(crate::alloc_guard::req_of_log(l) =~= req_dibp(b, bm, p));
+    assert(l.len() <= 1);
+}
+
+/// The pre-reservation exit's `policy_shape`.
+pub proof fn lemma_shape_prealloc(
+    b: Seq<u8>,
+    bm: BmpMode,
+    p: Policy,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
+)
+    requires
+        !policy_reach(b, bm, p),
+        l.len() == 0,
+    ensures policy_shape(b, bm, p, false, l),
+{
+    reveal(policy_shape);
+    reveal(req_dibp);
+    reveal(crate::alloc_guard::req_of_log);
+    reveal(crate::alloc_guard::all_ok);
+    assert(crate::alloc_guard::req_of_log(l) =~= req_dibp(b, bm, p));
+    assert(l.len() <= 1);
+}
+
+/// The one-request shape for the policy path./// The one-request shape for the policy path.
+pub proof fn lemma_req_dibp_len(b: Seq<u8>, bm: BmpMode, p: Policy)
+    ensures req_dibp(b, bm, p).len() <= 1,
+{
+    reveal(req_dibp);
+}
+
+/// The `Blank` second pass's reachability (THEOREMS-ALLOC-DELTA.md A-DIB-2,
+/// SPEC.md §2): the four conditions `decode_partial_metadata` revalidates before
+/// its reservation hold together iff `mh_partial(b, bm, p) is Some`. Each early
+/// return therefore has `Req_DIBp` empty, giving the `PreAlloc` corollary on the
+/// second pass.
+pub open spec fn partial_revalidated(b: Seq<u8>, bm: BmpMode, p: Policy, original: Error) -> bool {
+    crate::model::mh_policy(b, bm, p) == Err(original)
+        && (original == Error::TruncatedMasks || original == Error::TruncatedPalette)
+        && (b.len() <= crate::dib::MAX_INPUT)
+        && (bm == BmpMode::BareDib || crate::model::r1_prefix_policy(b, p) is Ok)
+        && match crate::model::r2r5_policy(b, bmp_mode_to_mode(bm),
+            if bm == BmpMode::BmpFile { 14int } else { 0int }, p) {
+            Ok(rf) => original == Error::TruncatedPalette || rf.hsize == 40 || rf.hsize == 64,
+            Err(_) => false,
+        }
+}
+
+/// The second-pass reachability lemma: under `decode_partial_metadata`'s
+/// precondition, the four early returns fire exactly when `mh_partial` is
+/// `None`, so passing all four is equivalent to `mh_partial(b, bm, p) is Some`.
+pub proof fn lemma_blank_second_pass(
+    b: Seq<u8>, bm: BmpMode, p: Policy, original: Error,
+)
+    requires
+        crate::model::mh_policy(b, bm, p) == Err(original),
+        original == Error::TruncatedMasks || original == Error::TruncatedPalette,
+        p.incomplete_metadata == IncompleteMetadataOptions::Blank,
+    ensures
+        crate::model::mh_partial(b, bm, p) is Some <==> partial_revalidated(b, bm, p, original),
+{
+    reveal(crate::model::mh_partial);
+    reveal(crate::model::mh_policy);
+    reveal(partial_revalidated);
+    reveal(crate::dib::bmp_mode_to_mode);
+    if crate::model::mh_partial(b, bm, p) is Some {
+        assert(b.len() <= crate::dib::MAX_INPUT);
+        assert(bm == BmpMode::BareDib || crate::model::r1_prefix_policy(b, p) is Ok);
+        let s: int = if bm == BmpMode::BmpFile { 14 } else { 0 };
+        match crate::model::r2r5_policy(b, bmp_mode_to_mode(bm), s, p) {
+            Ok(rf2) => {
+                assert(original == Error::TruncatedPalette || rf2.hsize == 40 || rf2.hsize == 64);
+            },
+            Err(_) => {},
+        }
+    }
+}
+
+fn alloc_output_n(n: usize, steps: &mut Ghost<nat>,
+    Tracked(log): Tracked<&mut crate::alloc_guard::AllocLog>)
+    -> (out: Result<Vec<u8>, crate::alloc_guard::OutOfMemory>)
+    requires
+        1 <= n <= 16777216,
+        old(log).view() == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty(),
+    ensures
+        match out {
+            Ok(v) => v@ == crate::model::zero_bytes(4 * n) && v@.len() == 4 * n,
+            Err(o) => o.elements_spec() == 4 * n
+                && o.site_spec() == crate::alloc_guard::AllocSite::Output,
+        },
+        final(steps)@ == old(steps)@ + if out is Ok { 4 * n } else { 0 },
+        final(log).view() == old(log).view().push(
+            (crate::alloc_guard::AllocSite::Output, (4 * n) as nat, out is Ok)),
+        at_site(matches!(out, Err(_)), final(log).view(), 4 * n as int, true),
+        match out {
+            Err(o) => o.site_spec() == crate::alloc_guard::AllocSite::Output
+                && o.elements_spec() == 4 * n,
+            _ => true,
+        },
+{
+    match crate::alloc_guard::try_zeroed(crate::alloc_guard::AllocSite::Output, 4 * n,
+        Tracked(log))
+    {
+        Ok(v) => {
+            proof {
+                *steps = Ghost(steps@ + (4 * n) as nat);
+                reveal(crate::model::zero_bytes);
+                assert(v@ =~= crate::model::zero_bytes(4 * n));
+                reveal(at_site);
+                reveal(crate::alloc_guard::req_of_log);
+                assert(final(log).view() =~= Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+                    (crate::alloc_guard::AllocSite::Output, (4 * n) as nat, true)));
+            }
+            Ok(v)
+        },
+        Err(o) => {
+            proof {
+                reveal(at_site);
+                reveal(crate::alloc_guard::req_of_log);
+                assert(final(log).view() =~= Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+                    (crate::alloc_guard::AllocSite::Output, (4 * n) as nat, false)));
+            }
+            Err(o)
+        },
+    }
+}
+
+/// The `Blank` second pass (THEOREMS-ALLOC-DELTA.md A-DIB-2, SPEC.md §2). It
+/// revalidates with `bmp_prefix_policy`, `dib_fields` and the header-size rule;
+/// its four early returns fire exactly when `mh_partial(b, bm, policy)` is
+/// `None` (`lemma_blank_second_pass`), so the one reservation is reached iff
+/// `policy_reach` holds, and `Req_DIBp` is `[(Output, 4N)]` on that path. The
+/// reservation is followed only by `fill_blank` and `Ok`, so `OutOfMemory` is
+/// the sole alternative to success.
+/// The `Blank` second pass's revalidation, split out of `decode_partial_metadata`
+/// so that neither body exceeds its per-function resource budget. It runs the
+/// same three checks in the same order: the `BmpFile` prefix, `dib_fields`, and
+/// the mask header-size rule. `Ok(f)` is exactly `mh_partial(b, bm, policy) ==
+/// Some(f.spec_raw())`; `Err` is exactly `mh_partial ... is None`
+/// (`lemma_blank_second_pass`).
+fn revalidate_partial(bytes: &[u8], bm: BmpMode, policy: Policy, original: Error)
+    -> (r: Result<Fields, Error>)
+    requires
+        crate::model::mh_policy(bytes@, bm, policy) == Err(original),
+        original == Error::TruncatedMasks || original == Error::TruncatedPalette,
+        policy.incomplete_metadata == IncompleteMetadataOptions::Blank,
+    ensures
+        match r {
+            Ok(f) => crate::model::mh_partial(bytes@, bm, policy) == Some(f.spec_raw())
+                && f.spec_n() == f.width_i as int * f.height_v as int
+                && f.n as int == f.spec_n()
+                && 1 <= f.n <= 16777216
+                && 4 * f.spec_n() <= 67108864
+                && policy_checked_n(bytes@, bm, policy) == f.spec_n(),
+            Err(_) => crate::model::mh_partial(bytes@, bm, policy) is None,
+        },
+{
+    proof {
+        lemma_blank_second_pass(bytes@, bm, policy, original);
+        reveal(crate::model::mh_partial);
+        reveal(crate::model::mh_policy);
+        reveal(partial_revalidated);
+        reveal(crate::dib::bmp_mode_to_mode);
+        reveal(crate::model::r2r5_policy);
+    }
+    if bytes.len() > MAX_INPUT {
+        return Err(original);
+    }
+    let mode = bmp_mode_mode(bm);
+    let is_bmp = match bm { BmpMode::BmpFile => true, _ => false };
+    let (start, file_offset) = match bm {
+        BmpMode::BmpFile => match bmp_prefix_policy(bytes, policy) {
+            Ok(pair) => pair,
+            Err(_) => {
+                return Err(original);
+            },
+        },
+        BmpMode::BareDib => (0usize, 0u64),
+    };
+    let f = match dib_fields(bytes, mode, start, file_offset, is_bmp, policy) {
+        Ok(f) => f,
+        Err(_) => {
+            return Err(original);
+        },
+    };
+    let masks_missing = match original { Error::TruncatedMasks => true, _ => false };
+    if masks_missing && f.size != 40 && f.size != 64 {
+        return Err(original);
+    }
+    proof {
+        crate::model::lemma_r2r5_policy_ok(bytes@, mode, start as int, policy, f.spec_raw());
+        assert(crate::model::mh_partial(bytes@, bm, policy) == Some(f.spec_raw()));
+        reveal(policy_checked_n);
+        assert(policy_checked_n(bytes@, bm, policy) == f.spec_n());
+        assert(f.spec_n() == f.width_i as int * f.height_v as int);
+        assert(f.n as int == f.spec_n());
+        assert(1 <= f.n) by (nonlinear_arith)
+            requires f.n as int == f.spec_n(), f.spec_n() == f.width_i as int * f.height_v as int,
+                f.width_i >= 1, f.height_v >= 1;
+        assert(f.n <= 16777216) by (nonlinear_arith)
+            requires f.n as int == f.spec_n(), f.spec_n() == f.width_i as int * f.height_v as int,
+                4 * (f.width_i as int * f.height_v as int) <= 67108864;
+    }
+    Ok(f)
+}
+
+/// The `Blank` second pass (THEOREMS-ALLOC-DELTA.md A-DIB-2, SPEC.md §2). It
+/// revalidates through `revalidate_partial`; when that yields a field record the
+/// one reservation is reached, and `Req_DIBp` is `[(Output, 4N)]`. When it does
+/// not, `mh_partial` is `None`, so `policy_reach` is false and no reservation is
+/// made. The reservation is followed only by `fill_blank` and `Ok`, so
+/// `OutOfMemory` is the sole alternative to success.
+fn decode_partial_metadata(bytes: &[u8], bm: BmpMode, policy: Policy, original: Error,
+    steps: &mut Ghost<nat>, Tracked(log): Tracked<&mut crate::alloc_guard::AllocLog>)
+    -> (r: (Result<Decoded, TryError>, bool))
+    requires crate::model::mh_policy(bytes@, bm, policy) == Err(original),
+        original == Error::TruncatedMasks || original == Error::TruncatedPalette,
+        policy.incomplete_metadata == IncompleteMetadataOptions::Blank,
+        old(log).view() == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty(),
+    ensures
+        match r.0 {
+            Err(TryError::OutOfMemory(o)) => o.site_spec() == crate::alloc_guard::AllocSite::Output
+                && o.elements_spec() as int == 4 * policy_checked_n(bytes@, bm, policy),
+            _ => true,
+        },
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            decode_policy_mp_eq(fmt_part(r.0), bytes@, bm, policy)
+            && decode_policy_alpha_eq(fmt_part(r.0), bytes@, bm, policy),
+        match r.0 {
+            Err(TryError::OutOfMemory(_)) => r.1 == false,
+            _ => r.1 == crate::model::recovered_policy(bytes@, bm, policy),
+        },
+        final(steps)@ as int <= old(steps)@ as int + 8 * policy_checked_n(bytes@, bm, policy),
+        match r.0 {
+            Ok(d) => 1 <= d.width <= 8192 && 1 <= d.height <= 8192
+                && d.rgba@.len() == 4 * (d.width as int * d.height as int) && d.rgba@.len() <= 67108864,
+            Err(_) => true,
+        },
+        policy_shape(bytes@, bm, policy, matches!(r.0, Err(TryError::OutOfMemory(_))),
+            final(log).view()),
+{
+    proof {
+        reveal(crate::model::mh_policy); reveal(crate::model::r2r7_policy);
+        reveal(crate::model::mh_partial); reveal(crate::model::mp_policy);
+        reveal(crate::model::recovered_policy); reveal(decode_policy_mp_eq);
+        reveal(decode_policy_alpha_eq);
+        reveal(policy_checked_n); reveal(crate::dib::bmp_mode_to_mode);
+        reveal(policy_shape); reveal(policy_reach); reveal(partial_revalidated);
+        reveal(req_dibp);
+        reveal(crate::alloc_guard::all_ok); reveal(crate::alloc_guard::req_of_log);
+    }
+    let f = match revalidate_partial(bytes, bm, policy, original) {
+        Ok(f) => f,
+        Err(_) => {
+            proof {
+                // `revalidate_partial` failed, so `mh_partial` is `None`, so
+                // `policy_reach` is false: no reservation, empty log, and no
+                // `OutOfMemory`.
+                reveal(policy_reach);
+                assert(crate::model::mh_partial(bytes@, bm, policy) is None);
+                assert(!policy_reach(bytes@, bm, policy));
+                lemma_shape_prealloc(bytes@, bm, policy, log.view());
+                reveal(policy_shape);
+                reveal(crate::alloc_guard::all_ok);
+                reveal(crate::alloc_guard::req_of_log);
+            }
+            return (Err(TryError::Format(original)), false);
+        },
+    };
+    proof {
+        assert(crate::model::mh_partial(bytes@, bm, policy) == Some(f.spec_raw()));
+        assert(f.spec_raw().width == f.width_i as int && f.spec_raw().height == f.height_v as int);
+        reveal(policy_reach);
+        reveal(req_dibp);
+        reveal(policy_checked_n);
+        reveal(crate::model::mh_partial);
+        assert(crate::model::mh_partial(bytes@, bm, policy) is Some);
+        assert(policy_reach(bytes@, bm, policy));
+        assert(1 <= f.n <= 16777216);
+        assert(4 * policy_checked_n(bytes@, bm, policy) == 4 * f.n as int);
+    }
+    let out = match alloc_output_n(f.n, steps, Tracked(log)) {
+        Ok(o) => o,
+        Err(o) => {
+            proof {
+                // A-DIB-2 clause 2: the log's one entry is the failed
+                // `(Output, 4N)` request and `Req_DIBp` is that one element.
+                lemma_shape_pushed_oom(bytes@, bm, policy, log.view());
+                reveal(policy_shape);
+                reveal(req_dibp);
+                reveal(crate::alloc_guard::req_of_log);
+                reveal(crate::alloc_guard::all_ok);
+                assert(log.view().len() == 1);
+                assert(!log.view()[0].2);
+                assert(log.view()[0].0 == o.site_spec());
+                assert(log.view()[0].1 == o.elements_spec() as nat);
+                assert(crate::alloc_guard::req_of_log(log.view())
+                    == req_dibp(bytes@, bm, policy));
+            }
+            return (Err(TryError::OutOfMemory(o)), false);
+        },
+    };
+    let mut out = out;
+    let transparent = f.bits == 32 || f.compression == 1 || f.compression == 2;
+    fill_blank(&mut out, transparent, steps);
+    proof {
+        reveal(crate::model::partial_fill);
+        crate::model::lemma_mh_policy_rle_or_32bpp_partial(bytes@, bm, policy, f.spec_raw());
+        assert(crate::model::mh_policy_rle_or_32bpp(bytes@, bm, policy)
+            == (f.bits == 32u32 || f.compression == 1u32 || f.compression == 2u32));
+        assert(transparent == crate::model::rle_or_32bpp(f.spec_raw().depth, f.spec_raw().compression));
+        // The success exit: the one log entry is `Ok`, so `policy_shape`.
+        lemma_shape_pushed_ok(bytes@, bm, policy, log.view());
+        reveal(policy_shape);
+        reveal(crate::alloc_guard::req_of_log);
+        reveal(crate::alloc_guard::all_ok);
+    }
+    (Ok(Decoded { width: f.width_i as u32, height: f.height_v, rgba: out, rle_or_32bpp: transparent }), true)
+}
+
+fn finish_raw_zero(b: &[u8], bm: BmpMode, h: &Header, mut out: Vec<u8>, start: usize,
+    policy: Policy, alpha: bool, steps: &mut Ghost<nat>,
+    Tracked(log): Tracked<&mut crate::alloc_guard::AllocLog>)
+    -> (r: (Result<Decoded, TryError>, bool))
+    requires
+        header_inv(b@, *h), header_inv_light(h),
+        h.mode == Mode::BmpFile || h.mode == Mode::BareDib,
+        crate::model::mh_policy(b@, bm, policy) == Ok(hrec(h)),
+        h.compression == 0 || h.compression == 3,
+        !crate::model::gdk_blank(b@, hrec(h), policy),
+        !crate::model::gdk_rgb_reject(b@, hrec(h), policy),
+        !crate::model::raw_legacy(policy),
+        start as int == crate::model::offset_effective(hrec(h), policy),
+        out@.len() == 4 * h.spec_n(), b@.len() <= 67108864,
+        crate::model::mh_partial(b@, bm, policy) is None,
+        policy_reach(b@, bm, policy),
+        old(log).view() == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+            (crate::alloc_guard::AllocSite::Output, 4 * h.spec_n() as nat, true)),
+    ensures
+        !matches!(r.0, Err(TryError::OutOfMemory(_))),
+        final(steps)@ as int <= old(steps)@ as int + 5 * h.spec_n() + h.spec_height() + 1,
+        decode_policy_mp_eq(fmt_part(r.0), b@, bm, policy),
+        policy_shape(b@, bm, policy, false, final(log).view()),
+        match r.0 {
+            Ok(d) => d.rle_or_32bpp == alpha,
+            Err(_) => true,
+        },
+        r.1 == crate::model::recovered_policy(b@, bm, policy),
+        match r.0 {
+            Ok(d) => d.width == h.width && d.height == h.height && d.rgba@.len() == 4 * h.spec_n(),
+            Err(_) => true,
+        },
+{
+    proof {
+        reveal(header_inv); reveal(header_inv_light); reveal(hrec); reveal(header_record);
+        reveal(decode_policy_mp_eq);
+        reveal(crate::model::mp_policy); reveal(crate::model::mp_raw_policy);
+        reveal(crate::model::mp_decoded); reveal(crate::model::mp_mask_phase_policy);
+        reveal(crate::model::mp_image_size_ok_policy); reveal(crate::model::image_size_ok_policy);
+        reveal(crate::model::image_size_ok); reveal(crate::model::is_ico);
+        reveal(crate::model::recovered_policy); reveal(crate::model::pixel_recovered);
+        reveal(policy_shape);
+        reveal(req_dibp);
+        reveal(policy_checked_n);
+        reveal(crate::model::mh_partial);
+        reveal(crate::alloc_guard::req_of_log);
+        reveal(crate::alloc_guard::all_ok);
+        // `hdr_matches` pins `policy_checked_n` to the concrete `spec_n`; that
+        // is what `policy_shape`'s `req_of_log` clause needs at every exit. The
+        // one `Ok` log entry is never touched below, so `policy_shape` holds at
+        // every exit from this single opening fact.
+        assert(policy_checked_n(b@, bm, policy) == h.spec_n());
+        assert(old(log).view() == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+            (crate::alloc_guard::AllocSite::Output, 4 * policy_checked_n(b@, bm, policy) as nat, true)));
+        lemma_shape_pushed_ok(b@, bm, policy, old(log).view());
+    }
+    let zero = match policy.short_pixels { ShortPixelsOptions::ZeroFill => true, _ => false };
+    let black = match policy.palette_index { PaletteIndexOptions::Black => true, _ => false };
+    let opaque = match policy.bitfield16_alpha { Bitfield16AlphaOptions::Opaque => true, _ => false };
+    let (result, event) = decode_raw_zero(b, h, &mut out, start, zero, black, policy.scaling, opaque, steps);
+    let advance = match result {
+        Err(e) => return (Err(TryError::Format(e)), false),
+        Ok(advance) => advance,
+    };
+    let exact = match policy.image_size {
+        MetadataOptions::Declared => true,
+        MetadataOptions::Ignore => false,
+    };
+    if exact && h.declared != 0 && h.declared as u64 != advance {
+        return (Err(TryError::Format(Error::InvalidImageSize)), false);
+    }
+    match h.mode {
+        Mode::BareDib => {
+            if (start <= b.len() && advance < (b.len() - start) as u64)
+                || (!zero && (start > b.len() || advance > (b.len() - start) as u64)) {
+                return (Err(TryError::Format(Error::TrailingBytes)), false);
+            }
+        },
+        _ => {},
+    }
+    let recovered = policy_header_recovered(b, h, policy);
+    (Ok(Decoded { width: h.width, height: h.height, rgba: out, rle_or_32bpp: alpha }), recovered || event)
+}
+
+fn finish_rle_clipped(b: &[u8], bm: BmpMode, h: &Header, mut out: Vec<u8>, policy: Policy,
+    alpha: bool, steps: &mut Ghost<nat>,
+    Tracked(log): Tracked<&mut crate::alloc_guard::AllocLog>)
+    -> (r: (Result<Decoded, TryError>, bool))
+    requires
+        header_inv(b@, *h), header_inv_light(h),
+        h.mode == Mode::BmpFile || h.mode == Mode::BareDib,
+        crate::model::mh_policy(b@, bm, policy) == Ok(hrec(h)),
+        h.compression == 1 || h.compression == 2,
+        !crate::model::gdk_blank(b@, hrec(h), policy),
+        !crate::model::rle_legacy(policy),
+        out@.len() == 4 * h.spec_n(), b@.len() <= 67108864,
+        crate::model::mh_partial(b@, bm, policy) is None,
+        policy_reach(b@, bm, policy),
+        old(log).view() == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+            (crate::alloc_guard::AllocSite::Output, 4 * h.spec_n() as nat, true)),
+    ensures
+        !matches!(r.0, Err(TryError::OutOfMemory(_))),
+        final(steps)@ as int <= old(steps)@ as int + 5 * h.spec_n() + b@.len() + 1,
+        decode_policy_mp_eq(fmt_part(r.0), b@, bm, policy),
+        policy_shape(b@, bm, policy, false, final(log).view()),
+        match r.0 {
+            Ok(d) => d.rle_or_32bpp == alpha,
+            Err(_) => true,
+        },
+        r.1 == crate::model::recovered_policy(b@, bm, policy),
+        match r.0 {
+            Ok(d) => d.width == h.width && d.height == h.height && d.rgba@.len() == 4 * h.spec_n(),
+            Err(_) => true,
+        },
+{
+    proof {
+        reveal(header_inv); reveal(header_inv_light); reveal(hrec); reveal(header_record);
+        reveal(decode_policy_mp_eq);
+        reveal(crate::model::mp_policy); reveal(crate::model::mp_rle_policy);
+        reveal(crate::model::mp_decoded); reveal(crate::model::gdk_rgb_reject);
+        reveal(crate::model::offset_effective);
+        reveal(crate::model::recovered_policy); reveal(crate::model::pixel_recovered);
+        reveal(policy_shape);
+        reveal(req_dibp);
+        reveal(policy_checked_n);
+        reveal(crate::model::mh_partial);
+        reveal(crate::alloc_guard::req_of_log);
+        reveal(crate::alloc_guard::all_ok);
+        assert(policy_checked_n(b@, bm, policy) == h.spec_n());
+        assert(old(log).view() == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+            (crate::alloc_guard::AllocSite::Output, 4 * policy_checked_n(b@, bm, policy) as nat, true)));
+        lemma_shape_pushed_ok(b@, bm, policy, old(log).view());
+    }
+    let black = match policy.palette_index { PaletteIndexOptions::Black => true, _ => false };
+    let (result, event) = decode_rle_clipped(b, h, &mut out, policy.rle_overrun, policy.rle_eol, policy.rle_eob, black, policy.rle_delta, steps, policy.rle_fill);
+    let pos = match result {
+        Err(e) => return (Err(TryError::Format(e)), false),
+        Ok(pos) => pos,
+    };
+    let end = finish_mask_policy(b, h, &mut out, pos, h.pixel_start, steps, policy);
+    proof { reveal(crate::model::mask_done_policy_eq); }
+    match end {
+        Err(e) => return (Err(TryError::Format(e)), false),
+        Ok(()) => {},
+    }
+    let recovered = policy_header_recovered(b, h, policy);
+    (Ok(Decoded { width: h.width, height: h.height, rgba: out, rle_or_32bpp: alpha }), recovered || event)
+}
+
+/// All retained policy combinations use this executable and its charged-work proof.
+proof fn lemma_policy_header_geometry(b: Seq<u8>, bm: BmpMode, p: Policy, m: crate::model::MHRecord)
+    requires crate::model::mh_policy(b, bm, p) == Ok(m),
+    ensures
+        m.mode == bmp_mode_to_mode(bm),
+        m.palette_end == m.palette_start + m.table_count * m.palette_stride,
+        (p.header_bytes == HeaderBytesOptions::ParsedFields && m.table_count == 0) || m.palette_end <= b.len(),
+{
+    reveal(crate::model::mh_policy);
+    reveal(crate::model::r2r7_policy);
+    reveal(crate::model::r6r7_policy);
+    reveal(crate::model::r6r7_result_policy);
+}
+
+/// A-DIB-2 (THEOREMS-ALLOC-DELTA.md §1): the policy path's `_tracked` body,
+/// quantified over **every** `Policy` record. It has three exits: the complete
+/// path (`decode_complete_policy`, whose own reservation is the one request
+/// unless the `Gdk` RGB offset rejection returns `InvalidPixelOffset` first),
+/// the `Blank` second pass (`decode_partial_metadata`), and a header error with
+/// no reservation. All three preserve the one-reservation log shape
+/// (`at_site`) and the work bound; the `4N` initialisation is charged only
+/// after a successful reservation.
+fn decode_policy_tracked(bytes: &[u8], bm: BmpMode, policy: Policy, steps: &mut Ghost<nat>,
+    Tracked(log): Tracked<&mut crate::alloc_guard::AllocLog>)
+    -> (r: (Result<Decoded, TryError>, bool))
+    requires
+        old(log).view() == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty(),
+    ensures
+        match r.0 {
+            Err(TryError::OutOfMemory(o)) => o.site_spec() == crate::alloc_guard::AllocSite::Output
+                && o.elements_spec() as int == 4 * policy_checked_n(bytes@, bm, policy),
+            _ => true,
+        },
+        final(steps)@ as int <= old(steps)@ as int
+            + 16 * (bytes@.len() + policy_checked_n(bytes@, bm, policy)),
+        match r.0 {
+            Err(TryError::OutOfMemory(_)) => r.1 == false,
+            _ => r.1 == crate::model::recovered_policy(bytes@, bm, policy),
+        },
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            decode_policy_mp_eq(fmt_part(r.0), bytes@, bm, policy)
+            && decode_policy_alpha_eq(fmt_part(r.0), bytes@, bm, policy),
+        match r.0 {
+            Ok(d) => 1 <= d.width as int <= 8192 && 1 <= d.height as int <= 8192
+                && d.rgba@.len() == 4 * (d.width as int * d.height as int)
+                && d.rgba@.len() <= 67108864,
+            Err(_) => true,
+        },
+        policy_shape(bytes@, bm, policy, matches!(r.0, Err(TryError::OutOfMemory(_))),
+            final(log).view()),
+{
+    let ghost start_steps = steps@;
     let recovered: bool = false;
     let h = match parse_header_policy(bytes, bm, policy) {
         Ok(h) => h,
         Err(e) => {
+            let blank = match policy.incomplete_metadata { IncompleteMetadataOptions::Blank => true, _ => false };
+            let recoverable = match e { Error::TruncatedMasks | Error::TruncatedPalette => true, _ => false };
+            if blank && recoverable {
+                return decode_partial_metadata(bytes, bm, policy, e, steps, Tracked(log));
+            }
+
             proof {
                 reveal(decode_policy_mp_eq);
+                reveal(decode_policy_alpha_eq);
+                reveal(fmt_part);
+                reveal(crate::model::mh_partial);
+                reveal(policy_reach);
+                reveal(policy_shape);
+                reveal(pre_alloc_policy);
+                reveal(req_dibp);
+                reveal(policy_checked_n);
+                reveal(crate::alloc_guard::all_ok);
+                reveal(crate::alloc_guard::req_of_log);
                 match crate::model::mh_policy(bytes@, bm, policy) {
                     Ok(_) => {},
                     Err(e2) => {
                         crate::model::lemma_mp_policy_mh_err(bytes@, bm, policy, e2);
+                        // `parse_header_policy` returned `e == e2`, and this is
+                        // the fall-through of `if blank && recoverable`: either
+                        // the policy is not `Blank`, or `e` is not the
+                        // recoverable pair. Either way `mh_partial` is `None`
+                        // (`Blank` is necessary and the error must be the pair),
+                        // so `policy_reach` is false.
+                        if policy.incomplete_metadata == IncompleteMetadataOptions::Blank {
+                            assert(!(e == Error::TruncatedMasks || e == Error::TruncatedPalette));
+                        }
+                        assert(crate::model::mh_partial(bytes@, bm, policy) is None);
+                        assert(!policy_reach(bytes@, bm, policy));
+                        lemma_shape_prealloc(bytes@, bm, policy, log.view());
+                        reveal(policy_shape);
+                        reveal(crate::alloc_guard::all_ok);
+                        reveal(crate::alloc_guard::req_of_log);
                     },
                 }
             }
-            return (Err(e), recovered);
+            return (Err(TryError::Format(e)), recovered);
         },
     };
+    let alpha = header_alpha(&h);
+    proof { lemma_alpha_value(bytes@, bm, policy, &h, alpha); }
+    let r = decode_complete_policy(bytes, bm, policy, h, alpha, steps, Tracked(log));
+    r
+}
+
+/// The complete-header half of the `has_alpha` tie, isolated from
+/// `decode_complete_policy`'s near-budget body. `MH_policy` has no partial
+/// fallback here (`mh_partial` is `None`), so the field's rule is
+/// `rle_or_32bpp` on `MH_policy`'s record `m`, whose `depth`/`compression`
+/// `hdr_matches` pins to the executable `Header`'s `spec_depth`/`spec_compression`.
+proof fn lemma_complete_alpha(b: Seq<u8>, bm: BmpMode, p: Policy, h: &Header, m: crate::model::MHRecord)
+    requires
+        crate::model::mh_policy(b, bm, p) == Ok(m),
+        crate::model::mh_partial(b, bm, p) is None,
+        hdr_matches(m, *h),
+    ensures
+        crate::model::mh_policy_rle_or_32bpp(b, bm, p)
+            == crate::model::rle_or_32bpp(h.spec_depth(), h.spec_compression()),
+{
+    reveal(crate::model::mh_policy_rle_or_32bpp);
+    reveal(crate::model::rle_or_32bpp);
+    crate::model::lemma_mh_policy_rle_or_32bpp_complete(b, bm, p, m);
+    reveal(hdr_matches);
+    assert(m.depth == h.spec_depth() && m.compression == h.spec_compression());
+}
+
+/// The complete-header `has_alpha` value tie: given `hdr_matches` and the
+/// header's own `rle_or_32bpp` value `alpha`, the model selection
+/// `mh_policy_rle_or_32bpp` equals `alpha`. A pure value lemma (no `Decoded`), so
+/// `decode_policy_tracked` runs it before the `Header` moves into
+/// `decode_complete_policy` and then combines it with that call's
+/// `d.rle_or_32bpp == alpha` postcondition.
+proof fn lemma_alpha_value(bytes: Seq<u8>, bm: BmpMode, policy: Policy, h: &Header, alpha: bool)
+    requires
+        match crate::model::mh_policy(bytes, bm, policy) { Ok(m) => hdr_matches(m, *h), Err(_) => false },
+        alpha == crate::model::rle_or_32bpp(h.spec_depth(), h.spec_compression()),
+    ensures alpha == crate::model::mh_policy_rle_or_32bpp(bytes, bm, policy),
+{
+    reveal(crate::model::mh_policy_rle_or_32bpp);
+    match crate::model::mh_policy(bytes, bm, policy) {
+        Ok(m) => {
+            crate::model::lemma_mh_partial_none(bytes, bm, policy, m);
+            lemma_complete_alpha(bytes, bm, policy, h, m);
+        },
+        Err(_) => {},
+    }
+}
+
+
+/// Isolate the complete-header geometry from the allocation and policy dispatch.
+proof fn lemma_complete_policy_geometry(b: Seq<u8>, bm: BmpMode, p: Policy,
+    h: &Header, m: crate::model::MHRecord)
+    requires
+        crate::model::mh_policy(b, bm, p) == Ok(m),
+        hdr_matches(m, *h), header_inv(b, *h), header_inv_light(h),
+    ensures
+        hrec(h) == m,
+        h.mode == Mode::BmpFile || h.mode == Mode::BareDib,
+        m.palette_end == h.spec_palette_end(),
+        h.spec_palette_end() == h.palette_end as int,
+        m.palette_end == m.palette_start + m.table_count * m.palette_stride,
+        (p.header_bytes == HeaderBytesOptions::ParsedFields && m.table_count == 0)
+            || m.palette_start + m.table_count * m.palette_stride <= b.len(),
+        policy_checked_n(b, bm, p) == h.spec_n(),
+        h.spec_height() <= h.spec_n(),
+{
+    lemma_policy_header_geometry(b, bm, p, m);
+    lemma_hrec_matches(m, h);
+    assert(hrec(h) == m);
+    reveal(hdr_matches);
+    reveal(hrec);
+    reveal(header_record);
+    reveal(crate::dib::bmp_mode_to_mode);
+    assert(h.mode == m.mode);
+    assert(m.mode == Mode::BmpFile || m.mode == Mode::BareDib);
+    reveal(header_inv);
+    assert(m.palette_end == h.spec_palette_end());
+    assert(h.spec_palette_end() == h.palette_end as int);
+    assert((p.header_bytes == HeaderBytesOptions::ParsedFields && m.table_count == 0) || m.palette_end <= b.len());
+    assert(policy_checked_n(b, bm, p) == h.spec_n());
+    reveal(header_inv_light);
+    assert(h.spec_height() <= h.spec_n()) by (nonlinear_arith)
+        requires 1 <= h.spec_width(), 1 <= h.spec_height(),
+            h.spec_n() == h.spec_width() * h.spec_height();
+    lemma_t12_phase_budget(b.len() as int, h.spec_n(), h.spec_height());
+}
+
+proof fn lemma_complete_policy_gdk_flags(b: Seq<u8>, p: Policy, h: &Header,
+    m: crate::model::MHRecord, gap: bool, offset: bool, rgb: bool)
+    requires
+        hdr_matches(m, *h),
+        gap == crate::model::indexed_gap_blank(m, p),
+        offset == (p.offset == OffsetOptions::Gdk && h.is_bmp && h.bits <= 8u32
+            && (h.pixel_start < h.palette_end || h.pixel_start > b.len())),
+        rgb == (p.offset == OffsetOptions::Gdk && h.is_bmp && h.bits > 8u32
+            && h.compression == 0u32 && h.pixel_start > b.len()),
+    ensures
+        (gap || offset) == crate::model::gdk_blank(b, m, p),
+        rgb == crate::model::gdk_rgb_reject(b, m, p),
+{
+    reveal(crate::model::gdk_blank);
+    reveal(crate::model::gdk_rgb_reject);
+    reveal(hdr_matches);
+    assert(m.depth == h.spec_depth() && m.pixel_start == h.spec_pixel_start()
+        && m.palette_end == h.spec_palette_end() && m.compression == h.spec_compression());
+    assert(h.spec_depth() == h.bits as int && h.spec_pixel_start() == h.pixel_start as int
+        && h.spec_palette_end() == h.palette_end as int && h.spec_compression() == h.compression as int);
+}
+
+proof fn lemma_complete_policy_rgb_prealloc(b: Seq<u8>, bm: BmpMode, p: Policy,
+    m: crate::model::MHRecord, l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>)
+    requires
+        crate::model::mh_policy(b, bm, p) == Ok(m),
+        crate::model::gdk_rgb_reject(b, m, p), l.len() == 0,
+    ensures
+        decode_policy_mp_eq(Err(Error::InvalidPixelOffset), b, bm, p),
+        policy_shape(b, bm, p, false, l),
+{
+    reveal(decode_policy_mp_eq);
+    crate::model::lemma_mp_policy_gdk_rgb(b, bm, p, m);
+    reveal(policy_reach);
+    assert(!policy_reach(b, bm, p));
+    lemma_shape_prealloc(b, bm, p, l);
+}
+
+fn reserve_complete_policy(bytes: &[u8], bm: BmpMode, policy: Policy, h: &Header,
+    Ghost(m): Ghost<crate::model::MHRecord>, steps: &mut Ghost<nat>,
+    Tracked(log): Tracked<&mut crate::alloc_guard::AllocLog>)
+    -> (r: (Result<Vec<u8>, TryError>, bool))
+    requires
+        header_inv(bytes@, *h), header_inv_light(h),
+        crate::model::mh_policy(bytes@, bm, policy) == Ok(m), hdr_matches(m, *h),
+        old(log).view() == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty(),
+    ensures
+        r.1 == crate::model::gdk_blank(bytes@, m, policy),
+        policy_checked_n(bytes@, bm, policy) == h.spec_n(),
+        final(steps)@ == old(steps)@ + if r.0 is Ok { 4 * h.spec_n() } else { 0 },
+        match r.0 {
+            Ok(out) => out@ == crate::model::zero_bytes(4 * h.spec_n())
+                && policy_reach(bytes@, bm, policy)
+                && final(log).view() == seq![(crate::alloc_guard::AllocSite::Output,
+                    4 * h.spec_n() as nat, true)],
+            Err(TryError::Format(e)) => decode_policy_mp_eq(Err(e), bytes@, bm, policy)
+                && !crate::model::recovered_policy(bytes@, bm, policy)
+                && policy_shape(bytes@, bm, policy, false, final(log).view()),
+            Err(TryError::OutOfMemory(o)) =>
+                o.site_spec() == crate::alloc_guard::AllocSite::Output
+                && o.elements_spec() == 4 * h.spec_n()
+                && policy_shape(bytes@, bm, policy, true, final(log).view()),
+        },
+{
+    proof { lemma_complete_policy_geometry(bytes@, bm, policy, h, m); }
+    let from_gap = policy_indexed_gap(h, policy);
+    let from_gdk_offset: bool = match policy.offset {
+        OffsetOptions::Gdk => h.is_bmp && h.bits <= 8u32 && (h.pixel_start < h.palette_end || h.pixel_start
+            > bytes.len()),
+        _ => false,
+    };
+    let from_gdk = from_gap || from_gdk_offset;
+    let from_gdk_rgb: bool = match policy.offset {
+        OffsetOptions::Gdk => h.is_bmp && h.bits > 8u32 && h.compression == 0u32 && h.pixel_start
+            > bytes.len(),
+        _ => false,
+    };
+    proof {
+        assert(from_gap == crate::model::indexed_gap_blank(m, policy)) by {
+            reveal(hdr_matches);
+            reveal(hrec);
+            reveal(header_record);
+        };
+        lemma_complete_policy_gdk_flags(bytes@, policy, h, m,
+            from_gap, from_gdk_offset, from_gdk_rgb);
+    }
+    if from_gdk_rgb {
+        proof {
+            lemma_complete_policy_rgb_prealloc(bytes@, bm, policy, m, log.view());
+        }
+        return (Err(TryError::Format(Error::InvalidPixelOffset)), from_gdk);
+    }
+    let out = match alloc_output(h, steps, Tracked(log)) {
+        Ok(o) => o,
+        Err(o) => {
+            proof {
+                assert(policy_reach(bytes@, bm, policy)) by { reveal(policy_reach); }
+                assert(log.view() == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+                    (crate::alloc_guard::AllocSite::Output,
+                     4 * policy_checked_n(bytes@, bm, policy) as nat, false)));
+                lemma_shape_pushed_oom(bytes@, bm, policy, log.view());
+            }
+            return (Err(TryError::OutOfMemory(o)), from_gdk);
+        },
+    };
+    proof { assert(policy_reach(bytes@, bm, policy)) by { reveal(policy_reach); } }
+    (Ok(out), from_gdk)
+}
+
+fn decode_complete_policy(bytes: &[u8], bm: BmpMode, policy: Policy, h: Header, alpha: bool,
+    steps: &mut Ghost<nat>, Tracked(log): Tracked<&mut crate::alloc_guard::AllocLog>)
+    -> (r: (Result<Decoded, TryError>, bool))
+    requires header_inv(bytes@, h), header_inv_light(&h),
+        match crate::model::mh_policy(bytes@, bm, policy) { Ok(mv) => hdr_matches(mv, h), Err(_) => false },
+        alpha == crate::model::rle_or_32bpp(h.spec_depth(), h.spec_compression()),
+        old(log).view() == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty(),
+    ensures
+        match r.0 {
+            Err(TryError::OutOfMemory(o)) => o.site_spec() == crate::alloc_guard::AllocSite::Output
+                && o.elements_spec() as int == 4 * policy_checked_n(bytes@, bm, policy),
+            _ => true,
+        },
+        final(steps)@ as int <= old(steps)@ as int
+            + 16 * (bytes@.len() + policy_checked_n(bytes@, bm, policy)),
+        match r.0 {
+            Err(TryError::OutOfMemory(_)) => r.1 == false,
+            _ => r.1 == crate::model::recovered_policy(bytes@, bm, policy),
+        },
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            decode_policy_mp_eq(fmt_part(r.0), bytes@, bm, policy),
+        match r.0 {
+            Ok(d) => d.rle_or_32bpp == alpha,
+            Err(_) => true,
+        },
+        match r.0 {
+            Ok(d) => 1 <= d.width as int <= 8192 && 1 <= d.height as int <= 8192
+                && d.rgba@.len() == 4 * (d.width as int * d.height as int)
+                && d.rgba@.len() <= 67108864,
+            Err(_) => true,
+        },
+        policy_shape(bytes@, bm, policy, matches!(r.0, Err(TryError::OutOfMemory(_))),
+            final(log).view()),
+{
+    let ghost start_steps = steps@;
+    let ghost m = ghost_mh_policy(bytes@, bm, policy, &h);
+    proof { lemma_complete_policy_geometry(bytes@, bm, policy, &h, m); }
+    let (reserved, from_gdk) = reserve_complete_policy(bytes, bm, policy, &h, Ghost(m), steps, Tracked(log));
+    let out = match reserved {
+        Ok(out) => out,
+        Err(e) => return (Err(e), false),
+    };
+    let raw = h.compression == 0 || h.compression == 3;
+    finish_policy_after_alloc(bytes, bm, policy, &h, alpha, raw, from_gdk, out,
+        Ghost(m), steps, Tracked(log))
+}
+
+/// The `offset = Gdk` blank-fill exit of `finish_policy_after_alloc`, split
+/// out so that neither body exceeds its per-function resource budget. It is the
+/// only exit that calls `fill_blank`, and its own `recovered`/`mp_policy`
+/// equation is the bulk of the model work, so isolating it keeps both functions
+/// inside the default solver budget.
+fn finish_policy_blank(bytes: &[u8], bm: BmpMode, policy: Policy, h: &Header, alpha: bool,
+    steps: &mut Ghost<nat>, mut out: Vec<u8>, Ghost(m): Ghost<crate::model::MHRecord>,
+    Tracked(log): Tracked<&mut crate::alloc_guard::AllocLog>)
+    -> (r: (Result<Decoded, TryError>, bool))
+    requires
+        header_inv(bytes@, *h), header_inv_light(h),
+        crate::model::mh_policy(bytes@, bm, policy) == Ok(m),
+        hdr_matches(m, *h),
+        alpha == crate::model::rle_or_32bpp(h.spec_depth(), h.spec_compression()),
+        crate::model::gdk_blank(bytes@, m, policy),
+        out@ == crate::model::zero_bytes(4 * h.spec_n()),
+        old(log).view() == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+            (crate::alloc_guard::AllocSite::Output, 4 * h.spec_n() as nat, true)),
+        policy_reach(bytes@, bm, policy),
+    ensures
+        !matches!(r.0, Err(TryError::OutOfMemory(_))),
+        final(steps)@ as int <= old(steps)@ as int + 4 * h.spec_n(),
+        r.1 == crate::model::recovered_policy(bytes@, bm, policy),
+        decode_policy_mp_eq(fmt_part(r.0), bytes@, bm, policy),
+        match r.0 {
+            Ok(d) => d.rle_or_32bpp == alpha,
+            Err(_) => true,
+        },
+        match r.0 {
+            Ok(d) => 1 <= d.width as int <= 8192 && 1 <= d.height as int <= 8192
+                && d.rgba@.len() == 4 * (d.width as int * d.height as int)
+                && d.rgba@.len() <= 67108864,
+            Err(_) => true,
+        },
+        policy_shape(bytes@, bm, policy, false, final(log).view()),
+{
+    proof {
+        reveal(policy_shape);
+        reveal(req_dibp);
+        reveal(policy_checked_n);
+        reveal(crate::alloc_guard::all_ok);
+        reveal(crate::alloc_guard::req_of_log);
+        reveal(crate::model::mh_partial);
+        crate::model::lemma_mh_partial_none(bytes@, bm, policy, m);
+        crate::model::lemma_mh_policy_bounds(bytes@, bm, policy, m);
+        reveal(crate::model::mh_bounds);
+        assert(policy_checked_n(bytes@, bm, policy) == m.n);
+        assert(m.n == h.spec_n());
+        assert(policy_checked_n(bytes@, bm, policy) == h.spec_n());
+        assert(old(log).view() == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+            (crate::alloc_guard::AllocSite::Output, 4 * policy_checked_n(bytes@, bm, policy) as nat, true)));
+        lemma_shape_pushed_ok(bytes@, bm, policy, old(log).view());
+    }
+    let transparent = h.compression == 1u32 || h.compression == 2u32;
+    fill_blank(&mut out, transparent, steps);
+    proof {
+        assert(out@ == (if transparent {
+            crate::model::zero_bytes(4 * m.n)
+        } else {
+            crate::model::opaque_fill(4 * m.n)
+        }));
+        if transparent {
+            assert(out@ == crate::model::zero_bytes(4 * m.n));
+        }
+        let recovered = crate::model::mh_recovered_so_far(bytes@, m, policy);
+        assert(recovered == crate::model::recovered_policy(bytes@, bm, policy)) by {
+            reveal(crate::model::recovered_policy);
+            reveal(crate::model::pixel_recovered);
+            reveal(crate::model::mh_recovered_so_far);
+            reveal(crate::model::gdk_blank);
+            reveal(crate::model::mp_policy);
+            assert((policy.header_bytes == HeaderBytesOptions::ParsedFields && m.table_count == 0) || m.palette_start + m.table_count * m.palette_stride <= bytes@.len());
+            assert(crate::model::gdk_blank(bytes@, m, policy));
+            if crate::model::mp_policy(bytes@, bm, policy) == Ok((
+                m.width,
+                m.height,
+                (if transparent {
+                    crate::model::zero_bytes(4 * m.n)
+                } else {
+                    crate::model::opaque_fill(4 * m.n)
+                }),
+            )) {
+            }
+        }
+        reveal(decode_policy_mp_eq);
+        assert(decode_policy_mp_eq(
+            Ok(Decoded { width: h.width, height: h.height, rgba: out, rle_or_32bpp: alpha }),
+            bytes@,
+            bm,
+            policy,
+        ));
+        reveal(policy_shape);
+    }
+    (Ok(Decoded { width: h.width, height: h.height, rgba: out, rle_or_32bpp: alpha }), true)
+}
+
+/// The policy path's clipping tail after the one reservation: the `Gdk` blank
+/// fill, the `finish_raw_zero` / `finish_rle_clipped` dispatches, and the plain
+/// raw/RLE transitions. Split out of `decode_complete_policy` so that neither
+/// body exceeds the per-function resource budget; the log is already the single
+/// `Ok` `(Output, 4N)` entry, so every exit is a post-reservation exit.
+/// Share the complete path's checked pixel count and successful-reservation log.
+proof fn lemma_complete_policy_pushed(b: Seq<u8>, bm: BmpMode, p: Policy,
+    h: &Header, m: crate::model::MHRecord,
+    l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>)
+    requires
+        crate::model::mh_policy(b, bm, p) == Ok(m), hdr_matches(m, *h),
+        policy_reach(b, bm, p),
+        l == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+            (crate::alloc_guard::AllocSite::Output, 4 * h.spec_n() as nat, true)),
+    ensures
+        policy_checked_n(b, bm, p) == h.spec_n(),
+        crate::model::mh_partial(b, bm, p) is None,
+        policy_shape(b, bm, p, false, l),
+{
+    crate::model::lemma_mh_partial_none(b, bm, p, m);
+    reveal(policy_checked_n);
+    reveal(hdr_matches);
+    assert(policy_checked_n(b, bm, p) == m.n);
+    assert(m.n == h.spec_n());
+    lemma_shape_pushed_ok(b, bm, p, l);
+}
+
+/// Plain raw/RLE and mask phase after the successful reservation.
+fn finish_policy_plain(bytes: &[u8], bm: BmpMode, policy: Policy, h: &Header,
+    alpha: bool, raw: bool, p0: usize, mut out: Vec<u8>,
+    Ghost(m): Ghost<crate::model::MHRecord>, steps: &mut Ghost<nat>,
+    Tracked(log): Tracked<&mut crate::alloc_guard::AllocLog>)
+    -> (r: (Result<Decoded, TryError>, bool))
+    requires
+        header_inv(bytes@, *h), header_inv_light(h),
+        crate::model::mh_policy(bytes@, bm, policy) == Ok(m), hdr_matches(m, *h),
+        h.mode == Mode::BmpFile || h.mode == Mode::BareDib,
+        alpha == crate::model::rle_or_32bpp(h.spec_depth(), h.spec_compression()),
+        raw == (h.compression == 0 || h.compression == 3),
+        raw || h.compression == 1 || h.compression == 2,
+        raw ==> crate::model::raw_legacy(policy),
+        !raw ==> crate::model::rle_legacy(policy),
+        !crate::model::gdk_blank(bytes@, m, policy),
+        !crate::model::gdk_rgb_reject(bytes@, m, policy),
+        p0 as int == crate::model::offset_effective(m, policy),
+        p0 <= bytes.len(),
+        out@ == crate::model::zero_bytes(4 * h.spec_n()),
+        bytes@.len() <= MAX_INPUT,
+        policy_reach(bytes@, bm, policy),
+        old(log).view() == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+            (crate::alloc_guard::AllocSite::Output, 4 * h.spec_n() as nat, true)),
+    ensures
+        !matches!(r.0, Err(TryError::OutOfMemory(_))),
+        final(steps)@ as int <= old(steps)@ as int - 4 * h.spec_n() as int
+            + 16 * (bytes@.len() + policy_checked_n(bytes@, bm, policy)),
+        r.1 == crate::model::recovered_policy(bytes@, bm, policy),
+        decode_policy_mp_eq(fmt_part(r.0), bytes@, bm, policy),
+        match r.0 { Ok(d) => d.rle_or_32bpp == alpha, Err(_) => true },
+        match r.0 {
+            Ok(d) => 1 <= d.width as int <= 8192 && 1 <= d.height as int <= 8192
+                && d.rgba@.len() == 4 * (d.width as int * d.height as int)
+                && d.rgba@.len() <= 67108864,
+            Err(_) => true,
+        },
+        policy_shape(bytes@, bm, policy, false, final(log).view()),
+{
+let ghost pre: int = old(steps)@ as int;
+proof {
+    lemma_complete_policy_pushed(bytes@, bm, policy, h, m, old(log).view());
+    reveal(header_inv_light);
+    assert(h.spec_height() <= h.spec_n()) by (nonlinear_arith)
+        requires 1 <= h.spec_width(), 1 <= h.spec_height(),
+            h.spec_n() == h.spec_width() * h.spec_height();
+    lemma_t12_phase_budget(bytes@.len() as int, h.spec_n(), h.spec_height());
+}
+let allow_end = match policy.rle_eob {
+RleEobOptions::Required => false,
+RleEobOptions::AtInputEnd => true,
+};
+proof {
+assert(p0 <= bytes.len() || (!raw && allow_end));
+if !raw {
+    reveal(crate::model::offset_effective);
+    assert(h.pixel_start == p0);
+}
+}
+let mut gcur: (usize, usize, usize) = (h.pixel_start, 0, 0);
+let p = if raw {
+decode_raw(bytes, h, &mut out, p0, steps)
+} else {
+decode_rle(bytes, h, &mut out, &mut gcur, steps)
+};
+proof {
+assert((bytes@.len() - p0 as int) / 2 <= bytes@.len() / 2)
+    by (nonlinear_arith) requires 0 <= p0 <= bytes@.len();
+assert(steps@ as int <= pre - 4 * h.spec_n()
+    + 16 * (bytes@.len() + policy_checked_n(bytes@, bm, policy)));
+}
+let pos = match p {
+Ok(pos) => pos,
+Err(e) => {
     proof {
         reveal(decode_policy_mp_eq);
+        reveal(crate::model::offset_effective);
+        reveal(crate::model::gdk_blank);
+        reveal(crate::model::gdk_rgb_reject);
+        if raw {
+            reveal(raw_done_eq);
+            reveal(crate::model::mr_raw_out);
+            crate::model::lemma_raw_full_proj(
+                bytes@, hrec(h), p0 as int, 0, 0);
+            assert(crate::model::mr_raw_out(bytes@, m, crate::model::offset_effective(m, policy))
+                is Err);
+            assert((crate::model::mr_raw_out(bytes@, m, crate::model::offset_effective(m, policy))->Err_0).0
+                == crate::model::RawErr::Api(e));
+            crate::model::lemma_mp_policy_raw_err(bytes@, bm, policy, m, e);
+        } else {
+            reveal(rle_exact);
+            reveal(crate::model::mr_out);
+            assert(crate::model::mr_out(bytes@, m, m.pixel_start, 0, 0) is Err);
+            assert((crate::model::mr_out(bytes@, m, m.pixel_start, 0, 0)->Err_0).0
+                == crate::model::RleErr::Api(e));
+            crate::model::lemma_mp_policy_rle_err(bytes@, bm, policy, m, e);
+        }
+        reveal(policy_shape);
     }
-    let ghost m = ghost_mh_policy(bytes@, bm, policy, &h);
-    let mut out = alloc_output(&h, &mut steps);
-    proof {
-        reveal(crate::model::mh_policy);
-        assert(crate::model::mh_policy(bytes@, bm, policy) == Ok(m));
-        assert(hdr_matches(m, h));
-        lemma_hrec_matches(m, &h);
-        assert(hrec(&h) == m);
-        reveal(hdr_matches);
-        reveal(hrec);
-        reveal(header_record);
-        reveal(crate::dib::bmp_mode_to_mode);
-        assert(h.mode == m.mode);
-        assert(m.mode == Mode::BmpFile || m.mode == Mode::BareDib);
-        assert(h.mode == Mode::BmpFile || h.mode == Mode::BareDib);
-        // R7 palette geometry: the record's own `palette_end` and the
-        // executable's `header_inv` palette bound name the same sum.
-        reveal(crate::model::mh_policy);
-        reveal(crate::model::r2r7);
-        reveal(crate::model::r6r7);
-        reveal(crate::model::r6r7_result);
-        reveal(crate::model::r1_prefix_policy);
-        reveal(crate::model::r6r7_result);
-        reveal(header_inv);
-        assert(hrec(&h) == m);
-        assert(m.palette_end == h.spec_palette_end());
-        assert(h.spec_palette_end() == h.palette_end as int);
-        assert(m.palette_end == m.palette_start + m.table_count * m.palette_stride);
-        assert(m.palette_end <= bytes@.len());
-        assert(m.palette_start + m.table_count * m.palette_stride <= bytes@.len());
-    }
-    let raw = h.compression == 0 || h.compression == 3;
-    let p = if raw {
-        decode_raw(bytes, &h, &mut out, &mut steps)
-    } else {
-        let mut gcur: (usize, usize, usize) = (h.pixel_start, 0, 0);
-        decode_rle(bytes, &h, &mut out, &mut gcur, &mut steps)
-    };
-    let pos = match p {
-        Ok(pos) => pos,
-        Err(e) => {
-            proof {
-                reveal(decode_policy_mp_eq);
-                if raw {
-                    reveal(raw_done_eq);
-                    reveal(crate::model::mr_raw_out);
-                    crate::model::lemma_raw_full_proj(
-                        bytes@, hrec(&h), h.pixel_start as int, 0, 0);
-                    assert(crate::model::mr_raw_out(bytes@, m, m.pixel_start) is Err);
-                    assert((crate::model::mr_raw_out(bytes@, m, m.pixel_start)->Err_0).0
-                        == crate::model::RawErr::Api(e));
-                    crate::model::lemma_mp_policy_raw_err(bytes@, bm, policy, m, e);
-                } else {
-                    reveal(rle_exact);
-                    reveal(crate::model::mr_out);
-                    assert(crate::model::mr_out(bytes@, m, m.pixel_start, 0, 0) is Err);
-                    assert((crate::model::mr_out(bytes@, m, m.pixel_start, 0, 0)->Err_0).0
-                        == crate::model::RleErr::Api(e));
-                    crate::model::lemma_mp_policy_rle_err(bytes@, bm, policy, m, e);
-                }
-            }
-            return (Err(e), recovered);
-        },
-    };
-    let ghost out_xor = out@;
-    let mask_result = finish_mask_policy(bytes, &h, &mut out, pos, &mut steps, policy);
-    match mask_result {
-        Ok(()) => {},
-        Err(e) => {
-            proof {
-                reveal(decode_policy_mp_eq);
-                reveal(crate::model::mask_done_policy_eq);
-                assert(crate::model::mask_done_policy_eq(
-                    bytes@, m, pos as int, out_xor, out@, Err(e), policy));
-                crate::model::lemma_mp_policy_phase(
-                    bytes@, m, pos as int, out_xor, out@, Err(e), policy);
-                if raw {
-                    crate::model::lemma_mp_policy_phase_err_raw(
-                        bytes@, bm, policy, m, pos as int, out_xor, e);
-                } else {
-                    crate::model::lemma_mp_policy_phase_err_rle(
-                        bytes@, bm, policy, m, pos as int, out_xor, e);
-                }
-            }
-            return (Err(e), recovered);
-        },
-    }
+    return (Err(TryError::Format(e)), false);
+},
+};
+let ghost out_xor = out@;
+let mask_result = finish_mask_policy(bytes, h, &mut out, pos, p0, steps, policy);
+match mask_result {
+Ok(()) => {},
+Err(e) => {
     proof {
         reveal(decode_policy_mp_eq);
         reveal(crate::model::mask_done_policy_eq);
+        reveal(crate::model::offset_effective);
+        reveal(crate::model::gdk_blank);
+        reveal(crate::model::gdk_rgb_reject);
+        assert(crate::model::mask_done_policy_eq(
+            bytes@, m, pos as int, out_xor, out@, Err(e), policy));
         crate::model::lemma_mp_policy_phase(
-            bytes@, m, pos as int, out_xor, out@, Ok(()), policy);
+            bytes@, m, pos as int, out_xor, out@, Err(e), policy);
+        if raw {
+            crate::model::lemma_mp_policy_phase_err_raw(
+                bytes@, bm, policy, m, pos as int, out_xor, e);
+        } else {
+            crate::model::lemma_mp_policy_phase_err_rle(
+                bytes@, bm, policy, m, pos as int, out_xor, e);
+        }
+        reveal(policy_shape);
+    }
+    return (Err(TryError::Format(e)), false);
+},
+}
+    proof {
+        reveal(decode_policy_mp_eq);
+        reveal(crate::model::mask_done_policy_eq);
+        reveal(crate::model::offset_effective);
+        reveal(crate::model::gdk_blank);
+        reveal(crate::model::gdk_rgb_reject);
+        crate::model::lemma_mp_policy_phase(bytes@, m, pos as int, out_xor, out@, Ok(()), policy);
         let end = choose|end: int| crate::model::mp_mask_phase_policy(
-            bytes@, m, pos as int, pos as int - m.pixel_start as int, out_xor, policy)
+            bytes@, m, pos as int, pos as int - crate::model::offset_effective(m, policy), out_xor, policy)
             == Ok((end, out@));
         if raw {
             reveal(raw_done_eq);
-            crate::model::lemma_raw_full_proj(
-                bytes@, hrec(&h), h.pixel_start as int, 0, 0);
-            assert(crate::model::mr_raw_out(bytes@, m, m.pixel_start)
+            crate::model::lemma_raw_full_proj(bytes@, hrec(h), p0 as int, 0, 0);
+            assert(crate::model::mr_raw_out(bytes@, m, crate::model::offset_effective(m, policy))
                 == Ok((pos as int, out_xor)));
-            crate::model::lemma_mp_policy_raw_assemble(
-                bytes@, bm, policy, m, pos as int, out_xor, out@, end);
+            crate::model::lemma_mp_policy_raw_assemble(bytes@, bm, policy, m, pos as int, out_xor, out@, end);
         } else {
             reveal(rle_exact);
             reveal(crate::model::mr_out);
             assert(crate::model::mr_out(bytes@, m, m.pixel_start, 0, 0)
                 == Ok((pos as int, out_xor)));
-            crate::model::lemma_mp_policy_rle_assemble(
-                bytes@, bm, policy, m, pos as int, out_xor, out@, end);
+            crate::model::lemma_mp_policy_rle_assemble(bytes@, bm, policy, m, pos as int, out_xor, out@, end);
         }
     }
-    (Ok(Decoded { width: h.width, height: h.height, rgba: out }), recovered)
+let recovered2 = policy_header_recovered(bytes, h, policy);
+proof {
+reveal(crate::model::recovered_policy);
+reveal(crate::model::pixel_recovered);
+assert(recovered2 == crate::model::mh_recovered_so_far(bytes@, m, policy));
+reveal(policy_shape);
+}
+(Ok(Decoded { width: h.width, height: h.height, rgba: out, rle_or_32bpp: alpha }), recovered2)
 }
 
-/// T10 · error precedence, at the manifest's quantification. For every R15 error
-/// `e`, `decode(b, mode) = Err(e)` iff `MP(b, mode) = Err(e)`; the `decode = MP`
-/// postcondition above discharges the `forall b, mode` part, and this witness
-/// states the iff shape on the actual public entry point (R14's operational
-/// ordering is proved through the T9 composition of `parse_header` (T2), the raw
-/// helper (T6), the RLE helper (T7) and the mask helper (T8), each of which
-/// carries the model's exact first error).
-#[allow(dead_code)]
-fn t10_error_precedence(bytes: &[u8], mode: Mode, e: Error) -> (r: Result<Decoded, Error>)
+fn finish_policy_after_alloc(bytes: &[u8], bm: BmpMode, policy: Policy, h: &Header, alpha: bool,
+    raw: bool, from_gdk: bool, mut out: Vec<u8>, Ghost(m): Ghost<crate::model::MHRecord>,
+    steps: &mut Ghost<nat>,
+    Tracked(log): Tracked<&mut crate::alloc_guard::AllocLog>)
+    -> (r: (Result<Decoded, TryError>, bool))
+    requires
+        header_inv(bytes@, *h), header_inv_light(h),
+        crate::model::mh_policy(bytes@, bm, policy) == Ok(m),
+        hdr_matches(m, *h),
+        alpha == crate::model::rle_or_32bpp(h.spec_depth(), h.spec_compression()),
+        raw == (h.compression == 0 || h.compression == 3),
+        raw || h.compression == 1 || h.compression == 2,
+        from_gdk == crate::model::gdk_blank(bytes@, m, policy),
+        out@ == crate::model::zero_bytes(4 * h.spec_n()),
+        old(log).view() == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+            (crate::alloc_guard::AllocSite::Output, 4 * h.spec_n() as nat, true)),
+        policy_reach(bytes@, bm, policy),
     ensures
-        (r == Err(e)) == (crate::model::mp(bytes@, mode) == Err(e)),
+        !matches!(r.0, Err(TryError::OutOfMemory(_))),
+        final(steps)@ as int <= old(steps)@ as int - 4 * h.spec_n() as int
+            + 16 * (bytes@.len() + policy_checked_n(bytes@, bm, policy)),
+        r.1 == crate::model::recovered_policy(bytes@, bm, policy),
+        decode_policy_mp_eq(fmt_part(r.0), bytes@, bm, policy),
+        match r.0 {
+            Ok(d) => d.rle_or_32bpp == alpha,
+            Err(_) => true,
+        },
+        match r.0 {
+            Ok(d) => 1 <= d.width as int <= 8192 && 1 <= d.height as int <= 8192
+                && d.rgba@.len() == 4 * (d.width as int * d.height as int)
+                && d.rgba@.len() <= 67108864,
+            Err(_) => true,
+        },
+        policy_shape(bytes@, bm, policy, false, final(log).view()),
 {
-    let r = decode(bytes, mode);
+    let ghost pre: int = steps@ as int - 4 * h.spec_n();
     proof {
-        // `decode = MP` (T9) holds unconditionally; the iff follows.
+        assert(pre == old(steps)@ as int - 4 * h.spec_n());
+        lemma_complete_policy_pushed(bytes@, bm, policy, h, m, old(log).view());
+        reveal(header_inv_light);
+        assert(h.spec_height() <= h.spec_n()) by (nonlinear_arith)
+            requires 1 <= h.spec_width(), 1 <= h.spec_height(),
+                h.spec_n() == h.spec_width() * h.spec_height();
+    }
+    if from_gdk {
+        // POLICY-SPEC `offset = Gdk`: an invalid indexed offset blanks the image.
+        return finish_policy_blank(bytes, bm, policy, h, alpha, steps, out, Ghost(m), Tracked(log));
+    }
+    finish_policy_pixels(bytes, bm, policy, h, alpha, raw, from_gdk, out,
+        Ghost(m), steps, Tracked(log))
+}
+
+fn finish_policy_pixels(bytes: &[u8], bm: BmpMode, policy: Policy, h: &Header, alpha: bool,
+    raw: bool, from_gdk: bool, mut out: Vec<u8>, Ghost(m): Ghost<crate::model::MHRecord>,
+    steps: &mut Ghost<nat>,
+    Tracked(log): Tracked<&mut crate::alloc_guard::AllocLog>)
+    -> (r: (Result<Decoded, TryError>, bool))
+    requires
+        header_inv(bytes@, *h), header_inv_light(h),
+        crate::model::mh_policy(bytes@, bm, policy) == Ok(m),
+        hdr_matches(m, *h),
+        alpha == crate::model::rle_or_32bpp(h.spec_depth(), h.spec_compression()),
+        raw == (h.compression == 0 || h.compression == 3),
+        raw || h.compression == 1 || h.compression == 2,
+        from_gdk == crate::model::gdk_blank(bytes@, m, policy),
+        out@ == crate::model::zero_bytes(4 * h.spec_n()),
+        old(log).view() == Seq::<(crate::alloc_guard::AllocSite, nat, bool)>::empty().push(
+            (crate::alloc_guard::AllocSite::Output, 4 * h.spec_n() as nat, true)),
+        policy_reach(bytes@, bm, policy),
+        !from_gdk,
+    ensures
+        !matches!(r.0, Err(TryError::OutOfMemory(_))),
+        final(steps)@ as int <= old(steps)@ as int - 4 * h.spec_n() as int
+            + 16 * (bytes@.len() + policy_checked_n(bytes@, bm, policy)),
+        r.1 == crate::model::recovered_policy(bytes@, bm, policy),
+        decode_policy_mp_eq(fmt_part(r.0), bytes@, bm, policy),
+        match r.0 {
+            Ok(d) => d.rle_or_32bpp == alpha,
+            Err(_) => true,
+        },
+        match r.0 {
+            Ok(d) => 1 <= d.width as int <= 8192 && 1 <= d.height as int <= 8192
+                && d.rgba@.len() == 4 * (d.width as int * d.height as int)
+                && d.rgba@.len() <= 67108864,
+            Err(_) => true,
+        },
+        policy_shape(bytes@, bm, policy, false, final(log).view()),
+{
+    let ghost pre: int = steps@ as int - 4 * h.spec_n();
+    proof {
+        lemma_complete_policy_geometry(bytes@, bm, policy, h, m);
+        lemma_complete_policy_pushed(bytes@, bm, policy, h, m, old(log).view());
+        assert(!crate::model::gdk_rgb_reject(bytes@, m, policy)) by { reveal(policy_reach); }
+    }
+    let p0 = policy_pixel_start(h, policy, Ghost(m));
+    let zero_fill = match policy.short_pixels {
+        ShortPixelsOptions::Reject => false,
+        ShortPixelsOptions::ZeroFill => true,
+    };
+    let black = match policy.palette_index { PaletteIndexOptions::Black => true, _ => false };
+    let scaled = match policy.scaling { ScalingOptions::Round => false, _ => true };
+    let opaque = match policy.bitfield16_alpha { Bitfield16AlphaOptions::Opaque => true, _ => false };
+    if raw && (zero_fill || black || scaled || opaque) {
+        let result = finish_raw_zero(bytes, bm, h, out, p0, policy, alpha, steps, Tracked(log));
+        proof {
+            assert(steps@ as int <= pre + 4 * h.spec_n() + 5 * h.spec_n() + h.spec_height() + 1);
+            assert(steps@ as int <= pre
+                + 16 * (bytes@.len() + policy_checked_n(bytes@, bm, policy)));
+        }
+        return result;
+    }
+
+    let allow_end = match policy.rle_eob {
+        RleEobOptions::Required => false,
+        RleEobOptions::AtInputEnd => true,
+    };
+    if p0 > bytes.len() && (raw || !allow_end) {
+        proof {
+            reveal(decode_policy_mp_eq);
+            reveal(crate::model::offset_effective);
+            if raw {
+                crate::model::lemma_mp_policy_raw_trunc(bytes@, bm, policy, m);
+            } else {
+                crate::model::lemma_mp_policy_rle_trunc(bytes@, bm, policy, m);
+            }
+            reveal(policy_shape);
+        }
+        if raw {
+            return (Err(TryError::Format(Error::TruncatedPixels)), false);
+        } else {
+            return (Err(TryError::Format(Error::RleTruncated)), false);
+        }
+    }
+    proof {
+        assert(p0 <= bytes.len() || (!raw && allow_end));
+        if !raw {
+            reveal(crate::model::offset_effective);
+            assert(h.pixel_start == p0);
+        }
+    }
+    let clipped = match policy.rle_overrun {
+        RleOverrunOptions::Reject => false,
+        RleOverrunOptions::Clip | RleOverrunOptions::Image => true,
+    };
+    let stop_eol = match policy.rle_eol {
+        RleEolOptions::OnlyFinal => false,
+        RleEolOptions::StopAtHeight => true,
+    };
+    let clamp_delta = match policy.rle_delta { RleDeltaOptions::ClampStop => true, _ => false };
+    let nonpalette = match policy.rle_fill { RleFillOptions::Palette0 => false, _ => true };
+    if !raw && (clipped || stop_eol || allow_end || black || clamp_delta || nonpalette) {
+        return finish_rle_clipped(bytes, bm, h, out, policy, alpha, steps, Tracked(log));
+    }
+return finish_policy_plain(bytes, bm, policy, h, alpha, raw, p0, out,
+        Ghost(m), steps, Tracked(log));
+}
+
+
+/// T10 · error precedence, at the manifest's quantification. For every R15
+/// error `e`, `try_decode(b, mode) = Err(Format(e))` iff `MP(b, mode) = Err(e)`;
+/// the `decode_mp_eq` postcondition on `fmt_part` discharges the `forall b,
+/// mode` part, and this witness states the iff shape on the public `try_decode`.
+#[allow(dead_code)]
+fn t10_error_precedence(bytes: &[u8], mode: Mode, e: Error) -> (r: Result<Decoded, TryError>)
+    ensures
+        !matches!(r, Err(TryError::OutOfMemory(_))) ==>
+            ((r == Err(TryError::Format(e))) == (crate::model::mp(bytes@, mode) == Err(e))),
+{
+    let r = try_decode(bytes, mode);
+    proof {
+        reveal(fmt_part);
+        reveal(decode_mp_eq);
+        // `decode = MP` (A-DIB-1) holds on `fmt_part(r)` for every
+        // non-`OutOfMemory` result; `OutOfMemory` never equals `Format(e)`, so
+        // the antecedent covers exactly the results where the iff is defined.
     }
     r
 }
 
 /// T13 · success and resource bounds, at the manifest's quantification. Every
 /// success has the model's exact `(w, h, p)` and the exact `4*w*h <= 67,108,864`
-/// output length; the `decode = MP` postcondition and `model::lemma_mp_ok_shape`
-/// discharge the `forall b, mode` part, this witness states it on the public
-/// entry point.
+/// output length; the `decode_mp_eq` postcondition on `fmt_part` states it on
+/// the public `try_decode`.
 #[allow(dead_code)]
-fn t13_success_bounds(bytes: &[u8], mode: Mode) -> (r: Result<Decoded, Error>)
+fn t13_success_bounds(bytes: &[u8], mode: Mode) -> (r: Result<Decoded, TryError>)
     ensures
-        match r {
+        !matches!(r, Err(TryError::OutOfMemory(_))) ==> match r {
             Ok(d) => {
                 &&& crate::model::mp(bytes@, mode) == Ok((
                     d.width as int, d.height as int, d.rgba@))
@@ -6184,42 +10387,130 @@ fn t13_success_bounds(bytes: &[u8], mode: Mode) -> (r: Result<Decoded, Error>)
             Err(_) => true,
         },
 {
-    decode(bytes, mode)
+    let r = try_decode(bytes, mode);
+    proof {
+        reveal(fmt_part);
+        reveal(decode_mp_eq);
+        // `try_decode`'s `decode_mp_eq` clause is on `fmt_part(r)`; on the `Ok`
+        // arm `fmt_part` is `Ok(d)`, so the model tuple is the returned
+        // `Decoded`'s fields. Case-split on `r` by reference so `r` survives the
+        // proof block and is returned.
+        assert(!matches!(r, Err(TryError::OutOfMemory(_))) ==> match r {
+            Ok(d) => {
+                &&& crate::model::mp(bytes@, mode) == Ok((
+                    d.width as int, d.height as int, d.rgba@))
+                &&& 1 <= d.width as int <= 8192
+                &&& 1 <= d.height as int <= 8192
+                &&& d.rgba@.len() == 4 * (d.width as int * d.height as int)
+                &&& d.rgba@.len() <= 67108864
+            },
+            Err(_) => true,
+        }) by {
+            match r {
+                Ok(ref d) => {
+                    assert(fmt_part(r) == Ok::<Decoded, Error>(*d)) by { reveal(fmt_part); };
+                },
+                Err(TryError::Format(_)) => {},
+                Err(TryError::OutOfMemory(_)) => {},
+            }
+        }
+    }
+    r
 }
 
-// --- P1 statement witnesses for the profiled entry point, at the same
-// quantification as the `decode` witnesses above: every slice, both BMP modes
-// and both profiles.
+/// The policy-free `has_alpha` witness, at the same quantification as
+/// `t13_success_bounds`: on every success `d.rle_or_32bpp` is the 32-bpp/RLE rule
+/// on `MH`'s validated record; an error carries no image. Discharged by
+/// `decode_mp_eq`'s `MH`-backed record plus `try_decode`'s postcondition.
+#[allow(dead_code)]
+fn t13_alpha_field(bytes: &[u8], mode: Mode) -> (r: Result<Decoded, TryError>)
+    ensures
+        !matches!(r, Err(TryError::OutOfMemory(_))) ==> match r {
+            Ok(d) => d.rle_or_32bpp == crate::model::mh_rle_or_32bpp(bytes@, mode),
+            Err(_) => true,
+        },
+{
+    let r = try_decode(bytes, mode);
+    proof {
+        reveal(fmt_part);
+        // `try_decode`'s guard on the model record: on a success `MH` accepted
+        // the header, so `mh_rle_or_32bpp` is `rle_or_32bpp`'s rule.
+        reveal(crate::model::mh_rle_or_32bpp);
+        reveal(crate::model::rle_or_32bpp);
+        assert(!matches!(r, Err(TryError::OutOfMemory(_))) ==> match r {
+            Ok(d) => d.rle_or_32bpp == crate::model::mh_rle_or_32bpp(bytes@, mode),
+            Err(_) => true,
+        }) by {
+            match r {
+                Ok(ref d) => {
+                    assert(fmt_part(r) == Ok::<Decoded, Error>(*d)) by { reveal(fmt_part); };
+                },
+                Err(TryError::Format(_)) => {},
+                Err(TryError::OutOfMemory(_)) => {},
+            }
+        }
+    }
+    r
+}
+
+// --- Statement witnesses for the profiled entry point, at the same
+// quantification as the `try_decode` witnesses above: every slice, both BMP modes
+// and all four named profiles.
 
 /// T9 · the profiled entry point equals `MP_policy` on every error, dimension
 /// and RGBA byte, for every slice, both modes and every profile. Discharged by
-/// `decode_with_policy`'s own `decode_policy_mp_eq` postcondition.
+/// `try_decode_with_policy`'s own `decode_policy_mp_eq` postcondition.
 #[allow(dead_code)]
-fn t9_policy(bytes: &[u8], bm: BmpMode, profile: BmpProfile) -> (r: (Result<Decoded, Error>, bool))
+fn t9_policy(bytes: &[u8], bm: BmpMode, profile: BmpProfile)
+    -> (r: (Result<Decoded, TryError>, bool))
     ensures
-        decode_policy_mp_eq(r.0, bytes@, bm, profile_policy(profile)),
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            decode_policy_mp_eq(fmt_part(r.0), bytes@, bm, profile_policy(profile)),
 {
-    decode_with_policy(bytes, bm, profile)
+    try_decode_with_policy(bytes, bm, profile)
+}
+
+/// The profiled `has_alpha` witness, at the same quantification as `t9_policy`:
+/// on every success `d.rle_or_32bpp` is the 32-bpp/RLE rule on the validated
+/// header selection `MH_policy`; an error carries no image. Discharged by
+/// `try_decode_with_policy`'s own `decode_policy_alpha_eq` postcondition.
+#[allow(dead_code)]
+fn t9_policy_alpha(bytes: &[u8], bm: BmpMode, profile: BmpProfile)
+    -> (r: (Result<Decoded, TryError>, bool))
+    ensures
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            decode_policy_alpha_eq(fmt_part(r.0), bytes@, bm, profile_policy(profile)),
+{
+    try_decode_with_policy(bytes, bm, profile)
 }
 
 /// T10 · error precedence for the profiled entry point: for every error `e`,
-/// `decode_with_policy(..).0 = Err(e)` iff `MP_policy(..) = Err(e)`.
+/// `try_decode_with_policy(..).0 = Err(Format(e))` iff `MP_policy(..) = Err(e)`.
 #[allow(dead_code)]
 fn t10_policy_precedence(bytes: &[u8], bm: BmpMode, profile: BmpProfile, e: Error)
-    -> (r: (Result<Decoded, Error>, bool))
+    -> (r: (Result<Decoded, TryError>, bool))
     ensures
-        (r.0 == Err(e)) == (crate::model::mp_policy(bytes@, bm, profile_policy(profile)) == Err(e)),
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            ((r.0 == Err(TryError::Format(e)))
+                == (crate::model::mp_policy(bytes@, bm, profile_policy(profile)) == Err(e))),
 {
-    decode_with_policy(bytes, bm, profile)
+    let r = try_decode_with_policy(bytes, bm, profile);
+    proof {
+        reveal(fmt_part);
+        reveal(decode_policy_mp_eq);
+    }
+    r
 }
 
 /// T13 · success and resource bounds for the profiled entry point: every success
-/// has `MP_policy`'s exact `(w, h, p)`, `1 <= w, h <= 8192` and a `4*w*h`
-/// output of at most 64 MiB.
+/// has `MP_policy`'s exact `(w, h, p)`, `1 <= w, h <= 8192`, a `4*w*h`
+/// output of at most 64 MiB, and the header-derived `rle_or_32bpp` field.
 #[allow(dead_code)]
 fn t13_policy_success_bounds(bytes: &[u8], bm: BmpMode, profile: BmpProfile)
-    -> (r: (Result<Decoded, Error>, bool))
+    -> (r: (Result<Decoded, TryError>, bool))
     ensures
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            decode_policy_alpha_eq(fmt_part(r.0), bytes@, bm, profile_policy(profile)),
         match r.0 {
             Ok(d) => {
                 &&& crate::model::mp_policy(bytes@, bm, profile_policy(profile))
@@ -6232,21 +10523,214 @@ fn t13_policy_success_bounds(bytes: &[u8], bm: BmpMode, profile: BmpProfile)
             Err(_) => true,
         },
 {
-    decode_with_policy(bytes, bm, profile)
+    let r = try_decode_with_policy(bytes, bm, profile);
+    proof {
+        reveal(fmt_part);
+        reveal(decode_policy_mp_eq);
+    }
+    r
 }
 
-/// T1/T3/T11/T12 · the profiled entry point's universal resource properties,
-/// stated on the concrete `decode_with_policy` call: the `recovered` flag is
-/// `false` and `decode_policy_mp_eq` holds, so the result is exactly the model's
-/// — the proof's other postconditions (the shape bounds) are the T13 part.
+/// Named-profile recovery-flag witness, at full quantification: for every
+/// slice, both BMP modes and all four named profiles, the flag is exactly the
+/// frozen spec's closed-event indicator on the selected record (and `false`
+/// with `OutOfMemory`). The universal charged-work bound is stated on
+/// `decode_policy_tracked`, the executable called by all four named profiles and
+/// by test-only custom records; it has no policy precondition.
 #[allow(dead_code)]
-fn t1_policy_totality(bytes: &[u8], bm: BmpMode, profile: BmpProfile)
-    -> (r: (Result<Decoded, Error>, bool))
+fn t1_policy_recovery_flag(bytes: &[u8], bm: BmpMode, profile: BmpProfile)
+    -> (r: (Result<Decoded, TryError>, bool))
     ensures
-        r.1 == false,
-        decode_policy_mp_eq(r.0, bytes@, bm, profile_policy(profile)),
+        match r.0 {
+            Err(TryError::OutOfMemory(_)) => r.1 == false,
+            _ => r.1 == crate::model::recovered_policy(bytes@, bm, profile_policy(profile)),
+        },
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            decode_policy_mp_eq(fmt_part(r.0), bytes@, bm, profile_policy(profile)),
 {
-    decode_with_policy(bytes, bm, profile)
+    try_decode_with_policy(bytes, bm, profile)
+}
+
+/// The P1 statement, kept for exactly the two profiles it covers. `Strict` and
+/// `Recommended` tolerate only `Ignore`d `bfSize`/`biSizeImage` declarations, so
+/// no entry of the closed data-affecting event list is reachable:
+/// `recovered_policy` is `false` on every input, and the flag with it. The two
+/// compatibility profiles are covered by `t1_policy_recovery_flag` above.
+#[allow(dead_code)]
+fn t1_policy_recovery_strict(bytes: &[u8], bm: BmpMode)
+    -> (r: (Result<Decoded, TryError>, bool))
+    ensures
+        match r.0 {
+            Err(TryError::OutOfMemory(_)) => r.1 == false,
+            _ => r.1 == false,
+        },
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            decode_policy_mp_eq(fmt_part(r.0), bytes@, bm, strict_policy()),
+{
+    try_decode_with_policy(bytes, bm, BmpProfile::Strict)
+}
+
+/// As `t1_policy_recovery_strict`, for `Recommended`.
+#[allow(dead_code)]
+fn t1_policy_recovery_recommended(bytes: &[u8], bm: BmpMode)
+    -> (r: (Result<Decoded, TryError>, bool))
+    ensures
+        match r.0 {
+            Err(TryError::OutOfMemory(_)) => r.1 == false,
+            _ => r.1 == false,
+        },
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            decode_policy_mp_eq(fmt_part(r.0), bytes@, bm, recommended_policy()),
+{
+    try_decode_with_policy(bytes, bm, BmpProfile::Recommended)
+}
+
+/// Logged policy core, quantified over every Policy record. Named-profile and
+/// test-only custom-record entry points both call this verified function.
+pub(crate) fn try_decode_policy_tracked(bytes: &[u8], bm: BmpMode, policy: Policy)
+    -> (r: (Result<Decoded, TryError>, bool, Tracked<crate::alloc_guard::AllocLog>))
+    ensures
+        match r.0 {
+            Ok(d) => 1 <= d.width as int <= 8192 && 1 <= d.height as int <= 8192
+                && d.rgba@.len() == 4 * (d.width as int * d.height as int)
+                && d.rgba@.len() <= 67108864,
+            Err(_) => true,
+        },
+        r.2@.view().len() <= 1,
+        match r.0 {
+            Err(TryError::OutOfMemory(o)) =>
+                (o.site_spec(), o.elements_spec() as nat) == req_dibp(bytes@, bm, policy)[0],
+            _ => true,
+        },
+        pre_alloc_policy(bytes@, bm, policy) ==>
+            !matches!(r.0, Err(TryError::OutOfMemory(_)))
+            && decode_policy_mp_eq(fmt_part(r.0), bytes@, bm, policy)
+            && decode_policy_alpha_eq(fmt_part(r.0), bytes@, bm, policy)
+            && r.1 == crate::model::recovered_policy(bytes@, bm, policy)
+            && r.2@.view().len() == 0,
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            decode_policy_mp_eq(fmt_part(r.0), bytes@, bm, policy)
+            && decode_policy_alpha_eq(fmt_part(r.0), bytes@, bm, policy),
+        match r.0 {
+            Err(TryError::OutOfMemory(_)) => r.1 == false,
+            _ => r.1 == crate::model::recovered_policy(bytes@, bm, policy),
+        },
+        policy_shape(bytes@, bm, policy, matches!(r.0, Err(TryError::OutOfMemory(_))),
+            r.2@.view()),
+        g_policy(bytes@, bm, policy, r.0, r.1, r.2@.view()),
+        prog_policy(bytes@, bm, policy, r.0, r.1, r.2@.view()),
+{
+    let mut steps = Ghost(0nat);
+    let tracked mut log = crate::alloc_guard::new_log();
+    let r = decode_policy_tracked(bytes, bm, policy, &mut steps, Tracked(&mut log));
+    proof {
+        assert(steps@ as int <= 16 * (bytes@.len() + policy_checked_n(bytes@, bm, policy)));
+        reveal(policy_shape);
+        reveal(pre_alloc_policy);
+        reveal(policy_reach);
+        reveal(prog_policy);
+        reveal(req_dibp);
+        reveal(fmt_part);
+        reveal(crate::alloc_guard::req_of_log);
+        reveal(crate::alloc_guard::all_ok);
+        if let Err(TryError::OutOfMemory(o)) = r.0 {
+            assert(log.view().len() == 1);
+            assert(req_dibp(bytes@, bm, policy).len() == 1);
+            assert(policy_reach(bytes@, bm, policy));
+            assert(o.elements_spec() as int == 4 * policy_checked_n(bytes@, bm, policy));
+            assert(0 <= policy_checked_n(bytes@, bm, policy));
+            assert((o.site_spec(), o.elements_spec() as nat) == req_dibp(bytes@, bm, policy)[0]);
+        }
+        lemma_g_policy_of_shape(bytes@, bm, policy, r.0, r.1, log.view());
+    }
+    (r.0, r.1, Tracked(log))
+}
+
+/// The `cfg(test)` custom-record decoder (the old `decode_custom_policy` shape:
+/// no log), for the differential harness against the independent Python oracle.
+#[cfg(test)]
+pub(crate) fn try_decode_custom_policy(bytes: &[u8], bm: BmpMode, policy: Policy)
+    -> (r: (Result<Decoded, TryError>, bool))
+    ensures
+        !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
+            decode_policy_mp_eq(fmt_part(r.0), bytes@, bm, policy)
+            && decode_policy_alpha_eq(fmt_part(r.0), bytes@, bm, policy),
+        match r.0 {
+            Err(TryError::OutOfMemory(_)) => r.1 == false,
+            _ => r.1 == crate::model::recovered_policy(bytes@, bm, policy),
+        },
+{
+    let r = try_decode_policy_tracked(bytes, bm, policy);
+    (r.0, r.1)
+}
+
+/// Projection of the format result used by the frozen policy model.
+pub open spec fn policy_result(r: Result<Decoded, Error>) -> Result<(int, int, Seq<u8>), Error> {
+    match r {
+        Ok(d) => Ok((d.width as int, d.height as int, d.rgba@)),
+        Err(e) => Err(e),
+    }
+}
+
+/// A-DIB-7(a): Strict has the same reservation request as the policy-free core.
+pub proof fn lemma_strict_requests(b: Seq<u8>, bm: BmpMode)
+    ensures req_dib(b, bmp_mode_to_mode(bm)) == req_dibp(b, bm, strict_policy()),
+{
+    crate::model::lemma_mh_policy_strict(b, bm);
+    reveal(req_dib); reveal(req_dibp); reveal(policy_reach); reveal(policy_checked_n);
+    reveal(crate::model::mh_partial); reveal(crate::model::gdk_rgb_reject);
+    reveal(strict_policy);
+}
+
+/// A-DIB-7(b): independent successful reservation outcomes give equal logs and
+/// equal format errors, dimensions and RGBA bytes. OOM outcomes are not coupled.
+pub proof fn lemma_strict_results(b: Seq<u8>, bm: BmpMode,
+    r1: Result<Decoded, TryError>, r2: Result<Decoded, TryError>, recovered: bool,
+    l1: Seq<(AllocSite, nat, bool)>, l2: Seq<(AllocSite, nat, bool)>)
+    requires
+        g(b, bmp_mode_to_mode(bm), r1, l1),
+        g_policy(b, bm, strict_policy(), r2, recovered, l2),
+        crate::alloc_guard::req_of_log(l1) == req_dib(b, bmp_mode_to_mode(bm)),
+        crate::alloc_guard::req_of_log(l2) == req_dibp(b, bm, strict_policy()),
+    ensures
+        crate::alloc_guard::req_of_log(l1) == crate::alloc_guard::req_of_log(l2),
+        (!matches!(r1, Err(TryError::OutOfMemory(_)))
+            && !matches!(r2, Err(TryError::OutOfMemory(_)))) ==>
+            l1 == l2 && policy_result(fmt_part(r1)) == policy_result(fmt_part(r2)),
+{
+    lemma_strict_requests(b, bm);
+    if !matches!(r1, Err(TryError::OutOfMemory(_)))
+        && !matches!(r2, Err(TryError::OutOfMemory(_))) {
+        crate::model::lemma_mp_policy_strict(b, bm);
+        reveal(g); reveal(g_clause1); reveal(g_policy);
+        reveal(decode_mp_eq); reveal(decode_policy_mp_eq); reveal(policy_result);
+        reveal(crate::alloc_guard::all_ok); reveal(crate::alloc_guard::req_of_log);
+        assert(l1.len() == l2.len());
+        assert forall|i: int| 0 <= i < l1.len() implies l1[i] == l2[i] by {
+            assert(crate::alloc_guard::req_of_log(l1)[i] == (l1[i].0, l1[i].1));
+            assert(crate::alloc_guard::req_of_log(l2)[i] == (l2[i].0, l2[i].1));
+            assert(l1[i].2 && l2[i].2);
+        }
+        assert(l1 =~= l2);
+    }
+}
+
+/// Execute the two independent Strict calls; no allocator coupling is assumed.
+#[allow(dead_code)]
+fn strict_allocation_bridge(bytes: &[u8], bm: BmpMode)
+    -> (r: (Result<Decoded, TryError>, Result<Decoded, TryError>))
+    ensures
+        (!matches!(r.0, Err(TryError::OutOfMemory(_)))
+            && !matches!(r.1, Err(TryError::OutOfMemory(_)))) ==>
+            policy_result(fmt_part(r.0)) == policy_result(fmt_part(r.1)),
+{
+    let a = try_decode_with_steps_logged(bytes, bmp_mode_mode(bm));
+    let b = try_decode_policy_tracked(bytes, bm, profile_policy_exec(BmpProfile::Strict));
+    proof {
+        reveal(policy_shape);
+        lemma_strict_results(bytes@, bm, a.0, b.0, b.1, a.2@.view(), b.2@.view());
+    }
+    (a.0, b.0)
 }
 
 } // verus!

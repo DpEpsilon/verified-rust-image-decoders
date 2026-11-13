@@ -9,13 +9,24 @@
 //! after a complete AND mask are ignored instead of `TrailingBytes`. This is a
 //! semver-breaking change to the public `Mode` enum.
 
+#![no_std]
+
+extern crate alloc;
+#[cfg(test)]
+#[macro_use]
+extern crate std;
+
+pub mod alloc_guard;
 pub mod dib;
 pub mod model;
 pub mod model_vectors;
 
+#[cfg(test)]
+mod policy_tests;
+
 pub use dib::{
-    decode, decode_with_policy, decode_with_steps, BmpMode, BmpProfile, Decoded, Error,
-    MetadataOptions, Mode, Policy,
+    try_decode, try_decode_with_policy, try_decode_with_steps, try_decode_with_steps_logged,
+    BmpMode, BmpProfile, Decoded, Error, Mode, TryError,
 };
 
 use vstd::prelude::*;

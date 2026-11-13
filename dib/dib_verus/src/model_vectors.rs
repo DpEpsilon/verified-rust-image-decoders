@@ -53,7 +53,7 @@ pub proof fn channel_lit(word: u32, mask: u32, k: u32, mx: u32, comp: u32, val: 
         forall|j: u32| 0 <= j < k ==> #[trigger] (mask >> j) & 1u32 == 0u32,
         mask >> k == mx,
         (word & mask) >> k == comp,
-        crate::model::scale_of(comp as int, mx as int) == val as int,
+        crate::model::scale_of(comp as int, crate::model::channel_span(mx) as int) == val as int,
     ensures
         crate::model::channel_of(word, mask) == val,
 {
@@ -473,6 +473,7 @@ proof fn want_bytes_bi_rgb_16_4404()
     assert(0x00007c00u32 >> 10u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00000444u32 & 0x00007c00u32) >> 10u32 == 1u32) by (bit_vector);
     assert(crate::model::scale_of(1int, 31int) == 8int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00000444u32, 0x00007c00u32, 10u32, 0x0000001fu32, 1u32, 8u8);
     assert(0x000003e0u32 != 0u32) by (bit_vector);
     assert((0x000003e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -482,6 +483,7 @@ proof fn want_bytes_bi_rgb_16_4404()
     assert(0x000003e0u32 >> 5u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00000444u32 & 0x000003e0u32) >> 5u32 == 2u32) by (bit_vector);
     assert(crate::model::scale_of(2int, 31int) == 16int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00000444u32, 0x000003e0u32, 5u32, 0x0000001fu32, 2u32, 16u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -491,6 +493,7 @@ proof fn want_bytes_bi_rgb_16_4404()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00000444u32 & 0x0000001fu32) >> 0u32 == 4u32) by (bit_vector);
     assert(crate::model::scale_of(4int, 31int) == 33int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00000444u32, 0x0000001fu32, 0u32, 0x0000001fu32, 4u32, 33u8);
     assert(want_bi_rgb_16_4404() == seq![
         0x08u8, 0x10u8, 0x21u8, 0xffu8,
@@ -562,6 +565,7 @@ proof fn want_bytes_bi_rgb_16_630c()
     assert(0x00007c00u32 >> 10u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00000c63u32 & 0x00007c00u32) >> 10u32 == 3u32) by (bit_vector);
     assert(crate::model::scale_of(3int, 31int) == 25int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00000c63u32, 0x00007c00u32, 10u32, 0x0000001fu32, 3u32, 25u8);
     assert(0x000003e0u32 != 0u32) by (bit_vector);
     assert((0x000003e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -571,6 +575,7 @@ proof fn want_bytes_bi_rgb_16_630c()
     assert(0x000003e0u32 >> 5u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00000c63u32 & 0x000003e0u32) >> 5u32 == 3u32) by (bit_vector);
     assert(crate::model::scale_of(3int, 31int) == 25int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00000c63u32, 0x000003e0u32, 5u32, 0x0000001fu32, 3u32, 25u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -580,6 +585,7 @@ proof fn want_bytes_bi_rgb_16_630c()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00000c63u32 & 0x0000001fu32) >> 0u32 == 3u32) by (bit_vector);
     assert(crate::model::scale_of(3int, 31int) == 25int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00000c63u32, 0x0000001fu32, 0u32, 0x0000001fu32, 3u32, 25u8);
     assert(want_bi_rgb_16_630c() == seq![
         0x19u8, 0x19u8, 0x19u8, 0xffu8,
@@ -651,6 +657,7 @@ proof fn want_bytes_bi_rgb_16_007c()
     assert(0x00007c00u32 >> 10u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x00007c00u32) >> 10u32 == 31u32) by (bit_vector);
     assert(crate::model::scale_of(31int, 31int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x00007c00u32, 10u32, 0x0000001fu32, 31u32, 255u8);
     assert(0x000003e0u32 != 0u32) by (bit_vector);
     assert((0x000003e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -660,6 +667,7 @@ proof fn want_bytes_bi_rgb_16_007c()
     assert(0x000003e0u32 >> 5u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x000003e0u32) >> 5u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x000003e0u32, 5u32, 0x0000001fu32, 0u32, 0u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -669,6 +677,7 @@ proof fn want_bytes_bi_rgb_16_007c()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x0000001fu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x0000001fu32, 0u32, 0x0000001fu32, 0u32, 0u8);
     assert(want_bi_rgb_16_007c() == seq![
         0xffu8, 0x00u8, 0x00u8, 0xffu8,
@@ -776,6 +785,7 @@ proof fn want_bytes_top_down_16()
     assert(0x00007c00u32 >> 10u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00000000u32 & 0x00007c00u32) >> 10u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00000000u32, 0x00007c00u32, 10u32, 0x0000001fu32, 0u32, 0u8);
     assert(0x000003e0u32 != 0u32) by (bit_vector);
     assert((0x000003e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -785,6 +795,7 @@ proof fn want_bytes_top_down_16()
     assert(0x000003e0u32 >> 5u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00000000u32 & 0x000003e0u32) >> 5u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00000000u32, 0x000003e0u32, 5u32, 0x0000001fu32, 0u32, 0u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -794,6 +805,7 @@ proof fn want_bytes_top_down_16()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00000000u32 & 0x0000001fu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00000000u32, 0x0000001fu32, 0u32, 0x0000001fu32, 0u32, 0u8);
     assert(want_top_down_16() == seq![
         0x00u8, 0x00u8, 0x00u8, 0xffu8,
@@ -1070,6 +1082,7 @@ proof fn want_bytes_masks_40_16()
     assert(0x0000f800u32 >> 11u32 == 0x0000001fu32) by (bit_vector);
     assert((0x000007e0u32 & 0x0000f800u32) >> 11u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x000007e0u32, 0x0000f800u32, 11u32, 0x0000001fu32, 0u32, 0u8);
     assert(0x000007e0u32 != 0u32) by (bit_vector);
     assert((0x000007e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -1079,6 +1092,7 @@ proof fn want_bytes_masks_40_16()
     assert(0x000007e0u32 >> 5u32 == 0x0000003fu32) by (bit_vector);
     assert((0x000007e0u32 & 0x000007e0u32) >> 5u32 == 63u32) by (bit_vector);
     assert(crate::model::scale_of(63int, 63int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000003fu32) == 0x0000003fu32) by (compute);
     channel_lit(0x000007e0u32, 0x000007e0u32, 5u32, 0x0000003fu32, 63u32, 255u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -1088,6 +1102,7 @@ proof fn want_bytes_masks_40_16()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x000007e0u32 & 0x0000001fu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x000007e0u32, 0x0000001fu32, 0u32, 0x0000001fu32, 0u32, 0u8);
     assert(want_masks_40_16() == seq![
         0x00u8, 0xffu8, 0x00u8, 0xffu8,
@@ -1160,6 +1175,7 @@ proof fn want_bytes_masks_52_16()
     assert(0x0000f800u32 >> 11u32 == 0x0000001fu32) by (bit_vector);
     assert((0x000007e0u32 & 0x0000f800u32) >> 11u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x000007e0u32, 0x0000f800u32, 11u32, 0x0000001fu32, 0u32, 0u8);
     assert(0x000007e0u32 != 0u32) by (bit_vector);
     assert((0x000007e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -1169,6 +1185,7 @@ proof fn want_bytes_masks_52_16()
     assert(0x000007e0u32 >> 5u32 == 0x0000003fu32) by (bit_vector);
     assert((0x000007e0u32 & 0x000007e0u32) >> 5u32 == 63u32) by (bit_vector);
     assert(crate::model::scale_of(63int, 63int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000003fu32) == 0x0000003fu32) by (compute);
     channel_lit(0x000007e0u32, 0x000007e0u32, 5u32, 0x0000003fu32, 63u32, 255u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -1178,6 +1195,7 @@ proof fn want_bytes_masks_52_16()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x000007e0u32 & 0x0000001fu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x000007e0u32, 0x0000001fu32, 0u32, 0x0000001fu32, 0u32, 0u8);
     assert(want_masks_52_16() == seq![
         0x00u8, 0xffu8, 0x00u8, 0xffu8,
@@ -1250,6 +1268,7 @@ proof fn want_bytes_masks_56_32()
     assert(0x00ff0000u32 >> 16u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44332211u32 & 0x00ff0000u32) >> 16u32 == 51u32) by (bit_vector);
     assert(crate::model::scale_of(51int, 255int) == 51int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44332211u32, 0x00ff0000u32, 16u32, 0x000000ffu32, 51u32, 51u8);
     assert(0x0000ff00u32 != 0u32) by (bit_vector);
     assert((0x0000ff00u32 >> 8u32) & 1u32 == 1u32) by (bit_vector);
@@ -1259,6 +1278,7 @@ proof fn want_bytes_masks_56_32()
     assert(0x0000ff00u32 >> 8u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44332211u32 & 0x0000ff00u32) >> 8u32 == 34u32) by (bit_vector);
     assert(crate::model::scale_of(34int, 255int) == 34int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44332211u32, 0x0000ff00u32, 8u32, 0x000000ffu32, 34u32, 34u8);
     assert(0x000000ffu32 != 0u32) by (bit_vector);
     assert((0x000000ffu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -1268,6 +1288,7 @@ proof fn want_bytes_masks_56_32()
     assert(0x000000ffu32 >> 0u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44332211u32 & 0x000000ffu32) >> 0u32 == 17u32) by (bit_vector);
     assert(crate::model::scale_of(17int, 255int) == 17int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44332211u32, 0x000000ffu32, 0u32, 0x000000ffu32, 17u32, 17u8);
     assert(0xff000000u32 != 0u32) by (bit_vector);
     assert((0xff000000u32 >> 24u32) & 1u32 == 1u32) by (bit_vector);
@@ -1277,6 +1298,7 @@ proof fn want_bytes_masks_56_32()
     assert(0xff000000u32 >> 24u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44332211u32 & 0xff000000u32) >> 24u32 == 68u32) by (bit_vector);
     assert(crate::model::scale_of(68int, 255int) == 68int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44332211u32, 0xff000000u32, 24u32, 0x000000ffu32, 68u32, 68u8);
     assert(want_masks_56_32() == seq![
         0x33u8, 0x22u8, 0x11u8, 0x44u8,
@@ -1351,6 +1373,7 @@ proof fn want_bytes_masks_64_16()
     assert(0x0000f800u32 >> 11u32 == 0x0000001fu32) by (bit_vector);
     assert((0x000007e0u32 & 0x0000f800u32) >> 11u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x000007e0u32, 0x0000f800u32, 11u32, 0x0000001fu32, 0u32, 0u8);
     assert(0x000007e0u32 != 0u32) by (bit_vector);
     assert((0x000007e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -1360,6 +1383,7 @@ proof fn want_bytes_masks_64_16()
     assert(0x000007e0u32 >> 5u32 == 0x0000003fu32) by (bit_vector);
     assert((0x000007e0u32 & 0x000007e0u32) >> 5u32 == 63u32) by (bit_vector);
     assert(crate::model::scale_of(63int, 63int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000003fu32) == 0x0000003fu32) by (compute);
     channel_lit(0x000007e0u32, 0x000007e0u32, 5u32, 0x0000003fu32, 63u32, 255u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -1369,6 +1393,7 @@ proof fn want_bytes_masks_64_16()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x000007e0u32 & 0x0000001fu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x000007e0u32, 0x0000001fu32, 0u32, 0x0000001fu32, 0u32, 0u8);
     assert(want_masks_64_16() == seq![
         0x00u8, 0xffu8, 0x00u8, 0xffu8,
@@ -1446,6 +1471,7 @@ proof fn want_bytes_masks_108_32()
     assert(0x00ff0000u32 >> 16u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44332211u32 & 0x00ff0000u32) >> 16u32 == 51u32) by (bit_vector);
     assert(crate::model::scale_of(51int, 255int) == 51int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44332211u32, 0x00ff0000u32, 16u32, 0x000000ffu32, 51u32, 51u8);
     assert(0x0000ff00u32 != 0u32) by (bit_vector);
     assert((0x0000ff00u32 >> 8u32) & 1u32 == 1u32) by (bit_vector);
@@ -1455,6 +1481,7 @@ proof fn want_bytes_masks_108_32()
     assert(0x0000ff00u32 >> 8u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44332211u32 & 0x0000ff00u32) >> 8u32 == 34u32) by (bit_vector);
     assert(crate::model::scale_of(34int, 255int) == 34int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44332211u32, 0x0000ff00u32, 8u32, 0x000000ffu32, 34u32, 34u8);
     assert(0x000000ffu32 != 0u32) by (bit_vector);
     assert((0x000000ffu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -1464,6 +1491,7 @@ proof fn want_bytes_masks_108_32()
     assert(0x000000ffu32 >> 0u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44332211u32 & 0x000000ffu32) >> 0u32 == 17u32) by (bit_vector);
     assert(crate::model::scale_of(17int, 255int) == 17int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44332211u32, 0x000000ffu32, 0u32, 0x000000ffu32, 17u32, 17u8);
     assert(0xff000000u32 != 0u32) by (bit_vector);
     assert((0xff000000u32 >> 24u32) & 1u32 == 1u32) by (bit_vector);
@@ -1473,6 +1501,7 @@ proof fn want_bytes_masks_108_32()
     assert(0xff000000u32 >> 24u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44332211u32 & 0xff000000u32) >> 24u32 == 68u32) by (bit_vector);
     assert(crate::model::scale_of(68int, 255int) == 68int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44332211u32, 0xff000000u32, 24u32, 0x000000ffu32, 68u32, 68u8);
     assert(want_masks_108_32() == seq![
         0x33u8, 0x22u8, 0x11u8, 0x44u8,
@@ -1551,6 +1580,7 @@ proof fn want_bytes_masks_124_32()
     assert(0x00ff0000u32 >> 16u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44332211u32 & 0x00ff0000u32) >> 16u32 == 51u32) by (bit_vector);
     assert(crate::model::scale_of(51int, 255int) == 51int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44332211u32, 0x00ff0000u32, 16u32, 0x000000ffu32, 51u32, 51u8);
     assert(0x0000ff00u32 != 0u32) by (bit_vector);
     assert((0x0000ff00u32 >> 8u32) & 1u32 == 1u32) by (bit_vector);
@@ -1560,6 +1590,7 @@ proof fn want_bytes_masks_124_32()
     assert(0x0000ff00u32 >> 8u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44332211u32 & 0x0000ff00u32) >> 8u32 == 34u32) by (bit_vector);
     assert(crate::model::scale_of(34int, 255int) == 34int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44332211u32, 0x0000ff00u32, 8u32, 0x000000ffu32, 34u32, 34u8);
     assert(0x000000ffu32 != 0u32) by (bit_vector);
     assert((0x000000ffu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -1569,6 +1600,7 @@ proof fn want_bytes_masks_124_32()
     assert(0x000000ffu32 >> 0u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44332211u32 & 0x000000ffu32) >> 0u32 == 17u32) by (bit_vector);
     assert(crate::model::scale_of(17int, 255int) == 17int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44332211u32, 0x000000ffu32, 0u32, 0x000000ffu32, 17u32, 17u8);
     assert(0xff000000u32 != 0u32) by (bit_vector);
     assert((0xff000000u32 >> 24u32) & 1u32 == 1u32) by (bit_vector);
@@ -1578,6 +1610,7 @@ proof fn want_bytes_masks_124_32()
     assert(0xff000000u32 >> 24u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44332211u32 & 0xff000000u32) >> 24u32 == 68u32) by (bit_vector);
     assert(crate::model::scale_of(68int, 255int) == 68int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44332211u32, 0xff000000u32, 24u32, 0x000000ffu32, 68u32, 68u8);
     assert(want_masks_124_32() == seq![
         0x33u8, 0x22u8, 0x11u8, 0x44u8,
@@ -2366,6 +2399,7 @@ proof fn want_bytes_ico_16_and_0()
     assert(0x00007c00u32 >> 10u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x00007c00u32) >> 10u32 == 31u32) by (bit_vector);
     assert(crate::model::scale_of(31int, 31int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x00007c00u32, 10u32, 0x0000001fu32, 31u32, 255u8);
     assert(0x000003e0u32 != 0u32) by (bit_vector);
     assert((0x000003e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -2375,6 +2409,7 @@ proof fn want_bytes_ico_16_and_0()
     assert(0x000003e0u32 >> 5u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x000003e0u32) >> 5u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x000003e0u32, 5u32, 0x0000001fu32, 0u32, 0u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -2384,6 +2419,7 @@ proof fn want_bytes_ico_16_and_0()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x0000001fu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x0000001fu32, 0u32, 0x0000001fu32, 0u32, 0u8);
     assert(want_ico_16_and_0() == seq![
         0xffu8, 0x00u8, 0x00u8, 0xffu8,
@@ -2455,6 +2491,7 @@ proof fn want_bytes_ico_16_and_1()
     assert(0x00007c00u32 >> 10u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x00007c00u32) >> 10u32 == 31u32) by (bit_vector);
     assert(crate::model::scale_of(31int, 31int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x00007c00u32, 10u32, 0x0000001fu32, 31u32, 255u8);
     assert(0x000003e0u32 != 0u32) by (bit_vector);
     assert((0x000003e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -2464,6 +2501,7 @@ proof fn want_bytes_ico_16_and_1()
     assert(0x000003e0u32 >> 5u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x000003e0u32) >> 5u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x000003e0u32, 5u32, 0x0000001fu32, 0u32, 0u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -2473,6 +2511,7 @@ proof fn want_bytes_ico_16_and_1()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x0000001fu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x0000001fu32, 0u32, 0x0000001fu32, 0u32, 0u8);
     assert(want_ico_16_and_1() == seq![
         0xffu8, 0x00u8, 0x00u8, 0x00u8,
@@ -4190,6 +4229,7 @@ proof fn want_bytes_bmp_optimal_palette_16()
     assert(0x00007c00u32 >> 10u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x00007c00u32) >> 10u32 == 31u32) by (bit_vector);
     assert(crate::model::scale_of(31int, 31int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x00007c00u32, 10u32, 0x0000001fu32, 31u32, 255u8);
     assert(0x000003e0u32 != 0u32) by (bit_vector);
     assert((0x000003e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -4199,6 +4239,7 @@ proof fn want_bytes_bmp_optimal_palette_16()
     assert(0x000003e0u32 >> 5u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x000003e0u32) >> 5u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x000003e0u32, 5u32, 0x0000001fu32, 0u32, 0u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -4208,6 +4249,7 @@ proof fn want_bytes_bmp_optimal_palette_16()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x0000001fu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x0000001fu32, 0u32, 0x0000001fu32, 0u32, 0u8);
     assert(want_bmp_optimal_palette_16() == seq![
         0xffu8, 0x00u8, 0x00u8, 0xffu8,
@@ -5679,6 +5721,7 @@ proof fn want_bytes_bmp_rgb_gap_16()
     assert(0x00007c00u32 >> 10u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x00007c00u32) >> 10u32 == 31u32) by (bit_vector);
     assert(crate::model::scale_of(31int, 31int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x00007c00u32, 10u32, 0x0000001fu32, 31u32, 255u8);
     assert(0x000003e0u32 != 0u32) by (bit_vector);
     assert((0x000003e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -5688,6 +5731,7 @@ proof fn want_bytes_bmp_rgb_gap_16()
     assert(0x000003e0u32 >> 5u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x000003e0u32) >> 5u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x000003e0u32, 5u32, 0x0000001fu32, 0u32, 0u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -5697,6 +5741,7 @@ proof fn want_bytes_bmp_rgb_gap_16()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x0000001fu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x0000001fu32, 0u32, 0x0000001fu32, 0u32, 0u8);
     assert(want_bmp_rgb_gap_16() == seq![
         0xffu8, 0x00u8, 0x00u8, 0xffu8,
@@ -5848,6 +5893,7 @@ proof fn want_bytes_bmp_fields_gap_16()
     assert(0x00007c00u32 >> 10u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x00007c00u32) >> 10u32 == 31u32) by (bit_vector);
     assert(crate::model::scale_of(31int, 31int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x00007c00u32, 10u32, 0x0000001fu32, 31u32, 255u8);
     assert(0x000003e0u32 != 0u32) by (bit_vector);
     assert((0x000003e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -5857,6 +5903,7 @@ proof fn want_bytes_bmp_fields_gap_16()
     assert(0x000003e0u32 >> 5u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x000003e0u32) >> 5u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x000003e0u32, 5u32, 0x0000001fu32, 0u32, 0u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -5866,6 +5913,7 @@ proof fn want_bytes_bmp_fields_gap_16()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x0000001fu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x0000001fu32, 0u32, 0x0000001fu32, 0u32, 0u8);
     assert(want_bmp_fields_gap_16() == seq![
         0xffu8, 0x00u8, 0x00u8, 0xffu8,
@@ -5959,6 +6007,7 @@ proof fn want_bytes_bmp_fields_gap_32()
     assert(0x00ff0000u32 >> 16u32 == 0x000000ffu32) by (bit_vector);
     assert((0x00ff0000u32 & 0x00ff0000u32) >> 16u32 == 255u32) by (bit_vector);
     assert(crate::model::scale_of(255int, 255int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x00ff0000u32, 0x00ff0000u32, 16u32, 0x000000ffu32, 255u32, 255u8);
     assert(0x0000ff00u32 != 0u32) by (bit_vector);
     assert((0x0000ff00u32 >> 8u32) & 1u32 == 1u32) by (bit_vector);
@@ -5968,6 +6017,7 @@ proof fn want_bytes_bmp_fields_gap_32()
     assert(0x0000ff00u32 >> 8u32 == 0x000000ffu32) by (bit_vector);
     assert((0x00ff0000u32 & 0x0000ff00u32) >> 8u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x00ff0000u32, 0x0000ff00u32, 8u32, 0x000000ffu32, 0u32, 0u8);
     assert(0x000000ffu32 != 0u32) by (bit_vector);
     assert((0x000000ffu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -5977,6 +6027,7 @@ proof fn want_bytes_bmp_fields_gap_32()
     assert(0x000000ffu32 >> 0u32 == 0x000000ffu32) by (bit_vector);
     assert((0x00ff0000u32 & 0x000000ffu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x00ff0000u32, 0x000000ffu32, 0u32, 0x000000ffu32, 0u32, 0u8);
     assert(want_bmp_fields_gap_32() == seq![
         0xffu8, 0x00u8, 0x00u8, 0xffu8,
@@ -6069,6 +6120,7 @@ proof fn want_bytes_fields_16_alpha_nonzero()
     assert(0x00000f00u32 >> 8u32 == 0x0000000fu32) by (bit_vector);
     assert((0x0000880fu32 & 0x00000f00u32) >> 8u32 == 8u32) by (bit_vector);
     assert(crate::model::scale_of(8int, 15int) == 136int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000000fu32) == 0x0000000fu32) by (compute);
     channel_lit(0x0000880fu32, 0x00000f00u32, 8u32, 0x0000000fu32, 8u32, 136u8);
     assert(0x000000f0u32 != 0u32) by (bit_vector);
     assert((0x000000f0u32 >> 4u32) & 1u32 == 1u32) by (bit_vector);
@@ -6078,6 +6130,7 @@ proof fn want_bytes_fields_16_alpha_nonzero()
     assert(0x000000f0u32 >> 4u32 == 0x0000000fu32) by (bit_vector);
     assert((0x0000880fu32 & 0x000000f0u32) >> 4u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 15int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000000fu32) == 0x0000000fu32) by (compute);
     channel_lit(0x0000880fu32, 0x000000f0u32, 4u32, 0x0000000fu32, 0u32, 0u8);
     assert(0x0000000fu32 != 0u32) by (bit_vector);
     assert((0x0000000fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -6087,6 +6140,7 @@ proof fn want_bytes_fields_16_alpha_nonzero()
     assert(0x0000000fu32 >> 0u32 == 0x0000000fu32) by (bit_vector);
     assert((0x0000880fu32 & 0x0000000fu32) >> 0u32 == 15u32) by (bit_vector);
     assert(crate::model::scale_of(15int, 15int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000000fu32) == 0x0000000fu32) by (compute);
     channel_lit(0x0000880fu32, 0x0000000fu32, 0u32, 0x0000000fu32, 15u32, 255u8);
     assert(0x0000f000u32 != 0u32) by (bit_vector);
     assert((0x0000f000u32 >> 12u32) & 1u32 == 1u32) by (bit_vector);
@@ -6096,6 +6150,7 @@ proof fn want_bytes_fields_16_alpha_nonzero()
     assert(0x0000f000u32 >> 12u32 == 0x0000000fu32) by (bit_vector);
     assert((0x0000880fu32 & 0x0000f000u32) >> 12u32 == 8u32) by (bit_vector);
     assert(crate::model::scale_of(8int, 15int) == 136int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000000fu32) == 0x0000000fu32) by (compute);
     channel_lit(0x0000880fu32, 0x0000f000u32, 12u32, 0x0000000fu32, 8u32, 136u8);
     assert(want_fields_16_alpha_nonzero() == seq![
         0x88u8, 0x00u8, 0xffu8, 0x88u8,
@@ -6168,6 +6223,7 @@ proof fn want_bytes_fields_16_alpha_zero()
     assert(0x00000f00u32 >> 8u32 == 0x0000000fu32) by (bit_vector);
     assert((0x0000080fu32 & 0x00000f00u32) >> 8u32 == 8u32) by (bit_vector);
     assert(crate::model::scale_of(8int, 15int) == 136int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000000fu32) == 0x0000000fu32) by (compute);
     channel_lit(0x0000080fu32, 0x00000f00u32, 8u32, 0x0000000fu32, 8u32, 136u8);
     assert(0x000000f0u32 != 0u32) by (bit_vector);
     assert((0x000000f0u32 >> 4u32) & 1u32 == 1u32) by (bit_vector);
@@ -6177,6 +6233,7 @@ proof fn want_bytes_fields_16_alpha_zero()
     assert(0x000000f0u32 >> 4u32 == 0x0000000fu32) by (bit_vector);
     assert((0x0000080fu32 & 0x000000f0u32) >> 4u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 15int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000000fu32) == 0x0000000fu32) by (compute);
     channel_lit(0x0000080fu32, 0x000000f0u32, 4u32, 0x0000000fu32, 0u32, 0u8);
     assert(0x0000000fu32 != 0u32) by (bit_vector);
     assert((0x0000000fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -6186,6 +6243,7 @@ proof fn want_bytes_fields_16_alpha_zero()
     assert(0x0000000fu32 >> 0u32 == 0x0000000fu32) by (bit_vector);
     assert((0x0000080fu32 & 0x0000000fu32) >> 0u32 == 15u32) by (bit_vector);
     assert(crate::model::scale_of(15int, 15int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000000fu32) == 0x0000000fu32) by (compute);
     channel_lit(0x0000080fu32, 0x0000000fu32, 0u32, 0x0000000fu32, 15u32, 255u8);
     assert(0x0000f000u32 != 0u32) by (bit_vector);
     assert((0x0000f000u32 >> 12u32) & 1u32 == 1u32) by (bit_vector);
@@ -6195,6 +6253,7 @@ proof fn want_bytes_fields_16_alpha_zero()
     assert(0x0000f000u32 >> 12u32 == 0x0000000fu32) by (bit_vector);
     assert((0x0000080fu32 & 0x0000f000u32) >> 12u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 15int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000000fu32) == 0x0000000fu32) by (compute);
     channel_lit(0x0000080fu32, 0x0000f000u32, 12u32, 0x0000000fu32, 0u32, 0u8);
     assert(want_fields_16_alpha_zero() == seq![
         0x88u8, 0x00u8, 0xffu8, 0x00u8,
@@ -6269,6 +6328,7 @@ proof fn want_bytes_fields_topdown_32()
     assert(0x00ff0000u32 >> 16u32 == 0x000000ffu32) by (bit_vector);
     assert((0x33ff0000u32 & 0x00ff0000u32) >> 16u32 == 255u32) by (bit_vector);
     assert(crate::model::scale_of(255int, 255int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x33ff0000u32, 0x00ff0000u32, 16u32, 0x000000ffu32, 255u32, 255u8);
     assert(0x0000ff00u32 != 0u32) by (bit_vector);
     assert((0x0000ff00u32 >> 8u32) & 1u32 == 1u32) by (bit_vector);
@@ -6278,6 +6338,7 @@ proof fn want_bytes_fields_topdown_32()
     assert(0x0000ff00u32 >> 8u32 == 0x000000ffu32) by (bit_vector);
     assert((0x33ff0000u32 & 0x0000ff00u32) >> 8u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x33ff0000u32, 0x0000ff00u32, 8u32, 0x000000ffu32, 0u32, 0u8);
     assert(0x000000ffu32 != 0u32) by (bit_vector);
     assert((0x000000ffu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -6287,6 +6348,7 @@ proof fn want_bytes_fields_topdown_32()
     assert(0x000000ffu32 >> 0u32 == 0x000000ffu32) by (bit_vector);
     assert((0x33ff0000u32 & 0x000000ffu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x33ff0000u32, 0x000000ffu32, 0u32, 0x000000ffu32, 0u32, 0u8);
     assert(0xff000000u32 != 0u32) by (bit_vector);
     assert((0xff000000u32 >> 24u32) & 1u32 == 1u32) by (bit_vector);
@@ -6296,6 +6358,7 @@ proof fn want_bytes_fields_topdown_32()
     assert(0xff000000u32 >> 24u32 == 0x000000ffu32) by (bit_vector);
     assert((0x33ff0000u32 & 0xff000000u32) >> 24u32 == 51u32) by (bit_vector);
     assert(crate::model::scale_of(51int, 255int) == 51int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x33ff0000u32, 0xff000000u32, 24u32, 0x000000ffu32, 51u32, 51u8);
     assert(0x00ff0000u32 != 0u32) by (bit_vector);
     assert((0x00ff0000u32 >> 16u32) & 1u32 == 1u32) by (bit_vector);
@@ -6305,6 +6368,7 @@ proof fn want_bytes_fields_topdown_32()
     assert(0x00ff0000u32 >> 16u32 == 0x000000ffu32) by (bit_vector);
     assert((0x3300ff00u32 & 0x00ff0000u32) >> 16u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x3300ff00u32, 0x00ff0000u32, 16u32, 0x000000ffu32, 0u32, 0u8);
     assert(0x0000ff00u32 != 0u32) by (bit_vector);
     assert((0x0000ff00u32 >> 8u32) & 1u32 == 1u32) by (bit_vector);
@@ -6314,6 +6378,7 @@ proof fn want_bytes_fields_topdown_32()
     assert(0x0000ff00u32 >> 8u32 == 0x000000ffu32) by (bit_vector);
     assert((0x3300ff00u32 & 0x0000ff00u32) >> 8u32 == 255u32) by (bit_vector);
     assert(crate::model::scale_of(255int, 255int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x3300ff00u32, 0x0000ff00u32, 8u32, 0x000000ffu32, 255u32, 255u8);
     assert(0x000000ffu32 != 0u32) by (bit_vector);
     assert((0x000000ffu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -6323,6 +6388,7 @@ proof fn want_bytes_fields_topdown_32()
     assert(0x000000ffu32 >> 0u32 == 0x000000ffu32) by (bit_vector);
     assert((0x3300ff00u32 & 0x000000ffu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x3300ff00u32, 0x000000ffu32, 0u32, 0x000000ffu32, 0u32, 0u8);
     assert(0xff000000u32 != 0u32) by (bit_vector);
     assert((0xff000000u32 >> 24u32) & 1u32 == 1u32) by (bit_vector);
@@ -6332,6 +6398,7 @@ proof fn want_bytes_fields_topdown_32()
     assert(0xff000000u32 >> 24u32 == 0x000000ffu32) by (bit_vector);
     assert((0x3300ff00u32 & 0xff000000u32) >> 24u32 == 51u32) by (bit_vector);
     assert(crate::model::scale_of(51int, 255int) == 51int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x3300ff00u32, 0xff000000u32, 24u32, 0x000000ffu32, 51u32, 51u8);
     assert(want_fields_topdown_32() == seq![
         0xffu8, 0x00u8, 0x00u8, 0x33u8, 0x00u8, 0xffu8, 0x00u8, 0x33u8,
@@ -6405,6 +6472,7 @@ proof fn want_bytes_fields_topdown_16()
     assert(0x00007c00u32 >> 10u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x00007c00u32) >> 10u32 == 31u32) by (bit_vector);
     assert(crate::model::scale_of(31int, 31int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x00007c00u32, 10u32, 0x0000001fu32, 31u32, 255u8);
     assert(0x000003e0u32 != 0u32) by (bit_vector);
     assert((0x000003e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -6414,6 +6482,7 @@ proof fn want_bytes_fields_topdown_16()
     assert(0x000003e0u32 >> 5u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x000003e0u32) >> 5u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x000003e0u32, 5u32, 0x0000001fu32, 0u32, 0u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -6423,6 +6492,7 @@ proof fn want_bytes_fields_topdown_16()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00007c00u32 & 0x0000001fu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00007c00u32, 0x0000001fu32, 0u32, 0x0000001fu32, 0u32, 0u8);
     assert(0x00007c00u32 != 0u32) by (bit_vector);
     assert((0x00007c00u32 >> 10u32) & 1u32 == 1u32) by (bit_vector);
@@ -6432,6 +6502,7 @@ proof fn want_bytes_fields_topdown_16()
     assert(0x00007c00u32 >> 10u32 == 0x0000001fu32) by (bit_vector);
     assert((0x000003e0u32 & 0x00007c00u32) >> 10u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x000003e0u32, 0x00007c00u32, 10u32, 0x0000001fu32, 0u32, 0u8);
     assert(0x000003e0u32 != 0u32) by (bit_vector);
     assert((0x000003e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -6441,6 +6512,7 @@ proof fn want_bytes_fields_topdown_16()
     assert(0x000003e0u32 >> 5u32 == 0x0000001fu32) by (bit_vector);
     assert((0x000003e0u32 & 0x000003e0u32) >> 5u32 == 31u32) by (bit_vector);
     assert(crate::model::scale_of(31int, 31int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x000003e0u32, 0x000003e0u32, 5u32, 0x0000001fu32, 31u32, 255u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -6450,6 +6522,7 @@ proof fn want_bytes_fields_topdown_16()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x000003e0u32 & 0x0000001fu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x000003e0u32, 0x0000001fu32, 0u32, 0x0000001fu32, 0u32, 0u8);
     assert(want_fields_topdown_16() == seq![
         0xffu8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0xffu8, 0x00u8, 0xffu8,
@@ -6522,6 +6595,7 @@ proof fn want_bytes_fields_scale_green6()
     assert(0x0000f800u32 >> 11u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00000160u32 & 0x0000f800u32) >> 11u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00000160u32, 0x0000f800u32, 11u32, 0x0000001fu32, 0u32, 0u8);
     assert(0x000007e0u32 != 0u32) by (bit_vector);
     assert((0x000007e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -6531,6 +6605,7 @@ proof fn want_bytes_fields_scale_green6()
     assert(0x000007e0u32 >> 5u32 == 0x0000003fu32) by (bit_vector);
     assert((0x00000160u32 & 0x000007e0u32) >> 5u32 == 11u32) by (bit_vector);
     assert(crate::model::scale_of(11int, 63int) == 45int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000003fu32) == 0x0000003fu32) by (compute);
     channel_lit(0x00000160u32, 0x000007e0u32, 5u32, 0x0000003fu32, 11u32, 45u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -6540,6 +6615,7 @@ proof fn want_bytes_fields_scale_green6()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00000160u32 & 0x0000001fu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00000160u32, 0x0000001fu32, 0u32, 0x0000001fu32, 0u32, 0u8);
     assert(want_fields_scale_green6() == seq![
         0x00u8, 0x2du8, 0x00u8, 0xffu8,
@@ -6612,6 +6688,7 @@ proof fn want_bytes_fields_scale_green5()
     assert(0x00007c00u32 >> 10u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00000160u32 & 0x00007c00u32) >> 10u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00000160u32, 0x00007c00u32, 10u32, 0x0000001fu32, 0u32, 0u8);
     assert(0x000003e0u32 != 0u32) by (bit_vector);
     assert((0x000003e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -6621,6 +6698,7 @@ proof fn want_bytes_fields_scale_green5()
     assert(0x000003e0u32 >> 5u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00000160u32 & 0x000003e0u32) >> 5u32 == 11u32) by (bit_vector);
     assert(crate::model::scale_of(11int, 31int) == 90int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00000160u32, 0x000003e0u32, 5u32, 0x0000001fu32, 11u32, 90u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -6630,6 +6708,7 @@ proof fn want_bytes_fields_scale_green5()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x00000160u32 & 0x0000001fu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x00000160u32, 0x0000001fu32, 0u32, 0x0000001fu32, 0u32, 0u8);
     assert(want_fields_scale_green5() == seq![
         0x00u8, 0x5au8, 0x00u8, 0xffu8,
@@ -6703,6 +6782,7 @@ proof fn want_bytes_ico_fields_16()
     assert(0x0000f800u32 >> 11u32 == 0x0000001fu32) by (bit_vector);
     assert((0x0000f800u32 & 0x0000f800u32) >> 11u32 == 31u32) by (bit_vector);
     assert(crate::model::scale_of(31int, 31int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x0000f800u32, 0x0000f800u32, 11u32, 0x0000001fu32, 31u32, 255u8);
     assert(0x000007e0u32 != 0u32) by (bit_vector);
     assert((0x000007e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -6712,6 +6792,7 @@ proof fn want_bytes_ico_fields_16()
     assert(0x000007e0u32 >> 5u32 == 0x0000003fu32) by (bit_vector);
     assert((0x0000f800u32 & 0x000007e0u32) >> 5u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 63int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000003fu32) == 0x0000003fu32) by (compute);
     channel_lit(0x0000f800u32, 0x000007e0u32, 5u32, 0x0000003fu32, 0u32, 0u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -6721,6 +6802,7 @@ proof fn want_bytes_ico_fields_16()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x0000f800u32 & 0x0000001fu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x0000f800u32, 0x0000001fu32, 0u32, 0x0000001fu32, 0u32, 0u8);
     assert(want_ico_fields_16() == seq![
         0xffu8, 0x00u8, 0x00u8, 0xffu8,
@@ -6828,6 +6910,7 @@ proof fn xor_bytes_ico_fields_32()
     assert(0x00ff0000u32 >> 16u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44ff0000u32 & 0x00ff0000u32) >> 16u32 == 255u32) by (bit_vector);
     assert(crate::model::scale_of(255int, 255int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44ff0000u32, 0x00ff0000u32, 16u32, 0x000000ffu32, 255u32, 255u8);
     assert(0x0000ff00u32 != 0u32) by (bit_vector);
     assert((0x0000ff00u32 >> 8u32) & 1u32 == 1u32) by (bit_vector);
@@ -6837,6 +6920,7 @@ proof fn xor_bytes_ico_fields_32()
     assert(0x0000ff00u32 >> 8u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44ff0000u32 & 0x0000ff00u32) >> 8u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44ff0000u32, 0x0000ff00u32, 8u32, 0x000000ffu32, 0u32, 0u8);
     assert(0x000000ffu32 != 0u32) by (bit_vector);
     assert((0x000000ffu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -6846,6 +6930,7 @@ proof fn xor_bytes_ico_fields_32()
     assert(0x000000ffu32 >> 0u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44ff0000u32 & 0x000000ffu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44ff0000u32, 0x000000ffu32, 0u32, 0x000000ffu32, 0u32, 0u8);
     assert(0xff000000u32 != 0u32) by (bit_vector);
     assert((0xff000000u32 >> 24u32) & 1u32 == 1u32) by (bit_vector);
@@ -6855,6 +6940,7 @@ proof fn xor_bytes_ico_fields_32()
     assert(0xff000000u32 >> 24u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44ff0000u32 & 0xff000000u32) >> 24u32 == 68u32) by (bit_vector);
     assert(crate::model::scale_of(68int, 255int) == 68int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44ff0000u32, 0xff000000u32, 24u32, 0x000000ffu32, 68u32, 68u8);
     assert(xor_ico_fields_32() == seq![
         0xffu8, 0x00u8, 0x00u8, 0x44u8,
@@ -7570,6 +7656,7 @@ proof fn want_bytes_bmp_fields_40_masks_then_optimal_table_gap()
     assert(0x0000f800u32 >> 11u32 == 0x0000001fu32) by (bit_vector);
     assert((0x0000f800u32 & 0x0000f800u32) >> 11u32 == 31u32) by (bit_vector);
     assert(crate::model::scale_of(31int, 31int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x0000f800u32, 0x0000f800u32, 11u32, 0x0000001fu32, 31u32, 255u8);
     assert(0x000007e0u32 != 0u32) by (bit_vector);
     assert((0x000007e0u32 >> 5u32) & 1u32 == 1u32) by (bit_vector);
@@ -7579,6 +7666,7 @@ proof fn want_bytes_bmp_fields_40_masks_then_optimal_table_gap()
     assert(0x000007e0u32 >> 5u32 == 0x0000003fu32) by (bit_vector);
     assert((0x0000f800u32 & 0x000007e0u32) >> 5u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 63int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000003fu32) == 0x0000003fu32) by (compute);
     channel_lit(0x0000f800u32, 0x000007e0u32, 5u32, 0x0000003fu32, 0u32, 0u8);
     assert(0x0000001fu32 != 0u32) by (bit_vector);
     assert((0x0000001fu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -7588,6 +7676,7 @@ proof fn want_bytes_bmp_fields_40_masks_then_optimal_table_gap()
     assert(0x0000001fu32 >> 0u32 == 0x0000001fu32) by (bit_vector);
     assert((0x0000f800u32 & 0x0000001fu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 31int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x0000001fu32) == 0x0000001fu32) by (compute);
     channel_lit(0x0000f800u32, 0x0000001fu32, 0u32, 0x0000001fu32, 0u32, 0u8);
     assert(want_bmp_fields_40_masks_then_optimal_table_gap() == seq![
         0xffu8, 0x00u8, 0x00u8, 0xffu8,
@@ -7735,6 +7824,7 @@ proof fn xor_bytes_ico_fields_32_no_alpha_and_veto()
     assert(0x00ff0000u32 >> 16u32 == 0x000000ffu32) by (bit_vector);
     assert((0x00ff0000u32 & 0x00ff0000u32) >> 16u32 == 255u32) by (bit_vector);
     assert(crate::model::scale_of(255int, 255int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x00ff0000u32, 0x00ff0000u32, 16u32, 0x000000ffu32, 255u32, 255u8);
     assert(0x0000ff00u32 != 0u32) by (bit_vector);
     assert((0x0000ff00u32 >> 8u32) & 1u32 == 1u32) by (bit_vector);
@@ -7744,6 +7834,7 @@ proof fn xor_bytes_ico_fields_32_no_alpha_and_veto()
     assert(0x0000ff00u32 >> 8u32 == 0x000000ffu32) by (bit_vector);
     assert((0x00ff0000u32 & 0x0000ff00u32) >> 8u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x00ff0000u32, 0x0000ff00u32, 8u32, 0x000000ffu32, 0u32, 0u8);
     assert(0x000000ffu32 != 0u32) by (bit_vector);
     assert((0x000000ffu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -7753,6 +7844,7 @@ proof fn xor_bytes_ico_fields_32_no_alpha_and_veto()
     assert(0x000000ffu32 >> 0u32 == 0x000000ffu32) by (bit_vector);
     assert((0x00ff0000u32 & 0x000000ffu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x00ff0000u32, 0x000000ffu32, 0u32, 0x000000ffu32, 0u32, 0u8);
     assert(xor_ico_fields_32_no_alpha_and_veto() == seq![
         0xffu8, 0x00u8, 0x00u8, 0xffu8,
@@ -7972,6 +8064,7 @@ proof fn xor_bytes_ico_fields_32_explicit_alpha_zero_and_fallback()
     assert(0x00ff0000u32 >> 16u32 == 0x000000ffu32) by (bit_vector);
     assert((0x00ff0000u32 & 0x00ff0000u32) >> 16u32 == 255u32) by (bit_vector);
     assert(crate::model::scale_of(255int, 255int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x00ff0000u32, 0x00ff0000u32, 16u32, 0x000000ffu32, 255u32, 255u8);
     assert(0x0000ff00u32 != 0u32) by (bit_vector);
     assert((0x0000ff00u32 >> 8u32) & 1u32 == 1u32) by (bit_vector);
@@ -7981,6 +8074,7 @@ proof fn xor_bytes_ico_fields_32_explicit_alpha_zero_and_fallback()
     assert(0x0000ff00u32 >> 8u32 == 0x000000ffu32) by (bit_vector);
     assert((0x00ff0000u32 & 0x0000ff00u32) >> 8u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x00ff0000u32, 0x0000ff00u32, 8u32, 0x000000ffu32, 0u32, 0u8);
     assert(0x000000ffu32 != 0u32) by (bit_vector);
     assert((0x000000ffu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -7990,6 +8084,7 @@ proof fn xor_bytes_ico_fields_32_explicit_alpha_zero_and_fallback()
     assert(0x000000ffu32 >> 0u32 == 0x000000ffu32) by (bit_vector);
     assert((0x00ff0000u32 & 0x000000ffu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x00ff0000u32, 0x000000ffu32, 0u32, 0x000000ffu32, 0u32, 0u8);
     assert(0xff000000u32 != 0u32) by (bit_vector);
     assert((0xff000000u32 >> 24u32) & 1u32 == 1u32) by (bit_vector);
@@ -7999,6 +8094,7 @@ proof fn xor_bytes_ico_fields_32_explicit_alpha_zero_and_fallback()
     assert(0xff000000u32 >> 24u32 == 0x000000ffu32) by (bit_vector);
     assert((0x00ff0000u32 & 0xff000000u32) >> 24u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x00ff0000u32, 0xff000000u32, 24u32, 0x000000ffu32, 0u32, 0u8);
     assert(0x00ff0000u32 != 0u32) by (bit_vector);
     assert((0x00ff0000u32 >> 16u32) & 1u32 == 1u32) by (bit_vector);
@@ -8008,6 +8104,7 @@ proof fn xor_bytes_ico_fields_32_explicit_alpha_zero_and_fallback()
     assert(0x00ff0000u32 >> 16u32 == 0x000000ffu32) by (bit_vector);
     assert((0x0000ff00u32 & 0x00ff0000u32) >> 16u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x0000ff00u32, 0x00ff0000u32, 16u32, 0x000000ffu32, 0u32, 0u8);
     assert(0x0000ff00u32 != 0u32) by (bit_vector);
     assert((0x0000ff00u32 >> 8u32) & 1u32 == 1u32) by (bit_vector);
@@ -8017,6 +8114,7 @@ proof fn xor_bytes_ico_fields_32_explicit_alpha_zero_and_fallback()
     assert(0x0000ff00u32 >> 8u32 == 0x000000ffu32) by (bit_vector);
     assert((0x0000ff00u32 & 0x0000ff00u32) >> 8u32 == 255u32) by (bit_vector);
     assert(crate::model::scale_of(255int, 255int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x0000ff00u32, 0x0000ff00u32, 8u32, 0x000000ffu32, 255u32, 255u8);
     assert(0x000000ffu32 != 0u32) by (bit_vector);
     assert((0x000000ffu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -8026,6 +8124,7 @@ proof fn xor_bytes_ico_fields_32_explicit_alpha_zero_and_fallback()
     assert(0x000000ffu32 >> 0u32 == 0x000000ffu32) by (bit_vector);
     assert((0x0000ff00u32 & 0x000000ffu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x0000ff00u32, 0x000000ffu32, 0u32, 0x000000ffu32, 0u32, 0u8);
     assert(0xff000000u32 != 0u32) by (bit_vector);
     assert((0xff000000u32 >> 24u32) & 1u32 == 1u32) by (bit_vector);
@@ -8035,6 +8134,7 @@ proof fn xor_bytes_ico_fields_32_explicit_alpha_zero_and_fallback()
     assert(0xff000000u32 >> 24u32 == 0x000000ffu32) by (bit_vector);
     assert((0x0000ff00u32 & 0xff000000u32) >> 24u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x0000ff00u32, 0xff000000u32, 24u32, 0x000000ffu32, 0u32, 0u8);
     assert(xor_ico_fields_32_explicit_alpha_zero_and_fallback() == seq![
         0xffu8, 0x00u8, 0x00u8, 0x00u8, 0x00u8, 0xffu8, 0x00u8, 0x00u8,
@@ -8225,6 +8325,7 @@ proof fn xor_bytes_ico_fields_32_explicit_alpha_keeps_xor()
     assert(0x00ff0000u32 >> 16u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44ff0000u32 & 0x00ff0000u32) >> 16u32 == 255u32) by (bit_vector);
     assert(crate::model::scale_of(255int, 255int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44ff0000u32, 0x00ff0000u32, 16u32, 0x000000ffu32, 255u32, 255u8);
     assert(0x0000ff00u32 != 0u32) by (bit_vector);
     assert((0x0000ff00u32 >> 8u32) & 1u32 == 1u32) by (bit_vector);
@@ -8234,6 +8335,7 @@ proof fn xor_bytes_ico_fields_32_explicit_alpha_keeps_xor()
     assert(0x0000ff00u32 >> 8u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44ff0000u32 & 0x0000ff00u32) >> 8u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44ff0000u32, 0x0000ff00u32, 8u32, 0x000000ffu32, 0u32, 0u8);
     assert(0x000000ffu32 != 0u32) by (bit_vector);
     assert((0x000000ffu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -8243,6 +8345,7 @@ proof fn xor_bytes_ico_fields_32_explicit_alpha_keeps_xor()
     assert(0x000000ffu32 >> 0u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44ff0000u32 & 0x000000ffu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44ff0000u32, 0x000000ffu32, 0u32, 0x000000ffu32, 0u32, 0u8);
     assert(0xff000000u32 != 0u32) by (bit_vector);
     assert((0xff000000u32 >> 24u32) & 1u32 == 1u32) by (bit_vector);
@@ -8252,6 +8355,7 @@ proof fn xor_bytes_ico_fields_32_explicit_alpha_keeps_xor()
     assert(0xff000000u32 >> 24u32 == 0x000000ffu32) by (bit_vector);
     assert((0x44ff0000u32 & 0xff000000u32) >> 24u32 == 68u32) by (bit_vector);
     assert(crate::model::scale_of(68int, 255int) == 68int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x44ff0000u32, 0xff000000u32, 24u32, 0x000000ffu32, 68u32, 68u8);
     assert(xor_ico_fields_32_explicit_alpha_keeps_xor() == seq![
         0xffu8, 0x00u8, 0x00u8, 0x44u8,
@@ -10325,6 +10429,7 @@ proof fn xor_bytes_fields32_no_alpha_new()
     assert(0x00ff0000u32 >> 16u32 == 0x000000ffu32) by (bit_vector);
     assert((0x00ff0000u32 & 0x00ff0000u32) >> 16u32 == 255u32) by (bit_vector);
     assert(crate::model::scale_of(255int, 255int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x00ff0000u32, 0x00ff0000u32, 16u32, 0x000000ffu32, 255u32, 255u8);
     assert(0x0000ff00u32 != 0u32) by (bit_vector);
     assert((0x0000ff00u32 >> 8u32) & 1u32 == 1u32) by (bit_vector);
@@ -10334,6 +10439,7 @@ proof fn xor_bytes_fields32_no_alpha_new()
     assert(0x0000ff00u32 >> 8u32 == 0x000000ffu32) by (bit_vector);
     assert((0x00ff0000u32 & 0x0000ff00u32) >> 8u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x00ff0000u32, 0x0000ff00u32, 8u32, 0x000000ffu32, 0u32, 0u8);
     assert(0x000000ffu32 != 0u32) by (bit_vector);
     assert((0x000000ffu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -10343,6 +10449,7 @@ proof fn xor_bytes_fields32_no_alpha_new()
     assert(0x000000ffu32 >> 0u32 == 0x000000ffu32) by (bit_vector);
     assert((0x00ff0000u32 & 0x000000ffu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x00ff0000u32, 0x000000ffu32, 0u32, 0x000000ffu32, 0u32, 0u8);
     assert(xor_fields32_no_alpha_new() == seq![
         0xffu8, 0x00u8, 0x00u8, 0xffu8,
@@ -10581,6 +10688,7 @@ proof fn xor_bytes_fields32_explicit_alpha_new()
     assert(0x00ff0000u32 >> 16u32 == 0x000000ffu32) by (bit_vector);
     assert((0x80ff0000u32 & 0x00ff0000u32) >> 16u32 == 255u32) by (bit_vector);
     assert(crate::model::scale_of(255int, 255int) == 255int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x80ff0000u32, 0x00ff0000u32, 16u32, 0x000000ffu32, 255u32, 255u8);
     assert(0x0000ff00u32 != 0u32) by (bit_vector);
     assert((0x0000ff00u32 >> 8u32) & 1u32 == 1u32) by (bit_vector);
@@ -10590,6 +10698,7 @@ proof fn xor_bytes_fields32_explicit_alpha_new()
     assert(0x0000ff00u32 >> 8u32 == 0x000000ffu32) by (bit_vector);
     assert((0x80ff0000u32 & 0x0000ff00u32) >> 8u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x80ff0000u32, 0x0000ff00u32, 8u32, 0x000000ffu32, 0u32, 0u8);
     assert(0x000000ffu32 != 0u32) by (bit_vector);
     assert((0x000000ffu32 >> 0u32) & 1u32 == 1u32) by (bit_vector);
@@ -10599,6 +10708,7 @@ proof fn xor_bytes_fields32_explicit_alpha_new()
     assert(0x000000ffu32 >> 0u32 == 0x000000ffu32) by (bit_vector);
     assert((0x80ff0000u32 & 0x000000ffu32) >> 0u32 == 0u32) by (bit_vector);
     assert(crate::model::scale_of(0int, 255int) == 0int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x80ff0000u32, 0x000000ffu32, 0u32, 0x000000ffu32, 0u32, 0u8);
     assert(0xff000000u32 != 0u32) by (bit_vector);
     assert((0xff000000u32 >> 24u32) & 1u32 == 1u32) by (bit_vector);
@@ -10608,6 +10718,7 @@ proof fn xor_bytes_fields32_explicit_alpha_new()
     assert(0xff000000u32 >> 24u32 == 0x000000ffu32) by (bit_vector);
     assert((0x80ff0000u32 & 0xff000000u32) >> 24u32 == 128u32) by (bit_vector);
     assert(crate::model::scale_of(128int, 255int) == 128int) by (nonlinear_arith);
+    assert(crate::model::channel_span(0x000000ffu32) == 0x000000ffu32) by (compute);
     channel_lit(0x80ff0000u32, 0xff000000u32, 24u32, 0x000000ffu32, 128u32, 128u8);
     assert(xor_fields32_explicit_alpha_new() == seq![
         0xffu8, 0x00u8, 0x00u8, 0x80u8,

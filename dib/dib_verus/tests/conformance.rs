@@ -12,8 +12,22 @@
 use std::fs;
 use std::path::PathBuf;
 
-use dib_verus::dib::{decode_with_steps, Error, Mode};
+use dib_verus::dib::{try_decode_with_steps, Decoded, Error, Mode, TryError};
 use serde_json::Value;
+
+
+/// Fold a `try_*` result into the frozen-typed result for a test: a
+/// `Format(e)` is the frozen error, and `OutOfMemory` is a test failure (the
+/// tests run without a fault-injecting allocator, so it never occurs).
+fn fmt_part(r: Result<Decoded, TryError>) -> Result<Decoded, Error> {
+    match r {
+        Ok(d) => Ok(d),
+        Err(TryError::Format(e)) => Err(e),
+        Err(TryError::OutOfMemory(o)) => {
+            panic!("unexpected OutOfMemory: site {:?}, elements {}", o.site(), o.elements())
+        }
+    }
+}
 
 fn vectors_path() -> PathBuf {
     let manifest = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
@@ -96,6 +110,36 @@ fn mode_of(v: &Value) -> Mode {
     }
 }
 
+fn le16(b: &[u8], o: usize) -> u32 {
+    b[o] as u32 | ((b[o + 1] as u32) << 8)
+}
+
+fn le32(b: &[u8], o: usize) -> u32 {
+    b[o] as u32 | ((b[o + 1] as u32) << 8) | ((b[o + 2] as u32) << 16) | ((b[o + 3] as u32) << 24)
+}
+
+/// Stock gdk-pixbuf's `has_alpha` rule, computed independently of the decoder:
+/// it reads `biBitCount` and `biCompression` straight from the DIB header bytes
+/// (start 14 for `BmpFile`, 0 for the DIB/ICO modes). The CORE (12-byte) and
+/// 16-byte layouts imply `biCompression = 0`, so the rule reduces to the depth
+/// test; every other accepted layout carries `biCompression` at offset 16. The
+/// rule depends on the header alone, never on a pixel value.
+fn header_rule(bytes: &[u8], mode: Mode) -> bool {
+    let s = match mode {
+        Mode::BmpFile => 14,
+        _ => 0,
+    };
+    let hsize = le32(bytes, s);
+    let (bits, compression) = if hsize == 12 {
+        (le16(bytes, s + 10), 0)
+    } else if hsize == 16 {
+        (le16(bytes, s + 14), 0)
+    } else {
+        (le16(bytes, s + 14), le32(bytes, s + 16))
+    };
+    bits == 32 || compression == 1 || compression == 2
+}
+
 /// Expand a `{count, hex}` run list into the full RGBA byte sequence, checking
 /// that each `hex` is four bytes and that the counts sum to `total`.
 fn expand_runs(runs: &Value, total: usize) -> Vec<u8> {
@@ -118,16 +162,17 @@ fn expand_runs(runs: &Value, total: usize) -> Vec<u8> {
 }
 
 /// Run one vector, returning `Err(message)` on any mismatch. The public entry
-/// point is `decode_with_steps` (R19/T12): every fixture is decoded through the
+/// point is `try_decode_with_steps` (R19/T12): every fixture is decoded through the
 /// exported tracked decoder, whose `.0` is exactly `decode`'s result (the two
 /// share the body; the ghost counter in `.1` erases).
 fn check_vector(v: &Value) -> Result<(), String> {
     let expected = &v["expected"];
     let mode = mode_of(v);
+    let bytes = input_bytes(v);
 
     let want_error = expected.get("error").and_then(|e| e.as_str());
-    let result = match input_bytes(v) {
-        Some(bytes) => decode_with_steps(&bytes, mode).0,
+    let result = match &bytes {
+        Some(bytes) => fmt_part(try_decode_with_steps(bytes, mode).0),
         // R1: over-cap input is `FileTooLarge` in every mode.
         None => return match want_error {
             Some("FileTooLarge") => Ok(()),
@@ -161,6 +206,16 @@ fn check_vector(v: &Value) -> Result<(), String> {
     let n = width as usize * height as usize;
     if decoded.rgba.len() != 4 * n {
         return Err(format!("rgba length {} != 4*{n} = {}", decoded.rgba.len(), 4 * n));
+    }
+    // `rle_or_32bpp` is the gdk-pixbuf header rule; check it against the header
+    // bytes read independently here (start 14 for BmpFile, 0 for the DIB modes).
+    let bytes = bytes.expect("an accepted vector materializes its input");
+    let want_alpha = header_rule(&bytes, mode);
+    if decoded.rle_or_32bpp != want_alpha {
+        return Err(format!(
+            "rle_or_32bpp {} != header rule {want_alpha}",
+            decoded.rle_or_32bpp
+        ));
     }
     let want = expand_runs(&expected["rgba_runs"], n);
     if decoded.rgba != want {

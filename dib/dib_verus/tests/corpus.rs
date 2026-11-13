@@ -1,7 +1,7 @@
-//! Corpus regression: run `decode` over every `../corpus` file and compare with the
+//! Corpus regression: run `try_decode` over every `../corpus` file and compare with the
 //! frozen Python oracle's answer in `tests/corpus_expected.json`.
 //!
-//! `.bmp` files go to `decode` directly in `BmpFile` mode. `.ico`/`.cur` files are first
+//! `.bmp` files go to `try_decode` directly in `BmpFile` mode. `.ico`/`.cur` files are first
 //! reduced by the first-DIB selection shim from `../run_corpus.py` (a measurement shim,
 //! not part of the core contract) and then decoded in `IcoEntryDib` mode. The expected
 //! file was generated once by `tools/corpus_expected.py`, which imports the frozen oracle;
@@ -10,8 +10,22 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 
-use dib_verus::dib::{decode, Mode};
+use dib_verus::dib::{try_decode, Decoded, Error, Mode, TryError};
 use serde_json::Value;
+
+
+/// Fold a `try_*` result into the frozen-typed result for a test: a
+/// `Format(e)` is the frozen error, and `OutOfMemory` is a test failure (the
+/// tests run without a fault-injecting allocator, so it never occurs).
+fn fmt_part(r: Result<Decoded, TryError>) -> Result<Decoded, Error> {
+    match r {
+        Ok(d) => Ok(d),
+        Err(TryError::Format(e)) => Err(e),
+        Err(TryError::OutOfMemory(o)) => {
+            panic!("unexpected OutOfMemory: site {:?}, elements {}", o.site(), o.elements())
+        }
+    }
+}
 
 fn root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -145,7 +159,7 @@ fn corpus_matches_oracle() {
             }
         };
 
-        let result = decode(bytes, mode);
+        let result = fmt_part(try_decode(bytes, mode));
         if outcome == "Accepted" {
             accepted += 1;
             match result {

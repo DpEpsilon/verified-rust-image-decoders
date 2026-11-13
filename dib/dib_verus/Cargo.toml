@@ -1,12 +1,12 @@
 [package]
 name = "dib_verus"
-version = "0.3.0"
+version = "0.4.0"
 license = "MIT"
 description = "Formally verified (Verus) DIB/BMP decoder core"
 edition = "2021"
 
 [dependencies]
-vstd = "=0.0.0-2026-11-01-0251"
+vstd = { version = "=0.0.0-2026-11-01-0251", default-features = false, features = ["alloc"] }
 
 [dev-dependencies]
 # Test-only: reads spec-frozen/VECTORS.json in tests/conformance.rs.
