@@ -1,0 +1,1 @@
+Superseded: compare.py flagged the audit tool's own read of its allowlist (audit/allowlist/) as an untracked input; fixed by allowing that directory (the allowlist is hashed in the report). Kept for the record; see the next inventory run.

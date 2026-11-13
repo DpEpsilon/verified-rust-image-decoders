@@ -1,0 +1,82 @@
+   Compiling icns_verus v0.1.0 (/tmp/claude-0/alloc-audit/seeded/s_icns_push/icns_verus)
+warning: unused import: `Decoded`
+  --> src/alloc_guard/sites.rs:24:26
+   |
+24 | use super::super::icns::{Decoded, Entry, Error};
+   |                          ^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `OutOfMemory`
+   --> src/icns.rs:457:36
+    |
+457 | use crate::alloc_guard::{AllocLog, OutOfMemory};
+    |                                    ^^^^^^^^^^^
+
+warning: variable does not need to be mutable
+    --> src/icns.rs:1508:9
+     |
+1508 |     let mut c0 = match crate::alloc_guard::try_zeroed(
+     |         ----^^
+     |         |
+     |         help: remove this `mut`
+     |
+     = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+    --> src/icns.rs:1519:9
+     |
+1519 |     let mut c1 = match crate::alloc_guard::try_zeroed(
+     |         ----^^
+     |         |
+     |         help: remove this `mut`
+
+warning: variable does not need to be mutable
+    --> src/icns.rs:1530:9
+     |
+1530 |     let mut c2 = match crate::alloc_guard::try_zeroed(
+     |         ----^^
+     |         |
+     |         help: remove this `mut`
+
+warning: function `foo` is never used
+ --> src/lib.rs:9:4
+  |
+9 | fn foo() { assert(1 == 0 + 1); }
+  |    ^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `ev` is never read
+  --> src/alloc_guard/mod.rs:45:11
+   |
+44 | pub tracked struct AllocLog {
+   |                    -------- field in this struct
+45 |     ghost ev: Seq<(AllocSite, nat, bool)>,
+   |           ^^
+
+warning: field `room` is never read
+   --> src/alloc_guard/sites.rs:241:5
+    |
+239 | pub struct Reserved<T> {
+    |            -------- field in this struct
+240 |     v: Vec<T>,
+241 |     room: Ghost<nat>,
+    |     ^^^^
+
+warning: variable `E` should have a snake case name
+    --> src/icns.rs:4231:9
+     |
+4231 |     let E = match try_parse(bytes) {
+     |         ^ help: convert the identifier to snake case: `e`
+     |
+     = note: `#[warn(non_snake_case)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 32
+finding-tags: allowlist-reviewer,allowlist-source-hash,guard-inline-never,unauthorized-alloc-path,unexplained-leaf
+findings-other-than-unsigned-reviewer: 31
+mode: PRODUCTION
+warning: `icns_verus` (lib) generated 9 warnings (run `cargo fix --lib -p icns_verus` to apply 5 suggestions)
+    Finished `release` profile [optimized] target(s) in 0.77s

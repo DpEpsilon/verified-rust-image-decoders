@@ -1,0 +1,171 @@
+# Environment variables that processes of a clean core build ask for while they
+# are ABSENT from the reduced environment (so they cannot influence the build).
+# Captured from a clean traced build of tga_verus on 2026-11-13 (capture.sh) and
+# reviewed as tool/linker/cargo probes; '# ...' lists the processes seen. A
+# build script or proc macro asking for any other absent name blocks the
+# inventory (undeclared-env-read). Present variables are the declared
+# environment (environment.txt) and need no entry.
+ALLOC_AUDIT_PROTOTYPE   #  alloc_audit
+ALLOC_AUDIT_ROOTS   #  alloc_audit
+ALLOC_AUDIT_VSTD_VERSION   #  alloc_audit
+APP_SANDBOX_CONTAINER_ID   #  cargo
+BINUTILS_ROOT   #  x86_64-linux-gnu-gcc-14
+CARGO   #  rustup
+CARGO_ENCODED_RUSTFLAGS   #  alloc_audit build-script-build
+CARGO_LOG   #  cargo
+CARGO_LOG_PROFILE   #  cargo
+CARGO_MAKEFLAGS   #  alloc_audit cargo rustc rustc
+CARGO_MANIFEST_DIR   #  alloc_audit
+CARGO_PKG_NAME   #  alloc_audit rustc
+CARGO_PKG_VERSION   #  alloc_audit build-script-build
+CI   #  alloc_audit cargo rustc
+CLICOLOR   #  cargo
+CLICOLOR_FORCE   #  cargo
+COLLECT_GCC   #  collect2
+COLLECT_GCC_OPTIONS   #  collect2
+COLORTERM   #  cargo
+COMPILER_PATH   #  collect2 x86_64-linux-gnu-gcc-14
+DOMTERM   #  cargo
+FORCE_HYPERLINK   #  cargo
+FORCE_LLD_DIAGNOSTICS_CRASH   #  rust-lld
+GCC_COMPARE_DEBUG   #  x86_64-linux-gnu-gcc-14
+GCC_EXEC_PREFIX   #  x86_64-linux-gnu-gcc-14
+GCC_EXTRA_DIAGNOSTIC_OUTPUT   #  collect2 x86_64-linux-gnu-gcc-14
+GCC_ROOT   #  x86_64-linux-gnu-gcc-14
+GLIBCXX_TUNABLES   #  collect2 x86_64-linux-gnu-gcc-14
+GZIP   #  gzip
+KONSOLE_VERSION   #  cargo
+LANG   #  collect2 x86_64-linux-gnu-gcc-14
+LIBRARY_PATH   #  x86_64-linux-gnu-gcc-14
+LLD_IN_TEST   #  rust-lld
+LLD_REPRODUCE   #  rust-lld
+LLD_VERSION   #  rust-lld
+LLVM_IGNORED_ENV_VAR   #  alloc_audit rust-lld rustc
+LLVM_OVERRIDE_PRODUCER   #  alloc_audit rust-lld rustc
+LPATH   #  x86_64-linux-gnu-gcc-14
+MAKEFLAGS   #  cargo rustc x86_64-linux-gnu-gcc-14
+MALLOC_CONF   #  rustc
+MFLAGS   #  cargo rustc
+NO_COLOR   #  cargo rustup
+OPENSSL_CONF   #  cargo rustup
+OPENSSL_ia32cap   #  cargo rustup
+OUT_DIR   #  alloc_audit build-script-build
+POSIXLY_CORRECT   #  tar
+PRISTINE_TAR_COMPAT   #  tar
+QNX_TARGET   #  alloc_audit rustc
+RUSTC   #  build-script-build
+RUSTC_BOOTSTRAP   #  alloc_audit build-script-build cargo rustc
+RUSTC_CTFE_BACKTRACE   #  alloc_audit rustc
+RUSTC_FORCE_RUSTC_VERSION   #  alloc_audit rustc
+RUSTC_GRAPHVIZ_FONT   #  alloc_audit rustc
+RUSTC_LOG   #  rustc
+RUSTC_LOG_BACKTRACE   #  rustc
+RUSTC_LOG_COLOR   #  rustc
+RUSTC_LOG_ENTRY_EXIT   #  rustc
+RUSTC_LOG_FORMAT_JSON   #  rustc
+RUSTC_LOG_LINES   #  rustc
+RUSTC_LOG_OUTPUT_TARGET   #  rustc
+RUSTC_LOG_THREAD_IDS   #  rustc
+RUSTC_LOG_WRAPTREE   #  rustc
+RUSTC_OVERRIDE_VERSION_STRING   #  rustc
+RUSTC_STAGE   #  build-script-build
+RUSTC_WORKSPACE_WRAPPER   #  build-script-build
+RUSTFLAGS   #  alloc_audit
+RUSTUP_AUTO_INSTALL   #  rustup
+RUSTUP_DIST_ROOT   #  rustup
+RUSTUP_DIST_SERVER   #  rustup
+RUSTUP_FORCE_ARG0   #  rustup
+RUSTUP_IO_THREADS   #  rustup
+RUSTUP_LOG   #  rustup
+RUSTUP_OVERRIDE_HOST_TRIPLE   #  rustup
+RUSTUP_OVERRIDE_HOST_TUPLE   #  rustup
+RUSTUP_OVERRIDE_UNIX_FALLBACK_SETTINGS   #  rustup
+RUSTUP_PERMIT_COPY_RENAME   #  rustup
+RUSTUP_TERM_COLOR   #  rustup
+RUSTUP_TERM_PROGRESS_WHEN   #  rustup
+RUSTUP_TERM_WIDTH   #  rustup
+RUSTUP_TRACE_DIR   #  rustup
+RUST_BACKTRACE   #  alloc_audit cargo rustc rustup
+RUST_LIB_BACKTRACE   #  cargo rustup
+RUST_MIN_STACK   #  alloc_audit build-script-build cargo rustc rustc rustup
+RUST_RECURSION_COUNT   #  rustup
+SIMPLE_BACKUP_SUFFIX   #  tar
+SQLITE_TMPDIR   #  cargo
+SSLKEYLOGFILE   #  cargo rustup
+SSL_CERT_DIR   #  cargo cargo
+SSL_CERT_FILE   #  cargo cargo
+TARGET   #  build-script-build
+TAR_BROKEN_NUMERIC_OWNER   #  tar
+TAR_LONGLINK_100   #  tar
+TAR_OPTIONS   #  tar
+TEMP   #  collect2 x86_64-linux-gnu-gcc-14
+TERM   #  cargo x86_64-linux-gnu-gcc-14
+TERM_PROGRAM   #  cargo
+TF_BUILD   #  cargo
+TMP   #  collect2 x86_64-linux-gnu-gcc-14
+TMPDIR   #  alloc_audit cargo collect2 x86_64-linux-gnu-gcc-14
+TOKIO_UNSTABLE_SHARDED_BLOCKING_QUEUE   #  rustup
+UNSTABLE_RUSTDOC_TEST_PATH   #  rustc
+VCINSTALLDIR   #  rustc
+VSTD_KIND   #  alloc_audit rustc
+VTE_VERSION   #  cargo
+WT_SESSION   #  cargo
+XDG_CONFIG_HOME   #  cargo
+__CARGO_FIX_PLZ   #  cargo
+__CARGO_TEMPORARY_BUILD_DIR_NEW_LAYOUT_OPT_OUT   #  cargo
+__CARGO_TEST_CHANNEL_OVERRIDE_DO_NOT_USE_THIS   #  cargo
+__CARGO_TEST_FORCE_ARGFILE   #  cargo
+__CARGO_TEST_INVOCATION_TIME   #  cargo
+__CARGO_TEST_LAST_USE_NOW   #  cargo
+__CARGO_TEST_ROOT   #  cargo
+__CARGO_TEST_SETSID_PLEASE_DONT_USE_ELSEWHERE   #  cargo
+__CARGO_TEST_TTY_WIDTH_DO_NOT_USE_THIS   #  cargo
+__CARGO_USE_GITOXIDE_INSTEAD_OF_GIT2   #  cargo
+ALL_PROXY   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+EMAIL   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_ALLOC_LIMIT   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_AUTHOR_DATE   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_AUTHOR_EMAIL   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_AUTHOR_NAME   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_COMMITTER_DATE   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_COMMITTER_EMAIL   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_COMMITTER_NAME   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_CONFIG_COUNT   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_CONFIG_GLOBAL   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_CONFIG_NOSYSTEM   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_CONFIG_SYSTEM   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_CURL_VERBOSE   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_EXTERNAL_DIFF   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_GLOB_PATHSPECS   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_HTTP_LOW_SPEED_LIMIT   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_HTTP_LOW_SPEED_TIME   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_HTTP_PROXY_AUTHMETHOD   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_HTTP_USER_AGENT   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_ICASE_PATHSPECS   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_LITERAL_PATHSPECS   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_NAMESPACE   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_NOGLOB_PATHSPECS   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_NO_REPLACE_OBJECTS   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_PROTOCOL_FROM_USER   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_REPLACE_REF_BASE   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_SHALLOW_FILE   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_SSH   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_SSH_COMMAND   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_SSH_VARIANT   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_SSL_CAINFO   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_SSL_NO_VERIFY   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_SSL_VERSION   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_TERMINAL_PROMPT   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_TRACE_PACKET   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIT_WORK_TREE   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIX_CREDENTIALS_HELPER_STDERR   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIX_EXTERNAL_COMMAND_STDERR   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIX_OBJECT_CACHE_MEMORY   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIX_PACK_CACHE_MEMORY   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+GIX_PARSE_PRECIOUS   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+HTTPS_PROXY   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+NO_PROXY   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+all_proxy   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+http_proxy   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+https_proxy   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)
+no_proxy   #  cargo (git/proxy probes; seen building the x9 control in a git checkout)

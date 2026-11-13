@@ -1,0 +1,9 @@
+inventory dib_verus: PASS, 0 finding(s); /home/ws/projects/verified-decoders/alloc-delta/audit/runs/20261113T063902Z-inventory/dib/INVENTORY.txt
+inventory tga_verus: PASS, 0 finding(s); /home/ws/projects/verified-decoders/alloc-delta/audit/runs/20261113T063902Z-inventory/tga/INVENTORY.txt
+inventory icns_verus: PASS, 0 finding(s); /home/ws/projects/verified-decoders/alloc-delta/audit/runs/20261113T063902Z-inventory/icns/INVENTORY.txt
+inventory ico_verus: PASS, 0 finding(s); /home/ws/projects/verified-decoders/alloc-delta/audit/runs/20261113T063902Z-inventory/ico/INVENTORY.txt
+control x9_build_script_untracked_read: OK (BLOCK)
+control x9_declared: OK (PASS)
+control x10_proc_macro_untracked_read: OK (BLOCK)
+control x10_declared: OK (PASS)
+inventory exit status: 0

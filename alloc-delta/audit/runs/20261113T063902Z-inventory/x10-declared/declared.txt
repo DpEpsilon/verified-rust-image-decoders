@@ -1,0 +1,2 @@
+file ../x10-undeclared-input.txt
+env X10_SECRET=declared-value

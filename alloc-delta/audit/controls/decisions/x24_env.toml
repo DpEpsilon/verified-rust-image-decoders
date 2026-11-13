@@ -1,0 +1,8 @@
+# Control fixture decisions for x24_env (see controls/README in ../README.md).
+required_roots = ["crate::x24_root"]
+
+# --- entries ---
+[[entry]]
+kind = "env"
+item = "ALLOC_AUDIT_X24"
+reason = "control fixture"

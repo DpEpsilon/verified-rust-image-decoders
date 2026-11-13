@@ -1,0 +1,284 @@
+   Compiling tga_verus v0.1.0 (/tmp/claude-0/alloc-audit/seeded/s_tga_box_new/tga_verus)
+warning: unused import: `crate::model::*`
+  --> src/policy_model.rs:15:5
+   |
+15 | use crate::model::*;
+   |     ^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `AlphaOptions`, `AttributeBitsOptions`, `DepthsOptions`, `ImageTypeOptions`, `IndexRangeOptions`, `InterleaveOptions`, `Map16AlphaOptions`, `Map5Options`, `MapHeaderOptions`, `MapIndexOptions`, `Policy`, and `Rgb5Options`
+  --> src/policy_model.rs:17:5
+   |
+17 |     AlphaOptions, AttributeBitsOptions, DepthsOptions, ImageTypeOptions, IndexRangeOptions,
+   |     ^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
+18 |     InterleaveOptions, Map16AlphaOptions, Map5Options, MapHeaderOptions, MapIndexOptions, Policy,
+   |     ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^^^^
+19 |     Rgb5Options,
+   |     ^^^^^^^^^^^
+
+warning: unused import: `alloc::vec`
+  --> src/tga.rs:22:5
+   |
+22 | use alloc::vec;
+   |     ^^^^^^^^^^
+
+warning: unused imports: `MHModel` and `PktH`
+  --> src/tga.rs:25:20
+   |
+25 | use crate::model::{MHModel, PktH};
+   |                    ^^^^^^^  ^^^^
+
+warning: unused import: `RleOverrunOptions`
+  --> src/tga.rs:29:26
+   |
+29 |     Policy, Rgb5Options, RleOverrunOptions,
+   |                          ^^^^^^^^^^^^^^^^^
+
+warning: unused import: `AllocLog`
+  --> src/alloc_guard/sites.rs:14:13
+   |
+14 | use super::{AllocLog, OutOfMemory};
+   |             ^^^^^^^^
+
+warning: unused import: `Decoded`
+  --> src/alloc_guard/sites.rs:15:25
+   |
+15 | use super::super::tga::{Decoded, Error};
+   |                         ^^^^^^^
+
+warning: unused variable: `c0g`
+    --> src/tga.rs:3233:5
+     |
+3233 |     c0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_c0g`
+     |
+     = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `c0g`
+    --> src/tga.rs:3665:5
+     |
+3665 |     c0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_c0g`
+
+warning: unused variable: `width`
+    --> src/tga.rs:3736:9
+     |
+3736 |     let width = h.width;
+     |         ^^^^^ help: if this is intentional, prefix it with an underscore: `_width`
+
+warning: unused variable: `height`
+    --> src/tga.rs:3737:9
+     |
+3737 |     let height = h.height;
+     |         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_height`
+
+warning: unused variable: `fx`
+    --> src/tga.rs:3738:10
+     |
+3738 |     let (fx, fy) = (h.flip_x(), h.flip_y());
+     |          ^^ help: if this is intentional, prefix it with an underscore: `_fx`
+
+warning: unused variable: `fy`
+    --> src/tga.rs:3738:14
+     |
+3738 |     let (fx, fy) = (h.flip_x(), h.flip_y());
+     |              ^^ help: if this is intentional, prefix it with an underscore: `_fy`
+
+warning: unused variable: `g`
+    --> src/tga.rs:3801:18
+     |
+3801 |         let (pr, g) = rle_packet(bytes, h, map, indexed, out, cursor, produced, n, p0g, Ghost(acc));
+     |                  ^ help: if this is intentional, prefix it with an underscore: `_g`
+
+warning: unused variable: `n`
+    --> src/tga.rs:4022:5
+     |
+4022 |     n: usize,
+     |     ^ help: if this is intentional, prefix it with an underscore: `_n`
+
+warning: unused variable: `p0g`
+    --> src/tga.rs:4023:5
+     |
+4023 |     p0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_p0g`
+
+warning: unused variable: `control`
+    --> src/tga.rs:4024:5
+     |
+4024 |     control: u8,
+     |     ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_control`
+
+warning: unused variable: `n`
+    --> src/tga.rs:4300:5
+     |
+4300 |     n: usize,
+     |     ^ help: if this is intentional, prefix it with an underscore: `_n`
+
+warning: unused variable: `p0g`
+    --> src/tga.rs:4301:5
+     |
+4301 |     p0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_p0g`
+
+warning: unused variable: `control`
+    --> src/tga.rs:4302:5
+     |
+4302 |     control: u8,
+     |     ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_control`
+
+warning: unused variable: `out_len`
+    --> src/tga.rs:4725:9
+     |
+4725 |     let out_len: usize = out.len();
+     |         ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_out_len`
+
+warning: unused variable: `p`
+    --> src/tga.rs:5162:25
+     |
+5162 | fn kind_hdr_exec(t: u8, p: Policy) -> (r: u8)
+     |                         ^ help: if this is intentional, prefix it with an underscore: `_p`
+
+warning: unused variable: `c0g`
+    --> src/tga.rs:6976:5
+     |
+6976 |     c0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_c0g`
+
+warning: unused variable: `steps`
+    --> src/tga.rs:6978:5
+     |
+6978 |     steps: &mut Ghost<nat>,
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `p0g`
+    --> src/tga.rs:7551:5
+     |
+7551 |     p0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_p0g`
+
+warning: unused variable: `control`
+    --> src/tga.rs:7553:5
+     |
+7553 |     control: u8,
+     |     ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_control`
+
+warning: unused variable: `steps`
+    --> src/tga.rs:7558:5
+     |
+7558 |     steps: &mut Ghost<nat>,
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `p0g`
+    --> src/tga.rs:7870:5
+     |
+7870 |     p0g: usize,
+     |     ^^^ help: if this is intentional, prefix it with an underscore: `_p0g`
+
+warning: unused variable: `control`
+    --> src/tga.rs:7872:5
+     |
+7872 |     control: u8,
+     |     ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_control`
+
+warning: unused variable: `steps`
+    --> src/tga.rs:7877:5
+     |
+7877 |     steps: &mut Ghost<nat>,
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `c0g`
+    --> src/tga.rs:8266:15
+     |
+8266 |     n: usize, c0g: usize, p0g: usize, p: Policy,
+     |               ^^^ help: if this is intentional, prefix it with an underscore: `_c0g`
+
+warning: unused variable: `pixels`
+    --> src/tga.rs:8348:22
+     |
+8348 | ...   let (result, pixels) = rle_packet_policy(bytes, h, map, indexed, out, cursor, produced, n, p0g, p, Ghost(acc), steps, clip, ...
+     |                    ^^^^^^ help: if this is intentional, prefix it with an underscore: `_pixels`
+
+warning: function `skeleton` is never used
+  --> src/lib.rs:24:4
+   |
+24 | fn skeleton() { assert(1 == 0 + 1); }
+   |    ^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `strict_policy_exec` is never used
+   --> src/policy.rs:306:15
+    |
+306 | pub(crate) fn strict_policy_exec() -> (r: Policy)
+    |               ^^^^^^^^^^^^^^^^^^
+
+warning: fields `x_origin` and `y_origin` are never read
+   --> src/tga.rs:145:16
+    |
+138 | pub(crate) struct Header {
+    |                   ------ fields in this struct
+...
+145 |     pub(crate) x_origin: u32,
+    |                ^^^^^^^^
+146 |     pub(crate) y_origin: u32,
+    |                ^^^^^^^^
+
+warning: function `t2_t5_policy_header` is never used
+    --> src/tga.rs:9329:4
+     |
+9329 | fn t2_t5_policy_header(b: &[u8], p: Policy) -> (r: Result<Header, Error>)
+     |    ^^^^^^^^^^^^^^^^^^^
+
+warning: function `t4_policy_conversion` is never used
+    --> src/tga.rs:9347:4
+     |
+9347 | fn t4_policy_conversion(h: &Header, map: &[u8], indexed: bool, s: &[u8], p: Policy, subst: &mut bool)
+     |    ^^^^^^^^^^^^^^^^^^^^
+
+warning: function `t3_t6_policy_packets` is never used
+    --> src/tga.rs:9403:4
+     |
+9403 | fn t3_t6_policy_packets(
+     |    ^^^^^^^^^^^^^^^^^^^^
+
+warning: function `t1_t8_t10_w_a_e_policy` is never used
+    --> src/tga.rs:9458:4
+     |
+9458 | fn t1_t8_t10_w_a_e_policy(bytes: &[u8], p: Policy)
+     |    ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `t7_t9_policy_exact` is never used
+    --> src/tga.rs:9492:4
+     |
+9492 | fn t7_t9_policy_exact(bytes: &[u8], profile: crate::policy::Profile)
+     |    ^^^^^^^^^^^^^^^^^^
+
+warning: function `r_recommended_conservative` is never used
+    --> src/tga.rs:9502:4
+     |
+9502 | fn r_recommended_conservative(bytes: &[u8])
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `e_policy_no_events` is never used
+    --> src/tga.rs:9524:4
+     |
+9524 | fn e_policy_no_events(bytes: &[u8], p: Policy) -> (r: (Result<Decoded, TryError>, bool))
+     |    ^^^^^^^^^^^^^^^^^^
+
+warning: field `ev` is never read
+  --> src/alloc_guard/mod.rs:45:11
+   |
+44 | pub tracked struct AllocLog {
+   |                    -------- field in this struct
+45 |     ghost ev: Seq<(AllocSite, nat, bool)>,
+   |           ^^
+
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 25
+finding-tags: allowlist-reviewer,allowlist-source-hash,unauthorized-alloc-path,unexplained-leaf
+findings-other-than-unsigned-reviewer: 24
+mode: PRODUCTION
+warning: `tga_verus` (lib) generated 43 warnings (run `cargo fix --lib -p tga_verus` to apply 32 suggestions)
+    Finished `release` profile [optimized] target(s) in 1.30s

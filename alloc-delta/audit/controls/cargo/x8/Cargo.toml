@@ -1,0 +1,8 @@
+[package]
+name = "x8_real_build_script"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[lib]
+path = "src/lib.rs"

@@ -1,0 +1,4 @@
+# Control fixture decisions for x12_foreign_crate (see controls/README in ../README.md).
+required_roots = ["crate::x12_root"]
+
+# --- entries ---

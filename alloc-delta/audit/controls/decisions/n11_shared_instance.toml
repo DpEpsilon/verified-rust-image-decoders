@@ -1,0 +1,24 @@
+# Control fixture decisions for n11_shared_instance (see controls/README in ../README.md).
+required_roots = ["crate::n11_shared_instance"]
+
+# --- entries ---
+[[entry]]
+kind = "alloc"
+item = "alloc::raw_vec::RawVecInner::<A>::reserve_exact"
+allow = "crate::guard::try_zeroed"
+contract = "control fixture: the guard's reservation"
+citation = "fixture (control); not a review of any shipped code"
+
+[[entry]]
+kind = "alloc"
+item = "alloc::vec::Vec::<T, A>::push"
+allow = "crate::guard::try_zeroed"
+contract = "control fixture: the guard's fill after reserving"
+citation = "fixture (control); not a review of any shipped code"
+
+[[entry]]
+kind = "alloc"
+item = "alloc::raw_vec::RawVecInner::<A>::deallocate"
+allow = "*"
+contract = "control fixture: deallocation"
+citation = "fixture (control); not a review of any shipped code"

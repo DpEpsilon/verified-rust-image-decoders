@@ -1,0 +1,8 @@
+# Manifest directory for x7_vstd_artifact: its Cargo.lock (a copy of
+# tga_verus's) locks the registry vstd, while the control links a different
+# vstd rlib with the same version string.
+[package]
+name = "x7-vstd-manifest"
+version = "0.0.0"
+edition = "2021"
+build = false

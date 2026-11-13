@@ -148,4 +148,14 @@ EOF
   fi
 fi
 
+# The production transitive call-graph audit (alloc-delta/audit, SPEC §6), when
+# it is present and this script audits the real tree (no source-path argument;
+# mutation runners pass one). The source lint above stays: it is a separate,
+# falsification-only gate. The production audit's verdict is its own.
+prod="$root/../alloc-delta/audit/run_audit.sh"
+if [ -x "$prod" ] && { [ $# -eq 0 ] || [ "${1:-}" = "--self-test" ]; }; then
+  echo "--- production call-graph audit: alloc-delta/audit/run_audit.sh icns ---"
+  if ! "$prod" icns; then echo "production audit: FAIL (see the run directory printed above)"; status=1; fi
+fi
+
 if [ "$status" = 0 ]; then echo "OK"; exit 0; else echo "FAIL"; exit 1; fi

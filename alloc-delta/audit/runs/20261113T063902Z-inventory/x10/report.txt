@@ -1,0 +1,66 @@
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 2
+finding-tags: allowlist-absent,undeclared-proc-macro
+findings-other-than-unsigned-reviewer: 2
+mode: PRODUCTION
+diagnostic: no allowlist
+crate: x10_lib
+crate-svh: 931d2fe7405a42fbe474c511b4961b1b
+invocation: wrapper
+rustc: 1.99.1 (58cf8f9c3 2026-10-13)
+rustc-commit: 58cf8f9c3 (full 58cf8f9c35b355199727627d07ae34a4e2846d67)
+target: x86_64-unknown-linux-gnu
+profile: opt-level=3,debug-assertions=off,share-generics=off
+profile-class: release
+features: []
+cfgs: ["panic=\"unwind\"", "target_abi=\"\"", "target_arch=\"x86_64\"", "target_endian=\"little\"", "target_env=\"gnu\"", "target_family=\"unix\"", "target_feature=\"fxsr\"", "target_feature=\"sse\"", "target_feature=\"sse2\"", "target_has_atomic=\"16\"", "target_has_atomic=\"32\"", "target_has_atomic=\"64\"", "target_has_atomic=\"8\"", "target_has_atomic=\"ptr\"", "target_has_atomic_load_store=\"16\"", "target_has_atomic_load_store=\"32\"", "target_has_atomic_load_store=\"64\"", "target_has_atomic_load_store=\"8\"", "target_has_atomic_load_store=\"ptr\"", "target_has_atomic_primitive_alignment=\"16\"", "target_has_atomic_primitive_alignment=\"32\"", "target_has_atomic_primitive_alignment=\"64\"", "target_has_atomic_primitive_alignment=\"8\"", "target_has_atomic_primitive_alignment=\"ptr\"", "target_has_reliable_f128", "target_has_reliable_f16", "target_has_reliable_f16_math", "target_has_threads", "target_object_format=\"elf\"", "target_os=\"linux\"", "target_pointer_width=\"64\"", "target_thread_local", "target_vendor=\"unknown\"", "unix"]
+source_hash: b9651a1b1d6aef13563d91ba36dea71f8897f9598c3ebb08052705b08ff600e7
+source-hash-scope: sha256 over sorted per-file sha256 of every non-imported source-map file outside the sysroot (module files and loaded include targets); dependency crates are bound by crate hash, vstd additionally by its locked source checksum
+allowlist: <none>
+vstd: linked=false version=None svh=None locked_checksum=None linked_artifact_sha256=None source_dir=None
+vstd-binding-problems: none
+roots: crate::x10_root
+roots-excluded: 
+generic-exports: 
+instances: 1
+edges: 0
+crates-reached: x10_lib 1
+allocator-sinks: 0
+mono-items: 0 in local codegen units; 0 not reached by the walk
+
+-- findings (2) --
+  [allowlist-absent] no allowlist was supplied: this run is a diagnostic and can never pass
+  [undeclared-proc-macro] the compilation loads proc-macro crate x10_pm (crate kind, not dylib presence); declare kind = "proc-macro", item = "x10_pm" with its artifact sha256
+
+-- source files (2) --
+  combined b9651a1b1d6aef13563d91ba36dea71f8897f9598c3ebb08052705b08ff600e7
+  840a71f5c97fc376101c9a418396e2edb27d1efa9fd14000901f68f8bd214f2a  x10_lib/src/lib.rs
+
+-- build inputs (compiler-resolved) (4) --
+  build-script: none
+  include: none (no file loaded other than module files)
+  env: none (no env!/option_env!/tracked env read)
+  proc-macro x10_pm svh=897436c5efb8eef47c12a3189736f1a3 /tmp/claude-0/alloc-audit/inventory/x10-target/release/deps/libx10_pm-721a935f8a28d307.so sha256=3f12950670757d632d963f0c180c2726d22b6f6975e75f637657bb1fd829560b
+
+-- linked artifacts and command line (8) --
+  rustc command line: /tmp/claude-0/alloc-audit/tool-target/release/alloc_audit --crate-name x10_lib --edition=2021 x10_lib/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata,link -C opt-level=3 -C embed-bitcode=no --check-cfg cfg(docsrs,test) --check-cfg cfg(feature, values()) -C metadata=20a45a97a5a872c4 -C extra-filename=-acb1fdf6d3ad8005 --out-dir /tmp/claude-0/alloc-audit/inventory/x10-target/x86_64-unknown-linux-gnu/release/deps --target x86_64-unknown-linux-gnu -C strip=debuginfo -L dependency=/tmp/claude-0/alloc-audit/inventory/x10-target/x86_64-unknown-linux-gnu/release/deps -L dependency=/tmp/claude-0/alloc-audit/inventory/x10-target/release/deps --extern x10_pm=/tmp/claude-0/alloc-audit/inventory/x10-target/release/deps/libx10_pm-721a935f8a28d307.so
+  env CARGO_MANIFEST_DIR=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/controls/cargo/x10/x10_lib
+  env CARGO_PKG_NAME=x10_lib
+  env CARGO_PKG_VERSION=0.0.0
+  Cargo.lock /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/controls/cargo/x10/Cargo.lock sha256=7c55be5b936e5b1cd0210873b5daf1c2528041d3825afbd328e3af30a22469f0
+  crate core svh=cbc12955c475a0d98147c7ede674d8a8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcore-1d288395a3394ed3.rmeta sha256=f991bfdb98d878590ba8a11da984bc230a078ee8079e27fcfd65854803b436f5
+  crate x10_pm svh=897436c5efb8eef47c12a3189736f1a3 kind=MacrosOnly sysroot=false artifact /tmp/claude-0/alloc-audit/inventory/x10-target/release/deps/libx10_pm-721a935f8a28d307.so sha256=3f12950670757d632d963f0c180c2726d22b6f6975e75f637657bb1fd829560b
+  crate compiler_builtins svh=608975982fce69540ecd1b8bed34a3d8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcompiler_builtins-2d9557d6e902a200.rmeta sha256=9462f23a8789d047933fc26cbdff2172961ee5c9bf994690b196ff9c3de5a5cf
+
+-- allocator sinks (every root-to-sink path judged) (0) --
+
+-- leaves (0) --
+
+-- panic edges (per function) (0) --
+
+-- guard call sites and generic exports (0) --
+
+-- dependency contracts (0) --
+
+-- edges (0) --

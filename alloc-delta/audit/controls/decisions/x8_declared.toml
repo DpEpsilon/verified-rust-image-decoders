@@ -1,0 +1,9 @@
+# Control fixture decisions for x8b_build_script_declared.
+required_roots = ["crate::x8_root"]
+
+# --- entries ---
+[[entry]]
+kind = "build-script"
+item = "build.rs"
+sha256 = "386ac5bf9a17f3dfe5424cf402cf6272c5bc8cefeb9dbf0eb2e73ad6d994e2b3"
+reason = "control fixture: the real build script, declared with its hash"

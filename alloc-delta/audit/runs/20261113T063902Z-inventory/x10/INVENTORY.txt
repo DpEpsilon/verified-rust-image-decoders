@@ -1,0 +1,201 @@
+=== independent build-input inventory (alloc-delta/audit/inventory) ===
+inventory-verdict: BLOCK
+crate: x10_lib
+findings: 2
+finding-tags: undeclared-env-read,untracked-read
+environment (reduced, declared):
+  PATH=/opt/cargo/bin:/usr/bin:/bin
+  HOME=/home/ws
+  CARGO_HOME=/home/ws/.cargo
+  RUSTUP_HOME=/opt/rustup
+  RUSTUP_TOOLCHAIN=1.99.1-x86_64-unknown-linux-gnu
+  LD_LIBRARY_PATH=/opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib
+  CARGO_TARGET_DIR=/tmp/claude-0/alloc-audit/inventory/x10-target
+  RUSTC_WRAPPER=/tmp/claude-0/alloc-audit/tool-target/release/alloc_audit
+  ALLOC_AUDIT_PLAN=/home/ws/projects/verified-decoders/alloc-delta/audit/runs/20261113T063902Z-inventory/x10/plan
+  ALLOC_AUDIT_CONTINUE=1
+  ALLOC_AUDIT_EDGES=1
+  ALLOC_AUDIT_RUN_DIR=/home/ws/projects/verified-decoders/alloc-delta/audit/runs/20261113T063902Z-inventory/x10
+  LD_PRELOAD=/tmp/claude-0/alloc-audit/inventory/getenv_log.so
+  ALLOC_INV_GETENV_LOG=/home/ws/projects/verified-decoders/alloc-delta/audit/runs/20261113T063902Z-inventory/x10/getenv.log
+
+-- findings --
+  [untracked-read] /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/controls/cargo/x10/x10-undeclared-input.txt was opened by ['alloc_audit'] and is neither a dep-info input, a locked/sysroot/target file, nor declared
+  [undeclared-env-read] process alloc_audit read environment variable X10_SECRET (present=0); it is neither in the declared environment nor a reviewed probe
+
+-- inventory --
+build units (cargo compiler-artifact messages): 2
+  unit path+file:///__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/controls/cargo/x10/x10_pm#0.0.0 ['proc-macro'] -> /tmp/claude-0/alloc-audit/inventory/x10-target/release/deps/libx10_pm-721a935f8a28d307.so sha256=3f12950670757d632d963f0c180c2726d22b6f6975e75f637657bb1fd829560b
+  unit path+file:///__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/controls/cargo/x10/x10_lib#0.0.0 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/x10-target/x86_64-unknown-linux-gnu/release/libx10_lib.rlib sha256=335db4456e9d154bf56e2dad36434b2e8884f30dbb378b09a35bf955fbe563ee
+  unit path+file:///__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/controls/cargo/x10/x10_lib#0.0.0 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/x10-target/x86_64-unknown-linux-gnu/release/deps/libx10_lib-acb1fdf6d3ad8005.rmeta sha256=bc2075858a787997a53835da7f1b138032d9d0a7a4918336ffcc477812f0578d
+build scripts executed: 0
+processes exec'd: 13; successful file opens: 787
+distinct (process, variable, present) environment reads: 163
+  env read ALLOC_AUDIT_CONTINUE present=1 by alloc_audit x2
+  env read ALLOC_AUDIT_EDGES present=1 by alloc_audit x2
+  env read ALLOC_AUDIT_PLAN present=1 by alloc_audit x2
+  env read ALLOC_AUDIT_PROTOTYPE present=0 by alloc_audit x2
+  env read ALLOC_AUDIT_ROOTS present=0 by alloc_audit x2
+  env read ALLOC_AUDIT_VSTD_VERSION present=0 by alloc_audit x2
+  env read CARGO_ENCODED_RUSTFLAGS present=0 by alloc_audit x1
+  env read CARGO_MAKEFLAGS present=1 by alloc_audit x1
+  env read CARGO_MANIFEST_DIR present=1 by alloc_audit x4
+  env read CARGO_PKG_NAME present=1 by alloc_audit x1
+  env read CARGO_PKG_VERSION present=1 by alloc_audit x1
+  env read CI present=0 by alloc_audit x1
+  env read LLVM_IGNORED_ENV_VAR present=0 by alloc_audit x6
+  env read LLVM_OVERRIDE_PRODUCER present=0 by alloc_audit x6
+  env read OUT_DIR present=0 by alloc_audit x2
+  env read QNX_TARGET present=0 by alloc_audit x2
+  env read RUSTC_BOOTSTRAP present=0 by alloc_audit x7
+  env read RUSTC_CTFE_BACKTRACE present=0 by alloc_audit x1
+  env read RUSTC_FORCE_RUSTC_VERSION present=0 by alloc_audit x1
+  env read RUSTC_GRAPHVIZ_FONT present=0 by alloc_audit x1
+  env read RUSTFLAGS present=0 by alloc_audit x1
+  env read RUST_BACKTRACE present=0 by alloc_audit x6
+  env read RUST_MIN_STACK present=0 by alloc_audit x2
+  env read X10_SECRET present=0 by alloc_audit x1
+  env read APP_SANDBOX_CONTAINER_ID present=0 by cargo x2
+  env read CARGO_HOME present=1 by cargo x1
+  env read CARGO_LOG present=0 by cargo x1
+  env read CARGO_LOG_PROFILE present=0 by cargo x1
+  env read CARGO_MAKEFLAGS present=0 by cargo x1
+  env read CI present=0 by cargo x4
+  env read CLICOLOR present=0 by cargo x4
+  env read CLICOLOR_FORCE present=0 by cargo x4
+  env read COLORTERM present=0 by cargo x1
+  env read DOMTERM present=0 by cargo x1
+  env read FORCE_HYPERLINK present=0 by cargo x1
+  env read HOME present=1 by cargo x3
+  env read KONSOLE_VERSION present=0 by cargo x1
+  env read LD_LIBRARY_PATH present=1 by cargo x2
+  env read MAKEFLAGS present=0 by cargo x1
+  env read MFLAGS present=0 by cargo x1
+  env read NO_COLOR present=0 by cargo x5
+  env read OPENSSL_CONF present=0 by cargo x1
+  env read OPENSSL_ia32cap present=0 by cargo x1
+  env read PATH present=1 by cargo x4
+  env read RUSTC_BOOTSTRAP present=0 by cargo x2
+  env read RUSTUP_HOME present=1 by cargo x3
+  env read RUST_BACKTRACE present=0 by cargo x1
+  env read RUST_LIB_BACKTRACE present=0 by cargo x1
+  env read RUST_MIN_STACK present=0 by cargo x1
+  env read SQLITE_TMPDIR present=0 by cargo x1
+  env read SSLKEYLOGFILE present=0 by cargo x1
+  env read SSL_CERT_DIR present=0 by cargo x2
+  env read SSL_CERT_DIR present=1 by cargo x1
+  env read SSL_CERT_FILE present=0 by cargo x2
+  env read SSL_CERT_FILE present=1 by cargo x1
+  env read TERM present=0 by cargo x4
+  env read TERM_PROGRAM present=0 by cargo x2
+  env read TF_BUILD present=0 by cargo x4
+  env read TMPDIR present=0 by cargo x1
+  env read VTE_VERSION present=0 by cargo x1
+  env read WT_SESSION present=0 by cargo x1
+  env read XDG_CONFIG_HOME present=0 by cargo x1
+  env read __CARGO_FIX_PLZ present=0 by cargo x1
+  env read __CARGO_TEMPORARY_BUILD_DIR_NEW_LAYOUT_OPT_OUT present=0 by cargo x1
+  env read __CARGO_TEST_CHANNEL_OVERRIDE_DO_NOT_USE_THIS present=0 by cargo x2
+  env read __CARGO_TEST_FORCE_ARGFILE present=0 by cargo x4
+  env read __CARGO_TEST_INVOCATION_TIME present=0 by cargo x1
+  env read __CARGO_TEST_LAST_USE_NOW present=0 by cargo x1
+  env read __CARGO_TEST_ROOT present=0 by cargo x3
+  env read __CARGO_TEST_SETSID_PLEASE_DONT_USE_ELSEWHERE present=0 by cargo x1
+  env read __CARGO_TEST_TTY_WIDTH_DO_NOT_USE_THIS present=0 by cargo x4
+  env read __CARGO_USE_GITOXIDE_INSTEAD_OF_GIT2 present=0 by cargo x1
+  env read COLLECT_GCC present=1 by collect2 x1
+  env read COLLECT_GCC_OPTIONS present=1 by collect2 x2
+  env read COMPILER_PATH present=1 by collect2 x1
+  env read GCC_EXTRA_DIAGNOSTIC_OUTPUT present=0 by collect2 x1
+  env read GLIBCXX_TUNABLES present=0 by collect2 x1
+  env read LANG present=0 by collect2 x1
+  env read PATH present=1 by collect2 x1
+  env read TEMP present=0 by collect2 x1
+  env read TMP present=0 by collect2 x1
+  env read TMPDIR present=0 by collect2 x1
+  env read FORCE_LLD_DIAGNOSTICS_CRASH present=0 by rust-lld x1
+  env read LLD_IN_TEST present=0 by rust-lld x1
+  env read LLD_REPRODUCE present=0 by rust-lld x1
+  env read LLD_VERSION present=0 by rust-lld x1
+  env read LLVM_IGNORED_ENV_VAR present=0 by rust-lld x1
+  env read LLVM_OVERRIDE_PRODUCER present=0 by rust-lld x1
+  env read CARGO_MAKEFLAGS present=0 by rustc x2
+  env read CARGO_MAKEFLAGS present=1 by rustc x1
+  env read CARGO_MANIFEST_DIR present=1 by rustc x1
+  env read CI present=0 by rustc x3
+  env read LLVM_IGNORED_ENV_VAR present=0 by rustc x6
+  env read LLVM_OVERRIDE_PRODUCER present=0 by rustc x6
+  env read MAKEFLAGS present=0 by rustc x2
+  env read MALLOC_CONF present=0 by rustc x6
+  env read MFLAGS present=0 by rustc x2
+  env read PATH present=1 by rustc x1
+  env read QNX_TARGET present=0 by rustc x2
+  env read RUSTC_BOOTSTRAP present=0 by rustc x21
+  env read RUSTC_CTFE_BACKTRACE present=0 by rustc x3
+  env read RUSTC_FORCE_RUSTC_VERSION present=0 by rustc x1
+  env read RUSTC_GRAPHVIZ_FONT present=0 by rustc x3
+  env read RUSTC_LOG present=0 by rustc x6
+  env read RUSTC_LOG_BACKTRACE present=0 by rustc x6
+  env read RUSTC_LOG_COLOR present=0 by rustc x6
+  env read RUSTC_LOG_ENTRY_EXIT present=0 by rustc x6
+  env read RUSTC_LOG_FORMAT_JSON present=0 by rustc x6
+  env read RUSTC_LOG_LINES present=0 by rustc x6
+  env read RUSTC_LOG_OUTPUT_TARGET present=0 by rustc x6
+  env read RUSTC_LOG_THREAD_IDS present=0 by rustc x6
+  env read RUSTC_LOG_WRAPTREE present=0 by rustc x6
+  env read RUSTC_OVERRIDE_VERSION_STRING present=0 by rustc x3
+  env read RUST_BACKTRACE present=0 by rustc x6
+  env read RUST_MIN_STACK present=0 by rustc x9
+  env read UNSTABLE_RUSTDOC_TEST_PATH present=0 by rustc x2
+  env read VCINSTALLDIR present=0 by rustc x1
+  env read CARGO present=0 by rustup x1
+  env read CARGO_HOME present=1 by rustup x3
+  env read LD_LIBRARY_PATH present=1 by rustup x1
+  env read NO_COLOR present=0 by rustup x1
+  env read OPENSSL_CONF present=0 by rustup x1
+  env read OPENSSL_ia32cap present=0 by rustup x2
+  env read PATH present=1 by rustup x1
+  env read RUSTUP_AUTO_INSTALL present=0 by rustup x1
+  env read RUSTUP_DIST_ROOT present=0 by rustup x1
+  env read RUSTUP_DIST_SERVER present=0 by rustup x1
+  env read RUSTUP_FORCE_ARG0 present=0 by rustup x1
+  env read RUSTUP_HOME present=1 by rustup x1
+  env read RUSTUP_IO_THREADS present=0 by rustup x1
+  env read RUSTUP_LOG present=0 by rustup x1
+  env read RUSTUP_OVERRIDE_HOST_TRIPLE present=0 by rustup x3
+  env read RUSTUP_OVERRIDE_HOST_TUPLE present=0 by rustup x3
+  env read RUSTUP_OVERRIDE_UNIX_FALLBACK_SETTINGS present=0 by rustup x1
+  env read RUSTUP_PERMIT_COPY_RENAME present=0 by rustup x1
+  env read RUSTUP_TERM_COLOR present=0 by rustup x2
+  env read RUSTUP_TERM_PROGRESS_WHEN present=0 by rustup x1
+  env read RUSTUP_TERM_WIDTH present=0 by rustup x2
+  env read RUSTUP_TOOLCHAIN present=1 by rustup x1
+  env read RUSTUP_TRACE_DIR present=0 by rustup x1
+  env read RUST_BACKTRACE present=0 by rustup x1
+  env read RUST_LIB_BACKTRACE present=0 by rustup x1
+  env read RUST_MIN_STACK present=0 by rustup x1
+  env read RUST_RECURSION_COUNT present=0 by rustup x3
+  env read SSLKEYLOGFILE present=0 by rustup x1
+  env read TOKIO_UNSTABLE_SHARDED_BLOCKING_QUEUE present=0 by rustup x1
+  env read PATH present=1 by strace x1
+  env read BINUTILS_ROOT present=0 by x86_64-linux-gnu-gcc-14 x6
+  env read COMPILER_PATH present=0 by x86_64-linux-gnu-gcc-14 x1
+  env read GCC_COMPARE_DEBUG present=0 by x86_64-linux-gnu-gcc-14 x1
+  env read GCC_EXEC_PREFIX present=0 by x86_64-linux-gnu-gcc-14 x1
+  env read GCC_EXTRA_DIAGNOSTIC_OUTPUT present=0 by x86_64-linux-gnu-gcc-14 x1
+  env read GCC_ROOT present=0 by x86_64-linux-gnu-gcc-14 x1
+  env read GLIBCXX_TUNABLES present=0 by x86_64-linux-gnu-gcc-14 x1
+  env read LANG present=0 by x86_64-linux-gnu-gcc-14 x1
+  env read LIBRARY_PATH present=0 by x86_64-linux-gnu-gcc-14 x1
+  env read LPATH present=0 by x86_64-linux-gnu-gcc-14 x1
+  env read MAKEFLAGS present=0 by x86_64-linux-gnu-gcc-14 x1
+  env read PATH present=1 by x86_64-linux-gnu-gcc-14 x2
+  env read TEMP present=0 by x86_64-linux-gnu-gcc-14 x1
+  env read TERM present=0 by x86_64-linux-gnu-gcc-14 x2
+  env read TMP present=0 by x86_64-linux-gnu-gcc-14 x1
+  env read TMPDIR present=0 by x86_64-linux-gnu-gcc-14 x1
+audited crate inputs: dep-info 1, report 1
+  input /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/controls/cargo/x10/x10_lib/src/lib.rs captured=840a71f5c97fc376101c9a418396e2edb27d1efa9fd14000901f68f8bd214f2a report=840a71f5c97fc376101c9a418396e2edb27d1efa9fd14000901f68f8bd214f2a
+traced rustc command line: /tmp/claude-0/alloc-audit/tool-target/release/alloc_audit /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc --crate-name x10_lib --edition=2021 x10_lib/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata,link -C opt-level=3 -C embed-bitcode=no --check-cfg cfg(docsrs,test) --check-cfg cfg(feature, values()) -C metadata=20a45a97a5a872c4 -C extra-filename=-acb1fdf6d3ad8005 --out-dir /tmp/claude-0/alloc-audit/inventory/x10-target/x86_64-unknown-linux-gnu/release/deps --target x86_64-unknown-linux-gnu -C strip=debuginfo -L dependency=/tmp/claude-0/alloc-audit/inventory/x10-target/x86_64-unknown-linux-gnu/release/deps -L dependency=/tmp/claude-0/alloc-audit/inventory/x10-target/release/deps --extern x10_pm=/tmp/claude-0/alloc-audit/inventory/x10-target/release/deps/libx10_pm-721a935f8a28d307.so
+  extern x10_pm /tmp/claude-0/alloc-audit/inventory/x10-target/release/deps/libx10_pm-721a935f8a28d307.so sha256=3f12950670757d632d963f0c180c2726d22b6f6975e75f637657bb1fd829560b
+audit report verdict: FAIL

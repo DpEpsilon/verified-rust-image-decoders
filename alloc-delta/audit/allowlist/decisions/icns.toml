@@ -1,0 +1,98 @@
+# Hand-written decisions for icns_verus (x86_64-unknown-linux-gnu, release).
+# draft_allowlist.py copies everything after the `--- entries ---` marker
+# verbatim into the draft allowlist.
+required_roots = ["crate::icns::try_parse", "crate::icns::try_decode_rgb", "crate::icns::try_decode_mask", "crate::icns::try_combine"]
+
+# --- entries ---
+# -- Allocation-capable items, one entry per (item, admitted guard function) --
+[[entry]]
+kind = "alloc"
+item = "alloc::vec::Vec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global>"
+allow = "crate::alloc_guard::try_zeroed"
+contract = "on an empty Vec<u8>, one exact reservation of n bytes (RawVecInner::try_reserve_exact -> grow_exact -> finish_grow -> __rust_alloc / __rust_realloc / __rust_dealloc); failure is returned as Err, never aborts"
+citation = "A-STD-1, A-STD-3 (SPEC §3); alloc/src/vec/mod.rs Vec::try_reserve_exact at rustc 58cf8f9c3; mod.rs hash-pinned (D6)"
+
+[[entry]]
+kind = "alloc"
+item = "alloc::vec::Vec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global>"
+allow = "crate::alloc_guard::sites::try_copy"
+contract = "on an empty Vec<u8>, one exact reservation of s.len() bytes; failure is returned as Err, never aborts"
+citation = "A-STD-1, A-STD-3 (SPEC §3); ICNS sites.rs hash-pinned (EXPECTED_SITES_SHA)"
+
+[[entry]]
+kind = "alloc"
+item = "alloc::vec::Vec::<T, A>::try_reserve_exact<crate::icns::Entry,alloc::alloc::Global>"
+allow = "crate::alloc_guard::sites::try_with_room"
+contract = "on an empty Vec<Entry>, one exact reservation of n <= MAX_ROOM elements (n * size_of::<Entry>() <= isize::MAX by lemma_entry_layout); failure is returned as Err, never aborts"
+citation = "A-STD-1, A-STD-3 (SPEC §3, ERRATA E5: try_with_room lives in sites.rs); ICNS sites.rs hash-pinned"
+
+[[entry]]
+kind = "alloc"
+item = "alloc::vec::Vec::<T, A>::resize<u8,alloc::alloc::Global>"
+allow = "crate::alloc_guard::try_zeroed"
+contract = "resize(n, 0) on a Vec<u8> with len 0 and capacity >= n: no reserve/grow path is taken; the growth path in its MIR (reserve -> finish_grow -> __rust_alloc/__rust_realloc, handle_error) is present but not taken"
+citation = "A-STD-1 and A-STD-4 (ERRATA E6; observed, not documented)"
+
+[[entry]]
+kind = "alloc"
+item = "alloc::vec::Vec::<T, A>::push<u8,alloc::alloc::Global>"
+allow = "crate::alloc_guard::sites::try_copy"
+contract = "push of s.len() bytes into a Vec<u8> whose capacity is >= s.len() after try_reserve_exact(s.len()) returned Ok: never grows; the growth path in its MIR (grow_one -> finish_grow -> __rust_alloc/__rust_realloc, handle_error) is present but not taken"
+citation = "A-STD-1 and A-STD-2 (SPEC §3)"
+
+[[entry]]
+kind = "alloc"
+item = "alloc::vec::Vec::<T, A>::push<crate::icns::Entry,alloc::alloc::Global>"
+allow = "crate::alloc_guard::sites::Reserved::<T>::push"
+contract = "Reserved::push requires len < room <= capacity (Reserved's invariant), so Vec::push never grows; the growth path in its MIR is present but not taken"
+citation = "A-STD-1, A-STD-2 and Reserved's verified invariant v@.len() <= room <= capacity (SPEC §3; ICNS sites.rs)"
+
+[[entry]]
+kind = "alloc"
+item = "alloc::raw_vec::RawVecInner::<A>::deallocate"
+allow = "*"
+contract = "deallocation (__rust_dealloc) of a Vec buffer on drop; cannot fail"
+citation = "SPEC §6: deallocation anywhere; `*` admits deallocation sinks only (tool rule, ERRATA E7)"
+
+# -- Generic exports of the guard (SPEC §6 step 1 says no core exports a generic
+#    function; ICNS's hash-pinned sites.rs does. Each is audited at every
+#    instantiation the roots reach.) --
+[[entry]]
+kind = "generic-export"
+item = "crate::alloc_guard::sites::try_with_room"
+citation = "ERRATA E5/E7: generic guard reservation in the pinned sites.rs; the walk audits its Entry instantiation; a downstream instantiation is downstream code"
+
+[[entry]]
+kind = "generic-export"
+item = "crate::alloc_guard::sites::Reserved::<T>::push"
+citation = "ERRATA E7: generic guard fill in the pinned sites.rs; audited at its Entry instantiation"
+
+[[entry]]
+kind = "generic-export"
+item = "crate::alloc_guard::sites::Reserved::<T>::into_vec"
+citation = "ERRATA E7: generic guard move-out in the pinned sites.rs; audited at its Entry instantiation"
+
+# -- Exported roots that are excluded from the walk (owner decision required) --
+[[entry]]
+kind = "root-exclude"
+item = "<crate::icns::Decoded as core::clone::Clone>::clone"
+citation = "OWNER DECISION: derive(Clone) on the public output type clones its Vec<u8> with an infallible allocation (Vec::clone -> to_vec_in -> handle_error). Not reachable from any try_* root; runs only when a caller clones a result. Recorded in alloc-delta/ERRATA.md E7"
+
+# -- Guard call sites (SPEC §6 per-core checks; icns/tools/audit_alloc.sh) --
+[[entry]]
+kind = "guard-calls"
+item = "crate::alloc_guard::sites::try_with_room"
+sites = 1
+reason = "ICNS: one try_with_room site (EntryList), in try_parse, before the entry loop"
+
+[[entry]]
+kind = "guard-calls"
+item = "crate::alloc_guard::try_zeroed"
+sites = 5
+reason = "ICNS: three RLE channels, RgbOut and CombineOut"
+
+[[entry]]
+kind = "guard-calls"
+item = "crate::alloc_guard::sites::try_copy"
+sites = 1
+reason = "ICNS: MaskData"

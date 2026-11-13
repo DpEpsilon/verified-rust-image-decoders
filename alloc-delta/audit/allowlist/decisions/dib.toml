@@ -1,0 +1,40 @@
+# Hand-written decisions for dib_verus (x86_64-unknown-linux-gnu, release).
+# draft_allowlist.py copies everything after the `--- entries ---` marker
+# verbatim into the draft allowlist.
+required_roots = ["crate::dib::try_decode", "crate::dib::try_decode_with_steps", "crate::dib::try_decode_with_policy", "crate::dib::try_decode_with_steps_logged"]
+
+# --- entries ---
+# -- Allocation-capable items, one entry per (item, admitted guard function) --
+[[entry]]
+kind = "alloc"
+item = "alloc::vec::Vec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global>"
+allow = "crate::alloc_guard::try_zeroed"
+contract = "on an empty Vec<u8>, one exact reservation of n bytes through RawVecInner::try_reserve_exact -> grow_exact -> finish_grow -> __rust_alloc (or __rust_realloc/__rust_dealloc on its internal paths); every failure is returned as Err (TryReserveError), never aborts"
+citation = "A-STD-1, A-STD-3 (SPEC §3); alloc/src/vec/mod.rs Vec::try_reserve_exact at rustc 58cf8f9c3; guard text hash-pinned (D6, EXPECTED_MOD_SHA)"
+
+[[entry]]
+kind = "alloc"
+item = "alloc::vec::Vec::<T, A>::resize<u8,alloc::alloc::Global>"
+allow = "crate::alloc_guard::try_zeroed"
+contract = "resize(n, 0) on a Vec<u8> with len 0 and capacity >= n (after the Ok arm of try_reserve_exact(n)): writes n zero bytes, takes no reserve/grow path; the growth path in its MIR (reserve -> do_reserve_and_handle -> finish_grow -> __rust_alloc/__rust_realloc, and handle_error) is present but not taken"
+citation = "A-STD-1 (capacity >= n after Ok) and A-STD-4 (ERRATA E6: resize does not reallocate when capacity suffices; observed, not documented); counting-allocator and fault-injection tests"
+
+[[entry]]
+kind = "alloc"
+item = "alloc::raw_vec::RawVecInner::<A>::deallocate"
+allow = "*"
+contract = "deallocation (__rust_dealloc) of a Vec buffer on drop; cannot fail"
+citation = "SPEC §6 allocation-capable items: drop_in_place::<Vec<T>> (deallocation) anywhere; `*` admits deallocation sinks only (tool rule, ERRATA E7)"
+
+# -- Exported roots that are excluded from the walk (owner decision required) --
+[[entry]]
+kind = "root-exclude"
+item = "<crate::dib::Decoded as core::clone::Clone>::clone"
+citation = "OWNER DECISION: derive(Clone) on the public output type clones its Vec<u8> pixel buffer with an infallible allocation (Vec::clone -> with_capacity_in -> handle_error). It is not reachable from any try_* root; it runs only when a caller clones a result. SPEC §6 step 1 counts every exported function as a root, so admitting this exclusion is a reviewer decision, recorded in alloc-delta/ERRATA.md E7"
+
+# -- Guard call sites (SPEC §6, per-core checks) --
+[[entry]]
+kind = "guard-calls"
+item = "crate::alloc_guard::try_zeroed"
+sites = 1
+reason = "DIB: one try_zeroed call site, in alloc_output_n (SPEC §6 per-core checks)"

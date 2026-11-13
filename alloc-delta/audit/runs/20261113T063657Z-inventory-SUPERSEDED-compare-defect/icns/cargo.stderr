@@ -1,0 +1,23 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling verus_syn v0.0.0-2026-11-01-0251
+   Compiling verus_prettyplease v0.0.0-2026-11-01-0251
+   Compiling syn v2.0.119
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.3
+   Compiling indexmap v2.14.2
+   Compiling synstructure v0.13.2
+   Compiling convert_case v0.4.0
+   Compiling vstd v0.0.0-2026-11-01-0251
+   Compiling verus_builtin_macros v0.0.0-2026-11-01-0251
+   Compiling verus_state_machines_macros v0.0.0-2026-11-01-0251
+   Compiling verus_builtin v0.0.0-2026-11-01-0251
+   Compiling icns_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/icns/icns_verus)
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 2
+finding-tags: allowlist-reviewer,guard-inline-never
+findings-other-than-unsigned-reviewer: 1
+mode: PRODUCTION
+    Finished `release` profile [optimized] target(s) in 22.18s

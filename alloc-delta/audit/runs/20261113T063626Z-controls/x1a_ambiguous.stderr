@@ -1,0 +1,6 @@
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 41
+finding-tags: allowlist-ambiguous,allowlist-unused-entry,foreign-crate-instance,unauthorized-alloc-path
+findings-other-than-unsigned-reviewer: 41
+mode: PRODUCTION

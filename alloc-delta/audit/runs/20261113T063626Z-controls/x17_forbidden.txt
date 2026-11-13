@@ -1,0 +1,185 @@
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 12
+finding-tags: allowlist-absent,forbidden-item,unauthorized-alloc-path,unexplained-leaf
+findings-other-than-unsigned-reviewer: 12
+mode: PRODUCTION
+diagnostic: no allowlist
+crate: x17
+crate-svh: 8bfb6066664c3a667100281383734592
+invocation: direct
+rustc: 1.99.1 (58cf8f9c3 2026-10-13)
+rustc-commit: 58cf8f9c3 (full 58cf8f9c35b355199727627d07ae34a4e2846d67)
+target: x86_64-unknown-linux-gnu
+profile: opt-level=2,debug-assertions=off,share-generics=off
+profile-class: custom
+features: []
+cfgs: ["panic=\"unwind\"", "target_abi=\"\"", "target_arch=\"x86_64\"", "target_endian=\"little\"", "target_env=\"gnu\"", "target_family=\"unix\"", "target_feature=\"fxsr\"", "target_feature=\"sse\"", "target_feature=\"sse2\"", "target_has_atomic=\"16\"", "target_has_atomic=\"32\"", "target_has_atomic=\"64\"", "target_has_atomic=\"8\"", "target_has_atomic=\"ptr\"", "target_has_atomic_load_store=\"16\"", "target_has_atomic_load_store=\"32\"", "target_has_atomic_load_store=\"64\"", "target_has_atomic_load_store=\"8\"", "target_has_atomic_load_store=\"ptr\"", "target_has_atomic_primitive_alignment=\"16\"", "target_has_atomic_primitive_alignment=\"32\"", "target_has_atomic_primitive_alignment=\"64\"", "target_has_atomic_primitive_alignment=\"8\"", "target_has_atomic_primitive_alignment=\"ptr\"", "target_has_reliable_f128", "target_has_reliable_f16", "target_has_reliable_f16_math", "target_has_threads", "target_object_format=\"elf\"", "target_os=\"linux\"", "target_pointer_width=\"64\"", "target_thread_local", "target_vendor=\"unknown\"", "unix"]
+source_hash: b0929bb2ea12b0d39c66e0e50ce1d96d44bd508c7026852c0db359f02d548ae5
+source-hash-scope: sha256 over sorted per-file sha256 of every non-imported source-map file outside the sysroot (module files and loaded include targets); dependency crates are bound by crate hash, vstd additionally by its locked source checksum
+allowlist: <none>
+vstd: linked=false version=None svh=None locked_checksum=None linked_artifact_sha256=None source_dir=None
+vstd-binding-problems: none
+roots: crate::x17_root
+roots-excluded: 
+generic-exports: 
+instances: 81
+edges: 103
+crates-reached: alloc 18, core 62, x17 1
+allocator-sinks: 3
+mono-items: 4 in local codegen units; 0 not reached by the walk
+
+-- findings (12) --
+  [allowlist-absent] no allowlist was supplied: this run is a diagnostic and can never pass
+  [unexplained-leaf] [ffi] alloc::alloc::__rust_no_alloc_shim_is_unstable_v2 reached from alloc::alloc::alloc_zeroed has no allowlist entry
+  [unexplained-leaf] [ffi] alloc::alloc::__rust_no_alloc_shim_is_unstable_v2 reached from alloc::alloc::alloc has no allowlist entry
+  [unexplained-leaf] [no-mir, diverging: per-caller entry required] core::panicking::panic_nounwind_fmt reached from core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check has no allowlist entry
+  [unauthorized-alloc-path] alloc::alloc::handle_alloc_error (Abort) is reachable on an unauthorized path: crate::x17_root -> alloc::rc::Rc::<T>::new<usize> -> alloc::boxed::Box::<T>::new<alloc::rc::RcInner<usize>> -> alloc::boxed::box_new_uninit -> alloc::alloc::handle_alloc_error  [no allocation-capable item on this path is allowlisted]
+  [unauthorized-alloc-path] alloc::alloc::__rust_alloc_zeroed (Alloc) is reachable on an unauthorized path: crate::x17_root -> alloc::rc::Rc::<T>::new<usize> -> alloc::boxed::Box::<T>::new<alloc::rc::RcInner<usize>> -> alloc::boxed::box_new_uninit -> <alloc::alloc::Global as core::alloc::Allocator>::allocate -> alloc::alloc::Global::alloc_impl -> alloc::alloc::Global::alloc_impl_runtime -> alloc::alloc::alloc_zeroed -> alloc::alloc::__rust_alloc_zeroed  [no allocation-capable item on this path is allowlisted]
+  [unauthorized-alloc-path] alloc::alloc::__rust_alloc (Alloc) is reachable on an unauthorized path: crate::x17_root -> alloc::rc::Rc::<T>::new<usize> -> alloc::boxed::Box::<T>::new<alloc::rc::RcInner<usize>> -> alloc::boxed::box_new_uninit -> <alloc::alloc::Global as core::alloc::Allocator>::allocate -> alloc::alloc::Global::alloc_impl -> alloc::alloc::Global::alloc_impl_runtime -> alloc::alloc::alloc -> alloc::alloc::__rust_alloc  [no allocation-capable item on this path is allowlisted]
+  [forbidden-item] crate::x17_root reaches alloc::rc::Rc::<T>::new<usize> (Rc/Arc) at /home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases/x/x17_forget.rs:7:13: 7:34
+  [forbidden-item] alloc::rc::Rc::<T>::new<usize> reaches alloc::rc::Rc::<T>::from_inner<usize> (Rc/Arc) at /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/rc.rs:429:13: 432:14
+  [forbidden-item] alloc::rc::Rc::<T>::from_inner<usize> reaches alloc::rc::Rc::<T, A>::from_inner_in<usize,alloc::alloc::Global> (Rc/Arc) at /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/rc.rs:362:18: 362:50
+  [forbidden-item] <alloc::rc::Rc<T, A> as core::ops::deref::Deref>::deref<usize,alloc::alloc::Global> reaches alloc::rc::Rc::<T, A>::inner<usize,alloc::alloc::Global> (Rc/Arc) at /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/rc.rs:2441:15: 2441:22
+  [forbidden-item] crate::x17_root calls core::mem::forget<alloc::rc::Rc<usize>> at /home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases/x/x17_forget.rs:9:5: 9:25 (SPEC §2: no mem::forget, Box::leak, ManuallyDrop)
+
+-- source files (2) --
+  combined b0929bb2ea12b0d39c66e0e50ce1d96d44bd508c7026852c0db359f02d548ae5
+  f265c91288d1866bfd9739d26174d7b156c873073827563b6615aa7be71568bc  x/x17_forget.rs
+
+-- build inputs (compiler-resolved) (4) --
+  build-script: none
+  include: none (no file loaded other than module files)
+  env: none (no env!/option_env!/tracked env read)
+  proc-macro: none
+
+-- linked artifacts and command line (5) --
+  rustc command line: /tmp/claude-0/alloc-audit/tool-target/release/alloc_audit --crate-name x17 --edition 2021 --crate-type lib -Copt-level=2 --out-dir /tmp/claude-0/alloc-audit/control-out -L /tmp/claude-0/alloc-audit/control-deps /home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases/x/x17_forget.rs
+  env CARGO_MANIFEST_DIR=/home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases
+  crate core svh=cbc12955c475a0d98147c7ede674d8a8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcore-1d288395a3394ed3.rmeta sha256=f991bfdb98d878590ba8a11da984bc230a078ee8079e27fcfd65854803b436f5
+  crate alloc svh=3e16574379d685a1d1b3318e7fc12518 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/liballoc-3988244237fec6ee.rmeta sha256=92fa3a38f8b43981aeb810e6be09f9b0a66f38439272f8ee1b7ddb832a8aa065
+  crate compiler_builtins svh=608975982fce69540ecd1b8bed34a3d8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcompiler_builtins-2d9557d6e902a200.rmeta sha256=9462f23a8789d047933fc26cbdff2172961ee5c9bf994690b196ff9c3de5a5cf
+
+-- allocator sinks (every root-to-sink path judged) (6) --
+  !! alloc::alloc::handle_alloc_error (Abort): 0 justified path(s), 1 unauthorized
+      UNAUTHORIZED crate::x17_root -> alloc::rc::Rc::<T>::new<usize> -> alloc::boxed::Box::<T>::new<alloc::rc::RcInner<usize>> -> alloc::boxed::box_new_uninit -> alloc::alloc::handle_alloc_error  [no allocation-capable item on this path is allowlisted]
+  !! alloc::alloc::__rust_alloc_zeroed (Alloc): 0 justified path(s), 1 unauthorized
+      UNAUTHORIZED crate::x17_root -> alloc::rc::Rc::<T>::new<usize> -> alloc::boxed::Box::<T>::new<alloc::rc::RcInner<usize>> -> alloc::boxed::box_new_uninit -> <alloc::alloc::Global as core::alloc::Allocator>::allocate -> alloc::alloc::Global::alloc_impl -> alloc::alloc::Global::alloc_impl_runtime -> alloc::alloc::alloc_zeroed -> alloc::alloc::__rust_alloc_zeroed  [no allocation-capable item on this path is allowlisted]
+  !! alloc::alloc::__rust_alloc (Alloc): 0 justified path(s), 1 unauthorized
+      UNAUTHORIZED crate::x17_root -> alloc::rc::Rc::<T>::new<usize> -> alloc::boxed::Box::<T>::new<alloc::rc::RcInner<usize>> -> alloc::boxed::box_new_uninit -> <alloc::alloc::Global as core::alloc::Allocator>::allocate -> alloc::alloc::Global::alloc_impl -> alloc::alloc::Global::alloc_impl_runtime -> alloc::alloc::alloc -> alloc::alloc::__rust_alloc  [no allocation-capable item on this path is allowlisted]
+
+-- leaves (3) --
+  !! [ffi] alloc::alloc::__rust_no_alloc_shim_is_unstable_v2 <- alloc::alloc::alloc_zeroed
+  !! [ffi] alloc::alloc::__rust_no_alloc_shim_is_unstable_v2 <- alloc::alloc::alloc
+  !! [no-mir,diverging] core::panicking::panic_nounwind_fmt <- core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check
+
+-- panic edges (per function) (0) --
+
+-- guard call sites and generic exports (0) --
+
+-- dependency contracts (0) --
+
+-- edges (103) --
+  crate::x17_root -> alloc::rc::Rc::<T>::new<usize> [inlined] @ /home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases/x/x17_forget.rs:7:13: 7:34
+  alloc::rc::Rc::<T>::new<usize> -> core::cell::Cell::<T>::new<usize> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/rc.rs:430:54: 430:66
+  core::cell::Cell::<T>::new<usize> -> core::cell::UnsafeCell::<T>::new<usize> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cell.rs:418:23: 418:45
+  alloc::rc::Rc::<T>::new<usize> -> alloc::boxed::Box::<T, A>::leak<alloc::rc::RcInner<usize>,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/rc.rs:430:17: 430:97
+  alloc::boxed::Box::<T, A>::leak<alloc::rc::RcInner<usize>,alloc::alloc::Global> -> alloc::boxed::Box::<T, A>::into_raw_with_allocator<alloc::rc::RcInner<usize>,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/boxed.rs:1942:28: 1942:59
+  alloc::boxed::Box::<T, A>::into_raw_with_allocator<alloc::rc::RcInner<usize>,alloc::alloc::Global> -> core::mem::manually_drop::ManuallyDrop::<T>::new<alloc::boxed::Box<alloc::rc::RcInner<usize>>> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/boxed.rs:1671:21: 1671:46
+  core::mem::manually_drop::ManuallyDrop::<T>::new<alloc::boxed::Box<alloc::rc::RcInner<usize>>> -> core::mem::maybe_dangling::MaybeDangling::<P>::new<alloc::boxed::Box<alloc::rc::RcInner<usize>>> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/mem/manually_drop.rs:183:31: 183:56
+  alloc::boxed::Box::<T, A>::into_raw_with_allocator<alloc::rc::RcInner<usize>,alloc::alloc::Global> -> <core::mem::manually_drop::ManuallyDrop<T> as core::ops::deref::DerefMut>::deref_mut<alloc::boxed::Box<alloc::rc::RcInner<usize>>> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/boxed.rs:1677:29: 1677:31
+  <core::mem::manually_drop::ManuallyDrop<T> as core::ops::deref::DerefMut>::deref_mut<alloc::boxed::Box<alloc::rc::RcInner<usize>>> -> core::mem::maybe_dangling::MaybeDangling::<P>::as_mut<alloc::boxed::Box<alloc::rc::RcInner<usize>>> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/mem/manually_drop.rs:284:20: 284:28
+  alloc::boxed::Box::<T, A>::into_raw_with_allocator<alloc::rc::RcInner<usize>,alloc::alloc::Global> -> <core::mem::manually_drop::ManuallyDrop<T> as core::ops::deref::Deref>::deref<alloc::boxed::Box<alloc::rc::RcInner<usize>>> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/boxed.rs:1678:41: 1678:44
+  <core::mem::manually_drop::ManuallyDrop<T> as core::ops::deref::Deref>::deref<alloc::boxed::Box<alloc::rc::RcInner<usize>>> -> core::mem::maybe_dangling::MaybeDangling::<P>::as_ref<alloc::boxed::Box<alloc::rc::RcInner<usize>>> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/mem/manually_drop.rs:275:20: 275:28
+  alloc::boxed::Box::<T, A>::into_raw_with_allocator<alloc::rc::RcInner<usize>,alloc::alloc::Global> -> core::ptr::read<alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/boxed.rs:1678:30: 1678:45
+  alloc::boxed::Box::<T, A>::leak<alloc::rc::RcInner<usize>,alloc::alloc::Global> -> core::mem::forget<alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/boxed.rs:1943:9: 1943:27
+  core::mem::forget<alloc::alloc::Global> -> core::mem::manually_drop::ManuallyDrop::<T>::new<alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/mem/mod.rs:192:13: 192:33
+  core::mem::manually_drop::ManuallyDrop::<T>::new<alloc::alloc::Global> -> core::mem::maybe_dangling::MaybeDangling::<P>::new<alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/mem/manually_drop.rs:183:31: 183:56
+  alloc::rc::Rc::<T>::new<usize> -> <T as core::convert::Into<U>>::into<&mut alloc::rc::RcInner<usize>,core::ptr::non_null::NonNull<alloc::rc::RcInner<usize>>> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/rc.rs:431:22: 431:28
+  <T as core::convert::Into<U>>::into<&mut alloc::rc::RcInner<usize>,core::ptr::non_null::NonNull<alloc::rc::RcInner<usize>>> -> <core::ptr::non_null::NonNull<T> as core::convert::From<&mut T>>::from<alloc::rc::RcInner<usize>> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/convert/mod.rs:781:9: 781:22
+  <core::ptr::non_null::NonNull<T> as core::convert::From<&mut T>>::from<alloc::rc::RcInner<usize>> -> core::ptr::non_null::NonNull::<T>::from_mut<alloc::rc::RcInner<usize>> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/non_null.rs:1710:9: 1710:29
+  alloc::rc::Rc::<T>::new<usize> -> alloc::rc::Rc::<T>::from_inner<usize> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/rc.rs:429:13: 432:14
+  alloc::rc::Rc::<T>::from_inner<usize> -> alloc::rc::Rc::<T, A>::from_inner_in<usize,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/rc.rs:362:18: 362:50
+  crate::x17_root -> <alloc::rc::Rc<T, A> as core::ops::deref::Deref>::deref<usize,alloc::alloc::Global> [inlined] @ /home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases/x/x17_forget.rs:8:13: 8:15
+  <alloc::rc::Rc<T, A> as core::ops::deref::Deref>::deref<usize,alloc::alloc::Global> -> alloc::rc::Rc::<T, A>::inner<usize,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/rc.rs:2441:15: 2441:22
+  alloc::rc::Rc::<T, A>::inner<usize,alloc::alloc::Global> -> core::ptr::non_null::NonNull::<T>::as_ref<alloc::rc::RcInner<usize>> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/rc.rs:376:27: 376:35
+  core::ptr::non_null::NonNull::<T>::as_ref<alloc::rc::RcInner<usize>> -> core::ptr::non_null::NonNull::<T>::as_ptr<alloc::rc::RcInner<usize>> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/non_null.rs:454:25: 454:33
+  core::ptr::non_null::NonNull::<T>::as_ref<alloc::rc::RcInner<usize>> -> core::ptr::mut_ptr::<impl *mut T>::cast_const<alloc::rc::RcInner<usize>> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/non_null.rs:454:34: 454:46
+  crate::x17_root -> core::mem::forget<alloc::rc::Rc<usize>> [inlined] @ /home/ws/projects/verified-decoders/alloc-delta/audit/controls/testcases/x/x17_forget.rs:9:5: 9:25
+  core::mem::forget<alloc::rc::Rc<usize>> -> core::mem::manually_drop::ManuallyDrop::<T>::new<alloc::rc::Rc<usize>> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/mem/mod.rs:192:13: 192:33
+  core::mem::manually_drop::ManuallyDrop::<T>::new<alloc::rc::Rc<usize>> -> core::mem::maybe_dangling::MaybeDangling::<P>::new<alloc::rc::Rc<usize>> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/mem/manually_drop.rs:183:31: 183:56
+  alloc::rc::Rc::<T>::new<usize> -> alloc::boxed::Box::<T>::new<alloc::rc::RcInner<usize>> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/rc.rs:430:27: 430:96
+  alloc::rc::Rc::<T>::new<usize> -> alloc::boxed::Box::<T>::new<alloc::rc::RcInner<usize>> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/rc.rs:430:27: 430:96
+  <T as core::convert::Into<U>>::into<&mut alloc::rc::RcInner<usize>,core::ptr::non_null::NonNull<alloc::rc::RcInner<usize>>> -> <core::ptr::non_null::NonNull<T> as core::convert::From<&mut T>>::from<alloc::rc::RcInner<usize>> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/convert/mod.rs:781:9: 781:22
+  alloc::boxed::Box::<T>::new<alloc::rc::RcInner<usize>> -> alloc::boxed::box_new_uninit [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/boxed.rs:290:19: 290:69
+  alloc::boxed::Box::<T>::new<alloc::rc::RcInner<usize>> -> core::ptr::drop_glue<alloc::rc::RcInner<usize>> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/boxed.rs:296:5: 296:6
+  alloc::boxed::box_new_uninit -> <alloc::alloc::Global as core::alloc::Allocator>::allocate [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/boxed.rs:251:18: 251:34
+  <alloc::alloc::Global as core::alloc::Allocator>::allocate -> alloc::alloc::Global::alloc_impl [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:541:14: 541:39
+  alloc::boxed::box_new_uninit -> core::ptr::non_null::NonNull::<[T]>::as_mut_ptr<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/boxed.rs:252:24: 252:36
+  core::ptr::non_null::NonNull::<[T]>::as_mut_ptr<u8> -> core::ptr::non_null::NonNull::<[T]>::as_non_null_ptr<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/non_null.rs:1473:14: 1473:31
+  core::ptr::non_null::NonNull::<[T]>::as_non_null_ptr<u8> -> core::ptr::non_null::NonNull::<T>::cast<[u8],u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/non_null.rs:1454:14: 1454:20
+  core::ptr::non_null::NonNull::<T>::cast<[u8],u8> -> core::ptr::non_null::NonNull::<T>::as_ptr<[u8]> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/non_null.rs:514:33: 514:41
+  core::ptr::non_null::NonNull::<[T]>::as_mut_ptr<u8> -> core::ptr::non_null::NonNull::<T>::as_ptr<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/non_null.rs:1473:32: 1473:40
+  alloc::alloc::Global::alloc_impl -> alloc::alloc::Global::alloc_impl_runtime [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:424:9: 428:10
+  alloc::boxed::box_new_uninit -> alloc::alloc::handle_alloc_error [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/boxed.rs:253:19: 253:45
+  alloc::alloc::Global::alloc_impl -> alloc::alloc::Global::alloc_impl_runtime [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:424:9: 428:10
+  alloc::alloc::Global::alloc_impl -> alloc::alloc::Global::alloc_impl_runtime [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:424:9: 428:10
+  alloc::alloc::Global::alloc_impl_runtime -> core::alloc::layout::Layout::size [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:298:22: 298:28
+  alloc::alloc::Global::alloc_impl_runtime -> core::alloc::layout::Layout::dangling_ptr [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:299:28: 299:42
+  core::alloc::layout::Layout::dangling_ptr -> core::mem::alignment::Alignment::as_nonzero_usize [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/alloc/layout.rs:277:48: 277:66
+  core::alloc::layout::Layout::dangling_ptr -> core::ptr::non_null::NonNull::<T>::without_provenance<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/alloc/layout.rs:277:9: 277:67
+  alloc::alloc::Global::alloc_impl_runtime -> core::ptr::non_null::NonNull::<T>::cast_slice<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:299:43: 299:56
+  core::ptr::non_null::NonNull::<T>::cast_slice<u8> -> core::ptr::non_null::NonNull::<[T]>::slice_from_raw_parts<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/non_null.rs:1351:9: 1351:49
+  core::ptr::non_null::NonNull::<[T]>::slice_from_raw_parts<u8> -> core::ptr::non_null::NonNull::<T>::as_ptr<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/non_null.rs:1395:43: 1395:51
+  core::ptr::non_null::NonNull::<[T]>::slice_from_raw_parts<u8> -> core::ptr::mut_ptr::<impl *mut T>::cast_slice<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/non_null.rs:1395:52: 1395:67
+  core::ptr::mut_ptr::<impl *mut T>::cast_slice<u8> -> core::ptr::slice_from_raw_parts_mut<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs:1686:9: 1686:44
+  core::ptr::slice_from_raw_parts_mut<u8> -> core::ptr::metadata::from_raw_parts_mut<[u8],u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:1260:5: 1260:34
+  core::ptr::non_null::NonNull::<[T]>::slice_from_raw_parts<u8> -> core::ptr::non_null::NonNull::<T>::new_unchecked<[u8]> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/non_null.rs:1395:18: 1395:68
+  core::ptr::non_null::NonNull::<T>::new_unchecked<[u8]> -> core::ub_checks::check_language_ub [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:77:35: 77:42
+  core::ub_checks::check_language_ub -> core::ub_checks::check_language_ub::runtime [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs:2636:9: 2636:61
+  alloc::alloc::Global::alloc_impl_runtime -> alloc::alloc::alloc_zeroed [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:302:43: 302:63
+  alloc::alloc::alloc_zeroed -> core::alloc::layout::Layout::size [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:290:36: 290:42
+  alloc::alloc::alloc_zeroed -> core::alloc::layout::Layout::alignment [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:290:51: 290:62
+  alloc::alloc::Global::alloc_impl_runtime -> alloc::alloc::alloc [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:302:73: 302:86
+  alloc::alloc::alloc -> core::alloc::layout::Layout::size [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:130:29: 130:35
+  alloc::alloc::alloc -> core::alloc::layout::Layout::alignment [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:130:44: 130:55
+  alloc::alloc::Global::alloc_impl_runtime -> core::ptr::non_null::NonNull::<T>::new<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:303:27: 303:48
+  core::ptr::non_null::NonNull::<T>::new<u8> -> core::ptr::mut_ptr::<impl *mut T>::is_null<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/non_null.rs:280:17: 280:26
+  core::ptr::mut_ptr::<impl *mut T>::is_null<u8> -> core::ptr::mut_ptr::<impl *mut T>::cast_const<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs:23:14: 23:26
+  core::ptr::mut_ptr::<impl *mut T>::is_null<u8> -> core::ptr::const_ptr::<impl *const T>::is_null<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs:23:27: 23:36
+  core::ptr::const_ptr::<impl *const T>::is_null<u8> -> core::ptr::const_ptr::<impl *const T>::is_null::runtime [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs:2636:9: 2636:61
+  core::ptr::const_ptr::<impl *const T>::is_null::runtime -> core::ptr::const_ptr::<impl *const T>::addr<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/const_ptr.rs:38:21: 38:27
+  core::ptr::const_ptr::<impl *const T>::addr<u8> -> core::ptr::const_ptr::<impl *const T>::cast<u8,()> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/const_ptr.rs:159:38: 159:50
+  core::ptr::non_null::NonNull::<T>::new<u8> -> core::ptr::non_null::NonNull::<T>::new_unchecked<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/non_null.rs:282:27: 282:51
+  core::ptr::non_null::NonNull::<T>::new_unchecked<u8> -> core::ub_checks::check_language_ub [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:77:35: 77:42
+  alloc::alloc::Global::alloc_impl_runtime -> core::option::Option::<T>::ok_or<core::ptr::non_null::NonNull<u8>,core::alloc::AllocError> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:303:49: 303:66
+  alloc::alloc::Global::alloc_impl_runtime -> <core::result::Result<T, E> as core::ops::try_trait::Try>::branch<core::ptr::non_null::NonNull<u8>,core::alloc::AllocError> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:303:27: 303:67
+  alloc::alloc::Global::alloc_impl_runtime -> <core::result::Result<T, F> as core::ops::try_trait::FromResidual<core::result::Result<core::convert::Infallible, E>>>::from_residual<core::ptr::non_null::NonNull<[u8]>,core::alloc::AllocError,core::alloc::AllocError> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:303:27: 303:67
+  <core::result::Result<T, F> as core::ops::try_trait::FromResidual<core::result::Result<core::convert::Infallible, E>>>::from_residual<core::ptr::non_null::NonNull<[u8]>,core::alloc::AllocError,core::alloc::AllocError> -> <T as core::convert::From<T>>::from<core::alloc::AllocError> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/result.rs:2193:27: 2193:40
+  alloc::alloc::alloc_zeroed -> alloc::alloc::__rust_no_alloc_shim_is_unstable_v2 [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:288:9: 288:46
+  alloc::alloc::alloc -> alloc::alloc::__rust_no_alloc_shim_is_unstable_v2 [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:128:9: 128:46
+  core::ptr::non_null::NonNull::<T>::new_unchecked<[u8]> -> core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
+  alloc::alloc::alloc_zeroed -> alloc::alloc::__rust_alloc_zeroed [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:290:9: 290:63
+  alloc::alloc::alloc -> alloc::alloc::__rust_alloc [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:130:9: 130:56
+  core::ptr::non_null::NonNull::<T>::new_unchecked<u8> -> core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
+  core::ptr::non_null::NonNull::<T>::new_unchecked<[u8]> -> core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
+  core::ptr::non_null::NonNull::<T>::new_unchecked<[u8]> -> core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
+  core::ptr::non_null::NonNull::<T>::new_unchecked<[u8]> -> core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
+  core::ptr::non_null::NonNull::<T>::new_unchecked<[u8]> -> core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
+  alloc::alloc::alloc_zeroed -> alloc::alloc::__rust_no_alloc_shim_is_unstable_v2 [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:288:9: 288:46
+  alloc::alloc::alloc_zeroed -> alloc::alloc::__rust_alloc_zeroed [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:290:9: 290:63
+  alloc::alloc::alloc -> alloc::alloc::__rust_no_alloc_shim_is_unstable_v2 [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:128:9: 128:46
+  alloc::alloc::alloc -> alloc::alloc::__rust_alloc [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:130:9: 130:56
+  core::ptr::non_null::NonNull::<T>::new_unchecked<u8> -> core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
+  core::ptr::non_null::NonNull::<T>::new_unchecked<u8> -> core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
+  core::option::Option::<T>::ok_or<core::ptr::non_null::NonNull<u8>,core::alloc::AllocError> -> core::ptr::drop_glue<core::alloc::AllocError> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:1338:5: 1338:6
+  <core::result::Result<T, F> as core::ops::try_trait::FromResidual<core::result::Result<core::convert::Infallible, E>>>::from_residual<core::ptr::non_null::NonNull<[u8]>,core::alloc::AllocError,core::alloc::AllocError> -> <T as core::convert::From<T>>::from<core::alloc::AllocError> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/result.rs:2193:27: 2193:40
+  core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check -> core::ptr::mut_ptr::<impl *mut T>::is_null<()> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/non_null.rs:245:57: 245:66
+  core::ptr::mut_ptr::<impl *mut T>::is_null<()> -> core::ptr::mut_ptr::<impl *mut T>::cast_const<()> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs:23:14: 23:26
+  core::ptr::mut_ptr::<impl *mut T>::is_null<()> -> core::ptr::const_ptr::<impl *const T>::is_null<()> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs:23:27: 23:36
+  core::ptr::const_ptr::<impl *const T>::is_null<()> -> core::ptr::const_ptr::<impl *const T>::is_null::runtime [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs:2636:9: 2636:61
+  core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check -> core::fmt::Arguments::<'a>::from_str [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:73:59: 73:96
+  core::fmt::Arguments::<'a>::from_str -> core::str::<impl str>::as_ptr [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/fmt/mod.rs:819:44: 819:52
+  core::fmt::Arguments::<'a>::from_str -> core::str::<impl str>::len [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/fmt/mod.rs:820:40: 820:45
+  core::str::<impl str>::len -> core::str::<impl str>::as_bytes [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:156:14: 156:24
+  core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check -> core::panicking::panic_nounwind_fmt [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:73:21: 73:104

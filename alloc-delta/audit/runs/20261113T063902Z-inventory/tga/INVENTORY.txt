@@ -1,0 +1,261 @@
+=== independent build-input inventory (alloc-delta/audit/inventory) ===
+inventory-verdict: PASS
+crate: tga_verus
+findings: 0
+finding-tags: -
+environment (reduced, declared):
+  PATH=/opt/cargo/bin:/usr/bin:/bin
+  HOME=/home/ws
+  CARGO_HOME=/home/ws/.cargo
+  RUSTUP_HOME=/opt/rustup
+  RUSTUP_TOOLCHAIN=1.99.1-x86_64-unknown-linux-gnu
+  LD_LIBRARY_PATH=/opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib
+  CARGO_TARGET_DIR=/tmp/claude-0/alloc-audit/inventory/tga-target
+  RUSTC_WRAPPER=/tmp/claude-0/alloc-audit/tool-target/release/alloc_audit
+  ALLOC_AUDIT_PLAN=/home/ws/projects/verified-decoders/alloc-delta/audit/runs/20261113T063902Z-inventory/tga/plan
+  ALLOC_AUDIT_CONTINUE=1
+  ALLOC_AUDIT_EDGES=1
+  ALLOC_AUDIT_RUN_DIR=/home/ws/projects/verified-decoders/alloc-delta/audit/runs/20261113T063902Z-inventory/tga
+  LD_PRELOAD=/tmp/claude-0/alloc-audit/inventory/getenv_log.so
+  ALLOC_INV_GETENV_LOG=/home/ws/projects/verified-decoders/alloc-delta/audit/runs/20261113T063902Z-inventory/tga/getenv.log
+
+-- findings --
+
+-- inventory --
+build units (cargo compiler-artifact messages): 20
+  unit registry+https://github.com/rust-lang/crates.io-index#proc-macro2@1.0.107 ['custom-build'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/build/proc-macro2-bf0ebb76a35ead3b/build-script-build sha256=802fb9c21bac510aeb1379713c41e59d432292e08d397b8eebe8156fde9ec153
+  unit registry+https://github.com/rust-lang/crates.io-index#unicode-ident@1.0.27 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libunicode_ident-82952c4e5edf73c0.rlib sha256=9c24b20ba411b4718fbdd43de065186c8f38d37ca42ee983c1ff9b1ddfc04bf0
+  unit registry+https://github.com/rust-lang/crates.io-index#unicode-ident@1.0.27 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libunicode_ident-82952c4e5edf73c0.rmeta sha256=b78e150420f4cc732634a5b1567e30d9f9209fd2e389ca4e992dd6f9c6028b95
+  unit registry+https://github.com/rust-lang/crates.io-index#quote@1.0.47 ['custom-build'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/build/quote-2165c0071fef8d8b/build-script-build sha256=dba98850ac4ac90c5be8c5695f562b3cfe28b887c9dca5e4218fa93309e0965f
+  unit registry+https://github.com/rust-lang/crates.io-index#proc-macro2@1.0.107 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libproc_macro2-99a0f6f9b775606c.rlib sha256=0b84401094578e9f2be0e5aa886f6b3f5b0504c65105abc5cbbd82077f1b532a
+  unit registry+https://github.com/rust-lang/crates.io-index#proc-macro2@1.0.107 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libproc_macro2-99a0f6f9b775606c.rmeta sha256=e636caa79142fcdfdd6a06ff29f23be9248fa93d6d3491f1f2376e5454b4c5d2
+  unit registry+https://github.com/rust-lang/crates.io-index#quote@1.0.47 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libquote-80bb434f18139497.rlib sha256=8436a94123dce1d0d9c07aefb9ab75a6f31ba4f16a1d9299a3e2fc94d2be3c30
+  unit registry+https://github.com/rust-lang/crates.io-index#quote@1.0.47 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libquote-80bb434f18139497.rmeta sha256=39f0c24718c4d9c4b35a493705a9e4f4703d71d826f73fb894fd5f245a40a2aa
+  unit registry+https://github.com/rust-lang/crates.io-index#verus_syn@0.0.0-2026-11-01-0251 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libverus_syn-6a0b5d0937a7df2e.rlib sha256=b7bbd649cb706f34acc7e429c0f487def95960ec8351643e9c8e3c53719192ec
+  unit registry+https://github.com/rust-lang/crates.io-index#verus_syn@0.0.0-2026-11-01-0251 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libverus_syn-6a0b5d0937a7df2e.rmeta sha256=713b21024bf5a4f594a5decd12c5fc5d08dc83950d45973d15959f2e71366bd9
+  unit registry+https://github.com/rust-lang/crates.io-index#verus_prettyplease@0.0.0-2026-11-01-0251 ['custom-build'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/build/verus_prettyplease-11cd2acb8b48a3f1/build-script-build sha256=713af0efed597be4f8871b8c0f185659f2fd8715bf6b1c585d1f0dd457050ae8
+  unit registry+https://github.com/rust-lang/crates.io-index#syn@2.0.119 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libsyn-153a600037382fc9.rlib sha256=985525083a8dd5b0e5d84b9ab843c47c93489a6356710e54f3202ed1e899bc3b
+  unit registry+https://github.com/rust-lang/crates.io-index#syn@2.0.119 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libsyn-153a600037382fc9.rmeta sha256=0690543a5485dbae70c99e1d107953bb24ab57ebba73bac0a86085aae91d77a4
+  unit registry+https://github.com/rust-lang/crates.io-index#hashbrown@0.17.1 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libhashbrown-4214bd197f5c2a13.rlib sha256=08d8e7e7b182b1f4d2637752d0eb9895304cdd902948eac7e1e18ed5ebbb54b8
+  unit registry+https://github.com/rust-lang/crates.io-index#hashbrown@0.17.1 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libhashbrown-4214bd197f5c2a13.rmeta sha256=8d8af34a2ea384d8064e18fc3df87fb81f488517811ea6fc94cd602db8a58eaf
+  unit registry+https://github.com/rust-lang/crates.io-index#equivalent@1.0.3 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libequivalent-64d3abf1620f14a9.rlib sha256=055e9a9c55bf5062f0ac648b956ee7d6f026d944c85ff77d3632b89bece8385e
+  unit registry+https://github.com/rust-lang/crates.io-index#equivalent@1.0.3 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libequivalent-64d3abf1620f14a9.rmeta sha256=f1450aefe92822cb4deaccd6e9ee4f706b660f7a62816128c351810f0b23a518
+  unit registry+https://github.com/rust-lang/crates.io-index#indexmap@2.14.2 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libindexmap-051baca07c72773d.rlib sha256=13f7f256277214810c18496c3ac796fb01c7020fc9f695e356e351f76553064d
+  unit registry+https://github.com/rust-lang/crates.io-index#indexmap@2.14.2 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libindexmap-051baca07c72773d.rmeta sha256=12736da255c9b60d3b27bcd18903e7517ef1a47428bdfedc35f6d4c854b9aa5e
+  unit registry+https://github.com/rust-lang/crates.io-index#synstructure@0.13.2 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libsynstructure-e36fac8bc011a5e5.rlib sha256=a9c786f94f452988164fa456df29fdf86a419cf091ba52c10c9446dc7c71ff6d
+  unit registry+https://github.com/rust-lang/crates.io-index#synstructure@0.13.2 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libsynstructure-e36fac8bc011a5e5.rmeta sha256=1972b57e72ed9e5d626e6bc4d4b1b26ad527afc0c4f0e489c7f9599b0d238eea
+  unit registry+https://github.com/rust-lang/crates.io-index#verus_prettyplease@0.0.0-2026-11-01-0251 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libverus_prettyplease-df823ba18880b456.rlib sha256=958fb76da7419d7fff2f0474b17965837819ed9700f6d9285df3b3f248bdc002
+  unit registry+https://github.com/rust-lang/crates.io-index#verus_prettyplease@0.0.0-2026-11-01-0251 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libverus_prettyplease-df823ba18880b456.rmeta sha256=ce27fc19ba1975553d42376cb6408833da94e786c4b106210d3529c1d73cd0a5
+  unit registry+https://github.com/rust-lang/crates.io-index#vstd@0.0.0-2026-11-01-0251 ['custom-build'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/build/vstd-a06db98fa9653af9/build-script-build sha256=21ba5422a2950ef3b48f016bc3f5cbe205c835e9cb2c50b1acb5c8cee54f0127
+  unit registry+https://github.com/rust-lang/crates.io-index#convert_case@0.4.0 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libconvert_case-3d209de4cb4c3de1.rlib sha256=823dc80e92624073924c891a8779d7418a8579b9ace36cede27e2dbfd9801431
+  unit registry+https://github.com/rust-lang/crates.io-index#convert_case@0.4.0 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libconvert_case-3d209de4cb4c3de1.rmeta sha256=1524afffff5d969e0d5d92fba23295907df8f5345848b187fe9baa721338e0d4
+  unit registry+https://github.com/rust-lang/crates.io-index#verus_builtin_macros@0.0.0-2026-11-01-0251 ['proc-macro'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libverus_builtin_macros-c32361d025cb512f.so sha256=a5f3765fadd6d754581b1f48397e4cdbb02f386ad872392622a2e5f292ad17da
+  unit registry+https://github.com/rust-lang/crates.io-index#verus_state_machines_macros@0.0.0-2026-11-01-0251 ['proc-macro'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/release/deps/libverus_state_machines_macros-afcf93a216aa33b2.so sha256=27bb5c1b206d32e5634e6507acb27cd00644ed0db2fb1a37485435255dd38a86
+  unit registry+https://github.com/rust-lang/crates.io-index#verus_builtin@0.0.0-2026-11-01-0251 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/x86_64-unknown-linux-gnu/release/deps/libverus_builtin-86c4460c3bc0417a.rlib sha256=a15f5d4c16aa5233bbb8ba8022932a2075a0e1fe10e80391fa2af61559a713a6
+  unit registry+https://github.com/rust-lang/crates.io-index#verus_builtin@0.0.0-2026-11-01-0251 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/x86_64-unknown-linux-gnu/release/deps/libverus_builtin-86c4460c3bc0417a.rmeta sha256=b0dfaa6407e42b7d15ce63155dd40cda0dee94d6a57102b23edc5e7e718cf4e5
+  unit registry+https://github.com/rust-lang/crates.io-index#vstd@0.0.0-2026-11-01-0251 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/x86_64-unknown-linux-gnu/release/deps/libvstd-9376ba70600fade7.rlib sha256=aff1a3b409f4ed0e496ce39505c64c0009b3beeff6c2bc08d290e762cc672d85
+  unit registry+https://github.com/rust-lang/crates.io-index#vstd@0.0.0-2026-11-01-0251 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/x86_64-unknown-linux-gnu/release/deps/libvstd-9376ba70600fade7.rmeta sha256=f93b65602d91170edd3bb93b775f0a423ad35a7a154329588eeec12ec52b1045
+  unit path+file:///__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/tga/tga_verus#0.1.0 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/x86_64-unknown-linux-gnu/release/libtga_verus.rlib sha256=6f098ab95678e55457aa5b93a7b1a73ebccc39642a33153b0f8e915144c45f78
+  unit path+file:///__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/tga/tga_verus#0.1.0 ['lib'] -> /tmp/claude-0/alloc-audit/inventory/tga-target/x86_64-unknown-linux-gnu/release/deps/libtga_verus-e1a4377b4656f554.rmeta sha256=62b27ffc11518c58d3baea2ad20833684921272260edb6fb958d3a785712826e
+build scripts executed: 4
+  build-script registry+https://github.com/rust-lang/crates.io-index#proc-macro2@1.0.107 cfgs=['span_locations', 'wrap_proc_macro', 'proc_macro_span_location', 'proc_macro_span_file'] env=[] out_dir=/tmp/claude-0/alloc-audit/inventory/tga-target/release/build/proc-macro2-6c690a9e10b464d6/out
+  build-script registry+https://github.com/rust-lang/crates.io-index#quote@1.0.47 cfgs=[] env=[] out_dir=/tmp/claude-0/alloc-audit/inventory/tga-target/release/build/quote-86148c8a4d375b21/out
+  build-script registry+https://github.com/rust-lang/crates.io-index#verus_prettyplease@0.0.0-2026-11-01-0251 cfgs=[] env=[] out_dir=/tmp/claude-0/alloc-audit/inventory/tga-target/release/build/verus_prettyplease-5fe7f8e4f9783dc3/out
+  build-script registry+https://github.com/rust-lang/crates.io-index#vstd@0.0.0-2026-11-01-0251 cfgs=[] env=[['RUST_MIN_STACK', '10485760']] out_dir=/tmp/claude-0/alloc-audit/inventory/tga-target/x86_64-unknown-linux-gnu/release/build/vstd-a31b043dc1604837/out
+processes exec'd: 66; successful file opens: 5114
+distinct (process, variable, present) environment reads: 183
+  env read ALLOC_AUDIT_CONTINUE present=1 by alloc_audit x23
+  env read ALLOC_AUDIT_EDGES present=1 by alloc_audit x23
+  env read ALLOC_AUDIT_PLAN present=1 by alloc_audit x23
+  env read ALLOC_AUDIT_PROTOTYPE present=0 by alloc_audit x23
+  env read ALLOC_AUDIT_ROOTS present=0 by alloc_audit x23
+  env read ALLOC_AUDIT_VSTD_VERSION present=0 by alloc_audit x23
+  env read CARGO_ENCODED_RUSTFLAGS present=0 by alloc_audit x1
+  env read CARGO_MAKEFLAGS present=1 by alloc_audit x1
+  env read CARGO_MANIFEST_DIR present=1 by alloc_audit x12
+  env read CARGO_PKG_NAME present=1 by alloc_audit x2
+  env read CARGO_PKG_VERSION present=1 by alloc_audit x1
+  env read CI present=0 by alloc_audit x1
+  env read LLVM_IGNORED_ENV_VAR present=0 by alloc_audit x27
+  env read LLVM_OVERRIDE_PRODUCER present=0 by alloc_audit x27
+  env read OUT_DIR present=0 by alloc_audit x2
+  env read QNX_TARGET present=0 by alloc_audit x2
+  env read RUSTC_BOOTSTRAP present=0 by alloc_audit x7
+  env read RUSTC_CTFE_BACKTRACE present=0 by alloc_audit x1
+  env read RUSTC_FORCE_RUSTC_VERSION present=0 by alloc_audit x1
+  env read RUSTC_GRAPHVIZ_FONT present=0 by alloc_audit x1
+  env read RUSTFLAGS present=0 by alloc_audit x1
+  env read RUST_BACKTRACE present=0 by alloc_audit x27
+  env read RUST_MIN_STACK present=0 by alloc_audit x2
+  env read TMPDIR present=0 by alloc_audit x1
+  env read VSTD_KIND present=0 by alloc_audit x1
+  env read CARGO_ENCODED_RUSTFLAGS present=1 by build-script-build x3
+  env read CARGO_PKG_VERSION present=1 by build-script-build x1
+  env read OUT_DIR present=1 by build-script-build x3
+  env read RUSTC present=1 by build-script-build x5
+  env read RUSTC_BOOTSTRAP present=0 by build-script-build x1
+  env read RUSTC_STAGE present=0 by build-script-build x3
+  env read RUSTC_WORKSPACE_WRAPPER present=0 by build-script-build x3
+  env read RUSTC_WRAPPER present=1 by build-script-build x3
+  env read RUST_MIN_STACK present=0 by build-script-build x1
+  env read TARGET present=1 by build-script-build x3
+  env read APP_SANDBOX_CONTAINER_ID present=0 by cargo x2
+  env read CARGO_HOME present=1 by cargo x1
+  env read CARGO_LOG present=0 by cargo x1
+  env read CARGO_LOG_PROFILE present=0 by cargo x1
+  env read CARGO_MAKEFLAGS present=0 by cargo x1
+  env read CI present=0 by cargo x5
+  env read CLICOLOR present=0 by cargo x4
+  env read CLICOLOR_FORCE present=0 by cargo x4
+  env read COLORTERM present=0 by cargo x1
+  env read DOMTERM present=0 by cargo x1
+  env read FORCE_HYPERLINK present=0 by cargo x1
+  env read HOME present=1 by cargo x3
+  env read KONSOLE_VERSION present=0 by cargo x1
+  env read LD_LIBRARY_PATH present=1 by cargo x24
+  env read MAKEFLAGS present=0 by cargo x1
+  env read MFLAGS present=0 by cargo x1
+  env read NO_COLOR present=0 by cargo x5
+  env read OPENSSL_CONF present=0 by cargo x1
+  env read OPENSSL_ia32cap present=0 by cargo x1
+  env read PATH present=1 by cargo x6
+  env read RUSTC_BOOTSTRAP present=0 by cargo x3
+  env read RUSTUP_HOME present=1 by cargo x4
+  env read RUST_BACKTRACE present=0 by cargo x1
+  env read RUST_LIB_BACKTRACE present=0 by cargo x1
+  env read RUST_MIN_STACK present=0 by cargo x2
+  env read SQLITE_TMPDIR present=0 by cargo x1
+  env read SSLKEYLOGFILE present=0 by cargo x1
+  env read SSL_CERT_DIR present=0 by cargo x2
+  env read SSL_CERT_DIR present=1 by cargo x1
+  env read SSL_CERT_FILE present=0 by cargo x2
+  env read SSL_CERT_FILE present=1 by cargo x1
+  env read TERM present=0 by cargo x5
+  env read TERM_PROGRAM present=0 by cargo x2
+  env read TF_BUILD present=0 by cargo x5
+  env read TMPDIR present=0 by cargo x1
+  env read VTE_VERSION present=0 by cargo x1
+  env read WT_SESSION present=0 by cargo x1
+  env read XDG_CONFIG_HOME present=0 by cargo x1
+  env read __CARGO_FIX_PLZ present=0 by cargo x1
+  env read __CARGO_TEMPORARY_BUILD_DIR_NEW_LAYOUT_OPT_OUT present=0 by cargo x1
+  env read __CARGO_TEST_CHANNEL_OVERRIDE_DO_NOT_USE_THIS present=0 by cargo x2
+  env read __CARGO_TEST_FORCE_ARGFILE present=0 by cargo x22
+  env read __CARGO_TEST_INVOCATION_TIME present=0 by cargo x1
+  env read __CARGO_TEST_LAST_USE_NOW present=0 by cargo x1
+  env read __CARGO_TEST_ROOT present=0 by cargo x3
+  env read __CARGO_TEST_SETSID_PLEASE_DONT_USE_ELSEWHERE present=0 by cargo x1
+  env read __CARGO_TEST_TTY_WIDTH_DO_NOT_USE_THIS present=0 by cargo x40
+  env read __CARGO_USE_GITOXIDE_INSTEAD_OF_GIT2 present=0 by cargo x1
+  env read COLLECT_GCC present=1 by collect2 x6
+  env read COLLECT_GCC_OPTIONS present=1 by collect2 x12
+  env read COMPILER_PATH present=1 by collect2 x6
+  env read GCC_EXTRA_DIAGNOSTIC_OUTPUT present=0 by collect2 x6
+  env read GLIBCXX_TUNABLES present=0 by collect2 x6
+  env read LANG present=0 by collect2 x6
+  env read PATH present=1 by collect2 x6
+  env read TEMP present=0 by collect2 x6
+  env read TMP present=0 by collect2 x6
+  env read TMPDIR present=0 by collect2 x6
+  env read GZIP present=0 by gzip x1
+  env read FORCE_LLD_DIAGNOSTICS_CRASH present=0 by rust-lld x6
+  env read LLD_IN_TEST present=0 by rust-lld x6
+  env read LLD_REPRODUCE present=0 by rust-lld x6
+  env read LLD_VERSION present=0 by rust-lld x6
+  env read LLVM_IGNORED_ENV_VAR present=0 by rust-lld x6
+  env read LLVM_OVERRIDE_PRODUCER present=0 by rust-lld x6
+  env read CARGO_MAKEFLAGS present=0 by rustc x2
+  env read CARGO_MAKEFLAGS present=1 by rustc x22
+  env read CARGO_PKG_NAME present=1 by rustc x1
+  env read CI present=0 by rustc x24
+  env read LLVM_IGNORED_ENV_VAR present=0 by rustc x29
+  env read LLVM_OVERRIDE_PRODUCER present=0 by rustc x29
+  env read MAKEFLAGS present=0 by rustc x2
+  env read MALLOC_CONF present=0 by rustc x29
+  env read MFLAGS present=0 by rustc x2
+  env read PATH present=1 by rustc x6
+  env read QNX_TARGET present=0 by rustc x38
+  env read RUSTC_BOOTSTRAP present=0 by rustc x150
+  env read RUSTC_CTFE_BACKTRACE present=0 by rustc x24
+  env read RUSTC_FORCE_RUSTC_VERSION present=0 by rustc x22
+  env read RUSTC_GRAPHVIZ_FONT present=0 by rustc x24
+  env read RUSTC_LOG present=0 by rustc x29
+  env read RUSTC_LOG_BACKTRACE present=0 by rustc x29
+  env read RUSTC_LOG_COLOR present=0 by rustc x29
+  env read RUSTC_LOG_ENTRY_EXIT present=0 by rustc x29
+  env read RUSTC_LOG_FORMAT_JSON present=0 by rustc x29
+  env read RUSTC_LOG_LINES present=0 by rustc x29
+  env read RUSTC_LOG_OUTPUT_TARGET present=0 by rustc x29
+  env read RUSTC_LOG_THREAD_IDS present=0 by rustc x29
+  env read RUSTC_LOG_WRAPTREE present=0 by rustc x29
+  env read RUSTC_OVERRIDE_VERSION_STRING present=0 by rustc x5
+  env read RUST_BACKTRACE present=0 by rustc x29
+  env read RUST_MIN_STACK present=0 by rustc x51
+  env read RUST_MIN_STACK present=1 by rustc x2
+  env read UNSTABLE_RUSTDOC_TEST_PATH present=0 by rustc x2
+  env read VCINSTALLDIR present=0 by rustc x6
+  env read VSTD_KIND present=0 by rustc x1
+  env read CARGO present=0 by rustup x1
+  env read CARGO_HOME present=1 by rustup x3
+  env read LD_LIBRARY_PATH present=1 by rustup x1
+  env read NO_COLOR present=0 by rustup x1
+  env read OPENSSL_CONF present=0 by rustup x1
+  env read OPENSSL_ia32cap present=0 by rustup x2
+  env read PATH present=1 by rustup x1
+  env read RUSTUP_AUTO_INSTALL present=0 by rustup x1
+  env read RUSTUP_DIST_ROOT present=0 by rustup x1
+  env read RUSTUP_DIST_SERVER present=0 by rustup x1
+  env read RUSTUP_FORCE_ARG0 present=0 by rustup x1
+  env read RUSTUP_HOME present=1 by rustup x1
+  env read RUSTUP_IO_THREADS present=0 by rustup x1
+  env read RUSTUP_LOG present=0 by rustup x1
+  env read RUSTUP_OVERRIDE_HOST_TRIPLE present=0 by rustup x3
+  env read RUSTUP_OVERRIDE_HOST_TUPLE present=0 by rustup x3
+  env read RUSTUP_OVERRIDE_UNIX_FALLBACK_SETTINGS present=0 by rustup x1
+  env read RUSTUP_PERMIT_COPY_RENAME present=0 by rustup x1
+  env read RUSTUP_TERM_COLOR present=0 by rustup x2
+  env read RUSTUP_TERM_PROGRESS_WHEN present=0 by rustup x1
+  env read RUSTUP_TERM_WIDTH present=0 by rustup x2
+  env read RUSTUP_TOOLCHAIN present=1 by rustup x1
+  env read RUSTUP_TRACE_DIR present=0 by rustup x1
+  env read RUST_BACKTRACE present=0 by rustup x1
+  env read RUST_LIB_BACKTRACE present=0 by rustup x1
+  env read RUST_MIN_STACK present=0 by rustup x1
+  env read RUST_RECURSION_COUNT present=0 by rustup x3
+  env read SSLKEYLOGFILE present=0 by rustup x1
+  env read TOKIO_UNSTABLE_SHARDED_BLOCKING_QUEUE present=0 by rustup x1
+  env read PATH present=1 by strace x1
+  env read POSIXLY_CORRECT present=0 by tar x1
+  env read PRISTINE_TAR_COMPAT present=0 by tar x1
+  env read SIMPLE_BACKUP_SUFFIX present=0 by tar x1
+  env read TAR_BROKEN_NUMERIC_OWNER present=0 by tar x1
+  env read TAR_LONGLINK_100 present=0 by tar x1
+  env read TAR_OPTIONS present=0 by tar x1
+  env read BINUTILS_ROOT present=0 by x86_64-linux-gnu-gcc-14 x36
+  env read COMPILER_PATH present=0 by x86_64-linux-gnu-gcc-14 x6
+  env read GCC_COMPARE_DEBUG present=0 by x86_64-linux-gnu-gcc-14 x6
+  env read GCC_EXEC_PREFIX present=0 by x86_64-linux-gnu-gcc-14 x6
+  env read GCC_EXTRA_DIAGNOSTIC_OUTPUT present=0 by x86_64-linux-gnu-gcc-14 x6
+  env read GCC_ROOT present=0 by x86_64-linux-gnu-gcc-14 x6
+  env read GLIBCXX_TUNABLES present=0 by x86_64-linux-gnu-gcc-14 x6
+  env read LANG present=0 by x86_64-linux-gnu-gcc-14 x6
+  env read LIBRARY_PATH present=0 by x86_64-linux-gnu-gcc-14 x6
+  env read LPATH present=0 by x86_64-linux-gnu-gcc-14 x6
+  env read MAKEFLAGS present=0 by x86_64-linux-gnu-gcc-14 x6
+  env read PATH present=1 by x86_64-linux-gnu-gcc-14 x12
+  env read TEMP present=0 by x86_64-linux-gnu-gcc-14 x6
+  env read TERM present=0 by x86_64-linux-gnu-gcc-14 x12
+  env read TMP present=0 by x86_64-linux-gnu-gcc-14 x6
+  env read TMPDIR present=0 by x86_64-linux-gnu-gcc-14 x6
+audited crate inputs: dep-info 8, report 8
+  input /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/tga/tga_verus/src/alloc_guard/mod.rs captured=26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7 report=26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7
+  input /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/tga/tga_verus/src/alloc_guard/sites.rs captured=58e1fb285124557080dde6a6bc01c0d6e839cd5402b804b08b240de43750c885 report=58e1fb285124557080dde6a6bc01c0d6e839cd5402b804b08b240de43750c885
+  input /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/tga/tga_verus/src/lib.rs captured=a01404daea7b08d8055c6fa2f282d0117815e00b1c91cb4eb7490f47102b6920 report=a01404daea7b08d8055c6fa2f282d0117815e00b1c91cb4eb7490f47102b6920
+  input /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/tga/tga_verus/src/model.rs captured=94aa6ab53e6031458cec57756e31035c02cd2426f00be87197f7740bd01423cb report=94aa6ab53e6031458cec57756e31035c02cd2426f00be87197f7740bd01423cb
+  input /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/tga/tga_verus/src/model_vectors.rs captured=26ee366168b079f3961a7626dac77e0d1990f1cb3cfee95fc54b4605b5b47e81 report=26ee366168b079f3961a7626dac77e0d1990f1cb3cfee95fc54b4605b5b47e81
+  input /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/tga/tga_verus/src/policy.rs captured=82b92df595273c9f314377a17151ce4fa1f7ca8951a8c5129976f85b396c0105 report=82b92df595273c9f314377a17151ce4fa1f7ca8951a8c5129976f85b396c0105
+  input /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/tga/tga_verus/src/policy_model.rs captured=8145756e250887ede499836479a1ccfe4526a5a3bb5e8cd85fda1f7c5e7e6e94 report=8145756e250887ede499836479a1ccfe4526a5a3bb5e8cd85fda1f7c5e7e6e94
+  input /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/tga/tga_verus/src/tga.rs captured=bfd05a90c6047cc130390f1d6b8d0b291024dba2406fb7931f752ce454ca31f0 report=bfd05a90c6047cc130390f1d6b8d0b291024dba2406fb7931f752ce454ca31f0
+traced rustc command line: /tmp/claude-0/alloc-audit/tool-target/release/alloc_audit /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc --crate-name tga_verus --edition=2021 src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata,link -C opt-level=3 -C embed-bitcode=no --warn=unexpected_cfgs --check-cfg cfg(verus_only) --check-cfg cfg(docsrs,test) --check-cfg cfg(feature, values()) -C metadata=ac8531ddda04b08c -C extra-filename=-e1a4377b4656f554 --out-dir /tmp/claude-0/alloc-audit/inventory/tga-target/x86_64-unknown-linux-gnu/release/deps --target x86_64-unknown-linux-gnu -C strip=debuginfo -L dependency=/tmp/claude-0/alloc-audit/inventory/tga-target/x86_64-unknown-linux-gnu/release/deps -L dependency=/tmp/claude-0/alloc-audit/inventory/tga-target/release/deps --extern vstd=/tmp/claude-0/alloc-audit/inventory/tga-target/x86_64-unknown-linux-gnu/release/deps/libvstd-9376ba70600fade7.rmeta
+  extern vstd /tmp/claude-0/alloc-audit/inventory/tga-target/x86_64-unknown-linux-gnu/release/deps/libvstd-9376ba70600fade7.rmeta sha256=f93b65602d91170edd3bb93b775f0a423ad35a7a154329588eeec12ec52b1045
+audit report verdict: FAIL

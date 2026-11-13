@@ -1,0 +1,25 @@
+[package]
+name = "alloc_audit"
+version = "1.0.0"
+edition = "2021"
+description = "Production transitive allocation audit (alloc-delta SPEC.md §6) for the verified decoder cores"
+publish = false
+
+[[bin]]
+name = "alloc_audit"
+path = "src/main.rs"
+
+# The rustc_private crates (rustc_driver, rustc_middle, ...) come from the
+# pinned toolchain's rustc-dev component via `extern crate` under
+# `#![feature(rustc_private)]`; build with RUSTC_BOOTSTRAP=1 (1.99.1 is stable).
+[dependencies]
+toml = { version = "=1.1.4", default-features = false, features = ["parse", "serde"] }
+serde = { version = "1", features = ["derive"] }
+sha2 = "=0.10.9"
+serde_json = "1"
+
+[profile.dev]
+debug = false
+
+[profile.release]
+debug = false

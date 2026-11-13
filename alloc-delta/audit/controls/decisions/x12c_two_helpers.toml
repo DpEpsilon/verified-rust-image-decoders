@@ -1,0 +1,4 @@
+# Control fixture decisions for x12c_two_helpers (see controls/README in ../README.md).
+required_roots = ["crate::x12c_root"]
+
+# --- entries ---

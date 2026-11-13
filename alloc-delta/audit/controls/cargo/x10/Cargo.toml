@@ -1,0 +1,3 @@
+[workspace]
+members = ["x10_pm", "x10_lib"]
+resolver = "2"

@@ -1,0 +1,14 @@
+alloc-delta production allocation audit, run 20261113T063604Z
+mode: PRODUCTION
+repo: /home/ws/projects/verified-decoders
+rustc: rustc 1.99.1 (58cf8f9c3 2026-10-13) binary: rustc commit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67 commit-date: 2026-10-13 host: x86_64-unknown-linux-gnu release: 1.99.1 LLVM version: 23.1.1 
+cargo: cargo 1.99.1 (5f94df478 2026-08-27)
+tool: /tmp/claude-0/alloc-audit/tool-target/release/alloc_audit sha256=eb716b495da61824cddc390158b236d1bc436c83ea1c063892ff0a50bd98552f
+tool sources: 468a86a15058ec8fd315fa36b378e05f98bb3f2ba71067d82c70171ee5044683 (sha256 of src/*.rs + Cargo.toml + Cargo.lock, concatenated)
+allowlist pins: OK (4 files)
+dib: dib_verus.txt: verdict FAIL, findings 1 (other than the unsigned reviewer: 0), tags allowlist-reviewer
+tga: tga_verus.txt: verdict FAIL, findings 1 (other than the unsigned reviewer: 0), tags allowlist-reviewer
+icns: icns_verus.txt: verdict FAIL, findings 2 (other than the unsigned reviewer: 1), tags allowlist-reviewer,guard-inline-never
+ico: ico_verus.txt: verdict FAIL, findings 3 (other than the unsigned reviewer: 2), tags allowlist-reviewer,dependency-contract,guard-inline-never
+ico: dib_verus-in-ico.txt: verdict FAIL, findings 1 (other than the unsigned reviewer: 0), tags allowlist-reviewer
+exit status: 1

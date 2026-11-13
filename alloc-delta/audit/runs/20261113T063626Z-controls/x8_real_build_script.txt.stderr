@@ -1,0 +1,37 @@
+   Compiling x8_real_build_script v0.0.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/controls/cargo/x8)
+warning: unexpected `cfg` condition name: `x8_from_build_script`
+ --> src/lib.rs:2:7
+  |
+2 | #[cfg(x8_from_build_script)]
+  |       ^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: expected names are: `docsrs`, `feature`, and `test` and 34 more
+  = help: consider using a Cargo feature instead
+  = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+           [lints.rust]
+           unexpected_cfgs = { level = "warn", check-cfg = ['cfg(x8_from_build_script)'] }
+  = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(x8_from_build_script)");` to the top of the `build.rs`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+  = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: unexpected `cfg` condition name: `x8_from_build_script`
+ --> src/lib.rs:6:11
+  |
+6 | #[cfg(not(x8_from_build_script))]
+  |           ^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: consider using a Cargo feature instead
+  = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+           [lints.rust]
+           unexpected_cfgs = { level = "warn", check-cfg = ['cfg(x8_from_build_script)'] }
+  = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(x8_from_build_script)");` to the top of the `build.rs`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 2
+finding-tags: allowlist-absent,undeclared-build-script
+findings-other-than-unsigned-reviewer: 2
+mode: PRODUCTION
+warning: `x8_real_build_script` (lib) generated 2 warnings
+    Finished `release` profile [optimized] target(s) in 0.31s

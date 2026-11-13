@@ -1,0 +1,11 @@
+# Manifest directory the direct-invocation controls run in (CARGO_MANIFEST_DIR):
+# a package with no build script, so the production tool's build-script check
+# (cargo package metadata) has something real to read. Not built by cargo.
+[package]
+name = "alloc-audit-controls"
+version = "0.0.0"
+edition = "2021"
+build = false
+
+[lib]
+path = "legacy/c1_clean.rs"
