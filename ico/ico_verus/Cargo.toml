@@ -1,0 +1,19 @@
+[package]
+name = "ico_verus"
+version = "0.1.0"
+license = "MIT"
+description = "Formally verified (Verus) ICO/CUR container core"
+edition = "2021"
+
+[dependencies]
+vstd = { version = "=0.0.0-2026-11-01-0251", default-features = false, features = ["alloc"] }
+dib_verus = { path = "../../dib/dib_verus" }
+
+[dev-dependencies]
+serde_json = "1"
+
+[package.metadata.verus]
+verify = true
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(verus_only)'] }
