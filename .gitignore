@@ -20,3 +20,8 @@ alloc-wip-*/
 astd4-logs/
 ico/mutation/m[0-9]*/
 ico/mutation/base/
+
+# Mutation-testing and allocation-work leftovers
+ico/ico_verus/src/*.m[0-9]*
+icns/alloc-notes/
+alloc-delta/proto/nostd_probe/freestanding/fs_test
