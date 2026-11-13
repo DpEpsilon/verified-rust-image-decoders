@@ -1,0 +1,872 @@
+{
+ "format": "ico",
+ "part": "large",
+ "n_files": 3,
+ "passes": 5,
+ "warmup": 1,
+ "rounds": 5,
+ "agreement": {
+  "ico-crate": {
+   "counts": {
+    "both-ok-equal": 3
+   },
+   "examples": []
+  },
+  "ico-image": {
+   "counts": {
+    "both-ok-equal": 3
+   },
+   "examples": []
+  },
+  "gdk:ico": {
+   "counts": {
+    "both-ok-equal": 2,
+    "verified-only-ok": 1
+   },
+   "examples": []
+  }
+ },
+ "timing": {
+  "ico_dib256.ico": {
+   "decoders": {
+    "ico-verified": {
+     "pixels": 10485760,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 70000000.0,
+     "min_ns": 68000000.0,
+     "max_ns": 72000000.0,
+     "ns_per_px": 6.67572021484375,
+     "min_ns_per_px": 6.4849853515625,
+     "mbps": 599.1862857142856,
+     "cpu_over_wall": 0.9815974733232307,
+     "wall_ns_per_px": 6.800873470306397,
+     "wall_min_ns_per_px": 6.397506332397461,
+     "wall_spread": 0.12435472761953204,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.05714285714285714,
+     "round_spread": 0.05882352941176472,
+     "hwm_mb": 27.23828125,
+     "base_mb": 27.23828125
+    },
+    "ico-crate": {
+     "pixels": 5898240,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 90000000.0,
+     "min_ns": 78000000.0,
+     "max_ns": 94000000.0,
+     "ns_per_px": 15.2587890625,
+     "min_ns_per_px": 13.224283854166666,
+     "mbps": 262.144,
+     "cpu_over_wall": 0.9813865537371347,
+     "wall_ns_per_px": 15.548194546169706,
+     "wall_min_ns_per_px": 12.657613118489584,
+     "wall_spread": 0.27849374349170336,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ]
+     ],
+     "spread": 0.17777777777777778,
+     "round_spread": 0.20512820512820507,
+     "hwm_mb": 27.23828125,
+     "base_mb": 27.23828125
+    },
+    "ico-image": {
+     "pixels": 16515072,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 42000000.0,
+     "min_ns": 42000000.0,
+     "max_ns": 52000000.0,
+     "ns_per_px": 2.5431315104166665,
+     "min_ns_per_px": 2.5431315104166665,
+     "mbps": 1572.864,
+     "cpu_over_wall": 0.9645994748720459,
+     "wall_ns_per_px": 2.6364637102399553,
+     "wall_min_ns_per_px": 2.4985865638369607,
+     "wall_spread": 0.3677322137732495,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.23809523809523808,
+     "round_spread": 0.23809523809523814,
+     "hwm_mb": 27.23828125,
+     "base_mb": 27.23828125
+    },
+    "gdk:ico": {
+     "pixels": 20512768,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 38000000.0,
+     "min_ns": 34000000.0,
+     "max_ns": 40000000.0,
+     "ns_per_px": 1.8525047424121406,
+     "min_ns_per_px": 1.6575042432108626,
+     "mbps": 2159.2387368421055,
+     "cpu_over_wall": 0.9499972212581278,
+     "wall_ns_per_px": 1.9500106957773813,
+     "wall_min_ns_per_px": 1.697771212544304,
+     "wall_spread": 0.20002843991681324,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.15789473684210525,
+     "round_spread": 0.17647058823529416,
+     "hwm_mb": 27.23828125,
+     "base_mb": 27.23828125
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [],
+   "size": 270398,
+   "verified_ok": true,
+   "ver_msg": "",
+   "skipped_disagree": []
+  },
+  "ico_multi6.ico": {
+   "decoders": {
+    "ico-verified": {
+     "pixels": 10551296,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 70000000.0,
+     "min_ns": 66000000.0,
+     "max_ns": 78000000.0,
+     "ns_per_px": 6.634256114130435,
+     "min_ns_per_px": 6.255155764751553,
+     "mbps": 602.9312,
+     "cpu_over_wall": 0.9698137436683631,
+     "wall_ns_per_px": 6.84075283263781,
+     "wall_min_ns_per_px": 5.847935646957493,
+     "wall_spread": 0.2821582201800839,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.17142857142857143,
+     "round_spread": 0.18181818181818188,
+     "hwm_mb": 27.23828125,
+     "base_mb": 27.23828125
+    },
+    "ico-crate": {
+     "pixels": 7077888,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 100000000.0,
+     "min_ns": 100000000.0,
+     "max_ns": 114000000.0,
+     "ns_per_px": 14.128508391203704,
+     "min_ns_per_px": 14.128508391203704,
+     "mbps": 283.11552,
+     "cpu_over_wall": 0.9673301274465181,
+     "wall_ns_per_px": 14.605673895941841,
+     "wall_min_ns_per_px": 13.765321519639757,
+     "wall_spread": 0.28134104148410727,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.14,
+     "round_spread": 0.1399999999999999,
+     "hwm_mb": 27.23828125,
+     "base_mb": 27.23828125
+    },
+    "ico-image": {
+     "pixels": 15335424,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 42000000.0,
+     "min_ns": 24000000.0,
+     "max_ns": 48000000.0,
+     "ns_per_px": 2.738757011217949,
+     "min_ns_per_px": 1.5650040064102564,
+     "mbps": 1460.5165714285715,
+     "cpu_over_wall": 0.982686974095763,
+     "wall_ns_per_px": 2.787008562658587,
+     "wall_min_ns_per_px": 1.5001997336363182,
+     "wall_spread": 0.6565218664931772,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.5714285714285714,
+     "round_spread": 1.0,
+     "hwm_mb": 27.23828125,
+     "base_mb": 27.23828125
+    },
+    "gdk:ico": {
+     "pixels": 17629184,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 32000000.0,
+     "min_ns": 28000000.0,
+     "max_ns": 36000000.0,
+     "ns_per_px": 1.8151719330855018,
+     "min_ns_per_px": 1.5882754414498141,
+     "mbps": 2203.6479999999997,
+     "cpu_over_wall": 1.002865720134839,
+     "wall_ns_per_px": 1.809985022562587,
+     "wall_min_ns_per_px": 1.5771201888867914,
+     "wall_spread": 0.2751932796463795,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.25,
+     "round_spread": 0.2857142857142858,
+     "hwm_mb": 27.23828125,
+     "base_mb": 27.23828125
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [],
+   "size": 370070,
+   "verified_ok": true,
+   "ver_msg": "",
+   "skipped_disagree": []
+  },
+  "probe_ico_dib1024_dir256.ico": {
+   "decoders": {
+    "ico-verified": {
+     "pixels": 12582912,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 86000000.0,
+     "min_ns": 84000000.0,
+     "max_ns": 88000000.0,
+     "ns_per_px": 6.834665934244792,
+     "min_ns_per_px": 6.67572021484375,
+     "mbps": 585.2517209302326,
+     "cpu_over_wall": 0.9850803848502884,
+     "wall_ns_per_px": 6.938180923461914,
+     "wall_min_ns_per_px": 6.723466555277507,
+     "wall_spread": 0.10099149486177489,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.046511627906976744,
+     "round_spread": 0.04761904761904767,
+     "hwm_mb": 27.23828125,
+     "base_mb": 27.23828125
+    },
+    "ico-crate": {
+     "pixels": 12582912,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 102000000.0,
+     "min_ns": 96000000.0,
+     "max_ns": 106000000.0,
+     "ns_per_px": 8.106231689453125,
+     "min_ns_per_px": 7.62939453125,
+     "mbps": 493.4475294117647,
+     "cpu_over_wall": 0.980823289222056,
+     "wall_ns_per_px": 8.264721870422363,
+     "wall_min_ns_per_px": 7.267776409784953,
+     "wall_spread": 0.19146380260112028,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.09803921568627451,
+     "round_spread": 0.10416666666666674,
+     "hwm_mb": 27.23828125,
+     "base_mb": 27.23828125
+    },
+    "ico-image": {
+     "pixels": 25165824,
+     "files": 1,
+     "samples": 25,
+     "median_ns": 64000000.0,
+     "min_ns": 62000000.0,
+     "max_ns": 68000000.0,
+     "ns_per_px": 2.5431315104166665,
+     "min_ns_per_px": 2.463658650716146,
+     "mbps": 1572.864,
+     "cpu_over_wall": 0.9878399525787431,
+     "wall_ns_per_px": 2.5744367837905884,
+     "wall_min_ns_per_px": 2.5074844360351562,
+     "wall_spread": 0.12450950852292104,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.09375,
+     "round_spread": 0.09677419354838701,
+     "hwm_mb": 27.23828125,
+     "base_mb": 27.23828125
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [],
+   "size": 4325438,
+   "verified_ok": true,
+   "ver_msg": "",
+   "skipped_disagree": []
+  }
+ },
+ "verified_ok": 3,
+ "verified_errors": {},
+ "agreement_profiles": {}
+}

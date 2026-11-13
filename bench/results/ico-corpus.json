@@ -1,0 +1,655 @@
+{
+ "format": "ico",
+ "part": "corpus",
+ "n_files": 433,
+ "passes": 7,
+ "warmup": 2,
+ "rounds": 5,
+ "agreement": {
+  "ico-crate": {
+   "counts": {
+    "both-ok-equal": 283,
+    "incumbent-only-ok": 105,
+    "both-error": 42,
+    "verified-only-ok": 2,
+    "both-ok-DIFFERENT": 1
+   },
+   "examples": [
+    {
+     "file": "53ba9e358222e4ff249979d66beb1644bdafd63e7cc9ec540372d9a12e1f1b97.ico",
+     "ver": [
+      256,
+      256
+     ],
+     "inc": [
+      1024,
+      1024
+     ]
+    }
+   ]
+  },
+  "ico-image": {
+   "counts": {
+    "both-ok-equal": 250,
+    "both-ok-DIFFERENT": 32,
+    "incumbent-only-ok": 105,
+    "both-error": 42,
+    "verified-only-ok": 4
+   },
+   "examples": [
+    {
+     "file": "05a323d33d3dd3c2ca0a6ff3eab632afbfd25afebe7ff15f95d2944adc0e5d16.ico",
+     "ver": [
+      16,
+      16
+     ],
+     "inc": [
+      16,
+      16
+     ]
+    },
+    {
+     "file": "077c3ebe35feb1e713b0de47045f30384258dcd059acf53962eb3752e5f5d196.cur",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      32,
+      32
+     ]
+    },
+    {
+     "file": "07ef9c98a6ec8b470ce4cd19ca033a055450cedafeb0d450a448413e8a9a495c.ico",
+     "ver": [
+      64,
+      64
+     ],
+     "inc": [
+      64,
+      64
+     ]
+    },
+    {
+     "file": "0a127d2b2958316ac927a85c6d2e2fe845e4626b3da7536898a14afdc76882d1.cur",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      32,
+      32
+     ]
+    },
+    {
+     "file": "0fcea12270000126459e21a35e873f9b824abc9ce3dc1c5dd16f3295522d30a4.cur",
+     "ver": [
+      256,
+      256
+     ],
+     "inc": [
+      256,
+      256
+     ]
+    }
+   ]
+  },
+  "gdk:ico": {
+   "counts": {
+    "both-ok-equal": 275,
+    "incumbent-only-ok": 51,
+    "both-error": 96,
+    "verified-only-ok": 3,
+    "both-ok-DIFFERENT": 8
+   },
+   "examples": [
+    {
+     "file": "2fdf1b727be91d482ea0379e8a6dad12416745d012ef765d60db19dc67e1eef0.cur",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      32,
+      32
+     ]
+    },
+    {
+     "file": "46c80fb6c20bd00b00cc78bbfcd989daf21f28f6972c4bdda345b237671a8f13.ico",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      16,
+      16
+     ]
+    },
+    {
+     "file": "4e728b78c7f28c022dac558db2c4c39bf16a6730391787f3bcd9af5494b2c74b.ico",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      16,
+      16
+     ]
+    },
+    {
+     "file": "53ba9e358222e4ff249979d66beb1644bdafd63e7cc9ec540372d9a12e1f1b97.ico",
+     "ver": [
+      256,
+      256
+     ],
+     "inc": [
+      256,
+      256
+     ]
+    },
+    {
+     "file": "bd087804a266ec549b060138518d47bb74495d040004dad11161bd4e97a238c5.cur",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      32,
+      32
+     ]
+    }
+   ]
+  }
+ },
+ "timing": {
+  "ico-crate": {
+   "decoders": {
+    "ico-verified": {
+     "pixels": 13073180,
+     "files": 283,
+     "samples": 35,
+     "median_ns": 111428571.42857143,
+     "min_ns": 95714285.71428572,
+     "max_ns": 114285714.28571428,
+     "ns_per_px": 8.52344811503945,
+     "min_ns_per_px": 7.32142338086722,
+     "mbps": 469.293641025641,
+     "cpu_over_wall": 0.9888617089260838,
+     "wall_ns_per_px": 8.619454103745225,
+     "wall_min_ns_per_px": 7.205137005686451,
+     "wall_spread": 0.26916717084351394,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.16666666666666663,
+     "round_spread": 0.19402985074626855,
+     "hwm_mb": 28.30078125,
+     "base_mb": 28.30078125
+    },
+    "ico-crate": {
+     "pixels": 10458544,
+     "files": 283,
+     "samples": 35,
+     "median_ns": 104285714.28571428,
+     "min_ns": 92857142.85714285,
+     "max_ns": 121428571.42857143,
+     "ns_per_px": 9.971341544837816,
+     "min_ns_per_px": 8.878591786499426,
+     "mbps": 401.14963287671236,
+     "cpu_over_wall": 0.9465902406131249,
+     "wall_ns_per_px": 10.533957690477756,
+     "wall_min_ns_per_px": 8.890833561535908,
+     "wall_spread": 0.32592080084335223,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.2739726027397261,
+     "round_spread": 0.30769230769230793,
+     "hwm_mb": 28.30078125,
+     "base_mb": 28.30078125
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [],
+   "n_files": 283,
+   "bytes": 15396615
+  },
+  "ico-image": {
+   "decoders": {
+    "ico-verified": {
+     "pixels": 14811188,
+     "files": 250,
+     "samples": 35,
+     "median_ns": 105714285.71428572,
+     "min_ns": 92857142.85714285,
+     "max_ns": 108571428.57142857,
+     "ns_per_px": 7.137461607690464,
+     "min_ns_per_px": 6.269391952701083,
+     "mbps": 560.4233297297297,
+     "cpu_over_wall": 0.9802594062586262,
+     "wall_ns_per_px": 7.281196754777537,
+     "wall_min_ns_per_px": 6.220968837881202,
+     "wall_spread": 0.2431623442388667,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.14864864864864866,
+     "round_spread": 0.1692307692307693,
+     "hwm_mb": 28.30078125,
+     "base_mb": 28.30078125
+    },
+    "ico-image": {
+     "pixels": 38085912,
+     "files": 250,
+     "samples": 35,
+     "median_ns": 104285714.28571428,
+     "min_ns": 98571428.57142857,
+     "max_ns": 108571428.57142857,
+     "ns_per_px": 2.7381703314788495,
+     "min_ns_per_px": 2.5881336009868576,
+     "mbps": 1460.829501369863,
+     "cpu_over_wall": 0.9836429766864703,
+     "wall_ns_per_px": 2.7837034334375397,
+     "wall_min_ns_per_px": 2.5310986382576317,
+     "wall_spread": 0.19889790673606095,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.09589041095890412,
+     "round_spread": 0.10144927536231885,
+     "hwm_mb": 28.30078125,
+     "base_mb": 28.30078125
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [],
+   "n_files": 250,
+   "bytes": 13477872
+  },
+  "gdk:ico": {
+   "decoders": {
+    "ico-verified": {
+     "pixels": 15638664,
+     "files": 275,
+     "samples": 35,
+     "median_ns": 115714285.71428572,
+     "min_ns": 111428571.42857143,
+     "max_ns": 117142857.14285715,
+     "ns_per_px": 7.399243676715972,
+     "min_ns_per_px": 7.125197614615381,
+     "mbps": 540.5957925925926,
+     "cpu_over_wall": 1.0020116968239632,
+     "wall_ns_per_px": 7.384388525771767,
+     "wall_min_ns_per_px": 7.130827735668469,
+     "wall_spread": 0.1756318914923958,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.049382716049382734,
+     "round_spread": 0.05128205128205132,
+     "hwm_mb": 28.30078125,
+     "base_mb": 28.30078125
+    },
+    "gdk:ico": {
+     "pixels": 31277328,
+     "files": 275,
+     "samples": 35,
+     "median_ns": 95714285.71428572,
+     "min_ns": 92857142.85714285,
+     "max_ns": 110000000.0,
+     "ns_per_px": 3.060181026789939,
+     "min_ns_per_px": 2.968832339423075,
+     "mbps": 1307.112214925373,
+     "cpu_over_wall": 0.9705318289896844,
+     "wall_ns_per_px": 3.1530970292602998,
+     "wall_min_ns_per_px": 2.8795703392566017,
+     "wall_spread": 0.2569254652559383,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.17910447761194037,
+     "round_spread": 0.18461538461538463,
+     "hwm_mb": 28.30078125,
+     "base_mb": 28.30078125
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [],
+   "n_files": 275,
+   "bytes": 15389344
+  }
+ },
+ "verified_ok": 286,
+ "verified_errors": {
+  "PngDelegation": 110,
+  "InvalidImageSize": 10,
+  "EntryOutOfBounds": 7,
+  "TruncatedEntries": 4,
+  "InvalidEntryReserved": 4,
+  "InvalidDimensions": 3,
+  "InvalidReserved": 3,
+  "TruncatedHeader": 2
+ },
+ "agreement_profiles": {}
+}

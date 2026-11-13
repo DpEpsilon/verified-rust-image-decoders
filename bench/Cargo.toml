@@ -1,0 +1,28 @@
+[package]
+name = "leniency-bench"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "bench"
+path = "src/main.rs"
+
+[[bin]]
+name = "gen"
+path = "src/bin/gen.rs"
+
+[dependencies]
+image = { version = "=0.25.10", default-features = false, features = ["bmp", "tga", "ico", "png"] }
+dib_verus = { path = "../dib/dib_verus" }
+tga_verus = { path = "../tga/tga_verus" }
+icns_verus = { path = "../icns/icns_verus" }
+ico_verus = { path = "../ico/ico_verus" }
+icns = "0.3"
+ico = "0.3"
+tinytga = "=0.5.0"
+embedded-graphics = "=0.8.1"
+sha2 = "0.10"
+
+[profile.release]
+opt-level = 3
+debug = false

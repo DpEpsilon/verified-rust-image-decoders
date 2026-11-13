@@ -1,0 +1,393 @@
+# round	size	cand	mode	cpu_ns_per_op	wall_ns_per_op	reps
+0	64MiB	A push-loop	fill	46562500	47564439	32
+0	64MiB	B vec![0;n]	fill	0	44532	32
+0	64MiB	C resize	fill	12187500	12273933	32
+0	64MiB	D1 extend_from_slice 4K	fill	9375000	9627277	32
+0	64MiB	D2 extend_from_slice 64K	fill	10625000	10767130	32
+0	64MiB	E extend(repeat.take)	fill	7500000	7860892	32
+0	64MiB	F resize_with	fill	5625000	5890338	32
+0	64MiB	A push-loop	fill+write	50000000	51076758	32
+0	64MiB	B vec![0;n]	fill+write	12187500	12304926	32
+0	64MiB	C resize	fill+write	8750000	8939988	32
+0	64MiB	D1 extend_from_slice 4K	fill+write	16562500	16773253	32
+0	64MiB	D2 extend_from_slice 64K	fill+write	9687500	9871063	32
+0	64MiB	E extend(repeat.take)	fill+write	9062500	8976631	32
+0	64MiB	F resize_with	fill+write	16875000	17220578	32
+0	4MiB	A push-loop	fill	2500000	2548225	512
+0	4MiB	B vec![0;n]	fill	58594	51652	512
+0	4MiB	C resize	fill	39062	49976	512
+0	4MiB	D1 extend_from_slice 4K	fill	58594	55405	512
+0	4MiB	D2 extend_from_slice 64K	fill	58594	54973	512
+0	4MiB	E extend(repeat.take)	fill	58594	51749	512
+0	4MiB	F resize_with	fill	39062	50578	512
+0	4MiB	A push-loop	fill+write	2656250	2712068	512
+0	4MiB	B vec![0;n]	fill+write	195312	191767	512
+0	4MiB	C resize	fill+write	195312	199826	512
+0	4MiB	D1 extend_from_slice 4K	fill+write	195312	196292	512
+0	4MiB	D2 extend_from_slice 64K	fill+write	175781	188234	512
+0	4MiB	E extend(repeat.take)	fill+write	195312	187041	512
+0	4MiB	F resize_with	fill+write	175781	188424	512
+0	256KiB	A push-loop	fill	157471	160262	8192
+0	256KiB	B vec![0;n]	fill	2441	2561	8192
+0	256KiB	C resize	fill	2441	2801	8192
+0	256KiB	D1 extend_from_slice 4K	fill	3662	3023	8192
+0	256KiB	D2 extend_from_slice 64K	fill	2441	2756	8192
+0	256KiB	E extend(repeat.take)	fill	2441	2521	8192
+0	256KiB	F resize_with	fill	2441	2682	8192
+0	256KiB	A push-loop	fill+write	167236	169889	8192
+0	256KiB	B vec![0;n]	fill+write	10986	11563	8192
+0	256KiB	C resize	fill+write	10986	11122	8192
+0	256KiB	D1 extend_from_slice 4K	fill+write	10986	11563	8192
+0	256KiB	D2 extend_from_slice 64K	fill+write	12207	11930	8192
+0	256KiB	E extend(repeat.take)	fill+write	10986	11534	8192
+0	256KiB	F resize_with	fill+write	12207	11512	8192
+0	1KiB	A push-loop	fill	600	650	50000
+0	1KiB	B vec![0;n]	fill	0	32	50000
+0	1KiB	C resize	fill	0	27	50000
+0	1KiB	D1 extend_from_slice 4K	fill	0	26	50000
+0	1KiB	D2 extend_from_slice 64K	fill	0	26	50000
+0	1KiB	E extend(repeat.take)	fill	200	26	50000
+0	1KiB	F resize_with	fill	0	27	50000
+0	1KiB	A push-loop	fill+write	600	679	50000
+0	1KiB	B vec![0;n]	fill+write	0	55	50000
+0	1KiB	C resize	fill+write	200	52	50000
+0	1KiB	D1 extend_from_slice 4K	fill+write	0	51	50000
+0	1KiB	D2 extend_from_slice 64K	fill+write	0	51	50000
+0	1KiB	E extend(repeat.take)	fill+write	200	53	50000
+0	1KiB	F resize_with	fill+write	0	61	50000
+1	64MiB	B vec![0;n]	fill	0	43418	32
+1	64MiB	C resize	fill	6562500	6436953	32
+1	64MiB	D1 extend_from_slice 4K	fill	6562500	6729959	32
+1	64MiB	D2 extend_from_slice 64K	fill	8750000	9061042	32
+1	64MiB	E extend(repeat.take)	fill	14687500	14846263	32
+1	64MiB	F resize_with	fill	11875000	11989003	32
+1	64MiB	A push-loop	fill	51250000	52264345	32
+1	64MiB	B vec![0;n]	fill+write	7812500	8284173	32
+1	64MiB	C resize	fill+write	9687500	9830756	32
+1	64MiB	D1 extend_from_slice 4K	fill+write	8437500	8651200	32
+1	64MiB	D2 extend_from_slice 64K	fill+write	8437500	8507185	32
+1	64MiB	E extend(repeat.take)	fill+write	16875000	17286727	32
+1	64MiB	F resize_with	fill+write	18437500	19164785	32
+1	64MiB	A push-loop	fill+write	57812500	58821033	32
+1	4MiB	B vec![0;n]	fill	39062	51763	512
+1	4MiB	C resize	fill	58594	48518	512
+1	4MiB	D1 extend_from_slice 4K	fill	58594	54009	512
+1	4MiB	D2 extend_from_slice 64K	fill	39062	48819	512
+1	4MiB	E extend(repeat.take)	fill	58594	47740	512
+1	4MiB	F resize_with	fill	39062	48757	512
+1	4MiB	A push-loop	fill	2421875	2489171	512
+1	4MiB	B vec![0;n]	fill+write	195312	187023	512
+1	4MiB	C resize	fill+write	175781	183227	512
+1	4MiB	D1 extend_from_slice 4K	fill+write	175781	185992	512
+1	4MiB	D2 extend_from_slice 64K	fill+write	195312	185283	512
+1	4MiB	E extend(repeat.take)	fill+write	175781	182046	512
+1	4MiB	F resize_with	fill+write	175781	186658	512
+1	4MiB	A push-loop	fill+write	2539062	2604310	512
+1	256KiB	B vec![0;n]	fill	2441	2456	8192
+1	256KiB	C resize	fill	2441	2598	8192
+1	256KiB	D1 extend_from_slice 4K	fill	3662	2726	8192
+1	256KiB	D2 extend_from_slice 64K	fill	2441	2524	8192
+1	256KiB	E extend(repeat.take)	fill	2441	2487	8192
+1	256KiB	F resize_with	fill	2441	2520	8192
+1	256KiB	A push-loop	fill	151367	155213	8192
+1	256KiB	B vec![0;n]	fill+write	10986	11058	8192
+1	256KiB	C resize	fill+write	10986	10881	8192
+1	256KiB	D1 extend_from_slice 4K	fill+write	10986	11045	8192
+1	256KiB	D2 extend_from_slice 64K	fill+write	9766	10678	8192
+1	256KiB	E extend(repeat.take)	fill+write	10986	10700	8192
+1	256KiB	F resize_with	fill+write	10986	10728	8192
+1	256KiB	A push-loop	fill+write	161133	165166	8192
+1	1KiB	B vec![0;n]	fill	0	32	50000
+1	1KiB	C resize	fill	200	25	50000
+1	1KiB	D1 extend_from_slice 4K	fill	0	25	50000
+1	1KiB	D2 extend_from_slice 64K	fill	0	25	50000
+1	1KiB	E extend(repeat.take)	fill	0	26	50000
+1	1KiB	F resize_with	fill	0	27	50000
+1	1KiB	A push-loop	fill	600	621	50000
+1	1KiB	B vec![0;n]	fill+write	200	54	50000
+1	1KiB	C resize	fill+write	0	52	50000
+1	1KiB	D1 extend_from_slice 4K	fill+write	0	56	50000
+1	1KiB	D2 extend_from_slice 64K	fill+write	0	52	50000
+1	1KiB	E extend(repeat.take)	fill+write	200	52	50000
+1	1KiB	F resize_with	fill+write	0	51	50000
+1	1KiB	A push-loop	fill+write	600	636	50000
+2	64MiB	C resize	fill	6562500	6607478	32
+2	64MiB	D1 extend_from_slice 4K	fill	6250000	6338070	32
+2	64MiB	D2 extend_from_slice 64K	fill	5937500	5781519	32
+2	64MiB	E extend(repeat.take)	fill	6562500	6644558	32
+2	64MiB	F resize_with	fill	7187500	7182069	32
+2	64MiB	A push-loop	fill	48125000	49400870	32
+2	64MiB	B vec![0;n]	fill	312500	45554	32
+2	64MiB	C resize	fill+write	18750000	19271256	32
+2	64MiB	D1 extend_from_slice 4K	fill+write	9375000	9626111	32
+2	64MiB	D2 extend_from_slice 64K	fill+write	9687500	9706560	32
+2	64MiB	E extend(repeat.take)	fill+write	8750000	8945546	32
+2	64MiB	F resize_with	fill+write	9687500	9756591	32
+2	64MiB	A push-loop	fill+write	47500000	48448183	32
+2	64MiB	B vec![0;n]	fill+write	7500000	7736216	32
+2	4MiB	C resize	fill	58594	51156	512
+2	4MiB	D1 extend_from_slice 4K	fill	39062	52879	512
+2	4MiB	D2 extend_from_slice 64K	fill	58594	49373	512
+2	4MiB	E extend(repeat.take)	fill	39062	48255	512
+2	4MiB	F resize_with	fill	58594	48442	512
+2	4MiB	A push-loop	fill	2500000	2545121	512
+2	4MiB	B vec![0;n]	fill	58594	51785	512
+2	4MiB	C resize	fill+write	195312	205210	512
+2	4MiB	D1 extend_from_slice 4K	fill+write	195312	189597	512
+2	4MiB	D2 extend_from_slice 64K	fill+write	214844	208276	512
+2	4MiB	E extend(repeat.take)	fill+write	195312	197569	512
+2	4MiB	F resize_with	fill+write	175781	187702	512
+2	4MiB	A push-loop	fill+write	2597656	2652010	512
+2	4MiB	B vec![0;n]	fill+write	195312	194597	512
+2	256KiB	C resize	fill	2441	2503	8192
+2	256KiB	D1 extend_from_slice 4K	fill	2441	2714	8192
+2	256KiB	D2 extend_from_slice 64K	fill	2441	2457	8192
+2	256KiB	E extend(repeat.take)	fill	2441	2477	8192
+2	256KiB	F resize_with	fill	2441	2445	8192
+2	256KiB	A push-loop	fill	150146	153244	8192
+2	256KiB	B vec![0;n]	fill	2441	2633	8192
+2	256KiB	C resize	fill+write	10986	10979	8192
+2	256KiB	D1 extend_from_slice 4K	fill+write	10986	11056	8192
+2	256KiB	D2 extend_from_slice 64K	fill+write	10986	10801	8192
+2	256KiB	E extend(repeat.take)	fill+write	9766	10740	8192
+2	256KiB	F resize_with	fill+write	10986	10973	8192
+2	256KiB	A push-loop	fill+write	161133	164801	8192
+2	256KiB	B vec![0;n]	fill+write	10986	10918	8192
+2	1KiB	C resize	fill	0	24	50000
+2	1KiB	D1 extend_from_slice 4K	fill	0	25	50000
+2	1KiB	D2 extend_from_slice 64K	fill	0	26	50000
+2	1KiB	E extend(repeat.take)	fill	0	26	50000
+2	1KiB	F resize_with	fill	0	24	50000
+2	1KiB	A push-loop	fill	600	642	50000
+2	1KiB	B vec![0;n]	fill	0	32	50000
+2	1KiB	C resize	fill+write	200	53	50000
+2	1KiB	D1 extend_from_slice 4K	fill+write	0	52	50000
+2	1KiB	D2 extend_from_slice 64K	fill+write	0	53	50000
+2	1KiB	E extend(repeat.take)	fill+write	0	53	50000
+2	1KiB	F resize_with	fill+write	200	50	50000
+2	1KiB	A push-loop	fill+write	600	674	50000
+2	1KiB	B vec![0;n]	fill+write	0	53	50000
+3	64MiB	D1 extend_from_slice 4K	fill	6875000	6836885	32
+3	64MiB	D2 extend_from_slice 64K	fill	6250000	6366509	32
+3	64MiB	E extend(repeat.take)	fill	6250000	6419352	32
+3	64MiB	F resize_with	fill	6250000	6213316	32
+3	64MiB	A push-loop	fill	45937500	47010150	32
+3	64MiB	B vec![0;n]	fill	312500	42587	32
+3	64MiB	C resize	fill	5937500	6014779	32
+3	64MiB	D1 extend_from_slice 4K	fill+write	8750000	9267451	32
+3	64MiB	D2 extend_from_slice 64K	fill+write	9375000	9582355	32
+3	64MiB	E extend(repeat.take)	fill+write	8750000	9076059	32
+3	64MiB	F resize_with	fill+write	9375000	9589487	32
+3	64MiB	A push-loop	fill+write	55312500	56692464	32
+3	64MiB	B vec![0;n]	fill+write	7812500	8051761	32
+3	64MiB	C resize	fill+write	8750000	8999528	32
+3	4MiB	D1 extend_from_slice 4K	fill	58594	51874	512
+3	4MiB	D2 extend_from_slice 64K	fill	39062	50470	512
+3	4MiB	E extend(repeat.take)	fill	58594	52130	512
+3	4MiB	F resize_with	fill	58594	50173	512
+3	4MiB	A push-loop	fill	2480469	2526863	512
+3	4MiB	B vec![0;n]	fill	39062	49378	512
+3	4MiB	C resize	fill	58594	48200	512
+3	4MiB	D1 extend_from_slice 4K	fill+write	175781	184947	512
+3	4MiB	D2 extend_from_slice 64K	fill+write	175781	183190	512
+3	4MiB	E extend(repeat.take)	fill+write	195312	187163	512
+3	4MiB	F resize_with	fill+write	175781	187922	512
+3	4MiB	A push-loop	fill+write	2597656	2655258	512
+3	4MiB	B vec![0;n]	fill+write	175781	184762	512
+3	4MiB	C resize	fill+write	175781	182275	512
+3	256KiB	D1 extend_from_slice 4K	fill	2441	2673	8192
+3	256KiB	D2 extend_from_slice 64K	fill	2441	2523	8192
+3	256KiB	E extend(repeat.take)	fill	2441	2514	8192
+3	256KiB	F resize_with	fill	2441	2534	8192
+3	256KiB	A push-loop	fill	152588	155668	8192
+3	256KiB	B vec![0;n]	fill	2441	2553	8192
+3	256KiB	C resize	fill	2441	2487	8192
+3	256KiB	D1 extend_from_slice 4K	fill+write	10986	11171	8192
+3	256KiB	D2 extend_from_slice 64K	fill+write	10986	10908	8192
+3	256KiB	E extend(repeat.take)	fill+write	9766	10841	8192
+3	256KiB	F resize_with	fill+write	12207	11325	8192
+3	256KiB	A push-loop	fill+write	159912	163666	8192
+3	256KiB	B vec![0;n]	fill+write	10986	11073	8192
+3	256KiB	C resize	fill+write	10986	11032	8192
+3	1KiB	D1 extend_from_slice 4K	fill	0	27	50000
+3	1KiB	D2 extend_from_slice 64K	fill	0	26	50000
+3	1KiB	E extend(repeat.take)	fill	0	26	50000
+3	1KiB	F resize_with	fill	0	26	50000
+3	1KiB	A push-loop	fill	800	632	50000
+3	1KiB	B vec![0;n]	fill	0	35	50000
+3	1KiB	C resize	fill	0	30	50000
+3	1KiB	D1 extend_from_slice 4K	fill+write	0	61	50000
+3	1KiB	D2 extend_from_slice 64K	fill+write	200	56	50000
+3	1KiB	E extend(repeat.take)	fill+write	0	56	50000
+3	1KiB	F resize_with	fill+write	0	52	50000
+3	1KiB	A push-loop	fill+write	600	664	50000
+3	1KiB	B vec![0;n]	fill+write	200	57	50000
+3	1KiB	C resize	fill+write	0	50	50000
+4	64MiB	D2 extend_from_slice 64K	fill	7187500	7068668	32
+4	64MiB	E extend(repeat.take)	fill	6250000	6463215	32
+4	64MiB	F resize_with	fill	6562500	6653203	32
+4	64MiB	A push-loop	fill	45937500	46853804	32
+4	64MiB	B vec![0;n]	fill	0	49622	32
+4	64MiB	C resize	fill	6875000	6971681	32
+4	64MiB	D1 extend_from_slice 4K	fill	8125000	8300092	32
+4	64MiB	D2 extend_from_slice 64K	fill+write	10000000	10363443	32
+4	64MiB	E extend(repeat.take)	fill+write	11250000	11289635	32
+4	64MiB	F resize_with	fill+write	10000000	10167946	32
+4	64MiB	A push-loop	fill+write	62500000	63522268	32
+4	64MiB	B vec![0;n]	fill+write	12500000	13087317	32
+4	64MiB	C resize	fill+write	17187500	17587596	32
+4	64MiB	D1 extend_from_slice 4K	fill+write	10000000	10177493	32
+4	4MiB	D2 extend_from_slice 64K	fill	39062	51588	512
+4	4MiB	E extend(repeat.take)	fill	58594	53538	512
+4	4MiB	F resize_with	fill	58594	50078	512
+4	4MiB	A push-loop	fill	2539062	2588844	512
+4	4MiB	B vec![0;n]	fill	58594	59692	512
+4	4MiB	C resize	fill	58594	56763	512
+4	4MiB	D1 extend_from_slice 4K	fill	58594	58504	512
+4	4MiB	D2 extend_from_slice 64K	fill+write	195312	199558	512
+4	4MiB	E extend(repeat.take)	fill+write	195312	194048	512
+4	4MiB	F resize_with	fill+write	195312	194304	512
+4	4MiB	A push-loop	fill+write	2656250	2708432	512
+4	4MiB	B vec![0;n]	fill+write	175781	183490	512
+4	4MiB	C resize	fill+write	175781	183555	512
+4	4MiB	D1 extend_from_slice 4K	fill+write	195312	186821	512
+4	256KiB	D2 extend_from_slice 64K	fill	2441	2457	8192
+4	256KiB	E extend(repeat.take)	fill	2441	2552	8192
+4	256KiB	F resize_with	fill	2441	2583	8192
+4	256KiB	A push-loop	fill	153809	156877	8192
+4	256KiB	B vec![0;n]	fill	2441	2691	8192
+4	256KiB	C resize	fill	3662	2591	8192
+4	256KiB	D1 extend_from_slice 4K	fill	2441	2701	8192
+4	256KiB	D2 extend_from_slice 64K	fill+write	10986	11172	8192
+4	256KiB	E extend(repeat.take)	fill+write	10986	11080	8192
+4	256KiB	F resize_with	fill+write	9766	10817	8192
+4	256KiB	A push-loop	fill+write	158691	162157	8192
+4	256KiB	B vec![0;n]	fill+write	10986	10921	8192
+4	256KiB	C resize	fill+write	9766	10711	8192
+4	256KiB	D1 extend_from_slice 4K	fill+write	10986	11299	8192
+4	1KiB	D2 extend_from_slice 64K	fill	200	25	50000
+4	1KiB	E extend(repeat.take)	fill	0	25	50000
+4	1KiB	F resize_with	fill	0	26	50000
+4	1KiB	A push-loop	fill	600	628	50000
+4	1KiB	B vec![0;n]	fill	0	33	50000
+4	1KiB	C resize	fill	0	27	50000
+4	1KiB	D1 extend_from_slice 4K	fill	0	26	50000
+4	1KiB	D2 extend_from_slice 64K	fill+write	0	53	50000
+4	1KiB	E extend(repeat.take)	fill+write	0	55	50000
+4	1KiB	F resize_with	fill+write	0	53	50000
+4	1KiB	A push-loop	fill+write	800	655	50000
+4	1KiB	B vec![0;n]	fill+write	0	53	50000
+4	1KiB	C resize	fill+write	0	51	50000
+4	1KiB	D1 extend_from_slice 4K	fill+write	0	53	50000
+5	64MiB	E extend(repeat.take)	fill	5625000	5972666	32
+5	64MiB	F resize_with	fill	5937500	6141336	32
+5	64MiB	A push-loop	fill	47187500	47997421	32
+5	64MiB	B vec![0;n]	fill	0	55452	32
+5	64MiB	C resize	fill	7500000	7432916	32
+5	64MiB	D1 extend_from_slice 4K	fill	6875000	6920218	32
+5	64MiB	D2 extend_from_slice 64K	fill	9062500	9303583	32
+5	64MiB	E extend(repeat.take)	fill+write	14062500	14339963	32
+5	64MiB	F resize_with	fill+write	8125000	8316666	32
+5	64MiB	A push-loop	fill+write	52500000	53804673	32
+5	64MiB	B vec![0;n]	fill+write	8750000	8651386	32
+5	64MiB	C resize	fill+write	8750000	9071536	32
+5	64MiB	D1 extend_from_slice 4K	fill+write	9687500	9625081	32
+5	64MiB	D2 extend_from_slice 64K	fill+write	9062500	9325776	32
+5	4MiB	E extend(repeat.take)	fill	39062	50699	512
+5	4MiB	F resize_with	fill	58594	50086	512
+5	4MiB	A push-loop	fill	2480469	2516472	512
+5	4MiB	B vec![0;n]	fill	39062	49195	512
+5	4MiB	C resize	fill	58594	50556	512
+5	4MiB	D1 extend_from_slice 4K	fill	39062	52451	512
+5	4MiB	D2 extend_from_slice 64K	fill	58594	49015	512
+5	4MiB	E extend(repeat.take)	fill+write	175781	183822	512
+5	4MiB	F resize_with	fill+write	195312	188871	512
+5	4MiB	A push-loop	fill+write	2617188	2659774	512
+5	4MiB	B vec![0;n]	fill+write	175781	190986	512
+5	4MiB	C resize	fill+write	195312	186509	512
+5	4MiB	D1 extend_from_slice 4K	fill+write	195312	191008	512
+5	4MiB	D2 extend_from_slice 64K	fill+write	175781	191451	512
+5	256KiB	E extend(repeat.take)	fill	2441	2601	8192
+5	256KiB	F resize_with	fill	2441	2493	8192
+5	256KiB	A push-loop	fill	153809	157778	8192
+5	256KiB	B vec![0;n]	fill	2441	2473	8192
+5	256KiB	C resize	fill	2441	2477	8192
+5	256KiB	D1 extend_from_slice 4K	fill	3662	2695	8192
+5	256KiB	D2 extend_from_slice 64K	fill	2441	2458	8192
+5	256KiB	E extend(repeat.take)	fill+write	9766	10880	8192
+5	256KiB	F resize_with	fill+write	10986	10754	8192
+5	256KiB	A push-loop	fill+write	161133	164478	8192
+5	256KiB	B vec![0;n]	fill+write	10986	10976	8192
+5	256KiB	C resize	fill+write	10986	10937	8192
+5	256KiB	D1 extend_from_slice 4K	fill+write	10986	11615	8192
+5	256KiB	D2 extend_from_slice 64K	fill+write	12207	11317	8192
+5	1KiB	E extend(repeat.take)	fill	0	27	50000
+5	1KiB	F resize_with	fill	0	27	50000
+5	1KiB	A push-loop	fill	600	635	50000
+5	1KiB	B vec![0;n]	fill	0	32	50000
+5	1KiB	C resize	fill	0	25	50000
+5	1KiB	D1 extend_from_slice 4K	fill	200	26	50000
+5	1KiB	D2 extend_from_slice 64K	fill	0	26	50000
+5	1KiB	E extend(repeat.take)	fill+write	0	54	50000
+5	1KiB	F resize_with	fill+write	0	53	50000
+5	1KiB	A push-loop	fill+write	600	647	50000
+5	1KiB	B vec![0;n]	fill+write	200	53	50000
+5	1KiB	C resize	fill+write	0	52	50000
+5	1KiB	D1 extend_from_slice 4K	fill+write	0	51	50000
+5	1KiB	D2 extend_from_slice 64K	fill+write	200	51	50000
+6	64MiB	F resize_with	fill	6562500	6800034	32
+6	64MiB	A push-loop	fill	46875000	47761163	32
+6	64MiB	B vec![0;n]	fill	0	42688	32
+6	64MiB	C resize	fill	6250000	6289040	32
+6	64MiB	D1 extend_from_slice 4K	fill	6250000	6547806	32
+6	64MiB	D2 extend_from_slice 64K	fill	6562500	6828745	32
+6	64MiB	E extend(repeat.take)	fill	5937500	6258618	32
+6	64MiB	F resize_with	fill+write	9062500	9185950	32
+6	64MiB	A push-loop	fill+write	49062500	49745579	32
+6	64MiB	B vec![0;n]	fill+write	8125000	8144538	32
+6	64MiB	C resize	fill+write	11250000	11470906	32
+6	64MiB	D1 extend_from_slice 4K	fill+write	12187500	12172648	32
+6	64MiB	D2 extend_from_slice 64K	fill+write	12187500	12525744	32
+6	64MiB	E extend(repeat.take)	fill+write	9375000	9481249	32
+6	4MiB	F resize_with	fill	58594	59071	512
+6	4MiB	A push-loop	fill	2441406	2502570	512
+6	4MiB	B vec![0;n]	fill	58594	48175	512
+6	4MiB	C resize	fill	39062	49402	512
+6	4MiB	D1 extend_from_slice 4K	fill	58594	52650	512
+6	4MiB	D2 extend_from_slice 64K	fill	58594	49676	512
+6	4MiB	E extend(repeat.take)	fill	39062	48904	512
+6	4MiB	F resize_with	fill+write	195312	191207	512
+6	4MiB	A push-loop	fill+write	2597656	2636974	512
+6	4MiB	B vec![0;n]	fill+write	195312	208455	512
+6	4MiB	C resize	fill+write	214844	210605	512
+6	4MiB	D1 extend_from_slice 4K	fill+write	175781	186716	512
+6	4MiB	D2 extend_from_slice 64K	fill+write	175781	183686	512
+6	4MiB	E extend(repeat.take)	fill+write	175781	185072	512
+6	256KiB	F resize_with	fill	2441	2558	8192
+6	256KiB	A push-loop	fill	151367	154252	8192
+6	256KiB	B vec![0;n]	fill	2441	2516	8192
+6	256KiB	C resize	fill	2441	2606	8192
+6	256KiB	D1 extend_from_slice 4K	fill	3662	2720	8192
+6	256KiB	D2 extend_from_slice 64K	fill	2441	2507	8192
+6	256KiB	E extend(repeat.take)	fill	2441	2513	8192
+6	256KiB	F resize_with	fill+write	10986	11226	8192
+6	256KiB	A push-loop	fill+write	159912	163644	8192
+6	256KiB	B vec![0;n]	fill+write	10986	10918	8192
+6	256KiB	C resize	fill+write	10986	11158	8192
+6	256KiB	D1 extend_from_slice 4K	fill+write	10986	11151	8192
+6	256KiB	D2 extend_from_slice 64K	fill+write	10986	11366	8192
+6	256KiB	E extend(repeat.take)	fill+write	10986	11266	8192
+6	1KiB	F resize_with	fill	200	27	50000
+6	1KiB	A push-loop	fill	600	630	50000
+6	1KiB	B vec![0;n]	fill	0	32	50000
+6	1KiB	C resize	fill	0	25	50000
+6	1KiB	D1 extend_from_slice 4K	fill	0	26	50000
+6	1KiB	D2 extend_from_slice 64K	fill	0	26	50000
+6	1KiB	E extend(repeat.take)	fill	0	26	50000
+6	1KiB	F resize_with	fill+write	200	51	50000
+6	1KiB	A push-loop	fill+write	600	639	50000
+6	1KiB	B vec![0;n]	fill+write	0	58	50000
+6	1KiB	C resize	fill+write	0	62	50000
+6	1KiB	D1 extend_from_slice 4K	fill+write	0	62	50000
+6	1KiB	D2 extend_from_slice 64K	fill+write	0	60	50000
+6	1KiB	E extend(repeat.take)	fill+write	0	58	50000

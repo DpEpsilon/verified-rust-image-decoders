@@ -1,0 +1,470 @@
+{
+ "format": "icns",
+ "part": "corpus",
+ "n_files": 15701,
+ "passes": 7,
+ "warmup": 2,
+ "rounds": 5,
+ "agreement": {
+  "icns-crate": {
+   "counts": {
+    "incumbent-only-ok": 11519,
+    "both-error": 3915,
+    "both-ok-DIFFERENT": 174,
+    "verified-only-ok": 50,
+    "both-ok-equal": 43
+   },
+   "examples": [
+    {
+     "file": "00aa78b08deabf52d90a531ec4dbdabc0fd1e7c8b93958cea869c2a4d7f01503.icns",
+     "ver": [
+      128,
+      128
+     ],
+     "inc": [
+      512,
+      512
+     ]
+    },
+    {
+     "file": "01175d594c6c18a68f171a5e8e5432b5ee8967838d81356457c7386cbf23be5f.icns",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      1024,
+      1024
+     ]
+    },
+    {
+     "file": "011e5056527e9a8afe44e77530c7adfd7e4ae00b752b2733797644a273d91559.icns",
+     "ver": [
+      128,
+      128
+     ],
+     "inc": [
+      512,
+      512
+     ]
+    },
+    {
+     "file": "0252b51b505338f039252056e6b88f50d9e55ea00841ab15bc0d9653bdf4a549.icns",
+     "ver": [
+      128,
+      128
+     ],
+     "inc": [
+      512,
+      512
+     ]
+    },
+    {
+     "file": "027d66410358770321e3ef29d68058f539b0e27e2bd4f850d2cd786332335ca6.icns",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      256,
+      256
+     ]
+    }
+   ]
+  },
+  "gdk:icns": {
+   "counts": {
+    "both-error": 15247,
+    "incumbent-only-ok": 187,
+    "both-ok-DIFFERENT": 166,
+    "both-ok-equal": 101
+   },
+   "examples": [
+    {
+     "file": "00aa78b08deabf52d90a531ec4dbdabc0fd1e7c8b93958cea869c2a4d7f01503.icns",
+     "ver": [
+      128,
+      128
+     ],
+     "inc": [
+      512,
+      512
+     ]
+    },
+    {
+     "file": "01175d594c6c18a68f171a5e8e5432b5ee8967838d81356457c7386cbf23be5f.icns",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      512,
+      512
+     ]
+    },
+    {
+     "file": "011e5056527e9a8afe44e77530c7adfd7e4ae00b752b2733797644a273d91559.icns",
+     "ver": [
+      128,
+      128
+     ],
+     "inc": [
+      512,
+      512
+     ]
+    },
+    {
+     "file": "0252b51b505338f039252056e6b88f50d9e55ea00841ab15bc0d9653bdf4a549.icns",
+     "ver": [
+      128,
+      128
+     ],
+     "inc": [
+      512,
+      512
+     ]
+    },
+    {
+     "file": "09392a60a0697844bae1da4b793f772ee766914b2921c674eabee0b89aac656c.icns",
+     "ver": [
+      128,
+      128
+     ],
+     "inc": [
+      512,
+      512
+     ]
+    }
+   ]
+  }
+ },
+ "timing": {
+  "icns-crate": {
+   "decoders": {
+    "icns-verified": {
+     "pixels": 5142528,
+     "files": 43,
+     "samples": 35,
+     "median_ns": 111428571.42857143,
+     "min_ns": 102857142.85714285,
+     "max_ns": 118571428.57142857,
+     "ns_per_px": 21.66805342208568,
+     "min_ns_per_px": 20.00128008192524,
+     "mbps": 184.60356923076924,
+     "cpu_over_wall": 0.9994615721120494,
+     "wall_ns_per_px": 21.679726391377937,
+     "wall_min_ns_per_px": 18.687633591883213,
+     "wall_spread": 0.3537007191766692,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.14102564102564105,
+     "round_spread": 0.1527777777777779,
+     "hwm_mb": 61.40234375,
+     "base_mb": 61.40234375
+    },
+    "icns-crate": {
+     "pixels": 8356608,
+     "files": 43,
+     "samples": 35,
+     "median_ns": 97142857.14285715,
+     "min_ns": 80000000.0,
+     "max_ns": 104285714.28571428,
+     "ns_per_px": 11.624675603170228,
+     "min_ns_per_px": 9.573262261434305,
+     "mbps": 344.09562352941174,
+     "cpu_over_wall": 0.9748829815341695,
+     "wall_ns_per_px": 11.924175335255644,
+     "wall_min_ns_per_px": 9.320055218576725,
+     "wall_spread": 0.34974507017912343,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.24999999999999997,
+     "round_spread": 0.3035714285714286,
+     "hwm_mb": 61.40234375,
+     "base_mb": 61.40234375
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [],
+   "n_files": 43,
+   "bytes": 1561014
+  },
+  "gdk:icns": {
+   "decoders": {
+    "icns-verified": {
+     "pixels": 5939200,
+     "files": 101,
+     "samples": 35,
+     "median_ns": 101428571.42857143,
+     "min_ns": 97142857.14285715,
+     "max_ns": 118571428.57142857,
+     "ns_per_px": 17.0778171182266,
+     "min_ns_per_px": 16.356219211822662,
+     "mbps": 234.2219718309859,
+     "cpu_over_wall": 0.9921277416505174,
+     "wall_ns_per_px": 17.21332485856681,
+     "wall_min_ns_per_px": 16.113948511584052,
+     "wall_spread": 0.2668846150531716,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.2112676056338027,
+     "round_spread": 0.22058823529411753,
+     "hwm_mb": 61.40234375,
+     "base_mb": 61.40234375
+    },
+    "gdk:icns": {
+     "pixels": 20787200,
+     "files": 101,
+     "samples": 35,
+     "median_ns": 105714285.71428572,
+     "min_ns": 92857142.85714285,
+     "max_ns": 110000000.0,
+     "ns_per_px": 5.085547149894441,
+     "min_ns_per_px": 4.4670346586910625,
+     "mbps": 786.5427027027026,
+     "cpu_over_wall": 0.9859950423396464,
+     "wall_ns_per_px": 5.157781663716133,
+     "wall_min_ns_per_px": 4.380797654325739,
+     "wall_spread": 0.4004242694029564,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.16216216216216223,
+     "round_spread": 0.18461538461538463,
+     "hwm_mb": 61.40234375,
+     "base_mb": 61.40234375
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [],
+   "n_files": 101,
+   "bytes": 9425139
+  }
+ },
+ "verified_ok": 267,
+ "verified_errors": {
+  "NoLegacyPair": 15427,
+  "TruncatedFile": 4,
+  "BadMagic": 2,
+  "TrailingFileBytes": 1
+ },
+ "agreement_profiles": {},
+ "timed_subset": "per pair: first 835 files by SHA-256 of content among the files both decoders decode identically (gate ran on all 15701)"
+}

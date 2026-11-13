@@ -1,0 +1,3101 @@
+{
+ "bmp24_4096x4096.bmp": {
+  "decoders": {
+   "bmp-verified": {
+    "pixels": 33554432,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 142000000.0,
+    "min_ns": 92000000.0,
+    "max_ns": 150000000.0,
+    "ns_per_px": 4.231929779052734,
+    "min_ns_per_px": 2.7418136596679688,
+    "mbps": 945.1952676056337,
+    "cpu_over_wall": 0.9811554651958971,
+    "wall_ns_per_px": 4.313210219144821,
+    "wall_min_ns_per_px": 2.1377823650836945,
+    "wall_spread": 0.6618782387587792,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.4084507042253521,
+    "round_spread": 0.6304347826086956,
+    "hwm_mb": 116.4140625,
+    "base_mb": 52.40625
+   },
+   "old:bmp-verified": {
+    "pixels": 33554432,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 142000000.0,
+    "min_ns": 68000000.0,
+    "max_ns": 172000000.0,
+    "ns_per_px": 4.231929779052734,
+    "min_ns_per_px": 2.0265579223632812,
+    "mbps": 945.1952676056337,
+    "cpu_over_wall": 0.9867957417734556,
+    "wall_ns_per_px": 4.28855699300766,
+    "wall_min_ns_per_px": 2.0376385152339935,
+    "wall_spread": 1.1754292877668309,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.7323943661971831,
+    "round_spread": 1.5294117647058822,
+    "hwm_mb": 116.484375,
+    "base_mb": 52.4765625
+   }
+  },
+  "load_before": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "load_after": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "flags": [],
+  "output_identical": true
+ },
+ "bmp24_8192x2048.bmp": {
+  "decoders": {
+   "bmp-verified": {
+    "pixels": 33554432,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 140000000.0,
+    "min_ns": 132000000.0,
+    "max_ns": 190000000.0,
+    "ns_per_px": 4.172325134277344,
+    "min_ns_per_px": 3.9339065551757812,
+    "mbps": 958.6980571428571,
+    "cpu_over_wall": 0.9854307512436259,
+    "wall_ns_per_px": 4.234011501073837,
+    "wall_min_ns_per_px": 4.013994961977005,
+    "wall_spread": 0.9842039814626117,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 1
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 1
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.4142857142857143,
+    "round_spread": 0.43939393939393945,
+    "hwm_mb": 116.12890625,
+    "base_mb": 52.12109375
+   },
+   "old:bmp-verified": {
+    "pixels": 33554432,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 134000000.0,
+    "min_ns": 132000000.0,
+    "max_ns": 160000000.0,
+    "ns_per_px": 3.993511199951172,
+    "min_ns_per_px": 3.9339065551757812,
+    "mbps": 1001.6248358208954,
+    "cpu_over_wall": 0.966670973883205,
+    "wall_ns_per_px": 4.131200075149536,
+    "wall_min_ns_per_px": 4.006896764039993,
+    "wall_spread": 0.6626926510325287,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 1
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.208955223880597,
+    "round_spread": 0.21212121212121215,
+    "hwm_mb": 116.31640625,
+    "base_mb": 52.30859375
+   }
+  },
+  "load_before": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "load_after": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "flags": [],
+  "output_identical": true
+ },
+ "bmp32_4096x3840.bmp": {
+  "decoders": {
+   "bmp-verified": {
+    "pixels": 31457280,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 140000000.0,
+    "min_ns": 136000000.0,
+    "max_ns": 164000000.0,
+    "ns_per_px": 4.450480143229167,
+    "min_ns_per_px": 4.323323567708333,
+    "mbps": 898.7794285714285,
+    "cpu_over_wall": 0.9755193896916573,
+    "wall_ns_per_px": 4.562164719899496,
+    "wall_min_ns_per_px": 4.350936031341552,
+    "wall_spread": 0.5221527597447019,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.2,
+    "round_spread": 0.2058823529411764,
+    "hwm_mb": 123.9921875,
+    "base_mb": 63.984375
+   },
+   "old:bmp-verified": {
+    "pixels": 31457280,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 154000000.0,
+    "min_ns": 76000000.0,
+    "max_ns": 166000000.0,
+    "ns_per_px": 4.895528157552083,
+    "min_ns_per_px": 2.4159749348958335,
+    "mbps": 817.0722077922078,
+    "cpu_over_wall": 0.9695529645630658,
+    "wall_ns_per_px": 5.049263254801432,
+    "wall_min_ns_per_px": 2.419247023264567,
+    "wall_spread": 0.7356887245926127,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 1
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 1
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.5844155844155844,
+    "round_spread": 1.1842105263157894,
+    "hwm_mb": 124.67578125,
+    "base_mb": 64.66796875
+   }
+  },
+  "load_before": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "load_after": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "flags": [],
+  "output_identical": true
+ },
+ "bmp8_4096x4096.bmp": {
+  "decoders": {
+   "bmp-verified": {
+    "pixels": 33554432,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 186000000.0,
+    "min_ns": 174000000.0,
+    "max_ns": 198000000.0,
+    "ns_per_px": 5.543231964111328,
+    "min_ns_per_px": 5.185604095458984,
+    "mbps": 721.6006881720431,
+    "cpu_over_wall": 1.0023183785760719,
+    "wall_ns_per_px": 5.5304103791713715,
+    "wall_min_ns_per_px": 5.257073312997818,
+    "wall_spread": 0.30535416006503946,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 1
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.12903225806451613,
+    "round_spread": 0.13793103448275867,
+    "hwm_mb": 84.390625,
+    "base_mb": 26.44921875
+   },
+   "old:bmp-verified": {
+    "pixels": 33554432,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 180000000.0,
+    "min_ns": 92000000.0,
+    "max_ns": 196000000.0,
+    "ns_per_px": 5.364418029785156,
+    "min_ns_per_px": 2.7418136596679688,
+    "mbps": 745.6540444444445,
+    "cpu_over_wall": 0.9967668648468081,
+    "wall_ns_per_px": 5.381818175315857,
+    "wall_min_ns_per_px": 2.759050101041794,
+    "wall_spread": 0.944882469336184,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.5777777777777777,
+    "round_spread": 1.1304347826086958,
+    "hwm_mb": 84.9375,
+    "base_mb": 26.44921875
+   }
+  },
+  "load_before": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "load_after": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "flags": [],
+  "output_identical": true
+ },
+ "bmp8rle_4096x4096.bmp": {
+  "decoders": {
+   "bmp-verified": {
+    "pixels": 50331648,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 134000000.0,
+    "min_ns": 92000000.0,
+    "max_ns": 194000000.0,
+    "ns_per_px": 2.6623407999674478,
+    "min_ns_per_px": 1.8278757731119792,
+    "mbps": 1502.4372537313434,
+    "cpu_over_wall": 0.9779247713854541,
+    "wall_ns_per_px": 2.7224392692248025,
+    "wall_min_ns_per_px": 1.8183687329292297,
+    "wall_spread": 1.611275180696232,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.7611940298507462,
+    "round_spread": 1.108695652173913,
+    "hwm_mb": 73.375,
+    "base_mb": 26.44921875
+   },
+   "old:bmp-verified": {
+    "pixels": 33554432,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 128000000.0,
+    "min_ns": 106000000.0,
+    "max_ns": 136000000.0,
+    "ns_per_px": 3.814697265625,
+    "min_ns_per_px": 3.159046173095703,
+    "mbps": 1048.576,
+    "cpu_over_wall": 0.9715527089735873,
+    "wall_ns_per_px": 3.9263924956321716,
+    "wall_min_ns_per_px": 3.041502296924591,
+    "wall_spread": 0.4593865616195541,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 1
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.234375,
+    "round_spread": 0.28301886792452824,
+    "hwm_mb": 73.5,
+    "base_mb": 26.44921875
+   }
+  },
+  "load_before": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "load_after": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "flags": [],
+  "output_identical": true
+ },
+ "tga24_4096x4096.tga": {
+  "decoders": {
+   "tga-verified": {
+    "pixels": 16777216,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 108000000.0,
+    "min_ns": 106000000.0,
+    "max_ns": 122000000.0,
+    "ns_per_px": 6.4373016357421875,
+    "min_ns_per_px": 6.318092346191406,
+    "mbps": 621.3783703703704,
+    "cpu_over_wall": 0.9744166634344003,
+    "wall_ns_per_px": 6.606313169002533,
+    "wall_min_ns_per_px": 6.4353721141815186,
+    "wall_spread": 0.3519611303749376,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 1
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.14814814814814814,
+    "round_spread": 0.15094339622641506,
+    "hwm_mb": 116.140625,
+    "base_mb": 52.1328125
+   },
+   "old:tga-verified": {
+    "pixels": 16777216,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 110000000.0,
+    "min_ns": 108000000.0,
+    "max_ns": 112000000.0,
+    "ns_per_px": 6.556510925292969,
+    "min_ns_per_px": 6.4373016357421875,
+    "mbps": 610.0805818181818,
+    "cpu_over_wall": 0.9856170074916838,
+    "wall_ns_per_px": 6.652189314365387,
+    "wall_min_ns_per_px": 6.503761172294617,
+    "wall_spread": 0.13583403542864847,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 1
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 1
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 1
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.03636363636363636,
+    "round_spread": 0.03703703703703698,
+    "hwm_mb": 115.92578125,
+    "base_mb": 51.91796875
+   }
+  },
+  "load_before": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "load_after": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "flags": [],
+  "output_identical": true
+ },
+ "tga24rle_4096x4096.tga": {
+  "decoders": {
+   "tga-verified": {
+    "pixels": 33554432,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 128000000.0,
+    "min_ns": 122000000.0,
+    "max_ns": 170000000.0,
+    "ns_per_px": 3.814697265625,
+    "min_ns_per_px": 3.635883331298828,
+    "mbps": 1048.576,
+    "cpu_over_wall": 0.9999823050006186,
+    "wall_ns_per_px": 3.814764767885208,
+    "wall_min_ns_per_px": 3.5986636579036713,
+    "wall_spread": 0.6018116085680203,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.375,
+    "round_spread": 0.39344262295081966,
+    "hwm_mb": 83.2421875,
+    "base_mb": 26.44921875
+   },
+   "old:tga-verified": {
+    "pixels": 33554432,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 124000000.0,
+    "min_ns": 74000000.0,
+    "max_ns": 144000000.0,
+    "ns_per_px": 3.6954879760742188,
+    "min_ns_per_px": 2.205371856689453,
+    "mbps": 1082.4010322580646,
+    "cpu_over_wall": 0.9946381942606681,
+    "wall_ns_per_px": 3.715409278869629,
+    "wall_min_ns_per_px": 1.8418425023555756,
+    "wall_spread": 1.0063171156185404,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.5645161290322581,
+    "round_spread": 0.945945945945946,
+    "hwm_mb": 83.828125,
+    "base_mb": 26.44921875
+   }
+  },
+  "load_before": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "load_after": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "flags": [],
+  "output_identical": true
+ },
+ "tga32_4096x3840.tga": {
+  "decoders": {
+   "tga-verified": {
+    "pixels": 15728640,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 108000000.0,
+    "min_ns": 104000000.0,
+    "max_ns": 150000000.0,
+    "ns_per_px": 6.866455078125,
+    "min_ns_per_px": 6.612141927083333,
+    "mbps": 582.5422222222222,
+    "cpu_over_wall": 0.9805569360021721,
+    "wall_ns_per_px": 7.002607218424479,
+    "wall_min_ns_per_px": 6.5929302215576175,
+    "wall_spread": 0.5342503634960879,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.42592592592592593,
+    "round_spread": 0.4423076923076923,
+    "hwm_mb": 123.75,
+    "base_mb": 63.7421875
+   },
+   "old:tga-verified": {
+    "pixels": 15728640,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 120000000.0,
+    "min_ns": 108000000.0,
+    "max_ns": 152000000.0,
+    "ns_per_px": 7.62939453125,
+    "min_ns_per_px": 6.866455078125,
+    "mbps": 524.288,
+    "cpu_over_wall": 0.9979232717752721,
+    "wall_ns_per_px": 7.645271682739258,
+    "wall_min_ns_per_px": 6.827076848347982,
+    "wall_spread": 0.5313872981298935,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 1
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.36666666666666664,
+    "round_spread": 0.40740740740740744,
+    "hwm_mb": 124.6796875,
+    "base_mb": 64.671875
+   }
+  },
+  "load_before": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "load_after": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "flags": [],
+  "output_identical": true
+ },
+ "tga32rle_4096x3840.tga": {
+  "decoders": {
+   "tga-verified": {
+    "pixels": 31457280,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 120000000.0,
+    "min_ns": 74000000.0,
+    "max_ns": 170000000.0,
+    "ns_per_px": 3.814697265625,
+    "min_ns_per_px": 2.3523966471354165,
+    "mbps": 1048.576,
+    "cpu_over_wall": 0.9869897397728349,
+    "wall_ns_per_px": 3.864981683095296,
+    "wall_min_ns_per_px": 1.8885979016621908,
+    "wall_spread": 1.160310689894231,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 1
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 1
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.8,
+    "round_spread": 1.2972972972972974,
+    "hwm_mb": 82.890625,
+    "base_mb": 26.44921875
+   },
+   "old:tga-verified": {
+    "pixels": 31457280,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 126000000.0,
+    "min_ns": 118000000.0,
+    "max_ns": 170000000.0,
+    "ns_per_px": 4.00543212890625,
+    "min_ns_per_px": 3.7511189778645835,
+    "mbps": 998.6438095238095,
+    "cpu_over_wall": 0.9922500936436026,
+    "wall_ns_per_px": 4.036716302235921,
+    "wall_min_ns_per_px": 3.709242598215739,
+    "wall_spread": 0.5172749599428244,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.4126984126984127,
+    "round_spread": 0.44067796610169485,
+    "hwm_mb": 83.7890625,
+    "base_mb": 26.44921875
+   }
+  },
+  "load_before": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "load_after": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "flags": [],
+  "output_identical": true
+ },
+ "icns_legacy128.icns": {
+  "decoders": {
+   "icns-verified": {
+    "pixels": 5701632,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 94000000.0,
+    "min_ns": 90000000.0,
+    "max_ns": 120000000.0,
+    "ns_per_px": 16.48650772270115,
+    "min_ns_per_px": 15.784954202586206,
+    "mbps": 242.62263829787233,
+    "cpu_over_wall": 0.9715786475499127,
+    "wall_ns_per_px": 16.968783499180585,
+    "wall_min_ns_per_px": 14.630535608050467,
+    "wall_spread": 0.4438239789310483,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.3191489361702128,
+    "round_spread": 0.33333333333333326,
+    "hwm_mb": 26.44921875,
+    "base_mb": 26.44921875
+   },
+   "old:icns-verified": {
+    "pixels": 10846208,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 92000000.0,
+    "min_ns": 60000000.0,
+    "max_ns": 114000000.0,
+    "ns_per_px": 8.482227152567976,
+    "min_ns_per_px": 5.531887273413897,
+    "mbps": 471.5742608695652,
+    "cpu_over_wall": 1.0168202966084698,
+    "wall_ns_per_px": 8.34191369001959,
+    "wall_min_ns_per_px": 5.177477234439907,
+    "wall_spread": 0.6950939227513442,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.5869565217391305,
+    "round_spread": 0.8999999999999999,
+    "hwm_mb": 26.44921875,
+    "base_mb": 26.44921875
+   }
+  },
+  "load_before": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "load_after": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "flags": [],
+  "output_identical": true
+ },
+ "icns_legacy128_pad32M.icns": {
+  "decoders": {
+   "icns-verified": {
+    "pixels": 5898240,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 100000000.0,
+    "min_ns": 90000000.0,
+    "max_ns": 108000000.0,
+    "ns_per_px": 16.954210069444443,
+    "min_ns_per_px": 15.2587890625,
+    "mbps": 235.9296,
+    "cpu_over_wall": 0.9900310408392359,
+    "wall_ns_per_px": 17.124927775065103,
+    "wall_min_ns_per_px": 13.9810546875,
+    "wall_spread": 0.39441900097670524,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 1
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.18,
+    "round_spread": 0.19999999999999996,
+    "hwm_mb": 36.3828125,
+    "base_mb": 36.11328125
+   },
+   "old:icns-verified": {
+    "pixels": 8863744,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 94000000.0,
+    "min_ns": 70000000.0,
+    "max_ns": 116000000.0,
+    "ns_per_px": 10.604999422365989,
+    "min_ns_per_px": 7.897339995378928,
+    "mbps": 377.18059574468083,
+    "cpu_over_wall": 1.0231126146367753,
+    "wall_ns_per_px": 10.365427295734174,
+    "wall_min_ns_per_px": 7.762472156235559,
+    "wall_spread": 0.6434309955275394,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 1
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.48936170212765956,
+    "round_spread": 0.6571428571428573,
+    "hwm_mb": 36.67578125,
+    "base_mb": 36.51171875
+   }
+  },
+  "load_before": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "load_after": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "flags": [],
+  "output_identical": true
+ },
+ "icns_png1024.icns": {
+  "note": "not decoded by both",
+  "new": "err",
+  "old": "err"
+ },
+ "ico_dib256.ico": {
+  "decoders": {
+   "ico-verified": {
+    "pixels": 11862016,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 58000000.0,
+    "min_ns": 52000000.0,
+    "max_ns": 64000000.0,
+    "ns_per_px": 4.889556716160221,
+    "min_ns_per_px": 4.383740504143646,
+    "mbps": 818.0700689655173,
+    "cpu_over_wall": 0.9630033537588005,
+    "wall_ns_per_px": 5.077403621778962,
+    "wall_min_ns_per_px": 4.415876019725483,
+    "wall_spread": 0.2660351058223631,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.20689655172413793,
+    "round_spread": 0.23076923076923084,
+    "hwm_mb": 26.44921875,
+    "base_mb": 26.44921875
+   },
+   "old:ico-verified": {
+    "pixels": 11796480,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 58000000.0,
+    "min_ns": 50000000.0,
+    "max_ns": 64000000.0,
+    "ns_per_px": 4.916720920138889,
+    "min_ns_per_px": 4.238552517361111,
+    "mbps": 813.5503448275863,
+    "cpu_over_wall": 0.9828753625581493,
+    "wall_ns_per_px": 5.002384948730469,
+    "wall_min_ns_per_px": 4.106029510498047,
+    "wall_spread": 0.3739230693963895,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.2413793103448276,
+    "round_spread": 0.28,
+    "hwm_mb": 26.44921875,
+    "base_mb": 26.44921875
+   }
+  },
+  "load_before": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "load_after": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "flags": [],
+  "output_identical": true
+ },
+ "ico_multi6.ico": {
+  "decoders": {
+   "ico-verified": {
+    "pixels": 12124160,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 56000000.0,
+    "min_ns": 50000000.0,
+    "max_ns": 60000000.0,
+    "ns_per_px": 4.6188766891891895,
+    "min_ns_per_px": 4.123997043918919,
+    "mbps": 866.0114285714285,
+    "cpu_over_wall": 1.0104597925868881,
+    "wall_ns_per_px": 4.571064304661107,
+    "wall_min_ns_per_px": 4.232119833456504,
+    "wall_spread": 0.19363753165242745,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.17857142857142858,
+    "round_spread": 0.19999999999999996,
+    "hwm_mb": 26.44921875,
+    "base_mb": 26.44921875
+   },
+   "old:ico-verified": {
+    "pixels": 12386304,
+    "files": 1,
+    "samples": 45,
+    "median_ns": 56000000.0,
+    "min_ns": 48000000.0,
+    "max_ns": 60000000.0,
+    "ns_per_px": 4.521122685185185,
+    "min_ns_per_px": 3.875248015873016,
+    "mbps": 884.736,
+    "cpu_over_wall": 0.9738648244668651,
+    "wall_ns_per_px": 4.642454036329158,
+    "wall_min_ns_per_px": 3.9090733603825645,
+    "wall_spread": 0.2467654166758039,
+    "load": [
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ],
+     [
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      },
+      {
+       "load1": 0.0,
+       "runnable_others": 0
+      }
+     ]
+    ],
+    "spread": 0.21428571428571427,
+    "round_spread": 0.25,
+    "hwm_mb": 26.44921875,
+    "base_mb": 26.44921875
+   }
+  },
+  "load_before": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "load_after": [
+   "0.00",
+   "0.00",
+   "0.00"
+  ],
+  "flags": [],
+  "output_identical": true
+ }
+}

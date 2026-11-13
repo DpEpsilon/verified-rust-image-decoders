@@ -1,0 +1,735 @@
+{
+ "format": "bmp",
+ "part": "corpus",
+ "n_files": 71,
+ "passes": 7,
+ "warmup": 2,
+ "rounds": 5,
+ "agreement": {
+  "bmp-image": {
+   "counts": {
+    "both-ok-equal": 45,
+    "both-error": 14,
+    "incumbent-only-ok": 7,
+    "both-ok-DIFFERENT": 3,
+    "verified-only-ok": 2
+   },
+   "examples": [
+    {
+     "file": "pal4rletrns.bmp",
+     "ver": [
+      127,
+      64
+     ],
+     "inc": [
+      127,
+      64
+     ]
+    },
+    {
+     "file": "pal8rletrns.bmp",
+     "ver": [
+      127,
+      64
+     ],
+     "inc": [
+      127,
+      64
+     ]
+    },
+    {
+     "file": "rgb32-111110.bmp",
+     "ver": [
+      127,
+      64
+     ],
+     "inc": [
+      127,
+      64
+     ]
+    }
+   ]
+  },
+  "gdk:bmp": {
+   "counts": {
+    "both-ok-equal": 40,
+    "both-error": 11,
+    "incumbent-only-ok": 10,
+    "both-ok-DIFFERENT": 9,
+    "verified-only-ok": 1
+   },
+   "examples": [
+    {
+     "file": "pal4rletrns.bmp",
+     "ver": [
+      127,
+      64
+     ],
+     "inc": [
+      127,
+      64
+     ]
+    },
+    {
+     "file": "pal8offs.bmp",
+     "ver": [
+      127,
+      64
+     ],
+     "inc": [
+      127,
+      64
+     ]
+    },
+    {
+     "file": "pal8rletrns.bmp",
+     "ver": [
+      127,
+      64
+     ],
+     "inc": [
+      127,
+      64
+     ]
+    },
+    {
+     "file": "rgb16-231.bmp",
+     "ver": [
+      127,
+      64
+     ],
+     "inc": [
+      127,
+      64
+     ]
+    },
+    {
+     "file": "rgb16-565.bmp",
+     "ver": [
+      127,
+      64
+     ],
+     "inc": [
+      127,
+      64
+     ]
+    }
+   ]
+  }
+ },
+ "timing": {
+  "bmp-image": {
+   "decoders": {
+    "bmp-verified": {
+     "pixels": 22808928,
+     "files": 45,
+     "samples": 35,
+     "median_ns": 97142857.14285715,
+     "min_ns": 95714285.71428572,
+     "max_ns": 98571428.57142857,
+     "ns_per_px": 4.25898390064001,
+     "min_ns_per_px": 4.196351784454127,
+     "mbps": 939.1911529411764,
+     "cpu_over_wall": 0.9697133521484249,
+     "wall_ns_per_px": 4.392002947266965,
+     "wall_min_ns_per_px": 4.310111373932172,
+     "wall_spread": 0.03591236856161191,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.029411764705882287,
+     "round_spread": 0.02985074626865658,
+     "hwm_mb": 18.90234375,
+     "base_mb": 18.90234375
+    },
+    "bmp-verified-policy-strict": {
+     "pixels": 23195520,
+     "files": 45,
+     "samples": 35,
+     "median_ns": 98571428.57142857,
+     "min_ns": 95714285.71428572,
+     "max_ns": 98571428.57142857,
+     "ns_per_px": 4.249589083212127,
+     "min_ns_per_px": 4.126412588046559,
+     "mbps": 941.2674782608697,
+     "cpu_over_wall": 0.9836414678854254,
+     "wall_ns_per_px": 4.320262231672323,
+     "wall_min_ns_per_px": 4.307950802568772,
+     "wall_spread": 0.03482452462749772,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.02898550724637675,
+     "round_spread": 0.02985074626865658,
+     "hwm_mb": 18.90234375,
+     "base_mb": 18.90234375
+    },
+    "bmp-verified-policy-recommended": {
+     "pixels": 23195520,
+     "files": 45,
+     "samples": 35,
+     "median_ns": 97142857.14285715,
+     "min_ns": 95714285.71428572,
+     "max_ns": 98571428.57142857,
+     "ns_per_px": 4.188000835629343,
+     "min_ns_per_px": 4.126412588046559,
+     "mbps": 955.1096470588235,
+     "cpu_over_wall": 0.9699554128470934,
+     "wall_ns_per_px": 4.31772510381315,
+     "wall_min_ns_per_px": 4.309013119774853,
+     "wall_spread": 0.020900127095967915,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.029411764705882287,
+     "round_spread": 0.02985074626865658,
+     "hwm_mb": 18.90234375,
+     "base_mb": 18.90234375
+    },
+    "bmp-image": {
+     "pixels": 29380992,
+     "files": 45,
+     "samples": 35,
+     "median_ns": 95714285.71428572,
+     "min_ns": 88571428.57142857,
+     "max_ns": 104285714.28571428,
+     "ns_per_px": 3.2576941484578095,
+     "min_ns_per_px": 3.014582644841555,
+     "mbps": 1227.862352238806,
+     "cpu_over_wall": 0.9756352526041187,
+     "wall_ns_per_px": 3.3390492397261466,
+     "wall_min_ns_per_px": 3.0610259857801942,
+     "wall_spread": 0.19342715899122304,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.16417910447761197,
+     "round_spread": 0.17741935483870974,
+     "hwm_mb": 18.90234375,
+     "base_mb": 18.90234375
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [],
+   "n_files": 45,
+   "bytes": 807741
+  },
+  "gdk:bmp": {
+   "decoders": {
+    "bmp-verified": {
+     "pixels": 23178784,
+     "files": 40,
+     "samples": 35,
+     "median_ns": 95714285.71428572,
+     "min_ns": 91428571.42857143,
+     "max_ns": 101428571.42857143,
+     "ns_per_px": 4.129392021353912,
+     "min_ns_per_px": 3.9444938711440356,
+     "mbps": 968.6656,
+     "cpu_over_wall": 0.9620364576121575,
+     "wall_ns_per_px": 4.292344628605194,
+     "wall_min_ns_per_px": 4.047464224180182,
+     "wall_spread": 0.26950559681437164,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ]
+     ],
+     "spread": 0.1044776119402985,
+     "round_spread": 0.109375,
+     "hwm_mb": 18.90234375,
+     "base_mb": 18.90234375
+    },
+    "bmp-verified-policy-strict": {
+     "pixels": 23870688,
+     "files": 40,
+     "samples": 35,
+     "median_ns": 97142857.14285715,
+     "min_ns": 97142857.14285715,
+     "max_ns": 98571428.57142857,
+     "ns_per_px": 4.06954576017487,
+     "min_ns_per_px": 4.06954576017487,
+     "mbps": 982.9106823529411,
+     "cpu_over_wall": 0.9724544233242806,
+     "wall_ns_per_px": 4.184819013176328,
+     "wall_min_ns_per_px": 4.168098045603043,
+     "wall_spread": 0.03924010477893234,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 2
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.014705882352941065,
+     "round_spread": 0.014705882352941124,
+     "hwm_mb": 18.90234375,
+     "base_mb": 18.90234375
+    },
+    "bmp-verified-policy-recommended": {
+     "pixels": 23870688,
+     "files": 40,
+     "samples": 35,
+     "median_ns": 97142857.14285715,
+     "min_ns": 85714285.71428572,
+     "max_ns": 98571428.57142857,
+     "ns_per_px": 4.06954576017487,
+     "min_ns_per_px": 3.5907756707425325,
+     "mbps": 982.9106823529411,
+     "cpu_over_wall": 0.9744698039845249,
+     "wall_ns_per_px": 4.176164046884614,
+     "wall_min_ns_per_px": 3.6770720223899707,
+     "wall_spread": 0.14151474478213802,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.1323529411764705,
+     "round_spread": 0.1499999999999999,
+     "hwm_mb": 18.90234375,
+     "base_mb": 18.90234375
+    },
+    "gdk:bmp": {
+     "pixels": 37016864,
+     "files": 40,
+     "samples": 35,
+     "median_ns": 95714285.71428572,
+     "min_ns": 95714285.71428572,
+     "max_ns": 98571428.57142857,
+     "ns_per_px": 2.5856940694459074,
+     "min_ns_per_px": 2.5856940694459074,
+     "mbps": 1546.9734208955224,
+     "cpu_over_wall": 0.9640124192827905,
+     "wall_ns_per_px": 2.682220703515025,
+     "wall_min_ns_per_px": 2.657658655255075,
+     "wall_spread": 0.031950580153680935,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.02985074626865665,
+     "round_spread": 0.02985074626865658,
+     "hwm_mb": 18.90234375,
+     "base_mb": 18.90234375
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [],
+   "n_files": 40,
+   "bytes": 724331
+  }
+ },
+ "verified_ok": 50,
+ "verified_errors": {
+  "InvalidFileSize": 5,
+  "UnsupportedPixelDepth": 4,
+  "InvalidColorCount": 2,
+  "RleBounds": 2,
+  "InvalidImageSize": 1,
+  "UnsupportedHeaderSize": 1,
+  "InvalidPlanes": 1,
+  "InvalidDimensions": 1
+ }
+}

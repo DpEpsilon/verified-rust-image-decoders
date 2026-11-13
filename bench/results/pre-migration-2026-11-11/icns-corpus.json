@@ -1,0 +1,470 @@
+{
+ "format": "icns",
+ "part": "corpus",
+ "n_files": 835,
+ "passes": 7,
+ "warmup": 2,
+ "rounds": 5,
+ "agreement": {
+  "icns-crate": {
+   "counts": {
+    "both-error": 631,
+    "incumbent-only-ok": 90,
+    "both-ok-DIFFERENT": 44,
+    "verified-only-ok": 31,
+    "both-ok-equal": 39
+   },
+   "examples": [
+    {
+     "file": "027d664103587703.bin",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      256,
+      256
+     ]
+    },
+    {
+     "file": "066f1750fb0e5dac.bin",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      256,
+      256
+     ]
+    },
+    {
+     "file": "0c5d8642204e022f.bin",
+     "ver": [
+      128,
+      128
+     ],
+     "inc": [
+      256,
+      256
+     ]
+    },
+    {
+     "file": "0d16a3d0cc941cea.bin",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      1024,
+      1024
+     ]
+    },
+    {
+     "file": "0da8b3b6f0dd348d.bin",
+     "ver": [
+      128,
+      128
+     ],
+     "inc": [
+      512,
+      512
+     ]
+    }
+   ]
+  },
+  "gdk:icns": {
+   "counts": {
+    "both-error": 657,
+    "both-ok-equal": 78,
+    "incumbent-only-ok": 64,
+    "both-ok-DIFFERENT": 36
+   },
+   "examples": [
+    {
+     "file": "0d16a3d0cc941cea.bin",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      512,
+      512
+     ]
+    },
+    {
+     "file": "0da8b3b6f0dd348d.bin",
+     "ver": [
+      128,
+      128
+     ],
+     "inc": [
+      512,
+      512
+     ]
+    },
+    {
+     "file": "144568b2511ffe3a.bin",
+     "ver": [
+      128,
+      128
+     ],
+     "inc": [
+      512,
+      512
+     ]
+    },
+    {
+     "file": "16e2ba33797a94a8.bin",
+     "ver": [
+      128,
+      128
+     ],
+     "inc": [
+      512,
+      512
+     ]
+    },
+    {
+     "file": "1b3536c7eaf3be91.bin",
+     "ver": [
+      32,
+      32
+     ],
+     "inc": [
+      512,
+      512
+     ]
+    }
+   ]
+  }
+ },
+ "timing": {
+  "icns-crate": {
+   "decoders": {
+    "icns-verified": {
+     "pixels": 12122880,
+     "files": 39,
+     "samples": 35,
+     "median_ns": 100000000.0,
+     "min_ns": 97142857.14285715,
+     "max_ns": 107142857.14285715,
+     "ns_per_px": 8.248864956182029,
+     "min_ns_per_px": 8.013183100291116,
+     "mbps": 484.91519999999997,
+     "cpu_over_wall": 0.9707710637492835,
+     "wall_ns_per_px": 8.497229948659065,
+     "wall_min_ns_per_px": 7.861414861815014,
+     "wall_spread": 0.15049689062513666,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.1,
+     "round_spread": 0.10294117647058831,
+     "hwm_mb": 20.27734375,
+     "base_mb": 20.27734375
+    },
+    "icns-crate": {
+     "pixels": 9236480,
+     "files": 39,
+     "samples": 35,
+     "median_ns": 101428571.42857143,
+     "min_ns": 91428571.42857143,
+     "max_ns": 108571428.57142857,
+     "ns_per_px": 10.981301472917327,
+     "min_ns_per_px": 9.898637947418436,
+     "mbps": 364.25554929577464,
+     "cpu_over_wall": 0.9958119194207004,
+     "wall_ns_per_px": 11.027485470655488,
+     "wall_min_ns_per_px": 9.766364459187916,
+     "wall_spread": 0.21200312612571015,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.16901408450704217,
+     "round_spread": 0.1875,
+     "hwm_mb": 20.27734375,
+     "base_mb": 20.27734375
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [
+    "round 4 icns-crate: other CPU load: 26399 40.0 bash /home/ws/.claude/plugins/cache/agent-sanitizer/agent-sanitizer/2.70.4/scripts/safe-launch.sh P"
+   ],
+   "n_files": 39,
+   "bytes": 1416347
+  },
+  "gdk:icns": {
+   "decoders": {
+    "icns-verified": {
+     "pixels": 12187648,
+     "files": 78,
+     "samples": 35,
+     "median_ns": 102857142.85714285,
+     "min_ns": 101428571.42857143,
+     "max_ns": 104285714.28571428,
+     "ns_per_px": 8.439457954245384,
+     "min_ns_per_px": 8.322243260436421,
+     "mbps": 473.9640888888889,
+     "cpu_over_wall": 1.0029886093383646,
+     "wall_ns_per_px": 8.414310866214711,
+     "wall_min_ns_per_px": 8.066404526944002,
+     "wall_spread": 0.14866272092898009,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 1
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.027777777777777717,
+     "round_spread": 0.028169014084507005,
+     "hwm_mb": 20.27734375,
+     "base_mb": 20.27734375
+    },
+    "gdk:icns": {
+     "pixels": 22159360,
+     "files": 78,
+     "samples": 35,
+     "median_ns": 97142857.14285715,
+     "min_ns": 97142857.14285715,
+     "max_ns": 104285714.28571428,
+     "ns_per_px": 4.383829548455242,
+     "min_ns_per_px": 4.383829548455242,
+     "mbps": 912.4442352941176,
+     "cpu_over_wall": 0.9637296341376326,
+     "wall_ns_per_px": 4.548816797958064,
+     "wall_min_ns_per_px": 4.442363813756354,
+     "wall_spread": 0.12554575389134576,
+     "load": [
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ],
+      [
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       },
+       {
+        "load1": 0.0,
+        "runnable_others": 0
+       }
+      ]
+     ],
+     "spread": 0.07352941176470579,
+     "round_spread": 0.07352941176470584,
+     "hwm_mb": 20.27734375,
+     "base_mb": 20.27734375
+    }
+   },
+   "load_before": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "load_after": [
+    "0.00",
+    "0.00",
+    "0.00"
+   ],
+   "flags": [],
+   "n_files": 78,
+   "bytes": 7613044
+  }
+ },
+ "verified_ok": 114,
+ "verified_errors": {
+  "BadMagic": 605,
+  "NoLegacyPair": 111,
+  "TruncatedFile": 4,
+  "TrailingFileBytes": 1
+ }
+}
