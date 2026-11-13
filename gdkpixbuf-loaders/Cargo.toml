@@ -1,0 +1,27 @@
+[package]
+name = "gdkpixbuf-loaders"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "gdk-pixbuf loader modules wrapping the verified decoder cores (scaffold: BMP)"
+publish = false
+
+[lib]
+# cdylib: the loader module gdk-pixbuf dlopens.
+# rlib: lets tests/ and examples/ link the safe shim and the extern functions.
+name = "pixbufloader_verified_bmp"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+dib_verus = { path = "../dib/dib_verus" }
+
+[build-dependencies]
+pkg-config = "0.3"
+
+# Panics must stay catchable: the shim converts them to GErrors with
+# catch_unwind. Do not set panic = "abort" in any profile.
+[profile.release]
+panic = "unwind"
+
+[profile.dev]
+panic = "unwind"
