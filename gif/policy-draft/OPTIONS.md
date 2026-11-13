@@ -1,0 +1,111 @@
+# GIF policy option catalogue (draft 0.1, not frozen)
+
+This draft extends GIF-CORE-SPEC draft 0.1 (`../spec-draft/SPEC.md`, G1–G19) the way the frozen DIB and TGA policy specs extend their cores. The stable entry points `decode_still`/`decode_frames` stay Strict. Profiled entry points take one of four named profiles (`Strict`, `Recommended`, `GdkCompat-2.42.12`, `ImageCrateCompat-0.25.10`) and add `recovered: bool` to every returned frame (and to the still result). `Policy::default()` is Strict; the profile selector is `#[non_exhaustive]`; the 22-field record below is internal and constructible only under `#[cfg(test)]`. The reference model is `policy_oracle.py`; `validate.py` checks the Strict bridge, obligation R and agreement with the incumbents; `necessity.py` reverts one field at a time.
+
+**Non-negotiable for every policy value**, including test-only records: G1's caps (`MAX_INPUT`, `MAX_DIMENSION`, `MAX_OUTPUT`, `MAX_FRAMES`, `MAX_TOTAL_PIXELS`) with their check order; G18's three reservation sites and no other input-dependent allocation; no read beyond the slice, unchecked overflow or narrowing, panic or nontermination; work `steps ≤ c·(|b| + N + P)` with `P ≤ MAX_TOTAL_PIXELS`. Clipped pixel positions are still produced by the LZW loop (they cost one step each and are counted in `P`), but are never written. A native decoder's acceptance beyond these caps is not part of any profile. The Python oracle allocates freely; its memory behaviour is not evidence about a Rust implementation.
+
+## The `recovered` flag
+
+For every retained record, a returned frame's `recovered` is true **iff** at least one of these data-affecting events occurred while decoding that frame (the still result's flag is its frame's flag):
+
+- **E1 clip:** under `frame_bounds=Clip`, the frame's rectangle is not inside the logical screen.
+- **E2 index substitution:** under `index_range ∈ {Transparent, Black, GdkTable}`, a non-transparent index `≥ C` (the declared table size) was drawn by substitution.
+- **E3 short frame:** under `short_frame=KeepCanvas`, `lzw_invalid=StopFrame` or `truncation=KeepPartial`, the frame ended with fewer than `w·h` indices and the rest of its rectangle kept the canvas.
+- **E4 string overrun:** under `lzw_tail=StopAtRaster`, the code that completed the raster carried indices past position `w·h`, and they were discarded.
+
+No other tolerance sets the flag: ignored trailing bytes, a missing trailer, undefined disposal treated as 1, a duplicate or wrongly sized Graphic Control, a missing End of Information code or bytes after it, extension block sizes, skipped stray bytes, a lenient minimum code size, Graphic Control scope variants. Strict never sets it. So `recovered=false` does not imply that Strict accepts the file.
+
+## Option fields
+
+Values in **bold** are Strict. Evidence: gdk-pixbuf 2.42.12 source copies in `../sources/gdk-pixbuf-2.42.12/` (cited as `io-gif.c:N`, `io-gif-animation.c:N`, `lzw.c:N`), gif 0.14.2 and image 0.25.10 from `~/.cargo/registry` (cited `gif decoder.rs:N`, `image gif.rs:N`); probe and vector names refer to `probes/results.json` (runner outputs) and `../spec-draft/VECTORS.json`; `wit:` names are the leniency harness's 75 witness files (67 distinct inputs) in `~/projects/leniency/gif/witnesses/` (see the hold-out caveat under Named profiles). "GDK" means both measured gdk-pixbuf paths (`GdkPixbufLoader` whole-buffer static image and `gdk_pixbuf_animation_new_from_file` iteration) unless one is named; "image" means `image::GifDecoder::into_frames`, and glycin's in-tree loader gave identical pixels on every input (one vote).
+
+| Field | Values and exact delta from Strict | Incumbent behaviour, evidence; safety |
+|---|---|---|
+| `version` | **`Known`**: G2 `87a`/`89a`. `Any`: any three bytes after `GIF`. | GDK `io-gif.c:550` and gif `decoder.rs:599–601` reject; giflib and libnsgif accept (`version-88a`). No profile uses `Any`. |
+| `frame_bounds` | **`Reject`**: G8 `FrameOutsideScreen`. `Clip`: accept; positions with `x ≥ W` or `y ≥ H` are produced but not written; disposal 2/3 act on the rectangle clipped to the screen; sets E1. | GDK skips such pixels (`io-gif-animation.c:379`), image composites only inside the screen (`image gif.rs:399–412`); both match Clip on `clip-right`, `clip-bottom`, `clip-entirely-outside`, `first-frame-entirely-outside`, `frame-larger-than-screen` and the witnesses `wit:01-field-left`, `wit:03-field-top`, `wit:29-struct-frame-beyond-canvas`, `wit:30-struct-frame-larger-than-canvas`. libnsgif grows the canvas instead (not catalogued). Coordinates are computed in u32; no write without both bounds checked. |
+| `restore_outside` | **`Restore`**: disposal 3 of a frame not inside the screen restores the clipped rectangle. `Keep`: such a frame's disposal 3 acts as 1. | Only meaningful with `Clip`. GDK's `gdk_pixbuf_copy_area` refuses an out-of-canvas source or destination (`io-gif-animation.c:336`, `:463`), so nothing is saved or restored (`clip-dispose3`, gdk-anim). |
+| `disposal_undefined` | **`Reject`**: G6.1 `UndefinedDisposal` for 4–7. `Keep`: accept; the frame record reports the raw value and compositing treats it as 1. | GDK maps 4–7 to retain (`io-gif.c:442–444`); gif maps them to `Any` (`decoder.rs:864`), which image keeps (`gif.rs:365–372`). Measured `disposal-4`…`disposal-7`: every decoder keeps. |
+| `gce_size` | **`Exact`**: G6.1 size 4 then terminator. `GdkFirstBlock`: read the first sub-block of any length, take packed, delay and index from its first four bytes (missing bytes read as 0), skip further sub-blocks. | GDK reads `block_count` bytes whatever their number and then the 4-byte fields (`io-gif.c:290–305`); missing bytes are stale bytes of the context buffer, so the 0 fill is a **surrogate** that matches `gce-size-3`/`gce-size-5` only because the buffer was zero there. gif requires the last sub-block to be 4 bytes (`decoder.rs:855`). |
+| `gce_duplicate` | **`Reject`**: `DuplicateGraphicControl`. `LastWins`: a later Graphic Control replaces the pending one. | GDK (`io-gif.c:294–305`) and gif (`decoder.rs:858–869`, `get_or_insert`) both overwrite (`gce-duplicate`, `wit:37-struct-gce-without-image`). |
+| `gce_scope` | **`NextGraphic`**: G7. `Sticky`: the last Graphic Control applies to every later image until another replaces it. | GDK never resets `disposal`, `delay_time` or `transparent_index` after a frame (`io-gif.c:298–305`, reset only in `new_context`); measured `gce-sticky` (frame 3 drawn with frame 2's transparency) and `anim-dispose-background-transparent-pixels`. image follows G7. |
+| `gce_consumers` | **`Spec`**: Plain Text and unknown labels ≤ 0x7F consume a pending Graphic Control (G7). `ImageOnly`: only an image does. | No measured decoder consumes it: GDK, image, giflib and libnsgif all apply it to the next image (`gce-consumed-by-plain-text`, `gce-before-plaintext`, `unknown-ext-graphic-label`). Recommended cannot adopt `ImageOnly` (obligation R; Q7). |
+| `gce_orphan` | **`Reject`**: `GraphicControlWithoutGraphic`. `Ignore`. | GDK and image accept (`gce-then-trailer`, `gce-without-image`). |
+| `ext_sizes` | **`Exact`**: Application size 11, Plain Text size 12. `Ignore`: any first sub-block size; an Application identifier is then the whole first sub-block. | Every decoder accepts `app-extension-size-10` and `plain-text-size-11`. GDK compares only 11 bytes of the identifier (`io-gif.c:317`). Metadata only. |
+| `unknown_extension` | **`Skip`**: G6.4. `Reject`: an unknown label returns `UnknownBlock`. | gif rejects unless `allow_unknown_blocks` (default false, `reader/mod.rs:127`; `decoder.rs:696–699`); image never sets it (`unknown-ext-label`, `wit:26-struct-insert-unknown-ext`). GDK, giflib, libnsgif skip. |
+| `unknown_block` | **`Reject`**: G5 `UnknownBlock`. `SkipByte`: skip the byte and read the next block introducer. | GDK's `gif_get_next_step` loops over any byte other than `;`, `!`, `,` (`io-gif.c:671–697`): `stray-byte-between`, `stray-bytes-before-first`, `unknown-block-before-image`. image rejects (`decoder.rs:707–713`). Linear: one byte per iteration. |
+| `lzw_min` | **`Spec`**: G9 `2 ≤ m ≤ 8`. `Range1to11`: `1 ≤ m ≤ 11`; literal codes `≥ 256` yield index `code mod 256`. `Range0to11`: as Range1to11, plus `m = 0` decoded as `m = 1` (**surrogate**). | gif accepts 1–11 (`decoder.rs:293`); GDK accepts 0–11 (`io-gif.c:503`) and runs its decoder with width `m+1` (`io-gif-animation.c:342`). Measured `lzw-min-1/9/10/11`: both decode normally. GDK's output for `m = 0` (`lzw-min-0`, `wit:anim-08-field-lzw_min`) is not reproduced (residual). Table size stays 4096 and indices 8 bits. |
+| `lzw_invalid` | **`Reject`**: `InvalidLzwCode`. `StopFrame`: end the frame's decoding at the invalid code; then `short_frame` decides. | GDK stops on a code `≥` table size (`lzw.c:209–212`). The tag's `return output_length` would paint uninitialised indices; the installed library leaves the rest untouched (`lzw-invalid-code-first`, `-second`), matching upstream's later `return n_written` fix. image, giflib, libnsgif reject. |
+| `lzw_tail` | **`Strict`**: G10.2 steps 1, 4, 5, 8 (`MissingEndOfInformation`, `DataAfterEndOfInformation`, `TooManyPixels`). `StopAtRaster`: when the raster is complete, stop decoding; ignore remaining codes and bytes; discard indices beyond `w·h` (E4). | Every measured decoder stops at the full raster: GDK `lzw.c:222–224`, gif/weezl fill a `w·h` buffer then skip sub-blocks (`decoder.rs:808–810`). Measured `lzw-missing-eoi-exact`, `lzw-excess-pixels`, `lzw-excess-in-string`, `lzw-data-after-eoi`: all accept with identical pixels. |
+| `short_frame` | **`Reject`**: `TooFewPixels`. `KeepCanvas`: positions never produced keep the canvas (transparent, or the previous frame); sets E3. | GDK draws only `n_indexes` entries (`io-gif-animation.c:367–390`): `lzw-short-first`, `lzw-short-second`, `lzw-empty-terminator-only`, `interlace-short`. image rejects (`converter.rs:210`, `:219` "image truncated"). |
+| `truncation` | **`Reject`**: `TruncatedImageData`. `KeepPartial`: decode the image data present at EOF as a short frame (E3), return it, then end with `TruncatedImageData`. | Only `gdk_pixbuf_new_from_file` (module `load`, `io-gif.c:855–871`) returns the partially decoded first frame, with its error set: `truncated-first-data`, `image-data-truncated-in-subblock` (runner `gdk-file`). The loader and animation paths reject (`io-gif.c:916–930`, `:981`). No profile uses it. |
+| `index_range` | **`Reject`**: `ColorIndexOutOfRange`. `Transparent`: leave the canvas pixel unchanged. `Black`: draw `(0,0,0,255)`. `GdkTable`: global entries beyond the table are `(0,0,0)`; local entries beyond the declared table keep the values of the most recent larger local table in the stream (zero before any); draw them opaque. E2 for all three. | gif leaves the RGBA pixel unwritten (`converter.rs:143–157`), so image's zero buffer shows the canvas through it (`gif.rs:361–363`): `index-oob-global`, `-global-anim`, `-stale-local`, `wit:35-struct-short-global-palette`. GDK reads a 256-entry map: the global map is zero-initialised (`io-gif-animation.h:66`), local maps are copied from a context buffer that is never cleared (`io-gif.c:396–405`): `index-oob-stale-local`. |
+| `missing_trailer` | **`Reject`**: `MissingTrailer`. `AtEof`: EOF at a block boundary acts as the Trailer. | GDK loader and animation reject (`stop_load` requires `GIF_DONE`, `io-gif.c:923`; load_animation `-1`); `gdk_pixbuf_new_from_file` accepts; image yields the frames, then an error the iterator consumer can ignore (`missing-trailer-one`, `-two`). |
+| `trailing` | **`Reject`**: `TrailingBytes`. `Ignore`. | Every decoder stops at `0x3B` (`io-gif.c:675–680`; gif `Trailer` state, `decoder.rs:849`): `trailing-garbage`, `wit:pixel-06-trailing-data`. |
+| `image_data` | **`Whole`**: G9 reads every sub-block before decoding. `Streaming`: decode while reading; on a structural error inside the image data the frame is returned if its raster completed with the End of Information code and at least one data byte followed that code, then the stream ends with the error; otherwise the error is returned without the frame. | gif's state machine decodes per sub-block (`decoder.rs:804–842`). The emission rule is a **surrogate** fitted to `wit:anim-07-field-first_sub_block_len`, `image-data-no-terminator` and three hand variants (append nothing, `3b`, `00`, `3b3b`): it misses `wit:19-lzw-no-block-terminator`. |
+| `empty_first_subblock` | **`Terminator`**: G5, a zero size byte ends the image data. `Skip`: a zero-length first image-data sub-block is skipped. | gif `LzwInit` consumes the first size byte and then reads the next byte as a size (`decoder.rs:782–789`, `:826–828`): `wit:18-lzw-first-subblock-zero`, `wit:anim-14-lzw-first-subblock-zero`. GDK terminates. |
+
+Operational order is G16's wherever a check still exists. A relaxed check never moves another check earlier. `GdkTable` keeps a 768-byte per-decoder record of the last local table; it is part of the decoder state, not an input-dependent allocation.
+
+### Presentation and metadata fields (not part of the pixel record)
+
+| Field | Values | Evidence |
+|---|---|---|
+| `delay_map` | **`Raw`**: report `delay_cs`. `Gdk`: `ms = 10·cs`; 0 → 100 ms; below 20 ms → 20 ms. `Glycin`: 0 → 100 ms, else `10·cs` ms. | `io-gif.c:414–426`; glycin `animated.rs:96–104`. Measured `delay-0/1/2/5/10`, `no-gce-delays`: gdk-anim 100,20,20,50,100,100; glycin 100,10,20,50,100,100; image 0,10,20,50,100,0. |
+| `loop_source` | **`NetscapeBeforeFirstImage`** (G6.3). `GdkAnywhere`: NETSCAPE2.0 or ANIMEXTS1.0 anywhere; GDK stores `n+1` for `n ≠ 0` and 1 when absent. | `io-gif.c:317–331`, `:796`; gif `reader/mod.rs:363–393`. UNVERIFIED by measurement: no runner exposes the loop count. |
+
+## Named profiles
+
+| Field | Strict | Recommended | GdkCompat-2.42.12 | ImageCrateCompat-0.25.10 |
+|---|---|---|---|---|
+| version | Known | Known | Known | Known |
+| frame_bounds | Reject | Clip | Clip | Clip |
+| restore_outside | Restore | Restore | Keep | Restore |
+| disposal_undefined | Reject | Keep | Keep | Keep |
+| gce_size | Exact | Exact | GdkFirstBlock | Exact |
+| gce_duplicate | Reject | LastWins | LastWins | LastWins |
+| gce_scope | NextGraphic | NextGraphic | Sticky | NextGraphic |
+| gce_consumers | Spec | Spec | ImageOnly | ImageOnly |
+| gce_orphan | Reject | Ignore | Ignore | Ignore |
+| ext_sizes | Exact | Ignore | Ignore | Ignore |
+| unknown_extension | Skip | Skip | Skip | Reject |
+| unknown_block | Reject | Reject | SkipByte | Reject |
+| lzw_min | Spec | Spec | Range0to11 | Range1to11 |
+| lzw_invalid | Reject | Reject | StopFrame | Reject |
+| lzw_tail | Strict | StopAtRaster | StopAtRaster | StopAtRaster |
+| short_frame | Reject | Reject | KeepCanvas | Reject |
+| truncation | Reject | Reject | Reject | Reject |
+| index_range | Reject | Reject | GdkTable | Transparent |
+| missing_trailer | Reject | AtEof | Reject | AtEof |
+| trailing | Reject | Ignore | Ignore | Ignore |
+| image_data | Whole | Whole | Whole | Streaming |
+| empty_first_subblock | Terminator | Terminator | Terminator | Skip |
+
+**Strict** is GIF-CORE-SPEC draft 0.1: `validate.py` finds `policy_oracle(Strict)` equal to `gif_oracle` on all 333 distinct vector, probe and witness inputs (frames and still).
+
+**Recommended** changes only error sites. Each of its eight fields replaces a branch on which Strict returns an error (`FrameOutsideScreen`, `UndefinedDisposal`, `DuplicateGraphicControl`, `GraphicControlWithoutGraphic`, `InvalidApplicationExtension`/`InvalidPlainText`, `MissingEndOfInformation`/`DataAfterEndOfInformation`/`TooManyPixels`, `MissingTrailer`, `TrailingBytes`) and is inert on every other branch: `Clip` never fires for a frame inside the screen, `Keep` never sees disposal ≤ 3, `StopAtRaster` stops exactly where Strict's EOI check succeeds, and so on. Therefore every image Strict accepts decodes to identical RGBA with `recovered=false` (obligation R; `validate.py`: 156 Strict-accepted still inputs and every Strict frame, 0 violations). Of the 86 probe and witness inputs that Strict rejects and at least one of image or the GDK loader accepts, Recommended accepts 33. These inputs are synthetic; no real-world GIF corpus has been measured (Q9).
+
+**GdkCompat-2.42.12** and **ImageCrateCompat-0.25.10** are opt-in byte-semantics proposals. Agreement on the 329 probe, vector and witness inputs (accept/reject, dimensions, frame count and SHA-256 of the composited frames): ImageCrateCompat vs image 327/329 and vs glycin 327/329; GdkCompat vs the GDK loader 327/329 and vs gdk-anim 326/329. The witnesses were added after all other fields were fixed; on that first run GdkCompat missed 1 witness and ImageCrateCompat 5. Three of the five (`wit:18`, `wit:anim-14`, `wit:anim-07`) then motivated `empty_first_subblock` and `image_data`, so the witness figures are not a clean hold-out for ImageCrateCompat; it now misses 2. `necessity.py` shows that reverting any listed field to Strict breaks at least one agreeing input, except ImageCrateCompat's `gce_orphan`, `missing_trailer` and `trailing`, which the iterator comparison cannot observe (image reports the frames and then an error); they are kept because the gif crate's own decoder accepts these inputs. Sufficiency and uniqueness are not shown.
+
+## Residuals (measured, not reproduced)
+
+- **gif crate, interlaced frames:** `wit:anim-12-field-image_flags` (7×33, interlaced, valid stream) is rejected by gif 0.14.2 with "image truncated", while the same bytes with the interlace bit cleared decode. Strict accepts it. A gif-crate defect in the row-wise fill (`converter.rs:200–211`); root cause UNVERIFIED.
+- **gif crate, image data without terminator:** `wit:19-lzw-no-block-terminator` (see `image_data`).
+- **GDK, minimum code size 0:** `lzw-min-0`, `wit:anim-08-field-lzw_min`.
+- **GDK crash:** `clip-dispose2-x-beyond` (a disposal-2 frame whose left edge lies beyond the screen, followed by another frame) kills `gdk_pixbuf_animation_new_from_file` with a signal. `io-gif-animation.c:452–456` computes `x_end = MIN(x_offset + width, anim->width)` and passes `(x_end − x_offset)·4`, which is negative, to `memset`. Reported here only; not investigated further and not reported upstream (coordinator's decision).
+
+## Not reproducible, explicitly excluded
+
+- GDK's path dependence: `gdk_pixbuf_new_from_file` returns a partially decoded first frame on truncation but rejects corruption; the loader rejects both; the animation path keeps earlier frames on corruption (`frame-zero-width-second`, `no-table-second-frame`) and rejects truncation. A bytes-only profile describes per-frame semantics; which frames a caller keeps after an error is decided by the iterator consumer (G15), not by a field.
+- GDK's one-byte-write loader differs from whole-buffer writes (XMP application extension rejected, `xmp-app-extension-skipped`); stale context bytes in a short Graphic Control.
+- Any behaviour depending on allocator contents (GDK's uninitialised `index_buffer` at the 2.42.12 tag, `gdk_pixbuf_new` without zeroing for the revert buffer), I/O chunking or callbacks.
+- Acceptance above the G1 caps (gdk-pixbuf accepts 65,535-pixel screens; the gif crate's default per-frame memory limit is 50,000,000 bytes, `reader/mod.rs:125`, which rejects a 12.5-megapixel frame that G1 accepts — UNVERIFIED by measurement).
+- giflib/libnsgif-only behaviours: any version string, a default colour table when none is present (`no-table-at-all`), zero-area frames accepted as empty, libnsgif's canvas growth for out-of-screen frames and zero screens.
+
+## Recorded decisions and open boundary
+
+- D1: `decode_still`/`decode_frames` unchanged; profiled entry points serve named profiles only; arbitrary records are `#[cfg(test)]`.
+- D2: Recommended contains only error-site relaxations (eight fields); every pixel-rule field stays Strict.
+- D3: Truncation inside image data and short frames remain errors in Strict and Recommended (Q4).
+- D4: `recovered` is the closed four-event list E1–E4.
+- D5: Profile names carry the measured library version and are immutable once frozen.
+- Open: Q1–Q18 in `QUESTIONS.md`.
