@@ -5,6 +5,7 @@
 //! R8/R9 classification model and the parse-success invariant (T6). The full
 //! `MP`/`MR`/`MC`/`MA`/`MJ` reference model is the subject of M3/M4.
 use vstd::prelude::*;
+use alloc::vec::Vec;
 #[cfg(verus_only)]
 use vstd::seq::{lemma_seq_new_len, lemma_seq_new_index, lemma_seq_subrange_composition, lemma_seq_subrange_index, lemma_seq_subrange_len};
 #[cfg(verus_only)]
@@ -20,6 +21,8 @@ verus! {
 
 #[cfg(verus_only)]
 use crate::icns::{Entry, Error, Decoded, MAX_ENTRIES, MAX_FILE_LEN};
+#[cfg(verus_only)]
+use crate::alloc_guard::sites::{AllocSite, TryError};
 
 // ---------------------------------------------------------------------------
 // Hexadecimal encoding of a four-byte type code (R1: lowercase, eight digits).
@@ -63,6 +66,28 @@ pub open spec fn code_of(s: Seq<char>) -> [u8; 4] {
         (hex_val(s[2]) * 16 + hex_val(s[3])) as u8,
         (hex_val(s[4]) * 16 + hex_val(s[5])) as u8,
         (hex_val(s[6]) * 16 + hex_val(s[7])) as u8,
+    ]
+}
+
+/// `hex_str(a)`: the model projection of the executable `Entry::type_hex`
+/// (`[u8; 8]`, decision D2). The eight ASCII bytes read as eight characters;
+/// equal to the frozen `MpEntry.type_hex` for every array the parser builds.
+pub open spec fn hex_str(a: [u8; 8]) -> Seq<char> {
+    Seq::new(8, |i: int| a[i] as char)
+}
+
+/// The spec form of the executable `hex4_bytes`: the eight lowercase hex digits
+/// of a four-byte code, as a byte array.
+pub open spec fn hex4_bytes_spec(code: [u8; 4]) -> [u8; 8] {
+    [
+        hex_digit(code[0] / 16) as u8,
+        hex_digit(code[0] % 16) as u8,
+        hex_digit(code[1] / 16) as u8,
+        hex_digit(code[1] % 16) as u8,
+        hex_digit(code[2] / 16) as u8,
+        hex_digit(code[2] % 16) as u8,
+        hex_digit(code[3] / 16) as u8,
+        hex_digit(code[3] % 16) as u8,
     ]
 }
 
@@ -162,9 +187,10 @@ pub open spec fn classify(code: [u8; 4], payload: Seq<u8>) -> (bool, Option<u32>
 // Entry-record model.
 // ---------------------------------------------------------------------------
 
-/// The four type bytes recovered from the entry's eight-digit `type_hex` string.
+/// The four type bytes recovered from the entry's eight-digit `type_hex` field
+/// (decision D2: `[u8; 8]`, read as characters through `hex_str`).
 pub open spec fn entry_code(e: Entry) -> [u8; 4] {
-    code_of(e.type_hex@)
+    code_of(hex_str(e.type_hex))
 }
 
 /// The payload bytes an entry names, as a subrange of `b`.
@@ -180,8 +206,8 @@ pub open spec fn entry_payload_safe(b: Seq<u8>, e: Entry) -> bool {
 /// The per-entry part of T6's success invariant.
 pub open spec fn entry_inv(b: Seq<u8>, e: Entry) -> bool {
     &&& 8 <= e.payload[0] <= e.payload[1] <= b.len()
-    &&& is_hex8(e.type_hex@)
-    &&& e.type_hex@ == hex4(entry_code(e))
+    &&& is_hex8(hex_str(e.type_hex))
+    &&& hex_str(e.type_hex) == hex4(entry_code(e))
     &&& e.opaque_candidate == classify(entry_code(e), entry_payload(b, e)).0
     &&& e.nominal_side == classify(entry_code(e), entry_payload(b, e)).1
 }
@@ -208,6 +234,52 @@ proof fn lemma_hex_digit_val(v: u8)
     else if v == 4 {} else if v == 5 {} else if v == 6 {} else if v == 7 {}
     else if v == 8 {} else if v == 9 {} else if v == 10 {} else if v == 11 {}
     else if v == 12 {} else if v == 13 {} else if v == 14 {} else {}
+}
+
+/// The byte-level nibble of a hex character equals its model value, in the
+/// `u8`-to-`char` direction `hex_str` needs. `hex_digit(v) as u8 == v` for every
+/// nibble, and the cast back is the identity on the eight ASCII digits.
+pub proof fn lemma_hex_digit_u8(v: u8)
+    requires
+        v < 16,
+    ensures
+        (hex_digit(v) as u8) < 128,
+        ((hex_digit(v) as u8) as char) == hex_digit(v),
+{
+    if v == 0 {} else if v == 1 {} else if v == 2 {} else if v == 3 {}
+    else if v == 4 {} else if v == 5 {} else if v == 6 {} else if v == 7 {}
+    else if v == 8 {} else if v == 9 {} else if v == 10 {} else if v == 11 {}
+    else if v == 12 {} else if v == 13 {} else if v == 14 {} else {}
+}
+
+/// `hex_str` of the spec construction `hex4_bytes_spec` is exactly `hex4`: the
+/// bridge between the executable `[u8; 8]` field and the frozen `Seq<char>`.
+pub proof fn lemma_hex_str_hex4_bytes(code: [u8; 4])
+    ensures
+        hex_str(hex4_bytes_spec(code)) == hex4(code),
+{
+    reveal(hex_str);
+    reveal(hex4_bytes_spec);
+    reveal(hex4);
+    lemma_hex_digit_u8(code[0] / 16);
+    lemma_hex_digit_u8(code[0] % 16);
+    lemma_hex_digit_u8(code[1] / 16);
+    lemma_hex_digit_u8(code[1] % 16);
+    lemma_hex_digit_u8(code[2] / 16);
+    lemma_hex_digit_u8(code[2] % 16);
+    lemma_hex_digit_u8(code[3] / 16);
+    lemma_hex_digit_u8(code[3] % 16);
+    assert(hex_str(hex4_bytes_spec(code)) =~= hex4(code));
+}
+
+/// `code_of` recovers the four bytes from `hex_str` of the spec construction:
+/// the array side of `lemma_code_of_hex4`.
+pub proof fn lemma_code_of_hex_str_hex4_bytes(code: [u8; 4])
+    ensures
+        code_of(hex_str(hex4_bytes_spec(code))) == code,
+{
+    lemma_hex_str_hex4_bytes(code);
+    lemma_code_of_hex4(code);
 }
 
 /// `hex4` produces exactly eight lowercase hex digits.
@@ -1034,7 +1106,7 @@ pub open spec fn exec_err(m: MpError) -> Error {
 
 /// The executable record matches its model record exactly (R1's four fields).
 pub open spec fn entry_matches(b: Seq<u8>, e: Entry, m: MpEntry) -> bool {
-    &&& e.type_hex@ == m.type_hex
+    &&& hex_str(e.type_hex) == m.type_hex
     &&& e.payload[0] == m.payload.0
     &&& e.payload[1] == m.payload.1
     &&& e.opaque_candidate == m.opaque_candidate
@@ -1149,7 +1221,7 @@ pub proof fn lemma_pref_done(b: Seq<u8>, L: u64, os: Seq<u32>)
 
 /// Two records have identical R1 fields.
 pub open spec fn entry_eq_fields(e: Entry, m: MpEntry) -> bool {
-    &&& e.type_hex@ == m.type_hex
+    &&& hex_str(e.type_hex) == m.type_hex
     &&& e.payload[0] == m.payload.0
     &&& e.payload[1] == m.payload.1
     &&& e.opaque_candidate == m.opaque_candidate
@@ -1355,7 +1427,7 @@ pub proof fn lemma_entry_matches_at(b: Seq<u8>, off: int, e: Entry)
     requires
         0 <= off,
         off + 8 <= b.len(),
-        e.type_hex@ == hex4(code4(b, off)),
+        hex_str(e.type_hex) == hex4(code4(b, off)),
         e.payload[0] == (off + 8) as u32,
         e.payload[1] == (off + (be32u(b, off + 4) as int)) as u32,
         e.opaque_candidate == classify(
@@ -1656,7 +1728,7 @@ pub proof fn lemma_entry_inv_from_at(b: Seq<u8>, off: int, e: Entry)
     reveal(entry_code); reveal(entry_payload);
     let q = be32u(b, off + 4) as int;
     assert(be32u(b, off + 4) as int == q);
-    assert(e.type_hex@ == hex4(code4(b, off)));
+    assert(hex_str(e.type_hex) == hex4(code4(b, off)));
     lemma_hex4_is_hex8(code4(b, off));
     assert(entry_code(e) == code4(b, off)) by {
         assert(entry_code(e) == code_of(hex4(code4(b, off))));
@@ -2248,7 +2320,7 @@ pub proof fn lemma_l3_mask_t8mk()
 pub open spec fn entries_same_fields(a: Seq<Entry>, b: Seq<Entry>) -> bool {
     &&& a.len() == b.len()
     &&& forall|i: int| 0 <= i < a.len() ==> {
-        &&& a[i].type_hex@ == b[i].type_hex@
+        &&& hex_str(a[i].type_hex) == hex_str(b[i].type_hex)
         &&& a[i].payload[0] == b[i].payload[0]
         &&& a[i].payload[1] == b[i].payload[1]
         &&& a[i].opaque_candidate == b[i].opaque_candidate
@@ -2275,7 +2347,7 @@ pub proof fn lemma_exact_entry_equivalence(a: Seq<Entry>, ms: Seq<MpEntry>, es: 
         assert forall|i: int| 0 <= i < es.len() implies
             #[trigger] entry_eq_fields(es[i], ms[i]) by {
             assert(entry_eq_fields(a[i], ms[i]));
-            assert(a[i].type_hex@ == es[i].type_hex@);
+            assert(hex_str(a[i].type_hex) == hex_str(es[i].type_hex));
             assert(a[i].payload[0] == es[i].payload[0]);
             assert(a[i].payload[1] == es[i].payload[1]);
             assert(a[i].opaque_candidate == es[i].opaque_candidate);
@@ -2284,7 +2356,7 @@ pub proof fn lemma_exact_entry_equivalence(a: Seq<Entry>, ms: Seq<MpEntry>, es: 
     }
     if entries_eq_models(es, ms) {
         assert forall|i: int| 0 <= i < a.len() implies {
-            &&& a[i].type_hex@ == es[i].type_hex@
+            &&& hex_str(a[i].type_hex) == hex_str(es[i].type_hex)
             &&& a[i].payload[0] == es[i].payload[0]
             &&& a[i].payload[1] == es[i].payload[1]
             &&& a[i].opaque_candidate == es[i].opaque_candidate
@@ -3104,7 +3176,7 @@ pub proof fn lemma_rle_pref_finish(
 
 /// The four type bytes of an entry, from its `type_hex` string (R1).
 pub open spec fn entry_type_code(e: Entry) -> [u8; 4] {
-    code_of(e.type_hex@)
+    code_of(hex_str(e.type_hex))
 }
 
 /// The payload an entry names, as a subrange of `b`.
@@ -3603,7 +3675,7 @@ pub proof fn lemma_mc_ms_eq(b: Seq<u8>, es: Seq<Entry>, ms: Seq<MpEntry>, i: u32
         let e = es[i as int];
         let m = ms[i as int];
         assert(entry_eq_fields(e, m));
-        assert(e.type_hex@ == m.type_hex);
+        assert(hex_str(e.type_hex) == m.type_hex);
         assert(entry_type_code(e) == code_of(m.type_hex)) by {
             reveal(entry_type_code);
         }
@@ -3628,7 +3700,7 @@ pub proof fn lemma_ma_ms_eq(b: Seq<u8>, es: Seq<Entry>, ms: Seq<MpEntry>, i: u32
         let e = es[i as int];
         let m = ms[i as int];
         assert(entry_eq_fields(e, m));
-        assert(e.type_hex@ == m.type_hex);
+        assert(hex_str(e.type_hex) == m.type_hex);
         assert(entry_type_code(e) == code_of(m.type_hex)) by {
             reveal(entry_type_code);
         }
@@ -3898,6 +3970,87 @@ pub proof fn lemma_decoded_eq_err(
     reveal(decoded_eq);
 }
 
+
+/// Any code the R8 table classifies has a side at most 128: a property of the
+/// `legacy_side` table alone, so it needs no hypothesis on the entry.
+pub proof fn lemma_legacy_side_bound(code: [u8; 4])
+    ensures
+        match legacy_side(code) {
+            Some((_, s)) => s <= 128,
+            None => true,
+        },
+{
+    reveal(legacy_side);
+    reveal(is_code);
+}
+
+/// The R8 side bound in the squared form `Req_C`/`Req_A`/`Req_J` need:
+/// `s*s <= 16384` for every legacy code.
+pub proof fn lemma_legacy_side_n_bound(code: [u8; 4])
+    ensures
+        match legacy_side(code) {
+            Some((_, s)) => (s as int) * (s as int) <= 16384,
+            None => true,
+        },
+{
+    reveal(legacy_side);
+    reveal(is_code);
+    if legacy_side(code) is Some {
+        let s = legacy_side(code).unwrap().1;
+        assert(s as int <= 128);
+        assert((s as int) * (s as int) <= 16384) by (nonlinear_arith)
+            requires 0 <= s as int, s as int <= 128;
+    }
+}
+
+/// The R8 table's smallest side is 16, so every classified code has
+/// `16 <= s <= 128` and `s*s >= 1`. The lower bound is what `assert(1 <= n)`
+/// in the decoders needs.
+pub proof fn lemma_legacy_side_ge_16(code: [u8; 4])
+    ensures
+        match legacy_side(code) {
+            Some((_, s)) => 16 <= s <= 128,
+            None => true,
+        },
+{
+    reveal(legacy_side);
+    reveal(is_code);
+}
+
+/// The RLE error propagates through `mc`: if the strip-and-RLE step of entry
+/// `i` is `Err(e)`, then `mc(b, E, i) == Err(e)` too (A-ICNS-4's error exit).
+pub proof fn lemma_mc_rle_err(
+    b: Seq<u8>,
+    E: Seq<Entry>,
+    i: u32,
+    code: [u8; 4],
+    side: u32,
+    e: Error,
+)
+    requires
+        (i as int) < (E.len() as int),
+        code == entry_type_code(E[i as int]),
+        legacy_side(code) == Some((true, side)),
+        mr(strip_it32(code, entry_payload_bytes(b, E[i as int])),
+            (side as int) * (side as int)) == Err(e),
+    ensures
+        mc(b, E, i) == Err(e),
+{
+    reveal(mc);
+}
+
+/// The payload byte length an entry names equals `payload[1] - payload[0]`.
+pub proof fn lemma_entry_payload_bytes_len(b: Seq<u8>, e: Entry)
+    requires
+        e.payload[0] as int <= e.payload[1] as int,
+        e.payload[1] as int <= b.len(),
+    ensures
+        entry_payload_bytes(b, e).len()
+            == (e.payload[1] as int) - (e.payload[0] as int),
+{
+    reveal(entry_payload_bytes);
+    lemma_seq_subrange_len(b, e.payload[0] as int, e.payload[1] as int);
+}
 /// `decoded_eq` on a successful executable result pins width, height and bytes.
 pub proof fn lemma_decoded_eq_ok(
     r: Result<Decoded, Error>,
@@ -3925,7 +4078,7 @@ pub proof fn lemma_mc_fields_eq(b: Seq<u8>, a: Seq<Entry>, a2: Seq<Entry>, i: u3
     if (i as int) < a.len() {
         let e1 = a[i as int];
         let e2 = a2[i as int];
-        assert(e1.type_hex@ == e2.type_hex@);
+        assert(hex_str(e1.type_hex) == hex_str(e2.type_hex));
         assert(e1.payload[0] == e2.payload[0]);
         assert(e1.payload[1] == e2.payload[1]);
     }
@@ -3945,7 +4098,7 @@ pub proof fn lemma_ma_fields_eq(b: Seq<u8>, a: Seq<Entry>, a2: Seq<Entry>, i: u3
     if (i as int) < a.len() {
         let e1 = a[i as int];
         let e2 = a2[i as int];
-        assert(e1.type_hex@ == e2.type_hex@);
+        assert(hex_str(e1.type_hex) == hex_str(e2.type_hex));
         assert(e1.payload[0] == e2.payload[0]);
         assert(e1.payload[1] == e2.payload[1]);
     }
@@ -4030,52 +4183,70 @@ pub proof fn lemma_mj_ms_eq(
     }
 }
 
-/// T12 stated over `P(b,E)`: `combine` equals `MJ` exactly. The `P(b,E)`
-/// premise is supplied by the caller (a successful parse via T8, or directly).
+/// T12 stated over `P(b,E)`: `try_combine` equals `MJ` exactly on every
+/// non-`OutOfMemory` result. The `P(b,E)` premise is supplied by the caller (a
+/// successful `try_parse` via T8, or directly).
 #[allow(dead_code)]
 fn t12_combine_exact_for_p(
     bytes: &[u8],
     entries: &[crate::icns::Entry],
     ci: Option<u32>,
     mi: Option<u32>,
-) -> (r: Result<crate::icns::Decoded, crate::icns::Error>)
+) -> (r: Result<crate::icns::Decoded, crate::alloc_guard::sites::TryError>)
     requires
-        crate::model::p_exec(bytes@, entries@),
+        crate::model::parsed_inv(bytes@, entries@),
     ensures
-        crate::model::combine_decoded_eq(r, bytes@, entries@, ci, mi),
+        !matches!(r, Err(crate::alloc_guard::sites::TryError::OutOfMemory(_)))
+            ==> crate::model::combine_decoded_eq(
+                crate::alloc_guard::sites::fmt_part(r),
+                bytes@,
+                entries@,
+                ci,
+                mi,
+            ),
 {
-    proof {
-        crate::model::lemma_p_exec_inv(bytes@, entries@);
-    }
-    crate::combine(bytes, entries, ci, mi)
+    crate::try_combine(bytes, entries, ci, mi)
 }
 
-/// T13 at a concrete call path: `parse` runs, and then `combine` runs on the
-/// same bytes and the entries `parse` returned. The premise of the statement is
-/// `parse(b) = Ok(E)`; the proof of `P(b,E)` is obtained inside the body from
-/// T7/T8 (`lemma_parse_ok_gives_p`), not assumed. The statement binds E to the
-/// entries `parse` returned, so it is exactly `combine(b,E,ci,mi) = MJ(b,E,ci,mi)`.
+/// T13 at a concrete call path: `try_parse` runs, then `try_combine` runs on the
+/// same bytes and the entries `try_parse` returned. The premise of the statement
+/// is `parse(b) = Ok(E)`; `P(b,E)` is obtained inside the body from T7/T8, not
+/// assumed. An `OutOfMemory` from either call makes the statement vacuous.
 #[allow(dead_code)]
 fn t13_combine_after_parse(
     bytes: &[u8],
     ci: Option<u32>,
     mi: Option<u32>,
-) -> (out: (crate::icns::ParseRes, crate::icns::CombineRes))
+) -> (out: (Result<Vec<crate::icns::Entry>, crate::alloc_guard::sites::TryError>,
+           Result<crate::icns::Decoded, crate::alloc_guard::sites::TryError>))
     ensures
-        match out.0 {
-            Ok(entries) => crate::model::combine_decoded_eq(out.1, bytes@, entries@, ci, mi),
-            Err(_) => true,
-        },
+        !matches!(out.0, Err(crate::alloc_guard::sites::TryError::OutOfMemory(_)))
+            && !matches!(out.1, Err(crate::alloc_guard::sites::TryError::OutOfMemory(_)))
+            ==> match out.0 {
+                Ok(entries) => crate::model::combine_decoded_eq(
+                    crate::alloc_guard::sites::fmt_part(out.1),
+                    bytes@,
+                    entries@,
+                    ci,
+                    mi,
+                ),
+                Err(_) => true,
+            },
 {
-    let entries = match crate::parse(bytes) {
+    use crate::alloc_guard::sites::TryError;
+    proof { reveal(crate::alloc_guard::sites::fmt_part_entries); }
+    let entries = match crate::try_parse(bytes) {
         Ok(v) => v,
-        Err(e) => return (Err(e), Err(e)),
+        Err(TryError::Format(e)) => return (Err(TryError::Format(e)), Err(TryError::Format(e))),
+        Err(TryError::OutOfMemory(o)) => {
+            return (Err(TryError::OutOfMemory(o)), Err(TryError::Format(crate::icns::Error::BadMagic)));
+        },
     };
     proof {
         crate::model::lemma_parse_ok_gives_p(bytes@, entries);
         crate::model::lemma_p_exec_inv(bytes@, entries@);
     }
-    let r = crate::combine(bytes, &entries, ci, mi);
+    let r = crate::try_combine(bytes, &entries, ci, mi);
     (Ok(entries), r)
 }
 

@@ -1,15 +1,41 @@
 //! Conformance harness: runs every vector in `spec-frozen/VECTORS.json` against
-//! the plain implementation in `src/icns.rs`.
+//! the alloc-delta `try_*` API in `src/icns.rs`.
 //!
-//! Per R18, each vector first runs `parse`; a parse error is reported before any
-//! decoding. Missing `color_index`/`mask_index` encode `None` for `combine`.
+//! Per R18, each vector first runs `try_parse`; a parse error is reported before
+//! any decoding. Missing `color_index`/`mask_index` encode `None` for
+//! `try_combine`. The tests run without a fault-injecting allocator, so
+//! `OutOfMemory` never occurs and is treated as a test failure (`fmt_part`
+//! panics on it), keeping the frozen expectations verbatim.
 
 use std::fs;
 use std::path::PathBuf;
 
-use icns_verus::icns::{combine, decode_mask, decode_rgb, parse, Entry, Error};
+use icns_verus::icns::{try_combine, try_decode_mask, try_decode_rgb, try_parse, Decoded, Entry, Error, TryError};
 
 use serde_json::Value;
+
+/// Fold a `try_*` result into the frozen-typed result: `Format(e)` is the frozen
+/// error, and `OutOfMemory` is a test failure (the tests run without a
+/// fault-injecting allocator, so it never occurs).
+fn fmt_part(r: Result<Decoded, TryError>) -> Result<Decoded, Error> {
+    match r {
+        Ok(d) => Ok(d),
+        Err(TryError::Format(e)) => Err(e),
+        Err(TryError::OutOfMemory(o)) => {
+            panic!("unexpected OutOfMemory: site {:?}, elements {}", o.site(), o.elements())
+        }
+    }
+}
+
+fn fmt_part_entries(r: Result<Vec<Entry>, TryError>) -> Result<Vec<Entry>, Error> {
+    match r {
+        Ok(v) => Ok(v),
+        Err(TryError::Format(e)) => Err(e),
+        Err(TryError::OutOfMemory(o)) => {
+            panic!("unexpected OutOfMemory: site {:?}, elements {}", o.site(), o.elements())
+        }
+    }
+}
 
 fn vectors_path() -> PathBuf {
     let manifest = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
@@ -79,8 +105,9 @@ fn check_parse_entries(actual: &[Entry], expected: &Value) {
     let want = expected.as_array().expect("entries array");
     assert_eq!(actual.len(), want.len(), "entry count");
     for (i, (a, w)) in actual.iter().zip(want.iter()).enumerate() {
+        // Decision D2: `type_hex` is `[u8; 8]`, compared through `std::str::from_utf8`.
         assert_eq!(
-            a.type_hex,
+            std::str::from_utf8(&a.type_hex).unwrap(),
             w["type_hex"].as_str().unwrap(),
             "entry {i} type_hex"
         );
@@ -109,7 +136,7 @@ fn check_vector(v: &Value) -> Result<(), String> {
     let bytes = input_bytes(v);
     let op = v["operation"].as_str().expect("operation");
 
-    let entries = match parse(&bytes) {
+    let entries = match fmt_part_entries(try_parse(&bytes)) {
         Ok(e) => e,
         Err(err) => {
             let want = expected
@@ -127,7 +154,7 @@ fn check_vector(v: &Value) -> Result<(), String> {
         if op == "parse" {
             return Err(format!("expected parse error {want}, parse succeeded"));
         }
-        let err = decode(v, &bytes, &entries)
+        let err = fmt_part(decode(v, &bytes, &entries))
             .err()
             .ok_or_else(|| format!("expected decode error {want}, decode succeeded"))?;
         if err.name() != want {
@@ -141,7 +168,7 @@ fn check_vector(v: &Value) -> Result<(), String> {
         return Ok(());
     }
 
-    let decoded = decode(v, &bytes, &entries).map_err(|e| e.name().to_string())?;
+    let decoded = fmt_part(decode(v, &bytes, &entries)).map_err(|e| e.name().to_string())?;
     let side = expected["side"].as_u64().expect("side") as u32;
     if decoded.width != side || decoded.height != side {
         return Err(format!(
@@ -168,19 +195,15 @@ fn check_vector(v: &Value) -> Result<(), String> {
     Ok(())
 }
 
-fn decode(
-    v: &Value,
-    bytes: &[u8],
-    entries: &[Entry],
-) -> Result<icns_verus::icns::Decoded, Error> {
+fn decode(v: &Value, bytes: &[u8], entries: &[Entry]) -> Result<Decoded, TryError> {
     match v["operation"].as_str().expect("operation") {
         "rgb" => {
             let ci = v["color_index"].as_u64().expect("color_index") as u32;
-            decode_rgb(bytes, entries, ci)
+            try_decode_rgb(bytes, entries, ci)
         }
         "mask" => {
             let mi = v["mask_index"].as_u64().expect("mask_index") as u32;
-            decode_mask(bytes, entries, mi)
+            try_decode_mask(bytes, entries, mi)
         }
         "combine" => {
             let ci = v
@@ -191,7 +214,7 @@ fn decode(
                 .get("mask_index")
                 .and_then(|x| x.as_u64())
                 .map(|x| x as u32);
-            combine(bytes, entries, ci, mi)
+            try_combine(bytes, entries, ci, mi)
         }
         other => panic!("unexpected operation for decode: {other}"),
     }

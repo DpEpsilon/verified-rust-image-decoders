@@ -1,0 +1,70 @@
+# no_std + alloc status of icns_verus (2026-11-12)
+
+## What changed
+
+`icns_verus` is `#![no_std]` with `extern crate alloc;`. Backups `*.nostd-1` are the green sources, `*.pre-nostd` the sources before the change.
+
+- `Cargo.toml`: `vstd = { version = "=0.0.0-2026-11-01-0251", default-features = false, features = ["alloc"] }`
+- `src/lib.rs`: `#![no_std]`, `extern crate alloc;`
+- `src/icns.rs`: `use alloc::string::String; use alloc::vec; use alloc::vec::Vec;`
+- `src/model.rs`: `use alloc::vec::Vec;`. The cargo build warns this import is unused because `Vec` appears there only in spec/proof signatures (erased in a normal build), but the verifier needs it (probe run 8: 17 errors without it). It is therefore a required import that a plain `cargo build` cannot validate.
+- No `std::` paths existed in the ICNS sources, no cfg(test) modules, and `tests/conformance.rs` is a separate std crate (unchanged). The dev-dependency `serde_json` stays (test-only).
+
+The alloc-delta migration (2026-11-12, `dib-policy`, WIP snapshots `icns/alloc-wip-1/` and `icns/alloc-notes/`) adds `src/alloc_guard/{mod.rs,sites.rs}` and `tests/fault_injection.rs`. Nothing changed about the `no_std` boundary: the guard uses `alloc::vec::Vec` with the explicit `use alloc::vec::Vec;`, `tests/fault_injection.rs` is a std test crate like `tests/conformance.rs`, and no production source gained a `std::` path. `tools/audit_alloc.sh` and `tools/alloc_scan.py` now exist.
+
+No change to any verified item, spec or proof; nothing beyond imports and the Cargo feature.
+
+## Verification
+
+Baseline (RUNLOG run 208): 315 verified, 0 errors. Converted live crate: **315 verified, 0 errors** (`runs/001.log`, RUNLOG line 1 of 2026-11-12, 327 s, fresh target dir so vstd was rebuilt alloc-only). The probe copy `alloc-delta/proto/nostd_probe/icns_nostd` gave the same 315/0 (probe run 9). Note on numbering: `icns/runs/` did not exist, so `verify.sh` numbered the log 001 while RUNLOG.tsv continues from 208; the RUNLOG row carries the 2026-11-12 timestamp.
+
+After the alloc-delta migration: **406 verified, 0 errors** (`runs/041.log`). `cargo test --offline`: `tests/conformance.rs` 111/111 frozen vectors, `tests/fault_injection.rs` 8 passed. The source lint `tools/audit_alloc.sh` (a falsification gate, not enforcement) exits 0. The obligations added over the 315 baseline are the A-ICNS-1..6 shape lemmas, the guard call sites and the `try_*` entry points; none of the 315 was removed.
+
+## Certification evidence (in `icns_verus/`, PATH=/opt/cargo/bin:/opt/verus)
+
+(a) `cargo tree --offline -e normal,no-proc-macro -f '{p} [{f}]'` (identical with `--no-default-features`):
+
+```
+icns_verus v0.1.0 []
+└── vstd v0.0.0-2026-11-01-0251 [alloc]
+    └── verus_builtin v0.0.0-2026-11-01-0251 []
+```
+
+No `std` feature in the linked closure. The host-side proc-macro closure (`verus_builtin_macros`, `verus_state_machines_macros`, `syn`, `proc-macro2`, `quote`, `verus_syn`, `verus_prettyplease`, `synstructure`, `convert_case`, `unicode-ident`, `indexmap [default,std]`, `equivalent`, `hashbrown`) appears only under plain `-e normal`; it runs in the compiler and is `MacrosOnly` in the rlib.
+
+(b) `cargo build --offline --lib --release` then `RUSTC_BOOTSTRAP=1 rustc -Zls=root target/release/libicns_verus.rlib`: dependencies core, alloc, compiler_builtins (private), vstd, verus_builtin, plus the two `MacrosOnly` crates. No `std`.
+
+(c) `cargo build --offline --lib --target T` (dev profile), vstd compiled alloc-only each time; `-Zls=root` on each rlib lists the same seven dependencies, no `std`:
+
+| target | result |
+|---|---|
+| `x86_64-unknown-none` | Finished, rc=0 (no `std` exists for this target) |
+| `thumbv7m-none-eabi` | Finished, rc=0; no 64-bit-atomics or other failure in vstd or the crate |
+| `i686-unknown-linux-gnu` | Finished, rc=0 (32-bit pointer width) |
+
+## What is and is not certified
+
+Certified: the crate and its linked dependency closure use only `core` and `alloc`; the lib compiles for `x86_64-unknown-none`, `thumbv7m-none-eabi` and `i686-unknown-linux-gnu`; verification (315/0) is unchanged.
+
+Not certified:
+- Linking or running on bare metal: only the lib rlib was built; no binary, global allocator or panic handler. A consumer must provide a `#[global_allocator]` and a panic handler; the crate allocates through `alloc`, and out-of-memory is reported as an error only where the code uses fallible reservation. The source lint is a falsification gate; it lists allocating constructs in exec code and fails on the ones it recognises, so it cannot establish that no allocation occurs outside the guard. The production call-graph audit (SPEC.md §6) does not exist for ICNS.
+- Verification per target: the verifier ran once, on x86_64 Linux. The i686 and thumbv7m builds are compile evidence only; behaviour with a 32-bit `usize` (for example the 64 MiB input cap and `u64`/`usize` conversions) is not re-proved.
+- Release-profile bare-metal builds and `-C panic=abort`.
+- The integration test crate (`tests/conformance.rs`) uses `std` and is not part of the claim.
+- The vstd used is the registry source with `features=["alloc"]`, rebuilt by `cargo verus`; the prebuilt `/opt/verus/libvstd.rlib` is std-enabled and would be used by a direct `verus` invocation.
+
+The freestanding host-link technique from nostd_probe was not rerun; the bare-metal builds supersede it.
+
+## Commands
+
+```
+cd icns && ./verify.sh "<note>"
+cd icns/icns_verus
+cargo test --offline
+cargo tree --offline -e normal,no-proc-macro -f '{p} [{f}]'
+cargo build --offline --lib --release
+RUSTC_BOOTSTRAP=1 rustc -Zls=root target/release/libicns_verus.rlib
+cargo build --offline --lib --target x86_64-unknown-none
+cargo build --offline --lib --target thumbv7m-none-eabi
+cargo build --offline --lib --target i686-unknown-linux-gnu
+```

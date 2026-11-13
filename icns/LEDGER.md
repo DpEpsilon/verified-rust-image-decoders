@@ -23,3 +23,38 @@ Verus M3 totals: DeepSeek attempts 1+2: 860,000 tokens (578,605 + 282,690), 393 
 | 4b | M4b | deepseek-v4.1-flash-verus (medium) | MJ model, T12, T13 | 238887 | 101 | 15m59s | 212 verified, 0 errors (reproduced after cargo clean); 111/111; no escapes; T13 binds E to parse result, P derived from T7/T8; 10 verifier runs (4 pass, 6 fail); finished; self-reported 96 calls vs harness 101 |
 | 4c | M4c | deepseek-v4.1-flash-verus (medium) | 102 vector agreements, 40 witnesses, mutations 1-10 | 461655 | 477 (harness; agent reported ~250; cap 400 exceeded) | 93m40s | 315 verified, 0 errors (reproduced after cargo clean, 5m10s); 111/111; no escapes; all 10 mutations fail the verifier (m1 6 err, m3 2, m5 2, m9 3, m10 1; m2/m4/m6/m7/m8 compile-abort), logs kept; 33 verifier runs (14 probes); agent self-report otherwise matched |
 Verus M4 totals (4a+4b+4c): 1,220,683 tokens, 823 tool calls (harness). Verus cumulative DeepSeek tokens: about 3.0M after M4c.
+| nostd-1 | no_std | claude (sonnet 5.5) | convert icns_verus to no_std + alloc; certification checks | - | - | - | 315 verified, 0 errors (unchanged from run 208; runs/001.log). Imports and Cargo feature only (alloc imports in icns.rs and model.rs; model.rs import is verifier-only). conformance green. Lib builds on x86_64-unknown-none, thumbv7m-none-eabi, i686-unknown-linux-gnu; rlib -Zls shows core/alloc/compiler_builtins only. See NO_STD.md. Backups *.nostd-1. |
+
+## alloc-delta ICNS step (2026-11-12, deepseek-v4.1-flash)
+
+The `try_*` ICNS crate: `./verify.sh` **406 verified, 0 errors** (`runs/041.log`),
+up from the 315 of the pre-delta `no_std` state; no pre-existing obligation was
+removed (the six "missing" top-level names are the renames `parse` ->
+`parse_tracked`, `rle_decode` -> `rle_decode_tracked`, `decode_rgb`/`decode_mask`/
+`combine` -> `*_tracked`, `hex4` -> `hex4_bytes`). `cargo test --offline`:
+`tests/conformance.rs` 111/111 vectors, `tests/fault_injection.rs` 8/8. The
+source lint `tools/audit_alloc.sh --self-test` exits 0. Verifier runs 14-42
+(28 runs, 1 green at 41 after a first green at 41; runs 001-013 are the previous
+agent's). Backups `src/*.alloc-1` and `alloc-wip-1/alloc_guard.green-1/`.
+
+## proof-contract gaps 4/5/7/8 (2026-11-12, deepseek-v4.1-flash)
+
+The four gaps from Sol's review of the ICNS alloc-delta step are closed: (4) the
+`OutOfMemory`-names-`Req` postcondition on `try_decode_mask` and `try_combine`,
+matching `try_decode_rgb`; (5) `ensures` tying `Error::name` and `TryError::name`
+to their `name_spec` (no `when_used_as_spec`); (7) named `PreAlloc` corollaries
+`lemma_g_{rgb,mask,combine}_prealloc` on the RGB, mask and combine logged entry
+points plus public bridges; (8) G clause 3 tightened to the per-site bound
+(16,384 / 49,152 / 65,536, `MAX_ROOM` for `EntryList`) instead of the global
+67,108,864.
+
+`./verify.sh` **413 verified, 0 errors** (`runs/044.log`), up from 406; no
+pre-existing obligation removed. `cargo test --offline`: `tests/conformance.rs`
+111/111 vectors, `tests/fault_injection.rs` 12/12. Mutation sensitivity: two
+disposable `VERIFY_CRATE` copies (`alloc-wip-1/mut-name-{1,2}`, deleted) each fail
+with exactly **1** error when one `name` spelling is mutated (`runs/047.log`,
+`runs/048.log`; `412 verified, 1 errors` each). Verifier runs 43-48 (runs 046 is a
+no-op re-run on the main crate). `tools/audit_alloc.sh` is clean except the
+`sites.rs` hash pin, which `tools/` (owned by another agent) must update:
+`c48050e7…` -> `adcc09be…`; `mod.rs` unchanged at `018ed17a…`. Backups
+`src/*.alloc-f44`, `alloc-wip-1/alloc_guard.green-f44/`, `alloc-wip-1/*.f44.rs`.

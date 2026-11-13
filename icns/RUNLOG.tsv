@@ -206,3 +206,53 @@
 206	2026-11-07T19:07:34+00:00	exit=0	252s	M4c: final — 102 model-vector obligations plus T1-T13 and L1-L6 [crate=icns_verus]	verification results:: 315 verified, 0 errors
 207	2026-11-07T19:09:26+00:00	exit=0	0s	M4c: final confirmation after cleanup [crate=icns_verus]	
 208	2026-11-07T19:15:01+00:00	exit=0	317s	M4c: definitive full reverify after cargo clean [crate=icns_verus]	verification results:: 315 verified, 0 errors
+1	2026-11-12T09:25:16+00:00	exit=0	327s	no_std+alloc conversion of live icns_verus (vstd alloc-only), baseline 315 [crate=icns_verus]	verification results:: 315 verified, 0 errors
+2	2026-11-12T12:26:39+00:00	exit=101	53s	alloc-delta ICNS: first full attempt after guard + type_hex + try_* rewrite [crate=icns_verus]	verification results:: 1950 verified, 0 errors
+3	2026-11-12T12:26:50+00:00	exit=101	1s	alloc-delta ICNS: second attempt [crate=icns_verus]	
+4	2026-11-12T12:29:25+00:00	exit=101	2s	alloc-delta ICNS: full rewrite, attempt 3 [crate=icns_verus]	
+5	2026-11-12T12:29:51+00:00	exit=101	2s	alloc-delta ICNS: attempt 4 [crate=icns_verus]	
+6	2026-11-12T12:30:50+00:00	exit=101	2s	alloc-delta ICNS: attempt 5 [crate=icns_verus]	
+7	2026-11-12T12:31:44+00:00	exit=101	2s	alloc-delta ICNS: attempt 6 [crate=icns_verus]	
+8	2026-11-12T12:31:58+00:00	exit=101	6s	alloc-delta ICNS: attempt 7 [crate=icns_verus]	
+9	2026-11-12T12:32:31+00:00	exit=101	2s	alloc-delta ICNS: attempt 8 [crate=icns_verus]	
+10	2026-11-12T12:32:42+00:00	exit=101	5s	alloc-delta ICNS: attempt 9 [crate=icns_verus]	
+11	2026-11-12T12:33:01+00:00	exit=101	5s	alloc-delta ICNS: attempt 10 [crate=icns_verus]	
+12	2026-11-12T12:33:29+00:00	exit=101	7s	alloc-delta ICNS: attempt 12 [crate=icns_verus]	
+13	2026-11-12T12:38:01+00:00	exit=101	265s	alloc-delta ICNS: attempt 13 [crate=icns_verus]	verification results:: 365 verified, 17 errors
+14	2026-11-12T13:06:21+00:00	exit=101	269s	alloc-delta ICNS: post_log snapshots, prefix-generalized mask log, combine log composition [crate=icns_verus]	verification results:: 374 verified, 14 errors
+15	2026-11-12T13:13:02+00:00	exit=101	262s	alloc-delta ICNS: exact log shapes, prefix-generalized mask, combine composition [crate=icns_verus]	verification results:: 380 verified, 9 errors
+16	2026-11-12T13:18:23+00:00	exit=101	259s	alloc-delta ICNS: combine req_j unfolding, all_ok empty lemma, n bounds [crate=icns_verus]	verification results:: 386 verified, 6 errors
+17	2026-11-12T13:24:06+00:00	exit=101	267s	alloc-delta ICNS: prefix lemma, all_ok empty, combine n bound, Ok shapes [crate=icns_verus]	verification results:: 387 verified, 8 errors
+18	2026-11-12T13:25:31+00:00	exit=101	1s	alloc-delta ICNS: empty lemmas, req_j unfold, prefix lemma side param [crate=icns_verus]	
+19	2026-11-12T13:30:03+00:00	exit=101	261s	alloc-delta ICNS: empty lemmas, req_j unfold, prefix lemma side param [crate=icns_verus]	verification results:: 391 verified, 5 errors
+20	2026-11-12T13:30:08+00:00	exit=101	19s	alloc-delta ICNS: case splits in logged wrappers, req_j lemma [crate=icns_verus]	
+21	2026-11-12T13:35:22+00:00	exit=101	275s	alloc-delta ICNS: fix result/log in logged wrappers [crate=icns_verus]	verification results:: 392 verified, 5 errors
+22	2026-11-12T13:40:14+00:00	exit=101	285s	alloc-delta ICNS: OOM-arm earlier-Ok foralls [crate=icns_verus]	verification results:: 392 verified, 5 errors
+23	2026-11-12T13:40:18+00:00	exit=101	77s	alloc-delta ICNS: Seq push index lemmas in a-lemmas [crate=icns_verus]	
+24	2026-11-12T13:44:48+00:00	exit=101	259s	alloc-delta ICNS: vstd::seq push index lemmas [crate=icns_verus]	verification results:: 392 verified, 5 errors
+25	2026-11-12T13:49:07+00:00	exit=101	311s	alloc-delta ICNS: mask wrapper log_extends unfold, a-lemma lengths [crate=icns_verus]	verification results:: 392 verified, 5 errors
+26	2026-11-12T13:53:34+00:00	exit=101	363s	alloc-delta ICNS: a-lemma index facts explicit [crate=icns_verus]	verification results:: 392 verified, 5 errors
+27	2026-11-12T13:57:54+00:00	exit=101	425s	alloc-delta ICNS: a-lemma hoist length fact [crate=icns_verus]	verification results:: 392 verified, 5 errors
+28	2026-11-12T14:02:15+00:00	exit=101	475s	alloc-delta ICNS: all_ok push helpers [crate=icns_verus]	verification results:: 395 verified, 6 errors
+29	2026-11-12T14:06:37+00:00	exit=101	473s	alloc-delta ICNS: simplified all_ok helpers [crate=icns_verus]	verification results:: 393 verified, 6 errors
+30	2026-11-12T14:11:02+00:00	exit=101	470s	alloc-delta ICNS: all_ok helpers with explicit length [crate=icns_verus]	verification results:: 394 verified, 6 errors
+31	2026-11-12T14:15:26+00:00	exit=101	405s	alloc-delta ICNS: all_ok helpers with local push var [crate=icns_verus]	verification results:: 393 verified, 6 errors
+32	2026-11-12T14:19:46+00:00	exit=101	350s	alloc-delta ICNS: all_ok helpers explicit nat arith [crate=icns_verus]	verification results:: 396 verified, 6 errors
+33	2026-11-12T14:24:09+00:00	exit=101	299s	alloc-delta ICNS: all_ok helpers implies+trigger [crate=icns_verus]	verification results:: 397 verified, 4 errors
+34	2026-11-12T14:28:54+00:00	exit=101	264s	alloc-delta ICNS: a_oom log_extends facts [crate=icns_verus]	verification results:: 398 verified, 3 errors
+35	2026-11-12T14:29:53+00:00	exit=101	5s	alloc-delta ICNS: clause3 helper-lemma-free forall [crate=icns_verus]	
+36	2026-11-12T14:34:34+00:00	exit=101	272s	alloc-delta ICNS: clause3 match on options [crate=icns_verus]	verification results:: 397 verified, 3 errors
+37	2026-11-12T14:40:08+00:00	exit=101	264s	alloc-delta ICNS: decompose req bound lemmas [crate=icns_verus]	verification results:: 403 verified, 2 errors
+38	2026-11-12T14:45:28+00:00	exit=101	263s	alloc-delta ICNS: assert forall implies-trigger [crate=icns_verus]	verification results:: 403 verified, 2 errors
+39	2026-11-12T14:50:47+00:00	exit=101	277s	alloc-delta ICNS: mask-OOM prefix composition [crate=icns_verus]	verification results:: 405 verified, 1 errors
+40	2026-11-12T14:56:08+00:00	exit=101	276s	alloc-delta ICNS: try_combine_logged OOM arm facts [crate=icns_verus]	verification results:: 405 verified, 1 errors
+41	2026-11-12T15:01:14+00:00	exit=0	267s	alloc-delta ICNS: try_combine_logged clause2 forall [crate=icns_verus]	verification results:: 406 verified, 0 errors
+42	2026-11-12T15:08:58+00:00	exit=0	1s	alloc-delta ICNS: final confirmation after tests, tools, docs [crate=icns_verus]	
+43	2026-11-12T16:00:31+00:00	exit=101	331s	alloc-delta ICNS: items 4 (mask/combine OOM in Req), 5 (name bridges), 7 (PreAlloc corollaries), 8 (per-site clause 3) [crate=icns_verus]	verification results:: 410 verified, 3 errors	peak_rss_sum_mb=3362	peak_rss_max_proc_mb=2506:rust_verify
+44	2026-11-12T16:05:38+00:00	exit=0	275s	alloc-delta ICNS: items 4/5/7/8, PreAlloc calls after G derivation [crate=icns_verus]	verification results:: 413 verified, 0 errors	peak_rss_sum_mb=1300	peak_rss_max_proc_mb=1029:rust_verify
+46	2026-11-12T16:06:23+00:00	exit=0	1s	MUT-sensitivity copy1: one Error::name exec spelling mutated (expect exactly 1 error) [crate=icns_verus]		peak_rss_sum_mb=60	peak_rss_max_proc_mb=38:cargo
+47	2026-11-12T16:12:09+00:00	exit=101	337s	MUT-sensitivity copy1: one Error::name exec spelling mutated (expect exactly 1 error) [crate=alloc-wip-1/mut-name-1]	verification results:: 412 verified, 1 errors	peak_rss_sum_mb=3139	peak_rss_max_proc_mb=2537:rust_verify
+48	2026-11-12T16:19:30+00:00	exit=101	327s	MUT-sensitivity copy2: TryError::name OutOfMemory spelling mutated (expect exactly 1 error) [crate=alloc-wip-1/mut-name-2]	verification results:: 412 verified, 1 errors	peak_rss_sum_mb=3220	peak_rss_max_proc_mb=2531:rust_verify
+49	2026-11-12T16:21:03+00:00	exit=0	1s	final confirmation: gaps 4/5/7/8 green after tests, lint, docs [crate=icns_verus]		peak_rss_sum_mb=288	peak_rss_max_proc_mb=248:rust_verify
+50	2026-11-12T16:26:46+00:00	exit=0	322s	final full reverify from scratch: gaps 4/5/7/8, 413 verified [crate=icns_verus]	verification results:: 413 verified, 0 errors	peak_rss_sum_mb=3125	peak_rss_max_proc_mb=2517:rust_verify
+51	2026-11-13T03:25:26+00:00	exit=0	323s	 [crate=icns_verus]	verification results:: 412 verified, 0 errors	peak_rss_sum_mb=3355	peak_rss_max_proc_mb=2524:rust_verify
