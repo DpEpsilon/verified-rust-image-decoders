@@ -8,3 +8,15 @@ corpus/
 **/rustc-ice-*.txt
 *.pyc
 __pycache__/
+
+# Build and backup leftovers
+*.rlib
+*.alloc-*
+*.p2*
+*.pol-*
+*.nostd-1
+*.pre-nostd
+alloc-wip-*/
+astd4-logs/
+ico/mutation/m[0-9]*/
+ico/mutation/base/
