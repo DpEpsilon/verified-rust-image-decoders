@@ -1,0 +1,15 @@
+[package]
+name = "nostd_probe"
+version = "0.1.0"
+license = "MIT"
+description = "Probe: can a no_std + alloc crate be verified with vstd alloc-only?"
+edition = "2021"
+
+[dependencies]
+vstd = { version = "=0.0.0-2026-11-01-0251", default-features = false, features = ["alloc"] }
+
+[package.metadata.verus]
+verify = true
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(verus_only)'] }

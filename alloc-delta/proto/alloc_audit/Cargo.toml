@@ -1,0 +1,15 @@
+[package]
+name = "alloc_audit"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "alloc_audit"
+path = "src/main.rs"
+
+# The rustc_private crates (rustc_driver, rustc_middle, ...) are found in the
+# sysroot via `extern crate` under `#![feature(rustc_private)]`; they are not
+# Cargo dependencies.
+
+[profile.dev]
+debug = false

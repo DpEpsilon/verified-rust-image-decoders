@@ -1,0 +1,5 @@
+# alloc-delta frozen 2026-11-12 by owner approval (pending no_std, Sol short read complete, twelfth revision). Prototype gates F1-F3 passed as feasibility gates only; production prerequisites in SPEC.md section 8 are NOT met: no 'proved' or 'audit shows' claim may be made until they are.
+d1c150e358932adbfc2b3ed90ed33a2eedf58e4de219d4bfe9b4b45a5cde1363  SPEC.md
+bdef166e40f6a7df061e35d0901deefd1a7f5c0ef10518cbb4f81553fe4569af  THEOREMS-ALLOC-DELTA.md
+481792f6e70373662266a4fa7a25d864f380bf70cb4537bbdb939b94228b2fcf  TABLE.md
+122f6bf7c999fb688fd5b0749a8955595af3bbdc9711e7571eaad9bb77009d71  REVIEW-SOL.md

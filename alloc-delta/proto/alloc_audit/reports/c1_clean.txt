@@ -1,0 +1,27 @@
+=== alloc_audit report ===
+verdict: Pass
+profile: opt-level=2,debug-assertions=off,share-generics=off [release]
+source_hash (audited crate): 5d90e4c04bbe53c91ccd3013f09232f545c6d982909b4ba027b8f5989ea54cdd
+source-hash scope: source-map text only (crate's own files; excludes include_bytes!/include_str! payloads, build-script and proc-macro output, and dependency sources)
+  source 0b681fe8e7599630b4bee97f373f183c1acea83d3dd1bd8b171cb508a2a66eaf  /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/proto/alloc_audit/testcases/c1_clean.rs
+mode: PROTOTYPE (--prototype given; the `prototype-fixture` reviewer is accepted)
+nodes (monomorphised instances walked): 49
+edges: 81
+allocator entry points reachable: 4 (4 allowlisted, 0 unexplained)
+fail-closed findings: 0
+unexplained leaves: 0
+allowlist: /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/proto/alloc_audit/allowlist/c1_clean.toml sha256=f014d57c4330d514c3da8870464eab8b49bde95098cf7fe658cdafdc6d3914c7 : 11 entries, reviewer Some("prototype-fixture"), commit Some("58cf8f9c3") (running "58cf8f9c3", full Some("58cf8f9c35b355199727627d07ae34a4e2846d67")), target Some("x86_64-unknown-linux-gnu"), profile Some("opt-level=2,debug-assertions=off,share-generics=off") (detected "opt-level=2,debug-assertions=off,share-generics=off" [release]), vstd Some("0.0.0-2026-11-01-0251") (linked false, actual None), source_hash Some("5d90e4c04bbe53c91ccd3013f09232f545c6d982909b4ba027b8f5989ea54cdd") (actual Some("5d90e4c04bbe53c91ccd3013f09232f545c6d982909b4ba027b8f5989ea54cdd"))
+
+-- allocator entry points --
+  OK alloc::alloc::__rust_alloc
+      path: c1_clean_root -> Holder::new -> guard::try_zeroed -> alloc::raw_vec::RawVecInner::<A>::reserve_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::grow_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::finish_grow<std::alloc::Global> -> <std::alloc::Global as std::alloc::Allocator>::allocate -> std::alloc::Global::alloc_impl_runtime -> alloc::alloc::__rust_alloc
+      via alloc::raw_vec::RawVecInner::<A>::reserve_exact (allowlist caller guard::try_zeroed)
+  OK alloc::alloc::__rust_alloc_zeroed
+      path: c1_clean_root -> Holder::new -> guard::try_zeroed -> alloc::raw_vec::RawVecInner::<A>::reserve_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::grow_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::finish_grow<std::alloc::Global> -> <std::alloc::Global as std::alloc::Allocator>::allocate -> std::alloc::Global::alloc_impl_runtime -> alloc::alloc::__rust_alloc_zeroed
+      via alloc::raw_vec::RawVecInner::<A>::reserve_exact (allowlist caller guard::try_zeroed)
+  OK alloc::alloc::__rust_dealloc
+      path: c1_clean_root -> Holder::new -> guard::try_zeroed -> alloc::raw_vec::RawVecInner::<A>::reserve_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::grow_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::finish_grow<std::alloc::Global> -> <std::alloc::Global as std::alloc::Allocator>::grow -> std::alloc::Global::grow_impl_runtime -> alloc::alloc::__rust_dealloc
+      via alloc::raw_vec::RawVecInner::<A>::reserve_exact (allowlist caller guard::try_zeroed)
+  OK alloc::alloc::__rust_realloc
+      path: c1_clean_root -> Holder::new -> guard::try_zeroed -> alloc::raw_vec::RawVecInner::<A>::reserve_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::grow_exact<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::finish_grow<std::alloc::Global> -> <std::alloc::Global as std::alloc::Allocator>::grow -> std::alloc::Global::grow_impl_runtime -> alloc::alloc::__rust_realloc
+      via alloc::raw_vec::RawVecInner::<A>::reserve_exact (allowlist caller guard::try_zeroed)

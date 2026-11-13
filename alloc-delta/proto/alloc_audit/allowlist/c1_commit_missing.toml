@@ -1,0 +1,105 @@
+# Prototype allowlist for testcase c1_clean.
+# This is a *test fixture*, not a reviewed production allowlist: it exists to
+# show the format and to make the clean control pass. A production allowlist
+# for DIB would carry the DIB source hash, the full commit, and a named human
+# reviewer.
+
+[meta]
+vstd_version = "0.0.0-2026-11-01-0251"
+vstd = "none"
+target = "x86_64-unknown-linux-gnu"
+profile = "opt-level=2,debug-assertions=off,share-generics=off"
+reviewer = "prototype-fixture"
+source_hash = "5d90e4c04bbe53c91ccd3013f09232f545c6d982909b4ba027b8f5989ea54cdd"
+
+# --- allocation-capable items, enumerated per caller ---------------------
+
+# The single reservation site. `guard::try_zeroed` reserves `n` bytes exactly;
+# the growth path cannot be taken because capacity was reserved first, so the
+# only allocator entry reached is the one call to `allocate`.
+[[entry]]
+item = "alloc::raw_vec::RawVecInner::<A>::reserve_exact"
+kind = "alloc"
+allow = "guard::try_zeroed"
+reason = "the crate's only reservation; exact, from the guard module"
+reviewer = "prototype-fixture"
+
+# The guard fills with `push` after reserving exactly, so the fills do not
+# regrow. The MIR edge `push_mut -> grow_one -> grow_amortized -> finish_grow`
+# exists regardless, so the reviewer must name `push` as an allocation-capable
+# item admitted from the guard (SPEC §6: "`Vec::<T>::push`: only from
+# `alloc_guard` functions"). Without this entry the strict all-paths check
+# correctly refuses the guard's own push path; the old first-parent check hid
+# it behind the reserve path.
+[[entry]]
+item = "std::vec::Vec::<T, A>::push_mut"
+kind = "alloc"
+allow = "guard::try_zeroed"
+reason = "guard fills after try_reserve_exact(n); the growth path finish_grow -> handle_alloc_error is not taken (A-STD-1)"
+reviewer = "prototype-fixture"
+
+# Deallocation, anywhere.
+[[entry]]
+item = "alloc::raw_vec::RawVecInner::<A>::deallocate"
+kind = "alloc"
+allow = "*"
+reason = "deallocation cannot fail"
+reviewer = "prototype-fixture"
+
+# --- non-allocating leaves the walk cannot enter -------------------------
+
+[[entry]]
+item = "alloc::alloc::__rust_no_alloc_shim_is_unstable_v2"
+kind = "ffi"
+allow = "*"
+reason = "std alloc shim stability probe; declares, does not allocate"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "alloc::raw_vec::handle_error"
+kind = "no-mir"
+allow = "*"
+reason = "capacity-overflow abort; unreachable under the guard's n*size <= isize::MAX precondition"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "core::panicking::panic_nounwind"
+kind = "no-mir"
+allow = "*"
+reason = "panic entry point; unreachable by the verified preconditions"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "core::panicking::panic_nounwind_fmt"
+kind = "no-mir"
+allow = "*"
+reason = "panic entry point; unreachable by the verified preconditions"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "std::rt::panic_fmt"
+kind = "no-mir"
+allow = "*"
+reason = "panic entry point; unreachable by the verified preconditions"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "std::intrinsics::cold_path"
+kind = "intrinsic"
+allow = "*"
+reason = "codegen hint; no allocation"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "std::intrinsics::ctpop"
+kind = "intrinsic"
+allow = "*"
+reason = "popcount; no allocation"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "std::intrinsics::write_bytes"
+kind = "intrinsic"
+allow = "*"
+reason = "memset used by the guard's zero fill; no allocation"
+reviewer = "prototype-fixture"

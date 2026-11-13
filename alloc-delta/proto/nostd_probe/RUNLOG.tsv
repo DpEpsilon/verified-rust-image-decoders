@@ -1,0 +1,11 @@
+1	2026-11-12T07:40:03+00:00	exit=101	56s	probe1: no_std + alloc-only vstd, try_reserve_exact + push [crate=nostd_probe]	verification results:: 1 verified, 1 errors
+2	2026-11-12T07:40:14+00:00	exit=101	2s	probe1b: no_std + alloc-only vstd, corrected postcondition [crate=nostd_probe]	
+3	2026-11-12T07:40:21+00:00	exit=0	3s	probe1c: no_std + alloc-only vstd, ghost using [crate=nostd_probe]	verification results:: 2 verified, 0 errors
+4	2026-11-12T07:44:59+00:00	exit=101	62s	probe2: no_std core pattern (policy.rs shapes) [crate=nostd_core]	verification results:: 7 verified, 2 errors
+5	2026-11-12T07:46:32+00:00	exit=101	3s	probe2b: describe moved out of verus! [crate=nostd_core]	
+6	2026-11-12T07:46:40+00:00	exit=0	4s	probe2c: add decreases [crate=nostd_core]	verification results:: 9 verified, 0 errors
+7	2026-11-12T07:48:27+00:00	exit=101	62s	neg1: std paths, unimported vec!/String in no_std crate [crate=nostd_probe_a]	verification results:: 1950 verified, 0 errors
+8	2026-11-12T07:51:46+00:00	exit=101	66s	icns copy converted to no_std+alloc (vstd alloc-only); baseline 315 verified [crate=icns_nostd]	verification results:: 1950 verified, 0 errors
+9	2026-11-12T07:57:19+00:00	exit=0	290s	icns copy no_std: add Vec import to model.rs (ghost-only uses) [crate=icns_nostd]	verification results:: 315 verified, 0 errors
+10	2026-11-12T15:12:07+00:00	exit=2	0s	peakrss smoke test [crate=nostd_core]		peak_rss_sum_mb=n/a	peak_rss_max_proc_mb=n/a
+11	2026-11-12T15:13:23+00:00	exit=0	70s	peakrss smoke test (retry after path fix) [crate=nostd_core]	verification results:: 9 verified, 0 errors	peak_rss_sum_mb=3129	peak_rss_max_proc_mb=2524:rust_verify

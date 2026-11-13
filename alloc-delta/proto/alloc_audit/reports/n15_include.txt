@@ -1,0 +1,18 @@
+=== alloc_audit report ===
+verdict: Fail
+profile: opt-level=2,debug-assertions=off,share-generics=off [release]
+source_hash (audited crate): d4d1bafd9dd37c52fadf5bb6dd2eeef3febe3883160baf7bba4992e7232d63a4
+source-hash scope: source-map text only (crate's own files; excludes include_bytes!/include_str! payloads, build-script and proc-macro output, and dependency sources)
+  source d60963e09db6d98d27c76e3763b9220cfe70e5094736dd6d5d4dcb3378544f89  /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/proto/alloc_audit/testcases/n15_include.rs
+  source edb6c685e5a2554c3a238d3d03c6ee9a87a08e5d86b0b0d173c03e1646ecaa20  /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/proto/alloc_audit/testcases/n15_payload.txt
+build input: include_str!n15_payload.txt present in source (payload not covered by source hash)
+mode: PROTOTYPE (--prototype given; the `prototype-fixture` reviewer is accepted)
+nodes (monomorphised instances walked): 1
+edges: 0
+allocator entry points reachable: 0 (0 allowlisted, 0 unexplained)
+fail-closed findings: 1
+unexplained leaves: 0
+allowlist: <none> sha256=<none> : 0 entries, reviewer None, commit None (running "", full None), target None, profile None (detected "" []), vstd None (linked false, actual None), source_hash None (actual None)
+
+-- fail-closed findings --
+  [undeclared-include] the audited source contains include_str!n15_payload.txt; the included bytes are not covered by the source hash (no allowlist declares it)

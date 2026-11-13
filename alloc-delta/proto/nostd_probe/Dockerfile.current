@@ -1,0 +1,80 @@
+FROM python:3.12-slim-trixie
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      git curl wget ca-certificates build-essential tmux ripgrep fd-find jq \
+      less openssh-client procps ncurses-term \
+      htop strace lsof \
+    && rm -rf /var/lib/apt/lists/*
+
+# Node LTS, needed by Claude Code.
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y nodejs
+
+# astral's own installer; uv has no self-install subcommand.
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# gh is not in Debian's repos. GitHub's apt repo, added the way they document.
+RUN mkdir -p -m 755 /etc/apt/keyrings \
+    && curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+         -o /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+    && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+         > /etc/apt/sources.list.d/github-cli.list \
+    && apt-get update && apt-get install -y gh
+
+# /tmp comes out of the base image 0777 without the sticky bit. Claude Code
+# refuses to create its cross-session socket there without it.
+RUN chmod 1777 /tmp
+
+# nano, so the operator can edit files in the terminal without vi.
+RUN apt-get update && apt-get install -y --no-install-recommends nano \
+    && rm -rf /var/lib/apt/lists/*
+
+# Rust, Verus and Creusot for the verified-decoder projects, installed under /opt
+# so they live in the image, not the workspace volume. Verus release 0.2026.11.02 pins Rust 1.99.1;
+# Creusot v0.14.0 pins nightly-2026-08-03.
+ENV RUSTUP_HOME=/opt/rustup CARGO_HOME=/opt/cargo
+RUN apt-get update && apt-get install -y --no-install-recommends unzip \
+    && rm -rf /var/lib/apt/lists/* \
+    && curl -fsSL https://sh.rustup.rs | sh -s -- -y --default-toolchain none --profile minimal \
+    && /opt/cargo/bin/rustup toolchain install 1.99.1 --profile minimal -c rustc-dev -c llvm-tools -c rustfmt \
+    && /opt/cargo/bin/rustup default 1.99.1
+
+RUN mkdir /opt/verus-dl && cd /opt/verus-dl \
+    && curl -fsSL -o verus.zip "https://github.com/verus-lang/verus/releases/download/release%2F0.2026.11.02.8bf68ee/verus-0.2026.11.02.8bf68ee-x86-linux.zip" \
+    && unzip -q verus.zip && mv verus-x86-linux /opt/verus && cd / && rm -rf /opt/verus-dl
+
+# Smoke test for Verus. Deliberately non-fatal; the result is kept in /opt/verus-smoke.log.
+RUN printf 'use vstd::prelude::*;\nverus!{ fn main() { assert(1 + 1 == 2); } }\n' > /tmp/smoke.rs \
+    ; PATH=/opt/cargo/bin:$PATH /opt/verus/verus /tmp/smoke.rs > /opt/verus-smoke.log 2>&1 ; rm -f /tmp/smoke.rs ; cat /opt/verus-smoke.log
+
+# Creusot (v0.14.0, nightly-2026-08-03, opam/Why3) was removed from the image: Verus won the
+# comparison and the Creusot proofs are archived with logs. To re-verify them, re-add:
+# apt: opam m4 pkg-config libgmp-dev zlib1g-dev autoconf automake libzmq3-dev bzip2 patch rsync;
+# rustup toolchain install nightly-2026-08-03 -c rustc-dev -c llvm-tools -c rustfmt;
+# opam init --bare --disable-sandboxing; opam var --global in-creusot-ci=true;
+# git clone --branch v0.14.0 https://github.com/creusot-rs/creusot /opt/creusot-src && ./INSTALL
+
+# Dev packages for building and testing the glycin ICNS loader end to end (gio, gtk4, seccomp,
+# meson) and for a possible GdkPixbuf shim (gdk-pixbuf headers and query-loaders tool).
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      libglib2.0-dev libgtk-4-dev libseccomp-dev meson ninja-build gettext \
+      libgdk-pixbuf-2.0-dev libgdk-pixbuf2.0-bin \
+    && rm -rf /var/lib/apt/lists/*
+
+# The last `RUN`, deliberately, and the pin is why the position matters.
+# Modal caches a layer by its command string and a changed layer rebuilds
+# every layer below it, so the step most likely to change belongs as late as
+# possible: a Claude Code bump re-runs this install and the `COPY` under it,
+# not the apt, Node, uv and gh steps above. Unpinned, the command string
+# would never change, so Modal would install whatever was latest at the first
+# build and never run this again — which is why Claude Code could never
+# update. `ws attach` offers to bump this line when a newer version exists.
+#
+# `COPY ws` stays below it because `ws/` changes more often still: every
+# helper deploy moves it, and that is the rebuild every workspace then pays.
+RUN npm install -g @anthropic-ai/claude-code@2.1.322
+
+ENV PATH=/home/ws/.cargo/bin:/home/ws/.local/bin:/root/.local/bin:/opt/cargo/bin:/opt/verus:/usr/local/bin:/usr/bin:/bin
+ENV PYTHONPATH=/opt/ws
+COPY ws /opt/ws/ws

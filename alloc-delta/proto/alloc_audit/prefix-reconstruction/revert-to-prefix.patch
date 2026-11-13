@@ -1,0 +1,15 @@
+--- /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/proto/alloc_audit/src/walk.rs	2026-11-12 06:54:55.659495984 +0000
++++ /tmp/claude-0/---modal-volumes-vo-Iyh3VLkOB7cEHrIp2RkTs7/07bf9765-af64-477d-a906-dbb14d47e2dd/scratchpad/prefix/src/walk.rs	2026-11-12 06:57:39.484311175 +0000
+@@ -952,7 +952,11 @@
+                 if collect_paths(root, entry, &fwd, &mut paths, &mut budget, MAX_DEPTH) {
+                     truncated = true;
+                 }
+-                for p in &paths {
++                // PRE-FIX RECONSTRUCTION: judge only the single shortest
++                // root-to-entry path (the first-BFS-parent rule). Every other
++                // path to the entry is ignored.
++                if let Some(shortest) = paths.iter().min_by_key(|p| p.len()) {
++                    let p = shortest;
+                     let (ok, item, caller) = judge_path(p, &entries, &audited);
+                     let rendered = (render_path(p), item.clone(), caller.clone());
+                     if first_path.is_none() {

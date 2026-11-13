@@ -1,0 +1,95 @@
+# Prototype allowlist for the C2 two-guard control.
+#
+# It gives the shared allocation-capable item
+# `RawVecInner::<A>::reserve_exact` TWO entries, one admitting
+# `guard_a::try_zeroed` and one admitting `guard_b::try_zeroed`, because both
+# guard functions call the SAME monomorphised instance (the item is
+# parameterised by the allocator only). A matcher that consults only one entry
+# per item would judge one guard's path against the other guard's entry and fail
+# spuriously; the matcher must check every matching entry.
+
+[meta]
+rustc_commit = "58cf8f9c3"
+vstd_version = "0.0.0-2026-11-01-0251"
+vstd = "none"
+target = "x86_64-unknown-linux-gnu"
+profile = "opt-level=2,debug-assertions=off,share-generics=off"
+reviewer = "prototype-fixture"
+source_hash = "5189e4228c5e21f4d3aae2303739e2f3f68273ce3bc7c922a5edf7ba5ba362a0"
+
+[[entry]]
+item = "alloc::raw_vec::RawVecInner::<A>::reserve_exact"
+kind = "alloc"
+allow = "guard_a::try_zeroed"
+reason = "the first guard's reservation; exact, from guard_a"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "alloc::raw_vec::RawVecInner::<A>::reserve_exact"
+kind = "alloc"
+allow = "guard_b::try_zeroed"
+reason = "the second guard's reservation; the same shared instance, a different admitted caller"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "alloc::raw_vec::RawVecInner::<A>::deallocate"
+kind = "alloc"
+allow = "*"
+reason = "deallocation cannot fail"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "alloc::alloc::__rust_no_alloc_shim_is_unstable_v2"
+kind = "ffi"
+allow = "*"
+reason = "std alloc shim stability probe; declares, does not allocate"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "alloc::raw_vec::handle_error"
+kind = "no-mir"
+allow = "*"
+reason = "capacity-overflow abort; unreachable under the guard precondition"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "core::panicking::panic_nounwind"
+kind = "no-mir"
+allow = "*"
+reason = "panic entry point; unreachable by the verified preconditions"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "core::panicking::panic_nounwind_fmt"
+kind = "no-mir"
+allow = "*"
+reason = "panic entry point; unreachable by the verified preconditions"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "std::rt::panic_fmt"
+kind = "no-mir"
+allow = "*"
+reason = "panic entry point; unreachable by the verified preconditions"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "std::intrinsics::cold_path"
+kind = "intrinsic"
+allow = "*"
+reason = "codegen hint; no allocation"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "std::intrinsics::ctpop"
+kind = "intrinsic"
+allow = "*"
+reason = "popcount; no allocation"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "std::intrinsics::write_bytes"
+kind = "intrinsic"
+allow = "*"
+reason = "memset; no allocation"
+reviewer = "prototype-fixture"

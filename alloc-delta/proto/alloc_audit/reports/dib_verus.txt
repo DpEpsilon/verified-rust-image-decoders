@@ -1,0 +1,27 @@
+=== alloc_audit report ===
+verdict: Pass
+profile: opt-level=3,debug-assertions=off,share-generics=off [release]
+source_hash (audited crate): cacb25c6fa40b84dd21335516d65bd57d744a42f25257a47355033e5b6280b42
+source-hash scope: source-map text only (crate's own files; excludes include_bytes!/include_str! payloads, build-script and proc-macro output, and dependency sources)
+  source 6cef9186bc7a2165ebd0656cc1371b5d2051b6afa7abb644c43718c26890f68b  src/dib.rs
+  source 4795ab60884153b5a456f0604f8485ed6546e9f9aa296d47a1cf9ae0f30c5460  src/lib.rs
+  source f3dd49ca95b325ab7ee5c4a89746871c8b62f6f32c48a63f217dc29262288845  src/model.rs
+  source e80eafc58dd3591328b93c3044c51ae9ebd637b16f23abd015daa0ce98305346  src/model_vectors.rs
+mode: PROTOTYPE (--prototype given; the `prototype-fixture` reviewer is accepted)
+nodes (monomorphised instances walked): 91
+edges: 277
+allocator entry points reachable: 3 (3 allowlisted, 0 unexplained)
+fail-closed findings: 0
+unexplained leaves: 0
+allowlist: /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/proto/alloc_audit/allowlist/dib_verus.toml sha256=1f9739e4d339ef2cbd8e4b41a54a72833fdf6196e9e18c16d3ae044eebcef2c8 : 21 entries, reviewer Some("prototype-fixture"), commit Some("58cf8f9c3") (running "58cf8f9c3", full Some("58cf8f9c35b355199727627d07ae34a4e2846d67")), target Some("x86_64-unknown-linux-gnu"), profile Some("opt-level=3,debug-assertions=off,share-generics=off") (detected "opt-level=3,debug-assertions=off,share-generics=off" [release]), vstd Some("0.0.0-2026-11-01-0251") (linked true, actual Some("0.0.0-2026-11-01-0251")), source_hash Some("cacb25c6fa40b84dd21335516d65bd57d744a42f25257a47355033e5b6280b42") (actual Some("cacb25c6fa40b84dd21335516d65bd57d744a42f25257a47355033e5b6280b42"))
+
+-- allocator entry points --
+  OK alloc::alloc::__rust_alloc
+      path: dib::decode -> dib::decode_tracked -> dib::alloc_output -> dib::alloc_output_n -> <u8 as std::vec::spec_from_elem::SpecFromElem>::from_elem<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_allocate_in<std::alloc::Global> -> <std::alloc::Global as std::alloc::Allocator>::allocate -> std::alloc::Global::alloc_impl_runtime -> alloc::alloc::__rust_alloc
+      via <u8 as std::vec::spec_from_elem::SpecFromElem>::from_elem (allowlist caller dib::alloc_output_n)
+  OK alloc::alloc::__rust_alloc_zeroed
+      path: dib::decode -> dib::decode_tracked -> dib::alloc_output -> dib::alloc_output_n -> <u8 as std::vec::spec_from_elem::SpecFromElem>::from_elem<std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_allocate_in<std::alloc::Global> -> <std::alloc::Global as std::alloc::Allocator>::allocate -> std::alloc::Global::alloc_impl_runtime -> alloc::alloc::__rust_alloc_zeroed
+      via <u8 as std::vec::spec_from_elem::SpecFromElem>::from_elem (allowlist caller dib::alloc_output_n)
+  OK alloc::alloc::__rust_dealloc
+      path: dib::decode -> dib::decode_tracked -> std::ptr::drop_glue<std::vec::Vec<u8>> -> std::ptr::drop_glue<alloc::raw_vec::RawVec<u8>> -> <alloc::raw_vec::RawVec<T, A> as std::ops::Drop>::drop<u8,std::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::deallocate<std::alloc::Global> -> <std::alloc::Global as std::alloc::Allocator>::deallocate -> alloc::alloc::__rust_dealloc
+      via alloc::raw_vec::RawVecInner::<A>::deallocate (allowlist caller dib::decode_tracked)

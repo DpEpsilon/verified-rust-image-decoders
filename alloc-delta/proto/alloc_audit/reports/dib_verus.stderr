@@ -1,0 +1,2 @@
+{"$message_type":"diagnostic","message":"multiple input filenames provided (first two filenames are `src/lib.rs` and `values())'`)","code":null,"level":"error","spans":[],"children":[],"rendered":"\u001b[1m\u001b[91merror\u001b[0m\u001b[1m: multiple input filenames provided (first two filenames are `src/lib.rs` and `values())'`)\u001b[0m\n\n"}
+alloc_audit: rustc did not succeed; no audit verdict

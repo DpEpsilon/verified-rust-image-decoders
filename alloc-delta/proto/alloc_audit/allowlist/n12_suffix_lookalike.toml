@@ -1,0 +1,96 @@
+# Prototype allowlist for the N11 shared-instance control.
+#
+# It admits exactly one caller, `guard::try_zeroed`, for the shared
+# allocation-capable instances, plus deallocation anywhere and the usual
+# non-allocating leaves. `unapproved_reserve` and `unapproved_grow` are NOT
+# admitted by any entry, yet they reach the same monomorphised
+# `RawVecInner::<A>::reserve_exact<std::alloc::Global>` and `Vec::push_mut`
+# instances the guard reaches. A correct tool must therefore still fail.
+
+[meta]
+rustc_commit = "58cf8f9c3"
+vstd_version = "0.0.0-2026-11-01-0251"
+vstd = "none"
+target = "x86_64-unknown-linux-gnu"
+profile = "opt-level=2,debug-assertions=off,share-generics=off"
+reviewer = "prototype-fixture"
+source_hash = "63c4fac301dbc8c493aee22430b5264b30da37894d1ceef0f8ce6f7f2895f90e"
+
+[[entry]]
+item = "alloc::raw_vec::RawVecInner::<A>::reserve_exact"
+kind = "alloc"
+allow = "guard::try_zeroed"
+reason = "the guard's reservation; exact, from the guard module"
+reviewer = "prototype-fixture"
+
+# The guard's own fill path. Admitting it from the guard is not what this
+# control is about: `unapproved_reserve`/`unapproved_grow` are still unadmitted.
+[[entry]]
+item = "std::vec::Vec::<T, A>::push_mut"
+kind = "alloc"
+allow = "guard::try_zeroed"
+reason = "guard fills after try_reserve_exact(n)"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "alloc::raw_vec::RawVecInner::<A>::deallocate"
+kind = "alloc"
+allow = "*"
+reason = "deallocation cannot fail"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "alloc::alloc::__rust_no_alloc_shim_is_unstable_v2"
+kind = "ffi"
+allow = "*"
+reason = "std alloc shim stability probe; declares, does not allocate"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "alloc::raw_vec::handle_error"
+kind = "no-mir"
+allow = "*"
+reason = "capacity-overflow abort; unreachable under the guard precondition"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "core::panicking::panic_nounwind"
+kind = "no-mir"
+allow = "*"
+reason = "panic entry point; unreachable by the verified preconditions"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "core::panicking::panic_nounwind_fmt"
+kind = "no-mir"
+allow = "*"
+reason = "panic entry point; unreachable by the verified preconditions"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "std::rt::panic_fmt"
+kind = "no-mir"
+allow = "*"
+reason = "panic entry point; unreachable by the verified preconditions"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "std::intrinsics::cold_path"
+kind = "intrinsic"
+allow = "*"
+reason = "codegen hint; no allocation"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "std::intrinsics::ctpop"
+kind = "intrinsic"
+allow = "*"
+reason = "popcount; no allocation"
+reviewer = "prototype-fixture"
+
+[[entry]]
+item = "std::intrinsics::write_bytes"
+kind = "intrinsic"
+allow = "*"
+reason = "memset; no allocation"
+reviewer = "prototype-fixture"
