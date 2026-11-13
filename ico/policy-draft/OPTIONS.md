@@ -1,0 +1,99 @@
+# ICO/CUR policy options (draft, not frozen)
+
+This draft catalogues every place where an incumbent ICO/CUR decoder deviates from frozen ICO-CORE-SPEC 1.0 (`../spec-frozen/SPEC.md`, R1–R13) or from the DIB-CORE-SPEC 1.1 `IcoEntryDibSlack` rules that ICO delegates to (`../../dib/spec-1.1-frozen/SPEC.md`, R3, R4, R8, R12, R19). It counts **16 ICO-specific fields**: 9 container fields, 6 DIB-in-ICO fields that the DIB policy record does not have today, and 1 selection field that belongs to an optional selector rather than to `decode_entry`. It also lists which of DIB's 22 frozen fields matter inside an ICO entry (8 of them). DIB has 22 fields and TGA 13; ICO's count is smaller than DIB's because ICO owns only the directory, and larger than it looks because 6 of its fields change DIB semantics in ICO mode, which the frozen DIB policy deliberately leaves policy-free.
+
+Nothing here changes the shipped `try_parse`/`try_decode_entry`. Values in **bold** are Strict (the shipped 1.0 behaviour). Every value is a deterministic function of the bytes and is safe when implemented with guarded reads and checked arithmetic, unless the row says *excluded*.
+
+## Incumbents and evidence
+
+- **gdk-pixbuf 2.42.12** `io-ico.c` at tag `2.42.12` (copy: `/home/ws/projects/spec/gdk-pixbuf-2.42.12/io-ico.c`; the checkout in `/home/ws/projects/spec/gdk-pixbuf` is master, version 2.44.8, and differs in 21 diff lines). Installed `libpixbufloader-ico.so` 2.42.12, driven through `GdkPixbufLoader` with the type forced, whole-buffer and one-byte writes (`gdk`, `gdk-byte`: identical on every probe).
+- **`ico` 0.3.0** (`~/.cargo/registry/src/*/ico-0.3.0/src/{icondir.rs,image.rs}`). The crate parses the whole directory and decodes an entry the caller names; it does not select. Runner columns `crate-e0` (entry 0) and `crate-largest` (largest area, then bit count; the bench's selector).
+- **`image` 0.25.10** `src/codecs/ico/decoder.rs` plus its BMP decoder in ICO mode (`src/codecs/bmp/decoder.rs`, `new_with_ico_format`). It selects internally.
+- **Strict**: the shipped verified `ico_verus` (`try_parse` + `try_decode_entry`), columns `strict-e0` and `strict-largest` (same selector as `crate-largest`).
+
+Hand-made probes: `/home/ws/projects/leniency/policy-probe/probe_cases.py` (function `ico_cases`, one case per hypothesis, inputs rebuilt into `/tmp/claude-0/policy-probe-inputs/ico/`), runners `src/main.rs` and `gdkprobe.c` in the same directory, recorded results `results-ico.json` (dimensions, SHA-256 prefix and, for at most 64 pixels, every RGBA byte). A row's "probe `x`" names a case there. Corpus counts come from the 433 files in `~/corpora/ico/files` (bytes read in place, never copied); per-file results are regenerable into `/tmp/claude-0/survey/ico-*.jsonl`.
+
+Corpus baseline (largest-entry selector for Strict and `ico`; each library's own choice otherwise): Strict decodes 286 of 433; 110 more select a PNG entry (`PngDelegation`, decodable only outside the core). `image` accepts 387, `ico` 389, gdk-pixbuf 334. Where Strict and a library both decode, the RGBA is identical in 250/282 files (`image`; 30 differ by the 32-bit AND rule `alpha32` below, 2 by selection), 275/283 (gdk-pixbuf; 4 by `mono_palette`, 2 by selection, 1 by `header_size`, 2 four-bit files with no identified cause: UNVERIFIED) and 283/284 (`ico`; 1 selection). Strict's non-PNG rejections on the corpus: `Dib(InvalidImageSize)` 10 (all three libraries accept all 10), `EntryOutOfBounds` 7, `TruncatedEntries` 4, `InvalidEntryReserved` 4, `InvalidReserved` 3, `Dib(InvalidDimensions)` 3 (no library accepts any of these 21), `Dib(TruncatedHeader)` 2 (gdk accepts both), `Dib(UnsupportedCompression)` 1 (`ico` accepts), `Dib(TruncatedAndMask)` 1 (`ico`, gdk accept), `Dib(TruncatedPixels)` 1 (gdk accepts), `EmptyDirectory` 1.
+
+## A. Container fields (ICO-level; change `parse`/`decode_entry` only)
+
+| Field | Values and ordered delta from ICO 1.0 | Incumbent behaviour, witness; safety | Proposed Recommended |
+|---|---|---|---|
+| `dir_reserved` | **`Zero`**: R3 `InvalidReserved` for a nonzero first word. `Ignore`: skip that check only. | `image` never reads it (`decoder.rs:158`, probe `dir-reserved-1`: decodes). gdk rejects (`io-ico.c:235–240`), `ico` rejects (`icondir.rs:53`). Corpus: 3 files fail here; no library decodes any of them. | `Zero` (one library, no corpus gain). |
+| `dir_type` | **`IcoOrCur`**: R3 type ∈ {1,2} else `UnsupportedType`. `Any`: accept every type word; a type other than 2 is read as ICO (planes/bit count, no hotspot). | `image` ignores the type (`decoder.rs:159`; probes `dir-type-0`, `dir-type-3` decode). gdk (`io-ico.c:247–254`) and `ico` (`icondir.rs:61`) reject. | `IcoOrCur`. |
+| `entry_cap` | **`Max1024`**: R2/R3 `TooManyEntries` above 1,024. `Max65535`: the u16 wire limit; the entry list then needs at most 65,535 records, still one bounded reservation after the table guard. | Every library accepts 1,025 entries (probe `count-1025`: all decode; Strict `TooManyEntries`). gdk sorts the whole list (`io-ico.c:328`, quadratic insertion). Raising the cap multiplies the reserved entry-list bound by 64 (1,024 to 65,535 records, about 2.6 MB at the current 40-byte record): an owner decision under obligation A. No corpus file exceeds 1,024. | `Max1024`. |
+| `entry_reserved` | **`Zero`**: R4 first defect `InvalidEntryReserved`. `Ignore`: skip that defect; the record continues to the size/overlap/bounds checks. | gdk never reads byte 3 (`io-ico.c:291–297`), `image` stores it unused (`decoder.rs:166`): probe `entry-reserved-1-selected` decodes in both. `ico` rejects the **whole directory** on any nonzero byte, selected or not (`icondir.rs:73`; probe `entry-reserved-1-unselected` fails in `ico`, decodes in Strict). Corpus: 4 files hit this; no library decodes them (other defects). | `Zero`. |
+| `entry_range` | **`Exact`**: R4/R7/D11, the selected entry decodes exactly `[offset, offset+size)`; `EmptyEntry`, `EntryOutOfBounds` and a short declaration's DIB error stand. `ToEof`: for a selected record whose offset passes `dir_end ≤ offset ≤ |b|`, ignore `size` (including 0 and sizes past EOF) and pass `[offset, |b|)` to DIB in slack mode; surplus bytes are then ignored by R19. `ImageSize`: as `ToEof` for the XOR raster, then use `size` only to decide whether an AND mask is present (see `and_mask=ImageSize`); reject when `offset+size` is below the XOR end. | gdk ignores `data_size` entirely (`io-ico.c:289,297`, declared `G_GNUC_UNUSED`) and reads from the offset as bytes arrive: probes `entry-size-0`, `entry-size-short-header`, `entry-size-xor-only`, `entry-size-beyond-eof` all decode in gdk. `image` seeks to the offset and reads unbounded; `size` only gates the AND mask (`decoder.rs:340–374`): `entry-size-beyond-eof` and `entry-size-xor-only` decode (the latter **opaque**, gdk applies the mask beyond the declared end), `entry-size-0`/`-short-header` fail `InvalidDataSize`. `ico` reads exactly `size` bytes and fails the whole directory if any range leaves the file (`icondir.rs:113–116`; `entry-oob-unselected` fails only in `ico`). Corpus: `Dib(TruncatedHeader)` 2 files (the `mask_1.cur` pattern) decode in gdk. **Hazard**: `ToEof` lets one entry consume the next entry's bytes (ICO DESIGN-NOTES D11). Safe: the slice is checked once; DIB bounds every read. | `Exact` (D11 is settled); see QUESTIONS Q4. |
+| `entry_overlap` | **`Reject`**: R4 `EntryOverlapsDirectory` when `offset < dir_end`. `Ignore`: drop that defect (the range is still bounded by the file). | No library compares an offset with the directory end: gdk `io-ico.c:296–328`, `image` `decoder.rs:157–190`, `ico` `icondir.rs:113–116` (source reading only; no probe builds a decodable DIB inside a directory: UNVERIFIED by execution). | `Reject`. |
+| `dimension_match` | **`Ignore`**: R5, directory width/height are metadata. `GdkExact`: reject unless the DIB width equals the directory width and `stored_height/2` the directory height (zero byte = 256). `ImageMin256`: reject unless directory side = `min(real side, 256)` for both DIB and PNG entries. | Narrowing only. gdk `io-ico.c:420–428` ("image size"), `image` `decoder.rs:230–232,290–300,321–329`; probes `dir-dims-16-dib-2`, `dir-dims-0-dib-2`, `stored-height-equal-h` decode in Strict and `ico`, fail in gdk and `image`. | `Ignore` (Strict). |
+| `dir_field_limit` | **`None`**: R5 retains raw planes/bit count/hotspots. `Image256`: reject the whole directory when any record's planes/hotspot-x or bit-count/hotspot-y word exceeds 256. | Narrowing only, `image` `decoder.rs:172–187`: probes `cur-hotspot-300` and `ico-planes-300` fail in `image` alone; a valid cursor with a hotspot beyond 256 is unreadable there. | `None`. |
+| `unselected_defects` | **`PerEntry`**: R4/R9 D9, a bad unselected record is a status. `WholeDirectory`: any invalid record, or a record whose range leaves the file, fails parse. | Narrowing only, `ico` (`icondir.rs:73,115`); probes `entry-reserved-1-unselected`, `entry-oob-unselected`. | `PerEntry`. |
+
+## B. DIB-in-ICO fields (need a DIB policy record in ICO mode; see QUESTIONS Q1)
+
+The frozen DIB policy gives `IcoEntryDib`/`IcoEntryDibSlack` no policy argument (DIB POLICY-SPEC D1/D7/D10/D14). Each field below therefore requires a revised, separately versioned DIB policy with ICO-mode fields; the ICO layer passes them through.
+
+| Field | Values and ordered delta from DIB 1.1 ICO rules | Incumbent behaviour, witness; safety | Proposed Recommended |
+|---|---|---|---|
+| `ico_height` | **`EvenPositive`**: R3, stored height positive and even, visible = stored/2, else `InvalidDimensions`. `FloorSigned`: visible = `abs(stored) div 2` (odd allowed), negative stored height means top-down; zero visible height still `InvalidDimensions`. `GdkZero256`: as FloorSigned, and visible height 0 (stored 0 or 1) means 256, as does width 0. | gdk `io-ico.c:401–418`, `image` (`bmp/decoder.rs:865–872`, `height /= 2`, top-down from the BMP header): probes `odd-stored-height-5` and `negative-stored-height` decode in both (top-down rows confirmed in the dump); `ico` rejects both (`image.rs:217–247`). `GdkZero256` is from source only (UNVERIFIED by execution); with width 256 it needs 256 rows of XOR and AND data, which every read must still bound. Corpus: 3 `Dib(InvalidDimensions)` files, no library decodes them. | `EvenPositive`. |
+| `alpha32` | **`WindowsFallback`**: R12, 32-bit XOR alpha kept if any is nonzero, otherwise AND bits decide (0 → 255). `XorOnly`: always XOR alpha, AND ignored (still consumed). `XorThenAnd`: XOR alpha, then an AND bit 1 sets alpha 0. | gdk skips AND for 32 bpp (`io-ico.c:823–825`), `ico` never reads it (`image.rs:394`): both `XorOnly`. `image` applies AND over XOR alpha (`decoder.rs:340–366`). Probe `dib32-zero-alpha-and`: Strict `102030ff…`, **all three libraries** `10203000…` (fully transparent). Probe `dib32-alpha-and-set`: `image` alone zeroes three alphas. Corpus: 30 of the 32 `image` pixel differences are 32-bit entries with alpha present (`XorThenAnd`); no corpus file is all-zero-alpha. Pixel rule, not an error site. | `WindowsFallback` (obligation R forbids changing a Strict-accepted image). |
+| `and_mask` | **`Required`**: R12 `TruncatedAndMask` unless `A` AND bytes follow the XOR raster. `OptionalAtEnd`: when **zero** bytes remain after the XOR raster (and only then), treat the mask as all zeros; a partial mask still fails. `ImageSize`: (with `entry_range=ImageSize`) the mask is present iff the declared entry end is at least XOR end + `A`, absent iff it equals the XOR end, else error. `GdkStream`: 32-bit needs no mask; other depths leave alpha 255 for rows whose mask bytes are missing. | `image`: probes `dib24-no-and`, `dib32-no-and`, `entry-size-xor-only` decode opaque (`decoder.rs:348–374`). gdk: `dib32-no-and` and `dib24-no-and` decode (stop_load checks only the header, `io-ico.c:625`). `ico` decodes `dib32-no-and` only. Corpus: 1 `Dib(TruncatedAndMask)` file, decoded by `ico` and gdk. Interaction: under `alpha32=WindowsFallback` an absent mask is all zeros, so an all-zero-alpha 32-bit entry becomes opaque, where `image` and gdk make it transparent. | `Required`; `OptionalAtEnd` is the candidate error-site relaxation (QUESTIONS Q5). |
+| `ico_rle` | **`Reject`**: R4 `UnsupportedOrientation` for RLE in ICO. `Decode`: decode RLE8/RLE4 bottom-up under the DIB `rle_*` fields, then the AND mask; the AND span follows the RLE stream. | `image` decodes (probe `rle8-in-ico`), but every alpha is 0 (dump `10203000…` four times: its RLE path leaves alpha 0 in ICO mode, then AND); gdk skips compressed entries during selection (`io-ico.c:366–372`), `ico` ignores the compression field and misreads RLE as raw (`image.rs:264`, dump `000000ff102030ff…`). No two libraries agree; corpus `Dib(UnsupportedCompression)` 1 file is BI_JPEG/PNG-class, not RLE. | `Reject`. Not proposed for any profile except as an `image` defect reproduction (QUESTIONS Q9). |
+| `ico_compression` | **`DibRules`**: R4, BITFIELDS allowed. `RgbOnly`: any compression other than BI_RGB is unusable (a selector skips the entry; `decode_entry` returns `UnsupportedCompression`). | Narrowing, gdk `io-ico.c:366–372` (probe `bitfields32-in-ico`: "Compressed icons are not supported"; Strict and `image` decode identically). | `DibRules`. |
+| `mono_palette` | **`Palette`**: R8, 1-bpp pixels index the palette. `BlackWhite`: bit 1 → white, bit 0 → black, palette ignored. | gdk `io-ico.c:806–813` (probe `dib1-colour-palette`: gdk `ffffffff000000ff…`, others red/blue). Corpus: 4 gdk pixel differences. Pixel rule. | `Palette`. |
+
+Two further gdk-pixbuf behaviours are **excluded**: (1) it ignores the DIB header size and always reads the palette at offset 40 (`io-ico.c:431–446,736–800`; probe `bih-v4-108`: gdk returns black pixels, `bih-core-12`: truncation error) — a safe surrogate exists (`headers=Only40`, DIB-level, narrowing) but reproducing the misread is not proposed; (2) an 8-bit index beyond `biClrUsed` reads stale header-buffer memory (probe `dib8-index-out-of-range`: gdk `224c50ff` in the last pixel), which is not byte-determined. gdk's partially decoded pixbuf after truncated XOR data (probe `xor-truncated`: unread rows `00000000`) depends on allocator contents; DIB `short_pixels=ZeroFill` is the safe surrogate. The `ico` crate's whole-palette read (`image.rs:281`, `colors_used` ignored; probe `dib8-clrused-2` fails) and its ignoring of compression are defects with no proposed field.
+
+## C. DIB fields that matter inside an ICO entry (existing DIB policy record)
+
+Applied through the same DIB pass-through. Evidence is ICO-specific; the DIB POLICY-SPEC rows hold the BMP evidence.
+
+| DIB field | Strict | Observed in ICO entries | Proposed Recommended |
+|---|---|---|---|
+| `image_size` | `Exact` (`{X, X+A}` in ICO) | All three libraries ignore `biSizeImage` (probe `sizeimage-wrong`). Corpus: **10 files** fail Strict at this check and all three libraries decode all 10. Whether each then passes Strict's later AND-mask check is not yet computed (no ICO-mode `image_size=Ignore` oracle exists): UNVERIFIED. | `Ignore`, as in DIB Recommended; the largest corpus gain on offer (up to 10 of 433). |
+| `planes` | `Must1` | gdk and `ico` ignore (probe `bih-planes-0`), `image` rejects. | `Must1`. |
+| `scaling` (16-bit BI_RGB) | `Round` | gdk replicates (probe `dib16-555-value3`: `18` vs `19`); `ico` and `image` round. Bit 15 ignored by all (probe `dib16-bit15`). | `Round`. |
+| `palette_index` | `Reject` | `image` substitutes black (probe `dib8-index-out-of-range`: `000000ff`), gdk excluded (stale memory), `ico` cannot see the case. | `Reject`. |
+| `short_pixels` | `Reject` | gdk returns partial pixels (excluded above); others reject. | `Reject`. |
+| `headers` | `All1_1` | `ico` accepts only 40 (`image.rs:221`), gdk assumes 40, `image` accepts 12/40/52/56/108/124 (probes `bih-core-12`, `bih-v4-108`). | `All1_1`. |
+| `masks` | `Reject` | Not probed in ICO; `image` uses its BMP `Independent` rule. UNVERIFIED in ICO. | `Reject`. |
+| `header_bytes` | `Full` | Not probed in ICO. UNVERIFIED. | `Full`. |
+
+`file_size`, `offset`, `bitfield_offset`, `high_count`, `reserved`, `incomplete_metadata`, `short_indexed_gap` and the `rle_*` fields have no ICO site (no file header; ICO forbids high-depth `biClrUsed` and RLE).
+
+## D. Selection (optional selector API; never inside `decode_entry`)
+
+| Field | Values | Incumbent behaviour, witness | Proposed |
+|---|---|---|---|
+| `selection` | **`Caller`**: R1/D9, the core never picks. `GdkScore`: sort by nominal area × depth from the colour-count byte (0→32, ≤2→1, ≤16→4, ≤256→8), ties to the **later** record; skip compressed and PNG records; no fallback after the chosen record fails. `ImageBest`: maximise (bit count word, area), ties to the **last** record; no fallback. `LargestArea`: the bench/`ico`-runner rule (area, then bit count, ties last). | gdk `io-ico.c:300–394` (probes `tie-two-equal`: entry 1; `bpp-vs-area`: 2×2; `png-plus-dib`: skips the PNG and decodes the 1×1 DIB; `largest-broken-smaller-ok`: no fallback). `image` `decoder.rs:194–212` (`bpp-vs-area`: the 1×1 32-bit entry). gdk also skips records whose offset exceeds `INT_MAX−40` without advancing its record pointer (`io-ico.c:316–319` `continue` precedes `Ptr += 16` at `:329`), so the next iteration rereads the same record: a defect, not reproduced. | `Caller` in the core; a selector is a separate, optional deliverable (QUESTIONS Q7). |
+
+PNG entries: Strict returns `PngDelegation`. `image` decodes only RGBA8 PNG (`decoder.rs:302`; probe `png-rgb` fails), `ico` decodes any PNG and checks the signature on 4 bytes only (`icondir.rs:9`; probe `png-sig-4-only` then fails as PNG rather than DIB), gdk never decodes PNG entries. A PNG decoder is outside this core; no field is proposed.
+
+## Named profiles (proposal)
+
+| Field | Strict | Recommended | GdkCompat-2.42.12 | ImageCrateCompat-0.25.10 |
+|---|---|---|---|---|
+| dir_reserved | Zero | Zero | Zero | Ignore |
+| dir_type | IcoOrCur | IcoOrCur | IcoOrCur | Any |
+| entry_cap | Max1024 | Max1024 | Max65535 | Max65535 |
+| entry_reserved | Zero | Zero | Ignore | Ignore |
+| entry_range | Exact | Exact | ToEof | ImageSize |
+| entry_overlap | Reject | Reject | Ignore | Ignore |
+| dimension_match | Ignore | Ignore | GdkExact | ImageMin256 |
+| dir_field_limit | None | None | None | Image256 |
+| unselected_defects | PerEntry | PerEntry | PerEntry | PerEntry |
+| ico_height | EvenPositive | EvenPositive | GdkZero256 | FloorSigned |
+| alpha32 | WindowsFallback | WindowsFallback | XorOnly | XorThenAnd |
+| and_mask | Required | Required | GdkStream | ImageSize |
+| ico_rle | Reject | Reject | Reject | Decode |
+| ico_compression | DibRules | DibRules | RgbOnly | DibRules |
+| mono_palette | Palette | Palette | BlackWhite | Palette |
+| DIB record | Strict | Recommended (image_size Ignore) | GdkCompat + headers=Only40 surrogate, scaling=Gdk | ImageCrateCompat |
+
+No `ico`-crate profile is proposed: its deviations from Strict are narrowing defects (whole-directory failure, 40-byte headers only, full palette always, compression ignored), and its acceptances beyond Strict are a subset of gdk's. Recommended equals Strict at the ICO level and passes the DIB Recommended record (`image_size=Ignore`, `file_size` has no ICO site); on the corpus that can add at most the 10 `InvalidImageSize` files, and by construction changes no Strict-accepted file (obligation R).
+
+## Not reproducible, explicitly excluded
+
+- gdk-pixbuf reading palette entries at a fixed offset 40 regardless of header size, stale-memory palette lookups, partially written pixbufs after truncation, and its quadratic sorted insert (`io-ico.c:328`).
+- `image`'s transparent RLE-in-ICO output, unless the owner wants a defect-reproducing profile (Q9).
+- Any behaviour that depends on a filename, a loader's progressive chunking, or a PNG decoder.

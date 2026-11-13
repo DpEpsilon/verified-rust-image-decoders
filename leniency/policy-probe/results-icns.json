@@ -1,0 +1,1242 @@
+{
+ "argb-raw-4N": {
+  "crate": {
+   "error": "invalid RLE-compressed data",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk-byte": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "head_hex": "69636e73000005186973333200000408ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030",
+  "len": 1304,
+  "strict": {
+   "error": "RleOverrun",
+   "status": "error"
+  }
+ },
+ "bad-magic": {
+  "crate": {
+   "error": "not an icns file (wrong magic literal)",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e78000001246973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 292,
+  "strict": {
+   "error": "BadMagic",
+   "status": "error"
+  }
+ },
+ "base-is32": {
+  "crate": {
+   "h": 16,
+   "rgba": "",
+   "sel": "RGB24_16x16",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk-byte": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "head_hex": "69636e73000001246973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 292,
+  "strict": {
+   "h": 16,
+   "rgba": "",
+   "sel": "0:1",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  }
+ },
+ "base-is32-il32": {
+  "crate": {
+   "h": 32,
+   "rgba": "",
+   "sel": "RGB24_32x32",
+   "sha": "60d84b975de09fe1",
+   "status": "ok",
+   "w": 32
+  },
+  "gdk": {
+   "h": 32,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "60d84b975de09fe1",
+   "status": "ok",
+   "w": 32
+  },
+  "gdk-byte": {
+   "h": 32,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "60d84b975de09fe1",
+   "status": "ok",
+   "w": 32
+  },
+  "head_hex": "69636e73000005646973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 1380,
+  "strict": {
+   "h": 32,
+   "rgba": "",
+   "sel": "2:3",
+   "sha": "60d84b975de09fe1",
+   "status": "ok",
+   "w": 32
+  }
+ },
+ "bmp-in-ic08": {
+  "crate": {
+   "error": "invalid signature",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 4,
+   "has_alpha": false,
+   "rgba": "102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff",
+   "sha": "d40ac999789ac409",
+   "status": "ok",
+   "w": 4
+  },
+  "gdk-byte": {
+   "h": 4,
+   "has_alpha": false,
+   "rgba": "102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff102030ff",
+   "sha": "d40ac999789ac409",
+   "status": "ok",
+   "w": 4
+  },
+  "head_hex": "69636e7300000192696330380000006e424d66000000000000003600000028000000040000000400000001001800000000000000000000000000000000000000",
+  "len": 402,
+  "strict": {
+   "h": 16,
+   "rgba": "",
+   "sel": "1:2",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  }
+ },
+ "broken-il32-good-is32": {
+  "crate": {
+   "error": "invalid RLE-compressed data",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 32,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "e44218b4165915d3",
+   "status": "ok",
+   "w": 32
+  },
+  "gdk-byte": {
+   "h": 32,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "e44218b4165915d3",
+   "status": "ok",
+   "w": 32
+  },
+  "head_hex": "69636e73000005616973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 1377,
+  "strict": {
+   "error": "RleTruncated",
+   "status": "error"
+  }
+ },
+ "colour-without-mask": {
+  "crate": {
+   "error": "NoCandidate",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e730000001c6973333200000014ff10fb10ff20fb20ff30fb30",
+  "len": 28,
+  "strict": {
+   "error": "NoLegacyPair",
+   "status": "error"
+  }
+ },
+ "colour-without-mask-plus-il32-pair": {
+  "crate": {
+   "h": 32,
+   "rgba": "",
+   "sel": "RGB24_32x32",
+   "sha": "60d84b975de09fe1",
+   "status": "ok",
+   "w": 32
+  },
+  "gdk": {
+   "h": 32,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "60d84b975de09fe1",
+   "status": "ok",
+   "w": 32
+  },
+  "gdk-byte": {
+   "h": 32,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "60d84b975de09fe1",
+   "status": "ok",
+   "w": 32
+  },
+  "head_hex": "69636e730000045c6973333200000014ff10fb10ff20fb20ff30fb30696c333200000038ff40ff40ff40ff40ff40ff40ff40ef40ff50ff50ff50ff50ff50ff50",
+  "len": 1116,
+  "strict": {
+   "h": 32,
+   "rgba": "",
+   "sel": "1:2",
+   "sha": "60d84b975de09fe1",
+   "status": "ok",
+   "w": 32
+  }
+ },
+ "declared-below-8": {
+  "crate": {
+   "error": "NoCandidate",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e73000000046973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 292,
+  "strict": {
+   "error": "InvalidFileLength",
+   "status": "error"
+  }
+ },
+ "declared-long": {
+  "crate": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "no pixbuf",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "no pixbuf",
+   "status": "error"
+  },
+  "head_hex": "69636e73000001346973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 292,
+  "strict": {
+   "error": "TruncatedFile",
+   "status": "error"
+  }
+ },
+ "declared-short-at-entry-boundary": {
+  "crate": {
+   "h": 16,
+   "rgba": "",
+   "sel": "RGB24_16x16",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk-byte": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "head_hex": "69636e73000001246973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 1380,
+  "strict": {
+   "error": "TrailingFileBytes",
+   "status": "error"
+  }
+ },
+ "declared-short-cuts-mask": {
+  "crate": {
+   "h": 16,
+   "rgba": "",
+   "sel": "RGB24_16x16",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e73000000806973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 292,
+  "strict": {
+   "error": "TrailingFileBytes",
+   "status": "error"
+  }
+ },
+ "duplicate-is32": {
+  "crate": {
+   "h": 16,
+   "rgba": "",
+   "sel": "RGB24_16x16",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "5a39e6f9ebe6398d",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk-byte": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "5a39e6f9ebe6398d",
+   "status": "ok",
+   "w": 16
+  },
+  "head_hex": "69636e73000001386973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 312,
+  "strict": {
+   "h": 16,
+   "rgba": "",
+   "sel": "0:1",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  }
+ },
+ "empty-container": {
+  "crate": {
+   "error": "NoCandidate",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e7300000008",
+  "len": 8,
+  "strict": {
+   "error": "NoLegacyPair",
+   "status": "error"
+  }
+ },
+ "entries-4097-junk": {
+  "crate": {
+   "h": 16,
+   "rgba": "",
+   "sel": "RGB24_16x16",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk-byte": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "head_hex": "69636e730000812c6a756e6b000000086a756e6b000000086a756e6b000000086a756e6b000000086a756e6b000000086a756e6b000000086a756e6b00000008",
+  "len": 33068,
+  "strict": {
+   "error": "TooManyEntries",
+   "status": "error"
+  }
+ },
+ "entry-length-0-last": {
+  "crate": {
+   "error": "invalid element length",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e730000012c6973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 300,
+  "strict": {
+   "error": "InvalidEntryLength",
+   "status": "error"
+  }
+ },
+ "entry-length-4-last": {
+  "crate": {
+   "error": "invalid element length",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e730000012c6973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 300,
+  "strict": {
+   "error": "InvalidEntryLength",
+   "status": "error"
+  }
+ },
+ "entry-oob-first": {
+  "crate": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e730000012c78787878000100006973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 300,
+  "strict": {
+   "error": "EntryOutOfBounds",
+   "status": "error"
+  }
+ },
+ "entry-oob-last": {
+  "crate": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e73000001306973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 304,
+  "strict": {
+   "error": "EntryOutOfBounds",
+   "status": "error"
+  }
+ },
+ "is32-zero-prefix": {
+  "crate": {
+   "h": 16,
+   "rgba": "",
+   "sel": "RGB24_16x16",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e7300000128697333320000001800000000ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 296,
+  "strict": {
+   "error": "RleOverrun",
+   "status": "error"
+  }
+ },
+ "it32-no-prefix": {
+  "crate": {
+   "h": 128,
+   "rgba": "",
+   "sel": "RGB24_128x128",
+   "sha": "f95c12d5eaad280a",
+   "status": "ok",
+   "w": 128
+  },
+  "gdk": {
+   "h": 128,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "f95c12d5eaad280a",
+   "status": "ok",
+   "w": 128
+  },
+  "gdk-byte": {
+   "h": 128,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "f95c12d5eaad280a",
+   "status": "ok",
+   "w": 128
+  },
+  "head_hex": "69636e73000043126974333200000302ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01",
+  "len": 17170,
+  "strict": {
+   "h": 128,
+   "rgba": "",
+   "sel": "0:1",
+   "sha": "f95c12d5eaad280a",
+   "status": "ok",
+   "w": 128
+  }
+ },
+ "it32-nonzero-prefix": {
+  "crate": {
+   "error": "invalid RLE-compressed data",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e7300004316697433320000030600000100ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01",
+  "len": 17174,
+  "strict": {
+   "error": "RleOverrun",
+   "status": "error"
+  }
+ },
+ "it32-prefix": {
+  "crate": {
+   "h": 128,
+   "rgba": "",
+   "sel": "RGB24_128x128",
+   "sha": "f95c12d5eaad280a",
+   "status": "ok",
+   "w": 128
+  },
+  "gdk": {
+   "h": 128,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "f95c12d5eaad280a",
+   "status": "ok",
+   "w": 128
+  },
+  "gdk-byte": {
+   "h": 128,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "f95c12d5eaad280a",
+   "status": "ok",
+   "w": 128
+  },
+  "head_hex": "69636e7300004316697433320000030600000000ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01ff01",
+  "len": 17174,
+  "strict": {
+   "h": 128,
+   "rgba": "",
+   "sel": "0:1",
+   "sha": "f95c12d5eaad280a",
+   "status": "ok",
+   "w": 128
+  }
+ },
+ "jp2sig-ic08-plus-is32": {
+  "crate": {
+   "error": "element to be decoded contains JPEG 2000 data, which is not yet supported",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk-byte": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "head_hex": "69636e730000014c69633038000000280000000c6a5020200d0a870a00000000000000000000000000000000000000006973333200000014ff10fb10ff20fb20",
+  "len": 332,
+  "strict": {
+   "h": 16,
+   "rgba": "",
+   "sel": "1:2",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  }
+ },
+ "mask-before-colour": {
+  "crate": {
+   "h": 16,
+   "rgba": "",
+   "sel": "RGB24_16x16",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk-byte": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "head_hex": "69636e730000012473386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 292,
+  "strict": {
+   "h": 16,
+   "rgba": "",
+   "sel": "1:0",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  }
+ },
+ "mask-long": {
+  "crate": {
+   "error": "wrong mask data payload length (257 instead of 256)",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e73000001256973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000109ffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+  "len": 293,
+  "strict": {
+   "error": "InvalidMaskLength",
+   "status": "error"
+  }
+ },
+ "mask-short": {
+  "crate": {
+   "error": "wrong mask data payload length (255 instead of 256)",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e73000001236973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000107ffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+  "len": 291,
+  "strict": {
+   "error": "InvalidMaskLength",
+   "status": "error"
+  }
+ },
+ "mismatch-is32-l8mk": {
+  "crate": {
+   "error": "NoCandidate",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e73000004246973333200000014ff10fb10ff20fb20ff30fb306c386d6b0000040880808080808080808080808080808080808080808080808080808080",
+  "len": 1060,
+  "strict": {
+   "error": "NoLegacyPair",
+   "status": "error"
+  }
+ },
+ "overrun-il32-good-is32": {
+  "crate": {
+   "error": "invalid RLE-compressed data",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk-byte": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "head_hex": "69636e73000005666973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 1382,
+  "strict": {
+   "error": "RleOverrun",
+   "status": "error"
+  }
+ },
+ "png-ic07-plus-is32": {
+  "crate": {
+   "h": 128,
+   "rgba": "",
+   "sel": "RGBA32_128x128",
+   "sha": "ac14adc316287968",
+   "status": "ok",
+   "w": 128
+  },
+  "gdk": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk-byte": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "head_hex": "69636e7300000295696330370000017189504e470d0a1a0a0000000d4948445200000080000000800806000000c33e61cb0000013049444154789cedd2210100",
+  "len": 661,
+  "strict": {
+   "h": 16,
+   "rgba": "",
+   "sel": "1:2",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  }
+ },
+ "png-ic08-16x16": {
+  "crate": {
+   "error": "decoded PNG has wrong dimensions (16x16 instead of 256x256)",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "e5ab37b1d73edaf2",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk-byte": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "e5ab37b1d73edaf2",
+   "status": "ok",
+   "w": 16
+  },
+  "head_hex": "69636e730000017e696330380000005a89504e470d0a1a0a0000000d49484452000000100000001008060000001ff3ff610000001949444154789c631054326e",
+  "len": 382,
+  "strict": {
+   "h": 16,
+   "rgba": "",
+   "sel": "1:2",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  }
+ },
+ "png-ic08-256": {
+  "crate": {
+   "h": 256,
+   "rgba": "",
+   "sel": "RGBA32_256x256",
+   "sha": "ac1dc7228d3784ea",
+   "status": "ok",
+   "w": 256
+  },
+  "gdk": {
+   "h": 256,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "ac1dc7228d3784ea",
+   "status": "ok",
+   "w": 256
+  },
+  "gdk-byte": {
+   "h": 256,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "ac1dc7228d3784ea",
+   "status": "ok",
+   "w": 256
+  },
+  "head_hex": "69636e7300000408696330380000040089504e470d0a1a0a0000000d49484452000001000000010008060000005c72a866000003bf49444154789cedce310180",
+  "len": 1032,
+  "strict": {
+   "error": "NoLegacyPair",
+   "status": "error"
+  }
+ },
+ "png-ic08-plus-broken-it32": {
+  "crate": {
+   "h": 256,
+   "rgba": "",
+   "sel": "RGBA32_256x256",
+   "sha": "ac1dc7228d3784ea",
+   "status": "ok",
+   "w": 256
+  },
+  "gdk": {
+   "h": 256,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "ac1dc7228d3784ea",
+   "status": "ok",
+   "w": 256
+  },
+  "gdk-byte": {
+   "h": 256,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "ac1dc7228d3784ea",
+   "status": "ok",
+   "w": 256
+  },
+  "head_hex": "69636e730000441d696330380000040089504e470d0a1a0a0000000d49484452000001000000010008060000005c72a866000003bf49444154789cedce310180",
+  "len": 17437,
+  "strict": {
+   "error": "RleTruncated",
+   "status": "error"
+  }
+ },
+ "png-ic09-512": {
+  "crate": {
+   "h": 512,
+   "rgba": "",
+   "sel": "RGBA32_512x512",
+   "sha": "4ee2ad1955859efe",
+   "status": "ok",
+   "w": 512
+  },
+  "gdk": {
+   "h": 512,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "4ee2ad1955859efe",
+   "status": "ok",
+   "w": 512
+  },
+  "gdk-byte": {
+   "h": 512,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "4ee2ad1955859efe",
+   "status": "ok",
+   "w": 512
+  },
+  "head_hex": "69636e7300000a286963303900000a2089504e470d0a1a0a0000000d4948445200000200000002000806000000f478d4fa000009df49444154789cedce310180",
+  "len": 2600,
+  "strict": {
+   "error": "NoLegacyPair",
+   "status": "error"
+  }
+ },
+ "png-ic10-1024-plus-is32": {
+  "crate": {
+   "h": 1024,
+   "rgba": "",
+   "sel": "RGBA32_512x512_2x",
+   "sha": "b6b992d60ee57955",
+   "status": "ok",
+   "w": 1024
+  },
+  "gdk": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk-byte": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "head_hex": "69636e7300001d166963313000001bf289504e470d0a1a0a0000000d49484452000004000000040008060000007f1d2b8300001bb149444154789cecce310dc0",
+  "len": 7446,
+  "strict": {
+   "h": 16,
+   "rgba": "",
+   "sel": "1:2",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  }
+ },
+ "png-icp4-16": {
+  "crate": {
+   "h": 16,
+   "rgba": "",
+   "sel": "RGBA32_16x16",
+   "sha": "e5ab37b1d73edaf2",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e7300000062696370340000005a89504e470d0a1a0a0000000d49484452000000100000001008060000001ff3ff610000001949444154789c631054326e",
+  "len": 98,
+  "strict": {
+   "error": "NoLegacyPair",
+   "status": "error"
+  }
+ },
+ "png-rgb-ic07": {
+  "crate": {
+   "h": 128,
+   "rgba": "",
+   "sel": "RGBA32_128x128",
+   "sha": "61d860626640235a",
+   "status": "ok",
+   "w": 128
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e7300000143696330370000013b89504e470d0a1a0a0000000d49484452000000800000008008020000004c5cf69c000000fa49444154789cedd1410d00",
+  "len": 323,
+  "strict": {
+   "error": "NoLegacyPair",
+   "status": "error"
+  }
+ },
+ "rle-empty-payload": {
+  "crate": {
+   "error": "invalid RLE-compressed data",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e7300000118697333320000000873386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 280,
+  "strict": {
+   "error": "RleTruncated",
+   "status": "error"
+  }
+ },
+ "rle-overrun-last-run": {
+  "crate": {
+   "error": "invalid RLE-compressed data",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Could not decode ICNS file",
+   "status": "error"
+  },
+  "head_hex": "69636e73000001246973333200000014ff10fb10ff20fb20fd30ff3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 292,
+  "strict": {
+   "error": "RleOverrun",
+   "status": "error"
+  }
+ },
+ "rle-trailing-1": {
+  "crate": {
+   "error": "invalid RLE-compressed data",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk-byte": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "head_hex": "69636e73000001256973333200000015ff10fb10ff20fb20ff30fb300073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 293,
+  "strict": {
+   "error": "RleTrailingBytes",
+   "status": "error"
+  }
+ },
+ "rle-truncated-then-mask": {
+  "crate": {
+   "error": "invalid RLE-compressed data",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "c90996b6fe2dc712",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk-byte": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "c90996b6fe2dc712",
+   "status": "ok",
+   "w": 16
+  },
+  "head_hex": "69636e73000001236973333200000013ff10fb10ff20fb20ff30fb73386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 291,
+  "strict": {
+   "error": "RleTruncated",
+   "status": "error"
+  }
+ },
+ "suffix-1-byte": {
+  "crate": {
+   "h": 16,
+   "rgba": "",
+   "sel": "RGB24_16x16",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk-byte": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "head_hex": "69636e73000001246973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 293,
+  "strict": {
+   "error": "TrailingFileBytes",
+   "status": "error"
+  }
+ },
+ "suffix-8-bytes": {
+  "crate": {
+   "h": 16,
+   "rgba": "",
+   "sel": "RGB24_16x16",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk-byte": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "head_hex": "69636e73000001246973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 300,
+  "strict": {
+   "error": "TrailingFileBytes",
+   "status": "error"
+  }
+ },
+ "suffix-entry": {
+  "crate": {
+   "h": 16,
+   "rgba": "",
+   "sel": "RGB24_16x16",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk-byte": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "head_hex": "69636e73000001246973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 303,
+  "strict": {
+   "error": "TrailingFileBytes",
+   "status": "error"
+  }
+ },
+ "tail-3-bytes-inside-declared": {
+  "crate": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "gdk-byte": {
+   "h": 16,
+   "has_alpha": true,
+   "rgba": "",
+   "sha": "33d996085e67f931",
+   "status": "ok",
+   "w": 16
+  },
+  "head_hex": "69636e73000001276973333200000014ff10fb10ff20fb20ff30fb3073386d6b00000108c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+  "len": 295,
+  "strict": {
+   "error": "TruncatedEntryHeader",
+   "status": "error"
+  }
+ }
+}

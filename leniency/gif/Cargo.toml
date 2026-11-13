@@ -1,0 +1,31 @@
+# Shared Rust runner for the GIF and PNG/APNG adapters (selectors gif:* and png:*).
+[package]
+name = "leniency-gifpng-runner"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+image = { version = "=0.25.10", default-features = false, features = ["gif", "png"] }
+glycin-image-rs = { path = "../../../glycin-plan/glycin/glycin-loaders/glycin-image-rs", default-features = false, features = ["builtin"] }
+glycin-utils = { path = "../../../glycin-plan/glycin/glycin-utils", default-features = false, features = ["builtin", "loader-utils"] }
+gif = "=0.14.2"
+png = "0.18.1"
+gift = "*"
+tinygif = "*"
+lodepng = "*"
+minipng = "*"
+zune-png = "*"
+zune-core = "*"
+embedded-graphics = "0.8"
+serde_json = "1.0"
+sha2 = "0.10"
+
+# Same patch as glycin's workspace Cargo.toml: glycin builds image-rs PNG against image-png git.
+[patch.crates-io]
+png = { git = "https://github.com/image-rs/image-png.git", rev = "e917d6a04f198c0b49df0ee5d0a65732bb6a337c" }
+
+[profile.release]
+opt-level = 1
+debug = false
+panic = "unwind"
+codegen-units = 16

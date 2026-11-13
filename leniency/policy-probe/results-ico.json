@@ -1,0 +1,2342 @@
+{
+ "and-truncated-half": {
+  "crate-e0": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010018003c00000016000000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "error": "Format error decoding Ico: ICO image data size did not match expected size",
+   "status": "error"
+  },
+  "len": 82,
+  "strict-e0": {
+   "error": "Dib(TruncatedAndMask)",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "Dib(TruncatedAndMask)",
+   "status": "error"
+  }
+ },
+ "base-24": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010018004000000016000000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "library",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 86,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "bih-core-12": {
+  "crate-e0": {
+   "error": "Invalid BMP header size (was 12, must be 40)",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "Invalid BMP header size (was 12, must be 40)",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "ICO image was truncated or incomplete.",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "ICO image was truncated or incomplete.",
+   "status": "error"
+  },
+  "head_hex": "000001000100020200000100180024000000160000000c0000000200040001001800302010302010000060504060504000008000000000000000",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "library",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 58,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "bih-planes-0": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010018004000000016000000280000000200000004000000000018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "error": "Format error decoding Bmp: More than one plane",
+   "status": "error"
+  },
+  "len": 86,
+  "strict-e0": {
+   "error": "Dib(InvalidPlanes)",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "Dib(InvalidPlanes)",
+   "status": "error"
+  }
+ },
+ "bih-v4-108": {
+  "crate-e0": {
+   "error": "Invalid BMP header size (was 108, must be 40)",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "Invalid BMP header size (was 108, must be 40)",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "000000ff000000ff000000ff000000ff",
+   "sha": "cc0fa51d4d0a97b6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "000000ff000000ff000000ff000000ff",
+   "sha": "cc0fa51d4d0a97b6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "000001000100020200000100180084000000160000006c0000000200000004000000010018000000000000000000000000000000000000000000000000000000",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "library",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 154,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "bitfields32-in-ico": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "0000ff0010203080ff00000000ff0000",
+   "sel": "entry:0",
+   "sha": "fd821bd31e014de5",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "0000ff0010203080ff00000000ff0000",
+   "sel": "entry:0",
+   "sha": "fd821bd31e014de5",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "error": "Compressed icons are not supported",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Compressed icons are not supported",
+   "status": "error"
+  },
+  "head_hex": "00000100010002020000010020004c00000016000000280000000200000004000000010020000300000000000000000000000000000000000000000000000000",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "library",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 98,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "bpp-vs-area": {
+  "crate-e0": {
+   "h": 1,
+   "rgba": "07060580",
+   "sel": "entry:0",
+   "sha": "74b2f096ec41af32",
+   "status": "ok",
+   "w": 1
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:1",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100020001010000010020003000000026000000020200000100180040000000560000002800000001000000020000000100200000000000000000000000",
+  "image": {
+   "h": 1,
+   "rgba": "07060580",
+   "sel": "library",
+   "sha": "74b2f096ec41af32",
+   "status": "ok",
+   "w": 1
+  },
+  "len": 150,
+  "strict-e0": {
+   "h": 1,
+   "rgba": "07060580",
+   "sel": "entry:0",
+   "sha": "74b2f096ec41af32",
+   "status": "ok",
+   "w": 1
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:1",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "count-0": {
+  "crate-e0": {
+   "error": "NoEntry",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "NoEntry",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Compressed icons are not supported",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Compressed icons are not supported",
+   "status": "error"
+  },
+  "head_hex": "00000100000028000000020000000400000001001800000000000000000000000000000000000000000000000000302010302010000060504060504000008000",
+  "image": {
+   "error": "Format error decoding Ico: ICO directory contains no image",
+   "status": "error"
+  },
+  "len": 70,
+  "strict-e0": {
+   "error": "EmptyDirectory",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "EmptyDirectory",
+   "status": "error"
+  }
+ },
+ "count-1025": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:1024",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010402020000010018004000000016400000020200000100180040000000164000000202000001001800400000001640000002020000010018004000",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "library",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 82006,
+  "strict-e0": {
+   "error": "TooManyEntries",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "TooManyEntries",
+   "status": "error"
+  }
+ },
+ "cur-hotspot-300": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "000002000100020200002c0102004000000016000000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "error": "Format error decoding Ico: ICO image entry has too many color planes or too large hotspot value",
+   "status": "error"
+  },
+  "len": 86,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "dib1-colour-palette": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "0000ffffff0000ffff0000ff0000ffff",
+   "sel": "entry:0",
+   "sha": "0ebbc54b59cb78aa",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "0000ffffff0000ffff0000ff0000ffff",
+   "sel": "entry:0",
+   "sha": "0ebbc54b59cb78aa",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "ffffffff000000ff000000ffffffffff",
+   "sha": "58335d78fe0b8040",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "ffffffff000000ff000000ffffffffff",
+   "sha": "58335d78fe0b8040",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010001004000000016000000280000000200000004000000010001000000000000000000000000000000000000000000000000000000",
+  "image": {
+   "h": 2,
+   "rgba": "0000ffffff0000ffff0000ff0000ffff",
+   "sel": "library",
+   "sha": "0ebbc54b59cb78aa",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 86,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "0000ffffff0000ffff0000ff0000ffff",
+   "sel": "entry:0",
+   "sha": "0ebbc54b59cb78aa",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "0000ffffff0000ffff0000ff0000ffff",
+   "sel": "entry:0",
+   "sha": "0ebbc54b59cb78aa",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "dib16-555-value3": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "191919ff191919ff191919ff191919ff",
+   "sel": "entry:0",
+   "sha": "6b74f84342635d93",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "191919ff191919ff191919ff191919ff",
+   "sel": "entry:0",
+   "sha": "6b74f84342635d93",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "181818ff181818ff181818ff181818ff",
+   "sha": "f857257d368e5df8",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "181818ff181818ff181818ff181818ff",
+   "sha": "f857257d368e5df8",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "0000010001000202000001001000380000001600000028000000020000000400000001001000000000000000000000000000000000000000000000000000630c",
+  "image": {
+   "h": 2,
+   "rgba": "191919ff191919ff191919ff191919ff",
+   "sel": "library",
+   "sha": "6b74f84342635d93",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 78,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "191919ff191919ff191919ff191919ff",
+   "sel": "entry:0",
+   "sha": "6b74f84342635d93",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "191919ff191919ff191919ff191919ff",
+   "sel": "entry:0",
+   "sha": "6b74f84342635d93",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "dib16-bit15": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "ff0000ffff0000ffff0000ffff0000ff",
+   "sel": "entry:0",
+   "sha": "fb3a6a641bbce9b7",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "ff0000ffff0000ffff0000ffff0000ff",
+   "sel": "entry:0",
+   "sha": "fb3a6a641bbce9b7",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "ff0000ffff0000ffff0000ffff0000ff",
+   "sha": "fb3a6a641bbce9b7",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "ff0000ffff0000ffff0000ffff0000ff",
+   "sha": "fb3a6a641bbce9b7",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "000001000100020200000100100038000000160000002800000002000000040000000100100000000000000000000000000000000000000000000000000000fc",
+  "image": {
+   "h": 2,
+   "rgba": "ff0000ffff0000ffff0000ffff0000ff",
+   "sel": "library",
+   "sha": "fb3a6a641bbce9b7",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 78,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "ff0000ffff0000ffff0000ffff0000ff",
+   "sel": "entry:0",
+   "sha": "fb3a6a641bbce9b7",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "ff0000ffff0000ffff0000ffff0000ff",
+   "sel": "entry:0",
+   "sha": "fb3a6a641bbce9b7",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "dib24-no-and": {
+  "crate-e0": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff102030ff102030ff",
+   "sha": "e3ccd0ec224e7c3b",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff102030ff102030ff",
+   "sha": "e3ccd0ec224e7c3b",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010018003800000016000000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff102030ff102030ff",
+   "sel": "library",
+   "sha": "e3ccd0ec224e7c3b",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 78,
+  "strict-e0": {
+   "error": "Dib(TruncatedAndMask)",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "Dib(TruncatedAndMask)",
+   "status": "error"
+  }
+ },
+ "dib32-alpha-and-set": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff1020308010203080",
+   "sel": "entry:0",
+   "sha": "b56fe8b5d6811717",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff1020308010203080",
+   "sel": "entry:0",
+   "sha": "b56fe8b5d6811717",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff1020308010203080",
+   "sha": "b56fe8b5d6811717",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff1020308010203080",
+   "sha": "b56fe8b5d6811717",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010020004000000016000000280000000200000004000000010020000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "40506000405060ff1020300010203000",
+   "sel": "library",
+   "sha": "5a7f5d1f4345063f",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 86,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff1020308010203080",
+   "sel": "entry:0",
+   "sha": "b56fe8b5d6811717",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff1020308010203080",
+   "sel": "entry:0",
+   "sha": "b56fe8b5d6811717",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "dib32-no-and": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff1020308010203080",
+   "sel": "entry:0",
+   "sha": "b56fe8b5d6811717",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff1020308010203080",
+   "sel": "entry:0",
+   "sha": "b56fe8b5d6811717",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff1020308010203080",
+   "sha": "b56fe8b5d6811717",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff1020308010203080",
+   "sha": "b56fe8b5d6811717",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010020003800000016000000280000000200000004000000010020000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff1020308010203080",
+   "sel": "library",
+   "sha": "b56fe8b5d6811717",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 78,
+  "strict-e0": {
+   "error": "Dib(TruncatedAndMask)",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "Dib(TruncatedAndMask)",
+   "status": "error"
+  }
+ },
+ "dib32-zero-alpha-and": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "10203000102030001020300010203000",
+   "sel": "entry:0",
+   "sha": "20c64da5de1a6763",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "10203000102030001020300010203000",
+   "sel": "entry:0",
+   "sha": "20c64da5de1a6763",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "10203000102030001020300010203000",
+   "sha": "20c64da5de1a6763",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "10203000102030001020300010203000",
+   "sha": "20c64da5de1a6763",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010020004000000016000000280000000200000004000000010020000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "10203000102030001020300010203000",
+   "sel": "library",
+   "sha": "20c64da5de1a6763",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 86,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "102030ff102030ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "963b5d40540cc239",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "102030ff102030ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "963b5d40540cc239",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "dib8-clrused-0-full": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "405060ff102030ff102030ff405060ff",
+   "sel": "entry:0",
+   "sha": "2269bf7467989753",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "405060ff102030ff102030ff405060ff",
+   "sel": "entry:0",
+   "sha": "2269bf7467989753",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff102030ff102030ff405060ff",
+   "sha": "2269bf7467989753",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff102030ff102030ff405060ff",
+   "sha": "2269bf7467989753",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010008003804000016000000280000000200000004000000010008000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff102030ff102030ff405060ff",
+   "sel": "library",
+   "sha": "2269bf7467989753",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 1102,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "405060ff102030ff102030ff405060ff",
+   "sel": "entry:0",
+   "sha": "2269bf7467989753",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "405060ff102030ff102030ff405060ff",
+   "sel": "entry:0",
+   "sha": "2269bf7467989753",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "dib8-clrused-2": {
+  "crate-e0": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff102030ff102030ff405060ff",
+   "sha": "2269bf7467989753",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff102030ff102030ff405060ff",
+   "sha": "2269bf7467989753",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010008004000000016000000280000000200000004000000010008000000000000000000000000000000000002000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff102030ff102030ff405060ff",
+   "sel": "library",
+   "sha": "2269bf7467989753",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 86,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "405060ff102030ff102030ff405060ff",
+   "sel": "entry:0",
+   "sha": "2269bf7467989753",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "405060ff102030ff102030ff405060ff",
+   "sel": "entry:0",
+   "sha": "2269bf7467989753",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "dib8-index-out-of-range": {
+  "crate-e0": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff102030ff102030ff224c50ff",
+   "sha": "ce50f2308b38c5e8",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff102030ff102030ff224c50ff",
+   "sha": "ce50f2308b38c5e8",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010008004000000016000000280000000200000004000000010008000000000000000000000000000000000002000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff102030ff102030ff000000ff",
+   "sel": "library",
+   "sha": "e8f437195f8cf3de",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 86,
+  "strict-e0": {
+   "error": "Dib(PaletteIndexOutOfRange)",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "Dib(PaletteIndexOutOfRange)",
+   "status": "error"
+  }
+ },
+ "dir-dims-0-dib-2": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "error": "Invalid header in icon (image size)",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Invalid header in icon (image size)",
+   "status": "error"
+  },
+  "head_hex": "00000100010000000000010018004000000016000000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "error": "Format error decoding Ico: Entry(256, 256) and BMP(2, 2) dimensions do not match!",
+   "status": "error"
+  },
+  "len": 86,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "dir-dims-16-dib-2": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "error": "Invalid header in icon (image size)",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Invalid header in icon (image size)",
+   "status": "error"
+  },
+  "head_hex": "00000100010010100000010018004000000016000000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "error": "Format error decoding Ico: Entry(16, 16) and BMP(2, 2) dimensions do not match!",
+   "status": "error"
+  },
+  "len": 86,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "dir-reserved-1": {
+  "crate-e0": {
+   "error": "Invalid reserved field value in ICONDIR (was 1, but must be 0)",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "Invalid reserved field value in ICONDIR (was 1, but must be 0)",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Invalid header in icon (first word)",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Invalid header in icon (first word)",
+   "status": "error"
+  },
+  "head_hex": "01000100010002020000010018004000000016000000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "library",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 86,
+  "strict-e0": {
+   "error": "InvalidReserved",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "InvalidReserved",
+   "status": "error"
+  }
+ },
+ "dir-type-0": {
+  "crate-e0": {
+   "error": "Invalid resource type (0)",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "Invalid resource type (0)",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Invalid header in icon (image type)",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Invalid header in icon (image type)",
+   "status": "error"
+  },
+  "head_hex": "00000000010002020000010018004000000016000000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "library",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 86,
+  "strict-e0": {
+   "error": "UnsupportedType",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "UnsupportedType",
+   "status": "error"
+  }
+ },
+ "dir-type-3": {
+  "crate-e0": {
+   "error": "Invalid resource type (3)",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "Invalid resource type (3)",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Invalid header in icon (image type)",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Invalid header in icon (image type)",
+   "status": "error"
+  },
+  "head_hex": "00000300010002020000010018004000000016000000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "library",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 86,
+  "strict-e0": {
+   "error": "UnsupportedType",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "UnsupportedType",
+   "status": "error"
+  }
+ },
+ "entry-offset-beyond-eof": {
+  "crate-e0": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "ICO image was truncated or incomplete.",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "ICO image was truncated or incomplete.",
+   "status": "error"
+  },
+  "head_hex": "00000100010002020000010018004000000010270000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "len": 86,
+  "strict-e0": {
+   "error": "EntryOutOfBounds",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "EntryOutOfBounds",
+   "status": "error"
+  }
+ },
+ "entry-oob-unselected": {
+  "crate-e0": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100020002020000010018004000000026000000010100000100180040000000102700002800000002000000040000000100180000000000000000000000",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "library",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 166,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "entry-reserved-1-selected": {
+  "crate-e0": {
+   "error": "Invalid reserved field value in ICONDIRENTRY (was 1, but must be 0)",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "Invalid reserved field value in ICONDIRENTRY (was 1, but must be 0)",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020001010018004000000016000000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "library",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 86,
+  "strict-e0": {
+   "error": "InvalidEntryReserved",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "InvalidEntryReserved",
+   "status": "error"
+  }
+ },
+ "entry-reserved-1-unselected": {
+  "crate-e0": {
+   "error": "Invalid reserved field value in ICONDIRENTRY (was 1, but must be 0)",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "Invalid reserved field value in ICONDIRENTRY (was 1, but must be 0)",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100020002020000010018004000000026000000010100010100180040000000660000002800000002000000040000000100180000000000000000000000",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "library",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 166,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "entry-size-0": {
+  "crate-e0": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010018000000000016000000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "error": "Format error decoding Ico: ICO image data size did not match expected size",
+   "status": "error"
+  },
+  "len": 86,
+  "strict-e0": {
+   "error": "EmptyEntry",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "EmptyEntry",
+   "status": "error"
+  }
+ },
+ "entry-size-0-unselected-small": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100020002020000010018004000000026000000010100000100180000000000660000002800000002000000040000000100180000000000000000000000",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "library",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 166,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "entry-size-beyond-eof": {
+  "crate-e0": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "0000010001000202000001001800a400000016000000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "library",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 86,
+  "strict-e0": {
+   "error": "EntryOutOfBounds",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "EntryOutOfBounds",
+   "status": "error"
+  }
+ },
+ "entry-size-short-header": {
+  "crate-e0": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010018000800000016000000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "error": "Format error decoding Ico: ICO image data size did not match expected size",
+   "status": "error"
+  },
+  "len": 86,
+  "strict-e0": {
+   "error": "Dib(TruncatedHeader)",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "Dib(TruncatedHeader)",
+   "status": "error"
+  }
+ },
+ "entry-size-xor-only": {
+  "crate-e0": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010018003800000016000000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff102030ff102030ff",
+   "sel": "library",
+   "sha": "e3ccd0ec224e7c3b",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 86,
+  "strict-e0": {
+   "error": "Dib(TruncatedAndMask)",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "Dib(TruncatedAndMask)",
+   "status": "error"
+  }
+ },
+ "ico-planes-300": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "000001000100020200002c0118004000000016000000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "error": "Format error decoding Ico: ICO image entry has too many color planes or too large hotspot value",
+   "status": "error"
+  },
+  "len": 86,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "largest-broken-smaller-ok": {
+  "crate-e0": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "ICO image was truncated or incomplete.",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "ICO image was truncated or incomplete.",
+   "status": "error"
+  },
+  "head_hex": "00000100020002020000010018001e00000026000000010100000100180030000000440000002800000002000000040000000100180000000000000000000000",
+  "image": {
+   "error": "Format error decoding Ico: ICO image data size did not match expected size",
+   "status": "error"
+  },
+  "len": 116,
+  "strict-e0": {
+   "error": "Dib(TruncatedHeader)",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "Dib(TruncatedHeader)",
+   "status": "error"
+  }
+ },
+ "negative-stored-height": {
+  "crate-e0": {
+   "error": "Invalid BMP height (was -2, but must be at least 1)",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "Invalid BMP height (was -2, but must be at least 1)",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "102030ff102030ff405060ff405060ff",
+   "sha": "5fe8126e5645ec92",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "102030ff102030ff405060ff405060ff",
+   "sha": "5fe8126e5645ec92",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "000001000100020200000100180040000000160000002800000002000000fcffffff010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "102030ff102030ff405060ff405060ff",
+   "sel": "library",
+   "sha": "5fe8126e5645ec92",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 86,
+  "strict-e0": {
+   "error": "Dib(InvalidDimensions)",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "Dib(InvalidDimensions)",
+   "status": "error"
+  }
+ },
+ "odd-stored-height-5": {
+  "crate-e0": {
+   "error": "Invalid height field in BMP header (was 5, but must be divisible by 2)",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "Invalid height field in BMP header (was 5, but must be divisible by 2)",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff102030ff102030ff",
+   "sha": "e3ccd0ec224e7c3b",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff102030ff102030ff",
+   "sha": "e3ccd0ec224e7c3b",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010018004000000016000000280000000200000005000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff102030ff102030ff",
+   "sel": "library",
+   "sha": "e3ccd0ec224e7c3b",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 86,
+  "strict-e0": {
+   "error": "Dib(InvalidDimensions)",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "Dib(InvalidDimensions)",
+   "status": "error"
+  }
+ },
+ "png-plus-dib": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "11223380112233801122338011223380",
+   "sel": "entry:0",
+   "sha": "75ee69262d369c2f",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "11223380112233801122338011223380",
+   "sel": "entry:0",
+   "sha": "75ee69262d369c2f",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 1,
+   "has_alpha": true,
+   "rgba": "070605ff",
+   "sha": "0b049b8b57b60340",
+   "status": "ok",
+   "w": 1
+  },
+  "gdk-byte": {
+   "h": 1,
+   "has_alpha": true,
+   "rgba": "070605ff",
+   "sha": "0b049b8b57b60340",
+   "status": "ok",
+   "w": 1
+  },
+  "head_hex": "00000100020002020000010020004a000000260000000101000001001800300000007000000089504e470d0a1a0a0000000d4948445200000002000000020806",
+  "image": {
+   "h": 2,
+   "rgba": "11223380112233801122338011223380",
+   "sel": "library",
+   "sha": "75ee69262d369c2f",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 160,
+  "strict-e0": {
+   "error": "PngDelegation",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "PngDelegation",
+   "status": "error"
+  }
+ },
+ "png-rgb": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "112233ff112233ff112233ff112233ff",
+   "sel": "entry:0",
+   "sha": "f02bfdb41309299d",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "112233ff112233ff112233ff112233ff",
+   "sel": "entry:0",
+   "sha": "f02bfdb41309299d",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "error": "Compressed icons are not supported",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Compressed icons are not supported",
+   "status": "error"
+  },
+  "head_hex": "0000010001000202000001001800490000001600000089504e470d0a1a0a0000000d4948445200000002000000020802000000fdd49a73000000104944415478",
+  "image": {
+   "error": "Format error decoding Ico: The PNG is not in RGBA format!",
+   "status": "error"
+  },
+  "len": 95,
+  "strict-e0": {
+   "error": "PngDelegation",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "PngDelegation",
+   "status": "error"
+  }
+ },
+ "png-rgba": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "11223380112233801122338011223380",
+   "sel": "entry:0",
+   "sha": "75ee69262d369c2f",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "11223380112233801122338011223380",
+   "sel": "entry:0",
+   "sha": "75ee69262d369c2f",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "error": "Compressed icons are not supported",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Compressed icons are not supported",
+   "status": "error"
+  },
+  "head_hex": "00000100010002020000010020004a0000001600000089504e470d0a1a0a0000000d494844520000000200000002080600000072b60d24000000114944415478",
+  "image": {
+   "h": 2,
+   "rgba": "11223380112233801122338011223380",
+   "sel": "library",
+   "sha": "75ee69262d369c2f",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 96,
+  "strict-e0": {
+   "error": "PngDelegation",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "PngDelegation",
+   "status": "error"
+  }
+ },
+ "png-sig-4-only": {
+  "crate-e0": {
+   "error": "Malformed PNG data: Invalid PNG signature.",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "Malformed PNG data: Invalid PNG signature.",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "Invalid header in icon (image size)",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Invalid header in icon (image size)",
+   "status": "error"
+  },
+  "head_hex": "0000010001000202000001001800400000001600000089504e470000000000000000000000000000000000000000000000000000000000000000000000000000",
+  "image": {
+   "error": "The decoder for Bmp does not support the format features Unknown bitmap header type (size=1196314761)",
+   "status": "error"
+  },
+  "len": 86,
+  "strict-e0": {
+   "error": "Dib(UnsupportedHeaderSize)",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "Dib(UnsupportedHeaderSize)",
+   "status": "error"
+  }
+ },
+ "rle8-in-ico": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "000000ff102030ff000000ff102030ff",
+   "sel": "entry:0",
+   "sha": "9f2a2d22ad2fb590",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "000000ff102030ff000000ff102030ff",
+   "sel": "entry:0",
+   "sha": "9f2a2d22ad2fb590",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "error": "Compressed icons are not supported",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Compressed icons are not supported",
+   "status": "error"
+  },
+  "head_hex": "00000100010002020000010008003a04000016000000280000000200000004000000010008000100000000000000000000000000000000000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "10203000102030001020300010203000",
+   "sel": "library",
+   "sha": "20c64da5de1a6763",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 1104,
+  "strict-e0": {
+   "error": "Dib(UnsupportedOrientation)",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "Dib(UnsupportedOrientation)",
+   "status": "error"
+  }
+ },
+ "sizeimage-wrong": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010018004000000016000000280000000200000004000000010018000000000007000000000000000000000000000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "library",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 86,
+  "strict-e0": {
+   "error": "Dib(InvalidImageSize)",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "Dib(InvalidImageSize)",
+   "status": "error"
+  }
+ },
+ "slack-after-and": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010018004800000016000000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "library",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 94,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "stored-height-equal-h": {
+  "crate-e0": {
+   "h": 1,
+   "rgba": "102030ff10203000",
+   "sel": "entry:0",
+   "sha": "7ff8ffdb7bb2ffb2",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 1,
+   "rgba": "102030ff10203000",
+   "sel": "entry:0",
+   "sha": "7ff8ffdb7bb2ffb2",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "error": "Invalid header in icon (image size)",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "Invalid header in icon (image size)",
+   "status": "error"
+  },
+  "head_hex": "00000100010002020000010018003800000016000000280000000200000002000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "error": "Format error decoding Ico: Entry(2, 2) and BMP(2, 1) dimensions do not match!",
+   "status": "error"
+  },
+  "len": 78,
+  "strict-e0": {
+   "h": 1,
+   "rgba": "102030ff10203000",
+   "sel": "entry:0",
+   "sha": "7ff8ffdb7bb2ffb2",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 1,
+   "rgba": "102030ff10203000",
+   "sel": "entry:0",
+   "sha": "7ff8ffdb7bb2ffb2",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "tie-two-equal": {
+  "crate-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "crate-largest": {
+   "h": 2,
+   "rgba": "030201ff030201ff030201ff030201ff",
+   "sel": "entry:1",
+   "sha": "1291031654efa844",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "030201ff030201ff030201ff030201ff",
+   "sha": "1291031654efa844",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "030201ff030201ff030201ff030201ff",
+   "sha": "1291031654efa844",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100020002020000010018004000000026000000020200000100180040000000660000002800000002000000040000000100180000000000000000000000",
+  "image": {
+   "h": 2,
+   "rgba": "030201ff030201ff030201ff030201ff",
+   "sel": "library",
+   "sha": "1291031654efa844",
+   "status": "ok",
+   "w": 2
+  },
+  "len": 166,
+  "strict-e0": {
+   "h": 2,
+   "rgba": "405060ff405060ff10203000102030ff",
+   "sel": "entry:0",
+   "sha": "2c1d111cde6cefd6",
+   "status": "ok",
+   "w": 2
+  },
+  "strict-largest": {
+   "h": 2,
+   "rgba": "030201ff030201ff030201ff030201ff",
+   "sel": "entry:1",
+   "sha": "1291031654efa844",
+   "status": "ok",
+   "w": 2
+  }
+ },
+ "truncated-table": {
+  "crate-e0": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "gdk": {
+   "error": "ICO image was truncated or incomplete.",
+   "status": "error"
+  },
+  "gdk-byte": {
+   "error": "ICO image was truncated or incomplete.",
+   "status": "error"
+  },
+  "head_hex": "0000010001000202000001001800",
+  "image": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "len": 14,
+  "strict-e0": {
+   "error": "TruncatedEntries",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "TruncatedEntries",
+   "status": "error"
+  }
+ },
+ "xor-truncated": {
+  "crate-e0": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "crate-largest": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "gdk": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "0000000000000000102030ff102030ff",
+   "sha": "a2602e227b59dc83",
+   "status": "ok",
+   "w": 2
+  },
+  "gdk-byte": {
+   "h": 2,
+   "has_alpha": true,
+   "rgba": "0000000000000000102030ff102030ff",
+   "sha": "a2602e227b59dc83",
+   "status": "ok",
+   "w": 2
+  },
+  "head_hex": "00000100010002020000010018003000000016000000280000000200000004000000010018000000000000000000000000000000000000000000000000003020",
+  "image": {
+   "error": "failed to fill whole buffer",
+   "status": "error"
+  },
+  "len": 70,
+  "strict-e0": {
+   "error": "Dib(TruncatedPixels)",
+   "status": "error"
+  },
+  "strict-largest": {
+   "error": "Dib(TruncatedPixels)",
+   "status": "error"
+  }
+ }
+}
