@@ -1,4 +1,4 @@
-# Sources for GIF-CORE-SPEC draft 0.1
+# Sources for GIF-CORE-SPEC draft 0.2 (unchanged since draft 0.1)
 
 ## Format text
 

@@ -2,8 +2,11 @@
 """Checks for the GIF policy draft.
 
 1. Strict bridge: policy_oracle(STRICT) equals gif_oracle on every vector and probe input.
-2. Obligation R: wherever Strict accepts (still: Ok; frames: every frame Strict returns),
-   Recommended returns the same bytes with recovered=false.
+2. Obligation R (OPTIONS.md), for the two meanings of Strict-accepted (SPEC.md G14, G15):
+   R-still: Strict decode_still is Ok -> RecommendedBeta's still is identical, recovered=false;
+   R-stream: Strict decode_frames ends at the Trailer -> RecommendedBeta returns the same info,
+   the same frame records (every field), recovered=false on each, and ends at the Trailer;
+   R-prefix: every frame Strict returns before an error is returned identically by RecommendedBeta.
 3. Profile agreement with the measured incumbents (probes/results.json):
    ImageCrateCompat-0.25.10 vs `image` (into_frames) and `glycin`;
    GdkCompat-2.42.12 vs `gdk-loader` (static image, whole buffer) and `gdk-anim`.
@@ -62,22 +65,29 @@ def bridge(ins):
 
 
 def obligation_r(ins):
-    bad = checked = 0
+    bad = still_ok = stream_ok = nframes = 0
     for b, name in ins.items():
-        s, r = PO.decode_still(b, PO.STRICT), PO.decode_still(b, PO.RECOMMENDED)
+        s, r = PO.decode_still(b, PO.STRICT), PO.decode_still(b, PO.RECOMMENDED_BETA)
         if 'error' not in s:
-            checked += 1
+            still_ok += 1
             if strip(r) != strip(s) or r.get('recovered'):
                 bad += 1
                 print('R-still', name)
-        f, g = PO.decode_frames(b, PO.STRICT), PO.decode_frames(b, PO.RECOMMENDED)
+        f, g = PO.decode_frames(b, PO.STRICT), PO.decode_frames(b, PO.RECOMMENDED_BETA)
+        gf = g.get('frames', [])
         for i, fr in enumerate(f.get('frames', [])):
-            gf = g.get('frames', [])
-            if i >= len(gf) or gf[i]['rgba'] != fr['rgba'] or gf[i]['recovered']:
+            nframes += 1
+            if i >= len(gf) or strip({'frames': [gf[i]]}) != strip({'frames': [fr]}) or gf[i]['recovered']:
                 bad += 1
-                print('R-frames', name, i)
+                print('R-prefix', name, i)
                 break
-    print(f'obligation R: {checked} Strict-accepted still inputs, {bad} violations')
+        if f.get('end') == 'trailer':
+            stream_ok += 1
+            if strip(g) != strip(f) or any(x['recovered'] for x in gf):
+                bad += 1
+                print('R-stream', name)
+    print(f'obligation R: {still_ok} Strict-accepted still inputs, {stream_ok} Strict-accepted streams, '
+          f'{nframes} Strict frames; {bad} violations')
 
 
 def h(x):
@@ -129,7 +139,8 @@ def runner_outcome(v, runner):
 def agreement():
     pairs = [('ImageCrateCompat-0.25.10', 'image'), ('ImageCrateCompat-0.25.10', 'glycin'),
              ('GdkCompat-2.42.12', 'gdk-loader'), ('GdkCompat-2.42.12', 'gdk-anim'),
-             ('Strict', 'image'), ('Strict', 'gdk-loader'), ('Recommended', 'image'), ('Recommended', 'gdk-loader')]
+             ('Strict', 'image'), ('Strict', 'gdk-loader'), ('RecommendedBeta', 'image'),
+             ('RecommendedBeta', 'gdk-loader')]
     for prof, runner in pairs:
         P = PO.PROFILES[prof]
         agree, miss = 0, []

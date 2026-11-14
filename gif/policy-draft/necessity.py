@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-"""For each named compatibility profile, revert one field at a time to its Strict value and
-list the probe/witness inputs whose modelled outcome then disagrees with the runner.
+"""For each named profile, revert one field at a time to its Strict value and list the
+probe/witness inputs whose modelled outcome then disagrees with the runner. RecommendedBeta is
+measured against `image` and the GDK loader: a field that breaks nothing has no measured
+incumbent support on these inputs (it may still be kept by design).
 Usage: python3 -I necessity.py"""
 import sys
 from pathlib import Path
@@ -10,7 +12,7 @@ import policy_oracle as PO  # noqa: E402
 import validate as V  # noqa: E402
 
 for prof, runners in (('GdkCompat-2.42.12', ('gdk-loader', 'gdk-anim')), ('ImageCrateCompat-0.25.10', ('image',)),
-                      ('Recommended', ())):
+                      ('RecommendedBeta', ('image', 'gdk-loader'))):
     P = PO.PROFILES[prof]
     for field, val in P.items():
         if val == PO.STRICT[field]:
