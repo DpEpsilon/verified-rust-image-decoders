@@ -169,7 +169,7 @@ Files with a colour index beyond the table (Q5), all names:
 Graphic Control before Plain Text (Q7), files that are not fuzzer-derived:
 
 
-Application identifiers: `NETSCAPE2.0` 242, `ImageMagick` 21, `XMP DataXMP` 12, `ICCRGBG1012` 9, `ADOBE:IR1.0` 7, `GIFCONnb1.0` 4, `PIANYGIF2.0` 4, `ANIMEXTS1.0` 1, `           ` 1, `UNKNOWN!XXX` 1.
+Application identifiers: `NETSCAPE2.0` 242, `ImageMagick` 21, `XMP DataXMP` 12, `ICCRGBG1012` 9, `ADOBE:IR1.0` 7, `GIFCONnb1.0` 4, `PIANYGIF2.0` 4, `ANIMEXTS1.0` 1, `\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00` 1, `UNKNOWN!XXX` 1.
 
 Notes on the scan: "missing End-of-Information" counts a frame whose code stream ends (data exhausted, or invalid code) before an EOI code is read; a frame that reaches EOI after the last pixel is not counted. "Colour index beyond the table" ORs, per frame, the set of indices contained in every table string the decoder emits, so it counts a frame once if any emitted pixel has an index at or above the table size and that index is not the transparent index. Counts are of files; a file with 100 offending frames counts once.
 
