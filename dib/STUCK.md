@@ -486,7 +486,7 @@ The fourteen option enums and their `Policy` fields, the exposure fix
 `strict_policy_exec`/`profile_policy_exec` narrowed to `pub(crate)`, `Policy`
 and `MetadataOptions` dropped from `lib.rs`), and the `parse_header` rlimit
 recovery all verify (run 387: 1658 verified, 0 errors; `cargo test --release`
-302/302 vectors, corpus 84/58, policy Strict/Recommended 102/102, and the P2a
+302/302 vectors, corpus 84/58, policy Strict/RecommendedBeta 102/102, and the P2a
 `cfg(test)` oracle harness green). **No option beyond the P2a six is
 behaviourally implemented.** `bitfield_offset` is the one that was attempted and
 it is **not** proved.

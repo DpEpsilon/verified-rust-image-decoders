@@ -349,7 +349,7 @@
      "hwm_mb": 69.8125,
      "base_mb": 65.80859375
     },
-    "tga-verified-policy-recommended": {
+    "tga-verified-policy-recommended-beta": {
      "pixels": 20110981,
      "files": 230,
      "samples": 35,
@@ -880,7 +880,7 @@
      "hwm_mb": 33.33203125,
      "base_mb": 29.32421875
     },
-    "tga-verified-policy-recommended": {
+    "tga-verified-policy-recommended-beta": {
      "pixels": 10186947,
      "files": 129,
      "samples": 35,
@@ -1411,7 +1411,7 @@
      "hwm_mb": 71.84765625,
      "base_mb": 67.83984375
     },
-    "tga-verified-policy-recommended": {
+    "tga-verified-policy-recommended-beta": {
      "pixels": 21159871,
      "files": 230,
      "samples": 35,
@@ -1815,7 +1815,7 @@
    "same": 252,
    "both-error": 42
   },
-  "tga-verified-policy-recommended": {
+  "tga-verified-policy-recommended-beta": {
    "same": 252,
    "both-error": 28,
    "ok-only-here": 14

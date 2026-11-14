@@ -92,12 +92,12 @@ unchanged by the exception.
 | DIB | `*Options` (22 enums) | enum | none direct | keep `pub` (fields of `Policy`) |
 | DIB | `Error::name` | fn | glycin, gdkpixbuf (R15 spelling) | keep `pub` |
 | DIB | `MAX_INPUT`, `MAX_OUTPUT` | const | gdkpixbuf (`MAX_INPUT`) | keep `pub` |
-| DIB | `recommended_policy` … `profile_policy` (5 spec fns) | spec fn | ico (via policy) | keep `pub`, `#[doc(hidden)]` (contract-facing constructors; the exec entry point is `try_decode_with_policy`) |
+| DIB | `recommended_beta_policy` … `profile_policy` (5 spec fns) | spec fn | ico (via policy) | keep `pub`, `#[doc(hidden)]` (contract-facing constructors; the exec entry point is `try_decode_with_policy`) |
 | TGA | `try_decode`, `try_decode_with_policy` | fn | bench, glycin | keep `pub` |
 | TGA | `try_decode_with_steps_logged` | fn | none | keep `pub`, `#[doc(hidden)]` (root in `required_roots`) |
 | TGA | `Decoded`, `Error`, `Header` | struct/enum | bench, glycin, tests | keep `pub` |
 | TGA | `Profile`, `Policy`, `*Options` | enum/struct | bench, tests, example | keep `pub` (in `policy.rs`) |
-| TGA | `policy::{strict,recommended,gdk_compat,image_crate_compat,profile}_policy` | spec fn | none | keep `pub` (public constructors in `policy.rs`) |
+| TGA | `policy::{strict,recommended_beta,gdk_compat,image_crate_compat,profile}_policy` | spec fn | none | keep `pub` (public constructors in `policy.rs`) |
 | TGA | `Error::name`, `MAX_INPUT` | fn/const | glycin, tests | keep `pub` |
 | ICNS | `try_parse`, `try_decode_rgb`, `try_decode_mask`, `try_combine` | fn | glycin, leniency, bench, tests | keep `pub` |
 | ICNS | `*_logged` (5) | fn | none | keep `pub`, `#[doc(hidden)]` (allocation roots) |
@@ -123,7 +123,7 @@ wrongly included DIB's `at_site_log` (E11 itself demoted that one to
 
 | Core | items | why hidden rather than demoted |
 |---|---|---|
-| DIB (27, was 28) | `name_spec`; `bmp_mode_to_mode`; `recommended_policy`,`strict_policy`,`gdk_compat_policy`,`image_crate_compat_policy`,`profile_policy`; `fmt_part`,`log_tied`,`req_dib`,`g_clause1..3`,`g`,`prog`,`prog_concl`,`pre_alloc`,`g_logged`,`prog_logged`,`lemma_req_dib_clause3`,`lemma_req_dib_len`,`decode_mp_eq`,`t12_checked_n`,`decode_policy_mp_eq`,`decode_policy_alpha_eq`,`policy_checked_n`,`policy_reach`,`req_dibp` | named by `try_*` contracts, or ICO's bridge, or the policy roots. **E12 correction: the E11 list wrongly included `at_site_log`; E11 demoted it to `pub(crate)`, so it is not hidden-public** |
+| DIB (27, was 28) | `name_spec`; `bmp_mode_to_mode`; `recommended_beta_policy`,`strict_policy`,`gdk_compat_policy`,`image_crate_compat_policy`,`profile_policy`; `fmt_part`,`log_tied`,`req_dib`,`g_clause1..3`,`g`,`prog`,`prog_concl`,`pre_alloc`,`g_logged`,`prog_logged`,`lemma_req_dib_clause3`,`lemma_req_dib_len`,`decode_mp_eq`,`t12_checked_n`,`decode_policy_mp_eq`,`decode_policy_alpha_eq`,`policy_checked_n`,`policy_reach`,`req_dibp` | named by `try_*` contracts, or ICO's bridge, or the policy roots. **E12 correction: the E11 list wrongly included `at_site_log`; E11 demoted it to `pub(crate)`, so it is not hidden-public** |
 | TGA (17) | `try_decode_with_steps_logged`; `name_spec`; `dec_vals`,`decode_eq`; `req_tga`,`req_tga_policy`; `g_clause1..3`,`g`,`prog`,`prog_concl`,`pre_alloc`; `policy_result`,`model_checked_n`,`policy_checked_n`,`decoded_bounds` | named by `try_*` contracts; `try_decode_with_steps_logged` is a `required_root` |
 | ICNS (60, was 61) | the four `*_logged` fns (`try_parse_logged`, `try_decode_rgb_logged`, `try_decode_mask_logged`, `try_combine_logged`); `name_spec`; `MAX_ENTRIES`,`MAX_LEGACY_SIDE`; `entry_count`,`reach_p`,`req_p`,`pre_alloc_p`,`site_max`,`req_within_site_max`; the `g_*_clause*`,`g_*`,`prog_*`,`req_*`,`at_site_log_*`,`pre_alloc_*`,`oom_in_req`,`log_extends` groups; six `lemma_*` | named by the `try_*` contracts. **E12: `try_rle_logged` was demoted to `pub(crate)`** (no `pub` contract names it, no `required_root`, no external caller), so the five `*_logged` fns became four |
 | ICO (11) | `name_spec`; `MAX_ENTRIES`,`DIRECTORY_HEADER_LEN`,`ENTRY_RECORD_LEN`,`MAX_DIRECTORY_LEN`,`PNG_SIGNATURE`,`TYPE_ICO`,`TYPE_CUR`; `try_parse_with_steps`,`try_decode_entry_with_steps` | named by `try_*` contracts, or `required_roots` |

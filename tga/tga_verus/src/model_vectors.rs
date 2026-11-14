@@ -2960,21 +2960,21 @@ pub proof fn policy_header_strict_depth_true15()
     ensures crate::policy_model::mh_policy(policy_bytes_strict_depth_true15(), crate::policy::strict_policy()) is Ok,
 { assert(crate::policy_model::mh_policy(policy_bytes_strict_depth_true15(), crate::policy::strict_policy()) is Ok) by (compute); }
 
-// Recommended: frozen vector attr-32-count4.
-pub open spec fn policy_bytes_recommended_attr_32_count4() -> Seq<u8> {
+// RecommendedBeta: frozen vector attr-32-count4.
+pub open spec fn policy_bytes_recommended_beta_attr_32_count4() -> Seq<u8> {
     seq![0u8, 0u8, 2u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 2u8, 0u8, 1u8, 0u8, 32u8, 36u8, 16u8, 32u8, 48u8, 64u8, 80u8, 96u8, 112u8, 0u8]
 }
-pub proof fn policy_header_recommended_attr_32_count4()
-    ensures crate::policy_model::mh_policy(policy_bytes_recommended_attr_32_count4(), crate::policy::recommended_policy()) is Ok,
-{ assert(crate::policy_model::mh_policy(policy_bytes_recommended_attr_32_count4(), crate::policy::recommended_policy()) is Ok) by (compute); }
+pub proof fn policy_header_recommended_beta_attr_32_count4()
+    ensures crate::policy_model::mh_policy(policy_bytes_recommended_beta_attr_32_count4(), crate::policy::recommended_beta_policy()) is Ok,
+{ assert(crate::policy_model::mh_policy(policy_bytes_recommended_beta_attr_32_count4(), crate::policy::recommended_beta_policy()) is Ok) by (compute); }
 
-// Recommended: frozen vector map-absent-stray-depth.
-pub open spec fn policy_bytes_recommended_map_absent_stray_depth() -> Seq<u8> {
+// RecommendedBeta: frozen vector map-absent-stray-depth.
+pub open spec fn policy_bytes_recommended_beta_map_absent_stray_depth() -> Seq<u8> {
     seq![0u8, 0u8, 2u8, 0u8, 0u8, 0u8, 0u8, 24u8, 0u8, 0u8, 0u8, 0u8, 2u8, 0u8, 1u8, 0u8, 24u8, 0u8, 16u8, 32u8, 48u8, 64u8, 80u8, 96u8]
 }
-pub proof fn policy_header_recommended_map_absent_stray_depth()
-    ensures crate::policy_model::mh_policy(policy_bytes_recommended_map_absent_stray_depth(), crate::policy::recommended_policy()) is Ok,
-{ assert(crate::policy_model::mh_policy(policy_bytes_recommended_map_absent_stray_depth(), crate::policy::recommended_policy()) is Ok) by (compute); }
+pub proof fn policy_header_recommended_beta_map_absent_stray_depth()
+    ensures crate::policy_model::mh_policy(policy_bytes_recommended_beta_map_absent_stray_depth(), crate::policy::recommended_beta_policy()) is Ok,
+{ assert(crate::policy_model::mh_policy(policy_bytes_recommended_beta_map_absent_stray_depth(), crate::policy::recommended_beta_policy()) is Ok) by (compute); }
 
 // GdkCompat-2.42.12: frozen vector map-flag2-truecolour.
 pub open spec fn policy_bytes_gdk_compat_map_flag2_truecolour() -> Seq<u8> {

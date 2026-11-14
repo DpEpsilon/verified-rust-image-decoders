@@ -180,7 +180,7 @@ pub struct Policy {
     pub image_type: ImageTypeOptions,
 }
 
-/// The profile selector. `Strict` is TGA-CORE-SPEC 1.0 exactly; `Recommended`
+/// The profile selector. `Strict` is TGA-CORE-SPEC 1.0 exactly; `RecommendedBeta`
 /// is Strict plus the four error-site relaxations (POLICY-SPEC D2). The two
 /// compatibility profiles `GdkCompat-2.42.12` and `ImageCrateCompat-0.25.10`
 /// reproduce the measured gdk-pixbuf and image-rs byte semantics on their
@@ -192,7 +192,7 @@ pub struct Policy {
 #[non_exhaustive]
 pub enum Profile {
     Strict,
-    Recommended,
+    RecommendedBeta,
     GdkCompat,
     ImageCrateCompat,
 }
@@ -226,11 +226,11 @@ pub open spec fn strict_policy() -> Policy {
     }
 }
 
-/// `Recommended`'s record (POLICY-SPEC D2): Strict except the four error-site
+/// `RecommendedBeta`'s record (POLICY-SPEC D2): Strict except the four error-site
 /// relaxations `trailing = Ignore`, `rle_overrun = ClipPacket`,
 /// `attribute_bits = Lenient`, `map_header = IgnoreAbsent`. Every pixel-rule
 /// field stays at its Strict value.
-pub open spec fn recommended_policy() -> Policy {
+pub open spec fn recommended_beta_policy() -> Policy {
     Policy {
         trailing: TrailingOptions::Ignore,
         rle_overrun: RleOverrunOptions::ClipPacket,
@@ -292,7 +292,7 @@ pub open spec fn image_crate_compat_policy() -> Policy {
 pub open spec fn profile_policy(p: Profile) -> Policy {
     match p {
         Profile::Strict => strict_policy(),
-        Profile::Recommended => recommended_policy(),
+        Profile::RecommendedBeta => recommended_beta_policy(),
         Profile::GdkCompat => gdk_compat_policy(),
         Profile::ImageCrateCompat => image_crate_compat_policy(),
     }
@@ -346,7 +346,7 @@ pub(crate) fn profile_policy_exec(p: Profile) -> (r: Policy)
             interleave: InterleaveOptions::Reject,
             image_type: ImageTypeOptions::Core,
         },
-        Profile::Recommended => Policy {
+        Profile::RecommendedBeta => Policy {
             trailing: TrailingOptions::Ignore,
             rle_overrun: RleOverrunOptions::ClipPacket,
             attribute_bits: AttributeBitsOptions::Lenient,

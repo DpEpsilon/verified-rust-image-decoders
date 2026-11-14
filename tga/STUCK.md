@@ -34,7 +34,7 @@ five-failure escalation rule does not apply.
 No outstanding policy blocker remains from this handoff. Active source
 verifies **927 obligations, 0 errors**. The complete RLE executable, total
 policy decoder, universal work/allocation/event witnesses, named-profile exact
-semantics and executable Recommended conservativity are delivered. Each
+semantics and executable RecommendedBeta conservativity are delivered. Each
 profile passes 302/302 frozen policy vectors and all 169 original inputs against
 its expected semantics; the differential harness reports 52,348 comparisons
 and zero mismatches. `NOTES.md` records the proof boundaries, corpus counts,
@@ -93,7 +93,7 @@ exact next step.
 
 ### 1. Obligations R and E — DONE (unchanged from run 062)
 
-`lemma_mp_policy_recommended_on_strict_ok` and the closed-event flag lemmas
+`lemma_mp_policy_recommended_beta_on_strict_ok` and the closed-event flag lemmas
 stand as recorded in run 062 (see NOTES.md).
 
 ### 2. Piece B1 (policy header parser) — DONE (run 068/082)
@@ -245,7 +245,7 @@ Watch items found while developing, which the next dispatch should not re-learn:
   only where every sample is in range. `lemma_mp_raw_cur_mono_ok` +
   `lemma_raw_prefix_ok_of_cur_ok` (landed) supply it from `MP`'s `Ok`.
 - **Bridge the phases with `mp_after_policy`'s R14 order, not `mp_policy`'s outer
-  match** (as the existing `lemma_mp_policy_recommended_on_strict_ok` does). The
+  match** (as the existing `lemma_mp_policy_recommended_beta_on_strict_ok` does). The
   raw error arm resolves only once inside `mp_after_policy`.
 - **A literal-packet error under Strict cannot occur** (`Reject` makes every
   literal sample in range, else the RLE stream would have reported
@@ -264,7 +264,7 @@ Watch items found while developing, which the next dispatch should not re-learn:
   each file's digest against manifest column 2 (std-only SHA-256 with a FIPS-validated
   self-test), panics loudly on mismatch. Re-run on `/home/ws/corpora/tga`:
   `rows=294 available=294 missing=0 sha256=verified`; counts unchanged
-  252/266/264/259 of 294 (Strict/Recommended/GdkCompat/ImageCrateCompat),
+  252/266/264/259 of 294 (Strict/RecommendedBeta/GdkCompat/ImageCrateCompat),
   recovered 0/2/4/2. Recorded in `notes/policy-corpus-sha256.txt`. No corpus
   bytes copied into the repo. The example is outside the verifier's scope (not
   in `src/`), so it consumes no verifier run.

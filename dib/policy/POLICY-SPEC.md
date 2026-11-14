@@ -6,7 +6,7 @@ This document defines a proposed byte-only extension of frozen DIB-CORE-SPEC 1.1
 
 All entries below are deterministic functions of bytes under those caps and safe *when implemented with guarded reads and checked arithmetic*. An `Ignore` field suppresses only its named check; it never relaxes the input/output caps or silently enables unsupported codecs. The oracle rejects bad modes/policies as typed-API errors, not format errors. Where a library has no byte-determined equivalent, the table names a safe surrogate rather than claiming exact native equivalence.
 
-The universal bounds apply to every **retained internal field combination**, including test-only records, even though callers can select only named profiles. Rust custom-record constructors exist only under `#[cfg(test)]` and are absent from release builds; the Python oracle's `EXPERIMENTAL_OPTIONS` switch controls reference-model probes. Metadata-only `Recommended` equals Strict except `file_size=Ignore` and `image_size=Ignore`; because ignored `bfSize` can be an inflated truncated-download signal, applications must opt in deliberately. A successful profiled Blank result may amplify a tiny metadata stub to the 64 MiB output cap, with exactly one capped output allocation.
+The universal bounds apply to every **retained internal field combination**, including test-only records, even though callers can select only named profiles. Rust custom-record constructors exist only under `#[cfg(test)]` and are absent from release builds; the Python oracle's `EXPERIMENTAL_OPTIONS` switch controls reference-model probes. Metadata-only `RecommendedBeta` equals Strict except `file_size=Ignore` and `image_size=Ignore`; because ignored `bfSize` can be an inflated truncated-download signal, applications must opt in deliberately. A successful profiled Blank result may amplify a tiny metadata stub to the 64 MiB output cap, with exactly one capped output allocation.
 
 `recovered` reports **only** the following data-affecting events; no unlisted tolerance sets it:
 
@@ -22,7 +22,7 @@ The universal bounds apply to every **retained internal field combination**, inc
 - `rle_delta=ClampStop` changes a destination coordinate only when it exceeds width or height; an exact destination equal to width/height is accepted but does not itself set the flag.
 - A non-`Palette0` RLE initialization leaves at least one output pixel unpainted when decoding stops (the early-end fill event).
 
-The flag remains false for ignored `bfSize`/`biSizeImage`, reserved words or planes, ignored BMP trailing bytes, a complete image ending in EOL then EOB under StopAtHeight, and a non-`Palette0` prefill that is completely overwritten. Consequently `recovered=false` does **not** imply that Strict accepts the file: Recommended may accept a metadata-only mismatch. The old `decode` result remains byte-identical to 1.1 and exposes no flag.
+The flag remains false for ignored `bfSize`/`biSizeImage`, reserved words or planes, ignored BMP trailing bytes, a complete image ending in EOL then EOB under StopAtHeight, and a non-`Palette0` prefill that is completely overwritten. Consequently `recovered=false` does **not** imply that Strict accepts the file: RecommendedBeta may accept a metadata-only mismatch. The old `decode` result remains byte-identical to 1.1 and exposes no flag.
 
 ## Independent options
 
@@ -57,9 +57,9 @@ R14's operational order is unchanged wherever a check still exists: input cap; B
 
 ## Named profiles
 
-These are proposals measured against installed gdk-pixbuf **2.42.12** and image **0.25.10**, not assertions of complete equivalence. `S/G/I/R` denote Strict/GdkCompat-2.42.12/ImageCrateCompat-0.25.10/Recommended. The table gives **every selectable field assignment**; profile names and their tables must remain immutable after a future freeze, with a new name for each changed version. The oracle checks all 302 byte-identical frozen 1.1 vectors on every run; `cmp` checks the copied vector file, not the decoder. Independently, Strict's accept/reject and successful RGBA SHA-256 agree with the shipped verified runner on all 10,000 seed-731 inputs. These are regression checks, not a proof. `POLICY-VECTORS.json` and `CUSTOM-VECTORS.json` use records `{name,mode,input_hex,expected}` and internal custom rows add a `policy` object; successful profiled expectations add `recovered: bool`. Format errors retain `{error: name}`; the unchanged strict vectors have no recovery field. Custom records are not accepted by `decode_with_policy`.
+These are proposals measured against installed gdk-pixbuf **2.42.12** and image **0.25.10**, not assertions of complete equivalence. `S/G/I/R` denote Strict/GdkCompat-2.42.12/ImageCrateCompat-0.25.10/RecommendedBeta. The table gives **every selectable field assignment**; profile names and their tables must remain immutable after a future freeze, with a new name for each changed version. The oracle checks all 302 byte-identical frozen 1.1 vectors on every run; `cmp` checks the copied vector file, not the decoder. Independently, Strict's accept/reject and successful RGBA SHA-256 agree with the shipped verified runner on all 10,000 seed-731 inputs. These are regression checks, not a proof. `POLICY-VECTORS.json` and `CUSTOM-VECTORS.json` use records `{name,mode,input_hex,expected}` and internal custom rows add a `policy` object; successful profiled expectations add `recovered: bool`. Format errors retain `{error: name}`; the unchanged strict vectors have no recovery field. Custom records are not accepted by `decode_with_policy`.
 
-| Field | Strict | GdkCompat-2.42.12 | ImageCrateCompat-0.25.10 | Recommended |
+| Field | Strict | GdkCompat-2.42.12 | ImageCrateCompat-0.25.10 | RecommendedBeta |
 |---|---|---|---|---|
 | file_size | AtMostFileLength | Ignore | Ignore | Ignore |
 | offset | Declared | Gdk | AllowAny | Declared |
@@ -96,9 +96,9 @@ These are proposals measured against installed gdk-pixbuf **2.42.12** and image 
 ## Recorded decisions and remaining boundary
 
 - D1/D7/D10/D14: The unchanged `decode` serves all four modes; `decode_with_policy` serves only BMP/BareDib with a named profile. Rust custom-record construction is `#[cfg(test)]`-only and absent from release builds; the Python switch only controls test probes.
-- D2/D3: `Recommended` differs from Strict only by ignoring `bfSize` and `biSizeImage`; short pixels, malformed RLE and noncanonical palette/mask data retain Strict checks.
+- D2/D3: `RecommendedBeta` differs from Strict only by ignoring `bfSize` and `biSizeImage`; short pixels, malformed RLE and noncanonical palette/mask data retain Strict checks.
 - D4/D11/D13: ZeroFill and Blank appear only in opt-in compatibility profiles; profiled successes carry the closed-list `recovered` flag, including early initialized Blank output but excluding metadata-only tolerance and complete RLE images.
-- D5/D6: Indexed count and declared BMP pixel offset remain authoritative in Strict/Recommended. Unknown compression and damaged magic remain errors in every profile.
+- D5/D6: Indexed count and declared BMP pixel offset remain authoritative in Strict/RecommendedBeta. Unknown compression and damaged magic remain errors in every profile.
 - D8: Glycin's default remains an integration decision, not an implicit choice made by this specification.
 - D9/D12/D15: Profile names are versioned and immutable once frozen; R14 and the closed error set fix first-error names, including `InvalidPixelOffset` for Gdk BI_RGB past EOF, `TruncatedPixels` after a short Gdk BITFIELDS raw offset, `InvalidColorCount` for BareDib high-depth count, `InvalidCompressionDepth` for H>=40 depth-2 compressed data, and `TruncatedMasks` for absent internal masks.
 

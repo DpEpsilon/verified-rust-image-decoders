@@ -335,7 +335,7 @@
      "hwm_mb": 116.50390625,
      "base_mb": 52.49609375
     },
-    "tga-verified-policy-recommended": {
+    "tga-verified-policy-recommended-beta": {
      "pixels": 16777216,
      "files": 1,
      "samples": 25,
@@ -922,7 +922,7 @@
      "hwm_mb": 83.41796875,
      "base_mb": 26.33203125
     },
-    "tga-verified-policy-recommended": {
+    "tga-verified-policy-recommended-beta": {
      "pixels": 16777216,
      "files": 1,
      "samples": 25,
@@ -1509,7 +1509,7 @@
      "hwm_mb": 123.765625,
      "base_mb": 63.7578125
     },
-    "tga-verified-policy-recommended": {
+    "tga-verified-policy-recommended-beta": {
      "pixels": 15728640,
      "files": 1,
      "samples": 25,
@@ -2025,7 +2025,7 @@
      "hwm_mb": 83.19921875,
      "base_mb": 26.33203125
     },
-    "tga-verified-policy-recommended": {
+    "tga-verified-policy-recommended-beta": {
      "pixels": 15728640,
      "files": 1,
      "samples": 25,
@@ -2407,7 +2407,7 @@
    "both-error": 1,
    "same": 4
   },
-  "tga-verified-policy-recommended": {
+  "tga-verified-policy-recommended-beta": {
    "both-error": 1,
    "same": 4
   },

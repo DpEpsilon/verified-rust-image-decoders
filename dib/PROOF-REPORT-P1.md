@@ -7,7 +7,7 @@ Crate version 0.3.0 (was 0.2.0). Branch `dib-policy`. No commits.
 
 - **Clean full reverify** (`cargo clean`, then `./verify.sh`): run 121,
   `verification results:: 1594 verified, 0 errors` (see below).
-- **`cargo test --release`**: policy conformance Strict 102/102 and Recommended
+- **`cargo test --release`**: policy conformance Strict 102/102 and RecommendedBeta
   102/102; the unchanged `conformance.rs` 302/302; corpus 84 files / 58 accepted.
 - **Frozen inputs intact**: `policy/FREEZE.txt` all six OK; `spec-1.1-frozen`
   FREEZE.txt OK. `THEOREMS.md`, `spec-frozen/`, `policy/*.md` and the policy
@@ -24,7 +24,7 @@ Crate version 0.3.0 (was 0.2.0). Branch `dib-policy`. No commits.
 
 Policy types (`dib_verus/src/dib.rs`): `MetadataOptions {Declared, Ignore}`, a
 two-field `Policy {file_size, image_size}` (room for later option groups), the
-`BmpProfile {Strict, Recommended}` selector with spec fn `profile_policy` and exec
+`BmpProfile {Strict, RecommendedBeta}` selector with spec fn `profile_policy` and exec
 wrapper `profile_policy_exec`, and `BmpMode {BmpFile, BareDib}` with
 `bmp_mode_to_mode` / `bmp_mode_mode`. `BmpProfile` and `BmpMode` are
 `#[non_exhaustive]`; `BmpProfile: Default` is `Strict`. The `profile_policy` match
@@ -69,7 +69,7 @@ Statement witnesses at the project's usual quantification: `t9_policy`,
 `t10_policy_precedence`, `t13_policy_success_bounds`, `t1_policy_totality`.
 
 Conformance: `dib_verus/tests/policy_conformance.rs` runs
-`policy/POLICY-VECTORS.json` for `Strict` and `Recommended` (102 each, `recovered`
+`policy/POLICY-VECTORS.json` for `Strict` and `RecommendedBeta` (102 each, `recovered`
 checked), next to the unchanged 302-vector and corpus tests.
 
 ## Deviations and honest limits

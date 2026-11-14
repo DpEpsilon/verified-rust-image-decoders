@@ -427,7 +427,10 @@ executable size check was needed. Verifier: run 53, **412 verified, 0 errors**
 (unchanged; a visibility change adds and removes no obligation). Tests: 111/111
 conformance, 12/12 fault injection. The draft allowlist was regenerated (new
 `source_hash` `cda2ebe74a1a747f9862bfb1e519294c9925515d88816cf01d237df2cea7b269`;
-entry set unchanged at 50). The production audit is `alloc-delta/audit/runs/20261114T084716Z`
-(only `allowlist-reviewer`); ICNS's walk is one instance and three edges smaller
+entry set unchanged at 50). The production audit was `alloc-delta/audit/runs/20261114T084716Z`
+(only `allowlist-reviewer`; that run directory was since deleted by the E13
+rename, whose authoritative run is `20261114T094507Z`, where ICNS again reports
+only `allowlist-reviewer` with the same `source_hash`); ICNS's walk is one
+instance and three edges smaller
 because `try_rle_logged` is no longer a root. See `alloc-delta/ERRATA.md` E12 and
 `alloc-delta/audit/API-SURVEY.md` section 6.

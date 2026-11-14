@@ -120,7 +120,7 @@ fn main() {
     assert!(text.starts_with("path\tsha256\t"));
     let profiles = [
         ("Strict", Profile::Strict),
-        ("Recommended", Profile::Recommended),
+        ("RecommendedBeta", Profile::RecommendedBeta),
         ("GdkCompat-2.42.12", Profile::GdkCompat),
         ("ImageCrateCompat-0.25.10", Profile::ImageCrateCompat),
     ];

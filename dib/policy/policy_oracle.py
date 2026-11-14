@@ -38,9 +38,9 @@ IMAGE = dict(STRICT, file_size='Ignore', offset='AllowAny', image_size='Ignore',
              rle_fill='OpaqueBlack', headers='No16No64', reserved='Ignore',
              masks='Independent',palette_index='Black',unsupported='Rgb2',
              scaling='Image',header_bytes='ParsedFields')
-RECOMMENDED = dict(STRICT, file_size='Ignore', image_size='Ignore')
+RECOMMENDED_BETA = dict(STRICT, file_size='Ignore', image_size='Ignore')
 PROFILES = {'Strict': STRICT, 'GdkCompat-2.42.12': GDK,
-            'ImageCrateCompat-0.25.10': IMAGE, 'Recommended': RECOMMENDED}
+            'ImageCrateCompat-0.25.10': IMAGE, 'RecommendedBeta': RECOMMENDED_BETA}
 OPTIONS = {
     'file_size': ('AtMostFileLength','Ignore'),
     'offset': ('Declared','AllowAny','Gdk'), 'image_size': ('Exact','Ignore'),

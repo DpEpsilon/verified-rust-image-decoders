@@ -38,7 +38,7 @@ OPTIONS = {
     'image_type': ('Core', 'GreyFallback'),
 }
 STRICT = {k: v[0] for k, v in OPTIONS.items()}
-RECOMMENDED = dict(STRICT, trailing='Ignore', rle_overrun='ClipPacket',
+RECOMMENDED_BETA = dict(STRICT, trailing='Ignore', rle_overrun='ClipPacket',
                    attribute_bits='Lenient', map_header='IgnoreAbsent')
 GDK = dict(STRICT, trailing='Ignore', rle_overrun='ClipPacket', attribute_bits='Lenient',
            map_header='Gdk', depths='Gdk', alpha='Stored', map16_alpha='Opaque',
@@ -46,7 +46,7 @@ GDK = dict(STRICT, trailing='Ignore', rle_overrun='ClipPacket', attribute_bits='
 IMAGE = dict(STRICT, trailing='Ignore', rle_overrun='ClipSamples', attribute_bits='ImageTable',
              map_header='Image', depths='Image', alpha='Stored', map16_alpha='Opaque',
              rgb5='Round', map5='Round', interleave='Ignore', image_type='GreyFallback')
-PROFILES = {'Strict': STRICT, 'Recommended': RECOMMENDED,
+PROFILES = {'Strict': STRICT, 'RecommendedBeta': RECOMMENDED_BETA,
             'GdkCompat-2.42.12': GDK, 'ImageCrateCompat-0.25.10': IMAGE}
 # Custom single-field records are internal reference-model probes only.
 EXPERIMENTAL_OPTIONS = True

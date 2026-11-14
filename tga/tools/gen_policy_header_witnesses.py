@@ -7,8 +7,8 @@ SOURCE = ROOT / 'tga_verus/src/model_vectors.rs'
 MARK = '// ---- policy header acceptance witnesses (generated) ----'
 choices = [
     ('Strict', 'strict_policy', 'depth-true15', None),
-    ('Recommended', 'recommended_policy', 'attr-32-count4', None),
-    ('Recommended', 'recommended_policy', 'map-absent-stray-depth', None),
+    ('RecommendedBeta', 'recommended_beta_policy', 'attr-32-count4', None),
+    ('RecommendedBeta', 'recommended_beta_policy', 'map-absent-stray-depth', None),
     ('GdkCompat-2.42.12', 'gdk_compat_policy', 'map-flag2-truecolour', None),
     ('GdkCompat-2.42.12', 'gdk_compat_policy', 'map-present-length0-baddepth', None),
     ('GdkCompat-2.42.12', 'gdk_compat_policy', 'depth-true15', 'UnsupportedPixelDepth'),

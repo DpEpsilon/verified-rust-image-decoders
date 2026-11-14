@@ -11,7 +11,7 @@ For every retained field record, `recovered` is true **if and only if** at least
 - **RLE clip:** under `rle_overrun = ClipPacket | ClipSamples`, an RLE packet's count exceeds the pixels remaining, so at least one encoded position is discarded.
 - **Index substitution:** under `index_range = Black`, an out-of-range palette index is replaced by black at a pixel write.
 
-No other tolerance sets the flag: ignored trailing bytes, a repaired attribute count (`Lenient`), ignored or relaxed colour-map fields, zero-based palette lookup, alternative alpha or 5-bit expansion rules, or a narrower depth table. Strict never sets it. Consequently `recovered = false` does not imply that Strict accepts the file: Recommended accepts metadata-only defects with the flag false.
+No other tolerance sets the flag: ignored trailing bytes, a repaired attribute count (`Lenient`), ignored or relaxed colour-map fields, zero-based palette lookup, alternative alpha or 5-bit expansion rules, or a narrower depth table. Strict never sets it. Consequently `recovered = false` does not imply that Strict accepts the file: RecommendedBeta accepts metadata-only defects with the flag false.
 
 ## Option fields
 
@@ -37,7 +37,7 @@ Operational order is R14's wherever a check still exists: input cap, header leng
 
 ## Named profiles
 
-| Field | Strict | Recommended | GdkCompat-2.42.12 | ImageCrateCompat-0.25.10 |
+| Field | Strict | RecommendedBeta | GdkCompat-2.42.12 | ImageCrateCompat-0.25.10 |
 |---|---|---|---|---|
 | trailing | FooterOnly | Ignore | Ignore | Ignore |
 | rle_overrun | Reject | ClipPacket | ClipPacket | ClipSamples |
@@ -55,7 +55,7 @@ Operational order is R14's wherever a check still exists: input cap, header leng
 
 **Strict** is the shipped 1.0 behaviour; the oracle reproduces all 169 frozen vectors, and validate.py compares it with the shipped Verus core.
 
-**Recommended** changes only error sites. Each of its four fields alters a branch on which Strict returns an error (`TrailingBytes`, `RleOverrun`, `InvalidAttributeBits`, `InvalidColorMap`), and on every other branch computes exactly what Strict computes: `Lenient` sets the effective count to the descriptor count whenever R5 allows it; `IgnoreAbsent` is inert when the flag-0 fields are zero; `ClipPacket` never fires when every packet fits; `Ignore` is inert on an empty suffix or a footer. Therefore every file Strict accepts decodes to identical RGBA with `recovered=false` (THEOREMS-POLICY-DELTA.md obligation R; checked on every corpus and synthetic input in REPORT.md). On the corpus it accepts 14 more real files (of the 19 Strict-rejected files that some library decodes) and leaves rejected the truncated files (R10) and the files whose defect is not one of these four.
+**RecommendedBeta** changes only error sites. Each of its four fields alters a branch on which Strict returns an error (`TrailingBytes`, `RleOverrun`, `InvalidAttributeBits`, `InvalidColorMap`), and on every other branch computes exactly what Strict computes: `Lenient` sets the effective count to the descriptor count whenever R5 allows it; `IgnoreAbsent` is inert when the flag-0 fields are zero; `ClipPacket` never fires when every packet fits; `Ignore` is inert on an empty suffix or a footer. Therefore every file Strict accepts decodes to identical RGBA with `recovered=false` (THEOREMS-POLICY-DELTA.md obligation R; checked on every corpus and synthetic input in REPORT.md). On the corpus it accepts 14 more real files (of the 19 Strict-rejected files that some library decodes) and leaves rejected the truncated files (R10) and the files whose defect is not one of these four.
 
 **GdkCompat-2.42.12** and **ImageCrateCompat-0.25.10** are opt-in byte-semantics proposals measured against gdk-pixbuf 2.42.12 (forced TGA loader, whole buffer) and image 0.25.10. They reproduce every measured corpus pixel difference exactly; REPORT.md gives their agreement on all inputs, of which only the seed-4242 mutation set was held out from tuning (the corpus, vector and tuned-seed figures are regressions). They are not claims of complete native parity; known residuals are listed below. glycin's in-tree image-rs path is the same TGA code as image 0.25.10 and is not a second vote.
 
@@ -80,8 +80,8 @@ No difference involves gamma, premultiplication, vertical orientation or palette
 ## Recorded decisions and open boundary
 
 - D1: `decode` is unchanged; `decode_with_policy` serves named profiles only; arbitrary records are `#[cfg(test)]`.
-- D2: Recommended contains only error-site relaxations (four fields). Every pixel-rule field stays at its Strict value in Recommended.
+- D2: RecommendedBeta contains only error-site relaxations (four fields). Every pixel-rule field stays at its Strict value in RecommendedBeta.
 - D3: Truncated raw pixels (R10) and the 1.0 caps remain errors in every profile.
 - D4: `recovered` is the closed two-event list above.
 - D5: Profile names carry the library version they were measured against and are immutable once frozen; a changed table needs a new name.
-- Decided by the owner 2026-11-12: Q1, Q2, Q4, Q5, Q6 accepted as recommended in QUESTIONS.md; Q3 and Q9 deferred to their defaults (Q3: a repaired attribute count does not set `recovered`; Q9: Strict and Recommended unchanged, any bit-15-opaque behaviour goes to a future, separately versioned opt-in profile). Compatibility profiles stay opt-in.
+- Decided by the owner 2026-11-12: Q1, Q2, Q4, Q5, Q6 accepted as recommended in QUESTIONS.md; Q3 and Q9 deferred to their defaults (Q3: a repaired attribute count does not set `recovered`; Q9: Strict and RecommendedBeta unchanged, any bit-15-opaque behaviour goes to a future, separately versioned opt-in profile). Compatibility profiles stay opt-in.

@@ -167,7 +167,7 @@
      "hwm_mb": 116.4140625,
      "base_mb": 52.40625
     },
-    "bmp-verified-policy-recommended": {
+    "bmp-verified-policy-recommended-beta": {
      "pixels": 16777216,
      "files": 1,
      "samples": 25,
@@ -683,7 +683,7 @@
      "hwm_mb": 116.421875,
      "base_mb": 52.4140625
     },
-    "bmp-verified-policy-recommended": {
+    "bmp-verified-policy-recommended-beta": {
      "pixels": 16777216,
      "files": 1,
      "samples": 25,
@@ -1199,7 +1199,7 @@
      "hwm_mb": 123.55078125,
      "base_mb": 63.54296875
     },
-    "bmp-verified-policy-recommended": {
+    "bmp-verified-policy-recommended-beta": {
      "pixels": 15728640,
      "files": 1,
      "samples": 25,
@@ -1715,7 +1715,7 @@
      "hwm_mb": 83.64453125,
      "base_mb": 27.015625
     },
-    "bmp-verified-policy-recommended": {
+    "bmp-verified-policy-recommended-beta": {
      "pixels": 16777216,
      "files": 1,
      "samples": 25,
@@ -2231,7 +2231,7 @@
      "hwm_mb": 73.6953125,
      "base_mb": 27.015625
     },
-    "bmp-verified-policy-recommended": {
+    "bmp-verified-policy-recommended-beta": {
      "pixels": 33554432,
      "files": 1,
      "samples": 25,
@@ -2782,7 +2782,7 @@
    "same": 5,
    "both-error": 2
   },
-  "bmp-verified-policy-recommended": {
+  "bmp-verified-policy-recommended-beta": {
    "same": 5,
    "both-error": 2
   },

@@ -229,7 +229,7 @@ for profile,rows in result.items():
 expected=next(r['expected'] for r in result['GdkCompat-2.42.12'] if r['name']=='clamp-delta-exact-height-no-recovery')
 assert expected.get('recovered') is False,expected
 for name in ('bfSize-greater-than-slice','biSizeImage-wrong'):
-    expected=next(r['expected'] for r in result['Recommended'] if r['name']==name)
+    expected=next(r['expected'] for r in result['RecommendedBeta'] if r['name']==name)
     assert expected.get('recovered') is False,(name,expected)
 (HERE/'POLICY-VECTORS.json').write_text(json.dumps(result,indent=2)+'\n')
 anchors={'file_size':'bfSize-greater-than-slice','offset':'bfOffBits-zero',

@@ -9515,25 +9515,25 @@ fn t7_t9_policy_exact(bytes: &[u8], profile: crate::policy::Profile)
 { try_decode_with_policy(bytes, profile) }
 
 /// R transfers the model's four error-site argument to both executable calls.
-fn r_recommended_conservative(bytes: &[u8])
+fn r_recommended_beta_conservative(bytes: &[u8])
     -> (r: ((Result<Decoded, TryError>, bool), (Result<Decoded, TryError>, bool)))
     ensures
         match (r.0.0, r.1.0) {
-            (Ok(strict), Ok(recommended)) =>
-                policy_result(crate::alloc_guard::sites::fmt_part(Ok(recommended))) == policy_result(crate::alloc_guard::sites::fmt_part(Ok(strict)))
+            (Ok(strict), Ok(recommended_beta)) =>
+                policy_result(crate::alloc_guard::sites::fmt_part(Ok(recommended_beta))) == policy_result(crate::alloc_guard::sites::fmt_part(Ok(strict)))
                 && !r.1.1,
             _ => true,
         },
 {
     let strict = try_decode_with_policy(bytes, crate::policy::Profile::Strict);
-    let recommended = try_decode_with_policy(bytes, crate::policy::Profile::Recommended);
+    let recommended_beta = try_decode_with_policy(bytes, crate::policy::Profile::RecommendedBeta);
     proof {
         reveal(crate::alloc_guard::sites::fmt_part);
         if let Ok(ref d) = strict.0 {
-            crate::policy_model::lemma_mp_policy_recommended_on_strict_ok(bytes@, dec_vals(*d));
+            crate::policy_model::lemma_mp_policy_recommended_beta_on_strict_ok(bytes@, dec_vals(*d));
         }
     }
-    (strict, recommended)
+    (strict, recommended_beta)
 }
 
 /// E's no-event corollary applies to every record with both event sites disabled.

@@ -1,7 +1,20 @@
 # TGA policy spec (frozen 2026-11-12)
-7dd067627e0dc924ece9f8ea0f374ccc66386a436e5f87a2b3812965ca2d3b79  POLICY-SPEC.md
-a41deb479007ab7f0b98ef9e29c129e56afc5f7a4e79460a105844293e5b269c  THEOREMS-POLICY-DELTA.md
-818022eb3dba777133e546d548e0bc9e1b83df97bfd78c126c34d2e6911a17c5  policy_oracle.py
-9810f3e235eb294ff186e1a5dcc86f344a09656632afdb406c35917c3044d3e0  gen_policy_vectors.py
-6db237c003b8d4a595b22c1253b2eb9e23c3fba1005c93e7af75dc7dd03d77b2  POLICY-VECTORS.json
-68681c6d0be63a158c73011a1e9d322a0b9a0e16ac2929a4c64a9166724b85b5  QUESTIONS.md
+#
+# --- SUPERSEDED 2026-11-14 by the dated block below (kept for reference) ---
+# 7dd067627e0dc924ece9f8ea0f374ccc66386a436e5f87a2b3812965ca2d3b79  POLICY-SPEC.md
+# a41deb479007ab7f0b98ef9e29c129e56afc5f7a4e79460a105844293e5b269c  THEOREMS-POLICY-DELTA.md
+# 818022eb3dba777133e546d548e0bc9e1b83df97bfd78c126c34d2e6911a17c5  policy_oracle.py
+# 9810f3e235eb294ff186e1a5dcc86f344a09656632afdb406c35917c3044d3e0  gen_policy_vectors.py
+# 6db237c003b8d4a595b22c1253b2eb9e23c3fba1005c93e7af75dc7dd03d77b2  POLICY-VECTORS.json
+# 68681c6d0be63a158c73011a1e9d322a0b9a0e16ac2929a4c64a9166724b85b5  QUESTIONS.md
+#
+# 2026-11-14: owner-approved rename `Recommended` -> `RecommendedBeta`
+# (provisional until real-world feedback; semantic content unchanged). The
+# hashes below replace the superseded block above for the listed files. See
+# ERRATA.md E2 for the old/new table and the evidence.
+a14b9d0d38263b32609de8670bc8778690747f5fb1ef1a4de64f8fe4d02fd247  POLICY-SPEC.md
+3ad17f7e6a6ba02e9ab0259504586384d75868c14327bc06041fcba18ae3e4af  THEOREMS-POLICY-DELTA.md
+50939f1b1551a70bb4f248421d3b6b56afe772716a404a9bdd93e394441ceab3  policy_oracle.py
+152b81417be85aa56b866c93ef567e34cef8f489dedb7d7059b77913000247ae  gen_policy_vectors.py
+852d20aca678e05c63ba8eb33e2d24f5564c37e23fd5584e77de10d1eb62c3a2  POLICY-VECTORS.json
+b02855569df6476e144b638cc4f1ee7cec841f048f398c5fd183e1fef44ad8a6  QUESTIONS.md

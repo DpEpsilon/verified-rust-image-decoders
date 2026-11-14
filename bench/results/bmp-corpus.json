@@ -262,7 +262,7 @@
      "hwm_mb": 25.9921875,
      "base_mb": 25.9921875
     },
-    "bmp-verified-policy-recommended": {
+    "bmp-verified-policy-recommended-beta": {
      "pixels": 11984352,
      "files": 45,
      "samples": 35,
@@ -793,7 +793,7 @@
      "hwm_mb": 25.9921875,
      "base_mb": 25.9921875
     },
-    "bmp-verified-policy-recommended": {
+    "bmp-verified-policy-recommended-beta": {
      "pixels": 12454272,
      "files": 40,
      "samples": 35,
@@ -1197,7 +1197,7 @@
    "same": 50,
    "both-error": 34
   },
-  "bmp-verified-policy-recommended": {
+  "bmp-verified-policy-recommended-beta": {
    "same": 50,
    "both-error": 32,
    "ok-only-here": 2

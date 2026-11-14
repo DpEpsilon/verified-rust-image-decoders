@@ -96,7 +96,7 @@ for field, choices in oracle.OPTIONS.items():
 palette_samples = [generated(i, kind=1) for i in range(24)]
 fields = ('map_header', 'map_index', 'index_range', 'map5', 'map16_alpha', 'alpha')
 for values in itertools.product(*(oracle.OPTIONS[f] for f in fields)):
-    policy = dict(oracle.RECOMMENDED, **dict(zip(fields, values)))
+    policy = dict(oracle.RECOMMENDED_BETA, **dict(zip(fields, values)))
     for i, raw in enumerate(palette_samples):
         emit('coupled/palette', str(i) + '/' + '/'.join(values), raw, policy)
 
@@ -112,7 +112,7 @@ for values in itertools.product(*(oracle.OPTIONS[f] for f in fields)):
 fields = ('rle_overrun', 'trailing', 'index_range')
 rle_samples = [generated(i, rle=True) for i in range(32)]
 for values in itertools.product(*(oracle.OPTIONS[f] for f in fields)):
-    policy = dict(oracle.RECOMMENDED, **dict(zip(fields, values)))
+    policy = dict(oracle.RECOMMENDED_BETA, **dict(zip(fields, values)))
     for i, raw in enumerate(rle_samples):
         for stop in sorted({len(raw), max(0, len(raw) - 1), min(18, len(raw))}):
             emit('coupled/rle', str(i) + '/' + '/'.join(values) + '/' + str(stop), raw[:stop], policy)

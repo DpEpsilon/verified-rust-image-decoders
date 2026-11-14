@@ -13,7 +13,7 @@ My oracle was built with the same 27 fields and the four profile tables read fro
 | STRICT-VECTORS.json (302) | 0 disagreements (`cmp` against the frozen VECTORS.json is identical) |
 | POLICY-VECTORS.json (59 x 4 profiles) | 0 disagreements |
 | CUSTOM-VECTORS.json (67) | 0 disagreements |
-| Seed-731 matrix, 10,000 inputs x 4 profiles, BmpFile | Strict, GdkCompat, Recommended: 0 diffs; ImageCrateCompat: 11 diffs (finding B2) |
+| Seed-731 matrix, 10,000 inputs x 4 profiles, BmpFile | Strict, GdkCompat, RecommendedBeta: 0 diffs; ImageCrateCompat: 11 diffs (finding B2) |
 
 Zero vector disagreements is weak evidence of precision: the vectors do not discriminate most of the ambiguities below (section 4). The real test was differential fuzzing of my oracle against the author's:
 
@@ -57,7 +57,7 @@ Unsafe options: none unbounded. Caveats are S8, N3, and the amplification above.
 
 ### Blocking
 
-**B1. Recommended contradicts D2/D3 and REPORT.** D2 and REPORT describe Recommended as "Strict plus bfSize/biSizeImage ignored". The table also sets `high_count=Ignore` and `rle_eol=StopAtHeight`. `StopAtHeight` accepts an RLE stream that lost its final `00 01`. Input (BareDib, 1x1 RLE8, one palette entry): `280000000100000001000000010008000100000000000000000000000000000001000000000000000000ff0001000000` (palette `00 00 ff 00`, then the commands `01 00` and `00 00`). Strict: `RleTruncated`. Recommended: Ok. That is acceptance of a file truncated by two bytes, against D3's "preserve rejection of malformed RLE". Either drop both fields from Recommended or reword D2/D3 and REPORT, and state that Recommended is not "metadata only". Also decide whether `file_size=Ignore` (accepts `bfSize > |b|`, the classic truncated-download signal) belongs in a profile whose rationale is "strict on content".
+**B1. RecommendedBeta contradicts D2/D3 and REPORT.** D2 and REPORT describe RecommendedBeta as "Strict plus bfSize/biSizeImage ignored". The table also sets `high_count=Ignore` and `rle_eol=StopAtHeight`. `StopAtHeight` accepts an RLE stream that lost its final `00 01`. Input (BareDib, 1x1 RLE8, one palette entry): `280000000100000001000000010008000100000000000000000000000000000001000000000000000000ff0001000000` (palette `00 00 ff 00`, then the commands `01 00` and `00 00`). Strict: `RleTruncated`. RecommendedBeta: Ok. That is acceptance of a file truncated by two bytes, against D3's "preserve rejection of malformed RLE". Either drop both fields from RecommendedBeta or reword D2/D3 and REPORT, and state that RecommendedBeta is not "metadata only". Also decide whether `file_size=Ignore` (accepts `bfSize > |b|`, the classic truncated-download signal) belongs in a profile whose rationale is "strict on content".
 
 **B2. ParsedFields: availability of the metadata end is unspecified.** With `header_bytes=ParsedFields` a declared header can end beyond EOF (the text says so). Palette end is then `s+H+table > |b|` even when the table is empty. The text's R7 literally says to return `TruncatedPalette` when bytes are insufficient. The oracle skips the check when `table_count=0`; my text-only reading rejected. ImageCrateCompat is affected: my oracle disagreed with the author's, and with image-rs, on matrix #4371, #4497, #5878, #6004, #6137, #8433, #8517, #8769, #8895, #9972 (the text cites #4371/#8433 itself), and in 10 of 10,000 seed-4242 inputs (the `biSize` cluster). Add the rule: "a zero-length palette or table needs no availability check; `palette_end` for offset purposes is `s+H+...` even if past EOF".
 
@@ -183,18 +183,18 @@ The plan is realistic as staged (typed `Policy`, strict bridge first, metadata f
 | Decision | Assessment |
 |---|---|
 | D1 keep Strict and add policy entry point | Agree. Add: `Policy::default()` = Strict; non_exhaustive; one name (S10). |
-| D2 Recommended ignores bfSize/biSizeImage | Rationale holds for reads. But the table does more (B1). Also consider keeping `file_size=AtMostFileLength` and ignoring only `biSizeImage`; `bfSize > |b|` is a free truncation detector. |
-| D3 keep short-pixel and RLE bounds rejection | Agree, but Recommended's `rle_eol=StopAtHeight` weakens it (B1). |
+| D2 RecommendedBeta ignores bfSize/biSizeImage | Rationale holds for reads. But the table does more (B1). Also consider keeping `file_size=AtMostFileLength` and ignoring only `biSizeImage`; `bfSize > |b|` is a free truncation detector. |
+| D3 keep short-pixel and RLE bounds rejection | Agree, but RecommendedBeta's `rle_eol=StopAtHeight` weakens it (B1). |
 | D4 ZeroFill opt-in | Agree, and add the recovered flag (S11); otherwise "opt-in" does not protect downstream consumers. |
 | D5 count and offset authoritative | Agree. `offset=Recover` and `indexed_count=FullIgnoringUsed` then have no consumer; consider dropping (S12). |
 | D6 unknown codecs and damaged magic rejected | Agree. Rgb2 is a non-default feature in ImageCrateCompat only; say so. |
 | D7 ICO policy separate | Agree. Missing: how the policy argument behaves with ICO modes (S10), and what the glycin integration does with ICO-embedded BMPs. |
 
-Decisions missing: **D8** which profile glycin's loader uses by default (ImageCrateCompat matches image-rs 100% on this corpus but accepts Rgb2 and wrong-size metadata; Recommended is the safer name but B1 applies); **D9** profile versioning, since GdkCompat and ImageCrateCompat name library versions that will change (freeze each profile table as immutable, name it with the library version, add new profiles rather than editing); **D10** whether custom policy records are public API (S12); **D11** whether recovered output carries a flag (S11); **D12** the error name for each new check site (S5).
+Decisions missing: **D8** which profile glycin's loader uses by default (ImageCrateCompat matches image-rs 100% on this corpus but accepts Rgb2 and wrong-size metadata; RecommendedBeta is the safer name but B1 applies); **D9** profile versioning, since GdkCompat and ImageCrateCompat name library versions that will change (freeze each profile table as immutable, name it with the library version, add new profiles rather than editing); **D10** whether custom policy records are public API (S12); **D11** whether recovered output carries a flag (S11); **D12** the error name for each new check site (S5).
 
 ## 9. Fixes required for the freeze
 
-Blocking: B1 (choose Recommended's contents and reword D2/D3), B2 (ParsedFields availability rule), B3 (BareDib high_count). Should-fix: S1 to S6 (text/oracle reconciliation and a vector for each), S7 (vectors for each survivor in section 5, at minimum the 33 non-equivalent ones), S8, S9 (reword the claim), S10 to S13 (API decisions can ship with the freeze if recorded as decisions). After B1 to B3 and S1 to S6 are fixed, re-run vectors and the differential fuzz (`/tmp/claude-0/rev/fuzz_pol.py`, `gen_struct.py`, `fuzz_rle.py`, all seed-parameterised) and the seed-4242 agreement (`agree.py`); I expect 0 oracle disagreements.
+Blocking: B1 (choose RecommendedBeta's contents and reword D2/D3), B2 (ParsedFields availability rule), B3 (BareDib high_count). Should-fix: S1 to S6 (text/oracle reconciliation and a vector for each), S7 (vectors for each survivor in section 5, at minimum the 33 non-equivalent ones), S8, S9 (reword the claim), S10 to S13 (API decisions can ship with the freeze if recorded as decisions). After B1 to B3 and S1 to S6 are fixed, re-run vectors and the differential fuzz (`/tmp/claude-0/rev/fuzz_pol.py`, `gen_struct.py`, `fuzz_rle.py`, all seed-parameterised) and the seed-4242 agreement (`agree.py`); I expect 0 oracle disagreements.
 
 ---
 
@@ -208,7 +208,7 @@ Scratch: `/tmp/claude-0/rev/` (`myoracle2.py` is my oracle rewritten to the new 
 
 | # | Status | Evidence |
 |---|---|---|
-| B1 Recommended contents | **Fixed** | Table: Strict + `file_size=Ignore` + `image_size=Ignore` only; D2/D3 and REPORT agree. 40,000-input property check (author's oracle): Strict never sets `recovered`; whenever Strict accepts, Recommended returns identical pixels with `recovered=false`; whenever Recommended accepts unflagged, Strict accepts (0 violations). |
+| B1 RecommendedBeta contents | **Fixed** | Table: Strict + `file_size=Ignore` + `image_size=Ignore` only; D2/D3 and REPORT agree. 40,000-input property check (author's oracle): Strict never sets `recovered`; whenever Strict accepts, RecommendedBeta returns identical pixels with `recovered=false`; whenever RecommendedBeta accepts unflagged, Strict accepts (0 violations). |
 | B2 ParsedFields availability | **Fixed** | Text: zero-length table needs no check, nonempty checks its span, H>=52 internal masks give `TruncatedMasks`. Vectors `parsed-fields-past-eof-empty-table`, `-nonempty-table`, `-table-required`; my oracle agrees on all; the 10 seed-4242 ImageCrateCompat residuals are gone. |
 | B3 BareDib `high_count` | **Fixed in text** | "All three values reject nonzero high-depth `biClrUsed` in BareDib with `InvalidColorCount`". Mutant "BareDib Ignore accepts" is killed; "BareDib GdkBound accepts" survives (no vector; see S15). |
 | S1 palette_gap vs BITFIELDS | **Fixed** | Field `palette_gap` deleted; only `bitfield_offset` moves BITFIELDS pixels. |
@@ -284,7 +284,7 @@ Replay of seed 4242 on the 3,180 inputs absent from the two tuning seeds, with b
 3. **Other readings differ.** For Gdk with BITFIELDS and `bfOffBits` inside the metadata, the author does not flag the offset (only the BI_RGB high-depth case is flagged) while the text says "ignored invalid declaration"; AllowAny with an offset inside metadata is not flagged but an offset outside `[18, length]` is.
 4. T9/T10 now claim equality of the flag; the proof target is undefined until this is fixed.
 
-Fix: define `recovered` as a closed list of events with one line each (which field, which condition), state that a flag-false result must equal the result of the same bytes under a stricter rule set (for Recommended this holds: 0 violations in 40,000), and add a vector per event and one negative vector per profile with a valid file that must report `recovered=false`.
+Fix: define `recovered` as a closed list of events with one line each (which field, which condition), state that a flag-false result must equal the result of the same bytes under a stricter rule set (for RecommendedBeta this holds: 0 violations in 40,000), and add a vector per event and one negative vector per profile with a valid file that must report `recovered=false`.
 
 **S14 (should-fix). The S2 vector tests something else.** `coupled-clamped-delta-eol-at-height` contains `00 ff 00 00` (an absolute-packet overrun), so it errors with RleBounds regardless. Replace by a delta that clamps to height followed by `00 00` (BareDib probe in my scratch: `rle_eol=StopAtHeight, rle_delta=ClampStop` on `00 02 00 05 00 00 00 01`: RleBounds).
 
@@ -299,7 +299,7 @@ Fix: define `recovered` as a closed list of events with one line each (which fie
 **Not ready to freeze.** Required before freezing: B4 (define `recovered` precisely and remove the false positive), S14 (fix the vector), S15 (add the listed vectors), S16 (record contents). Nits N8 to N10 can ship as decisions. After those, re-run: `fuzz2.py` (expect 0 differences including flags and names), `mutate2.py`/`equiv2.py` (expect no non-equivalent survivors), `agree3.py` on seed 9091.
 
 Remaining owner decisions:
-- **D8** which named profile glycin's loader uses: ImageCrateCompat-0.25.10 matches image-rs on 100% of 4,959 novel inputs but accepts 2-bpp and `bfOffBits` inside metadata; Recommended is Strict plus metadata leniency and flags every ignored declaration.
+- **D8** which named profile glycin's loader uses: ImageCrateCompat-0.25.10 matches image-rs on 100% of 4,959 novel inputs but accepts 2-bpp and `bfOffBits` inside metadata; RecommendedBeta is Strict plus metadata leniency and flags every ignored declaration.
 - **D13** the exact `recovered` contract (events list; whether a stop at a terminal EOL counts).
 - **D14** whether `EXPERIMENTAL_OPTIONS` exists in a released build at all (7.2e7 internal combinations stay in the universal proof either way).
 - **D15** error name for depth 2 with non-BI_RGB under Rgb2 (N8) and for Gdk BITFIELDS offsets (N9).
@@ -354,11 +354,11 @@ Overall (both-reject counted): Gdk 1,508 of 1,538 (98.0%); Image 1,538 of 1,538.
 
 ## 5. The `recovered` flag
 
-**Closed list.** The wording ("only the following data-affecting events; no unlisted tolerance sets it") is the right contract, and the negative statements (bfSize/biSizeImage, reserved, planes, trailing bytes, EOL+EOB under StopAtHeight, fully overwritten prefill) are all enforced: I tested each as a mutant and every one is killed by a vector. Recommended's flag is exact: on 6,000 inputs Strict accepts, Recommended returns the same pixels with `recovered=false` every time (and earlier on 40,000 Strict-rejected/accepted inputs, never an unflagged accept that Strict rejects).
+**Closed list.** The wording ("only the following data-affecting events; no unlisted tolerance sets it") is the right contract, and the negative statements (bfSize/biSizeImage, reserved, planes, trailing bytes, EOL+EOB under StopAtHeight, fully overwritten prefill) are all enforced: I tested each as a mutant and every one is killed by a vector. RecommendedBeta's flag is exact: on 6,000 inputs Strict accepts, RecommendedBeta returns the same pixels with `recovered=false` every time (and earlier on 40,000 Strict-rejected/accepted inputs, never an unflagged accept that Strict rejects).
 
 **Positive witnesses (one vector kills the "event not flagged" mutant).** Present for: Gdk indexed invalid offset, Gdk BI_RGB clamp below metadata end, AllowAny offset outside `[18,|b|]`, ParsedFields past EOF, incomplete-metadata Blank, short_indexed_gap Blank, DefaultRGB substitution, ZeroFill, Black substitution, encoded-run clip, absolute-run clip, ClampStop, early-end fill. **Missing:** the Gdk BITFIELDS outside-`[18,|b|]` clause of the first bullet (S17).
 
-**Negatives under each profile.** Complete valid files give `recovered=false` under all four profiles: on 6,000 Strict-valid inputs, 0 of Recommended, and for the compat profiles the flag fires only on three events that change the data relative to the declared layout: early-end fill (valid RLE with an early EOB under a non-Palette0 prefill: 135 Gdk, 148 Image), short_indexed_gap Blank (42 Gdk), and **bitfield_offset=MetadataEnd with a gap (150 Gdk)**. The first two are in the list. The third is not (B5).
+**Negatives under each profile.** Complete valid files give `recovered=false` under all four profiles: on 6,000 Strict-valid inputs, 0 of RecommendedBeta, and for the compat profiles the flag fires only on three events that change the data relative to the declared layout: early-end fill (valid RLE with an early EOB under a non-Palette0 prefill: 135 Gdk, 148 Image), short_indexed_gap Blank (42 Gdk), and **bitfield_offset=MetadataEnd with a gap (150 Gdk)**. The first two are in the list. The third is not (B5).
 
 **B5 (blocking, small). The closed list omits an event that the oracle and the vectors set.** With `bitfield_offset=MetadataEnd` (GdkCompat), a valid BITFIELDS file whose `bfOffBits` is not the metadata end (a gap, an optimal colour table, V4/V5 colour-profile bytes) is decoded from the metadata end and `policy_oracle.py` sets `recovered`. Vectors `base-bmp-fields-40-masks-then-optimal-table-gap`, `gdk-bitfield-declared-offset-with-gap` and `bitfield_offset-MetadataEnd-...` expect `true`. No bullet covers it ("outside `[18,|b|]`" does not apply), and the text says no unlisted tolerance sets the flag. Both readings are defensible (the pixels change, so it is data-affecting), but text, oracle and vectors must agree. Fix: add the event to the list (`bitfield_offset=MetadataEnd` selects a start different from a valid declared offset), or drop the flag from the oracle and three vectors. I implemented the oracle's behaviour to make my vectors pass; 150 of 4,122 Strict-valid inputs accepted by GdkCompat in my sample hit it.
 

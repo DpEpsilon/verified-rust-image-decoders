@@ -4,8 +4,8 @@ findings: 1
 finding-tags: allowlist-reviewer
 findings-other-than-unsigned-reviewer: 0
 mode: PRODUCTION
-crate: dib_verus
-crate-svh: 8f176695661602079c98210f9961578b
+crate: tga_verus
+crate-svh: d79da578af4ac2a653a929731d91fbd3
 invocation: wrapper
 rustc: 1.99.1 (58cf8f9c3 2026-10-13)
 rustc-commit: 58cf8f9c3 (full 58cf8f9c35b355199727627d07ae34a4e2846d67)
@@ -14,52 +14,54 @@ profile: opt-level=3,debug-assertions=off,share-generics=off
 profile-class: release
 features: []
 cfgs: ["panic=\"unwind\"", "target_abi=\"\"", "target_arch=\"x86_64\"", "target_endian=\"little\"", "target_env=\"gnu\"", "target_family=\"unix\"", "target_feature=\"fxsr\"", "target_feature=\"sse\"", "target_feature=\"sse2\"", "target_has_atomic=\"16\"", "target_has_atomic=\"32\"", "target_has_atomic=\"64\"", "target_has_atomic=\"8\"", "target_has_atomic=\"ptr\"", "target_has_atomic_load_store=\"16\"", "target_has_atomic_load_store=\"32\"", "target_has_atomic_load_store=\"64\"", "target_has_atomic_load_store=\"8\"", "target_has_atomic_load_store=\"ptr\"", "target_has_atomic_primitive_alignment=\"16\"", "target_has_atomic_primitive_alignment=\"32\"", "target_has_atomic_primitive_alignment=\"64\"", "target_has_atomic_primitive_alignment=\"8\"", "target_has_atomic_primitive_alignment=\"ptr\"", "target_has_reliable_f128", "target_has_reliable_f16", "target_has_reliable_f16_math", "target_has_threads", "target_object_format=\"elf\"", "target_os=\"linux\"", "target_pointer_width=\"64\"", "target_thread_local", "target_vendor=\"unknown\"", "unix"]
-source_hash: 10f5071a08964bb735ee266801c53d5c82926a36701cf4e01bbe0218b61e684c
+source_hash: 627a1646805bd453cb6a8cc602b677cc6095cd647b8257c92d0ec121f987ccf7
 source-hash-scope: sha256 over sorted per-file sha256 of every non-imported source-map file outside the sysroot (module files and loaded include targets); dependency crates are bound by crate hash, vstd additionally by its locked source checksum
-allowlist: /home/ws/projects/verified-decoders/alloc-delta/audit/allowlist/x86_64-unknown-linux-gnu/release/dib_verus.toml sha256=e85e901207666436effa5dc3f6aec8dd5647e7ca765b066389dce9bb4c4888a7 entries=64 reviewer="" drafted_by="draft_allowlist.py (Claude agent), 2026-11-13; unsigned"
+allowlist: /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/allowlist/x86_64-unknown-linux-gnu/release/tga_verus.toml sha256=fa18137315edf07a50abc82133c69837c4decd61a6109ea670c5d8c9f46d9d08 entries=58 reviewer="" drafted_by="draft_allowlist.py (Claude agent), 2026-11-13; unsigned"
 vstd: linked=true version=Some("0.0.0-2026-11-01-0251") svh=Some("fa564daeee3bd3d96afb1a9ec5dbc24f") locked_checksum=Some("7cfcc2fc379ffbcda31111f1a7da2a34d00bd984407cfa85d1edcf64da38dbd2") linked_artifact_sha256=Some("f93b65602d91170edd3bb93b775f0a423ad35a7a154329588eeec12ec52b1045") source_dir=Some("/home/ws/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/vstd-0.0.0-2026-11-01-0251")
 vstd-binding-problems: none
-roots: crate::alloc_guard::sites::TryError::name, <crate::alloc_guard::sites::TryError as core::clone::Clone>::clone, <crate::alloc_guard::sites::TryError as core::cmp::PartialEq>::eq, <crate::alloc_guard::sites::TryError as core::cmp::Eq>::assert_fields_are_eq, <crate::alloc_guard::sites::AllocSite as core::clone::Clone>::clone, <crate::alloc_guard::sites::AllocSite as core::cmp::PartialEq>::eq, <crate::alloc_guard::sites::AllocSite as core::cmp::Eq>::assert_fields_are_eq, crate::alloc_guard::OutOfMemory::site, crate::alloc_guard::OutOfMemory::elements, crate::alloc_guard::try_zeroed, <crate::alloc_guard::OutOfMemory as core::clone::Clone>::clone, <crate::alloc_guard::OutOfMemory as core::cmp::PartialEq>::eq, <crate::alloc_guard::OutOfMemory as core::cmp::Eq>::assert_fields_are_eq, crate::dib::Error::name, <crate::dib::BmpProfile as core::default::Default>::default, crate::dib::try_decode_with_steps_logged, crate::dib::try_decode_with_steps, crate::dib::try_decode, crate::dib::try_decode_with_policy, <crate::dib::Mode as core::clone::Clone>::clone, <crate::dib::Mode as core::cmp::PartialEq>::eq, <crate::dib::Mode as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::Error as core::clone::Clone>::clone, <crate::dib::Error as core::cmp::PartialEq>::eq, <crate::dib::Error as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::Decoded as core::cmp::PartialEq>::eq, <crate::dib::Decoded as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::MetadataOptions as core::clone::Clone>::clone, <crate::dib::MetadataOptions as core::cmp::PartialEq>::eq, <crate::dib::MetadataOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::PlanesOptions as core::clone::Clone>::clone, <crate::dib::PlanesOptions as core::cmp::PartialEq>::eq, <crate::dib::PlanesOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::ReservedOptions as core::clone::Clone>::clone, <crate::dib::ReservedOptions as core::cmp::PartialEq>::eq, <crate::dib::ReservedOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::OffsetOptions as core::clone::Clone>::clone, <crate::dib::OffsetOptions as core::cmp::PartialEq>::eq, <crate::dib::OffsetOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::HighCountOptions as core::clone::Clone>::clone, <crate::dib::HighCountOptions as core::cmp::PartialEq>::eq, <crate::dib::HighCountOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::HeadersOptions as core::clone::Clone>::clone, <crate::dib::HeadersOptions as core::cmp::PartialEq>::eq, <crate::dib::HeadersOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::MasksOptions as core::clone::Clone>::clone, <crate::dib::MasksOptions as core::cmp::PartialEq>::eq, <crate::dib::MasksOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::ShortPixelsOptions as core::clone::Clone>::clone, <crate::dib::ShortPixelsOptions as core::cmp::PartialEq>::eq, <crate::dib::ShortPixelsOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::RleEolOptions as core::clone::Clone>::clone, <crate::dib::RleEolOptions as core::cmp::PartialEq>::eq, <crate::dib::RleEolOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::RleOverrunOptions as core::clone::Clone>::clone, <crate::dib::RleOverrunOptions as core::cmp::PartialEq>::eq, <crate::dib::RleOverrunOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::RleDeltaOptions as core::clone::Clone>::clone, <crate::dib::RleDeltaOptions as core::cmp::PartialEq>::eq, <crate::dib::RleDeltaOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::RleEobOptions as core::clone::Clone>::clone, <crate::dib::RleEobOptions as core::cmp::PartialEq>::eq, <crate::dib::RleEobOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::RleFillOptions as core::clone::Clone>::clone, <crate::dib::RleFillOptions as core::cmp::PartialEq>::eq, <crate::dib::RleFillOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::PaletteIndexOptions as core::clone::Clone>::clone, <crate::dib::PaletteIndexOptions as core::cmp::PartialEq>::eq, <crate::dib::PaletteIndexOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::ScalingOptions as core::clone::Clone>::clone, <crate::dib::ScalingOptions as core::cmp::PartialEq>::eq, <crate::dib::ScalingOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::UnsupportedOptions as core::clone::Clone>::clone, <crate::dib::UnsupportedOptions as core::cmp::PartialEq>::eq, <crate::dib::UnsupportedOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::BitfieldOffsetOptions as core::clone::Clone>::clone, <crate::dib::BitfieldOffsetOptions as core::cmp::PartialEq>::eq, <crate::dib::BitfieldOffsetOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::Bitfield16AlphaOptions as core::clone::Clone>::clone, <crate::dib::Bitfield16AlphaOptions as core::cmp::PartialEq>::eq, <crate::dib::Bitfield16AlphaOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::IncompleteMetadataOptions as core::clone::Clone>::clone, <crate::dib::IncompleteMetadataOptions as core::cmp::PartialEq>::eq, <crate::dib::IncompleteMetadataOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::ShortIndexedGapOptions as core::clone::Clone>::clone, <crate::dib::ShortIndexedGapOptions as core::cmp::PartialEq>::eq, <crate::dib::ShortIndexedGapOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::HeaderBytesOptions as core::clone::Clone>::clone, <crate::dib::HeaderBytesOptions as core::cmp::PartialEq>::eq, <crate::dib::HeaderBytesOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::Policy as core::clone::Clone>::clone, <crate::dib::Policy as core::cmp::PartialEq>::eq, <crate::dib::Policy as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::BmpProfile as core::clone::Clone>::clone, <crate::dib::BmpProfile as core::cmp::PartialEq>::eq, <crate::dib::BmpProfile as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::BmpMode as core::clone::Clone>::clone, <crate::dib::BmpMode as core::cmp::PartialEq>::eq, <crate::dib::BmpMode as core::cmp::Eq>::assert_fields_are_eq
-roots-excluded: <crate::alloc_guard::OutOfMemory as core::fmt::Debug>::fmt, <crate::alloc_guard::sites::AllocSite as core::fmt::Debug>::fmt, <crate::alloc_guard::sites::TryError as core::fmt::Debug>::fmt, <crate::dib::Bitfield16AlphaOptions as core::fmt::Debug>::fmt, <crate::dib::BitfieldOffsetOptions as core::fmt::Debug>::fmt, <crate::dib::BmpMode as core::fmt::Debug>::fmt, <crate::dib::BmpProfile as core::fmt::Debug>::fmt, <crate::dib::Decoded as core::clone::Clone>::clone, <crate::dib::Decoded as core::fmt::Debug>::fmt, <crate::dib::Error as core::fmt::Debug>::fmt, <crate::dib::HeaderBytesOptions as core::fmt::Debug>::fmt, <crate::dib::HeadersOptions as core::fmt::Debug>::fmt, <crate::dib::HighCountOptions as core::fmt::Debug>::fmt, <crate::dib::IncompleteMetadataOptions as core::fmt::Debug>::fmt, <crate::dib::MasksOptions as core::fmt::Debug>::fmt, <crate::dib::MetadataOptions as core::fmt::Debug>::fmt, <crate::dib::Mode as core::fmt::Debug>::fmt, <crate::dib::OffsetOptions as core::fmt::Debug>::fmt, <crate::dib::PaletteIndexOptions as core::fmt::Debug>::fmt, <crate::dib::PlanesOptions as core::fmt::Debug>::fmt, <crate::dib::Policy as core::fmt::Debug>::fmt, <crate::dib::ReservedOptions as core::fmt::Debug>::fmt, <crate::dib::RleDeltaOptions as core::fmt::Debug>::fmt, <crate::dib::RleEobOptions as core::fmt::Debug>::fmt, <crate::dib::RleEolOptions as core::fmt::Debug>::fmt, <crate::dib::RleFillOptions as core::fmt::Debug>::fmt, <crate::dib::RleOverrunOptions as core::fmt::Debug>::fmt, <crate::dib::ScalingOptions as core::fmt::Debug>::fmt, <crate::dib::ShortIndexedGapOptions as core::fmt::Debug>::fmt, <crate::dib::ShortPixelsOptions as core::fmt::Debug>::fmt, <crate::dib::UnsupportedOptions as core::fmt::Debug>::fmt
+roots: <crate::policy::Profile as core::default::Default>::default, <crate::policy::TrailingOptions as core::clone::Clone>::clone, <crate::policy::TrailingOptions as core::cmp::PartialEq>::eq, <crate::policy::TrailingOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::policy::RleOverrunOptions as core::clone::Clone>::clone, <crate::policy::RleOverrunOptions as core::cmp::PartialEq>::eq, <crate::policy::RleOverrunOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::policy::AttributeBitsOptions as core::clone::Clone>::clone, <crate::policy::AttributeBitsOptions as core::cmp::PartialEq>::eq, <crate::policy::AttributeBitsOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::policy::MapHeaderOptions as core::clone::Clone>::clone, <crate::policy::MapHeaderOptions as core::cmp::PartialEq>::eq, <crate::policy::MapHeaderOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::policy::DepthsOptions as core::clone::Clone>::clone, <crate::policy::DepthsOptions as core::cmp::PartialEq>::eq, <crate::policy::DepthsOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::policy::AlphaOptions as core::clone::Clone>::clone, <crate::policy::AlphaOptions as core::cmp::PartialEq>::eq, <crate::policy::AlphaOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::policy::Map16AlphaOptions as core::clone::Clone>::clone, <crate::policy::Map16AlphaOptions as core::cmp::PartialEq>::eq, <crate::policy::Map16AlphaOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::policy::Rgb5Options as core::clone::Clone>::clone, <crate::policy::Rgb5Options as core::cmp::PartialEq>::eq, <crate::policy::Rgb5Options as core::cmp::Eq>::assert_fields_are_eq, <crate::policy::Map5Options as core::clone::Clone>::clone, <crate::policy::Map5Options as core::cmp::PartialEq>::eq, <crate::policy::Map5Options as core::cmp::Eq>::assert_fields_are_eq, <crate::policy::MapIndexOptions as core::clone::Clone>::clone, <crate::policy::MapIndexOptions as core::cmp::PartialEq>::eq, <crate::policy::MapIndexOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::policy::IndexRangeOptions as core::clone::Clone>::clone, <crate::policy::IndexRangeOptions as core::cmp::PartialEq>::eq, <crate::policy::IndexRangeOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::policy::InterleaveOptions as core::clone::Clone>::clone, <crate::policy::InterleaveOptions as core::cmp::PartialEq>::eq, <crate::policy::InterleaveOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::policy::ImageTypeOptions as core::clone::Clone>::clone, <crate::policy::ImageTypeOptions as core::cmp::PartialEq>::eq, <crate::policy::ImageTypeOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::policy::Policy as core::clone::Clone>::clone, <crate::policy::Policy as core::cmp::PartialEq>::eq, <crate::policy::Policy as core::cmp::Eq>::assert_fields_are_eq, <crate::policy::Profile as core::clone::Clone>::clone, <crate::policy::Profile as core::cmp::PartialEq>::eq, <crate::policy::Profile as core::cmp::Eq>::assert_fields_are_eq, crate::tga::Error::name, crate::tga::try_decode_with_steps_logged, crate::tga::try_decode, crate::tga::try_decode_with_policy, <crate::tga::Error as core::clone::Clone>::clone, <crate::tga::Error as core::cmp::PartialEq>::eq, <crate::tga::Error as core::cmp::Eq>::assert_fields_are_eq, <crate::tga::Decoded as core::cmp::PartialEq>::eq, <crate::tga::Decoded as core::cmp::Eq>::assert_fields_are_eq, crate::alloc_guard::sites::TryError::name, <crate::alloc_guard::sites::TryError as core::clone::Clone>::clone, <crate::alloc_guard::sites::TryError as core::cmp::PartialEq>::eq, <crate::alloc_guard::sites::TryError as core::cmp::Eq>::assert_fields_are_eq, <crate::alloc_guard::sites::AllocSite as core::clone::Clone>::clone, <crate::alloc_guard::sites::AllocSite as core::cmp::PartialEq>::eq, <crate::alloc_guard::sites::AllocSite as core::cmp::Eq>::assert_fields_are_eq, crate::alloc_guard::OutOfMemory::site, crate::alloc_guard::OutOfMemory::elements, crate::alloc_guard::try_zeroed, <crate::alloc_guard::OutOfMemory as core::clone::Clone>::clone, <crate::alloc_guard::OutOfMemory as core::cmp::PartialEq>::eq, <crate::alloc_guard::OutOfMemory as core::cmp::Eq>::assert_fields_are_eq
+roots-excluded: <crate::alloc_guard::OutOfMemory as core::fmt::Debug>::fmt, <crate::alloc_guard::sites::AllocSite as core::fmt::Debug>::fmt, <crate::alloc_guard::sites::TryError as core::fmt::Debug>::fmt, <crate::policy::AlphaOptions as core::fmt::Debug>::fmt, <crate::policy::AttributeBitsOptions as core::fmt::Debug>::fmt, <crate::policy::DepthsOptions as core::fmt::Debug>::fmt, <crate::policy::ImageTypeOptions as core::fmt::Debug>::fmt, <crate::policy::IndexRangeOptions as core::fmt::Debug>::fmt, <crate::policy::InterleaveOptions as core::fmt::Debug>::fmt, <crate::policy::Map16AlphaOptions as core::fmt::Debug>::fmt, <crate::policy::Map5Options as core::fmt::Debug>::fmt, <crate::policy::MapHeaderOptions as core::fmt::Debug>::fmt, <crate::policy::MapIndexOptions as core::fmt::Debug>::fmt, <crate::policy::Policy as core::fmt::Debug>::fmt, <crate::policy::Profile as core::fmt::Debug>::fmt, <crate::policy::Rgb5Options as core::fmt::Debug>::fmt, <crate::policy::RleOverrunOptions as core::fmt::Debug>::fmt, <crate::policy::TrailingOptions as core::fmt::Debug>::fmt, <crate::tga::Decoded as core::clone::Clone>::clone, <crate::tga::Decoded as core::fmt::Debug>::fmt, <crate::tga::Error as core::fmt::Debug>::fmt
 generic-exports: 
-instances: 421
-edges: 712
-crates-reached: alloc 65, core 170, dib_verus 178, verus_builtin 7, vstd 1
+instances: 364
+edges: 622
+crates-reached: alloc 64, core 161, tga_verus 133, verus_builtin 5, vstd 1
 allocator-sinks: 5
-mono-items: 92 in local codegen units; 0 not reached by the walk
+mono-items: 70 in local codegen units; 0 not reached by the walk
 
 -- findings (1) --
   [allowlist-reviewer] reviewer is missing or empty (recorded Some("")); the allowlist is unsigned
 
--- source files (7) --
-  combined 10f5071a08964bb735ee266801c53d5c82926a36701cf4e01bbe0218b61e684c
+-- source files (9) --
+  combined 627a1646805bd453cb6a8cc602b677cc6095cd647b8257c92d0ec121f987ccf7
   26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7  src/alloc_guard/mod.rs
-  33465c740e10162d0d6634afd0a6033e26f3d0f523b40e375f4b1d46bcdf000a  src/alloc_guard/sites.rs
-  07e1e000b69eebeecb22c5a9e5fdfbc2dcb811c826027016f697278b8a6c311e  src/dib.rs
-  9faeaf96c3b1d511f9764de34708d0f84822600c48045da3c84d31a327eb5a51  src/lib.rs
-  f3dd49ca95b325ab7ee5c4a89746871c8b62f6f32c48a63f217dc29262288845  src/model.rs
-  e80eafc58dd3591328b93c3044c51ae9ebd637b16f23abd015daa0ce98305346  src/model_vectors.rs
+  58e1fb285124557080dde6a6bc01c0d6e839cd5402b804b08b240de43750c885  src/alloc_guard/sites.rs
+  68ff3ac422f223cbeaafdee537b9fe7061f780b51694f6978187979fb6c72041  src/lib.rs
+  94aa6ab53e6031458cec57756e31035c02cd2426f00be87197f7740bd01423cb  src/model.rs
+  3546cbe9629c9fbba86a076a86c5643e7dda5205eb6e870512c6d689c757a121  src/model_vectors.rs
+  a1324e2cc76b4946968db225e4510548189a07210965109a4e02eec04a24ee7d  src/policy.rs
+  68f7536182a8b76f424fe4bb82883d445254144db52be19cd4bff10f065dde38  src/policy_model.rs
+  8158a92300d36d440b8db890f65765d40157c7d334f5dc8aac902f56c097ca50  src/tga.rs
 
 -- build inputs (compiler-resolved) (5) --
   build-script: none
   include: none (no file loaded other than module files)
   env: none (no env!/option_env!/tracked env read)
-  proc-macro verus_builtin_macros svh=aed47e5b6e044f8a217640aec802e715 /tmp/claude-0/alloc-audit/cores/ico/release/deps/libverus_builtin_macros-c32361d025cb512f.so sha256=a5f3765fadd6d754581b1f48397e4cdbb02f386ad872392622a2e5f292ad17da
-  proc-macro verus_state_machines_macros svh=70d2fe81030862011fed591e02bc1700 /tmp/claude-0/alloc-audit/cores/ico/release/deps/libverus_state_machines_macros-afcf93a216aa33b2.so sha256=27bb5c1b206d32e5634e6507acb27cd00644ed0db2fb1a37485435255dd38a86
+  proc-macro verus_builtin_macros svh=aed47e5b6e044f8a217640aec802e715 /tmp/claude-0/alloc-audit/cores/tga/release/deps/libverus_builtin_macros-c32361d025cb512f.so sha256=a5f3765fadd6d754581b1f48397e4cdbb02f386ad872392622a2e5f292ad17da
+  proc-macro verus_state_machines_macros svh=70d2fe81030862011fed591e02bc1700 /tmp/claude-0/alloc-audit/cores/tga/release/deps/libverus_state_machines_macros-afcf93a216aa33b2.so sha256=27bb5c1b206d32e5634e6507acb27cd00644ed0db2fb1a37485435255dd38a86
 
 -- linked artifacts and command line (12) --
-  rustc command line: /tmp/claude-0/alloc-audit/tool-target/release/alloc_audit --crate-name dib_verus --edition=2021 /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata,link -C opt-level=3 -C embed-bitcode=no --warn=unexpected_cfgs --check-cfg cfg(verus_only) --check-cfg cfg(docsrs,test) --check-cfg cfg(feature, values()) -C metadata=6ab8632a02a463ca -C extra-filename=-669ea58bf9d6c289 --out-dir /tmp/claude-0/alloc-audit/cores/ico/x86_64-unknown-linux-gnu/release/deps --target x86_64-unknown-linux-gnu -C strip=debuginfo -L dependency=/tmp/claude-0/alloc-audit/cores/ico/x86_64-unknown-linux-gnu/release/deps -L dependency=/tmp/claude-0/alloc-audit/cores/ico/release/deps --extern vstd=/tmp/claude-0/alloc-audit/cores/ico/x86_64-unknown-linux-gnu/release/deps/libvstd-9376ba70600fade7.rmeta
-  env CARGO_MANIFEST_DIR=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus
-  env CARGO_PKG_NAME=dib_verus
-  env CARGO_PKG_VERSION=0.4.0
-  Cargo.lock /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/Cargo.lock sha256=67a7135e469c23dc6c766dda126c5148c8d67073e8d05c58e828587935001e30
+  rustc command line: /tmp/claude-0/alloc-audit/tool-target/release/alloc_audit --crate-name tga_verus --edition=2021 src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata,link -C opt-level=3 -C embed-bitcode=no --warn=unexpected_cfgs --check-cfg cfg(verus_only) --check-cfg cfg(docsrs,test) --check-cfg cfg(feature, values()) -C metadata=ac8531ddda04b08c -C extra-filename=-e1a4377b4656f554 --out-dir /tmp/claude-0/alloc-audit/cores/tga/x86_64-unknown-linux-gnu/release/deps --target x86_64-unknown-linux-gnu -C strip=debuginfo -L dependency=/tmp/claude-0/alloc-audit/cores/tga/x86_64-unknown-linux-gnu/release/deps -L dependency=/tmp/claude-0/alloc-audit/cores/tga/release/deps --extern vstd=/tmp/claude-0/alloc-audit/cores/tga/x86_64-unknown-linux-gnu/release/deps/libvstd-9376ba70600fade7.rmeta
+  env CARGO_MANIFEST_DIR=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/tga/tga_verus
+  env CARGO_PKG_NAME=tga_verus
+  env CARGO_PKG_VERSION=0.1.0
+  Cargo.lock /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/tga/tga_verus/Cargo.lock sha256=b01887058b2cf5e8d4f6b277262199573e53a0ebd6299e77b649da3c4f58c72e
   crate core svh=cbc12955c475a0d98147c7ede674d8a8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcore-1d288395a3394ed3.rmeta sha256=f991bfdb98d878590ba8a11da984bc230a078ee8079e27fcfd65854803b436f5
   crate alloc svh=3e16574379d685a1d1b3318e7fc12518 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/liballoc-3988244237fec6ee.rmeta sha256=92fa3a38f8b43981aeb810e6be09f9b0a66f38439272f8ee1b7ddb832a8aa065
   crate compiler_builtins svh=608975982fce69540ecd1b8bed34a3d8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcompiler_builtins-2d9557d6e902a200.rmeta sha256=9462f23a8789d047933fc26cbdff2172961ee5c9bf994690b196ff9c3de5a5cf
-  crate vstd svh=fa564daeee3bd3d96afb1a9ec5dbc24f kind=Unconditional sysroot=false artifact /tmp/claude-0/alloc-audit/cores/ico/x86_64-unknown-linux-gnu/release/deps/libvstd-9376ba70600fade7.rmeta sha256=f93b65602d91170edd3bb93b775f0a423ad35a7a154329588eeec12ec52b1045
-  crate verus_builtin_macros svh=aed47e5b6e044f8a217640aec802e715 kind=MacrosOnly sysroot=false artifact /tmp/claude-0/alloc-audit/cores/ico/release/deps/libverus_builtin_macros-c32361d025cb512f.so sha256=a5f3765fadd6d754581b1f48397e4cdbb02f386ad872392622a2e5f292ad17da
-  crate verus_state_machines_macros svh=70d2fe81030862011fed591e02bc1700 kind=MacrosOnly sysroot=false artifact /tmp/claude-0/alloc-audit/cores/ico/release/deps/libverus_state_machines_macros-afcf93a216aa33b2.so sha256=27bb5c1b206d32e5634e6507acb27cd00644ed0db2fb1a37485435255dd38a86
-  crate verus_builtin svh=06bbe94fd6feef326e91b49a87810e1a kind=Unconditional sysroot=false artifact /tmp/claude-0/alloc-audit/cores/ico/x86_64-unknown-linux-gnu/release/deps/libverus_builtin-86c4460c3bc0417a.rmeta sha256=b0dfaa6407e42b7d15ce63155dd40cda0dee94d6a57102b23edc5e7e718cf4e5
+  crate vstd svh=fa564daeee3bd3d96afb1a9ec5dbc24f kind=Unconditional sysroot=false artifact /tmp/claude-0/alloc-audit/cores/tga/x86_64-unknown-linux-gnu/release/deps/libvstd-9376ba70600fade7.rmeta sha256=f93b65602d91170edd3bb93b775f0a423ad35a7a154329588eeec12ec52b1045
+  crate verus_builtin_macros svh=aed47e5b6e044f8a217640aec802e715 kind=MacrosOnly sysroot=false artifact /tmp/claude-0/alloc-audit/cores/tga/release/deps/libverus_builtin_macros-c32361d025cb512f.so sha256=a5f3765fadd6d754581b1f48397e4cdbb02f386ad872392622a2e5f292ad17da
+  crate verus_state_machines_macros svh=70d2fe81030862011fed591e02bc1700 kind=MacrosOnly sysroot=false artifact /tmp/claude-0/alloc-audit/cores/tga/release/deps/libverus_state_machines_macros-afcf93a216aa33b2.so sha256=27bb5c1b206d32e5634e6507acb27cd00644ed0db2fb1a37485435255dd38a86
+  crate verus_builtin svh=06bbe94fd6feef326e91b49a87810e1a kind=Unconditional sysroot=false artifact /tmp/claude-0/alloc-audit/cores/tga/x86_64-unknown-linux-gnu/release/deps/libverus_builtin-86c4460c3bc0417a.rmeta sha256=b0dfaa6407e42b7d15ce63155dd40cda0dee94d6a57102b23edc5e7e718cf4e5
 
 -- allocator sinks (every root-to-sink path judged) (10) --
   OK alloc::raw_vec::handle_error (Abort): 1 justified authorisation state(s), 0 unauthorized
@@ -70,11 +72,12 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
       e.g. crate::alloc_guard::try_zeroed -> alloc::vec::Vec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> -> alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::grow_exact<alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::finish_grow<alloc::alloc::Global> -> <alloc::alloc::Global as core::alloc::Allocator>::allocate -> alloc::alloc::Global::alloc_impl -> alloc::alloc::Global::alloc_impl_runtime -> alloc::alloc::alloc -> alloc::alloc::__rust_alloc  [last allowlisted item admitted for crate caller crate::alloc_guard::try_zeroed]
   OK alloc::alloc::__rust_realloc (Alloc): 1 justified authorisation state(s), 0 unauthorized
       e.g. crate::alloc_guard::try_zeroed -> alloc::vec::Vec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> -> alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::grow_exact<alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::finish_grow<alloc::alloc::Global> -> <alloc::alloc::Global as core::alloc::Allocator>::grow -> alloc::alloc::Global::grow_impl -> alloc::alloc::Global::grow_impl_runtime -> alloc::alloc::realloc_nonnull -> alloc::alloc::__rust_realloc  [last allowlisted item admitted for crate caller crate::alloc_guard::try_zeroed]
-  OK alloc::alloc::__rust_dealloc (Dealloc): 9 justified authorisation state(s), 0 unauthorized
+  OK alloc::alloc::__rust_dealloc (Dealloc): 5 justified authorisation state(s), 0 unauthorized
       e.g. crate::alloc_guard::try_zeroed -> alloc::vec::Vec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> -> alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::grow_exact<alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::finish_grow<alloc::alloc::Global> -> <alloc::alloc::Global as core::alloc::Allocator>::grow -> alloc::alloc::Global::grow_impl -> alloc::alloc::Global::grow_impl_runtime -> <alloc::alloc::Global as core::alloc::Allocator>::deallocate -> alloc::alloc::Global::deallocate_impl -> alloc::alloc::Global::deallocate_impl_runtime -> alloc::alloc::dealloc_nonnull -> alloc::alloc::__rust_dealloc  [last allowlisted item admitted for crate caller crate::alloc_guard::try_zeroed]
 
--- leaves (20) --
+-- leaves (18) --
   ok [intrinsic] core::intrinsics::compare_bytes [intrinsic] <- <A as core::slice::cmp::SlicePartialEq<B>>::equal_same_length<u8,u8>
+  ok [no-mir,diverging] core::slice::index::slice_index_fail <- <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8>
   ok [intrinsic] core::intrinsics::cold_path [intrinsic] <- core::intrinsics::unlikely
   ok [no-mir,diverging] core::panicking::panic_nounwind_fmt <- core::hint::assert_unchecked::precondition_check
   ok [no-mir,diverging] core::panicking::panic_nounwind_fmt <- core::num::<impl usize>::unchecked_add::precondition_check
@@ -89,59 +92,55 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   ok [ffi] alloc::alloc::__rust_no_alloc_shim_is_unstable_v2 <- alloc::alloc::alloc
   ok [intrinsic] core::intrinsics::ctpop<usize> [intrinsic] <- core::num::<impl usize>::count_ones
   ok [intrinsic] core::intrinsics::write_bytes<u8> [intrinsic] <- core::ptr::write_bytes<u8>
-  ok [intrinsic] core::intrinsics::cttz<u32> [intrinsic] <- core::num::<impl u32>::trailing_zeros
   ok [no-mir,diverging] core::panicking::panic_fmt <- core::ptr::const_ptr::<impl *const T>::is_aligned_to<()>
   ok [no-mir,diverging] core::panicking::panic_nounwind <- core::ub_checks::maybe_is_nonoverlapping::runtime
-  ok [no-mir,diverging] core::option::unwrap_failed <- core::option::Option::<T>::unwrap<usize>
-  ok [intrinsic] core::intrinsics::ctlz<u32> [intrinsic] <- core::num::<impl u32>::leading_zeros
 
--- panic edges (per function) (8) --
-  ok PanicBoundsCheck in <usize as core::slice::index::SliceIndex<[T]>>::index<u8>
-  ok PanicBoundsCheck in crate::dib::bmp_prefix
-  ok PanicBoundsCheck in crate::dib::rd16
-  ok PanicBoundsCheck in crate::dib::rd
+-- panic edges (per function) (14) --
+  ok PanicBoundsCheck in crate::tga::parse_header
+  ok PanicBoundsCheck in crate::tga::le16
+  ok PanicBoundsCheck in crate::tga::signature_tail
+  ok PanicBoundsCheck in crate::tga::rle_packet
+  ok PanicRemZero in crate::tga::output_offset
+  ok PanicDivZero in crate::tga::output_offset
+  ok PanicBoundsCheck in crate::tga::parse_header_policy
   ok PanicBoundsCheck in <usize as core::slice::index::SliceIndex<[T]>>::index_mut<u8>
-  ok PanicBoundsCheck in crate::dib::bmp_prefix_policy
-  ok PanicDivZero in crate::dib::channel
-  ok PanicDivZero in crate::dib::single_run
+  ok PanicBoundsCheck in crate::tga::sample_index
+  ok PanicBoundsCheck in crate::tga::convert_index
+  ok PanicBoundsCheck in crate::tga::convert_sample
+  ok PanicBoundsCheck in crate::tga::rle_packet_policy
+  ok PanicBoundsCheck in crate::tga::convert_index_policy
+  ok PanicBoundsCheck in crate::tga::convert_sample_policy
 
 -- guard call sites and generic exports (3) --
   crate::alloc_guard::try_zeroed: 1 call site(s), expected 1
-      /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9222:11: 9223:22 (in crate::dib::alloc_output_n)
+      src/tga.rs:8925:11: 8925:81 (in crate::tga::alloc_output_guarded)
   guard fn crate::alloc_guard::try_zeroed: reaches an allocator sink; #[inline(never)] present
 
 -- dependency contracts (0) --
 
--- edges (712) --
-  crate::alloc_guard::sites::TryError::name -> crate::dib::Error::name [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/sites.rs:51:36: 51:44
-  <crate::alloc_guard::sites::TryError as core::cmp::PartialEq>::eq -> core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::alloc_guard::OutOfMemory,crate::alloc_guard::OutOfMemory> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/sites.rs:25:17: 25:28
-  core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::alloc_guard::OutOfMemory,crate::alloc_guard::OutOfMemory> -> <crate::alloc_guard::OutOfMemory as core::cmp::PartialEq>::eq [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2351:13: 2351:41
-  <crate::alloc_guard::OutOfMemory as core::cmp::PartialEq>::eq -> <crate::alloc_guard::sites::AllocSite as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/mod.rs:67:5: 67:20
-  <crate::alloc_guard::sites::TryError as core::cmp::PartialEq>::eq -> core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::dib::Error,crate::dib::Error> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/sites.rs:24:12: 24:17
-  core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::dib::Error,crate::dib::Error> -> <crate::dib::Error as core::cmp::PartialEq>::eq [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2351:13: 2351:41
-  crate::alloc_guard::try_zeroed -> alloc::vec::Vec::<T>::new<u8> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/mod.rs:132:26: 132:36
-  alloc::vec::Vec::<T>::new<u8> -> alloc::raw_vec::RawVec::<T>::new<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:462:20: 462:33
-  alloc::raw_vec::RawVec::<T>::new<u8> -> alloc::raw_vec::RawVec::<T, A>::new_in<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:104:9: 104:29
-  alloc::raw_vec::RawVec::<T, A>::new_in<u8,alloc::alloc::Global> -> core::mem::alignment::Alignment::of<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:202:50: 202:70
-  alloc::raw_vec::RawVec::<T, A>::new_in<u8,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::new_in<alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:202:23: 202:71
-  alloc::raw_vec::RawVecInner::<A>::new_in<alloc::alloc::Global> -> core::mem::alignment::Alignment::as_nonzero_usize [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:570:75: 570:93
-  alloc::raw_vec::RawVecInner::<A>::new_in<alloc::alloc::Global> -> core::ptr::non_null::NonNull::<T>::without_provenance<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:570:41: 570:94
-  alloc::raw_vec::RawVecInner::<A>::new_in<alloc::alloc::Global> -> core::ptr::unique::Unique::<T>::from_non_null<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:570:19: 570:95
-  crate::alloc_guard::try_zeroed -> alloc::vec::Vec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/mod.rs:133:13: 133:33
-  alloc::vec::Vec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> -> alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1571:18: 1571:57
-  alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:384:18: 384:74
-  crate::alloc_guard::try_zeroed -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/mod.rs:144:1: 144:2
-  crate::alloc_guard::try_zeroed -> alloc::vec::Vec::<T, A>::resize<u8,alloc::alloc::Global> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/mod.rs:135:13: 135:29
-  crate::alloc_guard::try_zeroed -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/mod.rs:144:1: 144:2
-  crate::dib::try_decode_with_steps_logged -> verus_builtin::Ghost::<A>::assume_new_fallback<verus_builtin::nat> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8454:21: 8454:26
-  crate::dib::try_decode_with_steps_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8455:58: 8455:65
-  crate::dib::try_decode_with_steps_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8488:21: 8488:28
-  crate::dib::try_decode_with_steps_logged -> crate::dib::decode_tracked [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8455:18: 8455:76
-  crate::dib::try_decode_with_steps -> crate::dib::try_decode_with_steps_logged [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8505:13: 8505:54
-  crate::dib::try_decode -> crate::dib::try_decode_with_steps_logged [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8552:13: 8552:54
-  crate::dib::try_decode_with_policy -> crate::dib::profile_policy_exec [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8792:18: 8792:46
-  crate::dib::try_decode_with_policy -> crate::dib::try_decode_policy_tracked [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8793:13: 8793:57
-  <crate::dib::Decoded as core::cmp::PartialEq>::eq -> alloc::vec::partial_eq::<impl core::cmp::PartialEq<alloc::vec::Vec<U, A2>> for alloc::vec::Vec<T, A1>>::eq<u8,u8,alloc::alloc::Global,alloc::alloc::Global> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:174:5: 174:22
+-- edges (622) --
+  <crate::policy::Policy as core::cmp::PartialEq>::eq -> <crate::policy::TrailingOptions as core::cmp::PartialEq>::eq [inlined] @ src/policy.rs:168:5: 168:34
+  <crate::policy::Policy as core::cmp::PartialEq>::eq -> <crate::policy::RleOverrunOptions as core::cmp::PartialEq>::eq [inlined] @ src/policy.rs:169:5: 169:39
+  <crate::policy::Policy as core::cmp::PartialEq>::eq -> <crate::policy::AttributeBitsOptions as core::cmp::PartialEq>::eq [inlined] @ src/policy.rs:170:5: 170:45
+  <crate::policy::Policy as core::cmp::PartialEq>::eq -> <crate::policy::MapHeaderOptions as core::cmp::PartialEq>::eq [inlined] @ src/policy.rs:171:5: 171:37
+  <crate::policy::Policy as core::cmp::PartialEq>::eq -> <crate::policy::DepthsOptions as core::cmp::PartialEq>::eq [inlined] @ src/policy.rs:172:5: 172:30
+  <crate::policy::Policy as core::cmp::PartialEq>::eq -> <crate::policy::AlphaOptions as core::cmp::PartialEq>::eq [inlined] @ src/policy.rs:173:5: 173:28
+  <crate::policy::Policy as core::cmp::PartialEq>::eq -> <crate::policy::Map16AlphaOptions as core::cmp::PartialEq>::eq [inlined] @ src/policy.rs:174:5: 174:39
+  <crate::policy::Policy as core::cmp::PartialEq>::eq -> <crate::policy::Rgb5Options as core::cmp::PartialEq>::eq [inlined] @ src/policy.rs:175:5: 175:26
+  <crate::policy::Policy as core::cmp::PartialEq>::eq -> <crate::policy::Map5Options as core::cmp::PartialEq>::eq [inlined] @ src/policy.rs:176:5: 176:26
+  <crate::policy::Policy as core::cmp::PartialEq>::eq -> <crate::policy::MapIndexOptions as core::cmp::PartialEq>::eq [inlined] @ src/policy.rs:177:5: 177:35
+  <crate::policy::Policy as core::cmp::PartialEq>::eq -> <crate::policy::IndexRangeOptions as core::cmp::PartialEq>::eq [inlined] @ src/policy.rs:178:5: 178:39
+  <crate::policy::Policy as core::cmp::PartialEq>::eq -> <crate::policy::InterleaveOptions as core::cmp::PartialEq>::eq [inlined] @ src/policy.rs:179:5: 179:38
+  <crate::policy::Policy as core::cmp::PartialEq>::eq -> <crate::policy::ImageTypeOptions as core::cmp::PartialEq>::eq [inlined] @ src/policy.rs:180:5: 180:37
+  crate::tga::try_decode_with_steps_logged -> verus_builtin::Ghost::<A>::assume_new_fallback<verus_builtin::nat> [inlined] @ src/tga.rs:3129:21: 3129:26
+  crate::tga::try_decode_with_steps_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/tga.rs:3130:52: 3130:59
+  crate::tga::try_decode_with_steps_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<crate::alloc_guard::AllocLog> [inlined] @ src/tga.rs:3153:21: 3153:28
+  crate::tga::try_decode_with_steps_logged -> crate::tga::decode_tracked [call] @ src/tga.rs:3130:18: 3130:70
+  crate::tga::try_decode -> crate::tga::try_decode_with_steps_logged [call] @ src/tga.rs:3178:13: 3178:48
+  crate::tga::try_decode_with_policy -> crate::policy::profile_policy_exec [inlined] @ src/tga.rs:9280:13: 9280:56
+  crate::tga::try_decode_with_policy -> verus_builtin::Ghost::<A>::assume_new_fallback<verus_builtin::nat> [inlined] @ src/tga.rs:9281:21: 9281:26
+  crate::tga::try_decode_with_policy -> crate::tga::try_decode_policy_tracked [call] @ src/tga.rs:9282:13: 9282:60
+  <crate::tga::Decoded as core::cmp::PartialEq>::eq -> alloc::vec::partial_eq::<impl core::cmp::PartialEq<alloc::vec::Vec<U, A2>> for alloc::vec::Vec<T, A1>>::eq<u8,u8,alloc::alloc::Global,alloc::alloc::Global> [inlined] @ src/tga.rs:134:5: 134:22
   alloc::vec::partial_eq::<impl core::cmp::PartialEq<alloc::vec::Vec<U, A2>> for alloc::vec::Vec<T, A1>>::eq<u8,u8,alloc::alloc::Global,alloc::alloc::Global> -> <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,core::ops::range::RangeFull,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/partial_eq.rs:15:54: 15:58
   <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,core::ops::range::RangeFull,alloc::alloc::Global> -> <alloc::vec::Vec<T, A> as core::ops::deref::Deref>::deref<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3934:23: 3934:29
   <alloc::vec::Vec<T, A> as core::ops::deref::Deref>::deref<u8,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::as_slice<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3852:14: 3852:24
@@ -160,29 +159,54 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   core::slice::cmp::<impl core::cmp::PartialEq<[U]> for [T]>::eq<u8,u8> -> core::slice::<impl [T]>::as_ptr<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/cmp.rs:24:61: 24:69
   core::slice::cmp::<impl core::cmp::PartialEq<[U]> for [T]>::eq<u8,u8> -> <A as core::slice::cmp::SlicePartialEq<B>>::equal_same_length<u8,u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/cmp.rs:24:22: 24:91
   <A as core::slice::cmp::SlicePartialEq<B>>::equal_same_length<u8,u8> -> core::intrinsics::compare_bytes [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/cmp.rs:157:13: 157:52
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::MetadataOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:424:5: 424:35
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::PlanesOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:427:5: 427:30
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::ReservedOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:429:5: 429:34
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::OffsetOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:433:5: 433:30
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::HighCountOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:435:5: 435:37
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::HeadersOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:437:5: 437:32
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::MasksOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:439:5: 439:28
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::ShortPixelsOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:441:5: 441:41
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::RleEolOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:443:5: 443:31
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::RleOverrunOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:445:5: 445:39
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::RleDeltaOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:447:5: 447:35
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::RleEobOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:449:5: 449:31
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::RleFillOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:451:5: 451:33
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::PaletteIndexOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:453:5: 453:43
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::ScalingOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:455:5: 455:32
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::UnsupportedOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:457:5: 457:40
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::BitfieldOffsetOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:459:5: 459:47
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::Bitfield16AlphaOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:461:5: 461:49
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::IncompleteMetadataOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:463:5: 463:55
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::ShortIndexedGapOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:465:5: 465:50
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::HeaderBytesOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:467:5: 467:41
+  crate::alloc_guard::sites::TryError::name -> crate::tga::Error::name [call] @ src/alloc_guard/sites.rs:50:36: 50:44
+  <crate::alloc_guard::sites::TryError as core::cmp::PartialEq>::eq -> core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::alloc_guard::OutOfMemory,crate::alloc_guard::OutOfMemory> [inlined] @ src/alloc_guard/sites.rs:25:17: 25:28
+  core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::alloc_guard::OutOfMemory,crate::alloc_guard::OutOfMemory> -> <crate::alloc_guard::OutOfMemory as core::cmp::PartialEq>::eq [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2351:13: 2351:41
+  <crate::alloc_guard::OutOfMemory as core::cmp::PartialEq>::eq -> <crate::alloc_guard::sites::AllocSite as core::cmp::PartialEq>::eq [inlined] @ src/alloc_guard/mod.rs:67:5: 67:20
+  <crate::alloc_guard::sites::TryError as core::cmp::PartialEq>::eq -> core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::tga::Error,crate::tga::Error> [inlined] @ src/alloc_guard/sites.rs:24:12: 24:17
+  core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::tga::Error,crate::tga::Error> -> <crate::tga::Error as core::cmp::PartialEq>::eq [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2351:13: 2351:41
+  crate::alloc_guard::try_zeroed -> alloc::vec::Vec::<T>::new<u8> [inlined] @ src/alloc_guard/mod.rs:132:26: 132:36
+  alloc::vec::Vec::<T>::new<u8> -> alloc::raw_vec::RawVec::<T>::new<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:462:20: 462:33
+  alloc::raw_vec::RawVec::<T>::new<u8> -> alloc::raw_vec::RawVec::<T, A>::new_in<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:104:9: 104:29
+  alloc::raw_vec::RawVec::<T, A>::new_in<u8,alloc::alloc::Global> -> core::mem::alignment::Alignment::of<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:202:50: 202:70
+  alloc::raw_vec::RawVec::<T, A>::new_in<u8,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::new_in<alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:202:23: 202:71
+  alloc::raw_vec::RawVecInner::<A>::new_in<alloc::alloc::Global> -> core::mem::alignment::Alignment::as_nonzero_usize [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:570:75: 570:93
+  alloc::raw_vec::RawVecInner::<A>::new_in<alloc::alloc::Global> -> core::ptr::non_null::NonNull::<T>::without_provenance<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:570:41: 570:94
+  alloc::raw_vec::RawVecInner::<A>::new_in<alloc::alloc::Global> -> core::ptr::unique::Unique::<T>::from_non_null<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:570:19: 570:95
+  crate::alloc_guard::try_zeroed -> alloc::vec::Vec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> [inlined] @ src/alloc_guard/mod.rs:133:13: 133:33
+  alloc::vec::Vec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> -> alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1571:18: 1571:57
+  alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:384:18: 384:74
+  crate::alloc_guard::try_zeroed -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/alloc_guard/mod.rs:144:1: 144:2
+  crate::alloc_guard::try_zeroed -> alloc::vec::Vec::<T, A>::resize<u8,alloc::alloc::Global> [call] @ src/alloc_guard/mod.rs:135:13: 135:29
+  crate::alloc_guard::try_zeroed -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/alloc_guard/mod.rs:144:1: 144:2
+  crate::tga::decode_tracked -> crate::tga::Header::is_indexed [inlined] @ src/tga.rs:2626:21: 2626:33
+  crate::tga::decode_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/tga.rs:2642:56: 2642:63
+  crate::tga::decode_tracked -> crate::tga::Header::map_bytes_per_entry [inlined] @ src/tga.rs:2680:20: 2680:41
+  crate::tga::decode_tracked -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> [inlined] @ src/tga.rs:2768:21: 2768:41
+  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> -> <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:15: 19:26
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::num::<impl usize>::checked_sub [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:407:32: 407:72
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::get_offset_len_noubcheck<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:411:24: 411:76
+  crate::tga::decode_tracked -> crate::tga::Header::is_rle [inlined] @ src/tga.rs:2808:19: 2808:27
+  crate::tga::decode_tracked -> crate::tga::parse_header [call] @ src/tga.rs:2555:19: 2555:38
+  crate::tga::decode_tracked -> crate::tga::decode_rle [call] @ src/tga.rs:2809:9: 2809:100
+  crate::tga::decode_tracked -> crate::tga::decode_raw [call] @ src/tga.rs:2811:9: 2811:78
+  crate::tga::decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/tga.rs:3105:1: 3105:2
+  crate::tga::decode_tracked -> crate::tga::signature_tail [call] @ src/tga.rs:2971:26: 2971:47
+  crate::tga::decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/tga.rs:3105:1: 3105:2
+  crate::tga::decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/tga.rs:3105:1: 3105:2
+  crate::tga::decode_tracked -> crate::tga::alloc_output_guarded [call] @ src/tga.rs:2642:25: 2642:69
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
+  crate::tga::try_decode_policy_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/tga.rs:9242:57: 9242:64
+  crate::tga::try_decode_policy_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<crate::alloc_guard::AllocLog> [inlined] @ src/tga.rs:9259:26: 9259:33
+  crate::tga::try_decode_policy_tracked -> crate::tga::decode_policy_tracked [call] @ src/tga.rs:9242:18: 9242:75
+  core::slice::cmp::<impl core::cmp::PartialEq<[U]> for [T]>::eq<u8,u8> -> <A as core::slice::cmp::SlicePartialEq<B>>::equal_same_length<u8,u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/cmp.rs:24:22: 24:91
+  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::RangeFull> -> <core::ops::range::RangeFull as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
+  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::RangeFull> -> <core::ops::range::RangeFull as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
+  core::slice::cmp::<impl core::cmp::PartialEq<[U]> for [T]>::eq<u8,u8> -> <A as core::slice::cmp::SlicePartialEq<B>>::equal_same_length<u8,u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/cmp.rs:24:22: 24:91
+  <A as core::slice::cmp::SlicePartialEq<B>>::equal_same_length<u8,u8> -> core::intrinsics::compare_bytes [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/cmp.rs:157:13: 157:52
+  core::intrinsics::compare_bytes [intrinsic] -> core::intrinsics::compare_bytes [intrinsic-fallback] @ <no span>
   core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::alloc_guard::OutOfMemory,crate::alloc_guard::OutOfMemory> -> <crate::alloc_guard::OutOfMemory as core::cmp::PartialEq>::eq [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2351:13: 2351:41
-  core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::dib::Error,crate::dib::Error> -> <crate::dib::Error as core::cmp::PartialEq>::eq [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2351:13: 2351:41
+  core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::tga::Error,crate::tga::Error> -> <crate::tga::Error as core::cmp::PartialEq>::eq [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2351:13: 2351:41
   alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:384:18: 384:74
   alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:384:18: 384:74
   alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::needs_to_grow<alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:722:17: 722:60
@@ -206,25 +230,27 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   alloc::vec::Vec::<T, A>::resize<u8,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::truncate<u8,alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3577:13: 3577:35
   alloc::vec::Vec::<T, A>::resize<u8,alloc::alloc::Global> -> core::ptr::drop_glue<u8> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3579:5: 3579:6
   alloc::vec::Vec::<T, A>::resize<u8,alloc::alloc::Global> -> core::ptr::drop_glue<u8> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3579:5: 3579:6
-  crate::dib::decode_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8186:45: 8186:52
-  crate::dib::decode_tracked -> crate::dib::header_alpha [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8405:77: 8405:93
-  crate::dib::decode_tracked -> crate::dib::parse_header [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8122:19: 8122:44
-  crate::dib::decode_tracked -> crate::dib::alloc_output [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8186:21: 8186:58
-  crate::dib::decode_tracked -> crate::dib::decode_raw [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8238:9: 8238:62
-  crate::dib::decode_tracked -> crate::dib::decode_rle [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8240:9: 8240:58
-  crate::dib::decode_tracked -> crate::dib::finish_mask [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8290:23: 8290:67
-  crate::dib::decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8406:1: 8406:2
-  crate::dib::decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8406:1: 8406:2
-  crate::dib::try_decode_policy_tracked -> verus_builtin::Ghost::<A>::assume_new_fallback<verus_builtin::nat> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10651:21: 10651:26
-  crate::dib::try_decode_policy_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10653:66: 10653:73
-  crate::dib::try_decode_policy_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10674:16: 10674:23
-  crate::dib::try_decode_policy_tracked -> crate::dib::decode_policy_tracked [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10653:13: 10653:84
-  core::slice::cmp::<impl core::cmp::PartialEq<[U]> for [T]>::eq<u8,u8> -> <A as core::slice::cmp::SlicePartialEq<B>>::equal_same_length<u8,u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/cmp.rs:24:22: 24:91
-  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::RangeFull> -> <core::ops::range::RangeFull as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
-  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::RangeFull> -> <core::ops::range::RangeFull as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
-  core::slice::cmp::<impl core::cmp::PartialEq<[U]> for [T]>::eq<u8,u8> -> <A as core::slice::cmp::SlicePartialEq<B>>::equal_same_length<u8,u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/cmp.rs:24:22: 24:91
-  <A as core::slice::cmp::SlicePartialEq<B>>::equal_same_length<u8,u8> -> core::intrinsics::compare_bytes [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/cmp.rs:157:13: 157:52
-  core::intrinsics::compare_bytes [intrinsic] -> core::intrinsics::compare_bytes [intrinsic-fallback] @ <no span>
+  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> -> <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
+  crate::tga::parse_header -> crate::tga::le16 [inlined] @ src/tga.rs:1455:17: 1455:28
+  crate::tga::decode_rle -> crate::tga::Header::flip_x [inlined] @ src/tga.rs:3742:23: 3742:31
+  crate::tga::decode_rle -> crate::tga::Header::flip_y [inlined] @ src/tga.rs:3742:35: 3742:43
+  crate::tga::decode_rle -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<vstd::seq::Seq<u8>>> [inlined] @ src/tga.rs:3805:89: 3805:94
+  crate::tga::decode_rle -> crate::tga::rle_packet [call] @ src/tga.rs:3805:23: 3805:100
+  crate::tga::decode_raw -> crate::tga::Header::sample_bytes [inlined] @ src/tga.rs:3286:16: 3286:30
+  crate::tga::decode_raw -> crate::tga::Header::flip_x [inlined] @ src/tga.rs:3289:23: 3289:31
+  crate::tga::decode_raw -> crate::tga::Header::flip_y [inlined] @ src/tga.rs:3289:35: 3289:43
+  crate::tga::decode_raw -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> [inlined] @ src/tga.rs:3405:23: 3405:37
+  crate::tga::decode_raw -> crate::tga::output_offset [call] @ src/tga.rs:3455:19: 3455:58
+  crate::tga::decode_raw -> crate::tga::write_pixel [call] @ src/tga.rs:3491:9: 3491:37
+  crate::tga::decode_raw -> crate::tga::decode_one [call] @ src/tga.rs:3413:26: 3413:56
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
+  crate::tga::alloc_output_guarded -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/tga.rs:8925:68: 8925:75
+  crate::tga::alloc_output_guarded -> verus_builtin::Ghost::<A>::assume_new_fallback<verus_builtin::nat> [inlined] @ src/tga.rs:8927:22: 8927:27
+  crate::tga::alloc_output_guarded -> crate::alloc_guard::try_zeroed [call] @ src/tga.rs:8925:11: 8925:81
+  crate::tga::decode_policy_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/tga.rs:9216:61: 9216:68
+  crate::tga::decode_policy_tracked -> crate::tga::parse_header_policy [call] @ src/tga.rs:9196:19: 9196:48
+  crate::tga::decode_policy_tracked -> crate::tga::decode_complete_policy [call] @ src/tga.rs:9216:18: 9216:74
   <core::result::Result<T, F> as core::ops::try_trait::FromResidual<core::result::Result<core::convert::Infallible, E>>>::from_residual<(),alloc::collections::TryReserveError,alloc::collections::TryReserveError> -> <T as core::convert::From<T>>::from<alloc::collections::TryReserveError> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/result.rs:2193:27: 2193:40
   core::hint::assert_unchecked -> core::hint::assert_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
   alloc::raw_vec::RawVecInner::<A>::grow_exact<alloc::alloc::Global> -> core::alloc::layout::Layout::size [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:788:24: 788:30
@@ -286,28 +312,30 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   alloc::vec::Vec::<T, A>::truncate<u8,alloc::alloc::Global> -> core::ptr::mut_ptr::<impl *mut T>::cast_slice<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1827:48: 1827:73
   alloc::vec::Vec::<T, A>::truncate<u8,alloc::alloc::Global> -> core::ptr::drop_in_place<[u8]> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1829:13: 1829:34
   core::ptr::drop_in_place<[u8]> -> core::ptr::drop_glue<[u8]> [drop-glue] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:842:14: 842:38
-  crate::dib::parse_header -> crate::dib::strict_policy_exec [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2047:14: 2047:34
-  crate::dib::parse_header -> crate::dib::bmp_prefix [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2023:27: 2023:44
-  crate::dib::parse_header -> crate::dib::dib_fields [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2051:19: 2051:74
-  crate::dib::parse_header -> crate::dib::dib_finish [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2084:11: 2084:57
-  crate::dib::alloc_output -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3949:32: 3949:39
-  crate::dib::alloc_output -> crate::dib::alloc_output_n [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3949:5: 3949:45
-  crate::dib::decode_raw -> crate::dib::raw_loop [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4768:13: 4768:54
-  crate::dib::decode_rle -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6821:64: 6821:69
-  crate::dib::decode_rle -> crate::dib::fill_rle [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6810:5: 6810:31
-  crate::dib::decode_rle -> crate::dib::rle_loop [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6821:18: 6821:91
-  crate::dib::finish_mask -> crate::dib::stride [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:7541:55: 7541:73
-  crate::dib::finish_mask -> crate::dib::alpha_present [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:7673:25: 7673:53
-  crate::dib::alpha_present -> <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,usize,alloc::alloc::Global> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6864:15: 6864:26
-  <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,usize,alloc::alloc::Global> -> <alloc::vec::Vec<T, A> as core::ops::deref::Deref>::deref<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3934:23: 3934:29
-  <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,usize,alloc::alloc::Global> -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,usize> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3934:9: 3934:37
-  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:15: 19:26
-  crate::dib::finish_mask -> crate::dib::apply_and [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:7675:13: 7675:84
-  crate::dib::decode_policy_tracked -> crate::dib::header_alpha [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9690:17: 9690:33
-  crate::dib::decode_policy_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9650:77: 9650:84
-  crate::dib::decode_policy_tracked -> crate::dib::parse_header_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9644:19: 9644:57
-  crate::dib::decode_policy_tracked -> crate::dib::decode_complete_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9692:13: 9692:85
-  crate::dib::decode_policy_tracked -> crate::dib::decode_partial_metadata [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9650:24: 9650:90
+  crate::tga::rle_packet -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<vstd::seq::Seq<u8>>> [inlined] @ src/tga.rs:3968:43: 3968:48
+  crate::tga::rle_packet -> verus_builtin::Ghost::<A>::assume_new_fallback<verus_builtin::int> [inlined] @ src/tga.rs:4004:13: 4004:18
+  crate::tga::rle_packet -> crate::tga::rle_repeat_packet [call] @ src/tga.rs:4002:9: 4005:10
+  crate::tga::rle_packet -> crate::tga::rle_literal_packet [call] @ src/tga.rs:4007:9: 4010:10
+  crate::tga::write_pixel -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ src/tga.rs:2428:5: 2428:24
+  crate::tga::write_pixel -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ src/tga.rs:2429:5: 2429:28
+  crate::tga::write_pixel -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ src/tga.rs:2430:5: 2430:28
+  crate::tga::write_pixel -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ src/tga.rs:2431:5: 2431:28
+  crate::tga::decode_one -> crate::tga::index_in_range [inlined] @ src/tga.rs:2488:24: 2488:46
+  crate::tga::decode_one -> crate::tga::sample_index [call] @ src/tga.rs:2480:19: 2480:34
+  crate::tga::decode_one -> crate::tga::convert_index [call] @ src/tga.rs:2499:12: 2499:38
+  crate::tga::decode_one -> crate::tga::convert_sample [call] @ src/tga.rs:2508:12: 2508:32
+  crate::tga::parse_header_policy -> crate::tga::le16 [inlined] @ src/tga.rs:5998:20: 5998:30
+  crate::tga::parse_header_policy -> crate::tga::header_verdict [call] @ src/tga.rs:6008:13: 6008:34
+  crate::tga::decode_complete_policy -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/tga.rs:9114:52: 9114:59
+  crate::tga::decode_complete_policy -> crate::tga::map_bytes_policy_exec [inlined] @ src/tga.rs:9139:21: 9139:49
+  crate::tga::map_bytes_policy_exec -> crate::tga::flag_present_hdr_exec [inlined] @ src/tga.rs:8970:9: 8970:51
+  crate::tga::map_bytes_policy_exec -> crate::tga::Header::map_bytes_per_entry [inlined] @ src/tga.rs:8979:20: 8979:41
+  crate::tga::decode_complete_policy -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> [inlined] @ src/tga.rs:9145:21: 9145:38
+  crate::tga::decode_complete_policy -> crate::tga::alloc_output_guarded [call] @ src/tga.rs:9114:21: 9114:65
+  crate::tga::decode_complete_policy -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/tga.rs:9156:1: 9156:2
+  crate::tga::decode_complete_policy -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/tga.rs:9156:1: 9156:2
+  crate::tga::decode_complete_policy -> crate::tga::finish_policy [call] @ src/tga.rs:9146:21: 9146:77
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
   <T as core::convert::Into<U>>::into<alloc::collections::TryReserveErrorKind,alloc::collections::TryReserveError> -> <alloc::collections::TryReserveError as core::convert::From<alloc::collections::TryReserveErrorKind>>::from [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/convert/mod.rs:781:9: 781:22
   core::intrinsics::unlikely -> core::intrinsics::cold_path [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs:479:9: 479:20
   core::intrinsics::unlikely -> core::intrinsics::cold_path [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs:479:9: 479:20
@@ -364,52 +392,58 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   core::num::<impl usize>::unchecked_add::precondition_check -> core::num::<impl usize>::overflowing_add [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:1008:27: 1008:47
   core::num::<impl usize>::unchecked_add::precondition_check -> core::fmt::Arguments::<'a>::from_str [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:73:59: 73:96
   core::num::<impl usize>::unchecked_add::precondition_check -> core::panicking::panic_nounwind_fmt [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:73:21: 73:104
-  crate::dib::bmp_prefix -> crate::dib::rd16 [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1674:16: 1674:30
-  crate::dib::bmp_prefix -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1673:19: 1673:33
-  crate::dib::bmp_prefix -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1694:15: 1694:30
-  crate::dib::dib_fields -> crate::dib::rd16 [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2336:19: 2336:41
-  crate::dib::dib_fields -> crate::dib::rd32s [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2347:19: 2347:42
-  crate::dib::dib_fields -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2254:16: 2254:34
-  crate::dib::rd32s -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:892:13: 892:23
-  crate::dib::rd32s -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:892:13: 892:23
-  crate::dib::dib_fields -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2364:26: 2364:49
-  crate::dib::dib_fields -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2365:16: 2365:39
-  crate::dib::dib_fields -> crate::dib::validate_dib_fields [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2390:5: 2391:81
-  crate::dib::rd32s -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:892:13: 892:23
-  crate::dib::rd32s -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:892:13: 892:23
-  crate::dib::dib_fields -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2363:23: 2363:46
-  crate::dib::dib_finish -> crate::dib::policy_palette_counts [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3127:32: 3127:84
-  crate::dib::dib_finish -> crate::dib::dib_policy_masks [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3119:40: 3119:74
-  crate::dib::alloc_output_n -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9223:9: 9223:16
-  crate::dib::alloc_output_n -> crate::alloc_guard::try_zeroed [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9222:11: 9223:22
-  crate::dib::raw_loop -> crate::dib::stride [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4496:16: 4496:39
-  crate::dib::raw_loop -> crate::dib::out_offset [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4656:17: 4656:36
-  crate::dib::raw_loop -> crate::dib::raw_sample [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4630:23: 4630:53
-  crate::dib::raw_loop -> crate::dib::put [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4663:9: 4663:23
-  crate::dib::fill_rle -> crate::dib::colour [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4839:19: 4839:71
-  crate::dib::fill_rle -> crate::dib::put [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4865:9: 4865:23
-  crate::dib::rle_loop -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5846:57: 5846:62
-  crate::dib::rle_loop -> crate::dib::rle_command [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5846:23: 5846:74
-  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
-  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
-  crate::dib::apply_and -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6999:27: 6999:45
-  crate::dib::apply_and -> crate::dib::out_offset [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:7001:21: 7001:40
-  crate::dib::apply_and -> crate::dib::put_alpha [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:7018:27: 7018:47
-  crate::dib::put_alpha -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1370:5: 1370:18
-  crate::dib::put_alpha -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1370:5: 1370:18
-  crate::dib::parse_header_policy -> crate::dib::bmp_mode_mode [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1750:16: 1750:33
-  crate::dib::parse_header_policy -> crate::dib::dib_fields [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1790:19: 1790:78
-  crate::dib::parse_header_policy -> crate::dib::dib_finish [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1816:11: 1816:61
-  crate::dib::parse_header_policy -> crate::dib::bmp_prefix_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1759:27: 1759:59
-  crate::dib::decode_complete_policy -> verus_builtin::Ghost::<A>::assume_new_fallback<crate::model::MHRecord> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9924:79: 9924:84
-  crate::dib::decode_complete_policy -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9924:96: 9924:103
-  crate::dib::decode_complete_policy -> crate::dib::reserve_complete_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9924:32: 9924:109
-  crate::dib::decode_complete_policy -> crate::dib::finish_policy_after_alloc [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9930:5: 9931:39
-  crate::dib::decode_partial_metadata -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9403:48: 9403:55
-  crate::dib::decode_partial_metadata -> crate::dib::revalidate_partial [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9373:19: 9373:66
-  crate::dib::decode_partial_metadata -> crate::dib::alloc_output_n [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9403:21: 9403:61
-  crate::dib::decode_partial_metadata -> crate::dib::fill_blank [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9426:5: 9426:45
-  crate::dib::decode_partial_metadata -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9440:1: 9440:2
+  crate::tga::rle_repeat_packet -> crate::tga::Header::sample_bytes [inlined] @ src/tga.rs:4085:16: 4085:30
+  crate::tga::rle_repeat_packet -> crate::tga::Header::flip_x [inlined] @ src/tga.rs:4088:23: 4088:31
+  crate::tga::rle_repeat_packet -> crate::tga::Header::flip_y [inlined] @ src/tga.rs:4088:35: 4088:43
+  crate::tga::rle_repeat_packet -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<vstd::seq::Seq<u8>>> [inlined] @ src/tga.rs:4113:43: 4113:48
+  crate::tga::rle_repeat_packet -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> [inlined] @ src/tga.rs:4127:19: 4127:33
+  crate::tga::rle_repeat_packet -> crate::tga::output_offset [call] @ src/tga.rs:4199:19: 4199:66
+  crate::tga::rle_repeat_packet -> crate::tga::write_pixel [call] @ src/tga.rs:4223:9: 4223:37
+  crate::tga::rle_repeat_packet -> crate::tga::decode_one [call] @ src/tga.rs:4135:22: 4135:52
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
+  crate::tga::rle_literal_packet -> crate::tga::Header::sample_bytes [inlined] @ src/tga.rs:4363:16: 4363:30
+  crate::tga::rle_literal_packet -> crate::tga::Header::flip_x [inlined] @ src/tga.rs:4366:23: 4366:31
+  crate::tga::rle_literal_packet -> crate::tga::Header::flip_y [inlined] @ src/tga.rs:4366:35: 4366:43
+  crate::tga::rle_literal_packet -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<vstd::seq::Seq<u8>>> [inlined] @ src/tga.rs:4399:43: 4399:48
+  crate::tga::rle_literal_packet -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> [inlined] @ src/tga.rs:4418:24: 4418:38
+  crate::tga::rle_literal_packet -> crate::tga::output_offset [call] @ src/tga.rs:4539:19: 4539:66
+  crate::tga::rle_literal_packet -> crate::tga::write_pixel [call] @ src/tga.rs:4577:9: 4577:37
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
+  crate::tga::rle_literal_packet -> crate::tga::decode_one [call] @ src/tga.rs:4513:26: 4513:56
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
+  <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> -> <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> [inlined] @ /home/ws/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/vstd-0.0.0-2026-11-01-0251/pervasive.rs:398:13: 398:16
+  <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> -> <alloc::vec::Vec<T, A> as core::ops::deref::DerefMut>::deref_mut<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3943:34: 3943:40
+  <alloc::vec::Vec<T, A> as core::ops::deref::DerefMut>::deref_mut<u8,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::as_mut_slice<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3861:14: 3861:28
+  alloc::vec::Vec::<T, A>::as_mut_slice<u8,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::as_mut_ptr<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1904:78: 1904:90
+  <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> -> core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3943:9: 3943:48
+  core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index_mut<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:32:15: 32:30
+  <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> -> core::ptr::drop_glue<u8> [drop-glue] [drop] @ /home/ws/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/vstd-0.0.0-2026-11-01-0251/pervasive.rs:398:23: 398:24
+  <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> -> core::ptr::drop_glue<u8> [drop-glue] [drop] @ /home/ws/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/vstd-0.0.0-2026-11-01-0251/pervasive.rs:398:9: 398:16
+  crate::tga::convert_index -> crate::tga::Header::map_bytes_per_entry [inlined] @ src/tga.rs:2100:20: 2100:41
+  crate::tga::convert_index -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> [inlined] @ src/tga.rs:2139:17: 2139:40
+  crate::tga::convert_index -> crate::tga::Header::attribute_count [inlined] @ src/tga.rs:2144:18: 2144:35
+  crate::tga::convert_index -> crate::tga::conv555 [inlined] @ src/tga.rs:2186:17: 2186:32
+  crate::tga::conv555 -> crate::tga::expand5 [inlined] @ src/tga.rs:1853:9: 1853:32
+  crate::tga::convert_index -> crate::tga::entry_alpha [inlined] @ src/tga.rs:2188:29: 2188:71
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
+  crate::tga::convert_sample -> crate::tga::Header::attribute_count [inlined] @ src/tga.rs:1924:18: 1924:35
+  crate::tga::convert_sample -> crate::tga::conv555 [inlined] @ src/tga.rs:1949:17: 1949:32
+  crate::tga::header_verdict -> crate::tga::type_ok_hdr_exec [inlined] @ src/tga.rs:5630:16: 5630:49
+  crate::tga::header_verdict -> crate::tga::kind_hdr_exec [inlined] @ src/tga.rs:5640:16: 5640:46
+  crate::tga::header_verdict -> crate::tga::flag_ok_hdr_exec [inlined] @ src/tga.rs:5641:16: 5641:53
+  crate::tga::header_verdict -> crate::tga::flag_present_hdr_exec [inlined] @ src/tga.rs:5650:19: 5650:61
+  crate::tga::header_verdict -> crate::tga::range_bad_hdr_exec [inlined] @ src/tga.rs:5712:19: 5712:87
+  crate::tga::header_verdict -> crate::tga::index_depth_bad_hdr_exec [inlined] @ src/tga.rs:5731:19: 5731:102
+  crate::tga::header_verdict -> crate::tga::Header::attribute_count [inlined] @ src/tga.rs:5753:18: 5753:35
+  crate::tga::header_verdict -> crate::tga::depth_ok_hdr_exec [call] @ src/tga.rs:5679:16: 5679:64
+  crate::tga::header_verdict -> crate::tga::coherence_bad_hdr_exec [call] @ src/tga.rs:5690:19: 5697:6
+  crate::tga::header_verdict -> crate::tga::attr_ok_hdr_exec [call] @ src/tga.rs:5754:16: 5754:70
+  crate::tga::finish_policy -> crate::tga::kind_hdr_exec [inlined] @ src/tga.rs:9031:19: 9031:49
+  crate::tga::finish_policy -> crate::tga::decode_rle_policy [call] @ src/tga.rs:9038:22: 9039:55
+  crate::tga::finish_policy -> crate::tga::decode_raw_policy [call] @ src/tga.rs:9055:22: 9055:115
+  crate::tga::finish_policy -> crate::tga::suffix_policy_exec [call] @ src/tga.rs:9067:9: 9067:45
+  crate::tga::finish_policy -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/tga.rs:9074:1: 9074:2
+  crate::tga::finish_policy -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/tga.rs:9074:1: 9074:2
   core::intrinsics::unlikely -> core::intrinsics::cold_path [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs:479:9: 479:20
   core::alloc::layout::Layout::from_size_alignment_unchecked -> core::alloc::layout::Layout::from_size_alignment_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
   core::alloc::layout::Layout::from_size_alignment_unchecked -> core::alloc::layout::Layout::from_size_alignment_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
@@ -441,70 +475,21 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   alloc::raw_vec::RawVecInner::<A>::reserve<alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::reserve::do_reserve_and_handle<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:672:17: 672:74
   alloc::raw_vec::RawVecInner::<A>::reserve::do_reserve_and_handle<alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::grow_amortized<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:665:40: 665:88
   alloc::raw_vec::RawVecInner::<A>::reserve::do_reserve_and_handle<alloc::alloc::Global> -> alloc::raw_vec::handle_error [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:666:17: 666:34
-  crate::dib::rd32 -> crate::dib::rd16 [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:864:13: 864:23
-  crate::dib::rd32s -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:892:13: 892:23
-  crate::dib::validate_dib_fields -> crate::dib::abs_i32 [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2538:17: 2538:39
-  crate::dib::validate_dib_fields -> crate::dib::visible_height [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2539:20: 2539:47
-  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2912:24: 2912:40
-  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2913:24: 2913:44
-  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2914:24: 2914:44
-  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2932:24: 2932:47
-  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2933:24: 2933:47
-  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2934:24: 2934:47
-  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2939:17: 2939:40
-  crate::dib::dib_policy_masks -> crate::dib::policy_masks [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2995:31: 2996:48
-  crate::dib::raw_sample -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4102:20: 4102:28
-  crate::dib::raw_sample -> crate::dib::rd16 [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4233:28: 4233:38
-  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4246:48: 4246:73
-  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4247:21: 4247:46
-  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4247:48: 4247:73
-  crate::dib::raw_sample -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4249:28: 4249:38
-  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4262:21: 4262:46
-  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4262:48: 4262:73
-  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4263:21: 4263:46
-  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4263:48: 4263:73
-  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4290:40: 4290:61
-  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4290:63: 4290:84
-  crate::dib::raw_sample -> crate::dib::colour [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4142:17: 4142:70
-  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4246:21: 4246:46
-  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4290:17: 4290:38
-  crate::dib::put -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1321:5: 1321:21
-  crate::dib::put -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1322:5: 1322:25
-  crate::dib::put -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1323:5: 1323:25
-  crate::dib::put -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1324:5: 1324:25
-  crate::dib::colour -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1274:14: 1274:26
-  crate::dib::rle_command -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5575:43: 5575:48
-  crate::dib::rle_command -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5577:20: 5577:31
-  crate::dib::rle_command -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5592:82: 5592:87
-  crate::dib::rle_command -> verus_builtin::Ghost::<A>::assume_new_fallback<verus_builtin::int> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5681:64: 5681:69
-  crate::dib::rle_command -> crate::dib::paint_run [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5592:18: 5592:131
-  crate::dib::rle_command -> crate::dib::rle_abs_packet [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5681:21: 5681:93
-  crate::dib::put_alpha -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1370:5: 1370:18
-  <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> -> <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> [inlined] @ /home/ws/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/vstd-0.0.0-2026-11-01-0251/pervasive.rs:398:13: 398:16
-  <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> -> <alloc::vec::Vec<T, A> as core::ops::deref::DerefMut>::deref_mut<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3943:34: 3943:40
-  <alloc::vec::Vec<T, A> as core::ops::deref::DerefMut>::deref_mut<u8,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::as_mut_slice<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3861:14: 3861:28
-  alloc::vec::Vec::<T, A>::as_mut_slice<u8,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::as_mut_ptr<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1904:78: 1904:90
-  <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> -> core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3943:9: 3943:48
-  core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index_mut<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:32:15: 32:30
-  <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> -> core::ptr::drop_glue<u8> [drop-glue] [drop] @ /home/ws/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/vstd-0.0.0-2026-11-01-0251/pervasive.rs:398:23: 398:24
-  <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> -> core::ptr::drop_glue<u8> [drop-glue] [drop] @ /home/ws/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/vstd-0.0.0-2026-11-01-0251/pervasive.rs:398:9: 398:16
-  crate::dib::bmp_prefix_policy -> crate::dib::rd16 [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1867:16: 1867:30
-  crate::dib::bmp_prefix_policy -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1866:19: 1866:33
-  crate::dib::bmp_prefix_policy -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1943:15: 1943:30
-  crate::dib::reserve_complete_policy -> crate::dib::policy_indexed_gap [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9843:20: 9843:49
-  crate::dib::reserve_complete_policy -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9870:44: 9870:51
-  crate::dib::reserve_complete_policy -> crate::dib::alloc_output [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9870:21: 9870:57
-  crate::dib::finish_policy_after_alloc -> verus_builtin::Ghost::<A>::assume_new_fallback<crate::model::MHRecord> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10266:77: 10266:82
-  crate::dib::finish_policy_after_alloc -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10266:87: 10266:94
-  crate::dib::finish_policy_after_alloc -> crate::dib::finish_policy_blank [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10266:16: 10266:100
-  crate::dib::finish_policy_after_alloc -> crate::dib::finish_policy_pixels [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10268:5: 10269:39
-  crate::dib::revalidate_partial -> crate::dib::bmp_mode_mode [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9290:16: 9290:33
-  crate::dib::revalidate_partial -> crate::dib::dib_fields [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9301:19: 9301:78
-  crate::dib::revalidate_partial -> crate::dib::bmp_prefix_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9293:35: 9293:67
-  crate::dib::fill_blank -> alloc::vec::Vec::<T, A>::len<u8,alloc::alloc::Global> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3969:17: 3969:22
-  crate::dib::fill_blank -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3997:13: 3997:28
-  crate::dib::fill_blank -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3999:13: 3999:30
-  crate::dib::fill_blank -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4001:13: 4001:28
+  core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index_mut<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:32:9: 32:30
+  core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index_mut<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:32:9: 32:30
+  crate::tga::attr_ok_hdr_exec -> crate::tga::core_attr_ok_exec [inlined] @ src/tga.rs:5321:40: 5321:73
+  crate::tga::attr_ok_hdr_exec -> crate::tga::image_attr_ok_exec [call] @ src/tga.rs:5322:45: 5322:79
+  crate::tga::decode_rle_policy -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<vstd::seq::Seq<u8>>> [inlined] @ src/tga.rs:8352:108: 8352:113
+  crate::tga::decode_rle_policy -> crate::tga::rle_packet_policy [call] @ src/tga.rs:8352:32: 8352:139
+  crate::tga::decode_raw_policy -> crate::tga::Header::sample_bytes [inlined] @ src/tga.rs:7047:16: 7047:30
+  crate::tga::decode_raw_policy -> crate::tga::Header::flip_x [inlined] @ src/tga.rs:7050:23: 7050:31
+  crate::tga::decode_raw_policy -> crate::tga::Header::flip_y [inlined] @ src/tga.rs:7050:35: 7050:43
+  crate::tga::decode_raw_policy -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> [inlined] @ src/tga.rs:7172:23: 7172:37
+  crate::tga::decode_raw_policy -> crate::tga::output_offset [call] @ src/tga.rs:7224:19: 7224:58
+  crate::tga::decode_raw_policy -> crate::tga::write_pixel [call] @ src/tga.rs:7235:9: 7235:37
+  crate::tga::decode_raw_policy -> crate::tga::convert_one_policy [call] @ src/tga.rs:7192:26: 7192:74
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
+  crate::tga::suffix_policy_exec -> crate::tga::signature_tail [call] @ src/tga.rs:8997:14: 8997:35
   core::alloc::layout::Layout::from_size_alignment_unchecked::precondition_check -> core::alloc::layout::Layout::is_size_alignment_valid [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/alloc/layout.rs:164:18: 164:66
   core::alloc::layout::Layout::from_size_alignment_unchecked::precondition_check -> core::fmt::Arguments::<'a>::from_str [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:73:59: 73:96
   core::alloc::layout::Layout::from_size_alignment_unchecked::precondition_check -> core::panicking::panic_nounwind_fmt [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:73:21: 73:104
@@ -625,28 +610,16 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   core::cmp::max<usize> -> core::cmp::Ord::max<usize> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:1694:5: 1694:15
   core::cmp::max<usize> -> core::cmp::Ord::max<usize> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:1694:5: 1694:15
   alloc::raw_vec::RawVecInner::<A>::grow_amortized<alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::finish_grow<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:529:28: 529:62
-  crate::dib::policy_masks -> crate::dib::masks_valid_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1156:14: 1156:73
-  crate::dib::channel -> core::num::<impl u32>::trailing_zeros [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:981:22: 981:38
-  core::num::<impl u32>::trailing_zeros -> core::intrinsics::cttz<u32> [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:178:20: 178:42
-  crate::dib::paint_run -> crate::dib::out_offset [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5109:17: 5109:40
-  crate::dib::paint_run -> crate::dib::colour [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5064:23: 5064:76
-  crate::dib::paint_run -> crate::dib::put [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5116:9: 5116:23
-  crate::dib::rle_abs_packet -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5456:40: 5456:45
-  crate::dib::rle_abs_packet -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5482:70: 5482:75
-  crate::dib::rle_abs_packet -> crate::dib::paint_abs [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5482:14: 5482:119
-  core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index_mut<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:32:9: 32:30
-  core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index_mut<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:32:9: 32:30
-  crate::dib::finish_policy_blank -> crate::dib::fill_blank [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9988:5: 9988:45
-  crate::dib::finish_policy_blank -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10028:1: 10028:2
-  crate::dib::finish_policy_pixels -> verus_builtin::Ghost::<A>::assume_new_fallback<crate::model::MHRecord> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10314:44: 10314:49
-  crate::dib::finish_policy_pixels -> crate::dib::policy_pixel_start [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10314:14: 10314:53
-  crate::dib::policy_pixel_start -> crate::dib::bitfield_pixel_start [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8646:17: 8646:58
-  crate::dib::finish_policy_pixels -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10323:83: 10323:90
-  crate::dib::finish_policy_pixels -> crate::dib::finish_raw_zero [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10323:22: 10323:96
-  crate::dib::finish_policy_pixels -> crate::dib::finish_rle_clipped [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10371:16: 10371:89
-  crate::dib::finish_policy_pixels -> crate::dib::finish_policy_plain [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10373:8: 10374:39
-  crate::dib::finish_policy_pixels -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10375:1: 10375:2
-  crate::dib::finish_policy_pixels -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10375:1: 10375:2
+  crate::tga::image_attr_ok_exec -> crate::tga::core_attr_ok_exec [inlined] @ src/tga.rs:5305:9: 5305:42
+  crate::tga::rle_packet_policy -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<vstd::seq::Seq<u8>>> [inlined] @ src/tga.rs:7463:43: 7463:48
+  crate::tga::rle_packet_policy -> verus_builtin::Ghost::<A>::assume_new_fallback<verus_builtin::int> [inlined] @ src/tga.rs:7517:13: 7517:18
+  crate::tga::rle_packet_policy -> crate::tga::rle_repeat_packet_policy [call] @ src/tga.rs:7504:9: 7521:10
+  crate::tga::rle_packet_policy -> crate::tga::rle_literal_packet_policy [call] @ src/tga.rs:7523:9: 7540:10
+  crate::tga::convert_one_policy -> crate::tga::index_in_range_policy [inlined] @ src/tga.rs:6858:24: 6858:56
+  crate::tga::convert_one_policy -> crate::tga::black_substitute_exec [inlined] @ src/tga.rs:6892:16: 6892:56
+  crate::tga::convert_one_policy -> crate::tga::sample_index [call] @ src/tga.rs:6854:19: 6854:34
+  crate::tga::convert_one_policy -> crate::tga::convert_index_policy [call] @ src/tga.rs:6932:16: 6932:52
+  crate::tga::convert_one_policy -> crate::tga::convert_sample_policy [call] @ src/tga.rs:6939:12: 6939:42
   core::ptr::non_null::NonNull::<T>::new_unchecked<[u8]> -> core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
   core::ptr::non_null::NonNull::<T>::new_unchecked<[u8]> -> core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
   core::ptr::non_null::NonNull::<T>::new_unchecked<[u8]> -> core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
@@ -706,32 +679,41 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   core::cmp::Ord::max<usize> -> core::ptr::drop_glue<usize> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:1051:5: 1051:6
   core::cmp::Ord::max<usize> -> core::ptr::drop_glue<usize> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:1051:5: 1051:6
   core::cmp::Ord::max<usize> -> core::ptr::drop_glue<usize> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:1051:5: 1051:6
-  crate::dib::masks_valid_policy -> crate::dib::inside [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1109:13: 1109:29
-  crate::dib::masks_valid_policy -> crate::dib::single_run [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1097:17: 1097:31
-  crate::dib::single_run -> core::num::<impl u32>::wrapping_sub [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1174:24: 1174:39
-  crate::dib::single_run -> core::num::<impl u32>::wrapping_add [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1187:24: 1187:39
-  crate::dib::masks_valid_policy -> crate::dib::masks_valid [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1092:33: 1092:66
-  core::num::<impl u32>::trailing_zeros -> core::intrinsics::cttz<u32> [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:178:20: 178:42
-  core::intrinsics::cttz<u32> [intrinsic] -> core::intrinsics::cttz<u32> [intrinsic-fallback] @ <no span>
-  crate::dib::paint_abs -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5278:41: 5278:55
-  crate::dib::paint_abs -> crate::dib::out_offset [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5331:17: 5331:40
-  crate::dib::paint_abs -> crate::dib::colour [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5301:23: 5301:76
-  crate::dib::paint_abs -> crate::dib::put [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5338:9: 5338:23
-  crate::dib::finish_raw_zero -> crate::dib::decode_raw_zero [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9501:27: 9501:109
-  crate::dib::finish_raw_zero -> crate::dib::policy_header_recovered [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9522:21: 9522:58
-  crate::dib::finish_raw_zero -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9524:1: 9524:2
-  crate::dib::finish_raw_zero -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9524:1: 9524:2
-  crate::dib::finish_rle_clipped -> crate::dib::decode_rle_clipped [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9576:27: 9576:162
-  crate::dib::finish_rle_clipped -> crate::dib::finish_mask_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9581:15: 9581:84
-  crate::dib::finish_rle_clipped -> crate::dib::policy_header_recovered [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9587:21: 9587:58
-  crate::dib::finish_rle_clipped -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9589:1: 9589:2
-  crate::dib::finish_rle_clipped -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9589:1: 9589:2
-  crate::dib::finish_policy_plain -> crate::dib::decode_raw [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10118:1: 10118:42
-  crate::dib::finish_policy_plain -> crate::dib::decode_rle [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10120:1: 10120:49
-  crate::dib::finish_policy_plain -> crate::dib::finish_mask_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10160:19: 10160:81
-  crate::dib::finish_policy_plain -> crate::dib::policy_header_recovered [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10210:18: 10210:59
-  crate::dib::finish_policy_plain -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10218:1: 10218:2
-  crate::dib::finish_policy_plain -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10218:1: 10218:2
+  crate::tga::rle_repeat_packet_policy -> crate::tga::Header::sample_bytes [inlined] @ src/tga.rs:7637:16: 7637:30
+  crate::tga::rle_repeat_packet_policy -> crate::tga::Header::flip_x [inlined] @ src/tga.rs:7640:23: 7640:31
+  crate::tga::rle_repeat_packet_policy -> crate::tga::Header::flip_y [inlined] @ src/tga.rs:7640:35: 7640:43
+  crate::tga::rle_repeat_packet_policy -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<vstd::seq::Seq<u8>>> [inlined] @ src/tga.rs:7667:43: 7667:48
+  crate::tga::rle_repeat_packet_policy -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> [inlined] @ src/tga.rs:7670:19: 7670:33
+  crate::tga::rle_repeat_packet_policy -> crate::tga::output_offset [call] @ src/tga.rs:7763:19: 7763:66
+  crate::tga::rle_repeat_packet_policy -> crate::tga::write_pixel [call] @ src/tga.rs:7779:9: 7779:37
+  crate::tga::rle_repeat_packet_policy -> crate::tga::convert_one_policy [call] @ src/tga.rs:7678:22: 7678:70
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
+  crate::tga::rle_literal_packet_policy -> crate::tga::Header::sample_bytes [inlined] @ src/tga.rs:7956:16: 7956:30
+  crate::tga::rle_literal_packet_policy -> crate::tga::Header::flip_x [inlined] @ src/tga.rs:7959:23: 7959:31
+  crate::tga::rle_literal_packet_policy -> crate::tga::Header::flip_y [inlined] @ src/tga.rs:7959:35: 7959:43
+  crate::tga::rle_literal_packet_policy -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<vstd::seq::Seq<u8>>> [inlined] @ src/tga.rs:8010:43: 8010:48
+  crate::tga::rle_literal_packet_policy -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> [inlined] @ src/tga.rs:8013:24: 8013:38
+  crate::tga::rle_literal_packet_policy -> crate::tga::output_offset [call] @ src/tga.rs:8160:19: 8160:66
+  crate::tga::rle_literal_packet_policy -> crate::tga::write_pixel [call] @ src/tga.rs:8176:9: 8176:37
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
+  crate::tga::rle_literal_packet_policy -> crate::tga::convert_one_policy [call] @ src/tga.rs:8133:26: 8133:74
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
+  crate::tga::convert_index_policy -> crate::tga::Header::map_bytes_per_entry [inlined] @ src/tga.rs:6595:20: 6595:41
+  crate::tga::convert_index_policy -> crate::tga::entry_j_exec [inlined] @ src/tga.rs:6625:13: 6625:38
+  crate::tga::convert_index_policy -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> [inlined] @ src/tga.rs:6649:17: 6649:40
+  crate::tga::convert_index_policy -> crate::tga::Header::attribute_count [inlined] @ src/tga.rs:6654:23: 6654:40
+  crate::tga::convert_index_policy -> crate::tga::kind_hdr_exec [inlined] @ src/tga.rs:6655:30: 6655:60
+  crate::tga::convert_index_policy -> crate::tga::stored_alpha_exec [inlined] @ src/tga.rs:6751:24: 6751:50
+  crate::tga::convert_index_policy -> crate::tga::map_entry_alpha_exec [inlined] @ src/tga.rs:6696:25: 6696:76
+  crate::tga::convert_index_policy -> crate::tga::map555_exec [call] @ src/tga.rs:6695:25: 6695:47
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
+  crate::tga::convert_index_policy -> crate::tga::eff_attr_exec [call] @ src/tga.rs:6655:16: 6655:109
+  crate::tga::convert_sample_policy -> crate::tga::kind_hdr_exec [inlined] @ src/tga.rs:6371:16: 6371:46
+  crate::tga::convert_sample_policy -> crate::tga::Header::attribute_count [inlined] @ src/tga.rs:6372:23: 6372:40
+  crate::tga::convert_sample_policy -> crate::tga::stored_alpha_exec [inlined] @ src/tga.rs:6442:24: 6442:50
+  crate::tga::convert_sample_policy -> crate::tga::conv555_policy [call] @ src/tga.rs:6419:13: 6419:43
+  crate::tga::convert_sample_policy -> crate::tga::eff_attr_exec [call] @ src/tga.rs:6373:16: 6373:79
+  crate::tga::convert_sample_policy -> crate::tga::eff_attr_exec [call] @ src/tga.rs:6373:16: 6373:79
   core::ub_checks::maybe_is_aligned::runtime -> core::ptr::const_ptr::<impl *const T>::is_aligned_to<()> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:141:13: 141:37
   core::ub_checks::maybe_is_aligned::runtime -> core::ptr::const_ptr::<impl *const T>::is_aligned_to<()> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:141:13: 141:37
   core::ub_checks::maybe_is_aligned::runtime -> core::ptr::const_ptr::<impl *const T>::is_aligned_to<()> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:141:13: 141:37
@@ -754,74 +736,8 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   core::num::<impl i32>::wrapping_neg -> core::num::<impl i32>::wrapping_sub [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/int_macros.rs:2387:27: 2387:45
   core::intrinsics::unlikely -> core::intrinsics::cold_path [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs:479:9: 479:20
   core::ub_checks::maybe_is_nonoverlapping::runtime -> core::panicking::panic_nounwind [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:174:17: 176:18
-  crate::dib::masks_valid -> crate::dib::single_run [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1060:9: 1060:23
-  crate::dib::masks_valid -> crate::dib::inside [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1066:9: 1066:25
-  crate::dib::decode_raw_zero -> crate::dib::stride [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6108:16: 6108:39
-  crate::dib::decode_raw_zero -> crate::dib::policy_row_start [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6155:19: 6155:75
-  crate::dib::decode_raw_zero -> core::option::Option::<T>::is_none<usize> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6156:41: 6156:50
-  core::option::Option::<T>::is_none<usize> -> core::option::Option::<T>::is_some<usize> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:683:15: 683:24
-  crate::dib::decode_raw_zero -> core::option::Option::<T>::unwrap<usize> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6174:27: 6174:35
-  crate::dib::decode_raw_zero -> crate::dib::out_offset [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6183:26: 6183:45
-  crate::dib::decode_raw_zero -> crate::dib::fill_blank [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6107:5: 6107:50
-  crate::dib::decode_raw_zero -> crate::dib::put [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6188:13: 6188:32
-  crate::dib::decode_raw_zero -> crate::dib::raw_sample_scaled [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6175:27: 6175:90
-  crate::dib::policy_header_recovered -> crate::dib::policy_indexed_gap [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8711:30: 8711:54
-  crate::dib::policy_header_recovered -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8719:33: 8719:43
-  crate::dib::policy_header_recovered -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8720:33: 8720:47
-  crate::dib::policy_header_recovered -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8721:36: 8721:50
-  crate::dib::decode_rle_clipped -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6721:57: 6721:62
-  crate::dib::decode_rle_clipped -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6721:75: 6721:80
-  crate::dib::decode_rle_clipped -> crate::dib::fill_blank [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6665:45: 6665:73
-  crate::dib::decode_rle_clipped -> crate::dib::fill_blank [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6664:40: 6664:69
-  crate::dib::decode_rle_clipped -> crate::dib::fill_rle [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6663:37: 6663:63
-  crate::dib::decode_rle_clipped -> crate::dib::rle_clip_command [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6720:63: 6721:90
-  core::option::Option::<T>::unwrap<usize> -> core::option::unwrap_failed [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:1014:21: 1014:36
-  crate::dib::raw_sample_scaled -> crate::dib::raw_policy_word [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6059:20: 6059:55
-  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6061:57: 6061:98
-  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6062:17: 6062:58
-  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6062:103: 6062:144
-  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6064:53: 6064:89
-  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6065:17: 6065:52
-  crate::dib::raw_sample_scaled -> crate::dib::raw_sample [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6072:14: 6072:44
-  crate::dib::raw_sample_scaled -> crate::dib::raw_policy_word [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6059:20: 6059:55
-  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6061:14: 6061:55
-  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6064:14: 6064:51
-  crate::dib::rle_clip_command -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6568:43: 6568:48
-  crate::dib::rle_clip_command -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6573:13: 6573:21
-  crate::dib::rle_clip_command -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6577:97: 6577:102
-  crate::dib::rle_clip_command -> crate::dib::rle_clip_encoded [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6577:9: 6577:112
-  crate::dib::rle_clip_command -> crate::dib::rle_clip_absolute [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6612:9: 6612:113
-  crate::dib::rle_clip_command -> crate::dib::policy_delta_target [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6607:15: 6607:92
-  crate::dib::raw_policy_word -> crate::dib::rd16 [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6043:23: 6043:34
-  crate::dib::raw_policy_word -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6043:51: 6043:62
-  crate::dib::channel_policy -> core::num::<impl u32>::trailing_zeros [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6015:30: 6015:46
-  crate::dib::channel_policy -> core::num::<impl u32>::leading_zeros [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6010:38: 6010:53
-  core::num::<impl u32>::trailing_zeros -> core::intrinsics::cttz<u32> [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:178:20: 178:42
-  core::num::<impl u32>::trailing_zeros -> core::intrinsics::cttz<u32> [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:178:20: 178:42
-  crate::dib::channel_policy -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6006:34: 6006:53
-  crate::dib::channel_policy -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6011:29: 6011:48
-  crate::dib::channel_policy -> crate::dib::count_mask_bits [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6016:25: 6016:46
-  core::num::<impl u32>::leading_zeros -> core::intrinsics::ctlz<u32> [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:154:20: 154:54
-  crate::dib::rle_clip_encoded -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6489:13: 6489:21
-  crate::dib::rle_clip_encoded -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6498:62: 6498:67
-  crate::dib::rle_clip_encoded -> crate::dib::rle_clip_count [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6500:21: 6500:59
-  crate::dib::rle_clip_encoded -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6504:99: 6504:104
-  crate::dib::rle_clip_encoded -> crate::dib::paint_black_packet [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6504:25: 6504:114
-  crate::dib::rle_clip_encoded -> crate::dib::paint_run [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6508:18: 6508:91
-  crate::dib::rle_clip_absolute -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6396:16: 6396:28
-  crate::dib::rle_clip_absolute -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6403:62: 6403:67
-  crate::dib::rle_clip_absolute -> crate::dib::rle_clip_count [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6412:21: 6412:62
-  crate::dib::rle_clip_absolute -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6419:97: 6419:102
-  crate::dib::rle_clip_absolute -> crate::dib::paint_black_packet [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6419:25: 6419:112
-  crate::dib::rle_clip_absolute -> crate::dib::paint_abs [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6433:18: 6433:90
-  core::num::<impl u32>::leading_zeros -> core::intrinsics::ctlz<u32> [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:154:20: 154:54
-  crate::dib::count_mask_bits -> crate::dib::count_byte_bits [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5988:13: 5988:40
-  crate::dib::count_mask_bits -> crate::dib::count_byte_bits [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5989:13: 5989:47
-  crate::dib::count_mask_bits -> crate::dib::count_byte_bits [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5990:13: 5990:48
-  crate::dib::count_mask_bits -> crate::dib::count_byte_bits [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5991:13: 5991:48
-  core::intrinsics::ctlz<u32> [intrinsic] -> core::intrinsics::ctlz<u32> [intrinsic-fallback] @ <no span>
-  crate::dib::paint_black_packet -> crate::dib::out_offset [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6284:22: 6284:45
-  crate::dib::paint_black_packet -> crate::dib::policy_packet_index [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6279:18: 6279:71
-  crate::dib::paint_black_packet -> crate::dib::colour [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6280:23: 6280:76
-  crate::dib::paint_black_packet -> crate::dib::put [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6287:9: 6287:28
-  crate::dib::policy_packet_index -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6221:24: 6221:40
+  crate::tga::map555_exec -> crate::tga::map5_chan_exec [inlined] @ src/tga.rs:6256:9: 6256:33
+  crate::tga::eff_attr_exec -> crate::tga::core_attr_ok_exec [inlined] @ src/tga.rs:5338:14: 5338:47
+  crate::tga::eff_attr_exec -> crate::tga::image_attr_ok_exec [call] @ src/tga.rs:5337:45: 5337:79
+  crate::tga::eff_attr_exec -> crate::tga::image_attr_ok_exec [call] @ src/tga.rs:5341:45: 5341:77
+  crate::tga::conv555_policy -> crate::tga::rgb5_chan_exec [inlined] @ src/tga.rs:6219:9: 6219:45

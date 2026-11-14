@@ -3853,7 +3853,7 @@
       }
     }
   ],
-  "Recommended": [
+  "RecommendedBeta": [
     {
       "name": "base-file-size-mismatch",
       "mode": "BmpFile",
