@@ -23,7 +23,7 @@ STRICT = {
     'trns_invalid': 'Reject', 'plte_unexpected': 'Reject', 'palette_size': 'Reject', 'palette_index': 'Reject',
     'adler': 'Check', 'stream_end': 'Require', 'zlib_tail': 'Reject', 'window': 'Enforce', 'single_code': 'Accept',
     'image_data_error': 'Reject', 'depth16': 'Round', 'apng_in_still': 'Validate', 'apng_errors': 'Reject',
-    'blend': 'Exact', 'dispose_previous': 'Spec', 'apng16': 'Composite',
+    'blend': 'Exact', 'dispose_previous': 'Spec', 'apng16': 'Composite', 'subframe_interlace': 'Exact',
 }
 RECOMMENDED_BETA = dict(STRICT, crc_ancillary='Skip', iend='Lenient', missing_iend='AtEof', trailing='Ignore',
                         ancillary_order='Drop', ancillary_duplicate='FirstWins', ancillary_values='Drop',
@@ -35,7 +35,7 @@ GDK['apng'] = 'Off'
 IMAGE = dict(RECOMMENDED_BETA, chunk_type='Ancillary', after_idat='ImageRs', missing_iend='Reject',
              ancillary_order='ImageRs', ancillary_values='ImageRs', trns_invalid='ImageRs', adler='Ignore',
              stream_end='AtRaster', single_code='Reject', apng_in_still='ImageRs', apng_errors='Prefix',
-             blend='ImageF32', dispose_previous='ImageRs', apng16='Reject')
+             blend='ImageF32', dispose_previous='ImageRs', apng16='Reject', subframe_interlace='CanvasStride')
 for _p in (STRICT, RECOMMENDED_BETA, IMAGE):
     _p.setdefault('apng', 'On')
 PROFILES = {'Strict': STRICT, 'RecommendedBeta': RECOMMENDED_BETA, 'GdkCompat-2.42.12': GDK,
@@ -51,7 +51,7 @@ VALUES = {
     'window': ('Enforce', 'Ignore'), 'single_code': ('Accept', 'Reject'), 'image_data_error': ('Reject', 'GdkGrey'),
     'depth16': ('Round', 'HighByte'), 'apng_in_still': ('Validate', 'Ignore', 'ImageRs'),
     'apng_errors': ('Reject', 'Static', 'Prefix'), 'blend': ('Exact', 'ImageF32'), 'dispose_previous': ('Spec', 'ImageRs'),
-    'apng16': ('Composite', 'Reject'), 'apng': ('On', 'Off'),
+    'apng16': ('Composite', 'Reject'), 'subframe_interlace': ('Exact', 'CanvasStride'), 'apng': ('On', 'Off'),
 }
 for _p in PROFILES.values():
     assert set(_p) == set(VALUES), set(_p) ^ set(VALUES)
@@ -76,9 +76,39 @@ class Eof(Exception):
 
 
 # ---------------------------------------------------------------- zlib with policy (P9/P10)
-def zlib_decompress(data, limit, limit_error, P, ev, partial=None):
+class _TraceBits(O.Bits):
+    """Bit reader that logs (output length before the read, bit position after it) for every read,
+    so image_data_error=GdkGrey can tell where the zlib input stood when a row was completed."""
+    out = None
+    log = None
+
+    def get(self, n):
+        before = len(self.out)
+        v = None
+        try:
+            v = super().get(n)
+            return v
+        finally:
+            self.log.append((before, self.byte * 8 + self.bit, n, v))
+
+
+def stored_tail(data, out, limit, log):
+    """zlib's COPY state (inflate.c) copies the bytes of a stored block as they arrive; the oracle's inflate
+    reports a truncated stored block without them. When the input ends inside a stored block's data (the
+    last read was BTYPE = 00 and LEN/NLEN are complete), append the bytes that are present (GdkGrey only)."""
+    if not log or log[-1][2] != 2 or log[-1][3] != 0:
+        return
+    start = (log[-1][1] + 7) // 8
+    if start + 4 > len(data):
+        return
+    ln = data[start] | data[start + 1] << 8
+    out += data[start + 4:start + 4 + min(ln, limit + 1 - len(out))]
+
+
+def zlib_decompress(data, limit, limit_error, P, ev, partial=None, trace=None):
     """P9 with `adler`, `stream_end`, `zlib_tail`, `window`, `single_code`. `partial` receives the
-    output produced before an error (image_data_error=GdkGrey)."""
+    output produced before an error (image_data_error=GdkGrey). `trace` (a dict) receives the read log
+    and, on an error, the bit position at which it was detected ('err_bit')."""
     out = partial if partial is not None else bytearray()
     if len(data) < 2:
         fail('TruncatedZlib')
@@ -99,6 +129,10 @@ def zlib_decompress(data, limit, limit_error, P, ev, partial=None):
             if self.single_len1 and self.nsyms == 1 and sum(lengths) == 1 and len(lengths) > 30:
                 self.over = True                     # fdeflate: a one-code literal/length code is rejected
         O.Huffman.__init__ = strict_init
+    saved_bits = O.Bits
+    if trace is not None:
+        trace['log'] = []
+        O.Bits = type('_TB', (_TraceBits,), {'out': out, 'log': trace['log']})
     try:
         try:
             out, br = O.inflate(data, 2, lim, window, out)
@@ -111,6 +145,8 @@ def zlib_decompress(data, limit, limit_error, P, ev, partial=None):
             ev.add('R2')
             return bytes(out[:limit])
         except PngError as e:
+            if trace is not None and e.name == 'TruncatedZlib':
+                stored_tail(data, out, limit, trace['log'])
             if P['stream_end'] == 'AtRaster' and len(out) >= limit and e.name == 'TruncatedZlib':
                 if len(out) > limit:
                     ev.add('R2')
@@ -118,6 +154,7 @@ def zlib_decompress(data, limit, limit_error, P, ev, partial=None):
             raise
     finally:
         O.Huffman.__init__ = saved
+        O.Bits = saved_bits
     br.align()
     if br.byte + 4 > len(data):
         if P['stream_end'] == 'AtRaster' and len(out) >= limit:
@@ -126,6 +163,8 @@ def zlib_decompress(data, limit, limit_error, P, ev, partial=None):
             return bytes(out[:limit])
         fail('TruncatedZlib')
     if P['adler'] == 'Check' and be32(data, br.byte) != adler32(out):
+        if trace is not None:
+            trace['err_bit'] = (br.byte + 4) * 8          # zlib reads the whole Adler-32 before comparing
         fail('AdlerMismatch')
     if br.byte + 4 != len(data):
         if P['zlib_tail'] == 'Reject' and P['stream_end'] != 'AtRaster':
@@ -190,7 +229,7 @@ def _walk(b, P, ev, entry, box):
         fail('InvalidChunkLength')
     doc = parse_ihdr(d)
     W, H, ct, depth = doc['width'], doc['height'], doc['color_type'], doc['depth']
-    doc.update(plte=None, trns=None, idat=bytearray(), meta={}, actl=None, frames=[], iccp=None, eof=False, _P=P)
+    doc.update(plte=None, trns=None, idat=bytearray(), idat_ends=[], meta={}, actl=None, frames=[], iccp=None, eof=False, _P=P)
     box['doc'] = doc
     seen = {b'IHDR'}
     idat = 0
@@ -200,6 +239,8 @@ def _walk(b, P, ev, entry, box):
     pixels = 0
     apng_on = P['apng'] == 'On' and not (entry == 'still' and P['apng_in_still'] == 'Ignore')
     lenient_actl = P['apng_errors'] == 'Prefix' or (P['apng_errors'] == 'Static' and entry == 'frames')
+    replace_fctl = ((P['apng_errors'] == 'Prefix' and entry == 'frames')
+                    or (entry == 'still' and P['apng_in_still'] == 'ImageRs'))
     actl_ignored = False
 
     def apng_fail(name):
@@ -232,6 +273,7 @@ def _walk(b, P, ev, entry, box):
                 doc['eof'] = True
                 if t == b'IDAT':
                     doc['idat'] += d
+                    doc['idat_ends'].append(len(doc['idat']))
                     idat = 1
                 t, d, ok = b'IEND', b'', True
         n = len(d)
@@ -325,6 +367,7 @@ def _walk(b, P, ev, entry, box):
                 idat = 1
                 doc['_seen_idat'] = True
                 doc['idat'] += d
+                doc['idat_ends'].append(len(doc['idat']))
             elif t == b'IEND':
                 if idat == 0:
                     fail('MissingImageData')
@@ -375,6 +418,15 @@ def _walk(b, P, ev, entry, box):
                     if lenient_actl:
                         continue                                    # fcTL without (valid) acTL: ignored
                     fail('MissingAnimationControl')
+                if (replace_fctl and cur is not None and cur['source'] == 'fdAT' and not cur['parts_seen']
+                        and n == 26 and be32(d, 0) == seq):
+                    # png keeps only the latest frame control (stream.rs parse_fctl overwrites
+                    # info.frame_control); image makes one frame per image-data run, so an fcTL with no
+                    # image data before the next valid fcTL yields no frame.
+                    doc['frames'].remove(cur)
+                    pixels -= cur['rect'][2] * cur['rect'][3]
+                    fctl_before_idat = False
+                    cur = None
                 if cur is not None and (cur['source'] == 'IDAT' or cur['parts_seen']):
                     cur['closed'] = True
                 if idat == 0 and fctl_before_idat:
@@ -547,14 +599,38 @@ GREY_ERRORS = {'InvalidZlibHeader', 'UnsupportedZlibMethod', 'InvalidBlockType',
                'InvalidCodeLengths', 'InvalidSymbol', 'DistanceTooFar', 'AdlerMismatch', 'TruncatedImageData'}
 
 
-def decode_image(doc, data, w, h, P, ev, eof=False):
-    """P11-P13 with `image_data_error` and `eof` (GdkGrey/GdkPartial: rows completed before the error
-    are kept, the rest is GREY, event R5; a surrogate fitted to the gdk-pixbuf loader probes)."""
+def gdk_last_row_lost(name, trace, o_err, row_end, ends):
+    """image_data_error=GdkGrey, derived from libpng 1.6.48 pngpread.c:489-598 and zlib 1.3.1 inflate.c
+    (GAPS-CLOSED.md gap 2). libpng inflates into a buffer of exactly one filtered row and hands the row
+    to gdk-pixbuf only when inflate() returns without error and the buffer is full. inflate() returns
+    when it needs an output byte and has no room (LIT, MATCH, stored COPY) or when the current input
+    (in the whole-buffer loader: the rest of one IDAT chunk's data) is exhausted. Errors that zlib
+    detects before it needs output room (block header, stored length, code lengths, an invalid
+    literal/length or distance code, the Adler-32) therefore discard a row completed in the same
+    inflate() call; a distance too far back is detected in MATCH after the room check and never does.
+    `row_end`: raw offset where the last completed row ends; `o_err`: output length at the error;
+    `ends`: cumulative end offsets of the IDAT chunks' data in the zlib stream."""
+    if name in ('TruncatedImageData', 'TruncatedZlib', 'DistanceTooFar') or row_end != o_err:
+        return False
+    log = trace.get('log') or []
+    q_row = max((e[1] for e in log if e[0] < row_end), default=16)
+    q_err = trace.get('err_bit') or (log[-1][1] if log else 16)
+    if name == 'StoredLengthMismatch':
+        q_err = (q_err + 7) // 8 * 8 + 32                    # LEN and NLEN are read whole, after alignment
+    pulled_row, pulled_err = (q_row + 7) // 8, (q_err + 7) // 8
+    chunk_end = next((e for e in ends if e >= pulled_row), None)
+    return chunk_end is None or pulled_err <= chunk_end
+
+
+def decode_image(doc, data, w, h, P, ev, eof=False, ends=None):
+    """P11-P13 with `image_data_error` and `eof` (GdkGrey/GdkPartial: rows libpng's progressive reader
+    hands over before the error are kept, the rest is GREY, event R5; see gdk_last_row_lost)."""
     R = O.raw_size(doc, w, h)
     partial = bytearray()
-    lost_last = False
+    err = None
+    trace = {} if P['image_data_error'] == 'GdkGrey' else None
     try:
-        raw = zlib_decompress(data, R, 'ExcessImageData', P, ev, partial)
+        raw = zlib_decompress(data, R, 'ExcessImageData', P, ev, partial, trace)
         if len(raw) < R:
             fail('TruncatedImageData')
     except PngError as e:
@@ -562,17 +638,32 @@ def decode_image(doc, data, w, h, P, ev, eof=False):
         if not grey_ok:
             raise
         raw = bytes(partial[:R])
-        lost_last = e.name not in ('TruncatedImageData', 'TruncatedZlib')
+        err = e.name
+    if err:
+        # rows are completed strictly in stream order; libpng never unfilters a row it does not hand over
+        row_ends, pos = [], 0
+        for x0, y0, dx, dy, pw, ph in O.passes(doc, w, h):
+            for r in range(ph):
+                pos += 1 + O.row_bytes(doc, pw)
+                if pos > len(raw):
+                    break
+                row_ends.append(pos)
+            if pos > len(raw):
+                break
+        if row_ends and gdk_last_row_lost(err, trace, len(partial), row_ends[-1], ends or [len(data)]):
+            row_ends.pop()
+        raw = raw[:row_ends[-1] if row_ends else 0]
     bpp = max(1, O.bits_pp(doc) // 8)
     px = [None] * (w * h)
     pos = 0
-    rows = [(pa, r) for pa in O.passes(doc, w, h) for r in range(pa[5])]
     complete = []
+    stop = False
     for x0, y0, dx, dy, pw, ph in O.passes(doc, w, h):
         rb = O.row_bytes(doc, pw)
         prev = bytes(rb)
         for r in range(ph):
             if pos + 1 + rb > len(raw):
+                stop = True
                 break
             ft = raw[pos]
             if ft > 4:
@@ -580,16 +671,45 @@ def decode_image(doc, data, w, h, P, ev, eof=False):
             line = O.unfilter_row(ft, raw[pos + 1:pos + 1 + rb], prev, bpp)
             pos += 1 + rb
             prev = line
-            complete.append([((y0 + r * dy) * w + x0 + c * dx, p) for c, p in enumerate(pixel_row(doc, line, pw, P, ev))])
-    if lost_last and complete:
-        complete.pop()
-    for row in complete:
-        for i, p in row:
-            px[i] = p
+            complete.append(((x0, y0, dx, dy), y0 + r * dy, [(x0 + c * dx, p) for c, p in enumerate(pixel_row(doc, line, pw, P, ev))]))
+        if stop:
+            break
+    for (x0, y0, dx, dy), y, row in complete:
+        for x, p in row:
+            px[y * w + x] = p
     if any(p is None for p in px):
         ev.add('R5')
+        if doc['interlace'] and P['image_data_error'] == 'GdkGrey':
+            return gdk_blocky(w, h, complete)
         px = [GREY if p is None else p for p in px]
-    del rows
+    return px
+
+
+ADAM7 = {(0, 0, 8, 8): 0, (4, 0, 8, 8): 1, (0, 4, 4, 8): 2, (2, 0, 4, 4): 3, (0, 2, 2, 4): 4, (1, 0, 2, 2): 5, (0, 1, 1, 2): 6}
+BLOCK = (8, 8, 4, 4, 2, 2, 1)                       # png_pass_inc: replication width, and rows delivered
+
+
+def gdk_blocky(w, h, complete):
+    """The pixbuf gdk-pixbuf's loader shows for an interlaced image whose data stops early. gdk-pixbuf calls
+    png_set_interlace_handling (io-png.c:120) and png_progressive_combine_row, which combines in libpng's
+    'blocky display' mode (pngpread.c:899-911): png_push_process_row (pngpread.c:640-830) hands each
+    completed row of pass p to the row callback for BLOCK[p] consecutive image rows (rows not in the pass
+    get NULL and are untouched), png_do_read_interlace replicates every pass pixel BLOCK[p] times to the
+    right, and png_combine_row (pngrutil.c:3251ff.) copies the whole expanded row for passes 0, 2, 4 and 6
+    and, for passes 1, 3, 5, only the columns of B_COPY: x mod 8 in 4..7, x mod 4 in {2, 3}, x odd.
+    Pixels no row reached keep the prefill colour GREY."""
+    px = [GREY] * (w * h)
+    for key, y, row in complete:
+        p = ADAM7[key]
+        line = [None] * w
+        for x, v in row:
+            for xx in range(x, min(w, x + BLOCK[p])):
+                line[xx] = v
+        cols = [x for x in range(w) if line[x] is not None and (p in (0, 2, 4, 6) or
+                (p == 1 and x % 8 >= 4) or (p == 3 and x % 4 >= 2) or (p == 5 and x % 2))]
+        for yy in range(y, min(h, y + BLOCK[p])):
+            for x in cols:
+                px[yy * w + x] = line[x]
     return px
 
 
@@ -602,7 +722,7 @@ def decode_still(b, P):
     ev = set()
     try:
         doc = walk_entry(b, P, ev, 'still')
-        px = decode_image(doc, bytes(doc['idat']), doc['width'], doc['height'], P, ev, doc['eof'])
+        px = decode_image(doc, bytes(doc['idat']), doc['width'], doc['height'], P, ev, doc['eof'], doc['idat_ends'])
     except PngError as e:
         return {'error': e.name}
     return {'width': doc['width'], 'height': doc['height'], 'rgba': flat8(px), 'recovered': bool(ev), 'events': sorted(ev)}
@@ -636,6 +756,20 @@ def blend_f32(bg, fg):
     return tuple(outs) + (int(f32(m * af)),)
 
 
+def canvas_stride(doc, fpx, fw, fh, W, H):
+    """subframe_interlace=CanvasStride (png 0.18.1 decoder/mod.rs:453-466 with image 0.25.10 png.rs:420-430):
+    image allocates the frame buffer for the canvas (output_buffer_size uses info().size()), png expands an
+    interlaced subframe's pixel (x, y) to slot y*W + x of that buffer, and image reads its first fw*fh
+    slots as the fw x fh frame. Slots png never writes are zero bytes: (0,0,0,0) when the output has
+    alpha (colour types 4, 6 or a tRNS chunk), else (0,0,0,255)."""
+    alpha = doc['color_type'] in (4, 6) or doc['trns'] is not None
+    buf = [(0, 0, 0, 0) if alpha else (0, 0, 0, 255)] * (W * H)
+    for y in range(fh):
+        for x in range(fw):
+            buf[y * W + x] = fpx[y * fw + x]
+    return buf[:fw * fh]
+
+
 def decode_frames(b, P):
     ev = set()
     try:
@@ -659,7 +793,7 @@ def decode_frames(b, P):
                     fail(e.name)
                 # frames recorded by the failed walk (data collected up to the failing chunk)
         W, H = doc['width'], doc['height']
-        default = decode_image(doc, bytes(doc['idat']), W, H, P, ev, doc['eof'])
+        default = decode_image(doc, bytes(doc['idat']), W, H, P, ev, doc['eof'], doc['idat_ends'])
     except PngError as e:
         return {'error': e.name}
     base_ev = set(ev)
@@ -679,6 +813,9 @@ def decode_frames(b, P):
         fx, fy, fw, fh = f['rect']
         try:
             fpx = default if f['source'] == 'IDAT' else decode_image(doc, bytes(f['parts']), fw, fh, P, fev)
+            if (P['subframe_interlace'] == 'CanvasStride' and doc['interlace'] and f['source'] != 'IDAT'
+                    and fw != W):
+                fpx = canvas_stride(doc, fpx, fw, fh, W, H)
         except PngError as e:
             res['end'] = {'error': e.name}
             return res

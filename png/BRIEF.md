@@ -1,6 +1,6 @@
 # Brief: verified PNG decoder (Verus) — scope
 
-Status: specification phase. The draft spec is `spec-draft/` (PNG-CORE-SPEC 0.1: SPEC.md P1–P21, a 62-name closed error list, the Strict oracle `png_oracle.py` with a hand-written inflate, 592 vectors exercising all 62 errors), the leniency catalogue is `policy-draft/` (29-field record, four profiles, closed `recovered` events R1–R5, 16 owner questions), and the proof plan is `PLAN.md`. Nothing is frozen and no Rust exists yet. Once the owner answers `policy-draft/QUESTIONS.md` PNG-Q1–Q13, `spec-draft/` and `policy-draft/` are frozen (hashes in a `FREEZE.txt` each) and this brief gains the binding rules of `../dib/BRIEF.md`, `../dib/BRIEF-POLICY.md` and `../alloc-delta/SPEC.md` unchanged.
+Status: specification phase. The draft spec is `spec-draft/` (PNG-CORE-SPEC 0.1: SPEC.md P1–P21, a 62-name closed error list, the Strict oracle `png_oracle.py` with a hand-written inflate, 592 vectors exercising all 62 errors), the leniency catalogue is `policy-draft/` (30-field record, four profiles, closed `recovered` events R1–R5, 16 owner questions), and the proof plan is `PLAN.md`. Nothing is frozen and no Rust exists yet. Once the owner answers `policy-draft/QUESTIONS.md` PNG-Q1–Q13, `spec-draft/` and `policy-draft/` are frozen (hashes in a `FREEZE.txt` each) and this brief gains the binding rules of `../dib/BRIEF.md`, `../dib/BRIEF-POLICY.md` and `../alloc-delta/SPEC.md` unchanged.
 
 ## Goal
 
@@ -63,12 +63,12 @@ Two crates: `inflate_verus` (zlib + DEFLATE; `no_std`, no `alloc`; API `inflate_
 ## Evidence base
 
 - Spec texts: PNG third edition (W3C REC 2025-06-24, GitHub tag `Third-Edition`), RFC 1950/1951 (zlib 1.3.1 copies); local copies and re-fetch commands with SHA-256 in `spec-draft/SOURCES.md`; not committed (`.gitignore`).
-- Incumbents: gdk-pixbuf 2.42.12 source (`sources/gdk-pixbuf-2.42.12/`) and the installed Debian build with libpng 1.6.48; png 0.18.1, fdeflate 0.3.7 and image 0.25.10 from `~/.cargo/registry`; glycin's image-rs loader (source only; it patches png to git revision e917d6a). Runners: `policy-draft/probes/runner` (Rust; build: `CARGO_TARGET_DIR=/tmp/claude-0/png-probe-target cargo build --release --offline --locked -j1`) and the C runners of `~/projects/leniency/gif/runners` and `~/projects/leniency/shared/gdk.c` built into `/tmp/claude-0/png-probe-bin` (libspng `46c81dc`, stb `4e9b368` cloned to `/tmp/claude-0/png-probe-src`; commands in `policy-draft/probes/run_probes.py`'s docstring and `~/projects/leniency/gif/build.sh`).
+- Incumbents: gdk-pixbuf 2.42.12 source (`sources/gdk-pixbuf-2.42.12/`) and the installed Debian build with libpng 1.6.48; png 0.18.1, fdeflate 0.3.7 and image 0.25.10 from `~/.cargo/registry`; glycin's image-rs loader (measured since GAPS-CLOSED.md gap 1 with `policy-draft/probes/glycin-runner`, its PNG loader code in-process; it patches png to git revision e917d6a). Runners: `policy-draft/probes/runner` (Rust; build: `CARGO_TARGET_DIR=/tmp/claude-0/png-probe-target cargo build --release --offline --locked -j1`) and the C runners of `~/projects/leniency/gif/runners` and `~/projects/leniency/shared/gdk.c` built into `/tmp/claude-0/png-probe-bin` (libspng `46c81dc`, stb `4e9b368` cloned to `/tmp/claude-0/png-probe-src`; commands in `policy-draft/probes/run_probes.py`'s docstring and `~/projects/leniency/gif/build.sh`).
 - Results: `policy-draft/probes/results.json` (748 inputs × 10 runners), `policy-draft/OPTIONS.md`, `policy-draft/QUESTIONS.md`, `spec-draft/DESIGN-NOTES.md`.
 
 ## Corpus plan (PNG-Q7)
 
-Collect into `$CORPUS_DIR/png/files/` with a `MANIFEST.tsv` (source URL, revision, SHA-256, licence per file), as for the other formats; nothing is committed.
+Collect into `$CORPUS_DIR/png/files/` with a `MANIFEST.tsv` (source URL, revision, SHA-256, licence per file), as for the other formats; nothing is committed. The licence column below was checked against the repositories' licence texts in `policy-draft/CORPUS-LICENCES.md`, which corrects five rows (libpng `contrib/pngsuite`, image-png `tests/`, Wuffs, the APNG suite's author and licence, Adwaita).
 
 | Source | What it covers | Licence |
 |---|---|---|

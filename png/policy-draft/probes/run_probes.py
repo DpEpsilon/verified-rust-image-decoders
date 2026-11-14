@@ -3,14 +3,25 @@
 
 Runners (build: see ../../BRIEF.md "Evidence base"; binaries are regenerable, not durable):
   Rust  /tmp/claude-0/png-probe-target/release/png-policy-probe   (probes/runner: image 0.25.10 + png 0.18.1)
+  Rust  /tmp/claude-0/png-glycin-target/release/png-glycin-probe  (probes/glycin-runner: glycin 7344b95's
+        image-rs loader code for PNG, image 0.25.10 + png git e917d6a; build:
+        CARGO_TARGET_DIR=/tmp/claude-0/png-glycin-target cargo build --release --offline -j1)
   C     /tmp/claude-0/png-probe-bin/{gdk-anim,gdk-formats,png-native} from ~/projects/leniency/gif/runners
         and ~/projects/leniency/shared/gdk.c (gdk-pixbuf 2.42.12 Debian build, libpng 1.6.48, libspng 46c81dc, stb 4e9b368)
-Writes probes/results.json (durable) and prints one line per input.
+Every runner process runs under prlimit --as (default 768 MiB, --as-kib to change), --core=0, 30 s timeout.
 
-Usage: python3 -I run_probes.py [--only NAME_SUBSTRING]
+Input sets (--set): main (vectors, probes, witnesses; default; writes results.json), heldout and
+heldoutB (heldout_def.py sets A and B; write results-heldout.json, results-heldoutB.json). Inputs above 4 KiB are stored by reference:
+'hex' is null and 'ref' names the generator (probe:/vec:/wit:/held:) and 'sha256' the bytes;
+resolve(record) regenerates and checks them.
+
+Usage: python3 -I run_probes.py [--set main|heldout|heldoutB] [--only NAME_SUBSTRING] [--large]
+                                [--runners r1,r2] [--out FILE] [--as-kib N]
+  --large   only inputs above 4 KiB plus the beyond-cap dims probes
 """
 import hashlib
 import json
+import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -19,12 +30,11 @@ HERE = Path(__file__).resolve().parent
 PNGDIR = HERE.parent.parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(PNGDIR / 'spec-draft'))
-sys.path.insert(0, str(Path.home() / 'projects/leniency'))
-import engine  # noqa: E402
 import png_oracle as O  # noqa: E402
 from probes_def import PROBES  # noqa: E402
 
 RUST = Path('/tmp/claude-0/png-probe-target/release/png-policy-probe')
+GLYCIN = Path('/tmp/claude-0/png-glycin-target/release/png-glycin-probe')
 BIN = Path('/tmp/claude-0/png-probe-bin')
 RUNNERS = {
     'image': (RUST, ['image']),                 # what image::load_from_memory / glycin-style frame loop sees
@@ -37,7 +47,11 @@ RUNNERS = {
     'gdk-loader-byte': (BIN / 'gdk-anim', ['png', 'forced-byte']),
     'gdk-file': (BIN / 'gdk-formats', ['png', 'file']),
     'gdk-anim': (BIN / 'gdk-anim', ['png', 'anim']),
+    'glycin': (GLYCIN, ['glycin']),             # glycin's PNG loader path (mime image/png), frame loop
+    'image-load': (RUST, ['image-load']),       # image::load_from_memory, default Limits
 }
+DEFAULT_RUNNERS = [r for r in RUNNERS if r not in ('glycin', 'image-load')]   # the columns of results.json
+LARGE_EXTRA = {'probe:dims-100000x1', 'probe:dims-16385x16'}
 WORK = Path('/tmp/claude-0/png-probes')
 
 
@@ -74,7 +88,46 @@ def oracle_summary(b):
     return out
 
 
-def inputs():
+def invoke(path, spec, timeout, as_kib):
+    """engine.invoke with a configurable address-space limit."""
+    exe, args = spec
+    try:
+        p = subprocess.run(['prlimit', f'--as={as_kib * 1024}', '--core=0', '--fsize=67108864', '--', str(exe), *args, str(path)],
+                           stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout, check=False)
+        lines = p.stdout.decode('utf-8', 'replace').splitlines()
+        if p.returncode and not lines:
+            return {'status': 'crash', 'error_class': 'signal' if p.returncode < 0 else 'exit',
+                    'message': str(p.returncode) + ' ' + p.stderr.decode('utf-8', 'replace')[-160:]}
+        obj = json.loads(lines[-1]) if lines else {'status': 'crash', 'error_class': 'empty-output'}
+        if p.returncode and obj.get('status') == 'ok':
+            return {'status': 'crash', 'error_class': 'post-output', 'message': str(p.returncode)}
+        return obj
+    except subprocess.TimeoutExpired:
+        return {'status': 'timeout', 'error_class': 'timeout'}
+    except (OSError, ValueError, json.JSONDecodeError) as e:
+        return {'status': 'crash', 'error_class': type(e).__name__, 'message': str(e)[:150]}
+
+
+_GEN = {}
+
+
+def resolve(rec):
+    """The input bytes of a results record: from 'hex', else regenerated from its generator, checked by SHA-256."""
+    if rec.get('hex') is not None:
+        return bytes.fromhex(rec['hex'])
+    if not _GEN:
+        for b, (n, _) in {b: (n, w) for n, b, w in main_inputs()}.items():
+            _GEN[n] = b
+        from heldout_def import heldout
+        for n, b, _ in heldout('A') + heldout('B'):
+            _GEN[n] = b
+    b = _GEN[rec.get('ref', rec['name'])]
+    if hashlib.sha256(b).hexdigest() != rec['sha256']:
+        raise ValueError(f"{rec['name']}: regenerated input does not match the recorded SHA-256")
+    return b
+
+
+def main_inputs():
     seen = {}
     for v in json.loads((PNGDIR / 'spec-draft/VECTORS.json').read_text()):
         if 'pad_to' in v:
@@ -88,23 +141,44 @@ def inputs():
     return [(n, b, why) for b, (n, why) in seen.items()]
 
 
-def run_one(item):
+def inputs(which='main'):
+    if which in ('heldout', 'heldoutB'):
+        from heldout_def import heldout
+        return heldout('A' if which == 'heldout' else 'B')
+    return main_inputs()
+
+
+def run_one(item, runners, as_kib):
     name, b, why = item
     p = WORK / (name.replace('/', '_').replace(':', '_') + '.png')
     p.write_bytes(b)
-    res = {r: norm(engine.invoke(p, spec, 30)) for r, spec in RUNNERS.items()}
+    res = {r: norm(invoke(p, RUNNERS[r], 30, as_kib)) for r in runners}
     p.unlink()
-    return {'name': name, 'why': why, 'hex': b.hex() if len(b) <= 4096 else None,
-            'sha256': hashlib.sha256(b).hexdigest(), 'len': len(b), 'oracle': oracle_summary(b), 'runners': res}
+    rec = {'name': name, 'why': why, 'hex': b.hex() if len(b) <= 4096 else None,
+           'sha256': hashlib.sha256(b).hexdigest(), 'len': len(b), 'oracle': oracle_summary(b), 'runners': res}
+    if rec['hex'] is None:
+        rec['ref'] = name
+    return rec
+
+
+def arg(flag, default=None):
+    return sys.argv[sys.argv.index(flag) + 1] if flag in sys.argv else default
 
 
 def main():
-    only = sys.argv[sys.argv.index('--only') + 1] if '--only' in sys.argv else None
+    only = arg('--only')
+    which = arg('--set', 'main')
+    runners = arg('--runners', ','.join(DEFAULT_RUNNERS)).split(',')
+    as_kib = int(arg('--as-kib', 786432))
     WORK.mkdir(parents=True, exist_ok=True)
-    items = [i for i in inputs() if not only or only in i[0]]
-    with ThreadPoolExecutor(2) as ex:
-        results = list(ex.map(run_one, items))
-    out = HERE / ('results.json' if not only else 'results-partial.json')
+    items = [i for i in inputs(which) if not only or only in i[0]]
+    if '--large' in sys.argv:
+        items = [i for i in items if len(i[1]) > 4096 or i[0] in LARGE_EXTRA]
+    workers = 1 if '--large' in sys.argv else 2
+    with ThreadPoolExecutor(workers) as ex:
+        results = list(ex.map(lambda i: run_one(i, runners, as_kib), items))
+    default = 'results.json' if which == 'main' else f'results-{which}.json'
+    out = HERE / arg('--out', default if not only else 'results-partial.json')
     out.write_text(json.dumps(results, indent=0) + '\n')
     for r in results:
         o = r['oracle']['still']
