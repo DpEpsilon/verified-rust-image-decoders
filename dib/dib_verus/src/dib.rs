@@ -468,7 +468,7 @@ pub struct Policy {
 }
 
 /// The profile selector. All four frozen named profiles of POLICY-SPEC
-/// "Named profiles". `Strict` is DIB-CORE-SPEC 1.1 exactly; `Recommended`
+/// "Named profiles". `Strict` is DIB-CORE-SPEC 1.1 exactly; `RecommendedBeta`
 /// differs from it only by `file_size = Ignore` and `image_size = Ignore`;
 /// `GdkCompat` and `ImageCrateCompat` are the measured gdk-pixbuf 2.42.12 and
 /// image 0.25.10 assignments. `Default` is `Strict`. The matches in
@@ -479,7 +479,7 @@ pub struct Policy {
 #[non_exhaustive]
 pub enum BmpProfile {
     Strict,
-    Recommended,
+    RecommendedBeta,
     GdkCompat,
     ImageCrateCompat,
 }
@@ -510,10 +510,10 @@ pub open spec fn bmp_mode_to_mode(bm: BmpMode) -> Mode {
     }
 }
 
-/// `Recommended`'s policy record (POLICY-SPEC "Named profiles"): Strict except
+/// `RecommendedBeta`'s policy record (POLICY-SPEC "Named profiles"): Strict except
 /// `file_size = Ignore` and `image_size = Ignore`.
 #[doc(hidden)]
-pub open spec fn recommended_policy() -> Policy {
+pub open spec fn recommended_beta_policy() -> Policy {
     Policy {
         file_size: MetadataOptions::Ignore,
         image_size: MetadataOptions::Ignore,
@@ -634,7 +634,7 @@ pub open spec fn image_crate_compat_policy() -> Policy {
 pub open spec fn profile_policy(p: BmpProfile) -> Policy {
     match p {
         BmpProfile::Strict => strict_policy(),
-        BmpProfile::Recommended => recommended_policy(),
+        BmpProfile::RecommendedBeta => recommended_beta_policy(),
         BmpProfile::GdkCompat => gdk_compat_policy(),
         BmpProfile::ImageCrateCompat => image_crate_compat_policy(),
     }
@@ -721,7 +721,7 @@ pub(crate) fn profile_policy_exec(p: BmpProfile) -> (r: Policy)
         short_indexed_gap: ShortIndexedGapOptions::Decode,
         header_bytes: HeaderBytesOptions::Full,
         },
-        BmpProfile::Recommended => Policy {
+        BmpProfile::RecommendedBeta => Policy {
             file_size: MetadataOptions::Ignore,
             image_size: MetadataOptions::Ignore,
             planes: PlanesOptions::Must1,
@@ -8748,7 +8748,7 @@ fn policy_header_recovered(b: &[u8], h: &Header, p: Policy) -> (r: bool)
 ///   fallback), the same predicate the `offset = Gdk` blank fill selects. It never
 ///   reads a pixel value.
 /// * `recovered` is the closed-event flag of POLICY-SPEC on the selected record.
-///   For `Strict` and `Recommended` it is `false` on every input (only `Ignore`d
+///   For `Strict` and `RecommendedBeta` it is `false` on every input (only `Ignore`d
 ///   `bfSize`/`biSizeImage` values are tolerated there, and none of those is a
 ///   listed data-affecting event). `GdkCompat` and `ImageCrateCompat` carry
 ///   recovery-producing options, so their flag follows `recovered_policy`.
@@ -10580,7 +10580,7 @@ fn t1_policy_recovery_flag(bytes: &[u8], bm: BmpMode, profile: BmpProfile)
 }
 
 /// The P1 statement, kept for exactly the two profiles it covers. `Strict` and
-/// `Recommended` tolerate only `Ignore`d `bfSize`/`biSizeImage` declarations, so
+/// `RecommendedBeta` tolerate only `Ignore`d `bfSize`/`biSizeImage` declarations, so
 /// no entry of the closed data-affecting event list is reachable:
 /// `recovered_policy` is `false` on every input, and the flag with it. The two
 /// compatibility profiles are covered by `t1_policy_recovery_flag` above.
@@ -10598,9 +10598,9 @@ fn t1_policy_recovery_strict(bytes: &[u8], bm: BmpMode)
     try_decode_with_policy(bytes, bm, BmpProfile::Strict)
 }
 
-/// As `t1_policy_recovery_strict`, for `Recommended`.
+/// As `t1_policy_recovery_strict`, for `RecommendedBeta`.
 #[allow(dead_code)]
-fn t1_policy_recovery_recommended(bytes: &[u8], bm: BmpMode)
+fn t1_policy_recovery_recommended_beta(bytes: &[u8], bm: BmpMode)
     -> (r: (Result<Decoded, TryError>, bool))
     ensures
         match r.0 {
@@ -10608,9 +10608,9 @@ fn t1_policy_recovery_recommended(bytes: &[u8], bm: BmpMode)
             _ => r.1 == false,
         },
         !matches!(r.0, Err(TryError::OutOfMemory(_))) ==>
-            decode_policy_mp_eq(fmt_part(r.0), bytes@, bm, recommended_policy()),
+            decode_policy_mp_eq(fmt_part(r.0), bytes@, bm, recommended_beta_policy()),
 {
-    try_decode_with_policy(bytes, bm, BmpProfile::Recommended)
+    try_decode_with_policy(bytes, bm, BmpProfile::RecommendedBeta)
 }
 
 /// Logged policy core, quantified over every Policy record. Named-profile and

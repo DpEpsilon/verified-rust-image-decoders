@@ -9,14 +9,14 @@ agreement with verified (per incumbent): bmp-image: both-ok-equal 45, both-error
 |---|---|---|---|---|---|---|---|---|
 | bmp-verified | bmp-image (45 files) | 8.62 | 8.38 | 8.85 / 8.31 | 464 | 9% / 13% NOISY | 26 (+0) | 1 |
 | bmp-verified-policy-strict | bmp-image (45 files) | 8.46 | 8.11 | 8.57 / 8.14 | 473 | 10% / 15% NOISY | 26 (+0) | 0 |
-| bmp-verified-policy-recommended | bmp-image (45 files) | 8.46 | 7.75 | 8.63 / 7.64 | 473 | 14% / 19% NOISY | 26 (+0) | 1 |
+| bmp-verified-policy-recommended-beta | bmp-image (45 files) | 8.46 | 7.75 | 8.63 / 7.64 | 473 | 14% / 19% NOISY | 26 (+0) | 1 |
 | bmp-image | bmp-image (45 files) | 4.09 (0.47x) | 3.81 | 4.08 / 3.67 | 979 | 10% / 19% NOISY | 26 (+0) | 1 |
 | bmp-verified | bmp-image [subset where gdk+imagecompat profiles also match] (39 files) | 10.57 | 8.46 | 10.72 / 8.30 | 378 | 29% / 29% NOISY | 26 (+0) | 1 |
 | bmp-verified-policy-gdk | bmp-image [subset where gdk+imagecompat profiles also match] (39 files) | 13.65 | 12.69 | 13.84 / 12.75 | 293 | 12% / 13% NOISY | 26 (+0) | 1 |
 | bmp-verified-policy-imagecompat | bmp-image [subset where gdk+imagecompat profiles also match] (39 files) | 10.96 | 10.81 | 11.32 / 10.78 | 365 | 12% / 21% NOISY | 26 (+0) | 0 |
 | bmp-verified | gdk:bmp (40 files) | 7.80 | 7.57 | 8.02 / 7.65 | 513 | 14% / 18% NOISY | 26 (+0) | 1 |
 | bmp-verified-policy-strict | gdk:bmp (40 files) | 7.91 | 7.34 | 8.03 / 7.28 | 505 | 12% / 17% NOISY | 26 (+0) | 0 |
-| bmp-verified-policy-recommended | gdk:bmp (40 files) | 8.03 | 8.03 | 8.24 / 7.96 | 498 | 4% / 20% | 26 (+0) | 1 |
+| bmp-verified-policy-recommended-beta | gdk:bmp (40 files) | 8.03 | 8.03 | 8.24 / 7.96 | 498 | 4% / 20% | 26 (+0) | 1 |
 | gdk:bmp | gdk:bmp (40 files) | 2.89 (0.37x) | 2.77 | 2.89 / 2.75 | 1384 | 7% / 13% NOISY | 26 (+0) | 1 |
 | bmp-verified | gdk:bmp [subset where gdk+imagecompat profiles also match] (39 files) | 8.22 | 7.85 | 8.47 / 7.51 | 487 | 9% / 33% NOISY | 26 (+0) | 1 |
 | bmp-verified-policy-gdk | gdk:bmp [subset where gdk+imagecompat profiles also match] (39 files) | 15.01 | 14.38 | 15.27 / 13.96 | 266 | 6% / 12% NOISY | 26 (+0) | 0 |
@@ -32,35 +32,35 @@ agreement with verified (per incumbent): bmp-image: both-ok-equal 5, both-error 
 |---|---|---|---|---|---|---|---|---|
 | bmp-verified | bmp24_4096x4096.bmp | 6.79 | 6.56 | 6.76 / 6.53 | 589 | 13% / 30% NOISY | 116 (+64) | 1 |
 | bmp-verified-policy-strict | bmp24_4096x4096.bmp | 7.03 | 6.56 | 6.99 / 6.48 | 569 | 13% / 31% NOISY | 116 (+64) | 1 |
-| bmp-verified-policy-recommended | bmp24_4096x4096.bmp | 6.68 | 6.32 | 6.65 / 6.34 | 599 | 11% / 28% NOISY | 116 (+64) | 0 |
+| bmp-verified-policy-recommended-beta | bmp24_4096x4096.bmp | 6.68 | 6.32 | 6.65 / 6.34 | 599 | 11% / 28% NOISY | 116 (+64) | 0 |
 | bmp-verified-policy-gdk | bmp24_4096x4096.bmp | 9.78 | 9.66 | 9.81 / 9.49 | 409 | 2% / 14% | 116 (+64) | 1 |
 | bmp-verified-policy-imagecompat | bmp24_4096x4096.bmp | 8.94 | 8.70 | 9.07 / 8.66 | 447 | 8% / 18% NOISY | 116 (+64) | 1 |
 | bmp-image | bmp24_4096x4096.bmp | 3.22 (0.47x) | 3.16 | 3.25 / 3.06 | 1243 | 8% / 38% NOISY | 164 (+112) | 0 |
 | gdk:bmp | bmp24_4096x4096.bmp | 1.61 (0.24x) | 1.58 | 1.63 / 1.52 | 2486 | 8% / 16% NOISY | 106 (+49) | 0 |
 | bmp-verified | bmp24_8192x2048.bmp | 6.79 | 6.56 | 6.90 / 6.50 | 589 | 20% / 31% NOISY | 116 (+64) | 0 |
 | bmp-verified-policy-strict | bmp24_8192x2048.bmp | 6.91 | 6.68 | 6.81 / 6.47 | 579 | 9% / 31% NOISY | 116 (+64) | 0 |
-| bmp-verified-policy-recommended | bmp24_8192x2048.bmp | 6.91 | 6.91 | 6.96 / 6.51 | 579 | 3% / 28% | 116 (+64) | 0 |
+| bmp-verified-policy-recommended-beta | bmp24_8192x2048.bmp | 6.91 | 6.91 | 6.96 / 6.51 | 579 | 3% / 28% | 116 (+64) | 0 |
 | bmp-verified-policy-gdk | bmp24_8192x2048.bmp | 9.66 | 9.42 | 9.78 / 9.24 | 414 | 8% / 27% NOISY | 116 (+64) | 0 |
 | bmp-verified-policy-imagecompat | bmp24_8192x2048.bmp | 8.94 | 8.82 | 9.02 / 8.72 | 447 | 1% / 11% | 117 (+64) | 1 |
 | bmp-image | bmp24_8192x2048.bmp | 3.22 (0.47x) | 3.10 | 3.21 / 3.04 | 1243 | 8% / 19% NOISY | 164 (+112) | 1 |
 | gdk:bmp | bmp24_8192x2048.bmp | 1.61 (0.24x) | 1.49 | 1.62 / 1.49 | 2486 | 22% / 30% NOISY | 105 (+49) | 0 |
 | bmp-verified | bmp32_4096x3840.bmp | 6.74 | 6.61 | 6.82 / 6.55 | 594 | 17% / 46% NOISY | 124 (+60) | 0 |
 | bmp-verified-policy-strict | bmp32_4096x3840.bmp | 6.74 | 6.61 | 6.82 / 6.55 | 594 | 6% / 21% NOISY | 124 (+60) | 0 |
-| bmp-verified-policy-recommended | bmp32_4096x3840.bmp | 6.99 | 6.87 | 6.95 / 6.65 | 572 | 7% / 28% NOISY | 124 (+60) | 0 |
+| bmp-verified-policy-recommended-beta | bmp32_4096x3840.bmp | 6.99 | 6.87 | 6.95 / 6.65 | 572 | 7% / 28% NOISY | 124 (+60) | 0 |
 | bmp-verified-policy-gdk | bmp32_4096x3840.bmp | 9.03 | 8.90 | 9.19 / 8.78 | 443 | 10% / 22% NOISY | 125 (+60) | 0 |
 | bmp-verified-policy-imagecompat | bmp32_4096x3840.bmp | 9.28 | 9.16 | 9.39 / 8.96 | 431 | 3% / 14% | 124 (+60) | 0 |
 | bmp-image | bmp32_4096x3840.bmp | 3.43 (0.51x) | 3.12 | 3.41 / 3.10 | 1165 | 57% / 65% NOISY | 169 (+105) | 1 |
 | gdk:bmp | bmp32_4096x3840.bmp | 1.53 (0.23x) | 1.49 | 1.62 / 1.48 | 2621 | 32% / 41% NOISY | 130 (+61) | 0 |
 | bmp-verified | bmp8_4096x4096.bmp | 7.99 | 7.87 | 8.05 / 7.50 | 501 | 11% / 35% NOISY | 84 (+57) | 1 |
 | bmp-verified-policy-strict | bmp8_4096x4096.bmp | 7.87 | 7.75 | 7.90 / 7.59 | 508 | 6% / 27% NOISY | 84 (+57) | 1 |
-| bmp-verified-policy-recommended | bmp8_4096x4096.bmp | 7.99 | 7.75 | 8.06 / 7.62 | 501 | 15% / 42% NOISY | 84 (+57) | 0 |
+| bmp-verified-policy-recommended-beta | bmp8_4096x4096.bmp | 7.99 | 7.75 | 8.06 / 7.62 | 501 | 15% / 42% NOISY | 84 (+57) | 0 |
 | bmp-verified-policy-gdk | bmp8_4096x4096.bmp | 11.09 | 10.85 | 11.21 / 10.78 | 361 | 3% / 9% | 84 (+57) | 1 |
 | bmp-verified-policy-imagecompat | bmp8_4096x4096.bmp | 10.25 | 10.01 | 10.25 / 9.75 | 390 | 6% / 18% NOISY | 84 (+57) | 0 |
 | bmp-image | bmp8_4096x4096.bmp | 2.38 (0.30x) | 1.55 | 2.37 / 1.49 | 1678 | 74% / 70% NOISY | 132 (+105) | 0 |
 | gdk:bmp | bmp8_4096x4096.bmp | 2.19 (0.27x) | 2.15 | 2.23 / 2.11 | 1830 | 7% / 19% NOISY | 74 (+47) | 1 |
 | bmp-verified | bmp8rle_4096x4096.bmp | 5.48 | 2.86 | 5.54 / 2.73 | 729 | 98% / 59% NOISY | 74 (+47) | 0 |
 | bmp-verified-policy-strict | bmp8rle_4096x4096.bmp | 5.42 | 5.25 | 5.42 / 5.15 | 737 | 11% / 25% NOISY | 74 (+47) | 1 |
-| bmp-verified-policy-recommended | bmp8rle_4096x4096.bmp | 5.36 | 3.04 | 5.42 / 2.81 | 746 | 86% / 62% NOISY | 74 (+47) | 1 |
+| bmp-verified-policy-recommended-beta | bmp8rle_4096x4096.bmp | 5.36 | 3.04 | 5.42 / 2.81 | 746 | 86% / 62% NOISY | 74 (+47) | 1 |
 | bmp-verified-policy-gdk | bmp8rle_4096x4096.bmp | 5.66 | 2.98 | 5.72 / 2.88 | 706 | 96% / 56% NOISY | 74 (+47) | 0 |
 | bmp-verified-policy-imagecompat | bmp8rle_4096x4096.bmp | 6.68 | 6.56 | 6.67 / 6.31 | 599 | 2% / 15% | 74 (+47) | 1 |
 | bmp-image | bmp8rle_4096x4096.bmp | 2.30 (0.42x) | 2.26 | 2.40 / 2.20 | 1736 | 11% / 22% NOISY | 122 (+95) | 0 |
@@ -79,21 +79,21 @@ agreement with verified (per incumbent): tga-image: both-ok-equal 230, both-erro
 |---|---|---|---|---|---|---|---|---|
 | tga-verified | tga-image (230 files) | 9.23 | 9.16 | 9.47 / 8.97 | 433 | 2% / 11% | 69 (+4) | 1 |
 | tga-verified-policy-strict | tga-image (230 files) | 10.02 | 9.66 | 10.14 / 9.44 | 399 | 7% / 16% NOISY | 70 (+4) | 1 |
-| tga-verified-policy-recommended | tga-image (230 files) | 9.87 | 9.80 | 10.07 / 9.45 | 405 | 4% / 20% | 69 (+4) | 1 |
+| tga-verified-policy-recommended-beta | tga-image (230 files) | 9.87 | 9.80 | 10.07 / 9.45 | 405 | 4% / 20% | 69 (+4) | 1 |
 | tga-image | tga-image (230 files) | 3.27 (0.35x) | 2.20 | 3.25 / 2.13 | 1224 | 50% / 53% NOISY | 73 (+7) | 0 |
 | tga-verified | tga-image [subset where gdk+imagecompat profiles also match] (223 files) | 9.33 | 8.90 | 9.43 / 8.86 | 429 | 14% / 27% NOISY | 69 (+4) | 0 |
 | tga-verified-policy-gdk | tga-image [subset where gdk+imagecompat profiles also match] (223 files) | 9.97 | 9.54 | 10.15 / 9.45 | 401 | 13% / 18% NOISY | 70 (+4) | 1 |
 | tga-verified-policy-imagecompat | tga-image [subset where gdk+imagecompat profiles also match] (223 files) | 9.97 | 9.54 | 10.11 / 9.57 | 401 | 6% / 12% NOISY | 69 (+4) | 1 |
 | tga-verified | tga-tinytga (129 files) | 8.27 | 4.35 | 8.41 / 4.22 | 483 | 94% / 57% NOISY | 33 (+4) | 0 |
 | tga-verified-policy-strict | tga-tinytga (129 files) | 9.33 | 4.63 | 9.44 / 4.67 | 429 | 112% / 67% NOISY | 33 (+4) | 0 |
-| tga-verified-policy-recommended | tga-tinytga (129 files) | 9.96 | 9.54 | 10.08 / 9.54 | 402 | 96% / 98% NOISY | 33 (+4) | 0 |
+| tga-verified-policy-recommended-beta | tga-tinytga (129 files) | 9.96 | 9.54 | 10.08 / 9.54 | 402 | 96% / 98% NOISY | 33 (+4) | 0 |
 | tga-tinytga | tga-tinytga (129 files) | 18.09 (2.19x) | 17.53 | 18.52 / 17.58 | 221 | 9% / 15% NOISY | 34 (+4) | 0 |
 | tga-verified | tga-tinytga [subset where gdk+imagecompat profiles also match] (126 files) | 9.02 | 8.67 | 9.08 / 8.56 | 444 | 12% / 17% NOISY | 34 (+4) | 0 |
 | tga-verified-policy-gdk | tga-tinytga [subset where gdk+imagecompat profiles also match] (126 files) | 9.72 | 9.58 | 10.06 / 9.53 | 411 | 97% / 102% NOISY | 33 (+4) | 0 |
 | tga-verified-policy-imagecompat | tga-tinytga [subset where gdk+imagecompat profiles also match] (126 files) | 18.60 | 9.72 | 18.60 / 9.63 | 215 | 104% / 60% NOISY | 33 (+4) | 0 |
 | tga-verified | gdk:tga (230 files) | 9.38 | 9.18 | 9.52 / 8.91 | 426 | 15% / 29% NOISY | 72 (+4) | 1 |
 | tga-verified-policy-strict | gdk:tga (230 files) | 9.99 | 9.65 | 10.08 / 9.24 | 400 | 8% / 18% NOISY | 72 (+4) | 0 |
-| tga-verified-policy-recommended | gdk:tga (230 files) | 9.79 | 9.52 | 9.91 / 9.46 | 409 | 4% / 10% | 71 (+4) | 0 |
+| tga-verified-policy-recommended-beta | gdk:tga (230 files) | 9.79 | 9.52 | 9.91 / 9.46 | 409 | 4% / 10% | 71 (+4) | 0 |
 | gdk:tga | gdk:tga (230 files) | 21.20 (2.26x) | 20.39 | 21.07 / 20.33 | 189 | 7% / 26% NOISY | 81 (+9) | 1 |
 | tga-verified | gdk:tga [subset where gdk+imagecompat profiles also match] (223 files) | 8.69 | 8.55 | 8.81 / 8.50 | 460 | 3% / 8% | 70 (+4) | 0 |
 | tga-verified-policy-gdk | gdk:tga [subset where gdk+imagecompat profiles also match] (223 files) | 9.47 | 9.47 | 9.65 / 9.28 | 422 | 5% / 29% NOISY | 69 (+4) | 1 |
@@ -111,7 +111,7 @@ agreement with verified (per incumbent): tga-image: incumbent-only-ok 1, both-ok
 | gdk:tga | probe_tga24_8192x8192.tga | 18.54 | 18.30 | 18.67 / 18.23 | 216 | 6% / 16% NOISY | 585 (+385) | 0 |
 | tga-verified | tga24_4096x4096.tga | 9.66 | 9.18 | 9.77 / 9.02 | 414 | 26% / 33% NOISY | 116 (+64) | 0 |
 | tga-verified-policy-strict | tga24_4096x4096.tga | 10.01 | 9.89 | 10.26 / 9.96 | 399 | 6% / 11% NOISY | 117 (+64) | 0 |
-| tga-verified-policy-recommended | tga24_4096x4096.tga | 10.13 | 10.01 | 10.41 / 9.87 | 395 | 5% / 11% | 117 (+64) | 0 |
+| tga-verified-policy-recommended-beta | tga24_4096x4096.tga | 10.13 | 10.01 | 10.41 / 9.87 | 395 | 5% / 11% | 117 (+64) | 0 |
 | tga-verified-policy-gdk | tga24_4096x4096.tga | 10.25 | 9.66 | 10.44 / 9.91 | 390 | 12% / 17% NOISY | 116 (+64) | 0 |
 | tga-verified-policy-imagecompat | tga24_4096x4096.tga | 10.37 | 10.13 | 10.51 / 10.09 | 386 | 15% / 36% NOISY | 116 (+64) | 0 |
 | tga-image | tga24_4096x4096.tga | 2.34 (0.24x) | 1.71 | 2.36 / 1.70 | 1706 | 42% / 42% NOISY | 164 (+112) | 0 |
@@ -119,7 +119,7 @@ agreement with verified (per incumbent): tga-image: incumbent-only-ok 1, both-ok
 | gdk:tga | tga24_4096x4096.tga | 18.36 (1.90x) | 17.88 | 18.49 / 17.72 | 218 | 5% / 12% | 154 (+97) | 0 |
 | tga-verified | tga24rle_4096x4096.tga | 6.44 | 6.20 | 6.55 / 6.12 | 621 | 33% / 62% NOISY | 84 (+57) | 0 |
 | tga-verified-policy-strict | tga24rle_4096x4096.tga | 6.79 | 6.44 | 6.86 / 6.46 | 589 | 7% / 16% NOISY | 83 (+57) | 0 |
-| tga-verified-policy-recommended | tga24rle_4096x4096.tga | 6.44 | 6.44 | 6.65 / 6.43 | 621 | 9% / 31% NOISY | 84 (+57) | 1 |
+| tga-verified-policy-recommended-beta | tga24rle_4096x4096.tga | 6.44 | 6.44 | 6.65 / 6.43 | 621 | 9% / 31% NOISY | 84 (+57) | 1 |
 | tga-verified-policy-gdk | tga24rle_4096x4096.tga | 6.79 | 6.32 | 6.87 / 6.32 | 589 | 28% / 42% NOISY | 83 (+57) | 1 |
 | tga-verified-policy-imagecompat | tga24rle_4096x4096.tga | 6.56 | 6.44 | 6.65 / 6.39 | 610 | 6% / 14% NOISY | 84 (+58) | 0 |
 | tga-image | tga24rle_4096x4096.tga | 4.95 (0.77x) | 4.89 | 5.02 / 4.80 | 809 | 16% / 34% NOISY | 132 (+105) | 0 |
@@ -127,14 +127,14 @@ agreement with verified (per incumbent): tga-image: incumbent-only-ok 1, both-ok
 | gdk:tga | tga24rle_4096x4096.tga | 18.48 (2.87x) | 18.00 | 18.72 / 18.19 | 216 | 14% / 27% NOISY | 88 (+62) | 1 |
 | tga-verified | tga32_4096x3840.tga | 9.79 | 9.54 | 9.72 / 9.53 | 409 | 24% / 30% NOISY | 124 (+60) | 0 |
 | tga-verified-policy-strict | tga32_4096x3840.tga | 10.43 | 10.30 | 10.52 / 10.14 | 384 | 2% / 13% | 124 (+60) | 0 |
-| tga-verified-policy-recommended | tga32_4096x3840.tga | 10.94 | 10.68 | 11.27 / 10.32 | 366 | 18% / 28% NOISY | 125 (+60) | 0 |
+| tga-verified-policy-recommended-beta | tga32_4096x3840.tga | 10.94 | 10.68 | 11.27 / 10.32 | 366 | 18% / 28% NOISY | 125 (+60) | 0 |
 | tga-verified-policy-gdk | tga32_4096x3840.tga | 10.55 | 10.05 | 10.61 / 10.18 | 379 | 32% / 40% NOISY | 124 (+60) | 0 |
 | tga-verified-policy-imagecompat | tga32_4096x3840.tga | 10.30 | 10.17 | 10.39 / 10.19 | 388 | 10% / 15% NOISY | 125 (+60) | 0 |
 | tga-image | tga32_4096x3840.tga | 1.53 (0.16x) | 1.20 | 1.51 / 1.21 | 2621 | 36% / 39% NOISY | 125 (+60) | 1 |
 | gdk:tga | tga32_4096x3840.tga | 18.69 (1.91x) | 18.69 | 19.10 / 18.31 | 214 | 7% / 24% NOISY | 190 (+121) | 1 |
 | tga-verified | tga32rle_4096x3840.tga | 6.36 | 6.10 | 6.40 / 6.08 | 629 | 104% / 111% NOISY | 84 (+57) | 1 |
 | tga-verified-policy-strict | tga32rle_4096x3840.tga | 6.74 | 6.48 | 6.87 / 6.52 | 594 | 35% / 43% NOISY | 83 (+57) | 1 |
-| tga-verified-policy-recommended | tga32rle_4096x3840.tga | 6.61 | 6.48 | 6.78 / 6.43 | 605 | 18% / 24% NOISY | 83 (+57) | 1 |
+| tga-verified-policy-recommended-beta | tga32rle_4096x3840.tga | 6.61 | 6.48 | 6.78 / 6.43 | 605 | 18% / 24% NOISY | 83 (+57) | 1 |
 | tga-verified-policy-gdk | tga32rle_4096x3840.tga | 6.61 | 6.48 | 6.73 / 6.49 | 605 | 6% / 12% NOISY | 83 (+57) | 1 |
 | tga-verified-policy-imagecompat | tga32rle_4096x3840.tga | 6.74 | 6.61 | 6.86 / 6.52 | 594 | 15% / 32% NOISY | 83 (+57) | 1 |
 | tga-image | tga32rle_4096x3840.tga | 4.20 (0.66x) | 4.01 | 4.17 / 3.94 | 953 | 33% / 45% NOISY | 84 (+57) | 1 |

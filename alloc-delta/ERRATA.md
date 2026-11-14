@@ -212,8 +212,9 @@ ICO `5265d477…` → `5e2660a5d6a7af5205ca07fa64cf63504173f66e6bdab839fca5027b9
 (the pre-change values are exactly what the shipped allowlists record, so the
 computation reproduces them). The four allowlists were regenerated
 (`tools/draft_all.sh`), `PINS.sha256` rewritten, and the production audit re-run
-in `runs/20261114T081621Z` (since superseded and deleted by E12; see
-`runs/20261114T084716Z`): DIB, TGA and ICNS report only `allowlist-reviewer`;
+in `runs/20261114T081621Z` (since superseded and deleted by E12; the E11/E12
+run `runs/20261114T084716Z` was itself later superseded and deleted by E13, whose
+evidence is `runs/20261114T094507Z`): DIB, TGA and ICNS report only `allowlist-reviewer`;
 ICO reports `allowlist-reviewer` and `dependency-contract` (D9), with DIB's
 report inside the ICO run also only `allowlist-reviewer`. No `missing-root` or
 `mono-item-unwalked` appeared. Entry counts are unchanged (64/58/50/42) and the
@@ -295,7 +296,9 @@ icns` (its `source_hash` changed to
 `cda2ebe74a1a747f9862bfb1e519294c9925515d88816cf01d237df2cea7b269`, was
 `bfcd14ae…`; the entry set is unchanged at 50 and differs only in the order of
 the `panic` entries). `PINS.sha256` was rewritten. The production
-audit is `alloc-delta/audit/runs/20261114T084716Z`, which replaces the superseded
+audit was `alloc-delta/audit/runs/20261114T084716Z` (since superseded and deleted
+by E13; the authoritative run is now `20261114T094507Z`), which replaced the
+superseded
 `runs/20261114T081621Z` (now deleted). It reports exactly the expected findings:
 DIB, TGA and ICNS only `allowlist-reviewer`; ICO `allowlist-reviewer` and
 `dependency-contract` (D9), with DIB's report inside the ICO run also only
@@ -324,3 +327,53 @@ matches its regenerated allowlist. The guard hashes are unchanged
 `try_decode_rgb`/`try_decode_mask`/`try_combine` family with their `_logged`
 variants (`parsed_inv` required only in Verus, forgeable from public `Entry`
 fields). They are open design items.
+
+## E13 — 2026-11-14: the `Recommended` -> `RecommendedBeta` rename changes DIB's, TGA's and ICO's `source_hash`
+
+Owner decision 2026-11-14: every `Recommended` policy profile is renamed
+`RecommendedBeta` (provisional until real-world feedback). It applies to the
+frozen DIB and TGA policy layers; GIF and PNG already use the new name, and the
+ICNS and ICO policy layers are deferred. The rename touches the profile name
+(Rust selector variant, spec/proof function names, string keys, prose) and no
+field value; see `dib/policy/ERRATA.md` E1 and `tga/policy/ERRATA.md` E2 for the
+per-layer old/new frozen hashes and the reproducibility evidence.
+
+**Source hashes change for DIB and TGA** (their source files changed), and
+therefore for ICO, whose `dib_verus` dependency's `source_hash` also changes.
+ICNS's source is untouched, so its `source_hash` is unchanged; the ICNS
+allowlist is unchanged.
+
+| Core | `source_hash` before (E11/E12) | `source_hash` after |
+|---|---|---|
+| DIB | `10f5071a08964bb735ee266801c53d5c82926a36701cf4e01bbe0218b61e684c` | `1176feef4f943a58c0073ba25f27f53c00b40a14d7b8812321ee91adb45bf62d` |
+| TGA | `387f37cbdee25ce4b6149ca10db8bc082918a6cfbda945cbdd9968916c7c0c34` | `627a1646805bd453cb6a8cc602b677cc6095cd647b8257c92d0ec121f987ccf7` |
+| ICNS | `cda2ebe74a1a747f9862bfb1e519294c9925515d88816cf01d237df2cea7b269` | `cda2ebe74a1a747f9862bfb1e519294c9925515d88816cf01d237df2cea7b269` (unchanged) |
+| ICO | `5e2660a5d6a7af5205ca07fa64cf63504173f66e6bdab839fca5027b9816a530` | `5e2660a5d6a7af5205ca07fa64cf63504173f66e6bdab839fca5027b9816a530` (ICO's own source; the DIB source it links changed to the new DIB value) |
+
+The `dib_verus` `source_hash` inside the ICO run is DIB's own, so it also changed
+from `10f5071a…` to `1176feef…`.
+
+**Regeneration and re-audit.** `tools/draft_all.sh dib tga ico` regenerated the
+DIB and TGA draft allowlists (only `source_hash` changed; ICNS and ICO drafts
+were left byte-identical) and rewrote `PINS.sha256`. The production audit was
+re-run over all four cores in one run, `runs/20261114T094507Z`, which replaces
+`runs/20261114T084716Z` (now deleted) as the authoritative run. It reports exactly the expected
+findings: DIB, TGA and ICNS only `allowlist-reviewer`; ICO `allowlist-reviewer`
+and `dependency-contract` (D9), with DIB's report inside the ICO run also only
+`allowlist-reviewer`. Entry counts are unchanged (64 / 58 / 50 / 42) and the
+`required_roots` are unchanged. Instance and edge counts are unchanged for every
+core (DIB 421/712, TGA 364/622, ICNS 344/629, ICO 320/532); the rename adds and
+removes no item in the walk.
+
+**New allowlist pins** (`allowlist/PINS.sha256`): DIB
+`e0244373a5941588e9493adf05c11dfe4670efd17ede63310654967488f9f694` (was
+`e85e9012…`), TGA
+`fa18137315edf07a50abc82133c69837c4decd61a6109ea670c5d8c9f46d9d08` (was
+`6faad7c8…`); ICNS
+`1d95eaa7638d74e779771267c74dfa8b144ebc18681fd65260e167c9b744de6a` and ICO
+`1070a98eb06ebb3af92cf2f6e47f40ef4f2e9496873ff094ae5f36232b7302b1` are unchanged.
+
+**Verification and tests.** DIB reverifies (1764 verified, 0 errors, run 557),
+TGA (974, 0, run 232), ICO (346, 0, run 178). `cargo test --release` passes in
+`dib_verus`, `tga_verus` and `ico_verus`; the policy conformance tests report
+`RecommendedBeta` 102/102 (DIB) and 302/302 (TGA).

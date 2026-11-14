@@ -174,3 +174,4 @@
 175	2026-11-13T03:36:18+00:00	exit=0	103s	A-STD-4 resize fill [crate=ico_verus]	verification results:: 346 verified, 0 errors	peak_rss_sum_mb=2170	peak_rss_max_proc_mb=1637:rust_verify
 176	2026-11-14T05:45:12+00:00	exit=0	29s	D3/D4/D8: Reserved/try_with_room pub(crate), push/into_vec #[inline(never)] [crate=ico_verus]	verification results:: 346 verified, 0 errors	peak_rss_sum_mb=1451	peak_rss_max_proc_mb=1126:rust_verify
 177	2026-11-14T05:50:43+00:00	exit=0	272s	clean reverify: D3/D4/D8 visibility + inline(never) [crate=ico_verus]	verification results:: 346 verified, 0 errors	peak_rss_sum_mb=3411	peak_rss_max_proc_mb=2493:rust_verify
+178	2026-11-14T09:28:32+00:00	exit=0	108s	rename: Recommended -> RecommendedBeta (via DIB source) [crate=ico_verus]	verification results:: 346 verified, 0 errors	peak_rss_sum_mb=2167	peak_rss_max_proc_mb=1632:rust_verify

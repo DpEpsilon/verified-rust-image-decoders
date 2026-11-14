@@ -1558,3 +1558,4 @@
 554	2026-11-13T03:16:26+00:00	exit=101	103s	 [crate=dib_verus]	verification results:: 1763 verified, 1 errors	peak_rss_sum_mb=2069	peak_rss_max_proc_mb=1518:rust_verify
 555	2026-11-13T03:27:35+00:00	exit=101	91s	A-STD-4: resize fill; dib_finish rlimit 30 [crate=dib_verus]	verification results:: 1763 verified, 1 errors	peak_rss_sum_mb=2079	peak_rss_max_proc_mb=1531:rust_verify
 556	2026-11-13T03:34:30+00:00	exit=0	90s	A-STD-4 resize fill; rlimit 20 on dib_finish, parse_header [crate=dib_verus]	verification results:: 1764 verified, 0 errors	peak_rss_sum_mb=2075	peak_rss_max_proc_mb=1518:rust_verify
+557	2026-11-14T09:25:49+00:00	exit=0	93s	rename: Recommended -> RecommendedBeta [crate=dib_verus]	verification results:: 1764 verified, 0 errors	peak_rss_sum_mb=2082	peak_rss_max_proc_mb=1524:rust_verify

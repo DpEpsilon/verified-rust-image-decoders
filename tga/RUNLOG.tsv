@@ -718,3 +718,4 @@
 229	2026-11-12T11:31:44+00:00	exit=0	97s	alloc-delta FINAL: Sol findings 1-8 fixed (run from clean target) [crate=tga_verus]	verification results:: 975 verified, 0 errors
 230	2026-11-12T11:34:40+00:00	exit=0	97s	alloc-delta FINAL: Sol findings 1-8 fixed (wording tidy) [crate=tga_verus]	verification results:: 975 verified, 0 errors
 231	2026-11-13T03:17:53+00:00	exit=0	87s	 [crate=tga_verus]	verification results:: 974 verified, 0 errors	peak_rss_sum_mb=3646	peak_rss_max_proc_mb=2538:rust_verify
+232	2026-11-14T09:26:40+00:00	exit=0	45s	rename: Recommended -> RecommendedBeta [crate=tga_verus]	verification results:: 974 verified, 0 errors	peak_rss_sum_mb=1735	peak_rss_max_proc_mb=1327:rust_verify

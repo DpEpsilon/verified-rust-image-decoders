@@ -3460,7 +3460,7 @@
     }
    }
   ],
-  "Recommended": [
+  "RecommendedBeta": [
    {
     "name": "trailing-junk",
     "provenance": "hand:trailing-junk",

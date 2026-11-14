@@ -6,6 +6,7 @@ Evidence for this revision is in `runs/`:
 
 | Run | What it is | Result |
 |---|---|---|
+| `runs/20261114T094507Z/` | PRODUCTION: all four cores after the `Recommended` -> `RecommendedBeta` rename (ERRATA E13; DIB's and TGA's `source_hash` changed, so their allowlists were regenerated) | DIB, TGA and ICNS only `allowlist-reviewer`; ICO also `dependency-contract`. Same entry counts (64/58/50/42) and instance/edge counts as the run it replaces |
 | `runs/20261113T081241Z/` | FINAL: production audit after the re-check fix (E9) | same findings: DIB and TGA only `allowlist-reviewer`; ICNS also `guard-inline-never`; ICO also `guard-inline-never` and `dependency-contract` |
 | `runs/20261113T081403Z-controls/` | FINAL: 98 controls | 98 as expected, 0 failed, 98 result rows for 98 selected |
 | `runs/20261113T081444Z-inventory/` | FINAL: inventory, plus the x9, x10 and x26 controls | four cores PASS, five controls as expected |

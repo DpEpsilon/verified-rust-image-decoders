@@ -1,5 +1,5 @@
 //! Policy conformance harness: runs `policy/POLICY-VECTORS.json` against
-//! `try_decode_with_policy` for all four named profiles (`Strict`, `Recommended`,
+//! `try_decode_with_policy` for all four named profiles (`Strict`, `RecommendedBeta`,
 //! `GdkCompat-2.42.12`, `ImageCrateCompat-0.25.10`), all 102 vectors each, and
 //! checks the 71-file BMP corpus acceptance per profile. This sits next to
 //! `tests/conformance.rs` (the unchanged 302 frozen 1.1 vectors) and
@@ -107,7 +107,7 @@ fn header_rule(file: &[u8]) -> bool {
 /// selector value each names.
 const PROFILES: [(&str, BmpProfile); 4] = [
     ("Strict", BmpProfile::Strict),
-    ("Recommended", BmpProfile::Recommended),
+    ("RecommendedBeta", BmpProfile::RecommendedBeta),
     ("GdkCompat-2.42.12", BmpProfile::GdkCompat),
     ("ImageCrateCompat-0.25.10", BmpProfile::ImageCrateCompat),
 ];
@@ -287,7 +287,7 @@ fn policy_conformance_corpus_acceptance() {
     // profiles"); `Strict` matches the shipped 1.1 corpus runner's 50.
     let want_accept: [(&str, BmpProfile, usize); 4] = [
         ("Strict", BmpProfile::Strict, 50),
-        ("Recommended", BmpProfile::Recommended, 52),
+        ("RecommendedBeta", BmpProfile::RecommendedBeta, 52),
         ("GdkCompat-2.42.12", BmpProfile::GdkCompat, 58),
         ("ImageCrateCompat-0.25.10", BmpProfile::ImageCrateCompat, 55),
     ];

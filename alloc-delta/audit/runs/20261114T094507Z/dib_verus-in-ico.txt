@@ -5,7 +5,7 @@ finding-tags: allowlist-reviewer
 findings-other-than-unsigned-reviewer: 0
 mode: PRODUCTION
 crate: dib_verus
-crate-svh: ec40732648e93a6809bb6ac85fac0ce2
+crate-svh: 66109b8f3f5839ae7ee248f36a03a060
 invocation: wrapper
 rustc: 1.99.1 (58cf8f9c3 2026-10-13)
 rustc-commit: 58cf8f9c3 (full 58cf8f9c35b355199727627d07ae34a4e2846d67)
@@ -14,9 +14,9 @@ profile: opt-level=3,debug-assertions=off,share-generics=off
 profile-class: release
 features: []
 cfgs: ["panic=\"unwind\"", "target_abi=\"\"", "target_arch=\"x86_64\"", "target_endian=\"little\"", "target_env=\"gnu\"", "target_family=\"unix\"", "target_feature=\"fxsr\"", "target_feature=\"sse\"", "target_feature=\"sse2\"", "target_has_atomic=\"16\"", "target_has_atomic=\"32\"", "target_has_atomic=\"64\"", "target_has_atomic=\"8\"", "target_has_atomic=\"ptr\"", "target_has_atomic_load_store=\"16\"", "target_has_atomic_load_store=\"32\"", "target_has_atomic_load_store=\"64\"", "target_has_atomic_load_store=\"8\"", "target_has_atomic_load_store=\"ptr\"", "target_has_atomic_primitive_alignment=\"16\"", "target_has_atomic_primitive_alignment=\"32\"", "target_has_atomic_primitive_alignment=\"64\"", "target_has_atomic_primitive_alignment=\"8\"", "target_has_atomic_primitive_alignment=\"ptr\"", "target_has_reliable_f128", "target_has_reliable_f16", "target_has_reliable_f16_math", "target_has_threads", "target_object_format=\"elf\"", "target_os=\"linux\"", "target_pointer_width=\"64\"", "target_thread_local", "target_vendor=\"unknown\"", "unix"]
-source_hash: 10f5071a08964bb735ee266801c53d5c82926a36701cf4e01bbe0218b61e684c
+source_hash: 1176feef4f943a58c0073ba25f27f53c00b40a14d7b8812321ee91adb45bf62d
 source-hash-scope: sha256 over sorted per-file sha256 of every non-imported source-map file outside the sysroot (module files and loaded include targets); dependency crates are bound by crate hash, vstd additionally by its locked source checksum
-allowlist: /home/ws/projects/verified-decoders/alloc-delta/audit/allowlist/x86_64-unknown-linux-gnu/release/dib_verus.toml sha256=e85e901207666436effa5dc3f6aec8dd5647e7ca765b066389dce9bb4c4888a7 entries=64 reviewer="" drafted_by="draft_allowlist.py (Claude agent), 2026-11-13; unsigned"
+allowlist: /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/allowlist/x86_64-unknown-linux-gnu/release/dib_verus.toml sha256=e0244373a5941588e9493adf05c11dfe4670efd17ede63310654967488f9f694 entries=64 reviewer="" drafted_by="draft_allowlist.py (Claude agent), 2026-11-13; unsigned"
 vstd: linked=true version=Some("0.0.0-2026-11-01-0251") svh=Some("fa564daeee3bd3d96afb1a9ec5dbc24f") locked_checksum=Some("7cfcc2fc379ffbcda31111f1a7da2a34d00bd984407cfa85d1edcf64da38dbd2") linked_artifact_sha256=Some("f93b65602d91170edd3bb93b775f0a423ad35a7a154329588eeec12ec52b1045") source_dir=Some("/home/ws/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/vstd-0.0.0-2026-11-01-0251")
 vstd-binding-problems: none
 roots: crate::alloc_guard::sites::TryError::name, <crate::alloc_guard::sites::TryError as core::clone::Clone>::clone, <crate::alloc_guard::sites::TryError as core::cmp::PartialEq>::eq, <crate::alloc_guard::sites::TryError as core::cmp::Eq>::assert_fields_are_eq, <crate::alloc_guard::sites::AllocSite as core::clone::Clone>::clone, <crate::alloc_guard::sites::AllocSite as core::cmp::PartialEq>::eq, <crate::alloc_guard::sites::AllocSite as core::cmp::Eq>::assert_fields_are_eq, crate::alloc_guard::OutOfMemory::site, crate::alloc_guard::OutOfMemory::elements, crate::alloc_guard::try_zeroed, <crate::alloc_guard::OutOfMemory as core::clone::Clone>::clone, <crate::alloc_guard::OutOfMemory as core::cmp::PartialEq>::eq, <crate::alloc_guard::OutOfMemory as core::cmp::Eq>::assert_fields_are_eq, crate::dib::Error::name, <crate::dib::BmpProfile as core::default::Default>::default, crate::dib::try_decode_with_steps_logged, crate::dib::try_decode_with_steps, crate::dib::try_decode, crate::dib::try_decode_with_policy, <crate::dib::Mode as core::clone::Clone>::clone, <crate::dib::Mode as core::cmp::PartialEq>::eq, <crate::dib::Mode as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::Error as core::clone::Clone>::clone, <crate::dib::Error as core::cmp::PartialEq>::eq, <crate::dib::Error as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::Decoded as core::cmp::PartialEq>::eq, <crate::dib::Decoded as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::MetadataOptions as core::clone::Clone>::clone, <crate::dib::MetadataOptions as core::cmp::PartialEq>::eq, <crate::dib::MetadataOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::PlanesOptions as core::clone::Clone>::clone, <crate::dib::PlanesOptions as core::cmp::PartialEq>::eq, <crate::dib::PlanesOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::ReservedOptions as core::clone::Clone>::clone, <crate::dib::ReservedOptions as core::cmp::PartialEq>::eq, <crate::dib::ReservedOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::OffsetOptions as core::clone::Clone>::clone, <crate::dib::OffsetOptions as core::cmp::PartialEq>::eq, <crate::dib::OffsetOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::HighCountOptions as core::clone::Clone>::clone, <crate::dib::HighCountOptions as core::cmp::PartialEq>::eq, <crate::dib::HighCountOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::HeadersOptions as core::clone::Clone>::clone, <crate::dib::HeadersOptions as core::cmp::PartialEq>::eq, <crate::dib::HeadersOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::MasksOptions as core::clone::Clone>::clone, <crate::dib::MasksOptions as core::cmp::PartialEq>::eq, <crate::dib::MasksOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::ShortPixelsOptions as core::clone::Clone>::clone, <crate::dib::ShortPixelsOptions as core::cmp::PartialEq>::eq, <crate::dib::ShortPixelsOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::RleEolOptions as core::clone::Clone>::clone, <crate::dib::RleEolOptions as core::cmp::PartialEq>::eq, <crate::dib::RleEolOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::RleOverrunOptions as core::clone::Clone>::clone, <crate::dib::RleOverrunOptions as core::cmp::PartialEq>::eq, <crate::dib::RleOverrunOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::RleDeltaOptions as core::clone::Clone>::clone, <crate::dib::RleDeltaOptions as core::cmp::PartialEq>::eq, <crate::dib::RleDeltaOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::RleEobOptions as core::clone::Clone>::clone, <crate::dib::RleEobOptions as core::cmp::PartialEq>::eq, <crate::dib::RleEobOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::RleFillOptions as core::clone::Clone>::clone, <crate::dib::RleFillOptions as core::cmp::PartialEq>::eq, <crate::dib::RleFillOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::PaletteIndexOptions as core::clone::Clone>::clone, <crate::dib::PaletteIndexOptions as core::cmp::PartialEq>::eq, <crate::dib::PaletteIndexOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::ScalingOptions as core::clone::Clone>::clone, <crate::dib::ScalingOptions as core::cmp::PartialEq>::eq, <crate::dib::ScalingOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::UnsupportedOptions as core::clone::Clone>::clone, <crate::dib::UnsupportedOptions as core::cmp::PartialEq>::eq, <crate::dib::UnsupportedOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::BitfieldOffsetOptions as core::clone::Clone>::clone, <crate::dib::BitfieldOffsetOptions as core::cmp::PartialEq>::eq, <crate::dib::BitfieldOffsetOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::Bitfield16AlphaOptions as core::clone::Clone>::clone, <crate::dib::Bitfield16AlphaOptions as core::cmp::PartialEq>::eq, <crate::dib::Bitfield16AlphaOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::IncompleteMetadataOptions as core::clone::Clone>::clone, <crate::dib::IncompleteMetadataOptions as core::cmp::PartialEq>::eq, <crate::dib::IncompleteMetadataOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::ShortIndexedGapOptions as core::clone::Clone>::clone, <crate::dib::ShortIndexedGapOptions as core::cmp::PartialEq>::eq, <crate::dib::ShortIndexedGapOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::HeaderBytesOptions as core::clone::Clone>::clone, <crate::dib::HeaderBytesOptions as core::cmp::PartialEq>::eq, <crate::dib::HeaderBytesOptions as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::Policy as core::clone::Clone>::clone, <crate::dib::Policy as core::cmp::PartialEq>::eq, <crate::dib::Policy as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::BmpProfile as core::clone::Clone>::clone, <crate::dib::BmpProfile as core::cmp::PartialEq>::eq, <crate::dib::BmpProfile as core::cmp::Eq>::assert_fields_are_eq, <crate::dib::BmpMode as core::clone::Clone>::clone, <crate::dib::BmpMode as core::cmp::PartialEq>::eq, <crate::dib::BmpMode as core::cmp::Eq>::assert_fields_are_eq
@@ -32,10 +32,10 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   [allowlist-reviewer] reviewer is missing or empty (recorded Some("")); the allowlist is unsigned
 
 -- source files (7) --
-  combined 10f5071a08964bb735ee266801c53d5c82926a36701cf4e01bbe0218b61e684c
+  combined 1176feef4f943a58c0073ba25f27f53c00b40a14d7b8812321ee91adb45bf62d
   26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7  src/alloc_guard/mod.rs
   33465c740e10162d0d6634afd0a6033e26f3d0f523b40e375f4b1d46bcdf000a  src/alloc_guard/sites.rs
-  07e1e000b69eebeecb22c5a9e5fdfbc2dcb811c826027016f697278b8a6c311e  src/dib.rs
+  cc76dbed33705c6e91bbc694e24df30a62dc28c1a935f9787a8ebf91a386d227  src/dib.rs
   9faeaf96c3b1d511f9764de34708d0f84822600c48045da3c84d31a327eb5a51  src/lib.rs
   f3dd49ca95b325ab7ee5c4a89746871c8b62f6f32c48a63f217dc29262288845  src/model.rs
   e80eafc58dd3591328b93c3044c51ae9ebd637b16f23abd015daa0ce98305346  src/model_vectors.rs
@@ -44,11 +44,11 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   build-script: none
   include: none (no file loaded other than module files)
   env: none (no env!/option_env!/tracked env read)
-  proc-macro verus_builtin_macros svh=aed47e5b6e044f8a217640aec802e715 /tmp/claude-0/alloc-audit/cores/dib/release/deps/libverus_builtin_macros-c32361d025cb512f.so sha256=a5f3765fadd6d754581b1f48397e4cdbb02f386ad872392622a2e5f292ad17da
-  proc-macro verus_state_machines_macros svh=70d2fe81030862011fed591e02bc1700 /tmp/claude-0/alloc-audit/cores/dib/release/deps/libverus_state_machines_macros-afcf93a216aa33b2.so sha256=27bb5c1b206d32e5634e6507acb27cd00644ed0db2fb1a37485435255dd38a86
+  proc-macro verus_builtin_macros svh=aed47e5b6e044f8a217640aec802e715 /tmp/claude-0/alloc-audit/cores/ico/release/deps/libverus_builtin_macros-c32361d025cb512f.so sha256=a5f3765fadd6d754581b1f48397e4cdbb02f386ad872392622a2e5f292ad17da
+  proc-macro verus_state_machines_macros svh=70d2fe81030862011fed591e02bc1700 /tmp/claude-0/alloc-audit/cores/ico/release/deps/libverus_state_machines_macros-afcf93a216aa33b2.so sha256=27bb5c1b206d32e5634e6507acb27cd00644ed0db2fb1a37485435255dd38a86
 
 -- linked artifacts and command line (12) --
-  rustc command line: /tmp/claude-0/alloc-audit/tool-target/release/alloc_audit --crate-name dib_verus --edition=2021 src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata,link -C opt-level=3 -C embed-bitcode=no --warn=unexpected_cfgs --check-cfg cfg(verus_only) --check-cfg cfg(docsrs,test) --check-cfg cfg(feature, values()) -C metadata=70b783d1a0b1c323 -C extra-filename=-907fdf73f9d778db --out-dir /tmp/claude-0/alloc-audit/cores/dib/x86_64-unknown-linux-gnu/release/deps --target x86_64-unknown-linux-gnu -C strip=debuginfo -L dependency=/tmp/claude-0/alloc-audit/cores/dib/x86_64-unknown-linux-gnu/release/deps -L dependency=/tmp/claude-0/alloc-audit/cores/dib/release/deps --extern vstd=/tmp/claude-0/alloc-audit/cores/dib/x86_64-unknown-linux-gnu/release/deps/libvstd-9376ba70600fade7.rmeta
+  rustc command line: /tmp/claude-0/alloc-audit/tool-target/release/alloc_audit --crate-name dib_verus --edition=2021 /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata,link -C opt-level=3 -C embed-bitcode=no --warn=unexpected_cfgs --check-cfg cfg(verus_only) --check-cfg cfg(docsrs,test) --check-cfg cfg(feature, values()) -C metadata=6ab8632a02a463ca -C extra-filename=-669ea58bf9d6c289 --out-dir /tmp/claude-0/alloc-audit/cores/ico/x86_64-unknown-linux-gnu/release/deps --target x86_64-unknown-linux-gnu -C strip=debuginfo -L dependency=/tmp/claude-0/alloc-audit/cores/ico/x86_64-unknown-linux-gnu/release/deps -L dependency=/tmp/claude-0/alloc-audit/cores/ico/release/deps --extern vstd=/tmp/claude-0/alloc-audit/cores/ico/x86_64-unknown-linux-gnu/release/deps/libvstd-9376ba70600fade7.rmeta
   env CARGO_MANIFEST_DIR=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus
   env CARGO_PKG_NAME=dib_verus
   env CARGO_PKG_VERSION=0.4.0
@@ -56,10 +56,10 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   crate core svh=cbc12955c475a0d98147c7ede674d8a8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcore-1d288395a3394ed3.rmeta sha256=f991bfdb98d878590ba8a11da984bc230a078ee8079e27fcfd65854803b436f5
   crate alloc svh=3e16574379d685a1d1b3318e7fc12518 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/liballoc-3988244237fec6ee.rmeta sha256=92fa3a38f8b43981aeb810e6be09f9b0a66f38439272f8ee1b7ddb832a8aa065
   crate compiler_builtins svh=608975982fce69540ecd1b8bed34a3d8 kind=Unconditional sysroot=true artifact /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcompiler_builtins-2d9557d6e902a200.rmeta sha256=9462f23a8789d047933fc26cbdff2172961ee5c9bf994690b196ff9c3de5a5cf
-  crate vstd svh=fa564daeee3bd3d96afb1a9ec5dbc24f kind=Unconditional sysroot=false artifact /tmp/claude-0/alloc-audit/cores/dib/x86_64-unknown-linux-gnu/release/deps/libvstd-9376ba70600fade7.rmeta sha256=f93b65602d91170edd3bb93b775f0a423ad35a7a154329588eeec12ec52b1045
-  crate verus_builtin_macros svh=aed47e5b6e044f8a217640aec802e715 kind=MacrosOnly sysroot=false artifact /tmp/claude-0/alloc-audit/cores/dib/release/deps/libverus_builtin_macros-c32361d025cb512f.so sha256=a5f3765fadd6d754581b1f48397e4cdbb02f386ad872392622a2e5f292ad17da
-  crate verus_state_machines_macros svh=70d2fe81030862011fed591e02bc1700 kind=MacrosOnly sysroot=false artifact /tmp/claude-0/alloc-audit/cores/dib/release/deps/libverus_state_machines_macros-afcf93a216aa33b2.so sha256=27bb5c1b206d32e5634e6507acb27cd00644ed0db2fb1a37485435255dd38a86
-  crate verus_builtin svh=06bbe94fd6feef326e91b49a87810e1a kind=Unconditional sysroot=false artifact /tmp/claude-0/alloc-audit/cores/dib/x86_64-unknown-linux-gnu/release/deps/libverus_builtin-86c4460c3bc0417a.rmeta sha256=b0dfaa6407e42b7d15ce63155dd40cda0dee94d6a57102b23edc5e7e718cf4e5
+  crate vstd svh=fa564daeee3bd3d96afb1a9ec5dbc24f kind=Unconditional sysroot=false artifact /tmp/claude-0/alloc-audit/cores/ico/x86_64-unknown-linux-gnu/release/deps/libvstd-9376ba70600fade7.rmeta sha256=f93b65602d91170edd3bb93b775f0a423ad35a7a154329588eeec12ec52b1045
+  crate verus_builtin_macros svh=aed47e5b6e044f8a217640aec802e715 kind=MacrosOnly sysroot=false artifact /tmp/claude-0/alloc-audit/cores/ico/release/deps/libverus_builtin_macros-c32361d025cb512f.so sha256=a5f3765fadd6d754581b1f48397e4cdbb02f386ad872392622a2e5f292ad17da
+  crate verus_state_machines_macros svh=70d2fe81030862011fed591e02bc1700 kind=MacrosOnly sysroot=false artifact /tmp/claude-0/alloc-audit/cores/ico/release/deps/libverus_state_machines_macros-afcf93a216aa33b2.so sha256=27bb5c1b206d32e5634e6507acb27cd00644ed0db2fb1a37485435255dd38a86
+  crate verus_builtin svh=06bbe94fd6feef326e91b49a87810e1a kind=Unconditional sysroot=false artifact /tmp/claude-0/alloc-audit/cores/ico/x86_64-unknown-linux-gnu/release/deps/libverus_builtin-86c4460c3bc0417a.rmeta sha256=b0dfaa6407e42b7d15ce63155dd40cda0dee94d6a57102b23edc5e7e718cf4e5
 
 -- allocator sinks (every root-to-sink path judged) (10) --
   OK alloc::raw_vec::handle_error (Abort): 1 justified authorisation state(s), 0 unauthorized
@@ -107,19 +107,19 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
 
 -- guard call sites and generic exports (3) --
   crate::alloc_guard::try_zeroed: 1 call site(s), expected 1
-      src/dib.rs:9222:11: 9223:22 (in crate::dib::alloc_output_n)
+      /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9222:11: 9223:22 (in crate::dib::alloc_output_n)
   guard fn crate::alloc_guard::try_zeroed: reaches an allocator sink; #[inline(never)] present
 
 -- dependency contracts (0) --
 
 -- edges (712) --
-  crate::alloc_guard::sites::TryError::name -> crate::dib::Error::name [call] @ src/alloc_guard/sites.rs:51:36: 51:44
-  <crate::alloc_guard::sites::TryError as core::cmp::PartialEq>::eq -> core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::alloc_guard::OutOfMemory,crate::alloc_guard::OutOfMemory> [inlined] @ src/alloc_guard/sites.rs:25:17: 25:28
+  crate::alloc_guard::sites::TryError::name -> crate::dib::Error::name [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/sites.rs:51:36: 51:44
+  <crate::alloc_guard::sites::TryError as core::cmp::PartialEq>::eq -> core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::alloc_guard::OutOfMemory,crate::alloc_guard::OutOfMemory> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/sites.rs:25:17: 25:28
   core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::alloc_guard::OutOfMemory,crate::alloc_guard::OutOfMemory> -> <crate::alloc_guard::OutOfMemory as core::cmp::PartialEq>::eq [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2351:13: 2351:41
-  <crate::alloc_guard::OutOfMemory as core::cmp::PartialEq>::eq -> <crate::alloc_guard::sites::AllocSite as core::cmp::PartialEq>::eq [inlined] @ src/alloc_guard/mod.rs:67:5: 67:20
-  <crate::alloc_guard::sites::TryError as core::cmp::PartialEq>::eq -> core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::dib::Error,crate::dib::Error> [inlined] @ src/alloc_guard/sites.rs:24:12: 24:17
+  <crate::alloc_guard::OutOfMemory as core::cmp::PartialEq>::eq -> <crate::alloc_guard::sites::AllocSite as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/mod.rs:67:5: 67:20
+  <crate::alloc_guard::sites::TryError as core::cmp::PartialEq>::eq -> core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::dib::Error,crate::dib::Error> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/sites.rs:24:12: 24:17
   core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::dib::Error,crate::dib::Error> -> <crate::dib::Error as core::cmp::PartialEq>::eq [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2351:13: 2351:41
-  crate::alloc_guard::try_zeroed -> alloc::vec::Vec::<T>::new<u8> [inlined] @ src/alloc_guard/mod.rs:132:26: 132:36
+  crate::alloc_guard::try_zeroed -> alloc::vec::Vec::<T>::new<u8> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/mod.rs:132:26: 132:36
   alloc::vec::Vec::<T>::new<u8> -> alloc::raw_vec::RawVec::<T>::new<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:462:20: 462:33
   alloc::raw_vec::RawVec::<T>::new<u8> -> alloc::raw_vec::RawVec::<T, A>::new_in<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:104:9: 104:29
   alloc::raw_vec::RawVec::<T, A>::new_in<u8,alloc::alloc::Global> -> core::mem::alignment::Alignment::of<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:202:50: 202:70
@@ -127,21 +127,21 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   alloc::raw_vec::RawVecInner::<A>::new_in<alloc::alloc::Global> -> core::mem::alignment::Alignment::as_nonzero_usize [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:570:75: 570:93
   alloc::raw_vec::RawVecInner::<A>::new_in<alloc::alloc::Global> -> core::ptr::non_null::NonNull::<T>::without_provenance<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:570:41: 570:94
   alloc::raw_vec::RawVecInner::<A>::new_in<alloc::alloc::Global> -> core::ptr::unique::Unique::<T>::from_non_null<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:570:19: 570:95
-  crate::alloc_guard::try_zeroed -> alloc::vec::Vec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> [inlined] @ src/alloc_guard/mod.rs:133:13: 133:33
+  crate::alloc_guard::try_zeroed -> alloc::vec::Vec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/mod.rs:133:13: 133:33
   alloc::vec::Vec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> -> alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1571:18: 1571:57
   alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:384:18: 384:74
-  crate::alloc_guard::try_zeroed -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/alloc_guard/mod.rs:144:1: 144:2
-  crate::alloc_guard::try_zeroed -> alloc::vec::Vec::<T, A>::resize<u8,alloc::alloc::Global> [call] @ src/alloc_guard/mod.rs:135:13: 135:29
-  crate::alloc_guard::try_zeroed -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/alloc_guard/mod.rs:144:1: 144:2
-  crate::dib::try_decode_with_steps_logged -> verus_builtin::Ghost::<A>::assume_new_fallback<verus_builtin::nat> [inlined] @ src/dib.rs:8454:21: 8454:26
-  crate::dib::try_decode_with_steps_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/dib.rs:8455:58: 8455:65
-  crate::dib::try_decode_with_steps_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<crate::alloc_guard::AllocLog> [inlined] @ src/dib.rs:8488:21: 8488:28
-  crate::dib::try_decode_with_steps_logged -> crate::dib::decode_tracked [call] @ src/dib.rs:8455:18: 8455:76
-  crate::dib::try_decode_with_steps -> crate::dib::try_decode_with_steps_logged [call] @ src/dib.rs:8505:13: 8505:54
-  crate::dib::try_decode -> crate::dib::try_decode_with_steps_logged [call] @ src/dib.rs:8552:13: 8552:54
-  crate::dib::try_decode_with_policy -> crate::dib::profile_policy_exec [inlined] @ src/dib.rs:8792:18: 8792:46
-  crate::dib::try_decode_with_policy -> crate::dib::try_decode_policy_tracked [call] @ src/dib.rs:8793:13: 8793:57
-  <crate::dib::Decoded as core::cmp::PartialEq>::eq -> alloc::vec::partial_eq::<impl core::cmp::PartialEq<alloc::vec::Vec<U, A2>> for alloc::vec::Vec<T, A1>>::eq<u8,u8,alloc::alloc::Global,alloc::alloc::Global> [inlined] @ src/dib.rs:174:5: 174:22
+  crate::alloc_guard::try_zeroed -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/mod.rs:144:1: 144:2
+  crate::alloc_guard::try_zeroed -> alloc::vec::Vec::<T, A>::resize<u8,alloc::alloc::Global> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/mod.rs:135:13: 135:29
+  crate::alloc_guard::try_zeroed -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/mod.rs:144:1: 144:2
+  crate::dib::try_decode_with_steps_logged -> verus_builtin::Ghost::<A>::assume_new_fallback<verus_builtin::nat> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8454:21: 8454:26
+  crate::dib::try_decode_with_steps_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8455:58: 8455:65
+  crate::dib::try_decode_with_steps_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8488:21: 8488:28
+  crate::dib::try_decode_with_steps_logged -> crate::dib::decode_tracked [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8455:18: 8455:76
+  crate::dib::try_decode_with_steps -> crate::dib::try_decode_with_steps_logged [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8505:13: 8505:54
+  crate::dib::try_decode -> crate::dib::try_decode_with_steps_logged [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8552:13: 8552:54
+  crate::dib::try_decode_with_policy -> crate::dib::profile_policy_exec [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8792:18: 8792:46
+  crate::dib::try_decode_with_policy -> crate::dib::try_decode_policy_tracked [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8793:13: 8793:57
+  <crate::dib::Decoded as core::cmp::PartialEq>::eq -> alloc::vec::partial_eq::<impl core::cmp::PartialEq<alloc::vec::Vec<U, A2>> for alloc::vec::Vec<T, A1>>::eq<u8,u8,alloc::alloc::Global,alloc::alloc::Global> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:174:5: 174:22
   alloc::vec::partial_eq::<impl core::cmp::PartialEq<alloc::vec::Vec<U, A2>> for alloc::vec::Vec<T, A1>>::eq<u8,u8,alloc::alloc::Global,alloc::alloc::Global> -> <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,core::ops::range::RangeFull,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/partial_eq.rs:15:54: 15:58
   <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,core::ops::range::RangeFull,alloc::alloc::Global> -> <alloc::vec::Vec<T, A> as core::ops::deref::Deref>::deref<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3934:23: 3934:29
   <alloc::vec::Vec<T, A> as core::ops::deref::Deref>::deref<u8,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::as_slice<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3852:14: 3852:24
@@ -160,27 +160,27 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   core::slice::cmp::<impl core::cmp::PartialEq<[U]> for [T]>::eq<u8,u8> -> core::slice::<impl [T]>::as_ptr<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/cmp.rs:24:61: 24:69
   core::slice::cmp::<impl core::cmp::PartialEq<[U]> for [T]>::eq<u8,u8> -> <A as core::slice::cmp::SlicePartialEq<B>>::equal_same_length<u8,u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/cmp.rs:24:22: 24:91
   <A as core::slice::cmp::SlicePartialEq<B>>::equal_same_length<u8,u8> -> core::intrinsics::compare_bytes [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/cmp.rs:157:13: 157:52
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::MetadataOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:424:5: 424:35
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::PlanesOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:427:5: 427:30
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::ReservedOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:429:5: 429:34
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::OffsetOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:433:5: 433:30
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::HighCountOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:435:5: 435:37
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::HeadersOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:437:5: 437:32
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::MasksOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:439:5: 439:28
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::ShortPixelsOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:441:5: 441:41
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::RleEolOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:443:5: 443:31
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::RleOverrunOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:445:5: 445:39
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::RleDeltaOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:447:5: 447:35
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::RleEobOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:449:5: 449:31
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::RleFillOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:451:5: 451:33
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::PaletteIndexOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:453:5: 453:43
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::ScalingOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:455:5: 455:32
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::UnsupportedOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:457:5: 457:40
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::BitfieldOffsetOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:459:5: 459:47
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::Bitfield16AlphaOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:461:5: 461:49
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::IncompleteMetadataOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:463:5: 463:55
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::ShortIndexedGapOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:465:5: 465:50
-  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::HeaderBytesOptions as core::cmp::PartialEq>::eq [inlined] @ src/dib.rs:467:5: 467:41
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::MetadataOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:424:5: 424:35
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::PlanesOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:427:5: 427:30
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::ReservedOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:429:5: 429:34
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::OffsetOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:433:5: 433:30
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::HighCountOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:435:5: 435:37
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::HeadersOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:437:5: 437:32
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::MasksOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:439:5: 439:28
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::ShortPixelsOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:441:5: 441:41
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::RleEolOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:443:5: 443:31
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::RleOverrunOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:445:5: 445:39
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::RleDeltaOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:447:5: 447:35
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::RleEobOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:449:5: 449:31
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::RleFillOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:451:5: 451:33
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::PaletteIndexOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:453:5: 453:43
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::ScalingOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:455:5: 455:32
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::UnsupportedOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:457:5: 457:40
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::BitfieldOffsetOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:459:5: 459:47
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::Bitfield16AlphaOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:461:5: 461:49
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::IncompleteMetadataOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:463:5: 463:55
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::ShortIndexedGapOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:465:5: 465:50
+  <crate::dib::Policy as core::cmp::PartialEq>::eq -> <crate::dib::HeaderBytesOptions as core::cmp::PartialEq>::eq [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:467:5: 467:41
   core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::alloc_guard::OutOfMemory,crate::alloc_guard::OutOfMemory> -> <crate::alloc_guard::OutOfMemory as core::cmp::PartialEq>::eq [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2351:13: 2351:41
   core::cmp::impls::<impl core::cmp::PartialEq<&B> for &A>::eq<crate::dib::Error,crate::dib::Error> -> <crate::dib::Error as core::cmp::PartialEq>::eq [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2351:13: 2351:41
   alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<u8,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:384:18: 384:74
@@ -206,19 +206,19 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   alloc::vec::Vec::<T, A>::resize<u8,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::truncate<u8,alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3577:13: 3577:35
   alloc::vec::Vec::<T, A>::resize<u8,alloc::alloc::Global> -> core::ptr::drop_glue<u8> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3579:5: 3579:6
   alloc::vec::Vec::<T, A>::resize<u8,alloc::alloc::Global> -> core::ptr::drop_glue<u8> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3579:5: 3579:6
-  crate::dib::decode_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/dib.rs:8186:45: 8186:52
-  crate::dib::decode_tracked -> crate::dib::header_alpha [inlined] @ src/dib.rs:8405:77: 8405:93
-  crate::dib::decode_tracked -> crate::dib::parse_header [call] @ src/dib.rs:8122:19: 8122:44
-  crate::dib::decode_tracked -> crate::dib::alloc_output [call] @ src/dib.rs:8186:21: 8186:58
-  crate::dib::decode_tracked -> crate::dib::decode_raw [call] @ src/dib.rs:8238:9: 8238:62
-  crate::dib::decode_tracked -> crate::dib::decode_rle [call] @ src/dib.rs:8240:9: 8240:58
-  crate::dib::decode_tracked -> crate::dib::finish_mask [call] @ src/dib.rs:8290:23: 8290:67
-  crate::dib::decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/dib.rs:8406:1: 8406:2
-  crate::dib::decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/dib.rs:8406:1: 8406:2
-  crate::dib::try_decode_policy_tracked -> verus_builtin::Ghost::<A>::assume_new_fallback<verus_builtin::nat> [inlined] @ src/dib.rs:10651:21: 10651:26
-  crate::dib::try_decode_policy_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/dib.rs:10653:66: 10653:73
-  crate::dib::try_decode_policy_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<crate::alloc_guard::AllocLog> [inlined] @ src/dib.rs:10674:16: 10674:23
-  crate::dib::try_decode_policy_tracked -> crate::dib::decode_policy_tracked [call] @ src/dib.rs:10653:13: 10653:84
+  crate::dib::decode_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8186:45: 8186:52
+  crate::dib::decode_tracked -> crate::dib::header_alpha [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8405:77: 8405:93
+  crate::dib::decode_tracked -> crate::dib::parse_header [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8122:19: 8122:44
+  crate::dib::decode_tracked -> crate::dib::alloc_output [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8186:21: 8186:58
+  crate::dib::decode_tracked -> crate::dib::decode_raw [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8238:9: 8238:62
+  crate::dib::decode_tracked -> crate::dib::decode_rle [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8240:9: 8240:58
+  crate::dib::decode_tracked -> crate::dib::finish_mask [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8290:23: 8290:67
+  crate::dib::decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8406:1: 8406:2
+  crate::dib::decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8406:1: 8406:2
+  crate::dib::try_decode_policy_tracked -> verus_builtin::Ghost::<A>::assume_new_fallback<verus_builtin::nat> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10651:21: 10651:26
+  crate::dib::try_decode_policy_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10653:66: 10653:73
+  crate::dib::try_decode_policy_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10674:16: 10674:23
+  crate::dib::try_decode_policy_tracked -> crate::dib::decode_policy_tracked [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10653:13: 10653:84
   core::slice::cmp::<impl core::cmp::PartialEq<[U]> for [T]>::eq<u8,u8> -> <A as core::slice::cmp::SlicePartialEq<B>>::equal_same_length<u8,u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/cmp.rs:24:22: 24:91
   core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::RangeFull> -> <core::ops::range::RangeFull as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
   core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::RangeFull> -> <core::ops::range::RangeFull as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
@@ -286,28 +286,28 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   alloc::vec::Vec::<T, A>::truncate<u8,alloc::alloc::Global> -> core::ptr::mut_ptr::<impl *mut T>::cast_slice<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1827:48: 1827:73
   alloc::vec::Vec::<T, A>::truncate<u8,alloc::alloc::Global> -> core::ptr::drop_in_place<[u8]> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1829:13: 1829:34
   core::ptr::drop_in_place<[u8]> -> core::ptr::drop_glue<[u8]> [drop-glue] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:842:14: 842:38
-  crate::dib::parse_header -> crate::dib::strict_policy_exec [inlined] @ src/dib.rs:2047:14: 2047:34
-  crate::dib::parse_header -> crate::dib::bmp_prefix [call] @ src/dib.rs:2023:27: 2023:44
-  crate::dib::parse_header -> crate::dib::dib_fields [call] @ src/dib.rs:2051:19: 2051:74
-  crate::dib::parse_header -> crate::dib::dib_finish [call] @ src/dib.rs:2084:11: 2084:57
-  crate::dib::alloc_output -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/dib.rs:3949:32: 3949:39
-  crate::dib::alloc_output -> crate::dib::alloc_output_n [call] @ src/dib.rs:3949:5: 3949:45
-  crate::dib::decode_raw -> crate::dib::raw_loop [call] @ src/dib.rs:4768:13: 4768:54
-  crate::dib::decode_rle -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ src/dib.rs:6821:64: 6821:69
-  crate::dib::decode_rle -> crate::dib::fill_rle [call] @ src/dib.rs:6810:5: 6810:31
-  crate::dib::decode_rle -> crate::dib::rle_loop [call] @ src/dib.rs:6821:18: 6821:91
-  crate::dib::finish_mask -> crate::dib::stride [inlined] @ src/dib.rs:7541:55: 7541:73
-  crate::dib::finish_mask -> crate::dib::alpha_present [inlined] @ src/dib.rs:7673:25: 7673:53
-  crate::dib::alpha_present -> <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,usize,alloc::alloc::Global> [inlined] @ src/dib.rs:6864:15: 6864:26
+  crate::dib::parse_header -> crate::dib::strict_policy_exec [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2047:14: 2047:34
+  crate::dib::parse_header -> crate::dib::bmp_prefix [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2023:27: 2023:44
+  crate::dib::parse_header -> crate::dib::dib_fields [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2051:19: 2051:74
+  crate::dib::parse_header -> crate::dib::dib_finish [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2084:11: 2084:57
+  crate::dib::alloc_output -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3949:32: 3949:39
+  crate::dib::alloc_output -> crate::dib::alloc_output_n [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3949:5: 3949:45
+  crate::dib::decode_raw -> crate::dib::raw_loop [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4768:13: 4768:54
+  crate::dib::decode_rle -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6821:64: 6821:69
+  crate::dib::decode_rle -> crate::dib::fill_rle [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6810:5: 6810:31
+  crate::dib::decode_rle -> crate::dib::rle_loop [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6821:18: 6821:91
+  crate::dib::finish_mask -> crate::dib::stride [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:7541:55: 7541:73
+  crate::dib::finish_mask -> crate::dib::alpha_present [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:7673:25: 7673:53
+  crate::dib::alpha_present -> <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,usize,alloc::alloc::Global> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6864:15: 6864:26
   <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,usize,alloc::alloc::Global> -> <alloc::vec::Vec<T, A> as core::ops::deref::Deref>::deref<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3934:23: 3934:29
   <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,usize,alloc::alloc::Global> -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,usize> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3934:9: 3934:37
   core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:15: 19:26
-  crate::dib::finish_mask -> crate::dib::apply_and [call] @ src/dib.rs:7675:13: 7675:84
-  crate::dib::decode_policy_tracked -> crate::dib::header_alpha [inlined] @ src/dib.rs:9690:17: 9690:33
-  crate::dib::decode_policy_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/dib.rs:9650:77: 9650:84
-  crate::dib::decode_policy_tracked -> crate::dib::parse_header_policy [call] @ src/dib.rs:9644:19: 9644:57
-  crate::dib::decode_policy_tracked -> crate::dib::decode_complete_policy [call] @ src/dib.rs:9692:13: 9692:85
-  crate::dib::decode_policy_tracked -> crate::dib::decode_partial_metadata [call] @ src/dib.rs:9650:24: 9650:90
+  crate::dib::finish_mask -> crate::dib::apply_and [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:7675:13: 7675:84
+  crate::dib::decode_policy_tracked -> crate::dib::header_alpha [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9690:17: 9690:33
+  crate::dib::decode_policy_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9650:77: 9650:84
+  crate::dib::decode_policy_tracked -> crate::dib::parse_header_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9644:19: 9644:57
+  crate::dib::decode_policy_tracked -> crate::dib::decode_complete_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9692:13: 9692:85
+  crate::dib::decode_policy_tracked -> crate::dib::decode_partial_metadata [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9650:24: 9650:90
   <T as core::convert::Into<U>>::into<alloc::collections::TryReserveErrorKind,alloc::collections::TryReserveError> -> <alloc::collections::TryReserveError as core::convert::From<alloc::collections::TryReserveErrorKind>>::from [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/convert/mod.rs:781:9: 781:22
   core::intrinsics::unlikely -> core::intrinsics::cold_path [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs:479:9: 479:20
   core::intrinsics::unlikely -> core::intrinsics::cold_path [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs:479:9: 479:20
@@ -364,52 +364,52 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   core::num::<impl usize>::unchecked_add::precondition_check -> core::num::<impl usize>::overflowing_add [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:1008:27: 1008:47
   core::num::<impl usize>::unchecked_add::precondition_check -> core::fmt::Arguments::<'a>::from_str [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:73:59: 73:96
   core::num::<impl usize>::unchecked_add::precondition_check -> core::panicking::panic_nounwind_fmt [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:73:21: 73:104
-  crate::dib::bmp_prefix -> crate::dib::rd16 [inlined] @ src/dib.rs:1674:16: 1674:30
-  crate::dib::bmp_prefix -> crate::dib::rd32 [call] @ src/dib.rs:1673:19: 1673:33
-  crate::dib::bmp_prefix -> crate::dib::rd32 [call] @ src/dib.rs:1694:15: 1694:30
-  crate::dib::dib_fields -> crate::dib::rd16 [inlined] @ src/dib.rs:2336:19: 2336:41
-  crate::dib::dib_fields -> crate::dib::rd32s [inlined] @ src/dib.rs:2347:19: 2347:42
-  crate::dib::dib_fields -> crate::dib::rd32 [call] @ src/dib.rs:2254:16: 2254:34
-  crate::dib::rd32s -> crate::dib::rd32 [call] @ src/dib.rs:892:13: 892:23
-  crate::dib::rd32s -> crate::dib::rd32 [call] @ src/dib.rs:892:13: 892:23
-  crate::dib::dib_fields -> crate::dib::rd32 [call] @ src/dib.rs:2364:26: 2364:49
-  crate::dib::dib_fields -> crate::dib::rd32 [call] @ src/dib.rs:2365:16: 2365:39
-  crate::dib::dib_fields -> crate::dib::validate_dib_fields [call] @ src/dib.rs:2390:5: 2391:81
-  crate::dib::rd32s -> crate::dib::rd32 [call] @ src/dib.rs:892:13: 892:23
-  crate::dib::rd32s -> crate::dib::rd32 [call] @ src/dib.rs:892:13: 892:23
-  crate::dib::dib_fields -> crate::dib::rd32 [call] @ src/dib.rs:2363:23: 2363:46
-  crate::dib::dib_finish -> crate::dib::policy_palette_counts [inlined] @ src/dib.rs:3127:32: 3127:84
-  crate::dib::dib_finish -> crate::dib::dib_policy_masks [call] @ src/dib.rs:3119:40: 3119:74
-  crate::dib::alloc_output_n -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/dib.rs:9223:9: 9223:16
-  crate::dib::alloc_output_n -> crate::alloc_guard::try_zeroed [call] @ src/dib.rs:9222:11: 9223:22
-  crate::dib::raw_loop -> crate::dib::stride [inlined] @ src/dib.rs:4496:16: 4496:39
-  crate::dib::raw_loop -> crate::dib::out_offset [inlined] @ src/dib.rs:4656:17: 4656:36
-  crate::dib::raw_loop -> crate::dib::raw_sample [call] @ src/dib.rs:4630:23: 4630:53
-  crate::dib::raw_loop -> crate::dib::put [call] @ src/dib.rs:4663:9: 4663:23
-  crate::dib::fill_rle -> crate::dib::colour [call] @ src/dib.rs:4839:19: 4839:71
-  crate::dib::fill_rle -> crate::dib::put [call] @ src/dib.rs:4865:9: 4865:23
-  crate::dib::rle_loop -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ src/dib.rs:5846:57: 5846:62
-  crate::dib::rle_loop -> crate::dib::rle_command [call] @ src/dib.rs:5846:23: 5846:74
+  crate::dib::bmp_prefix -> crate::dib::rd16 [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1674:16: 1674:30
+  crate::dib::bmp_prefix -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1673:19: 1673:33
+  crate::dib::bmp_prefix -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1694:15: 1694:30
+  crate::dib::dib_fields -> crate::dib::rd16 [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2336:19: 2336:41
+  crate::dib::dib_fields -> crate::dib::rd32s [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2347:19: 2347:42
+  crate::dib::dib_fields -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2254:16: 2254:34
+  crate::dib::rd32s -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:892:13: 892:23
+  crate::dib::rd32s -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:892:13: 892:23
+  crate::dib::dib_fields -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2364:26: 2364:49
+  crate::dib::dib_fields -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2365:16: 2365:39
+  crate::dib::dib_fields -> crate::dib::validate_dib_fields [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2390:5: 2391:81
+  crate::dib::rd32s -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:892:13: 892:23
+  crate::dib::rd32s -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:892:13: 892:23
+  crate::dib::dib_fields -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2363:23: 2363:46
+  crate::dib::dib_finish -> crate::dib::policy_palette_counts [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3127:32: 3127:84
+  crate::dib::dib_finish -> crate::dib::dib_policy_masks [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3119:40: 3119:74
+  crate::dib::alloc_output_n -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9223:9: 9223:16
+  crate::dib::alloc_output_n -> crate::alloc_guard::try_zeroed [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9222:11: 9223:22
+  crate::dib::raw_loop -> crate::dib::stride [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4496:16: 4496:39
+  crate::dib::raw_loop -> crate::dib::out_offset [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4656:17: 4656:36
+  crate::dib::raw_loop -> crate::dib::raw_sample [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4630:23: 4630:53
+  crate::dib::raw_loop -> crate::dib::put [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4663:9: 4663:23
+  crate::dib::fill_rle -> crate::dib::colour [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4839:19: 4839:71
+  crate::dib::fill_rle -> crate::dib::put [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4865:9: 4865:23
+  crate::dib::rle_loop -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5846:57: 5846:62
+  crate::dib::rle_loop -> crate::dib::rle_command [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5846:23: 5846:74
   core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
   core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
-  crate::dib::apply_and -> crate::dib::rd [inlined] @ src/dib.rs:6999:27: 6999:45
-  crate::dib::apply_and -> crate::dib::out_offset [inlined] @ src/dib.rs:7001:21: 7001:40
-  crate::dib::apply_and -> crate::dib::put_alpha [inlined] @ src/dib.rs:7018:27: 7018:47
-  crate::dib::put_alpha -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ src/dib.rs:1370:5: 1370:18
-  crate::dib::put_alpha -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ src/dib.rs:1370:5: 1370:18
-  crate::dib::parse_header_policy -> crate::dib::bmp_mode_mode [inlined] @ src/dib.rs:1750:16: 1750:33
-  crate::dib::parse_header_policy -> crate::dib::dib_fields [call] @ src/dib.rs:1790:19: 1790:78
-  crate::dib::parse_header_policy -> crate::dib::dib_finish [call] @ src/dib.rs:1816:11: 1816:61
-  crate::dib::parse_header_policy -> crate::dib::bmp_prefix_policy [call] @ src/dib.rs:1759:27: 1759:59
-  crate::dib::decode_complete_policy -> verus_builtin::Ghost::<A>::assume_new_fallback<crate::model::MHRecord> [inlined] @ src/dib.rs:9924:79: 9924:84
-  crate::dib::decode_complete_policy -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/dib.rs:9924:96: 9924:103
-  crate::dib::decode_complete_policy -> crate::dib::reserve_complete_policy [call] @ src/dib.rs:9924:32: 9924:109
-  crate::dib::decode_complete_policy -> crate::dib::finish_policy_after_alloc [call] @ src/dib.rs:9930:5: 9931:39
-  crate::dib::decode_partial_metadata -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/dib.rs:9403:48: 9403:55
-  crate::dib::decode_partial_metadata -> crate::dib::revalidate_partial [call] @ src/dib.rs:9373:19: 9373:66
-  crate::dib::decode_partial_metadata -> crate::dib::alloc_output_n [call] @ src/dib.rs:9403:21: 9403:61
-  crate::dib::decode_partial_metadata -> crate::dib::fill_blank [call] @ src/dib.rs:9426:5: 9426:45
-  crate::dib::decode_partial_metadata -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/dib.rs:9440:1: 9440:2
+  crate::dib::apply_and -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6999:27: 6999:45
+  crate::dib::apply_and -> crate::dib::out_offset [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:7001:21: 7001:40
+  crate::dib::apply_and -> crate::dib::put_alpha [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:7018:27: 7018:47
+  crate::dib::put_alpha -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1370:5: 1370:18
+  crate::dib::put_alpha -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1370:5: 1370:18
+  crate::dib::parse_header_policy -> crate::dib::bmp_mode_mode [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1750:16: 1750:33
+  crate::dib::parse_header_policy -> crate::dib::dib_fields [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1790:19: 1790:78
+  crate::dib::parse_header_policy -> crate::dib::dib_finish [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1816:11: 1816:61
+  crate::dib::parse_header_policy -> crate::dib::bmp_prefix_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1759:27: 1759:59
+  crate::dib::decode_complete_policy -> verus_builtin::Ghost::<A>::assume_new_fallback<crate::model::MHRecord> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9924:79: 9924:84
+  crate::dib::decode_complete_policy -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9924:96: 9924:103
+  crate::dib::decode_complete_policy -> crate::dib::reserve_complete_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9924:32: 9924:109
+  crate::dib::decode_complete_policy -> crate::dib::finish_policy_after_alloc [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9930:5: 9931:39
+  crate::dib::decode_partial_metadata -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9403:48: 9403:55
+  crate::dib::decode_partial_metadata -> crate::dib::revalidate_partial [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9373:19: 9373:66
+  crate::dib::decode_partial_metadata -> crate::dib::alloc_output_n [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9403:21: 9403:61
+  crate::dib::decode_partial_metadata -> crate::dib::fill_blank [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9426:5: 9426:45
+  crate::dib::decode_partial_metadata -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9440:1: 9440:2
   core::intrinsics::unlikely -> core::intrinsics::cold_path [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs:479:9: 479:20
   core::alloc::layout::Layout::from_size_alignment_unchecked -> core::alloc::layout::Layout::from_size_alignment_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
   core::alloc::layout::Layout::from_size_alignment_unchecked -> core::alloc::layout::Layout::from_size_alignment_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
@@ -441,45 +441,45 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   alloc::raw_vec::RawVecInner::<A>::reserve<alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::reserve::do_reserve_and_handle<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:672:17: 672:74
   alloc::raw_vec::RawVecInner::<A>::reserve::do_reserve_and_handle<alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::grow_amortized<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:665:40: 665:88
   alloc::raw_vec::RawVecInner::<A>::reserve::do_reserve_and_handle<alloc::alloc::Global> -> alloc::raw_vec::handle_error [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:666:17: 666:34
-  crate::dib::rd32 -> crate::dib::rd16 [inlined] @ src/dib.rs:864:13: 864:23
-  crate::dib::rd32s -> crate::dib::rd32 [call] @ src/dib.rs:892:13: 892:23
-  crate::dib::validate_dib_fields -> crate::dib::abs_i32 [inlined] @ src/dib.rs:2538:17: 2538:39
-  crate::dib::validate_dib_fields -> crate::dib::visible_height [inlined] @ src/dib.rs:2539:20: 2539:47
-  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ src/dib.rs:2912:24: 2912:40
-  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ src/dib.rs:2913:24: 2913:44
-  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ src/dib.rs:2914:24: 2914:44
-  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ src/dib.rs:2932:24: 2932:47
-  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ src/dib.rs:2933:24: 2933:47
-  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ src/dib.rs:2934:24: 2934:47
-  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ src/dib.rs:2939:17: 2939:40
-  crate::dib::dib_policy_masks -> crate::dib::policy_masks [call] @ src/dib.rs:2995:31: 2996:48
-  crate::dib::raw_sample -> crate::dib::rd [inlined] @ src/dib.rs:4102:20: 4102:28
-  crate::dib::raw_sample -> crate::dib::rd16 [inlined] @ src/dib.rs:4233:28: 4233:38
-  crate::dib::raw_sample -> crate::dib::channel [call] @ src/dib.rs:4246:48: 4246:73
-  crate::dib::raw_sample -> crate::dib::channel [call] @ src/dib.rs:4247:21: 4247:46
-  crate::dib::raw_sample -> crate::dib::channel [call] @ src/dib.rs:4247:48: 4247:73
-  crate::dib::raw_sample -> crate::dib::rd32 [call] @ src/dib.rs:4249:28: 4249:38
-  crate::dib::raw_sample -> crate::dib::channel [call] @ src/dib.rs:4262:21: 4262:46
-  crate::dib::raw_sample -> crate::dib::channel [call] @ src/dib.rs:4262:48: 4262:73
-  crate::dib::raw_sample -> crate::dib::channel [call] @ src/dib.rs:4263:21: 4263:46
-  crate::dib::raw_sample -> crate::dib::channel [call] @ src/dib.rs:4263:48: 4263:73
-  crate::dib::raw_sample -> crate::dib::channel [call] @ src/dib.rs:4290:40: 4290:61
-  crate::dib::raw_sample -> crate::dib::channel [call] @ src/dib.rs:4290:63: 4290:84
-  crate::dib::raw_sample -> crate::dib::colour [call] @ src/dib.rs:4142:17: 4142:70
-  crate::dib::raw_sample -> crate::dib::channel [call] @ src/dib.rs:4246:21: 4246:46
-  crate::dib::raw_sample -> crate::dib::channel [call] @ src/dib.rs:4290:17: 4290:38
-  crate::dib::put -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ src/dib.rs:1321:5: 1321:21
-  crate::dib::put -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ src/dib.rs:1322:5: 1322:25
-  crate::dib::put -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ src/dib.rs:1323:5: 1323:25
-  crate::dib::put -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ src/dib.rs:1324:5: 1324:25
-  crate::dib::colour -> crate::dib::rd [inlined] @ src/dib.rs:1274:14: 1274:26
-  crate::dib::rle_command -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ src/dib.rs:5575:43: 5575:48
-  crate::dib::rle_command -> crate::dib::rd [inlined] @ src/dib.rs:5577:20: 5577:31
-  crate::dib::rle_command -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ src/dib.rs:5592:82: 5592:87
-  crate::dib::rle_command -> verus_builtin::Ghost::<A>::assume_new_fallback<verus_builtin::int> [inlined] @ src/dib.rs:5681:64: 5681:69
-  crate::dib::rle_command -> crate::dib::paint_run [call] @ src/dib.rs:5592:18: 5592:131
-  crate::dib::rle_command -> crate::dib::rle_abs_packet [call] @ src/dib.rs:5681:21: 5681:93
-  crate::dib::put_alpha -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ src/dib.rs:1370:5: 1370:18
+  crate::dib::rd32 -> crate::dib::rd16 [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:864:13: 864:23
+  crate::dib::rd32s -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:892:13: 892:23
+  crate::dib::validate_dib_fields -> crate::dib::abs_i32 [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2538:17: 2538:39
+  crate::dib::validate_dib_fields -> crate::dib::visible_height [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2539:20: 2539:47
+  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2912:24: 2912:40
+  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2913:24: 2913:44
+  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2914:24: 2914:44
+  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2932:24: 2932:47
+  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2933:24: 2933:47
+  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2934:24: 2934:47
+  crate::dib::dib_policy_masks -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2939:17: 2939:40
+  crate::dib::dib_policy_masks -> crate::dib::policy_masks [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2995:31: 2996:48
+  crate::dib::raw_sample -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4102:20: 4102:28
+  crate::dib::raw_sample -> crate::dib::rd16 [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4233:28: 4233:38
+  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4246:48: 4246:73
+  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4247:21: 4247:46
+  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4247:48: 4247:73
+  crate::dib::raw_sample -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4249:28: 4249:38
+  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4262:21: 4262:46
+  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4262:48: 4262:73
+  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4263:21: 4263:46
+  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4263:48: 4263:73
+  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4290:40: 4290:61
+  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4290:63: 4290:84
+  crate::dib::raw_sample -> crate::dib::colour [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4142:17: 4142:70
+  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4246:21: 4246:46
+  crate::dib::raw_sample -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4290:17: 4290:38
+  crate::dib::put -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1321:5: 1321:21
+  crate::dib::put -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1322:5: 1322:25
+  crate::dib::put -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1323:5: 1323:25
+  crate::dib::put -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1324:5: 1324:25
+  crate::dib::colour -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1274:14: 1274:26
+  crate::dib::rle_command -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5575:43: 5575:48
+  crate::dib::rle_command -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5577:20: 5577:31
+  crate::dib::rle_command -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5592:82: 5592:87
+  crate::dib::rle_command -> verus_builtin::Ghost::<A>::assume_new_fallback<verus_builtin::int> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5681:64: 5681:69
+  crate::dib::rle_command -> crate::dib::paint_run [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5592:18: 5592:131
+  crate::dib::rle_command -> crate::dib::rle_abs_packet [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5681:21: 5681:93
+  crate::dib::put_alpha -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1370:5: 1370:18
   <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> -> <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> [inlined] @ /home/ws/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/vstd-0.0.0-2026-11-01-0251/pervasive.rs:398:13: 398:16
   <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> -> <alloc::vec::Vec<T, A> as core::ops::deref::DerefMut>::deref_mut<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3943:34: 3943:40
   <alloc::vec::Vec<T, A> as core::ops::deref::DerefMut>::deref_mut<u8,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::as_mut_slice<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3861:14: 3861:28
@@ -488,23 +488,23 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index_mut<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:32:15: 32:30
   <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> -> core::ptr::drop_glue<u8> [drop-glue] [drop] @ /home/ws/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/vstd-0.0.0-2026-11-01-0251/pervasive.rs:398:23: 398:24
   <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> -> core::ptr::drop_glue<u8> [drop-glue] [drop] @ /home/ws/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/vstd-0.0.0-2026-11-01-0251/pervasive.rs:398:9: 398:16
-  crate::dib::bmp_prefix_policy -> crate::dib::rd16 [inlined] @ src/dib.rs:1867:16: 1867:30
-  crate::dib::bmp_prefix_policy -> crate::dib::rd32 [call] @ src/dib.rs:1866:19: 1866:33
-  crate::dib::bmp_prefix_policy -> crate::dib::rd32 [call] @ src/dib.rs:1943:15: 1943:30
-  crate::dib::reserve_complete_policy -> crate::dib::policy_indexed_gap [inlined] @ src/dib.rs:9843:20: 9843:49
-  crate::dib::reserve_complete_policy -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/dib.rs:9870:44: 9870:51
-  crate::dib::reserve_complete_policy -> crate::dib::alloc_output [call] @ src/dib.rs:9870:21: 9870:57
-  crate::dib::finish_policy_after_alloc -> verus_builtin::Ghost::<A>::assume_new_fallback<crate::model::MHRecord> [inlined] @ src/dib.rs:10266:77: 10266:82
-  crate::dib::finish_policy_after_alloc -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/dib.rs:10266:87: 10266:94
-  crate::dib::finish_policy_after_alloc -> crate::dib::finish_policy_blank [call] @ src/dib.rs:10266:16: 10266:100
-  crate::dib::finish_policy_after_alloc -> crate::dib::finish_policy_pixels [call] @ src/dib.rs:10268:5: 10269:39
-  crate::dib::revalidate_partial -> crate::dib::bmp_mode_mode [inlined] @ src/dib.rs:9290:16: 9290:33
-  crate::dib::revalidate_partial -> crate::dib::dib_fields [call] @ src/dib.rs:9301:19: 9301:78
-  crate::dib::revalidate_partial -> crate::dib::bmp_prefix_policy [call] @ src/dib.rs:9293:35: 9293:67
-  crate::dib::fill_blank -> alloc::vec::Vec::<T, A>::len<u8,alloc::alloc::Global> [inlined] @ src/dib.rs:3969:17: 3969:22
-  crate::dib::fill_blank -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ src/dib.rs:3997:13: 3997:28
-  crate::dib::fill_blank -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ src/dib.rs:3999:13: 3999:30
-  crate::dib::fill_blank -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ src/dib.rs:4001:13: 4001:28
+  crate::dib::bmp_prefix_policy -> crate::dib::rd16 [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1867:16: 1867:30
+  crate::dib::bmp_prefix_policy -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1866:19: 1866:33
+  crate::dib::bmp_prefix_policy -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1943:15: 1943:30
+  crate::dib::reserve_complete_policy -> crate::dib::policy_indexed_gap [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9843:20: 9843:49
+  crate::dib::reserve_complete_policy -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9870:44: 9870:51
+  crate::dib::reserve_complete_policy -> crate::dib::alloc_output [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9870:21: 9870:57
+  crate::dib::finish_policy_after_alloc -> verus_builtin::Ghost::<A>::assume_new_fallback<crate::model::MHRecord> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10266:77: 10266:82
+  crate::dib::finish_policy_after_alloc -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10266:87: 10266:94
+  crate::dib::finish_policy_after_alloc -> crate::dib::finish_policy_blank [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10266:16: 10266:100
+  crate::dib::finish_policy_after_alloc -> crate::dib::finish_policy_pixels [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10268:5: 10269:39
+  crate::dib::revalidate_partial -> crate::dib::bmp_mode_mode [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9290:16: 9290:33
+  crate::dib::revalidate_partial -> crate::dib::dib_fields [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9301:19: 9301:78
+  crate::dib::revalidate_partial -> crate::dib::bmp_prefix_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9293:35: 9293:67
+  crate::dib::fill_blank -> alloc::vec::Vec::<T, A>::len<u8,alloc::alloc::Global> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3969:17: 3969:22
+  crate::dib::fill_blank -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3997:13: 3997:28
+  crate::dib::fill_blank -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3999:13: 3999:30
+  crate::dib::fill_blank -> <alloc::vec::Vec<T> as vstd::pervasive::VecAdditionalExecFns<T>>::set<u8> [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4001:13: 4001:28
   core::alloc::layout::Layout::from_size_alignment_unchecked::precondition_check -> core::alloc::layout::Layout::is_size_alignment_valid [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/alloc/layout.rs:164:18: 164:66
   core::alloc::layout::Layout::from_size_alignment_unchecked::precondition_check -> core::fmt::Arguments::<'a>::from_str [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:73:59: 73:96
   core::alloc::layout::Layout::from_size_alignment_unchecked::precondition_check -> core::panicking::panic_nounwind_fmt [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:73:21: 73:104
@@ -625,28 +625,28 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   core::cmp::max<usize> -> core::cmp::Ord::max<usize> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:1694:5: 1694:15
   core::cmp::max<usize> -> core::cmp::Ord::max<usize> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:1694:5: 1694:15
   alloc::raw_vec::RawVecInner::<A>::grow_amortized<alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::finish_grow<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:529:28: 529:62
-  crate::dib::policy_masks -> crate::dib::masks_valid_policy [call] @ src/dib.rs:1156:14: 1156:73
-  crate::dib::channel -> core::num::<impl u32>::trailing_zeros [inlined] @ src/dib.rs:981:22: 981:38
+  crate::dib::policy_masks -> crate::dib::masks_valid_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1156:14: 1156:73
+  crate::dib::channel -> core::num::<impl u32>::trailing_zeros [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:981:22: 981:38
   core::num::<impl u32>::trailing_zeros -> core::intrinsics::cttz<u32> [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:178:20: 178:42
-  crate::dib::paint_run -> crate::dib::out_offset [inlined] @ src/dib.rs:5109:17: 5109:40
-  crate::dib::paint_run -> crate::dib::colour [call] @ src/dib.rs:5064:23: 5064:76
-  crate::dib::paint_run -> crate::dib::put [call] @ src/dib.rs:5116:9: 5116:23
-  crate::dib::rle_abs_packet -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ src/dib.rs:5456:40: 5456:45
-  crate::dib::rle_abs_packet -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ src/dib.rs:5482:70: 5482:75
-  crate::dib::rle_abs_packet -> crate::dib::paint_abs [call] @ src/dib.rs:5482:14: 5482:119
+  crate::dib::paint_run -> crate::dib::out_offset [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5109:17: 5109:40
+  crate::dib::paint_run -> crate::dib::colour [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5064:23: 5064:76
+  crate::dib::paint_run -> crate::dib::put [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5116:9: 5116:23
+  crate::dib::rle_abs_packet -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5456:40: 5456:45
+  crate::dib::rle_abs_packet -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5482:70: 5482:75
+  crate::dib::rle_abs_packet -> crate::dib::paint_abs [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5482:14: 5482:119
   core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index_mut<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:32:9: 32:30
   core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index_mut<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:32:9: 32:30
-  crate::dib::finish_policy_blank -> crate::dib::fill_blank [call] @ src/dib.rs:9988:5: 9988:45
-  crate::dib::finish_policy_blank -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/dib.rs:10028:1: 10028:2
-  crate::dib::finish_policy_pixels -> verus_builtin::Ghost::<A>::assume_new_fallback<crate::model::MHRecord> [inlined] @ src/dib.rs:10314:44: 10314:49
-  crate::dib::finish_policy_pixels -> crate::dib::policy_pixel_start [inlined] @ src/dib.rs:10314:14: 10314:53
-  crate::dib::policy_pixel_start -> crate::dib::bitfield_pixel_start [inlined] @ src/dib.rs:8646:17: 8646:58
-  crate::dib::finish_policy_pixels -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/dib.rs:10323:83: 10323:90
-  crate::dib::finish_policy_pixels -> crate::dib::finish_raw_zero [call] @ src/dib.rs:10323:22: 10323:96
-  crate::dib::finish_policy_pixels -> crate::dib::finish_rle_clipped [call] @ src/dib.rs:10371:16: 10371:89
-  crate::dib::finish_policy_pixels -> crate::dib::finish_policy_plain [call] @ src/dib.rs:10373:8: 10374:39
-  crate::dib::finish_policy_pixels -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/dib.rs:10375:1: 10375:2
-  crate::dib::finish_policy_pixels -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/dib.rs:10375:1: 10375:2
+  crate::dib::finish_policy_blank -> crate::dib::fill_blank [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9988:5: 9988:45
+  crate::dib::finish_policy_blank -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10028:1: 10028:2
+  crate::dib::finish_policy_pixels -> verus_builtin::Ghost::<A>::assume_new_fallback<crate::model::MHRecord> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10314:44: 10314:49
+  crate::dib::finish_policy_pixels -> crate::dib::policy_pixel_start [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10314:14: 10314:53
+  crate::dib::policy_pixel_start -> crate::dib::bitfield_pixel_start [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8646:17: 8646:58
+  crate::dib::finish_policy_pixels -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10323:83: 10323:90
+  crate::dib::finish_policy_pixels -> crate::dib::finish_raw_zero [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10323:22: 10323:96
+  crate::dib::finish_policy_pixels -> crate::dib::finish_rle_clipped [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10371:16: 10371:89
+  crate::dib::finish_policy_pixels -> crate::dib::finish_policy_plain [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10373:8: 10374:39
+  crate::dib::finish_policy_pixels -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10375:1: 10375:2
+  crate::dib::finish_policy_pixels -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10375:1: 10375:2
   core::ptr::non_null::NonNull::<T>::new_unchecked<[u8]> -> core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
   core::ptr::non_null::NonNull::<T>::new_unchecked<[u8]> -> core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
   core::ptr::non_null::NonNull::<T>::new_unchecked<[u8]> -> core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
@@ -706,32 +706,32 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   core::cmp::Ord::max<usize> -> core::ptr::drop_glue<usize> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:1051:5: 1051:6
   core::cmp::Ord::max<usize> -> core::ptr::drop_glue<usize> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:1051:5: 1051:6
   core::cmp::Ord::max<usize> -> core::ptr::drop_glue<usize> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:1051:5: 1051:6
-  crate::dib::masks_valid_policy -> crate::dib::inside [inlined] @ src/dib.rs:1109:13: 1109:29
-  crate::dib::masks_valid_policy -> crate::dib::single_run [inlined] @ src/dib.rs:1097:17: 1097:31
-  crate::dib::single_run -> core::num::<impl u32>::wrapping_sub [inlined] @ src/dib.rs:1174:24: 1174:39
-  crate::dib::single_run -> core::num::<impl u32>::wrapping_add [inlined] @ src/dib.rs:1187:24: 1187:39
-  crate::dib::masks_valid_policy -> crate::dib::masks_valid [call] @ src/dib.rs:1092:33: 1092:66
+  crate::dib::masks_valid_policy -> crate::dib::inside [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1109:13: 1109:29
+  crate::dib::masks_valid_policy -> crate::dib::single_run [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1097:17: 1097:31
+  crate::dib::single_run -> core::num::<impl u32>::wrapping_sub [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1174:24: 1174:39
+  crate::dib::single_run -> core::num::<impl u32>::wrapping_add [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1187:24: 1187:39
+  crate::dib::masks_valid_policy -> crate::dib::masks_valid [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1092:33: 1092:66
   core::num::<impl u32>::trailing_zeros -> core::intrinsics::cttz<u32> [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:178:20: 178:42
   core::intrinsics::cttz<u32> [intrinsic] -> core::intrinsics::cttz<u32> [intrinsic-fallback] @ <no span>
-  crate::dib::paint_abs -> crate::dib::rd [inlined] @ src/dib.rs:5278:41: 5278:55
-  crate::dib::paint_abs -> crate::dib::out_offset [inlined] @ src/dib.rs:5331:17: 5331:40
-  crate::dib::paint_abs -> crate::dib::colour [call] @ src/dib.rs:5301:23: 5301:76
-  crate::dib::paint_abs -> crate::dib::put [call] @ src/dib.rs:5338:9: 5338:23
-  crate::dib::finish_raw_zero -> crate::dib::decode_raw_zero [call] @ src/dib.rs:9501:27: 9501:109
-  crate::dib::finish_raw_zero -> crate::dib::policy_header_recovered [call] @ src/dib.rs:9522:21: 9522:58
-  crate::dib::finish_raw_zero -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/dib.rs:9524:1: 9524:2
-  crate::dib::finish_raw_zero -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/dib.rs:9524:1: 9524:2
-  crate::dib::finish_rle_clipped -> crate::dib::decode_rle_clipped [call] @ src/dib.rs:9576:27: 9576:162
-  crate::dib::finish_rle_clipped -> crate::dib::finish_mask_policy [call] @ src/dib.rs:9581:15: 9581:84
-  crate::dib::finish_rle_clipped -> crate::dib::policy_header_recovered [call] @ src/dib.rs:9587:21: 9587:58
-  crate::dib::finish_rle_clipped -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/dib.rs:9589:1: 9589:2
-  crate::dib::finish_rle_clipped -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/dib.rs:9589:1: 9589:2
-  crate::dib::finish_policy_plain -> crate::dib::decode_raw [call] @ src/dib.rs:10118:1: 10118:42
-  crate::dib::finish_policy_plain -> crate::dib::decode_rle [call] @ src/dib.rs:10120:1: 10120:49
-  crate::dib::finish_policy_plain -> crate::dib::finish_mask_policy [call] @ src/dib.rs:10160:19: 10160:81
-  crate::dib::finish_policy_plain -> crate::dib::policy_header_recovered [call] @ src/dib.rs:10210:18: 10210:59
-  crate::dib::finish_policy_plain -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/dib.rs:10218:1: 10218:2
-  crate::dib::finish_policy_plain -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/dib.rs:10218:1: 10218:2
+  crate::dib::paint_abs -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5278:41: 5278:55
+  crate::dib::paint_abs -> crate::dib::out_offset [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5331:17: 5331:40
+  crate::dib::paint_abs -> crate::dib::colour [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5301:23: 5301:76
+  crate::dib::paint_abs -> crate::dib::put [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5338:9: 5338:23
+  crate::dib::finish_raw_zero -> crate::dib::decode_raw_zero [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9501:27: 9501:109
+  crate::dib::finish_raw_zero -> crate::dib::policy_header_recovered [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9522:21: 9522:58
+  crate::dib::finish_raw_zero -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9524:1: 9524:2
+  crate::dib::finish_raw_zero -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9524:1: 9524:2
+  crate::dib::finish_rle_clipped -> crate::dib::decode_rle_clipped [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9576:27: 9576:162
+  crate::dib::finish_rle_clipped -> crate::dib::finish_mask_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9581:15: 9581:84
+  crate::dib::finish_rle_clipped -> crate::dib::policy_header_recovered [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9587:21: 9587:58
+  crate::dib::finish_rle_clipped -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9589:1: 9589:2
+  crate::dib::finish_rle_clipped -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9589:1: 9589:2
+  crate::dib::finish_policy_plain -> crate::dib::decode_raw [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10118:1: 10118:42
+  crate::dib::finish_policy_plain -> crate::dib::decode_rle [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10120:1: 10120:49
+  crate::dib::finish_policy_plain -> crate::dib::finish_mask_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10160:19: 10160:81
+  crate::dib::finish_policy_plain -> crate::dib::policy_header_recovered [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10210:18: 10210:59
+  crate::dib::finish_policy_plain -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10218:1: 10218:2
+  crate::dib::finish_policy_plain -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10218:1: 10218:2
   core::ub_checks::maybe_is_aligned::runtime -> core::ptr::const_ptr::<impl *const T>::is_aligned_to<()> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:141:13: 141:37
   core::ub_checks::maybe_is_aligned::runtime -> core::ptr::const_ptr::<impl *const T>::is_aligned_to<()> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:141:13: 141:37
   core::ub_checks::maybe_is_aligned::runtime -> core::ptr::const_ptr::<impl *const T>::is_aligned_to<()> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:141:13: 141:37
@@ -754,74 +754,74 @@ mono-items: 92 in local codegen units; 0 not reached by the walk
   core::num::<impl i32>::wrapping_neg -> core::num::<impl i32>::wrapping_sub [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/int_macros.rs:2387:27: 2387:45
   core::intrinsics::unlikely -> core::intrinsics::cold_path [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs:479:9: 479:20
   core::ub_checks::maybe_is_nonoverlapping::runtime -> core::panicking::panic_nounwind [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:174:17: 176:18
-  crate::dib::masks_valid -> crate::dib::single_run [inlined] @ src/dib.rs:1060:9: 1060:23
-  crate::dib::masks_valid -> crate::dib::inside [inlined] @ src/dib.rs:1066:9: 1066:25
-  crate::dib::decode_raw_zero -> crate::dib::stride [inlined] @ src/dib.rs:6108:16: 6108:39
-  crate::dib::decode_raw_zero -> crate::dib::policy_row_start [inlined] @ src/dib.rs:6155:19: 6155:75
-  crate::dib::decode_raw_zero -> core::option::Option::<T>::is_none<usize> [inlined] @ src/dib.rs:6156:41: 6156:50
+  crate::dib::masks_valid -> crate::dib::single_run [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1060:9: 1060:23
+  crate::dib::masks_valid -> crate::dib::inside [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1066:9: 1066:25
+  crate::dib::decode_raw_zero -> crate::dib::stride [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6108:16: 6108:39
+  crate::dib::decode_raw_zero -> crate::dib::policy_row_start [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6155:19: 6155:75
+  crate::dib::decode_raw_zero -> core::option::Option::<T>::is_none<usize> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6156:41: 6156:50
   core::option::Option::<T>::is_none<usize> -> core::option::Option::<T>::is_some<usize> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:683:15: 683:24
-  crate::dib::decode_raw_zero -> core::option::Option::<T>::unwrap<usize> [inlined] @ src/dib.rs:6174:27: 6174:35
-  crate::dib::decode_raw_zero -> crate::dib::out_offset [inlined] @ src/dib.rs:6183:26: 6183:45
-  crate::dib::decode_raw_zero -> crate::dib::fill_blank [call] @ src/dib.rs:6107:5: 6107:50
-  crate::dib::decode_raw_zero -> crate::dib::put [call] @ src/dib.rs:6188:13: 6188:32
-  crate::dib::decode_raw_zero -> crate::dib::raw_sample_scaled [call] @ src/dib.rs:6175:27: 6175:90
-  crate::dib::policy_header_recovered -> crate::dib::policy_indexed_gap [inlined] @ src/dib.rs:8711:30: 8711:54
-  crate::dib::policy_header_recovered -> crate::dib::rd32 [call] @ src/dib.rs:8719:33: 8719:43
-  crate::dib::policy_header_recovered -> crate::dib::rd32 [call] @ src/dib.rs:8720:33: 8720:47
-  crate::dib::policy_header_recovered -> crate::dib::rd32 [call] @ src/dib.rs:8721:36: 8721:50
-  crate::dib::decode_rle_clipped -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ src/dib.rs:6721:57: 6721:62
-  crate::dib::decode_rle_clipped -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ src/dib.rs:6721:75: 6721:80
-  crate::dib::decode_rle_clipped -> crate::dib::fill_blank [call] @ src/dib.rs:6665:45: 6665:73
-  crate::dib::decode_rle_clipped -> crate::dib::fill_blank [call] @ src/dib.rs:6664:40: 6664:69
-  crate::dib::decode_rle_clipped -> crate::dib::fill_rle [call] @ src/dib.rs:6663:37: 6663:63
-  crate::dib::decode_rle_clipped -> crate::dib::rle_clip_command [call] @ src/dib.rs:6720:63: 6721:90
+  crate::dib::decode_raw_zero -> core::option::Option::<T>::unwrap<usize> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6174:27: 6174:35
+  crate::dib::decode_raw_zero -> crate::dib::out_offset [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6183:26: 6183:45
+  crate::dib::decode_raw_zero -> crate::dib::fill_blank [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6107:5: 6107:50
+  crate::dib::decode_raw_zero -> crate::dib::put [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6188:13: 6188:32
+  crate::dib::decode_raw_zero -> crate::dib::raw_sample_scaled [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6175:27: 6175:90
+  crate::dib::policy_header_recovered -> crate::dib::policy_indexed_gap [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8711:30: 8711:54
+  crate::dib::policy_header_recovered -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8719:33: 8719:43
+  crate::dib::policy_header_recovered -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8720:33: 8720:47
+  crate::dib::policy_header_recovered -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:8721:36: 8721:50
+  crate::dib::decode_rle_clipped -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6721:57: 6721:62
+  crate::dib::decode_rle_clipped -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6721:75: 6721:80
+  crate::dib::decode_rle_clipped -> crate::dib::fill_blank [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6665:45: 6665:73
+  crate::dib::decode_rle_clipped -> crate::dib::fill_blank [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6664:40: 6664:69
+  crate::dib::decode_rle_clipped -> crate::dib::fill_rle [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6663:37: 6663:63
+  crate::dib::decode_rle_clipped -> crate::dib::rle_clip_command [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6720:63: 6721:90
   core::option::Option::<T>::unwrap<usize> -> core::option::unwrap_failed [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:1014:21: 1014:36
-  crate::dib::raw_sample_scaled -> crate::dib::raw_policy_word [call] @ src/dib.rs:6059:20: 6059:55
-  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ src/dib.rs:6061:57: 6061:98
-  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ src/dib.rs:6062:17: 6062:58
-  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ src/dib.rs:6062:103: 6062:144
-  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ src/dib.rs:6064:53: 6064:89
-  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ src/dib.rs:6065:17: 6065:52
-  crate::dib::raw_sample_scaled -> crate::dib::raw_sample [call] @ src/dib.rs:6072:14: 6072:44
-  crate::dib::raw_sample_scaled -> crate::dib::raw_policy_word [call] @ src/dib.rs:6059:20: 6059:55
-  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ src/dib.rs:6061:14: 6061:55
-  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ src/dib.rs:6064:14: 6064:51
-  crate::dib::rle_clip_command -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ src/dib.rs:6568:43: 6568:48
-  crate::dib::rle_clip_command -> crate::dib::rd [inlined] @ src/dib.rs:6573:13: 6573:21
-  crate::dib::rle_clip_command -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ src/dib.rs:6577:97: 6577:102
-  crate::dib::rle_clip_command -> crate::dib::rle_clip_encoded [call] @ src/dib.rs:6577:9: 6577:112
-  crate::dib::rle_clip_command -> crate::dib::rle_clip_absolute [call] @ src/dib.rs:6612:9: 6612:113
-  crate::dib::rle_clip_command -> crate::dib::policy_delta_target [call] @ src/dib.rs:6607:15: 6607:92
-  crate::dib::raw_policy_word -> crate::dib::rd16 [inlined] @ src/dib.rs:6043:23: 6043:34
-  crate::dib::raw_policy_word -> crate::dib::rd32 [call] @ src/dib.rs:6043:51: 6043:62
-  crate::dib::channel_policy -> core::num::<impl u32>::trailing_zeros [inlined] @ src/dib.rs:6015:30: 6015:46
-  crate::dib::channel_policy -> core::num::<impl u32>::leading_zeros [inlined] @ src/dib.rs:6010:38: 6010:53
+  crate::dib::raw_sample_scaled -> crate::dib::raw_policy_word [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6059:20: 6059:55
+  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6061:57: 6061:98
+  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6062:17: 6062:58
+  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6062:103: 6062:144
+  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6064:53: 6064:89
+  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6065:17: 6065:52
+  crate::dib::raw_sample_scaled -> crate::dib::raw_sample [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6072:14: 6072:44
+  crate::dib::raw_sample_scaled -> crate::dib::raw_policy_word [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6059:20: 6059:55
+  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6061:14: 6061:55
+  crate::dib::raw_sample_scaled -> crate::dib::channel_policy [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6064:14: 6064:51
+  crate::dib::rle_clip_command -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6568:43: 6568:48
+  crate::dib::rle_clip_command -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6573:13: 6573:21
+  crate::dib::rle_clip_command -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6577:97: 6577:102
+  crate::dib::rle_clip_command -> crate::dib::rle_clip_encoded [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6577:9: 6577:112
+  crate::dib::rle_clip_command -> crate::dib::rle_clip_absolute [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6612:9: 6612:113
+  crate::dib::rle_clip_command -> crate::dib::policy_delta_target [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6607:15: 6607:92
+  crate::dib::raw_policy_word -> crate::dib::rd16 [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6043:23: 6043:34
+  crate::dib::raw_policy_word -> crate::dib::rd32 [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6043:51: 6043:62
+  crate::dib::channel_policy -> core::num::<impl u32>::trailing_zeros [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6015:30: 6015:46
+  crate::dib::channel_policy -> core::num::<impl u32>::leading_zeros [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6010:38: 6010:53
   core::num::<impl u32>::trailing_zeros -> core::intrinsics::cttz<u32> [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:178:20: 178:42
   core::num::<impl u32>::trailing_zeros -> core::intrinsics::cttz<u32> [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:178:20: 178:42
-  crate::dib::channel_policy -> crate::dib::channel [call] @ src/dib.rs:6006:34: 6006:53
-  crate::dib::channel_policy -> crate::dib::channel [call] @ src/dib.rs:6011:29: 6011:48
-  crate::dib::channel_policy -> crate::dib::count_mask_bits [call] @ src/dib.rs:6016:25: 6016:46
+  crate::dib::channel_policy -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6006:34: 6006:53
+  crate::dib::channel_policy -> crate::dib::channel [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6011:29: 6011:48
+  crate::dib::channel_policy -> crate::dib::count_mask_bits [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6016:25: 6016:46
   core::num::<impl u32>::leading_zeros -> core::intrinsics::ctlz<u32> [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:154:20: 154:54
-  crate::dib::rle_clip_encoded -> crate::dib::rd [inlined] @ src/dib.rs:6489:13: 6489:21
-  crate::dib::rle_clip_encoded -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ src/dib.rs:6498:62: 6498:67
-  crate::dib::rle_clip_encoded -> crate::dib::rle_clip_count [inlined] @ src/dib.rs:6500:21: 6500:59
-  crate::dib::rle_clip_encoded -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ src/dib.rs:6504:99: 6504:104
-  crate::dib::rle_clip_encoded -> crate::dib::paint_black_packet [call] @ src/dib.rs:6504:25: 6504:114
-  crate::dib::rle_clip_encoded -> crate::dib::paint_run [call] @ src/dib.rs:6508:18: 6508:91
-  crate::dib::rle_clip_absolute -> crate::dib::rd [inlined] @ src/dib.rs:6396:16: 6396:28
-  crate::dib::rle_clip_absolute -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ src/dib.rs:6403:62: 6403:67
-  crate::dib::rle_clip_absolute -> crate::dib::rle_clip_count [inlined] @ src/dib.rs:6412:21: 6412:62
-  crate::dib::rle_clip_absolute -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ src/dib.rs:6419:97: 6419:102
-  crate::dib::rle_clip_absolute -> crate::dib::paint_black_packet [call] @ src/dib.rs:6419:25: 6419:112
-  crate::dib::rle_clip_absolute -> crate::dib::paint_abs [call] @ src/dib.rs:6433:18: 6433:90
+  crate::dib::rle_clip_encoded -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6489:13: 6489:21
+  crate::dib::rle_clip_encoded -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6498:62: 6498:67
+  crate::dib::rle_clip_encoded -> crate::dib::rle_clip_count [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6500:21: 6500:59
+  crate::dib::rle_clip_encoded -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6504:99: 6504:104
+  crate::dib::rle_clip_encoded -> crate::dib::paint_black_packet [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6504:25: 6504:114
+  crate::dib::rle_clip_encoded -> crate::dib::paint_run [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6508:18: 6508:91
+  crate::dib::rle_clip_absolute -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6396:16: 6396:28
+  crate::dib::rle_clip_absolute -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<crate::model::Write>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6403:62: 6403:67
+  crate::dib::rle_clip_absolute -> crate::dib::rle_clip_count [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6412:21: 6412:62
+  crate::dib::rle_clip_absolute -> verus_builtin::Ghost::<A>::assume_new_fallback<vstd::seq::Seq<u8>> [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6419:97: 6419:102
+  crate::dib::rle_clip_absolute -> crate::dib::paint_black_packet [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6419:25: 6419:112
+  crate::dib::rle_clip_absolute -> crate::dib::paint_abs [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6433:18: 6433:90
   core::num::<impl u32>::leading_zeros -> core::intrinsics::ctlz<u32> [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:154:20: 154:54
-  crate::dib::count_mask_bits -> crate::dib::count_byte_bits [call] @ src/dib.rs:5988:13: 5988:40
-  crate::dib::count_mask_bits -> crate::dib::count_byte_bits [call] @ src/dib.rs:5989:13: 5989:47
-  crate::dib::count_mask_bits -> crate::dib::count_byte_bits [call] @ src/dib.rs:5990:13: 5990:48
-  crate::dib::count_mask_bits -> crate::dib::count_byte_bits [call] @ src/dib.rs:5991:13: 5991:48
+  crate::dib::count_mask_bits -> crate::dib::count_byte_bits [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5988:13: 5988:40
+  crate::dib::count_mask_bits -> crate::dib::count_byte_bits [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5989:13: 5989:47
+  crate::dib::count_mask_bits -> crate::dib::count_byte_bits [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5990:13: 5990:48
+  crate::dib::count_mask_bits -> crate::dib::count_byte_bits [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5991:13: 5991:48
   core::intrinsics::ctlz<u32> [intrinsic] -> core::intrinsics::ctlz<u32> [intrinsic-fallback] @ <no span>
-  crate::dib::paint_black_packet -> crate::dib::out_offset [inlined] @ src/dib.rs:6284:22: 6284:45
-  crate::dib::paint_black_packet -> crate::dib::policy_packet_index [call] @ src/dib.rs:6279:18: 6279:71
-  crate::dib::paint_black_packet -> crate::dib::colour [call] @ src/dib.rs:6280:23: 6280:76
-  crate::dib::paint_black_packet -> crate::dib::put [call] @ src/dib.rs:6287:9: 6287:28
-  crate::dib::policy_packet_index -> crate::dib::rd [inlined] @ src/dib.rs:6221:24: 6221:40
+  crate::dib::paint_black_packet -> crate::dib::out_offset [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6284:22: 6284:45
+  crate::dib::paint_black_packet -> crate::dib::policy_packet_index [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6279:18: 6279:71
+  crate::dib::paint_black_packet -> crate::dib::colour [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6280:23: 6280:76
+  crate::dib::paint_black_packet -> crate::dib::put [call] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6287:9: 6287:28
+  crate::dib::policy_packet_index -> crate::dib::rd [inlined] @ /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6221:24: 6221:40

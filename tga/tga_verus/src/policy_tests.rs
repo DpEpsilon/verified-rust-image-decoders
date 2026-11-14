@@ -28,7 +28,7 @@ fn input(row: &Value) -> Vec<u8> {
 fn profile(name: &str) -> Profile {
     match name {
         "Strict" => Profile::Strict,
-        "Recommended" => Profile::Recommended,
+        "RecommendedBeta" => Profile::RecommendedBeta,
         "GdkCompat-2.42.12" => Profile::GdkCompat,
         "ImageCrateCompat-0.25.10" => Profile::ImageCrateCompat,
         _ => panic!("unknown profile {name}"),
@@ -163,7 +163,7 @@ fn policies_match_independent_oracle() {
     }
     assert!(child.wait().expect("oracle exit").success());
     for (group, (total, accepted)) in &groups { println!("oracle {group}: {total} checked, {accepted} accepted"); }
-    for name in ["Strict", "Recommended", "GdkCompat-2.42.12", "ImageCrateCompat-0.25.10"] {
+    for name in ["Strict", "RecommendedBeta", "GdkCompat-2.42.12", "ImageCrateCompat-0.25.10"] {
         assert_eq!(groups[&format!("profile-fixtures/{name}")].0, 302);
         assert_eq!(groups[&format!("profile-prefixes/{name}")].0, 7578);
         assert_eq!(groups[&format!("profile-core/{name}")].0, 169);

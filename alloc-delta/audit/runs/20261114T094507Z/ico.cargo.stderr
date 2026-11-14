@@ -12,4 +12,4 @@ findings: 2
 finding-tags: allowlist-reviewer,dependency-contract
 findings-other-than-unsigned-reviewer: 1
 mode: PRODUCTION
-    Finished `release` profile [optimized] target(s) in 4.15s
+    Finished `release` profile [optimized] target(s) in 3.93s

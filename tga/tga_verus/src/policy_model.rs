@@ -5294,9 +5294,9 @@ pub proof fn lemma_recovered_policy_strict(b: Seq<u8>)
 
 
 // ---------------------------------------------------------------------------
-// Obligation R: `Recommended` conservativity for Strict-accepted inputs.
+// Obligation R: `RecommendedBeta` conservativity for Strict-accepted inputs.
 //
-// Recommended differs from Strict in exactly four fields: `trailing`,
+// RecommendedBeta differs from Strict in exactly four fields: `trailing`,
 // `rle_overrun`, `attribute_bits`, `map_header`. On a Strict-accepted input each
 // is inert, so the header record, the conversion, and (with the suffix lemma)
 // the whole result are unchanged with `recovered = false`.
@@ -5308,10 +5308,10 @@ pub proof fn lemma_suffix_ignore_on_footer(b: Seq<u8>, cursor: int)
     requires
         mp_suffix_ok(b, cursor),
     ensures
-        mp_suffix_ok_policy(b, recommended_policy(), cursor),
+        mp_suffix_ok_policy(b, recommended_beta_policy(), cursor),
 {
     reveal(mp_suffix_ok_policy);
-    reveal(recommended_policy);
+    reveal(recommended_beta_policy);
     reveal(mp_suffix_ok);
 }
 
@@ -5332,7 +5332,7 @@ pub proof fn lemma_eff_attr_lenient_accepted(kind: int, d: int, count: int)
 
 /// Site lemma 2 (`map_header`): Strict-acceptance implies `IgnoreAbsent`
 /// acceptance, and the map's presence and slice are unchanged.
-pub proof fn lemma_map_recommended_on_strict(
+pub proof fn lemma_map_recommended_beta_on_strict(
     b: Seq<u8>,
     present: bool,
     kind: bool,
@@ -5363,7 +5363,7 @@ pub proof fn lemma_map_recommended_on_strict(
 
 /// A `map_coherence_bad` under `Core` and under `IgnoreAbsent` differ only in
 /// the flag-0 test; with a passing `Core` verdict, both are false or both agree.
-pub proof fn lemma_map_coherence_recommended(b: Seq<u8>, present: bool)
+pub proof fn lemma_map_coherence_recommended_beta(b: Seq<u8>, present: bool)
     requires
         18 <= b.len(),
         present == (b[1] == 1u8),
@@ -5378,16 +5378,16 @@ pub proof fn lemma_map_coherence_recommended(b: Seq<u8>, present: bool)
 }
 
 /// The header record equality: on a Strict-accepted input,
-/// `mh_policy(b, Recommended)` is the same `Ok` record as `mh_policy(b, Strict)`.
-pub proof fn lemma_mh_policy_recommended_on_strict_ok(b: Seq<u8>, m: MHModel)
+/// `mh_policy(b, RecommendedBeta)` is the same `Ok` record as `mh_policy(b, Strict)`.
+pub proof fn lemma_mh_policy_recommended_beta_on_strict_ok(b: Seq<u8>, m: MHModel)
     requires
         mh_policy(b, strict_policy()) == Ok(m),
     ensures
-        mh_policy(b, recommended_policy()) == Ok(m),
+        mh_policy(b, recommended_beta_policy()) == Ok(m),
 {
     reveal(mh_policy);
     reveal(strict_policy);
-    reveal(recommended_policy);
+    reveal(recommended_beta_policy);
     reveal(type_ok_policy);
     reveal(kind_policy);
     reveal(kind_of_type);
@@ -5410,32 +5410,32 @@ pub proof fn lemma_mh_policy_recommended_on_strict_ok(b: Seq<u8>, m: MHModel)
     assert(b[1] <= 1u8);
     assert(1 <= le16(b, 12) && le16(b, 12) <= 8192);
     assert(1 <= le16(b, 14) && le16(b, 14) <= 8192);
-    // Recommended's relaxed fields.
-    assert(recommended_policy().depths == DepthsOptions::Core);
-    assert(recommended_policy().interleave == InterleaveOptions::Reject);
-    assert(recommended_policy().image_type == ImageTypeOptions::Core);
-    assert(recommended_policy().map_header == MapHeaderOptions::IgnoreAbsent);
-    assert(recommended_policy().attribute_bits == AttributeBitsOptions::Lenient);
-    // Shared guards hold for Recommended because they are Strict's own.
-    assert(type_ok_policy(b[2], recommended_policy()));
-    assert(kind_policy(b[2], recommended_policy()) == kind_of_type(b[2]));
-    assert(map_flag_ok_policy(b, recommended_policy()));
-    assert(map_present_policy(b, recommended_policy()) == (b[1] == 1u8));
+    // RecommendedBeta's relaxed fields.
+    assert(recommended_beta_policy().depths == DepthsOptions::Core);
+    assert(recommended_beta_policy().interleave == InterleaveOptions::Reject);
+    assert(recommended_beta_policy().image_type == ImageTypeOptions::Core);
+    assert(recommended_beta_policy().map_header == MapHeaderOptions::IgnoreAbsent);
+    assert(recommended_beta_policy().attribute_bits == AttributeBitsOptions::Lenient);
+    // Shared guards hold for RecommendedBeta because they are Strict's own.
+    assert(type_ok_policy(b[2], recommended_beta_policy()));
+    assert(kind_policy(b[2], recommended_beta_policy()) == kind_of_type(b[2]));
+    assert(map_flag_ok_policy(b, recommended_beta_policy()));
+    assert(map_present_policy(b, recommended_beta_policy()) == (b[1] == 1u8));
     assert(depth_ok_policy(
-        kind_policy(b[2], recommended_policy()),
+        kind_policy(b[2], recommended_beta_policy()),
         b[16],
-        recommended_policy().depths,
+        recommended_beta_policy().depths,
     )) by {
         assert(depth_ok_policy(kind_of_type(b[2]), b[16], DepthsOptions::Core));
         assert(depth_ok_policy(kind_of_type(b[2]), b[16], DepthsOptions::Core) == depth_ok(b[2], b[16]));
     }
     assert(!map_coherence_bad(
         b,
-        map_present_policy(b, recommended_policy()),
-        kind_policy(b[2], recommended_policy()),
-        recommended_policy().map_header,
+        map_present_policy(b, recommended_beta_policy()),
+        kind_policy(b[2], recommended_beta_policy()),
+        recommended_beta_policy().map_header,
     )) by {
-        lemma_map_recommended_on_strict(
+        lemma_map_recommended_beta_on_strict(
             b,
             b[1] == 1u8,
             kind_of_type(b[2]) == 0,
@@ -5443,8 +5443,8 @@ pub proof fn lemma_mh_policy_recommended_on_strict_ok(b: Seq<u8>, m: MHModel)
     }
     assert(!map_range_bad(
         b,
-        map_present_policy(b, recommended_policy()),
-        recommended_policy().map_header,
+        map_present_policy(b, recommended_beta_policy()),
+        recommended_beta_policy().map_header,
     )) by {
         reveal(map_range_bad);
         if b[1] == 1u8 {
@@ -5453,17 +5453,17 @@ pub proof fn lemma_mh_policy_recommended_on_strict_ok(b: Seq<u8>, m: MHModel)
     }
     assert(!image_index_depth_bad(
         b,
-        map_present_policy(b, recommended_policy()),
-        kind_policy(b[2], recommended_policy()),
-        recommended_policy().depths,
+        map_present_policy(b, recommended_beta_policy()),
+        kind_policy(b[2], recommended_beta_policy()),
+        recommended_beta_policy().depths,
     )) by {
         reveal(image_index_depth_bad);
     }
     assert(attr_ok_policy(
-        kind_policy(b[2], recommended_policy()),
-        attr_depth(b, recommended_policy()),
+        kind_policy(b[2], recommended_beta_policy()),
+        attr_depth(b, recommended_beta_policy()),
         (b[17] & 0x0fu8) as int,
-        recommended_policy().attribute_bits,
+        recommended_beta_policy().attribute_bits,
     )) by {
         lemma_eff_attr_lenient_accepted(
             kind_of_type(b[2]),
@@ -5475,15 +5475,15 @@ pub proof fn lemma_mh_policy_recommended_on_strict_ok(b: Seq<u8>, m: MHModel)
             (b[17] & 0x0fu8) as int,
         );
     }
-    assert(map_bytes_policy(b, recommended_policy()) == map_bytes_policy(b, strict_policy())) by {
+    assert(map_bytes_policy(b, recommended_beta_policy()) == map_bytes_policy(b, strict_policy())) by {
         reveal(map_bytes_policy);
         reveal(map_present_policy);
     }
 }
 
-/// The conversion equality: on a strict-accepted record, the Recommended
+/// The conversion equality: on a strict-accepted record, the RecommendedBeta
 /// conversion is the Strict conversion (`conv2_policy(.., Strict) = conv2`).
-pub proof fn lemma_conv2_policy_recommended_on_strict(
+pub proof fn lemma_conv2_policy_recommended_beta_on_strict(
     h: PktH,
     map: Seq<u8>,
     s: Seq<u8>,
@@ -5494,12 +5494,12 @@ pub proof fn lemma_conv2_policy_recommended_on_strict(
         h.kind == 0 ==> h.map_first <= sindex(s, h.sample_bytes) < h.map_first + h.map_len,
         h.kind == 0 ==> map.len() == h.map_len * stride_of(h.map_depth),
     ensures
-        conv2_policy(h, map, s, recommended_policy()) == conv2_policy(h, map, s, strict_policy()),
+        conv2_policy(h, map, s, recommended_beta_policy()) == conv2_policy(h, map, s, strict_policy()),
 {
     reveal(conv2_policy);
     reveal(conv_sample_policy);
     reveal(conv_map_policy);
-    reveal(recommended_policy);
+    reveal(recommended_beta_policy);
     reveal(strict_policy);
     reveal(stored_alpha_policy);
     reveal(map555_policy);
@@ -5511,7 +5511,7 @@ pub proof fn lemma_conv2_policy_recommended_on_strict(
     reveal(bit15);
     reveal(stride_of);
     if h.kind == 0 {
-        assert(entry_j(sindex(s, h.sample_bytes), h.map_first, recommended_policy()) == sindex(
+        assert(entry_j(sindex(s, h.sample_bytes), h.map_first, recommended_beta_policy()) == sindex(
             s,
             h.sample_bytes,
         ) - h.map_first);
@@ -5526,21 +5526,21 @@ pub proof fn lemma_conv2_policy_recommended_on_strict(
 
 
 // ---------------------------------------------------------------------------
-// Obligation R, packet phase: on a Strict-accepted input the Recommended
+// Obligation R, packet phase: on a Strict-accepted input the RecommendedBeta
 // packet stream, pixels and flags equal Strict's.
 // ---------------------------------------------------------------------------
 
-/// The conversion of any sample is the same under Strict and Recommended: the
+/// The conversion of any sample is the same under Strict and RecommendedBeta: the
 /// two records agree on every field the conversion reads (`rgb5`, `map5`,
 /// `alpha`, `map16_alpha`, `map_index`, `index_range`).
 pub proof fn lemma_conv2_policy_rec_eq_strict(h: PktH, map: Seq<u8>, s: Seq<u8>)
     ensures
-        conv2_policy(h, map, s, recommended_policy()) == conv2_policy(h, map, s, strict_policy()),
+        conv2_policy(h, map, s, recommended_beta_policy()) == conv2_policy(h, map, s, strict_policy()),
 {
     reveal(conv2_policy);
     reveal(conv_sample_policy);
     reveal(conv_map_policy);
-    reveal(recommended_policy);
+    reveal(recommended_beta_policy);
     reveal(strict_policy);
     reveal(stored_alpha_policy);
     reveal(map555_policy);
@@ -5550,15 +5550,15 @@ pub proof fn lemma_conv2_policy_rec_eq_strict(h: PktH, map: Seq<u8>, s: Seq<u8>)
     reveal(in_range_policy);
 }
 
-/// Strict and Recommended agree on the index-range test (`map_index`,
+/// Strict and RecommendedBeta agree on the index-range test (`map_index`,
 /// `index_range` equal).
 pub proof fn lemma_in_range_rec_eq_strict(h: PktH, index: int)
     ensures
-        in_range_policy(h, index, recommended_policy()) == in_range_policy(h, index, strict_policy()),
+        in_range_policy(h, index, recommended_beta_policy()) == in_range_policy(h, index, strict_policy()),
 {
     reveal(in_range_policy);
     reveal(entry_j);
-    reveal(recommended_policy);
+    reveal(recommended_beta_policy);
     reveal(strict_policy);
 }
 
@@ -5566,7 +5566,7 @@ pub proof fn lemma_in_range_rec_eq_strict(h: PktH, index: int)
 /// equal), so a raw image's `recovered` bit is the same.
 pub proof fn lemma_raw_subst_rec_eq_strict(b: Seq<u8>, p: PktH, c0: int, k: int)
     ensures
-        raw_subst_policy(b, p, recommended_policy(), c0, k) == raw_subst_policy(
+        raw_subst_policy(b, p, recommended_beta_policy(), c0, k) == raw_subst_policy(
             b,
             p,
             strict_policy(),
@@ -5577,7 +5577,7 @@ pub proof fn lemma_raw_subst_rec_eq_strict(b: Seq<u8>, p: PktH, c0: int, k: int)
 {
     reveal(raw_subst_policy);
     reveal(pkt_subst);
-    reveal(recommended_policy);
+    reveal(recommended_beta_policy);
     reveal(strict_policy);
     if k <= 0 {
     } else {
@@ -5612,7 +5612,7 @@ pub proof fn lemma_mp_raw_acc_rec_eq_strict(
     acc: Seq<Seq<u8>>,
 )
     ensures
-        mp_raw_acc_policy(b, p, map, recommended_policy(), c0, k, acc) == mp_raw_acc_policy(
+        mp_raw_acc_policy(b, p, map, recommended_beta_policy(), c0, k, acc) == mp_raw_acc_policy(
             b,
             p,
             map,
@@ -5625,7 +5625,7 @@ pub proof fn lemma_mp_raw_acc_rec_eq_strict(
 {
     reveal(mp_raw_acc_policy);
     reveal(pkt_reject);
-    reveal(recommended_policy);
+    reveal(recommended_beta_policy);
     reveal(strict_policy);
     if k < 0 || k > p.n || p.sample_bytes <= 0 {
     } else if k == p.n {
@@ -5637,7 +5637,7 @@ pub proof fn lemma_mp_raw_acc_rec_eq_strict(
             p,
             map,
             smp,
-            recommended_policy(),
+            recommended_beta_policy(),
         )]);
     }
 }
@@ -5652,7 +5652,7 @@ pub proof fn lemma_lit_out_rec_eq_strict(
     count: int,
 )
     ensures
-        lit_out_policy(s, h, map, recommended_policy(), start, count) == lit_out_policy(
+        lit_out_policy(s, h, map, recommended_beta_policy(), start, count) == lit_out_policy(
             s,
             h,
             map,
@@ -5673,7 +5673,7 @@ pub proof fn lemma_lit_out_rec_eq_strict(
 /// `lit_ok_policy` is the same under the two records.
 pub proof fn lemma_lit_ok_rec_eq_strict(s: Seq<u8>, h: PktH, start: int, count: int)
     ensures
-        lit_ok_policy(s, h, start, count, recommended_policy()) == lit_ok_policy(
+        lit_ok_policy(s, h, start, count, recommended_beta_policy()) == lit_ok_policy(
             s,
             h,
             start,
@@ -5683,7 +5683,7 @@ pub proof fn lemma_lit_ok_rec_eq_strict(s: Seq<u8>, h: PktH, start: int, count: 
     decreases count,
 {
     reveal(lit_ok_policy);
-    reveal(recommended_policy);
+    reveal(recommended_beta_policy);
     reveal(strict_policy);
     if count <= 0 {
     } else {
@@ -5695,7 +5695,7 @@ pub proof fn lemma_lit_ok_rec_eq_strict(s: Seq<u8>, h: PktH, start: int, count: 
 /// `lit_good_policy` is the same under the two records.
 pub proof fn lemma_lit_good_rec_eq_strict(s: Seq<u8>, h: PktH, start: int, count: int)
     ensures
-        lit_good_policy(s, h, start, count, recommended_policy()) == lit_good_policy(
+        lit_good_policy(s, h, start, count, recommended_beta_policy()) == lit_good_policy(
             s,
             h,
             start,
@@ -5705,7 +5705,7 @@ pub proof fn lemma_lit_good_rec_eq_strict(s: Seq<u8>, h: PktH, start: int, count
     decreases count,
 {
     reveal(lit_good_policy);
-    reveal(recommended_policy);
+    reveal(recommended_beta_policy);
     reveal(strict_policy);
     if count <= 0 {
     } else {
@@ -5745,7 +5745,7 @@ proof fn lemma_strict_mr_ok_no_overrun(
 }
 
 /// Obligation R, packet phase: on an input whose Strict packet stream succeeds
-/// at `(cur, prod)`, the Recommended stream returns the identical `Ok`.
+/// at `(cur, prod)`, the RecommendedBeta stream returns the identical `Ok`.
 pub proof fn lemma_mr_at_rec_eq_strict_on_ok(
     s: Seq<u8>,
     h: PktH,
@@ -5758,11 +5758,11 @@ pub proof fn lemma_mr_at_rec_eq_strict_on_ok(
     requires
         mr_at_policy(s, h, map, strict_policy(), cur, prod, out) == Ok(r),
     ensures
-        mr_at_policy(s, h, map, recommended_policy(), cur, prod, out) == Ok(r),
+        mr_at_policy(s, h, map, recommended_beta_policy(), cur, prod, out) == Ok(r),
     decreases (h.n - prod) as nat,
 {
     reveal(mr_at_policy);
-    reveal(recommended_policy);
+    reveal(recommended_beta_policy);
     reveal(strict_policy);
     reveal(pkt_clip);
     reveal(pkt_reject);
@@ -5795,7 +5795,7 @@ pub proof fn lemma_mr_at_rec_eq_strict_on_ok(
             } else {
                 let smp = s.subrange(start, pe);
                 lemma_conv2_policy_rec_eq_strict(h, map, smp);
-                assert(out + pix_pow(conv2_policy(h, map, smp, recommended_policy()), paint)
+                assert(out + pix_pow(conv2_policy(h, map, smp, recommended_beta_policy()), paint)
                     == out + pix_pow(conv2_policy(h, map, smp, strict_policy()), paint));
                 lemma_mr_at_rec_eq_strict_on_ok(
                     s,
@@ -5803,7 +5803,7 @@ pub proof fn lemma_mr_at_rec_eq_strict_on_ok(
                     map,
                     pe,
                     prod + paint,
-                    out + pix_pow(conv2_policy(h, map, smp, recommended_policy()), paint),
+                    out + pix_pow(conv2_policy(h, map, smp, recommended_beta_policy()), paint),
                     r,
                 );
             }
@@ -5818,7 +5818,7 @@ pub proof fn lemma_mr_at_rec_eq_strict_on_ok(
                 if !lit_ok_policy(s, h, start, paint, strict_policy()) {
                     assert(false);
                 } else {
-                    assert(out + lit_out_policy(s, h, map, recommended_policy(), start, paint)
+                    assert(out + lit_out_policy(s, h, map, recommended_beta_policy(), start, paint)
                         == out + lit_out_policy(s, h, map, strict_policy(), start, paint));
                     lemma_mr_at_rec_eq_strict_on_ok(
                         s,
@@ -5826,7 +5826,7 @@ pub proof fn lemma_mr_at_rec_eq_strict_on_ok(
                         map,
                         pe,
                         prod + paint,
-                        out + lit_out_policy(s, h, map, recommended_policy(), start, paint),
+                        out + lit_out_policy(s, h, map, recommended_beta_policy(), start, paint),
                         r,
                     );
                 }
@@ -5839,7 +5839,7 @@ pub proof fn lemma_mr_at_rec_eq_strict_on_ok(
 
 // ---------------------------------------------------------------------------
 // Obligation R, end to end: `forall b: MP(b,Strict)=Ok(w,h,p) ==>
-// MP(b,Recommended)=Ok(w,h,p) with recovered=false`.
+// MP(b,RecommendedBeta)=Ok(w,h,p) with recovered=false`.
 //
 // The four site lemmas (suffix, `eff_attr`, `map_coherence_bad`, map present)
 // and the record equalities are above. The packet stream needs two facts on a
@@ -5850,12 +5850,12 @@ pub proof fn lemma_mr_at_rec_eq_strict_on_ok(
 // ---------------------------------------------------------------------------
 
 /// The conversion-relevant projection of the same accepted header record is the
-/// same under Strict and Recommended. `eff_attr` is the identical function for
+/// same under Strict and RecommendedBeta. `eff_attr` is the identical function for
 /// `Exact` and `Lenient` (`attr_table_allowed` maps both to `core_attr_allowed`),
 /// and every other field the projection reads is equal.
 pub proof fn lemma_pkt_of_mh_policy_rec_eq_strict(m: MHModel)
     ensures
-        pkt_of_mh_policy(m, recommended_policy()) == pkt_of_mh_policy(m, strict_policy()),
+        pkt_of_mh_policy(m, recommended_beta_policy()) == pkt_of_mh_policy(m, strict_policy()),
 {
     reveal(pkt_of_mh_policy);
     reveal(kind_policy);
@@ -5864,11 +5864,11 @@ pub proof fn lemma_pkt_of_mh_policy_rec_eq_strict(m: MHModel)
     reveal(attr_table_allowed);
     reveal(core_attr_allowed);
     reveal(strict_policy);
-    reveal(recommended_policy);
+    reveal(recommended_beta_policy);
 }
 
 /// Obligation R, packet phase, pixels: on an input whose Strict packet stream
-/// succeeds at `(cur, prod)` with accumulator `out`, the Recommended pixel
+/// succeeds at `(cur, prod)` with accumulator `out`, the RecommendedBeta pixel
 /// sequence from the same state equals Strict's. Each step's branch and painted
 /// count are pinned by the exact Strict `Ok`, so one unfolding per packet
 /// suffices and no single body sees the whole stream.
@@ -5884,7 +5884,7 @@ pub proof fn lemma_mr_pix_rec_eq_strict_on_ok(
     requires
         mr_at_policy(s, h, map, strict_policy(), cur, prod, out) == Ok(r),
     ensures
-        mr_pix_policy(s, h, map, recommended_policy(), cur, prod) == mr_pix_policy(
+        mr_pix_policy(s, h, map, recommended_beta_policy(), cur, prod) == mr_pix_policy(
             s,
             h,
             map,
@@ -5896,7 +5896,7 @@ pub proof fn lemma_mr_pix_rec_eq_strict_on_ok(
 {
     reveal(mr_at_policy);
     reveal(mr_pix_policy);
-    reveal(recommended_policy);
+    reveal(recommended_beta_policy);
     reveal(strict_policy);
     reveal(pkt_reject);
     reveal(rle_count);
@@ -5967,9 +5967,9 @@ pub proof fn lemma_mr_pix_rec_eq_strict_on_ok(
 }
 
 /// Obligation R, packet phase, `recovered`: on an input whose Strict packet
-/// stream succeeds at `(cur, prod)`, the Recommended flag scan reports no event.
-/// The packet fits (`lemma_strict_mr_ok_no_overrun`), so Recommended's
-/// `ClipPacket` never fires; `index_range = Reject` is Recommended's value, so
+/// stream succeeds at `(cur, prod)`, the RecommendedBeta flag scan reports no event.
+/// The packet fits (`lemma_strict_mr_ok_no_overrun`), so RecommendedBeta's
+/// `ClipPacket` never fires; `index_range = Reject` is RecommendedBeta's value, so
 /// every substitution bit is false and the literal scan is `lemma_lit_flags_no_events`.
 pub proof fn lemma_mr_flags_rec_false_on_strict_ok(
     s: Seq<u8>,
@@ -5983,12 +5983,12 @@ pub proof fn lemma_mr_flags_rec_false_on_strict_ok(
     requires
         mr_at_policy(s, h, map, strict_policy(), cur, prod, out) == Ok(r),
     ensures
-        mr_flags_policy(s, h, map, recommended_policy(), cur, prod) == (false, false),
+        mr_flags_policy(s, h, map, recommended_beta_policy(), cur, prod) == (false, false),
     decreases (h.n - prod) as nat,
 {
     reveal(mr_at_policy);
     reveal(mr_flags_policy);
-    reveal(recommended_policy);
+    reveal(recommended_beta_policy);
     reveal(strict_policy);
     reveal(pkt_clip);
     reveal(pkt_subst);
@@ -6019,7 +6019,7 @@ pub proof fn lemma_mr_flags_rec_false_on_strict_ok(
                 ;
             }
         }
-        assert(pkt_clip(count, remaining, recommended_policy()) == false) by {
+        assert(pkt_clip(count, remaining, recommended_beta_policy()) == false) by {
             reveal(pkt_clip);
         }
         if rle_repeat(control) {
@@ -6027,15 +6027,15 @@ pub proof fn lemma_mr_flags_rec_false_on_strict_ok(
             if s.len() < pe {
             } else {
                 let smp = s.subrange(start, pe);
-                assert(pkt_reject(h, sindex(smp, h.sample_bytes), recommended_policy())
+                assert(pkt_reject(h, sindex(smp, h.sample_bytes), recommended_beta_policy())
                     == pkt_reject(h, sindex(smp, h.sample_bytes), strict_policy())) by {
                     reveal(pkt_reject);
                     lemma_in_range_rec_eq_strict(h, sindex(smp, h.sample_bytes));
                 }
-                if h.kind == 0 && pkt_reject(h, sindex(smp, h.sample_bytes), recommended_policy()) {
+                if h.kind == 0 && pkt_reject(h, sindex(smp, h.sample_bytes), recommended_beta_policy()) {
                     assert(false);
                 } else {
-                    assert(!pkt_subst(h, sindex(smp, h.sample_bytes), recommended_policy())) by {
+                    assert(!pkt_subst(h, sindex(smp, h.sample_bytes), recommended_beta_policy())) by {
                         reveal(pkt_subst);
                     }
                     lemma_mr_flags_rec_false_on_strict_ok(
@@ -6054,7 +6054,7 @@ pub proof fn lemma_mr_flags_rec_false_on_strict_ok(
             let pe = start + need;
             if s.len() < pe {
             } else {
-                lemma_lit_flags_no_events(s, h, recommended_policy(), start, paint);
+                lemma_lit_flags_no_events(s, h, recommended_beta_policy(), start, paint);
                 lemma_mr_flags_rec_false_on_strict_ok(
                     s,
                     h,
@@ -6079,7 +6079,7 @@ pub proof fn lemma_acc_conv_policy_rec_eq_strict(
     k: int,
 )
     ensures
-        acc_conv_policy(b, p, map, recommended_policy(), c0, k) == acc_conv_policy(
+        acc_conv_policy(b, p, map, recommended_beta_policy(), c0, k) == acc_conv_policy(
             b,
             p,
             map,
@@ -6089,7 +6089,7 @@ pub proof fn lemma_acc_conv_policy_rec_eq_strict(
         ),
 {
     reveal(acc_conv_policy);
-    assert(acc_conv_policy(b, p, map, recommended_policy(), c0, k) =~= acc_conv_policy(
+    assert(acc_conv_policy(b, p, map, recommended_beta_policy(), c0, k) =~= acc_conv_policy(
         b,
         p,
         map,
@@ -6101,7 +6101,7 @@ pub proof fn lemma_acc_conv_policy_rec_eq_strict(
             b,
             p,
             map,
-            recommended_policy(),
+            recommended_beta_policy(),
             c0,
             k,
         )[j] == acc_conv_policy(b, p, map, strict_policy(), c0, k)[j] by {
@@ -6136,7 +6136,7 @@ pub proof fn lemma_mp_pixels_rec_eq_strict_on_strict_ok(
             0,
         ) == Ok((cursor, produced, px)),
     ensures
-        mp_pixels_policy(b, m, recommended_policy(), id_end) == mp_pixels_policy(
+        mp_pixels_policy(b, m, recommended_beta_policy(), id_end) == mp_pixels_policy(
             b,
             m,
             strict_policy(),
@@ -6160,14 +6160,14 @@ pub proof fn lemma_mp_pixels_rec_eq_strict_on_strict_ok(
 /// are (the orientation arguments are the record's own fields).
 pub proof fn lemma_assemble_eq_from_pixels(b: Seq<u8>, m: MHModel, id_end: int)
     requires
-        mp_pixels_policy(b, m, recommended_policy(), id_end) == mp_pixels_policy(
+        mp_pixels_policy(b, m, recommended_beta_policy(), id_end) == mp_pixels_policy(
             b,
             m,
             strict_policy(),
             id_end,
         ),
     ensures
-        mp_assemble_policy(b, m, recommended_policy(), id_end) == mp_assemble_policy(
+        mp_assemble_policy(b, m, recommended_beta_policy(), id_end) == mp_assemble_policy(
             b,
             m,
             strict_policy(),
@@ -6177,8 +6177,8 @@ pub proof fn lemma_assemble_eq_from_pixels(b: Seq<u8>, m: MHModel, id_end: int)
     reveal(mp_assemble_policy);
 }
 
-/// `recovered_policy(b, Recommended)` in the RLE branch, given that the
-/// Recommended flag scan reports no event: one unfold, so the flag expression
+/// `recovered_policy(b, RecommendedBeta)` in the RLE branch, given that the
+/// RecommendedBeta flag scan reports no event: one unfold, so the flag expression
 /// resolves without pulling the packet stream into the body.
 proof fn lemma_recovered_rle_false(
     b: Seq<u8>,
@@ -6188,22 +6188,22 @@ proof fn lemma_recovered_rle_false(
     px: Seq<Seq<u8>>,
 )
     requires
-        mh_policy(b, recommended_policy()) == Ok(m),
-        rle_policy(m.image_type, recommended_policy()),
+        mh_policy(b, recommended_beta_policy()) == Ok(m),
+        rle_policy(m.image_type, recommended_beta_policy()),
         mr_flags_policy(
             b,
-            pkt_of_mh_policy(m, recommended_policy()),
+            pkt_of_mh_policy(m, recommended_beta_policy()),
             b.subrange(18 + (m.id_length as int), 18 + (m.id_length as int) + m.map_bytes),
-            recommended_policy(),
+            recommended_beta_policy(),
             18 + (m.id_length as int) + m.map_bytes,
             0,
         ) == (false, false),
     ensures
-        recovered_policy(b, recommended_policy()) == false,
+        recovered_policy(b, recommended_beta_policy()) == false,
 {
     reveal(recovered_policy);
     reveal(rle_policy);
-    reveal(recommended_policy);
+    reveal(recommended_beta_policy);
 }
 
 /// Under Strict, the RLE branch of `mp_after_policy` returns `Ok` only when the
@@ -6276,9 +6276,9 @@ proof fn lemma_after_rle_shape(
     reveal(mp_suffix_ok_policy);
 }
 
-/// `mp_after_policy` at Recommended in the RLE branch, given the Recommended
-/// packet stream's `Ok`: one unfold of the Recommended record.
-proof fn lemma_after_rle_shape_recommended(
+/// `mp_after_policy` at RecommendedBeta in the RLE branch, given the RecommendedBeta
+/// packet stream's `Ok`: one unfold of the RecommendedBeta record.
+proof fn lemma_after_rle_shape_recommended_beta(
     b: Seq<u8>,
     m: MHModel,
     cursor: int,
@@ -6286,32 +6286,32 @@ proof fn lemma_after_rle_shape_recommended(
     px: Seq<Seq<u8>>,
 )
     requires
-        mh_policy(b, recommended_policy()) == Ok(m),
-        rle_policy(m.image_type, recommended_policy()),
+        mh_policy(b, recommended_beta_policy()) == Ok(m),
+        rle_policy(m.image_type, recommended_beta_policy()),
         mr_policy(
             b,
-            pkt_of_mh_policy(m, recommended_policy()),
+            pkt_of_mh_policy(m, recommended_beta_policy()),
             b.subrange(18 + (m.id_length as int), 18 + (m.id_length as int) + m.map_bytes),
-            recommended_policy(),
+            recommended_beta_policy(),
             18 + (m.id_length as int) + m.map_bytes,
             0,
         ) == Ok((cursor, produced, px)),
     ensures
-        mp_after_policy(b, m, recommended_policy()) == Ok((
+        mp_after_policy(b, m, recommended_beta_policy()) == Ok((
             m.width as int,
             m.height as int,
-            mp_assemble_policy(b, m, recommended_policy(), 18 + (m.id_length as int)),
+            mp_assemble_policy(b, m, recommended_beta_policy(), 18 + (m.id_length as int)),
         )),
 {
     reveal(mp_after_policy);
     reveal(mr_policy);
     reveal(rle_policy);
-    reveal(recommended_policy);
+    reveal(recommended_beta_policy);
     reveal(mp_suffix_ok_policy);
 }
 
 /// Obligation R, RLE case of the ID/map/pixel/suffix phase: a Strict-accepted
-/// record whose Strict packet stream returns `Ok(t)` gives, under Recommended,
+/// record whose Strict packet stream returns `Ok(t)` gives, under RecommendedBeta,
 /// the identical `Ok(r)` with `recovered = false`. The two shape lemmas fix the
 /// assembled image; the pixel equality and the flag scan are the per-packet
 /// inductions above.
@@ -6336,13 +6336,13 @@ proof fn lemma_mp_after_rle_rec_eq_strict_on_ok(
         ) == Ok((cursor, produced, px)),
         mp_after_policy(b, m, strict_policy()) == Ok(r),
     ensures
-        mp_after_policy(b, m, recommended_policy()) == Ok(r),
-        recovered_policy(b, recommended_policy()) == false,
+        mp_after_policy(b, m, recommended_beta_policy()) == Ok(r),
+        recovered_policy(b, recommended_beta_policy()) == false,
 {
     reveal(rle_policy);
     reveal(strict_policy);
     lemma_pkt_of_mh_policy_rec_eq_strict(m);
-    lemma_mh_policy_recommended_on_strict_ok(b, m);
+    lemma_mh_policy_recommended_beta_on_strict_ok(b, m);
     let id_end = 18 + (m.id_length as int);
     let p = pkt_of_mh_policy(m, strict_policy());
     let map = b.subrange(id_end, id_end + m.map_bytes);
@@ -6352,13 +6352,13 @@ proof fn lemma_mp_after_rle_rec_eq_strict_on_ok(
     lemma_mr_at_rec_eq_strict_on_ok(b, p, map, c0, 0, Seq::empty(), (cursor, produced, px));
     lemma_mp_pixels_rec_eq_strict_on_strict_ok(b, m, id_end, cursor, produced, px);
     lemma_assemble_eq_from_pixels(b, m, id_end);
-    lemma_after_rle_shape_recommended(b, m, cursor, produced, px);
+    lemma_after_rle_shape_recommended_beta(b, m, cursor, produced, px);
     lemma_mr_flags_rec_false_on_strict_ok(b, p, map, c0, 0, Seq::empty(), (cursor, produced, px));
     lemma_recovered_rle_false(b, m, cursor, produced, px);
 }
 
 /// Obligation R, raw case of the ID/map/pixel/suffix phase. `index_range =
-/// Reject` on Recommended makes the raw substitution scan false
+/// Reject` on RecommendedBeta makes the raw substitution scan false
 /// (`lemma_raw_subst_no_events`), and the raw phase is identical under the two
 /// records (`lemma_mp_raw_acc_rec_eq_strict`).
 pub proof fn lemma_mp_after_raw_rec_eq_strict_on_ok(b: Seq<u8>, m: MHModel, r: (int, int, Seq<u8>))
@@ -6367,15 +6367,15 @@ pub proof fn lemma_mp_after_raw_rec_eq_strict_on_ok(b: Seq<u8>, m: MHModel, r: (
         !rle_policy(m.image_type, strict_policy()),
         mp_after_policy(b, m, strict_policy()) == Ok(r),
     ensures
-        mp_after_policy(b, m, recommended_policy()) == Ok(r),
-        recovered_policy(b, recommended_policy()) == false,
+        mp_after_policy(b, m, recommended_beta_policy()) == Ok(r),
+        recovered_policy(b, recommended_beta_policy()) == false,
 {
     reveal(mp_after_policy);
     reveal(recovered_policy);
     reveal(mp_raw_policy);
     reveal(rle_policy);
     reveal(strict_policy);
-    reveal(recommended_policy);
+    reveal(recommended_beta_policy);
     reveal(mp_suffix_ok_policy);
     reveal(raw_subst_policy);
     lemma_pkt_of_mh_policy_rec_eq_strict(m);
@@ -6396,11 +6396,11 @@ pub proof fn lemma_mp_after_raw_rec_eq_strict_on_ok(b: Seq<u8>, m: MHModel, r: (
         Ok((_px, cursor)) => {
             assert(r == (m.width as int, m.height as int, mp_assemble_policy(b, m, strict_policy(), id_end)));
             lemma_mp_raw_acc_rec_eq_strict(b, p, map, c0, 0, Seq::empty());
-            assert(mp_raw_policy(b, p, map, recommended_policy(), c0) == Ok((_px, cursor)));
+            assert(mp_raw_policy(b, p, map, recommended_beta_policy(), c0) == Ok((_px, cursor)));
             lemma_mp_pixels_rec_eq_strict_on_strict_ok(b, m, id_end, cursor, m.n, _px);
             lemma_assemble_eq_from_pixels(b, m, id_end);
-            assert(mp_suffix_ok_policy(b, recommended_policy(), cursor));
-            lemma_raw_subst_no_events(b, p, recommended_policy(), c0, m.n);
+            assert(mp_suffix_ok_policy(b, recommended_beta_policy(), cursor));
+            lemma_raw_subst_no_events(b, p, recommended_beta_policy(), c0, m.n);
         },
     }
 }
@@ -6412,8 +6412,8 @@ pub proof fn lemma_mp_after_policy_rec_eq_strict_on_ok(b: Seq<u8>, m: MHModel, r
         mh_policy(b, strict_policy()) == Ok(m),
         mp_after_policy(b, m, strict_policy()) == Ok(r),
     ensures
-        mp_after_policy(b, m, recommended_policy()) == Ok(r),
-        recovered_policy(b, recommended_policy()) == false,
+        mp_after_policy(b, m, recommended_beta_policy()) == Ok(r),
+        recovered_policy(b, recommended_beta_policy()) == false,
 {
     reveal(rle_policy);
     reveal(strict_policy);
@@ -6448,25 +6448,25 @@ pub proof fn lemma_mp_after_policy_rec_eq_strict_on_ok(b: Seq<u8>, m: MHModel, r
     }
 }
 /// Obligation R (THEOREMS-POLICY-DELTA.md): every input Strict accepts decodes
-/// to the identical `(width, height, RGBA)` under Recommended, with
+/// to the identical `(width, height, RGBA)` under RecommendedBeta, with
 /// `recovered = false`.
-pub proof fn lemma_mp_policy_recommended_on_strict_ok(b: Seq<u8>, r: (int, int, Seq<u8>))
+pub proof fn lemma_mp_policy_recommended_beta_on_strict_ok(b: Seq<u8>, r: (int, int, Seq<u8>))
     requires
         mp_policy(b, strict_policy()) == Ok(r),
     ensures
-        mp_policy(b, recommended_policy()) == Ok(r),
-        recovered_policy(b, recommended_policy()) == false,
+        mp_policy(b, recommended_beta_policy()) == Ok(r),
+        recovered_policy(b, recommended_beta_policy()) == false,
 {
     reveal(mp_policy);
     reveal(mh_policy);
     reveal(strict_policy);
-    reveal(recommended_policy);
+    reveal(recommended_beta_policy);
     match mh_policy(b, strict_policy()) {
         Err(_) => {
             assert(false);
         },
         Ok(m) => {
-            lemma_mh_policy_recommended_on_strict_ok(b, m);
+            lemma_mh_policy_recommended_beta_on_strict_ok(b, m);
             lemma_mp_after_policy_rec_eq_strict_on_ok(b, m, r);
         },
     }

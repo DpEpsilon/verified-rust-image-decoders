@@ -6,7 +6,7 @@ Inputs come from three sources, recorded per vector in `provenance`:
   * `hand:<description>`   a synthetic file built here from explicit fields;
   * `seeded:<seed>:<name>` a random option-targeted mutation of a frozen vector.
 No corpus bytes are used.  Expected results are computed by policy_oracle.py and
-re-checked; the closed `recovered` event list and the Recommended invariant are
+re-checked; the closed `recovered` event list and the RecommendedBeta invariant are
 asserted independently of the per-profile grid.
 Output: POLICY-VECTORS.json {seed, generator, profiles: {name: [vector]}, custom: [vector]}.
 """
@@ -194,15 +194,15 @@ def expected(profile, name):
     return next(r['expected'] for r in profiles[profile] if r['name'] == name)
 
 
-# Recommended invariant: never changes a Strict-accepted result except the flag
+# RecommendedBeta invariant: never changes a Strict-accepted result except the flag
 for name, b, _ in cases:
     s = O.actual(b, 'Strict')
     if 'error' not in s:
-        r = O.actual(b, 'Recommended', with_recovery=True)
+        r = O.actual(b, 'RecommendedBeta', with_recovery=True)
         assert r.pop('recovered') is False and r == s, name
 # closed event list: positive witnesses
 for event, (profile, name) in {
-        'rle-clip-repeat': ('Recommended', 'rle-repeat-overrun'),
+        'rle-clip-repeat': ('RecommendedBeta', 'rle-repeat-overrun'),
         'rle-clip-raw': ('ImageCrateCompat-0.25.10', 'rle-raw-overrun-short-packet'),
         'index-black-opaque': ('GdkCompat-2.42.12', 'index-beyond-map24'),
         'index-black-transparent': ('GdkCompat-2.42.12', 'index-beyond-map32'),
@@ -215,7 +215,7 @@ for profile in O.PROFILES:
     for name in ('rle-complete-exact', 'trailing-footer'):
         assert expected(profile, name).get('recovered') is False, (profile, name)
 for name in ('trailing-junk', 'attr-32-count4', 'map-absent-stray-depth'):
-    assert expected('Recommended', name).get('recovered') is False, name
+    assert expected('RecommendedBeta', name).get('recovered') is False, name
 
 # internal single-option probes: one discriminating witness per non-Strict value
 custom = []

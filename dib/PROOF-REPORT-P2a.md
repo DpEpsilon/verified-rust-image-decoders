@@ -22,7 +22,7 @@ semantics, Strict byte-identical to the shipped profile, and the hard invariant
 Ignore}`, `ReservedOptions{Zero, Ignore}`, `OffsetOptions{Declared, AllowAny,
 Gdk}`, `HighCountOptions{BmpTable, Ignore, GdkBound}`, `HeadersOptions{All1_1,
 No16, No16No64}`, `MasksOptions{Reject, Independent, DefaultRGB}` — and six new
-`pub` fields on `Policy`. `strict_policy()`, `recommended_policy()`,
+`pub` fields on `Policy`. `strict_policy()`, `recommended_beta_policy()`,
 `profile_policy` and `profile_policy_exec` carry all eight fields; `Strict` sets
 every option to its bold (1.1) value, so `Strict` is byte-identical by
 construction. The exhaustive matches mean a new value is a compile error, not a
@@ -81,7 +81,7 @@ reads, and split each proof block into a named `proof fn`).
 
 - `cargo test --release`: `conformance: 302/302 vectors passed`; `corpus: 84
   files checked, 58 accepted`; `policy conformance: Strict: 102/102` and
-  `Recommended: 102/102`.
+  `RecommendedBeta: 102/102`.
 - `tools/audit_alloc.sh`: `OK` (`vec!` count 1).
 
 The P2a conformance extension (per-option oracle probes from

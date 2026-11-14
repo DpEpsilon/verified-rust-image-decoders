@@ -298,12 +298,12 @@ Checked on a standalone Verus file with the same toolchain (0.2026.11.02): `asse
 ## P1 (policy refactor, first slice; crate version 0.3.0)
 - **`dib.rs` policy types.** `MetadataOptions {Declared, Ignore}`, a two-field
   `Policy {file_size, image_size}` (room for later option groups), the
-  `BmpProfile {Strict, Recommended}` selector (`Default` is `Strict`, the match in
+  `BmpProfile {Strict, RecommendedBeta}` selector (`Default` is `Strict`, the match in
   `profile_policy` is exhaustive so a new profile is a compile error, not a silent
   Strict default), and `BmpMode {BmpFile, BareDib}` (POLICY-SPEC gives the
   profiled entry point only the two BMP modes, so no ICO input can reach a policy
   branch and no mode is rejected at run time). Spec fns `strict_policy`,
-  `recommended_policy`, `profile_policy`; exec wrappers `bmp_mode_mode`,
+  `recommended_beta_policy`, `profile_policy`; exec wrappers `bmp_mode_mode`,
   `profile_policy_exec`.
 - **`model.rs` policy layer.** `r1_prefix_policy` (R1's `bfSize` test governed by
   `file_size`), `mh_policy` (the R1–R7 model with that prefix, same `r2r7` chain
@@ -329,7 +329,7 @@ Checked on a standalone Verus file with the same toolchain (0.2026.11.02): `asse
   `decode`, `decode_with_steps`, every existing theorem and the 302 vectors are
   untouched; `lib.rs` re-exports the new names.
 - **Conformance.** `tests/policy_conformance.rs` runs `policy/POLICY-VECTORS.json`
-  for `Strict` and `Recommended` (102 each, `recovered` checked); it sits next to
+  for `Strict` and `RecommendedBeta` (102 each, `recovered` checked); it sits next to
   the unchanged `tests/conformance.rs` (302) and `tests/corpus.rs`.
 - **Deferred to later milestones (not P1).** GdkCompat-2.42.12 and
   ImageCrateCompat-0.25.10 (and the other sixteen options); any input that sets
@@ -345,7 +345,7 @@ Checked on a standalone Verus file with the same toolchain (0.2026.11.02): `asse
 - **Built in `*.p2a-wip2`.** Six new option enums (`PlanesOptions`,
   `ReservedOptions`, `OffsetOptions`, `HighCountOptions`, `HeadersOptions`,
   `MasksOptions`) and their `pub` fields on `Policy`; `strict_policy`/
-  `recommended_policy`/`profile_policy`/`profile_policy_exec` carrying all
+  `recommended_beta_policy`/`profile_policy`/`profile_policy_exec` carrying all
   eight fields; the model's `r1_prefix_policy` (reserved, offset), the
   accessors `width_i_of`/`stored_of`/`planes_of`/`depth_of`/`compression_of`/
   `used_of`/`comp_of`, `hsize_ok_policy`, `gdk_high_bound`,
@@ -368,7 +368,7 @@ Checked on a standalone Verus file with the same toolchain (0.2026.11.02): `asse
   acceptance) was not written. See `STUCK.md` and `PROOF-REPORT-P2a.md`.
 - **Checks on the delivered baseline.** clean reverify 1594 verified, 0 errors
   (runs 276 and 280); `cargo test --release` 302/302, corpus 84/58, policy
-  Strict/Recommended 102/102; `tools/audit_alloc.sh` OK; frozen inputs intact;
+  Strict/RecommendedBeta 102/102; `tools/audit_alloc.sh` OK; frozen inputs intact;
   no escapes, no `#[verifier::rlimit]`.
 
 ## P2b (policy refactor, third slice; INCOMPLETE — stopped at the escalation budget)
@@ -392,7 +392,7 @@ Checked on a standalone Verus file with the same toolchain (0.2026.11.02): `asse
   `Bitfield16AlphaOptions`, `IncompleteMetadataOptions`, `ShortIndexedGapOptions`,
   `HeaderBytesOptions`, each `#[non_exhaustive]`, plus the fourteen matching
   `Policy` fields. All four `Policy` constructors carry them at the Strict value,
-  so `strict_policy()`/`recommended_policy()`/`profile_policy_exec` are unchanged
+  so `strict_policy()`/`recommended_beta_policy()`/`profile_policy_exec` are unchanged
   and `parse_header`'s Strict instance is byte-identical.
 - **rlimit recovery.** The fourteen extra fields pushed `parse_header` over the
   per-function solver limit through its five redundant `reveal(strict_policy)`
@@ -411,7 +411,7 @@ Checked on a standalone Verus file with the same toolchain (0.2026.11.02): `asse
   `CUSTOM-VECTORS` rows, and per-option corpus counts are likewise not extended.
 - **Checks on the delivered state.** clean reverify 1658 verified, 0 errors
   (run 387); `cargo test --release` 302/302 vectors, corpus 84 files / 58
-  accepted, policy Strict/Recommended 102/102, the P2a `custom_policies_match_
+  accepted, policy Strict/RecommendedBeta 102/102, the P2a `custom_policies_match_
   python_oracle` harness green; frozen inputs intact; no escapes, no
   `#[verifier::rlimit]`.
 
@@ -421,30 +421,30 @@ Checked on a standalone Verus file with the same toolchain (0.2026.11.02): `asse
   run-442 green state, **1714 verified, 0 errors** (was 1712). All four frozen
   named profiles are selectable from release code.
 - **`BmpProfile`.** `GdkCompat` and `ImageCrateCompat` variants added after
-  `Recommended`; the enum was already `#[non_exhaustive]`, `Default` stays
+  `RecommendedBeta`; the enum was already `#[non_exhaustive]`, `Default` stays
   `Strict`.
 - **Spec records.** `gdk_compat_policy()` and `image_crate_compat_policy()` carry
   every one of the twenty-two retained fields from the frozen POLICY-SPEC "Named
   profiles" table; `profile_policy` gained the two arms. `profile_policy_exec`
   gained the matching two arms with the same field values; the `Strict` and
-  `Recommended` arms are **byte-identical** to the run-437 file (checked), so the
+  `RecommendedBeta` arms are **byte-identical** to the run-437 file (checked), so the
   P1 behaviour and its proofs are untouched. Six new verified obligations: the
   two spec-fn bodies and the two `profile_policy_exec` arms each discharge their
   `ensures` against `profile_policy` (the exec-constructor-equals-model equality,
-  as for `Strict`/`Recommended`). The constructors stay `pub(crate)`.
+  as for `Strict`/`RecommendedBeta`). The constructors stay `pub(crate)`.
 - **Witness fix (task 3).** `t1_policy_totality` claimed `r.1 == false` for
   *every* profile; that is false for the two compatibility profiles, which carry
   recovery-producing options. Split into `t1_policy_recovery_flag` (all four,
   `r.1 == recovered_policy(..)`, the frozen closed-event semantics) plus
-  `t1_policy_recovery_strict`/`_recommended` (concrete `BmpProfile::Strict` /
-  `Recommended`, `r.1 == false`, the original P1 claim at its original
+  `t1_policy_recovery_strict`/`_recommended_beta` (concrete `BmpProfile::Strict` /
+  `RecommendedBeta`, `r.1 == false`, the original P1 claim at its original
   quantification). No `model.rs` change was needed: `recovered_policy`,
   `mh_recovered_so_far`, `pixel_recovered`, `gdk_blank` were already written over
   an arbitrary `Policy`, and `lemma_mh_recovered_so_far_strict` stays as is.
 - **Conformance (`tests/policy_conformance.rs`).** `policy_conformance_all_profiles`
   runs all four `POLICY-VECTORS.json` profiles, **102/102 each**, RGBA and
   `recovered` checked. `policy_conformance_corpus_acceptance` checks the 71-file
-  BMP corpus per profile — **Strict 50, Recommended 52, GdkCompat-2.42.12 58,
+  BMP corpus per profile — **Strict 50, RecommendedBeta 52, GdkCompat-2.42.12 58,
   ImageCrateCompat-0.25.10 55** — and, for Strict, the frozen
   `corpus_expected.json` answer byte for byte.
 - **Public-vs-custom equality (task 3, the fixture half).** In
@@ -481,7 +481,7 @@ Checked on a standalone Verus file with the same toolchain (0.2026.11.02): `asse
 - **The field.** `Decoded` gains `pub rle_or_32bpp: bool`. It is the small change
   the brief asks for: `model.rs`'s `gdk_blank`/`partial_fill` already select the
   transparent fill with `bits == 32 || compression == 1 || compression == 2`, so
-  the same predicate is now also a returned value. The Strict/Recommended/Gdk/
+  the same predicate is now also a returned value. The Strict/RecommendedBeta/Gdk/
   Image RGBA bytes are untouched: no pixel path reads the field, and every
   existing postcondition (`decode_mp_eq`, `decode_policy_mp_eq`,
   `recovered_policy`, the T12 work bound, the one-`vec!` allocation) is kept.
@@ -523,7 +523,7 @@ Checked on a standalone Verus file with the same toolchain (0.2026.11.02): `asse
   `Decoded`).
 - **Checks on the delivered state.** clean reverify run 469 **1722 verified, 0
   errors**; `cargo test --release` 302/302 vectors, four-profile policy
-  conformance 102/102 each, corpus acceptance Strict 50 / Recommended 52 / Gdk
+  conformance 102/102 each, corpus acceptance Strict 50 / RecommendedBeta 52 / Gdk
   58 / ImageCrate 55, `custom_policies_match_python_oracle` 26,238 profile rows
   green; `tools/audit_alloc.sh` OK (one `vec!`); frozen policy hashes match
   `policy/FREEZE.txt`; no escapes, no `#[verifier::rlimit]`.

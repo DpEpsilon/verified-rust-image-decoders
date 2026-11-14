@@ -24,12 +24,12 @@ CORPORA = os.path.expanduser(os.environ.get('CORPUS_DIR', '~/corpora'))
 DIB_CORPUS = os.path.expanduser('~/projects/verified-decoders/dib/corpus')
 WORK = '/tmp/claude-0/bench-out'
 CFG = {
-    'bmp': dict(ver='bmp-verified', variants=['bmp-verified-policy-strict', 'bmp-verified-policy-recommended'],
+    'bmp': dict(ver='bmp-verified', variants=['bmp-verified-policy-strict', 'bmp-verified-policy-recommended-beta'],
                 extras=['bmp-verified-policy-gdk', 'bmp-verified-policy-imagecompat'],
                 inc=['bmp-image', 'gdk:bmp'],
                 corpus=lambda: dedupe(sorted(glob.glob(CORPORA + '/bmp/files/*')) + sorted(glob.glob(DIB_CORPUS + '/*.bmp'))),
                 large=lambda: sorted(glob.glob(LARGE + '/*bmp*.bmp'))),
-    'tga': dict(ver='tga-verified', variants=['tga-verified-policy-strict', 'tga-verified-policy-recommended'],
+    'tga': dict(ver='tga-verified', variants=['tga-verified-policy-strict', 'tga-verified-policy-recommended-beta'],
                 extras=['tga-verified-policy-gdk', 'tga-verified-policy-imagecompat'], inc=['tga-image', 'tga-tinytga', 'gdk:tga'],
                 corpus=lambda: sorted(glob.glob(CORPORA + '/tga/files/*')),
                 large=lambda: sorted(glob.glob(LARGE + '/*tga*.tga'))),

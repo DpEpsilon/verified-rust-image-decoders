@@ -14,7 +14,8 @@ functions (the `*_logged` ones are `#[doc(hidden)] pub`, which the tool still
 counts as exported; E12 later demoted ICNS's non-root `try_rle_logged`). Entry
 counts are unchanged at 64 / 58 / 50 / 42. The
 production run for this change (then `20261114T081621Z`, since deleted by
-E12; the current evidence is `runs/20261114T084716Z`) reports exactly the
+E12; the evidence then was `runs/20261114T084716Z`, since deleted by E13, whose
+authoritative run is `runs/20261114T094507Z`) reports exactly the
 expected findings: DIB,
 TGA and ICNS only `allowlist-reviewer`; ICO `allowlist-reviewer` and
 `dependency-contract` (D9), with DIB's report inside the ICO run also only
@@ -29,12 +30,29 @@ from another crate. ICNS's `try_rle_logged` was the one such item; it is now
 `pub(crate)` (ERRATA E12). ICNS reverified (412/0, run 53) and ICNS tests pass
 (111/111 conformance, 12/12 fault injection). The ICNS draft allowlist was
 regenerated (new `source_hash` `cda2ebe7...`; entry set unchanged at 50) and
-`PINS.sha256` rewritten. The authoritative production run is now
-`runs/20261114T084716Z`; `runs/20261114T081621Z` is deleted. ICNS's walk is one
+`PINS.sha256` rewritten. The authoritative production run was then
+`runs/20261114T084716Z` (since deleted by E13, whose authoritative run is
+`runs/20261114T094507Z`);
+`runs/20261114T081621Z` is deleted. ICNS's walk is one
 instance and three edges smaller; the other three cores are unchanged. See
 `API-SURVEY.md` section 6 for the caller-controlled surfaces that remain public
 (`alloc_guard::try_zeroed`, ICNS `try_copy`, and the ICNS `parsed_inv`
 decoders), which are open design items.
+
+**E13 (2026-11-14): the `Recommended` -> `RecommendedBeta` rename.** The DIB
+and TGA policy profiles were renamed `RecommendedBeta` (owner decision; ERRATA
+E13, and `dib/policy/ERRATA.md` E1, `tga/policy/ERRATA.md` E2). This changed
+DIB's and TGA's `source_hash`, so `tools/draft_all.sh dib tga ico` regenerated
+the DIB and TGA draft allowlists (only `source_hash` changed; ICNS and ICO were
+byte-identical) and rewrote `PINS.sha256`. The four-core production audit was
+re-run in one run, `runs/20261114T094507Z`, which is now the authoritative
+evidence; it replaces `runs/20261114T084716Z`, which is deleted along with the
+earlier `runs/20261114T081621Z`. It reports the same expected
+findings (DIB, TGA and ICNS only `allowlist-reviewer`; ICO `allowlist-reviewer`
+and `dependency-contract`), the same entry counts (64 / 58 / 50 / 42) and the
+same instance and edge counts (DIB 421/712, TGA 364/622, ICNS 344/629, ICO
+320/532). New `source_hash`: DIB `1176feef…`, TGA `627a1646…`; ICNS
+`cda2ebe7…` and ICO `5e2660a5…` are unchanged.
 
 **Conclusion.** The mechanical checks I could redo without Verus or
 cargo agree with the drafts: all 67 crate functions cited as the reason
@@ -203,8 +221,9 @@ rejection costs.
   after the public-API reduction. The DIB/TGA/ICNS roots are plain `pub`;
   ICO's `try_parse_with_steps` and `try_decode_entry_with_steps`, and
   TGA's and ICNS's `*_logged` roots, are `#[doc(hidden)] pub`, which the
-  tool still counts as exported. No `missing-root` was reported in
-  `20261114T084716Z`, so the lists are unchanged. (E12 later demoted ICNS's
+  tool still counts as exported. No `missing-root` was reported at E11/E12
+  (ERRATA E11/E12) or in E13's `20261114T094507Z`, so the lists are
+  unchanged. (E12 later demoted ICNS's
   `try_rle_logged` to `pub(crate)`; it is not a `required_root`.)
 - Recommendation: accept after checking the lists.
 
@@ -339,18 +358,22 @@ Other checks:
 - **PINS.sha256.** `sha256sum -c --strict PINS.sha256`: four of four OK.
 - **`source_hash`.** I recomputed it as the tool does (SHA-256 over the
   sorted per-file SHA-256 lines of every non-test module file) for all
-  four cores. As of the E11 API reduction and the E12 `try_rle_logged`
-  demotion the values are DIB
-  `10f5071a08964bb735ee266801c53d5c82926a36701cf4e01bbe0218b61e684c`,
-  TGA `387f37cbdee25ce4b6149ca10db8bc082918a6cfbda945cbdd9968916c7c0c34`,
+  four cores. After E13's rename (which changed DIB's and TGA's source and
+  therefore DIB's and ICO's `source_hash`) the values are DIB
+  `1176feef4f943a58c0073ba25f27f53c00b40a14d7b8812321ee91adb45bf62d`,
+  TGA `627a1646805bd453cb6a8cc602b677cc6095cd647b8257c92d0ec121f987ccf7`,
   ICNS `cda2ebe74a1a747f9862bfb1e519294c9925515d88816cf01d237df2cea7b269`,
   ICO `5e2660a5d6a7af5205ca07fa64cf63504173f66e6bdab839fca5027b9816a530`,
-  and four of four match the regenerated allowlists. (E11 alone recorded ICNS
+  and four of four match the regenerated allowlists. (E11/E12 recorded DIB
+  `10f5071a...`, TGA `387f37cb...`; E11 alone recorded ICNS
   as `bfcd14ae...`.) The method reproduces
   the pre-E11 values exactly (DIB `c0a03456...`, TGA `f9ca2824...`, ICNS
   `01f940ad...`, ICO `5265d477...`), which is the check that it is the
-  tool's computation. The E11/E12 reports are in run `20261114T084716Z` (which
-  replaces the now-deleted `20261114T081621Z`). DIB's
+  tool's computation. The E13 reports are in run `20261114T094507Z` (which
+  replaces `20261114T084716Z`, itself replacing the now-deleted
+  `20261114T081621Z`); both earlier runs are deleted, so the E11/E12 findings
+  are recorded here and in `../ERRATA.md` E11/E12 rather than in a run
+  directory. DIB's
   `source_hash` inside the ICO run equals DIB's own.
 - **Guard hashes.** `alloc_guard/mod.rs` is `26e4c832...` in all four
   (matches E6). Each `sites.rs` matches its pin: DIB `33465c74...`
@@ -433,8 +456,9 @@ ICNS and ICO now fail only on the unsigned reviewer (ICO also on
 7. Run `./run_audit.sh` from `alloc-delta/audit` (builds with `-j1`; it
    is slow on one CPU). Expected after signing: DIB and TGA PASS; ICNS
    PASS; ICO PASS once DIB passes in the same run (D9). The latest
-   unsigned run is `runs/20261114T084716Z`, which covers all four cores
-   after the E11 public-API reduction and the E12 `try_rle_logged` demotion:
+   unsigned run is `runs/20261114T094507Z`, which covers all four cores
+   after the E13 rename (and the E11 public-API reduction and E12
+   `try_rle_logged` demotion before it):
    DIB, TGA and ICNS only
    `allowlist-reviewer`; ICO `allowlist-reviewer` and
    `dependency-contract`; the run directory under `runs/` is the

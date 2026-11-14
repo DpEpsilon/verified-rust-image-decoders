@@ -35,7 +35,7 @@ fn serial_fault_injection_all_frozen_and_bmp_corpus() {
     }
     let profiles = [
         ("Strict", BmpProfile::Strict),
-        ("Recommended", BmpProfile::Recommended),
+        ("RecommendedBeta", BmpProfile::RecommendedBeta),
         ("GdkCompat-2.42.12", BmpProfile::GdkCompat),
         ("ImageCrateCompat-0.25.10", BmpProfile::ImageCrateCompat),
     ];
@@ -333,7 +333,7 @@ fn profile_of_group(group: &str) -> Option<BmpProfile> {
     let name = group.rsplit('/').next().expect("group has a slash");
     match name {
         "Strict" => Some(BmpProfile::Strict),
-        "Recommended" => Some(BmpProfile::Recommended),
+        "RecommendedBeta" => Some(BmpProfile::RecommendedBeta),
         "GdkCompat-2.42.12" => Some(BmpProfile::GdkCompat),
         "ImageCrateCompat-0.25.10" => Some(BmpProfile::ImageCrateCompat),
         _ => None,

@@ -5,4 +5,4 @@ findings: 1
 finding-tags: allowlist-reviewer
 findings-other-than-unsigned-reviewer: 0
 mode: PRODUCTION
-    Finished `release` profile [optimized] target(s) in 3.17s
+    Finished `release` profile [optimized] target(s) in 3.09s

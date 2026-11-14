@@ -59,7 +59,7 @@ cargo test --offline -- --nocapture --test-threads=1
 
 - All 302 frozen DIB 1.1 vectors passed.
 - All four named profiles passed their 102 vectors each.
-- BMP corpus acceptance remained 50/71 Strict, 52/71 Recommended, 58/71 GdkCompat, and 55/71 ImageCrateCompat.
+- BMP corpus acceptance remained 50/71 Strict, 52/71 RecommendedBeta, 58/71 GdkCompat, and 55/71 ImageCrateCompat.
 - The original mixed corpus checked 84 files and accepted 58.
 - All 66 frozen custom-policy vectors matched.
 - `custom_policies_match_python_oracle` passed, including 26,238 public-profile versus custom-record comparisons.

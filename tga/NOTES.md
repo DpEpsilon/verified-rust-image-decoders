@@ -11,13 +11,13 @@ Statements elsewhere in this file that describe the guard as a `push` loop, that
 The fallible-allocation delta for TGA is implemented and green after Sol's
 soundness review: **run 230, 975 verified, 0 errors** (run 223's 974 plus the
 verified test-only entry added for Sol finding 2). Tests: **169/169**
-conformance, **302/302** per profile for each of Strict, Recommended, GdkCompat
+conformance, **302/302** per profile for each of Strict, RecommendedBeta, GdkCompat
 and ImageCrateCompat, **28/28** custom frozen vectors, **52,348 differential
 comparisons, 0 mismatches**, and the fault-injection suite (**8/8** cases:
 per-reservation failure, threshold mode, no-`realloc`, physical-event layout,
 drop-without-leak, `PreAlloc`, and every one of the 169 vectors plus 12 corpus
 inputs under an injected reservation failure). Corpus counts unchanged (Strict
-252/294, Recommended 266/294, GdkCompat 264/294, ImageCrateCompat 259/294;
+252/294, RecommendedBeta 266/294, GdkCompat 264/294, ImageCrateCompat 259/294;
 recovered 0/2/4/2). `tools/audit_alloc.sh --self-test`: OK, 0 `vec!`, exactly 1
 `try_zeroed` call site, both guard files hash-pinned, and the scanner's own
 positive/negative controls pass. All three no_std targets build with `std`
@@ -201,7 +201,7 @@ What the reconnaissance established for the next dispatch, so it is not redone:
   (:4891/:4912, header helpers, kept), `t1_decode_safe` (:4937), and the policy
   witnesses `t7_strict_is_1_0` (:8426), `t2_t5_policy_header` (:8452),
   `t1_t8_t10_w_a_e_policy` (:8579), `t7_t9_policy_exact` (:8597),
-  `r_recommended_conservative` (:8606), `e_policy_no_events` (:8623). `t1_decode_safe`
+  `r_recommended_beta_conservative` (:8606), `e_policy_no_events` (:8623). `t1_decode_safe`
   and `t7_decode_exact` call `decode`; `t7_strict_is_1_0` calls both `decode` and
   `decode_with_policy`.
 - **Tests to migrate**: `tests/conformance.rs:13,85` (`use ...{decode, Error}`,
@@ -296,8 +296,8 @@ errors**, from a clean target directory in `runs/194.log`. Runs 179–194 contai
   error returns false with fresh state on the next call.
 - Universal witnesses cover header/map addressing, conversion, packet safety,
   bounds, termination, work, allocation-call counts and event exactness; named
-  profiles have exact T5–T7/T9 witnesses and executable Recommended
-  conservativity (`r_recommended_conservative`).
+  profiles have exact T5–T7/T9 witnesses and executable RecommendedBeta
+  conservativity (`r_recommended_beta_conservative`).
 - Ten small frozen-vector header witnesses extend the existing
   `model_vectors.rs`; regenerate them with `tools/gen_policy_header_witnesses.py`
   after regenerating the original core vector module.
@@ -314,7 +314,7 @@ future work.
 
 The final test command was `cargo --offline test --release -- --nocapture
 --test-threads=1` (full output `notes/policy-tests-final.txt`): 302/302 policy
-vectors for each of Strict, Recommended, GdkCompat and ImageCrateCompat; 28/28
+vectors for each of Strict, RecommendedBeta, GdkCompat and ImageCrateCompat; 28/28
 custom frozen vectors; 169/169 original core vectors; and **52,348 oracle
 comparisons, zero mismatches**. The differential test includes all 169 original
 inputs under every profile, all 7,578 proper prefixes per profile, all 32 option
@@ -326,7 +326,7 @@ Corpus measurement (`notes/policy-corpus-astra.txt`) used
 `/home/ws/corpora/tga/MANIFEST.tsv`, SHA-256
 `0f8a8a41ea00caf25d480cb4f9ca9bc1c30572007f6e880e9ca2876e2520584c`.
 The manifest was unchanged across the run; all 294 listed files were present
-and independently SHA-256-matched. Acceptance: Strict **252/294**, Recommended
+and independently SHA-256-matched. Acceptance: Strict **252/294**, RecommendedBeta
 **266/294**, GdkCompat **264/294**, ImageCrateCompat **259/294**. Successful
 recovery flags: 0, 2, 4 and 2 respectively. The runner reads corpus bytes in
 place; no corpus bytes were copied into the project.
@@ -606,8 +606,8 @@ type are unchanged); `src/lib.rs` gains the two modules.
   `Policy` with `pub` fields (Verus needs them public for the model's spec fns to
   be well-formed) but `#[non_exhaustive]` and `pub(crate)` constructors
   `strict_policy_exec`/`profile_policy_exec`, so no external literal or mutation;
-  `Profile {Strict, Recommended}` (`#[non_exhaustive]`, `Default = Strict`); the
-  spec records `strict_policy`, `recommended_policy`, `gdk_compat_policy`,
+  `Profile {Strict, RecommendedBeta}` (`#[non_exhaustive]`, `Default = Strict`); the
+  spec records `strict_policy`, `recommended_beta_policy`, `gdk_compat_policy`,
   `image_crate_compat_policy` and `profile_policy`. The two compat records are
   present (frozen field values) but the compat `Profile` variants are added when
   their nine pixel-rule fields are implemented.
@@ -647,22 +647,22 @@ type are unchanged); `src/lib.rs` gains the two modules.
   `lemma_recovered_policy_reject`, `lemma_recovered_policy_strict` (every record
   with `rle_overrun=Reject` and `index_range=Reject`, Strict included, has
   `recovered=false`). Probe run 026.
-- **R (Recommended conservativity)** partial. Proved: the four site lemmas
+- **R (RecommendedBeta conservativity)** partial. Proved: the four site lemmas
   (`lemma_suffix_ignore_on_footer`, `lemma_eff_attr_lenient_accepted`,
-  `lemma_map_recommended_on_strict`, `lemma_map_coherence_recommended`), the
-  header record equality `lemma_mh_policy_recommended_on_strict_ok`
-  (`mh_policy(b,Recommended) = Ok(m)` on a Strict-accepted input), the conversion
-  equality `lemma_conv2_policy_recommended_on_strict` and the record-indexed
+  `lemma_map_recommended_beta_on_strict`, `lemma_map_coherence_recommended_beta`), the
+  header record equality `lemma_mh_policy_recommended_beta_on_strict_ok`
+  (`mh_policy(b,RecommendedBeta) = Ok(m)` on a Strict-accepted input), the conversion
+  equality `lemma_conv2_policy_recommended_beta_on_strict` and the record-indexed
   equalities `lemma_conv2_policy_rec_eq_strict`, `lemma_in_range_rec_eq_strict`,
   `lemma_raw_subst_rec_eq_strict`, `lemma_lit_{ok,good,out}_rec_eq_strict`,
   `lemma_mp_raw_acc_rec_eq_strict` (the raw phase is identical under the two
   records for *every* input), and the packet-phase induction
-  `lemma_mr_at_rec_eq_strict_on_ok` (Strict-ok implies the Recommended stream
+  `lemma_mr_at_rec_eq_strict_on_ok` (Strict-ok implies the RecommendedBeta stream
   returns the same `Ok`). NOT done: the end-to-end `mp_policy` conservativity
-  (`mp_policy(b,Recommended) = mp_policy(b,Strict)` with `recovered=false`), which
-  needs the pixel-sequence/assembly equality `mr_pix_policy(Recommended) =
+  (`mp_policy(b,RecommendedBeta) = mp_policy(b,Strict)` with `recovered=false`), which
+  needs the pixel-sequence/assembly equality `mr_pix_policy(RecommendedBeta) =
   mr_pix_policy(Strict)` glued into `mp_assemble_policy` and an induction for the
-  Recommended flag scan; the intermediate stubs for these failed (a
+  RecommendedBeta flag scan; the intermediate stubs for these failed (a
   pixel-sequence equality and an rlimit on the assembled lemma) and were removed
   rather than left unproved.
 - Obligation **A** (allocation): `tools/audit_alloc.sh` (the DIB script adapted
@@ -673,25 +673,25 @@ type are unchanged); `src/lib.rs` gains the two modules.
 - Final delivered state: real-crate run 062, **739 verified, 0 errors**; `cargo
   test --test conformance` 169/169; `tools/audit_alloc.sh` OK (one `vec!`); the
   frozen policy and spec-frozen hashes all match `policy/FREEZE.txt`.
-- **R (Recommended conservativity) DONE** at the model level:
-  `lemma_mp_policy_recommended_on_strict_ok` proves `forall b, r:
-  mp_policy(b, Strict) = Ok(r) ==> mp_policy(b, Recommended) = Ok(r)` and
-  `recovered_policy(b, Recommended) = false`. Chain (all in `policy_model.rs`):
+- **R (RecommendedBeta conservativity) DONE** at the model level:
+  `lemma_mp_policy_recommended_beta_on_strict_ok` proves `forall b, r:
+  mp_policy(b, Strict) = Ok(r) ==> mp_policy(b, RecommendedBeta) = Ok(r)` and
+  `recovered_policy(b, RecommendedBeta) = false`. Chain (all in `policy_model.rs`):
   the four site lemmas and header equality (above); `pkt_of_mh_policy` record
   equality; the packet-phase pixel equality
   `lemma_mr_pix_rec_eq_strict_on_ok` and the flag-scan zero
   `lemma_mr_flags_rec_false_on_strict_ok`, each a per-packet induction fed by
   `lemma_strict_mr_ok_no_overrun` (a Strict-`Ok` packet's count fits the
-  remaining pixels, so Recommended's `ClipPacket` never fires); the raw-phase
+  remaining pixels, so RecommendedBeta's `ClipPacket` never fires); the raw-phase
   equality `lemma_mp_raw_acc_rec_eq_strict` and
   `lemma_raw_subst_no_events`; `orient` equality from the pixel-sequence
   equality; and the RLE/raw `mp_after` case lemmas behind one dispatch.
 - The rlimit hazard was avoided by factoring, not by any budget attribute: the
   single `mp_after` body and its RLE case both exceeded the default solver
   budget, so each was split into small non-recursive shape lemmas
-  (`lemma_after_rle_shape`, `_recommended`, `lemma_after_rle_ok_suffix`,
+  (`lemma_after_rle_shape`, `_recommended_beta`, `lemma_after_rle_ok_suffix`,
   `lemma_recovered_rle_false`) called in sequence. No `#[verifier::rlimit]`.
-- `policy.rs` now carries the four-variant `Profile` (`Strict`, `Recommended`,
+- `policy.rs` now carries the four-variant `Profile` (`Strict`, `RecommendedBeta`,
   `GdkCompat`, `ImageCrateCompat`) and the compatibility records in
   `profile_policy_exec`; the `Profile` extension is compiling and verifying but
   has **no executable effect** yet (nothing calls it).
@@ -844,7 +844,7 @@ Ported from DIB ('tooling hardening after Sol review'). Test and lint tooling on
 
 **3. Suite-level coverage.** New test `every_schedule_is_exercised_across_the_suite` runs every schedule on all 169 frozen vectors plus up to 12 corpus inputs (read in place from `~/corpora/tga`, never copied), learning each request size S from the allocation-1 failure and windowing the threshold schedules to S so harness allocations are never faulted. It prints per-schedule counts and asserts: allocation 1, thresholds 1, 4096, 65536 and 64 MiB each injected at least once (64 MiB would instead print "UNREACHABLE" if the largest request were below it); allocation 2 reached by every allocating case and never fired. Observed: 181 inputs, 120 allocate, largest reservation 67,108,864 bytes; nth=1 120/120; nth=2 reached 120, injected 0; thr=1 120/120; thr=4096 6/6; thr=65536 5/5; thr=64 MiB 2/2 (reachable: two frozen vectors reserve at least 64 MiB).
 
-**Results (`cargo test --offline -- --nocapture --test-threads=1`, all green).** Conformance 169/169; four profiles 302/302 each; custom 28/28; differential 52,348 comparisons, 0 mismatches; corpus acceptance Strict 252, Recommended 266, GdkCompat 264, ImageCrateCompat 259 of 294; fault injection 9/9 (the original 8 plus the suite test). `target/` deleted afterwards.
+**Results (`cargo test --offline -- --nocapture --test-threads=1`, all green).** Conformance 169/169; four profiles 302/302 each; custom 28/28; differential 52,348 comparisons, 0 mismatches; corpus acceptance Strict 252, RecommendedBeta 266, GdkCompat 264, ImageCrateCompat 259 of 294; fault injection 9/9 (the original 8 plus the suite test). `target/` deleted afterwards.
 
 ## Public-API reduction (2026-11-14)
 
