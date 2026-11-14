@@ -1,0 +1,8 @@
+   Compiling icns_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/icns/icns_verus)
+=== alloc_audit report (alloc-delta/audit, production tool) ===
+verdict: FAIL
+findings: 1
+finding-tags: allowlist-reviewer
+findings-other-than-unsigned-reviewer: 0
+mode: PRODUCTION
+    Finished `release` profile [optimized] target(s) in 1.35s
