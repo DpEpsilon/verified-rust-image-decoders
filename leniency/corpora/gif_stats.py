@@ -34,6 +34,16 @@ import os  # noqa: E402
 KNOWN_EXT = {0x01: 'PlainText', 0xF9: 'GraphicControl', 0xFE: 'Comment', 0xFF: 'Application'}
 
 
+def escape_ident(s):
+    """Write an application identifier (decoded as latin-1) for Markdown.
+
+    Bytes outside printable ASCII, and the backtick and backslash that would
+    break the code span or be ambiguous with an escape, become \\xNN, so a
+    fuzzer-derived identifier such as eleven NUL bytes stays readable text.
+    """
+    return ''.join(c if 0x20 <= ord(c) < 0x7F and c not in '`\\' else f'\\x{ord(c):02x}' for c in s)
+
+
 def sub_blocks(b, p):
     """Return (end_position_after_terminator, payload_bytes_total, ok)."""
     total = 0
@@ -642,7 +652,7 @@ def write(files, a):
     for nme in [x for x in summary['feature_all_names']['gce_before_plain_text'] if not any(t in x.lower() for t in ('afl', 'fuzz', 'crash'))]:
         w(f'- `{nme}`')
     w('')
-    w('Application identifiers: ' + (', '.join(f'`{k}` {v}' for k, v in ids.most_common(10)) or 'none') + '.')
+    w('Application identifiers: ' + (', '.join(f'`{escape_ident(k)}` {v}' for k, v in ids.most_common(10)) or 'none') + '.')
     w('')
     w('Notes on the scan: "missing End-of-Information" counts a frame whose code stream ends (data exhausted, or invalid code) before an EOI code is read; a frame that reaches EOI after the last pixel is not counted. "Colour index beyond the table" ORs, per frame, the set of indices contained in every table string the decoder emits, so it counts a frame once if any emitted pixel has an index at or above the table size and that index is not the transparent index. Counts are of files; a file with 100 offending frames counts once.')
     w('')
