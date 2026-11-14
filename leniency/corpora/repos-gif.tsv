@@ -1,0 +1,37 @@
+# repo	notes_count(unused)	licence claimed for the test files (SPDX, or NOASSERTION)	cap(0=unlimited)	repo_licence (what the repo states for its code; informational)
+# Priority order. Files are kept only under ~/corpora/gif/files; the licence column is NOASSERTION unless the repo states a licence that plainly covers its test images.
+image-rs/image-gif	0	NOASSERTION	0	MIT OR Apache-2.0
+image-rs/image	0	NOASSERTION	0	MIT
+gitlab.gnome.org/GNOME/gdk-pixbuf	0	NOASSERTION	0	LGPL-2.1-or-later
+mirrorer/giflib	0	NOASSERTION	0	MIT
+netsurf-browser/libnsgif	0	NOASSERTION	0	MIT
+python-pillow/Pillow	0	NOASSERTION	0	MIT-CMU
+ImageMagick/ImageMagick	0	NOASSERTION	0	ImageMagick (Apache-2.0-like)
+ImageMagick/ImageMagick6	0	NOASSERTION	0	ImageMagick (Apache-2.0-like)
+ImageMagick/Website	0	NOASSERTION	0	NOASSERTION
+google/wuffs	0	NOASSERTION	0	Apache-2.0
+SerenityOS/serenity	0	NOASSERTION	0	BSD-2-Clause
+web-platform-tests/wpt	0	NOASSERTION	0	BSD-3-Clause
+chromium/chromium	0	NOASSERTION	0	BSD-3-Clause (third_party dirs mixed)
+mozilla/gecko-dev	0	NOASSERTION	0	MPL-2.0
+WebKit/WebKit	0	NOASSERTION	0	BSD-2-Clause AND LGPL-2.0-or-later (mixed)
+servo/servo	0	NOASSERTION	0	MPL-2.0
+google/skia	0	NOASSERTION	0	BSD-3-Clause
+qt/qtbase	0	NOASSERTION	0	LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only (mixed)
+libgd/libgd	0	NOASSERTION	0	NOASSERTION
+libvips/libvips	0	NOASSERTION	0	LGPL-2.1-or-later
+lovell/sharp	0	NOASSERTION	0	Apache-2.0
+opencv/opencv	0	NOASSERTION	0	Apache-2.0
+SixLabors/ImageSharp	0	NOASSERTION	0	NOASSERTION (Six Labors Split License)
+OpenImageIO/oiio-images	0	NOASSERTION	0	NOASSERTION (mixed)
+SDL-mirror/SDL_image	0	NOASSERTION	0	Zlib
+wxWidgets/wxWidgets	0	NOASSERTION	0	NOASSERTION (wxWindows Library Licence)
+fltk/fltk	0	NOASSERTION	0	NOASSERTION (LGPL-2.0 with exception)
+Kitware/VTK	0	NOASSERTION	0	BSD-3-Clause
+kohler/gifsicle	0	NOASSERTION	0	GPL-2.0-only
+imazen/imageflow	0	NOASSERTION	0	NOASSERTION
+ruffle-rs/ruffle	0	NOASSERTION	0	MIT OR Apache-2.0
+kornelski/giflossy	0	NOASSERTION	0	GPL-2.0-only
+InsightSoftwareConsortium/ITK	0	NOASSERTION	0	Apache-2.0
+imagej/ImageJ	0	NOASSERTION	0	NOASSERTION (public domain claim)
+openjdk/jdk	0	NOASSERTION	30	GPL-2.0-only WITH Classpath-exception-2.0
