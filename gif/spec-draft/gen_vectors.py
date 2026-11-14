@@ -571,8 +571,34 @@ for left in (5, 65535):
             True, False), RB)
 
 # ---------------------------------------------------------------- RecommendedBeta: LZW minimum code size 1-11, checked literals (Q6)
-add('lzw-min-code-1-1x1@' + RB, 'still', header(1, 1, PAL2) + raw_image(0, 0, 1, 1, 1, [2, 1, 3], widths=[2, 2, 2]) + TRAILER,
-    rec(still_ok(1, 1, [C['k']])), RB)
+# Size 1 is accepted only for a frame of exactly one pixel (descriptor w*h = 1; owner decision 2026-11-14,
+# policy-draft/LZW-SIZE1-WIDENING.md): on one pixel no table entry is ever added, so the three widening rules coincide.
+one_px = [2, 1, 3]                                     # Clear, literal 1, EOI at width 2 (m = 1: clear 2, EOI 3)
+two_px = [2, 0, 1, 3]                                  # Clear, literals 0 and 1, EOI
+
+
+def size1_rejected(name, screen, rect, codes):
+    """A size-1 frame of more than one pixel: InvalidLzwMinCodeSize, for the still and the frame entry."""
+    b = header(*screen, PAL2) + raw_image(*rect, 1, codes, widths=[2] * len(codes)) + TRAILER
+    add(f'{name}@{RB}', 'still', b, err('InvalidLzwMinCodeSize'), RB)
+    add(f'{name}/frames@{RB}', 'frames', b, rec(frames_ok(*screen, [], end=err('InvalidLzwMinCodeSize'))), RB)
+
+
+both_profile('lzw-min-code-1-1x1', RB, header(1, 1, PAL2) + raw_image(0, 0, 1, 1, 1, one_px, widths=[2, 2, 2]) + TRAILER,
+             1, 1, [C['k']])
+size1_rejected('lzw-min-code-1-2x1', (2, 1), (0, 0, 2, 1), two_px)
+size1_rejected('lzw-min-code-1-1x2', (1, 2), (0, 0, 1, 2), two_px)
+both_profile('lzw-min-code-1-1x1-interlaced', RB,
+             header(1, 1, PAL2) + image(0, 0, 1, 1, m=1, interlaced=True, data=pack(one_px, [2, 2, 2])) + TRAILER,
+             1, 1, [C['k']], {'rect': (0, 0, 1, 1), 'interlaced': True})
+both_profile('lzw-min-code-1-1x1-frame-in-4x3-screen', RB,
+             header(4, 3, PAL2) + raw_image(2, 1, 1, 1, 1, one_px, widths=[2, 2, 2]) + TRAILER, 4, 3, grid('..../..k./....'),
+             {'rect': (2, 1, 1, 1)})                    # the frame's size counts, not the screen's
+size1_rejected('lzw-min-code-1-2x1-frame-clipped-to-1x1-screen', (1, 1), (0, 0, 2, 1), two_px)   # declared, not visible, size
+two_frames = header(2, 1, PAL2) + raw_image(0, 0, 1, 1, 1, one_px, widths=[2, 2, 2]) + raw_image(0, 0, 2, 1, 1, two_px, widths=[2] * 4) + TRAILER
+add('lzw-min-code-1-second-frame-2x1/frames@' + RB, 'frames', two_frames,
+    rec(frames_ok(2, 1, [frame((0, 0, 1, 1), [C['k'], C['.']])], end=err('InvalidLzwMinCodeSize'))), RB)   # the rule is per frame
+add('lzw-min-code-1-second-frame-2x1@' + RB, 'still', two_frames, rec(still_ok(2, 1, [C['k'], C['.']])), RB)   # a still stops after image 1
 add('lzw-min-code-9@' + RB, 'still', header(2, 1, PAL2) + raw_image(0, 0, 2, 1, 9, [512, 0, 1, 513]) + TRAILER,
     rec(still_ok(2, 1, [C['w'], C['k']])), RB)
 both_profile('lzw-min-code-10', RB, header(4, 3, PAL4) + image(0, 0, 4, 3, ix, m=10) + TRAILER, 4, 3, from_indices(ix, PAL4))

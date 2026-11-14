@@ -81,7 +81,7 @@ Interlace flag `I & 0x40`; sort flag `I & 0x20` and reserved bits `I & 0x18` are
 
 ## G9. Image data structure (§22)
 
-Require 1 byte (the LZW minimum code size `m`), else `TruncatedImageData`. Require `2 ≤ m ≤ 8`, else `InvalidLzwMinCodeSize` (Appendix F: indices are at most 8 bits and a one-bit image uses code size 2). Strict keeps this range; RecommendedBeta accepts 1–11 with literal codes above 255 rejected (Q6, `lzw_min` in `../policy-draft/OPTIONS.md`). Read the sub-block sequence after `m` (errors `TruncatedImageData`); `D` is the concatenation of its payloads. The whole sequence is read before any code is decoded, so a structural or truncation error inside the image data precedes every LZW and colour error of that image (N7). Record `gce` for this frame, clear the pending `gce`, set `k ← k+1` and `T ← T + A`.
+Require 1 byte (the LZW minimum code size `m`), else `TruncatedImageData`. Require `2 ≤ m ≤ 8`, else `InvalidLzwMinCodeSize` (Appendix F: indices are at most 8 bits and a one-bit image uses code size 2). Strict keeps this range; RecommendedBeta accepts 2–11 with literal codes above 255 rejected, and `m = 1` only when the frame descriptor's `w·h = 1`; a larger frame with `m = 1` is `InvalidLzwMinCodeSize`, decided here before the sub-blocks are read (Q6, `lzw_min` in `../policy-draft/OPTIONS.md`). Read the sub-block sequence after `m` (errors `TruncatedImageData`); `D` is the concatenation of its payloads. The whole sequence is read before any code is decoded, so a structural or truncation error inside the image data precedes every LZW and colour error of that image (N7). Record `gce` for this frame, clear the pending `gce`, set `k ← k+1` and `T ← T + A`.
 
 ## G10. Variable-length-code LZW (Appendix F)
 

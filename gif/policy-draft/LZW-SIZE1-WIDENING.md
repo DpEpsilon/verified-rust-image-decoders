@@ -1,6 +1,6 @@
-# LZW minimum code size 1: the widening rule (decision input, draft 0.2)
+# LZW minimum code size 1: the widening rule (decision input, draft 0.2; decided 2026-11-14, see the last section)
 
-At `m = 1` gdk-pixbuf, weezl (image/gif) and giflib read the same stream with three different code widths. Neither gdk-pixbuf nor image decodes what an Appendix F encoder writes; giflib's rule is the Appendix F one (read from source, not run). At `m >= 2` the three agree on every stream tested. Recommendation: RecommendedBeta accepts `m = 1` only for 1-pixel frames (`w·h = 1`) and returns `InvalidLzwMinCodeSize` for any larger frame. On a 1-pixel frame the loop reads Clear codes and one 2-bit literal and stops, so the widening rule is unobservable; both size-1 corpus files are 1×1 and stay accepted. Nothing in the oracle or the specs was edited.
+At `m = 1` gdk-pixbuf, weezl (image/gif) and giflib read the same stream with three different code widths. Neither gdk-pixbuf nor image decodes what an Appendix F encoder writes; giflib's rule is the Appendix F one (read from source, not run). At `m >= 2` the three agree on every stream tested. Recommendation: RecommendedBeta accepts `m = 1` only for 1-pixel frames (`w·h = 1`) and returns `InvalidLzwMinCodeSize` for any larger frame. On a 1-pixel frame the loop reads Clear codes and one 2-bit literal and stops, so the widening rule is unobservable; both size-1 corpus files are 1×1 and stay accepted. This note was written before the decision and still reads as the decision input; the outcome is in the last section.
 
 ## Width of the j-th code after a Clear at m = 1
 
@@ -51,3 +51,17 @@ Corpus: 2 of 1,407 files have `m = 1` and decode (`set_hsts.gif`, and chromium `
 Obligation R is unaffected by every option: Strict accepts `m` in [2, 8] only and the rule at `m >= 2` does not change.
 
 Consequences of the recommendation, for the owner to apply: the vector `lzw-min-code-1-1x1@RecommendedBeta` stays; add `lzw-min-code-1-2x1@RecommendedBeta` expecting `InvalidLzwMinCodeSize`. GdkCompat-2.42.12 keeps the gdk rule as it is. ImageCrateCompat-0.25.10 inherits G10.2 and so differs from image on `m = 1` frames of three or more codes; record it as a residual (no corpus file is affected) or give the profile weezl's schedule (the second code is 2 bits wide, then the Appendix F widths).
+
+## Decision
+
+The owner decided on 2026-11-14 to accept the recommendation: in RecommendedBeta, `lzw_min=Range1to11Checked` accepts `m = 1` only when the frame is exactly one pixel (the descriptor's `w·h = 1`) and returns `InvalidLzwMinCodeSize` for any larger frame with `m = 1`. Sizes 10 and 11 stay accepted with checked literals (a literal above 255 is `ColorIndexOutOfRange`); Strict stays at 2 to 8; compatibility profiles keep their library's rule.
+
+Applied the same day:
+
+- `policy_oracle.py`: `read_image_data` takes the frame's declared area and, for `Range1to11Checked` with `m = 1` and area not 1, raises `InvalidLzwMinCodeSize` at the minimum code size byte, before the sub-blocks are read. The size is the descriptor's, not the clipped visible part and not the screen's.
+- `gen_vectors.py` (373 vectors, 360 before; 13 added, all `@RecommendedBeta`): `lzw-min-code-1-1x1` (accepted, unchanged, now with a `/frames` sibling), `-2x1` and `-1x2` (rejected), `-1x1-interlaced` (accepted), `-1x1-frame-in-4x3-screen` (accepted: the frame's size counts, not the screen's), `-2x1-frame-clipped-to-1x1-screen` (rejected: the declared size counts, not the visible part), `-second-frame-2x1` (the first frame is returned, the second fails; a still stops after the first image). Each has a still and a `/frames` record.
+- Checks after the change: all 373 vectors agree; Strict bridge 360/360 inputs; obligation R unchanged, 0 violations; compatibility agreement unchanged for the three non-recommended profiles; RecommendedBeta against the incumbents 311 → 310 (`image`) and 269 → 268 (GDK loader), the one input being the 2×1 size-1 vector `vec:lzw-min-code-1`; the corpus accept/reject outcomes are unchanged (below).
+- Corpus: the seven files whose walk reaches an `m = 1` image-data call were re-analysed with the pass script's own `analyse`. The two accepted files (`set_hsts.gif`, chromium `0.gif`, both 1×1) are accepted as before and still flip through `lzw_min`; the five rejected ones are fuzzer-derived libnsgif mutants with frames of 1,024 or 8,224 pixels, and their first error changes to `InvalidLzwMinCodeSize` (four were `TruncatedImageData`, one `TooFewPixels`). All three incumbents reject all five.
+- Proof: T-LZW stays as drafted for `m` in [2, 11]; `m = 1` needs the one small lemma in `PLAN.md` M2 (a one-pixel frame adds no table entry, the width stays 2).
+
+Still open: `ImageCrateCompat-0.25.10` keeps `Range1to11` and G10.2's width 2, so on an `m = 1` frame of three or more codes it differs from `image` (last paragraph above); no corpus file is affected.

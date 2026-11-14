@@ -291,10 +291,10 @@ def policy_census(b):
     seen = []
     orig = policy_oracle.read_image_data
 
-    def rec(bb, p, P):
+    def rec(bb, p, P, *rest):                  # rest: the frame area, added with the size-1 rule
         if p < len(bb):
             seen.append(bb[p])
-        return orig(bb, p, P)
+        return orig(bb, p, P, *rest)
     policy_oracle.read_image_data = rec
     try:
         timed(policy_oracle.decode_frames, b, REC11, seconds=60)
