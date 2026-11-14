@@ -845,3 +845,20 @@ Ported from DIB ('tooling hardening after Sol review'). Test and lint tooling on
 **3. Suite-level coverage.** New test `every_schedule_is_exercised_across_the_suite` runs every schedule on all 169 frozen vectors plus up to 12 corpus inputs (read in place from `~/corpora/tga`, never copied), learning each request size S from the allocation-1 failure and windowing the threshold schedules to S so harness allocations are never faulted. It prints per-schedule counts and asserts: allocation 1, thresholds 1, 4096, 65536 and 64 MiB each injected at least once (64 MiB would instead print "UNREACHABLE" if the largest request were below it); allocation 2 reached by every allocating case and never fired. Observed: 181 inputs, 120 allocate, largest reservation 67,108,864 bytes; nth=1 120/120; nth=2 reached 120, injected 0; thr=1 120/120; thr=4096 6/6; thr=65536 5/5; thr=64 MiB 2/2 (reachable: two frozen vectors reserve at least 64 MiB).
 
 **Results (`cargo test --offline -- --nocapture --test-threads=1`, all green).** Conformance 169/169; four profiles 302/302 each; custom 28/28; differential 52,348 comparisons, 0 mismatches; corpus acceptance Strict 252, Recommended 266, GdkCompat 264, ImageCrateCompat 259 of 294; fault injection 9/9 (the original 8 plus the suite test). `target/` deleted afterwards.
+
+## Public-API reduction (2026-11-14)
+
+The intended public API is `try_decode`, `try_decode_with_policy`, `Decoded`,
+`Header`, `Error`, `TryError`, `policy::{Profile, Policy, *Options}` and the
+`policy::*_policy` constructors, and `MAX_INPUT`. The reference model (`model`),
+its generated obligations (`model_vectors`) and the policy model
+(`policy_model`) are now `pub(crate)`, hiding 909 `pub` items in one edit; see
+`alloc-delta/audit/API-SURVEY.md`. In `src/tga.rs` the `pub` items no `pub`
+contract names were demoted (50 -> 22) and the 17 a `try_*` contract names (the
+`G`/`Prog`/`Req_TGA` families, `policy_result`, `model_checked_n`,
+`policy_checked_n`, `decoded_bounds`, `dec_vals`, `decode_eq`,
+`try_decode_with_steps_logged`) are `#[doc(hidden)]`; Verus forbids demoting
+them. `alloc_guard` and `policy` stay `pub` modules. No contract or proof text
+changed. Verifier: **974 verified, 0 errors** (unchanged). Tests green (169/169
+conformance, 9/9 fault injection). `glycin-tga` reads `tga_verus::tga::MAX_INPUT`,
+which stays plain `pub`; `glycin-tga`, `bench` and the TGA example check/build.

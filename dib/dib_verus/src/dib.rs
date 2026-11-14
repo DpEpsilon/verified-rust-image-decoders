@@ -22,7 +22,7 @@ pub const MAX_INPUT: usize = 67_108_864;
 pub const MAX_OUTPUT: usize = 67_108_864;
 
 /// R3: each visible dimension is in `[1, MAX_DIMENSION]`.
-pub const MAX_DIMENSION: u32 = 8_192;
+pub(crate) const MAX_DIMENSION: u32 = 8_192;
 
 /// The four decode modes. R1: the DIB starts at 14 for `BmpFile`, at 0
 /// otherwise; both ICO modes double the stored height and carry an AND mask.
@@ -39,14 +39,14 @@ pub enum Mode {
 /// R1/R19: the shared-ICO-mode predicate — either ICO mode. Every R1–R18 ICO
 /// rule applies to a mode satisfying this; only R12's final cursor-equality
 /// check is governed by `exact_tail` instead.
-pub open spec fn is_ico(mode: Mode) -> bool {
+pub(crate) open spec fn is_ico(mode: Mode) -> bool {
     mode == Mode::IcoEntryDib || mode == Mode::IcoEntryDibSlack
 }
 
 /// R12/R14/R19: the exact-tail predicate — the modes that reject bytes after
 /// the structure (`BareDib`, `IcoEntryDib`). `BmpFile` ignores a suffix and
 /// `IcoEntryDibSlack` ignores post-AND bytes, so neither is `exact_tail`.
-pub open spec fn exact_tail(mode: Mode) -> bool {
+pub(crate) open spec fn exact_tail(mode: Mode) -> bool {
     mode == Mode::BareDib || mode == Mode::IcoEntryDib
 }
 
@@ -86,6 +86,7 @@ impl Error {
     /// the exec `Error::name` is tied to by `#[verifier::when_used_as_spec]`.
     /// `open` and field-free, so it is well-formed everywhere, including in
     /// `alloc_guard::sites`.
+    #[doc(hidden)]
     pub open spec fn name_spec(&self) -> &'static str {
         match self {
             Error::FileTooLarge => "FileTooLarge",
@@ -501,6 +502,7 @@ pub enum BmpMode {
 }
 
 /// The `Mode` a profiled `BmpMode` decodes as.
+#[doc(hidden)]
 pub open spec fn bmp_mode_to_mode(bm: BmpMode) -> Mode {
     match bm {
         BmpMode::BmpFile => Mode::BmpFile,
@@ -510,6 +512,7 @@ pub open spec fn bmp_mode_to_mode(bm: BmpMode) -> Mode {
 
 /// `Recommended`'s policy record (POLICY-SPEC "Named profiles"): Strict except
 /// `file_size = Ignore` and `image_size = Ignore`.
+#[doc(hidden)]
 pub open spec fn recommended_policy() -> Policy {
     Policy {
         file_size: MetadataOptions::Ignore,
@@ -538,6 +541,7 @@ pub open spec fn recommended_policy() -> Policy {
 }
 
 /// `Strict`'s policy record: every option group keeps its 1.1 value.
+#[doc(hidden)]
 pub open spec fn strict_policy() -> Policy {
     Policy {
         file_size: MetadataOptions::Declared,
@@ -567,6 +571,7 @@ pub open spec fn strict_policy() -> Policy {
 
 /// `GdkCompat-2.42.12`'s policy record (POLICY-SPEC "Named profiles"): the
 /// measured gdk-pixbuf 2.42.12 assignment on all twenty-two retained fields.
+#[doc(hidden)]
 pub open spec fn gdk_compat_policy() -> Policy {
     Policy {
         file_size: MetadataOptions::Ignore,
@@ -596,6 +601,7 @@ pub open spec fn gdk_compat_policy() -> Policy {
 
 /// `ImageCrateCompat-0.25.10`'s policy record (POLICY-SPEC "Named profiles"):
 /// the measured image 0.25.10 assignment on all twenty-two retained fields.
+#[doc(hidden)]
 pub open spec fn image_crate_compat_policy() -> Policy {
     Policy {
         file_size: MetadataOptions::Ignore,
@@ -624,6 +630,7 @@ pub open spec fn image_crate_compat_policy() -> Policy {
 }
 
 /// The profile selector's policy record (POLICY-SPEC "Named profiles").
+#[doc(hidden)]
 pub open spec fn profile_policy(p: BmpProfile) -> Policy {
     match p {
         BmpProfile::Strict => strict_policy(),
@@ -635,7 +642,7 @@ pub open spec fn profile_policy(p: BmpProfile) -> Policy {
 
 /// The executable wrapper for `bmp_mode_to_mode`: the profiled entry point calls
 /// this so its postcondition carries the spec-fn identity.
-pub fn bmp_mode_mode(bm: BmpMode) -> (r: Mode)
+pub(crate) fn bmp_mode_mode(bm: BmpMode) -> (r: Mode)
     ensures
         r == bmp_mode_to_mode(bm),
 {
@@ -3624,10 +3631,12 @@ fn out_offset(h: &Header, x: usize, y: usize) -> (r: usize)
 // THEOREMS-ALLOC-DELTA.md §0). Re-exported so that `log_tied` reaches ICO.
 // ---------------------------------------------------------------------------
 
+#[doc(hidden)]
 pub open spec fn fmt_part(r: Result<Decoded, TryError>) -> Result<Decoded, Error> {
     crate::alloc_guard::sites::fmt_part(r)
 }
 
+#[doc(hidden)]
 pub open spec fn log_tied(r: Result<Decoded, TryError>, l: Seq<(AllocSite, nat, bool)>) -> bool {
     crate::alloc_guard::sites::log_tied(r, l)
 }
@@ -3636,6 +3645,7 @@ pub open spec fn log_tied(r: Result<Decoded, TryError>, l: Seq<(AllocSite, nat, 
 /// every reservation succeeds (SPEC.md §2, §4): the one `(Output, 4N)` request
 /// iff `Reach(b, mode)`, i.e. iff `MH` accepts the header. `N` is `0` on a
 /// rejected header, so `req_dib` is then empty.
+#[doc(hidden)]
 pub open spec fn req_dib(b: Seq<u8>, mode: Mode) -> Seq<(crate::alloc_guard::AllocSite, nat)> {
     match crate::model::mh(b, mode) {
         Ok(m) => seq![(crate::alloc_guard::AllocSite::Output, 4 * m.n as nat)],
@@ -3646,6 +3656,7 @@ pub open spec fn req_dib(b: Seq<u8>, mode: Mode) -> Seq<(crate::alloc_guard::All
 /// Clause 1 of `G` (THEOREMS-ALLOC-DELTA.md §0): a non-`OutOfMemory` result
 /// satisfies the frozen predicate `decode_mp_eq` on `fmt_part(r)`, has exactly
 /// the requests of `Req_DIB`, and every log entry is `Ok`.
+#[doc(hidden)]
 pub open spec fn g_clause1(
     b: Seq<u8>,
     mode: Mode,
@@ -3663,6 +3674,7 @@ pub open spec fn g_clause1(
 /// Clause 2 of `G`: an `OutOfMemory` result has a non-empty log whose requests
 /// are a prefix of `Req_DIB`, every entry but the last `Ok`, and the last entry
 /// not `Ok` and equal to the returned `(site, elements)`.
+#[doc(hidden)]
 pub open spec fn g_clause2(
     b: Seq<u8>,
     mode: Mode,
@@ -3683,6 +3695,7 @@ pub open spec fn g_clause2(
 
 /// Clause 3 of `G`: every request is within its site's maximum, proved from the
 /// checked header before the guard call.
+#[doc(hidden)]
 pub open spec fn g_clause3(b: Seq<u8>, mode: Mode) -> bool {
     forall|j: int| 0 <= j < req_dib(b, mode).len()
         ==> req_dib(b, mode)[j].1 <= crate::alloc_guard::MAX_BYTES
@@ -3690,6 +3703,7 @@ pub open spec fn g_clause3(b: Seq<u8>, mode: Mode) -> bool {
 
 /// Theorem shape `G` for DIB's `decode` family (THEOREMS-ALLOC-DELTA.md
 /// A-DIB-1), proved on the logged entry point `try_decode_logged`.
+#[doc(hidden)]
 pub open spec fn g(
     b: Seq<u8>,
     mode: Mode,
@@ -3701,6 +3715,7 @@ pub open spec fn g(
 
 /// `Prog` (THEOREMS-ALLOC-DELTA.md §0): if every log entry is `Ok`, the result
 /// is not `OutOfMemory`, `decode_mp_eq` holds, and `req(L) == Req_DIB`.
+#[doc(hidden)]
 pub open spec fn prog(
     b: Seq<u8>,
     mode: Mode,
@@ -3713,6 +3728,7 @@ pub open spec fn prog(
 /// The `Prog` conclusion, split out so `prog` reveals to the solver as
 /// `all_ok(l) ==> prog_concl(..)`, whose `matches!` disjunct is then directly
 /// usable at the `OutOfMemory` exits (`g_prog` bundles this, `g` and `prog`).
+#[doc(hidden)]
 pub open spec fn prog_concl(
     b: Seq<u8>,
     mode: Mode,
@@ -3727,12 +3743,14 @@ pub open spec fn prog_concl(
 /// The `PreAlloc` corollary (THEOREMS-ALLOC-DELTA.md §0): `Req_DIB` empty means
 /// the header was rejected before any reservation, so the log is empty and the
 /// result is a format error satisfying `decode_mp_eq`.
+#[doc(hidden)]
 pub open spec fn pre_alloc(b: Seq<u8>, mode: Mode) -> bool {
     req_dib(b, mode).len() == 0
 }
 
 /// A-DIB-8's exported `G`, so ICO's `import_dib` can cite it across the crate
 /// boundary (SPEC.md §3.1). Same shape as `g`, named for the export.
+#[doc(hidden)]
 pub open spec fn g_logged(
     b: Seq<u8>,
     r: Result<Decoded, TryError>,
@@ -3742,6 +3760,7 @@ pub open spec fn g_logged(
 }
 
 /// A-DIB-8's exported `Prog`, alongside `g_logged`.
+#[doc(hidden)]
 pub open spec fn prog_logged(
     b: Seq<u8>,
     r: Result<Decoded, TryError>,
@@ -3753,6 +3772,7 @@ pub open spec fn prog_logged(
 /// Clause 3's content, as a named lemma: `Req_DIB`'s single element is `4N`
 /// with `1 <= N <= 16,777,216`, so it is within `MAX_BYTES`. Proved from the
 /// model's `mh_bounds`, never from an executable read.
+#[doc(hidden)]
 pub proof fn lemma_req_dib_clause3(b: Seq<u8>, mode: Mode)
     ensures g_clause3(b, mode),
 {
@@ -3772,6 +3792,7 @@ pub proof fn lemma_req_dib_clause3(b: Seq<u8>, mode: Mode)
 /// The one-request shape, as a lemma: `Req_DIB` has at most one element, so
 /// `req(L) == Req_DIB` follows from the last-entry equality on the `Err` arm
 /// (THEOREMS-ALLOC-DELTA.md A-DIB-3, A-DIB-7(a)).
+#[doc(hidden)]
 pub proof fn lemma_req_dib_len(b: Seq<u8>, mode: Mode)
     ensures req_dib(b, mode).len() <= 1,
 {
@@ -3782,7 +3803,7 @@ pub proof fn lemma_req_dib_len(b: Seq<u8>, mode: Mode)
 /// the result is `OutOfMemory` rather than on the moved `Decoded`. `req(L)` is
 /// exactly `Req_DIB` on both arms; a success has every entry `Ok`; a failure has
 /// a non-empty log whose last entry is not `Ok`.
-pub open spec fn at_site_log(
+pub(crate) open spec fn at_site_log(
     b: Seq<u8>,
     mode: Mode,
     r_is_oom: bool,
@@ -3798,7 +3819,7 @@ pub open spec fn at_site_log(
 
 /// The `Ok`-exit `at_site_log`: after the one successful `(Output, 4N)`
 /// reservation on an empty log, `req(L)` is exactly `Req_DIB`.
-pub proof fn lemma_at_site_log_ok(
+pub(crate) proof fn lemma_at_site_log_ok(
     b: Seq<u8>,
     mode: Mode,
     m: crate::model::MHRecord,
@@ -3818,7 +3839,7 @@ pub proof fn lemma_at_site_log_ok(
 }
 
 /// The `OutOfMemory`-exit `at_site_log`.
-pub proof fn lemma_at_site_log_oom(
+pub(crate) proof fn lemma_at_site_log_oom(
     b: Seq<u8>,
     mode: Mode,
     m: crate::model::MHRecord,
@@ -3838,7 +3859,7 @@ pub proof fn lemma_at_site_log_oom(
 }
 
 /// The pre-reservation `at_site_log`.
-pub proof fn lemma_at_site_log_prealloc(
+pub(crate) proof fn lemma_at_site_log_prealloc(
     b: Seq<u8>,
     mode: Mode,
     l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
@@ -3858,7 +3879,7 @@ pub proof fn lemma_at_site_log_prealloc(
 /// The log-only facts `at_site_log` gives, in the shape the entry points' proof
 /// blocks consume: `req(L)` is `Req_DIB`, which has at most one element, so `L`
 /// has at most one element, and a failure is the log's last (only) entry.
-pub proof fn lemma_at_site_log_parts(
+pub(crate) proof fn lemma_at_site_log_parts(
     b: Seq<u8>,
     mode: Mode,
     r_is_oom: bool,
@@ -7101,6 +7122,7 @@ spec fn mask_done_eq(
 
 /// T9: the public `decode` result equals `MP(b, mode)` as the exact `Result`,
 /// including every output byte — the manifest's T9 statement.
+#[doc(hidden)]
 pub open spec fn decode_mp_eq(r: Result<Decoded, Error>, b: Seq<u8>, mode: Mode) -> bool {
     match r {
         Ok(d) => crate::model::mp(b, mode) == Ok((d.width as int, d.height as int, d.rgba@)),
@@ -8026,6 +8048,7 @@ fn t11_decode_terminates(b: &[u8], h: &Header, out: &mut Vec<u8>) -> (r: Result<
 
 /// N is zero on a failed header, and the checked visible pixel count otherwise.
 /// Public because `decode_with_steps`'s exported T12 bound states it.
+#[doc(hidden)]
 pub open spec fn t12_checked_n(b: Seq<u8>, mode: Mode) -> int {
     match crate::model::mh(b, mode) {
         Ok(m) => m.n,
@@ -8560,6 +8583,7 @@ spec fn ghost_mh_policy(b: Seq<u8>, bm: BmpMode, policy: Policy, h: &Header)
 /// T9 for the profiled entry point: the returned `Result` equals
 /// `MP_policy(b, bm, policy)` as the exact `Result`, including every output
 /// byte. `Policy` is the concrete record `profile_policy(profile)` selects.
+#[doc(hidden)]
 pub open spec fn decode_policy_mp_eq(
     r: Result<Decoded, Error>,
     b: Seq<u8>,
@@ -8577,6 +8601,7 @@ pub open spec fn decode_policy_mp_eq(
 /// a success the `Decoded.rle_or_32bpp` field equals the gdk-pixbuf 32-bpp/RLE
 /// rule on the validated header selection `MH_policy` (or its `MH_policy`-backed
 /// partial fallback). An error carries no image, so the clause is vacuous.
+#[doc(hidden)]
 pub open spec fn decode_policy_alpha_eq(
     r: Result<Decoded, Error>,
     b: Seq<u8>,
@@ -8778,7 +8803,7 @@ pub fn try_decode_with_policy(bytes: &[u8], bm: BmpMode, profile: BmpProfile)
 /// - `!reach`: no reservation was made, so `l` is empty and `r_is_oom` is false;
 /// - `reach`: one entry `(Output, k)`, `Ok` exactly when `!r_is_oom`, and when
 ///   `r_is_oom` the helper's `OutOfMemory` names `(Output, k)`.
-pub open spec fn at_site(
+pub(crate) open spec fn at_site(
     r_is_oom: bool,
     l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
     k: int,
@@ -8795,7 +8820,7 @@ pub open spec fn at_site(
 /// `at_site`, discharged from the guard's `ensures` for the one call: an empty
 /// entry log, a single `try_zeroed(Output, k)`, and a result that is
 /// `OutOfMemory` exactly when the guard returned `Err`.
-pub proof fn lemma_at_site_one(
+pub(crate) proof fn lemma_at_site_one(
     k: int,
     r_is_oom: bool,
     l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
@@ -8810,7 +8835,7 @@ pub proof fn lemma_at_site_one(
 }
 
 /// `at_site` for a path that returned before any reservation.
-pub proof fn lemma_at_site_prealloc(
+pub(crate) proof fn lemma_at_site_prealloc(
     k: int,
     l: Seq<(crate::alloc_guard::AllocSite, nat, bool)>,
     r_is_oom: bool,
@@ -8826,6 +8851,7 @@ pub proof fn lemma_at_site_prealloc(
 /// N for the policy path: the validated pixel count, `0` on a rejected header.
 /// It equals `policy_checked_n`'s value on every input, and drives both the
 /// policy work bound and the guard's request size.
+#[doc(hidden)]
 pub open spec fn policy_checked_n(b: Seq<u8>, bm: BmpMode, p: Policy) -> int {
     match crate::model::mh_partial(b, bm, p) {
         Some(rf) => rf.width * rf.height,
@@ -8844,6 +8870,7 @@ pub open spec fn policy_checked_n(b: Seq<u8>, bm: BmpMode, p: Policy) -> int {
 /// iff the complete path passed `mh_policy` and `¬gdk_rgb_reject`, or the
 /// `Blank` second pass reached `alloc_output_n`. The second case is exactly
 /// `mh_partial(b, bm, p) is Some` (gate: `lemma_blank_second_pass`).
+#[doc(hidden)]
 pub open spec fn policy_reach(b: Seq<u8>, bm: BmpMode, p: Policy) -> bool {
     match crate::model::mh_policy(b, bm, p) {
         Ok(m) => !crate::model::gdk_rgb_reject(b, m, p),
@@ -8853,6 +8880,7 @@ pub open spec fn policy_reach(b: Seq<u8>, bm: BmpMode, p: Policy) -> bool {
 
 /// `Req_DIBp(b, bm, p)`: the one `(Output, 4N)` request iff `policy_reach`, else
 /// empty (SPEC.md §4).
+#[doc(hidden)]
 pub open spec fn req_dibp(b: Seq<u8>, bm: BmpMode, p: Policy)
     -> Seq<(crate::alloc_guard::AllocSite, nat)> {
     if policy_reach(b, bm, p) {
@@ -8866,13 +8894,13 @@ pub open spec fn req_dibp(b: Seq<u8>, bm: BmpMode, p: Policy)
 /// rejected before any reservation, so no `OutOfMemory` is returned and the log
 /// is empty. This is the lemma behind the Blank second-pass early returns
 /// (THEOREMS-ALLOC-DELTA.md A-DIB-2, A-DIB-20, SPEC.md §2).
-pub open spec fn pre_alloc_policy(b: Seq<u8>, bm: BmpMode, p: Policy) -> bool {
+pub(crate) open spec fn pre_alloc_policy(b: Seq<u8>, bm: BmpMode, p: Policy) -> bool {
     req_dibp(b, bm, p).len() == 0
 }
 
 /// Full policy `G`: exact non-OOM format result, alpha and recovery; the
 /// failed-prefix rule for OOM; and the maximum size of every requested buffer.
-pub open spec fn g_policy(
+pub(crate) open spec fn g_policy(
     b: Seq<u8>,
     bm: BmpMode,
     p: Policy,
@@ -8904,7 +8932,7 @@ pub open spec fn g_policy(
 
 /// `Prog` for the policy path (THEOREMS-ALLOC-DELTA.md §0): if every entry is
 /// `Ok` the result is not `OutOfMemory` and `req(L) == Req_DIBp`.
-pub open spec fn prog_policy(
+pub(crate) open spec fn prog_policy(
     b: Seq<u8>,
     bm: BmpMode,
     p: Policy,
@@ -8917,7 +8945,7 @@ pub open spec fn prog_policy(
 
 /// The `Prog` conclusion for the policy path, split out for the same reason as
 /// `prog_concl`.
-pub open spec fn prog_policy_concl(
+pub(crate) open spec fn prog_policy_concl(
     b: Seq<u8>,
     bm: BmpMode,
     p: Policy,
@@ -8935,7 +8963,7 @@ pub open spec fn prog_policy_concl(
 
 /// Clause 3 of the policy path's `G`: every request is within its site's
 /// maximum, proved before the guard call.
-pub open spec fn g_policy_clause3(b: Seq<u8>, bm: BmpMode, p: Policy) -> bool {
+pub(crate) open spec fn g_policy_clause3(b: Seq<u8>, bm: BmpMode, p: Policy) -> bool {
     forall|j: int| 0 <= j < req_dibp(b, bm, p).len()
         ==> req_dibp(b, bm, p)[j].1 <= crate::alloc_guard::MAX_BYTES
 }
@@ -8944,7 +8972,7 @@ pub open spec fn g_policy_clause3(b: Seq<u8>, bm: BmpMode, p: Policy) -> bool {
 /// complete path the record is `mh_policy`'s, bounded by `mh_bounds`; on the
 /// second pass it is `mh_partial`'s, bounded by `lemma_r2r5_policy_ok` on the
 /// R2-R5 record it re-parses.
-pub proof fn lemma_req_dibp_clause3(b: Seq<u8>, bm: BmpMode, p: Policy)
+pub(crate) proof fn lemma_req_dibp_clause3(b: Seq<u8>, bm: BmpMode, p: Policy)
     ensures g_policy_clause3(b, bm, p),
 {
     reveal(req_dibp);
@@ -8981,7 +9009,7 @@ pub proof fn lemma_req_dibp_clause3(b: Seq<u8>, bm: BmpMode, p: Policy)
 /// entry while a non-failure has every entry `Ok`. This is what each policy
 /// helper's `ensures` carries; `lemma_g_policy_of_shape` turns it into `G` and
 /// `Prog`.
-pub open spec fn policy_shape(
+pub(crate) open spec fn policy_shape(
     b: Seq<u8>,
     bm: BmpMode,
     p: Policy,
@@ -9001,7 +9029,7 @@ pub open spec fn policy_shape(
 /// own `decode_policy_mp_eq`/`decode_policy_alpha_eq` postconditions and the
 /// `OutOfMemory` naming clause. Every policy helper proves `policy_shape`; the
 /// logged entry point calls this once.
-pub proof fn lemma_g_policy_of_shape(
+pub(crate) proof fn lemma_g_policy_of_shape(
     b: Seq<u8>,
     bm: BmpMode,
     p: Policy,
@@ -9052,7 +9080,7 @@ pub proof fn lemma_g_policy_of_shape(
 /// The post-reservation exits all share `policy_shape` for the pushed `Ok`
 /// entry, so a helper can state it after `alloc_output_n` returns `Ok` or after
 /// `fill_blank`.
-pub proof fn lemma_shape_pushed_ok(
+pub(crate) proof fn lemma_shape_pushed_ok(
     b: Seq<u8>,
     bm: BmpMode,
     p: Policy,
@@ -9074,7 +9102,7 @@ pub proof fn lemma_shape_pushed_ok(
 }
 
 /// The failed-reservation exit's `policy_shape`.
-pub proof fn lemma_shape_pushed_oom(
+pub(crate) proof fn lemma_shape_pushed_oom(
     b: Seq<u8>,
     bm: BmpMode,
     p: Policy,
@@ -9096,7 +9124,7 @@ pub proof fn lemma_shape_pushed_oom(
 }
 
 /// The pre-reservation exit's `policy_shape`.
-pub proof fn lemma_shape_prealloc(
+pub(crate) proof fn lemma_shape_prealloc(
     b: Seq<u8>,
     bm: BmpMode,
     p: Policy,
@@ -9116,7 +9144,7 @@ pub proof fn lemma_shape_prealloc(
 }
 
 /// The one-request shape for the policy path./// The one-request shape for the policy path.
-pub proof fn lemma_req_dibp_len(b: Seq<u8>, bm: BmpMode, p: Policy)
+pub(crate) proof fn lemma_req_dibp_len(b: Seq<u8>, bm: BmpMode, p: Policy)
     ensures req_dibp(b, bm, p).len() <= 1,
 {
     reveal(req_dibp);
@@ -9127,7 +9155,7 @@ pub proof fn lemma_req_dibp_len(b: Seq<u8>, bm: BmpMode, p: Policy)
 /// its reservation hold together iff `mh_partial(b, bm, p) is Some`. Each early
 /// return therefore has `Req_DIBp` empty, giving the `PreAlloc` corollary on the
 /// second pass.
-pub open spec fn partial_revalidated(b: Seq<u8>, bm: BmpMode, p: Policy, original: Error) -> bool {
+pub(crate) open spec fn partial_revalidated(b: Seq<u8>, bm: BmpMode, p: Policy, original: Error) -> bool {
     crate::model::mh_policy(b, bm, p) == Err(original)
         && (original == Error::TruncatedMasks || original == Error::TruncatedPalette)
         && (b.len() <= crate::dib::MAX_INPUT)
@@ -9142,7 +9170,7 @@ pub open spec fn partial_revalidated(b: Seq<u8>, bm: BmpMode, p: Policy, origina
 /// The second-pass reachability lemma: under `decode_partial_metadata`'s
 /// precondition, the four early returns fire exactly when `mh_partial` is
 /// `None`, so passing all four is equivalent to `mh_partial(b, bm, p) is Some`.
-pub proof fn lemma_blank_second_pass(
+pub(crate) proof fn lemma_blank_second_pass(
     b: Seq<u8>, bm: BmpMode, p: Policy, original: Error,
 )
     requires
@@ -10665,7 +10693,7 @@ pub(crate) fn try_decode_custom_policy(bytes: &[u8], bm: BmpMode, policy: Policy
 }
 
 /// Projection of the format result used by the frozen policy model.
-pub open spec fn policy_result(r: Result<Decoded, Error>) -> Result<(int, int, Seq<u8>), Error> {
+pub(crate) open spec fn policy_result(r: Result<Decoded, Error>) -> Result<(int, int, Seq<u8>), Error> {
     match r {
         Ok(d) => Ok((d.width as int, d.height as int, d.rgba@)),
         Err(e) => Err(e),
@@ -10673,7 +10701,7 @@ pub open spec fn policy_result(r: Result<Decoded, Error>) -> Result<(int, int, S
 }
 
 /// A-DIB-7(a): Strict has the same reservation request as the policy-free core.
-pub proof fn lemma_strict_requests(b: Seq<u8>, bm: BmpMode)
+pub(crate) proof fn lemma_strict_requests(b: Seq<u8>, bm: BmpMode)
     ensures req_dib(b, bmp_mode_to_mode(bm)) == req_dibp(b, bm, strict_policy()),
 {
     crate::model::lemma_mh_policy_strict(b, bm);
@@ -10684,7 +10712,7 @@ pub proof fn lemma_strict_requests(b: Seq<u8>, bm: BmpMode)
 
 /// A-DIB-7(b): independent successful reservation outcomes give equal logs and
 /// equal format errors, dimensions and RGBA bytes. OOM outcomes are not coupled.
-pub proof fn lemma_strict_results(b: Seq<u8>, bm: BmpMode,
+pub(crate) proof fn lemma_strict_results(b: Seq<u8>, bm: BmpMode,
     r1: Result<Decoded, TryError>, r2: Result<Decoded, TryError>, recovered: bool,
     l1: Seq<(AllocSite, nat, bool)>, l2: Seq<(AllocSite, nat, bool)>)
     requires

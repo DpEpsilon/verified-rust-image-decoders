@@ -10,7 +10,7 @@ rustc_commit = "58cf8f9c35b355199727627d07ae34a4e2846d67"
 target = "x86_64-unknown-linux-gnu"
 profile = "opt-level=3,debug-assertions=off,share-generics=off"
 features = []
-source_hash = "f9ca28248b1e310ad4b663d97a6ad2cc12b5d8e39f58a3b2524dfdefd7e3f882"
+source_hash = "387f37cbdee25ce4b6149ca10db8bc082918a6cfbda945cbdd9968916c7c0c34"
 vstd_version = "0.0.0-2026-11-01-0251"
 vstd_svh = "fa564daeee3bd3d96afb1a9ec5dbc24f"
 vstd_source_checksum = "7cfcc2fc379ffbcda31111f1a7da2a34d00bd984407cfa85d1edcf64da38dbd2"
@@ -213,14 +213,14 @@ kind = "no-mir"
 item = "core::panicking::panic_nounwind_fmt"
 allow = "core::num::<impl usize>::unchecked_mul::precondition_check"
 contract = "diverges (panic, core); allocates nothing in core. Under a std consumer the panic hook may allocate a payload: this entry is admitted only because the edge is unreachable (citation)"
-citation = "ub_checks precondition: this call sits behind core::intrinsics::ub_checks(), which is false in a crate compiled with debug-assertions=off (the recorded profile), so the branch is dead in this artifact; reached from crate functions: crate::alloc_guard::try_zeroed, crate::tga::decode_complete_policy, crate::tga::decode_tracked, crate::tga::finish_policy, crate::tga::t7_strict_is_1_0"
+citation = "ub_checks precondition: this call sits behind core::intrinsics::ub_checks(), which is false in a crate compiled with debug-assertions=off (the recorded profile), so the branch is dead in this artifact; reached from crate functions: crate::alloc_guard::try_zeroed, crate::tga::decode_complete_policy, crate::tga::decode_tracked, crate::tga::finish_policy"
 
 [[entry]]
 kind = "no-mir"
 item = "core::panicking::panic_nounwind_fmt"
 allow = "core::alloc::layout::Layout::from_size_align_unchecked::precondition_check"
 contract = "diverges (panic, core); allocates nothing in core. Under a std consumer the panic hook may allocate a payload: this entry is admitted only because the edge is unreachable (citation)"
-citation = "ub_checks precondition: this call sits behind core::intrinsics::ub_checks(), which is false in a crate compiled with debug-assertions=off (the recorded profile), so the branch is dead in this artifact; reached from crate functions: crate::alloc_guard::try_zeroed, crate::tga::decode_complete_policy, crate::tga::decode_tracked, crate::tga::finish_policy, crate::tga::t7_strict_is_1_0"
+citation = "ub_checks precondition: this call sits behind core::intrinsics::ub_checks(), which is false in a crate compiled with debug-assertions=off (the recorded profile), so the branch is dead in this artifact; reached from crate functions: crate::alloc_guard::try_zeroed, crate::tga::decode_complete_policy, crate::tga::decode_tracked, crate::tga::finish_policy"
 
 [[entry]]
 kind = "no-mir"
@@ -234,7 +234,7 @@ kind = "no-mir"
 item = "core::panicking::panic_nounwind_fmt"
 allow = "core::mem::alignment::Alignment::new_unchecked::precondition_check"
 contract = "diverges (panic, core); allocates nothing in core. Under a std consumer the panic hook may allocate a payload: this entry is admitted only because the edge is unreachable (citation)"
-citation = "ub_checks precondition: this call sits behind core::intrinsics::ub_checks(), which is false in a crate compiled with debug-assertions=off (the recorded profile), so the branch is dead in this artifact; reached from crate functions: crate::alloc_guard::try_zeroed, crate::tga::decode_complete_policy, crate::tga::decode_tracked, crate::tga::finish_policy, crate::tga::t7_strict_is_1_0"
+citation = "ub_checks precondition: this call sits behind core::intrinsics::ub_checks(), which is false in a crate compiled with debug-assertions=off (the recorded profile), so the branch is dead in this artifact; reached from crate functions: crate::alloc_guard::try_zeroed, crate::tga::decode_complete_policy, crate::tga::decode_tracked, crate::tga::finish_policy"
 
 [[entry]]
 kind = "no-mir"

@@ -5,6 +5,37 @@ D8 are now resolved (D8 was a source change, D3/D4 were closed by the same
 change; ERRATA E10). The remaining ICNS and ICO findings are the unsigned
 reviewer, plus ICO's `dependency-contract` while DIB's report is unsigned.
 
+**E11 (2026-11-14): the public-API reduction.** The four cores' public
+surfaces were reduced to the library-user API (ERRATA E11; survey in
+`API-SURVEY.md`). This changed every core's `source_hash`, so the four draft
+allowlists were regenerated with `tools/draft_all.sh` and re-audited. The
+`required_roots` are unchanged: all fifteen `try_*` roots remain exported
+functions (the `*_logged` ones are `#[doc(hidden)] pub`, which the tool still
+counts as exported; E12 later demoted ICNS's non-root `try_rle_logged`). Entry
+counts are unchanged at 64 / 58 / 50 / 42. The
+production run for this change (then `20261114T081621Z`, since deleted by
+E12; the current evidence is `runs/20261114T084716Z`) reports exactly the
+expected findings: DIB,
+TGA and ICNS only `allowlist-reviewer`; ICO `allowlist-reviewer` and
+`dependency-contract` (D9), with DIB's report inside the ICO run also only
+`allowlist-reviewer`. No `missing-root`, `mono-item-unwalked` or other finding
+appeared, so hiding the proof modules did not orphan any codegen monomorphisation
+the roots do not reach.
+
+**E12 (2026-11-14): ICNS `try_rle_logged` demoted to `pub(crate)`.** Sol's
+review of E11 found that a `#[doc(hidden)] pub` exec fn whose only size
+restriction was a Verus precondition could be called with an out-of-range size
+from another crate. ICNS's `try_rle_logged` was the one such item; it is now
+`pub(crate)` (ERRATA E12). ICNS reverified (412/0, run 53) and ICNS tests pass
+(111/111 conformance, 12/12 fault injection). The ICNS draft allowlist was
+regenerated (new `source_hash` `cda2ebe7...`; entry set unchanged at 50) and
+`PINS.sha256` rewritten. The authoritative production run is now
+`runs/20261114T084716Z`; `runs/20261114T081621Z` is deleted. ICNS's walk is one
+instance and three edges smaller; the other three cores are unchanged. See
+`API-SURVEY.md` section 6 for the caller-controlled surfaces that remain public
+(`alloc_guard::try_zeroed`, ICNS `try_copy`, and the ICNS `parsed_inv`
+decoders), which are open design items.
+
 **Conclusion.** The mechanical checks I could redo without Verus or
 cargo agree with the drafts: all 67 crate functions cited as the reason
 a panic edge cannot fire exist, are exec functions inside `verus!`, and
@@ -168,6 +199,13 @@ rejection costs.
   roots (`missing-root` otherwise): DIB 4, TGA 3, ICNS 4, ICO 4. Read
   the list in `allowlist/decisions/<core>.toml`; confirm it is every
   entry point you consider public.
+- E11 check (2026-11-14): all fifteen roots are still exported functions
+  after the public-API reduction. The DIB/TGA/ICNS roots are plain `pub`;
+  ICO's `try_parse_with_steps` and `try_decode_entry_with_steps`, and
+  TGA's and ICNS's `*_logged` roots, are `#[doc(hidden)] pub`, which the
+  tool still counts as exported. No `missing-root` was reported in
+  `20261114T084716Z`, so the lists are unchanged. (E12 later demoted ICNS's
+  `try_rle_logged` to `pub(crate)`; it is not a `required_root`.)
 - Recommendation: accept after checking the lists.
 
 ### Other E7 deviations
@@ -301,18 +339,23 @@ Other checks:
 - **PINS.sha256.** `sha256sum -c --strict PINS.sha256`: four of four OK.
 - **`source_hash`.** I recomputed it as the tool does (SHA-256 over the
   sorted per-file SHA-256 lines of every non-test module file) for all
-  four cores. DIB `c0a03456...`, TGA `f9ca2824...`, ICNS `01f940ad...`,
-  ICO `5265d477...` (ICNS and ICO as of the E10 change; they were
-  `f81a2445...` and `ac617f1f...` before): four of four match the current
-  allowlists. The E10 reports are runs `20261114T055903Z` (ICNS) and
-  `20261114T055910Z` (ICO); DIB and TGA are in `20261113T081241Z`. DIB's `source_hash` inside the ICO
-  run equals DIB's own.
+  four cores. As of the E11 API reduction and the E12 `try_rle_logged`
+  demotion the values are DIB
+  `10f5071a08964bb735ee266801c53d5c82926a36701cf4e01bbe0218b61e684c`,
+  TGA `387f37cbdee25ce4b6149ca10db8bc082918a6cfbda945cbdd9968916c7c0c34`,
+  ICNS `cda2ebe74a1a747f9862bfb1e519294c9925515d88816cf01d237df2cea7b269`,
+  ICO `5e2660a5d6a7af5205ca07fa64cf63504173f66e6bdab839fca5027b9816a530`,
+  and four of four match the regenerated allowlists. (E11 alone recorded ICNS
+  as `bfcd14ae...`.) The method reproduces
+  the pre-E11 values exactly (DIB `c0a03456...`, TGA `f9ca2824...`, ICNS
+  `01f940ad...`, ICO `5265d477...`), which is the check that it is the
+  tool's computation. The E11/E12 reports are in run `20261114T084716Z` (which
+  replaces the now-deleted `20261114T081621Z`). DIB's
+  `source_hash` inside the ICO run equals DIB's own.
 - **Guard hashes.** `alloc_guard/mod.rs` is `26e4c832...` in all four
   (matches E6). Each `sites.rs` matches its pin: DIB `33465c74...`
   (`dib/tools/audit_alloc.py`), TGA `58e1fb28...`, ICNS `5dff9ec0...`,
-  ICO `5918505c...` (ICNS and ICO re-pinned after E10; the E10 runs
-  `runs/20261114T055635Z` and `runs/20261114T055653Z` carry `entries=50`
-  and `entries=42`).
+  ICO `5918505c...`. The E11 change touched none of these files.
 
 Mismatches found: none in hashes, counts or citations. Wording defects
 found: D4 ("verified invariant") and D5 (the "never aborts" attribution).
@@ -390,10 +433,12 @@ ICNS and ICO now fail only on the unsigned reviewer (ICO also on
 7. Run `./run_audit.sh` from `alloc-delta/audit` (builds with `-j1`; it
    is slow on one CPU). Expected after signing: DIB and TGA PASS; ICNS
    PASS; ICO PASS once DIB passes in the same run (D9). The latest
-   unsigned runs are `runs/20261114T055635Z` (ICNS, only
-   `allowlist-reviewer`) and `runs/20261114T055653Z` (ICO,
-   `allowlist-reviewer` and `dependency-contract`); the run directory
-   under `runs/` is the evidence.
+   unsigned run is `runs/20261114T084716Z`, which covers all four cores
+   after the E11 public-API reduction and the E12 `try_rle_logged` demotion:
+   DIB, TGA and ICNS only
+   `allowlist-reviewer`; ICO `allowlist-reviewer` and
+   `dependency-contract`; the run directory under `runs/` is the
+   evidence.
 8. Commit the four allowlists, `PINS.sha256` and the run directory
    together. Any later edit to an allowlist breaks the pin check and
    means a new review.

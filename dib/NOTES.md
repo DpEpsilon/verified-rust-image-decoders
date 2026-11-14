@@ -846,3 +846,29 @@ Results unchanged: 302/302 frozen vectors; four profiles 102/102; corpus 50/52/5
 Latest verifier result: run 556, **1,764 verified, 0 errors** (before E6: 1,765 (run 552)). The live source now carries two `#[verifier::rlimit(20)]` attributes, on `parse_header` and `dib_finish` (RUNLOG runs 555-556); statements in this file that no solver-budget attribute was added describe run 552 only. `alloc_guard/sites.rs` is unchanged (SHA-256 `33465c740e10162d0d6634afd0a6033e26f3d0f523b40e375f4b1d46bcdf000a`). DIB has no other use of A-STD-2: its guard makes one byte reservation and has no element list.
 
 Statements elsewhere in this file that describe the guard as a `push` loop, that use A-STD-2 for `try_zeroed`, that quote the old `mod.rs` hash `018ed17a...` or that give the pre-E6 verified count describe the cores before E6 and are superseded by this section. Test and lint results recorded in this file predate E6 unless dated 2026-11-13; a post-E6 rerun of them is not recorded here.
+
+## Public-API reduction (2026-11-14)
+
+The owner asked that the public surface be only what a library user needs. DIB's
+intended public API is the four `try_*` entry points, `Decoded`, `TryError` (with
+`Error` and `OutOfMemory`), `Mode`, the policy surface (`BmpMode`, `BmpProfile`,
+`Policy` and its 22 option enums, and the `*_policy` constructors), `MAX_INPUT`
+and `MAX_OUTPUT`, and the R15 `Error::name` spelling. Everything else is
+implementation detail.
+
+Two levers, no contract or proof text touched (see `alloc-delta/audit/API-SURVEY.md`):
+
+- `model_vectors` is now `pub(crate)`. `model` stays reachable from another
+  crate (`ico_verus`'s allocation proof names `dib_verus::model::{mp,
+  max_dimension, max_output, lemma_mp_ok_shape}`) but is `#[doc(hidden)]`.
+  Together these hide 1133 `pub` items of the reference model in one edit.
+- In `src/dib.rs`, `pub` items no `pub` contract names were demoted to
+  `pub(crate)` (91 -> 62), and the 28 that a `try_*` contract does name — the
+  `G`/`Prog`/`Req_DIB` families, `fmt_part`, `log_tied`, `decode_mp_eq`,
+  `t12_checked_n`, `name_spec`, `bmp_mode_to_mode`, the five `*_policy` spec
+  constructors — are marked `#[doc(hidden)]`. Verus refuses a `pub` item whose
+  contract names a non-`pub` item, so those cannot be demoted.
+
+`alloc_guard` stays a `pub` module (ICO reaches `AllocLog`), and its `mod.rs`
+(`26e4c832...`) and `sites.rs` (`33465c74...`) are unchanged. Verifier: run 557,
+**1,764 verified, 0 errors** (unchanged). Tests green (302/302 vectors).

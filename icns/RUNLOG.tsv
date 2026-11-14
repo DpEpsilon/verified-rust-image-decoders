@@ -257,3 +257,4 @@
 50	2026-11-12T16:26:46+00:00	exit=0	322s	final full reverify from scratch: gaps 4/5/7/8, 413 verified [crate=icns_verus]	verification results:: 413 verified, 0 errors	peak_rss_sum_mb=3125	peak_rss_max_proc_mb=2517:rust_verify
 51	2026-11-13T03:25:26+00:00	exit=0	323s	 [crate=icns_verus]	verification results:: 412 verified, 0 errors	peak_rss_sum_mb=3355	peak_rss_max_proc_mb=2524:rust_verify
 52	2026-11-14T05:41:06+00:00	exit=0	320s	D3/D4/D8: Reserved/try_with_room pub(crate), push/into_vec #[inline(never)] [crate=icns_verus]	verification results:: 412 verified, 0 errors	peak_rss_sum_mb=1805	peak_rss_max_proc_mb=1030:rust_verify
+53	2026-11-14T08:41:07+00:00	exit=0	268s	E12: try_rle_logged demoted to pub(crate) [crate=icns_verus]	verification results:: 412 verified, 0 errors	peak_rss_sum_mb=1293	peak_rss_max_proc_mb=1032:rust_verify

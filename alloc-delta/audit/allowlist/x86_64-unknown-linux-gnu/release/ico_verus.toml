@@ -10,7 +10,7 @@ rustc_commit = "58cf8f9c35b355199727627d07ae34a4e2846d67"
 target = "x86_64-unknown-linux-gnu"
 profile = "opt-level=3,debug-assertions=off,share-generics=off"
 features = []
-source_hash = "5265d477dc4cbfdb1256b736f1303f2cbf6c41e28052fec1836ac94eea9079cc"
+source_hash = "5e2660a5d6a7af5205ca07fa64cf63504173f66e6bdab839fca5027b9816a530"
 vstd_version = "0.0.0-2026-11-01-0251"
 vstd_svh = "fa564daeee3bd3d96afb1a9ec5dbc24f"
 vstd_source_checksum = "7cfcc2fc379ffbcda31111f1a7da2a34d00bd984407cfa85d1edcf64da38dbd2"

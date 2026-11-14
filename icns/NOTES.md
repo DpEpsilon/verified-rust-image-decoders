@@ -398,3 +398,36 @@ Statements elsewhere in this file that describe the guard as a `push` loop, that
 `alloc-delta/ERRATA.md` E10 applied the owner's decisions D3/D4/D8 to `alloc_guard/sites.rs`: `Reserved::push` and `Reserved::into_vec` gained `#[inline(never)]` (D8), and `Reserved<T>`, `Reserved::push`, `Reserved::into_vec` and `try_with_room<T>` became `pub(crate)` (D3/D4), so a downstream crate can no longer call them and violate `Reserved::push`'s `len < room` precondition. No `requires`/`ensures` and no proof changed. The new `sites.rs` SHA-256 is `5dff9ec076a778b04b782b3dc2e8a290b92c333cee0b281ebdb4619ac037892b` (was `adcc09be...`), `EXPECTED_SITES_SHA` in `tools/audit_alloc.sh` was re-pinned, and the three `generic-export` entries were removed from `alloc-delta/audit/allowlist/decisions/icns.toml`. Verifier: run 52, **412 verified, 0 errors** (unchanged). Tests: 111/111 conformance, 12/12 fault injection. The production audit reports only `allowlist-reviewer` (`runs/20261114T055635Z`); the `guard-inline-never` finding is gone.
 
 The "Latest verifier result" and `sites.rs` hash in the paragraph above are superseded by this section.
+
+## ERRATA E11 update (2026-11-14): public-API reduction
+
+The intended public API is `try_parse`, `try_decode_rgb`, `try_decode_mask`,
+`try_combine`, `Entry`, `Decoded`, `Error`, `TryError`, `MAX_FILE_LEN` and
+`Entry::type_code`. `model` and `model_vectors` are now `pub(crate)`; in
+`src/icns.rs` the `pub` items no `pub` contract names were demoted (80 -> 73) and
+the 61 named by a `*_logged` or public `try_*` contract (the five `*_logged`
+functions, the `G`/`Prog`/`Req`/`PreAlloc`/`AtSiteLog` families, `entry_count`,
+`reach_p`, `site_max`, `log_extends`, `oom_in_req`, and the five
+`lemma_*_prealloc` bridge lemmas) are `#[doc(hidden)]`. No contract or proof text
+changed. Verifier: **412 verified, 0 errors** (unchanged). Tests: 111/111
+conformance, 12/12 fault injection. `glycin-icns` checks clean.
+See `alloc-delta/audit/API-SURVEY.md` and ERRATA E11.
+
+## ERRATA E12 update (2026-11-14): `try_rle_logged` demoted to `pub(crate)`
+
+Sol's review of E11 found that `try_rle_logged` (the logged RLE entry point,
+`src/icns.rs` line 1822) was still `#[doc(hidden)] pub` while its size
+restriction `1 <= n <= 128*128` was only a Verus `requires` clause. Ordinary Rust
+from another crate could call it with a size of its choosing and make it reserve
+three 64 MiB channel buffers. It has no external caller (its only caller is the
+`t9_rle_exact` witness), is not one of ICNS's `required_roots`, and no `pub`
+contract names it, so it is now `pub(crate)`; `#[doc(hidden)]` was removed and no
+`requires`, `ensures` or proof text changed. Verus accepted the demotion, so no
+executable size check was needed. Verifier: run 53, **412 verified, 0 errors**
+(unchanged; a visibility change adds and removes no obligation). Tests: 111/111
+conformance, 12/12 fault injection. The draft allowlist was regenerated (new
+`source_hash` `cda2ebe74a1a747f9862bfb1e519294c9925515d88816cf01d237df2cea7b269`;
+entry set unchanged at 50). The production audit is `alloc-delta/audit/runs/20261114T084716Z`
+(only `allowlist-reviewer`); ICNS's walk is one instance and three edges smaller
+because `try_rle_logged` is no longer a root. See `alloc-delta/ERRATA.md` E12 and
+`alloc-delta/audit/API-SURVEY.md` section 6.
