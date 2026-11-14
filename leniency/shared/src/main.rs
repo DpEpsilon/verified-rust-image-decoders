@@ -60,15 +60,15 @@ fn run(which:&str,bytes:&[u8],dump:Option<&str>)->Value{
         },
         ("tga","verified")=>match tga_verus::tga::decode(bytes){Ok(d)=>ok(d.width,d.height,d.rgba,"RGBA8".into(),"single".into(),dump),Err(e)=>err(e.name())},
         ("icns","verified-legacy") | ("icns","verified-png")=>{
-            let entries=match icns_verus::parse(bytes){Ok(x)=>x,Err(e)=>return err(e.name())};
-            let ranked=glycin_icns::candidates(bytes,&entries);
+            let parsed=match icns_verus::try_parse(bytes){Ok(x)=>x,Err(icns_verus::TryError::Format(e))=>return err(e.name()),Err(_)=>return err("OOM")};
+            let ranked=glycin_icns::candidates(&parsed);
             let candidate=ranked.into_iter().find(|c|matches!(c,glycin_icns::Candidate::Legacy{..})==(mode=="verified-legacy"));
             match candidate {
-                Some(glycin_icns::Candidate::Legacy{color,mask,side})=>match icns_verus::combine(bytes,&entries,Some(color),Some(mask)){
-                    Ok(d)=>ok(d.width,d.height,d.data,"RGBA8".into(),format!("legacy:{side}:{color}:{mask}"),dump),Err(e)=>err(e.name())},
+                Some(glycin_icns::Candidate::Legacy{color,mask,side})=>match parsed.try_combine(Some(color),Some(mask)){
+                    Ok(d)=>ok(d.width,d.height,d.data,"RGBA8".into(),format!("legacy:{side}:{color}:{mask}"),dump),Err(icns_verus::TryError::Format(e))=>err(e.name()),Err(_)=>err("OOM")},
                 Some(glycin_icns::Candidate::Png{entry,..})=>{
-                    let e=&entries[entry as usize];let p=&bytes[e.payload[0] as usize..e.payload[1] as usize];
-                    image_result(p,ImageFormat::Png,format!("png:{entry}"),dump)
+                    let p=glycin_icns::entry_payload(&parsed,entry);
+                    match p {Some(p)=>image_result(p,ImageFormat::Png,format!("png:{entry}"),dump),None=>err("NoEntry")}
                 },None=>err("NoCandidate")
             }
         },

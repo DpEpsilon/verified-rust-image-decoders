@@ -211,6 +211,75 @@ proof fn lemma_nib_char(c: char)
 pub type ParseRes = Result<Vec<Entry>, Error>;
 pub type CombineRes = Result<Decoded, Error>;
 
+/// An opaque, parsed ICNS container: the input slice it was parsed from, and the
+/// entry list that parse produced from exactly that slice.
+///
+/// This is the whole point of the type. The decoders' Verus contracts require
+/// `parsed_inv(bytes@, entries@)`, and `parsed_inv` is erased in the compiled
+/// artifact. `Entry` has public fields, so an `(bytes, entries)` pair passed as
+/// two arguments can be forged in safe Rust: build any `Vec<Entry>` with
+/// out-of-range payloads and call the decoder, and the unchecked
+/// `&entries[i]` / `&bytes[start..end]` inside it panics or reads the wrong
+/// region. `Parsed` has **private** fields and is constructed only by
+/// `try_parse`, so safe Rust outside this crate cannot obtain a value that does
+/// not satisfy the invariant. The invariant itself is a Verus type invariant
+/// (`inv` below), which every method of the type may assume without a
+/// `requires` clause, and which `try_parse` must establish at the one
+/// construction site.
+///
+/// `entries()` is a shared slice, so a caller can read an entry (to choose an
+/// index) but cannot mutate the list it will be decoded with.
+pub struct Parsed<'a> {
+    /// The exact slice `try_parse` parsed. Never handed out as `&mut`.
+    bytes: &'a [u8],
+    /// The entry list `try_parse` produced from `bytes`.
+    entries: Vec<Entry>,
+}
+
+impl<'a> Parsed<'a> {
+    /// The type invariant: the entry list is the parsed form of the bytes it is
+    /// stored with. `pub` so a `pub fn`'s contract may name it (Verus refuses a
+    /// `pub` contract that refers to a private spec fn); `#[doc(hidden)]` because
+    /// it is proof plumbing, not API.
+    #[doc(hidden)]
+    #[verifier::type_invariant]
+    pub closed spec fn inv(&self) -> bool {
+        crate::model::parsed_inv(self.bytes@, self.entries@)
+    }
+
+    /// The bytes the handle was parsed from. `closed` and `pub` for the same
+    /// reason as `inv`: the `pub` method contracts name it, and it does not
+    /// reveal the field (only its view, which `bytes()` already hands out).
+    #[doc(hidden)]
+    pub closed spec fn spec_bytes(&self) -> Seq<u8> {
+        self.bytes@
+    }
+
+    /// The parsed entry list, as a sequence. `closed` and `pub`, as `spec_bytes`.
+    #[doc(hidden)]
+    pub closed spec fn spec_entries(&self) -> Seq<Entry> {
+        self.entries@
+    }
+
+    /// The parsed entry list, read-only. Callers use this to pick an index; it
+    /// is the only view of the entries that leaves the crate.
+    pub fn entries(&self) -> (r: &[Entry])
+        ensures r@ == self.spec_entries(),
+    {
+        self.entries.as_slice()
+    }
+
+    /// The input bytes this handle was parsed from, read-only. PNG-candidate
+    /// classification needs the payload ranges, which are offsets into this
+    /// slice; it is the same slice `entries()`'s ranges refer to, by
+    /// construction.
+    pub fn bytes(&self) -> (r: &'a [u8])
+        ensures r@ == self.spec_bytes(),
+    {
+        self.bytes
+    }
+}
+
 /// A decoded image: `width`, `height` (equal for a successful decode per R1)
 /// and the pixel bytes.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -1146,8 +1215,7 @@ fn parse_tracked(bytes: &[u8], Tracked(log): Tracked<&mut AllocLog>)
 
 /// The logged parse entry point (A-ICNS-1): creates the one log, runs the one
 /// entry-list reservation, and returns the log. `Eq_f` is `parses_to`.
-#[doc(hidden)]
-pub fn try_parse_logged(bytes: &[u8])
+pub(crate) fn try_parse_logged(bytes: &[u8])
     -> (r: (Result<Vec<Entry>, TryError>, Tracked<AllocLog>))
     ensures
         g_p(bytes@, r.0, r.1@.view()),
@@ -1183,15 +1251,35 @@ pub fn try_parse_logged(bytes: &[u8])
     (result, Tracked(log))
 }
 
-/// The public parse entry point: `try_parse_logged` with the log discarded
-/// (decision D1: the frozen name `parse` is removed). `OutOfMemory` names the
-/// failed `(EntryList, min(4096, (|b|-8)/8))` reservation.
-pub fn try_parse(bytes: &[u8]) -> (r: Result<Vec<Entry>, TryError>)
+/// The parse entry point and the **only** constructor of `Parsed`: it runs
+/// `try_parse_logged` and discards the log (decision D1: the frozen name `parse`
+/// is removed). `OutOfMemory` names the failed
+/// `(EntryList, min(4096, (|b|-8)/8))` reservation.
+///
+/// The `Ok` arm is the one place a `Parsed` value is built, so it is the one
+/// place the type invariant is established: the entries are `parses_to`'s model
+/// list for `bytes`, and `lemma_parse_ok_gives_p` + `lemma_p_exec_inv` turn that
+/// into `parsed_inv(bytes@, entries@)`. Safe Rust outside this crate cannot
+/// construct `Parsed` at all (private fields, no other constructor), so every
+/// decoder call made through the handle carries the invariant.
+///
+/// Every non-`OutOfMemory` result carries the T7 relation: `Ok` gives
+/// `parses_to_s` on the handle's entry view (the clause above), and
+/// `Err(Format(e))` gives `parses_to_s(bytes@, Err(e))`, so a rejection names
+/// the exact first format error and no accepted input can return one. Both are
+/// the `fmt_part_entries` projection of the logged internal result
+/// `try_parse_logged` proves, carried across the handle boundary.
+pub fn try_parse<'a>(bytes: &'a [u8]) -> (r: Result<Parsed<'a>, TryError>)
     ensures
-        !matches!(r, Err(TryError::OutOfMemory(_)))
-            ==> crate::model::parses_to(bytes@, crate::alloc_guard::sites::fmt_part_entries(r)),
-        pre_alloc_p(bytes@) ==> !matches!(r, Err(TryError::OutOfMemory(_)))
-            && crate::model::parses_to(bytes@, crate::alloc_guard::sites::fmt_part_entries(r)),
+        match r {
+            Ok(p) => {
+                &&& p.spec_bytes() == bytes@
+                &&& crate::model::parses_to_s(bytes@, Ok(p.spec_entries()))
+            },
+            Err(TryError::Format(e)) => crate::model::parses_to_s(bytes@, Err(e)),
+            Err(TryError::OutOfMemory(_)) => true,
+        },
+        pre_alloc_p(bytes@) ==> !matches!(r, Err(TryError::OutOfMemory(_))),
         match r {
             Err(TryError::OutOfMemory(o)) =>
                 o.site_spec() == AllocSite::EntryList
@@ -1202,6 +1290,8 @@ pub fn try_parse(bytes: &[u8]) -> (r: Result<Vec<Entry>, TryError>)
     let res = try_parse_logged(bytes);
     proof {
         reveal(crate::alloc_guard::sites::fmt_part_entries);
+        reveal(g_p);
+        reveal(g_p_clause1);
         reveal(req_p);
         reveal(pre_alloc_p);
         reveal(at_site_log_p);
@@ -1210,7 +1300,29 @@ pub fn try_parse(bytes: &[u8]) -> (r: Result<Vec<Entry>, TryError>)
             assert(req_p(bytes@)[0] == (AllocSite::EntryList, entry_count(bytes@)));
         }
     }
-    res.0
+    match res.0 {
+        Ok(entries) => {
+            proof {
+                crate::model::lemma_parse_ok_gives_p(bytes@, entries);
+                crate::model::lemma_p_exec_inv(bytes@, entries@);
+                crate::model::lemma_parses_to_ok_view(bytes@, entries);
+            }
+            Ok(Parsed { bytes, entries })
+        }
+        Err(TryError::Format(e)) => {
+            proof {
+                // The logged internal result satisfies `g_p_clause1`, which for a
+                // non-`OutOfMemory` result is `parses_to` on `fmt_part_entries`;
+                // at `Format(e)` that projection is `Err(e)`. `lemma_parses_to_err_view`
+                // lifts it to the view form the handle's contract states, so the
+                // rejection obligation survives the public boundary.
+                assert(crate::model::parses_to(bytes@, Err(e)));
+                crate::model::lemma_parses_to_err_view(bytes@, e);
+            }
+            Err(TryError::Format(e))
+        }
+        Err(TryError::OutOfMemory(o)) => Err(TryError::OutOfMemory(o)),
+    }
 }
 
 /// Copy `count` channel bytes from `payload` starting at `cursor` into
@@ -2854,8 +2966,7 @@ fn decode_rgb_tracked(
 }
 
 /// The logged colour decoder (A-ICNS-4): creates the one log and returns it.
-#[doc(hidden)]
-pub fn try_decode_rgb_logged(bytes: &[u8], entries: &[Entry], color_index: u32)
+pub(crate) fn try_decode_rgb_logged(bytes: &[u8], entries: &[Entry], color_index: u32)
     -> (r: (Result<Decoded, TryError>, Tracked<AllocLog>))
     requires
         crate::model::parsed_inv(bytes@, entries@),
@@ -2907,7 +3018,7 @@ pub fn try_decode_rgb_logged(bytes: &[u8], entries: &[Entry], color_index: u32)
 
 /// The public colour decoder (A-ICNS-4): `try_decode_rgb_logged` with the log
 /// discarded (decision D1: the frozen name `decode_rgb` is removed).
-pub fn try_decode_rgb(bytes: &[u8], entries: &[Entry], color_index: u32)
+pub(crate) fn try_decode_rgb(bytes: &[u8], entries: &[Entry], color_index: u32)
     -> (r: Result<Decoded, TryError>)
     requires
         crate::model::parsed_inv(bytes@, entries@),
@@ -2961,6 +3072,46 @@ pub fn try_decode_rgb(bytes: &[u8], entries: &[Entry], color_index: u32)
         }
     }
     res.0
+}
+
+impl<'a> Parsed<'a> {
+    /// The public colour decoder (A-ICNS-4) over the handle: `try_decode_rgb`
+    /// with the bytes and entries the handle holds.
+    ///
+    /// There is no `requires` clause: the handle's type invariant supplies
+    /// `parsed_inv(self.bytes@, self.entries@)`, which is exactly the internal
+    /// function's precondition. The `ensures` restates the internal
+    /// postcondition in handle terms, so a caller sees the model equality, the
+    /// output bounds and the named `OutOfMemory` request without naming the
+    /// opaque fields.
+    pub fn try_decode_rgb(&self, color_index: u32) -> (r: Result<Decoded, TryError>)
+        ensures
+            !matches!(r, Err(TryError::OutOfMemory(_)))
+                ==> crate::model::rgb_decoded_eq(
+                    crate::alloc_guard::sites::fmt_part(r),
+                    self.spec_bytes(),
+                    self.spec_entries(),
+                    color_index,
+                ),
+            match r {
+                Ok(d) => {
+                    &&& d.width == d.height
+                    &&& d.width <= 128
+                    &&& d.data@.len() <= MAX_LEGACY_SIDE * MAX_LEGACY_SIDE * 3
+                    &&& d.data@.len() == (d.width as usize) * (d.width as usize) * 3
+                },
+                Err(_) => true,
+            },
+            match r {
+                Err(TryError::OutOfMemory(o)) =>
+                    oom_in_req(o.site_spec(), o.elements_spec() as nat,
+                        req_c(self.spec_bytes(), self.spec_entries(), color_index)),
+                _ => true,
+            },
+    {
+        proof { use_type_invariant(self); }
+        try_decode_rgb(self.bytes, self.entries.as_slice(), color_index)
+    }
 }
 
 /// The mask index/type/length-error exits: no request is appended, so the log
@@ -3182,8 +3333,7 @@ fn decode_mask_tracked(
 }
 
 /// The logged mask decoder (A-ICNS-5): creates the one log and returns it.
-#[doc(hidden)]
-pub fn try_decode_mask_logged(bytes: &[u8], entries: &[Entry], mask_index: u32)
+pub(crate) fn try_decode_mask_logged(bytes: &[u8], entries: &[Entry], mask_index: u32)
     -> (r: (Result<Decoded, TryError>, Tracked<AllocLog>))
     requires
         crate::model::parsed_inv(bytes@, entries@),
@@ -3245,7 +3395,7 @@ pub fn try_decode_mask_logged(bytes: &[u8], entries: &[Entry], mask_index: u32)
 /// `Req_A`'s requests. `try_decode_mask_logged` already establishes the `site`,
 /// the size, the ordered prefix and the failed last event; this clause reads
 /// them out of that log.
-pub fn try_decode_mask(bytes: &[u8], entries: &[Entry], mask_index: u32)
+pub(crate) fn try_decode_mask(bytes: &[u8], entries: &[Entry], mask_index: u32)
     -> (r: Result<Decoded, TryError>)
     requires
         crate::model::parsed_inv(bytes@, entries@),
@@ -3300,6 +3450,41 @@ pub fn try_decode_mask(bytes: &[u8], entries: &[Entry], mask_index: u32)
         }
     }
     res.0
+}
+
+impl<'a> Parsed<'a> {
+    /// The public mask decoder (A-ICNS-5) over the handle: `try_decode_mask`
+    /// with the bytes and entries the handle holds. No `requires` clause; the
+    /// type invariant supplies `parsed_inv`, and the `ensures` restates the
+    /// internal postcondition in handle terms.
+    pub fn try_decode_mask(&self, mask_index: u32) -> (r: Result<Decoded, TryError>)
+        ensures
+            !matches!(r, Err(TryError::OutOfMemory(_)))
+                ==> crate::model::mask_decoded_eq(
+                    crate::alloc_guard::sites::fmt_part(r),
+                    self.spec_bytes(),
+                    self.spec_entries(),
+                    mask_index,
+                ),
+            match r {
+                Ok(d) => {
+                    &&& d.width == d.height
+                    &&& d.width <= 128
+                    &&& d.data@.len() <= MAX_LEGACY_SIDE * MAX_LEGACY_SIDE
+                    &&& d.data@.len() == (d.width as usize) * (d.width as usize)
+                },
+                Err(_) => true,
+            },
+            match r {
+                Err(TryError::OutOfMemory(o)) =>
+                    oom_in_req(o.site_spec(), o.elements_spec() as nat,
+                        req_a(self.spec_bytes(), self.spec_entries(), mask_index)),
+                _ => true,
+            },
+    {
+        proof { use_type_invariant(self); }
+        try_decode_mask(self.bytes, self.entries.as_slice(), mask_index)
+    }
 }
 
 /// R14: combine a colour and a mask entry into interleaved RGBA. The result
@@ -4125,8 +4310,7 @@ fn combine_tracked(
 }
 
 /// The logged combine decoder (A-ICNS-6): creates the one log and returns it.
-#[doc(hidden)]
-pub fn try_combine_logged(
+pub(crate) fn try_combine_logged(
     bytes: &[u8],
     entries: &[Entry],
     color_index: Option<u32>,
@@ -4206,7 +4390,7 @@ pub fn try_combine_logged(
 /// `Req_J`'s requests. `try_combine_logged` already establishes the `site`, the
 /// size, the ordered prefix and the failed last event; this clause reads them
 /// out of that log.
-pub fn try_combine(
+pub(crate) fn try_combine(
     bytes: &[u8],
     entries: &[Entry],
     color_index: Option<u32>,
@@ -4268,6 +4452,46 @@ pub fn try_combine(
     res.0
 }
 
+impl<'a> Parsed<'a> {
+    /// The public combine decoder (A-ICNS-6) over the handle: `try_combine` with
+    /// the bytes and entries the handle holds. No `requires` clause; the type
+    /// invariant supplies `parsed_inv`, and the `ensures` restates the internal
+    /// postcondition in handle terms.
+    pub fn try_combine(
+        &self,
+        color_index: Option<u32>,
+        mask_index: Option<u32>,
+    ) -> (r: Result<Decoded, TryError>)
+        ensures
+            !matches!(r, Err(TryError::OutOfMemory(_)))
+                ==> crate::model::combine_decoded_eq(
+                    crate::alloc_guard::sites::fmt_part(r),
+                    self.spec_bytes(),
+                    self.spec_entries(),
+                    color_index,
+                    mask_index,
+                ),
+            match r {
+                Ok(d) => {
+                    &&& d.width == d.height
+                    &&& d.width <= 128
+                    &&& d.data@.len() <= MAX_LEGACY_SIDE * MAX_LEGACY_SIDE * 4
+                    &&& d.data@.len() == (d.width as usize) * (d.width as usize) * 4
+                },
+                Err(_) => true,
+            },
+            match r {
+                Err(TryError::OutOfMemory(o)) =>
+                    oom_in_req(o.site_spec(), o.elements_spec() as nat,
+                        req_j(self.spec_bytes(), self.spec_entries(), color_index, mask_index)),
+                _ => true,
+            },
+    {
+        proof { use_type_invariant(self); }
+        try_combine(self.bytes, self.entries.as_slice(), color_index, mask_index)
+    }
+}
+
 // ---------------------------------------------------------------------------
 // T6/T9..T13 call-site witnesses, retargeted to the `try_*` surface (alloc-delta
 // SPEC.md §1.2: the frozen names are removed; each frozen witness is rewritten
@@ -4276,59 +4500,79 @@ pub fn try_combine(
 // ---------------------------------------------------------------------------
 
 /// T6: for every byte slice `bytes` with `|bytes| <= 67,108,864`, `try_parse`
-/// either fails, or (with no `OutOfMemory`) succeeds with at most 4,096 entries
-/// whose ranges are `8 <= start <= end <= |bytes|` and whose classification
-/// matches the parsed bytes. This is `parsed_inv`, which the frozen `parse`
-/// proved and `try_parse` proves on `fmt_part_entries(r)`.
+/// either fails, or succeeds with a handle whose entry view satisfies
+/// `parsed_inv(bytes@, entries@)` (at most 4,096 entries, each with
+/// `8 <= start <= end <= |bytes|`, classification matching the parsed bytes).
+/// The proof is the handle's type invariant: `try_parse` is its only
+/// constructor, and it establishes it.
 #[allow(dead_code)]
-fn parse_success_invariant(bytes: &[u8]) -> (r: Result<Vec<Entry>, TryError>)
+fn parse_success_invariant(bytes: &[u8]) -> (r: Result<Parsed<'_>, TryError>)
     ensures
         match r {
-            Ok(E) => crate::model::parsed_inv(bytes@, E@),
+            Ok(p) => crate::model::parsed_inv(bytes@, p.spec_entries()),
             Err(TryError::Format(_)) => true,
             Err(TryError::OutOfMemory(_)) => true,
         },
 {
-    proof { reveal(crate::alloc_guard::sites::fmt_part_entries); }
-    let E = match try_parse(bytes) {
-        Ok(e) => e,
-        Err(TryError::Format(e)) => return Err(TryError::Format(e)),
-        Err(TryError::OutOfMemory(o)) => return Err(TryError::OutOfMemory(o)),
-    };
-    proof {
-        crate::model::lemma_parse_ok_gives_p(bytes@, E);
-        crate::model::lemma_p_exec_inv(bytes@, E@);
+    match try_parse(bytes) {
+        Ok(p) => {
+            proof { use_type_invariant(&p); reveal(Parsed::inv); }
+            Ok(p)
+        }
+        Err(TryError::Format(e)) => Err(TryError::Format(e)),
+        Err(TryError::OutOfMemory(o)) => Err(TryError::OutOfMemory(o)),
     }
-    Ok(E)
 }
 
 /// T8 at an actual `try_parse` call, for every candidate entry sequence, both
-/// directions. A candidate is compared by all R1 fields; `OutOfMemory` makes
-/// both directions false (it is neither an accepted nor a rejected parse result).
+/// directions, over the **full** result. A successful handle (`Ok(p)`) matches a
+/// candidate `es` by all R1 fields exactly when `P(bytes, es)`; a rejection
+/// (`Format(e)`) matches **no** candidate, so `P(bytes, es)` is false for every
+/// `es`. This is the pre-change witness's `!OutOfMemory ==> forall es.
+/// parse_returned(fmt_part_entries(r), es) <==> p_exec(bytes, es)` carried to the
+/// handle's result type: `parse_returned` is `entries_same_fields` on `Ok` and
+/// `false` on `Err`, and the two arms below are that statement written out per
+/// arm, so the rejection obligation the public `try_parse` contract now carries
+/// is exercised by an actual call, not only by the contract. `OutOfMemory` is
+/// neither an accepted nor a rejected parse and is left unconstrained.
 #[allow(dead_code)]
-fn parse_with_t8(bytes: &[u8]) -> (r: Result<Vec<Entry>, TryError>)
+fn parse_with_t8(bytes: &[u8]) -> (r: Result<Parsed<'_>, TryError>)
     ensures
-        !matches!(r, Err(TryError::OutOfMemory(_))) ==> {
-            forall|es: Seq<Entry>| crate::model::parse_returned(
-                crate::alloc_guard::sites::fmt_part_entries(r),
-                es,
-            ) <==> crate::model::p_exec(bytes@, es)
+        match r {
+            Ok(p) => forall|es: Seq<Entry>| #[trigger] crate::model::entries_same_fields(
+                p.spec_entries(), es,
+            ) <==> crate::model::p_exec(bytes@, es),
+            Err(TryError::Format(_)) => forall|es: Seq<Entry>| !crate::model::p_exec(bytes@, es),
+            Err(TryError::OutOfMemory(_)) => true,
         },
 {
     let r = try_parse(bytes);
     proof {
-        reveal(crate::alloc_guard::sites::fmt_part_entries);
-        if !matches!(r, Err(TryError::OutOfMemory(_))) {
-            assert forall|es: Seq<Entry>| crate::model::parse_returned(
-                crate::alloc_guard::sites::fmt_part_entries(r),
-                es,
-            ) <==> crate::model::p_exec(bytes@, es) by {
-                crate::model::lemma_t8_result(
-                    bytes@,
-                    crate::alloc_guard::sites::fmt_part_entries(r),
-                    es,
-                );
+        match &r {
+            Ok(p) => {
+                assert forall|es: Seq<Entry>| #[trigger] crate::model::entries_same_fields(
+                    p.spec_entries(), es,
+                ) <==> crate::model::p_exec(bytes@, es) by {
+                    crate::model::lemma_t8_view(bytes@, p.spec_entries(), es);
+                }
             }
+            Err(TryError::Format(e)) => {
+                // The contract's error clause gives `parses_to_s(bytes@, Err(e))`,
+                // hence `!accepted(bytes@)`; `p_exec` implies `accepted`, so no
+                // candidate is a parse of these bytes.
+                assert(crate::model::parses_to_s(bytes@, Err(*e)));
+                crate::model::lemma_parse_err_gives_not_accepted(bytes@, *e);
+                assert forall|es: Seq<Entry>| !crate::model::p_exec(bytes@, es) by {
+                    reveal(crate::model::p_exec);
+                    if crate::model::p_exec(bytes@, es) {
+                        match crate::model::mp(bytes@) {
+                            Ok(ms) => assert(crate::model::accepted(bytes@)),
+                            Err(_) => assert(false),
+                        }
+                    }
+                }
+            }
+            Err(TryError::OutOfMemory(_)) => {}
         }
     }
     r
@@ -4367,8 +4611,10 @@ fn rle_after_call(payload: &[u8], n: usize) -> (r: Result<[Vec<u8>; 3], TryError
     t9_rle_exact(payload, n)
 }
 
-/// T10 stated over `P(b,E)`: `try_decode_rgb` equals `MC(b,E,i)` for a
-/// `parsed_inv` entry list.
+/// T10 stated over `P(b,E)`: the internal decoder equals `MC(b,E,i)` for a
+/// `parsed_inv` entry list. This is the statement in terms of the parts; the
+/// public surface states the same fact through `Parsed`, whose invariant is
+/// `parsed_inv` on the parts it holds.
 #[allow(dead_code)]
 fn t10_rgb_exact_for_p(bytes: &[u8], entries: &[Entry], i: u32)
     -> (r: Result<Decoded, TryError>)
@@ -4404,56 +4650,10 @@ fn t11_mask_exact_for_p(bytes: &[u8], entries: &[Entry], i: u32)
     try_decode_mask(bytes, entries, i)
 }
 
-/// A wrapper showing one concrete decoder call site: `try_parse` succeeds, then
-/// `try_decode_rgb` is called with the *same* slice and the *same* entries, and
-/// its precondition `parsed_inv(bytes@, entries@)` is discharged by `try_parse`'s
-/// postcondition, not assumed.
-#[allow(dead_code)]
-fn decode_rgb_after_parse(bytes: &[u8], i: u32) -> (r: Result<Decoded, TryError>)
-    ensures
-        match r {
-            Ok(d) => d.width == d.height && d.width <= 128 && d.data@.len()
-                == (d.width as usize) * (d.width as usize) * 3,
-            Err(_) => true,
-        },
-{
-    proof { reveal(crate::alloc_guard::sites::fmt_part_entries); }
-    let entries = match try_parse(bytes) {
-        Ok(e) => e,
-        Err(TryError::Format(e)) => return Err(TryError::Format(e)),
-        Err(TryError::OutOfMemory(o)) => return Err(TryError::OutOfMemory(o)),
-    };
-    proof {
-        crate::model::lemma_parse_ok_gives_p(bytes@, entries);
-        crate::model::lemma_p_exec_inv(bytes@, entries@);
-    }
-    try_decode_rgb(bytes, &entries, i)
-}
-
-/// As above for `try_decode_mask`.
-#[allow(dead_code)]
-fn decode_mask_after_parse(bytes: &[u8], i: u32) -> (r: Result<Decoded, TryError>)
-    ensures
-        match r {
-            Ok(d) => d.width == d.height && d.width <= 128 && d.data@.len()
-                == (d.width as usize) * (d.width as usize),
-            Err(_) => true,
-        },
-{
-    proof { reveal(crate::alloc_guard::sites::fmt_part_entries); }
-    let entries = match try_parse(bytes) {
-        Ok(e) => e,
-        Err(TryError::Format(e)) => return Err(TryError::Format(e)),
-        Err(TryError::OutOfMemory(o)) => return Err(TryError::OutOfMemory(o)),
-    };
-    proof {
-        crate::model::lemma_parse_ok_gives_p(bytes@, entries);
-        crate::model::lemma_p_exec_inv(bytes@, entries@);
-    }
-    try_decode_mask(bytes, &entries, i)
-}
-
-/// As above for `try_combine`.
+/// T13's shape on the handle: `try_parse` succeeds, then `try_combine` runs on
+/// the returned handle. The premise of the statement is `parse(b) = Ok(E)`;
+/// `P(b,E)` is obtained inside the body from T7/T8, not assumed, and the
+/// decoders are reached through the only constructor of `Parsed`.
 #[allow(dead_code)]
 fn combine_after_parse(bytes: &[u8], ci: Option<u32>, mi: Option<u32>)
     -> (r: Result<Decoded, TryError>)
@@ -4464,22 +4664,19 @@ fn combine_after_parse(bytes: &[u8], ci: Option<u32>, mi: Option<u32>)
             Err(_) => true,
         },
 {
-    proof { reveal(crate::alloc_guard::sites::fmt_part_entries); }
-    let entries = match try_parse(bytes) {
-        Ok(e) => e,
+    let p = match try_parse(bytes) {
+        Ok(p) => p,
         Err(TryError::Format(e)) => return Err(TryError::Format(e)),
         Err(TryError::OutOfMemory(o)) => return Err(TryError::OutOfMemory(o)),
     };
-    proof {
-        crate::model::lemma_parse_ok_gives_p(bytes@, entries);
-        crate::model::lemma_p_exec_inv(bytes@, entries@);
-    }
-    try_combine(bytes, &entries, ci, mi)
+    p.try_combine(ci, mi)
 }
 
-/// T10 at a concrete decoder call site, with the successful `try_parse` in front.
+/// T10 at a concrete decoder call site, with the successful `try_parse` in
+/// front: the handle's `try_decode_rgb` sees `parsed_inv` through the type
+/// invariant, so no precondition is assumed anywhere in the chain.
 #[allow(dead_code)]
-fn decode_rgb_with_t10(bytes: &[u8], i: u32) -> (r: Result<Decoded, TryError>)
+fn decode_rgb_after_parse(bytes: &[u8], i: u32) -> (r: Result<Decoded, TryError>)
     ensures
         match r {
             Ok(d) => d.width == d.height && d.width <= 128 && d.data@.len()
@@ -4487,22 +4684,17 @@ fn decode_rgb_with_t10(bytes: &[u8], i: u32) -> (r: Result<Decoded, TryError>)
             Err(_) => true,
         },
 {
-    proof { reveal(crate::alloc_guard::sites::fmt_part_entries); }
-    let entries = match try_parse(bytes) {
-        Ok(e) => e,
+    let p = match try_parse(bytes) {
+        Ok(p) => p,
         Err(TryError::Format(e)) => return Err(TryError::Format(e)),
         Err(TryError::OutOfMemory(o)) => return Err(TryError::OutOfMemory(o)),
     };
-    proof {
-        crate::model::lemma_parse_ok_gives_p(bytes@, entries);
-        crate::model::lemma_p_exec_inv(bytes@, entries@);
-    }
-    try_decode_rgb(bytes, &entries, i)
+    p.try_decode_rgb(i)
 }
 
 /// T11 at a concrete decoder call site.
 #[allow(dead_code)]
-fn decode_mask_with_t11(bytes: &[u8], i: u32) -> (r: Result<Decoded, TryError>)
+fn decode_mask_after_parse(bytes: &[u8], i: u32) -> (r: Result<Decoded, TryError>)
     ensures
         match r {
             Ok(d) => d.width == d.height && d.width <= 128 && d.data@.len()
@@ -4510,17 +4702,39 @@ fn decode_mask_with_t11(bytes: &[u8], i: u32) -> (r: Result<Decoded, TryError>)
             Err(_) => true,
         },
 {
-    proof { reveal(crate::alloc_guard::sites::fmt_part_entries); }
-    let entries = match try_parse(bytes) {
-        Ok(e) => e,
+    let p = match try_parse(bytes) {
+        Ok(p) => p,
         Err(TryError::Format(e)) => return Err(TryError::Format(e)),
         Err(TryError::OutOfMemory(o)) => return Err(TryError::OutOfMemory(o)),
     };
+    p.try_decode_mask(i)
+}
+
+/// The accessor a caller uses to choose an index: `entries()` hands out exactly
+/// the sequence the decoders' contracts name, so an index chosen from the view
+/// is an index into the decoded list.
+#[allow(dead_code)]
+fn entries_view_len_after_parse(bytes: &[u8]) -> (r: Result<usize, TryError>)
+    ensures
+        match r {
+            Ok(n) => n == crate::model::parse_len(bytes@),
+            Err(_) => true,
+        },
+{
+    let p = match try_parse(bytes) {
+        Ok(p) => p,
+        Err(TryError::Format(e)) => return Err(TryError::Format(e)),
+        Err(TryError::OutOfMemory(o)) => return Err(TryError::OutOfMemory(o)),
+    };
+    let view = p.entries();
+    let n = view.len();
     proof {
-        crate::model::lemma_parse_ok_gives_p(bytes@, entries);
-        crate::model::lemma_p_exec_inv(bytes@, entries@);
+        use_type_invariant(&p);
+        reveal(Parsed::inv);
+        assert(view@ == p.spec_entries());
+        crate::model::lemma_parses_to_len(bytes@, p.spec_entries());
     }
-    try_decode_mask(bytes, &entries, i)
+    Ok(n)
 }
 
 } // verus!

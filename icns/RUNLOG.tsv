@@ -258,3 +258,13 @@
 51	2026-11-13T03:25:26+00:00	exit=0	323s	 [crate=icns_verus]	verification results:: 412 verified, 0 errors	peak_rss_sum_mb=3355	peak_rss_max_proc_mb=2524:rust_verify
 52	2026-11-14T05:41:06+00:00	exit=0	320s	D3/D4/D8: Reserved/try_with_room pub(crate), push/into_vec #[inline(never)] [crate=icns_verus]	verification results:: 412 verified, 0 errors	peak_rss_sum_mb=1805	peak_rss_max_proc_mb=1030:rust_verify
 53	2026-11-14T08:41:07+00:00	exit=0	268s	E12: try_rle_logged demoted to pub(crate) [crate=icns_verus]	verification results:: 412 verified, 0 errors	peak_rss_sum_mb=1293	peak_rss_max_proc_mb=1032:rust_verify
+54	2026-11-14T10:12:29+00:00	exit=101	5s	E14 step 1: Parsed handle + pub methods + witnesses; expect errors to resolve [crate=icns_verus]		peak_rss_sum_mb=746	peak_rss_max_proc_mb=702:rust_verify
+55	2026-11-14T10:17:15+00:00	exit=0	259s	E14 step 1b: handle + methods + witnesses [crate=icns_verus]	verification results:: 418 verified, 0 errors	peak_rss_sum_mb=1310	peak_rss_max_proc_mb=1033:rust_verify
+56	2026-11-14T10:41:37+00:00	exit=101	8s	E14 final: Parsed handle, pub(crate) internals, handle witnesses, entry_list_capacity [crate=icns_verus]		peak_rss_sum_mb=810	peak_rss_max_proc_mb=765:rust_verify
+57	2026-11-14T10:42:07+00:00	exit=101	6s	E14: assume_specification for Vec::capacity (accessor only) [crate=icns_verus]		peak_rss_sum_mb=749	peak_rss_max_proc_mb=703:rust_verify
+58	2026-11-14T10:42:20+00:00	exit=101	6s	E14: assume_specification for Vec::capacity, Global allocator only [crate=icns_verus]		peak_rss_sum_mb=747	peak_rss_max_proc_mb=700:rust_verify
+59	2026-11-14T10:46:52+00:00	exit=0	255s	E14 final: Parsed handle without the capacity accessor [crate=icns_verus]	verification results:: 418 verified, 0 errors	peak_rss_sum_mb=1285	peak_rss_max_proc_mb=1038:rust_verify
+60	2026-11-14T10:58:21+00:00	exit=101	261s	E14 final (doc(hidden) removed from demoted fns): reverify [crate=icns_verus]	verification results:: 418 verified, 0 errors	peak_rss_sum_mb=1293	peak_rss_max_proc_mb=1030:rust_verify
+61	2026-11-14T11:05:35+00:00	exit=0	1s	E14 authoritative: Parsed handle on final source (model.rs doc reverted) [crate=icns_verus]		peak_rss_sum_mb=78	peak_rss_max_proc_mb=39:cargo
+62	2026-11-14T11:10:10+00:00	exit=0	264s	E14 authoritative clean full verify (Parsed handle, model.rs restored) [crate=icns_verus]	verification results:: 418 verified, 0 errors	peak_rss_sum_mb=1306	peak_rss_max_proc_mb=1036:rust_verify
+63	2026-11-14T11:43:02+00:00	exit=0	267s	E15: restore try_parse Format error clause + full-result T8 witness [crate=icns_verus]	verification results:: 418 verified, 0 errors	peak_rss_sum_mb=1289	peak_rss_max_proc_mb=1037:rust_verify

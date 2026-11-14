@@ -8,12 +8,12 @@ Starting with simpler file formats, the eventual goal is to implement everything
 
 | Format | Dir | Public entry points | Verus result (all 0 errors) | Vectors | Mutations that break the proof (campaigns predate the allocation change) |
 |---|---|---|---|---|---|
-| ICNS (container + legacy RLE/mask) | `icns/` | `try_parse`, `try_decode_rgb`, `try_decode_mask`, `try_combine` | 412 verified | 111 | 10/10 |
+| ICNS (container + legacy RLE/mask) | `icns/` | `try_parse`; `Parsed::{entries, bytes, try_decode_rgb, try_decode_mask, try_combine}` | 418 verified | 111 | 10/10 |
 | TGA | `tga/` | `try_decode`, `try_decode_with_policy`, `try_decode_with_steps_logged` | 974 verified | 169 | 15/15 (executable-side) |
 | DIB / BMP / ICO-entry bitmap | `dib/` | `try_decode`, `try_decode_with_policy`, `try_decode_with_steps`, `try_decode_with_steps_logged` | 1764 verified (spec 1.1; 1.0 is `dib/spec-frozen`) | 302 | 43/44 verifier kills + 1 audit kill |
 | ICO / CUR container (over the DIB core) | `ico/` | `try_parse`, `try_parse_with_steps`, `try_decode_entry`, `try_decode_entry_with_steps` | 346 verified | 217 | 32 verifier kills + 1 audit kill of 33, executable-side (m17 reworked as m34) |
 
-The infallible names (`parse`, `decode`, `decode_with_steps`, `decode_entry`, ...) were removed in the allocation change (`alloc-delta/`, frozen spec `alloc-delta/SPEC.md`, errata `alloc-delta/ERRATA.md`); older notes and proof reports that name them describe the pre-change cores. The counts above are the latest `RUNLOG.tsv` runs (DIB 556, TGA 231, ICNS 51, ICO 175, all on 2026-11-13).
+The infallible names (`parse`, `decode`, `decode_with_steps`, `decode_entry`, ...) were removed in the allocation change (`alloc-delta/`, frozen spec `alloc-delta/SPEC.md`, errata `alloc-delta/ERRATA.md`); older notes and proof reports that name them describe the pre-change cores. The counts above are the latest `RUNLOG.tsv` runs (DIB 556, TGA 231, ICNS 59, ICO 175). The ICNS decoders are methods on the opaque `Parsed` handle (alloc-delta `ERRATA.md` E14): `try_parse` is the only constructor, so a caller cannot pair a forged entry list with a different byte slice.
 
 `leniency/`: differential harness comparing our cores with gdk-pixbuf, the `image` crate, glycin's loaders and other crates, and the BMP/DIB leniency matrix (`leniency/bmp/LENIENCY.md`); TGA, ICNS and ICO results follow.
 `alt/icns-creusot/`: the same ICNS spec proved with Creusot/Why3 (comparison only; Verus won on effort, see `reviews/COMPARISON.md`). `tools/diff-harness/`: differential test of both ICNS cores against a Python oracle.

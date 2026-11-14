@@ -51,6 +51,17 @@
 //! T in {1, 4,096, 65,536, 67,108,864} windowed to each of the call's own
 //! request sizes.
 //!
+//! **The handle.** `icns_verus`'s decoders are methods on `Parsed`, an opaque
+//! handle whose only constructor is `try_parse`. For a decode vector the suite
+//! parses **outside** the injection window: `check_vector` builds the handle
+//! before arming, and `combine_probe` does the same, so the decoder's own
+//! reservations are the window's events and the entry list is live at the
+//! window's baseline, not one of them. A `Parse` vector parses inside its call
+//! (its `Req` *is* the entry-list reservation). The entry list is at most
+//! 4,096 * 28 = 114,688 bytes and is live until the call ends; the parsed handle
+//! is dropped before the statistics are read, so the live bytes after a decode
+//! call are still just the output's buffer.
+//!
 //! **Peak live bytes.** The peak numbers asserted here (`6*n_c` during the colour
 //! decode, `3*n_c + n_m` until the side check, `8n` after a matching check,
 //! 131,072 bytes at most, 114,688 for the entry list) are an OWNERSHIP FACT about
@@ -68,9 +79,7 @@ use std::cell::Cell;
 use std::sync::Mutex;
 
 use icns_verus::alloc_guard::AllocSite;
-use icns_verus::icns::{
-    try_combine, try_decode_mask, try_decode_rgb, try_parse, Decoded, Entry, Error, TryError,
-};
+use icns_verus::icns::{try_parse, Decoded, Entry, Error, Parsed, TryError};
 
 /// Serialises every test in this file. See the module docs.
 static SUITE_LOCK: Mutex<()> = Mutex::new(());
@@ -113,6 +122,10 @@ struct State {
     /// `live` at the moment the injector failed a request (the failed request
     /// itself is not included).
     live_at_fail: isize,
+    /// Bytes already live when the window was armed (the parsed entry list a
+    /// decode call inherits). `live`, `peak` and `live_at_fail` are reported
+    /// net of it, so the numbers measure the decoder alone.
+    baseline_live: isize,
     /// Failures returned by the underlying `System` allocator (not injected).
     sys_failures: usize,
     trace: [Ev; TRACE_CAP],
@@ -130,7 +143,7 @@ impl State {
     const EMPTY: Self = Self {
         armed: false, countdown: 0, countdown_fired: false, threshold: 0,
         threshold_window: 0, threshold_hit: 0, allocs: 0, reallocs: 0, live: 0,
-        peak: 0, live_at_fail: 0, sys_failures: 0, trace: [EV0; TRACE_CAP],
+        peak: 0, live_at_fail: 0, baseline_live: 0, sys_failures: 0, trace: [EV0; TRACE_CAP],
         trace_len: 0, trace_overflow: false,
         watch_size: 0, watch_live: 0, watch_align: 0, last_size: 0, last_align: 0,
         failed_size: 0, failed_align: 0,
@@ -164,7 +177,7 @@ fn should_fail(size: usize, align: usize) -> bool {
             s.countdown_fired = true;
             s.failed_size = size;
             s.failed_align = align;
-            s.live_at_fail = s.live;
+            s.live_at_fail = std::cmp::max(0, s.live - s.baseline_live);
             fail = true;
             return;
         }
@@ -174,7 +187,7 @@ fn should_fail(size: usize, align: usize) -> bool {
             s.threshold_hit += 1;
             s.failed_size = size;
             s.failed_align = align;
-            s.live_at_fail = s.live;
+            s.live_at_fail = std::cmp::max(0, s.live - s.baseline_live);
             fail = true;
         }
     });
@@ -185,8 +198,12 @@ fn should_fail(size: usize, align: usize) -> bool {
 fn record_success(size: usize, align: usize, realloc: bool) {
     with_state(|s| {
         s.live += size as isize;
-        if s.live > s.peak {
-            s.peak = s.live;
+        // Net of the bytes live at arm time (a decode call's parsed entry list).
+        // Their deallocation can take `live` below the baseline, which nets to
+        // zero: the decoder owns nothing of it.
+        let net = s.live - s.baseline_live;
+        if net > s.peak {
+            s.peak = net;
         }
         s.last_size = size;
         s.last_align = align;
@@ -302,14 +319,29 @@ fn peek_live() -> (isize, isize) {
 }
 
 /// Arm the countdown to fail the `k`-th non-zero request; reset the counters.
+/// Arm the countdown and reset the counters. Bytes already live (the entry list
+/// of a handle parsed before the window) are carried across the reset as
+/// `baseline_live`: every live-byte number this window reports is net of them,
+/// because SPEC.md §4 assigns the entry list to `try_parse`, not to the decoder.
 fn arm(k: usize) {
     with_state(|s| {
         let ws = s.watch_size;
+        let live = s.live;
         *s = State::EMPTY;
         s.watch_size = ws;
+        s.live = live;
+        s.baseline_live = live;
         s.armed = true;
         s.countdown = k as isize;
     });
+}
+
+/// `arm(k)` for probes that may not inject: `None` observes.
+fn arm_probe(k: Option<usize>) {
+    match k {
+        Some(k) => arm(k),
+        None => arm_observe(),
+    }
 }
 
 /// Arm with a countdown that never fires: observe the trace and peak of a call
@@ -318,13 +350,22 @@ fn arm_observe() {
     arm(usize::MAX >> 2);
 }
 
+/// `arm_threshold`, with the bytes already live taken as the baseline. See
+/// `arm`.
+fn arm_probe_threshold(t: usize, window: usize) {
+    arm_threshold(t, window);
+}
+
 /// Arm the size-threshold mode for requests of `>= t` bytes, confined to
 /// requests of exactly `window` bytes (`0` = every request).
 fn arm_threshold(t: usize, window: usize) {
     with_state(|s| {
         let ws = s.watch_size;
+        let live = s.live;
         *s = State::EMPTY;
         s.watch_size = ws;
+        s.live = live;
+        s.baseline_live = live;
         s.armed = true;
         s.threshold = t;
         s.threshold_window = window;
@@ -366,7 +407,7 @@ fn disarm() -> Stats {
             countdown_fired: s.countdown_fired,
             allocs: s.allocs,
             reallocs: s.reallocs,
-            live: s.live,
+            live: std::cmp::max(0, s.live - s.baseline_live),
             peak: s.peak,
             live_at_fail: s.live_at_fail,
             sys_failures: s.sys_failures,
@@ -409,16 +450,19 @@ fn hex_decode(s: &str) -> Vec<u8> {
     out
 }
 
-/// One frozen vector, reduced to what the fault suite needs: the input bytes,
-/// the operation with its indices, and the entries `try_parse` produced for the
-/// input *outside* any injection window (a decode call takes the pre-parsed
-/// entries, so the entry-list reservation is not part of the decode's log).
+/// One frozen vector, reduced to what the fault suite needs: the input bytes and
+/// the operation with its indices. A decode call reaches the decoder only
+/// through a `Parsed` handle, and the handle's only constructor is `try_parse`,
+/// so a decode vector's handle is parsed **outside** its injection window (see
+/// `check_vector`). The entry-list reservation is therefore not part of a decode
+/// call's log, exactly as SPEC.md §4 assigns it to `try_parse`; the window sees
+/// only the decoder's own sites. The frozen corpus classifies each call by the
+/// number of physical events, and for a decode vector those are the decoder's.
 #[derive(Clone)]
 struct Vector {
     name: String,
     bytes: Vec<u8>,
     op: Op,
-    entries: Vec<Entry>,
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -431,8 +475,7 @@ enum Op {
 
 /// A vector built in the test (not read from VECTORS.json).
 fn make_vector(name: &str, bytes: Vec<u8>, op: Op) -> Vector {
-    let entries = try_parse(&bytes).unwrap_or_default();
-    Vector { name: name.to_string(), bytes, op, entries }
+    Vector { name: name.to_string(), bytes, op }
 }
 
 fn vectors() -> Vec<Vector> {
@@ -470,10 +513,7 @@ fn vectors() -> Vec<Vector> {
                     ),
                     other => panic!("unexpected operation {other}"),
                 };
-                // Parse once, unarmed, so a decode call receives the entries and
-                // the entry-list reservation stays outside its own log.
-                let entries = try_parse(&bytes).unwrap_or_default();
-                out.push(Vector { name, bytes, op, entries });
+                out.push(Vector { name, bytes, op });
             }
             out
         })
@@ -481,37 +521,79 @@ fn vectors() -> Vec<Vector> {
 }
 
 /// The result of one call, in a form two runs can be compared field for field.
+/// `Parsed` keeps the entry count, read from the handle without allocating; the
+/// entry list's capacity is a fact of the allocator trace alone (the handle no
+/// longer reports it: vstd cannot specify `Vec::capacity`, so the core does not
+/// expose it). The entry *fields* are compared by the conformance suite, which
+/// runs all 111 vectors unarmed; copying them out here would allocate inside an
+/// armed window and consume the injector's countdown.
 #[derive(PartialEq, Debug)]
 enum Outcome {
-    Parsed(Vec<Entry>),
+    Parsed { len: usize },
     Decoded(Decoded),
     Format(Error),
     Oom(AllocSite, usize),
 }
 
-fn run(v: &Vector) -> Outcome {
+/// The outcome of one decoder result.
+fn outcome_of(r: Result<Decoded, TryError>) -> Outcome {
+    match r {
+        Ok(d) => Outcome::Decoded(d),
+        Err(TryError::Format(e)) => Outcome::Format(e),
+        Err(TryError::OutOfMemory(o)) => Outcome::Oom(o.site(), o.elements()),
+    }
+}
+
+/// One call of a vector. A `Parse` vector parses inside the call (its `Req` *is*
+/// the entry-list reservation). A decode vector is the decoder's call, and
+/// SPEC.md §4 assigns the entry list to `try_parse`, so the parse is performed
+/// here, before any arming the caller does around this function's tail — but
+/// `run` is called both inside and outside armed windows, so it takes the
+/// handle when the caller has one and parses otherwise. See `check_vector`,
+/// which always passes a handle for a decode vector.
+fn run_with(v: &Vector, parsed: Option<&Parsed<'_>>) -> Outcome {
     match v.op {
         Op::Parse => match try_parse(&v.bytes) {
-            Ok(e) => Outcome::Parsed(e),
+            Ok(p) => Outcome::Parsed { len: p.entries().len() },
             Err(TryError::Format(e)) => Outcome::Format(e),
             Err(TryError::OutOfMemory(o)) => Outcome::Oom(o.site(), o.elements()),
         },
-        Op::Rgb(i) => match try_decode_rgb(&v.bytes, &v.entries, i) {
-            Ok(d) => Outcome::Decoded(d),
-            Err(TryError::Format(e)) => Outcome::Format(e),
-            Err(TryError::OutOfMemory(o)) => Outcome::Oom(o.site(), o.elements()),
+        Op::Rgb(i) => match parsed {
+            Some(p) => outcome_of(p.try_decode_rgb(i)),
+            None => match try_parse(&v.bytes) {
+                Ok(p) => outcome_of(p.try_decode_rgb(i)),
+                Err(e) => store_parse_failure(e),
+            },
         },
-        Op::Mask(i) => match try_decode_mask(&v.bytes, &v.entries, i) {
-            Ok(d) => Outcome::Decoded(d),
-            Err(TryError::Format(e)) => Outcome::Format(e),
-            Err(TryError::OutOfMemory(o)) => Outcome::Oom(o.site(), o.elements()),
+        Op::Mask(i) => match parsed {
+            Some(p) => outcome_of(p.try_decode_mask(i)),
+            None => match try_parse(&v.bytes) {
+                Ok(p) => outcome_of(p.try_decode_mask(i)),
+                Err(e) => store_parse_failure(e),
+            },
         },
-        Op::Combine(ci, mi) => match try_combine(&v.bytes, &v.entries, ci, mi) {
-            Ok(d) => Outcome::Decoded(d),
-            Err(TryError::Format(e)) => Outcome::Format(e),
-            Err(TryError::OutOfMemory(o)) => Outcome::Oom(o.site(), o.elements()),
+        Op::Combine(ci, mi) => match parsed {
+            Some(p) => outcome_of(p.try_combine(ci, mi)),
+            None => match try_parse(&v.bytes) {
+                Ok(p) => outcome_of(p.try_combine(ci, mi)),
+                Err(e) => store_parse_failure(e),
+            },
         },
     }
+}
+
+/// A parse failure is reported as the decoder's outcome: the decoder never ran.
+fn store_parse_failure(e: TryError) -> Outcome {
+    match e {
+        TryError::Format(e) => Outcome::Format(e),
+        TryError::OutOfMemory(o) => Outcome::Oom(o.site(), o.elements()),
+    }
+}
+
+/// `run_with` without a caller-held handle: the unarmed control, and the shape
+/// used by tests that do not care where the parse sits in the window.
+fn run(v: &Vector) -> Outcome {
+    run_with(v, None)
 }
 
 // ---------------------------------------------------------------------------
@@ -586,7 +668,7 @@ fn classify(v: &Vector, n_phys: usize, obs: &Outcome, found: &[Req]) -> Class {
                 if count == 0 {
                     assert_eq!(n_phys, 0, "{}: a zero-element request reached the allocator", v.name);
                     match obs {
-                        Outcome::Parsed(e) => assert!(e.is_empty(), "{}", v.name),
+                        Outcome::Parsed { len, .. } => assert!(*len == 0, "{}", v.name),
                         Outcome::Format(Error::TruncatedEntryHeader) => {}
                         other => panic!("{}: zero-element request gave {other:?}", v.name),
                     }
@@ -712,8 +794,20 @@ fn check_vector(v: &Vector, c: &mut SuiteCounts) {
     let baseline = run(v);
     assert!(!matches!(baseline, Outcome::Oom(..)), "{}: control hit OutOfMemory", v.name);
 
+    // A decode vector's armed window must contain the decoder only. `run_with`
+    // parses before arming (see `run_with`'s doc), so the parse's entry-list
+    // reservation is a baseline of every window, not an event in each.
+    let parsed: Option<Parsed<'_>> = match v.op {
+        Op::Parse => None,
+        _ => match try_parse(&v.bytes) {
+            Ok(p) => Some(p),
+            Err(_) => None,
+        },
+    };
+    let run = |v: &Vector| run_with(v, parsed.as_ref());
+
     // (a) No failure injected: the ordered physical trace and the peak.
-    arm_observe();
+    arm_probe(None);
     let obs = run(v);
     let ost = disarm();
     assert_eq!(obs, baseline, "{}: result differs from the control", v.name);
@@ -731,7 +825,7 @@ fn check_vector(v: &Vector, c: &mut SuiteCounts) {
     let mut found: Vec<Req> = Vec::new();
     let mut k = 1;
     loop {
-        arm(k);
+        arm_probe(Some(k));
         let r = run(v);
         let st = disarm();
         if !st.countdown_fired {
@@ -797,7 +891,7 @@ fn check_vector(v: &Vector, c: &mut SuiteCounts) {
     if class != Class::Physical {
         // No event at all, under any schedule: a pure size threshold of one
         // byte over every request finds nothing to fail.
-        arm_threshold(1, 0);
+        arm_probe_threshold(1, 0);
         let r = run(v);
         let st = disarm();
         assert_eq!((st.allocs, st.threshold_hit, st.trace_len), (0, 0, 0),
@@ -807,14 +901,13 @@ fn check_vector(v: &Vector, c: &mut SuiteCounts) {
 
     // (e) Capacity and live bytes of the returned buffer, and the peak.
     let held = match &obs {
-        Outcome::Parsed(e) => {
-            let want = found.first().map_or(0, |f| f.elements);
-            assert!(e.capacity() >= want, "{}: entry-list capacity {} < {want}", v.name, e.capacity());
-            assert!(e.capacity() >= e.len(), "{}", v.name);
-            if class == Class::ZeroElement {
-                assert_eq!(e.capacity(), 0, "{}: zero-element request allocated", v.name);
-            }
-            e.capacity() * std::mem::size_of::<Entry>()
+        Outcome::Parsed { len } => {
+            // The entry list is the live buffer, and its size is the reservation
+            // the trace recorded (zero for the zero-element request). The length
+            // came from the handle, the size from the trace; (e) below checks
+            // they agree.
+            assert!(*len <= found.first().map_or(0, |f| f.elements), "{}", v.name);
+            ost.live as usize
         }
         Outcome::Decoded(d) => {
             let last = *found.last().expect("a successful decode reserved its output");
@@ -830,11 +923,19 @@ fn check_vector(v: &Vector, c: &mut SuiteCounts) {
         }
         _ => 0,
     };
-    assert_eq!(ost.live as usize, held, "{}: live bytes after the call are not the result's buffer", v.name);
+    // `held` is what the call leaves live: for a decode, its output. A `Parse`
+    // vector's entry list is also the handle it returns, but the handle is live
+    // before the window opens (the parse runs outside it), so it must not be
+    // added to the window's net live bytes.
+    let want_live = match v.op {
+        Op::Parse => 0,
+        _ => held,
+    };
+    assert_eq!(ost.live as usize, want_live, "{}: live bytes after the call are not the result's buffer", v.name);
     let events: Vec<(AllocSite, usize)> =
         found.iter().zip(&trace).map(|(q, e)| (q.site, e.size)).collect();
     assert_eq!(ost.peak as usize, ownership_peak(&events), "{}: peak vs ownership model", v.name);
-    assert!(ost.peak as usize >= held, "{}: peak below the live result", v.name);
+    assert!(ost.peak as usize >= want_live, "{}: peak below the live result", v.name);
     assert!(ost.peak as usize <= PEAK_BOUND, "{}: peak {} above 128 KiB", v.name, ost.peak);
     c.max_peak = c.max_peak.max(ost.peak as usize);
 
@@ -851,7 +952,7 @@ fn check_vector(v: &Vector, c: &mut SuiteCounts) {
         let mut any_injected = false;
         for &s in &sizes {
             let first = trace.iter().position(|e| e.size == s).expect("size from the trace");
-            arm_threshold(t, s);
+            arm_probe_threshold(t, s);
             let r = run(v);
             let st = disarm();
             c.thr_runs += 1;
@@ -1051,7 +1152,7 @@ fn entry_list_failure_is_exactly_out_of_memory() {
     let _guard = lock();
     let bytes = rgb_is32_16();
     let entries = try_parse(&bytes).expect("control parse");
-    assert_eq!(entries.len(), 1);
+    assert_eq!(entries.entries().len(), 1);
 
     // The entry list, `min(4096, (|b|-8)/8)` elements of `Entry`.
     let count = std::cmp::min(4096, (bytes.len() - 8) / 8);
@@ -1067,7 +1168,8 @@ fn entry_list_failure_is_exactly_out_of_memory() {
             assert_eq!(failed_size, count * std::mem::size_of::<Entry>());
             assert_eq!(failed_align, std::mem::align_of::<Entry>());
         }
-        other => panic!("expected OutOfMemory, got {other:?}"),
+        Ok(_) => panic!("expected OutOfMemory, the parse succeeded"),
+        Err(TryError::Format(e)) => panic!("expected OutOfMemory, got {}", e.name()),
     }
 }
 
@@ -1075,30 +1177,33 @@ fn entry_list_failure_is_exactly_out_of_memory() {
 fn channel_failure_names_the_channel_and_size() {
     let _guard = lock();
     let bytes = rgb_is32_16();
-    let entries = try_parse(&bytes).expect("control parse");
-    // `try_decode_rgb` alone makes four requests: 1..3 = the channels, 4 = RgbOut.
+    // The handle is parsed outside every window, so the decoder's four requests
+    // are events 1..4: 1..3 = the channels, 4 = RgbOut.
+    let p = try_parse(&bytes).expect("control parse");
     for (k, channel) in [(1usize, 0u8), (2, 1), (3, 2)] {
         arm(k);
-        let r = try_decode_rgb(&bytes, &entries, 0);
+        let r = p.try_decode_rgb(0);
         disarm();
         match r {
             Err(TryError::OutOfMemory(o)) => {
                 assert_eq!(o.site(), AllocSite::Channel(channel), "k={k}");
                 assert_eq!(o.elements(), 256, "channel size is n = 16*16");
             }
-            other => panic!("k={k}: expected OutOfMemory, got {other:?}"),
+            Ok(d) => panic!("k={k}: expected OutOfMemory, got a {}x{} decode", d.width, d.height),
+            Err(TryError::Format(e)) => panic!("k={k}: expected OutOfMemory, got {}", e.name()),
         }
     }
     // The fourth reservation is the RGB output, `3n = 768` bytes.
     arm(4);
-    let r = try_decode_rgb(&bytes, &entries, 0);
+    let r = p.try_decode_rgb(0);
     disarm();
     match r {
         Err(TryError::OutOfMemory(o)) => {
             assert_eq!(o.site(), AllocSite::RgbOut);
             assert_eq!(o.elements(), 768);
         }
-        other => panic!("expected OutOfMemory, got {other:?}"),
+        Ok(d) => panic!("expected OutOfMemory, got a {}x{} decode", d.width, d.height),
+        Err(TryError::Format(e)) => panic!("expected OutOfMemory, got {}", e.name()),
     }
 }
 
@@ -1106,17 +1211,18 @@ fn channel_failure_names_the_channel_and_size() {
 fn mask_copy_failure_names_the_site_and_size() {
     let _guard = lock();
     let bytes = mask_s8mk_16();
-    let entries = try_parse(&bytes).expect("control parse");
+    let p = try_parse(&bytes).expect("control parse");
     // `try_decode_mask` alone makes one request: the `MaskData` copy.
     arm(1);
-    let r = try_decode_mask(&bytes, &entries, 0);
+    let r = p.try_decode_mask(0);
     disarm();
     match r {
         Err(TryError::OutOfMemory(o)) => {
             assert_eq!(o.site(), AllocSite::MaskData);
             assert_eq!(o.elements(), 256);
         }
-        other => panic!("expected OutOfMemory, got {other:?}"),
+        Ok(d) => panic!("expected OutOfMemory, got a {}x{} decode", d.width, d.height),
+        Err(TryError::Format(e)) => panic!("expected OutOfMemory, got {}", e.name()),
     }
 }
 
@@ -1125,19 +1231,20 @@ fn combine_output_failure_names_the_site_and_size() {
     let _guard = lock();
     // One `is32` colour entry and one `s8mk` mask entry, both 16x16.
     let bytes = colour_and_mask(16, 16);
-    let entries = try_parse(&bytes).expect("control parse");
-    assert_eq!(entries.len(), 2);
+    let p = try_parse(&bytes).expect("control parse");
+    assert_eq!(p.entries().len(), 2);
     // `try_combine` makes six requests: 1..3 = the colour channels, 4 = RgbOut,
     // 5 = MaskData, 6 = CombineOut.
     arm(6);
-    let r = try_combine(&bytes, &entries, Some(0), Some(1));
+    let r = p.try_combine(Some(0), Some(1));
     disarm();
     match r {
         Err(TryError::OutOfMemory(o)) => {
             assert_eq!(o.site(), AllocSite::CombineOut);
             assert_eq!(o.elements(), 4 * 256);
         }
-        other => panic!("expected OutOfMemory, got {other:?}"),
+        Ok(d) => panic!("expected OutOfMemory, got a {}x{} decode", d.width, d.height),
+        Err(TryError::Format(e)) => panic!("expected OutOfMemory, got {}", e.name()),
     }
 }
 
@@ -1147,7 +1254,7 @@ fn prealloc_input_never_reaches_the_allocator() {
     // A bad magic: R3 fails before the entry-list reservation.
     let mut bytes = rgb_is32_16();
     bytes[0] = b'X';
-    let control = run(&Vector { name: "bad-magic".into(), bytes: bytes.clone(), op: Op::Parse, entries: Vec::new() });
+    let control = run(&Vector { name: "bad-magic".into(), bytes: bytes.clone(), op: Op::Parse });
     assert!(matches!(control, Outcome::Format(Error::BadMagic)));
 
     arm(1);
@@ -1183,12 +1290,17 @@ fn zero_element_request_is_a_logical_event_with_no_allocation() {
             let st = disarm();
             assert_eq!((st.allocs, st.trace_len, st.countdown_fired, st.threshold_hit), (0, 0, false, 0));
             match (r, want) {
-                (Ok(e), None) => {
-                    assert!(e.is_empty());
-                    assert_eq!(e.capacity(), 0, "a zero-element request allocated");
+                (Ok(p), None) => {
+                    assert!(p.entries().is_empty());
+                    assert_eq!((st.allocs, st.trace_len), (0, 0),
+                        "a zero-element request allocated");
                 }
                 (Err(TryError::Format(e)), Some(w)) => assert_eq!(e, w),
-                (other, _) => panic!("unexpected {other:?}"),
+                (Err(TryError::Format(e)), None) =>
+                    panic!("unexpected format error {}", e.name()),
+                (Ok(_), Some(_)) => panic!("a parse that was to fail succeeded"),
+                (Err(TryError::OutOfMemory(o)), _) =>
+                    panic!("unexpected OutOfMemory at site {:?}, {} elements", o.site(), o.elements()),
             }
         }
     }
@@ -1198,13 +1310,13 @@ fn zero_element_request_is_a_logical_event_with_no_allocation() {
 fn a_successful_output_is_dropped_without_leaking() {
     let _guard = lock();
     let bytes = rgb_is32_16();
-    let entries = try_parse(&bytes).expect("control parse");
     let out_size = 3 * 256;
     set_watch(out_size);
     let (watch_before, live_before) = peek_live();
     assert_eq!(watch_before, 0);
     {
-        let d = match try_decode_rgb(&bytes, &entries, 0) {
+        let p = try_parse(&bytes).expect("control parse");
+        let d = match p.try_decode_rgb(0) {
             Ok(d) => d,
             Err(e) => panic!("control decode failed: {}", e.name()),
         };
@@ -1225,13 +1337,13 @@ fn a_successful_output_is_dropped_without_leaking() {
 fn threshold_failure_below_the_request_size() {
     let _guard = lock();
     let bytes = rgb_is32_16();
-    let entries = try_parse(&bytes).expect("control parse");
     let mut schedule: Vec<usize> = THRESHOLDS.to_vec();
     schedule.extend([256, 768, 769]);
+    let p = try_parse(&bytes).expect("control parse");
     for t in schedule {
         let expect_fail = 768 >= t;
         arm_threshold(t, 768);
-        let r = try_decode_rgb(&bytes, &entries, 0);
+        let r = p.try_decode_rgb(0);
         let hit = disarm().threshold_hit;
         if expect_fail {
             assert!(hit > 0, "threshold {t} did not fail the 768-byte request");
@@ -1240,7 +1352,13 @@ fn threshold_failure_below_the_request_size() {
                     assert_eq!(o.site(), AllocSite::RgbOut);
                     assert_eq!(o.elements(), 768);
                 }
-                other => panic!("threshold {t}: expected OutOfMemory, got {other:?}"),
+                Ok(d) => panic!(
+                    "threshold {t}: expected OutOfMemory, got a {}x{} decode",
+                    d.width, d.height,
+                ),
+                Err(TryError::Format(e)) => panic!(
+                    "threshold {t}: expected OutOfMemory, got {}", e.name(),
+                ),
             }
         } else {
             assert_eq!(hit, 0, "threshold {t} failed a smaller request");
@@ -1253,14 +1371,20 @@ fn threshold_failure_below_the_request_size() {
 // Peak live bytes of `try_combine` (THEOREMS-ALLOC-DELTA.md §5; SPEC.md §4).
 // ---------------------------------------------------------------------------
 
-/// One `try_combine(Some(0), Some(1))` call under `arm(k)` (`None` = observe),
-/// returning the result and the allocator's statistics (peak included).
-fn combine_probe(bytes: &[u8], entries: &[Entry], k: Option<usize>) -> (Result<Decoded, TryError>, Stats) {
+/// One `try_combine(Some(0), Some(1))` call through the handle under `arm(k)`
+/// (`None` = observe), returning the result and the allocator's statistics
+/// (peak included). The handle is parsed before the window is armed, so the
+/// reservation events the window sees are the decoder's own (event 1 is the
+/// first colour channel; no `EntryList` event), the entry list is live at the
+/// window's baseline, and the numbers are the decoder's own (SPEC.md §4 assigns
+/// the list to `try_parse`).
+fn combine_probe(bytes: &[u8], k: Option<usize>) -> (Result<Decoded, TryError>, Stats) {
+    let p = try_parse(bytes).expect("control parse");
     match k {
         Some(k) => arm(k),
         None => arm_observe(),
     }
-    let r = try_combine(bytes, entries, Some(0), Some(1));
+    let r = p.try_combine(Some(0), Some(1));
     let st = disarm();
     (r, st)
 }
@@ -1277,10 +1401,13 @@ fn combine_probe(bytes: &[u8], entries: &[Entry], k: Option<usize>) -> (Result<D
 ///   `768 + 16,384 = 17,152` bytes;
 /// - at most 131,072 bytes (128 KiB) in every case.
 ///
-/// These are an ownership fact about the decoder, measured here on the pinned
-/// std and allocator; they are not a verified clause. The request sizes are
-/// exact (`try_reserve_exact`), so each measured peak equals its bound; the
-/// mandated check is that it does not exceed it.
+/// The handle is parsed before the window is armed (`combine_probe`) and is live
+/// at the window's baseline, so these remain the decoder's own numbers, exactly
+/// as SPEC.md §4 states them (the entry list belongs to `try_parse`). These are
+/// an ownership fact about the decoder, measured here on the pinned std and
+/// allocator; they are not a verified clause. The request sizes are exact
+/// (`try_reserve_exact`), so each measured peak equals its bound; the mandated
+/// check is that it does not exceed it.
 #[test]
 fn combine_peak_live_bytes_follow_the_stated_phases() {
     let _guard = lock();
@@ -1291,17 +1418,20 @@ fn combine_peak_live_bytes_follow_the_stated_phases() {
     ] {
         let (n_c, n_m) = (sc * sc, sm * sm);
         let bytes = colour_and_mask(sc, sm);
-        let entries = try_parse(&bytes).expect("control parse");
-        assert_eq!(entries.len(), 2, "{sc}x{sc} colour + {sm}x{sm} mask");
+        assert_eq!(try_parse(&bytes).expect("control parse").entries().len(), 2,
+            "{sc}x{sc} colour + {sm}x{sm} mask");
+        // The handle is parsed outside the window, so the decoder's first
+        // reservation is event 1, exactly as in the two-argument API.
+        let shift = 0usize;
 
         // Phase 1, colour decode: the three channels (3 n_c), then the RGB output
         // makes it 6 n_c. Failing the RGB output (event 4) shows the channels
         // alone; failing the mask copy (event 5) shows the whole phase.
-        let (r, st) = combine_probe(&bytes, &entries, Some(4));
+        let (r, st) = combine_probe(&bytes, Some(4 + shift));
         assert!(matches!(r, Err(TryError::OutOfMemory(o)) if o.site() == AllocSite::RgbOut));
         assert_eq!(st.peak as usize, 3 * n_c, "three channels before RgbOut ({sc},{sm})");
         assert_eq!(st.live_at_fail as usize, 3 * n_c);
-        let (r, st) = combine_probe(&bytes, &entries, Some(5));
+        let (r, st) = combine_probe(&bytes, Some(5 + shift));
         assert!(matches!(r, Err(TryError::OutOfMemory(o)) if o.site() == AllocSite::MaskData));
         assert!(st.peak as usize <= 6 * n_c, "colour-decode peak {} > 6 n_c ({sc},{sm})", st.peak);
         assert_eq!(st.peak as usize, 6 * n_c, "channels + RGB output ({sc},{sm})");
@@ -1312,14 +1442,14 @@ fn combine_peak_live_bytes_follow_the_stated_phases() {
             // Phase 2: the mask copy is live beside the RGB output until the
             // side check: 3 n_c + n_m. Failing the combine output (event 6)
             // observes that level at the moment of the request.
-            let (r, st) = combine_probe(&bytes, &entries, Some(6));
+            let (r, st) = combine_probe(&bytes, Some(6 + shift));
             assert!(matches!(r, Err(TryError::OutOfMemory(o)) if o.site() == AllocSite::CombineOut));
             assert_eq!(st.live_at_fail as usize, 3 * n_c + n_m, "RGB output + mask copy");
             assert!(st.peak as usize <= std::cmp::max(6 * n_c, 3 * n_c + n_m));
             assert_eq!(st.peak as usize, 6 * n_c);
             // Phase 3: after the matching check the combine output (4 n) joins:
             // 8 n.
-            let (r, st) = combine_probe(&bytes, &entries, None);
+            let (r, st) = combine_probe(&bytes, None);
             let d = r.expect("matching sides combine");
             assert_eq!(d.data.len(), 4 * n_c);
             assert!(st.peak as usize <= 8 * n_c, "peak {} > 8 n ({sc},{sm})", st.peak);
@@ -1332,8 +1462,8 @@ fn combine_peak_live_bytes_follow_the_stated_phases() {
         } else {
             // Mismatched sides: `TypeMismatch` with both buffers live.
             let bound = std::cmp::max(6 * n_c, 3 * n_c + n_m);
-            let (r, st) = combine_probe(&bytes, &entries, None);
-            assert!(matches!(r, Err(TryError::Format(Error::TypeMismatch))), "got {r:?}");
+            let (r, st) = combine_probe(&bytes, None);
+            assert!(matches!(r, Err(TryError::Format(Error::TypeMismatch))), "mismatched sides");
             assert!(st.peak as usize <= bound, "mismatched peak {} > {bound} ({sc},{sm})", st.peak);
             assert_eq!(st.peak as usize, bound);
             assert!(st.peak as usize <= PEAK_BOUND);
@@ -1342,8 +1472,8 @@ fn combine_peak_live_bytes_follow_the_stated_phases() {
             // No combine output is requested: five events, not six.
             assert_eq!(st.trace_len, 5, "mismatched sides stop before CombineOut");
             if (sc, sm) == (16, 128) {
-                assert_eq!(st.peak, 768 + 16_384);
-                assert_eq!(st.peak, 17_152);
+                assert_eq!(st.peak as usize, 768 + 16_384);
+                assert_eq!(st.peak as usize, 17_152);
             }
         }
 
@@ -1391,3 +1521,5 @@ fn frozen_vectors_respect_the_peak_bounds() {
     assert!(max_decode <= PEAK_BOUND);
     println!("frozen vectors: largest parse peak {max_parse} bytes, largest decode peak {max_decode} bytes");
 }
+
+

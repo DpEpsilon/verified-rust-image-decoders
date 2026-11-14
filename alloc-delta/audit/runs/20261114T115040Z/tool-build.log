@@ -42,4 +42,4 @@ help: consider changing the field to be of unit type to suppress this warning wh
    |
 
 warning: `alloc_audit` (bin "alloc_audit") generated 3 warnings
-    Finished `release` profile [optimized] target(s) in 0.12s
+    Finished `release` profile [optimized] target(s) in 0.10s

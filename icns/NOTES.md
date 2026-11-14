@@ -401,9 +401,10 @@ The "Latest verifier result" and `sites.rs` hash in the paragraph above are supe
 
 ## ERRATA E11 update (2026-11-14): public-API reduction
 
-The intended public API is `try_parse`, `try_decode_rgb`, `try_decode_mask`,
-`try_combine`, `Entry`, `Decoded`, `Error`, `TryError`, `MAX_FILE_LEN` and
-`Entry::type_code`. `model` and `model_vectors` are now `pub(crate)`; in
+The intended public API at E11 was `try_parse`, `try_decode_rgb`,
+`try_decode_mask`, `try_combine`, `Entry`, `Decoded`, `Error`, `TryError`,
+`MAX_FILE_LEN` and `Entry::type_code`; E14 (below) replaces the three decoders
+with methods on an opaque `Parsed` handle. `model` and `model_vectors` are now `pub(crate)`; in
 `src/icns.rs` the `pub` items no `pub` contract names were demoted (80 -> 73) and
 the 61 named by a `*_logged` or public `try_*` contract (the five `*_logged`
 functions, the `G`/`Prog`/`Req`/`PreAlloc`/`AtSiteLog` families, `entry_count`,
@@ -429,8 +430,86 @@ conformance, 12/12 fault injection. The draft allowlist was regenerated (new
 `source_hash` `cda2ebe74a1a747f9862bfb1e519294c9925515d88816cf01d237df2cea7b269`;
 entry set unchanged at 50). The production audit was `alloc-delta/audit/runs/20261114T084716Z`
 (only `allowlist-reviewer`; that run directory was since deleted by the E13
-rename, whose authoritative run is `20261114T094507Z`, where ICNS again reports
+rename, whose run was `20261114T094507Z` (deleted by E14), where ICNS again reports
 only `allowlist-reviewer` with the same `source_hash`); ICNS's walk is one
 instance and three edges smaller
 because `try_rle_logged` is no longer a root. See `alloc-delta/ERRATA.md` E12 and
 `alloc-delta/audit/API-SURVEY.md` section 6.
+
+## ERRATA E14 update (2026-11-14): the public ICNS API is an opaque `Parsed` handle
+
+An owner decision replaces the ICNS core's forgeable public decoder API with an
+opaque handle. The problem (found by a Sol review, recorded in
+`alloc-delta/audit/API-SURVEY.md` section 6): `try_decode_rgb`,
+`try_decode_mask` and `try_combine` took `(bytes: &[u8], entries: &[Entry], …)`
+and required `crate::model::parsed_inv(bytes@, entries@)` only in Verus. `Entry`
+has public fields, so ordinary Rust code could pass a `Vec<Entry>` with
+out-of-range payloads; the contract is erased, and the decoder then indexed and
+sliced on the forged entries (`&entries[color_index as usize]`,
+`payload_range(bytes, entry)`) with no executable check, which can panic or read
+the wrong region. `try_decode_rgb`'s `OutOfMemory`-naming and bounds clauses, and
+every `_logged` variant's, were otherwise unchanged.
+
+The public API is now:
+
+- `try_parse(bytes: &'a [u8]) -> Result<Parsed<'a>, TryError>` — the only
+  constructor of the handle; its `Ok` arm is the one place the type invariant is
+  established.
+- `Parsed::entries(&self) -> &[Entry]` — a shared view, so a caller can choose an
+  index but cannot mutate the list a decode will see. PNG/JPEG-2000 candidate
+  classification stays available through it.
+- `Parsed::bytes(&self) -> &'a [u8]` — the slice the entry ranges index.
+- `Parsed::try_decode_rgb(&self, color_index: u32)`, `Parsed::try_decode_mask`,
+  `Parsed::try_combine(&self, color_index: Option<u32>, mask_index: Option<u32>)`
+  — the decoders, with the same return types and model clauses as before, stated
+  in terms of `self.spec_bytes()`/`self.spec_entries()`. No `requires` clause:
+  `use_type_invariant(self)` supplies `parsed_inv`.
+
+`Parsed` holds `bytes: &'a [u8]` and `entries: Vec<Entry>` in private fields and
+carries `#[verifier::type_invariant] pub closed spec fn inv(&self)` stating
+`crate::model::parsed_inv(self.bytes@, self.entries@)`. Because the fields are
+private and `try_parse` is the only constructor, safe Rust outside the crate
+cannot forge an entry list or pair it with a different slice: provenance is a
+property of the type, at no runtime cost. Internal functions
+(`try_parse_logged`, the decoder `try_*`/`*_logged` and the `*_tracked` bodies)
+keep their `requires parsed_inv` and their full theorem statements, and are
+`pub(crate)`. `Entry`, `Decoded`, `Error`, `TryError` are unchanged; `Entry` keeps
+public fields for reading.
+
+A Verus detail worth recording: a `pub fn`'s `requires`/`ensures` cannot name a
+private field, so the method contracts speak through the `pub` (and
+`#[doc(hidden)]`) closed accessors `spec_bytes`/`spec_entries`, and the invariant
+itself is `pub` for the same reason.
+
+A `Parsed::entry_list_capacity` accessor was added for the fault suite's
+allocator-trace check and then removed: vstd has no specification for
+`Vec::capacity`, and this toolchain refuses as unstable both forms of an
+`assume_specification` for it. The suite now takes the entry list's size from the
+allocator trace and the entry count from `entries().len()`; no axiom was added
+and no `sites.rs` edit or re-pin was needed.
+
+Verifier: run 62, **418 verified, 0 errors** (was 412). Tests: 111/111
+conformance, 12/12 fault injection, reservation counts unchanged (87/33/33/16/3/2;
+87 physical-allocation cases; 174 trace events). `glycin-icns` in the local
+glycin fork checks and tests clean (loader 23, robustness 4, vectors 1). The
+ICNS draft allowlist was regenerated: new `source_hash`
+`0fb984b50938524485db5b0e6a1548d9ff4c97a51513ada88387ec55c22f2d48` (was
+`cda2ebe7…`), entry set unchanged at 50. `required_roots` is now five, spelling
+the handle methods (`crate::icns::Parsed::<'a>::entries`, `…::try_decode_rgb`,
+`…::try_decode_mask`, `…::try_combine`) plus `try_parse`. The authoritative
+production run is `alloc-delta/audit/runs/20261114T115040Z` (ICNS 351 instances /
+638 edges; only `allowlist-reviewer`). See `alloc-delta/ERRATA.md` E14 and
+`alloc-delta/audit/API-SURVEY.md` section 6.
+
+**E15 (2026-11-14): `try_parse`'s rejection clause restored.** Sol's review
+found that E14's `try_parse` gave `Err(TryError::Format(_))` the postcondition
+`true`, dropping the pre-change obligation that every non-`OutOfMemory` result
+satisfies `parses_to` — bad magic no longer had to return `BadMagic`. E15 adds
+`Err(TryError::Format(e)) => crate::model::parses_to_s(bytes@, Err(e))` to the
+`ensures` (derived from `try_parse_logged`'s log clause via
+`lemma_parses_to_err_view`) and restores the `parse_with_t8` witness to cover
+rejection as well as `Ok`. ICNS reverifies at 418 verified, 0 errors (run 63,
+unchanged count); tests pass. ICNS's `source_hash` is now
+`964a04253c9d01e65bb59ab17256e0a85378155c75e01442ff27b79e242d709c` (allowlist
+regenerated) and the deleted run above is replaced by `20261114T115040Z`. The
+review's scratch probe is kept as `icns/api-probe/`. See ERRATA E15.

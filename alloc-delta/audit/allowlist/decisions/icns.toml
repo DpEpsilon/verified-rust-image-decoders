@@ -1,7 +1,10 @@
 # Hand-written decisions for icns_verus (x86_64-unknown-linux-gnu, release).
 # draft_allowlist.py copies everything after the `--- entries ---` marker
 # verbatim into the draft allowlist.
-required_roots = ["crate::icns::try_parse", "crate::icns::try_decode_rgb", "crate::icns::try_decode_mask", "crate::icns::try_combine"]
+# ERRATA E14: the decoders are methods on the opaque `Parsed` handle, and the
+# canonical path of an inherent method names the impl's lifetime parameter, so
+# the roots are spelled `Parsed::<'a>::…` exactly as the tool reports them.
+required_roots = ["crate::icns::try_parse", "crate::icns::Parsed::<'a>::entries", "crate::icns::Parsed::<'a>::try_decode_rgb", "crate::icns::Parsed::<'a>::try_decode_mask", "crate::icns::Parsed::<'a>::try_combine"]
 
 # --- entries ---
 # -- Allocation-capable items, one entry per (item, admitted guard function) --
@@ -61,6 +64,8 @@ citation = "SPEC §6: deallocation anywhere; `*` admits deallocation sinks only 
 #    callees. See ERRATA E10. --
 
 # -- Exported roots that are excluded from the walk (owner decision required) --
+# E14 adds `Parsed::<'a>::bytes` to the exported set; it is an allocation-free
+# accessor, so it stays in the walk as an ordinary root and needs no exclusion.
 [[entry]]
 kind = "root-exclude"
 item = "<crate::icns::Decoded as core::clone::Clone>::clone"

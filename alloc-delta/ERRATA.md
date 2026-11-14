@@ -214,7 +214,8 @@ computation reproduces them). The four allowlists were regenerated
 (`tools/draft_all.sh`), `PINS.sha256` rewritten, and the production audit re-run
 in `runs/20261114T081621Z` (since superseded and deleted by E12; the E11/E12
 run `runs/20261114T084716Z` was itself later superseded and deleted by E13, whose
-evidence is `runs/20261114T094507Z`): DIB, TGA and ICNS report only `allowlist-reviewer`;
+run `runs/20261114T094507Z` was in turn deleted by E14; E14's evidence is
+`runs/20261114T111200Z`): DIB, TGA and ICNS report only `allowlist-reviewer`;
 ICO reports `allowlist-reviewer` and `dependency-contract` (D9), with DIB's
 report inside the ICO run also only `allowlist-reviewer`. No `missing-root` or
 `mono-item-unwalked` appeared. Entry counts are unchanged (64/58/50/42) and the
@@ -297,7 +298,8 @@ icns` (its `source_hash` changed to
 `bfcd14ae…`; the entry set is unchanged at 50 and differs only in the order of
 the `panic` entries). `PINS.sha256` was rewritten. The production
 audit was `alloc-delta/audit/runs/20261114T084716Z` (since superseded and deleted
-by E13; the authoritative run is now `20261114T094507Z`), which replaced the
+by E13, whose run was `20261114T094507Z` and is itself deleted by E14), which
+replaced the
 superseded
 `runs/20261114T081621Z` (now deleted). It reports exactly the expected findings:
 DIB, TGA and ICNS only `allowlist-reviewer`; ICO `allowlist-reviewer` and
@@ -356,8 +358,9 @@ from `10f5071a…` to `1176feef…`.
 **Regeneration and re-audit.** `tools/draft_all.sh dib tga ico` regenerated the
 DIB and TGA draft allowlists (only `source_hash` changed; ICNS and ICO drafts
 were left byte-identical) and rewrote `PINS.sha256`. The production audit was
-re-run over all four cores in one run, `runs/20261114T094507Z`, which replaces
-`runs/20261114T084716Z` (now deleted) as the authoritative run. It reports exactly the expected
+re-run over all four cores in one run, `runs/20261114T094507Z` (then the
+authoritative run; deleted by E14), which replaced `runs/20261114T084716Z` (now
+deleted). It reports exactly the expected
 findings: DIB, TGA and ICNS only `allowlist-reviewer`; ICO `allowlist-reviewer`
 and `dependency-contract` (D9), with DIB's report inside the ICO run also only
 `allowlist-reviewer`. Entry counts are unchanged (64 / 58 / 50 / 42) and the
@@ -377,3 +380,264 @@ removes no item in the walk.
 TGA (974, 0, run 232), ICO (346, 0, run 178). `cargo test --release` passes in
 `dib_verus`, `tga_verus` and `ico_verus`; the policy conformance tests report
 `RecommendedBeta` 102/102 (DIB) and 302/302 (TGA).
+
+## E14 — 2026-11-14: the ICNS public API becomes an opaque `Parsed` handle
+
+Owner decision 2026-11-14: the ICNS core's public decoders must not accept
+`(bytes, entries)` as two arguments. The problem is recorded in
+`audit/API-SURVEY.md` section 6: `try_decode_rgb`, `try_decode_mask` and
+`try_combine` require `crate::model::parsed_inv(bytes@, entries@)` only in
+Verus, `Entry`'s fields are public, and the check is erased in the compiled
+artifact, so ordinary safe Rust could build a `Vec<Entry>` with out-of-range
+payloads and pass it to a decoder, which then indexes and slices on it
+(`&entries[..]`, `payload_range`) with no executable check.
+
+**The change.** `pub struct Parsed<'a>` now holds the input `bytes: &'a [u8]`
+and the parsed `entries: Vec<Entry>` in **private** fields, with a Verus type
+invariant `inv` stating `crate::model::parsed_inv(self.bytes@, self.entries@)`.
+`try_parse` is the only constructor; it builds the handle in its `Ok` arm from
+the entries `try_parse_logged` returned, discharging `parsed_inv` from
+`lemma_parse_ok_gives_p` + `lemma_p_exec_inv`. The decoders are now inherent
+methods on the handle:
+
+- `try_parse(bytes: &'a [u8]) -> Result<Parsed<'a>, TryError>` (unchanged
+  contract shape: the `Ok` value's entries are `parses_to`'s model list for
+  `bytes`, the allocation log/`PreAlloc`/`G`/`Prog` theorem shape is unchanged);
+- `Parsed::entries(&self) -> &[Entry]`, a shared view so a caller can choose an
+  index but cannot mutate the list a decode will use;
+- `Parsed::bytes(&self) -> &'a [u8]`, the slice its entry ranges index (needed by
+  PNG-candidate classification);
+- `Parsed::try_decode_rgb(&self, color_index) -> Result<Decoded, TryError>`;
+- `Parsed::try_decode_mask(&self, mask_index) -> Result<Decoded, TryError>`;
+- `Parsed::try_combine(&self, color_index: Option<u32>, mask_index: Option<u32>)
+  -> Result<Decoded, TryError>`.
+
+Each method has **no** `requires` clause: `use_type_invariant(self)` supplies
+`parsed_inv(self.bytes@, self.entries@)`, which is exactly the internal
+function's precondition. The `ensures` restates the internal postcondition
+(model equality of the non-`OutOfMemory` result, the output bounds, the
+allocation-log relation, and the named `OutOfMemory` request) in terms of
+`self.spec_bytes()`/`self.spec_entries()`. Because `Parsed` has private fields
+and no other constructor, safe Rust outside the crate cannot forge an entry list
+or pair it with a different slice: provenance is a property of the type.
+
+**Type invariant, not a manual spec fn.** `#[verifier::type_invariant]` worked
+on this toolchain (verus `0.2026.11.02.8bf68ee`, V-1.99.1), so no manual
+`inv(&self)` `requires`/`ensures` fallback was needed. Two facts about it are
+worth recording. First, a `pub fn`'s `requires`/`ensures` may **not** name a
+private field ("field expression for an opaque datatype … this field expression
+must be well-formed everywhere"); the contract therefore speaks through the
+`pub` closed spec accessors `spec_bytes`/`spec_entries`, which are `pub` +
+`#[doc(hidden)]` (a `pub` contract naming a private spec fn is a hard error).
+Second, the invariant is itself `pub` (again because a `pub` contract could name
+it) and `#[doc(hidden)]`; `try_parse`'s `Ok` arm is the one place it is
+established, so every other method may assume it.
+
+**What did not change.** `Entry` keeps public fields; `Decoded`, `Error` and
+`TryError` are untouched. The internal functions `try_parse_logged`,
+`try_decode_rgb`/`_logged`, `try_decode_mask`/`_logged`, `try_combine`/`_logged`
+and `parse_tracked`/`decode_rgb_tracked`/`decode_mask_tracked`/`combine_tracked`
+keep their `requires parsed_inv` and their full theorem statements, and are now
+`pub(crate)`. The allocation-log theorems (`G`/`Prog`/`at_site_log_*`, the
+`PreAlloc` corollaries) are unchanged; the `*_logged` functions remain the
+theorem-facing internals.
+
+**Accessor the fault suite needed, and why it is not in the core.** The
+alloc-delta fault suite checks `capacity * size_of::<Entry>()` against its
+allocator trace. A slice cannot report capacity, and the entry list is not handed
+out mutably, so a `Parsed::entry_list_capacity` accessor was added and then
+**removed**: vstd has no specification for `Vec::capacity`, and this toolchain
+refuses as unstable both the `A: Allocator` generic form and the allocator-free
+form of an `assume_specification` for it. Rather than add an axiom for a value
+no proof obligation names, the suite now takes the entry list's size from the
+allocator's own trace (its `live` bytes) and the entry count from
+`entries().len()`; the capacity is no longer read from the handle. No
+`sites.rs` edit and no re-pin were needed.
+
+**Tests.** `cargo test --release -j1` passes: 111/111 conformance, 12/12 fault
+injection. The fault suite's reservation counts are unchanged (87/33/33/16/3/2
+per reservation, 87 physical-allocation cases, 174 trace events for 111
+vectors), and the frozen per-vector sites, order, sizes and the 128 KiB peak
+bound are unchanged. Two mechanisms keep this so: a decode vector's handle is
+parsed **outside** the armed window, so the entry list is the window's baseline
+(not one of the decoder's reservations, matching SPEC.md §4's `Req`), and the
+`arm`/`arm_threshold` helpers carry that baseline across the counter reset so
+`live`, `peak` and `live_at_fail` report the decoder alone. `Outcome::Parsed`
+needed an extra arm: `Parsed` does not implement `Debug` (its only honest derive
+would print the opaque fields), and the former `Outcome::Parsed(Vec<Entry>)`
+copy was dropped because copying entries out of the handle inside an armed window
+would allocate and consume the injector's countdown.
+
+**Verification.** ICNS reverifies at **418 verified, 0 errors** (run 62; was
+412). The new and changed obligations are the handle's `entries`/`bytes` methods,
+the three decoder wrappers (each discharges `parsed_inv` from the type
+invariant), the rewritten `try_parse` construction site, and the retargeted
+`parse_success_invariant` / `parse_with_t8` / `decode_rgb_after_parse` /
+`decode_mask_after_parse` / `combine_after_parse` / `t13_combine_after_parse`
+witnesses; no new lemma was needed beyond the two model lemmas below. No `rlimit`
+was changed (the live ICNS source still has none).
+
+**Model lemmas added.** `model::lemma_t8_view(b, es_actual, es)`: a handle's
+entry view satisfies `entries_same_fields(es_actual, es) <==> p_exec(b, es)`,
+stated directly on the sequence so a caller holding only `Seq<Entry>` (the view)
+needs no `Result` wrapper; it reuses `lemma_exact_entry_equivalence`.
+`model::parse_len(b)` and `model::lemma_parses_to_len(b, es)`: a successful
+parse's view has the model list's length.
+
+**Witness rewrites.** The T6/T7/T8/T9..T13 call-site witnesses in `icns.rs` and
+`model.rs` were retargeted to the handle: `parse_success_invariant` and
+`parse_with_t8` return `Result<Parsed, TryError>`, `decode_rgb_after_parse` /
+`decode_mask_after_parse` / `combine_after_parse` call the methods through a
+handle from `try_parse` (so no precondition is assumed anywhere in the chain),
+and `t13_combine_after_parse` returns the `Parsed` handle as its first tuple
+element. `t10`/`t11`/`t12` remain stated over the `parsed_inv` parts, which is
+the statement the handle's invariant carries.
+
+**Consumers updated.**
+
+- `icns_verus/tests/conformance.rs`, `tests/fault_injection.rs`: adapted to the
+  handle (above).
+- `bench/src/main.rs`: parses once and calls `parsed.try_combine(..)`.
+- `leniency/policy-probe/src/main.rs`: `icns_parsed(b)` + `p.entries()` +
+  `p.try_combine(..)`.
+- `leniency/shared/src/main.rs`: `icns_verus::try_parse`, `parsed.try_combine`,
+  `glycin_icns::candidates(&parsed)`, `glycin_icns::entry_payload(&parsed, i)`
+  (this runner was already uncompilable before the change, calling the removed
+  frozen `parse`/`combine` names; it now names the new API, unverified).
+- the local glycin fork `~/projects/glycin-plan/glycin/glycin-loaders/glycin-icns`
+  (loader and tests): `candidates(parsed)` and `entry_payload(parsed, i)`, the
+  decoders through the handle; `cargo check --offline -j1 -p glycin-icns` and
+  `cargo test -p glycin-icns` pass (loader 23, robustness 4, vectors 1).
+- `tools/diff-harness/src/main.rs` **not** fixed: it already calls the removed
+  frozen names (`parse`, `decode_rgb`, `decode_mask`, `combine`) and does not
+  compile; the task scopes it out. It now also predates the handle.
+
+**Audit.** ICNS's `source_hash` changed to
+`0fb984b50938524485db5b0e6a1548d9ff4c97a51513ada88387ec55c22f2d48` (was
+`cda2ebe7…`) and its `crate-svh` to `e6dfd4a7253baef22fa39b192944e65e`. The ICNS
+draft allowlist was regenerated with `tools/draft_all.sh icns`; the entry set is
+unchanged at 50 (the no-MIR and panic-edge entries moved to the new root names)
+and `PINS.sha256` was rewritten (ICNS
+`d6f4dc578a8fea1495512e50c25e65a72f13921655de56f965436c1545f09e7b`). DIB, TGA
+and ICO were left byte-identical; their `source_hash`, instance and edge counts
+and findings are unchanged.
+
+**`required_roots` (D10).** The decoders are inherent methods, whose canonical
+path names the impl's lifetime parameter, so the ICNS list is now five entries,
+spelled exactly as the tool reports them:
+`crate::icns::try_parse`,
+`crate::icns::Parsed::<'a>::entries`,
+`crate::icns::Parsed::<'a>::try_decode_rgb`,
+`crate::icns::Parsed::<'a>::try_decode_mask`,
+`crate::icns::Parsed::<'a>::try_combine`.
+`Parsed::<'a>::bytes` is a sixth exported root (it is `pub` and reachable);
+it is allocation-free and stays in the walk, needing no exclusion. No
+`_logged` function is public again: no theorem consumer in another crate needs
+one for ICNS, and all of them are `pub(crate)`.
+
+**Audit run.** The four-core production run is
+`alloc-delta/audit/runs/20261114T111200Z`, which is the authoritative evidence and
+replaces `runs/20261114T094507Z` (deleted). Expected findings, and what they
+were: DIB and TGA only `allowlist-reviewer`; ICNS only `allowlist-reviewer`
+(the former `guard-inline-never` for `Reserved::<T>::push` is gone since E10);
+ICO `allowlist-reviewer` and `dependency-contract` (D9, while DIB is unsigned),
+with DIB's report inside the ICO run also only `allowlist-reviewer`. Entry
+counts are unchanged (64 / 58 / 50 / 42). ICNS's walk is now 351 instances /
+638 edges (was 344/629: the new handle roots and their calls); its allocator
+sinks (5) and guard call sites (1 `try_with_room`, 5 `try_zeroed`, 1 `try_copy`)
+are unchanged, and rustc's collector still codegens no function the walk did not
+reach (`mono-items … 0 not reached`).
+
+**ICNS section-6 surface, resolved.** The forged-`entries` item in
+`audit/API-SURVEY.md` section 6 is resolved by this change; the survey lists the
+new public API and the remaining open item (the `try_zeroed`/`try_copy`
+Verus-only size caps) is unchanged.
+
+**Public API now (`crate::icns` and the crate root).** `try_parse`, `Parsed`
+with `entries`, `bytes`, `try_decode_rgb`, `try_decode_mask`, `try_combine`;
+`Entry` (public fields, for reading), `Decoded`, `Error`, `TryError`,
+`MAX_FILE_LEN`, and the `#[doc(hidden)]` `MAX_ENTRIES`, `MAX_LEGACY_SIDE`,
+`Entry::type_code`, `Error::name`, `Error::name_spec`, and the spec/proof items a
+`pub` contract names. No decoder takes `(bytes, entries)` any more.
+
+## E15 — 2026-11-14: `try_parse`'s rejection clause restored (corrects E14)
+
+Sol's review of E14 (the ICNS opaque `Parsed` handle) found one material defect,
+confirmed by the reviewer: the new public `try_parse` contract constrains the
+successful handle but gave `Err(TryError::Format(_))` the postcondition `true`.
+**E14's claim of an "unchanged contract shape" for `try_parse` (above) is
+therefore wrong, and so is its statement that the method `ensures` restates "the
+allocation-log relation": the `G`/`Prog`/`PreAlloc`/`at_site_log_*` clauses are
+internal-theorem facts about `try_parse_logged`/`parse_tracked`, not method
+postconditions.** This entry corrects both.
+
+**What was lost.** Before E14 every non-`OutOfMemory` result of the public
+parser satisfied `model::parses_to` on `fmt_part_entries(r)`, including the exact
+first format error, and the `PreAlloc` clause carried the same relation. After
+E14 the public boundary no longer established, for example, that bad magic
+returns `BadMagic`, nor that an accepted input cannot return a format error.
+HEAD's `parse_with_t8` public-call witness stated the full relation
+(`!OutOfMemory ==> forall es. parse_returned(fmt_part_entries(r), es) <==>
+p_exec(bytes, es)`), which covers rejection; the E14 rewrite constrained only
+`Ok`, so it did not recover the obligation.
+
+**The fix.** `try_parse`'s `ensures` again has an error-arm clause, in the same
+`parses_to_s` form the pre-change contract used and derived from the logged
+internal result:
+
+```
+Err(TryError::Format(e)) => crate::model::parses_to_s(bytes@, Err(e)),
+```
+
+The `Ok` arm (`p.spec_bytes() == bytes@ && parses_to_s(bytes@, Ok(p.spec_entries()))`),
+the `pre_alloc_p` clause and the named-`OutOfMemory` clause are unchanged. The
+body derives the error clause from `try_parse_logged`'s `g_p_clause1` (which for
+a non-`OutOfMemory` result is `parses_to` on `fmt_part_entries`) via
+`lemma_parses_to_err_view`, the existing small model lemma. The public-call
+witness `parse_with_t8` is restored to cover rejection as well as successful
+parses: its `ensures` is now
+`match r { Ok(p) => forall es. entries_same_fields(p.spec_entries(), es) <==> p_exec(bytes@, es),
+Err(Format(_)) => forall es. !p_exec(bytes@, es), Err(OutOfMemory(_)) => true }`,
+discharged from the contract's new error clause plus `lemma_parse_err_gives_not_accepted`
+(and `lemma_t8_view` on the `Ok` arm). No `assume`, `admit` or `external_body`
+was added, and no new model lemma was needed. Also comment-only: the
+`tests/fault_injection.rs` notes that said a decode vector parses *inside* its
+injection window were wrong (it parses outside, see `check_vector`/`combine_probe`)
+and now say so.
+
+**Verification and tests.** ICNS reverifies at **418 verified, 0 errors** (run
+63; the count is unchanged from E14's run 62 because the restored clause and the
+widened witness add postconditions and assertions to functions that were already
+counted verification units. A flat count does not show that no new logical
+obligation was added; Sol's review (2026-11-14) read the clause and the proof path
+directly and found the clause non-vacuous and fully discharged). `cargo
+test --release -j1` passes: 111/111 conformance, 12/12 fault injection.
+
+**Regeneration and re-audit.** ICNS's `source_hash` changed to
+`964a04253c9d01e65bb59ab17256e0a85378155c75e01442ff27b79e242d709c` (was
+`0fb984b5…`), so `tools/draft_all.sh icns` regenerated the ICNS draft allowlist
+(entry set unchanged at 50; only `source_hash` and the entry ordering changed)
+and rewrote `PINS.sha256` (ICNS
+`b0a0cc0e306e6dfb0cd6497f3b2d9e83a6fe554c2b38077ee725be1c09593e71`). ICNS's
+`crate-svh` is `266e0634352089beb02f512d3bd512e3`. The four-core production run
+is `runs/20261114T115040Z`, which is now the authoritative evidence and replaces
+E14's `runs/20261114T111200Z` (deleted). It reports the same expected findings
+(DIB, TGA and ICNS only `allowlist-reviewer`; ICO `allowlist-reviewer` and
+`dependency-contract`, with DIB's report inside the ICO run also only
+`allowlist-reviewer`), the same entry counts (64 / 58 / 50 / 42), and the same
+instance and edge counts and `source_hash` for DIB, TGA and ICO; ICNS's walk is
+unchanged at 351 instances / 638 edges.
+
+**Correction to E14's root list.** E14's SIGNOFF paragraph named
+`Parsed::<'a>::entry_list_capacity` as an exported root. No such root exists: the
+accessor was removed before E14 landed (E14 itself records why), and neither the
+tool's root list nor `required_roots` has an entry for it. `Parsed::<'a>::bytes`
+is the real sixth exported root, as E14 states elsewhere.
+
+**Regression probe.** The review's scratch crate is kept as
+`icns/api-probe/`, a compile-fail probe of the public surface: it checks that
+`Parsed` cannot be constructed literally, cannot be `Default`/`Clone`/`Copy`,
+cannot be mutated through `entries()`/`bytes()`, that the `_logged` internals and
+the old `(bytes, entries)` decoders are not public, and that `spec_bytes`/
+`spec_entries`/`inv` are not callable outside the crate. The expected compiler
+error codes are in its `README.md`.

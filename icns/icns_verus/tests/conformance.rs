@@ -2,15 +2,18 @@
 //! the alloc-delta `try_*` API in `src/icns.rs`.
 //!
 //! Per R18, each vector first runs `try_parse`; a parse error is reported before
-//! any decoding. Missing `color_index`/`mask_index` encode `None` for
-//! `try_combine`. The tests run without a fault-injecting allocator, so
+//! any decoding. A successful parse is an opaque `Parsed` handle, and the
+//! decoders are methods on it, so the bytes a decode sees are the bytes the
+//! entries were parsed from by construction. Missing `color_index`/`mask_index`
+//! encode `None` for `try_combine`. The tests run without a fault-injecting
+//! allocator, so
 //! `OutOfMemory` never occurs and is treated as a test failure (`fmt_part`
 //! panics on it), keeping the frozen expectations verbatim.
 
 use std::fs;
 use std::path::PathBuf;
 
-use icns_verus::icns::{try_combine, try_decode_mask, try_decode_rgb, try_parse, Decoded, Entry, Error, TryError};
+use icns_verus::icns::{try_parse, Decoded, Entry, Error, Parsed, TryError};
 
 use serde_json::Value;
 
@@ -27,9 +30,11 @@ fn fmt_part(r: Result<Decoded, TryError>) -> Result<Decoded, Error> {
     }
 }
 
-fn fmt_part_entries(r: Result<Vec<Entry>, TryError>) -> Result<Vec<Entry>, Error> {
+/// The parse result folded the same way: `Ok` is the opaque handle, whose
+/// `entries()` view is what the vectors compare against.
+fn fmt_part_parsed(r: Result<Parsed<'_>, TryError>) -> Result<Parsed<'_>, Error> {
     match r {
-        Ok(v) => Ok(v),
+        Ok(p) => Ok(p),
         Err(TryError::Format(e)) => Err(e),
         Err(TryError::OutOfMemory(o)) => {
             panic!("unexpected OutOfMemory: site {:?}, elements {}", o.site(), o.elements())
@@ -136,7 +141,7 @@ fn check_vector(v: &Value) -> Result<(), String> {
     let bytes = input_bytes(v);
     let op = v["operation"].as_str().expect("operation");
 
-    let entries = match fmt_part_entries(try_parse(&bytes)) {
+    let parsed = match fmt_part_parsed(try_parse(&bytes)) {
         Ok(e) => e,
         Err(err) => {
             let want = expected
@@ -154,7 +159,7 @@ fn check_vector(v: &Value) -> Result<(), String> {
         if op == "parse" {
             return Err(format!("expected parse error {want}, parse succeeded"));
         }
-        let err = fmt_part(decode(v, &bytes, &entries))
+        let err = fmt_part(decode(v, &parsed))
             .err()
             .ok_or_else(|| format!("expected decode error {want}, decode succeeded"))?;
         if err.name() != want {
@@ -164,11 +169,11 @@ fn check_vector(v: &Value) -> Result<(), String> {
     }
 
     if op == "parse" {
-        check_parse_entries(&entries, &expected["entries"]);
+        check_parse_entries(parsed.entries(), &expected["entries"]);
         return Ok(());
     }
 
-    let decoded = fmt_part(decode(v, &bytes, &entries)).map_err(|e| e.name().to_string())?;
+    let decoded = fmt_part(decode(v, &parsed)).map_err(|e| e.name().to_string())?;
     let side = expected["side"].as_u64().expect("side") as u32;
     if decoded.width != side || decoded.height != side {
         return Err(format!(
@@ -195,15 +200,15 @@ fn check_vector(v: &Value) -> Result<(), String> {
     Ok(())
 }
 
-fn decode(v: &Value, bytes: &[u8], entries: &[Entry]) -> Result<Decoded, TryError> {
+fn decode(v: &Value, parsed: &Parsed<'_>) -> Result<Decoded, TryError> {
     match v["operation"].as_str().expect("operation") {
         "rgb" => {
             let ci = v["color_index"].as_u64().expect("color_index") as u32;
-            try_decode_rgb(bytes, entries, ci)
+            parsed.try_decode_rgb(ci)
         }
         "mask" => {
             let mi = v["mask_index"].as_u64().expect("mask_index") as u32;
-            try_decode_mask(bytes, entries, mi)
+            parsed.try_decode_mask(mi)
         }
         "combine" => {
             let ci = v
@@ -214,7 +219,7 @@ fn decode(v: &Value, bytes: &[u8], entries: &[Entry]) -> Result<Decoded, TryErro
                 .get("mask_index")
                 .and_then(|x| x.as_u64())
                 .map(|x| x as u32);
-            try_combine(bytes, entries, ci, mi)
+            parsed.try_combine(ci, mi)
         }
         other => panic!("unexpected operation for decode: {other}"),
     }

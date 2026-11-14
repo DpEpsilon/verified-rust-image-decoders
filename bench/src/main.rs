@@ -66,13 +66,13 @@ fn tga_tiny(b: &[u8]) -> R {
 /// Largest legacy colour+mask pair (is32/s8mk .. it32/t8mk), as in the leniency harness.
 fn icns_verified(b: &[u8]) -> R {
     use icns_verus::TryError as T;
-    let entries = tryres!("icns", T, T::Format, T::OutOfMemory, icns_verus::try_parse(b))?;
+    let parsed = tryres!("icns", T, T::Format, T::OutOfMemory, icns_verus::try_parse(b))?;
     let codes: [([u8; 4], [u8; 4]); 4] = [(*b"it32", *b"t8mk"), (*b"ih32", *b"h8mk"), (*b"il32", *b"l8mk"), (*b"is32", *b"s8mk")];
     for (c, m) in codes {
-        let ci = entries.iter().position(|e| e.type_code() == c);
-        let mi = entries.iter().position(|e| e.type_code() == m);
+        let ci = parsed.entries().iter().position(|e| e.type_code() == c);
+        let mi = parsed.entries().iter().position(|e| e.type_code() == m);
         if let (Some(ci), Some(mi)) = (ci, mi) {
-            return tryres!("icns", T, T::Format, T::OutOfMemory, icns_verus::try_combine(b, &entries, Some(ci as u32), Some(mi as u32)))
+            return tryres!("icns", T, T::Format, T::OutOfMemory, parsed.try_combine(Some(ci as u32), Some(mi as u32)))
                 .map(|d| Img { w: d.width, h: d.height, rgba: d.data });
         }
     }
