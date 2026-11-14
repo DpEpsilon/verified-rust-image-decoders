@@ -10,6 +10,8 @@ Latest verifier result: run 51, **412 verified, 0 errors** (before E6: 413 (run 
 
 Statements elsewhere in this file that describe the guard as a `push` loop, that use A-STD-2 for `try_zeroed`, that quote the old `mod.rs` hash `018ed17a...` or that give the pre-E6 verified count describe the cores before E6 and are superseded by this section. Test and lint results recorded in this file predate E6 unless dated 2026-11-13; a post-E6 rerun of them is not recorded here.
 
+> ERRATA E10 (2026-11-14): `alloc_guard/sites.rs` is no longer `adcc09be...`. Owner decisions D3/D4/D8 added `#[inline(never)]` to `Reserved::push` and `Reserved::into_vec` and made `Reserved<T>`, those two methods and `try_with_room<T>` `pub(crate)`; the new `sites.rs` SHA-256 is `5dff9ec076a778b04b782b3dc2e8a290b92c333cee0b281ebdb4619ac037892b` and `EXPECTED_SITES_SHA` was re-pinned. Verifier unchanged: run 52, **412 verified, 0 errors**. `mod.rs` stays `26e4c832...`.
+
 `icns_verus` is `#![no_std]` with `extern crate alloc;`. Backups `*.nostd-1` are the green sources, `*.pre-nostd` the sources before the change.
 
 - `Cargo.toml`: `vstd = { version = "=0.0.0-2026-11-01-0251", default-features = false, features = ["alloc"] }`
