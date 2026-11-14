@@ -5,7 +5,7 @@ finding-tags: allowlist-reviewer
 findings-other-than-unsigned-reviewer: 0
 mode: PRODUCTION
 crate: icns_verus
-crate-svh: c4752f46cf725baf37fc2f8969338c05
+crate-svh: 266e0634352089beb02f512d3bd512e3
 invocation: wrapper
 rustc: 1.99.1 (58cf8f9c3 2026-10-13)
 rustc-commit: 58cf8f9c3 (full 58cf8f9c35b355199727627d07ae34a4e2846d67)
@@ -14,30 +14,30 @@ profile: opt-level=3,debug-assertions=off,share-generics=off
 profile-class: release
 features: []
 cfgs: ["panic=\"unwind\"", "target_abi=\"\"", "target_arch=\"x86_64\"", "target_endian=\"little\"", "target_env=\"gnu\"", "target_family=\"unix\"", "target_feature=\"fxsr\"", "target_feature=\"sse\"", "target_feature=\"sse2\"", "target_has_atomic=\"16\"", "target_has_atomic=\"32\"", "target_has_atomic=\"64\"", "target_has_atomic=\"8\"", "target_has_atomic=\"ptr\"", "target_has_atomic_load_store=\"16\"", "target_has_atomic_load_store=\"32\"", "target_has_atomic_load_store=\"64\"", "target_has_atomic_load_store=\"8\"", "target_has_atomic_load_store=\"ptr\"", "target_has_atomic_primitive_alignment=\"16\"", "target_has_atomic_primitive_alignment=\"32\"", "target_has_atomic_primitive_alignment=\"64\"", "target_has_atomic_primitive_alignment=\"8\"", "target_has_atomic_primitive_alignment=\"ptr\"", "target_has_reliable_f128", "target_has_reliable_f16", "target_has_reliable_f16_math", "target_has_threads", "target_object_format=\"elf\"", "target_os=\"linux\"", "target_pointer_width=\"64\"", "target_thread_local", "target_vendor=\"unknown\"", "unix"]
-source_hash: cda2ebe74a1a747f9862bfb1e519294c9925515d88816cf01d237df2cea7b269
+source_hash: 964a04253c9d01e65bb59ab17256e0a85378155c75e01442ff27b79e242d709c
 source-hash-scope: sha256 over sorted per-file sha256 of every non-imported source-map file outside the sysroot (module files and loaded include targets); dependency crates are bound by crate hash, vstd additionally by its locked source checksum
-allowlist: /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/allowlist/x86_64-unknown-linux-gnu/release/icns_verus.toml sha256=1d95eaa7638d74e779771267c74dfa8b144ebc18681fd65260e167c9b744de6a entries=50 reviewer="" drafted_by="draft_allowlist.py (Claude agent), 2026-11-13; unsigned"
+allowlist: /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/allowlist/x86_64-unknown-linux-gnu/release/icns_verus.toml sha256=b0a0cc0e306e6dfb0cd6497f3b2d9e83a6fe554c2b38077ee725be1c09593e71 entries=50 reviewer="" drafted_by="draft_allowlist.py (Claude agent), 2026-11-13; unsigned"
 vstd: linked=true version=Some("0.0.0-2026-11-01-0251") svh=Some("fa564daeee3bd3d96afb1a9ec5dbc24f") locked_checksum=Some("7cfcc2fc379ffbcda31111f1a7da2a34d00bd984407cfa85d1edcf64da38dbd2") linked_artifact_sha256=Some("f93b65602d91170edd3bb93b775f0a423ad35a7a154329588eeec12ec52b1045") source_dir=Some("/home/ws/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/vstd-0.0.0-2026-11-01-0251")
 vstd-binding-problems: none
-roots: crate::alloc_guard::sites::TryError::name, crate::alloc_guard::sites::try_copy, <crate::alloc_guard::sites::TryError as core::clone::Clone>::clone, <crate::alloc_guard::sites::TryError as core::cmp::PartialEq>::eq, <crate::alloc_guard::sites::TryError as core::cmp::Eq>::assert_fields_are_eq, <crate::alloc_guard::sites::AllocSite as core::clone::Clone>::clone, <crate::alloc_guard::sites::AllocSite as core::cmp::PartialEq>::eq, <crate::alloc_guard::sites::AllocSite as core::cmp::Eq>::assert_fields_are_eq, crate::alloc_guard::OutOfMemory::site, crate::alloc_guard::OutOfMemory::elements, crate::alloc_guard::try_zeroed, <crate::alloc_guard::OutOfMemory as core::clone::Clone>::clone, <crate::alloc_guard::OutOfMemory as core::cmp::PartialEq>::eq, <crate::alloc_guard::OutOfMemory as core::cmp::Eq>::assert_fields_are_eq, crate::icns::Error::name, crate::icns::Entry::type_code, crate::icns::try_parse_logged, crate::icns::try_parse, crate::icns::try_decode_rgb_logged, crate::icns::try_decode_rgb, crate::icns::try_decode_mask_logged, crate::icns::try_decode_mask, crate::icns::try_combine_logged, crate::icns::try_combine, <crate::icns::Error as core::clone::Clone>::clone, <crate::icns::Error as core::cmp::PartialEq>::eq, <crate::icns::Error as core::cmp::Eq>::assert_fields_are_eq, <crate::icns::Entry as core::clone::Clone>::clone, <crate::icns::Entry as core::cmp::PartialEq>::eq, <crate::icns::Entry as core::cmp::Eq>::assert_fields_are_eq, <crate::icns::Decoded as core::cmp::PartialEq>::eq, <crate::icns::Decoded as core::cmp::Eq>::assert_fields_are_eq
+roots: crate::alloc_guard::sites::TryError::name, crate::alloc_guard::sites::try_copy, <crate::alloc_guard::sites::TryError as core::clone::Clone>::clone, <crate::alloc_guard::sites::TryError as core::cmp::PartialEq>::eq, <crate::alloc_guard::sites::TryError as core::cmp::Eq>::assert_fields_are_eq, <crate::alloc_guard::sites::AllocSite as core::clone::Clone>::clone, <crate::alloc_guard::sites::AllocSite as core::cmp::PartialEq>::eq, <crate::alloc_guard::sites::AllocSite as core::cmp::Eq>::assert_fields_are_eq, crate::alloc_guard::OutOfMemory::site, crate::alloc_guard::OutOfMemory::elements, crate::alloc_guard::try_zeroed, <crate::alloc_guard::OutOfMemory as core::clone::Clone>::clone, <crate::alloc_guard::OutOfMemory as core::cmp::PartialEq>::eq, <crate::alloc_guard::OutOfMemory as core::cmp::Eq>::assert_fields_are_eq, crate::icns::Error::name, crate::icns::Entry::type_code, crate::icns::Parsed::<'a>::entries, crate::icns::Parsed::<'a>::bytes, crate::icns::try_parse, crate::icns::Parsed::<'a>::try_decode_rgb, crate::icns::Parsed::<'a>::try_decode_mask, crate::icns::Parsed::<'a>::try_combine, <crate::icns::Error as core::clone::Clone>::clone, <crate::icns::Error as core::cmp::PartialEq>::eq, <crate::icns::Error as core::cmp::Eq>::assert_fields_are_eq, <crate::icns::Entry as core::clone::Clone>::clone, <crate::icns::Entry as core::cmp::PartialEq>::eq, <crate::icns::Entry as core::cmp::Eq>::assert_fields_are_eq, <crate::icns::Decoded as core::cmp::PartialEq>::eq, <crate::icns::Decoded as core::cmp::Eq>::assert_fields_are_eq
 roots-excluded: <crate::alloc_guard::OutOfMemory as core::fmt::Debug>::fmt, <crate::alloc_guard::sites::AllocSite as core::fmt::Debug>::fmt, <crate::alloc_guard::sites::TryError as core::fmt::Debug>::fmt, <crate::icns::Decoded as core::clone::Clone>::clone, <crate::icns::Decoded as core::fmt::Debug>::fmt, <crate::icns::Entry as core::fmt::Debug>::fmt, <crate::icns::Error as core::fmt::Debug>::fmt
 generic-exports: 
-instances: 344
-edges: 629
-crates-reached: alloc 85, core 204, icns_verus 52, verus_builtin 3
+instances: 351
+edges: 638
+crates-reached: alloc 87, core 204, icns_verus 57, verus_builtin 3
 allocator-sinks: 5
-mono-items: 68 in local codegen units; 0 not reached by the walk
+mono-items: 71 in local codegen units; 0 not reached by the walk
 
 -- findings (1) --
   [allowlist-reviewer] reviewer is missing or empty (recorded Some("")); the allowlist is unsigned
 
 -- source files (7) --
-  combined cda2ebe74a1a747f9862bfb1e519294c9925515d88816cf01d237df2cea7b269
+  combined 964a04253c9d01e65bb59ab17256e0a85378155c75e01442ff27b79e242d709c
   26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7  src/alloc_guard/mod.rs
   5dff9ec076a778b04b782b3dc2e8a290b92c333cee0b281ebdb4619ac037892b  src/alloc_guard/sites.rs
-  a050e286c61ece67eb40542f2fac821ff04e8d37a5ace16827798c268f117e75  src/icns.rs
+  f4e0a4678f2d6a606efbfe9abac5bf91cf3f6e3d57a7f0f45cca537e9a499591  src/icns.rs
   0bce4aa0c80040f7267e169ee8e795768b95906bfbfceef810347f3273ef1d9c  src/lib.rs
-  eea3ce6cb730deb1e8d08e0c422457a4bcab6229be93eb6c536c335b35dd4cd4  src/model.rs
+  bbdef91f9f48ffe59655f10b261d4c085dede7edf04dedcb3470e2d504486db8  src/model.rs
   d629e33ee8fc0518e8999b0c150335d291d2bf2e54328704b04d6d56ed480cd1  src/model_vectors.rs
 
 -- build inputs (compiler-resolved) (5) --
@@ -75,8 +75,6 @@ mono-items: 68 in local codegen units; 0 not reached by the walk
 
 -- leaves (22) --
   ok [intrinsic] core::intrinsics::compare_bytes [intrinsic] <- <A as core::slice::cmp::SlicePartialEq<B>>::equal_same_length<u8,u8>
-  ok [no-mir,diverging] core::slice::index::slice_index_fail <- <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8>
-  ok [no-mir,diverging] core::slice::index::slice_index_fail <- <core::ops::range::RangeFrom<usize> as core::slice::index::SliceIndex<[T]>>::index<u8>
   ok [intrinsic] core::intrinsics::raw_eq<[u8; 8]> [intrinsic] <- <T as core::array::equality::SpecArrayEq<U, N>>::spec_eq<u8,u8,8>
   ok [intrinsic] core::intrinsics::raw_eq<[u32; 2]> [intrinsic] <- <T as core::array::equality::SpecArrayEq<U, N>>::spec_eq<u32,u32,2>
   ok [intrinsic] core::intrinsics::cold_path [intrinsic] <- core::intrinsics::unlikely
@@ -89,6 +87,8 @@ mono-items: 68 in local codegen units; 0 not reached by the walk
   ok [no-mir,diverging] core::panicking::panic_nounwind_fmt <- core::mem::alignment::Alignment::new_unchecked::precondition_check
   ok [no-mir,diverging] core::panicking::panic_nounwind_fmt <- core::ptr::write_bytes::precondition_check
   ok [no-mir,diverging] core::panicking::panic_nounwind_fmt <- core::ptr::copy_nonoverlapping::precondition_check
+  ok [no-mir,diverging] core::slice::index::slice_index_fail <- <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8>
+  ok [no-mir,diverging] core::slice::index::slice_index_fail <- <core::ops::range::RangeFrom<usize> as core::slice::index::SliceIndex<[T]>>::index<u8>
   ok [intrinsic] core::intrinsics::raw_eq<[u8; 4]> [intrinsic] <- <T as core::array::equality::SpecArrayEq<U, N>>::spec_eq<u8,u8,4>
   ok [ffi] alloc::alloc::__rust_no_alloc_shim_is_unstable_v2 <- alloc::alloc::alloc_zeroed
   ok [ffi] alloc::alloc::__rust_no_alloc_shim_is_unstable_v2 <- alloc::alloc::alloc
@@ -101,27 +101,27 @@ mono-items: 68 in local codegen units; 0 not reached by the walk
   ok PanicBoundsCheck in crate::alloc_guard::sites::try_copy
   ok PanicBoundsCheck in crate::icns::Entry::type_code
   ok PanicBoundsCheck in crate::icns::parse_tracked
+  ok PanicBoundsCheck in crate::icns::hex4_bytes
+  ok PanicBoundsCheck in crate::icns::be_u32
   ok PanicBoundsCheck in crate::icns::decode_rgb_tracked
   ok PanicBoundsCheck in <usize as core::slice::index::SliceIndex<[T]>>::index<u8>
   ok PanicBoundsCheck in <usize as core::slice::index::SliceIndex<[T]>>::index_mut<u8>
   ok PanicBoundsCheck in crate::icns::decode_mask_tracked
-  ok PanicBoundsCheck in crate::icns::hex4_bytes
-  ok PanicBoundsCheck in crate::icns::be_u32
-  ok PanicBoundsCheck in crate::icns::rle_decode_tracked
   ok PanicBoundsCheck in crate::icns::payload_starts_with
+  ok PanicBoundsCheck in crate::icns::rle_decode_tracked
   ok PanicBoundsCheck in crate::icns::rle_copy
 
 -- guard call sites and generic exports (14) --
   crate::alloc_guard::sites::try_with_room: 1 call site(s), expected 1
-      src/icns.rs:936:25: 940:6 (in crate::icns::parse_tracked)
+      src/icns.rs:1005:25: 1009:6 (in crate::icns::parse_tracked)
   crate::alloc_guard::try_zeroed: 5 call site(s), expected 5
-      src/icns.rs:1533:24: 1537:6 (in crate::icns::rle_decode_tracked)
-      src/icns.rs:1544:24: 1548:6 (in crate::icns::rle_decode_tracked)
-      src/icns.rs:1555:24: 1559:6 (in crate::icns::rle_decode_tracked)
-      src/icns.rs:2795:25: 2795:95 (in crate::icns::decode_rgb_tracked)
-      src/icns.rs:4050:25: 4050:99 (in crate::icns::combine_tracked)
+      src/icns.rs:1645:24: 1649:6 (in crate::icns::rle_decode_tracked)
+      src/icns.rs:1656:24: 1660:6 (in crate::icns::rle_decode_tracked)
+      src/icns.rs:1667:24: 1671:6 (in crate::icns::rle_decode_tracked)
+      src/icns.rs:2907:25: 2907:95 (in crate::icns::decode_rgb_tracked)
+      src/icns.rs:4235:25: 4235:99 (in crate::icns::combine_tracked)
   crate::alloc_guard::sites::try_copy: 1 call site(s), expected 1
-      src/icns.rs:3162:22: 3162:101 (in crate::icns::decode_mask_tracked)
+      src/icns.rs:3313:22: 3313:101 (in crate::icns::decode_mask_tracked)
   guard fn crate::alloc_guard::sites::try_copy: reaches an allocator sink; #[inline(never)] present
   guard fn crate::alloc_guard::try_zeroed: reaches an allocator sink; #[inline(never)] present
   guard fn crate::alloc_guard::sites::Reserved::<T>::push: reaches an allocator sink; #[inline(never)] present
@@ -129,7 +129,7 @@ mono-items: 68 in local codegen units; 0 not reached by the walk
 
 -- dependency contracts (0) --
 
--- edges (629) --
+-- edges (638) --
   crate::alloc_guard::sites::TryError::name -> crate::icns::Error::name [call] @ src/alloc_guard/sites.rs:67:36: 67:44
   crate::alloc_guard::sites::try_copy -> alloc::vec::Vec::<T>::new<u8> [inlined] @ src/alloc_guard/sites.rs:214:26: 214:36
   alloc::vec::Vec::<T>::new<u8> -> alloc::raw_vec::RawVec::<T>::new<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:462:20: 462:33
@@ -160,29 +160,30 @@ mono-items: 68 in local codegen units; 0 not reached by the walk
   crate::alloc_guard::try_zeroed -> alloc::vec::Vec::<T, A>::resize<u8,alloc::alloc::Global> [call] @ src/alloc_guard/mod.rs:135:13: 135:29
   crate::alloc_guard::try_zeroed -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/alloc_guard/mod.rs:144:1: 144:2
   crate::icns::Entry::type_code -> crate::icns::hex_nibble [inlined] @ src/icns.rs:158:22: 158:54
-  crate::icns::try_parse_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:1166:39: 1166:46
-  crate::icns::try_parse_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:1183:14: 1183:21
-  crate::icns::try_parse_logged -> crate::icns::parse_tracked [call] @ src/icns.rs:1166:18: 1166:57
-  crate::icns::try_parse -> crate::icns::try_parse_logged [call] @ src/icns.rs:1202:15: 1202:38
-  crate::icns::try_decode_rgb_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:2878:66: 2878:73
-  crate::icns::try_decode_rgb_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:2905:14: 2905:21
-  crate::icns::try_decode_rgb_logged -> crate::icns::decode_rgb_tracked [call] @ src/icns.rs:2878:18: 2878:84
-  crate::icns::try_decode_rgb -> crate::icns::try_decode_rgb_logged [call] @ src/icns.rs:2937:15: 2937:65
-  crate::icns::try_decode_mask_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:3206:66: 3206:73
-  crate::icns::try_decode_mask_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:3238:14: 3238:21
-  crate::icns::try_decode_mask_logged -> crate::icns::decode_mask_tracked [call] @ src/icns.rs:3206:18: 3206:84
-  crate::icns::try_decode_mask -> crate::icns::try_decode_mask_logged [call] @ src/icns.rs:3276:15: 3276:65
-  crate::icns::try_combine_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:4153:75: 4153:82
-  crate::icns::try_combine_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:4199:14: 4199:21
-  crate::icns::try_combine_logged -> crate::icns::combine_tracked [call] @ src/icns.rs:4153:18: 4153:93
-  crate::icns::try_combine -> crate::icns::try_combine_logged [call] @ src/icns.rs:4242:15: 4242:74
+  crate::icns::Parsed::<'a>::entries -> alloc::vec::Vec::<T, A>::as_slice<crate::icns::Entry,alloc::alloc::Global> [inlined] @ src/icns.rs:269:22: 269:32
+  alloc::vec::Vec::<T, A>::as_slice<crate::icns::Entry,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::as_ptr<crate::icns::Entry,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1865:76: 1865:84
+  alloc::vec::Vec::<T, A>::as_ptr<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVec::<T, A>::ptr<crate::icns::Entry,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1969:18: 1969:23
+  alloc::raw_vec::RawVec::<T, A>::ptr<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::ptr<alloc::alloc::Global,crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:296:20: 296:25
+  alloc::raw_vec::RawVecInner::<A>::ptr<alloc::alloc::Global,crate::icns::Entry> -> alloc::raw_vec::RawVecInner::<A>::non_null<alloc::alloc::Global,crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:606:14: 606:29
+  alloc::raw_vec::RawVecInner::<A>::non_null<alloc::alloc::Global,crate::icns::Entry> -> core::ptr::unique::Unique::<T>::cast<u8,crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:611:18: 611:24
+  core::ptr::unique::Unique::<T>::cast<u8,crate::icns::Entry> -> core::ptr::non_null::NonNull::<T>::cast<u8,crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/unique.rs:153:40: 153:46
+  core::ptr::non_null::NonNull::<T>::cast<u8,crate::icns::Entry> -> core::ptr::non_null::NonNull::<T>::as_ptr<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/non_null.rs:514:33: 514:41
+  alloc::raw_vec::RawVecInner::<A>::non_null<alloc::alloc::Global,crate::icns::Entry> -> core::ptr::unique::Unique::<T>::as_non_null_ptr<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:611:25: 611:42
+  alloc::raw_vec::RawVecInner::<A>::ptr<alloc::alloc::Global,crate::icns::Entry> -> core::ptr::non_null::NonNull::<T>::as_ptr<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:606:30: 606:38
+  crate::icns::try_parse -> crate::icns::try_parse_logged [call] @ src/icns.rs:1290:15: 1290:38
+  crate::icns::Parsed::<'a>::try_decode_rgb -> alloc::vec::Vec::<T, A>::as_slice<crate::icns::Entry,alloc::alloc::Global> [inlined] @ src/icns.rs:3113:49: 3113:59
+  crate::icns::Parsed::<'a>::try_decode_rgb -> crate::icns::try_decode_rgb [call] @ src/icns.rs:3113:9: 3113:73
+  crate::icns::Parsed::<'a>::try_decode_mask -> alloc::vec::Vec::<T, A>::as_slice<crate::icns::Entry,alloc::alloc::Global> [inlined] @ src/icns.rs:3486:50: 3486:60
+  crate::icns::Parsed::<'a>::try_decode_mask -> crate::icns::try_decode_mask [call] @ src/icns.rs:3486:9: 3486:73
+  crate::icns::Parsed::<'a>::try_combine -> alloc::vec::Vec::<T, A>::as_slice<crate::icns::Entry,alloc::alloc::Global> [inlined] @ src/icns.rs:4491:46: 4491:56
+  crate::icns::Parsed::<'a>::try_combine -> crate::icns::try_combine [call] @ src/icns.rs:4491:9: 4491:82
   <crate::icns::Entry as core::cmp::PartialEq>::eq -> core::array::equality::<impl core::cmp::PartialEq<[U; N]> for [T; N]>::eq<u8,u8,8> [inlined] @ src/icns.rs:118:5: 118:26
   core::array::equality::<impl core::cmp::PartialEq<[U; N]> for [T; N]>::eq<u8,u8,8> -> <T as core::array::equality::SpecArrayEq<U, N>>::spec_eq<u8,u8,8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/array/equality.rs:11:9: 11:42
   <crate::icns::Entry as core::cmp::PartialEq>::eq -> core::array::equality::<impl core::cmp::PartialEq<[U; N]> for [T; N]>::eq<u32,u32,2> [inlined] @ src/icns.rs:119:5: 119:26
   core::array::equality::<impl core::cmp::PartialEq<[U; N]> for [T; N]>::eq<u32,u32,2> -> <T as core::array::equality::SpecArrayEq<U, N>>::spec_eq<u32,u32,2> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/array/equality.rs:11:9: 11:42
   <crate::icns::Entry as core::cmp::PartialEq>::eq -> <core::option::Option<T> as core::cmp::PartialEq>::eq<u32> [inlined] @ src/icns.rs:121:5: 121:34
   <core::option::Option<T> as core::cmp::PartialEq>::eq<u32> -> core::cmp::impls::<impl core::cmp::PartialEq for u32>::eq [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:2440:35: 2440:43
-  <crate::icns::Decoded as core::cmp::PartialEq>::eq -> alloc::vec::partial_eq::<impl core::cmp::PartialEq<alloc::vec::Vec<U, A2>> for alloc::vec::Vec<T, A1>>::eq<u8,u8,alloc::alloc::Global,alloc::alloc::Global> [inlined] @ src/icns.rs:220:5: 220:22
+  <crate::icns::Decoded as core::cmp::PartialEq>::eq -> alloc::vec::partial_eq::<impl core::cmp::PartialEq<alloc::vec::Vec<U, A2>> for alloc::vec::Vec<T, A1>>::eq<u8,u8,alloc::alloc::Global,alloc::alloc::Global> [inlined] @ src/icns.rs:289:5: 289:22
   alloc::vec::partial_eq::<impl core::cmp::PartialEq<alloc::vec::Vec<U, A2>> for alloc::vec::Vec<T, A1>>::eq<u8,u8,alloc::alloc::Global,alloc::alloc::Global> -> <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,core::ops::range::RangeFull,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/partial_eq.rs:15:54: 15:58
   <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,core::ops::range::RangeFull,alloc::alloc::Global> -> <alloc::vec::Vec<T, A> as core::ops::deref::Deref>::deref<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3934:23: 3934:29
   <alloc::vec::Vec<T, A> as core::ops::deref::Deref>::deref<u8,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::as_slice<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3852:14: 3852:24
@@ -237,68 +238,12 @@ mono-items: 68 in local codegen units; 0 not reached by the walk
   alloc::vec::Vec::<T, A>::resize<u8,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::truncate<u8,alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3577:13: 3577:35
   alloc::vec::Vec::<T, A>::resize<u8,alloc::alloc::Global> -> core::ptr::drop_glue<u8> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3579:5: 3579:6
   alloc::vec::Vec::<T, A>::resize<u8,alloc::alloc::Global> -> core::ptr::drop_glue<u8> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3579:5: 3579:6
-  crate::icns::parse_tracked -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> [inlined] @ src/icns.rs:880:33: 880:39
-  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> -> <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:15: 19:26
-  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::num::<impl usize>::checked_sub [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:407:32: 407:72
-  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::get_offset_len_noubcheck<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:411:24: 411:76
-  crate::icns::parse_tracked -> crate::icns::entry_count_exec [inlined] @ src/icns.rs:925:17: 925:40
-  crate::icns::parse_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:939:9: 939:16
-  crate::icns::parse_tracked -> crate::icns::hex4_bytes [call] @ src/icns.rs:1066:17: 1066:33
-  crate::icns::parse_tracked -> crate::alloc_guard::sites::Reserved::<T>::push<crate::icns::Entry> [call] @ src/icns.rs:1113:9: 1113:24
-  crate::icns::parse_tracked -> crate::alloc_guard::sites::Reserved::<T>::into_vec<crate::icns::Entry> [call] @ src/icns.rs:1136:19: 1136:33
-  crate::icns::parse_tracked -> core::ptr::drop_glue<crate::alloc_guard::sites::Reserved<crate::icns::Entry>> [drop-glue] [drop] @ src/icns.rs:1145:1: 1145:2
-  crate::icns::parse_tracked -> core::ptr::drop_glue<crate::alloc_guard::sites::Reserved<crate::icns::Entry>> [drop-glue] [drop] @ src/icns.rs:1145:1: 1145:2
-  crate::icns::parse_tracked -> crate::icns::be_u32 [call] @ src/icns.rs:880:20: 880:40
-  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
-  crate::icns::parse_tracked -> crate::alloc_guard::sites::try_with_room<crate::icns::Entry> [call] @ src/icns.rs:936:25: 940:6
-  crate::icns::parse_tracked -> crate::icns::be_u32 [call] @ src/icns.rs:1009:22: 1009:54
-  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
-  crate::icns::parse_tracked -> crate::icns::classify [call] @ src/icns.rs:1065:48: 1065:71
-  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
-  crate::icns::decode_rgb_tracked -> core::array::equality::<impl core::cmp::PartialEq<[U; N]> for [T; N]>::eq<u8,u8,4> [inlined] @ src/icns.rs:2716:22: 2716:50
-  core::array::equality::<impl core::cmp::PartialEq<[U; N]> for [T; N]>::eq<u8,u8,4> -> <T as core::array::equality::SpecArrayEq<U, N>>::spec_eq<u8,u8,4> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/array/equality.rs:11:9: 11:42
-  crate::icns::decode_rgb_tracked -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::RangeFrom<usize>> [inlined] @ src/icns.rs:2731:17: 2731:22
-  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::RangeFrom<usize>> -> <core::ops::range::RangeFrom<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:15: 19:26
-  <core::ops::range::RangeFrom<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::get_offset_len_noubcheck<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:550:15: 550:67
-  crate::icns::decode_rgb_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:2748:57: 2748:64
-  crate::icns::decode_rgb_tracked -> <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,usize,alloc::alloc::Global> [inlined] @ src/icns.rs:2822:33: 2822:36
-  <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,usize,alloc::alloc::Global> -> <alloc::vec::Vec<T, A> as core::ops::deref::Deref>::deref<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3934:23: 3934:29
-  <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,usize,alloc::alloc::Global> -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,usize> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3934:9: 3934:37
-  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:15: 19:26
-  crate::icns::decode_rgb_tracked -> <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> [inlined] @ src/icns.rs:2822:12: 2822:19
-  <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> -> <alloc::vec::Vec<T, A> as core::ops::deref::DerefMut>::deref_mut<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3943:34: 3943:40
-  <alloc::vec::Vec<T, A> as core::ops::deref::DerefMut>::deref_mut<u8,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::as_mut_slice<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3861:14: 3861:28
-  alloc::vec::Vec::<T, A>::as_mut_slice<u8,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::as_mut_ptr<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1904:78: 1904:90
-  <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> -> core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3943:9: 3943:48
-  core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index_mut<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:32:15: 32:30
-  crate::icns::decode_rgb_tracked -> crate::icns::Entry::type_code [call] @ src/icns.rs:2674:16: 2674:33
-  crate::icns::decode_rgb_tracked -> crate::icns::legacy_side [call] @ src/icns.rs:2675:35: 2675:52
-  crate::icns::decode_rgb_tracked -> crate::icns::payload_range [call] @ src/icns.rs:2713:19: 2713:46
-  crate::icns::decode_rgb_tracked -> crate::icns::rle_decode_tracked [call] @ src/icns.rs:2748:26: 2748:70
-  crate::icns::decode_rgb_tracked -> crate::alloc_guard::try_zeroed [call] @ src/icns.rs:2795:25: 2795:95
-  crate::icns::decode_rgb_tracked -> core::ptr::drop_glue<[alloc::vec::Vec<u8>; 3]> [drop-glue] [drop] @ src/icns.rs:2854:1: 2854:2
-  crate::icns::decode_rgb_tracked -> core::ptr::drop_glue<[alloc::vec::Vec<u8>; 3]> [drop-glue] [drop] @ src/icns.rs:2854:1: 2854:2
-  crate::icns::decode_rgb_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/icns.rs:2854:1: 2854:2
-  crate::icns::decode_rgb_tracked -> core::ptr::drop_glue<[alloc::vec::Vec<u8>; 3]> [drop-glue] [drop] @ src/icns.rs:2854:1: 2854:2
-  <core::ops::range::RangeFrom<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:545:13: 545:67
-  crate::icns::decode_mask_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:3162:88: 3162:95
-  crate::icns::decode_mask_tracked -> crate::icns::Entry::type_code [call] @ src/icns.rs:3098:16: 3098:33
-  crate::icns::decode_mask_tracked -> crate::icns::legacy_side [call] @ src/icns.rs:3099:35: 3099:52
-  crate::icns::decode_mask_tracked -> crate::icns::payload_range [call] @ src/icns.rs:3134:19: 3134:46
-  crate::icns::decode_mask_tracked -> crate::alloc_guard::sites::try_copy [call] @ src/icns.rs:3162:22: 3162:101
-  crate::icns::combine_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:3901:60: 3901:67
-  crate::icns::combine_tracked -> <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,usize,alloc::alloc::Global> [inlined] @ src/icns.rs:4091:30: 4091:37
-  crate::icns::combine_tracked -> <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> [inlined] @ src/icns.rs:4091:12: 4091:19
-  crate::icns::combine_tracked -> crate::icns::decode_rgb_tracked [call] @ src/icns.rs:3901:21: 3901:73
-  crate::icns::combine_tracked -> crate::icns::decode_mask_tracked [call] @ src/icns.rs:3940:22: 3940:75
-  crate::icns::combine_tracked -> crate::alloc_guard::try_zeroed [call] @ src/icns.rs:4050:25: 4050:99
-  crate::icns::combine_tracked -> core::ptr::drop_glue<crate::icns::Decoded> [drop-glue] [drop] @ src/icns.rs:4125:1: 4125:2
-  crate::icns::combine_tracked -> core::ptr::drop_glue<crate::icns::Decoded> [drop-glue] [drop] @ src/icns.rs:4125:1: 4125:2
-  crate::icns::combine_tracked -> core::ptr::drop_glue<crate::icns::Decoded> [drop-glue] [drop] @ src/icns.rs:4125:1: 4125:2
-  crate::icns::combine_tracked -> core::ptr::drop_glue<crate::icns::Decoded> [drop-glue] [drop] @ src/icns.rs:4125:1: 4125:2
-  crate::icns::combine_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/icns.rs:4125:1: 4125:2
-  crate::icns::combine_tracked -> core::ptr::drop_glue<crate::icns::Decoded> [drop-glue] [drop] @ src/icns.rs:4125:1: 4125:2
-  crate::icns::combine_tracked -> core::ptr::drop_glue<crate::icns::Decoded> [drop-glue] [drop] @ src/icns.rs:4125:1: 4125:2
+  crate::icns::try_parse_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:1234:39: 1234:46
+  crate::icns::try_parse_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:1251:14: 1251:21
+  crate::icns::try_parse_logged -> crate::icns::parse_tracked [call] @ src/icns.rs:1234:18: 1234:57
+  crate::icns::try_decode_rgb -> crate::icns::try_decode_rgb_logged [call] @ src/icns.rs:3048:15: 3048:65
+  crate::icns::try_decode_mask -> crate::icns::try_decode_mask_logged [call] @ src/icns.rs:3426:15: 3426:65
+  crate::icns::try_combine -> crate::icns::try_combine_logged [call] @ src/icns.rs:4426:15: 4426:74
   core::array::equality::<impl core::cmp::PartialEq<[U; N]> for [T; N]>::eq<u8,u8,8> -> <T as core::array::equality::SpecArrayEq<U, N>>::spec_eq<u8,u8,8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/array/equality.rs:11:9: 11:42
   <T as core::array::equality::SpecArrayEq<U, N>>::spec_eq<u8,u8,8> -> core::intrinsics::raw_eq<[u8; 8]> [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/array/equality.rs:157:18: 157:72
   core::array::equality::<impl core::cmp::PartialEq<[U; N]> for [T; N]>::eq<u32,u32,2> -> <T as core::array::equality::SpecArrayEq<U, N>>::spec_eq<u32,u32,2> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/array/equality.rs:11:9: 11:42
@@ -374,56 +319,33 @@ mono-items: 68 in local codegen units; 0 not reached by the walk
   alloc::vec::Vec::<T, A>::truncate<u8,alloc::alloc::Global> -> core::ptr::mut_ptr::<impl *mut T>::cast_slice<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1827:48: 1827:73
   alloc::vec::Vec::<T, A>::truncate<u8,alloc::alloc::Global> -> core::ptr::drop_in_place<[u8]> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1829:13: 1829:34
   core::ptr::drop_in_place<[u8]> -> core::ptr::drop_glue<[u8]> [drop-glue] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:842:14: 842:38
-  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> -> <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
+  crate::icns::parse_tracked -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> [inlined] @ src/icns.rs:949:33: 949:39
+  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> -> <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:15: 19:26
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::num::<impl usize>::checked_sub [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:407:32: 407:72
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::get_offset_len_noubcheck<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:411:24: 411:76
+  crate::icns::parse_tracked -> crate::icns::entry_count_exec [inlined] @ src/icns.rs:994:17: 994:40
+  crate::icns::parse_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:1008:9: 1008:16
+  crate::icns::parse_tracked -> crate::icns::hex4_bytes [call] @ src/icns.rs:1135:17: 1135:33
+  crate::icns::parse_tracked -> crate::alloc_guard::sites::Reserved::<T>::push<crate::icns::Entry> [call] @ src/icns.rs:1182:9: 1182:24
+  crate::icns::parse_tracked -> crate::alloc_guard::sites::Reserved::<T>::into_vec<crate::icns::Entry> [call] @ src/icns.rs:1205:19: 1205:33
+  crate::icns::parse_tracked -> core::ptr::drop_glue<crate::alloc_guard::sites::Reserved<crate::icns::Entry>> [drop-glue] [drop] @ src/icns.rs:1214:1: 1214:2
+  crate::icns::parse_tracked -> core::ptr::drop_glue<crate::alloc_guard::sites::Reserved<crate::icns::Entry>> [drop-glue] [drop] @ src/icns.rs:1214:1: 1214:2
+  crate::icns::parse_tracked -> crate::icns::be_u32 [call] @ src/icns.rs:949:20: 949:40
   <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
-  crate::icns::hex4_bytes -> crate::icns::hex_digit_byte [call] @ src/icns.rs:426:20: 426:48
-  crate::icns::hex4_bytes -> crate::icns::hex_digit_byte [call] @ src/icns.rs:427:24: 427:52
-  crate::alloc_guard::sites::Reserved::<T>::push<crate::icns::Entry> -> alloc::vec::Vec::<T, A>::push<crate::icns::Entry,alloc::alloc::Global> [inlined] @ src/alloc_guard/sites.rs:264:16: 264:23
-  alloc::vec::Vec::<T, A>::push<crate::icns::Entry,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::push_mut<crate::icns::Entry,alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:996:17: 996:37
-  core::ptr::drop_glue<crate::alloc_guard::sites::Reserved<crate::icns::Entry>> [drop-glue] -> core::ptr::drop_glue<alloc::vec::Vec<crate::icns::Entry>> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
-  crate::alloc_guard::sites::try_with_room<crate::icns::Entry> -> alloc::vec::Vec::<T>::new<crate::icns::Entry> [inlined] @ src/alloc_guard/sites.rs:293:25: 293:35
-  alloc::vec::Vec::<T>::new<crate::icns::Entry> -> alloc::raw_vec::RawVec::<T>::new<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:462:20: 462:33
-  alloc::raw_vec::RawVec::<T>::new<crate::icns::Entry> -> alloc::raw_vec::RawVec::<T, A>::new_in<crate::icns::Entry,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:104:9: 104:29
-  alloc::raw_vec::RawVec::<T, A>::new_in<crate::icns::Entry,alloc::alloc::Global> -> core::mem::alignment::Alignment::of<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:202:50: 202:70
-  alloc::raw_vec::RawVec::<T, A>::new_in<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::new_in<alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:202:23: 202:71
-  crate::alloc_guard::sites::try_with_room<crate::icns::Entry> -> verus_builtin::Ghost::<A>::assume_new_fallback<verus_builtin::nat> [inlined] @ src/alloc_guard/sites.rs:296:39: 296:44
-  crate::alloc_guard::sites::try_with_room<crate::icns::Entry> -> alloc::vec::Vec::<T, A>::try_reserve_exact<crate::icns::Entry,alloc::alloc::Global> [inlined] @ src/alloc_guard/sites.rs:298:13: 298:33
-  alloc::vec::Vec::<T, A>::try_reserve_exact<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<crate::icns::Entry,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1571:18: 1571:57
-  alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:384:18: 384:74
-  crate::alloc_guard::sites::try_with_room<crate::icns::Entry> -> core::ptr::drop_glue<alloc::vec::Vec<crate::icns::Entry>> [drop-glue] [drop] @ src/alloc_guard/sites.rs:308:1: 308:2
-  crate::alloc_guard::sites::try_with_room<crate::icns::Entry> -> core::ptr::drop_glue<alloc::vec::Vec<crate::icns::Entry>> [drop-glue] [drop] @ src/alloc_guard/sites.rs:308:1: 308:2
-  crate::icns::classify -> core::option::Option::<T>::is_some<(bool, u32)> [inlined] @ src/icns.rs:346:26: 346:35
-  crate::icns::classify -> core::option::Option::<T>::is_some<u32> [inlined] @ src/icns.rs:350:33: 350:42
-  crate::icns::classify -> crate::icns::legacy_side [call] @ src/icns.rs:346:8: 346:25
-  crate::icns::classify -> crate::icns::nominal_side_table [call] @ src/icns.rs:350:8: 350:32
-  crate::icns::classify -> crate::icns::nominal_side_table [call] @ src/icns.rs:352:23: 352:47
-  crate::icns::classify -> crate::icns::payload_starts_with [call] @ src/icns.rs:357:15: 357:49
-  crate::icns::classify -> crate::icns::payload_starts_with [call] @ src/icns.rs:357:53: 357:87
-  core::array::equality::<impl core::cmp::PartialEq<[U; N]> for [T; N]>::eq<u8,u8,4> -> <T as core::array::equality::SpecArrayEq<U, N>>::spec_eq<u8,u8,4> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/array/equality.rs:11:9: 11:42
-  <T as core::array::equality::SpecArrayEq<U, N>>::spec_eq<u8,u8,4> -> core::intrinsics::raw_eq<[u8; 4]> [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/array/equality.rs:157:18: 157:72
-  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::RangeFrom<usize>> -> <core::ops::range::RangeFrom<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
-  <core::ops::range::RangeFrom<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:545:13: 545:67
-  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
-  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
-  core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index_mut<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:32:9: 32:30
-  core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index_mut<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:32:9: 32:30
-  crate::icns::legacy_side -> core::array::equality::<impl core::cmp::PartialEq<[U; N]> for [T; N]>::eq<u8,u8,4> [inlined] @ src/icns.rs:229:8: 229:36
-  crate::icns::payload_range -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> [inlined] @ src/icns.rs:1885:11: 1885:65
+  crate::icns::parse_tracked -> crate::alloc_guard::sites::try_with_room<crate::icns::Entry> [call] @ src/icns.rs:1005:25: 1009:6
+  crate::icns::parse_tracked -> crate::icns::be_u32 [call] @ src/icns.rs:1078:22: 1078:54
   <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
-  crate::icns::rle_decode_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:1536:9: 1536:16
-  crate::icns::rle_decode_tracked -> crate::alloc_guard::try_zeroed [call] @ src/icns.rs:1533:24: 1537:6
-  crate::icns::rle_decode_tracked -> crate::alloc_guard::try_zeroed [call] @ src/icns.rs:1544:24: 1548:6
-  crate::icns::rle_decode_tracked -> crate::alloc_guard::try_zeroed [call] @ src/icns.rs:1555:24: 1559:6
-  crate::icns::rle_decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/icns.rs:1817:1: 1817:2
-  crate::icns::rle_decode_tracked -> crate::icns::rle_copy [call] @ src/icns.rs:1736:13: 1736:83
-  crate::icns::rle_decode_tracked -> core::ptr::drop_glue<[alloc::vec::Vec<u8>; 3]> [drop-glue] [drop] @ src/icns.rs:1817:1: 1817:2
-  crate::icns::rle_decode_tracked -> core::ptr::drop_glue<[alloc::vec::Vec<u8>; 3]> [drop-glue] [drop] @ src/icns.rs:1817:1: 1817:2
-  crate::icns::rle_decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/icns.rs:1817:1: 1817:2
-  crate::icns::rle_decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/icns.rs:1817:1: 1817:2
-  crate::icns::rle_decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/icns.rs:1817:1: 1817:2
-  crate::icns::rle_decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/icns.rs:1817:1: 1817:2
-  core::ptr::drop_glue<[alloc::vec::Vec<u8>; 3]> [drop-glue] -> core::ptr::drop_glue<[alloc::vec::Vec<u8>]> [drop-glue] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
-  core::ptr::drop_glue<crate::icns::Decoded> [drop-glue] -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
+  crate::icns::parse_tracked -> crate::icns::classify [call] @ src/icns.rs:1134:48: 1134:71
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
+  crate::icns::try_decode_rgb_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:2989:66: 2989:73
+  crate::icns::try_decode_rgb_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:3016:14: 3016:21
+  crate::icns::try_decode_rgb_logged -> crate::icns::decode_rgb_tracked [call] @ src/icns.rs:2989:18: 2989:84
+  crate::icns::try_decode_mask_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:3356:66: 3356:73
+  crate::icns::try_decode_mask_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:3388:14: 3388:21
+  crate::icns::try_decode_mask_logged -> crate::icns::decode_mask_tracked [call] @ src/icns.rs:3356:18: 3356:84
+  crate::icns::try_combine_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:4337:75: 4337:82
+  crate::icns::try_combine_logged -> verus_builtin::Tracked::<A>::assume_new_fallback<crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:4383:14: 4383:21
+  crate::icns::try_combine_logged -> crate::icns::combine_tracked [call] @ src/icns.rs:4337:18: 4337:93
   core::intrinsics::raw_eq<[u8; 8]> [intrinsic] -> core::intrinsics::raw_eq<[u8; 8]> [intrinsic-fallback] @ <no span>
   core::intrinsics::raw_eq<[u32; 2]> [intrinsic] -> core::intrinsics::raw_eq<[u32; 2]> [intrinsic-fallback] @ <no span>
   <T as core::convert::Into<U>>::into<alloc::collections::TryReserveErrorKind,alloc::collections::TryReserveError> -> <alloc::collections::TryReserveError as core::convert::From<alloc::collections::TryReserveErrorKind>>::from [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/convert/mod.rs:781:9: 781:22
@@ -500,35 +422,75 @@ mono-items: 68 in local codegen units; 0 not reached by the walk
   core::num::<impl usize>::unchecked_add::precondition_check -> core::num::<impl usize>::overflowing_add [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:1008:27: 1008:47
   core::num::<impl usize>::unchecked_add::precondition_check -> core::fmt::Arguments::<'a>::from_str [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:73:59: 73:96
   core::num::<impl usize>::unchecked_add::precondition_check -> core::panicking::panic_nounwind_fmt [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:73:21: 73:104
-  crate::icns::hex_digit_byte -> crate::icns::hex_digit [call] @ src/icns.rs:401:13: 401:25
+  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> -> <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
+  crate::icns::hex4_bytes -> crate::icns::hex_digit_byte [call] @ src/icns.rs:495:20: 495:48
+  crate::icns::hex4_bytes -> crate::icns::hex_digit_byte [call] @ src/icns.rs:496:24: 496:52
+  crate::alloc_guard::sites::Reserved::<T>::push<crate::icns::Entry> -> alloc::vec::Vec::<T, A>::push<crate::icns::Entry,alloc::alloc::Global> [inlined] @ src/alloc_guard/sites.rs:264:16: 264:23
   alloc::vec::Vec::<T, A>::push<crate::icns::Entry,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::push_mut<crate::icns::Entry,alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:996:17: 996:37
-  alloc::vec::Vec::<T, A>::push_mut<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVec::<T, A>::capacity<crate::icns::Entry,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1032:28: 1032:38
-  alloc::raw_vec::RawVec::<T, A>::capacity<crate::icns::Entry,alloc::alloc::Global> -> core::mem::size_of<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:309:29: 309:43
-  alloc::raw_vec::RawVec::<T, A>::capacity<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::capacity<alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:309:20: 309:44
-  alloc::vec::Vec::<T, A>::push_mut<crate::icns::Entry,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::as_mut_ptr<crate::icns::Entry,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1036:28: 1036:40
-  alloc::vec::Vec::<T, A>::as_mut_ptr<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVec::<T, A>::ptr<crate::icns::Entry,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:2053:18: 2053:23
-  alloc::raw_vec::RawVec::<T, A>::ptr<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::ptr<alloc::alloc::Global,crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:296:20: 296:25
-  alloc::raw_vec::RawVecInner::<A>::ptr<alloc::alloc::Global,crate::icns::Entry> -> alloc::raw_vec::RawVecInner::<A>::non_null<alloc::alloc::Global,crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:606:14: 606:29
-  alloc::raw_vec::RawVecInner::<A>::non_null<alloc::alloc::Global,crate::icns::Entry> -> core::ptr::unique::Unique::<T>::cast<u8,crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:611:18: 611:24
-  core::ptr::unique::Unique::<T>::cast<u8,crate::icns::Entry> -> core::ptr::non_null::NonNull::<T>::cast<u8,crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/unique.rs:153:40: 153:46
-  core::ptr::non_null::NonNull::<T>::cast<u8,crate::icns::Entry> -> core::ptr::non_null::NonNull::<T>::as_ptr<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/non_null.rs:514:33: 514:41
-  alloc::raw_vec::RawVecInner::<A>::non_null<alloc::alloc::Global,crate::icns::Entry> -> core::ptr::unique::Unique::<T>::as_non_null_ptr<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:611:25: 611:42
-  alloc::raw_vec::RawVecInner::<A>::ptr<alloc::alloc::Global,crate::icns::Entry> -> core::ptr::non_null::NonNull::<T>::as_ptr<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:606:30: 606:38
-  alloc::vec::Vec::<T, A>::push_mut<crate::icns::Entry,alloc::alloc::Global> -> core::ptr::mut_ptr::<impl *mut T>::add<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1036:41: 1036:49
-  alloc::vec::Vec::<T, A>::push_mut<crate::icns::Entry,alloc::alloc::Global> -> core::ptr::write<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1037:13: 1037:35
-  alloc::vec::Vec::<T, A>::push_mut<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVec::<T, A>::grow_one<crate::icns::Entry,alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1033:13: 1033:32
-  alloc::vec::Vec::<T, A>::push_mut<crate::icns::Entry,alloc::alloc::Global> -> core::ptr::drop_glue<crate::icns::Entry> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1042:5: 1042:6
-  core::ptr::drop_glue<alloc::vec::Vec<crate::icns::Entry>> [drop-glue] -> <alloc::vec::Vec<T, A> as core::ops::drop::Drop>::drop<crate::icns::Entry,alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
-  core::ptr::drop_glue<alloc::vec::Vec<crate::icns::Entry>> [drop-glue] -> core::ptr::drop_glue<alloc::raw_vec::RawVec<crate::icns::Entry>> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
-  core::ptr::drop_glue<alloc::vec::Vec<crate::icns::Entry>> [drop-glue] -> core::ptr::drop_glue<alloc::raw_vec::RawVec<crate::icns::Entry>> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
+  core::ptr::drop_glue<crate::alloc_guard::sites::Reserved<crate::icns::Entry>> [drop-glue] -> core::ptr::drop_glue<alloc::vec::Vec<crate::icns::Entry>> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
+  crate::alloc_guard::sites::try_with_room<crate::icns::Entry> -> alloc::vec::Vec::<T>::new<crate::icns::Entry> [inlined] @ src/alloc_guard/sites.rs:293:25: 293:35
+  alloc::vec::Vec::<T>::new<crate::icns::Entry> -> alloc::raw_vec::RawVec::<T>::new<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:462:20: 462:33
+  alloc::raw_vec::RawVec::<T>::new<crate::icns::Entry> -> alloc::raw_vec::RawVec::<T, A>::new_in<crate::icns::Entry,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:104:9: 104:29
+  alloc::raw_vec::RawVec::<T, A>::new_in<crate::icns::Entry,alloc::alloc::Global> -> core::mem::alignment::Alignment::of<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:202:50: 202:70
+  alloc::raw_vec::RawVec::<T, A>::new_in<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::new_in<alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:202:23: 202:71
+  crate::alloc_guard::sites::try_with_room<crate::icns::Entry> -> verus_builtin::Ghost::<A>::assume_new_fallback<verus_builtin::nat> [inlined] @ src/alloc_guard/sites.rs:296:39: 296:44
+  crate::alloc_guard::sites::try_with_room<crate::icns::Entry> -> alloc::vec::Vec::<T, A>::try_reserve_exact<crate::icns::Entry,alloc::alloc::Global> [inlined] @ src/alloc_guard/sites.rs:298:13: 298:33
+  alloc::vec::Vec::<T, A>::try_reserve_exact<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<crate::icns::Entry,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1571:18: 1571:57
   alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:384:18: 384:74
-  alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:384:18: 384:74
-  crate::icns::nominal_side_table -> core::array::equality::<impl core::cmp::PartialEq<[U; N]> for [T; N]>::eq<u8,u8,4> [inlined] @ src/icns.rs:265:8: 265:36
-  core::intrinsics::raw_eq<[u8; 4]> [intrinsic] -> core::intrinsics::raw_eq<[u8; 4]> [intrinsic-fallback] @ <no span>
-  crate::icns::rle_copy -> alloc::vec::Vec::<T, A>::len<u8,alloc::alloc::Global> [inlined] @ src/icns.rs:1240:24: 1240:29
-  crate::icns::rle_copy -> <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> [inlined] @ src/icns.rs:1271:16: 1271:21
-  core::ptr::drop_glue<[alloc::vec::Vec<u8>]> [drop-glue] -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
-  core::ptr::drop_glue<[alloc::vec::Vec<u8>]> [drop-glue] -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
+  crate::alloc_guard::sites::try_with_room<crate::icns::Entry> -> core::ptr::drop_glue<alloc::vec::Vec<crate::icns::Entry>> [drop-glue] [drop] @ src/alloc_guard/sites.rs:308:1: 308:2
+  crate::alloc_guard::sites::try_with_room<crate::icns::Entry> -> core::ptr::drop_glue<alloc::vec::Vec<crate::icns::Entry>> [drop-glue] [drop] @ src/alloc_guard/sites.rs:308:1: 308:2
+  crate::icns::classify -> core::option::Option::<T>::is_some<(bool, u32)> [inlined] @ src/icns.rs:415:26: 415:35
+  crate::icns::classify -> core::option::Option::<T>::is_some<u32> [inlined] @ src/icns.rs:419:33: 419:42
+  crate::icns::classify -> crate::icns::legacy_side [call] @ src/icns.rs:415:8: 415:25
+  crate::icns::classify -> crate::icns::nominal_side_table [call] @ src/icns.rs:419:8: 419:32
+  crate::icns::classify -> crate::icns::nominal_side_table [call] @ src/icns.rs:421:23: 421:47
+  crate::icns::classify -> crate::icns::payload_starts_with [call] @ src/icns.rs:426:15: 426:49
+  crate::icns::classify -> crate::icns::payload_starts_with [call] @ src/icns.rs:426:53: 426:87
+  crate::icns::decode_rgb_tracked -> core::array::equality::<impl core::cmp::PartialEq<[U; N]> for [T; N]>::eq<u8,u8,4> [inlined] @ src/icns.rs:2828:22: 2828:50
+  core::array::equality::<impl core::cmp::PartialEq<[U; N]> for [T; N]>::eq<u8,u8,4> -> <T as core::array::equality::SpecArrayEq<U, N>>::spec_eq<u8,u8,4> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/array/equality.rs:11:9: 11:42
+  crate::icns::decode_rgb_tracked -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::RangeFrom<usize>> [inlined] @ src/icns.rs:2843:17: 2843:22
+  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::RangeFrom<usize>> -> <core::ops::range::RangeFrom<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:15: 19:26
+  <core::ops::range::RangeFrom<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::get_offset_len_noubcheck<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:550:15: 550:67
+  crate::icns::decode_rgb_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:2860:57: 2860:64
+  crate::icns::decode_rgb_tracked -> <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,usize,alloc::alloc::Global> [inlined] @ src/icns.rs:2934:33: 2934:36
+  <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,usize,alloc::alloc::Global> -> <alloc::vec::Vec<T, A> as core::ops::deref::Deref>::deref<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3934:23: 3934:29
+  <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,usize,alloc::alloc::Global> -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,usize> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3934:9: 3934:37
+  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:15: 19:26
+  crate::icns::decode_rgb_tracked -> <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> [inlined] @ src/icns.rs:2934:12: 2934:19
+  <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> -> <alloc::vec::Vec<T, A> as core::ops::deref::DerefMut>::deref_mut<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3943:34: 3943:40
+  <alloc::vec::Vec<T, A> as core::ops::deref::DerefMut>::deref_mut<u8,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::as_mut_slice<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3861:14: 3861:28
+  alloc::vec::Vec::<T, A>::as_mut_slice<u8,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::as_mut_ptr<u8,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1904:78: 1904:90
+  <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> -> core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:3943:9: 3943:48
+  core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index_mut<u8> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:32:15: 32:30
+  crate::icns::decode_rgb_tracked -> crate::icns::Entry::type_code [call] @ src/icns.rs:2786:16: 2786:33
+  crate::icns::decode_rgb_tracked -> crate::icns::legacy_side [call] @ src/icns.rs:2787:35: 2787:52
+  crate::icns::decode_rgb_tracked -> crate::icns::payload_range [call] @ src/icns.rs:2825:19: 2825:46
+  crate::icns::decode_rgb_tracked -> crate::icns::rle_decode_tracked [call] @ src/icns.rs:2860:26: 2860:70
+  crate::icns::decode_rgb_tracked -> crate::alloc_guard::try_zeroed [call] @ src/icns.rs:2907:25: 2907:95
+  crate::icns::decode_rgb_tracked -> core::ptr::drop_glue<[alloc::vec::Vec<u8>; 3]> [drop-glue] [drop] @ src/icns.rs:2966:1: 2966:2
+  crate::icns::decode_rgb_tracked -> core::ptr::drop_glue<[alloc::vec::Vec<u8>; 3]> [drop-glue] [drop] @ src/icns.rs:2966:1: 2966:2
+  crate::icns::decode_rgb_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/icns.rs:2966:1: 2966:2
+  crate::icns::decode_rgb_tracked -> core::ptr::drop_glue<[alloc::vec::Vec<u8>; 3]> [drop-glue] [drop] @ src/icns.rs:2966:1: 2966:2
+  <core::ops::range::RangeFrom<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:545:13: 545:67
+  crate::icns::decode_mask_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:3313:88: 3313:95
+  crate::icns::decode_mask_tracked -> crate::icns::Entry::type_code [call] @ src/icns.rs:3249:16: 3249:33
+  crate::icns::decode_mask_tracked -> crate::icns::legacy_side [call] @ src/icns.rs:3250:35: 3250:52
+  crate::icns::decode_mask_tracked -> crate::icns::payload_range [call] @ src/icns.rs:3285:19: 3285:46
+  crate::icns::decode_mask_tracked -> crate::alloc_guard::sites::try_copy [call] @ src/icns.rs:3313:22: 3313:101
+  crate::icns::combine_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:4086:60: 4086:67
+  crate::icns::combine_tracked -> <alloc::vec::Vec<T, A> as core::ops::index::Index<I>>::index<u8,usize,alloc::alloc::Global> [inlined] @ src/icns.rs:4276:30: 4276:37
+  crate::icns::combine_tracked -> <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> [inlined] @ src/icns.rs:4276:12: 4276:19
+  crate::icns::combine_tracked -> crate::icns::decode_rgb_tracked [call] @ src/icns.rs:4086:21: 4086:73
+  crate::icns::combine_tracked -> crate::icns::decode_mask_tracked [call] @ src/icns.rs:4125:22: 4125:75
+  crate::icns::combine_tracked -> crate::alloc_guard::try_zeroed [call] @ src/icns.rs:4235:25: 4235:99
+  crate::icns::combine_tracked -> core::ptr::drop_glue<crate::icns::Decoded> [drop-glue] [drop] @ src/icns.rs:4310:1: 4310:2
+  crate::icns::combine_tracked -> core::ptr::drop_glue<crate::icns::Decoded> [drop-glue] [drop] @ src/icns.rs:4310:1: 4310:2
+  crate::icns::combine_tracked -> core::ptr::drop_glue<crate::icns::Decoded> [drop-glue] [drop] @ src/icns.rs:4310:1: 4310:2
+  crate::icns::combine_tracked -> core::ptr::drop_glue<crate::icns::Decoded> [drop-glue] [drop] @ src/icns.rs:4310:1: 4310:2
+  crate::icns::combine_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/icns.rs:4310:1: 4310:2
+  crate::icns::combine_tracked -> core::ptr::drop_glue<crate::icns::Decoded> [drop-glue] [drop] @ src/icns.rs:4310:1: 4310:2
+  crate::icns::combine_tracked -> core::ptr::drop_glue<crate::icns::Decoded> [drop-glue] [drop] @ src/icns.rs:4310:1: 4310:2
   core::intrinsics::unlikely -> core::intrinsics::cold_path [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs:479:9: 479:20
   core::alloc::layout::Layout::from_size_alignment_unchecked -> core::alloc::layout::Layout::from_size_alignment_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
   core::alloc::layout::Layout::from_size_alignment_unchecked -> core::alloc::layout::Layout::from_size_alignment_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
@@ -566,17 +528,48 @@ mono-items: 68 in local codegen units; 0 not reached by the walk
   alloc::raw_vec::RawVecInner::<A>::reserve<alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::reserve::do_reserve_and_handle<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:672:17: 672:74
   alloc::raw_vec::RawVecInner::<A>::reserve::do_reserve_and_handle<alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::grow_amortized<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:665:40: 665:88
   alloc::raw_vec::RawVecInner::<A>::reserve::do_reserve_and_handle<alloc::alloc::Global> -> alloc::raw_vec::handle_error [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:666:17: 666:34
-  alloc::raw_vec::RawVec::<T, A>::grow_one<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::grow_one<alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:188:29: 188:48
-  alloc::raw_vec::RawVecInner::<A>::grow_one<alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::grow_amortized<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:493:36: 493:92
-  alloc::raw_vec::RawVecInner::<A>::grow_one<alloc::alloc::Global> -> alloc::raw_vec::handle_error [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:494:13: 494:30
-  <alloc::vec::Vec<T, A> as core::ops::drop::Drop>::drop<crate::icns::Entry,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::as_mut_ptr<crate::icns::Entry,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:4358:18: 4358:30
-  <alloc::vec::Vec<T, A> as core::ops::drop::Drop>::drop<crate::icns::Entry,alloc::alloc::Global> -> core::ptr::mut_ptr::<impl *mut T>::cast_slice<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:4358:31: 4358:51
-  core::ptr::mut_ptr::<impl *mut T>::cast_slice<crate::icns::Entry> -> core::ptr::slice_from_raw_parts_mut<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs:1686:9: 1686:44
-  core::ptr::slice_from_raw_parts_mut<crate::icns::Entry> -> core::ptr::metadata::from_raw_parts_mut<[crate::icns::Entry],crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:1260:5: 1260:34
-  <alloc::vec::Vec<T, A> as core::ops::drop::Drop>::drop<crate::icns::Entry,alloc::alloc::Global> -> core::ptr::mut_ptr::<impl *mut T>::drop_in_place<[crate::icns::Entry]> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:4358:52: 4358:67
-  core::ptr::mut_ptr::<impl *mut T>::drop_in_place<[crate::icns::Entry]> -> core::ptr::drop_in_place<[crate::icns::Entry]> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs:1384:18: 1384:37
-  core::ptr::drop_in_place<[crate::icns::Entry]> -> core::ptr::drop_glue<[crate::icns::Entry]> [drop-glue] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:842:14: 842:38
-  core::ptr::drop_glue<alloc::raw_vec::RawVec<crate::icns::Entry>> [drop-glue] -> <alloc::raw_vec::RawVec<T, A> as core::ops::drop::Drop>::drop<crate::icns::Entry,alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
+  crate::icns::hex_digit_byte -> crate::icns::hex_digit [call] @ src/icns.rs:470:13: 470:25
+  alloc::vec::Vec::<T, A>::push<crate::icns::Entry,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::push_mut<crate::icns::Entry,alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:996:17: 996:37
+  alloc::vec::Vec::<T, A>::push_mut<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVec::<T, A>::capacity<crate::icns::Entry,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1032:28: 1032:38
+  alloc::raw_vec::RawVec::<T, A>::capacity<crate::icns::Entry,alloc::alloc::Global> -> core::mem::size_of<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:309:29: 309:43
+  alloc::raw_vec::RawVec::<T, A>::capacity<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::capacity<alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:309:20: 309:44
+  alloc::vec::Vec::<T, A>::push_mut<crate::icns::Entry,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::as_mut_ptr<crate::icns::Entry,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1036:28: 1036:40
+  alloc::vec::Vec::<T, A>::as_mut_ptr<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVec::<T, A>::ptr<crate::icns::Entry,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:2053:18: 2053:23
+  alloc::vec::Vec::<T, A>::push_mut<crate::icns::Entry,alloc::alloc::Global> -> core::ptr::mut_ptr::<impl *mut T>::add<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1036:41: 1036:49
+  alloc::vec::Vec::<T, A>::push_mut<crate::icns::Entry,alloc::alloc::Global> -> core::ptr::write<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1037:13: 1037:35
+  alloc::vec::Vec::<T, A>::push_mut<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVec::<T, A>::grow_one<crate::icns::Entry,alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1033:13: 1033:32
+  alloc::vec::Vec::<T, A>::push_mut<crate::icns::Entry,alloc::alloc::Global> -> core::ptr::drop_glue<crate::icns::Entry> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:1042:5: 1042:6
+  core::ptr::drop_glue<alloc::vec::Vec<crate::icns::Entry>> [drop-glue] -> <alloc::vec::Vec<T, A> as core::ops::drop::Drop>::drop<crate::icns::Entry,alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
+  core::ptr::drop_glue<alloc::vec::Vec<crate::icns::Entry>> [drop-glue] -> core::ptr::drop_glue<alloc::raw_vec::RawVec<crate::icns::Entry>> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
+  core::ptr::drop_glue<alloc::vec::Vec<crate::icns::Entry>> [drop-glue] -> core::ptr::drop_glue<alloc::raw_vec::RawVec<crate::icns::Entry>> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
+  alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:384:18: 384:74
+  alloc::raw_vec::RawVec::<T, A>::try_reserve_exact<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::try_reserve_exact<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:384:18: 384:74
+  crate::icns::legacy_side -> core::array::equality::<impl core::cmp::PartialEq<[U; N]> for [T; N]>::eq<u8,u8,4> [inlined] @ src/icns.rs:298:8: 298:36
+  crate::icns::nominal_side_table -> core::array::equality::<impl core::cmp::PartialEq<[U; N]> for [T; N]>::eq<u8,u8,4> [inlined] @ src/icns.rs:334:8: 334:36
+  core::array::equality::<impl core::cmp::PartialEq<[U; N]> for [T; N]>::eq<u8,u8,4> -> <T as core::array::equality::SpecArrayEq<U, N>>::spec_eq<u8,u8,4> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/array/equality.rs:11:9: 11:42
+  <T as core::array::equality::SpecArrayEq<U, N>>::spec_eq<u8,u8,4> -> core::intrinsics::raw_eq<[u8; 4]> [intrinsic] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/array/equality.rs:157:18: 157:72
+  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::RangeFrom<usize>> -> <core::ops::range::RangeFrom<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
+  <core::ops::range::RangeFrom<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:545:13: 545:67
+  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
+  core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:19:9: 19:26
+  core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index_mut<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:32:9: 32:30
+  core::slice::index::<impl core::ops::index::IndexMut<I> for [T]>::index_mut<u8,usize> -> <usize as core::slice::index::SliceIndex<[T]>>::index_mut<u8> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:32:9: 32:30
+  crate::icns::payload_range -> core::slice::index::<impl core::ops::index::Index<I> for [T]>::index<u8,core::ops::range::Range<usize>> [inlined] @ src/icns.rs:1997:11: 1997:65
+  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index<u8> -> core::slice::index::slice_index_fail [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:413:13: 413:64
+  crate::icns::rle_decode_tracked -> verus_builtin::Tracked::<A>::assume_new_fallback<&mut crate::alloc_guard::AllocLog> [inlined] @ src/icns.rs:1648:9: 1648:16
+  crate::icns::rle_decode_tracked -> crate::alloc_guard::try_zeroed [call] @ src/icns.rs:1645:24: 1649:6
+  crate::icns::rle_decode_tracked -> crate::alloc_guard::try_zeroed [call] @ src/icns.rs:1656:24: 1660:6
+  crate::icns::rle_decode_tracked -> crate::alloc_guard::try_zeroed [call] @ src/icns.rs:1667:24: 1671:6
+  crate::icns::rle_decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/icns.rs:1929:1: 1929:2
+  crate::icns::rle_decode_tracked -> crate::icns::rle_copy [call] @ src/icns.rs:1848:13: 1848:83
+  crate::icns::rle_decode_tracked -> core::ptr::drop_glue<[alloc::vec::Vec<u8>; 3]> [drop-glue] [drop] @ src/icns.rs:1929:1: 1929:2
+  crate::icns::rle_decode_tracked -> core::ptr::drop_glue<[alloc::vec::Vec<u8>; 3]> [drop-glue] [drop] @ src/icns.rs:1929:1: 1929:2
+  crate::icns::rle_decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/icns.rs:1929:1: 1929:2
+  crate::icns::rle_decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/icns.rs:1929:1: 1929:2
+  crate::icns::rle_decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/icns.rs:1929:1: 1929:2
+  crate::icns::rle_decode_tracked -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ src/icns.rs:1929:1: 1929:2
+  core::ptr::drop_glue<[alloc::vec::Vec<u8>; 3]> [drop-glue] -> core::ptr::drop_glue<[alloc::vec::Vec<u8>]> [drop-glue] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
+  core::ptr::drop_glue<crate::icns::Decoded> [drop-glue] -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
   core::alloc::layout::Layout::from_size_alignment_unchecked::precondition_check -> core::alloc::layout::Layout::is_size_alignment_valid [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/alloc/layout.rs:164:18: 164:66
   core::alloc::layout::Layout::from_size_alignment_unchecked::precondition_check -> core::fmt::Arguments::<'a>::from_str [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:73:59: 73:96
   core::alloc::layout::Layout::from_size_alignment_unchecked::precondition_check -> core::panicking::panic_nounwind_fmt [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:73:21: 73:104
@@ -681,9 +674,22 @@ mono-items: 68 in local codegen units; 0 not reached by the walk
   core::ptr::copy_nonoverlapping<u8> -> core::ptr::copy_nonoverlapping::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
   alloc::alloc::dealloc_nonnull -> alloc::alloc::__rust_dealloc [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:175:14: 175:68
   alloc::alloc::dealloc_nonnull -> alloc::alloc::__rust_dealloc [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/alloc.rs:175:14: 175:68
+  alloc::raw_vec::RawVec::<T, A>::grow_one<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::grow_one<alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:188:29: 188:48
+  alloc::raw_vec::RawVecInner::<A>::grow_one<alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::grow_amortized<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:493:36: 493:92
+  alloc::raw_vec::RawVecInner::<A>::grow_one<alloc::alloc::Global> -> alloc::raw_vec::handle_error [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:494:13: 494:30
+  <alloc::vec::Vec<T, A> as core::ops::drop::Drop>::drop<crate::icns::Entry,alloc::alloc::Global> -> alloc::vec::Vec::<T, A>::as_mut_ptr<crate::icns::Entry,alloc::alloc::Global> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:4358:18: 4358:30
+  <alloc::vec::Vec<T, A> as core::ops::drop::Drop>::drop<crate::icns::Entry,alloc::alloc::Global> -> core::ptr::mut_ptr::<impl *mut T>::cast_slice<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:4358:31: 4358:51
+  core::ptr::mut_ptr::<impl *mut T>::cast_slice<crate::icns::Entry> -> core::ptr::slice_from_raw_parts_mut<crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs:1686:9: 1686:44
+  core::ptr::slice_from_raw_parts_mut<crate::icns::Entry> -> core::ptr::metadata::from_raw_parts_mut<[crate::icns::Entry],crate::icns::Entry> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:1260:5: 1260:34
+  <alloc::vec::Vec<T, A> as core::ops::drop::Drop>::drop<crate::icns::Entry,alloc::alloc::Global> -> core::ptr::mut_ptr::<impl *mut T>::drop_in_place<[crate::icns::Entry]> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:4358:52: 4358:67
+  core::ptr::mut_ptr::<impl *mut T>::drop_in_place<[crate::icns::Entry]> -> core::ptr::drop_in_place<[crate::icns::Entry]> [inlined] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs:1384:18: 1384:37
   core::ptr::drop_in_place<[crate::icns::Entry]> -> core::ptr::drop_glue<[crate::icns::Entry]> [drop-glue] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:842:14: 842:38
-  core::ptr::drop_in_place<[crate::icns::Entry]> -> core::ptr::drop_glue<[crate::icns::Entry]> [drop-glue] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:842:14: 842:38
-  <alloc::raw_vec::RawVec<T, A> as core::ops::drop::Drop>::drop<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::deallocate<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:425:18: 425:50
+  core::ptr::drop_glue<alloc::raw_vec::RawVec<crate::icns::Entry>> [drop-glue] -> <alloc::raw_vec::RawVec<T, A> as core::ops::drop::Drop>::drop<crate::icns::Entry,alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
+  core::intrinsics::raw_eq<[u8; 4]> [intrinsic] -> core::intrinsics::raw_eq<[u8; 4]> [intrinsic-fallback] @ <no span>
+  crate::icns::rle_copy -> alloc::vec::Vec::<T, A>::len<u8,alloc::alloc::Global> [inlined] @ src/icns.rs:1352:24: 1352:29
+  crate::icns::rle_copy -> <alloc::vec::Vec<T, A> as core::ops::index::IndexMut<I>>::index_mut<u8,usize,alloc::alloc::Global> [inlined] @ src/icns.rs:1383:16: 1383:21
+  core::ptr::drop_glue<[alloc::vec::Vec<u8>]> [drop-glue] -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
+  core::ptr::drop_glue<[alloc::vec::Vec<u8>]> [drop-glue] -> core::ptr::drop_glue<alloc::vec::Vec<u8>> [drop-glue] [drop] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:847:1: 849:25
   core::ptr::non_null::NonNull::<T>::new_unchecked<[u8]> -> core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
   core::ptr::non_null::NonNull::<T>::new_unchecked<[u8]> -> core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
   core::ptr::non_null::NonNull::<T>::new_unchecked<[u8]> -> core::ptr::non_null::NonNull::<T>::new_unchecked::precondition_check [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:78:17: 78:46
@@ -737,6 +743,9 @@ mono-items: 68 in local codegen units; 0 not reached by the walk
   core::ub_checks::maybe_is_aligned::runtime -> core::ptr::const_ptr::<impl *const T>::is_aligned_to<()> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:141:13: 141:37
   core::ub_checks::maybe_is_nonoverlapping -> core::ub_checks::maybe_is_nonoverlapping::runtime [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs:2636:9: 2636:61
   core::ptr::copy_nonoverlapping::precondition_check -> core::panicking::panic_nounwind_fmt [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:73:21: 73:104
+  core::ptr::drop_in_place<[crate::icns::Entry]> -> core::ptr::drop_glue<[crate::icns::Entry]> [drop-glue] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:842:14: 842:38
+  core::ptr::drop_in_place<[crate::icns::Entry]> -> core::ptr::drop_glue<[crate::icns::Entry]> [drop-glue] [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:842:14: 842:38
+  <alloc::raw_vec::RawVec<T, A> as core::ops::drop::Drop>::drop<crate::icns::Entry,alloc::alloc::Global> -> alloc::raw_vec::RawVecInner::<A>::deallocate<alloc::alloc::Global> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/raw_vec/mod.rs:425:18: 425:50
   core::ub_checks::maybe_is_aligned::runtime -> core::ptr::const_ptr::<impl *const T>::is_aligned_to<()> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:141:13: 141:37
   core::ub_checks::maybe_is_aligned::runtime -> core::ptr::const_ptr::<impl *const T>::is_aligned_to<()> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:141:13: 141:37
   core::ub_checks::maybe_is_aligned::runtime -> core::ptr::const_ptr::<impl *const T>::is_aligned_to<()> [call] @ /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ub_checks.rs:141:13: 141:37

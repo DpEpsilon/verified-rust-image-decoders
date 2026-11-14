@@ -1,6 +1,8 @@
 # Differential test: icns_verus vs icns_creusot vs Python oracle
 
 > Note 2026-11-13: this report predates the allocation change. The harness source (`src/main.rs`) calls `icns_verus::parse`, `decode_rgb`, `decode_mask` and `combine`, which were removed in favour of `try_parse`, `try_decode_rgb`, `try_decode_mask` and `try_combine` (returning `TryError`); it does not build against the current core until ported.
+>
+> Note 2026-11-14 (ERRATA E14): porting must also reach the decoders through the opaque `Parsed` handle. `try_decode_rgb`/`try_decode_mask`/`try_combine` are now methods on `Parsed` (constructed only by `try_parse`) and take no `(bytes, entries)` pair, so the harness's `Api` trait, whose methods receive `(b, es, i)`, no longer matches the core's shape.
 
 Result: 0 divergence groups. Written by a Sonnet agent (its Write tool refused to create this
 file, so the report text was saved here from its reply). Logs: out/. Reproduce:

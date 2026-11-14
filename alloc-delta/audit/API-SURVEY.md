@@ -43,7 +43,9 @@ code names `dib_verus::model::{mp, max_dimension, max_output, lemma_mp_ok_shape}
 ## 1. Per-core counts
 
 "all pub" counts every `pub` item in every `src/*.rs` and `src/alloc_guard/*.rs`
-before the change. "after" counts the implementation module only. The reference
+before the change. "after" counts the implementation module only (`src/icns.rs`; the ICNS "after"
+columns are E14's: 64 `pub` non-field items, 55 of them `#[doc(hidden)]`; E14
+changes only which items those are, not the documented surface). The reference
 model, `model_vectors`, `policy_model` and `witnesses` were demoted to
 `pub(crate)`, so they are not reachable from another crate and contribute no
 exported root. **The one exception is DIB's `model`**: it stays `#[doc(hidden)]
@@ -57,7 +59,7 @@ unchanged by the exception.
 |---|---|---|---|---|---|
 | DIB  | 1182 | 62 | 28 | 34 | 1764 verified, 0 errors |
 | TGA  | 956  | 22 | 17 | 5  | 974 verified, 0 errors |
-| ICNS | 556  | 73 | 61 | 12 | 412 verified, 0 errors |
+| ICNS | 556  | 64 | 55 | 12 | 418 verified, 0 errors |
 | ICO  | 536  | 21 | 11 | 10 | 346 verified, 0 errors |
 
 ## 2. Module decisions
@@ -99,8 +101,10 @@ unchanged by the exception.
 | TGA | `Profile`, `Policy`, `*Options` | enum/struct | bench, tests, example | keep `pub` (in `policy.rs`) |
 | TGA | `policy::{strict,recommended_beta,gdk_compat,image_crate_compat,profile}_policy` | spec fn | none | keep `pub` (public constructors in `policy.rs`) |
 | TGA | `Error::name`, `MAX_INPUT` | fn/const | glycin, tests | keep `pub` |
-| ICNS | `try_parse`, `try_decode_rgb`, `try_decode_mask`, `try_combine` | fn | glycin, leniency, bench, tests | keep `pub` |
-| ICNS | `*_logged` (5) | fn | none | keep `pub`, `#[doc(hidden)]` (allocation roots) |
+| ICNS | `try_parse` | fn | glycin, leniency, bench, tests | keep `pub` |
+| ICNS | `Parsed::entries`, `Parsed::bytes` | method | glycin (candidates, PNG payload), leniency | keep `pub` (the read-only view of the handle) |
+| ICNS | `Parsed::try_decode_rgb`, `Parsed::try_decode_mask`, `Parsed::try_combine` | method | glycin, leniency, bench, tests | keep `pub` (decoders on the opaque handle) |
+| ICNS | `*_logged` (4) | fn | none | demoted to `pub(crate)` (E14: the handle's methods are the allocation roots; no crate needs a logged variant) |
 | ICNS | `Entry`, `Decoded`, `Error`, `TryError` | struct/enum | glycin, leniency, bench, tests | keep `pub` |
 | ICNS | `MAX_FILE_LEN` | const | glycin | keep `pub` |
 | ICNS | `MAX_ENTRIES`, `MAX_LEGACY_SIDE` | const | none | keep `pub`, `#[doc(hidden)]` |
@@ -125,7 +129,7 @@ wrongly included DIB's `at_site_log` (E11 itself demoted that one to
 |---|---|---|
 | DIB (27, was 28) | `name_spec`; `bmp_mode_to_mode`; `recommended_beta_policy`,`strict_policy`,`gdk_compat_policy`,`image_crate_compat_policy`,`profile_policy`; `fmt_part`,`log_tied`,`req_dib`,`g_clause1..3`,`g`,`prog`,`prog_concl`,`pre_alloc`,`g_logged`,`prog_logged`,`lemma_req_dib_clause3`,`lemma_req_dib_len`,`decode_mp_eq`,`t12_checked_n`,`decode_policy_mp_eq`,`decode_policy_alpha_eq`,`policy_checked_n`,`policy_reach`,`req_dibp` | named by `try_*` contracts, or ICO's bridge, or the policy roots. **E12 correction: the E11 list wrongly included `at_site_log`; E11 demoted it to `pub(crate)`, so it is not hidden-public** |
 | TGA (17) | `try_decode_with_steps_logged`; `name_spec`; `dec_vals`,`decode_eq`; `req_tga`,`req_tga_policy`; `g_clause1..3`,`g`,`prog`,`prog_concl`,`pre_alloc`; `policy_result`,`model_checked_n`,`policy_checked_n`,`decoded_bounds` | named by `try_*` contracts; `try_decode_with_steps_logged` is a `required_root` |
-| ICNS (60, was 61) | the four `*_logged` fns (`try_parse_logged`, `try_decode_rgb_logged`, `try_decode_mask_logged`, `try_combine_logged`); `name_spec`; `MAX_ENTRIES`,`MAX_LEGACY_SIDE`; `entry_count`,`reach_p`,`req_p`,`pre_alloc_p`,`site_max`,`req_within_site_max`; the `g_*_clause*`,`g_*`,`prog_*`,`req_*`,`at_site_log_*`,`pre_alloc_*`,`oom_in_req`,`log_extends` groups; six `lemma_*` | named by the `try_*` contracts. **E12: `try_rle_logged` was demoted to `pub(crate)`** (no `pub` contract names it, no `required_root`, no external caller), so the five `*_logged` fns became four |
+| ICNS (54, was 61) | `name_spec`; `MAX_ENTRIES`,`MAX_LEGACY_SIDE`; `entry_count`,`reach_p`,`req_p`,`pre_alloc_p`,`site_max`,`req_within_site_max`; the `g_*_clause*`,`g_*`,`prog_*`,`req_*`,`at_site_log_*`,`pre_alloc_*`,`oom_in_req`,`log_extends` groups; six `lemma_*` | named by the `try_*` contracts. **E12: `try_rle_logged` was demoted to `pub(crate)`.** **E14: the four `*_logged` fns are now `pub(crate)` too** (the handle's methods are the roots; no `pub` contract names a `*_logged` fn in ICNS), and `Parsed::{inv, spec_bytes, spec_entries}` are new `#[doc(hidden)] pub` items a `pub` contract names |
 | ICO (11) | `name_spec`; `MAX_ENTRIES`,`DIRECTORY_HEADER_LEN`,`ENTRY_RECORD_LEN`,`MAX_DIRECTORY_LEN`,`PNG_SIGNATURE`,`TYPE_ICO`,`TYPE_CUR`; `try_parse_with_steps`,`try_decode_entry_with_steps` | named by `try_*` contracts, or `required_roots` |
 
 Not every item `#[doc(hidden)] pub` in the implementation module is required by
@@ -154,19 +158,20 @@ demoting items shrinks it. Consequences to regenerate:
   is the intended reduction; it may surface `mono-item-unwalked` for a witness
   fn that is reachable only from a demoted module (a finding to report, not to
   paper over).
-- **`source_hash`** changes for all four cores (the source files changed), so
-  the four draft allowlists must be regenerated.
+- **`source_hash`** changes for all four cores at E11 (the source files
+  changed), so the four draft allowlists were regenerated. E14 changed only
+  ICNS's again (`0fb984b5…`, from `cda2ebe7…`), and E15 changed it once more to
+  `964a0425…` (from `0fb984b5…`), when `try_parse`'s error clause was restored.
 
 See `alloc-delta/ERRATA.md` E11 for the recorded values,
 `alloc-delta/ERRATA.md` E12 for the `try_rle_logged` demotion and the correction
 to the E11 `at_site_log` entry and
 the current hashes, and `alloc-delta/audit/SIGNOFF.md` for the updated counts.
 
-## 6. Known caller-controlled surfaces that remain public
+## 6. Known caller-controlled surfaces
 
-These stay public; each is a place where the file does not, by itself, keep the
-caller inside the size or shape its Verus contract assumes. They are recorded
-here as open design items for the owner. None is changed by E12.
+**E14 (2026-11-14) resolved the decoder item in this section** (the opaque
+`Parsed` handle); the guard item remains open. Section is otherwise as at E12.
 
 **Guard functions whose size cap is a Verus-only precondition.** `alloc_guard::try_zeroed`
 exists in all four cores (`alloc_guard/mod.rs`), and `alloc_guard::sites::try_copy`
@@ -182,26 +187,33 @@ per-core and equally pinned. Both are stated surfaces, not defects the audit can
 see: the audit's `guard-calls` entries count the call sites, and every one is a
 crate-internal call whose meaning is a Verus proof, not an executable cap.
 
-**ICNS decoders that require `parsed_inv` only in Verus.** `try_decode_rgb`,
-`try_decode_mask`, `try_combine` and their `_logged` variants each carry
-`requires crate::model::parsed_inv(bytes@, entries@)`, and the `_logged` ones are
-`#[doc(hidden)] pub`. `Entry`'s fields are public, so ordinary Rust code can
-construct a `Vec<Entry>` that does not satisfy `parsed_inv` and pass it in. The
-contract is erased, and the decoder then indexes and slices on the forged
-`entries` (and the byte ranges those entries name) with no executable check:
-`decode_rgb_tracked` does `&entries[color_index as usize]` and
-`payload_range(bytes, entry)`, which can panic or read out of bounds where
-`parsed_inv` would have prevented it. The `_logged` variants make the same
-observation reachable from another crate; the non-logged ones do too, and are
-the documented API.
+**ICNS decoders that required `parsed_inv` only in Verus — RESOLVED (E14).**
+`try_decode_rgb`, `try_decode_mask` and `try_combine` used to take
+`(bytes: &[u8], entries: &[Entry], …)` and carry
+`requires crate::model::parsed_inv(bytes@, entries@)`. `Entry`'s fields are
+public, so ordinary Rust code could build a `Vec<Entry>` that does not satisfy
+`parsed_inv` and pass it in; the contract is erased, and the decoder then indexed
+and sliced on the forged `entries` (`&entries[color_index as usize]`,
+`payload_range(bytes, entry)`) with no executable check, which can panic or read
+the wrong region. The `_logged` variants made the same observation reachable from
+another crate.
 
-Candidate fixes for the owner, not applied here:
+E14 closes this with the first candidate fix below: an opaque `Parsed<'a>`
+handle, private `bytes`/`entries` fields, a Verus type invariant that states
+`parsed_inv(self.bytes@, self.entries@)`, and `try_parse` as the only
+constructor. The decoders are methods on the handle and take no
+`(bytes, entries)` pair, so provenance is guaranteed by the type and safe Rust
+outside the crate cannot construct a value that violates the invariant. The
+`_logged` variants are `pub(crate)`; the audit's `required_roots` are
+`try_parse` and the handle's `entries`/`try_decode_rgb`/`try_decode_mask`/
+`try_combine` (`Parsed::<'a>::…`; `Parsed::<'a>::bytes` is an exported root too).
+The public ICNS API is now: `try_parse`;
+`Parsed::{entries, bytes, try_decode_rgb, try_decode_mask, try_combine}`;
+`Entry`, `Decoded`, `Error`, `TryError`, `MAX_FILE_LEN`, and the hidden
+constants/accessors the contracts name. See `../ERRATA.md` E14.
 
-- an opaque `Parsed` handle returned by `try_parse` (a newtype over
-  `Vec<Entry>` with private contents) that the decoders take instead of
-  `&[Entry]`, so a forged entry list cannot be constructed outside the crate;
-- or executable validation at each decoder entry (re-check the entry ranges
-  against `bytes` before use), which costs a pass over `entries` per call;
-- or, for the guards, an executable `if n == 0 || n > MAX_BYTES { return Err(...) }`
-  before the reservation, which the `alloc_guard` proofs would need to be
-  re-derived against.
+**Candidate fix considered for the guards, not applied here:**
+
+- an executable `if n == 0 || n > MAX_BYTES { return Err(...) }` before the
+  reservation, which the `alloc_guard` proofs would need to be re-derived
+  against. (The decoder-side item above is resolved by E14; this one is not.)

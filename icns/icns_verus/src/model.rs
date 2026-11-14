@@ -1882,6 +1882,55 @@ pub proof fn lemma_parse_ok_gives_p(b: Seq<u8>, v: Vec<Entry>)
     lemma_t8(b, v@);
 }
 
+/// T8 for a handle's entry view: the entry sequence of a successful parse is
+/// related to a candidate `es` by `entries_same_fields` exactly when `P(b,es)`.
+/// Stated directly on the sequence (`parses_to_s`'s `Ok` arm), so a caller
+/// holding only `Seq<Entry>` needs no `Result` wrapper.
+pub proof fn lemma_t8_view(b: Seq<u8>, es_actual: Seq<Entry>, es: Seq<Entry>)
+    requires
+        parses_to_s(b, Ok(es_actual)),
+    ensures
+        entries_same_fields(es_actual, es) <==> p_exec(b, es),
+{
+    reveal(parses_to_s);
+    reveal(p_exec);
+    match mp(b) {
+        Ok(ms) => {
+            // `parses_to_s` on `Ok` is `entries_eq_models(es_actual, ms)`.
+            assert(entries_eq_models(es_actual, ms));
+            lemma_exact_entry_equivalence(es_actual, ms, es);
+        }
+        Err(_) => { assert(false); },
+    }
+}
+
+/// The length of the model parse: `Ok` gives the model list's length, an error
+/// gives none. A caller that chose an index in `entries()` needs this to know
+/// the view's length is the model's.
+pub open spec fn parse_len(b: Seq<u8>) -> nat
+    recommends accepted(b),
+{
+    match mp(b) {
+        Ok(ms) => ms.len(),
+        Err(_) => 0,
+    }
+}
+
+/// A successful parse's entry view has the model list's length.
+pub proof fn lemma_parses_to_len(b: Seq<u8>, es: Seq<Entry>)
+    requires
+        parses_to_s(b, Ok(es)),
+    ensures
+        es.len() == parse_len(b),
+{
+    reveal(parses_to_s);
+    reveal(parse_len);
+    match mp(b) {
+        Ok(ms) => { assert(entries_eq_models(es, ms)); },
+        Err(_) => { assert(false); },
+    }
+}
+
 /// If `parse` fails, no successful model run exists.
 pub proof fn lemma_parse_err_gives_not_accepted(b: Seq<u8>, e: Error)
     requires parses_to_s(b, Err(e)),
@@ -4183,9 +4232,9 @@ pub proof fn lemma_mj_ms_eq(
     }
 }
 
-/// T12 stated over `P(b,E)`: `try_combine` equals `MJ` exactly on every
+/// T12 stated over `P(b,E)`: the internal combine equals `MJ` exactly on every
 /// non-`OutOfMemory` result. The `P(b,E)` premise is supplied by the caller (a
-/// successful `try_parse` via T8, or directly).
+/// successful `try_parse` via T8, or the handle's type invariant).
 #[allow(dead_code)]
 fn t12_combine_exact_for_p(
     bytes: &[u8],
@@ -4209,24 +4258,25 @@ fn t12_combine_exact_for_p(
 }
 
 /// T13 at a concrete call path: `try_parse` runs, then `try_combine` runs on the
-/// same bytes and the entries `try_parse` returned. The premise of the statement
-/// is `parse(b) = Ok(E)`; `P(b,E)` is obtained inside the body from T7/T8, not
-/// assumed. An `OutOfMemory` from either call makes the statement vacuous.
+/// handle it returned. The premise of the statement is `parse(b) = Ok(E)`;
+/// `P(b,E)` reaches the decoder through `Parsed`'s type invariant, which
+/// `try_parse` established at the only construction site, so nothing is assumed
+/// here. An `OutOfMemory` from either call makes the statement vacuous.
 #[allow(dead_code)]
 fn t13_combine_after_parse(
     bytes: &[u8],
     ci: Option<u32>,
     mi: Option<u32>,
-) -> (out: (Result<Vec<crate::icns::Entry>, crate::alloc_guard::sites::TryError>,
+) -> (out: (Result<crate::icns::Parsed<'_>, crate::alloc_guard::sites::TryError>,
            Result<crate::icns::Decoded, crate::alloc_guard::sites::TryError>))
     ensures
         !matches!(out.0, Err(crate::alloc_guard::sites::TryError::OutOfMemory(_)))
             && !matches!(out.1, Err(crate::alloc_guard::sites::TryError::OutOfMemory(_)))
             ==> match out.0 {
-                Ok(entries) => crate::model::combine_decoded_eq(
+                Ok(p) => crate::model::combine_decoded_eq(
                     crate::alloc_guard::sites::fmt_part(out.1),
                     bytes@,
-                    entries@,
+                    p.spec_entries(),
                     ci,
                     mi,
                 ),
@@ -4235,19 +4285,15 @@ fn t13_combine_after_parse(
 {
     use crate::alloc_guard::sites::TryError;
     proof { reveal(crate::alloc_guard::sites::fmt_part_entries); }
-    let entries = match crate::try_parse(bytes) {
+    let p = match crate::try_parse(bytes) {
         Ok(v) => v,
         Err(TryError::Format(e)) => return (Err(TryError::Format(e)), Err(TryError::Format(e))),
         Err(TryError::OutOfMemory(o)) => {
             return (Err(TryError::OutOfMemory(o)), Err(TryError::Format(crate::icns::Error::BadMagic)));
         },
     };
-    proof {
-        crate::model::lemma_parse_ok_gives_p(bytes@, entries);
-        crate::model::lemma_p_exec_inv(bytes@, entries@);
-    }
-    let r = crate::try_combine(bytes, &entries, ci, mi);
-    (Ok(entries), r)
+    let r = p.try_combine(ci, mi);
+    (Ok(p), r)
 }
 
 } // verus!

@@ -30,7 +30,7 @@ mono-items: 55 in local codegen units; 0 not reached by the walk
 
 -- findings (2) --
   [allowlist-reviewer] reviewer is missing or empty (recorded Some("")); the allowlist is unsigned
-  [dependency-contract] dependency dib_verus: its own audit report /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/runs/20261114T094507Z/dib_verus-in-ico.txt does not PASS (verdict "FAIL", finding tags "allowlist-reviewer")
+  [dependency-contract] dependency dib_verus: its own audit report /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/runs/20261114T115040Z/dib_verus-in-ico.txt does not PASS (verdict "FAIL", finding tags "allowlist-reviewer")
 
 -- source files (8) --
   combined 5e2660a5d6a7af5205ca07fa64cf63504173f66e6bdab839fca5027b9816a530
@@ -115,7 +115,7 @@ mono-items: 55 in local codegen units; 0 not reached by the walk
   guard fn crate::alloc_guard::sites::Reserved::<T>::push: reaches an allocator sink; #[inline(never)] present
 
 -- dependency contracts (1) --
-  dib_verus: report /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/runs/20261114T094507Z/dib_verus-in-ico.txt verdict=FAIL crate-svh=66109b8f3f5839ae7ee248f36a03a060 linked-svh=66109b8f3f5839ae7ee248f36a03a060 source_hash=1176feef4f943a58c0073ba25f27f53c00b40a14d7b8812321ee91adb45bf62d findings-other-than-unsigned-reviewer=0
+  dib_verus: report /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/audit/runs/20261114T115040Z/dib_verus-in-ico.txt verdict=FAIL crate-svh=66109b8f3f5839ae7ee248f36a03a060 linked-svh=66109b8f3f5839ae7ee248f36a03a060 source_hash=1176feef4f943a58c0073ba25f27f53c00b40a14d7b8812321ee91adb45bf62d findings-other-than-unsigned-reviewer=0
 
 -- edges (532) --
   crate::alloc_guard::sites::TryError::name -> crate::ico::Error::name [call] @ src/alloc_guard/sites.rs:75:36: 75:44

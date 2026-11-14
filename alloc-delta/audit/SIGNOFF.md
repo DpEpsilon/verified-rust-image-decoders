@@ -15,7 +15,8 @@ counts as exported; E12 later demoted ICNS's non-root `try_rle_logged`). Entry
 counts are unchanged at 64 / 58 / 50 / 42. The
 production run for this change (then `20261114T081621Z`, since deleted by
 E12; the evidence then was `runs/20261114T084716Z`, since deleted by E13, whose
-authoritative run is `runs/20261114T094507Z`) reports exactly the
+authoritative run at the time was `runs/20261114T094507Z`, later deleted by
+E14) reports exactly the
 expected findings: DIB,
 TGA and ICNS only `allowlist-reviewer`; ICO `allowlist-reviewer` and
 `dependency-contract` (D9), with DIB's report inside the ICO run also only
@@ -32,7 +33,7 @@ from another crate. ICNS's `try_rle_logged` was the one such item; it is now
 regenerated (new `source_hash` `cda2ebe7...`; entry set unchanged at 50) and
 `PINS.sha256` rewritten. The authoritative production run was then
 `runs/20261114T084716Z` (since deleted by E13, whose authoritative run is
-`runs/20261114T094507Z`);
+`runs/20261114T094507Z`, itself later deleted by E14);
 `runs/20261114T081621Z` is deleted. ICNS's walk is one
 instance and three edges smaller; the other three cores are unchanged. See
 `API-SURVEY.md` section 6 for the caller-controlled surfaces that remain public
@@ -45,14 +46,43 @@ E13, and `dib/policy/ERRATA.md` E1, `tga/policy/ERRATA.md` E2). This changed
 DIB's and TGA's `source_hash`, so `tools/draft_all.sh dib tga ico` regenerated
 the DIB and TGA draft allowlists (only `source_hash` changed; ICNS and ICO were
 byte-identical) and rewrote `PINS.sha256`. The four-core production audit was
-re-run in one run, `runs/20261114T094507Z`, which is now the authoritative
-evidence; it replaces `runs/20261114T084716Z`, which is deleted along with the
+re-run in one run, `runs/20261114T094507Z` (then authoritative; later deleted
+by E14), which replaced `runs/20261114T084716Z`, which is deleted along with the
 earlier `runs/20261114T081621Z`. It reports the same expected
 findings (DIB, TGA and ICNS only `allowlist-reviewer`; ICO `allowlist-reviewer`
 and `dependency-contract`), the same entry counts (64 / 58 / 50 / 42) and the
 same instance and edge counts (DIB 421/712, TGA 364/622, ICNS 344/629, ICO
 320/532). New `source_hash`: DIB `1176feef…`, TGA `627a1646…`; ICNS
 `cda2ebe7…` and ICO `5e2660a5…` are unchanged.
+
+**E14 (2026-11-14): the ICNS `Parsed` handle.** The ICNS decoders are now
+methods on an opaque `Parsed<'a>` handle: private `bytes`/`entries` fields, a
+Verus type invariant `parsed_inv(bytes@, entries@)`, and `try_parse` as the only
+constructor. The three public decoders no longer take `(bytes, entries)`, so the
+forged-entry surface recorded in `API-SURVEY.md` section 6 is gone (ERRATA E14).
+This changed ICNS's `source_hash` to `0fb984b5…` and its `crate-svh` to
+`e6dfd4a7…` (both changed again by E15: `964a0425…` and `266e0634…`), so
+`tools/draft_all.sh icns` regenerated the ICNS draft allowlist
+(entry set unchanged at 50; the no-MIR and panic-edge entries moved to the new
+root names) and rewrote `PINS.sha256`. The `required_roots` changed: the decoders
+are inherent methods, whose canonical path names the impl's lifetime parameter,
+so the roots are now `crate::icns::try_parse` plus
+`crate::icns::Parsed::<'a>::{entries, try_decode_rgb, try_decode_mask,
+try_combine}` (five, not four). `Parsed::<'a>::bytes` is a sixth exported root;
+it is allocation-free and stays in the walk. (An earlier revision of this
+paragraph also named `Parsed::<'a>::entry_list_capacity`; no such root exists —
+the accessor was removed before E14 landed, and the tool's root list has no
+entry for it. Corrected by E15.) The four-core production run is
+`runs/20261114T115040Z` (E15), which is now the authoritative evidence and
+replaces `runs/20261114T111200Z` (deleted; that run replaced the
+`runs/20261114T094507Z` E14 deleted). It reports the same expected findings (DIB,
+TGA and ICNS only `allowlist-reviewer`; ICO `allowlist-reviewer` and
+`dependency-contract`), the same entry counts (64 / 58 / 50 / 42), and the same
+instance and edge counts and `source_hash` for DIB, TGA and ICO. ICNS's walk is
+351 instances / 638 edges (was 344/629: the five new handle roots and their
+calls); its guard call sites are unchanged at 1 `try_with_room`, 5 `try_zeroed`,
+1 `try_copy`. ICNS reverified at 418 verified, 0 errors (run 63), and its tests
+pass (111/111 conformance, 12/12 fault injection).
 
 **Conclusion.** The mechanical checks I could redo without Verus or
 cargo agree with the drafts: all 67 crate functions cited as the reason
@@ -213,18 +243,24 @@ rejection costs.
 - Recommendation: accept; sign DIB before ICO.
 
 ### D10. Roots that must exist (`required_roots`)
-- Each core lists its `try_*` entry points, which must be among the
-  roots (`missing-root` otherwise): DIB 4, TGA 3, ICNS 4, ICO 4. Read
+- Each core lists its public entry points, which must be among the
+  roots (`missing-root` otherwise): DIB 4, TGA 3, ICNS 5, ICO 4. Read
   the list in `allowlist/decisions/<core>.toml`; confirm it is every
   entry point you consider public.
+- ICNS's five (ERRATA E14) are `try_parse` and the four handle methods
+  `Parsed::<'a>::{entries, try_decode_rgb, try_decode_mask, try_combine}`.
+  The decoders moved from free functions to inherent methods when the
+  opaque handle replaced `(bytes, entries)`, so their canonical paths
+  carry the impl's lifetime parameter; `entries` is a root because it is
+  the only way a caller reads an entry to choose an index.
 - E11 check (2026-11-14): all fifteen roots are still exported functions
   after the public-API reduction. The DIB/TGA/ICNS roots are plain `pub`;
   ICO's `try_parse_with_steps` and `try_decode_entry_with_steps`, and
   TGA's and ICNS's `*_logged` roots, are `#[doc(hidden)] pub`, which the
   tool still counts as exported. No `missing-root` was reported at E11/E12
-  (ERRATA E11/E12) or in E13's `20261114T094507Z`, so the lists are
-  unchanged. (E12 later demoted ICNS's
-  `try_rle_logged` to `pub(crate)`; it is not a `required_root`.)
+  (ERRATA E11/E12) or in E14's `20261114T111200Z` (now deleted by E15, whose
+  authoritative run is `20261114T115040Z`). (E12 later demoted
+  ICNS's `try_rle_logged` to `pub(crate)`; it is not a `required_root`.)
 - Recommendation: accept after checking the lists.
 
 ### Other E7 deviations
@@ -369,10 +405,11 @@ Other checks:
   as `bfcd14ae...`.) The method reproduces
   the pre-E11 values exactly (DIB `c0a03456...`, TGA `f9ca2824...`, ICNS
   `01f940ad...`, ICO `5265d477...`), which is the check that it is the
-  tool's computation. The E13 reports are in run `20261114T094507Z` (which
-  replaces `20261114T084716Z`, itself replacing the now-deleted
-  `20261114T081621Z`); both earlier runs are deleted, so the E11/E12 findings
-  are recorded here and in `../ERRATA.md` E11/E12 rather than in a run
+  tool's computation. The E14 reports are in run `20261114T111200Z` (deleted by
+  E15, whose authoritative run is `20261114T115040Z`; that run in turn replaced
+  the now-deleted `20261114T094507Z`, `20261114T084716Z` and
+  `20261114T081621Z`); all earlier runs are deleted, so the E11-E13 findings
+  are recorded here and in `../ERRATA.md` E11-E13 rather than in a run
   directory. DIB's
   `source_hash` inside the ICO run equals DIB's own.
 - **Guard hashes.** `alloc_guard/mod.rs` is `26e4c832...` in all four
@@ -456,9 +493,10 @@ ICNS and ICO now fail only on the unsigned reviewer (ICO also on
 7. Run `./run_audit.sh` from `alloc-delta/audit` (builds with `-j1`; it
    is slow on one CPU). Expected after signing: DIB and TGA PASS; ICNS
    PASS; ICO PASS once DIB passes in the same run (D9). The latest
-   unsigned run is `runs/20261114T094507Z`, which covers all four cores
-   after the E13 rename (and the E11 public-API reduction and E12
-   `try_rle_logged` demotion before it):
+   unsigned run is `runs/20261114T115040Z`, which covers all four cores
+   after the E15 `try_parse` error clause (and the E14 ICNS handle, the E13
+   rename, E11 public-API reduction and E12 `try_rle_logged` demotion before
+   it):
    DIB, TGA and ICNS only
    `allowlist-reviewer`; ICO `allowlist-reviewer` and
    `dependency-contract`; the run directory under `runs/` is the

@@ -1,0 +1,21 @@
+[package]
+name = "parsed-api-review-probe"
+version = "0.0.0"
+edition = "2021"
+
+# `cargo build` (no features) must SUCCEED: it exercises the legal public API.
+# Each feature below turns on one negative case that must FAIL to compile with
+# the error code its name lists in README.md.
+[features]
+literal = []
+clone = []
+copy = []
+default_impl = []
+mut_entries = []
+mut_bytes = []
+old_api = []
+spec_api = []
+borrow_alias = []
+
+[dependencies]
+icns_verus = { path = "../icns_verus" }

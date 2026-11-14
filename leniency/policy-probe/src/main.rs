@@ -26,15 +26,16 @@ fn info(s: String) -> String {
     format!("{{\"status\":\"ok\",\"info\":\"{}\"}}", esc(&s))
 }
 
-fn icns_entries(b: &[u8]) -> Result<Vec<icns_verus::Entry>, String> {
+/// The parsed handle, or its error: `try_parse` is the only constructor.
+fn icns_parsed(b: &[u8]) -> Result<icns_verus::Parsed<'_>, String> {
     match icns_verus::try_parse(b) {
-        Ok(v) => Ok(v),
+        Ok(p) => Ok(p),
         Err(icns_verus::TryError::Format(e)) => Err(e.name().to_string()),
         Err(icns_verus::TryError::OutOfMemory(_)) => Err("OOM".into()),
     }
 }
-fn icns_pair(b: &[u8], es: &[icns_verus::Entry], c: usize, m: usize, sel: &str) -> String {
-    match icns_verus::try_combine(b, es, Some(c as u32), Some(m as u32)) {
+fn icns_pair(p: &icns_verus::Parsed<'_>, c: usize, m: usize, sel: &str) -> String {
+    match p.try_combine(Some(c as u32), Some(m as u32)) {
         Ok(d) => ok(d.width, d.height, &d.data, sel),
         Err(icns_verus::TryError::Format(e)) => err(e.name()),
         Err(_) => err("OOM"),
@@ -49,25 +50,25 @@ fn code(e: &icns_verus::Entry) -> [u8; 4] {
 fn run(sel: &str, b: &[u8]) -> String {
     let (name, arg) = sel.split_once(':').unwrap_or((sel, ""));
     match name {
-        "icns-strict-parse" => match icns_entries(b) {
-            Ok(es) => info(es.iter().map(|e| format!("{}[{},{})", String::from_utf8_lossy(&code(e)), e.payload[0], e.payload[1])).collect::<Vec<_>>().join(" ")),
+        "icns-strict-parse" => match icns_parsed(b) {
+            Ok(p) => info(p.entries().iter().map(|e| format!("{}[{},{})", String::from_utf8_lossy(&code(e)), e.payload[0], e.payload[1])).collect::<Vec<_>>().join(" ")),
             Err(e) => err(e),
         },
         "icns-strict-largest" => {
-            let es = match icns_entries(b) { Ok(v) => v, Err(e) => return err(e) };
+            let p = match icns_parsed(b) { Ok(v) => v, Err(e) => return err(e) };
             for (c, m) in [(*b"it32", *b"t8mk"), (*b"ih32", *b"h8mk"), (*b"il32", *b"l8mk"), (*b"is32", *b"s8mk")] {
-                let ci = es.iter().position(|e| code(e) == c);
-                let mi = es.iter().position(|e| code(e) == m);
+                let ci = p.entries().iter().position(|e| code(e) == c);
+                let mi = p.entries().iter().position(|e| code(e) == m);
                 if let (Some(ci), Some(mi)) = (ci, mi) {
-                    return icns_pair(b, &es, ci, mi, &format!("{}:{}", ci, mi));
+                    return icns_pair(&p, ci, mi, &format!("{}:{}", ci, mi));
                 }
             }
             err("NoLegacyPair")
         }
         "icns-strict-pair" => {
-            let es = match icns_entries(b) { Ok(v) => v, Err(e) => return err(e) };
+            let p = match icns_parsed(b) { Ok(v) => v, Err(e) => return err(e) };
             let (c, m) = arg.split_once(',').unwrap();
-            icns_pair(b, &es, c.parse().unwrap(), m.parse().unwrap(), arg)
+            icns_pair(&p, c.parse().unwrap(), m.parse().unwrap(), arg)
         }
         "icns-crate-read" => match icns::IconFamily::read(Cursor::new(b)) {
             Ok(f) => info(format!("{} elements; available {:?}", f.elements.len(), f.available_icons())),

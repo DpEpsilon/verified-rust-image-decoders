@@ -10,14 +10,14 @@ rustc_commit = "58cf8f9c35b355199727627d07ae34a4e2846d67"
 target = "x86_64-unknown-linux-gnu"
 profile = "opt-level=3,debug-assertions=off,share-generics=off"
 features = []
-source_hash = "cda2ebe74a1a747f9862bfb1e519294c9925515d88816cf01d237df2cea7b269"
+source_hash = "964a04253c9d01e65bb59ab17256e0a85378155c75e01442ff27b79e242d709c"
 vstd_version = "0.0.0-2026-11-01-0251"
 vstd_svh = "fa564daeee3bd3d96afb1a9ec5dbc24f"
 vstd_source_checksum = "7cfcc2fc379ffbcda31111f1a7da2a34d00bd984407cfa85d1edcf64da38dbd2"
 verus_builtin_svh = "06bbe94fd6feef326e91b49a87810e1a"
 reviewer = ""
 drafted_by = "draft_allowlist.py (Claude agent), 2026-11-13; unsigned"
-required_roots = ["crate::icns::try_parse", "crate::icns::try_decode_rgb", "crate::icns::try_decode_mask", "crate::icns::try_combine"]
+required_roots = ["crate::icns::try_parse", "crate::icns::Parsed::<'a>::entries", "crate::icns::Parsed::<'a>::try_decode_rgb", "crate::icns::Parsed::<'a>::try_decode_mask", "crate::icns::Parsed::<'a>::try_combine"]
 
 # ===== hand-written decisions (allowlist/decisions) =====
 # -- Allocation-capable items, one entry per (item, admitted guard function) --
@@ -77,6 +77,8 @@ citation = "SPEC §6: deallocation anywhere; `*` admits deallocation sinks only 
 #    callees. See ERRATA E10. --
 
 # -- Exported roots that are excluded from the walk (owner decision required) --
+# E14 adds `Parsed::<'a>::bytes` to the exported set; it is an allocation-free
+# accessor, so it stays in the walk as an ordinary root and needs no exclusion.
 [[entry]]
 kind = "root-exclude"
 item = "<crate::icns::Decoded as core::clone::Clone>::clone"
@@ -149,20 +151,6 @@ kind = "intrinsic"
 item = "core::intrinsics::compare_bytes"
 contract = "none: compiler intrinsic, lowered to inline code or a libc mem* call; allocates nothing"
 citation = "core::intrinsics::compare_bytes (memcmp), core source at rustc 58cf8f9c3"
-
-[[entry]]
-kind = "no-mir"
-item = "core::slice::index::slice_index_fail"
-allow = "<core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index"
-contract = "diverges (panic, core); allocates nothing in core. Under a std consumer the panic hook may allocate a payload: this entry is admitted only because the edge is unreachable (citation)"
-citation = "slice range indexing in verified crate code: icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3) discharges every range bound, so slice_index_fail cannot be reached; reached from crate functions: crate::icns::parse_tracked, crate::icns::payload_range"
-
-[[entry]]
-kind = "no-mir"
-item = "core::slice::index::slice_index_fail"
-allow = "<core::ops::range::RangeFrom<usize> as core::slice::index::SliceIndex<[T]>>::index"
-contract = "diverges (panic, core); allocates nothing in core. Under a std consumer the panic hook may allocate a payload: this entry is admitted only because the edge is unreachable (citation)"
-citation = "slice range indexing in verified crate code: icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3) discharges every range bound, so slice_index_fail cannot be reached; reached from crate functions: crate::icns::decode_rgb_tracked"
 
 [[entry]]
 kind = "intrinsic"
@@ -240,6 +228,20 @@ contract = "diverges (panic, core); allocates nothing in core. Under a std consu
 citation = "ub_checks precondition: this call sits behind core::intrinsics::ub_checks(), which is false in a crate compiled with debug-assertions=off (the recorded profile), so the branch is dead in this artifact; reached from crate functions: crate::alloc_guard::sites::Reserved::<T>::push, crate::alloc_guard::sites::try_copy, crate::alloc_guard::sites::try_with_room, crate::alloc_guard::try_zeroed"
 
 [[entry]]
+kind = "no-mir"
+item = "core::slice::index::slice_index_fail"
+allow = "<core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index"
+contract = "diverges (panic, core); allocates nothing in core. Under a std consumer the panic hook may allocate a payload: this entry is admitted only because the edge is unreachable (citation)"
+citation = "slice range indexing in verified crate code: icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3) discharges every range bound, so slice_index_fail cannot be reached; reached from crate functions: crate::icns::parse_tracked, crate::icns::payload_range"
+
+[[entry]]
+kind = "no-mir"
+item = "core::slice::index::slice_index_fail"
+allow = "<core::ops::range::RangeFrom<usize> as core::slice::index::SliceIndex<[T]>>::index"
+contract = "diverges (panic, core); allocates nothing in core. Under a std consumer the panic hook may allocate a payload: this entry is admitted only because the edge is unreachable (citation)"
+citation = "slice range indexing in verified crate code: icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3) discharges every range bound, so slice_index_fail cannot be reached; reached from crate functions: crate::icns::decode_rgb_tracked"
+
+[[entry]]
 kind = "ffi"
 item = "alloc::alloc::__rust_no_alloc_shim_is_unstable_v2"
 contract = "none: a volatile read of the allocator-shim stability marker symbol; allocates nothing"
@@ -295,6 +297,20 @@ citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS
 [[entry]]
 kind = "panic"
 item = "PanicBoundsCheck"
+allow = "crate::icns::hex4_bytes"
+contract = "diverges (panic); allocates nothing in core; admitted only as unreachable"
+citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3): crate::icns::hex4_bytes is verified exec code; Verus discharges the PanicBoundsCheck obligation (bounds/division/overflow) at every site, so the compiler-inserted check cannot fire"
+
+[[entry]]
+kind = "panic"
+item = "PanicBoundsCheck"
+allow = "crate::icns::be_u32"
+contract = "diverges (panic); allocates nothing in core; admitted only as unreachable"
+citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3): crate::icns::be_u32 is verified exec code; Verus discharges the PanicBoundsCheck obligation (bounds/division/overflow) at every site, so the compiler-inserted check cannot fire"
+
+[[entry]]
+kind = "panic"
+item = "PanicBoundsCheck"
 allow = "crate::icns::decode_rgb_tracked"
 contract = "diverges (panic); allocates nothing in core; admitted only as unreachable"
 citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3): crate::icns::decode_rgb_tracked is verified exec code; Verus discharges the PanicBoundsCheck obligation (bounds/division/overflow) at every site, so the compiler-inserted check cannot fire"
@@ -323,16 +339,9 @@ citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS
 [[entry]]
 kind = "panic"
 item = "PanicBoundsCheck"
-allow = "crate::icns::hex4_bytes"
+allow = "crate::icns::payload_starts_with"
 contract = "diverges (panic); allocates nothing in core; admitted only as unreachable"
-citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3): crate::icns::hex4_bytes is verified exec code; Verus discharges the PanicBoundsCheck obligation (bounds/division/overflow) at every site, so the compiler-inserted check cannot fire"
-
-[[entry]]
-kind = "panic"
-item = "PanicBoundsCheck"
-allow = "crate::icns::be_u32"
-contract = "diverges (panic); allocates nothing in core; admitted only as unreachable"
-citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3): crate::icns::be_u32 is verified exec code; Verus discharges the PanicBoundsCheck obligation (bounds/division/overflow) at every site, so the compiler-inserted check cannot fire"
+citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3): crate::icns::payload_starts_with is verified exec code; Verus discharges the PanicBoundsCheck obligation (bounds/division/overflow) at every site, so the compiler-inserted check cannot fire"
 
 [[entry]]
 kind = "panic"
@@ -340,13 +349,6 @@ item = "PanicBoundsCheck"
 allow = "crate::icns::rle_decode_tracked"
 contract = "diverges (panic); allocates nothing in core; admitted only as unreachable"
 citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3): crate::icns::rle_decode_tracked is verified exec code; Verus discharges the PanicBoundsCheck obligation (bounds/division/overflow) at every site, so the compiler-inserted check cannot fire"
-
-[[entry]]
-kind = "panic"
-item = "PanicBoundsCheck"
-allow = "crate::icns::payload_starts_with"
-contract = "diverges (panic); allocates nothing in core; admitted only as unreachable"
-citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3): crate::icns::payload_starts_with is verified exec code; Verus discharges the PanicBoundsCheck obligation (bounds/division/overflow) at every site, so the compiler-inserted check cannot fire"
 
 [[entry]]
 kind = "panic"
