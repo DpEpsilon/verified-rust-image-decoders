@@ -1,0 +1,17 @@
+# Probe runner for the PNG policy draft: image 0.25.10 with the png crate it resolves from
+# crates.io (0.18.1, NOT the image-png git revision glycin's workspace patches in).
+[package]
+name = "png-policy-probe"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+image = { version = "=0.25.10", default-features = false, features = ["png"] }
+png = "=0.18.1"
+sha2 = "0.10"
+
+[profile.release]
+opt-level = 1
+debug = false
+codegen-units = 16
