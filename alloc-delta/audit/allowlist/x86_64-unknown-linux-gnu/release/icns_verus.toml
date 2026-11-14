@@ -10,7 +10,7 @@ rustc_commit = "58cf8f9c35b355199727627d07ae34a4e2846d67"
 target = "x86_64-unknown-linux-gnu"
 profile = "opt-level=3,debug-assertions=off,share-generics=off"
 features = []
-source_hash = "f81a2445b5be34c6ad658dc83e36ec47d4ef3423cb834f7b896701264ec8b48a"
+source_hash = "01f940ad26f6c78aa06d64cd4c9596855526702ffe2373ed3129a9b0bd367d26"
 vstd_version = "0.0.0-2026-11-01-0251"
 vstd_svh = "fa564daeee3bd3d96afb1a9ec5dbc24f"
 vstd_source_checksum = "7cfcc2fc379ffbcda31111f1a7da2a34d00bd984407cfa85d1edcf64da38dbd2"
@@ -61,7 +61,7 @@ kind = "alloc"
 item = "alloc::vec::Vec::<T, A>::push<crate::icns::Entry,alloc::alloc::Global>"
 allow = "crate::alloc_guard::sites::Reserved::<T>::push"
 contract = "Reserved::push requires len < room <= capacity (Reserved's invariant), so Vec::push never grows; the growth path in its MIR is present but not taken"
-citation = "A-STD-1, A-STD-2 and Reserved's verified invariant v@.len() <= room <= capacity (SPEC §3; ICNS sites.rs)"
+citation = "A-STD-1, A-STD-2 and Reserved's documented invariant v@.len() <= room <= capacity: room <= capacity is a doc comment, not a Verus invariant (vstd models no capacity); callers are crate-internal and must prove len < room (SPEC §3; ICNS sites.rs)"
 
 [[entry]]
 kind = "alloc"
@@ -70,23 +70,11 @@ allow = "*"
 contract = "deallocation (__rust_dealloc) of a Vec buffer on drop; cannot fail"
 citation = "SPEC §6: deallocation anywhere; `*` admits deallocation sinks only (tool rule, ERRATA E7)"
 
-# -- Generic exports of the guard (SPEC §6 step 1 says no core exports a generic
-#    function; ICNS's hash-pinned sites.rs does. Each is audited at every
-#    instantiation the roots reach.) --
-[[entry]]
-kind = "generic-export"
-item = "crate::alloc_guard::sites::try_with_room"
-citation = "ERRATA E5/E7: generic guard reservation in the pinned sites.rs; the walk audits its Entry instantiation; a downstream instantiation is downstream code"
-
-[[entry]]
-kind = "generic-export"
-item = "crate::alloc_guard::sites::Reserved::<T>::push"
-citation = "ERRATA E7: generic guard fill in the pinned sites.rs; audited at its Entry instantiation"
-
-[[entry]]
-kind = "generic-export"
-item = "crate::alloc_guard::sites::Reserved::<T>::into_vec"
-citation = "ERRATA E7: generic guard move-out in the pinned sites.rs; audited at its Entry instantiation"
+# -- Generic exports of the guard: NONE (D3/D4 resolved 2026-11-14). `try_with_room<T>`,
+#    `Reserved<T>`, `Reserved::push` and `Reserved::into_vec` are `pub(crate)` in the
+#    hash-pinned sites.rs, so they are no longer exported and the tool no longer reports
+#    `generic-pub-fn`; the walk still audits their `Entry` instantiations as crate-internal
+#    callees. See ERRATA E10. --
 
 # -- Exported roots that are excluded from the walk (owner decision required) --
 [[entry]]

@@ -1,0 +1,4 @@
+x86_64-unknown-linux-gnu/release/dib_verus.toml: OK
+x86_64-unknown-linux-gnu/release/icns_verus.toml: OK
+x86_64-unknown-linux-gnu/release/ico_verus.toml: OK
+x86_64-unknown-linux-gnu/release/tga_verus.toml: OK

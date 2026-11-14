@@ -30,7 +30,7 @@ kind = "alloc"
 item = "alloc::vec::Vec::<T, A>::push<crate::ico::Entry,alloc::alloc::Global>"
 allow = "crate::alloc_guard::sites::Reserved::<T>::push"
 contract = "Reserved::push requires len < room <= capacity (Reserved's invariant), so Vec::push never grows; the growth path in its MIR is present but not taken"
-citation = "A-STD-1, A-STD-2 and Reserved's verified invariant v@.len() <= room <= capacity (SPEC §3; ICO sites.rs)"
+citation = "A-STD-1, A-STD-2 and Reserved's documented invariant v@.len() <= room <= capacity: room <= capacity is a doc comment, not a Verus invariant (vstd models no capacity); callers are crate-internal and must prove len < room (SPEC §3; ICO sites.rs)"
 
 [[entry]]
 kind = "alloc"
@@ -39,20 +39,11 @@ allow = "*"
 contract = "deallocation (__rust_dealloc) of a Vec buffer on drop; cannot fail"
 citation = "SPEC §6: deallocation anywhere; `*` admits deallocation sinks only (tool rule, ERRATA E7)"
 
-[[entry]]
-kind = "generic-export"
-item = "crate::alloc_guard::sites::try_with_room"
-citation = "ERRATA E5/E7: generic guard reservation in the pinned sites.rs; the walk audits its Entry instantiation; a downstream instantiation is downstream code"
-
-[[entry]]
-kind = "generic-export"
-item = "crate::alloc_guard::sites::Reserved::<T>::push"
-citation = "ERRATA E7: generic guard fill in the pinned sites.rs; audited at its Entry instantiation"
-
-[[entry]]
-kind = "generic-export"
-item = "crate::alloc_guard::sites::Reserved::<T>::into_vec"
-citation = "ERRATA E7: generic guard move-out in the pinned sites.rs; audited at its Entry instantiation"
+# -- Generic exports of the guard: NONE (D3/D4 resolved 2026-11-14). `try_with_room<T>`,
+#    `Reserved<T>`, `Reserved::push` and `Reserved::into_vec` are `pub(crate)` in the
+#    hash-pinned sites.rs, so they are no longer exported and the tool no longer reports
+#    `generic-pub-fn`; the walk still audits their `Entry` instantiations as crate-internal
+#    callees. See ERRATA E10. --
 
 # -- DIB, the one path dependency (SPEC §6 dependency contracts, §9 crate rule) --
 [[entry]]
