@@ -19623,8 +19623,8 @@
    "image_tail_error": null,
    "incidental": false,
    "name": "netsurf-browser/libnsgif:test/ns-afl-gif/id:000007,orig:id:000516,src:000037,op:havoc,rep:1.gif",
-   "rb_still": "TruncatedImageData",
-   "rb_stream": "TruncatedImageData",
+   "rb_still": "InvalidLzwMinCodeSize",
+   "rb_stream": "InvalidLzwMinCodeSize",
    "recovered_events": [],
    "recovered_still": false,
    "sha256": "a72658c3f4c56802bb927de996acea422eafa2f2545dff86720ccc4a030f72b3",
@@ -20628,8 +20628,8 @@
    "image_tail_error": null,
    "incidental": false,
    "name": "netsurf-browser/libnsgif:test/ns-afl-gif/id:000092,orig:id:000580,src:000099,op:flip4,pos:44.gif",
-   "rb_still": "TruncatedImageData",
-   "rb_stream": "TruncatedImageData",
+   "rb_still": "InvalidLzwMinCodeSize",
+   "rb_stream": "InvalidLzwMinCodeSize",
    "recovered_events": [],
    "recovered_still": false,
    "sha256": "231df5124ca82349c7be0e28e3d2cd904dacc018692d4648cc2e730556fdd613",
@@ -20668,8 +20668,8 @@
    "image_tail_error": null,
    "incidental": false,
    "name": "netsurf-browser/libnsgif:test/ns-afl-gif/id:000098,orig:id:000595,src:000099,op:havoc,rep:8.gif",
-   "rb_still": "TruncatedImageData",
-   "rb_stream": "TruncatedImageData",
+   "rb_still": "InvalidLzwMinCodeSize",
+   "rb_stream": "InvalidLzwMinCodeSize",
    "recovered_events": [],
    "recovered_still": false,
    "sha256": "4d4ea357a132014f92ec9ae93887a0577199c010d86d66b5b8314725dc157284",
@@ -21148,8 +21148,8 @@
    "image_tail_error": null,
    "incidental": false,
    "name": "netsurf-browser/libnsgif:test/ns-afl-gif/id:000140,orig:id:000674,src:000589,op:flip2,pos:27.gif",
-   "rb_still": "TruncatedImageData",
-   "rb_stream": "TruncatedImageData",
+   "rb_still": "InvalidLzwMinCodeSize",
+   "rb_stream": "InvalidLzwMinCodeSize",
    "recovered_events": [],
    "recovered_still": false,
    "sha256": "3e9b7e56ab7a9727f7dff26ee0e3fe20421b91a1e601d29b33830d781c4f6ef6",
@@ -22488,8 +22488,8 @@
    "image_tail_error": null,
    "incidental": false,
    "name": "netsurf-browser/libnsgif:test/ns-afl-gif/id:000323,sync:gif_fuzz03,src:000311.gif",
-   "rb_still": "TooFewPixels",
-   "rb_stream": "TooFewPixels",
+   "rb_still": "InvalidLzwMinCodeSize",
+   "rb_stream": "InvalidLzwMinCodeSize",
    "recovered_events": [],
    "recovered_still": false,
    "sha256": "cef123a7f44dae9c06d9dcef3105aa1df9a1f7e2f0abcdb687de7895c1130aeb",
@@ -29455,16 +29455,16 @@
     "InvalidFrameDimensions": 16,
     "InvalidGraphicControl": 8,
     "InvalidLzwCode": 16,
-    "InvalidLzwMinCodeSize": 20,
+    "InvalidLzwMinCodeSize": 25,
     "NoColorTable": 88,
     "NoImage": 6,
     "OutputTooLarge": 13,
     "PixelBudgetExceeded": 3,
-    "TooFewPixels": 14,
+    "TooFewPixels": 13,
     "TruncatedColorTable": 4,
     "TruncatedExtension": 4,
     "TruncatedHeader": 2,
-    "TruncatedImageData": 30,
+    "TruncatedImageData": 26,
     "TruncatedImageDescriptor": 1,
     "UnknownBlock": 17,
     "UnsupportedVersion": 79
@@ -29499,7 +29499,7 @@
     ],
     [
      "TruncatedImageData",
-     30,
+     26,
      [
       "gitlab.gnome.org/GNOME/gdk-pixbuf:tests/test-images/fail/invalid.4.gif",
       "google/wuffs:test/data/hippopotamus.interlaced.truncated.gif",
@@ -29508,7 +29508,7 @@
     ],
     [
      "InvalidLzwMinCodeSize",
-     20,
+     25,
      [
       "gitlab.gnome.org/GNOME/gdk-pixbuf:tests/test-images/fail/overflow-codes-max.gif",
       "gitlab.gnome.org/GNOME/gdk-pixbuf:tests/test-images/fail/overflow-codes.gif",
@@ -29544,7 +29544,7 @@
     ],
     [
      "TooFewPixels",
-     14,
+     13,
      [
       "WebKit/WebKit:LayoutTests/fast/images/resources/gif-frame-outside-logical-screen.gif",
       "chromium/chromium:third_party/blink/renderer/platform/image-decoders/testing/first-frame-has-greater-size-than-screen-size.gif",
@@ -29621,15 +29621,15 @@
     "InvalidFrameDimensions": 16,
     "InvalidGraphicControl": 9,
     "InvalidLzwCode": 18,
-    "InvalidLzwMinCodeSize": 20,
+    "InvalidLzwMinCodeSize": 25,
     "NoColorTable": 90,
     "OutputTooLarge": 13,
     "PixelBudgetExceeded": 3,
-    "TooFewPixels": 14,
+    "TooFewPixels": 13,
     "TruncatedColorTable": 4,
     "TruncatedExtension": 5,
     "TruncatedHeader": 2,
-    "TruncatedImageData": 33,
+    "TruncatedImageData": 29,
     "TruncatedImageDescriptor": 2,
     "UnknownBlock": 22,
     "UnsupportedVersion": 79
@@ -29664,11 +29664,20 @@
     ],
     [
      "TruncatedImageData",
-     33,
+     29,
      [
       "gitlab.gnome.org/GNOME/gdk-pixbuf:tests/test-images/fail/invalid.4.gif",
       "google/wuffs:test/data/hippopotamus.interlaced.truncated.gif",
       "libgd/libgd:tests/gif/gif-conformance/invalid/truncated_lzw.gif"
+     ]
+    ],
+    [
+     "InvalidLzwMinCodeSize",
+     25,
+     [
+      "gitlab.gnome.org/GNOME/gdk-pixbuf:tests/test-images/fail/overflow-codes-max.gif",
+      "gitlab.gnome.org/GNOME/gdk-pixbuf:tests/test-images/fail/overflow-codes.gif",
+      "image-rs/image-gif:tests/crashtest/issue-117-out-of-range.gif"
      ]
     ],
     [
@@ -29678,15 +29687,6 @@
       "WebKit/WebKit:LayoutTests/fast/images/resources/bad-trailer.gif",
       "chromium/chromium:third_party/blink/renderer/platform/image-decoders/testing/broken.gif",
       "chromium/chromium:third_party/blink/renderer/platform/image-decoders/testing/radient-bad-terminator.gif"
-     ]
-    ],
-    [
-     "InvalidLzwMinCodeSize",
-     20,
-     [
-      "gitlab.gnome.org/GNOME/gdk-pixbuf:tests/test-images/fail/overflow-codes-max.gif",
-      "gitlab.gnome.org/GNOME/gdk-pixbuf:tests/test-images/fail/overflow-codes.gif",
-      "image-rs/image-gif:tests/crashtest/issue-117-out-of-range.gif"
      ]
     ],
     [
@@ -29709,7 +29709,7 @@
     ],
     [
      "TooFewPixels",
-     14,
+     13,
      [
       "WebKit/WebKit:LayoutTests/fast/images/resources/gif-frame-outside-logical-screen.gif",
       "chromium/chromium:third_party/blink/renderer/platform/image-decoders/testing/first-frame-has-greater-size-than-screen-size.gif",
@@ -29867,19 +29867,19 @@
    }
   },
   "timing": {
-   "oracle_seconds_total": 785.5,
+   "oracle_seconds_total": 669.5,
    "slowest": [
     [
-     53.57,
+     57.94,
      "image-rs/image-gif:tests/samples/sample_big.gif"
     ],
     [
-     50.76,
+     31.06,
      "chromium/chromium:chrome/test/data/image_decoding/droids.gif"
     ],
     [
-     45.64,
-     "WebKit/WebKit:LayoutTests/fast/images/resources/3720-2584-animated-black.gif"
+     29.8,
+     "OpenImageIO/oiio-images:gif/gif_tahoe_interlaced.gif"
     ]
    ]
   }
