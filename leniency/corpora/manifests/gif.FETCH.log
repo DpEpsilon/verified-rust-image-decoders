@@ -1,0 +1,148 @@
+image-rs/image-gif	TOO-LARGE-OR-EMPTY	benches/photo.gif	10130100
+image-rs/image-gif	OK	commit=a5f89ddc2b29424334244c97456b4a26e208aa7d	candidates=23	stored=22	reused=0	duplicates=0	failed=0
+image-rs/image	OK	commit=e70e9fe5073f4b298a33b72993847241a8eaaca6	candidates=13	stored=11	reused=0	duplicates=2	failed=0
+gitlab.gnome.org/GNOME/gdk-pixbuf	OK	commit=ff4acb5b5c9a8ac29667235ec1626c996dec84de	candidates=94	stored=89	reused=0	duplicates=5	failed=0
+mirrorer/giflib	OK	commit=fa37672085ce4b3d62c51627ab3c8cf2dda8009a	candidates=33	stored=31	reused=0	duplicates=2	failed=0
+netsurf-browser/libnsgif	OK	commit=c26c7aa4765e4a40b5f2a1e7941368286ca88e32	candidates=324	stored=324	reused=0	duplicates=0	failed=0
+python-pillow/Pillow	OK	commit=7533ff222598f4745487b402dfb58f39b438288b	candidates=40	stored=40	reused=0	duplicates=0	failed=0
+ImageMagick/ImageMagick	OK	commit=cf973b410447fc051aa05fb93573e29762e34981	candidates=34	stored=33	reused=0	duplicates=1	failed=0
+ImageMagick/ImageMagick6	OK	commit=ce7624119fa3e33d8967179acf79217ee1a1580e	candidates=20	stored=2	reused=0	duplicates=18	failed=0
+ImageMagick/Website	OK	commit=0a1ddd9baa6b6538ea73fd16508ba1683ffe15b3	candidates=17	stored=6	reused=0	duplicates=11	failed=0
+google/wuffs	OK	commit=b36a81d3352604fee1fee3661f39909706b1b966	candidates=31	stored=30	reused=0	duplicates=1	failed=0
+SerenityOS/serenity	OK	commit=1a00c247b06730267fd6b0dc9f700a435c3e66b4	candidates=18	stored=17	reused=0	duplicates=1	failed=0
+web-platform-tests/wpt	OK	commit=4f0b21074fd5bd14e7adafd08fa17ba4a0ec6661	candidates=31	stored=28	reused=0	duplicates=3	failed=0
+chromium/chromium	TOO-LARGE-OR-EMPTY	chrome/test/data/download-test3.gif	0
+chromium/chromium	TOO-LARGE-OR-EMPTY	components/test/data/actor/download-test.gif	0
+chromium/chromium	TOO-LARGE-OR-EMPTY	third_party/google-closure-library/closure/goog/net/crossdomainrpc_test.gif	0
+chromium/chromium	OK	commit=ca8253839df0881a2b51d83641700b4adfe01acf	candidates=606	stored=360	reused=0	duplicates=243	failed=0
+mozilla/gecko-dev	OK	commit=5836a062726f715fda621338a17b51aff30d0a8c	candidates=214	stored=152	reused=0	duplicates=62	failed=0
+WebKit/WebKit	TOO-LARGE-OR-EMPTY	LayoutTests/platform/mac/fast/loader/resources/mimeTypeExamples/example-gif.gif	0
+WebKit/WebKit	OK	commit=a90432c4ab9c1e44bd9dbb8d95b486e201d24535	candidates=492	stored=60	reused=0	duplicates=431	failed=0
+servo/servo	OK	commit=5bfbd79f00835e20ed0b2bfc3bd0af449fe0a8d2	candidates=37	stored=2	reused=0	duplicates=35	failed=0
+google/skia	OK	commit=741278733ac19dee96fe06ce9b1fa95bf4e88f6b	candidates=22	stored=0	reused=0	duplicates=22	failed=0
+qt/qtbase	OK	commit=628b0e6827e19289903997c1a636e37271df377d	candidates=46	stored=34	reused=0	duplicates=12	failed=0
+libgd/libgd	TOO-LARGE-OR-EMPTY	tests/gif/gif-conformance/invalid/empty.gif	0
+libgd/libgd	OK	commit=3e04b12b67e91bd60528421bbff490eb4b181247	candidates=61	stored=49	reused=0	duplicates=11	failed=0
+libvips/libvips	OK	commit=5e918bd43a5f2fc8cfcd23fddbfc6704a1fcff3f	candidates=8	stored=7	reused=0	duplicates=1	failed=0
+lovell/sharp	OK	commit=80323211e23afa4f56d63c70e7db17dfd6e588f0	candidates=4	stored=4	reused=0	duplicates=0	failed=0
+opencv/opencv	OK	commit=205613a29728c2217049bdddbbe98322b485b34e	candidates=7	stored=7	reused=0	duplicates=0	failed=0
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/EncodeGeneratedPatterns_Argb32_TestPattern100x100.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/EncodeGeneratedPatterns_Rgba32_TestPattern100x100.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/EncodeGeneratedPatterns_RgbaVector_TestPattern100x100.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue2866_Rgba32_issue_2866.gif/00.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue2866_Rgba32_issue_2866.gif/08.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue2866_Rgba32_issue_2866.gif/104.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue2866_Rgba32_issue_2866.gif/112.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue2866_Rgba32_issue_2866.gif/16.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue2866_Rgba32_issue_2866.gif/24.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue2866_Rgba32_issue_2866.gif/32.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue2866_Rgba32_issue_2866.gif/40.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue2866_Rgba32_issue_2866.gif/48.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue2866_Rgba32_issue_2866.gif/56.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue2866_Rgba32_issue_2866.gif/64.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue2866_Rgba32_issue_2866.gif/72.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue2866_Rgba32_issue_2866.gif/80.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue2866_Rgba32_issue_2866.gif/88.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue2866_Rgba32_issue_2866.gif/96.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue3142_Rgba32_issue_3142.gif/00.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue3142_Rgba32_issue_3142.gif/08.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue3142_Rgba32_issue_3142.gif/104.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue3142_Rgba32_issue_3142.gif/112.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue3142_Rgba32_issue_3142.gif/16.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue3142_Rgba32_issue_3142.gif/24.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue3142_Rgba32_issue_3142.gif/32.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue3142_Rgba32_issue_3142.gif/40.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue3142_Rgba32_issue_3142.gif/48.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue3142_Rgba32_issue_3142.gif/56.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue3142_Rgba32_issue_3142.gif/64.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue3142_Rgba32_issue_3142.gif/72.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue3142_Rgba32_issue_3142.gif/80.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue3142_Rgba32_issue_3142.gif/88.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/GifEncoderTests/GifEncoder_CanDecode_AndEncode_Issue3142_Rgba32_issue_3142.gif/96.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/External/ReferenceOutput/ResizeTests/Resize_IsAppliedToAllFrames_Rgba32_giphy.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/18-bit_RGB_Cube.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/GlobalQuantizationTest.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/adobe-rgb-icc.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/animated_loop.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/animated_loop_interlaced.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/animated_transparent_firstframerestoreprev_loop.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/animated_transparent_frame_norestore_loop.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/animated_transparent_frame_restorebackground_loop.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/animated_transparent_frame_restoreprev_loop.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/animated_transparent_loop.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/animated_transparent_restoreprev_loop.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/base_1x4.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/base_4x1.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/cheers.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/exiftool-icc.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/frames/10x1-left0-top0-interlaced.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/frames/10x10-left0-top10-interlaced.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/frames/10x10-left0-top10-sequential.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/frames/10x10-left0-top5-interlaced.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/frames/10x10-left0-top5-sequential.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/frames/10x10-left5-top3-interlaced.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/frames/10x2-left0-top0-interlaced.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/frames/10x20-left0-top8-interlaced.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/frames/10x20-left0-top9-interlaced.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/frames/10x3-left0-top7-interlaced.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/frames/10x4-left0-top0-interlaced.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/frames/20x20-left0-top0-interlaced.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/frames/20x20-left0-top0-sequential.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/frames/4x4-left12-top0-interlaced.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/frames/4x4-left12-top0-sequential.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/frames/lzw-code-outside-table-hidden-row.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/frames/lzw-code-outside-table.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/giphy.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/global-256-no-trans.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/image-zero-height.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/image-zero-size.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/image-zero-width.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/bugzilla-55918.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue1530.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue1668_invalidcolorindex.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue1962_tiniest_gif_1st.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue2012_Stronghold-Crusader-Extreme-Cover.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue2012_drona1.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue403_baddescriptorwidth.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue405_badappextlength252-2.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue405_badappextlength252.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue_2198.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue_2288.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue_2288_2.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue_2288_3.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue_2288_4.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue_2450.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue_2450_2.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue_2743.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue_2758.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue_2859_A.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue_2859_B.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue_2866.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue_2953.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue_2980.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/issues/issue_3142.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/kumin.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/large_comment.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/leo.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/m4nb.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/max-height.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/max-width.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/mixed-disposal.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/receipt.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/rings.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/static_nontransparent.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/static_transparent.gif
+SixLabors/ImageSharp	LFS-POINTER	tests/Images/Input/Gif/trans.gif
+SixLabors/ImageSharp	OK	commit=b8428e0fb409b1c2f282d8da05cad0ac6bb18a66	candidates=107	stored=0	reused=0	duplicates=0	failed=0
+OpenImageIO/oiio-images	OK	commit=d13e98f92b4e75ae7cd949cc5aa1df219560fb93	candidates=10	stored=10	reused=0	duplicates=0	failed=0
+SDL-mirror/SDL_image	OK	commit=f4f5caf21d6f18de85baee945348f56697d1813a	candidates=12	stored=11	reused=0	duplicates=1	failed=0
+wxWidgets/wxWidgets	OK	commit=41814dd05ce54f3091c7894736cc03c635a46449	candidates=23	stored=20	reused=0	duplicates=3	failed=0
+fltk/fltk	OK	commit=cfd093905194b99575a53fe9f32ea2c3610e959d	candidates=6	stored=6	reused=0	duplicates=0	failed=0
+Kitware/VTK	OK	commit=c6cb77bac3d2617674a9622acca7edd4a290c754	candidates=7	stored=7	reused=0	duplicates=0	failed=0
+kohler/gifsicle	OK	commit=64a656b574b991a7d899abe8a80c2c63c94ae50e	candidates=2	stored=2	reused=0	duplicates=0	failed=0
+imazen/imageflow	OK	commit=6bbe6677ab1de76e1e534aaf1c720064263cb816	candidates=6	stored=6	reused=0	duplicates=0	failed=0
+ruffle-rs/ruffle	OK	commit=0efc3792851b7005e9035b52f0d10c26cf33ea4b	candidates=3	stored=3	reused=0	duplicates=0	failed=0
+kornelski/giflossy	OK	commit=c242bbee1d2ab449c4971f7364a404ca48216991	candidates=2	stored=0	reused=0	duplicates=2	failed=0
+InsightSoftwareConsortium/ITK	OK	commit=302886dcaad0a714fc15299e8b044d01404b7604	candidates=2	stored=2	reused=0	duplicates=0	failed=0
+imagej/ImageJ	OK	commit=a376e43fad41a7337f7f01433c9673ed376b40e6	candidates=2	stored=2	reused=0	duplicates=0	failed=0
+openjdk/jdk	OK	commit=ab68166488b78edab4a2c3ceed5886a35bef3674	candidates=598	stored=30	reused=0	duplicates=0	failed=0
