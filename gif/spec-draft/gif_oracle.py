@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""GIF-CORE-SPEC draft 0.1: strict reference decoder (Python oracle).
+"""GIF-CORE-SPEC draft 0.2: strict reference decoder (Python oracle).
 
 Every function names the SPEC.md section (G1..G18) it implements. The oracle is a
 reference model: it allocates freely and is not evidence about any Rust
@@ -9,15 +9,17 @@ Public functions:
   decode_still(b)  -> {'width','height','rgba': bytes, 'frame': meta} | {'error': name}
   decode_frames(b) -> {'width','height','loop_count','background_index','aspect',
                        'frames': [frame...], 'end': 'trailer' | {'error': name}}
-                      or {'error': name} when the stream fails before the first frame
-                      record could be produced and no frame was returned.
+                      or {'error': name} when G2-G4 or the block walk before the first
+                      image descriptor fails (the iterator constructor's error, G15).
+  plays(loop_count) -> ('Once',) | ('Forever',) | ('Repeats', n)       (G20)
+  total_plays(p)    -> 1 | None (forever) | n + 1                      (G20)
 A frame is {'rgba': bytes (whole canvas, 4*W*H), 'rect': (left, top, width, height),
 'delay_cs', 'disposal', 'user_input', 'transparent': int|None, 'interlaced'}.
 """
 
-# G1. Limits.
+# G1. Limits: the only place the caps are written (theorems are stated over these names).
 MAX_INPUT = 67_108_864
-MAX_DIMENSION = 8_192
+MAX_DIMENSION = 65_535          # the GIF wire limit (LE16): no separate per-side cap (Q8)
 MAX_OUTPUT = 67_108_864
 MAX_FRAMES = 65_536
 MAX_TOTAL_PIXELS = 1 << 30
@@ -33,7 +35,7 @@ ERRORS = (
     'PixelBudgetExceeded', 'NoColorTable', 'TruncatedImageData',
     'InvalidLzwMinCodeSize', 'InvalidLzwCode', 'TooManyPixels', 'TooFewPixels',
     'MissingEndOfInformation', 'DataAfterEndOfInformation',
-    'ColorIndexOutOfRange', 'TrailingBytes', 'NoImage',
+    'ColorIndexOutOfRange', 'TrailingBytes', 'NoImage', 'UnsupportedGraphicControlTarget',
 )
 # Strict sets no recovery event; the closed `recovered` list is in ../policy-draft/OPTIONS.md.
 
@@ -102,6 +104,8 @@ def parse_extension(b, p, st):
     need(b, p, 2, 'TruncatedExtension')
     label = b[p + 1]
     p += 2
+    if label <= 0x7F and st['gce'] is not None:         # G7: Plain Text or unknown graphic label
+        raise GifError('UnsupportedGraphicControlTarget')
     if label == 0xF9:                                   # G6.1 Graphic Control Extension
         if st['gce'] is not None:
             raise GifError('DuplicateGraphicControl')
@@ -125,8 +129,7 @@ def parse_extension(b, p, st):
             raise GifError('InvalidPlainText')
         need(b, p, 13, 'TruncatedExtension')
         _, p = read_sub_blocks(b, p + 13, 'TruncatedExtension')
-        st['gce'] = None                                # G7: a PTE consumes the GCE; not rendered
-        return p
+        return p                                        # not rendered (G6.2)
     if label == 0xFF:                                   # G6.3 Application Extension
         need(b, p, 1, 'TruncatedExtension')
         if b[p] != 11:
@@ -141,8 +144,6 @@ def parse_extension(b, p, st):
         return p
     # G6.4 Comment (0xFE) and unknown labels: skip the sub-blocks.
     _, p = read_sub_blocks(b, p, 'TruncatedExtension')
-    if label <= 0x7F:                                   # G7: unknown graphic-rendering label
-        st['gce'] = None
     return p
 
 
@@ -274,7 +275,7 @@ def run(b, still):
     W, H = scr['width'], scr['height']
     canvas = bytearray(4 * W * H)                       # G12.1: transparent black
     st = {'gce': None, 'frames_seen': 0, 'total_pixels': 0, 'loop_count': None}
-    frames, prev = [], None
+    frames, prev, at_image = [], None, False
     res = {'width': W, 'height': H, 'version': scr['version'].decode(), 'background_index': scr['background_index'],
            'aspect': scr['aspect'], 'frames': frames}
     try:
@@ -294,6 +295,7 @@ def run(b, still):
                 continue
             if c != 0x2C:
                 raise GifError('UnknownBlock')
+            at_image = True                             # G15: the constructor's walk ends here
             fh, p = parse_image_descriptor(b, p, scr, st)
             m, data, p = read_image_data(b, p)
             gce, st['gce'] = st['gce'], None
@@ -316,6 +318,8 @@ def run(b, still):
             if still:
                 break
     except GifError as e:
+        if not at_image and not still:
+            raise                                       # G15: error before the first image descriptor
         res['end'] = {'error': e.name}
     res['loop_count'] = st['loop_count']
     return res
@@ -339,11 +343,29 @@ def decode_still(b):
 
 def decode_frames(b):
     """G15: every frame in order, then the stream's end ('trailer' or the first error).
-    Header errors (G2-G4) return {'error': name} with no frame list."""
+    An error in G2-G4 or before the first image descriptor returns {'error': name}
+    with no frame list (the constructor fails)."""
     try:
         return run(bytes(b), still=False)
     except GifError as e:
         return {'error': e.name}
+
+
+def plays(loop_count):
+    """G20: the documented meaning of the raw NETSCAPE2.0 value (browser convention)."""
+    if loop_count is None:
+        return ('Once',)
+    assert 0 <= loop_count <= 0xFFFF
+    return ('Forever',) if loop_count == 0 else ('Repeats', loop_count)
+
+
+def total_plays(p):
+    """G20: total number of plays; None for Forever. Repeats(n) gives n + 1 <= 65,536 (u32)."""
+    if p[0] == 'Once':
+        return 1
+    if p[0] == 'Forever':
+        return None
+    return p[1] + 1
 
 
 if __name__ == '__main__':

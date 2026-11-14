@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Generate VECTORS.json for GIF-CORE-SPEC draft 0.1.
+"""Generate VECTORS.json for GIF-CORE-SPEC draft 0.2.
 
 Independence: inputs are built by an LZW *encoder* and a block writer in this file,
 and every expectation is written from the generator's intent (the index raster it
 encoded, a hand-drawn canvas, or a hand-named error), never by calling the oracle.
-check_vectors.py then runs gif_oracle.py against every record.
+check_vectors.py then runs gif_oracle.py against every record, and
+../policy-draft/policy_oracle.py against records that name a `profile`.
 """
 import json
 import random
@@ -18,7 +19,7 @@ def lzw_codes(indices, m, clear_first=True, eoi=True, clear_on_full=True, clear_
     """Standard GIF LZW encoder: returns the emitted code list (no widths)."""
     clear, end = 1 << m, (1 << m) + 1
     out = [clear] if clear_first else []
-    dic = {bytes([i]): i for i in range(clear)}
+    dic = {bytes([i]): i for i in range(min(clear, 256))}
     nxt = end + 1
     w = b''
     since = 0
@@ -34,11 +35,11 @@ def lzw_codes(indices, m, clear_first=True, eoi=True, clear_on_full=True, clear_
             nxt += 1
         elif clear_on_full:
             out.append(clear)
-            dic = {bytes([i]): i for i in range(clear)}
+            dic = {bytes([i]): i for i in range(min(clear, 256))}
             nxt = end + 1
         if clear_every and since >= clear_every and nxt < 4096:
             out.append(clear)
-            dic = {bytes([i]): i for i in range(clear)}
+            dic = {bytes([i]): i for i in range(min(clear, 256))}
             nxt = end + 1
             since = 0
         w = c
@@ -167,8 +168,31 @@ def from_indices(indices, pal):
 V = []
 
 
-def add(name, entry, b, expected):
-    V.append({'name': name, 'entry': entry, 'input_hex': b.hex(), 'expected': expected})
+def add(name, entry, b, expected, profile=None):
+    v = {'name': name, 'entry': entry, 'input_hex': b.hex(), 'expected': expected}
+    if profile:
+        v['profile'] = profile
+    V.append(v)
+
+
+RB, ICC = 'RecommendedBeta', 'ImageCrateCompat-0.25.10'
+
+
+def rec(expected, *flags):
+    """Profile expectation: add `recovered` to a still result or to each frame (flags in order)."""
+    e = json.loads(json.dumps(expected))
+    if 'frames' in e:
+        for f, r in zip(e['frames'], flags or [False] * len(e['frames'])):
+            f['recovered'] = r
+    elif 'error' not in e:
+        e['recovered'] = flags[0] if flags else False
+    return e
+
+
+def both_profile(name, profile, b, w, h, pixels, fmeta=None, loop=None, recovered=False):
+    add(f'{name}@{profile}', 'still', b, rec(still_ok(w, h, pixels), recovered), profile)
+    f = frame(**(fmeta or {'rect': (0, 0, w, h)}), pixels=pixels)
+    add(f'{name}/frames@{profile}', 'frames', b, rec(frames_ok(w, h, [f], loop=loop), recovered), profile)
 
 
 def still_ok(w, h, pixels):
@@ -225,7 +249,7 @@ add('version-88a', 'still', b'GIF88a' + base[6:], err('UnsupportedVersion'))
 add('version-lowercase-89A', 'still', b'GIF89A' + base[6:], err('UnsupportedVersion'))
 add('screen-zero-width', 'still', header(0, 3, PAL4) + image(0, 0, 4, 3, ix) + TRAILER, err('InvalidDimensions'))
 add('screen-zero-height', 'still', header(4, 0, PAL4) + TRAILER, err('InvalidDimensions'))
-add('screen-8193', 'still', header(8193, 1, PAL4) + TRAILER, err('InvalidDimensions'))
+add('screen-8193-accepted', 'still', header(8193, 1, PAL4) + TRAILER, err('NoImage'))   # Q8: no per-side cap below 65,535
 add('screen-output-too-large', 'still', header(8192, 2049, PAL4) + TRAILER, err('OutputTooLarge'))
 add('screen-output-exact-cap-no-image', 'still', header(8192, 2048, PAL4) + TRAILER, err('NoImage'))
 add('screen-output-exact-cap-no-image/frames', 'frames', header(8192, 2048, PAL4) + TRAILER, frames_ok(8192, 2048, []))
@@ -294,10 +318,20 @@ add('gce-truncated', 'still', header(4, 3, PAL4) + b'\x21\xf9\x04\x00\x00', err(
 add('gce-duplicate', 'still', header(4, 3, PAL4) + gce() + gce() + image(0, 0, 4, 3, ix) + TRAILER, err('DuplicateGraphicControl'))
 both('gce-comment-gce-target', header(4, 3, PAL4) + gce(transparent=2) + comment + image(0, 0, 4, 3, ix) + TRAILER, 4, 3, tp,
      {'rect': (0, 0, 4, 3), 'transparent': 2})
-both('gce-consumed-by-plain-text', header(4, 3, PAL4) + gce(transparent=2) + plain + image(0, 0, 4, 3, ix) + TRAILER,
+# Q7: a pending Graphic Control meeting Plain Text or an unknown label 0x00-0x7F is unsupported in Strict;
+# RecommendedBeta (gce_consumers=ImageOnly) applies it to the next image, without `recovered`.
+for nm, blk in (('gce-consumed-by-plain-text', plain), ('gce-consumed-by-unknown-graphic-label', b'\x21\x02\x01z\0')):
+    bb = header(4, 3, PAL4) + gce(transparent=2) + blk + image(0, 0, 4, 3, ix) + TRAILER
+    add(nm, 'still', bb, err('UnsupportedGraphicControlTarget'))
+    add(nm + '/frames', 'frames', bb, err('UnsupportedGraphicControlTarget'))      # constructor error (G15)
+    both_profile(nm, RB, bb, 4, 3, tp, {'rect': (0, 0, 4, 3), 'transparent': 2})
+both('unknown-graphic-label-without-gce-skipped', header(4, 3, PAL4) + b'\x21\x02\x01z\0' + image(0, 0, 4, 3, ix) + TRAILER,
      4, 3, from_indices(ix, PAL4))
-both('gce-consumed-by-unknown-graphic-label', header(4, 3, PAL4) + gce(transparent=2) + b'\x21\x02\x01z\0' + image(0, 0, 4, 3, ix) + TRAILER,
-     4, 3, from_indices(ix, PAL4))
+both('gce-after-plain-text-applies', header(4, 3, PAL4) + plain + gce(transparent=2) + image(0, 0, 4, 3, ix) + TRAILER, 4, 3, tp,
+     {'rect': (0, 0, 4, 3), 'transparent': 2})
+add('gce-plain-text-target-before-truncation', 'still', header(4, 3, PAL4) + gce() + b'\x21\x01\x0c\x00', err('UnsupportedGraphicControlTarget'))
+add('gce-plain-text-after-first-image', 'frames', header(4, 3, PAL4) + image(0, 0, 4, 3, ix) + gce() + plain + image(0, 0, 4, 3, ix) + TRAILER,
+    frames_ok(4, 3, [frame((0, 0, 4, 3), from_indices(ix, PAL4))], end=err('UnsupportedGraphicControlTarget')))
 add('gce-then-trailer', 'frames', header(4, 3, PAL4) + image(0, 0, 4, 3, ix) + gce() + TRAILER,
     frames_ok(4, 3, [frame((0, 0, 4, 3), from_indices(ix, PAL4))], end=err('GraphicControlWithoutGraphic')))
 for d in (4, 5, 6, 7):
@@ -465,8 +499,8 @@ for n in range(len(full)):
         e = 'MissingTrailer'
     nframes = (1 if n >= layout[3][2] else 0) + (1 if n >= layout[4][2] else 0)
     fr = [frame((0, 0, 4, 2), fa, delay=3, disposal=1), frame((1, 0, 2, 1), grid('rggr/rrrr'))][:nframes]
-    if e in ('TruncatedHeader', 'TruncatedColorTable'):
-        add(f'cut-{n}', 'frames', full[:n], err(e))
+    if e in ('TruncatedHeader', 'TruncatedColorTable') or n <= layout[3][1]:
+        add(f'cut-{n}', 'frames', full[:n], err(e))   # G15: no image descriptor reached, the constructor fails
     else:
         add(f'cut-{n}', 'frames', full[:n], frames_ok(4, 2, fr, end=err(e)))
     add(f'cut-{n}/still', 'still', full[:n], still_ok(4, 2, fa) if first_done else err(e))
@@ -479,6 +513,79 @@ for n, end in ((65_536, 'trailer'), (65_537, err('TooManyFrames'))):
               'suffix_hex': TRAILER.hex(),
               'expected': {'summary': True, 'width': 1, 'height': 1, 'frame_count': min(n, 65_536),
                            'last_rgba_runs': runs([C['r']]), 'end': end}})
+
+# ---------------------------------------------------------------- loop count: sub-block scan (Q15)
+two_loops = b'\x21\xff\x0bNETSCAPE2.0\x03\x01\x03\x00\x03\x01\x09\x00\0'
+buffering = b'\x21\xff\x0bNETSCAPE2.0\x05\x02\x00\x10\x00\x00\x03\x01\x07\x00\0'
+both('netscape-two-loop-subblocks-last-wins', header(4, 3, PAL4) + two_loops + image(0, 0, 4, 3, ix) + TRAILER,
+     4, 3, from_indices(ix, PAL4), loop=9)
+f1 = frame((0, 0, 4, 3), from_indices(ix, PAL4))
+add('netscape-buffering-subblock-ignored/frames@' + ICC, 'frames', header(4, 3, PAL4) + buffering + image(0, 0, 4, 3, ix) + TRAILER,
+    rec(frames_ok(4, 3, [f1], loop=None)), ICC)            # loop_scan=FirstSubBlockOnly: the buffering block hides the count
+add('netscape-two-loop-subblocks-first-only/frames@' + ICC, 'frames', header(4, 3, PAL4) + two_loops + image(0, 0, 4, 3, ix) + TRAILER,
+    rec(frames_ok(4, 3, [f1], loop=3)), ICC)
+add('netscape-buffering-subblock-ignored/frames@' + RB, 'frames', header(4, 3, PAL4) + buffering + image(0, 0, 4, 3, ix) + TRAILER,
+    rec(frames_ok(4, 3, [f1], loop=7)), RB)
+
+# ---------------------------------------------------------------- plays() over the raw loop count (G20)
+def plays_exp(loop):
+    if loop is None:
+        return {'loop_count': None, 'plays': 'Once', 'total_plays': 1}
+    if loop == 0:
+        return {'loop_count': 0, 'plays': 'Forever', 'total_plays': None}
+    return {'loop_count': loop, 'plays': {'Repeats': loop}, 'total_plays': loop + 1}
+
+
+add('plays-no-netscape', 'plays', base, plays_exp(None))
+for n in (0, 1, 5, 65535):
+    add(f'plays-loop-{n}', 'plays', header(4, 3, PAL4) + netscape.replace(le(5) + b'\0', le(n) + b'\0') + image(0, 0, 4, 3, ix) + TRAILER,
+        plays_exp(n))
+add('plays-netscape-after-first-image', 'plays', header(4, 3, PAL4) + image(0, 0, 4, 3, ix) + netscape + TRAILER, plays_exp(None))
+add('plays-animexts', 'plays', header(4, 3, PAL4) + netscape.replace(b'NETSCAPE2.0', b'ANIMEXTS1.0') + image(0, 0, 4, 3, ix) + TRAILER,
+    plays_exp(None))
+
+# ---------------------------------------------------------------- wire-maximum screens and coordinates (Q8)
+row = [(x // 1000) % 4 for x in range(65535)]
+both('screen-65535x1', header(65535, 1, PAL4) + image(0, 0, 65535, 1, row) + TRAILER, 65535, 1, from_indices(row, PAL4))
+col = [(y // 1000) % 4 for y in range(65535)]
+both('screen-1x65535-interlaced', header(1, 65535, PAL4) + image(0, 0, 1, 65535, col, interlaced=True) + TRAILER, 1, 65535,
+     from_indices(col, PAL4), {'rect': (0, 0, 1, 65535), 'interlaced': True})
+wide = [((x // 4096) + y) % 4 for y in range(100) for x in range(32768)]
+both('screen-32768x100', header(32768, 100, PAL4) + image(0, 0, 32768, 100, wide) + TRAILER, 32768, 100, from_indices(wide, PAL4))
+add('screen-65535x256-area-cap-exact', 'still', header(65535, 256, PAL4) + TRAILER, err('NoImage'))
+add('screen-65535x256-area-cap-exact/frames', 'frames', header(65535, 256, PAL4) + TRAILER, frames_ok(65535, 256, []))
+add('screen-65535x257-output-too-large', 'still', header(65535, 257, PAL4) + TRAILER, err('OutputTooLarge'))
+add('screen-65535x65535-output-too-large', 'still', header(65535, 65535, PAL4) + TRAILER, err('OutputTooLarge'))
+both('frame-touches-right-edge-wire-max', header(65535, 1, PAL4) + image(65534, 0, 1, 1, [3]) + TRAILER, 65535, 1,
+     [C['.']] * 65534 + [C['b']], {'rect': (65534, 0, 1, 1)})
+far = header(65535, 1, PAL4) + image(65535, 0, 65535, 1, [1] * 65535) + TRAILER     # left + w = 131,070
+add('frame-left-65535-width-65535', 'still', far, err('FrameOutsideScreen'))
+add('frame-left-65535-width-65535/frames@' + RB, 'frames', far,
+    rec(frames_ok(65535, 1, [frame((65535, 0, 65535, 1), [C['.']] * 65535)]), True), RB)   # every position clipped (E1)
+
+# ---------------------------------------------------------------- clipped disposal 2 entirely beyond the screen (Q18 regression)
+for left in (5, 65535):
+    add(f'clip-dispose2-left-edge-beyond-screen-{left}/frames@' + RB, 'frames',
+        header(4, 2, PAL4) + gce(disposal=2) + image(left, 0, 2, 1, [2, 2]) + B + TRAILER,
+        rec(frames_ok(4, 2, [frame((left, 0, 2, 1), grid('..../....'), disposal=2), frame((1, 0, 2, 1), grid('.gg./....'))]),
+            True, False), RB)
+
+# ---------------------------------------------------------------- RecommendedBeta: LZW minimum code size 1-11, checked literals (Q6)
+add('lzw-min-code-1-1x1@' + RB, 'still', header(1, 1, PAL2) + raw_image(0, 0, 1, 1, 1, [2, 1, 3], widths=[2, 2, 2]) + TRAILER,
+    rec(still_ok(1, 1, [C['k']])), RB)
+add('lzw-min-code-9@' + RB, 'still', header(2, 1, PAL2) + raw_image(0, 0, 2, 1, 9, [512, 0, 1, 513]) + TRAILER,
+    rec(still_ok(2, 1, [C['w'], C['k']])), RB)
+both_profile('lzw-min-code-10', RB, header(4, 3, PAL4) + image(0, 0, 4, 3, ix, m=10) + TRAILER, 4, 3, from_indices(ix, PAL4))
+both_profile('lzw-min-code-11', RB, header(4, 3, PAL4) + image(0, 0, 4, 3, ix, m=11) + TRAILER, 4, 3, from_indices(ix, PAL4))
+add('lzw-min-code-9-literal-300@' + RB, 'still', header(2, 1, PAL4) + raw_image(0, 0, 2, 1, 9, [512, 300, 7, 513]) + TRAILER,
+    err('ColorIndexOutOfRange'), RB)
+add('lzw-min-code-12@' + RB, 'still', header(2, 1, PAL2) + raw_image(0, 0, 2, 1, 2, [4, 0, 1, 5])[:10] + b'\x0c\x00' + TRAILER,
+    err('InvalidLzwMinCodeSize'), RB)
+
+# ---------------------------------------------------------------- RecommendedBeta: stopping at the raster keeps sub-block structure (Q1)
+add('image-data-no-terminator@' + RB, 'still', (header(4, 3, PAL4) + image(0, 0, 4, 3, ix))[:-1], err('TruncatedImageData'), RB)
+add('lzw-data-after-eoi@' + RB, 'still', header(2, 1, PAL4) + raw_image(0, 0, 2, 1, 2, [4, 1, 2, 5], extra=b'\0') + TRAILER,
+    rec(still_ok(2, 1, [C['r'], C['g']])), RB)
 
 V = [v for v in V if v is not None]
 if __name__ == '__main__':
