@@ -1,0 +1,2907 @@
+[
+{
+"name": "vec:idat/split-1-byte",
+"why": "",
+"hex": null,
+"sha256": "0725590da8f76c355991b113f54652335a5516ba9a806916ced7614f23a2dcf7",
+"len": 13110,
+"oracle": {
+"still": "ok:397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"frames": {
+"n": 1,
+"seq": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"end": "iend",
+"plays": null,
+"delays": [
+null
+]
+}
+},
+"runners": {
+"image": {
+"status": "ok",
+"w": 23,
+"h": 11,
+"sha": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"frames": 1,
+"seq": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"rgba_hex": "6a0dc9e96ff3241716e4c607eae4296d846ede8ca09fc3b0b4dd75f7632b50086c19ae699a02239449c32e367d44935fd94eb504df3289b513677b50f03514de154ad1028783d0d565096cf67426066e02cf418ce3552d7f52925fe1f54367ed345eb4db98562e1dddc5917df7313e27339b7f9406387e672bf766fedb21b188d9cb1879595eea3af39c4cd296f142ce9d5a2c0522d6a0dbe98c29eec4199feb9964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e627f366389cadba426c410c7af460bd94223de51e9225c30f80f93aed0c72885adc33be5436fe721f93ea2e10207a60227dd2cfacc7942937503f9b9f7420b000c18f173bc6feba1dbb2d5c40e2fcb650579adf1319b5706d82f49380772a9645aa3988e0270aa4c6bfbd8418c0ae4b6acf286134f8a73eac5876f5942dfc8e978a026b9cd0eea80cc41fea77a6b3bac537fc49984fe01e5be514a441fb67a2a41da267c8fd0170a976d4aacb30ebf9440a0535ea9379095fe77cf571576adefe2b520b81c5f81996c1f1a18fc40ae64ff81b963f946b1ccfc1e8c7c10237e0c5bd3689769734d099aedf899e0535a4fd82901b63d3460c3b4cdae08ee852ec3a64485a1e24daebc41855ed3d9be68bb5fcc482255c94842576389dd43dc8b6d6d1b1136c597090fe93f56e8772e598e4b758d440c366c69619f90e4ddd7ac7275485e026a6180037cdd32220f6892a34fa7ce860b0e1d1c15dece6e47ba94166041fbaae0c7af65fdcd482c08e21a502c3171919d1f6e2daae7a3996e3d9edcc8f2f6ecec4e9d0e938bccf5462ab1c274e725d31ebdd7e389e3f48bf14a5758f1fdabd24ad067db06f7079975282f97b3061cebcf2e3b43d7550a12a488bfeb21a178e523c52bc5e247a21500184176647573f379d74c448b56633915a36be9b774fd0b64bc40a29ac3d3703b5ef3102eacbd8603b2be764170d88aae510693618668c826919de27e50911fea3cad3429c9b66e4734a7c7a2bd7798dd129982126f1e3b974ed0082ec5b777b01eec769f9864d92a6c44a8fff4b0513a7d546655eedd7665404277e50a7c37dde77700c12cf9c7c3b9f10250c43522d5bb51c216272f5f576cc338f37d34cbe6140312f1a5161d48e8a2d704d5f9927ad90e968bb0731d1fdb34a3fcf822672f509507d71fdaa5000f5efa28dea0cfa809acfe4b59b7ddb8d090aaa771d1e9ace27703bbf5214e97a",
+"color": "Rgba8"
+},
+"image-still": {
+"status": "ok",
+"w": 23,
+"h": 11,
+"sha": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"frames": 1,
+"seq": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"rgba_hex": "6a0dc9e96ff3241716e4c607eae4296d846ede8ca09fc3b0b4dd75f7632b50086c19ae699a02239449c32e367d44935fd94eb504df3289b513677b50f03514de154ad1028783d0d565096cf67426066e02cf418ce3552d7f52925fe1f54367ed345eb4db98562e1dddc5917df7313e27339b7f9406387e672bf766fedb21b188d9cb1879595eea3af39c4cd296f142ce9d5a2c0522d6a0dbe98c29eec4199feb9964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e627f366389cadba426c410c7af460bd94223de51e9225c30f80f93aed0c72885adc33be5436fe721f93ea2e10207a60227dd2cfacc7942937503f9b9f7420b000c18f173bc6feba1dbb2d5c40e2fcb650579adf1319b5706d82f49380772a9645aa3988e0270aa4c6bfbd8418c0ae4b6acf286134f8a73eac5876f5942dfc8e978a026b9cd0eea80cc41fea77a6b3bac537fc49984fe01e5be514a441fb67a2a41da267c8fd0170a976d4aacb30ebf9440a0535ea9379095fe77cf571576adefe2b520b81c5f81996c1f1a18fc40ae64ff81b963f946b1ccfc1e8c7c10237e0c5bd3689769734d099aedf899e0535a4fd82901b63d3460c3b4cdae08ee852ec3a64485a1e24daebc41855ed3d9be68bb5fcc482255c94842576389dd43dc8b6d6d1b1136c597090fe93f56e8772e598e4b758d440c366c69619f90e4ddd7ac7275485e026a6180037cdd32220f6892a34fa7ce860b0e1d1c15dece6e47ba94166041fbaae0c7af65fdcd482c08e21a502c3171919d1f6e2daae7a3996e3d9edcc8f2f6ecec4e9d0e938bccf5462ab1c274e725d31ebdd7e389e3f48bf14a5758f1fdabd24ad067db06f7079975282f97b3061cebcf2e3b43d7550a12a488bfeb21a178e523c52bc5e247a21500184176647573f379d74c448b56633915a36be9b774fd0b64bc40a29ac3d3703b5ef3102eacbd8603b2be764170d88aae510693618668c826919de27e50911fea3cad3429c9b66e4734a7c7a2bd7798dd129982126f1e3b974ed0082ec5b777b01eec769f9864d92a6c44a8fff4b0513a7d546655eedd7665404277e50a7c37dde77700c12cf9c7c3b9f10250c43522d5bb51c216272f5f576cc338f37d34cbe6140312f1a5161d48e8a2d704d5f9927ad90e968bb0731d1fdb34a3fcf822672f509507d71fdaa5000f5efa28dea0cfa809acfe4b59b7ddb8d090aaa771d1e9ace27703bbf5214e97a",
+"color": "Rgba8"
+},
+"pngcrate": {
+"status": "ok",
+"w": 23,
+"h": 11,
+"info": {
+"color": "Rgba",
+"depth": 8,
+"gamma": "None",
+"srgb": "None",
+"chrm": false,
+"iccp": -1,
+"text": [
+0,
+0,
+0
+],
+"actl": "None",
+"trns": -1,
+"line": 92,
+"outdepth": "Eight",
+"outcolor": "Rgba",
+"raw": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca"
+}
+},
+"libpng": {
+"status": "ok",
+"w": 23,
+"h": 11,
+"sha": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"frames": 1,
+"seq": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+23,
+11,
+-1
+]
+]
+},
+"spng": {
+"status": "ok",
+"w": 23,
+"h": 11,
+"sha": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"frames": 1,
+"seq": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+23,
+11,
+-1
+]
+]
+},
+"stb": {
+"status": "ok",
+"w": 23,
+"h": 11,
+"sha": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"frames": 1,
+"seq": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+23,
+11,
+-1
+]
+]
+},
+"gdk-loader": {
+"status": "ok",
+"w": 23,
+"h": 11,
+"sha": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"frames": 1,
+"seq": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+23,
+11,
+-1
+]
+]
+},
+"gdk-loader-byte": {
+"status": "ok",
+"w": 23,
+"h": 11,
+"sha": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"frames": 1,
+"seq": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+23,
+11,
+-1
+]
+]
+},
+"gdk-file": {
+"status": "ok",
+"w": 23,
+"h": 11,
+"sha": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca"
+},
+"gdk-anim": {
+"status": "ok",
+"w": 23,
+"h": 11,
+"sha": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"frames": 1,
+"seq": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+23,
+11,
+-1
+]
+]
+},
+"glycin": {
+"status": "ok",
+"w": 23,
+"h": 11,
+"sha": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"frames": 1,
+"seq": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"delays_ms": [
+-1
+]
+},
+"image-load": {
+"status": "ok",
+"w": 23,
+"h": 11,
+"sha": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"frames": 1,
+"seq": "397f4152bed74ea4443c3a7a9351d9f433d6060717cb8cb76c168e4404c09bca",
+"rgba_hex": "6a0dc9e96ff3241716e4c607eae4296d846ede8ca09fc3b0b4dd75f7632b50086c19ae699a02239449c32e367d44935fd94eb504df3289b513677b50f03514de154ad1028783d0d565096cf67426066e02cf418ce3552d7f52925fe1f54367ed345eb4db98562e1dddc5917df7313e27339b7f9406387e672bf766fedb21b188d9cb1879595eea3af39c4cd296f142ce9d5a2c0522d6a0dbe98c29eec4199feb9964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e6279964e627f366389cadba426c410c7af460bd94223de51e9225c30f80f93aed0c72885adc33be5436fe721f93ea2e10207a60227dd2cfacc7942937503f9b9f7420b000c18f173bc6feba1dbb2d5c40e2fcb650579adf1319b5706d82f49380772a9645aa3988e0270aa4c6bfbd8418c0ae4b6acf286134f8a73eac5876f5942dfc8e978a026b9cd0eea80cc41fea77a6b3bac537fc49984fe01e5be514a441fb67a2a41da267c8fd0170a976d4aacb30ebf9440a0535ea9379095fe77cf571576adefe2b520b81c5f81996c1f1a18fc40ae64ff81b963f946b1ccfc1e8c7c10237e0c5bd3689769734d099aedf899e0535a4fd82901b63d3460c3b4cdae08ee852ec3a64485a1e24daebc41855ed3d9be68bb5fcc482255c94842576389dd43dc8b6d6d1b1136c597090fe93f56e8772e598e4b758d440c366c69619f90e4ddd7ac7275485e026a6180037cdd32220f6892a34fa7ce860b0e1d1c15dece6e47ba94166041fbaae0c7af65fdcd482c08e21a502c3171919d1f6e2daae7a3996e3d9edcc8f2f6ecec4e9d0e938bccf5462ab1c274e725d31ebdd7e389e3f48bf14a5758f1fdabd24ad067db06f7079975282f97b3061cebcf2e3b43d7550a12a488bfeb21a178e523c52bc5e247a21500184176647573f379d74c448b56633915a36be9b774fd0b64bc40a29ac3d3703b5ef3102eacbd8603b2be764170d88aae510693618668c826919de27e50911fea3cad3429c9b66e4734a7c7a2bd7798dd129982126f1e3b974ed0082ec5b777b01eec769f9864d92a6c44a8fff4b0513a7d546655eedd7665404277e50a7c37dde77700c12cf9c7c3b9f10250c43522d5bb51c216272f5f576cc338f37d34cbe6140312f1a5161d48e8a2d704d5f9927ad90e968bb0731d1fdb34a3fcf822672f509507d71fdaa5000f5efa28dea0cfa809acfe4b59b7ddb8d090aaa771d1e9ace27703bbf5214e97a",
+"color": "Rgba8"
+}
+},
+"ref": "vec:idat/split-1-byte"
+},
+{
+"name": "vec:icc/too-large",
+"why": "",
+"hex": null,
+"sha256": "2bbe4f41b867e400ddc7814238f9e879d55a71d39d1016409ed9c5936f4ae4ae",
+"len": 16385,
+"oracle": {
+"still": "ok:dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": {
+"n": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"end": "iend",
+"plays": null,
+"delays": [
+null
+]
+}
+},
+"runners": {
+"image": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"rgba_hex": "c9493fffca4b97ffe11a17fffcf681ff",
+"color": "Rgb8"
+},
+"image-still": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"rgba_hex": "c9493fffca4b97ffe11a17fffcf681ff",
+"color": "Rgb8"
+},
+"pngcrate": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"info": {
+"color": "Rgb",
+"depth": 8,
+"gamma": "None",
+"srgb": "None",
+"chrm": false,
+"iccp": 16777217,
+"text": [
+0,
+0,
+0
+],
+"actl": "None",
+"trns": -1,
+"line": 6,
+"outdepth": "Eight",
+"outcolor": "Rgb",
+"raw": "c9493fca4b97e11a17fcf681"
+}
+},
+"libpng": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+2,
+2,
+-1
+]
+]
+},
+"spng": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+2,
+2,
+-1
+]
+]
+},
+"stb": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+2,
+2,
+-1
+]
+]
+},
+"gdk-loader": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+2,
+2,
+-1
+]
+]
+},
+"gdk-loader-byte": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+2,
+2,
+-1
+]
+]
+},
+"gdk-file": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6"
+},
+"gdk-anim": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+2,
+2,
+-1
+]
+]
+},
+"glycin": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"delays_ms": [
+-1
+]
+},
+"image-load": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"rgba_hex": "c9493fffca4b97ffe11a17fffcf681ff",
+"color": "Rgb8"
+}
+},
+"ref": "vec:icc/too-large"
+},
+{
+"name": "vec:icc/exactly-max",
+"why": "",
+"hex": null,
+"sha256": "534622c13484ff8b9b1e58ef407cc24355e4d9f8aef8b8164cabecb7daf3c7da",
+"len": 16385,
+"oracle": {
+"still": "ok:dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": {
+"n": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"end": "iend",
+"plays": null,
+"delays": [
+null
+]
+}
+},
+"runners": {
+"image": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"rgba_hex": "c9493fffca4b97ffe11a17fffcf681ff",
+"color": "Rgb8"
+},
+"image-still": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"rgba_hex": "c9493fffca4b97ffe11a17fffcf681ff",
+"color": "Rgb8"
+},
+"pngcrate": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"info": {
+"color": "Rgb",
+"depth": 8,
+"gamma": "None",
+"srgb": "None",
+"chrm": false,
+"iccp": 16777216,
+"text": [
+0,
+0,
+0
+],
+"actl": "None",
+"trns": -1,
+"line": 6,
+"outdepth": "Eight",
+"outcolor": "Rgb",
+"raw": "c9493fca4b97e11a17fcf681"
+}
+},
+"libpng": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+2,
+2,
+-1
+]
+]
+},
+"spng": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+2,
+2,
+-1
+]
+]
+},
+"stb": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+2,
+2,
+-1
+]
+]
+},
+"gdk-loader": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+2,
+2,
+-1
+]
+]
+},
+"gdk-loader-byte": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+2,
+2,
+-1
+]
+]
+},
+"gdk-file": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6"
+},
+"gdk-anim": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+2,
+2,
+-1
+]
+]
+},
+"glycin": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"delays_ms": [
+-1
+]
+},
+"image-load": {
+"status": "ok",
+"w": 2,
+"h": 2,
+"sha": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"frames": 1,
+"seq": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+"rgba_hex": "c9493fffca4b97ffe11a17fffcf681ff",
+"color": "Rgb8"
+}
+},
+"ref": "vec:icc/exactly-max"
+},
+{
+"name": "probe:iccp-bomb-100m",
+"why": "iCCP inflating to 100 MiB",
+"hex": null,
+"sha256": "b24e96be7e3bab39b0544524ff0963172edb8a387e9e44a9863c410241adcf7d",
+"len": 101911,
+"oracle": {
+"still": "ok:a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"frames": {
+"n": 1,
+"seq": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"end": "iend",
+"plays": null,
+"delays": [
+null
+]
+}
+},
+"runners": {
+"image": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"frames": 1,
+"seq": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"rgba_hex": "000000ff111111ff222222ff333333ff444444ff555555ff666666ff777777ff888888ff999999ffaaaaaaffbbbbbbffccccccffddddddffeeeeeeffffffffff",
+"color": "Rgb8"
+},
+"image-still": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"frames": 1,
+"seq": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"rgba_hex": "000000ff111111ff222222ff333333ff444444ff555555ff666666ff777777ff888888ff999999ffaaaaaaffbbbbbbffccccccffddddddffeeeeeeffffffffff",
+"color": "Rgb8"
+},
+"pngcrate": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"info": {
+"color": "Rgb",
+"depth": 8,
+"gamma": "None",
+"srgb": "None",
+"chrm": false,
+"iccp": -1,
+"text": [
+0,
+0,
+0
+],
+"actl": "None",
+"trns": -1,
+"line": 48,
+"outdepth": "Eight",
+"outcolor": "Rgb",
+"raw": "000000111111222222333333444444555555666666777777888888999999aaaaaabbbbbbccccccddddddeeeeeeffffff"
+}
+},
+"libpng": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"frames": 1,
+"seq": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+16,
+1,
+-1
+]
+]
+},
+"spng": {
+"status": "error",
+"err": "reached chunk/cache limits"
+},
+"stb": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"frames": 1,
+"seq": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+16,
+1,
+-1
+]
+]
+},
+"gdk-loader": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"frames": 1,
+"seq": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+16,
+1,
+-1
+]
+]
+},
+"gdk-loader-byte": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"frames": 1,
+"seq": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+16,
+1,
+-1
+]
+]
+},
+"gdk-file": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"gdk-anim": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"frames": 1,
+"seq": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+16,
+1,
+-1
+]
+]
+},
+"glycin": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"frames": 1,
+"seq": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"delays_ms": [
+-1
+]
+},
+"image-load": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"frames": 1,
+"seq": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae",
+"rgba_hex": "000000ff111111ff222222ff333333ff444444ff555555ff666666ff777777ff888888ff999999ffaaaaaaffbbbbbbffccccccffddddddffeeeeeeffffffffff",
+"color": "Rgb8"
+}
+},
+"ref": "probe:iccp-bomb-100m"
+},
+{
+"name": "probe:ztxt-bomb-64m",
+"why": "zTXt inflating to 64 MiB",
+"hex": null,
+"sha256": "69e414eaba5bcfe4e942f4472a7f712cf0a644082b9fabf66237d773164fb60c",
+"len": 65256,
+"oracle": {
+"still": "ok:c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": {
+"n": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"end": "iend",
+"plays": null,
+"delays": [
+null
+]
+}
+},
+"runners": {
+"image": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"rgba_hex": "000000ff3c0000ff780000ffb40000ff005a00ff3c5a1eff785a3cffb45a5aff00b400ff3cb43cff78b478ffb4b4b4ff",
+"color": "Rgb8"
+},
+"image-still": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"rgba_hex": "000000ff3c0000ff780000ffb40000ff005a00ff3c5a1eff785a3cffb45a5aff00b400ff3cb43cff78b478ffb4b4b4ff",
+"color": "Rgb8"
+},
+"pngcrate": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"info": {
+"color": "Rgb",
+"depth": 8,
+"gamma": "None",
+"srgb": "None",
+"chrm": false,
+"iccp": -1,
+"text": [
+0,
+1,
+0
+],
+"actl": "None",
+"trns": -1,
+"line": 12,
+"outdepth": "Eight",
+"outcolor": "Rgb",
+"raw": "0000003c0000780000b40000005a003c5a1e785a3cb45a5a00b4003cb43c78b478b4b4b4"
+}
+},
+"libpng": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"spng": {
+"status": "error",
+"err": "reached chunk/cache limits"
+},
+"stb": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"gdk-loader": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"gdk-loader-byte": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"gdk-file": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616"
+},
+"gdk-anim": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"glycin": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"delays_ms": [
+-1
+]
+},
+"image-load": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"rgba_hex": "000000ff3c0000ff780000ffb40000ff005a00ff3c5a1eff785a3cffb45a5aff00b400ff3cb43cff78b478ffb4b4b4ff",
+"color": "Rgb8"
+}
+},
+"ref": "probe:ztxt-bomb-64m"
+},
+{
+"name": "probe:itxt-bomb-64m",
+"why": "compressed XMP iTXt inflating to 64 MiB",
+"hex": null,
+"sha256": "8b133b17013fd763bfd367831869401f4b4017d0d953222d8d6a5ef3c768f198",
+"len": 65269,
+"oracle": {
+"still": "ok:c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": {
+"n": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"end": "iend",
+"plays": null,
+"delays": [
+null
+]
+}
+},
+"runners": {
+"image": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"rgba_hex": "000000ff3c0000ff780000ffb40000ff005a00ff3c5a1eff785a3cffb45a5aff00b400ff3cb43cff78b478ffb4b4b4ff",
+"color": "Rgb8"
+},
+"image-still": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"rgba_hex": "000000ff3c0000ff780000ffb40000ff005a00ff3c5a1eff785a3cffb45a5aff00b400ff3cb43cff78b478ffb4b4b4ff",
+"color": "Rgb8"
+},
+"pngcrate": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"info": {
+"color": "Rgb",
+"depth": 8,
+"gamma": "None",
+"srgb": "None",
+"chrm": false,
+"iccp": -1,
+"text": [
+0,
+0,
+1
+],
+"actl": "None",
+"trns": -1,
+"line": 12,
+"outdepth": "Eight",
+"outcolor": "Rgb",
+"raw": "0000003c0000780000b40000005a003c5a1e785a3cb45a5a00b4003cb43c78b478b4b4b4"
+}
+},
+"libpng": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"spng": {
+"status": "error",
+"err": "reached chunk/cache limits"
+},
+"stb": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"gdk-loader": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"gdk-loader-byte": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"gdk-file": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616"
+},
+"gdk-anim": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"glycin": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"delays_ms": [
+-1
+]
+},
+"image-load": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"rgba_hex": "000000ff3c0000ff780000ffb40000ff005a00ff3c5a1eff785a3cffb45a5aff00b400ff3cb43cff78b478ffb4b4b4ff",
+"color": "Rgb8"
+}
+},
+"ref": "probe:itxt-bomb-64m"
+},
+{
+"name": "probe:text-many-20000",
+"why": "20,000 tEXt chunks",
+"hex": null,
+"sha256": "34f5d3229c277de1ff1578c35cabbcaed8346eb6112d4571d40510ccefa13833",
+"len": 300097,
+"oracle": {
+"still": "ok:c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": {
+"n": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"end": "iend",
+"plays": null,
+"delays": [
+null
+]
+}
+},
+"runners": {
+"image": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"rgba_hex": "000000ff3c0000ff780000ffb40000ff005a00ff3c5a1eff785a3cffb45a5aff00b400ff3cb43cff78b478ffb4b4b4ff",
+"color": "Rgb8"
+},
+"image-still": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"rgba_hex": "000000ff3c0000ff780000ffb40000ff005a00ff3c5a1eff785a3cffb45a5aff00b400ff3cb43cff78b478ffb4b4b4ff",
+"color": "Rgb8"
+},
+"pngcrate": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"info": {
+"color": "Rgb",
+"depth": 8,
+"gamma": "None",
+"srgb": "None",
+"chrm": false,
+"iccp": -1,
+"text": [
+20000,
+0,
+0
+],
+"actl": "None",
+"trns": -1,
+"line": 12,
+"outdepth": "Eight",
+"outcolor": "Rgb",
+"raw": "0000003c0000780000b40000005a003c5a1e785a3cb45a5a00b4003cb43c78b478b4b4b4"
+}
+},
+"libpng": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"spng": {
+"status": "error",
+"err": "reached chunk/cache limits"
+},
+"stb": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"gdk-loader": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"gdk-loader-byte": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"gdk-file": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616"
+},
+"gdk-anim": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"glycin": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"delays_ms": [
+-1
+]
+},
+"image-load": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"rgba_hex": "000000ff3c0000ff780000ffb40000ff005a00ff3c5a1eff785a3cffb45a5aff00b400ff3cb43cff78b478ffb4b4b4ff",
+"color": "Rgb8"
+}
+},
+"ref": "probe:text-many-20000"
+},
+{
+"name": "probe:text-large-8m",
+"why": "one 8 MiB tEXt",
+"hex": null,
+"sha256": "03ff53e1ca163a13364996c86678be0e0a80c2ccbab7f63f5f2d61a5008b3c0d",
+"len": 8388719,
+"oracle": {
+"still": "ok:c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": {
+"n": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"end": "iend",
+"plays": null,
+"delays": [
+null
+]
+}
+},
+"runners": {
+"image": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"rgba_hex": "000000ff3c0000ff780000ffb40000ff005a00ff3c5a1eff785a3cffb45a5aff00b400ff3cb43cff78b478ffb4b4b4ff",
+"color": "Rgb8"
+},
+"image-still": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"rgba_hex": "000000ff3c0000ff780000ffb40000ff005a00ff3c5a1eff785a3cffb45a5aff00b400ff3cb43cff78b478ffb4b4b4ff",
+"color": "Rgb8"
+},
+"pngcrate": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"info": {
+"color": "Rgb",
+"depth": 8,
+"gamma": "None",
+"srgb": "None",
+"chrm": false,
+"iccp": -1,
+"text": [
+1,
+0,
+0
+],
+"actl": "None",
+"trns": -1,
+"line": 12,
+"outdepth": "Eight",
+"outcolor": "Rgb",
+"raw": "0000003c0000780000b40000005a003c5a1e785a3cb45a5a00b4003cb43c78b478b4b4b4"
+}
+},
+"libpng": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"spng": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"stb": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"gdk-loader": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"gdk-loader-byte": {
+"status": "timeout",
+"err": "timeout"
+},
+"gdk-file": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616"
+},
+"gdk-anim": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+4,
+3,
+-1
+]
+]
+},
+"glycin": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"delays_ms": [
+-1
+]
+},
+"image-load": {
+"status": "ok",
+"w": 4,
+"h": 3,
+"sha": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"frames": 1,
+"seq": "c05ce5fd588f044af7db679fc77239c728913cca177b27cc7541602a9d36e616",
+"rgba_hex": "000000ff3c0000ff780000ffb40000ff005a00ff3c5a1eff785a3cffb45a5aff00b400ff3cb43cff78b478ffb4b4b4ff",
+"color": "Rgb8"
+}
+},
+"ref": "probe:text-large-8m"
+},
+{
+"name": "probe:dims-100000x1",
+"why": "100000x1 grey, complete data",
+"hex": "89504e470d0a1a0a0000000d49484452000186a0000000010800000000781549090000007849444154789cedc13101000000c2a0f54f6d0d0fa0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000805b0386b00001a416349c0000000049454e44ae426082",
+"sha256": "47be731842255d41035920442c1df81c1c2e5ff090956f36c0e54ff036732a56",
+"len": 177,
+"oracle": {
+"still": "InvalidDimensions",
+"frames": {
+"error": "InvalidDimensions"
+}
+},
+"runners": {
+"image": {
+"status": "ok",
+"w": 100000,
+"h": 1,
+"sha": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"frames": 1,
+"seq": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"color": "L8"
+},
+"image-still": {
+"status": "ok",
+"w": 100000,
+"h": 1,
+"sha": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"frames": 1,
+"seq": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"color": "L8"
+},
+"pngcrate": {
+"status": "ok",
+"w": 100000,
+"h": 1,
+"info": {
+"color": "Grayscale",
+"depth": 8,
+"gamma": "None",
+"srgb": "None",
+"chrm": false,
+"iccp": -1,
+"text": [
+0,
+0,
+0
+],
+"actl": "None",
+"trns": -1,
+"line": 100000,
+"outdepth": "Eight",
+"outcolor": "Grayscale",
+"raw": "9192c25b734fcbadbe32dadc28089c60db0e39f90cc20ce2e5733f57261acc0c"
+}
+},
+"libpng": {
+"status": "ok",
+"w": 100000,
+"h": 1,
+"sha": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"frames": 1,
+"seq": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+100000,
+1,
+-1
+]
+]
+},
+"spng": {
+"status": "ok",
+"w": 100000,
+"h": 1,
+"sha": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"frames": 1,
+"seq": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+100000,
+1,
+-1
+]
+]
+},
+"stb": {
+"status": "ok",
+"w": 100000,
+"h": 1,
+"sha": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"frames": 1,
+"seq": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+100000,
+1,
+-1
+]
+]
+},
+"gdk-loader": {
+"status": "ok",
+"w": 100000,
+"h": 1,
+"sha": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"frames": 1,
+"seq": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+100000,
+1,
+-1
+]
+]
+},
+"gdk-loader-byte": {
+"status": "ok",
+"w": 100000,
+"h": 1,
+"sha": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"frames": 1,
+"seq": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+100000,
+1,
+-1
+]
+]
+},
+"gdk-file": {
+"status": "ok",
+"w": 100000,
+"h": 1,
+"sha": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e"
+},
+"gdk-anim": {
+"status": "ok",
+"w": 100000,
+"h": 1,
+"sha": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"frames": 1,
+"seq": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+100000,
+1,
+-1
+]
+]
+},
+"glycin": {
+"status": "ok",
+"w": 100000,
+"h": 1,
+"sha": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"frames": 1,
+"seq": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"delays_ms": [
+-1
+]
+},
+"image-load": {
+"status": "ok",
+"w": 100000,
+"h": 1,
+"sha": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"frames": 1,
+"seq": "49c2845f4eabee7659116c8035e3b68d77f8199acff07c62551f2f2a55b2290e",
+"color": "L8"
+}
+}
+},
+{
+"name": "probe:dims-16385x16",
+"why": "one pixel above the proposed side cap",
+"hex": "89504e470d0a1a0a0000000d494844520000400100000010080000000024bc53840000011549444154789cedc13101000000c2a0f54f6d067fa000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003e03005c0001c3657f630000000049454e44ae426082",
+"sha256": "ee4d7b08d26a9bb61f68a987ac34523b6fa79a0642a38b8658919b1b408572a0",
+"len": 334,
+"oracle": {
+"still": "InvalidDimensions",
+"frames": {
+"error": "InvalidDimensions"
+}
+},
+"runners": {
+"image": {
+"status": "ok",
+"w": 16385,
+"h": 16,
+"sha": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"frames": 1,
+"seq": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"color": "L8"
+},
+"image-still": {
+"status": "ok",
+"w": 16385,
+"h": 16,
+"sha": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"frames": 1,
+"seq": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"color": "L8"
+},
+"pngcrate": {
+"status": "ok",
+"w": 16385,
+"h": 16,
+"info": {
+"color": "Grayscale",
+"depth": 8,
+"gamma": "None",
+"srgb": "None",
+"chrm": false,
+"iccp": -1,
+"text": [
+0,
+0,
+0
+],
+"actl": "None",
+"trns": -1,
+"line": 16385,
+"outdepth": "Eight",
+"outcolor": "Grayscale",
+"raw": "289b38ac99bda5ae0fb1bc388a5434ee319cfa678f88763c6ba7d413b6c92489"
+}
+},
+"libpng": {
+"status": "ok",
+"w": 16385,
+"h": 16,
+"sha": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"frames": 1,
+"seq": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+16385,
+16,
+-1
+]
+]
+},
+"spng": {
+"status": "ok",
+"w": 16385,
+"h": 16,
+"sha": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"frames": 1,
+"seq": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+16385,
+16,
+-1
+]
+]
+},
+"stb": {
+"status": "ok",
+"w": 16385,
+"h": 16,
+"sha": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"frames": 1,
+"seq": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+16385,
+16,
+-1
+]
+]
+},
+"gdk-loader": {
+"status": "ok",
+"w": 16385,
+"h": 16,
+"sha": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"frames": 1,
+"seq": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+16385,
+16,
+-1
+]
+]
+},
+"gdk-loader-byte": {
+"status": "ok",
+"w": 16385,
+"h": 16,
+"sha": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"frames": 1,
+"seq": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+16385,
+16,
+-1
+]
+]
+},
+"gdk-file": {
+"status": "ok",
+"w": 16385,
+"h": 16,
+"sha": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5"
+},
+"gdk-anim": {
+"status": "ok",
+"w": 16385,
+"h": 16,
+"sha": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"frames": 1,
+"seq": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+16385,
+16,
+-1
+]
+]
+},
+"glycin": {
+"status": "ok",
+"w": 16385,
+"h": 16,
+"sha": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"frames": 1,
+"seq": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"delays_ms": [
+-1
+]
+},
+"image-load": {
+"status": "ok",
+"w": 16385,
+"h": 16,
+"sha": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"frames": 1,
+"seq": "ff4e424954c28e5d14e27cf7f66140d170d4f710bf2674187cc9455820889de5",
+"color": "L8"
+}
+}
+},
+{
+"name": "wit:03-length-IEND",
+"why": "leniency-harness witness",
+"hex": null,
+"sha256": "7e0a597944edb8ef061ca7a01e81f9a7a6ed30ed5d6c936905bfb4d05ab8c8d4",
+"len": 37356,
+"oracle": {
+"still": "TruncatedChunk",
+"frames": {
+"error": "TruncatedChunk"
+}
+},
+"runners": {
+"image": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"frames": 1,
+"seq": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"color": "L16"
+},
+"image-still": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"frames": 1,
+"seq": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"color": "L16"
+},
+"pngcrate": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"tail": "Chunk length wrong: ChunkType { type: IEND, critical: true, private: false, reserved: false, safecopy: false }",
+"info": {
+"color": "Grayscale",
+"depth": 16,
+"gamma": "None",
+"srgb": "None",
+"chrm": false,
+"iccp": -1,
+"text": [
+0,
+0,
+0
+],
+"actl": "None",
+"trns": -1,
+"line": 300,
+"outdepth": "Sixteen",
+"outcolor": "Grayscale",
+"raw": "7fb58de141bd4d69f3fa9853a52c3d4afccc7af7388d5ab4ddf9bb2695c9d528"
+}
+},
+"libpng": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"tail": "Read Error: unexpected end of data",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"spng": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"tail": "invalid chunk length",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"stb": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"gdk-loader": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"gdk-loader-byte": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"gdk-file": {
+"status": "error",
+"err": "Failed to load image \u201c/tmp/claude-0/png-probes/wit_03-length-IEND.png\u201d: Fatal error in PNG image file: Read Error"
+},
+"gdk-anim": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"glycin": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"frames": 1,
+"seq": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"delays_ms": [
+-1
+]
+},
+"image-load": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"frames": 1,
+"seq": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"color": "L16"
+}
+},
+"ref": "wit:03-length-IEND"
+},
+{
+"name": "wit:04-length-IDAT",
+"why": "leniency-harness witness",
+"hex": null,
+"sha256": "d2d0849607363dcdd564cf86f7e7657dcc3da788ab667bb78df6580ec15b466b",
+"len": 37356,
+"oracle": {
+"still": "CrcMismatch",
+"frames": {
+"error": "CrcMismatch"
+}
+},
+"runners": {
+"image": {
+"status": "error",
+"err": "Format error decoding Png: CRC error: expected 0x358f857c have 0xef8814cf while decoding ChunkType { type: IDAT, critical: true, private: false, reserved: false"
+},
+"image-still": {
+"status": "error",
+"err": "Format error decoding Png: CRC error: expected 0x358f857c have 0xef8814cf while decoding ChunkType { type: IDAT, critical: true, private: false, reserved: false"
+},
+"pngcrate": {
+"status": "error",
+"err": "CRC error: expected 0x358f857c have 0xef8814cf while decoding ChunkType { type: IDAT, critical: true, private: false, reserved: false, safecopy: false } chunk."
+},
+"libpng": {
+"status": "error",
+"err": "IDAT: CRC error"
+},
+"spng": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"tail": "invalid chunk checksum",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"stb": {
+"status": "error",
+"err": "stbi"
+},
+"gdk-loader": {
+"status": "error",
+"err": "Fatal error reading PNG image file: IDAT: CRC error"
+},
+"gdk-loader-byte": {
+"status": "error",
+"err": "Fatal error reading PNG image file: IDAT: CRC error"
+},
+"gdk-file": {
+"status": "error",
+"err": "Failed to load image \u201c/tmp/claude-0/png-probes/wit_04-length-IDAT.png\u201d: Fatal error in PNG image file: IDAT: CRC error"
+},
+"gdk-anim": {
+"status": "error",
+"err": "Fatal error reading PNG image file: IDAT: CRC error"
+},
+"glycin": {
+"status": "error",
+"err": "ExpectedError: src/glycin_png.rs:113:33: /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/glycin-plan/glycin/glycin-utils/src/image_rs.rs:85:42: Format error"
+},
+"image-load": {
+"status": "error",
+"err": "Format error decoding Png: CRC error: expected 0x358f857c have 0xef8814cf while decoding ChunkType { type: IDAT, critical: true, private: false, reserved: false"
+}
+},
+"ref": "wit:04-length-IDAT"
+},
+{
+"name": "wit:25-type-bit-safe-to-copy",
+"why": "leniency-harness witness",
+"hex": null,
+"sha256": "01f3bc13af3b8adb4d2e831f1c1b28543fffa151f153b5a075e8b1ad877f9c28",
+"len": 37356,
+"oracle": {
+"still": "UnknownCriticalChunk",
+"frames": {
+"error": "UnknownCriticalChunk"
+}
+},
+"runners": {
+"image": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"frames": 1,
+"seq": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"color": "L16"
+},
+"image-still": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"frames": 1,
+"seq": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"color": "L16"
+},
+"pngcrate": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"tail": "Unrecognized critical chunk: ChunkType { type: IENd, critical: true, private: false, reserved: false, safecopy: true }",
+"info": {
+"color": "Grayscale",
+"depth": 16,
+"gamma": "None",
+"srgb": "None",
+"chrm": false,
+"iccp": -1,
+"text": [
+0,
+0,
+0
+],
+"actl": "None",
+"trns": -1,
+"line": 300,
+"outdepth": "Sixteen",
+"outcolor": "Grayscale",
+"raw": "7fb58de141bd4d69f3fa9853a52c3d4afccc7af7388d5ab4ddf9bb2695c9d528"
+}
+},
+"libpng": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"tail": "Read Error: unexpected end of data",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"spng": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"tail": "unknown critical chunk",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"stb": {
+"status": "error",
+"err": "IENd PNG chunk not known"
+},
+"gdk-loader": {
+"status": "error",
+"err": "Fatal error reading PNG image file: IENd: unhandled critical chunk"
+},
+"gdk-loader-byte": {
+"status": "error",
+"err": "Fatal error reading PNG image file: IENd: unhandled critical chunk"
+},
+"gdk-file": {
+"status": "error",
+"err": "Failed to load image \u201c/tmp/claude-0/png-probes/wit_25-type-bit-safe-to-copy.png\u201d: Fatal error in PNG image file: IENd: unhandled critical chunk"
+},
+"gdk-anim": {
+"status": "error",
+"err": "Fatal error reading PNG image file: IENd: unhandled critical chunk"
+},
+"glycin": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"frames": 1,
+"seq": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"delays_ms": [
+-1
+]
+},
+"image-load": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"frames": 1,
+"seq": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"color": "L16"
+}
+},
+"ref": "wit:25-type-bit-safe-to-copy"
+},
+{
+"name": "wit:26-type-bit-private",
+"why": "leniency-harness witness",
+"hex": null,
+"sha256": "36a867e4d9ebaeba3d5f0e4f6956ffd9021d4e0722e95b2a59c729d3edcb772b",
+"len": 37356,
+"oracle": {
+"still": "UnknownCriticalChunk",
+"frames": {
+"error": "UnknownCriticalChunk"
+}
+},
+"runners": {
+"image": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"frames": 1,
+"seq": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"color": "L16"
+},
+"image-still": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"frames": 1,
+"seq": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"color": "L16"
+},
+"pngcrate": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"tail": "Unrecognized critical chunk: ChunkType { type: IeND, critical: true, private: true, reserved: false, safecopy: false }",
+"info": {
+"color": "Grayscale",
+"depth": 16,
+"gamma": "None",
+"srgb": "None",
+"chrm": false,
+"iccp": -1,
+"text": [
+0,
+0,
+0
+],
+"actl": "None",
+"trns": -1,
+"line": 300,
+"outdepth": "Sixteen",
+"outcolor": "Grayscale",
+"raw": "7fb58de141bd4d69f3fa9853a52c3d4afccc7af7388d5ab4ddf9bb2695c9d528"
+}
+},
+"libpng": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"tail": "Read Error: unexpected end of data",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"spng": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"tail": "unknown critical chunk",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"stb": {
+"status": "error",
+"err": "IeND PNG chunk not known"
+},
+"gdk-loader": {
+"status": "error",
+"err": "Fatal error reading PNG image file: IeND: unhandled critical chunk"
+},
+"gdk-loader-byte": {
+"status": "error",
+"err": "Fatal error reading PNG image file: IeND: unhandled critical chunk"
+},
+"gdk-file": {
+"status": "error",
+"err": "Failed to load image \u201c/tmp/claude-0/png-probes/wit_26-type-bit-private.png\u201d: Fatal error in PNG image file: IeND: unhandled critical chunk"
+},
+"gdk-anim": {
+"status": "error",
+"err": "Fatal error reading PNG image file: IeND: unhandled critical chunk"
+},
+"glycin": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"frames": 1,
+"seq": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"delays_ms": [
+-1
+]
+},
+"image-load": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"frames": 1,
+"seq": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"color": "L16"
+}
+},
+"ref": "wit:26-type-bit-private"
+},
+{
+"name": "wit:27-apng-actl-without-fctl",
+"why": "leniency-harness witness",
+"hex": null,
+"sha256": "476ff86a066fc222d5b87e7b3ec50327f03ed632aa6e66cfed89e30d1e72119b",
+"len": 37376,
+"oracle": {
+"still": "FrameCountMismatch",
+"frames": {
+"error": "FrameCountMismatch"
+}
+},
+"runners": {
+"image": {
+"status": "error",
+"err": "The encoder or decoder for Png does not support the color type `L16`"
+},
+"image-still": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"frames": 1,
+"seq": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"color": "L16"
+},
+"pngcrate": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"info": {
+"color": "Grayscale",
+"depth": 16,
+"gamma": "None",
+"srgb": "None",
+"chrm": false,
+"iccp": -1,
+"text": [
+0,
+0,
+0
+],
+"actl": "Some(AnimationControl { num_frames: 2, num_plays: 0 })",
+"trns": -1,
+"line": 300,
+"outdepth": "Sixteen",
+"outcolor": "Grayscale",
+"raw": "7fb58de141bd4d69f3fa9853a52c3d4afccc7af7388d5ab4ddf9bb2695c9d528"
+}
+},
+"libpng": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"spng": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"stb": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"gdk-loader": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"gdk-loader-byte": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"gdk-file": {
+"status": "error",
+"err": "Couldn\u2019t recognize the image file format for file \u201c/tmp/claude-0/png-probes/wit_27-apng-actl-without-fctl.png\u201d"
+},
+"gdk-anim": {
+"status": "error",
+"err": "Couldn\u2019t recognize the image file format for file \u201c/tmp/claude-0/png-probes/wit_27-apng-actl-without-fctl.png\u201d"
+},
+"glycin": {
+"status": "error",
+"err": "ExpectedError: src/glycin_png.rs:284:23: The encoder or decoder for Png does not support the color type `L16`"
+},
+"image-load": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"frames": 1,
+"seq": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"color": "L16"
+}
+},
+"ref": "wit:27-apng-actl-without-fctl"
+},
+{
+"name": "wit:33-apng-add-single-frame",
+"why": "leniency-harness witness",
+"hex": null,
+"sha256": "91c2db31d28c5022bafb9b8acf29aa8d919ce9d0a2dba12d9ff440381ee1236e",
+"len": 37414,
+"oracle": {
+"still": "ok:73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"still16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"frames": {
+"n": 1,
+"seq": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"end": "iend",
+"plays": 0,
+"delays": [
+[
+1,
+10
+]
+]
+}
+},
+"runners": {
+"image": {
+"status": "error",
+"err": "The encoder or decoder for Png does not support the color type `L16`"
+},
+"image-still": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"frames": 1,
+"seq": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"color": "L16"
+},
+"pngcrate": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"info": {
+"color": "Grayscale",
+"depth": 16,
+"gamma": "None",
+"srgb": "None",
+"chrm": false,
+"iccp": -1,
+"text": [
+0,
+0,
+0
+],
+"actl": "Some(AnimationControl { num_frames: 1, num_plays: 0 })",
+"trns": -1,
+"line": 300,
+"outdepth": "Sixteen",
+"outcolor": "Grayscale",
+"raw": "7fb58de141bd4d69f3fa9853a52c3d4afccc7af7388d5ab4ddf9bb2695c9d528"
+}
+},
+"libpng": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"spng": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"stb": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"sha16": "c3c5f15f38187570e3a7772f21af0210854f3d734f0fbd98691947eb76769516",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"gdk-loader": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"gdk-loader-byte": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frames": 1,
+"seq": "55863e89b603ff5ad92ede056916da08910fda12c4cdd8f3165963b37dc26ad2",
+"frame_info": [
+[
+-1,
+-1,
+0,
+0,
+150,
+130,
+-1
+]
+]
+},
+"gdk-file": {
+"status": "error",
+"err": "Couldn\u2019t recognize the image file format for file \u201c/tmp/claude-0/png-probes/wit_33-apng-add-single-frame.png\u201d"
+},
+"gdk-anim": {
+"status": "error",
+"err": "Couldn\u2019t recognize the image file format for file \u201c/tmp/claude-0/png-probes/wit_33-apng-add-single-frame.png\u201d"
+},
+"glycin": {
+"status": "error",
+"err": "ExpectedError: src/glycin_png.rs:284:23: The encoder or decoder for Png does not support the color type `L16`"
+},
+"image-load": {
+"status": "ok",
+"w": 150,
+"h": 130,
+"sha": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"frames": 1,
+"seq": "73448c4c1b5400bce5b8d371d2d7c2ff3b560a281aeb5a6b7e9f168d3167692c",
+"color": "L16"
+}
+},
+"ref": "wit:33-apng-add-single-frame"
+}
+]

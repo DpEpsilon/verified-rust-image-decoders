@@ -1,0 +1,32 @@
+# glycin PNG runner for the PNG policy draft (GAPS-CLOSED.md gap 1).
+#
+# Runs glycin's image-rs loader code for PNG: `src/glycin_png.rs` is a PNG-only copy of
+# glycin 7344b95 `glycin-loaders/glycin-image-rs/src/lib.rs` (ImgLoader::load, specific_frame,
+# ImageRsFormat) and `animated.rs` (worker, animated_get_frame), linked against glycin's own
+# glycin-utils (path dependency, so Handler::frame/frame_details are glycin's code) and the
+# exact crate versions of glycin's Cargo.lock (this lock file started as a copy of it).
+# Like glycin's workspace, png is patched to image-png git e917d6a.
+# Not built: the other formats of glycin-image-rs (jxl, exr, tiff, jpeg2000, ...), which the
+# PNG path never reaches, and glycin's sandbox/D-Bus process boundary.
+[package]
+name = "png-glycin-probe"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+glycin-utils = { path = "../../../../../glycin-plan/glycin/glycin-utils", default-features = false, features = ["async-io", "image-rs", "loader-utils", "builtin"] }
+gufo-common = { version = "2.0.0", features = ["serde"] }
+gufo = { version = "0.5.0", features = ["jpeg", "png", "tiff", "webp"] }
+image = { version = "0.25.9", default-features = false, features = ["png"] }
+log = "0.4"
+sha2 = "0.10"
+
+[patch.crates-io]
+png = { git = "https://github.com/image-rs/image-png.git", rev = "e917d6a04f198c0b49df0ee5d0a65732bb6a337c" }
+
+[profile.release]
+opt-level = 1
+debug = false
+panic = "unwind"
+codegen-units = 16

@@ -4,6 +4,8 @@
 //!                otherwise DynamicImage::from_decoder(..).to_rgba8() (image's own 16->8 rule);
 //!                rgba16_sha256 from to_rgba16() when the source has 16-bit samples.
 //!   image-still  the same decoder, never the APNG path (what image::load_from_memory returns).
+//!   image-load   image::load_from_memory (format guessing, default Limits: 512 MiB allocation cap).
+//!   image-icc    PngDecoder::icc_profile() (Ok(Some(len)) / Ok(None) / Err), then the still decode.
 //!   pngcrate     png::Decoder, default limits, Transformations::EXPAND, first next_frame only,
 //!                plus the metadata the crate exposes (gamma, chrm, srgb, iccp, text counts, actl).
 //! Output: status, w, h, frames, sha (RGBA8 of the first frame), seq (all frames), rgba16, info, error.
@@ -57,6 +59,20 @@ fn image_sel(b: &[u8], allow_apng: bool) -> String {
     ok(r8.width(), r8.height(), &[r8.into_raw()], &extra)
 }
 
+fn image_load(b: &[u8]) -> String {
+    match image::load_from_memory(b) {
+        Ok(im) => { let r8 = im.to_rgba8(); ok(r8.width(), r8.height(), &[r8.into_raw()], &format!(",\"color\":\"{:?}\"", im.color())) }
+        Err(e) => err(e),
+    }
+}
+
+fn image_icc(b: &[u8]) -> String {
+    let mut d = match image::codecs::png::PngDecoder::new(Cursor::new(b)) { Ok(d) => d, Err(e) => return err(e) };
+    let icc = match d.icc_profile() { Ok(Some(p)) => format!("{}", p.len()), Ok(None) => "\"none\"".into(), Err(e) => format!("\"err: {}\"", esc(&e.to_string())) };
+    let still = match image::DynamicImage::from_decoder(d) { Ok(im) => { let r8 = im.to_rgba8(); format!("\"ok:{}\"", sha(r8.as_raw())) } Err(e) => format!("\"err: {}\"", esc(&e.to_string())) };
+    format!("{{\"status\":\"ok\",\"icc\":{icc},\"still\":{still}}}")
+}
+
 fn pngcrate(b: &[u8]) -> String {
     let mut d = png::Decoder::new(Cursor::new(b));
     d.set_transformations(png::Transformations::EXPAND);
@@ -83,6 +99,8 @@ fn main() {
     let out = std::panic::catch_unwind(|| match a[1].as_str() {
         "image" => image_sel(&b, true),
         "image-still" => image_sel(&b, false),
+        "image-load" => image_load(&b),
+        "image-icc" => image_icc(&b),
         "pngcrate" => pngcrate(&b),
         s => err(format!("unknown selector {s}")),
     }).unwrap_or_else(|_| err("panic"));

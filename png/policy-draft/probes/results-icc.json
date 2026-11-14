@@ -1,0 +1,645 @@
+[
+{
+"name": "icc:iccp-valid",
+"why": "iCCP with a junk profile (not a real ICC)",
+"len": 416,
+"runners": {
+"image-icc": {
+"status": "ok",
+"icc": 768,
+"still": "ok:a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"pngcrate": {
+"status": "ok",
+"iccp_len": 768
+},
+"glycin": {
+"status": "ok",
+"icc": 768,
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-load": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-still": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"gdk-loader": {
+"status": "ok"
+}
+}
+},
+{
+"name": "icc:iccp-bad-zlib",
+"why": "iCCP whose zlib stream is corrupt",
+"len": 136,
+"runners": {
+"image-icc": {
+"status": "ok",
+"icc": "none",
+"still": "ok:a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"pngcrate": {
+"status": "ok",
+"iccp_len": -1
+},
+"glycin": {
+"status": "ok",
+"icc": -1,
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-load": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-still": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"gdk-loader": {
+"status": "ok"
+}
+}
+},
+{
+"name": "icc:iccp-method-1",
+"why": "iCCP compression method 1",
+"len": 416,
+"runners": {
+"image-icc": {
+"status": "ok",
+"icc": "none",
+"still": "ok:a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"pngcrate": {
+"status": "ok",
+"iccp_len": -1
+},
+"glycin": {
+"status": "ok",
+"icc": -1,
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-load": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-still": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"gdk-loader": {
+"status": "ok"
+}
+}
+},
+{
+"name": "icc:iccp-bomb-100m",
+"why": "iCCP inflating to 100 MiB",
+"len": 101911,
+"runners": {
+"image-icc": {
+"status": "ok",
+"icc": 104857600,
+"still": "ok:a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"pngcrate": {
+"status": "ok",
+"iccp_len": -1
+},
+"glycin": {
+"status": "ok",
+"icc": 104857600,
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-load": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-still": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"gdk-loader": {
+"status": "ok"
+}
+}
+},
+{
+"name": "icc:dims-65535-square-tiny-data",
+"why": "65535x65535 RGBA, 100 data bytes",
+"len": 69,
+"runners": {
+"image-icc": {
+"status": "crash",
+"error_class": "signal",
+"message": "-6 memory allocation of 17179344900 bytes failed\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n"
+},
+"pngcrate": {
+"status": "error",
+"error": "harness: output buffer too large"
+},
+"glycin": {
+"status": "crash",
+"error_class": "signal",
+"message": "-6 memory allocation of 17179344900 bytes failed\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n"
+},
+"image-load": {
+"status": "error",
+"error": "Memory limit exceeded"
+},
+"image-still": {
+"status": "crash",
+"error_class": "signal",
+"message": "-6 memory allocation of 17179344900 bytes failed\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n"
+},
+"gdk-loader": {
+"status": "error",
+"error_class": "gdk",
+"message": "Insufficient memory to store a 65535 by 65535 image; try exiting some applications to reduce memory usage"
+}
+}
+},
+{
+"name": "icc:iccp-name-empty",
+"why": "profile name of length 0",
+"len": 415,
+"runners": {
+"image-icc": {
+"status": "ok",
+"icc": "none",
+"still": "ok:a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"pngcrate": {
+"status": "ok",
+"iccp_len": -1
+},
+"glycin": {
+"status": "ok",
+"icc": -1,
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-load": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-still": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"gdk-loader": {
+"status": "ok"
+}
+}
+},
+{
+"name": "icc:iccp-name-79",
+"why": "profile name of 79 bytes (the maximum)",
+"len": 494,
+"runners": {
+"image-icc": {
+"status": "ok",
+"icc": 768,
+"still": "ok:a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"pngcrate": {
+"status": "ok",
+"iccp_len": 768
+},
+"glycin": {
+"status": "ok",
+"icc": 768,
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-load": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-still": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"gdk-loader": {
+"status": "ok"
+}
+}
+},
+{
+"name": "icc:iccp-name-80",
+"why": "profile name of 80 bytes (one too long)",
+"len": 495,
+"runners": {
+"image-icc": {
+"status": "ok",
+"icc": 768,
+"still": "ok:a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"pngcrate": {
+"status": "ok",
+"iccp_len": 768
+},
+"glycin": {
+"status": "ok",
+"icc": -1,
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-load": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-still": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"gdk-loader": {
+"status": "ok"
+}
+}
+},
+{
+"name": "icc:iccp-name-leading-space",
+"why": "profile name with a leading space",
+"len": 417,
+"runners": {
+"image-icc": {
+"status": "ok",
+"icc": 768,
+"still": "ok:a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"pngcrate": {
+"status": "ok",
+"iccp_len": 768
+},
+"glycin": {
+"status": "ok",
+"icc": 768,
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-load": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-still": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"gdk-loader": {
+"status": "ok"
+}
+}
+},
+{
+"name": "icc:iccp-name-control-char",
+"why": "profile name with a control character",
+"len": 417,
+"runners": {
+"image-icc": {
+"status": "ok",
+"icc": 768,
+"still": "ok:a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"pngcrate": {
+"status": "ok",
+"iccp_len": 768
+},
+"glycin": {
+"status": "ok",
+"icc": 768,
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-load": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-still": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"gdk-loader": {
+"status": "ok"
+}
+}
+},
+{
+"name": "icc:iccp-no-nul",
+"why": "no NUL after the name",
+"len": 149,
+"runners": {
+"image-icc": {
+"status": "ok",
+"icc": "none",
+"still": "ok:a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"pngcrate": {
+"status": "ok",
+"iccp_len": -1
+},
+"glycin": {
+"status": "ok",
+"icc": -1,
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-load": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-still": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"gdk-loader": {
+"status": "ok"
+}
+}
+},
+{
+"name": "icc:iccp-no-method",
+"why": "name, NUL and nothing else",
+"len": 131,
+"runners": {
+"image-icc": {
+"status": "ok",
+"icc": "none",
+"still": "ok:a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"pngcrate": {
+"status": "ok",
+"iccp_len": -1
+},
+"glycin": {
+"status": "ok",
+"icc": -1,
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-load": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-still": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"gdk-loader": {
+"status": "ok"
+}
+}
+},
+{
+"name": "icc:iccp-truncated-zlib",
+"why": "zlib stream cut in half",
+"len": 274,
+"runners": {
+"image-icc": {
+"status": "ok",
+"icc": "none",
+"still": "ok:a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"pngcrate": {
+"status": "ok",
+"iccp_len": -1
+},
+"glycin": {
+"status": "ok",
+"icc": -1,
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-load": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-still": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"gdk-loader": {
+"status": "ok"
+}
+}
+},
+{
+"name": "icc:iccp-bad-adler",
+"why": "profile zlib stream with a wrong Adler-32",
+"len": 416,
+"runners": {
+"image-icc": {
+"status": "ok",
+"icc": "none",
+"still": "ok:a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"pngcrate": {
+"status": "ok",
+"iccp_len": -1
+},
+"glycin": {
+"status": "ok",
+"icc": -1,
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-load": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-still": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"gdk-loader": {
+"status": "ok"
+}
+}
+},
+{
+"name": "icc:iccp-trailing-after-zlib",
+"why": "four bytes after the zlib stream",
+"len": 420,
+"runners": {
+"image-icc": {
+"status": "ok",
+"icc": 768,
+"still": "ok:a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"pngcrate": {
+"status": "ok",
+"iccp_len": 768
+},
+"glycin": {
+"status": "ok",
+"icc": 768,
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-load": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-still": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"gdk-loader": {
+"status": "ok"
+}
+}
+},
+{
+"name": "icc:iccp-empty-profile",
+"why": "profile inflating to 0 bytes",
+"len": 140,
+"runners": {
+"image-icc": {
+"status": "ok",
+"icc": 0,
+"still": "ok:a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"pngcrate": {
+"status": "ok",
+"iccp_len": 0
+},
+"glycin": {
+"status": "ok",
+"icc": 0,
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-load": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-still": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"gdk-loader": {
+"status": "ok"
+}
+}
+},
+{
+"name": "icc:iccp-bomb-1g",
+"why": "profile inflating to 1 GiB (overlong)",
+"len": 1043776,
+"runners": {
+"image-icc": {
+"status": "ok",
+"icc": 1073741824,
+"still": "ok:a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"pngcrate": {
+"status": "ok",
+"iccp_len": -1
+},
+"glycin": {
+"status": "ok",
+"icc": 1073741824,
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-load": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"image-still": {
+"status": "ok",
+"w": 16,
+"h": 1,
+"sha": "a0d6d56263b270be4e975f86f8ac6c4e81b3e34f9804055891951d234c813aae"
+},
+"gdk-loader": {
+"status": "ok"
+}
+}
+}
+]
