@@ -10,10 +10,12 @@ verus! {
 pub const MAX_FILE_LEN: u64 = 67_108_864;
 
 /// Maximum number of accepted entries (R6). A 4,097th entry is rejected.
+#[doc(hidden)]
 pub const MAX_ENTRIES: usize = 4096;
 
 /// Every legacy side is at most 128 (R8), so a decoded channel has at most
 /// 128*128 = 16,384 bytes and an RGB output at most 49,152 bytes (R10).
+#[doc(hidden)]
 pub const MAX_LEGACY_SIDE: usize = 128;
 
 /// The complete, closed error set of R17. `name()` returns the exact
@@ -44,6 +46,7 @@ pub enum Error {
 impl Error {
     /// The R17 spelling table, `open` and field-free so it is well-formed
     /// everywhere, including in `alloc_guard::sites`.
+    #[doc(hidden)]
     pub open spec fn name_spec(&self) -> &'static str {
         match self {
             Error::FileTooLarge => "FileTooLarge",
@@ -245,7 +248,7 @@ fn legacy_side(code: [u8; 4]) -> (r: Option<(bool, u32)>)
 }
 
 /// Every legacy side is at most 128 (in fact exactly one of 16, 32, 48, 128).
-pub proof fn lemma_legacy_side_le_128(code: [u8; 4])
+pub(crate) proof fn lemma_legacy_side_le_128(code: [u8; 4])
     ensures
         match crate::model::legacy_side(code) {
             Some((_, s)) => s <= 128,
@@ -460,6 +463,7 @@ use crate::alloc_guard::sites::AllocSite;
 /// `min(4096, (|b|-8)/8)`, the entry-list request count (SPEC.md §4), as a
 /// model-side spec function. `reach_p`'s hypothesis `8 <= |b|` makes `|b|-8`
 /// non-negative.
+#[doc(hidden)]
 pub open spec fn entry_count(b: Seq<u8>) -> nat {
     if b.len() >= 8 {
         if (b.len() - 8) / 8 <= 4096 { ((b.len() - 8) / 8) as nat } else { 4096 }
@@ -471,6 +475,7 @@ pub open spec fn entry_count(b: Seq<u8>) -> nat {
 /// `Reach_P(b)`: R2-R4 pass (SPEC.md §2), so `try_parse` reserves the entry
 /// list: length in `[8, 2^26]`, the ICNS magic, and `BE32(b[4..8]) == |b|`.
 /// (The last also gives `BE32 >= 8`, R2-R4's remaining check.)
+#[doc(hidden)]
 pub open spec fn reach_p(b: Seq<u8>) -> bool {
     &&& 8 <= b.len()
     &&& b.len() <= 67108864
@@ -480,6 +485,7 @@ pub open spec fn reach_p(b: Seq<u8>) -> bool {
 
 /// `Req_P(b)` (SPEC.md §4, A-ICNS-1): the one `(EntryList, count)` request iff
 /// R2-R4 pass, else `[]`.
+#[doc(hidden)]
 pub open spec fn req_p(b: Seq<u8>) -> Seq<(AllocSite, nat)> {
     if reach_p(b) {
         seq![(AllocSite::EntryList, entry_count(b))]
@@ -490,6 +496,7 @@ pub open spec fn req_p(b: Seq<u8>) -> Seq<(AllocSite, nat)> {
 
 /// `PreAlloc(b)` (THEOREMS-ALLOC-DELTA.md §0): `Req_P` is empty, so no
 /// reservation is made and no `OutOfMemory` can appear.
+#[doc(hidden)]
 pub open spec fn pre_alloc_p(b: Seq<u8>) -> bool {
     req_p(b).len() == 0
 }
@@ -499,6 +506,7 @@ pub open spec fn pre_alloc_p(b: Seq<u8>) -> bool {
 /// per-site caps. Every ICNS site but `EntryList` holds `u8`, so the element
 /// count is the byte count; `EntryList` holds `Entry` records and is capped by
 /// `MAX_ROOM` entries.
+#[doc(hidden)]
 pub open spec fn site_max(site: AllocSite) -> nat {
     match site {
         AllocSite::EntryList => crate::alloc_guard::sites::MAX_ROOM as nat,
@@ -511,6 +519,7 @@ pub open spec fn site_max(site: AllocSite) -> nat {
 
 /// Every request in `req` is within its own site's maximum — the frozen G
 /// clause 3, stated per site rather than against the global `MAX_BYTES`.
+#[doc(hidden)]
 pub open spec fn req_within_site_max(req: Seq<(AllocSite, nat)>) -> bool {
     forall|j: int| 0 <= j < req.len() ==> req[j].1 <= site_max(req[j].0)
 }
@@ -518,6 +527,7 @@ pub open spec fn req_within_site_max(req: Seq<(AllocSite, nat)>) -> bool {
 /// Clause 1 of `G` for `try_parse` (THEOREMS-ALLOC-DELTA.md §0): a
 /// non-`OutOfMemory` result satisfies `parses_to` on `fmt_part_entries(r)`, has
 /// exactly the requests of `Req_P`, and every log entry is `Ok`.
+#[doc(hidden)]
 pub open spec fn g_p_clause1(
     b: Seq<u8>,
     r: Result<Vec<Entry>, TryError>,
@@ -534,6 +544,7 @@ pub open spec fn g_p_clause1(
 /// Clause 2 of `G`: an `OutOfMemory` result has a non-empty log whose requests
 /// are a prefix of `Req_P`, every entry but the last `Ok`, and the last entry
 /// not `Ok` and equal to the returned `(site, elements)`.
+#[doc(hidden)]
 pub open spec fn g_p_clause2(
     b: Seq<u8>,
     r: Result<Vec<Entry>, TryError>,
@@ -555,12 +566,14 @@ pub open spec fn g_p_clause2(
 /// the checked input before the guard call. For the `EntryList` site the site
 /// maximum is `MAX_ROOM` entries (`site_max(EntryList)`), so this is already
 /// the per-site bound and not the global `MAX_BYTES`.
+#[doc(hidden)]
 pub open spec fn g_p_clause3(b: Seq<u8>) -> bool {
     forall|j: int| 0 <= j < req_p(b).len()
         ==> req_p(b)[j].1 <= crate::alloc_guard::sites::MAX_ROOM
 }
 
 /// Theorem shape `G` for `try_parse` (A-ICNS-1), proved on `try_parse_logged`.
+#[doc(hidden)]
 pub open spec fn g_p(
     b: Seq<u8>,
     r: Result<Vec<Entry>, TryError>,
@@ -571,6 +584,7 @@ pub open spec fn g_p(
 
 /// `Prog` for `try_parse`: if every log entry is `Ok`, the result is not
 /// `OutOfMemory`, `parses_to` holds, and `req(L) == Req_P`.
+#[doc(hidden)]
 pub open spec fn prog_p(
     b: Seq<u8>,
     r: Result<Vec<Entry>, TryError>,
@@ -579,6 +593,7 @@ pub open spec fn prog_p(
     crate::alloc_guard::all_ok(l) ==> prog_p_concl(b, r, l)
 }
 
+#[doc(hidden)]
 pub open spec fn prog_p_concl(
     b: Seq<u8>,
     r: Result<Vec<Entry>, TryError>,
@@ -591,6 +606,7 @@ pub open spec fn prog_p_concl(
 
 /// The log-only facts `at_site_log_p` gives: `req(L)` is `Req_P`, which has at
 /// most one element, and a failure is the log's last (only) entry.
+#[doc(hidden)]
 pub open spec fn at_site_log_p(
     b: Seq<u8>,
     r_is_oom: bool,
@@ -1130,6 +1146,7 @@ fn parse_tracked(bytes: &[u8], Tracked(log): Tracked<&mut AllocLog>)
 
 /// The logged parse entry point (A-ICNS-1): creates the one log, runs the one
 /// entry-list reservation, and returns the log. `Eq_f` is `parses_to`.
+#[doc(hidden)]
 pub fn try_parse_logged(bytes: &[u8])
     -> (r: (Result<Vec<Entry>, TryError>, Tracked<AllocLog>))
     ensures
@@ -1271,6 +1288,7 @@ fn rle_copy(
 }
 
 /// `Req_R(n)`: the three channel reservations, in order (SPEC.md §4, A-ICNS-3).
+#[doc(hidden)]
 pub open spec fn req_r(n: nat) -> Seq<(AllocSite, nat)> {
     seq![
         (AllocSite::Channel(0u8), n),
@@ -1281,6 +1299,7 @@ pub open spec fn req_r(n: nat) -> Seq<(AllocSite, nat)> {
 
 /// Clause 1 of `G` for `try_rle`: a non-`OutOfMemory` result is `rle_result_eq`
 /// on `fmt_part_channels(r)`, has exactly `Req_R`'s requests, every entry `Ok`.
+#[doc(hidden)]
 pub open spec fn g_r_clause1(
     b: Seq<u8>,
     n: nat,
@@ -1300,6 +1319,7 @@ pub open spec fn g_r_clause1(
 
 /// Clause 2 of `G` for `try_rle`: the `OutOfMemory` log shape. Here `Req_R` has
 /// three elements, so the requests must be a genuine prefix.
+#[doc(hidden)]
 pub open spec fn g_r_clause2(
     b: Seq<u8>,
     n: nat,
@@ -1321,10 +1341,12 @@ pub open spec fn g_r_clause2(
 /// Clause 3 of `G` for `try_rle`: each request is `n <= 16,384`, which is
 /// `site_max(Channel(_))` (frozen per-site bound, SPEC.md §4), not the global
 /// `MAX_BYTES`.
+#[doc(hidden)]
 pub open spec fn g_r_clause3(n: nat) -> bool {
     req_within_site_max(req_r(n))
 }
 
+#[doc(hidden)]
 pub open spec fn g_r(
     b: Seq<u8>,
     n: nat,
@@ -1334,6 +1356,7 @@ pub open spec fn g_r(
     g_r_clause1(b, n, r, l) && g_r_clause2(b, n, r, l) && g_r_clause3(n)
 }
 
+#[doc(hidden)]
 pub open spec fn prog_r(
     b: Seq<u8>,
     n: nat,
@@ -1343,6 +1366,7 @@ pub open spec fn prog_r(
     crate::alloc_guard::all_ok(l) ==> prog_r_concl(b, n, r, l)
 }
 
+#[doc(hidden)]
 pub open spec fn prog_r_concl(
     b: Seq<u8>,
     n: nat,
@@ -1359,6 +1383,7 @@ pub open spec fn prog_r_concl(
 
 /// The log-only facts `at_site_log_r` gives: `req(L)` is a prefix of `Req_R`, so
 /// a failure is `L`'s last entry, and an all-`Ok` `L` of length three is `Req_R`.
+#[doc(hidden)]
 pub open spec fn at_site_log_r(
     n: nat,
     r_is_oom: bool,
@@ -1792,8 +1817,11 @@ fn rle_decode_tracked(payload: &[u8], n: usize, Tracked(log): Tracked<&mut Alloc
 }
 
 /// The logged RLE entry point (A-ICNS-3): creates the one log, runs the three
-/// channel reservations, returns the log. `Eq_f` is `rle_result_eq`.
-pub fn try_rle_logged(payload: &[u8], n: usize)
+/// channel reservations, returns the log. `Eq_f` is `rle_result_eq`. Crate
+/// internal: its only caller is the `t9_rle_exact` witness, and its
+/// `1 <= n <= 128*128` restriction is a Verus precondition that ordinary Rust
+/// callers need not honour (ERRATA E12).
+pub(crate) fn try_rle_logged(payload: &[u8], n: usize)
     -> (r: (Result<[Vec<u8>; 3], TryError>, Tracked<AllocLog>))
     requires
         n <= MAX_LEGACY_SIDE * MAX_LEGACY_SIDE,
@@ -1865,6 +1893,7 @@ fn payload_range<'a>(bytes: &'a [u8], entry: &Entry) -> (r: &'a [u8])
 /// `Req_C(b,E,i)`: `[]` on index/type errors, `Req_R(n)` on an RLE error, and
 /// `Req_R(n) ++ [(RgbOut, 3n)]` otherwise (SPEC.md §4, A-ICNS-4). Stated in model
 /// terms through `mc`: the index/type guards and the RLE outcome come from `mc`.
+#[doc(hidden)]
 pub open spec fn req_c(b: Seq<u8>, E: Seq<Entry>, i: u32) -> Seq<(AllocSite, nat)> {
     if (i as int) >= (E.len() as int) {
         Seq::empty()
@@ -1887,22 +1916,26 @@ pub open spec fn req_c(b: Seq<u8>, E: Seq<Entry>, i: u32) -> Seq<(AllocSite, nat
 
 /// `(site, elements)` is one of the requests in `req`: the public `try_*`'s
 /// `OutOfMemory`-naming clause (THEOREMS-ALLOC-DELTA.md §0).
+#[doc(hidden)]
 pub open spec fn oom_in_req(site: AllocSite, elements: nat, req: Seq<(AllocSite, nat)>) -> bool {
     exists|j: int| 0 <= j < req.len() && req[j] == (site, elements)
 }
 
 /// `PreAlloc_C(b,E,i)` (THEOREMS-ALLOC-DELTA.md §0): `Req_C` is empty, so the
 /// colour decode reserves nothing and cannot return `OutOfMemory`.
+#[doc(hidden)]
 pub open spec fn pre_alloc_c(b: Seq<u8>, E: Seq<Entry>, i: u32) -> bool {
     req_c(b, E, i).len() == 0
 }
 
 /// `PreAlloc_A(b,E,i)`: as above for `Req_A`.
+#[doc(hidden)]
 pub open spec fn pre_alloc_a(b: Seq<u8>, E: Seq<Entry>, i: u32) -> bool {
     req_a(b, E, i).len() == 0
 }
 
 /// `PreAlloc_J(b,E,ci,mi)`: as above for `Req_J`.
+#[doc(hidden)]
 pub open spec fn pre_alloc_j(b: Seq<u8>, E: Seq<Entry>, ci: Option<u32>, mi: Option<u32>) -> bool {
     req_j(b, E, ci, mi).len() == 0
 }
@@ -1910,6 +1943,7 @@ pub open spec fn pre_alloc_j(b: Seq<u8>, E: Seq<Entry>, ci: Option<u32>, mi: Opt
 /// The named `PreAlloc` corollary for the colour decoder (THEOREMS-ALLOC-DELTA.md
 /// §0): an empty `Req_C` means the result is not `OutOfMemory`, `rgb_decoded_eq`
 /// holds on `fmt_part(r)`, and `L` is empty.
+#[doc(hidden)]
 pub open spec fn pre_alloc_c_concl(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -1924,6 +1958,7 @@ pub open spec fn pre_alloc_c_concl(
 }
 
 /// The named `PreAlloc` corollary for the mask decoder (A-ICNS-5).
+#[doc(hidden)]
 pub open spec fn pre_alloc_a_concl(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -1938,6 +1973,7 @@ pub open spec fn pre_alloc_a_concl(
 }
 
 /// The named `PreAlloc` corollary for the combine decoder (A-ICNS-6).
+#[doc(hidden)]
 pub open spec fn pre_alloc_j_concl(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -1952,6 +1988,7 @@ pub open spec fn pre_alloc_j_concl(
             && l == Seq::<(AllocSite, nat, bool)>::empty()
 }
 
+#[doc(hidden)]
 pub open spec fn g_c_clause1(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -1967,6 +2004,7 @@ pub open spec fn g_c_clause1(
     }
 }
 
+#[doc(hidden)]
 pub open spec fn g_c_clause2(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -1989,10 +2027,12 @@ pub open spec fn g_c_clause2(
 /// Clause 3 of `G` for `try_decode_rgb`: every request is within its own site's
 /// maximum (16,384 for a channel, 49,152 for `RgbOut`), from `parsed_inv`
 /// (legacy sides <= 128), not the global `MAX_BYTES`.
+#[doc(hidden)]
 pub open spec fn g_c_clause3(b: Seq<u8>, E: Seq<Entry>, i: u32) -> bool {
     req_within_site_max(req_c(b, E, i))
 }
 
+#[doc(hidden)]
 pub open spec fn g_c(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -2003,6 +2043,7 @@ pub open spec fn g_c(
     g_c_clause1(b, E, i, r, l) && g_c_clause2(b, E, i, r, l) && g_c_clause3(b, E, i)
 }
 
+#[doc(hidden)]
 pub open spec fn prog_c(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -2013,6 +2054,7 @@ pub open spec fn prog_c(
     crate::alloc_guard::all_ok(l) ==> prog_c_concl(b, E, i, r, l)
 }
 
+#[doc(hidden)]
 pub open spec fn prog_c_concl(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -2025,6 +2067,7 @@ pub open spec fn prog_c_concl(
         && crate::alloc_guard::req_of_log(l) == req_c(b, E, i)
 }
 
+#[doc(hidden)]
 pub open spec fn at_site_log_c(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -2043,6 +2086,7 @@ pub open spec fn at_site_log_c(
 }
 
 /// `Req_A(b,E,i)`: `[(MaskData, n)]` iff `MA`'s length check passes, else `[]`.
+#[doc(hidden)]
 pub open spec fn req_a(b: Seq<u8>, E: Seq<Entry>, i: u32) -> Seq<(AllocSite, nat)> {
     if (i as int) >= (E.len() as int) {
         Seq::empty()
@@ -2064,6 +2108,7 @@ pub open spec fn req_a(b: Seq<u8>, E: Seq<Entry>, i: u32) -> Seq<(AllocSite, nat
     }
 }
 
+#[doc(hidden)]
 pub open spec fn g_a_clause1(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -2079,6 +2124,7 @@ pub open spec fn g_a_clause1(
     }
 }
 
+#[doc(hidden)]
 pub open spec fn g_a_clause2(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -2100,10 +2146,12 @@ pub open spec fn g_a_clause2(
 
 /// Clause 3 of `G` for `try_decode_mask`: the one request is at most 16,384,
 /// `site_max(MaskData)`, from `parsed_inv`.
+#[doc(hidden)]
 pub open spec fn g_a_clause3(b: Seq<u8>, E: Seq<Entry>, i: u32) -> bool {
     req_within_site_max(req_a(b, E, i))
 }
 
+#[doc(hidden)]
 pub open spec fn g_a(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -2114,6 +2162,7 @@ pub open spec fn g_a(
     g_a_clause1(b, E, i, r, l) && g_a_clause2(b, E, i, r, l) && g_a_clause3(b, E, i)
 }
 
+#[doc(hidden)]
 pub open spec fn prog_a(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -2124,6 +2173,7 @@ pub open spec fn prog_a(
     crate::alloc_guard::all_ok(l) ==> prog_a_concl(b, E, i, r, l)
 }
 
+#[doc(hidden)]
 pub open spec fn prog_a_concl(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -2139,6 +2189,7 @@ pub open spec fn prog_a_concl(
 /// `l` starts with `pre` and the requests appended after `pre` are a prefix of
 /// `req`. The `pre` parameter is what lets `combine` share one log: the mask
 /// decode runs after the colour decode, so its log starts with `Req_C`.
+#[doc(hidden)]
 pub open spec fn log_extends(
     pre: Seq<(AllocSite, nat, bool)>,
     l: Seq<(AllocSite, nat, bool)>,
@@ -2153,6 +2204,7 @@ pub open spec fn log_extends(
 
 /// The mask decode's log shape, relative to the prefix `pre` it starts from.
 /// With `pre == []` this is the standalone `try_decode_mask` shape.
+#[doc(hidden)]
 pub open spec fn at_site_log_a(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -2193,7 +2245,7 @@ proof fn lemma_req_a_clause3(b: Seq<u8>, E: Seq<Entry>, i: u32)
 /// §0, A-ICNS-4): `Req_C == []` implies the result is not `OutOfMemory`,
 /// `rgb_decoded_eq` holds on `fmt_part(r)`, and `L == []`. Proved from `G`:
 /// clause 2 would need a non-empty log that is a prefix of the empty `Req_C`.
-pub proof fn lemma_g_rgb_prealloc(
+pub(crate) proof fn lemma_g_rgb_prealloc(
     b: Seq<u8>,
     E: Seq<Entry>,
     i: u32,
@@ -2241,7 +2293,7 @@ pub proof fn lemma_g_rgb_prealloc(
 /// The public `try_decode_rgb` contract implies the `PreAlloc` corollary's
 /// observable parts. Its `OutOfMemory` naming clause together with `Req_C == []`
 /// rules `OutOfMemory` out; the functional relation is the contract's own.
-pub proof fn lemma_public_rgb_prealloc(
+pub(crate) proof fn lemma_public_rgb_prealloc(
     b: Seq<u8>,
     E: Seq<Entry>,
     i: u32,
@@ -2273,7 +2325,7 @@ pub proof fn lemma_public_rgb_prealloc(
 /// The named `PreAlloc` corollary for `try_decode_mask` (THEOREMS-ALLOC-DELTA.md
 /// §0, A-ICNS-5): `Req_A == []` implies non-`OutOfMemory`, `mask_decoded_eq` on
 /// `fmt_part(r)`, and `L == []`.
-pub proof fn lemma_g_mask_prealloc(
+pub(crate) proof fn lemma_g_mask_prealloc(
     b: Seq<u8>,
     E: Seq<Entry>,
     i: u32,
@@ -2320,7 +2372,7 @@ pub proof fn lemma_g_mask_prealloc(
 
 /// The public `try_decode_mask` contract implies the `PreAlloc` corollary's
 /// observable parts.
-pub proof fn lemma_public_mask_prealloc(
+pub(crate) proof fn lemma_public_mask_prealloc(
     b: Seq<u8>,
     E: Seq<Entry>,
     i: u32,
@@ -2802,6 +2854,7 @@ fn decode_rgb_tracked(
 }
 
 /// The logged colour decoder (A-ICNS-4): creates the one log and returns it.
+#[doc(hidden)]
 pub fn try_decode_rgb_logged(bytes: &[u8], entries: &[Entry], color_index: u32)
     -> (r: (Result<Decoded, TryError>, Tracked<AllocLog>))
     requires
@@ -3129,6 +3182,7 @@ fn decode_mask_tracked(
 }
 
 /// The logged mask decoder (A-ICNS-5): creates the one log and returns it.
+#[doc(hidden)]
 pub fn try_decode_mask_logged(bytes: &[u8], entries: &[Entry], mask_index: u32)
     -> (r: (Result<Decoded, TryError>, Tracked<AllocLog>))
     requires
@@ -3260,6 +3314,7 @@ pub fn try_decode_mask(bytes: &[u8], entries: &[Entry], mask_index: u32)
 /// the colour decode is `Ok`, then `(CombineOut, 4n)` if both are `Ok` and the
 /// sides match. An absent index gives `[]` (`MJ`'s `MissingColor`/`MissingMask`
 /// precedence). Stated in terms of `mc`/`ma`, so it is a model statement.
+#[doc(hidden)]
 pub open spec fn req_j(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -3296,6 +3351,7 @@ pub open spec fn req_j(
     }
 }
 
+#[doc(hidden)]
 pub open spec fn g_j_clause1(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -3312,6 +3368,7 @@ pub open spec fn g_j_clause1(
     }
 }
 
+#[doc(hidden)]
 pub open spec fn g_j_clause2(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -3335,10 +3392,12 @@ pub open spec fn g_j_clause2(
 /// Clause 3 of `G` for `try_combine`: every request is within its own site's
 /// maximum (channels 16,384, `RgbOut` 49,152, `MaskData` 16,384, `CombineOut`
 /// 65,536), from `parsed_inv` (legacy sides <= 128, so `4n <= 65536`).
+#[doc(hidden)]
 pub open spec fn g_j_clause3(b: Seq<u8>, E: Seq<Entry>, ci: Option<u32>, mi: Option<u32>) -> bool {
     req_within_site_max(req_j(b, E, ci, mi))
 }
 
+#[doc(hidden)]
 pub open spec fn g_j(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -3351,6 +3410,7 @@ pub open spec fn g_j(
         && g_j_clause3(b, E, ci, mi)
 }
 
+#[doc(hidden)]
 pub open spec fn prog_j(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -3362,6 +3422,7 @@ pub open spec fn prog_j(
     crate::alloc_guard::all_ok(l) ==> prog_j_concl(b, E, ci, mi, r, l)
 }
 
+#[doc(hidden)]
 pub open spec fn prog_j_concl(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -3375,6 +3436,7 @@ pub open spec fn prog_j_concl(
         && crate::alloc_guard::req_of_log(l) == req_j(b, E, ci, mi)
 }
 
+#[doc(hidden)]
 pub open spec fn at_site_log_j(
     b: Seq<u8>,
     E: Seq<Entry>,
@@ -3558,7 +3620,7 @@ proof fn lemma_req_j_clause3(b: Seq<u8>, E: Seq<Entry>, ci: Option<u32>, mi: Opt
 /// The named `PreAlloc` corollary for `try_combine` (THEOREMS-ALLOC-DELTA.md §0,
 /// A-ICNS-6): `Req_J == []` implies non-`OutOfMemory`, `combine_decoded_eq` on
 /// `fmt_part(r)`, and `L == []`.
-pub proof fn lemma_g_combine_prealloc(
+pub(crate) proof fn lemma_g_combine_prealloc(
     b: Seq<u8>,
     E: Seq<Entry>,
     ci: Option<u32>,
@@ -3606,7 +3668,7 @@ pub proof fn lemma_g_combine_prealloc(
 
 /// The public `try_combine` contract implies the `PreAlloc` corollary's
 /// observable parts.
-pub proof fn lemma_public_combine_prealloc(
+pub(crate) proof fn lemma_public_combine_prealloc(
     b: Seq<u8>,
     E: Seq<Entry>,
     ci: Option<u32>,
@@ -4063,6 +4125,7 @@ fn combine_tracked(
 }
 
 /// The logged combine decoder (A-ICNS-6): creates the one log and returns it.
+#[doc(hidden)]
 pub fn try_combine_logged(
     bytes: &[u8],
     entries: &[Entry],

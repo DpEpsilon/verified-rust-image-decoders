@@ -409,3 +409,15 @@ Statements elsewhere in this file that describe the guard as a `push` loop, that
 `alloc-delta/ERRATA.md` E10 applied the owner's decisions D3/D4/D8 to `alloc_guard/sites.rs`: `Reserved::push` and `Reserved::into_vec` gained `#[inline(never)]` (D8), and `Reserved<T>`, `Reserved::push`, `Reserved::into_vec` and `try_with_room<T>` became `pub(crate)` (D3/D4), so a downstream crate can no longer call them and violate `Reserved::push`'s `len < room` precondition. No `requires`/`ensures` and no proof changed. The new `sites.rs` SHA-256 is `5918505c88282574c693481a557f3b0abd0c1022d4a3e11a2137891efd59bdcf` (was `5c7b24a0...`), `EXPECTED_SITES_SHA` in `tools/audit_alloc.sh` was re-pinned, and the three `generic-export` entries were removed from `alloc-delta/audit/allowlist/decisions/ico.toml`. Verifier: run 176 (incremental) and run 177 (clean reverify of the crate and its DIB dependency), both **346 verified, 0 errors** (unchanged). Tests: 217/217 conformance, fault injection passing. The production audit reports `allowlist-reviewer` and `dependency-contract` (DIB's report is unsigned) only (`runs/20261114T055653Z`); the `guard-inline-never` finding is gone.
 
 The "Latest verifier result" and `sites.rs` hash in the paragraph above are superseded by this section.
+
+## Public-API reduction (2026-11-14)
+
+The intended public API is `try_parse`, `try_decode_entry`, `Entry`, `Header`,
+`EntryKind`, `EntryDefect`, `EntryStatus`, `Error`, `TryError`, `MAX_INPUT` and
+the `name()` accessors. `model`, `model_vectors` and `witnesses` are now
+`pub(crate)`; in `src/ico.rs` the `pub` items no `pub` contract names were
+demoted (40 -> 21) and the 11 named by a `try_*` contract or listed in the
+audit's `required_roots` (`try_parse_with_steps`, `try_decode_entry_with_steps`,
+`name_spec`, the size/signature constants) are `#[doc(hidden)]`. No contract or
+proof text changed. Verifier: **346 verified, 0 errors** (unchanged; `dib_verus`
+1764 in the same run). Tests green. See `alloc-delta/audit/API-SURVEY.md`.

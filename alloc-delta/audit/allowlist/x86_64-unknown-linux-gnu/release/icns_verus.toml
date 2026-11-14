@@ -10,7 +10,7 @@ rustc_commit = "58cf8f9c35b355199727627d07ae34a4e2846d67"
 target = "x86_64-unknown-linux-gnu"
 profile = "opt-level=3,debug-assertions=off,share-generics=off"
 features = []
-source_hash = "01f940ad26f6c78aa06d64cd4c9596855526702ffe2373ed3129a9b0bd367d26"
+source_hash = "cda2ebe74a1a747f9862bfb1e519294c9925515d88816cf01d237df2cea7b269"
 vstd_version = "0.0.0-2026-11-01-0251"
 vstd_svh = "fa564daeee3bd3d96afb1a9ec5dbc24f"
 vstd_source_checksum = "7cfcc2fc379ffbcda31111f1a7da2a34d00bd984407cfa85d1edcf64da38dbd2"
@@ -295,13 +295,6 @@ citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS
 [[entry]]
 kind = "panic"
 item = "PanicBoundsCheck"
-allow = "crate::icns::rle_decode_tracked"
-contract = "diverges (panic); allocates nothing in core; admitted only as unreachable"
-citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3): crate::icns::rle_decode_tracked is verified exec code; Verus discharges the PanicBoundsCheck obligation (bounds/division/overflow) at every site, so the compiler-inserted check cannot fire"
-
-[[entry]]
-kind = "panic"
-item = "PanicBoundsCheck"
 allow = "crate::icns::decode_rgb_tracked"
 contract = "diverges (panic); allocates nothing in core; admitted only as unreachable"
 citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3): crate::icns::decode_rgb_tracked is verified exec code; Verus discharges the PanicBoundsCheck obligation (bounds/division/overflow) at every site, so the compiler-inserted check cannot fire"
@@ -344,9 +337,9 @@ citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS
 [[entry]]
 kind = "panic"
 item = "PanicBoundsCheck"
-allow = "crate::icns::rle_copy"
+allow = "crate::icns::rle_decode_tracked"
 contract = "diverges (panic); allocates nothing in core; admitted only as unreachable"
-citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3): crate::icns::rle_copy is verified exec code; Verus discharges the PanicBoundsCheck obligation (bounds/division/overflow) at every site, so the compiler-inserted check cannot fire"
+citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3): crate::icns::rle_decode_tracked is verified exec code; Verus discharges the PanicBoundsCheck obligation (bounds/division/overflow) at every site, so the compiler-inserted check cannot fire"
 
 [[entry]]
 kind = "panic"
@@ -354,4 +347,11 @@ item = "PanicBoundsCheck"
 allow = "crate::icns::payload_starts_with"
 contract = "diverges (panic); allocates nothing in core; admitted only as unreachable"
 citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3): crate::icns::payload_starts_with is verified exec code; Verus discharges the PanicBoundsCheck obligation (bounds/division/overflow) at every site, so the compiler-inserted check cannot fire"
+
+[[entry]]
+kind = "panic"
+item = "PanicBoundsCheck"
+allow = "crate::icns::rle_copy"
+contract = "diverges (panic); allocates nothing in core; admitted only as unreachable"
+citation = "icns/THEOREMS.md T1 restated as Safe' on try_* (alloc-delta THEOREMS-ALLOC-DELTA.md §3): crate::icns::rle_copy is verified exec code; Verus discharges the PanicBoundsCheck obligation (bounds/division/overflow) at every site, so the compiler-inserted check cannot fire"
 

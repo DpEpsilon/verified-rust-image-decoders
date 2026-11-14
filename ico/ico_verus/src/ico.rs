@@ -51,24 +51,31 @@ pub use crate::alloc_guard::{AllocSite, TryError};
 pub const MAX_INPUT: usize = 67_108_864;
 
 /// R2: `MAX_ENTRIES = 1,024` records. The u16 wire count permits 65,535.
+#[doc(hidden)]
 pub const MAX_ENTRIES: usize = 1_024;
 
 /// R3: the shared directory header is six bytes.
+#[doc(hidden)]
 pub const DIRECTORY_HEADER_LEN: usize = 6;
 
 /// R4: one directory record is 16 bytes.
+#[doc(hidden)]
 pub const ENTRY_RECORD_LEN: usize = 16;
 
 /// R7/T7: a complete maximum-size directory occupies `6 + 16*1,024` bytes.
+#[doc(hidden)]
 pub const MAX_DIRECTORY_LEN: usize = DIRECTORY_HEADER_LEN + ENTRY_RECORD_LEN * MAX_ENTRIES;
 
 /// R6: the eight-byte PNG signature `89 50 4e 47 0d 0a 1a 0a`.
+#[doc(hidden)]
 pub const PNG_SIGNATURE: [u8; 8] = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
 
 /// R3: ICO directory type.
+#[doc(hidden)]
 pub const TYPE_ICO: u16 = 1;
 
 /// R3: CUR directory type.
+#[doc(hidden)]
 pub const TYPE_CUR: u16 = 2;
 
 // ---------------------------------------------------------------------------
@@ -141,6 +148,7 @@ impl Error {
     /// R9: the exact spelling used by `VECTORS.json`, in spec position.
     /// `alloc_guard::sites::TryError::name_spec` reads it for the `Format(e)`
     /// case, so the alloc-delta `TryError` name table is this frozen spelling.
+    #[doc(hidden)]
     pub open spec fn name_spec(&self) -> &'static str {
         match self {
             Error::FileTooLarge => "FileTooLarge",
@@ -295,6 +303,7 @@ fn rd32(b: &[u8], p: usize) -> (r: u32)
 // ---------------------------------------------------------------------------
 
 /// The `H(b)` result: the two metadata words and the end of the whole directory.
+#[doc(hidden)]
 pub struct Header {
     pub kind: u16,
     pub count: usize,
@@ -302,7 +311,7 @@ pub struct Header {
 }
 
 /// The `H` record a concrete `Header` denotes, field for field.
-pub open spec fn hdr_matches(hr: crate::model::HRec, h: Header) -> bool {
+pub(crate) open spec fn hdr_matches(hr: crate::model::HRec, h: Header) -> bool {
     &&& hr.typ == h.kind as int
     &&& hr.count == h.count as int
     &&& hr.dir_end == h.dir_end as int
@@ -980,6 +989,7 @@ fn try_parse_logged(
 /// `16*(|b|+1)` for every slice (and at most `parse_step_bound`), and the log
 /// `r.2@` has at most one entry: `0` on a directory error, `1` on success, and
 /// on `OutOfMemory` the one failed entry named by the result.
+#[doc(hidden)]
 pub fn try_parse_with_steps(bytes: &[u8]) -> (r: (Result<Vec<Entry>, TryError>, Ghost<nat>, Ghost<
     nat,
 >, Tracked<AllocLog>))
@@ -1590,6 +1600,7 @@ fn try_decode_entry_logged(
 /// their sum directly — the combined bound the manifest's T9 row claims — since
 /// the two per-counter bounds alone would permit `16 + dib_steps_bound` for one
 /// and `dib_steps_bound` for the other.
+#[doc(hidden)]
 pub fn try_decode_entry_with_steps(bytes: &[u8], entries: &[Entry], index: u32) -> (r: (Result<
     Decoded,
     TryError,
@@ -1672,7 +1683,7 @@ pub fn try_decode_entry_with_steps(bytes: &[u8], entries: &[Entry], index: u32) 
 
 /// The `Seq::new`-snoc step used by `parse`'s loop: growing the ghost list by one
 /// record appends the next `ME`.
-pub proof fn lemma_seq_new_snoc<A>(f: spec_fn(int) -> A, k: nat)
+pub(crate) proof fn lemma_seq_new_snoc<A>(f: spec_fn(int) -> A, k: nat)
     ensures
         Seq::new(k + 1, f) =~= Seq::new(k, f).push(f(k as int)),
 {
@@ -1705,7 +1716,7 @@ pub proof fn lemma_seq_new_snoc<A>(f: spec_fn(int) -> A, k: nat)
 /// most `usize::MAX` on both the 32-bit (2^32 - 1) and the 64-bit (2^64 - 1)
 /// target, so none of the `u64` comparisons can wrap and none of the narrowings
 /// can lose a bit.
-pub proof fn t7_arithmetic_bounds(b: Seq<u8>, hr: crate::model::HRec)
+pub(crate) proof fn t7_arithmetic_bounds(b: Seq<u8>, hr: crate::model::HRec)
     requires
         crate::model::h(b) == Ok(hr),
     ensures
@@ -1740,7 +1751,7 @@ pub proof fn t7_arithmetic_bounds(b: Seq<u8>, hr: crate::model::HRec)
 }
 
 /// T2 (exact parse), stated on the parse result: exactly `MC(b)` as a whole.
-pub proof fn t2_parse_exact(b: Seq<u8>, r: Result<Vec<Entry>, Error>)
+pub(crate) proof fn t2_parse_exact(b: Seq<u8>, r: Result<Vec<Entry>, Error>)
     requires
         crate::model::parse_eq(b, r),
     ensures
@@ -1761,7 +1772,7 @@ pub proof fn t2_parse_exact(b: Seq<u8>, r: Result<Vec<Entry>, Error>)
 /// T3 (record validity): every success of `parse` has `|E| = count` with `count`
 /// in `[1, 1024]`, each record is its wire-derived `ME`, and each valid record's
 /// payload lies in `[dir_end, |b|]` under the 64 MiB cap.
-pub proof fn t3_record_validity(b: Seq<u8>, v: Vec<Entry>)
+pub(crate) proof fn t3_record_validity(b: Seq<u8>, v: Vec<Entry>)
     requires
         crate::model::parse_eq(b, Ok(v)),
     ensures
@@ -1773,7 +1784,7 @@ pub proof fn t3_record_validity(b: Seq<u8>, v: Vec<Entry>)
 
 /// T4 (signature classification): for every valid record `E[j]`, `kind = Png`
 /// iff `raw_size >= 8` and the eight bytes at `raw_offset` are the signature.
-pub proof fn t4_signature_classification(b: Seq<u8>, v: Vec<Entry>)
+pub(crate) proof fn t4_signature_classification(b: Seq<u8>, v: Vec<Entry>)
     requires
         crate::model::parse_eq(b, Ok(v)),
     ensures
@@ -1788,7 +1799,7 @@ pub proof fn t4_signature_classification(b: Seq<u8>, v: Vec<Entry>)
 /// `try_decode_entry`'s non-`OutOfMemory` result satisfies `md_eq` on
 /// `fmt_part_decoded(r)` — the total model `MD` as the whole `Result`, including
 /// the composition with the DIB model on the validated declared slice.
-pub fn t5_decode_exact(b: &[u8], es: &[Entry], index: u32) -> (r: Result<Decoded, TryError>)
+pub(crate) fn t5_decode_exact(b: &[u8], es: &[Entry], index: u32) -> (r: Result<Decoded, TryError>)
     ensures
         match r {
             Err(TryError::OutOfMemory(o)) =>
@@ -1808,7 +1819,7 @@ pub fn t5_decode_exact(b: &[u8], es: &[Entry], index: u32) -> (r: Result<Decoded
 /// fixed by R8/R10 order, and on the selected-DIB branch the result is a DIB
 /// success or a DIB error and nothing else. (The exact DIB bytes and errors are
 /// T5's.)
-pub proof fn t1_decode_ico(b: Seq<u8>, es: Seq<Entry>, index: u32, r: Result<Decoded, Error>)
+pub(crate) proof fn t1_decode_ico(b: Seq<u8>, es: Seq<Entry>, index: u32, r: Result<Decoded, Error>)
     requires
         crate::model::md_eq(b, es, index, r),
     ensures
@@ -1833,7 +1844,7 @@ pub proof fn t1_decode_ico(b: Seq<u8>, es: Seq<Entry>, index: u32, r: Result<Dec
 /// the selected record, so an unselected bogus supplied record cannot change the
 /// result; on the parse side record defects are statuses, not errors. Stated as
 /// the `MD`'s ordering lemmas composed (see `model::lemma_t6_*`).
-pub proof fn t6_precedence(
+pub(crate) proof fn t6_precedence(
     b: Seq<u8>,
     es1: Seq<Entry>,
     es2: Seq<Entry>,
@@ -1861,7 +1872,7 @@ pub proof fn t6_precedence(
 /// before any DIB error; the selected DIB's own R14 priority is delegated
 /// unchanged. The predicate `model::t6_full_prec` names that chain; the proof
 /// composes the `model::lemma_t6_*` facts through the public `md_eq`.
-pub proof fn t6_precedence_full(b: Seq<u8>, es: Seq<Entry>, index: u32, r: Result<Decoded, Error>)
+pub(crate) proof fn t6_precedence_full(b: Seq<u8>, es: Seq<Entry>, index: u32, r: Result<Decoded, Error>)
     requires
         crate::model::md_eq(b, es, index, r),
     ensures
@@ -1874,7 +1885,7 @@ pub proof fn t6_precedence_full(b: Seq<u8>, es: Seq<Entry>, index: u32, r: Resul
 /// public calls. On `try_parse` a directory-wide error is the whole result; on
 /// `try_decode_entry` it precedes the index, list, record and defect checks.
 /// Stated on the two public entry points.
-pub fn t6_parse_directory_priority(b: &[u8]) -> (r: Result<Vec<Entry>, TryError>)
+pub(crate) fn t6_parse_directory_priority(b: &[u8]) -> (r: Result<Vec<Entry>, TryError>)
     ensures
         match r {
             Err(TryError::OutOfMemory(o)) =>
@@ -1904,7 +1915,7 @@ pub fn t6_parse_directory_priority(b: &[u8]) -> (r: Result<Vec<Entry>, TryError>
 /// T6 (exact precedence): on `try_decode_entry` the directory guard precedes
 /// every subsequent check, and the index check precedes the list-length check.
 /// These are the `md_ico`/`md` orderings, restated for the public call.
-pub fn t6_decode_ordering(b: &[u8], es: &[Entry], index: u32) -> (r: Result<Decoded, TryError>)
+pub(crate) fn t6_decode_ordering(b: &[u8], es: &[Entry], index: u32) -> (r: Result<Decoded, TryError>)
     ensures
         match r {
             Err(TryError::OutOfMemory(o)) =>
@@ -1950,7 +1961,7 @@ pub fn t6_decode_ordering(b: &[u8], es: &[Entry], index: u32) -> (r: Result<Deco
 /// loop of its own and revalidates exactly one record, then calls the terminating
 /// DIB 1.1 decoder once. Stated at the manifest's quantification for `count`,
 /// `i` and `k`.
-pub proof fn t8_termination(count: int, i: int, k: int)
+pub(crate) proof fn t8_termination(count: int, i: int, k: int)
     requires
         0 <= i < count,
         0 <= k <= 8,
@@ -1966,7 +1977,7 @@ pub proof fn t8_termination(count: int, i: int, k: int)
 /// `Decoded` obeying the DIB dependency's own `4*w*h <= 67,108,864` output
 /// contract (and `1 <= w,h <= 8,192`), discharged from the public `md_eq`
 /// postcondition.
-pub fn t7_dib_output_bound(b: &[u8], es: &[Entry], index: u32) -> (r: Result<Decoded, TryError>)
+pub(crate) fn t7_dib_output_bound(b: &[u8], es: &[Entry], index: u32) -> (r: Result<Decoded, TryError>)
     ensures
         match r {
             Err(TryError::OutOfMemory(o)) =>
@@ -2009,7 +2020,7 @@ pub fn t7_dib_output_bound(b: &[u8], es: &[Entry], index: u32) -> (r: Result<Dec
 /// cannot panic. The proof is Verus verifying the `try_decode_entry` body, which
 /// has no `requires`; this lemma records the fact that the selected index is kept
 /// `u32`-wide, so a 256th or 65,536th record is addressed, not narrowed.
-pub proof fn t1_index_u32(index: u32)
+pub(crate) proof fn t1_index_u32(index: u32)
     ensures
         (index as int) <= 4294967295,
         (index as int) < 4294967296,
@@ -2027,7 +2038,7 @@ pub proof fn t1_index_u32(index: u32)
 /// success path charges the bounded list initialisation and at most nine per
 /// record — and its returned log has `r.2@ == L.len() <= 1` in place of the ghost
 /// allocation-call count.
-pub fn t9_parse_linear_work(
+pub(crate) fn t9_parse_linear_work(
     b: &[u8],
 ) -> (r: (Result<Vec<Entry>, TryError>, Ghost<nat>, Ghost<nat>, Tracked<AllocLog>))
     ensures
@@ -2056,7 +2067,7 @@ pub fn t9_parse_linear_work(
 /// proved bound (`t9_step_cap`), it never scans `E` (the step **bound** is a
 /// function of the decision alone), and its only reservations are DIB's, threaded
 /// into the returned log `r.3@` (`r.4@ == L.len() <= 1`).
-pub fn t9_wrapper_linear_work(
+pub(crate) fn t9_wrapper_linear_work(
     b: &[u8],
     es: &[Entry],
     index: u32,
@@ -2098,7 +2109,7 @@ pub fn t9_wrapper_linear_work(
 /// The equality proved is of the bound `t9_step_cap`, not of a real step count:
 /// no charged count appears here, so the two lists are not shown to charge the
 /// same number of steps.
-pub proof fn t9_wrapper_ignores_list(b: Seq<u8>, es1: Seq<Entry>, es2: Seq<Entry>, index: u32)
+pub(crate) proof fn t9_wrapper_ignores_list(b: Seq<u8>, es1: Seq<Entry>, es2: Seq<Entry>, index: u32)
     requires
         es1.len() == es2.len(),
         (index as int) < es1.len() ==> es1[index as int] == es2[index as int],
@@ -2115,7 +2126,7 @@ pub proof fn t9_wrapper_ignores_list(b: Seq<u8>, es1: Seq<Entry>, es2: Seq<Entry
 /// guard `Req_P` is one bounded entry-list request (`1 <= count <= 1,024`), and
 /// `Req_D` has at most one element (DIB's one `Output` request), so each entry
 /// point's log is at most one entry.
-pub proof fn t10_allocation_bound(b: Seq<u8>, es: Seq<Entry>, index: u32, hr: crate::model::HRec)
+pub(crate) proof fn t10_allocation_bound(b: Seq<u8>, es: Seq<Entry>, index: u32, hr: crate::model::HRec)
     requires
         crate::model::h(b) == Ok(hr),
     ensures

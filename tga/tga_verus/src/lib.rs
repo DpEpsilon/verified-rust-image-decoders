@@ -9,10 +9,10 @@ extern crate std;
 
 use vstd::prelude::*;
 
-pub mod model;
-pub mod model_vectors;
+pub(crate) mod model;
+pub(crate) mod model_vectors;
 pub mod policy;
-pub mod policy_model;
+pub(crate) mod policy_model;
 pub mod tga;
 pub mod alloc_guard;
 

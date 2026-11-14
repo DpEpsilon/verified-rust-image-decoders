@@ -35,10 +35,10 @@ verus! {
 pub const MAX_INPUT: usize = 67_108_864;
 
 /// R6: the RGBA output is at most 64 MiB (`4*width*height`).
-pub const MAX_OUTPUT: usize = 67_108_864;
+pub(crate) const MAX_OUTPUT: usize = 67_108_864;
 
 /// R2: each image dimension is between 1 and 8,192 inclusive.
-pub const MAX_DIMENSION: u32 = 8_192;
+pub(crate) const MAX_DIMENSION: u32 = 8_192;
 
 /// The closed, case-sensitive error set of R15. Exactly eighteen variants;
 /// `name()` returns the exact spelling.
@@ -69,6 +69,7 @@ impl Error {
     /// that `alloc_guard::sites::TryError::name_spec` reads. `open` and
     /// field-free, so it is well-formed everywhere, including in the guard's
     /// `sites.rs`.
+    #[doc(hidden)]
     pub open spec fn name_spec(&self) -> &'static str {
         match self {
             Error::FileTooLarge => "FileTooLarge",
@@ -315,6 +316,7 @@ spec fn map_end_of(m: crate::model::MHModel, h: Header) -> int {
 }
 
 /// T7: the model result tuple `(width, height, rgba)` of an executable `Decoded`.
+#[doc(hidden)]
 pub open spec fn dec_vals(d: Decoded) -> (int, int, Seq<u8>) {
     (d.width as int, d.height as int, d.rgba@)
 }
@@ -322,6 +324,7 @@ pub open spec fn dec_vals(d: Decoded) -> (int, int, Seq<u8>) {
 /// T7/T9: `try_decode(bytes)` equals `MP(bytes)` as the exact `Result` — the exact
 /// three-tuple, or the exact error. This is the relation the public entry
 /// carries; `MP` is the model's definition, not a call to any executable code.
+#[doc(hidden)]
 pub open spec fn decode_eq(r: Result<Decoded, Error>, b: Seq<u8>) -> bool {
     match r {
         Ok(d) => crate::model::mp(b) == Ok(dec_vals(d)),
@@ -3106,6 +3109,7 @@ fn decode_tracked(bytes: &[u8], steps: &mut Ghost<nat>,
 /// `G`/`Prog`, the `PreAlloc` corollary, the A-TGA-5 charge bound and the
 /// failure naming are its postconditions. (Frozen A-TGA-4 is termination; the
 /// charge bound is the added A-TGA-5 — see alloc-delta/ERRATA.md.)
+#[doc(hidden)]
 pub fn try_decode_with_steps_logged(bytes: &[u8])
     -> (r: (Result<Decoded, TryError>, Ghost<nat>, Tracked<AllocLog>))
     ensures
@@ -5486,7 +5490,7 @@ fn index_depth_bad_hdr_exec(
 
 /// The `Result<(), Error>` projection of a header model result: `Ok` for any
 /// accepted record, the error otherwise.
-pub open spec fn of_mh(r: Result<MHModel, Error>) -> Result<(), Error> {
+pub(crate) open spec fn of_mh(r: Result<MHModel, Error>) -> Result<(), Error> {
     match r {
         Ok(_) => Ok(()),
         Err(e) => Err(e),
@@ -8396,6 +8400,7 @@ use crate::alloc_guard::{AllocSite, AllocLog, OutOfMemory};
 /// reservation succeeds (SPEC.md §4): the one `(Output, 4N)` request iff
 /// `MH(b)` is `Ok`, else `[]`. `N` is `0` on a rejected header, so `req_tga` is
 /// then empty.
+#[doc(hidden)]
 pub open spec fn req_tga(b: Seq<u8>) -> Seq<(AllocSite, nat)> {
     match crate::model::mh(b) {
         Ok(m) => seq![(AllocSite::Output, 4 * m.n as nat)],
@@ -8405,6 +8410,7 @@ pub open spec fn req_tga(b: Seq<u8>) -> Seq<(AllocSite, nat)> {
 
 /// The same requests for the policy entry point, whose header model is
 /// `mh_policy` (the policy `Reach` is `MH_policy(b, p)` is `Ok`).
+#[doc(hidden)]
 pub open spec fn req_tga_policy(b: Seq<u8>, p: Policy) -> Seq<(AllocSite, nat)> {
     match crate::policy_model::mh_policy(b, p) {
         Ok(m) => seq![(AllocSite::Output, 4 * m.n as nat)],
@@ -8415,6 +8421,7 @@ pub open spec fn req_tga_policy(b: Seq<u8>, p: Policy) -> Seq<(AllocSite, nat)> 
 /// Clause 1 of `G` (THEOREMS-ALLOC-DELTA.md §0): a non-`OutOfMemory` result
 /// satisfies the frozen predicate on `crate::alloc_guard::sites::fmt_part(r)`, has exactly the requests of
 /// `Req_TGA`, and every log entry is `Ok`.
+#[doc(hidden)]
 pub open spec fn g_clause1(
     b: Seq<u8>,
     r: Result<Decoded, TryError>,
@@ -8431,6 +8438,7 @@ pub open spec fn g_clause1(
 /// Clause 2 of `G`: an `OutOfMemory` result has a non-empty log whose requests
 /// are a prefix of `Req_TGA`, every entry but the last `Ok`, and the last entry
 /// not `Ok` and equal to the returned `(site, elements)`.
+#[doc(hidden)]
 pub open spec fn g_clause2(
     b: Seq<u8>,
     r: Result<Decoded, TryError>,
@@ -8450,12 +8458,14 @@ pub open spec fn g_clause2(
 
 /// Clause 3 of `G`: every request is within its site's maximum, proved from the
 /// checked header before the guard call.
+#[doc(hidden)]
 pub open spec fn g_clause3(b: Seq<u8>) -> bool {
     forall|j: int| 0 <= j < req_tga(b).len() ==> req_tga(b)[j].1 <= crate::alloc_guard::MAX_BYTES
 }
 
 /// Theorem shape `G` for TGA's `decode` family (THEOREMS-ALLOC-DELTA.md
 /// A-TGA-1), proved on the logged entry point `try_decode_with_steps_logged`.
+#[doc(hidden)]
 pub open spec fn g(
     b: Seq<u8>,
     r: Result<Decoded, TryError>,
@@ -8466,6 +8476,7 @@ pub open spec fn g(
 
 /// `Prog` (THEOREMS-ALLOC-DELTA.md §0): if every log entry is `Ok`, the result
 /// is not `OutOfMemory`, `decode_eq` holds, and `req(L) == Req_TGA`.
+#[doc(hidden)]
 pub open spec fn prog(
     b: Seq<u8>,
     r: Result<Decoded, TryError>,
@@ -8476,6 +8487,7 @@ pub open spec fn prog(
 
 /// The `Prog` conclusion, split out so `prog` reveals to the solver as
 /// `all_ok(l) ==> prog_concl(..)`.
+#[doc(hidden)]
 pub open spec fn prog_concl(
     b: Seq<u8>,
     r: Result<Decoded, TryError>,
@@ -8489,6 +8501,7 @@ pub open spec fn prog_concl(
 /// The `PreAlloc` corollary (THEOREMS-ALLOC-DELTA.md §0): `Req_TGA` empty means
 /// the header was rejected before any reservation, so the log is empty and the
 /// result is a format error satisfying `decode_eq`.
+#[doc(hidden)]
 pub open spec fn pre_alloc(b: Seq<u8>) -> bool {
     req_tga(b).len() == 0
 }
@@ -8496,7 +8509,7 @@ pub open spec fn pre_alloc(b: Seq<u8>) -> bool {
 /// The log-only facts `at_site_log` gives, in the shape the entry points' proof
 /// blocks consume: `req(L)` is `Req_TGA`, which has at most one element, so `L`
 /// has at most one element, and a failure is the log's last (only) entry.
-pub open spec fn at_site_log(
+pub(crate) open spec fn at_site_log(
     b: Seq<u8>,
     r_is_oom: bool,
     l: Seq<(AllocSite, nat, bool)>,
@@ -8511,7 +8524,7 @@ pub open spec fn at_site_log(
 
 /// The `Ok`-exit `at_site_log`: after the one successful `(Output, 4N)`
 /// reservation on an empty log, `req(L)` is exactly `Req_TGA`.
-pub proof fn lemma_at_site_log_ok(
+pub(crate) proof fn lemma_at_site_log_ok(
     b: Seq<u8>,
     m: crate::model::MHModel,
     l: Seq<(AllocSite, nat, bool)>,
@@ -8530,7 +8543,7 @@ pub proof fn lemma_at_site_log_ok(
 }
 
 /// The `OutOfMemory`-exit `at_site_log`.
-pub proof fn lemma_at_site_log_oom(
+pub(crate) proof fn lemma_at_site_log_oom(
     b: Seq<u8>,
     m: crate::model::MHModel,
     l: Seq<(AllocSite, nat, bool)>,
@@ -8549,7 +8562,7 @@ pub proof fn lemma_at_site_log_oom(
 }
 
 /// The pre-reservation `at_site_log`.
-pub proof fn lemma_at_site_log_prealloc(
+pub(crate) proof fn lemma_at_site_log_prealloc(
     b: Seq<u8>,
     l: Seq<(AllocSite, nat, bool)>,
 )
@@ -8568,7 +8581,7 @@ pub proof fn lemma_at_site_log_prealloc(
 /// Clause 3's content, as a named lemma: `Req_TGA`'s single element is `4N`
 /// with `1 <= N <= 16,777,216`, so it is within `MAX_BYTES`. Proved from the
 /// model's `mh_bounds`, never from an executable read.
-pub proof fn lemma_req_tga_clause3(b: Seq<u8>)
+pub(crate) proof fn lemma_req_tga_clause3(b: Seq<u8>)
     ensures g_clause3(b),
 {
     reveal(req_tga);
@@ -8587,7 +8600,7 @@ pub proof fn lemma_req_tga_clause3(b: Seq<u8>)
 /// The one-request shape, as a lemma: `Req_TGA` has at most one element, so
 /// `req(L) == Req_TGA` plus the last-entry equality gives the prefix clause on
 /// the `Err` arm.
-pub proof fn lemma_req_tga_len(b: Seq<u8>)
+pub(crate) proof fn lemma_req_tga_len(b: Seq<u8>)
     ensures req_tga(b).len() <= 1,
 {
     reveal(req_tga);
@@ -8596,7 +8609,7 @@ pub proof fn lemma_req_tga_len(b: Seq<u8>)
 /// The log-only facts `at_site_log` gives: `req(L)` is `Req_TGA`, which has at
 /// most one element, so `L` has at most one element, and a failure is the log's
 /// last (only) entry.
-pub proof fn lemma_at_site_log_parts(
+pub(crate) proof fn lemma_at_site_log_parts(
     b: Seq<u8>,
     r_is_oom: bool,
     l: Seq<(AllocSite, nat, bool)>,
@@ -8616,7 +8629,7 @@ pub proof fn lemma_at_site_log_parts(
 }
 
 /// The policy path's `at_site_log`, whose request set is `Req_TGA_policy`.
-pub open spec fn at_site_log_policy(
+pub(crate) open spec fn at_site_log_policy(
     b: Seq<u8>,
     p: Policy,
     r_is_oom: bool,
@@ -8630,7 +8643,7 @@ pub open spec fn at_site_log_policy(
         })
 }
 
-pub proof fn lemma_at_site_log_policy_ok(
+pub(crate) proof fn lemma_at_site_log_policy_ok(
     b: Seq<u8>,
     p: Policy,
     m: crate::model::MHModel,
@@ -8649,7 +8662,7 @@ pub proof fn lemma_at_site_log_policy_ok(
     assert(crate::alloc_guard::req_of_log(l) =~= req_tga_policy(b, p));
 }
 
-pub proof fn lemma_at_site_log_policy_oom(
+pub(crate) proof fn lemma_at_site_log_policy_oom(
     b: Seq<u8>,
     p: Policy,
     m: crate::model::MHModel,
@@ -8668,7 +8681,7 @@ pub proof fn lemma_at_site_log_policy_oom(
     assert(crate::alloc_guard::req_of_log(l) =~= req_tga_policy(b, p));
 }
 
-pub proof fn lemma_at_site_log_policy_prealloc(
+pub(crate) proof fn lemma_at_site_log_policy_prealloc(
     b: Seq<u8>,
     p: Policy,
     l: Seq<(AllocSite, nat, bool)>,
@@ -8685,7 +8698,7 @@ pub proof fn lemma_at_site_log_policy_prealloc(
     assert(crate::alloc_guard::req_of_log(l) =~= req_tga_policy(b, p));
 }
 
-pub proof fn lemma_req_tga_policy_clause3(b: Seq<u8>, p: Policy)
+pub(crate) proof fn lemma_req_tga_policy_clause3(b: Seq<u8>, p: Policy)
     ensures forall|j: int| 0 <= j < req_tga_policy(b, p).len()
         ==> req_tga_policy(b, p)[j].1 <= crate::alloc_guard::MAX_BYTES,
 {
@@ -8703,7 +8716,7 @@ pub proof fn lemma_req_tga_policy_clause3(b: Seq<u8>, p: Policy)
 
 /// `Req_TGA_policy`'s single element, when it exists, is `(Output, 4N)` with
 /// `N = policy_checked_n`.
-pub proof fn lemma_req_tga_policy_elem(b: Seq<u8>, p: Policy)
+pub(crate) proof fn lemma_req_tga_policy_elem(b: Seq<u8>, p: Policy)
     ensures req_tga_policy(b, p).len() == 1
         ==> req_tga_policy(b, p)[0].1 == 4 * policy_checked_n(b, p) as nat,
 {
@@ -8711,7 +8724,7 @@ pub proof fn lemma_req_tga_policy_elem(b: Seq<u8>, p: Policy)
     reveal(policy_checked_n);
 }
 
-pub proof fn lemma_req_tga_policy_len(b: Seq<u8>, p: Policy)
+pub(crate) proof fn lemma_req_tga_policy_len(b: Seq<u8>, p: Policy)
     ensures req_tga_policy(b, p).len() <= 1,
 {
     reveal(req_tga_policy);
@@ -8725,7 +8738,7 @@ pub proof fn lemma_req_tga_policy_len(b: Seq<u8>, p: Policy)
 /// `Eq_f` for TGA is `decode_eq`/`mp_policy` alone, and the flag is stated
 /// separately as `r is Ok ==> r.1 == recovered_policy(b, p)` together with
 /// `r is Err ==> !r.1`, on the entry points and in `pre_alloc_policy_concl`.
-pub open spec fn g_policy_clause1(
+pub(crate) open spec fn g_policy_clause1(
     b: Seq<u8>,
     p: Policy,
     r: Result<Decoded, TryError>,
@@ -8740,7 +8753,7 @@ pub open spec fn g_policy_clause1(
 }
 
 /// Clause 2 of the policy path's `G`.
-pub open spec fn g_policy_clause2(
+pub(crate) open spec fn g_policy_clause2(
     b: Seq<u8>,
     p: Policy,
     r: Result<Decoded, TryError>,
@@ -8758,13 +8771,13 @@ pub open spec fn g_policy_clause2(
     }
 }
 
-pub open spec fn g_policy_clause3(b: Seq<u8>, p: Policy) -> bool {
+pub(crate) open spec fn g_policy_clause3(b: Seq<u8>, p: Policy) -> bool {
     forall|j: int| 0 <= j < req_tga_policy(b, p).len()
         ==> req_tga_policy(b, p)[j].1 <= crate::alloc_guard::MAX_BYTES
 }
 
 /// Theorem shape `G` for the policy entry point.
-pub open spec fn g_policy(
+pub(crate) open spec fn g_policy(
     b: Seq<u8>,
     p: Policy,
     r: Result<Decoded, TryError>,
@@ -8773,7 +8786,7 @@ pub open spec fn g_policy(
     g_policy_clause1(b, p, r, l) && g_policy_clause2(b, p, r, l) && g_policy_clause3(b, p)
 }
 
-pub open spec fn prog_policy(
+pub(crate) open spec fn prog_policy(
     b: Seq<u8>,
     p: Policy,
     r: Result<Decoded, TryError>,
@@ -8786,7 +8799,7 @@ pub open spec fn prog_policy(
 /// to the solver as `all_ok(l) ==> prog_policy_concl(..)`. Like `prog_concl` it
 /// carries the functional relation, here `mp_policy` on
 /// `crate::alloc_guard::sites::fmt_part(r)`, alongside the request equality.
-pub open spec fn prog_policy_concl(
+pub(crate) open spec fn prog_policy_concl(
     b: Seq<u8>,
     p: Policy,
     r: Result<Decoded, TryError>,
@@ -8803,7 +8816,7 @@ pub open spec fn prog_policy_concl(
 /// `recovered` is false. The policy twin of `pre_alloc`, strengthened with the
 /// functional relation and the flag component of `g_policy_clause1`. Its
 /// `r.1 == false` is `r.0 is Err ==> !r.1` for the only non-`Ok` outcome here.
-pub open spec fn pre_alloc_policy_concl(
+pub(crate) open spec fn pre_alloc_policy_concl(
     b: Seq<u8>,
     p: Policy,
     r: (Result<Decoded, TryError>, bool),
@@ -8822,7 +8835,7 @@ pub open spec fn pre_alloc_policy_concl(
 /// `r.1 == recovered_policy(b, p)` on `Ok`, `false` on `Format`, carries the
 /// flag component of `g_policy_clause1`. The `PreAlloc` corollary
 /// `pre_alloc_policy_concl` is a separate `ensures` from the same hypotheses.
-pub proof fn lemma_g_policy_of_shape(
+pub(crate) proof fn lemma_g_policy_of_shape(
     b: Seq<u8>,
     p: Policy,
     r: (Result<Decoded, TryError>, bool),
@@ -8918,11 +8931,13 @@ fn alloc_output_guarded(
     }
 }
 
+#[doc(hidden)]
 pub open spec fn policy_result(r: Result<Decoded, Error>) -> Result<(int, int, Seq<u8>), Error> {
     match r { Ok(d) => Ok((d.width as int, d.height as int, d.rgba@)), Err(e) => Err(e) }
 }
 
 /// `N` from the 1.0 header model: `mh`'s record on success, else `0`.
+#[doc(hidden)]
 pub open spec fn model_checked_n(b: Seq<u8>) -> int {
     match crate::model::mh(b) { Ok(m) => m.n, Err(_) => 0 }
 }
@@ -8930,14 +8945,16 @@ pub open spec fn model_checked_n(b: Seq<u8>) -> int {
 
 /// The policy path's `PreAlloc` corollary: `Req_TGA_policy` empty means the
 /// header was rejected before any reservation.
-pub open spec fn pre_alloc_policy(b: Seq<u8>, p: Policy) -> bool {
+pub(crate) open spec fn pre_alloc_policy(b: Seq<u8>, p: Policy) -> bool {
     req_tga_policy(b, p).len() == 0
 }
 
+#[doc(hidden)]
 pub open spec fn policy_checked_n(b: Seq<u8>, p: Policy) -> int {
     match crate::policy_model::mh_policy(b, p) { Ok(m) => m.n, Err(_) => 0 }
 }
 
+#[doc(hidden)]
 pub open spec fn decoded_bounds(r: Result<Decoded, Error>) -> bool {
     match r {
         Ok(d) => 1 <= d.width as int <= 8192 && 1 <= d.height as int <= 8192
@@ -9284,7 +9301,7 @@ pub fn try_decode_with_policy(bytes: &[u8], profile: crate::policy::Profile)
 /// Public executable witness that Strict is exactly the 1.0 decoder: for
 /// every input the two calls produce the same error or identical dimensions
 /// and RGBA bytes, and Strict never reports recovery.
-pub fn t7_strict_is_1_0(bytes: &[u8])
+pub(crate) fn t7_strict_is_1_0(bytes: &[u8])
     -> (r: ((Result<Decoded, TryError>, bool), Result<Decoded, TryError>))
     ensures
         r.0.1 == false,
