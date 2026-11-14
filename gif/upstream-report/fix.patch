@@ -1,0 +1,55 @@
+--- a/gdk-pixbuf/io-gif-animation.c	2026-11-14 08:37:02.151893586 +0000
++++ b/gdk-pixbuf/io-gif-animation.c	2026-11-14 08:37:02.156705114 +0000
+@@ -438,7 +438,7 @@
+         for (link = g_list_find (anim->frames, anim->last_frame); link->next != NULL && link->data != requested_frame; link = link->next) {
+                 GdkPixbufFrame *frame = link->data;
+                 guchar *pixels;
+-                int y, x_end, y_end;
++                int y, x_end, y_end, clip_width;
+ 
+                 /* Remove last frame if required */
+                 switch (frame->action) {
+@@ -447,19 +447,36 @@
+                 case GDK_PIXBUF_FRAME_DISPOSE:
+                         /* Replace previous area with background */
+                         pixels = gdk_pixbuf_get_pixels (anim->last_frame_data);
++                        /* The frame rectangle is not guaranteed to lie inside the
++                         * logical screen. A frame whose left edge is beyond the screen
++                         * width leaves x_end < x_offset, so the unclipped cleared width
++                         * is negative and memset() receives it as a huge size_t.
++                         * Clip horizontally before clearing.
++                         */
+                         x_end = MIN (anim->last_frame->x_offset + anim->last_frame->width, anim->width);
+                         y_end = MIN (anim->last_frame->y_offset + anim->last_frame->height, anim->height);
+-                        for (y = anim->last_frame->y_offset; y < y_end; y++) {
+-                                gsize offset;
+-                                if (g_size_checked_mul (&offset, gdk_pixbuf_get_rowstride (anim->last_frame_data), y) &&
+-                                    g_size_checked_add (&offset, offset, anim->last_frame->x_offset * 4)) {
+-                                         memset (pixels + offset, 0, (x_end - anim->last_frame->x_offset) * 4);
++                        clip_width = x_end - anim->last_frame->x_offset;
++                        if (clip_width > 0) {
++                                for (y = anim->last_frame->y_offset; y < y_end; y++) {
++                                        gsize offset;
++                                        if (g_size_checked_mul (&offset, gdk_pixbuf_get_rowstride (anim->last_frame_data), y) &&
++                                            g_size_checked_add (&offset, offset, anim->last_frame->x_offset * 4)) {
++                                                 memset (pixels + offset, 0, (gsize) clip_width * 4);
++                                        }
+                                 }
+                         }
+                         break;
+                 case GDK_PIXBUF_FRAME_REVERT:
+-                        /* Replace previous area with last retained area */
+-                        if (anim->last_frame_revert_data != NULL)
++                        /* Replace previous area with last retained area.
++                         * The same unclipped offsets are used here; the rectangle is
++                         * checked against the screen before copying so that the
++                         * precondition of gdk_pixbuf_copy_area() holds by construction.
++                         */
++                        if (anim->last_frame_revert_data != NULL &&
++                            anim->last_frame->x_offset >= 0 &&
++                            anim->last_frame->y_offset >= 0 &&
++                            anim->last_frame->x_offset + anim->last_frame->width <= anim->width &&
++                            anim->last_frame->y_offset + anim->last_frame->height <= anim->height)
+                                 gdk_pixbuf_copy_area (anim->last_frame_revert_data,
+                                                       0, 0, anim->last_frame->width, anim->last_frame->height,
+                                                       anim->last_frame_data,

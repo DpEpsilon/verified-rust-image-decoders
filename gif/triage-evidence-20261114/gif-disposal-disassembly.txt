@@ -1,0 +1,57 @@
+
+/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-gif.so:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000004012 <fill_info@@Base+0x782>:
+    4012:	49 8b bf 38 03 00 00 	mov    0x338(%r15),%rdi
+    4019:	e8 22 e2 ff ff       	call   2240 <gdk_pixbuf_get_pixels@plt>
+    401e:	41 8b 97 28 03 00 00 	mov    0x328(%r15),%edx
+    4025:	48 89 04 24          	mov    %rax,(%rsp)
+    4029:	49 8b 87 40 03 00 00 	mov    0x340(%r15),%rax
+    4030:	44 0f b7 68 14       	movzwl 0x14(%rax),%r13d
+    4035:	44 03 68 0c          	add    0xc(%rax),%r13d
+    4039:	41 39 d5             	cmp    %edx,%r13d
+    403c:	44 0f b7 60 16       	movzwl 0x16(%rax),%r12d
+    4041:	41 0f 4e d5          	cmovle %r13d,%edx
+    4045:	44 8b 68 10          	mov    0x10(%rax),%r13d
+    4049:	41 8b 87 2c 03 00 00 	mov    0x32c(%r15),%eax
+    4050:	45 01 ec             	add    %r13d,%r12d
+    4053:	89 54 24 0c          	mov    %edx,0xc(%rsp)
+    4057:	41 39 c4             	cmp    %eax,%r12d
+    405a:	44 0f 4f e0          	cmovg  %eax,%r12d
+    405e:	45 39 e5             	cmp    %r12d,%r13d
+    4061:	7c 1a                	jl     407d <fill_info@@Base+0x7ed>
+    4063:	e9 78 ff ff ff       	jmp    3fe0 <fill_info@@Base+0x750>
+    4068:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
+    406f:	00 
+    4070:	41 83 c5 01          	add    $0x1,%r13d
+    4074:	45 39 ec             	cmp    %r13d,%r12d
+    4077:	0f 84 63 ff ff ff    	je     3fe0 <fill_info@@Base+0x750>
+    407d:	49 8b bf 38 03 00 00 	mov    0x338(%r15),%rdi
+    4084:	e8 c7 e2 ff ff       	call   2350 <gdk_pixbuf_get_rowstride@plt>
+    4089:	49 63 d5             	movslq %r13d,%rdx
+    408c:	48 98                	cltq
+    408e:	48 0f af c2          	imul   %rdx,%rax
+    4092:	48 85 c0             	test   %rax,%rax
+    4095:	78 d9                	js     4070 <fill_info@@Base+0x7e0>
+    4097:	49 8b 97 40 03 00 00 	mov    0x340(%r15),%rdx
+    409e:	48 01 e8             	add    %rbp,%rax
+    40a1:	8b 72 0c             	mov    0xc(%rdx),%esi
+    40a4:	8d 3c b5 00 00 00 00 	lea    0x0(,%rsi,4),%edi
+    40ab:	48 63 ff             	movslq %edi,%rdi
+    40ae:	48 01 c7             	add    %rax,%rdi
+    40b1:	0f 90 c0             	seto   %al
+    40b4:	48 01 ef             	add    %rbp,%rdi
+    40b7:	0f b6 c0             	movzbl %al,%eax
+    40ba:	48 85 c0             	test   %rax,%rax
+    40bd:	75 b1                	jne    4070 <fill_info@@Base+0x7e0>
+    40bf:	8b 54 24 0c          	mov    0xc(%rsp),%edx
+    40c3:	48 8b 04 24          	mov    (%rsp),%rax
+    40c7:	29 f2                	sub    %esi,%edx
+    40c9:	48 01 c7             	add    %rax,%rdi
+    40cc:	31 f6                	xor    %esi,%esi
+    40ce:	c1 e2 02             	shl    $0x2,%edx
+    40d1:	48 63 d2             	movslq %edx,%rdx
+    40d4:	e8 b7 e0 ff ff       	call   2190 <memset@plt>

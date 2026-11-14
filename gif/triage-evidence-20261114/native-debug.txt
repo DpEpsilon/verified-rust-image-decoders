@@ -1,0 +1,135 @@
+initial stop 5
+r15 0x55addcb81840
+r14 0x55addcb817a0
+r13 0x55addcb81840
+r12 0x2
+rbp 0x3
+rbx 0x64
+r11 0x3
+r10 0x0
+r9 0x55addcb83b50
+r8 0x0
+rax 0x0
+rcx 0x1
+rdx 0x2
+rsi 0x1
+rdi 0x55addcb86de0
+orig_rax 0x3
+rip 0x0
+cs 0x33
+eflags 0x10202
+rsp 0x7f12f64186b8
+ss 0x2b
+fs_base 0x2b804c1fa940
+gs_base 0x0
+ds 0x0
+es 0x0
+fs 0x0
+gs 0x6b
+fault_address 0x0
+MAPS
+2b804b81c000-2b804b81d000 r--p 00000000 00:1d 78235                      /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+2b804b81d000-2b804b845000 r-xp 00001000 00:1d 78235                      /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+2b804b845000-2b804b852000 r--p 00029000 00:1d 78235                      /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+2b804b852000-2b804b853000 rw-p 00036000 00:1d 78235                      /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+2b804b853000-2b804b854000 rw-p 00000000 00:00 0 
+2b804b854000-2b804b855000 r--p 00000000 00:00 0                          [vvar]
+2b804b855000-2b804b857000 r-xp 00000000 00:00 0 
+2b804b857000-2b804b859000 rw-p 00000000 00:00 0 
+2b804b85f000-2b804b867000 r--p 00000000 00:1d 79407                      /usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0.4200.12
+2b804b867000-2b804b881000 r-xp 00008000 00:1d 79407                      /usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0.4200.12
+2b804b881000-2b804b88c000 r--p 00022000 00:1d 79407                      /usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0.4200.12
+2b804b88c000-2b804b88d000 rw-p 0002d000 00:1d 79407                      /usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0.4200.12
+2b804b88d000-2b804b8ac000 r--p 00000000 00:1d 79436                      /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8400.4
+2b804b8ac000-2b804b94d000 r-xp 0001f000 00:1d 79436                      /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8400.4
+2b804b94d000-2b804b9e3000 r--p 000c0000 00:1d 79436                      /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8400.4
+2b804b9e3000-2b804b9e4000 r--p 00155000 00:1d 79436                      /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8400.4
+2b804b9e4000-2b804b9e5000 rw-p 00156000 00:1d 79436                      /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8400.4
+2b804b9e5000-2b804b9e6000 rw-p 00000000 00:00 0 
+2b804b9e6000-2b804ba0e000 r--p 00000000 00:1d 79110                      /usr/lib/x86_64-linux-gnu/libc.so.6
+2b804ba0e000-2b804bb71000 r-xp 00028000 00:1d 79110                      /usr/lib/x86_64-linux-gnu/libc.so.6
+2b804bb71000-2b804bbc7000 r--p 0018b000 00:1d 79110                      /usr/lib/x86_64-linux-gnu/libc.so.6
+2b804bbc7000-2b804bbcb000 r--p 001e0000 00:1d 79110                      /usr/lib/x86_64-linux-gnu/libc.so.6
+2b804bbcb000-2b804bbcd000 rw-p 001e4000 00:1d 79110                      /usr/lib/x86_64-linux-gnu/libc.so.6
+2b804bbcd000-2b804bbda000 rw-p 00000000 00:00 0 
+2b804bbda000-2b804bbeb000 r--p 00000000 00:1d 79767                      /usr/lib/x86_64-linux-gnu/libm.so.6
+2b804bbeb000-2b804bc68000 r-xp 00011000 00:1d 79767                      /usr/lib/x86_64-linux-gnu/libm.so.6
+2b804bc68000-2b804bcc8000 r--p 0008e000 00:1d 79767                      /usr/lib/x86_64-linux-gnu/libm.so.6
+2b804bcc8000-2b804bcc9000 r--p 000ed000 00:1d 79767                      /usr/lib/x86_64-linux-gnu/libm.so.6
+2b804bcc9000-2b804bcca000 rw-p 000ee000 00:1d 79767                      /usr/lib/x86_64-linux-gnu/libm.so.6
+2b804bcca000-2b804bccc000 rw-p 00000000 00:00 0 
+2b804bccc000-2b804bcdc000 r--p 00000000 00:1d 79466                      /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.8400.4
+2b804bcdc000-2b804bd11000 r-xp 00010000 00:1d 79466                      /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.8400.4
+2b804bd11000-2b804bd2e000 r--p 00045000 00:1d 79466                      /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.8400.4
+2b804bd2e000-2b804bd2f000 rw-p 00062000 00:1d 79466                      /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.8400.4
+2b804bd2f000-2b804bd31000 r--p 00000000 00:1d 79446                      /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.8400.4
+2b804bd31000-2b804bd33000 r-xp 00002000 00:1d 79446                      /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.8400.4
+2b804bd33000-2b804bd34000 r--p 00004000 00:1d 79446                      /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.8400.4
+2b804bd34000-2b804bd35000 r--p 00004000 00:1d 79446                      /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.8400.4
+2b804bd35000-2b804bd36000 rw-p 00005000 00:1d 79446                      /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.8400.4
+2b804bd36000-2b804bd74000 r--p 00000000 00:1d 79421                      /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8400.4
+2b804bd74000-2b804be92000 r-xp 0003e000 00:1d 79421                      /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8400.4
+2b804be92000-2b804bf21000 r--p 0015c000 00:1d 79421                      /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8400.4
+2b804bf21000-2b804bf2b000 r--p 001ea000 00:1d 79421                      /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8400.4
+2b804bf2b000-2b804bf2c000 rw-p 001f4000 00:1d 79421                      /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8400.4
+2b804bf2c000-2b804bf2e000 rw-p 00000000 00:00 0 
+2b804bf2e000-2b804bf34000 r--p 00000000 00:1d 80012                      /usr/lib/x86_64-linux-gnu/libpng16.so.16.48.0
+2b804bf34000-2b804bf5a000 r-xp 00006000 00:1d 80012                      /usr/lib/x86_64-linux-gnu/libpng16.so.16.48.0
+2b804bf5a000-2b804bf66000 r--p 0002c000 00:1d 80012                      /usr/lib/x86_64-linux-gnu/libpng16.so.16.48.0
+2b804bf66000-2b804bf67000 rw-p 00038000 00:1d 80012                      /usr/lib/x86_64-linux-gnu/libpng16.so.16.48.0
+2b804bf67000-2b804bf6b000 r--p 00000000 00:1d 79678                      /usr/lib/x86_64-linux-gnu/libjpeg.so.62.3.0
+2b804bf6b000-2b804bfba000 r-xp 00004000 00:1d 79678                      /usr/lib/x86_64-linux-gnu/libjpeg.so.62.3.0
+2b804bfba000-2b804bffd000 r--p 00053000 00:1d 79678                      /usr/lib/x86_64-linux-gnu/libjpeg.so.62.3.0
+2b804bffd000-2b804bffe000 rw-p 00096000 00:1d 79678                      /usr/lib/x86_64-linux-gnu/libjpeg.so.62.3.0
+2b804bffe000-2b804c000000 rw-p 00000000 00:00 0 
+2b804c000000-2b804c002000 r--p 00000000 00:1d 79023                      /usr/lib/x86_64-linux-gnu/libatomic.so.1.2.0
+2b804c002000-2b804c005000 r-xp 00002000 00:1d 79023                      /usr/lib/x86_64-linux-gnu/libatomic.so.1.2.0
+2b804c005000-2b804c007000 r--p 00005000 00:1d 79023                      /usr/lib/x86_64-linux-gnu/libatomic.so.1.2.0
+2b804c007000-2b804c008000 r--p 00006000 00:1d 79023                      /usr/lib/x86_64-linux-gnu/libatomic.so.1.2.0
+2b804c008000-2b804c009000 rw-p 00007000 00:1d 79023                      /usr/lib/x86_64-linux-gnu/libatomic.so.1.2.0
+2b804c009000-2b804c00a000 rw-p 00000000 00:00 0 
+2b804c00a000-2b804c00d000 r--p 00000000 00:1d 79959                      /usr/lib/x86_64-linux-gnu/libpcre2-8.so.0.14.0
+2b804c00d000-2b804c088000 r-xp 00003000 00:1d 79959                      /usr/lib/x86_64-linux-gnu/libpcre2-8.so.0.14.0
+2b804c088000-2b804c0b7000 r--p 0007e000 00:1d 79959                      /usr/lib/x86_64-linux-gnu/libpcre2-8.so.0.14.0
+2b804c0b7000-2b804c0b8000 r--p 000ac000 00:1d 79959                      /usr/lib/x86_64-linux-gnu/libpcre2-8.so.0.14.0
+2b804c0b8000-2b804c0b9000 rw-p 000ad000 00:1d 79959                      /usr/lib/x86_64-linux-gnu/libpcre2-8.so.0.14.0
+2b804c0b9000-2b804c0bb000 r--p 00000000 00:1d 79331                      /usr/lib/x86_64-linux-gnu/libffi.so.8.1.4
+2b804c0bb000-2b804c0c2000 r-xp 00002000 00:1d 79331                      /usr/lib/x86_64-linux-gnu/libffi.so.8.1.4
+2b804c0c2000-2b804c0c4000 r--p 00009000 00:1d 79331                      /usr/lib/x86_64-linux-gnu/libffi.so.8.1.4
+2b804c0c4000-2b804c0c5000 r--p 0000a000 00:1d 79331                      /usr/lib/x86_64-linux-gnu/libffi.so.8.1.4
+2b804c0c5000-2b804c0c6000 rw-p 0000b000 00:1d 79331                      /usr/lib/x86_64-linux-gnu/libffi.so.8.1.4
+2b804c0c6000-2b804c0c9000 r--p 00000000 00:1d 80425                      /usr/lib/x86_64-linux-gnu/libz.so.1.3.1
+2b804c0c9000-2b804c0dd000 r-xp 00003000 00:1d 80425                      /usr/lib/x86_64-linux-gnu/libz.so.1.3.1
+2b804c0dd000-2b804c0e4000 r--p 00017000 00:1d 80425                      /usr/lib/x86_64-linux-gnu/libz.so.1.3.1
+2b804c0e4000-2b804c0e5000 r--p 0001d000 00:1d 80425                      /usr/lib/x86_64-linux-gnu/libz.so.1.3.1
+2b804c0e5000-2b804c0e6000 rw-p 0001e000 00:1d 80425                      /usr/lib/x86_64-linux-gnu/libz.so.1.3.1
+2b804c0e6000-2b804c0f3000 r--p 00000000 00:1d 79789                      /usr/lib/x86_64-linux-gnu/libmount.so.1.1.0
+2b804c0f3000-2b804c144000 r-xp 0000d000 00:1d 79789                      /usr/lib/x86_64-linux-gnu/libmount.so.1.1.0
+2b804c144000-2b804c15e000 r--p 0005e000 00:1d 79789                      /usr/lib/x86_64-linux-gnu/libmount.so.1.1.0
+2b804c15e000-2b804c161000 r--p 00077000 00:1d 79789                      /usr/lib/x86_64-linux-gnu/libmount.so.1.1.0
+2b804c161000-2b804c162000 rw-p 0007a000 00:1d 79789                      /usr/lib/x86_64-linux-gnu/libmount.so.1.1.0
+2b804c162000-2b804c164000 rw-p 00000000 00:00 0 
+2b804c164000-2b804c16b000 r--p 00000000 00:1d 80078                      /usr/lib/x86_64-linux-gnu/libselinux.so.1
+2b804c16b000-2b804c18b000 r-xp 00007000 00:1d 80078                      /usr/lib/x86_64-linux-gnu/libselinux.so.1
+2b804c18b000-2b804c195000 r--p 00027000 00:1d 80078                      /usr/lib/x86_64-linux-gnu/libselinux.so.1
+2b804c195000-2b804c196000 rw-p 00031000 00:1d 80078                      /usr/lib/x86_64-linux-gnu/libselinux.so.1
+2b804c196000-2b804c198000 rw-p 00000000 00:00 0 
+2b804c198000-2b804c1a2000 r--p 00000000 00:1d 79055                      /usr/lib/x86_64-linux-gnu/libblkid.so.1.1.0
+2b804c1a2000-2b804c1df000 r-xp 0000a000 00:1d 79055                      /usr/lib/x86_64-linux-gnu/libblkid.so.1.1.0
+2b804c1df000-2b804c1f8000 r--p 00047000 00:1d 79055                      /usr/lib/x86_64-linux-gnu/libblkid.so.1.1.0
+2b804c1f8000-2b804c1f9000 rw-p 00060000 00:1d 79055                      /usr/lib/x86_64-linux-gnu/libblkid.so.1.1.0
+2b804c1f9000-2b804c1fe000 rw-p 00000000 00:00 0 
+2b804c1fe000-2b804c225000 r--s 00000000 00:1d 105292                     /usr/share/mime/mime.cache
+2b804c225000-2b804c227000 r--p 00000000 00:1d 77971                      /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-gif.so
+2b804c227000-2b804c22a000 r-xp 00002000 00:1d 77971                      /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-gif.so
+2b804c22a000-2b804c22c000 r--p 00005000 00:1d 77971                      /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-gif.so
+2b804c22c000-2b804c22d000 rw-p 00007000 00:1d 77971                      /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-gif.so
+55addcb70000-55addcb72000 r--p 00000000 00:1e 146205                     /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/gif/triage-evidence-20261114/gdk-anim
+55addcb72000-55addcb74000 r-xp 00002000 00:1e 146205                     /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/gif/triage-evidence-20261114/gdk-anim
+55addcb74000-55addcb75000 r--p 00004000 00:1e 146205                     /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/gif/triage-evidence-20261114/gdk-anim
+55addcb75000-55addcb76000 r--p 00004000 00:1e 146205                     /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/gif/triage-evidence-20261114/gdk-anim
+55addcb76000-55addcb77000 rw-p 00005000 00:1e 146205                     /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/gif/triage-evidence-20261114/gdk-anim
+55addcb77000-55addcb98000 rw-p 00000000 00:00 0                          [heap]
+7f12f5c1a000-7f12f641a000 rw-p 00000000 00:00 0                          [stack]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+

@@ -1,0 +1,3 @@
+libc6:amd64	2.41-12+deb13u4
+libgdk-pixbuf-2.0-0:amd64	2.42.12+dfsg-4+deb13u1
+libgdk-pixbuf-2.0-dev:amd64	2.42.12+dfsg-4+deb13u1

@@ -1,0 +1,17 @@
+=================================================================
+==2704==ERROR: AddressSanitizer: negative-size-param: (size=-8)
+    #0 0x2b31f701e008 in memset ../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors_memintrinsics.inc:87
+    #1 0x2b31f83b90d8  (/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-gif.so+0x40d8) (BuildId: 6100c8407fca00873c2ff1327c0df79a329704cd)
+    #2 0x56467040eb28 in run_anim /home/ws/projects/verified-decoders/leniency/gif/runners/gdk_anim.c:45
+    #3 0x56467040f1d2 in main /home/ws/projects/verified-decoders/leniency/gif/runners/gdk_anim.c:82
+    #4 0x2b31f79ffca7  (/lib/x86_64-linux-gnu/libc.so.6+0x29ca7) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
+    #5 0x2b31f79ffd64 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x29d64) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
+    #6 0x56467040d400 in _start (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/gif/triage-evidence-20261114/gdk-anim-asan+0x3400) (BuildId: f95e0060afd76b285e9a157fea30740c19325aad)
+
+0x503000001888 is located 24 bytes inside of 32-byte region [0x503000001870,0x503000001890)
+allocated by thread T0 here:
+    #0 0x2b31f7020610 in calloc ../../../../src/libsanitizer/asan/asan_malloc_linux.cpp:77
+    #1 0x2b31f75fc266 in gdk_pixbuf_new (/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0+0xa266) (BuildId: 97a801bd034f0aab3ce5f891fb016a6190e70d9a)
+
+SUMMARY: AddressSanitizer: negative-size-param ../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors_memintrinsics.inc:87 in memset
+==2704==ABORTING
