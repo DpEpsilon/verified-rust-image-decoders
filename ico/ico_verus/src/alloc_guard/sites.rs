@@ -150,7 +150,7 @@ pub open spec fn log_tied_decoded(
 
 /// A reserved block with `room` free slots, filled only by `push`, which
 /// requires `len < room`. Invariant A-STD-1: `v@.len() <= room <= v.capacity()`.
-pub struct Reserved<T> {
+pub(crate) struct Reserved<T> {
     v: Vec<T>,
     room: Ghost<nat>,
 }
@@ -167,7 +167,8 @@ impl<T> Reserved<T> {
     /// Push one element. The precondition is the `len < room` guard; A-STD-2
     /// (the capacity invariant) is what makes this `push` allocation-free. The
     /// verifier cannot see that; it sees only `final(v)@ == old(v)@.push(x)`.
-    pub fn push(&mut self, x: T)
+    #[inline(never)]
+    pub(crate) fn push(&mut self, x: T)
         requires
             old(self).view().len() < old(self).room(),
         ensures
@@ -177,7 +178,8 @@ impl<T> Reserved<T> {
         self.v.push(x);
     }
 
-    pub fn into_vec(self) -> (v: Vec<T>)
+    #[inline(never)]
+    pub(crate) fn into_vec(self) -> (v: Vec<T>)
         ensures v@ == self.view(),
     {
         self.v
@@ -190,7 +192,7 @@ impl<T> Reserved<T> {
 /// `global layout` declaration below, through `lemma_entry_layout` (SPEC.md §3,
 /// gate F2).
 #[inline(never)]
-pub fn try_with_room<T>(site: AllocSite, n: usize, Tracked(log): Tracked<&mut AllocLog>)
+pub(crate) fn try_with_room<T>(site: AllocSite, n: usize, Tracked(log): Tracked<&mut AllocLog>)
     -> (r: Result<Reserved<T>, OutOfMemory>)
     requires
         n <= MAX_ROOM,
