@@ -170,14 +170,17 @@ def parse_image_descriptor(b, p, scr, st, P):
             'ncolors': ncolors, 'inside': inside}, p
 
 
-def read_image_data(b, p, P):
-    """G9 with lzw_min and truncation."""
+def read_image_data(b, p, P, area):
+    """G9 with lzw_min and truncation. `area` is the frame's declared w*h (the descriptor's, not the
+    clipped visible part)."""
     need(b, p, 1, 'TruncatedImageData')
     m = b[p]
     lo = {'Spec': 2, 'Range1to11': 1, 'Range0to11': 0, 'Range1to11Checked': 1}[P['lzw_min']]
     hi = 8 if P['lzw_min'] == 'Spec' else 11
     if not lo <= m <= hi:
         raise GifError('InvalidLzwMinCodeSize')
+    if m == 1 and P['lzw_min'] == 'Range1to11Checked' and area != 1:
+        raise GifError('InvalidLzwMinCodeSize')     # Q6: size 1 only for a 1-pixel frame (LZW-SIZE1-WIDENING.md)
     p += 1
     out = []
     if P['empty_first_subblock'] == 'Skip' and p < len(b) and b[p] == 0:
@@ -342,7 +345,7 @@ def run(b, P, still):
                 continue
             at_image = True                                # G15: the constructor's walk ends here
             fh, p = parse_image_descriptor(b, p, scr, st, P)
-            m, data, p, cut = read_image_data(b, p, P)
+            m, data, p, cut = read_image_data(b, p, P, fh['rect'][2] * fh['rect'][3])
             gce = st['gce']
             st['gce_fresh'] = False
             if P['gce_scope'] == 'NextGraphic':
