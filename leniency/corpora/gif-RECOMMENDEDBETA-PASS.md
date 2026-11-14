@@ -2,7 +2,7 @@
 
 RecommendedBeta accepts 1,016 of 1,407 corpus files as whole streams (72.2%) and 1,027 as stills; Strict accepts 915 (65.0%) and 974. 101 files flip from rejected to accepted, 0 Strict-accepted files decode differently (obligation R), and on every file that RecommendedBeta and an incumbent both accept, the first frame equals the incumbent's (1,016 of 1,016 against gdk-pixbuf's animation path, 1,014 of 1,014 against its forced loader, 1,023 of 1,023 against image 0.25.10). The recording half of the Q9 gate is met; the data cannot support more than that (last section).
 
-Corpus: the manifest `corpora/manifests/gif.MANIFEST.tsv` (SHA-256 `122e6ecacdbe081c7bf32209ede195833d2fcda4553381dd39695631b39ccf23`, checked by the script before it reads a file), 1,407 files, of which 1,318 carry a GIF signature, 326 are fuzzer-derived (path contains afl, fuzz or crash) and 303 are incidental assets (documentation, website and demo images; `gif_stats.py`'s path heuristic). Oracle: `gif/policy-draft/policy_oracle.py` (draft 0.2) with `PROFILES['Strict']` and `PROFILES['RecommendedBeta']`; "stream" means `decode_frames` ends at the Trailer, "still" means `decode_still` returns the first frame. No oracle run timed out. Per-file outcomes: `gif-recommendedbeta-pass.json` (names, error names and numbers only). Script: `gif_recommendedbeta_pass.py`.
+Corpus: the manifest `corpora/manifests/gif.MANIFEST.tsv` (SHA-256 `122e6ecacdbe081c7bf32209ede195833d2fcda4553381dd39695631b39ccf23`, checked by the script before it reads a file), 1,407 files, of which 1,318 carry a GIF signature, 326 are fuzzer-derived (path contains afl, fuzz or crash) and 303 are incidental assets (documentation, website and demo images; `gif_stats.py`'s path heuristic). Oracle: `gif/policy-draft/policy_oracle.py` (draft 0.2) with `PROFILES['Strict']` and `PROFILES['RecommendedBeta']` (minimum code size 1 accepted only for a one-pixel frame); "stream" means `decode_frames` ends at the Trailer, "still" means `decode_still` returns the first frame. No oracle run timed out. Per-file outcomes: `gif-recommendedbeta-pass.json` (names, error names and numbers only). Script: `gif_recommendedbeta_pass.py`.
 
 ## Acceptance
 
@@ -52,18 +52,20 @@ Notes on the table.
 | `NoColorTable` | 90 | `skbug5883.gif`, `empty-palette.gif` |
 | `UnsupportedVersion` | 79 | `bad_magic.gif`, `id:000040,orig:id:000471,src:000005,op:havoc,rep:4,+cov.gif` |
 | `InvalidDimensions` | 46 | `zero-dims.gif`, `xOffsetTooBig.gif` |
-| `TruncatedImageData` | 33 | `invalid.4.gif`, `hippopotamus.interlaced.truncated.gif` |
+| `TruncatedImageData` | 29 | `invalid.4.gif`, `hippopotamus.interlaced.truncated.gif` |
+| `InvalidLzwMinCodeSize` | 25 | `overflow-codes-max.gif`, `overflow-codes.gif` |
 | `UnknownBlock` | 22 | `bad-trailer.gif`, `broken.gif` |
-| `InvalidLzwMinCodeSize` | 20 | `overflow-codes-max.gif`, `overflow-codes.gif` |
 | `InvalidLzwCode` | 18 | `bad-code.gif`, `bad-initial-code.gif` |
 | `InvalidFrameDimensions` | 16 | `skbug5887.gif`, `image-zero-height.gif` |
-| `TooFewPixels` | 14 | `gif-frame-outside-logical-screen.gif`, `first-frame-has-greater-size-than-screen-size.gif` |
+| `TooFewPixels` | 13 | `gif-frame-outside-logical-screen.gif`, `first-frame-has-greater-size-than-screen-size.gif` |
 | `OutputTooLarge` | 13 | `size-failure.gif`, `large-size-image-crash.gif` |
 | `InvalidGraphicControl` | 9 | `bad_lzw_data.gif`, `ossfuzz6274.gif` |
 | `BadSignature` | 8 | `aboutHeader.gif`, `bkgd_yellow.gif` |
 | `ColorIndexOutOfRange` | 7 | `alphabetAnim.gif`, `invalid-colors.gif` |
 | `TruncatedExtension` | 5 | `trunc-ext-subblock.gif`, `id:000010,orig:id:000547,src:000080,op:havoc,rep:2.gif` |
 | `TruncatedColorTable` | 4 | `trunc-gct.gif`, `id:000029,orig:id:000453,src:000005,op:flip1,pos:10,+cov.gif` |
+
+Five of the 25 `InvalidLzwMinCodeSize` files are libnsgif `ns-afl-gif` fuzzer mutants that carry minimum code size 1 on a frame of more than one pixel. Before the size-1 rule (RecommendedBeta accepts `m = 1` only for a one-pixel frame, Q6 refinement) they failed later, four at `TruncatedImageData` and one at `TooFewPixels`; gdk-pixbuf's two paths and image reject all five either way, and no accept/reject outcome changed.
 
 `NoColorTable` (90) is high because RecommendedBeta forgives `UndefinedDisposal` in 29 fuzzer-derived files and `FrameOutsideScreen` in 3 more, and then reaches the missing colour table; Strict reports the other 58 there.
 
@@ -73,7 +75,7 @@ Every Strict-accepted file decodes identically under RecommendedBeta: 974 stills
 
 ## Agreement with the incumbents
 
-Incumbent runners: gdk-pixbuf 2.42.12 (`gdk-anim gif anim`: animation path; `gdk-anim gif forced-whole`: loader forced to GIF, whole buffer, first frame) and image 0.25.10 / gif 0.14.2 (`rust-image gif:image`, `build-min.sh`). Rerun for this pass, because the old JSON lacks the image runner's `tail_error` (an error after its first frame; 22 files). Statuses and first-frame hashes equal `gif-incumbents.json` on 1,407 of 1,407 files for all three runners. First frames are compared with RGB zeroed where alpha is 0. Runners stop at 64 frames, so a whole-stream "accept" means the first 64 frames.
+Incumbent runners: gdk-pixbuf 2.42.12 (`gdk-anim gif anim`: animation path; `gdk-anim gif forced-whole`: loader forced to GIF, whole buffer, first frame) and image 0.25.10 / gif 0.14.2 (`rust-image gif:image`, `build-min.sh`). The runners were run once for this pass, because the old JSON lacks the image runner's `tail_error` (an error after its first frame; 22 files); statuses and first-frame hashes then equalled `gif-incumbents.json` on 1,407 of 1,407 files for all three runners. The rerun after the size-1 rule changed only the oracle half: the incumbent results (statuses, frame counts, first-frame hashes and `tail_error`) are the stored ones, since neither the runners nor the corpus changed. First frames are compared with RGB zeroed where alpha is 0. Runners stop at 64 frames, so a whole-stream "accept" means the first 64 frames.
 
 | incumbent | first frame, both accept | equal | RB accepts, incumbent rejects (stream / still) | incumbent accepts, RB rejects (stream / still) |
 |---|---|---|---|---|
@@ -126,7 +128,7 @@ Gate ("block the RecommendedBeta freeze until a real-corpus pass records which S
 
 ```
 cd leniency/corpora
-python3 -I gif_recommendedbeta_pass.py oracle     --cache DIR   # resumable; 786 s of oracle time on one core
+python3 -I gif_recommendedbeta_pass.py oracle     --cache DIR   # resumable (`--budget SECONDS` per call); about 670 s of oracle time on one core
 python3 -I gif_recommendedbeta_pass.py incumbents --cache DIR   # runners from ../gif/build-min.sh in /tmp/claude-0/leniency-gifpng-bin
 python3 -I gif_recommendedbeta_pass.py report     --cache DIR   # writes gif-recommendedbeta-pass.json
 ```
