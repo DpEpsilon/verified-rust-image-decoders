@@ -1,0 +1,168 @@
+[
+ {
+  "name": "clear_then_eoi",
+  "m": 2,
+  "data": [
+   44
+  ],
+  "a": 1,
+  "expected": [],
+  "error": "TooFewPixels",
+  "pos": 6
+ },
+ {
+  "name": "one_literal",
+  "m": 2,
+  "data": [
+   76,
+   1
+  ],
+  "a": 1,
+  "expected": [
+   1
+  ],
+  "error": null
+ },
+ {
+  "name": "two_literals",
+  "m": 2,
+  "data": [
+   140,
+   10
+  ],
+  "a": 2,
+  "expected": [
+   1,
+   2
+  ],
+  "error": null
+ },
+ {
+  "name": "kwkwk",
+  "m": 2,
+  "data": [
+   140,
+   11
+  ],
+  "a": 3,
+  "expected": [
+   1,
+   1,
+   1
+  ],
+  "error": null
+ },
+ {
+  "name": "code_beyond_next",
+  "m": 2,
+  "data": [
+   204,
+   1
+  ],
+  "a": 2,
+  "expected": [
+   1
+  ],
+  "error": "InvalidLzwCode",
+  "pos": 9
+ },
+ {
+  "name": "empty",
+  "m": 2,
+  "data": [],
+  "a": 1,
+  "expected": [],
+  "error": "TooFewPixels",
+  "pos": 0
+ },
+ {
+  "name": "too_many_pixels",
+  "m": 2,
+  "data": [
+   140,
+   12
+  ],
+  "a": 3,
+  "expected": [
+   1,
+   2,
+   1
+  ],
+  "error": "TooManyPixels",
+  "pos": 12
+ },
+ {
+  "name": "data_after_eoi",
+  "m": 2,
+  "data": [
+   76,
+   1,
+   0,
+   0
+  ],
+  "a": 1,
+  "expected": [
+   1
+  ],
+  "error": "DataAfterEndOfInformation",
+  "pos": 9
+ },
+ {
+  "name": "missing_eoi",
+  "m": 2,
+  "data": [
+   140,
+   0
+  ],
+  "a": 1,
+  "expected": [
+   1
+  ],
+  "error": "MissingEndOfInformation",
+  "pos": 9
+ },
+ {
+  "name": "width_change",
+  "m": 2,
+  "data": [
+   140,
+   22,
+   5
+  ],
+  "a": 4,
+  "expected": [
+   1,
+   2,
+   3,
+   1
+  ],
+  "error": null
+ },
+ {
+  "name": "m1_one_pixel",
+  "m": 1,
+  "data": [
+   54
+  ],
+  "a": 1,
+  "expected": [
+   1
+  ],
+  "error": null
+ },
+ {
+  "name": "m8_one_literal",
+  "m": 8,
+  "data": [
+   0,
+   145,
+   5,
+   4
+  ],
+  "a": 1,
+  "expected": [
+   200
+  ],
+  "error": null
+ }
+]

@@ -1,0 +1,36 @@
+    Checking lzw_proof v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/gif/lzw_proof)
+verification results:: 184 verified, 0 errors
+warning: function `NTAB` should have a snake case name
+   --> src/model.rs:112:18
+    |
+112 | pub open spec fn NTAB() -> int {
+    |                  ^^^^ help: convert the identifier to snake case: `ntab`
+    |
+    = note: `#[warn(non_snake_case)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: function `L` should have a snake case name
+   --> src/model.rs:307:18
+    |
+307 | pub open spec fn L(m: int, d: Seq<u8>, a: int, ps: Params, st: St) -> MRes
+    |                  ^ help: convert the identifier to snake case: `l`
+
+warning: function `lemma_L_unfold` should have a snake case name
+   --> src/model.rs:326:14
+    |
+326 | pub proof fn lemma_L_unfold(m:int,d:Seq<u8>,a:int,ps:Params,st:St)
+    |              ^^^^^^^^^^^^^^ help: convert the identifier to snake case: `lemma_l_unfold`
+
+warning: function `lemma_L_step_pos` should have a snake case name
+   --> src/model.rs:336:14
+    |
+336 | pub proof fn lemma_L_step_pos(m: int, d: Seq<u8>, a: int, ps: Params, st: St)
+    |              ^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `lemma_l_step_pos`
+
+warning: function `ML` should have a snake case name
+   --> src/model.rs:378:18
+    |
+378 | pub open spec fn ML(m: int, d: Seq<u8>, a: int, ps: Params) -> MRes {
+    |                  ^^ help: convert the identifier to snake case: `ml`
+
+warning: `lzw_proof` (lib) generated 5 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 7.60s

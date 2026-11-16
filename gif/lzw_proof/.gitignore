@@ -1,0 +1,6 @@
+/target/
+/runs/
+# Generated test data: regenerate with tools/gen_random_expected.py (34 KB) and
+# tools/gen_vector_cases.py; the witness gate's data is small and is kept.
+/tests/expected/random.json
+/tests/expected/vectors.json

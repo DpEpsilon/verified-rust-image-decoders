@@ -1,0 +1,236 @@
+1	2026-11-15T07:39:51+00:00	exit=1	0s	M2 smoke: toolchain and no_std skeleton [crate=lzw_proof]		peak_rss_sum_mb=n/a	peak_rss_max_proc_mb=n/a
+2	2026-11-15T07:40:41+00:00	exit=0	45s	M2 smoke: toolchain and no_std skeleton [crate=.]	verification results:: 2 verified, 0 errors	peak_rss_sum_mb=29132	peak_rss_max_proc_mb=2539:rust_verify
+3	2026-11-15T07:59:07+00:00	exit=101	1s	M2 model: ML transcription + walk lemmas (first pass) [crate=.]		peak_rss_sum_mb=72	peak_rss_max_proc_mb=40:cargo
+4	2026-11-15T07:59:16+00:00	exit=101	3s	M2 model: ML transcription + walk lemmas (second pass) [crate=.]		peak_rss_sum_mb=663	peak_rss_max_proc_mb=617:rust_verify
+5	2026-11-15T07:59:39+00:00	exit=101	2s	M2 model: ML transcription + walk lemmas (third pass) [crate=.]		peak_rss_sum_mb=669	peak_rss_max_proc_mb=621:rust_verify
+6	2026-11-15T07:59:45+00:00	exit=101	3s	M2 model: ML transcription + walk lemmas (fourth pass) [crate=.]	verification results:: 8 verified, 9 errors	peak_rss_sum_mb=777	peak_rss_max_proc_mb=676:rust_verify
+7	2026-11-15T08:00:58+00:00	exit=101	2s	M2 model v2: string-table ML, no literal init (D20) [crate=.]	verification results:: 6 verified, 1 errors	peak_rss_sum_mb=702	peak_rss_max_proc_mb=658:rust_verify
+8	2026-11-15T08:01:26+00:00	exit=101	2s	M2 model v2 + step-advance lemma [crate=.]		peak_rss_sum_mb=678	peak_rss_max_proc_mb=632:rust_verify
+9	2026-11-15T08:01:31+00:00	exit=101	2s	M2 model v2 + public step-advance lemma [crate=.]		peak_rss_sum_mb=706	peak_rss_max_proc_mb=656:rust_verify
+10	2026-11-15T08:01:51+00:00	exit=101	0s	M2 model v2: termination via inline case analysis [crate=.]		peak_rss_sum_mb=43	peak_rss_max_proc_mb=36:cargo
+11	2026-11-15T08:01:59+00:00	exit=101	2s	M2 model v2: termination via inline case analysis [crate=.]		peak_rss_sum_mb=706	peak_rss_max_proc_mb=658:rust_verify
+12	2026-11-15T08:02:19+00:00	exit=101	2s	M2 model v2: guarded recursion + step lemmas [crate=.]		peak_rss_sum_mb=1034	peak_rss_max_proc_mb=660:rust_verify
+13	2026-11-15T08:02:31+00:00	exit=0	2s	M2 model v2: guarded recursion + step lemmas [crate=.]	verification results:: 8 verified, 0 errors	peak_rss_sum_mb=708	peak_rss_max_proc_mb=661:rust_verify
+14	2026-11-15T08:03:47+00:00	exit=101	1s	M2 exec: slice interface + first spec helpers [crate=.]		peak_rss_sum_mb=519	peak_rss_max_proc_mb=471:rust_verify
+15	2026-11-15T08:03:54+00:00	exit=0	2s	M2 exec: slice interface + first spec helpers (pass 2) [crate=.]	verification results:: 9 verified, 0 errors	peak_rss_sum_mb=813	peak_rss_max_proc_mb=674:rust_verify
+16	2026-11-15T08:04:02+00:00	exit=0	3s	M2 exec: table accessor specs [crate=.]	verification results:: 9 verified, 0 errors	peak_rss_sum_mb=764	peak_rss_max_proc_mb=673:rust_verify
+17	2026-11-15T08:04:52+00:00	exit=0	3s	M2 exec: Params + error map surface [crate=.]	verification results:: 8 verified, 0 errors	peak_rss_sum_mb=711	peak_rss_max_proc_mb=663:rust_verify
+18	2026-11-15T08:05:22+00:00	exit=101	1s	M2 chain: fuel walk specs + reversal/shape/bound lemmas [crate=.]		peak_rss_sum_mb=516	peak_rss_max_proc_mb=466:rust_verify
+19	2026-11-15T08:05:28+00:00	exit=101	1s	M2 chain: fuel walk specs + lemmas (pass 2) [crate=.]		peak_rss_sum_mb=513	peak_rss_max_proc_mb=466:rust_verify
+20	2026-11-15T08:05:36+00:00	exit=101	1s	M2 chain: fuel walk specs + lemmas (pass 3) [crate=.]		peak_rss_sum_mb=513	peak_rss_max_proc_mb=465:rust_verify
+21	2026-11-15T08:05:51+00:00	exit=101	1s	M2 chain: fuel walk specs + lemmas (pass 4) [crate=.]		peak_rss_sum_mb=42	peak_rss_max_proc_mb=36:cargo
+22	2026-11-15T08:06:00+00:00	exit=101	2s	M2 chain: fuel walk specs + lemmas (pass 5) [crate=.]	verification results:: 12 verified, 4 errors	peak_rss_sum_mb=789	peak_rss_max_proc_mb=684:rust_verify
+23	2026-11-15T08:06:40+00:00	exit=101	2s	M2 chain v2: decreases c, chain_ok = prefix[x] < x [crate=.]		peak_rss_sum_mb=782	peak_rss_max_proc_mb=677:rust_verify
+24	2026-11-15T08:06:45+00:00	exit=101	1s	M2 chain v2: decreases c (pass 2) [crate=.]		peak_rss_sum_mb=41	peak_rss_max_proc_mb=36:cargo
+25	2026-11-15T08:06:52+00:00	exit=101	2s	M2 chain v2: recursion measure placement [crate=.]		peak_rss_sum_mb=777	peak_rss_max_proc_mb=678:rust_verify
+26	2026-11-15T08:07:01+00:00	exit=101	1s	M2 chain v2: recursion measure on all three lemmas [crate=.]		peak_rss_sum_mb=439	peak_rss_max_proc_mb=392:rust_verify
+27	2026-11-15T08:07:23+00:00	exit=101	3s	M2 chain v2: decreases last on three lemmas [crate=.]	verification results:: 9 verified, 7 errors	peak_rss_sum_mb=842	peak_rss_max_proc_mb=688:rust_verify
+28	2026-11-15T08:07:47+00:00	exit=101	2s	M2 chain v3: nat fuel threaded [crate=.]		peak_rss_sum_mb=696	peak_rss_max_proc_mb=652:rust_verify
+29	2026-11-15T08:07:55+00:00	exit=101	2s	M2 chain v3: nat fuel threaded (pass 2) [crate=.]		peak_rss_sum_mb=694	peak_rss_max_proc_mb=649:rust_verify
+30	2026-11-15T08:08:04+00:00	exit=101	2s	M2 chain v3: nat fuel threaded (pass 3) [crate=.]	verification results:: 12 verified, 4 errors	peak_rss_sum_mb=840	peak_rss_max_proc_mb=686:rust_verify
+31	2026-11-15T08:08:28+00:00	exit=101	2s	M2 chain v4: fuel_enough with slack [crate=.]	verification results:: 14 verified, 3 errors	peak_rss_sum_mb=788	peak_rss_max_proc_mb=686:rust_verify
+32	2026-11-15T08:08:48+00:00	exit=101	3s	M2 chain v5: fuel_enough >= c-clear+1 [crate=.]	verification results:: 14 verified, 3 errors	peak_rss_sum_mb=723	peak_rss_max_proc_mb=674:rust_verify
+33	2026-11-15T08:09:00+00:00	exit=101	2s	M2 chain v6: literal-parent case direct [crate=.]	verification results:: 14 verified, 3 errors	peak_rss_sum_mb=791	peak_rss_max_proc_mb=686:rust_verify
+34	2026-11-15T08:09:11+00:00	exit=101	2s	M2 chain v7: fuel_enough includes fuel>=1; elen_bound needs clear<=c [crate=.]	verification results:: 12 verified, 5 errors	peak_rss_sum_mb=874	peak_rss_max_proc_mb=687:rust_verify
+35	2026-11-15T08:09:48+00:00	exit=101	3s	M2 chain v8: fuel slack 2, uniform hand-off [crate=.]	verification results:: 15 verified, 3 errors	peak_rss_sum_mb=887	peak_rss_max_proc_mb=683:rust_verify
+36	2026-11-15T08:10:04+00:00	exit=101	2s	M2 chain v9: fuel>=2 conjunct + str frame lemma [crate=.]		peak_rss_sum_mb=667	peak_rss_max_proc_mb=618:rust_verify
+37	2026-11-15T08:10:12+00:00	exit=101	3s	M2 chain v9 pass 2 [crate=.]	verification results:: 14 verified, 6 errors	peak_rss_sum_mb=794	peak_rss_max_proc_mb=688:rust_verify
+38	2026-11-15T08:10:28+00:00	exit=101	3s	M2 chain v10: fuel step calls threaded [crate=.]	verification results:: 16 verified, 3 errors	peak_rss_sum_mb=840	peak_rss_max_proc_mb=686:rust_verify
+39	2026-11-15T08:10:44+00:00	exit=101	1s	M2 chain v11: fresh_entry via frame lemma [crate=.]		peak_rss_sum_mb=511	peak_rss_max_proc_mb=466:rust_verify
+40	2026-11-15T08:10:56+00:00	exit=101	2s	M2 chain v12: re-add frame lemma [crate=.]	verification results:: 17 verified, 2 errors	peak_rss_sum_mb=784	peak_rss_max_proc_mb=686:rust_verify
+41	2026-11-15T08:11:06+00:00	exit=101	2s	M2 chain v13: final two fixes [crate=.]	verification results:: 18 verified, 2 errors	peak_rss_sum_mb=785	peak_rss_max_proc_mb=684:rust_verify
+42	2026-11-15T08:11:14+00:00	exit=101	1s	M2 chain v14 [crate=.]		peak_rss_sum_mb=69	peak_rss_max_proc_mb=38:cargo
+43	2026-11-15T08:11:21+00:00	exit=101	3s	M2 chain v15 [crate=.]	verification results:: 20 verified, 2 errors	peak_rss_sum_mb=888	peak_rss_max_proc_mb=684:rust_verify
+44	2026-11-15T08:11:31+00:00	exit=101	2s	M2 chain v16 [crate=.]	verification results:: 20 verified, 2 errors	peak_rss_sum_mb=791	peak_rss_max_proc_mb=688:rust_verify
+45	2026-11-15T08:11:59+00:00	exit=101	0s	M2 chain v17: range clear+2..c [crate=.]		peak_rss_sum_mb=515	peak_rss_max_proc_mb=465:rust_verify
+46	2026-11-15T08:12:10+00:00	exit=101	3s	M2 chain v17 pass 2 [crate=.]	verification results:: 16 verified, 6 errors	peak_rss_sum_mb=845	peak_rss_max_proc_mb=692:rust_verify
+47	2026-11-15T08:12:24+00:00	exit=101	3s	M2 chain v18: hand-off arithmetic c >= p+1 [crate=.]	verification results:: 16 verified, 6 errors	peak_rss_sum_mb=834	peak_rss_max_proc_mb=684:rust_verify
+48	2026-11-15T08:12:47+00:00	exit=101	2s	probe: does plain decreases c work with link hypothesis? [crate=.]	verification results:: 1 verified, 2 errors	peak_rss_sum_mb=697	peak_rss_max_proc_mb=652:rust_verify
+49	2026-11-15T08:12:56+00:00	exit=101	2s	probe: budget fuel > c, uniform hand-off [crate=.]	verification results:: 4 verified, 1 errors	peak_rss_sum_mb=745	peak_rss_max_proc_mb=660:rust_verify
+50	2026-11-15T08:13:13+00:00	exit=101	3s	M2 chain v19: budget fuel > c, stored_len/code_len split [crate=.]	verification results:: 17 verified, 3 errors	peak_rss_sum_mb=899	peak_rss_max_proc_mb=691:rust_verify
+51	2026-11-15T08:13:24+00:00	exit=101	2s	M2 chain v20: chain_ok domain clause [crate=.]	verification results:: 15 verified, 5 errors	peak_rss_sum_mb=843	peak_rss_max_proc_mb=689:rust_verify
+52	2026-11-15T08:13:33+00:00	exit=101	2s	M2 chain v21: chain_step ensures parent facts [crate=.]	verification results:: 18 verified, 2 errors	peak_rss_sum_mb=895	peak_rss_max_proc_mb=687:rust_verify
+53	2026-11-15T08:13:45+00:00	exit=101	3s	M2 chain v22: chain_ok literal branch explicit [crate=.]	verification results:: 17 verified, 3 errors	peak_rss_sum_mb=882	peak_rss_max_proc_mb=685:rust_verify
+54	2026-11-15T08:13:58+00:00	exit=101	3s	M2 chain v23: explicit forall instantiation [crate=.]	verification results:: 18 verified, 2 errors	peak_rss_sum_mb=841	peak_rss_max_proc_mb=689:rust_verify
+55	2026-11-15T08:14:07+00:00	exit=101	2s	M2 chain v24: fuel_above includes >=1 [crate=.]	verification results:: 19 verified, 1 errors	peak_rss_sum_mb=709	peak_rss_max_proc_mb=665:rust_verify
+56	2026-11-15T08:14:19+00:00	exit=101	2s	M2 chain v25: literal-parent root case [crate=.]	verification results:: 19 verified, 1 errors	peak_rss_sum_mb=777	peak_rss_max_proc_mb=686:rust_verify
+57	2026-11-15T08:14:29+00:00	exit=101	2s	M2 chain v26: root_literal lemma [crate=.]	verification results:: 20 verified, 1 errors	peak_rss_sum_mb=833	peak_rss_max_proc_mb=691:rust_verify
+58	2026-11-15T08:14:39+00:00	exit=101	3s	M2 chain v27 [crate=.]	verification results:: 20 verified, 1 errors	peak_rss_sum_mb=1152	peak_rss_max_proc_mb=687:rust_verify
+59	2026-11-15T08:14:49+00:00	exit=101	2s	M2 chain v28: case on fuel first [crate=.]	verification results:: 20 verified, 1 errors	peak_rss_sum_mb=840	peak_rss_max_proc_mb=689:rust_verify
+60	2026-11-15T08:14:56+00:00	exit=0	2s	M2 chain v29: chain_ok has 0 <= c [crate=.]	verification results:: 21 verified, 0 errors	peak_rss_sum_mb=783	peak_rss_max_proc_mb=685:rust_verify
+61	2026-11-15T08:15:22+00:00	exit=101	1s	M2 exec: params bridge [crate=.]		peak_rss_sum_mb=512	peak_rss_max_proc_mb=466:rust_verify
+62	2026-11-15T08:15:29+00:00	exit=0	3s	M2 exec: params bridge pass 2 [crate=.]	verification results:: 23 verified, 0 errors	peak_rss_sum_mb=786	peak_rss_max_proc_mb=686:rust_verify
+63	2026-11-15T08:15:48+00:00	exit=101	1s	M2 model v3: chain-representation table [crate=.]		peak_rss_sum_mb=188	peak_rss_max_proc_mb=182:rust_verify
+64	2026-11-15T08:15:54+00:00	exit=0	3s	M2 model v3 pass 2 [crate=.]	verification results:: 23 verified, 0 errors	peak_rss_sum_mb=838	peak_rss_max_proc_mb=688:rust_verify
+65	2026-11-15T08:16:00+00:00	exit=101	1s	M2 exec: signature + shape [crate=.]		peak_rss_sum_mb=73	peak_rss_max_proc_mb=42:cargo
+66	2026-11-15T08:16:08+00:00	exit=101	1s	M2 exec: signature + shape pass 2 [crate=.]		peak_rss_sum_mb=664	peak_rss_max_proc_mb=621:rust_verify
+67	2026-11-15T08:16:13+00:00	exit=101	2s	M2 exec: signature + shape pass 3 [crate=.]		peak_rss_sum_mb=652	peak_rss_max_proc_mb=604:rust_verify
+68	2026-11-15T08:16:18+00:00	exit=101	1s	M2 exec: signature + shape pass 4 [crate=.]		peak_rss_sum_mb=675	peak_rss_max_proc_mb=628:rust_verify
+69	2026-11-15T08:16:28+00:00	exit=101	2s	M2 exec: signature + shape pass 5 [crate=.]		peak_rss_sum_mb=674	peak_rss_max_proc_mb=626:rust_verify
+70	2026-11-15T08:16:33+00:00	exit=0	2s	M2 exec: signature + shape pass 6 [crate=.]	verification results:: 24 verified, 0 errors	peak_rss_sum_mb=725	peak_rss_max_proc_mb=680:rust_verify
+71	2026-11-15T08:16:45+00:00	exit=101	1s	M2 exec: loop skeleton with model-fold invariant [crate=.]		peak_rss_sum_mb=514	peak_rss_max_proc_mb=468:rust_verify
+72	2026-11-15T08:16:53+00:00	exit=101	2s	M2 exec: loop skeleton pass 2 [crate=.]		peak_rss_sum_mb=676	peak_rss_max_proc_mb=627:rust_verify
+73	2026-11-15T08:16:59+00:00	exit=101	2s	M2 exec: loop skeleton pass 3 [crate=.]	verification results:: 24 verified, 1 errors	peak_rss_sum_mb=1152	peak_rss_max_proc_mb=698:rust_verify
+74	2026-11-15T08:17:05+00:00	exit=101	2s	M2 exec: loop skeleton pass 4 [crate=.]	verification results:: 24 verified, 1 errors	peak_rss_sum_mb=1150	peak_rss_max_proc_mb=696:rust_verify
+75	2026-11-15T08:17:17+00:00	exit=101	2s	M2 exec: loop with st_of ghost state [crate=.]	verification results:: 24 verified, 1 errors	peak_rss_sum_mb=1148	peak_rss_max_proc_mb=695:rust_verify
+76	2026-11-15T08:17:29+00:00	exit=101	2s	M2 exec: conservative body (decode loop unfinished), model+chain green [crate=.]	verification results:: 23 verified, 1 errors	peak_rss_sum_mb=955	peak_rss_max_proc_mb=698:rust_verify
+77	2026-11-15T08:17:37+00:00	exit=101	2s	M2 exec: conservative body pass 2 [crate=.]	verification results:: 23 verified, 1 errors	peak_rss_sum_mb=1155	peak_rss_max_proc_mb=693:rust_verify
+78	2026-11-15T08:17:43+00:00	exit=0	2s	M2 exec: conservative body pass 3 [crate=.]	verification results:: 24 verified, 0 errors	peak_rss_sum_mb=1147	peak_rss_max_proc_mb=691:rust_verify
+79	2026-11-15T08:17:56+00:00	exit=0	2s	M2 witnesses: params shape [crate=.]	verification results:: 25 verified, 0 errors	peak_rss_sum_mb=797	peak_rss_max_proc_mb=696:rust_verify
+80	2026-11-15T08:18:39+00:00	exit=101	2s	M2 witnesses: twelve streams vs model (first pass) [crate=.]		peak_rss_sum_mb=895	peak_rss_max_proc_mb=701:rust_verify
+81	2026-11-15T08:18:50+00:00	exit=101	2s	M2 witnesses: read model's positions (1) [crate=.]		peak_rss_sum_mb=972	peak_rss_max_proc_mb=711:rust_verify
+82	2026-11-15T08:18:53+00:00	exit=101	2s	M2 witnesses: read model's positions (2) [crate=.]		peak_rss_sum_mb=804	peak_rss_max_proc_mb=701:rust_verify
+83	2026-11-15T08:18:55+00:00	exit=101	2s	M2 witnesses: read model's positions (3) [crate=.]		peak_rss_sum_mb=1043	peak_rss_max_proc_mb=696:rust_verify
+84	2026-11-15T08:19:01+00:00	exit=101	2s	M2 witnesses: position readback 1 [crate=.]		peak_rss_sum_mb=1156	peak_rss_max_proc_mb=696:rust_verify
+85	2026-11-15T08:19:03+00:00	exit=101	2s	M2 witnesses: position readback 2 [crate=.]		peak_rss_sum_mb=799	peak_rss_max_proc_mb=696:rust_verify
+86	2026-11-15T08:19:05+00:00	exit=101	2s	M2 witnesses: position readback 3 [crate=.]		peak_rss_sum_mb=1152	peak_rss_max_proc_mb=697:rust_verify
+87	2026-11-15T08:19:07+00:00	exit=101	2s	M2 witnesses: position readback 4 [crate=.]		peak_rss_sum_mb=1151	peak_rss_max_proc_mb=698:rust_verify
+88	2026-11-15T08:19:09+00:00	exit=101	2s	M2 witnesses: position readback 5 [crate=.]		peak_rss_sum_mb=1151	peak_rss_max_proc_mb=698:rust_verify
+89	2026-11-15T08:19:11+00:00	exit=101	2s	M2 witnesses: position readback 6 [crate=.]		peak_rss_sum_mb=910	peak_rss_max_proc_mb=699:rust_verify
+90	2026-11-15T08:19:14+00:00	exit=101	3s	M2 witnesses: position readback 7 [crate=.]		peak_rss_sum_mb=1040	peak_rss_max_proc_mb=700:rust_verify
+91	2026-11-15T08:19:16+00:00	exit=101	2s	M2 witnesses: position readback 8 [crate=.]		peak_rss_sum_mb=1045	peak_rss_max_proc_mb=701:rust_verify
+92	2026-11-15T08:19:18+00:00	exit=101	2s	M2 witnesses: position readback 9 [crate=.]		peak_rss_sum_mb=803	peak_rss_max_proc_mb=701:rust_verify
+93	2026-11-15T08:19:20+00:00	exit=101	2s	M2 witnesses: position readback 10 [crate=.]		peak_rss_sum_mb=1041	peak_rss_max_proc_mb=699:rust_verify
+94	2026-11-15T08:19:22+00:00	exit=101	2s	M2 witnesses: position readback 11 [crate=.]		peak_rss_sum_mb=1155	peak_rss_max_proc_mb=698:rust_verify
+95	2026-11-15T08:19:24+00:00	exit=101	2s	M2 witnesses: position readback 12 [crate=.]		peak_rss_sum_mb=802	peak_rss_max_proc_mb=699:rust_verify
+96	2026-11-15T08:20:01+00:00	exit=0	3s	M2 witnesses: exact error name and position vs model [crate=.]	verification results:: 37 verified, 0 errors	peak_rss_sum_mb=1043	peak_rss_max_proc_mb=705:rust_verify
+97	2026-11-15T08:23:01+00:00	exit=0	4s	M2 FINAL: model + chain + witnesses green (decode loop pending) [crate=.]	verification results:: 39 verified, 0 errors	peak_rss_sum_mb=917	peak_rss_max_proc_mb=708:rust_verify
+98	2026-11-15T08:23:38+00:00	exit=0	1s	M2 authoritative: final green state [crate=.]		peak_rss_sum_mb=44	peak_rss_max_proc_mb=37:cargo
+99	2026-11-15T08:25:38+00:00	exit=101	3s	M2 loop/a: peel+peek splice lemma [crate=.]	verification results:: 41 verified, 1 errors	peak_rss_sum_mb=808	peak_rss_max_proc_mb=707:rust_verify
+100	2026-11-15T08:25:50+00:00	exit=0	4s	M2 loop/a: splice lemma pass 2 [crate=.]	verification results:: 42 verified, 0 errors	peak_rss_sum_mb=918	peak_rss_max_proc_mb=707:rust_verify
+101	2026-11-15T08:26:02+00:00	exit=101	2s	M2 loop/a2: emitted_by/popped_into shapes [crate=.]		peak_rss_sum_mb=688	peak_rss_max_proc_mb=642:rust_verify
+102	2026-11-15T08:26:14+00:00	exit=101	3s	M2 loop/a3: emission shapes [crate=.]	verification results:: 42 verified, 1 errors	peak_rss_sum_mb=1151	peak_rss_max_proc_mb=705:rust_verify
+103	2026-11-15T08:26:20+00:00	exit=101	1s	M2 loop/a4: keep splice lemma, drop stalled emission shapes [crate=.]		peak_rss_sum_mb=45	peak_rss_max_proc_mb=39:cargo
+104	2026-11-15T08:26:28+00:00	exit=0	3s	M2 loop/a5: chain green with splice lemma [crate=.]	verification results:: 42 verified, 0 errors	peak_rss_sum_mb=922	peak_rss_max_proc_mb=713:rust_verify
+105	2026-11-15T08:26:42+00:00	exit=0	4s	M2 loop/b: zeroed-array entry requirement [crate=.]	verification results:: 42 verified, 0 errors	peak_rss_sum_mb=1041	peak_rss_max_proc_mb=707:rust_verify
+106	2026-11-15T08:26:48+00:00	exit=101	1s	M2 loop/c: wrote_string spec [crate=.]		peak_rss_sum_mb=476	peak_rss_max_proc_mb=432:rust_verify
+107	2026-11-15T08:26:55+00:00	exit=0	4s	M2 loop/c2: import fuel_of [crate=.]	verification results:: 42 verified, 0 errors	peak_rss_sum_mb=1158	peak_rss_max_proc_mb=709:rust_verify
+108	2026-11-15T08:27:11+00:00	exit=0	3s	M2 loop/d: pushbytes + peek bridge [crate=.]	verification results:: 43 verified, 0 errors	peak_rss_sum_mb=924	peak_rss_max_proc_mb=713:rust_verify
+109	2026-11-15T08:27:18+00:00	exit=101	1s	M2 loop/e: stack_holds shape [crate=.]		peak_rss_sum_mb=516	peak_rss_max_proc_mb=466:rust_verify
+110	2026-11-15T08:27:33+00:00	exit=101	1s	M2 loop/f: rev_splice with pushbytes [crate=.]		peak_rss_sum_mb=186	peak_rss_max_proc_mb=180:rust_verify
+111	2026-11-15T08:27:40+00:00	exit=101	3s	M2 loop/g: rev_splice green [crate=.]	verification results:: 43 verified, 1 errors	peak_rss_sum_mb=867	peak_rss_max_proc_mb=715:rust_verify
+112	2026-11-15T08:27:51+00:00	exit=101	4s	M2 loop/h: peel step index [crate=.]	verification results:: 43 verified, 1 errors	peak_rss_sum_mb=925	peak_rss_max_proc_mb=715:rust_verify
+113	2026-11-15T08:27:59+00:00	exit=101	4s	M2 loop/i: peel_step lemma [crate=.]	verification results:: 44 verified, 1 errors	peak_rss_sum_mb=925	peak_rss_max_proc_mb=713:rust_verify
+114	2026-11-15T08:28:11+00:00	exit=101	3s	M2 loop/j: pushbytes_cons [crate=.]	verification results:: 44 verified, 2 errors	peak_rss_sum_mb=936	peak_rss_max_proc_mb=723:rust_verify
+115	2026-11-15T08:28:32+00:00	exit=101	4s	M2 loop/k: range facts [crate=.]	verification results:: 45 verified, 1 errors	peak_rss_sum_mb=814	peak_rss_max_proc_mb=714:rust_verify
+116	2026-11-15T08:28:43+00:00	exit=0	4s	M2 loop/l: i>=1 branch [crate=.]	verification results:: 46 verified, 0 errors	peak_rss_sum_mb=816	peak_rss_max_proc_mb=710:rust_verify
+117	2026-11-15T08:29:03+00:00	exit=0	4s	M2 loop/m: seg_ok + stack_ok specs [crate=.]	verification results:: 46 verified, 0 errors	peak_rss_sum_mb=809	peak_rss_max_proc_mb=709:rust_verify
+118	2026-11-15T08:29:08+00:00	exit=101	0s	M2 loop/n: emit_string contract [crate=.]		peak_rss_sum_mb=514	peak_rss_max_proc_mb=470:rust_verify
+119	2026-11-15T08:29:13+00:00	exit=101	1s	M2 loop/o: emit_string contract [crate=.]		peak_rss_sum_mb=714	peak_rss_max_proc_mb=664:rust_verify
+120	2026-11-15T08:29:21+00:00	exit=0	4s	M2 loop/p: emit_string contract [crate=.]	verification results:: 47 verified, 0 errors	peak_rss_sum_mb=817	peak_rss_max_proc_mb=713:rust_verify
+121	2026-11-15T08:29:26+00:00	exit=101	1s	M2 loop/q: push loop draft [crate=.]		peak_rss_sum_mb=513	peak_rss_max_proc_mb=464:rust_verify
+122	2026-11-15T08:29:37+00:00	exit=101	2s	M2 loop/r: push loop draft 2 [crate=.]		peak_rss_sum_mb=664	peak_rss_max_proc_mb=619:rust_verify
+123	2026-11-15T08:29:44+00:00	exit=101	3s	M2 loop/s: push loop slice write [crate=.]	verification results:: 46 verified, 2 errors	peak_rss_sum_mb=878	peak_rss_max_proc_mb=720:rust_verify
+124	2026-11-15T08:29:52+00:00	exit=101	3s	M2 loop/t: push loop entry facts [crate=.]	verification results:: 47 verified, 1 errors	peak_rss_sum_mb=865	peak_rss_max_proc_mb=720:rust_verify
+125	2026-11-15T08:29:59+00:00	exit=101	3s	M2 loop/u: top < 4096 [crate=.]	verification results:: 47 verified, 1 errors	peak_rss_sum_mb=869	peak_rss_max_proc_mb=718:rust_verify
+126	2026-11-15T08:30:19+00:00	exit=101	3s	M2 loop/v: push loop with peel invariant [crate=.]	verification results:: 47 verified, 1 errors	peak_rss_sum_mb=821	peak_rss_max_proc_mb=715:rust_verify
+127	2026-11-15T08:30:28+00:00	exit=101	4s	M2 loop/w: peel_in_range lemma [crate=.]	verification results:: 47 verified, 2 errors	peak_rss_sum_mb=883	peak_rss_max_proc_mb=721:rust_verify
+128	2026-11-15T08:30:37+00:00	exit=0	4s	M2 loop/x: restore green (emit_string contract only) [crate=.]	verification results:: 47 verified, 0 errors	peak_rss_sum_mb=817	peak_rss_max_proc_mb=716:rust_verify
+129	2026-11-15T08:30:46+00:00	exit=0	4s	M2 loop/y: peel_f fuel-bounded walk [crate=.]	verification results:: 50 verified, 0 errors	peak_rss_sum_mb=926	peak_rss_max_proc_mb=716:rust_verify
+130	2026-11-15T08:30:54+00:00	exit=0	4s	M2 loop/z: peel_f_range [crate=.]	verification results:: 51 verified, 0 errors	peak_rss_sum_mb=911	peak_rss_max_proc_mb=715:rust_verify
+131	2026-11-15T08:31:02+00:00	exit=101	4s	M2 loop/aa: push loop with peel_f [crate=.]	verification results:: 51 verified, 1 errors	peak_rss_sum_mb=821	peak_rss_max_proc_mb=718:rust_verify
+132	2026-11-15T08:31:10+00:00	exit=101	1s	M2 loop/bb: chain_ok_widen [crate=.]		peak_rss_sum_mb=515	peak_rss_max_proc_mb=467:rust_verify
+133	2026-11-15T08:31:18+00:00	exit=101	1s	M2 loop/cc: chain_ok_widen [crate=.]		peak_rss_sum_mb=513	peak_rss_max_proc_mb=468:rust_verify
+134	2026-11-15T08:31:27+00:00	exit=101	1s	M2 loop/dd: chain_ok_widen [crate=.]		peak_rss_sum_mb=513	peak_rss_max_proc_mb=467:rust_verify
+135	2026-11-15T08:31:38+00:00	exit=101	4s	M2 loop/ee: chain_ok_widen [crate=.]	verification results:: 51 verified, 2 errors	peak_rss_sum_mb=914	peak_rss_max_proc_mb=718:rust_verify
+136	2026-11-15T08:31:46+00:00	exit=0	4s	M2 loop/ff: restore green, keep peel_f/range lemmas [crate=.]	verification results:: 51 verified, 0 errors	peak_rss_sum_mb=816	peak_rss_max_proc_mb=713:rust_verify
+137	2026-11-15T08:31:55+00:00	exit=0	4s	M2 loop/gg: chain_ok carries the [2,c] clause [crate=.]	verification results:: 51 verified, 0 errors	peak_rss_sum_mb=909	peak_rss_max_proc_mb=716:rust_verify
+138	2026-11-15T08:32:04+00:00	exit=0	4s	M2 loop/hh: peel_f_range with clear=0 needs c>=2 [crate=.]	verification results:: 51 verified, 0 errors	peak_rss_sum_mb=819	peak_rss_max_proc_mb=713:rust_verify
+139	2026-11-15T08:32:10+00:00	exit=101	2s	M2 loop/ii: push loop with widened chain_ok [crate=.]		peak_rss_sum_mb=674	peak_rss_max_proc_mb=627:rust_verify
+140	2026-11-15T08:32:24+00:00	exit=101	4s	M2 loop/jj: push loop arg order [crate=.]	verification results:: 51 verified, 1 errors	peak_rss_sum_mb=876	peak_rss_max_proc_mb=719:rust_verify
+141	2026-11-15T08:32:36+00:00	exit=101	4s	M2 loop/kk: push loop plain invariants [crate=.]	verification results:: 51 verified, 1 errors	peak_rss_sum_mb=822	peak_rss_max_proc_mb=718:rust_verify
+142	2026-11-15T08:32:51+00:00	exit=101	1s	M2 loop/ll: peel_f_range on clear [crate=.]		peak_rss_sum_mb=686	peak_rss_max_proc_mb=636:rust_verify
+143	2026-11-15T08:32:58+00:00	exit=101	3s	M2 loop/mm: peel_f_range call [crate=.]	verification results:: 50 verified, 2 errors	peak_rss_sum_mb=884	peak_rss_max_proc_mb=725:rust_verify
+144	2026-11-15T08:33:10+00:00	exit=101	4s	M2 loop/nn: peel_f_range literal parent [crate=.]	verification results:: 50 verified, 2 errors	peak_rss_sum_mb=813	peak_rss_max_proc_mb=714:rust_verify
+145	2026-11-15T08:34:05+00:00	exit=101	0s	M2 loop/oo: peel_bound on peel (no peel_f, no escape) [crate=.]		peak_rss_sum_mb=54	peak_rss_max_proc_mb=42:cargo
+146	2026-11-15T08:34:13+00:00	exit=101	4s	M2 loop/pp: peel_bound wired [crate=.]	verification results:: 51 verified, 2 errors	peak_rss_sum_mb=938	peak_rss_max_proc_mb=727:rust_verify
+147	2026-11-15T08:34:25+00:00	exit=101	4s	M2 loop/qq: loop carries chain_ok + peel_stored [crate=.]	verification results:: 51 verified, 2 errors	peak_rss_sum_mb=823	peak_rss_max_proc_mb=720:rust_verify
+148	2026-11-15T08:34:39+00:00	exit=101	3s	M2 loop/rr: cur == peel, direct bound [crate=.]	verification results:: 51 verified, 2 errors	peak_rss_sum_mb=942	peak_rss_max_proc_mb=731:rust_verify
+149	2026-11-15T08:34:56+00:00	exit=101	4s	M2 loop/ss: assert cur range [crate=.]	verification results:: 51 verified, 2 errors	peak_rss_sum_mb=825	peak_rss_max_proc_mb=722:rust_verify
+150	2026-11-15T08:35:11+00:00	exit=101	4s	M2 loop/tt: peel unfold lemmas [crate=.]	verification results:: 53 verified, 2 errors	peak_rss_sum_mb=867	peak_rss_max_proc_mb=720:rust_verify
+151	2026-11-15T08:35:21+00:00	exit=101	4s	M2 loop/uu: drop redundant assert [crate=.]	verification results:: 53 verified, 2 errors	peak_rss_sum_mb=828	peak_rss_max_proc_mb=721:rust_verify
+152	2026-11-15T08:35:34+00:00	exit=101	3s	M2 loop/vv: peel_one in place [crate=.]	verification results:: 54 verified, 1 errors	peak_rss_sum_mb=938	peak_rss_max_proc_mb=724:rust_verify
+153	2026-11-15T08:35:43+00:00	exit=101	3s	M2 loop/ww: cur range from peel_bound [crate=.]	verification results:: 54 verified, 1 errors	peak_rss_sum_mb=825	peak_rss_max_proc_mb=719:rust_verify
+154	2026-11-15T08:35:55+00:00	exit=101	4s	M2 loop/xx: array lengths as invariants [crate=.]	verification results:: 54 verified, 1 errors	peak_rss_sum_mb=1050	peak_rss_max_proc_mb=718:rust_verify
+155	2026-11-15T08:36:05+00:00	exit=101	4s	M2 loop/yy: slice lengths [crate=.]	verification results:: 54 verified, 1 errors	peak_rss_sum_mb=884	peak_rss_max_proc_mb=728:rust_verify
+156	2026-11-15T08:36:15+00:00	exit=101	1s	M2 loop/zz: bind pfx before the write [crate=.]		peak_rss_sum_mb=520	peak_rss_max_proc_mb=473:rust_verify
+157	2026-11-15T08:36:22+00:00	exit=101	2s	M2 loop/aaa: import peel lemmas [crate=.]		peak_rss_sum_mb=678	peak_rss_max_proc_mb=634:rust_verify
+158	2026-11-15T08:36:31+00:00	exit=101	2s	M2 loop/bbb: pfx u16 [crate=.]		peak_rss_sum_mb=692	peak_rss_max_proc_mb=646:rust_verify
+159	2026-11-15T08:36:43+00:00	exit=101	3s	M2 loop/ccc: cur = pfx as usize [crate=.]	verification results:: 54 verified, 1 errors	peak_rss_sum_mb=821	peak_rss_max_proc_mb=719:rust_verify
+160	2026-11-15T08:36:57+00:00	exit=101	4s	M2 loop/ddd: peel step chain [crate=.]	verification results:: 54 verified, 1 errors	peak_rss_sum_mb=823	peak_rss_max_proc_mb=719:rust_verify
+161	2026-11-15T08:37:09+00:00	exit=101	4s	M2 loop/eee: ghost view of pf[cur] [crate=.]	verification results:: 54 verified, 1 errors	peak_rss_sum_mb=822	peak_rss_max_proc_mb=720:rust_verify
+162	2026-11-15T08:37:19+00:00	exit=101	1s	M2 loop/fff: chain_ok(pf@,...) direct [crate=.]		peak_rss_sum_mb=42	peak_rss_max_proc_mb=36:cargo
+163	2026-11-15T08:37:36+00:00	exit=0	4s	M2 restore: green backup lzw.rs + current chain.rs [crate=.]	verification results:: 53 verified, 0 errors	peak_rss_sum_mb=926	peak_rss_max_proc_mb=718:rust_verify
+164	2026-11-15T08:37:50+00:00	exit=101	0s	M2 restore + emit_string contract [crate=.]		peak_rss_sum_mb=518	peak_rss_max_proc_mb=469:rust_verify
+165	2026-11-15T08:37:56+00:00	exit=101	1s	M2 restore + emit_string contract pass 2 [crate=.]		peak_rss_sum_mb=228	peak_rss_max_proc_mb=182:rust_verify
+166	2026-11-15T08:38:08+00:00	exit=0	4s	M2 restore + emit_string contract pass 3 [crate=.]	verification results:: 54 verified, 0 errors	peak_rss_sum_mb=822	peak_rss_max_proc_mb=716:rust_verify
+167	2026-11-15T08:38:16+00:00	exit=101	3s	M2 exec/a: push loop in emit_string [crate=.]	verification results:: 54 verified, 1 errors	peak_rss_sum_mb=882	peak_rss_max_proc_mb=723:rust_verify
+168	2026-11-15T08:38:27+00:00	exit=101	1s	M2 exec/b: push loop step facts [crate=.]		peak_rss_sum_mb=701	peak_rss_max_proc_mb=650:rust_verify
+169	2026-11-15T08:38:39+00:00	exit=101	3s	M2 exec/c: fix ps_emit use [crate=.]	verification results:: 54 verified, 1 errors	peak_rss_sum_mb=884	peak_rss_max_proc_mb=725:rust_verify
+170	2026-11-15T08:38:48+00:00	exit=101	0s	M2 exec/d: fully-qualified push loop [crate=.]		peak_rss_sum_mb=41	peak_rss_max_proc_mb=35:cargo
+171	2026-11-15T08:39:01+00:00	exit=101	3s	M2 exec/e: brace fixed [crate=.]	verification results:: 54 verified, 1 errors	peak_rss_sum_mb=873	peak_rss_max_proc_mb=716:rust_verify
+172	2026-11-15T08:39:15+00:00	exit=0	4s	M2 exec: restore green (chain lemmas kept, loops stubbed) [crate=.]	verification results:: 54 verified, 0 errors	peak_rss_sum_mb=881	peak_rss_max_proc_mb=729:rust_verify
+173	2026-11-15T08:39:27+00:00	exit=101	0s	probe: slice view bridge [crate=.]		peak_rss_sum_mb=515	peak_rss_max_proc_mb=471:rust_verify
+174	2026-11-15T08:39:32+00:00	exit=101	1s	probe: slice view bridge pass 2 [crate=.]		peak_rss_sum_mb=520	peak_rss_max_proc_mb=472:rust_verify
+175	2026-11-15T08:39:39+00:00	exit=0	4s	probe: slice view bridge pass 3 [crate=.]	verification results:: 56 verified, 0 errors	peak_rss_sum_mb=827	peak_rss_max_proc_mb=721:rust_verify
+176	2026-11-15T08:39:56+00:00	exit=101	3s	M2 exec/f: push loop, read before assert [crate=.]	verification results:: 54 verified, 1 errors	peak_rss_sum_mb=1160	peak_rss_max_proc_mb=722:rust_verify
+177	2026-11-15T08:40:10+00:00	exit=101	3s	M2 exec/g: peel reductions explicit [crate=.]	verification results:: 54 verified, 1 errors	peak_rss_sum_mb=911	peak_rss_max_proc_mb=719:rust_verify
+178	2026-11-15T08:40:27+00:00	exit=101	4s	M2 exec/h: peel_stored at top-1 [crate=.]	verification results:: 54 verified, 1 errors	peak_rss_sum_mb=824	peak_rss_max_proc_mb=724:rust_verify
+179	2026-11-15T08:40:36+00:00	exit=0	3s	M2 exec: final green [crate=.]	verification results:: 54 verified, 0 errors	peak_rss_sum_mb=880	peak_rss_max_proc_mb=726:rust_verify
+180	2026-11-15T08:40:51+00:00	exit=0	4s	M2 exec/i: peel_stored <= k [crate=.]	verification results:: 54 verified, 0 errors	peak_rss_sum_mb=820	peak_rss_max_proc_mb=717:rust_verify
+181	2026-11-15T08:41:03+00:00	exit=101	4s	M2 exec/j: push loop with peel_stored <= k [crate=.]	verification results:: 54 verified, 1 errors	peak_rss_sum_mb=874	peak_rss_max_proc_mb=717:rust_verify
+182	2026-11-15T08:41:20+00:00	exit=101	4s	M2 exec/k: peel associativity [crate=.]	verification results:: 54 verified, 2 errors	peak_rss_sum_mb=872	peak_rss_max_proc_mb=717:rust_verify
+183	2026-11-15T08:41:29+00:00	exit=101	4s	M2 exec/l: peel_add on a [crate=.]	verification results:: 55 verified, 1 errors	peak_rss_sum_mb=823	peak_rss_max_proc_mb=719:rust_verify
+184	2026-11-15T08:41:37+00:00	exit=101	4s	M2 exec/m: push loop with peel_add [crate=.]	verification results:: 55 verified, 1 errors	peak_rss_sum_mb=1164	peak_rss_max_proc_mb=727:rust_verify
+185	2026-11-15T08:42:01+00:00	exit=101	5s	M2 exec/n: cur not clear/eoi [crate=.]	verification results:: 55 verified, 1 errors	peak_rss_sum_mb=922	peak_rss_max_proc_mb=720:rust_verify
+186	2026-11-15T08:42:11+00:00	exit=101	4s	M2 exec/o: peel_not_reserved [crate=.]	verification results:: 56 verified, 2 errors	peak_rss_sum_mb=820	peak_rss_max_proc_mb=718:rust_verify
+187	2026-11-15T08:42:25+00:00	exit=101	4s	M2 exec/p: peel_not_reserved literal branch [crate=.]	verification results:: 56 verified, 2 errors	peak_rss_sum_mb=911	peak_rss_max_proc_mb=719:rust_verify
+188	2026-11-15T08:42:37+00:00	exit=101	4s	M2 exec/q: k==1 in literal branch [crate=.]	verification results:: 56 verified, 2 errors	peak_rss_sum_mb=1166	peak_rss_max_proc_mb=723:rust_verify
+189	2026-11-15T08:42:49+00:00	exit=101	4s	M2 exec/r: drop stalled peel_not_reserved, keep the rest [crate=.]	verification results:: 56 verified, 1 errors	peak_rss_sum_mb=878	peak_rss_max_proc_mb=721:rust_verify
+190	2026-11-15T08:42:57+00:00	exit=0	5s	M2 exec: green, all chain lemmas kept [crate=.]	verification results:: 56 verified, 0 errors	peak_rss_sum_mb=1152	peak_rss_max_proc_mb=719:rust_verify
+191	2026-11-15T08:43:11+00:00	exit=0	0s	M2 authoritative FINAL (run for the record) [crate=.]		peak_rss_sum_mb=43	peak_rss_max_proc_mb=37:cargo
+192	2026-11-15T08:46:20+00:00	exit=0	4s	Sol: reserved cursor, real chain length bound, policy counterexample [crate=.]	verification results:: 59 verified, 0 errors	peak_rss_sum_mb=934	peak_rss_max_proc_mb=724:rust_verify
+193	2026-11-15T08:47:16+00:00	exit=101	3s	Sol: complete independent emit_string push/pop proof [crate=.]		peak_rss_sum_mb=683	peak_rss_max_proc_mb=638:rust_verify
+194	2026-11-15T08:47:29+00:00	exit=101	4s	Sol: import slice setters for emission [crate=.]	verification results:: 60 verified, 1 errors	peak_rss_sum_mb=904	peak_rss_max_proc_mb=739:rust_verify
+195	2026-11-15T08:48:08+00:00	exit=0	4s	Sol: bound output arithmetic and prohibit literal narrowing [crate=.]	verification results:: 61 verified, 0 errors	peak_rss_sum_mb=834	peak_rss_max_proc_mb=730:rust_verify
+196	2026-11-15T08:49:26+00:00	exit=0	5s	Sol: final direct-index emission proof [crate=.]	verification results:: 61 verified, 0 errors	peak_rss_sum_mb=829	peak_rss_max_proc_mb=730:rust_verify
+197	2026-11-15T08:51:32+00:00	exit=0	5s	Sol: final stage handoff, emission proved; T-LZW stopped on policy mismatch [crate=.]	verification results:: 61 verified, 0 errors	peak_rss_sum_mb=931	peak_rss_max_proc_mb=734:rust_verify
+198	2026-11-15T08:56:07+00:00	exit=0	4s	Sol resumed: full model observations, E4 overrun, literal precedence [crate=.]	verification results:: 63 verified, 0 errors	peak_rss_sum_mb=838	peak_rss_max_proc_mb=735:rust_verify
+199	2026-11-15T08:57:10+00:00	exit=101	4s	Sol: stack-free emission with clipped backwards writes [crate=.]	verification results:: 63 verified, 2 errors	peak_rss_sum_mb=959	peak_rss_max_proc_mb=742:rust_verify
+200	2026-11-15T08:57:42+00:00	exit=0	5s	Sol: explicit take-index and slice-length facts in stack-free emission [crate=.]	verification results:: 65 verified, 0 errors	peak_rss_sum_mb=909	peak_rss_max_proc_mb=748:rust_verify
+201	2026-11-15T08:59:52+00:00	exit=101	0s	Sol: table agreement, fresh frames, length cache and bit reader [crate=.]		peak_rss_sum_mb=116	peak_rss_max_proc_mb=70:rust_verify
+202	2026-11-15T09:00:10+00:00	exit=101	1s	Sol: fix cast/comparison parsing in bit reader [crate=.]		peak_rss_sum_mb=523	peak_rss_max_proc_mb=473:rust_verify
+203	2026-11-15T09:00:38+00:00	exit=101	5s	Sol: parenthesize cast comparisons [crate=.]	verification results:: 72 verified, 3 errors	peak_rss_sum_mb=1028	peak_rss_max_proc_mb=759:rust_verify
+204	2026-11-15T09:01:10+00:00	exit=0	5s	Sol: explicit byte mask bound and cache domain [crate=.]	verification results:: 74 verified, 0 errors	peak_rss_sum_mb=1059	peak_rss_max_proc_mb=772:rust_verify
+205	2026-11-15T09:02:51+00:00	exit=101	4s	Sol: dictionary insertion and length-cache preservation [crate=.]	verification results:: 75 verified, 2 errors	peak_rss_sum_mb=1033	peak_rss_max_proc_mb=766:rust_verify
+206	2026-11-15T09:03:34+00:00	exit=0	5s	Sol: instantiate cache recurrence and explicit modulo-byte identity [crate=.]	verification results:: 79 verified, 0 errors	peak_rss_sum_mb=1070	peak_rss_max_proc_mb=772:rust_verify
+207	2026-11-15T09:05:03+00:00	exit=101	4s	Sol: first complete stack-free decoder refinement proof [crate=.]	verification results:: 80 verified, 2 errors	peak_rss_sum_mb=1053	peak_rss_max_proc_mb=790:rust_verify
+208	2026-11-15T09:05:50+00:00	exit=101	5s	Sol: decoder entry domain and stable output capacity [crate=.]	verification results:: 81 verified, 1 errors	peak_rss_sum_mb=1008	peak_rss_max_proc_mb=788:rust_verify
+209	2026-11-15T09:06:50+00:00	exit=101	5s	Sol: explicit emitted-prefix and fresh-slot array agreement [crate=.]	verification results:: 81 verified, 1 errors	peak_rss_sum_mb=1056	peak_rss_max_proc_mb=789:rust_verify
+210	2026-11-15T09:07:23+00:00	exit=101	5s	Sol: preserve readable-range quantifier across insertion [crate=.]	verification results:: 81 verified, 1 errors	peak_rss_sum_mb=1049	peak_rss_max_proc_mb=791:rust_verify
+211	2026-11-15T09:08:07+00:00	exit=101	4s	Sol: isolate mutable-slice frame facts around emission [crate=.]	verification results:: 81 verified, 1 errors	peak_rss_sum_mb=1049	peak_rss_max_proc_mb=794:rust_verify
+212	2026-11-15T09:08:37+00:00	exit=0	5s	Sol: split array-agreement quantifiers with concrete slice triggers [crate=.]	verification results:: 82 verified, 0 errors	peak_rss_sum_mb=1078	peak_rss_max_proc_mb=793:rust_verify
+213	2026-11-15T09:12:48+00:00	exit=0	11s	Sol: public stack-free decoder, complete-observation oracle samples [crate=.]	verification results:: 174 verified, 0 errors	peak_rss_sum_mb=1005	peak_rss_max_proc_mb=805:rust_verify
+214	2026-11-15T09:15:06+00:00	exit=101	1s	Sol: width, size-one, checked-root and L-DISCARD invariants [crate=.]		peak_rss_sum_mb=530	peak_rss_max_proc_mb=482:rust_verify
+215	2026-11-15T09:15:26+00:00	exit=101	10s	Sol: disambiguate model power in width invariant [crate=.]	verification results:: 174 verified, 2 errors	peak_rss_sum_mb=1177	peak_rss_max_proc_mb=807:rust_verify
+216	2026-11-15T09:16:11+00:00	exit=101	3s	Sol: isolate strengthened decoder assertions without increasing rlimit [crate=.]		peak_rss_sum_mb=702	peak_rss_max_proc_mb=654:rust_verify
+217	2026-11-15T09:17:07+00:00	exit=101	10s	Sol: strengthened width and size-one invariants after entry facts [crate=.]	verification results:: 175 verified, 1 errors	peak_rss_sum_mb=1103	peak_rss_max_proc_mb=811:rust_verify
+218	2026-11-15T09:17:36+00:00	exit=101	10s	Sol: preserve initial-width power relation across Clear [crate=.]	verification results:: 175 verified, 1 errors	peak_rss_sum_mb=1072	peak_rss_max_proc_mb=805:rust_verify
+219	2026-11-15T09:17:58+00:00	exit=101	10s	Sol: separate solver for strengthened decoder query [crate=.]	verification results:: 175 verified, 1 errors	peak_rss_sum_mb=1014	peak_rss_max_proc_mb=816:rust_verify
+220	2026-11-15T09:20:21+00:00	exit=101	10s	Sol: modular historical bounds for checked roots and discarded indices [crate=.]	verification results:: 177 verified, 2 errors	peak_rss_sum_mb=1142	peak_rss_max_proc_mb=824:rust_verify
+221	2026-11-15T09:21:21+00:00	exit=101	3s	Sol: hide recursive powers and expose only required history bounds [crate=.]		peak_rss_sum_mb=708	peak_rss_max_proc_mb=661:rust_verify
+222	2026-11-15T09:22:12+00:00	exit=101	10s	Sol: function-level power opacity and explicit recurrence lemma [crate=.]	verification results:: 179 verified, 1 errors	peak_rss_sum_mb=1183	peak_rss_max_proc_mb=819:rust_verify
+223	2026-11-15T09:22:59+00:00	exit=101	10s	Sol: expose one model fold equation per iteration [crate=.]	verification results:: 180 verified, 1 errors	peak_rss_sum_mb=1025	peak_rss_max_proc_mb=820:rust_verify
+224	2026-11-15T09:23:29+00:00	exit=0	10s	Sol diagnostic: bounded 20-unit decoder query to expose remaining obligations [crate=.]	verification results:: 181 verified, 0 errors	peak_rss_sum_mb=1000	peak_rss_max_proc_mb=820:rust_verify
+225	2026-11-15T09:25:27+00:00	exit=0	10s	Sol: modular resolved-code emission; restore default solver limit [crate=.]	verification results:: 182 verified, 0 errors	peak_rss_sum_mb=1139	peak_rss_max_proc_mb=822:rust_verify
+226	2026-11-15T09:28:15+00:00	exit=0	11s	Sol: explicit T-LZW call theorem, L-FULL, and size-one branch [crate=.]	verification results:: 184 verified, 0 errors	peak_rss_sum_mb=1171	peak_rss_max_proc_mb=827:rust_verify
+227	2026-11-15T09:33:55+00:00	exit=0	11s	Sol: default limits, two threads, no-cheating, final proof audit [crate=.]	verification results:: 184 verified, 0 errors	peak_rss_sum_mb=908	peak_rss_max_proc_mb=758:rust_verify
+228	2026-11-16T04:44:51+00:00	exit=0	2s	cap bump A: MAX_INPUT 2^28, canvas cap kept at 2^26 [crate=.]		peak_rss_sum_mb=46	peak_rss_max_proc_mb=39:cargo
+229	2026-11-16T04:44:57+00:00	exit=0	1s	cap bump A: forced fresh LZW re-verification [crate=.]		peak_rss_sum_mb=71	peak_rss_max_proc_mb=37:cargo
+230	2026-11-16T04:45:34+00:00	exit=101	18s	cap bump A: clean-cache fresh LZW verification [crate=.]		peak_rss_sum_mb=2643	peak_rss_max_proc_mb=811:rust_verify
+231	2026-11-16T04:46:36+00:00	exit=101	1s	cap bump A: fresh LZW verification after cache reset [crate=.]		peak_rss_sum_mb=44	peak_rss_max_proc_mb=39:cargo
+232	2026-11-16T04:47:21+00:00	exit=101	0s	cap bump A: fresh LZW verification (cache restored) [crate=.]		peak_rss_sum_mb=226	peak_rss_max_proc_mb=181:rust_verify
+233	2026-11-16T04:47:45+00:00	exit=101	1s	cap bump A: fresh LZW verification (cache restored v2) [crate=.]		peak_rss_sum_mb=80	peak_rss_max_proc_mb=38:cargo
+234	2026-11-16T04:49:20+00:00	exit=101	0s	cap bump A: fresh LZW verification (full cache restore) [crate=.]		peak_rss_sum_mb=64	peak_rss_max_proc_mb=38:cargo
+235	2026-11-16T04:49:39+00:00	exit=101	0s	cap bump A: fresh LZW verification (fingerprints reset) [crate=.]		peak_rss_sum_mb=83	peak_rss_max_proc_mb=38:cargo
+236	2026-11-16T04:50:24+00:00	exit=0	8s	cap bump A: fresh LZW verification (cache replaced) [crate=.]	verification results:: 184 verified, 0 errors	peak_rss_sum_mb=907	peak_rss_max_proc_mb=755:rust_verify

@@ -1,0 +1,34 @@
+[package]
+name = "gif_verus"
+version = "0.1.0"
+license = "MIT"
+description = "GIF decoder core (GIF87a/89a, Strict and RecommendedBeta profiles), to be verified with Verus"
+edition = "2021"
+
+[dependencies]
+vstd = { version = "=0.0.0-2026-11-01-0251", default-features = false, features = ["alloc"] }
+
+[features]
+# Test-only: exposes `policy::Policy` constructors beyond the public profiles
+# (the metadata field `loop_scan`), so tests/conformance.rs can run the two
+# `@ImageCrateCompat-0.25.10` loop-count records before P2 adds that profile.
+# Never enabled by a consumer; enabled for this crate's own tests by the
+# self dev-dependency below.
+test-records = []
+
+[dev-dependencies]
+# Test-only: reads spec-draft/VECTORS.json in tests/conformance.rs.
+serde_json = "1"
+gif_verus = { path = ".", features = ["test-records"] }
+
+[package.metadata.verus]
+verify = true
+
+[lints.rust]
+# Verus supports ghost code, code that is used for proofs but erased during compilation.
+# Ghost items imported via `use` do not exist during a normal `cargo build`; such
+# imports are guarded by the feature flag `verus_only`, which Verus turns on during
+# verification. This suppression keeps cargo from warning that the cfg is undeclared.
+unexpected_cfgs = { level = "warn", check-cfg = [
+  'cfg(verus_only)',
+] }

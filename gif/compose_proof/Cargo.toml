@@ -1,0 +1,20 @@
+[package]
+name = "compose_proof"
+version = "0.1.0"
+license = "MIT"
+description = "Formally verified (Verus) GIF G11 interlace and G12 compositor (T4, T5, T7, T8), milestone M4 of gif_verus"
+edition = "2021"
+
+[dependencies]
+vstd = { version = "=0.0.0-2026-11-01-0251", default-features = false, features = ["alloc"] }
+
+[dev-dependencies]
+serde_json = "1"
+
+[package.metadata.verus]
+verify = true
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = [
+  'cfg(verus_only)',
+] }

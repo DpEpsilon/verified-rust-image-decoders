@@ -1,0 +1,305 @@
+1	2026-11-15T09:52:34+00:00	exit=101	11s	M4a smoke: limits, model (IR/MC specs), interlace_row equality with iv [crate=.]		peak_rss_sum_mb=3472	peak_rss_max_proc_mb=799:rust_verify
+2	2026-11-15T09:57:18+00:00	exit=101	1s	M4a pass 1: pass arithmetic, div helpers, iv_at folds [crate=.]		peak_rss_sum_mb=512	peak_rss_max_proc_mb=468:rust_verify
+3	2026-11-15T09:57:24+00:00	exit=101	3s	M4a pass 1b: div-mod imports [crate=.]		peak_rss_sum_mb=663	peak_rss_max_proc_mb=615:rust_verify
+4	2026-11-15T09:57:33+00:00	exit=101	3s	M4a pass 1c: ComposeError type, div helpers [crate=.]		peak_rss_sum_mb=819	peak_rss_max_proc_mb=678:rust_verify
+5	2026-11-15T09:57:40+00:00	exit=101	2s	M4a pass 1d: div_add_mul/mod_sub_zero with mod lemmas [crate=.]		peak_rss_sum_mb=715	peak_rss_max_proc_mb=663:rust_verify
+6	2026-11-15T09:58:25+00:00	exit=101	3s	M4a pass 1e: div_add_mul with distributivity [crate=.]		peak_rss_sum_mb=780	peak_rss_max_proc_mb=678:rust_verify
+7	2026-11-15T09:59:02+00:00	exit=101	1s	M4a batch I: pass counts and ir == iv [crate=.]		peak_rss_sum_mb=376	peak_rss_max_proc_mb=328:rust_verify
+8	2026-11-15T09:59:07+00:00	exit=101	2s	M4a batch I: pass counts and ir == iv [crate=.]		peak_rss_sum_mb=781	peak_rss_max_proc_mb=680:rust_verify
+9	2026-11-15T09:59:13+00:00	exit=101	1s	M4a batch I2: u_sum base cases, mod_sub_zero [crate=.]		peak_rss_sum_mb=40	peak_rss_max_proc_mb=34:cargo
+10	2026-11-15T09:59:19+00:00	exit=101	0s	M4a batch I2: u_sum base cases, mod_sub_zero [crate=.]		peak_rss_sum_mb=439	peak_rss_max_proc_mb=394:rust_verify
+11	2026-11-15T09:59:29+00:00	exit=101	1s	M4a batch I3: u_sum, n3_half, ir == iv [crate=.]		peak_rss_sum_mb=664	peak_rss_max_proc_mb=617:rust_verify
+12	2026-11-15T09:59:34+00:00	exit=101	3s	M4a batch I3: u_sum, n3_half, ir == iv [crate=.]		peak_rss_sum_mb=831	peak_rss_max_proc_mb=678:rust_verify
+13	2026-11-15T09:59:41+00:00	exit=101	2s	M4a batch I3b: pass_len(3) instance and div preconditions [crate=.]		peak_rss_sum_mb=1150	peak_rss_max_proc_mb=664:rust_verify
+14	2026-11-15T09:59:47+00:00	exit=101	2s	M4a batch I3c: pass_len(3) instance simplified [crate=.]		peak_rss_sum_mb=1039	peak_rss_max_proc_mb=680:rust_verify
+15	2026-11-15T09:59:59+00:00	exit=101	2s	M4a batch I4: div_zero before div_step; minimal ir_bijective [crate=.]	verification results:: 26 verified, 3 errors	peak_rss_sum_mb=713	peak_rss_max_proc_mb=665:rust_verify
+16	2026-11-15T10:00:56+00:00	exit=101	3s	M4a batch I5: reveal pass_start/pass_step [crate=.]	verification results:: 26 verified, 3 errors	peak_rss_sum_mb=834	peak_rss_max_proc_mb=685:rust_verify
+17	2026-11-15T10:01:22+00:00	exit=101	0s	M4a batch I6: clean base cases, pass_len3, ir == iv [crate=.]		peak_rss_sum_mb=375	peak_rss_max_proc_mb=330:rust_verify
+18	2026-11-15T10:01:28+00:00	exit=101	2s	M4a batch I7: dedupe ir_eq_iv_at [crate=.]	verification results:: 29 verified, 1 errors	peak_rss_sum_mb=724	peak_rss_max_proc_mb=682:rust_verify
+19	2026-11-15T10:01:35+00:00	exit=101	3s	M4a batch I8: nk == pass_len for all four passes [crate=.]	verification results:: 29 verified, 1 errors	peak_rss_sum_mb=788	peak_rss_max_proc_mb=683:rust_verify
+20	2026-11-15T10:01:41+00:00	exit=0	3s	M4a batch I9: nk four branches; nk == pass_len [crate=.]	verification results:: 30 verified, 0 errors	peak_rss_sum_mb=787	peak_rss_max_proc_mb=684:rust_verify
+21	2026-11-15T10:02:21+00:00	exit=101	1s	M4a batch IIa: inverse definitions and mod facts [crate=.]		peak_rss_sum_mb=220	peak_rss_max_proc_mb=182:rust_verify
+22	2026-11-15T10:02:27+00:00	exit=101	0s	M4a batch IIa: inverse definitions and mod facts [crate=.]		peak_rss_sum_mb=513	peak_rss_max_proc_mb=465:rust_verify
+23	2026-11-15T10:02:32+00:00	exit=101	1s	M4a batch IIa: inverse definitions and mod facts [crate=.]		peak_rss_sum_mb=43	peak_rss_max_proc_mb=36:cargo
+24	2026-11-15T10:02:37+00:00	exit=101	1s	M4a batch IIa: mod facts [crate=.]		peak_rss_sum_mb=42	peak_rss_max_proc_mb=36:cargo
+25	2026-11-15T10:02:47+00:00	exit=101	0s	M4a batch IIa: mod facts [crate=.]		peak_rss_sum_mb=40	peak_rss_max_proc_mb=35:cargo
+26	2026-11-15T10:02:54+00:00	exit=101	0s	M4a batch IIa: mod facts [crate=.]		peak_rss_sum_mb=41	peak_rss_max_proc_mb=34:cargo
+27	2026-11-15T10:03:05+00:00	exit=101	2s	M4a batch IIa: mod facts, disjoint passes [crate=.]		peak_rss_sum_mb=668	peak_rss_max_proc_mb=623:rust_verify
+28	2026-11-15T10:03:11+00:00	exit=0	3s	M4a batch IIa: mod facts [crate=.]	verification results:: 35 verified, 0 errors	peak_rss_sum_mb=769	peak_rss_max_proc_mb=679:rust_verify
+29	2026-11-15T10:03:41+00:00	exit=101	1s	M4a batch IIb: pass bounds and count shapes [crate=.]		peak_rss_sum_mb=372	peak_rss_max_proc_mb=327:rust_verify
+30	2026-11-15T10:03:47+00:00	exit=101	1s	M4a batch IIb: pass bounds [crate=.]		peak_rss_sum_mb=532	peak_rss_max_proc_mb=487:rust_verify
+31	2026-11-15T10:03:56+00:00	exit=101	3s	M4a batch IIb: pass bounds [crate=.]	verification results:: 42 verified, 1 errors	peak_rss_sum_mb=832	peak_rss_max_proc_mb=683:rust_verify
+32	2026-11-15T10:04:02+00:00	exit=0	3s	M4a batch IIb: pass bounds + div_floor [crate=.]	verification results:: 43 verified, 0 errors	peak_rss_sum_mb=826	peak_rss_max_proc_mb=684:rust_verify
+33	2026-11-15T10:04:21+00:00	exit=101	3s	M4a batch IIc: back below, iv below, pass_of_r [crate=.]	verification results:: 46 verified, 1 errors	peak_rss_sum_mb=802	peak_rss_max_proc_mb=699:rust_verify
+34	2026-11-15T10:04:32+00:00	exit=0	3s	M4a batch IId: pass_of_r, back inverse [crate=.]	verification results:: 49 verified, 0 errors	peak_rss_sum_mb=800	peak_rss_max_proc_mb=699:rust_verify
+35	2026-11-15T10:04:40+00:00	exit=101	1s	M4a: interlace_row equality with IR, bijection, T5 capstone [crate=.]		peak_rss_sum_mb=514	peak_rss_max_proc_mb=467:rust_verify
+36	2026-11-15T10:04:44+00:00	exit=101	1s	M4a: interlace_row equality, bijection [crate=.]		peak_rss_sum_mb=516	peak_rss_max_proc_mb=466:rust_verify
+37	2026-11-15T10:04:54+00:00	exit=101	2s	M4a: interlace_row executable [crate=.]		peak_rss_sum_mb=690	peak_rss_max_proc_mb=645:rust_verify
+38	2026-11-15T10:05:05+00:00	exit=101	4s	M4a: interlace_row executable [crate=.]	verification results:: 49 verified, 4 errors	peak_rss_sum_mb=902	peak_rss_max_proc_mb=704:rust_verify
+39	2026-11-15T10:05:16+00:00	exit=101	4s	M4a: iv unfolding assertions [crate=.]	verification results:: 51 verified, 2 errors	peak_rss_sum_mb=808	peak_rss_max_proc_mb=700:rust_verify
+40	2026-11-15T10:05:28+00:00	exit=101	3s	M4a: interlace_row with preconditions [crate=.]	verification results:: 52 verified, 1 errors	peak_rss_sum_mb=802	peak_rss_max_proc_mb=699:rust_verify
+41	2026-11-15T10:05:36+00:00	exit=101	3s	M4a: bijection quantifiers [crate=.]	verification results:: 52 verified, 1 errors	peak_rss_sum_mb=805	peak_rss_max_proc_mb=700:rust_verify
+42	2026-11-15T10:05:44+00:00	exit=101	3s	M4a: bijection quantifiers [crate=.]	verification results:: 52 verified, 1 errors	peak_rss_sum_mb=860	peak_rss_max_proc_mb=701:rust_verify
+43	2026-11-15T10:06:05+00:00	exit=101	3s	M4a: class-index bound, peel lemma, bijection capstone [crate=.]	verification results:: 52 verified, 1 errors	peak_rss_sum_mb=806	peak_rss_max_proc_mb=704:rust_verify
+44	2026-11-15T10:06:17+00:00	exit=101	3s	M4a: class-index bound, peel, bijection capstone [crate=.]	verification results:: 55 verified, 1 errors	peak_rss_sum_mb=811	peak_rss_max_proc_mb=705:rust_verify
+45	2026-11-15T10:06:34+00:00	exit=101	3s	M4a: split bijection quantifier conjuncts [crate=.]	verification results:: 55 verified, 1 errors	peak_rss_sum_mb=1148	peak_rss_max_proc_mb=709:rust_verify
+46	2026-11-15T10:06:44+00:00	exit=0	3s	M4a completes: bijection over the whole cap [crate=.]	verification results:: 56 verified, 0 errors	peak_rss_sum_mb=1159	peak_rss_max_proc_mb=706:rust_verify
+47	2026-11-15T10:07:33+00:00	exit=101	0s	M4b batch 1: draw_index contract [crate=.]		peak_rss_sum_mb=510	peak_rss_max_proc_mb=467:rust_verify
+48	2026-11-15T10:07:39+00:00	exit=101	1s	M4b batch 1a: draw_index contract [crate=.]		peak_rss_sum_mb=518	peak_rss_max_proc_mb=470:rust_verify
+49	2026-11-15T10:07:53+00:00	exit=101	1s	M4b batch 1b: draw_index contract [crate=.]		peak_rss_sum_mb=511	peak_rss_max_proc_mb=465:rust_verify
+50	2026-11-15T10:07:58+00:00	exit=101	1s	M4b batch 1c: draw_index contract [crate=.]		peak_rss_sum_mb=517	peak_rss_max_proc_mb=469:rust_verify
+51	2026-11-15T10:08:05+00:00	exit=101	2s	M4b batch 1d: draw_index contract [crate=.]		peak_rss_sum_mb=696	peak_rss_max_proc_mb=650:rust_verify
+52	2026-11-15T10:08:17+00:00	exit=101	3s	M4b batch 1e: table immutable, spec_frame fixed [crate=.]		peak_rss_sum_mb=693	peak_rss_max_proc_mb=649:rust_verify
+53	2026-11-15T10:08:23+00:00	exit=101	3s	M4b batch 1f: draw_index full proof [crate=.]		peak_rss_sum_mb=691	peak_rss_max_proc_mb=648:rust_verify
+54	2026-11-15T10:08:34+00:00	exit=101	3s	M4b batch 1g: ghost frame binding [crate=.]	verification results:: 61 verified, 3 errors	peak_rss_sum_mb=870	peak_rss_max_proc_mb=716:rust_verify
+55	2026-11-15T10:08:51+00:00	exit=101	0s	M4b batch 1h: arithmetic side conditions [crate=.]		peak_rss_sum_mb=42	peak_rss_max_proc_mb=36:cargo
+56	2026-11-15T10:08:59+00:00	exit=101	0s	M4b batch 1i: arithmetic [crate=.]		peak_rss_sum_mb=40	peak_rss_max_proc_mb=35:cargo
+57	2026-11-15T10:10:40+00:00	exit=101	1s	M4b batch 1j: draw_index proof [crate=.]		peak_rss_sum_mb=510	peak_rss_max_proc_mb=464:rust_verify
+58	2026-11-15T10:10:52+00:00	exit=101	1s	M4b batch 1k: draw_index proof [crate=.]		peak_rss_sum_mb=515	peak_rss_max_proc_mb=467:rust_verify
+59	2026-11-15T10:10:58+00:00	exit=101	1s	M4b batch 1l: draw_index proof [crate=.]		peak_rss_sum_mb=513	peak_rss_max_proc_mb=469:rust_verify
+60	2026-11-15T10:11:04+00:00	exit=101	3s	M4b batch 1m: draw_index proof [crate=.]	verification results:: 60 verified, 3 errors	peak_rss_sum_mb=876	peak_rss_max_proc_mb=714:rust_verify
+61	2026-11-15T10:11:21+00:00	exit=101	3s	M4b batch 1n: u32 bounds, row start [crate=.]	verification results:: 62 verified, 3 errors	peak_rss_sum_mb=883	peak_rss_max_proc_mb=721:rust_verify
+62	2026-11-15T10:11:44+00:00	exit=101	2s	M4b batch 1o: arithmetic and row cache [crate=.]		peak_rss_sum_mb=690	peak_rss_max_proc_mb=644:rust_verify
+63	2026-11-15T10:11:51+00:00	exit=101	3s	M4b batch 1p: row cache proof [crate=.]	verification results:: 63 verified, 2 errors	peak_rss_sum_mb=1163	peak_rss_max_proc_mb=718:rust_verify
+64	2026-11-15T10:12:10+00:00	exit=101	1s	M4b batch 1q: cache-free draw_index [crate=.]		peak_rss_sum_mb=511	peak_rss_max_proc_mb=467:rust_verify
+65	2026-11-15T10:12:17+00:00	exit=101	3s	M4b batch 1r: cache-free draw_index [crate=.]	verification results:: 64 verified, 2 errors	peak_rss_sum_mb=869	peak_rss_max_proc_mb=717:rust_verify
+66	2026-11-15T10:12:33+00:00	exit=101	4s	M4b batch 1s: offsets, interlace precondition [crate=.]	verification results:: 65 verified, 1 errors	peak_rss_sum_mb=822	peak_rss_max_proc_mb=719:rust_verify
+67	2026-11-15T10:12:47+00:00	exit=101	2s	M4b batch 1t: canvas offset in usize [crate=.]		peak_rss_sum_mb=700	peak_rss_max_proc_mb=653:rust_verify
+68	2026-11-15T10:12:55+00:00	exit=101	3s	M4b batch 1u: canvas offset bound [crate=.]	verification results:: 66 verified, 1 errors	peak_rss_sum_mb=883	peak_rss_max_proc_mb=719:rust_verify
+69	2026-11-15T10:13:09+00:00	exit=0	4s	M4b batch 1v: pixel word unfolding [crate=.]	verification results:: 67 verified, 0 errors	peak_rss_sum_mb=874	peak_rss_max_proc_mb=720:rust_verify
+70	2026-11-15T10:13:20+00:00	exit=101	2s	M4b batch 2: clip_of, clear_rect, copy_rect [crate=.]		peak_rss_sum_mb=699	peak_rss_max_proc_mb=653:rust_verify
+71	2026-11-15T10:13:30+00:00	exit=101	3s	M4b batch 2a: clear_rect and copy_rect [crate=.]		peak_rss_sum_mb=697	peak_rss_max_proc_mb=650:rust_verify
+72	2026-11-15T10:13:42+00:00	exit=101	1s	M4b batch 2b: qualified model names [crate=.]		peak_rss_sum_mb=518	peak_rss_max_proc_mb=469:rust_verify
+73	2026-11-15T10:13:47+00:00	exit=101	1s	M4b batch 2c: qualified helpers [crate=.]		peak_rss_sum_mb=517	peak_rss_max_proc_mb=470:rust_verify
+74	2026-11-15T10:13:50+00:00	exit=101	1s	M4b batch 2d [crate=.]		peak_rss_sum_mb=517	peak_rss_max_proc_mb=470:rust_verify
+75	2026-11-15T10:13:57+00:00	exit=101	4s	M4b batch 2e: clear_rect and copy_rect [crate=.]	verification results:: 67 verified, 7 errors	peak_rss_sum_mb=889	peak_rss_max_proc_mb=724:rust_verify
+76	2026-11-15T10:14:18+00:00	exit=101	3s	M4b batch 2f: clear_rect and copy_rect rewritten [crate=.]	verification results:: 70 verified, 6 errors	peak_rss_sum_mb=895	peak_rss_max_proc_mb=729:rust_verify
+77	2026-11-15T10:14:35+00:00	exit=101	3s	M4b batch 2g: reveals and length invariants [crate=.]	verification results:: 70 verified, 6 errors	peak_rss_sum_mb=899	peak_rss_max_proc_mb=731:rust_verify
+78	2026-11-15T10:14:48+00:00	exit=101	4s	M4b batch 2h: row unfolding, usize bounds [crate=.]	verification results:: 70 verified, 7 errors	peak_rss_sum_mb=901	peak_rss_max_proc_mb=733:rust_verify
+79	2026-11-15T10:14:56+00:00	exit=101	3s	M4b batch 2i: reveals per iteration [crate=.]	verification results:: 70 verified, 7 errors	peak_rss_sum_mb=897	peak_rss_max_proc_mb=731:rust_verify
+80	2026-11-15T10:15:18+00:00	exit=101	4s	M4b batch 3: pointwise clear_rect and copy_rect [crate=.]	verification results:: 66 verified, 8 errors	peak_rss_sum_mb=899	peak_rss_max_proc_mb=731:rust_verify
+81	2026-11-15T10:15:57+00:00	exit=101	3s	M4b batch 4: per-byte clear_rect [crate=.]	verification results:: 70 verified, 6 errors	peak_rss_sum_mb=895	peak_rss_max_proc_mb=733:rust_verify
+82	2026-11-15T10:16:12+00:00	exit=101	3s	M4b batch 4b: cell bytes lemma [crate=.]	verification results:: 71 verified, 4 errors	peak_rss_sum_mb=897	peak_rss_max_proc_mb=730:rust_verify
+83	2026-11-15T10:16:34+00:00	exit=101	3s	M4b batch 4c: empty clip, guard restored [crate=.]	verification results:: 75 verified, 3 errors	peak_rss_sum_mb=898	peak_rss_max_proc_mb=734:rust_verify
+84	2026-11-15T10:16:49+00:00	exit=101	3s	M4b batch 4d: cell bytes, canvas_ok reveal [crate=.]	verification results:: 76 verified, 2 errors	peak_rss_sum_mb=979	peak_rss_max_proc_mb=729:rust_verify
+85	2026-11-15T10:17:04+00:00	exit=101	2s	M4b batch 4e: length facts in invariants [crate=.]		peak_rss_sum_mb=684	peak_rss_max_proc_mb=640:rust_verify
+86	2026-11-15T10:17:18+00:00	exit=101	4s	M4b batch 4f: nat length [crate=.]	verification results:: 75 verified, 3 errors	peak_rss_sum_mb=898	peak_rss_max_proc_mb=733:rust_verify
+87	2026-11-15T10:17:54+00:00	exit=101	1s	M4b batch 5: slab and cell-range lemmas [crate=.]		peak_rss_sum_mb=513	peak_rss_max_proc_mb=465:rust_verify
+88	2026-11-15T10:18:01+00:00	exit=101	4s	M4b batch 5b: slab lemmas [crate=.]	verification results:: 76 verified, 4 errors	peak_rss_sum_mb=893	peak_rss_max_proc_mb=728:rust_verify
+89	2026-11-15T10:18:17+00:00	exit=101	3s	M4b batch 5c: offset lemmas [crate=.]	verification results:: 77 verified, 3 errors	peak_rss_sum_mb=902	peak_rss_max_proc_mb=738:rust_verify
+90	2026-11-15T10:18:34+00:00	exit=101	1s	M4b batch 6: fold model restored, verify model only [crate=.]		peak_rss_sum_mb=525	peak_rss_max_proc_mb=479:rust_verify
+91	2026-11-15T10:19:07+00:00	exit=101	1s	M4b batch 7: fold-shaped clear_rect and copy_rect [crate=.]		peak_rss_sum_mb=534	peak_rss_max_proc_mb=485:rust_verify
+92	2026-11-15T10:19:15+00:00	exit=101	3s	M4b batch 7b: fold clear_rect and copy_rect [crate=.]		peak_rss_sum_mb=683	peak_rss_max_proc_mb=636:rust_verify
+93	2026-11-15T10:19:22+00:00	exit=101	3s	M4b batch 7c [crate=.]	verification results:: 73 verified, 6 errors	peak_rss_sum_mb=891	peak_rss_max_proc_mb=729:rust_verify
+94	2026-11-15T10:19:37+00:00	exit=101	3s	M4b batch 7d: canvas facts asserted [crate=.]	verification results:: 73 verified, 6 errors	peak_rss_sum_mb=891	peak_rss_max_proc_mb=730:rust_verify
+95	2026-11-15T10:19:54+00:00	exit=101	3s	M4b batch 7e: guards and empty identity [crate=.]	verification results:: 80 verified, 4 errors	peak_rss_sum_mb=891	peak_rss_max_proc_mb=729:rust_verify
+96	2026-11-15T10:20:13+00:00	exit=101	3s	M4b batch 7f: row step lemmas [crate=.]	verification results:: 80 verified, 6 errors	peak_rss_sum_mb=890	peak_rss_max_proc_mb=729:rust_verify
+97	2026-11-15T10:20:39+00:00	exit=101	1s	M4b batch 8: pointwise clear_rect [crate=.]		peak_rss_sum_mb=513	peak_rss_max_proc_mb=468:rust_verify
+98	2026-11-15T10:20:52+00:00	exit=101	2s	M4b batch 8b [crate=.]		peak_rss_sum_mb=691	peak_rss_max_proc_mb=642:rust_verify
+99	2026-11-15T10:21:01+00:00	exit=101	3s	M4b batch 8c [crate=.]	verification results:: 74 verified, 2 errors	peak_rss_sum_mb=899	peak_rss_max_proc_mb=733:rust_verify
+100	2026-11-15T10:21:31+00:00	exit=101	4s	M4b batch 8d: usize products [crate=.]	verification results:: 74 verified, 3 errors	peak_rss_sum_mb=894	peak_rss_max_proc_mb=733:rust_verify
+101	2026-11-15T10:21:48+00:00	exit=101	4s	M4b batch 8e [crate=.]	verification results:: 76 verified, 1 errors	peak_rss_sum_mb=899	peak_rss_max_proc_mb=737:rust_verify
+102	2026-11-15T10:22:01+00:00	exit=101	3s	M4b batch 8f: product lemma conclusions [crate=.]	verification results:: 76 verified, 1 errors	peak_rss_sum_mb=896	peak_rss_max_proc_mb=736:rust_verify
+103	2026-11-15T10:22:15+00:00	exit=101	3s	M4b batch 8g: row_px offsets [crate=.]	verification results:: 76 verified, 1 errors	peak_rss_sum_mb=895	peak_rss_max_proc_mb=733:rust_verify
+104	2026-11-15T10:22:24+00:00	exit=101	4s	M4b batch 8h [crate=.]	verification results:: 76 verified, 1 errors	peak_rss_sum_mb=895	peak_rss_max_proc_mb=734:rust_verify
+105	2026-11-15T10:22:31+00:00	exit=101	3s	M4b batch 8i [crate=.]	verification results:: 76 verified, 1 errors	peak_rss_sum_mb=903	peak_rss_max_proc_mb=740:rust_verify
+106	2026-11-15T10:22:47+00:00	exit=101	3s	M4b batch 8j [crate=.]	verification results:: 76 verified, 1 errors	peak_rss_sum_mb=898	peak_rss_max_proc_mb=737:rust_verify
+107	2026-11-15T10:23:02+00:00	exit=101	3s	M4b batch 8k: cell bytes lemma [crate=.]	verification results:: 77 verified, 1 errors	peak_rss_sum_mb=1055	peak_rss_max_proc_mb=728:rust_verify
+108	2026-11-15T10:23:17+00:00	exit=0	4s	M4b batch 8l [crate=.]	verification results:: 78 verified, 0 errors	peak_rss_sum_mb=907	peak_rss_max_proc_mb=737:rust_verify
+109	2026-11-15T10:23:25+00:00	exit=101	1s	M4b batch 9: copy_rect [crate=.]		peak_rss_sum_mb=547	peak_rss_max_proc_mb=497:rust_verify
+110	2026-11-15T10:23:34+00:00	exit=0	4s	M4b batch 9b: copy_rect [crate=.]	verification results:: 81 verified, 0 errors	peak_rss_sum_mb=898	peak_rss_max_proc_mb=737:rust_verify
+111	2026-11-15T10:23:46+00:00	exit=101	1s	M4b batch 10: dispose, save_rect, draw_all, composite [crate=.]		peak_rss_sum_mb=514	peak_rss_max_proc_mb=467:rust_verify
+112	2026-11-15T10:23:54+00:00	exit=101	3s	M4b batch 10b [crate=.]		peak_rss_sum_mb=691	peak_rss_max_proc_mb=643:rust_verify
+113	2026-11-15T10:24:01+00:00	exit=101	2s	M4b batch 10c: dispose, draw_all, composite [crate=.]		peak_rss_sum_mb=716	peak_rss_max_proc_mb=667:rust_verify
+114	2026-11-15T10:24:09+00:00	exit=101	3s	M4b batch 10d [crate=.]	verification results:: 83 verified, 3 errors	peak_rss_sum_mb=902	peak_rss_max_proc_mb=744:rust_verify
+115	2026-11-15T10:24:25+00:00	exit=101	2s	M4b batch 10e: composite via mc_from [crate=.]		peak_rss_sum_mb=526	peak_rss_max_proc_mb=479:rust_verify
+116	2026-11-15T10:24:33+00:00	exit=101	4s	M4b batch 10f: composite [crate=.]	verification results:: 84 verified, 3 errors	peak_rss_sum_mb=916	peak_rss_max_proc_mb=746:rust_verify
+117	2026-11-15T10:24:56+00:00	exit=101	4s	M4b batch 11: draw_run model [crate=.]	verification results:: 85 verified, 4 errors	peak_rss_sum_mb=1175	peak_rss_max_proc_mb=746:rust_verify
+118	2026-11-15T10:25:09+00:00	exit=101	4s	M4b batch 11b: draw_all with run model [crate=.]	verification results:: 85 verified, 4 errors	peak_rss_sum_mb=905	peak_rss_max_proc_mb=746:rust_verify
+119	2026-11-15T10:25:32+00:00	exit=101	4s	M4b batch 11c [crate=.]	verification results:: 85 verified, 3 errors	peak_rss_sum_mb=902	peak_rss_max_proc_mb=742:rust_verify
+120	2026-11-15T10:25:55+00:00	exit=101	1s	M4b batch 12: draw_upto prefix model [crate=.]		peak_rss_sum_mb=546	peak_rss_max_proc_mb=498:rust_verify
+121	2026-11-15T10:26:01+00:00	exit=101	3s	M4b batch 12b [crate=.]		peak_rss_sum_mb=704	peak_rss_max_proc_mb=657:rust_verify
+122	2026-11-15T10:26:15+00:00	exit=101	3s	M4b batch 12c [crate=.]	verification results:: 87 verified, 4 errors	peak_rss_sum_mb=898	peak_rss_max_proc_mb=742:rust_verify
+123	2026-11-15T10:26:43+00:00	exit=101	4s	M4b batch 13: draw_all with ghost run [crate=.]	verification results:: 86 verified, 5 errors	peak_rss_sum_mb=915	peak_rss_max_proc_mb=746:rust_verify
+124	2026-11-15T10:27:08+00:00	exit=101	4s	M4b batch 14: draw_all fold identity [crate=.]	verification results:: 85 verified, 3 errors	peak_rss_sum_mb=908	peak_rss_max_proc_mb=746:rust_verify
+125	2026-11-15T10:27:23+00:00	exit=101	3s	M4b batch 14b: canvas_ok invariant [crate=.]	verification results:: 86 verified, 2 errors	peak_rss_sum_mb=1181	peak_rss_max_proc_mb=745:rust_verify
+126	2026-11-15T10:27:41+00:00	exit=101	0s	M4b batch 14c: ghost pre-state [crate=.]		peak_rss_sum_mb=518	peak_rss_max_proc_mb=467:rust_verify
+127	2026-11-15T10:27:49+00:00	exit=101	4s	M4b batch 14d [crate=.]	verification results:: 86 verified, 2 errors	peak_rss_sum_mb=1174	peak_rss_max_proc_mb=744:rust_verify
+128	2026-11-15T10:28:09+00:00	exit=101	4s	M4b batch 14e [crate=.]	verification results:: 86 verified, 2 errors	peak_rss_sum_mb=900	peak_rss_max_proc_mb=742:rust_verify
+129	2026-11-15T10:28:20+00:00	exit=101	3s	M4b batch 14f [crate=.]		peak_rss_sum_mb=688	peak_rss_max_proc_mb=642:rust_verify
+130	2026-11-15T10:28:28+00:00	exit=101	4s	M4b batch 14g [crate=.]	verification results:: 86 verified, 2 errors	peak_rss_sum_mb=907	peak_rss_max_proc_mb=747:rust_verify
+131	2026-11-15T10:28:44+00:00	exit=101	3s	M4b batch 14h [crate=.]	verification results:: 86 verified, 2 errors	peak_rss_sum_mb=905	peak_rss_max_proc_mb=748:rust_verify
+132	2026-11-15T10:29:05+00:00	exit=101	4s	M4b batch 14i [crate=.]	verification results:: 86 verified, 2 errors	peak_rss_sum_mb=912	peak_rss_max_proc_mb=747:rust_verify
+133	2026-11-15T10:29:14+00:00	exit=101	3s	M4b batch 14j [crate=.]	verification results:: 86 verified, 2 errors	peak_rss_sum_mb=914	peak_rss_max_proc_mb=748:rust_verify
+134	2026-11-15T10:29:23+00:00	exit=101	4s	M4b batch 14k [crate=.]	verification results:: 86 verified, 2 errors	peak_rss_sum_mb=917	peak_rss_max_proc_mb=749:rust_verify
+135	2026-11-15T10:29:40+00:00	exit=101	4s	M4b batch 14l [crate=.]	verification results:: 85 verified, 3 errors	peak_rss_sum_mb=902	peak_rss_max_proc_mb=744:rust_verify
+136	2026-11-15T10:29:48+00:00	exit=101	4s	M4b batch 14m [crate=.]	verification results:: 86 verified, 2 errors	peak_rss_sum_mb=911	peak_rss_max_proc_mb=747:rust_verify
+137	2026-11-15T10:29:57+00:00	exit=101	4s	M4b batch 14n [crate=.]	verification results:: 86 verified, 2 errors	peak_rss_sum_mb=906	peak_rss_max_proc_mb=742:rust_verify
+138	2026-11-15T10:30:17+00:00	exit=101	4s	M4b batch 14o [crate=.]	verification results:: 86 verified, 2 errors	peak_rss_sum_mb=908	peak_rss_max_proc_mb=744:rust_verify
+139	2026-11-15T10:30:26+00:00	exit=101	4s	M4b batch 14p [crate=.]	verification results:: 86 verified, 2 errors	peak_rss_sum_mb=897	peak_rss_max_proc_mb=741:rust_verify
+140	2026-11-15T10:30:37+00:00	exit=101	3s	M4b batch 14q [crate=.]	verification results:: 86 verified, 2 errors	peak_rss_sum_mb=902	peak_rss_max_proc_mb=745:rust_verify
+141	2026-11-15T10:30:51+00:00	exit=101	4s	M4b batch 15: draw_run_at unfolding lemmas [crate=.]	verification results:: 88 verified, 2 errors	peak_rss_sum_mb=908	peak_rss_max_proc_mb=746:rust_verify
+142	2026-11-15T10:30:59+00:00	exit=101	4s	M4b batch 15b [crate=.]	verification results:: 88 verified, 2 errors	peak_rss_sum_mb=910	peak_rss_max_proc_mb=747:rust_verify
+143	2026-11-15T10:31:10+00:00	exit=101	4s	M4b batch 15c [crate=.]	verification results:: 88 verified, 2 errors	peak_rss_sum_mb=909	peak_rss_max_proc_mb=742:rust_verify
+144	2026-11-15T10:31:32+00:00	exit=101	4s	M4b batch 15d [crate=.]	verification results:: 88 verified, 2 errors	peak_rss_sum_mb=917	peak_rss_max_proc_mb=748:rust_verify
+145	2026-11-15T10:31:41+00:00	exit=101	4s	M4b batch 15e [crate=.]	verification results:: 88 verified, 2 errors	peak_rss_sum_mb=907	peak_rss_max_proc_mb=742:rust_verify
+146	2026-11-15T10:32:05+00:00	exit=101	4s	M4b batch 15f [crate=.]	verification results:: 87 verified, 3 errors	peak_rss_sum_mb=902	peak_rss_max_proc_mb=741:rust_verify
+147	2026-11-15T10:32:14+00:00	exit=101	4s	M4b batch 15g [crate=.]	verification results:: 88 verified, 2 errors	peak_rss_sum_mb=900	peak_rss_max_proc_mb=744:rust_verify
+148	2026-11-15T10:32:34+00:00	exit=101	2s	M4b batch 16: composite glue [crate=.]		peak_rss_sum_mb=689	peak_rss_max_proc_mb=644:rust_verify
+149	2026-11-15T10:32:42+00:00	exit=101	4s	M4b batch 16b [crate=.]	verification results:: 88 verified, 2 errors	peak_rss_sum_mb=916	peak_rss_max_proc_mb=752:rust_verify
+150	2026-11-15T10:32:49+00:00	exit=101	2s	M4b batch 16c: mc as run triple [crate=.]		peak_rss_sum_mb=689	peak_rss_max_proc_mb=641:rust_verify
+151	2026-11-15T10:32:59+00:00	exit=101	4s	M4b batch 17: composite triple form [crate=.]	verification results:: 89 verified, 1 errors	peak_rss_sum_mb=910	peak_rss_max_proc_mb=743:rust_verify
+152	2026-11-15T10:33:26+00:00	exit=101	4s	M4b batch 18: Err branch via post [crate=.]	verification results:: 89 verified, 1 errors	peak_rss_sum_mb=906	peak_rss_max_proc_mb=746:rust_verify
+153	2026-11-15T10:33:47+00:00	exit=101	4s	M4b batch 18b [crate=.]	verification results:: 89 verified, 1 errors	peak_rss_sum_mb=895	peak_rss_max_proc_mb=744:rust_verify
+154	2026-11-15T10:34:02+00:00	exit=101	3s	M4b batch 18c: single pair invariant [crate=.]	verification results:: 89 verified, 1 errors	peak_rss_sum_mb=913	peak_rss_max_proc_mb=750:rust_verify
+155	2026-11-15T10:34:23+00:00	exit=101	4s	M4b batch 18d [crate=.]	verification results:: 89 verified, 1 errors	peak_rss_sum_mb=903	peak_rss_max_proc_mb=745:rust_verify
+156	2026-11-15T10:34:34+00:00	exit=101	4s	M4b batch 18e [crate=.]	verification results:: 89 verified, 1 errors	peak_rss_sum_mb=904	peak_rss_max_proc_mb=746:rust_verify
+157	2026-11-15T10:34:48+00:00	exit=101	3s	M4b batch 18f [crate=.]	verification results:: 89 verified, 1 errors	peak_rss_sum_mb=913	peak_rss_max_proc_mb=746:rust_verify
+158	2026-11-15T10:35:07+00:00	exit=101	4s	M4b batch 18g [crate=.]	verification results:: 89 verified, 1 errors	peak_rss_sum_mb=913	peak_rss_max_proc_mb=749:rust_verify
+159	2026-11-15T10:35:17+00:00	exit=101	4s	M4b batch 18h [crate=.]	verification results:: 89 verified, 1 errors	peak_rss_sum_mb=903	peak_rss_max_proc_mb=745:rust_verify
+160	2026-11-15T10:35:29+00:00	exit=101	4s	M4b batch 18i: invariant captured on pre [crate=.]	verification results:: 89 verified, 1 errors	peak_rss_sum_mb=917	peak_rss_max_proc_mb=751:rust_verify
+161	2026-11-15T10:35:47+00:00	exit=101	4s	M4b batch 18j [crate=.]	verification results:: 89 verified, 1 errors	peak_rss_sum_mb=1183	peak_rss_max_proc_mb=750:rust_verify
+162	2026-11-15T10:35:59+00:00	exit=0	4s	M4b batch 19: draw_all with old(canvas) [crate=.]	verification results:: 90 verified, 0 errors	peak_rss_sum_mb=1063	peak_rss_max_proc_mb=744:rust_verify
+163	2026-11-15T10:36:11+00:00	exit=101	0s	M4a: T5 offset and address clauses [crate=.]		peak_rss_sum_mb=539	peak_rss_max_proc_mb=494:rust_verify
+164	2026-11-15T10:36:17+00:00	exit=101	1s	M4a: T5 offset clauses [crate=.]		peak_rss_sum_mb=536	peak_rss_max_proc_mb=491:rust_verify
+165	2026-11-15T10:36:25+00:00	exit=101	3s	M4a: T5 offset clauses [crate=.]		peak_rss_sum_mb=684	peak_rss_max_proc_mb=638:rust_verify
+166	2026-11-15T10:36:32+00:00	exit=101	4s	M4a: T5 offset clauses [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=918	peak_rss_max_proc_mb=751:rust_verify
+167	2026-11-15T10:36:42+00:00	exit=101	1s	M4a: frame address injectivity [crate=.]		peak_rss_sum_mb=531	peak_rss_max_proc_mb=483:rust_verify
+168	2026-11-15T10:36:50+00:00	exit=101	4s	M4a: frame address injectivity [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=917	peak_rss_max_proc_mb=752:rust_verify
+169	2026-11-15T10:36:59+00:00	exit=101	4s	M4a: injectivity bounds [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=920	peak_rss_max_proc_mb=755:rust_verify
+170	2026-11-15T10:37:07+00:00	exit=101	4s	M4a: injectivity via one address [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=916	peak_rss_max_proc_mb=748:rust_verify
+171	2026-11-15T10:37:14+00:00	exit=101	1s	M4a: injectivity addr shape [crate=.]		peak_rss_sum_mb=529	peak_rss_max_proc_mb=481:rust_verify
+172	2026-11-15T10:37:22+00:00	exit=101	4s	M4a: injectivity addr [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=918	peak_rss_max_proc_mb=754:rust_verify
+173	2026-11-15T10:37:31+00:00	exit=101	3s	M4a: address injectivity, slab form [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=916	peak_rss_max_proc_mb=748:rust_verify
+174	2026-11-15T10:37:43+00:00	exit=101	4s	M4a: injectivity with c-bounds [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=1174	peak_rss_max_proc_mb=747:rust_verify
+175	2026-11-15T10:37:50+00:00	exit=101	4s	M4a: injectivity bounds flat [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=918	peak_rss_max_proc_mb=752:rust_verify
+176	2026-11-15T10:37:59+00:00	exit=101	4s	M4a: injectivity column bounds [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=913	peak_rss_max_proc_mb=746:rust_verify
+177	2026-11-15T10:38:16+00:00	exit=101	4s	M4a: injectivity column bounds 2 [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=921	peak_rss_max_proc_mb=751:rust_verify
+178	2026-11-15T10:39:23+00:00	exit=101	4s	M4a: injectivity bounds 3 [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=919	peak_rss_max_proc_mb=748:rust_verify
+179	2026-11-15T10:40:02+00:00	exit=101	4s	M4a: injectivity with 0<=left [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=919	peak_rss_max_proc_mb=752:rust_verify
+180	2026-11-15T10:40:12+00:00	exit=101	4s	M4a: injectivity via d1/d2 [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=923	peak_rss_max_proc_mb=758:rust_verify
+181	2026-11-15T10:40:27+00:00	exit=101	4s	M4a: injectivity slab order [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=917	peak_rss_max_proc_mb=750:rust_verify
+182	2026-11-15T10:40:35+00:00	exit=101	4s	M4a: injectivity with grouped addr [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=917	peak_rss_max_proc_mb=753:rust_verify
+183	2026-11-15T10:40:51+00:00	exit=101	4s	M4a: injectivity slab on the column sum [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=915	peak_rss_max_proc_mb=752:rust_verify
+184	2026-11-15T10:41:14+00:00	exit=101	4s	M4a: injectivity slab calls fixed [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=913	peak_rss_max_proc_mb=748:rust_verify
+185	2026-11-15T10:41:23+00:00	exit=101	4s	M4a: injectivity row equality [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=918	peak_rss_max_proc_mb=751:rust_verify
+186	2026-11-15T10:41:50+00:00	exit=101	4s	M4a: injectivity row equality v2 [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=1175	peak_rss_max_proc_mb=754:rust_verify
+187	2026-11-15T10:42:46+00:00	exit=101	4s	M4a: injectivity rows proved separately [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=920	peak_rss_max_proc_mb=751:rust_verify
+188	2026-11-15T10:42:57+00:00	exit=101	5s	M4a: injectivity y1 - top [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=915	peak_rss_max_proc_mb=750:rust_verify
+189	2026-11-15T10:43:06+00:00	exit=101	5s	M4a: injectivity with ry1/ry2 [crate=.]	verification results:: 92 verified, 2 errors	peak_rss_sum_mb=917	peak_rss_max_proc_mb=747:rust_verify
+190	2026-11-15T10:43:17+00:00	exit=101	4s	M4a: injectivity final [crate=.]	verification results:: 93 verified, 1 errors	peak_rss_sum_mb=913	peak_rss_max_proc_mb=747:rust_verify
+191	2026-11-15T10:43:32+00:00	exit=101	4s	M4a: offset strict with grouped sum [crate=.]	verification results:: 93 verified, 1 errors	peak_rss_sum_mb=1176	peak_rss_max_proc_mb=753:rust_verify
+192	2026-11-15T10:43:40+00:00	exit=101	4s	M4a: offset strict grouped [crate=.]	verification results:: 93 verified, 1 errors	peak_rss_sum_mb=1183	peak_rss_max_proc_mb=750:rust_verify
+193	2026-11-15T10:43:47+00:00	exit=101	3s	M4a: offset strict final [crate=.]		peak_rss_sum_mb=717	peak_rss_max_proc_mb=668:rust_verify
+194	2026-11-15T10:43:55+00:00	exit=101	4s	M4a: T5 offset strict done [crate=.]	verification results:: 93 verified, 1 errors	peak_rss_sum_mb=1173	peak_rss_max_proc_mb=750:rust_verify
+195	2026-11-15T10:44:08+00:00	exit=101	1s	M4a: T5 offset strict complete [crate=.]		peak_rss_sum_mb=530	peak_rss_max_proc_mb=484:rust_verify
+196	2026-11-15T10:44:13+00:00	exit=101	1s	M4a: T5 offset strict complete [crate=.]		peak_rss_sum_mb=528	peak_rss_max_proc_mb=483:rust_verify
+197	2026-11-15T10:44:22+00:00	exit=0	4s	M4a: T5 offset strict complete [crate=.]	verification results:: 94 verified, 0 errors	peak_rss_sum_mb=914	peak_rss_max_proc_mb=754:rust_verify
+198	2026-11-15T10:44:36+00:00	exit=0	4s	M4b: output pixel clause definitions [crate=.]	verification results:: 94 verified, 0 errors	peak_rss_sum_mb=914	peak_rss_max_proc_mb=749:rust_verify
+199	2026-11-15T10:44:45+00:00	exit=101	1s	M4b: pixel clause lemmas [crate=.]		peak_rss_sum_mb=535	peak_rss_max_proc_mb=486:rust_verify
+200	2026-11-15T10:44:57+00:00	exit=101	2s	M4b: pixel clause lemmas 2 [crate=.]		peak_rss_sum_mb=684	peak_rss_max_proc_mb=639:rust_verify
+201	2026-11-15T10:45:04+00:00	exit=101	3s	M4b: index_ok helper [crate=.]		peak_rss_sum_mb=686	peak_rss_max_proc_mb=638:rust_verify
+202	2026-11-15T10:45:10+00:00	exit=101	1s	M4b: initial pixels simple [crate=.]		peak_rss_sum_mb=528	peak_rss_max_proc_mb=481:rust_verify
+203	2026-11-15T10:45:17+00:00	exit=101	2s	M4b: initial pixels [crate=.]		peak_rss_sum_mb=709	peak_rss_max_proc_mb=661:rust_verify
+204	2026-11-15T10:45:32+00:00	exit=101	4s	M4b: nat lengths [crate=.]	verification results:: 96 verified, 4 errors	peak_rss_sum_mb=927	peak_rss_max_proc_mb=763:rust_verify
+205	2026-11-15T10:45:52+00:00	exit=101	4s	M4b: pixel clause pointwise [crate=.]	verification results:: 96 verified, 4 errors	peak_rss_sum_mb=923	peak_rss_max_proc_mb=762:rust_verify
+206	2026-11-15T10:46:11+00:00	exit=101	5s	M4b: cell bounds and suffix recursion [crate=.]	verification results:: 98 verified, 4 errors	peak_rss_sum_mb=924	peak_rss_max_proc_mb=764:rust_verify
+207	2026-11-15T10:46:29+00:00	exit=101	4s	M4b: pixel clause 3 [crate=.]	verification results:: 98 verified, 4 errors	peak_rss_sum_mb=930	peak_rss_max_proc_mb=769:rust_verify
+208	2026-11-15T10:46:40+00:00	exit=101	5s	M4b: pixel clause 4 [crate=.]	verification results:: 99 verified, 3 errors	peak_rss_sum_mb=919	peak_rss_max_proc_mb=760:rust_verify
+209	2026-11-15T10:47:04+00:00	exit=101	0s	M4b: target cell shape [crate=.]		peak_rss_sum_mb=534	peak_rss_max_proc_mb=487:rust_verify
+210	2026-11-15T10:47:12+00:00	exit=101	4s	M4b: target cell shape 2 [crate=.]	verification results:: 100 verified, 4 errors	peak_rss_sum_mb=934	peak_rss_max_proc_mb=765:rust_verify
+211	2026-11-15T10:47:31+00:00	exit=101	1s	M4b: target cell shape 3 [crate=.]		peak_rss_sum_mb=536	peak_rss_max_proc_mb=488:rust_verify
+212	2026-11-15T10:47:39+00:00	exit=101	4s	M4b: target cell shape 4 [crate=.]	verification results:: 101 verified, 3 errors	peak_rss_sum_mb=924	peak_rss_max_proc_mb=761:rust_verify
+213	2026-11-15T10:47:53+00:00	exit=101	1s	M4b: draw_step_pixels with geometry [crate=.]		peak_rss_sum_mb=532	peak_rss_max_proc_mb=485:rust_verify
+214	2026-11-15T10:47:58+00:00	exit=101	1s	M4b: helpers re-added [crate=.]		peak_rss_sum_mb=531	peak_rss_max_proc_mb=487:rust_verify
+215	2026-11-15T10:48:08+00:00	exit=101	5s	M4b: draw_run_pixels with geometry [crate=.]	verification results:: 102 verified, 2 errors	peak_rss_sum_mb=932	peak_rss_max_proc_mb=768:rust_verify
+216	2026-11-15T10:48:23+00:00	exit=101	2s	M4b: suffix recursion fix [crate=.]		peak_rss_sum_mb=687	peak_rss_max_proc_mb=639:rust_verify
+217	2026-11-15T10:48:31+00:00	exit=101	2s	M4b: done lemma int q [crate=.]		peak_rss_sum_mb=707	peak_rss_max_proc_mb=661:rust_verify
+218	2026-11-15T10:48:45+00:00	exit=101	5s	M4b: int/nat lengths [crate=.]	verification results:: 102 verified, 2 errors	peak_rss_sum_mb=923	peak_rss_max_proc_mb=763:rust_verify
+219	2026-11-15T10:49:13+00:00	exit=101	5s	M4b: pixel clause position-indexed [crate=.]	verification results:: 102 verified, 2 errors	peak_rss_sum_mb=933	peak_rss_max_proc_mb=765:rust_verify
+220	2026-11-15T10:49:20+00:00	exit=101	1s	M4b: pixel clause position-indexed [crate=.]		peak_rss_sum_mb=531	peak_rss_max_proc_mb=486:rust_verify
+221	2026-11-15T10:49:33+00:00	exit=101	4s	M4b: unfold lemmas restored [crate=.]	verification results:: 101 verified, 2 errors	peak_rss_sum_mb=933	peak_rss_max_proc_mb=765:rust_verify
+222	2026-11-15T10:49:50+00:00	exit=101	4s	M4b: pixel clause final [crate=.]	verification results:: 102 verified, 1 errors	peak_rss_sum_mb=1067	peak_rss_max_proc_mb=758:rust_verify
+223	2026-11-15T10:50:00+00:00	exit=101	4s	M4b: pixel clause whole-frame [crate=.]	verification results:: 102 verified, 1 errors	peak_rss_sum_mb=927	peak_rss_max_proc_mb=764:rust_verify
+224	2026-11-15T10:50:12+00:00	exit=101	4s	M4b: pixel clause with at-0 statement [crate=.]	verification results:: 102 verified, 1 errors	peak_rss_sum_mb=932	peak_rss_max_proc_mb=767:rust_verify
+225	2026-11-15T10:50:22+00:00	exit=101	4s	M4b: pixel clause connect at-0 [crate=.]	verification results:: 102 verified, 1 errors	peak_rss_sum_mb=931	peak_rss_max_proc_mb=765:rust_verify
+226	2026-11-15T10:50:39+00:00	exit=101	4s	M4b: pixel clause implication form [crate=.]	verification results:: 102 verified, 1 errors	peak_rss_sum_mb=923	peak_rss_max_proc_mb=758:rust_verify
+227	2026-11-15T10:50:56+00:00	exit=101	4s	M4b: no-error lemma [crate=.]	verification results:: 103 verified, 1 errors	peak_rss_sum_mb=937	peak_rss_max_proc_mb=769:rust_verify
+228	2026-11-15T10:51:11+00:00	exit=101	0s	M4b: no-error with the at-0 link [crate=.]		peak_rss_sum_mb=515	peak_rss_max_proc_mb=467:rust_verify
+229	2026-11-15T10:51:16+00:00	exit=101	1s	M4b: no-error lemma 2 [crate=.]		peak_rss_sum_mb=536	peak_rss_max_proc_mb=486:rust_verify
+230	2026-11-15T10:51:33+00:00	exit=101	4s	M4b: no-error lemma 3 [crate=.]	verification results:: 104 verified, 1 errors	peak_rss_sum_mb=921	peak_rss_max_proc_mb=765:rust_verify
+231	2026-11-15T10:51:41+00:00	exit=101	4s	M4b: no-error lemma 4 [crate=.]	verification results:: 104 verified, 1 errors	peak_rss_sum_mb=1072	peak_rss_max_proc_mb=762:rust_verify
+232	2026-11-15T10:51:48+00:00	exit=101	1s	M4b: no-error lemma simpler [crate=.]		peak_rss_sum_mb=532	peak_rss_max_proc_mb=487:rust_verify
+233	2026-11-15T10:51:56+00:00	exit=101	4s	M4b: no-error lemma [crate=.]	verification results:: 104 verified, 1 errors	peak_rss_sum_mb=930	peak_rss_max_proc_mb=763:rust_verify
+234	2026-11-15T10:52:13+00:00	exit=101	4s	M4b: no-error lemma tail [crate=.]	verification results:: 104 verified, 1 errors	peak_rss_sum_mb=929	peak_rss_max_proc_mb=763:rust_verify
+235	2026-11-15T10:52:23+00:00	exit=0	4s	M4b: pixel clause conditional [crate=.]	verification results:: 104 verified, 0 errors	peak_rss_sum_mb=932	peak_rss_max_proc_mb=764:rust_verify
+236	2026-11-15T10:52:35+00:00	exit=101	3s	M4b: frame sequence fold [crate=.]		peak_rss_sum_mb=720	peak_rss_max_proc_mb=670:rust_verify
+237	2026-11-15T10:52:46+00:00	exit=101	1s	M4b: frame sequence with error carry [crate=.]		peak_rss_sum_mb=41	peak_rss_max_proc_mb=34:cargo
+238	2026-11-15T10:52:56+00:00	exit=0	4s	M4b: frame sequence fixed [crate=.]	verification results:: 106 verified, 0 errors	peak_rss_sum_mb=1068	peak_rss_max_proc_mb=766:rust_verify
+239	2026-11-15T10:53:06+00:00	exit=101	4s	M4b: next_frame driver, Clip clauses [crate=.]	verification results:: 108 verified, 1 errors	peak_rss_sum_mb=936	peak_rss_max_proc_mb=768:rust_verify
+240	2026-11-15T10:53:14+00:00	exit=101	4s	M4b: clip outside proof [crate=.]	verification results:: 108 verified, 1 errors	peak_rss_sum_mb=933	peak_rss_max_proc_mb=766:rust_verify
+241	2026-11-15T10:53:22+00:00	exit=101	4s	M4b: clip outside with width/height [crate=.]	verification results:: 108 verified, 1 errors	peak_rss_sum_mb=934	peak_rss_max_proc_mb=768:rust_verify
+242	2026-11-15T10:53:27+00:00	exit=101	1s	M4b: clip outside 3 [crate=.]		peak_rss_sum_mb=532	peak_rss_max_proc_mb=487:rust_verify
+243	2026-11-15T10:53:35+00:00	exit=101	4s	M4b: clip outside 4 [crate=.]	verification results:: 108 verified, 1 errors	peak_rss_sum_mb=917	peak_rss_max_proc_mb=762:rust_verify
+244	2026-11-15T10:53:40+00:00	exit=101	1s	M4b: ir/iv nonnegativity [crate=.]		peak_rss_sum_mb=526	peak_rss_max_proc_mb=482:rust_verify
+245	2026-11-15T10:53:48+00:00	exit=101	4s	M4b: clip outside 5 [crate=.]		peak_rss_sum_mb=988	peak_rss_max_proc_mb=759:rust_verify
+246	2026-11-15T10:53:58+00:00	exit=101	4s	M4b: ir_nat decreases [crate=.]	verification results:: 108 verified, 3 errors	peak_rss_sum_mb=939	peak_rss_max_proc_mb=771:rust_verify
+247	2026-11-15T10:54:04+00:00	exit=101	1s	M4b: clip outside 6 [crate=.]		peak_rss_sum_mb=538	peak_rss_max_proc_mb=490:rust_verify
+248	2026-11-15T10:54:16+00:00	exit=101	4s	M4b: clip outside 7 [crate=.]	verification results:: 110 verified, 2 errors	peak_rss_sum_mb=941	peak_rss_max_proc_mb=772:rust_verify
+249	2026-11-15T10:54:31+00:00	exit=101	4s	M4b: clip outside 8 [crate=.]	verification results:: 111 verified, 1 errors	peak_rss_sum_mb=933	peak_rss_max_proc_mb=764:rust_verify
+250	2026-11-15T10:54:39+00:00	exit=101	4s	M4b: clip outside 9 [crate=.]	verification results:: 111 verified, 1 errors	peak_rss_sum_mb=928	peak_rss_max_proc_mb=768:rust_verify
+251	2026-11-15T10:54:48+00:00	exit=101	4s	M4b: clip outside 10 [crate=.]	verification results:: 111 verified, 1 errors	peak_rss_sum_mb=936	peak_rss_max_proc_mb=766:rust_verify
+252	2026-11-15T10:54:56+00:00	exit=101	1s	M4b: iv total nonnegativity [crate=.]		peak_rss_sum_mb=537	peak_rss_max_proc_mb=488:rust_verify
+253	2026-11-15T10:55:03+00:00	exit=101	4s	M4b: iv total 2 [crate=.]	verification results:: 111 verified, 2 errors	peak_rss_sum_mb=987	peak_rss_max_proc_mb=765:rust_verify
+254	2026-11-15T10:55:14+00:00	exit=101	4s	M4b: iv total via residual [crate=.]	verification results:: 112 verified, 2 errors	peak_rss_sum_mb=940	peak_rss_max_proc_mb=772:rust_verify
+255	2026-11-15T10:55:25+00:00	exit=101	4s	M4b: iv total with pass form [crate=.]	verification results:: 112 verified, 2 errors	peak_rss_sum_mb=933	peak_rss_max_proc_mb=770:rust_verify
+256	2026-11-15T10:55:36+00:00	exit=101	4s	M4b: iv total with explicit unfolding [crate=.]	verification results:: 113 verified, 1 errors	peak_rss_sum_mb=928	peak_rss_max_proc_mb=763:rust_verify
+257	2026-11-15T10:55:47+00:00	exit=101	1s	M4b: target coordinate bounds [crate=.]		peak_rss_sum_mb=546	peak_rss_max_proc_mb=497:rust_verify
+258	2026-11-15T10:55:55+00:00	exit=101	4s	M4b: ir nonneg by pass walk [crate=.]	verification results:: 117 verified, 3 errors	peak_rss_sum_mb=927	peak_rss_max_proc_mb=770:rust_verify
+259	2026-11-15T10:56:20+00:00	exit=101	5s	M4b: ir nonneg literals [crate=.]	verification results:: 117 verified, 3 errors	peak_rss_sum_mb=936	peak_rss_max_proc_mb=768:rust_verify
+260	2026-11-15T10:56:44+00:00	exit=101	4s	M4b: ir nonneg by cases [crate=.]	verification results:: 117 verified, 3 errors	peak_rss_sum_mb=935	peak_rss_max_proc_mb=768:rust_verify
+261	2026-11-15T10:57:09+00:00	exit=101	4s	M4b: div nonneg cases [crate=.]	verification results:: 117 verified, 3 errors	peak_rss_sum_mb=933	peak_rss_max_proc_mb=766:rust_verify
+262	2026-11-15T10:57:21+00:00	exit=101	1s	M4b: div nonneg with mod bound [crate=.]		peak_rss_sum_mb=536	peak_rss_max_proc_mb=489:rust_verify
+263	2026-11-15T10:57:30+00:00	exit=101	4s	M4b: div nonneg final [crate=.]	verification results:: 117 verified, 4 errors	peak_rss_sum_mb=939	peak_rss_max_proc_mb=773:rust_verify
+264	2026-11-15T10:57:43+00:00	exit=101	4s	M4b: iv-based clipping bounds [crate=.]	verification results:: 117 verified, 4 errors	peak_rss_sum_mb=929	peak_rss_max_proc_mb=766:rust_verify
+265	2026-11-15T10:57:54+00:00	exit=101	4s	M4b: clip clauses final [crate=.]	verification results:: 116 verified, 2 errors	peak_rss_sum_mb=931	peak_rss_max_proc_mb=766:rust_verify
+266	2026-11-15T10:58:01+00:00	exit=101	1s	M4b: target_y_nonneg [crate=.]		peak_rss_sum_mb=540	peak_rss_max_proc_mb=493:rust_verify
+267	2026-11-15T10:58:12+00:00	exit=101	5s	M4b: ir == iv for any argument [crate=.]	verification results:: 120 verified, 3 errors	peak_rss_sum_mb=942	peak_rss_max_proc_mb=771:rust_verify
+268	2026-11-15T10:58:22+00:00	exit=101	4s	M4b: ir == iv any, no recursion [crate=.]	verification results:: 121 verified, 2 errors	peak_rss_sum_mb=949	peak_rss_max_proc_mb=775:rust_verify
+269	2026-11-15T10:58:32+00:00	exit=101	4s	M4b: ir == iv with count lemma [crate=.]	verification results:: 121 verified, 2 errors	peak_rss_sum_mb=930	peak_rss_max_proc_mb=768:rust_verify
+270	2026-11-15T10:58:42+00:00	exit=101	4s	M4b: ir==iv any final [crate=.]	verification results:: 121 verified, 2 errors	peak_rss_sum_mb=941	peak_rss_max_proc_mb=773:rust_verify
+271	2026-11-15T10:59:02+00:00	exit=101	1s	M4b: clip clauses on the drawing domain [crate=.]		peak_rss_sum_mb=542	peak_rss_max_proc_mb=494:rust_verify
+272	2026-11-15T10:59:13+00:00	exit=101	4s	M4b: clip clauses restricted [crate=.]	verification results:: 118 verified, 2 errors	peak_rss_sum_mb=935	peak_rss_max_proc_mb=768:rust_verify
+273	2026-11-15T10:59:23+00:00	exit=101	5s	M4b: ir_at nonneg total [crate=.]	verification results:: 120 verified, 2 errors	peak_rss_sum_mb=939	peak_rss_max_proc_mb=773:rust_verify
+274	2026-11-15T10:59:31+00:00	exit=101	4s	M4b: ir_at nonneg step [crate=.]	verification results:: 120 verified, 2 errors	peak_rss_sum_mb=937	peak_rss_max_proc_mb=771:rust_verify
+275	2026-11-15T10:59:43+00:00	exit=101	4s	M4b: clip clauses simplified [crate=.]	verification results:: 120 verified, 3 errors	peak_rss_sum_mb=941	peak_rss_max_proc_mb=773:rust_verify
+276	2026-11-15T10:59:54+00:00	exit=101	4s	M4b: pass3 route [crate=.]	verification results:: 122 verified, 3 errors	peak_rss_sum_mb=946	peak_rss_max_proc_mb=776:rust_verify
+277	2026-11-15T11:00:06+00:00	exit=101	5s	M4b: pass3 route 2 [crate=.]	verification results:: 122 verified, 3 errors	peak_rss_sum_mb=936	peak_rss_max_proc_mb=773:rust_verify
+278	2026-11-15T11:00:24+00:00	exit=101	4s	M4b: pass3 short form [crate=.]	verification results:: 123 verified, 2 errors	peak_rss_sum_mb=1071	peak_rss_max_proc_mb=767:rust_verify
+279	2026-11-15T11:00:41+00:00	exit=101	5s	M4b: k=3 assert [crate=.]	verification results:: 123 verified, 2 errors	peak_rss_sum_mb=937	peak_rss_max_proc_mb=773:rust_verify
+280	2026-11-15T11:00:48+00:00	exit=101	1s	M4b: ir_at nonneg by literal k [crate=.]		peak_rss_sum_mb=526	peak_rss_max_proc_mb=482:rust_verify
+281	2026-11-15T11:00:53+00:00	exit=101	1s	M4b: dedupe [crate=.]		peak_rss_sum_mb=538	peak_rss_max_proc_mb=490:rust_verify
+282	2026-11-15T11:01:01+00:00	exit=101	4s	M4b: dedupe 2 [crate=.]	verification results:: 123 verified, 2 errors	peak_rss_sum_mb=938	peak_rss_max_proc_mb=775:rust_verify
+283	2026-11-15T11:01:19+00:00	exit=101	4s	M4b: pass constants in ir_at [crate=.]	verification results:: 123 verified, 2 errors	peak_rss_sum_mb=937	peak_rss_max_proc_mb=773:rust_verify
+284	2026-11-15T11:01:31+00:00	exit=101	4s	M4b: ir_at base case k=4 [crate=.]	verification results:: 124 verified, 1 errors	peak_rss_sum_mb=936	peak_rss_max_proc_mb=769:rust_verify
+285	2026-11-15T11:01:52+00:00	exit=101	5s	M4b: target_y_ge via top [crate=.]	verification results:: 124 verified, 1 errors	peak_rss_sum_mb=940	peak_rss_max_proc_mb=774:rust_verify
+286	2026-11-15T11:02:06+00:00	exit=101	1s	M4b: target_y bound by top [crate=.]		peak_rss_sum_mb=533	peak_rss_max_proc_mb=487:rust_verify
+287	2026-11-15T11:02:11+00:00	exit=101	1s	M4b: reorder lemmas [crate=.]		peak_rss_sum_mb=532	peak_rss_max_proc_mb=488:rust_verify
+288	2026-11-15T11:02:25+00:00	exit=0	4s	M4b: reinstated pass walk [crate=.]	verification results:: 120 verified, 0 errors	peak_rss_sum_mb=931	peak_rss_max_proc_mb=765:rust_verify
+289	2026-11-15T11:04:17+00:00	exit=101	1s	M4 full: interlace, compositor, disposals, clipping, pixel clause [crate=.]		peak_rss_sum_mb=531	peak_rss_max_proc_mb=482:rust_verify
+290	2026-11-15T11:04:27+00:00	exit=0	5s	M4 full verification [crate=.]	verification results:: 120 verified, 0 errors	peak_rss_sum_mb=938	peak_rss_max_proc_mb=773:rust_verify
+291	2026-11-15T11:04:38+00:00	exit=101	4s	M4b: T12 work-accounting statements [crate=.]	verification results:: 121 verified, 2 errors	peak_rss_sum_mb=942	peak_rss_max_proc_mb=774:rust_verify
+292	2026-11-15T11:04:50+00:00	exit=101	5s	M4b: work accounting fixed [crate=.]	verification results:: 121 verified, 2 errors	peak_rss_sum_mb=932	peak_rss_max_proc_mb=773:rust_verify
+293	2026-11-15T11:05:00+00:00	exit=101	5s	M4b: work accounting 3 [crate=.]	verification results:: 121 verified, 2 errors	peak_rss_sum_mb=937	peak_rss_max_proc_mb=770:rust_verify
+294	2026-11-15T11:05:30+00:00	exit=101	4s	M4b: work accounting 4 [crate=.]	verification results:: 121 verified, 2 errors	peak_rss_sum_mb=939	peak_rss_max_proc_mb=774:rust_verify
+295	2026-11-15T11:05:43+00:00	exit=101	5s	M4b: work accounting 5 [crate=.]	verification results:: 121 verified, 2 errors	peak_rss_sum_mb=936	peak_rss_max_proc_mb=774:rust_verify
+296	2026-11-15T11:06:01+00:00	exit=101	4s	M4b: work accounting 6 [crate=.]	verification results:: 122 verified, 1 errors	peak_rss_sum_mb=937	peak_rss_max_proc_mb=773:rust_verify
+297	2026-11-15T11:06:13+00:00	exit=101	5s	M4b: work accounting 7 [crate=.]	verification results:: 122 verified, 1 errors	peak_rss_sum_mb=942	peak_rss_max_proc_mb=775:rust_verify
+298	2026-11-15T11:06:28+00:00	exit=101	4s	M4b: work accounting 8 [crate=.]	verification results:: 122 verified, 1 errors	peak_rss_sum_mb=938	peak_rss_max_proc_mb=774:rust_verify
+299	2026-11-15T11:06:39+00:00	exit=0	5s	M4b: T12 disposal bound [crate=.]	verification results:: 123 verified, 0 errors	peak_rss_sum_mb=935	peak_rss_max_proc_mb=773:rust_verify
+300	2026-11-15T11:07:14+00:00	exit=0	4s	M4 final: drop dead reveals, full audit [crate=.]	verification results:: 123 verified, 0 errors	peak_rss_sum_mb=940	peak_rss_max_proc_mb=773:rust_verify
+301	2026-11-15T11:08:21+00:00	exit=0	1s	M4 final: full audit, tests green [crate=.]		peak_rss_sum_mb=53	peak_rss_max_proc_mb=38:cargo
+302	2026-11-15T11:08:29+00:00	exit=0	0s	M4 final: clean rebuild, all 123 obligations [crate=.]		peak_rss_sum_mb=42	peak_rss_max_proc_mb=36:cargo
+303	2026-11-15T11:08:36+00:00	exit=0	1s	M4 final: cold cache, all obligations [crate=.]		peak_rss_sum_mb=39	peak_rss_max_proc_mb=32:cargo
+304	2026-11-15T11:08:44+00:00	exit=0	4s	M4 final: full re-verification of every module [crate=.]	verification results:: 123 verified, 0 errors	peak_rss_sum_mb=936	peak_rss_max_proc_mb=771:rust_verify
+305	2026-11-16T04:44:40+00:00	exit=0	8s	cap bump A: MAX_INPUT 2^28, canvas cap kept at 2^26 [crate=.]	verification results:: 123 verified, 0 errors	peak_rss_sum_mb=931	peak_rss_max_proc_mb=771:rust_verify
