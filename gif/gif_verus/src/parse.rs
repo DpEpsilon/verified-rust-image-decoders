@@ -1714,6 +1714,7 @@ pub open spec fn extension_post(b:Seq<u8>,p:usize,pol:Policy,oldst:WalkState,st:
 pub fn parse_extension(b:&[u8],p:usize,st:&mut WalkState,pol:&Policy)->(r:Result<usize,Error>)
     requires p<=b.len(),b.len()<=MAX_INPUT,
     ensures extension_post(b@,p,*pol,*old(st),*final(st),r),
+        old(st).frames_seen>=1 ==> final(st).loop_count==old(st).loop_count,
 {
     let result=parse_extension_verified(b,p,st,*pol);
     match result {
@@ -1888,6 +1889,8 @@ pub fn parse_data_step(b:&[u8],c:usize,pol:&Policy,area:u64,st:&mut WalkState)->
     requires c<=b.len(),b.len()<=MAX_INPUT,old(st).frames_seen<MAX_FRAMES,
         (old(st).total_pixels as int)+(area as int)<=MAX_TOTAL_PIXELS,
     ensures data_step_post(b@,c,*pol,area,*old(st),*final(st),r),
+        final(st).loop_count==old(st).loop_count,
+        r is Ok ==> final(st).frames_seen as int==old(st).frames_seen as int+1,
 {
     let result=scan_image_data(b,c,pol,area);
     proof {lemma_data_model(b@,c as int,*pol,area as int,*st,result);}
@@ -1922,6 +1925,8 @@ pub open spec fn image_step_post(b:Seq<u8>,p:usize,hdr:Header,pol:Policy,oldst:W
 pub fn parse_image_step(b:&[u8],p:usize,hdr:&Header,pol:&Policy,st:&mut WalkState)->(r:Result<ImageStep,Error>)
     requires p<=b.len(),b.len()<=MAX_INPUT,hdr_inv(b@,*hdr),old(st).total_pixels<=MAX_TOTAL_PIXELS,
     ensures image_step_post(b@,p,*hdr,*pol,*old(st),*final(st),r),
+        final(st).loop_count==old(st).loop_count,
+        r is Ok ==> final(st).frames_seen as int==old(st).frames_seen as int+1,
         final(st).total_pixels<=MAX_TOTAL_PIXELS,
         r is Ok ==> final(st).frames_seen<=MAX_FRAMES,
 {
@@ -1980,6 +1985,10 @@ pub fn parse_mb(b:&[u8],p:&mut usize,hdr:&Header,pol:&Policy,st:&mut WalkState)-
     requires *old(p)<=b.len(),b.len()<=MAX_INPUT,hdr_inv(b@,*hdr),
         old(st).total_pixels<=MAX_TOTAL_PIXELS,old(st).frames_seen<=MAX_FRAMES,
     ensures mb_exec_post(b@,*old(p),*hdr,*pol,*old(st),*final(p),*final(st),r),
+        r is Ok && r.unwrap() is Some ==> final(st).frames_seen as int==old(st).frames_seen as int+1,
+
+        old(st).frames_seen>=1 || *old(p)<b.len() && b@[*old(p) as int]!=0x21
+            ==> final(st).loop_count==old(st).loop_count,
         *final(p)<=b.len(),final(st).total_pixels<=MAX_TOTAL_PIXELS,final(st).frames_seen<=MAX_FRAMES,
 {
     hide(crate::model::mb_fuel);
@@ -1996,6 +2005,9 @@ pub fn parse_mb(b:&[u8],p:&mut usize,hdr:&Header,pol:&Policy,st:&mut WalkState)-
             missing_reject==(pol.missing_trailer==crate::policy::MissingTrailer::Reject),
             orphan_reject==(pol.gce_orphan==crate::policy::GceOrphan::Reject),
             trailing_reject==(pol.trailing==crate::policy::Trailing::Reject),
+            old(st).frames_seen>=1 || *old(p)<b.len() && b@[*old(p) as int]!=0x21
+                ==> st.loop_count==old(st).loop_count,
+            old(st).frames_seen==0 && *old(p)<b.len() && b@[*old(p) as int]!=0x21 ==> *p==*old(p),
             initial==crate::model::mb(b@,header_model(*hdr),*pol,walk_m_at(*old(st),*old(p))),
             initial==crate::model::mb_fuel(b@,header_model(*hdr),*pol,walk_m_at(*st,*p),fuel),
         decreases b.len()-*p,

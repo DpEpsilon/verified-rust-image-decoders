@@ -1386,3 +1386,328 @@ Only then claim T-ITER, complete A-GIF-2/A-GIF-3/A-GIF-4 over finite call
 sequences, T9 and integrated T13. T12 still needs actual step counters and the
 full per-call/summed inequalities. T-PLAYS does not depend on that remaining
 work and is already proved.
+
+## Semantic-state foundation and borrow rejoin (Sol, runs 491-516)
+
+Final run 516 verifies **565 functions, 0 errors**. The final release suite
+passes in `gif/runs/sol-20261116/tests-semantic-foundation-final.log`: five
+report tests, seven conformance functions (373 vectors plus the other checks),
+four allocation-fault tests and the 37,239-frame stress test. All 14 frozen
+hashes match. No commits, background jobs, new assumptions or solver-limit
+increases were made in this continuation.
+
+### Independent model and constructor initialization
+
+New `src/frame_model.rs` composes the existing independent MB, ML and drawing
+models. It defines complete frame records, previous disposal/rectangle,
+canvas/Saved state, status, per-call outcomes and the first Saved request,
+including requests for frames that later fail LZW or colour validation.
+`image_mode` handles the still path's omission of Saved; the iterator model
+uses the normal mode. Colour precedence stays outside pure ML. `after_calls`
+retains the terminal call and later fused calls; `stream_fuel`/`mf` give the
+frame sequence and terminal result. OutsideDomain is a separate internal
+marker, not another GIF error.
+
+The model is independent of executable frame control flow. Its report bridge,
+`lemma_image_observation`, is proved from exact ML/colour observations and the
+successful forward drawing equation. The model still needs the reachable
+non-OutsideDomain/fuel adequacy proof and the bridge from successive calls to
+MF's complete frame sequence before claiming the frozen T-ITER statement.
+
+`gif::wf_p` is now defined, with live parser/canvas/disposal/Saved equality to
+`after_calls`, an OOM cut at the first Saved request, and terminal abstraction
+of private bytes and cursor that no later call exposes. `prev_bounds` adds
+positive rectangle dimensions, coordinate/sum bounds, normalized disposal and
+the Saved-presence requirement for disposal 3. It is part of `storage_wf`.
+Actual non-still constructors now establish `wf_p(dec,-1)` through their
+`constructor_result` contracts. This is a proved base case, **not yet a
+preserved semantic invariant**.
+
+### The canvas-borrow boundary is resolved
+
+The earlier failed outer-canvas wrapper was missing two borrow equations.
+`DrawerSink::new` now proves
+`final(canvas)@ == final(s.canvas)@`. That alone was insufficient: generic
+Sink calls could replace the nested mutable reference while preserving the
+current state observations. The trait now has a prophetic `sink_future`
+observation, with an empty default and Drawer's implementation equal to
+`final(self.canvas)@`. Every put and the emit/run/decode helpers preserve it.
+This is a proved future-reference contract, not a new axiom or an admission.
+
+`compose_new::decode_canvas` consequently proves length preservation,
+ML/colour observations, successful whole-canvas equality and pixel-origin
+preservation on the caller's original mutable slice. The actual frame path
+uses this wrapper. Do not return to the old wrapper without the borrow-endpoint
+condition: run 496 still failed despite the constructor equation alone;
+run 498 passed after generic endpoint preservation.
+
+### Actual frame code lifted so far
+
+`Frames::apply_previous` is verified against the exact disposal effect.
+`prepare_canvas` composes it with the actual Saved helper and row copy,
+proving exact disposed canvas, saved pixels, request trace, storage preservation
+and Saved OOM/fusion. Both are used by the actual image path, not ghost-only
+stand-ins. The combined query initially exceeded the resource limit; splitting
+previous disposal from current saving resolved it at default limits.
+
+`decode_image_pixels` is verified against independent model parameters and
+frame/table views; it carries exact ML/colour observations and successful
+whole-canvas equality through the original slice borrow. The actual `image`
+body is now inside `verus!` and proves safety, storage preservation, fixed
+input/header/policy/Info/parser state, Running on success, Fused on error, and
+the exact optional Saved-log append. A format error now fuses inside `image`
+itself; `next_frame`'s existing fuse assignment is idempotent. Runtime results
+are unchanged. The palette slice uses the bounds MB validated rather than an
+unreachable empty-table fallback.
+
+`parse_extension`, `parse_data_step`, `parse_image_step` and `parse_mb` now
+expose loop-count stability. MB preserves it after the first frame, or when
+its initial cursor is not an extension introducer. The loop invariant retains
+the unchanged initial cursor in the first-frame/non-extension case.
+
+### Current blocker and exact remaining scope
+
+The stronger `image_result` predicate expresses the semantic result relation,
+but **it is not an ensured postcondition of the final image function**.
+Runs 504-515 attempted that lift, with the later attempts exceeding the
+default resource limit even after isolating pixels and the model-report lemma.
+The default-limit storage proof became green after keeping `storage_wf`
+opaque and using `lemma_storage_bounds`/`lemma_storage_reframe` instead of
+expanding the complete invariant in the executable query. The attempted
+semantic version is preserved at
+`gif/runs/sol-20261116/gif-image-semantic-attempt.rs`; it predates the final
+storage-framing isolation, so use it as reference, not as a replacement file.
+
+Next split the semantic image introduction into a separate proof lemma using
+the prepared-state snapshot, `lemma_image_observation` and the concrete return
+metadata; prove `image_result` on the actual body. Then lift `step`,
+`next_frame` and still wrappers. Those three remain plain functions here.
+Complete WF preservation and the MF fuel/history bridge before claiming
+T-ITER, T9 or A-GIF-2/3/4 over finite call sequences. T12 accounting and
+integrated T13 remain open. No completion of these rows is claimed by the
+new model definitions or the constructor base case alone.
+
+One verifier issue occurred in run 511: hiding `frame_model::image_mode` after
+removing its last reference from the function caused an undeclared-fuel-variable
+AIR panic. Removing the unused hide avoided it. Runs 514 and 516 are green.
+
+## Actual semantic image contract (Sol, runs 517-523)
+
+Run 523 verifies **569 functions, 0 errors**. The preceding section's image
+semantic-postcondition blocker is resolved: the actual `Frames::image` now
+ensures `image_result`, including exact non-OOM result/metadata/canvas relation
+and Saved OOM observation. This is not yet step/next_frame or T-ITER.
+
+The proof uses `lemma_image_finish` and `lemma_image_oom` as separate
+introduction queries. `pixels_observation` packages the existing exact report,
+colour and canvas observations; `prepared_matches` packages the pre-draw
+canvas, Saved and trace. Keeping both observations and storage_wf opaque in
+the executable query avoids expanding their quantified bodies there.
+`frame_metadata` constructs the actual returned metadata with its own proof.
+
+The allocating `image` wrapper now calls the verified `image_prepared`
+helper after successful preparation. The latter receives a ghost snapshot of
+the pre-disposal state, performs the actual pixel decode, updates Prev, and
+introduces the semantic result on success or format failure. This separation
+was needed in addition to the proof-lemma split: runs 518-520 still exhausted
+the monolithic image query. With separate executable queries, run 522 exposed
+two missing preconditions instead of exhausting the solver: the prepared state
+retains the original Prev record, and disposal 3 on the non-still path has a
+Saved buffer. The real wrapper proves both facts from preparation.
+
+Adding functions changed solver behavior in `lzw::lemma_resolved_agrees`:
+runs 520/522 failed to instantiate the raw/model agreement quantifier. A second
+explicit quantified assertion, oriented and triggered on raw_pf_seq, supplies
+the exact premise of refinement::table_agreement. No algorithm, contract,
+assumption or solver limit changed. The preceding LZW source is backed up at
+`gif/runs/sol-20261116/lzw-before-agreement-trigger.rs`.
+
+Run 521 again hit the unused-hide AIR bug, this time because pixels_observation
+was no longer referenced by the allocating wrapper after splitting it.
+Removing that wrapper's unused hide resolved the verifier panic.
+
+Final release tests pass in
+`gif/runs/sol-20261116/tests-image-result-final.log`: five report tests, seven
+conformance functions covering the 373 vectors and other checks, four
+allocation-fault tests and the 37,239-frame stress test. All 14 frozen hashes
+match. No commits or background jobs were started.
+
+The next obligation is the actual `Frames::step` contract. It must establish
+image_ready/storage_wf after parse_mb and lift the now-proved image_result from
+the post-MB physical state to a frame-model call from the pre-MB state. Preserve
+the first-frame cursor-at-introducer case and the post-first-frame L-LOOP
+facts when proving fixed Info. Then lift next_frame and the still wrappers,
+prove model OutsideDomain/fuel adequacy and the successive-call/MF sequence
+bridge, and complete WF preservation/T-ITER. All of those remain open here;
+the old source snapshot marked image-semantic-attempt is now superseded by the
+proved current image body. T9, finite-call-sequence allocation theorems, T12
+accounting and integrated T13 still depend on the remaining iterator work.
+
+## Verified scan, step and next-frame adapter (Sol, runs 524-531)
+
+Run 531 verifies **578 functions, 0 errors**. Actual `scan_next`, `step` and
+public `next_frame` are now inside `verus!` and verified. The next_frame
+contract is a **one-call semantic/storage observation**, not yet the frozen
+WF/MF induction theorem T-ITER. The distinction below is intentional.
+
+`storage_wf` now includes the first-frame cursor fact: when Running with zero
+frames_seen, the cursor points at the first image introducer. The constructors
+establish it. The data/image/MB parser contracts now expose the successful
+image's exact frames_seen increment; MB's existing loop-count stability
+therefore preserves fixed Info both at the first descriptor and after later
+extensions. The stronger invariant is preserved by all verified frame helpers.
+
+`scan_next` calls actual parse_mb and proves its complete postcondition,
+post-MB storage bounds, fixed input/header/policy/Info, unchanged canvas/table/
+Saved/Prev/log, and image_ready on an image result. It sets Done on Trailer
+and Fused on a parse error. `lemma_storage_walk` isolates the bounds/Info
+preservation proof; `lemma_mb_image_ready` isolates the descriptor/data bridge.
+
+`step` calls the real scan_next and image paths. `step_result` relates the
+result to an independent model call from the **pre-MB** state: exact error,
+metadata and whole canvas on success; no partial output; exact optional Saved
+trace append; matching parser position and site/size on Saved OOM. The proof
+uses separate terminal and image introduction lemmas. A new pure image-state
+extensionality lemma handles the changed parser state between the pre-MB and
+post-MB snapshots. `lemma_image_reservation` exports the model's reserve_saved
+flag without expanding its entire image fold in the adapter query.
+
+The frame model now has call_mode for the still/stream distinction; its existing
+call wrapper selects stream mode, so MF's behavior is unchanged. The still
+wrappers are not yet verified, but the proved step relation supports their
+no-Saved mode.
+
+`FrameView` is inside verus. `next_result` proves that a successful view borrows
+the decoder's actual single canvas and carries the model's complete metadata
+and canvas; active calls transition to Running/Done/Fused as appropriate. A
+call on Done or Fused returns None and preserves the entire decoder state,
+including the real allocation log. `fixed_stream` exposes fixed Info and
+input/header/policy without mentioning private fields in public contracts.
+The old redundant Done/Fused assignments in next_frame were removed because
+scan/image already perform them. Runtime outputs remain unchanged.
+
+Proof engineering: the stronger cursor invariant made apply_previous exceed
+the default limit in run 524; keeping storage_wf opaque and using the existing
+framing lemma fixed it. Runs 526-527 exhausted the combined parse/semantic-step
+query; separating scan_next from step made both pass at default limits. The
+intermediate storage-walk lemma needed Running as a precondition, since a
+failed Saved log must not be moved from Fused back to another state.
+
+Final release tests pass in `gif/runs/sol-20261116/tests-next-frame-final.log`:
+five report tests, seven conformance functions covering all 373 vectors and
+other checks, four allocation-fault tests, and the 37,239-frame stress test.
+All 14 frozen hashes match; no new assumption, admission, axiom, unsafe body,
+solver-limit increase, commit or background job was introduced.
+
+### Exact remaining theorem boundary
+
+Actual next_frame requires storage_wf and ensures storage_wf, fixed_stream and
+next_result. Its precondition is weaker than semantic wf_p, so constructors
+and the method's own postcondition compose for storage/safety across repeated
+calls. Its postcondition does **not** yet ensure wf_p(d,n+1), compare the nth
+result with the complete MF frame sequence, or identify SavedAt across the
+whole trace. Do not call this the full frozen T-ITER theorem.
+
+Next lift the still wrappers and define their MS observation using stream-free
+call_mode; then prove model image/call OutsideDomain unreachability, fuel
+adequacy and the successive-call/MF sequence bridge. Prove semantic WF
+preservation, including the first Saved request and OOM cut, and use the actual
+next_frame contract for T-ITER. Global A-GIF-2/3/4 timing/equality claims, T9,
+T12 work accounting and integrated T13 still need those remaining proofs.
+The storage trace already limits reachable decoders to the constructor trace
+plus at most one Saved event, but the complete frozen A-GIF-3/A-GIF-4 statements
+also require MF's SavedAt timing and are not claimed complete here.
+
+## MS, total MF and full T-ITER (Sol, runs 532-546)
+
+Run 546 verifies **611 functions, 0 errors**. This continuation supersedes the
+preceding section's remaining one-call/WF/MF limitations: the actual public
+next_frame now carries the MF-indexed iterator observation and semantic WF
+preservation. The still wrappers are verified against MS as well.
+
+### Actual still entry points
+
+`frame_model::ms` independently composes MP with the first call in still mode,
+returning the complete Still bytes/dimensions/recovered observation or the
+exact first format error. None is its internal OutsideDomain marker.
+`lemma_ms_defined` proves that marker unreachable for every input and record.
+`Still` is now inside verus. Actual still_with, try_decode_still,
+try_decode_still_with_policy and the source test-record wrapper have MS
+contracts: success matches every byte, width/height and the returned recovered
+flag; a non-OOM error is exactly MS's error; OOM implies MH success. The core
+wrapper discards recovered as its API requires. Constructor/error/empty-stream
+and first-call bridges are separate proofs. No logged still variants or full
+A-GIF-1 G/Prog package have been added yet.
+
+### Total models and full frame sequence
+
+The pure model now proves descriptor/table domain bounds and strict cursor
+progress through a complete MB image, by induction over extension fuel and the
+sub-block scan. A successful image's model drawing fold is defined whenever
+all offered indices pass transparency/table validation; the complementary
+case already returns the exact colour error. Thus image_mode cannot return
+OutsideDomain on a validated frame, including the frame at a Saved OOM site.
+
+`lemma_initial_domain` proves MP's cursor bounds; `lemma_call_progress` proves
+model calls defined and successful frames strictly advance the cursor.
+`lemma_stream_fuel_adequate` shows fuel greater than the remaining input bytes
+cannot run out, so MF's `|b|+1` fuel suffices. `lemma_mf_defined` excludes
+OutsideDomain after every successful MP. `lemma_stream_calls` and
+`lemma_mf_position` connect every zero-based call index to MF's full frame
+sequence: its frame, its single terminal error/Trailer, and error-free None
+on every later terminal call.
+
+### Semantic WF and Saved timing
+
+`lemma_call_saved_presence`, `lemma_no_saved_before` and
+`lemma_first_saved_at` prove that a reservation from a state without Saved is
+the first reservation in the model call history. A reservation makes model
+Saved present, and later calls cannot lose it. `lemma_step_call_defined` links
+the actual OOM branch's validated MB image to a defined model call.
+
+`lemma_step_wf` proves wf_p(d,n+1), including the first Saved reservation and
+OOM cut. `lemma_terminal_wf` preserves it on terminal calls. Actual step and
+next_frame now ensure, for every n, `wf_p(old,n) ==> wf_p(final,n+1)`.
+The constructor already established wf_p(dec,-1), so these are connected
+invariant proofs on actual calls, not merely model lemmas.
+
+### Public T-ITER contract
+
+`iter_result` states the complete MF-indexed observation. For each call index:
+frame bytes and all metadata match MF; the terminal result matches MF.end;
+later calls return None; Saved OOM may displace the result only at the model's
+first Saved reservation, with exact Saved site and `4*W*H` size.
+`iterator_observation` additionally returns None after the real trace records
+an earlier OOM. `lemma_next_iter` and `lemma_next_observation` introduce these
+facts from the concrete next_result and WF relation. Actual public next_frame
+ensures iterator_observation for every n satisfying its incoming WF, as well
+as preserving WF. It still requires only the weaker storage_wf for safety.
+
+Actual info now also proves its complete record equals MF.info in every
+storage-well-formed state, via info_result. All info reads are immutable;
+next_result already proves terminal calls preserve the entire decoder and
+real log. These contracts compose through arbitrary finite info/next_frame
+interleavings. No equality of an error's private canvas was introduced.
+
+### Validation and remaining work
+
+All default limits remain unchanged. Run 532 repeated the known unused-hide
+AIR panic for a constructor-only lemma that no longer referenced call_mode;
+removing that hide fixed it. Run 540 needed an explicit MB-to-mb_fuel wrapper
+identity in the pure progress proof. Run 543 needed a proof-block syntax fix.
+All later queries are green; no new axiom, admission, unsafe body or assumption
+was added.
+
+Final release tests pass in `gif/runs/sol-20261116/tests-titer-final.log`: five
+report tests, seven conformance functions covering all 373 vectors and other
+checks, four allocation-fault tests and the 37,239-frame stress test. All 14
+frozen hashes match. No commits or background jobs were started.
+
+T-ITER, T-PLAYS and the actual MS observation are now proved. Still remaining:
+logged still entry points and A-GIF-1 G/Prog; packaging the full T9 and
+A-GIF-2/3/4 finite-sequence allocation/log equalities and Prog observations;
+T12's actual ghost counters and complete work inequalities; integrated T13
+pixel/resource theorems; the manifest's independent vector/mutation gates.
+The current real trace/storage invariant and first-Saved model lemmas provide
+the allocation proof inputs, but no new full A-GIF-1/3/4 theorem package is
+claimed by this checkpoint.

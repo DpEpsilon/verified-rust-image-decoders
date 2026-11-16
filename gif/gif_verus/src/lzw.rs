@@ -562,6 +562,11 @@ pub trait Sink {
     /// Immutable configuration's action on one put; rejection may be identity.
     spec fn sink_effect(&self) -> spec_fn(Seq<u8>, u32, u8) -> Seq<u8>;
 
+    /// Endpoint of a borrowed drawing target. Preserving this observation
+    /// prevents a sink call from replacing the caller's mutable borrow.
+    #[verifier::prophetic]
+    open spec fn sink_future(&self) -> Seq<u8> { Seq::empty() }
+
     fn put(&mut self, q: u32, v: u8) -> (r: bool)
         requires
             (q as int) < old(self).sink_area(),
@@ -572,6 +577,7 @@ pub trait Sink {
             final(self).sink_inv(),
             final(self).sink_area() == old(self).sink_area(),
             forall|x: u8| final(self).sink_ok(x) == old(self).sink_ok(x),
+            final(self).sink_future() == old(self).sink_future(),
             final(self).sink_effect() == old(self).sink_effect(),
             final(self).sink_view() == old(self).sink_effect()(old(self).sink_view(),q,v),
             final(self).sink_view().len() == old(self).sink_view().len(),
@@ -2073,6 +2079,7 @@ fn emit_raw<S: Sink>(t: &[u8], clear: u32, code: u32, q: u32, area: u32, len: u3
         len == crate::chain::str_of(raw_sf_seq(t@), raw_pf_seq(t@), clear as int, code as int, 4096).len(),
         old(sink).sink_inv(), old(sink).sink_area() == area as int,
     ensures
+        final(sink).sink_future()==old(sink).sink_future(),
         final(sink).sink_effect()==old(sink).sink_effect(),
         final(sink).sink_view().len()==old(sink).sink_view().len(),
         final(sink).sink_view()==effect_fold(old(sink).sink_view(),sink_pairs(crate::chain::str_of(raw_sf_seq(t@),raw_pf_seq(t@),clear as int,code as int,4096),q as int,area as int,0),old(sink).sink_effect()),
@@ -2113,6 +2120,7 @@ fn emit_raw<S: Sink>(t: &[u8], clear: u32, code: u32, q: u32, area: u32, len: u3
             forall|v: u8| sink.sink_ok(v) == ok(v),
             sink.sink_log() == h0 + h,
             cv0==old(sink).sink_view(),effect==old(sink).sink_effect(),
+            sink.sink_future()==old(sink).sink_future(),
             sink.sink_effect()==effect,sink.sink_view()==effect_fold(cv0,h,effect),
             sink.sink_view().len()==cv0.len(),
             h + sink_pairs(s, q as int, area as int, len as int - j as int) == sink_pairs(s, q as int, area as int, 0),
@@ -2347,6 +2355,7 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
         crate::model::sub_scan(old(reader).b@,old(reader).seq_start as int) is Some,
         read_d(old(reader).b@,old(reader).seq_start as int).len() == data_len,
     ensures
+        final(sink).sink_future()==old(sink).sink_future(),
         final(sink).sink_effect()==old(sink).sink_effect(),
         final(sink).sink_view().len()==old(sink).sink_view().len(),
         final(sink).sink_view()==effect_fold(old(sink).sink_view(),rep.h@,old(sink).sink_effect()),
@@ -2448,6 +2457,7 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
             log_complete(h,st.o,q as int), sink.sink_log()==h0+h,
             h0==old(sink).sink_log(),
             cv0==old(sink).sink_view(),effect==old(sink).sink_effect(),
+            sink.sink_future()==old(sink).sink_future(),
             sink.sink_effect()==effect,sink.sink_view()==effect_fold(cv0,h,effect),
             sink.sink_view().len()==cv0.len(),
             forall|v:u8| ok(v)==old(sink).sink_ok(v),
@@ -2571,6 +2581,7 @@ fn run_code<S: Sink>(t: &mut [u8], next: &mut u32, width: &mut u32, clear: u32,
         q<area<=crate::limits::MAX_TOTAL_PIXELS,
         old(sink).sink_inv(), old(sink).sink_area()==area as int,
     ensures
+        final(sink).sink_future()==old(sink).sink_future(),
         final(sink).sink_effect()==old(sink).sink_effect(),
         final(sink).sink_view().len()==old(sink).sink_view().len(),
         final(sink).sink_view()==effect_fold(old(sink).sink_view(),sink_pairs(resolved_raw(old(t)@,clear as int,*old(next) as int,prev as int,code as int),q as int,area as int,0),old(sink).sink_effect()),
@@ -2655,6 +2666,9 @@ pub proof fn lemma_resolved_agrees(t: Seq<u8>, m: int, st: St, code: int)
     assert forall|x:int| clear+2<=x<=c implies #[trigger] st.pf[x]==raw_pf_seq(t)[x] && st.sf[x]==raw_sf_seq(t)[x] by {
         assert(raw_prefix(t,x)==st.pf[x] as int);
         assert(raw_suffix(t,x)==st.sf[x] as int);
+    }
+    assert forall|x:int| clear+2<=x<=c implies #[trigger] raw_pf_seq(t)[x]==st.pf[x] && raw_sf_seq(t)[x]==st.sf[x] by {
+        assert(st.pf[x]==raw_pf_seq(t)[x] && st.sf[x]==raw_sf_seq(t)[x]);
     }
     crate::refinement::table_agreement(raw_sf_seq(t),raw_pf_seq(t),st.sf,st.pf,clear,c,4096);
     lemma_walk_agrees(t,st.pf,st.sf,clear,c,4096);
@@ -2965,6 +2979,7 @@ pub fn decode_image_data<S:Sink>(b:&[u8],data:crate::parse::ImageData,area:u32,o
         read_d(b@,data.first as int).len()==data.data_len,data.data_len<=crate::limits::MAX_INPUT,
         table_len_ok(old(t)@),old(sink).sink_inv(),old(sink).sink_area()==area as int,
     ensures
+        final(sink).sink_future()==old(sink).sink_future(),
         final(sink).sink_effect()==old(sink).sink_effect(),
         final(sink).sink_view().len()==old(sink).sink_view().len(),
         final(sink).sink_view()==effect_fold(old(sink).sink_view(),rep.h@,old(sink).sink_effect()),

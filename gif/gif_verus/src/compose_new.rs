@@ -782,6 +782,7 @@ pub fn clear_rect(canvas: &mut [u8], sw: u32, sh: u32, r: Rect)
         (r.top as int) + (r.height as int) <= 2 * max_dimension(),
     ensures
         final(canvas)@ == crate::mc::clear_rect(old(canvas)@, sw, sh, r.spec_rect()),
+        final(canvas)@.len()==old(canvas)@.len(),
 {
     let (x0, x1, y0, y1) = clip_of(r, sw, sh);
     let ghost cv0 = old(canvas)@;
@@ -934,6 +935,7 @@ pub fn copy_rect(dst: &mut [u8], src: &[u8], sw: u32, sh: u32, r: Rect)
         (r.top as int) + (r.height as int) <= 2 * max_dimension(),
     ensures
         final(dst)@ == crate::mc::copy_rect(old(dst)@, src@, sw, sh, r.spec_rect()),
+        final(dst)@.len()==old(dst)@.len(),
 {
     let (x0, x1, y0, y1) = clip_of(r, sw, sh);
     let ghost dv0 = old(dst)@;
@@ -2222,6 +2224,7 @@ impl<'c, 't> DrawerSink<'c, 't> {
         ensures
             s.fr == fr,
             s.canvas@ == old(canvas)@,
+            final(canvas)@ == final(s.canvas)@,
             s.table == table,
             s.sw == sw,
             s.sh == sh,
@@ -2251,6 +2254,9 @@ impl<'c, 't> crate::lzw::Sink for DrawerSink<'c, 't> {
     }
 
     closed spec fn sink_view(&self) -> Seq<u8> { self.canvas@ }
+
+    #[verifier::prophetic]
+    closed spec fn sink_future(&self) -> Seq<u8> { final(self.canvas)@ }
 
     closed spec fn sink_effect(&self) -> spec_fn(Seq<u8>,u32,u8)->Seq<u8> {
         crate::emission_compose::draw_effect(self.fr.spec_frame(),self.table@,self.sw,self.sh)
@@ -2322,6 +2328,7 @@ pub fn decode_drawer(b:&[u8],data:crate::parse::ImageData,area:u32,opts:crate::l
         crate::model::sub_scan(b@,data.first as int) is Some,
         crate::lzw::read_d(b@,data.first as int).len()==data.data_len,data.data_len<=crate::limits::MAX_INPUT,
     ensures final(sink).sink_inv(),crate::lzw::table_len_ok(final(t)@),
+        final(sink).sink_future()==old(sink).sink_future(),
         forall|ts:Set<Seq<u8>>| pixels_well_formed(old(sink).canvas@,ts) && ts.contains(old(sink).table@)
             ==> pixels_well_formed(final(sink).canvas@,ts),
         crate::lzw::projected_error(rep)==if exists|i:int| 0<=i<crate::lzw_model::ML(data.min_code_size as int,crate::lzw::read_d(b@,data.first as int),area as int,crate::lzw::lzw_ps(data.min_code_size,opts)).idx.len()
@@ -2354,6 +2361,34 @@ pub fn decode_drawer(b:&[u8],data:crate::parse::ImageData,area:u32,opts:crate::l
             crate::emission_compose::lemma_complete_log_canvas(cv0,frame.spec_frame(),colors,sw,sh,rep.h@,o);
         }
     }
+    rep
+}
+
+/// Rejoin the Drawer's mutable borrow with the caller's canvas explicitly.
+/// The constructor's future-reference equation carries the decoder's effect
+/// back to this formal parameter when the local sink goes out of scope.
+pub fn decode_canvas(b:&[u8],data:crate::parse::ImageData,area:u32,opts:crate::lzw::LzwOptions,
+    kind:crate::policy::LzwMin,t:&mut [u8],canvas:&mut [u8],colors:&[u8],fr:Frame,sw:u32,sh:u32)->(rep:crate::lzw::LzwReport)
+    requires b.len()<=crate::limits::MAX_INPUT,area<=crate::limits::MAX_TOTAL_PIXELS,
+        frame_ok(fr),canvas_ok(old(canvas),sw,sh),table_ok(colors,fr),
+        (fr.rect.width as int)*(fr.rect.height as int)==area as int,
+        crate::lzw::table_len_ok(old(t)@),
+        crate::parse::lzw_min_ok(kind,data.min_code_size as int,area as int),
+        opts.checked_literals==(kind==crate::policy::LzwMin::Range1to11Checked),
+        crate::model::sub_scan(b@,data.first as int) is Some,
+        crate::lzw::read_d(b@,data.first as int).len()==data.data_len,data.data_len<=crate::limits::MAX_INPUT,
+    ensures crate::lzw::table_len_ok(final(t)@),final(canvas)@.len()==old(canvas)@.len(),
+        crate::lzw::report_matches(rep,crate::lzw_model::ML(data.min_code_size as int,crate::lzw::read_d(b@,data.first as int),area as int,crate::lzw::lzw_ps(data.min_code_size,opts))),
+        crate::lzw::colour_observation(rep,crate::lzw_model::ML(data.min_code_size as int,crate::lzw::read_d(b@,data.first as int),area as int,crate::lzw::lzw_ps(data.min_code_size,opts)).idx,|v:u8|drawer_ok(fr,v)),
+        rep.colour is None ==> crate::mc::draw_fold(old(canvas)@,fr.spec_frame(),colors@,sw,sh,
+            crate::lzw_model::ML(data.min_code_size as int,crate::lzw::read_d(b@,data.first as int),area as int,crate::lzw::lzw_ps(data.min_code_size,opts)).idx,0)==Ok(final(canvas)@),
+        forall|ts:Set<Seq<u8>>| pixels_well_formed(old(canvas)@,ts) && ts.contains(colors@)
+            ==> pixels_well_formed(final(canvas)@,ts),
+{
+    let rep={
+        let mut sink=DrawerSink::new(canvas,colors,fr,sw,sh);
+        decode_drawer(b,data,area,opts,kind,t,&mut sink)
+    };
     rep
 }
 } // verus!

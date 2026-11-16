@@ -1,0 +1,527 @@
+   Compiling gif_verus v0.1.0 (/home/ws/projects/verified-decoders/gif/gif_verus)
+warning: unused imports: `DrawState`, `DrawerSink as Drawer`, `Frame`, `draw_index`, and `new_state`
+  --> src/compose.rs:22:28
+   |
+22 |     clear_rect, copy_rect, draw_index, new_state, DrawState, Frame, Rect, DrawerSink as Drawer,
+   |                            ^^^^^^^^^^  ^^^^^^^^^  ^^^^^^^^^  ^^^^^        ^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `crate::interlace::interlace_row`
+  --> src/compose.rs:24:9
+   |
+24 | pub use crate::interlace::interlace_row;
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `LZW_TABLE_BYTES`
+  --> src/gif.rs:20:36
+   |
+20 | use crate::lzw::{LzwOptions, Tail, LZW_TABLE_BYTES};
+   |                                    ^^^^^^^^^^^^^^^
+
+warning: unused imports: `GceOrphan`, `MissingTrailer`, `Trailing`, and `UnknownBlock`
+  --> src/gif.rs:22:21
+   |
+22 | use crate::policy::{GceOrphan, LzwMin, LzwTail, MissingTrailer, Policy, Profile, Trailing, UnknownBlock};
+   |                     ^^^^^^^^^                   ^^^^^^^^^^^^^^                   ^^^^^^^^  ^^^^^^^^^^^^
+
+warning: unused import: `crate::lzw::LzwParams as Params`
+  --> src/lzw_model.rs:17:5
+   |
+17 | use crate::lzw::LzwParams as Params;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `b`
+   --> src/gif.rs:224:5
+    |
+224 |     b: &[u8],
+    |     ^ help: if this is intentional, prefix it with an underscore: `_b`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `im`
+   --> src/gif.rs:576:21
+    |
+576 |             Ok(Some(im))=>{proof {lemma_storage_walk(original,*self);lemma_mb_image_ready(original,*self,im);}},
+    |                     ^^ help: if this is intentional, prefix it with an underscore: `_im`
+
+warning: unused variable: `b`
+   --> src/gif.rs:639:13
+    |
+639 |         let b = self.b;
+    |             ^ help: if this is intentional, prefix it with an underscore: `_b`
+
+warning: unused variable: `bp`
+   --> src/lzw.rs:729:13
+    |
+729 |         let bp = self.b;
+    |             ^^ help: if this is intentional, prefix it with an underscore: `_bp`
+
+warning: unused variable: `gb`
+   --> src/lzw.rs:898:13
+    |
+898 |         let gb = self.b;
+    |             ^^ help: if this is intentional, prefix it with an underscore: `_gb`
+
+warning: unused variable: `ga0`
+   --> src/lzw.rs:902:13
+    |
+902 |         let ga0 = self.nacc;
+    |             ^^^ help: if this is intentional, prefix it with an underscore: `_ga0`
+
+warning: unused variable: `ebits`
+   --> src/lzw.rs:908:13
+    |
+908 |         let ebits = self.total_bits;
+    |             ^^^^^ help: if this is intentional, prefix it with an underscore: `_ebits`
+
+warning: unused variable: `ebl`
+   --> src/lzw.rs:909:13
+    |
+909 |         let ebl = self.bits_left;
+    |             ^^^ help: if this is intentional, prefix it with an underscore: `_ebl`
+
+warning: variable `bytes` is assigned to, but never used
+   --> src/lzw.rs:929:13
+    |
+929 |         let mut bytes = 0u32;
+    |             ^^^^^^^^^
+    |
+    = note: consider using `_bytes` instead
+
+warning: value assigned to `bytes` is never read
+    --> src/lzw.rs:1053:13
+     |
+1053 |             bytes += 1;
+     |             ^^^^^^^^^^
+     |
+     = help: maybe it is overwritten before being read?
+     = note: `#[warn(unused_assignments)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable `fuel` is assigned to, but never used
+    --> src/lzw.rs:2103:9
+     |
+2103 |     let mut fuel: u32 = 4096;
+     |         ^^^^^^^^
+     |
+     = note: consider using `_fuel` instead
+
+warning: value assigned to `fuel` is never read
+    --> src/lzw.rs:2181:13
+     |
+2181 |             fuel -= 1;
+     |             ^^^^^^^^^
+     |
+     = help: maybe it is overwritten before being read?
+
+warning: unused variable: `input`
+    --> src/lzw.rs:2397:9
+     |
+2397 |     let input = reader.b;
+     |         ^^^^^ help: if this is intentional, prefix it with an underscore: `_input`
+
+warning: unused variable: `eoi`
+    --> src/lzw.rs:2413:9
+     |
+2413 |     let eoi = clear + 1;
+     |         ^^^ help: if this is intentional, prefix it with an underscore: `_eoi`
+
+warning: unused variable: `after`
+    --> src/lzw.rs:2490:30
+     |
+2490 |             CodeStep::Clear {after} => {
+     |                              ^^^^^ help: try ignoring the field: `after: _`
+
+warning: unused variable: `checked`
+    --> src/lzw.rs:2570:74
+     |
+2570 |     code: u32, have: bool, prev: u32, prev_first: u8, q: u32, area: u32, checked: bool,
+     |                                                                          ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_checked`
+
+warning: unused variable: `base`
+    --> src/lzw.rs:2615:9
+     |
+2615 |     let base=if kw {prev} else {code};
+     |         ^^^^ help: if this is intentional, prefix it with an underscore: `_base`
+
+warning: unused variable: `m`
+    --> src/lzw.rs:2709:53
+     |
+2709 | fn read_step(reader: &mut BitReader, data_len: u32, m: u32, clear: u32, width: u32,
+     |                                                     ^ help: if this is intentional, prefix it with an underscore: `_m`
+
+warning: unused variable: `state`
+    --> src/lzw.rs:2710:65
+     |
+2710 |     q: u32, area: u32, next: u32, have: bool, opts: LzwOptions, state: Ghost<crate::lzw_model::St>) -> (r: CodeStep)
+     |                                                                 ^^^^^ help: if this is intentional, prefix it with an underscore: `_state`
+
+warning: unused variable: `kind`
+    --> src/lzw.rs:2974:5
+     |
+2974 |     kind:crate::policy::LzwMin,t:&mut [u8],sink:&mut S)->(rep:LzwReport)
+     |     ^^^^ help: if this is intentional, prefix it with an underscore: `_kind`
+
+warning: unused variable: `prev`
+   --> src/parse.rs:576:13
+    |
+576 |         let prev = lc;
+    |             ^^^^ help: if this is intentional, prefix it with an underscore: `_prev`
+
+warning: unused variable: `blen`
+    --> src/parse.rs:1431:13
+     |
+1431 |         let blen: usize = b.len();
+     |             ^^^^ help: if this is intentional, prefix it with an underscore: `_blen`
+
+warning: unused variable: `nlc`
+    --> src/parse.rs:1486:16
+     |
+1486 |     let (nsub, nlc) = read_sub_blocks(b, q + 1 + size, Error::TruncatedExtension)?;
+     |                ^^^ help: if this is intentional, prefix it with an underscore: `_nlc`
+
+warning: field `ev` is never read
+  --> src/alloc_guard/mod.rs:45:11
+   |
+44 | pub tracked struct AllocLog {
+   |                    -------- field in this struct
+45 |     ghost ev: Seq<(AllocSite, nat, bool)>,
+   |           ^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: struct `Rect` is never constructed
+  --> src/mc.rs:38:12
+   |
+38 | pub struct Rect {
+   |            ^^^^
+
+warning: struct `FrameSpec` is never constructed
+  --> src/mc.rs:49:12
+   |
+49 | pub struct FrameSpec {
+   |            ^^^^^^^^^
+
+warning: function `new_state` is never used
+   --> src/compose_new.rs:149:8
+    |
+149 | pub fn new_state() -> (s: DrawState)
+    |        ^^^^^^^^^
+
+warning: function `dispose` is never used
+    --> src/compose_new.rs:1078:8
+     |
+1078 | pub fn dispose(
+     |        ^^^^^^^
+
+warning: function `save_rect` is never used
+    --> src/compose_new.rs:1132:8
+     |
+1132 | pub fn save_rect(saved: &mut [u8], canvas: &[u8], sw: u32, sh: u32, fr: Frame) -> (u: ())
+     |        ^^^^^^^^^
+
+warning: function `draw_all` is never used
+    --> src/compose_new.rs:1151:8
+     |
+1151 | pub fn draw_all(canvas: &mut [u8], idx: &[u8], fr: Frame, table: &[u8], sw: u32, sh: u32) -> (r: Result<
+     |        ^^^^^^^^
+
+warning: function `composite` is never used
+    --> src/compose_new.rs:1301:8
+     |
+1301 | pub fn composite(
+     |        ^^^^^^^^^
+
+warning: function `next_frame` is never used
+    --> src/compose_new.rs:1779:8
+     |
+1779 | pub fn next_frame(
+     |        ^^^^^^^^^^
+
+warning: field `log` is never read
+    --> src/compose_new.rs:2218:9
+     |
+2211 | pub struct DrawerSink<'c, 't> {
+     |            ---------- field in this struct
+...
+2218 |     pub log: Ghost<Seq<(u32, u8)>>,
+     |         ^^^
+
+warning: function `cached` is never used
+  --> src/dictionary.rs:31:8
+   |
+31 | pub fn cached(c:usize,clear:usize,ls:&[u16])->(n:usize)
+   |        ^^^^^^
+
+warning: function `insert` is never used
+  --> src/dictionary.rs:38:8
+   |
+38 | pub fn insert(e:usize,p:usize,v:u8,clear:usize,
+   |        ^^^^^^
+
+warning: enum `Status` is never used
+  --> src/frame_model.rs:15:10
+   |
+15 | pub enum Status { Running, Done, Failed }
+   |          ^^^^^^
+
+warning: struct `FrameRec` is never constructed
+  --> src/frame_model.rs:17:12
+   |
+17 | pub struct FrameRec {
+   |            ^^^^^^^^
+
+warning: struct `Previous` is never constructed
+  --> src/frame_model.rs:28:12
+   |
+28 | pub struct Previous {
+   |            ^^^^^^^^
+
+warning: struct `State` is never constructed
+  --> src/frame_model.rs:33:12
+   |
+33 | pub struct State {
+   |            ^^^^^
+
+warning: struct `Call` is never constructed
+  --> src/frame_model.rs:41:12
+   |
+41 | pub struct Call {
+   |            ^^^^
+
+warning: struct `StillImage` is never constructed
+   --> src/frame_model.rs:235:12
+    |
+235 | pub struct StillImage {pub width:int,pub height:int,pub rgba:Seq<u8>,pub recovered:bool}
+    |            ^^^^^^^^^^
+
+warning: enum `End` is never used
+   --> src/frame_model.rs:261:10
+    |
+261 | pub enum End { Trailer, Error(Error), OutsideDomain }
+    |          ^^^
+
+warning: struct `Stream` is never constructed
+   --> src/frame_model.rs:262:12
+    |
+262 | pub struct Stream {pub frames:Seq<FrameRec>,pub end:End}
+    |            ^^^^^^
+
+warning: field `log` is never read
+   --> src/gif.rs:473:5
+    |
+456 | pub struct Frames<'a> {
+    |            ------ field in this struct
+...
+473 |     log: Tracked<AllocLog>,
+    |     ^^^
+
+warning: function `fmt` is never used
+   --> src/gif.rs:478:4
+    |
+478 | fn fmt<T>(r: Result<T, crate::gif::Error>) -> (out: Result<T, TryError>)
+    |    ^^^
+
+warning: struct `LzwParams` is never constructed
+   --> src/lzw.rs:432:12
+    |
+432 | pub struct LzwParams {
+    |            ^^^^^^^^^
+
+warning: fields `seq_start`, `fetched`, and `data_len` are never read
+   --> src/lzw.rs:631:15
+    |
+619 | pub struct BitReader<'a> {
+    |            --------- fields in this struct
+...
+631 |     pub ghost seq_start: usize,
+    |               ^^^^^^^^^
+632 |     /// Ghost: the payload bytes fetched so far.
+633 |     pub ghost fetched: u32,
+    |               ^^^^^^^
+634 |     /// Ghost: `|D|`, the payload length of the sequence (G9's scan total).
+635 |     pub ghost data_len: u32,
+    |               ^^^^^^^^
+
+warning: fields `written`, `pos`, `h`, and `times` are never read
+    --> src/lzw.rs:1848:9
+     |
+1847 | pub struct LzwReport {
+     |            --------- fields in this struct
+1848 |     pub written: u32,
+     |         ^^^^^^^
+1849 |     pub error: Option<Error>,
+1850 |     pub pos: u32,
+     |         ^^^
+...
+1853 |     pub h: Ghost<Seq<(u32, u8)>>,
+     |         ^
+1854 |     pub times: Ghost<Seq<u32>>,
+     |         ^^^^^
+
+warning: field `pos` is never read
+    --> src/lzw.rs:1861:9
+     |
+1859 | pub struct ColourFault {
+     |            ----------- field in this struct
+1860 |     pub q: u32,
+1861 |     pub pos: u32,
+     |         ^^^
+     |
+     = note: `ColourFault` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
+
+warning: method `public_pos` is never used
+    --> src/lzw.rs:1865:12
+     |
+1864 | impl LzwReport {
+     | -------------- method in this implementation
+1865 |     pub fn public_pos(&self) -> (pos: u32)
+     |            ^^^^^^^^^^
+
+warning: enum `ErrK` is never used
+  --> src/lzw_model.rs:28:10
+   |
+28 | pub enum ErrK {
+   |          ^^^^
+
+warning: struct `MRes` is never constructed
+  --> src/lzw_model.rs:40:12
+   |
+40 | pub struct MRes {
+   |            ^^^^
+
+warning: multiple fields are never read
+   --> src/lzw_model.rs:139:9
+    |
+138 | pub struct St {
+    |            -- fields in this struct
+139 |     pub pos: int,
+    |         ^^^
+140 |     pub width: int,
+    |         ^^^^^
+141 |     pub next: int,
+    |         ^^^^
+142 |     pub prev: int,
+    |         ^^^^
+143 |     pub q: int,
+    |         ^
+144 |     pub pf: Seq<u16>,
+    |         ^^
+145 |     pub sf: Seq<u8>,
+    |         ^^
+146 |     pub o: Seq<u8>,
+    |         ^
+
+warning: enum `Vd` is never used
+   --> src/lzw_model.rs:229:10
+    |
+229 | pub enum Vd {
+    |          ^^
+
+warning: struct `ColorTableM` is never constructed
+   --> src/model.rs:142:12
+    |
+142 | pub struct ColorTableM {
+    |            ^^^^^^^^^^^
+
+warning: struct `HeaderM` is never constructed
+   --> src/model.rs:149:12
+    |
+149 | pub struct HeaderM {
+    |            ^^^^^^^
+
+warning: struct `FrameHeaderM` is never constructed
+   --> src/model.rs:533:12
+    |
+533 | pub struct FrameHeaderM {
+    |            ^^^^^^^^^^^^
+
+warning: struct `WalkM` is never constructed
+   --> src/model.rs:546:12
+    |
+546 | pub struct WalkM {
+    |            ^^^^^
+
+warning: enum `MbOut` is never used
+   --> src/model.rs:557:10
+    |
+557 | pub enum MbOut {
+    |          ^^^^^
+
+warning: struct `InfoM` is never constructed
+    --> src/model.rs:1349:12
+     |
+1349 | pub struct InfoM {
+     |            ^^^^^
+
+warning: `gif_verus` (lib) generated 65 warnings (run `cargo fix --lib -p gif_verus` to apply 24 suggestions)
+warning: fields `h` and `times` are never read
+    --> src/lzw.rs:1853:9
+     |
+1847 | pub struct LzwReport {
+     |            --------- fields in this struct
+...
+1853 |     pub h: Ghost<Seq<(u32, u8)>>,
+     |         ^
+1854 |     pub times: Ghost<Seq<u32>>,
+     |         ^^^^^
+
+warning: `gif_verus` (lib test) generated 63 warnings (62 duplicates)
+warning: value assigned to `checksum` is never read
+   --> tests/stress.rs:261:9
+    |
+261 |         checksum ^= f.rgba[0] as u64;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: maybe it is overwritten before being read?
+    = note: `#[warn(unused_assignments)]` (part of `#[warn(unused)]`) on by default
+
+warning: `gif_verus` (test "stress") generated 1 warning
+    Finished `release` profile [optimized] target(s) in 3.47s
+     Running unittests src/lib.rs (/home/ws/projects/verified-decoders/gif/gif_verus/target/release/deps/gif_verus-21e5a35e80e5b7e4)
+
+running 5 tests
+test lzw::tests::colour_fault_does_not_stop_the_pure_fold ... ok
+test lzw::tests::colour_position_precedes_a_later_invalid_code ... ok
+test lzw::tests::literals_ignore_stale_dictionary_bytes_and_size_one_stops ... ok
+test lzw::tests::reverse_kwkwk_and_crossing_observations ... ok
+test lzw::tests::r12_before_read_and_after_code_errors ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/conformance.rs (/home/ws/projects/verified-decoders/gif/gif_verus/target/release/deps/conformance-e647d28cd8865320)
+
+running 7 tests
+test error_names_closed_list ... ok
+test extra_records_from_env ... ok
+test plays_exhaustive ... ok
+test probes ... ok
+test vectors_large_frames ... ok
+test vectors_large_padding ... ok
+test vectors_small ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.60s
+
+     Running tests/fault_injection.rs (/home/ws/projects/verified-decoders/gif/gif_verus/target/release/deps/fault_injection-354cd870bf00e40e)
+
+running 4 tests
+test frames_requests_and_injection ... ok
+test saved_reserved_once_per_decoder ... ok
+test still_requests_and_injection ... ok
+test still_never_reserves_saved ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/stress.rs (/home/ws/projects/verified-decoders/gif/gif_verus/target/release/deps/stress-1ec90a9a8e7bed9a)
+
+running 1 test
+test film_60x60_37239_frames ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.51s
+
+   Doc-tests gif_verus
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

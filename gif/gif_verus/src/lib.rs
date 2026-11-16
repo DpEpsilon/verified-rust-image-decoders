@@ -25,6 +25,7 @@ mod interlace;
 mod compose_new;
 mod dictionary;
 mod emission_compose;
+mod frame_model;
 pub mod gif;
 pub mod limits;
 mod lzw;
