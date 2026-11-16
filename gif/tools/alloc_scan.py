@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Syntax-aware source scan for the alloc-delta source lint (SPEC.md §6).
 
-GIF copy of icns/tools/alloc_scan.py; only the self-test's real-source control differs
-(it checks the GIF modules).
+Derived from icns/tools/alloc_scan.py. GIF additionally handles conditional
+contract expressions, bodyless trait contracts and test-only module registrations.
+The module inventory keeps unregistered files in scope; only registrations that
+are unreachable with cfg(test) off justify excluding a file.
 
 This tool is a *falsification gate*, not an enforcement mechanism: it makes a
 listing of allocating constructs in exec code, and it fails on a construct it
@@ -24,20 +26,31 @@ The second rule needs to tell exec code from ghost code, so the scanner:
    char and raw-string literals (so `"https://x"` does not hide code after it);
 2. blanks string/char literal bodies (so a `}` or `//` inside a literal cannot
    confuse the brace or comment tracking);
-3. removes the text of non-exec regions: `proof { ... }` blocks and block-form
-   `assert!(...)`/`assert(...)`, `spec fn`/`open spec fn`/`closed spec fn`
-   bodies and their `requires`/`ensures` clauses, `proof fn` definitions, and
-   `let ... = Ghost(..)`/`ghost` bindings;
-4. reports every surviving alloc construct, and every surviving `.push(`.
+3. removes Verus non-exec regions inside `verus!`: `proof { ... }`,
+   `assert(...)`, spec/proof functions, exec contracts and ghost bindings;
+   ordinary Rust assertion macros remain executable and are scanned;
+4. removes items explicitly gated by `#[cfg(test)]` (not by filename);
+5. reports every surviving alloc construct, and every surviving `.push(`.
+
+The scanner is not a Rust/Verus parser or a type checker. Its balanced-delimiter
+and expression-continuation rules cover the syntax used here; unsupported syntax
+may produce findings. Passing this lint does not replace the call-graph audit.
 
 Usage:
     alloc_scan.py FILE...            scan the named files (0 = clean)
+    alloc_scan.py --production-files SRCDIR   list non-test, non-guard files
     alloc_scan.py --self-test        run built-in positive/negative controls
+
+Module inventory errors fail closed. Source inclusion, macro definitions,
+module cfg_attr and inline-module path overrides need explicit inventory support
+before this lint can exclude test-only files in a tree that uses those forms.
 """
 
+import json
 import os
 import re
 import sys
+import tempfile
 
 # Allocating / aborting constructs, the DIB/TGA pattern set extended with the
 # alloc-delta items. `.push(` is handled separately: it is legal in ghost code.
@@ -204,7 +217,7 @@ def find_matching(text: str, open_idx: int, open_ch: str, close_ch: str) -> int:
             if depth == 0:
                 return i + 1
         i += 1
-    return n
+    raise ValueError(f"unmatched {open_ch!r} at source offset {open_idx}")
 
 
 SPEC_FN = re.compile(
@@ -213,7 +226,7 @@ SPEC_FN = re.compile(
 PROOF_FN = re.compile(r"\bproof\s+fn\b")
 EXEC_FN = re.compile(r"(?<![\w:])\bfn\s+[A-Za-z_]\w*")
 PROOF_BLOCK = re.compile(r"\bproof\b\s*\{")
-ASSERT_CALL = re.compile(r"\bassert(?:_eq|_ne|_ok|_err)?!?\s*\(")
+ASSERT_CALL = re.compile(r"\bassert\s*\(")
 GHOST_BIND = re.compile(r"\blet\s+(?:ghost|tracked)\b")
 # A loop `invariant` clause is ghost code: it is a spec expression, erased in a
 # normal build, so a `Seq::push` inside it allocates nothing. The clause runs
@@ -222,36 +235,46 @@ INVARIANT = re.compile(r"\binvariant\b")
 DECREASES = re.compile(r"\bdecreases\b")
 
 
-def find_fn_body(text: str, fn_start: int):
-    """Return (open, close) of the body braces of the `fn` at `fn_start`.
+CONTRACT = re.compile(r"\b(?:requires|ensures|recommends|decreases|returns|opens_invariants)\b")
+CONTINUATION = re.compile(r"(?:else|as|is|has|matches)\b")
 
-    Scans past the parameter list and any `requires`/`ensures` clauses. A brace
-    block is a clause expression (not the body) when the significant character
-    after its closing `}` is punctuation; the body's `}` is followed by an item
-    start, an enclosing `}`, or end of input. Comments and literals are already
-    blanked, so `///` does not appear as punctuation here.
+
+def find_fn_body(text: str, fn_start: int):
+    """Return (body opening brace or None, end of body/declaration).
+
+    After a parameter list, a semicolon ends a bodyless trait declaration,
+    including its contracts. Inside a contract, a balanced brace expression
+    continues when followed by an operator, a comma, `else`, a cast/pattern
+    operator, or another block (the eventual function body). In particular an
+    `if` arm followed by `else` is not an executable function body. Outside a
+    contract the first brace is the body, even if its close precedes `;`.
     """
     n = len(text)
     paren = text.find("(", fn_start)
     if paren < 0:
         return None, None
     i = find_matching(text, paren, "(", ")")
+    in_contract = False
     while i < n:
         c = text[i]
         if c == ";":
-            return None, None  # bodyless declaration
-        if c == "(":
-            i = find_matching(text, i, "(", ")")
-            continue
-        if c == "[":
-            i = find_matching(text, i, "[", "]")
+            return None, i + 1
+        if CONTRACT.match(text, i):
+            in_contract = True
+        if c in "([":
+            i = find_matching(text, i, c, {"(": ")", "[": "]"}[c])
             continue
         if c == "{":
             end = find_matching(text, i, "{", "}")
             t = end
-            while t < n and text[t] in " \t\r\n":
+            while t < n and text[t].isspace():
                 t += 1
-            if t >= n or text[t] == "}" or text[t] == "#" or text[t].isalpha() or text[t] == "_":
+            continues = t < n and (
+                text[t] in ",.([?:=!<>+-*/%&|^{"
+                or CONTINUATION.match(text, t)
+                or CONTRACT.match(text, t)
+            )
+            if not in_contract or not continues:
                 return i, end
             i = end
             continue
@@ -259,28 +282,25 @@ def find_fn_body(text: str, fn_start: int):
     return None, None
 
 
-def strip_nonexec(text: str) -> str:
-    """Blank Verus ghost/proof/spec regions so only exec bodies remain."""
+def strip_verus_nonexec(text: str) -> str:
+    """Blank ghost regions within one already-identified `verus!` block."""
     out = list(text)
 
     # `spec fn` / `proof fn` definitions and their bodies.
     for m in list(SPEC_FN.finditer(text)) + list(PROOF_FN.finditer(text)):
-        brace, _ = find_fn_body(text, m.end())
-        if brace is None:
-            semi = text.find(";", m.end())
-            mask_range(out, m.start(), semi + 1 if semi >= 0 else len(text))
-        else:
-            end = find_matching(text, brace, "{", "}")
+        brace, end = find_fn_body(text, m.end())
+        if end is not None:
             mask_range(out, m.start(), end)
 
-    # Exec functions' signatures and clauses: keep only the body braces.
+    # Exec function contracts, including trait declarations without a body.
     for m in EXEC_FN.finditer(text):
-        brace, _ = find_fn_body(text, m.end())
-        if brace is None:
+        brace, end = find_fn_body(text, m.end())
+        if end is None:
             continue
-        end = find_matching(text, brace, "{", "}")
-        mask_range(out, m.start(), brace + 1)  # through the opening `{` is kept open
-        mask_range(out, end - 1, end)          # blank the closing `}` too
+        if brace is None:
+            mask_range(out, m.start(), end)
+        else:
+            mask_range(out, m.start(), brace)
 
     # `proof { ... }` blocks.
     for m in PROOF_BLOCK.finditer(text):
@@ -288,7 +308,7 @@ def strip_nonexec(text: str) -> str:
         end = find_matching(text, brace, "{", "}")
         mask_range(out, m.start(), end)
 
-    # `assert!(..)` / `assert_eq!(..)` and friends.
+    # Verus `assert(..)` is ghost; Rust `assert!(..)` remains executable.
     for m in ASSERT_CALL.finditer(text):
         paren = text.index("(", m.start())
         end = find_matching(text, paren, "(", ")")
@@ -315,6 +335,176 @@ def strip_nonexec(text: str) -> str:
         mask_range(out, m.start(), end)
 
     return "".join(out)
+
+
+# Only an exact positive cfg(test) establishes exclusion. In particular neither
+# a `_tests.rs` name, `#[test]`, `cfg(not(test))`, nor `cfg(any(test, feature=...))`
+# makes a module test-only. Other configurations stay in scope conservatively.
+ATTRIBUTES = re.compile(r"(?:#\s*\[(?:[^\[\]]|\[[^\[\]]*\])*\]\s*)+")
+TEST_CFG = re.compile(r"#\s*\[\s*cfg\s*\(\s*test\s*\)\s*\]")
+MODULE = re.compile(r"(?:\bpub(?:\s*\([^)]*\))?\s+)?\bmod\s+(\w+)\s*([;{])")
+VERUS_BLOCK = re.compile(r"\bverus\s*!\s*\{")
+
+
+def attribute_spans(attributes: str):
+    """Yield only top-level attributes, not attribute-shaped macro arguments."""
+    i = 0
+    while i < len(attributes):
+        if attributes[i].isspace():
+            i += 1
+            continue
+        opening = re.match(r"#\s*\[", attributes[i:])
+        if opening is None:
+            raise ValueError("unsupported attribute syntax in module inventory")
+        end = find_matching(attributes, i + opening.end() - 1, "[", "]")
+        yield i, end
+        i = end
+
+
+def has_test_cfg(attributes: str) -> bool:
+    return any(TEST_CFG.fullmatch(attributes[lo:hi])
+               for lo, hi in attribute_spans(attributes))
+
+
+def strip_test_items(text: str) -> str:
+    """Blank explicitly cfg(test) fn/mod items, preserving all source offsets."""
+    out = list(text)
+    for attrs in ATTRIBUTES.finditer(text):
+        if not has_test_cfg(attrs.group()):
+            continue
+        start = attrs.end()
+        item = MODULE.match(text, start)
+        if item:
+            end = (item.end() if item[2] == ";" else
+                   find_matching(text, item.end() - 1, "{", "}"))
+        else:
+            fn = re.match(r"(?:pub(?:\([^)]*\))?\s+)?(?:async\s+|unsafe\s+)?fn\s+\w+", text[start:])
+            if not fn:
+                continue  # unsupported item shape: keep scanning, do not suppress
+            _, end = find_fn_body(text, start + fn.end())
+        if end is not None:
+            mask_range(out, attrs.start(), end)
+    return "".join(out)
+
+
+def strip_nonexec(text: str) -> str:
+    """Apply Verus erasure only in verus!, and cfg(test) erasure everywhere."""
+    text = strip_test_items(text)
+    out = list(text)
+    end = 0
+    for m in VERUS_BLOCK.finditer(text):
+        if m.start() < end:
+            continue
+        brace = m.end() - 1
+        end = find_matching(text, brace, "{", "}")
+        out[brace:end] = strip_verus_nonexec(text[brace:end])
+    return "".join(out)
+
+
+def module_edges(text: str, source: str) -> list:
+    """External module registrations as (resolved path, test-only edge).
+
+    Explicit paths come from the literal in the original attribute, never from
+    a filename convention. Walk inline modules so their cfg(test) propagates to
+    external children. A missing/unsupported path fails the inventory closed.
+    """
+    clean = strip_literals_and_comments(text)
+    if re.search(r"\b(?:include|macro_rules)\s*!|\bmacro\s+\w+", clean):
+        raise ValueError(f"{source}: source inclusion/macro definition needs module-inventory review")
+    directory = os.path.dirname(source)
+    stem = os.path.splitext(os.path.basename(source))[0]
+    module_dir = directory if stem in ("lib", "main", "mod") else os.path.join(directory, stem)
+    edges = []
+
+    def walk(lo, hi, default_dir, path_dir, inherited_test=False):
+        i = lo
+        while i < hi:
+            attrs = ATTRIBUTES.match(clean, i)
+            item_start = attrs.end() if attrs else i
+            item = MODULE.match(clean, item_start)
+            if item is None:
+                i = attrs.end() if attrs else i + 1
+                continue
+            if attrs and re.search(r"\bcfg_attr\b", attrs.group()):
+                raise ValueError(f"{source}: cfg_attr on a module needs module-inventory review")
+            test_only = inherited_test or bool(attrs and has_test_cfg(attrs.group()))
+            name, kind = item.groups()
+            if kind == "{":
+                end = find_matching(clean, item.end() - 1, "{", "}")
+                if attrs and re.search(r"\bpath\b", attrs.group()):
+                    raise ValueError(f"{source}: path on inline module is unsupported")
+                child_dir = os.path.join(default_dir, name)
+                walk(item.end(), end - 1, child_dir, child_dir, test_only)
+                i = end
+                continue
+            path_attrs = []
+            if attrs:
+                for attr_lo, attr_hi in attribute_spans(attrs.group()):
+                    absolute = attrs.start() + attr_lo
+                    attr = re.fullmatch(r"#\s*\[\s*path\s*=([^\]]*)\]", clean[absolute:attrs.start() + attr_hi])
+                    if attr:
+                        a, b = absolute + attr.start(1), absolute + attr.end(1)
+                        path_attrs.append(text[a:b].strip())
+            if path_attrs:
+                if len(path_attrs) != 1:
+                    raise ValueError(f"{source}: ambiguous module path attributes")
+                # Ordinary quoted paths cover this tree. Reject unsupported Rust
+                # escape/raw-literal forms rather than silently dropping a file.
+                rel = json.loads(path_attrs[0])
+                target = os.path.join(path_dir, rel)
+            else:
+                choices = [os.path.join(default_dir, name + ".rs"),
+                           os.path.join(default_dir, name, "mod.rs")]
+                present = [p for p in choices if os.path.isfile(p)]
+                if len(present) != 1:
+                    raise ValueError(f"{source}: cannot resolve module {name}: {choices}")
+                target = present[0]
+            target = os.path.realpath(target)
+            if not os.path.isfile(target):
+                raise ValueError(f"{source}: missing module {target}")
+            edges.append((target, test_only))
+            i = item.end()
+
+    walk(0, len(clean), module_dir, directory)
+    return edges
+
+
+def production_files(srcdir: str) -> list:
+    """All non-guard Rust files, excluding only test-registered module subtrees.
+
+    Preserve the old scan's conservative coverage of unregistered files. Start
+    at lib.rs and files with no incoming registration; orphan registration cycles
+    also stay in scope. Follow every edge unless cfg(test) disables it. A second
+    production registration of a test target therefore keeps that file scanned.
+    """
+    srcdir = os.path.realpath(srcdir)
+    guard = os.path.join(srcdir, "alloc_guard") + os.sep
+    files = {os.path.realpath(os.path.join(d, n))
+             for d, _, names in os.walk(srcdir) for n in names
+             if n.endswith(".rs") and not os.path.realpath(os.path.join(d, n)).startswith(guard)}
+    edges = {}
+    for path in files:
+        with open(path, encoding="utf-8") as fh:
+            edges[path] = module_edges(fh.read(), path)
+        for target, _ in edges[path]:
+            if target not in files and not target.startswith(guard):
+                raise ValueError(f"{path}: module outside scan tree: {target}")
+    targets = {target for es in edges.values() for target, _ in es}
+    roots = (files - targets) | ({os.path.join(srcdir, "lib.rs")} & files)
+
+    def reachable(starts, include_tests):
+        seen = set()
+        todo = list(starts)
+        while todo:
+            path = todo.pop()
+            if path in seen or path not in files:
+                continue
+            seen.add(path)
+            todo.extend(target for target, test in edges[path] if include_tests or not test)
+        return seen
+
+    roots |= files - reachable(roots, True)
+    return sorted(reachable(roots, False))
 
 
 # SPEC.md §6: `Reserved::push` and `Reserved::into_vec` are whitelisted by full
@@ -345,9 +535,9 @@ def reserved_fn_spans(body: str) -> list:
         o, c = find_fn_body(body, m.end())
         if o is None:
             continue
-        inner = body[o:c + 1]
+        inner = body[o:c]
         if "try_with_room" in inner and RESERVED_BIND.search(inner):
-            spans.append((o, c + 1))
+            spans.append((o, c))
     return spans
 
 
@@ -525,22 +715,130 @@ fn f(v: &mut Vec<u8>)
            "    invariant s == Seq::<u8>::empty().push(1),\n    decreases n - i,\n"
            "  { i = i + 1; }\n}\n} // verus!\n")
     check("invariant-clause Seq::push unflagged", scan(inv) == [])
-    # Positive control on the real GIF sources (skipped if not found): every
-    # production module is clean, with or without --allow-reserved (GIF has no
-    # `Reserved<T>` site, so there is nothing to suppress).
+    # Regressions for all six formerly false-positive production sites: brace
+    # expressions in contracts, bodyless trait contracts, and a proof fn with an
+    # if/match in its requires. The executable bodies remain separately scanned.
+    conditional = """
+verus! {
+trait Sink {
+    fn put(&mut self, q: u32)
+        ensures final(self).log() == old(self).log().push(q),
+    ;
+}
+proof fn lemma(s: Seq<u8>, p: bool)
+    requires p == if p { true } else { match p { true => true, _ => false } },
+    ensures s.push(1).len() == s.len() + 1,
+{ assert(s.push(1).len() > 0); }
+fn conditional(v: &mut Vec<u8>, p: bool)
+    requires p == if p { true } else { false },
+    ensures s == if p { s.push(1) } else if p { s.push(2) } else { s.push(3) },
+        n == if p { 1 } else { 2 },
+{
+    let ghost s2 = s.push(4);
+    proof { assert(s2.push(5).len() > 0); }
+    EXECUTABLE
+}
+}
+"""
+    check("conditional/bodyless/proof contracts are ghost",
+          scan(conditional.replace("EXECUTABLE", "")) == [])
+    # Every existing allocation control also runs directly beside those ghost
+    # pushes, not just in an otherwise empty verus! function.
+    for c in constructs:
+        for mode in (False, True):
+            findings = scan(conditional.replace("EXECUTABLE", c + ";"), mode)
+            expected_line = conditional[:conditional.index("EXECUTABLE")].count("\n") + 1
+            check(f"conditional contract preserves exec {c} (reserved={mode})",
+                  bool(findings) and all(f[0] == expected_line for f in findings))
+    for src in ('fn f() { assert!({ v.push(1); true }); }',
+                'verus! { fn f() { assert_eq!(Vec::new(), v); } }',
+                'fn f() { assert_ne!(vec![1], v); }'):
+        check("executable Rust assertion arguments scanned", bool(scan(src)))
+    for attribute in ("#[cfg(test)]", "#[cfg ( test )] #[allow(dead_code)]"):
+        check("cfg(test) inline module excluded",
+              scan(attribute + " mod arbitrary { fn f() { Vec::new(); } }") == [])
+        check("cfg(test) function excluded",
+              scan(attribute + " fn f() { v.push(1); }") == [])
+        check("exec sibling of cfg(test) module retained",
+              bool(scan(attribute + " mod tests { fn f() { Vec::new(); } }"
+                        "fn production() { v.push(1); }")))
+    for attribute in ("", "#[test]", "#[cfg(not(test))]",
+                      '#[cfg(any(test, feature = "prod"))]',
+                      '#[annotation(#[cfg(test)])]'):
+        check(f"non-test-only module scanned: {attribute}",
+              bool(scan(attribute + " mod tests { fn f() { v.push(1); } }")))
+
+    # Real module registration controls, in isolated temporary trees. The name
+    # of a source file never establishes its production/test classification.
+    with tempfile.TemporaryDirectory(prefix="alloc-scan-modules-") as tmp:
+        def put(name, source):
+            path = os.path.join(tmp, name)
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            with open(path, "w", encoding="utf-8") as fh:
+                fh.write(source)
+            return os.path.realpath(path)
+
+        test_path = put("arbitrary.rs", "mod child; fn f() { Vec::new(); }")
+        child_path = put("arbitrary/child.rs", "fn f() { v.push(1); }")
+        prod_path = put("looks_like_tests.rs", "fn f() { v.push(1); }")
+        orphan_path = put("unregistered.rs", "fn f() { Box::new(1); }")
+        registration = '#[path = "arbitrary.rs"] mod checks;\n'
+        put("lib.rs", "#[cfg(test)] " + registration + "mod looks_like_tests;\n")
+        live = production_files(tmp)
+        check("cfg(test) external path and children excluded",
+              test_path not in live and child_path not in live)
+        check("production *_tests.rs and unregistered files retained",
+              prod_path in live and orphan_path in live)
+        for attribute in ("", "#[cfg(not(test))]",
+                          '#[cfg(any(test, feature = "prod"))]',
+                          '#[annotation(#[cfg(test)])]'):
+            put("lib.rs", attribute + registration)
+            live = production_files(tmp)
+            check(f"external module retained without exact test-only cfg: {attribute}",
+                  test_path in live and child_path in live)
+        put("lib.rs", "#[cfg(test)] " + registration
+            + '#[path = "arbitrary.rs"] mod also_production;')
+        check("second production registration defeats test exclusion",
+              test_path in production_files(tmp))
+        put("lib.rs", '#[cfg(test)] mod outer { #[path = "../arbitrary.rs"] mod inner; }')
+        os.makedirs(os.path.join(tmp, "outer"), exist_ok=True)
+        check("inline test context propagates to external children",
+              test_path not in production_files(tmp))
+        for unsupported in ("mod missing;", 'include!("arbitrary.rs");',
+                            '#[cfg_attr(feature = "prod", path = "arbitrary.rs")] mod checks;',
+                            'macro_rules! register { () => { mod checks; } }'):
+            put("lib.rs", unsupported)
+            try:
+                production_files(tmp)
+            except ValueError:
+                pass
+            else:
+                check(f"unsupported module discovery fails closed: {unsupported}", False)
+
+    # Check the same complete module inventory that audit_alloc.sh scans, not a
+    # stale list that silently omits newly registered production/proof modules.
     srcdir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "gif_verus", "src")
-    for name in ("gif.rs", "parse.rs", "lzw.rs", "compose.rs", "policy.rs", "limits.rs", "lib.rs"):
-        real = os.path.join(srcdir, name)
-        if os.path.exists(real):
-            rtext = open(real).read()
-            check(f"real {name} clean", scan(rtext) == [])
-            check(f"real {name} clean under allow_reserved", scan(rtext, allow_reserved=True) == [])
+    real_files = production_files(srcdir) if os.path.isdir(srcdir) else []
+    for real in real_files:
+        with open(real, encoding="utf-8") as fh:
+            rtext = fh.read()
+        name = os.path.basename(real)
+        check(f"real {name} clean", scan(rtext) == [])
+        check(f"real {name} clean under allow_reserved", scan(rtext, allow_reserved=True) == [])
     if fails == 0:
-        print(f"self-test: OK ({len(constructs)} allocating constructs flagged; look-alikes, ghost Seq::push/insert and comments not)")
+        print(f"self-test: OK ({len(constructs)} allocating constructs flagged, also beside conditional ghost contracts in both modes; "
+              f"cfg(test) registration controls; {len(real_files)} real sources clean in both modes)")
     return 1 if fails else 0
 
 
 def main(argv: list) -> int:
+    if "--production-files" in argv:
+        if len(argv) != 3 or argv[1] != "--production-files":
+            print("usage: alloc_scan.py --production-files SRCDIR", file=sys.stderr)
+            return 2
+        for path in production_files(argv[2]):
+            print(path)
+        return 0
     if "--self-test" in argv:
         return self_test()
     if "--count-vec" in argv:
@@ -569,4 +867,8 @@ def main(argv: list) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv))
+    try:
+        sys.exit(main(sys.argv))
+    except (OSError, ValueError) as exc:
+        print(f"alloc_scan: {exc}", file=sys.stderr)
+        sys.exit(2)

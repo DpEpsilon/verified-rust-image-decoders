@@ -9,10 +9,13 @@
 # guard's two text files and requires the guard's reservation call sites to be
 # exactly GIF's three sites.
 #
-# The scan covers every production module under `gif_verus/src` except
-# `alloc_guard/` (the guard IS the allocation; decision D6). GIF has no
-# `Reserved<T>` site, so the scan must be clean both with and without
-# `--allow-reserved`: no `.push(`/`.into_vec(` at all outside the guard.
+# The scan covers every Rust source under `gif_verus/src` except `alloc_guard/`
+# (the guard IS the allocation; decision D6) and external modules registered
+# exclusively through #[cfg(test)] paths. Unregistered files stay in scope.
+# Inline #[cfg(test)] fn/mod items and Verus ghost contexts are also excluded.
+# GIF has no `Reserved<T>` site, so both scanner modes must be clean: no exec
+# `.push(`/`.into_vec(` at all outside the guard. Ordinary assertion macros
+# are executable; their allocation-capable arguments remain in scope.
 #
 # Reservation call sites (G18), all in `gif.rs`, all byte-counted `try_zeroed`:
 #   try_zeroed(AllocSite::Canvas, ..)    once (Frames::open: decode_still and the constructor)
@@ -26,7 +29,7 @@
 # The production call-graph audit (alloc-delta/audit/run_audit.sh) has no GIF
 # configuration yet; its integration comes in a later milestone.
 set -u
-root="$(cd "$(dirname "$0")/.." && pwd)"
+root="$(cd "$(dirname "$0")/.." && pwd -P)"
 srcdir="$root/gif_verus/src"
 scanner="$root/tools/alloc_scan.py"
 status=0
@@ -40,11 +43,16 @@ status=0
 EXPECTED_MOD_SHA=26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7
 EXPECTED_SITES_SHA=ba8f9fe5719341171767e5b932e1b8db973c8db487efa668ddfd138c2784b133
 
-mapfile -t files < <(find "$srcdir" -name '*.rs' -not -path "$srcdir/alloc_guard/*" | sort)
-if [ "${#files[@]}" -eq 0 ]; then echo "no production modules found under $srcdir"; exit 1; fi
+# Capture the inventory's exit status: mapfile over process substitution would
+# hide a module-resolution error and could silently scan an incomplete list.
+if ! inventory=$(python3 "$scanner" --production-files "$srcdir"); then
+  echo "production module inventory failed"; exit 1
+fi
+if [ -z "$inventory" ]; then echo "no production modules found under $srcdir"; exit 1; fi
+mapfile -t files <<< "$inventory"
 names=()
 for f in "${files[@]}"; do names+=("${f#"$srcdir"/}"); done
-echo "scanned: ${names[*]} (alloc_guard/ excluded)"
+echo "scanned: ${names[*]} (alloc_guard/ and cfg(test)-only module subtrees excluded)"
 
 for mode in --allow-reserved ""; do
   findings=$(python3 "$scanner" $mode "${files[@]}" 2>&1)
@@ -65,11 +73,14 @@ n_canvas=$(flat | grep -oE 'try_zeroed\( *AllocSite::Canvas' | wc -l)
 n_saved=$(flat | grep -oE 'try_zeroed\( *AllocSite::Saved' | wc -l)
 n_table=$(flat | grep -oE 'try_zeroed\( *AllocSite::LzwTable' | wc -l)
 n_zeroed_all=$(cat "${files[@]}" | sed -E 's#//.*$##' | grep -cE '\btry_zeroed\(')
-# M3: `reserve` (the verified G18 prefix) and the still-unverified `open` each
-# name Canvas and LzwTable, and `image` names Saved once: 5 call expressions.
-# Each site name appears at most twice (once per function), and `Saved` once.
-echo "guard reservation call sites: Canvas $n_canvas, LzwTable $n_table, Saved $n_saved (expected 2, 2, 1); try_zeroed calls in gif.rs: $n_zeroed_all (expected 5)"
-if [ "$n_canvas" != 2 ] || [ "$n_table" != 2 ] || [ "$n_saved" != 1 ] || [ "$n_zeroed_all" != 5 ]; then status=1; fi
+# History of the expected counts: before M3 step 0 and M5, `reserve` (the
+# verified G18 prefix) and the unverified `open` each named Canvas and LzwTable,
+# giving 2, 2, 1 and 5 call expressions. M3 step 0 turned the LZW table into one
+# `try_zeroed` reservation; M5 unified the constructor reservations behind one
+# proved reserve path (Canvas, LzwTable) and `ensure_saved` (Saved). Production
+# now has exactly three call expressions: one per site, in gif.rs.
+echo "guard reservation call sites: Canvas $n_canvas, LzwTable $n_table, Saved $n_saved (expected 1, 1, 1); try_zeroed calls in production: $n_zeroed_all (expected 3)"
+if [ "$n_canvas" != 1 ] || [ "$n_table" != 1 ] || [ "$n_saved" != 1 ] || [ "$n_zeroed_all" != 3 ]; then status=1; fi
 
 for pair in "mod.rs:$EXPECTED_MOD_SHA" "sites.rs:$EXPECTED_SITES_SHA"; do
   name="${pair%%:*}"; want="${pair##*:}"
@@ -90,17 +101,21 @@ if [ "${1:-}" = "--self-test" ]; then
   echo "--- scanner self-test ---"
   if ! python3 "$scanner" --self-test; then status=1; fi
   tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
-  printf 'fn leaky(v: &mut Vec<u8>, n: usize) {\n    let mut i = 0;\n    while i < n {\n        v.push(0u8);\n        i += 1;\n    }\n}\n' > "$tmp/unguarded.rs"
-  if python3 "$scanner" "$tmp/unguarded.rs" > /dev/null 2>&1; then
-    echo "negative gate self-test FAILED: unguarded exec v.push(x) was not flagged"; status=1
+  printf 'verus! {\nspec fn ghost_push(s: Seq<u8>) -> Seq<u8> { s.push(1) }\nfn leaky(v: &mut Vec<u8>)\n    ensures s == if p { s.push(2) } else { s.push(3) },\n{\n    proof { let s = s.push(4); }\n    v.push(0u8);\n}\n}\n' > "$tmp/unguarded.rs"
+  python3 "$scanner" "$tmp/unguarded.rs" > "$tmp/push.out" 2>&1
+  rc=$?
+  if [ "$rc" = 1 ] && grep -qE '^  7: \.push\($' "$tmp/push.out"; then
+    echo "negative gate self-test OK: exec v.push(x) beside ghost pushes flagged"
   else
-    echo "negative gate self-test OK: unguarded exec v.push(x) flagged"
+    echo "negative gate self-test FAILED: expected an exec v.push(x) finding (exit $rc)"; status=1
   fi
   printf 'fn alloc(n: usize) -> Vec<u8> {\n    vec![0u8; n]\n}\n' > "$tmp/vec.rs"
-  if python3 "$scanner" "$tmp/vec.rs" > /dev/null 2>&1; then
-    echo "negative gate self-test FAILED: exec vec! was not flagged"; status=1
-  else
+  python3 "$scanner" "$tmp/vec.rs" > "$tmp/vec.out" 2>&1
+  rc=$?
+  if [ "$rc" = 1 ] && grep -qE '^  2: vec!\[$' "$tmp/vec.out"; then
     echo "negative gate self-test OK: exec vec! flagged"
+  else
+    echo "negative gate self-test FAILED: expected an exec vec! finding (exit $rc)"; status=1
   fi
 fi
 
