@@ -26,6 +26,9 @@ mod compose_new;
 mod dictionary;
 mod emission_compose;
 mod frame_model;
+mod work_model;
+mod pixel_model;
+mod model_vectors;
 pub mod gif;
 pub mod limits;
 mod lzw;
@@ -38,7 +41,8 @@ pub mod policy;
 pub use alloc_guard::sites::TryError;
 pub use alloc_guard::{AllocSite, OutOfMemory};
 pub use gif::{
-    plays, try_decode_still, try_decode_still_with_policy, Error, FrameView, Frames, Info, Plays,
+    plays, try_decode_still, try_decode_still_with_policy, try_decode_still_logged,
+    try_decode_still_with_policy_logged, Error, FrameView, Frames, Info, Plays,
     Still, Version,
 };
 pub use policy::Profile;

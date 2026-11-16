@@ -149,6 +149,11 @@ pub closed spec fn profile_record(p:Profile)->Policy {
     match p {Profile::Strict=>STRICT,Profile::RecommendedBeta=>RECOMMENDED_BETA}
 }
 
+pub(crate) proof fn lemma_profile_records()
+    ensures profile_record(Profile::Strict)==STRICT,
+        profile_record(Profile::RecommendedBeta)==RECOMMENDED_BETA,
+{}
+
 impl Profile {
     /// The record this profile selects.
     pub(crate) fn policy(self) -> (pol: Policy)

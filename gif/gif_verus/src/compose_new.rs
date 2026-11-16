@@ -433,6 +433,9 @@ pub fn clip_of(r: Rect, sw: u32, sh: u32) -> (c: (u32, u32, u32, u32))
         crate::mc::clip(r.spec_rect(), sw, sh) == (c.0 as int, c.1 as int, c.2 as int, c.3 as int),
         c.1 as int <= sw as int,
         c.3 as int <= sh as int,
+        c.0 == r.left, c.2 == r.top,
+        c.1 as int <= r.left as int + r.width as int,
+        c.3 as int <= r.top as int + r.height as int,
         c.0 as int <= c.1 as int || c.1 as int <= c.0 as int,
 {
     proof {
@@ -773,7 +776,7 @@ pub proof fn lemma_clip_empty_identity(dst: Seq<u8>, src: Seq<u8>, sw: u32, sh: 
 /// screen, to `(0,0,0,0)`. Writes nothing when the clipped rectangle is empty
 /// (Q18): the row loop runs over no row.
 #[allow(unused_variables)]
-pub fn clear_rect(canvas: &mut [u8], sw: u32, sh: u32, r: Rect)
+pub fn clear_rect(canvas: &mut [u8], sw: u32, sh: u32, r: Rect) -> (work: Ghost<nat>)
     requires
         canvas_ok(canvas, sw, sh),
         r.width >= 1,
@@ -781,9 +784,11 @@ pub fn clear_rect(canvas: &mut [u8], sw: u32, sh: u32, r: Rect)
         (r.left as int) + (r.width as int) <= 2 * max_dimension(),
         (r.top as int) + (r.height as int) <= 2 * max_dimension(),
     ensures
+        work@ as int <= 2 * ((r.width as int) * (r.height as int)),
         final(canvas)@ == crate::mc::clear_rect(old(canvas)@, sw, sh, r.spec_rect()),
         final(canvas)@.len()==old(canvas)@.len(),
 {
+    let ghost mut steps = 0nat;
     let (x0, x1, y0, y1) = clip_of(r, sw, sh);
     let ghost cv0 = old(canvas)@;
     let ghost len = cv0.len();
@@ -797,12 +802,16 @@ pub fn clear_rect(canvas: &mut [u8], sw: u32, sh: u32, r: Rect)
             reveal(crate::mc::clip_is_empty);
             lemma_clip_empty_identity(cv0, cv0, sw, sh, r);
         }
-        return;
+        return Ghost(steps);
     }
     let mut y: u32 = y0;
     while y < y1
         invariant
             y0 <= y <= y1,
+            steps as int == (y as int-y0 as int) * (1 + x1 as int-x0 as int),
+            x1 as int-x0 as int <= r.width as int,
+            y1 as int-y0 as int <= r.height as int,
+            r.width>=1, r.height>=1,
             y1 as int <= sh as int,
             x0 as int <= x1 as int,
             x1 as int <= sw as int,
@@ -828,10 +837,16 @@ pub fn clear_rect(canvas: &mut [u8], sw: u32, sh: u32, r: Rect)
             assert((z as int) <= cv0.len());
             assert((a as int) <= (z as int));
         }
+        proof { steps = steps + 1; }
         let mut x: u32 = x0;
         while x < x1
             invariant
                 x0 <= x <= x1,
+                steps as int == (y as int-y0 as int) * (1+x1 as int-x0 as int) + 1 + x as int-x0 as int,
+                y0<=y,
+                x1 as int-x0 as int <= r.width as int,
+                y1 as int-y0 as int <= r.height as int,
+                r.width>=1, r.height>=1,
                 y < y1,
                 y1 as int <= sh as int,
                 x1 as int <= sw as int,
@@ -909,13 +924,24 @@ pub fn clear_rect(canvas: &mut [u8], sw: u32, sh: u32, r: Rect)
             canvas[o + 1] = 0;
             canvas[o + 2] = 0;
             canvas[o + 3] = 0;
+            proof { steps = steps + 1; }
             x += 1;
+        }
+        proof {
+            assert(steps as int == (y as int + 1-y0 as int) * (1+x1 as int-x0 as int)) by(nonlinear_arith)
+                requires steps as int == (y as int-y0 as int) * (1+x1 as int-x0 as int) + 1+x1 as int-x0 as int;
         }
         y += 1;
     }
     proof {
         lemma_cleared_upto_full(cv0, sw, sh, r);
+    }    proof {
+        assert(steps as int <= 2 * ((r.width as int) * (r.height as int))) by(nonlinear_arith)
+            requires steps as int == (y1 as int-y0 as int) * (1+x1 as int-x0 as int),
+                0<=x1 as int-x0 as int<=r.width as int,0<=y1 as int-y0 as int<=r.height as int,
+                r.width>=1,r.height>=1;
     }
+    Ghost(steps)
 }
 /// The disposal-3 save (`canvas → Saved`) and restore (`Saved → canvas`): copy
 /// the clipped rectangle's bytes from `src` to the same offsets of `dst`.
@@ -925,7 +951,7 @@ pub fn clear_rect(canvas: &mut [u8], sw: u32, sh: u32, r: Rect)
 /// save is `copy_rect(saved, canvas, ...)`; the restore is the same call with the
 #[allow(unused_variables)]
 /// arguments swapped, which is why one proof covers both.
-pub fn copy_rect(dst: &mut [u8], src: &[u8], sw: u32, sh: u32, r: Rect)
+pub fn copy_rect(dst: &mut [u8], src: &[u8], sw: u32, sh: u32, r: Rect) -> (work: Ghost<nat>)
     requires
         canvas_ok(dst, sw, sh),
         src@.len() == 4 * (sw as int) * (sh as int),
@@ -934,9 +960,11 @@ pub fn copy_rect(dst: &mut [u8], src: &[u8], sw: u32, sh: u32, r: Rect)
         (r.left as int) + (r.width as int) <= 2 * max_dimension(),
         (r.top as int) + (r.height as int) <= 2 * max_dimension(),
     ensures
+        work@ as int <= 2 * ((r.width as int) * (r.height as int)),
         final(dst)@ == crate::mc::copy_rect(old(dst)@, src@, sw, sh, r.spec_rect()),
         final(dst)@.len()==old(dst)@.len(),
 {
+    let ghost mut steps = 0nat;
     let (x0, x1, y0, y1) = clip_of(r, sw, sh);
     let ghost dv0 = old(dst)@;
     let ghost len = dv0.len();
@@ -950,12 +978,16 @@ pub fn copy_rect(dst: &mut [u8], src: &[u8], sw: u32, sh: u32, r: Rect)
             reveal(crate::mc::clip_is_empty);
             lemma_clip_empty_identity(dv0, src@, sw, sh, r);
         }
-        return;
+        return Ghost(steps);
     }
     let mut y: u32 = y0;
     while y < y1
         invariant
             y0 <= y <= y1,
+            steps as int == (y as int-y0 as int) * (1 + x1 as int-x0 as int),
+            x1 as int-x0 as int <= r.width as int,
+            y1 as int-y0 as int <= r.height as int,
+            r.width>=1, r.height>=1,
             y1 as int <= sh as int,
             x0 as int <= x1 as int,
             x1 as int <= sw as int,
@@ -982,10 +1014,16 @@ pub fn copy_rect(dst: &mut [u8], src: &[u8], sw: u32, sh: u32, r: Rect)
             assert((z as int) <= dv0.len());
             assert((a as int) <= (z as int));
         }
+        proof { steps = steps + 1; }
         let mut x: u32 = x0;
         while x < x1
             invariant
                 x0 <= x <= x1,
+                steps as int == (y as int-y0 as int) * (1+x1 as int-x0 as int) + 1 + x as int-x0 as int,
+                y0<=y,
+                x1 as int-x0 as int <= r.width as int,
+                y1 as int-y0 as int <= r.height as int,
+                r.width>=1, r.height>=1,
                 y < y1,
                 y1 as int <= sh as int,
                 x1 as int <= sw as int,
@@ -1057,13 +1095,24 @@ pub fn copy_rect(dst: &mut [u8], src: &[u8], sw: u32, sh: u32, r: Rect)
             dst[o + 1] = src[o + 1];
             dst[o + 2] = src[o + 2];
             dst[o + 3] = src[o + 3];
+            proof { steps = steps + 1; }
             x += 1;
+        }
+        proof {
+            assert(steps as int == (y as int + 1-y0 as int) * (1+x1 as int-x0 as int)) by(nonlinear_arith)
+                requires steps as int == (y as int-y0 as int) * (1+x1 as int-x0 as int) + 1+x1 as int-x0 as int;
         }
         y += 1;
     }
     proof {
         lemma_copied_upto_full(dv0, src@, sw, sh, r);
+    }    proof {
+        assert(steps as int <= 2 * ((r.width as int) * (r.height as int))) by(nonlinear_arith)
+            requires steps as int == (y1 as int-y0 as int) * (1+x1 as int-x0 as int),
+                0<=x1 as int-x0 as int<=r.width as int,0<=y1 as int-y0 as int<=r.height as int,
+                r.width>=1,r.height>=1;
     }
+    Ghost(steps)
 }
 
 
@@ -2321,7 +2370,7 @@ use crate::lzw::Sink;
 /// equality is required when a colour error rejects the frame.
 pub fn decode_drawer(b:&[u8],data:crate::parse::ImageData,area:u32,opts:crate::lzw::LzwOptions,
     kind:crate::policy::LzwMin,t:&mut [u8],sink:&mut DrawerSink)->(rep:crate::lzw::LzwReport)
-    requires b.len()<=crate::limits::MAX_INPUT,area<=crate::limits::MAX_TOTAL_PIXELS,
+    requires b.len()<=crate::limits::MAX_INPUT,1<=area<=crate::limits::MAX_TOTAL_PIXELS,
         old(sink).sink_inv(),old(sink).sink_area()==area as int,crate::lzw::table_len_ok(old(t)@),
         crate::parse::lzw_min_ok(kind,data.min_code_size as int,area as int),
         opts.checked_literals==(kind==crate::policy::LzwMin::Range1to11Checked),
@@ -2339,6 +2388,7 @@ pub fn decode_drawer(b:&[u8],data:crate::parse::ImageData,area:u32,opts:crate::l
         crate::lzw::colour_observation(rep,crate::lzw_model::ML(data.min_code_size as int,crate::lzw::read_d(b@,data.first as int),area as int,crate::lzw::lzw_ps(data.min_code_size,opts)).idx,|v:u8|drawer_ok(old(sink).fr,v)),
         rep.colour is None ==> crate::mc::draw_fold(old(sink).canvas@,old(sink).fr.spec_frame(),old(sink).table@,old(sink).sw,old(sink).sh,
             crate::lzw_model::ML(data.min_code_size as int,crate::lzw::read_d(b@,data.first as int),area as int,crate::lzw::lzw_ps(data.min_code_size,opts)).idx,0)==Ok(final(sink).canvas@),
+        rep.work@ <= 5 * data.data_len as nat + 2 * area as nat,
 {
     let ghost cv0=sink.canvas@;
     let ghost frame=sink.fr;
@@ -2369,7 +2419,7 @@ pub fn decode_drawer(b:&[u8],data:crate::parse::ImageData,area:u32,opts:crate::l
 /// back to this formal parameter when the local sink goes out of scope.
 pub fn decode_canvas(b:&[u8],data:crate::parse::ImageData,area:u32,opts:crate::lzw::LzwOptions,
     kind:crate::policy::LzwMin,t:&mut [u8],canvas:&mut [u8],colors:&[u8],fr:Frame,sw:u32,sh:u32)->(rep:crate::lzw::LzwReport)
-    requires b.len()<=crate::limits::MAX_INPUT,area<=crate::limits::MAX_TOTAL_PIXELS,
+    requires b.len()<=crate::limits::MAX_INPUT,1<=area<=crate::limits::MAX_TOTAL_PIXELS,
         frame_ok(fr),canvas_ok(old(canvas),sw,sh),table_ok(colors,fr),
         (fr.rect.width as int)*(fr.rect.height as int)==area as int,
         crate::lzw::table_len_ok(old(t)@),
@@ -2384,6 +2434,7 @@ pub fn decode_canvas(b:&[u8],data:crate::parse::ImageData,area:u32,opts:crate::l
             crate::lzw_model::ML(data.min_code_size as int,crate::lzw::read_d(b@,data.first as int),area as int,crate::lzw::lzw_ps(data.min_code_size,opts)).idx,0)==Ok(final(canvas)@),
         forall|ts:Set<Seq<u8>>| pixels_well_formed(old(canvas)@,ts) && ts.contains(colors@)
             ==> pixels_well_formed(final(canvas)@,ts),
+        rep.work@ <= 5 * data.data_len as nat + 2 * area as nat,
 {
     let rep={
         let mut sink=DrawerSink::new(canvas,colors,fr,sw,sh);

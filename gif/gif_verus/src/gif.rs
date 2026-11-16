@@ -28,6 +28,14 @@ verus! {
 /// `Req_new(b) = Req_still(b)`: the two reservations of a still call or of the
 /// iterator constructor, `[(Canvas, 4·N), (LzwTable, LZW_TABLE_BYTES)]`, and
 /// only when G2–G4 pass (`ReqLzw = [(LzwTable, 20,480)]`, G18, D4).
+pub const C_CALL: usize = 32;
+pub const C_WORK: usize = 64;
+pub const C_FIXED: usize = 41_984;
+
+pub open spec fn header_pixels(b:Seq<u8>)->nat {
+    match crate::model::mh(b) {Ok(h)=>(h.width*h.height) as nat,Err(_)=>0}
+}
+
 pub open spec fn req_new(b: Seq<u8>) -> Seq<(AllocSite, nat)> {
     match crate::model::mh(b) {
         Ok(m) => seq![
@@ -223,6 +231,7 @@ impl Version {
 fn reserve(
     b: &[u8],
     hdr: &Header,
+    steps: &mut Ghost<nat>,
     Tracked(log): Tracked<&mut AllocLog>,
 ) -> (r: Result<(Vec<u8>, Vec<u8>), TryError>)
     requires
@@ -240,6 +249,9 @@ fn reserve(
         ),
         r is Err ==> g_new_clause2(b@, true, final(log).view()),
         r is Err ==> pre_alloc_new(b@) == false,
+    old(steps)@ <= final(steps)@,
+        final(steps)@ as int <= old(steps)@ as int + 4*(hdr.width as int)*(hdr.height as int) + crate::lzw::LZW_TABLE_BYTES as int,
+        r is Ok ==> final(steps)@ as int == old(steps)@ as int + 4*(hdr.width as int)*(hdr.height as int) + crate::lzw::LZW_TABLE_BYTES as int,
 {
     proof {
         reveal(req_new);
@@ -282,7 +294,7 @@ fn reserve(
         assert(n >= 4);
     }
     let canvas = match try_zeroed(AllocSite::Canvas, n, Tracked(log)) {
-        Ok(v) => v,
+        Ok(v) => {proof {steps@=steps@+v@.len();} v},
         Err(o) => return Err(TryError::OutOfMemory(o)),
     };
     proof {
@@ -306,7 +318,7 @@ fn reserve(
         }
     }
     let table = match try_zeroed(AllocSite::LzwTable, crate::lzw::LZW_TABLE_BYTES, Tracked(log)) {
-        Ok(v) => v,
+        Ok(v) => {proof {steps@=steps@+v@.len();} v},
         Err(o) => return Err(TryError::OutOfMemory(o)),
     };
     proof {
@@ -471,6 +483,8 @@ pub struct Frames<'a> {
     /// disposal-3 first frame reserves no `Saved` (G18 `Req(still)`).
     still: bool,
     log: Tracked<AllocLog>,
+    work: Ghost<nat>,
+    charged_pixels: Ghost<nat>,
 }
 } // verus!
 
@@ -495,18 +509,35 @@ impl<'a> Frames<'a> {
         ensures storage_wf(*final(self)),next_result(*old(self),*final(self),out),fixed_stream(*old(self),*final(self)),
             forall|n:int| wf_p(*old(self),n) ==> wf_p(*final(self),n+1),
             forall|n:int| wf_p(*old(self),n) ==> iterator_observation(*old(self),n,out),
+            forall|n:int| wf_p(*old(self),n) ==> next_allocation(*old(self),*final(self),n,out),
+            next_work(*old(self),*final(self)),next_model_work(*old(self),*final(self),out),
+            forall|n:int| wf_p(*old(self),n) && work_ready(*old(self)) ==> t12_measured_call(*old(self),*final(self),n),
+            forall|k:nat| T12_next(*old(self),*final(self),k,out),
+            forall|n:int| wf_p(*old(self),n) ==> T13_view(*final(self),n+1,out),
     {
-        hide(storage_wf);hide(step_result);hide(wf_p);hide(iterator_observation);
+        hide(storage_wf);hide(step_result);hide(wf_p);hide(iterator_observation);hide(next_allocation);
         let ghost original=*self;
         match self.state {
             State::Running=>{},
             _=>{
                 proof {
                     assert forall|n:int| wf_p(*old(self),n) implies wf_p(*self,n+1) by {lemma_terminal_wf(*self,n);}
-                    assert forall|n:int| wf_p(original,n) implies iterator_observation(original,n,None) by {
+                    assert forall|n:int| wf_p(original,n) implies iterator_observation(original,n,None) && next_allocation(original,*self,n,None) by {
                         lemma_next_observation(original,*self,None,n);
+                        lemma_next_allocation(original,*self,n,None);
                     }
 
+                }
+                proof {
+                    lemma_next_work(original,*self);
+                    assert forall|n:int| wf_p(original,n) && work_ready(original) implies t12_measured_call(original,*self,n) by {
+                        lemma_t12_measured_call(original,*self,n,None);
+                    }
+                }
+                proof {
+                    assert(next_model_work(original,*self,None));
+                    assert forall|k:nat| T12_next(original,*self,k,None) by {lemma_T12_next(original,*self,k,None);}
+                    assert forall|n:int| wf_p(original,n) implies T13_view(*self,n+1,None) by {lemma_T13_next(original,*self,n,None);}
                 }
                 return None;
             },
@@ -526,9 +557,21 @@ impl<'a> Frames<'a> {
             Err(e) => Some(Err(e)),
         };
         proof {
-            assert forall|n:int| wf_p(original,n) implies iterator_observation(original,n,out) by {
+            assert forall|n:int| wf_p(original,n) implies iterator_observation(original,n,out) && next_allocation(original,*self,n,out) by {
                 lemma_next_observation(original,*self,out,n);
+                lemma_next_allocation(original,*self,n,out);
             }
+        }
+        proof {
+            lemma_next_work(original,*self);
+            assert forall|n:int| wf_p(original,n) && work_ready(original) implies t12_measured_call(original,*self,n) by {
+                lemma_t12_measured_call(original,*self,n,out);
+            }
+        }
+        proof {
+            assert(next_model_work(original,*self,out));
+            assert forall|k:nat| T12_next(original,*self,k,out) by {lemma_T12_next(original,*self,k,out);}
+            assert forall|n:int| wf_p(original,n) implies T13_view(*self,n+1,out) by {lemma_T13_next(original,*self,n,out);}
         }
         out
     }
@@ -547,6 +590,7 @@ impl<'a> Frames<'a> {
             final(self).b==old(self).b,final(self).hdr==old(self).hdr,final(self).pol==old(self).pol,
             final(self).info==old(self).info,final(self).still==old(self).still,
             match r {Err(_)=>final(self).state==State::Fused,Ok(None)=>final(self).state==State::Done,Ok(Some(_))=>final(self).state==State::Running},
+        step_cost(*old(self),*final(self)),step_model_work(*old(self),*final(self),r),
     {
         hide(storage_wf);hide(step_result);hide(image_result);hide(crate::parse::mb_exec_post);hide(wf_p);
         hide(crate::model::mb);hide(crate::model::mp);hide(crate::parse::hdr_ok);
@@ -592,12 +636,20 @@ impl<'a> Frames<'a> {
                 Ok(None)=>final(self).state==State::Done,
                 Ok(Some(im))=>final(self).state==State::Running && image_ready(*final(self),im),
             },
+        final(self).charged_pixels@==old(self).charged_pixels@,
+            old(self).p<=final(self).p<=old(self).b.len(),old(self).work@<=final(self).work@,
+            final(self).work@ as int <= old(self).work@ as int + 4 * (effective_cursor(*final(self))-old(self).p as int)+1,
+            r is Ok && r->Ok_0 is Some ==> old(self).p<final(self).p && r->Ok_0->Some_0.data.data_len as int<=final(self).p as int-old(self).p as int,
+            old(self).p<old(self).b.len() && old(self).b@[old(self).p as int]==0x2c ==> !(r is Ok && r->Ok_0 is None),
+            effective_cursor(*final(self))==crate::work_model::mb_cur(old(self).b@,crate::parse::header_model(old(self).hdr),old(self).pol,crate::parse::walk_m_at(old(self).st,old(self).p)),
+            (match r {Ok(Some(im))=>rect_area(im.fh.rect),_=>0nat})
+                ==crate::work_model::mb_area(old(self).b@,crate::parse::header_model(old(self).hdr),old(self).pol,crate::parse::walk_m_at(old(self).st,old(self).p)),
     {
         hide(storage_wf);hide(crate::parse::mb_exec_post);
         hide(crate::model::mb);hide(crate::model::mp);hide(crate::parse::hdr_ok);hide(crate::parse::image_data_post);
         proof {lemma_storage_bounds(*self);}
         let ghost original=*self;
-        let parsed=parse::parse_mb(self.b,&mut self.p,&self.hdr,&self.pol,&mut self.st);
+        let parsed=parse::parse_mb(self.b,&mut self.p,&self.hdr,&self.pol,&mut self.st,&mut self.work);
         match parsed {
             Err(_)=>{self.state=State::Fused;proof {lemma_storage_walk(original,*self);}},
             Ok(None)=>{self.state=State::Done;proof {lemma_storage_walk(original,*self);}},
@@ -615,6 +667,7 @@ fn decode_image_pixels(b:&[u8],hdr:Header,pol:Policy,im:parse::ImageStep,t:&mut 
         crate::compose_new::canvas_ok(old(cv),hdr.width as u32,hdr.height as u32),crate::lzw::table_len_ok(old(t)@),
     ensures final(cv)@.len()==old(cv)@.len(),crate::lzw::table_len_ok(final(t)@),
         pixels_observation(b@,hdr,pol,im,old(cv)@,final(cv)@,rep),
+        rep.work@ as int <= 5 * im.data.data_len as int + 2 * ((im.fh.rect.width as int) * (im.fh.rect.height as int)),
 {
     hide(crate::lzw_model::ML);hide(crate::mc::draw_fold);
     hide(crate::parse::image_data_post);hide(crate::model::sub_scan);hide(crate::lzw::read_d);
@@ -634,11 +687,18 @@ fn decode_image_pixels(b:&[u8],hdr:Header,pol:Policy,im:parse::ImageStep,t:&mut 
     let colors=&b[fh.table.offset..fh.table.offset+3*fh.table.entries as usize];
     proof {
         assert(area32 as int==(fh.rect.width as int)*(fh.rect.height as int));
+        assert(area32 >= 1) by(nonlinear_arith)
+            requires area32 as int==(fh.rect.width as int)*(fh.rect.height as int),fh.rect.width>=1,fh.rect.height>=1;
         assert(crate::lzw::lzw_ps(data.min_code_size,opts)==crate::frame_model::params(pol));
         assert(fr.spec_frame()==crate::frame_model::frame(crate::parse::frame_header_model(fh),im.gce));
         crate::lzw::lemma_image_data_ready(b@,data.first as int-1,pol,area32,data);
     }
-    crate::compose_new::decode_canvas(b,data,area32,opts,pol.lzw_min,t,cv,colors,fr,hdr.width as u32,hdr.height as u32)
+    let rep=crate::compose_new::decode_canvas(b,data,area32,opts,pol.lzw_min,t,cv,colors,fr,hdr.width as u32,hdr.height as u32);
+    proof {
+        assert(2 * area32 as int == 2 * (fh.rect.width as int) * (fh.rect.height as int)) by(nonlinear_arith)
+            requires area32 as int == (fh.rect.width as int) * (fh.rect.height as int);
+    }
+    rep
 }
 
 impl<'a> Frames<'a> {
@@ -656,6 +716,7 @@ impl<'a> Frames<'a> {
             final(self).log@.view()==if crate::frame_model::raw_disposal(image.gce)==3 && !old(self).still && old(self).saved is None {
                 old(self).log@.view().push((AllocSite::Saved,old(self).canvas@.len(),!(r is Err && r->Err_0 is OutOfMemory)))
             } else {old(self).log@.view()},
+        image_cost(*old(self),image,*final(self),r),
     {
         hide(crate::model::mp);hide(crate::parse::hdr_ok);
         hide(crate::mc::copy_rect);hide(crate::mc::clear_rect);hide(crate::mc::draw_fold);
@@ -684,6 +745,32 @@ impl<'a> Frames<'a> {
     }
 
     #[verifier::spinoff_prover]
+    fn render_pixels(&mut self,image:parse::ImageStep)->(report:crate::lzw::LzwReport)
+        requires storage_wf(*old(self)),image_ready(*old(self),image),
+        ensures storage_wf(*final(self)),measured_pixels(*old(self),*final(self),image),
+            final(self).canvas@.len()==old(self).canvas@.len(),final(self).table@.len()==old(self).table@.len(),
+            pixels_observation(old(self).b@,old(self).hdr,old(self).pol,image,old(self).canvas@,final(self).canvas@,report),
+            final(self).b==old(self).b,final(self).hdr==old(self).hdr,final(self).pol==old(self).pol,
+            final(self).info==old(self).info,final(self).p==old(self).p,walk_state_same(*old(self),*final(self)),
+            final(self).still==old(self).still,final(self).state==old(self).state,final(self).prev==old(self).prev,
+            saved_view(*final(self))==saved_view(*old(self)),(final(self).saved is Some)==(old(self).saved is Some),
+            final(self).log@.view()==old(self).log@.view(),
+    {
+        hide(storage_wf);hide(pixels_observation);hide(measured_pixels);
+        hide(crate::model::mp);hide(crate::parse::hdr_ok);hide(crate::parse::image_data_post);hide(crate::lzw::read_d);
+        proof {lemma_storage_bounds(*self);}
+        let ghost before=*self;
+        let report=decode_image_pixels(self.b,self.hdr,self.pol,image,&mut self.table,&mut self.canvas);
+        proof {
+            self.work@=self.work@+report.work@;
+            self.charged_pixels@=(self.charged_pixels@ as int+rect_area(image.fh.rect)) as nat;
+            lemma_measured_pixels(before,*self,image,report.work@);
+            reveal(prev_bounds);lemma_storage_reframe(before,*self);
+        }
+        report
+    }
+
+    #[verifier::spinoff_prover]
     fn image_prepared(&mut self,image:parse::ImageStep,Ghost(original):Ghost<Frames<'a>>)->(r:Result<FrameMeta,TryError>)
         requires storage_wf(*old(self)),old(self).state==State::Running,image_ready(*old(self),image),image_ready(original,image),
             old(self).b==original.b,old(self).hdr==original.hdr,old(self).pol==original.pol,old(self).p==original.p,
@@ -696,16 +783,21 @@ impl<'a> Frames<'a> {
             final(self).still==old(self).still,final(self).log@.view()==old(self).log@.view(),
             r is Ok ==> final(self).state==State::Running,
             r is Err ==> final(self).state==State::Fused && r->Err_0 is Format,
+        r is Ok ==> final(self).prev is Some && final(self).prev.unwrap().rect==image.fh.rect,
+            saved_view(*final(self))==saved_view(*old(self)),
+            (final(self).saved is Some)==(old(self).saved is Some),
+            measured_pixels(*old(self),*final(self),image),
     {
         hide(crate::model::mp);hide(crate::parse::hdr_ok);
         hide(crate::mc::copy_rect);hide(crate::mc::clear_rect);hide(crate::mc::draw_fold);
         hide(crate::lzw_model::ML);hide(crate::lzw::read_d);hide(crate::model::sub_scan);hide(crate::parse::image_data_post);
-        hide(storage_wf);hide(image_result);hide(prepared_matches);hide(pixels_observation);
+        hide(storage_wf);hide(image_result);hide(prepared_matches);hide(pixels_observation);hide(measured_pixels);
         proof {lemma_storage_bounds(*self);}
         let fh=image.fh;
         let disposal=match image.gce {Some(g)=>g.disposal,None=>0};
         let ghost prepared=*self;
-        let report=decode_image_pixels(self.b,self.hdr,self.pol,image,&mut self.table,&mut self.canvas);
+        let report=self.render_pixels(image);
+        let ghost costed=*self;
         let ghost observed=report;
         let overrun=match report.public_result() {
             Ok(v)=>v,
@@ -713,6 +805,7 @@ impl<'a> Frames<'a> {
                 self.state=State::Fused;
                 proof {
                     reveal(prev_bounds);lemma_storage_reframe(prepared,*self);
+                    lemma_pixels_cost_frame(prepared,costed,*self,image);
                     lemma_image_finish(original,image,prepared,*self,observed,Err(e));
                 }
                 return Err(TryError::Format(e));
@@ -721,7 +814,7 @@ impl<'a> Frames<'a> {
         self.prev = Some(Prev { rect: fh.rect, disposal: if disposal > 3 { 1 } else { disposal } });
         proof {reveal(prev_bounds);lemma_storage_reframe(prepared,*self);}
         let meta=frame_metadata(image,overrun);
-        proof {lemma_image_finish(original,image,prepared,*self,observed,Ok(meta));}
+        proof {lemma_pixels_cost_frame(prepared,costed,*self,image);lemma_image_finish(original,image,prepared,*self,observed,Ok(meta));}
         Ok(meta)
     }
 }
@@ -730,19 +823,21 @@ impl<'a> Frames<'a> {
 verus! {
 /// `try_decode_still_with_policy(b, Profile::Strict)` without the flag (G14).
 pub fn try_decode_still(b: &[u8]) -> (r: Result<Still, TryError>)
-    ensures still_core_result(b@,r),
+    ensures still_core_result(b@,r),T13_core(b@,r),
 {
-    match try_decode_still_with_policy(b, Profile::Strict) {
+    let r=match try_decode_still_with_policy(b, Profile::Strict) {
         Ok((s, _)) => Ok(s),
         Err(e) => Err(e),
-    }
+    };
+    proof {lemma_T13_core(b@,r);}
+    r
 }
 
 /// G14 under a profile: the first frame on the logical screen and its
 /// `recovered` flag. Bytes after the first image's block terminator are not
 /// examined. `Req = [(Canvas, 4·W·H), (LzwTable, 20_480)]` when G2–G4 pass.
 pub fn try_decode_still_with_policy(b: &[u8], p: Profile) -> (r: Result<(Still, bool), TryError>)
-    ensures still_result(b@,crate::policy::profile_record(p),r),
+    ensures still_result(b@,crate::policy::profile_record(p),r),T13_still(b@,crate::policy::profile_record(p),r),
 {
     still_with(b, p.policy())
 }
@@ -751,40 +846,93 @@ pub fn try_decode_still_with_policy(b: &[u8], p: Profile) -> (r: Result<(Still, 
 #[cfg(feature = "test-records")]
 #[doc(hidden)]
 pub fn try_decode_still_with_record(b: &[u8], pol: Policy) -> (r: Result<(Still, bool), TryError>)
-    ensures still_result(b@,pol,r),
+    ensures still_result(b@,pol,r),T13_still(b@,pol,r),
 {
     still_with(b, pol)
 }
 
-#[verifier::spinoff_prover]
 fn still_with(b: &[u8], pol: Policy) -> (out: Result<(Still, bool), TryError>)
-    ensures still_result(b@,pol,out),
+    ensures still_result(b@,pol,out),T13_still(b@,pol,out),
 {
-    hide(crate::model::mp);hide(crate::frame_model::ms);hide(still_result);
+    let r=still_with_logged(b,pol);
+    proof {reveal(still_g);lemma_T13_still(b@,pol,r.0);}
+    r.0
+}
+
+#[verifier::spinoff_prover]
+fn still_with_logged(b:&[u8],pol:Policy)->(out:(Result<(Still,bool),TryError>,Tracked<AllocLog>))
+    ensures still_g(b@,pol,out.0,out.1@.view()),
+{
+    hide(crate::model::mp);hide(crate::frame_model::ms);hide(still_result);hide(still_g);
     hide(step_result);hide(storage_wf);
-    let mut d=match Frames::open(b,pol,true) {
+    let opened=Frames::open_logged(b,pol,true);
+    proof {reveal(construction_log);}
+    let (result,Tracked(error_log))=opened;
+    let mut d=match result {
         Ok(d)=>d,
-        Err(e)=>{proof {lemma_still_constructor_error(b@,pol,e);}return Err(e);},
+        Err(e)=>{
+            let tracked log=error_log.tracked_unwrap();
+            let r=Err(e);
+            proof {lemma_still_constructor_error(b@,pol,e);lemma_still_package(b@,pol,r,log.view());}
+            return (r,Tracked(log));
+        },
     };
     proof {reveal(constructor_result);reveal(constructor_ok);}
     let ghost initial=d;
     match d.state {
         State::Running=>{},
-        _=>{proof {lemma_still_empty(d);}return Err(TryError::Format(Error::NoImage));},
+        _=>{
+            proof {
+                lemma_still_empty(d);reveal(constructor_work);lemma_work_total(d);
+                lemma_still_empty_work_area(d);
+                assert(d.work@ as int<=C_WORK as int*(b.len() as int+header_pixels(b@) as int+d.charged_pixels@ as int)+C_FIXED as int);
+                assert(d.work@ as int<=C_WORK as int*(b.len() as int+header_pixels(b@) as int+crate::work_model::P(b@,pol,None,1) as int)+C_FIXED as int);
+            }
+            let r=Err(TryError::Format(Error::NoImage));
+            let tracked log=d.log.get();
+            proof {lemma_still_package(b@,pol,r,log.view());}
+            return (r,Tracked(log));
+        },
     }
-    let r=d.step();
-    proof {lemma_still_step(initial,d,r);}
-    match r {
+    let step=d.step();
+    proof {
+        lemma_still_step(initial,d,step);lemma_still_trace(initial,d,step);
+        reveal(constructor_work);lemma_next_work(initial,d);
+        lemma_still_work_area(initial,d,step);
+        assert(d.work@ as int<=C_WORK as int*(b.len() as int+header_pixels(b@) as int+d.charged_pixels@ as int)+C_FIXED as int);
+        assert(d.work@ as int<=C_WORK as int*(b.len() as int+header_pixels(b@) as int+crate::work_model::P(b@,pol,None,1) as int)+C_FIXED as int);
+    }
+    let r=match step {
         Err(e)=>Err(e),
         Ok(Some(m))=>Ok((Still {width:d.hdr.width,height:d.hdr.height,rgba:d.canvas},m.recovered)),
         Ok(None)=>Err(TryError::Format(Error::NoImage)),
-    }
+    };
+    let tracked log=d.log.get();
+    proof {lemma_still_package(b@,pol,r,log.view());}
+    (r,Tracked(log))
+}
+
+pub fn try_decode_still_with_policy_logged(b:&[u8],p:Profile)->(r:(Result<(Still,bool),TryError>,Tracked<AllocLog>))
+    ensures still_g(b@,crate::policy::profile_record(p),r.0,r.1@.view()),T13_still(b@,crate::policy::profile_record(p),r.0),
+{
+    let r=still_with_logged(b,p.policy());
+    proof {reveal(still_g);lemma_T13_still(b@,crate::policy::profile_record(p),r.0);}
+    r
+}
+
+pub fn try_decode_still_logged(b:&[u8])->(out:(Result<Still,TryError>,Tracked<AllocLog>))
+    ensures still_core_g(b@,out.0,out.1@.view()),T13_core(b@,out.0),
+{
+    let (r,log)=still_with_logged(b,Profile::Strict.policy());
+    let ghost observed=r;
+    let result=match r {Ok((s,_))=>Ok(s),Err(e)=>Err(e)};
+    proof {lemma_still_strip(b@,observed,log@.view());reveal(still_core_g);lemma_T13_core(b@,result);}
+    (result,log)
 }
 } // verus!
 
 
 verus! {
-#[derive(Debug)]
 struct Prepared {
     hdr:Header,
     p:usize,
@@ -792,6 +940,7 @@ struct Prepared {
     stop:crate::parse::PrefixStop,
     canvas:Vec<u8>,
     table:Vec<u8>,
+    work:Ghost<nat>,
 }
 
 spec fn prepared_ok(b:Seq<u8>,pol:Policy,d:Prepared)->bool {
@@ -824,7 +973,7 @@ spec fn prepare_result(b:Seq<u8>,pol:Policy,r:Result<Prepared,TryError>)->bool {
 
 /// The exact header/reservation/prefix constructor, without duplicating or
 /// initializing any input-dependent storage beyond the sealed reservations.
-fn prepare(b:&[u8],pol:Policy,Tracked(log):Tracked<&mut AllocLog>)->(r:Result<Prepared,TryError>)
+fn prepare(b:&[u8],pol:Policy,steps:&mut Ghost<nat>,Tracked(log):Tracked<&mut AllocLog>)->(r:Result<Prepared,TryError>)
     requires log.view()==Seq::<(AllocSite,nat,bool)>::empty(),
     ensures prepare_result(b@,pol,r),
         crate::alloc_guard::sites::log_tied(r,final(log).view()),
@@ -832,6 +981,13 @@ fn prepare(b:&[u8],pol:Policy,Tracked(log):Tracked<&mut AllocLog>)->(r:Result<Pr
         r is Ok ==> crate::alloc_guard::req_of_log(final(log).view())==req_new(b@),
         crate::alloc_guard::req_of_log(final(log).view()).is_prefix_of(req_new(b@)),
         !(r is Err && r->Err_0 is OutOfMemory) ==> crate::alloc_guard::req_of_log(final(log).view())==req_new(b@),
+        old(steps)@<=final(steps)@,
+        r is Err && r->Err_0 is OutOfMemory ==> final(steps)@ as int<=old(steps)@ as int+4*header_pixels(b@) as int+crate::lzw::LZW_TABLE_BYTES as int,
+        match r {
+            Ok(d)=>d.work@==final(steps)@ && final(steps)@ <= old(steps)@ + C_CALL * (d.p as nat+header_pixels(b@)) + C_FIXED
+                && final(steps)@ as int<=old(steps)@ as int+4*header_pixels(b@) as int+crate::lzw::LZW_TABLE_BYTES as int+4*d.p as int+1,
+            Err(_)=>final(steps)@ <= old(steps)@ + C_CALL * (b.len() as nat+header_pixels(b@)) + C_FIXED,
+        },
 {
     hide(crate::model::mp_fuel);
     let hdr=match parse::parse_header(b) {
@@ -843,16 +999,21 @@ fn prepare(b:&[u8],pol:Policy,Tracked(log):Tracked<&mut AllocLog>)->(r:Result<Pr
         crate::model::lemma_mh_ok_bounds(b@,mh);
         crate::parse::lemma_header_model_matches(b@,hdr,mh);
         assert(crate::parse::hdr_ok(b@,hdr));
+        reveal(header_pixels);
+        assert(header_pixels(b@) as int==(hdr.width as int)*(hdr.height as int));
+        assert(4*(hdr.width as int)*(hdr.height as int)==4*header_pixels(b@) as int) by(nonlinear_arith)
+            requires header_pixels(b@) as int==(hdr.width as int)*(hdr.height as int);
+
     }
-    let (canvas,table)=match reserve(b,&hdr,Tracked(log)) {
+    let (canvas,table)=match reserve(b,&hdr,steps,Tracked(log)) {
         Ok(v)=>v,Err(e)=>return Err(e),
     };
     let mut p=hdr.cursor;
     let mut st=WalkState::new();
-    let stop=match crate::parse::parse_mp(b,&mut p,&pol,&mut st) {
+    let stop=match crate::parse::parse_mp(b,&mut p,&pol,&mut st,steps) {
         Ok(stop)=>stop,Err(e)=>return Err(TryError::Format(e)),
     };
-    Ok(Prepared {hdr,p,st,stop,canvas,table})
+    Ok(Prepared {hdr,p,st,stop,canvas,table,work:Ghost(steps@)})
 }
 } // verus!
 
@@ -864,6 +1025,480 @@ pub open spec fn info_model(i:Info)->crate::model::InfoM {
 
 /// Storage and parser bounds required between frame calls. The semantic
 /// canvas/disposal relation to the full frame model is a separate invariant.
+/// Frozen work observations after n+1 calls, including the actual OOM cut.
+pub closed spec fn work_wf(d:Frames,n:int,cut:Option<nat>)->bool {
+    &&& wf_p(d,n) && work_accounted(d)
+    &&& match cut {
+        None=>crate::alloc_guard::all_ok(d.log@.view()),
+        Some(i)=>i as int<=n && d.state==State::Fused
+            && crate::frame_model::saved_at(d.b@,crate::parse::header_model(d.hdr),d.pol,i),
+    }
+    &&& effective_cursor(d)==crate::work_model::cur_n(d.b@,d.pol,cut,n)
+    &&& d.charged_pixels@==crate::work_model::P(d.b@,d.pol,cut,(n+1) as nat)
+    &&& (d.state==State::Running ==> prior_area(d)==crate::work_model::A_n(d.b@,d.pol,cut,n))
+}
+spec fn call_oom(r:Option<Result<FrameView,TryError>>)->bool {
+    r is Some && r->Some_0 is Err && r->Some_0->Err_0 is OutOfMemory
+}
+spec fn next_cut(cut:Option<nat>,k:nat,r:Option<Result<FrameView,TryError>>)->Option<nat> {
+    if call_oom(r) {Some(k)} else {cut}
+}
+/// T12 in the frozen names, call k beginning in the state indexed k-1.
+pub closed spec fn T12_next(a:Frames,d:Frames,k:nat,r:Option<Result<FrameView,TryError>>)->bool {
+    forall|cut:Option<nat>| #[trigger] work_wf(a,k as int-1,cut) ==> {
+        let nc=next_cut(cut,k,r);
+        &&& work_wf(d,k as int,nc)
+        &&& d.work@ as int-a.work@ as int<=C_CALL as int *
+            (crate::work_model::cur_n(a.b@,a.pol,nc,k as int)-crate::work_model::cur_n(a.b@,a.pol,cut,k as int-1)
+             +crate::work_model::A_n(a.b@,a.pol,nc,k as int) as int
+             +crate::work_model::A_n(a.b@,a.pol,cut,k as int-1) as int
+             +if crate::frame_model::saved_at(a.b@,crate::parse::header_model(a.hdr),a.pol,k) {header_pixels(a.b@) as int} else {0})
+        &&& d.work@ as int<=C_CALL as int*(a.b.len() as int+2*header_pixels(a.b@) as int+2*crate::work_model::P(a.b@,a.pol,nc,k+1) as int)+C_FIXED as int
+        &&& d.work@ as int<=C_WORK as int*(a.b.len() as int+header_pixels(a.b@) as int+crate::work_model::P(a.b@,a.pol,nc,k+1) as int)+C_FIXED as int
+    }
+}
+
+pub closed spec fn T13_resources(d:Frames)->bool {
+    &&& 1<=d.hdr.width<=crate::limits::MAX_DIMENSION && 1<=d.hdr.height<=crate::limits::MAX_DIMENSION
+    &&& d.canvas@.len()==4*(d.hdr.width as int)*(d.hdr.height as int)<=crate::limits::MAX_OUTPUT
+    &&& d.table@.len()==crate::lzw::LZW_TABLE_BYTES
+    &&& match d.saved {None=>true,Some(v)=>v@.len()==d.canvas@.len()}
+    &&& d.canvas@.len() as int+d.table@.len() as int+(match d.saved {None=>0int,Some(v)=>v@.len() as int})
+        <=2*d.canvas@.len() as int+crate::lzw::LZW_TABLE_BYTES as int
+}
+pub closed spec fn T13_still(b:Seq<u8>,p:Policy,r:Result<(Still,bool),TryError>)->bool {
+    &&& still_result(b,p,r)
+    &&& match r {
+        Ok((s,_))=>1<=s.width<=crate::limits::MAX_DIMENSION && 1<=s.height<=crate::limits::MAX_DIMENSION
+            && s.rgba@.len()==4*(s.width as int)*(s.height as int)<=crate::limits::MAX_OUTPUT
+            && crate::mc::pixels_well_formed(s.rgba@,crate::pixel_model::active_tables(b,crate::model::mh(b).unwrap(),p,1)),
+        _=>true,
+    }
+    &&& (!(r is Err && r->Err_0 is OutOfMemory) ==> {
+        &&& (crate::frame_model::ms(b,p) is Some && crate::frame_model::ms(b,p).unwrap() is Ok ==> r is Ok)
+        &&& forall|e:Error| (r is Err && r->Err_0==TryError::Format(e)) <==> crate::frame_model::ms(b,p)==Some(Err(e))
+    })
+}
+pub closed spec fn T13_core(b:Seq<u8>,r:Result<Still,TryError>)->bool {
+    let p=crate::policy::profile_record(Profile::Strict);
+    &&& still_core_result(b,r)
+    &&& match r {
+        Ok(s)=>1<=s.width<=crate::limits::MAX_DIMENSION && 1<=s.height<=crate::limits::MAX_DIMENSION
+            && s.rgba@.len()==4*(s.width as int)*(s.height as int)<=crate::limits::MAX_OUTPUT
+            && crate::mc::pixels_well_formed(s.rgba@,crate::pixel_model::active_tables(b,crate::model::mh(b).unwrap(),p,1)),
+        _=>true,
+    }
+    &&& (!(r is Err && r->Err_0 is OutOfMemory) ==> {
+        &&& (crate::frame_model::ms(b,p) is Some && crate::frame_model::ms(b,p).unwrap() is Ok ==> r is Ok)
+        &&& forall|e:Error| (r is Err && r->Err_0==TryError::Format(e)) <==> crate::frame_model::ms(b,p)==Some(Err(e))
+    })
+}
+pub closed spec fn T13_view(d:Frames,n:int,r:Option<Result<FrameView,TryError>>)->bool {
+    &&& T13_resources(d)
+    &&& match r {
+        Some(Ok(v))=>v.rgba@==d.canvas@ && crate::mc::pixels_well_formed(v.rgba@,
+            crate::pixel_model::active_tables(d.b@,crate::parse::header_model(d.hdr),d.pol,(n+1) as nat)),
+        _=>true,
+    }
+}
+proof fn lemma_T13_resources(d:Frames)
+    requires storage_wf(d),ensures T13_resources(d),
+{lemma_storage_bounds(d);}
+proof fn lemma_T13_still(b:Seq<u8>,p:Policy,r:Result<(Still,bool),TryError>)
+    requires still_result(b,p,r),ensures T13_still(b,p,r),
+{
+    hide(crate::frame_model::ms);
+    crate::pixel_model::lemma_ms_pixels(b,p);
+}
+pub proof fn lemma_still_core_observation(b:Seq<u8>,r:Result<Still,TryError>)
+    requires still_core_result(b,r),
+    ensures match r {
+        Ok(s)=>match crate::frame_model::ms(b,crate::policy::profile_record(Profile::Strict)) {
+            Some(Ok(m))=>m.width==s.width as int && m.height==s.height as int && m.rgba==s.rgba@,
+            _=>false,
+        },
+        Err(TryError::Format(e))=>crate::frame_model::ms(b,crate::policy::profile_record(Profile::Strict))==Some(Err(e)),
+        Err(TryError::OutOfMemory(_))=>crate::model::mh(b) is Ok,
+    },
+{}
+
+proof fn lemma_T13_core(b:Seq<u8>,r:Result<Still,TryError>)
+    requires still_core_result(b,r),ensures T13_core(b,r),
+{
+    hide(crate::frame_model::ms);
+    crate::pixel_model::lemma_ms_pixels(b,crate::policy::profile_record(Profile::Strict));
+}
+#[verifier::spinoff_prover]
+proof fn lemma_T13_next(a:Frames,d:Frames,n:int,r:Option<Result<FrameView,TryError>>)
+    requires wf_p(d,n+1),next_result(a,d,r),fixed_stream(a,d),
+    ensures T13_view(d,n+1,r),
+{
+    hide(crate::model::mp);hide(crate::parse::hdr_ok);hide(crate::frame_model::after_calls);
+    lemma_T13_resources(d);
+    if r is Some && r->Some_0 is Ok {
+        reveal(next_result);
+        assert(d.state==State::Running);
+        lemma_wf_running(d,n+1);lemma_work_mh(d);
+        crate::pixel_model::lemma_after_pixels(d.b@,crate::parse::header_model(d.hdr),d.pol,(n+2) as nat);
+    }
+}
+
+pub closed spec fn constructor_work(d:Frames)->bool {
+    &&& d.work@ <= C_CALL * (d.p as nat+header_pixels(d.b@)) + C_FIXED
+    &&& d.charged_pixels@==0
+    &&& work_accounted(d)
+    &&& (!d.still ==> work_wf(d,-1,None))
+    &&& T13_resources(d)
+}
+pub closed spec fn work_ready(d:Frames)->bool {
+    d.state==State::Running ==> d.prev is Some || d.p<d.b.len() && d.b@[d.p as int]==0x2c
+}
+spec fn work_potential(d:Frames)->int {
+    d.work@ as int + if d.state==State::Running {2*prior_area(d)+1} else {0}
+        + if d.saved is None {d.canvas@.len() as int} else {0}
+}
+pub closed spec fn work_accounted(d:Frames)->bool {
+    &&& work_ready(d)
+    &&& work_potential(d)<=C_CALL as int * (effective_cursor(d)+header_pixels(d.b@) as int+2*d.charged_pixels@ as int)+C_FIXED as int
+}
+pub closed spec fn total_work_bound(d:Frames)->bool {
+    d.work@ as int<=C_CALL as int*(d.b.len() as int+2*header_pixels(d.b@) as int+2*d.charged_pixels@ as int)+C_FIXED as int
+        && d.work@ as int<=C_WORK as int*(d.b.len() as int+header_pixels(d.b@) as int+d.charged_pixels@ as int)+C_FIXED as int
+}
+pub closed spec fn work_view(d:Frames)->nat {d.work@}
+pub closed spec fn charged_pixels(d:Frames)->nat {d.charged_pixels@}
+spec fn rect_area(r:Rect)->nat {(r.width as nat)*(r.height as nat)}
+spec fn prior_area(d:Frames)->nat {match d.prev {None=>0,Some(p)=>rect_area(p.rect)}}
+spec fn saved_fill(a:Frames,d:Frames)->int {
+    if a.saved is None && d.saved is Some {a.canvas@.len() as int} else {0}
+}
+spec fn effective_cursor(d:Frames)->int {if d.state==State::Fused {d.b.len() as int} else {d.p as int}}
+spec fn step_model_work(a:Frames,d:Frames,r:Result<Option<FrameMeta>,TryError>)->bool {
+    &&& d.charged_pixels@ as int==a.charged_pixels@ as int+
+        if r is Err && r->Err_0 is OutOfMemory {0int} else {crate::work_model::mb_area(a.b@,crate::parse::header_model(a.hdr),a.pol,crate::parse::walk_m_at(a.st,a.p)) as int}
+    &&& effective_cursor(d)==if r is Err {a.b.len() as int} else {crate::work_model::mb_cur(a.b@,crate::parse::header_model(a.hdr),a.pol,crate::parse::walk_m_at(a.st,a.p))}
+}
+pub closed spec fn next_model_work(a:Frames,d:Frames,r:Option<Result<FrameView,TryError>>)->bool {
+    if a.state!=State::Running {d==a} else {
+        step_model_work(a,d,match r {None=>Ok(None),Some(Err(e))=>Err(e),Some(Ok(v))=>Ok(Some(view_metadata(v)))})
+    }
+}
+
+spec fn image_cost(a:Frames,im:parse::ImageStep,d:Frames,r:Result<FrameMeta,TryError>)->bool {
+    let area=if r is Err && r->Err_0 is OutOfMemory {0nat} else {rect_area(im.fh.rect)};
+    &&& d.charged_pixels@ as int==a.charged_pixels@ as int+area
+    &&& (a.saved is Some ==> d.saved is Some)
+    &&& (r is Ok ==> d.prev is Some && prior_area(d)==area)
+    &&& a.work@<=d.work@
+    &&& d.work@ as int <= a.work@ as int + 5*im.data.data_len as int + 4*area + 2*prior_area(a) + saved_fill(a,d)
+}
+spec fn step_cost(a:Frames,d:Frames)->bool {
+    &&& a.work@<=d.work@ && a.charged_pixels@<=d.charged_pixels@
+    &&& a.p<=d.p
+    &&& (a.saved is Some ==> d.saved is Some)
+    &&& (d.state==State::Running ==> d.prev is Some && a.p<d.p && prior_area(d) as int==d.charged_pixels@ as int-a.charged_pixels@ as int)
+    &&& (d.state==State::Done && a.p<a.b.len() && a.b@[a.p as int]==0x2c ==> false)
+    &&& d.work@ as int <= a.work@ as int + 9*(effective_cursor(d)-a.p as int)
+        +4*(d.charged_pixels@ as int-a.charged_pixels@ as int)+2*prior_area(a)+saved_fill(a,d)+1
+}
+
+pub closed spec fn next_work(a:Frames,d:Frames)->bool {
+    &&& a.work@<=d.work@ && a.charged_pixels@<=d.charged_pixels@
+    &&& (a.state!=State::Running ==> a.work@==d.work@ && a.charged_pixels@==d.charged_pixels@)
+    &&& (a.state==State::Running ==> step_cost(a,d))
+    &&& (work_accounted(a) ==> work_accounted(d) && total_work_bound(d))
+    &&& (work_ready(a) ==> d.work@ as int <= a.work@ as int + C_CALL as int *
+        (effective_cursor(d)-effective_cursor(a)+d.charged_pixels@ as int-a.charged_pixels@ as int
+         + if a.state==State::Running {prior_area(a) as int} else {0}
+         + if a.saved is None && d.saved is Some {header_pixels(a.b@) as int} else {0}))
+}
+spec fn measured_pixels(a:Frames,d:Frames,im:parse::ImageStep)->bool {
+    &&& d.charged_pixels@ as int==a.charged_pixels@ as int+rect_area(im.fh.rect)
+    &&& a.work@<=d.work@
+    &&& d.work@ as int<=a.work@ as int+5*im.data.data_len as int+2*rect_area(im.fh.rect)
+}
+proof fn lemma_measured_pixels(a:Frames,d:Frames,im:parse::ImageStep,cost:nat)
+    requires d.work@==a.work@+cost,d.charged_pixels@==a.charged_pixels@+rect_area(im.fh.rect),
+        cost as int<=5*im.data.data_len as int+2*rect_area(im.fh.rect),
+    ensures measured_pixels(a,d,im),
+{}
+proof fn lemma_pixels_cost_frame(a:Frames,p:Frames,d:Frames,im:parse::ImageStep)
+    requires measured_pixels(a,p,im),d.work@==p.work@,d.charged_pixels@==p.charged_pixels@,
+    ensures measured_pixels(a,d,im),
+{}
+/// Operational T12 observations: work counts concrete bodies/fills and the
+/// pixel charge increases only after preparation succeeds, at the G10 entry.
+pub closed spec fn t12_measured_call(a:Frames,d:Frames,n:int)->bool {
+    d.work@ as int<=a.work@ as int+C_CALL as int *
+        (effective_cursor(d)-effective_cursor(a)+d.charged_pixels@ as int-a.charged_pixels@ as int
+         +(if a.state==State::Running {prior_area(a) as int} else {0})
+         +(if crate::frame_model::saved_at(a.b@,crate::parse::header_model(a.hdr),a.pol,(n+1) as nat) {header_pixels(a.b@) as int} else {0}))
+}
+proof fn lemma_work_total(d:Frames)
+    requires storage_wf(d),work_accounted(d),
+    ensures total_work_bound(d),
+{
+    hide(crate::model::mp);hide(crate::parse::hdr_ok);
+    lemma_storage_bounds(d);
+}
+proof fn lemma_t12_measured_call(a:Frames,d:Frames,n:int,r:Option<Result<FrameView,TryError>>)
+    requires storage_wf(a),storage_wf(d),wf_p(a,n),next_allocation(a,d,n,r),next_work(a,d),work_ready(a),
+    ensures t12_measured_call(a,d,n),
+{
+    hide(crate::model::mp);hide(crate::parse::hdr_ok);
+    hide(crate::frame_model::saved_at);hide(iterator_log);hide(iterator_observation);
+    reveal(storage_wf);reveal(next_allocation);
+    if a.saved is None && d.saved is Some {
+        assert(a.log@.view().len()>=2);
+        assert(d.log@.view().len()==3);
+        assert(crate::alloc_guard::all_ok(d.log@.view()));
+        assert(crate::alloc_guard::all_ok(a.log@.view()));
+        assert(crate::frame_model::saved_at(a.b@,crate::parse::header_model(a.hdr),a.pol,(n+1) as nat));
+    }
+}
+
+/// Hoare-style finite histories of the real APIs. An unchanged snapshot is
+/// an info call; every non-identity edge uses next_frame's proved next_work.
+pub proof fn lemma_finite_work_history(ds:Seq<Frames>)
+    requires ds.len()>=1,constructor_work(ds[0]),
+        forall|i:int| 0<=i<ds.len() ==> storage_wf(#[trigger] ds[i]),
+        forall|i:int| 0<=i<ds.len()-1 ==> ds[i+1]==ds[i] || next_work(#[trigger] ds[i],ds[i+1]),
+    ensures work_accounted(ds.last()),total_work_bound(ds.last()),
+    decreases ds.len(),
+{
+    if ds.len()==1 {lemma_work_total(ds[0]);}
+    else {
+        let prefix=ds.take(ds.len() as int-1);
+        assert forall|i:int| 0<=i<prefix.len() implies storage_wf(#[trigger] prefix[i]) by {assert(prefix[i]==ds[i]);}
+        assert forall|i:int| 0<=i<prefix.len()-1 implies prefix[i+1]==prefix[i] || next_work(#[trigger] prefix[i],prefix[i+1]) by {assert(prefix[i]==ds[i]);assert(prefix[i+1]==ds[i+1]);}
+        lemma_finite_work_history(prefix);
+        assert(prefix.last()==ds[ds.len() as int-2]);
+    }
+}
+
+proof fn lemma_work_mh(d:Frames)
+    requires storage_wf(d),
+    ensures crate::model::mh(d.b@)==Ok(crate::parse::header_model(d.hdr)),
+{
+    hide(crate::model::mp);reveal(storage_wf);reveal(crate::parse::hdr_ok);
+    let h=choose|h:crate::model::HeaderM| crate::model::mh(d.b@)==Ok(h) && crate::parse::hdr_matches(d.b@,h,d.hdr);
+    crate::parse::lemma_header_model_matches(d.b@,d.hdr,h);
+}
+
+#[verifier::spinoff_prover]
+proof fn lemma_work_wf_step(a:Frames,d:Frames,k:nat,cut:Option<nat>,r:Option<Result<FrameView,TryError>>)
+    requires work_wf(a,k as int-1,cut),wf_p(d,k as int),fixed_stream(a,d),
+        next_work(a,d),next_model_work(a,d,r),next_result(a,d,r),
+        next_allocation(a,d,k as int-1,r),
+    ensures work_wf(d,k as int,next_cut(cut,k,r)),
+{
+    hide(crate::model::mp);hide(crate::model::mb);hide(crate::parse::hdr_ok);
+    hide(crate::frame_model::call);hide(crate::frame_model::call_mode);hide(crate::frame_model::after_calls);
+    hide(crate::frame_model::saved_at);hide(iterator_log);hide(iterator_observation);
+    reveal(work_wf);reveal(next_allocation);
+    lemma_work_mh(a);lemma_work_mh(d);
+    let nc=next_cut(cut,k,r);
+    if a.state==State::Running {
+        lemma_wf_running(a,k as int-1);
+        assert(cut is None);
+        let step=match r {None=>Ok(None),Some(Err(e))=>Err(e),Some(Ok(v))=>Ok(Some(view_metadata(v)))};
+        reveal(next_result);reveal(step_result);
+        assert(step_result(a,d,step));
+        lemma_step_call_defined(a,d,step);
+        reveal(crate::frame_model::call);
+        let c=crate::frame_model::call(a.b@,crate::parse::header_model(a.hdr),a.pol,model_state(a)).unwrap();
+        if call_oom(r) {
+            assert(nc==Some(k));
+        } else {
+            assert(c.error is Some <==> r is Some && r->Some_0 is Err);
+        }
+    } else {
+        assert(d==a);assert(!call_oom(r));
+        if cut is None {
+            reveal(wf_p);
+            let st=crate::frame_model::after_calls(a.b@,crate::parse::header_model(a.hdr),a.pol,k).unwrap();
+            assert(st.status!=crate::frame_model::Status::Running);
+        }
+    }
+    if call_oom(r) {
+        assert(cut is None);
+        assert(crate::frame_model::saved_at(a.b@,crate::parse::header_model(a.hdr),a.pol,k));
+    } else if cut is None {
+        assert forall|i:int| 0<=i<d.log@.view().len() implies #[trigger] d.log@.view()[i].2 by {
+            if i<a.log@.view().len() {assert(d.log@.view()[i]==a.log@.view()[i]);}
+        }
+        assert(crate::alloc_guard::all_ok(d.log@.view()));
+    }
+    crate::work_model::lemma_P_next(a.b@,a.pol,cut,nc,k);
+    assert(d.charged_pixels@ as int-a.charged_pixels@ as int==crate::work_model::A_n(a.b@,a.pol,nc,k as int) as int);
+    reveal_with_fuel(crate::work_model::cur_calls,1);
+    assert(effective_cursor(d)==crate::work_model::cur_n(a.b@,a.pol,nc,k as int));
+}
+
+#[verifier::spinoff_prover]
+proof fn lemma_T12_next(a:Frames,d:Frames,k:nat,r:Option<Result<FrameView,TryError>>)
+    requires storage_wf(a),storage_wf(d),fixed_stream(a,d),next_work(a,d),next_model_work(a,d,r),next_result(a,d,r),
+        wf_p(a,k as int-1) ==> wf_p(d,k as int),
+        wf_p(a,k as int-1) ==> next_allocation(a,d,k as int-1,r),
+        wf_p(a,k as int-1) && work_ready(a) ==> t12_measured_call(a,d,k as int-1),
+    ensures T12_next(a,d,k,r),
+{
+    hide(crate::model::mp);hide(crate::parse::hdr_ok);
+    hide(crate::work_model::P);hide(crate::work_model::cur_n);hide(crate::work_model::A_n);
+    assert forall|cut:Option<nat>| #[trigger] work_wf(a,k as int-1,cut) implies {
+        let nc=next_cut(cut,k,r);
+        &&& work_wf(d,k as int,nc)
+        &&& d.work@ as int-a.work@ as int<=C_CALL as int *
+            (crate::work_model::cur_n(a.b@,a.pol,nc,k as int)-crate::work_model::cur_n(a.b@,a.pol,cut,k as int-1)
+             +crate::work_model::A_n(a.b@,a.pol,nc,k as int) as int+crate::work_model::A_n(a.b@,a.pol,cut,k as int-1) as int
+             +if crate::frame_model::saved_at(a.b@,crate::parse::header_model(a.hdr),a.pol,k) {header_pixels(a.b@) as int} else {0})
+        &&& d.work@ as int<=C_CALL as int*(a.b.len() as int+2*header_pixels(a.b@) as int+2*crate::work_model::P(a.b@,a.pol,nc,k+1) as int)+C_FIXED as int
+        &&& d.work@ as int<=C_WORK as int*(a.b.len() as int+header_pixels(a.b@) as int+crate::work_model::P(a.b@,a.pol,nc,k+1) as int)+C_FIXED as int
+    } by {
+        reveal(work_wf);
+        lemma_work_wf_step(a,d,k,cut,r);
+        lemma_work_total(d);
+        let nc=next_cut(cut,k,r);
+        if a.state==State::Running {
+            assert(d.charged_pixels@ as int-a.charged_pixels@ as int==crate::work_model::A_n(a.b@,a.pol,nc,k as int) as int) by {
+                reveal(crate::work_model::P);
+                if nc!=cut {crate::work_model::lemma_P_cut_prefix(a.b@,a.pol,k,k);}
+            }
+        } else {
+            assert(d==a);
+        }
+    }
+}
+
+proof fn lemma_initial_model(d:Frames)
+    requires constructor_ok(d,d.b@,d.pol,d.still),
+    ensures crate::frame_model::initial(d.b@,d.pol)==Some(model_state(d)),
+{
+    hide(crate::model::mp_fuel);reveal(constructor_ok);reveal(storage_wf);
+    lemma_work_mh(d);
+    let initial=crate::frame_model::initial(d.b@,d.pol).unwrap();
+    assert(model_state(d)==initial);
+}
+proof fn lemma_still_work_area(a:Frames,d:Frames,r:Result<Option<FrameMeta>,TryError>)
+    requires constructor_ok(a,a.b@,a.pol,true),a.charged_pixels@==0,a.state==State::Running,
+        step_model_work(a,d,r),!(r is Err && r->Err_0 is OutOfMemory),
+    ensures d.charged_pixels@==crate::work_model::P(a.b@,a.pol,None,1),
+{
+    hide(crate::model::mp);hide(crate::model::mb);
+    lemma_work_mh(a);lemma_initial_model(a);
+    reveal_with_fuel(crate::work_model::P,2);reveal(crate::work_model::A_n);reveal(step_model_work);
+    reveal_with_fuel(crate::frame_model::after_calls,1);
+}
+proof fn lemma_still_empty_work_area(d:Frames)
+    requires constructor_ok(d,d.b@,d.pol,true),d.charged_pixels@==0,d.state!=State::Running,
+    ensures d.charged_pixels@==crate::work_model::P(d.b@,d.pol,None,1),
+{
+    hide(crate::model::mp);hide(crate::model::mb);
+    lemma_work_mh(d);lemma_initial_model(d);
+    reveal_with_fuel(crate::work_model::P,2);reveal(crate::work_model::A_n);
+    reveal_with_fuel(crate::frame_model::after_calls,1);
+}
+
+pub closed spec fn steps_total(ds:Seq<Frames>)->int
+    decreases ds.len(),
+{
+    if ds.len()==0 {0} else if ds.len()==1 {ds[0].work@ as int}
+    else {steps_total(ds.take(ds.len() as int-1))+ds.last().work@ as int-ds[ds.len() as int-2].work@ as int}
+}
+proof fn lemma_steps_total(ds:Seq<Frames>)
+    requires ds.len()>0,
+    ensures steps_total(ds)==ds.last().work@ as int,
+    decreases ds.len(),
+{
+    reveal_with_fuel(steps_total,1);
+    if ds.len()>1 {
+        let pr=ds.take(ds.len() as int-1);lemma_steps_total(pr);
+        assert(pr.last()==ds[ds.len() as int-2]);
+    }
+}
+/// Constructor plus any finite next_frame history; info calls are immutable
+/// and can be inserted without changing any snapshot or work summand.
+proof fn theorem_T12_finite(ds:Seq<Frames>,rs:Seq<Option<Result<FrameView,TryError>>>,cuts:Seq<Option<nat>>)
+    requires ds.len()==rs.len()+1,cuts.len()==ds.len(),cuts[0] is None,
+        constructor_work(ds[0]),!ds[0].still,
+        forall|i:int| 0<=i<ds.len() ==> storage_wf(#[trigger] ds[i]) && ds[i].b==ds[0].b && ds[i].pol==ds[0].pol,
+        forall|i:int| 0<=i<rs.len() ==> T12_next(#[trigger] ds[i],ds[i+1],i as nat,rs[i])
+            && cuts[i+1]==next_cut(cuts[i],i as nat,rs[i]),
+    ensures work_wf(ds.last(),rs.len() as int-1,cuts.last()),
+        steps_total(ds)<=C_CALL as int*(ds[0].b.len() as int+2*header_pixels(ds[0].b@) as int
+            +2*crate::work_model::P(ds[0].b@,ds[0].pol,cuts.last(),rs.len()) as int)+C_FIXED as int,
+        steps_total(ds)<=C_WORK as int*(ds[0].b.len() as int+header_pixels(ds[0].b@) as int
+            +crate::work_model::P(ds[0].b@,ds[0].pol,cuts.last(),rs.len()) as int)+C_FIXED as int,
+    decreases rs.len(),
+{
+    hide(crate::work_model::P);hide(crate::work_model::A_n);hide(crate::work_model::cur_n);
+    if rs.len()==0 {reveal(constructor_work);lemma_work_total(ds[0]);}
+    else {
+        let dp=ds.take(ds.len() as int-1);
+        let rp=rs.take(rs.len() as int-1);
+        let cp=cuts.take(cuts.len() as int-1);
+        assert forall|i:int| 0<=i<dp.len() implies storage_wf(#[trigger] dp[i]) && dp[i].b==dp[0].b && dp[i].pol==dp[0].pol by {assert(dp[i]==ds[i]);}
+        assert forall|i:int| 0<=i<rp.len() implies T12_next(#[trigger] dp[i],dp[i+1],i as nat,rp[i])
+            && cp[i+1]==next_cut(cp[i],i as nat,rp[i]) by {assert(dp[i]==ds[i]);assert(dp[i+1]==ds[i+1]);}
+        theorem_T12_finite(dp,rp,cp);
+        let i=rs.len() as int-1;
+        assert(dp.last()==ds[i]);assert(cp.last()==cuts[i]);
+        reveal(T12_next);
+    }
+    lemma_steps_total(ds);
+}
+
+proof fn lemma_work_header(d:Frames)
+    requires storage_wf(d),
+    ensures d.canvas@.len() as int==4*header_pixels(d.b@) as int,
+{
+    hide(crate::model::mp);
+    reveal(storage_wf);reveal(crate::parse::hdr_ok);
+    let h=choose|h:crate::model::HeaderM| crate::model::mh(d.b@)==Ok(h) && crate::parse::hdr_matches(d.b@,h,d.hdr);
+    assert(header_pixels(d.b@) as int==(d.hdr.width as int)*(d.hdr.height as int));
+    assert(4*(d.hdr.width as int)*(d.hdr.height as int)==4*header_pixels(d.b@) as int) by(nonlinear_arith)
+        requires header_pixels(d.b@) as int==(d.hdr.width as int)*(d.hdr.height as int);
+}
+proof fn lemma_constructor_work(d:Frames)
+    requires constructor_ok(d,d.b@,d.pol,d.still),d.charged_pixels@==0,!d.still ==> wf_p(d,-1),
+        d.work@ as int<=4*header_pixels(d.b@) as int+crate::lzw::LZW_TABLE_BYTES as int+4*d.p as int+1,
+    ensures constructor_work(d),
+{
+    hide(crate::model::mp);hide(crate::parse::hdr_ok);
+    reveal(constructor_ok);lemma_work_header(d);lemma_work_mh(d);lemma_T13_resources(d);
+}
+proof fn lemma_work_transition(a:Frames,d:Frames)
+    requires storage_wf(a),storage_wf(d),fixed_stream(a,d),
+        a.state==State::Running,step_cost(a,d),work_ready(a),
+    ensures work_ready(d),
+        work_potential(d)<=work_potential(a)+C_CALL as int *
+            (effective_cursor(d)-effective_cursor(a)+2*(d.charged_pixels@ as int-a.charged_pixels@ as int)),
+        d.work@ as int<=a.work@ as int+C_CALL as int *
+            (effective_cursor(d)-effective_cursor(a)+d.charged_pixels@ as int-a.charged_pixels@ as int+prior_area(a) as int
+                +if a.saved is None && d.saved is Some {header_pixels(a.b@) as int} else {0}),
+{
+    hide(crate::model::mp);hide(crate::parse::hdr_ok);
+    lemma_storage_bounds(a);lemma_storage_bounds(d);
+    lemma_work_header(a);
+    if a.prev is Some {
+        let r=a.prev.unwrap().rect;
+        assert(prior_area(a)>=1) by(nonlinear_arith)
+            requires r.width>=1,r.height>=1,prior_area(a)==(r.width as nat)*(r.height as nat);
+    }
+}
+proof fn lemma_next_work(a:Frames,d:Frames)
+    requires storage_wf(a),storage_wf(d),fixed_stream(a,d),
+        if a.state==State::Running {step_cost(a,d)} else {d==a},
+    ensures next_work(a,d),
+{
+    hide(crate::model::mp);hide(crate::parse::hdr_ok);
+    if a.state==State::Running && work_ready(a) {lemma_work_transition(a,d);}
+    if work_accounted(a) {
+        lemma_storage_bounds(d);
+        assert(work_potential(d)>=d.work@ as int);
+    }
+}
+
 pub closed spec fn storage_wf(d:Frames)->bool {
     &&& prev_bounds(d)
     &&& (d.state==State::Running && d.st.frames_seen==0 ==> d.p<d.b.len() && d.b@[d.p as int]==0x2c)
@@ -923,24 +1558,35 @@ impl<'a> Frames<'a> {
             !(r.0 is Err && r.0->Err_0 is OutOfMemory) ==> crate::alloc_guard::req_of_log(construction_log(&r))==req_new(b@),
             r.0 is Ok ==> r.1@ is None,
             r.0 is Err ==> r.1@ is Some,
+        r.0 is Ok ==> constructor_work(r.0->Ok_0),
     {
         hide(crate::model::mp);
         reveal(constructor_result);reveal(constructor_ok);reveal(storage_wf);reveal(construction_log);
         let tracked mut log=crate::alloc_guard::new_log();
-        let prepared=prepare(b,pol,Tracked(&mut log));
+        let mut steps=Ghost(0nat);
+        let prepared=prepare(b,pol,&mut steps,Tracked(&mut log));
         match prepared {
-            Err(e)=>(Err(e),Tracked(Some(log))),
+            Err(e)=>{
+                proof {
+                    assert(steps@<=C_CALL*(b.len() as nat+header_pixels(b@))+C_FIXED);
+                    crate::work_model::lemma_initial_cur_bounds(b@,pol);
+                    if !(e is OutOfMemory) {reveal(prepare_result);assert(crate::model::mp(b@,pol) is Err);}
+                    assert(steps@ as int<=C_CALL as int*(crate::work_model::cur_n(b@,pol,None,-1)+header_pixels(b@) as int)+C_FIXED as int);
+                }
+                (Err(e),Tracked(Some(log)))
+            },
             Ok(d)=> {
                 let info=Info {width:d.hdr.width,height:d.hdr.height,version:d.hdr.version,
                     background_index:d.hdr.background_index,aspect:d.hdr.aspect,loop_count:d.st.loop_count};
                 let state=match d.stop {crate::parse::PrefixStop::AtImage=>State::Running,crate::parse::PrefixStop::Trailer=>State::Done};
                 let dec=Frames {b,pol,hdr:d.hdr,info,p:d.p,st:d.st,canvas:d.canvas,table:d.table,
-                    saved:None,prev:None,state,still,log:Tracked(log)};
+                    saved:None,prev:None,state,still,log:Tracked(log),work:Ghost(d.work@),charged_pixels:Ghost(0nat)};
                 proof {
                     assert(match crate::model::mp(dec.b@,dec.pol) {Err(_)=>false,Ok((mi,_))=>info_model(dec.info)==mi});
                     assert(dec.log@.view()==seq![(AllocSite::Canvas,dec.canvas@.len(),true),(AllocSite::LzwTable,crate::lzw::LZW_TABLE_BYTES as nat,true)]);
                     assert(storage_wf(dec));assert(constructor_ok(dec,b@,pol,still));
                     if !still {lemma_constructor_wf(dec);}
+                    lemma_constructor_work(dec);
                 }
                 (Ok(dec),Tracked(None))
             },
@@ -949,38 +1595,54 @@ impl<'a> Frames<'a> {
 
     fn open(b:&'a [u8],pol:Policy,still:bool)->(r:Result<Frames<'a>,TryError>)
         ensures constructor_result(b@,pol,still,r),
+        r is Ok ==> constructor_work(r->Ok_0),
     {Self::open_logged(b,pol,still).0}
 
     pub fn try_new(b:&'a [u8])->(r:Result<Frames<'a>,TryError>)
         ensures constructor_result(b@,crate::policy::profile_record(Profile::Strict),false,r),
+        r is Ok ==> constructor_work(r->Ok_0),
     {Self::open(b,Profile::Strict.policy(),false)}
 
     pub fn try_new_with_policy(b:&'a [u8],p:Profile)->(r:Result<Frames<'a>,TryError>)
         ensures constructor_result(b@,crate::policy::profile_record(p),false,r),
+        r is Ok ==> constructor_work(r->Ok_0),
     {Self::open(b,p.policy(),false)}
 
     pub fn try_new_logged(b:&'a [u8])->(r:(Result<Frames<'a>,TryError>,Tracked<Option<AllocLog>>))
         ensures constructor_result(b@,crate::policy::profile_record(Profile::Strict),false,r.0),
+            constructor_g(b@,crate::policy::profile_record(Profile::Strict),r.0,construction_log(&r)),
             crate::alloc_guard::sites::log_tied(r.0,construction_log(&r)),
             g_new_clause2(b@,r.0 is Err && r.0->Err_0 is OutOfMemory,construction_log(&r)),g_new_clause3(b@),
             crate::alloc_guard::req_of_log(construction_log(&r)).is_prefix_of(req_new(b@)),
             !(r.0 is Err && r.0->Err_0 is OutOfMemory) ==> crate::alloc_guard::req_of_log(construction_log(&r))==req_new(b@),
             r.0 is Ok ==> r.1@ is None,r.0 is Err ==> r.1@ is Some,
-    {Self::open_logged(b,Profile::Strict.policy(),false)}
+        r.0 is Ok ==> constructor_work(r.0->Ok_0),
+    {
+        let r=Self::open_logged(b,Profile::Strict.policy(),false);
+        proof {lemma_constructor_package(b@,crate::policy::profile_record(Profile::Strict),r.0,construction_log(&r));}
+        r
+    }
 
     pub fn try_new_with_policy_logged(b:&'a [u8],p:Profile)->(r:(Result<Frames<'a>,TryError>,Tracked<Option<AllocLog>>))
         ensures constructor_result(b@,crate::policy::profile_record(p),false,r.0),
+            constructor_g(b@,crate::policy::profile_record(p),r.0,construction_log(&r)),
             crate::alloc_guard::sites::log_tied(r.0,construction_log(&r)),
             g_new_clause2(b@,r.0 is Err && r.0->Err_0 is OutOfMemory,construction_log(&r)),g_new_clause3(b@),
             crate::alloc_guard::req_of_log(construction_log(&r)).is_prefix_of(req_new(b@)),
             !(r.0 is Err && r.0->Err_0 is OutOfMemory) ==> crate::alloc_guard::req_of_log(construction_log(&r))==req_new(b@),
             r.0 is Ok ==> r.1@ is None,r.0 is Err ==> r.1@ is Some,
-    {Self::open_logged(b,p.policy(),false)}
+        r.0 is Ok ==> constructor_work(r.0->Ok_0),
+    {
+        let r=Self::open_logged(b,p.policy(),false);
+        proof {lemma_constructor_package(b@,crate::policy::profile_record(p),r.0,construction_log(&r));}
+        r
+    }
 
     #[cfg(feature="test-records")]
     #[doc(hidden)]
     pub fn try_new_with_record(b:&'a [u8],pol:Policy)->(r:Result<Frames<'a>,TryError>)
         ensures constructor_result(b@,pol,false,r),
+        r is Ok ==> constructor_work(r->Ok_0),
     {Self::open(b,pol,false)}
 
     #[verifier::spinoff_prover]
@@ -993,6 +1655,9 @@ impl<'a> Frames<'a> {
             final(self).state==old(self).state,saved_view(*final(self))==saved_view(*old(self)),
             final(self).log@.view()==old(self).log@.view(),
             final(self).canvas@==crate::frame_model::disposed(old(self).canvas@,saved_view(*old(self)),previous_view(*old(self)),old(self).hdr.width as u32,old(self).hdr.height as u32),
+        final(self).charged_pixels@==old(self).charged_pixels@,
+            old(self).work@<=final(self).work@,
+            final(self).work@ as int<=old(self).work@ as int+2*prior_area(*old(self)),
     {
         hide(crate::model::mp);hide(crate::parse::hdr_ok);
         hide(crate::mc::copy_rect);hide(crate::mc::clear_rect);
@@ -1002,9 +1667,9 @@ impl<'a> Frames<'a> {
         let sw=self.hdr.width as u32;
         let sh=self.hdr.height as u32;
         if let Some(prev)=self.prev {
-            if prev.disposal==2 {clear_rect(&mut self.canvas,sw,sh,prev.rect);}
+            if prev.disposal==2 {let cost=clear_rect(&mut self.canvas,sw,sh,prev.rect);proof {self.work@=self.work@+cost@;}}
             else if prev.disposal==3 {
-                if let Some(saved)=&self.saved {copy_rect(&mut self.canvas,saved,sw,sh,prev.rect);}
+                if let Some(saved)=&self.saved {let cost=copy_rect(&mut self.canvas,saved,sw,sh,prev.rect);proof {self.work@=self.work@+cost@;}}
             }
         }
         proof {lemma_storage_reframe(before,*self);}
@@ -1034,6 +1699,10 @@ impl<'a> Frames<'a> {
             r is Err ==> disposal==3 && !old(self).still && old(self).saved is None
                 && final(self).saved is None && final(self).state==State::Fused
                 && match r->Err_0 {TryError::OutOfMemory(o)=>o.site_spec()==AllocSite::Saved && o.elements_spec() as int==old(self).canvas@.len(),_=>false},
+        final(self).charged_pixels@==old(self).charged_pixels@,
+            old(self).work@<=final(self).work@,
+            final(self).work@ as int<=old(self).work@ as int+2*prior_area(*old(self))+saved_fill(*old(self),*final(self))
+                + if r is Ok && disposal==3 && !old(self).still {2*rect_area(rect)} else {0},
     {
         hide(crate::model::mp);hide(crate::parse::hdr_ok);
         hide(crate::mc::copy_rect);hide(crate::mc::clear_rect);
@@ -1044,7 +1713,7 @@ impl<'a> Frames<'a> {
         proof {assert(storage_wf(*self));}
         if disposal==3 && !self.still {
             match self.ensure_saved() {Ok(())=>{},Err(e)=>return Err(e)}
-            if let Some(saved)=&mut self.saved {copy_rect(saved,&self.canvas,sw,sh,rect);}
+            if let Some(saved)=&mut self.saved {let cost=copy_rect(saved,&self.canvas,sw,sh,rect);proof {self.work@=self.work@+cost@;}}
         }
         proof {assert(storage_wf(*self));}
         Ok(())
@@ -1071,6 +1740,8 @@ impl<'a> Frames<'a> {
             r is Ok ==> final(self).state==old(self).state && final(self).saved is Some,
             r is Err ==> final(self).state==State::Fused && r->Err_0 is OutOfMemory,
             final(self).log@.view().len()<=3,
+        final(self).charged_pixels@==old(self).charged_pixels@,
+            final(self).work@ as int == old(self).work@ as int+saved_fill(*old(self),*final(self)),
     {
         hide(crate::model::mp);
         hide(crate::parse::hdr_ok);
@@ -1086,6 +1757,7 @@ impl<'a> Frames<'a> {
         match try_zeroed(AllocSite::Saved,n,Tracked(self.log.borrow_mut())) {
             Ok(v)=>{
                 proof {assert(self.log@.view()==l0.push((AllocSite::Saved,n as nat,true)));}
+                proof {self.work@=self.work@+v@.len();}
                 self.saved=Some(v);
                 proof {
                     assert(self.log@.view() =~= seq![(AllocSite::Canvas,n as nat,true),(AllocSite::LzwTable,crate::lzw::LZW_TABLE_BYTES as nat,true),(AllocSite::Saved,n as nat,true)]);
@@ -1270,6 +1942,240 @@ pub closed spec fn still_core_result(b:Seq<u8>,r:Result<Still,TryError>)->bool {
             _=>false,
         },
     }
+}
+
+pub closed spec fn constructor_g(b:Seq<u8>,pol:Policy,r:Result<Frames,TryError>,l:Seq<(AllocSite,nat,bool)>)->bool {
+    &&& constructor_result(b,pol,false,r)
+    &&& crate::alloc_guard::sites::log_tied(r,l)
+    &&& requests_bounded(l) && l.len()<=2
+    &&& g_new_clause2(b,r is Err && r->Err_0 is OutOfMemory,l) && g_new_clause3(b)
+    &&& crate::alloc_guard::req_of_log(l).is_prefix_of(req_new(b))
+    &&& (!(r is Err && r->Err_0 is OutOfMemory) ==> crate::alloc_guard::req_of_log(l)==req_new(b))
+    &&& (crate::alloc_guard::all_ok(l) ==> !(r is Err && r->Err_0 is OutOfMemory))
+    &&& match r {Ok(d)=>info_result(d,d.info) && iterator_log(d,-1),Err(_)=>true}
+}
+#[verifier::spinoff_prover]
+proof fn lemma_constructor_package(b:Seq<u8>,pol:Policy,r:Result<Frames,TryError>,l:Seq<(AllocSite,nat,bool)>)
+    requires constructor_result(b,pol,false,r),crate::alloc_guard::sites::log_tied(r,l),
+        crate::alloc_guard::req_of_log(l).is_prefix_of(req_new(b)),
+        !(r is Err && r->Err_0 is OutOfMemory) ==> crate::alloc_guard::req_of_log(l)==req_new(b),
+    ensures constructor_g(b,pol,r,l),
+{
+    hide(crate::model::mp);reveal(constructor_g);
+    lemma_new_prefix_sites(b,l);
+    if r is Ok {
+        reveal(constructor_result);reveal(constructor_ok);
+        lemma_info_result(r.unwrap());lemma_iterator_log(r.unwrap(),-1);
+    }
+}
+
+pub closed spec fn next_allocation(a:Frames,d:Frames,n:int,r:Option<Result<FrameView,TryError>>)->bool {
+    let oom=r is Some && r.unwrap() is Err && r.unwrap()->Err_0 is OutOfMemory;
+    let size=(4*(a.hdr.width as int)*(a.hdr.height as int)) as nat;
+    let at=crate::frame_model::saved_at(a.b@,crate::parse::header_model(a.hdr),a.pol,(n+1) as nat);
+    &&& iterator_log(d,n+1)
+    &&& if crate::alloc_guard::all_ok(a.log@.view()) {
+        if oom {
+            &&& at && d.state==State::Fused
+            &&& d.log@.view()==a.log@.view().push((AllocSite::Saved,size,false))
+            &&& match r.unwrap()->Err_0 {TryError::OutOfMemory(o)=>o.site_spec()==AllocSite::Saved && o.elements_spec() as nat==size,_=>false}
+        } else {
+            d.log@.view()==a.log@.view()+if at {seq![(AllocSite::Saved,size,true)]} else {Seq::empty()}
+        }
+    } else {r is None && d.log@.view()==a.log@.view()}
+    &&& (!oom ==> crate::alloc_guard::req_of_log(d.log@.view())==crate::alloc_guard::req_of_log(a.log@.view())+req_next(a,(n+1) as nat))
+    &&& (crate::alloc_guard::all_ok(d.log@.view()) ==> crate::alloc_guard::all_ok(a.log@.view()) && !oom && iterator_observation(a,n,r))
+}
+
+#[verifier::spinoff_prover]
+proof fn lemma_next_allocation(a:Frames,d:Frames,n:int,r:Option<Result<FrameView,TryError>>)
+    requires wf_p(a,n),wf_p(d,n+1),fixed_stream(a,d),next_result(a,d,r),
+    ensures next_allocation(a,d,n,r),
+{
+    hide(crate::frame_model::after_calls);hide(crate::frame_model::call);hide(crate::frame_model::call_mode);
+    hide(crate::model::mp);hide(crate::model::mh);hide(crate::model::mb);hide(crate::frame_model::image_mode);
+    hide(storage_wf);
+    lemma_iterator_log(d,n+1);lemma_storage_bounds(a);lemma_next_observation(a,d,r,n);
+    reveal(wf_p);reveal(next_result);reveal(fixed_stream);reveal(next_allocation);reveal(req_next);
+    let k=(n+1) as nat;
+    if crate::alloc_guard::all_ok(a.log@.view()) {
+        let s=crate::frame_model::after_calls(a.b@,crate::parse::header_model(a.hdr),a.pol,k).unwrap();
+        if a.state==State::Running {
+            lemma_wf_running(a,n);
+            let step=match r {None=>Ok(None),Some(Err(e))=>Err(e),Some(Ok(v))=>Ok(Some(view_metadata(v)))};
+            lemma_step_call_defined(a,d,step);
+            let c=crate::frame_model::call(a.b@,crate::parse::header_model(a.hdr),a.pol,s).unwrap();
+            crate::frame_model::lemma_saved_current(a.b@,crate::parse::header_model(a.hdr),a.pol,k,s,c);
+            assert(crate::frame_model::call_mode(a.b@,crate::parse::header_model(a.hdr),a.pol,s,a.still)==Some(c)) by {reveal(crate::frame_model::call);}
+        } else {
+            crate::frame_model::lemma_terminal_call(a.b@,crate::parse::header_model(a.hdr),a.pol,s);
+            assert(!crate::frame_model::saved_at(a.b@,crate::parse::header_model(a.hdr),a.pol,k));
+        }
+    } else {
+        let i=choose|i:nat| i<=n && crate::frame_model::saved_at(a.b@,crate::parse::header_model(a.hdr),a.pol,i)
+            && match (crate::frame_model::after_calls(a.b@,crate::parse::header_model(a.hdr),a.pol,i),crate::frame_model::call_at(a.b@,crate::parse::header_model(a.hdr),a.pol,i)) {
+                (Some(s),Some(c))=>prev_matches(a,s.prev) && crate::parse::st_matches(a.p,a.st,c.after.walk),_=>false,
+            };
+        if crate::frame_model::saved_at(a.b@,crate::parse::header_model(a.hdr),a.pol,k) {
+            crate::frame_model::lemma_saved_unique(a.b@,crate::parse::header_model(a.hdr),a.pol,i,k);
+        }
+    }
+    let oom=r is Some && r.unwrap() is Err && r.unwrap()->Err_0 is OutOfMemory;
+    if oom {
+        assert(!crate::alloc_guard::all_ok(d.log@.view())) by {
+            let j=a.log@.view().len() as int;
+            assert(d.log@.view()[j].2==false);
+        }
+    } else {
+        let at=crate::frame_model::saved_at(a.b@,crate::parse::header_model(a.hdr),a.pol,k);
+        assert(d.log@.view() =~= a.log@.view()+if at {seq![(AllocSite::Saved,a.canvas@.len(),true)]} else {Seq::empty()});
+        assert(crate::alloc_guard::req_of_log(d.log@.view()) =~= crate::alloc_guard::req_of_log(a.log@.view())+req_next(a,k));
+    }
+    if crate::alloc_guard::all_ok(d.log@.view()) {
+        assert forall|j:int| 0<=j<a.log@.view().len() implies a.log@.view()[j].2 by {
+            assert(d.log@.view()[j]==a.log@.view()[j]);
+        }
+    }
+}
+
+pub closed spec fn saved_before(d:Frames,n:int)->bool {
+    exists|i:nat| i<=n && crate::frame_model::saved_at(d.b@,crate::parse::header_model(d.hdr),d.pol,i)
+}
+pub closed spec fn req_next(d:Frames,k:nat)->Seq<(AllocSite,nat)> {
+    if crate::frame_model::saved_at(d.b@,crate::parse::header_model(d.hdr),d.pol,k) {
+        seq![(AllocSite::Saved,(4*(d.hdr.width as int)*(d.hdr.height as int)) as nat)]
+    } else {Seq::empty()}
+}
+pub closed spec fn iterator_log(d:Frames,n:int)->bool {
+    let l=d.log@.view();
+    let size=(4*(d.hdr.width as int)*(d.hdr.height as int)) as nat;
+    &&& requests_bounded(l) && l.len()<=3
+    &&& if crate::alloc_guard::all_ok(l) {
+        crate::alloc_guard::req_of_log(l)==req_new(d.b@)+if saved_before(d,n) {seq![(AllocSite::Saved,size)]} else {Seq::empty()}
+    } else {
+        &&& saved_before(d,n) && d.state==State::Fused && d.saved is None
+        &&& l==seq![(AllocSite::Canvas,size,true),(AllocSite::LzwTable,crate::lzw::LZW_TABLE_BYTES as nat,true),(AllocSite::Saved,size,false)]
+    }
+}
+
+#[verifier::spinoff_prover]
+proof fn lemma_storage_sites(d:Frames)
+    requires storage_wf(d),
+    ensures requests_bounded(d.log@.view()),d.log@.view().len()<=3,
+        req_new(d.b@)==seq![(AllocSite::Canvas,d.canvas@.len()),(AllocSite::LzwTable,crate::lzw::LZW_TABLE_BYTES as nat)],
+{
+    hide(crate::model::mp);hide(crate::model::mh);hide(crate::parse::hdr_ok);hide(crate::parse::hdr_inv);
+    lemma_model_header(d);lemma_new_sites(d.b@);reveal(storage_wf);
+    assert(site_bounded(AllocSite::Canvas,d.canvas@.len()));
+    assert(site_bounded(AllocSite::Saved,d.canvas@.len()));
+}
+
+#[verifier::spinoff_prover]
+proof fn lemma_iterator_log(d:Frames,n:int)
+    requires wf_p(d,n),
+    ensures iterator_log(d,n),
+{
+    hide(crate::frame_model::after_calls);hide(crate::frame_model::call);hide(crate::model::mp);hide(crate::model::mh);
+    hide(crate::parse::hdr_ok);hide(crate::parse::hdr_inv);
+    reveal(wf_p);reveal(storage_wf);reveal(iterator_log);reveal(saved_before);
+    lemma_storage_sites(d);
+    if crate::alloc_guard::all_ok(d.log@.view()) {
+        let s=crate::frame_model::after_calls(d.b@,crate::parse::header_model(d.hdr),d.pol,(n+1) as nat).unwrap();
+        assert((s.saved is Some)==(d.saved is Some));
+        if s.saved is Some {
+            crate::frame_model::lemma_saved_exists(d.b@,crate::parse::header_model(d.hdr),d.pol,(n+1) as nat,s);
+            assert(saved_before(d,n));
+            assert(crate::alloc_guard::req_of_log(d.log@.view()) =~= req_new(d.b@)+seq![(AllocSite::Saved,d.canvas@.len())]);
+        } else {
+            crate::frame_model::lemma_no_saved_before(d.b@,crate::parse::header_model(d.hdr),d.pol,(n+1) as nat,s);
+            assert(!saved_before(d,n)) by {
+                if saved_before(d,n) {
+                    let i=choose|i:nat| i<=n && crate::frame_model::saved_at(d.b@,crate::parse::header_model(d.hdr),d.pol,i);
+                    assert(!crate::frame_model::call_at(d.b@,crate::parse::header_model(d.hdr),d.pol,i).unwrap().reserve_saved);
+                }
+            }
+            assert(crate::alloc_guard::req_of_log(d.log@.view()) =~= req_new(d.b@)+Seq::empty());
+        }
+    } else {assert(saved_before(d,n));}
+}
+
+pub open spec fn site_bounded(site:AllocSite,n:nat)->bool {
+    1<=n && n<=crate::alloc_guard::MAX_BYTES && match site {
+        AllocSite::Canvas|AllocSite::Saved=>n<=crate::limits::MAX_OUTPUT,
+        AllocSite::LzwTable=>n==crate::lzw::LZW_TABLE_BYTES,
+    }
+}
+pub open spec fn requests_bounded(l:Seq<(AllocSite,nat,bool)>)->bool {
+    forall|j:int| 0<=j<l.len() ==> site_bounded(l[j].0,l[j].1)
+}
+proof fn lemma_new_sites(b:Seq<u8>)
+    ensures req_new(b).len()<=2,g_new_clause3(b),
+        forall|j:int| 0<=j<req_new(b).len() ==> site_bounded(req_new(b)[j].0,req_new(b)[j].1),
+{
+    hide(crate::model::mh);
+    if crate::model::mh(b) is Ok {
+        let h=crate::model::mh(b).unwrap();
+        crate::model::lemma_mh_ok_bounds(b,h);
+        assert(4*h.width*h.height>=4) by(nonlinear_arith) requires h.width>=1,h.height>=1;
+        assert(crate::limits::MAX_OUTPUT<=crate::alloc_guard::MAX_BYTES) by(compute);
+        assert(1<=crate::lzw::LZW_TABLE_BYTES<=crate::alloc_guard::MAX_BYTES) by(compute);
+    }
+}
+proof fn lemma_new_prefix_sites(b:Seq<u8>,l:Seq<(AllocSite,nat,bool)>)
+    requires crate::alloc_guard::req_of_log(l).is_prefix_of(req_new(b)),
+    ensures requests_bounded(l),l.len()<=2,g_new_clause3(b),
+{
+    lemma_new_sites(b);
+    assert forall|j:int| 0<=j<l.len() implies site_bounded(l[j].0,l[j].1) by {
+        assert(crate::alloc_guard::req_of_log(l)[j]==req_new(b)[j]);
+    }
+}
+proof fn lemma_still_package(b:Seq<u8>,pol:Policy,r:Result<(Still,bool),TryError>,l:Seq<(AllocSite,nat,bool)>)
+    requires still_result(b,pol,r),crate::alloc_guard::sites::log_tied(r,l),
+        crate::alloc_guard::req_of_log(l).is_prefix_of(req_new(b)),
+        !(r is Err && r->Err_0 is OutOfMemory) ==> crate::alloc_guard::req_of_log(l)==req_new(b),
+    ensures still_g(b,pol,r,l),
+{
+    reveal(still_g);lemma_new_prefix_sites(b,l);
+}
+
+/// A-GIF-1's complete still observation: semantic result, sealed failure,
+/// exact request sequence/prefix, site bounds and all-success progress.
+pub closed spec fn still_g(b:Seq<u8>,pol:Policy,r:Result<(Still,bool),TryError>,l:Seq<(AllocSite,nat,bool)>)->bool {
+    &&& still_result(b,pol,r)
+    &&& requests_bounded(l) && l.len()<=2
+    &&& crate::alloc_guard::sites::log_tied(r,l)
+    &&& g_new_clause2(b,r is Err && r->Err_0 is OutOfMemory,l) && g_new_clause3(b)
+    &&& crate::alloc_guard::req_of_log(l).is_prefix_of(req_new(b))
+    &&& (!(r is Err && r->Err_0 is OutOfMemory) ==> crate::alloc_guard::req_of_log(l)==req_new(b))
+    &&& (crate::alloc_guard::all_ok(l) ==> !(r is Err && r->Err_0 is OutOfMemory))
+}
+pub closed spec fn still_core_g(b:Seq<u8>,r:Result<Still,TryError>,l:Seq<(AllocSite,nat,bool)>)->bool {
+    &&& still_core_result(b,r)
+    &&& requests_bounded(l) && l.len()<=2
+    &&& crate::alloc_guard::sites::log_tied(r,l)
+    &&& g_new_clause2(b,r is Err && r->Err_0 is OutOfMemory,l) && g_new_clause3(b)
+    &&& crate::alloc_guard::req_of_log(l).is_prefix_of(req_new(b))
+    &&& (!(r is Err && r->Err_0 is OutOfMemory) ==> crate::alloc_guard::req_of_log(l)==req_new(b))
+    &&& (crate::alloc_guard::all_ok(l) ==> !(r is Err && r->Err_0 is OutOfMemory))
+}
+
+#[verifier::spinoff_prover]
+proof fn lemma_still_trace(a:Frames,d:Frames,r:Result<Option<FrameMeta>,TryError>)
+    requires constructor_ok(a,a.b@,a.pol,true),a.state==State::Running,step_result(a,d,r),
+    ensures !(r is Err && r->Err_0 is OutOfMemory),d.log@.view()==a.log@.view(),
+        crate::alloc_guard::all_ok(d.log@.view()),crate::alloc_guard::req_of_log(d.log@.view())==req_new(a.b@),
+{
+    hide(crate::model::mp);hide(crate::frame_model::call_mode);
+    reveal(constructor_ok);
+    crate::frame_model::lemma_still_no_reserve(a.b@,crate::parse::header_model(a.hdr),a.pol,model_state(a));
+}
+
+proof fn lemma_still_strip(b:Seq<u8>,r:Result<(Still,bool),TryError>,l:Seq<(AllocSite,nat,bool)>)
+    requires still_g(b,crate::policy::profile_record(Profile::Strict),r,l),
+    ensures still_core_g(b,match r {Ok((s,_))=>Ok(s),Err(e)=>Err(e)},l),
+{
+    reveal(still_g);reveal(still_core_g);reveal(still_result);reveal(still_core_result);
 }
 
 proof fn lemma_still_constructor_error(b:Seq<u8>,pol:Policy,e:TryError)

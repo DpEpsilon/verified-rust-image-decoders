@@ -1711,3 +1711,297 @@ pixel/resource theorems; the manifest's independent vector/mutation gates.
 The current real trace/storage invariant and first-Saved model lemmas provide
 the allocation proof inputs, but no new full A-GIF-1/3/4 theorem package is
 claimed by this checkpoint.
+
+## Allocation theorem packages (Sol, runs 547-554)
+
+Run 554 verifies **628 functions, 0 errors**. The preceding section's
+A-GIF-1/2/3/4 packaging gap is closed on the actual public APIs. T12 has not
+been instrumented; this is a context checkpoint before the loop-accounting
+pass, not a work-bound completion claim.
+
+### A-GIF-1 and the actual still log
+
+New public `try_decode_still_logged` and
+`try_decode_still_with_policy_logged` return the actual owned
+`Tracked<AllocLog>` on every outcome. They are re-exported at the crate root.
+The ordinary still path calls the same private still_with_logged body and
+merely discards the ghost trace observation. On constructor failure that body
+extracts the real error log from the constructor's tracked Option; after a
+successful constructor it moves the real log out of Frames. No fabricated log
+or placeholder permission is introduced.
+
+`still_g`/`still_core_g` combine exact MS observation, sealed log_tied failure,
+request-prefix/full-equality clauses, per-site bounds and at most two requests,
+plus all-log-entries-Ok implies no OutOfMemory. `site_bounded` proves positive
+requests, Canvas/Saved at most MAX_OUTPUT and LzwTable exactly its frozen size,
+all within the guard bound. `lemma_still_trace` proves the actual still step
+adds no request and cannot return Saved OOM; still-mode model calls never
+reserve Saved. Both public logged still entry points ensure their full G/Prog
+package. Runtime still calls continue to share this proved path.
+
+### A-GIF-2, finite-sequence A-GIF-3/4 and T9
+
+Both public logged constructors now ensure `constructor_g`: exact MP/initial
+WF observation, complete MF Info, initial iterator-log observation, sealed
+failure, exact request sequence or failed prefix, site bounds/count and Prog.
+The previous owner alternatives remain explicit (Frames owns the log on
+success, the separate tracked Option owns it on error).
+
+The converse Saved-history lemma is now proved: Saved present after k model
+calls implies an earlier first Saved reservation. Saved timing is unique, and
+`lemma_saved_current` identifies the current model call's reserve flag exactly
+with SavedAt at that call index.
+
+`iterator_log(d,n)` proves the real cumulative request trace equals Req_new
+plus the unique Saved request at an index at most n, or the exact failed Saved
+trace with two earlier successful reservations and Fused state. It proves site
+bounds and at most three requests. `next_allocation` proves exact per-call
+Req_next append, SavedAt-only OOM, exact false-event/object site and byte count,
+log stability after a failure, and backward all-success progress. In
+particular, all entries Ok after a call implies all entries were Ok before it,
+that call was not OOM, and its MF observation is exact.
+
+Actual public next_frame now ensures next_allocation for every incoming WF
+index, alongside its existing WF/T-ITER postconditions. Constructor_g supplies
+the initial trace; immutable info leaves it unchanged. These actual
+initialization/transition contracts prove the finite-call-sequence packages
+by induction, without a disconnected synthetic execution log. This supplies
+T9's functional/allocation integration together with the logged still G/Prog
+and the previously completed T-ITER contracts. No separate runtime simulator
+or callback collection was added.
+
+Run 550 needed explicit Saved-history absence and extensional Req equality;
+run 552 needed an explicit failed-last-entry contradiction and elementwise
+Req projection/progress proof. All were resolved at default limits.
+
+Final release tests pass in
+`gif/runs/sol-20261116/tests-allocation-packages-final.log`: five report tests,
+seven conformance functions covering all 373 vectors and other checks, four
+allocation-fault tests and the 37,239-frame stress test. All 14 frozen hashes
+match. No commits or background jobs were started; no new assumptions,
+admissions, unsafe bodies, axioms or solver-limit changes were introduced.
+
+### T12 resume point
+
+No concrete ghost step counter has yet been added, and no T12 bound is
+claimed. Instrument actual loop bodies and the successful zero-fill calls;
+do not replace their cost with a spec-only input formula. The hash-pinned guard
+must remain unchanged: its callers can charge n filled bytes on an Ok result.
+
+Concrete production loop sites to start from are the reader-fill loop in
+lzw.rs, emit_raw's chain loop and decode's outer loop; parse.rs's sub-block,
+NETSCAPE loop scan/identifier and MP/MB loops; and compose_new.rs's clear/copy
+row/column loops. Its forward draw loop is a separate helper, not the actual
+reverse-emission path. interlace.rs has no executable loop in the current
+source. Propagate measured helper costs through the existing split adapters.
+
+The design memo's dominant `5*|D|+2*A` sum is the target, not existing
+instrumentation. Distinguish successful code reads (at most `4*|D|`) from
+outer decoder bodies: an empty payload or a StopAtRaster halt can execute one
+body without reading a code. The spare unit in the `2*A-1` chain bound can
+pay that final body. Count the reader and chain loops as they actually run.
+
+Do not use WalkState.total_pixels blindly as P: G9 updates it before Saved
+reservation, whereas a Saved OOM frame does not reach G10 and has A_n=0 in
+the frozen work bound. Disposal before that failure belongs to A_(n-1).
+Fused calls run no loop and must leave the work counter unchanged. Remaining
+after T12 are integrated T13 and the manifest's independent model/vector,
+mutation and policy-proof gates not already completed elsewhere.
+
+## Measured operational T12 packages (Sol, runs 555-575)
+
+Run 575 verifies **650 functions, 0 errors**. All requested production loop
+sites now have measured counters, and the actual public constructor/iterator
+paths carry quantitative work observations. **Do not mark frozen T12 complete
+without the model-cursor/area identification described below.** T13 and the
+independent witness/mutation campaigns were not attempted.
+
+`lzw.rs` counts reader-fill bodies, raw-chain bodies and outer decoder bodies.
+`LzwReport.work` carries their measured sum, bounded by `5*data_len + 2*area`
+through decode_image_data, decode_drawer, decode_canvas and decode_image_pixels.
+The outer invariant charges completed code bodies to two consumed bits and
+completed chain bodies to q; the final body's spare unit fits the positive
+raster's `2*A` charge, including empty data and StopAtRaster. The helper domain
+now explicitly requires area >= 1, exactly the frozen T-LZW domain; the real
+image adapter proves it from the checked descriptor.
+
+`parse.rs` counts sub-block scans, the NETSCAPE identifier comparison and all
+NETSCAPE scan passes, plus MP/MB bodies. Its contracts propagate measured costs
+through extension/data/image helpers. MP and MB cost at most four times their
+cursor advance plus one final body, with |b| as the error endpoint. `clear_rect`
+and `copy_rect` return erased measured costs; their row and column counters
+prove at most `2*w*h`, including clipping and empty clipped rectangles.
+
+`Frames.work` accumulates constructor fills, prefix parsing, MB, disposal,
+Saved fills/copies and LZW. Callers charge successful guard fills by the actual
+returned Vec length; failed fills add nothing and the pinned guard is unchanged.
+`Frames.charged_pixels` increases only on the post-preparation render path,
+including format failure, and not on Saved OOM. Previous disposal is charged to
+prior_area, never to the Saved-OOM frame's area. All split adapters export their
+measured costs. The new concrete render_pixels split keeps the semantic image
+query below the default resource limit; no solver limit was raised.
+
+`constructor_work` gives the 32*(constructor cursor + N)+41984 bound and
+initializes work_accounted. The latter uses a potential of measured work,
+two units per pending previous-frame pixel plus one terminal-body credit, and
+a prepaid canvas-length credit while Saved is absent. Actual next_frame proves
+next_work: monotonic work/pixel counters, exact stability on Done/Fused calls,
+work_accounted preservation, and both 32*(|b|+2*N+2*charged_pixels)+41984 and
+64*(|b|+N+charged_pixels)+41984 cumulative bounds. `t12_measured_call` supplies
+the 32-factor per-call bound with the independently proved SavedAt indicator.
+`lemma_finite_work_history` lifts these actual transition contracts over finite
+snapshot histories, including immutable info steps. Actual still_with_logged
+asserts the cumulative 64-factor bound before discarding the decoder; every
+public still wrapper uses that same measured path. Constructor-error paths
+assert their measured bound in open_logged before returning the error log.
+
+### Exact remaining frozen boundary
+
+The numeric packages use effective_cursor (the real parser cursor, or |b| on
+Fused), the measured G10-area counter and the actual pending Prev area. They do
+not yet prove aliases between those quantities and the frozen model-indexed
+cur_n/A_n/A_(n-1)/P names. In particular, frame_model::call_mode intentionally
+retains its incoming State.walk on Trailer, even after MB scanned extensions;
+semantic_state_matches ignores a terminal decoder's private parser cursor.
+Do not substitute after_calls(...).walk.p for the work cursor. A separate
+independent structural-work cursor observer, or terminal-cursor enrichment of
+the production model with preservation proofs, is needed. Add the explicit
+MB-image-to-charged-area transition and finite area-sum bridge, keeping the
+Saved-OOM current area zero. work_ready is an additional reachable invariant
+established by constructor_work and preserved by next_work; it has not been
+folded into semantic wf_p. These are the resume points for a fully literal
+frozen T12 package. No frozen-statement counterexample or erratum is claimed.
+
+The final release run is `gif/runs/sol-20261116/tests-t12-final.log`: five LZW
+report tests, seven conformance functions covering all 373 vectors, four
+allocation-fault tests and the 37,239-frame stress test all pass. All 14 frozen
+hashes match; both guard hashes match their pinned values. Final run 575 took
+14 seconds and peaked at 2,466 MiB summed RSS. Verus is
+0.2026.11.02.8bf68ee, vstd 0.0.0-2026-11-01-0251, rustc 1.99.1
+(58cf8f9c3 2026-10-13). No assumption, admission, axiom, unsafe body, solver-limit
+increase, commit or background job was introduced. Pre-edit and intermediate
+source backups are under `gif/runs/sol-20261116/t12-*.rs`.
+
+### Independent witness and mutation handoff (list only)
+
+No integrated src/model_vectors.rs or implementation-side mutation runner
+exists. The manifest still requires independent expected-value proofs for all
+362 inputs at most 4096 bytes, the M2/M3/M4/M5/P1/P2 named gates and symbolic
+instantiations L1-L5 for the other 11 records. Register a new Rust proof module
+in gif_verus/src/lib.rs, using spec-frozen/VECTORS.json's authored expected
+values, not expectations computed from the implementation. Existing standalone
+lzw_proof/src/{witnesses,regressions,policy_samples}.rs and its tools are inputs
+to that work, not completed integrated public-entry witnesses. Standalone M2
+already has its two >=8 MiB stress streams; their integrated public-path gate
+still needs an adapter. The existing gif_verus/tools/gen_mutants.py mutates
+runtime input records; it does not run the manifest's source-proof mutations.
+
+All 26 implementation-side mutations of THEOREMS.md remain without integrated
+verifier diagnostic artifacts. The alloc-delta mutations A1, A2, A2-prime, A4,
+A5, A8, A9 and A17-A19 also need their specified real-core gates at Canvas,
+LzwTable and Saved. Use disposable source copies, preserve the seeded target,
+and run one verification at a time through gif/verify.sh with VERIFY_CRATE set
+to the copy. Mutation 24's inserted loops must include their defined work
+charge; an uncharged new loop bypasses the instrumentation rather than testing
+the numeric theorem. The source lint script tools/audit_alloc.sh still expects
+five reservation expressions (2,2,1); production has the intended three (1,1,1).
+Its stale count gate needs repair before treating it as an allocation-mutation
+runner, and the production call-graph audit has no GIF configuration yet.
+
+## Frozen T12, integrated T13 and initial independent witnesses (Sol, runs 576-606)
+
+Run 606 verifies **700 functions, 0 errors**. The preceding section's frozen
+T12 identification gap is closed. T13's model and actual public pixel/resource
+packages are also proved. The integrated independent-vector gate has six
+model/real-public-call pairs, not the complete manifest gate. No mutation
+campaign was run.
+
+### Frozen work quantities on the actual APIs
+
+New src/work_model.rs defines independent mb_cur/mb_area and the frozen-named
+cur_n, A_n and P. mb_cur uses MP's structural prefix fold to retain the endpoint
+of a Trailer reached after extensions; it does not reuse the terminal frame
+model's retained State.walk. Actual parse_mb proves this cursor observation
+and its MB descriptor area. scan_next and step propagate both observations to
+public next_frame. P is a finite sum of A_n. A Saved-OOM cut makes its current
+A_n and all later areas zero, while preserving every earlier area.
+
+work_wf relates the measured counters to cur_n and P and identifies pending
+Prev with the preceding A_n on Running states. constructor_work establishes
+work_wf(-1,None); actual next_frame preserves it with the actual Saved-OOM cut.
+Its T12_next postcondition states the frozen 32-factor per-call inequality
+using cur_n, A_n, A_(n-1) and SavedAt, and both cumulative bounds using P.
+theorem_T12_finite proves the finite-history result with an explicit telescoped
+constructor-plus-call sum. Immutable info calls add no summand or state change.
+Constructor-error branches now assert 32*(cur_(-1)+N)+41984, not merely the
+weaker |b|-based constructor-error bound. The actual still path identifies its
+measured area with the first-call P and asserts 64*(|b|+N+P)+41984. Thus the
+numeric work statements include format errors and OOM, with the fixed allowance
+charged only through construction. Fused calls preserve the measured counter.
+Run 585 was the first green checkpoint for these complete work packages.
+
+### T13 model and public packages
+
+New src/pixel_model.rs proves LZW output-length bounds, clipped clear/copy and
+generalized draw-fold pixel preservation. Its active_tables is a finite prefix
+history of tables actually selected by model MB image steps, not arbitrary
+input subranges. Induction over after_calls preserves both canvas and Saved
+pixel invariants; the model MS theorem covers every model success, dimensions,
+length/cap and opaque-table-entry versus transparent-black pixels. This also
+covers disposal 3 restoring previously valid pixels.
+
+Actual public ordinary/logged still entry points now ensure T13_core or
+T13_still: the exact existing MS/whole-canvas observation, unconditional success
+soundness, reverse success and error equivalences under the non-OOM antecedent,
+and dimensions/length/cap/pixel clauses. Actual next_frame ensures T13_view for
+every incoming semantic WF index: the returned bytes are the actual single
+canvas and satisfy the model-history pixel invariant. T13_resources additionally
+bounds the owned Canvas/LzwTable/optional-Saved lengths by 2*(4*N)+20480 bytes.
+Allocator overhead, physical ownership/borrow enforcement and error-canvas
+non-exposure retain the manifest's trust/API boundaries; no rollback or
+error-canvas equality was added. Run 590 was the first green integrated T13
+checkpoint. These packages concern the implemented Reject-index policies;
+unsupported P2 substitution semantics are not newly claimed.
+
+### Independent witness checkpoint and resume point
+
+src/model_vectors.rs is registered in src/lib.rs. It proves the authored frozen
+MS expectation and makes a real try_decode_still call for each of six records:
+empty, header-12, bad-signature, version-88a, header-only-gct-trailer/still and
+two-colour-m2. Executable success/error observations retain the necessary
+non-OOM antecedent. The positive gate proves every RGBA byte, using staged MH,
+MP, MB, individual LZW codes and drawing computations. Its LZW observation is
+idx [0,1,0], no error, pos 16, E4 false; width becomes four before the EOI read.
+
+Input and expected literals originate only in spec-frozen/VECTORS.json's
+input_hex/expected fields. No oracle or executable supplied expected outputs.
+Whole-positive-MS by-compute attempts exceeded the default compute recursion
+depth. The checked-in gate instead uses closed concrete compute terms and
+per-code fold equations; it raises no limit. An isolated nonlinear arithmetic
+query establishes the 12-byte initial canvas. The two added observation lemmas
+in gif.rs and policy.rs expose existing closed result/profile facts without
+changing either statement or runtime behavior.
+
+The next vector work is the other 356 small records, the 11 large-record
+symbolic instantiations L1-L5, all remaining named M2/M3/M4/M5/P1/P2 gates,
+MF/public iterator witnesses and the integrated >=8 MiB stress adapter. The six
+still witnesses do not replace direct M2 complete-report witnesses or any
+mutation kill. basic-4x3-gct and basic-87a were generated in an exploratory
+backup but are NOT registered proved witnesses. The original emitter writes
+only a new file and must not replace the staged checked-in proof. Useful
+exploratory backups are runs/sol-20261116/model-vectors-*.rs; the current
+src/model_vectors.rs is the authoritative green resume source.
+
+All 26 implementation-side mutations and the previously listed alloc-delta
+mutations still need their specified diagnostic artifacts. The prior section's
+mutation-file mapping, seeded-target precautions and stale allocation-lint
+count warning remain applicable.
+
+Final release validation is runs/sol-20261116/tests-t12-t13-final.log: five
+report tests, seven conformance functions covering 373 vectors, four allocation-
+fault tests and the 37,239-frame stress test all pass. All 14 frozen hashes and
+both pinned guard hashes match. Run 606 took 22 seconds and peaked at 2,684 MiB
+summed RSS. Versions remain Verus 0.2026.11.02.8bf68ee, vstd
+0.0.0-2026-11-01-0251 and rustc 1.99.1 (58cf8f9c3 2026-10-13). No assumptions,
+admissions, external bodies, unsafe bodies, axioms, solver/compute limit raises,
+protected-file edits, commits or background jobs were introduced.

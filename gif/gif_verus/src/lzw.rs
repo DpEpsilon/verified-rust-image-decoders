@@ -817,7 +817,7 @@ impl<'a> BitReader<'a> {
     /// payload bits is `(total_bits as int) - (bits_left as int)`, and the last
     /// precondition is the caller's standing hypothesis from G9's scan of the
     /// whole sub-block sequence (`crate::model::lemma_rd_step_ok_all`).
-    fn read(&mut self, width: u32) -> (code: u32)
+    fn read(&mut self, width: u32, steps: &mut Ghost<nat>) -> (code: u32)
         requires
             old(self).bits_left >= width,
             1 <= width <= 12,
@@ -858,6 +858,8 @@ impl<'a> BitReader<'a> {
             final(self).data_len == old(self).data_len,
             final(self).total_bits == old(self).total_bits,
             final(self).bits_left == old(self).bits_left - width,
+            final(self).fetched >= old(self).fetched,
+            final(steps)@ as int == old(steps)@ as int + final(self).fetched as int - old(self).fetched as int,
             final(self).bits_left <= final(self).total_bits,
             final(self).total_bits == 8 * (final(self).data_len as int),
             final(self).pos as int == crate::model::rd_state(
@@ -939,6 +941,7 @@ impl<'a> BitReader<'a> {
                 self.seq_start == old(self).seq_start,
                 (self.seq_start as int) == gs,
                 self.fetched as int == (gf) + (bytes as int),
+                steps@ == old(steps)@ + bytes as nat,
                 self.nacc as int == (ga) + 8 * (bytes as int),
                 ga >= 0,
                 self.bits_left == ebl,
@@ -969,6 +972,7 @@ impl<'a> BitReader<'a> {
                     ),
             decreases 32u32 - self.nacc,
         {
+            proof { steps@ = steps@ + 1; }
             proof {
                 // 8·fetched = gp + nacc with nacc < width and gp = 8·|D| − bits_left
                 // at bits_left >= width, so fetched + 1 <= |D|.
@@ -1853,6 +1857,9 @@ pub struct LzwReport {
     pub h: Ghost<Seq<(u32, u8)>>,
     pub times: Ghost<Seq<u32>>,
     pub colour: Option<ColourFault>,
+    /// Measured reader-fill, raw-chain and outer-decoder loop iterations.
+    /// The concrete Drawer put path has no loop or bulk fill/copy call.
+    pub work: Ghost<nat>,
 }
 
 #[derive(Clone, Copy)]
@@ -2071,7 +2078,7 @@ pub proof fn lemma_min_rejected_push(h: Seq<(u32,u8)>, f: Option<u32>, ok: spec_
 /// Walk a verified raw chain last-first, without allocating an index buffer.
 /// The log equation records performed calls plus the still-unvisited suffix.
 fn emit_raw<S: Sink>(t: &[u8], clear: u32, code: u32, q: u32, area: u32, len: u32,
-    sink: &mut S) -> (r: (u8, Option<u32>))
+    sink: &mut S, steps: &mut Ghost<nat>) -> (r: (u8, Option<u32>))
     requires
         table_len_ok(t@), clear < TABLE_SIZE, code < TABLE_SIZE,
         crate::chain::chain_ok(raw_pf_seq(t@), clear as int, code as int),
@@ -2090,6 +2097,7 @@ fn emit_raw<S: Sink>(t: &[u8], clear: u32, code: u32, q: u32, area: u32, len: u3
             crate::chain::str_of(raw_sf_seq(t@), raw_pf_seq(t@), clear as int, code as int, 4096), q as int, area as int, 0),
         min_rejected(sink_pairs(crate::chain::str_of(raw_sf_seq(t@), raw_pf_seq(t@), clear as int, code as int, 4096), q as int, area as int, 0),
             r.1, |v: u8| old(sink).sink_ok(v)),
+        final(steps)@ == old(steps)@ + len as nat,
 {
     let ghost s = crate::chain::str_of(raw_sf_seq(t@), raw_pf_seq(t@), clear as int, code as int, 4096);
     let ghost h0 = sink.sink_log();
@@ -2111,6 +2119,7 @@ fn emit_raw<S: Sink>(t: &[u8], clear: u32, code: u32, q: u32, area: u32, len: u3
             table_len_ok(t@), clear < TABLE_SIZE, code < TABLE_SIZE,
             q <= area <= crate::limits::MAX_TOTAL_PIXELS,
             0 <= j <= len <= TABLE_SIZE, s.len() == len, len >= 1,
+            steps@ + j as nat == old(steps)@ + len as nat,
             cur < TABLE_SIZE,
             crate::chain::chain_ok(raw_pf_seq(t@), clear as int, cur as int),
             crate::chain::fuel_above(cur as int, fuel as nat),
@@ -2127,6 +2136,7 @@ fn emit_raw<S: Sink>(t: &[u8], clear: u32, code: u32, q: u32, area: u32, len: u3
             min_rejected(h, fault, ok),
         decreases j,
     {
+        proof { steps@ = steps@ + 1; }
         let ghost k = len as int - j as int;
         proof {
             if cur < clear {
@@ -2345,7 +2355,7 @@ verus! {
 pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
     opts: LzwOptions, t: &mut [u8], sink: &mut S) -> (rep: LzwReport)
     requires
-        1 <= m <= 11,
+        1 <= m <= 11, area >= 1,
         m_ok(lzw_ps(m,opts), m as int, area as int),
         area <= crate::limits::MAX_TOTAL_PIXELS,
         old(sink).sink_inv(), old(sink).sink_area() == area as int,
@@ -2375,6 +2385,7 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
         log_time_agrees(rep.h@,rep.times@),
         colour_observation(rep, ML(m as int,read_d(old(reader).b@,old(reader).seq_start as int),area as int,lzw_ps(m,opts)).idx,
             |v:u8| old(sink).sink_ok(v)),
+        rep.work@ <= 5 * data_len as nat + 2 * area as nat,
 {
     hide(L);
     hide(verdict);
@@ -2394,9 +2405,11 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
     hide(log_time_agrees);
     hide(crate::chain::str_of);
     hide(crate::chain::root_of);
+    let mut steps = Ghost(0nat);
+    let ghost fetched0 = reader.fetched as int;
     let input = reader.b;
     let stop = match opts.tail { Tail::StopAtRaster => true, Tail::Strict => false };
-    proof { assert(stop == (opts.tail == Tail::StopAtRaster)); }
+    proof { assert(stop == (opts.tail == Tail::StopAtRaster)); reveal(reader_ready); }
     let ghost b0 = reader.b@;
     let ghost start = reader.seq_start;
     let ghost d = read_d(b0,start as int);
@@ -2429,6 +2442,11 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
     loop
         invariant
             1 <= m <= 11, m_ok(ps,m as int,area as int), ps == lzw_ps(m,opts),
+            area >= 1,
+            reader.fetched as int >= fetched0, fetched0 >= 0,
+            2 * (steps@ as int - reader.fetched as int + fetched0 - q as int)
+                <= reader.total_bits as int - reader.bits_left as int,
+            reader.total_bits as int == 8 * data_len as int,
             stop == (opts.tail == Tail::StopAtRaster),
             clear as int == lzw_clear_of(m as int), eoi as int == lzw_eoi_of(m as int), clear <= 2048,
             lzw_ipow2(m as int+1) == 2*clear,
@@ -2468,6 +2486,7 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
             log_time_agrees(h,times),
         decreases reader.bits_left,
     {
+        proof { steps@ = steps@ + 1; }
         let ghost op = raw_pf_seq(t@);
         let ghost os = raw_sf_seq(t@);
         let ghost ol = raw_ls_seq(t@);
@@ -2478,14 +2497,16 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
             lemma_L_step_pos(m as int,d,area as int,ps,st);
             reveal_with_fuel(code_stamps,1);
         }
-        let decision = read_step(reader,data_len,m,clear,width,q,area,next,have_prev,opts,Ghost(st));
+        let decision = read_step(reader,data_len,m,clear,width,q,area,next,have_prev,opts,Ghost(st),&mut steps);
         let (code,after) = match decision {
             CodeStep::Halt {error,pos} => {
                 proof {
+                    reveal(reader_ready);
+                    assert(steps@ as int <= 5 * data_len as int + 2 * area as int);
                     lemma_raster_complete(h,st.o,q as int);
                     lemma_colour_projection(h,times,st.o,q as int,colour,ok);
                 }
-                return LzwReport {written:q,error,pos,e4:false,h:Ghost(h),times:Ghost(times),colour};
+                return LzwReport {written:q,error,pos,e4:false,h:Ghost(h),times:Ghost(times),colour,work:Ghost(steps@)};
             },
             CodeStep::Clear {after} => {
                 proof {
@@ -2506,7 +2527,7 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
         let ghost s = semit(m as int,st,code as int);
         let ghost grow = have_prev && next<TABLE_SIZE;
         let ghost ot = t@;
-        let (len,first,blockfault) = run_code(t,&mut next,&mut width,clear,code,have_prev,prev,prev_first,q,area,opts.checked_literals,sink);
+        let (len,first,blockfault) = run_code(t,&mut next,&mut width,clear,code,have_prev,prev,prev_first,q,area,opts.checked_literals,sink,&mut steps);
         proof {
             assert(s==resolved_raw(ot,clear as int,st.next,st.prev,code as int));
             assert(s.len()==len);
@@ -2526,6 +2547,8 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
         }
         if len>area-q {
             proof {
+                reveal(reader_ready);
+                assert(steps@ as int <= 5 * data_len as int + 2 * area as int);
                 let no = st.o+s.take(area as int-q as int);
                 let mr=crate::lzw_model::observation(no,if stop {None} else {Some(ErrK::TooManyPixels)},after as int,stop);
                 assert(verdict(m as int,d,area as int,ps,st)==Vd::Halt(mr));
@@ -2534,7 +2557,7 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
                 lemma_raster_complete(h,no,area as int);
                 lemma_colour_projection(h,times,no,area as int,colour,ok);
             }
-            return LzwReport {written:area,error:if stop {None} else {Some(Error::TooManyPixels)},pos:after,e4:stop,h:Ghost(h),times:Ghost(times),colour};
+            return LzwReport {written:area,error:if stop {None} else {Some(Error::TooManyPixels)},pos:after,e4:stop,h:Ghost(h),times:Ghost(times),colour,work:Ghost(steps@)};
         }
         let ghost ns = emit_st(m as int,st,after as int,code as int,s,first,grow);
         proof {
@@ -2568,7 +2591,7 @@ pub open spec fn resolved_raw(t: Seq<u8>, clear: int, next: int, prev: int, code
 /// outside the fold query prevents its raw-byte quantifiers expanding at exits.
 fn run_code<S: Sink>(t: &mut [u8], next: &mut u32, width: &mut u32, clear: u32,
     code: u32, have: bool, prev: u32, prev_first: u8, q: u32, area: u32, checked: bool,
-    sink: &mut S) -> (r: (u32,u8,Option<u32>))
+    sink: &mut S, steps: &mut Ghost<nat>) -> (r: (u32,u8,Option<u32>))
     requires
         table_len_ok(old(t)@), clear<TABLE_SIZE, 1<=*old(width)<=12,
         crate::dictionary::table_ok(raw_pf_seq(old(t)@),raw_ls_seq(old(t)@),clear as int,*old(next) as int),
@@ -2604,6 +2627,7 @@ fn run_code<S: Sink>(t: &mut [u8], next: &mut u32, width: &mut u32, clear: u32,
         forall|v:u8| final(sink).sink_ok(v)==old(sink).sink_ok(v),
         final(sink).sink_log()==old(sink).sink_log()+sink_pairs(resolved_raw(old(t)@,clear as int,*old(next) as int,prev as int,code as int),q as int,area as int,0),
         min_rejected(sink_pairs(resolved_raw(old(t)@,clear as int,*old(next) as int,prev as int,code as int),q as int,area as int,0),r.2,|v:u8| old(sink).sink_ok(v)),
+        final(steps)@ == old(steps)@ + r.0 as nat,
 {
     let ghost ot=t@;
     let ghost op=raw_pf_seq(t@);
@@ -2628,7 +2652,7 @@ fn run_code<S: Sink>(t: &mut [u8], next: &mut u32, width: &mut u32, clear: u32,
         assert(s==crate::chain::str_of(raw_sf_seq(t@),raw_pf_seq(t@),clear as int,code as int,4096));
     }
     let len=code_len(t,clear,code) as u32;
-    let (first,fault)=emit_raw(t,clear,code,q,area,len,sink);
+    let (first,fault)=emit_raw(t,clear,code,q,area,len,sink,steps);
     if !kw && have && *next<TABLE_SIZE as u32 {
         proof {crate::refinement::fresh_frame(os,op,clear as int,*next as int,prev as int,first,code as int);}
         add_entry(t,next,width,prev,first,clear);
@@ -2707,7 +2731,7 @@ pub open spec fn control_matches(c: CodeStep, m: int, d: Seq<u8>, a: int, ps: Lz
 
 /// G10.2's control checks, with no table or sink quantifiers in this query.
 fn read_step(reader: &mut BitReader, data_len: u32, m: u32, clear: u32, width: u32,
-    q: u32, area: u32, next: u32, have: bool, opts: LzwOptions, state: Ghost<crate::lzw_model::St>) -> (r: CodeStep)
+    q: u32, area: u32, next: u32, have: bool, opts: LzwOptions, state: Ghost<crate::lzw_model::St>, steps: &mut Ghost<nat>) -> (r: CodeStep)
     requires reader_ready(old(reader)), old(reader).data_len==data_len,
         crate::model::sub_scan(old(reader).b@,old(reader).seq_start as int) is Some,
         read_d(old(reader).b@,old(reader).seq_start as int).len()==data_len,
@@ -2723,6 +2747,11 @@ fn read_step(reader: &mut BitReader, data_len: u32, m: u32, clear: u32, width: u
             CodeStep::Clear {after} => final(reader).bits_left<old(reader).bits_left && after as int==(final(reader).total_bits as int)-(final(reader).bits_left as int),
             CodeStep::Emit {after,..} => final(reader).bits_left<old(reader).bits_left && after as int==(final(reader).total_bits as int)-(final(reader).bits_left as int),
         },
+        final(reader).fetched >= old(reader).fetched,
+        final(reader).bits_left <= old(reader).bits_left,
+        final(reader).total_bits == old(reader).total_bits,
+        final(steps)@ as int == old(steps)@ as int + final(reader).fetched as int - old(reader).fetched as int,
+        !(r is Halt) ==> final(reader).bits_left as int + 2 <= old(reader).bits_left as int,
 {
     let stop=match opts.tail {Tail::StopAtRaster=>true,Tail::Strict=>false};
     let ghost st=state@;
@@ -2732,7 +2761,7 @@ fn read_step(reader: &mut BitReader, data_len: u32, m: u32, clear: u32, width: u
     if reader.bits_left<width {
         return CodeStep::Halt {error:Some(if q<area {Error::TooFewPixels} else {Error::MissingEndOfInformation}),pos:reader.bit_pos()};
     }
-    let code=reader.read(width);
+    let code=reader.read(width,steps);
     let after=reader.bit_pos();
     proof {
         let scanned=crate::model::sub_scan(reader.b@,reader.seq_start as int).unwrap();
@@ -2972,7 +3001,7 @@ pub proof fn lemma_image_data_ready(b:Seq<u8>,p:int,pol:crate::policy::Policy,ar
 /// no index buffer. The preceding scan establishes minimum-size admissibility.
 pub fn decode_image_data<S:Sink>(b:&[u8],data:crate::parse::ImageData,area:u32,opts:LzwOptions,
     kind:crate::policy::LzwMin,t:&mut [u8],sink:&mut S)->(rep:LzwReport)
-    requires b.len()<=crate::limits::MAX_INPUT,area<=crate::limits::MAX_TOTAL_PIXELS,
+    requires b.len()<=crate::limits::MAX_INPUT,1<=area<=crate::limits::MAX_TOTAL_PIXELS,
         crate::parse::lzw_min_ok(kind,data.min_code_size as int,area as int),
         opts.checked_literals==(kind==crate::policy::LzwMin::Range1to11Checked),
         crate::model::sub_scan(b@,data.first as int) is Some,
@@ -2993,6 +3022,7 @@ pub fn decode_image_data<S:Sink>(b:&[u8],data:crate::parse::ImageData,area:u32,o
         fault_matches(rep.h@,rep.times@,rep.colour,|v:u8|old(sink).sink_ok(v)),log_time_agrees(rep.h@,rep.times@),
         colour_observation(rep,ML(data.min_code_size as int,read_d(b@,data.first as int),area as int,lzw_ps(data.min_code_size,opts)).idx,|v:u8|old(sink).sink_ok(v)),
         rep.written<=area,rep.pos as int<=8*(data.data_len as int),
+        rep.work@ <= 5 * data.data_len as nat + 2 * area as nat,
 {
     proof {lemma_min_admissibility(kind,data.min_code_size,area,opts);}
     let mut reader=BitReader::new_scanned(b,data.first,data.data_len);

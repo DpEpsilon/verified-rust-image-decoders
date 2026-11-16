@@ -1,0 +1,543 @@
+    Checking gif_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/gif/gif_verus)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/gif/gif_verus/target/debug/incremental/gif_verus-2jnwtls564pjp/s-ho7q3yjhe8-1v9w6fu-working`
+
+note: automatically chose triggers for this expression:
+   --> src/alloc_guard/mod.rs:108:5
+    |
+108 |     forall|j: int| 0 <= j < l.len() ==> l[j].2
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/alloc_guard/mod.rs:108:41
+    |
+108 |     forall|j: int| 0 <= j < l.len() ==> l[j].2
+    |                                         ^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/frame_model.rs:236:9
+    |
+236 |     &&& forall|j:nat| j<k ==> call_at(b,h,pol,j) is Some && !call_at(b,h,pol,j).unwrap().reserve_saved
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/frame_model.rs:236:31
+    |
+236 |     &&& forall|j:nat| j<k ==> call_at(b,h,pol,j) is Some && !call_at(b,h,pol,j).unwrap().reserve_saved
+    |                               ^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> src/parse.rs:67:5
+   |
+67 |     exists|m: crate::model::HeaderM| #[trigger] crate::model::mh(b) == Ok(m) && hdr_matches(b, m, h)
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+  --> src/parse.rs:67:81
+   |
+67 |     exists|m: crate::model::HeaderM| #[trigger] crate::model::mh(b) == Ok(m) && hdr_matches(b, m, h)
+   |                                                                                 ^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> src/alloc_guard/sites.rs:81:16
+   |
+81 |             && (forall|j: int| 0 <= j < l.len() - 1 ==> l[j].2)
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+  --> src/alloc_guard/sites.rs:81:57
+   |
+81 |             && (forall|j: int| 0 <= j < l.len() - 1 ==> l[j].2)
+   |                                                         ^^^^
+
+note: automatically chose triggers for this expression:
+  --> src/gif.rs:52:87
+   |
+52 |           l.len() >= 1 && crate::alloc_guard::req_of_log(l).is_prefix_of(req_new(b)) && (forall|j: int|
+   |  _______________________________________________________________________________________^
+53 | |             0 <= j < l.len() - 1 ==> l[j].2) && !l[l.len() - 1].2
+   | |____________________________________________^
+
+note:   trigger 1 of 1:
+  --> src/gif.rs:53:38
+   |
+53 |             0 <= j < l.len() - 1 ==> l[j].2) && !l[l.len() - 1].2
+   |                                      ^^^^
+
+note: automatically chose triggers for this expression:
+  --> src/gif.rs:62:5
+   |
+62 |     forall|j: int| 0 <= j < req_new(b).len() ==> req_new(b)[j].1 <= crate::alloc_guard::MAX_BYTES
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+  --> src/gif.rs:62:50
+   |
+62 |     forall|j: int| 0 <= j < req_new(b).len() ==> req_new(b)[j].1 <= crate::alloc_guard::MAX_BYTES
+   |                                                  ^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/gif.rs:1489:5
+     |
+1489 |     forall|j:int| 0<=j<l.len() ==> site_bounded(l[j].0,l[j].1)
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/gif.rs:1489:49
+     |
+1489 |     forall|j:int| 0<=j<l.len() ==> site_bounded(l[j].0,l[j].1)
+     |                                                 ^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/gif.rs:1633:11
+     |
+1633 |     let h=choose|h:crate::model::HeaderM| crate::model::mh(d.b@)==Ok(h) && crate::parse::hdr_matches(d.b@,h,d.hdr);
+     |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/gif.rs:1633:76
+     |
+1633 |     let h=choose|h:crate::model::HeaderM| crate::model::mh(d.b@)==Ok(h) && crate::parse::hdr_matches(d.b@,h,d.hdr);
+     |                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/gif.rs:497:13
+    |
+497 |             forall|n:int| wf_p(*old(self),n) ==> iterator_observation(*old(self),n,out),
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/gif.rs:497:27
+    |
+497 |             forall|n:int| wf_p(*old(self),n) ==> iterator_observation(*old(self),n,out),
+    |                           ^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/gif.rs:498:13
+    |
+498 |             forall|n:int| wf_p(*old(self),n) ==> next_allocation(*old(self),*final(self),n,out),
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/gif.rs:498:27
+    |
+498 |             forall|n:int| wf_p(*old(self),n) ==> next_allocation(*old(self),*final(self),n,out),
+    |                           ^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/gif.rs:507:21
+    |
+507 | ...   assert forall|n:int| wf_p(original,n) implies iterator_observation(original,n,None) && next_allocation(original,*self,n,None)...
+    |       ^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/gif.rs:507:42
+    |
+507 | ...   assert forall|n:int| wf_p(original,n) implies iterator_observation(original,n,None) && next_allocation(original,*self,n,None)...
+    |                            ^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/gif.rs:531:13
+    |
+531 | ...   assert forall|n:int| wf_p(original,n) implies iterator_observation(original,n,out) && next_allocation(original,*self,n,out) by {
+    |       ^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/gif.rs:531:34
+    |
+531 | ...   assert forall|n:int| wf_p(original,n) implies iterator_observation(original,n,out) && next_allocation(original,*self,n,out) by {
+    |                            ^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/gif.rs:1906:13
+     |
+1906 |             assert forall|j:int| 0<=j<d.log@.view().len() implies d.log@.view()[j].2 by {
+     |             ^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/gif.rs:1906:67
+     |
+1906 |             assert forall|j:int| 0<=j<d.log@.view().len() implies d.log@.view()[j].2 by {
+     |                                                                   ^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/gif.rs:1415:9
+     |
+1415 |         assert forall|j:int| 0<=j<a.log@.view().len() implies a.log@.view()[j].2 by {
+     |         ^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/gif.rs:1415:63
+     |
+1415 |         assert forall|j:int| 0<=j<a.log@.view().len() implies a.log@.view()[j].2 by {
+     |                                                               ^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/frame_model.rs:460:13
+    |
+460 |     ensures forall|j:nat| j<k ==> call_at(b,h,pol,j) is Some && !call_at(b,h,pol,j).unwrap().reserve_saved,
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/frame_model.rs:460:35
+    |
+460 |     ensures forall|j:nat| j<k ==> call_at(b,h,pol,j) is Some && !call_at(b,h,pol,j).unwrap().reserve_saved,
+    |                                   ^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/gif.rs:1493:9
+     |
+1493 |         forall|j:int| 0<=j<req_new(b).len() ==> site_bounded(req_new(b)[j].0,req_new(b)[j].1),
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/gif.rs:1493:62
+     |
+1493 |         forall|j:int| 0<=j<req_new(b).len() ==> site_bounded(req_new(b)[j].0,req_new(b)[j].1),
+     |                                                              ^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/compose_new.rs:2385:9
+     |
+2385 | /         forall|ts:Set<Seq<u8>>| pixels_well_formed(old(canvas)@,ts) && ts.contains(colors@)
+2386 | |             ==> pixels_well_formed(final(canvas)@,ts),
+     | |_____________________________________________________^
+
+note:   trigger 1 of 2:
+    --> src/compose_new.rs:2385:33
+     |
+2385 |         forall|ts:Set<Seq<u8>>| pixels_well_formed(old(canvas)@,ts) && ts.contains(colors@)
+     |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+    --> src/compose_new.rs:2386:17
+     |
+2386 |             ==> pixels_well_formed(final(canvas)@,ts),
+     |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/lzw.rs:2047:17
+     |
+2047 |             &&& exists|i: int| 0 <= i < h.len() && h[i].0 == p && !ok(h[i].1)
+     |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/lzw.rs:2047:52
+     |
+2047 |             &&& exists|i: int| 0 <= i < h.len() && h[i].0 == p && !ok(h[i].1)
+     |                                                    ^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/lzw.rs:2245:34
+     |
+2245 |     Seq::new(h.len(), |p: int| h[choose|i: int| 0 <= i < h.len() && (h[i].0 as int) == p].1)
+     |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/lzw.rs:2245:70
+     |
+2245 |     Seq::new(h.len(), |p: int| h[choose|i: int| 0 <= i < h.len() && (h[i].0 as int) == p].1)
+     |                                                                      ^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/lzw.rs:2278:20
+     |
+2278 |         Some(c) => exists|i: int| 0 <= i < h.len() && h[i].0 == c.q && !ok(h[i].1) && ts[i] == c.pos,
+     |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/lzw.rs:2278:87
+     |
+2278 |         Some(c) => exists|i: int| 0 <= i < h.len() && h[i].0 == c.q && !ok(h[i].1) && ts[i] == c.pos,
+     |                                                                                       ^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/compose_new.rs:651:5
+    |
+651 |     assert forall|i: int| 0 <= i < cv.len() implies (
+    |     ^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/compose_new.rs:652:57
+    |
+652 |         if (crate::mc::clip(r.spec_rect(), sw, sh).2 <= crate::mc::byte_row(i, sw as int)
+    |                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/compose_new.rs:2332:9
+     |
+2332 | /         forall|ts:Set<Seq<u8>>| pixels_well_formed(old(sink).canvas@,ts) && ts.contains(old(sink).table@)
+2333 | |             ==> pixels_well_formed(final(sink).canvas@,ts),
+     | |__________________________________________________________^
+
+note:   trigger 1 of 2:
+    --> src/compose_new.rs:2332:33
+     |
+2332 |         forall|ts:Set<Seq<u8>>| pixels_well_formed(old(sink).canvas@,ts) && ts.contains(old(sink).table@)
+     |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+    --> src/compose_new.rs:2333:17
+     |
+2333 |             ==> pixels_well_formed(final(sink).canvas@,ts),
+     |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/compose_new.rs:2356:9
+     |
+2356 | ...   assert forall|ts:Set<Seq<u8>>| pixels_well_formed(cv0,ts) && ts.contains(colors) implies pixels_well_formed(sink.canvas@,ts)...
+     |       ^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/compose_new.rs:2356:40
+     |
+2356 | ...   assert forall|ts:Set<Seq<u8>>| pixels_well_formed(cv0,ts) && ts.contains(colors) implies pixels_well_formed(sink.canvas@,ts)...
+     |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/frame_model.rs:470:9
+    |
+470 |         assert forall|j:nat| j<k implies call_at(b,h,pol,j) is Some && !call_at(b,h,pol,j).unwrap().reserve_saved by {
+    |         ^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/frame_model.rs:470:42
+    |
+470 |         assert forall|j:nat| j<k implies call_at(b,h,pol,j) is Some && !call_at(b,h,pol,j).unwrap().reserve_saved by {
+    |                                          ^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/gif.rs:1579:11
+     |
+1579 |     let h=choose|h:crate::model::HeaderM| crate::model::mh(d.b@)==Ok(h) && crate::parse::hdr_matches(d.b@,h,d.hdr);
+     |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/gif.rs:1579:76
+     |
+1579 |     let h=choose|h:crate::model::HeaderM| crate::model::mh(d.b@)==Ok(h) && crate::parse::hdr_matches(d.b@,h,d.hdr);
+     |                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/gif.rs:265:17
+    |
+265 |         let m = choose|m: crate::model::HeaderM| crate::model::mh(b@) == Ok(m) && crate::parse::hdr_matches(b@, m, *hdr);
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/gif.rs:265:83
+    |
+265 |         let m = choose|m: crate::model::HeaderM| crate::model::mh(b@) == Ok(m) && crate::parse::hdr_matches(b@, m, *hdr);
+    |                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/gif.rs:274:17
+    |
+274 |         let m = choose|m: crate::model::HeaderM| crate::model::mh(b@) == Ok(m) && crate::parse::hdr_matches(b@, m, *hdr);
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/gif.rs:274:83
+    |
+274 |         let m = choose|m: crate::model::HeaderM| crate::model::mh(b@) == Ok(m) && crate::parse::hdr_matches(b@, m, *hdr);
+    |                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/gif.rs:291:17
+    |
+291 |         let m = choose|m: crate::model::HeaderM| crate::model::mh(b@) == Ok(m) && crate::parse::hdr_matches(b@, m, *hdr);
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/gif.rs:291:83
+    |
+291 |         let m = choose|m: crate::model::HeaderM| crate::model::mh(b@) == Ok(m) && crate::parse::hdr_matches(b@, m, *hdr);
+    |                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/gif.rs:1509:5
+     |
+1509 |     assert forall|j:int| 0<=j<l.len() implies site_bounded(l[j].0,l[j].1) by {
+     |     ^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/gif.rs:1509:60
+     |
+1509 |     assert forall|j:int| 0<=j<l.len() implies site_bounded(l[j].0,l[j].1) by {
+     |                                                            ^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/model.rs:2404:9
+     |
+2404 |         forall|j: int| 0 <= j <= k ==> have(b, rd_state(b, q, j).0, 1),
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/model.rs:2404:48
+     |
+2404 |         forall|j: int| 0 <= j <= k ==> have(b, rd_state(b, q, j).0, 1),
+     |                                                ^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/model.rs:2405:9
+     |
+2405 | /         forall|j: int| 0 <= j <= k ==> rd_state(b, q, j).1 == 0 ==> b[rd_state(b, q, j).0] as int >= 1
+2406 | |             && have(b, rd_state(b, q, j).0 + 1, b[rd_state(b, q, j).0] as int),
+     | |______________________________________________________________________________^
+
+note:   trigger 1 of 1:
+    --> src/model.rs:2405:40
+     |
+2405 |         forall|j: int| 0 <= j <= k ==> rd_state(b, q, j).1 == 0 ==> b[rd_state(b, q, j).0] as int >= 1
+     |                                        ^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/lzw.rs:2255:21
+     |
+2255 |             let i = choose|i: int| 0 <= i < h.len() && (h[i].0 as int) == p;
+     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/lzw.rs:2255:57
+     |
+2255 |             let i = choose|i: int| 0 <= i < h.len() && (h[i].0 as int) == p;
+     |                                                         ^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/lzw.rs:2873:23
+     |
+2873 |                 let i=choose|i:int| 0<=i<h.len() && (h[i].0 as int)==p;
+     |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/lzw.rs:2873:54
+     |
+2873 |                 let i=choose|i:int| 0<=i<h.len() && (h[i].0 as int)==p;
+     |                                                      ^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/lzw.rs:2878:19
+     |
+2878 |             let i=choose|i:int| 0<=i<h.len() && h[i].0==c.q && !ok(h[i].1) && ts[i]==c.pos;
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/lzw.rs:2878:79
+     |
+2878 |             let i=choose|i:int| 0<=i<h.len() && h[i].0==c.q && !ok(h[i].1) && ts[i]==c.pos;
+     |                                                                               ^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/lzw.rs:2882:23
+     |
+2882 |                 let j=choose|j:int| 0<=j<h.len() && (h[j].0 as int)==p;
+     |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/lzw.rs:2882:54
+     |
+2882 |                 let j=choose|j:int| 0<=j<h.len() && (h[j].0 as int)==p;
+     |                                                      ^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/lzw.rs:2064:25
+     |
+2064 |                 let i = choose|i: int| 0 <= i < h.len() && h[i].0 == x && !ok(h[i].1);
+     |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/lzw.rs:2064:60
+     |
+2064 |                 let i = choose|i: int| 0 <= i < h.len() && h[i].0 == x && !ok(h[i].1);
+     |                                                            ^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/lzw.rs:2305:25
+     |
+2305 |                 let i = choose|i:int| 0<=i<b.len() && b[i].0==c.q && !ok(b[i].1);
+     |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/lzw.rs:2305:55
+     |
+2305 |                 let i = choose|i:int| 0<=i<b.len() && b[i].0==c.q && !ok(b[i].1);
+     |                                                       ^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/lzw.rs:2309:25
+     |
+2309 |                 let i = choose|i:int| 0<=i<h.len() && h[i].0==c.q && !ok(h[i].1) && ts[i]==c.pos;
+     |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/lzw.rs:2309:85
+     |
+2309 |                 let i = choose|i:int| 0<=i<h.len() && h[i].0==c.q && !ok(h[i].1) && ts[i]==c.pos;
+     |                                                                                     ^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/lzw.rs:3079:23
+     |
+3079 |                 let i=choose|i:int| 0<=i<h.len() && (h[i].0 as int)==p;
+     |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/lzw.rs:3079:54
+     |
+3079 |                 let i=choose|i:int| 0<=i<h.len() && (h[i].0 as int)==p;
+     |                                                      ^^^^
+
+note: Verus printed one or more automatically chosen quantifier triggers
+      because it had low confidence in the chosen triggers.
+      To suppress these messages, do one of the following:
+        (1) manually annotate a single desired trigger using `#[trigger]`
+            (example: `forall|i: int, j: int| f(i) && #[trigger] g(i) && #[trigger] h(j)`),
+        (2) manually annotate multiple desired triggers using `#![trigger ...]`
+            (example: `forall|i: int| #![trigger f(i)] #![trigger g(i)] f(i) && g(i)`),
+        (3) accept the automatically chosen trigger using `#![auto]`
+            (example: `forall|i: int, j: int| #![auto] f(i) && g(i) && h(j)`)
+        (4) use the `--triggers-mode silent` command-line option to suppress all printing of triggers.
+      (Note: triggers are used by the underlying SMT theorem prover to instantiate quantifiers;
+      the theorem prover instantiates a quantifier whenever some expression matches the
+      pattern specified by one of the quantifier's triggers.)
+    --> src/lzw.rs:3079:23
+     |
+3079 |                 let i=choose|i:int| 0<=i<h.len() && (h[i].0 as int)==p;
+     |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+verification results:: 628 verified, 0 errors
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/gif/gif_verus/target/debug/incremental/gif_verus-2jnwtls564pjp/s-ho7q45ewrv-1yvviz6-working`
+
+warning: function `NTAB` should have a snake case name
+  --> src/lzw_model.rs:96:18
+   |
+96 | pub open spec fn NTAB() -> int {
+   |                  ^^^^ help: convert the identifier to snake case: `ntab`
+   |
+   = note: `#[warn(non_snake_case)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: function `L` should have a snake case name
+   --> src/lzw_model.rs:291:18
+    |
+291 | pub open spec fn L(m: int, d: Seq<u8>, a: int, ps: Params, st: St) -> MRes
+    |                  ^ help: convert the identifier to snake case: `l`
+
+warning: function `lemma_L_unfold` should have a snake case name
+   --> src/lzw_model.rs:310:14
+    |
+310 | pub proof fn lemma_L_unfold(m:int,d:Seq<u8>,a:int,ps:Params,st:St)
+    |              ^^^^^^^^^^^^^^ help: convert the identifier to snake case: `lemma_l_unfold`
+
+warning: function `lemma_L_step_pos` should have a snake case name
+   --> src/lzw_model.rs:320:14
+    |
+320 | pub proof fn lemma_L_step_pos(m: int, d: Seq<u8>, a: int, ps: Params, st: St)
+    |              ^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `lemma_l_step_pos`
+
+warning: function `ML` should have a snake case name
+   --> src/lzw_model.rs:362:18
+    |
+362 | pub open spec fn ML(m: int, d: Seq<u8>, a: int, ps: Params) -> MRes {
+    |                  ^^ help: convert the identifier to snake case: `ml`
+
+warning: `gif_verus` (lib) generated 7 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 12.94s

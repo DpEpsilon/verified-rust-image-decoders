@@ -400,7 +400,7 @@ pub fn parse_header(b: &[u8]) -> (r: Result<Header, Error>)
 /// missing byte. G6.3 rule A (the `loop_count` scan) is a separate pass over
 /// the same block (`loop_count_of`), so this function's contract is only the
 /// structural scan plus the payload total.
-fn read_sub_blocks(b: &[u8], q: usize, err: Error) -> (r: Result<(usize, u64), Error>)
+fn read_sub_blocks(b: &[u8], q: usize, err: Error, steps: &mut Ghost<nat>) -> (r: Result<(usize, u64), Error>)
     requires
         q <= b.len(),
         b.len() <= crate::limits::MAX_INPUT,
@@ -419,6 +419,13 @@ fn read_sub_blocks(b: &[u8], q: usize, err: Error) -> (r: Result<(usize, u64), E
                 Err(e) => e == err,
             },
         },
+        old(steps)@ <= final(steps)@,
+        match r {
+            Ok(v) => q as int <= v.0 as int <= b.len() as int
+                && final(steps)@ as int <= old(steps)@ as int + 1 * (v.0 as int - q as int) + 0,
+            Err(_) => final(steps)@ as int <= old(steps)@ as int + 1 * (b.len() as int - q as int + 1),
+        },
+        r is Ok ==> r->Ok_0.1 as int <= r->Ok_0.0 as int-q as int,
 {
     let mut p = q;
     let mut total: u64 = 0;
@@ -436,6 +443,9 @@ fn read_sub_blocks(b: &[u8], q: usize, err: Error) -> (r: Result<(usize, u64), E
     loop
         invariant
             q <= p <= b.len(),
+            old(steps)@ <= steps@,
+            steps@ as int <= old(steps)@ as int + p as int - q as int,
+            total as int <= p as int-q as int,
             b@.len() == b.len(),
             b.len() <= crate::limits::MAX_INPUT,
             crate::model::sub_pref_at(b@, q as int, p as int, scanned),
@@ -443,6 +453,7 @@ fn read_sub_blocks(b: &[u8], q: usize, err: Error) -> (r: Result<(usize, u64), E
             total as int == crate::model::concat_len(scanned),
         decreases (b.len() - p),
     {
+        proof { steps@ = steps@ + 1; }
         if !need(b, p, 1) {
             return Err(err);
         }
@@ -494,7 +505,7 @@ fn read_sub_blocks(b: &[u8], q: usize, err: Error) -> (r: Result<(usize, u64), E
 /// G6.3 rule A as a separate pass: the `loop_count` value the payloads of a
 /// sub-block sequence set, or `None` when the sequence cannot be read (the
 /// caller has already established that it can, so the value is then irrelevant).
-fn loop_count_of(b: &[u8], q: usize, seed: Option<u16>, first_only: bool) -> (r: Result<
+fn loop_count_of(b: &[u8], q: usize, seed: Option<u16>, first_only: bool, steps: &mut Ghost<nat>) -> (r: Result<
     (usize, Option<u16>),
     Error,
 >)
@@ -515,9 +526,16 @@ fn loop_count_of(b: &[u8], q: usize, seed: Option<u16>, first_only: bool) -> (r:
                 Err(e) => e == Error::TruncatedExtension,
             },
         },
+        old(steps)@ <= final(steps)@,
+        match r {
+            Ok(v) => q as int <= v.0 as int <= b.len() as int
+                && final(steps)@ as int <= old(steps)@ as int + 2 * (v.0 as int - q as int) + 0,
+            Err(_) => final(steps)@ as int <= old(steps)@ as int + 2 * (b.len() as int - q as int + 1),
+        },
 {
-    let sub = read_sub_blocks(b, q, Error::TruncatedExtension)?;
+    let sub = read_sub_blocks(b, q, Error::TruncatedExtension, steps)?;
     let (end, _) = sub;
+    let ghost scan_cost=steps@;
     let mut lc = seed;
     let mut idx: usize = 0;
     let mut p = q;
@@ -531,7 +549,10 @@ fn loop_count_of(b: &[u8], q: usize, seed: Option<u16>, first_only: bool) -> (r:
     }
     loop
         invariant
-            q <= p <= b.len(),
+            q <= p <= end <= b.len(),
+            old(steps)@ <= scan_cost <= steps@,
+            scan_cost as int <= old(steps)@ as int + end as int-q as int,
+            steps@ as int <= scan_cost as int+p as int-q as int,
             b@.len() == b.len(),
             b.len() <= crate::limits::MAX_INPUT,
             idx as int == payloads.len(),
@@ -545,6 +566,7 @@ fn loop_count_of(b: &[u8], q: usize, seed: Option<u16>, first_only: bool) -> (r:
             },
         decreases (b.len() - p),
     {
+        proof { steps@ = steps@ + 1; }
         proof {
             assert(b@.len() <= usize::MAX);
         }
@@ -667,6 +689,8 @@ fn loop_count_of(b: &[u8], q: usize, seed: Option<u16>, first_only: bool) -> (r:
         p = p + 1 + n;
         proof {
             payloads = payloads.push(payload);
+            let tail=crate::model::sub_scan(b@,p as int).unwrap();
+            lemma_sub_scan_bounds(b@,p as int,tail.0,tail.1);
         }
     }
 }
@@ -1064,7 +1088,7 @@ fn gce_ext(b: &[u8], pol: Policy, st: &WalkState, q: usize) -> (r: Result<(usize
 }
 
 /// G6.4 / G6.2: the sub-block sequence at `q` read and skipped.
-fn skip_ext(b: &[u8], st: &WalkState, q: usize) -> (r: Result<(usize, WalkState), Error>)
+fn skip_ext(b: &[u8], st: &WalkState, q: usize, steps: &mut Ghost<nat>) -> (r: Result<(usize, WalkState), Error>)
     requires
         q <= b.len(),
         b.len() <= crate::limits::MAX_INPUT,
@@ -1082,8 +1106,14 @@ fn skip_ext(b: &[u8], st: &WalkState, q: usize) -> (r: Result<(usize, WalkState)
                 Err(_) => false,
             },
         },
+        old(steps)@ <= final(steps)@,
+        match r {
+            Ok(v) => q as int <= v.0 as int <= b.len() as int
+                && final(steps)@ as int <= old(steps)@ as int + 1 * (v.0 as int - q as int) + 0,
+            Err(_) => final(steps)@ as int <= old(steps)@ as int + 1 * (b.len() as int - q as int + 1),
+        },
 {
-    let (end, _) = read_sub_blocks(b, q, Error::TruncatedExtension)?;
+    let (end, _) = read_sub_blocks(b, q, Error::TruncatedExtension, steps)?;
     Ok((
         end,
         WalkState {
@@ -1103,7 +1133,7 @@ pub open spec fn st_eq_keep(st2: WalkState, st: WalkState, end: usize, mend: int
 
 
 /// `loop_value` of the tail is `loop_fold` of the tail from `None`, which is
-/// what `loop_count_of` computes (`loop_count_of(b, q+1+size, None, fo)`).
+/// what `loop_count_of` computes (`loop_count_of(b, q+1+size, None, fo, steps)`).
 pub proof fn lemma_loop_value_tail(subs: Seq<Seq<u8>>)
     requires
         subs.len() >= 1,
@@ -1320,7 +1350,7 @@ pub proof fn lemma_pt_step_ok(b: Seq<u8>, pol: Policy, st: WalkState, q: int)
 /// G6.2: the Plain Text Extension at `q`. The 12-byte header is the first
 /// sub-block; `ext_sizes = Exact` requires its size byte to be 12. The whole
 /// sequence is then skipped (not rendered, N4/Q7).
-fn plain_text_ext(b: &[u8], pol: Policy, st: &WalkState, q: usize) -> (r: Result<
+fn plain_text_ext(b: &[u8], pol: Policy, st: &WalkState, q: usize, steps: &mut Ghost<nat>) -> (r: Result<
     (usize, WalkState),
     Error,
 >)
@@ -1337,6 +1367,12 @@ fn plain_text_ext(b: &[u8], pol: Policy, st: &WalkState, q: usize) -> (r: Result
                 Ok((end, st2)) => st_matches(end, st2, s2),
                 Err(_) => false,
             },
+        },
+        old(steps)@ <= final(steps)@,
+        match r {
+            Ok(v) => q as int <= v.0 as int <= b.len() as int
+                && final(steps)@ as int <= old(steps)@ as int + 1 * (v.0 as int - q as int) + 0,
+            Err(_) => final(steps)@ as int <= old(steps)@ as int + 1 * (b.len() as int - q as int + 1),
         },
 {
     if !need(b, q, 1) {
@@ -1364,19 +1400,25 @@ fn plain_text_ext(b: &[u8], pol: Policy, st: &WalkState, q: usize) -> (r: Result
         lemma_pt_step_ok(b@, pol, *st, q as int);
         reveal(st_matches);
     }
-    skip_ext(b, st, q)
+    skip_ext(b, st, q, steps)
 }
 
 /// G6.3: the Application Extension at `q`. The identifier block is the first
 /// sub-block; `ext_sizes = Exact` requires its size byte to be 11. When it is
 /// `NETSCAPE2.0` and no image has been seen, G6.3 rule A scans the following
 /// sub-blocks for `loop_count`.
-fn app_ext(b: &[u8], pol: Policy, st: &WalkState, q: usize) -> (r: Result<(usize, WalkState), Error>)
+fn app_ext(b: &[u8], pol: Policy, st: &WalkState, q: usize, steps: &mut Ghost<nat>) -> (r: Result<(usize, WalkState), Error>)
     requires
         q <= b.len(),
         b.len() <= crate::limits::MAX_INPUT,
     ensures
         app_ext_post(b@, pol, *st, q as int, r),
+        old(steps)@ <= final(steps)@,
+        match r {
+            Ok(v) => q as int <= v.0 as int <= b.len() as int
+                && final(steps)@ as int <= old(steps)@ as int + 3 * (v.0 as int - q as int) + 0,
+            Err(_) => final(steps)@ as int <= old(steps)@ as int + 3 * (b.len() as int - q as int + 1),
+        },
 {
     if !need(b, q, 1) {
         proof {
@@ -1424,6 +1466,7 @@ fn app_ext(b: &[u8], pol: Policy, st: &WalkState, q: usize) -> (r: Result<(usize
     // The identifier is the 11 payload bytes `b[q+1..q+12]`; `is_netscape` is
     // whether they equal `NETSCAPE2.0`. The comparison runs only when `size` is
     // 11 (a shorter or longer first sub-block is not the identifier).
+    let ghost initial_cost=steps@;
     let mut is_netscape = size == 11;
     if is_netscape {
         // `q + 1 + 11 <= |b| <= MAX_INPUT`, so every index this loop forms is at
@@ -1448,6 +1491,8 @@ fn app_ext(b: &[u8], pol: Policy, st: &WalkState, q: usize) -> (r: Result<(usize
         while i < 11
             invariant
                 i <= 11,
+                steps@ == initial_cost + i as nat,
+                initial_cost == old(steps)@,
                 blen == b@.len(),
                 q + 1 + 11 <= blen,
                 blen <= crate::limits::MAX_INPUT,
@@ -1457,6 +1502,7 @@ fn app_ext(b: &[u8], pol: Policy, st: &WalkState, q: usize) -> (r: Result<(usize
                 is_netscape == crate::model::id_matches(b@, q as int, i as int),
             decreases (11 - i),
         {
+            proof { steps@ = steps@ + 1; }
             let j: usize = q + 1 + i;
             let byte = get(b, j);
             let want = crate::model::NETSCAPE_ID[i];
@@ -1483,9 +1529,9 @@ fn app_ext(b: &[u8], pol: Policy, st: &WalkState, q: usize) -> (r: Result<(usize
         _ => false,
     };
     let mut lc = st.loop_count;
-    let (nsub, nlc) = read_sub_blocks(b, q + 1 + size, Error::TruncatedExtension)?;
+    let (nsub, nlc) = read_sub_blocks(b, q + 1 + size, Error::TruncatedExtension, steps)?;
     if is_netscape && st.frames_seen == 0 {
-        let (_, lc2) = loop_count_of(b, q + 1 + size, st.loop_count, first_only)?;
+        let (_, lc2) = loop_count_of(b, q + 1 + size, st.loop_count, first_only, steps)?;
         lc = lc2;
     }
     proof {
@@ -1581,7 +1627,7 @@ pub open spec fn ext_step_post(
 
 /// G6/G7: the extension with its introducer at `p`. The scope check (G7)
 /// precedes every other check of the extension (G6).
-fn parse_extension_verified(b: &[u8], p: usize, st: &WalkState, pol: Policy) -> (r: Result<
+fn parse_extension_verified(b: &[u8], p: usize, st: &WalkState, pol: Policy, steps: &mut Ghost<nat>) -> (r: Result<
     (usize, WalkState),
     Error,
 >)
@@ -1590,6 +1636,12 @@ fn parse_extension_verified(b: &[u8], p: usize, st: &WalkState, pol: Policy) -> 
         b.len() <= crate::limits::MAX_INPUT,
     ensures
         ext_step_post(b@, pol, *st, p as int, r),
+        old(steps)@ <= final(steps)@,
+        match r {
+            Ok(v) => p as int <= v.0 as int <= b.len() as int
+                && final(steps)@ as int <= old(steps)@ as int + 3 * (v.0 as int - p as int) + 0,
+            Err(_) => final(steps)@ as int <= old(steps)@ as int + 3 * (b.len() as int - p as int),
+        },
 {
     if !need(b, p, 2) {
         proof {
@@ -1631,7 +1683,7 @@ fn parse_extension_verified(b: &[u8], p: usize, st: &WalkState, pol: Policy) -> 
         return gce_ext(b, pol, st, q);
     }
     if label == 0x01 {
-        return plain_text_ext(b, pol, st, q);
+        return plain_text_ext(b, pol, st, q, steps);
     }
     if label == 0xFF {
         proof {
@@ -1640,7 +1692,7 @@ fn parse_extension_verified(b: &[u8], p: usize, st: &WalkState, pol: Policy) -> 
             reveal(walk_m_at);
             reveal(walk_m_unused);
         }
-        return app_ext(b, pol, st, q);
+        return app_ext(b, pol, st, q, steps);
     }
     // G6.4: Comment (0xFE) and unknown labels are skipped.
     proof {
@@ -1649,7 +1701,7 @@ fn parse_extension_verified(b: &[u8], p: usize, st: &WalkState, pol: Policy) -> 
         reveal(crate::model::have);
         reveal(walk_m_at);
     }
-    skip_ext(b, st, q)
+    skip_ext(b, st, q, steps)
 }
 
 
@@ -1711,12 +1763,18 @@ pub open spec fn extension_post(b:Seq<u8>,p:usize,pol:Policy,oldst:WalkState,st:
     }
 }
 
-pub fn parse_extension(b:&[u8],p:usize,st:&mut WalkState,pol:&Policy)->(r:Result<usize,Error>)
+pub fn parse_extension(b:&[u8],p:usize,st:&mut WalkState,pol:&Policy, steps: &mut Ghost<nat>)->(r:Result<usize,Error>)
     requires p<=b.len(),b.len()<=MAX_INPUT,
     ensures extension_post(b@,p,*pol,*old(st),*final(st),r),
         old(st).frames_seen>=1 ==> final(st).loop_count==old(st).loop_count,
+        old(steps)@ <= final(steps)@,
+        match r {
+            Ok(v) => p as int <= v as int <= b.len() as int
+                && final(steps)@ as int <= old(steps)@ as int + 3 * (v as int - p as int) + 0,
+            Err(_) => final(steps)@ as int <= old(steps)@ as int + 3 * (b.len() as int - p as int),
+        },
 {
-    let result=parse_extension_verified(b,p,st,*pol);
+    let result=parse_extension_verified(b,p,st,*pol, steps);
     match result {
         Err(e)=>Err(e),
         Ok((end,ns))=> {
@@ -1830,9 +1888,16 @@ pub open spec fn image_data_post(b:Seq<u8>,p:int,pol:Policy,area:int,r:Result<Im
 
 /// G9 image data: minimum code size (policy `lzw_min`, `area` = descriptor
 /// `w·h`), then the whole sub-block sequence before any code is decoded.
-pub fn scan_image_data(b: &[u8], p: usize, pol: &Policy, area: u64) -> (r: Result<ImageData, Error>)
+pub fn scan_image_data(b: &[u8], p: usize, pol: &Policy, area: u64, steps: &mut Ghost<nat>) -> (r: Result<ImageData, Error>)
     requires p<=b.len(),b.len()<=crate::limits::MAX_INPUT,
     ensures image_data_post(b@,p as int,*pol,area as int,r),
+        old(steps)@ <= final(steps)@,
+        match r {
+            Ok(v) => p as int <= v.end as int <= b.len() as int
+                && final(steps)@ as int <= old(steps)@ as int + 1 * (v.end as int - p as int) + 0,
+            Err(_) => final(steps)@ as int <= old(steps)@ as int + 1 * (b.len() as int - p as int + 1),
+        },
+        r is Ok ==> r->Ok_0.data_len as int <= r->Ok_0.end as int-p as int,
 {
     if !need(b, p, 1) { return Err(Error::TruncatedImageData); }
     let m = get(b, p) as u32;
@@ -1845,7 +1910,7 @@ pub fn scan_image_data(b: &[u8], p: usize, pol: &Policy, area: u64) -> (r: Resul
             if m == 1 && area != 1 { return Err(Error::InvalidLzwMinCodeSize); }
         }
     }
-    let (end, total) = read_sub_blocks(b, p + 1, Error::TruncatedImageData)?;
+    let (end, total) = read_sub_blocks(b, p + 1, Error::TruncatedImageData, steps)?;
     proof {
         let scanned=crate::model::sub_scan(b@,p as int+1).unwrap();
         crate::model::lemma_concat_len(scanned.0,Seq::empty());
@@ -1885,14 +1950,21 @@ pub proof fn lemma_data_model(b:Seq<u8>,c:int,pol:Policy,area:int,st:WalkState,r
 {}
 
 /// G9's actual state update follows the complete structural scan.
-pub fn parse_data_step(b:&[u8],c:usize,pol:&Policy,area:u64,st:&mut WalkState)->(r:Result<(ImageData,Option<Gce>),Error>)
+pub fn parse_data_step(b:&[u8],c:usize,pol:&Policy,area:u64,st:&mut WalkState, steps: &mut Ghost<nat>)->(r:Result<(ImageData,Option<Gce>),Error>)
     requires c<=b.len(),b.len()<=MAX_INPUT,old(st).frames_seen<MAX_FRAMES,
         (old(st).total_pixels as int)+(area as int)<=MAX_TOTAL_PIXELS,
     ensures data_step_post(b@,c,*pol,area,*old(st),*final(st),r),
         final(st).loop_count==old(st).loop_count,
         r is Ok ==> final(st).frames_seen as int==old(st).frames_seen as int+1,
+        old(steps)@ <= final(steps)@,
+        match r {
+            Ok(v) => c as int <= v.0.end as int <= b.len() as int
+                && final(steps)@ as int <= old(steps)@ as int + 1 * (v.0.end as int - c as int) + 0,
+            Err(_) => final(steps)@ as int <= old(steps)@ as int + 1 * (b.len() as int - c as int + 1),
+        },
+        r is Ok ==> r->Ok_0.0.data_len as int <= r->Ok_0.0.end as int-c as int,
 {
-    let result=scan_image_data(b,c,pol,area);
+    let result=scan_image_data(b,c,pol,area, steps);
     proof {lemma_data_model(b@,c as int,*pol,area as int,*st,result);}
     let data=match result {Ok(data)=>data,Err(e)=>return Err(e)};
     let gce=st.gce;
@@ -1922,19 +1994,26 @@ pub open spec fn image_step_post(b:Seq<u8>,p:usize,hdr:Header,pol:Policy,oldst:W
 
 /// Exact executable G8-G9 image step, including frame/pixel counters and GCE
 /// consumption, used by the frame path before disposal, allocation or LZW.
-pub fn parse_image_step(b:&[u8],p:usize,hdr:&Header,pol:&Policy,st:&mut WalkState)->(r:Result<ImageStep,Error>)
+pub fn parse_image_step(b:&[u8],p:usize,hdr:&Header,pol:&Policy,st:&mut WalkState, steps: &mut Ghost<nat>)->(r:Result<ImageStep,Error>)
     requires p<=b.len(),b.len()<=MAX_INPUT,hdr_inv(b@,*hdr),old(st).total_pixels<=MAX_TOTAL_PIXELS,
     ensures image_step_post(b@,p,*hdr,*pol,*old(st),*final(st),r),
         final(st).loop_count==old(st).loop_count,
         r is Ok ==> final(st).frames_seen as int==old(st).frames_seen as int+1,
         final(st).total_pixels<=MAX_TOTAL_PIXELS,
         r is Ok ==> final(st).frames_seen<=MAX_FRAMES,
+        old(steps)@ <= final(steps)@,
+        match r {
+            Ok(v) => p as int <= v.data.end as int <= b.len() as int
+                && final(steps)@ as int <= old(steps)@ as int + 1 * (v.data.end as int - p as int) + 0,
+            Err(_) => final(steps)@ as int <= old(steps)@ as int + 1 * (b.len() as int - p as int + 1),
+        },
+        r is Ok ==> r->Ok_0.data.data_len as int <= r->Ok_0.data.end as int-p as int,
 {
     let ghost start=*st;
     let (fh,c)=parse_image_descriptor(b,p,hdr,st,pol)?;
     proof {lemma_descriptor_area(fh.rect.width,fh.rect.height,st.total_pixels);}
     let area=(fh.rect.width as u64)*(fh.rect.height as u64);
-    let (data,gce)=parse_data_step(b,c,pol,area,st)?;
+    let (data,gce)=parse_data_step(b,c,pol,area,st, steps)?;
     Ok(ImageStep {fh,data,gce})
 }
 
@@ -1981,7 +2060,7 @@ pub open spec fn mb_exec_post(b:Seq<u8>,p0:usize,hdr:Header,pol:Policy,s0:WalkSt
 /// MB's executable block walk: extensions, exact Trailer checks, then one
 /// descriptor/data step. The model fuel counts extensions; the executable
 /// variant counts bytes still available at the increasing cursor.
-pub fn parse_mb(b:&[u8],p:&mut usize,hdr:&Header,pol:&Policy,st:&mut WalkState)->(r:Result<Option<ImageStep>,Error>)
+pub fn parse_mb(b:&[u8],p:&mut usize,hdr:&Header,pol:&Policy,st:&mut WalkState, steps: &mut Ghost<nat>)->(r:Result<Option<ImageStep>,Error>)
     requires *old(p)<=b.len(),b.len()<=MAX_INPUT,hdr_inv(b@,*hdr),
         old(st).total_pixels<=MAX_TOTAL_PIXELS,old(st).frames_seen<=MAX_FRAMES,
     ensures mb_exec_post(b@,*old(p),*hdr,*pol,*old(st),*final(p),*final(st),r),
@@ -1990,18 +2069,30 @@ pub fn parse_mb(b:&[u8],p:&mut usize,hdr:&Header,pol:&Policy,st:&mut WalkState)-
         old(st).frames_seen>=1 || *old(p)<b.len() && b@[*old(p) as int]!=0x21
             ==> final(st).loop_count==old(st).loop_count,
         *final(p)<=b.len(),final(st).total_pixels<=MAX_TOTAL_PIXELS,final(st).frames_seen<=MAX_FRAMES,
+        *old(p) <= *final(p), old(steps)@ <= final(steps)@,
+        final(steps)@ as int <= old(steps)@ as int + 4 *
+            ((if r is Err {b.len()} else {*final(p)}) as int - *old(p) as int) + 1,
+        r is Ok && r->Ok_0 is Some ==> r->Ok_0->Some_0.data.data_len as int <= *final(p) as int-*old(p) as int,
+        r is Ok && r->Ok_0 is Some ==> *old(p)<*final(p),
+        *old(p)<b.len() && b@[*old(p) as int]==0x2c ==> !(r is Ok && r->Ok_0 is None),
+        (if r is Err {b.len() as int} else {*final(p) as int}) == crate::work_model::mb_cur(b@,header_model(*hdr),*pol,walk_m_at(*old(st),*old(p))),
+        (match r {Ok(Some(im))=>(im.fh.rect.width as nat)*(im.fh.rect.height as nat),_=>0nat})
+            ==crate::work_model::mb_area(b@,header_model(*hdr),*pol,walk_m_at(*old(st),*old(p))),
 {
-    hide(crate::model::mb_fuel);
+    hide(crate::model::mb_fuel);hide(crate::model::mp_fuel);
     let missing_reject=match pol.missing_trailer {crate::policy::MissingTrailer::Reject=>true,_=>false};
     let orphan_reject=match pol.gce_orphan {crate::policy::GceOrphan::Reject=>true,_=>false};
     let trailing_reject=match pol.trailing {crate::policy::Trailing::Reject=>true,_=>false};
     let ghost initial=crate::model::mb(b@,header_model(*hdr),*pol,walk_m_at(*st,*p));
+    let ghost prefix_initial=crate::model::mp_fuel(b@,*pol,walk_m_at(*st,*p),(b.len()-*p) as nat);
     let ghost mut fuel=(b.len()-*p) as nat;
     loop
         invariant *p<=b.len(),b.len()<=MAX_INPUT,hdr_inv(b@,*hdr),
             st.total_pixels<=MAX_TOTAL_PIXELS,st.frames_seen<=MAX_FRAMES,
             st.frames_seen==old(st).frames_seen,st.total_pixels==old(st).total_pixels,
             fuel>=b.len()-*p,
+            *old(p)<=*p,old(steps)@<=steps@,
+            steps@ as int <= old(steps)@ as int + 4 * (*p as int-*old(p) as int),
             missing_reject==(pol.missing_trailer==crate::policy::MissingTrailer::Reject),
             orphan_reject==(pol.gce_orphan==crate::policy::GceOrphan::Reject),
             trailing_reject==(pol.trailing==crate::policy::Trailing::Reject),
@@ -2010,9 +2101,12 @@ pub fn parse_mb(b:&[u8],p:&mut usize,hdr:&Header,pol:&Policy,st:&mut WalkState)-
             old(st).frames_seen==0 && *old(p)<b.len() && b@[*old(p) as int]!=0x21 ==> *p==*old(p),
             initial==crate::model::mb(b@,header_model(*hdr),*pol,walk_m_at(*old(st),*old(p))),
             initial==crate::model::mb_fuel(b@,header_model(*hdr),*pol,walk_m_at(*st,*p),fuel),
+            prefix_initial==crate::model::mp_fuel(b@,*pol,walk_m_at(*old(st),*old(p)),(b.len()-*old(p)) as nat),
+            prefix_initial==crate::model::mp_fuel(b@,*pol,walk_m_at(*st,*p),fuel),
         decreases b.len()-*p,
     {
-        proof {reveal_with_fuel(crate::model::mb_fuel,1);}
+        proof { steps@ = steps@ + 1; }
+        proof {reveal_with_fuel(crate::model::mb_fuel,1);reveal_with_fuel(crate::model::mp_fuel,1);}
         let c=if *p>=b.len() {
             if missing_reject {return Err(Error::MissingTrailer);}
             0x3bu8
@@ -2025,7 +2119,7 @@ pub fn parse_mb(b:&[u8],p:&mut usize,hdr:&Header,pol:&Policy,st:&mut WalkState)-
         }
         if c==0x21 {
             let ghost before=walk_m_at(*st,*p);
-            let end=parse_extension(b,*p,st,pol)?;
+            let end=parse_extension(b,*p,st,pol, steps)?;
             proof {
                 let ns=crate::model::ext_step(b@,*pol,before).unwrap();
                 assert(ns==walk_m_at(*st,end));
@@ -2035,7 +2129,7 @@ pub fn parse_mb(b:&[u8],p:&mut usize,hdr:&Header,pol:&Policy,st:&mut WalkState)-
             continue;
         }
         if c==0x2c {
-            let image=parse_image_step(b,*p,hdr,pol,st)?;
+            let image=parse_image_step(b,*p,hdr,pol,st, steps)?;
             proof {lemma_image_end(b@,*pol,*p,image);}
             *p=image.data.end;
             return Ok(Some(image));
@@ -2060,10 +2154,13 @@ pub open spec fn mp_exec_post(b:Seq<u8>,p0:usize,pol:Policy,s0:WalkState,p:usize
 }
 
 /// Constructor walk: extensions and trailer checks, never descriptor/data work.
-pub fn parse_mp(b:&[u8],p:&mut usize,pol:&Policy,st:&mut WalkState)->(r:Result<PrefixStop,Error>)
+pub fn parse_mp(b:&[u8],p:&mut usize,pol:&Policy,st:&mut WalkState, steps: &mut Ghost<nat>)->(r:Result<PrefixStop,Error>)
     requires *old(p)<=b.len(),b.len()<=MAX_INPUT,
     ensures mp_exec_post(b@,*old(p),*pol,*old(st),*final(p),*final(st),r),
         *final(p)<=b.len(),final(st).frames_seen==old(st).frames_seen,final(st).total_pixels==old(st).total_pixels,
+        *old(p) <= *final(p), old(steps)@ <= final(steps)@,
+        final(steps)@ as int <= old(steps)@ as int + 4 *
+            ((if r is Err {b.len()} else {*final(p)}) as int - *old(p) as int) + 1,
 {
     hide(crate::model::mp_fuel);
     let missing_reject=match pol.missing_trailer {crate::policy::MissingTrailer::Reject=>true,_=>false};
@@ -2075,6 +2172,8 @@ pub fn parse_mp(b:&[u8],p:&mut usize,pol:&Policy,st:&mut WalkState)->(r:Result<P
         invariant *p<=b.len(),b.len()<=MAX_INPUT,
             st.frames_seen==old(st).frames_seen,st.total_pixels==old(st).total_pixels,
             fuel>=b.len()-*p,
+            *old(p)<=*p,old(steps)@<=steps@,
+            steps@ as int <= old(steps)@ as int + 4 * (*p as int-*old(p) as int),
             missing_reject==(pol.missing_trailer==crate::policy::MissingTrailer::Reject),
             orphan_reject==(pol.gce_orphan==crate::policy::GceOrphan::Reject),
             trailing_reject==(pol.trailing==crate::policy::Trailing::Reject),
@@ -2082,6 +2181,7 @@ pub fn parse_mp(b:&[u8],p:&mut usize,pol:&Policy,st:&mut WalkState)->(r:Result<P
             initial==crate::model::mp_fuel(b@,*pol,walk_m_at(*st,*p),fuel),
         decreases b.len()-*p,
     {
+        proof { steps@ = steps@ + 1; }
         proof {reveal_with_fuel(crate::model::mp_fuel,1);}
         let c=if *p>=b.len() {
             if missing_reject {return Err(Error::MissingTrailer);}
@@ -2095,7 +2195,7 @@ pub fn parse_mp(b:&[u8],p:&mut usize,pol:&Policy,st:&mut WalkState)->(r:Result<P
         }
         if c==0x21 {
             let ghost before=walk_m_at(*st,*p);
-            let end=parse_extension(b,*p,st,pol)?;
+            let end=parse_extension(b,*p,st,pol, steps)?;
             proof {
                 let ns=crate::model::ext_step(b@,*pol,before).unwrap();
                 assert(ns==walk_m_at(*st,end));fuel=(fuel-1) as nat;

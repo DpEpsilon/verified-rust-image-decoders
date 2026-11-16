@@ -440,10 +440,17 @@ pub proof fn lemma_ms_defined(b:Seq<u8>,pol:Policy)
     }
 }
 
+pub proof fn lemma_still_no_reserve(b:Seq<u8>,h:HeaderM,pol:Policy,s:State)
+    ensures call_mode(b,h,pol,s,true) is Some ==> !call_mode(b,h,pol,s,true).unwrap().reserve_saved,
+{
+    hide(crate::model::mb);hide(crate::lzw_model::ML);hide(crate::mc::draw_fold);hide(crate::mc::copy_rect);hide(crate::mc::clear_rect);
+}
+
 pub proof fn lemma_call_saved_presence(b:Seq<u8>,h:HeaderM,pol:Policy,s:State,c:Call)
     requires call(b,h,pol,s)==Some(c),
     ensures s.saved is Some ==> c.after.saved is Some,
-        c.reserve_saved ==> c.after.saved is Some,
+        c.reserve_saved ==> c.after.saved is Some && s.saved is None,
+        s.saved is None && c.after.saved is Some ==> c.reserve_saved,
 {
     hide(crate::model::mb);hide(crate::lzw_model::ML);hide(crate::mc::draw_fold);hide(crate::mc::copy_rect);hide(crate::mc::clear_rect);
 }
@@ -471,6 +478,39 @@ pub proof fn lemma_first_saved_at(b:Seq<u8>,h:HeaderM,pol:Policy,k:nat,s:State,c
     ensures saved_at(b,h,pol,k),
 {
     lemma_no_saved_before(b,h,pol,k,s);
+}
+
+pub proof fn lemma_saved_exists(b:Seq<u8>,h:HeaderM,pol:Policy,k:nat,s:State)
+    requires after_calls(b,h,pol,k)==Some(s),s.saved is Some,
+    ensures exists|i:nat| i<k && saved_at(b,h,pol,i),
+    decreases k,
+{
+    hide(call);reveal_with_fuel(after_calls,1);
+    if k>0 {
+        let p=after_calls(b,h,pol,(k-1) as nat).unwrap();
+        let c=call(b,h,pol,p).unwrap();
+        lemma_call_saved_presence(b,h,pol,p,c);
+        if p.saved is Some {lemma_saved_exists(b,h,pol,(k-1) as nat,p);}
+        else {lemma_first_saved_at(b,h,pol,(k-1) as nat,p,c);}
+    }
+}
+
+pub proof fn lemma_saved_unique(b:Seq<u8>,h:HeaderM,pol:Policy,i:nat,j:nat)
+    requires saved_at(b,h,pol,i),saved_at(b,h,pol,j),
+    ensures i==j,
+{
+    hide(call_at);
+    if i<j {assert(!call_at(b,h,pol,i).unwrap().reserve_saved);}
+    if j<i {assert(!call_at(b,h,pol,j).unwrap().reserve_saved);}
+}
+
+pub proof fn lemma_saved_current(b:Seq<u8>,h:HeaderM,pol:Policy,k:nat,s:State,c:Call)
+    requires after_calls(b,h,pol,k)==Some(s),call(b,h,pol,s)==Some(c),
+    ensures saved_at(b,h,pol,k)==c.reserve_saved,
+{
+    hide(call);
+    lemma_call_saved_presence(b,h,pol,s,c);
+    if c.reserve_saved {lemma_first_saved_at(b,h,pol,k,s,c);}
 }
 
 pub struct StillImage {pub width:int,pub height:int,pub rgba:Seq<u8>,pub recovered:bool}
