@@ -1,0 +1,92 @@
+# repo	notes_count(unused)	licence claimed for the files (SPDX, or NOASSERTION)	cap_files(0=unlimited)	repo_licence (what the repo states; informational)	kind (tests|mixed|assets|fuzz)	cap_MiB(0=unlimited)
+# Priority order (a file that is byte-identical in two repos is attributed to the first). Files live only under ~/corpora/png/files; the licence column is NOASSERTION unless the repo states a licence that plainly covers the file. kind: tests = decoder/format test files; mixed = large project (path heuristic decides); assets = icon themes, docs, wallpapers (incidental unless a path token says otherwise); fuzz = fuzzer corpora.
+pnggroup/libpng	0	NOASSERTION	0	libpng-2.0 (contrib/pngsuite: van Schaik freeware)	tests	0
+image-rs/image-png	0	NOASSERTION	0	MIT OR Apache-2.0 (tests/ mixed, see CORPUS-LICENCES.md)	tests	0
+image-rs/image	0	NOASSERTION	0	MIT	tests	0
+gitlab.gnome.org/GNOME/gdk-pixbuf	0	NOASSERTION	0	LGPL-2.1-or-later	tests	0
+python-pillow/Pillow	0	NOASSERTION	0	MIT-CMU	tests	0
+libvips/libvips	0	NOASSERTION	0	LGPL-2.1-or-later	tests	0
+nothings/stb	0	NOASSERTION	0	MIT OR Unlicense	tests	0
+lvandeve/lodepng	0	NOASSERTION	0	Zlib	tests	0
+randy408/libspng	0	NOASSERTION	0	BSD-2-Clause	tests	0
+kornelski/pngquant	0	NOASSERTION	0	GPL-3.0-or-later (v2.x) / BSD-2-Clause	tests	0
+shssoichiro/oxipng	0	NOASSERTION	0	MIT	tests	0
+lunapaint/pngsuite	0	NOASSERTION	0	NOASSERTION	tests	0
+google/wuffs	0	NOASSERTION	0	Apache-2.0 OR MIT	tests	0
+ImageMagick/ImageMagick	0	NOASSERTION	0	ImageMagick (Apache-2.0-like)	tests	0
+ImageMagick/ImageMagick6	0	NOASSERTION	0	ImageMagick (Apache-2.0-like)	tests	0
+ImageMagick/Website	0	NOASSERTION	0	NOASSERTION	assets	0
+OpenImageIO/oiio-images	0	NOASSERTION	0	NOASSERTION (mixed)	tests	0
+OpenImageIO/oiio	0	NOASSERTION	0	BSD-3-Clause	tests	0
+AOMediaCodec/libavif	0	NOASSERTION	0	BSD-2-Clause	tests	0
+libjxl/libjxl	0	NOASSERTION	0	BSD-3-Clause	tests	0
+OSGeo/gdal	0	NOASSERTION	0	MIT	tests	0
+onevcat/APNGKit	0	NOASSERTION	0	MIT	tests	0
+davidmz/apng-js	0	NOASSERTION	0	MIT	tests	0
+apngasm/apngasm	0	NOASSERTION	0	Zlib	tests	0
+Skycoder42/QtApng	0	NOASSERTION	0	BSD-3-Clause	tests	0
+line/apng-drawable	0	NOASSERTION	0	Apache-2.0	tests	0
+penfeizhou/APNG4Android	0	NOASSERTION	0	Apache-2.0	tests	0
+google/skia	0	NOASSERTION	0	BSD-3-Clause	tests	0
+SerenityOS/serenity	0	NOASSERTION	0	BSD-2-Clause	tests	0
+opencv/opencv	0	NOASSERTION	0	Apache-2.0	tests	0
+Kitware/VTK	0	NOASSERTION	0	BSD-3-Clause	tests	0
+InsightSoftwareConsortium/ITK	0	NOASSERTION	0	Apache-2.0	tests	0
+lovell/sharp	0	NOASSERTION	0	Apache-2.0	tests	0
+SixLabors/ImageSharp	0	NOASSERTION	0	NOASSERTION (Six Labors Split License)	tests	0
+libgd/libgd	0	NOASSERTION	0	NOASSERTION	tests	0
+libsdl-org/SDL_image	0	NOASSERTION	0	Zlib	tests	0
+wxWidgets/wxWidgets	0	NOASSERTION	0	NOASSERTION (wxWindows Library Licence)	tests	0
+fltk/fltk	0	NOASSERTION	0	NOASSERTION (LGPL-2.0 with exception)	tests	0
+qt/qtbase	0	NOASSERTION	0	LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only (mixed)	tests	0
+ruffle-rs/ruffle	0	NOASSERTION	0	MIT OR Apache-2.0	tests	0
+web-platform-tests/wpt	0	NOASSERTION	1500	BSD-3-Clause	mixed	400
+chromium/chromium	0	NOASSERTION	1500	BSD-3-Clause (third_party dirs mixed)	mixed	400
+mozilla/gecko-dev	0	NOASSERTION	1500	MPL-2.0	mixed	400
+WebKit/WebKit	0	NOASSERTION	1500	BSD-2-Clause AND LGPL-2.0-or-later (mixed)	mixed	400
+servo/servo	0	NOASSERTION	1000	MPL-2.0	mixed	300
+openjdk/jdk	0	NOASSERTION	300	GPL-2.0-only WITH Classpath-exception-2.0	mixed	100
+GNOME/adwaita-icon-theme	0	NOASSERTION	0	LGPL-3.0-only OR CC-BY-SA-3.0-US	assets	300
+PapirusDevelopmentTeam/papirus-icon-theme	0	NOASSERTION	800	GPL-3.0-only	assets	200
+KDE/breeze-icons	0	NOASSERTION	800	LGPL-3.0-or-later	assets	200
+elementary/icons	0	NOASSERTION	800	GPL-3.0-or-later	assets	200
+gitlab.gnome.org/GNOME/gnome-user-docs	0	NOASSERTION	0	CC-BY-SA-3.0 (docs)	assets	400
+gitlab.gnome.org/GNOME/gnome-backgrounds	0	NOASSERTION	0	CC-BY-SA-4.0 / CC0 (mixed)	assets	1500
+gitlab.gnome.org/GNOME/gimp-help	0	NOASSERTION	800	GPL-3.0-or-later / CC-BY-SA	assets	400
+godotengine/godot-docs	0	NOASSERTION	0	CC-BY-3.0	assets	600
+blender/blender-manual	0	NOASSERTION	0	CC-BY-SA-4.0	assets	600
+microsoft/vscode-docs	0	NOASSERTION	800	CC-BY-4.0 (docs), MIT	assets	600
+github/docs	0	NOASSERTION	800	CC-BY-4.0 (docs), MIT	assets	600
+kubernetes/website	0	NOASSERTION	800	CC-BY-4.0	assets	400
+docker/docs	0	NOASSERTION	800	Apache-2.0	assets	400
+mdn/content	0	NOASSERTION	800	CC-BY-SA-2.5	assets	400
+inkscape/inkscape-docs	0	NOASSERTION	0	GPL-2.0-or-later / CC-BY-SA	assets	400
+gohugoio/hugo	0	NOASSERTION	0	Apache-2.0	assets	200
+neonvoidx/pics	0	NOASSERTION	0	NOASSERTION	assets	1500
+MilesCorporate/The-Wallpaper-Collection	0	NOASSERTION	0	NOASSERTION	assets	2000
+k1ng440/Wallpapers	0	NOASSERTION	0	NOASSERTION	assets	1500
+markpendlebury/ultrawide-wallpapers	0	NOASSERTION	0	NOASSERTION	assets	1500
+AbegAshford/rice-walls	0	NOASSERTION	0	NOASSERTION	assets	800
+dharmx/walls	0	NOASSERTION	0	NOASSERTION	assets	1000
+spreadpaper/SpreadPaper	0	NOASSERTION	0	NOASSERTION	assets	100
+AFLplusplus/AFLplusplus	0	NOASSERTION	0	Apache-2.0	fuzz	0
+MozillaSecurity/fuzzdata	0	NOASSERTION	0	MPL-2.0	fuzz	500
+strongcourage/fuzzing-corpus	0	NOASSERTION	0	NOASSERTION	fuzz	500
+KhronosGroup/glTF-Sample-Assets	0	NOASSERTION	400	mixed per-model (see each model README)	assets	1500
+KhronosGroup/KTX-Software	0	NOASSERTION	0	Apache-2.0 (mixed)	tests	600
+mrdoob/three.js	0	NOASSERTION	500	MIT	assets	800
+opencv/opencv_extra	0	NOASSERTION	0	Apache-2.0	tests	600
+tesseract-ocr/test	0	NOASSERTION	0	Apache-2.0	tests	600
+scikit-image/scikit-image	0	NOASSERTION	0	BSD-3-Clause	tests	100
+mozilla/pdf.js	0	NOASSERTION	300	Apache-2.0	tests	100
+immich-app/test-assets	0	NOASSERTION	0	NOASSERTION	tests	1500
+godotengine/godot-demo-projects	0	NOASSERTION	500	MIT	assets	400
+Anuken/Mindustry	0	NOASSERTION	300	GPL-3.0-only	assets	300
+adi1090x/polybar-themes	0	NOASSERTION	0	GPL-3.0-only	assets	300
+adi1090x/rofi	0	NOASSERTION	0	GPL-3.0-only	assets	300
+end-4/dots-hyprland	0	NOASSERTION	0	GPL-3.0-only	assets	300
+JaKooLit/Hyprland-Dots	0	NOASSERTION	0	GPL-3.0-only	assets	300
+elenapan/dotfiles	0	NOASSERTION	0	MIT	assets	300
+mylinuxforwork/dotfiles	0	NOASSERTION	0	NOASSERTION	assets	300
+blender/blender	0	NOASSERTION	300	GPL-3.0-or-later	assets	100
+libretro/RetroArch	0	NOASSERTION	100	GPL-3.0-only	assets	50

@@ -1,0 +1,16 @@
+# repo	why
+# Hold-out repos for the PNG corpus pass (council decision PNG-Q7). Chosen by repository name on 2026-11-16, before any statistic
+# of the corpus had been computed. Rule: no RecommendedBeta or cap value is fitted to these repos; every Phase 2 result is reported
+# for the development set (all other repos) and for the hold-out separately. Whole repos are held out, not random files, because
+# files of one repo share encoders and near-duplicates (a file-level split would leak). Chosen to cover each class and to include
+# one browser tree, one test suite of a rendering library, and documentation sets with many screenshots.
+mozilla/gecko-dev	mixed: browser tree
+google/skia	tests: rendering library
+opencv/opencv_extra	tests: test data of a computer-vision library
+servo/servo	mixed: browser tree
+godotengine/godot-docs	assets: documentation screenshots
+github/docs	assets: documentation screenshots
+kubernetes/website	assets: website images
+gitlab.gnome.org/GNOME/gnome-user-docs	assets: documentation screenshots
+elenapan/dotfiles	assets: desktop screenshots and wallpapers
+AFLplusplus/AFLplusplus	fuzz: seed corpus
