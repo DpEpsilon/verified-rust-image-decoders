@@ -964,34 +964,17 @@ pub open spec fn loop_hit_value(h: Seq<u8>) -> Option<u16> {
     Some(((h[1] as u16) | ((h[2] as u16) << 8)) as u16)
 }
 
-/// Every position a walk over an input of at most `MAX_INPUT` bytes forms is at
-/// most `MAX_INPUT + 2^16`, which fits a `usize` on either target. `MAX_INPUT`
-/// is 268,435,456 and the crate's positions are `usize` sums of values below
-/// `MAX_INPUT + 2^16` (`parse.rs` module comment), well below `2^32`.
+/// A position at most one LE16-domain block past MAX_INPUT fits usize on
+/// either target, by G1's checked derived bound, not the current cap value.
 pub proof fn lemma_pos_fits(p: usize, n: usize)
     requires
         p <= crate::limits::MAX_INPUT,
-        n <= 65536,
+        n <= (u16::MAX as int) + 1,
         usize::MAX as u64 >= 0xffff_ffffu64,
     ensures
         p + n <= usize::MAX,
 {
-    assert(crate::limits::MAX_INPUT == 268435456);
-    assert(268435456 + 65536 == 268500992);
-    assert(p + n <= 268500992) by (nonlinear_arith)
-        requires
-            p <= 268435456,
-            n <= 65536,
-    ;
-    // On both supported targets `usize` is at least 32 bits, so `usize::MAX` is
-    // at least 4,294,967,295 and 268,500,992 fits.
-    assert(268500992 <= 0xffff_ffffu64) by (bit_vector);
-    assert(p + n <= usize::MAX) by (nonlinear_arith)
-        requires
-            p + n <= 268500992,
-            268500992 <= 0xffff_ffffu64,
-            usize::MAX as u64 >= 0xffff_ffffu64,
-    ;
+    crate::limits::caps_ok();
 }
 
 /// The first byte of `b` is `first` when the payload begins there.
@@ -1599,18 +1582,18 @@ pub proof fn lemma_shift_pow2(n: int)
     }
 }
 
-/// `area_cap` (THEOREMS.md's `area_cap_u64`): with `w, h <= 65535` the product
-/// `w*h` fits `u32` (at most 4,294,836,225), so the executable's comparison
-/// `w*h > MAX_OUTPUT/4` cannot wrap and is equivalent to the model's
-/// `4·w·h > MAX_OUTPUT` (`MAX_OUTPUT` is a multiple of 4).
+/// `area_cap` (THEOREMS.md's `area_cap_u64`): LE16-domain factors have a
+/// product that fits u32. Comparing that product with floor(MAX_OUTPUT / 4)
+/// is equivalent to comparing four times the product with MAX_OUTPUT; no
+/// divisibility requirement on MAX_OUTPUT is needed.
 pub open spec fn max_output_quarter() -> int {
     max_output() / 4
 }
 
 pub proof fn lemma_area_cap(w: u32, h: u32)
     requires
-        w <= 65535,
-        h <= 65535,
+        w <= (u16::MAX as int),
+        h <= (u16::MAX as int),
     ensures
         (w as int) * (h as int) <= 4294836225,
         (w as int) * (h as int) > max_output_quarter() ==> 4 * (w as int) * (h as int)
@@ -1618,39 +1601,20 @@ pub proof fn lemma_area_cap(w: u32, h: u32)
         4 * (w as int) * (h as int) > max_output() ==> (w as int) * (h as int)
             > max_output_quarter(),
 {
-    reveal(max_output);
+    crate::limits::caps_ok();
     reveal(max_output_quarter);
     assert((w as int) * (h as int) <= 4294836225) by (nonlinear_arith)
         requires
-            w <= 65535,
-            h <= 65535,
+            w <= (u16::MAX as int),
+            h <= (u16::MAX as int),
     ;
-    assert(max_output_quarter() == 16777216);
-    assert(max_output() == 67108864);
+    // Euclidean division proves the comparison for every cap, including a cap
+    // that is not a multiple of four.
+    vstd::arithmetic::div_mod::lemma_fundamental_div_mod(max_output(), 4);
+    assert(0 <= max_output() % 4 < 4);
     let a = (w as int) * (h as int);
-    assert(a > max_output_quarter() ==> 4 * a > max_output()) by (nonlinear_arith)
-        requires
-            max_output() == 67108864,
-            max_output_quarter() == 16777216,
-            a == (w as int) * (h as int),
-    ;
-    assert(0 <= a) by (nonlinear_arith)
-        requires
-            a == (w as int) * (h as int),
-            w <= 65535,
-            h <= 65535,
-    ;
     assert(4 * (w as int) * (h as int) == 4 * a) by (nonlinear_arith)
-        requires
-            a == (w as int) * (h as int),
-    ;
-    assert(4 * a > max_output() ==> a > max_output_quarter()) by (nonlinear_arith)
-        requires
-            max_output() == 67108864,
-            max_output_quarter() == 16777216,
-            a == (w as int) * (h as int),
-            0 <= a,
-    ;
+        requires a == (w as int) * (h as int);
 }
 
 /// `4·W·H <= MAX_OUTPUT` (the checked G3 bound) fits a `usize` on either target
@@ -1658,8 +1622,8 @@ pub proof fn lemma_area_cap(w: u32, h: u32)
 /// (`mh_bounds`); on a 32-bit target it is what rules out the overflow.
 pub proof fn lemma_4wh_usize(w: u32, h: u32)
     requires
-        1 <= w <= 65535,
-        1 <= h <= 65535,
+        1 <= w <= (u16::MAX as int),
+        1 <= h <= (u16::MAX as int),
         4 * (w as int) * (h as int) <= max_output(),
     ensures
         4 * (w as usize) * (h as usize) <= usize::MAX,
@@ -1697,29 +1661,21 @@ pub proof fn lemma_slice_bound(len: usize, x: usize)
 {
 }
 
-/// `MAX_INPUT + 2^16` fits a `usize` on both supported targets. Stated as
-/// `268500992 < usize::MAX` with `u64` arithmetic: a `usize` of 32 bits or more
-/// has `usize::MAX >= 2^32 - 1 = 4,294,967,295 > 268,500,992`.
+/// G1's MAX_INPUT plus one LE16-domain block fits usize on either target.
 pub proof fn lemma_max_input_fits_umax()
     ensures
-        crate::limits::MAX_INPUT == 268435456,
-        crate::limits::MAX_INPUT + 65536 <= usize::MAX,
+        crate::limits::MAX_INPUT + ((u16::MAX as int) + 1) <= usize::MAX,
 {
-    assert(crate::limits::MAX_INPUT == 268435456);
-    assert(crate::limits::MAX_INPUT <= usize::MAX);
-    assert(crate::limits::MAX_INPUT + 65536 <= usize::MAX);
+    crate::limits::caps_ok();
 }
 
-/// `MAX_INPUT + 12` fits a `usize` on both supported targets (TGA's idiom,
-/// `tga.rs:2636`: a plain `<= usize::MAX` assert on a small literal).
+/// The fixed header lookahead is smaller than G1's LE16-domain allowance.
 pub proof fn lemma_max_input_plus12()
     ensures
         crate::limits::MAX_INPUT + 12 <= usize::MAX,
         crate::limits::MAX_INPUT <= usize::MAX,
 {
-    assert(crate::limits::MAX_INPUT == 268435456);
-    assert(crate::limits::MAX_INPUT <= usize::MAX);
-    assert(crate::limits::MAX_INPUT + 12 <= usize::MAX);
+    crate::limits::caps_ok();
 }
 
 /// `p + 1` does not overflow a `usize` when `p < len`: the DIB/TGA idiom
@@ -1728,7 +1684,7 @@ pub proof fn lemma_max_input_plus12()
 pub proof fn lemma_succ_no_overflow_usize(len: usize, p: usize)
     requires
         p < len,
-        len <= crate::limits::MAX_INPUT + 65536,
+        len <= crate::limits::MAX_INPUT + ((u16::MAX as int) + 1),
     ensures
         p + 1 <= usize::MAX,
         len <= usize::MAX,
@@ -1740,8 +1696,8 @@ pub proof fn lemma_succ_no_overflow_usize(len: usize, p: usize)
     lemma_max_input_fits_umax();
     assert(len <= usize::MAX) by (nonlinear_arith)
         requires
-            len <= crate::limits::MAX_INPUT + 65536,
-            crate::limits::MAX_INPUT + 65536 <= usize::MAX,
+            len <= crate::limits::MAX_INPUT + ((u16::MAX as int) + 1),
+            crate::limits::MAX_INPUT + ((u16::MAX as int) + 1) <= usize::MAX,
     ;
 }
 
@@ -1780,14 +1736,14 @@ pub proof fn lemma_le16_lt(b: Seq<u8>, p: int)
     requires
         p + 2 <= b.len(),
     ensures
-        0 <= le16(b, p) < 65536,
+        0 <= le16(b, p) < ((u16::MAX as int) + 1),
 {
     reveal(le16);
     assert(b[p] as int >= 0);
     assert(b[p] as int <= 255);
     assert(b[p + 1] as int >= 0);
     assert(b[p + 1] as int <= 255);
-    assert(le16(b, p) <= 65535) by (nonlinear_arith)
+    assert(le16(b, p) <= (u16::MAX as int)) by (nonlinear_arith)
         requires
             le16(b, p) == b[p] as int + 256 * (b[p + 1] as int),
             b[p] as int >= 0,

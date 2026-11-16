@@ -36,6 +36,9 @@ mod lzw_model;
 pub(crate) mod model;
 mod parse;
 mod refinement;
+mod representation_domain;
+#[cfg(verus_only)]
+mod string_model;
 pub mod policy;
 
 pub use alloc_guard::sites::TryError;

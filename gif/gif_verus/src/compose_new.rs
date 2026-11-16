@@ -299,21 +299,22 @@ pub fn draw_index(
     Ok(())
 }
 
-/// `z < 4·sw·sh <= 4·MAX_DIMENSION² = 17,179,344,900` is only just over
-/// `u32::MAX`, so a canvas byte offset of a pixel inside the screen does not fit
-/// `u32` in general; the executable therefore computes it in `usize`. This lemma
-/// supplies the bound `usize` needs (THEOREMS' `area_cap_u64`).
+/// An unchecked RGBA byte count can exceed u32 even for LE16-domain sides.
+/// Once G3 checks MAX_OUTPUT, the canvas byte offsets fit usize on both targets;
+/// the product of the two screen dimensions itself fits u32.
 pub proof fn lemma_sw_sh_prod_u32(sw: int, sh: int)
     requires
         0 <= sw <= max_dimension(),
         0 <= sh <= max_dimension(),
     ensures
         sw * sh <= 4294967295,
-        sw * sh <= 4294836225,
+        sw * sh <= (u16::MAX as int) * (u16::MAX as int),
 {
+    crate::limits::caps_ok();
     lemma_mul_inequality(sw, max_dimension(), sh);
     assert(sw * sh <= max_dimension() * max_dimension());
-    assert(max_dimension() * max_dimension() == 4294836225);
+    assert(max_dimension() * max_dimension() <= (u16::MAX as int) * (u16::MAX as int))
+        by(nonlinear_arith) requires 0 <= max_dimension() <= u16::MAX;
 }
 
 /// `left + col` and `top + row_y` fit in a `u32` on every reachable state:
@@ -325,7 +326,7 @@ pub proof fn lemma_cap_sum_u32(a: int, b: int)
     ensures
         a + b <= 4294967295,
 {
-    assert(max_dimension() == 65535);
+    crate::limits::caps_ok();
 }
 
 /// `⌊q/w⌋ < h` for `q < w·h` and `w >= 1`: the interlace row is always defined.
@@ -394,10 +395,11 @@ pub proof fn lemma_cell_offset_in_bounds(y: int, x: int, sw: int, sh: int)
 pub proof fn lemma_cap_product_u32()
     ensures
         max_dimension() * max_dimension() <= 4294967295,
-        max_dimension() * max_dimension() == 4294836225,
+        max_dimension() * max_dimension() <= (u16::MAX as int) * (u16::MAX as int),
 {
-    assert(max_dimension() == 65535);
-    assert(65535 * 65535 == 4294836225);
+    crate::limits::caps_ok();
+    assert(max_dimension() * max_dimension() <= (u16::MAX as int) * (u16::MAX as int))
+        by(nonlinear_arith) requires 0 <= max_dimension() <= u16::MAX;
 }
 
 /// `w·⌊q/w⌋ <= q`, the bound that keeps the row start inside `q`.
@@ -469,6 +471,7 @@ pub proof fn lemma_row_offset_bound(y: int, x: int, sw: int, sh: int)
     lemma_mul_inequality(y + 1, sh, sw);
     lemma_mul_is_commutative(sh, sw);
     assert((y + 1) * sw <= sw * sh);
+    crate::limits::caps_ok();
     assert(y * sw + x <= y * sw + sw);
     lemma_mul_is_associative(4, sw, sh);
 }
@@ -697,16 +700,17 @@ pub proof fn lemma_usize_products(y: int, x: int, sw: int, sh: int, len: nat)
         0 <= sw,
         0 <= sh,
         len == 4 * sw * sh,
-        len <= 67108864,
+        len <= max_output(),
     ensures
-        y * sw <= 16777216,
-        y * sw + x <= 16777216,
-        y * sw + x < 67108864,
-        4 * (y * sw + x) <= 67108864,
+        y * sw <= crate::model::max_output_quarter(),
+        y * sw + x <= crate::model::max_output_quarter(),
+        y * sw + x < max_output(),
+        4 * (y * sw + x) <= max_output(),
         4 * (y * sw + x) <= len,
         y * sw + x <= usize::MAX,
         4 * (y * sw + x) <= usize::MAX,
 {
+    crate::limits::caps_ok();
     assert(y * sw + x <= y * sw + sw);
     lemma_mul_is_distributive_add_other_way(sw, y, 1);
     assert(y * sw + sw == (y + 1) * sw);
@@ -714,20 +718,20 @@ pub proof fn lemma_usize_products(y: int, x: int, sw: int, sh: int, len: nat)
     lemma_mul_is_commutative(sh, sw);
     assert((y + 1) * sw <= sw * sh);
     assert(y * sw + x <= sw * sh);
-    assert(sw * sh <= 16777216) by {
-        assert(4 * (sw * sh) <= 67108864) by {
+    assert(sw * sh <= crate::model::max_output_quarter()) by {
+        assert(4 * (sw * sh) <= max_output()) by {
             lemma_mul_is_associative(4, sw, sh);
         }
     }
-    assert(y * sw <= 16777216);
+    assert(y * sw <= crate::model::max_output_quarter());
     lemma_mul_inequality(y * sw + x, sw * sh, 4);
     lemma_mul_is_associative(4, sw, sh);
     assert(4 * (y * sw + x) <= 4 * sw * sh);
-    assert(y * sw + x <= 16777216);
-    assert(y * sw + x < 67108864);
-    assert(4 * (y * sw + x) <= 67108864);
+    assert(y * sw + x <= crate::model::max_output_quarter());
+    assert(y * sw + x < max_output());
+    assert(4 * (y * sw + x) <= max_output());
     assert(4 * (y * sw + x) <= len);
-    assert(usize::MAX >= 67108864);
+    assert(usize::MAX >= max_output());
 }
 
 /// Every byte index of a row range is inside the canvas: `x <= sw`, `y < sh` give
@@ -740,6 +744,7 @@ pub proof fn lemma_row_bytes_inside(y: int, x: int, sw: int, sh: int)
     ensures
         4 * (y * sw + x) <= 4 * sw * sh,
 {
+    crate::limits::caps_ok();
     assert(y * sw + x <= y * sw + sw);
     lemma_mul_is_distributive_add_other_way(sw, y, 1);
     assert(y * sw + sw == (y + 1) * sw);
@@ -818,7 +823,7 @@ pub fn clear_rect(canvas: &mut [u8], sw: u32, sh: u32, r: Rect) -> (work: Ghost<
             sw as int >= 1,
             sh as int >= 1,
             cv0.len() == 4 * (sw as int) * (sh as int),
-            cv0.len() <= 67108864,
+            cv0.len() <= max_output(),
             canvas@.len() == len,
             canvas@
                 == cleared_upto(cv0, sw, x0 as int, x1 as int, y0 as int, y1 as int, y as int, x0 as int),
@@ -853,7 +858,7 @@ pub fn clear_rect(canvas: &mut [u8], sw: u32, sh: u32, r: Rect) -> (work: Ghost<
                 sw as int >= 1,
                 sh as int >= 1,
                 cv0.len() == 4 * (sw as int) * (sh as int),
-                cv0.len() <= 67108864,
+                cv0.len() <= max_output(),
                 canvas@.len() == len,
                 canvas@
                     == cleared_upto(
@@ -870,7 +875,7 @@ pub fn clear_rect(canvas: &mut [u8], sw: u32, sh: u32, r: Rect) -> (work: Ghost<
         {
             proof {
                 lemma_usize_products(y as int, (x + 1) as int, sw as int, sh as int, cv0.len());
-                assert((y as int) * (sw as int) <= 16777216);
+                assert((y as int) * (sw as int) <= crate::model::max_output_quarter());
                 lemma_mul_is_commutative(y as int, sw as int);
             }
             let rpx: usize = (y as usize) * (sw as usize);
@@ -882,7 +887,7 @@ pub fn clear_rect(canvas: &mut [u8], sw: u32, sh: u32, r: Rect) -> (work: Ghost<
             let cell_off: usize = rpx + (x as usize);
             proof {
                 assert((cell_off as int) == (rpx as int) + (x as int));
-                assert(4 * (cell_off as int) <= 67108864);
+                assert(4 * (cell_off as int) <= max_output());
                 assert(4 * (cell_off as int) <= usize::MAX);
             }
             let o: usize = 4 * cell_off;
@@ -995,7 +1000,7 @@ pub fn copy_rect(dst: &mut [u8], src: &[u8], sw: u32, sh: u32, r: Rect) -> (work
             sh as int >= 1,
             dv0.len() == 4 * (sw as int) * (sh as int),
             src@.len() == 4 * (sw as int) * (sh as int),
-            dv0.len() <= 67108864,
+            dv0.len() <= max_output(),
             dst@.len() == len,
             dst@
                 == copied_upto(dv0, src@, sw, x0 as int, x1 as int, y0 as int, y1 as int, y as int, x0 as int),
@@ -1031,7 +1036,7 @@ pub fn copy_rect(dst: &mut [u8], src: &[u8], sw: u32, sh: u32, r: Rect) -> (work
                 sh as int >= 1,
                 dv0.len() == 4 * (sw as int) * (sh as int),
                 src@.len() == 4 * (sw as int) * (sh as int),
-                dv0.len() <= 67108864,
+                dv0.len() <= max_output(),
                 dst@.len() == len,
                 dst@
                     == copied_upto(
@@ -1049,7 +1054,7 @@ pub fn copy_rect(dst: &mut [u8], src: &[u8], sw: u32, sh: u32, r: Rect) -> (work
         {
             proof {
                 lemma_usize_products(y as int, (x + 1) as int, sw as int, sh as int, dv0.len());
-                assert((y as int) * (sw as int) <= 16777216);
+                assert((y as int) * (sw as int) <= crate::model::max_output_quarter());
                 lemma_mul_is_commutative(y as int, sw as int);
             }
             let rpx: usize = (y as usize) * (sw as usize);
@@ -1061,7 +1066,7 @@ pub fn copy_rect(dst: &mut [u8], src: &[u8], sw: u32, sh: u32, r: Rect) -> (work
             let cell_off: usize = rpx + (x as usize);
             proof {
                 assert((cell_off as int) == (rpx as int) + (x as int));
-                assert(4 * (cell_off as int) <= 67108864);
+                assert(4 * (cell_off as int) <= max_output());
                 assert(4 * (cell_off as int) <= usize::MAX);
             }
             let o: usize = 4 * cell_off;

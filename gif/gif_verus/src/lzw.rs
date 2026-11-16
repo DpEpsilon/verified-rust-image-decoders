@@ -1968,10 +1968,10 @@ pub proof fn lemma_raw_views(t: Seq<u8>)
         forall|c: int| 0 <= c < TABLE_SIZE ==> #[trigger] raw_sf_seq(t)[c] as int == raw_suffix(t, c),
 {
     assert forall|c: int| 0 <= c < TABLE_SIZE implies #[trigger] raw_pf_seq(t)[c] as int == raw_prefix(t, c) by {
-        assert(0 <= raw_prefix(t, c) <= 65535);
+        assert(0 <= raw_prefix(t, c) <= (u16::MAX as int));
     }
     assert forall|c: int| 0 <= c < TABLE_SIZE implies #[trigger] raw_ls_seq(t)[c] as int == raw_length(t, c) by {
-        assert(0 <= raw_length(t, c) <= 65535);
+        assert(0 <= raw_length(t, c) <= (u16::MAX as int));
     }
 }
 
@@ -2386,7 +2386,15 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
         colour_observation(rep, ML(m as int,read_d(old(reader).b@,old(reader).seq_start as int),area as int,lzw_ps(m,opts)).idx,
             |v:u8| old(sink).sink_ok(v)),
         rep.work@ <= 5 * data_len as nat + 2 * area as nat,
+        report_matches(rep, crate::string_model::ST(m as int,read_d(old(reader).b@,old(reader).seq_start as int),area as int,lzw_ps(m,opts))),
+        raster(rep.h@) == crate::string_model::ST(m as int,read_d(old(reader).b@,old(reader).seq_start as int),area as int,lzw_ps(m,opts)).idx,
+        colour_observation(rep, crate::string_model::ST(m as int,read_d(old(reader).b@,old(reader).seq_start as int),area as int,lzw_ps(m,opts)).idx,
+            |v:u8| old(sink).sink_ok(v)),
 {
+    hide(crate::string_model::ST);
+    hide(crate::string_model::fold);
+    hide(crate::string_model::step);
+    hide(crate::string_model::relates);
     hide(L);
     hide(verdict);
     hide(effect_fold);
@@ -2431,16 +2439,24 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
     let mut prev_first: u8 = 0;
     let mut q: u32 = 0;
     let ghost mut st = init_st(m as int);
+    let ghost mut sst = crate::string_model::initial(m as int);
     proof {
+        assert(m<=8 || ps.checked_literals);
+        crate::string_model::theorem_ml_st(m as int,d,area as int,ps);
+        crate::string_model::lemma_initial(m as int);
         lemma_table_reset(t@,clear as int,st.pf,st.sf);
         lemma_empty_observation(ok);
         lemma_effect_empty(cv0,effect);
         crate::dictionary::history_empty(raw_pf_seq(t@),raw_ls_seq(t@),clear as int,0,opts.checked_literals);
         assert(st.pos == (reader.total_bits as int)-(reader.bits_left as int));
         lemma_shift_power(width);
+        crate::string_model::theorem_all_represented(t@,m as int,st,sst);
     }
     loop
         invariant
+            crate::string_model::relates(m as int,st,sst),
+            crate::string_model::represented(t@,m as int,sst),
+            crate::string_model::ST(m as int,d,area as int,ps)==ML(m as int,d,area as int,ps),
             1 <= m <= 11, m_ok(ps,m as int,area as int), ps == lzw_ps(m,opts),
             area >= 1,
             reader.fetched as int >= fetched0, fetched0 >= 0,
@@ -2510,8 +2526,11 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
             },
             CodeStep::Clear {after} => {
                 proof {
+                    crate::string_model::lemma_clear(m as int,st,sst,after as int);
+                    sst=crate::string_model::clear(m as int,sst,after as int);
                     st=clear_st(m as int,st,after as int);
                     lemma_table_reset(t@,clear as int,st.pf,st.sf);
+                    crate::string_model::theorem_all_represented(t@,m as int,st,sst);
                     crate::dictionary::history_empty(op,ol,clear as int,q as int,opts.checked_literals);
                 }
                 next=clear+2; width=m+1; have_prev=false; prev=0;
@@ -2522,6 +2541,7 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
         proof {
             lemma_control_emit(m as int,d,area as int,ps,st,code,after);
             lemma_resolved_agrees(t@,m as int,st,code as int);
+            crate::string_model::lemma_accepted_code(m as int,st,sst,code as int,opts.checked_literals);
             if m==1 && area==1 && stop { assert(!have_prev); assert(code<clear); }
         }
         let ghost s = semit(m as int,st,code as int);
@@ -2545,6 +2565,14 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
             h=h+block;
             times=times+Seq::new(block.len(),|_i:int| after);
         }
+        let ghost ns = emit_st(m as int,st,after as int,code as int,s,first,grow);
+        let ghost nss = crate::string_model::emit(sst,after as int,code as int,crate::string_model::resolve(sst,code as int));
+        proof {
+            assert(first==first_of(m as int,st,code as int));
+            crate::string_model::lemma_emit(m as int,st,sst,code as int,after as int);
+            lemma_agrees_grow(ot,t@,st,ns,clear as int,grow,prev as u16,first);
+            crate::string_model::theorem_all_represented(t@,m as int,ns,nss);
+        }
         if len>area-q {
             proof {
                 reveal(reader_ready);
@@ -2559,7 +2587,6 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
             }
             return LzwReport {written:area,error:if stop {None} else {Some(Error::TooManyPixels)},pos:after,e4:stop,h:Ghost(h),times:Ghost(times),colour,work:Ghost(steps@)};
         }
-        let ghost ns = emit_st(m as int,st,after as int,code as int,s,first,grow);
         proof {
             assert(first==first_of(m as int,st,code as int));
             assert(verdict(m as int,d,area as int,ps,st)==Vd::Step(ns));
@@ -2569,9 +2596,9 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
             assert(times+code_stamps(m as int,d,area as int,ps,ns)==before_times+code_stamps(m as int,d,area as int,ps,st));
         }
         proof {
-            lemma_agrees_grow(ot,t@,st,ns,clear as int,grow,prev as u16,first);
             lemma_shift_power(width);
             st=ns;
+            sst=nss;
         }
         q+=len; have_prev=true; prev=code; prev_first=first;
     }
@@ -2801,7 +2828,7 @@ pub proof fn lemma_agrees_grow(t: Seq<u8>, nt: Seq<u8>, st: St, ns: St, clear: i
     ensures table_agrees(nt,ns.pf,ns.sf,clear,ns.next-1),
 {
     lemma_raw_views(t); lemma_raw_views(nt);
-    assert forall|x:int| clear+2<=x<ns.next implies #[trigger] raw_prefix(nt,x)==ns.pf[x] as int && raw_suffix(nt,x)==ns.sf[x] as int by {
+    assert forall|x:int| clear+2<=x<=ns.next-1 implies #[trigger] raw_prefix(nt,x)==ns.pf[x] as int && raw_suffix(nt,x)==ns.sf[x] as int by {
         if grow && x==st.next {} else {
             assert(raw_prefix(t,x)==st.pf[x] as int);
             assert(raw_suffix(t,x)==st.sf[x] as int);
@@ -3023,6 +3050,9 @@ pub fn decode_image_data<S:Sink>(b:&[u8],data:crate::parse::ImageData,area:u32,o
         colour_observation(rep,ML(data.min_code_size as int,read_d(b@,data.first as int),area as int,lzw_ps(data.min_code_size,opts)).idx,|v:u8|old(sink).sink_ok(v)),
         rep.written<=area,rep.pos as int<=8*(data.data_len as int),
         rep.work@ <= 5 * data.data_len as nat + 2 * area as nat,
+        report_matches(rep,crate::string_model::ST(data.min_code_size as int,read_d(b@,data.first as int),area as int,lzw_ps(data.min_code_size,opts))),
+        raster(rep.h@)==crate::string_model::ST(data.min_code_size as int,read_d(b@,data.first as int),area as int,lzw_ps(data.min_code_size,opts)).idx,
+        colour_observation(rep,crate::string_model::ST(data.min_code_size as int,read_d(b@,data.first as int),area as int,lzw_ps(data.min_code_size,opts)).idx,|v:u8|old(sink).sink_ok(v)),
 {
     proof {lemma_min_admissibility(kind,data.min_code_size,area,opts);}
     let mut reader=BitReader::new_scanned(b,data.first,data.data_len);
@@ -3119,6 +3149,49 @@ pub proof fn lemma_log_canonical_multiset(h:Seq<(u32,u8)>,o:Seq<u8>)
         assert forall|v:(u32,u8)| #[trigger] h.to_multiset().count(v)==#[trigger] f.to_multiset().count(v) by {
             assert(h.to_multiset().sub(f.to_multiset()).count(v)==0);
         }
+    }
+}
+} // verus!
+
+verus! {
+/// The reviewer's literal-pair obligation uses the real storage insertion.
+/// Literal 1 adds nothing; literal 2 inserts prev=[1] plus first([2]) at 6.
+/// The caller may supply stale bytes, including a non-one raw length at 1.
+pub fn witness_literal_pair_entry(t:&mut [u8])
+    requires table_len_ok(old(t)@),
+    ensures table_len_ok(final(t)@),
+        raw_prefix(final(t)@,6)==1,raw_suffix(final(t)@,6)==2,raw_length(final(t)@,6)==2,
+        chain(final(t)@,2,6,4096)==seq![1u8,2u8],
+        crate::chain::code_len(final(t)@,2,6)==2,
+        code_first(final(t)@,2,6,4096)==1,
+        chain(final(t)@,2,6,4096)==crate::string_model::emit(
+            crate::string_model::emit(crate::string_model::initial(2),3,1,seq![1u8]),6,2,seq![2u8]).table[6],
+{
+    let ghost t0=t@;
+    let ghost x0=init_st(2);
+    let ghost x1=emit_st(2,x0,3,1,seq![1u8],1u8,false);
+    let ghost x2=emit_st(2,x1,6,2,seq![2u8],2u8,true);
+    let ghost s0=crate::string_model::initial(2);
+    let ghost s1=crate::string_model::emit(s0,3,1,seq![1u8]);
+    let ghost s2=crate::string_model::emit(s1,6,2,seq![2u8]);
+    proof {
+        crate::string_model::lemma_literal_pair_steps();
+        crate::string_model::lemma_initial(2);
+        assert(semit(2,init_st(2),1)==seq![1u8]) by(compute);
+        assert(first_of(2,init_st(2),1)==1u8) by(compute);
+        crate::string_model::lemma_emit(2,x0,s0,1,3);
+        assert(semit(2,emit_st(2,init_st(2),3,1,seq![1u8],1u8,false),2)==seq![2u8]) by(compute);
+        assert(first_of(2,emit_st(2,init_st(2),3,1,seq![1u8],1u8,false),2)==2u8) by(compute);
+        crate::string_model::lemma_emit(2,x1,s1,2,6);
+        lemma_table_reset(t@,4,x1.pf,x1.sf);
+    }
+    let mut next=6u32;
+    let mut width=3u32;
+    add_entry(t,&mut next,&mut width,1,2,4);
+    proof {
+        lemma_agrees_grow(t0,t@,x1,x2,4,true,1u16,2u8);
+        crate::string_model::theorem_representation(t@,2,x2,s2,6);
+        lemma_raw_views(t@);
     }
 }
 } // verus!

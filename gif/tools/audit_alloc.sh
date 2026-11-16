@@ -100,6 +100,7 @@ done
 if [ "${1:-}" = "--self-test" ]; then
   echo "--- scanner self-test ---"
   if ! python3 "$scanner" --self-test; then status=1; fi
+  if ! "$root/tools/lint_caps.sh" --self-test; then status=1; fi
   tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
   printf 'verus! {\nspec fn ghost_push(s: Seq<u8>) -> Seq<u8> { s.push(1) }\nfn leaky(v: &mut Vec<u8>)\n    ensures s == if p { s.push(2) } else { s.push(3) },\n{\n    proof { let s = s.push(4); }\n    v.push(0u8);\n}\n}\n' > "$tmp/unguarded.rs"
   python3 "$scanner" "$tmp/unguarded.rs" > "$tmp/push.out" 2>&1

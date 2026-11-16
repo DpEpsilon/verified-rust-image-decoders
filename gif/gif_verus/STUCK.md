@@ -2005,3 +2005,252 @@ summed RSS. Versions remain Verus 0.2026.11.02.8bf68ee, vstd
 0.0.0-2026-11-01-0251 and rustc 1.99.1 (58cf8f9c3 2026-10-13). No assumptions,
 admissions, external bodies, unsafe bodies, axioms, solver/compute limit raises,
 protected-file edits, commits or background jobs were introduced.
+
+## Symbolic-cap repair checkpoint and widening blocker (Sol, runs 607-612)
+
+The working crate is green at run 612: **697 verified, 0 errors**, 21 seconds,
+2,734 MiB peak summed RSS. The count fell from 700 because the repair removed
+separate arithmetic tactic queries; it did not remove a decoder theorem.
+Task 1 is PARTIAL: the requested halved-input control passes, but the full
+frozen permitted-cap-change clause still has dependencies beyond copied
+numerals. Task 2 was not started; this handoff stops at the Task 1 blocker.
+
+### Proved and checked
+
+src/limits.rs now contains a no-precondition caps_ok lemma that checks G1's
+LE16 dimension bound, input-plus-one-LE16-domain-block bound on both supported
+usize widths, output bound against the pinned guard and u32/usize, and the
+unchecked dimension/product/budget bounds. The position lemmas cite caps_ok
+instead of equating MAX_INPUT to its current value. The area comparison uses
+Euclidean division and no longer requires MAX_OUTPUT to be a multiple of four.
+The compositor's resource bounds use max_output()/max_output_quarter(); the
+constructor uses MAX_OUTPUT <= MAX_BYTES rather than equality. Dimension
+product helpers use wire-domain inequalities rather than a fixed cap product.
+Wire/type facts use u16::MAX; no frozen file or allocation-guard file changed.
+
+The new tools/lint_caps.sh scans Rust sources, including models and proof
+bodies, for frozen cap numerals, common decimal/hex/shift spellings, the old
+input-lookahead sum, output/4 and sufficiently large configured numeric values.
+It excludes only limits.rs and the frozen alloc_guard/mod.rs (the latter owns
+its separate, hash-pinned MAX_BYTES). It is a lexical falsification gate, not
+a parser for all equivalent Rust expressions; small configured values collide
+with non-cap literals. Scratch-copy controls reject eleven injected forms and
+accept named wire/type bounds. audit_alloc.sh --self-test invokes this lint.
+
+Run 609 changes ONLY limits.rs's MAX_INPUT declaration to 134217728 in a
+disposable scratch copy: 697 verified, 0 errors. All other Rust sources were
+byte-identical to the working sources at the time of the run; the source hash
+record is runs/sol-20261116/caps-input-half-control.txt. Run 610 changes only
+that declaration to u32::MAX as usize: caps_ok rejects the input-lookahead
+postconditions, as required (the bit-counter multiplication also fails).
+Run 607 was an initial caps_ok shift-arithmetic failure, repaired with a
+compute proof of the configured budget bound; run 608 first passed.
+
+### Blocker: a G1-permitted input cap breaks the existing bit-reader contract
+
+Run 611 changes only MAX_INPUT to 536870912 (2^29). caps_ok PASSES: the input
+plus the LE16-domain block is 536936448, below 2^32, and all other G1 bounds
+are unchanged. Verification FAILS at src/lzw.rs:663, data_len * 8, because
+BitReader stores total_bits/bits_left in u32. The smallest helper-domain
+counterexample is BitReader::new(&[], 0, 536870912): its sole precondition,
+data_len <= MAX_INPUT, holds, but the multiplication is 4294967296, one above
+u32::MAX. This is a helper-contract counterexample, not a claimed reachable
+512-MiB-file public decoding failure (sub-block framing consumes input bytes).
+
+Do not conceal this failure by adding 8*MAX_INPUT <= u32::MAX to caps_ok:
+frozen G1 does not require that bound. To preserve the frozen statement,
+widen the reader's bit counts and associated positions/timestamps/reports to
+u64, preserving their integer ML observations. If the owner instead chooses
+to retain u32 counters, the proposed erratum is an additional G1 requirement
+MAX_INPUT <= floor(u32::MAX/8); this narrows permitted cap changes and needs
+explicit approval. No such erratum or new restriction was applied here.
+
+A separate source-level resume point is frame_model.rs:255's remaining
+MAX_DIMENSION == u16::MAX equality. image_domain bounds descriptor coordinates
+and sizes by MAX_DIMENSION, although Clip permits the full LE16 descriptor
+domain even when the screen cap is smaller. For example, with MAX_DIMENSION
+lowered to 65534, a 1x1 screen and a Clip descriptor at left=65535, top=0,
+w=h=1 passes MB's descriptor checks but fails image_domain. No dimension-cap
+mutation was run. Replace descriptor-only cap bounds with wire bounds and
+propagate that distinction rather than assuming the cap equals the wire limit.
+
+### Validation and Task 2 resume point
+
+runs/sol-20261116/caps-release-tests.log passes all five library/report tests,
+seven conformance functions (373 vectors), four allocation-fault tests and the
+37,239-frame stress test. runs/sol-20261116/caps-audit-self-test.log exits 0,
+including both pinned guard hashes and the cap-lint controls. All six verifier
+runs used verify.sh serially, CARGO_BUILD_JOBS=1 and timeout 25m, and appear in
+RUNLOG.tsv. Pre-edit backups are runs/sol-20261116/caps-before/. No assumptions,
+admissions, external bodies, unsafe code, axioms, solver-limit changes, commits
+or surviving background jobs were introduced. Temporary control sources are
+not the durable evidence; the run logs and source-hash record are.
+
+The semantic statement chain is STILL public API -> existing ML -> shared
+prefix/suffix-chain model. There is no independent ST string-table layer,
+no ML/ST simulation and no executable-chain-to-ST representation lemma yet;
+the [1,2] at code 6 obligation remains open. Resume Task 2 only after deciding
+how to close the permitted-cap-change blocker above, or explicitly separating
+that remaining Task 1 work from the independent-dictionary proof.
+
+## T-LZW literal-domain counterexample (Sol, runs 613-614)
+
+After the coordinator accepted Task 1 as partial and requested Task 2, source
+review found an unsatisfiable part of the frozen representation clause itself.
+THEOREMS.md:71 quantifies over every literal c < clear, including the extended
+RB literal domain when m >= 9, and requires model_table[c][0] = code_first.
+The requested independent dictionary has type Seq<Seq<u8>>. For m=9, clear=512
+and c=256, code_first(t,9,256,4096)=256 and code_suffix(t,9,256)=256 by their
+literal rules. No u8 element of any string can equal 256. This is the smallest
+supported m and literal c exposing the contradiction. It already occurs in
+the initial dictionary, without consuming any input or reading any table byte.
+The actual checked-literal guard rejects such a code before a chain walk, so
+this is not a public-output counterexample at the current caps.
+
+New src/representation_domain.rs, registered in src/lib.rs, proves the
+counterexample for every correctly sized executable reservation and every
+4096-entry byte-string dictionary whose entry 256 has length one (the length
+the frozen literal rule requires). Its first byte cannot equal code_first.
+The lemma also proves that the executable literal chain has length one and
+its element is below 256, whereas code_first is 256. Its preconditions are
+satisfiable, for example with a zeroed reservation and singleton-zero strings.
+This is a refutation of the universal first-byte obligation, NOT an independent
+ST model or a proof of the requested representation theorem.
+
+Proposed erratum, not applied: for checked-literal policies, restrict the
+representation lemma's literal arm to 0 <= c < min(clear,256), retaining the
+whole stored-entry arm clear+2 <= c < next and the checked-root invariant.
+Require the existing checked-literal guard to reject the excluded literal
+codes before any resolution/emission or table insertion. This preserves all
+observable G10 behavior. An integer-string model would be another possible
+design, but it would not satisfy the requested Seq<Seq<u8>> layer without a
+separate checked conversion theorem. No frozen statement was changed and no
+invalid literal was silently excluded from the claimed theorem.
+
+Run 614 verifies 698, 0 errors. Run 613 was a failed exploratory proof that
+additionally asserted 256int as u8 == 0; Verus treats that out-of-range ghost
+cast as an unspecified byte, so the final proof does not assume a truncation
+value and uses only the byte's type bound. Both runs are in RUNLOG.tsv.
+runs/sol-20261116/representation-domain-release-tests.log passes all existing
+release tests; representation-domain-audit-self-test.log exits 0, including
+the cap lint and pinned guard hashes. The pre-registration lib.rs backup is
+runs/sol-20261116/caps-before/lib-before-string-domain.rs. No public contract,
+frozen file, guard file, assumption, admission, external body, unsafe code,
+axiom, solver limit, commit or background job was added or changed.
+
+Task 2 remains blocked on the literal-domain decision. No ST step/fold,
+ML/ST simulation, executable-chain/ST representation proof or independent
+m=2 literals 1,2 -> table[6]=[1,2] witness is claimed. The current public
+statement chain remains API -> ML -> shared prefix/suffix-chain model.
+
+## Independent ST representation layer completed on E4's domain (Sol, runs 615-625)
+
+Run 625 verifies **718, 0 errors**, 23 seconds, 2,716 MiB peak summed RSS.
+This section supersedes the preceding Task 2 blocker as an implementation
+resume point: after the coordinator recorded proposed E4 and directed work on
+its restricted literal domain, the independent model and its bridges were
+completed. E4 is still proposed, not owner-approved. The proof does NOT claim
+the impossible unrestricted literal-domain statement of frozen THEOREMS.md:71.
+Task 1 remains partial for the previously recorded E3 and dimension-cap issues.
+
+### Independent dictionary and observation simulation
+
+New src/string_model.rs defines State.table: Seq<Seq<u8>> and
+State.prev: Option<Seq<u8>>, initial, clear, resolve, emit, step, fold and ST.
+The definitions never read a prefix/suffix/length representation. They reuse
+only mathematical code extraction, powers, the minimum-size predicate and the
+common observation/error types, not ML's dictionary operations. Initialization
+assigns singleton strings to byte-readable literals and empty strings to
+unreadable slots. Clear independently resets this dictionary and prev while
+preserving emitted output. The sole insertion is prev ++ [first(cur)]; KwKwK
+resolves prev ++ [first(prev)], and full-table non-Clear steps add nothing.
+The excluded checked literals are rejected before resolution or insertion.
+
+The readable domain is 0 <= c < min(clear,256) or clear+2 <= c < next. The
+simulation relation relates only this domain; it additionally proves decreasing
+prefix links, byte roots and the previous-string relation. lemma_initial,
+lemma_clear and lemma_emit preserve it. lemma_step proves lockstep control and
+state simulation, including exact error-prefix indices, error kind, position
+and E4. lemma_fold lifts the relation over the finite bitstream.
+theorem_ml_st proves ML(m,D,A,ps) == ST(m,D,A,ps) for 1 <= m <= 11 and
+(m <= 8 or ps.checked_literals). It has no valid-input, successful-result or
+minimum-size-admissibility precondition: invalid admissibility gives the same
+initial error in both models. These conditions cover the actual core policies.
+Separate independent lemmas state KwKwK and full-table deferred-clear facts.
+
+### Executable table representation and actual-call connection
+
+theorem_representation connects the independent string at every readable c to
+the actual reservation: chain(t,m,c)=table[c], its length equals code_len, its
+first byte equals code_first, its last byte equals code_suffix, and its length
+is between one and LZW_CODES. The proof crosses raw_prefix/raw_suffix/raw_length
+and the executable readable-range and cached-length invariants. Literal facts
+come from the code, never from the raw bytes of literal slots. The quantified
+package theorem_all_represented exports this result as represented(t,m,s).
+
+Actual lzw::decode now carries an independent ghost sst alongside its existing
+ML state. Its loop invariant includes relates and represented; construction,
+Clear and each actual run_code insertion establish them. The insertion proof
+also runs before a raster-crossing return, so an inserted entry is represented
+even when emission subsequently ends at TooManyPixels or StopAtRaster.
+lemma_accepted_code ties the checked-literal guard to the byte-readable domain.
+The independent model is not defined by this executable ghost state: sst
+advances by the separately defined string-table transitions proved to simulate
+ML. This makes the representation lemma an actual decoder invariant rather
+than an uncalled implication about arbitrarily chosen representations.
+
+Both decode and the real frame adapter decode_image_data retain their existing
+contracts and additionally ensure report_matches against ST, raster equality
+against ST.idx and colour_observation against ST.idx. No existing public or
+helper contract was weakened for this layer. src/lib.rs registers the model
+under cfg(verus_only); its string-table states are proof-only and add no runtime
+allocation or work loop to the decoder.
+
+The final statement chain is: public still/iterator contracts -> existing
+MS/MF/frame models -> the actual decode_image_data/decode ML observations ->
+the proved ML == ST observation equality -> independent byte-string G10
+semantics. At each concrete table state, the live representation invariant
+connects the raw reservation's chain, length, first and suffix to ST.table.
+This chain proves Task 2 on E4's corrected readable domain, and explicitly
+depends on E4 for matching the frozen representation statement. It does not
+apply E3 or resolve the separately proposed reachable-domain erratum E2.
+
+### The reviewer's code-6 obligation and validation
+
+lemma_literal_pair_steps uses the actual encoded first two codes in payload
+[17]: m=2, literals 1 and 2, at positions 3 and 6. Before consulting any chain,
+the independent dictionary acquires table[6]=[1,2], next=7. The complete
+independent witness for payload [145,11] (codes 1,2,6,EOI, widths 3,3,3,4)
+proves indices [1,2,1,2], success, bit position 13 and E4=false.
+
+lzw::witness_literal_pair_entry calls the REAL add_entry storage operation
+for the second literal, with an arbitrary correctly sized reservation. It
+proves raw prefix 6=1, suffix 6=2, stored length 6=2, code_first 6=1 and
+chain 6=[1,2]=the independently evolved table[6]. The reservation may contain
+stale literal lengths: no premise says raw stored_length(1)=1. The new runtime
+regression exercises both this real-call witness and the complete decoder on
+zero-filled and 0xa5-filled storage, including exact report and emission log.
+
+runs/sol-20261116/string-model-release-tests.log passes six library/report tests,
+seven conformance functions covering 373 vectors, four allocation-fault tests
+and the 37,239-frame stress test. string-model-audit-self-test.log exits 0 with
+both guard hashes and the cap-lint controls. All 14 FREEZE.txt hashes match.
+The final combined halved-cap control, run 624, also verifies 718: only the
+MAX_INPUT declaration differs (134217728); every other Rust source is
+byte-identical. Its durable source-hash record is
+runs/sol-20261116/caps-input-half-with-st-control.txt. Earlier run 610 still
+supplies the caps_ok negative control; no unapproved restriction was added.
+
+Runs 615-625 are recorded in RUNLOG.tsv. Run 616 exposed missing raw-array
+agreement facts in the representation proof; 617 added them. Run 619 hit the
+default compute recursion limit on symbolic local states; 620 used closed
+literal terms instead, without a limit increase. Run 621 needed the existing
+raw-agreement quantifier to use table_agrees' exact <= next-1 interval; 622
+proved the equivalent formulation. An initial release build exposed the model
+enum's proof-only import, fixed by gating the whole model module. No assumptions,
+admissions, external bodies, unsafe code, axioms, solver/compute limit changes,
+frozen/guard edits, commits or surviving background jobs were introduced.
+Pre-integration and intermediate source backups are under
+runs/sol-20261116/string-before/. No further Task 2 proof work is pending on the
+chosen E4 domain; remaining decisions are owner approval of errata and the
+Task 1 issues explicitly retained above.

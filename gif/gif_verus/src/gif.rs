@@ -262,24 +262,24 @@ fn reserve(
         reveal(crate::parse::hdr_ok);
         reveal(crate::parse::hdr_inv);
     }
-    // 4·W·H <= MAX_OUTPUT = alloc_guard::MAX_BYTES, and >= 4 (hdr_inv).
+    // 4·W·H <= MAX_OUTPUT <= alloc_guard::MAX_BYTES, and >= 4 (hdr_inv).
     let w = hdr.width as u32;
     let h = hdr.height as u32;
     proof {
         assert(1 <= hdr.width as int <= crate::model::max_dimension());
         assert(1 <= hdr.height as int <= crate::model::max_dimension());
-        assert(crate::model::max_dimension() == 65535);
+        crate::limits::caps_ok();
         assert(w == hdr.width);
         assert(h == hdr.height);
-        assert(1 <= w <= 65535);
-        assert(1 <= h <= 65535);
+        assert(1 <= w <= u16::MAX as u32);
+        assert(1 <= h <= u16::MAX as u32);
         // `hdr_ok` gives the model record, and `mh_bounds` its area cap.
         let m = choose|m: crate::model::HeaderM| crate::model::mh(b@) == Ok(m) && crate::parse::hdr_matches(b@, m, *hdr);
         crate::model::lemma_mh_ok_bounds(b@, m);
         reveal(crate::parse::hdr_matches);
         assert(4 * (w as int) * (h as int) <= crate::model::max_output());
         crate::model::lemma_4wh_usize(w, h);
-        assert(crate::model::max_output() == crate::alloc_guard::MAX_BYTES);
+        assert(crate::model::max_output() <= crate::alloc_guard::MAX_BYTES);
     }
     let n = 4 * (w as usize) * (h as usize);
     proof {

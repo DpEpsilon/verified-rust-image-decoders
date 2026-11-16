@@ -39,6 +39,21 @@ fn run(t:&mut [u8],m:u32,d:&[u8],area:u32,stop:bool,checked:bool,rejected:Option
 }
 
 #[test]
+fn independent_literal_pair_storage_and_decode() {
+    for fill in [0u8,0xa5u8] {
+        let mut t=vec![fill;LZW_TABLE_BYTES];
+        witness_literal_pair_entry(&mut t);
+        assert_eq!((prefix_get(&t,6),suffix_get(&t,6),stored_len(&t,6)),(1,2,2));
+        t.fill(fill);
+        // Codes 1,2,6 use three bits; adding entry 7 widens EOI to four bits.
+        let (r,h)=run(&mut t,2,&[145,11],4,false,false,None);
+        assert_eq!(h,vec![(0,1),(1,2),(3,2),(2,1)]);
+        assert_eq!((r.written,r.error,r.pos,r.e4),(4,None,13,false));
+        assert_eq!((prefix_get(&t,6),suffix_get(&t,6),stored_len(&t,6)),(1,2,2));
+    }
+}
+
+#[test]
 fn reverse_kwkwk_and_crossing_observations() {
     let mut t=vec![0xa5;LZW_TABLE_BYTES];
     let d=[140,11];

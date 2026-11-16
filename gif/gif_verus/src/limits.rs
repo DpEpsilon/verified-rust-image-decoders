@@ -26,4 +26,24 @@ pub const MAX_FRAMES: u32 = 65_536;
 /// Sum of `w·h` over the image descriptors processed (G8). 2^30.
 pub const MAX_TOTAL_PIXELS: u64 = 1 << 30;
 
+/// G1's derived bounds, checked once against the configured caps. This lemma
+/// has no precondition: changing a cap outside this domain fails verification
+/// here rather than silently adding an assumption to any decoder theorem.
+/// The LE16 wire domain stays fixed even when MAX_DIMENSION is lowered.
+pub proof fn caps_ok()
+    ensures
+        MAX_DIMENSION <= u16::MAX,
+        (MAX_INPUT as int) + (u16::MAX as int) + 1 <= u32::MAX,
+        (MAX_INPUT as int) + (u16::MAX as int) + 1 <= usize::MAX,
+        MAX_OUTPUT <= crate::alloc_guard::MAX_BYTES,
+        MAX_OUTPUT <= u32::MAX,
+        MAX_OUTPUT <= usize::MAX,
+        4 * (MAX_DIMENSION as int) * (MAX_DIMENSION as int) <= u64::MAX,
+        (MAX_TOTAL_PIXELS as int) + (MAX_DIMENSION as int) * (MAX_DIMENSION as int) <= u64::MAX,
+        (MAX_DIMENSION as int) * (MAX_DIMENSION as int) <= u32::MAX,
+        3 * (MAX_DIMENSION as int) <= u32::MAX,
+{
+    assert((MAX_TOTAL_PIXELS as int) + (MAX_DIMENSION as int) * (MAX_DIMENSION as int) <= u64::MAX) by(compute);
+}
+
 } // verus!

@@ -263,8 +263,8 @@ pub fn parse_header(b: &[u8]) -> (r: Result<Header, Error>)
         crate::model::lemma_le16_lt(b@, 8);
         assert(w as int == crate::model::le16(b@, 6));
         assert(h as int == crate::model::le16(b@, 8));
-        assert(w <= 65535);
-        assert(h <= 65535);
+        assert(w <= u16::MAX as u32);
+        assert(h <= u16::MAX as u32);
     }
     if !(1 <= w && w <= MAX_DIMENSION && 1 <= h && h <= MAX_DIMENSION) {
         proof {
