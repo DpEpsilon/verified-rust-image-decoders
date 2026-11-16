@@ -7,6 +7,8 @@
    R-stream: Strict decode_frames ends at the Trailer -> RecommendedBeta returns the same info,
    the same frame records (every field), recovered=false on each, and ends at the Trailer;
    R-prefix: every frame Strict returns before an error is returned identically by RecommendedBeta.
+   R compares every field policy_oracle returns; version, background_index and aspect are not among
+   them (see INFO_ONLY_IN_GIF_ORACLE).
 3. Profile agreement with the measured incumbents (probes/results.json):
    ImageCrateCompat-0.25.10 vs `image` (into_frames) and `glycin`;
    GdkCompat-2.42.12 vs `gdk-loader` (static image, whole buffer) and `gdk-anim`.
@@ -43,13 +45,29 @@ def inputs():
     return seen
 
 
-def strip(res):
+# Info fields that gif_oracle returns and policy_oracle does not (THEOREMS.md D15). No check here
+# compares them: the bridge drops them from gif_oracle's result, and obligation R compares two
+# policy_oracle results, which lack them. On the models they are equal by lemma L-MHP (MH_p = MH for
+# every record: the header, and with it version, background_index and aspect, does not depend on the
+# profile). TODO(P1): if policy_oracle.py ever returns them, strip_r compares them already; then empty
+# INFO_ONLY_IN_GIF_ORACLE so that the bridge compares them too.
+INFO_ONLY_IN_GIF_ORACLE = ('version', 'background_index', 'aspect')
+
+
+def strip_r(res):
+    """Obligation R: every field policy_oracle returns except the `recovered` flags and the event sets
+    (the flags are checked separately)."""
     if 'frames' in res:
         res = dict(res, frames=[{k: v for k, v in f.items() if k not in ('recovered', 'events')} for f in res['frames']])
-        res.pop('background_index', None)
-        res.pop('aspect', None)
-        res.pop('version', None)
     return {k: v for k, v in res.items() if k != 'recovered'}
+
+
+def strip(res):
+    """Strict bridge: strip_r, minus the Info fields that only gif_oracle returns."""
+    res = strip_r(res)
+    if 'frames' in res:
+        res = {k: v for k, v in res.items() if k not in INFO_ONLY_IN_GIF_ORACLE}
+    return res
 
 
 def bridge(ins):
@@ -70,20 +88,20 @@ def obligation_r(ins):
         s, r = PO.decode_still(b, PO.STRICT), PO.decode_still(b, PO.RECOMMENDED_BETA)
         if 'error' not in s:
             still_ok += 1
-            if strip(r) != strip(s) or r.get('recovered'):
+            if strip_r(r) != strip_r(s) or r.get('recovered'):
                 bad += 1
                 print('R-still', name)
         f, g = PO.decode_frames(b, PO.STRICT), PO.decode_frames(b, PO.RECOMMENDED_BETA)
         gf = g.get('frames', [])
         for i, fr in enumerate(f.get('frames', [])):
             nframes += 1
-            if i >= len(gf) or strip({'frames': [gf[i]]}) != strip({'frames': [fr]}) or gf[i]['recovered']:
+            if i >= len(gf) or strip_r({'frames': [gf[i]]}) != strip_r({'frames': [fr]}) or gf[i]['recovered']:
                 bad += 1
                 print('R-prefix', name, i)
                 break
         if f.get('end') == 'trailer':
             stream_ok += 1
-            if strip(g) != strip(f) or any(x['recovered'] for x in gf):
+            if strip_r(g) != strip_r(f) or any(x['recovered'] for x in gf):
                 bad += 1
                 print('R-stream', name)
     print(f'obligation R: {still_ok} Strict-accepted still inputs, {stream_ok} Strict-accepted streams, '

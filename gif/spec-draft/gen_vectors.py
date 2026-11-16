@@ -256,10 +256,10 @@ add('screen-output-exact-cap-no-image/frames', 'frames', header(8192, 2048, PAL4
 add('gct-truncated', 'still', header(4, 3, PAL4)[:20], err('TruncatedColorTable'))
 add('header-only-gct-trailer', 'frames', header(4, 3, PAL4) + TRAILER, frames_ok(4, 3, []))
 add('header-only-gct-trailer/still', 'still', header(4, 3, PAL4) + TRAILER, err('NoImage'))
-V.append({'name': 'over-64m', 'entry': 'still', 'input_hex': base.hex(), 'pad_to': 67_108_865, 'expected': err('FileTooLarge')})
-V.append({'name': 'exact-64m-trailing', 'entry': 'still', 'input_hex': base.hex(), 'pad_to': 67_108_864,
+V.append({'name': 'over-256m', 'entry': 'still', 'input_hex': base.hex(), 'pad_to': 268_435_457, 'expected': err('FileTooLarge')})
+V.append({'name': 'exact-256m-trailing', 'entry': 'still', 'input_hex': base.hex(), 'pad_to': 268_435_456,
           'expected': still_ok(4, 3, from_indices(ix, PAL4))})
-V.append({'name': 'exact-64m-trailing/frames', 'entry': 'frames', 'input_hex': base.hex(), 'pad_to': 67_108_864,
+V.append({'name': 'exact-256m-trailing/frames', 'entry': 'frames', 'input_hex': base.hex(), 'pad_to': 268_435_456,
           'expected': frames_ok(4, 3, [frame((0, 0, 4, 3), from_indices(ix, PAL4))], end=err('TrailingBytes'))})
 
 # ---------------------------------------------------------------- stream structure
@@ -383,6 +383,12 @@ both('lzw-table-full-clear', header(128, 64, pal256) + image(0, 0, 128, 64, big,
 both('lzw-table-full-deferred-clear', header(128, 64, pal256) + image(0, 0, 128, 64, big, m=8, clear_on_full=False) + TRAILER,
      128, 64, from_indices(big, pal256))
 rnd4 = [rnd.randrange(4) for _ in range(64 * 64)]
+# Despite its name (kept: vector names are fixed), lzw-m2-reaches-12-bits reaches code width 11 only:
+# its 1,268 bytes cannot carry the 2,042 codes needed for next = 2048. No record of at most 4,096 bytes
+# reaches width 12 or a full table. Width 12 is reached by the two lzw-table-full-* records and
+# screen-32768x100, a full table (next = 4096) and the deferred clear only by lzw-table-full-deferred-clear.
+# The proofs rest on the symbolic lemma L-FULL (../THEOREMS.md) and on a long stress stream generated
+# at test time (../PLAN.md, M2), not on these records (SPEC.md G17).
 both('lzw-m2-reaches-12-bits', header(64, 64, PAL4) + image(0, 0, 64, 64, rnd4, m=2, clear_on_full=False) + TRAILER,
      64, 64, from_indices(rnd4, PAL4))
 add('lzw-min-code-1', 'still', header(2, 1, PAL2) + raw_image(0, 0, 2, 1, 1, [2, 0, 1, 3], widths=[2, 2, 2, 2]) + TRAILER,

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """GIF-CORE-SPEC draft 0.2: strict reference decoder (Python oracle).
 
-Every function names the SPEC.md section (G1..G18) it implements. The oracle is a
+Every function names the SPEC.md section (G1..G20) it implements. The oracle is a
 reference model: it allocates freely and is not evidence about any Rust
 implementation's memory behaviour (SPEC.md G18).
 
@@ -18,9 +18,9 @@ A frame is {'rgba': bytes (whole canvas, 4*W*H), 'rect': (left, top, width, heig
 """
 
 # G1. Limits: the only place the caps are written (theorems are stated over these names).
-MAX_INPUT = 67_108_864
+MAX_INPUT = 268_435_456          # 256 MiB = 2^28 (owner decision 2026-11-16)
 MAX_DIMENSION = 65_535          # the GIF wire limit (LE16): no separate per-side cap (Q8)
-MAX_OUTPUT = 67_108_864
+MAX_OUTPUT = 67_108_864          # 64 MiB: limited by the shared alloc guard MAX_BYTES; owner intends to raise both later (2026-11-16)
 MAX_FRAMES = 65_536
 MAX_TOTAL_PIXELS = 1 << 30
 
@@ -49,12 +49,12 @@ class GifError(Exception):
 
 
 def le16(b, i):
-    """D1 (conventions): unsigned little-endian 16-bit word; caller proves i+2 <= len(b)."""
+    """SPEC.md Conventions (LE16): unsigned little-endian 16-bit word; caller proves i+2 <= len(b)."""
     return b[i] | (b[i + 1] << 8)
 
 
 def need(b, p, n, err):
-    """D2 (conventions): guarded read; raise `err` unless n bytes exist at p."""
+    """SPEC.md Conventions ("require n bytes at p, else E"): guarded read; raise `err` unless n bytes exist at p."""
     if p + n > len(b):
         raise GifError(err)
 
@@ -184,28 +184,28 @@ def read_image_data(b, p):
 
 def lzw_decode(m, data, area, emit):
     """G10 variable-length-code LZW. Calls emit(q, index) for output position q
-    in stream order; enforces the G10 pixel-count and end-code rules."""
+    in stream order; enforces the G10.2 pixel-count and end-code rules (steps 1-8)."""
     clear, eoi = 1 << m, (1 << m) + 1
     nbits = len(data) * 8
     pos = 0                          # bit position of the next code
     width = m + 1
-    table = [bytes([i]) for i in range(clear)] + [b'', b'']   # G10.1 initial table
+    table = [bytes([i]) for i in range(clear)] + [b'', b'']   # G10.1 state: the initial table
     prev = None                      # previous code's string, None right after a clear
     q = 0                            # pixels produced
     while True:
-        if pos + width > nbits:      # G10.5: data exhausted without EOI
+        if pos + width > nbits:      # G10.2 step 1: fewer than `width` bits remain
             raise GifError('TooFewPixels' if q < area else 'MissingEndOfInformation')
         code = 0
-        for k in range(width):       # G10.2: LSB-first packing
+        for k in range(width):       # G10.2 step 2 (G10 preamble: LSB-first packing)
             i = pos + k
             code |= ((data[i >> 3] >> (i & 7)) & 1) << k
         pos += width
-        if code == clear:            # G10.3
+        if code == clear:            # G10.2 step 3
             table, width, prev = table[:clear + 2], m + 1, None
             continue
         if q == area and code != eoi:
-            raise GifError('MissingEndOfInformation')   # G10.5: raster complete, no EOI
-        if code == eoi:              # G10.4
+            raise GifError('MissingEndOfInformation')   # G10.2 step 4: raster complete, no EOI
+        if code == eoi:              # G10.2 step 5
             if q < area:
                 raise GifError('TooFewPixels')
             if (pos + 7) // 8 < len(data):
@@ -214,14 +214,14 @@ def lzw_decode(m, data, area, emit):
         if code < len(table) and code not in (clear, eoi):
             s = table[code]
         elif code == len(table) and prev is not None and len(table) < 4096:
-            s = prev + prev[:1]      # G10.3: the KwKwK case
+            s = prev + prev[:1]      # G10.2 step 6: the KwKwK case
         else:
             raise GifError('InvalidLzwCode')
         if prev is not None and len(table) < 4096:
             table.append(prev + s[:1])
             if len(table) == (1 << width) and width < 12:
-                width += 1           # G10.3: widen after the table reaches 2**width
-        prev = s
+                width += 1           # G10.2 step 7: widen after the table reaches 2**width
+        prev = s                     # G10.2 step 8
         for idx in s:
             if q >= area:
                 raise GifError('TooManyPixels')

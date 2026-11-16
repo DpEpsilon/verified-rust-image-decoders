@@ -95,3 +95,5 @@ cd icns/icns_verus && cargo test && cargo verus verify     # same for tga/tga_ve
 `reviews/`: independent reviews (Sol, Sonnet, Fable) and the Verus-vs-Creusot comparison. `*/BRIEF.md`, `LEDGER.md`: how the agents were run and what it cost.
 
 MIT licensed (`LICENSE`). Spec fidelity notes cite gdk-pixbuf (LGPL) behaviour; no code was copied from it.
+
+Before any release declaration, see `RELEASE-GATES.md` for items to raise with the owner.

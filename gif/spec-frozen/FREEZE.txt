@@ -1,0 +1,18 @@
+# GIF-CORE-SPEC 1.0 (frozen 2026-11-16); RecommendedBeta and policy-draft NOT frozen (Q9)
+# check_vectors.py imports ../policy-draft/policy_oracle.py, which imports ../spec-draft/gif_oracle.py;
+# both hashes at freeze are recorded below (D16)
+# caps at freeze: MAX_INPUT 256 MiB, MAX_OUTPUT 64 MiB (bounded by the shared guard MAX_BYTES; owner intends to raise both later, see ../../RELEASE-GATES.md)
+fe7e216db3b5c7865997d38fb4cf8588358da1b1f14cc12172985ebd6dd5a853  SPEC.md
+724d487a10312b572a1762f02f4b8547d594464babf85e4cc6af9a51e0986309  DESIGN-NOTES.md
+b36f1891dad6897f203f90676ee77f85ae61676bc3c9587ba15d142038c2506f  SOURCES.md
+2bf59a0961f713fdc28526865cd7c996ba8dfc5b79e8478b751888fd86b6dfc4  VECTORS.json
+b9741085a668f1fe9df637a902d0e1df22171d438d0ea8e7bb1421729887edc4  gif_oracle.py
+3dfb242d2d0fe1b84358dfcb3740924042fa6cba0ef13087f92e7846ed80678f  gen_vectors.py
+5f63516537efdecb3e57fe6817da1c012dd6852f790305b455f1c9893d124787  check_vectors.py
+2e9668e2dbd73035687d1350c206b8ae5d5e067fdf894348f93644aebc9588e3  check_plays.py
+c0e48c12e3e91b1e78090caffb1d1ffe8e7d0face4350da675044a9a4be02aa3  sources/spec-gif89a.txt
+ec52271ba06a0c13771ef6a9a9895869cec6b3d45da11e71661258d27c2364c6  ../THEOREMS.md
+649c0063121bee51b35b49192a1a9e5772ea7de5b589ac09e76033490839a0ff  ../REVIEW-BRIEF.md
+0416e14b5b2b8202f51b11767bfd089dfdfa81820ce22b0e7e71d1132f9a2b9d  ../policy-draft/policy_oracle.py
+b9741085a668f1fe9df637a902d0e1df22171d438d0ea8e7bb1421729887edc4  ../spec-draft/gif_oracle.py
+296fa0c129b25c2fba52037acadb00ea2b9e45db44224b445843589aff79a0bf  ../REVIEW-SOL-THEOREMS.md
