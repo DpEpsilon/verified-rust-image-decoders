@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Checks for the PNG policy draft.
 
+(draft 0.2: RecommendedBeta changed by the 2026-11-16 owner decisions, ../DECISIONS.md)
 1. Strict bridge: policy_oracle(STRICT) equals png_oracle on every vector, probe and witness input
    (still and frames, including the first error).
 2. Obligation R: wherever Strict accepts (still: Ok; frames: every frame Strict returns), RecommendedBeta
@@ -201,7 +202,18 @@ def main():
             gain += 'error' not in PO.decode_still(b, PO.RECOMMENDED_BETA)
     print(f'RecommendedBeta accepts {gain} of the {tot} probe/vector/witness inputs that Strict rejects and image-still '
           f'or the gdk-pixbuf loader accepts.')
-    return 1 if bridge_bad or r_bad else 0
+    # PNG-Q11: RecommendedBeta's frames entry point falls back to the default image (R4) on an APNG structural error
+    r4 = r4_strict_ok = r4_err = 0
+    for b in seen:
+        r = PO.decode_frames(b, PO.RECOMMENDED_BETA)
+        if 'error' in r:
+            r4_err += 1
+        elif any('R4' in f.get('events', ()) for f in r['frames']):
+            r4 += 1
+            r4_strict_ok += 'error' not in O.decode_frames(b)
+    print(f'RecommendedBeta frames: {r4} of {len(seen)} inputs fall back to the default image (R4), '
+          f'{r4_strict_ok} of them accepted by Strict (must be 0); {r4_err} inputs still return an error.')
+    return 1 if bridge_bad or r_bad or r4_strict_ok else 0
 
 
 if __name__ == '__main__':

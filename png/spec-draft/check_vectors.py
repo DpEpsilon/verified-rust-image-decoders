@@ -16,6 +16,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import png_oracle as O  # noqa: E402
+sys.path.insert(0, str(HERE.parent / 'policy-draft'))
+import policy_oracle as PO  # noqa: E402
 
 
 def runs(pix, digits=8):
@@ -40,7 +42,28 @@ def materialize(v):
     return b
 
 
+def actual_profile(v):
+    """Records with `profile` other than Strict (P19): the profile's still/frames entry point, with recovered and events."""
+    b, P = materialize(v), PO.PROFILES[v['profile']]
+    if v['entry'] == 'still':
+        r = PO.decode_still(b, P)
+        if 'error' in r:
+            return {'error': r['error']}
+        return {'width': r['width'], 'height': r['height'], 'rgba_runs': runs(quads(r['rgba'])),
+                'recovered': r['recovered'], 'events': r['events']}
+    assert v['entry'] == 'frames', v['name']
+    r = PO.decode_frames(b, P)
+    if 'error' in r:
+        return {'error': r['error']}
+    return {'width': r['width'], 'height': r['height'], 'num_plays': r['num_plays'], 'end': r['end'],
+            'frames': [{'rect': f['rect'], 'delay': f['delay'], 'dispose': f['dispose'], 'blend': f['blend'],
+                        'rgba_runs': runs(quads(f['rgba'])), 'recovered': f['recovered'], 'events': f['events']}
+                       for f in r['frames']]}
+
+
 def actual(v):
+    if v.get('profile', 'Strict') != 'Strict':
+        return actual_profile(v)
     b = materialize(v)
     e = v['entry']
     if e == 'still':
@@ -187,6 +210,8 @@ def main():
             bad += 1
             print('MISMATCH', v['name'], json.dumps(a)[:300], 'expected', json.dumps(v['expected'])[:300])
         e = v['expected']
+        if v.get('profile', 'Strict') != 'Strict':
+            continue            # P19: the error list counts Strict records only
         if 'error' in e:
             seen.add(e['error'])
         elif isinstance(e.get('end'), dict):

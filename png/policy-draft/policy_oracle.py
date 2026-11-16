@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PNG policy draft 0.1: the strict oracle (../spec-draft/png_oracle.py) indexed by an option
+"""PNG policy draft 0.2 (owner decisions of 2026-11-16 applied, ../DECISIONS.md): the strict oracle (../spec-draft/png_oracle.py) indexed by an option
 record. Every option site names its OPTIONS.md field; with STRICT the results equal png_oracle
 on every input (check: validate.py, Strict bridge).
 
@@ -25,14 +25,20 @@ STRICT = {
     'image_data_error': 'Reject', 'depth16': 'Round', 'apng_in_still': 'Validate', 'apng_errors': 'Reject',
     'blend': 'Exact', 'dispose_previous': 'Spec', 'apng16': 'Composite', 'subframe_interlace': 'Exact',
 }
-RECOMMENDED_BETA = dict(STRICT, crc_ancillary='Skip', iend='Lenient', missing_iend='AtEof', trailing='Ignore',
+# RecommendedBeta (provisional): 15 of the 30 fields differ from Strict. Fourteen are full relaxations;
+# zlib_tail is narrowed (PNG-Q1: IgnoreTail ignores bytes after the Adler-32-checked end of the zlib stream
+# but surplus decompressed output stays ExcessImageData). crc_ancillary=SkipExceptFdat is PNG-Q2 (a bad CRC
+# on IHDR, PLTE, IDAT or fdAT is rejected); apng_errors=Static is PNG-Q11 (R4).
+RECOMMENDED_BETA = dict(STRICT, crc_ancillary='SkipExceptFdat', iend='Lenient', missing_iend='AtEof', trailing='Ignore',
                         ancillary_order='Drop', ancillary_duplicate='FirstWins', ancillary_values='Drop',
                         trns_invalid='Drop', plte_unexpected='Ignore', palette_size='Allow', palette_index='Black',
-                        zlib_tail='Ignore', window='Ignore', apng_in_still='Ignore')
-GDK = dict(RECOMMENDED_BETA, reserved_bit='RejectBeforeIdat', zlib_tail='StopAtRaster', eof='GdkPartial', image_data_error='GdkGrey', depth16='HighByte',
+                        zlib_tail='IgnoreTail', window='Ignore', apng_in_still='Ignore', apng_errors='Static')
+# The two compatibility profiles keep the field values they were fitted with (draft 0.1's RecommendedBeta).
+_DRAFT01 = dict(RECOMMENDED_BETA, crc_ancillary='Skip', zlib_tail='Ignore', apng_errors='Reject')
+GDK = dict(_DRAFT01, reserved_bit='RejectBeforeIdat', zlib_tail='StopAtRaster', eof='GdkPartial', image_data_error='GdkGrey', depth16='HighByte',
            apng_errors='Static', apng_in_still='Ignore')
 GDK['apng'] = 'Off'
-IMAGE = dict(RECOMMENDED_BETA, chunk_type='Ancillary', after_idat='ImageRs', missing_iend='Reject',
+IMAGE = dict(_DRAFT01, chunk_type='Ancillary', after_idat='ImageRs', missing_iend='Reject',
              ancillary_order='ImageRs', ancillary_values='ImageRs', trns_invalid='ImageRs', adler='Ignore',
              stream_end='AtRaster', single_code='Reject', apng_in_still='ImageRs', apng_errors='Prefix',
              blend='ImageF32', dispose_previous='ImageRs', apng16='Reject', subframe_interlace='CanvasStride')
@@ -41,13 +47,13 @@ for _p in (STRICT, RECOMMENDED_BETA, IMAGE):
 PROFILES = {'Strict': STRICT, 'RecommendedBeta': RECOMMENDED_BETA, 'GdkCompat-2.42.12': GDK,
             'ImageCrateCompat-0.25.10': IMAGE}
 VALUES = {
-    'crc_critical': ('Reject', 'Ignore'), 'crc_ancillary': ('Reject', 'Skip', 'Ignore'), 'iend': ('Strict', 'Lenient'),
+    'crc_critical': ('Reject', 'Ignore'), 'crc_ancillary': ('Reject', 'Skip', 'SkipExceptFdat', 'Ignore'), 'iend': ('Strict', 'Lenient'),
     'chunk_type': ('Reject', 'Ancillary'), 'reserved_bit': ('Accept', 'Reject', 'RejectBeforeIdat'), 'after_idat': ('Full', 'ImageRs'),
     'missing_iend': ('Reject', 'AtEof'), 'eof': ('Reject', 'GdkPartial'), 'trailing': ('Reject', 'Ignore'),
     'ancillary_order': ('Reject', 'Drop', 'ImageRs'), 'ancillary_duplicate': ('Reject', 'FirstWins'),
     'ancillary_values': ('Reject', 'Drop', 'ImageRs'), 'trns_invalid': ('Reject', 'Drop', 'ImageRs'),
     'plte_unexpected': ('Reject', 'Ignore'), 'palette_size': ('Reject', 'Allow'), 'palette_index': ('Reject', 'Black'),
-    'adler': ('Check', 'Ignore'), 'stream_end': ('Require', 'AtRaster'), 'zlib_tail': ('Reject', 'Ignore', 'StopAtRaster'),
+    'adler': ('Check', 'Ignore'), 'stream_end': ('Require', 'AtRaster'), 'zlib_tail': ('Reject', 'IgnoreTail', 'Ignore', 'StopAtRaster'),
     'window': ('Enforce', 'Ignore'), 'single_code': ('Accept', 'Reject'), 'image_data_error': ('Reject', 'GdkGrey'),
     'depth16': ('Round', 'HighByte'), 'apng_in_still': ('Validate', 'Ignore', 'ImageRs'),
     'apng_errors': ('Reject', 'Static', 'Prefix'), 'blend': ('Exact', 'ImageF32'), 'dispose_previous': ('Spec', 'ImageRs'),
@@ -120,6 +126,7 @@ def zlib_decompress(data, limit, limit_error, P, ev, partial=None, trace=None):
     if flg & 0x20:
         fail('ZlibPresetDictionary')
     window = 1 << 15 if P['window'] == 'Ignore' else 1 << ((cmf >> 4) + 8)
+    # IgnoreTail (RecommendedBeta) leaves the limit at `limit`: another output byte is ExcessImageData.
     lim = limit + 1 if (P['zlib_tail'] == 'Ignore' or P['stream_end'] == 'AtRaster') else limit
     stop = P['zlib_tail'] == 'StopAtRaster'                 # libpng: stop inflating at the first surplus byte
     saved = O.Huffman.__init__
@@ -238,7 +245,7 @@ def _walk(b, P, ev, entry, box):
     fctl_before_idat = False
     pixels = 0
     apng_on = P['apng'] == 'On' and not (entry == 'still' and P['apng_in_still'] == 'Ignore')
-    lenient_actl = P['apng_errors'] == 'Prefix' or (P['apng_errors'] == 'Static' and entry == 'frames')
+    lenient_actl = P['apng_errors'] == 'Prefix'
     replace_fctl = ((P['apng_errors'] == 'Prefix' and entry == 'frames')
                     or (entry == 'still' and P['apng_in_still'] == 'ImageRs'))
     actl_ignored = False
@@ -246,6 +253,14 @@ def _walk(b, P, ev, entry, box):
     def apng_fail(name):
         if P['apng_errors'] in ('Prefix', 'Static') and entry == 'frames':
             raise ApngError(name, [f for f in doc['frames'] if f.get('closed')], doc['actl'])
+        fail(name)
+
+    def sfail(name):
+        """An APNG structural error (PNG-Q11): under apng_errors=Static the frames entry point falls back to
+        the default image (R4); otherwise it is the error itself. Allocation, resource (TooManyFrames,
+        PixelBudgetExceeded), critical-chunk (CrcMismatch) and inflate errors never come through here."""
+        if P['apng_errors'] == 'Static' and entry == 'frames':
+            raise ApngError(name, [], doc['actl'])
         fail(name)
 
     def drop(tt, reason_ok):
@@ -290,20 +305,22 @@ def _walk(b, P, ev, entry, box):
         if (entry == 'still' and P['apng_in_still'] == 'ImageRs' and t == b'fcTL' and idat == 0 and n == 26
                 and (be32(d, 12) or be32(d, 16) or be32(d, 4) != W or be32(d, 8) != H)):
             fail('InvalidFrameControl')
+        orig_t = t
         if not apng_on and t in APNG_TYPES:
             t, anc = b'\xff\xff\xff\xff', True                     # treated as an unknown ancillary chunk
         if not ok:
             if t == b'IEND':
                 if P['iend'] == 'Strict':
                     fail('CrcMismatch')
-            elif anc:
+            elif anc and not (orig_t == b'fdAT' and P['crc_ancillary'] == 'SkipExceptFdat'):
+                # PNG-Q2: the chunk's framing and bounds were checked by chunk_at before this point
                 if P['crc_ancillary'] == 'Reject':
                     fail('CrcMismatch')
-                if P['crc_ancillary'] == 'Skip':
+                if P['crc_ancillary'] in ('Skip', 'SkipExceptFdat'):
                     drop(t, True)
                     continue
-            elif P['crc_critical'] == 'Reject':
-                fail('CrcMismatch')
+            elif orig_t == b'fdAT' or P['crc_critical'] == 'Reject':
+                fail('CrcMismatch')                              # IHDR, PLTE, IDAT; fdAT under SkipExceptFdat
         # ---- duplicates and order (P5)
         if t in SINGLE and t in seen:
             if anc and P['ancillary_duplicate'] == 'FirstWins':
@@ -313,6 +330,8 @@ def _walk(b, P, ev, entry, box):
                 continue
             if t == b'PLTE' and P['plte_unexpected'] == 'Ignore' and ct in (0, 4):
                 continue
+            if t in APNG_TYPES:
+                sfail('DuplicateChunk')
             fail('DuplicateChunk')
         misplaced = ((t in BEFORE_PLTE and (doc['plte'] is not None or idat))
                      or (t in AFTER_PLTE and (idat or (doc['plte'] is None and (ct == 3 or t == b'hIST'))))
@@ -320,7 +339,7 @@ def _walk(b, P, ev, entry, box):
         if misplaced:
             if t == b'acTL' and apng_on:
                 if not lenient_actl:
-                    fail('ChunkOutOfOrder')
+                    sfail('ChunkOutOfOrder')
                 actl_ignored = True
                 continue
             if P['ancillary_order'] == 'Drop' or (P['ancillary_order'] == 'ImageRs'
@@ -338,6 +357,8 @@ def _walk(b, P, ev, entry, box):
             if t == b'acTL' and lenient_actl:
                 actl_ignored = True
                 continue
+            if t == b'acTL':
+                sfail('InvalidChunkLength')
             fail('InvalidChunkLength')
         seen.add(t)
         try:
@@ -409,7 +430,7 @@ def _walk(b, P, ev, entry, box):
                         actl_ignored = True
                         continue
                     if nf == 0:
-                        fail('InvalidAnimationControl')
+                        sfail('InvalidAnimationControl')
                 if nf > MAX_FRAMES:
                     fail('TooManyFrames')
                 doc['actl'] = {'num_frames': nf, 'num_plays': plays}
@@ -417,7 +438,7 @@ def _walk(b, P, ev, entry, box):
                 if doc['actl'] is None:
                     if lenient_actl:
                         continue                                    # fcTL without (valid) acTL: ignored
-                    fail('MissingAnimationControl')
+                    sfail('MissingAnimationControl')
                 if (replace_fctl and cur is not None and cur['source'] == 'fdAT' and not cur['parts_seen']
                         and n == 26 and be32(d, 0) == seq):
                     # png keeps only the latest frame control (stream.rs parse_fctl overwrites
@@ -443,7 +464,7 @@ def _walk(b, P, ev, entry, box):
                 if fw == 0 or fh == 0 or fx + fw > W or fy + fh > H or dop > 2 or bop > 1:
                     apng_fail('InvalidFrameControl')
                 if idat == 0 and (fx or fy or fw != W or fh != H):
-                    fail('InvalidFrameControl')                      # image rejects this even in read_info
+                    sfail('InvalidFrameControl')                      # image rejects this even in read_info
                 pixels += fw * fh
                 if pixels > MAX_TOTAL_PIXELS:
                     fail('PixelBudgetExceeded')
@@ -456,7 +477,7 @@ def _walk(b, P, ev, entry, box):
                 if doc['actl'] is None:
                     if lenient_actl:
                         continue
-                    fail('MissingAnimationControl')
+                    sfail('MissingAnimationControl')
                 if idat == 0:
                     apng_fail('ChunkOutOfOrder')
                 if n < 4:
