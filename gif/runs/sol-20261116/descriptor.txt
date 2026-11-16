@@ -1,0 +1,66 @@
+verus! {
+pub open spec fn header_model(h:Header)->crate::model::HeaderM {
+    crate::model::HeaderM {width:h.width as int,height:h.height as int,version:crate::model::version_code(h.version),
+        background_index:h.background_index as int,aspect:h.aspect as int,cursor:h.cursor as int,
+        global:match h.global {None=>None,Some(t)=>Some(crate::model::ColorTableM {off:t.offset as int,entries:t.entries as int})}}
+}
+pub open spec fn frame_header_model(h:FrameHeader)->crate::model::FrameHeaderM {
+    crate::model::FrameHeaderM {left:h.rect.left as int,top:h.rect.top as int,w:h.rect.width as int,h:h.rect.height as int,
+        interlaced:h.interlaced,table:crate::model::ColorTableM {off:h.table.offset as int,entries:h.table.entries as int},inside:h.inside}
+}
+pub open spec fn frame_header_ok(b:Seq<u8>,h:FrameHeader,c:usize,st:WalkState)->bool {
+    &&& 1<=h.rect.width<=MAX_DIMENSION && 1<=h.rect.height<=MAX_DIMENSION
+    &&& h.rect.left<=MAX_DIMENSION && h.rect.top<=MAX_DIMENSION
+    &&& 2<=h.table.entries<=256
+    &&& h.table.offset as int+3*(h.table.entries as int)<=b.len()
+    &&& c<=b.len() && st.frames_seen<MAX_FRAMES
+    &&& (st.total_pixels as int)+(h.rect.width as int)*(h.rect.height as int)<=MAX_TOTAL_PIXELS
+}
+pub open spec fn descriptor_post(b:Seq<u8>,p:usize,hdr:Header,st:WalkState,pol:Policy,r:Result<(FrameHeader,usize),Error>)->bool {
+    match r {
+        Err(e)=>crate::model::image_step(b,header_model(hdr),pol,walk_m_at(st,p))==Err(e),
+        Ok((fh,c))=>frame_header_ok(b,fh,c,st) && crate::model::image_step(b,header_model(hdr),pol,walk_m_at(st,p))
+            ==crate::model::finish_image(b,pol,walk_m_at(st,p),frame_header_model(fh),(fh.rect.width as int)*(fh.rect.height as int),c as int),
+    }
+}
+pub proof fn lemma_descriptor_area(w:u32,h:u32,total:u64)
+    requires w<=MAX_DIMENSION,h<=MAX_DIMENSION,total<=MAX_TOTAL_PIXELS,
+    ensures (w as int)*(h as int)<= (MAX_DIMENSION as int)*(MAX_DIMENSION as int),
+        (total as int)+(w as int)*(h as int)<=u64::MAX,
+{
+    assert((w as int)*(h as int)<= (MAX_DIMENSION as int)*(MAX_DIMENSION as int)) by(nonlinear_arith);
+    assert((MAX_TOTAL_PIXELS as int)+(MAX_DIMENSION as int)*(MAX_DIMENSION as int)<=u64::MAX) by(compute);
+}
+
+/// Exact G8 descriptor prefix; successful results leave G9 to `scan_image_data`.
+pub fn parse_image_descriptor(b:&[u8],p:usize,hdr:&Header,st:&WalkState,pol:&Policy)->(r:Result<(FrameHeader,usize),Error>)
+    requires p<=b.len(),b.len()<=MAX_INPUT,hdr_inv(b@,*hdr),st.total_pixels<=MAX_TOTAL_PIXELS,
+    ensures descriptor_post(b@,p,*hdr,*st,*pol,r),
+{
+    proof {hide(crate::model::finish_image);}
+    if st.frames_seen>=MAX_FRAMES {return Err(Error::TooManyFrames);}
+    if !need(b,p,10) {return Err(Error::TruncatedImageDescriptor);}
+    let left=le16(b,p+1) as u32;
+    let top=le16(b,p+3) as u32;
+    let w=le16(b,p+5) as u32;
+    let h=le16(b,p+7) as u32;
+    let packed=get(b,p+9);
+    let mut c=p+10;
+    if w==0 || h==0 {return Err(Error::InvalidFrameDimensions);}
+    let inside=left+w<=hdr.width as u32 && top+h<=hdr.height as u32;
+    let reject=match pol.frame_bounds {FrameBounds::Reject=>true,FrameBounds::Clip=>false};
+    if !inside && reject {return Err(Error::FrameOutsideScreen);}
+    proof {lemma_descriptor_area(w,h,st.total_pixels);}
+    if st.total_pixels+(w as u64)*(h as u64)>MAX_TOTAL_PIXELS {return Err(Error::PixelBudgetExceeded);}
+    let mut table=hdr.global;
+    if packed&0x80!=0 {
+        let entries=table_entries(packed);
+        let n=3*entries as usize;
+        if !need(b,c,n) {return Err(Error::TruncatedColorTable);}
+        table=Some(ColorTable {offset:c,entries});
+        c+=n;
+    }
+    let table=match table {Some(t)=>t,None=>return Err(Error::NoColorTable)};
+    Ok((FrameHeader {rect:Rect {left,top,width:w,height:h},interlaced:packed&0x40!=0,table,inside},c))
+}
+} // verus!

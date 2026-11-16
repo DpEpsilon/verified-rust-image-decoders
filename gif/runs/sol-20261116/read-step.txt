@@ -1,0 +1,82 @@
+
+verus! {
+pub enum CodeStep {
+    Halt { error: Option<Error>, pos: u32 },
+    Clear { after: u32 },
+    Emit { code: u32, after: u32 },
+}
+
+pub open spec fn control_matches(c: CodeStep, m: int, d: Seq<u8>, a: int, ps: LzwParams, st: St) -> bool {
+    match c {
+        CodeStep::Halt {error,pos} => match verdict(m,d,a,ps,st) {
+            Vd::Halt(r) => r.idx==st.o && r.pos==pos as int && !r.e4 && match r.error {
+                None => error is None, Some(e) => error==Some(err_of(e)),
+            },
+            _ => false,
+        },
+        CodeStep::Clear {after} => after as int==st.pos+st.width && verdict(m,d,a,ps,st)==Vd::Step(clear_st(m,st,after as int)),
+        CodeStep::Emit {code,after} => {
+            &&& after as int==st.pos+st.width
+            &&& st.pos+st.width<=nbits(d)
+            &&& code as int==crate::lzw_model::code_at(d,st.pos,st.width,0)
+            &&& code<TABLE_SIZE
+            &&& code as int!=lzw_clear_of(m) && code as int!=lzw_eoi_of(m)
+            &&& st.q<a
+            &&& crate::lzw_model::str_ok(m,st.next,st.prev,code as int)
+            &&& ps.checked_literals && (code as int)<lzw_clear_of(m) ==> code<256
+        },
+    }
+}
+
+/// G10.2's control checks, with no table or sink quantifiers in this query.
+fn read_step(reader: &mut BitReader, data_len: u32, m: u32, clear: u32, width: u32,
+    q: u32, area: u32, next: u32, have: bool, opts: LzwOptions, state: Ghost<St>) -> (r: CodeStep)
+    requires reader_ready(old(reader)), old(reader).data_len==data_len,
+        crate::model::sub_scan(old(reader).b@,old(reader).seq_start as int) is Some,
+        read_d(old(reader).b@,old(reader).seq_start as int).len()==data_len,
+        1<=m<=11, clear as int==lzw_clear_of(m as int), clear<=2048, 2<=width<=12,
+        q<=area, state@.q==q as int, state@.width==width as int,
+        state@.pos==(old(reader).total_bits as int)-(old(reader).bits_left as int),
+        state@.next==next as int, next<=TABLE_SIZE, have==(state@.prev>=0), state@.prev>=-1,
+    ensures reader_ready(final(reader)), final(reader).b==old(reader).b,
+        final(reader).seq_start==old(reader).seq_start, final(reader).data_len==data_len,
+        control_matches(r,m as int,read_d(old(reader).b@,old(reader).seq_start as int),area as int,lzw_ps(m,opts),state@),
+        match r {
+            CodeStep::Halt {pos,..} => pos as int <= 8*(data_len as int),
+            CodeStep::Clear {after} => final(reader).bits_left<old(reader).bits_left && after as int==(final(reader).total_bits as int)-(final(reader).bits_left as int),
+            CodeStep::Emit {after,..} => final(reader).bits_left<old(reader).bits_left && after as int==(final(reader).total_bits as int)-(final(reader).bits_left as int),
+        },
+{
+    let stop=match opts.tail {Tail::StopAtRaster=>true,Tail::Strict=>false};
+    let ghost st=state@;
+    let ghost d=read_d(reader.b@,reader.seq_start as int);
+    proof { reveal(BitReader::bit_pos_spec); }
+    if stop && q==area {return CodeStep::Halt {error:None,pos:reader.bit_pos()};}
+    if reader.bits_left<width {
+        return CodeStep::Halt {error:Some(if q<area {Error::TooFewPixels} else {Error::MissingEndOfInformation}),pos:reader.bit_pos()};
+    }
+    let code=reader.read(width);
+    let after=reader.bit_pos();
+    proof {
+        let scanned=crate::model::sub_scan(reader.b@,reader.seq_start as int).unwrap();
+        crate::model::lemma_concat_len(scanned.0,Seq::empty());
+        crate::model::lemma_lbits_read(reader.b@,reader.seq_start as int,scanned.0,scanned.1,st.pos,width as int);
+        lemma_code_models(d,st.pos,width as int,0);
+        lemma_lzw_code_bound(d,st.pos,width as int,0);
+        lemma_shift_power(width);
+    }
+    let eoi=clear+1;
+    if code==clear {return CodeStep::Clear {after};}
+    if q==area && code!=eoi {return CodeStep::Halt {error:Some(Error::MissingEndOfInformation),pos:after};}
+    if code==eoi {
+        if q<area {return CodeStep::Halt {error:Some(Error::TooFewPixels),pos:after};}
+        if !stop && (after+7)/8<data_len {return CodeStep::Halt {error:Some(Error::DataAfterEndOfInformation),pos:after};}
+        return CodeStep::Halt {error:None,pos:after};
+    }
+    if opts.checked_literals && code<clear && code>=256 {return CodeStep::Halt {error:Some(Error::ColorIndexOutOfRange),pos:after};}
+    if !(code<next || code==next && have && next<TABLE_SIZE as u32) {
+        return CodeStep::Halt {error:Some(Error::InvalidLzwCode),pos:after};
+    }
+    CodeStep::Emit {code,after}
+}
+} // verus!

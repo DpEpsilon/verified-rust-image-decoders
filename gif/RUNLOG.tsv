@@ -163,3 +163,327 @@
 163	2026-11-15T10:03:12+00:00	exit=0	1s	M3 FINAL: forced re-verification of the parser [crate=gif_verus]		peak_rss_sum_mb=363	peak_rss_max_proc_mb=325:rust_verify
 164	2026-11-15T10:03:22+00:00	exit=0	6s	M3 FINAL: cache-invalidated full verification [crate=gif_verus]	verification results:: 168 verified, 0 errors	peak_rss_sum_mb=1086	peak_rss_max_proc_mb=809:rust_verify
 165	2026-11-16T04:44:29+00:00	exit=0	21s	cap bump A: MAX_INPUT 2^28, canvas cap kept at 2^26 [crate=gif_verus]	verification results:: 168 verified, 0 errors	peak_rss_sum_mb=2290	peak_rss_max_proc_mb=806:rust_verify
+166	2026-11-16T05:13:23+00:00	exit=0	1s	M5 baseline: current gif_verus state before integration [crate=gif_verus]		peak_rss_sum_mb=44	peak_rss_max_proc_mb=37:cargo
+167	2026-11-16T05:19:08+00:00	exit=101	0s	M5a: L-TABLE-VIEW raw accessors and region-separation lemmas [crate=gif_verus]		peak_rss_sum_mb=116	peak_rss_max_proc_mb=72:rust_verify
+168	2026-11-16T05:19:27+00:00	exit=101	1s	M5a: L-TABLE-VIEW raw accessors and region-separation lemmas [crate=gif_verus]		peak_rss_sum_mb=539	peak_rss_max_proc_mb=493:rust_verify
+169	2026-11-16T05:19:45+00:00	exit=101	5s	M5a: L-TABLE-VIEW raw accessors and region-separation lemmas [crate=gif_verus]	verification results:: 182 verified, 1 errors	peak_rss_sum_mb=1168	peak_rss_max_proc_mb=825:rust_verify
+170	2026-11-16T05:20:24+00:00	exit=101	4s	M5a: L-TABLE-VIEW with split disjointness lemmas [crate=gif_verus]		peak_rss_sum_mb=1101	peak_rss_max_proc_mb=825:rust_verify
+171	2026-11-16T05:20:43+00:00	exit=0	5s	M5a: L-TABLE-VIEW region lemmas, linear form [crate=gif_verus]	verification results:: 185 verified, 0 errors	peak_rss_sum_mb=1097	peak_rss_max_proc_mb=826:rust_verify
+172	2026-11-16T05:26:05+00:00	exit=101	4s	M5a: payload_byte view of sub-blocks (L-BITS foundation) [crate=gif_verus]	verification results:: 187 verified, 1 errors	peak_rss_sum_mb=1106	peak_rss_max_proc_mb=828:rust_verify
+173	2026-11-16T05:26:34+00:00	exit=101	3s	M5a: L-BITS payload_byte concat identity [crate=gif_verus]		peak_rss_sum_mb=714	peak_rss_max_proc_mb=666:rust_verify
+174	2026-11-16T05:26:47+00:00	exit=101	4s	M5a: L-BITS payload_byte concat identity [crate=gif_verus]	verification results:: 190 verified, 1 errors	peak_rss_sum_mb=1110	peak_rss_max_proc_mb=831:rust_verify
+175	2026-11-16T05:27:05+00:00	exit=101	4s	M5a: L-BITS payload_byte concat identity v3 [crate=gif_verus]	verification results:: 190 verified, 2 errors	peak_rss_sum_mb=1105	peak_rss_max_proc_mb=831:rust_verify
+176	2026-11-16T05:27:26+00:00	exit=101	4s	M5a: L-BITS payload_byte concat identity v4 [crate=gif_verus]	verification results:: 191 verified, 1 errors	peak_rss_sum_mb=1105	peak_rss_max_proc_mb=833:rust_verify
+177	2026-11-16T05:27:38+00:00	exit=101	4s	M5a: L-BITS payload_byte concat identity v5 [crate=gif_verus]	verification results:: 191 verified, 1 errors	peak_rss_sum_mb=1166	peak_rss_max_proc_mb=828:rust_verify
+178	2026-11-16T05:27:50+00:00	exit=0	5s	M5a: L-BITS payload_byte concat identity v6 [crate=gif_verus]	verification results:: 192 verified, 0 errors	peak_rss_sum_mb=1059	peak_rss_max_proc_mb=830:rust_verify
+179	2026-11-16T05:28:31+00:00	exit=101	4s	M5a: blk_at reader-state lemmas [crate=gif_verus]	verification results:: 194 verified, 1 errors	peak_rss_sum_mb=1110	peak_rss_max_proc_mb=835:rust_verify
+180	2026-11-16T05:28:43+00:00	exit=101	4s	M5a: blk_at reader-state lemmas v2 [crate=gif_verus]	verification results:: 194 verified, 1 errors	peak_rss_sum_mb=1109	peak_rss_max_proc_mb=835:rust_verify
+181	2026-11-16T05:28:53+00:00	exit=0	5s	M5a: blk_at reader-state lemmas v3 [crate=gif_verus]	verification results:: 195 verified, 0 errors	peak_rss_sum_mb=1110	peak_rss_max_proc_mb=839:rust_verify
+182	2026-11-16T05:31:21+00:00	exit=101	3s	M5b: loop_fold seed lemmas for app_ext rule A [crate=gif_verus]		peak_rss_sum_mb=747	peak_rss_max_proc_mb=698:rust_verify
+183	2026-11-16T05:31:30+00:00	exit=0	5s	M5b: loop_fold seed lemmas v2 [crate=gif_verus]	verification results:: 197 verified, 0 errors	peak_rss_sum_mb=1057	peak_rss_max_proc_mb=834:rust_verify
+184	2026-11-16T05:31:54+00:00	exit=101	1s	M5b: app_step Ok record lemma [crate=gif_verus]		peak_rss_sum_mb=534	peak_rss_max_proc_mb=487:rust_verify
+185	2026-11-16T05:32:07+00:00	exit=101	0s	M5b: app_step Ok record lemma in parse.rs [crate=gif_verus]		peak_rss_sum_mb=531	peak_rss_max_proc_mb=484:rust_verify
+186	2026-11-16T05:32:14+00:00	exit=101	1s	M5b: app_step Ok record lemma v2 [crate=gif_verus]		peak_rss_sum_mb=534	peak_rss_max_proc_mb=485:rust_verify
+187	2026-11-16T05:32:30+00:00	exit=101	5s	M5b: app_step Ok record lemma v3 [crate=gif_verus]	verification results:: 197 verified, 1 errors	peak_rss_sum_mb=1117	peak_rss_max_proc_mb=837:rust_verify
+188	2026-11-16T05:32:57+00:00	exit=101	5s	M5b: app_step Ok record lemma v4 [crate=gif_verus]	verification results:: 197 verified, 1 errors	peak_rss_sum_mb=1114	peak_rss_max_proc_mb=840:rust_verify
+189	2026-11-16T05:33:12+00:00	exit=101	5s	M5b: app_step Ok record lemma v5 [crate=gif_verus]	verification results:: 197 verified, 1 errors	peak_rss_sum_mb=1084	peak_rss_max_proc_mb=837:rust_verify
+190	2026-11-16T05:33:28+00:00	exit=101	3s	M5b: app_step Ok record lemma v6 [crate=gif_verus]		peak_rss_sum_mb=723	peak_rss_max_proc_mb=678:rust_verify
+191	2026-11-16T05:33:36+00:00	exit=101	4s	M5b: app_step Ok record lemma v7 [crate=gif_verus]	verification results:: 197 verified, 1 errors	peak_rss_sum_mb=1116	peak_rss_max_proc_mb=842:rust_verify
+192	2026-11-16T05:33:51+00:00	exit=101	4s	M5b: app_step Ok record lemma v8 [crate=gif_verus]	verification results:: 197 verified, 1 errors	peak_rss_sum_mb=1113	peak_rss_max_proc_mb=839:rust_verify
+193	2026-11-16T05:34:05+00:00	exit=101	4s	M5b: app_step Ok record lemma v9 [crate=gif_verus]	verification results:: 197 verified, 1 errors	peak_rss_sum_mb=1115	peak_rss_max_proc_mb=837:rust_verify
+194	2026-11-16T05:34:31+00:00	exit=101	5s	M5b: lemma_app_step_of_scan model lemma [crate=gif_verus]	verification results:: 197 verified, 1 errors	peak_rss_sum_mb=1115	peak_rss_max_proc_mb=839:rust_verify
+195	2026-11-16T05:34:50+00:00	exit=101	4s	M5b: lemma_app_step_of_scan model lemma v2 [crate=gif_verus]	verification results:: 197 verified, 1 errors	peak_rss_sum_mb=1117	peak_rss_max_proc_mb=838:rust_verify
+196	2026-11-16T05:35:09+00:00	exit=101	5s	M5b: lemma_app_step_of_scan model lemma v3 [crate=gif_verus]	verification results:: 197 verified, 1 errors	peak_rss_sum_mb=1056	peak_rss_max_proc_mb=837:rust_verify
+197	2026-11-16T05:35:22+00:00	exit=101	4s	M5b: lemma_app_step_of_scan model lemma v4 [crate=gif_verus]	verification results:: 197 verified, 1 errors	peak_rss_sum_mb=1105	peak_rss_max_proc_mb=842:rust_verify
+198	2026-11-16T05:35:35+00:00	exit=101	4s	M5b: lemma_app_step_of_scan v5 [crate=gif_verus]	verification results:: 197 verified, 1 errors	peak_rss_sum_mb=1124	peak_rss_max_proc_mb=845:rust_verify
+199	2026-11-16T05:35:48+00:00	exit=101	4s	M5b: lemma_app_step_of_scan v6 [crate=gif_verus]	verification results:: 197 verified, 1 errors	peak_rss_sum_mb=1116	peak_rss_max_proc_mb=838:rust_verify
+200	2026-11-16T05:36:03+00:00	exit=0	5s	M5b: lemma_app_step_of_scan v7 [crate=gif_verus]	verification results:: 198 verified, 0 errors	peak_rss_sum_mb=1120	peak_rss_max_proc_mb=836:rust_verify
+201	2026-11-16T05:37:28+00:00	exit=0	5s	M5 chunk boundary: L-TABLE-VIEW, L-BITS foundation, app_step model lemma; parse.rs reverted [crate=gif_verus]	verification results:: 198 verified, 0 errors	peak_rss_sum_mb=1114	peak_rss_max_proc_mb=840:rust_verify
+202	2026-11-16T05:41:05+00:00	exit=0	4s	M5b: app_step_of_scan implication guard [crate=gif_verus]	verification results:: 198 verified, 0 errors	peak_rss_sum_mb=1129	peak_rss_max_proc_mb=836:rust_verify
+203	2026-11-16T05:41:18+00:00	exit=0	5s	M5b: app_step_of_scan bq guard [crate=gif_verus]	verification results:: 198 verified, 0 errors	peak_rss_sum_mb=1119	peak_rss_max_proc_mb=840:rust_verify
+204	2026-11-16T05:42:19+00:00	exit=101	19s	M5b: app_ext wired to lemma_app_step_of_scan [crate=gif_verus]		peak_rss_sum_mb=738	peak_rss_max_proc_mb=689:rust_verify
+205	2026-11-16T05:42:27+00:00	exit=101	4s	M5b: app_ext wired v2 [crate=gif_verus]	verification results:: 197 verified, 1 errors	peak_rss_sum_mb=1060	peak_rss_max_proc_mb=838:rust_verify
+206	2026-11-16T05:43:18+00:00	exit=101	4s	M5b: id_matches and lemma_id_matches_eq [crate=gif_verus]	verification results:: 197 verified, 2 errors	peak_rss_sum_mb=1107	peak_rss_max_proc_mb=844:rust_verify
+207	2026-11-16T05:43:39+00:00	exit=101	4s	M5b: lemma_id_matches_eq v2 [crate=gif_verus]	verification results:: 197 verified, 2 errors	peak_rss_sum_mb=1123	peak_rss_max_proc_mb=842:rust_verify
+208	2026-11-16T05:43:53+00:00	exit=101	4s	M5b: lemma_id_matches_eq v3 [crate=gif_verus]	verification results:: 198 verified, 1 errors	peak_rss_sum_mb=1121	peak_rss_max_proc_mb=844:rust_verify
+209	2026-11-16T05:44:13+00:00	exit=101	5s	M5b: id_matches step + flag lemmas [crate=gif_verus]	verification results:: 198 verified, 1 errors	peak_rss_sum_mb=1105	peak_rss_max_proc_mb=840:rust_verify
+210	2026-11-16T05:44:30+00:00	exit=101	1s	M5b: app_ext id loop invariant [crate=gif_verus]		peak_rss_sum_mb=531	peak_rss_max_proc_mb=487:rust_verify
+211	2026-11-16T05:46:06+00:00	exit=101	2s	M5b: app_ext wiring with id_matches loop invariant [crate=gif_verus]		peak_rss_sum_mb=740	peak_rss_max_proc_mb=697:rust_verify
+212	2026-11-16T05:46:24+00:00	exit=0	5s	M5b: app_ext loop bound exec reads [crate=gif_verus]	verification results:: 200 verified, 0 errors	peak_rss_sum_mb=1128	peak_rss_max_proc_mb=845:rust_verify
+213	2026-11-16T05:47:01+00:00	exit=0	5s	M5b: app_ext_post with full st_matches [crate=gif_verus]	verification results:: 200 verified, 0 errors	peak_rss_sum_mb=1065	peak_rss_max_proc_mb=844:rust_verify
+214	2026-11-16T05:47:11+00:00	exit=0	5s	M5b: ext_step_post full st_matches [crate=gif_verus]	verification results:: 200 verified, 0 errors	peak_rss_sum_mb=1065	peak_rss_max_proc_mb=841:rust_verify
+215	2026-11-16T05:47:28+00:00	exit=0	1s	M5b chunk boundary: app_ext loop_count gap closed, app_ext_post/ext_step_post strengthened [crate=gif_verus]		peak_rss_sum_mb=44	peak_rss_max_proc_mb=38:cargo
+216	2026-11-16T05:49:39+00:00	exit=101	0s	M5a: payload bit/code vs concat identities [crate=gif_verus]		peak_rss_sum_mb=45	peak_rss_max_proc_mb=39:cargo
+217	2026-11-16T05:50:15+00:00	exit=0	5s	M5a: payload bit/code vs concat identities v2 [crate=gif_verus]	verification results:: 206 verified, 0 errors	peak_rss_sum_mb=1127	peak_rss_max_proc_mb=846:rust_verify
+218	2026-11-16T05:52:05+00:00	exit=101	4s	M5a: rd_state model and byte-offset agreement [crate=gif_verus]	verification results:: 208 verified, 1 errors	peak_rss_sum_mb=1196	peak_rss_max_proc_mb=843:rust_verify
+219	2026-11-16T05:53:16+00:00	exit=101	5s	M5a: rd_rel reader/blk_at alignment [crate=gif_verus]	verification results:: 207 verified, 1 errors	peak_rss_sum_mb=1124	peak_rss_max_proc_mb=844:rust_verify
+220	2026-11-16T05:53:37+00:00	exit=101	4s	M5a: rd_rel explicit cases [crate=gif_verus]	verification results:: 207 verified, 1 errors	peak_rss_sum_mb=1127	peak_rss_max_proc_mb=848:rust_verify
+221	2026-11-16T05:53:52+00:00	exit=101	5s	M5a: rd_rel cases v2 [crate=gif_verus]	verification results:: 207 verified, 1 errors	peak_rss_sum_mb=1191	peak_rss_max_proc_mb=845:rust_verify
+222	2026-11-16T05:54:17+00:00	exit=0	6s	M5a: rd_nonneg helper [crate=gif_verus]	verification results:: 209 verified, 0 errors	peak_rss_sum_mb=1126	peak_rss_max_proc_mb=849:rust_verify
+223	2026-11-16T05:55:28+00:00	exit=101	0s	M5a: acc_view / mask / payload_code identities [crate=gif_verus]		peak_rss_sum_mb=73	peak_rss_max_proc_mb=38:cargo
+224	2026-11-16T05:55:53+00:00	exit=101	2s	M5a: acc_view identities v2 [crate=gif_verus]		peak_rss_sum_mb=734	peak_rss_max_proc_mb=688:rust_verify
+225	2026-11-16T05:56:14+00:00	exit=101	2s	M5a: mask32 low_bits_val identity [crate=gif_verus]		peak_rss_sum_mb=701	peak_rss_max_proc_mb=654:rust_verify
+226	2026-11-16T05:56:43+00:00	exit=101	4s	M5a: mask32 typed cast [crate=gif_verus]		peak_rss_sum_mb=1122	peak_rss_max_proc_mb=851:rust_verify
+227	2026-11-16T05:57:13+00:00	exit=101	1s	M5a: u32-indexed mask identity [crate=gif_verus]		peak_rss_sum_mb=536	peak_rss_max_proc_mb=491:rust_verify
+228	2026-11-16T05:57:19+00:00	exit=101	1s	M5a: mask identity only [crate=gif_verus]		peak_rss_sum_mb=538	peak_rss_max_proc_mb=492:rust_verify
+229	2026-11-16T05:57:29+00:00	exit=101	2s	M5a: mask identity + acc_view spec [crate=gif_verus]		peak_rss_sum_mb=729	peak_rss_max_proc_mb=682:rust_verify
+230	2026-11-16T05:57:45+00:00	exit=101	1s	M5a: mask identity int-indexed [crate=gif_verus]		peak_rss_sum_mb=720	peak_rss_max_proc_mb=672:rust_verify
+231	2026-11-16T05:57:59+00:00	exit=101	5s	M5a: mask identity cast fix [crate=gif_verus]		peak_rss_sum_mb=1129	peak_rss_max_proc_mb=848:rust_verify
+232	2026-11-16T05:58:10+00:00	exit=101	5s	M5a: mask identity shift fix [crate=gif_verus]	verification results:: 212 verified, 1 errors	peak_rss_sum_mb=1073	peak_rss_max_proc_mb=851:rust_verify
+233	2026-11-16T05:58:25+00:00	exit=101	5s	M5a: mask identity base case [crate=gif_verus]	verification results:: 213 verified, 1 errors	peak_rss_sum_mb=1204	peak_rss_max_proc_mb=848:rust_verify
+234	2026-11-16T05:58:38+00:00	exit=101	5s	M5a: mask identity base v3 [crate=gif_verus]		peak_rss_sum_mb=1130	peak_rss_max_proc_mb=849:rust_verify
+235	2026-11-16T05:58:48+00:00	exit=101	5s	M5a: mask identity base v4 [crate=gif_verus]		peak_rss_sum_mb=1128	peak_rss_max_proc_mb=849:rust_verify
+236	2026-11-16T05:59:03+00:00	exit=0	5s	M5a: mask identity base v5 [crate=gif_verus]	verification results:: 214 verified, 0 errors	peak_rss_sum_mb=1124	peak_rss_max_proc_mb=849:rust_verify
+237	2026-11-16T05:59:26+00:00	exit=0	1s	M5a chunk boundary: L-BITS model half complete (bits, reader state, mask identity) [crate=gif_verus]		peak_rss_sum_mb=44	peak_rss_max_proc_mb=39:cargo
+238	2026-11-16T06:00:14+00:00	exit=101	5s	M5a: acc_push and acc_take [crate=gif_verus]		peak_rss_sum_mb=1209	peak_rss_max_proc_mb=852:rust_verify
+239	2026-11-16T06:00:29+00:00	exit=101	5s	M5a: acc_push u32 locals [crate=gif_verus]		peak_rss_sum_mb=1111	peak_rss_max_proc_mb=852:rust_verify
+240	2026-11-16T06:00:56+00:00	exit=101	2s	M5a: acc_push u32-indexed bit32 [crate=gif_verus]		peak_rss_sum_mb=720	peak_rss_max_proc_mb=674:rust_verify
+241	2026-11-16T06:01:21+00:00	exit=101	2s	M5a: acc_push diff local [crate=gif_verus]		peak_rss_sum_mb=693	peak_rss_max_proc_mb=649:rust_verify
+242	2026-11-16T06:01:37+00:00	exit=101	2s	M5a: acc_take u32 casts [crate=gif_verus]		peak_rss_sum_mb=694	peak_rss_max_proc_mb=649:rust_verify
+243	2026-11-16T06:01:53+00:00	exit=101	5s	M5a: acc_take sum local [crate=gif_verus]		peak_rss_sum_mb=1078	peak_rss_max_proc_mb=854:rust_verify
+244	2026-11-16T06:02:05+00:00	exit=101	1s	M5a: acc_push shifts [crate=gif_verus]		peak_rss_sum_mb=529	peak_rss_max_proc_mb=480:rust_verify
+245	2026-11-16T06:02:17+00:00	exit=101	5s	M5a: acc_push shifts v2 [crate=gif_verus]		peak_rss_sum_mb=1124	peak_rss_max_proc_mb=852:rust_verify
+246	2026-11-16T06:02:41+00:00	exit=101	2s	M5a: acc_push casts v6 [crate=gif_verus]		peak_rss_sum_mb=712	peak_rss_max_proc_mb=666:rust_verify
+247	2026-11-16T06:02:57+00:00	exit=101	5s	M5a: acc_push quantifier cast [crate=gif_verus]	verification results:: 218 verified, 1 errors	peak_rss_sum_mb=1129	peak_rss_max_proc_mb=851:rust_verify
+248	2026-11-16T06:03:24+00:00	exit=101	5s	M5a: acc_view zero-high-bits [crate=gif_verus]	verification results:: 219 verified, 1 errors	peak_rss_sum_mb=1204	peak_rss_max_proc_mb=852:rust_verify
+249	2026-11-16T06:03:37+00:00	exit=101	1s	M5a: acc_push zero-high ensures [crate=gif_verus]		peak_rss_sum_mb=529	peak_rss_max_proc_mb=484:rust_verify
+250	2026-11-16T06:03:48+00:00	exit=101	0s	M5a: acc_push clean [crate=gif_verus]		peak_rss_sum_mb=556	peak_rss_max_proc_mb=507:rust_verify
+251	2026-11-16T06:04:00+00:00	exit=0	5s	M5a: acc_push inner block fixed [crate=gif_verus]	verification results:: 221 verified, 0 errors	peak_rss_sum_mb=1127	peak_rss_max_proc_mb=852:rust_verify
+252	2026-11-16T06:04:17+00:00	exit=101	4s	M5a: acc_take re-added [crate=gif_verus]		peak_rss_sum_mb=1129	peak_rss_max_proc_mb=854:rust_verify
+253	2026-11-16T06:04:35+00:00	exit=101	5s	M5a: acc_take zero-high cast [crate=gif_verus]		peak_rss_sum_mb=1133	peak_rss_max_proc_mb=852:rust_verify
+254	2026-11-16T06:04:51+00:00	exit=101	5s	M5a: acc_take u32 bounds [crate=gif_verus]		peak_rss_sum_mb=1130	peak_rss_max_proc_mb=852:rust_verify
+255	2026-11-16T06:05:07+00:00	exit=101	1s	M5a: acc_take int bounds [crate=gif_verus]		peak_rss_sum_mb=530	peak_rss_max_proc_mb=484:rust_verify
+256	2026-11-16T06:05:27+00:00	exit=101	4s	M5a: acc_take int parens [crate=gif_verus]	verification results:: 223 verified, 1 errors	peak_rss_sum_mb=1128	peak_rss_max_proc_mb=853:rust_verify
+257	2026-11-16T06:05:53+00:00	exit=101	5s	M5a: acc_take mask form [crate=gif_verus]	verification results:: 223 verified, 1 errors	peak_rss_sum_mb=1129	peak_rss_max_proc_mb=853:rust_verify
+258	2026-11-16T06:06:09+00:00	exit=101	5s	M5a: acc_take mask bridge [crate=gif_verus]	verification results:: 223 verified, 1 errors	peak_rss_sum_mb=1123	peak_rss_max_proc_mb=851:rust_verify
+259	2026-11-16T06:06:27+00:00	exit=101	4s	M5a: acc_take mask width form [crate=gif_verus]	verification results:: 223 verified, 1 errors	peak_rss_sum_mb=1126	peak_rss_max_proc_mb=853:rust_verify
+260	2026-11-16T06:06:47+00:00	exit=101	6s	M5a: acc_take wu form [crate=gif_verus]	verification results:: 223 verified, 1 errors	peak_rss_sum_mb=1135	peak_rss_max_proc_mb=852:rust_verify
+261	2026-11-16T06:07:04+00:00	exit=0	5s	M5a: acc_take mask block [crate=gif_verus]	verification results:: 225 verified, 0 errors	peak_rss_sum_mb=1130	peak_rss_max_proc_mb=853:rust_verify
+262	2026-11-16T06:07:41+00:00	exit=0	0s	M5a: acc_push + acc_take proved (L-BITS model half complete) [crate=gif_verus]		peak_rss_sum_mb=73	peak_rss_max_proc_mb=37:cargo
+263	2026-11-16T06:23:29+00:00	exit=0	5s	M5a step3: rd_step_ok + lemma_rd_step_ok_all (structural) [crate=gif_verus]	verification results:: 228 verified, 0 errors	peak_rss_sum_mb=1082	peak_rss_max_proc_mb=856:rust_verify
+264	2026-11-16T06:26:43+00:00	exit=101	1s	M5a step3: BitReader new/fetch_byte/read/bit_pos contracts [crate=gif_verus]		peak_rss_sum_mb=529	peak_rss_max_proc_mb=483:rust_verify
+265	2026-11-16T06:27:02+00:00	exit=101	1s	M5a step3: BitReader contracts v2 [crate=gif_verus]		peak_rss_sum_mb=551	peak_rss_max_proc_mb=508:rust_verify
+266	2026-11-16T06:27:10+00:00	exit=101	0s	M5a step3: BitReader contracts v3 [crate=gif_verus]		peak_rss_sum_mb=542	peak_rss_max_proc_mb=495:rust_verify
+267	2026-11-16T06:27:18+00:00	exit=101	1s	M5a step3: BitReader contracts v4 [crate=gif_verus]		peak_rss_sum_mb=538	peak_rss_max_proc_mb=495:rust_verify
+268	2026-11-16T06:27:24+00:00	exit=101	2s	M5a step3: BitReader contracts v5 [crate=gif_verus]		peak_rss_sum_mb=733	peak_rss_max_proc_mb=684:rust_verify
+269	2026-11-16T06:27:34+00:00	exit=101	3s	M5a step3: BitReader contracts v6 [crate=gif_verus]		peak_rss_sum_mb=756	peak_rss_max_proc_mb=709:rust_verify
+270	2026-11-16T06:28:03+00:00	exit=101	2s	M5a step3: BitReader contracts v7 [crate=gif_verus]		peak_rss_sum_mb=726	peak_rss_max_proc_mb=676:rust_verify
+271	2026-11-16T06:28:26+00:00	exit=101	2s	M5a step3: BitReader contracts v8 (pub fields) [crate=gif_verus]		peak_rss_sum_mb=697	peak_rss_max_proc_mb=650:rust_verify
+272	2026-11-16T06:28:34+00:00	exit=101	2s	M5a step3: BitReader contracts v9 [crate=gif_verus]		peak_rss_sum_mb=732	peak_rss_max_proc_mb=687:rust_verify
+273	2026-11-16T06:28:43+00:00	exit=101	2s	M5a step3: BitReader contracts v10 [crate=gif_verus]		peak_rss_sum_mb=717	peak_rss_max_proc_mb=671:rust_verify
+274	2026-11-16T06:28:57+00:00	exit=101	2s	M5a step3: BitReader contracts v11 [crate=gif_verus]		peak_rss_sum_mb=726	peak_rss_max_proc_mb=678:rust_verify
+275	2026-11-16T06:29:05+00:00	exit=101	3s	M5a step3: BitReader contracts v12 [crate=gif_verus]		peak_rss_sum_mb=743	peak_rss_max_proc_mb=698:rust_verify
+276	2026-11-16T06:29:16+00:00	exit=101	5s	M5a step3: BitReader contracts v13 [crate=gif_verus]		peak_rss_sum_mb=1176	peak_rss_max_proc_mb=867:rust_verify
+277	2026-11-16T06:29:43+00:00	exit=101	1s	M5a step3: fetch_byte clean [crate=gif_verus]		peak_rss_sum_mb=529	peak_rss_max_proc_mb=483:rust_verify
+278	2026-11-16T06:29:50+00:00	exit=101	1s	M5a step3: fetch_byte clean v2 [crate=gif_verus]		peak_rss_sum_mb=728	peak_rss_max_proc_mb=680:rust_verify
+279	2026-11-16T06:30:03+00:00	exit=101	2s	M5a step3: fetch_byte clean v3 [crate=gif_verus]		peak_rss_sum_mb=729	peak_rss_max_proc_mb=681:rust_verify
+280	2026-11-16T06:30:14+00:00	exit=101	4s	M5a step3: fetch_byte clean v4 [crate=gif_verus]		peak_rss_sum_mb=1094	peak_rss_max_proc_mb=871:rust_verify
+281	2026-11-16T06:30:30+00:00	exit=101	5s	M5a step3: fetch_byte + read v5 [crate=gif_verus]		peak_rss_sum_mb=1136	peak_rss_max_proc_mb=869:rust_verify
+282	2026-11-16T06:31:19+00:00	exit=101	1s	M5a step3: fetch_byte/read v6 [crate=gif_verus]		peak_rss_sum_mb=533	peak_rss_max_proc_mb=489:rust_verify
+283	2026-11-16T06:31:35+00:00	exit=101	5s	M5a step3: fetch_byte/read v7 [crate=gif_verus]		peak_rss_sum_mb=1144	peak_rss_max_proc_mb=868:rust_verify
+284	2026-11-16T06:31:53+00:00	exit=101	5s	M5a step3: fetch_byte/read v8 [crate=gif_verus]		peak_rss_sum_mb=1143	peak_rss_max_proc_mb=869:rust_verify
+285	2026-11-16T06:32:04+00:00	exit=101	5s	M5a step3: fetch_byte/read v9 [crate=gif_verus]	verification results:: 235 verified, 8 errors	peak_rss_sum_mb=1257	peak_rss_max_proc_mb=872:rust_verify
+286	2026-11-16T06:32:26+00:00	exit=101	5s	M5a step3: fetch_byte/read v10 [crate=gif_verus]	verification results:: 235 verified, 8 errors	peak_rss_sum_mb=1192	peak_rss_max_proc_mb=872:rust_verify
+287	2026-11-16T06:32:39+00:00	exit=101	5s	M5a step3: fetch_byte/read v11 [crate=gif_verus]		peak_rss_sum_mb=1094	peak_rss_max_proc_mb=871:rust_verify
+288	2026-11-16T06:32:50+00:00	exit=101	2s	M5a step3: fetch_byte/read v12 [crate=gif_verus]		peak_rss_sum_mb=727	peak_rss_max_proc_mb=678:rust_verify
+289	2026-11-16T06:33:11+00:00	exit=101	2s	M5a step3: fetch_byte/read v13 [crate=gif_verus]		peak_rss_sum_mb=725	peak_rss_max_proc_mb=675:rust_verify
+290	2026-11-16T06:33:30+00:00	exit=101	1s	M5a step3: read rewrite [crate=gif_verus]		peak_rss_sum_mb=554	peak_rss_max_proc_mb=509:rust_verify
+291	2026-11-16T06:33:43+00:00	exit=101	5s	M5a step3: read rewrite v2 [crate=gif_verus]		peak_rss_sum_mb=1140	peak_rss_max_proc_mb=870:rust_verify
+292	2026-11-16T06:33:52+00:00	exit=101	5s	M5a step3: read rewrite v3 [crate=gif_verus]	verification results:: 241 verified, 3 errors	peak_rss_sum_mb=1207	peak_rss_max_proc_mb=873:rust_verify
+293	2026-11-16T06:34:10+00:00	exit=101	5s	M5a step3: read rewrite v4 [crate=gif_verus]	verification results:: 241 verified, 3 errors	peak_rss_sum_mb=1213	peak_rss_max_proc_mb=872:rust_verify
+294	2026-11-16T06:34:29+00:00	exit=101	2s	M5a step3: read rewrite v5 [crate=gif_verus]		peak_rss_sum_mb=735	peak_rss_max_proc_mb=687:rust_verify
+295	2026-11-16T06:34:39+00:00	exit=101	2s	M5a step3: read rewrite v6 [crate=gif_verus]		peak_rss_sum_mb=724	peak_rss_max_proc_mb=680:rust_verify
+296	2026-11-16T06:34:51+00:00	exit=101	3s	M5a step3: read rewrite v7 [crate=gif_verus]		peak_rss_sum_mb=723	peak_rss_max_proc_mb=675:rust_verify
+297	2026-11-16T06:35:25+00:00	exit=101	5s	M5a step3: int-typed contracts [crate=gif_verus]		peak_rss_sum_mb=1140	peak_rss_max_proc_mb=870:rust_verify
+298	2026-11-16T06:35:50+00:00	exit=101	5s	M5a step3: pure-int contracts [crate=gif_verus]		peak_rss_sum_mb=1140	peak_rss_max_proc_mb=870:rust_verify
+299	2026-11-16T06:36:11+00:00	exit=101	5s	M5a step3: pure-int contracts v2 [crate=gif_verus]	verification results:: 240 verified, 2 errors	peak_rss_sum_mb=1189	peak_rss_max_proc_mb=871:rust_verify
+300	2026-11-16T06:36:24+00:00	exit=101	5s	M5a step3: pure-int contracts v3 [crate=gif_verus]	verification results:: 242 verified, 1 errors	peak_rss_sum_mb=1213	peak_rss_max_proc_mb=875:rust_verify
+301	2026-11-16T06:36:37+00:00	exit=101	5s	M5a step3: pure-int contracts v4 [crate=gif_verus]	verification results:: 242 verified, 1 errors	peak_rss_sum_mb=1209	peak_rss_max_proc_mb=872:rust_verify
+302	2026-11-16T06:36:54+00:00	exit=101	5s	M5a step3: pure-int contracts v5 [crate=gif_verus]	verification results:: 242 verified, 2 errors	peak_rss_sum_mb=1264	peak_rss_max_proc_mb=876:rust_verify
+303	2026-11-16T06:37:06+00:00	exit=101	5s	M5a step3: pure-int contracts v6 [crate=gif_verus]	verification results:: 242 verified, 2 errors	peak_rss_sum_mb=1246	peak_rss_max_proc_mb=875:rust_verify
+304	2026-11-16T06:37:17+00:00	exit=101	5s	M5a step3: pure-int contracts v7 [crate=gif_verus]	verification results:: 242 verified, 2 errors	peak_rss_sum_mb=1204	peak_rss_max_proc_mb=872:rust_verify
+305	2026-11-16T06:37:33+00:00	exit=101	1s	M5a step3: pure-int contracts v8 [crate=gif_verus]		peak_rss_sum_mb=534	peak_rss_max_proc_mb=490:rust_verify
+306	2026-11-16T06:37:46+00:00	exit=101	5s	M5a step3: pure-int contracts v9 [crate=gif_verus]	verification results:: 242 verified, 2 errors	peak_rss_sum_mb=1209	peak_rss_max_proc_mb=870:rust_verify
+307	2026-11-16T06:38:00+00:00	exit=101	5s	M5a step3: pure-int contracts v10 [crate=gif_verus]	verification results:: 244 verified, 1 errors	peak_rss_sum_mb=1238	peak_rss_max_proc_mb=871:rust_verify
+308	2026-11-16T06:38:12+00:00	exit=101	5s	M5a step3: pure-int contracts v11 [crate=gif_verus]	verification results:: 244 verified, 1 errors	peak_rss_sum_mb=1236	peak_rss_max_proc_mb=873:rust_verify
+309	2026-11-16T06:38:29+00:00	exit=101	5s	M5a step3: pure-int contracts v12 [crate=gif_verus]	verification results:: 244 verified, 1 errors	peak_rss_sum_mb=1254	peak_rss_max_proc_mb=873:rust_verify
+310	2026-11-16T06:38:48+00:00	exit=101	4s	M5a step3: pure-int contracts v13 [crate=gif_verus]	verification results:: 244 verified, 1 errors	peak_rss_sum_mb=1241	peak_rss_max_proc_mb=871:rust_verify
+311	2026-11-16T06:39:05+00:00	exit=101	5s	M5a step3: pure-int contracts v14 [crate=gif_verus]	verification results:: 244 verified, 1 errors	peak_rss_sum_mb=1256	peak_rss_max_proc_mb=869:rust_verify
+312	2026-11-16T06:39:20+00:00	exit=101	5s	M5a step3: pure-int contracts v15 [crate=gif_verus]	verification results:: 244 verified, 1 errors	peak_rss_sum_mb=1260	peak_rss_max_proc_mb=870:rust_verify
+313	2026-11-16T06:39:51+00:00	exit=101	5s	M5a step3: pure-int contracts v16 [crate=gif_verus]	verification results:: 243 verified, 2 errors	peak_rss_sum_mb=1263	peak_rss_max_proc_mb=877:rust_verify
+314	2026-11-16T06:40:09+00:00	exit=101	6s	M5a step3: pure-int contracts v17 [crate=gif_verus]	verification results:: 243 verified, 1 errors	peak_rss_sum_mb=1249	peak_rss_max_proc_mb=872:rust_verify
+315	2026-11-16T06:40:22+00:00	exit=101	5s	M5a step3: pure-int contracts v18 [crate=gif_verus]	verification results:: 243 verified, 1 errors	peak_rss_sum_mb=1213	peak_rss_max_proc_mb=874:rust_verify
+316	2026-11-16T06:40:43+00:00	exit=101	5s	M5a step3: pure-int contracts v19 [crate=gif_verus]	verification results:: 246 verified, 3 errors	peak_rss_sum_mb=1156	peak_rss_max_proc_mb=872:rust_verify
+317	2026-11-16T06:41:05+00:00	exit=101	5s	M5a step3: read decreases 32-nacc [crate=gif_verus]	verification results:: 247 verified, 1 errors	peak_rss_sum_mb=1205	peak_rss_max_proc_mb=874:rust_verify
+318	2026-11-16T06:41:21+00:00	exit=101	5s	M5a step3: ga nonneg [crate=gif_verus]	verification results:: 247 verified, 1 errors	peak_rss_sum_mb=1200	peak_rss_max_proc_mb=869:rust_verify
+319	2026-11-16T06:41:31+00:00	exit=101	1s	M5a step3: ga0 u32 [crate=gif_verus]		peak_rss_sum_mb=551	peak_rss_max_proc_mb=503:rust_verify
+320	2026-11-16T06:41:43+00:00	exit=101	5s	M5a step3: ga ghost [crate=gif_verus]	verification results:: 247 verified, 1 errors	peak_rss_sum_mb=1265	peak_rss_max_proc_mb=881:rust_verify
+321	2026-11-16T06:41:57+00:00	exit=101	6s	M5a step3: ga consistent [crate=gif_verus]	verification results:: 247 verified, 1 errors	peak_rss_sum_mb=1252	peak_rss_max_proc_mb=876:rust_verify
+322	2026-11-16T06:42:08+00:00	exit=0	5s	M5a step3: ga invariant [crate=gif_verus]	verification results:: 248 verified, 0 errors	peak_rss_sum_mb=1267	peak_rss_max_proc_mb=883:rust_verify
+323	2026-11-16T06:43:21+00:00	exit=0	5s	M5a step3: cleanup [crate=gif_verus]	verification results:: 248 verified, 0 errors	peak_rss_sum_mb=1261	peak_rss_max_proc_mb=872:rust_verify
+324	2026-11-16T06:43:56+00:00	exit=0	0s	M5a step3: final confirmation [crate=gif_verus]		peak_rss_sum_mb=91	peak_rss_max_proc_mb=38:cargo
+325	2026-11-16T06:45:15+00:00	exit=101	5s	M5a: lemma_lbits_read citation [crate=gif_verus]	verification results:: 248 verified, 1 errors	peak_rss_sum_mb=1200	peak_rss_max_proc_mb=870:rust_verify
+326	2026-11-16T06:45:30+00:00	exit=0	6s	M5a: lemma_lbits_read citation v2 [crate=gif_verus]	verification results:: 249 verified, 0 errors	peak_rss_sum_mb=1261	peak_rss_max_proc_mb=877:rust_verify
+327	2026-11-16T06:46:08+00:00	exit=0	0s	M5a: chunk boundary confirmation [crate=gif_verus]		peak_rss_sum_mb=44	peak_rss_max_proc_mb=39:cargo
+328	2026-11-16T06:47:11+00:00	exit=0	6s	M5a: chain.rs adaptation probe [crate=gif_verus]	verification results:: 281 verified, 0 errors	peak_rss_sum_mb=1290	peak_rss_max_proc_mb=904:rust_verify
+329	2026-11-16T06:47:33+00:00	exit=0	6s	M5a: refinement+dictionary probe [crate=gif_verus]	verification results:: 293 verified, 0 errors	peak_rss_sum_mb=1251	peak_rss_max_proc_mb=923:rust_verify
+330	2026-11-16T06:47:45+00:00	exit=0	6s	M5a: chain stored_len over raw_length [crate=gif_verus]	verification results:: 293 verified, 0 errors	peak_rss_sum_mb=1201	peak_rss_max_proc_mb=921:rust_verify
+331	2026-11-16T06:48:11+00:00	exit=101	0s	M5a: lzw_model + params + code-level views [crate=gif_verus]		peak_rss_sum_mb=549	peak_rss_max_proc_mb=498:rust_verify
+332	2026-11-16T06:48:20+00:00	exit=101	1s	M5a: lzw_model + params + code-level views v2 [crate=gif_verus]		peak_rss_sum_mb=549	peak_rss_max_proc_mb=499:rust_verify
+333	2026-11-16T06:48:30+00:00	exit=0	6s	M5a: ErrK placement [crate=gif_verus]	verification results:: 297 verified, 0 errors	peak_rss_sum_mb=1302	peak_rss_max_proc_mb=925:rust_verify
+334	2026-11-16T06:48:42+00:00	exit=0	6s	M5a: dedup err_of [crate=gif_verus]	verification results:: 297 verified, 0 errors	peak_rss_sum_mb=1295	peak_rss_max_proc_mb=929:rust_verify
+335	2026-11-16T06:48:56+00:00	exit=0	6s	M5a: ErrK in lzw_model only [crate=gif_verus]	verification results:: 296 verified, 0 errors	peak_rss_sum_mb=1306	peak_rss_max_proc_mb=923:rust_verify
+336	2026-11-16T06:49:10+00:00	exit=0	6s	M5a: register lzw_model [crate=gif_verus]	verification results:: 303 verified, 0 errors	peak_rss_sum_mb=1317	peak_rss_max_proc_mb=938:rust_verify
+337	2026-11-16T06:49:54+00:00	exit=0	6s	M5a: step 1 complete (ML + chain + dictionary adapted) [crate=gif_verus]	verification results:: 303 verified, 0 errors	peak_rss_sum_mb=1265	peak_rss_max_proc_mb=932:rust_verify
+338	2026-11-16T06:50:08+00:00	exit=0	1s	M5a: step 1 chunk boundary [crate=gif_verus]		peak_rss_sum_mb=43	peak_rss_max_proc_mb=38:cargo
+339	2026-11-16T06:50:42+00:00	exit=0	0s	step2: sink_pairs + index lemmas [crate=gif_verus]		peak_rss_sum_mb=225	peak_rss_max_proc_mb=182:rust_verify
+340	2026-11-16T06:50:53+00:00	exit=0	1s	step2: sink_pairs + index lemmas v2 [crate=gif_verus]		peak_rss_sum_mb=291	peak_rss_max_proc_mb=249:rust_verify
+341	2026-11-16T06:51:07+00:00	exit=101	6s	step2: sink_pairs + index lemmas v3 [crate=gif_verus]	verification results:: 304 verified, 2 errors	peak_rss_sum_mb=1276	peak_rss_max_proc_mb=935:rust_verify
+342	2026-11-16T06:51:22+00:00	exit=101	6s	step2: sink_pairs ok existential [crate=gif_verus]	verification results:: 305 verified, 1 errors	peak_rss_sum_mb=1270	peak_rss_max_proc_mb=935:rust_verify
+343	2026-11-16T06:51:36+00:00	exit=101	6s	step2: complete base case [crate=gif_verus]	verification results:: 305 verified, 1 errors	peak_rss_sum_mb=1335	peak_rss_max_proc_mb=944:rust_verify
+344	2026-11-16T06:51:55+00:00	exit=101	6s	step2: complete lemma witness [crate=gif_verus]	verification results:: 305 verified, 1 errors	peak_rss_sum_mb=1274	peak_rss_max_proc_mb=944:rust_verify
+345	2026-11-16T06:52:16+00:00	exit=101	6s	step2: complete lemma restructured [crate=gif_verus]	verification results:: 305 verified, 1 errors	peak_rss_sum_mb=1316	peak_rss_max_proc_mb=939:rust_verify
+346	2026-11-16T06:52:36+00:00	exit=0	6s	step2: complete lemma correct domain [crate=gif_verus]	verification results:: 306 verified, 0 errors	peak_rss_sum_mb=1277	peak_rss_max_proc_mb=933:rust_verify
+347	2026-11-16T06:52:57+00:00	exit=101	1s	step3-entry: walk agreement bridge [crate=gif_verus]		peak_rss_sum_mb=549	peak_rss_max_proc_mb=502:rust_verify
+348	2026-11-16T06:53:07+00:00	exit=101	6s	step3-entry: walk agreement bridge v2 [crate=gif_verus]		peak_rss_sum_mb=1179	peak_rss_max_proc_mb=920:rust_verify
+349	2026-11-16T06:53:19+00:00	exit=101	5s	step3-entry: walk agreement bridge v3 [crate=gif_verus]	verification results:: 307 verified, 1 errors	peak_rss_sum_mb=1252	peak_rss_max_proc_mb=937:rust_verify
+350	2026-11-16T06:53:27+00:00	exit=101	1s	step3-entry: raw walk eq seq v4 [crate=gif_verus]		peak_rss_sum_mb=546	peak_rss_max_proc_mb=501:rust_verify
+351	2026-11-16T06:53:37+00:00	exit=101	5s	step3-entry: raw walk eq seq v5 [crate=gif_verus]	verification results:: 307 verified, 1 errors	peak_rss_sum_mb=1274	peak_rss_max_proc_mb=940:rust_verify
+352	2026-11-16T06:53:49+00:00	exit=101	5s	step3-entry: raw walk eq seq v6 [crate=gif_verus]	verification results:: 307 verified, 1 errors	peak_rss_sum_mb=1308	peak_rss_max_proc_mb=935:rust_verify
+353	2026-11-16T06:54:15+00:00	exit=101	6s	step3-entry: raw walk its own invariant [crate=gif_verus]	verification results:: 306 verified, 2 errors	peak_rss_sum_mb=1316	peak_rss_max_proc_mb=945:rust_verify
+354	2026-11-16T06:54:44+00:00	exit=101	5s	step3-entry: raw link mirrors link_ok [crate=gif_verus]	verification results:: 306 verified, 2 errors	peak_rss_sum_mb=1278	peak_rss_max_proc_mb=941:rust_verify
+355	2026-11-16T06:54:54+00:00	exit=101	1s	step3-entry: walk agreement v7 [crate=gif_verus]		peak_rss_sum_mb=545	peak_rss_max_proc_mb=500:rust_verify
+356	2026-11-16T06:55:04+00:00	exit=101	6s	step3-entry: walk agreement v8 [crate=gif_verus]	verification results:: 307 verified, 1 errors	peak_rss_sum_mb=1288	peak_rss_max_proc_mb=941:rust_verify
+357	2026-11-16T06:55:18+00:00	exit=101	6s	step3-entry: walk agreement v9 [crate=gif_verus]	verification results:: 307 verified, 1 errors	peak_rss_sum_mb=1304	peak_rss_max_proc_mb=939:rust_verify
+358	2026-11-16T06:55:32+00:00	exit=0	6s	step3-entry: walk agreement v10 [crate=gif_verus]	verification results:: 309 verified, 0 errors	peak_rss_sum_mb=1334	peak_rss_max_proc_mb=946:rust_verify
+359	2026-11-16T06:56:04+00:00	exit=0	0s	step2 boundary confirmation [crate=gif_verus]		peak_rss_sum_mb=44	peak_rss_max_proc_mb=38:cargo
+360	2026-11-16T06:56:54+00:00	exit=0	0s	step3 recipe recorded; tree green [crate=gif_verus]		peak_rss_sum_mb=81	peak_rss_max_proc_mb=34:rustup
+361	2026-11-16T06:57:25+00:00	exit=101	6s	step3: sink_pairs length lemma [crate=gif_verus]	verification results:: 309 verified, 2 errors	peak_rss_sum_mb=1256	peak_rss_max_proc_mb=938:rust_verify
+362	2026-11-16T06:57:43+00:00	exit=101	6s	step3: sink_pairs count lemma v2 [crate=gif_verus]	verification results:: 310 verified, 1 errors	peak_rss_sum_mb=1334	peak_rss_max_proc_mb=948:rust_verify
+363	2026-11-16T06:57:56+00:00	exit=0	6s	step3: peel termination [crate=gif_verus]	verification results:: 311 verified, 0 errors	peak_rss_sum_mb=1330	peak_rss_max_proc_mb=946:rust_verify
+364	2026-11-16T06:58:30+00:00	exit=0	1s	chunk: decode helpers complete, tree green [crate=gif_verus]		peak_rss_sum_mb=44	peak_rss_max_proc_mb=38:cargo
+365	2026-11-16T07:36:31+00:00	exit=0	6s	step3-prereq: concat_len additivity lemma [crate=gif_verus]	verification results:: 312 verified, 0 errors	peak_rss_sum_mb=1712	peak_rss_max_proc_mb=945:rust_verify
+366	2026-11-16T07:37:17+00:00	exit=0	7s	step3-prereq: code_log spec landed [crate=gif_verus]	verification results:: 313 verified, 0 errors	peak_rss_sum_mb=1334	peak_rss_max_proc_mb=946:rust_verify
+367	2026-11-16T07:49:50+00:00	exit=0	6s	step1: retire code_log/u32_of [crate=gif_verus]	verification results:: 312 verified, 0 errors	peak_rss_sum_mb=1328	peak_rss_max_proc_mb=945:rust_verify
+368	2026-11-16T07:51:29+00:00	exit=101	6s	step3a: read allows fetched==data_len [crate=gif_verus]	verification results:: 311 verified, 1 errors	peak_rss_sum_mb=1269	peak_rss_max_proc_mb=938:rust_verify
+369	2026-11-16T07:51:48+00:00	exit=101	6s	step3a: read allows fetched==data_len (nacc<width) [crate=gif_verus]	verification results:: 310 verified, 2 errors	peak_rss_sum_mb=1287	peak_rss_max_proc_mb=947:rust_verify
+370	2026-11-16T07:52:28+00:00	exit=101	6s	step3a: read allows fetched==data_len (v3) [crate=gif_verus]	verification results:: 311 verified, 1 errors	peak_rss_sum_mb=1273	peak_rss_max_proc_mb=938:rust_verify
+371	2026-11-16T07:53:06+00:00	exit=0	6s	step3a: read allows fetched==data_len (v4) [crate=gif_verus]	verification results:: 312 verified, 0 errors	peak_rss_sum_mb=1273	peak_rss_max_proc_mb=937:rust_verify
+372	2026-11-16T07:57:24+00:00	exit=101	3s	step2a: port compose_proof modules (compile check) [crate=gif_verus]		peak_rss_sum_mb=794	peak_rss_max_proc_mb=747:rust_verify
+373	2026-11-16T07:57:41+00:00	exit=101	7s	step2a: port compose_proof modules (compile check 2) [crate=gif_verus]	verification results:: 432 verified, 0 errors	peak_rss_sum_mb=1447	peak_rss_max_proc_mb=1055:rust_verify
+374	2026-11-16T07:59:32+00:00	exit=101	3s	step2b: DrawerSink implements Sink [crate=gif_verus]		peak_rss_sum_mb=769	peak_rss_max_proc_mb=722:rust_verify
+375	2026-11-16T07:59:39+00:00	exit=101	1s	step2b: DrawerSink implements Sink (v2) [crate=gif_verus]		peak_rss_sum_mb=553	peak_rss_max_proc_mb=508:rust_verify
+376	2026-11-16T07:59:49+00:00	exit=101	3s	step2b: DrawerSink implements Sink (v3) [crate=gif_verus]		peak_rss_sum_mb=806	peak_rss_max_proc_mb=758:rust_verify
+377	2026-11-16T07:59:57+00:00	exit=101	3s	step2b: DrawerSink implements Sink (v4) [crate=gif_verus]		peak_rss_sum_mb=775	peak_rss_max_proc_mb=731:rust_verify
+378	2026-11-16T08:00:15+00:00	exit=101	2s	step2b: DrawerSink implements Sink (v5) [crate=gif_verus]		peak_rss_sum_mb=774	peak_rss_max_proc_mb=726:rust_verify
+379	2026-11-16T08:00:41+00:00	exit=101	2s	step2b: DrawerSink implements Sink (v6) [crate=gif_verus]		peak_rss_sum_mb=573	peak_rss_max_proc_mb=524:rust_verify
+380	2026-11-16T08:01:34+00:00	exit=101	7s	step2b: DrawerSink implements Sink (Ghost log) [crate=gif_verus]	verification results:: 434 verified, 1 errors	peak_rss_sum_mb=1515	peak_rss_max_proc_mb=1058:rust_verify
+381	2026-11-16T08:01:44+00:00	exit=101	3s	step2b: DrawerSink implements Sink (Ghost log v2) [crate=gif_verus]		peak_rss_sum_mb=806	peak_rss_max_proc_mb=761:rust_verify
+382	2026-11-16T08:01:50+00:00	exit=101	2s	step2b: DrawerSink implements Sink (Ghost log v3) [crate=gif_verus]		peak_rss_sum_mb=762	peak_rss_max_proc_mb=715:rust_verify
+383	2026-11-16T08:02:05+00:00	exit=101	7s	step2b: DrawerSink implements Sink (Ghost log v4) [crate=gif_verus]	verification results:: 434 verified, 1 errors	peak_rss_sum_mb=1501	peak_rss_max_proc_mb=1058:rust_verify
+384	2026-11-16T08:02:22+00:00	exit=101	7s	step2b: DrawerSink implements Sink (Ghost log v5) [crate=gif_verus]	verification results:: 435 verified, 0 errors	peak_rss_sum_mb=1493	peak_rss_max_proc_mb=1059:rust_verify
+385	2026-11-16T08:02:47+00:00	exit=101	2s	step2b: compose.rs shim [crate=gif_verus]		peak_rss_sum_mb=764	peak_rss_max_proc_mb=718:rust_verify
+386	2026-11-16T08:02:59+00:00	exit=101	3s	step2b: gif.rs sink call site [crate=gif_verus]		peak_rss_sum_mb=743	peak_rss_max_proc_mb=696:rust_verify
+387	2026-11-16T08:03:11+00:00	exit=0	7s	step2b: gif.rs sink call site v2 [crate=gif_verus]	verification results:: 435 verified, 0 errors	peak_rss_sum_mb=1450	peak_rss_max_proc_mb=1056:rust_verify
+388	2026-11-16T08:06:59+00:00	exit=0	1s	consolidate: green state after steps 1-3 [crate=gif_verus]		peak_rss_sum_mb=46	peak_rss_max_proc_mb=40:cargo
+389	2026-11-16T08:07:12+00:00	exit=0	1s	consolidate: force full verification [crate=gif_verus]		peak_rss_sum_mb=46	peak_rss_max_proc_mb=40:cargo
+390	2026-11-16T08:08:14+00:00	exit=101	2s	step4prereq: log_complete append lemma [crate=gif_verus]		peak_rss_sum_mb=559	peak_rss_max_proc_mb=515:rust_verify
+391	2026-11-16T08:08:27+00:00	exit=101	7s	step4prereq: log_complete append lemma v2 [crate=gif_verus]		peak_rss_sum_mb=1325	peak_rss_max_proc_mb=1043:rust_verify
+392	2026-11-16T08:08:36+00:00	exit=101	2s	step4prereq: log_complete append lemma v3 [crate=gif_verus]		peak_rss_sum_mb=748	peak_rss_max_proc_mb=703:rust_verify
+393	2026-11-16T08:08:47+00:00	exit=101	2s	step4prereq: log_complete append lemma v4 [crate=gif_verus]		peak_rss_sum_mb=763	peak_rss_max_proc_mb=718:rust_verify
+394	2026-11-16T08:09:00+00:00	exit=101	6s	step4prereq: log_complete append lemma v5 [crate=gif_verus]	verification results:: 435 verified, 1 errors	peak_rss_sum_mb=1451	peak_rss_max_proc_mb=1058:rust_verify
+395	2026-11-16T08:09:30+00:00	exit=101	7s	step4prereq: log_complete append lemma v6 [crate=gif_verus]	verification results:: 435 verified, 1 errors	peak_rss_sum_mb=1515	peak_rss_max_proc_mb=1065:rust_verify
+396	2026-11-16T08:10:02+00:00	exit=101	6s	step4prereq: log_complete append lemma v7 [crate=gif_verus]	verification results:: 435 verified, 1 errors	peak_rss_sum_mb=1460	peak_rss_max_proc_mb=1060:rust_verify
+397	2026-11-16T08:10:19+00:00	exit=101	2s	step4prereq: log_complete append lemma v8 [crate=gif_verus]		peak_rss_sum_mb=576	peak_rss_max_proc_mb=532:rust_verify
+398	2026-11-16T08:10:29+00:00	exit=0	6s	step4prereq: log_complete append lemma v9 [crate=gif_verus]	verification results:: 438 verified, 0 errors	peak_rss_sum_mb=1441	peak_rss_max_proc_mb=1059:rust_verify
+399	2026-11-16T08:12:15+00:00	exit=101	2s	step4prereq: log_block for sink_pairs [crate=gif_verus]		peak_rss_sum_mb=758	peak_rss_max_proc_mb=709:rust_verify
+400	2026-11-16T08:12:24+00:00	exit=101	2s	step4prereq: log_block for sink_pairs v2 [crate=gif_verus]		peak_rss_sum_mb=755	peak_rss_max_proc_mb=707:rust_verify
+401	2026-11-16T08:12:33+00:00	exit=101	2s	step4prereq: log_block for sink_pairs v3 [crate=gif_verus]		peak_rss_sum_mb=766	peak_rss_max_proc_mb=719:rust_verify
+402	2026-11-16T08:12:48+00:00	exit=101	2s	step4prereq: log_block for sink_pairs v4 [crate=gif_verus]		peak_rss_sum_mb=755	peak_rss_max_proc_mb=709:rust_verify
+403	2026-11-16T08:13:04+00:00	exit=101	6s	step4prereq: log_block for sink_pairs v5 [crate=gif_verus]	verification results:: 440 verified, 1 errors	peak_rss_sum_mb=1450	peak_rss_max_proc_mb=1059:rust_verify
+404	2026-11-16T08:13:24+00:00	exit=101	6s	step4prereq: log_block for sink_pairs v6 [crate=gif_verus]	verification results:: 441 verified, 5 errors	peak_rss_sum_mb=1523	peak_rss_max_proc_mb=1069:rust_verify
+405	2026-11-16T08:13:47+00:00	exit=101	7s	step4prereq: log_block for sink_pairs v7 [crate=gif_verus]	verification results:: 441 verified, 5 errors	peak_rss_sum_mb=1460	peak_rss_max_proc_mb=1070:rust_verify
+406	2026-11-16T08:14:19+00:00	exit=101	6s	step4prereq: log_block v8 [crate=gif_verus]		peak_rss_sum_mb=1512	peak_rss_max_proc_mb=1065:rust_verify
+407	2026-11-16T08:14:38+00:00	exit=101	7s	step4prereq: u32 roundtrip [crate=gif_verus]		peak_rss_sum_mb=1467	peak_rss_max_proc_mb=1068:rust_verify
+408	2026-11-16T08:17:24+00:00	exit=101	6s	step4prereq: u32 roundtrip v2 [crate=gif_verus]		peak_rss_sum_mb=1512	peak_rss_max_proc_mb=1066:rust_verify
+409	2026-11-16T08:18:17+00:00	exit=101	7s	step4prereq: u32 roundtrip v3 [crate=gif_verus]	verification results:: 444 verified, 5 errors	peak_rss_sum_mb=1527	peak_rss_max_proc_mb=1074:rust_verify
+410	2026-11-16T08:18:55+00:00	exit=101	7s	step4prereq: log_block v9 [crate=gif_verus]	verification results:: 451 verified, 2 errors	peak_rss_sum_mb=1410	peak_rss_max_proc_mb=1072:rust_verify
+411	2026-11-16T08:19:10+00:00	exit=0	7s	step4prereq: log_block v10 [crate=gif_verus]	verification results:: 453 verified, 0 errors	peak_rss_sum_mb=1507	peak_rss_max_proc_mb=1064:rust_verify
+412	2026-11-16T08:19:56+00:00	exit=0	0s	consolidate: green after log_block bridge [crate=gif_verus]		peak_rss_sum_mb=45	peak_rss_max_proc_mb=39:cargo
+413	2026-11-16T08:22:16+00:00	exit=101	1s	step4a: report type + lzw_ps spec [crate=gif_verus]		peak_rss_sum_mb=575	peak_rss_max_proc_mb=531:rust_verify
+414	2026-11-16T08:22:31+00:00	exit=0	8s	step4a: report type + lzw_ps spec v2 [crate=gif_verus]	verification results:: 453 verified, 0 errors	peak_rss_sum_mb=1508	peak_rss_max_proc_mb=1065:rust_verify
+415	2026-11-16T08:23:10+00:00	exit=101	1s	step4b: decode lifted (skeleton) [crate=gif_verus]		peak_rss_sum_mb=572	peak_rss_max_proc_mb=527:rust_verify
+416	2026-11-16T08:23:31+00:00	exit=101	1s	step4b: decode contract v2 [crate=gif_verus]		peak_rss_sum_mb=564	peak_rss_max_proc_mb=517:rust_verify
+417	2026-11-16T08:23:38+00:00	exit=101	3s	step4b: decode contract v3 [crate=gif_verus]		peak_rss_sum_mb=763	peak_rss_max_proc_mb=717:rust_verify
+418	2026-11-16T08:23:56+00:00	exit=101	3s	step4b: decode contract v4 [crate=gif_verus]		peak_rss_sum_mb=764	peak_rss_max_proc_mb=719:rust_verify
+419	2026-11-16T08:24:07+00:00	exit=101	2s	step4b: decode contract v5 [crate=gif_verus]		peak_rss_sum_mb=806	peak_rss_max_proc_mb=759:rust_verify
+420	2026-11-16T08:24:21+00:00	exit=101	6s	step4b: decode contract v6 [crate=gif_verus]		peak_rss_sum_mb=1365	peak_rss_max_proc_mb=1047:rust_verify
+421	2026-11-16T08:24:34+00:00	exit=101	8s	step4b: decode contract v7 [crate=gif_verus]	verification results:: 453 verified, 4 errors	peak_rss_sum_mb=1474	peak_rss_max_proc_mb=1076:rust_verify
+422	2026-11-16T08:25:03+00:00	exit=0	7s	restore green (decode rewrite parked) [crate=gif_verus]	verification results:: 453 verified, 0 errors	peak_rss_sum_mb=1520	peak_rss_max_proc_mb=1069:rust_verify
+423	2026-11-16T08:25:49+00:00	exit=0	8s	report layer re-added (run 414 state) [crate=gif_verus]	verification results:: 453 verified, 0 errors	peak_rss_sum_mb=1407	peak_rss_max_proc_mb=1068:rust_verify
+425	2026-11-16T08:28:41+00:00	exit=101	2s	Sol: raw table insertion contract and immutable sink configuration [crate=gif_verus]		peak_rss_sum_mb=753	peak_rss_max_proc_mb=705:rust_verify
+426	2026-11-16T08:29:05+00:00	exit=0	8s	Sol: insertion spec integer casts [crate=gif_verus]	verification results:: 455 verified, 0 errors	peak_rss_sum_mb=1467	peak_rss_max_proc_mb=1067:rust_verify
+427	2026-11-16T08:31:04+00:00	exit=101	7s	Sol: backward emission log and minimum rejected position [crate=gif_verus]	verification results:: 457 verified, 1 errors	peak_rss_sum_mb=1526	peak_rss_max_proc_mb=1078:rust_verify
+428	2026-11-16T08:31:40+00:00	exit=0	8s	Sol: identify walked suffix byte and bound raster addition [crate=gif_verus]	verification results:: 458 verified, 0 errors	peak_rss_sum_mb=1467	peak_rss_max_proc_mb=1088:rust_verify
+429	2026-11-16T08:34:15+00:00	exit=101	8s	Sol: raster observation, code timestamps, colour-fault append helpers [crate=gif_verus]	verification results:: 468 verified, 1 errors	peak_rss_sum_mb=1491	peak_rss_max_proc_mb=1091:rust_verify
+430	2026-11-16T08:36:37+00:00	exit=101	8s	Sol: integrated decode model fold, reverse log, and saved colour timestamp [crate=gif_verus]	verification results:: 470 verified, 1 errors	peak_rss_sum_mb=1581	peak_rss_max_proc_mb=1132:rust_verify
+431	2026-11-16T08:37:35+00:00	exit=101	8s	Sol: connect reader payload code to pure code_at model [crate=gif_verus]	verification results:: 471 verified, 1 errors	peak_rss_sum_mb=1608	peak_rss_max_proc_mb=1145:rust_verify
+432	2026-11-16T08:38:11+00:00	exit=101	8s	Sol: preserve original reader slice and sub-block origin through loop [crate=gif_verus]	verification results:: 471 verified, 1 errors	peak_rss_sum_mb=1605	peak_rss_max_proc_mb=1137:rust_verify
+433	2026-11-16T08:38:38+00:00	exit=101	9s	Sol: retain entry sink log and validity predicate in decoder invariant [crate=gif_verus]	verification results:: 471 verified, 1 errors	peak_rss_sum_mb=1601	peak_rss_max_proc_mb=1141:rust_verify
+434	2026-11-16T08:39:11+00:00	exit=101	8s	Sol: reveal consumed-bit position at core exits and model steps [crate=gif_verus]	verification results:: 471 verified, 1 errors	peak_rss_sum_mb=1649	peak_rss_max_proc_mb=1143:rust_verify
+435	2026-11-16T08:39:51+00:00	exit=101	8s	Sol: bind tail-policy enum through a model-visible match [crate=gif_verus]	verification results:: 471 verified, 1 errors	peak_rss_sum_mb=1616	peak_rss_max_proc_mb=1136:rust_verify
+436	2026-11-16T08:40:21+00:00	exit=101	8s	Sol: connect KwKwK cached first index to resolved model string [crate=gif_verus]	verification results:: 471 verified, 1 errors	peak_rss_sum_mb=1656	peak_rss_max_proc_mb=1132:rust_verify
+437	2026-11-16T08:40:54+00:00	exit=101	3s	Sol: isolate decoder assertions at unchanged default solver limit [crate=gif_verus]		peak_rss_sum_mb=748	peak_rss_max_proc_mb=701:rust_verify
+438	2026-11-16T08:42:32+00:00	exit=101	8s	Sol: isolate code emission and raw dictionary evolution from model fold [crate=gif_verus]	verification results:: 472 verified, 1 errors	peak_rss_sum_mb=1598	peak_rss_max_proc_mb=1128:rust_verify
+439	2026-11-16T08:43:15+00:00	exit=101	8s	Sol: isolate readable-range model/raw chain refinement [crate=gif_verus]	verification results:: 473 verified, 1 errors	peak_rss_sum_mb=1615	peak_rss_max_proc_mb=1136:rust_verify
+440	2026-11-16T08:45:10+00:00	exit=101	8s	Sol: split code-read checks from dictionary and sink refinement [crate=gif_verus]	verification results:: 473 verified, 2 errors	peak_rss_sum_mb=1634	peak_rss_max_proc_mb=1130:rust_verify
+441	2026-11-16T08:45:55+00:00	exit=101	8s	Sol: isolate raw readable-range update and strengthen control state bounds [crate=gif_verus]	verification results:: 474 verified, 2 errors	peak_rss_sum_mb=1602	peak_rss_max_proc_mb=1131:rust_verify
+442	2026-11-16T08:46:31+00:00	exit=101	9s	Sol: rule out previous code before first size-1 pixel and out-of-table insertion [crate=gif_verus]	verification results:: 474 verified, 2 errors	peak_rss_sum_mb=1620	peak_rss_max_proc_mb=1131:rust_verify
+443	2026-11-16T08:47:24+00:00	exit=101	9s	Sol: keep raw table definitions opaque in the decoder fold query [crate=gif_verus]	verification results:: 474 verified, 2 errors	peak_rss_sum_mb=1599	peak_rss_max_proc_mb=1126:rust_verify
+444	2026-11-16T08:48:04+00:00	exit=101	8s	Sol: prove stale-table reset by empty readable range, without initialization [crate=gif_verus]	verification results:: 476 verified, 1 errors	peak_rss_sum_mb=1610	peak_rss_max_proc_mb=1132:rust_verify
+445	2026-11-16T08:49:02+00:00	exit=101	9s	Sol: keep reader/log/colour/chain predicates opaque at fold boundary [crate=gif_verus]	verification results:: 477 verified, 1 errors	peak_rss_sum_mb=1570	peak_rss_max_proc_mb=1135:rust_verify
+446	2026-11-16T08:49:50+00:00	exit=101	9s	Sol: identify immutable sink predicates extensionally across calls [crate=gif_verus]	verification results:: 477 verified, 1 errors	peak_rss_sum_mb=1599	peak_rss_max_proc_mb=1141:rust_verify
+447	2026-11-16T08:50:55+00:00	exit=0	9s	Sol: connect per-code call count to pure timestamp fold and emitted prefix [crate=gif_verus]	verification results:: 480 verified, 0 errors	peak_rss_sum_mb=1598	peak_rss_max_proc_mb=1129:rust_verify
+448	2026-11-16T08:53:51+00:00	exit=0	9s	Sol: prove earliest logical colour fault and its exact after-code position [crate=gif_verus]	verification results:: 482 verified, 0 errors	peak_rss_sum_mb=1617	peak_rss_max_proc_mb=1138:rust_verify
+449	2026-11-16T08:55:21+00:00	exit=0	9s	Sol: connect decode report to L-INTERLEAVE public result and colour R12 position [crate=gif_verus]	verification results:: 484 verified, 0 errors	peak_rss_sum_mb=1569	peak_rss_max_proc_mb=1142:rust_verify
+450	2026-11-16T09:00:38+00:00	exit=0	10s	Sol: generalized clipped per-put pixel preservation and distinct-write commutation [crate=gif_verus]	verification results:: 489 verified, 0 errors	peak_rss_sum_mb=1564	peak_rss_max_proc_mb=1155:rust_verify
+451	2026-11-16T09:02:10+00:00	exit=101	9s	Sol: arbitrary successful put-log permutations preserve whole canvas [crate=gif_verus]	verification results:: 493 verified, 1 errors	peak_rss_sum_mb=1624	peak_rss_max_proc_mb=1151:rust_verify
+452	2026-11-16T09:02:43+00:00	exit=0	10s	Sol: expose multiset length and membership in canvas permutation induction [crate=gif_verus]	verification results:: 494 verified, 0 errors	peak_rss_sum_mb=1643	peak_rss_max_proc_mb=1161:rust_verify
+453	2026-11-16T09:04:07+00:00	exit=0	9s	Sol: prove G9 minimum-code-size admissibility and payload scan at actual entry [crate=gif_verus]	verification results:: 496 verified, 0 errors	peak_rss_sum_mb=1526	peak_rss_max_proc_mb=1155:rust_verify
+454	2026-11-16T09:05:38+00:00	exit=101	10s	Sol: wire G9 admissibility and fresh-reader facts into the frame LZW entry [crate=gif_verus]	verification results:: 499 verified, 1 errors	peak_rss_sum_mb=1639	peak_rss_max_proc_mb=1161:rust_verify
+455	2026-11-16T09:06:27+00:00	exit=101	10s	Sol: expose fresh reader accumulator and all payload-fetch facts [crate=gif_verus]	verification results:: 499 verified, 1 errors	peak_rss_sum_mb=1710	peak_rss_max_proc_mb=1170:rust_verify
+456	2026-11-16T09:06:55+00:00	exit=0	11s	Sol: prove zero accumulator bit-shift fact for scanned reader [crate=gif_verus]	verification results:: 501 verified, 0 errors	peak_rss_sum_mb=1592	peak_rss_max_proc_mb=1172:rust_verify
+457	2026-11-16T09:09:14+00:00	exit=0	10s	Sol: expose raw-link invariant after every insertion and decoder step [crate=gif_verus]	verification results:: 502 verified, 0 errors	peak_rss_sum_mb=1698	peak_rss_max_proc_mb=1161:rust_verify
+458	2026-11-16T09:16:32+00:00	exit=101	10s	Sol: carry an abstract immutable Sink action through actual generic put calls [crate=gif_verus]	verification results:: 502 verified, 3 errors	peak_rss_sum_mb=1719	peak_rss_max_proc_mb=1171:rust_verify
+459	2026-11-16T09:17:12+00:00	exit=101	9s	Sol: expose empty and singleton abstract Sink folds [crate=gif_verus]	verification results:: 505 verified, 1 errors	peak_rss_sum_mb=1692	peak_rss_max_proc_mb=1163:rust_verify
+460	2026-11-16T09:18:15+00:00	exit=0	10s	Sol: isolate emission verdict from the generic effect-fold query [crate=gif_verus]	verification results:: 507 verified, 0 errors	peak_rss_sum_mb=1576	peak_rss_max_proc_mb=1168:rust_verify
+461	2026-11-16T09:20:02+00:00	exit=0	10s	Sol: derive canonical forward-log multiset from complete actual sink log [crate=gif_verus]	verification results:: 508 verified, 0 errors	peak_rss_sum_mb=1631	peak_rss_max_proc_mb=1176:rust_verify
+462	2026-11-16T09:21:00+00:00	exit=0	10s	Sol: connect generic Sink fold, actual put permutation and forward G12 draw_fold [crate=gif_verus]	verification results:: 512 verified, 0 errors	peak_rss_sum_mb=1599	peak_rss_max_proc_mb=1181:rust_verify
+463	2026-11-16T09:23:03+00:00	exit=101	2s	Sol: instantiate generic Sink effects to a concrete Drawer canvas call [crate=gif_verus]		peak_rss_sum_mb=569	peak_rss_max_proc_mb=523:rust_verify
+464	2026-11-16T09:23:24+00:00	exit=101	10s	Sol: qualify concrete drawing model in Drawer entry contract [crate=gif_verus]	verification results:: 512 verified, 1 errors	peak_rss_sum_mb=1553	peak_rss_max_proc_mb=1188:rust_verify
+465	2026-11-16T09:24:01+00:00	exit=101	10s	Sol: preserve concrete canvas borrow while constructing Drawer adapter [crate=gif_verus]	verification results:: 512 verified, 1 errors	peak_rss_sum_mb=1570	peak_rss_max_proc_mb=1185:rust_verify
+466	2026-11-16T09:25:03+00:00	exit=101	10s	Sol: explicitly reborrow canvas into the concrete Drawer adapter [crate=gif_verus]	verification results:: 512 verified, 1 errors	peak_rss_sum_mb=1661	peak_rss_max_proc_mb=1178:rust_verify
+467	2026-11-16T09:26:55+00:00	exit=0	11s	Sol: state successful canvas equality on the concrete Drawer state [crate=gif_verus]	verification results:: 513 verified, 0 errors	peak_rss_sum_mb=1697	peak_rss_max_proc_mb=1180:rust_verify
+468	2026-11-16T09:31:02+00:00	exit=101	3s	Sol: prove descriptor checks and frame/pixel budget against model image_step [crate=gif_verus]		peak_rss_sum_mb=789	peak_rss_max_proc_mb=741:rust_verify
+469	2026-11-16T09:31:26+00:00	exit=101	9s	Sol: keep G9 continuation opaque while proving descriptor prefix [crate=gif_verus]	verification results:: 516 verified, 1 errors	peak_rss_sum_mb=1653	peak_rss_max_proc_mb=1184:rust_verify
+470	2026-11-16T09:32:04+00:00	exit=0	11s	Sol: state nonnegative descriptor dimensions in budget arithmetic query [crate=gif_verus]	verification results:: 517 verified, 0 errors	peak_rss_sum_mb=1668	peak_rss_max_proc_mb=1185:rust_verify
+471	2026-11-16T09:34:32+00:00	exit=0	11s	Sol: prove image/data model steps, GCE consumption and bounded counter updates [crate=gif_verus]	verification results:: 522 verified, 0 errors	peak_rss_sum_mb=1613	peak_rss_max_proc_mb=1192:rust_verify
+472	2026-11-16T09:35:49+00:00	exit=101	2s	Sol: expose frame-level colour precedence and pixel origins at concrete decode call [crate=gif_verus]		peak_rss_sum_mb=566	peak_rss_max_proc_mb=521:rust_verify
+473	2026-11-16T09:36:15+00:00	exit=0	10s	Sol: qualify projected GIF error in concrete drawing contract [crate=gif_verus]	verification results:: 523 verified, 0 errors	peak_rss_sum_mb=1652	peak_rss_max_proc_mb=1196:rust_verify
+474	2026-11-16T09:38:24+00:00	exit=0	11s	Sol: route actual extension dispatch through verified code and prove cursor progress [crate=gif_verus]	verification results:: 526 verified, 0 errors	peak_rss_sum_mb=1682	peak_rss_max_proc_mb=1200:rust_verify
+475	2026-11-16T09:40:24+00:00	exit=0	10s	Sol: prove the full executable MB walk using verified extension and image steps [crate=gif_verus]	verification results:: 529 verified, 0 errors	peak_rss_sum_mb=1666	peak_rss_max_proc_mb=1207:rust_verify
+476	2026-11-16T09:44:29+00:00	exit=0	10s	Sol: M5b final audit, actual MB and concrete successful-canvas wiring [crate=gif_verus]	verification results:: 529 verified, 0 errors	peak_rss_sum_mb=1605	peak_rss_max_proc_mb=1207:rust_verify
+477	2026-11-16T09:51:42+00:00	exit=101	2s	Sol: prove constructor prefix walk vs mp_fuel, stopping at the image introducer [crate=gif_verus]		peak_rss_sum_mb=770	peak_rss_max_proc_mb=724:rust_verify
+478	2026-11-16T09:52:05+00:00	exit=0	10s	Sol: derive Debug for prefix outcome used by exact Result specification [crate=gif_verus]	verification results:: 533 verified, 0 errors	peak_rss_sum_mb=1666	peak_rss_max_proc_mb=1209:rust_verify
+479	2026-11-16T09:52:36+00:00	exit=0	10s	Sol: strengthen reservation proof with exact buffers and sealed OOM log binding [crate=gif_verus]	verification results:: 533 verified, 0 errors	peak_rss_sum_mb=1718	peak_rss_max_proc_mb=1209:rust_verify
+480	2026-11-16T09:55:37+00:00	exit=101	2s	Sol: compose MH, proved reserve and prefix MP into allocation-aware constructor [crate=gif_verus]		peak_rss_sum_mb=758	peak_rss_max_proc_mb=714:rust_verify
+481	2026-11-16T09:56:06+00:00	exit=0	10s	Sol: keep constructor helper predicates private to their module [crate=gif_verus]	verification results:: 534 verified, 0 errors	peak_rss_sum_mb=1640	peak_rss_max_proc_mb=1210:rust_verify
+482	2026-11-16T10:00:00+00:00	exit=101	10s	Sol: wire real allocation-log ownership through Frames constructors and Saved reservation [crate=gif_verus]	verification results:: 543 verified, 2 errors	peak_rss_sum_mb=1696	peak_rss_max_proc_mb=1217:rust_verify
+483	2026-11-16T10:01:20+00:00	exit=101	10s	Sol: reveal constructor/storage predicates and bound the Saved request [crate=gif_verus]	verification results:: 544 verified, 2 errors	peak_rss_sum_mb=1648	peak_rss_max_proc_mb=1216:rust_verify
+484	2026-11-16T10:02:24+00:00	exit=101	10s	Sol: identify exact constructor and Saved log-shape invariant obligations [crate=gif_verus]	verification results:: 544 verified, 2 errors	peak_rss_sum_mb=1742	peak_rss_max_proc_mb=1213:rust_verify
+485	2026-11-16T10:03:49+00:00	exit=101	10s	Sol: isolate fixed MP observation from constructor and Saved storage updates [crate=gif_verus]	verification results:: 545 verified, 1 errors	peak_rss_sum_mb=1698	peak_rss_max_proc_mb=1219:rust_verify
+486	2026-11-16T10:04:50+00:00	exit=0	11s	Sol: identify Saved log update and fixed MP metadata separately [crate=gif_verus]	verification results:: 546 verified, 0 errors	peak_rss_sum_mb=1642	peak_rss_max_proc_mb=1225:rust_verify
+487	2026-11-16T10:08:06+00:00	exit=0	12s	Sol: prove complete non-OOM constructor requests and exact single Saved append [crate=gif_verus]	verification results:: 546 verified, 0 errors	peak_rss_sum_mb=1758	peak_rss_max_proc_mb=1228:rust_verify
+488	2026-11-16T10:09:12+00:00	exit=101	13s	Sol: prove actual G20 plays and total_plays functions and input injectivity [crate=gif_verus]	verification results:: 549 verified, 1 errors	peak_rss_sum_mb=1815	peak_rss_max_proc_mb=1229:rust_verify
+489	2026-11-16T10:10:30+00:00	exit=0	12s	Sol: isolate Saved proof and keep the unchanged header relation opaque [crate=gif_verus]	verification results:: 550 verified, 0 errors	peak_rss_sum_mb=1760	peak_rss_max_proc_mb=1225:rust_verify
+490	2026-11-16T10:13:01+00:00	exit=0	15s	Sol: prove actual info accessor and expose logged-constructor ownership alternatives [crate=gif_verus]	verification results:: 551 verified, 0 errors	peak_rss_sum_mb=1821	peak_rss_max_proc_mb=1227:rust_verify

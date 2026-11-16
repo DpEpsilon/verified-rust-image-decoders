@@ -75,7 +75,7 @@ pub open spec fn hdr_inv(b: Seq<u8>, h: Header) -> bool {
     &&& 4 * (h.width as int) * (h.height as int) <= crate::model::max_output()
     &&& match h.global {
         None => h.cursor == 13,
-        Some(c) => 2 <= c.entries <= 256 && h.cursor == 13 + 3 * c.entries as int,
+        Some(c) => 2 <= c.entries <= 256 && c.offset == 13 && h.cursor == 13 + 3 * c.entries as int,
     }
     &&& h.cursor <= b.len()
 }
@@ -693,7 +693,9 @@ pub struct WalkState {
 }
 
 impl WalkState {
-    pub fn new() -> WalkState {
+    pub fn new() -> (st: WalkState)
+        ensures st.gce is None,st.frames_seen==0,st.total_pixels==0,st.loop_count is None,
+    {
         WalkState { gce: None, frames_seen: 0, total_pixels: 0, loop_count: None }
     }
 }
@@ -1450,13 +1452,30 @@ fn app_ext(b: &[u8], pol: Policy, st: &WalkState, q: usize) -> (r: Result<(usize
                 q + 1 + 11 <= blen,
                 blen <= crate::limits::MAX_INPUT,
                 q + 12 <= usize::MAX,
+                // The flag is `id_matches` at `i`: every byte compared so far
+                // matched.
+                is_netscape == crate::model::id_matches(b@, q as int, i as int),
             decreases (11 - i),
         {
             let j: usize = q + 1 + i;
-            if get(b, j) != crate::model::NETSCAPE_ID[i] {
+            let byte = get(b, j);
+            let want = crate::model::NETSCAPE_ID[i];
+            proof {
+                crate::model::lemma_id_matches_step(b@, q as int, i as int);
+                assert(byte == b@[j as int]);
+                assert(want == crate::model::NETSCAPE_ID@[i as int]);
+            }
+            if byte != want {
                 is_netscape = false;
+            } else {
+                proof {
+                    assert(is_netscape == crate::model::id_matches(b@, q as int, i as int + 1));
+                }
             }
             i += 1;
+        }
+        proof {
+            crate::model::lemma_id_matches_eq(b@, q as int);
         }
     }
     let first_only = match pol.loop_scan {
@@ -1477,6 +1496,35 @@ fn app_ext(b: &[u8], pol: Policy, st: &WalkState, q: usize) -> (r: Result<(usize
         reveal(crate::model::bytes_of);
         reveal(crate::model::NETSCAPE_ID);
         reveal(walk_m_unused);
+        // The scan's payload list: `read_sub_blocks` proved `sub_scan(b, q+1+size)`
+        // succeeds, and `sub_scan(b, q)` is the identifier payload followed by it.
+        let ghost id_len: int = size as int;
+        let ghost rest = choose|r: (Seq<Seq<u8>>, int)|
+            crate::model::sub_scan(b@, q as int + 1 + id_len) == Some(r);
+        lemma_sub_scan_at(b@, q as int, id_len);
+        let ghost payload: Seq<u8> = b@.subrange(q as int + 1, q as int + 1 + id_len);
+        let ghost subs: Seq<Seq<u8>> = seq![payload] + rest.0;
+        assert(crate::model::sub_scan(b@, q as int) == Some((subs, rest.1)));
+        assert(subs.len() >= 1);
+        vstd::seq::lemma_seq_subrange_len(b@, q as int + 1, q as int + 1 + id_len);
+        assert(payload.len() == id_len);
+        assert(subs[0] == payload);
+        assert(subs.subrange(1, subs.len() as int) == rest.0) by {
+            assert(subs.subrange(1, subs.len() as int) =~= rest.0);
+        }
+        assert(is_netscape == (subs[0] == crate::model::bytes_of(&crate::model::NETSCAPE_ID)));
+        crate::model::lemma_app_step_of_scan(
+            b@,
+            pol,
+            walk_m_unused(*st),
+            q as int,
+            subs,
+            rest.1,
+            is_netscape,
+            first_only,
+            lc,
+        );
+        assert(nsub as int == rest.1);
     }
     Ok((
         nsub,
@@ -1484,9 +1532,11 @@ fn app_ext(b: &[u8], pol: Policy, st: &WalkState, q: usize) -> (r: Result<(usize
     ))
 }
 
-/// `app_ext`'s structural postcondition (M3 proves this part): the error order,
-/// the cursor and the unchanged fields. The `loop_count` equality with
-/// `app_step`'s `loop_value` is the open obligation (STUCK.md).
+/// `app_ext`'s postcondition: the exact `app_step` result, `loop_count`
+/// included. The body proves it with `lemma_app_step_of_scan` (M5b), so the
+/// whole `WalkM` — cursor, `gce`, `frames_seen`, `total_pixels`, `loop_count` —
+/// matches. This closes the open `loop_count` obligation the earlier contract
+/// left out.
 pub open spec fn app_ext_post(
     b: Seq<u8>,
     pol: Policy,
@@ -1500,20 +1550,16 @@ pub open spec fn app_ext_post(
             Err(e2) => e2 == e,
         },
         Ok(s2) => match r {
-            Ok((end, st2)) => {
-                &&& end as int == s2.p
-                &&& st2.frames_seen as int == s2.frames_seen
-                &&& st2.total_pixels as int == s2.total_pixels
-                &&& st2.gce == s2.gce
-            },
+            Ok((end, st2)) => st_matches(end, st2, s2),
             Err(_) => false,
         },
     }
 }
 
-/// The extension dispatch's postcondition: everything `st_matches` states
-/// except that the `loop_count` component is not required, because the
-/// Application branch's exact value is the open obligation (STUCK.md).
+/// The extension dispatch's postcondition: the exact `ext_step` result, the
+/// whole `WalkM` (`loop_count` included). Every branch — Graphic Control, Plain
+/// Text, Application and the skip — now matches `st_matches`, so this is the
+/// same clause as `gce_ext_post` was for its own step.
 pub open spec fn ext_step_post(
     b: Seq<u8>,
     pol: Policy,
@@ -1527,12 +1573,7 @@ pub open spec fn ext_step_post(
             Err(e2) => e2 == e,
         },
         Ok(s2) => match r {
-            Ok((end, st2)) => {
-                &&& end as int == s2.p
-                &&& st2.frames_seen as int == s2.frames_seen
-                &&& st2.total_pixels as int == s2.total_pixels
-                &&& st2.gce == s2.gce
-            },
+            Ok((end, st2)) => st_matches(end, st2, s2),
             Err(_) => false,
         },
     }
@@ -1614,6 +1655,7 @@ fn parse_extension_verified(b: &[u8], p: usize, st: &WalkState, pol: Policy) -> 
 
 } // verus!
 
+verus! {
 /// G8 result.
 #[derive(Clone, Copy, Debug)]
 pub struct FrameHeader {
@@ -1633,178 +1675,428 @@ pub struct ImageData {
     pub data_len: u32,
     pub end: usize,
 }
+} // verus!
 
-const NETSCAPE: [u8; 11] = *b"NETSCAPE2.0";
-
-/// G6 extensions and G7 scope, with the introducer at `p`. Returns the cursor
-/// after the extension.
-pub fn parse_extension(b: &[u8], p: usize, st: &mut WalkState, pol: &Policy) -> Result<usize, Error> {
-    if !need(b, p, 2) {
-        return Err(Error::TruncatedExtension);
+verus! {
+pub proof fn lemma_sub_scan_bounds(b:Seq<u8>,q:int,subs:Seq<Seq<u8>>,end:int)
+    requires 0<=q,crate::model::sub_scan(b,q)==Some((subs,end)),
+    ensures q<end<=b.len(),
+    decreases (b.len()-q) as nat,
+{
+    reveal(crate::model::sub_scan);
+    if b[q]!=0 {
+        let rest=crate::model::sub_scan(b,q+1+b[q] as int).unwrap();
+        lemma_sub_scan_bounds(b,q+1+b[q] as int,rest.0,rest.1);
     }
-    let label = get(b, p + 1);
-    let q = p + 2;
-    if label <= 0x7F && st.gce.is_some() && pol.gce_consumers == GceConsumers::Reject {
-        return Err(Error::UnsupportedGraphicControlTarget);
-    }
-    if label == 0xF9 {
-        // G6.1 Graphic Control.
-        if matches!(st.gce, Some(_)) && pol.gce_duplicate == GceDuplicate::Reject {
-            return Err(Error::DuplicateGraphicControl);
-        }
-        if !need(b, q, 1) {
-            return Err(Error::TruncatedExtension);
-        }
-        if get(b, q) != 4 {
-            return Err(Error::InvalidGraphicControl);
-        }
-        if !need(b, q, 6) {
-            return Err(Error::TruncatedExtension);
-        }
-        if get(b, q + 5) != 0 {
-            return Err(Error::InvalidGraphicControl);
-        }
-        let g = get(b, q + 1);
-        let disposal = (g >> 2) & 7;
-        if disposal > 3 && pol.disposal_undefined == DisposalUndefined::Reject {
-            return Err(Error::UndefinedDisposal);
-        }
-        st.gce = Some(Gce {
-            disposal,
-            user_input: g & 2 != 0,
-            delay_cs: le16(b, q + 2),
-            transparent: if g & 1 != 0 { Some(get(b, q + 4)) } else { None },
-        });
-        return Ok(q + 6);
-    }
-    if label == 0x01 {
-        // G6.2 Plain Text: the 12-byte header is read as the first sub-block.
-        if !need(b, q, 1) {
-            return Err(Error::TruncatedExtension);
-        }
-        if get(b, q) != 12 && pol.ext_sizes == ExtSizes::Exact {
-            return Err(Error::InvalidPlainText);
-        }
-        let (end, _) = read_sub_blocks(b, q, Error::TruncatedExtension)?;
-        return Ok(end);
-    }
-    if label == 0xFF {
-        // G6.3 Application: the identifier block is the first sub-block.
-        if !need(b, q, 1) {
-            return Err(Error::TruncatedExtension);
-        }
-        let size = get(b, q) as usize;
-        if size != 11 && pol.ext_sizes == ExtSizes::Exact {
-            return Err(Error::InvalidApplicationExtension);
-        }
-        if size == 0 {
-            return Ok(q + 1);
-        }
-        if !need(b, q + 1, size) {
-            return Err(Error::TruncatedExtension);
-        }
-        let mut is_netscape = size == 11;
-        let mut i = 0;
-        while i < 11 && is_netscape {
-            if get(b, q + 1 + i) != NETSCAPE[i] {
-                is_netscape = false;
-            }
-            i += 1;
-        }
-        let first_only = pol.loop_scan == LoopScan::FirstSubBlockOnly;
-        let (end, _) = read_sub_blocks(b, q + 1 + size, Error::TruncatedExtension)?;
-        if is_netscape && st.frames_seen == 0 {
-            // G6.3 rule A over the sub-blocks after the identifier.
-            let (_, lc) = loop_count_of(b, q + 1 + size, st.loop_count, first_only)?;
-            st.loop_count = lc;
-        }
-        return Ok(end);
-    }
-    // G6.4 Comment and unknown labels.
-    let (end, _) = read_sub_blocks(b, q, Error::TruncatedExtension)?;
-    Ok(end)
 }
 
-/// G8 image descriptor and local colour table, separator at `p`.
-pub fn parse_image_descriptor(
-    b: &[u8],
-    p: usize,
-    hdr: &Header,
-    st: &WalkState,
-    pol: &Policy,
-) -> Result<(FrameHeader, usize), Error> {
-    if st.frames_seen >= MAX_FRAMES {
-        return Err(Error::TooManyFrames);
-    }
-    if !need(b, p, 10) {
-        return Err(Error::TruncatedImageDescriptor);
-    }
-    let left = le16(b, p + 1) as u32;
-    let top = le16(b, p + 3) as u32;
-    let w = le16(b, p + 5) as u32;
-    let h = le16(b, p + 7) as u32;
-    let packed = get(b, p + 9);
-    let mut c = p + 10;
-    if w == 0 || h == 0 {
-        return Err(Error::InvalidFrameDimensions);
-    }
-    // Sums up to 131,070, compared without narrowing.
-    let inside = left + w <= hdr.width as u32 && top + h <= hdr.height as u32;
-    if !inside && pol.frame_bounds == FrameBounds::Reject {
-        return Err(Error::FrameOutsideScreen);
-    }
-    if st.total_pixels + (w as u64) * (h as u64) > MAX_TOTAL_PIXELS {
-        return Err(Error::PixelBudgetExceeded);
-    }
-    let mut table = hdr.global;
-    if packed & 0x80 != 0 {
-        let entries = table_entries(packed);
-        let n = 3 * entries as usize;
-        if !need(b, c, n) {
-            return Err(Error::TruncatedColorTable);
+pub proof fn lemma_ext_success_progress(b:Seq<u8>,pol:Policy,s:crate::model::WalkM,ns:crate::model::WalkM)
+    requires 0<=s.p,crate::model::ext_step(b,pol,s)==Ok(ns),
+    ensures s.p<ns.p<=b.len(),ns.frames_seen==s.frames_seen,ns.total_pixels==s.total_pixels,
+        s.frames_seen>=1 ==> ns.loop_count==s.loop_count,
+{
+    let q=s.p+2;
+    if b[s.p+1]!=0xf9 {
+        match crate::model::sub_scan(b,q) {
+            None=>{},Some((subs,end))=>lemma_sub_scan_bounds(b,q,subs,end),
         }
-        table = Some(ColorTable { offset: c, entries });
-        c += n;
     }
-    let table = match table {
-        Some(t) => t,
-        None => return Err(Error::NoColorTable),
-    };
-    Ok((
-        FrameHeader {
-            rect: Rect { left, top, width: w, height: h },
-            interlaced: packed & 0x40 != 0,
-            table,
-            inside,
+}
+
+pub open spec fn extension_post(b:Seq<u8>,p:usize,pol:Policy,oldst:WalkState,st:WalkState,r:Result<usize,Error>)->bool {
+    match crate::model::ext_step(b,pol,walk_m_at(oldst,p)) {
+        Err(e)=>r is Err && r.unwrap_err()==e && walk_eq(oldst,st),
+        Ok(ms)=>r is Ok && st_matches(r.unwrap(),st,ms) && p<r.unwrap()<=b.len()
+            && st.frames_seen==oldst.frames_seen && st.total_pixels==oldst.total_pixels,
+    }
+}
+
+pub fn parse_extension(b:&[u8],p:usize,st:&mut WalkState,pol:&Policy)->(r:Result<usize,Error>)
+    requires p<=b.len(),b.len()<=MAX_INPUT,
+    ensures extension_post(b@,p,*pol,*old(st),*final(st),r),
+{
+    let result=parse_extension_verified(b,p,st,*pol);
+    match result {
+        Err(e)=>Err(e),
+        Ok((end,ns))=> {
+            proof {
+                let ms=crate::model::ext_step(b@,*pol,walk_m_at(*st,p)).unwrap();
+                lemma_ext_success_progress(b@,*pol,walk_m_at(*st,p),ms);
+            }
+            *st=ns;
+            Ok(end)
         },
-        c,
-    ))
+    }
+}
+} // verus!
+
+verus! {
+pub open spec fn header_model(h:Header)->crate::model::HeaderM {
+    crate::model::HeaderM {width:h.width as int,height:h.height as int,version:crate::model::version_code(h.version),
+        background_index:h.background_index as int,aspect:h.aspect as int,cursor:h.cursor as int,
+        global:match h.global {None=>None,Some(t)=>Some(crate::model::ColorTableM {off:t.offset as int,entries:t.entries as int})}}
+}
+pub open spec fn frame_header_model(h:FrameHeader)->crate::model::FrameHeaderM {
+    crate::model::FrameHeaderM {left:h.rect.left as int,top:h.rect.top as int,w:h.rect.width as int,h:h.rect.height as int,
+        interlaced:h.interlaced,table:crate::model::ColorTableM {off:h.table.offset as int,entries:h.table.entries as int},inside:h.inside}
+}
+pub open spec fn frame_header_ok(b:Seq<u8>,h:FrameHeader,c:usize,st:WalkState)->bool {
+    &&& 1<=h.rect.width<=MAX_DIMENSION && 1<=h.rect.height<=MAX_DIMENSION
+    &&& h.rect.left<=MAX_DIMENSION && h.rect.top<=MAX_DIMENSION
+    &&& 2<=h.table.entries<=256
+    &&& h.table.offset as int+3*(h.table.entries as int)<=b.len()
+    &&& c<=b.len() && st.frames_seen<MAX_FRAMES
+    &&& (st.total_pixels as int)+(h.rect.width as int)*(h.rect.height as int)<=MAX_TOTAL_PIXELS
+}
+pub open spec fn descriptor_post(b:Seq<u8>,p:usize,hdr:Header,st:WalkState,pol:Policy,r:Result<(FrameHeader,usize),Error>)->bool {
+    match r {
+        Err(e)=>crate::model::image_step(b,header_model(hdr),pol,walk_m_at(st,p))==Err(e),
+        Ok((fh,c))=>frame_header_ok(b,fh,c,st) && p as int+10<=c as int && crate::model::image_step(b,header_model(hdr),pol,walk_m_at(st,p))
+            ==crate::model::finish_image(b,pol,walk_m_at(st,p),frame_header_model(fh),(fh.rect.width as int)*(fh.rect.height as int),c as int),
+    }
+}
+pub proof fn lemma_descriptor_area(w:u32,h:u32,total:u64)
+    requires w<=MAX_DIMENSION,h<=MAX_DIMENSION,total<=MAX_TOTAL_PIXELS,
+    ensures (w as int)*(h as int)<= (MAX_DIMENSION as int)*(MAX_DIMENSION as int),
+        (total as int)+(w as int)*(h as int)<=u64::MAX,
+{
+    assert((w as int)*(h as int)<= (MAX_DIMENSION as int)*(MAX_DIMENSION as int)) by(nonlinear_arith)
+        requires 0<=w as int<=MAX_DIMENSION,0<=h as int<=MAX_DIMENSION;
+    assert((MAX_TOTAL_PIXELS as int)+(MAX_DIMENSION as int)*(MAX_DIMENSION as int)<=u64::MAX) by(compute);
+}
+
+/// Exact G8 descriptor prefix; successful results leave G9 to `scan_image_data`.
+pub fn parse_image_descriptor(b:&[u8],p:usize,hdr:&Header,st:&WalkState,pol:&Policy)->(r:Result<(FrameHeader,usize),Error>)
+    requires p<=b.len(),b.len()<=MAX_INPUT,hdr_inv(b@,*hdr),st.total_pixels<=MAX_TOTAL_PIXELS,
+    ensures descriptor_post(b@,p,*hdr,*st,*pol,r),
+{
+    hide(crate::model::finish_image);
+    if st.frames_seen>=MAX_FRAMES {return Err(Error::TooManyFrames);}
+    if !need(b,p,10) {return Err(Error::TruncatedImageDescriptor);}
+    let left=le16(b,p+1) as u32;
+    let top=le16(b,p+3) as u32;
+    let w=le16(b,p+5) as u32;
+    let h=le16(b,p+7) as u32;
+    let packed=get(b,p+9);
+    let mut c=p+10;
+    if w==0 || h==0 {return Err(Error::InvalidFrameDimensions);}
+    let inside=left+w<=hdr.width as u32 && top+h<=hdr.height as u32;
+    let reject=match pol.frame_bounds {FrameBounds::Reject=>true,FrameBounds::Clip=>false};
+    if !inside && reject {return Err(Error::FrameOutsideScreen);}
+    proof {lemma_descriptor_area(w,h,st.total_pixels);}
+    if st.total_pixels+(w as u64)*(h as u64)>MAX_TOTAL_PIXELS {return Err(Error::PixelBudgetExceeded);}
+    let mut table=hdr.global;
+    if packed&0x80!=0 {
+        let entries=table_entries(packed);
+        let n=3*entries as usize;
+        if !need(b,c,n) {return Err(Error::TruncatedColorTable);}
+        table=Some(ColorTable {offset:c,entries});
+        c+=n;
+    }
+    let table=match table {Some(t)=>t,None=>return Err(Error::NoColorTable)};
+    Ok((FrameHeader {rect:Rect {left,top,width:w,height:h},interlaced:packed&0x40!=0,table,inside},c))
+}
+} // verus!
+
+verus! {
+/// G9's policy check, made before scanning the image sub-blocks.
+pub open spec fn lzw_min_ok(kind:LzwMin,m:int,area:int)->bool {
+    match kind {
+        LzwMin::Spec=>2<=m<=8,
+        LzwMin::Range1to11Checked=>1<=m<=11 && (m!=1 || area==1),
+    }
+}
+
+pub open spec fn image_data_post(b:Seq<u8>,p:int,pol:Policy,area:int,r:Result<ImageData,Error>)->bool {
+    if !crate::model::have(b,p,1) {r is Err && r.unwrap_err()==Error::TruncatedImageData}
+    else if !lzw_min_ok(pol.lzw_min,b[p] as int,area) {r is Err && r.unwrap_err()==Error::InvalidLzwMinCodeSize}
+    else {match crate::model::sub_scan(b,p+1) {
+        None=>r is Err && r.unwrap_err()==Error::TruncatedImageData,
+        Some((ps,e))=>match r {
+            Err(_)=>false,
+            Ok(data)=> {
+                &&& data.min_code_size as int==b[p] as int
+                &&& data.first as int==p+1
+                &&& data.end as int==e
+                &&& data.data_len as int==crate::model::concat_len(ps)
+                &&& data.data_len as int==crate::model::concat(ps).len()
+                &&& data.data_len<=crate::limits::MAX_INPUT
+                &&& lzw_min_ok(pol.lzw_min,data.min_code_size as int,area)
+            },
+        },
+    }}
 }
 
 /// G9 image data: minimum code size (policy `lzw_min`, `area` = descriptor
 /// `w·h`), then the whole sub-block sequence before any code is decoded.
-pub fn scan_image_data(b: &[u8], p: usize, pol: &Policy, area: u64) -> Result<ImageData, Error> {
-    if !need(b, p, 1) {
-        return Err(Error::TruncatedImageData);
-    }
+pub fn scan_image_data(b: &[u8], p: usize, pol: &Policy, area: u64) -> (r: Result<ImageData, Error>)
+    requires p<=b.len(),b.len()<=crate::limits::MAX_INPUT,
+    ensures image_data_post(b@,p as int,*pol,area as int,r),
+{
+    if !need(b, p, 1) { return Err(Error::TruncatedImageData); }
     let m = get(b, p) as u32;
     match pol.lzw_min {
         LzwMin::Spec => {
-            if !(2 <= m && m <= 8) {
-                return Err(Error::InvalidLzwMinCodeSize);
-            }
+            if !(2 <= m && m <= 8) { return Err(Error::InvalidLzwMinCodeSize); }
         }
         LzwMin::Range1to11Checked => {
-            if !(1 <= m && m <= 11) {
-                return Err(Error::InvalidLzwMinCodeSize);
-            }
-            if m == 1 && area != 1 {
-                return Err(Error::InvalidLzwMinCodeSize);
-            }
+            if !(1 <= m && m <= 11) { return Err(Error::InvalidLzwMinCodeSize); }
+            if m == 1 && area != 1 { return Err(Error::InvalidLzwMinCodeSize); }
         }
     }
     let (end, total) = read_sub_blocks(b, p + 1, Error::TruncatedImageData)?;
-    // total <= |b| <= MAX_INPUT, so it fits in u32.
+    proof {
+        let scanned=crate::model::sub_scan(b@,p as int+1).unwrap();
+        crate::model::lemma_concat_len(scanned.0,Seq::empty());
+    }
+    // G9's scan bounds the payload total by the input slice before narrowing.
     let data_len = if total > u32::MAX as u64 { u32::MAX } else { total as u32 };
     Ok(ImageData { min_code_size: m, first: p + 1, data_len, end })
 }
+} // verus!
+
+verus! {
+#[derive(Clone,Copy,Debug)]
+pub struct ImageStep {
+    pub fh:FrameHeader,
+    pub data:ImageData,
+    pub gce:Option<Gce>,
+}
+
+pub open spec fn data_step_post(b:Seq<u8>,c:usize,pol:Policy,area:u64,oldst:WalkState,st:WalkState,r:Result<(ImageData,Option<Gce>),Error>)->bool {
+    match crate::model::data_step(b,pol,walk_m_unused(oldst),c as int,area as int) {
+        Err(e)=>r is Err && r.unwrap_err()==e && walk_eq(oldst,st),
+        Ok((m,d,ms))=>match r {
+            Err(_)=>false,
+            Ok((data,g))=>data.min_code_size as int==m && crate::lzw::read_d(b,data.first as int)==d
+                && st_matches(data.end,st,ms) && g==oldst.gce && image_data_post(b,c as int,pol,area as int,Ok(data)),
+        },
+    }
+}
+
+pub proof fn lemma_data_model(b:Seq<u8>,c:int,pol:Policy,area:int,st:WalkState,r:Result<ImageData,Error>)
+    requires image_data_post(b,c,pol,area,r),
+    ensures match r {
+        Err(e)=>crate::model::data_step(b,pol,walk_m_unused(st),c,area)==Err(e),
+        Ok(data)=>crate::model::data_step(b,pol,walk_m_unused(st),c,area)==Ok((data.min_code_size as int,crate::lzw::read_d(b,data.first as int),
+            crate::model::WalkM {p:data.end as int,gce:None,frames_seen:st.frames_seen as int+1,total_pixels:st.total_pixels as int+area,loop_count:st.loop_count})),
+    },
+{}
+
+/// G9's actual state update follows the complete structural scan.
+pub fn parse_data_step(b:&[u8],c:usize,pol:&Policy,area:u64,st:&mut WalkState)->(r:Result<(ImageData,Option<Gce>),Error>)
+    requires c<=b.len(),b.len()<=MAX_INPUT,old(st).frames_seen<MAX_FRAMES,
+        (old(st).total_pixels as int)+(area as int)<=MAX_TOTAL_PIXELS,
+    ensures data_step_post(b@,c,*pol,area,*old(st),*final(st),r),
+{
+    let result=scan_image_data(b,c,pol,area);
+    proof {lemma_data_model(b@,c as int,*pol,area as int,*st,result);}
+    let data=match result {Ok(data)=>data,Err(e)=>return Err(e)};
+    let gce=st.gce;
+    st.gce=None;
+    st.frames_seen+=1;
+    st.total_pixels+=area;
+    Ok((data,gce))
+}
+
+pub open spec fn image_step_post(b:Seq<u8>,p:usize,hdr:Header,pol:Policy,oldst:WalkState,st:WalkState,r:Result<ImageStep,Error>)->bool {
+    match crate::model::image_step(b,header_model(hdr),pol,walk_m_at(oldst,p)) {
+        Err(e)=>r is Err && r.unwrap_err()==e && walk_eq(oldst,st),
+        Ok((fh,g,m,d,ms))=>match r {
+            Err(_)=>false,
+            Ok(image)=>frame_header_model(image.fh)==fh && image.gce==g && image.data.min_code_size as int==m
+                && crate::lzw::read_d(b,image.data.first as int)==d && st_matches(image.data.end,st,ms)
+                && frame_header_ok(b,image.fh,image.data.first,oldst)
+                && p<image.data.first
+                && image_data_post(b,image.data.first as int-1,pol,(image.fh.rect.width as int)*(image.fh.rect.height as int),Ok(image.data))
+                && lzw_min_ok(pol.lzw_min,m,(image.fh.rect.width as int)*(image.fh.rect.height as int))
+                && crate::model::sub_scan(b,image.data.first as int) is Some
+                && crate::lzw::read_d(b,image.data.first as int).len()==image.data.data_len
+                && image.data.data_len<=MAX_INPUT,
+        },
+    }
+}
+
+/// Exact executable G8-G9 image step, including frame/pixel counters and GCE
+/// consumption, used by the frame path before disposal, allocation or LZW.
+pub fn parse_image_step(b:&[u8],p:usize,hdr:&Header,pol:&Policy,st:&mut WalkState)->(r:Result<ImageStep,Error>)
+    requires p<=b.len(),b.len()<=MAX_INPUT,hdr_inv(b@,*hdr),old(st).total_pixels<=MAX_TOTAL_PIXELS,
+    ensures image_step_post(b@,p,*hdr,*pol,*old(st),*final(st),r),
+        final(st).total_pixels<=MAX_TOTAL_PIXELS,
+        r is Ok ==> final(st).frames_seen<=MAX_FRAMES,
+{
+    let ghost start=*st;
+    let (fh,c)=parse_image_descriptor(b,p,hdr,st,pol)?;
+    proof {lemma_descriptor_area(fh.rect.width,fh.rect.height,st.total_pixels);}
+    let area=(fh.rect.width as u64)*(fh.rect.height as u64);
+    let (data,gce)=parse_data_step(b,c,pol,area,st)?;
+    Ok(ImageStep {fh,data,gce})
+}
+
+/// At an image introducer, the executable step is MB's image branch.
+pub proof fn lemma_mb_image_branch(b:Seq<u8>,p:usize,hdr:Header,pol:Policy,oldst:WalkState,st:WalkState,r:Result<ImageStep,Error>)
+    requires p<b.len(),b[p as int]==0x2c,image_step_post(b,p,hdr,pol,oldst,st,r),
+    ensures match crate::model::mb(b,header_model(hdr),pol,walk_m_at(oldst,p)) {
+        Err(e)=>r is Err && r.unwrap_err()==e,
+        Ok(out)=>match out {
+            crate::model::MbOut::Trailer=>false,
+            crate::model::MbOut::Image(fh,g,m,d,ms)=>match r {
+                Err(_)=>false,Ok(image)=>frame_header_model(image.fh)==fh && image.gce==g && image.data.min_code_size as int==m
+                    && crate::lzw::read_d(b,image.data.first as int)==d && st_matches(image.data.end,st,ms),
+            },
+        },
+    },
+{}
+} // verus!
+
+verus! {
+pub proof fn lemma_image_end(b:Seq<u8>,pol:Policy,p:usize,image:ImageStep)
+    requires p<image.data.first,
+        image_data_post(b,image.data.first as int-1,pol,(image.fh.rect.width as int)*(image.fh.rect.height as int),Ok(image.data)),
+    ensures p<image.data.end<=b.len(),
+{
+    let scan=crate::model::sub_scan(b,image.data.first as int).unwrap();
+    lemma_sub_scan_bounds(b,image.data.first as int,scan.0,scan.1);
+}
+
+pub open spec fn mb_exec_post(b:Seq<u8>,p0:usize,hdr:Header,pol:Policy,s0:WalkState,p:usize,st:WalkState,r:Result<Option<ImageStep>,Error>)->bool {
+    match crate::model::mb(b,header_model(hdr),pol,walk_m_at(s0,p0)) {
+        Err(e)=>r is Err && r.unwrap_err()==e,
+        Ok(crate::model::MbOut::Trailer)=>r is Ok && r.unwrap() is None,
+        Ok(crate::model::MbOut::Image(fh,g,m,d,ms))=>match r {
+            Ok(Some(image))=>frame_header_model(image.fh)==fh && image.gce==g && image.data.min_code_size as int==m
+                && crate::lzw::read_d(b,image.data.first as int)==d && st_matches(p,st,ms) && p==image.data.end
+                && frame_header_ok(b,image.fh,image.data.first,s0)
+                && image_data_post(b,image.data.first as int-1,pol,(image.fh.rect.width as int)*(image.fh.rect.height as int),Ok(image.data)),
+            _=>false,
+        },
+    }
+}
+
+/// MB's executable block walk: extensions, exact Trailer checks, then one
+/// descriptor/data step. The model fuel counts extensions; the executable
+/// variant counts bytes still available at the increasing cursor.
+pub fn parse_mb(b:&[u8],p:&mut usize,hdr:&Header,pol:&Policy,st:&mut WalkState)->(r:Result<Option<ImageStep>,Error>)
+    requires *old(p)<=b.len(),b.len()<=MAX_INPUT,hdr_inv(b@,*hdr),
+        old(st).total_pixels<=MAX_TOTAL_PIXELS,old(st).frames_seen<=MAX_FRAMES,
+    ensures mb_exec_post(b@,*old(p),*hdr,*pol,*old(st),*final(p),*final(st),r),
+        *final(p)<=b.len(),final(st).total_pixels<=MAX_TOTAL_PIXELS,final(st).frames_seen<=MAX_FRAMES,
+{
+    hide(crate::model::mb_fuel);
+    let missing_reject=match pol.missing_trailer {crate::policy::MissingTrailer::Reject=>true,_=>false};
+    let orphan_reject=match pol.gce_orphan {crate::policy::GceOrphan::Reject=>true,_=>false};
+    let trailing_reject=match pol.trailing {crate::policy::Trailing::Reject=>true,_=>false};
+    let ghost initial=crate::model::mb(b@,header_model(*hdr),*pol,walk_m_at(*st,*p));
+    let ghost mut fuel=(b.len()-*p) as nat;
+    loop
+        invariant *p<=b.len(),b.len()<=MAX_INPUT,hdr_inv(b@,*hdr),
+            st.total_pixels<=MAX_TOTAL_PIXELS,st.frames_seen<=MAX_FRAMES,
+            st.frames_seen==old(st).frames_seen,st.total_pixels==old(st).total_pixels,
+            fuel>=b.len()-*p,
+            missing_reject==(pol.missing_trailer==crate::policy::MissingTrailer::Reject),
+            orphan_reject==(pol.gce_orphan==crate::policy::GceOrphan::Reject),
+            trailing_reject==(pol.trailing==crate::policy::Trailing::Reject),
+            initial==crate::model::mb(b@,header_model(*hdr),*pol,walk_m_at(*old(st),*old(p))),
+            initial==crate::model::mb_fuel(b@,header_model(*hdr),*pol,walk_m_at(*st,*p),fuel),
+        decreases b.len()-*p,
+    {
+        proof {reveal_with_fuel(crate::model::mb_fuel,1);}
+        let c=if *p>=b.len() {
+            if missing_reject {return Err(Error::MissingTrailer);}
+            0x3bu8
+        } else {get(b,*p)};
+        if c==0x3b {
+            let have_gce=match st.gce {Some(_)=>true,None=>false};
+            if have_gce && orphan_reject {return Err(Error::GraphicControlWithoutGraphic);}
+            if *p<b.len() && b.len()-*p>1 && trailing_reject {return Err(Error::TrailingBytes);}
+            return Ok(None);
+        }
+        if c==0x21 {
+            let ghost before=walk_m_at(*st,*p);
+            let end=parse_extension(b,*p,st,pol)?;
+            proof {
+                let ns=crate::model::ext_step(b@,*pol,before).unwrap();
+                assert(ns==walk_m_at(*st,end));
+                fuel=(fuel-1) as nat;
+            }
+            *p=end;
+            continue;
+        }
+        if c==0x2c {
+            let image=parse_image_step(b,*p,hdr,pol,st)?;
+            proof {lemma_image_end(b@,*pol,*p,image);}
+            *p=image.data.end;
+            return Ok(Some(image));
+        }
+        return Err(Error::UnknownBlock);
+    }
+}
+} // verus!
+
+verus! {
+#[derive(Clone,Copy,PartialEq,Eq,Debug)]
+pub enum PrefixStop {AtImage,Trailer}
+
+pub open spec fn mp_exec_post(b:Seq<u8>,p0:usize,pol:Policy,s0:WalkState,p:usize,st:WalkState,r:Result<PrefixStop,Error>)->bool {
+    match crate::model::mp_fuel(b,pol,walk_m_at(s0,p0),(b.len()-p0) as nat) {
+        Err(e)=>r is Err && r.unwrap_err()==e,
+        Ok(ms)=>r is Ok && st_matches(p,st,ms) && match r.unwrap() {
+            PrefixStop::AtImage=>p<b.len() && b[p as int]==0x2c,
+            PrefixStop::Trailer=>p==b.len() || p<b.len() && b[p as int]==0x3b,
+        },
+    }
+}
+
+/// Constructor walk: extensions and trailer checks, never descriptor/data work.
+pub fn parse_mp(b:&[u8],p:&mut usize,pol:&Policy,st:&mut WalkState)->(r:Result<PrefixStop,Error>)
+    requires *old(p)<=b.len(),b.len()<=MAX_INPUT,
+    ensures mp_exec_post(b@,*old(p),*pol,*old(st),*final(p),*final(st),r),
+        *final(p)<=b.len(),final(st).frames_seen==old(st).frames_seen,final(st).total_pixels==old(st).total_pixels,
+{
+    hide(crate::model::mp_fuel);
+    let missing_reject=match pol.missing_trailer {crate::policy::MissingTrailer::Reject=>true,_=>false};
+    let orphan_reject=match pol.gce_orphan {crate::policy::GceOrphan::Reject=>true,_=>false};
+    let trailing_reject=match pol.trailing {crate::policy::Trailing::Reject=>true,_=>false};
+    let ghost initial=crate::model::mp_fuel(b@,*pol,walk_m_at(*st,*p),(b.len()-*p) as nat);
+    let ghost mut fuel=(b.len()-*p) as nat;
+    loop
+        invariant *p<=b.len(),b.len()<=MAX_INPUT,
+            st.frames_seen==old(st).frames_seen,st.total_pixels==old(st).total_pixels,
+            fuel>=b.len()-*p,
+            missing_reject==(pol.missing_trailer==crate::policy::MissingTrailer::Reject),
+            orphan_reject==(pol.gce_orphan==crate::policy::GceOrphan::Reject),
+            trailing_reject==(pol.trailing==crate::policy::Trailing::Reject),
+            initial==crate::model::mp_fuel(b@,*pol,walk_m_at(*old(st),*old(p)),(b.len()-*old(p)) as nat),
+            initial==crate::model::mp_fuel(b@,*pol,walk_m_at(*st,*p),fuel),
+        decreases b.len()-*p,
+    {
+        proof {reveal_with_fuel(crate::model::mp_fuel,1);}
+        let c=if *p>=b.len() {
+            if missing_reject {return Err(Error::MissingTrailer);}
+            0x3bu8
+        } else {get(b,*p)};
+        if c==0x3b {
+            let have_gce=match st.gce {Some(_)=>true,None=>false};
+            if have_gce && orphan_reject {return Err(Error::GraphicControlWithoutGraphic);}
+            if *p<b.len() && b.len()-*p>1 && trailing_reject {return Err(Error::TrailingBytes);}
+            return Ok(PrefixStop::Trailer);
+        }
+        if c==0x21 {
+            let ghost before=walk_m_at(*st,*p);
+            let end=parse_extension(b,*p,st,pol)?;
+            proof {
+                let ns=crate::model::ext_step(b@,*pol,before).unwrap();
+                assert(ns==walk_m_at(*st,end));fuel=(fuel-1) as nat;
+            }
+            *p=end;continue;
+        }
+        if c==0x2c {return Ok(PrefixStop::AtImage);}
+        return Err(Error::UnknownBlock);
+    }
+}
+
+pub proof fn lemma_header_model_matches(b:Seq<u8>,h:Header,m:crate::model::HeaderM)
+    requires hdr_matches(b,m,h),
+    ensures m==header_model(h),
+{}
+} // verus!

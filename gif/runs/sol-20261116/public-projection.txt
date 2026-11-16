@@ -1,0 +1,36 @@
+
+verus! {
+pub open spec fn projected_error(r: LzwReport) -> Option<Error> {
+    match r.colour { Some(_) => Some(Error::ColorIndexOutOfRange), None => r.error }
+}
+pub open spec fn projected_pos(r: LzwReport) -> u32 {
+    match r.colour { Some(c) => c.pos, None => r.pos }
+}
+pub open spec fn colour_observation(r: LzwReport, o: Seq<u8>, ok: spec_fn(u8)->bool) -> bool {
+    &&& (r.colour is None) <==> (forall|p:int| 0<=p<o.len() ==> ok(#[trigger] o[p]))
+    &&& match r.colour {
+        None => true,
+        Some(c) => {
+            &&& c.q<o.len()
+            &&& !ok(o[c.q as int])
+            &&& forall|p:int| 0<=p<(c.q as int) ==> ok(#[trigger] o[p])
+            &&& c.pos==r.times@[c.q as int]
+        },
+    }
+}
+
+/// Palette rejection precedes the pure LZW result without adding a palette
+/// branch to the pure G10 model's `verdict`.
+pub proof fn lemma_public_projection(r:LzwReport, mr:MRes, ok:spec_fn(u8)->bool)
+    requires report_matches(r,mr), colour_observation(r,mr.idx,ok),
+    ensures
+        projected_error(r)==if exists|p:int| 0<=p<mr.idx.len() && !ok(#[trigger] mr.idx[p]) {
+            Some(Error::ColorIndexOutOfRange)
+        } else {match mr.error {None=>None,Some(e)=>Some(err_of(e))}},
+        match r.colour {
+            None=> projected_pos(r) as int==mr.pos,
+            Some(c)=> projected_error(r)==Some(Error::ColorIndexOutOfRange)
+                && projected_pos(r)==r.times@[c.q as int],
+        },
+{}
+} // verus!

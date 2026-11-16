@@ -1,0 +1,53 @@
+
+verus! {
+pub proof fn lemma_sub_scan_bounds(b:Seq<u8>,q:int,subs:Seq<Seq<u8>>,end:int)
+    requires 0<=q,crate::model::sub_scan(b,q)==Some((subs,end)),
+    ensures q<end<=b.len(),
+    decreases (b.len()-q) as nat,
+{
+    reveal(crate::model::sub_scan);
+    if b[q]!=0 {
+        let rest=crate::model::sub_scan(b,q+1+b[q] as int).unwrap();
+        lemma_sub_scan_bounds(b,q+1+b[q] as int,rest.0,rest.1);
+    }
+}
+
+pub proof fn lemma_ext_success_progress(b:Seq<u8>,pol:Policy,s:crate::model::WalkM,ns:crate::model::WalkM)
+    requires 0<=s.p,crate::model::ext_step(b,pol,s)==Ok(ns),
+    ensures s.p<ns.p<=b.len(),ns.frames_seen==s.frames_seen,ns.total_pixels==s.total_pixels,
+        s.frames_seen>=1 ==> ns.loop_count==s.loop_count,
+{
+    let q=s.p+2;
+    if b[s.p+1]!=0xf9 {
+        match crate::model::sub_scan(b,q) {
+            None=>{},Some((subs,end))=>lemma_sub_scan_bounds(b,q,subs,end),
+        }
+    }
+}
+
+pub open spec fn extension_post(b:Seq<u8>,p:usize,pol:Policy,oldst:WalkState,st:WalkState,r:Result<usize,Error>)->bool {
+    match crate::model::ext_step(b,pol,walk_m_at(oldst,p)) {
+        Err(e)=>r is Err && r.unwrap_err()==e && walk_eq(oldst,st),
+        Ok(ms)=>r is Ok && st_matches(r.unwrap(),st,ms) && p<r.unwrap()<=b.len()
+            && st.frames_seen==oldst.frames_seen && st.total_pixels==oldst.total_pixels,
+    }
+}
+
+pub fn parse_extension(b:&[u8],p:usize,st:&mut WalkState,pol:&Policy)->(r:Result<usize,Error>)
+    requires p<=b.len(),b.len()<=MAX_INPUT,
+    ensures extension_post(b@,p,*pol,*old(st),*final(st),r),
+{
+    let result=parse_extension_verified(b,p,st,*pol);
+    match result {
+        Err(e)=>Err(e),
+        Ok((end,ns))=> {
+            proof {
+                let ms=crate::model::ext_step(b@,*pol,walk_m_at(*st,p)).unwrap();
+                lemma_ext_success_progress(b@,*pol,walk_m_at(*st,p),ms);
+            }
+            *st=ns;
+            Ok(end)
+        },
+    }
+}
+} // verus!

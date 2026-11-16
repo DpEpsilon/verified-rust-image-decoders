@@ -1,0 +1,89 @@
+
+verus! {
+
+/// Typed length view of the raw reservation; literal bytes remain arbitrary.
+pub open spec fn raw_ls_seq(t: Seq<u8>) -> Seq<u16> {
+    Seq::new(TABLE_SIZE as nat, |i: int| raw_length(t, i) as u16)
+}
+
+pub proof fn lemma_raw_views(t: Seq<u8>)
+    requires table_len_ok(t),
+    ensures
+        forall|c: int| 0 <= c < TABLE_SIZE ==> #[trigger] raw_pf_seq(t)[c] as int == raw_prefix(t, c),
+        forall|c: int| 0 <= c < TABLE_SIZE ==> #[trigger] raw_ls_seq(t)[c] as int == raw_length(t, c),
+        forall|c: int| 0 <= c < TABLE_SIZE ==> #[trigger] raw_sf_seq(t)[c] as int == raw_suffix(t, c),
+{
+    assert forall|c: int| 0 <= c < TABLE_SIZE implies #[trigger] raw_pf_seq(t)[c] as int == raw_prefix(t, c) by {
+        assert(0 <= raw_prefix(t, c) <= 65535);
+    }
+    assert forall|c: int| 0 <= c < TABLE_SIZE implies #[trigger] raw_ls_seq(t)[c] as int == raw_length(t, c) by {
+        assert(0 <= raw_length(t, c) <= 65535);
+    }
+}
+
+/// G10.2 step 7 changes only the newly readable entry, including its length.
+fn add_entry(t: &mut [u8], next: &mut u32, width: &mut u32, prev: u32, s0: u8, clear: u32)
+    requires
+        table_len_ok(old(t)@),
+        *old(next) < TABLE_SIZE,
+        1 <= *old(width) <= 12,
+        prev < *old(next),
+        crate::dictionary::valid(clear as int, *old(next) as int, prev as int),
+        crate::dictionary::table_ok(raw_pf_seq(old(t)@), raw_ls_seq(old(t)@), clear as int, *old(next) as int),
+    ensures
+        table_len_ok(final(t)@),
+        *final(next) == *old(next) + 1,
+        *final(width) == if *old(width) < 12 && *final(next) == (1u32 << *old(width)) { *old(width) + 1 } else { *old(width) },
+        1 <= *final(width) <= 12,
+        raw_pf_seq(final(t)@) == raw_pf_seq(old(t)@).update(*old(next) as int, prev as u16),
+        raw_sf_seq(final(t)@) == raw_sf_seq(old(t)@).update(*old(next) as int, s0),
+        raw_ls_seq(final(t)@) == raw_ls_seq(old(t)@).update(*old(next) as int,
+            (crate::refinement::clen(raw_ls_seq(old(t)@), clear as int, prev as int) + 1) as u16),
+        crate::refinement::clen(raw_ls_seq(old(t)@), clear as int, prev as int) + 1 <= TABLE_SIZE,
+        crate::dictionary::table_ok(raw_pf_seq(final(t)@), raw_ls_seq(final(t)@), clear as int, *final(next) as int),
+        crate::chain::str_of(raw_sf_seq(final(t)@), raw_pf_seq(final(t)@), clear as int, *old(next) as int, 4096)
+            == crate::chain::str_of(raw_sf_seq(old(t)@), raw_pf_seq(old(t)@), clear as int, prev as int, 4096).push(s0),
+{
+    let e = *next;
+    let ghost ot = t@;
+    let ghost op = raw_pf_seq(ot);
+    let ghost os = raw_sf_seq(ot);
+    let ghost ol = raw_ls_seq(ot);
+    proof {
+        lemma_raw_views(ot);
+        crate::dictionary::chain_valid(op, ol, clear as int, e as int, prev as int);
+        crate::refinement::cache_shape(os, op, ol, clear as int, prev as int, 4096);
+        crate::chain::lemma_str_len_bound(os, op, clear as int, prev as int, 4096);
+    }
+    let plen = code_len(t, clear, prev);
+    proof { assert(plen as int + 1 <= 4096); }
+    prefix_set(t, e, prev as u16);
+    let ghost t1 = t@;
+    proof { lemma_prefix_set_region(ot, t1, e as int, prev as u16); }
+    suffix_set(t, e, s0);
+    let ghost t2 = t@;
+    proof { lemma_suffix_set_region(t1, t2, e as int, s0); }
+    stored_len_set(t, e, plen + 1);
+    proof {
+        lemma_length_set_region(t2, t@, e as int, plen + 1);
+        lemma_raw_views(t@);
+        assert(raw_pf_seq(t@) =~= op.update(e as int, prev as u16));
+        assert(raw_sf_seq(t@) =~= os.update(e as int, s0));
+        assert(raw_ls_seq(t@) =~= ol.update(e as int, (plen + 1) as u16));
+        assert(crate::dictionary::table_ok(raw_pf_seq(t@), raw_ls_seq(t@), clear as int, e as int + 1)) by {
+            assert forall|x: int| clear + 2 <= x < e + 1 implies #[trigger] crate::chain::link_ok(raw_pf_seq(t@), clear as int, x)
+                && crate::refinement::clen(raw_ls_seq(t@), clear as int, x) == crate::refinement::clen(raw_ls_seq(t@), clear as int, raw_pf_seq(t@)[x] as int) + 1
+                && 1 <= crate::refinement::clen(raw_ls_seq(t@), clear as int, x) <= 4096 by {
+                if x == e {} else { assert(crate::chain::link_ok(op, clear as int, x)); }
+            }
+        }
+        crate::dictionary::chain_valid(raw_pf_seq(t@), raw_ls_seq(t@), clear as int, e as int + 1, e as int);
+        crate::chain::lemma_chain_step(raw_sf_seq(t@), raw_pf_seq(t@), clear as int, e as int, 4096);
+        crate::refinement::fresh_frame(os, op, clear as int, e as int, prev as int, s0, prev as int);
+        crate::refinement::fuel_irrelevant(raw_sf_seq(t@), raw_pf_seq(t@), clear as int, prev as int, 4095, 4096);
+    }
+    *next += 1;
+    if *next == (1u32 << *width) && *width < 12 { *width += 1; }
+}
+
+} // verus!

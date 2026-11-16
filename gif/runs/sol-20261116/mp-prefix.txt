@@ -1,0 +1,68 @@
+
+verus! {
+#[derive(Clone,Copy,PartialEq,Eq)]
+pub enum PrefixStop {AtImage,Trailer}
+
+pub open spec fn mp_exec_post(b:Seq<u8>,p0:usize,pol:Policy,s0:WalkState,p:usize,st:WalkState,r:Result<PrefixStop,Error>)->bool {
+    match crate::model::mp_fuel(b,pol,walk_m_at(s0,p0),(b.len()-p0) as nat) {
+        Err(e)=>r is Err && r.unwrap_err()==e,
+        Ok(ms)=>r is Ok && st_matches(p,st,ms) && match r.unwrap() {
+            PrefixStop::AtImage=>p<b.len() && b[p as int]==0x2c,
+            PrefixStop::Trailer=>p==b.len() || p<b.len() && b[p as int]==0x3b,
+        },
+    }
+}
+
+/// Constructor walk: extensions and trailer checks, never descriptor/data work.
+pub fn parse_mp(b:&[u8],p:&mut usize,pol:&Policy,st:&mut WalkState)->(r:Result<PrefixStop,Error>)
+    requires *old(p)<=b.len(),b.len()<=MAX_INPUT,
+    ensures mp_exec_post(b@,*old(p),*pol,*old(st),*final(p),*final(st),r),
+        *final(p)<=b.len(),final(st).frames_seen==old(st).frames_seen,final(st).total_pixels==old(st).total_pixels,
+{
+    hide(crate::model::mp_fuel);
+    let missing_reject=match pol.missing_trailer {crate::policy::MissingTrailer::Reject=>true,_=>false};
+    let orphan_reject=match pol.gce_orphan {crate::policy::GceOrphan::Reject=>true,_=>false};
+    let trailing_reject=match pol.trailing {crate::policy::Trailing::Reject=>true,_=>false};
+    let ghost initial=crate::model::mp_fuel(b@,*pol,walk_m_at(*st,*p),(b.len()-*p) as nat);
+    let ghost mut fuel=(b.len()-*p) as nat;
+    loop
+        invariant *p<=b.len(),b.len()<=MAX_INPUT,
+            st.frames_seen==old(st).frames_seen,st.total_pixels==old(st).total_pixels,
+            fuel>=b.len()-*p,
+            missing_reject==(pol.missing_trailer==crate::policy::MissingTrailer::Reject),
+            orphan_reject==(pol.gce_orphan==crate::policy::GceOrphan::Reject),
+            trailing_reject==(pol.trailing==crate::policy::Trailing::Reject),
+            initial==crate::model::mp_fuel(b@,*pol,walk_m_at(*old(st),*old(p)),(b.len()-*old(p)) as nat),
+            initial==crate::model::mp_fuel(b@,*pol,walk_m_at(*st,*p),fuel),
+        decreases b.len()-*p,
+    {
+        proof {reveal_with_fuel(crate::model::mp_fuel,1);}
+        let c=if *p>=b.len() {
+            if missing_reject {return Err(Error::MissingTrailer);}
+            0x3bu8
+        } else {get(b,*p)};
+        if c==0x3b {
+            let have_gce=match st.gce {Some(_)=>true,None=>false};
+            if have_gce && orphan_reject {return Err(Error::GraphicControlWithoutGraphic);}
+            if *p<b.len() && b.len()-*p>1 && trailing_reject {return Err(Error::TrailingBytes);}
+            return Ok(PrefixStop::Trailer);
+        }
+        if c==0x21 {
+            let ghost before=walk_m_at(*st,*p);
+            let end=parse_extension(b,*p,st,pol)?;
+            proof {
+                let ns=crate::model::ext_step(b@,*pol,before).unwrap();
+                assert(ns==walk_m_at(*st,end));fuel=(fuel-1) as nat;
+            }
+            *p=end;continue;
+        }
+        if c==0x2c {return Ok(PrefixStop::AtImage);}
+        return Err(Error::UnknownBlock);
+    }
+}
+
+pub proof fn lemma_header_model_matches(b:Seq<u8>,h:Header,m:crate::model::HeaderM)
+    requires hdr_matches(b,m,h),
+    ensures m==header_model(h),
+{}
+} // verus!

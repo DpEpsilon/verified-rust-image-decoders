@@ -1,0 +1,66 @@
+
+verus! {
+pub open spec fn draw_effect(fr:FrameSpec,table:Seq<u8>,sw:u32,sh:u32)->spec_fn(Seq<u8>,u32,u8)->Seq<u8> {
+    |cv:Seq<u8>,q:u32,v:u8| match draw_step(cv,fr,table,sw,sh,q as int,v) {Ok(n)=>n,Err(_)=>cv}
+}
+
+pub proof fn lemma_effect_draw_calls(cv:Seq<u8>,fr:FrameSpec,table:Seq<u8>,sw:u32,sh:u32,h:Seq<(u32,u8)>)
+    requires draw_domain(cv,fr,table,sw,sh),calls_ok(h,fr),
+    ensures draw_calls(cv,fr,table,sw,sh,h)==Ok(crate::lzw::effect_fold(cv,h,draw_effect(fr,table,sw,sh))),
+    decreases h.len(),
+{
+    if h.len()>0 {
+        lemma_calls_remove(h,fr,0);
+        lemma_draw_success_len(cv,fr,table,sw,sh,h[0].0,h[0].1);
+        let nc=draw_step(cv,fr,table,sw,sh,h[0].0 as int,h[0].1).unwrap();
+        lemma_effect_draw_calls(nc,fr,table,sw,sh,h.drop_first());
+    }
+}
+
+pub open spec fn forward_calls(o:Seq<u8>,q:int)->Seq<(u32,u8)> {
+    Seq::new((o.len()-q) as nat,|i:int|((q+i) as u32,o[q+i]))
+}
+pub proof fn lemma_forward_draw_fold(cv:Seq<u8>,fr:FrameSpec,table:Seq<u8>,sw:u32,sh:u32,o:Seq<u8>,q:int)
+    requires 0<=q<=o.len()<=u32::MAX,
+    ensures draw_calls(cv,fr,table,sw,sh,forward_calls(o,q))==draw_fold(cv,fr,table,sw,sh,o,q),
+    decreases o.len()-q,
+{
+    if q<o.len() {
+        crate::lzw::lemma_u32_roundtrip(q);
+        assert(forward_calls(o,q).drop_first() =~= forward_calls(o,q+1));
+        match draw_step(cv,fr,table,sw,sh,q,o[q]) {
+            Err(_)=>{},Ok(nc)=>lemma_forward_draw_fold(nc,fr,table,sw,sh,o,q+1),
+        }
+    }
+}
+
+pub proof fn lemma_complete_calls_ok(h:Seq<(u32,u8)>,o:Seq<u8>,fr:FrameSpec)
+    requires crate::lzw::log_complete(h,o,o.len() as int),o.len()<=u32::MAX,
+        o.len()<=(fr.rect.width as int)*(fr.rect.height as int),
+        forall|p:int| 0<=p<o.len() ==> fr.transparent==Some(#[trigger] o[p]) || (o[p] as int)<fr.c,
+    ensures calls_ok(h,fr),calls_ok(crate::lzw::canonical_log(o),fr),
+{
+    assert forall|i:int,j:int| 0<=i<h.len() && 0<=j<h.len() && #[trigger] h[i].0==#[trigger] h[j].0 implies h[i].1==h[j].1 by {
+        assert(h[i].1==o[h[i].0 as int]);assert(h[j].1==o[h[j].0 as int]);
+    }
+    let f=crate::lzw::canonical_log(o);
+    assert forall|i:int| 0<=i<f.len() implies (#[trigger] f[i].0 as int)<(fr.rect.width as int)*(fr.rect.height as int)
+        && (fr.transparent==Some(f[i].1) || (f[i].1 as int)<fr.c) by {crate::lzw::lemma_u32_roundtrip(i);}
+}
+
+/// The complete actual call log draws exactly the forward G12.2 model canvas
+/// when all model indices pass the colour check.
+pub proof fn lemma_complete_log_canvas(cv:Seq<u8>,fr:FrameSpec,table:Seq<u8>,sw:u32,sh:u32,h:Seq<(u32,u8)>,o:Seq<u8>)
+    requires draw_domain(cv,fr,table,sw,sh),crate::lzw::log_complete(h,o,o.len() as int),
+        o.len()<=u32::MAX,o.len()<=(fr.rect.width as int)*(fr.rect.height as int),
+        forall|p:int| 0<=p<o.len() ==> fr.transparent==Some(#[trigger] o[p]) || (o[p] as int)<fr.c,
+    ensures draw_fold(cv,fr,table,sw,sh,o,0)==Ok(crate::lzw::effect_fold(cv,h,draw_effect(fr,table,sw,sh))),
+{
+    crate::lzw::lemma_log_canonical_multiset(h,o);
+    lemma_complete_calls_ok(h,o,fr);
+    lemma_successful_canvas_permutation(cv,fr,table,sw,sh,h,crate::lzw::canonical_log(o));
+    lemma_effect_draw_calls(cv,fr,table,sw,sh,h);
+    assert(crate::lzw::canonical_log(o) =~= forward_calls(o,0));
+    lemma_forward_draw_fold(cv,fr,table,sw,sh,o,0);
+}
+} // verus!

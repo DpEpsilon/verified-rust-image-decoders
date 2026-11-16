@@ -145,9 +145,15 @@ pub(crate) const RECOMMENDED_BETA: Policy = Policy {
     ..STRICT
 };
 
+pub closed spec fn profile_record(p:Profile)->Policy {
+    match p {Profile::Strict=>STRICT,Profile::RecommendedBeta=>RECOMMENDED_BETA}
+}
+
 impl Profile {
     /// The record this profile selects.
-    pub(crate) fn policy(self) -> Policy {
+    pub(crate) fn policy(self) -> (pol: Policy)
+        ensures pol==profile_record(self),
+    {
         match self {
             Profile::Strict => STRICT,
             Profile::RecommendedBeta => RECOMMENDED_BETA,

@@ -1,0 +1,56 @@
+verus! {
+/// G9's policy check, made before scanning the image sub-blocks.
+pub open spec fn lzw_min_ok(kind:LzwMin,m:int,area:int)->bool {
+    match kind {
+        LzwMin::Spec=>2<=m<=8,
+        LzwMin::Range1to11Checked=>1<=m<=11 && (m!=1 || area==1),
+    }
+}
+
+pub open spec fn image_data_post(b:Seq<u8>,p:int,pol:Policy,area:int,r:Result<ImageData,Error>)->bool {
+    if !crate::model::have(b,p,1) {r is Err && r.unwrap_err()==Error::TruncatedImageData}
+    else if !lzw_min_ok(pol.lzw_min,b[p] as int,area) {r is Err && r.unwrap_err()==Error::InvalidLzwMinCodeSize}
+    else {match crate::model::sub_scan(b,p+1) {
+        None=>r is Err && r.unwrap_err()==Error::TruncatedImageData,
+        Some((ps,e))=>match r {
+            Err(_)=>false,
+            Ok(data)=> {
+                &&& data.min_code_size as int==b[p] as int
+                &&& data.first as int==p+1
+                &&& data.end as int==e
+                &&& data.data_len as int==crate::model::concat_len(ps)
+                &&& data.data_len as int==crate::model::concat(ps).len()
+                &&& data.data_len<=crate::limits::MAX_INPUT
+                &&& lzw_min_ok(pol.lzw_min,data.min_code_size as int,area)
+            },
+        },
+    }}
+}
+
+/// G9 image data: minimum code size (policy `lzw_min`, `area` = descriptor
+/// `w·h`), then the whole sub-block sequence before any code is decoded.
+pub fn scan_image_data(b: &[u8], p: usize, pol: &Policy, area: u64) -> (r: Result<ImageData, Error>)
+    requires p<=b.len(),b.len()<=crate::limits::MAX_INPUT,
+    ensures image_data_post(b@,p as int,*pol,area as int,r),
+{
+    if !need(b, p, 1) { return Err(Error::TruncatedImageData); }
+    let m = get(b, p) as u32;
+    match pol.lzw_min {
+        LzwMin::Spec => {
+            if !(2 <= m && m <= 8) { return Err(Error::InvalidLzwMinCodeSize); }
+        }
+        LzwMin::Range1to11Checked => {
+            if !(1 <= m && m <= 11) { return Err(Error::InvalidLzwMinCodeSize); }
+            if m == 1 && area != 1 { return Err(Error::InvalidLzwMinCodeSize); }
+        }
+    }
+    let (end, total) = read_sub_blocks(b, p + 1, Error::TruncatedImageData)?;
+    proof {
+        let scanned=crate::model::sub_scan(b@,p as int+1).unwrap();
+        crate::model::lemma_concat_len(scanned.0,Seq::empty());
+    }
+    // G9's scan bounds the payload total by the input slice before narrowing.
+    let data_len = if total > u32::MAX as u64 { u32::MAX } else { total as u32 };
+    Ok(ImageData { min_code_size: m, first: p + 1, data_len, end })
+}
+} // verus!

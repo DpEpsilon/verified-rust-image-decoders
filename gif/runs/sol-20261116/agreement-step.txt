@@ -1,0 +1,24 @@
+
+verus! {
+pub proof fn lemma_agrees_grow(t: Seq<u8>, nt: Seq<u8>, st: St, ns: St, clear: int, grow: bool, p: u16, v: u8)
+    requires table_len_ok(t), table_len_ok(nt),
+        st.pf.len()==4096,st.sf.len()==4096,0<=clear,clear+2<=st.next<=4096,
+        table_agrees(t,st.pf,st.sf,clear,st.next-1),
+        ns.next==st.next+if grow {1int} else {0int},
+        ns.pf==if grow {st.pf.update(st.next,p)} else {st.pf},
+        ns.sf==if grow {st.sf.update(st.next,v)} else {st.sf},
+        raw_pf_seq(nt)==if grow {raw_pf_seq(t).update(st.next,p)} else {raw_pf_seq(t)},
+        raw_sf_seq(nt)==if grow {raw_sf_seq(t).update(st.next,v)} else {raw_sf_seq(t)},
+    ensures table_agrees(nt,ns.pf,ns.sf,clear,ns.next-1),
+{
+    lemma_raw_views(t); lemma_raw_views(nt);
+    assert forall|x:int| clear+2<=x<ns.next implies #[trigger] raw_prefix(nt,x)==ns.pf[x] as int && raw_suffix(nt,x)==ns.sf[x] as int by {
+        if grow && x==st.next {} else {
+            assert(raw_prefix(t,x)==st.pf[x] as int);
+            assert(raw_suffix(t,x)==st.sf[x] as int);
+            assert(raw_pf_seq(t)[x] as int==raw_prefix(t,x));
+            assert(raw_sf_seq(t)[x] as int==raw_suffix(t,x));
+        }
+    }
+}
+} // verus!

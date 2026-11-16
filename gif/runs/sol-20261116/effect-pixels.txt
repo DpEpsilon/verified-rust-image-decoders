@@ -1,0 +1,17 @@
+
+verus! {
+/// Every speculative put preserves the pixel-origin invariant; rejection is
+/// identity and successful writes use the active table, including under Clip.
+pub proof fn lemma_effect_pixels(cv:Seq<u8>,fr:FrameSpec,table:Seq<u8>,sw:u32,sh:u32,h:Seq<(u32,u8)>,ts:Set<Seq<u8>>)
+    requires draw_domain(cv,fr,table,sw,sh),pixels_well_formed(cv,ts),ts.contains(table),
+        forall|i:int| 0<=i<h.len() ==> (#[trigger] h[i].0 as int)<(fr.rect.width as int)*(fr.rect.height as int),
+    ensures pixels_well_formed(crate::lzw::effect_fold(cv,h,draw_effect(fr,table,sw,sh)),ts),
+    decreases h.len(),
+{
+    if h.len()>0 {
+        lemma_draw_step_pixels_clip(cv,fr,table,sw,sh,h[0].0 as int,h[0].1,ts);
+        let nc=draw_effect(fr,table,sw,sh)(cv,h[0].0,h[0].1);
+        lemma_effect_pixels(nc,fr,table,sw,sh,h.drop_first(),ts);
+    }
+}
+} // verus!

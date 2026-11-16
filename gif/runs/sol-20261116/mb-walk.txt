@@ -1,0 +1,84 @@
+
+verus! {
+pub proof fn lemma_image_end(b:Seq<u8>,pol:Policy,p:usize,image:ImageStep)
+    requires p<image.data.first,
+        image_data_post(b,image.data.first as int-1,pol,(image.fh.rect.width as int)*(image.fh.rect.height as int),Ok(image.data)),
+    ensures p<image.data.end<=b.len(),
+{
+    let scan=crate::model::sub_scan(b,image.data.first as int).unwrap();
+    lemma_sub_scan_bounds(b,image.data.first as int,scan.0,scan.1);
+}
+
+pub open spec fn mb_exec_post(b:Seq<u8>,p0:usize,hdr:Header,pol:Policy,s0:WalkState,p:usize,st:WalkState,r:Result<Option<ImageStep>,Error>)->bool {
+    match crate::model::mb(b,header_model(hdr),pol,walk_m_at(s0,p0)) {
+        Err(e)=>r is Err && r.unwrap_err()==e,
+        Ok(crate::model::MbOut::Trailer)=>r is Ok && r.unwrap() is None,
+        Ok(crate::model::MbOut::Image(fh,g,m,d,ms))=>match r {
+            Ok(Some(image))=>frame_header_model(image.fh)==fh && image.gce==g && image.data.min_code_size as int==m
+                && crate::lzw::read_d(b,image.data.first as int)==d && st_matches(p,st,ms) && p==image.data.end
+                && frame_header_ok(b,image.fh,image.data.first,s0)
+                && image_data_post(b,image.data.first as int-1,pol,(image.fh.rect.width as int)*(image.fh.rect.height as int),Ok(image.data)),
+            _=>false,
+        },
+    }
+}
+
+/// MB's executable block walk: extensions, exact Trailer checks, then one
+/// descriptor/data step. The model fuel counts extensions; the executable
+/// variant counts bytes still available at the increasing cursor.
+pub fn parse_mb(b:&[u8],p:&mut usize,hdr:&Header,pol:&Policy,st:&mut WalkState)->(r:Result<Option<ImageStep>,Error>)
+    requires *old(p)<=b.len(),b.len()<=MAX_INPUT,hdr_inv(b@,*hdr),
+        old(st).total_pixels<=MAX_TOTAL_PIXELS,old(st).frames_seen<=MAX_FRAMES,
+    ensures mb_exec_post(b@,*old(p),*hdr,*pol,*old(st),*final(p),*final(st),r),
+        *final(p)<=b.len(),final(st).total_pixels<=MAX_TOTAL_PIXELS,final(st).frames_seen<=MAX_FRAMES,
+{
+    hide(crate::model::mb_fuel);
+    let missing_reject=match pol.missing_trailer {crate::policy::MissingTrailer::Reject=>true,_=>false};
+    let orphan_reject=match pol.gce_orphan {crate::policy::GceOrphan::Reject=>true,_=>false};
+    let trailing_reject=match pol.trailing {crate::policy::Trailing::Reject=>true,_=>false};
+    let ghost initial=crate::model::mb(b@,header_model(*hdr),*pol,walk_m_at(*st,*p));
+    let ghost mut fuel=(b.len()-*p) as nat;
+    loop
+        invariant *p<=b.len(),b.len()<=MAX_INPUT,hdr_inv(b@,*hdr),
+            st.total_pixels<=MAX_TOTAL_PIXELS,st.frames_seen<=MAX_FRAMES,
+            st.frames_seen==old(st).frames_seen,st.total_pixels==old(st).total_pixels,
+            fuel>=b.len()-*p,
+            missing_reject==(pol.missing_trailer==crate::policy::MissingTrailer::Reject),
+            orphan_reject==(pol.gce_orphan==crate::policy::GceOrphan::Reject),
+            trailing_reject==(pol.trailing==crate::policy::Trailing::Reject),
+            initial==crate::model::mb(b@,header_model(*hdr),*pol,walk_m_at(*old(st),*old(p))),
+            initial==crate::model::mb_fuel(b@,header_model(*hdr),*pol,walk_m_at(*st,*p),fuel),
+        decreases b.len()-*p,
+    {
+        proof {reveal_with_fuel(crate::model::mb_fuel,1);}
+        let c=if *p>=b.len() {
+            if missing_reject {return Err(Error::MissingTrailer);}
+            0x3bu8
+        } else {get(b,*p)};
+        if c==0x3b {
+            let have_gce=match st.gce {Some(_)=>true,None=>false};
+            if have_gce && orphan_reject {return Err(Error::GraphicControlWithoutGraphic);}
+            if *p<b.len() && b.len()-*p>1 && trailing_reject {return Err(Error::TrailingBytes);}
+            return Ok(None);
+        }
+        if c==0x21 {
+            let ghost before=walk_m_at(*st,*p);
+            let end=parse_extension(b,*p,st,pol)?;
+            proof {
+                let ns=crate::model::ext_step(b@,*pol,before).unwrap();
+                assert(ns==walk_m_at(*st,end));
+                fuel=(fuel-1) as nat;
+            }
+            *p=end;
+            continue;
+        }
+        if c==0x2c {
+            let image=parse_image_step(b,*p,hdr,pol,st)?;
+            proof {lemma_image_end(b@,*pol,*p,image);}
+            *p=image.data.end;
+            return Ok(Some(image));
+        }
+        return Err(Error::UnknownBlock);
+    }
+}
+} // verus!

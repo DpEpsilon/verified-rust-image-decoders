@@ -266,6 +266,25 @@ pub proof fn lemma_concat_len(s: Seq<Seq<u8>>, t: Seq<Seq<u8>>)
     }
 }
 
+/// `concat_len` is additive over sequence concatenation: the payload byte count
+/// of a longer sub-block list is the sum of the two parts. The `decode` loop's
+/// log invariant splits the finished codes' payload list at every code, so it
+/// calls this once per iteration.
+pub proof fn lemma_concat_len_add(s: Seq<Seq<u8>>, t: Seq<Seq<u8>>)
+    ensures
+        concat_len(s + t) == concat_len(s) + concat_len(t),
+    decreases s.len(),
+{
+    reveal(concat_len);
+    if s.len() == 0 {
+        assert(s + t =~= t);
+    } else {
+        assert((s + t)[0] == s[0]);
+        assert((s + t).subrange(1, (s + t).len() as int) =~= s.subrange(1, s.len() as int) + t);
+        lemma_concat_len_add(s.subrange(1, s.len() as int), t);
+    }
+}
+
 /// The total payload length, as a recursion on the payload list.
 pub open spec fn concat_len(s: Seq<Seq<u8>>) -> int
     decreases s.len(),
@@ -659,6 +678,50 @@ pub open spec fn app_step(b: Seq<u8>, pol: Policy, s: WalkM, q: int) -> Result<W
 /// G6.3: the identifier an Application Extension must carry to be a loop source.
 pub const NETSCAPE_ID: [u8; 11] = *b"NETSCAPE2.0";
 
+/// Whether the `i` payload bytes at `q + 1` equal the first `i` bytes of
+/// `NETSCAPE2.0`, the predicate `app_ext`'s byte-by-byte comparison loop
+/// maintains.
+pub open spec fn id_matches(b: Seq<u8>, q: int, i: int) -> bool {
+    forall|k: int| 0 <= k < i ==> #[trigger] b[q + 1 + k] == NETSCAPE_ID@[k]
+}
+
+/// Bridging `id_matches` at 11 to the payload's equality with the constant:
+/// `id_matches(b, q, 11)` holds iff the 11-byte subrange at `q + 1` is
+/// `NETSCAPE2.0`. This is the form `is_netscape` reads.
+pub proof fn lemma_id_matches_eq(b: Seq<u8>, q: int)
+    requires
+        0 <= q,
+        q + 12 <= b.len(),
+    ensures
+        id_matches(b, q, 11) == (b.subrange(q + 1, q + 12) == NETSCAPE_ID@),
+{
+    let id = NETSCAPE_ID@;
+    let sub = b.subrange(q + 1, q + 12);
+    vstd::seq::lemma_seq_subrange_len(b, q + 1, q + 12);
+    assert(sub.len() == 11);
+    assert(id.len() == 11);
+    if id_matches(b, q, 11) {
+        assert forall|k: int| 0 <= k < sub.len() implies #[trigger] sub[k] == id[k] by {
+            vstd::seq::lemma_seq_subrange_index(b, q + 1, q + 12, k);
+            assert(0 <= k < 11);
+            assert(sub[k] == b[q + 1 + k]);
+            assert(b[q + 1 + k] == id[k]);
+        }
+        assert(sub =~= id);
+    } else {
+        assert(exists|k: int| 0 <= k < 11 && b[q + 1 + k] != id[k]) by {
+            if !exists|k: int| 0 <= k < 11 && b[q + 1 + k] != id[k] {
+                assert(forall|k: int| 0 <= k < 11 ==> b[q + 1 + k] == id[k]);
+                assert(id_matches(b, q, 11));
+            }
+        }
+        let k = choose|k: int| 0 <= k < 11 && b[q + 1 + k] != id[k];
+        vstd::seq::lemma_seq_subrange_index(b, q + 1, q + 12, k);
+        assert(sub[k] == b[q + 1 + k]);
+        assert(sub != id);
+    }
+}
+
 /// Whether the first payload is exactly `NETSCAPE2.0`.
 pub open spec fn is_netscape(s: Seq<Seq<u8>>) -> bool {
     s.len() >= 1 && s[0] == bytes_of(&NETSCAPE_ID)
@@ -702,6 +765,191 @@ pub open spec fn loop_fold(
 /// The fold, starting from no value.
 pub open spec fn loop_value(s: Seq<Seq<u8>>, first_only: bool) -> Option<u16> {
     loop_fold(s, 0, None, first_only)
+}
+
+/// A fold started from a `Some` seed is always `Some`: the accumulator only ever
+/// becomes `loop_hit_value(h)` (a `Some`) or stays as it was.
+pub proof fn lemma_fold_some_seed(s: Seq<Seq<u8>>, off: int, acc: Option<u16>, first_only: bool)
+    requires
+        acc is Some,
+    ensures
+        loop_fold(s, off, acc, first_only) is Some,
+    decreases s.len(),
+{
+    reveal(loop_fold);
+    if s.len() == 0 {
+        assert(loop_fold(s, off, acc, first_only) == acc);
+    } else {
+        let h = s[0];
+        let hit = loop_hit(h, off, first_only);
+        let hv = loop_hit_value(h);
+        reveal(loop_hit_value);
+        let acc1 = if hit {
+            hv
+        } else {
+            acc
+        };
+        if hit {
+            assert(hv is Some);
+        }
+        assert(acc1 is Some);
+        lemma_fold_some_seed(s.subrange(1, s.len() as int), off + 1, acc1, first_only);
+    }
+}
+
+/// The fold from a seed `acc` equals the fold from `None`, except that a `None`
+/// result is `acc` (the seed survives when no payload hits). This is the identity
+/// G6.3 rule A needs: `app_step` folds from `None` and `app_ext` folds from the
+/// incoming `loop_count`, and G18 makes the two agree.
+pub proof fn lemma_loop_fold_seed(s: Seq<Seq<u8>>, off: int, acc: Option<u16>, first_only: bool)
+    ensures
+        loop_fold(s, off, acc, first_only) == match loop_fold(s, off, None, first_only) {
+            None => acc,
+            Some(v) => Some(v),
+        },
+    decreases s.len(),
+{
+    reveal(loop_fold);
+    if s.len() == 0 {
+        assert(loop_fold(s, off, acc, first_only) == acc);
+        assert(loop_fold(s, off, None, first_only) == None);
+    } else {
+        let h = s[0];
+        let t = s.subrange(1, s.len() as int);
+        let hit = loop_hit(h, off, first_only);
+        let hv = loop_hit_value(h);
+        let acc1 = if hit {
+            hv
+        } else {
+            acc
+        };
+        let none1 = if hit {
+            hv
+        } else {
+            None
+        };
+        reveal(loop_hit_value);
+        assert(loop_fold(s, off, acc, first_only) == loop_fold(t, off + 1, acc1, first_only));
+        assert(loop_fold(s, off, None, first_only) == loop_fold(t, off + 1, none1, first_only));
+        if hit {
+            assert(none1 == hv && acc1 == hv);
+            assert(hv is Some);
+            lemma_fold_some_seed(t, off + 1, hv, first_only);
+            assert(loop_fold(t, off + 1, hv, first_only) is Some);
+        } else {
+            assert(none1 == None && acc1 == acc);
+            lemma_loop_fold_seed(t, off + 1, acc, first_only);
+        }
+    }
+}
+
+/// `app_step`'s success case, exposed in the shape `app_ext` computes it (T6,
+/// G6.3 rule A). From the `sub_scan` unfolding — the identifier payload
+/// `subs[0]`, the tail `subs.subrange(1, |subs|)`, the end cursor `e` — and the
+/// rule-A value `lc` the executable's `loop_count_of` returns
+/// (`loop_fold(tail, 0, s.loop_count, first_only)`, or `s.loop_count` when the
+/// identifier did not match), the model's `app_step` returns exactly the
+/// `WalkM` with cursor `e` and `loop_count = lc`. This is the missing model
+/// lemma that closes `app_ext`'s open `loop_count` obligation (STACK.md).
+pub proof fn lemma_app_step_of_scan(
+    b: Seq<u8>,
+    pol: Policy,
+    s: WalkM,
+    q: int,
+    subs: Seq<Seq<u8>>,
+    e: int,
+    id_match: bool,
+    first_only: bool,
+    lc: Option<u16>,
+)
+    requires
+        0 <= q,
+        have(b, q, 1),
+        1 <= b[q] as int,
+        have(b, q + 1, b[q] as int),
+        pol.ext_sizes == ExtSizes::Exact ==> b[q] as int == 11,
+        sub_scan(b, q) == Some((subs, e)),
+        subs.len() >= 1,
+        subs[0] == b.subrange(q + 1, q + 1 + (b[q] as int)),
+        sub_scan(b, q + 1 + (b[q] as int)) == Some((subs.subrange(1, subs.len() as int), e)),
+        id_match == (subs[0] == bytes_of(&NETSCAPE_ID)),
+        first_only == (pol.loop_scan == LoopScan::FirstSubBlockOnly),
+        lc == if id_match && s.frames_seen == 0 {
+            loop_fold(subs.subrange(1, subs.len() as int), 0, s.loop_count, first_only)
+        } else {
+            s.loop_count
+        },
+    ensures
+        app_step(b, pol, s, q) == Ok(
+            WalkM {
+                p: e,
+                gce: s.gce,
+                frames_seen: s.frames_seen,
+                total_pixels: s.total_pixels,
+                loop_count: lc,
+            },
+        ),
+{
+    reveal(have);
+    let tail = subs.subrange(1, subs.len() as int);
+    assert(is_netscape(subs) == id_match) by {
+        reveal(is_netscape);
+        assert(bytes_of(&NETSCAPE_ID) == NETSCAPE_ID@);
+    }
+    reveal(loop_value);
+    assert(loop_value(tail, first_only) == loop_fold(tail, 0, None, first_only));
+    lemma_loop_fold_seed(tail, 0, s.loop_count, first_only);
+    let scanned = loop_value(tail, first_only);
+    let model_lc = if is_netscape(subs) && s.frames_seen == 0 {
+        match scanned {
+            None => s.loop_count,
+            Some(v) => Some(v),
+        }
+    } else {
+        s.loop_count
+    };
+    assert(model_lc == lc) by {
+        if is_netscape(subs) && s.frames_seen == 0 {
+            assert(scanned == loop_fold(tail, 0, None, first_only));
+            match loop_fold(tail, 0, None, first_only) {
+                None => {
+                    assert(scanned == None);
+                    assert(loop_fold(tail, 0, s.loop_count, first_only) == s.loop_count);
+                },
+                Some(v) => {
+                    assert(scanned == Some(v));
+                    assert(loop_fold(tail, 0, s.loop_count, first_only) == Some(v));
+                },
+            }
+        }
+    }
+    reveal(app_step);
+    assert(have(b, q, 1));
+    let bq: u8 = b[q];
+    if pol.ext_sizes == ExtSizes::Exact {
+        assert(bq as int == 11);
+    }
+    assert(!(bq != 11u8 && pol.ext_sizes == ExtSizes::Exact));
+    match sub_scan(b, q) {
+        None => {
+            assert(false);
+        },
+        Some((subs2, end)) => {
+            assert(subs2 == subs);
+            assert(end == e);
+            assert(is_netscape(subs2) == is_netscape(subs));
+            assert(subs2.subrange(1, subs2.len() as int) == tail);
+            assert(model_lc == if is_netscape(subs2) && s.frames_seen == 0 {
+                match loop_value(subs2.subrange(1, subs2.len() as int), pol.loop_scan
+                    == LoopScan::FirstSubBlockOnly) {
+                    None => s.loop_count,
+                    Some(v) => Some(v),
+                }
+            } else {
+                s.loop_count
+            });
+        },
+    }
 }
 
 /// The executable's rule-A test for the payload `h` at index `off`, in exactly
@@ -1574,6 +1822,1067 @@ pub proof fn lemma_have_need(b: Seq<u8>, p: int, n: int)
         have(b, p, n) <==> (p as usize <= b.len() && n as usize <= b.len() - (p as usize)),
 {
     reveal(have);
+}
+
+// ---------------------------------------------------------------------------
+// L-BITS: the payload a sub-block reader walks (T6, G10.2)
+// ---------------------------------------------------------------------------
+
+/// The concatenated payload's length, `|D|` of G9, read from the scan at the
+/// size byte `q`: `concat_len` of `sub_scan`'s payload list, or `-1` when the
+/// sequence cannot be read. `-1` is unreachable at a call whose `sub_scan`
+/// succeeds; every lemma below guards on the `Some` case.
+pub open spec fn payload_len(b: Seq<u8>, q: int) -> int {
+    match sub_scan(b, q) {
+        None => -1,
+        Some((ps, _)) => concat_len(ps),
+    }
+}
+
+/// Byte `i` (0-based) of the concatenated payload of the sub-block sequence
+/// whose size byte is at `q` — the byte a reader walking the sequence fetches
+/// as its `i`-th payload byte. The recursion follows `sub_scan`: within the
+/// first payload it is `b[q + 1 + i]`; past it, `i` shifts by that payload's
+/// length and the walk resumes at the next size byte. On a guarded read
+/// (`have`) and `0 <= i < payload_len(b, q)` the walk stays in bounds; the
+/// out-of-range branches return 0 and are never read.
+pub open spec fn payload_byte(b: Seq<u8>, q: int, i: int) -> u8
+    decreases (b.len() - q) as nat,
+{
+    if !have(b, q, 1) {
+        0u8
+    } else {
+        let n = b[q] as int;
+        if n == 0 {
+            0u8
+        } else if !have(b, q + 1, n) {
+            0u8
+        } else if i < n {
+            b[q + 1 + i]
+        } else {
+            payload_byte(b, q + 1 + n, i - n)
+        }
+    }
+}
+
+/// `concat` of a one-element sequence is that element.
+pub proof fn lemma_concat_one(p: Seq<u8>)
+    ensures
+        concat(seq![p]) == p,
+{
+    reveal(concat);
+    assert(seq![p].subrange(1, 1) == Seq::<Seq<u8>>::empty()) by {
+        assert(seq![p].subrange(1, 1) =~= Seq::<Seq<u8>>::empty());
+    }
+    assert(concat(Seq::<Seq<u8>>::empty()) == Seq::<u8>::empty()) by {
+        reveal(concat);
+    }
+}
+
+/// `concat` splits over `+`.
+pub proof fn lemma_concat_append(s: Seq<Seq<u8>>, t: Seq<Seq<u8>>)
+    ensures
+        concat(s + t) == concat(s) + concat(t),
+{
+    lemma_concat_len(s, t);
+}
+
+/// The concat/length facts of `lemma_concat_append` at `seq![p] + t`, in one
+/// place so `payload_byte`'s induction does not re-derive them.
+pub proof fn lemma_concat_append_one(p: Seq<u8>, t: Seq<Seq<u8>>)
+    ensures
+        concat(seq![p] + t) == p + concat(t),
+        concat_len(seq![p] + t) == p.len() + concat_len(t),
+{
+    lemma_concat_one(p);
+    lemma_concat_append(seq![p], t);
+    lemma_concat_len(seq![p], t);
+    assert(concat(seq![p]) == p);
+    assert(concat(seq![p]).len() == concat_len(seq![p]));
+    // `concat_len(seq![p] + t)` unfolds to `(seq![p]+t)[0].len() + concat_len(t)`.
+    reveal(concat_len);
+    let u = seq![p] + t;
+    assert(u.len() >= 1);
+    assert(u[0] == p);
+    assert(u.subrange(1, u.len() as int) == t) by {
+        assert(u.subrange(1, u.len() as int) =~= t);
+    }
+    assert(concat_len(u) == u[0].len() + concat_len(u.subrange(1, u.len() as int)));
+}
+
+/// One payload read: within the first payload the walk reads `b[q + 1 + i]`.
+pub proof fn lemma_payload_byte_head(b: Seq<u8>, q: int, i: int, n: int)
+    requires
+        have(b, q, 1),
+        b[q] as int == n,
+        1 <= n,
+        have(b, q + 1, n),
+        0 <= i < n,
+    ensures
+        payload_byte(b, q, i) == b[q + 1 + i],
+{
+    reveal(payload_byte);
+    reveal(have);
+}
+
+/// One payload skip: past the first payload the walk resumes at the next size
+/// byte with the index shifted by that payload's length.
+pub proof fn lemma_payload_byte_tail(b: Seq<u8>, q: int, i: int, n: int)
+    requires
+        have(b, q, 1),
+        b[q] as int == n,
+        1 <= n,
+        have(b, q + 1, n),
+        n <= i,
+    ensures
+        payload_byte(b, q, i) == payload_byte(b, q + 1 + n, i - n),
+{
+    reveal(payload_byte);
+    reveal(have);
+}
+
+/// L-BITS's index identity: the `i`-th payload byte of the sequence at `q` is
+/// the `i`-th byte of its concatenation `D`. Proved by the induction
+/// `sub_scan` itself runs, one accepted sub-block at a time.
+pub proof fn lemma_payload_byte_concat(b: Seq<u8>, q: int, ps: Seq<Seq<u8>>, e: int)
+    requires
+        0 <= q,
+        sub_scan(b, q) == Some((ps, e)),
+    ensures
+        forall|i: int| 0 <= i < concat_len(ps) ==> #[trigger] payload_byte(b, q, i) == concat(ps)[i],
+    decreases (b.len() - q) as nat,
+{
+    reveal(payload_byte);
+    reveal(sub_scan);
+    reveal(have);
+    reveal(concat);
+    reveal(concat_len);
+    if !have(b, q, 1) {
+        assert(false);
+    } else {
+        let n = b[q] as int;
+        if n == 0 {
+            assert(ps == Seq::<Seq<u8>>::empty()) by {
+                assert(sub_scan(b, q) == Some((Seq::<Seq<u8>>::empty(), q + 1)));
+            }
+            assert(concat_len(ps) == 0);
+        } else if !have(b, q + 1, n) {
+            assert(false);
+        } else {
+            let payload = b.subrange(q + 1, q + 1 + n);
+            vstd::seq::lemma_seq_subrange_len(b, q + 1, q + 1 + n);
+            assert(payload.len() == n);
+            match sub_scan(b, q + 1 + n) {
+                None => {
+                    assert(sub_scan(b, q) == None) by {
+                        assert(b[q] as int == n);
+                    }
+                    assert(false);
+                },
+                Some((rest, e2)) => {
+                    assert(sub_scan(b, q) == Some((seq![payload] + rest, e2))) by {
+                        assert(b[q] as int == n);
+                    }
+                    assert(ps == seq![payload] + rest);
+                    assert(e == e2);
+                    lemma_concat_append_one(payload, rest);
+                    assert(concat(ps) == concat(seq![payload] + rest));
+                    assert(concat_len(ps) == concat_len(seq![payload] + rest));
+                    assert(concat(ps) == payload + concat(rest));
+                    assert(concat_len(ps) == payload.len() + concat_len(rest));
+                    lemma_payload_byte_concat(b, q + 1 + n, rest, e2);
+                    assert(0 <= q + 1 + n);
+                    assert forall|i: int| 0 <= i < concat_len(ps) implies #[trigger] payload_byte(
+                        b,
+                        q,
+                        i,
+                    ) == concat(ps)[i] by {
+                        if i < n {
+                            lemma_payload_byte_head(b, q, i, n);
+                            assert(payload[i] == b[q + 1 + i]) by {
+                                vstd::seq::lemma_seq_subrange_index(b, q + 1, q + 1 + n, i);
+                            }
+                            vstd::seq::lemma_seq_add_index1(payload, concat(rest), i);
+                        } else {
+                            lemma_payload_byte_tail(b, q, i, n);
+                            assert(0 <= i - n < concat_len(rest));
+                            assert(payload_byte(b, q + 1 + n, i - n) == concat(rest)[i - n]);
+                            lemma_concat_len(rest, Seq::<Seq<u8>>::empty());
+                            assert(concat(rest).len() == concat_len(rest));
+                            assert(payload.len() == n);
+                            assert(payload.len() <= i < payload.len() + concat(rest).len());
+                            vstd::seq::lemma_seq_add_index2(payload, concat(rest), i);
+                            assert(concat(rest)[i - payload.len()] == concat(rest)[i - n]);
+                        }
+                    }
+                },
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// L-BITS's reader state: the executable bit reader walks the sequence one
+// payload byte at a time and must know, after `i` payload bytes, where it
+// stands. `blk_at` gives that as a triple.
+// ---------------------------------------------------------------------------
+
+/// The reader's position after `i` payload bytes of the sequence at `q`, as
+/// `(size_off, left, byte_off)`: `size_off` is the index of the current
+/// sub-block's size byte, `left` the payload bytes it still holds (`left >= 1`
+/// on the reachable domain), `byte_off` the index of the `i`-th payload byte.
+pub open spec fn blk_at(b: Seq<u8>, q: int, i: int) -> (int, int, int)
+    decreases (b.len() - q) as nat,
+{
+    if !have(b, q, 1) {
+        (q, 0, q)
+    } else {
+        let n = b[q] as int;
+        if n == 0 {
+            (q, 0, q + 1)
+        } else if !have(b, q + 1, n) {
+            (q, n, q + 1)
+        } else if i < n {
+            (q, n - i, q + 1 + i)
+        } else {
+            blk_at(b, q + 1 + n, i - n)
+        }
+    }
+}
+
+/// The `i`-th payload byte sits at `blk_at`'s third component, so `payload_byte`
+/// is a plain read there.
+pub proof fn lemma_blk_at_byte(b: Seq<u8>, q: int, i: int, ps: Seq<Seq<u8>>, e: int)
+    requires
+        0 <= q,
+        sub_scan(b, q) == Some((ps, e)),
+        0 <= i < concat_len(ps),
+    ensures
+        payload_byte(b, q, i) == b[blk_at(b, q, i).2],
+    decreases (b.len() - q) as nat,
+{
+    reveal(payload_byte);
+    reveal(blk_at);
+    reveal(sub_scan);
+    reveal(have);
+    reveal(concat_len);
+    if !have(b, q, 1) {
+        assert(false);
+    } else {
+        let n = b[q] as int;
+        if n == 0 {
+            assert(concat_len(ps) == 0);
+            assert(false);
+        } else if !have(b, q + 1, n) {
+            assert(false);
+        } else {
+            let payload = b.subrange(q + 1, q + 1 + n);
+            vstd::seq::lemma_seq_subrange_len(b, q + 1, q + 1 + n);
+            assert(payload.len() == n);
+            match sub_scan(b, q + 1 + n) {
+                None => {
+                    assert(false);
+                },
+                Some((rest, e2)) => {
+                    assert(ps == seq![payload] + rest);
+                    lemma_concat_append_one(payload, rest);
+                    assert(concat_len(ps) == payload.len() + concat_len(rest));
+                    if i < n {
+                        assert(payload_byte(b, q, i) == b[q + 1 + i]);
+                        assert(blk_at(b, q, i) == (q, n - i, q + 1 + i));
+                    } else {
+                        let bi = blk_at(b, q + 1 + n, i - n);
+                        assert(blk_at(b, q, i) == bi);
+                        assert(0 <= i - n < concat_len(rest));
+                        lemma_blk_at_byte(b, q + 1 + n, i - n, rest, e2);
+                        assert(payload_byte(b, q + 1 + n, i - n) == b[bi.2]);
+                        assert(payload_byte(b, q, i) == payload_byte(b, q + 1 + n, i - n));
+                    }
+                },
+            }
+        }
+    }
+}
+
+/// One reader step: after `i` payload bytes, `blk_at(b, q, i).1` is the current
+/// sub-block's remaining payload bytes, and it is at least 2 while `i + 1` is
+/// still inside the same payload. Crossing a sub-block boundary the reader skips
+/// the size byte at `byte_off + 1` and lands at `byte_off + 2` with `left` the
+/// new size byte.
+pub proof fn lemma_blk_at_step(b: Seq<u8>, q: int, i: int, ps: Seq<Seq<u8>>, e: int)
+    requires
+        0 <= q,
+        sub_scan(b, q) == Some((ps, e)),
+        0 <= i < concat_len(ps) - 1,
+    ensures
+        blk_at(b, q, i).1 >= 1,
+        blk_at(b, q, i).1 >= 2 ==> blk_at(b, q, i + 1) == (
+            blk_at(b, q, i).0,
+            blk_at(b, q, i).1 - 1,
+            blk_at(b, q, i).2 + 1,
+        ),
+        blk_at(b, q, i).1 == 1 ==> {
+            &&& blk_at(b, q, i + 1).0 == blk_at(b, q, i).2 + 1
+            &&& blk_at(b, q, i + 1).1 == b[blk_at(b, q, i).2 + 1] as int
+            &&& blk_at(b, q, i + 1).2 == blk_at(b, q, i).2 + 2
+        },
+    decreases (b.len() - q) as nat,
+{
+    reveal(payload_byte);
+    reveal(blk_at);
+    reveal(sub_scan);
+    reveal(have);
+    reveal(concat_len);
+    if !have(b, q, 1) {
+        assert(false);
+    } else {
+        let n = b[q] as int;
+        if n == 0 {
+            assert(false);
+        } else if !have(b, q + 1, n) {
+            assert(false);
+        } else {
+            let payload = b.subrange(q + 1, q + 1 + n);
+            vstd::seq::lemma_seq_subrange_len(b, q + 1, q + 1 + n);
+            assert(payload.len() == n);
+            match sub_scan(b, q + 1 + n) {
+                None => {
+                    assert(false);
+                },
+                Some((rest, e2)) => {
+                    assert(ps == seq![payload] + rest);
+                    lemma_concat_append_one(payload, rest);
+                    assert(concat_len(ps) == payload.len() + concat_len(rest));
+                    if i + 1 < n {
+                        assert(blk_at(b, q, i) == (q, n - i, q + 1 + i));
+                        assert(blk_at(b, q, i + 1) == (q, n - i - 1, q + 1 + i + 1));
+                    } else if i + 1 == n {
+                        assert(blk_at(b, q, i) == (q, n - i, q + 1 + i));
+                        assert(blk_at(b, q, i).1 == 1);
+                        assert(blk_at(b, q, i + 1) == blk_at(b, q + 1 + n, 0));
+                        assert(blk_at(b, q, i + 1).2 == blk_at(b, q, i).2 + 2);
+                    } else {
+                        let bi = blk_at(b, q + 1 + n, i - n);
+                        assert(blk_at(b, q, i) == bi);
+                        assert(blk_at(b, q, i + 1) == blk_at(b, q + 1 + n, i - n + 1));
+                        assert(0 <= i - n < concat_len(rest) - 1);
+                        lemma_blk_at_step(b, q + 1 + n, i - n, rest, e2);
+                        assert(bi.1 >= 1);
+                    }
+                },
+            }
+        }
+    }
+}
+
+/// One step of the identifier comparison: `id_matches` at `i + 1` is
+/// `id_matches` at `i` and the `i`-th byte matching. This is the loop
+/// invariant `app_ext`'s comparison maintains.
+pub proof fn lemma_id_matches_step(b: Seq<u8>, q: int, i: int)
+    requires
+        0 <= i,
+        q + 1 + i < b.len(),
+    ensures
+        id_matches(b, q, i + 1) == (id_matches(b, q, i) && b[q + 1 + i] == NETSCAPE_ID@[i]),
+{
+    reveal(id_matches);
+    if id_matches(b, q, i + 1) {
+        assert forall|k: int| 0 <= k < i implies #[trigger] b[q + 1 + k] == NETSCAPE_ID@[k] by {};
+        assert(b[q + 1 + i] == NETSCAPE_ID@[i]);
+    }
+    if id_matches(b, q, i) && b[q + 1 + i] == NETSCAPE_ID@[i] {
+        assert forall|k: int| 0 <= k < i + 1 implies #[trigger] b[q + 1 + k] == NETSCAPE_ID@[k] by {
+            if k == i {
+            }
+        };
+    }
+}
+
+
+// ---------------------------------------------------------------------------
+// L-BITS's bit and code view of the payload (G10), in the form the executable
+// bit reader must produce.
+// ---------------------------------------------------------------------------
+
+/// G10's bit `j` of the concatenated payload: bit `j % 8` of payload byte
+/// `j / 8`, least significant bit first.
+pub open spec fn payload_bit(b: Seq<u8>, q: int, j: int) -> int {
+    ((payload_byte(b, q, j / 8) >> (j % 8) as u8) & 1u8) as int
+}
+
+/// G10's code in `width` bits at payload bit position `pos`, least significant
+/// bit first. This is `lzw_proof`'s `code_at` recursion over the sub-block
+/// payload instead of a contiguous slice.
+pub open spec fn payload_code(b: Seq<u8>, q: int, pos: int, width: int, i: int) -> int
+    decreases width - i,
+{
+    if i >= width {
+        0
+    } else {
+        payload_bit(b, q, pos + i) + 2 * payload_code(b, q, pos, width, i + 1)
+    }
+}
+
+/// G10's `bit_at` over a contiguous `D` (`lzw_proof`'s `model::bit_at`).
+pub open spec fn concat_bit(d: Seq<u8>, j: int) -> int {
+    ((d[j / 8] >> (j % 8) as u8) & 1u8) as int
+}
+
+/// G10's `code_at` over a contiguous `D` (`lzw_proof`'s `model::code_at`).
+pub open spec fn concat_code(d: Seq<u8>, pos: int, width: int, i: int) -> int
+    decreases width - i,
+{
+    if i >= width {
+        0
+    } else {
+        concat_bit(d, pos + i) + 2 * concat_code(d, pos, width, i + 1)
+    }
+}
+
+/// L-BITS's bit identity: bit `j` of the sub-block payload equals bit `j` of
+/// the concatenation `D`. Immediate from `lemma_payload_byte_concat`.
+pub proof fn lemma_payload_bit_concat(b: Seq<u8>, q: int, ps: Seq<Seq<u8>>, e: int, j: int)
+    requires
+        0 <= q,
+        sub_scan(b, q) == Some((ps, e)),
+        0 <= j < 8 * concat_len(ps),
+    ensures
+        payload_bit(b, q, j) == concat_bit(concat(ps), j),
+{
+    reveal(payload_bit);
+    reveal(concat_bit);
+    lemma_concat_len_nonneg(ps);
+    assert(0 <= j / 8) by (nonlinear_arith)
+        requires
+            0 <= j,
+    ;
+    assert(j / 8 < concat_len(ps)) by (nonlinear_arith)
+        requires
+            j < 8 * concat_len(ps),
+    ;
+    lemma_payload_byte_concat(b, q, ps, e);
+    assert(payload_byte(b, q, j / 8) == concat(ps)[j / 8]);
+}
+
+/// L-BITS's code identity: reading `width` bits at payload position `pos`
+/// equals `code_at` reading them from the concatenation `D`. Stated at the
+/// recursion cursor `i` so the induction is structural.
+pub proof fn lemma_payload_code_concat(
+    b: Seq<u8>,
+    q: int,
+    ps: Seq<Seq<u8>>,
+    e: int,
+    pos: int,
+    width: int,
+    i: int,
+)
+    requires
+        0 <= q,
+        0 <= pos,
+        0 <= i <= width,
+        sub_scan(b, q) == Some((ps, e)),
+        pos + width <= 8 * concat_len(ps),
+    ensures
+        payload_code(b, q, pos, width, i) == concat_code(concat(ps), pos, width, i),
+    decreases width - i,
+{
+    reveal(payload_code);
+    reveal(concat_code);
+    if i >= width {
+        assert(payload_code(b, q, pos, width, i) == 0);
+        assert(concat_code(concat(ps), pos, width, i) == 0);
+    } else {
+        lemma_payload_bit_concat(b, q, ps, e, pos + i);
+        lemma_payload_code_concat(b, q, ps, e, pos, width, i + 1);
+    }
+}
+
+
+
+/// L-BITS at a code read (T6's statement in the form `lzw::decode` cites it):
+/// the `width`-bit code at reader bit position `pos` over the sub-block payload
+/// of the sequence at `q` equals the code G10's model reads from the
+/// concatenated payload `D` at the same position. Together with
+/// `BitReader::read`'s postcondition — it returns `payload_code` at the
+/// position before the read — this makes every code the executable reads the
+/// code `ML`'s `code_at(D, pos, width, 0)` computes.
+pub proof fn lemma_lbits_read(b: Seq<u8>, q: int, ps: Seq<Seq<u8>>, e: int, pos: int, width: int)
+    requires
+        0 <= q,
+        sub_scan(b, q) == Some((ps, e)),
+        0 <= pos,
+        0 <= width,
+        pos + width <= 8 * concat_len(ps),
+    ensures
+        payload_code(b, q, pos, width, 0) == concat_code(concat(ps), pos, width, 0),
+{
+    lemma_payload_code_concat(b, q, ps, e, pos, width, 0);
+}
+
+// ---------------------------------------------------------------------------
+// L-BITS's executable reader state. `lzw::BitReader` defers a sub-block's size
+// byte until it needs that block's first payload byte, so between blocks it
+// sits at a size byte with `left_in_block == 0`. `rd_state` mirrors that.
+// ---------------------------------------------------------------------------
+
+/// The executable reader's `(pos, left_in_block)` after `k` payload bytes, on
+/// the sequence whose first size byte is at `q`. `pos` is the next byte
+/// `fetch_byte` dereferences; `left_in_block == 0` means the next fetch reads a
+/// size byte first.
+pub open spec fn rd_state(b: Seq<u8>, q: int, k: int) -> (int, int)
+    decreases k,
+{
+    if k <= 0 {
+        (q, 0)
+    } else {
+        let (p, l) = rd_state(b, q, k - 1);
+        if l == 0 {
+            let s = if have(b, p, 1) {
+                b[p] as int
+            } else {
+                0
+            };
+            (p + 2, if s > 0 {
+                s - 1
+            } else {
+                0
+            })
+        } else {
+            (p + 1, l - 1)
+        }
+    }
+}
+
+/// The byte index the `k`-th payload byte (`k >= 0`) is read from: the byte
+/// `fetch_byte` returns on that call.
+pub open spec fn rd_next_off(b: Seq<u8>, q: int, k: int) -> int {
+    let (p, l) = rd_state(b, q, k);
+    if l == 0 {
+        p + 1
+    } else {
+        p
+    }
+}
+
+/// Both fields of `rd_state` are non-negative.
+pub proof fn lemma_rd_nonneg(b: Seq<u8>, q: int, k: int)
+    requires
+        0 <= q,
+        0 <= k,
+    ensures
+        rd_state(b, q, k).0 >= q,
+        rd_state(b, q, k).1 >= 0,
+    decreases k,
+{
+    reveal(rd_state);
+    if k > 0 {
+        lemma_rd_nonneg(b, q, k - 1);
+    }
+}
+
+/// The reader and `blk_at` agree at a payload index: inside a block they name
+/// the same next byte and hold the same remaining count; at a boundary the
+/// reader's next byte is `blk_at`'s current payload start, whose size is
+/// `blk_at`'s count.
+pub open spec fn rd_rel(b: Seq<u8>, q: int, k: int) -> bool {
+    let (p, l) = rd_state(b, q, k);
+    let (so, sl, bo) = blk_at(b, q, k);
+    &&& (l == 0 ==> p + 1 == bo && sl == b[p] as int)
+    &&& (l >= 1 ==> p == bo && l == sl)
+}
+
+/// The reader walk agrees with `blk_at` at every payload byte before the scan's
+/// end: with `k` payload bytes fetched, either the reader sits inside a block
+/// (same cursor and count as `blk_at`) or at a block boundary (its next size
+/// byte is `blk_at`'s current payload start, whose size is `blk_at`'s count).
+/// Hence `rd_next_off` and `blk_at`'s third component name the same byte.
+pub proof fn lemma_rd_rel(b: Seq<u8>, q: int, k: int, ps: Seq<Seq<u8>>, e: int)
+    requires
+        0 <= q,
+        sub_scan(b, q) == Some((ps, e)),
+        0 <= k <= concat_len(ps) - 1,
+        forall|j: int| 0 <= j <= k ==> have(b, rd_state(b, q, j).0, 1),
+        forall|j: int| 0 <= j <= k ==> rd_state(b, q, j).1 == 0 ==> b[rd_state(b, q, j).0] as int >= 1
+            && have(b, rd_state(b, q, j).0 + 1, b[rd_state(b, q, j).0] as int),
+    ensures
+        rd_rel(b, q, k),
+        rd_next_off(b, q, k) == blk_at(b, q, k).2,
+    decreases k,
+{
+    reveal(rd_state);
+    reveal(rd_next_off);
+    reveal(blk_at);
+    reveal(rd_rel);
+    reveal(have);
+    reveal(sub_scan);
+    reveal(concat_len);
+    if k == 0 {
+        let n = b[q] as int;
+        assert(concat_len(ps) >= 1);
+        assert(n >= 1);
+        assert(ps.len() >= 1);
+        assert(blk_at(b, q, 0) == (q, n, q + 1));
+        assert(rd_state(b, q, 0) == (q, 0));
+        assert(rd_rel(b, q, 0));
+        assert(rd_next_off(b, q, 0) == q + 1);
+    } else {
+        lemma_rd_rel(b, q, k - 1, ps, e);
+        let (p, l) = rd_state(b, q, k - 1);
+        let (so, sl, bo) = blk_at(b, q, k - 1);
+        assert(rd_rel(b, q, k - 1));
+        lemma_rd_nonneg(b, q, k - 1);
+        // One `fetch_byte` step.
+        assert(rd_state(b, q, k) == (if l == 0 {
+            (p + 2, if b[p] as int > 0 {
+                b[p] as int - 1
+            } else {
+                0
+            })
+        } else {
+            (p + 1, l - 1)
+        })) by {
+            reveal(rd_state);
+        }
+        // One `blk_at` step.
+        assert(k - 1 < concat_len(ps) - 1);
+        lemma_blk_at_step(b, q, k - 1, ps, e);
+        assert(blk_at(b, q, k - 1).1 >= 1);
+        if blk_at(b, q, k - 1).1 >= 2 {
+            assert(blk_at(b, q, k) == (so, sl - 1, bo + 1));
+        } else {
+            assert(blk_at(b, q, k) == (bo + 1, b[bo + 1] as int, bo + 2));
+        }
+        assert(rd_rel(b, q, k));
+        // The four cases of the reader step against the four of `blk_at`.
+        if l == 0 {
+            // At a boundary: `rd_rel(k-1)` gives `p + 1 == bo` and `sl == b[p]`.
+            assert(blk_at(b, q, k - 1).2 == p + 1);
+            assert(blk_at(b, q, k - 1).1 == b[p] as int);
+            if b[p] as int == 1 {
+                assert(rd_state(b, q, k) == (p + 2, 0));
+                assert(rd_next_off(b, q, k) == p + 3);
+                assert(blk_at(b, q, k) == (p + 2, b[p + 2] as int, p + 3));
+            } else {
+                assert(b[p] as int >= 2);
+                assert(rd_state(b, q, k) == (p + 2, b[p] as int - 1));
+                assert(rd_next_off(b, q, k) == p + 2);
+                assert(blk_at(b, q, k) == (blk_at(b, q, k - 1).0, b[p] as int - 1, p + 2));
+            }
+        } else if l == 1 {
+            assert(rd_state(b, q, k) == (p + 1, 0));
+            assert(rd_next_off(b, q, k) == p + 2);
+            assert(blk_at(b, q, k - 1).1 == 1);
+            assert(blk_at(b, q, k - 1).2 == p);
+            assert(blk_at(b, q, k) == (p + 1, b[p + 1] as int, p + 2));
+        } else {
+            assert(l > 1);
+            assert(rd_state(b, q, k) == (p + 1, l - 1));
+            assert(rd_next_off(b, q, k) == p + 1);
+            assert(blk_at(b, q, k - 1).1 == l);
+            assert(blk_at(b, q, k - 1).1 > 1);
+            assert(blk_at(b, q, k - 1).2 == p);
+            assert(blk_at(b, q, k).2 == p + 1);
+        }
+        assert(rd_next_off(b, q, k) == blk_at(b, q, k).2);
+    }
+}
+
+
+// ---------------------------------------------------------------------------
+// L-BITS's reader step condition (`rd_step_ok`): the facts `fetch_byte` needs
+// at each call to return `payload_byte` and step the reader state.
+// ---------------------------------------------------------------------------
+
+/// The reader step is well defined at `k` payload bytes fetched: the byte
+/// `fetch_byte` dereferences is present, that byte is `payload_byte(b, q, k)`,
+/// and, when the reader is at a sub-block boundary (`left_in_block == 0`), the
+/// size byte it reads there is positive with its payload present.
+pub open spec fn rd_step_ok(b: Seq<u8>, q: int, k: int) -> bool {
+    let (p, l) = rd_state(b, q, k);
+    &&& have(b, p, 1)
+    &&& have(b, rd_next_off(b, q, k), 1)
+    &&& payload_byte(b, q, k) == b[rd_next_off(b, q, k)]
+    &&& (l == 0 ==> b[p] as int >= 1 && have(b, p + 1, b[p] as int))
+}
+
+/// Within one sub-block: after `j` payload bytes of a block whose size byte is
+/// at `q` (`b[q] == n`, `1 <= n <= |b| - q - 1`), the reader holds the next byte
+/// at `q + 1 + j` with `n - j` bytes left in that block.
+pub proof fn lemma_rd_state_within_first(b: Seq<u8>, q: int, j: int, n: int)
+    requires
+        have(b, q, 1),
+        b[q] as int == n,
+        1 <= n,
+        have(b, q + 1, n),
+        1 <= j <= n,
+    ensures
+        rd_state(b, q, j) == (q + 1 + j, n - j),
+    decreases j,
+{
+    reveal(rd_state);
+    reveal(have);
+    if j == 1 {
+        assert(rd_state(b, q, 0) == (q, 0));
+        assert(rd_state(b, q, 1) == (q + 2, n - 1));
+    } else {
+        lemma_rd_state_within_first(b, q, j - 1, n);
+        assert(rd_state(b, q, j - 1) == (q + j, n - (j - 1)));
+        assert(n - (j - 1) >= 1);
+        assert(rd_state(b, q, j) == (q + j + 1, n - j));
+    }
+}
+
+/// Crossing the sub-block boundary: the reader's state after `n` payload bytes
+/// of the block at `q` equals its state after `k` payload bytes of the sequence
+/// whose size byte follows that payload (`q + 1 + n`) — the deferral walks on.
+pub proof fn lemma_rd_state_shift(b: Seq<u8>, q: int, k: int, n: int)
+    requires
+        have(b, q, 1),
+        b[q] as int == n,
+        1 <= n,
+        have(b, q + 1, n),
+        0 <= k,
+    ensures
+        rd_state(b, q + 1 + n, k) == rd_state(b, q, n + k),
+    decreases k,
+{
+    reveal(rd_state);
+    reveal(have);
+    lemma_rd_state_within_first(b, q, n, n);
+    assert(rd_state(b, q, n) == (q + 1 + n, 0));
+    assert(rd_state(b, q + 1 + n, 0) == (q + 1 + n, 0));
+    if k == 0 {
+    } else {
+        lemma_rd_state_shift(b, q, k - 1, n);
+        assert(rd_state(b, q + 1 + n, k - 1) == rd_state(b, q, n + k - 1));
+        assert(rd_state(b, q + 1 + n, k) == rd_state(b, q, n + k));
+    }
+}
+
+/// L-BITS's step condition holds at every payload index below `|D|`: the
+/// structural induction over the sub-block sequence (the recursion `sub_scan`
+/// and `payload_byte` run), so `fetch_byte` may be called at any index it
+/// reaches. This is the hypothesis the executable reader's contracts carry.
+pub proof fn lemma_rd_step_ok_all(b: Seq<u8>, q: int, ps: Seq<Seq<u8>>, e: int)
+    requires
+        0 <= q,
+        sub_scan(b, q) == Some((ps, e)),
+    ensures
+        forall|j: int| 0 <= j < concat_len(ps) ==> #[trigger] rd_step_ok(b, q, j),
+    decreases (b.len() - q) as nat,
+{
+    reveal(rd_step_ok);
+    reveal(rd_state);
+    reveal(rd_next_off);
+    reveal(payload_byte);
+    reveal(sub_scan);
+    reveal(have);
+    reveal(concat_len);
+    if !have(b, q, 1) {
+        assert(false);
+    } else {
+        let n = b[q] as int;
+        if n == 0 {
+            assert(concat_len(ps) == 0);
+        } else if !have(b, q + 1, n) {
+            assert(false);
+        } else {
+            let payload = b.subrange(q + 1, q + 1 + n);
+            vstd::seq::lemma_seq_subrange_len(b, q + 1, q + 1 + n);
+            assert(payload.len() == n);
+            match sub_scan(b, q + 1 + n) {
+                None => {
+                    assert(false);
+                },
+                Some((rest, e2)) => {
+                    assert(ps == seq![payload] + rest);
+                    lemma_concat_append_one(payload, rest);
+                    assert(concat_len(ps) == n + concat_len(rest));
+                    lemma_rd_step_ok_all(b, q + 1 + n, rest, e2);
+                    assert forall|j: int| 0 <= j < concat_len(ps) implies #[trigger] rd_step_ok(
+                        b,
+                        q,
+                        j,
+                    ) by {
+                        if j == 0 {
+                            assert(rd_state(b, q, 0) == (q, 0));
+                            assert(rd_next_off(b, q, 0) == q + 1);
+                            lemma_payload_byte_head(b, q, 0, n);
+                            assert(payload_byte(b, q, 0) == b[q + 1]);
+                        } else if j < n {
+                            lemma_rd_state_within_first(b, q, j, n);
+                            lemma_payload_byte_head(b, q, j, n);
+                            assert(rd_state(b, q, j) == (q + 1 + j, n - j));
+                            assert(rd_next_off(b, q, j) == q + 1 + j);
+                            assert(payload_byte(b, q, j) == b[q + 1 + j]);
+                        } else {
+                            lemma_rd_state_shift(b, q, j - n, n);
+                            lemma_payload_byte_tail(b, q, j, n);
+                            assert(0 <= j - n < concat_len(rest));
+                            assert(rd_step_ok(b, q + 1 + n, j - n));
+                            assert(rd_state(b, q, j) == rd_state(b, q + 1 + n, j - n));
+                            assert(rd_next_off(b, q, j) == rd_next_off(b, q + 1 + n, j - n));
+                            assert(payload_byte(b, q, j) == payload_byte(b, q + 1 + n, j - n));
+                        }
+                    }
+                },
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// L-BITS's accumulator view: what the executable `BitReader.acc`/`nacc` mean.
+// ---------------------------------------------------------------------------
+
+/// Low bit `j` of a `u32`, on `u32` so `bit_vector` can see it.
+pub open spec fn bit32(x: u32, j: u32) -> u32 {
+    (x >> j) & 1u32
+}
+
+/// The value of bits `[i, width)` of `x`, lowest first — the same recursion
+/// `payload_code` runs, so it is `payload_code` up to the bit equality.
+/// The low-`n` bit mask as a `u32` value (the `u32` parameter keeps it a
+/// finite-width expression for `bit_vector`).
+pub open spec fn mask32(n: u32) -> u32 {
+    ((1u32 << n) - 1u32) as u32
+}
+
+/// Low bit `j` of `x`; the `u32` cast keeps the shift inside `bit_vector`.
+pub open spec fn bit32i(x: u32, j: int) -> int {
+    ((x >> (j as u32)) & 1u32) as int
+}
+
+/// The value of bits `[i, width)` of `x` (ints, like `payload_code`).
+pub open spec fn low_bits_val(x: u32, width: int, i: int) -> int
+    decreases width - i,
+{
+    if i >= width {
+        0
+    } else {
+        bit32i(x, i) + 2 * low_bits_val(x, width, i + 1)
+    }
+}
+
+/// The masked value equals the bit recursion: the crux identity for
+/// `BitReader::read`. Induction on the remaining width, one `bit_vector` step
+/// with the `u32` quantities bound as locals.
+pub proof fn lemma_mask_eq_low_bits(x: u32, width: int, i: int)
+    requires
+        0 <= i <= width <= 32,
+    ensures
+        ((x >> (i as u32)) & mask32((width - i) as u32)) as int == low_bits_val(x, width, i),
+    decreases width - i,
+{
+    reveal(low_bits_val);
+    reveal(bit32i);
+    reveal(mask32);
+    if i >= width {
+        let iu: u32 = i as u32;
+        assert((width - i) as u32 == 0u32);
+        assert(mask32(0u32) == 0u32) by (bit_vector);
+        assert(((x >> iu) & mask32(0u32)) as int == 0) by (bit_vector)
+            requires
+                mask32(0u32) == 0u32,
+        ;
+    } else {
+        let iu: u32 = i as u32;
+        let nu: u32 = (width - i) as u32;
+        let lo: u32 = (x >> iu) & 1u32;
+        let hi: u32 = (x >> (iu + 1u32)) & mask32((nu - 1) as u32);
+        assert(hi as int == low_bits_val(x, width, i + 1)) by {
+            assert(((x >> ((i + 1) as u32)) & mask32((width - i - 1) as u32)) as int
+                == low_bits_val(x, width, i + 1)) by {
+                lemma_mask_eq_low_bits(x, width, i + 1);
+            }
+            assert((i + 1) as u32 == iu + 1u32);
+            assert((width - i - 1) as u32 == nu - 1u32);
+        }
+        assert(((x >> iu) & mask32(nu)) as int == lo as int + 2 * (hi as int)) by (bit_vector)
+            requires
+                iu < 32,
+                nu >= 1,
+                nu <= 32,
+                lo == ((x >> iu) & 1u32),
+                hi == ((x >> (iu + 1u32)) & mask32((nu - 1) as u32)),
+                mask32(nu) == (((1u32 << nu) - 1u32) as u32),
+                mask32((nu - 1) as u32) == (((1u32 << ((nu - 1) as u32)) - 1u32) as u32),
+        ;
+        assert(lo as int == bit32i(x, i));
+    }
+}
+
+/// The accumulated read: with the accumulator's low `nacc` bits holding the
+/// payload bits at `[8·fetched − nacc, 8·fetched)`, `read(width)` returns
+/// `payload_code` at the reader's position and the shifted accumulator holds
+/// the payload bits from the new position.
+pub open spec fn acc_view(b: Seq<u8>, q: int, fetched: int, nacc: int, acc: u32) -> bool {
+    &&& 0 <= nacc <= 32
+    &&& (acc >> (nacc as u32)) == 0u32
+    &&& forall|j: int| 0 <= j < nacc ==> #[trigger] bit32(acc, j as u32) as int == payload_bit(
+        b,
+        q,
+        8 * fetched - nacc + j,
+    )
+}
+
+
+/// `low_bits_val` is `payload_code` when the two agree bit by bit: one
+/// induction, since both are the same recursion.
+pub proof fn lemma_low_bits_val_is_payload_code(
+    b: Seq<u8>,
+    q: int,
+    pos: int,
+    width: int,
+    i: int,
+    x: u32,
+)
+    requires
+        0 <= i <= width,
+        forall|j: int| i <= j < width ==> #[trigger] bit32i(x, j) == payload_bit(b, q, pos + j),
+    ensures
+        low_bits_val(x, width, i) == payload_code(b, q, pos, width, i),
+    decreases width - i,
+{
+    reveal(low_bits_val);
+    reveal(payload_code);
+    reveal(bit32i);
+    if i >= width {
+    } else {
+        lemma_low_bits_val_is_payload_code(b, q, pos, width, i + 1, x);
+        assert(bit32i(x, i) == payload_bit(b, q, pos + i));
+    }
+}
+
+/// Step 1 of L-BITS's executable half: `acc | (byte << nacc)` extends
+/// `acc_view` by eight bits, when `byte` is the next payload byte.
+pub proof fn lemma_acc_push(b: Seq<u8>, q: int, fetched: int, nacc: int, acc: u32, byte: u8)
+    requires
+        acc_view(b, q, fetched, nacc, acc),
+        nacc + 8 <= 32,
+        byte as int == payload_byte(b, q, fetched),
+    ensures
+        acc_view(b, q, fetched + 1, nacc + 8, acc | ((byte as u32) << (nacc as u32))),
+{
+    reveal(acc_view);
+    reveal(bit32);
+    let nu: u32 = nacc as u32;
+    let acc2: u32 = acc | ((byte as u32) << nu);
+    assert(acc2 >> (nu + 8u32) == 0u32) by (bit_vector)
+        requires
+            acc2 == (acc | ((byte as u32) << nu)),
+            acc >> nu == 0u32,
+            nu + 8u32 <= 32u32,
+    ;
+    assert forall|j: int| 0 <= j < nacc + 8 implies #[trigger] bit32(acc2, j as u32) as int
+        == payload_bit(b, q, 8 * (fetched + 1) - (nacc + 8) + j) by {
+        let ju: u32 = j as u32;
+        if j < nacc {
+            assert(bit32(acc2, ju) == bit32(acc, ju)) by (bit_vector)
+                requires
+                    acc2 == (acc | ((byte as u32) << nu)),
+                    ju < nu,
+                    nu <= 24,
+            ;
+            assert(bit32(acc, j as u32) as int == payload_bit(b, q, 8 * fetched - nacc + j));
+            assert(8 * (fetched + 1) - (nacc + 8) + j == 8 * fetched - nacc + j);
+        } else {
+            let du: u32 = (j - nacc) as u32;
+            assert(du == (ju - nu) as u32);
+            assert(ju == (nu + du) as u32);
+            assert(bit32(acc, ju) == 0u32) by (bit_vector)
+                requires
+                    ju >= nu,
+                    acc >> nu == 0u32,
+                    nu <= 24,
+            ;
+            assert(bit32(acc2, ju) == bit32(byte as u32, du)) by (bit_vector)
+                requires
+                    acc2 == (acc | ((byte as u32) << nu)),
+                    ju == (nu + du) as u32,
+                    du < 8u32,
+                    nu <= 24,
+                    bit32(acc, ju) == 0u32,
+            ;
+            assert(((byte >> du) & 1u8) == ((byte >> (du & 7u32)) & 1u8)) by (bit_vector)
+                requires
+                    du < 8u32,
+            ;
+            assert(bit32(byte as u32, du) == (byte >> du) & 1u8);
+            reveal(payload_bit);
+            assert((8 * fetched + (j - nacc)) / 8 == fetched);
+            assert((8 * fetched + (j - nacc)) % 8 == j - nacc);
+            assert(payload_byte(b, q, fetched) == byte);
+            assert(bit32(byte as u32, du) as int == payload_bit(b, q, 8 * fetched + (j - nacc)));
+            assert(8 * (fetched + 1) - (nacc + 8) + j == 8 * fetched + (j - nacc));
+        }
+    }
+}
+
+
+/// Step 2 of L-BITS's executable half: reading `width` bits at the reader's
+/// position. `acc & mask32(width)` is `payload_code` at bit position
+/// `8·fetched − nacc`, and the shifted accumulator keeps the view at the next
+/// position (`fetched` unchanged, `nacc` reduced by `width`).
+pub proof fn lemma_acc_take(b: Seq<u8>, q: int, fetched: int, nacc: int, acc: u32, width: int)
+    requires
+        acc_view(b, q, fetched, nacc, acc),
+        1 <= width <= 12,
+        width <= nacc,
+    ensures
+        (acc & mask32(width as u32)) as int == payload_code(b, q, 8 * fetched - nacc, width, 0),
+        acc_view(b, q, fetched, nacc - width, acc >> (width as u32)),
+{
+    reveal(acc_view);
+    reveal(bit32);
+    reveal(bit32i);
+    let wu: u32 = (width - 0) as u32;
+    let nu: u32 = nacc as u32;
+    let du: u32 = (nacc - width) as u32;
+    assert(du == nu - wu);
+    assert(acc >> (nacc as u32) == 0u32);
+    assert((acc >> wu) >> du == 0u32) by (bit_vector)
+        requires
+            du == nu - wu,
+            acc >> nu == 0u32,
+            wu <= nu,
+            nu <= 32,
+    ;
+    lemma_mask_eq_low_bits(acc, width, 0);
+    assert((acc >> (0 as u32)) == acc) by (bit_vector);
+    assert((acc & mask32(wu)) as int == low_bits_val(acc, width, 0)) by {
+        assert(((acc >> (0 as u32)) & mask32((width - 0) as u32)) as int == low_bits_val(
+            acc,
+            width,
+            0,
+        ));
+        assert((width - 0) as u32 == wu);
+    }
+    assert forall|j: int| 0 <= j < width implies #[trigger] bit32i(acc, j) == payload_bit(
+        b,
+        q,
+        8 * fetched - nacc + j,
+    ) by {
+        assert(bit32i(acc, j) == bit32(acc, j as u32) as int);
+    }
+    lemma_low_bits_val_is_payload_code(b, q, 8 * fetched - nacc, width, 0, acc);
+    assert forall|j: int| 0 <= j < nacc - width implies #[trigger] bit32(
+        acc >> wu,
+        j as u32,
+    ) as int == payload_bit(b, q, 8 * fetched - (nacc - width) + j) by {
+        let ju: u32 = j as u32;
+        let su: u32 = (ju + wu) as u32;
+        assert(ju as int == j);
+        assert((su as int) == (ju as int) + (wu as int));
+        assert((su as int) < 32);
+        assert(bit32(acc >> wu, ju) == bit32(acc, su)) by (bit_vector)
+            requires
+                su == ju + wu,
+                su < 32u32,
+        ;
+        assert(bit32(acc, su) as int == payload_bit(b, q, 8 * fetched - nacc + (j + width)));
+        assert(8 * fetched - (nacc - width) + j == 8 * fetched - nacc + (j + width));
+    }
 }
 
 } // verus!

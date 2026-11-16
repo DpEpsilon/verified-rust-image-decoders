@@ -1,0 +1,38 @@
+
+verus! {
+#[cfg(verus_only)]
+use crate::lzw::Sink;
+
+/// Concrete-call drawing theorem: generic LZW effects instantiate to Drawer's
+/// canvas, and successful reverse calls equal the forward G12.2 canvas.
+pub fn decode_drawer(b:&[u8],data:crate::parse::ImageData,area:u32,opts:crate::lzw::LzwOptions,
+    kind:crate::policy::LzwMin,t:&mut [u8],canvas:&mut [u8],table:&[u8],fr:Frame,sw:u32,sh:u32)->(rep:crate::lzw::LzwReport)
+    requires b.len()<=crate::limits::MAX_INPUT,area<=crate::limits::MAX_TOTAL_PIXELS,
+        area as int==(fr.rect.width as int)*(fr.rect.height as int),
+        frame_ok(fr),canvas_ok(old(canvas),sw,sh),table_ok(table,fr),crate::lzw::table_len_ok(old(t)@),
+        crate::parse::lzw_min_ok(kind,data.min_code_size as int,area as int),
+        opts.checked_literals==(kind==crate::policy::LzwMin::Range1to11Checked),
+        crate::model::sub_scan(b@,data.first as int) is Some,
+        crate::lzw::read_d(b@,data.first as int).len()==data.data_len,data.data_len<=crate::limits::MAX_INPUT,
+    ensures canvas_ok(final(canvas),sw,sh),crate::lzw::table_len_ok(final(t)@),
+        crate::lzw::report_matches(rep,crate::lzw_model::ML(data.min_code_size as int,crate::lzw::read_d(b@,data.first as int),area as int,crate::lzw::lzw_ps(data.min_code_size,opts))),
+        crate::lzw::colour_observation(rep,crate::lzw_model::ML(data.min_code_size as int,crate::lzw::read_d(b@,data.first as int),area as int,crate::lzw::lzw_ps(data.min_code_size,opts)).idx,|v:u8|drawer_ok(fr,v)),
+        rep.colour is None ==> draw_fold(old(canvas)@,fr.spec_frame(),table@,sw,sh,
+            crate::lzw_model::ML(data.min_code_size as int,crate::lzw::read_d(b@,data.first as int),area as int,crate::lzw::lzw_ps(data.min_code_size,opts)).idx,0)==Ok(final(canvas)@),
+{
+    let ghost cv0=canvas@;
+    let mut sink=DrawerSink::new(canvas,table,fr,sw,sh);
+    let ghost ok=|v:u8|sink.sink_ok(v);
+    proof {assert(ok =~= |v:u8|drawer_ok(fr,v));}
+    let rep=crate::lzw::decode_image_data(b,data,area,opts,kind,t,&mut sink);
+    proof {
+        let o=crate::lzw_model::ML(data.min_code_size as int,crate::lzw::read_d(b@,data.first as int),area as int,crate::lzw::lzw_ps(data.min_code_size,opts)).idx;
+        assert(sink.canvas@==crate::lzw::effect_fold(cv0,rep.h@,crate::emission_compose::draw_effect(fr.spec_frame(),table@,sw,sh)));
+        if rep.colour is None {
+            assert forall|p:int| 0<=p<o.len() implies fr.transparent==Some(#[trigger] o[p]) || (o[p] as int)<fr.c by {};
+            crate::emission_compose::lemma_complete_log_canvas(cv0,fr.spec_frame(),table@,sw,sh,rep.h@,o);
+        }
+    }
+    rep
+}
+} // verus!

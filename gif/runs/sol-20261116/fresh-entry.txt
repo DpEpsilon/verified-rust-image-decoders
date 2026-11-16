@@ -1,0 +1,62 @@
+
+verus! {
+impl<'a> BitReader<'a> {
+    /// G9's structural scan supplies every future payload-fetch precondition.
+    pub fn new_scanned(b:&'a [u8],first:usize,data_len:u32)->(r:BitReader<'a>)
+        requires b.len()<=crate::limits::MAX_INPUT,data_len<=crate::limits::MAX_INPUT,
+            crate::model::sub_scan(b@,first as int) is Some,
+            read_d(b@,first as int).len()==data_len,
+        ensures reader_ready(&r),r.b==b,r.seq_start==first,r.data_len==data_len,
+            r.total_bits==r.bits_left,r.fetched==0,r.nacc==0,r.acc==0,
+    {
+        let r=BitReader::new(b,first,data_len);
+        proof {
+            let scanned=crate::model::sub_scan(b@,first as int).unwrap();
+            crate::model::lemma_concat_len(scanned.0,Seq::empty());
+            crate::model::lemma_rd_step_ok_all(b@,first as int,scanned.0,scanned.1);
+        }
+        r
+    }
+}
+
+pub proof fn lemma_min_admissibility(kind:crate::policy::LzwMin,m:u32,area:u32,opts:LzwOptions)
+    requires crate::parse::lzw_min_ok(kind,m as int,area as int),
+        opts.checked_literals==(kind==crate::policy::LzwMin::Range1to11Checked),
+    ensures 1<=m<=11,m_ok(lzw_ps(m,opts),m as int,area as int),lzw_ps_known(m,opts),
+{}
+
+/// Export the successful G9 parser's facts in the exact core-entry vocabulary.
+pub proof fn lemma_image_data_ready(b:Seq<u8>,p:int,pol:crate::policy::Policy,area:u32,data:crate::parse::ImageData)
+    requires crate::parse::image_data_post(b,p,pol,area as int,Ok(data)),
+    ensures crate::parse::lzw_min_ok(pol.lzw_min,data.min_code_size as int,area as int),
+        crate::model::sub_scan(b,data.first as int) is Some,
+        read_d(b,data.first as int).len()==data.data_len,
+        data.data_len<=crate::limits::MAX_INPUT,
+{}
+
+/// The frame path uses the G9 record directly: no contiguous payload copy and
+/// no index buffer. The preceding scan establishes minimum-size admissibility.
+pub fn decode_image_data<S:Sink>(b:&[u8],data:crate::parse::ImageData,area:u32,opts:LzwOptions,
+    kind:crate::policy::LzwMin,t:&mut [u8],sink:&mut S)->(rep:LzwReport)
+    requires b.len()<=crate::limits::MAX_INPUT,area<=crate::limits::MAX_TOTAL_PIXELS,
+        crate::parse::lzw_min_ok(kind,data.min_code_size as int,area as int),
+        opts.checked_literals==(kind==crate::policy::LzwMin::Range1to11Checked),
+        crate::model::sub_scan(b@,data.first as int) is Some,
+        read_d(b@,data.first as int).len()==data.data_len,data.data_len<=crate::limits::MAX_INPUT,
+        table_len_ok(old(t)@),old(sink).sink_inv(),old(sink).sink_area()==area as int,
+    ensures table_len_ok(final(t)@),final(sink).sink_inv(),final(sink).sink_area()==area as int,
+        forall|v:u8| final(sink).sink_ok(v)==old(sink).sink_ok(v),
+        final(sink).sink_log()==old(sink).sink_log()+rep.h@,
+        report_matches(rep,ML(data.min_code_size as int,read_d(b@,data.first as int),area as int,lzw_ps(data.min_code_size,opts))),
+        log_complete(rep.h@,ML(data.min_code_size as int,read_d(b@,data.first as int),area as int,lzw_ps(data.min_code_size,opts)).idx,rep.written as int),
+        raster(rep.h@)==ML(data.min_code_size as int,read_d(b@,data.first as int),area as int,lzw_ps(data.min_code_size,opts)).idx,
+        rep.times@==code_stamps(data.min_code_size as int,read_d(b@,data.first as int),area as int,lzw_ps(data.min_code_size,opts),init_st(data.min_code_size as int)),
+        fault_matches(rep.h@,rep.times@,rep.colour,|v:u8|old(sink).sink_ok(v)),log_time_agrees(rep.h@,rep.times@),
+        colour_observation(rep,ML(data.min_code_size as int,read_d(b@,data.first as int),area as int,lzw_ps(data.min_code_size,opts)).idx,|v:u8|old(sink).sink_ok(v)),
+        rep.written<=area,rep.pos as int<=8*(data.data_len as int),
+{
+    proof {lemma_min_admissibility(kind,data.min_code_size,area,opts);}
+    let mut reader=BitReader::new_scanned(b,data.first,data.data_len);
+    decode(&mut reader,data.data_len,data.min_code_size,area,opts,t,sink)
+}
+} // verus!

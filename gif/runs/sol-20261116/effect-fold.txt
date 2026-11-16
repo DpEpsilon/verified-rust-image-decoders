@@ -1,0 +1,23 @@
+
+verus! {
+pub open spec fn effect_fold(cv:Seq<u8>,h:Seq<(u32,u8)>,effect:spec_fn(Seq<u8>,u32,u8)->Seq<u8>)->Seq<u8>
+    decreases h.len(),
+{
+    if h.len()==0 {cv} else {effect_fold(effect(cv,h[0].0,h[0].1),h.drop_first(),effect)}
+}
+pub proof fn lemma_effect_append(cv:Seq<u8>,h:Seq<(u32,u8)>,b:Seq<(u32,u8)>,effect:spec_fn(Seq<u8>,u32,u8)->Seq<u8>)
+    ensures effect_fold(cv,h+b,effect)==effect_fold(effect_fold(cv,h,effect),b,effect),
+    decreases h.len(),
+{
+    if h.len()>0 {
+        assert((h+b).drop_first()==h.drop_first()+b);
+        lemma_effect_append(effect(cv,h[0].0,h[0].1),h.drop_first(),b,effect);
+    }
+}
+pub proof fn lemma_effect_push(cv:Seq<u8>,h:Seq<(u32,u8)>,p:u32,v:u8,effect:spec_fn(Seq<u8>,u32,u8)->Seq<u8>)
+    ensures effect_fold(cv,h.push((p,v)),effect)==effect(effect_fold(cv,h,effect),p,v),
+{
+    assert(h.push((p,v))==h+seq![(p,v)]);
+    lemma_effect_append(cv,h,seq![(p,v)],effect);
+}
+} // verus!

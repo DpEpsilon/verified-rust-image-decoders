@@ -1,0 +1,92 @@
+
+verus! {
+#[derive(Clone,Copy,Debug)]
+pub struct ImageStep {
+    pub fh:FrameHeader,
+    pub data:ImageData,
+    pub gce:Option<Gce>,
+}
+
+pub open spec fn data_step_post(b:Seq<u8>,c:usize,pol:Policy,area:u64,oldst:WalkState,st:WalkState,r:Result<(ImageData,Option<Gce>),Error>)->bool {
+    match crate::model::data_step(b,pol,walk_m_unused(oldst),c as int,area as int) {
+        Err(e)=>r is Err && r.unwrap_err()==e && walk_eq(oldst,st),
+        Ok((m,d,ms))=>match r {
+            Err(_)=>false,
+            Ok((data,g))=>data.min_code_size as int==m && crate::lzw::read_d(b,data.first as int)==d
+                && st_matches(data.end,st,ms) && g==oldst.gce && image_data_post(b,c as int,pol,area as int,Ok(data)),
+        },
+    }
+}
+
+pub proof fn lemma_data_model(b:Seq<u8>,c:int,pol:Policy,area:int,st:WalkState,r:Result<ImageData,Error>)
+    requires image_data_post(b,c,pol,area,r),
+    ensures match r {
+        Err(e)=>crate::model::data_step(b,pol,walk_m_unused(st),c,area)==Err(e),
+        Ok(data)=>crate::model::data_step(b,pol,walk_m_unused(st),c,area)==Ok((data.min_code_size as int,crate::lzw::read_d(b,data.first as int),
+            crate::model::WalkM {p:data.end as int,gce:None,frames_seen:st.frames_seen as int+1,total_pixels:st.total_pixels as int+area,loop_count:st.loop_count})),
+    },
+{}
+
+/// G9's actual state update follows the complete structural scan.
+pub fn parse_data_step(b:&[u8],c:usize,pol:&Policy,area:u64,st:&mut WalkState)->(r:Result<(ImageData,Option<Gce>),Error>)
+    requires c<=b.len(),b.len()<=MAX_INPUT,old(st).frames_seen<MAX_FRAMES,
+        (old(st).total_pixels as int)+(area as int)<=MAX_TOTAL_PIXELS,
+    ensures data_step_post(b@,c,*pol,area,*old(st),*final(st),r),
+{
+    let result=scan_image_data(b,c,pol,area);
+    proof {lemma_data_model(b@,c as int,*pol,area as int,*st,result);}
+    let data=match result {Ok(data)=>data,Err(e)=>return Err(e)};
+    let gce=st.gce;
+    st.gce=None;
+    st.frames_seen+=1;
+    st.total_pixels+=area;
+    Ok((data,gce))
+}
+
+pub open spec fn image_step_post(b:Seq<u8>,p:usize,hdr:Header,pol:Policy,oldst:WalkState,st:WalkState,r:Result<ImageStep,Error>)->bool {
+    match crate::model::image_step(b,header_model(hdr),pol,walk_m_at(oldst,p)) {
+        Err(e)=>r is Err && r.unwrap_err()==e && walk_eq(oldst,st),
+        Ok((fh,g,m,d,ms))=>match r {
+            Err(_)=>false,
+            Ok(image)=>frame_header_model(image.fh)==fh && image.gce==g && image.data.min_code_size as int==m
+                && crate::lzw::read_d(b,image.data.first as int)==d && st_matches(image.data.end,st,ms)
+                && frame_header_ok(b,image.fh,image.data.first,oldst)
+                && lzw_min_ok(pol.lzw_min,m,(image.fh.rect.width as int)*(image.fh.rect.height as int))
+                && crate::model::sub_scan(b,image.data.first as int) is Some
+                && crate::lzw::read_d(b,image.data.first as int).len()==image.data.data_len
+                && image.data.data_len<=MAX_INPUT,
+        },
+    }
+}
+
+/// Exact executable G8-G9 image step, including frame/pixel counters and GCE
+/// consumption, used by the frame path before disposal, allocation or LZW.
+pub fn parse_image_step(b:&[u8],p:usize,hdr:&Header,pol:&Policy,st:&mut WalkState)->(r:Result<ImageStep,Error>)
+    requires p<=b.len(),b.len()<=MAX_INPUT,hdr_inv(b@,*hdr),old(st).total_pixels<=MAX_TOTAL_PIXELS,
+    ensures image_step_post(b@,p,*hdr,*pol,*old(st),*final(st),r),
+        final(st).total_pixels<=MAX_TOTAL_PIXELS,
+        r is Ok ==> final(st).frames_seen<=MAX_FRAMES,
+{
+    let ghost start=*st;
+    let (fh,c)=parse_image_descriptor(b,p,hdr,st,pol)?;
+    proof {lemma_descriptor_area(fh.rect.width,fh.rect.height,st.total_pixels);}
+    let area=(fh.rect.width as u64)*(fh.rect.height as u64);
+    let (data,gce)=parse_data_step(b,c,pol,area,st)?;
+    Ok(ImageStep {fh,data,gce})
+}
+
+/// At an image introducer, the executable step is MB's image branch.
+pub proof fn lemma_mb_image_branch(b:Seq<u8>,p:usize,hdr:Header,pol:Policy,oldst:WalkState,st:WalkState,r:Result<ImageStep,Error>)
+    requires p<b.len(),b[p as int]==0x2c,image_step_post(b,p,hdr,pol,oldst,st,r),
+    ensures match crate::model::mb(b,header_model(hdr),pol,walk_m_at(oldst,p)) {
+        Err(e)=>r is Err && r.unwrap_err()==e,
+        Ok(out)=>match out {
+            crate::model::MbOut::Trailer=>false,
+            crate::model::MbOut::Image(fh,g,m,d,ms)=>match r {
+                Err(_)=>false,Ok(image)=>frame_header_model(image.fh)==fh && image.gce==g && image.data.min_code_size as int==m
+                    && crate::lzw::read_d(b,image.data.first as int)==d && st_matches(image.data.end,st,ms),
+            },
+        },
+    },
+{}
+} // verus!

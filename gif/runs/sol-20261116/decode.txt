@@ -1,0 +1,222 @@
+
+verus! {
+
+/// The integrated core completes the pure fold after a sink rejection; the
+/// frame adapter projects the saved colour fault over the pure observation.
+#[verifier::spinoff_prover]
+pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
+    opts: LzwOptions, t: &mut [u8], sink: &mut S) -> (rep: LzwReport)
+    requires
+        1 <= m <= 11,
+        m_ok(lzw_ps(m,opts), m as int, area as int),
+        area <= crate::limits::MAX_TOTAL_PIXELS,
+        old(sink).sink_inv(), old(sink).sink_area() == area as int,
+        table_len_ok(old(t)@),
+        reader_ready(old(reader)), old(reader).data_len == data_len,
+        old(reader).total_bits == old(reader).bits_left,
+        crate::model::sub_scan(old(reader).b@,old(reader).seq_start as int) is Some,
+        read_d(old(reader).b@,old(reader).seq_start as int).len() == data_len,
+    ensures
+        table_len_ok(final(t)@), reader_ready(final(reader)),
+        final(reader).b == old(reader).b, final(reader).seq_start == old(reader).seq_start,
+        final(reader).data_len == data_len,
+        final(sink).sink_inv(), final(sink).sink_area() == area as int,
+        forall|v:u8| final(sink).sink_ok(v) == old(sink).sink_ok(v),
+        final(sink).sink_log() == old(sink).sink_log() + rep.h@,
+        rep.written <= area,
+        rep.pos as int <= 8 * (data_len as int),
+        report_matches(rep, ML(m as int,read_d(old(reader).b@,old(reader).seq_start as int),area as int,lzw_ps(m,opts))),
+        log_complete(rep.h@, ML(m as int,read_d(old(reader).b@,old(reader).seq_start as int),area as int,lzw_ps(m,opts)).idx,rep.written as int),
+        raster(rep.h@) == ML(m as int,read_d(old(reader).b@,old(reader).seq_start as int),area as int,lzw_ps(m,opts)).idx,
+        rep.times@ == code_stamps(m as int,read_d(old(reader).b@,old(reader).seq_start as int),area as int,lzw_ps(m,opts),init_st(m as int)),
+        fault_matches(rep.h@,rep.times@,rep.colour,|v:u8| old(sink).sink_ok(v)),
+{
+    hide(L);
+    hide(code_stamps);
+    let ghost b0 = reader.b@;
+    let ghost start = reader.seq_start;
+    let ghost d = read_d(b0,start as int);
+    let ghost ps = lzw_ps(m,opts);
+    let ghost h0 = sink.sink_log();
+    let ghost ok = |v:u8| sink.sink_ok(v);
+    let ghost mut h = Seq::<(u32,u8)>::empty();
+    let ghost mut times = Seq::<u32>::empty();
+    let mut colour: Option<ColourFault> = None;
+    proof { lemma_shift_power(m); }
+    let clear = 1u32 << m;
+    let eoi = clear + 1;
+    let mut next = clear + 2;
+    let mut width = m + 1;
+    let mut have_prev = false;
+    let mut prev: u32 = 0;
+    let mut prev_first: u8 = 0;
+    let mut q: u32 = 0;
+    let ghost mut st = init_st(m as int);
+    proof {
+        lemma_raw_views(t@);
+        assert(crate::dictionary::table_ok(raw_pf_seq(t@),raw_ls_seq(t@),clear as int,next as int));
+        crate::dictionary::history_empty(raw_pf_seq(t@),raw_ls_seq(t@),clear as int,0,opts.checked_literals);
+        assert(st.pos == (reader.total_bits as int)-(reader.bits_left as int));
+        lemma_shift_power(width);
+    }
+    loop
+        invariant
+            1 <= m <= 11, m_ok(ps,m as int,area as int), ps == lzw_ps(m,opts),
+            clear as int == lzw_clear_of(m as int), eoi as int == lzw_eoi_of(m as int), clear <= 2048,
+            lzw_ipow2(m as int+1) == 2*clear,
+            m>=2 ==> clear>=4, m==1 ==> clear==2,
+            m+1 <= width <= 12,
+            m>=2 ==> (next as int)<lzw_ipow2(width as int) || width==12,
+            m==1 && area==1 && opts.tail==Tail::StopAtRaster ==> next==4 && width==2,
+            table_len_ok(t@), clear+2 <= next <= TABLE_SIZE,
+            crate::dictionary::table_ok(raw_pf_seq(t@),raw_ls_seq(t@),clear as int,next as int),
+            have_prev ==> crate::dictionary::valid(clear as int,next as int,prev as int) && prev<next,
+            have_prev ==> prev_first == crate::chain::root_of(raw_pf_seq(t@),clear as int,prev as int,4096) as u8,
+            crate::dictionary::history(raw_pf_seq(t@),raw_ls_seq(t@),clear as int,next as int,q as int,have_prev,prev as int,opts.checked_literals),
+            !have_prev ==> next==clear+2,
+            reader_ready(reader), reader.b@==b0, reader.seq_start==start, reader.data_len==data_len,
+            crate::model::sub_scan(b0,start as int) is Some, d==read_d(b0,start as int), d.len()==data_len,
+            q<=area<=crate::limits::MAX_TOTAL_PIXELS,
+            st.pos == (reader.total_bits as int)-(reader.bits_left as int),
+            st.width==width as int, st.next==next as int,
+            st.prev==if have_prev {prev as int} else {-1}, st.q==q as int, st.o.len()==q,
+            st.pf.len()==4096, st.sf.len()==4096,
+            table_agrees(t@,st.pf,st.sf,clear as int,next as int-1),
+            ML(m as int,d,area as int,ps)==L(m as int,d,area as int,ps,st),
+            log_complete(h,st.o,q as int), sink.sink_log()==h0+h,
+            sink.sink_inv(), sink.sink_area()==area as int,
+            forall|v:u8| sink.sink_ok(v)==ok(v),
+            times + code_stamps(m as int,d,area as int,ps,st) == code_stamps(m as int,d,area as int,ps,init_st(m as int)),
+            fault_matches(h,times,colour,ok),
+        decreases reader.bits_left,
+    {
+        let ghost op = raw_pf_seq(t@);
+        let ghost os = raw_sf_seq(t@);
+        let ghost ol = raw_ls_seq(t@);
+        proof {
+            lemma_raw_views(t@);
+            lemma_L_unfold(m as int,d,area as int,ps,st);
+            lemma_L_step_pos(m as int,d,area as int,ps,st);
+            reveal_with_fuel(code_stamps,1);
+        }
+        if opts.tail == Tail::StopAtRaster && q == area {
+            let pos = reader.bit_pos();
+            proof { lemma_raster_complete(h,st.o,q as int); }
+            return LzwReport {written:q,error:None,pos,e4:false,h:Ghost(h),times:Ghost(times),colour};
+        }
+        if reader.bits_left < width {
+            let error = if q<area {Error::TooFewPixels} else {Error::MissingEndOfInformation};
+            let pos = reader.bit_pos();
+            proof { lemma_raster_complete(h,st.o,q as int); }
+            return LzwReport {written:q,error:Some(error),pos,e4:false,h:Ghost(h),times:Ghost(times),colour};
+        }
+        let code = reader.read(width);
+        let after = reader.bit_pos();
+        proof {
+            let scanned = crate::model::sub_scan(b0,start as int).unwrap();
+            crate::model::lemma_lbits_read(b0,start as int,scanned.0,scanned.1,st.pos,width as int);
+            assert(code as int == crate::lzw_model::code_at(d,st.pos,width as int,0));
+            lemma_lzw_code_bound(d,st.pos,width as int,0);
+            lemma_shift_power(width);
+            assert(code < TABLE_SIZE);
+        }
+        if code == clear {
+            proof {
+                let ns = clear_st(m as int,st,after as int);
+                assert(verdict(m as int,d,area as int,ps,st)==Vd::Step(ns));
+                st=ns;
+                crate::dictionary::history_empty(op,ol,clear as int,q as int,opts.checked_literals);
+            }
+            next=clear+2; width=m+1; have_prev=false; prev=0;
+            continue;
+        }
+        if q==area && code!=eoi {
+            proof { lemma_raster_complete(h,st.o,q as int); }
+            return LzwReport {written:q,error:Some(Error::MissingEndOfInformation),pos:after,e4:false,h:Ghost(h),times:Ghost(times),colour};
+        }
+        if code==eoi {
+            if q<area {
+                proof { lemma_raster_complete(h,st.o,q as int); }
+                return LzwReport {written:q,error:Some(Error::TooFewPixels),pos:after,e4:false,h:Ghost(h),times:Ghost(times),colour};
+            }
+            if opts.tail==Tail::Strict && (after+7)/8<data_len {
+                proof { lemma_raster_complete(h,st.o,q as int); }
+                return LzwReport {written:q,error:Some(Error::DataAfterEndOfInformation),pos:after,e4:false,h:Ghost(h),times:Ghost(times),colour};
+            }
+            proof { lemma_raster_complete(h,st.o,q as int); }
+            return LzwReport {written:q,error:None,pos:after,e4:false,h:Ghost(h),times:Ghost(times),colour};
+        }
+        if opts.checked_literals && code<clear && code>=256 {
+            proof { lemma_raster_complete(h,st.o,q as int); }
+            return LzwReport {written:q,error:Some(Error::ColorIndexOutOfRange),pos:after,e4:false,h:Ghost(h),times:Ghost(times),colour};
+        }
+        let kw = code==next;
+        if !(code<next || (kw && have_prev && next<TABLE_SIZE as u32)) {
+            proof { lemma_raster_complete(h,st.o,q as int); }
+            return LzwReport {written:q,error:Some(Error::InvalidLzwCode),pos:after,e4:false,h:Ghost(h),times:Ghost(times),colour};
+        }
+        let base = if kw {prev} else {code};
+        proof {
+            crate::dictionary::chain_valid(op,ol,clear as int,next as int,base as int);
+            assert forall|x:int| clear+2<=x<=base implies #[trigger] st.pf[x]==op[x] && st.sf[x]==os[x] by {};
+            crate::refinement::table_agreement(os,op,st.sf,st.pf,clear as int,base as int,4096);
+            lemma_walk_agrees(t@,st.pf,st.sf,clear as int,base as int,4096);
+            crate::dictionary::history_read(op,ol,clear as int,next as int,q as int,have_prev,prev as int,opts.checked_literals,base as int);
+            if m==1 && area==1 && opts.tail==Tail::StopAtRaster {
+                assert(!have_prev); assert(code<clear);
+            }
+        }
+        let ghost s = semit(m as int,st,code as int);
+        let ghost grow = have_prev && next<TABLE_SIZE;
+        if kw { add_entry(t,&mut next,&mut width,prev,prev_first,clear); }
+        proof {
+            lemma_raw_views(t@);
+            crate::dictionary::chain_valid(raw_pf_seq(t@),raw_ls_seq(t@),clear as int,next as int,code as int);
+            crate::refinement::cache_shape(raw_sf_seq(t@),raw_pf_seq(t@),raw_ls_seq(t@),clear as int,code as int,4096);
+            assert(s == crate::chain::str_of(raw_sf_seq(t@),raw_pf_seq(t@),clear as int,code as int,4096));
+        }
+        let len = code_len(t,clear,code) as u32;
+        let (first,blockfault) = emit_raw(t,clear,code,q,area,len,sink);
+        let ghost oldcolour = colour;
+        colour=merge_colour(colour,blockfault,after);
+        proof {
+            let block = sink_pairs(s,q as int,area as int,0);
+            lemma_fault_append(h,times,oldcolour,block,blockfault,after,colour,ok);
+            lemma_emitted_log(h,st.o,s,q as int,area as int);
+            h=h+block;
+            times=times+Seq::new(block.len(),|_i:int| after);
+        }
+        if len>area-q {
+            proof {
+                let no = st.o+s.take(area as int-q as int);
+                lemma_raster_complete(h,no,area as int);
+                reveal_with_fuel(code_stamps,1);
+            }
+            return LzwReport {written:area,error:if opts.tail==Tail::StopAtRaster {None} else {Some(Error::TooManyPixels)},pos:after,e4:opts.tail==Tail::StopAtRaster,h:Ghost(h),times:Ghost(times),colour};
+        }
+        let ghost ns = emit_st(m as int,st,after as int,code as int,s,first,grow);
+        proof {
+            assert(first==first_of(m as int,st,code as int));
+            assert(verdict(m as int,d,area as int,ps,st)==Vd::Step(ns));
+        }
+        if !kw && have_prev && next<TABLE_SIZE as u32 {
+            proof { crate::refinement::fresh_frame(raw_sf_seq(t@),raw_pf_seq(t@),clear as int,next as int,prev as int,first,code as int); }
+            add_entry(t,&mut next,&mut width,prev,first,clear);
+        }
+        proof {
+            lemma_raw_views(t@);
+            assert(raw_pf_seq(t@)==if grow {op.update(st.next,prev as u16)} else {op});
+            assert(raw_sf_seq(t@)==if grow {os.update(st.next,first)} else {os});
+            assert(raw_ls_seq(t@)==if grow {ol.update(st.next,(crate::refinement::clen(ol,clear as int,prev as int)+1) as u16)} else {ol});
+            assert forall|x:int| clear+2<=x<next implies #[trigger] ns.pf[x]==raw_pf_seq(t@)[x] && ns.sf[x]==raw_sf_seq(t@)[x] by {
+                if grow && x==st.next {} else { assert(st.pf[x]==op[x] && st.sf[x]==os[x]); }
+            }
+            crate::dictionary::history_advance(op,ol,raw_pf_seq(t@),raw_ls_seq(t@),clear as int,st.next,q as int,have_prev,prev as int,opts.checked_literals,code as int,len as int);
+            lemma_shift_power(width);
+            st=ns;
+        }
+        q+=len; have_prev=true; prev=code; prev_first=first;
+    }
+}
+
+} // verus!

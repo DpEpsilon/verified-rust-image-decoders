@@ -1,0 +1,25 @@
+
+verus! {
+
+pub proof fn lemma_resolved_agrees(t: Seq<u8>, m: int, st: St, code: int)
+    requires table_len_ok(t),
+        crate::dictionary::table_ok(raw_pf_seq(t),raw_ls_seq(t),lzw_clear_of(m),st.next),
+        st.pf.len()==4096, st.sf.len()==4096,
+        table_agrees(t,st.pf,st.sf,lzw_clear_of(m),st.next-1),
+        crate::dictionary::valid(lzw_clear_of(m),st.next,code) || code==st.next && st.next<4096 && crate::dictionary::valid(lzw_clear_of(m),st.next,st.prev),
+    ensures semit(m,st,code)==resolved_raw(t,lzw_clear_of(m),st.next,st.prev,code),
+        first_of(m,st,code)==crate::chain::root_of(raw_pf_seq(t),lzw_clear_of(m),if code==st.next {st.prev} else {code},4096) as u8,
+{
+    let c=if code==st.next {st.prev} else {code};
+    let clear=lzw_clear_of(m);
+    lemma_raw_views(t);
+    crate::dictionary::chain_valid(raw_pf_seq(t),raw_ls_seq(t),clear,st.next,c);
+    assert forall|x:int| clear+2<=x<=c implies #[trigger] st.pf[x]==raw_pf_seq(t)[x] && st.sf[x]==raw_sf_seq(t)[x] by {
+        assert(raw_prefix(t,x)==st.pf[x] as int);
+        assert(raw_suffix(t,x)==st.sf[x] as int);
+    }
+    crate::refinement::table_agreement(raw_sf_seq(t),raw_pf_seq(t),st.sf,st.pf,clear,c,4096);
+    lemma_walk_agrees(t,st.pf,st.sf,clear,c,4096);
+}
+
+} // verus!

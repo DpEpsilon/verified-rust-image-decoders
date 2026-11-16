@@ -1,0 +1,72 @@
+
+verus! {
+/// Physical call order and logical raster order carry the same per-code time.
+pub open spec fn log_time_agrees(h: Seq<(u32,u8)>, ts: Seq<u32>) -> bool {
+    &&& h.len()==ts.len()
+    &&& forall|i:int| 0<=i<h.len() ==> #[trigger] ts[i]==ts[h[i].0 as int]
+}
+
+pub proof fn lemma_emission_times(h: Seq<(u32,u8)>, ts: Seq<u32>, o: Seq<u8>, s: Seq<u8>, q:int,a:int,after:u32)
+    requires log_complete(h,o,q),log_time_agrees(h,ts),
+        0<=q<=a<=crate::limits::MAX_TOTAL_PIXELS, s.len()<=TABLE_SIZE,
+    ensures log_time_agrees(h+sink_pairs(s,q,a,0),ts+Seq::new(sink_pairs(s,q,a,0).len(),|_i:int|after)),
+{
+    let b=sink_pairs(s,q,a,0);
+    let nt=ts+Seq::new(b.len(),|_i:int|after);
+    lemma_sink_pairs_len(s,q,a,0);
+    lemma_sink_pairs_ok(s,q,a,0);
+    assert(crate::limits::MAX_TOTAL_PIXELS+TABLE_SIZE<=u32::MAX) by(compute);
+    assert forall|j:int| 0<=j<s.len() implies #[trigger] (o+s)[q+j]==s[j] by {};
+    lemma_log_block_sink_pairs(s,o+s,q,a);
+    assert forall|i:int| 0<=i<(h+b).len() implies #[trigger] nt[i]==nt[(h+b)[i].0 as int] by {
+        if i<h.len() {
+            assert((h+b)[i]==h[i]);
+            assert((h[i].0 as int)<q);
+            assert(nt[h[i].0 as int]==ts[h[i].0 as int]);
+        } else {
+            let k=i-h.len();
+            assert((h+b)[i]==b[k]);
+            let j=choose|j:int| 0<=j<s.len() && b[k]==((q+j) as u32,s[j]);
+            lemma_u32_roundtrip(q+j);
+            assert(q<=(b[k].0 as int)<q+b.len());
+            assert(nt[b[k].0 as int]==after);
+        }
+    }
+}
+
+/// L-INTERLEAVE's colour projection and R12's first offending code timestamp.
+pub proof fn lemma_colour_projection(h: Seq<(u32,u8)>, ts: Seq<u32>, o: Seq<u8>, q:int,
+    f: Option<ColourFault>,ok:spec_fn(u8)->bool)
+    requires log_complete(h,o,q),log_time_agrees(h,ts),fault_matches(h,ts,f,ok),
+    ensures
+        (f is None) <==> (forall|p:int| 0<=p<o.len() ==> ok(#[trigger] o[p])),
+        match f {
+            None=>true,
+            Some(c)=> {
+                &&& 0<=c.q<o.len()
+                &&& !ok(o[c.q as int])
+                &&& forall|p:int| 0<=p<(c.q as int) ==> ok(#[trigger] o[p])
+                &&& c.pos==ts[c.q as int]
+            },
+        },
+{
+    match f {
+        None=> {
+            assert forall|p:int| 0<=p<o.len() implies ok(#[trigger] o[p]) by {
+                assert(log_has_at(h,p));
+                let i=choose|i:int| 0<=i<h.len() && (h[i].0 as int)==p;
+                assert(h[i].1==o[p]);
+            }
+        },
+        Some(c)=> {
+            let i=choose|i:int| 0<=i<h.len() && h[i].0==c.q && !ok(h[i].1) && ts[i]==c.pos;
+            assert(h[i].1==o[c.q as int]);
+            assert forall|p:int| 0<=p<(c.q as int) implies ok(#[trigger] o[p]) by {
+                assert(log_has_at(h,p));
+                let j=choose|j:int| 0<=j<h.len() && (h[j].0 as int)==p;
+                assert(h[j].1==o[p]);
+            }
+        },
+    }
+}
+} // verus!

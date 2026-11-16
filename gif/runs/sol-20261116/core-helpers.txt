@@ -1,0 +1,141 @@
+
+verus! {
+#[cfg(verus_only)]
+use crate::lzw_model::{St, Vd, ML, L, init_st, clear_st, emit_st, semit, first_of, verdict, nbits, m_ok, lzw_ipow2, lzw_clear_of, lzw_eoi_of, lemma_L_unfold, lemma_L_step_pos};
+
+/// Reader state consumed and preserved by each code read.
+pub open spec fn reader_ready(r: &BitReader) -> bool {
+    &&& r.b.len() <= crate::limits::MAX_INPUT
+    &&& r.data_len <= crate::limits::MAX_INPUT
+    &&& r.bits_left <= r.total_bits
+    &&& r.total_bits == 8 * (r.data_len as int)
+    &&& r.pos as int == crate::model::rd_state(r.b@, r.seq_start as int, r.fetched as int).0
+    &&& r.left_in_block as int == crate::model::rd_state(r.b@, r.seq_start as int, r.fetched as int).1
+    &&& r.nacc as int == 8 * (r.fetched as int) - ((r.total_bits as int) - (r.bits_left as int))
+    &&& r.nacc <= 32
+    &&& r.fetched <= r.data_len
+    &&& crate::model::acc_view(r.b@, r.seq_start as int, r.fetched as int, r.nacc as int, r.acc)
+    &&& forall|j: int| 0 <= j < r.data_len as int ==> #[trigger] crate::model::rd_step_ok(r.b@, r.seq_start as int, j)
+}
+
+pub proof fn lemma_shift_power(m: u32)
+    requires m <= 12,
+    ensures (1u32 << m) as int == lzw_ipow2(m as int),
+        1 <= lzw_ipow2(m as int) <= TABLE_SIZE,
+        m <= 11 ==> lzw_ipow2(m as int) <= 2048,
+        m >= 2 ==> lzw_ipow2(m as int) >= 4,
+        m == 1 ==> lzw_ipow2(m as int) == 2,
+{
+    reveal_with_fuel(lzw_ipow2, 13);
+    assert((1u32 << m) == match m {0=>1u32,1=>2,2=>4,3=>8,4=>16,5=>32,6=>64,7=>128,8=>256,9=>512,10=>1024,11=>2048,_=>4096}) by (bit_vector)
+        requires m <= 12;
+}
+
+pub proof fn lemma_lzw_code_bound(d: Seq<u8>, p: int, w: int, i: int)
+    requires 0 <= i <= w <= 12, 0 <= p, p+w <= nbits(d),
+    ensures 0 <= crate::lzw_model::code_at(d,p,w,i) < lzw_ipow2(w-i),
+    decreases w-i,
+{
+    if i < w {
+        assert(0 <= crate::lzw_model::lzw_bit_at(d,p+i) <= 1) by {
+            let b = d[(p+i)/8]; let j = ((p+i)%8) as u8;
+            assert(((b >> j) & 1u8) <= 1) by (bit_vector);
+        }
+        lemma_lzw_code_bound(d,p,w,i+1);
+    }
+}
+
+pub open spec fn raster(h: Seq<(u32,u8)>) -> Seq<u8> {
+    Seq::new(h.len(), |p: int| h[choose|i: int| 0 <= i < h.len() && (h[i].0 as int) == p].1)
+}
+
+pub proof fn lemma_raster_complete(h: Seq<(u32,u8)>, o: Seq<u8>, q: int)
+    requires log_complete(h,o,q), o.len() == q,
+    ensures raster(h) == o,
+{
+    assert(raster(h) =~= o) by {
+        assert forall|p: int| 0 <= p < o.len() implies #[trigger] raster(h)[p] == o[p] by {
+            let i = choose|i: int| 0 <= i < h.len() && (h[i].0 as int) == p;
+            assert(h[i].1 == o[h[i].0 as int]);
+        }
+    }
+}
+
+/// After-code position for each as-yet un-emitted index of the pure fold.
+pub open spec fn code_stamps(m: int, d: Seq<u8>, a: int, ps: LzwParams, st: St) -> Seq<u32>
+    decreases nbits(d)-st.pos,
+{
+    match verdict(m,d,a,ps,st) {
+        Vd::Halt(r) => Seq::new((r.idx.len()-st.o.len()) as nat, |_i: int| r.pos as u32),
+        Vd::Step(ns) => if ns.pos > st.pos {
+            Seq::new((ns.o.len()-st.o.len()) as nat, |_i: int| ns.pos as u32) + code_stamps(m,d,a,ps,ns)
+        } else { Seq::empty() },
+    }
+}
+
+pub open spec fn fault_matches(h: Seq<(u32,u8)>, ts: Seq<u32>, f: Option<ColourFault>, ok: spec_fn(u8)->bool) -> bool {
+    &&& h.len() == ts.len()
+    &&& min_rejected(h, match f { Some(c) => Some(c.q), None => None }, ok)
+    &&& match f {
+        None => true,
+        Some(c) => exists|i: int| 0 <= i < h.len() && h[i].0 == c.q && !ok(h[i].1) && ts[i] == c.pos,
+    }
+}
+
+fn merge_colour(f: Option<ColourFault>, block: Option<u32>, after: u32) -> (nf: Option<ColourFault>)
+    ensures nf == match block {
+        None => f,
+        Some(p) => match f { Some(c) => if p < c.q {Some(ColourFault {q:p,pos:after})} else {f}, None => Some(ColourFault {q:p,pos:after}) },
+    },
+{
+    match block {
+        None => f,
+        Some(p) => match f { Some(c) => if p < c.q {Some(ColourFault {q:p,pos:after})} else {f}, None => Some(ColourFault {q:p,pos:after}) },
+    }
+}
+
+pub proof fn lemma_fault_append(h: Seq<(u32,u8)>, ts: Seq<u32>, f: Option<ColourFault>,
+    b: Seq<(u32,u8)>, bf: Option<u32>, after: u32, nf: Option<ColourFault>, ok: spec_fn(u8)->bool)
+    requires fault_matches(h,ts,f,ok), min_rejected(b,bf,ok),
+        nf == match bf { None => f, Some(p) => match f { Some(c) => if p<c.q {Some(ColourFault {q:p,pos:after})} else {f}, None => Some(ColourFault {q:p,pos:after}) } },
+    ensures fault_matches(h+b, ts+Seq::new(b.len(), |_i:int| after), nf, ok),
+{
+    let nt = ts+Seq::new(b.len(), |_i:int| after);
+    match nf {
+        None => {},
+        Some(c) => {
+            if bf == Some(c.q) && (f is None || c.q < f.unwrap().q) {
+                let i = choose|i:int| 0<=i<b.len() && b[i].0==c.q && !ok(b[i].1);
+                assert((h+b)[h.len()+i] == b[i]);
+                assert(nt[h.len()+i] == after);
+            } else {
+                let i = choose|i:int| 0<=i<h.len() && h[i].0==c.q && !ok(h[i].1) && ts[i]==c.pos;
+                assert((h+b)[i] == h[i]);
+                assert(nt[i] == ts[i]);
+            }
+        },
+    }
+    assert forall|i:int| 0<=i<(h+b).len() implies #[trigger] (h+b)[i] == if i<h.len() {h[i]} else {b[i-h.len()]} by {};
+}
+
+/// Append a completed code's reverse call block to the logical raster prefix.
+pub proof fn lemma_emitted_log(h: Seq<(u32,u8)>, o: Seq<u8>, s: Seq<u8>, q: int, a: int)
+    requires log_complete(h,o,q), o.len()==q, 0<=q<=a, a<=crate::limits::MAX_TOTAL_PIXELS, s.len() <= TABLE_SIZE,
+    ensures log_complete(h+sink_pairs(s,q,a,0), o+s.take(if s.len()<=a-q {s.len() as int} else {a-q}),
+        q+if s.len()<=a-q {s.len() as int} else {a-q}),
+{
+    let n = if s.len() <= a-q {s.len() as int} else {a-q};
+    let no = o+s.take(n);
+    assert(crate::limits::MAX_TOTAL_PIXELS + TABLE_SIZE <= u32::MAX) by (compute);
+    assert forall|j:int| 0<=j<s.len() implies #[trigger] (o+s)[q+j]==s[j] by {};
+    lemma_log_block_sink_pairs(s,o+s,q,a);
+    let b = sink_pairs(s,q,a,0);
+    lemma_sink_pairs_len(s,q,a,0);
+    assert forall|i:int| 0<=i<b.len() implies #[trigger] b[i].1 == no[b[i].0 as int] by {
+        assert((b[i].0 as int) < q+n);
+    }
+    assert forall|i:int| 0<=i<h.len() implies #[trigger] h[i].1 == no[h[i].0 as int] by {};
+    lemma_log_complete_append(h,b,no,q);
+}
+
+} // verus!

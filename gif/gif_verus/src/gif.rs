@@ -17,7 +17,7 @@ use alloc::vec::Vec;
 use crate::alloc_guard::sites::TryError;
 use crate::alloc_guard::{try_zeroed, AllocLog, AllocSite};
 use crate::compose::{clear_rect, copy_rect, Drawer, Rect};
-use crate::lzw::{self, BitReader, LzwOptions, Tail, LZW_TABLE_BYTES};
+use crate::lzw::{LzwOptions, Tail, LZW_TABLE_BYTES};
 use crate::parse::{self, Header, WalkState};
 use crate::policy::{GceOrphan, LzwMin, LzwTail, MissingTrailer, Policy, Profile, Trailing, UnknownBlock};
 
@@ -230,6 +230,11 @@ fn reserve(
         crate::parse::hdr_ok(b@, *hdr),
         log.view() == Seq::<(AllocSite, nat, bool)>::empty(),
     ensures
+        crate::alloc_guard::sites::log_tied(r,final(log).view()),
+        g_new_clause3(b@),
+        r is Err ==> r.unwrap_err() is OutOfMemory,
+        r is Ok ==> r->Ok_0.0@ == Seq::new((4*(hdr.width as int)*(hdr.height as int)) as nat,|_i:int|0u8),
+        r is Ok ==> r->Ok_0.1@ == Seq::new(crate::lzw::LZW_TABLE_BYTES as nat,|_i:int|0u8),
         r is Ok ==> crate::alloc_guard::req_of_log(final(log).view()) == req_new(b@) && crate::alloc_guard::all_ok(
             final(log).view(),
         ),
@@ -317,6 +322,7 @@ fn reserve(
 
 } // verus!
 
+verus! {
 /// Stream information (G1), fixed by the constructor's prefix walk.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Info {
@@ -331,6 +337,8 @@ pub struct Info {
     /// (G6.3, rule A); `plays` gives its meaning (G20).
     pub loop_count: Option<u16>,
 }
+
+} // verus!
 
 /// The first frame composited on the logical screen (G14). `rgba` is
 /// `4·width·height` bytes, the `Canvas` reservation itself.
@@ -360,6 +368,7 @@ pub struct FrameView<'f> {
     pub recovered: bool,
 }
 
+verus! {
 /// G20: the documented meaning of `Info::loop_count`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Plays {
@@ -369,7 +378,9 @@ pub enum Plays {
 }
 
 /// G20: `None ↦ Once`, `Some(0) ↦ Forever`, `Some(n) ↦ Repeats(n)`.
-pub fn plays(loop_count: Option<u16>) -> Plays {
+pub fn plays(loop_count: Option<u16>) -> (p: Plays)
+    ensures p==plays_model(loop_count),
+{
     match loop_count {
         None => Plays::Once,
         Some(0) => Plays::Forever,
@@ -380,7 +391,9 @@ pub fn plays(loop_count: Option<u16>) -> Plays {
 impl Plays {
     /// Total plays: `Once` 1, `Repeats(n)` `n + 1` (at most 65,536, in `u32`),
     /// `Forever` none.
-    pub fn total_plays(self) -> Option<u32> {
+    pub fn total_plays(self) -> (p: Option<u32>)
+        ensures p==total_plays_model(self),
+    {
         match self {
             Plays::Once => Some(1),
             Plays::Forever => None,
@@ -389,6 +402,20 @@ impl Plays {
     }
 }
 
+
+pub open spec fn plays_model(x:Option<u16>)->Plays {
+    match x {None=>Plays::Once,Some(0)=>Plays::Forever,Some(n)=>Plays::Repeats(n)}
+}
+pub open spec fn total_plays_model(p:Plays)->Option<u32> {
+    match p {Plays::Once=>Some(1),Plays::Forever=>None,Plays::Repeats(n)=>Some((n as int+1) as u32)}
+}
+/// T-PLAYS: the total-play observation identifies every optional wire value.
+pub proof fn lemma_total_plays_injective(x:Option<u16>,y:Option<u16>)
+    ensures total_plays_model(plays_model(x))==total_plays_model(plays_model(y)) ==> x==y,
+{}
+} // verus!
+
+verus! {
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum State {
     /// The cursor is at a block boundary; more frames may follow.
@@ -419,11 +446,6 @@ struct FrameMeta {
     recovered: bool,
 }
 
-enum Stop {
-    AtImage,
-    Trailer,
-}
-
 /// The frame decoder (G15). Borrows the input; owns one canvas (`Canvas`),
 /// one LZW table (`LzwTable`) and, from the first disposal-3 frame on, the
 /// restore buffer (`Saved`). Not an `Iterator`: each view borrows the canvas.
@@ -444,7 +466,9 @@ pub struct Frames<'a> {
     /// `try_decode_still*`: the first frame's disposal is never applied, so a
     /// disposal-3 first frame reserves no `Saved` (G18 `Req(still)`).
     still: bool,
+    log: Tracked<AllocLog>,
 }
+} // verus!
 
 fn fmt<T>(r: Result<T, crate::gif::Error>) -> Result<T, TryError> {
     match r {
@@ -454,80 +478,6 @@ fn fmt<T>(r: Result<T, crate::gif::Error>) -> Result<T, TryError> {
 }
 
 impl<'a> Frames<'a> {
-    /// `Frames::try_new_with_policy(b, Profile::Strict)`.
-    pub fn try_new(b: &'a [u8]) -> Result<Frames<'a>, TryError> {
-        Frames::open(b, Profile::Strict.policy(), false)
-    }
-
-    /// G2–G4, then `Canvas` and `LzwTable`, then the prefix walk to the first
-    /// image descriptor. An error in that prefix is the constructor's error.
-    pub fn try_new_with_policy(b: &'a [u8], p: Profile) -> Result<Frames<'a>, TryError> {
-        Frames::open(b, p.policy(), false)
-    }
-
-    /// Test-only: a decoder for an arbitrary record (feature `test-records`).
-    #[cfg(feature = "test-records")]
-    #[doc(hidden)]
-    pub fn try_new_with_record(b: &'a [u8], pol: Policy) -> Result<Frames<'a>, TryError> {
-        Frames::open(b, pol, false)
-    }
-
-    fn open(b: &'a [u8], pol: Policy, still: bool) -> Result<Frames<'a>, TryError> {
-        let hdr = fmt(parse::parse_header(b))?;
-        // 4·W·H <= MAX_OUTPUT = alloc_guard::MAX_BYTES, and >= 4.
-        let n = 4 * (hdr.width as usize) * (hdr.height as usize);
-        let canvas = match try_zeroed(
-            AllocSite::Canvas,
-            n,
-            Tracked::<&mut AllocLog>::assume_new(),
-        ) {
-            Ok(v) => v,
-            Err(o) => return Err(TryError::OutOfMemory(o)),
-        };
-        let table = match try_zeroed(
-            AllocSite::LzwTable,
-            LZW_TABLE_BYTES,
-            Tracked::<&mut AllocLog>::assume_new(),
-        ) {
-            Ok(v) => v,
-            Err(o) => return Err(TryError::OutOfMemory(o)),
-        };
-        let info = Info {
-            width: hdr.width,
-            height: hdr.height,
-            version: hdr.version,
-            background_index: hdr.background_index,
-            aspect: hdr.aspect,
-            loop_count: None,
-        };
-        let mut d = Frames {
-            b,
-            pol,
-            hdr,
-            info,
-            p: hdr.cursor,
-            st: WalkState::new(),
-            canvas,
-            table,
-            saved: None,
-            prev: None,
-            state: State::Running,
-            still,
-        };
-        match d.walk() {
-            Ok(Stop::AtImage) => {}
-            Ok(Stop::Trailer) => d.state = State::Done,
-            Err(e) => return Err(TryError::Format(e)),
-        }
-        d.info.loop_count = d.st.loop_count;
-        Ok(d)
-    }
-
-    /// Width, height, version, background index, aspect and `loop_count`.
-    pub fn info(&self) -> &Info {
-        &self.info
-    }
-
     /// `Some(Ok(view))` for each frame in stream order, then `Some(Err(e))`
     /// once if the stream ends in an error, then `None` on every later call.
     pub fn next_frame(&mut self) -> Option<Result<FrameView<'_>, TryError>> {
@@ -556,59 +506,20 @@ impl<'a> Frames<'a> {
         }
     }
 
-    /// G5 block loop from the cursor until an image separator (cursor left on
-    /// it) or the Trailer.
-    fn walk(&mut self) -> Result<Stop, Error> {
-        let b = self.b;
-        loop {
-            let c;
-            if self.p >= b.len() {
-                if self.pol.missing_trailer == MissingTrailer::Reject {
-                    return Err(Error::MissingTrailer);
-                }
-                c = 0x3B; // missing_trailer = AtEof: EOF acts as the Trailer.
-            } else {
-                c = parse::get(b, self.p);
-            }
-            if c == 0x3B {
-                if self.st.gce.is_some() && self.pol.gce_orphan == GceOrphan::Reject {
-                    return Err(Error::GraphicControlWithoutGraphic);
-                }
-                if self.p < b.len() && b.len() - self.p > 1 && self.pol.trailing == Trailing::Reject {
-                    return Err(Error::TrailingBytes);
-                }
-                return Ok(Stop::Trailer);
-            }
-            if c == 0x21 {
-                self.p = parse::parse_extension(b, self.p, &mut self.st, &self.pol)?;
-                continue;
-            }
-            if c == 0x2C {
-                return Ok(Stop::AtImage);
-            }
-            match self.pol.unknown_block {
-                UnknownBlock::Reject => return Err(Error::UnknownBlock),
-            }
-        }
-    }
-
     /// Walk to the next image and decode it (G8–G12), or report the Trailer.
     fn step(&mut self) -> Result<Option<FrameMeta>, TryError> {
-        match fmt(self.walk())? {
-            Stop::Trailer => Ok(None),
-            Stop::AtImage => self.image().map(Some),
+        match fmt(parse::parse_mb(self.b, &mut self.p, &self.hdr, &self.pol, &mut self.st))? {
+            None => Ok(None),
+            Some(image) => self.image(image).map(Some),
         }
     }
 
-    fn image(&mut self) -> Result<FrameMeta, TryError> {
+    fn image(&mut self, image: parse::ImageStep) -> Result<FrameMeta, TryError> {
         let b = self.b;
-        let (fh, c) = fmt(parse::parse_image_descriptor(b, self.p, &self.hdr, &self.st, &self.pol))?;
+        let fh = image.fh;
+        let data = image.data;
+        let gce = image.gce;
         let area = fh.rect.width as u64 * fh.rect.height as u64;
-        let data = fmt(parse::scan_image_data(b, c, &self.pol, area))?;
-        let gce = self.st.gce;
-        self.st.gce = None;
-        self.st.frames_seen += 1;
-        self.st.total_pixels += area;
         self.p = data.end;
 
         let sw = self.hdr.width as u32;
@@ -630,17 +541,7 @@ impl<'a> Frames<'a> {
         // G12.2: a disposal-3 frame saves its rectangle; `Saved` is reserved
         // once, at the first such frame (G18).
         if disposal == 3 && !self.still {
-            if self.saved.is_none() {
-                let n = self.canvas.len();
-                match try_zeroed(
-                    AllocSite::Saved,
-                    n,
-                    Tracked::<&mut AllocLog>::assume_new(),
-                ) {
-                    Ok(v) => self.saved = Some(v),
-                    Err(o) => return Err(TryError::OutOfMemory(o)),
-                }
-            }
+            self.ensure_saved()?;
             if let Some(saved) = &mut self.saved {
                 copy_rect(saved, &self.canvas, sw, sh, fh.rect);
             }
@@ -661,19 +562,27 @@ impl<'a> Frames<'a> {
             checked_literals: self.pol.lzw_min == LzwMin::Range1to11Checked,
         };
         let table: &mut [u8] = &mut self.table;
-        let mut sink = Drawer::new(&mut self.canvas, colors, transparent, fh.rect, fh.interlaced, sw, sh);
-        let mut reader = BitReader::new(b, data.first, data.data_len);
+        let sink_fr = crate::compose_new::Frame {
+            rect: fh.rect,
+            interlaced: fh.interlaced,
+            // The parser validated the table's entry count before LZW.
+            c: fh.table.entries,
+            transparent,
+            // Drawing ignores disposal; normalize Keep for the sink invariant.
+            disposal: if disposal > 3 { 1 } else { disposal as u32 },
+        };
+        let mut sink = Drawer::new(&mut self.canvas, colors, sink_fr, sw, sh);
         // area <= MAX_TOTAL_PIXELS = 2^30 after G8, so it fits in u32.
         let area32 = if area > u32::MAX as u64 { u32::MAX } else { area as u32 };
-        let overrun = fmt(lzw::decode(
-            &mut reader,
-            data.data_len,
-            data.min_code_size,
+        let overrun = fmt(crate::compose_new::decode_drawer(
+            b,
+            data,
             area32,
             opts,
+            self.pol.lzw_min,
             table,
             &mut sink,
-        ))?;
+        ).public_result())?;
 
         self.prev = Some(Prev { rect: fh.rect, disposal: if disposal > 3 { 1 } else { disposal } });
         let (delay_cs, user_input) = match gce {
@@ -726,3 +635,257 @@ fn still_with(b: &[u8], pol: Policy) -> Result<(Still, bool), TryError> {
     }
 }
 
+
+verus! {
+#[derive(Debug)]
+struct Prepared {
+    hdr:Header,
+    p:usize,
+    st:WalkState,
+    stop:crate::parse::PrefixStop,
+    canvas:Vec<u8>,
+    table:Vec<u8>,
+}
+
+spec fn prepared_ok(b:Seq<u8>,pol:Policy,d:Prepared)->bool {
+    &&& crate::parse::hdr_inv(b,d.hdr) && crate::parse::hdr_ok(b,d.hdr)
+    &&& b.len()<=crate::limits::MAX_INPUT && d.p<=b.len()
+    &&& d.st.frames_seen==0 && d.st.total_pixels==0
+    &&& d.canvas@==Seq::new((4*(d.hdr.width as int)*(d.hdr.height as int)) as nat,|_i:int|0u8)
+    &&& d.table@==Seq::new(crate::lzw::LZW_TABLE_BYTES as nat,|_i:int|0u8)
+    &&& match d.stop {
+        crate::parse::PrefixStop::AtImage=>d.p<b.len() && b[d.p as int]==0x2c,
+        crate::parse::PrefixStop::Trailer=>d.p==b.len() || d.p<b.len() && b[d.p as int]==0x3b,
+    }
+    &&& match crate::model::mp(b,pol) {
+        Err(_)=>false,
+        Ok((mi,ms))=> {
+            &&& mi.width==d.hdr.width as int && mi.height==d.hdr.height as int
+            &&& mi.version==crate::model::version_code(d.hdr.version)
+            &&& mi.background_index==d.hdr.background_index as int && mi.aspect==d.hdr.aspect as int
+            &&& mi.loop_count==d.st.loop_count && crate::parse::st_matches(d.p,d.st,ms)
+        },
+    }
+}
+spec fn prepare_result(b:Seq<u8>,pol:Policy,r:Result<Prepared,TryError>)->bool {
+    match r {
+        Ok(d)=>prepared_ok(b,pol,d),
+        Err(TryError::Format(e))=>crate::model::mp(b,pol)==Err(e),
+        Err(TryError::OutOfMemory(_))=>crate::model::mh(b) is Ok,
+    }
+}
+
+/// The exact header/reservation/prefix constructor, without duplicating or
+/// initializing any input-dependent storage beyond the sealed reservations.
+fn prepare(b:&[u8],pol:Policy,Tracked(log):Tracked<&mut AllocLog>)->(r:Result<Prepared,TryError>)
+    requires log.view()==Seq::<(AllocSite,nat,bool)>::empty(),
+    ensures prepare_result(b@,pol,r),
+        crate::alloc_guard::sites::log_tied(r,final(log).view()),
+        g_new_clause2(b@,r is Err && r->Err_0 is OutOfMemory,final(log).view()),g_new_clause3(b@),
+        r is Ok ==> crate::alloc_guard::req_of_log(final(log).view())==req_new(b@),
+        crate::alloc_guard::req_of_log(final(log).view()).is_prefix_of(req_new(b@)),
+        !(r is Err && r->Err_0 is OutOfMemory) ==> crate::alloc_guard::req_of_log(final(log).view())==req_new(b@),
+{
+    hide(crate::model::mp_fuel);
+    let hdr=match parse::parse_header(b) {
+        Ok(h)=>h,
+        Err(e)=>return Err(TryError::Format(e)),
+    };
+    proof {
+        let mh=crate::model::mh(b@).unwrap();
+        crate::model::lemma_mh_ok_bounds(b@,mh);
+        crate::parse::lemma_header_model_matches(b@,hdr,mh);
+        assert(crate::parse::hdr_ok(b@,hdr));
+    }
+    let (canvas,table)=match reserve(b,&hdr,Tracked(log)) {
+        Ok(v)=>v,Err(e)=>return Err(e),
+    };
+    let mut p=hdr.cursor;
+    let mut st=WalkState::new();
+    let stop=match crate::parse::parse_mp(b,&mut p,&pol,&mut st) {
+        Ok(stop)=>stop,Err(e)=>return Err(TryError::Format(e)),
+    };
+    Ok(Prepared {hdr,p,st,stop,canvas,table})
+}
+} // verus!
+
+verus! {
+pub open spec fn info_model(i:Info)->crate::model::InfoM {
+    crate::model::InfoM {width:i.width as int,height:i.height as int,version:crate::model::version_code(i.version),
+        background_index:i.background_index as int,aspect:i.aspect as int,loop_count:i.loop_count}
+}
+
+/// Storage and parser bounds required between frame calls. The semantic
+/// canvas/disposal relation to the full frame model is a separate invariant.
+pub closed spec fn storage_wf(d:Frames)->bool {
+    &&& d.b.len()<=crate::limits::MAX_INPUT && crate::parse::hdr_inv(d.b@,d.hdr) && crate::parse::hdr_ok(d.b@,d.hdr)
+    &&& d.p<=d.b.len() && d.st.frames_seen<=crate::limits::MAX_FRAMES && d.st.total_pixels<=crate::limits::MAX_TOTAL_PIXELS
+    &&& d.canvas@.len()==4*(d.hdr.width as int)*(d.hdr.height as int)
+    &&& d.table@.len()==crate::lzw::LZW_TABLE_BYTES
+    &&& d.st.loop_count==d.info.loop_count
+    &&& match crate::model::mp(d.b@,d.pol) {Err(_)=>false,Ok((mi,_))=>info_model(d.info)==mi}
+    &&& match d.saved {
+        None=>d.log@.view()==seq![(AllocSite::Canvas,d.canvas@.len(),true),(AllocSite::LzwTable,crate::lzw::LZW_TABLE_BYTES as nat,true)]
+            || d.state==State::Fused && d.log@.view()==seq![(AllocSite::Canvas,d.canvas@.len(),true),(AllocSite::LzwTable,crate::lzw::LZW_TABLE_BYTES as nat,true),(AllocSite::Saved,d.canvas@.len(),false)],
+        Some(v)=>v@.len()==d.canvas@.len() && d.log@.view()==seq![(AllocSite::Canvas,d.canvas@.len(),true),(AllocSite::LzwTable,crate::lzw::LZW_TABLE_BYTES as nat,true),(AllocSite::Saved,d.canvas@.len(),true)],
+    }
+}
+
+pub closed spec fn constructor_ok(d:Frames,b:Seq<u8>,pol:Policy,still:bool)->bool {
+    &&& storage_wf(d) && d.b@==b && d.pol==pol && d.still==still
+    &&& d.st.frames_seen==0 && d.st.total_pixels==0 && d.saved is None && d.prev is None
+    &&& d.canvas@==Seq::new(d.canvas@.len(),|_i:int|0u8)
+    &&& d.table@==Seq::new(crate::lzw::LZW_TABLE_BYTES as nat,|_i:int|0u8)
+    &&& crate::alloc_guard::req_of_log(d.log@.view())==req_new(b) && crate::alloc_guard::all_ok(d.log@.view())
+    &&& match crate::model::mp(b,pol) {Err(_)=>false,Ok((_,ms))=>crate::parse::st_matches(d.p,d.st,ms)}
+    &&& match d.state {State::Running=>d.p<b.len() && b[d.p as int]==0x2c,State::Done=>d.p==b.len() || d.p<b.len() && b[d.p as int]==0x3b,State::Fused=>false}
+}
+
+pub closed spec fn constructor_result(b:Seq<u8>,pol:Policy,still:bool,r:Result<Frames,TryError>)->bool {
+    match r {
+        Ok(d)=>constructor_ok(d,b,pol,still),
+        Err(TryError::Format(e))=>crate::model::mp(b,pol)==Err(e),
+        Err(TryError::OutOfMemory(_))=>crate::model::mh(b) is Ok,
+    }
+}
+
+/// Success owns the log in Frames; only an error returns it separately.
+pub closed spec fn construction_log(r:&(Result<Frames,TryError>,Tracked<Option<AllocLog>>))->Seq<(AllocSite,nat,bool)> {
+    match r.0 {Ok(d)=>d.log@.view(),Err(_)=>match r.1@ {Some(l)=>l.view(),None=>Seq::empty()}}
+}
+
+impl<'a> Frames<'a> {
+    pub closed spec fn log_view(&self)->Seq<(AllocSite,nat,bool)> {self.log@.view()}
+    pub closed spec fn info_view(&self)->Info {self.info}
+
+    /// Width, height, version, background index, aspect and `loop_count`.
+    pub fn info(&self)->(i:&Info)
+        ensures *i==self.info_view(),
+    {&self.info}
+
+    fn open_logged(b:&'a [u8],pol:Policy,still:bool)->(r:(Result<Frames<'a>,TryError>,Tracked<Option<AllocLog>>))
+        ensures constructor_result(b@,pol,still,r.0),
+            crate::alloc_guard::sites::log_tied(r.0,construction_log(&r)),
+            g_new_clause2(b@,r.0 is Err && r.0->Err_0 is OutOfMemory,construction_log(&r)),g_new_clause3(b@),
+            crate::alloc_guard::req_of_log(construction_log(&r)).is_prefix_of(req_new(b@)),
+            !(r.0 is Err && r.0->Err_0 is OutOfMemory) ==> crate::alloc_guard::req_of_log(construction_log(&r))==req_new(b@),
+            r.0 is Ok ==> r.1@ is None,
+            r.0 is Err ==> r.1@ is Some,
+    {
+        hide(crate::model::mp);
+        reveal(constructor_result);reveal(constructor_ok);reveal(storage_wf);reveal(construction_log);
+        let tracked mut log=crate::alloc_guard::new_log();
+        let prepared=prepare(b,pol,Tracked(&mut log));
+        match prepared {
+            Err(e)=>(Err(e),Tracked(Some(log))),
+            Ok(d)=> {
+                let info=Info {width:d.hdr.width,height:d.hdr.height,version:d.hdr.version,
+                    background_index:d.hdr.background_index,aspect:d.hdr.aspect,loop_count:d.st.loop_count};
+                let state=match d.stop {crate::parse::PrefixStop::AtImage=>State::Running,crate::parse::PrefixStop::Trailer=>State::Done};
+                let dec=Frames {b,pol,hdr:d.hdr,info,p:d.p,st:d.st,canvas:d.canvas,table:d.table,
+                    saved:None,prev:None,state,still,log:Tracked(log)};
+                proof {
+                    assert(match crate::model::mp(dec.b@,dec.pol) {Err(_)=>false,Ok((mi,_))=>info_model(dec.info)==mi});
+                    assert(dec.log@.view()==seq![(AllocSite::Canvas,dec.canvas@.len(),true),(AllocSite::LzwTable,crate::lzw::LZW_TABLE_BYTES as nat,true)]);
+                    assert(storage_wf(dec));assert(constructor_ok(dec,b@,pol,still));
+                }
+                (Ok(dec),Tracked(None))
+            },
+        }
+    }
+
+    fn open(b:&'a [u8],pol:Policy,still:bool)->(r:Result<Frames<'a>,TryError>)
+        ensures constructor_result(b@,pol,still,r),
+    {Self::open_logged(b,pol,still).0}
+
+    pub fn try_new(b:&'a [u8])->(r:Result<Frames<'a>,TryError>)
+        ensures constructor_result(b@,crate::policy::profile_record(Profile::Strict),false,r),
+    {Self::open(b,Profile::Strict.policy(),false)}
+
+    pub fn try_new_with_policy(b:&'a [u8],p:Profile)->(r:Result<Frames<'a>,TryError>)
+        ensures constructor_result(b@,crate::policy::profile_record(p),false,r),
+    {Self::open(b,p.policy(),false)}
+
+    pub fn try_new_logged(b:&'a [u8])->(r:(Result<Frames<'a>,TryError>,Tracked<Option<AllocLog>>))
+        ensures constructor_result(b@,crate::policy::profile_record(Profile::Strict),false,r.0),
+            crate::alloc_guard::sites::log_tied(r.0,construction_log(&r)),
+            g_new_clause2(b@,r.0 is Err && r.0->Err_0 is OutOfMemory,construction_log(&r)),g_new_clause3(b@),
+            crate::alloc_guard::req_of_log(construction_log(&r)).is_prefix_of(req_new(b@)),
+            !(r.0 is Err && r.0->Err_0 is OutOfMemory) ==> crate::alloc_guard::req_of_log(construction_log(&r))==req_new(b@),
+            r.0 is Ok ==> r.1@ is None,r.0 is Err ==> r.1@ is Some,
+    {Self::open_logged(b,Profile::Strict.policy(),false)}
+
+    pub fn try_new_with_policy_logged(b:&'a [u8],p:Profile)->(r:(Result<Frames<'a>,TryError>,Tracked<Option<AllocLog>>))
+        ensures constructor_result(b@,crate::policy::profile_record(p),false,r.0),
+            crate::alloc_guard::sites::log_tied(r.0,construction_log(&r)),
+            g_new_clause2(b@,r.0 is Err && r.0->Err_0 is OutOfMemory,construction_log(&r)),g_new_clause3(b@),
+            crate::alloc_guard::req_of_log(construction_log(&r)).is_prefix_of(req_new(b@)),
+            !(r.0 is Err && r.0->Err_0 is OutOfMemory) ==> crate::alloc_guard::req_of_log(construction_log(&r))==req_new(b@),
+            r.0 is Ok ==> r.1@ is None,r.0 is Err ==> r.1@ is Some,
+    {Self::open_logged(b,p.policy(),false)}
+
+    #[cfg(feature="test-records")]
+    #[doc(hidden)]
+    pub fn try_new_with_record(b:&'a [u8],pol:Policy)->(r:Result<Frames<'a>,TryError>)
+        ensures constructor_result(b@,pol,false,r),
+    {Self::open(b,pol,false)}
+
+    /// The sole Saved reservation: a real borrow of the decoder's sealed log.
+    #[verifier::spinoff_prover]
+    fn ensure_saved(&mut self)->(r:Result<(),TryError>)
+        requires storage_wf(*old(self)),old(self).state==State::Running,!old(self).still,
+        ensures storage_wf(*final(self)),
+            final(self).b==old(self).b,final(self).hdr==old(self).hdr,final(self).pol==old(self).pol,
+            final(self).info==old(self).info,final(self).p==old(self).p,walk_state_same(*old(self),*final(self)),
+            final(self).canvas@==old(self).canvas@,final(self).table@==old(self).table@,
+            final(self).still==old(self).still,final(self).prev==old(self).prev,
+            crate::alloc_guard::sites::log_tied(r,final(self).log@.view()),
+            final(self).log@.view()==if old(self).saved is None {
+                old(self).log@.view().push((AllocSite::Saved,old(self).canvas@.len(),r is Ok))
+            } else {old(self).log@.view()},
+            r is Err ==> match r->Err_0 {TryError::OutOfMemory(o)=>o.site_spec()==AllocSite::Saved && o.elements_spec() as int==old(self).canvas@.len(),_=>false},
+            match old(self).saved {
+                Some(v)=>match final(self).saved {Some(w)=>w@==v@,None=>false},
+                None=>r is Ok ==> match final(self).saved {Some(w)=>w@==Seq::new(old(self).canvas@.len(),|_i:int|0u8),None=>false},
+            },
+            r is Ok ==> final(self).state==old(self).state && final(self).saved is Some,
+            r is Err ==> final(self).state==State::Fused && r->Err_0 is OutOfMemory,
+            final(self).log@.view().len()<=3,
+    {
+        hide(crate::model::mp);
+        hide(crate::parse::hdr_ok);
+        reveal(storage_wf);
+        if let Some(_) = self.saved {return Ok(());}
+        proof {
+            assert(4*(self.hdr.width as int)*(self.hdr.height as int)>=4) by(nonlinear_arith)
+                requires self.hdr.width>=1,self.hdr.height>=1;
+        }
+        let n=self.canvas.len();
+        let ghost l0=self.log@.view();
+        proof {assert(l0==seq![(AllocSite::Canvas,n as nat,true),(AllocSite::LzwTable,crate::lzw::LZW_TABLE_BYTES as nat,true)]);}
+        match try_zeroed(AllocSite::Saved,n,Tracked(self.log.borrow_mut())) {
+            Ok(v)=>{
+                proof {assert(self.log@.view()==l0.push((AllocSite::Saved,n as nat,true)));}
+                self.saved=Some(v);
+                proof {
+                    assert(self.log@.view() =~= seq![(AllocSite::Canvas,n as nat,true),(AllocSite::LzwTable,crate::lzw::LZW_TABLE_BYTES as nat,true),(AllocSite::Saved,n as nat,true)]);
+                    assert(match crate::model::mp(self.b@,self.pol) {Err(_)=>false,Ok((mi,_))=>info_model(self.info)==mi});
+                    assert(storage_wf(*self));
+                }
+                Ok(())
+            },
+            Err(o)=>{
+                proof {assert(self.log@.view()==l0.push((AllocSite::Saved,n as nat,false)));}
+                self.state=State::Fused;
+                proof {
+                    assert(self.log@.view() =~= seq![(AllocSite::Canvas,n as nat,true),(AllocSite::LzwTable,crate::lzw::LZW_TABLE_BYTES as nat,true),(AllocSite::Saved,n as nat,false)]);
+                    assert(match crate::model::mp(self.b@,self.pol) {Err(_)=>false,Ok((mi,_))=>info_model(self.info)==mi});
+                    assert(storage_wf(*self));
+                }
+                Err(TryError::OutOfMemory(o))
+            },
+        }
+    }
+}
+spec fn walk_state_same(a:Frames,b:Frames)->bool {crate::parse::walk_eq(a.st,b.st)}
+} // verus!

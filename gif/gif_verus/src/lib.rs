@@ -13,12 +13,25 @@
 extern crate alloc;
 
 pub mod alloc_guard;
+mod chain;
 mod compose;
+/// M4: the compositor's total models `IR`/`MC` (`compose_proof/src/model.rs`).
+mod mc;
+/// M4: the executable `interlace_row` and the T5 interlace theory
+/// (`compose_proof/src/interlace.rs`).
+mod interlace;
+/// M4: the compositor's proved per-index sink `draw_index` and its helpers
+/// (`compose_proof/src/compose.rs`).
+mod compose_new;
+mod dictionary;
+mod emission_compose;
 pub mod gif;
 pub mod limits;
 mod lzw;
+mod lzw_model;
 pub(crate) mod model;
 mod parse;
+mod refinement;
 pub mod policy;
 
 pub use alloc_guard::sites::TryError;

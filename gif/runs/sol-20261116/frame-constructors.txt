@@ -1,0 +1,125 @@
+
+verus! {
+pub open spec fn info_model(i:Info)->crate::model::InfoM {
+    crate::model::InfoM {width:i.width as int,height:i.height as int,version:crate::model::version_code(i.version),
+        background_index:i.background_index as int,aspect:i.aspect as int,loop_count:i.loop_count}
+}
+
+/// Storage and parser bounds required between frame calls. The semantic
+/// canvas/disposal relation to the full frame model is a separate invariant.
+pub closed spec fn storage_wf(d:Frames)->bool {
+    &&& d.b.len()<=crate::limits::MAX_INPUT && crate::parse::hdr_inv(d.b@,d.hdr) && crate::parse::hdr_ok(d.b@,d.hdr)
+    &&& d.p<=d.b.len() && d.st.frames_seen<=crate::limits::MAX_FRAMES && d.st.total_pixels<=crate::limits::MAX_TOTAL_PIXELS
+    &&& d.canvas@.len()==4*(d.hdr.width as int)*(d.hdr.height as int)
+    &&& d.table@.len()==crate::lzw::LZW_TABLE_BYTES
+    &&& d.st.loop_count==d.info.loop_count
+    &&& match crate::model::mp(d.b@,d.pol) {Err(_)=>false,Ok((mi,_))=>info_model(d.info)==mi}
+    &&& match d.saved {
+        None=>d.log@.view()==seq![(AllocSite::Canvas,d.canvas@.len(),true),(AllocSite::LzwTable,crate::lzw::LZW_TABLE_BYTES as nat,true)]
+            || d.state==State::Fused && d.log@.view()==seq![(AllocSite::Canvas,d.canvas@.len(),true),(AllocSite::LzwTable,crate::lzw::LZW_TABLE_BYTES as nat,true),(AllocSite::Saved,d.canvas@.len(),false)],
+        Some(v)=>v@.len()==d.canvas@.len() && d.log@.view()==seq![(AllocSite::Canvas,d.canvas@.len(),true),(AllocSite::LzwTable,crate::lzw::LZW_TABLE_BYTES as nat,true),(AllocSite::Saved,d.canvas@.len(),true)],
+    }
+}
+
+pub closed spec fn constructor_ok(d:Frames,b:Seq<u8>,pol:Policy,still:bool)->bool {
+    &&& storage_wf(d) && d.b@==b && d.pol==pol && d.still==still
+    &&& d.st.frames_seen==0 && d.st.total_pixels==0 && d.saved is None && d.prev is None
+    &&& d.canvas@==Seq::new(d.canvas@.len(),|_i:int|0u8)
+    &&& d.table@==Seq::new(crate::lzw::LZW_TABLE_BYTES as nat,|_i:int|0u8)
+    &&& crate::alloc_guard::req_of_log(d.log@.view())==req_new(b) && crate::alloc_guard::all_ok(d.log@.view())
+    &&& match crate::model::mp(b,pol) {Err(_)=>false,Ok((_,ms))=>crate::parse::st_matches(d.p,d.st,ms)}
+    &&& match d.state {State::Running=>d.p<b.len() && b[d.p as int]==0x2c,State::Done=>d.p==b.len() || d.p<b.len() && b[d.p as int]==0x3b,State::Fused=>false}
+}
+
+pub closed spec fn constructor_result(b:Seq<u8>,pol:Policy,still:bool,r:Result<Frames,TryError>)->bool {
+    match r {
+        Ok(d)=>constructor_ok(d,b,pol,still),
+        Err(TryError::Format(e))=>crate::model::mp(b,pol)==Err(e),
+        Err(TryError::OutOfMemory(_))=>crate::model::mh(b) is Ok,
+    }
+}
+
+/// Success owns the log in Frames; only an error returns it separately.
+pub closed spec fn construction_log(r:&(Result<Frames,TryError>,Tracked<Option<AllocLog>>))->Seq<(AllocSite,nat,bool)> {
+    match r.0 {Ok(d)=>d.log@.view(),Err(_)=>match r.1@ {Some(l)=>l.view(),None=>Seq::empty()}}
+}
+
+impl<'a> Frames<'a> {
+    pub closed spec fn log_view(&self)->Seq<(AllocSite,nat,bool)> {self.log@.view()}
+
+    fn open_logged(b:&'a [u8],pol:Policy,still:bool)->(r:(Result<Frames<'a>,TryError>,Tracked<Option<AllocLog>>))
+        ensures constructor_result(b@,pol,still,r.0),
+            crate::alloc_guard::sites::log_tied(r.0,construction_log(&r)),
+            g_new_clause2(b@,r.0 is Err && r.0->Err_0 is OutOfMemory,construction_log(&r)),g_new_clause3(b@),
+            crate::alloc_guard::req_of_log(construction_log(&r)).is_prefix_of(req_new(b@)),
+            r.0 is Ok ==> r.1@ is None,
+            r.0 is Err ==> r.1@ is Some,
+    {
+        let tracked mut log=crate::alloc_guard::new_log();
+        let prepared=prepare(b,pol,Tracked(&mut log));
+        match prepared {
+            Err(e)=>(Err(e),Tracked(Some(log))),
+            Ok(d)=> {
+                let info=Info {width:d.hdr.width,height:d.hdr.height,version:d.hdr.version,
+                    background_index:d.hdr.background_index,aspect:d.hdr.aspect,loop_count:d.st.loop_count};
+                let state=match d.stop {crate::parse::PrefixStop::AtImage=>State::Running,crate::parse::PrefixStop::Trailer=>State::Done};
+                let dec=Frames {b,pol,hdr:d.hdr,info,p:d.p,st:d.st,canvas:d.canvas,table:d.table,
+                    saved:None,prev:None,state,still,log:Tracked(log)};
+                (Ok(dec),Tracked(None))
+            },
+        }
+    }
+
+    fn open(b:&'a [u8],pol:Policy,still:bool)->(r:Result<Frames<'a>,TryError>)
+        ensures constructor_result(b@,pol,still,r),
+    {Self::open_logged(b,pol,still).0}
+
+    pub fn try_new(b:&'a [u8])->(r:Result<Frames<'a>,TryError>)
+        ensures constructor_result(b@,crate::policy::profile_record(Profile::Strict),false,r),
+    {Self::open(b,Profile::Strict.policy(),false)}
+
+    pub fn try_new_with_policy(b:&'a [u8],p:Profile)->(r:Result<Frames<'a>,TryError>)
+        ensures constructor_result(b@,crate::policy::profile_record(p),false,r),
+    {Self::open(b,p.policy(),false)}
+
+    pub fn try_new_logged(b:&'a [u8])->(r:(Result<Frames<'a>,TryError>,Tracked<Option<AllocLog>>))
+        ensures constructor_result(b@,crate::policy::profile_record(Profile::Strict),false,r.0),
+            crate::alloc_guard::sites::log_tied(r.0,construction_log(&r)),
+            g_new_clause2(b@,r.0 is Err && r.0->Err_0 is OutOfMemory,construction_log(&r)),g_new_clause3(b@),
+            crate::alloc_guard::req_of_log(construction_log(&r)).is_prefix_of(req_new(b@)),
+    {Self::open_logged(b,Profile::Strict.policy(),false)}
+
+    pub fn try_new_with_policy_logged(b:&'a [u8],p:Profile)->(r:(Result<Frames<'a>,TryError>,Tracked<Option<AllocLog>>))
+        ensures constructor_result(b@,crate::policy::profile_record(p),false,r.0),
+            crate::alloc_guard::sites::log_tied(r.0,construction_log(&r)),
+            g_new_clause2(b@,r.0 is Err && r.0->Err_0 is OutOfMemory,construction_log(&r)),g_new_clause3(b@),
+            crate::alloc_guard::req_of_log(construction_log(&r)).is_prefix_of(req_new(b@)),
+    {Self::open_logged(b,p.policy(),false)}
+
+    #[cfg(feature="test-records")]
+    #[doc(hidden)]
+    pub fn try_new_with_record(b:&'a [u8],pol:Policy)->(r:Result<Frames<'a>,TryError>)
+        ensures constructor_result(b@,pol,false,r),
+    {Self::open(b,pol,false)}
+
+    /// The sole Saved reservation: a real borrow of the decoder's sealed log.
+    fn ensure_saved(&mut self)->(r:Result<(),TryError>)
+        requires storage_wf(*old(self)),old(self).state==State::Running,!old(self).still,
+        ensures storage_wf(*final(self)),
+            final(self).b==old(self).b,final(self).hdr==old(self).hdr,final(self).pol==old(self).pol,
+            final(self).info==old(self).info,final(self).p==old(self).p,walk_state_same(*old(self),*final(self)),
+            final(self).canvas@==old(self).canvas@,final(self).table@==old(self).table@,
+            r is Ok ==> final(self).saved is Some,
+            r is Err ==> final(self).state==State::Fused && r->Err_0 is OutOfMemory,
+            final(self).log@.view().len()<=3,
+    {
+        if let Some(_) = self.saved {return Ok(());}
+        let n=self.canvas.len();
+        match try_zeroed(AllocSite::Saved,n,Tracked(self.log.borrow_mut())) {
+            Ok(v)=>{self.saved=Some(v);Ok(())},
+            Err(o)=>{self.state=State::Fused;Err(TryError::OutOfMemory(o))},
+        }
+    }
+}
+spec fn walk_state_same(a:Frames,b:Frames)->bool {crate::parse::walk_eq(a.st,b.st)}
+} // verus!

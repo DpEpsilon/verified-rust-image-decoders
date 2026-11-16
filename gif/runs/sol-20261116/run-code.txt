@@ -1,0 +1,86 @@
+
+verus! {
+
+pub open spec fn resolved_raw(t: Seq<u8>, clear: int, next: int, prev: int, code: int) -> Seq<u8> {
+    let base = if code==next {prev} else {code};
+    let s = crate::chain::str_of(raw_sf_seq(t),raw_pf_seq(t),clear,base,4096);
+    if code==next {s.push(s[0])} else {s}
+}
+
+/// Resolve, emit and insert one ordinary/KwKwK code. Keeping table evolution
+/// outside the fold query prevents its raw-byte quantifiers expanding at exits.
+fn run_code<S: Sink>(t: &mut [u8], next: &mut u32, width: &mut u32, clear: u32,
+    code: u32, have: bool, prev: u32, prev_first: u8, q: u32, area: u32, checked: bool,
+    sink: &mut S) -> (r: (u32,u8,Option<u32>))
+    requires
+        table_len_ok(old(t)@), clear<TABLE_SIZE, 1<=*old(width)<=12,
+        crate::dictionary::table_ok(raw_pf_seq(old(t)@),raw_ls_seq(old(t)@),clear as int,*old(next) as int),
+        have ==> crate::dictionary::valid(clear as int,*old(next) as int,prev as int) && prev<*old(next),
+        have ==> prev_first==crate::chain::root_of(raw_pf_seq(old(t)@),clear as int,prev as int,4096) as u8,
+        crate::dictionary::history(raw_pf_seq(old(t)@),raw_ls_seq(old(t)@),clear as int,*old(next) as int,q as int,have,prev as int,checked),
+        code<TABLE_SIZE,
+        crate::dictionary::valid(clear as int,*old(next) as int,code as int) || code==*old(next) && have && *old(next)<TABLE_SIZE,
+        checked && code<clear ==> code<256,
+        q<area<=crate::limits::MAX_TOTAL_PIXELS,
+        old(sink).sink_inv(), old(sink).sink_area()==area as int,
+    ensures
+        table_len_ok(final(t)@),
+        crate::dictionary::table_ok(raw_pf_seq(final(t)@),raw_ls_seq(final(t)@),clear as int,*final(next) as int),
+        *final(next)==*old(next)+if have && *old(next)<TABLE_SIZE {1int} else {0int},
+        *final(width) as int==if have && *old(next)<TABLE_SIZE {crate::lzw_model::widen(*old(width) as int,*old(next) as int+1)} else {*old(width) as int},
+        1<=*final(width)<=12,
+        raw_pf_seq(final(t)@)==if have && *old(next)<TABLE_SIZE {raw_pf_seq(old(t)@).update(*old(next) as int,prev as u16)} else {raw_pf_seq(old(t)@)},
+        raw_sf_seq(final(t)@)==if have && *old(next)<TABLE_SIZE {raw_sf_seq(old(t)@).update(*old(next) as int,r.1)} else {raw_sf_seq(old(t)@)},
+        r.0 as int==resolved_raw(old(t)@,clear as int,*old(next) as int,prev as int,code as int).len(),
+        1<=r.0<=TABLE_SIZE, r.0<=q as int+1,
+        r.1==resolved_raw(old(t)@,clear as int,*old(next) as int,prev as int,code as int)[0],
+        r.1==crate::chain::root_of(raw_pf_seq(old(t)@),clear as int,if code==*old(next) {prev as int} else {code as int},4096) as u8,
+        r.1==crate::chain::root_of(raw_pf_seq(final(t)@),clear as int,code as int,4096) as u8,
+        crate::dictionary::valid(clear as int,*final(next) as int,code as int),
+        crate::dictionary::history(raw_pf_seq(final(t)@),raw_ls_seq(final(t)@),clear as int,*final(next) as int,q as int+r.0 as int,true,code as int,checked),
+        final(sink).sink_inv(), final(sink).sink_area()==area as int,
+        forall|v:u8| final(sink).sink_ok(v)==old(sink).sink_ok(v),
+        final(sink).sink_log()==old(sink).sink_log()+sink_pairs(resolved_raw(old(t)@,clear as int,*old(next) as int,prev as int,code as int),q as int,area as int,0),
+        min_rejected(sink_pairs(resolved_raw(old(t)@,clear as int,*old(next) as int,prev as int,code as int),q as int,area as int,0),r.2,|v:u8| old(sink).sink_ok(v)),
+{
+    let ghost ot=t@;
+    let ghost op=raw_pf_seq(t@);
+    let ghost os=raw_sf_seq(t@);
+    let ghost ol=raw_ls_seq(t@);
+    let ghost e=*next;
+    let ghost w=*width;
+    let kw=code==*next;
+    let base=if kw {prev} else {code};
+    proof {
+        lemma_raw_views(t@);
+        crate::dictionary::chain_valid(op,ol,clear as int,*next as int,base as int);
+        crate::refinement::cache_shape(os,op,ol,clear as int,base as int,4096);
+        crate::dictionary::history_read(op,ol,clear as int,*next as int,q as int,have,prev as int,checked,base as int);
+    }
+    let ghost s=resolved_raw(t@,clear as int,*next as int,prev as int,code as int);
+    if kw {add_entry(t,next,width,prev,prev_first,clear);}
+    proof {
+        lemma_raw_views(t@);
+        crate::dictionary::chain_valid(raw_pf_seq(t@),raw_ls_seq(t@),clear as int,*next as int,code as int);
+        crate::refinement::cache_shape(raw_sf_seq(t@),raw_pf_seq(t@),raw_ls_seq(t@),clear as int,code as int,4096);
+        assert(s==crate::chain::str_of(raw_sf_seq(t@),raw_pf_seq(t@),clear as int,code as int,4096));
+    }
+    let len=code_len(t,clear,code) as u32;
+    let (first,fault)=emit_raw(t,clear,code,q,area,len,sink);
+    if !kw && have && *next<TABLE_SIZE as u32 {
+        proof {crate::refinement::fresh_frame(os,op,clear as int,*next as int,prev as int,first,code as int);}
+        add_entry(t,next,width,prev,first,clear);
+    }
+    proof {
+        let grow=have && e<TABLE_SIZE;
+        lemma_raw_views(t@);
+        assert(raw_pf_seq(t@)==if grow {op.update(e as int,prev as u16)} else {op});
+        assert(raw_sf_seq(t@)==if grow {os.update(e as int,first)} else {os});
+        assert(raw_ls_seq(t@)==if grow {ol.update(e as int,(crate::refinement::clen(ol,clear as int,prev as int)+1) as u16)} else {ol});
+        crate::dictionary::history_advance(op,ol,raw_pf_seq(t@),raw_ls_seq(t@),clear as int,e as int,q as int,have,prev as int,checked,code as int,len as int);
+        lemma_shift_power(w);
+    }
+    (len,first,fault)
+}
+
+} // verus!

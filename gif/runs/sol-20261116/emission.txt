@@ -1,0 +1,131 @@
+
+verus! {
+
+/// `fault` is the least rejected raster position in this physical call log.
+pub open spec fn min_rejected(h: Seq<(u32, u8)>, fault: Option<u32>, ok: spec_fn(u8) -> bool) -> bool {
+    match fault {
+        None => forall|i: int| 0 <= i < h.len() ==> ok(#[trigger] h[i].1),
+        Some(p) => {
+            &&& exists|i: int| 0 <= i < h.len() && h[i].0 == p && !ok(h[i].1)
+            &&& forall|i: int| 0 <= i < h.len() && !ok(#[trigger] h[i].1) ==> p <= h[i].0
+        },
+    }
+}
+
+pub proof fn lemma_min_rejected_push(h: Seq<(u32,u8)>, f: Option<u32>, ok: spec_fn(u8)->bool,
+    p: u32, v: u8, nf: Option<u32>)
+    requires min_rejected(h, f, ok),
+        nf == if ok(v) { f } else { match f { Some(x) => Some(if p < x {p} else {x}), None => Some(p) } },
+    ensures min_rejected(h.push((p,v)), nf, ok),
+{
+    match nf {
+        None => {},
+        Some(x) => {
+            if !ok(v) && x == p { assert(h.push((p,v))[h.len() as int] == (p,v)); }
+            else {
+                let i = choose|i: int| 0 <= i < h.len() && h[i].0 == x && !ok(h[i].1);
+                assert(h.push((p,v))[i] == h[i]);
+            }
+        },
+    }
+}
+
+/// Walk a verified raw chain last-first, without allocating an index buffer.
+/// The log equation records performed calls plus the still-unvisited suffix.
+fn emit_raw<S: Sink>(t: &[u8], clear: u32, code: u32, q: u32, area: u32, len: u32,
+    sink: &mut S) -> (r: (u8, Option<u32>))
+    requires
+        table_len_ok(t@), clear < TABLE_SIZE, code < TABLE_SIZE,
+        crate::chain::chain_ok(raw_pf_seq(t@), clear as int, code as int),
+        q <= area <= crate::limits::MAX_TOTAL_PIXELS,
+        len == crate::chain::str_of(raw_sf_seq(t@), raw_pf_seq(t@), clear as int, code as int, 4096).len(),
+        old(sink).sink_inv(), old(sink).sink_area() == area as int,
+    ensures
+        r.0 == crate::chain::str_of(raw_sf_seq(t@), raw_pf_seq(t@), clear as int, code as int, 4096)[0],
+        final(sink).sink_inv(), final(sink).sink_area() == old(sink).sink_area(),
+        forall|v: u8| final(sink).sink_ok(v) == old(sink).sink_ok(v),
+        final(sink).sink_log() == old(sink).sink_log() + sink_pairs(
+            crate::chain::str_of(raw_sf_seq(t@), raw_pf_seq(t@), clear as int, code as int, 4096), q as int, area as int, 0),
+        min_rejected(sink_pairs(crate::chain::str_of(raw_sf_seq(t@), raw_pf_seq(t@), clear as int, code as int, 4096), q as int, area as int, 0),
+            r.1, |v: u8| old(sink).sink_ok(v)),
+{
+    let ghost s = crate::chain::str_of(raw_sf_seq(t@), raw_pf_seq(t@), clear as int, code as int, 4096);
+    let ghost h0 = sink.sink_log();
+    let ghost ok = |v: u8| sink.sink_ok(v);
+    let ghost mut h = Seq::<(u32,u8)>::empty();
+    let mut fault: Option<u32> = None;
+    let mut cur = code;
+    let mut j = len;
+    let mut fuel: u32 = 4096;
+    let mut first: u8 = 0;
+    proof {
+        lemma_raw_views(t@);
+        crate::chain::lemma_str_len_bound(raw_sf_seq(t@), raw_pf_seq(t@), clear as int, code as int, 4096);
+    }
+    while j > 0
+        invariant
+            table_len_ok(t@), clear < TABLE_SIZE, code < TABLE_SIZE,
+            q <= area <= crate::limits::MAX_TOTAL_PIXELS,
+            0 <= j <= len <= TABLE_SIZE, s.len() == len, len >= 1,
+            cur < TABLE_SIZE,
+            crate::chain::chain_ok(raw_pf_seq(t@), clear as int, cur as int),
+            crate::chain::fuel_above(cur as int, fuel as nat),
+            j > 0 ==> s.take(j as int) == crate::chain::str_of(raw_sf_seq(t@), raw_pf_seq(t@), clear as int, cur as int, fuel as nat),
+            j == 0 ==> first == s[0],
+            sink.sink_inv(), sink.sink_area() == area as int,
+            forall|v: u8| sink.sink_ok(v) == ok(v),
+            sink.sink_log() == h0 + h,
+            h + sink_pairs(s, q as int, area as int, len as int - j as int) == sink_pairs(s, q as int, area as int, 0),
+            min_rejected(h, fault, ok),
+        decreases j,
+    {
+        let ghost k = len as int - j as int;
+        proof {
+            if cur < clear {
+                assert(crate::chain::str_of(raw_sf_seq(t@), raw_pf_seq(t@), clear as int, cur as int, fuel as nat) == seq![cur as u8]);
+                assert(j == 1);
+            } else {
+                crate::chain::lemma_chain_step(raw_sf_seq(t@), raw_pf_seq(t@), clear as int, cur as int, fuel as nat);
+                crate::chain::lemma_str_len_bound(raw_sf_seq(t@), raw_pf_seq(t@), clear as int, raw_pf_seq(t@)[cur as int] as int, (fuel - 1) as nat);
+                assert(j >= 2);
+            }
+        }
+        j -= 1;
+        let v = if cur < clear { cur as u8 } else { suffix_get(t, cur) };
+        first = v;
+        proof {
+            assert(s[j as int] == v);
+            reveal_with_fuel(sink_pairs, 1);
+            assert(sink_pairs(s, q as int, area as int, k) == if q + j < area {
+                seq![((q + j) as u32, v)] + sink_pairs(s, q as int, area as int, k + 1)
+            } else { sink_pairs(s, q as int, area as int, k + 1) });
+        }
+        let p = q + j;
+        if p < area {
+            let accepted = sink.put(p, v);
+            let ghost oldfault = fault;
+            if !accepted {
+                fault = match fault { Some(x) => Some(if p < x {p} else {x}), None => Some(p) };
+            }
+            proof {
+                lemma_min_rejected_push(h, oldfault, ok, p, v, fault);
+                h = h.push((p,v));
+            }
+        }
+        if j > 0 {
+            let parent = prefix_get(t, cur) as u32;
+            proof {
+                let inner = crate::chain::str_of(raw_sf_seq(t@), raw_pf_seq(t@), clear as int, parent as int, (fuel - 1) as nat);
+                assert(s.take(j as int + 1) == inner.push(v));
+                assert(inner.len() == j);
+                assert(s.take(j as int) =~= inner);
+            }
+            cur = parent;
+            fuel -= 1;
+        }
+    }
+    proof { assert(h == sink_pairs(s, q as int, area as int, 0)); }
+    (first, fault)
+}
+
+} // verus!

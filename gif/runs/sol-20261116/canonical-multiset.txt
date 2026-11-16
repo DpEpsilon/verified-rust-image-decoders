@@ -1,0 +1,41 @@
+
+verus! {
+pub open spec fn canonical_log(o:Seq<u8>)->Seq<(u32,u8)> {
+    Seq::new(o.len(),|p:int|(p as u32,o[p]))
+}
+/// Coverage, count and values imply the exact forward pair multiset.
+pub proof fn lemma_log_canonical_multiset(h:Seq<(u32,u8)>,o:Seq<u8>)
+    requires log_complete(h,o,o.len() as int),o.len()<=u32::MAX,
+    ensures h.to_multiset()==canonical_log(o).to_multiset(),
+{
+    broadcast use vstd::multiset::group_multiset_axioms;
+    let f=canonical_log(o);
+    assert(f.no_duplicates()) by {
+        assert forall|i:int,j:int| 0<=i<j<f.len() implies #[trigger] f[i]!=#[trigger] f[j] by {
+            lemma_u32_roundtrip(i);lemma_u32_roundtrip(j);
+        }
+    }
+    f.lemma_multiset_has_no_duplicates();
+    assert(f.to_multiset().subset_of(h.to_multiset())) by {
+        assert forall|v:(u32,u8)| #[trigger] f.to_multiset().count(v)<=#[trigger] h.to_multiset().count(v) by {
+            vstd::seq_lib::to_multiset_contains(f,v);
+            vstd::seq_lib::to_multiset_contains(h,v);
+            if f.to_multiset().count(v)>0 {
+                let p=f.lemma_contains_to_index(v);
+                assert(log_has_at(h,p));
+                let i=choose|i:int| 0<=i<h.len() && (h[i].0 as int)==p;
+                assert(h[i].1==o[p]);
+                assert(h[i]==v);
+                assert(h.contains(v));
+            }
+        }
+    }
+    vstd::seq_lib::to_multiset_len(f);vstd::seq_lib::to_multiset_len(h);
+    assert(h.to_multiset().sub(f.to_multiset()).len()==0);
+    assert(h.to_multiset() =~= f.to_multiset()) by {
+        assert forall|v:(u32,u8)| #[trigger] h.to_multiset().count(v)==#[trigger] f.to_multiset().count(v) by {
+            assert(h.to_multiset().sub(f.to_multiset()).count(v)==0);
+        }
+    }
+}
+} // verus!

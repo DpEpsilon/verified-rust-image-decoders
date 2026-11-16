@@ -1,0 +1,71 @@
+
+verus! {
+#[derive(Debug)]
+struct Prepared {
+    hdr:Header,
+    p:usize,
+    st:WalkState,
+    stop:crate::parse::PrefixStop,
+    canvas:Vec<u8>,
+    table:Vec<u8>,
+}
+
+open spec fn prepared_ok(b:Seq<u8>,pol:Policy,d:Prepared)->bool {
+    &&& crate::parse::hdr_inv(b,d.hdr) && crate::parse::hdr_ok(b,d.hdr)
+    &&& b.len()<=crate::limits::MAX_INPUT && d.p<=b.len()
+    &&& d.st.frames_seen==0 && d.st.total_pixels==0
+    &&& d.canvas@==Seq::new((4*(d.hdr.width as int)*(d.hdr.height as int)) as nat,|_i:int|0u8)
+    &&& d.table@==Seq::new(crate::lzw::LZW_TABLE_BYTES as nat,|_i:int|0u8)
+    &&& match d.stop {
+        crate::parse::PrefixStop::AtImage=>d.p<b.len() && b[d.p as int]==0x2c,
+        crate::parse::PrefixStop::Trailer=>d.p==b.len() || d.p<b.len() && b[d.p as int]==0x3b,
+    }
+    &&& match crate::model::mp(b,pol) {
+        Err(_)=>false,
+        Ok((mi,ms))=> {
+            &&& mi.width==d.hdr.width as int && mi.height==d.hdr.height as int
+            &&& mi.version==crate::model::version_code(d.hdr.version)
+            &&& mi.background_index==d.hdr.background_index as int && mi.aspect==d.hdr.aspect as int
+            &&& mi.loop_count==d.st.loop_count && crate::parse::st_matches(d.p,d.st,ms)
+        },
+    }
+}
+open spec fn prepare_result(b:Seq<u8>,pol:Policy,r:Result<Prepared,TryError>)->bool {
+    match r {
+        Ok(d)=>prepared_ok(b,pol,d),
+        Err(TryError::Format(e))=>crate::model::mp(b,pol)==Err(e),
+        Err(TryError::OutOfMemory(_))=>crate::model::mh(b) is Ok,
+    }
+}
+
+/// The exact header/reservation/prefix constructor, without duplicating or
+/// initializing any input-dependent storage beyond the sealed reservations.
+fn prepare(b:&[u8],pol:Policy,Tracked(log):Tracked<&mut AllocLog>)->(r:Result<Prepared,TryError>)
+    requires log.view()==Seq::<(AllocSite,nat,bool)>::empty(),
+    ensures prepare_result(b@,pol,r),
+        crate::alloc_guard::sites::log_tied(r,final(log).view()),
+        g_new_clause2(b@,r is Err && r->Err_0 is OutOfMemory,final(log).view()),g_new_clause3(b@),
+        r is Ok ==> crate::alloc_guard::req_of_log(final(log).view())==req_new(b@),
+{
+    hide(crate::model::mp_fuel);
+    let hdr=match parse::parse_header(b) {
+        Ok(h)=>h,
+        Err(e)=>return Err(TryError::Format(e)),
+    };
+    proof {
+        let mh=crate::model::mh(b@).unwrap();
+        crate::model::lemma_mh_ok_bounds(b@,mh);
+        crate::parse::lemma_header_model_matches(b@,hdr,mh);
+        assert(crate::parse::hdr_ok(b@,hdr));
+    }
+    let (canvas,table)=match reserve(b,&hdr,Tracked(log)) {
+        Ok(v)=>v,Err(e)=>return Err(e),
+    };
+    let mut p=hdr.cursor;
+    let mut st=WalkState::new();
+    let stop=match crate::parse::parse_mp(b,&mut p,&pol,&mut st) {
+        Ok(stop)=>stop,Err(e)=>return Err(TryError::Format(e)),
+    };
+    Ok(Prepared {hdr,p,st,stop,canvas,table})
+}
+} // verus!
