@@ -1,5 +1,144 @@
 # Inflate proof ledger
 
+## Actual dynamic-header refinement complete, 2026-11-17
+
+**Fresh final-source run 252: 215 verified, 0 errors.** Assigned step (1) is complete at the actual production parser and block-header reader. This is not completion of layer 3 or a public inflate theorem. No current tooling/proof blocker exists. Resume with step (2), the stored LEN/NLEN check and compressed/window/copy/block composition.
+
+| Runs | Evidence | Result |
+|---|---|---|
+| 239–245 | Production parser conversion, explicit continuation snapshots, consumed-bit-sensitive helper costs and repeat-loop extraction | Typing/invariant fixes; removed unused-hide AIR failures; no solver-limit change |
+| 246 | Actual Tables::dynamic against MDynamic, separate construction budget | 214 verified, 0 errors |
+| 247–248 | Literal-construction reach marker and actual three-bit block-header reads | Run 248: 215 verified, 0 errors |
+| 249–252 | Formatting, thirteen release tests, adapter and fresh formatted-source proof replay | Run 252: 215 verified, 0 errors |
+| 253–254 | All vector layouts, 10,000 generated streams plus 10,000 single-bit corruptions, seeds 18 and 19 | 33,544 public-entry pairs; zero unexpected differences |
+| 255–258 | Host/thumbv7m libraries and instantiated allocator probes, symbol/source/cap controls and frozen hashes | Passed; twelve frozen entries |
+
+### Exact proved surface
+
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs:32` lemma_cl_order proves the executable CL_ORDER equals the independent model::code_length_order permutation at every index and stays below NCL.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs:358` dynamic_code is the actual CL-read/permutation loop and code-length-table construction. Its loop maintains equality to MDynamicCL; success continues at MDynamicLengths with the exact admitted code and position, and failure has the exact model error/position. Its returned Ghost construction observation excludes Bits::get work.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs:425` write_length_repeat is the actual repeat-fill loop, extracted from dynamic parsing. It proves exact mathematical repeated-prefix extension, preserved length_entries_ok, array safety, termination and exactly count observed loop iterations.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs:455` Tables::dynamic_lengths is the actual expansion loop, EOB check and ordered literal/distance builds. It maintains equality to MDynamicLengths and proves exact output-table profiles or model error/position through dynamic_eq (:347). The combined sequence uses length_entries_ok, not the canonical 288-entry lengths_ok; total <= DYNAMIC_LENGTHS and every actual write is bounded. Repeat-16 checks the previous entry before reading extras, overflow checks precede repeat writes, and EOB precedes literal admission then distance admission.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs:588` Tables::dynamic composes all three count reads before count admission, then the two verified production helpers, and proves exact MDynamic refinement on every outcome. It preserves both fixed tables and all Huffman well-formedness requirements. The actual run calls this parser through read_block_header, not a model-mirror implementation.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs:630` read_block_header performs the actual BFINAL/BTYPE reads, rejects type 3 and invokes dynamic parsing for type 2. Its contract relates these fields to independent field_value and MDynamic, and proves L-HDR-BITS at the real literal-construction boundary: header_table_start is set immediately before self.lit.build (:577–579), and whenever set it equals the endpoint at least 45 bits after the block start, including when either final table build fails. The expansion loop tracks symbol-18 counts/entries/bits separately from other entries/bits and establishes lemma_header_coding_cost's premises at :572; counts + CL fields + expansion account for 14 + at least 12 + at least 16 bits, plus the actual three block bits.
+- Construction work is separate from reader/decode work throughout. The CL helper bounds construction by 139 iterations and the expansion/finalization helper by 1,706, giving at most 1,845 construction iterations. Tables::dynamic and read_block_header export header_construction < 2,048 and actual observed work delta <= header_construction + 3*(consumed_bits+1). This is a local cost theorem, not global T12; the additive allowance covers a failed input attempt.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/bits.rs:120` get now exports monotonic bounded positions, value < pow2(n), consumed-bit-sensitive work <= 2*(consumed+1), and <= 2*consumed on success. `/home/ws/projects/verified-decoders/png/inflate_verus/src/huffman.rs:165` decode now exports endpoint bounds, successful symbol < profile length, a positive successful bit count, work <= 3*(consumed+1), and <= 3*consumed on success. Existing exact refinement contracts remain intact; these changes do not alter runtime bodies.
+
+### Exact resume and remaining boundaries
+
+1. Continue step (2) at `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs:745–755`: alignment, four stored LEN/NLEN bytes, complement check and composition with the already-verified stored_payload. read_block_header already handles the actual three-bit reads/type-3 rejection/dynamic-table selection; it does not prove any block payload or full dispatch simulation.
+2. Verify compressed at `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs:674`, including reserved literal/distance symbols, decoded length/distance bases/extras, declared-window versus Ignore, DistanceTooFar before emission and the actual overlapping-copy loop against MCopy. Extend the independent model to full MBlk/control flow; keep ring_repr strictly executable/model representation, not part of that model.
+3. Compose run at `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs:717` and both public entries (:808, :820). Full L-WINDOW/L-RING, T-INFL, global T1/T11/T12, caller-original-slice framing and public Ghost result accounting remain open. Public freshness must remain exactly wf plus pos()==0, without index/counter resets.
+4. No authored model-vector witnesses or proof mutations ran. Add the dynamic-specific mutations later: count admission before the third field; CL permutation swap; repeat-16 extra read before the previous-entry check; repeat overflow check removal; EOB/admission order changes; wrong repeat fill; and omission/misclassification of a construction/read/decode work charge. Existing earlier mutation lists still apply.
+5. The 32-bit verifier replay remains open. Plan: supply an actually matching pinned i686 vstd verification cache without changing features, then run CARGO_BUILD_TARGET=i686-unknown-linux-gnu through the same bounded serial verify.sh and record a fresh count; do not substitute the thumbv7m ordinary build for that replay or weaken --no-cheating if dependency bootstrap fails.
+
+Runs 253–254 compare all 1,181 extracted streams in four layouts and together check 10,000 generated streams/corruptions: 33,544 public-entry pairs or 67,088 actual public calls, including empty Z. Those are runtime observations, not authored model-versus-expected witness proofs. The thirteen release tests and both target allocator-symbol gates pass on final runtime source.
+
+No frozen counterexample/new erratum, forbidden proof escape, trusted item, solver-limit increase, frozen/manifest/errata edit, commit or background job was introduced. E1 remains coordinator-owned. The accepted verifier/vstd/rustc versions and ghost-vstd/alloc dependency boundary are unchanged. Backup before conversion: `/home/ws/projects/verified-decoders/png/inflate_verus/backups/dynamic-parser-before-layer3.tar`. Scoped hides of Huffman::repr/wf caused the known unused-fuel AIR bug in runs 240/244 and were removed; production repeat-loop extraction plus spinoff_prover resolved the expansion query's resource pressure without changing limits.
+
+---
+
+## Dynamic-header model foundation within layer 3, 2026-11-17
+
+**Fresh run 231: 205 verified, 0 errors.** Low-context handback, not completion of layer 3. The independent ordered dynamic-header model and three supporting lemmas are checked; the actual Tables::dynamic remains ordinary unverified Rust. No runtime body changed after the accepted 200-verified checkpoint. No current tooling/proof blocker exists.
+
+| Runs | Evidence | Result |
+|---|---|---|
+| 231 | Independent dynamic-header model, supporting lemmas and length-dependent Huffman work clauses | Fresh 205 verified, 0 errors |
+| 232–234 | Thirteen release tests, adapter, all vector layouts plus 1,000 generated streams and 1,000 corruptions | Passed; 8,772 public-entry pairs, zero unexpected differences |
+| 235–238 | Host/thumbv7m libraries and instantiated allocator probes, source/cap controls and frozen hashes | Passed; twelve frozen entries |
+
+### Exact new surface
+
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/model.rs:1379` DynamicHeader, MDynamic at line 1479, MDynamicCL at line 1459 and MDynamicLengths at line 1414 independently describe ordered count fields, the RFC code-length permutation, code-length decoding and repeat expansion, final EOB presence, literal admission and distance admission. They contain only mathematical length sequences and bit positions, never executable tables or ring state. Their recursive decreases clauses are checked; no actual parser-refinement theorem is claimed.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/model.rs:1393` length_entries_ok checks entry values without canonical lengths_ok's 288-entry bound. The combined dynamic profile can contain 316 entries and must use this separate predicate.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/model.rs:1496` lemma_dynamic_count_fields proves the three wire-field ranges. lemma_finish_dynamic at line 1508 proves successful finalization's exact split, EOB presence, admissions, unchanged endpoint and DYNAMIC_LENGTHS bound. These are model-local facts, not yet bounds on the actual expansion loop.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/model.rs:1524` lemma_header_coding_cost proves at least sixteen length-code bits from explicit aggregate repeat/entry/bit inequalities. It is only an arithmetic ingredient: the actual loop does not yet establish those inequalities, and L-HDR-BITS remains open.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/huffman.rs:55` build, line 70 build_with_single and line 114 build_canonical now export the upper bound `work_delta <= CANON_FIXED_STEPS + 2*lengths.len() + MAX_CODE_BITS + 1` in addition to their uniform bound. This clause is an upper bound on every outcome, not an exported equality.
+
+### Exact resume and remaining boundaries
+
+1. Verify Tables::dynamic at `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs:324` against MDynamic. Expose the actual CL_ORDER to Verus and prove its correspondence to the independent permutation; maintain CL-loop and expansion-loop equalities to the respective model continuations. Keep all count fields before count admission, repeat-16's previous-entry check before extras, and EOB presence before literal then distance admission.
+2. Prove actual 316-entry safety, consumed-bit accounting for L-HDR-BITS and a separate construction-only work bound. Track symbol-18 counts/entries/bits separately from other entries/bits to discharge lemma_header_coding_cost. Reader and Huffman-decode work must not be silently included in the 2,048-iteration construction budget.
+3. Complete stored header/LEN-NLEN/dispatch, reserved-symbol rejection, distance/window checks and the real overlapping-copy loop against MCopy/MBlk; then compose the outer run. Full MBlk/Inflate models, complete L-WINDOW/L-RING and public-entry refinement remain open.
+4. Preserve public source freshness as wf plus pos()==0; public sink identity/initial-snapshot framing, Ghost result accounting, global safety/work, 32-bit verifier replay, authored model-vector proofs and proof mutations remain open.
+
+Runs 225–226 remain the latest full 10,000-stream/10,000-corruption differential on the unchanged runtime bodies. Runs 232–238 check the latest spec-only source changes. No forbidden proof escape, trusted item, solver-limit change, frozen/manifest/errata edit, commit or background job was introduced. E1 remains coordinator-owned. Backup: `/home/ws/projects/verified-decoders/png/inflate_verus/backups/dynamic-model-before-layer3.tar`.
+
+---
+
+## Historical stored/output/Adler/fixed checkpoint within layer 3, 2026-11-17
+
+**Fresh run 222: 200 verified, 0 errors.** Low-context handback within layer 3, with no current tooling/proof blocker. The actual Adler methods, output append/previous methods, stored-payload loop and fixed-table constructor are verified. Dynamic-header parsing, full block/compressed-match simulation, L-HDR-BITS/construction budget and complete L-WINDOW/L-RING remain open. There is still no complete MBlk/Inflate model or public T-INFL theorem.
+
+| Runs | Evidence | Result |
+|---|---|---|
+| 196–198 | Actual deferred Adler update/finish against independent mathematical sums | Natural modulo casts and explicit nonlinear local definitions; 184 verified |
+| 199–205 | Adler release/vector/differential/build/symbol/source/hash checks | Passed |
+| 206–211 | Actual output constructor/append/previous, ring-append representation and suffix preservation | Mutable-sink borrowing, suffix composition and explicit sink-size contract fixes; 191 verified |
+| 212 | Actual production stored-payload loop against MStoredPayload | 195 verified |
+| 213–219 | Stored/output release/vector/differential/build/symbol/source/hash checks | Passed |
+| 220 | Independent fixed profiles, actual Tables::new and fixed initialization budget | 200 verified |
+| 221–224 | Formatting, fresh proof replay, thirteen release tests and adapter | Run 222: 200 verified, 0 errors |
+| 225–226 | Final-source full differential, seeds 15 and 16 | 10,000 generated streams plus 10,000 corruptions; zero unexpected differences |
+| 227–230 | Final host/thumbv7m libraries/instantiated probes, allocator/source/cap controls and frozen hashes | Passed; twelve frozen entries |
+
+### Exact proved surface
+
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/model.rs:1279` sum_bytes and line 1286 sum_prefixes independently define mathematical single and prefix sums, without deferred accumulators. Adler at line 1293 encodes their modular checksum; lemma_adler_sums_push at line 1298 proves the append recurrence.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/adler.rs:76` Adler::new, line 83 update_byte and line 113 finish are the actual production methods. They prove safety, mathematical checksum equivalence and exact observed byte-sequence extension, including deferred reduction at ADLER_NMAX. adler_format_ok at line 8, lemma_bound_step at line 19 and lemma_mod_add_equal at line 50 provide the bounds/congruence proof. No call to the old unverified update is trusted.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs:131` Output::append_byte refines MEmit while preserving produced/output/Adler consistency, the caller-slice prefix and the untouched suffix relative to its constructor snapshot, or the last-window ring representation. Previous at line 170 returns exactly the byte at model-output index produced-distance under the explicit valid-distance precondition. New at line 110 initializes the observation with arbitrary caller-owned contents; its sink-size contract matches the existing into/ring requirements.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs:37` ring_repr is a representation predicate, never part of an independent model definition. lemma_ring_append at line 61 preserves every readable last-window byte; lemma_recent_distinct at line 43 proves the update slot cannot collide with a retained byte. lemma_skip_later at line 51 proves the suffix projection needed for untouched output.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs:193` stored_payload is the actual loop called by run at line 462. It proves exact MStoredPayload output/status/bit-position effects after alignment and validated LEN/NLEN, D5 availability-before-limit, preserved output invariants and a measured Ghost work delta <=2*count. stored_eq at line 182 states the executable/model observation relation. Bits::align now explicitly exports remaining==0.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/model.rs:1322` fixed_lit_lengths and line 1327 fixed_dist_lengths are independent RFC profiles. lemma_fixed_lit_mass at line 1341, lemma_fixed_dist_mass at line 1352 and lemma_fixed_codes at line 1361 prove exact complete Kraft mass/admissibility, under either single-code choice. The distance profile has FIXED_DIST_COUNT entries, including symbols 30 and 31.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs:265` Tables::new is the actual constructor. It builds those exact profiles through the accepted verified Huffman constructor, establishes fixed_wf at line 260, always succeeds and charges at most C_INFL_FIXED exact Ghost work, including the three initially empty dynamic Huffman states. The general Huffman build contracts now export their already-proved Ghost work bounds.
+
+### Exact resume and remaining boundaries
+
+1. Continue with Tables::dynamic at `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs:324`: independently model ordered count/length/repeat parsing; prove admission/error positions, the 316-entry bound, L-HDR-BITS and the 2,048-iteration construction budget. The current Huffman constructor exports a uniform bound; strengthen its success work clause to the existing exact length-dependent observation when needed for the tighter header budget.
+2. Complete stored header/dispatch and the compressed symbol/match path. run at line 424 still contains unverified zlib/block headers and the LEN/NLEN check; compressed at line 381 is unverified. In particular the post-decode errors for fixed reserved symbols and the actual distance/window checks are not yet proved, despite the fixed tables now being verified.
+3. Compose the existing output/copy/ring primitives against MCopy through the real overlapping-copy loop; do not cite primitive ring preservation as full L-WINDOW/L-RING or an inflate theorem. Extend the independent model with full MBlk/control flow and eventually Inflate, never by importing executable transitions/tables/rings.
+4. When proving public entries, preserve wf plus pos()==0 and the existing sink-length contracts, with no reset/index assumptions. Export the constructor's sink identity/initial snapshot as needed to tie the local untouched-suffix invariant to the caller's original slice; the current new contract establishes local wf, not that complete public borrowing/framing theorem.
+
+Public T-INFL, global T1/T11/T12, 32-bit verifier replay, public Ghost result counters, authored model-vector proofs and proof mutations remain open. L-ADLER is proved at the actual accumulator interface; checksum enforcement in the unverified outer run is not yet a public-entry theorem. The latest full differential checks 33,544 public-entry pairs (67,088 actual calls), all vector layouts and 10,000 generated streams/corruptions; thirteen release tests and both allocator-symbol probes pass.
+
+No new trusted item, forbidden proof escape, solver-limit change, frozen/manifest/errata edit, commit or background job was introduced. E1 remains coordinator-owned. Backups for these moves are `/home/ws/projects/verified-decoders/png/inflate_verus/backups/adler-before-layer3.tar`, `/home/ws/projects/verified-decoders/png/inflate_verus/backups/output-before-stored-layer3.tar` and `/home/ws/projects/verified-decoders/png/inflate_verus/backups/tables-before-fixed-layer3.tar`. Accepted verifier/dependency versions and bounded serial settings remain unchanged.
+
+---
+
+## Independent output-model foundation within layer 3, 2026-11-17
+
+**Fresh run 193: 170 verified, 0 errors.** This is a low-context checkpoint inside layer 3. Only ghost/model code changed after the accepted layer-2 commit 4510229. The independent evolving output and stored-payload semantics are defined and their foundational lemmas are proved. This is not a full MBlk/Inflate model, executable stored-block refinement, L-WINDOW/L-RING or completion of layer 3. No runtime path was replaced or changed.
+
+| Runs | Evidence | Result |
+|---|---|---|
+| 184 | Initial independent sequence-output/copy/stored definitions | Required explicit triggers for overlap indices |
+| 185 | Evolving sequence copy and exact D5 stored-payload theorem | 170 verified, 0 errors |
+| 186–192 | Thirteen release tests, all vector layouts plus 1,000 generated streams/corruptions, host/thumb probes, source/cap controls and hashes | Passed; 8,772 public-entry pairs, twelve frozen hashes |
+| 193 | Separate mathematical InflateFault labels, no executable error datatype in model | Fresh 170 verified, 0 errors |
+| 194–195 | Final source/hash controls and thirteen release tests | Passed |
+
+New definitions and proofs in `/home/ws/projects/verified-decoders/png/inflate_verus/src/model.rs`:
+
+- `InflateFault` at line 1078 supplies the model's own error labels; `OutputEffect` at line 1092 distinguishes Next, Full, Error and OutsideDomain.
+- `MEmit` at line 1108 appends to Seq<u8> only below L; reaching L does not itself terminate a stream.
+- `copy_distance` at line 1116 computes every next match byte from the sequence after earlier match bytes were appended; it never reads the executable ring/tables. `lemma_copy_distance` at line 1167 proves exact length, old-prefix preservation and extended[out.len()+j] == extended[out.len()+j-distance], including overlap. `lemma_copy_prefix` at line 1195 proves every intermediate copy is the corresponding prefix of a longer copy.
+- `MCopy` at line 1126 checks distance against output/window before emission, appends what fits and returns Full only when another byte exists. `lemma_MCopy_shape` at line 1207 proves its exact Next/Full/DistanceTooFar shape under the explicit decoded-match domain.
+- `MStoredPayload` at line 1151 models an aligned payload after LEN/NLEN validation, taking bytes in stream order and testing availability before the output limit. `lemma_stored_payload` at line 1240 proves the exact output sequence and End/Full/TruncatedZlib outcome: Full requires a present byte beyond the limit; truncation retains all present bytes that fit; an exactly filled payload can return End. Positions on End/Error are nat bit positions. `lemma_push_subrange` at line 1230 supplies the sequence identity used by the induction.
+
+The copy domain explicitly requires a positive distance, a decoded length in 3..LEN_MAX, a valid positive window no larger than WINDOW_MAX, and an existing output of at most L bytes. Outside-domain arguments receive the internal marker, not a new format error. Invalid admissible-domain distances still return DistanceTooFar before the limit outcome. Stored-payload domain requires cursor<=|Z|, existing output<=L and the wire LEN bound. The full block parser and its guards are not yet transcribed.
+
+Exact resume:
+
+1. Extend this foundation to the independent fixed/dynamic-header and block-loop models; do not define them by executable transitions, tables or buffers.
+2. Convert the actual stored path in `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs:229` against MStoredPayload and the actual output append operation at line 42 against MEmit. The sink/Adler helper contracts remain unverified; do not treat Adler.update_byte as trusted while composing append.
+3. Prove fixed table construction at line 70 with all 32 distance codes, dynamic header at line 102 with ordered admission/checks, 316 entries and L-HDR-BITS/construction budget, then match/window/ring/overlap representation through the actual compressed loop at line 159.
+4. Public entry contracts must retain source wf plus pos()==0, without index/counter-reset assumptions. Public T-INFL, global safety/work, 32-bit replay, authored model-vector witnesses and proof mutations remain open.
+
+The previous layer-2 source, full 10,000-stream differential and proof inventory below remain accepted. No executable code changed in this continuation. No new trusted item, forbidden proof escape, solver-limit increase, frozen/manifest/errata edit, commit or background job was introduced. E1 remains coordinator-owned. Backup: `/home/ws/projects/verified-decoders/png/inflate_verus/backups/output-model-before-layer3.tar`. The verifier/vstd/rustc versions and bounded serial settings remain as recorded below.
+
+---
+
 ## Completed reader/Huffman layer, 2026-11-17
 
 **Fresh run 176: 163 verified, 0 errors.** Assigned layer 2 is complete at the actual Segments/Bits/Huffman methods: L-BITS, outer canonical construction/admission and decode/MDec refinement are proved. T-HUFF(a–c) and L-CANON are established on this verified host target through those real methods, not a separate decoder. A 32-bit verifier replay and the manifest's authored-witness/mutation gates remain open. This is not T-INFL, global T1/T11/T12, full container T-SEG, allocation sign-off or a release declaration. Resume with layer 3, blocks/window and the independent append-only inflate model.

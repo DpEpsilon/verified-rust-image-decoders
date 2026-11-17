@@ -120,16 +120,20 @@ impl<'a, S: Segments> Bits<'a, S> {
     pub(crate) fn get(&mut self, n: u8, w: &mut Work) -> (r: Result<u32, InflateError>)
         requires old(self).wf(), n <= 32, old(w).wf(),
         ensures final(self).wf(), final(w).wf(), final(self).concat() == old(self).concat(),
+            old(self).position() <= final(self).position() <= old(self).position() + n,
             final(self).position() <= 8 * final(self).concat().len(),
             final(self).measured_seg() <= crate::limits::C_SEG * (final(self).src.seg_count() + 1),
             final(w).core >= old(w).core, final(w).core <= old(w).core + 2 * n,
             old(w).observed@ <= final(w).observed@ <= old(w).observed@ + 2 * n,
+            final(w).observed@ <= old(w).observed@ + 2 * (final(self).position() - old(self).position() + 1),
+            r.is_ok() ==> final(w).observed@ <= old(w).observed@ + 2 * (final(self).position() - old(self).position()),
             final(w).observed@ - old(w).observed@
                 == final(self).measured_core() - old(self).measured_core(),
             match r {
                 Ok(value) => old(self).position() + n <= 8 * old(self).concat().len()
                     && final(self).position() == old(self).position() + n
-                    && value == m::field_value(old(self).concat(), old(self).position(), n as nat),
+                    && value == m::field_value(old(self).concat(), old(self).position(), n as nat)
+                    && value < m::pow2(n as nat),
                 Err(e) => e == InflateError::TruncatedZlib
                     && old(self).position() + n > 8 * old(self).concat().len()
                     && final(self).position() == 8 * old(self).concat().len(),
@@ -203,13 +207,14 @@ impl<'a, S: Segments> Bits<'a, S> {
             }
             i += 1;
         }
-        proof { self.lemma_bounds(); }
+        proof { self.lemma_bounds(); m::lemma_field_bound(initial.concat(), initial.position(), n as nat); }
         Ok(value)
     }
 
     pub(crate) fn align(&mut self)
         requires old(self).wf(),
         ensures final(self).wf(), final(self).concat() == old(self).concat(),
+            final(self).remaining == 0,
             final(self).position() == old(self).position() + old(self).remaining,
             final(self).position() % 8 == 0,
             final(self).position() == ((old(self).position() + 7) / 8) * 8,

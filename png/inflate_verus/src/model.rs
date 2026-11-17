@@ -1073,4 +1073,465 @@ pub proof fn lemma_decode_prefix_hit(lengths: Seq<u8>, z: Seq<u8>, start: nat, b
     lemma_exact_unique(lengths, bits, s, t);
 }
 
+/// Independent output effects. No executable output buffer or ring appears in
+/// these definitions; every successful byte extends a mathematical sequence.
+pub enum InflateFault {
+    TruncatedZlib,
+    InvalidZlibHeader,
+    UnsupportedZlibMethod,
+    ZlibPresetDictionary,
+    InvalidBlockType,
+    StoredLengthMismatch,
+    InvalidCodeLengths,
+    InvalidSymbol,
+    DistanceTooFar,
+    AdlerMismatch,
+    TrailingZlibData,
+}
+
+pub enum OutputEffect {
+    Next { out: Seq<u8> },
+    Full { out: Seq<u8> },
+    Error { error: InflateFault, out: Seq<u8> },
+    OutsideDomain,
+}
+
+pub open spec fn effect_output(effect: OutputEffect) -> Seq<u8> {
+    match effect {
+        OutputEffect::Next { out } => out,
+        OutputEffect::Full { out } => out,
+        OutputEffect::Error { error: _, out } => out,
+        OutputEffect::OutsideDomain => Seq::empty(),
+    }
+}
+
+pub open spec fn MEmit(out: Seq<u8>, limit: nat, byte: u8) -> OutputEffect {
+    if out.len() > limit { OutputEffect::OutsideDomain }
+    else if out.len() == limit { OutputEffect::Full { out } }
+    else { OutputEffect::Next { out: out.push(byte) } }
+}
+
+/// Resolve each next match byte against the sequence after all earlier bytes
+/// of the same match were appended. This defines overlap without a ring model.
+pub open spec fn copy_distance(out: Seq<u8>, distance: nat, count: nat) -> Seq<u8>
+    decreases count,
+{
+    if count == 0 || distance == 0 || distance > out.len() { out }
+    else {
+        let previous = copy_distance(out, distance, (count - 1) as nat);
+        previous.push(previous[(previous.len() - distance) as int])
+    }
+}
+
+pub open spec fn MCopy(out: Seq<u8>, limit: nat, window: nat, distance: nat, count: nat) -> OutputEffect {
+    if out.len() > limit || distance == 0 || count < 3 || count > crate::limits::LEN_MAX
+        || window == 0 || window > crate::limits::WINDOW_MAX {
+        OutputEffect::OutsideDomain
+    } else if distance > out.len() || distance > window {
+        OutputEffect::Error { error: InflateFault::DistanceTooFar, out }
+    } else {
+        let fit = if count <= limit - out.len() { count } else { (limit - out.len()) as nat };
+        let extended = copy_distance(out, distance, fit);
+        if fit < count { OutputEffect::Full { out: extended } }
+        else { OutputEffect::Next { out: extended } }
+    }
+}
+
+/// Stored payload effects carry an input position only when it is observable
+/// in a normal continuation or format error; Full needs only the output prefix.
+pub enum StoredEffect {
+    End { out: Seq<u8>, position: nat },
+    Full { out: Seq<u8> },
+    Error { error: InflateFault, out: Seq<u8>, position: nat },
+    OutsideDomain,
+}
+
+/// Aligned stored payload, after LEN/NLEN have already been checked. Availability
+/// precedes the output-limit test for every byte, including the byte beyond L.
+pub open spec fn MStoredPayload(z: Seq<u8>, cursor: nat, out: Seq<u8>, limit: nat, count: nat) -> StoredEffect
+    decreases count,
+{
+    if cursor > z.len() || out.len() > limit || count > u16::MAX {
+        StoredEffect::OutsideDomain
+    } else if count == 0 {
+        StoredEffect::End { out, position: 8 * cursor }
+    } else if cursor == z.len() {
+        StoredEffect::Error { error: InflateFault::TruncatedZlib, out, position: 8 * cursor }
+    } else if out.len() == limit {
+        StoredEffect::Full { out }
+    } else {
+        MStoredPayload(z, cursor + 1, out.push(z[cursor as int]), limit, (count - 1) as nat)
+    }
+}
+
+pub proof fn lemma_copy_distance(out: Seq<u8>, distance: nat, count: nat)
+    requires 1 <= distance <= out.len(),
+    ensures
+        copy_distance(out, distance, count).len() == out.len() + count,
+        copy_distance(out, distance, count).take(out.len() as int) == out,
+        forall|j: int| 0 <= j < count ==>
+            #[trigger] copy_distance(out, distance, count)[out.len() + j]
+                == copy_distance(out, distance, count)[out.len() + j - distance],
+    decreases count,
+{
+    if count > 0 {
+        lemma_copy_distance(out, distance, (count - 1) as nat);
+        let previous = copy_distance(out, distance, (count - 1) as nat);
+        let extended = copy_distance(out, distance, count);
+        assert(previous.len() >= distance);
+        assert(extended.take(out.len() as int) =~= out);
+        assert forall|j: int| 0 <= j < count implies
+            #[trigger] extended[out.len() + j] == extended[out.len() + j - distance] by {
+            if j < count - 1 {
+                assert(0 <= out.len() + j - distance < previous.len());
+                assert(previous[out.len() + j] == previous[out.len() + j - distance]);
+            } else {
+                assert(out.len() + j == previous.len());
+            }
+        }
+    }
+}
+
+pub proof fn lemma_copy_prefix(out: Seq<u8>, distance: nat, a: nat, b: nat)
+    requires 1 <= distance <= out.len(), a <= b,
+    ensures copy_distance(out, distance, b).take((out.len() + a) as int) == copy_distance(out, distance, a),
+    decreases b - a,
+{
+    lemma_copy_distance(out, distance, b);
+    if a < b {
+        lemma_copy_prefix(out, distance, a, (b - 1) as nat);
+        lemma_copy_distance(out, distance, (b - 1) as nat);
+    }
+}
+
+pub proof fn lemma_MCopy_shape(out: Seq<u8>, limit: nat, window: nat, distance: nat, count: nat)
+    requires out.len() <= limit, 1 <= distance, 3 <= count <= crate::limits::LEN_MAX,
+        1 <= window <= crate::limits::WINDOW_MAX,
+    ensures match MCopy(out, limit, window, distance, count) {
+        OutputEffect::Next { out: extended } => distance <= out.len() && distance <= window
+            && extended == copy_distance(out, distance, count)
+            && extended.len() == out.len() + count && extended.len() <= limit
+            && extended.take(out.len() as int) == out,
+        OutputEffect::Full { out: extended } => distance <= out.len() && distance <= window
+            && out.len() + count > limit && extended.len() == limit
+            && extended == copy_distance(out, distance, (limit - out.len()) as nat)
+            && extended.take(out.len() as int) == out,
+        OutputEffect::Error { error, out: unchanged } => error == InflateFault::DistanceTooFar
+            && (distance > out.len() || distance > window) && unchanged == out,
+        OutputEffect::OutsideDomain => false,
+    },
+{
+    if distance <= out.len() && distance <= window {
+        let fit = if count <= limit - out.len() { count } else { (limit - out.len()) as nat };
+        lemma_copy_distance(out, distance, fit);
+    }
+}
+
+pub proof fn lemma_push_subrange(out: Seq<u8>, z: Seq<u8>, a: nat, b: nat)
+    requires a < b <= z.len(),
+    ensures out.push(z[a as int]) + z.subrange((a + 1) as int, b as int)
+        == out + z.subrange(a as int, b as int),
+{
+    assert(out.push(z[a as int]) + z.subrange((a + 1) as int, b as int)
+        =~= out + z.subrange(a as int, b as int));
+}
+
+/// D5's exact stream-order output prefix and first limit/truncation outcome.
+pub proof fn lemma_stored_payload(z: Seq<u8>, cursor: nat, out: Seq<u8>, limit: nat, count: nat)
+    requires cursor <= z.len(), out.len() <= limit, count <= u16::MAX,
+    ensures match MStoredPayload(z, cursor, out, limit, count) {
+        StoredEffect::End { out: extended, position } => cursor + count <= z.len()
+            && out.len() + count <= limit && position == 8 * (cursor + count)
+            && extended == out + z.subrange(cursor as int, (cursor + count) as int),
+        StoredEffect::Full { out: extended } => limit - out.len() < count
+            && limit - out.len() < z.len() - cursor
+            && extended == out + z.subrange(cursor as int, (cursor + limit - out.len()) as int)
+            && extended.len() == limit,
+        StoredEffect::Error { error, out: extended, position } => error == InflateFault::TruncatedZlib
+            && z.len() - cursor < count && out.len() + z.len() - cursor <= limit
+            && position == 8 * z.len() && extended == out + z.subrange(cursor as int, z.len() as int),
+        StoredEffect::OutsideDomain => false,
+    },
+    decreases count,
+{
+    if count > 0 && cursor < z.len() && out.len() < limit {
+        lemma_stored_payload(z, cursor + 1, out.push(z[cursor as int]), limit, (count - 1) as nat);
+        let effect = MStoredPayload(z, cursor + 1, out.push(z[cursor as int]), limit, (count - 1) as nat);
+        match effect {
+            StoredEffect::End { out: extended, position } => {
+                lemma_push_subrange(out, z, cursor, cursor + count);
+            },
+            StoredEffect::Full { out: extended } => {
+                lemma_push_subrange(out, z, cursor, (cursor + limit - out.len()) as nat);
+            },
+            StoredEffect::Error { error, out: extended, position } => {
+                lemma_push_subrange(out, z, cursor, z.len());
+            },
+            StoredEffect::OutsideDomain => {},
+        }
+    } else {
+        assert(z.subrange(cursor as int, cursor as int) =~= Seq::<u8>::empty());
+        assert(out + Seq::<u8>::empty() =~= out);
+    }
+}
+
+/// Mathematical Adler sums: no deferred-modulo state or executable accumulator.
+pub open spec fn sum_bytes(out: Seq<u8>) -> nat
+    decreases out.len(),
+{
+    if out.len() == 0 { 0 }
+    else { sum_bytes(out.drop_last()) + out.last() as nat }
+}
+
+pub open spec fn sum_prefixes(out: Seq<u8>) -> nat
+    decreases out.len(),
+{
+    if out.len() == 0 { 0 }
+    else { sum_prefixes(out.drop_last()) + 1 + sum_bytes(out) }
+}
+
+pub open spec fn Adler(out: Seq<u8>) -> nat {
+    (sum_prefixes(out) % (crate::limits::ADLER_MOD as nat)) * pow2(16)
+        + (1 + sum_bytes(out)) % (crate::limits::ADLER_MOD as nat)
+}
+
+pub proof fn lemma_adler_sums_push(out: Seq<u8>, byte: u8)
+    ensures sum_bytes(out.push(byte)) == sum_bytes(out) + byte,
+        sum_prefixes(out.push(byte)) == sum_prefixes(out) + 1 + sum_bytes(out.push(byte)),
+{
+    assert(out.push(byte).drop_last() =~= out);
+}
+
+pub proof fn lemma_stored_unfold(z: Seq<u8>, cursor: nat, out: Seq<u8>, limit: nat, count: nat)
+    requires cursor <= z.len(), out.len() <= limit, count <= u16::MAX,
+    ensures
+        count == 0 ==> MStoredPayload(z, cursor, out, limit, count)
+            == (StoredEffect::End { out, position: 8 * cursor }),
+        count > 0 && cursor == z.len() ==> MStoredPayload(z, cursor, out, limit, count)
+            == (StoredEffect::Error { error: InflateFault::TruncatedZlib, out, position: 8 * cursor }),
+        count > 0 && cursor < z.len() && out.len() == limit ==>
+            MStoredPayload(z, cursor, out, limit, count) == (StoredEffect::Full { out }),
+        count > 0 && cursor < z.len() && out.len() < limit ==>
+            MStoredPayload(z, cursor, out, limit, count)
+                == MStoredPayload(z, cursor + 1, out.push(z[cursor as int]), limit, (count - 1) as nat),
+{
+    reveal(MStoredPayload);
+}
+
+/// RFC 1951 fixed code lengths, defined without executable table state.
+pub open spec fn fixed_lit_lengths() -> Seq<u8> {
+    Seq::new(FIXED_LIT_COUNT as nat, |s: int| if s < 144 { 8u8 }
+        else if s < 256 { 9u8 } else if s < 280 { 7u8 } else { 8u8 })
+}
+
+pub open spec fn fixed_dist_lengths() -> Seq<u8> {
+    Seq::new(crate::limits::FIXED_DIST_COUNT as nat, |s: int| 5u8)
+}
+
+pub open spec fn fixed_lit_mass(k: nat) -> nat {
+    let a = pow2((MAX_CODE_BITS - 8) as nat);
+    let b = pow2((MAX_CODE_BITS - 9) as nat);
+    let c = pow2((MAX_CODE_BITS - 7) as nat);
+    if k <= 144 { k * a }
+    else if k <= 256 { 144 * a + ((k - 144) as nat) * b }
+    else if k <= 280 { 144 * a + 112 * b + ((k - 256) as nat) * c }
+    else { 144 * a + 112 * b + 24 * c + ((k - 280) as nat) * a }
+}
+
+pub proof fn lemma_fixed_lit_mass(k: nat)
+    requires k <= FIXED_LIT_COUNT,
+    ensures kraft_prefix(fixed_lit_lengths(), k) == fixed_lit_mass(k),
+    decreases k,
+{
+    assert(pow2((MAX_CODE_BITS - 8) as nat) == 128) by (compute);
+    assert(pow2((MAX_CODE_BITS - 9) as nat) == 64) by (compute);
+    assert(pow2((MAX_CODE_BITS - 7) as nat) == 256) by (compute);
+    if k > 0 { lemma_fixed_lit_mass((k - 1) as nat); }
+}
+
+pub proof fn lemma_fixed_dist_mass(k: nat)
+    requires k <= crate::limits::FIXED_DIST_COUNT,
+    ensures kraft_prefix(fixed_dist_lengths(), k) == k * pow2((MAX_CODE_BITS - 5) as nat),
+    decreases k,
+{
+    assert(pow2((MAX_CODE_BITS - 5) as nat) == 1024) by (compute);
+    if k > 0 { lemma_fixed_dist_mass((k - 1) as nat); }
+}
+
+pub proof fn lemma_fixed_codes(single_accept: bool)
+    ensures lengths_ok(fixed_lit_lengths()), lengths_ok(fixed_dist_lengths()),
+        Kraft(fixed_lit_lengths()) == CODE_SPACE, Kraft(fixed_dist_lengths()) == CODE_SPACE,
+        admissible(fixed_lit_lengths(), CodeKind::LitLen, single_accept),
+        admissible(fixed_dist_lengths(), CodeKind::Dist, single_accept),
+{
+    lemma_fixed_lit_mass(FIXED_LIT_COUNT as nat);
+    lemma_fixed_dist_mass(crate::limits::FIXED_DIST_COUNT as nat);
+    assert(fixed_lit_mass(FIXED_LIT_COUNT as nat) == CODE_SPACE) by (compute);
+    assert(crate::limits::FIXED_DIST_COUNT * pow2((MAX_CODE_BITS - 5) as nat) == CODE_SPACE) by (compute);
+    assert forall|s: int| 0 <= s < fixed_lit_lengths().len() implies
+        fixed_lit_lengths()[s] <= MAX_CODE_BITS by {}
+    assert forall|s: int| 0 <= s < fixed_dist_lengths().len() implies
+        fixed_dist_lengths()[s] <= MAX_CODE_BITS by {}
+}
+
+/// Independently ordered dynamic-header parsing. These states contain only
+/// length sequences and bit positions, never executable Huffman tables.
+pub enum DynamicHeader {
+    Tables { lit: Seq<u8>, dist: Seq<u8>, position: nat },
+    Error { error: InflateFault, position: nat },
+    OutsideDomain,
+}
+
+pub open spec fn code_length_order() -> Seq<int> {
+    seq![16int, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15]
+}
+
+pub open spec fn dynamic_sizes_ok(nlen: nat, ndist: nat) -> bool {
+    257 <= nlen <= crate::limits::NLIT_MAX && 1 <= ndist <= crate::limits::NDIST_MAX
+}
+
+pub open spec fn length_entries_ok(lengths: Seq<u8>) -> bool {
+    forall|s: int| 0 <= s < lengths.len() ==> lengths[s] <= MAX_CODE_BITS
+}
+
+pub open spec fn finish_dynamic(lengths: Seq<u8>, nlen: nat, ndist: nat, position: nat,
+    single_accept: bool) -> DynamicHeader {
+    if !dynamic_sizes_ok(nlen, ndist) || lengths.len() != nlen + ndist || !length_entries_ok(lengths) {
+        DynamicHeader::OutsideDomain
+    } else if lengths[256] == 0 {
+        DynamicHeader::Error { error: InflateFault::InvalidCodeLengths, position }
+    } else {
+        let lit = lengths.take(nlen as int);
+        let dist = lengths.skip(nlen as int);
+        if !admissible(lit, CodeKind::LitLen, single_accept) {
+            DynamicHeader::Error { error: InflateFault::InvalidCodeLengths, position }
+        } else if !admissible(dist, CodeKind::Dist, single_accept) {
+            DynamicHeader::Error { error: InflateFault::InvalidCodeLengths, position }
+        } else { DynamicHeader::Tables { lit, dist, position } }
+    }
+}
+
+pub open spec fn MDynamicLengths(z: Seq<u8>, position: nat, code: Seq<u8>, lengths: Seq<u8>,
+    nlen: nat, ndist: nat, single_accept: bool) -> DynamicHeader
+    decreases if lengths.len() <= nlen + ndist { nlen + ndist - lengths.len() } else { 0 },
+{
+    let total = nlen + ndist;
+    if position > 8 * z.len() || !dynamic_sizes_ok(nlen, ndist) || lengths.len() > total
+        || !length_entries_ok(lengths) || code.len() != crate::limits::NCL
+        || !admissible(code, CodeKind::CodeLen, true) {
+        DynamicHeader::OutsideDomain
+    } else if lengths.len() == total {
+        finish_dynamic(lengths, nlen, ndist, position, single_accept)
+    } else {
+        match MDec(code, z, position) {
+            Decoded::InvalidSymbol { position: end } =>
+                DynamicHeader::Error { error: InflateFault::InvalidSymbol, position: end },
+            Decoded::TruncatedZlib { position: end } =>
+                DynamicHeader::Error { error: InflateFault::TruncatedZlib, position: end },
+            Decoded::OutsideDomain => DynamicHeader::OutsideDomain,
+            Decoded::Symbol { symbol, position: after_code } => {
+                if symbol < 16 {
+                    MDynamicLengths(z, after_code, code, lengths.push(symbol as u8), nlen, ndist, single_accept)
+                } else if symbol > 18 {
+                    DynamicHeader::OutsideDomain
+                } else if symbol == 16 && lengths.len() == 0 {
+                    DynamicHeader::Error { error: InflateFault::InvalidCodeLengths, position: after_code }
+                } else {
+                    let width = if symbol == 16 { 2nat } else if symbol == 17 { 3nat } else { 7nat };
+                    if after_code + width > 8 * z.len() {
+                        DynamicHeader::Error { error: InflateFault::TruncatedZlib, position: 8 * z.len() }
+                    } else {
+                        let repeat = (if symbol == 18 { 11nat } else { 3nat }) + field_value(z, after_code, width);
+                        let value = if symbol == 16 { lengths.last() } else { 0u8 };
+                        if repeat > total - lengths.len() {
+                            DynamicHeader::Error { error: InflateFault::InvalidCodeLengths, position: after_code + width }
+                        } else {
+                            MDynamicLengths(z, after_code + width, code,
+                                lengths + Seq::new(repeat, |i: int| value), nlen, ndist, single_accept)
+                        }
+                    }
+                }
+            },
+        }
+    }
+}
+
+pub open spec fn MDynamicCL(z: Seq<u8>, position: nat, code: Seq<u8>, i: nat, ncode: nat,
+    nlen: nat, ndist: nat, single_accept: bool) -> DynamicHeader
+    decreases if i <= ncode { ncode - i } else { 0 },
+{
+    if position > 8 * z.len() || !dynamic_sizes_ok(nlen, ndist) || i > ncode
+        || ncode < 4 || ncode > crate::limits::NCL || code.len() != crate::limits::NCL
+        || !(forall|s: int| 0 <= s < code.len() ==> code[s] <= 7) {
+        DynamicHeader::OutsideDomain
+    } else if i == ncode {
+        if !admissible(code, CodeKind::CodeLen, true) {
+            DynamicHeader::Error { error: InflateFault::InvalidCodeLengths, position }
+        } else { MDynamicLengths(z, position, code, Seq::empty(), nlen, ndist, single_accept) }
+    } else if position + 3 > 8 * z.len() {
+        DynamicHeader::Error { error: InflateFault::TruncatedZlib, position: 8 * z.len() }
+    } else {
+        MDynamicCL(z, position + 3, code.update(code_length_order()[i as int], field_value(z, position, 3) as u8),
+            i + 1, ncode, nlen, ndist, single_accept)
+    }
+}
+
+pub open spec fn MDynamic(z: Seq<u8>, position: nat, single_accept: bool) -> DynamicHeader {
+    if position > 8 * z.len() { DynamicHeader::OutsideDomain }
+    else if position + 14 > 8 * z.len() {
+        DynamicHeader::Error { error: InflateFault::TruncatedZlib, position: 8 * z.len() }
+    } else {
+        let nlen = field_value(z, position, 5) + 257;
+        let ndist = field_value(z, position + 5, 5) + 1;
+        let ncode = field_value(z, position + 10, 4) + 4;
+        if nlen > crate::limits::NLIT_MAX || ndist > crate::limits::NDIST_MAX {
+            DynamicHeader::Error { error: InflateFault::InvalidCodeLengths, position: position + 14 }
+        } else {
+            MDynamicCL(z, position + 14, Seq::new(crate::limits::NCL as nat, |i: int| 0u8),
+                0, ncode, nlen, ndist, single_accept)
+        }
+    }
+}
+
+pub proof fn lemma_dynamic_count_fields(z: Seq<u8>, position: nat)
+    ensures field_value(z, position, 5) + 257 <= FIXED_LIT_COUNT,
+        1 <= field_value(z, position + 5, 5) + 1 <= crate::limits::FIXED_DIST_COUNT,
+        4 <= field_value(z, position + 10, 4) + 4 <= crate::limits::NCL,
+{
+    lemma_field_bound(z, position, 5);
+    lemma_field_bound(z, position + 5, 5);
+    lemma_field_bound(z, position + 10, 4);
+    assert(pow2(5) == 32) by (compute);
+    assert(pow2(4) == 16) by (compute);
+}
+
+pub proof fn lemma_finish_dynamic(lengths: Seq<u8>, nlen: nat, ndist: nat, position: nat, single_accept: bool)
+    ensures match finish_dynamic(lengths, nlen, ndist, position, single_accept) {
+        DynamicHeader::Tables { lit, dist, position: end } => dynamic_sizes_ok(nlen, ndist)
+            && lit.len() == nlen && dist.len() == ndist
+            && lengths.len() == nlen + ndist && lengths.len() <= crate::limits::DYNAMIC_LENGTHS
+            && lit == lengths.take(nlen as int) && dist == lengths.skip(nlen as int)
+            && lit[256] > 0 && end == position
+            && admissible(lit, CodeKind::LitLen, single_accept)
+            && admissible(dist, CodeKind::Dist, single_accept),
+        DynamicHeader::Error { error, position: end } => error == InflateFault::InvalidCodeLengths && end == position,
+        DynamicHeader::OutsideDomain => true,
+    },
+{}
+
+/// Arithmetic ingredient for L-HDR-BITS, not yet tied to the real header loop.
+/// Large repeats are symbol 18; all other entries obey 5*bits >= 2*entries.
+pub proof fn lemma_header_coding_cost(large: nat, large_entries: nat, other_entries: nat,
+    large_bits: nat, other_bits: nat)
+    requires large_entries + other_entries >= 257 + 1,
+        large_entries <= 138 * large, large_bits >= 8 * large,
+        5 * other_bits >= 2 * other_entries,
+    ensures large_bits + other_bits >= 16,
+{
+    if large >= 2 {} else {
+        assert(other_entries >= 120);
+        assert(other_bits >= 48);
+    }
+}
+
 } // verus!

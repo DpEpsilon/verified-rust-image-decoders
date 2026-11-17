@@ -56,6 +56,8 @@ impl Huffman {
         requires old(w).wf(),
         ensures final(self).wf(), final(w).wf(),
             final(w).core >= old(w).core, final(w).core <= old(w).core + HUFF_BUILD_STEPS,
+            old(w).observed@ <= final(w).observed@ <= old(w).observed@ + HUFF_BUILD_STEPS,
+            final(w).observed@ <= old(w).observed@ + CANON_FIXED_STEPS + 2 * lengths.len() + MAX_CODE_BITS + 1,
             final(self).ready@ == r.is_ok(),
             r.is_ok() == m::admissible(lengths@, crate::classification::model_kind(kind), true),
             r.is_err() ==> r.err() == Some(InflateError::InvalidCodeLengths),
@@ -69,6 +71,8 @@ impl Huffman {
         requires old(w).wf(),
         ensures final(self).wf(), final(w).wf(),
             final(w).core >= old(w).core, final(w).core <= old(w).core + HUFF_BUILD_STEPS,
+            old(w).observed@ <= final(w).observed@ <= old(w).observed@ + HUFF_BUILD_STEPS,
+            final(w).observed@ <= old(w).observed@ + CANON_FIXED_STEPS + 2 * lengths.len() + MAX_CODE_BITS + 1,
             final(self).ready@ == r.is_ok(),
             r.is_ok() == m::admissible(lengths@, crate::classification::model_kind(kind), single_accept),
             r.is_err() ==> r.err() == Some(InflateError::InvalidCodeLengths),
@@ -111,6 +115,8 @@ impl Huffman {
         requires old(w).wf(),
         ensures final(w).wf(), final(w).core >= old(w).core,
             final(w).core <= old(w).core + HUFF_BUILD_STEPS,
+            old(w).observed@ <= final(w).observed@ <= old(w).observed@ + HUFF_BUILD_STEPS,
+            final(w).observed@ <= old(w).observed@ + CANON_FIXED_STEPS + 2 * lengths.len() + MAX_CODE_BITS + 1,
             !final(self).ready@,
             r.is_ok() == (m::lengths_ok(lengths@) && m::Kraft(lengths@) <= CODE_SPACE),
             match r {
@@ -162,6 +168,11 @@ impl Huffman {
         ensures final(br).wf(), final(w).wf(), final(br).concat() == old(br).concat(),
             final(w).core >= old(w).core, final(w).core <= old(w).core + 3 * MAX_CODE_BITS,
             old(w).observed@ <= final(w).observed@ <= old(w).observed@ + 3 * MAX_CODE_BITS,
+            old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
+            final(w).observed@ <= old(w).observed@ + 3 * (final(br).position() - old(br).position() + 1),
+            r.is_ok() ==> r.unwrap() < self.lengths@.len()
+                && old(br).position() < final(br).position() <= old(br).position() + MAX_CODE_BITS
+                && final(w).observed@ <= old(w).observed@ + 3 * (final(br).position() - old(br).position()),
             match r {
                 Ok(s) => m::MDec(self.lengths@, old(br).concat(), old(br).position())
                     == (m::Decoded::Symbol { symbol: s as nat, position: final(br).position() }),

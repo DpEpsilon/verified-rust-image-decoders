@@ -34,7 +34,6 @@ pub enum InflateError {
     AdlerMismatch,
     TrailingZlibData,
 }
-} // verus!
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Status {
@@ -42,6 +41,7 @@ pub enum Status {
     Full,
     Err(InflateError),
 }
+} // verus!
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum AdlerOption {
