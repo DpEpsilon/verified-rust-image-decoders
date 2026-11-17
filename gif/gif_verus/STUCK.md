@@ -2661,3 +2661,179 @@ edited. No assume/admit/external_body, unsafe, new axiom or solver-limit
 increase was introduced. All new model/simulation modules are proof-only.
 Versions remain Verus 0.2026.11.02.8bf68ee, vstd 0.0.0-2026-11-01-0251,
 rustc 1.99.1 (58cf8f9c3 2026-10-13).
+
+## P1 final packages: executable P-E and full-record P-T9/P-UNIV (Sol)
+
+The final default run 689 verifies **830 functions, 0 errors**. Final run 690,
+on the same Rust sources with RUSTFLAGS='--cfg feature="test-records"', verifies
+**834 functions, 0 errors**, including the four test-record entry/constructor
+helpers. Both runs use gif/verify.sh, CARGO_BUILD_JOBS=1 and timeout 25m.
+Runs 673-690 are serial and recorded in RUNLOG.tsv. Run 688 also rebuilt and
+verified vstd (1950 verified) before verifying gif_verus (834); that dependency
+count is not the decoder's count. No verifier ran concurrently. Source hashes
+for the final Rust tree are runs/sol-20261117/p1-final-sources.sha256.
+Pre-edit backups are runs/sol-20261117/p1-package-before/. No commits or
+background jobs were started. This section supersedes the previous checkpoint's
+P-E and final-package residuals, not its unrelated release-gate inventory.
+
+### Exact executable event observers
+
+policy_model::raster_overrun_site (policy_model.rs:440) computes E4's site from
+the descriptor area and the independent string_model::ST result, without
+consulting recovered or an event set. clip_site (:446) computes E1 from the
+independent descriptor's inside test. overrun_trace (:455) records one such
+boolean per delivered model frame. lemma_bounds_record proves the descriptor's
+inside bit equals its coordinate sums against the screen; the event proof does
+not assume an arbitrary inside bit agrees with geometry.
+
+policy_model::theorem_mf_event_sites (:552) proves trace lengths, recovered iff
+events are nonempty, E1 iff Clip and the returned rectangle is outside the
+screen, E4 iff the independent overrun trace, and exclusion of E2/E3.
+theorem_ms_event_sites (:574) proves the corresponding first-frame facts.
+All these theorems quantify over every implemented Policy record.
+
+gif::theorem_p_e_still (gif.rs:2483) is the named actual-result observer:
+from the real still_result contract it proves P_E_still (:2474).
+gif::theorem_p_e_view (:2506) is the named actual-view observer:
+from the real iter_result contract it proves P_E_view (:2494), including
+explicit bounds on the model frame, event and overrun-trace indices.
+The view's actual rectangle and screen Info determine E1; the independent
+string trace determines E4. Both observers prove recovered iff the model's
+event set is nonempty and exclude E2/E3. No event predicate is defined from
+the executable recovery bit. A returned error/OOM is not a returned frame,
+so the P-E observer makes no partial-frame claim for it.
+
+### P-T9 on the independent model and real entry paths
+
+Named predicates and transfer theorems in gif.rs:
+
+- P_T9_still (:2515), theorem_p_t9_still (:2528): exact Still/error/recovered
+  observation against policy_model::ms, T13 resources/pixels, P-E, and both
+  success/error directions under the non-OOM antecedent.
+- P_T9_iterator (:2536), theorem_p_t9_iterator (:2540): the actual iterator
+  result together with the independent full-stream projection and P-E.
+- P_T9_constructor (:2547), theorem_p_t9_constructor (:2557): exact independent
+  MP/Info observation, with exact error equivalence under non-OOM.
+- P_T9_info (:2649), theorem_p_t9_info (:2652): immutable Info against the
+  independent MF record, every Info field included.
+
+The actual profiled/test-record still entry points and their generic engines
+now ensure P_T9_still. The actual profiled/test-record constructors and generic
+open wrappers ensure P_T9_constructor. info() ensures P_T9_info from storage_wf.
+next_frame() ensures the named universal next package below; at every reachable
+call index its package carries P-E and, while prior requests succeeded, the
+independent P-T9 iterator observation. Existing contracts were retained.
+
+### Universal measured allocation/work packages
+
+P_UNIV_still (gif.rs:2568), P_UNIV_constructor (:2574) and P_UNIV_next (:2617)
+assemble the existing allocation, semantic, pixel/resource, exact error and
+work guarantees. No named-profile test or input-validity precondition narrows
+these packages. Safety and termination are established by Verus checking the
+actual generic executable bodies and their decreasing loops; they are not
+represented by an unrelated pure boolean.
+
+The original constructor/still paths discarded their ghost work observations
+after internal assertions. The implementation now retains those observations
+through ghost-only measured workers. open_logged_measured (:1609) returns its
+actual work count through &mut Ghost<nat> on success, format error and OOM;
+its contract ensures P_UNIV_constructor. still_with_logged_measured (:890)
+propagates the constructor error count or the actual final decoder count and
+ensures P_UNIV_still. The ordinary open_logged/still_with_logged wrappers used
+by the shipped APIs call these measured workers and discard only the ghost
+observation. Public runtime signatures, reservations and decoding branches
+are unchanged. The added wrappers run no work-counted loop and allocate
+nothing. The package is therefore tied to the real counters on all paths,
+not an existential witness chosen below a bound.
+
+The constructor package gives the frozen C_CALL*(cur_-1+N)+C_FIXED bound;
+the still package gives C_WORK*(|b|+N+P)+C_FIXED. Both include explicit PreAlloc:
+MH error implies an empty log and no OOM. Constructor allocation guarantees
+cover both ordinary and still construction; the ordinary constructor retains
+the complete existing constructor_g package. next_frame's package carries
+exact allocation transitions, T12_next for every call index, storage/WF
+preservation, T13 views and independent event observations, including fused
+calls and Saved OOM. OOM remains inside the guarantee, not a global premise.
+
+P_UNIV_history_input (:2663) describes a finite history rooted in a real
+successful generic constructor and the P_UNIV_next facts supplied by actual
+calls. theorem_p_univ_history (:2720) proves P_UNIV_history_report (:2670):
+WF/exact allocation log and bounded requests at every snapshot, at most three
+reservations, per-call event/semantic observations and the frozen cumulative
+C_CALL*(|b|+2*N+2*P)+C_FIXED and C_WORK*(|b|+N+P)+C_FIXED bounds with the actual
+Saved-OOM cut. Immutable info calls can be inserted without changing any
+snapshot, log or work summand. Constructor failures are covered by the measured
+constructor package rather than being forged into an iterator history.
+
+### Exact implemented field domain
+
+policy::implemented_record (policy.rs:110) lists all 22 pixel fields and
+loop_scan. theorem_full_record_domain (:135) proves this predicate for every
+Policy value; it is not an assumed record well-formedness condition.
+The packages cover ten binary pixel fields, twelve singleton pixel fields and
+binary metadata: all 2,048 records, including test-only combinations.
+
+| Field | Implemented values covered by the packages |
+|---|---|
+| version | Known only |
+| frame_bounds | Reject, Clip |
+| restore_outside | Restore only (clipped disposal-3 save/restore) |
+| disposal_undefined | Reject, Keep |
+| gce_size | Exact only |
+| gce_duplicate | Reject, LastWins |
+| gce_scope | NextGraphic only |
+| gce_consumers | Reject, ImageOnly |
+| gce_orphan | Reject, Ignore |
+| ext_sizes | Exact, Ignore |
+| unknown_extension | Skip only |
+| unknown_block | Reject only |
+| lzw_min | Spec, Range1to11Checked |
+| lzw_invalid | Reject only |
+| lzw_tail | Strict, StopAtRaster |
+| short_frame | Reject only |
+| truncation | Reject only |
+| index_range | Reject only |
+| missing_trailer | Reject, AtEof |
+| trailing | Reject, Ignore |
+| image_data | Whole only |
+| empty_first_subblock | Terminator only |
+| loop_scan (metadata) | EverySubBlock, FirstSubBlockOnly |
+
+Range1to11Checked permits m=1 only on a descriptor area of one pixel, permits
+2..11, and rejects excluded literals in the specified operational order.
+This includes mixed records with a checked minimum and Strict tail, not only
+RB's named combination. StopAtRaster never excuses a broken whole sub-block
+scan. E2/E3 are impossible because substitution/short-frame/partial-frame
+values are absent from these enums. All records keep index_range=Reject,
+so the existing T13 palette/alpha invariants transfer unchanged.
+FirstSubBlockOnly is included in P-T9/P-UNIV, but remains outside obligation R.
+
+Unimplemented compatibility values are outside the type, not silently mapped
+to Strict: RestoreOutside::Keep, GdkFirstBlock, Sticky, unknown-extension Reject,
+SkipByte, unchecked/wrapping minima, StopFrame, KeepCanvas, KeepPartial, palette
+substitutions, Streaming and a skipped first zero sub-block are not accepted
+record values in this crate. Compatibility profiles remain unimplemented.
+Presentation delay_map/loop_source remain outside the pixel record as before.
+
+### Validation and remaining gates
+
+runs/sol-20261117/p1-final-release-tests.log records the required release test
+command under nice -n 10 passing on the final sources: seven unit/report tests,
+seven conformance functions (373 records), four allocation-fault tests, the
+1,024-record conservative test, two prefix/bridge tests and the 37,239-frame
+stress test. p1-final-audit-self-test.log exits 0 with both pinned guard hashes,
+three reservation sites, 44 scanner controls and symbolic-cap controls.
+p1-final-frozen-hashes.log records all 14 frozen hashes matching.
+
+The earlier L-PREFIX, independent P-BRIDGE, L-TAIL/L-CONS and P-R theorems remain
+green in the final runs. The requested P1 policy theorem packages now exist;
+this is not a release declaration. The pre-existing full frozen witness matrix,
+proof-sensitivity mutation campaign, production allocation-call-graph evidence
+and the previously recorded core/erratum release gates are not closed by these
+packages. No new counterexample or erratum was found. No frozen, policy-draft,
+alloc_guard, ERRATA.md or RELEASE-GATES.md edit was made. No assume/admit,
+external_body, unsafe, new axiom or solver-limit increase was introduced.
+Resource-limit failures in package composition were resolved by opaque atomic
+contracts, small projection lemmas and stable snapshot-index triggers.
+Versions remain Verus 0.2026.11.02.8bf68ee, vstd 0.0.0-2026-11-01-0251,
+rustc 1.99.1 (58cf8f9c3 2026-10-13).

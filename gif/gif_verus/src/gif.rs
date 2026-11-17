@@ -514,6 +514,7 @@ impl<'a> Frames<'a> {
             forall|n:int| wf_p(*old(self),n) && work_ready(*old(self)) ==> t12_measured_call(*old(self),*final(self),n),
             forall|k:nat| T12_next(*old(self),*final(self),k,out),
             forall|n:int| wf_p(*old(self),n) ==> T13_view(*final(self),n+1,out),
+            P_UNIV_next(*old(self),*final(self),out),
     {
         hide(storage_wf);hide(step_result);hide(wf_p);hide(iterator_observation);hide(next_allocation);
         let ghost original=*self;
@@ -538,6 +539,7 @@ impl<'a> Frames<'a> {
                     assert(next_model_work(original,*self,None));
                     assert forall|k:nat| T12_next(original,*self,k,None) by {lemma_T12_next(original,*self,k,None);}
                     assert forall|n:int| wf_p(original,n) implies T13_view(*self,n+1,None) by {lemma_T13_next(original,*self,n,None);}
+                    lemma_p_univ_next(original,*self,None);
                 }
                 return None;
             },
@@ -572,6 +574,7 @@ impl<'a> Frames<'a> {
             assert(next_model_work(original,*self,out));
             assert forall|k:nat| T12_next(original,*self,k,out) by {lemma_T12_next(original,*self,k,out);}
             assert forall|n:int| wf_p(original,n) implies T13_view(*self,n+1,out) by {lemma_T13_next(original,*self,n,out);}
+            lemma_p_univ_next(original,*self,out);
         }
         out
     }
@@ -843,6 +846,7 @@ pub fn try_decode_still(b: &[u8]) -> (r: Result<Still, TryError>)
 /// examined. `Req = [(Canvas, 4·W·H), (LzwTable, 20_480)]` when G2–G4 pass.
 pub fn try_decode_still_with_policy(b: &[u8], p: Profile) -> (r: Result<(Still, bool), TryError>)
     ensures still_result(b@,crate::policy::profile_record(p),r),T13_still(b@,crate::policy::profile_record(p),r),
+        P_T9_still(b@,crate::policy::profile_record(p),r),
         p==Profile::Strict && r is Ok ==> !r.unwrap().1,
         crate::policy_proofs::obligation_r_still_result(b@,crate::policy::profile_record(p),r),
 {
@@ -861,13 +865,13 @@ pub fn try_decode_still_with_policy(b: &[u8], p: Profile) -> (r: Result<(Still, 
 #[cfg(feature = "test-records")]
 #[doc(hidden)]
 pub fn try_decode_still_with_record(b: &[u8], pol: Policy) -> (r: Result<(Still, bool), TryError>)
-    ensures still_result(b@,pol,r),T13_still(b@,pol,r),
+    ensures still_result(b@,pol,r),T13_still(b@,pol,r),P_T9_still(b@,pol,r),
 {
     still_with(b, pol)
 }
 
 fn still_with(b: &[u8], pol: Policy) -> (out: Result<(Still, bool), TryError>)
-    ensures still_result(b@,pol,out),T13_still(b@,pol,out),
+    ensures still_result(b@,pol,out),T13_still(b@,pol,out),P_T9_still(b@,pol,out),
 {
     let r=still_with_logged(b,pol);
     proof {reveal(still_g);lemma_T13_still(b@,pol,r.0);}
@@ -876,19 +880,28 @@ fn still_with(b: &[u8], pol: Policy) -> (out: Result<(Still, bool), TryError>)
 
 #[verifier::spinoff_prover]
 fn still_with_logged(b:&[u8],pol:Policy)->(out:(Result<(Still,bool),TryError>,Tracked<AllocLog>))
-    ensures still_g(b@,pol,out.0,out.1@.view()),
+    ensures still_g(b@,pol,out.0,out.1@.view()),P_T9_still(b@,pol,out.0),
+{
+    let mut measured=Ghost(0nat);
+    still_with_logged_measured(b,pol,&mut measured)
+}
+
+#[verifier::spinoff_prover]
+fn still_with_logged_measured(b:&[u8],pol:Policy,measured:&mut Ghost<nat>)->(out:(Result<(Still,bool),TryError>,Tracked<AllocLog>))
+    ensures still_g(b@,pol,out.0,out.1@.view()),P_UNIV_still(b@,pol,out.0,out.1@.view(),final(measured)@),
 {
     hide(crate::model::mp);hide(crate::frame_model::ms);hide(still_result);hide(still_g);
     hide(step_result);hide(storage_wf);
-    let opened=Frames::open_logged(b,pol,true);
-    proof {reveal(construction_log);}
+    let opened=Frames::open_logged_measured(b,pol,true,measured);
+    proof {reveal(construction_log);reveal(P_UNIV_constructor);crate::work_model::lemma_initial_cur_bounds(b@,pol);}
     let (result,Tracked(error_log))=opened;
     let mut d=match result {
         Ok(d)=>d,
         Err(e)=>{
             let tracked log=error_log.tracked_unwrap();
             let r=Err(e);
-            proof {lemma_still_constructor_error(b@,pol,e);lemma_still_package(b@,pol,r,log.view());}
+            proof {lemma_still_constructor_error(b@,pol,e);lemma_still_package(b@,pol,r,log.view());
+                lemma_p_univ_still(b@,pol,r,log.view(),measured@);}
             return (r,Tracked(log));
         },
     };
@@ -904,8 +917,9 @@ fn still_with_logged(b:&[u8],pol:Policy)->(out:(Result<(Still,bool),TryError>,Tr
                 assert(d.work@ as int<=C_WORK as int*(b.len() as int+header_pixels(b@) as int+crate::work_model::P(b@,pol,None,1) as int)+C_FIXED as int);
             }
             let r=Err(TryError::Format(Error::NoImage));
+            *measured=Ghost(d.work@);
             let tracked log=d.log.get();
-            proof {lemma_still_package(b@,pol,r,log.view());}
+            proof {lemma_still_package(b@,pol,r,log.view());lemma_p_univ_still(b@,pol,r,log.view(),measured@);}
             return (r,Tracked(log));
         },
     }
@@ -917,18 +931,20 @@ fn still_with_logged(b:&[u8],pol:Policy)->(out:(Result<(Still,bool),TryError>,Tr
         assert(d.work@ as int<=C_WORK as int*(b.len() as int+header_pixels(b@) as int+d.charged_pixels@ as int)+C_FIXED as int);
         assert(d.work@ as int<=C_WORK as int*(b.len() as int+header_pixels(b@) as int+crate::work_model::P(b@,pol,None,1) as int)+C_FIXED as int);
     }
+    *measured=Ghost(d.work@);
     let r=match step {
         Err(e)=>Err(e),
         Ok(Some(m))=>Ok((Still {width:d.hdr.width,height:d.hdr.height,rgba:d.canvas},m.recovered)),
         Ok(None)=>Err(TryError::Format(Error::NoImage)),
     };
     let tracked log=d.log.get();
-    proof {lemma_still_package(b@,pol,r,log.view());}
+    proof {lemma_still_package(b@,pol,r,log.view());lemma_p_univ_still(b@,pol,r,log.view(),measured@);}
     (r,Tracked(log))
 }
 
 pub fn try_decode_still_with_policy_logged(b:&[u8],p:Profile)->(r:(Result<(Still,bool),TryError>,Tracked<AllocLog>))
     ensures still_g(b@,crate::policy::profile_record(p),r.0,r.1@.view()),T13_still(b@,crate::policy::profile_record(p),r.0),
+        P_T9_still(b@,crate::policy::profile_record(p),r.0),
 {
     let r=still_with_logged(b,p.policy());
     proof {reveal(still_g);lemma_T13_still(b@,crate::policy::profile_record(p),r.0);}
@@ -1571,9 +1587,9 @@ impl<'a> Frames<'a> {
 
     /// Width, height, version, background index, aspect and `loop_count`.
     pub fn info(&self)->(i:&Info)
-        ensures *i==self.info_view(),storage_wf(*self) ==> info_result(*self,*i),
+        ensures *i==self.info_view(),storage_wf(*self) ==> info_result(*self,*i) && P_T9_info(*self,*i),
     {
-        proof {if storage_wf(*self) {lemma_info_result(*self);}}
+        proof {if storage_wf(*self) {lemma_info_result(*self);theorem_p_t9_info(*self,self.info);}}
         &self.info
     }
 
@@ -1583,9 +1599,23 @@ impl<'a> Frames<'a> {
             g_new_clause2(b@,r.0 is Err && r.0->Err_0 is OutOfMemory,construction_log(&r)),g_new_clause3(b@),
             crate::alloc_guard::req_of_log(construction_log(&r)).is_prefix_of(req_new(b@)),
             !(r.0 is Err && r.0->Err_0 is OutOfMemory) ==> crate::alloc_guard::req_of_log(construction_log(&r))==req_new(b@),
+            r.0 is Ok ==> r.1@ is None,r.0 is Err ==> r.1@ is Some,
+            r.0 is Ok ==> constructor_work(r.0->Ok_0),P_T9_constructor(b@,pol,still,r.0),
+    {
+        let mut measured=Ghost(0nat);
+        Self::open_logged_measured(b,pol,still,&mut measured)
+    }
+
+    fn open_logged_measured(b:&'a [u8],pol:Policy,still:bool,measured:&mut Ghost<nat>)->(r:(Result<Frames<'a>,TryError>,Tracked<Option<AllocLog>>))
+        ensures constructor_result(b@,pol,still,r.0),
+            crate::alloc_guard::sites::log_tied(r.0,construction_log(&r)),
+            g_new_clause2(b@,r.0 is Err && r.0->Err_0 is OutOfMemory,construction_log(&r)),g_new_clause3(b@),
+            crate::alloc_guard::req_of_log(construction_log(&r)).is_prefix_of(req_new(b@)),
+            !(r.0 is Err && r.0->Err_0 is OutOfMemory) ==> crate::alloc_guard::req_of_log(construction_log(&r))==req_new(b@),
             r.0 is Ok ==> r.1@ is None,
             r.0 is Err ==> r.1@ is Some,
         r.0 is Ok ==> constructor_work(r.0->Ok_0),
+        P_UNIV_constructor(b@,pol,still,r.0,construction_log(&r),final(measured)@),
     {
         hide(crate::model::mp);
         reveal(constructor_result);reveal(constructor_ok);reveal(storage_wf);reveal(construction_log);
@@ -1600,7 +1630,10 @@ impl<'a> Frames<'a> {
                     if !(e is OutOfMemory) {reveal(prepare_result);assert(crate::model::mp(b@,pol) is Err);}
                     assert(steps@ as int<=C_CALL as int*(crate::work_model::cur_n(b@,pol,None,-1)+header_pixels(b@) as int)+C_FIXED as int);
                 }
-                (Err(e),Tracked(Some(log)))
+                *measured=Ghost(steps@);
+                let r=(Err(e),Tracked(Some(log)));
+                proof {lemma_p_univ_constructor(b@,pol,still,r.0,construction_log(&r),measured@);}
+                r
             },
             Ok(d)=> {
                 let info=Info {width:d.hdr.width,height:d.hdr.height,version:d.hdr.version,
@@ -1614,14 +1647,18 @@ impl<'a> Frames<'a> {
                     assert(storage_wf(dec));assert(constructor_ok(dec,b@,pol,still));
                     if !still {lemma_constructor_wf(dec);}
                     lemma_constructor_work(dec);
+                    assert(crate::work_model::cur_n(b@,pol,None,-1)==dec.p as int);
                 }
-                (Ok(dec),Tracked(None))
+                *measured=Ghost(dec.work@);
+                let r=(Ok(dec),Tracked(None));
+                proof {lemma_p_univ_constructor(b@,pol,still,r.0,construction_log(&r),measured@);}
+                r
             },
         }
     }
 
     fn open(b:&'a [u8],pol:Policy,still:bool)->(r:Result<Frames<'a>,TryError>)
-        ensures constructor_result(b@,pol,still,r),
+        ensures constructor_result(b@,pol,still,r),P_T9_constructor(b@,pol,still,r),
         r is Ok ==> constructor_work(r->Ok_0),
     {Self::open_logged(b,pol,still).0}
 
@@ -1632,6 +1669,7 @@ impl<'a> Frames<'a> {
 
     pub fn try_new_with_policy(b:&'a [u8],p:Profile)->(r:Result<Frames<'a>,TryError>)
         ensures constructor_result(b@,crate::policy::profile_record(p),false,r),
+            P_T9_constructor(b@,crate::policy::profile_record(p),false,r),
         r is Ok ==> constructor_work(r->Ok_0),
     {Self::open(b,p.policy(),false)}
 
@@ -1652,6 +1690,7 @@ impl<'a> Frames<'a> {
 
     pub fn try_new_with_policy_logged(b:&'a [u8],p:Profile)->(r:(Result<Frames<'a>,TryError>,Tracked<Option<AllocLog>>))
         ensures constructor_result(b@,crate::policy::profile_record(p),false,r.0),
+            P_T9_constructor(b@,crate::policy::profile_record(p),false,r.0),
             constructor_g(b@,crate::policy::profile_record(p),r.0,construction_log(&r)),
             crate::alloc_guard::sites::log_tied(r.0,construction_log(&r)),
             g_new_clause2(b@,r.0 is Err && r.0->Err_0 is OutOfMemory,construction_log(&r)),g_new_clause3(b@),
@@ -1668,7 +1707,7 @@ impl<'a> Frames<'a> {
     #[cfg(feature="test-records")]
     #[doc(hidden)]
     pub fn try_new_with_record(b:&'a [u8],pol:Policy)->(r:Result<Frames<'a>,TryError>)
-        ensures constructor_result(b@,pol,false,r),
+        ensures constructor_result(b@,pol,false,r),P_T9_constructor(b@,pol,false,r),
         r is Ok ==> constructor_work(r->Ok_0),
     {Self::open(b,pol,false)}
 
@@ -2428,6 +2467,293 @@ pub proof fn theorem_conservative_iterator_stream(a:Frames,c:Frames,k:nat,
     crate::policy::lemma_profile_records();
     let strict=crate::frame_model::mf(a.b@,a.pol).unwrap();
     crate::conservative::theorem_r_stream(a.b@,c.pol,strict.0,strict.1);
+}
+
+/// P-E for an actual still result. Event sites come from the independent
+/// parser/string trace, not from the executable recovery bit.
+pub closed spec fn P_E_still(b:Seq<u8>,p:Policy,r:Result<(Still,bool),TryError>)->bool {
+    match r {Ok((_,recovered))=>{
+        let ev=crate::policy_model::still_events(b,p);
+        &&& recovered==(ev!=Set::<crate::policy_model::Event>::empty())
+        &&& ev.contains(crate::policy_model::Event::E1)==crate::policy_model::still_clip_site(b,p)
+        &&& ev.contains(crate::policy_model::Event::E4)==crate::policy_model::still_overrun_site(b,p)
+        &&& !ev.contains(crate::policy_model::Event::E2) && !ev.contains(crate::policy_model::Event::E3)
+    },_=>true}
+}
+pub proof fn theorem_p_e_still(b:Seq<u8>,p:Policy,r:Result<(Still,bool),TryError>)
+    requires still_result(b,p,r),ensures P_E_still(b,p,r),
+{
+    hide(crate::frame_model::ms);hide(crate::policy_model::ms);
+    lemma_still_policy_observation(b,p,r);
+    crate::policy_model::theorem_ms_bridge(b,p);
+    crate::policy_model::theorem_ms_event_sites(b,p);
+}
+
+/// P-E for a view returned at model call k. E1 uses the actual view's rectangle
+/// and screen Info; E4 uses the independent raster-completing string trace.
+pub closed spec fn P_E_view(a:Frames,k:nat,r:Option<Result<FrameView,TryError>>)->bool {
+    match r {Some(Ok(v))=>match crate::policy_model::mf(a.b@,a.pol) {
+        Err(_)=>false,Ok((info,s))=>k<s.frames.len() && k<s.events.len() && k<crate::policy_model::overruns(a.b@,a.pol).len() && {
+            let ev=s.events[k as int];
+            &&& v.recovered==(ev!=Set::<crate::policy_model::Event>::empty())
+            &&& ev.contains(crate::policy_model::Event::E1)==(a.pol.frame_bounds==crate::policy::FrameBounds::Clip
+                && !((v.rect.0 as int)+(v.rect.2 as int)<=info.width && (v.rect.1 as int)+(v.rect.3 as int)<=info.height))
+            &&& ev.contains(crate::policy_model::Event::E4)==crate::policy_model::overruns(a.b@,a.pol)[k as int]
+            &&& !ev.contains(crate::policy_model::Event::E2) && !ev.contains(crate::policy_model::Event::E3)
+        },
+    },_=>true}
+}
+pub proof fn theorem_p_e_view(a:Frames,k:nat,r:Option<Result<FrameView,TryError>>)
+    requires iter_result(a,k,r),ensures P_E_view(a,k,r),
+{
+    hide(crate::frame_model::mf);hide(crate::policy_model::mf);
+    reveal(iter_result);
+    crate::policy_model::theorem_mf_bridge(a.b@,a.pol);
+    crate::policy_model::theorem_mf_event_sites(a.b@,a.pol);
+}
+
+pub closed spec fn P_T9_still(b:Seq<u8>,p:Policy,r:Result<(Still,bool),TryError>)->bool {
+    &&& T13_still(b,p,r) && P_E_still(b,p,r)
+    &&& match r {
+        Ok((s,recovered))=>crate::policy_model::ms(b,p)==Some(Ok(crate::frame_model::StillImage {
+            width:s.width as int,height:s.height as int,rgba:s.rgba@,recovered})),
+        Err(TryError::Format(e))=>crate::policy_model::ms(b,p)==Some(Err(e)),
+        Err(TryError::OutOfMemory(_))=>crate::policy_model::mh(b,p) is Ok,
+    }
+    &&& (!(r is Err && r->Err_0 is OutOfMemory) ==> {
+        &&& (crate::policy_model::ms(b,p) is Some && crate::policy_model::ms(b,p).unwrap() is Ok ==> r is Ok)
+        &&& forall|e:Error| (r is Err && r->Err_0==TryError::Format(e)) <==> crate::policy_model::ms(b,p)==Some(Err(e))
+    })
+}
+pub proof fn theorem_p_t9_still(b:Seq<u8>,p:Policy,r:Result<(Still,bool),TryError>)
+    requires still_result(b,p,r),ensures P_T9_still(b,p,r),
+{
+    hide(crate::frame_model::ms);hide(crate::policy_model::ms);
+    lemma_T13_still(b,p,r);theorem_p_e_still(b,p,r);
+    crate::policy_model::theorem_ms_bridge(b,p);
+    lemma_still_policy_observation(b,p,r);
+}
+pub closed spec fn P_T9_iterator(a:Frames,k:nat,r:Option<Result<FrameView,TryError>>)->bool {
+    &&& iter_result(a,k,r) && P_E_view(a,k,r)
+    &&& crate::policy_model::erase_mf(crate::policy_model::mf(a.b@,a.pol))==crate::frame_model::mf(a.b@,a.pol)
+}
+pub proof fn theorem_p_t9_iterator(a:Frames,k:nat,r:Option<Result<FrameView,TryError>>)
+    requires iter_result(a,k,r),ensures P_T9_iterator(a,k,r),
+{
+    hide(crate::frame_model::mf);hide(crate::policy_model::mf);
+    theorem_p_e_view(a,k,r);crate::policy_model::theorem_mf_bridge(a.b@,a.pol);
+}
+
+pub closed spec fn P_T9_constructor(b:Seq<u8>,p:Policy,still:bool,r:Result<Frames,TryError>)->bool {
+    &&& constructor_result(b,p,still,r)
+    &&& match r {
+        Ok(d)=>match crate::policy_model::mp(b,p) {Ok((i,_))=>info_model(d.info)==i,Err(_)=>false},
+        Err(TryError::Format(e))=>crate::policy_model::mp(b,p)==Err(e),
+        Err(TryError::OutOfMemory(_))=>crate::policy_model::mh(b,p) is Ok,
+    }
+    &&& (!(r is Err && r->Err_0 is OutOfMemory) ==> forall|e:Error|
+        (r is Err && r->Err_0==TryError::Format(e)) <==> crate::policy_model::mp(b,p)==Err(e))
+}
+pub proof fn theorem_p_t9_constructor(b:Seq<u8>,p:Policy,still:bool,r:Result<Frames,TryError>)
+    requires constructor_result(b,p,still,r),ensures P_T9_constructor(b,p,still,r),
+{
+    hide(crate::model::mp);hide(crate::policy_model::mp);hide(crate::model::mh);
+    reveal(constructor_result);reveal(constructor_ok);reveal(storage_wf);
+    crate::policy_model::theorem_parser_bridge(b,p);
+}
+
+/// P-UNIV's allocation/observation/work package. Safety and termination are
+/// checked on the generic measured executable that establishes this predicate,
+/// not represented by a freestanding boolean or allocation-success premise.
+pub closed spec fn P_UNIV_still(b:Seq<u8>,p:Policy,r:Result<(Still,bool),TryError>,l:Seq<(AllocSite,nat,bool)>,steps:nat)->bool {
+    &&& crate::policy::implemented_record(p)
+    &&& still_g(b,p,r,l) && P_T9_still(b,p,r)
+    &&& (crate::model::mh(b) is Err ==> l.len()==0 && !(r is Err && r->Err_0 is OutOfMemory))
+    &&& steps as int<=C_WORK as int*(b.len() as int+header_pixels(b) as int+crate::work_model::P(b,p,None,1) as int)+C_FIXED as int
+}
+pub closed spec fn P_UNIV_constructor(b:Seq<u8>,p:Policy,still:bool,r:Result<Frames,TryError>,l:Seq<(AllocSite,nat,bool)>,steps:nat)->bool {
+    &&& crate::policy::implemented_record(p)
+    &&& P_T9_constructor(b,p,still,r)
+    &&& (crate::model::mh(b) is Err ==> l.len()==0 && !(r is Err && r->Err_0 is OutOfMemory))
+    &&& (!still ==> constructor_g(b,p,r,l))
+    &&& crate::alloc_guard::sites::log_tied(r,l) && requests_bounded(l) && l.len()<=2
+    &&& g_new_clause2(b,r is Err && r->Err_0 is OutOfMemory,l) && g_new_clause3(b)
+    &&& crate::alloc_guard::req_of_log(l).is_prefix_of(req_new(b))
+    &&& (!(r is Err && r->Err_0 is OutOfMemory) ==> crate::alloc_guard::req_of_log(l)==req_new(b))
+    &&& (crate::alloc_guard::all_ok(l) ==> !(r is Err && r->Err_0 is OutOfMemory))
+    &&& match r {Ok(d)=>constructor_work(d) && steps==d.work@,_=>true}
+    &&& steps as int<=C_CALL as int*(crate::work_model::cur_n(b,p,None,-1)+header_pixels(b) as int)+C_FIXED as int
+}
+proof fn lemma_p_univ_prealloc(b:Seq<u8>,l:Seq<(AllocSite,nat,bool)>)
+    requires crate::alloc_guard::req_of_log(l).is_prefix_of(req_new(b)),
+    ensures crate::model::mh(b) is Err ==> l.len()==0,
+{
+    hide(crate::model::mh);
+    assert(crate::alloc_guard::req_of_log(l).len()==l.len());
+}
+proof fn lemma_p_univ_still(b:Seq<u8>,p:Policy,r:Result<(Still,bool),TryError>,l:Seq<(AllocSite,nat,bool)>,steps:nat)
+    requires still_g(b,p,r,l),
+        steps as int<=C_WORK as int*(b.len() as int+header_pixels(b) as int+crate::work_model::P(b,p,None,1) as int)+C_FIXED as int,
+    ensures P_UNIV_still(b,p,r,l,steps),
+{
+    reveal(still_g);crate::policy::theorem_full_record_domain(p);theorem_p_t9_still(b,p,r);
+    lemma_p_univ_prealloc(b,l);lemma_still_policy_observation(b,p,r);
+}
+
+proof fn lemma_p_univ_constructor(b:Seq<u8>,p:Policy,still:bool,r:Result<Frames,TryError>,l:Seq<(AllocSite,nat,bool)>,steps:nat)
+    requires constructor_result(b,p,still,r),crate::alloc_guard::sites::log_tied(r,l),
+        g_new_clause2(b,r is Err && r->Err_0 is OutOfMemory,l),
+        crate::alloc_guard::req_of_log(l).is_prefix_of(req_new(b)),
+        !(r is Err && r->Err_0 is OutOfMemory) ==> crate::alloc_guard::req_of_log(l)==req_new(b),
+        match r {Ok(d)=>constructor_work(d) && steps==d.work@,_=>true},
+        steps as int<=C_CALL as int*(crate::work_model::cur_n(b,p,None,-1)+header_pixels(b) as int)+C_FIXED as int,
+    ensures P_UNIV_constructor(b,p,still,r,l,steps),
+{
+    crate::policy::theorem_full_record_domain(p);theorem_p_t9_constructor(b,p,still,r);
+    lemma_new_prefix_sites(b,l);lemma_p_univ_prealloc(b,l);
+    if !still {lemma_constructor_package(b,p,r,l);}
+}
+
+pub closed spec fn P_UNIV_next(a:Frames,d:Frames,r:Option<Result<FrameView,TryError>>)->bool {
+    &&& crate::policy::implemented_record(a.pol)
+    &&& storage_wf(d) && next_result(a,d,r) && fixed_stream(a,d)
+    &&& next_work(a,d) && next_model_work(a,d,r)
+    &&& forall|k:nat| T12_next(a,d,k,r)
+    &&& forall|n:int| #[trigger] wf_p(a,n) ==> {
+        &&& wf_p(d,n+1) && iterator_observation(a,n,r) && next_allocation(a,d,n,r) && T13_view(d,n+1,r)
+        &&& P_E_view(a,(n+1) as nat,r)
+        &&& (crate::alloc_guard::all_ok(a.log@.view()) ==> P_T9_iterator(a,(n+1) as nat,r))
+    }
+}
+proof fn lemma_p_univ_next(a:Frames,d:Frames,r:Option<Result<FrameView,TryError>>)
+    requires storage_wf(d),next_result(a,d,r),fixed_stream(a,d),next_work(a,d),next_model_work(a,d,r),
+        forall|k:nat| T12_next(a,d,k,r),
+        forall|n:int| #[trigger] wf_p(a,n) ==> wf_p(d,n+1) && iterator_observation(a,n,r) && next_allocation(a,d,n,r) && T13_view(d,n+1,r),
+    ensures P_UNIV_next(a,d,r),
+{
+    hide(wf_p);hide(P_T9_iterator);hide(P_E_view);
+    hide(storage_wf);hide(next_result);hide(fixed_stream);hide(next_work);hide(next_model_work);
+    hide(T12_next);hide(next_allocation);hide(T13_view);hide(iterator_observation);hide(iter_result);
+    hide(crate::frame_model::mf);hide(crate::policy_model::mf);
+    crate::policy::theorem_full_record_domain(a.pol);
+    assert forall|n:int| #[trigger] wf_p(a,n) implies P_E_view(a,(n+1) as nat,r)
+        && (crate::alloc_guard::all_ok(a.log@.view()) ==> P_T9_iterator(a,(n+1) as nat,r)) by {
+        reveal(iterator_observation);
+        if crate::alloc_guard::all_ok(a.log@.view()) {
+            theorem_p_t9_iterator(a,(n+1) as nat,r);theorem_p_e_view(a,(n+1) as nat,r);
+        }
+        else {assert(r is None);reveal(P_E_view);}
+    }
+}
+
+pub closed spec fn P_T9_info(d:Frames,i:Info)->bool {
+    match crate::policy_model::mf(d.b@,d.pol) {Err(_)=>false,Ok((mi,_))=>info_model(i)==mi}
+}
+pub proof fn theorem_p_t9_info(d:Frames,i:Info)
+    requires info_result(d,i),ensures P_T9_info(d,i),
+{
+    hide(crate::frame_model::mf);hide(crate::policy_model::mf);
+    crate::policy_model::theorem_mf_bridge(d.b@,d.pol);
+}
+
+/// A finite history rooted in an actual successful generic constructor.
+/// Input bytes and all Policy fields are unrestricted; each transition is the
+/// package now guaranteed by the real next_frame method. Immutable info calls
+/// can be inserted without changing snapshots, logs or measured work.
+pub closed spec fn P_UNIV_history_input(b:Seq<u8>,p:Policy,ds:Seq<Frames>,rs:Seq<Option<Result<FrameView,TryError>>>,cuts:Seq<Option<nat>>)->bool {
+    &&& ds.len()==rs.len()+1 && cuts.len()==ds.len() && cuts[0] is None
+    &&& constructor_result(b,p,false,Ok(ds[0])) && constructor_work(ds[0])
+    &&& forall|i:int| 0<=i<ds.len() ==> storage_wf(#[trigger] ds[i]) && ds[i].b@==b && ds[i].b==ds[0].b && ds[i].pol==p
+    &&& forall|i:int| 0<=i<rs.len() ==> #[trigger] P_UNIV_next(ds[i],ds[i+1],rs[i])
+        && cuts[i+1]==next_cut(cuts[i],i as nat,rs[i])
+}
+pub closed spec fn P_UNIV_history_report(b:Seq<u8>,p:Policy,ds:Seq<Frames>,rs:Seq<Option<Result<FrameView,TryError>>>,cuts:Seq<Option<nat>>)->bool {
+    &&& crate::policy::implemented_record(p)
+    &&& work_wf(ds.last(),rs.len() as int-1,cuts.last())
+    &&& steps_total(ds)<=C_CALL as int*(b.len() as int+2*header_pixels(b) as int+2*crate::work_model::P(b,p,cuts.last(),rs.len()) as int)+C_FIXED as int
+    &&& steps_total(ds)<=C_WORK as int*(b.len() as int+header_pixels(b) as int+crate::work_model::P(b,p,cuts.last(),rs.len()) as int)+C_FIXED as int
+    &&& forall|i:int| 0<=i<ds.len() ==> wf_p(#[trigger] ds[i],i-1) && iterator_log(ds[i],i-1)
+        && requests_bounded(ds[i].log@.view()) && ds[i].log@.view().len()<=3
+    &&& forall|i:int| 0<=i<rs.len() ==> #[trigger] P_E_view(ds[i],i as nat,rs[i])
+        && next_allocation(ds[i],ds[i+1],i-1,rs[i])
+        && (crate::alloc_guard::all_ok(ds[i].log@.view()) ==> P_T9_iterator(ds[i],i as nat,rs[i]))
+}
+proof fn lemma_p_univ_next_at(a:Frames,d:Frames,r:Option<Result<FrameView,TryError>>,n:int)
+    requires P_UNIV_next(a,d,r),wf_p(a,n),
+    ensures wf_p(d,n+1),iterator_observation(a,n,r),next_allocation(a,d,n,r),T13_view(d,n+1,r),
+        P_E_view(a,(n+1) as nat,r),crate::alloc_guard::all_ok(a.log@.view()) ==> P_T9_iterator(a,(n+1) as nat,r),
+        forall|k:nat| T12_next(a,d,k,r),
+{
+    hide(wf_p);hide(iterator_observation);hide(next_allocation);hide(T13_view);hide(P_E_view);hide(P_T9_iterator);hide(T12_next);
+    hide(storage_wf);hide(next_result);hide(fixed_stream);hide(next_work);hide(next_model_work);
+}
+
+proof fn lemma_p_univ_history_wf(b:Seq<u8>,p:Policy,ds:Seq<Frames>,rs:Seq<Option<Result<FrameView,TryError>>>,cuts:Seq<Option<nat>>,k:nat)
+    requires P_UNIV_history_input(b,p,ds,rs,cuts),k<ds.len(),
+    ensures wf_p(ds[k as int],k as int-1),
+    decreases k,
+{
+    hide(wf_p);hide(constructor_result);hide(constructor_work);hide(storage_wf);hide(P_UNIV_next);
+    if k==0 {reveal(constructor_result);}
+    else {
+        lemma_p_univ_history_wf(b,p,ds,rs,cuts,(k-1) as nat);
+        let j=k as int-1;
+        assert(P_UNIV_next(ds[j],ds[j+1],rs[j]));
+        lemma_p_univ_next_at(ds[j],ds[j+1],rs[j],j-1);
+    }
+}
+proof fn lemma_p_univ_history_report(b:Seq<u8>,p:Policy,ds:Seq<Frames>,rs:Seq<Option<Result<FrameView,TryError>>>,cuts:Seq<Option<nat>>)
+    requires crate::policy::implemented_record(p),work_wf(ds.last(),rs.len() as int-1,cuts.last()),
+        steps_total(ds)<=C_CALL as int*(b.len() as int+2*header_pixels(b) as int+2*crate::work_model::P(b,p,cuts.last(),rs.len()) as int)+C_FIXED as int,
+        steps_total(ds)<=C_WORK as int*(b.len() as int+header_pixels(b) as int+crate::work_model::P(b,p,cuts.last(),rs.len()) as int)+C_FIXED as int,
+        forall|i:int| 0<=i<ds.len() ==> wf_p(#[trigger] ds[i],i-1) && iterator_log(ds[i],i-1)
+            && requests_bounded(ds[i].log@.view()) && ds[i].log@.view().len()<=3,
+        forall|i:int| 0<=i<rs.len() ==> #[trigger] P_E_view(ds[i],i as nat,rs[i]) && next_allocation(ds[i],ds[i+1],i-1,rs[i])
+            && (crate::alloc_guard::all_ok(ds[i].log@.view()) ==> P_T9_iterator(ds[i],i as nat,rs[i])),
+    ensures P_UNIV_history_report(b,p,ds,rs,cuts),
+{
+    hide(work_wf);hide(steps_total);hide(header_pixels);hide(crate::work_model::P);hide(wf_p);hide(iterator_log);
+    hide(requests_bounded);hide(P_E_view);hide(next_allocation);hide(P_T9_iterator);
+}
+
+#[verifier::spinoff_prover]
+pub proof fn theorem_p_univ_history(b:Seq<u8>,p:Policy,ds:Seq<Frames>,rs:Seq<Option<Result<FrameView,TryError>>>,cuts:Seq<Option<nat>>)
+    requires P_UNIV_history_input(b,p,ds,rs,cuts),
+    ensures P_UNIV_history_report(b,p,ds,rs,cuts),
+{
+    hide(wf_p);hide(iterator_log);hide(P_E_view);hide(P_T9_iterator);hide(T12_next);hide(next_allocation);
+    hide(work_wf);hide(steps_total);hide(crate::work_model::P);hide(storage_wf);hide(constructor_work);
+    hide(P_UNIV_next);hide(constructor_result);hide(constructor_ok);hide(requests_bounded);hide(header_pixels);
+    hide(crate::frame_model::mf);hide(crate::policy_model::mf);hide(crate::model::mh);hide(crate::model::mp);
+    crate::policy::theorem_full_record_domain(p);
+    assert forall|i:int| 0<=i<ds.len() implies wf_p(#[trigger] ds[i],i-1) && iterator_log(ds[i],i-1)
+        && requests_bounded(ds[i].log@.view()) && ds[i].log@.view().len()<=3 by {
+        lemma_p_univ_history_wf(b,p,ds,rs,cuts,i as nat);
+        lemma_iterator_log(ds[i],i-1);lemma_storage_sites(ds[i]);
+    }
+    assert forall|i:int| 0<=i<rs.len() implies T12_next(#[trigger] ds[i],ds[i+1],i as nat,rs[i])
+        && cuts[i+1]==next_cut(cuts[i],i as nat,rs[i]) by {
+        assert(P_UNIV_next(ds[i],ds[i+1],rs[i]));
+        assert(cuts[i+1]==next_cut(cuts[i],i as nat,rs[i]));
+        lemma_p_univ_history_wf(b,p,ds,rs,cuts,i as nat);
+        lemma_p_univ_next_at(ds[i],ds[i+1],rs[i],i-1);
+        assert(T12_next(ds[i],ds[i+1],i as nat,rs[i]));
+    }
+    assert forall|i:int| 0<=i<ds.len() implies storage_wf(#[trigger] ds[i]) && ds[i].b==ds[0].b && ds[i].pol==ds[0].pol by {}
+    assert(!ds[0].still) by {reveal(constructor_result);reveal(constructor_ok);}
+    theorem_T12_finite(ds,rs,cuts);
+    assert(ds[0].b@==b && ds[0].pol==p);
+    assert(ds[0].b.len() as int==b.len());
+    assert(work_wf(ds.last(),rs.len() as int-1,cuts.last()));
+    assert(steps_total(ds)<=C_CALL as int*(b.len() as int+2*header_pixels(b) as int+2*crate::work_model::P(b,p,cuts.last(),rs.len()) as int)+C_FIXED as int);
+    assert(steps_total(ds)<=C_WORK as int*(b.len() as int+header_pixels(b) as int+crate::work_model::P(b,p,cuts.last(),rs.len()) as int)+C_FIXED as int);
+    assert forall|i:int| 0<=i<rs.len() implies #[trigger] P_E_view(ds[i],i as nat,rs[i])
+        && next_allocation(ds[i],ds[i+1],i-1,rs[i])
+        && (crate::alloc_guard::all_ok(ds[i].log@.view()) ==> P_T9_iterator(ds[i],i as nat,rs[i])) by {
+        lemma_p_univ_history_wf(b,p,ds,rs,cuts,i as nat);
+        lemma_p_univ_next_at(ds[i],ds[i+1],rs[i],i-1);
+    }
+    lemma_p_univ_history_report(b,p,ds,rs,cuts);
 }
 
 pub closed spec fn info_result(d:Frames,i:Info)->bool {

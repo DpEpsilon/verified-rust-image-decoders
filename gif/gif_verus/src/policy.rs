@@ -102,6 +102,40 @@ pub struct Policy {
     pub loop_scan: LoopScan,
 }
 
+/// Full implemented record domain: ten binary pixel fields, twelve singleton
+/// pixel fields and binary loop_scan metadata (2,048 records). No profile test
+/// narrows the universal packages. Every omitted compatibility value is outside
+/// the type: unchecked/wrapping minima, Sticky, recovery substitutions, partial
+/// frames, Streaming, SkipByte and the other P2 variants are not implemented.
+pub open spec fn implemented_record(p:Policy)->bool {
+    &&& p.version==VersionRule::Known
+    &&& matches!(p.frame_bounds,FrameBounds::Reject|FrameBounds::Clip)
+    &&& p.restore_outside==RestoreOutside::Restore
+    &&& matches!(p.disposal_undefined,DisposalUndefined::Reject|DisposalUndefined::Keep)
+    &&& p.gce_size==GceSize::Exact
+    &&& matches!(p.gce_duplicate,GceDuplicate::Reject|GceDuplicate::LastWins)
+    &&& p.gce_scope==GceScope::NextGraphic
+    &&& matches!(p.gce_consumers,GceConsumers::Reject|GceConsumers::ImageOnly)
+    &&& matches!(p.gce_orphan,GceOrphan::Reject|GceOrphan::Ignore)
+    &&& matches!(p.ext_sizes,ExtSizes::Exact|ExtSizes::Ignore)
+    &&& p.unknown_extension==UnknownExtension::Skip
+    &&& p.unknown_block==UnknownBlock::Reject
+    &&& matches!(p.lzw_min,LzwMin::Spec|LzwMin::Range1to11Checked)
+    &&& p.lzw_invalid==LzwInvalid::Reject
+    &&& matches!(p.lzw_tail,LzwTail::Strict|LzwTail::StopAtRaster)
+    &&& p.short_frame==ShortFrame::Reject
+    &&& p.truncation==Truncation::Reject
+    &&& p.index_range==IndexRange::Reject
+    &&& matches!(p.missing_trailer,MissingTrailer::Reject|MissingTrailer::AtEof)
+    &&& matches!(p.trailing,Trailing::Reject|Trailing::Ignore)
+    &&& p.image_data==ImageDataMode::Whole
+    &&& p.empty_first_subblock==EmptyFirstSubblock::Terminator
+    &&& matches!(p.loop_scan,LoopScan::EverySubBlock|LoopScan::FirstSubBlockOnly)
+}
+pub proof fn theorem_full_record_domain(p:Policy)
+    ensures implemented_record(p),
+{}
+
 /// Strict: the core of SPEC.md (`policy_oracle.STRICT`).
 pub(crate) const STRICT: Policy = Policy {
     version: VersionRule::Known,

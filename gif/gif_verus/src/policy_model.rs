@@ -435,4 +435,156 @@ pub(crate) proof fn theorem_strict_bridge(b:Seq<u8>,m:int,d:Seq<u8>,a:int)
     }
 }
 
+/// E4's independent event site: the ST raster-completing code carries a
+/// string beyond the descriptor area. This does not inspect recovered/events.
+pub open spec fn raster_overrun_site(b:Seq<u8>,h:HeaderM,p:Policy,s:fm::State)->bool {
+    match mb(b,h,p,s.walk) {
+        Ok(MbOut::Image(fh,_,m,d,_))=>p.lzw_tail==LzwTail::StopAtRaster && ml(m,d,fh.w*fh.h,p).e4,
+        _=>false,
+    }
+}
+pub open spec fn clip_site(b:Seq<u8>,h:HeaderM,p:Policy,s:fm::State)->bool {
+    match mb(b,h,p,s.walk) {Ok(MbOut::Image(fh,_,_,_,_))=>p.frame_bounds==FrameBounds::Clip && !fh.inside,_=>false}
+}
+pub open spec fn rectangle_inside(f:fm::FrameRec,w:int,h:int)->bool {
+    f.rect.0+f.rect.2<=w && f.rect.1+f.rect.3<=h
+}
+
+/// A parallel model trace records the independent E4 site for each delivered
+/// frame. Its booleans come from ST, not from an event set or recovery flag.
+pub open spec fn overrun_trace(b:Seq<u8>,h:HeaderM,p:Policy,s:fm::State,fuel:nat)->Seq<bool>
+    decreases fuel,
+{
+    if fuel==0 {Seq::empty()} else {match call(b,h,p,s,false) {
+        Some(c)=>if c.result.error is None && c.result.frame is Some {
+            seq![raster_overrun_site(b,h,p,s)]+overrun_trace(b,h,p,c.result.after,(fuel-1) as nat)
+        } else {Seq::empty()},
+        None=>Seq::empty(),
+    }}
+}
+pub open spec fn overruns(b:Seq<u8>,p:Policy)->Seq<bool> {
+    match mh(b,p) {Ok(h)=>match initial(b,p) {Some(s)=>overrun_trace(b,h,p,s,b.len()+1),None=>Seq::empty()},Err(_)=>Seq::empty()}
+}
+pub open spec fn still_events(b:Seq<u8>,p:Policy)->Set<Event> {
+    match mh(b,p) {Ok(h)=>match initial(b,p) {
+        Some(s)=>match call(b,h,p,s,true) {Some(c)=>c.events,None=>Set::empty()},None=>Set::empty(),
+    },Err(_)=>Set::empty()}
+}
+pub open spec fn still_clip_site(b:Seq<u8>,p:Policy)->bool {
+    match mh(b,p) {Ok(h)=>match initial(b,p) {Some(s)=>clip_site(b,h,p,s),None=>false},Err(_)=>false}
+}
+pub open spec fn still_overrun_site(b:Seq<u8>,p:Policy)->bool {
+    match mh(b,p) {Ok(h)=>match initial(b,p) {Some(s)=>raster_overrun_site(b,h,p,s),None=>false},Err(_)=>false}
+}
+
+pub proof fn lemma_bounds_record(b:Seq<u8>,h:HeaderM,p:Policy,s:WalkM,fuel:nat,
+    fh:FrameHeaderM,g:Option<GceM>,m:int,d:Seq<u8>,walk:WalkM)
+    requires mb_fuel(b,h,p,s,fuel)==Ok(MbOut::Image(fh,g,m,d,walk)),
+    ensures fh.inside==(fh.left+fh.w<=h.width && fh.top+fh.h<=h.height),
+    decreases fuel,
+{
+    hide(extension);hide(data);
+    reveal_with_fuel(mb_fuel,1);
+    if fuel>0 && s.p<b.len() && b[s.p]==0x21 {
+        lemma_bounds_record(b,h,p,extension(b,p,s).unwrap(),(fuel-1) as nat,fh,g,m,d,walk);
+    }
+}
+
+pub proof fn lemma_call_event_sites(b:Seq<u8>,h:HeaderM,p:Policy,s:fm::State,still:bool,c:Call)
+    requires call(b,h,p,s,still)==Some(c),c.result.frame is Some,
+    ensures c.result.frame.unwrap().recovered==(c.events!=Set::<Event>::empty()),
+        c.events.contains(Event::E1)==clip_site(b,h,p,s),
+        c.events.contains(Event::E1)==(p.frame_bounds==FrameBounds::Clip && !rectangle_inside(c.result.frame.unwrap(),h.width,h.height)),
+        c.events.contains(Event::E4)==raster_overrun_site(b,h,p,s),
+        !c.events.contains(Event::E2),!c.events.contains(Event::E3),
+{
+    hide(ml);hide(crate::mc::draw_fold);hide(mb);
+    if s.status==fm::Status::Running {
+        match mb(b,h,p,s.walk) {
+            Ok(MbOut::Image(fh,g,m,d,walk))=>{
+                lemma_events(p,fh,ml(m,d,fh.w*fh.h,p).e4);
+                assert(mb_fuel(b,h,p,s.walk,(b.len()-s.walk.p) as nat)==Ok(MbOut::Image(fh,g,m,d,walk))) by {reveal(mb);}
+                lemma_bounds_record(b,h,p,s.walk,(b.len()-s.walk.p) as nat,fh,g,m,d,walk);
+            },_=>{},
+        }
+    }
+}
+
+pub proof fn lemma_stream_event_sites(b:Seq<u8>,h:HeaderM,p:Policy,s:fm::State,fuel:nat)
+    requires core::mh_bounds(b,h),0<=s.walk.p<=b.len(),
+    ensures overrun_trace(b,h,p,s,fuel).len()==stream(b,h,p,s,fuel).frames.len(),
+        stream(b,h,p,s,fuel).events.len()==stream(b,h,p,s,fuel).frames.len(),
+        forall|i:int| #![trigger stream(b,h,p,s,fuel).frames[i]] 0<=i<stream(b,h,p,s,fuel).frames.len() ==> {
+            let f=stream(b,h,p,s,fuel).frames[i]; let ev=stream(b,h,p,s,fuel).events[i];
+            &&& f.recovered==(ev!=Set::<Event>::empty())
+            &&& ev.contains(Event::E1)==(p.frame_bounds==FrameBounds::Clip && !rectangle_inside(f,h.width,h.height))
+            &&& ev.contains(Event::E4)==overrun_trace(b,h,p,s,fuel)[i]
+            &&& !ev.contains(Event::E2) && !ev.contains(Event::E3)
+        },
+    decreases fuel,
+{
+    hide(call);hide(fm::call_mode);hide(fm::call);
+    reveal_with_fuel(stream,1);reveal_with_fuel(overrun_trace,1);
+    if fuel>0 {
+        lemma_call_bridge(b,h,p,s,false);fm::lemma_call_progress(b,h,p,s);
+        assert(fm::call(b,h,p,s)==erase_call(call(b,h,p,s,false))) by {reveal(fm::call);}
+        match call(b,h,p,s,false) {
+            Some(c)=>if c.result.error is None && c.result.frame is Some {
+                lemma_call_event_sites(b,h,p,s,false,c);
+                lemma_stream_event_sites(b,h,p,c.result.after,(fuel-1) as nat);
+                let result=stream(b,h,p,s,fuel);let tail=stream(b,h,p,c.result.after,(fuel-1) as nat);
+                assert forall|i:int| #![trigger result.frames[i]] 0<=i<result.frames.len() implies {
+                    let f=result.frames[i]; let ev=result.events[i];
+                    &&& f.recovered==(ev!=Set::<Event>::empty())
+                    &&& ev.contains(Event::E1)==(p.frame_bounds==FrameBounds::Clip && !rectangle_inside(f,h.width,h.height))
+                    &&& ev.contains(Event::E4)==overrun_trace(b,h,p,s,fuel)[i]
+                    &&& !ev.contains(Event::E2) && !ev.contains(Event::E3)
+                } by {
+                    if i==0 {assert(result.frames[i]==c.result.frame.unwrap());assert(result.events[i]==c.events);}
+                    else {assert(result.frames[i]==tail.frames[i-1]);assert(result.events[i]==tail.events[i-1]);
+                        assert(overrun_trace(b,h,p,s,fuel)[i]==overrun_trace(b,h,p,c.result.after,(fuel-1) as nat)[i-1]);}
+                }
+            },_=>{},
+        }
+    }
+}
+
+pub proof fn theorem_mf_event_sites(b:Seq<u8>,p:Policy)
+    ensures match mf(b,p) {Err(_)=>true,Ok((info,s))=>{
+        &&& overruns(b,p).len()==s.frames.len() && s.events.len()==s.frames.len()
+        &&& forall|i:int| #![trigger s.frames[i]] 0<=i<s.frames.len() ==> {
+            let f=s.frames[i];let ev=s.events[i];
+            &&& f.recovered==(ev!=Set::<Event>::empty())
+            &&& ev.contains(Event::E1)==(p.frame_bounds==FrameBounds::Clip && !rectangle_inside(f,info.width,info.height))
+            &&& ev.contains(Event::E4)==overruns(b,p)[i]
+            &&& !ev.contains(Event::E2) && !ev.contains(Event::E3)
+        }
+    }},
+{
+    hide(core::mh);hide(core::mp);hide(mp);hide(stream);hide(overrun_trace);
+    theorem_parser_bridge(b,p);
+    if core::mp(b,p) is Ok {
+        fm::lemma_initial_domain(b,p);
+        assert(core::mp(b,p).unwrap().0.width==core::mh(b).unwrap().width
+            && core::mp(b,p).unwrap().0.height==core::mh(b).unwrap().height) by {reveal(core::mp);}
+        lemma_stream_event_sites(b,core::mh(b).unwrap(),p,initial(b,p).unwrap(),b.len()+1);
+    }
+}
+
+pub proof fn theorem_ms_event_sites(b:Seq<u8>,p:Policy)
+    ensures match ms(b,p) {Some(Ok(s))=>{
+        let ev=still_events(b,p);
+        &&& s.recovered==(ev!=Set::<Event>::empty())
+        &&& ev.contains(Event::E1)==still_clip_site(b,p)
+        &&& ev.contains(Event::E4)==still_overrun_site(b,p)
+        &&& !ev.contains(Event::E2) && !ev.contains(Event::E3)
+    },_=>true},
+{
+    hide(core::mh);hide(core::mp);hide(mp);hide(call);
+    if ms(b,p) is Some && ms(b,p).unwrap() is Ok {
+        let h=mh(b,p).unwrap();let s=initial(b,p).unwrap();
+        lemma_call_event_sites(b,h,p,s,true,call(b,h,p,s,true).unwrap());
+    }
+}
+
 } // verus!
