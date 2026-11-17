@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+"""Check P11's raw-size bound (PNG-Q5, Adam7 correction) and the worked examples quoted in SPEC.md.
+
+R(w,h) = sum over non-empty passes of ph*(1 + ceil(pw*B/8)), B = bits per pixel <= 64. For interlaced images
+the rows term is S(h) = sum of ph over non-empty passes, which exceeds h, so R <= h*(1 + 8w) is false.
+Bound used by the proofs: R <= 8*w*h + S(h) and S(h) <= 2h + 2. Checked here:
+  - S(h) <= ceil(15h/8) + 2 <= 2h + 2 for every h in 1..70000 (w large enough that all seven passes with y0 < h are non-empty);
+  - R <= 8*w*h + 2h + 2 for every w, h in 1..96 and every (colour type, depth) pair, interlaced and not;
+  - R <= h*(1 + 8w) fails for interlaced images (a counterexample is printed), holds when not interlaced;
+  - the worked examples of SPEC.md P11.
+Usage: python3 -I check_bounds.py
+"""
+import math
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import png_oracle as O  # noqa: E402
+
+PAIRS = [(0, d) for d in (1, 2, 4, 8, 16)] + [(2, 8), (2, 16)] + [(3, d) for d in (1, 2, 4, 8)] + [(4, 8), (4, 16), (6, 8), (6, 16)]
+
+
+def doc(ct, d, il):
+    return {'color_type': ct, 'depth': d, 'interlace': il}
+
+
+def S(h):
+    return sum(ph for *_, pw, ph in O.passes(doc(0, 8, 1), 10 ** 6, h))
+
+
+def main():
+    bad = 0
+    worst = max(S(h) - 2 * h for h in range(1, 70001))
+    worst2 = max(S(h) - (15 * h + 7) // 8 for h in range(1, 70001))
+    if worst > 2 or worst2 > 2:
+        bad += 1
+    print(f'max over h<=70000 of S(h) - 2h = {worst}, of S(h) - ceil(15h/8) = {worst2} (bounds: 2, 2)')
+    viol = None
+    for ct, d in PAIRS:
+        for il in (0, 1):
+            dd = doc(ct, d, il)
+            for w in range(1, 97):
+                for h in range(1, 97):
+                    r = O.raw_size(dd, w, h)
+                    if r > 8 * w * h + 2 * h + 2:
+                        bad += 1
+                    if r > h * (1 + 8 * w):
+                        if not il:
+                            bad += 1
+                        elif viol is None or r - h * (1 + 8 * w) > viol[0]:
+                            viol = (r - h * (1 + 8 * w), ct, d, w, h, r)
+    print(f'R <= 8wh + 2h + 2: {"holds" if not bad else "VIOLATED"} for 13 (colour type, depth) pairs x 2 interlace modes x 96 x 96 sizes')
+    print(f'old bound h(1+8w) fails when interlaced; largest excess {viol[0]} at colour type {viol[1]}, depth {viol[2]}, {viol[3]}x{viol[4]}: R = {viol[5]}')
+    # worked examples (RGBA16, interlaced): 5x5, 1024x1024, and the two extremes of the area cap (4wh = MAX_OUTPUT)
+    d = doc(6, 16, 1)
+    for w, h in ((5, 5), (1024, 1024), (8192, 8192), (1, 1 << 26), (1 << 26, 1)):
+        print(f'RGBA16 interlaced {w}x{h}: R = {O.raw_size(d, w, h)}; h(1+8w) = {h * (1 + 8 * w)}; 8wh + S(h) = {8 * w * h + S(h)}')
+    # new caps (MAX_DIMENSION = 2^31-1, MAX_OUTPUT = 2^28): S(h+8) = S(h) + 15 once every pass is non-empty, so the
+    # check up to 70,000 covers all h; large h are spot-checked here. The area cap forces h <= MAX_OUTPUT/4 = 2^26.
+    big_bad = 0
+    for h in (1 << 20, (1 << 26) - 1, 1 << 26, (1 << 26) + 1, (1 << 31) - 1):
+        if S(h) > 2 * h + 2 or S(h) > (15 * h + 7) // 8 + 2:
+            big_bad += 1
+    bad += big_bad
+    print(f'S(h) <= 2h + 2 and <= ceil(15h/8) + 2 at h = 2^20, 2^26-1, 2^26, 2^26+1, 2^31-1: {"holds" if not big_bad else "VIOLATED"}')
+    hmax = O.MAX_OUTPUT // 4
+    rmax = 8 * hmax + 2 * hmax + 2   # R <= 8wh + 2h + 2 with w*h <= MAX_OUTPUT/4 and h <= MAX_OUTPUT/4
+    rmax = 2 * O.MAX_OUTPUT + 2 * hmax + 2
+    print(f'MAX_DIMENSION = {O.MAX_DIMENSION}, MAX_OUTPUT = {O.MAX_OUTPUT}; h <= MAX_OUTPUT/4 = {hmax}')
+    print(f'R <= 2*MAX_OUTPUT + 2*(MAX_OUTPUT/4) + 2 = {rmax} ({rmax / 2**20:.1f} MiB); the form with 2*MAX_DIMENSION would give '
+          f'{2 * O.MAX_OUTPUT + 2 * O.MAX_DIMENSION + 2} and is looser than the guard')
+    # shapes at the area cap, derived from MAX_OUTPUT so that the check holds for every permitted cap value (at the
+    # current values: 1 x 2^26, 2^26 x 1, 2 x 2^25, 4 x 2^24 and 8192 x 8192)
+    worst = 0
+    q = O.MAX_OUTPUT // 4
+    s_ = math.isqrt(q)
+    for il in (0, 1):
+        for w, h in ((1, q), (q, 1), (2, q // 2), (4, q // 4), (s_, s_)):
+            if w >= 1 and h >= 1:
+                worst = max(worst, O.raw_size(doc(6, 16, il), w, h))
+    print(f'largest exact R over the RGBA16 cap-boundary shapes tried: {worst} ({worst / 2**20:.1f} MiB); bound {rmax}; guard 2^30 = {1 << 30}')
+    if worst > rmax or rmax > (1 << 30):
+        bad += 1
+    return 1 if bad else 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

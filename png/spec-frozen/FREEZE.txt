@@ -1,0 +1,23 @@
+# PNG-CORE-SPEC 1.0 (frozen 2026-11-17), Stage 1: Strict decode rules only.
+# NOT frozen: the cap values (../limits-draft), RecommendedBeta and all of ../policy-draft (PNG-Q7),
+# and the P rows of ../THEOREMS.md (Stage 2, changes in ../THEOREMS-POLICY-DELTA.md).
+# Cap premise: VECTORS.json's outcomes hold for every cap tuple satisfying caps_ok with each cap at least
+#   MAX_INPUT=13110,MAX_DIMENSION=402,MAX_OUTPUT=1608,MAX_FRAMES=3,MAX_TOTAL_PIXELS=24,MAX_ICC=768
+# checked here at that lower corner and at the upper corner
+#   MAX_INPUT=0x1000000000000000,MAX_DIMENSION=0x7fffffff,MAX_OUTPUT=429496728,MAX_FRAMES=0xffffffff,MAX_TOTAL_PIXELS=0x4000000000000000,MAX_ICC=0x40000000
+# png_oracle.py loads ../limits-frozen/limits.py or ../limits-draft/limits.py; no cap value is hashed here.
+# Re-check: sha256sum -c FREEZE.txt, then check_vectors.py --caps <either corner> (independent of limits.py),
+# or plain check_vectors.py at any permitted values. VECTORS.json is git-ignored while PNG-Q16 is open;
+# regenerate it with gen_vectors.py in a scratch copy, never inside spec-frozen/.
+31d0d0e3cb8efbd8983f634d2ca81f71cda8233995571579d710504765bf044b  SPEC.md
+c6049807bf939b67f46b6761fe309f830521d98e9f43d4fa9f0bae0cefbc9495  DESIGN-NOTES.md
+9c2a8fddd31b3d1ca8f578753ccd5851e108e907fca33298564eeb03fcb2f88a  SOURCES.md
+641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d  VECTORS.json
+5a6a4ce2cf56219b7f4a9a1ef77201fe61a694f16e80b7941482f3f1a6452d2c  png_oracle.py
+40e37608394adcdbc8234a7c40e93cbf2b7a64ad55900f1c6e2c62b12f63975c  gen_vectors.py
+25045ef990ea9f9593782635f29701220a78e198ff9cbc721081c8e0d2f7597e  check_vectors.py
+b792de955546325a97b02946ca3950d971153b5c96bfae80991f14b693bfe769  check_bounds.py
+ebef57a68e08815d5a100887c8c2f999c8eab8ed0ff5b26aa4c197b93f5e0ee6  check_over.py
+3bacbc703c97ac988efcbd95e7d49bcfab5a5c9d706c2b10e6b4c784abb67351  ../THEOREMS.md
+5ef9243abc030a14b30e17a058ddf9356d9ff3cf7a6b126f2c78568babfe10c5  ../REVIEW-BRIEF.md
+4f51fecd3e008e6b13ea0f6a505357f3ad905effe286495585125b7a19de3f58  ../REVIEW-SOL-THEOREMS.md
