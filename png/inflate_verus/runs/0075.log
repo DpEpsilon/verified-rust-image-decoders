@@ -1,0 +1,37 @@
+command: ['cargo', 'test', '--release', '--all-targets', '--manifest-path', '/home/ws/projects/verified-decoders/png/inflate_verus/Cargo.toml']
+   Compiling inflate_verus v0.1.0 (/home/ws/projects/verified-decoders/png/inflate_verus)
+    Finished `release` profile [optimized] target(s) in 1.62s
+     Running unittests src/lib.rs (/home/ws/projects/verified-decoders/png/inflate_verus/target/release/deps/inflate_verus-f76f7cdf9d46d126)
+
+running 3 tests
+test huffman::tests::oversubscription_is_rejected_before_canonical_representation ... ok
+test huffman::tests::incomplete_nonoversubscribed_vectors_still_get_canonical_representation ... ok
+test huffman::tests::bounded_exhaustion_matches_independent_word_assignment ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/contract.rs (/home/ws/projects/verified-decoders/png/inflate_verus/target/release/deps/contract-678f0a3a345a9d8a)
+
+running 7 tests
+test empty_z_and_header_order ... ok
+test eof_cursor_and_empty_segments_are_stable ... ok
+test exact_limit_does_not_skip_adler_or_tail ... ok
+test measuring_limit_is_u64_not_a_slice_length ... ok
+test stored_prefix_and_limit_precedence_d5 ... ok
+test million_empty_segments_do_not_enter_core_steps ... ok
+test adler_deferral_and_ring_wrap ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests examples/allocator_probe.rs (/home/ws/projects/verified-decoders/png/inflate_verus/target/release/examples/allocator_probe-0395b8ff2896041e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests examples/inflate_runner.rs (/home/ws/projects/verified-decoders/png/inflate_verus/target/release/examples/inflate_runner-3fd67ba2745abf15)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

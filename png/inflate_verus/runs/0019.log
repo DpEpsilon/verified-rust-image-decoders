@@ -1,0 +1,21 @@
+command: ['cargo', 'verus', 'verify', '--', '--num-threads', '2', '--no-cheating']
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling verus_syn v0.0.0-2026-11-01-0251
+   Compiling verus_prettyplease v0.0.0-2026-11-01-0251
+   Compiling syn v2.0.119
+   Compiling equivalent v1.0.3
+   Compiling hashbrown v0.17.1
+   Compiling indexmap v2.14.2
+   Compiling synstructure v0.13.2
+   Compiling convert_case v0.4.0
+   Compiling vstd v0.0.0-2026-11-01-0251
+   Compiling verus_builtin_macros v0.0.0-2026-11-01-0251
+   Compiling verus_state_machines_macros v0.0.0-2026-11-01-0251
+    Checking verus_builtin v0.0.0-2026-11-01-0251
+error: `--is-vstd` is not allowed with `--no-cheating`
+error: could not compile `vstd` (lib)
+
+Caused by:
+  process didn't exit successfully: `/opt/verus/verus /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc --crate-name vstd --edition=2021 /home/ws/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/vstd-0.0.0-2026-11-01-0251/vstd.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata -C embed-bitcode=no -C debuginfo=2 --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values("alloc", "allocator", "allow_panic", "default", "std", "strict_provenance_atomic_ptr"))' -C metadata=b88a4c9d341b7830 -C extra-filename=-03bc18a84b05fe12 --out-dir /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/target/debug/deps -L dependency=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/target/debug/deps --extern verus_builtin=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/target/debug/deps/libverus_builtin-6060ec3937d74377.rmeta --extern verus_builtin_macros=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/target/debug/deps/libverus_builtin_macros-7a1ef0fa282e0440.so --extern verus_state_machines_macros=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/target/debug/deps/libverus_state_machines_macros-3910143b806a7d0f.so --cap-lints allow -Z checksum-hash-algorithm=blake3` (exit status: 255)

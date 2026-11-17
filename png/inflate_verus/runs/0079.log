@@ -1,0 +1,18 @@
+command: ['python3', '-I', '/home/ws/projects/verified-decoders/png/inflate_verus/tools/audit_source.py', '--self-test']
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/adler.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/bits.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/classification.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/lib.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/limits.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/segments.rs
+alloc_scan: clean (10 file(s))
+alloc_scan: clean (10 file(s))
+self-test: OK (44 allocating constructs flagged, also beside conditional ghost contracts in both modes; cfg(test) registration controls; 26 real sources clean in both modes)
+cap lint positive/negative controls passed
+cap lint clean: 9 source files, all six configured caps
+12 frozen hashes match; allocation scanner clean; pinned ghost vstd/alloc cache configuration
+No signed production call-graph audit or Verus theorem is claimed.
