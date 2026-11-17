@@ -16,3 +16,8 @@ policy-draft/probes/glycin-runner/target/
 policy-draft/probes/glycin-runner/src/glycin_png.rs
 __pycache__/
 *.pyc
+
+# crash inputs against third-party crates; kept local until the reporting decision
+# (probes_def.py constructs plte-len-13 and dims-65535-square-tiny-data; results-glycin.json holds all inputs as hex)
+policy-draft/probes/probes_def.py
+policy-draft/probes/results-glycin.json
