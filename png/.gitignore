@@ -18,6 +18,8 @@ __pycache__/
 *.pyc
 
 # crash inputs against third-party crates; kept local until the reporting decision
-# (probes_def.py constructs plte-len-13 and dims-65535-square-tiny-data; results-glycin.json holds all inputs as hex)
-policy-draft/probes/probes_def.py
+# (probes_crash_private.py constructs plte-len-13 and dims-65535-square-tiny-data, spliced in by probes_def.py;
+# probes_def_full_local.py is the old full file; results-glycin.json holds all inputs as hex)
+policy-draft/probes/probes_crash_private.py
+policy-draft/probes/probes_def_full_local.py
 policy-draft/probes/results-glycin.json
