@@ -843,8 +843,18 @@ pub fn try_decode_still(b: &[u8]) -> (r: Result<Still, TryError>)
 /// examined. `Req = [(Canvas, 4·W·H), (LzwTable, 20_480)]` when G2–G4 pass.
 pub fn try_decode_still_with_policy(b: &[u8], p: Profile) -> (r: Result<(Still, bool), TryError>)
     ensures still_result(b@,crate::policy::profile_record(p),r),T13_still(b@,crate::policy::profile_record(p),r),
+        p==Profile::Strict && r is Ok ==> !r.unwrap().1,
+        crate::policy_proofs::obligation_r_still_result(b@,crate::policy::profile_record(p),r),
 {
-    still_with(b, p.policy())
+    let r=still_with(b, p.policy());
+    proof {
+        crate::policy_proofs::lemma_obligation_r_still_result(b@,crate::policy::profile_record(p),r);
+        if p==Profile::Strict {
+            crate::policy::lemma_profile_records();
+            crate::policy_proofs::lemma_still_no_recovery(b@,crate::policy::profile_record(p));
+        }
+    }
+    r
 }
 
 /// Test-only: the still entry point for an arbitrary record.
@@ -1115,6 +1125,18 @@ proof fn lemma_T13_still(b:Seq<u8>,p:Policy,r:Result<(Still,bool),TryError>)
     hide(crate::frame_model::ms);
     crate::pixel_model::lemma_ms_pixels(b,p);
 }
+/// Expose the profiled call's exact model observation without opening its
+/// closed allocation-aware result predicate in another proof module.
+pub proof fn lemma_still_policy_observation(b:Seq<u8>,p:Policy,r:Result<(Still,bool),TryError>)
+    requires still_result(b,p,r),
+    ensures match r {
+        Ok((s,recovered))=>crate::frame_model::ms(b,p)==Some(Ok(crate::frame_model::StillImage {
+            width:s.width as int,height:s.height as int,rgba:s.rgba@,recovered})),
+        Err(TryError::Format(e))=>crate::frame_model::ms(b,p)==Some(Err(e)),
+        Err(TryError::OutOfMemory(_))=>crate::model::mh(b) is Ok,
+    },
+{}
+
 pub proof fn lemma_still_core_observation(b:Seq<u8>,r:Result<Still,TryError>)
     requires still_core_result(b,r),
     ensures match r {
@@ -2300,6 +2322,112 @@ proof fn lemma_next_observation(a:Frames,d:Frames,r:Option<Result<FrameView,TryE
 {
     if crate::alloc_guard::all_ok(a.log@.view()) {lemma_next_iter(a,d,r,n);}
     else {reveal(wf_p);reveal(next_result);}
+}
+
+pub closed spec fn strict_constructor_agrees(b:Seq<u8>,a:Result<Frames,TryError>,c:Result<Frames,TryError>)->bool {
+    match (a,c) {
+        (Ok(d),Ok(e))=>d.b@==b && e.b@==b && d.pol==crate::policy::profile_record(Profile::Strict)
+            && e.pol==d.pol && d.info==e.info && wf_p(d,-1) && wf_p(e,-1),
+        (Err(TryError::Format(x)),Err(TryError::Format(y)))=>x==y,
+        _=>false,
+    }
+}
+pub closed spec fn same_strict_input(a:Frames,c:Frames)->bool {
+    a.b@==c.b@ && a.pol==crate::policy::profile_record(Profile::Strict) && c.pol==a.pol
+}
+
+/// P-BRIDGE's constructor observation for two independently allocated calls.
+/// Neither decoder's private canvas or reservation identity is compared.
+pub proof fn theorem_strict_constructor_calls(b:Seq<u8>,a:Result<Frames,TryError>,c:Result<Frames,TryError>)
+    requires constructor_result(b,crate::policy::profile_record(Profile::Strict),false,a),
+        constructor_result(b,crate::policy::profile_record(Profile::Strict),false,c),
+        !(a is Err && a->Err_0 is OutOfMemory),!(c is Err && c->Err_0 is OutOfMemory),
+    ensures strict_constructor_agrees(b,a,c),
+{
+    hide(crate::model::mp);hide(crate::model::mh);
+    reveal(constructor_result);reveal(constructor_ok);
+}
+
+pub closed spec fn conservative_pair_input(a:Frames,c:Frames)->bool {
+    a.b@==c.b@ && a.pol==crate::policy::profile_record(Profile::Strict) && crate::conservative::conservative(c.pol)
+}
+pub closed spec fn conservative_construction_agrees(a:Result<Frames,TryError>,c:Result<Frames,TryError>)->bool {
+    match (a,c) {(Ok(d),Ok(e))=>d.info==e.info && conservative_pair_input(d,e) && wf_p(d,-1) && wf_p(e,-1),_=>false}
+}
+pub proof fn theorem_conservative_constructor_calls(b:Seq<u8>,p:Policy,a:Result<Frames,TryError>,c:Result<Frames,TryError>)
+    requires crate::conservative::conservative(p),
+        constructor_result(b,crate::policy::profile_record(Profile::Strict),false,a),a is Ok,
+        constructor_result(b,p,false,c),!(c is Err && c->Err_0 is OutOfMemory),
+    ensures conservative_construction_agrees(a,c),
+{
+    hide(crate::model::mp);hide(crate::model::mh);
+    reveal(constructor_result);reveal(constructor_ok);
+    crate::policy::lemma_profile_records();
+    crate::conservative::lemma_initial_simulation(b,p);
+}
+
+pub open spec fn same_frame_observation(a:Option<Result<FrameView,TryError>>,c:Option<Result<FrameView,TryError>>)->bool {
+    match (a,c) {
+        (None,None)=>true,
+        (Some(Err(TryError::Format(e))),Some(Err(TryError::Format(f))))=>e==f,
+        (Some(Ok(v)),Some(Ok(w)))=>v.rgba@==w.rgba@ && v.rect==w.rect && v.delay_cs==w.delay_cs
+            && v.disposal==w.disposal && v.user_input==w.user_input && v.transparent==w.transparent
+            && v.interlaced==w.interlaced && !v.recovered && !w.recovered,
+        _=>false,
+    }
+}
+
+/// Two Strict iterators at the same model call index expose identical frames,
+/// including every metadata field. The real next_frame contract supplies
+/// iter_result while all previous requests succeeded (iterator_observation).
+pub proof fn theorem_strict_iterator_calls(a:Frames,c:Frames,k:nat,
+    r:Option<Result<FrameView,TryError>>,s:Option<Result<FrameView,TryError>>)
+    requires same_strict_input(a,c),
+        iter_result(a,k,r),iter_result(c,k,s),
+        !(r is Some && r.unwrap() is Err && r.unwrap()->Err_0 is OutOfMemory),
+        !(s is Some && s.unwrap() is Err && s.unwrap()->Err_0 is OutOfMemory),
+    ensures same_frame_observation(r,s),
+{
+    hide(crate::frame_model::mf);
+    reveal(iter_result);
+    crate::policy::lemma_profile_records();
+    crate::policy_proofs::theorem_strict_no_recovery(a.b@);
+}
+
+/// R-prefix on two actual iterator-result contracts. Only Strict's delivered
+/// frames are compared; the conservative iterator may continue after Strict's
+/// eventual format error. Prior allocations succeeded when iter_result holds.
+pub proof fn theorem_conservative_iterator_frame(a:Frames,c:Frames,k:nat,
+    r:Option<Result<FrameView,TryError>>,s:Option<Result<FrameView,TryError>>)
+    requires conservative_pair_input(a,c),iter_result(a,k,r),iter_result(c,k,s),r is Some,r.unwrap() is Ok,
+        !(s is Some && s.unwrap() is Err && s.unwrap()->Err_0 is OutOfMemory),
+    ensures s is Some,s.unwrap() is Ok,same_frame_observation(r,s),
+{
+    hide(crate::frame_model::mf);
+    reveal(iter_result);
+    crate::policy::lemma_profile_records();
+    let strict=crate::frame_model::mf(a.b@,a.pol).unwrap();
+    crate::conservative::theorem_r_prefix(a.b@,c.pol,strict.0,strict.1);
+}
+
+pub closed spec fn strict_stream_accepted(a:Frames)->bool {
+    match crate::frame_model::mf(a.b@,a.pol) {Ok((_,s))=>s.end==crate::frame_model::End::Trailer,_=>false}
+}
+
+/// R-stream also fixes the terminating call when Strict reaches a Trailer.
+pub proof fn theorem_conservative_iterator_stream(a:Frames,c:Frames,k:nat,
+    r:Option<Result<FrameView,TryError>>,s:Option<Result<FrameView,TryError>>)
+    requires conservative_pair_input(a,c),iter_result(a,k,r),iter_result(c,k,s),
+        strict_stream_accepted(a),
+        !(r is Some && r.unwrap() is Err && r.unwrap()->Err_0 is OutOfMemory),
+        !(s is Some && s.unwrap() is Err && s.unwrap()->Err_0 is OutOfMemory),
+    ensures same_frame_observation(r,s),
+{
+    hide(crate::frame_model::mf);
+    reveal(iter_result);
+    crate::policy::lemma_profile_records();
+    let strict=crate::frame_model::mf(a.b@,a.pol).unwrap();
+    crate::conservative::theorem_r_stream(a.b@,c.pol,strict.0,strict.1);
 }
 
 pub closed spec fn info_result(d:Frames,i:Info)->bool {

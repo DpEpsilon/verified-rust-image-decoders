@@ -1,0 +1,13 @@
+scanned: chain.rs compose.rs compose_new.rs conservative.rs dictionary.rs emission_compose.rs frame_model.rs gif.rs interlace.rs lib.rs limits.rs lzw.rs lzw_model.rs mc.rs model.rs model_vectors.rs parse.rs pixel_model.rs policy.rs policy_model.rs policy_proofs.rs prefix_model.rs refinement.rs representation_domain.rs string_model.rs work_model.rs (alloc_guard/ and cfg(test)-only module subtrees excluded)
+alloc_scan --allow-reserved: clean
+alloc_scan (no suppression): clean
+guard reservation call sites: Canvas 1, LzwTable 1, Saved 1 (expected 1, 1, 1); try_zeroed calls in production: 3 (expected 3)
+alloc_guard/mod.rs hash OK
+alloc_guard/sites.rs hash OK
+--- scanner self-test ---
+self-test: OK (44 allocating constructs flagged, also beside conditional ghost contracts in both modes; cfg(test) registration controls; 26 real sources clean in both modes)
+symbolic caps: clean
+symbolic caps: scratch-copy positive/negative controls passed
+negative gate self-test OK: exec v.push(x) beside ghost pushes flagged
+negative gate self-test OK: exec vec! flagged
+OK

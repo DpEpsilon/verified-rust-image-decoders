@@ -2417,3 +2417,247 @@ made both main run 644 and unchanged boundary run 645 green. No assumptions,
 admissions, external bodies, unsafe code, new axioms, solver-limit increases,
 frozen/guard edits or commits were introduced. ERRATA.md and RELEASE-GATES.md
 were left to the concurrent documentation agent. No background jobs were started.
+
+## P1 first checkpoint: L-PREFIX and Strict call bridges (Sol, 2026-11-17)
+
+Run 657 verifies **755 functions, 0 errors**, from baseline run 644's 729.
+Runs 647-657 are serial, through gif/verify.sh, CARGO_BUILD_JOBS=1, each under
+timeout 25m, and are recorded in RUNLOG.tsv. Run 650 first closed L-PREFIX at
+741; run 654 closed the initial Strict observation lemmas at 751; run 656
+closed the constructor/iterator bridges at 753. Pre-edit backups are under
+runs/sol-20261117/p1-before/. No commits or background jobs were started.
+
+### L-PREFIX, including unequal input lengths and the real-call corollary
+
+src/prefix_model.rs:162 theorem_successful_still_prefix proves the cross-input
+statement for every value of the implemented Policy record, not just Strict:
+if frame_model::ms(b,p)=Some(Ok(s)), c agrees with b before first_terminator(b,p),
+and c.len()<=MAX_INPUT, then frame_model::ms(c,p)=Some(Ok(s)). The equality
+includes width, height, every RGBA byte and recovered. first_terminator (:153)
+is MB's post-image cursor, fixed by the whole structural scan before LZW.
+The Strict specialization is theorem_l_prefix (:189).
+
+The supporting lemmas transfer a successful header, sub-block scan, extension,
+image descriptor/data scan, MP walk, MB walk and frame draw to the replacement
+input. lemma_mb (:92) and lemma_mp_walk (:113) allow different fuel on the two
+inputs; the replacement needs only the bytes through the image terminator.
+lemma_image (:75) also proves the active table ends before the terminator,
+including the global-table case. No same-length premise or fixed suffix is
+used. This discharges L-PREFIX against the existing integrated core model.
+
+policy_proofs::theorem_two_still_calls_prefix (src/policy_proofs.rs:160) lifts
+that result through the exact contracts of two real try_decode_still calls:
+if the first succeeds and the replacement does not return OutOfMemory, the
+replacement succeeds with identical dimensions and every RGBA byte. The
+replacement's allocation failure remains permitted, as the manifest requires.
+witness_two_colour_prefix (prefix_model.rs:200) instantiates the universal
+statement from the frozen two-colour-m2 success witness, with terminator
+cursor 34, arbitrary replacement suffix and the authored white/black/white
+RGBA. This witness does not obtain expected pixels from the executable.
+
+### Strict bridge: exact current scope
+
+policy_proofs::theorem_strict_two_still_calls (:146) proves equality of two
+independent non-OutOfMemory results using the actual still_core_result and
+still_result contracts: exact format error, or equal dimensions/every RGBA
+byte and false recovered. gif::lemma_still_policy_observation (gif.rs:1128)
+exports the profiled model observation without weakening or opening a closed
+predicate outside its module. The actual try_decode_still_with_policy body
+now additionally ensures that a successful Strict result has false recovered
+(gif.rs:846), and proves that fact on its real return path.
+
+gif::theorem_strict_constructor_calls (gif.rs:2339) proves that two non-OOM
+constructor results with the Strict contracts have the same format error or
+Info and both establish wf_p(-1). gif::theorem_strict_iterator_calls (:2363)
+proves equality of every view field at the same model call index, including
+false recovered, and equality of terminal format errors/None. Its premises
+are iter_result for both actual calls and no OOM in either current result;
+next_frame's existing iterator_observation supplies iter_result when each
+decoder's prior allocation log is all successful. It does not claim equality
+after one decoder previously failed allocation while the other continued.
+
+policy_proofs::theorem_strict_no_recovery (:108) proves false recovered on
+successful Strict stills and every frame of Strict MF, on every input.
+lemma_no_e4 (:27) excludes E4 for any Strict LZW tail; lemma_reject_inside (:35)
+proves successful MB images are inside when frame_bounds=Reject. The same
+no-recovery argument applies to any implemented record with Reject bounds
+and Strict LZW tail. Despite its name, lemma_strict_tail_no_e4 is NOT L-TAIL:
+it excludes the E4 flag and does not characterize successful post-raster codes.
+
+theorem_strict_model_specialization (policy_proofs.rs:122) identifies the
+Strict profile with the existing record-indexed core MP/MS/MF specializations
+and the core strict_params ML observation, including false recovered. MH
+already has no Policy argument. This is a specialization bridge, not an
+independent transcription of OPTIONS.md. No separate policy_model.rs exists
+yet, so do not report the complete independent M*_p-to-core P-BRIDGE as closed.
+The real-call observational bridge and L-PREFIX are proved; the next model
+layer must preserve those theorems and add its own Strict bridge.
+
+### Validation and resume point
+
+runs/sol-20261117/p1-prefix-bridge-release-tests.log records exit 0 for
+cargo test --release -j1 --offline under nice -n 10: seven unit/report tests,
+seven conformance functions (373 records), four allocation-fault tests, two
+new prefix/Strict-bridge tests and the 37,239-frame stress test pass. The new
+tests remove the Trailer, replace the suffix after byte 34 with every possible
+initial byte, compare every input cut through both Strict entry points, compare
+all iterator view fields and check the trailing-error/fused paths.
+p1-prefix-bridge-audit-self-test.log records exit 0 for audit_alloc.sh
+--self-test, including the named-cap lint and its controls.
+p1-prefix-bridge-frozen-hashes.log records all 14 frozen hashes matching.
+
+Resume with the independent OPTIONS.md/policy_oracle.py transcription in a
+new policy_model.rs, reusing the independent string_model and compositor
+models but not deriving definitions from executable policy branches. Then
+prove its Strict bridge and connect it to the current record-indexed models.
+L-TAIL's successful-tail characterization, L-CONS at S1/S2/S3, P-R for RB and
+declared-conservative records, independent event traces/P-E and the final
+P-T9/P-UNIV packages remain unproved in this checkpoint. No policy counterexample
+or new erratum was found or claimed. No frozen, policy-draft, alloc_guard,
+ERRATA.md or RELEASE-GATES.md file was edited. No assume/admit/external_body,
+unsafe, new axiom or solver-limit increase was introduced. Tool versions are
+unchanged: Verus 0.2026.11.02.8bf68ee, vstd 0.0.0-2026-11-01-0251, rustc 1.99.1
+(58cf8f9c3 2026-10-13).
+
+## P1 R checkpoint: independent policy model, L-TAIL/L-CONS and P-R (Sol)
+
+Run 672 verifies **807 functions, 0 errors**. Runs 658-672 are serial through
+gif/verify.sh with CARGO_BUILD_JOBS=1 and timeout 25m, recorded in RUNLOG.tsv.
+Run 663 first closed the independent model/Strict bridge at 769; run 664
+closed the tail/string simulation at 778; run 668 closed the three model R
+forms at 790; run 669 added real-call R corollaries at 796; run 670 added
+value-specific inertness and S2 trace lemmas at 806; run 671 adds independent
+RecommendedBeta non-vacuity; run 672 explicitly excludes OutsideDomain from
+the conservative stream in theorem_r_prefix. Pre-continuation backups are under
+runs/sol-20261117/p1-model-before/. No background jobs or commits were started.
+This section supersedes the first checkpoint's independent-model/R residuals.
+
+### Independent model and full-record bridge
+
+New src/policy_model.rs transcribes OPTIONS.md/policy_oracle.py's implemented
+semantics: extension scope/duplicates/sizes/disposal, bounds and minimum-size
+checks, whole image-data scanning, missing/trailing tolerances, loop metadata,
+LZW via independent string_model::ST, compositor/disposal and explicit E1-E4
+sets. It reuses independent core header/sub-block/bit-field models and
+frame/compositor models; no executable parsing, dictionary or drawing function
+is called in its definitions. LzwParams and result-record types are shared
+data types, not executable transitions. mh directly reuses the independent
+header model because version=Known is the only implemented version value.
+The agreement proofs start at policy_model.rs:245, after the definitions.
+
+policy_model::theorem_parser_bridge (:274), theorem_lzw_bridge (:286),
+theorem_ms_bridge (:353) and theorem_mf_bridge (:402) connect the independent
+model to the existing record-indexed core models for every implemented Policy,
+not only profiles. theorem_strict_bridge (:415) now supplies the independent
+Strict bridge missing from the previous checkpoint, including identical
+observations and empty frame event sets. The existing real Strict-call bridges
+continue to verify. The independent dictionary bridge handles every integer
+minimum-size argument: inadmissible sizes yield the shared exact error; valid
+sizes use the already-proved ML=ST theorem.
+
+The implemented record has ten binary pixel fields, twelve singleton pixel
+fields and a binary loop_scan metadata field: 2,048 record values. The bridges
+quantify over all of them, including FirstSubBlockOnly. Compatibility values
+not present in those enums are outside this milestone and cannot be supplied
+to these Rust APIs. No enum or executable policy value was added or removed.
+
+### L-TAIL and modular L-CONS
+
+New src/conservative.rs:55 theorem_l_tail proves that a successful Strict
+post-raster ML tail emits no additional index, has E4=false and has an exact
+finite bit-read trace ending at its reported position. tail_trace (:21) checks
+every read at its current width and checks the final EOI's padding/no-extra-byte
+condition. lemma_tail_trace_shape (:33) proves Clear^j followed by EOI for
+j>=0. lemma_clear_tail_neutral (:50) proves Clear preserves q, output and the
+physical prefix/suffix storage; it changes only the control fields. The
+independent string dictionary drops unreachable entries on Clear, which is
+not a physical storage write. lemma_string_tail (:89) proves the corresponding
+index/event observation for the independent dictionary model.
+
+The simulation is modular rather than a new monolithic traced interpreter.
+lemma_s1_parser (:170) preserves every successful Strict parser segment,
+including each extension boundary. lemma_s2_step (:110) and theorem_s2_trace
+(:420) preserve the full independent string state at every pre-raster point
+and the first raster-complete point, including a prefix of a frame that later
+fails. lemma_lzw_simulation (:120) permits StopAtRaster to skip Strict's tail
+without comparing final bit position/dictionary. lemma_s3_render (:220)
+preserves the complete frame result, canvas, Saved, previous disposal and
+walk state, with an empty event set. lemma_call_simulation (:234) composes
+these successful call segments; lemma_stream_simulation (:300) inducts over
+the returned frame prefix. The equality relation is exact equality of the
+compared model records; final LZW control state is deliberately absent at S3.
+
+There is one pure-value inertness lemma for each declared value, at :372-411:
+lemma_clip_inert, lemma_disposal_keep_inert, lemma_last_wins_inert,
+lemma_image_only_inert, lemma_orphan_ignore_inert,
+lemma_extension_sizes_ignore_inert, lemma_checked_minimum_inert,
+lemma_missing_trailer_at_eof_inert and lemma_trailing_ignore_inert.
+lemma_pure_parser_steps (:158) proves their simultaneous successful-step
+inertness, so combinations are covered rather than inferred from testing.
+
+### P-R, models and actual public-call contracts
+
+conservative::conservative (:17) requires EverySubBlock metadata; every other
+implemented variant is one of the declared pure/tail values. This covers all
+1,024 combinations of Strict/RecommendedBeta pixel values. It excludes
+FirstSubBlockOnly, whose Strict-accepted metadata counterexamples are already
+in OPTIONS.md. theorem_recommended_beta_conservative (:368) proves RB and
+Strict satisfy this predicate. No new declaration or policy edit is needed.
+
+conservative::theorem_r_still (:276) proves identical accepted Still and false
+recovered, with an empty first-frame event set. theorem_r_prefix (:337) proves
+identical Info and every frame Strict returned before any error, false
+recovered and empty event sets, allowing later relaxed frames.
+theorem_r_stream (:356) additionally proves identical full frame sequence
+and Trailer when Strict's stream succeeds. Info equality includes version,
+background_index and aspect. The model theorems apply to every conservative
+record, not just RB. witness_recommended_beta_two_colour (:430) instantiates
+the result from the independently authored frozen white/black/white witness.
+
+policy_proofs::theorem_r_still_executable (policy_proofs.rs:175) lifts the
+still theorem through the real still_result contract, for every conservative
+record and every non-OOM result. theorem_recommended_beta_two_still_calls
+(:208) relates an actual successful core still result to an independently
+allocated non-OOM RB call. The actual try_decode_still_with_policy return
+path now ensures obligation_r_still_result (gif.rs:847), proved on that path.
+
+gif::theorem_conservative_constructor_calls (gif.rs:2357) proves identical
+Info and establishes both wf_p(-1) invariants when the Strict constructor
+succeeds and the relaxed constructor is not OOM.
+theorem_conservative_iterator_frame (:2400) lifts R-prefix to every returned
+FrameView field at the same call index. theorem_conservative_iterator_stream
+(:2418) also fixes termination for Strict-accepted streams. These use the actual
+iter_result contracts: iterator_observation supplies them while earlier
+allocation requests succeeded. Current OOM is excluded separately on each
+compared result. Nothing equates calls after one decoder previously failed
+allocation while the other continued; that is outside the manifest's R claim.
+
+### Validation and remaining work
+
+runs/sol-20261117/p1-r-release-tests.log records exit 0 for the required release
+test command under nice -n 10: seven unit/report tests, seven conformance
+functions (373 records), four allocation-fault tests, the two prefix/bridge
+tests, the new conservative-combination test and the 37,239-frame stress test
+pass. tests/policy_conservative.rs checks all 1,024 conservative records on
+six frozen inputs, including Clear after raster, disposal 3, raw header Info,
+multiple NETSCAPE loop sub-blocks and an error after a returned frame.
+p1-r-audit-self-test.log records exit 0, both pinned guard hashes, the three
+reservation sites, allocation-scanner controls and symbolic-cap controls.
+p1-r-frozen-hashes.log records all 14 frozen hashes matching.
+
+Resume at explicit executable P-E and final P-T9/P-UNIV packaging. The independent
+model already records exact event sets, lemma_events identifies E1/E4 and
+excludes E2/E3 for implemented field types, and theorem_mf_bridge proves every
+model frame has recovered iff its event set is nonempty. A named actual-view
+observer/theorem connecting those event sets to iter_result is not yet added;
+do not report that final package as complete. The full-record semantic
+bridges are present, but no new named P-UNIV safety/allocation/work package
+was assembled in this checkpoint. Existing generic contracts are unchanged.
+Mandatory witness/mutation/allocation-audit release gates outside this task
+remain as previously recorded. No new counterexample or erratum was found.
+
+No frozen, policy-draft, alloc_guard, ERRATA.md or RELEASE-GATES.md file was
+edited. No assume/admit/external_body, unsafe, new axiom or solver-limit
+increase was introduced. All new model/simulation modules are proof-only.
+Versions remain Verus 0.2026.11.02.8bf68ee, vstd 0.0.0-2026-11-01-0251,
+rustc 1.99.1 (58cf8f9c3 2026-10-13).

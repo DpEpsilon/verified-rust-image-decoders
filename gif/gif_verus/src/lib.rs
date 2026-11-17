@@ -26,6 +26,7 @@ mod compose_new;
 mod dictionary;
 mod emission_compose;
 mod frame_model;
+mod prefix_model;
 mod work_model;
 mod pixel_model;
 mod model_vectors;
@@ -40,6 +41,11 @@ mod representation_domain;
 #[cfg(verus_only)]
 mod string_model;
 pub mod policy;
+mod policy_proofs;
+#[cfg(verus_only)]
+mod policy_model;
+#[cfg(verus_only)]
+mod conservative;
 
 pub use alloc_guard::sites::TryError;
 pub use alloc_guard::{AllocSite, OutOfMemory};
