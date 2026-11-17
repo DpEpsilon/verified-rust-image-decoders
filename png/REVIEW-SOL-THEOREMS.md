@@ -54,3 +54,24 @@ The independent inflate-model design (canonical codewords, independently appende
 ## Checks and limits
 
 All Python experiments ran under `python3 -I -B` with bounded timeouts; no repository file edited. Recomputed all 796 vectors (796 agree); the cap-sensitive set is 12 Strict and 6 profile records (blind doubling of `MAX_DIMENSION` above the wire maximum adds a thirteenth, `ihdr/width-2^31`, which violates `caps_ok` and is not a permitted change: state the perturbation domain); 586 Strict records exercise 57 of 62 errors; 1,163 vector streams plus 200 random and 200 corrupted agree with zlib (three declared window rule differences); `check_bounds.py` passes; 1,089 small Adam7 bijections and 49 large exact pass-area sums; all 65,536 16-bit rounding inputs; filters for all five types and distances 1,2,3,4,6,8; OVER over all 65,536 alpha pairs; Kraft against exact sums on 5,461 small length vectors; `validate.py --no-large`: 773 and 372 pass. Not verified: Verus, compiling the crates, mutation tests, incumbent binaries, `check_over.py`'s full 4.26-billion-tuple run, the real corpus pass, fault injection, the production audit, any freeze command. A focused re-review should check the corrected Huffman domains, the full Segments contract and accounting boundary, the new empty-fdAT vectors, the chosen error/prefix rules and the revised cap-independent freeze procedure before Stage 1 is declared ready.
+
+## Addendum: focused re-review (2026-11-17)
+
+Reviewer: GPT-6.1 Sol, read-only, on the corrected manifest (commit `74f31c7`). Saved by the coordinator.
+
+**Verdict: ready to freeze Stage 1 after one statement-level fix** (re-review finding 1 below, applied in the commit that adds this addendum). Owner approval is a separate gate; this verdict does not grant it.
+
+Re-review findings:
+
+1. **Medium: the work counters overlapped.** The step accounting made every concrete loop body increment `steps`, T-SEG let `read` loop over empty segments, yet T12 bounded `steps(inflate_zlib_*)` by the segment-free `C_IN·|Z| + C_OUT·k + C_INFL_FIXED` and charged segment traversal again through `seg_steps`; `PLAN.md` M2 repeated the segment-free bound. One million empty segments followed by an 8-byte valid empty zlib stream cost 1,000,001 segment-advance iterations against a stated bound of 8,192. Applied: disjoint counters `core_steps` (every loop body except the reader's segment-advance iterations) and `seg_steps` (those iterations), total work their sum; T12 states `core_steps ≤ C_IN·|Z| + C_OUT·k + C_INFL_FIXED` and `seg_steps ≤ C_SEG·(seg_count() + 1)`, the `+ 1` being the advance past the final segment that reports end of input; the PNG discharge charges 12 container bytes per chunk, with the worked case (12,000,065-byte PNG, 1,000,001 segment steps, integrated still bound 24,576,204,800 steps). No decoding rule changed.
+2. **Low (Stage 2 only): the Stage-2 freeze archives `validate.py` without its dependency closure** (the probes modules and result files, three draft vector directories). Applied as a note in `REVIEW-BRIEF.md`: `policy-frozen/validate.py` is an archived script, not a reproducible entry point; Stage 2 must preserve and hash the closure or pin the external evidence separately. Open Stage-2 item.
+
+Status of the first review's findings:
+
+- Closed: 1, 2, 4, 5, 6, 7, 8, 9.
+- Finding 6: cap envelope verified. All 599 core records pass at both corners, at three interior tuples and at six mixed tuples. Each envelope minimum is tight: lowering it fails 1, 2, 2, 5, 3 and 2 records for input, dimension, output, frames, total pixels and ICC respectively. Upper corner: `MAX_OUTPUT = 429,496,728`, `MAX_ICC = 2^30`, `MAX_DIMENSION = 2^31 − 1`, `MAX_FRAMES = 2^32 − 1`, `MAX_INPUT = 2^60`, `MAX_TOTAL_PIXELS = 2^62`.
+- Finding 3: partially closed until re-review finding 1; closed by it.
+
+Status of the open questions: D3, D4 (follows the council), D5, D6–D13, D18–D20 and D23 closed or closed at statement level; D14–D16, D21 and D22 deferred to Stage 2; D17 a future implementation obligation.
+
+What the re-review ran: 810 of 810 vector expectations; 1,181 vector-stream comparisons with zlib, 200 random streams and 200 corruptions, zero mismatches; byte-identical in-memory regeneration of all three vector files; `validate.py --no-large` figures reproduced (Strict bridge 784 pass, 0 fail; obligation R 375 inputs, 0 violations; RecommendedBeta 224 of 287; fitted 726; held-out 394 and 397; R4 fallback 42; frame errors 170). Not run: the freeze commands, exhaustive OVER, large-probe validation, the corpus pass, Rust compilation, verifier proofs, mutations, fault injection, the production audit.
