@@ -1,0 +1,931 @@
+    Checking dib_verus v0.4.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/target/debug/incremental/dib_verus-06w62e4yww0g5/s-ho8l663y57-164un9u-working`
+
+warning: Verus does not currently support autoderive Clone impl when the clone is not a copy; continuing, but without adding a specification for the derived Clone impl
+   --> src/dib.rs:170:17
+    |
+170 | #[derive(Debug, Clone, PartialEq, Eq)]
+    |                 ^^^^^
+    |
+    = help: to suppress this warning, use `#[verifier::allow(autoderive_clone_without_spec)]` on the surrounding function, datatype, or module or `#![verifier::allow(autoderive_clone_without_spec)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+   --> src/model_vectors.rs:445:5
+    |
+445 |     reveal(crate::model::bitfield_channel);
+    |     ^^^^^^
+    |
+    = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+   --> src/model_vectors.rs:447:5
+    |
+447 |     reveal(crate::model::rgb555_channel);
+    |     ^^^^^^
+    |
+    = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+   --> src/model_vectors.rs:537:5
+    |
+537 |     reveal(crate::model::bitfield_channel);
+    |     ^^^^^^
+    |
+    = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+   --> src/model_vectors.rs:539:5
+    |
+539 |     reveal(crate::model::rgb555_channel);
+    |     ^^^^^^
+    |
+    = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+   --> src/model_vectors.rs:629:5
+    |
+629 |     reveal(crate::model::bitfield_channel);
+    |     ^^^^^^
+    |
+    = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+   --> src/model_vectors.rs:631:5
+    |
+631 |     reveal(crate::model::rgb555_channel);
+    |     ^^^^^^
+    |
+    = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+   --> src/model_vectors.rs:757:5
+    |
+757 |     reveal(crate::model::bitfield_channel);
+    |     ^^^^^^
+    |
+    = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+   --> src/model_vectors.rs:759:5
+    |
+759 |     reveal(crate::model::rgb555_channel);
+    |     ^^^^^^
+    |
+    = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:1054:5
+     |
+1054 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:1056:5
+     |
+1056 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:1147:5
+     |
+1147 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:1149:5
+     |
+1149 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:1240:5
+     |
+1240 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:1242:5
+     |
+1242 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:1345:5
+     |
+1345 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:1347:5
+     |
+1347 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:1443:5
+     |
+1443 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:1445:5
+     |
+1445 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:1552:5
+     |
+1552 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:1554:5
+     |
+1554 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:2371:5
+     |
+2371 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:2373:5
+     |
+2373 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:2463:5
+     |
+2463 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:2465:5
+     |
+2465 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:2614:5
+     |
+2614 |     reveal(crate::model::mr_raw);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:2616:5
+     |
+2616 |     reveal(crate::model::raw_writes);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:2741:5
+     |
+2741 |     reveal(crate::model::mr_raw);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:2743:5
+     |
+2743 |     reveal(crate::model::raw_writes);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:2952:5
+     |
+2952 |     reveal(crate::model::mr_raw);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:2954:5
+     |
+2954 |     reveal(crate::model::raw_writes);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:3856:5
+     |
+3856 |     reveal(crate::model::mr_raw);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:3858:5
+     |
+3858 |     reveal(crate::model::raw_writes);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:4037:5
+     |
+4037 |     reveal(crate::model::mr_raw);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:4039:5
+     |
+4039 |     reveal(crate::model::raw_writes);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:4201:5
+     |
+4201 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:4203:5
+     |
+4203 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:5693:5
+     |
+5693 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:5695:5
+     |
+5695 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:5865:5
+     |
+5865 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:5867:5
+     |
+5867 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:5979:5
+     |
+5979 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:5981:5
+     |
+5981 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:6092:5
+     |
+6092 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:6094:5
+     |
+6094 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:6195:5
+     |
+6195 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:6197:5
+     |
+6197 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:6300:5
+     |
+6300 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:6302:5
+     |
+6302 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:6444:5
+     |
+6444 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:6446:5
+     |
+6446 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:6567:5
+     |
+6567 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:6569:5
+     |
+6569 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:6660:5
+     |
+6660 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:6662:5
+     |
+6662 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:6754:5
+     |
+6754 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:6756:5
+     |
+6756 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:6871:5
+     |
+6871 |     reveal(crate::model::mr_raw);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:6873:5
+     |
+6873 |     reveal(crate::model::raw_writes);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:7628:5
+     |
+7628 |     reveal(crate::model::bitfield_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:7630:5
+     |
+7630 |     reveal(crate::model::rgb555_channel);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:7785:5
+     |
+7785 |     reveal(crate::model::mr_raw);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:7787:5
+     |
+7787 |     reveal(crate::model::raw_writes);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:8025:5
+     |
+8025 |     reveal(crate::model::mr_raw);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:8027:5
+     |
+8027 |     reveal(crate::model::raw_writes);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:8286:5
+     |
+8286 |     reveal(crate::model::mr_raw);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:8288:5
+     |
+8288 |     reveal(crate::model::raw_writes);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:9597:5
+     |
+9597 |     reveal(crate::model::mr_raw);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:9599:5
+     |
+9599 |     reveal(crate::model::raw_writes);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:9744:5
+     |
+9744 |     reveal(crate::model::mr_raw);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:9746:5
+     |
+9746 |     reveal(crate::model::raw_writes);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:9891:5
+     |
+9891 |     reveal(crate::model::mr_raw);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/model_vectors.rs:9893:5
+     |
+9893 |     reveal(crate::model::raw_writes);
+     |     ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+     --> src/model_vectors.rs:10066:5
+      |
+10066 |     reveal(crate::model::mr_raw);
+      |     ^^^^^^
+      |
+      = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+     --> src/model_vectors.rs:10068:5
+      |
+10068 |     reveal(crate::model::raw_writes);
+      |     ^^^^^^
+      |
+      = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+     --> src/model_vectors.rs:10242:5
+      |
+10242 |     reveal(crate::model::mr_raw);
+      |     ^^^^^^
+      |
+      = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+     --> src/model_vectors.rs:10244:5
+      |
+10244 |     reveal(crate::model::raw_writes);
+      |     ^^^^^^
+      |
+      = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+     --> src/model_vectors.rs:10390:5
+      |
+10390 |     reveal(crate::model::mr_raw);
+      |     ^^^^^^
+      |
+      = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+     --> src/model_vectors.rs:10392:5
+      |
+10392 |     reveal(crate::model::raw_writes);
+      |     ^^^^^^
+      |
+      = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+     --> src/model_vectors.rs:10649:5
+      |
+10649 |     reveal(crate::model::mr_raw);
+      |     ^^^^^^
+      |
+      = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+     --> src/model_vectors.rs:10651:5
+      |
+10651 |     reveal(crate::model::raw_writes);
+      |     ^^^^^^
+      |
+      = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+warning: this reveal/fuel statement has no effect because no verification condition in this module depends on this function
+    --> src/dib.rs:3212:13
+     |
+3212 |             reveal(crate::model::r6r7_policy_err);
+     |             ^^^^^^
+     |
+     = help: to suppress this warning, use `#[verifier::allow(dead_reveal)]` on the surrounding function, datatype, or module or `#![verifier::allow(dead_reveal)]` in the module or crate
+
+note: automatically chose triggers for this expression:
+   --> src/alloc_guard/mod.rs:108:5
+    |
+108 |     forall|j: int| 0 <= j < l.len() ==> l[j].2
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/alloc_guard/mod.rs:108:41
+    |
+108 |     forall|j: int| 0 <= j < l.len() ==> l[j].2
+    |                                         ^^^^
+
+note: automatically chose triggers for this expression:
+  --> src/alloc_guard/sites.rs:89:16
+   |
+89 |             && (forall|j: int| 0 <= j < l.len() - 1 ==> l[j].2)
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+  --> src/alloc_guard/sites.rs:89:57
+   |
+89 |             && (forall|j: int| 0 <= j < l.len() - 1 ==> l[j].2)
+   |                                                         ^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/model.rs:2429:9
+     |
+2429 |         forall|m: MHRecord| #[trigger] mh(b, mode) == Ok(m) ==> mh_bounds(m),
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/model.rs:2429:65
+     |
+2429 |         forall|m: MHRecord| #[trigger] mh(b, mode) == Ok(m) ==> mh_bounds(m),
+     |                                                                 ^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/model.rs:2431:5
+     |
+2431 |     assert forall|m: MHRecord| #[trigger] mh(b, mode) == Ok(m) implies mh_bounds(m) by {
+     |     ^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/model.rs:2431:72
+     |
+2431 |     assert forall|m: MHRecord| #[trigger] mh(b, mode) == Ok(m) implies mh_bounds(m) by {
+     |                                                                        ^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/dib.rs:3688:16
+     |
+3688 |             && (forall|j: int| 0 <= j < l.len() - 1 ==> l[j].2)
+     |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/dib.rs:3688:57
+     |
+3688 |             && (forall|j: int| 0 <= j < l.len() - 1 ==> l[j].2)
+     |                                                         ^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/dib.rs:3700:5
+     |
+3700 | /     forall|j: int| 0 <= j < req_dib(b, mode).len()
+3701 | |         ==> req_dib(b, mode)[j].1 <= crate::alloc_guard::MAX_BYTES
+     | |__________________________________________________________________^
+
+note:   trigger 1 of 1:
+    --> src/dib.rs:3701:13
+     |
+3701 |         ==> req_dib(b, mode)[j].1 <= crate::alloc_guard::MAX_BYTES
+     |             ^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/dib.rs:8579:5
+     |
+8579 | /     choose|m: crate::model::MHRecord| crate::model::mh_policy(b, bm, policy) == Ok(m)
+8580 | |         && hdr_matches(m, *h)
+     | |_____________________________^
+
+note:   trigger 1 of 1:
+    --> src/dib.rs:8580:12
+     |
+8580 |         && hdr_matches(m, *h)
+     |            ^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/dib.rs:8967:5
+     |
+8967 | /     forall|j: int| 0 <= j < req_dibp(b, bm, p).len()
+8968 | |         ==> req_dibp(b, bm, p)[j].1 <= crate::alloc_guard::MAX_BYTES
+     | |____________________________________________________________________^
+
+note:   trigger 1 of 1:
+    --> src/dib.rs:8968:13
+     |
+8968 |         ==> req_dibp(b, bm, p)[j].1 <= crate::alloc_guard::MAX_BYTES
+     |             ^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/dib.rs:8918:16
+     |
+8918 |             && (forall|j: int| 0 <= j < l.len() - 1 ==> l[j].2)
+     |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+    --> src/dib.rs:8918:57
+     |
+8918 |             && (forall|j: int| 0 <= j < l.len() - 1 ==> l[j].2)
+     |                                                         ^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/dib.rs:8184:19
+     |
+8184 |       let ghost m = choose|m: crate::model::MHRecord| crate::model::mh(bytes@, mode) == Ok(m)
+     |  ___________________^
+8185 | |         && hdr_matches(m, h);
+     | |____________________________^
+
+note:   trigger 1 of 1:
+    --> src/dib.rs:8185:12
+     |
+8185 |         && hdr_matches(m, h);
+     |            ^^^^^^^^^^^^^^^^^
+
+note: Verus printed one or more automatically chosen quantifier triggers
+      because it had low confidence in the chosen triggers.
+      To suppress these messages, do one of the following:
+        (1) manually annotate a single desired trigger using `#[trigger]`
+            (example: `forall|i: int, j: int| f(i) && #[trigger] g(i) && #[trigger] h(j)`),
+        (2) manually annotate multiple desired triggers using `#![trigger ...]`
+            (example: `forall|i: int| #![trigger f(i)] #![trigger g(i)] f(i) && g(i)`),
+        (3) accept the automatically chosen trigger using `#![auto]`
+            (example: `forall|i: int, j: int| #![auto] f(i) && g(i) && h(j)`)
+        (4) use the `--triggers-mode silent` command-line option to suppress all printing of triggers.
+      (Note: triggers are used by the underlying SMT theorem prover to instantiate quantifiers;
+      the theorem prover instantiates a quantifier whenever some expression matches the
+      pattern specified by one of the quantifier's triggers.)
+    --> src/dib.rs:8184:19
+     |
+8184 |       let ghost m = choose|m: crate::model::MHRecord| crate::model::mh(bytes@, mode) == Ok(m)
+     |  ___________________^
+8185 | |         && hdr_matches(m, h);
+     | |____________________________^
+
+verification results:: 1764 verified, 0 errors
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/target/debug/incremental/dib_verus-06w62e4yww0g5/s-ho8l75uyv1-15arzfc-working`
+
+warning: function `b_header_12_BareDib` should have a snake case name
+  --> src/model_vectors.rs:89:18
+   |
+89 | pub open spec fn b_header_12_BareDib() -> Seq<u8> {
+   |                  ^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `b_header_12_bare_dib`
+   |
+   = note: `#[warn(non_snake_case)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: function `agree_header_12_BareDib` should have a snake case name
+  --> src/model_vectors.rs:97:14
+   |
+97 | pub proof fn agree_header_12_BareDib()
+   |              ^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_header_12_bare_dib`
+
+warning: function `b_header_16_BareDib` should have a snake case name
+   --> src/model_vectors.rs:105:18
+    |
+105 | pub open spec fn b_header_16_BareDib() -> Seq<u8> {
+    |                  ^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `b_header_16_bare_dib`
+
+warning: function `agree_header_16_BareDib` should have a snake case name
+   --> src/model_vectors.rs:113:14
+    |
+113 | pub proof fn agree_header_16_BareDib()
+    |              ^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_header_16_bare_dib`
+
+warning: function `b_header_40_BareDib` should have a snake case name
+   --> src/model_vectors.rs:121:18
+    |
+121 | pub open spec fn b_header_40_BareDib() -> Seq<u8> {
+    |                  ^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `b_header_40_bare_dib`
+
+warning: function `agree_header_40_BareDib` should have a snake case name
+   --> src/model_vectors.rs:131:14
+    |
+131 | pub proof fn agree_header_40_BareDib()
+    |              ^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_header_40_bare_dib`
+
+warning: function `b_header_40_BmpFile` should have a snake case name
+   --> src/model_vectors.rs:139:18
+    |
+139 | pub open spec fn b_header_40_BmpFile() -> Seq<u8> {
+    |                  ^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `b_header_40_bmp_file`
+
+warning: function `agree_header_40_BmpFile` should have a snake case name
+   --> src/model_vectors.rs:150:14
+    |
+150 | pub proof fn agree_header_40_BmpFile()
+    |              ^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_header_40_bmp_file`
+
+warning: function `b_header_40_IcoEntryDib` should have a snake case name
+   --> src/model_vectors.rs:158:18
+    |
+158 | pub open spec fn b_header_40_IcoEntryDib() -> Seq<u8> {
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `b_header_40_ico_entry_dib`
+
+warning: function `agree_header_40_IcoEntryDib` should have a snake case name
+   --> src/model_vectors.rs:168:14
+    |
+168 | pub proof fn agree_header_40_IcoEntryDib()
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_header_40_ico_entry_dib`
+
+warning: function `b_header_52_BareDib` should have a snake case name
+   --> src/model_vectors.rs:176:18
+    |
+176 | pub open spec fn b_header_52_BareDib() -> Seq<u8> {
+    |                  ^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `b_header_52_bare_dib`
+
+warning: function `agree_header_52_BareDib` should have a snake case name
+   --> src/model_vectors.rs:187:14
+    |
+187 | pub proof fn agree_header_52_BareDib()
+    |              ^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_header_52_bare_dib`
+
+warning: function `b_header_56_BareDib` should have a snake case name
+   --> src/model_vectors.rs:195:18
+    |
+195 | pub open spec fn b_header_56_BareDib() -> Seq<u8> {
+    |                  ^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `b_header_56_bare_dib`
+
+warning: function `agree_header_56_BareDib` should have a snake case name
+   --> src/model_vectors.rs:206:14
+    |
+206 | pub proof fn agree_header_56_BareDib()
+    |              ^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_header_56_bare_dib`
+
+warning: function `b_header_64_BareDib` should have a snake case name
+   --> src/model_vectors.rs:214:18
+    |
+214 | pub open spec fn b_header_64_BareDib() -> Seq<u8> {
+    |                  ^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `b_header_64_bare_dib`
+
+warning: function `agree_header_64_BareDib` should have a snake case name
+   --> src/model_vectors.rs:226:14
+    |
+226 | pub proof fn agree_header_64_BareDib()
+    |              ^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_header_64_bare_dib`
+
+warning: function `b_header_108_BareDib` should have a snake case name
+   --> src/model_vectors.rs:234:18
+    |
+234 | pub open spec fn b_header_108_BareDib() -> Seq<u8> {
+    |                  ^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `b_header_108_bare_dib`
+
+warning: function `agree_header_108_BareDib` should have a snake case name
+   --> src/model_vectors.rs:250:14
+    |
+250 | pub proof fn agree_header_108_BareDib()
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_header_108_bare_dib`
+
+warning: function `b_header_124_BareDib` should have a snake case name
+   --> src/model_vectors.rs:258:18
+    |
+258 | pub open spec fn b_header_124_BareDib() -> Seq<u8> {
+    |                  ^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `b_header_124_bare_dib`
+
+warning: function `agree_header_124_BareDib` should have a snake case name
+   --> src/model_vectors.rs:275:14
+    |
+275 | pub proof fn agree_header_124_BareDib()
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `agree_header_124_bare_dib`
+
+warning: `dib_verus` (lib) generated 104 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1m 03s

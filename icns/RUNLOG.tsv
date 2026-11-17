@@ -268,3 +268,4 @@
 61	2026-11-14T11:05:35+00:00	exit=0	1s	E14 authoritative: Parsed handle on final source (model.rs doc reverted) [crate=icns_verus]		peak_rss_sum_mb=78	peak_rss_max_proc_mb=39:cargo
 62	2026-11-14T11:10:10+00:00	exit=0	264s	E14 authoritative clean full verify (Parsed handle, model.rs restored) [crate=icns_verus]	verification results:: 418 verified, 0 errors	peak_rss_sum_mb=1306	peak_rss_max_proc_mb=1036:rust_verify
 63	2026-11-14T11:43:02+00:00	exit=0	267s	E15: restore try_parse Format error clause + full-result T8 witness [crate=icns_verus]	verification results:: 418 verified, 0 errors	peak_rss_sum_mb=1289	peak_rss_max_proc_mb=1037:rust_verify
+64	2026-11-17T06:39:14+00:00	exit=0	281s	E16: owner-approved MAX_BYTES 1 GiB; unchanged core caps [crate=icns_verus]	verification results:: 418 verified, 0 errors	peak_rss_sum_mb=1296	peak_rss_max_proc_mb=1035:rust_verify

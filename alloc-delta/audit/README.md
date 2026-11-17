@@ -146,3 +146,21 @@ The seeded-core controls are uneven: eight for TGA, one for DIB, one for ICNS an
 - `controls/`: testcases (`legacy/`, `x/`), fixtures and their generators, cargo-based controls (`cargo/x8`, `x9`, `x10`), the seeding script and `run_controls.sh`.
 - `inventory/`: `capture.sh`, `compare.py`, the getenv shim, `KNOWN-ENV-PROBES.txt` and `run_inventory.sh`.
 - `runs/`: evidence.
+
+## E16 guard raise — 2026-11-17
+
+The shared production guard ceiling is now 1 GiB, SHA-256
+`add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137`;
+the five source-audit pins were updated. This supersedes the earlier statement
+that EXPECTED_MOD_SHA is unchanged; all EXPECTED_SITES_SHA pins are unchanged.
+The current four-core production evidence is `runs/20261117T065102Z/`, after
+regenerating the unsigned drafts with `tools/draft_all.sh`. Each draft changed
+only `source_hash`; entry sets/order/counts and empty reviewer fields are
+unchanged, with four matching updated PINS.sha256 lines. The run exits 1:
+DIB/TGA/ICNS only `allowlist-reviewer`, ICO additionally `dependency-contract`.
+Walks are unchanged at 421/712, 364/622, 351/638, 320/532 instances/edges;
+zero local codegen items are unreached. No allowlist was signed. This rerun
+supersedes the earlier authoritative E15 audit evidence for the current
+source, without deleting historical runs. Full hashes, source-hash changes,
+tests and pending ICO/DIB Verus replay are in `../ERRATA.md` E16. GIF's source
+self-test passes, but GIF still has no production call-graph configuration.

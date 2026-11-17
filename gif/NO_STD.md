@@ -4,7 +4,7 @@
 
 - `Cargo.toml`: `vstd = { version = "=0.0.0-2026-11-01-0251", default-features = false, features = ["alloc"] }`. Dev-dependencies (tests only): `serde_json`, and the crate itself with the feature `test-records`, which exposes record-level constructors for the two `@ImageCrateCompat-0.25.10` loop-count vectors; a consumer never enables it.
 - `src/lib.rs`: `#![no_std]`, `extern crate alloc;`. No `std::` path in any production module. `alloc::vec::Vec` is the only alloc type named outside the guard (`gif.rs`: the canvas, the table record and `Saved` it receives from the guard).
-- `src/alloc_guard/mod.rs`: byte-identical to the other cores, SHA-256 `26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7` (trusted items A-STD-1/2/4 as there).
+- `src/alloc_guard/mod.rs`: byte-identical to the other cores, SHA-256 `add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137` (trusted items A-STD-1/2/4 as there).
 - `src/alloc_guard/sites.rs`: GIF's own; SHA-256 `ba8f9fe5719341171767e5b932e1b8db973c8db487efa668ddfd138c2784b133`, pinned in `tools/audit_alloc.sh` (the only place the pin appears). It declares `AllocSite = Canvas | LzwTable | Saved` and `log_tied`; all three GIF reservations are byte-counted `try_zeroed` calls of the shared guard (G18, D4): `LzwTable` is one `try_zeroed(LzwTable, 20_480)` region, not a `Vec<LzwTable>`.
 - The decoder calls the guard outside `verus!` with `Tracked::assume_new()` for the log argument (the M1 code is not verified; M3/M5 replace those calls by `*_logged` functions that thread a real `AllocLog`).
 
@@ -40,3 +40,15 @@ cargo build --offline --lib --target x86_64-unknown-none
 cargo build --offline --lib --target thumbv7m-none-eabi
 cargo build --offline --lib --target i686-unknown-linux-gnu
 ```
+
+## Shared guard limit — 2026-11-17 (alloc-delta E16)
+
+The owner raised `MAX_BYTES` from 67,108,864 bytes (64 MiB) to 1,073,741,824
+bytes (1 GiB). The production `alloc_guard/mod.rs` SHA-256 is now
+`add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137`, byte-identical in
+DIB, TGA, ICNS, ICO and GIF. This supersedes earlier statements of the current
+guard hash or guard limit in this file; dated E6 results remain historical.
+This core's own caps remain unchanged. The guard raise does not authorize a
+core-cap raise: that needs the core's own erratum and re-verification.
+Re-verification and audit evidence is appended to `alloc-delta/ERRATA.md` E16;
+DIB verification is pending a sandbox RAM increase.

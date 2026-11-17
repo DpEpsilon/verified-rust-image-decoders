@@ -113,3 +113,15 @@ cargo test --offline --release -- --nocapture
   `x86_64-unknown-linux-gnu` only. 32-bit verification and behaviour are
   unchecked.
 - A `no_std` consumer supplies a `#[global_allocator]` and a `#[panic_handler]`.
+
+## Shared guard limit — 2026-11-17 (alloc-delta E16)
+
+The owner raised `MAX_BYTES` from 67,108,864 bytes (64 MiB) to 1,073,741,824
+bytes (1 GiB). The production `alloc_guard/mod.rs` SHA-256 is now
+`add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137`, byte-identical in
+DIB, TGA, ICNS, ICO and GIF. This supersedes earlier statements of the current
+guard hash or guard limit in this file; dated E6 results remain historical.
+This core's own caps remain unchanged. The guard raise does not authorize a
+core-cap raise: that needs the core's own erratum and re-verification.
+Re-verification and audit evidence is appended to `alloc-delta/ERRATA.md` E16;
+DIB verification is pending a sandbox RAM increase.

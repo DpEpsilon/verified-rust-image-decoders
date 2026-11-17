@@ -641,3 +641,186 @@ cannot be mutated through `entries()`/`bytes()`, that the `_logged` internals an
 the old `(bytes, entries)` decoders are not public, and that `spec_bytes`/
 `spec_entries`/`inv` are not callable outside the crate. The expected compiler
 error codes are in its `README.md`.
+
+## E16 — 2026-11-17: shared byte-reservation guard raised to 1 GiB (owner-approved)
+
+This entry amends frozen `SPEC.md` §4 (`MAX_BYTES = 67,108,864`) without
+editing SPEC.md, FREEZE.txt or any other frozen artifact. The owner approved
+`MAX_BYTES = 1,073,741,824` (`2^30`, 1 GiB), formerly 67,108,864 (`2^26`,
+64 MiB), on 2026-11-17. Only the constant and its value/erratum comment change
+in each guard. The five production copies remain byte-identical; the toy
+prototype has its own APIs and body and is changed independently.
+
+- Production `mod.rs` old SHA-256: `26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7`.
+- Production `mod.rs` new SHA-256: `add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137`.
+- Prototype `mod.rs` old SHA-256: `f8ac624bfa55e584761ce7462a9a6951b116cee19b4be6b214dcdcd403a64c12`.
+- Prototype `mod.rs` new SHA-256: `608e9fbd0e0eb20a015680f84ff9931817d77de278c00f37449d3db8243afec5`.
+
+PNG needs reservations of 512 MiB for the RGBA16 output of a 67,108,864-pixel
+(8192 × 8192) image; its filtered raw buffer also includes scanline overhead.
+The owner chose 1 GiB. `2^30` fits a 32-bit `usize` and is below a 32-bit
+`isize::MAX`. This raises the guard ceiling, not a decoder's accepted sizes.
+DIB, TGA, ICNS, ICO and GIF retain their 64 MiB output caps. Their proofs
+establish `4N <= MAX_BYTES` from their own caps; a larger guard constant weakens
+that obligation. Request ordering, the `1 <= n` lower bound, log sealing,
+error types, A-STD-1 through A-STD-4, `MAX_ROOM`, site enumerations and
+per-core cap values are unchanged. ICNS's and ICO's `sites.rs` refer to
+`MAX_BYTES` symbolically and need no edit; every `sites.rs` hash remains fixed.
+
+All six original `mod.rs` files were backed up under
+`audit/runs-backup-2026-11-17/`, preserving repository-relative paths. Active
+production audit-tool hash pins and current prose are updated. Earlier dated
+errata and historical audit runs are not rewritten. The `sol-repro/ed1.py`
+and `ed3.py` files are historical README/E6 editing scripts, not live hash
+checks, and remain unchanged. Allowlists remain unsigned: regeneration and
+its exact differences will be recorded below; nothing is signed.
+
+Re-verification proceeds one crate at a time with `CARGO_BUILD_JOBS=1` and a
+25-minute timeout: guard_proto, TGA, ICNS, ICO, GIF; DIB is explicitly deferred
+until the owner increases sandbox RAM. Baselines are guard_proto 45, TGA 974,
+ICNS 418, ICO 346, GIF 718 and DIB 1764 verified (all 0 errors). Results and
+audit evidence will be appended below. This entry does not claim completed
+re-verification or production audit assurance.
+
+**Baseline correction and first result.** The successful guard_proto baseline
+is **44**, not 45 (prototype RUNLOG run 143); 45 was a mistaken reading of
+a negative-check result. E16 run 149 verifies 44, 0 errors, unchanged.
+
+**Re-verification evidence before the RAM restart (2026-11-17).** Each run
+used the crate's documented `verify.sh` under `timeout --kill-after=30s 25m`
+with `CARGO_BUILD_JOBS=1`, sequentially. No proof, contract, assumption,
+`external_body` or solver-budget change was needed.
+
+| Crate | Successful baseline | E16 run | Verified before → after | Errors | Elapsed | Peak summed RSS |
+|---|---|---|---|---|---|---|
+| guard_proto | prototype 143 | prototype 149 | 44 → 44 | 0 | 86 s | see RUNLOG |
+| TGA | 232 | 233 | 974 → 974 | 0 | 40 s | see RUNLOG |
+| ICNS | 63 | 64 | 418 → 418 | 0 | 281 s | 1,296 MiB |
+| GIF | 625 | 626 | 718 → 718 | 0 | 33 s | 2,767 MiB |
+| ICO | 178 | pending RAM increase | 346 → pending | pending | — | — |
+| DIB | 557 | pending RAM increase | 1764 → pending | pending | — | — |
+
+The ICO command also verifies its changed DIB path dependency, so the
+coordinator explicitly deferred both ICO and DIB until the owner increases
+sandbox RAM. Neither run was started. Current source manifests (SHA-256 per
+`src/**/*.rs`, repository-relative filenames, excluding historic `.rs.*`
+snapshots) are kept in `audit/runs-backup-2026-11-17/*-current-source.sha256`.
+The completed verification runs cover the source represented by those
+manifests; the ICO/DIB manifests are snapshots, not verification evidence.
+
+**Release tests and fault injection.** All five production cores pass
+`nice -n 10 cargo test --offline --release -j1` with
+`CARGO_BUILD_JOBS=1` and a 25-minute timeout. The aggregate Rust harness test
+counts, excluding empty doctest suites, are DIB 8, TGA 13, ICNS 13, ICO 2 and
+GIF 18. Each core's allocation fault suite was also replayed explicitly with
+`--nocapture`, using the same release/offline/job/priority/timeout settings.
+DIB's serial unit test passes over 1,131 calls (302 core, 408 named-policy,
+66 custom-policy, 355 corpus; seven allocation schedules), with 820 allocating
+cases and a largest reservation of 64 MiB. TGA's 9 fault tests pass over 181
+inputs (120 allocate; largest reservation 64 MiB). ICNS's 12 fault tests pass
+over 111 cases (22 PreAlloc, 2 zero-element EntryList, 87 physical-allocation).
+ICO's serial fault test passes over 217 cases (120 parse, 97 decode; eight
+allocation schedules; 117 allocate). GIF's 4 fault tests pass, as does its
+37,239-frame film test in the full suite. Logs are in
+`audit/runs/20261117T064017Z-e16-tests/` (`*-all.log`, `*-fault.log`).
+
+An extra ordinary-cargo test attempt on the toy prototype failed before tests
+with four E0432 errors: its existing imports name Verus-erased spec functions
+(`log_tied`, `all_ok`, `fmt_part`, `req_of_log`, `marker_hex`) without
+`cfg(verus_only)` guards. These import files are unchanged by E16; no
+out-of-scope fix was applied. See `guard_proto-all.log`. The documented Verus
+verification of the prototype succeeds at 44/0 as recorded above.
+
+**Allowlist regeneration.** `audit/tools/draft_all.sh` converged after two
+iterations. Comparing both parsed TOML and textual diffs against the backups
+shows exactly one changed line per generated allowlist: `[meta].source_hash`.
+Entries, entry ordering, `required_roots`, toolchain/vstd/proc-macro pins and
+all other metadata are unchanged, including `reviewer = ""`. Entry totals
+remain DIB/TGA/ICNS/ICO 64/58/50/42. `allowlist/PINS.sha256` has exactly the
+four corresponding changed hash lines; `sha256sum -c --strict` passes.
+No allowlist was signed. The two ICO no-MIR drafting-rule messages are
+already admitted by the unchanged hand-written decisions; the final report
+adds no finding for them.
+
+| Core | Old source_hash | New source_hash |
+|---|---|---|
+| DIB | `1176feef4f943a58c0073ba25f27f53c00b40a14d7b8812321ee91adb45bf62d` | `80019ab8d2eceb5a8657e6e35eb41f5ea9bb81e7cc92dfbae9a09802104e09c9` |
+| TGA | `627a1646805bd453cb6a8cc602b677cc6095cd647b8257c92d0ec121f987ccf7` | `db50efd3846639e1d90a36f683ec4d433935cc507a59b8221a437817fd745f61` |
+| ICNS | `964a04253c9d01e65bb59ab17256e0a85378155c75e01442ff27b79e242d709c` | `cc58a3733f2000eb71cdfcb244ce66e1fab34da78b317b5aed8b0380a1a25e2f` |
+| ICO | `5e2660a5d6a7af5205ca07fa64cf63504173f66e6bdab839fca5027b9816a530` | `6c7d4e92f1c096e14449c821fe007befe42eb1a1672ebf6d4a2d6059ccb0af07` |
+
+**Production audit rerun.** `audit/run_audit.sh`, production release x86_64,
+used `CARGO_BUILD_JOBS=1`, `ALLOC_AUDIT_TIMEOUT=1500`, an outer 25-minute
+timeout and durable build output
+`/home/ws/.cache/verified-decoders-alloc-audit-e16` (no Verus invocation).
+The authoritative four-core run is `audit/runs/20261117T065102Z/`.
+It exits **1**, as required for unsigned drafts: DIB, TGA and ICNS have only
+`allowlist-reviewer`; ICO has `allowlist-reviewer` and `dependency-contract`
+because its same-run DIB report is unsigned. The DIB report inside the ICO
+build also has only `allowlist-reviewer`. These are the same findings as E15.
+Walk sizes are unchanged: DIB 421 instances / 712 edges; TGA 364 / 622;
+ICNS 351 / 638; ICO 320 / 532. Each reports zero codegen items not reached.
+There is no new unexplained allocation finding, and no production PASS or
+production assurance claim.
+
+The per-core audit wrappers were replayed too (DIB source lint with its
+controls; TGA/ICNS/ICO with `--self-test`). Source lint, unchanged `sites.rs`
+pins, the new `mod.rs` pins, scanner controls and negative gate controls all
+pass. Their invoked production audits give the same expected unsigned
+findings and make the wrappers exit 1, in runs `20261117T065332Z` (DIB),
+`20261117T065345Z` (TGA), `20261117T065359Z` (ICNS) and
+`20261117T065412Z` (ICO). Wrapper logs share the test-log directory above.
+`gif/tools/audit_alloc.sh --self-test` exits **0**: 44 allocating constructs
+are caught, 22 real sources are clean in both scanner modes, symbolic-cap
+controls pass, and executable `push`/`vec!` negative gate controls are caught.
+GIF still has no production call-graph audit configuration; E16 does not
+create one or close that release gate.
+
+`sha256sum -c --strict` passes for alloc-delta/FREEZE.txt (all four frozen
+documents) and GIF's complete freeze manifest, including THEOREMS.md. Frozen
+SPEC/THEOREMS/FREEZE texts, including the frozen-content copy in
+`gif/spec-draft/SPEC.md`, remain untouched; GIF E5 records their old guard
+ceiling as historical. Existing audit run directories were not rewritten or
+deleted. No target directory was removed, no commit was made by this worker,
+and no verification/build/test/background job remains running.
+
+**Remaining step.** After the owner increases RAM and explicitly authorizes
+continuation, recheck `ps`/available memory, run ICO and then DIB individually
+with their documented verify scripts, `CARGO_BUILD_JOBS=1` and 25-minute
+timeouts, compare against 346 and 1764, and append both results here. If either
+run is OOM-killed, stop rather than change contracts. The guard raise is not
+fully reverified until those runs succeed. PNG's concurrent owner-decided
+256 MiB RGBA8 and wire-limit per-side caps are separate from E16; PNG's own
+freeze and allocation-proof obligations remain in RELEASE-GATES.md item 1.
+
+**ICO and DIB replay after the RAM increase (2026-11-17).** Run one at a
+time, in the order DIB then ICO, each through the crate's documented
+`verify.sh` under `timeout --kill-after=30s 25m` with `CARGO_BUILD_JOBS=1`;
+`ps` showed no other cargo/verus/rustc job before either run and none after.
+No proof, contract, assumption, `external_body`, solver limit, source or audit
+file was changed.
+
+| Crate | Successful baseline | E16 run | Verified before → after | Errors | Elapsed | Peak summed RSS | Peak single proc |
+|---|---|---|---|---|---|---|---|
+| DIB | dib 557 | dib 558 | 1764 → 1764 | 0 | 65 s | 2,067 MiB | 1,520 MiB (rust_verify) |
+| ICO (plus DIB dependency) | ico 178 | ico 179 | 346 → 346 | 0 | 71 s | 2,195 MiB | 1,637 MiB (rust_verify) |
+
+DIB log: `dib/runs/558.log`, RUNLOG line
+`558  2026-11-17T07:02:41+00:00  exit=0  65s  E16: MAX_BYTES 1 GiB; full DIB replay after RAM increase [crate=dib_verus]  verification results:: 1764 verified, 0 errors`.
+ICO log: `ico/runs/179.log`. That single log contains two summaries, matching
+the dependency structure: the DIB dependency verifies `1764 verified, 0
+errors` (`179.log:805`) and the ICO crate verifies `346 verified, 0 errors`
+(`179.log:1133`). The ICO RUNLOG line records the ICO count only:
+`179  2026-11-17T07:04:17+00:00  exit=0  71s  E16: MAX_BYTES 1 GiB; full ICO and DIB dependency replay after RAM increase [crate=ico_verus]  verification results:: 346 verified, 0 errors`.
+Both counts equal the ICO run 178 baselines (346 and its DIB dependency
+1764), so the guard raise changed neither count.
+
+Machine memory at run time: `MemTotal` 344,657,132 kB and `MemAvailable`
+343,235,444 kB from `/proc/meminfo` (about 328.7 GiB and 327.3 GiB); the
+cgroup v1 limit `/sys/fs/cgroup/memory/memory.limit_in_bytes` was
+352,928,903,168 bytes (about 328.7 GiB); `SwapTotal` 0. Neither run
+approached the cgroup limit. `CARGO_BUILD_JOBS=1` and the runner's own
+`python3 -I ../tools/peakrss.py` wrapper measured the peaks. No run was
+OOM-killed or timed out; no target directory was removed and no commit was
+made. The guard raise is now re-verified for ICO and DIB; the unsigned audit
+allowlists remain unsigned and establish no production assurance.

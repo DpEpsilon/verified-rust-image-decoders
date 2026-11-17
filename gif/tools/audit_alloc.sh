@@ -40,7 +40,7 @@ status=0
 # PIN TO UPDATE when `alloc_guard/sites.rs` changes: EXPECTED_SITES_SHA below is
 # the only place the `sites.rs` hash appears. A deliberate edit of `sites.rs`
 # fails the gate until this one line is updated to the new `sha256sum`.
-EXPECTED_MOD_SHA=26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7
+EXPECTED_MOD_SHA=add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137
 EXPECTED_SITES_SHA=ba8f9fe5719341171767e5b932e1b8db973c8db487efa668ddfd138c2784b133
 
 # Capture the inventory's exit status: mapfile over process substitution would

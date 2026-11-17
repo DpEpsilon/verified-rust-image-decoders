@@ -1,0 +1,31 @@
+{
+  "tests": "/home/ws/projects/verified-decoders/alloc-delta/audit/runs/20261117T064017Z-e16-tests",
+  "audit_target": "/home/ws/.cache/verified-decoders-alloc-audit-e16",
+  "authoritative_production_audit": "/home/ws/projects/verified-decoders/alloc-delta/audit/runs/20261117T065102Z",
+  "pending_verification": [
+    "ico",
+    "dib"
+  ],
+  "completed_verification": {
+    "guard_proto": {
+      "run": 149,
+      "before": 44,
+      "after": 44
+    },
+    "tga": {
+      "run": 233,
+      "before": 974,
+      "after": 974
+    },
+    "icns": {
+      "run": 64,
+      "before": 418,
+      "after": 418
+    },
+    "gif": {
+      "run": 626,
+      "before": 718,
+      "after": 718
+    }
+  }
+}

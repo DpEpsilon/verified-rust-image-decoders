@@ -1,0 +1,14 @@
+draft iteration 1: changed=1
+draft iteration 2: changed=0
+PINS.sha256 rewritten:
+1eee5b9ebec9086a3e9ce7973606d6bf989f710be3e98673e2fcef09d2e53244  x86_64-unknown-linux-gnu/release/dib_verus.toml
+abef441ab25e4627a2832c5274ce69851e84293135b56ce6caa88d057701c6ea  x86_64-unknown-linux-gnu/release/icns_verus.toml
+e1a63c27d1b2edc987947e0f7f741a37f7d735a0e4c8d0f5ad72543e872208c5  x86_64-unknown-linux-gnu/release/ico_verus.toml
+ebb3de5f7c9b3618263b6ae6add75467701e9b255c4fd769e4393f42899709f1  x86_64-unknown-linux-gnu/release/tga_verus.toml
+-- dib_verus: not admitted by any drafting rule:
+-- tga_verus: not admitted by any drafting rule:
+-- icns_verus: not admitted by any drafting rule:
+-- ico_verus: not admitted by any drafting rule:
+draft_allowlist: 2 item(s) matched no rule and were NOT admitted:
+    ok [no-mir] dib_verus::dib::try_decode_with_steps <- crate::skeleton
+    ok [no-mir] dib_verus::dib::try_decode_with_steps_logged <- crate::ico::try_decode_entry_logged

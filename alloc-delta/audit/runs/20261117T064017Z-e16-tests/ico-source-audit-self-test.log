@@ -1,0 +1,26 @@
+scanned: ico.rs lib.rs model.rs model_vectors.rs witnesses.rs (alloc_guard/ excluded)
+alloc_scan: clean (5 file(s))
+vec! in ico.rs: 0 (expected 0, the guard replaces the entry-list reservation)
+guard reservation call sites: 1 (try_with_room: 1; expected exactly 1)
+import_dib call sites: 1 (expected exactly 1)
+dib_verus::try_decode_with_steps_logged call sites: 1 (expected exactly 1)
+alloc_guard/mod.rs hash OK
+alloc_guard/sites.rs hash OK
+--- scanner self-test ---
+self-test: OK (44 allocating constructs flagged; look-alikes, ghost Seq::push/insert and comments not)
+--- negative gate self-test: a temporary unguarded exec v.push(x) must fail ---
+negative gate self-test OK: unguarded exec v.push(x) flagged
+--- production call-graph audit: alloc-delta/audit/run_audit.sh ico ---
+alloc-delta production allocation audit, run 20261117T065412Z
+mode: PRODUCTION
+repo: /home/ws/projects/verified-decoders
+rustc: rustc 1.99.1 (58cf8f9c3 2026-10-13) binary: rustc commit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67 commit-date: 2026-10-13 host: x86_64-unknown-linux-gnu release: 1.99.1 LLVM version: 23.1.1 
+cargo: cargo 1.99.1 (5f94df478 2026-08-27)
+tool: /home/ws/.cache/verified-decoders-alloc-audit-e16/tool-target/release/alloc_audit sha256=e22ebbf4cbfa3e5b4dda13dd34b28b2fa74d42cfeee934e644a28a7b9b17fd70
+tool sources: cf7971ddc2c3be1311b412656e6443e47d6ead9257fb6d252cb8b45b9a07a565 (sha256 of src/*.rs + Cargo.toml + Cargo.lock, concatenated)
+allowlist pins: OK (4 files)
+ico: ico_verus.txt: verdict FAIL, findings 2 (other than the unsigned reviewer: 1), tags allowlist-reviewer,dependency-contract
+ico: dib_verus-in-ico.txt: verdict FAIL, findings 1 (other than the unsigned reviewer: 0), tags allowlist-reviewer
+exit status: 1
+production audit: FAIL (see the run directory printed above)
+FAIL

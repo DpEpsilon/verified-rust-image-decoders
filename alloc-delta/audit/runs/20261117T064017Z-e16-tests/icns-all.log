@@ -1,0 +1,128 @@
+command: timeout --kill-after=30s 25m nice -n 10 cargo test --offline --release -j1
+cwd: /home/ws/projects/verified-decoders/icns/icns_verus
+   Compiling icns_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/icns/icns_verus)
+warning: unused import: `Decoded`
+  --> src/alloc_guard/sites.rs:24:26
+   |
+24 | use super::super::icns::{Decoded, Entry, Error};
+   |                          ^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `OutOfMemory`
+   --> src/icns.rs:529:36
+    |
+529 | use crate::alloc_guard::{AllocLog, OutOfMemory};
+    |                                    ^^^^^^^^^^^
+
+warning: unused import: `alloc::vec::Vec`
+ --> src/model.rs:8:5
+  |
+8 | use alloc::vec::Vec;
+  |     ^^^^^^^^^^^^^^^
+
+warning: variable does not need to be mutable
+    --> src/icns.rs:1645:9
+     |
+1645 |     let mut c0 = match crate::alloc_guard::try_zeroed(
+     |         ----^^
+     |         |
+     |         help: remove this `mut`
+     |
+     = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+    --> src/icns.rs:1656:9
+     |
+1656 |     let mut c1 = match crate::alloc_guard::try_zeroed(
+     |         ----^^
+     |         |
+     |         help: remove this `mut`
+
+warning: variable does not need to be mutable
+    --> src/icns.rs:1667:9
+     |
+1667 |     let mut c2 = match crate::alloc_guard::try_zeroed(
+     |         ----^^
+     |         |
+     |         help: remove this `mut`
+
+warning: function `foo` is never used
+ --> src/lib.rs:9:4
+  |
+9 | fn foo() { assert(1 == 0 + 1); }
+  |    ^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `ev` is never read
+  --> src/alloc_guard/mod.rs:45:11
+   |
+44 | pub tracked struct AllocLog {
+   |                    -------- field in this struct
+45 |     ghost ev: Seq<(AllocSite, nat, bool)>,
+   |           ^^
+
+warning: field `room` is never read
+   --> src/alloc_guard/sites.rs:241:5
+    |
+239 | pub(crate) struct Reserved<T> {
+    |                   -------- field in this struct
+240 |     v: Vec<T>,
+241 |     room: Ghost<nat>,
+    |     ^^^^
+
+warning: enum `MpError` is never used
+   --> src/model.rs:393:10
+    |
+393 | pub enum MpError {
+    |          ^^^^^^^
+
+warning: struct `MpEntry` is never constructed
+   --> src/model.rs:406:12
+    |
+406 | pub struct MpEntry {
+    |            ^^^^^^^
+
+warning: `icns_verus` (lib) generated 11 warnings (run `cargo fix --lib -p icns_verus` to apply 6 suggestions)
+warning: `icns_verus` (lib test) generated 11 warnings (11 duplicates)
+    Finished `release` profile [optimized] target(s) in 8.17s
+     Running unittests src/lib.rs (target/release/deps/icns_verus-32a96621b1f3be41)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/conformance.rs (target/release/deps/conformance-a3aebd78d78eb295)
+
+running 1 test
+test conformance_all_vectors ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.45s
+
+     Running tests/fault_injection.rs (target/release/deps/fault_injection-c74394019ac9ccdb)
+
+running 12 tests
+test a_successful_output_is_dropped_without_leaking ... ok
+test combine_output_failure_names_the_site_and_size ... ok
+test channel_failure_names_the_channel_and_size ... ok
+test combine_peak_live_bytes_follow_the_stated_phases ... ok
+test entry_layout_matches_the_declaration ... ok
+test entry_list_failure_is_exactly_out_of_memory ... ok
+test every_vector_survives_a_failure_at_each_reservation ... ok
+test frozen_vectors_respect_the_peak_bounds ... ok
+test prealloc_input_never_reaches_the_allocator ... ok
+test mask_copy_failure_names_the_site_and_size ... ok
+test threshold_failure_below_the_request_size ... ok
+test zero_element_request_is_a_logical_event_with_no_allocation ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.61s
+
+   Doc-tests icns_verus
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+E16 runner exit=0 duration=9.8s

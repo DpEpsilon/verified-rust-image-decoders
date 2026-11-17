@@ -85,3 +85,15 @@ The verified implementation exposes the logical-log contracts for A-DIB-1 throug
 The lint passed, but it is not a typed or transitive call-graph analysis. It recognizes this source tree's Verus syntax and formatting, not every possible Rust program. The sealed ghost log is verified; its correspondence to physical reservations is tested and depends on the hash-pinned guard text. The frozen A-STD assumptions about reservation capacity and no-growth vector writes remain assumptions about the Rust allocation implementation. Neither the source lint nor the fault tests discharge that trust boundary.
 
 No bare-metal binary was linked or executed. No target allocator or panic handler was supplied. No 32-bit or embedded target verification, target fault injection, end-to-end loader integration, or production call-graph audit was performed. A downstream executable must provide its allocator and panic behavior and review its unified dependency features. Build targets were removed after recording the evidence; source backups and all verifier logs remain under the durable project directory.
+
+## Shared guard limit — 2026-11-17 (alloc-delta E16)
+
+The owner raised `MAX_BYTES` from 67,108,864 bytes (64 MiB) to 1,073,741,824
+bytes (1 GiB). The production `alloc_guard/mod.rs` SHA-256 is now
+`add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137`, byte-identical in
+DIB, TGA, ICNS, ICO and GIF. This supersedes earlier statements of the current
+guard hash or guard limit in this file; dated E6 results remain historical.
+This core's own caps remain unchanged. The guard raise does not authorize a
+core-cap raise: that needs the core's own erratum and re-verification.
+Re-verification and audit evidence is appended to `alloc-delta/ERRATA.md` E16;
+DIB verification is pending a sandbox RAM increase.

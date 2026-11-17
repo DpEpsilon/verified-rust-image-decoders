@@ -19,7 +19,7 @@ with its own model intact.
 | `src/compose.rs` | `draw_index` (the per-index sink), `clear_rect`/`copy_rect`, `dispose`, `save_rect`, `draw_all`, `composite`/`next_frame`, the output pixel clause, the Clip clauses and the T12 work statement |
 | `tests/compositor.rs` | the compositor against `gif_oracle.py` on the 30 M4 vector records, the per-index sink against `composite`, `interlace_row` against G11, and the Q18 regression |
 
-The caps are the named constants of `src/limits.rs`: `MAX_INPUT` 256 MiB (2^28); `MAX_OUTPUT` stays at 64 MiB (2^26; `W·H ≤ 16,777,216` pixels) because it must not exceed the shared alloc guard's `MAX_BYTES` (67,108,864), which is copied byte-identically into every core. The owner expects to raise the canvas cap and `MAX_BYTES` together later, as a strict widening through an alloc-delta erratum with re-verification of every core.
+The caps are the named constants of `src/limits.rs`: `MAX_INPUT` 256 MiB (2^28); `MAX_OUTPUT` stays at 64 MiB (2^26; `W·H ≤ 16,777,216` pixels). Alloc-delta erratum E16 (owner-approved 2026-11-17) raises the shared guard's `MAX_BYTES` to 1,073,741,824 bytes (1 GiB), not this canvas cap; a canvas-cap raise needs its own erratum and re-verification.
 
 From the repository root:
 

@@ -146,3 +146,4 @@
 146	2026-11-12T06:12:08+00:00	exit=101	3s	negative check neg2_edit_log_outside_guard (must FAIL) [crate=guard_proto]	
 147	2026-11-12T06:12:12+00:00	exit=101	4s	negative check neg3_return_oom_after_ok (must FAIL) [crate=guard_proto]	verification results:: 44 verified, 1 errors
 148	2026-11-12T06:12:17+00:00	exit=101	5s	negative check neg4_skip_import (must FAIL) [crate=guard_proto_dep]	verification results:: 22 verified, 1 errors
+149	2026-11-17T06:33:03+00:00	exit=0	86s	E16: owner-approved MAX_BYTES 1 GiB; constant/comment-only guard change [crate=guard_proto]	verification results:: 44 verified, 0 errors	peak_rss_sum_mb=11894	peak_rss_max_proc_mb=2672:rust_verify

@@ -89,3 +89,18 @@ what G8–G9 establish) is not proved. It is listed as open in `../RELEASE-GATES
 **Proposed erratum.** Restrict the literal arm of the representation lemma's domain to `0 <= c < min(clear, 256)`; keep the stored-entry arm `clear + 2 <= c < next` entirely; keep the checked-root invariant, and require the existing checked-literal guard to reject the excluded codes before resolution, emission or insertion. No observable G10 behaviour changes. The alternative is an integer-string dictionary (elements wider than a byte), which would need a separate conversion theorem to the byte-valued output.
 
 **Effect.** Task 2 (independent string-table model, review finding 1) proceeds on the restricted domain; if the erratum is not approved, that task stays blocked.
+
+## E5 — 2026-11-17: shared guard ceiling (PROPOSED / informational; no GIF cap change)
+
+Frozen `THEOREMS.md:9` says the guard's `MAX_BYTES` is 67,108,864 today and
+therefore holds GIF's `MAX_OUTPUT` at 64 MiB; `spec-frozen/FREEZE.txt` records
+the same context. Those files remain untouched. Owner-approved alloc-delta
+erratum E16 raises only the shared guard ceiling to 1,073,741,824 bytes
+(1 GiB), with production guard SHA-256
+`add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137`. The reference to the old
+ceiling should be read as historical; `MAX_OUTPUT <= MAX_BYTES` still holds.
+GIF's `MAX_OUTPUT` remains 67,108,864 bytes (64 MiB), and its other caps and
+theorem obligations do not change. A later GIF output-cap raise needs its own
+owner decision/erratum and re-verification; this informational proposal does
+not apply that raise or amend the frozen text. Evidence for the guard raise
+is appended to `../alloc-delta/ERRATA.md` E16.

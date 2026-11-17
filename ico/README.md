@@ -28,7 +28,7 @@ obligation lists were not diffed): `try_zeroed` now fills with `resize(n, 0u8)` 
 `try_reserve_exact(n)` instead of a `push` loop (ERRATA E6, trusted item A-STD-4,
 observed behaviour of std 1.99.1 and not a documented guarantee). The shared
 `alloc_guard/mod.rs` has SHA-256
-`26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7`, identical in
+`add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137`, identical in
 all four cores. Implementation and source-lint checks run. Not produced: the production call-graph allocation audit, the independent
 build-input inventory and the signed allowlist. The trust boundary is A-STD, the
 hash-reviewed guard text, and the future signed allowlist. See

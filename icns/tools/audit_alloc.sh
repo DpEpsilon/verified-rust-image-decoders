@@ -47,7 +47,7 @@ status=0
 # the only place the `sites.rs` hash appears (old/new values are recorded in
 # NOTES.md). A deliberate edit of `sites.rs` fails the gate until this one line is
 # updated to the new `sha256sum` of the file.
-EXPECTED_MOD_SHA=26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7
+EXPECTED_MOD_SHA=add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137
 EXPECTED_SITES_SHA=5dff9ec076a778b04b782b3dc2e8a290b92c333cee0b281ebdb4619ac037892b
 
 # Production modules: every `src/**/*.rs` except `alloc_guard/`.

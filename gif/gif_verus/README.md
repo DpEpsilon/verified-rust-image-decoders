@@ -43,7 +43,7 @@ An error in G2–G4 or in the blocks before the first image descriptor is the co
 
 ## Limits and allocation
 
-The caps are the named constants of `src/limits.rs` (G1): `MAX_INPUT` 256 MiB (2^28), `MAX_DIMENSION` 65,535 (the wire limit), `MAX_OUTPUT` `4·W·H ≤ 64 MiB`, `MAX_FRAMES` 65,536, `MAX_TOTAL_PIXELS` 2^30. `MAX_OUTPUT` stays at 64 MiB (2^26; `W·H ≤ 16,777,216` pixels) because it must not exceed the shared alloc guard's `MAX_BYTES` (67,108,864), which is copied byte-identically into every core; the owner expects to raise both later, as a strict widening through an alloc-delta erratum with re-verification of every core.
+The caps are the named constants of `src/limits.rs` (G1): `MAX_INPUT` 256 MiB (2^28), `MAX_DIMENSION` 65,535 (the wire limit), `MAX_OUTPUT` `4·W·H ≤ 64 MiB`, `MAX_FRAMES` 65,536, `MAX_TOTAL_PIXELS` 2^30. `MAX_OUTPUT` stays at 64 MiB (2^26; `W·H ≤ 16,777,216` pixels). The shared guard's `MAX_BYTES` is now 1,073,741,824 bytes (1 GiB), under owner-approved alloc-delta erratum E16 (2026-11-17); raising GIF's canvas cap needs its own erratum and re-verification.
 
 | Site | Size | When |
 |---|---|---|
@@ -51,7 +51,7 @@ The caps are the named constants of `src/limits.rs` (G1): `MAX_INPUT` 256 MiB (2
 | `LzwTable` | one 20,480-byte `try_zeroed` region: prefix codes (LE16 pairs, bytes `[0, 8192)`), suffix bytes (`[8192, 12288)`), string lengths (LE16 pairs, `[12288, 20480)`), 4,096 each | same call, after `Canvas` |
 | `Saved` | `4·W·H` bytes | the first frame with disposal 3, once per `Frames` (never for the still) |
 
-Peak heap per decoder is `8·W·H + 20,480` bytes, independent of the frame count. There is no index buffer (indices go straight to the canvas through the interlace map) and no per-frame copy (an error leaves the decoder fused and the canvas unexposed). The guard's `mod.rs` is byte-identical to the other cores' (SHA-256 `26e4c832…`); `sites.rs` is GIF's own (`../tools/audit_alloc.sh` pins both).
+Peak heap per decoder is `8·W·H + 20,480` bytes, independent of the frame count. There is no index buffer (indices go straight to the canvas through the interlace map) and no per-frame copy (an error leaves the decoder fused and the canvas unexposed). The guard's `mod.rs` is byte-identical to the other cores' (SHA-256 `add634bc…`); `sites.rs` is GIF's own (`../tools/audit_alloc.sh` pins both).
 
 ## Modules
 

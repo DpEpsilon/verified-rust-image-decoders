@@ -16,7 +16,7 @@ import re
 import sys
 
 PINS = {
-    "mod.rs": "26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7",
+    "mod.rs": "add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137",
     "sites.rs": "33465c740e10162d0d6634afd0a6033e26f3d0f523b40e375f4b1d46bcdf000a",
 }
 

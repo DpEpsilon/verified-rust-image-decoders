@@ -191,3 +191,12 @@ per-core type only through `pub use sites::...`; in the real delta the four
   one) and that i686 is unavailable in this image.
 - §8 F3: record this verdict, and that the cross-crate half needed the per-arm
   lemma split, not a shape change.
+
+## E16 guard limit — 2026-11-17
+
+The earlier guard hash is historical. Owner-approved alloc-delta E16 changes
+only `MAX_BYTES` and its value comment to 1,073,741,824 bytes (1 GiB).
+The prototype guard SHA-256 is now
+`608e9fbd0e0eb20a015680f84ff9931817d77de278c00f37449d3db8243afec5`;
+the five production copies have their separate hash in E16. Prototype
+verification run 149: 44 verified, 0 errors, unchanged from run 143.

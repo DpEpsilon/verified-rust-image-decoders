@@ -163,3 +163,17 @@ Extreme-case data point: a full-film GIF of 60×60 pixels with 37,239 frames, un
 - D6: No colour table at all and unknown version strings are rejected in every profile (Q11, Q12); `version=Any` is removed.
 - D7: No Pedantic or NearStrict profile (Q7).
 - Decisions Q1–Q18 are recorded in `QUESTIONS.md` and `../DECISIONS.md`. Open for the owner: the freeze of RecommendedBeta waits on the real-corpus pass (Q9); ImageCrateCompat's `m = 1` schedule (Residuals). The `m = 1` rule of RecommendedBeta is decided (Q6 refinement).
+
+## Guard-limit update — 2026-11-17
+
+The owner approved alloc-delta erratum E16: `MAX_BYTES` is now 1,073,741,824
+bytes (1 GiB), not 67,108,864 bytes (64 MiB). This supersedes the earlier plan
+to choose the shared guard limit after the PNG corpus pass. DIB, TGA, ICNS,
+ICO and GIF keep their existing 64 MiB output caps; a core may raise its cap
+separately through its own erratum. PNG's owner-decided caps are now the PNG wire-limit dimensions and 256 MiB
+RGBA8 output; freezing those values remains corpus-gated. The 1 GiB per-reservation guard accommodates the
+512 MiB RGBA16 output for an 8192 × 8192 image and its filtered raw buffer;
+the earlier statements that those proposed PNG reservations exceed the guard
+limit describe the pre-E16 guard, not the current limit. Verification and
+audit evidence, including pending DIB verification, is in
+`alloc-delta/ERRATA.md` E16 and `RELEASE-GATES.md` item 1.

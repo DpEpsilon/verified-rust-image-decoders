@@ -1,0 +1,17 @@
+allocation lint controls: ghost push ignored; executable allocation/push/split_off/clone_from/abort rejected; non-allocating look-alikes accepted
+guard mod.rs: add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137
+guard sites.rs: 33465c740e10162d0d6634afd0a6033e26f3d0f523b40e375f4b1d46bcdf000a
+executable try_zeroed call sites: 1 (expected 1)
+OK: source lint only; not a transitive allocation audit
+--- production call-graph audit: alloc-delta/audit/run_audit.sh dib ---
+alloc-delta production allocation audit, run 20261117T065332Z
+mode: PRODUCTION
+repo: /home/ws/projects/verified-decoders
+rustc: rustc 1.99.1 (58cf8f9c3 2026-10-13) binary: rustc commit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67 commit-date: 2026-10-13 host: x86_64-unknown-linux-gnu release: 1.99.1 LLVM version: 23.1.1 
+cargo: cargo 1.99.1 (5f94df478 2026-08-27)
+tool: /home/ws/.cache/verified-decoders-alloc-audit-e16/tool-target/release/alloc_audit sha256=e22ebbf4cbfa3e5b4dda13dd34b28b2fa74d42cfeee934e644a28a7b9b17fd70
+tool sources: cf7971ddc2c3be1311b412656e6443e47d6ead9257fb6d252cb8b45b9a07a565 (sha256 of src/*.rs + Cargo.toml + Cargo.lock, concatenated)
+allowlist pins: OK (4 files)
+dib: dib_verus.txt: verdict FAIL, findings 1 (other than the unsigned reviewer: 0), tags allowlist-reviewer
+exit status: 1
+production audit: FAIL (see the run directory printed above)

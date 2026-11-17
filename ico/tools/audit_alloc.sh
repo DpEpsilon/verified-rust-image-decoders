@@ -27,7 +27,7 @@ status=0
 # D6: the guard text is byte-identical across the four cores. `mod.rs` is pinned
 # to the reviewed cross-core hash; `sites.rs` to ICO's own (it carries
 # `import_dib`, `try_with_room` and the `global layout` declaration).
-EXPECTED_MOD_SHA=26e4c832d2df80b782d157e68ade31066cc82ca2774b4c714a6df0f4edaf86b7
+EXPECTED_MOD_SHA=add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137
 EXPECTED_SITES_SHA=5918505c88282574c693481a557f3b0abd0c1022d4a3e11a2137891efd59bdcf
 
 # Production modules: every `src/**/*.rs` except `alloc_guard/`.

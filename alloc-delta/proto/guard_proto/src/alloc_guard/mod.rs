@@ -21,8 +21,8 @@ pub use sites::{AllocSite, Entry, IcoEntry};
 
 verus! {
 
-/// Upper bound on a single byte-oriented reservation (SPEC.md §4). 67,108,864 B.
-pub const MAX_BYTES: usize = 67_108_864;
+/// Upper bound on a single byte-oriented reservation (SPEC.md §4; ERRATA E16). 1,073,741,824 B.
+pub const MAX_BYTES: usize = 1_073_741_824;
 
 /// Upper bound on a `Reserved<T>` room, in elements (SPEC.md §3).
 pub const MAX_ROOM: usize = 4_096;

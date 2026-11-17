@@ -1,0 +1,82 @@
+command: timeout --kill-after=30s 25m nice -n 10 cargo test --offline --release -j1
+cwd: /home/ws/projects/verified-decoders/alloc-delta/proto/guard_proto
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling verus_syn v0.0.0-2026-11-01-0251
+   Compiling verus_prettyplease v0.0.0-2026-11-01-0251
+   Compiling syn v2.0.119
+   Compiling equivalent v1.0.3
+   Compiling hashbrown v0.17.1
+   Compiling indexmap v2.14.2
+   Compiling synstructure v0.13.2
+   Compiling vstd v0.0.0-2026-11-01-0251
+   Compiling convert_case v0.4.0
+   Compiling verus_builtin_macros v0.0.0-2026-11-01-0251
+   Compiling verus_state_machines_macros v0.0.0-2026-11-01-0251
+   Compiling verus_builtin v0.0.0-2026-11-01-0251
+   Compiling guard_proto v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/alloc-delta/proto/guard_proto)
+error[E0432]: unresolved import `super::log_tied`
+ --> src/alloc_guard/sites.rs:7:46
+  |
+7 | use super::{AllocLog, OutOfMemory, TryError, log_tied};
+  |                                              ^^^^^^^^ no `log_tied` in `alloc_guard`
+
+error[E0432]: unresolved imports `crate::alloc_guard::all_ok`, `crate::alloc_guard::fmt_part`, `crate::alloc_guard::log_tied`, `crate::alloc_guard::req_of_log`
+  --> src/toy.rs:11:26
+   |
+11 | use crate::alloc_guard::{all_ok, fmt_part, log_tied, req_of_log};
+   |                          ^^^^^^  ^^^^^^^^  ^^^^^^^^  ^^^^^^^^^^ no `req_of_log` in `alloc_guard`
+   |                          |       |         |
+   |                          |       |         no `log_tied` in `alloc_guard`
+   |                          |       no `fmt_part` in `alloc_guard`
+   |                          no `all_ok` in `alloc_guard`
+
+error[E0432]: unresolved import `crate::alloc_guard::marker_hex`
+  --> src/toy_entries.rs:12:26
+   |
+12 | use crate::alloc_guard::{marker_hex, marker_hex_exec};
+   |                          ^^^^^^^^^^ no `marker_hex` in `alloc_guard`
+
+error[E0432]: unresolved imports `crate::alloc_guard::all_ok`, `crate::alloc_guard::fmt_part`, `crate::alloc_guard::req_of_log`
+  --> src/toy_entries.rs:13:26
+   |
+13 | use crate::alloc_guard::{all_ok, fmt_part, req_of_log};
+   |                          ^^^^^^  ^^^^^^^^  ^^^^^^^^^^ no `req_of_log` in `alloc_guard`
+   |                          |       |
+   |                          |       no `fmt_part` in `alloc_guard`
+   |                          no `all_ok` in `alloc_guard`
+
+warning: unused import: `vstd::prelude::*`
+ --> src/lib.rs:4:5
+  |
+4 | use vstd::prelude::*;
+  |     ^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `OutOfMemory`
+  --> src/toy.rs:10:66
+   |
+10 | use crate::alloc_guard::{self, AllocLog, AllocSite, DecodeError, OutOfMemory, TryError};
+   |                                                                  ^^^^^^^^^^^
+
+warning: unused import: `OutOfMemory`
+  --> src/toy_entries.rs:11:73
+   |
+11 | use crate::alloc_guard::{self, AllocLog, AllocSite, DecodeError, Entry, OutOfMemory, TryError};
+   |                                                                         ^^^^^^^^^^^
+
+warning: unused variable: `b`
+   --> src/toy_entries.rs:328:29
+    |
+328 | pub fn try_parse_zero_entry(b: &[u8]) -> (r: Result<Vec<Entry>, TryError>)
+    |                             ^ help: if this is intentional, prefix it with an underscore: `_b`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+For more information about this error, try `rustc --explain E0432`.
+warning: `guard_proto` (lib) generated 4 warnings
+error: could not compile `guard_proto` (lib) due to 4 previous errors; 4 warnings emitted
+
+E16 runner exit=101 duration=21.4s

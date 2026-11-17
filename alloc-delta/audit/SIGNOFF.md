@@ -508,3 +508,18 @@ ICNS and ICO now fail only on the unsigned reviewer (ICO also on
 Anything in the allowlists that looked wrong, beyond the two wording
 defects (D4 now fixed, D5 open): nothing. The `reviewer` field is the
 only blocker for DIB, TGA and ICNS; ICO also needs DIB signed (D9).
+
+## E16 unsigned refresh — 2026-11-17
+
+Nothing is signed. The guard ceiling changed to 1 GiB; its production SHA-256
+is `add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137`.
+All four unsigned drafts changed exactly their source_hash field; entries,
+entry order, required roots, dependency admissions, toolchain/vstd/proc-macro
+pins and empty reviewer fields are unchanged. PINS.sha256 was regenerated and
+passes its strict check. The current four-core production run is
+`runs/20261117T065102Z/`: only `allowlist-reviewer` for DIB/TGA/ICNS, plus
+`dependency-contract` for ICO. No new audit finding or scope decision appeared.
+This updates the earlier current-hash/current-run references, not historical
+records or any human approval. ICO and DIB verification remain deferred until
+the owner raises sandbox RAM. Full hashes, tests and the four completed Verus
+results are appended in `../ERRATA.md` E16. Signing remains an owner action.

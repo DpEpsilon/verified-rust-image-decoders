@@ -35,8 +35,8 @@ pub use sites::{AllocSite, TryError};
 
 verus! {
 
-/// Upper bound on a single byte-oriented reservation (SPEC.md §4). 67,108,864 B.
-pub const MAX_BYTES: usize = 67_108_864;
+/// Upper bound on a single byte-oriented reservation (SPEC.md §4; ERRATA E16). 1,073,741,824 B.
+pub const MAX_BYTES: usize = 1_073_741_824;
 
 /// The sealed logical reservation trace (SPEC.md §2, §3). One field, private to
 /// this module. Each element is `(site, elements, ok)`; `ok == (r is Ok)` for

@@ -51,3 +51,17 @@ its inputs at runtime, sends them over a pipe and stores no large vector files.
 history. `LEDGER.md` records the final run, count, tools and remaining integration
 scope. Raw-byte accessors, allocator/parser integration, compositing and the full
 T12 work-accounting proof are outside this standalone milestone.
+
+## Guard-limit update — 2026-11-17
+
+The owner approved alloc-delta erratum E16: `MAX_BYTES` is now 1,073,741,824
+bytes (1 GiB), not 67,108,864 bytes (64 MiB). This supersedes the earlier plan
+to choose the shared guard limit after the PNG corpus pass. DIB, TGA, ICNS,
+ICO and GIF keep their existing 64 MiB output caps; a core may raise its cap
+separately through its own erratum. PNG's owner-decided caps are now the PNG wire-limit dimensions and 256 MiB
+RGBA8 output; freezing those values remains corpus-gated. The 1 GiB per-reservation guard accommodates the
+512 MiB RGBA16 output for an 8192 × 8192 image and its filtered raw buffer;
+the earlier statements that those proposed PNG reservations exceed the guard
+limit describe the pre-E16 guard, not the current limit. Verification and
+audit evidence, including pending DIB verification, is in
+`alloc-delta/ERRATA.md` E16 and `RELEASE-GATES.md` item 1.

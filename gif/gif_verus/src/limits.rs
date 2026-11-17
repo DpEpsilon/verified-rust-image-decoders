@@ -14,10 +14,9 @@ pub const MAX_INPUT: usize = 268_435_456;
 pub const MAX_DIMENSION: u32 = 65_535;
 
 /// Bytes of one RGBA8 canvas, `4·W·H` (G3). 64 MiB (2^26), 16,777,216 (2^24)
-/// pixels. Held at 64 MiB because it must not exceed the shared alloc guard's
-/// `MAX_BYTES` (67,108,864, copied byte-identically into every core); the owner
-/// expects to raise both later, as a strict widening through an alloc-delta
-/// erratum with re-verification of every core.
+/// pixels. This core cap is unchanged by alloc-delta ERRATA E16 (2026-11-17),
+/// which raises the shared guard's `MAX_BYTES` to 1,073,741,824 bytes (1 GiB).
+/// Raising this canvas cap needs a separate core erratum and re-verification.
 pub const MAX_OUTPUT: u64 = 67_108_864;
 
 /// Image descriptors per stream (G8).

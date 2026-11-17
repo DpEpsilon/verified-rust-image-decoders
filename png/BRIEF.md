@@ -91,8 +91,8 @@ The owner approved alloc-delta erratum E16: `MAX_BYTES` is now 1,073,741,824
 bytes (1 GiB), not 67,108,864 bytes (64 MiB). This supersedes the earlier plan
 to choose the shared guard limit after the PNG corpus pass. DIB, TGA, ICNS,
 ICO and GIF keep their existing 64 MiB output caps; a core may raise its cap
-separately through its own erratum. PNG's per-side and output caps remain
-provisional and corpus-gated. The 1 GiB per-reservation guard accommodates the
+separately through its own erratum. PNG's owner-decided caps are now the PNG wire-limit dimensions and 256 MiB
+RGBA8 output; freezing those values remains corpus-gated. The 1 GiB per-reservation guard accommodates the
 512 MiB RGBA16 output for an 8192 × 8192 image and its filtered raw buffer;
 the earlier statements that those proposed PNG reservations exceed the guard
 limit describe the pre-E16 guard, not the current limit. Verification and

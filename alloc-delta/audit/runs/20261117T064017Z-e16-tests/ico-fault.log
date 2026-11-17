@@ -1,0 +1,518 @@
+command: timeout --kill-after=30s 25m nice -n 10 cargo test --offline --release -j1 --test fault_injection -- --nocapture
+cwd: /home/ws/projects/verified-decoders/ico/ico_verus
+warning: unused import: `AllocLog`
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/sites.rs:14:13
+   |
+14 | use super::{AllocLog, OutOfMemory};
+   |             ^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Decoded`
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/sites.rs:15:25
+   |
+15 | use super::super::dib::{Decoded, Error};
+   |                         ^^^^^^^
+
+warning: unused imports: `BitfieldOffsetOptions`, `BmpMode`, `HeadersOptions`, `HighCountOptions`, `MasksOptions`, `MetadataOptions`, `OffsetOptions`, `PlanesOptions`, `Policy`, `ReservedOptions`, `ShortIndexedGapOptions`, and `UnsupportedOptions`
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/model.rs:16:5
+   |
+16 |     BitfieldOffsetOptions, BmpMode, Error, HeadersOptions, HighCountOptions, MasksOptions,
+   |     ^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^         ^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^
+17 |     MetadataOptions, Mode, OffsetOptions, PlanesOptions, Policy, ReservedOptions,
+   |     ^^^^^^^^^^^^^^^        ^^^^^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^  ^^^^^^^^^^^^^^^
+18 |     ShortIndexedGapOptions, UnsupportedOptions,
+   |     ^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `file_offset`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2205:5
+     |
+2205 |     file_offset: u64,
+     |     ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_file_offset`
+     |
+     = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `bytes`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2396:5
+     |
+2396 |     bytes: &[u8], mode: Mode, start: usize, is_bmp: bool, policy: Policy,
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_bytes`
+
+warning: variable `masks_okv` is assigned to, but never used
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2898:9
+     |
+2898 |     let mut masks_okv: bool = true;
+     |         ^^^^^^^^^^^^^
+     |
+     = note: consider using `_masks_okv` instead
+
+warning: unused variable: `ms0v`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2991:13
+     |
+2991 |         let ms0v: u32 = mask_fields[0];
+     |             ^^^^ help: if this is intentional, prefix it with an underscore: `_ms0v`
+
+warning: unused variable: `ms1v`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2992:13
+     |
+2992 |         let ms1v: u32 = mask_fields[1];
+     |             ^^^^ help: if this is intentional, prefix it with an underscore: `_ms1v`
+
+warning: unused variable: `ms2v`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2993:13
+     |
+2993 |         let ms2v: u32 = mask_fields[2];
+     |             ^^^^ help: if this is intentional, prefix it with an underscore: `_ms2v`
+
+warning: unused variable: `ms3v`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2994:13
+     |
+2994 |         let ms3v: u32 = mask_fields[3];
+     |             ^^^^ help: if this is intentional, prefix it with an underscore: `_ms3v`
+
+warning: value assigned to `masks_okv` is never read
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3002:9
+     |
+3002 |         masks_okv = ok;
+     |         ^^^^^^^^^^^^^^
+     |
+     = help: maybe it is overwritten before being read?
+     = note: `#[warn(unused_assignments)]` (part of `#[warn(unused)]`) on by default
+
+warning: value assigned to `pos` is never read
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3251:5
+     |
+3251 |     pos = pixel_start;
+     |     ^^^^^^^^^^^^^^^^^
+     |
+     = help: maybe it is overwritten before being read?
+
+warning: unused variable: `steps`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3957:53
+     |
+3957 | fn fill_blank(out: &mut Vec<u8>, transparent: bool, steps: &mut Ghost<nat>)
+     |                                                     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `fill`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:3974:9
+     |
+3974 |     let fill: u8 = if transparent {
+     |         ^^^^ help: if this is intentional, prefix it with an underscore: `_fill`
+
+warning: unused variable: `line`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4033:59
+     |
+4033 | fn raw_sample(b: &[u8], h: &Header, pos: usize, x: usize, line: usize) -> (r: Result<[u8; 4], Error>)
+     |                                                           ^^^^ help: if this is intentional, prefix it with an underscore: `_line`
+
+warning: unused variable: `steps`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4457:5
+     |
+4457 |     steps: &mut Ghost<nat>,
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `steps`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4818:54
+     |
+4818 | fn fill_rle(b: &[u8], h: &Header, out: &mut Vec<u8>, steps: &mut Ghost<nat>)
+     |                                                      ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `steps`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:4915:5
+     |
+4915 |     steps: &mut Ghost<nat>,
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `steps`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5182:5
+     |
+5182 |     steps: &mut Ghost<nat>,
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `g`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:5846:18
+     |
+5846 |         let (pr, g) = rle_command(b, h, out, pos, x, y, Ghost(gw), steps);
+     |                  ^ help: if this is intentional, prefix it with an underscore: `_g`
+
+warning: unused variable: `line`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6027:64
+     |
+6027 | fn raw_policy_word(b: &[u8], h: &Header, pos: usize, x: usize, line: usize) -> (word: u32)
+     |                                                                ^^^^ help: if this is intentional, prefix it with an underscore: `_line`
+
+warning: unused variable: `q`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6211:85
+     |
+6211 | fn policy_packet_index(b: &[u8], bits: u32, absolute: bool, value: usize, j: usize, q: usize)
+     |                                                                                     ^ help: if this is intentional, prefix it with an underscore: `_q`
+
+warning: unused variable: `steps`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6246:49
+     |
+6246 |     Ghost(gw): Ghost<Seq<crate::model::Write>>, steps: &mut Ghost<nat>, Ghost(initial): Ghost<Seq<u8>>) -> (event: bool)
+     |                                                 ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `eol`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6359:33
+     |
+6359 |     overrun: RleOverrunOptions, eol: RleEolOptions, eob: RleEobOptions, black: bool, delta: RleDeltaOptions, Ghost(gw): Ghost<Seq<...
+     |                                 ^^^ help: if this is intentional, prefix it with an underscore: `_eol`
+
+warning: unused variable: `eob`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6359:53
+     |
+6359 |     overrun: RleOverrunOptions, eol: RleEolOptions, eob: RleEobOptions, black: bool, delta: RleDeltaOptions, Ghost(gw): Ghost<Seq<...
+     |                                                     ^^^ help: if this is intentional, prefix it with an underscore: `_eob`
+
+warning: unused variable: `delta`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6359:86
+     |
+6359 | ...eEobOptions, black: bool, delta: RleDeltaOptions, Ghost(gw): Ghost<Seq<crate::model::Write>>, steps: &mut Ghost<nat>, Ghost(ini...
+     |                              ^^^^^ help: if this is intentional, prefix it with an underscore: `_delta`
+
+warning: unused variable: `eol`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6452:33
+     |
+6452 |     overrun: RleOverrunOptions, eol: RleEolOptions, eob: RleEobOptions, black: bool, delta: RleDeltaOptions, Ghost(gw): Ghost<Seq<...
+     |                                 ^^^ help: if this is intentional, prefix it with an underscore: `_eol`
+
+warning: unused variable: `eob`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6452:53
+     |
+6452 |     overrun: RleOverrunOptions, eol: RleEolOptions, eob: RleEobOptions, black: bool, delta: RleDeltaOptions, Ghost(gw): Ghost<Seq<...
+     |                                                     ^^^ help: if this is intentional, prefix it with an underscore: `_eob`
+
+warning: unused variable: `delta`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6452:86
+     |
+6452 | ...eEobOptions, black: bool, delta: RleDeltaOptions, Ghost(gw): Ghost<Seq<crate::model::Write>>, steps: &mut Ghost<nat>, Ghost(ini...
+     |                              ^^^^^ help: if this is intentional, prefix it with an underscore: `_delta`
+
+warning: unused variable: `g`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6821:13
+     |
+6821 |     let (r, g) = rle_loop(b, h, out, &mut pos, &mut x, &mut y, Ghost(Seq::empty()), steps);
+     |             ^ help: if this is intentional, prefix it with an underscore: `_g`
+
+warning: unused variable: `steps`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6846:45
+     |
+6846 | fn alpha_present(h: &Header, out: &Vec<u8>, steps: &mut Ghost<nat>) -> (r: bool)
+     |                                             ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `and_bytes`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6886:25
+     |
+6886 |     mask_stride: usize, and_bytes: usize, has_xor_alpha: bool,
+     |                         ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_and_bytes`
+
+warning: unused variable: `steps`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:6887:5
+     |
+6887 |     steps: &mut Ghost<nat>)
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `out`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:7342:45
+     |
+7342 | fn finish_mask_policy(b: &[u8], h: &Header, out: &mut Vec<u8>, pos: usize, p0: usize,
+     |                                             ^^^ help: if this is intentional, prefix it with an underscore: `_out`
+
+warning: unused variable: `steps`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:7343:5
+     |
+7343 |     steps: &mut Ghost<nat>, policy: Policy) -> (r: Result<(), Error>)
+     |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `steps`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9200:29
+     |
+9200 | fn alloc_output_n(n: usize, steps: &mut Ghost<nat>,
+     |                             ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `bm`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9442:30
+     |
+9442 | fn finish_raw_zero(b: &[u8], bm: BmpMode, h: &Header, mut out: Vec<u8>, start: usize,
+     |                              ^^ help: if this is intentional, prefix it with an underscore: `_bm`
+
+warning: unused variable: `bm`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9526:33
+     |
+9526 | fn finish_rle_clipped(b: &[u8], bm: BmpMode, h: &Header, mut out: Vec<u8>, policy: Policy,
+     |                                 ^^ help: if this is intentional, prefix it with an underscore: `_bm`
+
+warning: unused variable: `bm`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9816:42
+     |
+9816 | fn reserve_complete_policy(bytes: &[u8], bm: BmpMode, policy: Policy, h: &Header,
+     |                                          ^^ help: if this is intentional, prefix it with an underscore: `_bm`
+
+warning: unused variable: `bytes`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9939:24
+     |
+9939 | fn finish_policy_blank(bytes: &[u8], bm: BmpMode, policy: Policy, h: &Header, alpha: bool,
+     |                        ^^^^^ help: if this is intentional, prefix it with an underscore: `_bytes`
+
+warning: unused variable: `bm`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9939:38
+     |
+9939 | fn finish_policy_blank(bytes: &[u8], bm: BmpMode, policy: Policy, h: &Header, alpha: bool,
+     |                                      ^^ help: if this is intentional, prefix it with an underscore: `_bm`
+
+warning: unused variable: `policy`
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:9939:51
+     |
+9939 | fn finish_policy_blank(bytes: &[u8], bm: BmpMode, policy: Policy, h: &Header, alpha: bool,
+     |                                                   ^^^^^^ help: if this is intentional, prefix it with an underscore: `_policy`
+
+warning: unused variable: `bm`
+     --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10058:38
+      |
+10058 | fn finish_policy_plain(bytes: &[u8], bm: BmpMode, policy: Policy, h: &Header,
+      |                                      ^^ help: if this is intentional, prefix it with an underscore: `_bm`
+
+warning: unused variable: `allow_end`
+     --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10105:5
+      |
+10105 | let allow_end = match policy.rle_eob {
+      |     ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_allow_end`
+
+warning: variable does not need to be mutable
+     --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10221:32
+      |
+10221 |     raw: bool, from_gdk: bool, mut out: Vec<u8>, Ghost(m): Ghost<crate::model::MHRecord>,
+      |                                ----^^^
+      |                                |
+      |                                help: remove this `mut`
+      |
+      = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+     --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10273:32
+      |
+10273 |     raw: bool, from_gdk: bool, mut out: Vec<u8>, Ghost(m): Ghost<crate::model::MHRecord>,
+      |                                ----^^^
+      |                                |
+      |                                help: remove this `mut`
+
+warning: unused variable: `from_gdk`
+     --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10273:16
+      |
+10273 |     raw: bool, from_gdk: bool, mut out: Vec<u8>, Ghost(m): Ghost<crate::model::MHRecord>,
+      |                ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_from_gdk`
+
+warning: unused variable: `e`
+     --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10383:51
+      |
+10383 | fn t10_error_precedence(bytes: &[u8], mode: Mode, e: Error) -> (r: Result<Decoded, TryError>)
+      |                                                   ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `e`
+     --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:10518:74
+      |
+10518 | fn t10_policy_precedence(bytes: &[u8], bm: BmpMode, profile: BmpProfile, e: Error)
+      |                                                                          ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: function `skeleton` is never used
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/lib.rs:56:4
+   |
+56 | fn skeleton() {
+   |    ^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `ev` is never read
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/alloc_guard/mod.rs:45:11
+   |
+44 | pub tracked struct AllocLog {
+   |                    -------- field in this struct
+45 |     ghost ev: Seq<(AllocSite, nat, bool)>,
+   |           ^^
+
+warning: function `rem` is never used
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:921:4
+    |
+921 | fn rem(len: usize, pos: usize) -> (r: usize)
+    |    ^^^
+
+warning: fields `planes`, `table_count`, `core`, and `top_down` are never read
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:1390:5
+     |
+1381 | struct Header {
+     |        ------ fields in this struct
+...
+1390 |     planes: u32,
+     |     ^^^^^^
+...
+1398 |     table_count: u32,
+     |     ^^^^^^^^^^^
+...
+1407 |     core: bool,
+     |     ^^^^
+1408 |     top_down: bool,
+     |     ^^^^^^^^
+
+warning: field `is_bmp` is never read
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/dib/dib_verus/src/dib.rs:2119:5
+     |
+2105 | struct Fields {
+     |        ------ field in this struct
+...
+2119 |     is_bmp: bool,
+     |     ^^^^^^
+
+warning: `dib_verus` (lib) generated 54 warnings (run `cargo fix --lib -p dib_verus` to apply 46 suggestions)
+warning: unused import: `alloc::vec::Vec`
+  --> src/model.rs:15:5
+   |
+15 | use alloc::vec::Vec;
+   |     ^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `s`
+    --> src/alloc_guard/sites.rs:1313:5
+     |
+1313 |     s: &[u8],
+     |     ^ help: if this is intentional, prefix it with an underscore: `_s`
+     |
+     = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `steps`
+   --> src/ico.rs:453:62
+    |
+453 | fn has_png_signature(bytes: &[u8], start: usize, end: usize, steps: &mut Ghost<nat>) -> (r: bool)
+    |                                                              ^^^^^ help: if this is intentional, prefix it with an underscore: `_steps`
+
+warning: unused variable: `dib_steps`
+    --> src/ico.rs:1203:5
+     |
+1203 |     dib_steps: &mut Ghost<nat>,
+     |     ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_dib_steps`
+
+warning: unused variable: `dsteps`
+    --> src/ico.rs:1526:30
+     |
+1526 |                     let (r0, dsteps, Tracked(dlog)) = dib_verus::try_decode_with_steps_logged(
+     |                              ^^^^^^ help: if this is intentional, prefix it with an underscore: `_dsteps`
+
+warning: field `ev` is never read
+  --> src/alloc_guard/mod.rs:45:11
+   |
+44 | pub tracked struct AllocLog {
+   |                    -------- field in this struct
+45 |     ghost ev: Seq<(AllocSite, nat, bool)>,
+   |           ^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `room` is never read
+   --> src/alloc_guard/sites.rs:155:5
+    |
+153 | pub(crate) struct Reserved<T> {
+    |                   -------- field in this struct
+154 |     v: Vec<T>,
+155 |     room: Ghost<nat>,
+    |     ^^^^
+
+warning: fields `typ`, `count`, and `dir_end` are never read
+  --> src/model.rs:90:9
+   |
+88 | pub struct HRec {
+   |            ---- fields in this struct
+89 |     /// R3: 1 (ICO) or 2 (CUR).
+90 |     pub typ: int,
+   |         ^^^
+91 |     /// R3: the wire count, an admissible value in `[1, 1024]`.
+92 |     pub count: int,
+   |         ^^^^^
+93 |     /// R3: `6 + 16*count`.
+94 |     pub dir_end: int,
+   |         ^^^^^^^
+
+warning: enum `IcoDecision` is never used
+   --> src/model.rs:503:10
+    |
+503 | pub enum IcoDecision {
+    |          ^^^^^^^^^^^
+
+warning: function `t11_valid_selected_beside_invalid_unselected` is never used
+  --> src/witnesses.rs:88:8
+   |
+88 | pub fn t11_valid_selected_beside_invalid_unselected(bytes: &[u8], entries: &[Entry]) -> (r:
+   |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `t11_forged_selected_invalid` is never used
+   --> src/witnesses.rs:153:8
+    |
+153 | pub fn t11_forged_selected_invalid(bytes: &[u8], entries: &[Entry]) -> (r: Result<Decoded, TryError>)
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `t11_forged_unselected_ignored` is never used
+   --> src/witnesses.rs:221:8
+    |
+221 | pub fn t11_forged_unselected_ignored(bytes: &[u8], entries: &[Entry]) -> (r: Result<Decoded, TryError>)
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `t5_decode_exact` is never used
+    --> src/ico.rs:1802:15
+     |
+1802 | pub(crate) fn t5_decode_exact(b: &[u8], es: &[Entry], index: u32) -> (r: Result<Decoded, TryError>)
+     |               ^^^^^^^^^^^^^^^
+
+warning: function `t6_parse_directory_priority` is never used
+    --> src/ico.rs:1888:15
+     |
+1888 | pub(crate) fn t6_parse_directory_priority(b: &[u8]) -> (r: Result<Vec<Entry>, TryError>)
+     |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `t6_decode_ordering` is never used
+    --> src/ico.rs:1918:15
+     |
+1918 | pub(crate) fn t6_decode_ordering(b: &[u8], es: &[Entry], index: u32) -> (r: Result<Decoded, TryError>)
+     |               ^^^^^^^^^^^^^^^^^^
+
+warning: function `t7_dib_output_bound` is never used
+    --> src/ico.rs:1980:15
+     |
+1980 | pub(crate) fn t7_dib_output_bound(b: &[u8], es: &[Entry], index: u32) -> (r: Result<Decoded, TryError>)
+     |               ^^^^^^^^^^^^^^^^^^^
+
+warning: function `t9_parse_linear_work` is never used
+    --> src/ico.rs:2041:15
+     |
+2041 | pub(crate) fn t9_parse_linear_work(
+     |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: function `t9_wrapper_linear_work` is never used
+    --> src/ico.rs:2070:15
+     |
+2070 | pub(crate) fn t9_wrapper_linear_work(
+     |               ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: `ico_verus` (lib) generated 18 warnings (run `cargo fix --lib -p ico_verus` to apply 5 suggestions)
+    Finished `release` profile [optimized] target(s) in 0.18s
+     Running tests/fault_injection.rs (target/release/deps/fault_injection-ae6b0bc83dfad08e)
+
+running 1 test
+fault suite: 217 cases, 117 allocate, largest reservation 45056 bytes
+  schedule nth=0 threshold=0: trigger reachable in 217 cases, failure injected in 0
+  schedule nth=1 threshold=0: trigger reachable in 117 cases, failure injected in 117
+  schedule nth=2 threshold=0: trigger reachable in 117 cases, failure injected in 0
+  schedule nth=3 threshold=0: trigger reachable in 117 cases, failure injected in 0
+  schedule nth=0 threshold=1: trigger reachable in 117 cases, failure injected in 117
+  schedule nth=0 threshold=4096: trigger reachable in 1 cases, failure injected in 1
+  schedule nth=0 threshold=65536: trigger reachable in 0 cases, failure injected in 0
+  schedule nth=0 threshold=67108864: trigger reachable in 0 cases, failure injected in 0
+  decode cases that returned OutOfMemory at Dib(Output): 44
+  UNREACHABLE by this corpus: threshold 65536; the largest reservation is 45056 bytes, so that schedule injects nothing and is a no-failure control here
+  UNREACHABLE by this corpus: threshold 67108864; the largest reservation is 45056 bytes, so that schedule injects nothing and is a no-failure control here
+serial faults: 120 parse + 97 decode calls; eight allocation schedules each
+test serial_fault_injection_all_vectors ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+
+E16 runner exit=0 duration=0.4s
