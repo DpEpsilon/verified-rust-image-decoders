@@ -1,5 +1,129 @@
 # Inflate proof ledger
 
+## Completed reader/Huffman layer, 2026-11-17
+
+**Fresh run 176: 163 verified, 0 errors.** Assigned layer 2 is complete at the actual Segments/Bits/Huffman methods: L-BITS, outer canonical construction/admission and decode/MDec refinement are proved. T-HUFF(a–c) and L-CANON are established on this verified host target through those real methods, not a separate decoder. A 32-bit verifier replay and the manifest's authored-witness/mutation gates remain open. This is not T-INFL, global T1/T11/T12, full container T-SEG, allocation sign-off or a release declaration. Resume with layer 3, blocks/window and the independent append-only inflate model.
+
+| Runs | Evidence | Result |
+|---|---|---|
+| 132–135 | Verified Work interface and erased observation | Natural cast/visibility fixes, then 133 verified |
+| 136–140 | Actual Bits cache/read/align contracts and independent field_value | Position cast, mutable-entry snapshots, cache visibility/refill and generic-wf-law fixes |
+| 141 | Bits and generic Segments wf law | 147 verified |
+| 142–148 | Reader release/differential/allocator/source/hash checks | Passed |
+| 149 | Actual outer Huffman construction/admission/error mapping; Ghost live-count lengths | 152 verified |
+| 150–156 | Constructor release/differential/allocator/source/hash checks | Passed |
+| 157–159 | Actual decoder refinement | Default resource-limit failure, then scoped abstraction/projection helpers and exact EOF-position fix; no limit increase |
+| 160 | Actual decode equals MDec, symbol/error and position | 160 verified |
+| 161–162 | Both single-code choices, outer L-CANON bridges and construction work composition | 163 verified |
+| 163–164 | Exact Ghost work, total legacy diagnostic update, no work-slack preconditions | 163 verified |
+| 165–168 | Formatting, fresh proof replay, thirteen release tests and adapter | Run 166: 163 verified, 0 errors |
+| 169–170 | Final-source full differential, seeds 9 and 10 | 10,000 generated streams plus 10,000 corruptions, zero unexpected differences |
+| 171–174 | Host/thumbv7m libraries and instantiated probes, allocator/source/cap controls and hashes | Passed; twelve frozen entries |
+| 175–176 | Proof-only stable-cache invariant and exact next-byte alignment | Exposed pre-refill cache facts, then 163 verified, 0 errors |
+| 177–183 | Final-source thirteen release tests, all vectors plus 1,000 streams/corruptions, both target gates and frozen hashes | Passed; no runtime-body change after the full differential |
+
+### Exact proved surface
+
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/segments.rs:54` adds the proved trait law lemma_wf. An overridable default spec body alone does not expose its facts to generic consumers; SegmentSlices proves the law at line 155. The actual constructor/read methods remain verified at lines 105 and 157. No initial index/counter reset is required by read.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/bits.rs:77` Bits::new requires only source wf and snapshots ghost work/rank origins. Its byte at line 90, get at line 120 and align at line 210 prove exact bytes/bits, preserved concat, bit-position range, exact rounding to the next byte boundary, partial consumption on truncation and termination. Stable wf excludes the transient full-byte refill state; that state uses cache_wf only inside get. get covers n<=32 and returns model::field_value; bit position is a nat, 8*src.pos()-remaining. Measured segment work is a delta bounded by C_SEG*(seg_count+1), not an absolute counter requiring reset. get's exact Ghost work delta is at most 2*n.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/lib.rs:116` Work::new and line 121 Work::add maintain an exact erased Ghost<nat> observation. The legacy u128 diagnostic clamps at its type maximum; no helper now requires spare diagnostic capacity. The diagnostic clamp does not clamp the mathematical counter.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/huffman.rs:110` build_canonical composes the actual canonical constructor and live loop, maps every construction error to InvalidCodeLengths, and establishes the full representation on every non-oversubscribed input, including otherwise inadmissible vectors. It asserts the work observation equals the actual helper observations. `/home/ws/projects/verified-decoders/png/inflate_verus/src/canonical.rs:312` live_counts now takes Ghost lengths, with no executable observation borrow.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/huffman.rs:68` build_with_single proves exact admission under both single-code choices; the actual build at line 55 delegates to it with true. Successful construction establishes ready, representation and the matching independent admissibility predicate; every failure clears ready. new at line 95 is verified.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/huffman.rs:36` lemma_canon_forward and line 45 lemma_canon_reverse expose the outer L-CANON word/lookup equivalence without constraining unused symbol slots.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/huffman.rs:159` decode proves exact MDec symbol/error and bit position on the real Bits reader. Its invariant tracks the reachable independent prefix, no exact hit at the pending read, numerical msb_bits correspondence and model recursion equality. Empty codes fail without reading, dead prefixes fail before another read, and truncation occurs only on a live prefix. The actual decoder terminates and adds at most 3*MAX_CODE_BITS exact Ghost work.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/model.rs:1004` field_value independently sums wire bits; lemma_field_one at line 1019, lemma_msb_push at line 1025, lemma_initial_prefix at line 1033, lemma_decode_prefix_step at line 1056 and lemma_decode_prefix_hit at line 1065 supply the decoder bridge. The model never reads the concrete cache or tables.
+
+The final decoder uses code*2+bit and the bit reader uses addition of a disjoint bit weight; the independent specifications and runtime differential cover those plain-code changes. Existing public option types remain the Strict/RecommendedBeta domain; the both-choice primitive does not claim implementation of all Stage-2 inflate tuples.
+
+### Resume and remaining boundaries
+
+1. Add an independent evolving inflate model in `/home/ws/projects/verified-decoders/png/inflate_verus/src/model.rs`: append decoded bytes to Seq<u8>, resolving each match distance within that evolving output, never by reading executable ring/table state.
+2. Verify the actual stored/fixed/dynamic block paths in `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs`: D5 stream-order stored prefixes and availability-before-limit, all 32 fixed distance codes, dynamic header ordering/admission, the 316-entry bound and L-HDR-BITS/2,048-iteration budget.
+3. Prove window/ring representation and overlapping copies, then both actual public entries against the independent Inflate model, including status/count/written prefix, limit/Adler/window rules. Discharge the actual inflate callers' helper preconditions; do not equate the proved Huffman layer with public T-INFL.
+4. Public results remain runtime u128 diagnostics; move returned observations to Ghost counters and prove global T12 later. The historical public seg_steps field still reports an absolute diagnostic, so public accounting must return a per-call ghost delta under wf plus pos()==0, without reset/index assumptions.
+
+No proof mutations or authored frozen-model witness computations were run. Pending mutations include cache bit order/advance, partial-EOF consumption, canonical/single admission, failed-lookup/dead-prefix boundaries, reading before dead-prefix rejection, plus the later block/window/limit/Adler/work mutations. Runtime authored expectations remain runtime evidence only.
+
+Runs 169–170 each check all 1,181 extracted streams in four layouts and deterministic stress cases, and together check 10,000 generated streams and 10,000 single-bit corruptions: 33,544 public-entry pairs, 67,088 actual entry calls, zero unexpected differences. The final release suite has thirteen tests. All final build/symbol/source/cap/frozen gates pass.
+
+Verus 0.2026.11.02.8bf68ee, vstd 0.0.0-2026-11-01-0251 and rustc 1.99.1 (58cf8f9c3), default solver limits, two verifier threads, CARGO_BUILD_JOBS=1, --no-cheating and bounded serial verify.sh remain unchanged. No new trust item, forbidden proof escape, frozen/manifest/errata edit, commit or background job was introduced. E1 remains coordinator-owned. Backups before these moves are `/home/ws/projects/verified-decoders/png/inflate_verus/backups/bits-before-layer2.tar` and `/home/ws/projects/verified-decoders/png/inflate_verus/backups/huffman-outer-before-layer2.tar`.
+
+---
+
+## Segments checkpoint within layer 2, 2026-11-17
+
+**Run 124: 130 verified, 0 errors.** The actual Segments trait and SegmentSlices constructor/read loop now have verified contracts. This is a low-context checkpoint inside layer 2, not completion of L-BITS, T-HUFF or T-INFL. Resume with the unchanged Bits reader.
+
+| Runs | Evidence | Result |
+|---|---|---|
+| 110–112 | Initial trait/read conversion | Ghost natural field initialization errors; replaced raw ghost fields with Ghost<nat> wrappers |
+| 113 | Generic trait reveal attempt | Verus internal AIR error, no completed count; removed generic reveals without changing verifier settings |
+| 114–115 | Read-loop entry snapshot and progress | Explicit initial == *old(self) invariant, then 126 verified |
+| 116 | Universal wf bounds and stable repeated EOF | 126 verified |
+| 117–123 | Release tests, vector/differential regression, host/thumb probes, source controls and hashes | Passed |
+| 124 | Concrete diagnostic getters tied to spec views | 130 verified, 0 errors |
+| 125–131 | Final release/differential/build/symbol/source/hash gates | Passed; 8,772 public-entry pairs in run 127, twelve frozen hashes in run 131 |
+
+`/home/ws/projects/verified-decoders/png/inflate_verus/src/segments.rs:35` is the actual trait. Its spec views are concat, pos, seg_index, seg_count, seg_steps and core_steps; wf at line 44 includes the universal cursor/length/progress bounds plus an implementation-specific state_wf. The read contract at line 52 requires only wf, preserves concat and segment count, returns the exact next concatenated byte or EOF, keeps positions/ranks monotonic, and charges exactly one further core iteration. The segment counter delta equals the advance-rank delta; rank is bounded by seg_count + 1, so costs telescope across reads without resetting counters or assuming initial segment index zero. A None return exhausts the rank, making subsequent EOF reads preserve both position and segment work.
+
+`SegmentSlices::new` at `/home/ws/projects/verified-decoders/png/inflate_verus/src/segments.rs:95` proves wf, pos()==0, exact concatenation, segment count and zero initial ghost counters, and rejects a concatenation beyond SEGMENT_BYTES_MAX. `Segments::read` for SegmentSlices at line 145 is the actual loop: every segment advance increments the erased seg_work counter, each returning iteration increments read_work, and the remaining segment count is its termination variant. The runtime advances diagnostic remains independently tied to seg_work. The four concrete diagnostics at lines 187–199 are also verified.
+
+`lemma_parts_monotone` at line 15 and `lemma_parts_byte` at line 23 connect the concrete borrowed segment cursor to concatenation. These are observation/representation lemmas, not a replacement byte-reader runtime path. The public concrete diagnostic names remain available; generic diagnostic reporting now calls the trait's diagnostic_seg_steps at `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs:299`, because seg_steps is the ghost spec view.
+
+Exact resume:
+
+1. Convert `/home/ws/projects/verified-decoders/png/inflate_verus/src/bits.rs` into Verus, using the now-real trait contracts. Bits::new should require src.wf, not reset indices/counters; capture ghost counter/rank origins so work is a delta. Preserve the public inflate entry antecedent wf plus pos()==0. Bit position is 8*src.pos()-remaining in nat; prove cached-byte correctness, k<=32 reads, partial consumption on truncation, alignment, concat preservation and loop termination.
+2. Verify `/home/ws/projects/verified-decoders/png/inflate_verus/src/huffman.rs:73` decode/MDec using reachable prefixes and the accepted D4 bridge, then compose constructor/admission/error mapping and convert live_counts' lengths observation to Ghost.
+3. Do not claim full T-HUFF/L-CANON until those actual outer functions are verified. Public result counters remain runtime u128; the current public seg_steps result is still the historical absolute diagnostic, not a proved per-call delta for arbitrary wf plus pos()==0 states. Global work accounting, blocks/window, T-INFL, 32-bit replay and authored witness/mutation gates remain open.
+
+The current trait contract works from arbitrary well-formed cursor states; no index/counter-reset precondition was added to read or to a public inflate theorem. No Bits source was changed in this continuation. No new trust item, solver-limit increase, frozen/manifest/errata edit, commit or background job was introduced. Backup before this layer: `/home/ws/projects/verified-decoders/png/inflate_verus/backups/segments-before-layer2.tar`. Accepted verifier/dependency versions and E1 boundary remain as recorded below.
+
+---
+
+## Live-prefix and D4 checkpoint, 2026-11-17
+
+**Run 108: 118 verified, 0 errors.** Assigned layer 1 is complete: the actual live-count reverse loop and its independent remaining-mass invariant are verified, and the post-lookup dead-prefix expression is proved equivalent to independent canonical-word liveness for every admissible code. This is not a verified Huffman decoder or full T-HUFF. Resume with layer 2, Bits/Segments contracts.
+
+| Runs | Evidence | Result |
+|---|---|---|
+| 80–84 | Independent remaining-mass recurrence and executable reverse loop | Integer quotient cast, explicit zero-product base case and existing code-growth unfolding fixes |
+| 85 | Reverse loop, rounded division, safety, termination and erased work | 92 verified |
+| 86–88 | Ten release tests, adapter, all vector layouts and 1,000 generated streams/corruptions | Passed |
+| 89–90 | Complete-code prefix witnesses and exact remaining-mass partition | Pinned division lemma name/argument fixes and explicit zero-product base case |
+| 91 | Complete-code proper-prefix interval | 104 verified |
+| 92–93 | Single/empty code semantics | Explicit one-bit string and RFC first-code base unfolding |
+| 94 | Complete/single/empty admissible live interval | 113 verified |
+| 95–96 | Failed-lookup dead-prefix semantics and local MDec error precedence | Syntax fix, then 117 verified |
+| 97 | Concrete table/live-array representation bridge for D4 | 118 verified |
+| 98–102 | Formatting, ten release tests, adapter, all vector layouts and differential seed 4 | Passed; 8,772 public-entry pairs in run 102 |
+| 103–106, 109 | Host/thumbv7m builds, instantiated allocator probes, source/cap controls and frozen hashes; final source-control replay | Passed; twelve frozen entries |
+| 99, 107 | Unchanged-source verifier replays | Cargo cache hits; no fresh proof count |
+| 108 | Final source after D4 precedence comment; fresh verifier replay | 118 verified, 0 errors |
+
+### Exact proof surface
+
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/model.rs:550` `remaining_mass_prefix` independently sums the leaf mass of symbols longer than depth n; `lemma_remaining_bounds` at line 570, `lemma_remaining_step` at line 580 and `lemma_remaining_partition` at line 628 prove bounds, reverse recurrence and the partition against the independent occupied mass.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/canonical.rs:312` `live_counts` is the actual executable reverse loop, called by `Huffman::build_canonical` at `/home/ws/projects/verified-decoders/png/inflate_verus/src/huffman.rs:69`; it proves every live entry equals the rounded independent mass, terminates safely and returns exactly MAX_CODE_BITS + 1 erased Ghost steps.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/model.rs:658` `lemma_complete_live_count` and line 750 `lemma_complete_proper_live` prove the complete-code interval; line 681 `lemma_rank_exists` and line 716 `lemma_complete_extension` construct independent symbol witnesses without executable table slots.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/model.rs:831` `lemma_single_words`, line 853 `lemma_single_live` and line 904 `lemma_empty_live` prove the other two admissible shapes; line 919 `lemma_admissible_live_interval` combines all three.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/model.rs:951` `lemma_numeric_exact`, line 974 `lemma_admissible_dead_prefix` and line 990 `lemma_decode_prefix_errors` establish failed-lookup subtraction safety, dead-prefix equivalence and local MDec InvalidSymbol-before-EOF precedence.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/canonical.rs:353` `lemma_dead_prefix_representation` connects the actual count/first/live arrays and failed table lookup to the independent liveness predicate.
+
+The loop now uses `(higher + unit - 1) / unit` instead of `div_ceil`; Verus proves the addition, subtraction and division safe under the exact non-oversubscription precondition. Runtime diagnostics charge the same number of iterations outside the erased helper. The helper's lengths slice is an executable observation borrow used only by its specification; convert it to a Ghost sequence when the outer constructor enters Verus. No dynamic allocation was introduced.
+
+### Resume and remaining boundaries
+
+1. Encode T-SEG on the actual trait and SegmentSlices implementation in `/home/ws/projects/verified-decoders/png/inflate_verus/src/segments.rs`, then L-BITS on the actual reader in `/home/ws/projects/verified-decoders/png/inflate_verus/src/bits.rs`; retain only wf plus pos()==0 as the public fresh-entry antecedent, not zero segment-index/counter assumptions.
+2. Verify `/home/ws/projects/verified-decoders/png/inflate_verus/src/huffman.rs:73` `decode` against MDec with reachable-prefix/no-shorter-hit and numeric-bit-prefix invariants; call the new D4 representation lemma before another read.
+3. Move and compose the outer Huffman constructor, its model lengths/ready state, admission and error mapping into Verus; current helper preconditions are not yet proved at the unverified outer calls.
+4. Hand back full T-HUFF/L-CANON only after that composition; blocks/window, independent append-only inflate model, public T-INFL, ghost public work accounting, caps_ok/CAPS-SYM, 32-bit proof replay and authored witness/mutation gates remain open.
+
+No proof mutations were run. Pending live-prefix mutations include flooring the quotient, changing the reverse depth/shift, omitting depth zero, changing the dead-interval boundary, and reading input before rejecting a dead prefix. The complete/single/empty split is intentionally not claimed for arbitrary inadmissible incomplete codes.
+
+Run 102 checks 631 frozen, 140 cap and 410 policy extractor streams in four layouts plus 1,000 generated streams and 1,000 single-bit corruptions, with zero unexpected differences. Public counters remain runtime u128. The approved ghost vstd/alloc cache and coordinator-owned E1 clarification are unchanged; no full A-PNG allocation claim is made. Verus 0.2026.11.02.8bf68ee, vstd 0.0.0-2026-11-01-0251 and rustc 1.99.1 (58cf8f9c3), default solver limits, two verifier threads, CARGO_BUILD_JOBS=1, --no-cheating and the 25-minute wrapper bound remain in force. No new trusted item, forbidden proof escape, frozen/manifest/errata edit, commit or background job was introduced. Backup: `/home/ws/projects/verified-decoders/png/inflate_verus/backups/live-prefix-before-run80.tar`.
+
+---
+
 Canonical-table checkpoint, 2026-11-17: **run 74, 84 verified, 0 errors**. This is a low-context handback within the Huffman layer. The actual canonical-table constructor and lookup are verified; the outer Huffman constructor, live-prefix logic and decode/MDec are not yet verified. No full T-HUFF or public inflate theorem is claimed. STUCK.md remains byte-identical to the accepted run-56 checkpoint, as the coordinator requested; this section contains the current resume point.
 
 | Runs | Evidence | Result |

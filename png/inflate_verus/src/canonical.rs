@@ -307,4 +307,76 @@ pub fn build_tables(lengths: &[u8], counts: &mut [u16; MAX_CODE_BITS + 1],
     (Ok((kraft, nonzero)), Ghost(count_work@ + (MAX_CODE_BITS + 1) as nat + _first_work@ + _symbol_work@))
 }
 
+/// Actual reverse loop used by Huffman construction. Its invariant is the
+/// independent per-symbol remaining mass, not another table recurrence.
+pub fn live_counts(Ghost(lengths): Ghost<Seq<u8>>, counts: &[u16; MAX_CODE_BITS + 1],
+    live: &mut [u32; MAX_CODE_BITS + 1]) -> (work: Ghost<nat>)
+    requires m::lengths_ok(lengths), m::Kraft(lengths) <= CODE_SPACE,
+        forall|n: int| 1 <= n <= MAX_CODE_BITS ==> counts@[n] == m::bl_count(lengths, n as nat),
+    ensures work@ == MAX_CODE_BITS + 1,
+        forall|n: int| 0 <= n <= MAX_CODE_BITS ==> final(live)@[n] == m::live_count(lengths, n as nat),
+{
+    proof { huffman_format_ok(); m::lemma_remaining_bounds(lengths, MAX_CODE_BITS as nat, lengths.len()); }
+    let mut higher = 0u32;
+    let mut n = MAX_CODE_BITS;
+    let ghost mut steps: nat = 0;
+    loop
+        invariant
+            n <= MAX_CODE_BITS, steps == MAX_CODE_BITS - n,
+            m::lengths_ok(lengths), m::Kraft(lengths) <= CODE_SPACE,
+            higher == m::remaining_mass(lengths, n as nat),
+            forall|j: int| 1 <= j <= MAX_CODE_BITS ==> counts@[j] == m::bl_count(lengths, j as nat),
+            forall|j: int| n < j <= MAX_CODE_BITS ==> live@[j] == m::live_count(lengths, j as nat),
+        decreases n,
+    {
+        proof {
+            steps = steps + 1;
+            huffman_format_ok();
+            m::lemma_remaining_bounds(lengths, n as nat, lengths.len());
+            m::lemma_pow2_monotone((MAX_CODE_BITS - n) as nat, MAX_CODE_BITS as nat);
+            m::lemma_pow2_positive((MAX_CODE_BITS - n) as nat);
+            m::lemma_pow2_vstd((MAX_CODE_BITS - n) as nat);
+            vstd::bits::lemma_u32_shl_is_mul(1, (MAX_CODE_BITS - n) as u32);
+        }
+        let unit = 1u32 << (MAX_CODE_BITS - n);
+        live[n] = (higher + unit - 1) / unit;
+        if n == 0 { return Ghost(steps); }
+        proof { m::lemma_remaining_step(lengths, n as nat, lengths.len());
+            m::lemma_remaining_bounds(lengths, (n - 1) as nat, lengths.len()); }
+        higher += counts[n] as u32 * unit;
+        n -= 1;
+    }
+}
+
+/// Representation bridge for the actual post-lookup dead-prefix expression.
+/// This is not a proof of Huffman::decode's reader loop or reachable states.
+pub proof fn lemma_dead_prefix_representation(lengths: Seq<u8>, counts: Seq<u16>, first: Seq<u32>,
+    offsets: Seq<u16>, symbols: Seq<u16>, live: Seq<u32>, kind: m::CodeKind,
+    single_accept: bool, n: nat, code: nat)
+    requires table_repr(lengths, counts, first, offsets, symbols),
+        m::admissible(lengths, kind, single_accept),
+        live.len() == MAX_CODE_BITS + 1,
+        forall|j: int| 0 <= j <= MAX_CODE_BITS ==> live[j] == m::live_count(lengths, j as nat),
+        1 <= n <= MAX_CODE_BITS, code < m::pow2(n),
+        table_lookup(counts, first, offsets, symbols, n, code).is_none(),
+    ensures
+        forall|s: int| !m::exact(lengths, m::msb_bits(code, n), s),
+        code < first[n as int] || code >= first[n as int] + counts[n as int],
+        !m::live(lengths, m::msb_bits(code, n)) == (code < first[n as int]
+            || code - first[n as int] - counts[n as int] >= live[n as int]),
+{
+    m::lemma_bucket_bound(lengths, n);
+    assert(code < first[n as int] || code >= first[n as int] + counts[n as int]);
+    m::lemma_numeric_exact(lengths, n, code);
+    m::lemma_admissible_dead_prefix(lengths, kind, single_accept, n, code);
+}
+
+pub proof fn lemma_lookup_bounds(lengths: Seq<u8>, counts: Seq<u16>, first: Seq<u32>,
+    offsets: Seq<u16>, symbols: Seq<u16>, n: nat)
+    requires table_repr(lengths, counts, first, offsets, symbols), 1 <= n <= MAX_CODE_BITS,
+    ensures offsets[n as int] + counts[n as int] <= FIXED_LIT_COUNT,
+{
+    m::lemma_bucket_bound(lengths, n);
+}
+
 } // verus!

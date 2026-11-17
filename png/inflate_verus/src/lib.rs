@@ -19,6 +19,7 @@ pub mod segments;
 pub use inflate::{inflate_zlib_into, inflate_zlib_measure};
 pub use segments::{SegmentSlices, Segments};
 
+vstd::prelude::verus! {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum InflateError {
     TruncatedZlib,
@@ -33,6 +34,7 @@ pub enum InflateError {
     AdlerMismatch,
     TrailingZlibData,
 }
+} // verus!
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Status {
@@ -99,12 +101,37 @@ pub struct InflateResult {
     pub seg_steps: u128,
 }
 
-#[derive(Default)]
+use vstd::prelude::*;
+
+verus! {
 pub(crate) struct Work {
     pub core: u128,
+    pub observed: Ghost<nat>,
 }
 impl Work {
-    pub fn add(&mut self, n: usize) {
-        self.core += n as u128;
+    pub(crate) closed spec fn wf(&self) -> bool {
+        self.core == if self.observed@ <= u128::MAX { self.observed@ } else { u128::MAX as nat }
+    }
+
+    pub(crate) fn new() -> (w: Self)
+        ensures w.wf(), w.core == 0, w.observed@ == 0,
+    { Self { core: 0, observed: Ghost(0nat) } }
+
+    /// The erased observation is exact; the legacy runtime diagnostic clamps.
+    pub(crate) fn add(&mut self, n: usize)
+        requires old(self).wf(),
+        ensures final(self).wf(), old(self).core <= final(self).core <= old(self).core + n,
+            final(self).observed@ == old(self).observed@ + n,
+    {
+        if self.core > u128::MAX - n as u128 { self.core = u128::MAX; }
+        else { self.core += n as u128; }
+        proof { self.observed = Ghost(self.observed@ + n as nat); }
+    }
+}
+} // verus!
+
+impl Default for Work {
+    fn default() -> Self {
+        Self::new()
     }
 }

@@ -1,0 +1,394 @@
+command: ['cargo', 'verus', 'verify', '--', '--num-threads', '2', '--no-cheating']
+    Checking inflate_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/target/debug/incremental/inflate_verus-1303t8mhpqchm/s-ho923beoy7-0vwkd41-working`
+
+note: automatically chose triggers for this expression:
+   --> src/canonical.rs:161:8
+    |
+161 |       && (forall|s: int| 0 <= s < lengths.len() && lengths[s] > 0 ==>
+    |  ________^
+162 | |         symbols[m::symbol_slot(lengths, s) as int] == s)
+    | |________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> src/canonical.rs:161:50
+    |
+161 |     && (forall|s: int| 0 <= s < lengths.len() && lengths[s] > 0 ==>
+    |                                                  ^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> src/canonical.rs:162:17
+    |
+162 |         symbols[m::symbol_slot(lengths, s) as int] == s)
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/model.rs:103:5
+    |
+103 | /     exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+104 | |         && prefix(bits, cw(lengths, s).unwrap())
+    | |________________________________________________^
+
+note:   trigger 1 of 1:
+   --> src/model.rs:103:46
+    |
+103 |     exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                              ^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/model.rs:746:5
+    |
+746 | /     exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+747 | |         && bits.len() < lengths[s] && prefix(bits, cw(lengths, s).unwrap())
+    | |___________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> src/model.rs:746:46
+    |
+746 |     exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                              ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> src/model.rs:747:25
+    |
+747 |         && bits.len() < lengths[s] && prefix(bits, cw(lengths, s).unwrap())
+    |                         ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/huffman.rs:256:21
+    |
+256 |               let s = choose|s: int| 0 <= s < lengths.len() && m::cw(lengths, s).is_some()
+    |  _____________________^
+257 | |                 && bits.len() < lengths[s] && m::prefix(bits, m::cw(lengths, s).unwrap());
+    | |_________________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> src/huffman.rs:256:62
+    |
+256 |             let s = choose|s: int| 0 <= s < lengths.len() && m::cw(lengths, s).is_some()
+    |                                                              ^^^^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> src/huffman.rs:257:33
+    |
+257 |                 && bits.len() < lengths[s] && m::prefix(bits, m::cw(lengths, s).unwrap());
+    |                                 ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> src/canonical.rs:68:9
+   |
+68 |         forall|n: int| 0 <= n <= MAX_CODE_BITS ==> old(next)@[n] == offsets[n],
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+  --> src/canonical.rs:68:69
+   |
+68 |         forall|n: int| 0 <= n <= MAX_CODE_BITS ==> old(next)@[n] == offsets[n],
+   |                                                                     ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> src/canonical.rs:71:9
+   |
+71 | /         forall|n: int| 1 <= n <= MAX_CODE_BITS ==>
+72 | |             final(next)@[n] == offsets[n] + m::bl_count(lengths@, n as nat),
+   | |___________________________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> src/canonical.rs:72:13
+   |
+72 |             final(next)@[n] == offsets[n] + m::bl_count(lengths@, n as nat),
+   |             ^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> src/canonical.rs:73:9
+   |
+73 | /         forall|s: int| 0 <= s < lengths.len() && lengths@[s] > 0 ==>
+74 | |             final(symbols)@[m::symbol_slot(lengths@, s) as int] == s,
+   | |____________________________________________________________________^
+
+note:   trigger 1 of 2:
+  --> src/canonical.rs:73:50
+   |
+73 |         forall|s: int| 0 <= s < lengths.len() && lengths@[s] > 0 ==>
+   |                                                  ^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+  --> src/canonical.rs:74:29
+   |
+74 |             final(symbols)@[m::symbol_slot(lengths@, s) as int] == s,
+   |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/canonical.rs:119:17
+    |
+119 |                 assert forall|t: int| 0 <= t < s + 1 && lengths@[t] > 0 implies
+    |                 ^^^^^^
+
+note:   trigger 1 of 2:
+   --> src/canonical.rs:119:57
+    |
+119 |                 assert forall|t: int| 0 <= t < s + 1 && lengths@[t] > 0 implies
+    |                                                         ^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> src/canonical.rs:120:30
+    |
+120 |                     symbols@[m::symbol_slot(lengths@, t) as int] == t by {
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/canonical.rs:144:13
+    |
+144 |             assert forall|n: int| 1 <= n <= MAX_CODE_BITS implies
+    |             ^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/canonical.rs:145:17
+    |
+145 |                 next@[n] == offsets[n] + m::count_prefix(lengths@, n as nat, (s + 1) as nat) by {}
+    |                 ^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> src/canonical.rs:93:13
+   |
+93 | /             forall|n: int| 1 <= n <= MAX_CODE_BITS ==>
+94 | |                 next@[n] == offsets[n] + m::count_prefix(lengths@, n as nat, s as nat),
+   | |______________________________________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> src/canonical.rs:94:17
+   |
+94 |                 next@[n] == offsets[n] + m::count_prefix(lengths@, n as nat, s as nat),
+   |                 ^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> src/canonical.rs:95:13
+   |
+95 | /             forall|t: int| 0 <= t < s && lengths@[t] > 0 ==>
+96 | |                 symbols@[m::symbol_slot(lengths@, t) as int] == t,
+   | |_________________________________________________________________^
+
+note:   trigger 1 of 2:
+  --> src/canonical.rs:95:42
+   |
+95 |             forall|t: int| 0 <= t < s && lengths@[t] > 0 ==>
+   |                                          ^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+  --> src/canonical.rs:96:26
+   |
+96 |                 symbols@[m::symbol_slot(lengths@, t) as int] == t,
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/model.rs:939:17
+    |
+939 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+940 | |             && prefix(bits, cw(lengths, s).unwrap());
+    | |____________________________________________________^
+
+note:   trigger 1 of 1:
+   --> src/model.rs:939:58
+    |
+939 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/model.rs:719:13
+    |
+719 |       ensures exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _____________^
+720 | |         && lengths[s] >= n && prefix(msb_bits(code, n), cw(lengths, s).unwrap()),
+    | |________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> src/model.rs:719:54
+    |
+719 |     ensures exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                      ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> src/model.rs:720:12
+    |
+720 |         && lengths[s] >= n && prefix(msb_bits(code, n), cw(lengths, s).unwrap()),
+    |            ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/model.rs:738:17
+    |
+738 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+739 | |             && lengths[s] >= n + 1 && prefix(msb_bits(2 * code, n + 1), cw(lengths, s).unwrap());
+    | |________________________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> src/model.rs:738:58
+    |
+738 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> src/model.rs:739:16
+    |
+739 |             && lengths[s] >= n + 1 && prefix(msb_bits(2 * code, n + 1), cw(lengths, s).unwrap());
+    |                ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/model.rs:758:17
+    |
+758 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+759 | |             && n < lengths[s] && prefix(msb_bits(code, n), cw(lengths, s).unwrap());
+    | |___________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> src/model.rs:758:58
+    |
+758 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> src/model.rs:759:20
+    |
+759 |             && n < lengths[s] && prefix(msb_bits(code, n), cw(lengths, s).unwrap());
+    |                    ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/model.rs:775:17
+    |
+775 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+776 | |             && lengths[s] >= n + 1 && prefix(msb_bits(2 * code, n + 1), cw(lengths, s).unwrap());
+    | |________________________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> src/model.rs:775:58
+    |
+775 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> src/model.rs:776:16
+    |
+776 |             && lengths[s] >= n + 1 && prefix(msb_bits(2 * code, n + 1), cw(lengths, s).unwrap());
+    |                ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/model.rs:834:9
+    |
+834 | /         (forall|s: int| 0 <= s < lengths.len() && lengths[s] > 0 ==>
+835 | |             cw(lengths, s) == Some(seq![false])),
+    | |________________________________________________^
+
+note:   trigger 1 of 1:
+   --> src/model.rs:835:13
+    |
+835 |             cw(lengths, s) == Some(seq![false])),
+    |             ^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/model.rs:841:5
+    |
+841 |     assert forall|s: int| 0 <= s < lengths.len() && lengths[s] > 0 implies
+    |     ^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/model.rs:842:9
+    |
+842 |         cw(lengths, s) == Some(seq![false]) by {
+    |         ^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/model.rs:862:17
+    |
+862 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+863 | |             && prefix(msb_bits(code, n), cw(lengths, s).unwrap());
+    | |_________________________________________________________________^
+
+note:   trigger 1 of 1:
+   --> src/model.rs:862:58
+    |
+862 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/model.rs:871:17
+    |
+871 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+872 | |             && n < lengths[s] && prefix(msb_bits(code, n), cw(lengths, s).unwrap());
+    | |___________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> src/model.rs:871:58
+    |
+871 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> src/model.rs:872:20
+    |
+872 |             && n < lengths[s] && prefix(msb_bits(code, n), cw(lengths, s).unwrap());
+    |                    ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> src/model.rs:1046:17
+     |
+1046 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+     |  _________________^
+1047 | |             && lengths[s] >= 0 && prefix(msb_bits(0, 0), cw(lengths, s).unwrap());
+     | |_________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+    --> src/model.rs:1046:58
+     |
+1046 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+     |                                                          ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+    --> src/model.rs:1047:16
+     |
+1047 |             && lengths[s] >= 0 && prefix(msb_bits(0, 0), cw(lengths, s).unwrap());
+     |                ^^^^^^^^^^
+
+note: Verus printed one or more automatically chosen quantifier triggers
+      because it had low confidence in the chosen triggers.
+      To suppress these messages, do one of the following:
+        (1) manually annotate a single desired trigger using `#[trigger]`
+            (example: `forall|i: int, j: int| f(i) && #[trigger] g(i) && #[trigger] h(j)`),
+        (2) manually annotate multiple desired triggers using `#![trigger ...]`
+            (example: `forall|i: int| #![trigger f(i)] #![trigger g(i)] f(i) && g(i)`),
+        (3) accept the automatically chosen trigger using `#![auto]`
+            (example: `forall|i: int, j: int| #![auto] f(i) && g(i) && h(j)`)
+        (4) use the `--triggers-mode silent` command-line option to suppress all printing of triggers.
+      (Note: triggers are used by the underlying SMT theorem prover to instantiate quantifiers;
+      the theorem prover instantiates a quantifier whenever some expression matches the
+      pattern specified by one of the quantifier's triggers.)
+    --> src/model.rs:1046:17
+     |
+1046 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+     |  _________________^
+1047 | |             && lengths[s] >= 0 && prefix(msb_bits(0, 0), cw(lengths, s).unwrap());
+     | |_________________________________________________________________________________^
+
+verification results:: 163 verified, 0 errors
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/target/debug/incremental/inflate_verus-1303t8mhpqchm/s-ho923iq7do-0i7wpvb-working`
+
+warning: function `Kraft` should have a snake case name
+  --> src/model.rs:51:18
+   |
+51 | pub open spec fn Kraft(lengths: Seq<u8>) -> nat {
+   |                  ^^^^^ help: convert the identifier to snake case (notice the capitalization): `kraft`
+   |
+   = note: `#[warn(non_snake_case)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: function `MDec` should have a snake case name
+   --> src/model.rs:127:18
+    |
+127 | pub open spec fn MDec(lengths: Seq<u8>, z: Seq<u8>, start: nat) -> Decoded {
+    |                  ^^^^ help: convert the identifier to snake case: `mdec`
+
+warning: `inflate_verus` (lib) generated 4 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 13.00s

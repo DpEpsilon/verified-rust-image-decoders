@@ -296,7 +296,7 @@ fn entry<S: Segments>(src: &mut S, sink: Sink<'_>, limit: u64, o: InflateOptions
         status,
         produced: output.produced,
         core_steps: work.core,
-        seg_steps: br.src.seg_steps(),
+        seg_steps: br.src.diagnostic_seg_steps(),
     }
 }
 

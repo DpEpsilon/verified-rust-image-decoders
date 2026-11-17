@@ -1,0 +1,6 @@
+command: ['python3', '-I', '/home/ws/projects/verified-decoders/png/inflate_verus/tools/audit_symbols.py']
+no alloc:: or allocator symbols: /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/target/release/libinflate_verus.rlib; 12 symbol lines
+no alloc:: or allocator symbols: /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/target/release/examples/liballocator_probe.rlib; 24 symbol lines
+no alloc:: or allocator symbols: /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/target/thumbv7m-none-eabi/release/libinflate_verus.rlib; 14 symbol lines
+no alloc:: or allocator symbols: /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/target/thumbv7m-none-eabi/release/examples/liballocator_probe.rlib; 41 symbol lines
+Both public entry points instantiated without allocator references on host and thumbv7m
