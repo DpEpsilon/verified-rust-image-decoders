@@ -1,6 +1,6 @@
 //! Independent G10 dictionary semantics: dictionary entries and prev are byte
 //! strings, never prefix/suffix arrays. The representation proofs below depend
-//! on proposed E4's byte-readable literal domain; excluded checked literals
+//! on owner-approved E4's byte-readable literal domain; excluded checked literals
 //! are rejected before any dictionary lookup or insertion.
 use vstd::prelude::*;
 #[cfg(verus_only)]
@@ -216,6 +216,32 @@ pub proof fn lemma_emit(m:int,x:ml::St,s:State,c:int,after:int)
     } else {assert(ns.table[c]==cur);}
 }
 
+/// E4(b): decreasing links reach a literal below both clear and 256.
+/// lemma_initial, lemma_emit and lemma_clear preserve the relates hypothesis.
+pub proof fn lemma_stored_root(m:int,x:ml::St,s:State,c:int)
+    requires relates(m,x,s),ml::lzw_clear_of(m)+2<=c<x.next,
+    ensures 0<=crate::chain::root_of(x.pf,ml::lzw_clear_of(m),c,4096)<ml::lzw_clear_of(m),
+        crate::chain::root_of(x.pf,ml::lzw_clear_of(m),c,4096)<256,
+{
+    lemma_read(m,x,s,c);
+    crate::chain::lemma_root_literal(x.pf,ml::lzw_clear_of(m),c,4096);
+    assert forall|i:int| ml::lzw_clear_of(m)+2<=i<=c && (x.pf[i] as int)<ml::lzw_clear_of(m)
+        implies #[trigger] x.pf[i]<256 by {
+        assert(crate::chain::link_ok(x.pf,ml::lzw_clear_of(m),i));
+    }
+    crate::refinement::checked_root(x.pf,ml::lzw_clear_of(m),c,4096);
+}
+
+/// E4(d): restricting literals to byte strings changes no literal for m<=8.
+pub proof fn lemma_small_literal_domain(m:int,c:int)
+    requires 1<=m<=8,
+    ensures ml::lzw_clear_of(m)<=256,
+        (if ml::lzw_clear_of(m)<256 {ml::lzw_clear_of(m)} else {256int})==ml::lzw_clear_of(m),
+        (0<=c<ml::lzw_clear_of(m) && c<256)==(0<=c<ml::lzw_clear_of(m)),
+{
+    reveal_with_fuel(ml::lzw_ipow2,9);
+}
+
 /// The policy guard excludes non-byte literals before any resolution or add.
 pub proof fn lemma_accepted_code(m:int,x:ml::St,s:State,c:int,checked:bool)
     requires 1<=m<=11,m<=8 || checked,relates(m,x,s),0<=c,
@@ -306,6 +332,8 @@ pub proof fn theorem_representation(t:Seq<u8>,m:int,x:ml::St,s:State,c:int)
         (s.table[c][0] as int)==crate::lzw::code_first(t,m,c,4096),
         (s.table[c][s.table[c].len() as int-1] as int)==crate::lzw::code_suffix(t,m,c),
         1<=s.table[c].len()<=4096,
+        0<=crate::chain::root_of(crate::lzw::raw_pf_seq(t),ml::lzw_clear_of(m),c,4096)<ml::lzw_clear_of(m),
+        crate::chain::root_of(crate::lzw::raw_pf_seq(t),ml::lzw_clear_of(m),c,4096)<256,
 {
     lemma_powers(m);
     lemma_read(m,x,s,c);
@@ -347,6 +375,9 @@ pub proof fn theorem_all_represented(t:Seq<u8>,m:int,x:ml::St,s:State)
         crate::dictionary::table_ok(crate::lzw::raw_pf_seq(t),crate::lzw::raw_ls_seq(t),ml::lzw_clear_of(m),x.next),
         crate::lzw::table_agrees(t,x.pf,x.sf,ml::lzw_clear_of(m),x.next-1),
     ensures represented(t,m,s),
+        forall|c:int| ml::lzw_clear_of(m)+2<=c<x.next ==>
+            0<=#[trigger] crate::chain::root_of(crate::lzw::raw_pf_seq(t),ml::lzw_clear_of(m),c,4096)<ml::lzw_clear_of(m)
+            && crate::chain::root_of(crate::lzw::raw_pf_seq(t),ml::lzw_clear_of(m),c,4096)<256,
 {
     reveal(represented);
     assert forall|c:int| readable(m,s.next,c) implies #[trigger] crate::lzw::chain(t,m,c,4096)==s.table[c]
@@ -354,6 +385,11 @@ pub proof fn theorem_all_represented(t:Seq<u8>,m:int,x:ml::St,s:State)
         && (s.table[c][0] as int)==crate::lzw::code_first(t,m,c,4096)
         && (s.table[c][s.table[c].len() as int-1] as int)==crate::lzw::code_suffix(t,m,c)
         && 1<=s.table[c].len()<=4096 by {
+        theorem_representation(t,m,x,s,c);
+    }
+    assert forall|c:int| ml::lzw_clear_of(m)+2<=c<x.next implies
+        0<=#[trigger] crate::chain::root_of(crate::lzw::raw_pf_seq(t),ml::lzw_clear_of(m),c,4096)<ml::lzw_clear_of(m)
+        && crate::chain::root_of(crate::lzw::raw_pf_seq(t),ml::lzw_clear_of(m),c,4096)<256 by {
         theorem_representation(t,m,x,s,c);
     }
 }
@@ -390,6 +426,21 @@ pub proof fn lemma_literal_pair_complete()
 {
     assert(ST(2,seq![145u8,11u8],4,crate::lzw::strict_params())
         ==ml::observation(seq![1u8,2u8,1u8,2u8],None,13,false)) by(compute);
+}
+
+/// E4(a) cannot omit G10 step 4: under checked literals plus Strict tail,
+/// a full raster rejects the next excluded literal as MissingEndOfInformation.
+/// Codes 0,256 at width 10 occupy 20 bits of the payload [0,0,4].
+pub proof fn lemma_checked_literal_full_raster_counterexample()
+    ensures ST(9,seq![0u8,0u8,4u8],1,LzwParams {
+        m_lo:1,m_hi:11,size1_only_one_pixel:true,checked_literals:true,
+        deferred_clear:true,stop_at_raster:false,
+    })==ml::observation(seq![0u8],Some(ml::ErrK::MissingEndOfInformation),20,false),
+{
+    assert(ST(9,seq![0u8,0u8,4u8],1,LzwParams {
+        m_lo:1,m_hi:11,size1_only_one_pixel:true,checked_literals:true,
+        deferred_clear:true,stop_at_raster:false,
+    })==ml::observation(seq![0u8],Some(ml::ErrK::MissingEndOfInformation),20,false)) by(compute);
 }
 
 /// KwKwK resolves from the previous string and then stores that same string

@@ -1821,7 +1821,7 @@ pub proof fn lemma_descriptor_area(w:u32,h:u32,total:u64)
 {
     assert((w as int)*(h as int)<= (MAX_DIMENSION as int)*(MAX_DIMENSION as int)) by(nonlinear_arith)
         requires 0<=w as int<=MAX_DIMENSION,0<=h as int<=MAX_DIMENSION;
-    assert((MAX_TOTAL_PIXELS as int)+(MAX_DIMENSION as int)*(MAX_DIMENSION as int)<=u64::MAX) by(compute);
+    crate::limits::caps_ok();
 }
 
 /// Exact G8 descriptor prefix; successful results leave G9 to `scan_image_data`.

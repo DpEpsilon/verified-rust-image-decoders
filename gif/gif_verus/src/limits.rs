@@ -32,6 +32,7 @@ pub const MAX_TOTAL_PIXELS: u64 = 1 << 30;
 pub proof fn caps_ok()
     ensures
         MAX_DIMENSION <= u16::MAX,
+        8 * (MAX_INPUT as int) <= u32::MAX,
         (MAX_INPUT as int) + (u16::MAX as int) + 1 <= u32::MAX,
         (MAX_INPUT as int) + (u16::MAX as int) + 1 <= usize::MAX,
         MAX_OUTPUT <= crate::alloc_guard::MAX_BYTES,

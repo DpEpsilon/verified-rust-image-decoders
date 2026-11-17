@@ -2514,6 +2514,13 @@ pub fn decode<S: Sink>(reader: &mut BitReader, data_len: u32, m: u32, area: u32,
             reveal_with_fuel(code_stamps,1);
         }
         let decision = read_step(reader,data_len,m,clear,width,q,area,next,have_prev,opts,Ghost(st),&mut steps);
+        proof {
+            lemma_dispatch_coverage(decision,m as int,d,area as int,ps,st);
+            if 9<=m && opts.checked_literals && st.q<area as int && st.pos+st.width<=nbits(d)
+                && 256<=crate::lzw_model::code_at(d,st.pos,st.width,0)<lzw_clear_of(m as int) {
+                lemma_checked_literal_rejected(decision,m as int,d,area as int,ps,st);
+            }
+        }
         let (code,after) = match decision {
             CodeStep::Halt {error,pos} => {
                 proof {
@@ -2756,6 +2763,63 @@ pub open spec fn control_matches(c: CodeStep, m: int, d: Seq<u8>, a: int, ps: Lz
     }
 }
 
+/// E4(c): no code reaches run_code outside the readable or justified KwKwK
+/// domain. A consumed code outside it is Clear, EOI, or an error-only Halt.
+pub open spec fn dispatch_covered(r:CodeStep,m:int,d:Seq<u8>,a:int,ps:LzwParams,st:St)->bool {
+    &&& match r {
+        CodeStep::Emit {code,..}=>crate::string_model::readable(m,st.next,code as int)
+            || code as int==st.next && st.prev>=0 && st.next<4096,
+        _=>true,
+    }
+    &&& if !(ps.stop_at_raster && st.q==a) && st.pos+st.width<=nbits(d) {
+        let c=crate::lzw_model::code_at(d,st.pos,st.width,0);
+        c==lzw_clear_of(m) || c==lzw_eoi_of(m)
+            || crate::string_model::readable(m,st.next,c)
+            || c==st.next && st.prev>=0 && st.next<4096
+            || match r {CodeStep::Halt {error,..}=>error is Some,_=>false}
+    } else {true}
+}
+
+/// E4(a), with G10's earlier raster-completion check made explicit.
+/// control_matches is the verified contract of the actual read_step dispatch.
+pub proof fn lemma_checked_literal_rejected(r:CodeStep,m:int,d:Seq<u8>,a:int,ps:LzwParams,st:St)
+    requires 9<=m<=11,ps.checked_literals,st.q<a,
+        st.pos+st.width<=nbits(d),
+        256<=crate::lzw_model::code_at(d,st.pos,st.width,0)<lzw_clear_of(m),
+        control_matches(r,m,d,a,ps,st),
+    ensures r==(CodeStep::Halt {error:Some(Error::ColorIndexOutOfRange),pos:(st.pos+st.width) as u32}),
+{
+    reveal(verdict);
+    match r {
+        CodeStep::Emit {code,..}=>{},
+        CodeStep::Clear {..}=>{},
+        CodeStep::Halt {..}=>{},
+    }
+}
+
+pub proof fn lemma_dispatch_coverage(r:CodeStep,m:int,d:Seq<u8>,a:int,ps:LzwParams,st:St)
+    requires 1<=m<=11,m<=8 || ps.checked_literals,
+        lzw_clear_of(m)+2<=st.next<=4096,st.prev>=-1,
+        control_matches(r,m,d,a,ps,st),
+    ensures dispatch_covered(r,m,d,a,ps,st),
+{
+    if m<=8 {crate::string_model::lemma_small_literal_domain(m,0);}
+    match r {
+        CodeStep::Emit {code,..}=>{},
+        CodeStep::Clear {..}=>{reveal(verdict);},
+        CodeStep::Halt {error,..}=>{
+            if !(ps.stop_at_raster && st.q==a) && st.pos+st.width<=nbits(d) {
+                let c=crate::lzw_model::code_at(d,st.pos,st.width,0);
+                if c!=lzw_clear_of(m) && c!=lzw_eoi_of(m)
+                    && !crate::string_model::readable(m,st.next,c)
+                    && !(c==st.next && st.prev>=0 && st.next<4096) {
+                    reveal(verdict);
+                }
+            }
+        },
+    }
+}
+
 /// G10.2's control checks, with no table or sink quantifiers in this query.
 fn read_step(reader: &mut BitReader, data_len: u32, m: u32, clear: u32, width: u32,
     q: u32, area: u32, next: u32, have: bool, opts: LzwOptions, state: Ghost<crate::lzw_model::St>, steps: &mut Ghost<nat>) -> (r: CodeStep)
@@ -2815,6 +2879,11 @@ fn read_step(reader: &mut BitReader, data_len: u32, m: u32, clear: u32, width: u
 } // verus!
 
 verus! {
+pub proof fn lemma_table_agrees_intro(t:Seq<u8>,pf:Seq<u16>,sf:Seq<u8>,clear:int,c:int)
+    requires forall|x:int| clear+2<=x<=c ==> #[trigger] raw_prefix(t,x)==pf[x] as int && raw_suffix(t,x)==sf[x] as int,
+    ensures table_agrees(t,pf,sf,clear,c),
+{}
+
 pub proof fn lemma_agrees_grow(t: Seq<u8>, nt: Seq<u8>, st: St, ns: St, clear: int, grow: bool, p: u16, v: u8)
     requires table_len_ok(t), table_len_ok(nt),
         st.pf.len()==4096,st.sf.len()==4096,0<=clear,clear+2<=st.next<=4096,
@@ -2840,6 +2909,7 @@ pub proof fn lemma_agrees_grow(t: Seq<u8>, nt: Seq<u8>, st: St, ns: St, clear: i
         assert(raw_pf_seq(nt)[x] as int==raw_prefix(nt,x));
         assert(raw_sf_seq(nt)[x] as int==raw_suffix(nt,x));
     }
+    lemma_table_agrees_intro(nt,ns.pf,ns.sf,clear,ns.next-1);
 }
 } // verus!
 

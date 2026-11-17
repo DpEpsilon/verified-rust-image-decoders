@@ -676,7 +676,12 @@ fn decode_image_pixels(b:&[u8],hdr:Header,pol:Policy,im:parse::ImageStep,t:&mut 
     let disposal=match im.gce {Some(g)=>g.disposal,None=>0};
     let transparent=match im.gce {Some(g)=>g.transparent,None=>None};
     let area=(fh.rect.width as u64)*(fh.rect.height as u64);
-    proof {assert(crate::limits::MAX_TOTAL_PIXELS<=u32::MAX) by(compute);}
+    proof {
+        crate::limits::caps_ok();
+        assert((fh.rect.width as int)*(fh.rect.height as int)<=u32::MAX) by(nonlinear_arith)
+            requires 0<=fh.rect.width<=u16::MAX,
+                0<=fh.rect.height<=u16::MAX;
+    }
     let area32=area as u32;
     let opts=LzwOptions {
         tail:match pol.lzw_tail {LzwTail::StopAtRaster=>Tail::StopAtRaster,LzwTail::Strict=>Tail::Strict},
@@ -2117,7 +2122,7 @@ proof fn lemma_new_sites(b:Seq<u8>)
         let h=crate::model::mh(b).unwrap();
         crate::model::lemma_mh_ok_bounds(b,h);
         assert(4*h.width*h.height>=4) by(nonlinear_arith) requires h.width>=1,h.height>=1;
-        assert(crate::limits::MAX_OUTPUT<=crate::alloc_guard::MAX_BYTES) by(compute);
+        crate::limits::caps_ok();
         assert(1<=crate::lzw::LZW_TABLE_BYTES<=crate::alloc_guard::MAX_BYTES) by(compute);
     }
 }

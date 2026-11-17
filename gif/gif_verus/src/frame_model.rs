@@ -106,8 +106,8 @@ pub open spec fn disposed(cv:Seq<u8>,saved:Option<Seq<u8>>,prev:Option<Previous>
 /// additional GIF error; MB establishes these facts on reachable images.
 pub open spec fn image_domain(b:Seq<u8>,h:HeaderM,fh:FrameHeaderM)->bool {
     &&& 1<=h.width<=crate::limits::MAX_DIMENSION && 1<=h.height<=crate::limits::MAX_DIMENSION
-    &&& 0<=fh.left<=crate::limits::MAX_DIMENSION && 0<=fh.top<=crate::limits::MAX_DIMENSION
-    &&& 1<=fh.w<=crate::limits::MAX_DIMENSION && 1<=fh.h<=crate::limits::MAX_DIMENSION
+    &&& 0<=fh.left<=u16::MAX && 0<=fh.top<=u16::MAX
+    &&& 1<=fh.w<=u16::MAX && 1<=fh.h<=u16::MAX
     &&& 0<=fh.table.off && 2<=fh.table.entries<=256
     &&& fh.table.off+3*fh.table.entries<=b.len()
 }
@@ -117,6 +117,18 @@ pub open spec fn saved_image(s:State,fr:crate::mc::FrameSpec,cv:Seq<u8>,sw:u32,s
         let base=match s.saved {Some(v)=>v,None=>Seq::new(s.canvas.len(),|_i:int|0u8)};
         Some(crate::mc::copy_rect(base,cv,sw,sh,fr.rect))
     } else {s.saved}
+}
+
+/// A successful disposal-3 frame records the very rectangle used by its save.
+/// The next restore therefore cannot observe stale Saved bytes outside it.
+pub proof fn lemma_saved_image_restore(s:State,fr:crate::mc::FrameSpec,cv:Seq<u8>,drawn:Seq<u8>,sw:u32,sh:u32)
+    requires fr.disposal==3,cv.len()==s.canvas.len(),drawn.len()==cv.len(),
+        s.saved is Some ==> s.saved.unwrap().len()==cv.len(),
+    ensures disposed(drawn,saved_image(s,fr,cv,sw,sh,false),Some(Previous {rect:fr.rect,disposal:3}),sw,sh)
+        ==crate::mc::copy_rect(drawn,cv,sw,sh,fr.rect),
+{
+    let base=match s.saved {Some(v)=>v,None=>Seq::new(s.canvas.len(),|_i:int|0u8)};
+    crate::compose_new::lemma_copy_rect_restore_reads_saved(base,cv,drawn,sw,sh,fr.rect);
 }
 
 pub open spec fn image_mode(b:Seq<u8>,h:HeaderM,pol:Policy,s:State,fh:FrameHeaderM,g:Option<GceM>,m:int,d:Seq<u8>,walk:WalkM,still:bool)->Option<Call> {
@@ -252,7 +264,7 @@ pub proof fn lemma_descriptor_domain(b:Seq<u8>,h:HeaderM,pol:Policy,s:WalkM,fh:F
     hide(crate::model::finish_image);
     crate::model::lemma_le16_lt(b,s.p+1);crate::model::lemma_le16_lt(b,s.p+3);
     crate::model::lemma_le16_lt(b,s.p+5);crate::model::lemma_le16_lt(b,s.p+7);
-    assert(crate::limits::MAX_DIMENSION==u16::MAX) by(compute);
+    crate::limits::caps_ok();
     let left=crate::model::le16(b,s.p+1);
     let top=crate::model::le16(b,s.p+3);
     let w=crate::model::le16(b,s.p+5);

@@ -131,6 +131,33 @@ fn literals_ignore_stale_dictionary_bytes_and_size_one_stops() {
     assert_eq!((r.written,r.error,r.pos,r.e4),(1,None,4,false));
 }
 
+#[test]
+fn checked_literals_reject_without_table_or_sink_effects() {
+    let mut t=vec![0xa5;LZW_TABLE_BYTES];
+    let before=t.clone();
+    for m in 9..=11 {
+        for c in 256..(1<<m) {
+            let d=packed(m+1,&[c]);
+            let (r,h)=run(&mut t,m,&d,1,true,true,None);
+            assert!(h.is_empty());
+            assert_eq!((r.written,r.error,r.pos,r.e4),
+                (0,Some(Error::ColorIndexOutOfRange),m+1,false));
+            assert_eq!(t,before);
+        }
+        // G10 step 4 precedes the checked-literal guard after a full raster.
+        let d=packed(m+1,&[0,256]);
+        let (r,h)=run(&mut t,m,&d,1,false,true,None);
+        assert_eq!(h,vec![(0,0)]);
+        assert_eq!((r.written,r.error,r.pos,r.e4),
+            (1,Some(Error::MissingEndOfInformation),2*(m+1),false));
+        assert_eq!(t,before);
+        let (r,h)=run(&mut t,m,&d,1,true,true,None);
+        assert_eq!(h,vec![(0,0)]);
+        assert_eq!((r.written,r.error,r.pos,r.e4),(1,None,m+1,false));
+        assert_eq!(t,before);
+    }
+}
+
 fn raw_stored_len_for_test(t:&[u8],c:usize)->u16 {
     u16::from_le_bytes([t[LENGTH_OFF+2*c],t[LENGTH_OFF+2*c+1]])
 }

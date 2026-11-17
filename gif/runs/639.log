@@ -1,0 +1,8 @@
+    Checking gif_verus v0.1.0 (/tmp/claude-0/---modal-volumes-vo-Iyh3VLkOB7cEHrIp2RkTs7/07bf9765-af64-477d-a906-dbb14d47e2dd/scratchpad/e3-cap-controls)
+error: expression simplifies to `4294971391 <= 4294967295`, which evaluates to false
+    --> src/lzw.rs:2163:20
+     |
+2163 |             assert(crate::limits::MAX_TOTAL_PIXELS + TABLE_SIZE <= u32::MAX) by (compute);
+     |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: could not compile `gif_verus` (lib) due to 1 previous error

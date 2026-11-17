@@ -2254,3 +2254,166 @@ Pre-integration and intermediate source backups are under
 runs/sol-20261116/string-before/. No further Task 2 proof work is pending on the
 chosen E4 domain; remaining decisions are owner approval of errata and the
 Task 1 issues explicitly retained above.
+
+## Owner-approved E1-E4 condition checks (Sol, 2026-11-17, runs 628-646)
+
+Final main run 644 verifies **729, 0 errors**; final E3 boundary run 645 also
+verifies **729, 0 errors** with only MAX_INPUT's declaration changed to
+536_870_911 on a scratch copy. Final negative control 646 changes that declaration
+to 536_870_912 and fails caps_ok's new bit-count bound, with 727 verified and two
+errors (the other is the expected BitReader multiplication overflow). All runs
+were serial, through gif/verify.sh, CARGO_BUILD_JOBS=1, under timeout 25m. Their
+RUNLOG.tsv records identify scratch-copy runs explicitly. The live MAX_INPUT is
+unchanged at 268_435_456. Pre-edit source backups are runs/sol-20261117/e1-e4-before/.
+
+### E3: boundary condition discharged; finding 6 remains open
+
+limits::caps_ok (src/limits.rs:32-46) now additionally ensures
+8*(MAX_INPUT as int)<=u32::MAX. Every previous ensures clause remains present.
+Run 628 first verified the added restriction at 718; run 629 verified the initial
+536_870_911 boundary copy at 718 without proof edits; run 630 rejected
+536_870_912 at caps_ok. Final runs 644-646 repeat the positive/negative checks
+with all E1/E4 additions present. Source hashes for final successful boundary
+run 645 are runs/sol-20261117/e3-boundary-run645-source-hashes.tsv: every Rust
+source except limits.rs is byte-identical to main, and limits.rs differs only
+in the MAX_INPUT declaration. Initial boundary hashes are in
+e3-boundary-source-hashes.tsv in the same directory. The scratch copies are
+not durable; the run logs, source-hash manifests and main sources are durable.
+
+Mechanical cleanup removed frame_model::lemma_descriptor_domain's
+MAX_DIMENSION==u16::MAX assertion. image_domain now bounds descriptor fields by
+the LE16 wire limit while retaining the screen cap. gif::decode_image_pixels
+now proves area narrowing from the wire product, not MAX_TOTAL_PIXELS<=u32::MAX.
+The local output/descriptor-budget assertions now use caps_ok instead of
+recomputing configured numerals.
+
+This does NOT prove unchanged proofs for every amended-G1 cap. Diagnostic run
+638, with only MAX_DIMENSION=32_767 changed on an intermediate scratch copy,
+failed downstream descriptor/screen-cap dependencies: parse::frame_header_ok
+and lemma_descriptor_area (src/parse.rs:1802,1817), compose_new::frame_ok and
+frame-product proof (src/compose_new.rs:112,191-195), gif::prepare_canvas and
+prev_bounds (src/gif.rs:1686,1790), and pixel_model::lemma_draw_pixels
+(src/pixel_model.rs:77-79). That intermediate run also exposed the narrowing
+proof's dimension-cap premise, subsequently replaced by the wire premise.
+For Clip, a 1x1 screen and descriptor left=32_768, top=0, w=h=1 are legal at a
+32_767 screen cap but violate the remaining descriptor-cap contracts. Fixing
+those contracts requires propagating the screen/wire distinction through the
+parser, compositor/interlace and pixel proofs, not merely deleting an equality.
+
+Diagnostic run 639 changes only MAX_TOTAL_PIXELS to u32::MAX on a scratch copy.
+The amended caps_ok bounds permit it, but lzw.rs:2163 computes
+MAX_TOTAL_PIXELS+TABLE_SIZE=4_294_971_391, above u32::MAX, and fails. The same
+extra configured-cap assumption remains at lzw.rs:2336 and :2960. The runtime
+emit_walk computes q+j before clipping, so removing that assumption requires
+checked clipping before addition or wider arithmetic, plus changes to the
+sink_pairs position lemmas; do not add an unapproved budget restriction to
+caps_ok. Numerals 131070 in clipping/interlace encode twice the fixed LE16 wire
+limit, not a configurable input/output cap. The cap lint passes, but does not
+prove symbolic configurability or close finding 6.
+
+### E1: same-offset save/restore footprint discharged
+
+compose_new::lemma_copy_rect_access (src/compose_new.rs:953) proves that each
+byte of a copied pixel is in mc::in_clipped. copy_rect invokes it immediately
+before all four actual source loads/destination stores (:1129-1138); both loops
+retain the exact clipping tuple. copy_rect's strengthened postcondition
+(:994-998) states that every rectangle byte comes from the same src offset and
+every other destination byte is unchanged. No source load occurs in the
+empty-rectangle branch.
+
+compose_new::lemma_copy_rect_restore_reads_saved (:966) proves
+copy_rect(drawn,copy_rect(base,before,r),r)=copy_rect(drawn,before,r) for arbitrary
+old Saved bytes, and explicitly states save's per-byte equality inside r.
+frame_model::lemma_saved_image_restore (src/frame_model.rs:124) connects this
+fact to saved_image and the matching Previous rectangle. Actual save remains
+in gif.rs:1721, actual restore in gif.rs:1677, and the successful frame stores
+that same descriptor rectangle in prev (gif.rs:819). Saved's canvas layout,
+reservation bound, save timing and at-most-once reservation are unchanged.
+Run 633 first verified the E1 additions at 722; final run 644 includes them.
+
+### E4: b/c/d proved; a needs the earlier-raster-check qualification
+
+(a) lzw::lemma_checked_literal_rejected (src/lzw.rs:2785) proves exact
+ColorIndexOutOfRange, unchanged output and the after-code position for
+9<=m<=11, checked_literals, a complete code in [256,clear), and q<A. The actual
+decode calls the lemma immediately after read_step (lzw.rs:2516-2524), before
+run_code can resolve, emit or insert. read_step has no table or sink argument.
+
+The unqualified amended (a) is false for checked literals plus Strict tail:
+m=9, A=1, payload [0,0,4] encodes codes 0 then 256 at width 10. After output 0,
+G10 step 4 returns MissingEndOfInformation at bit position 20, before the
+checked-literal guard. string_model::lemma_checked_literal_full_raster_counterexample
+(src/string_model.rs:434) proves the complete independent observation. The
+existing theorem_ml_st transfers it to integrated ML. StopAtRaster instead
+stops at bit position 10 without reading 256. Preserve frozen G10 error order;
+qualify (a) by q<A (and enough bits to process a code), or explicitly allow
+prior frozen checks. E4 must not be reported unconditionally discharged.
+
+(b) string_model::lemma_stored_root (src/string_model.rs:221) proves each stored
+prefix chain ends at a root below both clear and 256. theorem_representation
+(:325) now exports those bounds for the actual raw table; theorem_all_represented
+(:373) exports them for every stored entry. Existing lemma_initial (:122),
+lemma_clear (:171) and lemma_emit (:183) preserve relates and its decreasing
+links/byte-parent condition. Actual decode carries relates/represented and
+re-establishes the raw-root theorem initially, after every Clear, and after
+every actual run_code insertion (lzw.rs:2453,2540,2581), including before a
+raster-crossing return. chain::lemma_root_literal and refinement::checked_root
+supply termination and byte-root bounds; dictionary::history_empty and
+history_advance preserve the executable dictionary invariant as before.
+
+(c) lzw::lemma_dispatch_coverage (src/lzw.rs:2800), with dispatch_covered
+(:2768), proves that every consumed code is a readable literal/stored entry,
+Clear, EOI, justified KwKwK (c=next, previous exists, next<4096), or an error-only
+Halt. It covers invalid codes beyond excluded literals. Actual decode invokes
+it for every read_step decision (:2518); Halt returns before run_code and Clear
+only resets the dictionary. No resolution, emission or insertion runs on the
+rejected branch. lemma_table_agrees_intro (:2882) stabilizes the raw-table
+agreement quantifier without changing contracts or solver limits.
+
+(d) string_model::lemma_small_literal_domain (src/string_model.rs:236) proves
+min(clear,256)=clear for G9's 1<=m<=8 and unchanged literal membership.
+
+### E2: inventory only, not a broader T-LZW claim
+
+Of the three release obligations, independent string-table representation is
+proved on E4's byte-readable domain: string_model::theorem_representation,
+theorem_all_represented and theorem_ml_st, maintained by actual decode and
+exported by decode_image_data. The code-6 literal-pair witnesses remain present.
+
+Standalone/integrated model agreement is NOT proved: there is no cross-crate
+agreement theorem relating lzw_proof::model::ML to gif_verus::lzw_model::ML.
+The latter's definitions match the former modulo naming/import adaptation in
+a textual diff, but a textual diff is not a Verus proof. theorem_ml_st relates
+integrated ML to this crate's independent ST; it does not compare the two MLs.
+
+Full G8-G9 coverage/exactness of the integrated precondition is NOT separately
+proved. Existing lzw::lemma_min_admissibility (src/lzw.rs:3082) proves G9's minimum
+size implies the core m predicate; lemma_image_data_ready (:3089) exports fresh
+scan/length facts; decode_image_data (:3099), decode_image_pixels and all actual
+calls verify their contracts. These do not constitute the separately requested
+standalone-domain/G8-G9 exactness theorem. Retain both E2 gates; do not claim
+unrestricted frozen T-LZW from scoped call-site verification.
+
+### Validation and run history
+
+runs/sol-20261117/e1-e4-release-tests.log records cargo test --release -j1
+--offline under nice -n 10: seven unit/report tests, seven conformance test
+functions, four allocation-fault tests and the 37,239-frame stress test pass.
+The new checked_literals_reject_without_table_or_sink_effects test
+(src/lzw_tests.rs:135) checks all 2,816 excluded literals for m=9..11 with no sink
+calls or table-byte changes, and confirms the full-raster Strict/StopAtRaster
+precedence for all three minimum sizes. The initial test launch lacked rustc
+on PATH; rerunning with /opt/cargo/bin:/opt/verus succeeded.
+
+runs/sol-20261117/e1-e4-audit-self-test.log records audit_alloc.sh --self-test
+exit 0, both pinned guard hashes, 44 scanner negative controls, the three
+production reservation sites and the symbolic-cap lint/controls.
+runs/sol-20261117/e1-e4-frozen-hashes.log records all 14 FREEZE.txt hashes matching.
+
+Runs 631-632 lacked a clipping-tuple invariant; 633 supplied it. Run 634 was an
+enum-literal parenthesization error. Runs 635 and 641-643 exposed quantified
+table-agreement instantiation sensitivity; proved helper lemma_table_agrees_intro
+made both main run 644 and unchanged boundary run 645 green. No assumptions,
+admissions, external bodies, unsafe code, new axioms, solver-limit increases,
+frozen/guard edits or commits were introduced. ERRATA.md and RELEASE-GATES.md
+were left to the concurrent documentation agent. No background jobs were started.

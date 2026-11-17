@@ -948,6 +948,32 @@ pub fn clear_rect(canvas: &mut [u8], sw: u32, sh: u32, r: Rect) -> (work: Ghost<
     }
     Ghost(steps)
 }
+/// Every source load and destination store in one copy iteration has this
+/// footprint. Save and restore use the same clipped rectangle and byte offsets.
+pub proof fn lemma_copy_rect_access(sw:u32,sh:u32,r:Rect,x:int,y:int,i:int)
+    requires 1<=sw,0<=x<sw,0<=y<sh,
+        crate::mc::clip(r.spec_rect(),sw,sh).0<=x<crate::mc::clip(r.spec_rect(),sw,sh).1,
+        crate::mc::clip(r.spec_rect(),sw,sh).2<=y<crate::mc::clip(r.spec_rect(),sw,sh).3,
+        4*(y*(sw as int)+x)<=i<4*(y*(sw as int)+x)+4,
+    ensures crate::mc::in_clipped(i,sw,sh,r.spec_rect()),
+{
+    assert(0<=i) by(nonlinear_arith) requires 0<=y,1<=sw,0<=x,4*(y*(sw as int)+x)<=i;
+    lemma_cell_bytes(i,y,x,sw as int);
+}
+
+/// Restoring from a matching save depends only on the bytes that save wrote.
+/// The old Saved bytes outside the rectangle may be arbitrary and unequal.
+pub proof fn lemma_copy_rect_restore_reads_saved(base:Seq<u8>,before:Seq<u8>,drawn:Seq<u8>,sw:u32,sh:u32,r:crate::mc::Rect)
+    requires base.len()==before.len(),drawn.len()==before.len(),
+    ensures crate::mc::copy_rect(drawn,crate::mc::copy_rect(base,before,sw,sh,r),sw,sh,r)
+        ==crate::mc::copy_rect(drawn,before,sw,sh,r),
+        forall|i:int| 0<=i<before.len() && crate::mc::in_clipped(i,sw,sh,r) ==>
+            #[trigger] crate::mc::copy_rect(base,before,sw,sh,r)[i]==before[i],
+{
+    assert(crate::mc::copy_rect(drawn,crate::mc::copy_rect(base,before,sw,sh,r),sw,sh,r)
+        =~=crate::mc::copy_rect(drawn,before,sw,sh,r));
+}
+
 /// The disposal-3 save (`canvas → Saved`) and restore (`Saved → canvas`): copy
 /// the clipped rectangle's bytes from `src` to the same offsets of `dst`.
 ///
@@ -968,6 +994,8 @@ pub fn copy_rect(dst: &mut [u8], src: &[u8], sw: u32, sh: u32, r: Rect) -> (work
         work@ as int <= 2 * ((r.width as int) * (r.height as int)),
         final(dst)@ == crate::mc::copy_rect(old(dst)@, src@, sw, sh, r.spec_rect()),
         final(dst)@.len()==old(dst)@.len(),
+        forall|i:int| 0<=i<old(dst)@.len() ==> #[trigger] final(dst)@[i]
+            ==if crate::mc::in_clipped(i,sw,sh,r.spec_rect()) {src@[i]} else {old(dst)@[i]},
 {
     let ghost mut steps = 0nat;
     let (x0, x1, y0, y1) = clip_of(r, sw, sh);
@@ -988,6 +1016,7 @@ pub fn copy_rect(dst: &mut [u8], src: &[u8], sw: u32, sh: u32, r: Rect) -> (work
     let mut y: u32 = y0;
     while y < y1
         invariant
+            (x0 as int,x1 as int,y0 as int,y1 as int)==crate::mc::clip(r.spec_rect(),sw,sh),
             y0 <= y <= y1,
             steps as int == (y as int-y0 as int) * (1 + x1 as int-x0 as int),
             x1 as int-x0 as int <= r.width as int,
@@ -1023,6 +1052,7 @@ pub fn copy_rect(dst: &mut [u8], src: &[u8], sw: u32, sh: u32, r: Rect) -> (work
         let mut x: u32 = x0;
         while x < x1
             invariant
+                (x0 as int,x1 as int,y0 as int,y1 as int)==crate::mc::clip(r.spec_rect(),sw,sh),
                 x0 <= x <= x1,
                 steps as int == (y as int-y0 as int) * (1+x1 as int-x0 as int) + 1 + x as int-x0 as int,
                 y0<=y,
@@ -1095,6 +1125,12 @@ pub fn copy_rect(dst: &mut [u8], src: &[u8], sw: u32, sh: u32, r: Rect) -> (work
                     assert(o as int == 4 * ((y as int) * (sw as int) + (x as int)));
                     lemma_cell_bytes(i, y as int, x as int, sw as int);
                 }
+            }
+            proof {
+                lemma_copy_rect_access(sw,sh,r,x as int,y as int,o as int);
+                lemma_copy_rect_access(sw,sh,r,x as int,y as int,o as int+1);
+                lemma_copy_rect_access(sw,sh,r,x as int,y as int,o as int+2);
+                lemma_copy_rect_access(sw,sh,r,x as int,y as int,o as int+3);
             }
             dst[o] = src[o];
             dst[o + 1] = src[o + 1];

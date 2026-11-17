@@ -1,0 +1,212 @@
+/home/ws/projects/verified-decoders/gif/gif_verus/src/representation_domain.rs:25:    assert(crate::chain::ipow2(9) == 512) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/string_model.rs:403:    assert(emit(emit(initial(2),3,1,seq![1u8]),6,2,seq![2u8]).table[6]==seq![1u8,2u8]) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/string_model.rs:413:    assert(ml::code_at(seq![17u8],0,3,0)==1) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/string_model.rs:414:    assert(ml::code_at(seq![17u8],3,3,0)==2) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/string_model.rs:415:    assert(ml::lzw_clear_of(2)==4) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/string_model.rs:416:    assert(initial(2).table[1]==seq![1u8]) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/string_model.rs:417:    assert(initial(2).table[2]==seq![2u8]) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/string_model.rs:428:        ==ml::observation(seq![1u8,2u8,1u8,2u8],None,13,false)) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/string_model.rs:443:    })==ml::observation(seq![0u8],Some(ml::ErrK::MissingEndOfInformation),20,false)) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/mc.rs:22:    crate::limits::MAX_DIMENSION as int
+/home/ws/projects/verified-decoders/gif/gif_verus/src/mc.rs:26:    crate::limits::MAX_OUTPUT as int
+/home/ws/projects/verified-decoders/gif/gif_verus/src/mc.rs:35:/// `left + width <= 2·MAX_DIMENSION` holds without narrowing (THEOREMS'
+/home/ws/projects/verified-decoders/gif/gif_verus/src/mc.rs:125:/// The whole of G11's bijection claim, `1 <= h <= MAX_DIMENSION`.
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:265:    // 4·W·H <= MAX_OUTPUT <= alloc_guard::MAX_BYTES, and >= 4 (hdr_inv).
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:666:    requires b.len()<=crate::limits::MAX_INPUT,crate::parse::hdr_inv(b@,hdr),image_inputs(b@,hdr,pol,im),
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:679:    proof {assert(crate::limits::MAX_TOTAL_PIXELS<=u32::MAX) by(compute);}
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:948:    &&& b.len()<=crate::limits::MAX_INPUT && d.p<=b.len()
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:1062:    &&& 1<=d.hdr.width<=crate::limits::MAX_DIMENSION && 1<=d.hdr.height<=crate::limits::MAX_DIMENSION
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:1063:    &&& d.canvas@.len()==4*(d.hdr.width as int)*(d.hdr.height as int)<=crate::limits::MAX_OUTPUT
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:1072:        Ok((s,_))=>1<=s.width<=crate::limits::MAX_DIMENSION && 1<=s.height<=crate::limits::MAX_DIMENSION
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:1073:            && s.rgba@.len()==4*(s.width as int)*(s.height as int)<=crate::limits::MAX_OUTPUT
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:1086:        Ok(s)=>1<=s.width<=crate::limits::MAX_DIMENSION && 1<=s.height<=crate::limits::MAX_DIMENSION
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:1087:            && s.rgba@.len()==4*(s.width as int)*(s.height as int)<=crate::limits::MAX_OUTPUT
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:1505:    &&& d.b.len()<=crate::limits::MAX_INPUT && crate::parse::hdr_inv(d.b@,d.hdr) && crate::parse::hdr_ok(d.b@,d.hdr)
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:1506:    &&& d.p<=d.b.len() && d.st.frames_seen<=crate::limits::MAX_FRAMES && d.st.total_pixels<=crate::limits::MAX_TOTAL_PIXELS
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:1683:            1<=rect.width<=crate::limits::MAX_DIMENSION,1<=rect.height<=crate::limits::MAX_DIMENSION,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:1684:            rect.left<=crate::limits::MAX_DIMENSION,rect.top<=crate::limits::MAX_DIMENSION,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:1789:            &&& p.rect.left<=crate::limits::MAX_DIMENSION && p.rect.top<=crate::limits::MAX_DIMENSION
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:1790:            &&& 1<=p.rect.width<=crate::limits::MAX_DIMENSION && 1<=p.rect.height<=crate::limits::MAX_DIMENSION
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:1799:    ensures prev_bounds(d),d.b.len()<=crate::limits::MAX_INPUT,crate::parse::hdr_inv(d.b@,d.hdr),
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:1800:        d.p<=d.b.len(),d.st.frames_seen<=crate::limits::MAX_FRAMES,d.st.total_pixels<=crate::limits::MAX_TOTAL_PIXELS,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:1806:        1<=d.hdr.width<=crate::limits::MAX_DIMENSION,1<=d.hdr.height<=crate::limits::MAX_DIMENSION,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:1807:        4*(d.hdr.width as int)*(d.hdr.height as int)<=crate::limits::MAX_OUTPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:1827:    &&& (im.fh.rect.width as int)*(im.fh.rect.height as int)<=crate::limits::MAX_TOTAL_PIXELS
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:2104:        AllocSite::Canvas|AllocSite::Saved=>n<=crate::limits::MAX_OUTPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:2120:        assert(crate::limits::MAX_OUTPUT<=crate::alloc_guard::MAX_BYTES) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:2121:        assert(1<=crate::lzw::LZW_TABLE_BYTES<=crate::alloc_guard::MAX_BYTES) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/gif.rs:2343:        d.p<=d.b.len(),d.st.frames_seen<=crate::limits::MAX_FRAMES,d.st.total_pixels<=crate::limits::MAX_TOTAL_PIXELS,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/compose_new.rs:6://! below `4·W·H <= MAX_OUTPUT`. All coordinate arithmetic is on values up to
+/home/ws/projects/verified-decoders/gif/gif_verus/src/compose_new.rs:59:/// `top + h` at most `2·MAX_DIMENSION`).
+/home/ws/projects/verified-decoders/gif/gif_verus/src/compose_new.rs:111:/// `2·MAX_DIMENSION` without narrowing (THEOREMS' `rect_sum_unnarrowed`).
+/home/ws/projects/verified-decoders/gif/gif_verus/src/compose_new.rs:122:/// range, so G3's `4·W·H <= MAX_OUTPUT` holds.
+/home/ws/projects/verified-decoders/gif/gif_verus/src/compose_new.rs:303:/// Once G3 checks MAX_OUTPUT, the canvas byte offsets fit usize on both targets;
+/home/ws/projects/verified-decoders/gif/gif_verus/src/compose_new.rs:321:/// `left <= 2·MAX_DIMENSION` and `col < MAX_DIMENSION`.
+/home/ws/projects/verified-decoders/gif/gif_verus/src/compose_new.rs:392:/// `MAX_DIMENSION·MAX_DIMENSION` fits in a `u32`: `4·MAX_DIMENSION²` is under
+/home/ws/projects/verified-decoders/gif/gif_verus/src/compose_new.rs:444:        assert((r.left as int) + (r.width as int) <= 131070);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/compose_new.rs:445:        assert((r.top as int) + (r.height as int) <= 131070);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/compose_new.rs:693:/// inside `MAX_OUTPUT`, `y·sw`, `4·(y·sw)`, `4·(y·sw) + 4·x` and `4·x` all fit
+/home/ws/projects/verified-decoders/gif/gif_verus/src/compose_new.rs:2414:    requires b.len()<=crate::limits::MAX_INPUT,1<=area<=crate::limits::MAX_TOTAL_PIXELS,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/compose_new.rs:2419:        crate::lzw::read_d(b@,data.first as int).len()==data.data_len,data.data_len<=crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/compose_new.rs:2463:    requires b.len()<=crate::limits::MAX_INPUT,1<=area<=crate::limits::MAX_TOTAL_PIXELS,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/compose_new.rs:2470:        crate::lzw::read_d(b@,data.first as int).len()==data.data_len,data.data_len<=crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/emission_compose.rs:11:    requires 1<=fr.rect.width,1<=fr.rect.height<=crate::limits::MAX_DIMENSION,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/emission_compose.rs:25:    requires 1<=fr.rect.width,1<=fr.rect.height<=crate::limits::MAX_DIMENSION,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/emission_compose.rs:50:        1<=fr.rect.width,1<=fr.rect.height<=crate::limits::MAX_DIMENSION,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/emission_compose.rs:92:        1<=fr.rect.width,1<=fr.rect.height<=crate::limits::MAX_DIMENSION,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/emission_compose.rs:122:    &&& 1<=fr.rect.width && 1<=fr.rect.height<=crate::limits::MAX_DIMENSION
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model_vectors.rs:14:    assert(crate::frame_model::ms(bytes_empty(),crate::policy::profile_record(crate::policy::Profile::Strict))==Some(Err(Error::TruncatedHeader))) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model_vectors.rs:31:    assert(crate::frame_model::ms(bytes_header_12(),crate::policy::profile_record(crate::policy::Profile::Strict))==Some(Err(Error::TruncatedHeader))) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model_vectors.rs:48:    assert(crate::frame_model::ms(bytes_bad_signature(),crate::policy::profile_record(crate::policy::Profile::Strict))==Some(Err(Error::BadSignature))) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model_vectors.rs:65:    assert(crate::frame_model::ms(bytes_version_88a(),crate::policy::profile_record(crate::policy::Profile::Strict))==Some(Err(Error::UnsupportedVersion))) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model_vectors.rs:82:    assert(crate::frame_model::ms(bytes_header_only_gct_trailer_still(),crate::policy::profile_record(crate::policy::Profile::Strict))==Some(Err(Error::NoImage))) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model_vectors.rs:111:        global:Some(crate::model::ColorTableM {off:13,entries:2}),cursor:19}))) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model_vectors.rs:112:    assert(crate::model::mp((bytes_two_colour_m2()),(crate::policy::profile_record(crate::policy::Profile::Strict)))==Ok(((crate::model::InfoM {width:3,height:1,version:1,background_index:0,aspect:0,loop_count:None}),(crate::model::WalkM {p:19,gce:None,frames_seen:0,total_pixels:0,loop_count:None})))) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model_vectors.rs:115:        table:crate::model::ColorTableM {off:13,entries:2},inside:true}),None,2,seq![68u8,80u8],(crate::model::WalkM {p:34,gce:None,frames_seen:1,total_pixels:3,loop_count:None})))) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model_vectors.rs:126:    assert(crate::lzw_model::code_at(seq![68u8,80u8],0,3,0)==4) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model_vectors.rs:127:    assert(crate::lzw_model::code_at(seq![68u8,80u8],3,3,0)==0) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model_vectors.rs:128:    assert(crate::lzw_model::code_at(seq![68u8,80u8],6,3,0)==1) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model_vectors.rs:129:    assert(crate::lzw_model::code_at(seq![68u8,80u8],9,3,0)==0) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model_vectors.rs:130:    assert(crate::lzw_model::code_at(seq![68u8,80u8],12,4,0)==5) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model_vectors.rs:131:    assert(crate::lzw_model::lzw_clear_of(2)==4 && crate::lzw_model::lzw_eoi_of(2)==5 && crate::lzw_model::lzw_ipow2(3)==8) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model_vectors.rs:152:        table:crate::model::ColorTableM {off:13,entries:2},inside:true}),None),(seq![255u8,255u8,255u8,0u8,0u8,0u8]),3,1,(seq![0u8,1u8,0u8]),0)==Ok((seq![255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]))) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model_vectors.rs:153:    assert((bytes_two_colour_m2()).subrange(13,19)==(seq![255u8,255u8,255u8,0u8,0u8,0u8])) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model_vectors.rs:158:    assert(bytes_two_colour_m2()[19]==0x2cu8) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:9:/// Input bytes (G2): `|b| > MAX_INPUT` is `FileTooLarge`. 256 MiB (2^28).
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:10:pub const MAX_INPUT: usize = 268_435_456;
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:14:pub const MAX_DIMENSION: u32 = 65_535;
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:20:pub const MAX_OUTPUT: u64 = 67_108_864;
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:23:pub const MAX_FRAMES: u32 = 65_536;
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:26:pub const MAX_TOTAL_PIXELS: u64 = 1 << 30;
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:31:/// The LE16 wire domain stays fixed even when MAX_DIMENSION is lowered.
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:34:        MAX_DIMENSION <= u16::MAX,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:35:        8 * (MAX_INPUT as int) <= u32::MAX,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:36:        (MAX_INPUT as int) + (u16::MAX as int) + 1 <= u32::MAX,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:37:        (MAX_INPUT as int) + (u16::MAX as int) + 1 <= usize::MAX,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:38:        MAX_OUTPUT <= crate::alloc_guard::MAX_BYTES,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:39:        MAX_OUTPUT <= u32::MAX,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:40:        MAX_OUTPUT <= usize::MAX,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:41:        4 * (MAX_DIMENSION as int) * (MAX_DIMENSION as int) <= u64::MAX,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:42:        (MAX_TOTAL_PIXELS as int) + (MAX_DIMENSION as int) * (MAX_DIMENSION as int) <= u64::MAX,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:43:        (MAX_DIMENSION as int) * (MAX_DIMENSION as int) <= u32::MAX,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:44:        3 * (MAX_DIMENSION as int) <= u32::MAX,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/limits.rs:46:    assert((MAX_TOTAL_PIXELS as int) + (MAX_DIMENSION as int) * (MAX_DIMENSION as int) <= u64::MAX) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/frame_model.rs:108:    &&& 1<=h.width<=crate::limits::MAX_DIMENSION && 1<=h.height<=crate::limits::MAX_DIMENSION
+/home/ws/projects/verified-decoders/gif/gif_verus/src/frame_model.rs:109:    &&& 0<=fh.left<=crate::limits::MAX_DIMENSION && 0<=fh.top<=crate::limits::MAX_DIMENSION
+/home/ws/projects/verified-decoders/gif/gif_verus/src/frame_model.rs:110:    &&& 1<=fh.w<=crate::limits::MAX_DIMENSION && 1<=fh.h<=crate::limits::MAX_DIMENSION
+/home/ws/projects/verified-decoders/gif/gif_verus/src/frame_model.rs:267:    assert(crate::limits::MAX_DIMENSION==u16::MAX) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/interlace.rs:982:        1 <= h <= crate::limits::MAX_DIMENSION,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/interlace.rs:1259:/// THEOREMS' `interlace_bijection`: for every `1 <= h <= MAX_DIMENSION`, `IR` is
+/home/ws/projects/verified-decoders/gif/gif_verus/src/interlace.rs:1294:/// The claim over the whole cap: `∀ 1 <= h <= MAX_DIMENSION`.
+/home/ws/projects/verified-decoders/gif/gif_verus/src/interlace.rs:1379:/// below `W·H`, and `left + fw`, `top + fh` are below `2·MAX_DIMENSION`
+/home/ws/projects/verified-decoders/gif/gif_verus/src/interlace.rs:1392:        left + fw <= 131070,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/interlace.rs:1393:        top + fh <= 131070,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/interlace.rs:1589:/// (`h <= MAX_DIMENSION` is the model's domain).
+/home/ws/projects/verified-decoders/gif/gif_verus/src/interlace.rs:1600:/// the index inside a pass is non-negative. The `h <= MAX_DIMENSION` bound is the
+/home/ws/projects/verified-decoders/gif/gif_verus/src/pixel_model.rs:79:        1<=fr.rect.width,1<=fr.rect.height<=crate::limits::MAX_DIMENSION,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/pixel_model.rs:236:        Some(Ok(s))=>1<=s.width<=crate::limits::MAX_DIMENSION && 1<=s.height<=crate::limits::MAX_DIMENSION
+/home/ws/projects/verified-decoders/gif/gif_verus/src/pixel_model.rs:237:            && s.rgba.len()==4*s.width*s.height<=crate::limits::MAX_OUTPUT
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:8://! values below `MAX_INPUT + 2^16` and are compared, never wrapped.
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:18:use crate::limits::{MAX_DIMENSION, MAX_FRAMES, MAX_INPUT, MAX_OUTPUT, MAX_TOTAL_PIXELS};
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:177:    if b.len() > MAX_INPUT {
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:269:    if !(1 <= w && w <= MAX_DIMENSION && 1 <= h && h <= MAX_DIMENSION) {
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:285:    // `w*h > MAX_OUTPUT/4` is the model's `4·w·h > MAX_OUTPUT` (G1, G3).
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:287:    if (wh as u64) > MAX_OUTPUT / 4 {
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:294:            assert(MAX_OUTPUT / 4 == crate::model::max_output_quarter()) by (compute_only);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:406:        b.len() <= crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:450:            b.len() <= crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:514:        b.len() <= crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:557:            b.len() <= crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:958:        b.len() <= crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1094:        b.len() <= crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1359:        b.len() <= crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1413:        b.len() <= crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1472:        // `q + 1 + 11 <= |b| <= MAX_INPUT`, so every index this loop forms is at
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1473:        // most `MAX_INPUT + 12`, far below `usize::MAX`.
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1477:            assert(blen <= crate::limits::MAX_INPUT);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1478:            assert(q + 12 <= crate::limits::MAX_INPUT + 12) by (nonlinear_arith)
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1481:                    blen <= crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1486:                    q + 12 <= crate::limits::MAX_INPUT + 12,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1487:                    crate::limits::MAX_INPUT + 12 <= usize::MAX,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1498:                blen <= crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1636:        b.len() <= crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1767:    requires p<=b.len(),b.len()<=MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1803:    &&& 1<=h.rect.width<=MAX_DIMENSION && 1<=h.rect.height<=MAX_DIMENSION
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1804:    &&& h.rect.left<=MAX_DIMENSION && h.rect.top<=MAX_DIMENSION
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1807:    &&& c<=b.len() && st.frames_seen<MAX_FRAMES
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1808:    &&& (st.total_pixels as int)+(h.rect.width as int)*(h.rect.height as int)<=MAX_TOTAL_PIXELS
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1818:    requires w<=MAX_DIMENSION,h<=MAX_DIMENSION,total<=MAX_TOTAL_PIXELS,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1819:    ensures (w as int)*(h as int)<= (MAX_DIMENSION as int)*(MAX_DIMENSION as int),
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1822:    assert((w as int)*(h as int)<= (MAX_DIMENSION as int)*(MAX_DIMENSION as int)) by(nonlinear_arith)
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1823:        requires 0<=w as int<=MAX_DIMENSION,0<=h as int<=MAX_DIMENSION;
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1824:    assert((MAX_TOTAL_PIXELS as int)+(MAX_DIMENSION as int)*(MAX_DIMENSION as int)<=u64::MAX) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1829:    requires p<=b.len(),b.len()<=MAX_INPUT,hdr_inv(b@,*hdr),st.total_pixels<=MAX_TOTAL_PIXELS,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1833:    if st.frames_seen>=MAX_FRAMES {return Err(Error::TooManyFrames);}
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1846:    if st.total_pixels+(w as u64)*(h as u64)>MAX_TOTAL_PIXELS {return Err(Error::PixelBudgetExceeded);}
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1882:                &&& data.data_len<=crate::limits::MAX_INPUT
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1892:    requires p<=b.len(),b.len()<=crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1954:    requires c<=b.len(),b.len()<=MAX_INPUT,old(st).frames_seen<MAX_FRAMES,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1955:        (old(st).total_pixels as int)+(area as int)<=MAX_TOTAL_PIXELS,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1990:                && image.data.data_len<=MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:1998:    requires p<=b.len(),b.len()<=MAX_INPUT,hdr_inv(b@,*hdr),old(st).total_pixels<=MAX_TOTAL_PIXELS,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:2002:        final(st).total_pixels<=MAX_TOTAL_PIXELS,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:2003:        r is Ok ==> final(st).frames_seen<=MAX_FRAMES,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:2064:    requires *old(p)<=b.len(),b.len()<=MAX_INPUT,hdr_inv(b@,*hdr),
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:2065:        old(st).total_pixels<=MAX_TOTAL_PIXELS,old(st).frames_seen<=MAX_FRAMES,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:2071:        *final(p)<=b.len(),final(st).total_pixels<=MAX_TOTAL_PIXELS,final(st).frames_seen<=MAX_FRAMES,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:2090:        invariant *p<=b.len(),b.len()<=MAX_INPUT,hdr_inv(b@,*hdr),
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:2091:            st.total_pixels<=MAX_TOTAL_PIXELS,st.frames_seen<=MAX_FRAMES,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:2158:    requires *old(p)<=b.len(),b.len()<=MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/parse.rs:2172:        invariant *p<=b.len(),b.len()<=MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:38:/// G2: `MAX_INPUT` bytes. Read from `limits.rs`, the one place the value lives.
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:40:    crate::limits::MAX_INPUT as int
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:43:/// G3: screen width and height, `MAX_DIMENSION`.
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:45:    crate::limits::MAX_DIMENSION as int
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:48:/// G3: `4·W·H <= MAX_OUTPUT`.
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:50:    crate::limits::MAX_OUTPUT as int
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:53:/// G8: image descriptors per stream, `MAX_FRAMES`.
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:55:    crate::limits::MAX_FRAMES as int
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:58:/// G8: the sum of `w·h`, `MAX_TOTAL_PIXELS`.
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:60:    crate::limits::MAX_TOTAL_PIXELS as int
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:178:/// `MH(b)`: G2's `|b| > MAX_INPUT` test first, then the 13-byte header, the
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:967:/// A position at most one LE16-domain block past MAX_INPUT fits usize on
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:971:        p <= crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:1426:/// MAX_DIMENSION`, `|b| <= MAX_INPUT`, a table of `2^(f+1)` entries between 2
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:1586:/// product that fits u32. Comparing that product with floor(MAX_OUTPUT / 4)
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:1587:/// is equivalent to comparing four times the product with MAX_OUTPUT; no
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:1588:/// divisibility requirement on MAX_OUTPUT is needed.
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:1620:/// `4·W·H <= MAX_OUTPUT` (the checked G3 bound) fits a `usize` on either target
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:1664:/// G1's MAX_INPUT plus one LE16-domain block fits usize on either target.
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:1667:        crate::limits::MAX_INPUT + ((u16::MAX as int) + 1) <= usize::MAX,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:1675:        crate::limits::MAX_INPUT + 12 <= usize::MAX,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:1676:        crate::limits::MAX_INPUT <= usize::MAX,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:1687:        len <= crate::limits::MAX_INPUT + ((u16::MAX as int) + 1),
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:1699:            len <= crate::limits::MAX_INPUT + ((u16::MAX as int) + 1),
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:1700:            crate::limits::MAX_INPUT + ((u16::MAX as int) + 1) <= usize::MAX,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/model.rs:1704:/// `q + 1 + i` for `q <= MAX_INPUT` and `i <= 11` fits a `usize`.
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:646:    /// payload length (`|D|`, at most `MAX_INPUT`, so `8·|D|` fits in `u32`).
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:649:            data_len <= crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:697:            old(self).b.len() <= crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:825:            old(self).b.len() <= crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:937:                self.b.len() <= crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:1652:/// `sink_pairs` position is below `MAX_TOTAL_PIXELS` and `decode`'s `q + j` is at
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:2085:        q <= area <= crate::limits::MAX_TOTAL_PIXELS,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:2120:            q <= area <= crate::limits::MAX_TOTAL_PIXELS,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:2163:            assert(crate::limits::MAX_TOTAL_PIXELS + TABLE_SIZE <= u32::MAX) by (compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:2206:    &&& r.b.len() <= crate::limits::MAX_INPUT
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:2207:    &&& r.data_len <= crate::limits::MAX_INPUT
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:2330:    requires log_complete(h,o,q), o.len()==q, 0<=q<=a, a<=crate::limits::MAX_TOTAL_PIXELS, s.len() <= TABLE_SIZE,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:2336:    assert(crate::limits::MAX_TOTAL_PIXELS + TABLE_SIZE <= u32::MAX) by (compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:2360:        area <= crate::limits::MAX_TOTAL_PIXELS,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:2484:            q<=area<=crate::limits::MAX_TOTAL_PIXELS,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:2638:        q<area<=crate::limits::MAX_TOTAL_PIXELS,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:2948:        0<=q<=a<=crate::limits::MAX_TOTAL_PIXELS, s.len()<=TABLE_SIZE,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:2955:    assert(crate::limits::MAX_TOTAL_PIXELS+TABLE_SIZE<=u32::MAX) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:3055:        requires b.len()<=crate::limits::MAX_INPUT,data_len<=crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:3089:        data.data_len<=crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:3096:    requires b.len()<=crate::limits::MAX_INPUT,1<=area<=crate::limits::MAX_TOTAL_PIXELS,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:3100:        read_d(b@,data.first as int).len()==data.data_len,data.data_len<=crate::limits::MAX_INPUT,
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:3245:        assert(semit(2,init_st(2),1)==seq![1u8]) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:3246:        assert(first_of(2,init_st(2),1)==1u8) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:3248:        assert(semit(2,emit_st(2,init_st(2),3,1,seq![1u8],1u8,false),2)==seq![2u8]) by(compute);
+/home/ws/projects/verified-decoders/gif/gif_verus/src/lzw.rs:3249:        assert(first_of(2,emit_st(2,init_st(2),3,1,seq![1u8],1u8,false),2)==2u8) by(compute);
