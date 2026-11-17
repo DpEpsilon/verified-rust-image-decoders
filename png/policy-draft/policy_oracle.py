@@ -98,19 +98,6 @@ class _TraceBits(O.Bits):
             self.log.append((before, self.byte * 8 + self.bit, n, v))
 
 
-def stored_tail(data, out, limit, log):
-    """zlib's COPY state (inflate.c) copies the bytes of a stored block as they arrive; the oracle's inflate
-    reports a truncated stored block without them. When the input ends inside a stored block's data (the
-    last read was BTYPE = 00 and LEN/NLEN are complete), append the bytes that are present (GdkGrey only)."""
-    if not log or log[-1][2] != 2 or log[-1][3] != 0:
-        return
-    start = (log[-1][1] + 7) // 8
-    if start + 4 > len(data):
-        return
-    ln = data[start] | data[start + 1] << 8
-    out += data[start + 4:start + 4 + min(ln, limit + 1 - len(out))]
-
-
 def zlib_decompress(data, limit, limit_error, P, ev, partial=None, trace=None):
     """P9 with `adler`, `stream_end`, `zlib_tail`, `window`, `single_code`. `partial` receives the
     output produced before an error (image_data_error=GdkGrey). `trace` (a dict) receives the read log
@@ -126,9 +113,11 @@ def zlib_decompress(data, limit, limit_error, P, ev, partial=None, trace=None):
     if flg & 0x20:
         fail('ZlibPresetDictionary')
     window = 1 << 15 if P['window'] == 'Ignore' else 1 << ((cmf >> 4) + 8)
-    # IgnoreTail (RecommendedBeta) leaves the limit at `limit`: another output byte is ExcessImageData.
-    lim = limit + 1 if (P['zlib_tail'] == 'Ignore' or P['stream_end'] == 'AtRaster') else limit
-    stop = P['zlib_tail'] == 'StopAtRaster'                 # libpng: stop inflating at the first surplus byte
+    # D12 (council decision 2026-11-17): no profile raises the inflate limit above `limit`. An attempt to emit a byte
+    # beyond it is the surplus detection: ExcessImageData, except under the compatibility values zlib_tail=StopAtRaster,
+    # zlib_tail=Ignore and stream_end=AtRaster, where it ends inflating with R2 and the Adler-32 is not examined (until P2
+    # specifies a bounded surplus rule and its checksum behaviour). IgnoreTail (RecommendedBeta) never reaches it.
+    surplus_ok = P['zlib_tail'] in ('StopAtRaster', 'Ignore') or P['stream_end'] == 'AtRaster'
     saved = O.Huffman.__init__
     if P['single_code'] == 'Reject':
         def strict_init(self, lengths):
@@ -142,32 +131,24 @@ def zlib_decompress(data, limit, limit_error, P, ev, partial=None, trace=None):
         O.Bits = type('_TB', (_TraceBits,), {'out': out, 'log': trace['log']})
     try:
         try:
-            out, br = O.inflate(data, 2, lim, window, out)
+            out, br = O.inflate(data, 2, limit, window, out)
         except OutputLimit:
-            if stop:
-                ev.add('R2')
-                return bytes(out[:limit])
-            if lim == limit:
+            if not surplus_ok:
                 fail(limit_error)
             ev.add('R2')
-            return bytes(out[:limit])
+            return bytes(out)
         except PngError as e:
-            if trace is not None and e.name == 'TruncatedZlib':
-                stored_tail(data, out, limit, trace['log'])
-            if P['stream_end'] == 'AtRaster' and len(out) >= limit and e.name == 'TruncatedZlib':
-                if len(out) > limit:
-                    ev.add('R2')
-                return bytes(out[:limit])
+            # a truncated stored block has already appended its present bytes (P10.2, D5), so no helper re-adds them
+            if P['stream_end'] == 'AtRaster' and len(out) == limit and e.name == 'TruncatedZlib':
+                return bytes(out)
             raise
     finally:
         O.Huffman.__init__ = saved
         O.Bits = saved_bits
     br.align()
     if br.byte + 4 > len(data):
-        if P['stream_end'] == 'AtRaster' and len(out) >= limit:
-            if len(out) > limit:
-                ev.add('R2')
-            return bytes(out[:limit])
+        if P['stream_end'] == 'AtRaster' and len(out) == limit:
+            return bytes(out)
         fail('TruncatedZlib')
     if P['adler'] == 'Check' and be32(data, br.byte) != adler32(out):
         if trace is not None:
@@ -176,9 +157,6 @@ def zlib_decompress(data, limit, limit_error, P, ev, partial=None, trace=None):
     if br.byte + 4 != len(data):
         if P['zlib_tail'] == 'Reject' and P['stream_end'] != 'AtRaster':
             fail('TrailingZlibData')
-    if len(out) > limit:
-        ev.add('R2')
-        return bytes(out[:limit])
     return bytes(out)
 
 

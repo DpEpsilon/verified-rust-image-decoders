@@ -39,7 +39,25 @@ def _load(name):
 GLYCIN = {r['name']: r['runners'] for r in (_load('results-glycin.json') or [])}
 HELDOUT = _load('results-heldout.json')
 HELDOUT_B = _load('results-heldoutB.json')
-VEC = json.loads((HERE.parent / 'spec-draft/VECTORS.json').read_text())
+# the three vector files of the Stage-1 split (REVIEW-BRIEF.md): Strict core, cap-dependent Strict, profile records
+VEC = [v for f in ('spec-draft/VECTORS.json', 'limits-draft/VECTORS-CAPS.json', 'policy-draft/VECTORS-POLICY.json')
+       for v in json.loads((HERE.parent / f).read_text())]
+VEC_BY_NAME = {'vec:' + v['name']: bytes.fromhex(v['input_hex']) for v in VEC if 'pad_to' not in v}
+
+
+def resolve(r):
+    """probes/run_probes.resolve regenerates vector inputs from spec-draft/VECTORS.json only; since the Stage-1 split
+    the cap-dependent and profile records live in two other files, so vector inputs are taken from all three here
+    (same SHA-256 check)."""
+    n = r.get('ref', r['name'])
+    if r.get('hex') is None and n in VEC_BY_NAME:
+        b = VEC_BY_NAME[n]
+        if hashlib.sha256(b).hexdigest() != r['sha256']:
+            raise ValueError(f"{r['name']}: vector input does not match the recorded SHA-256")
+        return b
+    return RP.resolve(r)
+
+
 SECOND_ROUND = {'apng-bg-then-previous-4', 'apng-previous-chain', 'idat-then-4-bytes', 'idat-then-iend-no-crc',
                 'crc-extra-idat-after-stream', 'unknown-critical-after-idat', 'crc-text-after-idat-image',
                 'trns-rgb16-lowbyte', 'index-oob-2bit-trns'}
@@ -186,13 +204,13 @@ def main():
     stats = agreement(rows)
     report(stats, listing, 'fitted set (at most 4 KiB)')
     if '--no-large' not in sys.argv:
-        lrows = [(r['name'], RP.resolve(r), dict(r['runners'], **GLYCIN.get(r['name'], {}))) for r in large]
+        lrows = [(r['name'], resolve(r), dict(r['runners'], **GLYCIN.get(r['name'], {}))) for r in large]
         report(agreement(lrows), listing, f'inputs above 4 KiB ({len(lrows)}, regenerated from their generators, SHA-256 checked)')
     if HELDOUT is not None and '--no-heldout' not in sys.argv:
-        hrows = [(r['name'], RP.resolve(r), r['runners']) for r in HELDOUT]
+        hrows = [(r['name'], resolve(r), r['runners']) for r in HELDOUT]
         report(agreement(hrows), listing, f'held-out set A ({len(hrows)} mutations, heldout_def.py; seen while modelling gap 2)')
     if HELDOUT_B is not None and '--no-heldout' not in sys.argv:
-        hrows = [(r['name'], RP.resolve(r), r['runners']) for r in HELDOUT_B]
+        hrows = [(r['name'], resolve(r), r['runners']) for r in HELDOUT_B]
         report(agreement(hrows), listing, f'held-out set B ({len(hrows)} mutations, frozen after the gap-2/gap-5 changes; the stored-tail fix came after it)')
     # acceptance gain of RecommendedBeta among inputs Strict rejects and an incumbent accepts
     gain = tot = 0

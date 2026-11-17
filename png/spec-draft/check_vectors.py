@@ -3,7 +3,9 @@
 coverage, and cross-check the oracle's hand-written inflate, CRC-32 and Adler-32 against
 Python's zlib (the only place zlib meets the oracle).
 
-Usage: python3 -I check_vectors.py [VECTORS.json] [--fuzz N] [--only SUBSTRING]
+Usage: python3 -I check_vectors.py [VECTORS.json] [--fuzz N] [--only SUBSTRING] [--caps NAME=V,...] [--usage]
+  --caps   evaluate the (Strict) records with the named caps replaced (the Stage-1 fixture envelope, REVIEW-BRIEF.md)
+  --usage  print, per cap, the largest quantity any record compares with it, and the envelope's lower corner
 """
 import hashlib
 import json
@@ -16,8 +18,17 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import png_oracle as O  # noqa: E402
-sys.path.insert(0, str(HERE.parent / 'policy-draft'))
-import policy_oracle as PO  # noqa: E402
+_PO = None
+
+
+def policy_oracle():
+    """Imported only for a record whose `profile` is not Strict, so the Strict check never depends on ../policy-draft."""
+    global _PO
+    if _PO is None:
+        sys.path.insert(0, str(HERE.parent / 'policy-draft'))
+        import policy_oracle as PO  # noqa: E402
+        _PO = PO
+    return _PO
 
 
 def runs(pix, digits=8):
@@ -44,6 +55,7 @@ def materialize(v):
 
 def actual_profile(v):
     """Records with `profile` other than Strict (P19): the profile's still/frames entry point, with recovered and events."""
+    PO = policy_oracle()
     b, P = materialize(v), PO.PROFILES[v['profile']]
     if v['entry'] == 'still':
         r = PO.decode_still(b, P)
@@ -91,9 +103,30 @@ def actual(v):
                         'rgba_runs': runs(quads(f['rgba']))} for f in r['frames']]}
 
 
+WINDOW_MAX = 32768
+
+
+def req_icc(b):
+    """P20 (three cases, D7): the requests of icc_profile when no reservation fails, as [site, elements] pairs."""
+    try:
+        doc = O.walk(b)
+    except O.PngError:
+        return []
+    if doc['iccp'] is None:
+        return []
+    try:
+        m = len(O.zlib_decompress(doc['iccp'], O.MAX_ICC, 'IccProfileTooLarge'))
+    except O.PngError:
+        return [['IccWindow', WINDOW_MAX]]
+    return [['IccWindow', WINDOW_MAX], ['Icc', m]]
+
+
 def zlib_streams(b):
-    """Concatenated IDAT payload and each frame's fdAT payload of a well-framed input (no checks)."""
-    out, p, idat, frames = [], 8, bytearray(), []
+    """Concatenated IDAT payload and each frame's fdAT payload of a well-framed input (no checks). An IDAT run
+    whose payloads are all empty yields the empty stream b'' (it exists and is inflated, P9: TruncatedZlib); no
+    IDAT chunk yields no stream. Likewise a frame with at least one fdAT chunk yields its payload, possibly b'',
+    and a frame without fdAT chunks (IDAT-based, or MissingFrameData) yields none."""
+    out, p, idat, frames, idat_seen = [], 8, bytearray(), [], False
     while p + 12 <= len(b):
         n = struct.unpack('>I', b[p:p + 4])[0]
         t = b[p + 4:p + 8]
@@ -102,14 +135,15 @@ def zlib_streams(b):
         d = b[p + 8:p + 8 + n]
         if t == b'IDAT':
             idat += d
+            idat_seen = True
         elif t == b'fcTL':
-            frames.append(bytearray())
-        elif t == b'fdAT' and frames:
-            frames[-1] += d[4:]
+            frames.append(None)
+        elif t == b'fdAT' and frames and n >= 4:        # a shorter fdAT is InvalidChunkLength, not frame data
+            frames[-1] = (frames[-1] or bytearray()) + d[4:]
         p += 12 + n
-    if idat:
+    if idat_seen:
         out.append(bytes(idat))
-    out += [bytes(f) for f in frames if f]
+    out += [bytes(f) for f in frames if f is not None]
     return out
 
 
@@ -191,13 +225,77 @@ def cross_check(vs, fuzz):
     return differ + fz + (not crc_ok) + (not adl_ok)
 
 
+CAP_NAMES = ('MAX_INPUT', 'MAX_DIMENSION', 'MAX_OUTPUT', 'MAX_FRAMES', 'MAX_TOTAL_PIXELS', 'MAX_ICC')
+PNG_WIRE_MAX = (1 << 31) - 1
+CAPS_OK_MIN = {'MAX_INPUT': 0, 'MAX_DIMENSION': 1, 'MAX_OUTPUT': 4, 'MAX_FRAMES': 1, 'MAX_TOTAL_PIXELS': 0, 'MAX_ICC': 1}
+
+
+def usage(v):
+    """The largest quantity each cap is compared with while decoding record v (an upper bound, from the chunk framing,
+    no checks): |b|; max(W, H) and 4*W*H when both sides are in 1..PNG_WIRE_MAX (otherwise InvalidDimensions holds for
+    every permitted MAX_DIMENSION and the area test is never reached); acTL num_frames; the sum of fcTL w*h; the
+    inflated iCCP profile length for an icc record. A record keeps its outcome for every cap tuple with each cap at least
+    this value (each cap enters only through a test `quantity > cap`)."""
+    b = materialize(v)
+    u = {'MAX_INPUT': len(b)}
+    p, first, pixels = 8, True, 0
+    while p + 12 <= len(b):
+        n = struct.unpack('>I', b[p:p + 4])[0]
+        t = b[p + 4:p + 8]
+        if p + 12 + n > len(b):
+            break
+        d = b[p + 8:p + 8 + n]
+        if first and t == b'IHDR' and n == 13:
+            W, H = struct.unpack('>II', d[:8])
+            if 1 <= W <= PNG_WIRE_MAX and 1 <= H <= PNG_WIRE_MAX:
+                u['MAX_DIMENSION'], u['MAX_OUTPUT'] = max(W, H), 4 * W * H
+        elif t == b'acTL' and n == 8:
+            u['MAX_FRAMES'] = max(u.get('MAX_FRAMES', 0), struct.unpack('>I', d[:4])[0])
+        elif t == b'fcTL' and n == 26:
+            fw, fh = struct.unpack('>II', d[4:12])
+            pixels += fw * fh
+            u['MAX_TOTAL_PIXELS'] = pixels
+        elif t == b'iCCP' and v['entry'] == 'icc':
+            z = d.find(b'\0')
+            try:
+                u['MAX_ICC'] = len(zlib.decompressobj().decompress(d[z + 2:], 1 << 31))
+            except zlib.error:
+                pass
+        first = False
+        p += 12 + n
+    return u
+
+
+def set_caps(spec):
+    """--caps NAME=VALUE,...: evaluate the Strict records at other cap values (png_oracle reads its caps at call time)."""
+    for item in spec.split(','):
+        k, val = item.split('=')
+        assert k in CAP_NAMES, k
+        setattr(O, k, int(val, 0))
+
+
 def main():
     args = sys.argv[1:]
     fuzz = int(args[args.index('--fuzz') + 1]) if '--fuzz' in args else 200
     only = args[args.index('--only') + 1] if '--only' in args else None
-    pos = [a for i, a in enumerate(args) if not a.startswith('--') and (i == 0 or not args[i - 1].startswith('--'))]
+    pos = [a for i, a in enumerate(args) if not a.startswith('--') and (i == 0 or not args[i - 1] in ('--fuzz', '--only', '--caps'))]
     path = Path(pos[0]) if pos else HERE / 'VECTORS.json'
     vs = json.loads(path.read_text())
+    if '--usage' in args:
+        top = {}
+        for v in vs:
+            for k, q in usage(v).items():
+                if q > top.get(k, (-1, ''))[0]:
+                    top[k] = (q, v['name'])
+        for k in CAP_NAMES:
+            q, nm = top.get(k, (0, '-'))
+            print(f'{k}: largest use {q} ({nm})')
+        print('lower corner: --caps ' + ','.join(f'{k}={max(CAPS_OK_MIN[k], top.get(k, (0,))[0])}' for k in CAP_NAMES))
+        return 0
+    if '--caps' in args:
+        assert all(v.get('profile', 'Strict') == 'Strict' for v in vs), '--caps evaluates Strict records only'
+        set_caps(args[args.index('--caps') + 1])
+        print('caps: ' + ', '.join(f'{k}={getattr(O, k)}' for k in CAP_NAMES))
     if only:
         vs = [v for v in vs if only in v['name']]
     names = [v['name'] for v in vs]
@@ -209,6 +307,12 @@ def main():
         if a != v['expected']:
             bad += 1
             print('MISMATCH', v['name'], json.dumps(a)[:300], 'expected', json.dumps(v['expected'])[:300])
+        if 'req' in v:
+            assert v['entry'] == 'icc', v['name']
+            r = req_icc(materialize(v))
+            if r != v['req']:
+                bad += 1
+                print('REQ MISMATCH', v['name'], r, 'expected', v['req'])
         e = v['expected']
         if v.get('profile', 'Strict') != 'Strict':
             continue            # P19: the error list counts Strict records only

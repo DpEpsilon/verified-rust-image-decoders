@@ -217,3 +217,11 @@ Tracked as `../RELEASE-GATES.md` item 8.
 **Operative wording of E4 (a), replacing the approved text above:** "for m in [9, 11] and a complete code c in [256, clear) read while q < A, the decoder returns `ColorIndexOutOfRange` before resolution, emission or insertion; when q = A (raster full) the frozen G10 precedence applies first (Strict: `MissingEndOfInformation`; `StopAtRaster`: the code is not read); in every case such a code is rejected with an error before resolution, emission or insertion."
 
 This refines the council's wording without changing its intent: the coverage clause (c) already said "rejected with an error". Frozen G10 error precedence is unchanged. The owner's approval covers it as a precision fix, since the owner delegated these details to the council. Flag for the next council round if one is held.
+
+### E4 Correction (2026-11-17), from the second independent review (`REVIEW-ASTRA-INTEGRATED-2.md`, Low finding)
+
+The sentence above ("Operative wording of E4 (a)...") ends by concluding that "in every case such a code is rejected with an error". That is false for the excluded case m = 9, area 1, payload [0, 0, 4] with checked literals: under Strict the tail emits index 0 and then reports `MissingEndOfInformation`; under StopAtRaster the decoder returns after index 0 without consuming literal 256 (`string_model.rs:65-80`, `:434-443`). The existing text is kept; the operative clause is corrected to:
+
+"an excluded literal in [256, clear) is never resolved, emitted or inserted; if it is consumed (read while q < A), the decoder returns `ColorIndexOutOfRange` before those operations; when the raster is full the frozen G10 precedence applies first (Strict: `MissingEndOfInformation`; StopAtRaster: the code is not read)."
+
+No code or proof change is needed: the proofs already establish exactly this.

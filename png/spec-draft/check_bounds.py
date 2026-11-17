@@ -10,6 +10,7 @@ Bound used by the proofs: R <= 8*w*h + S(h) and S(h) <= 2h + 2. Checked here:
   - the worked examples of SPEC.md P11.
 Usage: python3 -I check_bounds.py
 """
+import math
 import sys
 from pathlib import Path
 
@@ -68,10 +69,15 @@ def main():
     print(f'MAX_DIMENSION = {O.MAX_DIMENSION}, MAX_OUTPUT = {O.MAX_OUTPUT}; h <= MAX_OUTPUT/4 = {hmax}')
     print(f'R <= 2*MAX_OUTPUT + 2*(MAX_OUTPUT/4) + 2 = {rmax} ({rmax / 2**20:.1f} MiB); the form with 2*MAX_DIMENSION would give '
           f'{2 * O.MAX_OUTPUT + 2 * O.MAX_DIMENSION + 2} and is looser than the guard')
+    # shapes at the area cap, derived from MAX_OUTPUT so that the check holds for every permitted cap value (at the
+    # current values: 1 x 2^26, 2^26 x 1, 2 x 2^25, 4 x 2^24 and 8192 x 8192)
     worst = 0
+    q = O.MAX_OUTPUT // 4
+    s_ = math.isqrt(q)
     for il in (0, 1):
-        for w, h in ((1, 1 << 26), (1 << 26, 1), (8192, 8192), (2, 1 << 25), (4, 1 << 24)):
-            worst = max(worst, O.raw_size(doc(6, 16, il), w, h))
+        for w, h in ((1, q), (q, 1), (2, q // 2), (4, q // 4), (s_, s_)):
+            if w >= 1 and h >= 1:
+                worst = max(worst, O.raw_size(doc(6, 16, il), w, h))
     print(f'largest exact R over the RGBA16 cap-boundary shapes tried: {worst} ({worst / 2**20:.1f} MiB); bound {rmax}; guard 2^30 = {1 << 30}')
     if worst > rmax or rmax > (1 << 30):
         bad += 1

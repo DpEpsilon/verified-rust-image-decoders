@@ -13,12 +13,23 @@ Entry points (P1):
 """
 
 # ------------------------------------------------------------------ P1 limits
-MAX_INPUT = 256 * 1024 * 1024          # bytes of input
-MAX_DIMENSION = (1 << 31) - 1         # pixels per side: the PNG wire limit; MAX_OUTPUT bounds the area
-MAX_OUTPUT = 256 * 1024 * 1024         # bytes of one RGBA8 canvas, 4*W*H (2^26 pixels)
-MAX_FRAMES = 65536                     # acTL num_frames
-MAX_TOTAL_PIXELS = 1 << 30             # sum of w*h over the fcTL frames of one stream
-MAX_ICC = 16 * 1024 * 1024             # bytes of a decompressed ICC profile
+# The six cap values live only in ../limits-draft/limits.py (../limits-frozen/limits.py after Stage 2); this file
+# names them and never writes a value (REVIEW-BRIEF.md, acceptance A5). Every use below reads the module global at
+# call time, so check_vectors.py --caps can evaluate the frozen records at other cap values (the fixture envelope).
+def _load_limits():
+    import importlib.util
+    from pathlib import Path
+    root = Path(__file__).resolve().parent.parent
+    d = root / 'limits-frozen' if (root / 'limits-frozen').is_dir() else root / 'limits-draft'
+    spec = importlib.util.spec_from_file_location('png_limits', d / 'limits.py')
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    return m
+
+
+_L = _load_limits()
+MAX_INPUT, MAX_DIMENSION, MAX_OUTPUT = _L.MAX_INPUT, _L.MAX_DIMENSION, _L.MAX_OUTPUT
+MAX_FRAMES, MAX_TOTAL_PIXELS, MAX_ICC = _L.MAX_FRAMES, _L.MAX_TOTAL_PIXELS, _L.MAX_ICC
 
 ERRORS = [
     'FileTooLarge', 'BadSignature', 'TruncatedChunk', 'ChunkTooLong', 'InvalidChunkType', 'CrcMismatch',
@@ -143,20 +154,31 @@ class Huffman:
             if n:
                 self.symbol[offs[n]] = s
                 offs[n] += 1
+        # live[n]: how many n-bit strings are proper prefixes of a longer codeword. In canonical order they follow the
+        # codewords of length n, so an n-bit string beyond them is a prefix of no codeword (D4).
+        self.live = [(sum(self.count[m] << (15 - m) for m in range(n + 1, 16)) + (1 << (15 - n)) - 1) >> (15 - n)
+                     for n in range(16)]
 
     def decode(self, br):
-        """Read one code; a bit string that matches no code is InvalidSymbol (only possible for
-        the incomplete codes P10.3 admits)."""
+        """P10.3 (D4, council decision 2026-11-17): read bits one at a time; return the symbol as soon as the bits read
+        are a codeword; InvalidSymbol as soon as they are a prefix of no codeword (for the incomplete codes P10.3 admits:
+        the other bit value of a single one-bit code, or, for an empty code, before any bit is read); the reader's
+        TruncatedZlib arises only while the bits read are still a proper prefix of some codeword. Complete codes have
+        no dead prefix; oversubscribed codes are rejected at construction and never reach this function."""
+        if self.live[0] == 0:
+            fail('InvalidSymbol')
         code = first = index = 0
         for n in range(1, 16):
             code |= br.get(1)
             cnt = self.count[n]
             if code - cnt < first:
                 return self.symbol[index + (code - first)]
+            if code - first - cnt >= self.live[n]:
+                fail('InvalidSymbol')
             index += cnt
             first = (first + cnt) << 1
             code <<= 1
-        fail('InvalidSymbol')
+        fail('InvalidSymbol')                               # unreachable: live[15] = 0
 
 
 LEN_BASE = [3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35, 43, 51, 59, 67, 83, 99, 115,
@@ -168,7 +190,7 @@ DIST_EXTRA = [0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 
 CL_ORDER = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15]
 
 FIXED_LIT = Huffman([8] * 144 + [9] * 112 + [7] * 24 + [8] * 8)
-FIXED_DIST = Huffman([5] * 30)   # codes 30, 31 exist in the fixed code but are invalid (P10.4)
+FIXED_DIST = Huffman([5] * 32)   # P10.4: all 32 five-bit codewords; symbols 30, 31 decode and are InvalidSymbol (D20)
 
 
 def acceptable(h, kind):
@@ -203,15 +225,17 @@ def inflate(data, pos, limit, window, out=None):
             if ln != (~nln & 0xFFFF):
                 fail('StoredLengthMismatch')
             br.byte += 4
-            # bytes are produced one at a time in stream order: the limit, then a truncation
+            # P10.2 (D5, council decision 2026-11-17): each of the LEN bytes in stream order: absent -> TruncatedZlib;
+            # present with the output already at the limit -> OutputLimit (Full); otherwise appended. Filling the limit
+            # exactly is not Full. So a truncated block keeps the bytes that are present and fit.
             take = min(ln, len(data) - br.byte)
             if len(out) + take > limit:
                 out += data[br.byte:br.byte + limit - len(out)]
                 raise OutputLimit
+            out += data[br.byte:br.byte + take]
+            br.byte += take
             if take < ln:
                 fail('TruncatedZlib')
-            out += data[br.byte:br.byte + ln]
-            br.byte += ln
         elif btype == 3:
             fail('InvalidBlockType')
         else:
@@ -456,7 +480,7 @@ def walk(b):
         elif t == b'IEND':
             if idat == 0:
                 fail('MissingImageData')
-            if cur is not None and cur['source'] == 'fdAT' and not cur['parts']:
+            if cur is not None and cur['source'] == 'fdAT' and not cur['fdat_seen']:     # presence, not payload length
                 fail('MissingFrameData')
             if doc['actl'] is not None and len(doc['frames']) != doc['actl']['num_frames']:
                 fail('FrameCountMismatch')
@@ -564,7 +588,7 @@ def walk(b):
             if be32(d, 0) != seq:
                 fail('SequenceError')
             seq += 1
-            if cur is not None and cur['source'] == 'fdAT' and not cur['parts']:
+            if cur is not None and cur['source'] == 'fdAT' and not cur['fdat_seen']:     # presence, not payload length
                 fail('MissingFrameData')
             fw, fh, fx, fy = be32(d, 4), be32(d, 8), be32(d, 12), be32(d, 16)
             dn, dd, dop, bop = be16(d, 20), be16(d, 22), d[24], d[25]
@@ -578,7 +602,7 @@ def walk(b):
             if idat == 0:
                 fctl_before_idat = True
             cur = {'rect': (fx, fy, fw, fh), 'delay': (dn, dd), 'dispose': dop, 'blend': bop,
-                   'source': 'fdAT', 'parts': bytearray()}
+                   'source': 'fdAT', 'parts': bytearray(), 'fdat_seen': False}
             doc['frames'].append(cur)
         elif t == b'fdAT':
             if doc['actl'] is None:
@@ -592,8 +616,8 @@ def walk(b):
             seq += 1
             if cur is None or cur['source'] != 'fdAT':
                 fail('UnexpectedFrameData')
-            cur['parts'] += d[4:]
-            cur['nonempty'] = True
+            cur['parts'] += d[4:]                  # may be empty: a 4-byte fdAT is valid (P14.1)
+            cur['fdat_seen'] = True
         elif not t[0] & 0x20:
             fail('UnknownCriticalChunk')
         # unknown ancillary chunk: skipped (P5)
