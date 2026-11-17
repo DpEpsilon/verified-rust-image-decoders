@@ -693,8 +693,10 @@ bad('container/idat-after-iend', TOK + IDAT_OK, 'TrailingBytes')
 # ---------------------------------------------------------------- P4 IHDR
 for nm, (w_, h_, dd, cc_, cm, fm, im), e in [
         ('width-0', (0, 2, 8, 2, 0, 0, 0), 'InvalidDimensions'), ('height-0', (2, 0, 8, 2, 0, 0, 0), 'InvalidDimensions'),
-        ('width-16385', (16385, 1, 8, 2, 0, 0, 0), 'InvalidDimensions'), ('width-2^31', (1 << 31, 1, 8, 2, 0, 0, 0), 'InvalidDimensions'),
-        ('16384x1025-output', (16384, 1025, 8, 2, 0, 0, 0), 'OutputTooLarge'),
+        ('width-2^31', (1 << 31, 1, 8, 2, 0, 0, 0), 'InvalidDimensions'),
+        ('width-2^31-1-output', ((1 << 31) - 1, 1, 8, 2, 0, 0, 0), 'OutputTooLarge'),
+        ('67108865x1-output', (67108865, 1, 8, 2, 0, 0, 0), 'OutputTooLarge'),
+        ('8192x8193-output', (8192, 8193, 8, 2, 0, 0, 0), 'OutputTooLarge'),
         ('depth-3', (2, 2, 3, 0, 0, 0, 0), 'InvalidColorTypeDepth'), ('rgb-depth-4', (2, 2, 4, 2, 0, 0, 0), 'InvalidColorTypeDepth'),
         ('palette-depth-16', (2, 2, 16, 3, 0, 0, 0), 'InvalidColorTypeDepth'), ('ct-1', (2, 2, 8, 1, 0, 0, 0), 'InvalidColorTypeDepth'),
         ('ct-5', (2, 2, 8, 5, 0, 0, 0), 'InvalidColorTypeDepth'), ('ct-7', (2, 2, 8, 7, 0, 0, 0), 'InvalidColorTypeDepth'),
@@ -703,8 +705,10 @@ for nm, (w_, h_, dd, cc_, cm, fm, im), e in [
         ('filter-method-1', (2, 2, 8, 2, 0, 1, 0), 'UnsupportedFilterMethod'),
         ('interlace-2', (2, 2, 8, 2, 0, 0, 2), 'UnsupportedInterlaceMethod')]:
     bad(f'ihdr/{nm}', SIG + chunk(b'IHDR', struct.pack('>IIBBBBB', w_, h_, dd, cc_, cm, fm, im)) + IDAT_OK + IEND, e)
-# the largest admissible output: header accepted, data then missing (shows the caps pass)
-bad('ihdr/16384x1024-accepted-then-truncated-zlib', SIG + ihdr(16384, 1024, 8, 6) + chunk(b'IDAT', b'\x78\x01') + IEND, 'TruncatedZlib')
+# the largest admissible outputs (4*W*H = 2^28): header accepted, data then missing (shows the caps pass)
+bad('ihdr/8192x8192-accepted-then-truncated-zlib', SIG + ihdr(8192, 8192, 8, 6) + chunk(b'IDAT', b'\x78\x01') + IEND, 'TruncatedZlib')
+bad('ihdr/67108864x1-accepted-then-truncated-zlib', SIG + ihdr(67108864, 1, 8, 6) + chunk(b'IDAT', b'\x78\x01') + IEND, 'TruncatedZlib')
+bad('ihdr/1x67108864-accepted-then-truncated-zlib', SIG + ihdr(1, 67108864, 8, 6) + chunk(b'IDAT', b'\x78\x01') + IEND, 'TruncatedZlib')
 bad('limits/file-too-large', TOK, 'FileTooLarge')
 V[-1]['pad_to'] = MAX_INPUT + 1
 
@@ -1137,7 +1141,7 @@ for k in range(65):
     bb += fctl(seq, BW_, BH_, 0, 0) + fdat(seq + 1, b'\x78\x01')
     seq += 2
 pair('apng-static/pixel-budget', 'frames', bb + IEND, 'PixelBudgetExceeded', 'PixelBudgetExceeded')
-pair('apng-static/output-too-large', 'frames', SIG + ihdr(16384, 1025, 8, 2) + actl(1) + chunk(b'IDAT', Z0) + IEND, 'OutputTooLarge', 'OutputTooLarge')
+pair('apng-static/output-too-large', 'frames', SIG + ihdr(8192, 8193, 8, 2) + actl(1) + chunk(b'IDAT', Z0) + IEND, 'OutputTooLarge', 'OutputTooLarge')
 # a later frame's data is corrupt: the error comes from the iterator at that frame, after the frames before it
 B1 = AHDR + actl(2) + fctl(0, AW, AH, 0, 0) + chunk(b'IDAT', Z0) + fctl(1, 2, 2, 0, 0) + fdat(2, Z1[:-1] + b'\0') + IEND
 e1 = frames_exp([((0, 0, AW, AH), F0, 0, 0)], [((1, 10), 0, 0)], end={'error': 'AdlerMismatch'})

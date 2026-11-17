@@ -14,8 +14,8 @@ Entry points (P1):
 
 # ------------------------------------------------------------------ P1 limits
 MAX_INPUT = 256 * 1024 * 1024          # bytes of input
-MAX_DIMENSION = 16384                  # pixels per side
-MAX_OUTPUT = 64 * 1024 * 1024          # bytes of one RGBA8 canvas, 4*W*H
+MAX_DIMENSION = (1 << 31) - 1         # pixels per side: the PNG wire limit; MAX_OUTPUT bounds the area
+MAX_OUTPUT = 256 * 1024 * 1024         # bytes of one RGBA8 canvas, 4*W*H (2^26 pixels)
 MAX_FRAMES = 65536                     # acTL num_frames
 MAX_TOTAL_PIXELS = 1 << 30             # sum of w*h over the fcTL frames of one stream
 MAX_ICC = 16 * 1024 * 1024             # bytes of a decompressed ICC profile

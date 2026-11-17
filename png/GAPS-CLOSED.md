@@ -1,6 +1,6 @@
 # PNG specification phase: gaps closed
 
-*Historical record of the specification phase. The 2026-11-16 owner decisions changed some of the numbers below; see `policy-draft/DECISIONS.md` (RecommendedBeta now accepts 224 of the 289 inputs, not 231; its agreement with the incumbents is 679/721 and 601/721; the Strict bridge covers 767 inputs; 793 vectors). The compatibility profiles' numbers are unchanged.*
+*Historical record of the specification phase. The 2026-11-16 owner decisions changed some of the numbers below; see `policy-draft/DECISIONS.md` (RecommendedBeta now accepts 224 of the 289 inputs, not 231; its agreement with the incumbents is 679/721 and 601/721; the Strict bridge covers 767 inputs; 793 vectors). The compatibility profiles' numbers are unchanged. The 2026-11-17 cap decision (per side 2^31 − 1, output 256 MiB) changes them again: 796 vectors, Strict bridge 773 inputs, RecommendedBeta 224 of 287, see `policy-draft/DECISIONS.md`.*
 
 The phase report (commit 3ef5dc4) listed nine gaps. Seven are closed, two are partly closed (gap 1: glycin's loader code runs, but in-process and without its sandbox; gap 3: the published W3C text could not be fetched). The oracle changes leave Strict untouched and raise ImageCrateCompat's fitted agreement; on a held-out set frozen after the changes, GdkCompat agrees with the gdk-pixbuf loader on 389 of 395 inputs and ImageCrateCompat with image on 395 (still) and 394 (frames).
 
