@@ -1,3 +1,23 @@
+# Current checkpoint: authored repeats and systematic stream classes
+
+2026-11-18. **Fresh final-source run 492: 496 verified, 0 errors.** Core coverage is **343 / 631 frozen stream instances**, up by 300. The exact handoff is the top section of `/home/ws/projects/verified-decoders/png/inflate_verus/LEDGER.md`. All jobs have exited; no failed or speculative proof remains active. Next logged run is 502.
+
+The new independent partial trace bridge handles literal code lengths plus repeats 16/17/18. Four frozen repeat/admission-error records and single-literal-code-len1 are closed. An explicit synthetic partial trace checks all three successful repeat kinds; it is not counted as a frozen stream or a complete public-entry stream witness.
+
+A generic balanced fixed-literal bridge and independent D5 stored-payload bridge support 114 stream classes: 86 fixed-literal classes cover 259 frozen instances, and 28 stored classes cover 36. The other 48 core instances have individual authored witnesses. All class representatives prove independent raw bytes/status at R and call both actual entries; the provenance audit checks every member's exact Z and independently calculated legal image R. The authoring pipeline reconstructs encoder-intent samples, forward filters and Adam7 order without a decode oracle. Its forward encoding comparison only selects eligible traces. This batch uses at most 128 raw bytes; that is an authoring boundary, not a solver-bound claim.
+
+Eight tail-policy records additionally verify under all four implemented window/tail combinations at R and R+1, including the original later-IDAT segmentation. IgnoreTail succeeds only for exactly full output after matching Adler; bad Adler is never ignored. These policy records do not enter the 343/631 core numerator and are not integrated PNG policy results.
+
+All 631 core instances are listed in `/home/ws/projects/verified-decoders/png/inflate_verus/tools/witness_inventory.json`. The remaining 288 await authored traces: 161 first-fixed-block, 83 first-stored-block, 43 non-IDAT and one first-dynamic-block. No attempted instance remains resource-blocked. Extend independent fixed-match/effect traces and APNG frame classes next; retain per-stream provenance and frame R. The large frozen window/zlib/flush/truncation/segment-boundary records and excess-output/window-policy families remain open. Any new default-limit resource failure must be recorded against its named instance without raising limits.
+
+Runtime implementations did not change. Full fresh evidence nevertheless passes in runs 493–500: source/cap/allocation/erased-counter/provenance controls and twelve hashes, thirteen release tests, release adapter, host/thumb instantiated allocator probes/symbols, all vector layouts, 10,000 generated streams and 10,000 corruptions with zero unexpected differences. No new mutation kill was added; the historical total stays 63. No signed allocation audit or M2 sign-off is claimed.
+
+Pinned i686 replay remains blocked by the absent matching cache (run 501), not replaced by thumb. L-LIMIT-MONO, the prior synthetic window/ring/D5 proofs and the amended E2 SegmentSlices frame discharge remain proved. E1 and E2 statuses are unchanged; per-reader IDAT/fdAT/iCCP M3 obligations remain. No frozen file, theorem manifest or errata file was edited, and no new frozen-statement concern arose.
+
+---
+
+## Previous checkpoint (historical)
+
 # Current checkpoint: selected dynamic/D4/window/ring gates and L-LIMIT-MONO
 
 2026-11-18. **Fresh final-source run 476: 362 verified, 0 errors.** The exact handoff is the top section of `/home/ws/projects/verified-decoders/png/inflate_verus/LEDGER.md`. No failing or speculative proof remains in the active source tree. Next logged run is 477.

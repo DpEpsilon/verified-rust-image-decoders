@@ -1,0 +1,4419 @@
+[
+  {
+    "name": "ok/ct0-d1-il0-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d1-il0-2x3",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d1-il0-7x5",
+    "stream": 0,
+    "bytes": 18,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct0-d1-il0-7x5",
+    "stream": 0,
+    "bytes": 18,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d1-il0-9x10",
+    "stream": 0,
+    "bytes": 38,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d1-il0-17x2",
+    "stream": 0,
+    "bytes": 16,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d1-il1-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d1-il1-2x3",
+    "stream": 0,
+    "bytes": 18,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d1-il1-7x5",
+    "stream": 0,
+    "bytes": 30,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct0-d1-il1-7x5",
+    "stream": 0,
+    "bytes": 30,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d1-il1-9x10",
+    "stream": 0,
+    "bytes": 53,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "ok/ct0-d1-il1-17x2",
+    "stream": 0,
+    "bytes": 20,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d2-il0-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d2-il0-2x3",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d2-il0-7x5",
+    "stream": 0,
+    "bytes": 23,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct0-d2-il0-7x5",
+    "stream": 0,
+    "bytes": 23,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d2-il0-9x10",
+    "stream": 0,
+    "bytes": 51,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d2-il0-17x2",
+    "stream": 0,
+    "bytes": 20,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d2-il1-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d2-il1-2x3",
+    "stream": 0,
+    "bytes": 18,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d2-il1-7x5",
+    "stream": 0,
+    "bytes": 32,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct0-d2-il1-7x5",
+    "stream": 0,
+    "bytes": 32,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d2-il1-9x10",
+    "stream": 0,
+    "bytes": 61,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d2-il1-17x2",
+    "stream": 0,
+    "bytes": 23,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d4-il0-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d4-il0-2x3",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d4-il0-7x5",
+    "stream": 0,
+    "bytes": 34,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct0-d4-il0-7x5",
+    "stream": 0,
+    "bytes": 34,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d4-il0-9x10",
+    "stream": 0,
+    "bytes": 71,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d4-il0-17x2",
+    "stream": 0,
+    "bytes": 29,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d4-il1-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d4-il1-2x3",
+    "stream": 0,
+    "bytes": 18,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d4-il1-7x5",
+    "stream": 0,
+    "bytes": 41,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct0-d4-il1-7x5",
+    "stream": 0,
+    "bytes": 41,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d4-il1-9x10",
+    "stream": 0,
+    "bytes": 81,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d4-il1-17x2",
+    "stream": 0,
+    "bytes": 32,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d8-il0-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d8-il0-2x3",
+    "stream": 0,
+    "bytes": 17,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d8-il0-7x5",
+    "stream": 0,
+    "bytes": 51,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct0-d8-il0-7x5",
+    "stream": 0,
+    "bytes": 51,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d8-il0-9x10",
+    "stream": 0,
+    "bytes": 111,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d8-il0-17x2",
+    "stream": 0,
+    "bytes": 47,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d8-il1-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d8-il1-2x3",
+    "stream": 0,
+    "bytes": 19,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d8-il1-7x5",
+    "stream": 0,
+    "bytes": 55,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct0-d8-il1-7x5",
+    "stream": 0,
+    "bytes": 55,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d8-il1-9x10",
+    "stream": 0,
+    "bytes": 121,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d8-il1-17x2",
+    "stream": 0,
+    "bytes": 50,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d16-il0-1x1",
+    "stream": 0,
+    "bytes": 11,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d16-il0-2x3",
+    "stream": 0,
+    "bytes": 23,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d16-il0-7x5",
+    "stream": 0,
+    "bytes": 86,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct0-d16-il0-7x5",
+    "stream": 0,
+    "bytes": 86,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d16-il0-9x10",
+    "stream": 0,
+    "bytes": 201,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct0-d16-il0-17x2",
+    "stream": 0,
+    "bytes": 81,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d16-il1-1x1",
+    "stream": 0,
+    "bytes": 11,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d16-il1-2x3",
+    "stream": 0,
+    "bytes": 25,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d16-il1-7x5",
+    "stream": 0,
+    "bytes": 92,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct0-d16-il1-7x5",
+    "stream": 0,
+    "bytes": 92,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct0-d16-il1-9x10",
+    "stream": 0,
+    "bytes": 211,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct0-d16-il1-17x2",
+    "stream": 0,
+    "bytes": 84,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct2-d8-il0-1x1",
+    "stream": 0,
+    "bytes": 12,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct2-d8-il0-2x3",
+    "stream": 0,
+    "bytes": 30,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct2-d8-il0-7x5",
+    "stream": 0,
+    "bytes": 121,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct2-d8-il0-7x5",
+    "stream": 0,
+    "bytes": 121,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct2-d8-il0-9x10",
+    "stream": 0,
+    "bytes": 291,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct2-d8-il0-17x2",
+    "stream": 0,
+    "bytes": 115,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct2-d8-il1-1x1",
+    "stream": 0,
+    "bytes": 12,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct2-d8-il1-2x3",
+    "stream": 0,
+    "bytes": 32,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct2-d8-il1-7x5",
+    "stream": 0,
+    "bytes": 127,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct2-d8-il1-7x5",
+    "stream": 0,
+    "bytes": 127,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct2-d8-il1-9x10",
+    "stream": 0,
+    "bytes": 301,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct2-d8-il1-17x2",
+    "stream": 0,
+    "bytes": 118,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct2-d16-il0-1x1",
+    "stream": 0,
+    "bytes": 15,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct2-d16-il0-2x3",
+    "stream": 0,
+    "bytes": 48,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct2-d16-il0-7x5",
+    "stream": 0,
+    "bytes": 226,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok16/ct2-d16-il0-7x5",
+    "stream": 0,
+    "bytes": 226,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct2-d16-il0-9x10",
+    "stream": 0,
+    "bytes": 561,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct2-d16-il0-17x2",
+    "stream": 0,
+    "bytes": 217,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct2-d16-il1-1x1",
+    "stream": 0,
+    "bytes": 15,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct2-d16-il1-2x3",
+    "stream": 0,
+    "bytes": 52,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct2-d16-il1-7x5",
+    "stream": 0,
+    "bytes": 232,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok16/ct2-d16-il1-7x5",
+    "stream": 0,
+    "bytes": 232,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct2-d16-il1-9x10",
+    "stream": 0,
+    "bytes": 571,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct2-d16-il1-17x2",
+    "stream": 0,
+    "bytes": 220,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct3-d1-il0-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d1-il0-2x3",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d1-il0-7x5",
+    "stream": 0,
+    "bytes": 18,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct3-d1-il0-7x5",
+    "stream": 0,
+    "bytes": 18,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d1-il0-9x10",
+    "stream": 0,
+    "bytes": 38,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d1-il0-17x2",
+    "stream": 0,
+    "bytes": 16,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d1-il1-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d1-il1-2x3",
+    "stream": 0,
+    "bytes": 18,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d1-il1-7x5",
+    "stream": 0,
+    "bytes": 30,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct3-d1-il1-7x5",
+    "stream": 0,
+    "bytes": 30,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d1-il1-9x10",
+    "stream": 0,
+    "bytes": 54,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d1-il1-17x2",
+    "stream": 0,
+    "bytes": 20,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d2-il0-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d2-il0-2x3",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d2-il0-7x5",
+    "stream": 0,
+    "bytes": 23,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct3-d2-il0-7x5",
+    "stream": 0,
+    "bytes": 23,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d2-il0-9x10",
+    "stream": 0,
+    "bytes": 49,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d2-il0-17x2",
+    "stream": 0,
+    "bytes": 20,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d2-il1-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d2-il1-2x3",
+    "stream": 0,
+    "bytes": 18,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d2-il1-7x5",
+    "stream": 0,
+    "bytes": 32,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct3-d2-il1-7x5",
+    "stream": 0,
+    "bytes": 32,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d2-il1-9x10",
+    "stream": 0,
+    "bytes": 61,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d2-il1-17x2",
+    "stream": 0,
+    "bytes": 23,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d4-il0-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d4-il0-2x3",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d4-il0-7x5",
+    "stream": 0,
+    "bytes": 34,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct3-d4-il0-7x5",
+    "stream": 0,
+    "bytes": 34,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d4-il0-9x10",
+    "stream": 0,
+    "bytes": 71,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d4-il0-17x2",
+    "stream": 0,
+    "bytes": 28,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d4-il1-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d4-il1-2x3",
+    "stream": 0,
+    "bytes": 18,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d4-il1-7x5",
+    "stream": 0,
+    "bytes": 41,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct3-d4-il1-7x5",
+    "stream": 0,
+    "bytes": 41,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d4-il1-9x10",
+    "stream": 0,
+    "bytes": 81,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d4-il1-17x2",
+    "stream": 0,
+    "bytes": 31,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d8-il0-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d8-il0-2x3",
+    "stream": 0,
+    "bytes": 17,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d8-il0-7x5",
+    "stream": 0,
+    "bytes": 51,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct3-d8-il0-7x5",
+    "stream": 0,
+    "bytes": 51,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d8-il0-9x10",
+    "stream": 0,
+    "bytes": 111,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d8-il0-17x2",
+    "stream": 0,
+    "bytes": 45,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d8-il1-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d8-il1-2x3",
+    "stream": 0,
+    "bytes": 19,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d8-il1-7x5",
+    "stream": 0,
+    "bytes": 55,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct3-d8-il1-7x5",
+    "stream": 0,
+    "bytes": 55,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d8-il1-9x10",
+    "stream": 0,
+    "bytes": 121,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct3-d8-il1-17x2",
+    "stream": 0,
+    "bytes": 48,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct4-d8-il0-1x1",
+    "stream": 0,
+    "bytes": 11,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct4-d8-il0-2x3",
+    "stream": 0,
+    "bytes": 24,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct4-d8-il0-7x5",
+    "stream": 0,
+    "bytes": 86,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct4-d8-il0-7x5",
+    "stream": 0,
+    "bytes": 86,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct4-d8-il0-9x10",
+    "stream": 0,
+    "bytes": 201,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct4-d8-il0-17x2",
+    "stream": 0,
+    "bytes": 81,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct4-d8-il1-1x1",
+    "stream": 0,
+    "bytes": 11,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct4-d8-il1-2x3",
+    "stream": 0,
+    "bytes": 25,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct4-d8-il1-7x5",
+    "stream": 0,
+    "bytes": 92,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok16/ct4-d8-il1-7x5",
+    "stream": 0,
+    "bytes": 92,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct4-d8-il1-9x10",
+    "stream": 0,
+    "bytes": 211,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct4-d8-il1-17x2",
+    "stream": 0,
+    "bytes": 84,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct4-d16-il0-1x1",
+    "stream": 0,
+    "bytes": 13,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct4-d16-il0-2x3",
+    "stream": 0,
+    "bytes": 36,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct4-d16-il0-7x5",
+    "stream": 0,
+    "bytes": 156,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok16/ct4-d16-il0-7x5",
+    "stream": 0,
+    "bytes": 156,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct4-d16-il0-9x10",
+    "stream": 0,
+    "bytes": 381,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct4-d16-il0-17x2",
+    "stream": 0,
+    "bytes": 149,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct4-d16-il1-1x1",
+    "stream": 0,
+    "bytes": 13,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct4-d16-il1-2x3",
+    "stream": 0,
+    "bytes": 38,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct4-d16-il1-7x5",
+    "stream": 0,
+    "bytes": 162,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok16/ct4-d16-il1-7x5",
+    "stream": 0,
+    "bytes": 162,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct4-d16-il1-9x10",
+    "stream": 0,
+    "bytes": 391,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct4-d16-il1-17x2",
+    "stream": 0,
+    "bytes": 152,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct6-d8-il0-1x1",
+    "stream": 0,
+    "bytes": 13,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct6-d8-il0-2x3",
+    "stream": 0,
+    "bytes": 36,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct6-d8-il0-7x5",
+    "stream": 0,
+    "bytes": 156,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok16/ct6-d8-il0-7x5",
+    "stream": 0,
+    "bytes": 156,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct6-d8-il0-9x10",
+    "stream": 0,
+    "bytes": 381,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct6-d8-il0-17x2",
+    "stream": 0,
+    "bytes": 149,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct6-d8-il1-1x1",
+    "stream": 0,
+    "bytes": 13,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct6-d8-il1-2x3",
+    "stream": 0,
+    "bytes": 38,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct6-d8-il1-7x5",
+    "stream": 0,
+    "bytes": 162,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok16/ct6-d8-il1-7x5",
+    "stream": 0,
+    "bytes": 162,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct6-d8-il1-9x10",
+    "stream": 0,
+    "bytes": 391,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct6-d8-il1-17x2",
+    "stream": 0,
+    "bytes": 152,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct6-d16-il0-1x1",
+    "stream": 0,
+    "bytes": 17,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct6-d16-il0-2x3",
+    "stream": 0,
+    "bytes": 62,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct6-d16-il0-7x5",
+    "stream": 0,
+    "bytes": 296,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok16/ct6-d16-il0-7x5",
+    "stream": 0,
+    "bytes": 296,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct6-d16-il0-9x10",
+    "stream": 0,
+    "bytes": 741,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct6-d16-il0-17x2",
+    "stream": 0,
+    "bytes": 285,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct6-d16-il1-1x1",
+    "stream": 0,
+    "bytes": 17,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct6-d16-il1-2x3",
+    "stream": 0,
+    "bytes": 64,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "ok/ct6-d16-il1-7x5",
+    "stream": 0,
+    "bytes": 302,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok16/ct6-d16-il1-7x5",
+    "stream": 0,
+    "bytes": 302,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct6-d16-il1-9x10",
+    "stream": 0,
+    "bytes": 751,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "ok/ct6-d16-il1-17x2",
+    "stream": 0,
+    "bytes": 288,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/0-ct0-d1",
+    "stream": 0,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "filter/0-ct0-d8",
+    "stream": 0,
+    "bytes": 37,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "filter/0-ct0-d16",
+    "stream": 0,
+    "bytes": 61,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "filter/0-ct2-d8",
+    "stream": 0,
+    "bytes": 87,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/0-ct2-d16",
+    "stream": 0,
+    "bytes": 159,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/0-ct4-d8",
+    "stream": 0,
+    "bytes": 63,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/0-ct6-d16",
+    "stream": 0,
+    "bytes": 207,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/1-ct0-d1",
+    "stream": 0,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "filter/1-ct0-d8",
+    "stream": 0,
+    "bytes": 37,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "filter/1-ct0-d16",
+    "stream": 0,
+    "bytes": 63,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/1-ct2-d8",
+    "stream": 0,
+    "bytes": 87,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/1-ct2-d16",
+    "stream": 0,
+    "bytes": 159,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/1-ct4-d8",
+    "stream": 0,
+    "bytes": 63,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/1-ct6-d16",
+    "stream": 0,
+    "bytes": 207,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/2-ct0-d1",
+    "stream": 0,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "filter/2-ct0-d8",
+    "stream": 0,
+    "bytes": 37,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "filter/2-ct0-d16",
+    "stream": 0,
+    "bytes": 63,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/2-ct2-d8",
+    "stream": 0,
+    "bytes": 87,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/2-ct2-d16",
+    "stream": 0,
+    "bytes": 159,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/2-ct4-d8",
+    "stream": 0,
+    "bytes": 63,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/2-ct6-d16",
+    "stream": 0,
+    "bytes": 207,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/3-ct0-d1",
+    "stream": 0,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "filter/3-ct0-d8",
+    "stream": 0,
+    "bytes": 37,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "filter/3-ct0-d16",
+    "stream": 0,
+    "bytes": 63,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/3-ct2-d8",
+    "stream": 0,
+    "bytes": 87,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/3-ct2-d16",
+    "stream": 0,
+    "bytes": 159,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/3-ct4-d8",
+    "stream": 0,
+    "bytes": 63,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/3-ct6-d16",
+    "stream": 0,
+    "bytes": 207,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/4-ct0-d1",
+    "stream": 0,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "filter/4-ct0-d8",
+    "stream": 0,
+    "bytes": 37,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "filter/4-ct0-d16",
+    "stream": 0,
+    "bytes": 63,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/4-ct2-d8",
+    "stream": 0,
+    "bytes": 87,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/4-ct2-d16",
+    "stream": 0,
+    "bytes": 159,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/4-ct4-d8",
+    "stream": 0,
+    "bytes": 63,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "filter/4-ct6-d16",
+    "stream": 0,
+    "bytes": 207,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "trns/grey-d1",
+    "stream": 0,
+    "bytes": 14,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns/grey-d1-masked",
+    "stream": 0,
+    "bytes": 14,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns/grey-d2",
+    "stream": 0,
+    "bytes": 17,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns/grey-d2-masked",
+    "stream": 0,
+    "bytes": 17,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns/grey-d4",
+    "stream": 0,
+    "bytes": 20,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns/grey-d4-masked",
+    "stream": 0,
+    "bytes": 20,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns/grey-d8",
+    "stream": 0,
+    "bytes": 26,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns/grey-d8-masked",
+    "stream": 0,
+    "bytes": 26,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns/grey-d16",
+    "stream": 0,
+    "bytes": 44,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "trns/rgb-d8",
+    "stream": 0,
+    "bytes": 61,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns/rgb-d16",
+    "stream": 0,
+    "bytes": 111,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "trns/rgb-d16-low-byte-differs",
+    "stream": 0,
+    "bytes": 111,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "trns/palette-d8-16-entries-3-alpha",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns16/palette-d8-16-3",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns/palette-d8-16-entries-16-alpha",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns16/palette-d8-16-16",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns/palette-d4-16-entries-1-alpha",
+    "stream": 0,
+    "bytes": 17,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns16/palette-d4-16-1",
+    "stream": 0,
+    "bytes": 17,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns/palette-d1-2-entries-2-alpha",
+    "stream": 0,
+    "bytes": 14,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns16/palette-d1-2-2",
+    "stream": 0,
+    "bytes": 14,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "depth16/rounding-boundaries",
+    "stream": 0,
+    "bytes": 29,
+    "covered": false,
+    "reason": "awaits authored dynamic profile/symbol trace"
+  },
+  {
+    "name": "zlib/level0-default",
+    "stream": 0,
+    "bytes": 1034,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "zlib/level0-fixed",
+    "stream": 0,
+    "bytes": 1034,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "zlib/level0-huffman",
+    "stream": 0,
+    "bytes": 1034,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "zlib/level0-rle",
+    "stream": 0,
+    "bytes": 1034,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "zlib/level0-filtered",
+    "stream": 0,
+    "bytes": 1034,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "zlib/level1-default",
+    "stream": 0,
+    "bytes": 1006,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "zlib/level1-fixed",
+    "stream": 0,
+    "bytes": 1006,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "zlib/level1-huffman",
+    "stream": 0,
+    "bytes": 1034,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "zlib/level1-rle",
+    "stream": 0,
+    "bytes": 1007,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "zlib/level1-filtered",
+    "stream": 0,
+    "bytes": 1006,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "zlib/level6-default",
+    "stream": 0,
+    "bytes": 1005,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "zlib/level6-fixed",
+    "stream": 0,
+    "bytes": 1005,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "zlib/level6-huffman",
+    "stream": 0,
+    "bytes": 1034,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "zlib/level6-rle",
+    "stream": 0,
+    "bytes": 1007,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "zlib/level6-filtered",
+    "stream": 0,
+    "bytes": 1007,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "zlib/level9-default",
+    "stream": 0,
+    "bytes": 1004,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "zlib/level9-fixed",
+    "stream": 0,
+    "bytes": 1004,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "zlib/level9-huffman",
+    "stream": 0,
+    "bytes": 1034,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "zlib/level9-rle",
+    "stream": 0,
+    "bytes": 1007,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "zlib/level9-filtered",
+    "stream": 0,
+    "bytes": 1006,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "zlib/window-9",
+    "stream": 0,
+    "bytes": 1005,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "zlib/window-10",
+    "stream": 0,
+    "bytes": 1005,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "zlib/window-12",
+    "stream": 0,
+    "bytes": 1005,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "zlib/window-15",
+    "stream": 0,
+    "bytes": 1005,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "zlib/sync-and-full-flush-empty-stored-blocks",
+    "stream": 0,
+    "bytes": 1003,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "idat/split-1-byte",
+    "stream": 0,
+    "bytes": 1005,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "idat/split-irregular",
+    "stream": 0,
+    "bytes": 1005,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "idat/zero-length-idats",
+    "stream": 0,
+    "bytes": 1005,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "deflate/stored-only",
+    "stream": 0,
+    "bytes": 15,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/empty-stored-then-stored",
+    "stream": 0,
+    "bytes": 20,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/fixed-literals",
+    "stream": 0,
+    "bytes": 12,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/dynamic-literals-two-dist-codes",
+    "stream": 0,
+    "bytes": 162,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/dynamic-single-dist-code-len1",
+    "stream": 0,
+    "bytes": 161,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/dynamic-no-dist-codes",
+    "stream": 0,
+    "bytes": 161,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/fixed-overlapping-matches",
+    "stream": 0,
+    "bytes": 15,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/distance-equals-output",
+    "stream": 0,
+    "bytes": 11,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/match-overruns-image-is-excess",
+    "stream": 0,
+    "bytes": 11,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "zlib/fcheck",
+    "stream": 0,
+    "bytes": 1005,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "zlib/cm-7",
+    "stream": 0,
+    "bytes": 15,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "zlib/cinfo-8",
+    "stream": 0,
+    "bytes": 15,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "zlib/fdict",
+    "stream": 0,
+    "bytes": 19,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "zlib/one-byte",
+    "stream": 0,
+    "bytes": 1,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "zlib/empty-idat-only",
+    "stream": 0,
+    "bytes": 0,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "zlib/bad-adler",
+    "stream": 0,
+    "bytes": 15,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "zlib/missing-adler",
+    "stream": 0,
+    "bytes": 11,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "zlib/partial-adler",
+    "stream": 0,
+    "bytes": 13,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "zlib/trailing-byte",
+    "stream": 0,
+    "bytes": 16,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "zlib/second-stream",
+    "stream": 0,
+    "bytes": 30,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "zlib/trailing-in-later-idat",
+    "stream": 0,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "zlib/cut-mid-block",
+    "stream": 0,
+    "bytes": 502,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "zlib/cut-mid-stored",
+    "stream": 0,
+    "bytes": 6,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/btype-3",
+    "stream": 0,
+    "bytes": 7,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/stored-nlen",
+    "stream": 0,
+    "bytes": 15,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/fixed-lit-286",
+    "stream": 0,
+    "bytes": 8,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/fixed-dist-30",
+    "stream": 0,
+    "bytes": 9,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/fixed-dist-30-then-eof",
+    "stream": 0,
+    "bytes": 5,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/fixed-dist-31",
+    "stream": 0,
+    "bytes": 9,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/fixed-dist-31-then-eof",
+    "stream": 0,
+    "bytes": 5,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/distance-before-output",
+    "stream": 0,
+    "bytes": 8,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/distance-beyond-output",
+    "stream": 0,
+    "bytes": 9,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/distance-beyond-declared-window",
+    "stream": 0,
+    "bytes": 432,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "deflate/distance-within-declared-window",
+    "stream": 0,
+    "bytes": 432,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "deflate/hlit-287",
+    "stream": 0,
+    "bytes": 56,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/hdist-31",
+    "stream": 0,
+    "bytes": 56,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/code-length-code-oversubscribed",
+    "stream": 0,
+    "bytes": 56,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/code-length-code-incomplete",
+    "stream": 0,
+    "bytes": 56,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/repeat-with-no-previous",
+    "stream": 0,
+    "bytes": 56,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/repeat-overflows-count",
+    "stream": 0,
+    "bytes": 60,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/no-end-of-block-code",
+    "stream": 0,
+    "bytes": 168,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/incomplete-literal-code",
+    "stream": 0,
+    "bytes": 168,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/incomplete-distance-code",
+    "stream": 0,
+    "bytes": 169,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/oversubscribed-literal-code",
+    "stream": 0,
+    "bytes": 168,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/single-literal-code-len1",
+    "stream": 0,
+    "bytes": 153,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/unassigned-code-in-incomplete-literal-code",
+    "stream": 0,
+    "bytes": 145,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/length-with-no-distance-codes",
+    "stream": 0,
+    "bytes": 165,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/single-literal-code-other-bit-then-eof",
+    "stream": 0,
+    "bytes": 141,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/single-literal-code-live-prefix-eof",
+    "stream": 0,
+    "bytes": 145,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/length-with-no-distance-codes-then-eof",
+    "stream": 0,
+    "bytes": 157,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/single-distance-code-other-bit-then-eof",
+    "stream": 0,
+    "bytes": 158,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "deflate/single-distance-code-live-prefix-eof",
+    "stream": 0,
+    "bytes": 165,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "image/truncated-data",
+    "stream": 0,
+    "bytes": 1000,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "image/excess-data",
+    "stream": 0,
+    "bytes": 1006,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "image/excess-row",
+    "stream": 0,
+    "bytes": 1009,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "image/filter-type-5",
+    "stream": 0,
+    "bytes": 1005,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "image/filter-type-255",
+    "stream": 0,
+    "bytes": 1005,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "image/palette-index-out-of-range",
+    "stream": 0,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "image/palette-index-out-of-range-d2",
+    "stream": 0,
+    "bytes": 12,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "precedence/adler-before-filter",
+    "stream": 0,
+    "bytes": 1005,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "precedence/index-row0-before-filter-row1",
+    "stream": 0,
+    "bytes": 14,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct0-d1-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "interlace/ct6-d16-1x1",
+    "stream": 0,
+    "bytes": 17,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct3-d4-1x1",
+    "stream": 0,
+    "bytes": 10,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct0-d1-1x2",
+    "stream": 0,
+    "bytes": 12,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct6-d16-1x2",
+    "stream": 0,
+    "bytes": 27,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct3-d4-1x2",
+    "stream": 0,
+    "bytes": 12,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct0-d1-2x1",
+    "stream": 0,
+    "bytes": 12,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct6-d16-2x1",
+    "stream": 0,
+    "bytes": 27,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct3-d4-2x1",
+    "stream": 0,
+    "bytes": 12,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct0-d1-1x5",
+    "stream": 0,
+    "bytes": 18,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct6-d16-1x5",
+    "stream": 0,
+    "bytes": 56,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "interlace/ct3-d4-1x5",
+    "stream": 0,
+    "bytes": 18,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct0-d1-5x1",
+    "stream": 0,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct6-d16-5x1",
+    "stream": 0,
+    "bytes": 55,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "interlace/ct3-d4-5x1",
+    "stream": 0,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct0-d1-2x2",
+    "stream": 0,
+    "bytes": 14,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct6-d16-2x2",
+    "stream": 0,
+    "bytes": 44,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct3-d4-2x2",
+    "stream": 0,
+    "bytes": 14,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct0-d1-3x3",
+    "stream": 0,
+    "bytes": 20,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct6-d16-3x3",
+    "stream": 0,
+    "bytes": 89,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "interlace/ct3-d4-3x3",
+    "stream": 0,
+    "bytes": 21,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct0-d1-4x4",
+    "stream": 0,
+    "bytes": 22,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct6-d16-4x4",
+    "stream": 0,
+    "bytes": 146,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "interlace/ct3-d4-4x4",
+    "stream": 0,
+    "bytes": 24,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct0-d1-5x5",
+    "stream": 0,
+    "bytes": 27,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct6-d16-5x5",
+    "stream": 0,
+    "bytes": 222,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "interlace/ct3-d4-5x5",
+    "stream": 0,
+    "bytes": 36,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct0-d1-8x8",
+    "stream": 0,
+    "bytes": 38,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct6-d16-8x8",
+    "stream": 0,
+    "bytes": 538,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "interlace/ct3-d4-8x8",
+    "stream": 0,
+    "bytes": 59,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "interlace/ct0-d1-9x1",
+    "stream": 0,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct6-d16-9x1",
+    "stream": 0,
+    "bytes": 87,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "interlace/ct3-d4-9x1",
+    "stream": 0,
+    "bytes": 17,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct0-d1-1x9",
+    "stream": 0,
+    "bytes": 26,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/ct6-d16-1x9",
+    "stream": 0,
+    "bytes": 92,
+    "covered": false,
+    "reason": "awaits authored stored-block trace"
+  },
+  {
+    "name": "interlace/ct3-d4-1x9",
+    "stream": 0,
+    "bytes": 26,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "interlace/1x1-filter-bytes-for-empty-passes",
+    "stream": 0,
+    "bytes": 12,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "container/minimal-ok",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/first-chunk-not-ihdr",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/ihdr-length-12",
+    "stream": 0,
+    "bytes": 22,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "container/ihdr-crc",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/idat-crc",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/ancillary-crc",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/unknown-ancillary-crc",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/iend-crc",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/type-digit",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/type-space",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/missing-iend",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/missing-iend-after-text",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/trailing-byte",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/trailing-second-iend",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/iend-length-1",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/unknown-critical",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/reserved-bit-on-critical",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/unknown-ancillary-everywhere",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/reserved-bit-ancillary",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/duplicate-ihdr",
+    "stream": 0,
+    "bytes": 22,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "container/non-consecutive-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "container/idat-after-iend",
+    "stream": 0,
+    "bytes": 44,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "ihdr/width-0",
+    "stream": 0,
+    "bytes": 22,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "ihdr/height-0",
+    "stream": 0,
+    "bytes": 22,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "ihdr/width-2^31",
+    "stream": 0,
+    "bytes": 22,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "ihdr/depth-3",
+    "stream": 0,
+    "bytes": 22,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "ihdr/rgb-depth-4",
+    "stream": 0,
+    "bytes": 22,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "ihdr/palette-depth-16",
+    "stream": 0,
+    "bytes": 22,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "ihdr/ct-1",
+    "stream": 0,
+    "bytes": 22,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "ihdr/ct-5",
+    "stream": 0,
+    "bytes": 22,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "ihdr/ct-7",
+    "stream": 0,
+    "bytes": 22,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "ihdr/ga-depth-1",
+    "stream": 0,
+    "bytes": 22,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "ihdr/compression-1",
+    "stream": 0,
+    "bytes": 22,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "ihdr/filter-method-1",
+    "stream": 0,
+    "bytes": 22,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "ihdr/interlace-2",
+    "stream": 0,
+    "bytes": 22,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "plte/ok",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "plte/missing",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "plte/after-idat",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "plte/after-idat-rgb",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "plte/duplicate",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "plte/length-8",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "plte/length-0",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "plte/257-entries",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "plte/5-entries-depth-2",
+    "stream": 0,
+    "bytes": 12,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "plte/in-greyscale",
+    "stream": 0,
+    "bytes": 12,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "plte/in-grey-alpha",
+    "stream": 0,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "plte/suggested-palette-in-rgb",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "trns/before-plte",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "trns/before-plte-rgb",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "trns/after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "trns/duplicate",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "trns/palette-too-long",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "trns/palette-empty",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "trns/rgb-length-2",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "trns/grey-length-6",
+    "stream": 0,
+    "bytes": 12,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns/in-rgba",
+    "stream": 0,
+    "bytes": 11,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "trns/in-grey-alpha",
+    "stream": 0,
+    "bytes": 11,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "anc-ok/gAMA-4",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/cHRM-32",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/sRGB-1",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/iCCP-303",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/sBIT-3",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/cICP-4",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/mDCV-24",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/cLLI-8",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/bKGD-6",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/pHYs-9",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/sPLT-17",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/sPLT-15",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/eXIf-8",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/eXIf-4",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/tIME-7",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/tIME-7-after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/tEXt-11",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/tEXt-11-after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/tEXt-8",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/tEXt-8-after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/zTXt-22",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/zTXt-22-after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/iTXt-16",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/iTXt-16-after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/iTXt-34",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/iTXt-34-after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/srgb-and-iccp-both",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/many-text",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/ztxt-with-corrupt-zlib-not-inflated",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/gamma-0",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/gama-len-3",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/chrm-len-31",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/srgb-4",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/srgb-len-2",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/iccp-no-null",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/iccp-empty-name",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/iccp-method-1",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/iccp-name-80",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/iccp-leading-space",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/iccp-no-method",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/sbit-0",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/sbit-9",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/sbit-len-4",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/cicp-matrix-1",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/cicp-range-2",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/cicp-len-5",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/mdcv-len-23",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/clli-len-9",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/bkgd-len-2-rgb",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/bkgd-high-bits",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/phys-unit-2",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/phys-len-8",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/splt-depth-4",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/splt-len",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/splt-no-null",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/exif-bad-magic",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/exif-len-3",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/time-month-13",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/time-second-61",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/time-len-8",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/text-no-null",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/text-empty-keyword",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/text-keyword-nbsp",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/text-keyword-double-space",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/text-keyword-control",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/ztxt-method-1",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/ztxt-no-method",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/itxt-flag-2",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/itxt-compressed-method-1",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/itxt-missing-separators",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/itxt-uncompressed-method-ignored",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/hist-without-plte",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/hist-wrong-length",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/hist",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/bkgd-index-3-of-3",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/bkgd-index-2",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/bkgd-before-plte-palette",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-bad/sbit-palette-9",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "anc-ok/sbit-palette-8",
+    "stream": 0,
+    "bytes": 14,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/gAMA-after-plte",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/gAMA-after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/gAMA-duplicate",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/cHRM-after-plte",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/cHRM-after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/cHRM-duplicate",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/sRGB-after-plte",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/sRGB-after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/sRGB-duplicate",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/iCCP-after-plte",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/iCCP-after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/iCCP-duplicate",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/sBIT-after-plte",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/sBIT-after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/sBIT-duplicate",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/cICP-after-plte",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/cICP-after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/cICP-duplicate",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/mDCV-after-plte",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/mDCV-after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/mDCV-duplicate",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/cLLI-after-plte",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/cLLI-after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/cLLI-duplicate",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/pHYs-after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/eXIf-after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/sPLT-after-idat",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/pHYs-duplicate",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/eXIf-duplicate",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/tIME-duplicate",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/bKGD-duplicate",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/splt-twice",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "order/bkgd-hist-after-plte-before-idat-rgb",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "icc/present",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "icc/absent",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "icc/bad-adler",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "icc/structural-error-first",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "icc/still-ignores-icc-payload-errors",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "icc/empty-profile",
+    "stream": 0,
+    "bytes": 22,
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
+  },
+  {
+    "name": "apng/default-is-frame0-dispose-bg-blend-over",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/default-is-frame0-dispose-bg-blend-over",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/default-is-frame0-dispose-bg-blend-over",
+    "stream": 2,
+    "bytes": 14,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/still-is-default-image",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/still-is-default-image",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/still-is-default-image",
+    "stream": 2,
+    "bytes": 14,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/default-not-in-animation",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/default-not-in-animation",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/default-not-in-animation",
+    "stream": 2,
+    "bytes": 14,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/default-not-in-animation-still",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/default-not-in-animation-still",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/default-not-in-animation-still",
+    "stream": 2,
+    "bytes": 14,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/dispose-previous-first-frame-and-later",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/dispose-previous-first-frame-and-later",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/dispose-previous-first-frame-and-later",
+    "stream": 2,
+    "bytes": 14,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/blend-over-arithmetic",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/blend-over-arithmetic",
+    "stream": 1,
+    "bytes": 28,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/blend-over-arithmetic",
+    "stream": 2,
+    "bytes": 29,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/blend-over-transparent-source",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/blend-over-transparent-source",
+    "stream": 1,
+    "bytes": 37,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/blend-over-transparent-source",
+    "stream": 2,
+    "bytes": 36,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/blend-over-transparent-destination",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/blend-over-transparent-destination",
+    "stream": 1,
+    "bytes": 41,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/blend-over-transparent-destination",
+    "stream": 2,
+    "bytes": 52,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/blend-over-zero-result-alpha",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/blend-over-zero-result-alpha",
+    "stream": 1,
+    "bytes": 53,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/blend-over-zero-result-alpha",
+    "stream": 2,
+    "bytes": 53,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/interlaced-subframe",
+    "stream": 0,
+    "bytes": 33,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/interlaced-subframe",
+    "stream": 1,
+    "bytes": 36,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/static-file-as-frames",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/frame1-adler-error-ends",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/frame1-adler-error-ends",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/frame1-error-still-unaffected",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/frame1-error-still-unaffected",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/frame1-truncated-data-ends",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/frame1-truncated-data-ends",
+    "stream": 1,
+    "bytes": 17,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/empty-fdat-payload",
+    "stream": 0,
+    "bytes": 13,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/empty-fdat-payload",
+    "stream": 1,
+    "bytes": 0,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/empty-fdat-payload-still",
+    "stream": 0,
+    "bytes": 13,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/empty-fdat-payload-still",
+    "stream": 1,
+    "bytes": 0,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/empty-fdat-then-data",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/empty-fdat-then-data",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng/empty-fdat-then-data-still",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng/empty-fdat-then-data-still",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng-bad/actl-zero-frames",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/actl-zero-frames-still",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/actl-after-idat",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/actl-duplicate",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/actl-len-4",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fctl-without-actl",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fctl-without-actl-still",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fdat-without-actl",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/no-fctl-at-all",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fewer-frames-than-declared",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fewer-frames-than-declared",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng-bad/more-frames-than-declared",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/more-frames-than-declared",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng-bad/seq-starts-at-1",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/seq-starts-at-1",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng-bad/seq-gap",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/seq-gap",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng-bad/seq-gap-still",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/seq-gap-still",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng-bad/seq-fdat-repeats",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/seq-fdat-repeats",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng-bad/fdat-before-fctl",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fdat-for-idat-frame",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fdat-for-idat-frame",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng-bad/fdat-for-idat-frame-still",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fdat-for-idat-frame-still",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng-bad/fdat-before-idat",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fdat-before-idat",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng-bad/fdat-len-3",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fctl-no-fdat-then-iend",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fctl-no-fdat-then-fctl",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fctl-no-fdat-then-fctl",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng-bad/two-fctl-before-idat",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fctl-len-25",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fctl-width-0",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fctl-width-0",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng-bad/fctl-outside-x",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fctl-outside-x",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng-bad/fctl-outside-y",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fctl-outside-y",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng-bad/fctl-offset-overflow-u32",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fctl-offset-overflow-u32",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng-bad/fctl-dispose-3",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fctl-dispose-3",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng-bad/fctl-blend-2",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fctl-blend-2",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  },
+  {
+    "name": "apng-bad/default-fctl-smaller",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/default-fctl-offset",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fctl-crc",
+    "stream": 0,
+    "bytes": 23,
+    "covered": false,
+    "reason": "awaits authored fixed-match/literal trace"
+  },
+  {
+    "name": "apng-bad/fctl-crc",
+    "stream": 1,
+    "bytes": 16,
+    "covered": false,
+    "reason": "awaits authored trace; non-IDAT stream"
+  }
+]

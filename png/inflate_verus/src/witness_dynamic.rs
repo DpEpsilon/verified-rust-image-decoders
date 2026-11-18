@@ -1,4 +1,4 @@
-//! Independent literal code-length traces for the frozen dynamic witnesses.
+//! Independent literal and repeat code-length traces for frozen dynamic witnesses.
 use crate::{
     model as m,
     witnesses::{follow_word, wire_word},
@@ -65,6 +65,116 @@ pub(crate) proof fn expand_literals(z: Seq<u8>, code: Seq<u8>, values: Seq<u8>, 
     }
 }
 
+// Each trace entry authors a symbol, the consumed bit interval and the
+// independently expected expanded length interval. Extra bits are checked
+// against that interval, never used to construct the expected profile.
+pub(crate) open spec fn repeat_step(z: Seq<u8>, code: Seq<u8>, symbols: Seq<u8>, positions: Seq<nat>, offsets: Seq<nat>, values: Seq<u8>, j: int) -> bool {
+    let s = symbols[j] as int;
+    let a = offsets[j];
+    let b = offsets[j+1];
+    let end = (positions[j] + code[s]) as nat;
+    0 <= s <= 18 && code[s] > 0
+    && a < b <= values.len()
+    && end <= positions[j+1] <= 8*z.len()
+    && wire_word(z,positions[j],code[s] as nat) == m::cw(code,s).unwrap()
+    && if s < 16 {
+        b == a+1 && values[a as int] == s && positions[j+1] == end
+    } else {
+        let width = if s == 16 { 2nat } else if s == 17 { 3nat } else { 7nat };
+        let base = if s == 18 { 11nat } else { 3nat };
+        (s == 16 ==> a > 0)
+        && positions[j+1] == end+width
+        && b-a == base + m::field_value(z,end,width)
+        && values.subrange(a as int,b as int) == Seq::new((b-a) as nat,|i:int| if s == 16 { values[(a-1) as int] } else { 0u8 })
+    }
+}
+
+pub(crate) open spec fn repeat_trace(z: Seq<u8>, code: Seq<u8>, symbols: Seq<u8>, positions: Seq<nat>, offsets: Seq<nat>, values: Seq<u8>, a: nat, b: nat) -> bool
+    decreases b-a,
+{
+    if a >= b { true }
+    else if b == a+1 { repeat_step(z,code,symbols,positions,offsets,values,a as int) }
+    else {
+        let mid = (a+(b-a)/2) as nat;
+        repeat_trace(z,code,symbols,positions,offsets,values,a,mid)
+        && repeat_trace(z,code,symbols,positions,offsets,values,mid,b)
+    }
+}
+
+proof fn repeat_trace_at(z: Seq<u8>, code: Seq<u8>, symbols: Seq<u8>, positions: Seq<nat>, offsets: Seq<nat>, values: Seq<u8>, a: nat, b: nat, k: nat)
+    requires a <= k < b <= symbols.len(), repeat_trace(z,code,symbols,positions,offsets,values,a,b),
+    ensures repeat_step(z,code,symbols,positions,offsets,values,k as int),
+    decreases b-a,
+{
+    if b != a+1 {
+        let mid = (a+(b-a)/2) as nat;
+        if k < mid { repeat_trace_at(z,code,symbols,positions,offsets,values,a,mid,k); }
+        else { repeat_trace_at(z,code,symbols,positions,offsets,values,mid,b,k); }
+    }
+}
+
+// Partial traces compose with either another trace, finish_dynamic, or an
+// independently authored rejection at the first unconsumed symbol.
+pub(crate) proof fn expand_repeats(z: Seq<u8>, code: Seq<u8>, symbols: Seq<u8>, positions: Seq<nat>, offsets: Seq<nat>, values: Seq<u8>, nlen: nat, ndist: nat, k: nat)
+    requires m::dynamic_sizes_ok(nlen,ndist), values.len() <= nlen+ndist,
+        m::length_entries_ok(values), code.len() == crate::limits::NCL,
+        m::admissible(code,m::CodeKind::CodeLen,true),
+        positions.len() == symbols.len()+1, offsets.len() == symbols.len()+1,
+        offsets[symbols.len() as int] == values.len(),
+        k <= symbols.len(), offsets[k as int] <= values.len(), positions[k as int] <= 8*z.len(),
+        repeat_trace(z,code,symbols,positions,offsets,values,k,symbols.len()),
+    ensures m::MDynamicLengths(z,positions[k as int],code,values.take(offsets[k as int] as int),nlen,ndist,true)
+        == m::MDynamicLengths(z,positions[symbols.len() as int],code,values,nlen,ndist,true),
+    decreases symbols.len()-k,
+{
+    hide(m::MDec); hide(m::decode_prefix);
+    assert(m::length_entries_ok(values.take(offsets[k as int] as int)));
+    if k < symbols.len() {
+        repeat_trace_at(z,code,symbols,positions,offsets,values,k,symbols.len(),k);
+        // The suffix predicate follows by projection through the same balanced tree.
+        assert forall|j:int| k+1 <= j < symbols.len() implies repeat_step(z,code,symbols,positions,offsets,values,j) by {
+            repeat_trace_at(z,code,symbols,positions,offsets,values,k,symbols.len(),j as nat);
+        }
+        repeat_trace_from_steps(z,code,symbols,positions,offsets,values,k+1,symbols.len());
+        let a = offsets[k as int]; let b = offsets[(k+1) as int]; let s = symbols[k as int] as int;
+        follow_word(code,z,positions[k as int],s,0);
+        assert(m::MDec(code,z,positions[k as int]) == (m::Decoded::Symbol { symbol: s as nat, position: (positions[k as int]+code[s]) as nat })) by { reveal(m::MDec); }
+        expand_repeats(z,code,symbols,positions,offsets,values,nlen,ndist,k+1);
+        if s < 16 {
+            assert(values.take(a as int).push(s as u8) =~= values.take(b as int));
+        } else {
+            assert(values.take(a as int) + values.subrange(a as int,b as int) =~= values.take(b as int));
+            if s == 16 { assert(values.take(a as int).last() == values[(a-1) as int]); }
+        }
+        let prefix = values.take(a as int);
+        let next = values.take(b as int);
+        assert(prefix.len() == a && a < nlen+ndist);
+        assert(m::MDynamicLengths(z,positions[k as int],code,prefix,nlen,ndist,true)
+            == m::MDynamicLengths(z,positions[(k+1) as int],code,next,nlen,ndist,true)) by {
+            reveal(m::MDynamicLengths);
+            if s >= 16 {
+                let width = if s == 16 { 2nat } else if s == 17 { 3nat } else { 7nat };
+                let count = (if s == 18 { 11nat } else { 3nat }) + m::field_value(z,(positions[k as int]+code[s]) as nat,width);
+                assert(count == b-a);
+                assert(count <= nlen+ndist-prefix.len());
+                assert(prefix + Seq::new(count,|i:int| if s == 16 { prefix.last() } else { 0u8 }) == next);
+            }
+        }
+    } else { assert(values.take(offsets[k as int] as int) =~= values); }
+}
+
+proof fn repeat_trace_from_steps(z: Seq<u8>, code: Seq<u8>, symbols: Seq<u8>, positions: Seq<nat>, offsets: Seq<nat>, values: Seq<u8>, a: nat, b: nat)
+    requires a <= b <= symbols.len(), forall|j:int| a <= j < b ==> repeat_step(z,code,symbols,positions,offsets,values,j),
+    ensures repeat_trace(z,code,symbols,positions,offsets,values,a,b),
+    decreases b-a,
+{
+    if b > a+1 {
+        let mid = (a+(b-a)/2) as nat;
+        repeat_trace_from_steps(z,code,symbols,positions,offsets,values,a,mid);
+        repeat_trace_from_steps(z,code,symbols,positions,offsets,values,mid,b);
+    }
+}
+
 pub(crate) open spec fn cl_trace(z: Seq<u8>, p: nat, code: Seq<u8>, i: nat) -> Seq<u8>
     decreases 19-i,
 {
@@ -72,6 +182,21 @@ pub(crate) open spec fn cl_trace(z: Seq<u8>, p: nat, code: Seq<u8>, i: nat) -> S
         cl_trace(z,p+3,code.update(m::code_length_order()[i as int],m::field_value(z,p,3) as u8),i+1)
     }
 }
+pub(crate) proof fn cl_fields(z: Seq<u8>, p: nat, code: Seq<u8>, i: nat, nlen: nat, ndist: nat)
+    requires i <= 19, code.len() == 19, forall|s:int| 0 <= s < code.len() ==> code[s] <= 7,
+        p+3*(19-i) <= 8*z.len(), m::dynamic_sizes_ok(nlen,ndist),
+    ensures m::MDynamicCL(z,p,code,i,19,nlen,ndist,true) ==
+        m::MDynamicCL(z,(p+3*(19-i)) as nat,cl_trace(z,p,code,i),19,19,nlen,ndist,true),
+    decreases 19-i,
+{
+    assert(crate::limits::NCL == 19) by (compute);
+    if i < 19 {
+        m::lemma_field_bound(z,p,3);
+        assert(m::pow2(3) == 8) by (compute);
+        cl_fields(z,p+3,code.update(m::code_length_order()[i as int],m::field_value(z,p,3) as u8),i+1,nlen,ndist);
+    }
+}
+
 pub(crate) proof fn cl_bridge(z: Seq<u8>, p: nat, code: Seq<u8>, i: nat, nlen: nat, ndist: nat)
     requires i <= 19, code.len() == 19, forall|s: int| 0 <= s < code.len() ==> code[s] <= 7,
         p+3*(19-i) <= 8*z.len(), m::dynamic_sizes_ok(nlen,ndist),
@@ -222,6 +347,30 @@ pub(crate) proof fn eob_single_word()
 {
     profile_next(0,1); profile_counts(0,1,256);
     assert(m::msb_bits(0,1) == seq![false]) by (compute);
+}
+
+// Concrete non-frozen regression for all three successful repeat kinds.
+// Authored words are 11100, 1010/00, 1011/000, 1100/0000000;
+// they expand to four 3s followed by fourteen zeros.
+proof fn authored_three_repeat_kinds()
+    ensures m::MDynamicLengths(seq![167u8,104,12,0],0,
+        seq![4u8,5,5,5,4,4,4,4,4,4,4,4,4,5,5,5,4,4,4],Seq::empty(),257,1,true)
+        == m::MDynamicLengths(seq![167u8,104,12,0],29,
+        seq![4u8,5,5,5,4,4,4,4,4,4,4,4,4,5,5,5,4,4,4],Seq::new(18,|i:int|if i < 4 {3u8} else {0u8}),257,1,true),
+{
+    let z = seq![167u8,104,12,0];
+    let code = seq![4u8,5,5,5,4,4,4,4,4,4,4,4,4,5,5,5,4,4,4];
+    let values = Seq::new(18,|i:int|if i < 4 {3u8} else {0u8});
+    assert(crate::limits::NCL == 19) by (compute);
+    assert(crate::limits::NLIT_MAX == 286) by (compute);
+    assert(crate::limits::NDIST_MAX == 30) by (compute);
+    assert(crate::limits::CODE_SPACE == 32768) by (compute);
+    assert(m::Kraft(seq![4u8,5,5,5,4,4,4,4,4,4,4,4,4,5,5,5,4,4,4]) == 32768) by (compute);
+    assert(m::admissible(code,m::CodeKind::CodeLen,true));
+    assert(repeat_trace(seq![167u8,104,12,0],seq![4u8,5,5,5,4,4,4,4,4,4,4,4,4,5,5,5,4,4,4],
+        seq![3u8,16,17,18],seq![0nat,5,11,18,29],seq![0nat,1,4,7,18],Seq::new(18,|i:int|if i < 4 {3u8} else {0u8}),0,4)) by (compute);
+    expand_repeats(z,code,seq![3u8,16,17,18],seq![0nat,5,11,18,29],seq![0nat,1,4,7,18],values,257,1,0);
+    assert(values.take(0) =~= Seq::<u8>::empty());
 }
 
 } // verus!

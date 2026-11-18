@@ -1,0 +1,43 @@
+[
+  {
+    "function": "trailing_byte",
+    "records": [
+      "policy/zlib-tail/trailing-byte/strict",
+      "policy/zlib-tail/trailing-byte/recommended-beta"
+    ],
+    "segment_lengths": [
+      16
+    ]
+  },
+  {
+    "function": "second_stream",
+    "records": [
+      "policy/zlib-tail/second-stream/strict",
+      "policy/zlib-tail/second-stream/recommended-beta"
+    ],
+    "segment_lengths": [
+      30
+    ]
+  },
+  {
+    "function": "trailing_in_later_idat",
+    "records": [
+      "policy/zlib-tail/trailing-in-later-idat/strict",
+      "policy/zlib-tail/trailing-in-later-idat/recommended-beta"
+    ],
+    "segment_lengths": [
+      15,
+      1
+    ]
+  },
+  {
+    "function": "bad_adler_with_trailing_byte_stays_an_error",
+    "records": [
+      "policy/zlib-tail/bad-adler-with-trailing-byte-stays-an-error/strict",
+      "policy/zlib-tail/bad-adler-with-trailing-byte-stays-an-error/recommended-beta"
+    ],
+    "segment_lengths": [
+      16
+    ]
+  }
+]

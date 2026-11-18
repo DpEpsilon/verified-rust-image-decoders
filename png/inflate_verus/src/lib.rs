@@ -20,6 +20,8 @@ pub mod segments;
 #[cfg(verus_only)]
 mod witness_cases;
 #[cfg(verus_only)]
+mod witness_classes;
+#[cfg(verus_only)]
 mod witness_d4;
 #[cfg(verus_only)]
 mod witness_dynamic;
@@ -28,7 +30,17 @@ mod witness_dynamic_cases;
 #[cfg(verus_only)]
 mod witness_invalid_dynamic;
 #[cfg(verus_only)]
+mod witness_literal_class;
+#[cfg(verus_only)]
 mod witness_overlap;
+#[cfg(verus_only)]
+mod witness_policy;
+#[cfg(verus_only)]
+mod witness_policy_cases;
+#[cfg(verus_only)]
+mod witness_repeats;
+#[cfg(verus_only)]
+mod witness_single_literal;
 #[cfg(verus_only)]
 mod witness_window;
 #[cfg(verus_only)]
