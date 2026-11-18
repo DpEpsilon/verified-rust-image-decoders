@@ -7,13 +7,13 @@ at the end with their date and the artifact they concern. An entry marked PROPOS
 has not been applied: it takes effect only after the owner approves it, and the
 entry is then amended in place of a new one by appending an "Owner decision" line.
 
-## Index and status (as of 2026-11-17)
+## Index and status (as of 2026-11-18)
 
 | Erratum | Status |
 |---|---|
-| E1 | PROPOSED, awaiting council/owner decision |
+| E1 | APPROVED (2026-11-18) |
 
-## E1 — 2026-11-17: `inflate_verus` "no `alloc` dependency" (A-PNG-6) — PROPOSED, awaiting council/owner decision (not applied)
+## E1 — 2026-11-17: `inflate_verus` "no `alloc` dependency" (A-PNG-6) — APPROVED (2026-11-18)
 
 **Frozen text.** `THEOREMS.md:161` (A-PNG-6): "`inflate_verus` has no `alloc`
 dependency (build check, alloc-delta §9)". `PLAN.md:9` says the same of the
@@ -39,6 +39,8 @@ probes.
 built. Verus refuses that under `--no-cheating` in this sandbox (run 19:
 `--is-vstd is not allowed with --no-cheating`; `inflate_verus/runs/0019.log`).
 
-### E1 Status (2026-11-17)
+### E1 Status (2026-11-18)
 
-PROPOSED. Awaiting council/owner decision. Not applied; the frozen text stands.
+APPROVED (2026-11-18).
+
+Owner decision (2026-11-18): APPROVED. The verification configuration may use a ghost-only vstd dependency with the alloc feature; production and freestanding builds must remain allocator-free as checked by the instantiated-entry symbol probes.
