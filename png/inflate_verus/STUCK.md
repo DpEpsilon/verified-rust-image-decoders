@@ -1,4 +1,20 @@
-# Current checkpoint: actual dynamic-header parser complete
+# Current checkpoint: actual stored/compressed/block refinement complete
+
+2026-11-18. **Fresh final-source run 285: 236 verified, 0 errors.** Steps (2a) and (2b) are complete at the actual production helpers and full DEFLATE block loop under their explicit well-formedness/window preconditions. This is a clean handoff before step (2c), not a public inflate theorem. No current proof/tooling blocker exists. `/home/ws/projects/verified-decoders/png/inflate_verus/LEDGER.md` has the exact contracts, locations and evidence.
+
+The production chain in `/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs` now includes stored_block (:348) against MStoredBlock, match_copy (:838) against MCopy, compressed_step (:901) against MCompressedStep, compressed (:947) against MCompressed, one_block (:998) against MOneBlock and blocks (:1038) against MBlk. The actual run calls these helpers. The independent models in `/home/ws/projects/verified-decoders/png/inflate_verus/src/model.rs:1539–1700` use mathematical sequences, canonical MDec and arithmetic RFC bases/extras; they never import executable tables, buffers or ring_repr.
+
+The stored proof includes alignment, four ordered LEN/NLEN reads, complement and D5 payload composition. The compressed proof includes reserved literal/length 286/287 and distance 30/31, bases/extras, distance/output/window rejection before any emission or Full decision, the actual overlapping copy and maintained slice/ring/Adler representation. selected_window (:1085) proves declared-window versus Ignore for validated CINFO; the outer guard/caller composition remains open. blocks proves exact full BFINAL-loop effects and termination, and local work <=64*(consumed_bits+1)+2*newly_produced, without the +1 on success. Header construction is now <=48*consumed_bits on every outcome, separate from reader/decode work and retaining its <2,048 budget.
+
+Resume step (2c) at run (:1105): independent Inflate envelope, zlib header/check order, table/blocks caller preconditions, checksum alignment/BE32/Adler and exactly-full IgnoreTail; then entry (:1148), inflate_zlib_into (:1166) and inflate_zlib_measure (:1178). Public freshness must remain exactly wf plus pos()==0, with no index/counter resets. Public sink identity/caller-original-slice framing, returned Ghost per-call work counters and limits.rs caps_ok/global T1/T11/T12 remain open. Existing public runtime-u128 diagnostics were not changed or expanded. Do not call block-local L-WINDOW/L-RING preservation a complete public theorem.
+
+Runs 276–277 pass thirteen release tests and the adapter. Runs 279–280 pass all 1,181 vector streams in four layouts plus 10,000 generated streams and 10,000 corruptions, seeds 20/21: 33,544 public-entry pairs, zero unexpected differences. Runs 281–284 pass host/thumbv7m libraries/instantiated allocator probes, symbols, source/cap controls and twelve frozen hashes. Run 285 changes only an erased origin-bound assertion after those runtime gates. Runs 259 and 278 were cached green invocations without fresh verifier counts; neither is evidence for a new count. Next logged run is 286.
+
+Authored model-vector witnesses, all proof mutations and the matching pinned i686 verification replay remain open. No frozen counterexample/new erratum, trusted addition, solver-limit change, frozen edit, commit or surviving background job was introduced. No target directory was cleaned, deleted or repaired. Accepted verifier/vstd/rustc settings and E1 are unchanged. The ledger names the three sub-megabyte pre-edit backups and the precise remaining boundaries.
+
+---
+
+# Historical checkpoint: actual dynamic-header parser complete
 
 2026-11-17. **Fresh final-source run 252: 215 verified, 0 errors.** Assigned step (1) is complete; no current tooling/proof blocker exists. The actual Tables::dynamic now refines independent MDynamic on every outcome. This is not completion of layer 3 or a public inflate theorem. `/home/ws/projects/verified-decoders/png/inflate_verus/LEDGER.md` has the exact contracts, locations and runs.
 

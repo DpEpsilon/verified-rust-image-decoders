@@ -1,0 +1,135 @@
+command: ['cargo', 'build', '--release', '--lib', '--example', 'allocator_probe']
+warning: unused import: `C_SEG`
+ --> src/segments.rs:2:21
+  |
+2 | use crate::limits::{C_SEG, SEGMENT_BYTES_MAX};
+  |                     ^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `table_work`
+   --> src/huffman.rs:130:21
+    |
+130 |         let (built, table_work) = crate::canonical::build_tables(lengths,
+    |                     ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_table_work`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `live_work`
+   --> src/huffman.rs:152:13
+    |
+152 |         let live_work = crate::canonical::live_counts(Ghost(lengths@), &self.count, &mut self.live);
+    |             ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_live_work`
+
+warning: unused variable: `nlen`
+   --> src/inflate.rs:359:5
+    |
+359 |     nlen: usize, ndist: usize, w: &mut Work) -> (ret: (Result<(), E>, Ghost<nat>))
+    |     ^^^^ help: if this is intentional, prefix it with an underscore: `_nlen`
+
+warning: unused variable: `ndist`
+   --> src/inflate.rs:359:18
+    |
+359 |     nlen: usize, ndist: usize, w: &mut Work) -> (ret: (Result<(), E>, Ghost<nat>))
+    |                  ^^^^^ help: if this is intentional, prefix it with an underscore: `_ndist`
+
+warning: unused variable: `code_cost`
+   --> src/inflate.rs:619:27
+    |
+619 |         let (code_result, code_cost) = dynamic_code(&mut self.code, br, ncode, nlen, ndist, w);
+    |                           ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_code_cost`
+
+warning: unused variable: `length_cost`
+   --> src/inflate.rs:622:22
+    |
+622 |         let (result, length_cost) = self.dynamic_lengths(br, nlen, ndist, w);
+    |                      ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_length_cost`
+
+warning: field `observed` is never read
+   --> src/lib.rs:109:9
+    |
+107 | pub(crate) struct Work {
+    |                   ---- field in this struct
+108 |     pub core: u128,
+109 |     pub observed: Ghost<nat>,
+    |         ^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `bytes` is never read
+  --> src/adler.rs:63:16
+   |
+59 | pub(crate) struct Adler {
+   |                   ----- field in this struct
+...
+63 |     pub(crate) bytes: Ghost<Seq<u8>>,
+   |                ^^^^^
+
+warning: fields `origin_seg`, `origin_core`, `origin_rank`, `origin_count`, and `loop_work` are never read
+  --> src/bits.rs:37:16
+   |
+33 | pub(crate) struct Bits<'a, S: Segments> {
+   |                   ---- fields in this struct
+...
+37 |     pub(crate) origin_seg: Ghost<nat>,
+   |                ^^^^^^^^^^
+38 |     pub(crate) origin_core: Ghost<nat>,
+   |                ^^^^^^^^^^^
+39 |     pub(crate) origin_rank: Ghost<nat>,
+   |                ^^^^^^^^^^^
+40 |     pub(crate) origin_count: Ghost<nat>,
+   |                ^^^^^^^^^^^^
+41 |     pub(crate) loop_work: Ghost<nat>,
+   |                ^^^^^^^^^
+
+warning: fields `lengths`, `kind`, `single_accept`, and `ready` are never read
+  --> src/huffman.rs:18:16
+   |
+11 | pub(crate) struct Huffman {
+   |                   ------- fields in this struct
+...
+18 |     pub(crate) lengths: Ghost<Seq<u8>>,
+   |                ^^^^^^^
+19 |     pub(crate) kind: Ghost<Kind>,
+   |                ^^^^
+20 |     pub(crate) single_accept: Ghost<bool>,
+   |                ^^^^^^^^^^^^^
+21 |     pub(crate) ready: Ghost<bool>,
+   |                ^^^^^
+
+warning: fields `out` and `initial` are never read
+   --> src/inflate.rs:99:5
+    |
+ 94 | struct Output<'a> {
+    |        ------ fields in this struct
+...
+ 99 |     out: Ghost<Seq<u8>>,
+    |     ^^^
+100 |     initial: Ghost<Seq<u8>>,
+    |     ^^^^^^^
+
+warning: fields `header_construction` and `header_table_start` are never read
+   --> src/inflate.rs:267:5
+    |
+261 | struct Tables {
+    |        ------ fields in this struct
+...
+267 |     header_construction: Ghost<nat>,
+    |     ^^^^^^^^^^^^^^^^^^^
+268 |     header_table_start: Ghost<Option<nat>>,
+    |     ^^^^^^^^^^^^^^^^^^
+
+warning: fields `seg_work` and `read_work` are never read
+   --> src/segments.rs:99:5
+    |
+ 92 | pub struct SegmentSlices<'a> {
+    |            ------------- fields in this struct
+...
+ 99 |     seg_work: Ghost<nat>,
+    |     ^^^^^^^^
+100 |     read_work: Ghost<nat>,
+    |     ^^^^^^^^^
+
+warning: `inflate_verus` (lib) generated 14 warnings (run `cargo fix --lib -p inflate_verus` to apply 7 suggestions)
+   Compiling inflate_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus)
+    Finished `release` profile [optimized] target(s) in 0.48s

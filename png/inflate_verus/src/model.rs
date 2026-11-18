@@ -1534,4 +1534,168 @@ pub proof fn lemma_header_coding_cost(large: nat, large_entries: nat, other_entr
     }
 }
 
+/// P10.2 stored block after BTYPE, including padding and ordered LEN/NLEN reads.
+/// The complement test is mathematical addition of the two little-endian words.
+pub open spec fn MStoredBlock(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat) -> StoredEffect {
+    let cursor = (position + 7) / 8;
+    if position > 8 * z.len() || out.len() > limit { StoredEffect::OutsideDomain }
+    else if cursor + 4 > z.len() {
+        StoredEffect::Error { error: InflateFault::TruncatedZlib, out, position: 8 * z.len() }
+    } else {
+        let len = z[cursor as int] as nat + 256 * z[(cursor + 1) as int] as nat;
+        let nlen = z[(cursor + 2) as int] as nat + 256 * z[(cursor + 3) as int] as nat;
+        if len + nlen != u16::MAX {
+            StoredEffect::Error { error: InflateFault::StoredLengthMismatch, out, position: 8 * (cursor + 4) }
+        } else { MStoredPayload(z, cursor + 4, out, limit, len) }
+    }
+}
+
+/// RFC 1951 length and distance groups, defined arithmetically rather than by
+/// the executable lookup arrays. Outside the decoded symbol domains they are 0.
+pub open spec fn length_extra(symbol: nat) -> nat {
+    if symbol < 265 || symbol >= 285 { 0 } else { (symbol - 261) as nat / 4 }
+}
+pub open spec fn length_base(symbol: nat) -> nat {
+    if symbol < 257 || symbol > 285 { 0 }
+    else if symbol < 265 { (symbol - 254) as nat }
+    else if symbol == 285 { crate::limits::LEN_MAX as nat }
+    else { let e = length_extra(symbol);
+        3 + pow2(e + 2) + (symbol - 261 - 4 * e) as nat * pow2(e) }
+}
+pub open spec fn distance_extra(symbol: nat) -> nat {
+    if symbol < 4 || symbol >= crate::limits::NDIST_MAX { 0 } else { (symbol / 2 - 1) as nat }
+}
+pub open spec fn distance_base(symbol: nat) -> nat {
+    if symbol >= crate::limits::NDIST_MAX { 0 }
+    else if symbol < 4 { symbol + 1 }
+    else { let e = distance_extra(symbol); 1 + pow2(e + 1) + (symbol % 2) * pow2(e) }
+}
+
+pub enum SymbolEffect {
+    Next { out: Seq<u8>, position: nat },
+    End { out: Seq<u8>, position: nat },
+    Full { out: Seq<u8> },
+    Error { error: InflateFault, out: Seq<u8>, position: nat },
+    OutsideDomain,
+}
+
+/// One match after a literal/length symbol: extras, distance code, extras, then
+/// the output/window check in MCopy, before any emission or limit decision.
+pub open spec fn MMatch(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+    window: nat, dist: Seq<u8>, symbol: nat) -> SymbolEffect {
+    let le = length_extra(symbol);
+    if symbol < 257 || symbol > 285 || position > 8 * z.len()
+        || out.len() > limit || window == 0 || window > crate::limits::WINDOW_MAX {
+        SymbolEffect::OutsideDomain
+    } else if position + le > 8 * z.len() {
+        SymbolEffect::Error { error: InflateFault::TruncatedZlib, out, position: 8 * z.len() }
+    } else {
+        let count = length_base(symbol) + field_value(z, position, le);
+        match MDec(dist, z, position + le) {
+            Decoded::OutsideDomain => SymbolEffect::OutsideDomain,
+            Decoded::InvalidSymbol { position: end } => SymbolEffect::Error { error: InflateFault::InvalidSymbol, out, position: end },
+            Decoded::TruncatedZlib { position: end } => SymbolEffect::Error { error: InflateFault::TruncatedZlib, out, position: end },
+            Decoded::Symbol { symbol: ds, position: after_code } => {
+                if ds >= crate::limits::NDIST_MAX {
+                    SymbolEffect::Error { error: InflateFault::InvalidSymbol, out, position: after_code }
+                } else {
+                    let de = distance_extra(ds);
+                    if after_code + de > 8 * z.len() {
+                        SymbolEffect::Error { error: InflateFault::TruncatedZlib, out, position: 8 * z.len() }
+                    } else {
+                        let distance = distance_base(ds) + field_value(z, after_code, de);
+                        match MCopy(out, limit, window, distance, count) {
+                            OutputEffect::Next { out: extended } => SymbolEffect::Next { out: extended, position: after_code + de },
+                            OutputEffect::Full { out: extended } => SymbolEffect::Full { out: extended },
+                            OutputEffect::Error { error, out: unchanged } => SymbolEffect::Error { error, out: unchanged, position: after_code + de },
+                            OutputEffect::OutsideDomain => SymbolEffect::OutsideDomain,
+                        }
+                    }
+                }
+            },
+        }
+    }
+}
+
+pub open spec fn MCompressedStep(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+    window: nat, lit: Seq<u8>, dist: Seq<u8>) -> SymbolEffect {
+    if position > 8 * z.len() || out.len() > limit || window == 0 || window > crate::limits::WINDOW_MAX {
+        SymbolEffect::OutsideDomain
+    } else { match MDec(lit, z, position) {
+        Decoded::OutsideDomain => SymbolEffect::OutsideDomain,
+        Decoded::InvalidSymbol { position: end } => SymbolEffect::Error { error: InflateFault::InvalidSymbol, out, position: end },
+        Decoded::TruncatedZlib { position: end } => SymbolEffect::Error { error: InflateFault::TruncatedZlib, out, position: end },
+        Decoded::Symbol { symbol, position: end } => {
+            if symbol < 256 { match MEmit(out, limit, symbol as u8) {
+                OutputEffect::Next { out: extended } => SymbolEffect::Next { out: extended, position: end },
+                OutputEffect::Full { out: unchanged } => SymbolEffect::Full { out: unchanged },
+                _ => SymbolEffect::OutsideDomain,
+            } } else if symbol == 256 { SymbolEffect::End { out, position: end } }
+            else if symbol > 285 { SymbolEffect::Error { error: InflateFault::InvalidSymbol, out, position: end } }
+            else { MMatch(z, end, out, limit, window, dist, symbol) }
+        },
+    } }
+}
+
+pub open spec fn MCompressed(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+    window: nat, lit: Seq<u8>, dist: Seq<u8>) -> StoredEffect
+    decreases 8 * z.len() - position,
+{
+    match MCompressedStep(z, position, out, limit, window, lit, dist) {
+        SymbolEffect::Next { out: extended, position: end } => {
+            if end <= position || end > 8 * z.len() { StoredEffect::OutsideDomain }
+            else { MCompressed(z, end, extended, limit, window, lit, dist) }
+        },
+        SymbolEffect::End { out: extended, position: end } => StoredEffect::End { out: extended, position: end },
+        SymbolEffect::Full { out: extended } => StoredEffect::Full { out: extended },
+        SymbolEffect::Error { error, out: extended, position: end } => StoredEffect::Error { error, out: extended, position: end },
+        SymbolEffect::OutsideDomain => StoredEffect::OutsideDomain,
+    }
+}
+
+/// One complete block, including its header and independent table selection.
+/// The bool is BFINAL; only a successful End continuation consults it.
+pub open spec fn MOneBlock(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+    window: nat, single_accept: bool) -> (bool, StoredEffect) {
+    if position > 8 * z.len() || out.len() > limit || window == 0 || window > crate::limits::WINDOW_MAX {
+        (false, StoredEffect::OutsideDomain)
+    } else if position + 3 > 8 * z.len() {
+        (false, StoredEffect::Error { error: InflateFault::TruncatedZlib, out, position: 8 * z.len() })
+    } else {
+        let last = field_value(z, position, 1) != 0;
+        let typ = field_value(z, position + 1, 2);
+        let effect = if typ == 0 { MStoredBlock(z, position + 3, out, limit) }
+        else if typ == 1 { MCompressed(z, position + 3, out, limit, window, fixed_lit_lengths(), fixed_dist_lengths()) }
+        else if typ == 2 { match MDynamic(z, position + 3, single_accept) {
+            DynamicHeader::Tables { lit, dist, position: end } => MCompressed(z, end, out, limit, window, lit, dist),
+            DynamicHeader::Error { error, position: end } => StoredEffect::Error { error, out, position: end },
+            DynamicHeader::OutsideDomain => StoredEffect::OutsideDomain,
+        } } else { StoredEffect::Error { error: InflateFault::InvalidBlockType, out, position: position + 3 } };
+        (last, effect)
+    }
+}
+
+/// P10 block loop: every continuation advances the mathematical bit position.
+pub open spec fn MBlk(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+    window: nat, single_accept: bool) -> StoredEffect
+    decreases 8 * z.len() - position,
+{
+    let (last, effect) = MOneBlock(z, position, out, limit, window, single_accept);
+    match effect {
+        StoredEffect::End { out: extended, position: end } => {
+            if end <= position || end > 8 * z.len() { StoredEffect::OutsideDomain }
+            else if last { effect }
+            else { MBlk(z, end, extended, limit, window, single_accept) }
+        },
+        _ => effect,
+    }
+}
+
+/// P9/P10 admissible match distance for the two implemented window policies.
+pub open spec fn window_size(cinfo: nat, enforce: bool) -> nat {
+    if cinfo > 7 { 0 }
+    else if enforce { pow2(cinfo + 8) }
+    else { crate::limits::WINDOW_MAX as nat }
+}
+
 } // verus!

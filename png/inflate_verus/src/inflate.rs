@@ -9,6 +9,7 @@ use crate::{
 };
 use vstd::prelude::*;
 
+verus! {
 const LEN_BASE: [u16; 29] = [
     3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35, 43, 51, 59, 67, 83, 99, 115, 131,
     163, 195, 227, 258,
@@ -24,7 +25,91 @@ const DIST_EXTRA: [u8; NDIST_MAX] = [
     0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13,
     13,
 ];
-verus! {
+proof fn lemma_length_tables(index: int)
+    requires 0 <= index < 29,
+    ensures LEN_BASE@[index] == m::length_base((index + 257) as nat),
+        LEN_EXTRA@[index] == m::length_extra((index + 257) as nat),
+        LEN_EXTRA@[index] <= 5, 3 <= LEN_BASE@[index],
+        LEN_BASE@[index] + m::pow2(LEN_EXTRA@[index] as nat) - 1 <= LEN_MAX,
+{
+    assert(LEN_BASE@ == seq![3u16, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258]);
+    assert(LEN_EXTRA@ == seq![0u8, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0]);
+    reveal_with_fuel(m::pow2, 16);
+    assert(m::pow2(0) == 1 && m::pow2(1) == 2 && m::pow2(2) == 4 && m::pow2(3) == 8
+        && m::pow2(4) == 16 && m::pow2(5) == 32 && m::pow2(6) == 64 && m::pow2(7) == 128) by (compute);
+    assert(m::length_base(257) == 3 && m::length_base(258) == 4 && m::length_base(259) == 5
+        && m::length_base(260) == 6 && m::length_base(261) == 7 && m::length_base(262) == 8
+        && m::length_base(263) == 9 && m::length_base(264) == 10 && m::length_base(265) == 11
+        && m::length_base(266) == 13 && m::length_base(267) == 15 && m::length_base(268) == 17
+        && m::length_base(269) == 19 && m::length_base(270) == 23 && m::length_base(271) == 27
+        && m::length_base(272) == 31 && m::length_base(273) == 35 && m::length_base(274) == 43
+        && m::length_base(275) == 51 && m::length_base(276) == 59 && m::length_base(277) == 67
+        && m::length_base(278) == 83 && m::length_base(279) == 99 && m::length_base(280) == 115
+        && m::length_base(281) == 131 && m::length_base(282) == 163 && m::length_base(283) == 195
+        && m::length_base(284) == 227 && m::length_base(285) == LEN_MAX) by (compute);
+    if index == 0 {} else if index == 1 {} else if index == 2 {} else if index == 3 {}
+    else if index == 4 {} else if index == 5 {} else if index == 6 {} else if index == 7 {}
+    else if index == 8 {} else if index == 9 {} else if index == 10 {} else if index == 11 {}
+    else if index == 12 {} else if index == 13 {} else if index == 14 {} else if index == 15 {}
+    else if index == 16 {} else if index == 17 {} else if index == 18 {} else if index == 19 {}
+    else if index == 20 {} else if index == 21 {} else if index == 22 {} else if index == 23 {}
+    else if index == 24 {} else if index == 25 {} else if index == 26 {} else if index == 27 {}
+    else {}
+}
+
+proof fn lemma_distance_tables(symbol: int)
+    requires 0 <= symbol < NDIST_MAX,
+    ensures DIST_BASE@[symbol] == m::distance_base(symbol as nat),
+        DIST_EXTRA@[symbol] == m::distance_extra(symbol as nat),
+        DIST_EXTRA@[symbol] <= 13, 1 <= DIST_BASE@[symbol],
+        DIST_BASE@[symbol] + m::pow2(DIST_EXTRA@[symbol] as nat) - 1 <= WINDOW_MAX,
+{
+    assert(DIST_BASE@ == seq![1u16, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193, 257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577]);
+    assert(DIST_EXTRA@ == seq![0u8, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13]);
+    reveal_with_fuel(m::pow2, 16);
+    assert(m::pow2(0) == 1 && m::pow2(1) == 2 && m::pow2(2) == 4 && m::pow2(3) == 8
+        && m::pow2(4) == 16 && m::pow2(5) == 32 && m::pow2(6) == 64 && m::pow2(7) == 128
+        && m::pow2(8) == 256 && m::pow2(9) == 512 && m::pow2(10) == 1024
+        && m::pow2(11) == 2048 && m::pow2(12) == 4096 && m::pow2(13) == 8192
+        && m::pow2(14) == 16384) by (compute);
+    assert(m::distance_base(0) == 1 && m::distance_base(1) == 2 && m::distance_base(2) == 3
+        && m::distance_base(3) == 4 && m::distance_base(4) == 5 && m::distance_base(5) == 7
+        && m::distance_base(6) == 9 && m::distance_base(7) == 13 && m::distance_base(8) == 17
+        && m::distance_base(9) == 25 && m::distance_base(10) == 33 && m::distance_base(11) == 49
+        && m::distance_base(12) == 65 && m::distance_base(13) == 97 && m::distance_base(14) == 129
+        && m::distance_base(15) == 193 && m::distance_base(16) == 257 && m::distance_base(17) == 385
+        && m::distance_base(18) == 513 && m::distance_base(19) == 769 && m::distance_base(20) == 1025
+        && m::distance_base(21) == 1537 && m::distance_base(22) == 2049 && m::distance_base(23) == 3073
+        && m::distance_base(24) == 4097 && m::distance_base(25) == 6145 && m::distance_base(26) == 8193
+        && m::distance_base(27) == 12289 && m::distance_base(28) == 16385 && m::distance_base(29) == 24577) by (compute);
+    if symbol < 4 { assert(DIST_EXTRA@[symbol] == 0); }
+    else if symbol < 6 { assert(DIST_EXTRA@[symbol] == 1); }
+    else if symbol < 8 { assert(DIST_EXTRA@[symbol] == 2); }
+    else if symbol < 10 { assert(DIST_EXTRA@[symbol] == 3); }
+    else if symbol < 12 { assert(DIST_EXTRA@[symbol] == 4); }
+    else if symbol < 14 { assert(DIST_EXTRA@[symbol] == 5); }
+    else if symbol < 16 { assert(DIST_EXTRA@[symbol] == 6); }
+    else if symbol < 18 { assert(DIST_EXTRA@[symbol] == 7); }
+    else if symbol < 20 { assert(DIST_EXTRA@[symbol] == 8); }
+    else if symbol < 22 { assert(DIST_EXTRA@[symbol] == 9); }
+    else if symbol < 24 { assert(DIST_EXTRA@[symbol] == 10); }
+    else if symbol < 26 { assert(DIST_EXTRA@[symbol] == 11); }
+    else if symbol < 28 { assert(DIST_EXTRA@[symbol] == 12); }
+    else { assert(DIST_EXTRA@[symbol] == 13); }
+    if symbol == 0 {} else if symbol == 1 {} else if symbol == 2 {} else if symbol == 3 {}
+    else if symbol == 4 {} else if symbol == 5 {} else if symbol == 6 {} else if symbol == 7 {}
+    else if symbol == 8 {} else if symbol == 9 {} else if symbol == 10 {} else if symbol == 11 {}
+    else if symbol == 12 {} else if symbol == 13 {} else if symbol == 14 {} else if symbol == 15 {}
+    else if symbol == 16 {} else if symbol == 17 {} else if symbol == 18 {} else if symbol == 19 {}
+    else if symbol == 20 {} else if symbol == 21 {} else if symbol == 22 {} else if symbol == 23 {}
+    else if symbol == 24 {} else if symbol == 25 {} else if symbol == 26 {} else if symbol == 27 {}
+    else if symbol == 28 {} else {}
+    assert(WINDOW_MAX == 32768) by (compute);
+    assert(DIST_EXTRA@[symbol] <= 13);
+    assert(DIST_BASE@[symbol] <= 24577);
+    m::lemma_pow2_monotone(DIST_EXTRA@[symbol] as nat, 13);
+}
+
 const CL_ORDER: [usize; NCL] = [
     16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15,
 ];
@@ -192,8 +277,8 @@ closed spec fn stored_eq(effect: m::StoredEffect, result: Result<(), Status>, ou
     match effect {
         m::StoredEffect::End { out: expected, position: end } => result.is_ok() && out == expected && position == end,
         m::StoredEffect::Full { out: expected } => result == Err(Status::Full) && out == expected,
-        m::StoredEffect::Error { error, out: expected, position: end } => error == m::InflateFault::TruncatedZlib
-            && result == Err(Status::Err(E::TruncatedZlib)) && out == expected && position == end,
+        m::StoredEffect::Error { error, out: expected, position: end } => out == expected && position == end
+            && match result { Err(Status::Err(e)) => fault_eq(error, e), _ => false },
         m::StoredEffect::OutsideDomain => false,
     }
 }
@@ -206,7 +291,10 @@ fn stored_payload<S: Segments>(br: &mut Bits<'_, S>, output: &mut Output<'_>, co
     ensures final(br).wf(), final(br).remaining == 0, final(br).concat() == old(br).concat(),
         final(output).wf(), final(output).limit == old(output).limit,
         final(output).initial == old(output).initial, final(w).wf(),
+        old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
+        old(output).produced <= final(output).produced,
         old(w).observed@ <= final(w).observed@ <= old(w).observed@ + 2 * count,
+        final(w).observed@ <= old(w).observed@ + 2 * (final(output).produced - old(output).produced + 1),
         stored_eq(m::MStoredPayload(old(br).concat(), old(br).position() / 8,
             old(output).out@, old(output).limit as nat, count as nat), r, final(output).out@, final(br).position()),
 {
@@ -224,8 +312,10 @@ fn stored_payload<S: Segments>(br: &mut Bits<'_, S>, output: &mut Output<'_>, co
             br.wf(), br.remaining == 0, br.concat() == z, z == old(br).concat(),
             start == old(br).position() / 8, start <= z.len(),
             br.position() == 8 * (start + count - remaining), br.position() <= 8 * z.len(),
+            br.position() >= old(br).position(),
             output.wf(), output.out@.len() <= limit, output.limit == limit, limit == old(output).limit,
             original == old(output).out@, output.initial == old(output).initial,
+            output.produced == old(output).produced + count - remaining,
             w.wf(), old(w).observed@ <= w.observed@,
             w.observed@ == old(w).observed@ + 2 * (count - remaining),
             remaining <= count,
@@ -254,6 +344,43 @@ fn stored_payload<S: Segments>(br: &mut Bits<'_, S>, output: &mut Output<'_>, co
     Ok(())
 }
 
+/// The production stored header, followed by the same verified payload loop.
+fn stored_block<S: Segments>(br: &mut Bits<'_, S>, output: &mut Output<'_>, w: &mut Work)
+    -> (r: Result<(), Status>)
+    requires old(br).wf(), old(output).wf(), old(w).wf(),
+    ensures final(br).wf(), final(br).remaining == 0, final(br).concat() == old(br).concat(),
+        old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
+        final(output).wf(), final(output).limit == old(output).limit,
+        final(output).initial == old(output).initial, old(output).produced <= final(output).produced,
+        final(w).wf(), old(w).observed@ <= final(w).observed@,
+        final(w).observed@ <= old(w).observed@ + 4 + 2 * (final(output).produced - old(output).produced + 1),
+        stored_eq(m::MStoredBlock(old(br).concat(), old(br).position(), old(output).out@,
+            old(output).limit as nat), r, final(output).out@, final(br).position()),
+{
+    hide(Output::wf);
+    hide(m::MStoredPayload);
+    let ghost z = br.concat();
+    let ghost start = br.position();
+    proof { br.lemma_bounds(); output.lemma_observation(); }
+    br.align();
+    let ghost cursor = br.position() / 8;
+    let lo = match br.byte(w) { Ok(b) => b as u16, Err(e) => return Err(Status::Err(e)), };
+    let hi = match br.byte(w) { Ok(b) => b as u16, Err(e) => return Err(Status::Err(e)), };
+    let nlo = match br.byte(w) { Ok(b) => b as u16, Err(e) => return Err(Status::Err(e)), };
+    let nhi = match br.byte(w) { Ok(b) => b as u16, Err(e) => return Err(Status::Err(e)), };
+    let len = lo | hi << 8;
+    let nlen = nlo | nhi << 8;
+    proof {
+        assert(len as int == lo as int + 256 * hi as int) by (bit_vector)
+            requires lo <= 255, hi <= 255, len == lo | hi << 8;
+        assert(nlen as int == nlo as int + 256 * nhi as int) by (bit_vector)
+            requires nlo <= 255, nhi <= 255, nlen == nlo | nhi << 8;
+        assert((len == !nlen) == (len as int + nlen as int == u16::MAX)) by (bit_vector);
+    }
+    if len != !nlen { return Err(Status::Err(E::StoredLengthMismatch)); }
+    stored_payload(br, output, len, w)
+}
+
 } // verus!
 
 verus! {
@@ -271,6 +398,10 @@ impl Tables {
     closed spec fn fixed_wf(&self) -> bool {
         self.fixed_lit.wf() && self.fixed_lit.ready@ && self.fixed_lit.lengths@ == m::fixed_lit_lengths()
         && self.fixed_dist.wf() && self.fixed_dist.ready@ && self.fixed_dist.lengths@ == m::fixed_dist_lengths()
+    }
+
+    closed spec fn wf(&self) -> bool {
+        self.fixed_wf() && self.lit.wf() && self.dist.wf() && self.code.wf()
     }
 
     fn new(w: &mut Work) -> (r: Result<Self, E>)
@@ -468,6 +599,7 @@ impl Tables {
             ret.0.is_ok() ==> final(self).header_table_start@.is_some(),
             final(self).lit.wf(), final(self).dist.wf(),
             ret.1@ <= DYNAMIC_LENGTHS + 4 * (nlen + ndist) + 2 * (CANON_FIXED_STEPS + MAX_CODE_BITS + 1),
+            final(self).header_table_start@.is_none() ==> ret.1@ <= 3 * DYNAMIC_LENGTHS,
             old(w).observed@ <= final(w).observed@ <= old(w).observed@ + ret.1@ + 3 * (final(br).position() - old(br).position() + 1),
             ret.0.is_ok() ==> final(self).lit.ready@ && final(self).dist.ready@
                 && final(self).lit.kind@ == Kind::LitLen && final(self).dist.kind@ == Kind::Dist
@@ -592,6 +724,7 @@ impl Tables {
             final(self).fixed_lit == old(self).fixed_lit, final(self).fixed_dist == old(self).fixed_dist,
             final(self).code.wf(), final(self).lit.wf(), final(self).dist.wf(),
             final(self).header_construction@ < 2048,
+            final(self).header_construction@ <= 48 * (final(br).position() - old(br).position()),
             final(self).header_table_start@.is_some() ==> final(self).header_table_start@ == Some(final(br).position())
                 && final(br).position() >= old(br).position() + 42,
             r.is_ok() ==> final(self).header_table_start@.is_some(),
@@ -635,11 +768,13 @@ fn read_block_header<S: Segments>(tables: &mut Tables, br: &mut Bits<'_, S>, w: 
         final(tables).fixed_lit == old(tables).fixed_lit, final(tables).fixed_dist == old(tables).fixed_dist,
         final(tables).code.wf(), final(tables).lit.wf(), final(tables).dist.wf(),
         final(tables).header_construction@ < 2048,
+        final(tables).header_construction@ <= 48 * (final(br).position() - old(br).position()),
         final(tables).header_table_start@.is_some() ==>
             final(tables).header_table_start@ == Some(final(br).position())
             && final(br).position() >= old(br).position() + 45,
         old(w).observed@ <= final(w).observed@ <= old(w).observed@ + final(tables).header_construction@
             + 3 * (final(br).position() - old(br).position() + 1),
+        r.is_ok() ==> old(br).position() + 3 <= final(br).position(),
         match r {
             Ok((last, typ)) => last == m::field_value(old(br).concat(), old(br).position(), 1)
                 && typ == m::field_value(old(br).concat(), old(br).position() + 1, 2) && typ <= 2
@@ -671,48 +806,301 @@ fn read_block_header<S: Segments>(tables: &mut Tables, br: &mut Bits<'_, S>, w: 
 
 } // verus!
 
-fn compressed<S: Segments>(
-    br: &mut Bits<'_, S>,
-    output: &mut Output<'_>,
-    lit: &Huffman,
-    dist: &Huffman,
-    window: u64,
-    w: &mut Work,
-) -> Result<(), Status> {
-    loop {
+verus! {
+
+closed spec fn fault_eq(error: m::InflateFault, e: E) -> bool {
+    match error {
+        m::InflateFault::TruncatedZlib => e == E::TruncatedZlib,
+        m::InflateFault::InvalidZlibHeader => e == E::InvalidZlibHeader,
+        m::InflateFault::UnsupportedZlibMethod => e == E::UnsupportedZlibMethod,
+        m::InflateFault::ZlibPresetDictionary => e == E::ZlibPresetDictionary,
+        m::InflateFault::InvalidBlockType => e == E::InvalidBlockType,
+        m::InflateFault::StoredLengthMismatch => e == E::StoredLengthMismatch,
+        m::InflateFault::InvalidCodeLengths => e == E::InvalidCodeLengths,
+        m::InflateFault::InvalidSymbol => e == E::InvalidSymbol,
+        m::InflateFault::DistanceTooFar => e == E::DistanceTooFar,
+        m::InflateFault::AdlerMismatch => e == E::AdlerMismatch,
+        m::InflateFault::TrailingZlibData => e == E::TrailingZlibData,
+    }
+}
+
+closed spec fn copy_eq(effect: m::OutputEffect, result: Result<(), Status>, out: Seq<u8>) -> bool {
+    match effect {
+        m::OutputEffect::Next { out: expected } => result.is_ok() && out == expected,
+        m::OutputEffect::Full { out: expected } => result == Err(Status::Full) && out == expected,
+        m::OutputEffect::Error { error, out: expected } => out == expected
+            && match result { Err(Status::Err(e)) => fault_eq(error, e), _ => false },
+        m::OutputEffect::OutsideDomain => false,
+    }
+}
+
+/// Actual distance guards and overlapping-copy loop, shared by both sinks.
+fn match_copy(output: &mut Output<'_>, window: u64, distance: u64, length: u32, w: &mut Work)
+    -> (r: Result<(), Status>)
+    requires old(output).wf(), old(w).wf(), 1 <= window <= WINDOW_MAX,
+        1 <= distance <= WINDOW_MAX, 3 <= length <= LEN_MAX,
+    ensures final(output).wf(), final(output).limit == old(output).limit,
+        final(output).initial == old(output).initial, old(output).produced <= final(output).produced,
+        final(w).wf(), old(w).observed@ <= final(w).observed@,
+        final(w).observed@ <= old(w).observed@ + final(output).produced - old(output).produced + 1,
+        r.is_ok() ==> final(w).observed@ == old(w).observed@ + length,
+        copy_eq(m::MCopy(old(output).out@, old(output).limit as nat, window as nat, distance as nat,
+            length as nat), r, final(output).out@),
+{
+    hide(Output::wf);
+    hide(m::copy_distance);
+    let ghost original = output.out@;
+    let ghost limit = output.limit;
+    proof { output.lemma_observation(); }
+    if distance > output.produced || distance > window { return Err(Status::Err(E::DistanceTooFar)); }
+    proof { reveal(m::copy_distance); assert(m::copy_distance(original, distance as nat, 0) == original); }
+    let mut j = 0u32;
+    while j < length
+        invariant output.wf(), output.limit == limit, limit == old(output).limit,
+            original == old(output).out@, output.initial == old(output).initial,
+            1 <= distance <= original.len(), distance <= window <= WINDOW_MAX,
+            3 <= length <= LEN_MAX, j <= length,
+            output.out@ == m::copy_distance(original, distance as nat, j as nat),
+            output.produced == old(output).produced + j,
+            w.wf(), w.observed@ == old(w).observed@ + j,
+        decreases length - j,
+    {
+        proof { m::lemma_copy_distance(original, distance as nat, j as nat); output.lemma_observation(); }
+        let ghost before = output.out@;
         w.add(1);
-        let sym = lit.decode(br, w).map_err(Status::Err)?;
-        if sym < 256 {
-            output.append_byte(sym as u8)?;
-        } else if sym == 256 {
-            return Ok(());
-        } else {
-            if sym > 285 {
-                return Err(Status::Err(E::InvalidSymbol));
-            }
-            let index = usize::from(sym - 257);
-            let length =
-                u32::from(LEN_BASE[index]) + br.get(LEN_EXTRA[index], w).map_err(Status::Err)?;
-            let ds = usize::from(dist.decode(br, w).map_err(Status::Err)?);
-            if ds >= NDIST_MAX {
-                return Err(Status::Err(E::InvalidSymbol));
-            }
-            let distance = u64::from(DIST_BASE[ds])
-                + u64::from(br.get(DIST_EXTRA[ds], w).map_err(Status::Err)?);
-            if distance > output.produced || distance > window {
-                return Err(Status::Err(E::DistanceTooFar));
-            }
-            let mut j = 0;
-            while j < length {
-                w.add(1);
-                // Resolve against the evolving output/ring, including overlap.
-                let byte = output.previous(distance);
-                output.append_byte(byte)?;
-                j += 1;
-            }
+        let byte = output.previous(distance);
+        match output.append_byte(byte) {
+            Ok(()) => {},
+            Err(status) => return Err(status),
+        }
+        proof {
+            reveal(m::copy_distance);
+            assert(m::copy_distance(original, distance as nat, (j + 1) as nat) == before.push(byte));
+        }
+        j += 1;
+    }
+    proof { output.lemma_observation(); }
+    Ok(())
+}
+
+enum SymbolStep { Continue, End }
+
+closed spec fn symbol_eq(effect: m::SymbolEffect, result: Result<SymbolStep, Status>, out: Seq<u8>, position: nat) -> bool {
+    match effect {
+        m::SymbolEffect::Next { out: expected, position: end } => result == Ok(SymbolStep::Continue) && out == expected && position == end,
+        m::SymbolEffect::End { out: expected, position: end } => result == Ok(SymbolStep::End) && out == expected && position == end,
+        m::SymbolEffect::Full { out: expected } => result == Err(Status::Full) && out == expected,
+        m::SymbolEffect::Error { error, out: expected, position: end } => out == expected && position == end
+            && match result { Err(Status::Err(e)) => fault_eq(error, e), _ => false },
+        m::SymbolEffect::OutsideDomain => false,
+    }
+}
+
+/// One real production symbol iteration. Reserved symbols are rejected before
+/// their nonexistent extra bits, and match_copy checks distance before emission.
+fn compressed_step<S: Segments>(br: &mut Bits<'_, S>, output: &mut Output<'_>,
+    lit: &Huffman, dist: &Huffman, window: u64, w: &mut Work) -> (r: Result<SymbolStep, Status>)
+    requires old(br).wf(), old(output).wf(), old(w).wf(),
+        lit.wf(), lit.ready@, dist.wf(), dist.ready@, 1 <= window <= WINDOW_MAX,
+    ensures final(br).wf(), final(br).concat() == old(br).concat(),
+        old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
+        r.is_ok() ==> old(br).position() < final(br).position(),
+        final(output).wf(), final(output).limit == old(output).limit,
+        final(output).initial == old(output).initial, old(output).produced <= final(output).produced,
+        final(w).wf(), old(w).observed@ <= final(w).observed@,
+        final(w).observed@ <= old(w).observed@ + 8 * (final(br).position() - old(br).position() + 1)
+            + final(output).produced - old(output).produced,
+        r.is_ok() ==> final(w).observed@ <= old(w).observed@ + 8 * (final(br).position() - old(br).position())
+            + final(output).produced - old(output).produced,
+        symbol_eq(m::MCompressedStep(old(br).concat(), old(br).position(), old(output).out@,
+            old(output).limit as nat, window as nat, lit.lengths@, dist.lengths@), r, final(output).out@, final(br).position()),
+{
+    hide(Output::wf);
+    hide(m::MDec);
+    hide(m::MMatch);
+    let ghost z = br.concat();
+    proof { br.lemma_bounds(); output.lemma_observation(); }
+    w.add(1);
+    let sym = match lit.decode(br, w) { Ok(s) => s, Err(e) => return Err(Status::Err(e)), };
+    if sym < 256 {
+        match output.append_byte(sym as u8) { Ok(()) => {}, Err(s) => return Err(s), }
+        Ok(SymbolStep::Continue)
+    } else if sym == 256 { Ok(SymbolStep::End) }
+    else {
+        if sym > 285 { return Err(Status::Err(E::InvalidSymbol)); }
+        let index = (sym - 257) as usize;
+        proof { lemma_length_tables(index as int); reveal(m::MMatch); }
+        let extra = match br.get(LEN_EXTRA[index], w) { Ok(n) => n, Err(e) => return Err(Status::Err(e)), };
+        let length = LEN_BASE[index] as u32 + extra;
+        let ds = match dist.decode(br, w) { Ok(s) => s as usize, Err(e) => return Err(Status::Err(e)), };
+        if ds >= NDIST_MAX { return Err(Status::Err(E::InvalidSymbol)); }
+        proof { lemma_distance_tables(ds as int); }
+        let de = match br.get(DIST_EXTRA[ds], w) { Ok(n) => n, Err(e) => return Err(Status::Err(e)), };
+        let distance = DIST_BASE[ds] as u64 + de as u64;
+        match match_copy(output, window, distance, length, w) {
+            Ok(()) => Ok(SymbolStep::Continue),
+            Err(status) => Err(status),
         }
     }
 }
+
+fn compressed<S: Segments>(br: &mut Bits<'_, S>, output: &mut Output<'_>,
+    lit: &Huffman, dist: &Huffman, window: u64, w: &mut Work) -> (r: Result<(), Status>)
+    requires old(br).wf(), old(output).wf(), old(w).wf(),
+        lit.wf(), lit.ready@, dist.wf(), dist.ready@, 1 <= window <= WINDOW_MAX,
+    ensures final(br).wf(), final(br).concat() == old(br).concat(),
+        old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
+        r.is_ok() ==> old(br).position() < final(br).position(),
+        final(output).wf(), final(output).limit == old(output).limit,
+        final(output).initial == old(output).initial, old(output).produced <= final(output).produced,
+        final(w).wf(), old(w).observed@ <= final(w).observed@,
+        final(w).observed@ <= old(w).observed@ + 8 * (final(br).position() - old(br).position() + 1)
+            + final(output).produced - old(output).produced,
+        stored_eq(m::MCompressed(old(br).concat(), old(br).position(), old(output).out@,
+            old(output).limit as nat, window as nat, lit.lengths@, dist.lengths@), r, final(output).out@, final(br).position()),
+{
+    hide(Output::wf);
+    hide(m::MCompressed);
+    hide(m::MCompressedStep);
+    let ghost z = br.concat();
+    let ghost start = br.position();
+    let ghost original = output.out@;
+    let ghost limit = output.limit;
+    let ghost initial = m::MCompressed(z, start, original, limit as nat, window as nat, lit.lengths@, dist.lengths@);
+    proof { br.lemma_bounds(); output.lemma_observation(); }
+    loop
+        invariant br.wf(), br.concat() == z, z == old(br).concat(), start == old(br).position(),
+            start <= br.position() <= 8 * z.len(), output.wf(), output.limit == limit, limit == old(output).limit,
+            original == old(output).out@, output.initial == old(output).initial, old(output).produced <= output.produced,
+            lit.wf(), lit.ready@, dist.wf(), dist.ready@, 1 <= window <= WINDOW_MAX,
+            w.wf(), old(w).observed@ <= w.observed@ <= old(w).observed@ + 8 * (br.position() - start)
+                + output.produced - old(output).produced,
+            initial == m::MCompressed(z, start, original, limit as nat, window as nat, lit.lengths@, dist.lengths@),
+            initial == m::MCompressed(z, br.position(), output.out@, limit as nat, window as nat, lit.lengths@, dist.lengths@),
+        decreases 8 * z.len() - br.position(),
+    {
+        proof { reveal(m::MCompressed); }
+        match compressed_step(br, output, lit, dist, window, w) {
+            Ok(SymbolStep::Continue) => {},
+            Ok(SymbolStep::End) => return Ok(()),
+            Err(status) => return Err(status),
+        }
+    }
+}
+
+closed spec fn block_eq(effect: (bool, m::StoredEffect), result: Result<bool, Status>, out: Seq<u8>, position: nat) -> bool {
+    stored_eq(effect.1, match result { Ok(_) => Ok(()), Err(s) => Err(s) }, out, position)
+        && (result.is_ok() ==> result.unwrap() == effect.0)
+}
+
+/// The real BTYPE dispatch. All payloads run through the verified production
+/// helpers, while MOneBlock selects mathematical code-length profiles only.
+fn one_block<S: Segments>(tables: &mut Tables, br: &mut Bits<'_, S>, output: &mut Output<'_>,
+    window: u64, w: &mut Work) -> (r: Result<bool, Status>)
+    requires old(tables).wf(), old(br).wf(), old(output).wf(), old(w).wf(), 1 <= window <= WINDOW_MAX,
+    ensures final(tables).wf(), final(br).wf(), final(br).concat() == old(br).concat(),
+        old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
+        r.is_ok() ==> old(br).position() + 3 <= final(br).position(),
+        final(output).wf(), final(output).limit == old(output).limit,
+        final(output).initial == old(output).initial, old(output).produced <= final(output).produced,
+        final(w).wf(), old(w).observed@ <= final(w).observed@,
+        final(w).observed@ <= old(w).observed@ + 64 * (final(br).position() - old(br).position() + 1)
+            + 2 * (final(output).produced - old(output).produced),
+        r.is_ok() ==> final(w).observed@ <= old(w).observed@ + 64 * (final(br).position() - old(br).position())
+            + 2 * (final(output).produced - old(output).produced),
+        block_eq(m::MOneBlock(old(br).concat(), old(br).position(), old(output).out@,
+            old(output).limit as nat, window as nat, true), r, final(output).out@, final(br).position()),
+{
+    hide(Output::wf);
+    hide(m::MDynamic);
+    hide(m::MCompressed);
+    hide(m::MStoredBlock);
+    proof { br.lemma_bounds(); output.lemma_observation(); }
+    w.add(1);
+    let (last, typ) = match read_block_header(tables, br, w) {
+        Ok(pair) => pair, Err(e) => return Err(Status::Err(e)),
+    };
+    match typ {
+        0 => match stored_block(br, output, w) { Ok(()) => {}, Err(s) => return Err(s), },
+        1 => match compressed(br, output, &tables.fixed_lit, &tables.fixed_dist, window, w) {
+            Ok(()) => {}, Err(s) => return Err(s),
+        },
+        2 => match compressed(br, output, &tables.lit, &tables.dist, window, w) {
+            Ok(()) => {}, Err(s) => return Err(s),
+        },
+        _ => return Err(Status::Err(E::InvalidBlockType)),
+    }
+    Ok(last != 0)
+}
+
+/// Actual block loop, before the zlib checksum/tail. Success means a BFINAL
+/// block ended, not that the zlib envelope has been accepted.
+fn blocks<S: Segments>(tables: &mut Tables, br: &mut Bits<'_, S>, output: &mut Output<'_>,
+    window: u64, w: &mut Work) -> (r: Result<(), Status>)
+    requires old(tables).wf(), old(br).wf(), old(output).wf(), old(w).wf(), 1 <= window <= WINDOW_MAX,
+    ensures final(tables).wf(), final(br).wf(), final(br).concat() == old(br).concat(),
+        old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
+        r.is_ok() ==> old(br).position() + 3 <= final(br).position(),
+        final(output).wf(), final(output).limit == old(output).limit,
+        final(output).initial == old(output).initial, old(output).produced <= final(output).produced,
+        final(w).wf(), old(w).observed@ <= final(w).observed@,
+        final(w).observed@ <= old(w).observed@ + 64 * (final(br).position() - old(br).position() + 1)
+            + 2 * (final(output).produced - old(output).produced),
+        r.is_ok() ==> final(w).observed@ <= old(w).observed@ + 64 * (final(br).position() - old(br).position())
+            + 2 * (final(output).produced - old(output).produced),
+        stored_eq(m::MBlk(old(br).concat(), old(br).position(), old(output).out@,
+            old(output).limit as nat, window as nat, true), r, final(output).out@, final(br).position()),
+{
+    hide(Output::wf);
+    hide(m::MBlk);
+    hide(m::MOneBlock);
+    let ghost z = br.concat();
+    let ghost start = br.position();
+    let ghost original = output.out@;
+    let ghost limit = output.limit;
+    let ghost initial = m::MBlk(z, start, original, limit as nat, window as nat, true);
+    proof {
+        br.lemma_bounds(); output.lemma_observation();
+        assert(start <= 8 * z.len());
+    }
+    loop
+        invariant tables.wf(), br.wf(), br.concat() == z, z == old(br).concat(), start == old(br).position(),
+            start <= br.position() <= 8 * z.len(), output.wf(), output.limit == limit, limit == old(output).limit,
+            original == old(output).out@, output.initial == old(output).initial, old(output).produced <= output.produced,
+            1 <= window <= WINDOW_MAX, w.wf(), old(w).observed@ <= w.observed@,
+            w.observed@ <= old(w).observed@ + 64 * (br.position() - start) + 2 * (output.produced - old(output).produced),
+            initial == m::MBlk(z, start, original, limit as nat, window as nat, true),
+            initial == m::MBlk(z, br.position(), output.out@, limit as nat, window as nat, true),
+        decreases 8 * z.len() - br.position(),
+    {
+        proof { reveal(m::MBlk); }
+        match one_block(tables, br, output, window, w) {
+            Ok(last) => if last { return Ok(()); },
+            Err(s) => return Err(s),
+        }
+    }
+}
+
+/// Production policy selection after the CMF method/CINFO guard.
+fn selected_window(cinfo: u8, enforce: bool) -> (window: u64)
+    requires cinfo <= 7,
+    ensures window == m::window_size(cinfo as nat, enforce), 1 <= window <= WINDOW_MAX,
+{
+    proof {
+        assert(WINDOW_MAX == m::pow2(15)) by (compute);
+        m::lemma_pow2_positive(cinfo as nat + 8);
+        m::lemma_pow2_monotone(cinfo as nat + 8, 15);
+    }
+    if enforce {
+        proof {
+            m::lemma_pow2_vstd(cinfo as nat + 8);
+            vstd::bits::lemma_u64_shl_is_mul(1, (cinfo + 8) as u64);
+        }
+        1u64 << (cinfo + 8)
+    } else { WINDOW_MAX as u64 }
+}
+
+} // verus!
 
 fn run<S: Segments>(
     br: &mut Bits<'_, S>,
@@ -731,39 +1119,9 @@ fn run<S: Segments>(
     if flg & 0x20 != 0 {
         return Err(Status::Err(E::ZlibPresetDictionary));
     }
-    let window = match o.window {
-        Window::Enforce => 1u64 << ((cmf >> 4) + 8),
-        Window::Ignore => WINDOW_MAX as u64,
-    };
+    let window = selected_window(cmf >> 4, o.window == Window::Enforce);
     let mut tables = Tables::new(w).map_err(Status::Err)?;
-    loop {
-        w.add(1);
-        let (final_block, block_type) =
-            read_block_header(&mut tables, br, w).map_err(Status::Err)?;
-        match block_type {
-            0 => {
-                br.align();
-                let lo = u16::from(br.byte(w).map_err(Status::Err)?);
-                let hi = u16::from(br.byte(w).map_err(Status::Err)?);
-                let nlo = u16::from(br.byte(w).map_err(Status::Err)?);
-                let nhi = u16::from(br.byte(w).map_err(Status::Err)?);
-                let len = lo | hi << 8;
-                if len != !(nlo | nhi << 8) {
-                    return Err(Status::Err(E::StoredLengthMismatch));
-                }
-                // The verified payload loop preserves D5's read-before-limit order.
-                stored_payload(br, output, len, w)?;
-            }
-            1 => compressed(br, output, &tables.fixed_lit, &tables.fixed_dist, window, w)?,
-            2 => {
-                compressed(br, output, &tables.lit, &tables.dist, window, w)?;
-            }
-            _ => return Err(Status::Err(E::InvalidBlockType)),
-        }
-        if final_block != 0 {
-            break;
-        }
-    }
+    blocks(&mut tables, br, output, window, w)?;
     br.align();
     let mut expected = 0u32;
     let mut i = 0;
