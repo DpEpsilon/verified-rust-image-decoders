@@ -1,0 +1,13 @@
+command: ['python3', '-I', '/home/ws/projects/verified-decoders/png/inflate_verus/tools/differential.py', '--fuzz', '5000', '--seed', '29']
+extractor presence cases: 8
+VECTORS.json: 599 records, 631 extracted streams; four layouts each
+VECTORS-CAPS.json: 13 records, 140 extracted streams; four layouts each
+VECTORS-POLICY.json: 198 records, 410 extracted streams; four layouts each
+authored inflate-error expectations checked: 44; D4 five, empty-Z one; non-R bounded harness calls: 278
+differential 1000/5000 streams + corruptions
+differential 2000/5000 streams + corruptions
+differential 3000/5000 streams + corruptions
+differential 4000/5000 streams + corruptions
+differential 5000/5000 streams + corruptions
+Python zlib differential: 5000 generated streams + 5000 single-bit corruptions; 0 unexpected differences, allowed={}
+PASS: 1181 vector streams, 16772 public-entry pairs; each pair checks status/count, prefix/suffix, ring, cursor; work is erased and proved

@@ -16,6 +16,10 @@ def checked(command):
     subprocess.run(command, cwd=ROOT, check=True, timeout=90)
 
 
+def erased_work_ok(text):
+    return not re.search(r'\b(?:core|advances|core_steps|seg_steps)\s*:\s*u128\b', text)
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--self-test', action='store_true')
@@ -33,7 +37,16 @@ def main():
     forbidden = re.compile(r'\b(?:extern\s+crate\s+(?:alloc|std)|unsafe\s*\{|'
                            r'assume_specification|external_body|admit\s*\(|assume\s*\()')
     for path in src:
-        assert not forbidden.search(path.read_text()), path
+        text = path.read_text()
+        assert not forbidden.search(text), path
+        assert erased_work_ok(text), f'runtime work counter: {path}'
+    for field in ('core_steps', 'seg_steps'):
+        assert re.search(rf'pub {field}: Ghost<nat>', lib), field
+    if args.self_test:
+        for field in ('core', 'advances', 'core_steps', 'seg_steps'):
+            assert not erased_work_ok(f'pub {field}: u128,'), field
+            assert erased_work_ok(f'pub {field}: Ghost<nat>,'), field
+        print('erased-counter lint positive/negative controls passed')
     # Reuse the GIF scanner instead of copying its Rust/Verus lexical machinery.
     scanner = REPO / 'gif/tools/alloc_scan.py'
     checked([sys.executable, '-I', str(scanner), '--production-files', str(ROOT / 'src')])
@@ -41,6 +54,7 @@ def main():
         checked([sys.executable, '-I', str(scanner), *mode, *map(str, src)])
     if args.self_test:
         checked([sys.executable, '-I', str(scanner), '--self-test'])
+    checked([sys.executable, '-I', str(ROOT / 'tools/audit_witnesses.py')])
     checked([sys.executable, '-I', str(ROOT / 'tools/lint_caps.py'),
              *(['--self-test'] if args.self_test else [])])
     frozen = ROOT.parent / 'spec-frozen'

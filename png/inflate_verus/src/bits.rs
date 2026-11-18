@@ -38,6 +38,8 @@ pub(crate) struct Bits<'a, S: Segments> {
     pub(crate) origin_core: Ghost<nat>,
     pub(crate) origin_rank: Ghost<nat>,
     pub(crate) origin_count: Ghost<nat>,
+    #[cfg(verus_only)]
+    pub(crate) origin_source: Ghost<S::Frame>,
     pub(crate) loop_work: Ghost<nat>,
 }
 
@@ -55,17 +57,30 @@ impl<'a, S: Segments> Bits<'a, S> {
                 == self.src.concat()[(self.src.pos() - 1) as int] as nat
                     / m::pow2((8 - self.remaining) as nat) })
         && self.src.seg_count() == self.origin_count@
+        && self.src.source_frame() == self.origin_source@
         && self.src.seg_steps() >= self.origin_seg@
         && self.src.core_steps() >= self.origin_core@
         && self.src.advance_rank() >= self.origin_rank@
         && self.src.seg_steps() - self.origin_seg@ == self.src.advance_rank() - self.origin_rank@
     }
 
+    #[verifier::prophetic]
+    pub(crate) closed spec fn frame(&self) -> (S, nat, nat, nat, nat, S::Frame) {
+        (*final(self.src), self.origin_seg@, self.origin_core@, self.origin_rank@, self.origin_count@, self.origin_source@)
+    }
+
+    pub(crate) proof fn lemma_frame(&self)
+        ensures self.frame().1 == self.origin_seg@, self.frame().2 == self.origin_core@,
+            self.frame().3 == self.origin_rank@, self.frame().4 == self.origin_count@,
+            self.frame().5 == self.origin_source@,
+    {}
+
     pub(crate) closed spec fn wf(&self) -> bool { self.cache_wf() && self.remaining < 8 }
 
     pub(crate) proof fn lemma_bounds(&self)
         requires self.wf(),
         ensures self.position() <= 8 * self.concat().len(),
+            self.remaining == 0 ==> self.position() % 8 == 0,
             self.measured_seg() <= crate::limits::C_SEG * (self.origin_count@ + 1),
     {
         assert(self.src.wf());
@@ -78,19 +93,36 @@ impl<'a, S: Segments> Bits<'a, S> {
         requires old(src).wf(),
         ensures b.wf(), b.concat() == old(src).concat(), b.position() == 8 * old(src).pos(),
             b.measured_seg() == 0, b.measured_core() == 0,
+            b.remaining == 0,
+            b.frame() == (*final(src), old(src).seg_steps(), old(src).core_steps(), old(src).advance_rank(), old(src).seg_count(), old(src).source_frame()),
     {
         let origin_seg = Ghost(src.seg_steps());
         let origin_core = Ghost(src.core_steps());
         let origin_rank = Ghost(src.advance_rank());
         let origin_count = Ghost(src.seg_count());
+        let origin_source = Ghost(src.source_frame());
         Self { src, current: 0, remaining: 0, origin_seg, origin_core, origin_rank,
-            origin_count, loop_work: Ghost(0nat) }
+            origin_count, #[cfg(verus_only)] origin_source, loop_work: Ghost(0nat) }
+    }
+
+    /// Release the source borrow and export observations relative to this reader's origins.
+    pub(crate) fn complete(self) -> (steps: Ghost<nat>)
+        requires self.wf(),
+        ensures self.frame().0.wf(), self.frame().0.concat() == self.concat(),
+            self.frame().0.pos() <= self.concat().len(),
+            self.frame().0.seg_count() == self.origin_count@,
+            self.frame().0.source_frame() == self.frame().5,
+            steps@ == self.frame().0.seg_steps() - self.origin_seg@,
+            steps@ <= crate::limits::C_SEG * (self.origin_count@ + 1),
+    {
+        proof { self.lemma_bounds(); self.src.lemma_wf(); }
+        Ghost(self.measured_seg())
     }
 
     pub(crate) fn byte(&mut self, w: &mut Work) -> (r: Result<u8, InflateError>)
         requires old(self).wf(), old(self).remaining == 0,
             old(w).wf(),
-        ensures final(self).wf(), final(w).wf(),
+        ensures final(self).wf(), final(self).frame() == old(self).frame(), final(w).wf(),
             final(self).remaining == 0, final(self).current == 0,
             final(self).origin_seg == old(self).origin_seg,
             final(self).origin_core == old(self).origin_core,
@@ -98,9 +130,12 @@ impl<'a, S: Segments> Bits<'a, S> {
             final(self).origin_count == old(self).origin_count,
             final(self).loop_work == old(self).loop_work,
             final(self).concat() == old(self).concat(),
-            final(self).measured_core() == old(self).measured_core() + 1,
-            old(w).core <= final(w).core <= old(w).core + 1, final(w).observed@ == old(w).observed@ + 1,
+            old(self).measured_core() <= final(self).measured_core() <= old(self).measured_core() + 1,
+            final(w).observed@ - old(w).observed@
+                == final(self).measured_core() - old(self).measured_core(),
+            old(w).observed@ <= final(w).observed@ <= old(w).observed@ + 1,
             final(self).measured_seg() <= crate::limits::C_SEG * (final(self).src.seg_count() + 1),
+            r.is_ok() ==> final(w).observed@ == old(w).observed@ + 1,
             match r {
                 Ok(byte) => old(self).position() < 8 * old(self).concat().len()
                     && byte == old(self).concat()[(old(self).position() / 8) as int]
@@ -110,8 +145,10 @@ impl<'a, S: Segments> Bits<'a, S> {
                     && final(self).position() == old(self).position(),
             },
     {
-        w.add(1);
-        match self.src.read() {
+        let ghost before = self.src.core_steps();
+        let read = self.src.read();
+        proof { w.observed = Ghost((w.observed@ + self.src.core_steps() - before) as nat); }
+        match read {
             Some(byte) => Ok(byte),
             None => Err(InflateError::TruncatedZlib),
         }
@@ -119,11 +156,10 @@ impl<'a, S: Segments> Bits<'a, S> {
 
     pub(crate) fn get(&mut self, n: u8, w: &mut Work) -> (r: Result<u32, InflateError>)
         requires old(self).wf(), n <= 32, old(w).wf(),
-        ensures final(self).wf(), final(w).wf(), final(self).concat() == old(self).concat(),
+        ensures final(self).wf(), final(self).frame() == old(self).frame(), final(w).wf(), final(self).concat() == old(self).concat(),
             old(self).position() <= final(self).position() <= old(self).position() + n,
             final(self).position() <= 8 * final(self).concat().len(),
             final(self).measured_seg() <= crate::limits::C_SEG * (final(self).src.seg_count() + 1),
-            final(w).core >= old(w).core, final(w).core <= old(w).core + 2 * n,
             old(w).observed@ <= final(w).observed@ <= old(w).observed@ + 2 * n,
             final(w).observed@ <= old(w).observed@ + 2 * (final(self).position() - old(self).position() + 1),
             r.is_ok() ==> final(w).observed@ <= old(w).observed@ + 2 * (final(self).position() - old(self).position()),
@@ -143,11 +179,10 @@ impl<'a, S: Segments> Bits<'a, S> {
         let mut value = 0u32;
         let mut i = 0u8;
         while i < n
-            invariant initial == *old(self), self.wf(), w.wf(), i <= n <= 32,
+            invariant initial == *old(self), self.wf(), self.frame() == initial.frame(), w.wf(), i <= n <= 32,
                 self.concat() == initial.concat(),
                 self.position() == initial.position() + i,
                 value == m::field_value(initial.concat(), initial.position(), i as nat),
-                w.core >= old(w).core, w.core <= old(w).core + 2 * i,
                 old(w).observed@ <= w.observed@ <= old(w).observed@ + 2 * i,
                 w.observed@ - old(w).observed@ == self.measured_core() - initial.measured_core(),
             decreases n - i,
@@ -159,10 +194,25 @@ impl<'a, S: Segments> Bits<'a, S> {
                     Ok(byte) => byte,
                     Err(e) => return Err(e),
                 };
-                proof { assert(self.cache_wf()); }
+                proof {
+                    assert(self.cache_wf());
+                    assert(self.src.pos() > 0);
+                    assert(byte == self.concat()[(self.src.pos() - 1) as int]);
+                    assert(m::pow2(0) == 1) by (compute);
+                }
                 self.current = byte;
                 self.remaining = 8;
-                proof { assert(self.cache_wf()); assert(self.position() == initial.position() + i); }
+                proof {
+                    assert(self.src.wf());
+                    assert(self.remaining <= 8 && self.remaining <= 8 * self.src.pos());
+                    assert(self.current == self.src.concat()[(self.src.pos() - 1) as int] as nat / m::pow2(0));
+                    assert(self.src.seg_count() == self.origin_count@);
+                    assert(self.src.seg_steps() >= self.origin_seg@);
+                    assert(self.src.core_steps() >= self.origin_core@);
+                    assert(self.src.advance_rank() >= self.origin_rank@);
+                    assert(self.src.seg_steps() - self.origin_seg@ == self.src.advance_rank() - self.origin_rank@);
+                    assert(self.cache_wf()); assert(self.position() == initial.position() + i);
+                }
             }
             let ghost before = self.position();
             let ghost previous_value = value;
@@ -213,7 +263,7 @@ impl<'a, S: Segments> Bits<'a, S> {
 
     pub(crate) fn align(&mut self)
         requires old(self).wf(),
-        ensures final(self).wf(), final(self).concat() == old(self).concat(),
+        ensures final(self).wf(), final(self).frame() == old(self).frame(), final(self).concat() == old(self).concat(),
             final(self).remaining == 0,
             final(self).position() == old(self).position() + old(self).remaining,
             final(self).position() % 8 == 0,
@@ -243,9 +293,9 @@ mod tests {
         let mut w = Work::new();
         assert_eq!(br.get(32, &mut w), Ok(0x12345678));
         assert_eq!(br.get(1, &mut w), Err(InflateError::TruncatedZlib));
-        let advances = br.src.diagnostic_seg_steps();
+        let advances = br.src.seg_index();
         assert_eq!(br.get(1, &mut w), Err(InflateError::TruncatedZlib));
-        assert_eq!(br.src.diagnostic_seg_steps(), advances);
+        assert_eq!(br.src.seg_index(), advances);
     }
 
     #[test]

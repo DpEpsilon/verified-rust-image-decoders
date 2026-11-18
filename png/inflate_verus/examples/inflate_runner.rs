@@ -69,7 +69,11 @@ fn main() {
         let mut ring = vec![0xcd; WINDOW_MAX];
         let mut src2 = SegmentSlices::new(&parts).unwrap();
         let m = inflate_zlib_measure(&mut src2, &mut ring, limit as u64, options);
-        assert_eq!(r, m, "into/measure observation, counters included");
+        assert_eq!(
+            (r.status, r.produced),
+            (m.status, m.produced),
+            "into/measure observation"
+        );
         let k = usize::try_from(r.produced).unwrap();
         assert!(
             out[k..].iter().all(|&x| x == 0xa5),
@@ -78,11 +82,7 @@ fn main() {
         for j in k.saturating_sub(WINDOW_MAX)..k {
             assert_eq!(ring[j % WINDOW_MAX], out[j], "last-window representation");
         }
-        assert!(
-            r.core_steps <= C_IN * data.len() as u128 + C_OUT * r.produced as u128 + C_INFL_FIXED,
-            "observed core work exceeds manifest bound: {r:?}"
-        );
-        assert!(r.seg_steps <= C_SEG * (parts.len() as u128 + 1));
+        // Work observations are erased; public Verus contracts establish their bounds.
         assert!(src.pos() <= data.len() as u64);
         assert!(src.seg_index() <= parts.len());
         let status = match r.status {
@@ -92,12 +92,10 @@ fn main() {
         };
         writeln!(
             stdout,
-            "{}\t{}\t{}\t{}\t{}\t{}",
+            "{}\t{}\t{}\t{}",
             status,
             k,
             hex(&out[..k]),
-            r.core_steps,
-            r.seg_steps,
             src.pos()
         )
         .unwrap();

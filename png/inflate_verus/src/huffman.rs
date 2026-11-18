@@ -55,7 +55,6 @@ impl Huffman {
     pub(crate) fn build(&mut self, lengths: &[u8], kind: Kind, w: &mut Work) -> (r: Result<(), InflateError>)
         requires old(w).wf(),
         ensures final(self).wf(), final(w).wf(),
-            final(w).core >= old(w).core, final(w).core <= old(w).core + HUFF_BUILD_STEPS,
             old(w).observed@ <= final(w).observed@ <= old(w).observed@ + HUFF_BUILD_STEPS,
             final(w).observed@ <= old(w).observed@ + CANON_FIXED_STEPS + 2 * lengths.len() + MAX_CODE_BITS + 1,
             final(self).ready@ == r.is_ok(),
@@ -70,7 +69,6 @@ impl Huffman {
     pub(crate) fn build_with_single(&mut self, lengths: &[u8], kind: Kind, single_accept: bool, w: &mut Work) -> (r: Result<(), InflateError>)
         requires old(w).wf(),
         ensures final(self).wf(), final(w).wf(),
-            final(w).core >= old(w).core, final(w).core <= old(w).core + HUFF_BUILD_STEPS,
             old(w).observed@ <= final(w).observed@ <= old(w).observed@ + HUFF_BUILD_STEPS,
             final(w).observed@ <= old(w).observed@ + CANON_FIXED_STEPS + 2 * lengths.len() + MAX_CODE_BITS + 1,
             final(self).ready@ == r.is_ok(),
@@ -98,7 +96,7 @@ impl Huffman {
 
     pub(crate) fn new(w: &mut Work) -> (h: Self)
         requires old(w).wf(),
-        ensures h.wf(), !h.ready@, final(w).wf(), old(w).core <= final(w).core <= old(w).core + HUFF_INIT_STEPS,
+        ensures h.wf(), !h.ready@, final(w).wf(),
             final(w).observed@ == old(w).observed@ + HUFF_INIT_STEPS,
     {
         w.add(HUFF_INIT_STEPS);
@@ -113,8 +111,7 @@ impl Huffman {
 
     fn build_canonical(&mut self, lengths: &[u8], w: &mut Work) -> (r: Result<u32, InflateError>)
         requires old(w).wf(),
-        ensures final(w).wf(), final(w).core >= old(w).core,
-            final(w).core <= old(w).core + HUFF_BUILD_STEPS,
+        ensures final(w).wf(),
             old(w).observed@ <= final(w).observed@ <= old(w).observed@ + HUFF_BUILD_STEPS,
             final(w).observed@ <= old(w).observed@ + CANON_FIXED_STEPS + 2 * lengths.len() + MAX_CODE_BITS + 1,
             !final(self).ready@,
@@ -165,8 +162,7 @@ impl Huffman {
     pub(crate) fn decode<S: Segments>(&self, br: &mut Bits<'_, S>, w: &mut Work)
         -> (r: Result<u16, InflateError>)
         requires self.wf(), self.ready@, old(br).wf(), old(w).wf(),
-        ensures final(br).wf(), final(w).wf(), final(br).concat() == old(br).concat(),
-            final(w).core >= old(w).core, final(w).core <= old(w).core + 3 * MAX_CODE_BITS,
+        ensures final(br).wf(), final(br).frame() == old(br).frame(), final(w).wf(), final(br).concat() == old(br).concat(),
             old(w).observed@ <= final(w).observed@ <= old(w).observed@ + 3 * MAX_CODE_BITS,
             old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
             final(w).observed@ <= old(w).observed@ + 3 * (final(br).position() - old(br).position() + 1),
@@ -207,16 +203,18 @@ impl Huffman {
                 self.wf(), self.ready@, self.repr(),
                 lengths == self.lengths@, kind == crate::classification::model_kind(self.kind@),
                 single_accept == self.single_accept@, m::admissible(lengths, kind, single_accept),
-                br.wf(), br.concat() == z, z == old(br).concat(), start == old(br).position(),
+                br.wf(), br.frame() == old(br).frame(), br.concat() == z, z == old(br).concat(), start == old(br).position(),
                 start <= 8 * z.len(), br.position() == start + n, br.position() <= 8 * z.len(),
-                w.wf(), w.core >= old(w).core, w.core <= old(w).core + 3 * n,
+                w.wf(),
                 old(w).observed@ <= w.observed@ <= old(w).observed@ + 3 * n,
                 n <= MAX_CODE_BITS, code < m::pow2(n as nat), bits == m::msb_bits(code as nat, n as nat),
                 bits.len() == n, m::live(lengths, bits), forall|s: int| !m::exact(lengths, bits, s),
                 m::decode_prefix(lengths, z, start, bits) == m::MDec(lengths, z, start),
             decreases MAX_CODE_BITS - n,
         {
+            let ghost decode_iteration = w.observed@;
             w.add(1);
+            proof { assert(w.observed@ == decode_iteration + 1); }
             let bit = match br.get(1, w) {
                 Ok(bit) => bit,
                 Err(e) => {

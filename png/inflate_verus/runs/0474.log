@@ -1,0 +1,3 @@
+command: ['python3', '-I', '-c', 'from pathlib import Path\nroots=[Path("/home/ws/projects/verified-decoders/png/inflate_verus/target"),Path("/home/ws/projects/verified-decoders/gif/gif_verus/target"),Path("/home/ws/.cache")]\nfound=[]\nfor root in roots:\n if root.exists():\n  for p in root.rglob("*vstd*.vir"):\n   if "i686" in str(p): found.append(str(p))\nprint("Matching i686 verification-artifact candidates:",found)\nprint("No candidate copied or rebuilt; no versions, flags, features or fingerprints changed.")\nassert not found, "Inspect new target candidates before deciding replay remains open"\n']
+Matching i686 verification-artifact candidates: []
+No candidate copied or rebuilt; no versions, flags, features or fingerprints changed.

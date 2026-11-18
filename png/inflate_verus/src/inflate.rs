@@ -122,13 +122,13 @@ proof fn lemma_cl_order(i: int)
 }
 }
 
-// The public signatures require ring.len() == WINDOW_MAX for measuring, and
-// a fresh source satisfying Segments' contract. A typed array inside the sink
-// prevents accidental indexing of a shorter ring. No stream-driven allocation.
+// Public measuring requires ring.len() == WINDOW_MAX; Output::wf preserves it.
+// Both public entries require only wf and pos()==0 from the source, with no
+// index or counter reset. No stream-driven allocation.
 verus! {
 
 /// Representation only: the independent model never reads this predicate.
-closed spec fn ring_repr(ring: Seq<u8>, out: Seq<u8>) -> bool {
+pub open spec fn ring_repr(ring: Seq<u8>, out: Seq<u8>) -> bool {
     ring.len() == WINDOW_MAX && forall|i: int|
         0 <= i < out.len() && out.len() - WINDOW_MAX <= i ==>
             #[trigger] ring[i % WINDOW_MAX as int] == out[i]
@@ -169,11 +169,17 @@ proof fn lemma_ring_append(ring: Seq<u8>, out: Seq<u8>, byte: u8)
 
 enum Sink<'a> {
     Into(&'a mut [u8]),
-    Ring(&'a mut [u8; WINDOW_MAX]),
+    Ring(&'a mut [u8]),
 }
 
 closed spec fn sink_view(sink: Sink) -> Seq<u8> {
     match sink { Sink::Into(out) => out@, Sink::Ring(ring) => ring@ }
+}
+
+/// The borrowed sink's eventual contents and variant, not its mutable current view.
+#[verifier::prophetic]
+closed spec fn sink_identity(sink: Sink) -> (bool, Seq<u8>) {
+    match sink { Sink::Into(out) => (true, final(out)@), Sink::Ring(ring) => (false, final(ring)@) }
 }
 
 struct Output<'a> {
@@ -207,6 +213,7 @@ impl<'a> Output<'a> {
             Sink::Ring(ring) => ring@.len() == WINDOW_MAX,
         },
         ensures s.wf(), s.produced == 0, s.limit == limit, s.out@ == Seq::<u8>::empty(),
+            s.initial@ == sink_view(sink), sink_identity(s.sink) == sink_identity(sink),
     {
         let initial = Ghost(sink_view(sink));
         let adler = Adler::new();
@@ -226,6 +233,7 @@ impl<'a> Output<'a> {
         requires old(self).wf(),
         ensures final(self).wf(), final(self).limit == old(self).limit,
             final(self).initial == old(self).initial,
+            sink_identity(final(self).sink) == sink_identity(old(self).sink),
             match m::MEmit(old(self).out@, old(self).limit as nat, byte) {
                 m::OutputEffect::Next { out } => r.is_ok() && final(self).out@ == out
                     && final(self).produced == old(self).produced + 1,
@@ -234,6 +242,7 @@ impl<'a> Output<'a> {
                 _ => false,
             },
     {
+        proof { caps_ok(); }
         if self.produced == self.limit { return Err(Status::Full); }
         let ghost before = self.out@;
         match &mut self.sink {
@@ -288,9 +297,10 @@ fn stored_payload<S: Segments>(br: &mut Bits<'_, S>, output: &mut Output<'_>, co
     -> (r: Result<(), Status>)
     requires old(br).wf(), old(br).remaining == 0, old(br).position() % 8 == 0,
         old(output).wf(), old(w).wf(),
-    ensures final(br).wf(), final(br).remaining == 0, final(br).concat() == old(br).concat(),
+    ensures final(br).wf(), final(br).frame() == old(br).frame(), final(br).remaining == 0, final(br).concat() == old(br).concat(),
         final(output).wf(), final(output).limit == old(output).limit,
-        final(output).initial == old(output).initial, final(w).wf(),
+        final(output).initial == old(output).initial,
+        sink_identity(final(output).sink) == sink_identity(old(output).sink), final(w).wf(),
         old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
         old(output).produced <= final(output).produced,
         old(w).observed@ <= final(w).observed@ <= old(w).observed@ + 2 * count,
@@ -309,12 +319,13 @@ fn stored_payload<S: Segments>(br: &mut Bits<'_, S>, output: &mut Output<'_>, co
     let mut remaining = count;
     while remaining > 0
         invariant
-            br.wf(), br.remaining == 0, br.concat() == z, z == old(br).concat(),
+            br.wf(), br.frame() == old(br).frame(), br.remaining == 0, br.concat() == z, z == old(br).concat(),
             start == old(br).position() / 8, start <= z.len(),
             br.position() == 8 * (start + count - remaining), br.position() <= 8 * z.len(),
             br.position() >= old(br).position(),
             output.wf(), output.out@.len() <= limit, output.limit == limit, limit == old(output).limit,
             original == old(output).out@, output.initial == old(output).initial,
+            sink_identity(output.sink) == sink_identity(old(output).sink),
             output.produced == old(output).produced + count - remaining,
             w.wf(), old(w).observed@ <= w.observed@,
             w.observed@ == old(w).observed@ + 2 * (count - remaining),
@@ -348,10 +359,11 @@ fn stored_payload<S: Segments>(br: &mut Bits<'_, S>, output: &mut Output<'_>, co
 fn stored_block<S: Segments>(br: &mut Bits<'_, S>, output: &mut Output<'_>, w: &mut Work)
     -> (r: Result<(), Status>)
     requires old(br).wf(), old(output).wf(), old(w).wf(),
-    ensures final(br).wf(), final(br).remaining == 0, final(br).concat() == old(br).concat(),
+    ensures final(br).wf(), final(br).frame() == old(br).frame(), final(br).remaining == 0, final(br).concat() == old(br).concat(),
         old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
         final(output).wf(), final(output).limit == old(output).limit,
-        final(output).initial == old(output).initial, old(output).produced <= final(output).produced,
+        final(output).initial == old(output).initial,
+        sink_identity(final(output).sink) == sink_identity(old(output).sink), old(output).produced <= final(output).produced,
         final(w).wf(), old(w).observed@ <= final(w).observed@,
         final(w).observed@ <= old(w).observed@ + 4 + 2 * (final(output).produced - old(output).produced + 1),
         stored_eq(m::MStoredBlock(old(br).concat(), old(br).position(), old(output).out@,
@@ -490,7 +502,7 @@ fn dynamic_code<S: Segments>(code: &mut Huffman, br: &mut Bits<'_, S>, ncode: us
     nlen: usize, ndist: usize, w: &mut Work) -> (ret: (Result<(), E>, Ghost<nat>))
     requires old(br).wf(), old(w).wf(), old(code).wf(), 4 <= ncode <= NCL,
         m::dynamic_sizes_ok(nlen as nat, ndist as nat),
-    ensures final(br).wf(), final(w).wf(), final(code).wf(),
+    ensures final(br).wf(), final(br).frame() == old(br).frame(), final(w).wf(), final(code).wf(),
         final(br).concat() == old(br).concat(), old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
         ret.1@ <= NCL + ncode + CANON_FIXED_STEPS + 2 * NCL + MAX_CODE_BITS + 1,
         old(w).observed@ <= final(w).observed@ <= old(w).observed@ + ret.1@ + 2 * (final(br).position() - old(br).position() + 1),
@@ -515,12 +527,14 @@ fn dynamic_code<S: Segments>(code: &mut Huffman, br: &mut Bits<'_, S>, ncode: us
     let ghost start = br.position();
     let ghost initial = m::MDynamicCL(z, start, Seq::new(NCL as nat, |i: int| 0u8),
         0, ncode as nat, nlen as nat, ndist as nat, true);
+    let ghost cl_zero_fill = w.observed@;
     let mut cl = [0u8; NCL];
     w.add(NCL);
+    proof { assert(w.observed@ == cl_zero_fill + NCL); }
     proof { assert(cl@ =~= Seq::new(NCL as nat, |i: int| 0u8)); }
     let mut i = 0;
     while i < ncode
-        invariant br.wf(), br.concat() == z, z == old(br).concat(), start == old(br).position(),
+        invariant br.wf(), br.frame() == old(br).frame(), br.concat() == z, z == old(br).concat(), start == old(br).position(),
             code.wf(), 4 <= ncode <= NCL, m::dynamic_sizes_ok(nlen as nat, ndist as nat),
             initial == m::MDynamicCL(z, start, Seq::new(NCL as nat, |i: int| 0u8),
                 0, ncode as nat, nlen as nat, ndist as nat, true),
@@ -589,7 +603,7 @@ impl Tables {
             old(self).code.wf(), old(self).code.ready@, old(self).code.lengths@.len() == NCL,
             m::admissible(old(self).code.lengths@, m::CodeKind::CodeLen, true),
             old(self).lit.wf(), old(self).dist.wf(),
-        ensures final(br).wf(), final(w).wf(), final(br).concat() == old(br).concat(),
+        ensures final(br).wf(), final(br).frame() == old(br).frame(), final(w).wf(), final(br).concat() == old(br).concat(),
             old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
             final(self).code == old(self).code,
             final(self).fixed_lit == old(self).fixed_lit, final(self).fixed_dist == old(self).fixed_dist,
@@ -628,7 +642,7 @@ impl Tables {
         let ghost mut large_bits: nat = 0;
         let ghost mut other_bits: nat = 0;
         while i < total
-            invariant br.wf(), br.concat() == z, z == old(br).concat(), start == old(br).position(),
+            invariant br.wf(), br.frame() == old(br).frame(), br.concat() == z, z == old(br).concat(), start == old(br).position(),
                 start <= br.position() <= 8 * z.len(), w.wf(),
                 self.code == old(self).code, self.code.wf(), self.code.ready@, code == self.code.lengths@,
                 code.len() == NCL, m::admissible(code, m::CodeKind::CodeLen, true),
@@ -649,8 +663,9 @@ impl Tables {
             let ghost cursor = br.position();
             let ghost prefix = lengths@.take(i as int);
             proof { reveal(m::MDynamicLengths); }
+            let ghost header_iteration = w.observed@;
             w.add(1);
-            proof { construction = (construction + 1) as nat; }
+            proof { assert(w.observed@ == header_iteration + 1); construction = (construction + 1) as nat; }
             let sym = match self.code.decode(br, w) {
                 Ok(sym) => sym,
                 Err(e) => return (Err(e), Ghost(construction)),
@@ -706,11 +721,14 @@ impl Tables {
         }
         if lengths[256] == 0 { return (Err(E::InvalidCodeLengths), Ghost(construction)); }
         // The coding-cost invariant applies even when construction rejects.
+        // Pin the frozen EOB-before-admission boundary at the real build call.
+        proof { assert(lengths@[256] > 0); }
         proof { self.header_table_start = Ghost(Some(br.position())); }
         let ghost before_lit = w.observed@;
         let lit_result = self.lit.build(&lengths[..nlen], Kind::LitLen, w);
         proof { construction = (construction + w.observed@ - before_lit) as nat; }
         match lit_result { Ok(()) => {}, Err(e) => return (Err(e), Ghost(construction)), }
+        proof { assert(self.lit.ready@); }
         let ghost before_dist = w.observed@;
         let dist_result = self.dist.build(&lengths[nlen..total], Kind::Dist, w);
         proof { construction = (construction + w.observed@ - before_dist) as nat; }
@@ -719,7 +737,7 @@ impl Tables {
 
     fn dynamic<S: Segments>(&mut self, br: &mut Bits<'_, S>, w: &mut Work) -> (r: Result<(), E>)
         requires old(br).wf(), old(w).wf(), old(self).code.wf(), old(self).lit.wf(), old(self).dist.wf(),
-        ensures final(br).wf(), final(w).wf(), final(br).concat() == old(br).concat(),
+        ensures final(br).wf(), final(br).frame() == old(br).frame(), final(w).wf(), final(br).concat() == old(br).concat(),
             old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
             final(self).fixed_lit == old(self).fixed_lit, final(self).fixed_dist == old(self).fixed_dist,
             final(self).code.wf(), final(self).lit.wf(), final(self).dist.wf(),
@@ -763,7 +781,7 @@ impl Tables {
 fn read_block_header<S: Segments>(tables: &mut Tables, br: &mut Bits<'_, S>, w: &mut Work)
     -> (r: Result<(u32, u32), E>)
     requires old(br).wf(), old(w).wf(), old(tables).code.wf(), old(tables).lit.wf(), old(tables).dist.wf(),
-    ensures final(br).wf(), final(w).wf(), final(br).concat() == old(br).concat(),
+    ensures final(br).wf(), final(br).frame() == old(br).frame(), final(w).wf(), final(br).concat() == old(br).concat(),
         old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
         final(tables).fixed_lit == old(tables).fixed_lit, final(tables).fixed_dist == old(tables).fixed_dist,
         final(tables).code.wf(), final(tables).lit.wf(), final(tables).dist.wf(),
@@ -808,7 +826,7 @@ fn read_block_header<S: Segments>(tables: &mut Tables, br: &mut Bits<'_, S>, w: 
 
 verus! {
 
-closed spec fn fault_eq(error: m::InflateFault, e: E) -> bool {
+pub open spec fn fault_eq(error: m::InflateFault, e: E) -> bool {
     match error {
         m::InflateFault::TruncatedZlib => e == E::TruncatedZlib,
         m::InflateFault::InvalidZlibHeader => e == E::InvalidZlibHeader,
@@ -840,7 +858,8 @@ fn match_copy(output: &mut Output<'_>, window: u64, distance: u64, length: u32, 
     requires old(output).wf(), old(w).wf(), 1 <= window <= WINDOW_MAX,
         1 <= distance <= WINDOW_MAX, 3 <= length <= LEN_MAX,
     ensures final(output).wf(), final(output).limit == old(output).limit,
-        final(output).initial == old(output).initial, old(output).produced <= final(output).produced,
+        final(output).initial == old(output).initial,
+        sink_identity(final(output).sink) == sink_identity(old(output).sink), old(output).produced <= final(output).produced,
         final(w).wf(), old(w).observed@ <= final(w).observed@,
         final(w).observed@ <= old(w).observed@ + final(output).produced - old(output).produced + 1,
         r.is_ok() ==> final(w).observed@ == old(w).observed@ + length,
@@ -858,6 +877,7 @@ fn match_copy(output: &mut Output<'_>, window: u64, distance: u64, length: u32, 
     while j < length
         invariant output.wf(), output.limit == limit, limit == old(output).limit,
             original == old(output).out@, output.initial == old(output).initial,
+            sink_identity(output.sink) == sink_identity(old(output).sink),
             1 <= distance <= original.len(), distance <= window <= WINDOW_MAX,
             3 <= length <= LEN_MAX, j <= length,
             output.out@ == m::copy_distance(original, distance as nat, j as nat),
@@ -902,11 +922,12 @@ fn compressed_step<S: Segments>(br: &mut Bits<'_, S>, output: &mut Output<'_>,
     lit: &Huffman, dist: &Huffman, window: u64, w: &mut Work) -> (r: Result<SymbolStep, Status>)
     requires old(br).wf(), old(output).wf(), old(w).wf(),
         lit.wf(), lit.ready@, dist.wf(), dist.ready@, 1 <= window <= WINDOW_MAX,
-    ensures final(br).wf(), final(br).concat() == old(br).concat(),
+    ensures final(br).wf(), final(br).frame() == old(br).frame(), final(br).concat() == old(br).concat(),
         old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
         r.is_ok() ==> old(br).position() < final(br).position(),
         final(output).wf(), final(output).limit == old(output).limit,
-        final(output).initial == old(output).initial, old(output).produced <= final(output).produced,
+        final(output).initial == old(output).initial,
+        sink_identity(final(output).sink) == sink_identity(old(output).sink), old(output).produced <= final(output).produced,
         final(w).wf(), old(w).observed@ <= final(w).observed@,
         final(w).observed@ <= old(w).observed@ + 8 * (final(br).position() - old(br).position() + 1)
             + final(output).produced - old(output).produced,
@@ -920,7 +941,9 @@ fn compressed_step<S: Segments>(br: &mut Bits<'_, S>, output: &mut Output<'_>,
     hide(m::MMatch);
     let ghost z = br.concat();
     proof { br.lemma_bounds(); output.lemma_observation(); }
+    let ghost symbol_iteration = w.observed@;
     w.add(1);
+    proof { assert(w.observed@ == symbol_iteration + 1); }
     let sym = match lit.decode(br, w) { Ok(s) => s, Err(e) => return Err(Status::Err(e)), };
     if sym < 256 {
         match output.append_byte(sym as u8) { Ok(()) => {}, Err(s) => return Err(s), }
@@ -948,11 +971,12 @@ fn compressed<S: Segments>(br: &mut Bits<'_, S>, output: &mut Output<'_>,
     lit: &Huffman, dist: &Huffman, window: u64, w: &mut Work) -> (r: Result<(), Status>)
     requires old(br).wf(), old(output).wf(), old(w).wf(),
         lit.wf(), lit.ready@, dist.wf(), dist.ready@, 1 <= window <= WINDOW_MAX,
-    ensures final(br).wf(), final(br).concat() == old(br).concat(),
+    ensures final(br).wf(), final(br).frame() == old(br).frame(), final(br).concat() == old(br).concat(),
         old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
         r.is_ok() ==> old(br).position() < final(br).position(),
         final(output).wf(), final(output).limit == old(output).limit,
-        final(output).initial == old(output).initial, old(output).produced <= final(output).produced,
+        final(output).initial == old(output).initial,
+        sink_identity(final(output).sink) == sink_identity(old(output).sink), old(output).produced <= final(output).produced,
         final(w).wf(), old(w).observed@ <= final(w).observed@,
         final(w).observed@ <= old(w).observed@ + 8 * (final(br).position() - old(br).position() + 1)
             + final(output).produced - old(output).produced,
@@ -969,9 +993,10 @@ fn compressed<S: Segments>(br: &mut Bits<'_, S>, output: &mut Output<'_>,
     let ghost initial = m::MCompressed(z, start, original, limit as nat, window as nat, lit.lengths@, dist.lengths@);
     proof { br.lemma_bounds(); output.lemma_observation(); }
     loop
-        invariant br.wf(), br.concat() == z, z == old(br).concat(), start == old(br).position(),
+        invariant br.wf(), br.frame() == old(br).frame(), br.concat() == z, z == old(br).concat(), start == old(br).position(),
             start <= br.position() <= 8 * z.len(), output.wf(), output.limit == limit, limit == old(output).limit,
-            original == old(output).out@, output.initial == old(output).initial, old(output).produced <= output.produced,
+            original == old(output).out@, output.initial == old(output).initial,
+            sink_identity(output.sink) == sink_identity(old(output).sink), old(output).produced <= output.produced,
             lit.wf(), lit.ready@, dist.wf(), dist.ready@, 1 <= window <= WINDOW_MAX,
             w.wf(), old(w).observed@ <= w.observed@ <= old(w).observed@ + 8 * (br.position() - start)
                 + output.produced - old(output).produced,
@@ -998,11 +1023,12 @@ closed spec fn block_eq(effect: (bool, m::StoredEffect), result: Result<bool, St
 fn one_block<S: Segments>(tables: &mut Tables, br: &mut Bits<'_, S>, output: &mut Output<'_>,
     window: u64, w: &mut Work) -> (r: Result<bool, Status>)
     requires old(tables).wf(), old(br).wf(), old(output).wf(), old(w).wf(), 1 <= window <= WINDOW_MAX,
-    ensures final(tables).wf(), final(br).wf(), final(br).concat() == old(br).concat(),
+    ensures final(tables).wf(), final(br).wf(), final(br).frame() == old(br).frame(), final(br).concat() == old(br).concat(),
         old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
         r.is_ok() ==> old(br).position() + 3 <= final(br).position(),
         final(output).wf(), final(output).limit == old(output).limit,
-        final(output).initial == old(output).initial, old(output).produced <= final(output).produced,
+        final(output).initial == old(output).initial,
+        sink_identity(final(output).sink) == sink_identity(old(output).sink), old(output).produced <= final(output).produced,
         final(w).wf(), old(w).observed@ <= final(w).observed@,
         final(w).observed@ <= old(w).observed@ + 64 * (final(br).position() - old(br).position() + 1)
             + 2 * (final(output).produced - old(output).produced),
@@ -1016,7 +1042,9 @@ fn one_block<S: Segments>(tables: &mut Tables, br: &mut Bits<'_, S>, output: &mu
     hide(m::MCompressed);
     hide(m::MStoredBlock);
     proof { br.lemma_bounds(); output.lemma_observation(); }
+    let ghost block_iteration = w.observed@;
     w.add(1);
+    proof { assert(w.observed@ == block_iteration + 1); }
     let (last, typ) = match read_block_header(tables, br, w) {
         Ok(pair) => pair, Err(e) => return Err(Status::Err(e)),
     };
@@ -1038,11 +1066,12 @@ fn one_block<S: Segments>(tables: &mut Tables, br: &mut Bits<'_, S>, output: &mu
 fn blocks<S: Segments>(tables: &mut Tables, br: &mut Bits<'_, S>, output: &mut Output<'_>,
     window: u64, w: &mut Work) -> (r: Result<(), Status>)
     requires old(tables).wf(), old(br).wf(), old(output).wf(), old(w).wf(), 1 <= window <= WINDOW_MAX,
-    ensures final(tables).wf(), final(br).wf(), final(br).concat() == old(br).concat(),
+    ensures final(tables).wf(), final(br).wf(), final(br).frame() == old(br).frame(), final(br).concat() == old(br).concat(),
         old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
         r.is_ok() ==> old(br).position() + 3 <= final(br).position(),
         final(output).wf(), final(output).limit == old(output).limit,
-        final(output).initial == old(output).initial, old(output).produced <= final(output).produced,
+        final(output).initial == old(output).initial,
+        sink_identity(final(output).sink) == sink_identity(old(output).sink), old(output).produced <= final(output).produced,
         final(w).wf(), old(w).observed@ <= final(w).observed@,
         final(w).observed@ <= old(w).observed@ + 64 * (final(br).position() - old(br).position() + 1)
             + 2 * (final(output).produced - old(output).produced),
@@ -1064,9 +1093,10 @@ fn blocks<S: Segments>(tables: &mut Tables, br: &mut Bits<'_, S>, output: &mut O
         assert(start <= 8 * z.len());
     }
     loop
-        invariant tables.wf(), br.wf(), br.concat() == z, z == old(br).concat(), start == old(br).position(),
+        invariant tables.wf(), br.wf(), br.frame() == old(br).frame(), br.concat() == z, z == old(br).concat(), start == old(br).position(),
             start <= br.position() <= 8 * z.len(), output.wf(), output.limit == limit, limit == old(output).limit,
-            original == old(output).out@, output.initial == old(output).initial, old(output).produced <= output.produced,
+            original == old(output).out@, output.initial == old(output).initial,
+            sink_identity(output.sink) == sink_identity(old(output).sink), old(output).produced <= output.produced,
             1 <= window <= WINDOW_MAX, w.wf(), old(w).observed@ <= w.observed@,
             w.observed@ <= old(w).observed@ + 64 * (br.position() - start) + 2 * (output.produced - old(output).produced),
             initial == m::MBlk(z, start, original, limit as nat, window as nat, true),
@@ -1100,89 +1130,260 @@ fn selected_window(cinfo: u8, enforce: bool) -> (window: u64)
     } else { WINDOW_MAX as u64 }
 }
 
-} // verus!
-
-fn run<S: Segments>(
-    br: &mut Bits<'_, S>,
-    output: &mut Output<'_>,
-    o: InflateOptions,
-    w: &mut Work,
-) -> Result<(), Status> {
-    let cmf = br.byte(w).map_err(Status::Err)?;
-    let flg = br.byte(w).map_err(Status::Err)?;
-    if (u16::from(cmf) * 256 + u16::from(flg)) % 31 != 0 {
-        return Err(Status::Err(E::InvalidZlibHeader));
-    }
-    if cmf & 15 != 8 || cmf >> 4 > 7 {
-        return Err(Status::Err(E::UnsupportedZlibMethod));
-    }
-    if flg & 0x20 != 0 {
-        return Err(Status::Err(E::ZlibPresetDictionary));
-    }
-    let window = selected_window(cmf >> 4, o.window == Window::Enforce);
-    let mut tables = Tables::new(w).map_err(Status::Err)?;
-    blocks(&mut tables, br, output, window, w)?;
-    br.align();
+/// Actual ordered four-byte checksum read, with a mathematical BE prefix.
+fn checksum<S: Segments>(br: &mut Bits<'_, S>, w: &mut Work) -> (r: Result<u32, E>)
+    requires old(br).wf(), old(br).remaining == 0, old(w).wf(),
+    ensures final(br).wf(), final(br).frame() == old(br).frame(), final(br).remaining == 0, final(br).concat() == old(br).concat(),
+        old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
+        final(w).wf(), old(w).observed@ <= final(w).observed@ <= old(w).observed@ + 8,
+        match r {
+            Ok(value) => old(br).position() / 8 + 4 <= old(br).concat().len()
+                && value == m::be_value(old(br).concat(), old(br).position() / 8, 4)
+                && final(br).position() == old(br).position() + 32,
+            Err(e) => e == E::TruncatedZlib && old(br).position() / 8 + 4 > old(br).concat().len()
+                && final(br).position() == 8 * old(br).concat().len(),
+        },
+{
+    let ghost z = br.concat();
+    let ghost start = br.position();
+    let ghost cursor = start / 8;
     let mut expected = 0u32;
-    let mut i = 0;
-    while i < 4 {
+    let mut i = 0u8;
+    proof { br.lemma_bounds(); }
+    while i < 4
+        invariant br.wf(), br.frame() == old(br).frame(), br.remaining == 0, br.concat() == z, z == old(br).concat(),
+            start == old(br).position(), cursor == start / 8, start == 8 * cursor,
+            br.position() == start + 8 * i, cursor + i <= z.len(), i <= 4,
+            expected == m::be_value(z, cursor, i as nat), expected < m::pow2(8 * i as nat),
+            w.wf(), old(w).observed@ <= w.observed@ <= old(w).observed@ + 2 * i,
+        decreases 4 - i,
+    {
         w.add(1);
-        expected = (expected << 8) | u32::from(br.byte(w).map_err(Status::Err)?);
+        let byte = match br.byte(w) { Ok(b) => b, Err(e) => return Err(e), };
+        proof {
+            m::lemma_pow2_monotone(8 * i as nat, 24);
+            assert(m::pow2(24) == u32::MAX / 256 + 1) by (compute);
+            assert(m::pow2(0) == 1 && m::pow2(8) == 256 && m::pow2(16) == u16::MAX as nat + 1
+                && m::pow2(24) == u32::MAX / 256 + 1 && m::pow2(32) == 4294967296) by (compute);
+            assert(m::pow2(8 * (i + 1) as nat) == 256 * m::pow2(8 * i as nat)) by {
+                if i == 0 {} else if i == 1 {} else if i == 2 {} else {}
+            }
+            let previous = expected;
+            assert(((previous << 8) | byte as u32) as int == 256 * previous as int + byte as int) by (bit_vector)
+                requires previous < u32::MAX / 256 + 1;
+        }
+        expected = (expected << 8) | byte as u32;
         i += 1;
     }
-    if expected != output.adler.finish() {
-        return Err(Status::Err(E::AdlerMismatch));
-    }
-    // IgnoreTail is inert for a short raster: only exactly-L output may ignore
-    // bytes after the checked Adler-32 (OPTIONS.md's RecommendedBeta condition).
-    if o.zlib_tail == ZlibTail::IgnoreTail && output.produced == output.limit {
-        return Ok(());
-    }
-    w.add(1);
-    if br.src.read().is_some() {
-        return Err(Status::Err(E::TrailingZlibData));
-    }
+    Ok(expected)
+}
+
+/// Actual checksum enforcement and exactly-full IgnoreTail decision.
+fn finish<S: Segments>(br: &mut Bits<'_, S>, output: &Output<'_>, ignore_tail: bool, w: &mut Work)
+    -> (r: Result<(), Status>)
+    requires old(br).wf(), output.wf(), old(w).wf(),
+    ensures final(br).wf(), final(br).frame() == old(br).frame(), final(br).concat() == old(br).concat(),
+        old(br).position() <= final(br).position() <= 8 * final(br).concat().len(),
+        final(w).wf(), old(w).observed@ <= final(w).observed@ <= old(w).observed@ + 9,
+        stored_eq(m::MFinish(old(br).concat(), old(br).position(), output.out@,
+            output.limit as nat, ignore_tail), r, output.out@, final(br).position()),
+{
+    hide(Output::wf);
+    proof { output.lemma_observation(); br.lemma_bounds(); }
+    br.align();
+    let expected = match checksum(br, w) { Ok(value) => value, Err(e) => return Err(Status::Err(e)), };
+    proof { reveal(Output::wf); }
+    if expected != output.adler.finish() { return Err(Status::Err(E::AdlerMismatch)); }
+    if ignore_tail && output.produced == output.limit { return Ok(()); }
+    if br.byte(w).is_ok() { return Err(Status::Err(E::TrailingZlibData)); }
     Ok(())
 }
 
-fn entry<S: Segments>(src: &mut S, sink: Sink<'_>, limit: u64, o: InflateOptions) -> InflateResult {
+fn run<S: Segments>(br: &mut Bits<'_, S>, output: &mut Output<'_>, o: InflateOptions, w: &mut Work)
+    -> (r: Result<(), Status>)
+    requires old(br).wf(), old(br).position() == 0, old(br).remaining == 0,
+        old(output).wf(), old(output).produced == 0, old(w).wf(),
+    ensures final(br).wf(), final(br).frame() == old(br).frame(), final(br).concat() == old(br).concat(),
+        final(br).position() <= 8 * final(br).concat().len(),
+        final(output).wf(), final(output).limit == old(output).limit,
+        final(output).initial == old(output).initial,
+        sink_identity(final(output).sink) == sink_identity(old(output).sink),
+        final(w).wf(), old(w).observed@ <= final(w).observed@,
+        final(w).observed@ <= old(w).observed@ + C_IN * old(br).concat().len()
+            + C_OUT * final(output).produced + C_INFL_FIXED,
+        stored_eq(m::MEnvelope(old(br).concat(), old(output).limit as nat,
+            o.window == Window::Enforce, o.zlib_tail == ZlibTail::IgnoreTail),
+            r, final(output).out@, final(br).position()),
+{
+    hide(Output::wf);
+    hide(m::MBlk);
+    hide(m::MFinish);
+    proof { output.lemma_observation(); assert(output.out@ =~= Seq::<u8>::empty()); br.lemma_bounds(); }
+    let cmf = match br.byte(w) { Ok(b) => b, Err(e) => return Err(Status::Err(e)), };
+    let flg = match br.byte(w) { Ok(b) => b, Err(e) => return Err(Status::Err(e)), };
+    if (cmf as u16 * 256 + flg as u16) % 31 != 0 { return Err(Status::Err(E::InvalidZlibHeader)); }
+    proof {
+        assert((cmf & 15) == cmf % 16 && (cmf >> 4) == cmf / 16) by (bit_vector);
+        assert((flg & 0x20 != 0) == ((flg as nat / 32) % 2 != 0)) by (bit_vector);
+    }
+    if cmf & 15 != 8 || cmf >> 4 > 7 { return Err(Status::Err(E::UnsupportedZlibMethod)); }
+    if flg & 0x20 != 0 { return Err(Status::Err(E::ZlibPresetDictionary)); }
+    let cinfo = cmf >> 4;
+    proof { assert(cinfo as nat == cmf as nat / 16) by (bit_vector)
+        requires cinfo == cmf >> 4; }
+    let window = selected_window(cinfo, matches!(o.window, Window::Enforce));
+    proof {
+        assert(cinfo as nat == cmf as nat / 16);
+        assert(window == m::window_size(cinfo as nat, o.window == Window::Enforce));
+        assert(window == m::window_size(cmf as nat / 16, o.window == Window::Enforce));
+    }
+    let mut tables = match Tables::new(w) { Ok(t) => t, Err(e) => return Err(Status::Err(e)), };
+    let ghost z = br.concat();
+    let ghost limit = output.limit;
+    let ghost effect = m::MBlk(z, 16, Seq::empty(), limit as nat, window as nat, true);
+    proof {
+        assert(z.len() >= 2);
+        assert(cmf == z[0] && flg == z[1]);
+        assert((256 * z[0] as nat + z[1] as nat) % 31 == 0);
+        assert(z[0] as nat % 16 == 8 && z[0] as nat / 16 <= 7);
+        assert((z[1] as nat / 32) % 2 == 0);
+        assert(window == m::window_size(z[0] as nat / 16, o.window == Window::Enforce));
+        assert(m::MEnvelope(z, limit as nat, o.window == Window::Enforce, o.zlib_tail == ZlibTail::IgnoreTail)
+            == match effect {
+                m::StoredEffect::End { out, position } => m::MFinish(z, position, out, limit as nat, o.zlib_tail == ZlibTail::IgnoreTail),
+                other => other,
+            });
+    }
+    match blocks(&mut tables, br, output, window, w) {
+        Ok(()) => { proof { assert(effect == m::StoredEffect::End { out: output.out@, position: br.position() }); } },
+        Err(s) => return Err(s),
+    }
+    finish(br, output, matches!(o.zlib_tail, ZlibTail::IgnoreTail), w)
+}
+
+} // verus!
+
+verus! {
+
+pub open spec fn status_eq(status: Status, expected: m::InflateStatus) -> bool {
+    match expected {
+        m::InflateStatus::Done => status == Status::Done,
+        m::InflateStatus::Full => status == Status::Full,
+        m::InflateStatus::Error(fault) => match status { Status::Err(e) => fault_eq(fault, e), _ => false },
+        m::InflateStatus::OutsideDomain => false,
+    }
+}
+
+fn entry<S: Segments>(src: &mut S, sink: Sink<'_>, limit: u64, o: InflateOptions) -> (r: InflateResult)
+    requires old(src).wf(), old(src).pos() == 0,
+        match sink { Sink::Into(buffer) => buffer.len() == limit, Sink::Ring(ring) => ring.len() == WINDOW_MAX },
+    ensures final(src).wf(), final(src).concat() == old(src).concat(),
+        final(src).source_frame() == old(src).source_frame(),
+        final(src).pos() <= final(src).concat().len(), final(src).seg_count() == old(src).seg_count(),
+        status_eq(r.status, m::Inflate(old(src).concat(), limit as nat,
+            o.window == Window::Enforce, o.zlib_tail == ZlibTail::IgnoreTail).status),
+        r.produced == m::Inflate(old(src).concat(), limit as nat,
+            o.window == Window::Enforce, o.zlib_tail == ZlibTail::IgnoreTail).out.len(),
+        r.produced <= limit, sink_identity(sink).1.len() == sink_view(sink).len(),
+        if sink_identity(sink).0 {
+            sink_identity(sink).1.take(r.produced as int) == m::Inflate(old(src).concat(), limit as nat,
+                o.window == Window::Enforce, o.zlib_tail == ZlibTail::IgnoreTail).out
+            && sink_identity(sink).1.skip(r.produced as int) == sink_view(sink).skip(r.produced as int)
+        } else {
+            ring_repr(sink_identity(sink).1, m::Inflate(old(src).concat(), limit as nat,
+                o.window == Window::Enforce, o.zlib_tail == ZlibTail::IgnoreTail).out)
+        },
+        r.core_steps@ <= C_IN * old(src).concat().len() + C_OUT * r.produced + C_INFL_FIXED,
+        r.seg_steps@ <= C_SEG * (old(src).seg_count() + 1),
+        r.core_steps@ + r.seg_steps@ <= C_IN * old(src).concat().len() + C_OUT * r.produced
+            + C_INFL_FIXED + C_SEG * (old(src).seg_count() + 1),
+        r.seg_steps@ == final(src).seg_steps() - old(src).seg_steps(),
+{
+    proof { caps_ok(); }
+    let ghost count = src.seg_count();
+    let ghost origin_seg = src.seg_steps();
     let mut output = Output::new(sink, limit);
-    let mut work = Work::default();
+    let mut work = Work::new();
     let mut br = Bits::new(src);
+    let ghost frame = br.frame();
+    proof { assert(frame.4 == count && frame.1 == origin_seg); }
     let status = match run(&mut br, &mut output, o, &mut work) {
         Ok(()) => Status::Done,
         Err(s) => s,
     };
+    proof {
+        assert(br.frame() == frame);
+        br.lemma_frame();
+        assert(br.origin_count@ == count);
+        br.lemma_bounds(); reveal(Output::wf);
+    }
+    let seg_steps = br.complete();
     InflateResult {
         status,
         produced: output.produced,
-        core_steps: work.core,
-        seg_steps: br.src.diagnostic_seg_steps(),
+        core_steps: Ghost(work.observed@),
+        seg_steps,
     }
 }
 
-/// Write at most out.len() bytes; preserve the unwritten suffix on every result.
-/// Requires a fresh source satisfying Segments' contract. No allocation.
-pub fn inflate_zlib_into<S: Segments>(
-    src: &mut S,
-    out: &mut [u8],
-    o: InflateOptions,
-) -> InflateResult {
+/// Write at most out.len() bytes; preserve the caller's original unwritten suffix.
+/// For S=SegmentSlices, source_frame preserves the complete shared input borrow;
+/// all remaining runtime source fields are cursor state. SegmentSlices owns no
+/// other mutable borrow, so only out and the source cursor can change.
+/// An arbitrary Segments implementation may mutate state it owns: its value
+/// frame is not a universal effect restriction (proposed PNG erratum E2).
+pub fn inflate_zlib_into<S: Segments>(src: &mut S, out: &mut [u8], o: InflateOptions) -> (r: InflateResult)
+    requires old(src).wf(), old(src).pos() == 0,
+    ensures final(src).wf(), final(src).concat() == old(src).concat(),
+        final(src).source_frame() == old(src).source_frame(),
+        final(src).pos() <= final(src).concat().len(), final(src).seg_count() == old(src).seg_count(),
+        status_eq(r.status, m::Inflate(old(src).concat(), old(out).len() as nat,
+            o.window == Window::Enforce, o.zlib_tail == ZlibTail::IgnoreTail).status),
+        r.produced == m::Inflate(old(src).concat(), old(out).len() as nat,
+            o.window == Window::Enforce, o.zlib_tail == ZlibTail::IgnoreTail).out.len(),
+        r.produced <= old(out).len(), final(out).len() == old(out).len(),
+        final(out)@.take(r.produced as int) == m::Inflate(old(src).concat(), old(out).len() as nat,
+            o.window == Window::Enforce, o.zlib_tail == ZlibTail::IgnoreTail).out,
+        final(out)@.skip(r.produced as int) == old(out)@.skip(r.produced as int),
+        r.core_steps@ <= C_IN * old(src).concat().len() + C_OUT * r.produced + C_INFL_FIXED,
+        r.seg_steps@ <= C_SEG * (old(src).seg_count() + 1),
+        r.core_steps@ + r.seg_steps@ <= C_IN * old(src).concat().len() + C_OUT * r.produced
+            + C_INFL_FIXED + C_SEG * (old(src).seg_count() + 1),
+        r.seg_steps@ == final(src).seg_steps() - old(src).seg_steps(),
+{
     let limit = out.len() as u64;
     entry(src, Sink::Into(out), limit, o)
 }
 
-/// Measure using exactly WINDOW_MAX caller-owned bytes, whose initial contents
-/// may be arbitrary. Requires a fresh source and ring.len() == WINDOW_MAX.
-/// An invalid ring is a caller-contract violation, not an input-format error.
-pub fn inflate_zlib_measure<S: Segments>(
-    src: &mut S,
-    ring: &mut [u8],
-    limit: u64,
-    o: InflateOptions,
-) -> InflateResult {
-    let ring: &mut [u8; WINDOW_MAX] = ring
-        .try_into()
-        .expect("inflate measure requires WINDOW_MAX ring bytes");
+/// Measure with exactly WINDOW_MAX caller-owned bytes, initially arbitrary.
+/// For S=SegmentSlices, only ring and the source cursor can change; the
+/// source_frame postcondition preserves the complete shared input borrow.
+/// Generic readers retain their own effects, as documented on into.
+pub fn inflate_zlib_measure<S: Segments>(src: &mut S, ring: &mut [u8], limit: u64, o: InflateOptions)
+    -> (r: InflateResult)
+    requires old(src).wf(), old(src).pos() == 0, old(ring).len() == WINDOW_MAX,
+    ensures final(src).wf(), final(src).concat() == old(src).concat(),
+        final(src).source_frame() == old(src).source_frame(),
+        final(src).pos() <= final(src).concat().len(), final(src).seg_count() == old(src).seg_count(),
+        status_eq(r.status, m::Inflate(old(src).concat(), limit as nat,
+            o.window == Window::Enforce, o.zlib_tail == ZlibTail::IgnoreTail).status),
+        r.produced == m::Inflate(old(src).concat(), limit as nat,
+            o.window == Window::Enforce, o.zlib_tail == ZlibTail::IgnoreTail).out.len(),
+        r.produced <= limit, final(ring).len() == WINDOW_MAX,
+        ring_repr(final(ring)@, m::Inflate(old(src).concat(), limit as nat,
+            o.window == Window::Enforce, o.zlib_tail == ZlibTail::IgnoreTail).out),
+        forall|j: int| 0 <= j < r.produced && j < WINDOW_MAX ==>
+            #[trigger] final(ring)@[(r.produced as int - 1 - j) % (WINDOW_MAX as int)]
+                == m::Inflate(old(src).concat(), limit as nat,
+                    o.window == Window::Enforce, o.zlib_tail == ZlibTail::IgnoreTail).out[r.produced as int - 1 - j],
+        r.core_steps@ <= C_IN * old(src).concat().len() + C_OUT * r.produced + C_INFL_FIXED,
+        r.seg_steps@ <= C_SEG * (old(src).seg_count() + 1),
+        r.core_steps@ + r.seg_steps@ <= C_IN * old(src).concat().len() + C_OUT * r.produced
+            + C_INFL_FIXED + C_SEG * (old(src).seg_count() + 1),
+        r.seg_steps@ == final(src).seg_steps() - old(src).seg_steps(),
+{
+    assert!(ring.len() == WINDOW_MAX, "inflate measure requires WINDOW_MAX ring bytes");
     entry(src, Sink::Ring(ring), limit, o)
 }
+
+} // verus!

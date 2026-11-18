@@ -1,6 +1,6 @@
 # Allocation-free PNG inflate
 
-The current layer-3 checkpoint has **236 verified, 0 errors** in fresh final-source run 285. Steps (2a) and (2b) are complete at the actual stored/compressed helpers, block dispatch and full DEFLATE BFINAL loop against independent mathematical models, under explicit helper well-formedness/window preconditions. This includes stored alignment/LEN/NLEN/D5, reserved symbols, arithmetic length/distance bases/extras, pre-emission distance/window checks, overlapping copies and block-level slice/ring/Adler preservation. The actual policy helper proves declared-window versus Ignore after validated CINFO. Construction work remains separate from reading/decoding and is now bounded by consumed bits on every header outcome; the complete block loop has a local Ghost linear-work bound. The zlib envelope/public caller composition, full public L-WINDOW/L-RING and T-INFL, returned Ghost per-call counters and global T1/T11/T12 remain open. Thirteen release tests, all vector layouts plus 10,000 generated streams and 10,000 corruptions, host/thumbv7m instantiated allocator probes and twelve frozen hashes pass. The 32-bit verifier replay, authored model-vector witnesses and mutation gates remain open. Resume step (2c) at run, then both public entries; `/home/ws/projects/verified-decoders/png/inflate_verus/LEDGER.md` and `/home/ws/projects/verified-decoders/png/inflate_verus/STUCK.md` give exact contracts, locations and boundaries. The coordinator-owned ghost-library dependency-wording clarification remains open.
+Fresh final-source run 476 reports **362 verified, 0 errors**. Both actual public entries retain their independent-model, output/suffix, source-frame and erased-work contracts. The frozen witness subset is now 43 of 631 streams: the additions cover three successful dynamic blocks, all five D4 short-input cases, the large fixed-overlap record and eight further stored/header/dynamic-error companions. Three synthetic streams additionally prove distance exactly the declared window, window+1 under Enforce versus Ignore, and a wrapped measuring ring at distance WINDOW_MAX. The separate independent-model L-LIMIT-MONO theorem is proved. Nineteen new verifier mutation kills bring the historical total to 63; ill-typed run 453 is not counted. E2 is APPROVED WITH AMENDMENT, and the ledger records SegmentSlices as the first L-SEG-FRAME discharge: Verus checks frame preservation on Some/None returns, while type/call-graph inspection and trusted Rust aliasing establish the absence of other effects. No universal no-extra-effect claim is made for arbitrary T-SEG readers; future PNG IDAT/fdAT/iCCP readers each need their own M3 discharge. Fresh full runtime gates pass in runs 466–473, including thirteen release tests, host/thumb instantiated allocator probes, 10,000 generated streams plus 10,000 corruptions, all vector layouts, source/cap/provenance controls and twelve frozen hashes. The other 588 core streams, named policy/segment gates, any further mutation variants and matching pinned i686 verification remain open; run 474 finds no matching cache. This is not M2 sign-off or a signed allocation audit. E1 remains APPROVED. `/home/ws/projects/verified-decoders/png/inflate_verus/LEDGER.md` and `/home/ws/projects/verified-decoders/png/inflate_verus/STUCK.md` give the exact handoff; next logged run is 477.
 
 ## Historical M1a implementation
 
@@ -10,7 +10,7 @@ M1a plain Rust checkpoint, 2026-11-17. Runtime tests pass; **zero Verus obligati
 
 The frozen manifest requires `#![no_std]` **without `alloc`**, overriding the task's initial `no_std+alloc` wording. This library has no dependencies and no allocation guard. Callers own the output and the measuring ring. The PNG crate will own the hash-pinned guard and the `IccWindow` reservation; copying that guard into this crate would violate the manifest's allocation shape. Huffman tables use fixed-size arrays.
 
-## API and behaviour
+## Historical M1a API and behaviour
 
 - `inflate_zlib_into(src, out, options)` uses `out.len()` as the limit and preserves the unwritten suffix on every outcome.
 - `inflate_zlib_measure(src, ring, limit, options)` requires a ring of exactly `limits::WINDOW_MAX` bytes, with arbitrary initial contents.
@@ -26,7 +26,7 @@ The five option fields expose only Strict/RecommendedBeta values. `InflateOption
 
 `SegmentSlices::new(parts)` borrows the segment list, checks T-SEG's concatenation-length ceiling, and starts a fresh cursor. Construction does not allocate; its traversal precedes the inflate call and does not enter that call's work counters. Empty segments participate in `seg_steps`; repeated EOF reads do not repeatedly charge the final advance.
 
-## Evidence and replay
+## Historical M1a evidence and replay
 
 The logged runner fixes `CARGO_BUILD_JOBS=1`, bounds the foreground command, selects the crate's working directory, and records success or failure in `RUNLOG.tsv` and `runs/NNNN.log`.
 
@@ -46,7 +46,7 @@ The harness uses a bounded output buffer for 278 extracted streams whose raw sha
 
 Library builds pass on x86_64, i686 and freestanding `thumbv7m-none-eabi`. Source checks reuse GIF's allocation scanner in both modes, run its positive/negative controls, reject copied cap numerals with a separate controlled lint, and confirm all twelve Stage-1 hashes. These are falsification gates, not the signed production call-graph audit.
 
-## Proof boundary and next step
+## Historical M1a proof boundary and next step
 
 The current counters are runtime `u128` diagnostics, not the manifest's erased `Ghost<nat>` observations. T-SEG's `concat`, `wf` and cost contracts currently exist only as prose. There is no independent mathematical model, `caps_ok`, verified loop variant, public-entry refinement theorem, model-versus-authored witness proof or verifier mutation kill. No T-HUFF, L-CANON, T-INFL, T-SEG, T1, T11, T12 or allocation theorem is claimed.
 

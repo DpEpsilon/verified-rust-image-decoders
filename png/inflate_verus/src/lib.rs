@@ -1,7 +1,7 @@
 //! Allocation-free zlib/DEFLATE, PNG-CORE-SPEC 1.0 P9–P10.
 //!
-//! M1a ordinary Rust, not yet verified. Both entry points retain the produced
-//! count on errors and distinguish an exactly full output from a surplus byte.
+//! Both verified public entries refine one independent sequence model, retain
+//! produced prefixes on errors and return erased per-call work observations.
 #![no_std]
 #![forbid(unsafe_code)]
 
@@ -11,11 +11,33 @@ mod canonical;
 mod classification;
 mod huffman;
 mod inflate;
+#[cfg(verus_only)]
+pub mod limit_mono;
 pub mod limits;
 #[cfg(verus_only)]
 pub mod model;
 pub mod segments;
+#[cfg(verus_only)]
+mod witness_cases;
+#[cfg(verus_only)]
+mod witness_d4;
+#[cfg(verus_only)]
+mod witness_dynamic;
+#[cfg(verus_only)]
+mod witness_dynamic_cases;
+#[cfg(verus_only)]
+mod witness_invalid_dynamic;
+#[cfg(verus_only)]
+mod witness_overlap;
+#[cfg(verus_only)]
+mod witness_window;
+#[cfg(verus_only)]
+mod witness_window_cases;
+#[cfg(verus_only)]
+mod witnesses;
 
+#[cfg(verus_only)]
+pub use inflate::{fault_eq, ring_repr, status_eq};
 pub use inflate::{inflate_zlib_into, inflate_zlib_measure};
 pub use segments::{SegmentSlices, Segments};
 
@@ -41,7 +63,6 @@ pub enum Status {
     Full,
     Err(InflateError),
 }
-} // verus!
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum AdlerOption {
@@ -90,41 +111,35 @@ impl InflateOptions {
         ..Self::STRICT
     };
 }
-
-/// Runtime diagnostics at M1a; M2 must replace these with erased Ghost<nat>
-/// counters connected to the same concrete loops. No work inequality is proved.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct InflateResult {
-    pub status: Status,
-    pub produced: u64,
-    pub core_steps: u128,
-    pub seg_steps: u128,
-}
+} // verus!
 
 use vstd::prelude::*;
 
 verus! {
+/// Both work observations are erased, exact per-call loop counts.
+#[derive(Clone, Copy)]
+pub struct InflateResult {
+    pub status: Status,
+    pub produced: u64,
+    pub core_steps: Ghost<nat>,
+    pub seg_steps: Ghost<nat>,
+}
+
 pub(crate) struct Work {
-    pub core: u128,
     pub observed: Ghost<nat>,
 }
 impl Work {
-    pub(crate) closed spec fn wf(&self) -> bool {
-        self.core == if self.observed@ <= u128::MAX { self.observed@ } else { u128::MAX as nat }
-    }
+    pub(crate) closed spec fn wf(&self) -> bool { true }
 
     pub(crate) fn new() -> (w: Self)
-        ensures w.wf(), w.core == 0, w.observed@ == 0,
-    { Self { core: 0, observed: Ghost(0nat) } }
+        ensures w.wf(), w.observed@ == 0,
+    { Self { observed: Ghost(0nat) } }
 
-    /// The erased observation is exact; the legacy runtime diagnostic clamps.
+    /// Charge only the erased counter at the actual production loop boundary.
     pub(crate) fn add(&mut self, n: usize)
         requires old(self).wf(),
-        ensures final(self).wf(), old(self).core <= final(self).core <= old(self).core + n,
-            final(self).observed@ == old(self).observed@ + n,
+        ensures final(self).wf(), final(self).observed@ == old(self).observed@ + n,
     {
-        if self.core > u128::MAX - n as u128 { self.core = u128::MAX; }
-        else { self.core += n as u128; }
         proof { self.observed = Ghost(self.observed@ + n as nat); }
     }
 }

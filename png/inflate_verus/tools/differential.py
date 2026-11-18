@@ -3,7 +3,8 @@
 
 Use python3 -I. Inputs are generated or read from the frozen synthetic vectors;
 no corpus or generated stream bytes are written to disk. The Rust adapter checks
-into/measure equality, untouched suffix, last-window contents, and observed work.
+into/measure equality, untouched suffix, last-window contents, and cursor bounds.
+Work observations are now erased and are checked by public Verus contracts.
 """
 import argparse
 import json
@@ -80,7 +81,7 @@ class Runner:
         self.proc.stdin.flush()
         line = self.proc.stdout.readline()
         assert line, f'Rust adapter exited on {name}; status {self.proc.poll()}'
-        status, k, raw, core, seg, pos = line.rstrip('\n').split('\t')
+        status, k, raw, pos = line.rstrip('\n').split('\t')
         output = bytes.fromhex(raw)
         assert int(k) == len(output), name
         result = status, output
@@ -310,7 +311,7 @@ def main():
         ring_stress(runner)
         differential(runner, a.fuzz, a.seed)
         print(f'PASS: {total} vector streams, {runner.calls} public-entry pairs; '
-              'each pair checks status/count, prefix/suffix, ring, observed work', flush=True)
+              'each pair checks status/count, prefix/suffix, ring, cursor; work is erased and proved', flush=True)
     finally:
         runner.close()
 

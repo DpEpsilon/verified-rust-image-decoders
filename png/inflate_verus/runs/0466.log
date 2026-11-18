@@ -1,0 +1,30 @@
+command: ['python3', '-I', '/home/ws/projects/verified-decoders/png/inflate_verus/tools/audit_source.py', '--self-test']
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/adler.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/bits.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/classification.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/lib.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/limit_mono.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/limits.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/segments.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_cases.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_d4.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_dynamic.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_dynamic_cases.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_invalid_dynamic.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_overlap.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_window.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_window_cases.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witnesses.rs
+alloc_scan: clean (20 file(s))
+alloc_scan: clean (20 file(s))
+self-test: OK (44 allocating constructs flagged, also beside conditional ghost contracts in both modes; cfg(test) registration controls; 26 real sources clean in both modes)
+43 authored witness streams match frozen IDAT extraction, including Z=[]; no oracle used
+cap lint positive/negative controls passed
+cap lint clean: 19 source files, all six configured caps
+erased-counter lint positive/negative controls passed
+12 frozen hashes match; allocation scanner clean; pinned ghost vstd/alloc cache configuration
+No signed production call-graph audit or Verus theorem is claimed.

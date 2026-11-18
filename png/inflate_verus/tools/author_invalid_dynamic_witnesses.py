@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+"""Author invalid dynamic-profile witnesses from length intent, not an oracle."""
+import json
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1]
+V={v['name']:v for v in json.loads((ROOT.parent/'spec-frozen/VECTORS.json').read_text())}
+def wire(name):
+ b=bytes.fromhex(V[name]['input_hex']);p=8;z=b''
+ while p+12<=len(b):
+  n=int.from_bytes(b[p:p+4],'big')
+  if b[p+4:p+8]==b'IDAT':z+=b[p+8:p+8+n]
+  p+=12+n
+ return z
+def seq(v,ty='u8'):return 'seq!['+', '.join(str(x)+(ty if i==0 else '') for i,x in enumerate(v))+']'
+CL=[4,5,5,5,4,4,4,4,4,4,4,4,4,5,5,5,4,4,4]
+CASES=[('no-end-of-block-code',[0,65,66],2,[1,1]),('incomplete-literal-code',[0,65,256],2,[1,1]),('incomplete-distance-code',[0,65,66,256],2,[2,2,2]),('oversubscribed-literal-code',[0,1,2,256],1,[1,1])]
+lines=['//! Authored dynamic rejection profiles and both actual public calls.','use crate::{model as m,Status,InflateError as E,witnesses::check_at,witness_dynamic::*};','use vstd::prelude::*;','verus! {']
+for suffix,active,width,dist in CASES:
+ name='deflate/'+suffix;z=wire(name);zs=seq(z);ds=seq(dist);cl=seq(CL);lit=[width if i in active else 0 for i in range(286)];vals=lit+dist
+ litexpr='Seq::new(286,|i:int| if '+' || '.join(f'i == {x}' for x in active)+f' {{ {width}u8 }} else {{0u8}})'
+ pos=[90]
+ for v in vals:pos.append(pos[-1]+CL[v])
+ ps=seq(pos,'nat');end=pos[-1]
+ lines += [f'/// {name}: independently authored rejected lengths, R=4.','#[verifier::spinoff_prover]',f'fn {suffix.replace("-","_")}() {{','    hide(m::Kraft); hide(m::count_prefix); hide(m::MDynamicLengths); hide(m::MDynamicCL); hide(m::MDec);',f'    let wire=[{", ".join(hex(x)+( "u8" if i==0 else "") for i,x in enumerate(z))}];','    proof {',f'        let z={zs}; let code={cl}; let lit={litexpr}; let dist={ds};',f'        let values=lit+dist; let positions={ps};','        assert(crate::limits::CODE_SPACE == 32768) by (compute); assert(crate::limits::MAX_CODE_BITS == 15) by (compute); assert(crate::limits::NLIT_MAX == 286) by (compute); assert(crate::limits::NDIST_MAX == 30) by (compute); assert(crate::limits::NCL == 19) by (compute);',f'        assert(m::Kraft({cl}) == 32768) by (compute); assert(m::admissible(code,m::CodeKind::CodeLen,true));',f'        assert(cl_trace({zs},33,Seq::new(19,|i:int|0u8),0) == {cl}) by (compute);',f'        assert(trace_words({zs},{cl},{litexpr}+{ds},{ps},0,{len(vals)})) by (compute);',f'        trace_decodes(z,code,values,positions,0,{len(vals)});',f'        expand_literals(z,code,values,positions,286,{len(dist)},0);',f'        assert(values.take(0) =~= Seq::<u8>::empty()); assert(positions[0] == 90); assert(positions[values.len() as int] == {end});',f'        assert(values.take(286) =~= lit); assert(values.skip(286) =~= dist);',f'        assert(m::Kraft({litexpr}) == {len(active)*(32768>>width) if width!=1 else "(u16::MAX as nat + 1)"}) by (compute);',f'        assert(m::count_prefix({litexpr},0,286) == {286-len(active)}) by (compute);',f'        assert(m::bl_count({litexpr},1) == {len(active) if width==1 else 0}) by (compute);',f'        assert(m::Kraft({ds}) == {sum(32768>>x for x in dist)}) by (compute);',f'        assert(m::count_prefix({ds},0,{len(dist)}) == 0) by (compute); assert(m::bl_count({ds},1) == {dist.count(1)}) by (compute);',f'        assert(m::finish_dynamic(values,286,{len(dist)},{end},true) == (m::DynamicHeader::Error{{error:m::InflateFault::InvalidCodeLengths,position:{end}}}));',f'        assert(m::MDynamicLengths(z,90,code,Seq::empty(),286,{len(dist)},true) == (m::DynamicHeader::Error{{error:m::InflateFault::InvalidCodeLengths,position:{end}}}));',f'        cl_bridge(z,33,Seq::new(19,|i:int|0u8),0,286,{len(dist)});',f'        assert(m::MDynamicCL(z,33,Seq::new(19,|i:int|0u8),0,19,286,{len(dist)},true) == (m::DynamicHeader::Error{{error:m::InflateFault::InvalidCodeLengths,position:{end}}}));',f'        assert(m::field_value({zs},19,5) == 29) by (compute); assert(m::field_value({zs},24,5) == {len(dist)-1}) by (compute); assert(m::field_value({zs},29,4) == 15) by (compute);',f'        assert(m::MDynamic(z,19,true) == (m::DynamicHeader::Error{{error:m::InflateFault::InvalidCodeLengths,position:{end}}}));','        assert(crate::limits::WINDOW_MAX == 32768) by (compute); assert(m::pow2(15) == 32768) by (compute);',f'        assert(m::field_value({zs},16,1) == 1) by (compute); assert(m::field_value({zs},17,2) == 2) by (compute);',f'        assert(m::MBlk(z,16,Seq::empty(),4,32768,true) == (m::StoredEffect::Error{{error:m::InflateFault::InvalidCodeLengths,out:Seq::empty(),position:{end}}}));','        assert(m::Inflate(z,4,true,false).status == m::InflateStatus::Error(m::InflateFault::InvalidCodeLengths)); assert(m::Inflate(z,4,true,false).out == Seq::<u8>::empty());',f'        assert(crate::limits::SEGMENT_BYTES_MAX >= {len(z)}) by (compute);','    }','    let mut output=[0xa5u8;4];let ghost raw=Seq::<u8>::empty();check_at(&wire,&mut output,Status::Err(E::InvalidCodeLengths),Ghost(raw));','}']
+lines+=['} // verus!',''];(ROOT/'src/witness_invalid_dynamic.rs').write_text('\n'.join(lines));print('Wrote four independently authored invalid dynamic profiles')

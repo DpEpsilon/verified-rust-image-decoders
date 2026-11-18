@@ -1698,4 +1698,62 @@ pub open spec fn window_size(cinfo: nat, enforce: bool) -> nat {
     else { crate::limits::WINDOW_MAX as nat }
 }
 
+/// Mathematical big-endian prefix value, without a byte buffer or machine shifts.
+pub open spec fn be_value(z: Seq<u8>, cursor: nat, count: nat) -> nat
+    decreases count,
+{
+    if count == 0 || cursor + count > z.len() { 0 }
+    else { 256 * be_value(z, cursor, (count - 1) as nat) + z[(cursor + count - 1) as int] as nat }
+}
+
+/// P9 steps 5–6 after a final DEFLATE block: padding, checksum, then tail.
+pub open spec fn MFinish(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+    ignore_tail: bool) -> StoredEffect {
+    let cursor = (position + 7) / 8;
+    if position > 8 * z.len() || out.len() > limit { StoredEffect::OutsideDomain }
+    else if cursor + 4 > z.len() {
+        StoredEffect::Error { error: InflateFault::TruncatedZlib, out, position: 8 * z.len() }
+    } else if be_value(z, cursor, 4) != Adler(out) {
+        StoredEffect::Error { error: InflateFault::AdlerMismatch, out, position: 8 * (cursor + 4) }
+    } else if ignore_tail && out.len() == limit {
+        StoredEffect::End { out, position: 8 * (cursor + 4) }
+    } else if cursor + 4 < z.len() {
+        StoredEffect::Error { error: InflateFault::TrailingZlibData, out, position: 8 * (cursor + 5) }
+    } else { StoredEffect::End { out, position: 8 * (cursor + 4) } }
+}
+
+/// P9 in its operational check order. Only mathematical bytes, positions,
+/// canonical codewords and the evolving sequence output enter this envelope.
+pub open spec fn MEnvelope(z: Seq<u8>, limit: nat, enforce_window: bool,
+    ignore_tail: bool) -> StoredEffect {
+    let out = Seq::<u8>::empty();
+    if z.len() < 2 {
+        StoredEffect::Error { error: InflateFault::TruncatedZlib, out, position: 8 * z.len() }
+    } else if (256 * z[0] as nat + z[1] as nat) % 31 != 0 {
+        StoredEffect::Error { error: InflateFault::InvalidZlibHeader, out, position: 16 }
+    } else if z[0] as nat % 16 != 8 || z[0] as nat / 16 > 7 {
+        StoredEffect::Error { error: InflateFault::UnsupportedZlibMethod, out, position: 16 }
+    } else if (z[1] as nat / 32) % 2 != 0 {
+        StoredEffect::Error { error: InflateFault::ZlibPresetDictionary, out, position: 16 }
+    } else { match MBlk(z, 16, out, limit, window_size(z[0] as nat / 16, enforce_window), true) {
+        StoredEffect::End { out: extended, position: end } => MFinish(z, end, extended, limit, ignore_tail),
+        effect => effect,
+    } }
+}
+
+pub enum InflateStatus { Done, Full, Error(InflateFault), OutsideDomain }
+pub struct Inflated { pub status: InflateStatus, pub out: Seq<u8>, pub r2: bool }
+
+/// The single public inflate model for the implemented Strict/RB field domain.
+/// The remaining three option fields each have one inhabitant; R2 is false.
+pub open spec fn Inflate(z: Seq<u8>, limit: nat, enforce_window: bool,
+    ignore_tail: bool) -> Inflated {
+    match MEnvelope(z, limit, enforce_window, ignore_tail) {
+        StoredEffect::End { out, .. } => Inflated { status: InflateStatus::Done, out, r2: false },
+        StoredEffect::Full { out } => Inflated { status: InflateStatus::Full, out, r2: false },
+        StoredEffect::Error { error, out, .. } => Inflated { status: InflateStatus::Error(error), out, r2: false },
+        StoredEffect::OutsideDomain => Inflated { status: InflateStatus::OutsideDomain, out: Seq::empty(), r2: false },
+    }
+}
+
 } // verus!

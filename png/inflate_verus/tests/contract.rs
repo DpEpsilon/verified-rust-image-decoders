@@ -34,7 +34,7 @@ fn check(z: &[u8], limit: usize, status: Status, expected: &[u8]) {
     let mut src = SegmentSlices::new(&parts).unwrap();
     let mut ring = vec![0xcc; WINDOW_MAX];
     let m = inflate_zlib_measure(&mut src, &mut ring, limit as u64, O::STRICT);
-    assert_eq!(m, r);
+    assert_eq!((m.status, m.produced), (r.status, r.produced));
     for j in expected.len().saturating_sub(WINDOW_MAX)..expected.len() {
         assert_eq!(ring[j % WINDOW_MAX], expected[j]);
     }
@@ -128,18 +128,18 @@ fn eof_cursor_and_empty_segments_are_stable() {
         assert_eq!(s.pos(), 0);
     }
     assert_eq!(s.seg_index(), parts.len());
-    assert_eq!(s.seg_steps(), parts.len() as u128 + 1);
 }
 #[test]
-fn million_empty_segments_do_not_enter_core_steps() {
+fn million_empty_segments_preserve_the_stream() {
     let z = stored(b"", 0, true);
     let mut parts = vec![&[][..]; 1_000_000];
     parts.push(&z);
     let mut s = SegmentSlices::new(&parts).unwrap();
     let r = inflate_zlib_into(&mut s, &mut [], O::STRICT);
     assert_eq!(r.status, Status::Done);
-    assert_eq!(r.seg_steps, parts.len() as u128 + 1);
-    assert!(r.core_steps <= C_IN * z.len() as u128 + C_INFL_FIXED);
+    assert_eq!(r.produced, 0);
+    assert_eq!(s.seg_index(), parts.len());
+    assert_eq!(s.pos(), z.len() as u64);
 }
 #[test]
 fn measuring_limit_is_u64_not_a_slice_length() {
