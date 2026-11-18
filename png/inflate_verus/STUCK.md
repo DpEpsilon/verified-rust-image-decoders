@@ -1,3 +1,23 @@
+# Current checkpoint: default-limit decomposition, original layouts and parsed audit bindings
+
+2026-11-18. **Fresh final-source run 529: 831 verified, 0 errors.** Core coverage is **592 / 631**, up by 29. The exact handoff is the top section of `/home/ws/projects/verified-decoders/png/inflate_verus/LEDGER.md`. All jobs have exited; no failing or speculative proof remains active. **Next logged run is 542.**
+
+All twelve previously blocked streams now pass at default limits. Five stored classes use separate constructors, payload equality, fields, balanced checksum sums and symbolic model/public-call composition. Three further large BASE_RAW fixed/RLE classes cover nine instances. Six fdAT instances now have checksum-error or successful short-output proofs at their own fcTL R; two additional small IDAT instances close palette and trailing-stream cases. There are 250 regular stream classes covering 533 instances, plus 48 individual, three earlier small-error and eight finishing instances.
+
+The three named original IDAT gates are closed: 1,005 one-byte parts, 67 irregular parts and five parts with lengths `[0,10,0,995,0]`. A verified borrowed-slice layout constructor calls both actual entries at R=1,023. These layout proofs add no duplicate coverage credit. Complete forward encoding means complete candidate DEFLATE-body encoding, not a zlib decoder or a source of expected output.
+
+Both medium findings in `/home/ws/projects/verified-decoders/png/REVIEW-ASTRA-WITNESSES.md` are repaired. The audit parses exact input/limit/options/status/raw call descriptors for every credited witness, explicitly binds all 48 individual cases to independent R, checks exact policy tuple multisets, pins reviewed harness bodies and rejects unsupported runtime control flow. Eleven negative/checkout tests pass in runs 530/540; run 541 validates the final source-bound count, twenty retained log hashes, all source/frozen controls and a checkout replay without `runs/`. Required proof logs and final runtime logs live under non-ignored `evidence/`, with SHA-256 checks; historical blocked diagnostics remain retained and current `tools/witness_blocked.json` is empty.
+
+**39 core instances remain:** 21 first-fixed-block trace gaps, dynamic `depth16/rounding-boundaries`, the dynamic fdAT `apng/interlaced-subframe`, and sixteen malformed/ambiguous IHDR/fcTL instances without a legal independent R. Do not invent fallback R or call these unattempted streams resource-blocked. The other frozen declared-window, level/filter/flush/truncation, image/policy excess-output/excess-row and beyond-declared-window gates remain open. Existing synthetic window/ring proofs do not replace them.
+
+New implementation mutation kills are 524 (length-extra width plus one) and 528 (distance-extra width plus one), giving historical total **65**. Production runtime bodies did not change. Full runtime evidence passes in 531–537: thirteen tests, host/thumb instantiated allocator probes, every vector layout, 10,000 generated streams and 10,000 corruptions, zero unexpected differences; 33,544 entry-point pairs / 67,088 actual calls. Work is erased and proved, not measured. No signed allocation audit or M2 sign-off is claimed.
+
+Pinned i686 proof replay remains open: run 539 finds no candidate in the inflate/GIF targets or `/home/ws/.cache`; no bootstrap or target substitution occurred. E1/E2 statuses, the SegmentSlices L-SEG-FRAME discharge and the separate M3 reader/call-site obligations remain unchanged. No new frozen-statement discrepancy, trust addition, solver-limit increase, target cleaning, commit/push or edit outside the crate occurred. Existing mutation/review evidence was left unchanged.
+
+---
+
+## Previous checkpoint (historical)
+
 # Current checkpoint: fixed-match/effect bridge and extended authored classes
 
 2026-11-18. **Fresh final-source run 510: 767 verified, 0 errors.** Core coverage is **563 / 631**, up by 220. The exact handoff is the top section of `/home/ws/projects/verified-decoders/png/inflate_verus/LEDGER.md`. All jobs have exited; no failing/speculative proof remains active. Next logged run is 521.

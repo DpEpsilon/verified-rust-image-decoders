@@ -138,4 +138,62 @@ pub(crate) proof fn expand(z: Seq<u8>, raw: Seq<u8>, ts: Seq<Step>, k: nat)
     if k+1 < ts.len() {expand(z,raw,ts,k+1);}
     reveal_with_fuel(m::MCompressed,2);
 }
+proof fn step_effect_at(z: Seq<u8>, raw: Seq<u8>, t: Step, last: bool, limit: nat)
+    requires raw.len() <= limit, valid_step(z,raw,t,last),
+    ensures m::MCompressedStep(z,t.pos,raw.take(t.before as int),limit,32768,m::fixed_lit_lengths(),m::fixed_dist_lengths()) ==
+        if last {m::SymbolEffect::End {out:raw,position:t.next}}
+        else {m::SymbolEffect::Next {out:raw.take(t.after as int),position:t.next}},
+{
+    hide(m::MDec); hide(m::decode_prefix); hide(m::cw); hide(m::copy_distance);
+    assert(crate::limits::FIXED_LIT_COUNT == 288) by (compute);
+    assert(crate::limits::FIXED_DIST_COUNT == 32) by (compute);
+    assert(crate::limits::WINDOW_MAX == 32768) by (compute);
+    assert(crate::limits::LEN_MAX == 258) by (compute);
+    fixed_decode(z,t.pos,t.symbol as int);
+    if t.symbol < 256 {
+        assert(raw.take(t.before as int).push(raw[t.before as int]) =~= raw.take(t.after as int));
+    } else if t.symbol == 256 {
+        assert(raw.take(t.before as int) =~= raw);
+    } else {
+        let dp = t.pos+width(t.symbol)+m::length_extra(t.symbol);
+        fixed_dist_decode(z,dp,t.ds as int);
+        copy_quant(raw,t.before,t.distance,0,t.length);
+        copy_prefix(raw,t.before,t.distance,t.length);
+        assert(m::MCopy(raw.take(t.before as int),limit,32768,t.distance,t.length) ==
+            (m::OutputEffect::Next {out:raw.take(t.after as int)}));
+    }
+    reveal(m::MCompressedStep);
+}
+pub(crate) proof fn effects_at(z: Seq<u8>, raw: Seq<u8>, ts: Seq<Step>, a: nat, b: nat, limit: nat)
+    requires raw.len() <= limit, a <= b <= ts.len(), trace(z,raw,ts,a,b),
+    ensures forall|j:int| a <= j < b ==> valid_step(z,raw,#[trigger] ts[j],j+1 == ts.len()),
+        forall|j:int| a <= j < b && j+1 < ts.len() ==> ts[j+1].pos == ts[j].next && ts[j+1].before == ts[j].after,
+        forall|j:int| a <= j < b ==> #[trigger] m::MCompressedStep(z,ts[j].pos,raw.take(ts[j].before as int),limit,32768,m::fixed_lit_lengths(),m::fixed_dist_lengths()) ==
+            if j+1 == ts.len() {m::SymbolEffect::End {out:raw,position:ts[j].next}}
+            else {m::SymbolEffect::Next {out:raw.take(ts[j].after as int),position:ts[j].next}},
+    decreases b-a,
+{
+    if a < b {
+        if b == a+1 {step_effect_at(z,raw,ts[a as int],a+1 == ts.len(),limit);}
+        else {
+            let mid = (a+(b-a)/2) as nat;
+            effects_at(z,raw,ts,a,mid,limit); effects_at(z,raw,ts,mid,b,limit);
+        }
+    }
+}
+pub(crate) proof fn expand_at(z: Seq<u8>, raw: Seq<u8>, ts: Seq<Step>, k: nat, limit: nat)
+    requires raw.len() <= limit, k < ts.len(),
+        forall|j:int| k <= j < ts.len() ==> valid_step(z,raw,#[trigger] ts[j],j+1 == ts.len()),
+        forall|j:int| k <= j < ts.len() && j+1 < ts.len() ==> ts[j+1].pos == ts[j].next && ts[j+1].before == ts[j].after,
+        forall|j:int| k <= j < ts.len() ==> #[trigger] m::MCompressedStep(z,ts[j].pos,raw.take(ts[j].before as int),limit,32768,m::fixed_lit_lengths(),m::fixed_dist_lengths()) ==
+            if j+1 == ts.len() {m::SymbolEffect::End {out:raw,position:ts[j].next}}
+            else {m::SymbolEffect::Next {out:raw.take(ts[j].after as int),position:ts[j].next}},
+    ensures m::MCompressed(z,ts[k as int].pos,raw.take(ts[k as int].before as int),limit,32768,m::fixed_lit_lengths(),m::fixed_dist_lengths()) ==
+        (m::StoredEffect::End {out:raw,position:ts.last().next}),
+    decreases ts.len()-k,
+{
+    hide(m::MCompressedStep);
+    if k+1 < ts.len() {expand_at(z,raw,ts,k+1,limit);}
+    reveal_with_fuel(m::MCompressed,2);
+}
 } // verus!

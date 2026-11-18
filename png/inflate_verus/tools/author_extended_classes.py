@@ -133,6 +133,15 @@ def greedy(raw,prefix,lazy,oldest,origin=0):
         else:ts.append(raw[p]);p+=1
     return ts
 
+def rle(raw):
+    ts=[];p=0
+    while p<len(raw):
+        n=0
+        while p>0 and n<258 and p+n<len(raw) and raw[p+n]==raw[p+n-1]:n+=1
+        if n>=3:ts.append((n,1));p+=n
+        else:ts.append(raw[p]);p+=1
+    return ts
+
 # Each fdAT stream uses the dimensions of its own enclosing fcTL, not the canvas.
 def stream_rs(data):
     hs = [b for k,b in chunks(data) if k == b'IHDR' and len(b) == 13]
@@ -161,21 +170,22 @@ known = set()
 for c in base:
     name,index = c['members'][0]
     known.add(streams(bytes.fromhex(next(v['input_hex'] for v in V if v['name']==name)))[index])
-# Named diagnostics are retained if a concrete verifier query exhausts its limit.
-BLOCKED = {c['class'] for c in json.loads((ROOT/'tools/witness_blocked.json').read_text())}
 
 def consider(ident,name,raw,intent,index=0):
     data = bytes.fromhex(next(v['input_hex'] for v in V if v['name']==name)); z = streams(data)[index]
-    if ident in BLOCKED or z in known: return
+    if z in known: return
     tokens = None
     if z[2:-4] != stored_body(raw):
         # Each candidate depends on raw and these fixed forward rules only.
-        # Comparing its complete encoding with Z never supplies expected bytes.
+        # Comparing its complete candidate DEFLATE-body encoding with Z never supplies expected bytes.
         for lazy in (False,True):
             for origin in (0,1):
                 trial = greedy(raw,1,lazy,False,origin)
                 if encode(trial) == z[2:-4]: tokens = trial; break
             if tokens is not None: break
+        if tokens is None:
+            trial = rle(raw)
+            if encode(trial) == z[2:-4]: tokens = trial
         if tokens is None: return
     members = [(v['name'],i) for v in V for i,s in enumerate(streams(bytes.fromhex(v['input_hex'])))
                if s == z and (v['name'],i) not in covered and stream_rs(bytes.fromhex(v['input_hex']))[i] == len(raw)]
@@ -221,6 +231,8 @@ base_raw=scan_intent(base_px,23,11,6,8,0)
 # A single stored BASE_RAW encoding also covers all byte-identical level-zero
 # and Huffman-only records; large queried instances stay subject to default limits.
 consider('base_stored','zlib/level0-default',base_raw,{'schedule':'base-image','shape':[23,11,6,8,0]})
+for ident,name in [('base_fixed','zlib/level6-default'),('base_level9','zlib/level9-default'),('base_rle','zlib/level6-rle')]:
+    consider(ident,name,base_raw,{'schedule':'base-image','shape':[23,11,6,8,0]})
 for _ in range(600+12+9):rng.randrange(256)
 for w,h in [(1,1),(1,2),(2,1),(1,5),(5,1),(2,2),(3,3),(4,4),(5,5),(8,8),(9,1),(1,9)]:
     for ct,d in [(0,1),(6,16),(3,4)]:
@@ -268,7 +280,7 @@ consider('one_pixel_apng','apng/empty-fdat-payload',scan_intent([(10,20,30,255)]
 # Emit separate constructors so large literal-array proofs never share a solver
 # query with the public-call refinement. Expected raw remains a ghost sequence.
 lines=['//! Independently authored fixed-match and larger stored stream classes.',
-       'use crate::{model as m, witness_match as t, witness_checksum as c, witness_literal_class::stored_payload, witnesses::check_at, Status};',
+       'use crate::{model as m, witness_match as t, witness_checksum as c, witness_literal_class::stored_payload, witness_layout::replay_layout, witnesses::check_at, Status};',
        'use vstd::prelude::*;', 'verus! {']
 claims=[]
 base_keys={tuple(member) for c in base for member in c['members']}
@@ -282,6 +294,88 @@ for ident,name,raw in CASES:
         d=bytes.fromhex(v['input_hex']); ss=streams(d);rr=stream_rs(d)
         for i,s in enumerate(ss):
             if s==z and rr[i]==n and (v['name'],i) not in base_keys:members.append([v['name'],i]);base_keys.add((v['name'],i))
+    if tokens is not None and n > 527:
+        steps=[];pos=19;before=0
+        for token in tokens+[256]:
+            if isinstance(token,int):s=token;le=ds=de=length=distance=0;nextpos=pos+(8 if s<144 else 9 if s<256 else 7);after=before+(s<256)
+            else:
+                length,distance=token;s,le,ln,ds,de,dn=codes(length,distance);nextpos=pos+(7 if s<280 else 8)+ln+5+dn;after=before+length
+            steps.append({'pos':pos,'next':nextpos,'before':before,'after':after,'symbol':s,'le':le,'ds':ds,'de':de,'length':length,'distance':distance})
+            pos=nextpos;before=after
+        end=pos;ts='seq!['+', '.join('t::Step {'+', '.join(f'{k}:{v}' for k,v in step.items())+'}' for step in steps)+']'
+        sb=sum(raw);sp=sum((n-i)*v for i,v in enumerate(raw))+n;adler=(sp%65521)*65536+(1+sb)%65521
+        lines += [f'spec fn {ident}_z() -> Seq<u8> {{ {zs} }}',f'spec fn {ident}_raw() -> Seq<u8> {{ {rs} }}',
+                  f'spec fn {ident}_ts() -> Seq<t::Step> {{ {ts} }}',
+                  f'fn {ident}_bytes() -> (wire: [u8;{len(z)}])',f'    ensures wire@ == {ident}_z(),','{',
+                  '    ['+', '.join(hex(x)+('u8' if i==0 else '') for i,x in enumerate(z))+']','}',
+                  '#[verifier::spinoff_prover]',f'proof fn {ident}_trace()',
+                  f'    ensures {ident}_z().len() == {len(z)}, {ident}_raw().len() == {n}, {ident}_ts().len() == {len(steps)},',
+                  f'        {ident}_ts()[0].pos == 19, {ident}_ts()[0].before == 0, {ident}_ts().last().next == {end},',
+                  f'        t::trace({ident}_z(),{ident}_raw(),{ident}_ts(),0,{len(steps)}),','{',
+                  f'    assert(t::trace({zs},{rs},{ts},0,{len(steps)})) by (compute);','}',
+                  '#[verifier::spinoff_prover]',f'proof fn {ident}_fields()',
+                  f'    ensures {ident}_z()[0] == 120, {ident}_z()[1] == {z[1]},',
+                  f'        m::field_value({ident}_z(),16,1) == 1, m::field_value({ident}_z(),17,2) == 1,',
+                  f'        m::be_value({ident}_z(),{(end+7)//8},4) == {adler},','{',
+                  f'    assert(m::field_value({zs},16,1) == 1) by (compute); assert(m::field_value({zs},17,2) == 1) by (compute);',
+                  f'    assert(m::be_value({zs},{(end+7)//8},4) == {adler}) by (compute);','}',
+                  '#[verifier::spinoff_prover]',f'proof fn {ident}_checksum()',f'    ensures m::Adler({ident}_raw()) == {adler},','{',
+                  '    hide(m::sum_bytes); hide(m::sum_prefixes);',f'    let raw = {ident}_raw();',
+                  f'    assert(c::sums({rs},0,{n}) == ({sb}nat,{sp}nat)) by (compute);',
+                  f'    c::sums_correct(raw,0,{n}); assert(raw.subrange(0,{n}) =~= raw);',
+                  '    assert(crate::limits::ADLER_MOD == 65521) by (compute); assert(m::pow2(16) == u16::MAX+1) by (compute);',
+                  f'    assert(({sp}nat%65521)*(u16::MAX as nat+1)+(1+{sb}nat)%65521 == {adler}) by (compute);','}',
+                  '#[verifier::spinoff_prover]',f'fn {ident}() {{',f'    hide({ident}_z); hide({ident}_raw); hide({ident}_ts);',
+                  f'    let wire = {ident}_bytes();','    proof {',f'        {ident}_trace(); {ident}_fields(); {ident}_checksum();',
+                  f'        crate::witness_stored_bridge::fixed_stream({ident}_z(),{ident}_raw(),{ident}_ts(),{n},{z[1]},{adler});',
+                  f'        assert(crate::limits::SEGMENT_BYTES_MAX >= {len(z)}) by (compute);','    }',
+                  f'    let ghost raw = {ident}_raw(); let mut output = [0xa5u8;{n}]; check_at(&wire,&mut output,Status::Done,Ghost(raw));','}']
+        claims.append({'class':ident,'encoding':'fixed-matches','raw':raw,'representative':[name,index],'intent':INTENTS[ident],'steps':steps,'members':members,'decomposed':'fixed'})
+        continue
+    if tokens is None and n > 527:
+        # Separate concrete payload and checksum facts from model/public calls.
+        end = 8*(7+n)
+        sb = sum(raw); sp = sum((n-i)*v for i,v in enumerate(raw))+n
+        adler = (sp%65521)*65536+(1+sb)%65521
+        lines += [f'spec fn {ident}_z() -> Seq<u8> {{ {zs} }}',
+                  f'spec fn {ident}_raw() -> Seq<u8> {{ {rs} }}',
+                  f'fn {ident}_bytes() -> (wire: [u8;{len(z)}])',
+                  f'    ensures wire@ == {ident}_z(),', '{',
+                  '    ['+', '.join(hex(x)+('u8' if i==0 else '') for i,x in enumerate(z))+']', '}',
+                  '#[verifier::spinoff_prover]', f'proof fn {ident}_payload()',
+                  f'    ensures {ident}_z().len() == {len(z)}, {ident}_raw().len() == {n},',
+                  f'        {ident}_z().subrange(7,{7+n}) == {ident}_raw(),', '{',
+                  f'    assert({zs}.subrange(7,{7+n}) == {rs}) by (compute);', '}',
+                  '#[verifier::spinoff_prover]', f'proof fn {ident}_fields()',
+                  f'    ensures {ident}_z()[3] as nat + 256*{ident}_z()[4] as nat == {n},',
+                  f'        {ident}_z()[5] as nat + 256*{ident}_z()[6] as nat == {65535-n},',
+                  f'        m::field_value({ident}_z(),24,16) == {n},',
+                  f'        m::field_value({ident}_z(),40,16) == {65535-n},',
+                  f'        m::field_value({ident}_z(),16,1) == 1, m::field_value({ident}_z(),17,2) == 0,',
+                  f'        m::be_value({ident}_z(),0,1) == {z[0]}, m::be_value({ident}_z(),1,1) == {z[1]},',
+                  f'        m::be_value({ident}_z(),{7+n},4) == {adler},', '{']
+        for start,width,value in [(24,16,n),(40,16,65535-n),(16,1,1),(17,2,0)]:
+            lines.append(f'    assert(m::field_value({zs},{start},{width}) == {value}) by (compute);')
+        for start,width,value in [(0,1,z[0]),(1,1,z[1]),(7+n,4,adler)]:
+            lines.append(f'    assert(m::be_value({zs},{start},{width}) == {value}) by (compute);')
+        lines += ['}', '#[verifier::spinoff_prover]', f'proof fn {ident}_checksum()',
+                  f'    ensures m::Adler({ident}_raw()) == {adler},', '{',
+                  '    hide(m::sum_bytes); hide(m::sum_prefixes);',
+                  f'    let raw = {ident}_raw();',
+                  f'    assert(c::sums({rs},0,{n}) == ({sb}nat,{sp}nat)) by (compute);',
+                  f'    c::sums_correct(raw,0,{n}); assert(raw.subrange(0,{n}) =~= raw);',
+                  '    assert(crate::limits::ADLER_MOD == 65521) by (compute); assert(m::pow2(16) == u16::MAX+1) by (compute);',
+                  f'    assert(({sp}nat % 65521)*(u16::MAX as nat+1)+(1+{sb}nat)%65521 == {adler}) by (compute);', '}',
+                  '#[verifier::spinoff_prover]', f'fn {ident}() {{',
+                  f'    hide({ident}_z); hide({ident}_raw); hide(m::sum_bytes); hide(m::sum_prefixes);',
+                  f'    let wire = {ident}_bytes();', '    proof {',
+                  f'        {ident}_payload(); {ident}_fields(); {ident}_checksum();',
+                  f'        assert(crate::limits::SEGMENT_BYTES_MAX >= {len(z)}) by (compute);',
+                  f'        crate::witness_stored_bridge::stored_stream({ident}_z(),{ident}_raw(),{n},{z[0]},{z[1]},{adler});',
+                  '    }', f'    let ghost raw = {ident}_raw();',
+                  f'    let mut output = [0xa5u8;{n}]; check_at(&wire,&mut output,Status::Done,Ghost(raw));', '}']
+        claims.append({'class':ident,'encoding':'stored','raw':raw,'representative':[name,index],'intent':INTENTS[ident],'steps':[],'members':members,'decomposed':True})
+        continue
     lines += [f'fn {ident}_bytes() -> (wire: [u8;{len(z)}])', f'    ensures wire@ == {zs},', '{', '    ['+', '.join(hex(x)+('u8' if i==0 else '') for i,x in enumerate(z))+']','}',
               '#[verifier::spinoff_prover]',f'fn {ident}() {{',
               '    hide(m::MDec); hide(m::decode_prefix); hide(m::cw); hide(m::MCompressed); hide(m::MCompressedStep); hide(m::MStoredPayload); hide(m::sum_bytes); hide(m::sum_prefixes);',
@@ -317,6 +411,34 @@ for ident,name,raw in CASES:
               f'        assert(crate::limits::SEGMENT_BYTES_MAX >= {len(z)}) by (compute);','    }',
               f'    let ghost raw = {rs}; let mut output = [0xa5u8;{n}]; check_at(&wire,&mut output,Status::Done,Ghost(raw));','}']
     claims.append({'class':ident,'encoding':encoding,'raw':raw,'representative':[name,index],'intent':INTENTS[ident],'steps':steps,'members':members})
+layouts=[]
+for suffix in ('split-1-byte','split-irregular','zero-length-idats'):
+    name='idat/'+suffix; ident='layout_'+suffix.replace('-','_')
+    data=bytes.fromhex(next(v['input_hex'] for v in V if v['name']==name))
+    parts=[b for k,b in chunks(data) if k==b'IDAT']; cuts=[0]
+    for part in parts:cuts.append(cuts[-1]+len(part))
+    assert b''.join(parts) == streams(bytes.fromhex(next(v['input_hex'] for v in V if v['name']=='zlib/level6-default')))[0]
+    base_claim=next(c for c in claims if c['class']=='base_fixed');raw=base_claim['raw'];n=len(raw);cs=seq(cuts,'usize')
+    checksum=(sum((n-i)*v for i,v in enumerate(raw))+n)%65521*65536+(1+sum(raw))%65521
+    lines += [f'spec fn {ident}_cuts() -> Seq<usize> {{ {cs} }}',
+              f'fn {ident}_cuts_bytes() -> (cuts: [usize;{len(cuts)}])',f'    ensures cuts@ == {ident}_cuts(),','{',
+              '    ['+', '.join(str(x)+('usize' if i==0 else '') for i,x in enumerate(cuts))+']','}',
+              '#[verifier::spinoff_prover]',f'proof fn {ident}_cut_facts()',
+              f'    ensures {ident}_cuts().len() == {len(cuts)}, {ident}_cuts()[0] == 0, {ident}_cuts().last() == {cuts[-1]},',
+              f'        forall|j:int| 0 <= j < {len(parts)} ==> #[trigger] {ident}_cuts()[j] <= {ident}_cuts()[j+1] <= {cuts[-1]},','{',
+              f'    assert(crate::witness_layout::cuts_ok({cs},0,{len(parts)},{cuts[-1]})) by (compute);',
+              f'    crate::witness_layout::cuts_quant({ident}_cuts(),0,{len(parts)},{cuts[-1]});','}',
+              '#[verifier::spinoff_prover]',f'fn {ident}() {{',
+              f'    hide(base_fixed_z); hide(base_fixed_raw); hide(base_fixed_ts); hide({ident}_cuts);',
+              '    let wire = base_fixed_bytes();',f'    let cuts = {ident}_cuts_bytes();',
+              '    proof {',f'        {ident}_cut_facts(); base_fixed_trace(); base_fixed_fields(); base_fixed_checksum();',
+              f'        crate::witness_stored_bridge::fixed_stream(base_fixed_z(),base_fixed_raw(),base_fixed_ts(),{n},156,{checksum});',
+              f'        assert(crate::limits::SEGMENT_BYTES_MAX >= {len(b"".join(parts))}) by (compute);','    }',
+              f'    let mut parts: [&[u8];{len(parts)}] = [&wire[0..0];{len(parts)}];',
+              f'    let ghost raw = base_fixed_raw(); let mut output = [0xa5u8;{n}];',
+              '    replay_layout(&wire,&cuts,&mut parts,&mut output,Ghost(raw));','}']
+    layouts.append({'class':ident,'record':name,'r':n,'raw':raw,'cuts':cuts,'segment_lengths':[len(p) for p in parts]})
+(ROOT/'tools/witness_layouts.json').write_text(json.dumps(layouts,indent=2)+'\n')
 lines+=['} // verus!','']
 (ROOT/'src/witness_extended.rs').write_text('\n'.join(lines))
 (ROOT/'tools/witness_extended.json').write_text(json.dumps(claims,indent=2)+'\n')

@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 """Check authored witness input provenance without consulting an inflate oracle."""
 import ast
+import hashlib
+import sys
 import json
 from pathlib import Path
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT/'tools'))
+import witness_calls
 
 
 def idat(data):
@@ -101,9 +105,109 @@ def stream_shapes(data):
     return shaped
 
 
+def expected_call(parts, limit, enforce, tail, status, raw, harness='check_policy_parts'):
+    return {'input_hex':b''.join(parts).hex(), 'segment_lengths':[len(p) for p in parts],
+            'harness':harness, 'input':'wire' if harness != 'check_policy_parts' else 'parts',
+            'limit':limit, 'enforce':enforce, 'ignore_tail':tail, 'status':status, 'raw':raw}
+
+
+def validate_bindings(vectors, policy_vectors, source_overrides=None, manifest_overrides=None):
+    """Bind coverage to parsed, unconditional runtime harness statements."""
+    source_overrides = source_overrides or {}
+    manifest_overrides = manifest_overrides or {}
+    def source(name):
+        return source_overrides[name] if name in source_overrides else (ROOT/'src'/name).read_text()
+    def manifest(name):
+        return manifest_overrides[name] if name in manifest_overrides else json.loads((ROOT/'tools'/name).read_text())
+    for harness in manifest('witness_harnesses.json'):
+        ts = witness_calls.declaration(source(harness['source']),harness['function'])
+        assert hashlib.sha256(' '.join(ts).encode()).hexdigest() == harness['token_sha256'], harness
+    individual = manifest('witness_individual.json')
+    individual_keys = set()
+    assert len(individual) == 48
+    for claim in individual:
+        name,index = claim['record'],claim['stream']
+        assert (name,index) not in individual_keys, name
+        individual_keys.add((name,index))
+        mapping = re.findall(r'/// ([\w/-]+):[^\n]*\n(?:#\[[^\n]*\]\s*)?fn (\w+)\(\)',source(claim['source']))
+        assert (name,claim['function']) in mapping, name
+        r,parts,_ = stream_shapes(bytes.fromhex(vectors[name]['input_hex']))[index]
+        assert claim['r'] == r and r is not None, name
+        assert claim['input_hex'] == b''.join(parts).hex(), name
+        assert len(claim['calls']) == 1, name
+        call = claim['calls'][0]
+        assert call['limit'] == r and call['enforce'] and not call['ignore_tail'], name
+        assert call['input_hex'] == claim['input_hex'] and len(call['raw']) <= r, name
+        assert call['harness'] in ('check_at','check_public'), name
+        witness_calls.validate(source(claim['source']),claim['function'],claim['calls'])
+    for filename,src in [('witness_classes.json','witness_classes.rs'),('witness_extended.json','witness_extended.rs')]:
+        for claim in manifest(filename):
+            name,index = claim.get('representative',claim['members'][0])
+            z = streams(bytes.fromhex(vectors[name]['input_hex']))[index]
+            call = expected_call([z],len(claim['raw']),True,False,'Done',claim['raw'],'check_at')
+            witness_calls.validate(source(src),claim['class'],[call])
+    for filename,src in [('witness_special.json','witness_special.rs'),('witness_finish.json','witness_finish.rs')]:
+        for claim in manifest(filename):
+            domain = claim.get('domain','core')
+            name,index = claim['members'][0]
+            v = vectors if domain == 'core' else policy_vectors
+            r,parts,_ = stream_shapes(bytes.fromhex(v[name]['input_hex']))[index]
+            assert claim['r'] == r and r is not None, name
+            opts = [(L,e,t) for L in (r,r+1) for e in (True,False) for t in (False,True)] if domain == 'policy' else [(r,True,False)]
+            expected = [expected_call(parts,L,e,t,claim['status'],claim['raw']) for L,e,t in opts]
+            witness_calls.validate(source(src),claim['class'],expected)
+    for claim in manifest('witness_policy.json'):
+        name = claim['records'][0]
+        r,parts,_ = stream_shapes(bytes.fromhex(policy_vectors[name]['input_hex']))[0]
+        assert r == claim['r'], name
+        expected = [expected_call(parts,c['limit'],c['enforce'],c['ignore_tail'],c['status'],claim['raw']) for c in claim['calls']]
+        assert sorted((c['limit'],c['enforce'],c['ignore_tail']) for c in claim['calls']) == sorted((L,e,t) for L in (r,r+1) for e in (True,False) for t in (False,True)), name
+        witness_calls.validate(source('witness_policy_cases.rs'),claim['function'],expected)
+    for claim in manifest('witness_layouts.json'):
+        r,parts,_ = stream_shapes(bytes.fromhex(vectors[claim['record']]['input_hex']))[0]
+        assert r == claim['r'] and [len(p) for p in parts] == claim['segment_lengths'], claim['record']
+        cuts = [0]
+        for part in parts: cuts.append(cuts[-1]+len(part))
+        assert cuts == claim['cuts'], claim['record']
+        call = expected_call(parts,r,True,False,'Done',claim['raw'],'replay_layout')
+        witness_calls.validate(source('witness_extended.rs'),claim['class'],[call])
+    print('Parsed public-call descriptors bind all credited witnesses to exact input, limit, options, status and raw')
+    return individual_keys
+
+
+def validate_evidence(root=ROOT):
+    records = json.loads((root/'evidence/manifest.json').read_text())
+    paths = set()
+    for record in records:
+        path = record['path']
+        assert path.startswith('evidence/') and '..' not in Path(path).parts and path not in paths, path
+        paths.add(path)
+        data = (root/path).read_bytes()
+        assert hashlib.sha256(data).hexdigest() == record['sha256'], path
+        if 'verification_results' in record:
+            assert record['verification_results'] in data.decode(), path
+        if record.get('role') == 'current-final-source-count':
+            sources = record['source_sha256']
+            actual = {str(p.relative_to(root)) for p in (root/'src').rglob('*.rs')} | {'Cargo.toml','Cargo.lock','verify.sh'}
+            assert set(sources) == actual, 'final-count source inventory changed'
+            for name,digest in sources.items():
+                assert '..' not in Path(name).parts
+                assert hashlib.sha256((root/name).read_bytes()).hexdigest() == digest, ('final-count source changed',name)
+    for item in json.loads((root/'evidence/historical-blocked.json').read_text()) + json.loads((root/'tools/witness_blocked.json').read_text()):
+        assert item['diagnostics'] in paths, item
+        log = (root/item['diagnostics']).read_text()
+        assert f'fn {item["class"]}()' in log and 'resource limit (rlimit) exceeded' in log, item
+        assert (root/item['source_snapshot']).stat().st_size < 1_000_000, item
+    assert {'evidence/run-0507.txt','evidence/run-0508.txt','evidence/run-0510.txt'} <= paths
+    print(f'{len(records)} retained proof logs hash-checked without reading ignored runs/')
+
+
 def main():
     vectors = {v['name']: v for v in json.loads((ROOT.parent / 'spec-frozen/VECTORS.json').read_text())}
-    for name in ('author_more_witnesses.py', 'author_dynamic_witnesses.py', 'author_d4_witnesses.py', 'author_window_witnesses.py', 'author_invalid_dynamic_witnesses.py', 'author_repeat_witnesses.py', 'author_literal_classes.py', 'author_extended_classes.py', 'author_special_witnesses.py', 'author_policy_witnesses.py', 'author_single_literal_witness.py'):
+    policy_vectors = {v['name']: v for v in json.loads((ROOT.parent/'policy-draft/VECTORS-POLICY.json').read_text())}
+    validate_evidence()
+    individual_keys = validate_bindings(vectors, policy_vectors)
+    for name in ('author_more_witnesses.py', 'author_dynamic_witnesses.py', 'author_d4_witnesses.py', 'author_window_witnesses.py', 'author_invalid_dynamic_witnesses.py', 'author_repeat_witnesses.py', 'author_literal_classes.py', 'author_extended_classes.py', 'author_special_witnesses.py', 'author_policy_witnesses.py', 'author_single_literal_witness.py', 'author_finish_witnesses.py'):
         tree = ast.parse((ROOT / 'tools' / name).read_text())
         for node in ast.walk(tree):
             if isinstance(node, ast.Import):
@@ -132,6 +236,7 @@ def main():
     seen.add('zlib/fcheck')
     # This is the authored subset, not a claim of coverage of all 631 streams.
     assert len(seen) == 48, (len(seen), sorted(seen))
+    assert individual_keys == {(name,0) for name in seen}
     assert 'zlib/empty-idat-only' in seen
     print(f'{len(seen)} authored witness streams match frozen IDAT extraction, including Z=[]; no oracle used')
     covered = {(name, 0) for name in seen}
@@ -162,22 +267,46 @@ def main():
     extended_fdats = 0
     for claim in extended:
         ident, raw = claim['class'], claim['raw']
-        ctor = re.search(r'fn ' + re.escape(ident) + r'_bytes\(\) -> \(wire: \[u8;(\d+)\]\)\s*ensures wire@ == seq!\[([^\]]*)\],\s*\{\s*\[([^\]]*)\]\s*\}', extended_text)
-        assert ctor, ident
-        wire = bytes(int(x.strip().removesuffix('u8'), 0) for x in ctor[3].split(',') if x.strip())
+        if claim.get('decomposed'):
+            ctor = re.search(r'fn ' + re.escape(ident) + r'_bytes\(\) -> \(wire: \[u8;(\d+)\]\)\s*ensures wire@ == ' + re.escape(ident) + r'_z\(\),\s*\{\s*\[([^\]]*)\]\s*\}', extended_text)
+            assert ctor, ident
+            wire = bytes(int(x.strip().removesuffix('u8'), 0) for x in ctor[2].split(',') if x.strip())
+            zspec = re.search(r'spec fn ' + re.escape(ident) + r'_z\(\) -> Seq<u8> \{ seq!\[([^\]]*)\] \}', extended_text)
+            rspec = re.search(r'spec fn ' + re.escape(ident) + r'_raw\(\) -> Seq<u8> \{ seq!\[([^\]]*)\] \}', extended_text)
+            assert zspec and rspec, ident
+            assert wire == bytes(int(x.strip().removesuffix('u8'), 0) for x in zspec[1].split(',') if x.strip()), ident
+            assert raw == [int(x.strip().removesuffix('u8'), 0) for x in rspec[1].split(',') if x.strip()], ident
+        else:
+            ctor = re.search(r'fn ' + re.escape(ident) + r'_bytes\(\) -> \(wire: \[u8;(\d+)\]\)\s*ensures wire@ == seq!\[([^\]]*)\],\s*\{\s*\[([^\]]*)\]\s*\}', extended_text)
+            assert ctor, ident
+            wire = bytes(int(x.strip().removesuffix('u8'), 0) for x in ctor[3].split(',') if x.strip())
+            assert wire == bytes(int(x.strip().removesuffix('u8'), 0) for x in ctor[2].split(',') if x.strip()), ident
         assert len(wire) == int(ctor[1]), ident
-        assert wire == bytes(int(x.strip().removesuffix('u8'), 0) for x in ctor[2].split(',') if x.strip()), ident
         body = re.search(r'fn ' + re.escape(ident) + r'\(\) \{(.*?)(?=\n\})', extended_text, re.S)
         assert body and f'let wire = {ident}_bytes();' in body[1], ident
-        for prefix in ('let raw = ', 'let ghost raw = '):
-            authored = re.search(re.escape(prefix) + r'seq!\[([^\]]*)\]', body[1])
-            assert authored, ident
-            assert [int(x.strip().removesuffix('u8'), 0) for x in authored[1].split(',') if x.strip()] == raw, ident
+        if claim.get('decomposed'):
+            assert f'let ghost raw = {ident}_raw();' in body[1], ident
+            fixed = claim.get('decomposed') == 'fixed'
+            for helper in (('trace', 'fields', 'checksum') if fixed else ('payload', 'fields', 'checksum')):
+                assert f'{ident}_{helper}();' in body[1], ident
+            bridge = f'fixed_stream({ident}_z(),{ident}_raw(),{ident}_ts(),{len(raw)},' if fixed else f'stored_stream({ident}_z(),{ident}_raw(),{len(raw)},'
+            assert 'crate::witness_stored_bridge::' + bridge in body[1], ident
+        else:
+            for prefix in ('let raw = ', 'let ghost raw = '):
+                authored = re.search(re.escape(prefix) + r'seq!\[([^\]]*)\]', body[1])
+                assert authored, ident
+                assert [int(x.strip().removesuffix('u8'), 0) for x in authored[1].split(',') if x.strip()] == raw, ident
         assert f'let mut output = [0xa5u8;{len(raw)}]' in body[1], ident
         assert 'check_at(&wire,&mut output,Status::Done,Ghost(raw))' in body[1], ident
+        trace_text = body[1]
+        if claim.get('decomposed') == 'fixed':
+            spec = re.search(r'spec fn ' + re.escape(ident) + r'_ts\(\) -> Seq<t::Step> \{ (seq!\[.*?\]) \}', extended_text)
+            helper = re.search(r'proof fn ' + re.escape(ident) + r'_trace\(\).*?\n\{(.*?)(?=\n\})', extended_text, re.S)
+            assert spec and helper, ident
+            trace_text = spec[1] + helper[1]
         steps = [dict((k, int(v)) for k, v in re.findall(r'(\w+):(\d+)', step))
-                 for step in re.findall(r't::Step \{([^}]*)\}', body[1])]
-        # The trace is authored twice in the query: its binding and compute check.
+                 for step in re.findall(r't::Step \{([^}]*)\}', trace_text)]
+        # The trace is authored twice: its binding/spec and concrete compute check.
         assert steps == claim['steps'] * 2, ident
         assert claim['members'] and claim['representative'] in claim['members'], ident
         for name, index in claim['members']:
@@ -216,6 +345,34 @@ def main():
                 assert (name,index) not in covered, (name,index)
                 covered.add((name,index))
     print('Three small error families match original payload boundaries: 3 core streams and 2 window-policy records')
+    finishing = json.loads((ROOT / 'tools/witness_finish.json').read_text())
+    finish_text = (ROOT / 'src/witness_finish.rs').read_text()
+    finish_fdats = 0
+    for claim in finishing:
+        ident, raw = claim['class'], claim['raw']
+        body = re.search(r'fn ' + re.escape(ident) + r'\(\) \{(.*?)(?=\n\})', finish_text, re.S)
+        assert body, ident
+        parts = [bytes(int(x.strip().removesuffix('u8'), 0) for x in literal.split(',') if x.strip())
+                 for literal in re.findall(r'let segment_\d+: \[u8;\d+\] = \[([^\]]*)\]', body[1])]
+        assert [len(p) for p in parts] == claim['segment_lengths'], ident
+        for prefix in ('let raw = ', 'let ghost raw = '):
+            authored = re.search(re.escape(prefix) + r'seq!\[([^\]]*)\]', body[1])
+            assert authored, ident
+            assert raw == [int(x.strip().removesuffix('u8'), 0) for x in authored[1].split(',') if x.strip()], ident
+        steps = [dict((k, int(v)) for k,v in re.findall(r'(\w+):(\d+)', step))
+                 for step in re.findall(r't::Step \{([^}]*)\}', body[1])]
+        assert steps == claim['steps'] * 2, ident
+        assert body[1].count('check_policy_parts(') == 1, ident
+        assert f'let mut output = [0xa5u8;{claim["r"]}]' in body[1], ident
+        assert f't::effects_at(z,raw,ts,0,{len(claim["steps"])},{claim["r"]})' in body[1], ident
+        for name,index in claim['members']:
+            key = (name,index)
+            assert key not in covered, key
+            r,original,control = stream_shapes(bytes.fromhex(vectors[name]['input_hex']))[index]
+            assert r == claim['r'] and original == parts, key
+            finish_fdats += control is not None
+            covered.add(key)
+    print(f'{len(finishing)} finishing classes audited with original parts and R, including {finish_fdats} fdAT instances')
     blocked = json.loads((ROOT / 'tools/witness_blocked.json').read_text())
     blocked_keys = {}
     for item in blocked:

@@ -1,0 +1,790 @@
+[
+  {
+    "class": "frame_adler_error",
+    "members": [
+      [
+        "apng/frame1-adler-error-ends",
+        1
+      ],
+      [
+        "apng/frame1-error-still-unaffected",
+        1
+      ]
+    ],
+    "r": 18,
+    "raw": [
+      0,
+      0,
+      255,
+      0,
+      255,
+      0,
+      255,
+      0,
+      255,
+      1,
+      0,
+      255,
+      0,
+      255,
+      0,
+      0,
+      0,
+      0
+    ],
+    "tokens": [
+      0,
+      0,
+      255,
+      [
+        6,
+        2
+      ],
+      1,
+      [
+        5,
+        7
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "status": "AdlerMismatch",
+    "steps": [
+      {
+        "pos": 19,
+        "next": 27,
+        "before": 0,
+        "after": 1,
+        "symbol": 0,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 27,
+        "next": 35,
+        "before": 1,
+        "after": 2,
+        "symbol": 0,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 35,
+        "next": 44,
+        "before": 2,
+        "after": 3,
+        "symbol": 255,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 44,
+        "next": 56,
+        "before": 3,
+        "after": 9,
+        "symbol": 260,
+        "le": 0,
+        "ds": 1,
+        "de": 0,
+        "length": 6,
+        "distance": 2
+      },
+      {
+        "pos": 56,
+        "next": 64,
+        "before": 9,
+        "after": 10,
+        "symbol": 1,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 64,
+        "next": 77,
+        "before": 10,
+        "after": 15,
+        "symbol": 259,
+        "le": 0,
+        "ds": 5,
+        "de": 0,
+        "length": 5,
+        "distance": 7
+      },
+      {
+        "pos": 77,
+        "next": 89,
+        "before": 15,
+        "after": 18,
+        "symbol": 257,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 3,
+        "distance": 1
+      },
+      {
+        "pos": 89,
+        "next": 96,
+        "before": 18,
+        "after": 18,
+        "symbol": 256,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      }
+    ],
+    "segment_lengths": [
+      16
+    ]
+  },
+  {
+    "class": "green_canvas_r",
+    "members": [
+      [
+        "apng-bad/fdat-for-idat-frame",
+        1
+      ],
+      [
+        "apng-bad/fdat-for-idat-frame-still",
+        1
+      ],
+      [
+        "apng-bad/fdat-before-idat",
+        1
+      ]
+    ],
+    "r": 51,
+    "raw": [
+      0,
+      0,
+      255,
+      0,
+      255,
+      0,
+      255,
+      0,
+      255,
+      1,
+      0,
+      255,
+      0,
+      255,
+      0,
+      0,
+      0,
+      0
+    ],
+    "tokens": [
+      0,
+      0,
+      255,
+      [
+        6,
+        2
+      ],
+      1,
+      [
+        5,
+        7
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "status": "Done",
+    "steps": [
+      {
+        "pos": 19,
+        "next": 27,
+        "before": 0,
+        "after": 1,
+        "symbol": 0,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 27,
+        "next": 35,
+        "before": 1,
+        "after": 2,
+        "symbol": 0,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 35,
+        "next": 44,
+        "before": 2,
+        "after": 3,
+        "symbol": 255,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 44,
+        "next": 56,
+        "before": 3,
+        "after": 9,
+        "symbol": 260,
+        "le": 0,
+        "ds": 1,
+        "de": 0,
+        "length": 6,
+        "distance": 2
+      },
+      {
+        "pos": 56,
+        "next": 64,
+        "before": 9,
+        "after": 10,
+        "symbol": 1,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 64,
+        "next": 77,
+        "before": 10,
+        "after": 15,
+        "symbol": 259,
+        "le": 0,
+        "ds": 5,
+        "de": 0,
+        "length": 5,
+        "distance": 7
+      },
+      {
+        "pos": 77,
+        "next": 89,
+        "before": 15,
+        "after": 18,
+        "symbol": 257,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 3,
+        "distance": 1
+      },
+      {
+        "pos": 89,
+        "next": 96,
+        "before": 18,
+        "after": 18,
+        "symbol": 256,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      }
+    ],
+    "segment_lengths": [
+      16
+    ]
+  },
+  {
+    "class": "short_successful_frame",
+    "members": [
+      [
+        "apng/frame1-truncated-data-ends",
+        1
+      ]
+    ],
+    "r": 18,
+    "raw": [
+      0,
+      0,
+      255,
+      0,
+      255,
+      0,
+      255,
+      0,
+      255,
+      1,
+      0,
+      255,
+      0,
+      255,
+      0,
+      0,
+      0
+    ],
+    "tokens": [
+      0,
+      0,
+      255,
+      [
+        6,
+        2
+      ],
+      1,
+      [
+        5,
+        7
+      ],
+      0,
+      0
+    ],
+    "status": "Done",
+    "steps": [
+      {
+        "pos": 19,
+        "next": 27,
+        "before": 0,
+        "after": 1,
+        "symbol": 0,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 27,
+        "next": 35,
+        "before": 1,
+        "after": 2,
+        "symbol": 0,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 35,
+        "next": 44,
+        "before": 2,
+        "after": 3,
+        "symbol": 255,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 44,
+        "next": 56,
+        "before": 3,
+        "after": 9,
+        "symbol": 260,
+        "le": 0,
+        "ds": 1,
+        "de": 0,
+        "length": 6,
+        "distance": 2
+      },
+      {
+        "pos": 56,
+        "next": 64,
+        "before": 9,
+        "after": 10,
+        "symbol": 1,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 64,
+        "next": 77,
+        "before": 10,
+        "after": 15,
+        "symbol": 259,
+        "le": 0,
+        "ds": 5,
+        "de": 0,
+        "length": 5,
+        "distance": 7
+      },
+      {
+        "pos": 77,
+        "next": 85,
+        "before": 15,
+        "after": 16,
+        "symbol": 0,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 85,
+        "next": 93,
+        "before": 16,
+        "after": 17,
+        "symbol": 0,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 93,
+        "next": 100,
+        "before": 17,
+        "after": 17,
+        "symbol": 256,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      }
+    ],
+    "segment_lengths": [
+      17
+    ]
+  },
+  {
+    "class": "palette_five_entries",
+    "members": [
+      [
+        "plte/5-entries-depth-2",
+        0
+      ]
+    ],
+    "r": 4,
+    "raw": [
+      0,
+      16,
+      1,
+      144
+    ],
+    "tokens": [
+      0,
+      16,
+      1,
+      144
+    ],
+    "status": "Done",
+    "steps": [
+      {
+        "pos": 19,
+        "next": 27,
+        "before": 0,
+        "after": 1,
+        "symbol": 0,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 27,
+        "next": 35,
+        "before": 1,
+        "after": 2,
+        "symbol": 16,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 35,
+        "next": 43,
+        "before": 2,
+        "after": 3,
+        "symbol": 1,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 43,
+        "next": 52,
+        "before": 3,
+        "after": 4,
+        "symbol": 144,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 52,
+        "next": 59,
+        "before": 4,
+        "after": 4,
+        "symbol": 256,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      }
+    ],
+    "segment_lengths": [
+      12
+    ]
+  },
+  {
+    "class": "idat_after_iend_tail",
+    "members": [
+      [
+        "container/idat-after-iend",
+        0
+      ]
+    ],
+    "r": 14,
+    "raw": [
+      0,
+      201,
+      73,
+      63,
+      202,
+      75,
+      151,
+      1,
+      225,
+      26,
+      23,
+      27,
+      220,
+      106
+    ],
+    "tokens": [
+      0,
+      201,
+      73,
+      63,
+      202,
+      75,
+      151,
+      1,
+      225,
+      26,
+      23,
+      27,
+      220,
+      106
+    ],
+    "status": "TrailingZlibData",
+    "steps": [
+      {
+        "pos": 19,
+        "next": 27,
+        "before": 0,
+        "after": 1,
+        "symbol": 0,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 27,
+        "next": 36,
+        "before": 1,
+        "after": 2,
+        "symbol": 201,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 36,
+        "next": 44,
+        "before": 2,
+        "after": 3,
+        "symbol": 73,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 44,
+        "next": 52,
+        "before": 3,
+        "after": 4,
+        "symbol": 63,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 52,
+        "next": 61,
+        "before": 4,
+        "after": 5,
+        "symbol": 202,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 61,
+        "next": 69,
+        "before": 5,
+        "after": 6,
+        "symbol": 75,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 69,
+        "next": 78,
+        "before": 6,
+        "after": 7,
+        "symbol": 151,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 78,
+        "next": 86,
+        "before": 7,
+        "after": 8,
+        "symbol": 1,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 86,
+        "next": 95,
+        "before": 8,
+        "after": 9,
+        "symbol": 225,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 95,
+        "next": 103,
+        "before": 9,
+        "after": 10,
+        "symbol": 26,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 103,
+        "next": 111,
+        "before": 10,
+        "after": 11,
+        "symbol": 23,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 111,
+        "next": 119,
+        "before": 11,
+        "after": 12,
+        "symbol": 27,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 119,
+        "next": 128,
+        "before": 12,
+        "after": 13,
+        "symbol": 220,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 128,
+        "next": 136,
+        "before": 13,
+        "after": 14,
+        "symbol": 106,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      },
+      {
+        "pos": 136,
+        "next": 143,
+        "before": 14,
+        "after": 14,
+        "symbol": 256,
+        "le": 0,
+        "ds": 0,
+        "de": 0,
+        "length": 0,
+        "distance": 0
+      }
+    ],
+    "segment_lengths": [
+      22,
+      22
+    ]
+  }
+]

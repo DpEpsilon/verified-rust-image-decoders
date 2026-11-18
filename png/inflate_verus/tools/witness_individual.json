@@ -1,0 +1,1511 @@
+[
+  {
+    "record": "zlib/empty-idat-only",
+    "stream": 0,
+    "source": "witnesses.rs",
+    "function": "empty_idat_only",
+    "input_hex": "",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "",
+        "segment_lengths": [
+          0
+        ],
+        "harness": "check_public",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "TruncatedZlib",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/stored-only",
+    "stream": 0,
+    "source": "witnesses.rs",
+    "function": "stored_only",
+    "input_hex": "7801010400fbff0041004201090084",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801010400fbff0041004201090084",
+        "segment_lengths": [
+          15
+        ],
+        "harness": "check_public",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "Done",
+        "raw": [
+          0,
+          65,
+          0,
+          66
+        ]
+      }
+    ]
+  },
+  {
+    "record": "zlib/cm-7",
+    "stream": 0,
+    "source": "witnesses.rs",
+    "function": "zlib_cm_7",
+    "input_hex": "7709010400fbff0041004201090084",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7709010400fbff0041004201090084",
+        "segment_lengths": [
+          15
+        ],
+        "harness": "check_public",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "UnsupportedZlibMethod",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "zlib/cinfo-8",
+    "stream": 0,
+    "source": "witnesses.rs",
+    "function": "zlib_cinfo_8",
+    "input_hex": "881c010400fbff0041004201090084",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "881c010400fbff0041004201090084",
+        "segment_lengths": [
+          15
+        ],
+        "harness": "check_public",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "UnsupportedZlibMethod",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "zlib/fdict",
+    "stream": 0,
+    "source": "witnesses.rs",
+    "function": "zlib_fdict",
+    "input_hex": "78bb00000001010400fbff0041004201090084",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "78bb00000001010400fbff0041004201090084",
+        "segment_lengths": [
+          19
+        ],
+        "harness": "check_public",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "ZlibPresetDictionary",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "zlib/one-byte",
+    "stream": 0,
+    "source": "witnesses.rs",
+    "function": "zlib_one_byte",
+    "input_hex": "78",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "78",
+        "segment_lengths": [
+          1
+        ],
+        "harness": "check_public",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "TruncatedZlib",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "zlib/bad-adler",
+    "stream": 0,
+    "source": "witnesses.rs",
+    "function": "zlib_bad_adler",
+    "input_hex": "7801010400fbff0041004200000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801010400fbff0041004200000001",
+        "segment_lengths": [
+          15
+        ],
+        "harness": "check_public",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "AdlerMismatch",
+        "raw": [
+          0,
+          65,
+          0,
+          66
+        ]
+      }
+    ]
+  },
+  {
+    "record": "zlib/missing-adler",
+    "stream": 0,
+    "source": "witnesses.rs",
+    "function": "zlib_missing_adler",
+    "input_hex": "7801010400fbff00410042",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801010400fbff00410042",
+        "segment_lengths": [
+          11
+        ],
+        "harness": "check_public",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "TruncatedZlib",
+        "raw": [
+          0,
+          65,
+          0,
+          66
+        ]
+      }
+    ]
+  },
+  {
+    "record": "zlib/partial-adler",
+    "stream": 0,
+    "source": "witnesses.rs",
+    "function": "zlib_partial_adler",
+    "input_hex": "7801010400fbff004100420109",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801010400fbff004100420109",
+        "segment_lengths": [
+          13
+        ],
+        "harness": "check_public",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "TruncatedZlib",
+        "raw": [
+          0,
+          65,
+          0,
+          66
+        ]
+      }
+    ]
+  },
+  {
+    "record": "zlib/trailing-byte",
+    "stream": 0,
+    "source": "witnesses.rs",
+    "function": "zlib_trailing_byte",
+    "input_hex": "7801010400fbff004100420109008400",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801010400fbff004100420109008400",
+        "segment_lengths": [
+          16
+        ],
+        "harness": "check_public",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "TrailingZlibData",
+        "raw": [
+          0,
+          65,
+          0,
+          66
+        ]
+      }
+    ]
+  },
+  {
+    "record": "zlib/second-stream",
+    "stream": 0,
+    "source": "witnesses.rs",
+    "function": "zlib_second_stream",
+    "input_hex": "7801010400fbff00410042010900847801010400fbff0041004201090084",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801010400fbff00410042010900847801010400fbff0041004201090084",
+        "segment_lengths": [
+          30
+        ],
+        "harness": "check_public",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "TrailingZlibData",
+        "raw": [
+          0,
+          65,
+          0,
+          66
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/stored-nlen",
+    "stream": 0,
+    "source": "witnesses.rs",
+    "function": "deflate_stored_nlen",
+    "input_hex": "7801010400faff0041004201090084",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801010400faff0041004201090084",
+        "segment_lengths": [
+          15
+        ],
+        "harness": "check_public",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "StoredLengthMismatch",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/fixed-literals",
+    "stream": 0,
+    "source": "witnesses.rs",
+    "function": "fixed_literals",
+    "input_hex": "780163706470020001090084",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "780163706470020001090084",
+        "segment_lengths": [
+          12
+        ],
+        "harness": "check_public",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "Done",
+        "raw": [
+          0,
+          65,
+          0,
+          66
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/fixed-lit-286",
+    "stream": 0,
+    "source": "witness_cases.rs",
+    "function": "deflate_fixed_lit_286",
+    "input_hex": "78011b0300000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "78011b0300000001",
+        "segment_lengths": [
+          8
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidSymbol",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/distance-before-output",
+    "stream": 0,
+    "source": "witness_cases.rs",
+    "function": "deflate_distance_before_output",
+    "input_hex": "7801030200000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801030200000001",
+        "segment_lengths": [
+          8
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "DistanceTooFar",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/distance-beyond-output",
+    "stream": 0,
+    "source": "witness_cases.rs",
+    "function": "deflate_distance_beyond_output",
+    "input_hex": "780163004200000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "780163004200000001",
+        "segment_lengths": [
+          9
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "DistanceTooFar",
+        "raw": [
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/fixed-dist-30",
+    "stream": 0,
+    "source": "witness_cases.rs",
+    "function": "deflate_fixed_dist_30",
+    "input_hex": "780163003e00000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "780163003e00000001",
+        "segment_lengths": [
+          9
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidSymbol",
+        "raw": [
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/fixed-dist-31",
+    "stream": 0,
+    "source": "witness_cases.rs",
+    "function": "deflate_fixed_dist_31",
+    "input_hex": "780163007e00000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "780163007e00000001",
+        "segment_lengths": [
+          9
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidSymbol",
+        "raw": [
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/fixed-dist-30-then-eof",
+    "stream": 0,
+    "source": "witness_cases.rs",
+    "function": "deflate_fixed_dist_30_then_eof",
+    "input_hex": "780163003e",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "780163003e",
+        "segment_lengths": [
+          5
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidSymbol",
+        "raw": [
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/fixed-dist-31-then-eof",
+    "stream": 0,
+    "source": "witness_cases.rs",
+    "function": "deflate_fixed_dist_31_then_eof",
+    "input_hex": "780163007e",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "780163007e",
+        "segment_lengths": [
+          5
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidSymbol",
+        "raw": [
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/distance-equals-output",
+    "stream": 0,
+    "source": "witness_cases.rs",
+    "function": "deflate_distance_equals_output",
+    "input_hex": "78016360074200002f000f",
+    "r": 5,
+    "calls": [
+      {
+        "input_hex": "78016360074200002f000f",
+        "segment_lengths": [
+          11
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 5,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "Done",
+        "raw": [
+          0,
+          7,
+          0,
+          7,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/match-overruns-image-is-excess",
+    "stream": 0,
+    "source": "witness_cases.rs",
+    "function": "deflate_match_overruns_image_is_excess",
+    "input_hex": "78016360074200003b0013",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "78016360074200003b0013",
+        "segment_lengths": [
+          11
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "Full",
+        "raw": [
+          0,
+          7,
+          0,
+          7
+        ]
+      }
+    ]
+  },
+  {
+    "record": "zlib/cut-mid-stored",
+    "stream": 0,
+    "source": "witness_cases.rs",
+    "function": "zlib_cut_mid_stored",
+    "input_hex": "7801010400fb",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801010400fb",
+        "segment_lengths": [
+          6
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "TruncatedZlib",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/btype-3",
+    "stream": 0,
+    "source": "witness_cases.rs",
+    "function": "deflate_btype_3",
+    "input_hex": "78010700000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "78010700000001",
+        "segment_lengths": [
+          7
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidBlockType",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/hlit-287",
+    "stream": 0,
+    "source": "witness_cases.rs",
+    "function": "deflate_hlit_287",
+    "input_hex": "7801f5e149922449926ddb020000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801f5e149922449926ddb020000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
+        "segment_lengths": [
+          56
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidCodeLengths",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/hdist-31",
+    "stream": 0,
+    "source": "witness_cases.rs",
+    "function": "deflate_hdist_31",
+    "input_hex": "7801edfe49922449926ddb020000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801edfe49922449926ddb020000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
+        "segment_lengths": [
+          56
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidCodeLengths",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "zlib/fcheck",
+    "stream": 0,
+    "source": "witness_cases.rs",
+    "function": "zlib_fcheck",
+    "input_hex": "789d63c8e23df932ffb38ab8d89363ecaf9e68e6b6e4ddeb5930fff0862d774bbf276b0770e448aecb9cc5a43cc5f3b09e59adcbe4f89b7e5b59ee1b756e154eaf0ef8602a724fd4eb22537bf385aba99c39df4ad4d8f298ce3bf63c0ed5ad0f9a14ff90f1ab73fa5b7b69df77293faa9c5cf39313a472d6aeb2c972ccbd3cf7ff65d5fd2fa66fd0f2eefab72afd63c3e44b0767d925cd581cfaed0f7be62bf3d69a926bc7b7750adfee2dfb7bd5dbdd86010b605aa2586f95ca66e4c3c8b7836bcffcd0558b8c5730a49d4c9f3c5927e3405e6e83e63e67d3f907669e5be7c0f6e7edb213b342998b9744fee1daa554dee7e6b3e1c65e4b5c068300b3af51b1082e497410c51454fa3c7433f7bcda67ab3fb73e997a3034316f977cafcaace5c53b575a161e5ee7b165eb8c874da9f287fb0eef145f1ec562997d6cc1a1a8eeced545192a0f45137df3d3ad59f3173ffaaabf4859fd7c9440e93ccdc387a4274665da2b0b7f3563e6e5e33f377bf7c519cf826b8e07cdfbd817c45f25764a731dcbfe1b2cb95681276732c7b2fcf4b07d535560b8d429f411c3e65d47cdff78cef07f2017fd546489e3eff4454b6417a59ff8cb58b0b2eccaaad306af7fba70b19abe9a5cc919ffbce66b6178d6bd7fda41dc8d477f484e3bf87161ff11ae67fe3fa4a7d94fc996397ff0c5f1834ce60f8eee35eb2c9b6e7261e63ac6fb9df358c3a4e36ba3cbd302b77dbc5139e54af09c0a9e3535dff29e1c983471d9976aa6cae689f32a12ef7d2f48b8c0c420b54472fdf109924c535ec64eebd85f3bc9aaf55ee7fd0f5ab1aec536313c7c9fc2c2267b6c3fd2b8f35639b7e4ff2026cbf29927e6d52997fce4bfa86e76473585fda371e9ac5fabc4139f7b3c703dffea8b2aa792e3bbefdc936295efa6374ffd12bdcf95ad7053f301218d5b0966fbef5d30fc929474ecba79c1ea608fe7dd3cd3675f7a52f0fae0d1c6190714a66656329fdbcbe96ec0d7374f534d751e8f27c3fa0d2fe5d6d8decadddfa57e932724d0edc3d429a70ede35b9badfb150a1cfe697d1bd5987a72bf3743cfa7a209a7dc79bbc372f0e707ef9626fbd24ac4de5b6c58ce72fa49e363a972f0bbffa61e92dc3532c666b84b213942f05ae0c5a3af983c4f57d070fb9acdab169f9bf5f62d31efb54dfde3e4ffe7ce87cf519017fee9facc82bff293a3dc068d38c36cdb501e27f973e75af58d1e618f45ce2aced8ae301a17f76ccf9af796146fff5253a059a173aaad5199c8374a3b7ca2826157dfd5a76c6b8dffcb2cfbe4407437da9c0c42b7d5dba05bef133d5d74e7899b19bddf0e2dfcd5ef6e79bd48abe7206d416fe5d15c0f0f5fda2de573cbf1a669d7fb27576eded5e4eae55e5b272b3cea91758ef0f12795905004a1dd1d0",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "789d63c8e23df932ffb38ab8d89363ecaf9e68e6b6e4ddeb5930fff0862d774bbf276b0770e448aecb9cc5a43cc5f3b09e59adcbe4f89b7e5b59ee1b756e154eaf0ef8602a724fd4eb22537bf385aba99c39df4ad4d8f298ce3bf63c0ed5ad0f9a14ff90f1ab73fa5b7b69df77293faa9c5cf39313a472d6aeb2c972ccbd3cf7ff65d5fd2fa66fd0f2eefab72afd63c3e44b0767d925cd581cfaed0f7be62bf3d69a926bc7b7750adfee2dfb7bd5dbdd86010b605aa2586f95ca66e4c3c8b7836bcffcd0558b8c5730a49d4c9f3c5927e3405e6e83e63e67d3f907669e5be7c0f6e7edb213b342998b9744fee1daa554dee7e6b3e1c65e4b5c068300b3af51b1082e497410c51454fa3c7433f7bcda67ab3fb73e997a3034316f977cafcaace5c53b575a161e5ee7b165eb8c874da9f287fb0eef145f1ec562997d6cc1a1a8eeced545192a0f45137df3d3ad59f3173ffaaabf4859fd7c9440e93ccdc387a4274665da2b0b7f3563e6e5e33f377bf7c519cf826b8e07cdfbd817c45f25764a731dcbfe1b2cb95681276732c7b2fcf4b07d535560b8d429f411c3e65d47cdff78cef07f2017fd546489e3eff4454b6417a59ff8cb58b0b2eccaaad306af7fba70b19abe9a5cc919ffbce66b6178d6bd7fda41dc8d477f484e3bf87161ff11ae67fe3fa4a7d94fc996397ff0c5f1834ce60f8eee35eb2c9b6e7261e63ac6fb9df358c3a4e36ba3cbd302b77dbc5139e54af09c0a9e3535dff29e1c983471d9976aa6cae689f32a12ef7d2f48b8c0c420b54472fdf109924c535ec64eebd85f3bc9aaf55ee7fd0f5ab1aec536313c7c9fc2c2267b6c3fd2b8f35639b7e4ff2026cbf29927e6d52997fce4bfa86e76473585fda371e9ac5fabc4139f7b3c703dffea8b2aa792e3bbefdc936295efa6374ffd12bdcf95ad7053f301218d5b0966fbef5d30fc929474ecba79c1ea608fe7dd3cd3675f7a52f0fae0d1c6190714a66656329fdbcbe96ec0d7374f534d751e8f27c3fa0d2fe5d6d8decadddfa57e932724d0edc3d429a70ede35b9badfb150a1cfe697d1bd5987a72bf3743cfa7a209a7dc79bbc372f0e707ef9626fbd24ac4de5b6c58ce72fa49e363a972f0bbffa61e92dc3532c666b84b213942f05ae0c5a3af983c4f57d070fb9acdab169f9bf5f62d31efb54dfde3e4ffe7ce87cf519017fee9facc82bff293a3dc068d38c36cdb501e27f973e75af58d1e618f45ce2aced8ae301a17f76ccf9af796146fff5253a059a173aaad5199c8374a3b7ca2826157dfd5a76c6b8dffcb2cfbe4407437da9c0c42b7d5dba05bef133d5d74e7899b19bddf0e2dfcd5ef6e79bd48abe7206d416fe5d15c0f0f5fda2de573cbf1a669d7fb27576eded5e4eae55e5b272b3cea91758ef0f12795905004a1dd1d0",
+        "segment_lengths": [
+          1005
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidZlibHeader",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/empty-stored-then-stored",
+    "stream": 0,
+    "source": "witness_cases.rs",
+    "function": "empty_stored_then_stored",
+    "input_hex": "7801000000ffff010400fbff0041004201090084",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801000000ffff010400fbff0041004201090084",
+        "segment_lengths": [
+          20
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "Done",
+        "raw": [
+          0,
+          65,
+          0,
+          66
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/dynamic-literals-two-dist-codes",
+    "stream": 0,
+    "source": "witness_dynamic_cases.rs",
+    "function": "deflate_dynamic_literals_two_dist_codes",
+    "input_hex": "7801ede149922449926ddb6e0000000000000000000000000000000000000000000000000000000000000080bd01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600300000000000000000000000000c05a480301090084",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801ede149922449926ddb6e0000000000000000000000000000000000000000000000000000000000000080bd01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600300000000000000000000000000c05a480301090084",
+        "segment_lengths": [
+          162
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "Done",
+        "raw": [
+          0,
+          65,
+          0,
+          66
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/dynamic-single-dist-code-len1",
+    "stream": 0,
+    "source": "witness_dynamic_cases.rs",
+    "function": "deflate_dynamic_single_dist_code_len1",
+    "input_hex": "7801ede049922449926ddb6e0000000000000000000000000000000000000000000000000000000000000080bd01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600300000000000000000000000000c0421a01090084",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801ede049922449926ddb6e0000000000000000000000000000000000000000000000000000000000000080bd01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600300000000000000000000000000c0421a01090084",
+        "segment_lengths": [
+          161
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "Done",
+        "raw": [
+          0,
+          65,
+          0,
+          66
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/dynamic-no-dist-codes",
+    "stream": 0,
+    "source": "witness_dynamic_cases.rs",
+    "function": "deflate_dynamic_no_dist_codes",
+    "input_hex": "7801ede049922449926ddb6e0000000000000000000000000000000000000000000000000000000000000080bd0100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000060030000000000000000000000000000200d01090084",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801ede049922449926ddb6e0000000000000000000000000000000000000000000000000000000000000080bd0100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000060030000000000000000000000000000200d01090084",
+        "segment_lengths": [
+          161
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "Done",
+        "raw": [
+          0,
+          65,
+          0,
+          66
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/single-literal-code-other-bit-then-eof",
+    "stream": 0,
+    "source": "witness_d4.rs",
+    "function": "single_literal_code_other_bit_then_eof",
+    "input_hex": "780105e049922449926ddb02000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002c08",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "780105e049922449926ddb02000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002c08",
+        "segment_lengths": [
+          141
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidSymbol",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/single-literal-code-live-prefix-eof",
+    "stream": 0,
+    "source": "witness_d4.rs",
+    "function": "single_literal_code_live_prefix_eof",
+    "input_hex": "78019a306102a0003c49922449b26d5b000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008005",
+    "r": 17,
+    "calls": [
+      {
+        "input_hex": "78019a306102a0003c49922449b26d5b000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008005",
+        "segment_lengths": [
+          145
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 17,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "TruncatedZlib",
+        "raw": [
+          144,
+          144,
+          144
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/length-with-no-distance-codes-then-eof",
+    "stream": 0,
+    "source": "witness_d4.rs",
+    "function": "length_with_no_distance_codes_then_eof",
+    "input_hex": "7801ede049922449926ddb9e730e0000000000000000000000000000000000000000000000000000000000009c0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e700000000000000000000000000000072",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801ede049922449926ddb9e730e0000000000000000000000000000000000000000000000000000000000009c0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e700000000000000000000000000000072",
+        "segment_lengths": [
+          157
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidSymbol",
+        "raw": [
+          0,
+          65
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/single-distance-code-other-bit-then-eof",
+    "stream": 0,
+    "source": "witness_d4.rs",
+    "function": "single_distance_code_other_bit_then_eof",
+    "input_hex": "7801ede049922449926ddb9e730e0000000000000000000000000000000000000000000000000000000000009c0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e700000000000000000000000000002ce401",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801ede049922449926ddb9e730e0000000000000000000000000000000000000000000000000000000000009c0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e700000000000000000000000000002ce401",
+        "segment_lengths": [
+          158
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidSymbol",
+        "raw": [
+          0,
+          65
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/single-distance-code-live-prefix-eof",
+    "stream": 0,
+    "source": "witness_d4.rs",
+    "function": "single_distance_code_live_prefix_eof",
+    "input_hex": "78019a3061c284091300ede049922449926ddb9e730e0000000000000000000000000000000000000000000000000000000000009c0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e700000000000000000000000000002ce4",
+    "r": 17,
+    "calls": [
+      {
+        "input_hex": "78019a3061c284091300ede049922449926ddb9e730e0000000000000000000000000000000000000000000000000000000000009c0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e700000000000000000000000000002ce4",
+        "segment_lengths": [
+          165
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 17,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "TruncatedZlib",
+        "raw": [
+          144,
+          144,
+          144,
+          144,
+          144,
+          144,
+          0,
+          65
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/unassigned-code-in-incomplete-literal-code",
+    "stream": 0,
+    "source": "witness_d4.rs",
+    "function": "unassigned_code_in_incomplete_literal_code",
+    "input_hex": "780105e049922449926ddb02000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002c0800000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "780105e049922449926ddb02000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002c0800000001",
+        "segment_lengths": [
+          145
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidSymbol",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/length-with-no-distance-codes",
+    "stream": 0,
+    "source": "witness_d4.rs",
+    "function": "length_with_no_distance_codes",
+    "input_hex": "7801ede049922449926ddb9e730e0000000000000000000000000000000000000000000000000000000000009c0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e7000000000000000000000000000000720000000000000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801ede049922449926ddb9e730e0000000000000000000000000000000000000000000000000000000000009c0300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e7000000000000000000000000000000720000000000000001",
+        "segment_lengths": [
+          165
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidSymbol",
+        "raw": [
+          0,
+          65
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/fixed-overlapping-matches",
+    "stream": 0,
+    "source": "witness_overlap.rs",
+    "function": "fixed_overlapping_matches",
+    "input_hex": "780163701c0548003f0000cb9f4c2d",
+    "r": 301,
+    "calls": [
+      {
+        "input_hex": "780163701c0548003f0000cb9f4c2d",
+        "segment_lengths": [
+          15
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 301,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "Done",
+        "raw": [
+          0,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65
+        ]
+      }
+    ]
+  },
+  {
+    "record": "deflate/no-end-of-block-code",
+    "stream": 0,
+    "source": "witness_invalid_dynamic.rs",
+    "function": "no_end_of_block_code",
+    "input_hex": "7801ede149922449926ddb6e0000000000000000000000000000000000000000000000000000000000000080bd01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000602d000000000000000000000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801ede149922449926ddb6e0000000000000000000000000000000000000000000000000000000000000080bd01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000602d000000000000000000000001",
+        "segment_lengths": [
+          168
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidCodeLengths",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/incomplete-literal-code",
+    "stream": 0,
+    "source": "witness_invalid_dynamic.rs",
+    "function": "incomplete_literal_code",
+    "input_hex": "7801ede149922449926ddb6e00000000000000000000000000000000000000000000000000000000000000800d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000b00100000000000000000000000000602d000000000000000000000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801ede149922449926ddb6e00000000000000000000000000000000000000000000000000000000000000800d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000b00100000000000000000000000000602d000000000000000000000001",
+        "segment_lengths": [
+          168
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidCodeLengths",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/incomplete-distance-code",
+    "stream": 0,
+    "source": "witness_invalid_dynamic.rs",
+    "function": "incomplete_distance_code",
+    "input_hex": "7801ede249922449926ddb6e0000000000000000000000000000000000000000000000000000000000000080bd01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600300000000000000000000000000c0de1b000000000000000000000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801ede249922449926ddb6e0000000000000000000000000000000000000000000000000000000000000080bd01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600300000000000000000000000000c0de1b000000000000000000000001",
+        "segment_lengths": [
+          169
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidCodeLengths",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/oversubscribed-literal-code",
+    "stream": 0,
+    "source": "witness_invalid_dynamic.rs",
+    "function": "oversubscribed_literal_code",
+    "input_hex": "7801ede149922449926ddbaeb5000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600100000000000000000000000000c05a000000000000000000000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801ede149922449926ddbaeb5000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600100000000000000000000000000c05a000000000000000000000001",
+        "segment_lengths": [
+          168
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidCodeLengths",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/repeat-with-no-previous",
+    "stream": 0,
+    "source": "witness_repeats.rs",
+    "function": "repeat_with_no_previous",
+    "input_hex": "7801ede149922449926ddb160000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801ede149922449926ddb160000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
+        "segment_lengths": [
+          56
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidCodeLengths",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/repeat-overflows-count",
+    "stream": 0,
+    "source": "witness_repeats.rs",
+    "function": "repeat_overflows_count",
+    "input_hex": "7801ede149922449926ddbce7ffef3070000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801ede149922449926ddbce7ffef3070000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
+        "segment_lengths": [
+          60
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidCodeLengths",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/code-length-code-oversubscribed",
+    "stream": 0,
+    "source": "witness_repeats.rs",
+    "function": "code_length_code_oversubscribed",
+    "input_hex": "7801ede1b76ddbb66ddbb6010000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801ede1b76ddbb66ddbb6010000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
+        "segment_lengths": [
+          56
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidCodeLengths",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/code-length-code-incomplete",
+    "stream": 0,
+    "source": "witness_repeats.rs",
+    "function": "code_length_code_incomplete",
+    "input_hex": "7801ede1dbb66ddbb66ddb020000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "7801ede1dbb66ddbb66ddb020000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
+        "segment_lengths": [
+          56
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "InvalidCodeLengths",
+        "raw": []
+      }
+    ]
+  },
+  {
+    "record": "deflate/single-literal-code-len1",
+    "stream": 0,
+    "source": "witness_single_literal.rs",
+    "function": "single_literal_code_len1",
+    "input_hex": "780104e049922449926ddb02000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002c100400fbff0041004201090084",
+    "r": 4,
+    "calls": [
+      {
+        "input_hex": "780104e049922449926ddb02000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002c100400fbff0041004201090084",
+        "segment_lengths": [
+          153
+        ],
+        "harness": "check_at",
+        "input": "wire",
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "Done",
+        "raw": [
+          0,
+          65,
+          0,
+          66
+        ]
+      }
+    ]
+  }
+]

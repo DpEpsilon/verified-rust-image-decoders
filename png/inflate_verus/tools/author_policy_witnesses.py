@@ -25,16 +25,18 @@ for suffix in ['trailing-byte','second-stream','trailing-in-later-idat','bad-adl
     lines += [f'// Policy {name}: authored raw [0,65,0,66], exact R and non-exact R+1.', '#[verifier::spinoff_prover]', f'fn {ident}() {{']
     for i,p in enumerate(ps): lines += [f'    let segment_{i} = [{", ".join(hex(x)+("u8" if j == 0 else "") for j,x in enumerate(p))}];']
     lines += [f'    let parts: [&[u8];{len(ps)}] = [{", ".join("&segment_"+str(i) for i in range(len(ps)))}];', '    proof {', f'        reveal_with_fuel(crate::segments::parts_prefix,{len(ps)+1});', f'        assert(crate::segments::parts_prefix(parts@,{len(ps)}) =~= {zs});', '        assert(crate::limits::SEGMENT_BYTES_MAX >= 30) by (compute);', '    }', '    let ghost raw = seq![0u8,65,0,66];']
+    calls = []
     for L in (4,5):
         for enforce in (True,False):
             for ignore in (False,True):
                 status = 'AdlerMismatch' if suffix.startswith('bad-adler') else 'Done' if ignore and L == 4 else 'TrailingZlibData'
+                calls.append({'limit':L,'enforce':enforce,'ignore_tail':ignore,'status':status})
                 model_status = 'm::InflateStatus::Done' if status == 'Done' else f'm::InflateStatus::Error(m::InflateFault::{status})'
                 actual_status = 'Status::Done' if status == 'Done' else f'Status::Err(E::{status})'
                 e,t = str(enforce).lower(),str(ignore).lower()
                 lines += ['    proof {', f'        assert(m::Inflate({zs},{L},{e},{t}).status == {model_status}) by (compute);', f'        assert(m::Inflate({zs},{L},{e},{t}).out == seq![0u8,65,0,66]) by (compute);', '    }', f'    let mut output = [0xa5u8;{L}]; check_policy_parts(&parts,&mut output,{e},{t},{actual_status},Ghost(raw));']
     lines += ['}']
-    manifest.append({'function':ident,'records':[name+'/strict',name+'/recommended-beta'],'segment_lengths':[len(p) for p in ps]})
+    manifest.append({'function':ident,'records':[name+'/strict',name+'/recommended-beta'],'segment_lengths':[len(p) for p in ps],'r':4,'raw':[0,65,0,66],'calls':calls})
 lines += ['} // verus!', '']
 (ROOT/'src/witness_policy_cases.rs').write_text('\n'.join(lines))
 (ROOT/'tools/witness_policy.json').write_text(json.dumps(manifest,indent=2)+'\n')

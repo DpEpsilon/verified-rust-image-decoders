@@ -1,5 +1,64 @@
 # Inflate proof ledger
 
+## Sol default-limit decomposition, original layouts and audited call bindings, 2026-11-18
+
+**Fresh final-source run 529: 831 verified, 0 errors.** Core coverage is **592 / 631**, up by **29** from 563. All twelve previously blocked streams now verify at default solver limits; no stream remains resource-blocked. The three named original IDAT split/empty-segment gates are proved. Both medium Astra witness-audit findings are repaired. This remains a partial M2 checkpoint, not M2 sign-off.
+
+| Runs | Evidence | Result |
+|---|---|---|
+| 521 | Unsuccessful preparatory Python edit, followed by unchanged-source Cargo cache hit | No verification-results line; not fresh proof evidence |
+| 522 | First separated stored constructors/payload/fields/checksum queries | 787 verified, 6 errors; missing symbolic header and cap facts, no resource exhaustion |
+| 523 | Repaired stored composition and per-frame finishing witnesses | 801 verified, 0 errors; all twelve old resource blocks resolved |
+| 524 | Implementation length-extra width increased by one | 800 verified, 1 error; real mutation kill |
+| 525 | Three decomposed large BASE_RAW fixed/RLE classes | 817 verified, 0 errors |
+| 526–527 | Source/provenance/frozen controls and initial nine negative audit tests | Pass |
+| 528 | Implementation distance-extra width increased by one | 816 verified, 1 error; real mutation kill |
+| 529 | Original one-byte, irregular and empty-IDAT layout witnesses | **831 verified, 0 errors** |
+| 530 | Eleven negative audit tests, including original-layout call/cut mutations | Pass |
+| 531–535 | Release tests, adapter, host/thumb instantiated probes and allocator symbols | Pass; thirteen tests |
+| 536–537 | Full differential seeds 34 and 35 | 10,000 generated streams and 10,000 corruptions; zero unexpected differences |
+| 538–540 | Final source/provenance/cap/allocation/frozen controls, pinned i686 inventory and eleven source-bound checkout/audit tests | All pass; 539 finds no candidate in the documented cache roots |
+| 541 | Final twenty retained log hashes, final-count source hashes, full source controls and runs-free evidence checkout replay | Pass |
+
+### Exact proved surface
+
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/witness_stored_bridge.rs` composes symbolic stored and fixed streams from separately proved concrete facts. Large constructors, payload equality, balanced checksum sums, wire fields and fixed traces no longer share one solver query with model/public-call refinement. All queries use unchanged default limits. The four RGB16/RGBA16 9x10 stored classes and BASE_RAW stored class close the twelve old blocks; raw lengths are 550, 560, 730, 740 and 1,023.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/tools/author_extended_classes.py` adds the BASE_RAW default-fixed, level-nine and distance-one RLE forward candidates. Their three classes cover nine more instances. Complete forward encoding means **complete candidate DEFLATE-body encoding**: comparison with `z[2:-4]` selects eligibility and an authored trace; it never supplies raw bytes, and the proof separately checks the header, Adler and finish.
+- There are now **250 classes covering 533 instances**: 136 fixed-literal classes, 94 stored classes and 20 fixed-match classes. The 136 extended classes cover 238 instances. Together with 48 individual witnesses, three earlier small error instances and eight finishing instances, these give **592 / 631**. Ten policy records remain outside the numerator.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/witness_match.rs` adds checked fixed-match expansion at any limit at least the authored raw length. `/home/ws/projects/verified-decoders/png/inflate_verus/src/witness_finish.rs` uses it for two checksum-error fdAT prefixes at R=18, a successful 17-byte frame stream at R=18, and three green 18-byte streams whose own enclosing fcTL gives R=51. The other two finishing instances are the packed five-entry-palette stream and IDAT-after-IEND's trailing-zlib error. Each case preserves original segment boundaries and calls both actual entries. These are inflate outcomes, not PNG acceptance or APNG-composition results.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/witness_layout.rs` verifies a generic borrowed-slice layout constructor and replays both actual entries. `/home/ws/projects/verified-decoders/png/inflate_verus/tools/witness_layouts.json` binds the three named records to their original boundaries: 1,005 one-byte IDATs, 67 irregular IDATs, and five IDATs of lengths `[0,10,0,995,0]`. All three use their independently calculated R=1,023 and authored BASE_RAW. These layout witnesses close named original-boundary gates but add no inventory credit beyond the already proved stream class.
+
+### Astra audit findings repaired
+
+The read-only report is `/home/ws/projects/verified-decoders/png/REVIEW-ASTRA-WITNESSES.md`; its files were not edited. Astra found no wrong expected bytes, oracle leak or weakened public-entry proof, and confirmed the previous 563/631 count.
+
+`/home/ws/projects/verified-decoders/png/inflate_verus/tools/witness_calls.py` parses a restricted straight-line Rust witness language. It skips proof blocks, resolves actual constructor bytes and ghost raw bindings, and rejects unsupported runtime statements or control flow around a harness. The audit now binds every credited caller to the exact multiset of input, limit, window/tail options, status and raw sequence. `/home/ws/projects/verified-decoders/png/inflate_verus/tools/witness_individual.json` explicitly describes all 48 individual witnesses at independently derived R; class, special, finishing, policy and original-layout callers receive the same parsed-call checks. Reviewed harness declarations/bodies have token hashes in `tools/witness_harnesses.json`; this also pins `check_public`'s implicit four-byte limit and the helpers that invoke both real entries.
+
+`/home/ws/projects/verified-decoders/png/inflate_verus/tools/test_witness_audit.py` rejects removed calls, changed limits, duplicate option tuples, changed individual/special manifest statuses, calls hidden under control flow, a removed new finishing/layout call and changed layout cuts. Its checkout test copies required evidence and source files without a `runs/` directory, checks them, then confirms that a changed log fails its hash check. This is a fail-closed checked-descriptor gate, not a claim to parse arbitrary Rust.
+
+All audit-required diagnostics now live under the non-ignored `/home/ws/projects/verified-decoders/png/inflate_verus/evidence/`. `evidence/manifest.json` checks log SHA-256 digests, exact count lines and the final run's source/Cargo/verify.sh hashes. Historical 507/508 failure logs, 510's count, new proof/mutation counts and final runtime logs are retained; originals remain in `runs/`. `evidence/historical-blocked.json` preserves all old block identities, diagnostics and source snapshots. `tools/witness_blocked.json` is empty because every old block was resolved, not because its evidence was discarded. No `.gitignore` edit occurred.
+
+### Runtime, mutations and frozen boundary
+
+Production runtime implementations did not change; only verifier-gated modules and module declarations, authoring/audit tooling, inventories, evidence and documentation changed. Full runtime evidence was nevertheless replayed in 531–537: thirteen release tests, adapter, host/thumb libraries and instantiated allocator probes, allocator-symbol checks, all 1,181 extracted streams in four layouts per seed, 10,000 generated streams and 10,000 single-bit corruptions. The differential checks **33,544 public-entry pairs / 67,088 actual calls**, with zero unexpected differences. Work remains erased and proved, not runtime-measured. No signed production allocation/call-graph audit is claimed.
+
+New real mutation kills are 524 (`length-extra-width-plus-one`) and 528 (`distance-extra-width-plus-one`), raising the historical total from 63 to **65**. Each changes only the implementation in a new disposable copy and fails the compressed-step refinement postcondition; neither is a type-check failure or a resource failure. Existing mutation copies and `runs/sol-*.out` were left unchanged.
+
+E1 remains APPROVED; E2 remains APPROVED WITH AMENDMENT. The earlier SegmentSlices L-SEG-FRAME discharge and the separate M3 IDAT/fdAT/iCCP reader/call-site obligations remain unchanged. No universal no-extra-effect guarantee for arbitrary T-SEG readers is claimed. No new frozen-statement discrepancy was found; ERRATA.md, THEOREMS.md and spec-frozen were not edited. Sixteen malformed/ambiguous IHDR/fcTL instances remain uncredited without an invented fallback R.
+
+### Exact resume
+
+1. **39 core instances remain:** 21 first-fixed-block trace gaps, `depth16/rounding-boundaries`, the dynamic first block of fdAT `apng/interlaced-subframe`, and sixteen instances without a legal independent image/frame R. There are **no current default-limit blocks**. The inventory gives every name; do not relabel unattempted records as resource failures.
+2. The BASE_RAW decomposed constructors/trace/checksum/model pattern is ready for further large classes. The remaining level-six/level-nine fixed-header variants are natural next candidates; other window headers require the correct selected window, not a silent 32,768-byte substitution. The small empty-Adam7-pass case still needs Full at R=2, not Done on its eight authored raw bytes.
+3. Named original IDAT split/empty gates are now closed. Both frozen declared-window records, the beyond-declared-window policy family, large remaining level/filter/flush/truncation streams, image excess-data/excess-row cases, policy excess-output/excess-row/excess-output-and-tail, the two dynamic profiles and further mutation variants remain open. Success at R or an existing synthetic exact/window+1/ring-wrap stream is not a substitute for those records.
+4. Pinned i686 proof replay remains open. Run 539 finds no vstd `.vir` candidate under an i686 path in the inflate/GIF targets or `/home/ws/.cache`; no bootstrap, rebuild, copy, feature/flag/fingerprint change or target substitution occurred. Thumb probes remain runtime evidence, not an i686 proof replay.
+
+All jobs started in this continuation have exited. **Next logged run is 542.** Runs 538/541 pass all source/provenance/allocation/cap/erased-counter controls and all twelve frozen hashes. Run 540 passes all eleven negative audit/checkout tests, and 541 rechecks the final twenty retained evidence-log hashes plus the final count's complete source/Cargo/verify.sh hashes with no `runs/` directory in its checkout replay.
+
+Pre-edit snapshots are `backups/sol-before-decomposed-witnesses.tar.gz` (351,710 bytes), `backups/sol-before-large-fixed-decomposition.tar.gz` (346,203 bytes) and `backups/sol-before-original-layouts.tar.gz` (505,182 bytes), all below 1 MB. No target directory was cleaned, removed or repaired. No commit/push or edit outside this crate occurred. Verus 0.2026.11.02.8bf68ee, cached vstd hash 01822e92e4f44378, rustc 1.99.1, one Cargo job, two verifier threads, default solver limits and --no-cheating are unchanged. No trusted item or proof escape was added. Only tooling/evidence/documentation changed after final-source run 529.
+
+---
+
 ## Sol fixed-match/effect bridge and extended authored classes, 2026-11-18
 
 **Fresh final-source run 510: 767 verified, 0 errors.** The independently authored core-stream subset is now **563 of 631**, up from 343: **220 additional frozen stream instances**. The remaining 68 have explicit incomplete entries, including twelve streams blocked by five named default-limit queries. Ten policy records are additionally proved, outside the core numerator. This is a clean partial M2 checkpoint, not M2 sign-off.

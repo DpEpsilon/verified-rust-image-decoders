@@ -32,6 +32,12 @@ mod witness_dynamic_cases;
 #[cfg(verus_only)]
 mod witness_extended;
 #[cfg(verus_only)]
+mod witness_stored_bridge;
+#[cfg(verus_only)]
+mod witness_finish;
+#[cfg(verus_only)]
+mod witness_layout;
+#[cfg(verus_only)]
 mod witness_invalid_dynamic;
 #[cfg(verus_only)]
 mod witness_literal_class;

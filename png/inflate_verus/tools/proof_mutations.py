@@ -39,6 +39,8 @@ CASES = {
 
 
 FILE_CASES = {
+    'length-extra-width-plus-one': ('inflate.rs', 'br.get(LEN_EXTRA[index], w)', 'br.get(LEN_EXTRA[index] + 1, w)'),
+    'distance-extra-width-plus-one': ('inflate.rs', 'br.get(DIST_EXTRA[ds], w)', 'br.get(DIST_EXTRA[ds] + 1, w)'),
     'bits-partial-eof-invent-buffered-bit': ('bits.rs', 'Err(e) => return Err(e),\n                };\n                proof {', 'Err(e) => { self.remaining = 1; return Err(e); },\n                };\n                proof {'),
     'reader-eof-advances-byte-position': ('segments.rs', 'return None;\n            }\n            let part', 'self.position += 1;\n                return None;\n            }\n            let part'),
     'single-literal-rejected': ('huffman.rs', 'is_admissible(kind, kraft, self.nsyms, self.count[1], single_accept)', 'is_admissible(kind, kraft, self.nsyms, self.count[1], false)'),

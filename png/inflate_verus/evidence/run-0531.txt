@@ -1,0 +1,200 @@
+command: ['cargo', 'test', '--release', '--all-targets']
+   Compiling inflate_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus)
+warning: unused import: `C_SEG`
+ --> src/segments.rs:2:21
+  |
+2 | use crate::limits::{C_SEG, SEGMENT_BYTES_MAX};
+  |                     ^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `origin_source`
+   --> src/bits.rs:103:13
+    |
+103 |         let origin_source = Ghost(src.source_frame());
+    |             ^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_origin_source`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `w`
+   --> src/bits.rs:122:35
+    |
+122 |     pub(crate) fn byte(&mut self, w: &mut Work) -> (r: Result<u8, InflateError>)
+    |                                   ^ help: if this is intentional, prefix it with an underscore: `_w`
+
+warning: unused variable: `table_work`
+   --> src/huffman.rs:127:21
+    |
+127 |         let (built, table_work) = crate::canonical::build_tables(lengths,
+    |                     ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_table_work`
+
+warning: unused variable: `live_work`
+   --> src/huffman.rs:149:13
+    |
+149 |         let live_work = crate::canonical::live_counts(Ghost(lengths@), &self.count, &mut self.live);
+    |             ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_live_work`
+
+warning: unused variable: `nlen`
+   --> src/inflate.rs:502:5
+    |
+502 |     nlen: usize, ndist: usize, w: &mut Work) -> (ret: (Result<(), E>, Ghost<nat>))
+    |     ^^^^ help: if this is intentional, prefix it with an underscore: `_nlen`
+
+warning: unused variable: `ndist`
+   --> src/inflate.rs:502:18
+    |
+502 |     nlen: usize, ndist: usize, w: &mut Work) -> (ret: (Result<(), E>, Ghost<nat>))
+    |                  ^^^^^ help: if this is intentional, prefix it with an underscore: `_ndist`
+
+warning: unused variable: `code_cost`
+   --> src/inflate.rs:770:27
+    |
+770 |         let (code_result, code_cost) = dynamic_code(&mut self.code, br, ncode, nlen, ndist, w);
+    |                           ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_code_cost`
+
+warning: unused variable: `length_cost`
+   --> src/inflate.rs:773:22
+    |
+773 |         let (result, length_cost) = self.dynamic_lengths(br, nlen, ndist, w);
+    |                      ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_length_cost`
+
+warning: unused variable: `n`
+   --> src/lib.rs:165:34
+    |
+165 |     pub(crate) fn add(&mut self, n: usize)
+    |                                  ^ help: if this is intentional, prefix it with an underscore: `_n`
+
+warning: field `observed` is never read
+   --> src/lib.rs:155:9
+    |
+154 | pub(crate) struct Work {
+    |                   ---- field in this struct
+155 |     pub observed: Ghost<nat>,
+    |         ^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `bytes` is never read
+  --> src/adler.rs:63:16
+   |
+59 | pub(crate) struct Adler {
+   |                   ----- field in this struct
+...
+63 |     pub(crate) bytes: Ghost<Seq<u8>>,
+   |                ^^^^^
+
+warning: fields `origin_seg`, `origin_core`, `origin_rank`, `origin_count`, and `loop_work` are never read
+  --> src/bits.rs:37:16
+   |
+33 | pub(crate) struct Bits<'a, S: Segments> {
+   |                   ---- fields in this struct
+...
+37 |     pub(crate) origin_seg: Ghost<nat>,
+   |                ^^^^^^^^^^
+38 |     pub(crate) origin_core: Ghost<nat>,
+   |                ^^^^^^^^^^^
+39 |     pub(crate) origin_rank: Ghost<nat>,
+   |                ^^^^^^^^^^^
+40 |     pub(crate) origin_count: Ghost<nat>,
+   |                ^^^^^^^^^^^^
+...
+43 |     pub(crate) loop_work: Ghost<nat>,
+   |                ^^^^^^^^^
+
+warning: fields `lengths`, `kind`, `single_accept`, and `ready` are never read
+  --> src/huffman.rs:18:16
+   |
+11 | pub(crate) struct Huffman {
+   |                   ------- fields in this struct
+...
+18 |     pub(crate) lengths: Ghost<Seq<u8>>,
+   |                ^^^^^^^
+19 |     pub(crate) kind: Ghost<Kind>,
+   |                ^^^^
+20 |     pub(crate) single_accept: Ghost<bool>,
+   |                ^^^^^^^^^^^^^
+21 |     pub(crate) ready: Ghost<bool>,
+   |                ^^^^^
+
+warning: fields `out` and `initial` are never read
+   --> src/inflate.rs:190:5
+    |
+185 | struct Output<'a> {
+    |        ------ fields in this struct
+...
+190 |     out: Ghost<Seq<u8>>,
+    |     ^^^
+191 |     initial: Ghost<Seq<u8>>,
+    |     ^^^^^^^
+
+warning: fields `header_construction` and `header_table_start` are never read
+   --> src/inflate.rs:406:5
+    |
+400 | struct Tables {
+    |        ------ fields in this struct
+...
+406 |     header_construction: Ghost<nat>,
+    |     ^^^^^^^^^^^^^^^^^^^
+407 |     header_table_start: Ghost<Option<nat>>,
+    |     ^^^^^^^^^^^^^^^^^^
+
+warning: fields `seg_work` and `read_work` are never read
+   --> src/segments.rs:102:5
+    |
+ 96 | pub struct SegmentSlices<'a> {
+    |            ------------- fields in this struct
+...
+102 |     seg_work: Ghost<nat>,
+    |     ^^^^^^^^
+103 |     read_work: Ghost<nat>,
+    |     ^^^^^^^^^
+
+warning: `inflate_verus` (lib) generated 17 warnings (run `cargo fix --lib -p inflate_verus` to apply 10 suggestions)
+warning: unused import: `Segments`
+ --> examples/inflate_runner.rs:3:88
+  |
+3 |     inflate_zlib_into, inflate_zlib_measure, limits::*, InflateOptions, SegmentSlices, Segments,
+  |                                                                                        ^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `inflate_verus` (example "inflate_runner" test) generated 1 warning (run `cargo fix --example "inflate_runner" -p inflate_verus --tests` to apply 1 suggestion)
+warning: `inflate_verus` (lib test) generated 17 warnings (17 duplicates)
+    Finished `release` profile [optimized] target(s) in 3.02s
+     Running unittests src/lib.rs (target/release/deps/inflate_verus-f76f7cdf9d46d126)
+
+running 6 tests
+test bits::tests::failed_read_consumes_the_remaining_cached_prefix ... ok
+test huffman::tests::both_single_code_admission_choices_use_the_production_constructor ... ok
+test huffman::tests::incomplete_nonoversubscribed_vectors_still_get_canonical_representation ... ok
+test bits::tests::full_width_read_crosses_empty_segments_and_eof_is_stable ... ok
+test huffman::tests::oversubscription_is_rejected_before_canonical_representation ... ok
+test huffman::tests::bounded_exhaustion_matches_independent_word_assignment ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/contract.rs (target/release/deps/contract-678f0a3a345a9d8a)
+
+running 7 tests
+test empty_z_and_header_order ... ok
+test eof_cursor_and_empty_segments_are_stable ... ok
+test exact_limit_does_not_skip_adler_or_tail ... ok
+test measuring_limit_is_u64_not_a_slice_length ... ok
+test stored_prefix_and_limit_precedence_d5 ... ok
+test adler_deferral_and_ring_wrap ... ok
+test million_empty_segments_preserve_the_stream ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests examples/allocator_probe.rs (target/release/examples/allocator_probe-0395b8ff2896041e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests examples/inflate_runner.rs (target/release/examples/inflate_runner-3fd67ba2745abf15)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

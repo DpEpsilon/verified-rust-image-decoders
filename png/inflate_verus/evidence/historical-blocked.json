@@ -1,0 +1,100 @@
+[
+  {
+    "class": "extended_ct2_d16_il0_9x10",
+    "run": 507,
+    "members": [
+      [
+        "ok/ct2-d16-il0-9x10",
+        0
+      ]
+    ],
+    "raw_bytes": 550,
+    "reason": "function body check: default resource limit (rlimit) exceeded",
+    "diagnostics": "evidence/run-0507.txt",
+    "source_snapshot": "backups/sol-run507-extended-queries.tar.gz"
+  },
+  {
+    "class": "extended_ct6_d16_il0_9x10",
+    "run": 507,
+    "members": [
+      [
+        "ok/ct6-d16-il0-9x10",
+        0
+      ]
+    ],
+    "raw_bytes": 730,
+    "reason": "function body check: default resource limit (rlimit) exceeded",
+    "diagnostics": "evidence/run-0507.txt",
+    "source_snapshot": "backups/sol-run507-extended-queries.tar.gz"
+  },
+  {
+    "class": "extended_ct6_d16_il1_9x10",
+    "run": 507,
+    "members": [
+      [
+        "ok/ct6-d16-il1-9x10",
+        0
+      ]
+    ],
+    "raw_bytes": 740,
+    "reason": "function body check: default resource limit (rlimit) exceeded",
+    "diagnostics": "evidence/run-0507.txt",
+    "source_snapshot": "backups/sol-run507-extended-queries.tar.gz"
+  },
+  {
+    "class": "base_stored",
+    "run": 508,
+    "members": [
+      [
+        "zlib/level0-default",
+        0
+      ],
+      [
+        "zlib/level0-fixed",
+        0
+      ],
+      [
+        "zlib/level0-huffman",
+        0
+      ],
+      [
+        "zlib/level0-rle",
+        0
+      ],
+      [
+        "zlib/level0-filtered",
+        0
+      ],
+      [
+        "zlib/level1-huffman",
+        0
+      ],
+      [
+        "zlib/level6-huffman",
+        0
+      ],
+      [
+        "zlib/level9-huffman",
+        0
+      ]
+    ],
+    "raw_bytes": 1023,
+    "reason": "function body check: default resource limit (rlimit) exceeded",
+    "diagnostics": "evidence/run-0508.txt",
+    "source_snapshot": "backups/sol-run508-extended-queries.tar.gz"
+  },
+  {
+    "class": "extended_ct2_d16_il1_9x10",
+    "run": 508,
+    "members": [
+      [
+        "ok/ct2-d16-il1-9x10",
+        0
+      ]
+    ],
+    "raw_bytes": 560,
+    "reason": "function body check: default resource limit (rlimit) exceeded",
+    "diagnostics": "evidence/run-0508.txt",
+    "source_snapshot": "backups/sol-run508-extended-queries.tar.gz"
+  }
+]

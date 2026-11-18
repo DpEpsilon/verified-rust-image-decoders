@@ -1,0 +1,17 @@
+command: ['python3', '-I', 'tools/test_witness_audit.py']
+test_changed_individual_status_is_rejected (__main__.WitnessAuditTests.test_changed_individual_status_is_rejected) ... ok
+test_changed_layout_cuts_are_rejected (__main__.WitnessAuditTests.test_changed_layout_cuts_are_rejected) ... ok
+test_changed_limit_is_rejected (__main__.WitnessAuditTests.test_changed_limit_is_rejected) ... ok
+test_changed_manifest_status_is_rejected (__main__.WitnessAuditTests.test_changed_manifest_status_is_rejected) ... ok
+test_control_flow_cannot_supply_call_credit (__main__.WitnessAuditTests.test_control_flow_cannot_supply_call_credit) ... ok
+test_current_call_bindings (__main__.WitnessAuditTests.test_current_call_bindings) ... ok
+test_duplicated_option_tuple_is_rejected (__main__.WitnessAuditTests.test_duplicated_option_tuple_is_rejected) ... ok
+test_evidence_checkout_needs_no_runs_directory (__main__.WitnessAuditTests.test_evidence_checkout_needs_no_runs_directory) ... ok
+test_new_finishing_call_removal_is_rejected (__main__.WitnessAuditTests.test_new_finishing_call_removal_is_rejected) ... ok
+test_original_layout_call_removal_is_rejected (__main__.WitnessAuditTests.test_original_layout_call_removal_is_rejected) ... ok
+test_removed_public_call_is_rejected (__main__.WitnessAuditTests.test_removed_public_call_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 158.584s
+
+OK

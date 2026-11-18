@@ -7,6 +7,63 @@
     ],
     "segment_lengths": [
       16
+    ],
+    "r": 4,
+    "raw": [
+      0,
+      65,
+      0,
+      66
+    ],
+    "calls": [
+      {
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "TrailingZlibData"
+      },
+      {
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": true,
+        "status": "Done"
+      },
+      {
+        "limit": 4,
+        "enforce": false,
+        "ignore_tail": false,
+        "status": "TrailingZlibData"
+      },
+      {
+        "limit": 4,
+        "enforce": false,
+        "ignore_tail": true,
+        "status": "Done"
+      },
+      {
+        "limit": 5,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "TrailingZlibData"
+      },
+      {
+        "limit": 5,
+        "enforce": true,
+        "ignore_tail": true,
+        "status": "TrailingZlibData"
+      },
+      {
+        "limit": 5,
+        "enforce": false,
+        "ignore_tail": false,
+        "status": "TrailingZlibData"
+      },
+      {
+        "limit": 5,
+        "enforce": false,
+        "ignore_tail": true,
+        "status": "TrailingZlibData"
+      }
     ]
   },
   {
@@ -17,6 +74,63 @@
     ],
     "segment_lengths": [
       30
+    ],
+    "r": 4,
+    "raw": [
+      0,
+      65,
+      0,
+      66
+    ],
+    "calls": [
+      {
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "TrailingZlibData"
+      },
+      {
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": true,
+        "status": "Done"
+      },
+      {
+        "limit": 4,
+        "enforce": false,
+        "ignore_tail": false,
+        "status": "TrailingZlibData"
+      },
+      {
+        "limit": 4,
+        "enforce": false,
+        "ignore_tail": true,
+        "status": "Done"
+      },
+      {
+        "limit": 5,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "TrailingZlibData"
+      },
+      {
+        "limit": 5,
+        "enforce": true,
+        "ignore_tail": true,
+        "status": "TrailingZlibData"
+      },
+      {
+        "limit": 5,
+        "enforce": false,
+        "ignore_tail": false,
+        "status": "TrailingZlibData"
+      },
+      {
+        "limit": 5,
+        "enforce": false,
+        "ignore_tail": true,
+        "status": "TrailingZlibData"
+      }
     ]
   },
   {
@@ -28,6 +142,63 @@
     "segment_lengths": [
       15,
       1
+    ],
+    "r": 4,
+    "raw": [
+      0,
+      65,
+      0,
+      66
+    ],
+    "calls": [
+      {
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "TrailingZlibData"
+      },
+      {
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": true,
+        "status": "Done"
+      },
+      {
+        "limit": 4,
+        "enforce": false,
+        "ignore_tail": false,
+        "status": "TrailingZlibData"
+      },
+      {
+        "limit": 4,
+        "enforce": false,
+        "ignore_tail": true,
+        "status": "Done"
+      },
+      {
+        "limit": 5,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "TrailingZlibData"
+      },
+      {
+        "limit": 5,
+        "enforce": true,
+        "ignore_tail": true,
+        "status": "TrailingZlibData"
+      },
+      {
+        "limit": 5,
+        "enforce": false,
+        "ignore_tail": false,
+        "status": "TrailingZlibData"
+      },
+      {
+        "limit": 5,
+        "enforce": false,
+        "ignore_tail": true,
+        "status": "TrailingZlibData"
+      }
     ]
   },
   {
@@ -38,6 +209,63 @@
     ],
     "segment_lengths": [
       16
+    ],
+    "r": 4,
+    "raw": [
+      0,
+      65,
+      0,
+      66
+    ],
+    "calls": [
+      {
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "AdlerMismatch"
+      },
+      {
+        "limit": 4,
+        "enforce": true,
+        "ignore_tail": true,
+        "status": "AdlerMismatch"
+      },
+      {
+        "limit": 4,
+        "enforce": false,
+        "ignore_tail": false,
+        "status": "AdlerMismatch"
+      },
+      {
+        "limit": 4,
+        "enforce": false,
+        "ignore_tail": true,
+        "status": "AdlerMismatch"
+      },
+      {
+        "limit": 5,
+        "enforce": true,
+        "ignore_tail": false,
+        "status": "AdlerMismatch"
+      },
+      {
+        "limit": 5,
+        "enforce": true,
+        "ignore_tail": true,
+        "status": "AdlerMismatch"
+      },
+      {
+        "limit": 5,
+        "enforce": false,
+        "ignore_tail": false,
+        "status": "AdlerMismatch"
+      },
+      {
+        "limit": 5,
+        "enforce": false,
+        "ignore_tail": true,
+        "status": "AdlerMismatch"
+      }
     ]
   }
 ]
