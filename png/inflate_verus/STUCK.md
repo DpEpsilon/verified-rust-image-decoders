@@ -1,3 +1,25 @@
+# Current checkpoint: fixed-match/effect bridge and extended authored classes
+
+2026-11-18. **Fresh final-source run 510: 767 verified, 0 errors.** Core coverage is **563 / 631**, up by 220. The exact handoff is the top section of `/home/ws/projects/verified-decoders/png/inflate_verus/LEDGER.md`. All jobs have exited; no failing/speculative proof remains active. Next logged run is 521.
+
+The new balanced fixed-match trace bridge proves literal/length and distance words, both extra fields and sequence-copy effects including overlap, independently of executable decode tables and the ring. A balanced Adler-sum bridge and separately verified literal input constructors support larger stored classes. The 128-byte authoring batch boundary is removed; successful new classes reach 527 raw bytes without implying a general solver bound.
+
+128 new classes cover 217 frozen streams: 50 fixed-literal classes cover 59, 61 stored classes cover 70, and 17 fixed-match classes cover 88. The independent sample/filter/Adam7 replay now extends beyond initial images through filters, tRNS and interlace edges; APNG samples are authored directly. Complete forward encoding is an eligibility comparison, never a source of expected raw bytes. The audit checks all constructor/trace transcriptions and members at independently derived image/frame R, including 33 successful fdAT instances. Two empty fdAT errors and core trailing-in-later-IDAT add three more core instances, giving the increase of 220.
+
+Both distance-before-output window-policy records additionally prove empty output/DistanceTooFar for all four window/tail choices at R and R+1, with original segments. Together with the earlier eight tail-policy records, ten policy records are proved outside the core numerator. These remain inflate outcomes, not integrated PNG policy results.
+
+All 631 core instances are inventoried. **68 remain:** twelve default-limit-blocked streams, 32 first-fixed-block trace gaps, seven further fdAT gaps, one dynamic profile, and sixteen malformed/ambiguous IHDR/fcTL cases without a legal independent R. Do not invent fallback R or reuse a byte-identical class at a different R. Remaining named gates include the three large IDAT split/empty-segment records, declared windows, large zlib/flush/truncation, excess-output policy families, the distance-beyond-window policy family and further mutations.
+
+Five queries exhausted default solver limits and were excluded without raising limits: RGB16 9x10 noninterlaced (550 raw bytes, run 507) and interlaced (560, 508), RGBA16 9x10 noninterlaced (730, 507) and interlaced (740, 507), and BASE_RAW stored (1,023, 508), the last covering eight frozen records. `/home/ws/projects/verified-decoders/png/inflate_verus/tools/witness_blocked.json` records exact class/member identities and diagnostics. The source/manifests from both failed runs are preserved in sub-1-MB backups. No unattempted stream is labelled resource-blocked.
+
+Production implementations did not change. Full runtime evidence passes in runs 511–518 and final source/inventory controls in 520: thirteen tests, host/thumb instantiated probes and allocator symbols, all vector layouts, 10,000 generated streams and 10,000 corruptions, zero unexpected differences. No new mutation kills were added; the historical total remains 63. No signed allocation audit or M2 sign-off is claimed.
+
+Pinned i686 replay remains blocked by the absent matching cache (519), not replaced by thumb. L-LIMIT-MONO and the existing synthetic window/ring/D5 proofs remain checked. E1/E2 statuses and the amended SegmentSlices L-SEG-FRAME discharge are unchanged; IDAT/fdAT/iCCP reader/call-site M3 duties remain. No frozen document, theorem manifest or errata file was edited; no new frozen-statement discrepancy arose.
+
+---
+
+## Previous checkpoint (historical)
+
 # Current checkpoint: authored repeats and systematic stream classes
 
 2026-11-18. **Fresh final-source run 492: 496 verified, 0 errors.** Core coverage is **343 / 631 frozen stream instances**, up by 300. The exact handoff is the top section of `/home/ws/projects/verified-decoders/png/inflate_verus/LEDGER.md`. All jobs have exited; no failed or speculative proof remains active. Next logged run is 502.

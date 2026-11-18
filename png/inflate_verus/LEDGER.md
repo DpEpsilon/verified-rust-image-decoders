@@ -1,5 +1,65 @@
 # Inflate proof ledger
 
+## Sol fixed-match/effect bridge and extended authored classes, 2026-11-18
+
+**Fresh final-source run 510: 767 verified, 0 errors.** The independently authored core-stream subset is now **563 of 631**, up from 343: **220 additional frozen stream instances**. The remaining 68 have explicit incomplete entries, including twelve streams blocked by five named default-limit queries. Ten policy records are additionally proved, outside the core numerator. This is a clean partial M2 checkpoint, not M2 sign-off.
+
+| Runs | Evidence | Result |
+|---|---|---|
+| 502–503 | Independent fixed-match wire/extra/copy-effect bridge | Run 503: 503 verified, 0 errors |
+| 504–506 | Balanced independent Adler-sum bridge development | Nat/base-case proof failures; no mutation kill |
+| 507 | First 80 extended authored classes | 652 verified, 15 errors; three named default-resource failures retained |
+| 508 | Extended interlace/APNG schedule and explicit scalar Adler arithmetic | 749 verified, 2 errors; two further named default-resource failures retained |
+| 509 | Eligible classes and small original-segment error/policy gates | 767 verified, 0 errors |
+| 510 | Final cap-clean Adler-radix representation | **767 verified, 0 errors** |
+| 511–516 | Source/provenance/allocation/cap/hash controls, release tests/adapter, host/thumb probes and symbols | All pass |
+| 517–518 | Full differential seeds 32 and 33 | 10,000 generated streams plus 10,000 corruptions; zero unexpected differences |
+| 519 | Matching pinned i686 verifier-cache inventory | No candidate; no bootstrap or replay |
+| 520 | Final source controls with precise R/blocked inventory reasons | All pass; all twelve frozen hashes unchanged |
+
+### Exact proved surface
+
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/witness_match.rs` adds a balanced authored fixed-code trace bridge. Each step specifies its wire position, next position, produced-prefix lengths, literal/length symbol, length extra, distance symbol, distance extra, copy length and distance. The bridge proves both canonical decodes, the extra fields and each output effect. Its independent sequence-copy predicate checks every copied byte against the evolving raw prefix, including overlap; no executable Huffman table or measuring-ring representation supplies expected bytes or effects.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/witness_checksum.rs` proves balanced byte/prefix sums equal the independent mathematical Adler sums, using a separately proved concatenation identity. Concrete classes check balanced sums and scalar checksum arithmetic separately; they do not interpret the entire inflate/checksum recursively in one compute expression. The checksum radix uses `u16::MAX+1`, avoiding the cap lint's unrelated MAX_FRAMES numeral collision without weakening the lint.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/witness_extended.rs` adds **128 classes covering 217 new streams**: 50 fixed-literal classes cover 59 instances, 61 stored classes cover 70, and 17 fixed-match classes cover 88. Every class has a separately verified exact literal input constructor, an independently authored raw sequence, a model/status proof at R and calls to both actual public entries. Successful new classes reach 527 raw bytes; that observation is not a general solver bound.
+- Across old and new classes, **242 classes cover 512 instances**: 136 fixed-literal classes cover 318, 89 stored classes cover 106, and 17 fixed-match classes cover 88. The 48 earlier individual witnesses and three new small error instances give the total **563 / 631**.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/tools/author_extended_classes.py` independently replays the sample schedule through the initial images, individual filters, tRNS, BASE_PX/rawW RNG consumption and interlace-edge images. It authors APNG samples directly, before composition. Forward LZ77 candidates depend only on intended raw bytes and fixed greedy/lazy dictionary rules; complete forward-encoding equality against the input selects eligibility, never expected output bytes. The tool imports only json, random and pathlib; it imports/executes neither the frozen encoder nor a decoder, oracle or executable decode table. The 128-byte batch restriction is gone.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/tools/audit_witnesses.py` checks every new constructor's exact frozen bytes, both authored raw bindings, every trace transcription, every class member and its independently calculated R. fdAT membership uses the stream's own enclosing fcTL dimensions and original sequence-number-stripped payloads, not canvas dimensions. The new successful classes cover **33 fdAT instances**; two separately proved empty fdAT instances bring the newly covered fdAT total to 35. No malformed/ambiguous shape receives an invented R.
+- `/home/ws/projects/verified-decoders/png/inflate_verus/src/witness_special.rs` proves both frozen empty-fdAT streams at R=5 with empty output/TruncatedZlib, and core `zlib/trailing-in-later-idat` at R=4 with raw `[0,65,0,66]`/TrailingZlibData using its original two IDAT segments. It additionally closes both policy `window/distance-before-output-stays-an-error` records at R=4 and R+1=5 under all four window/tail combinations, retaining empty output/DistanceTooFar. The eight previous tail-policy records remain proved, for ten policy records in total; these are inflate outcomes, not integrated PNG policy theorems.
+
+### Named default-limit blocks and other failures
+
+The following queries actually exhausted the unchanged default solver limit. They were removed from active witness claims and were not retried with increased limits. Diagnostics and exact failing source snapshots remain in the crate; `/home/ws/projects/verified-decoders/png/inflate_verus/tools/witness_blocked.json` maps each failure to every affected frozen instance.
+
+| Named query | Frozen streams | Raw bytes | Diagnostic run |
+|---|---|---:|---:|
+| extended_ct2_d16_il0_9x10 | ok/ct2-d16-il0-9x10 | 550 | 507 |
+| extended_ct2_d16_il1_9x10 | ok/ct2-d16-il1-9x10 | 560 | 508 |
+| extended_ct6_d16_il0_9x10 | ok/ct6-d16-il0-9x10 | 730 | 507 |
+| extended_ct6_d16_il1_9x10 | ok/ct6-d16-il1-9x10 | 740 | 507 |
+| base_stored | level0 default/fixed/huffman/rle/filtered, plus level1/6/9 huffman | 1,023 | 508 |
+
+Run 502 rejected a boolean-containing trigger; selecting the trace-index term fixed it. Run 504 rejected a nat/int mismatch. Runs 505–506 needed explicit empty/singleton Adler-sum base facts. Run 507's twelve non-resource Adler assertions needed explicit scalar sums/modular arithmetic, not larger solver limits. Run 508 left only its two named resource failures. An unlogged source-control trial after 509 detected the checksum-radix/cap-lint collision; 510 and source-control runs 511/520 validate the representation-only fix. No failing/speculative proof remains active.
+
+There are **no new mutation kills**; the historical total remains 63. Historical run 453 remains a type-check failure, not a kill. Existing mutation cases, selectors and `runs/sol-*.out` evidence were not changed.
+
+### Runtime and frozen boundary
+
+Only verifier-gated modules, cfg(verus_only) module declarations, authoring/audit tooling, inventories and documentation changed. Production implementations are unchanged. Full runtime evidence was nevertheless replayed: source/allocation/cap/erased-counter/provenance controls and twelve frozen hashes (511/520), thirteen release tests (512), adapter (513), host/thumb libraries and instantiated probes (514–515), allocator-symbol checks (516), all 1,181 extracted vector streams in four layouts per seed plus 10,000 generated streams and 10,000 single-bit corruptions (517–518). The differential checks **33,544 public-entry pairs / 67,088 actual calls**, with zero unexpected differences. Work observations remain erased and proved, not runtime measured. No signed production allocation/call-graph audit is claimed.
+
+E1 remains APPROVED; E2 remains APPROVED WITH AMENDMENT. The earlier SegmentSlices L-SEG-FRAME discharge and separate per-reader/call-site M3 obligations are unchanged. No universal no-extra-effect guarantee for arbitrary T-SEG readers is claimed. No new frozen-statement discrepancy was found; ERRATA.md, THEOREMS.md and spec-frozen were not edited. Sixteen remaining extracted instances lack a legal independent image/frame R because of malformed or ambiguous IHDR/fcTL; they remain uncredited rather than silently receiving a fallback limit.
+
+### Exact resume
+
+1. Continue `/home/ws/projects/verified-decoders/png/inflate_verus/tools/witness_inventory.json`: **68 remain** — twelve default-limit-blocked streams, 32 first-fixed-block trace gaps, seven further fdAT gaps, one dynamic profile (`depth16/rounding-boundaries`), and sixteen malformed/ambiguous image/frame-R cases. Preserve the five named resource failures and their diagnostics; do not raise limits or describe unattempted streams as resource failures.
+2. The reusable fixed-match/effect and balanced Adler bridges are ready. Extend the independent forward encoder/profile intent, not decode-oracle output. For the remaining fdAT records, distinguish checksum-error prefixes, a successful zlib stream with short image data, the interlaced subframe and streams whose enclosing frame R differs from the existing green-frame class. A byte-identical Z does not justify reusing a proof at a different R. Keep original parts and per-stream fcTL provenance.
+3. Named gates still open: core idat/split-1-byte, idat/split-irregular and idat/zero-length-idats; both frozen declared-window records; large zlib/flush/truncation streams; policy excess-output/excess-row/excess-output-and-tail; policy window/distance-beyond-declared-window; and further required implementation mutations. Core trailing-in-later-IDAT and the distance-before-output window-policy family are now closed, not substitutes for those open gates. Existing synthetic exact/window+1, ring-wrap, D5 and L-LIMIT-MONO proofs remain checked.
+4. i686 replay remains open. Run 519 finds no pinned matching i686 vstd .vir in inflate/GIF targets or /home/ws/.cache. No bootstrap, version/feature/flag/fingerprint change or target substitution occurred. Thumb probes are runtime evidence, not an i686 proof replay.
+
+All jobs started in this continuation have exited. **Next logged run is 521.** The pre-edit snapshot is `/home/ws/projects/verified-decoders/png/inflate_verus/backups/sol-before-match-bridge.tar.gz` (211,523 bytes). Exact failing queries/manifests are in `backups/sol-run507-extended-queries.tar.gz` (102,465 bytes) and `backups/sol-run508-extended-queries.tar.gz` (127,306 bytes); each archive is below 1 MB. No target directory was cleaned, removed or repaired; no commit/push or edit outside the crate occurred. Verus 0.2026.11.02.8bf68ee, cached vstd hash 01822e92e4f44378, rustc 1.99.1, one Cargo job, two verifier threads, default solver limits and --no-cheating are unchanged. No trusted item or proof escape was added. Only tooling/inventory/documentation changed after fresh final-source run 510.
+
+---
+
 ## Sol authored repeats and systematic stream classes, 2026-11-18
 
 **Fresh final-source run 492: 496 verified, 0 errors.** The independently authored core-stream subset is now **343 of 631**, up from 43: 300 additional frozen stream instances. All 631 instances have an explicit coverage/incomplete entry. Four tail-policy families additionally cover eight policy records, outside the core numerator. This is a clean partial M2 checkpoint, not M2 sign-off.

@@ -22,15 +22,21 @@ mod witness_cases;
 #[cfg(verus_only)]
 mod witness_classes;
 #[cfg(verus_only)]
+mod witness_checksum;
+#[cfg(verus_only)]
 mod witness_d4;
 #[cfg(verus_only)]
 mod witness_dynamic;
 #[cfg(verus_only)]
 mod witness_dynamic_cases;
 #[cfg(verus_only)]
+mod witness_extended;
+#[cfg(verus_only)]
 mod witness_invalid_dynamic;
 #[cfg(verus_only)]
 mod witness_literal_class;
+#[cfg(verus_only)]
+mod witness_match;
 #[cfg(verus_only)]
 mod witness_overlap;
 #[cfg(verus_only)]
@@ -41,6 +47,8 @@ mod witness_policy_cases;
 mod witness_repeats;
 #[cfg(verus_only)]
 mod witness_single_literal;
+#[cfg(verus_only)]
+mod witness_special;
 #[cfg(verus_only)]
 mod witness_window;
 #[cfg(verus_only)]

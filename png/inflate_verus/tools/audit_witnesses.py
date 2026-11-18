@@ -49,7 +49,7 @@ def streams(data):
     return [b''.join(parts) for parts in ([] if idat_parts is None else [idat_parts]) + [f for f in frames if f is not None]]
 
 
-def image_r(data):
+def image_r(data, dimensions=None):
     """Independent legal IHDR/Adam7 row-byte count for IDAT class membership."""
     headers = [p for k,p in chunks(data) if k == b'IHDR' and len(p) == 13]
     if len(headers) != 1:
@@ -61,6 +61,10 @@ def image_r(data):
     if not (0 < w < 2**31 and 0 < height < 2**31 and color in legal and depth in legal[color]
             and compression == filtering == 0 and interlace in (0,1)):
         return None
+    if dimensions is not None:
+        w, height = dimensions
+        if not (0 < w < 2**31 and 0 < height < 2**31):
+            return None
     channels = {0:1,2:3,3:1,4:2,6:4}[color]
     grids = [(0,0,1,1)] if interlace == 0 else [(0,0,8,8),(4,0,8,8),(0,4,4,8),(2,0,4,4),(0,2,2,4),(1,0,2,2),(0,1,1,2)]
     total = 0
@@ -71,13 +75,39 @@ def image_r(data):
     return total
 
 
+def stream_shapes(data):
+    """Associate every extracted stream with its own original control record."""
+    default = None
+    frames = []
+    for kind, payload in chunks(data):
+        if kind == b'IDAT':
+            if default is None:
+                default = []
+            default.append(payload)
+        elif kind == b'fcTL':
+            frames.append([payload, None])
+        elif kind == b'fdAT' and len(payload) >= 4 and frames:
+            if frames[-1][1] is None:
+                frames[-1][1] = []
+            frames[-1][1].append(payload[4:])
+    shaped = [] if default is None else [(image_r(data), default, None)]
+    for control, parts in frames:
+        if parts is None:
+            continue
+        dims = (int.from_bytes(control[4:8], 'big'), int.from_bytes(control[8:12], 'big'))
+        r = image_r(data, dims) if len(control) == 26 else None
+        shaped.append((r, parts, control))
+    assert [b''.join(parts) for _, parts, _ in shaped] == streams(data)
+    return shaped
+
+
 def main():
     vectors = {v['name']: v for v in json.loads((ROOT.parent / 'spec-frozen/VECTORS.json').read_text())}
-    for name in ('author_more_witnesses.py', 'author_dynamic_witnesses.py', 'author_d4_witnesses.py', 'author_window_witnesses.py', 'author_invalid_dynamic_witnesses.py', 'author_repeat_witnesses.py', 'author_literal_classes.py', 'author_policy_witnesses.py', 'author_single_literal_witness.py'):
+    for name in ('author_more_witnesses.py', 'author_dynamic_witnesses.py', 'author_d4_witnesses.py', 'author_window_witnesses.py', 'author_invalid_dynamic_witnesses.py', 'author_repeat_witnesses.py', 'author_literal_classes.py', 'author_extended_classes.py', 'author_special_witnesses.py', 'author_policy_witnesses.py', 'author_single_literal_witness.py'):
         tree = ast.parse((ROOT / 'tools' / name).read_text())
         for node in ast.walk(tree):
             if isinstance(node, ast.Import):
-                allowed = {'json', 'pathlib', 'random'} if name == 'author_literal_classes.py' else {'json', 'pathlib'}
+                allowed = {'json', 'pathlib', 'random'} if name in ('author_literal_classes.py', 'author_extended_classes.py') else {'json', 'pathlib'}
                 assert all(alias.name in allowed for alias in node.names), name
             if isinstance(node, ast.ImportFrom):
                 assert node.module == 'pathlib', name
@@ -127,6 +157,74 @@ def main():
             assert index == 0 and streams(data)[index] == wire, key
             assert image_r(data) == len(raw), key
             covered.add(key)
+    extended = json.loads((ROOT / 'tools/witness_extended.json').read_text())
+    extended_text = (ROOT / 'src/witness_extended.rs').read_text()
+    extended_fdats = 0
+    for claim in extended:
+        ident, raw = claim['class'], claim['raw']
+        ctor = re.search(r'fn ' + re.escape(ident) + r'_bytes\(\) -> \(wire: \[u8;(\d+)\]\)\s*ensures wire@ == seq!\[([^\]]*)\],\s*\{\s*\[([^\]]*)\]\s*\}', extended_text)
+        assert ctor, ident
+        wire = bytes(int(x.strip().removesuffix('u8'), 0) for x in ctor[3].split(',') if x.strip())
+        assert len(wire) == int(ctor[1]), ident
+        assert wire == bytes(int(x.strip().removesuffix('u8'), 0) for x in ctor[2].split(',') if x.strip()), ident
+        body = re.search(r'fn ' + re.escape(ident) + r'\(\) \{(.*?)(?=\n\})', extended_text, re.S)
+        assert body and f'let wire = {ident}_bytes();' in body[1], ident
+        for prefix in ('let raw = ', 'let ghost raw = '):
+            authored = re.search(re.escape(prefix) + r'seq!\[([^\]]*)\]', body[1])
+            assert authored, ident
+            assert [int(x.strip().removesuffix('u8'), 0) for x in authored[1].split(',') if x.strip()] == raw, ident
+        assert f'let mut output = [0xa5u8;{len(raw)}]' in body[1], ident
+        assert 'check_at(&wire,&mut output,Status::Done,Ghost(raw))' in body[1], ident
+        steps = [dict((k, int(v)) for k, v in re.findall(r'(\w+):(\d+)', step))
+                 for step in re.findall(r't::Step \{([^}]*)\}', body[1])]
+        # The trace is authored twice in the query: its binding and compute check.
+        assert steps == claim['steps'] * 2, ident
+        assert claim['members'] and claim['representative'] in claim['members'], ident
+        for name, index in claim['members']:
+            key = (name, index)
+            assert key not in covered, key
+            data = bytes.fromhex(vectors[name]['input_hex'])
+            r, parts, control = stream_shapes(data)[index]
+            assert b''.join(parts) == wire and r == len(raw), key
+            extended_fdats += control is not None
+            covered.add(key)
+    classes += extended
+    print(f'{len(extended)} extended constructors/traces audited, including {extended_fdats} fdAT streams at their own frame R')
+    special = json.loads((ROOT / 'tools/witness_special.json').read_text())
+    special_text = (ROOT / 'src/witness_special.rs').read_text()
+    policy_vectors = {v['name']:v for v in json.loads((ROOT.parent / 'policy-draft/VECTORS-POLICY.json').read_text())}
+    for claim in special:
+        ident = claim['class']
+        body = re.search(r'fn ' + re.escape(ident) + r'\(\) \{(.*?)(?=\n\})', special_text, re.S)
+        assert body, ident
+        parts = [bytes(int(x.strip().removesuffix('u8'),0) for x in literal.split(',') if x.strip())
+                 for literal in re.findall(r'let segment_\d+: \[u8;\d+\] = \[([^\]]*)\]', body[1])]
+        assert [len(p) for p in parts] == claim['segment_lengths'], ident
+        calls = 8 if claim['domain'] == 'policy' else 1
+        assert body[1].count('check_policy_parts(') == calls, ident
+        assert f'let mut output = [0xa5u8;{claim["r"]}]' in body[1], ident
+        if claim['raw']:
+            raw = re.search(r'let ghost raw = seq!\[([^\]]*)\]', body[1])
+            assert raw and [int(x.strip().removesuffix('u8'),0) for x in raw[1].split(',') if x.strip()] == claim['raw'], ident
+        else:
+            assert 'let ghost raw = Seq::<u8>::empty();' in body[1], ident
+        for name, index in claim['members']:
+            data = bytes.fromhex((vectors if claim['domain'] == 'core' else policy_vectors)[name]['input_hex'])
+            r, original, control = stream_shapes(data)[index]
+            assert r == claim['r'] and parts == original, (name,index)
+            if claim['domain'] == 'core':
+                assert (name,index) not in covered, (name,index)
+                covered.add((name,index))
+    print('Three small error families match original payload boundaries: 3 core streams and 2 window-policy records')
+    blocked = json.loads((ROOT / 'tools/witness_blocked.json').read_text())
+    blocked_keys = {}
+    for item in blocked:
+        log = (ROOT / item['diagnostics']).read_text()
+        assert f'fn {item["class"]}()' in log and 'resource limit (rlimit) exceeded' in log, item
+        assert (ROOT / item['source_snapshot']).stat().st_size < 1_000_000, item
+        for name,index in item['members']:
+            assert (name,index) not in covered, (name,index)
+            blocked_keys[name,index] = item
     all_streams = {(v['name'],i): z for v in vectors.values() for i,z in enumerate(streams(bytes.fromhex(v['input_hex'])))}
     assert len(all_streams) == 631, len(all_streams)
     assert covered <= all_streams.keys()
@@ -138,13 +236,20 @@ def main():
             'awaits authored trace; empty/short envelope' if len(z) < 3 else
             ['awaits authored stored-block trace', 'awaits authored fixed-match/literal trace',
              'awaits authored dynamic profile/symbol trace', 'awaits authored invalid-block trace'][(z[2] >> 1) & 3])
+        if key not in covered:
+            data = bytes.fromhex(vectors[name]['input_hex'])
+            if stream_shapes(data)[index][0] is None:
+                reason = 'no legal independent image/frame R; malformed or ambiguous IHDR/fcTL'
+        if key in blocked_keys:
+            item = blocked_keys[key]
+            reason = f'blocked at default solver rlimit; run {item["run"]}; {item["class"]}'
         inventory.append({'name':name, 'stream':index, 'bytes':len(z), 'covered':key in covered, 'reason':reason})
     (ROOT / 'tools/witness_inventory.json').write_text(json.dumps(inventory,indent=2)+'\n')
     class_kinds = {}
     for claim in classes:
         kind = claim['encoding']
         class_kinds[kind] = class_kinds.get(kind, 0) + 1
-    print(f'{len(classes)} independent stream classes {class_kinds} cover {len(covered)-len(seen)} additional streams')
+    print(f'{len(classes)} independent stream classes {class_kinds} cover {sum(len(c["members"]) for c in classes)} additional streams')
     print(f'{len(covered)} / 631 frozen core streams covered; {631-len(covered)} remain; every stream inventoried')
     policy_vectors = {v['name']:v for v in json.loads((ROOT.parent / 'policy-draft/VECTORS-POLICY.json').read_text())}
     policy_text = (ROOT / 'src/witness_policy_cases.rs').read_text()

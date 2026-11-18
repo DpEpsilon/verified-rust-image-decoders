@@ -1,0 +1,64 @@
+[
+  {
+    "class": "empty_fdat",
+    "domain": "core",
+    "members": [
+      [
+        "apng/empty-fdat-payload",
+        1
+      ],
+      [
+        "apng/empty-fdat-payload-still",
+        1
+      ]
+    ],
+    "r": 5,
+    "raw": [],
+    "status": "TruncatedZlib",
+    "segment_lengths": [
+      0
+    ]
+  },
+  {
+    "class": "core_tail_later_idat",
+    "domain": "core",
+    "members": [
+      [
+        "zlib/trailing-in-later-idat",
+        0
+      ]
+    ],
+    "r": 4,
+    "raw": [
+      0,
+      65,
+      0,
+      66
+    ],
+    "status": "TrailingZlibData",
+    "segment_lengths": [
+      15,
+      1
+    ]
+  },
+  {
+    "class": "policy_distance_before",
+    "domain": "policy",
+    "members": [
+      [
+        "policy/window/distance-before-output-stays-an-error/strict",
+        0
+      ],
+      [
+        "policy/window/distance-before-output-stays-an-error/recommended-beta",
+        0
+      ]
+    ],
+    "r": 4,
+    "raw": [],
+    "status": "DistanceTooFar",
+    "segment_lengths": [
+      8
+    ]
+  }
+]

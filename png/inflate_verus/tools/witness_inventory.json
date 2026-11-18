@@ -73,8 +73,8 @@
     "name": "ok/ct0-d1-il1-9x10",
     "stream": 0,
     "bytes": 53,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct0-d1-il1-17x2",
@@ -367,8 +367,8 @@
     "name": "ok/ct0-d16-il0-9x10",
     "stream": 0,
     "bytes": 201,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct0-d16-il0-17x2",
@@ -409,8 +409,8 @@
     "name": "ok/ct0-d16-il1-9x10",
     "stream": 0,
     "bytes": 211,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct0-d16-il1-17x2",
@@ -451,8 +451,8 @@
     "name": "ok/ct2-d8-il0-9x10",
     "stream": 0,
     "bytes": 291,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct2-d8-il0-17x2",
@@ -493,8 +493,8 @@
     "name": "ok/ct2-d8-il1-9x10",
     "stream": 0,
     "bytes": 301,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct2-d8-il1-17x2",
@@ -521,29 +521,29 @@
     "name": "ok/ct2-d16-il0-7x5",
     "stream": 0,
     "bytes": 226,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok16/ct2-d16-il0-7x5",
     "stream": 0,
     "bytes": 226,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct2-d16-il0-9x10",
     "stream": 0,
     "bytes": 561,
     "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "reason": "blocked at default solver rlimit; run 507; extended_ct2_d16_il0_9x10"
   },
   {
     "name": "ok/ct2-d16-il0-17x2",
     "stream": 0,
     "bytes": 217,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct2-d16-il1-1x1",
@@ -563,29 +563,29 @@
     "name": "ok/ct2-d16-il1-7x5",
     "stream": 0,
     "bytes": 232,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok16/ct2-d16-il1-7x5",
     "stream": 0,
     "bytes": 232,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct2-d16-il1-9x10",
     "stream": 0,
     "bytes": 571,
     "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "reason": "blocked at default solver rlimit; run 508; extended_ct2_d16_il1_9x10"
   },
   {
     "name": "ok/ct2-d16-il1-17x2",
     "stream": 0,
     "bytes": 220,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct3-d1-il0-1x1",
@@ -955,8 +955,8 @@
     "name": "ok/ct4-d8-il0-9x10",
     "stream": 0,
     "bytes": 201,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct4-d8-il0-17x2",
@@ -997,8 +997,8 @@
     "name": "ok/ct4-d8-il1-9x10",
     "stream": 0,
     "bytes": 211,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct4-d8-il1-17x2",
@@ -1025,29 +1025,29 @@
     "name": "ok/ct4-d16-il0-7x5",
     "stream": 0,
     "bytes": 156,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok16/ct4-d16-il0-7x5",
     "stream": 0,
     "bytes": 156,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct4-d16-il0-9x10",
     "stream": 0,
     "bytes": 381,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct4-d16-il0-17x2",
     "stream": 0,
     "bytes": 149,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct4-d16-il1-1x1",
@@ -1067,29 +1067,29 @@
     "name": "ok/ct4-d16-il1-7x5",
     "stream": 0,
     "bytes": 162,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok16/ct4-d16-il1-7x5",
     "stream": 0,
     "bytes": 162,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct4-d16-il1-9x10",
     "stream": 0,
     "bytes": 391,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct4-d16-il1-17x2",
     "stream": 0,
     "bytes": 152,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct6-d8-il0-1x1",
@@ -1109,29 +1109,29 @@
     "name": "ok/ct6-d8-il0-7x5",
     "stream": 0,
     "bytes": 156,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok16/ct6-d8-il0-7x5",
     "stream": 0,
     "bytes": 156,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct6-d8-il0-9x10",
     "stream": 0,
     "bytes": 381,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct6-d8-il0-17x2",
     "stream": 0,
     "bytes": 149,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct6-d8-il1-1x1",
@@ -1151,29 +1151,29 @@
     "name": "ok/ct6-d8-il1-7x5",
     "stream": 0,
     "bytes": 162,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok16/ct6-d8-il1-7x5",
     "stream": 0,
     "bytes": 162,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct6-d8-il1-9x10",
     "stream": 0,
     "bytes": 391,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct6-d8-il1-17x2",
     "stream": 0,
     "bytes": 152,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct6-d16-il0-1x1",
@@ -1193,29 +1193,29 @@
     "name": "ok/ct6-d16-il0-7x5",
     "stream": 0,
     "bytes": 296,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok16/ct6-d16-il0-7x5",
     "stream": 0,
     "bytes": 296,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct6-d16-il0-9x10",
     "stream": 0,
     "bytes": 741,
     "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "reason": "blocked at default solver rlimit; run 507; extended_ct6_d16_il0_9x10"
   },
   {
     "name": "ok/ct6-d16-il0-17x2",
     "stream": 0,
     "bytes": 285,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct6-d16-il1-1x1",
@@ -1235,414 +1235,414 @@
     "name": "ok/ct6-d16-il1-7x5",
     "stream": 0,
     "bytes": 302,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok16/ct6-d16-il1-7x5",
     "stream": 0,
     "bytes": 302,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "ok/ct6-d16-il1-9x10",
     "stream": 0,
     "bytes": 751,
     "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "reason": "blocked at default solver rlimit; run 507; extended_ct6_d16_il1_9x10"
   },
   {
     "name": "ok/ct6-d16-il1-17x2",
     "stream": 0,
     "bytes": 288,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/0-ct0-d1",
     "stream": 0,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/0-ct0-d8",
     "stream": 0,
     "bytes": 37,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/0-ct0-d16",
     "stream": 0,
     "bytes": 61,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/0-ct2-d8",
     "stream": 0,
     "bytes": 87,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/0-ct2-d16",
     "stream": 0,
     "bytes": 159,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/0-ct4-d8",
     "stream": 0,
     "bytes": 63,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/0-ct6-d16",
     "stream": 0,
     "bytes": 207,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/1-ct0-d1",
     "stream": 0,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/1-ct0-d8",
     "stream": 0,
     "bytes": 37,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/1-ct0-d16",
     "stream": 0,
     "bytes": 63,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/1-ct2-d8",
     "stream": 0,
     "bytes": 87,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/1-ct2-d16",
     "stream": 0,
     "bytes": 159,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/1-ct4-d8",
     "stream": 0,
     "bytes": 63,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/1-ct6-d16",
     "stream": 0,
     "bytes": 207,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/2-ct0-d1",
     "stream": 0,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/2-ct0-d8",
     "stream": 0,
     "bytes": 37,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/2-ct0-d16",
     "stream": 0,
     "bytes": 63,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/2-ct2-d8",
     "stream": 0,
     "bytes": 87,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/2-ct2-d16",
     "stream": 0,
     "bytes": 159,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/2-ct4-d8",
     "stream": 0,
     "bytes": 63,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/2-ct6-d16",
     "stream": 0,
     "bytes": 207,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/3-ct0-d1",
     "stream": 0,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/3-ct0-d8",
     "stream": 0,
     "bytes": 37,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/3-ct0-d16",
     "stream": 0,
     "bytes": 63,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/3-ct2-d8",
     "stream": 0,
     "bytes": 87,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/3-ct2-d16",
     "stream": 0,
     "bytes": 159,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/3-ct4-d8",
     "stream": 0,
     "bytes": 63,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/3-ct6-d16",
     "stream": 0,
     "bytes": 207,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/4-ct0-d1",
     "stream": 0,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/4-ct0-d8",
     "stream": 0,
     "bytes": 37,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/4-ct0-d16",
     "stream": 0,
     "bytes": 63,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/4-ct2-d8",
     "stream": 0,
     "bytes": 87,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/4-ct2-d16",
     "stream": 0,
     "bytes": 159,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/4-ct4-d8",
     "stream": 0,
     "bytes": 63,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "filter/4-ct6-d16",
     "stream": 0,
     "bytes": 207,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/grey-d1",
     "stream": 0,
     "bytes": 14,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/grey-d1-masked",
     "stream": 0,
     "bytes": 14,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/grey-d2",
     "stream": 0,
     "bytes": 17,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/grey-d2-masked",
     "stream": 0,
     "bytes": 17,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/grey-d4",
     "stream": 0,
     "bytes": 20,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/grey-d4-masked",
     "stream": 0,
     "bytes": 20,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/grey-d8",
     "stream": 0,
     "bytes": 26,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/grey-d8-masked",
     "stream": 0,
     "bytes": 26,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/grey-d16",
     "stream": 0,
     "bytes": 44,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/rgb-d8",
     "stream": 0,
     "bytes": 61,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/rgb-d16",
     "stream": 0,
     "bytes": 111,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/rgb-d16-low-byte-differs",
     "stream": 0,
     "bytes": 111,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/palette-d8-16-entries-3-alpha",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns16/palette-d8-16-3",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/palette-d8-16-entries-16-alpha",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns16/palette-d8-16-16",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/palette-d4-16-entries-1-alpha",
     "stream": 0,
     "bytes": 17,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns16/palette-d4-16-1",
     "stream": 0,
     "bytes": 17,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/palette-d1-2-entries-2-alpha",
     "stream": 0,
     "bytes": 14,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns16/palette-d1-2-2",
     "stream": 0,
     "bytes": 14,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "depth16/rounding-boundaries",
@@ -1656,35 +1656,35 @@
     "stream": 0,
     "bytes": 1034,
     "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "reason": "blocked at default solver rlimit; run 508; base_stored"
   },
   {
     "name": "zlib/level0-fixed",
     "stream": 0,
     "bytes": 1034,
     "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "reason": "blocked at default solver rlimit; run 508; base_stored"
   },
   {
     "name": "zlib/level0-huffman",
     "stream": 0,
     "bytes": 1034,
     "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "reason": "blocked at default solver rlimit; run 508; base_stored"
   },
   {
     "name": "zlib/level0-rle",
     "stream": 0,
     "bytes": 1034,
     "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "reason": "blocked at default solver rlimit; run 508; base_stored"
   },
   {
     "name": "zlib/level0-filtered",
     "stream": 0,
     "bytes": 1034,
     "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "reason": "blocked at default solver rlimit; run 508; base_stored"
   },
   {
     "name": "zlib/level1-default",
@@ -1705,7 +1705,7 @@
     "stream": 0,
     "bytes": 1034,
     "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "reason": "blocked at default solver rlimit; run 508; base_stored"
   },
   {
     "name": "zlib/level1-rle",
@@ -1740,7 +1740,7 @@
     "stream": 0,
     "bytes": 1034,
     "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "reason": "blocked at default solver rlimit; run 508; base_stored"
   },
   {
     "name": "zlib/level6-rle",
@@ -1775,7 +1775,7 @@
     "stream": 0,
     "bytes": 1034,
     "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "reason": "blocked at default solver rlimit; run 508; base_stored"
   },
   {
     "name": "zlib/level9-rle",
@@ -1991,8 +1991,8 @@
     "name": "zlib/trailing-in-later-idat",
     "stream": 0,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "zlib/cut-mid-block",
@@ -2250,15 +2250,15 @@
     "name": "image/palette-index-out-of-range",
     "stream": 0,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "image/palette-index-out-of-range-d2",
     "stream": 0,
     "bytes": 12,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "precedence/adler-before-filter",
@@ -2271,8 +2271,8 @@
     "name": "precedence/index-row0-before-filter-row1",
     "stream": 0,
     "bytes": 14,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct0-d1-1x1",
@@ -2285,246 +2285,246 @@
     "name": "interlace/ct6-d16-1x1",
     "stream": 0,
     "bytes": 17,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct3-d4-1x1",
     "stream": 0,
     "bytes": 10,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct0-d1-1x2",
     "stream": 0,
     "bytes": 12,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct6-d16-1x2",
     "stream": 0,
     "bytes": 27,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct3-d4-1x2",
     "stream": 0,
     "bytes": 12,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct0-d1-2x1",
     "stream": 0,
     "bytes": 12,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct6-d16-2x1",
     "stream": 0,
     "bytes": 27,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct3-d4-2x1",
     "stream": 0,
     "bytes": 12,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct0-d1-1x5",
     "stream": 0,
     "bytes": 18,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct6-d16-1x5",
     "stream": 0,
     "bytes": 56,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct3-d4-1x5",
     "stream": 0,
     "bytes": 18,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct0-d1-5x1",
     "stream": 0,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct6-d16-5x1",
     "stream": 0,
     "bytes": 55,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct3-d4-5x1",
     "stream": 0,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct0-d1-2x2",
     "stream": 0,
     "bytes": 14,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct6-d16-2x2",
     "stream": 0,
     "bytes": 44,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct3-d4-2x2",
     "stream": 0,
     "bytes": 14,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct0-d1-3x3",
     "stream": 0,
     "bytes": 20,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct6-d16-3x3",
     "stream": 0,
     "bytes": 89,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct3-d4-3x3",
     "stream": 0,
     "bytes": 21,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct0-d1-4x4",
     "stream": 0,
     "bytes": 22,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct6-d16-4x4",
     "stream": 0,
     "bytes": 146,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct3-d4-4x4",
     "stream": 0,
     "bytes": 24,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct0-d1-5x5",
     "stream": 0,
     "bytes": 27,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct6-d16-5x5",
     "stream": 0,
     "bytes": 222,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct3-d4-5x5",
     "stream": 0,
     "bytes": 36,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct0-d1-8x8",
     "stream": 0,
     "bytes": 38,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct6-d16-8x8",
     "stream": 0,
     "bytes": 538,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct3-d4-8x8",
     "stream": 0,
     "bytes": 59,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct0-d1-9x1",
     "stream": 0,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct6-d16-9x1",
     "stream": 0,
     "bytes": 87,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct3-d4-9x1",
     "stream": 0,
     "bytes": 17,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct0-d1-1x9",
     "stream": 0,
     "bytes": 26,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct6-d16-1x9",
     "stream": 0,
     "bytes": 92,
-    "covered": false,
-    "reason": "awaits authored stored-block trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/ct3-d4-1x9",
     "stream": 0,
     "bytes": 26,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "interlace/1x1-filter-bytes-for-empty-passes",
@@ -2552,7 +2552,7 @@
     "stream": 0,
     "bytes": 22,
     "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL"
   },
   {
     "name": "container/ihdr-crc",
@@ -2671,7 +2671,7 @@
     "stream": 0,
     "bytes": 22,
     "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL"
   },
   {
     "name": "container/non-consecutive-idat",
@@ -2692,91 +2692,91 @@
     "stream": 0,
     "bytes": 22,
     "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL"
   },
   {
     "name": "ihdr/height-0",
     "stream": 0,
     "bytes": 22,
     "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL"
   },
   {
     "name": "ihdr/width-2^31",
     "stream": 0,
     "bytes": 22,
     "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL"
   },
   {
     "name": "ihdr/depth-3",
     "stream": 0,
     "bytes": 22,
     "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL"
   },
   {
     "name": "ihdr/rgb-depth-4",
     "stream": 0,
     "bytes": 22,
     "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL"
   },
   {
     "name": "ihdr/palette-depth-16",
     "stream": 0,
     "bytes": 22,
     "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL"
   },
   {
     "name": "ihdr/ct-1",
     "stream": 0,
     "bytes": 22,
     "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL"
   },
   {
     "name": "ihdr/ct-5",
     "stream": 0,
     "bytes": 22,
     "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL"
   },
   {
     "name": "ihdr/ct-7",
     "stream": 0,
     "bytes": 22,
     "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL"
   },
   {
     "name": "ihdr/ga-depth-1",
     "stream": 0,
     "bytes": 22,
     "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL"
   },
   {
     "name": "ihdr/compression-1",
     "stream": 0,
     "bytes": 22,
     "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL"
   },
   {
     "name": "ihdr/filter-method-1",
     "stream": 0,
     "bytes": 22,
     "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL"
   },
   {
     "name": "ihdr/interlace-2",
     "stream": 0,
     "bytes": 22,
     "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL"
   },
   {
     "name": "plte/ok",
@@ -2845,15 +2845,15 @@
     "name": "plte/in-greyscale",
     "stream": 0,
     "bytes": 12,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "plte/in-grey-alpha",
     "stream": 0,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "plte/suggested-palette-in-rgb",
@@ -2915,22 +2915,22 @@
     "name": "trns/grey-length-6",
     "stream": 0,
     "bytes": 12,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/in-rgba",
     "stream": 0,
     "bytes": 11,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "trns/in-grey-alpha",
     "stream": 0,
     "bytes": 11,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "anc-ok/gAMA-4",
@@ -3762,197 +3762,197 @@
     "name": "apng/default-is-frame0-dispose-bg-blend-over",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/default-is-frame0-dispose-bg-blend-over",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/default-is-frame0-dispose-bg-blend-over",
     "stream": 2,
     "bytes": 14,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/still-is-default-image",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/still-is-default-image",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/still-is-default-image",
     "stream": 2,
     "bytes": 14,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/default-not-in-animation",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/default-not-in-animation",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/default-not-in-animation",
     "stream": 2,
     "bytes": 14,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/default-not-in-animation-still",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/default-not-in-animation-still",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/default-not-in-animation-still",
     "stream": 2,
     "bytes": 14,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/dispose-previous-first-frame-and-later",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/dispose-previous-first-frame-and-later",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/dispose-previous-first-frame-and-later",
     "stream": 2,
     "bytes": 14,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/blend-over-arithmetic",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/blend-over-arithmetic",
     "stream": 1,
     "bytes": 28,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/blend-over-arithmetic",
     "stream": 2,
     "bytes": 29,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/blend-over-transparent-source",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/blend-over-transparent-source",
     "stream": 1,
     "bytes": 37,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/blend-over-transparent-source",
     "stream": 2,
     "bytes": 36,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/blend-over-transparent-destination",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/blend-over-transparent-destination",
     "stream": 1,
     "bytes": 41,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/blend-over-transparent-destination",
     "stream": 2,
     "bytes": 52,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/blend-over-zero-result-alpha",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/blend-over-zero-result-alpha",
     "stream": 1,
     "bytes": 53,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/blend-over-zero-result-alpha",
     "stream": 2,
     "bytes": 53,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/interlaced-subframe",
     "stream": 0,
     "bytes": 33,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/interlaced-subframe",
@@ -3965,15 +3965,15 @@
     "name": "apng/static-file-as-frames",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/frame1-adler-error-ends",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/frame1-adler-error-ends",
@@ -3986,8 +3986,8 @@
     "name": "apng/frame1-error-still-unaffected",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/frame1-error-still-unaffected",
@@ -4000,8 +4000,8 @@
     "name": "apng/frame1-truncated-data-ends",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/frame1-truncated-data-ends",
@@ -4014,218 +4014,218 @@
     "name": "apng/empty-fdat-payload",
     "stream": 0,
     "bytes": 13,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/empty-fdat-payload",
     "stream": 1,
     "bytes": 0,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/empty-fdat-payload-still",
     "stream": 0,
     "bytes": 13,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/empty-fdat-payload-still",
     "stream": 1,
     "bytes": 0,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/empty-fdat-then-data",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/empty-fdat-then-data",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/empty-fdat-then-data-still",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/empty-fdat-then-data-still",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/actl-zero-frames",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/actl-zero-frames-still",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/actl-after-idat",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/actl-duplicate",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/actl-len-4",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-without-actl",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-without-actl-still",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fdat-without-actl",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/no-fctl-at-all",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fewer-frames-than-declared",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fewer-frames-than-declared",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/more-frames-than-declared",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/more-frames-than-declared",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/seq-starts-at-1",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/seq-starts-at-1",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/seq-gap",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/seq-gap",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/seq-gap-still",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/seq-gap-still",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/seq-fdat-repeats",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/seq-fdat-repeats",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fdat-before-fctl",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fdat-for-idat-frame",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fdat-for-idat-frame",
@@ -4238,8 +4238,8 @@
     "name": "apng-bad/fdat-for-idat-frame-still",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fdat-for-idat-frame-still",
@@ -4252,8 +4252,8 @@
     "name": "apng-bad/fdat-before-idat",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fdat-before-idat",
@@ -4266,154 +4266,154 @@
     "name": "apng-bad/fdat-len-3",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-no-fdat-then-iend",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-no-fdat-then-fctl",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-no-fdat-then-fctl",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/two-fctl-before-idat",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-len-25",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-width-0",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-width-0",
     "stream": 1,
     "bytes": 16,
     "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL"
   },
   {
     "name": "apng-bad/fctl-outside-x",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-outside-x",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-outside-y",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-outside-y",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-offset-overflow-u32",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-offset-overflow-u32",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-dispose-3",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-dispose-3",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-blend-2",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-blend-2",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/default-fctl-smaller",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/default-fctl-offset",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-crc",
     "stream": 0,
     "bytes": 23,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng-bad/fctl-crc",
     "stream": 1,
     "bytes": 16,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   }
 ]
