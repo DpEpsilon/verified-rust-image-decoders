@@ -25,3 +25,10 @@ ico/mutation/base/
 ico/ico_verus/src/*.m[0-9]*
 icns/alloc-notes/
 alloc-delta/proto/nostd_probe/freestanding/fs_test
+
+# Upstream bug reports and their supporting material (reproducers, crash inputs, triage, patches
+# against third-party code) are never tracked here; they are kept outside the public repository.
+**/upstream-report/
+**/upstream-reports/
+**/triage-evidence-*/
+**/*CRASH-TRIAGE*

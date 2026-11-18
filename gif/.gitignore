@@ -1,6 +1,8 @@
 # Third-party copies: re-fetch as described in spec-draft/SOURCES.md
 sources/gdk-pixbuf-2.42.12/
 spec-draft/sources/spec-gif89a.txt
-# Triage evidence: keep text logs, not the built runner binaries
-triage-evidence-*/gdk-anim
-triage-evidence-*/gdk-anim-asan
+# Upstream-report material is never tracked in this public repository; it lives outside it.
+upstream-report/
+triage-evidence-*/
+policy-draft/*CRASH-TRIAGE*.md
+policy-draft/probes/probes_crash_private.py

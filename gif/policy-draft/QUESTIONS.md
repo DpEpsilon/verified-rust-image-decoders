@@ -76,7 +76,7 @@ Each item names the decision, the options and a recommendation, and can be read 
 
 **Decided (2026-11-14).** Compatibility profiles are opt-in and versioned, never glycin's default, and not frozen before a held-out comparison on the real corpus.
 
-**Q18. The gdk-pixbuf crash.** `probe:clip-dispose2-x-beyond` crashes `gdk_pixbuf_animation_new_from_file` in 2.42.12: a negative length reaches `memset` when a disposal-2 frame starts right of the screen. *Recommendation: route through the coordinator for a disclosure decision; the verified decoder is unaffected (it clips with checked arithmetic).*
+**Q18. Disposal 2 on a frame beyond the screen.** A disposal-2 frame whose left edge lies right of the screen crashes one measured incumbent. The analysis and any disclosure are kept outside the public repository. *Recommendation: the verified decoder clips with checked arithmetic.*
 
 **Decided (2026-11-14).** The verified decoder clips with checked arithmetic; regression vectors `clip-dispose2-left-edge-beyond-screen-5` and `-65535` (RecommendedBeta; the incumbent is not named) require that a disposal-2 frame whose left edge lies entirely beyond the screen writes nothing and that the next frame decodes.
 
