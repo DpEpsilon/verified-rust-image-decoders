@@ -1,0 +1,36 @@
+{
+ "inputs": 1607,
+ "timeouts": [],
+ "stats": {
+  "still": [
+   1607,
+   0
+  ],
+  "still16": [
+   1607,
+   0
+  ],
+  "frames": [
+   1607,
+   0
+  ],
+  "icc": [
+   1607,
+   0
+  ],
+  "rb_still": [
+   1607,
+   0
+  ],
+  "rb_frames": [
+   1607,
+   0
+  ]
+ },
+ "accepted": {
+  "still": 446,
+  "frames": 446,
+  "rb_still": 919
+ },
+ "diffs": []
+}

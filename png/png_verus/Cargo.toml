@@ -1,0 +1,36 @@
+[package]
+name = "png_verus"
+version = "0.1.0"
+license = "MIT"
+description = "PNG/APNG decoder core (PNG-CORE-SPEC 1.0, Strict and RecommendedBeta), M1b plain implementation, to be verified with Verus"
+edition = "2021"
+
+[dependencies]
+vstd = { version = "=0.0.0-2026-11-01-0251", default-features = false, features = ["alloc"] }
+# The verified, allocation-free zlib/DEFLATE core (PNG-CORE-SPEC P9-P10). Never edited from here.
+inflate_verus = { path = "../inflate_verus" }
+
+[features]
+# Test-only: exposes the internal event set and the request trace, so
+# tests/conformance.rs can check `events` and `req`. Never enabled by a
+# consumer; enabled for this crate's own tests by the self dev-dependency below.
+test-records = []
+
+[dev-dependencies]
+# Test-only: reads the three vector files in tests/conformance.rs.
+serde_json = "1"
+sha2 = "0.10"
+png_verus = { path = ".", features = ["test-records"] }
+
+[package.metadata.verus]
+verify = true
+
+[profile.test]
+opt-level = 2
+
+[lints.rust]
+# Ghost items imported via `use` do not exist during a normal `cargo build`;
+# Verus turns on `verus_only` during verification.
+unexpected_cfgs = { level = "warn", check-cfg = [
+  'cfg(verus_only)',
+] }
