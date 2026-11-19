@@ -1,0 +1,3 @@
+command: ['python3', '-I', '-c', 'from pathlib import Path; roots=[Path("/home/ws/projects/verified-decoders/png/inflate_verus/target"),Path("/home/ws/projects/verified-decoders/gif/gif_verus/target"),Path("/home/ws/.cache")]; found=[str(p) for r in roots if r.exists() for p in r.rglob("*vstd*.vir") if "i686" in str(p)]; print("Matching pinned i686 vstd verification-artifact candidates:",found); print("No bootstrap, rebuild, copy, fingerprint change or target substitution."); assert not found,"Inspect candidates before attempting replay"']
+Matching pinned i686 vstd verification-artifact candidates: []
+No bootstrap, rebuild, copy, fingerprint change or target substitution.

@@ -1648,8 +1648,8 @@
     "name": "depth16/rounding-boundaries",
     "stream": 0,
     "bytes": 29,
-    "covered": false,
-    "reason": "awaits authored dynamic profile/symbol trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "zlib/level0-default",
@@ -1690,15 +1690,15 @@
     "name": "zlib/level1-default",
     "stream": 0,
     "bytes": 1006,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "zlib/level1-fixed",
     "stream": 0,
     "bytes": 1006,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "zlib/level1-huffman",
@@ -1718,8 +1718,8 @@
     "name": "zlib/level1-filtered",
     "stream": 0,
     "bytes": 1006,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "zlib/level6-default",
@@ -1732,8 +1732,8 @@
     "name": "zlib/level6-fixed",
     "stream": 0,
     "bytes": 1005,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "zlib/level6-huffman",
@@ -1753,8 +1753,8 @@
     "name": "zlib/level6-filtered",
     "stream": 0,
     "bytes": 1007,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "zlib/level9-default",
@@ -1767,8 +1767,8 @@
     "name": "zlib/level9-fixed",
     "stream": 0,
     "bytes": 1004,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "zlib/level9-huffman",
@@ -1788,29 +1788,29 @@
     "name": "zlib/level9-filtered",
     "stream": 0,
     "bytes": 1006,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "zlib/window-9",
     "stream": 0,
     "bytes": 1005,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "zlib/window-10",
     "stream": 0,
     "bytes": 1005,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "zlib/window-12",
     "stream": 0,
     "bytes": 1005,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "zlib/window-15",
@@ -1823,8 +1823,8 @@
     "name": "zlib/sync-and-full-flush-empty-stored-blocks",
     "stream": 0,
     "bytes": 1003,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "idat/split-1-byte",
@@ -1998,8 +1998,8 @@
     "name": "zlib/cut-mid-block",
     "stream": 0,
     "bytes": 502,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "zlib/cut-mid-stored",
@@ -2075,15 +2075,15 @@
     "name": "deflate/distance-beyond-declared-window",
     "stream": 0,
     "bytes": 432,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "deflate/distance-within-declared-window",
     "stream": 0,
     "bytes": 432,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "deflate/hlit-287",
@@ -2215,36 +2215,36 @@
     "name": "image/truncated-data",
     "stream": 0,
     "bytes": 1000,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "image/excess-data",
     "stream": 0,
     "bytes": 1006,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "image/excess-row",
     "stream": 0,
     "bytes": 1009,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "image/filter-type-5",
     "stream": 0,
     "bytes": 1005,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "image/filter-type-255",
     "stream": 0,
     "bytes": 1005,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "image/palette-index-out-of-range",
@@ -2264,8 +2264,8 @@
     "name": "precedence/adler-before-filter",
     "stream": 0,
     "bytes": 1005,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "precedence/index-row0-before-filter-row1",
@@ -2530,8 +2530,8 @@
     "name": "interlace/1x1-filter-bytes-for-empty-passes",
     "stream": 0,
     "bytes": 12,
-    "covered": false,
-    "reason": "awaits authored fixed-match/literal trace"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "container/minimal-ok",
@@ -3958,8 +3958,8 @@
     "name": "apng/interlaced-subframe",
     "stream": 1,
     "bytes": 36,
-    "covered": false,
-    "reason": "awaits authored trace; non-IDAT stream"
+    "covered": true,
+    "reason": "proved authored model/public-entry witness"
   },
   {
     "name": "apng/static-file-as-frames",

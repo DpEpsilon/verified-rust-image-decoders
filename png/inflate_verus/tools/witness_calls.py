@@ -36,23 +36,31 @@ def split_top(ts, separator=','):
     if start<len(ts):result.append(ts[start:])
     return result
 
+@lru_cache(maxsize=8)
+def declaration_index(text):
+    # Retain every occurrence so cached lookup still rejects duplicates.
+    ts=tokens(text);names={}
+    for i in range(len(ts)-1):
+        if ts[i]=='fn':names.setdefault(ts[i+1],[]).append(i)
+    return ts,names
+
 def function(text, name):
-    ts=tokens(text);hits=[]
-    for i in range(len(ts)-4):
-        if ts[i:i+4] == ['fn',name,'(',')'] and ts[i+4]=='{':
+    ts,names=declaration_index(text);hits=[]
+    for i in names.get(name,[]):
+        if i+4<len(ts) and ts[i:i+4] == ['fn',name,'(',')'] and ts[i+4]=='{':
             end=end_group(ts,i+4);hits.append(ts[i+5:end-1])
     assert len(hits)==1,(name,'missing or duplicate zero-argument witness function')
     return hits[0]
 
 def declaration(text, name):
-    ts=tokens(text);matches=[i for i in range(len(ts)-1) if ts[i:i+2]==['fn',name]]
+    ts,names=declaration_index(text);matches=names.get(name,[])
     assert len(matches)==1,(name,'missing or duplicate declaration')
     i=matches[0];start=ts.index('{',i)
     return ts[i:end_group(ts,start)]
 
 def spec_sequence(text,name):
-    ts=tokens(text);needle=['fn',name,'(',')','->','Seq','<','u8','>','{']
-    hits=[i for i in range(len(ts)-len(needle)) if ts[i:i+len(needle)]==needle]
+    ts,names=declaration_index(text);needle=['fn',name,'(',')','->','Seq','<','u8','>','{']
+    hits=[i for i in names.get(name,[]) if ts[i:i+len(needle)]==needle]
     assert len(hits)==1,(name,'missing or duplicate literal sequence spec')
     start=hits[0]+len(needle)-1;end=end_group(ts,start)
     return ts[start+1:end-1]
@@ -79,7 +87,7 @@ def _a_row_body(text):
 
 def array_values(ts, text):
     if len(ts)==3 and ts[1:]==['(',')']:
-        all_tokens=tokens(text);matches=[i for i in range(len(all_tokens)-1) if all_tokens[i:i+2]==['fn',ts[0]]]
+        all_tokens,names=declaration_index(text);matches=names.get(ts[0],[])
         assert len(matches)==1,(ts[0],'constructor missing or duplicated')
         start=all_tokens.index('{',matches[0]);ts=all_tokens[start+1:end_group(all_tokens,start)-1]
     assert ts[0]=='[' and ts[-1]==']',('unsupported input constructor',ts[:8])

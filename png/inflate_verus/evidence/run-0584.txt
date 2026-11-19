@@ -1,0 +1,33 @@
+command: ['python3', '-I', 'tools/test_witness_audit.py']
+test_cached_constructor_lookup_rejects_duplicates (__main__.WitnessAuditTests.test_cached_constructor_lookup_rejects_duplicates) ... ok
+test_cached_function_lookup_rejects_duplicates (__main__.WitnessAuditTests.test_cached_function_lookup_rejects_duplicates) ... ok
+test_cached_spec_lookup_rejects_duplicates (__main__.WitnessAuditTests.test_cached_spec_lookup_rejects_duplicates) ... ok
+test_changed_individual_status_is_rejected (__main__.WitnessAuditTests.test_changed_individual_status_is_rejected) ... ok
+test_changed_layout_cuts_are_rejected (__main__.WitnessAuditTests.test_changed_layout_cuts_are_rejected) ... ok
+test_changed_limit_is_rejected (__main__.WitnessAuditTests.test_changed_limit_is_rejected) ... ok
+test_changed_manifest_status_is_rejected (__main__.WitnessAuditTests.test_changed_manifest_status_is_rejected) ... ok
+test_complete_audit_main (__main__.WitnessAuditTests.test_complete_audit_main) ... ok
+test_configured_call_removal_is_rejected (__main__.WitnessAuditTests.test_configured_call_removal_is_rejected) ... ok
+test_configured_call_status_is_rejected (__main__.WitnessAuditTests.test_configured_call_status_is_rejected) ... ok
+test_configured_policy_raw_prefix_is_rejected (__main__.WitnessAuditTests.test_configured_policy_raw_prefix_is_rejected) ... ok
+test_configured_policy_tuple_duplication_is_rejected (__main__.WitnessAuditTests.test_configured_policy_tuple_duplication_is_rejected) ... ok
+test_control_flow_cannot_supply_call_credit (__main__.WitnessAuditTests.test_control_flow_cannot_supply_call_credit) ... ok
+test_current_call_bindings (__main__.WitnessAuditTests.test_current_call_bindings) ... ok
+test_cut_source_prefix_change_is_rejected (__main__.WitnessAuditTests.test_cut_source_prefix_change_is_rejected) ... ok
+test_declared_window_descriptor_change_is_rejected (__main__.WitnessAuditTests.test_declared_window_descriptor_change_is_rejected) ... ok
+test_duplicated_option_tuple_is_rejected (__main__.WitnessAuditTests.test_duplicated_option_tuple_is_rejected) ... ok
+test_dynamic_copy_distance_change_is_rejected (__main__.WitnessAuditTests.test_dynamic_copy_distance_change_is_rejected) ... ok
+test_dynamic_profile_call_removal_is_rejected (__main__.WitnessAuditTests.test_dynamic_profile_call_removal_is_rejected) ... ok
+test_dynamic_profile_length_change_is_rejected (__main__.WitnessAuditTests.test_dynamic_profile_length_change_is_rejected) ... ok
+test_dynamic_repeat_position_change_is_rejected (__main__.WitnessAuditTests.test_dynamic_repeat_position_change_is_rejected) ... ok
+test_evidence_checkout_needs_no_runs_directory (__main__.WitnessAuditTests.test_evidence_checkout_needs_no_runs_directory) ... ok
+test_flush_call_removal_is_rejected (__main__.WitnessAuditTests.test_flush_call_removal_is_rejected) ... ok
+test_new_finishing_call_removal_is_rejected (__main__.WitnessAuditTests.test_new_finishing_call_removal_is_rejected) ... ok
+test_original_layout_call_removal_is_rejected (__main__.WitnessAuditTests.test_original_layout_call_removal_is_rejected) ... ok
+test_removed_public_call_is_rejected (__main__.WitnessAuditTests.test_removed_public_call_is_rejected) ... ok
+test_unregistered_witness_module_is_rejected (__main__.WitnessAuditTests.test_unregistered_witness_module_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 27 tests in 21.821s
+
+OK

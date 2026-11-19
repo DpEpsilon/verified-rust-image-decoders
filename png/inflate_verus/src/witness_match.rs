@@ -24,7 +24,7 @@ pub(crate) open spec fn copy_bytes(raw: Seq<u8>, start: nat, distance: nat, a: n
         copy_bytes(raw,start,distance,a,mid) && copy_bytes(raw,start,distance,mid,b)
     }
 }
-proof fn copy_quant(raw: Seq<u8>, start: nat, distance: nat, a: nat, b: nat)
+pub(crate) proof fn copy_quant(raw: Seq<u8>, start: nat, distance: nat, a: nat, b: nat)
     requires a <= b, distance <= start, start+b <= raw.len(), copy_bytes(raw,start,distance,a,b),
     ensures forall|j:int| a <= j < b ==> #[trigger] raw[start+j] == raw[start+j-distance],
     decreases b-a,
@@ -34,7 +34,7 @@ proof fn copy_quant(raw: Seq<u8>, start: nat, distance: nat, a: nat, b: nat)
         copy_quant(raw,start,distance,a,mid); copy_quant(raw,start,distance,mid,b);
     }
 }
-proof fn copy_prefix(raw: Seq<u8>, start: nat, distance: nat, n: nat)
+pub(crate) proof fn copy_prefix(raw: Seq<u8>, start: nat, distance: nat, n: nat)
     requires 0 < distance <= start, start+n <= raw.len(),
         forall|j:int| 0 <= j < n ==> #[trigger] raw[start+j] == raw[start+j-distance],
     ensures m::copy_distance(raw.take(start as int),distance,n) == raw.take((start+n) as int),
@@ -196,4 +196,9 @@ pub(crate) proof fn expand_at(z: Seq<u8>, raw: Seq<u8>, ts: Seq<Step>, k: nat, l
     if k+1 < ts.len() {expand_at(z,raw,ts,k+1,limit);}
     reveal_with_fuel(m::MCompressed,2);
 }
+pub(crate) proof fn join_trace(z: Seq<u8>, raw: Seq<u8>, ts: Seq<Step>, a: nat, b: nat)
+    requires a <= b,
+        trace(z,raw,ts,a,(a+(b-a)/2) as nat), trace(z,raw,ts,(a+(b-a)/2) as nat,b),
+    ensures trace(z,raw,ts,a,b),
+{}
 } // verus!

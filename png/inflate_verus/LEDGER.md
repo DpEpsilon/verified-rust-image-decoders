@@ -1,5 +1,60 @@
 # Inflate proof ledger
 
+## Round 7 recovered: shared default-limit queries, 2026-11-19
+
+**Fresh final-source run 582: 1,379 verified, 0 errors.** Core coverage is **615 / 631**, up by **23** from 592. All 21 first-fixed-block gaps and both remaining dynamic profiles now pass at default solver limits. The only sixteen uncredited core instances lack a legal independent IHDR/fcTL R. No legal-R stream remains solver-resource blocked. This is a clean partial M2 checkpoint, not M2 sign-off.
+
+| Runs | Result |
+|---|---|
+| 562, 573 | Whole-batch 25-minute wall-clock timeouts; no verification-results line or query-rlimit diagnostic; not success evidence |
+| 574 | Shared-query exact public-call bindings and three cached-parser duplicate guards pass |
+| 575 | **1,379 verified, 0 errors**, 1,306.68 seconds; source-bound evidence retained |
+| 576 | Full audit exposed a local `chunks` list shadowing the PNG chunk iterator; repaired without changing proof source |
+| 577 | Initial 26 negative/checkout tests pass |
+| 578 | Full source/provenance/allocation/cap/erased-work controls and twelve frozen hashes pass |
+| 579 | All **27** audit tests pass, including full audit main and runs-free evidence checkout |
+| 580 | Length-value-plus-one mutation killed: 1,378 verified, 1 error |
+| 581 | Legal window-equality rejection mutation killed: 1,378 verified, 1 error |
+| 582 | **Fresh final replay: 1,379 verified, 0 errors**, 1,381.77 seconds |
+| 583–584 | Final complete source controls and all **27** audit/negative/checkout tests pass |
+| 566–572 | Complete fresh runtime replay passes |
+
+### Exact added witness surface
+
+The fixed-first-block additions cover `zlib/level1-default`, `level1-fixed`, `level1-filtered`, `level6-fixed`, `level9-fixed`, `level6-filtered`, `level9-filtered`, `window-9`, `window-10`, `window-12`, `sync-and-full-flush-empty-stored-blocks`, and `cut-mid-block`; `image/truncated-data`, `excess-data`, `excess-row`, `filter-type-5`, and `filter-type-255`; `precedence/adler-before-filter`; `interlace/1x1-filter-bytes-for-empty-passes`; and both `deflate/distance-*-declared-window` records. These are 21 core instances, not 21 new physical constructors: the three level-one records share one representative only after exact Z, independent R, raw intent and option/result equality checks.
+
+The complete dynamic additions are `depth16/rounding-boundaries` at R=25 and fdAT stream 1 of `apng/interlaced-subframe` at its own fcTL R=42. Their Huffman tables, repeat fields, words, length/distance extras and copy effects come from forward sample/encoder intent, not a decoder or frozen expected fields. The flush witness composes five authored blocks; the EOF witness proves the independent 552-byte prefix and a live-code truncation.
+
+Twenty-one fixed configuration classes now cover nineteen core instances and eight policy records, with two further dynamic and two block classes. The four new policy families are excess-output, excess-row, excess-output-and-tail, and distance-beyond-declared-window, each with strict/recommended-beta records and all eight `(R or R+1, enforce-window, ignore-tail)` tuples. Together with the ten earlier policy records, eighteen policy records are proved outside the core numerator. These are inflate outcomes, not integrated PNG policy results: an excess-output record can be Done at R+1 while its PNG image policy still rejects the extra byte.
+
+Both declared-window core records use their actual headers: distance 300 is rejected after 400 bytes with the declared 256-byte window and accepted with the declared 512-byte window. The policy counterpart proves the 256-byte/32,768-byte selection at both limits and both tail choices. The empty-Adam7-pass fixture remains Full at R=2, not Done on its eight authored bytes.
+
+### Repairs, evidence and current handoff
+
+All six interrupted proof modules remain active and now verify. Run 553 failed two empty stored-range preconditions and then the pinned Verus undeclared-MDec-fuel panic; 555 repaired those issues but left six dynamic match/EOB assertion failures. Concrete z/raw length facts close those six failures. Direct fixture-function compute expressions eliminate run 562's 102 local-alias simplification warnings. Shared output-prefix, block-result and finishing subqueries, unused-checksum removal and the level-one representative let the complete crate finish inside the unchanged 25-minute bound. No solver limit increased.
+
+The audit checks every exact-call descriptor and now indexes function declarations without weakening duplicate rejection. Full audit run 576 additionally found the interrupted main-path iterator shadowing bug; `trace_ranges` avoids that shadow, and the 27th test executes the complete audit pipeline. All required logs are retained under `evidence/`, with hashes and run 582's complete 42-file source/Cargo/verify.sh binding; 63 retained logs are checked without reading ignored runs/. Twenty-three round-7 rlimit records moved from `tools/witness_blocked.json` into `evidence/historical-blocked.json`, with `resolved_run: 575`; the current blocked list is empty. Required 543/549 archives remain retained. Six unreferenced backup files were pruned, reclaiming 2,061,648 bytes.
+
+Production runtime bodies match 5f697fa. Fresh runtime evidence 566–572 includes thirteen release tests, the adapter, instantiated host/thumb allocator probes and symbol checks, all 1,181 extracted vector streams in four layouts per seed, 10,000 generated streams and 10,000 corruptions, with zero unexpected differences. The two seeds check 33,544 public-entry pairs / 67,088 actual calls. Work is erased and proved, not measured. No signed allocation audit is claimed.
+
+Run 580 kills `length-extra-value-plus-one`: **1,378 verified, 1 error**, with compressed-step refinement and match-length-range diagnostics, not a type-check or resource failure. Run 581 additionally kills `window-boundary-equality-rejected`: **1,378 verified, 1 error**, at the match-copy/model postcondition when a legal `distance == window` is rejected. The historical mutation total is now **67**. Its 776,153-byte source snapshot is `backups/round7-length-extra-value-plus-one.tar.gz`; the retained log and archive both have manifest hashes. Disposable failed source files were removed, while their target link and the shared cache were left untouched. The final unchanged-main replay 582 reconfirms 1,379 verified, 0 errors after both implementation mutations.
+
+The interrupted `distance-extra-value-plus-one` selector was backed out because it duplicated historical `distance-wrong-base`; aliases earn no new kill. Both new mutations used the optional `--case-root` to avoid the untouched pre-existing `mutation-cases/`. The second exact source archive is `backups/round7-window-boundary-equality-rejected.tar.gz` (776,154 bytes). Both new mutation sources are retained as sub-1-MB archives with log/archive hashes; disposable failed source and Cargo files are removed, retaining only target/log links. The pre-existing untracked mutation cases remain untouched. **Final accepted count: run 582, 1,379 verified, 0 errors. Final controls: 583; all 27 tests: 584. Next logged run: 585. All jobs have exited; no failing or speculative proof remains active.**
+
+Pinned i686 replay remains blocked by the absent matching vstd cache (fresh inventory 565); no bootstrap or target substitution occurred. E1 remains APPROVED; E2 remains APPROVED WITH AMENDMENT. The existing SegmentSlices L-SEG-FRAME discharge, L-LIMIT-MONO and separate M3 IDAT/fdAT/iCCP reader/call-site obligations are unchanged. No new frozen-statement concern was found. Frozen/review/errata files and pre-existing mutation/review evidence are unchanged. No target cleaning, vstd cache repair, solver-flag change or trust addition occurred. No commit/push or edit outside this crate occurred.
+
+---
+
+## Round 7 recovery diagnostics (historical), 2026-11-19
+
+At recovery start, run 529 remained the only accepted checkpoint: 831 verified, 0 errors and 592/631 core instances. Runs 562 and 573 later hit the whole-batch 25-minute wall-clock bound without a count or query error. Run 562 also printed 102 failed-to-simplify warnings from local-alias compute expressions; direct fixture calls eliminated them in 573. Shared subqueries then produced clean run 575, followed by fresh final-source replay 582. Neither wall-clock timeout is used to label an individual stream solver-rlimit blocked.
+
+Run 542 failed on a missing generated module; 547 rejected `hide` declarations placed after ordinary statements. Runs 543 and 549 exhausted default limits in large concrete configuration/profile/flush queries. The later decomposition separates constructors, trace chunks, balanced trace joins, outputs, result walks, checksums, model composition and public callers. Run 552 hit the pinned Verus undeclared-fuel panic for `witness_blocks.cut_source`. Run 553 failed two empty-stored-payload subrange preconditions and then panicked on undeclared `model.MDec` fuel; it has no verification-results line. Run 555 supplied the empty subrange facts, removed irrelevant fuel declarations, avoided the panic and reported 1487 verified, six failed dynamic match/EOB assertions, no remaining resource failure. An unlogged run 561 was interrupted after warnings and has no count. Its log is not evidence of success.
+
+Preparatory audit 563 failed closed because the interrupted manifest had no current final-source count. Descriptor checks passed in 564/574. Full main-path audit 576 later exposed the `chunks` iterator shadowing error; the repaired main pipeline and all negative/checkout tests pass in 583/584. Required failure diagnostics and their referenced source archives remain retained.
+
+---
+
 ## Sol default-limit decomposition, original layouts and audited call bindings, 2026-11-18
 
 **Fresh final-source run 529: 831 verified, 0 errors.** Core coverage is **592 / 631**, up by **29** from 563. All twelve previously blocked streams now verify at default solver limits; no stream remains resource-blocked. The three named original IDAT split/empty-segment gates are proved. Both medium Astra witness-audit findings are repaired. This remains a partial M2 checkpoint, not M2 sign-off.

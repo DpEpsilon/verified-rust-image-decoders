@@ -24,6 +24,18 @@ mod witness_classes;
 #[cfg(verus_only)]
 mod witness_checksum;
 #[cfg(verus_only)]
+mod witness_config;
+#[cfg(verus_only)]
+mod witness_config_cases;
+#[cfg(verus_only)]
+mod witness_profile_bridge;
+#[cfg(verus_only)]
+mod witness_profiles;
+#[cfg(verus_only)]
+mod witness_block_bridge;
+#[cfg(verus_only)]
+mod witness_blocks;
+#[cfg(verus_only)]
 mod witness_d4;
 #[cfg(verus_only)]
 mod witness_dynamic;

@@ -13,6 +13,8 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 CASES = {
+    'length-extra-value-plus-one': ('let length = LEN_BASE[index] as u32 + extra;', 'let length = LEN_BASE[index] as u32 + extra + 1;'),
+    'window-boundary-equality-rejected': ('if distance > output.produced || distance > window {', 'if distance > output.produced || distance >= window {'),
     'omit-nlen': ('if len != !nlen { return Err(Status::Err(E::StoredLengthMismatch)); }',
                   'if false { return Err(Status::Err(E::StoredLengthMismatch)); }'),
     'wrong-length-285': ('163, 195, 227, 258,', '163, 195, 227, 257,'),
@@ -120,7 +122,11 @@ FILE_CASES = {
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('case', choices=list(CASES) + list(FILE_CASES))
+    parser.add_argument('--case-root', type=Path, default=ROOT / 'mutation-cases',
+                        help='durable disposable-copy parent, inside this crate')
     args = parser.parse_args()
+    case_root = args.case_root.resolve()
+    assert case_root.is_relative_to(ROOT.resolve()), 'mutation copies must remain inside this crate'
     if args.case in FILE_CASES:
         filename, before, after = FILE_CASES[args.case]
     else:
@@ -128,7 +134,7 @@ def main():
         before, after = CASES[args.case]
     text = (ROOT / 'src' / filename).read_text()
     assert text.count(before) == 1, (args.case, text.count(before))
-    dest = ROOT / 'mutation-cases' / args.case
+    dest = case_root / args.case
     assert not dest.exists(), f'Keep existing diagnostics; choose another case: {dest}'
     dest.mkdir(parents=True)
     for name in ('src', 'tools', 'examples', 'tests'):

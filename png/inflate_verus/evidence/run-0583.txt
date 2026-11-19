@@ -1,0 +1,60 @@
+command: ['python3', '-I', 'tools/audit_source.py', '--self-test']
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/adler.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/bits.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/classification.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/lib.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/limit_mono.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/limits.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/segments.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_block_bridge.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_blocks.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_cases.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_checksum.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_classes.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_config.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_config_cases.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_d4.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_dynamic.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_dynamic_cases.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_extended.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_finish.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_invalid_dynamic.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_layout.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_literal_class.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_match.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_overlap.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_policy.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_policy_cases.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_profile_bridge.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_profiles.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_repeats.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_single_literal.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_special.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_stored_bridge.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_window.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_window_cases.rs
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witnesses.rs
+alloc_scan: clean (39 file(s))
+alloc_scan: clean (39 file(s))
+self-test: OK (44 allocating constructs flagged, also beside conditional ghost contracts in both modes; cfg(test) registration controls; 26 real sources clean in both modes)
+61 retained proof logs hash-checked without reading ignored runs/
+Parsed public-call descriptors bind all credited witnesses to exact input, limit, options, status and raw
+48 authored witness streams match frozen IDAT extraction, including Z=[]; no oracle used
+136 extended constructors/traces audited, including 33 fdAT streams at their own frame R
+Three small error families match original payload boundaries: 3 core streams and 2 window-policy records
+5 finishing classes audited with original parts and R, including 6 fdAT instances
+21 fixed configuration classes audited; 8 policy records outside the core numerator
+2 complete dynamic profile/word/effect witnesses audited
+2 flush/EOF witnesses audited with original parts and independent prefixes
+250 independent stream classes {'fixed-literals': 136, 'stored': 94, 'fixed-matches': 20} cover 533 additional streams
+615 / 631 frozen core streams covered; 16 remain; every stream inventoried
+8 policy records match original IDAT segments; four window/tail combinations at R and R+1; not added to the core-stream numerator
+cap lint positive/negative controls passed
+cap lint clean: 38 source files, all six configured caps
+erased-counter lint positive/negative controls passed
+12 frozen hashes match; allocation scanner clean; pinned ghost vstd/alloc cache configuration
+No signed production call-graph audit or Verus theorem is claimed.

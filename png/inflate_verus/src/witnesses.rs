@@ -45,7 +45,7 @@ pub(crate) proof fn follow_word(lengths: Seq<u8>, z: Seq<u8>, start: nat, s: int
     }
 }
 
-proof fn lemma_wire_prefix(z: Seq<u8>, start: nat, a: nat, b: nat)
+pub(crate) proof fn lemma_wire_prefix(z: Seq<u8>, start: nat, a: nat, b: nat)
     requires a <= b,
     ensures wire_word(z, start, a) == wire_word(z, start, b).take(a as int),
         wire_word(z, start, b).len() == b,
@@ -86,7 +86,7 @@ proof fn fixed_next(n: nat)
     }
 }
 
-proof fn fixed_word(s: int)
+pub(crate) proof fn fixed_word(s: int)
     requires 0 <= s < crate::limits::FIXED_LIT_COUNT,
     ensures m::cw(m::fixed_lit_lengths(), s) == Some(m::msb_bits(
         if s < 144 { (48 + s) as nat } else if s < 256 { (400 + s - 144) as nat }

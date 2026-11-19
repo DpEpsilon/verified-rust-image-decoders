@@ -115,7 +115,10 @@ def validate_bindings(vectors, policy_vectors, source_overrides=None, manifest_o
     """Bind coverage to parsed, unconditional runtime harness statements."""
     source_overrides = source_overrides or {}
     manifest_overrides = manifest_overrides or {}
+    lib = source_overrides.get('lib.rs',(ROOT/'src/lib.rs').read_text())
+    active = set(re.findall(r'#\[cfg\(verus_only\)\]\s*(?:pub\s+)?mod\s+(\w+)\s*;',lib))
     def source(name):
+        assert Path(name).stem in active, ('witness module is not active',name)
         return source_overrides[name] if name in source_overrides else (ROOT/'src'/name).read_text()
     def manifest(name):
         return manifest_overrides[name] if name in manifest_overrides else json.loads((ROOT/'tools'/name).read_text())
@@ -171,12 +174,96 @@ def validate_bindings(vectors, policy_vectors, source_overrides=None, manifest_o
         assert cuts == claim['cuts'], claim['record']
         call = expected_call(parts,r,True,False,'Done',claim['raw'],'replay_layout')
         witness_calls.validate(source('witness_extended.rs'),claim['class'],[call])
+    for filename,src in [('witness_config.json','witness_config_cases.rs'),('witness_profiles.json','witness_profiles.rs'),('witness_blocks.json','witness_blocks.rs')]:
+        for claim in manifest(filename):
+            domain = vectors if claim['domain'] == 'core' else policy_vectors
+            name,index = claim['members'][0]
+            r,parts,_ = stream_shapes(bytes.fromhex(domain[name]['input_hex']))[index]
+            assert r == claim['r'] and [len(p) for p in parts] == claim['segment_lengths'], name
+            tuples = [(c['limit'],c['enforce'],c['ignore_tail']) for c in claim['calls']]
+            options = [(L,e,t) for L in (r,r+1) for e in (True,False) for t in (False,True)] if claim['domain'] == 'policy' else [(r,True,False)]
+            assert sorted(tuples) == sorted(options), name
+            for call in claim['calls']:
+                if 'window' in call:
+                    cmf = b''.join(parts)[0]
+                    assert call['window'] == (2**(cmf//16+8) if call['enforce'] else 32768), name
+            expected = [expected_call(parts,c['limit'],c['enforce'],c['ignore_tail'],c['status'],c['raw']) for c in claim['calls']]
+            witness_calls.validate(source(src),claim['class'],expected)
+            for member,index in claim['members']:
+                mr,mp,_ = stream_shapes(bytes.fromhex(domain[member]['input_hex']))[index]
+                assert mr == r and mp == parts, member
     print('Parsed public-call descriptors bind all credited witnesses to exact input, limit, options, status and raw')
     return individual_keys
 
 
+def validate_profile_transcriptions(claims, text, vectors):
+    keys=set()
+    for claim in claims:
+        ident=claim['class']
+        assert witness_calls.sequence(witness_calls.spec_sequence(text,ident+'_raw'),{},text) == claim['raw'], ident
+        for kind in ('lit','dist'):
+            values=claim[kind]
+            expr=f'Seq::new({len(values)},|i:int| '+''.join(f'if i == {i} {{{n}u8}} else ' for i,n in enumerate(values) if n)+'{0u8})'
+            assert witness_calls.spec_sequence(text,ident+'_'+kind) == witness_calls.tokens(expr), (ident,kind)
+        assert witness_calls.sequence(witness_calls.spec_sequence(text,ident+'_cl'),{},text) == claim['cl'], ident
+        def seq(xs,ty='u8'):
+            return 'seq!['+', '.join(str(x)+(ty if i==0 else '') for i,x in enumerate(xs))+']'
+        repeat=f'd::repeat_trace({seq(witness_calls.sequence(witness_calls.spec_sequence(text,ident+"_z"),{},text))},{seq(claim["cl"])},{seq(claim["repeat_symbols"])},{seq(claim["repeat_positions"],"nat")},{seq(claim["repeat_offsets"],"nat")},{seq(claim["lit"]+claim["dist"])},0,{len(claim["repeat_symbols"])})'
+        compact=' '.join(witness_calls.tokens(text))
+        assert ' '.join(witness_calls.tokens(repeat)) in compact, ident
+        for step in claim['steps']:
+            assert ' '.join(witness_calls.tokens(f'follow_word(lit,z,{step["pos"]},{step["symbol"]},0)')) in compact, ident
+            out='raw' if step['symbol']==256 else f'raw.take({step["after"]})'
+            variant='End' if step['symbol']==256 else 'Next'
+            expr=f'm::MCompressedStep(z,{step["pos"]},raw.take({step["before"]}),{claim["r"]},32768,lit,dist) == (m::SymbolEffect::{variant} {{out:{out},position:{step["next"]}}})'
+            assert ' '.join(witness_calls.tokens(expr)) in compact, (ident,step)
+            if step['symbol']>256:
+                expr=f't::copy_bytes({seq(claim["raw"])},{step["before"]},{step["distance"]},0,{step["length"]})'
+                assert ' '.join(witness_calls.tokens(expr)) in compact, (ident,step)
+                lp=step['pos']+claim['lit'][step['symbol']]
+                ln=0 if step['symbol']<265 or step['symbol']>=285 else (step['symbol']-261)//4
+                dp=lp+ln
+                assert ' '.join(witness_calls.tokens(f'follow_word(dist,z,{dp},{step["ds"]},0)')) in compact, (ident,step)
+
+        for name,index in claim['members']:
+            r,parts,_=stream_shapes(bytes.fromhex(vectors[name]['input_hex']))[index]
+            assert r == claim['r'] and [len(p) for p in parts] == claim['segment_lengths'], name
+            assert bytes(witness_calls.sequence(witness_calls.spec_sequence(text,ident+'_z'),{},text)) == b''.join(parts), name
+            assert (name,index) not in keys, name
+            keys.add((name,index))
+    return keys
+
+
+def validate_block_transcriptions(claims,text,vectors):
+    keys=set()
+    for claim in claims:
+        ident=claim['class']
+        for suffix,key in [('raw','raw'),('source','model_raw')]:
+            assert witness_calls.sequence(witness_calls.spec_sequence(text,ident+'_'+suffix),{},text) == claim[key], (ident,key)
+        spec=re.search(r'spec fn '+re.escape(ident)+r'_ts\(\) -> Seq<t::Step> \{ (seq!\[.*?\]) \}',text)
+        helper=re.search(r'proof fn '+re.escape(ident)+r'_trace\(\).*?\n\{(.*?)(?=\n\})',text,re.S)
+        assert spec and helper, ident
+        authored=[dict((k,int(v)) for k,v in re.findall(r'(\w+):(\d+)',step)) for step in re.findall(r't::Step \{([^}]*)\}',spec[1]+helper[1])]
+        assert authored == claim['steps'], ident
+        chunks=claim['trace_chunks']
+        assert chunks[0][0] == 0 and chunks[-1][1] == claim['trace_prefix'], ident
+        assert all(a[1] == b[0] for a,b in zip(chunks,chunks[1:])), ident
+        for j,(lo,hi) in enumerate(chunks):
+            chunk=re.search(r'proof fn '+re.escape(ident)+r'_trace_chunk_'+str(j)+r'\(\).*?\n\{(.*?)(?=\n\})',text,re.S)
+            assert chunk and f'assert(t::trace({ident}_z(),{ident}_source(),{ident}_ts(),{lo},{hi})) by (compute);' in chunk[1], ident
+            assert f'{ident}_trace_chunk_{j}();' in helper[1], ident
+        for name,index in claim['members']:
+            r,parts,_=stream_shapes(bytes.fromhex(vectors[name]['input_hex']))[index]
+            assert r == claim['r'] and [len(p) for p in parts] == claim['segment_lengths'], name
+            assert bytes(witness_calls.sequence(witness_calls.spec_sequence(text,ident+'_z'),{},text)) == b''.join(parts), name
+            assert (name,index) not in keys, name
+            keys.add((name,index))
+    return keys
+
+
 def validate_evidence(root=ROOT):
     records = json.loads((root/'evidence/manifest.json').read_text())
+    assert sum(record.get('role') == 'current-final-source-count' for record in records) == 1, 'one fresh source-bound final count is required'
     paths = set()
     for record in records:
         path = record['path']
@@ -186,6 +273,10 @@ def validate_evidence(root=ROOT):
         assert hashlib.sha256(data).hexdigest() == record['sha256'], path
         if 'verification_results' in record:
             assert record['verification_results'] in data.decode(), path
+        for name,digest in record.get('source_archives_sha256',{}).items():
+            assert '..' not in Path(name).parts and name.startswith('backups/'), name
+            archive = (root/name).read_bytes()
+            assert len(archive) < 1_000_000 and hashlib.sha256(archive).hexdigest() == digest, name
         if record.get('role') == 'current-final-source-count':
             sources = record['source_sha256']
             actual = {str(p.relative_to(root)) for p in (root/'src').rglob('*.rs')} | {'Cargo.toml','Cargo.lock','verify.sh'}
@@ -196,7 +287,7 @@ def validate_evidence(root=ROOT):
     for item in json.loads((root/'evidence/historical-blocked.json').read_text()) + json.loads((root/'tools/witness_blocked.json').read_text()):
         assert item['diagnostics'] in paths, item
         log = (root/item['diagnostics']).read_text()
-        assert f'fn {item["class"]}()' in log and 'resource limit (rlimit) exceeded' in log, item
+        assert any(f'fn {q}(' in log for q in item.get('queries',[item['class']])) and 'resource limit (rlimit) exceeded' in log, item
         assert (root/item['source_snapshot']).stat().st_size < 1_000_000, item
     assert {'evidence/run-0507.txt','evidence/run-0508.txt','evidence/run-0510.txt'} <= paths
     print(f'{len(records)} retained proof logs hash-checked without reading ignored runs/')
@@ -207,11 +298,11 @@ def main():
     policy_vectors = {v['name']: v for v in json.loads((ROOT.parent/'policy-draft/VECTORS-POLICY.json').read_text())}
     validate_evidence()
     individual_keys = validate_bindings(vectors, policy_vectors)
-    for name in ('author_more_witnesses.py', 'author_dynamic_witnesses.py', 'author_d4_witnesses.py', 'author_window_witnesses.py', 'author_invalid_dynamic_witnesses.py', 'author_repeat_witnesses.py', 'author_literal_classes.py', 'author_extended_classes.py', 'author_special_witnesses.py', 'author_policy_witnesses.py', 'author_single_literal_witness.py', 'author_finish_witnesses.py'):
+    for name in ('author_more_witnesses.py', 'author_dynamic_witnesses.py', 'author_d4_witnesses.py', 'author_window_witnesses.py', 'author_invalid_dynamic_witnesses.py', 'author_repeat_witnesses.py', 'author_literal_classes.py', 'author_extended_classes.py', 'author_special_witnesses.py', 'author_policy_witnesses.py', 'author_single_literal_witness.py', 'author_finish_witnesses.py', 'author_config_witnesses.py', 'author_profile_witnesses.py', 'author_huffman_intent.py', 'author_block_witnesses.py'):
         tree = ast.parse((ROOT / 'tools' / name).read_text())
         for node in ast.walk(tree):
             if isinstance(node, ast.Import):
-                allowed = {'json', 'pathlib', 'random'} if name in ('author_literal_classes.py', 'author_extended_classes.py') else {'json', 'pathlib'}
+                allowed = {'json', 'pathlib', 'sys', 're', 'author_extended_classes', 'author_huffman_intent'} if name in ('author_config_witnesses.py','author_profile_witnesses.py','author_huffman_intent.py','author_block_witnesses.py') else {'json', 'pathlib', 'random'} if name in ('author_literal_classes.py', 'author_extended_classes.py') else {'json', 'pathlib'}
                 assert all(alias.name in allowed for alias in node.names), name
             if isinstance(node, ast.ImportFrom):
                 assert node.module == 'pathlib', name
@@ -373,11 +464,52 @@ def main():
             finish_fdats += control is not None
             covered.add(key)
     print(f'{len(finishing)} finishing classes audited with original parts and R, including {finish_fdats} fdAT instances')
+    config = json.loads((ROOT/'tools/witness_config.json').read_text())
+    config_text = (ROOT/'src/witness_config_cases.rs').read_text()
+    config_policy = set()
+    for claim in config:
+        ident = claim['class']
+        assert witness_calls.sequence(witness_calls.spec_sequence(config_text,ident+'_raw'),{},config_text) == claim['raw'], ident
+        name,index = claim['members'][0]
+        domain = vectors if claim['domain'] == 'core' else policy_vectors
+        z = streams(bytes.fromhex(domain[name]['input_hex']))[index]
+        assert bytes(witness_calls.sequence(witness_calls.spec_sequence(config_text,ident+'_z'),{},config_text)) == z, ident
+        spec = re.search(r'spec fn '+re.escape(ident)+r'_ts\(\) -> Seq<t::Step> \{ (seq!\[.*?\]) \}',config_text)
+        helper = re.search(r'proof fn '+re.escape(ident)+r'_trace\(\).*?\n\{(.*?)(?=\n\})',config_text,re.S)
+        assert spec and helper, ident
+        authored = [dict((k,int(v)) for k,v in re.findall(r'(\w+):(\d+)',step)) for step in re.findall(r't::Step \{([^}]*)\}',spec[1]+helper[1])]
+        assert authored == claim['steps'], ident
+        trace_ranges=claim['trace_chunks']
+        assert trace_ranges[0][0] == 0 and trace_ranges[-1][1] == len(claim['steps']), ident
+        assert all(a[1] == b[0] for a,b in zip(trace_ranges,trace_ranges[1:])), ident
+        for j,(lo,hi) in enumerate(trace_ranges):
+            chunk=re.search(r'proof fn '+re.escape(ident)+r'_trace_chunk_'+str(j)+r'\(\).*?\n\{(.*?)(?=\n\})',config_text,re.S)
+            assert chunk and f'assert(t::trace({ident}_z(),{ident}_raw(),{ident}_ts(),{lo},{hi})) by (compute);' in chunk[1], ident
+            assert f'{ident}_trace_chunk_{j}();' in helper[1], ident
+        for name,index in claim['members']:
+            key = (name,index)
+            if claim['domain'] == 'core':
+                assert key not in covered, key
+                covered.add(key)
+            else:
+                assert key not in config_policy, key
+                config_policy.add(key)
+    print(f'{len(config)} fixed configuration classes audited; {len(config_policy)} policy records outside the core numerator')
+    profiles = json.loads((ROOT/'tools/witness_profiles.json').read_text())
+    profile_keys = validate_profile_transcriptions(profiles,(ROOT/'src/witness_profiles.rs').read_text(),vectors)
+    assert not profile_keys & covered
+    covered.update(profile_keys)
+    print(f'{len(profiles)} complete dynamic profile/word/effect witnesses audited')
+    blocks = json.loads((ROOT/'tools/witness_blocks.json').read_text())
+    block_keys = validate_block_transcriptions(blocks,(ROOT/'src/witness_blocks.rs').read_text(),vectors)
+    assert not block_keys & covered
+    covered.update(block_keys)
+    print(f'{len(blocks)} flush/EOF witnesses audited with original parts and independent prefixes')
     blocked = json.loads((ROOT / 'tools/witness_blocked.json').read_text())
     blocked_keys = {}
     for item in blocked:
         log = (ROOT / item['diagnostics']).read_text()
-        assert f'fn {item["class"]}()' in log and 'resource limit (rlimit) exceeded' in log, item
+        assert any(f'fn {q}(' in log for q in item.get('queries',[item['class']])) and 'resource limit (rlimit) exceeded' in log, item
         assert (ROOT / item['source_snapshot']).stat().st_size < 1_000_000, item
         for name,index in item['members']:
             assert (name,index) not in covered, (name,index)

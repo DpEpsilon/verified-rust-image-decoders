@@ -1,0 +1,10 @@
+command: ['python3', '-I', 'tools/test_witness_audit.py', 'WitnessAuditTests.test_current_call_bindings', 'WitnessAuditTests.test_cached_function_lookup_rejects_duplicates', 'WitnessAuditTests.test_cached_spec_lookup_rejects_duplicates', 'WitnessAuditTests.test_cached_constructor_lookup_rejects_duplicates']
+test_current_call_bindings (__main__.WitnessAuditTests.test_current_call_bindings) ... ok
+test_cached_function_lookup_rejects_duplicates (__main__.WitnessAuditTests.test_cached_function_lookup_rejects_duplicates) ... ok
+test_cached_spec_lookup_rejects_duplicates (__main__.WitnessAuditTests.test_cached_spec_lookup_rejects_duplicates) ... ok
+test_cached_constructor_lookup_rejects_duplicates (__main__.WitnessAuditTests.test_cached_constructor_lookup_rejects_duplicates) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.624s
+
+OK

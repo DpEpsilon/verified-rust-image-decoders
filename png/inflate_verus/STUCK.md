@@ -1,4 +1,20 @@
-# Current checkpoint: default-limit decomposition, original layouts and parsed audit bindings
+# Current checkpoint: round 7 recovered at default limits
+
+2026-11-19. **Fresh final-source run 582: 1,379 verified, 0 errors. Core coverage: 615/631, up by 23.** All 21 first-fixed-block gaps and both remaining dynamic profiles now verify. The sixteen remaining malformed/ambiguous IHDR/fcTL instances lack legal independent R and remain uncredited. No legal-R stream is resource-blocked; `tools/witness_blocked.json` is empty and all 23 round-7 failed formulations remain in retained historical diagnostics.
+
+Both frozen declared-window records, all remaining level/filter/flush/truncation streams, image excess-output/excess-row families and the four new policy families are covered. Eighteen policy records now have inflate witnesses outside the core numerator; these do not establish integrated PNG policy acceptance. The exact class/stream list and failure reconstruction are at the top of LEDGER.md.
+
+Final provenance/source controls pass in 583. All 27 negative/checkout/main-pipeline tests pass in 584. Source audit 576 found and then repaired a local trace-list name shadowing the PNG chunk iterator. Required logs and archives have retained hashes; run 582 binds all 42 source/Cargo/verify.sh files, and 63 retained evidence logs are hash-checked. Six unused backup files were pruned without dropping a referenced archive.
+
+Runtime source is unchanged from 5f697fa. Fresh complete runtime evidence 566–572 passes: thirteen tests, host/thumb instantiated allocator probes and symbols, all vector layouts, 10,000 generated streams and 10,000 corruptions, zero unexpected differences. No signed allocation audit or M2 sign-off is claimed.
+
+Runs 580 and 581 kill `length-extra-value-plus-one` and `window-boundary-equality-rejected`: each reports 1,378 verified, 1 error, at actual implementation/model refinement obligations. Historical total: **67**. Both exact sources are archived below 1 MB with retained log/archive hashes. Disposable failed source/Cargo files are removed; only target/log links remain. The unchanged-main fresh replay 582 is clean, and the pre-existing untracked `mutation-cases/` remains untouched. **Final count: run 582, 1,379 verified, 0 errors. Next logged run: 585. All jobs have exited; no failing or speculative proof remains active.**
+
+Pinned i686 replay remains open because no matching pinned vstd cache exists (565). E1/E2 statuses, the SegmentSlices L-SEG-FRAME result and separate M3 caller obligations are unchanged. No new frozen-statement concern, proof escape, solver-limit increase, target cleaning, commit/push or edit outside the crate occurred.
+
+---
+
+# Previous checkpoint: default-limit decomposition, original layouts and parsed audit bindings
 
 2026-11-18. **Fresh final-source run 529: 831 verified, 0 errors.** Core coverage is **592 / 631**, up by 29. The exact handoff is the top section of `/home/ws/projects/verified-decoders/png/inflate_verus/LEDGER.md`. All jobs have exited; no failing or speculative proof remains active. **Next logged run is 542.**
 

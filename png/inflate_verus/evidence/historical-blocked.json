@@ -96,5 +96,590 @@
     "reason": "function body check: default resource limit (rlimit) exceeded",
     "diagnostics": "evidence/run-0508.txt",
     "source_snapshot": "backups/sol-run508-extended-queries.tar.gz"
+  },
+  {
+    "class": "level6_fixed",
+    "members": [
+      [
+        "zlib/level6-fixed",
+        0
+      ]
+    ],
+    "policy_members": [],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "level6_fixed"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "level9_fixed",
+    "members": [
+      [
+        "zlib/level9-fixed",
+        0
+      ]
+    ],
+    "policy_members": [],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "level9_fixed"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "level6_filtered",
+    "members": [
+      [
+        "zlib/level6-filtered",
+        0
+      ]
+    ],
+    "policy_members": [],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "level6_filtered",
+      "level6_filtered_trace"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "level9_filtered",
+    "members": [
+      [
+        "zlib/level9-filtered",
+        0
+      ]
+    ],
+    "policy_members": [],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "level9_filtered"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "window_9",
+    "members": [
+      [
+        "zlib/window-9",
+        0
+      ]
+    ],
+    "policy_members": [],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "window_9"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "window_10",
+    "members": [
+      [
+        "zlib/window-10",
+        0
+      ]
+    ],
+    "policy_members": [],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "window_10",
+      "window_10_facts_0"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "window_12",
+    "members": [
+      [
+        "zlib/window-12",
+        0
+      ]
+    ],
+    "policy_members": [],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "window_12"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "short_image",
+    "members": [
+      [
+        "image/truncated-data",
+        0
+      ]
+    ],
+    "policy_members": [],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "short_image",
+      "short_image_facts_0"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "filter_type_5",
+    "members": [
+      [
+        "image/filter-type-5",
+        0
+      ]
+    ],
+    "policy_members": [],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "filter_type_5",
+      "filter_type_5_facts_0"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "filter_type_255",
+    "members": [
+      [
+        "image/filter-type-255",
+        0
+      ]
+    ],
+    "policy_members": [],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "filter_type_255",
+      "filter_type_255_trace"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "adler_before_filter",
+    "members": [
+      [
+        "precedence/adler-before-filter",
+        0
+      ]
+    ],
+    "policy_members": [],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "adler_before_filter"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "excess_data",
+    "members": [
+      [
+        "image/excess-data",
+        0
+      ]
+    ],
+    "policy_members": [],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "excess_data",
+      "excess_data_facts_0"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "excess_row",
+    "members": [
+      [
+        "image/excess-row",
+        0
+      ]
+    ],
+    "policy_members": [],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "excess_row",
+      "excess_row_facts_0",
+      "excess_row_trace"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "declared_beyond",
+    "members": [
+      [
+        "deflate/distance-beyond-declared-window",
+        0
+      ]
+    ],
+    "policy_members": [],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "declared_beyond"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "declared_within",
+    "members": [
+      [
+        "deflate/distance-within-declared-window",
+        0
+      ]
+    ],
+    "policy_members": [],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "declared_within"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "policy_excess_output_stays_an_error",
+    "members": [],
+    "policy_members": [
+      [
+        "policy/zlib-tail/excess-output-stays-an-error/strict",
+        0
+      ],
+      [
+        "policy/zlib-tail/excess-output-stays-an-error/recommended-beta",
+        0
+      ]
+    ],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "policy_excess_output_stays_an_error",
+      "policy_excess_output_stays_an_error_facts_0",
+      "policy_excess_output_stays_an_error_facts_1",
+      "policy_excess_output_stays_an_error_facts_2",
+      "policy_excess_output_stays_an_error_facts_3"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "policy_excess_row_stays_an_error",
+    "members": [],
+    "policy_members": [
+      [
+        "policy/zlib-tail/excess-row-stays-an-error/strict",
+        0
+      ],
+      [
+        "policy/zlib-tail/excess-row-stays-an-error/recommended-beta",
+        0
+      ]
+    ],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "policy_excess_row_stays_an_error",
+      "policy_excess_row_stays_an_error_facts_0",
+      "policy_excess_row_stays_an_error_facts_1",
+      "policy_excess_row_stays_an_error_facts_2",
+      "policy_excess_row_stays_an_error_facts_3",
+      "policy_excess_row_stays_an_error_facts_4",
+      "policy_excess_row_stays_an_error_facts_5",
+      "policy_excess_row_stays_an_error_facts_6",
+      "policy_excess_row_stays_an_error_facts_7",
+      "policy_excess_row_stays_an_error_trace"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "policy_excess_output_and_trailing_byte",
+    "members": [],
+    "policy_members": [
+      [
+        "policy/zlib-tail/excess-output-and-trailing-byte/strict",
+        0
+      ],
+      [
+        "policy/zlib-tail/excess-output-and-trailing-byte/recommended-beta",
+        0
+      ]
+    ],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "policy_excess_output_and_trailing_byte",
+      "policy_excess_output_and_trailing_byte_facts_0",
+      "policy_excess_output_and_trailing_byte_facts_1",
+      "policy_excess_output_and_trailing_byte_facts_2",
+      "policy_excess_output_and_trailing_byte_facts_3"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "policy_declared_beyond",
+    "members": [],
+    "policy_members": [
+      [
+        "policy/window/distance-beyond-declared-window/strict",
+        0
+      ],
+      [
+        "policy/window/distance-beyond-declared-window/recommended-beta",
+        0
+      ]
+    ],
+    "run": 543,
+    "diagnostics": "evidence/run-0543.txt",
+    "source_snapshot": "backups/sol-before-config-refinement.tar.gz",
+    "source_chunks": [
+      "backups/sol-config-attempt-chunk-0.tar.gz",
+      "backups/sol-config-attempt-chunk-1.tar.gz",
+      "backups/sol-config-attempt-chunk-2.tar.gz",
+      "backups/sol-config-attempt-chunk-3.tar.gz",
+      "backups/sol-config-attempt-chunk-4.tar.gz"
+    ],
+    "queries": [
+      "policy_declared_beyond"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "rounding",
+    "members": [
+      [
+        "depth16/rounding-boundaries",
+        0
+      ]
+    ],
+    "run": 549,
+    "diagnostics": "evidence/run-0549.txt",
+    "source_snapshot": "backups/sol-before-chunked-refinement-base.tar.gz",
+    "queries": [
+      "rounding_payload"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "subframe",
+    "members": [
+      [
+        "apng/interlaced-subframe",
+        1
+      ]
+    ],
+    "run": 549,
+    "diagnostics": "evidence/run-0549.txt",
+    "source_snapshot": "backups/sol-before-chunked-refinement-base.tar.gz",
+    "queries": [
+      "subframe_payload"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "flush",
+    "members": [
+      [
+        "zlib/sync-and-full-flush-empty-stored-blocks",
+        0
+      ]
+    ],
+    "run": 549,
+    "diagnostics": "evidence/run-0549.txt",
+    "source_snapshot": "backups/sol-before-chunked-refinement-base.tar.gz",
+    "queries": [
+      "flush",
+      "flush_trace"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
+  },
+  {
+    "class": "cut",
+    "members": [
+      [
+        "zlib/cut-mid-block",
+        0
+      ]
+    ],
+    "run": 549,
+    "diagnostics": "evidence/run-0549.txt",
+    "source_snapshot": "backups/sol-before-chunked-refinement-base.tar.gz",
+    "queries": [
+      "cut"
+    ],
+    "reason": "Earlier default-rlimit formulation; resolved by shared/decomposed witnesses in fresh run 575",
+    "resolved_run": 575
   }
 ]

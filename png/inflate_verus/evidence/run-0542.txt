@@ -1,0 +1,16 @@
+command: ['cargo', 'verus', 'verify', '--', '--num-threads', '2', '--no-cheating']
+    Checking inflate_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/target/debug/incremental/inflate_verus-1303t8mhpqchm/s-ho9tz0cjxs-1fp9k3u-working`
+
+error[E0583]: file not found for module `witness_config_cases`
+  --> src/lib.rs:29:1
+   |
+29 | mod witness_config_cases;
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: to create the module `witness_config_cases`, create file "src/witness_config_cases.rs" or "src/witness_config_cases/mod.rs"
+   = note: if there is a `mod witness_config_cases` elsewhere in the crate already, import it with `use crate::...` instead
+
+For more information about this error, try `rustc --explain E0583`.
+warning: `inflate_verus` (lib) generated 1 warning
+error: could not compile `inflate_verus` (lib) due to 1 previous error; 1 warning emitted
