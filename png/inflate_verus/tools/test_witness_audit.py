@@ -165,6 +165,7 @@ class WitnessAuditTests(unittest.TestCase):
     def checkout(root):
         shutil.copytree(ROOT/'evidence',root/'evidence')
         (root/'tools').mkdir();shutil.copy2(ROOT/'tools/witness_blocked.json',root/'tools/witness_blocked.json')
+        shutil.copy2(ROOT/'tools/proof_mutations.py',root/'tools/proof_mutations.py')
         items=json.loads((ROOT/'evidence/historical-blocked.json').read_text())+json.loads((ROOT/'tools/witness_blocked.json').read_text())
         for item in items:
             dest=root/item['source_snapshot'];dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(ROOT/item['source_snapshot'],dest)
@@ -222,11 +223,20 @@ class WitnessAuditTests(unittest.TestCase):
 
     def test_split_total_differing_from_monolithic_reference_is_rejected(self):
         def edit(root,manifest,record):
-            ref=next(r for r in manifest if r.get('role')=='monolithic-reference-count')
-            count=int(ref['verification_results'].split()[2])
-            log=root/ref['path'];text=log.read_text()
-            log.write_text(text.replace(ref['verification_results'],f'verification results:: {count+1} verified, 0 errors'))
-            ref['verification_results']=f'verification results:: {count+1} verified, 0 errors'
+            # A synthetic reference exists only in this negative-test checkout;
+            # the production tree no longer has a source-equivalent monolithic run.
+            count=record['verified_unique_total']+1
+            path='evidence/negative-test-monolithic.txt'
+            line=f'verification results:: {count} verified, 0 errors'
+            (root/path).write_text(line+'\n')
+            sources={}
+            for source in sorted((root/'src').glob('*.rs')):
+                data=source.read_text()
+                if source.name=='lib.rs':data=audit.strip_split_gates(data)
+                sources[str(source.relative_to(root))]=hashlib.sha256(data.encode()).hexdigest()
+            manifest[:]=[r for r in manifest if r.get('role')!='monolithic-reference-count']
+            manifest.append({'path':path,'role':'monolithic-reference-count',
+                             'verification_results':line,'source_sha256':sources})
         self.split_case(edit,'differs from the monolithic reference')
 
     def test_split_uncovered_module_is_rejected(self):
@@ -279,6 +289,48 @@ class WitnessAuditTests(unittest.TestCase):
         def edit(root,manifest,record):
             record['source_sha256']=dict(record['source_sha256'],**{'src/lib.rs':'0'*64})
         self.replay_case(edit,'different source tree')
+
+    def mutation_case(self, edit, message):
+        index=json.loads((ROOT/'evidence/mutation-index.json').read_text())
+        records=json.loads((ROOT/'evidence/manifest.json').read_text())
+        edit(index)
+        with self.assertRaisesRegex(AssertionError,message):
+            with contextlib.redirect_stdout(io.StringIO()):
+                audit.validate_mutation_index(ROOT,{r['path']:r for r in records},index)
+
+    def test_missing_mutation_39_is_rejected(self):
+        self.mutation_case(lambda t:t['requirements'][38]['mutants'].clear(),'required mutation selectors differ')
+
+    def test_wrong_requirement_selector_is_rejected(self):
+        def edit(t):t['requirements'][38]['mutants'][0]['selector']='ignore-short-tail'
+        self.mutation_case(edit,'required mutation selectors differ')
+
+    def test_mutation_12_without_ghost_qualification_is_rejected(self):
+        self.mutation_case(lambda t:t['requirements'][11].pop('qualification'),'mutation 12 needs its ghost qualification')
+
+    def test_future_mutation_promoted_to_m2_is_rejected(self):
+        def edit(t):t['requirements'][35]['milestone']='M2'
+        self.mutation_case(edit,'mutation milestone differs')
+
+    def test_mutation_typecheck_failure_is_not_a_kill(self):
+        def edit(t):t['requirements'][38]['mutants'][0]['verification_results']='verification results:: 0 verified, 0 errors'
+        self.mutation_case(edit,'mutation needs positive verified and failed-proof counts')
+
+    def test_mutation_with_missing_proof_diagnostic_is_rejected(self):
+        def edit(t):t['requirements'][38]['mutants'][0]['failed_proof']='error: fabricated failed proof'
+        self.mutation_case(edit,'mutation diagnostic missing from log')
+
+    def test_mutation_with_other_implementation_revision_is_rejected(self):
+        def edit(t):t['requirements'][38]['mutants'][0]['source_revision']['implementation_sha256']='0'*64
+        self.mutation_case(edit,'mutation implementation revision differs')
+
+    def test_mutation_archive_must_reproduce_split_source_hash(self):
+        def edit(t):t['requirements'][38]['mutants'][0]['source_revision']['source_tree_sha256']='0'*64
+        self.mutation_case(edit,'mutation archive does not reproduce its split source hash')
+
+    def test_additional_mutation_cannot_replace_required_coverage(self):
+        def edit(t):t['requirements'][38]['mutants'][0]['selector']=t['additional_mutations'][0]['selector']
+        self.mutation_case(edit,'required mutation selectors differ')
 
     def test_evidence_checkout_needs_no_runs_directory(self):
         with tempfile.TemporaryDirectory(prefix='audit-checkout-',dir=ROOT/'backups') as temp:

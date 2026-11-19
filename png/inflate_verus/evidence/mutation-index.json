@@ -1,0 +1,1410 @@
+{
+ "schema": 1,
+ "requirement_source": "../THEOREMS.md:215\u2013254",
+ "selector_definitions_sha256": "1336b67ff61e42b6235677cf01bd3f5f8c5d410d99592883838d80fbc7ae0f23",
+ "provenance_note": "Historical runs predate source-hash-bound checkpoints. evidence_commit is the commit that records the run, not a claim that the mutant ran on that clean commit. implementation_snapshot identifies a retained implementation revision from that phase; it does not retroactively bind every historical proof/helper file. Mutation 39 has an exact disposable archive and split source hash.",
+ "requirements": [
+  {
+   "number": 1,
+   "milestone": "M2",
+   "status": "verifier-killed",
+   "mutants": [
+    {
+     "selector": "btype-swap-fixed-dynamic",
+     "run": 383,
+     "source_revision": {
+      "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+      "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding.",
+      "implementation_snapshot": "backups/astra-before-work-mutations.tar",
+      "implementation_sha256": "f88a59d5fbc26b0f73846ba646733adf6736118f1ccc644adab0d35d6b4c62fa"
+     },
+     "failed_proof": "error: postcondition not satisfied\n    --> src/inflate.rs:1029:9\n     |\n1029 | /         block_eq(m::MOneBlock(old(br).concat(), old(br).position(), old(output).out@,\n1030 | |             old(output).limit as nat, window as nat, true), r, final(output).out@, final(br).position()),\n     | |________________________________________________________________________________________________________^ failed this postcondition\n...\n1051 |       Ok(last != 0)\n     |       ------------- at the end of the function body",
+     "log": "evidence/run-0383.txt",
+     "verification_results": "verification results:: 299 verified, 1 errors",
+     "mutation": {
+      "file": "src/inflate.rs",
+      "before": "match typ {",
+      "after": "match if typ == 1 { 2 } else if typ == 2 { 1 } else { typ } {"
+     },
+     "failed_function": "one_block"
+    }
+   ]
+  },
+  {
+   "number": 2,
+   "milestone": "M2",
+   "status": "verifier-killed",
+   "mutants": [
+    {
+     "selector": "huffman-lsb-first",
+     "run": 371,
+     "source_revision": {
+      "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+      "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding.",
+      "implementation_snapshot": "backups/astra-before-work-mutations.tar",
+      "implementation_sha256": "e5c1576f6f289c2f9c16648884ed1a5f4f9bee3809ce658791da6ca80e840974"
+     },
+     "failed_proof": "error: possible arithmetic underflow/overflow\n   --> src/huffman.rs:236:20\n    |\n236 |             code = code + (bit << n);\n    |                    ^^^^^^^^^^^^^^^^^",
+     "log": "evidence/run-0371.txt",
+     "verification_results": "verification results:: 299 verified, 1 errors",
+     "mutation": {
+      "file": "src/huffman.rs",
+      "before": "code = code * 2 + bit;",
+      "after": "code = code + (bit << n);"
+     },
+     "failed_function": "decode"
+    }
+   ]
+  },
+  {
+   "number": 3,
+   "milestone": "M2",
+   "status": "verifier-killed",
+   "mutants": [
+    {
+     "selector": "huffman-accept-incomplete",
+     "run": 372,
+     "source_revision": {
+      "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+      "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding.",
+      "implementation_snapshot": "backups/astra-before-work-mutations.tar",
+      "implementation_sha256": "e5c1576f6f289c2f9c16648884ed1a5f4f9bee3809ce658791da6ca80e840974"
+     },
+     "failed_proof": "error: postcondition not satisfied\n  --> src/huffman.rs:71:17\n   |\n71 |           ensures final(self).wf(), final(w).wf(),\n   |                   ^^^^^^^^^^^^^^^^ failed this postcondition\n...\n91 | /         if true {\n92 | |             proof { self.ready = Ghost(true); }\n93 | |             Ok(())\n94 | |         } else { Err(InflateError::InvalidCodeLengths) }\n   | |________________________________________________________- at the end of the function body",
+     "log": "evidence/run-0372.txt",
+     "verification_results": "verification results:: 299 verified, 1 errors",
+     "mutation": {
+      "file": "src/huffman.rs",
+      "before": "if admissible {",
+      "after": "if true {"
+     },
+     "failed_function": "build_with_single"
+    }
+   ]
+  },
+  {
+   "number": 4,
+   "milestone": "M2",
+   "status": "verifier-killed",
+   "mutants": [
+    {
+     "selector": "omit-nlen",
+     "run": 317,
+     "source_revision": {
+      "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+      "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding.",
+      "implementation_snapshot": "backups/public-envelope-before-witnesses.tar",
+      "implementation_sha256": "87a47394e24164e4435f477e36acd46ad5b8435de208b0a5a694d78d54c5c07d"
+     },
+     "failed_proof": "error: postcondition not satisfied\n   --> src/inflate.rs:369:9\n    |\n369 | /         stored_eq(m::MStoredBlock(old(br).concat(), old(br).position(), old(output).out@,\n370 | |             old(output).limit as nat), r, final(output).out@, final(br).position()),\n    | |___________________________________________________________________________________^ failed this postcondition\n...\n393 |       stored_payload(br, output, len, w)\n    |       ---------------------------------- at the end of the function body",
+     "log": "evidence/run-0317.txt",
+     "verification_results": "verification results:: 271 verified, 1 errors",
+     "mutation": {
+      "file": "src/inflate.rs",
+      "before": "if len != !nlen { return Err(Status::Err(E::StoredLengthMismatch)); }",
+      "after": "if false { return Err(Status::Err(E::StoredLengthMismatch)); }"
+     },
+     "failed_function": "stored_block"
+    }
+   ]
+  },
+  {
+   "number": 5,
+   "milestone": "M2",
+   "status": "verifier-killed",
+   "mutants": [
+    {
+     "selector": "wrong-length-285",
+     "run": 320,
+     "source_revision": {
+      "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+      "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding.",
+      "implementation_snapshot": "backups/public-envelope-before-witnesses.tar",
+      "implementation_sha256": "87a47394e24164e4435f477e36acd46ad5b8435de208b0a5a694d78d54c5c07d"
+     },
+     "failed_proof": "error: assertion failed\n  --> src/inflate.rs:35:12\n   |\n35 | ...rt(LEN_BASE@ == seq![3u16, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258]);\n   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed",
+     "log": "evidence/run-0320.txt",
+     "verification_results": "verification results:: 271 verified, 1 errors",
+     "mutation": {
+      "file": "src/inflate.rs",
+      "before": "163, 195, 227, 258,",
+      "after": "163, 195, 227, 257,"
+     },
+     "failed_function": "lemma_length_tables"
+    }
+   ]
+  },
+  {
+   "number": 6,
+   "milestone": "M2",
+   "status": "verifier-killed",
+   "mutants": [
+    {
+     "selector": "reserved-distance-admitted",
+     "run": 387,
+     "source_revision": {
+      "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+      "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding.",
+      "implementation_snapshot": "backups/astra-before-work-mutations.tar",
+      "implementation_sha256": "f88a59d5fbc26b0f73846ba646733adf6736118f1ccc644adab0d35d6b4c62fa"
+     },
+     "failed_proof": "error: precondition not satisfied\n   --> src/inflate.rs:952:17\n    |\n 61 |     requires 0 <= symbol < NDIST_MAX,\n    |              ----------------------- failed precondition\n...\n952 |         proof { lemma_distance_tables(ds as int); }\n    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+     "log": "evidence/run-0387.txt",
+     "verification_results": "verification results:: 299 verified, 1 errors",
+     "mutation": {
+      "file": "src/inflate.rs",
+      "before": "if ds >= NDIST_MAX {",
+      "after": "if ds > NDIST_MAX {"
+     },
+     "failed_function": "compressed_step"
+    },
+    {
+     "selector": "fixed-only-thirty-distances",
+     "run": 382,
+     "source_revision": {
+      "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+      "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding.",
+      "implementation_snapshot": "backups/astra-before-work-mutations.tar",
+      "implementation_sha256": "f88a59d5fbc26b0f73846ba646733adf6736118f1ccc644adab0d35d6b4c62fa"
+     },
+     "failed_proof": "error: assertion failed\n   --> src/inflate.rs:465:24\n    |\n465 |         proof { assert(dist_lengths@ =~= m::fixed_dist_lengths()); }\n    |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed",
+     "log": "evidence/run-0382.txt",
+     "verification_results": "verification results:: 299 verified, 1 errors",
+     "mutation": {
+      "file": "src/inflate.rs",
+      "before": "let dist_lengths = [5u8; FIXED_DIST_COUNT];",
+      "after": "let dist_lengths = [5u8; NDIST_MAX];"
+     },
+     "failed_function": "new"
+    }
+   ]
+  },
+  {
+   "number": 7,
+   "milestone": "M2",
+   "status": "verifier-killed",
+   "mutants": [
+    {
+     "selector": "distance-output-plus-one",
+     "run": 384,
+     "source_revision": {
+      "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+      "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding.",
+      "implementation_snapshot": "backups/astra-before-work-mutations.tar",
+      "implementation_sha256": "f88a59d5fbc26b0f73846ba646733adf6736118f1ccc644adab0d35d6b4c62fa"
+     },
+     "failed_proof": "error: possible arithmetic underflow/overflow\n   --> src/inflate.rs:868:19\n    |\n868 |     if distance > output.produced + 1 || distance > window { return Err(Status::Err(E::DistanceTooFar)); }\n    |                   ^^^^^^^^^^^^^^^^^^^",
+     "log": "evidence/run-0384.txt",
+     "verification_results": "verification results:: 299 verified, 1 errors",
+     "mutation": {
+      "file": "src/inflate.rs",
+      "before": "if distance > output.produced || distance > window {",
+      "after": "if distance > output.produced + 1 || distance > window {"
+     },
+     "failed_function": "match_copy"
+    }
+   ]
+  },
+  {
+   "number": 8,
+   "milestone": "M2",
+   "status": "verifier-killed",
+   "mutants": [
+    {
+     "selector": "omit-window-guard",
+     "run": 321,
+     "source_revision": {
+      "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+      "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding.",
+      "implementation_snapshot": "backups/public-envelope-before-witnesses.tar",
+      "implementation_sha256": "87a47394e24164e4435f477e36acd46ad5b8435de208b0a5a694d78d54c5c07d"
+     },
+     "failed_proof": "error: invariant not satisfied before loop\n   --> src/inflate.rs:875:46\n    |\n875 |             1 <= distance <= original.len(), distance <= window <= WINDOW_MAX,\n    |                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+     "log": "evidence/run-0321.txt",
+     "verification_results": "verification results:: 271 verified, 1 errors",
+     "mutation": {
+      "file": "src/inflate.rs",
+      "before": "if distance > output.produced || distance > window {",
+      "after": "if distance > output.produced {"
+     },
+     "failed_function": "match_copy"
+    }
+   ]
+  },
+  {
+   "number": 9,
+   "milestone": "M2",
+   "status": "verifier-killed",
+   "mutants": [
+    {
+     "selector": "late-adler-deferral",
+     "run": 450,
+     "source_revision": {
+      "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+      "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding.",
+      "implementation_snapshot": "backups/sol-before-remaining-mutations.tar",
+      "implementation_sha256": "db061928f7e3c4ef4ff45e5ab48c92ede0569304a776d6a533b0036c5deff046"
+     },
+     "failed_proof": "error: postcondition not satisfied\n   --> src/adler.rs:85:17\n    |\n 85 |         ensures final(self).wf(), final(self).data() == old(self).data().push(byte),\n    |                 ^^^^^^^^^^^^^^^^ failed this postcondition\n...\n110 |         proof { self.bytes = Ghost(previous.bytes@.push(byte)); }\n    |               --------------------------------------------------- at the end of the function body",
+     "log": "evidence/run-0450.txt",
+     "verification_results": "verification results:: 335 verified, 1 errors",
+     "mutation": {
+      "file": "src/adler.rs",
+      "before": "if self.pending == ADLER_NMAX {",
+      "after": "if self.pending == ADLER_NMAX + 1 {"
+     },
+     "failed_function": "update_byte"
+    }
+   ]
+  },
+  {
+   "number": 10,
+   "milestone": "M2",
+   "status": "verifier-killed",
+   "mutants": [
+    {
+     "selector": "omit-adler-comparison",
+     "run": 318,
+     "source_revision": {
+      "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+      "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding.",
+      "implementation_snapshot": "backups/public-envelope-before-witnesses.tar",
+      "implementation_sha256": "87a47394e24164e4435f477e36acd46ad5b8435de208b0a5a694d78d54c5c07d"
+     },
+     "failed_proof": "error: postcondition not satisfied\n    --> src/inflate.rs:1178:9\n     |\n1178 | /         stored_eq(m::MFinish(old(br).concat(), old(br).position(), output.out@,\n1179 | |             output.limit as nat, ignore_tail), r, output.out@, final(br).position()),\n     | |____________________________________________________________________________________^ failed this postcondition\n...\n1188 |       if br.byte(w).is_ok() { return Err(Status::Err(E::TrailingZlibData)); }\n     |                               -------------------------------------------- at this exit",
+     "log": "evidence/run-0318.txt",
+     "verification_results": "verification results:: 271 verified, 1 errors",
+     "mutation": {
+      "file": "src/inflate.rs",
+      "before": "if expected != output.adler.finish() {",
+      "after": "if false {"
+     },
+     "failed_function": "finish"
+    }
+   ]
+  },
+  {
+   "number": 11,
+   "milestone": "M2",
+   "status": "verifier-killed",
+   "mutants": [
+    {
+     "selector": "full-at-limit",
+     "run": 323,
+     "source_revision": {
+      "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+      "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding.",
+      "implementation_snapshot": "backups/public-envelope-before-witnesses.tar",
+      "implementation_sha256": "87a47394e24164e4435f477e36acd46ad5b8435de208b0a5a694d78d54c5c07d"
+     },
+     "failed_proof": "error: postcondition not satisfied\n   --> src/inflate.rs:237:13\n    |\n237 | /             match m::MEmit(old(self).out@, old(self).limit as nat, byte) {\n238 | |                 m::OutputEffect::Next { out } => r.is_ok() && final(self).out@ == out\n239 | |                     && final(self).produced == old(self).produced + 1,\n240 | |                 m::OutputEffect::Full { out } => r == Err(Status::Full) && final(self).out@ == out\n241 | |                     && final(self).produced == old(self).produced,\n242 | |                 _ => false,\n243 | |             },\n    | |_____________^ failed this postcondition\n...\n246 |           if self.produced + 1 == self.limit { return Err(Status::Full); }\n    |                                                ------------------------ at this exit",
+     "log": "evidence/run-0323.txt",
+     "verification_results": "verification results:: 271 verified, 1 errors",
+     "mutation": {
+      "file": "src/inflate.rs",
+      "before": "if self.produced == self.limit {",
+      "after": "if self.produced + 1 == self.limit {"
+     },
+     "failed_function": "append_byte"
+    },
+    {
+     "selector": "output-omit-limit-guard",
+     "run": 389,
+     "source_revision": {
+      "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+      "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding.",
+      "implementation_snapshot": "backups/astra-before-work-mutations.tar",
+      "implementation_sha256": "f88a59d5fbc26b0f73846ba646733adf6736118f1ccc644adab0d35d6b4c62fa"
+     },
+     "failed_proof": "error: postcondition not satisfied\n   --> src/inflate.rs:234:17\n    |\n234 |           ensures final(self).wf(), final(self).limit == old(self).limit,\n    |                   ^^^^^^^^^^^^^^^^ failed this postcondition\n...\n244 | /     {\n245 | |         proof { caps_ok(); }\n246 | |         if false { return Err(Status::Full); }\n247 | |         let ghost before = self.out@;\n...   |\n270 | |         Ok(())\n271 | |     }\n    | |_____- at the end of the function body",
+     "log": "evidence/run-0389.txt",
+     "verification_results": "verification results:: 299 verified, 1 errors",
+     "mutation": {
+      "file": "src/inflate.rs",
+      "before": "if self.produced == self.limit {",
+      "after": "if false {"
+     },
+     "failed_function": "append_byte"
+    }
+   ]
+  },
+  {
+   "number": 12,
+   "milestone": "M2",
+   "status": "verifier-killed",
+   "mutants": [
+    {
+     "selector": "bit-position-u32-narrowing",
+     "run": 451,
+     "source_revision": {
+      "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+      "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding.",
+      "implementation_snapshot": "backups/sol-before-remaining-mutations.tar",
+      "implementation_sha256": "d1d704186be0ffe3d6b817099525578fbbf174c560b2ad7b759989ec4f85cb2b"
+     },
+     "failed_proof": "error: postcondition not satisfied\n  --> src/bits.rs:83:13\n   |\n80 |     pub(crate) proof fn lemma_bounds(&self)\n   |     --------------------------------------- at the end of the function body\n...\n83 |             self.remaining == 0 ==> self.position() % 8 == 0,\n   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition",
+     "log": "evidence/run-0451.txt",
+     "verification_results": "verification results:: 331 verified, 5 errors",
+     "mutation": {
+      "file": "src/bits.rs",
+      "before": "(8 * self.src.pos() - self.remaining) as nat",
+      "after": "((8 * self.src.pos() - self.remaining) as u32) as nat"
+     },
+     "failed_function": "lemma_bounds",
+     "qualification": "Ghost representation narrowing: implementation-side bit-position observation only, not an executable u32 counter; independent model unchanged."
+    }
+   ],
+   "qualification": "Ghost representation narrowing: implementation-side bit-position observation only, not an executable u32 counter; independent model unchanged."
+  },
+  {
+   "number": 13,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 14,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 15,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 16,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 17,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 18,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 19,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 20,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 21,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 22,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 23,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 24,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 25,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 26,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 27,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 28,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 29,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 30,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 31,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 32,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 33,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 34,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 35,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 36,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 37,
+   "milestone": "M2",
+   "status": "verifier-killed",
+   "mutants": [
+    {
+     "selector": "huffman-skip-dead-prefix",
+     "run": 373,
+     "source_revision": {
+      "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+      "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding.",
+      "implementation_snapshot": "backups/astra-before-work-mutations.tar",
+      "implementation_sha256": "e5c1576f6f289c2f9c16648884ed1a5f4f9bee3809ce658791da6ca80e840974"
+     },
+     "failed_proof": "error: invariant not satisfied at end of loop body\n   --> src/huffman.rs:211:34\n    |\n211 |                 bits.len() == n, m::live(lengths, bits), forall|s: int| !m::exact(lengths, bits, s),\n    |                                  ^^^^^^^^^^^^^^^^^^^^^^",
+     "log": "evidence/run-0373.txt",
+     "verification_results": "verification results:: 299 verified, 1 errors",
+     "mutation": {
+      "file": "src/huffman.rs",
+      "before": "if code < first || code - first - count >= self.live[n] {",
+      "after": "if false {"
+     },
+     "failed_function": "decode"
+    }
+   ]
+  },
+  {
+   "number": 38,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  },
+  {
+   "number": 39,
+   "milestone": "M2",
+   "status": "verifier-killed",
+   "mutants": [
+    {
+     "selector": "stored-truncation-drop-prefix",
+     "run": 613,
+     "source_revision": {
+      "evidence_commit": "b34b217ee033de2033fe616cd1e23de973591f12",
+      "scope": "Disposable mutation of b34b217 production sources; exact source archive and split tree hash retained.",
+      "implementation_snapshot": "backups/m2-review-stored-truncation-drop-prefix.tar.gz",
+      "implementation_sha256": "b151da95b54ed7223e894cd2f250462321427582721447a8649a85c9566c8d20",
+      "source_tree_sha256": "932b7db9552dd849a38365f7ca6b109e606eee9babdcea0690067866b19bf28a"
+     },
+     "failed_proof": "error: postcondition not satisfied\n   --> src/inflate.rs:301:9\n    |\n301 |         final(output).wf(), final(output).limit == old(output).limit,\n    |         ^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n346 |                 return Err(Status::Err(e));\n    |                 -------------------------- at this exit",
+     "log": "evidence/run-0613.txt",
+     "verification_results": "verification results:: 371 verified, 1 errors",
+     "mutation": {
+      "file": "src/inflate.rs",
+      "before": "proof { assert(cursor == z.len()); }\n                return Err(Status::Err(e));",
+      "after": "proof { assert(cursor == z.len()); }\n                output.produced = 0;\n                return Err(Status::Err(e));"
+     },
+     "failed_function": "stored_payload"
+    }
+   ]
+  },
+  {
+   "number": 40,
+   "milestone": "not M2",
+   "status": "not credited here; later PNG/allocation/policy milestone",
+   "mutants": []
+  }
+ ],
+ "additional_mutations": [
+  {
+   "selector": "ignore-short-tail",
+   "run": 319,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n    --> src/inflate.rs:1178:9\n     |\n1178 | /         stored_eq(m::MFinish(old(br).concat(), old(br).position(), output.out@,\n1179 | |             output.limit as nat, ignore_tail), r, output.out@, final(br).position()),\n     | |____________________________________________________________________________________^ failed this postcondition\n...\n1187 |       if ignore_tail { return Ok(()); }\n     |                        ------------- at this exit",
+   "log": "evidence/run-0319.txt",
+   "verification_results": "verification results:: 271 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "if ignore_tail && output.produced == output.limit {",
+    "after": "if ignore_tail {"
+   }
+  },
+  {
+   "selector": "wrong-copy-offset",
+   "run": 322,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: assertion failed\n   --> src/inflate.rs:892:20\n    |\n892 |             assert(m::copy_distance(original, distance as nat, (j + 1) as nat) == before.push(byte));\n    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed",
+   "log": "evidence/run-0322.txt",
+   "verification_results": "verification results:: 271 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "let byte = output.previous(distance);",
+    "after": "let byte = output.previous(1);"
+   }
+  },
+  {
+   "selector": "omit-copy-charge",
+   "run": 324,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: invariant not satisfied at end of loop body\n   --> src/inflate.rs:879:21\n    |\n879 |             w.wf(), w.observed@ == old(w).observed@ + j,\n    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+   "log": "evidence/run-0324.txt",
+   "verification_results": "verification results:: 271 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "w.add(1);\n        let byte = output.previous(distance);",
+    "after": "let byte = output.previous(distance);"
+   }
+  },
+  {
+   "selector": "early-bfinal",
+   "run": 325,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n    --> src/inflate.rs:1070:9\n     |\n1070 | /         stored_eq(m::MBlk(old(br).concat(), old(br).position(), old(output).out@,\n1071 | |             old(output).limit as nat, window as nat, true), r, final(output).out@, final(br).position()),\n     | |________________________________________________________________________________________________________^ failed this postcondition\n...\n1098 |               Ok(last) => if true { return Ok(()); },\n     |                                     ------------- at this exit",
+   "log": "evidence/run-0325.txt",
+   "verification_results": "verification results:: 271 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "Ok(last) => if last { return Ok(()); },",
+    "after": "Ok(last) => if true { return Ok(()); },"
+   }
+  },
+  {
+   "selector": "reserved-length-286-admitted",
+   "run": 326,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: precondition not satisfied\n   --> src/inflate.rs:947:17\n    |\n 29 |     requires 0 <= index < 29,\n    |              --------------- failed precondition\n...\n947 |         proof { lemma_length_tables(index as int); reveal(m::MMatch); }\n    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+   "log": "evidence/run-0326.txt",
+   "verification_results": "verification results:: 271 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "if sym > 285 {",
+    "after": "if sym > 286 {"
+   }
+  },
+  {
+   "selector": "omit-fcheck",
+   "run": 327,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n    --> src/inflate.rs:1204:9\n     |\n1204 | /         stored_eq(m::MEnvelope(old(br).concat(), old(output).limit as nat,\n1205 | |             o.window == Window::Enforce, o.zlib_tail == ZlibTail::IgnoreTail),\n1206 | |             r, final(output).out@, final(br).position()),\n     | |________________________________________________________^ failed this postcondition\n...\n1219 |       if cmf & 15 != 8 || cmf >> 4 > 7 { return Err(Status::Err(E::UnsupportedZlibMethod)); }\n     |                                          ------------------------------------------------- at this exit",
+   "log": "evidence/run-0327.txt",
+   "verification_results": "verification results:: 271 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "if (cmf as u16 * 256 + flg as u16) % 31 != 0 {",
+    "after": "if false {"
+   }
+  },
+  {
+   "selector": "little-endian-checksum",
+   "run": 328,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: invariant not satisfied at end of loop body\n    --> src/inflate.rs:1147:13\n     |\n1147 |             expected == m::be_value(z, cursor, i as nat), expected < m::pow2(8 * i as nat),\n     |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+   "log": "evidence/run-0328.txt",
+   "verification_results": "verification results:: 271 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "expected = (expected << 8) | byte as u32;",
+    "after": "expected = (expected >> 8) | ((byte as u32) << 24);"
+   }
+  },
+  {
+   "selector": "reader-wrong-byte",
+   "run": 365,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/segments.rs:87:13\n    |\n 87 | /             if old(self).pos() < old(self).concat().len() {\n 88 | |                 r == Some(old(self).concat()[old(self).pos() as int])\n 89 | |                     && final(self).pos() == old(self).pos() + 1\n 90 | |             } else { r.is_none() && final(self).pos() == old(self).pos() },\n    | |__________________________________________________________________________^ failed this postcondition\n...\n188 |                   return Some(byte);\n    |                   ----------------- at this exit",
+   "log": "evidence/run-0365.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/segments.rs",
+    "before": "let byte = part[self.offset];",
+    "after": "let byte = 0u8;"
+   }
+  },
+  {
+   "selector": "reader-first-eof-double-charge",
+   "run": 366,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/segments.rs:83:13\n    |\n 83 | /             final(self).core_steps() == old(self).core_steps()\n 84 | |                 + if r.is_some() || old(self).advance_rank() == old(self).seg_count() + 1 { 1nat } else { 0nat },\n    | |________________________________________________________________________________________________________________^ failed this postcondition\n...\n180 |                   return None;\n    |                   ----------- at this exit",
+   "log": "evidence/run-0366.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/segments.rs",
+    "before": "self.end_reported = true;\n                    proof",
+    "after": "self.end_reported = true;\n                    proof { self.read_work = Ghost(self.read_work@ + 1); }\n                    proof"
+   }
+  },
+  {
+   "selector": "reader-omit-segment-charge",
+   "run": 367,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: invariant not satisfied at end of loop body\n   --> src/segments.rs:165:17\n    |\n165 |                 self.wf(), initial.wf(), initial == *old(self), self.parts == initial.parts,\n    |                 ^^^^^^^^^",
+   "log": "evidence/run-0367.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/segments.rs",
+    "before": "self.offset = 0;\n            proof { self.seg_work = Ghost(self.seg_work@ + 1); }",
+    "after": "self.offset = 0;"
+   }
+  },
+  {
+   "selector": "bits-wrong-shift",
+   "run": 368,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: invariant not satisfied at end of loop body\n   --> src/bits.rs:181:46\n    |\n181 |             invariant initial == *old(self), self.wf(), self.frame() == initial.frame(), w.wf(), i <= n <= 32,\n    |                                              ^^^^^^^^^",
+   "log": "evidence/run-0368.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/bits.rs",
+    "before": "self.current >>= 1;",
+    "after": "self.current <<= 1;"
+   }
+  },
+  {
+   "selector": "bits-wrong-alignment",
+   "run": 369,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/bits.rs:265:17\n    |\n263 |     pub(crate) fn align(&mut self)\n    |     ------------------------------ at the end of the function body\n264 |         requires old(self).wf(),\n265 |         ensures final(self).wf(), final(self).frame() == old(self).frame(), final(self).concat() == old(self).concat(),\n    |                 ^^^^^^^^^^^^^^^^ failed this postcondition",
+   "log": "evidence/run-0369.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/bits.rs",
+    "before": "self.current = 0;\n        self.remaining = 0;",
+    "after": "self.current = 0;\n        self.remaining = 1;"
+   }
+  },
+  {
+   "selector": "bits-misclassify-first-eof",
+   "run": 370,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/bits.rs:133:13\n    |\n133 | /             final(w).observed@ - old(w).observed@\n134 | |                 == final(self).measured_core() - old(self).measured_core(),\n    | |__________________________________________________________________________^ failed this postcondition\n...\n150 | /         match read {\n151 | |             Some(byte) => Ok(byte),\n152 | |             None => Err(InflateError::TruncatedZlib),\n153 | |         }\n    | |_________- at the end of the function body",
+   "log": "evidence/run-0370.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/bits.rs",
+    "before": "w.observed@ + self.src.core_steps() - before",
+    "after": "w.observed@ + 1"
+   }
+  },
+  {
+   "selector": "huffman-empty-as-truncated",
+   "run": 374,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/huffman.rs:172:13\n    |\n172 | /             match r {\n173 | |                 Ok(s) => m::MDec(self.lengths@, old(br).concat(), old(br).position())\n174 | |                     == (m::Decoded::Symbol { symbol: s as nat, position: final(br).position() }),\n175 | |                 Err(e) => (e == InflateError::InvalidSymbol\n...   |\n180 | |                         == (m::Decoded::TruncatedZlib { position: final(br).position() })),\n181 | |             },\n    | |_____________^ failed this postcondition\n...\n196 |               return Err(InflateError::TruncatedZlib);\n    |               --------------------------------------- at this exit",
+   "log": "evidence/run-0374.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/huffman.rs",
+    "before": "return Err(InflateError::InvalidSymbol);\n        }\n        let mut code",
+    "after": "return Err(InflateError::TruncatedZlib);\n        }\n        let mut code"
+   }
+  },
+  {
+   "selector": "huffman-omit-init-charge",
+   "run": 375,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/huffman.rs:100:13\n    |\n100 |               final(w).observed@ == old(w).observed@ + HUFF_INIT_STEPS,\n    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n103 | /         Self {\n104 | |             count: [0; MAX_CODE_BITS + 1], first: [0; MAX_CODE_BITS + 1],\n105 | |             offset: [0; MAX_CODE_BITS + 1], symbol: [0; FIXED_LIT_COUNT],\n106 | |             live: [0; MAX_CODE_BITS + 1], nsyms: 0,\n107 | |             lengths: Ghost(Seq::empty()), kind: Ghost(Kind::Dist),\n108 | |             single_accept: Ghost(true), ready: Ghost(false),\n109 | |         }\n    | |_________- at the end of the function body",
+   "log": "evidence/run-0375.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/huffman.rs",
+    "before": "w.add(HUFF_INIT_STEPS);",
+    "after": "w.add(0);"
+   }
+  },
+  {
+   "selector": "dynamic-cl-permutation",
+   "run": 376,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: invariant not satisfied at end of loop body\n   --> src/inflate.rs:542:13\n    |\n542 |             initial == m::MDynamicCL(z, br.position(), cl@, i as nat, ncode as nat, nlen as nat, ndist as nat, true),\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+   "log": "evidence/run-0376.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "cl[CL_ORDER[i]] = value as u8;",
+    "after": "cl[i] = value as u8;"
+   }
+  },
+  {
+   "selector": "dynamic-repeat-overflow",
+   "run": 377,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: invariant not satisfied at end of loop body\n   --> src/inflate.rs:651:17\n    |\n651 |                 i <= total, total == nlen + ndist, total <= DYNAMIC_LENGTHS,\n    |                 ^^^^^^^^^^",
+   "log": "evidence/run-0377.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "if repeat > total - i {",
+    "after": "if false {"
+   }
+  },
+  {
+   "selector": "dynamic-wrong-repeat-fill",
+   "run": 378,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: assertion failed\n   --> src/inflate.rs:705:28\n    |\n705 |                     assert(lengths@.take(i as int) =~= next);\n    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed",
+   "log": "evidence/run-0378.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "write_length_repeat(&mut lengths, i, repeat, value, w)",
+    "after": "write_length_repeat(&mut lengths, i, repeat, 0, w)"
+   }
+  },
+  {
+   "selector": "dynamic-omit-eob-check",
+   "run": 379,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/inflate.rs:620:13\n    |\n620 | /             dynamic_eq(m::MDynamicLengths(old(br).concat(), old(br).position(), old(self).code.lengths@,\n621 | |                 Seq::empty(), nlen as nat, ndist as nat, true), ret.0,\n622 | |                 final(self).lit.lengths@, final(self).dist.lengths@, final(br).position()),\n    | |__________________________________________________________________________________________^ failed this postcondition\n...\n729 |           (dist_result, Ghost(construction))\n    |           ---------------------------------- at the end of the function body",
+   "log": "evidence/run-0379.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "if lengths[256] == 0 {",
+    "after": "if false {"
+   }
+  },
+  {
+   "selector": "dynamic-count-before-third",
+   "run": 380,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/inflate.rs:747:13\n    |\n747 | /             dynamic_eq(m::MDynamic(old(br).concat(), old(br).position(), true), r,\n748 | |                 final(self).lit.lengths@, final(self).dist.lengths@, final(br).position()),\n    | |__________________________________________________________________________________________^ failed this postcondition\n...\n761 |           if nlen > NLIT_MAX || ndist > NDIST_MAX { return Err(E::InvalidCodeLengths); }\n    |                                                     --------------------------------- at this exit",
+   "log": "evidence/run-0380.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "let ncode = match br.get(4, w)",
+    "after": "if nlen > NLIT_MAX || ndist > NDIST_MAX { return Err(E::InvalidCodeLengths); }\n        let ncode = match br.get(4, w)"
+   }
+  },
+  {
+   "selector": "dynamic-repeat16-read-before-previous",
+   "run": 381,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/inflate.rs:620:13\n    |\n620 | /             dynamic_eq(m::MDynamicLengths(old(br).concat(), old(br).position(), old(self).code.lengths@,\n621 | |                 Seq::empty(), nlen as nat, ndist as nat, true), ret.0,\n622 | |                 final(self).lit.lengths@, final(self).dist.lengths@, final(br).position()),\n    | |__________________________________________________________________________________________^ failed this postcondition\n...\n684 |                       if i == 0 { return (Err(E::InvalidCodeLengths), Ghost(construction)); }\n    |                                   -------------------------------------------------------- at this exit",
+   "log": "evidence/run-0381.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "if i == 0 { return (Err(E::InvalidCodeLengths), Ghost(construction)); }\n                    let extra = match br.get(2, w) {\n                        Ok(extra) => extra, Err(e) => return (Err(e), Ghost(construction)),\n                    };",
+    "after": "let extra = match br.get(2, w) {\n                        Ok(extra) => extra, Err(e) => return (Err(e), Ghost(construction)),\n                    };\n                    if i == 0 { return (Err(E::InvalidCodeLengths), Ghost(construction)); }"
+   }
+  },
+  {
+   "selector": "distance-wrong-base",
+   "run": 385,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/inflate.rs:930:9\n    |\n930 | /         symbol_eq(m::MCompressedStep(old(br).concat(), old(br).position(), old(output).out@,\n931 | |             old(output).limit as nat, window as nat, lit.lengths@, dist.lengths@), r, final(output).out@, final(br).position()),\n    | |_______________________________________________________________________________________________________________________________^ failed this postcondition\n...\n940 | /     if sym < 256 {\n941 | |         match output.append_byte(sym as u8) { Ok(()) => {}, Err(s) => return Err(s), }\n942 | |         Ok(SymbolStep::Continue)\n943 | |     } else if sym == 256 { Ok(SymbolStep::End) }\n...   |\n959 | |     }\n    | |_____- at the end of the function body",
+   "log": "evidence/run-0385.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "let distance = DIST_BASE[ds] as u64 + de as u64;",
+    "after": "let distance = DIST_BASE[ds] as u64 + de as u64 + 1;"
+   }
+  },
+  {
+   "selector": "distance-wrong-extras",
+   "run": 386,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/inflate.rs:930:9\n    |\n930 | /         symbol_eq(m::MCompressedStep(old(br).concat(), old(br).position(), old(output).out@,\n931 | |             old(output).limit as nat, window as nat, lit.lengths@, dist.lengths@), r, final(output).out@, final(br).position()),\n    | |_______________________________________________________________________________________________________________________________^ failed this postcondition\n...\n940 | /     if sym < 256 {\n941 | |         match output.append_byte(sym as u8) { Ok(()) => {}, Err(s) => return Err(s), }\n942 | |         Ok(SymbolStep::Continue)\n943 | |     } else if sym == 256 { Ok(SymbolStep::End) }\n...   |\n959 | |     }\n    | |_____- at the end of the function body",
+   "log": "evidence/run-0386.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "br.get(DIST_EXTRA[ds], w)",
+    "after": "br.get(0, w)"
+   }
+  },
+  {
+   "selector": "reader-skip-empty-position",
+   "run": 388,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: invariant not satisfied at end of loop body\n   --> src/segments.rs:165:17\n    |\n165 |                 self.wf(), initial.wf(), initial == *old(self), self.parts == initial.parts,\n    |                 ^^^^^^^^^",
+   "log": "evidence/run-0388.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/segments.rs",
+    "before": "self.offset = 0;\n            proof { self.seg_work",
+    "after": "self.offset = 1;\n            proof { self.seg_work"
+   }
+  },
+  {
+   "selector": "omit-symbol-iteration-charge",
+   "run": 392,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: assertion failed\n   --> src/inflate.rs:942:20\n    |\n942 |     proof { assert(w.observed@ == symbol_iteration + 1); }\n    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed",
+   "log": "evidence/run-0392.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "let ghost symbol_iteration = w.observed@;\n    w.add(1);",
+    "after": "let ghost symbol_iteration = w.observed@;"
+   }
+  },
+  {
+   "selector": "omit-block-iteration-charge",
+   "run": 393,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: assertion failed\n    --> src/inflate.rs:1043:20\n     |\n1043 |     proof { assert(w.observed@ == block_iteration + 1); }\n     |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed",
+   "log": "evidence/run-0393.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "let ghost block_iteration = w.observed@;\n    w.add(1);",
+    "after": "let ghost block_iteration = w.observed@;"
+   }
+  },
+  {
+   "selector": "omit-cl-construction-charge",
+   "run": 394,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: assertion failed\n   --> src/inflate.rs:533:20\n    |\n533 |     proof { assert(w.observed@ == cl_zero_fill + NCL); }\n    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed",
+   "log": "evidence/run-0394.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "w.add(NCL);\n    proof { assert(w.observed@ == cl_zero_fill",
+    "after": "w.add(0);\n    proof { assert(w.observed@ == cl_zero_fill"
+   }
+  },
+  {
+   "selector": "omit-dynamic-symbol-charge",
+   "run": 395,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: assertion failed\n   --> src/inflate.rs:667:28\n    |\n667 |             proof { assert(w.observed@ == header_iteration + 1); construction = (construction + 1) as nat; }\n    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed",
+   "log": "evidence/run-0395.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "let ghost header_iteration = w.observed@;\n            w.add(1);",
+    "after": "let ghost header_iteration = w.observed@;"
+   }
+  },
+  {
+   "selector": "omit-huffman-decode-charge",
+   "run": 396,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: assertion failed\n   --> src/huffman.rs:216:28\n    |\n216 |             proof { assert(w.observed@ == decode_iteration + 1); }\n    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed",
+   "log": "evidence/run-0396.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/huffman.rs",
+    "before": "let ghost decode_iteration = w.observed@;\n            w.add(1);",
+    "after": "let ghost decode_iteration = w.observed@;"
+   }
+  },
+  {
+   "selector": "omit-bits-loop-charge",
+   "run": 397,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/bits.rs:166:13\n    |\n166 | /             final(w).observed@ - old(w).observed@\n167 | |                 == final(self).measured_core() - old(self).measured_core(),\n    | |__________________________________________________________________________^ failed this postcondition\n...\n195 |                       Err(e) => return Err(e),\n    |                                 ------------- at this exit",
+   "log": "evidence/run-0397.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/bits.rs",
+    "before": "w.add(1);\n            proof { self.loop_work",
+    "after": "w.add(0);\n            proof { self.loop_work"
+   }
+  },
+  {
+   "selector": "reader-omit-byte-charge",
+   "run": 398,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/segments.rs:84:13\n    |\n 84 | /             final(self).core_steps() == old(self).core_steps()\n 85 | |                 + if r.is_some() || old(self).advance_rank() == old(self).seg_count() + 1 { 1nat } else { 0nat },\n    | |________________________________________________________________________________________________________________^ failed this postcondition\n...\n189 |                   return Some(byte);\n    |                   ----------------- at this exit",
+   "log": "evidence/run-0398.txt",
+   "verification_results": "verification results:: 299 verified, 1 errors",
+   "mutation": {
+    "file": "src/segments.rs",
+    "before": "proof { self.read_work = Ghost(self.read_work@ + 1); }\n                return Some(byte);",
+    "after": "return Some(byte);"
+   }
+  },
+  {
+   "selector": "bits-partial-eof-invent-buffered-bit",
+   "run": 438,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/bits.rs:159:17\n    |\n159 |         ensures final(self).wf(), final(self).frame() == old(self).frame(), final(w).wf(), final(self).concat() == old(self).concat(),\n    |                 ^^^^^^^^^^^^^^^^ failed this postcondition\n...\n195 |                     Err(e) => { self.remaining = 1; return Err(e); },\n    |                                                     ------------- at this exit",
+   "log": "evidence/run-0438.txt",
+   "verification_results": "verification results:: 335 verified, 1 errors",
+   "mutation": {
+    "file": "src/bits.rs",
+    "before": "Err(e) => return Err(e),\n                };\n                proof {",
+    "after": "Err(e) => { self.remaining = 1; return Err(e); },\n                };\n                proof {"
+   }
+  },
+  {
+   "selector": "reader-eof-advances-byte-position",
+   "run": 439,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/segments.rs:70:13\n    |\n 70 |             final(self).wf(), final(self).concat() == old(self).concat(),\n    |             ^^^^^^^^^^^^^^^^ failed this postcondition\n...\n194 |                 return None;\n    |                 ----------- at this exit",
+   "log": "evidence/run-0439.txt",
+   "verification_results": "verification results:: 335 verified, 1 errors",
+   "mutation": {
+    "file": "src/segments.rs",
+    "before": "return None;\n            }\n            let part",
+    "after": "self.position += 1;\n                return None;\n            }\n            let part"
+   }
+  },
+  {
+   "selector": "single-literal-rejected",
+   "run": 440,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n  --> src/huffman.rs:75:13\n   |\n75 |               r.is_ok() == m::admissible(lengths@, crate::classification::model_kind(kind), single_accept),\n   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n91 | /         if admissible {\n92 | |             proof { self.ready = Ghost(true); }\n93 | |             Ok(())\n94 | |         } else { Err(InflateError::InvalidCodeLengths) }\n   | |________________________________________________________- at the end of the function body",
+   "log": "evidence/run-0440.txt",
+   "verification_results": "verification results:: 335 verified, 1 errors",
+   "mutation": {
+    "file": "src/huffman.rs",
+    "before": "is_admissible(kind, kraft, self.nsyms, self.count[1], single_accept)",
+    "after": "is_admissible(kind, kraft, self.nsyms, self.count[1], false)"
+   }
+  },
+  {
+   "selector": "single-literal-two-bit-admitted",
+   "run": 441,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n  --> src/huffman.rs:71:17\n   |\n71 |           ensures final(self).wf(), final(w).wf(),\n   |                   ^^^^^^^^^^^^^^^^ failed this postcondition\n...\n91 | /         if admissible {\n92 | |             proof { self.ready = Ghost(true); }\n93 | |             Ok(())\n94 | |         } else { Err(InflateError::InvalidCodeLengths) }\n   | |________________________________________________________- at the end of the function body",
+   "log": "evidence/run-0441.txt",
+   "verification_results": "verification results:: 335 verified, 1 errors",
+   "mutation": {
+    "file": "src/huffman.rs",
+    "before": "is_admissible(kind, kraft, self.nsyms, self.count[1], single_accept)",
+    "after": "is_admissible(kind, kraft, self.nsyms, self.nsyms as u16, single_accept)"
+   }
+  },
+  {
+   "selector": "single-distance-empty-rejected",
+   "run": 442,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n  --> src/huffman.rs:75:13\n   |\n75 |               r.is_ok() == m::admissible(lengths@, crate::classification::model_kind(kind), single_accept),\n   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n91 | /         if admissible && self.nsyms > 0 {\n92 | |             proof { self.ready = Ghost(true); }\n93 | |             Ok(())\n94 | |         } else { Err(InflateError::InvalidCodeLengths) }\n   | |________________________________________________________- at the end of the function body",
+   "log": "evidence/run-0442.txt",
+   "verification_results": "verification results:: 335 verified, 1 errors",
+   "mutation": {
+    "file": "src/huffman.rs",
+    "before": "if admissible {",
+    "after": "if admissible && self.nsyms > 0 {"
+   }
+  },
+  {
+   "selector": "live-count-floor",
+   "run": 443,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/canonical.rs:317:9\n    |\n317 |         forall|n: int| 0 <= n <= MAX_CODE_BITS ==> final(live)@[n] == m::live_count(lengths, n as nat),\n    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n343 |         if n == 0 { return Ghost(steps); }\n    |                     ------------------- at this exit",
+   "log": "evidence/run-0443.txt",
+   "verification_results": "verification results:: 335 verified, 1 errors",
+   "mutation": {
+    "file": "src/canonical.rs",
+    "before": "live[n] = (higher + unit - 1) / unit;",
+    "after": "live[n] = higher / unit;"
+   }
+  },
+  {
+   "selector": "live-count-reverse-shift",
+   "run": 444,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: possible arithmetic underflow/overflow\n   --> src/canonical.rs:342:20\n    |\n342 |         live[n] = (higher + unit - 1) / unit;\n    |                    ^^^^^^^^^^^^^",
+   "log": "evidence/run-0444.txt",
+   "verification_results": "verification results:: 335 verified, 1 errors",
+   "mutation": {
+    "file": "src/canonical.rs",
+    "before": "let unit = 1u32 << (MAX_CODE_BITS - n);",
+    "after": "let unit = 1u32 << n;"
+   }
+  },
+  {
+   "selector": "live-count-reverse-depth",
+   "run": 445,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: possible arithmetic underflow/overflow\n   --> src/canonical.rs:346:9\n    |\n346 |         higher += counts[n - 1] as u32 * unit;\n    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+   "log": "evidence/run-0445.txt",
+   "verification_results": "verification results:: 335 verified, 1 errors",
+   "mutation": {
+    "file": "src/canonical.rs",
+    "before": "higher += counts[n] as u32 * unit;",
+    "after": "higher += counts[n - 1] as u32 * unit;"
+   }
+  },
+  {
+   "selector": "live-count-omit-depth-zero",
+   "run": 446,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/canonical.rs:316:13\n    |\n316 |     ensures work@ == MAX_CODE_BITS + 1,\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n343 |         if n == 1 { return Ghost(steps); }\n    |                     ------------------- at this exit",
+   "log": "evidence/run-0446.txt",
+   "verification_results": "verification results:: 335 verified, 1 errors",
+   "mutation": {
+    "file": "src/canonical.rs",
+    "before": "if n == 0 { return Ghost(steps); }",
+    "after": "if n == 1 { return Ghost(steps); }"
+   }
+  },
+  {
+   "selector": "dead-prefix-lower-bound-inclusive",
+   "run": 447,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/huffman.rs:172:13\n    |\n172 | /             match r {\n173 | |                 Ok(s) => m::MDec(self.lengths@, old(br).concat(), old(br).position())\n174 | |                     == (m::Decoded::Symbol { symbol: s as nat, position: final(br).position() }),\n175 | |                 Err(e) => (e == InflateError::InvalidSymbol\n...   |\n180 | |                         == (m::Decoded::TruncatedZlib { position: final(br).position() })),\n181 | |             },\n    | |_____________^ failed this postcondition\n...\n260 |                   return Err(InflateError::InvalidSymbol);\n    |                   --------------------------------------- at this exit",
+   "log": "evidence/run-0447.txt",
+   "verification_results": "verification results:: 335 verified, 1 errors",
+   "mutation": {
+    "file": "src/huffman.rs",
+    "before": "if code < first || code - first - count >= self.live[n] {",
+    "after": "if code <= first || code - first - count >= self.live[n] {"
+   }
+  },
+  {
+   "selector": "dead-prefix-upper-bound-exclusive",
+   "run": 448,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: invariant not satisfied at end of loop body\n   --> src/huffman.rs:211:34\n    |\n211 |                 bits.len() == n, m::live(lengths, bits), forall|s: int| !m::exact(lengths, bits, s),\n    |                                  ^^^^^^^^^^^^^^^^^^^^^^",
+   "log": "evidence/run-0448.txt",
+   "verification_results": "verification results:: 335 verified, 1 errors",
+   "mutation": {
+    "file": "src/huffman.rs",
+    "before": "if code < first || code - first - count >= self.live[n] {",
+    "after": "if code < first || code - first - count > self.live[n] {"
+   }
+  },
+  {
+   "selector": "length-extras-omitted",
+   "run": 449,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/inflate.rs:936:9\n    |\n936 | /         symbol_eq(m::MCompressedStep(old(br).concat(), old(br).position(), old(output).out@,\n937 | |             old(output).limit as nat, window as nat, lit.lengths@, dist.lengths@), r, final(output).out@, final(br).position()),\n    | |_______________________________________________________________________________________________________________________________^ failed this postcondition\n...\n948 | /     if sym < 256 {\n949 | |         match output.append_byte(sym as u8) { Ok(()) => {}, Err(s) => return Err(s), }\n950 | |         Ok(SymbolStep::Continue)\n951 | |     } else if sym == 256 { Ok(SymbolStep::End) }\n...   |\n967 | |     }\n    | |_____- at the end of the function body",
+   "log": "evidence/run-0449.txt",
+   "verification_results": "verification results:: 335 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "br.get(LEN_EXTRA[index], w)",
+    "after": "br.get(0, w)"
+   }
+  },
+  {
+   "selector": "reader-byte-as-segment-work",
+   "run": 452,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/segments.rs:70:13\n    |\n 70 |             final(self).wf(), final(self).concat() == old(self).concat(),\n    |             ^^^^^^^^^^^^^^^^ failed this postcondition\n...\n202 |                 return Some(byte);\n    |                 ----------------- at this exit",
+   "log": "evidence/run-0452.txt",
+   "verification_results": "verification results:: 335 verified, 1 errors",
+   "mutation": {
+    "file": "src/segments.rs",
+    "before": "proof { self.read_work = Ghost(self.read_work@ + 1); }\n                return Some(byte);",
+    "after": "proof { self.seg_work = Ghost(self.seg_work@ + 1); }\n                return Some(byte);"
+   }
+  },
+  {
+   "selector": "reader-work-in-construction-budget",
+   "run": 456,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/inflate.rs:507:9\n    |\n507 |         ret.1@ <= NCL + ncode + CANON_FIXED_STEPS + 2 * NCL + MAX_CODE_BITS + 1,\n    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n566 |     (result, Ghost(cost as nat))\n    |     ---------------------------- at the end of the function body",
+   "log": "evidence/run-0456.txt",
+   "verification_results": "verification results:: 357 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "let ghost cost = NCL + ncode + w.observed@ - before_build;",
+    "after": "let ghost cost = w.observed@ - cl_zero_fill;"
+   }
+  },
+  {
+   "selector": "decode-work-in-construction-budget",
+   "run": 457,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/inflate.rs:616:13\n    |\n616 |             final(self).header_table_start@.is_none() ==> ret.1@ <= 3 * DYNAMIC_LENGTHS,\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n704 |                 if repeat > total - i { return (Err(E::InvalidCodeLengths), Ghost(construction)); }\n    |                                         -------------------------------------------------------- at this exit",
+   "log": "evidence/run-0457.txt",
+   "verification_results": "verification results:: 357 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "let ghost after_code = br.position();",
+    "after": "proof { construction = (construction + w.observed@ - header_iteration - 1) as nat; }\n            let ghost after_code = br.position();"
+   }
+  },
+  {
+   "selector": "dynamic-admit-before-eob",
+   "run": 458,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: assertion failed\n   --> src/inflate.rs:724:24\n    |\n724 |         proof { assert(lengths@[256] > 0); }\n    |                        ^^^^^^^^^^^^^^^^^ assertion failed",
+   "log": "evidence/run-0458.txt",
+   "verification_results": "verification results:: 357 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "        if lengths[256] == 0 { return (Err(E::InvalidCodeLengths), Ghost(construction)); }\n        // The coding-cost invariant applies even when construction rejects.\n        // Pin the frozen EOB-before-admission boundary at the real build call.\n        proof { assert(lengths@[256] > 0); }\n        proof { self.header_table_start = Ghost(Some(br.position())); }\n        let ghost before_lit = w.observed@;\n        let lit_result = self.lit.build(&lengths[..nlen], Kind::LitLen, w);",
+    "after": "        // The coding-cost invariant applies even when construction rejects.\n        // Pin the frozen EOB-before-admission boundary at the real build call.\n        proof { assert(lengths@[256] > 0); }\n        proof { self.header_table_start = Ghost(Some(br.position())); }\n        let ghost before_lit = w.observed@;\n        let lit_result = self.lit.build(&lengths[..nlen], Kind::LitLen, w);\n        if lengths[256] == 0 { return (Err(E::InvalidCodeLengths), Ghost(construction)); }"
+   }
+  },
+  {
+   "selector": "dynamic-distance-admission-first",
+   "run": 459,
+   "source_revision": {
+    "evidence_commit": "1473befab9d2191528195dbd17583282f2c4bb3e",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: assertion failed\n   --> src/inflate.rs:731:24\n    |\n731 |         proof { assert(self.lit.ready@); }\n    |                        ^^^^^^^^^^^^^^ assertion failed",
+   "log": "evidence/run-0459.txt",
+   "verification_results": "verification results:: 357 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "        let lit_result = self.lit.build(&lengths[..nlen], Kind::LitLen, w);\n        proof { construction = (construction + w.observed@ - before_lit) as nat; }\n        match lit_result { Ok(()) => {}, Err(e) => return (Err(e), Ghost(construction)), }\n        proof { assert(self.lit.ready@); }\n        let ghost before_dist = w.observed@;\n        let dist_result = self.dist.build(&lengths[nlen..total], Kind::Dist, w);",
+    "after": "        let lit_result = self.dist.build(&lengths[nlen..total], Kind::Dist, w);\n        proof { construction = (construction + w.observed@ - before_lit) as nat; }\n        match lit_result { Ok(()) => {}, Err(e) => return (Err(e), Ghost(construction)), }\n        proof { assert(self.lit.ready@); }\n        let ghost before_dist = w.observed@;\n        let dist_result = self.lit.build(&lengths[..nlen], Kind::LitLen, w);"
+   }
+  },
+  {
+   "selector": "length-extra-width-plus-one",
+   "run": 524,
+   "source_revision": {
+    "evidence_commit": "5f697fabcb127dfcaab338e243f93c0f0d2491dc",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/inflate.rs:936:9\n    |\n936 | /         symbol_eq(m::MCompressedStep(old(br).concat(), old(br).position(), old(output).out@,\n937 | |             old(output).limit as nat, window as nat, lit.lengths@, dist.lengths@), r, final(output).out@, final(br).position()),\n    | |_______________________________________________________________________________________________________________________________^ failed this postcondition\n...\n959 |           if ds >= NDIST_MAX { return Err(Status::Err(E::InvalidSymbol)); }\n    |                                ----------------------------------------- at this exit",
+   "log": "evidence/run-0524.txt",
+   "verification_results": "verification results:: 800 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "br.get(LEN_EXTRA[index], w)",
+    "after": "br.get(LEN_EXTRA[index] + 1, w)"
+   }
+  },
+  {
+   "selector": "distance-extra-width-plus-one",
+   "run": 528,
+   "source_revision": {
+    "evidence_commit": "5f697fabcb127dfcaab338e243f93c0f0d2491dc",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/inflate.rs:936:9\n    |\n936 | /         symbol_eq(m::MCompressedStep(old(br).concat(), old(br).position(), old(output).out@,\n937 | |             old(output).limit as nat, window as nat, lit.lengths@, dist.lengths@), r, final(output).out@, final(br).position()),\n    | |_______________________________________________________________________________________________________________________________^ failed this postcondition\n...\n948 | /     if sym < 256 {\n949 | |         match output.append_byte(sym as u8) { Ok(()) => {}, Err(s) => return Err(s), }\n950 | |         Ok(SymbolStep::Continue)\n951 | |     } else if sym == 256 { Ok(SymbolStep::End) }\n...   |\n967 | |     }\n    | |_____- at the end of the function body",
+   "log": "evidence/run-0528.txt",
+   "verification_results": "verification results:: 816 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "br.get(DIST_EXTRA[ds], w)",
+    "after": "br.get(DIST_EXTRA[ds] + 1, w)"
+   }
+  },
+  {
+   "selector": "length-extra-value-plus-one",
+   "run": 580,
+   "source_revision": {
+    "evidence_commit": "fdb4026dd8b29f9e97e0cc7ec2509b35b5ebf8d6",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/inflate.rs:936:9\n    |\n936 | /         symbol_eq(m::MCompressedStep(old(br).concat(), old(br).position(), old(output).out@,\n937 | |             old(output).limit as nat, window as nat, lit.lengths@, dist.lengths@), r, final(output).out@, final(br).position()),\n    | |_______________________________________________________________________________________________________________________________^ failed this postcondition\n...\n948 | /     if sym < 256 {\n949 | |         match output.append_byte(sym as u8) { Ok(()) => {}, Err(s) => return Err(s), }\n950 | |         Ok(SymbolStep::Continue)\n951 | |     } else if sym == 256 { Ok(SymbolStep::End) }\n...   |\n967 | |     }\n    | |_____- at the end of the function body",
+   "log": "evidence/run-0580.txt",
+   "verification_results": "verification results:: 1378 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "let length = LEN_BASE[index] as u32 + extra;",
+    "after": "let length = LEN_BASE[index] as u32 + extra + 1;"
+   }
+  },
+  {
+   "selector": "window-boundary-equality-rejected",
+   "run": 581,
+   "source_revision": {
+    "evidence_commit": "fdb4026dd8b29f9e97e0cc7ec2509b35b5ebf8d6",
+    "scope": "Historical working-tree run recorded by this commit; not an exact clean-commit source binding."
+   },
+   "failed_proof": "error: postcondition not satisfied\n   --> src/inflate.rs:866:9\n    |\n866 | /         copy_eq(m::MCopy(old(output).out@, old(output).limit as nat, window as nat, distance as nat,\n867 | |             length as nat), r, final(output).out@),\n    | |__________________________________________________^ failed this postcondition\n...\n874 |       if distance > output.produced || distance >= window { return Err(Status::Err(E::DistanceTooFar)); }\n    |                                                             ------------------------------------------ at this exit",
+   "log": "evidence/run-0581.txt",
+   "verification_results": "verification results:: 1378 verified, 1 errors",
+   "mutation": {
+    "file": "src/inflate.rs",
+    "before": "if distance > output.produced || distance > window {",
+    "after": "if distance > output.produced || distance >= window {"
+   }
+  }
+ ],
+ "excluded_attempts": [
+  {
+   "run": 453,
+   "reason": "Rust type-check failure, no failed Verus proof; not a kill."
+  }
+ ],
+ "historical_kill_total": 68
+}

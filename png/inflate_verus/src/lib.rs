@@ -91,6 +91,8 @@ mod witness_window_cases;
 mod witnesses;
 
 #[cfg(verus_only)]
+pub use adler::{deferred_b_bound_twice, lemma_adler_nmax_maximal};
+#[cfg(verus_only)]
 pub use inflate::{fault_eq, ring_repr, status_eq};
 pub use inflate::{inflate_zlib_into, inflate_zlib_measure};
 pub use segments::{SegmentSlices, Segments};

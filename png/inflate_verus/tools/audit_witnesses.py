@@ -6,6 +6,7 @@ import sys
 import json
 from pathlib import Path
 import re
+import tarfile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'tools'))
@@ -343,6 +344,93 @@ def validate_target_replay(root, record, final, by_path):
     return unique
 
 
+# Frozen THEOREMS mutation numbers, not a count of all useful experiments.
+M2_MUTATION_SELECTORS = {
+    1: {'btype-swap-fixed-dynamic'}, 2: {'huffman-lsb-first'},
+    3: {'huffman-accept-incomplete'}, 4: {'omit-nlen'}, 5: {'wrong-length-285'},
+    6: {'reserved-distance-admitted', 'fixed-only-thirty-distances'},
+    7: {'distance-output-plus-one'}, 8: {'omit-window-guard'},
+    9: {'late-adler-deferral'}, 10: {'omit-adler-comparison'},
+    11: {'full-at-limit', 'output-omit-limit-guard'}, 12: {'bit-position-u32-narrowing'},
+    37: {'huffman-skip-dead-prefix'}, 39: {'stored-truncation-drop-prefix'},
+}
+
+
+def validate_mutation_index(root, by_path, index=None):
+    """Check numbered coverage, real failed proofs, retained revisions and scope.
+
+    Historical snapshots identify the affected implementation revision, not a
+    retroactive source-hash binding of the whole historical verifier process.
+    """
+    if index is None:
+        index = json.loads((root/'evidence/mutation-index.json').read_text())
+    assert index['schema'] == 1
+    selector_source = (root/'tools/proof_mutations.py').read_bytes()
+    assert hashlib.sha256(selector_source).hexdigest() == index['selector_definitions_sha256'], 'mutation selector definitions changed'
+    definitions = {}
+    for node in ast.parse(selector_source).body:
+        if isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
+            if node.targets[0].id in ('CASES', 'FILE_CASES'):
+                definitions[node.targets[0].id] = ast.literal_eval(node.value)
+    selectors = {key: ('inflate.rs', *value) for key, value in definitions['CASES'].items()}
+    selectors.update(definitions['FILE_CASES'])
+    requirements = index['requirements']
+    assert [r['number'] for r in requirements] == list(range(1, 41)), 'mutation requirements must be exactly 1–40'
+    runs = set()
+    for requirement in requirements:
+        number = requirement['number']
+        wanted = M2_MUTATION_SELECTORS.get(number, set())
+        assert requirement['milestone'] == ('M2' if wanted else 'not M2'), ('mutation milestone differs', number)
+        assert requirement['status'] == ('verifier-killed' if wanted else 'not credited here; later PNG/allocation/policy milestone'), ('mutation status differs', number)
+        assert {m['selector'] for m in requirement['mutants']} == wanted, ('required mutation selectors differ', number)
+        if number == 12:
+            assert 'Ghost representation narrowing' in requirement.get('qualification', ''), 'mutation 12 needs its ghost qualification'
+        for mutant in requirement['mutants']:
+            file, before, after = selectors[mutant['selector']]
+            assert mutant['mutation'] == {'file':'src/'+file, 'before':before, 'after':after}, 'mutation replacement differs from its selector'
+            revision = mutant['source_revision']
+            assert re.fullmatch(r'[0-9a-f]{40}', revision['evidence_commit']), 'missing mutation evidence revision'
+            archive = revision['implementation_snapshot']
+            record = by_path.get(mutant['log'], {})
+            assert archive in record.get('source_archives_sha256', {}), 'mutation implementation snapshot is not retained'
+            with tarfile.open(root/archive) as snapshot:
+                implementation = snapshot.extractfile(mutant['mutation']['file']).read()
+                if 'source_tree_sha256' in revision:
+                    import split_checkpoint as sc
+                    names = {p.name for p in snapshot.getmembers() if p.name.startswith('src/') and p.name.endswith('.rs')} | set(sc.TOOL_FILES)
+                    inventory = {name:hashlib.sha256(snapshot.extractfile(name).read()).hexdigest() for name in names}
+                    assert sc.tree_hash(inventory) == revision['source_tree_sha256'], 'mutation archive does not reproduce its split source hash'
+            assert hashlib.sha256(implementation).hexdigest() == revision['implementation_sha256'], 'mutation implementation revision differs'
+            image = mutant['mutation']['after' if number == 39 else 'before']
+            assert implementation.decode().count(image) == 1, 'mutation replacement does not match its implementation revision'
+            assert mutant['failed_function'], 'mutation failed function missing'
+            if number == 12:
+                assert 'Ghost representation narrowing' in mutant.get('qualification', ''), 'mutation 12 needs its ghost qualification'
+    all_mutants = [m for r in requirements for m in r['mutants']] + index['additional_mutations']
+    for mutant in all_mutants:
+        run = mutant['run']
+        assert run not in runs, ('mutation run counted twice', run)
+        runs.add(run)
+        record = by_path.get(mutant['log'])
+        assert record and record['run'] == run and record['mutation'] == mutant['selector'], 'mutation log is not retained with its selector'
+        text = (root/mutant['log']).read_text()
+        assert mutant['failed_proof'] in text and mutant['failed_proof'].startswith('error: '), 'mutation diagnostic missing from log'
+        assert re.search(r'^error: (postcondition not satisfied|precondition not satisfied|assertion failed|invariant not satisfied|possible arithmetic underflow/overflow)', mutant['failed_proof']), 'mutation needs a real failed proof'
+        summary = mutant['verification_results']
+        assert summary == record['verification_results'] and re.fullmatch(r'verification results:: [1-9]\d* verified, [1-9]\d* errors', summary), 'mutation needs positive verified and failed-proof counts'
+        if run == 613:
+            import split_checkpoint as sc
+            report = sc.json_report(text)['verification-results']
+            assert report['verified'] > 0 and report['errors'] > 0 and not report['encountered-vir-error'], 'mutation needs a real failed JSON proof'
+            assert 'VERIFY_SOURCE_TREE=' + mutant['source_revision']['source_tree_sha256'] in text
+        else:
+            assert summary in text, 'mutation count missing from log'
+    assert index['historical_kill_total'] == len(runs), 'mutation kill total differs'
+    assert all(e['run'] not in runs for e in index['excluded_attempts']), 'excluded attempt counted as a mutation kill'
+    assert {e['run'] for e in index['excluded_attempts']} == {453}, 'retain the type-check-only exclusion'
+    print(f'{len(M2_MUTATION_SELECTORS)} M2 mutation requirements checked; {len(runs)} historical kills (mutation 12 is ghost representation narrowing)')
+
+
 def validate_evidence(root=ROOT):
     records = json.loads((root/'evidence/manifest.json').read_text())
     assert sum(record.get('role') == 'current-final-source-count' for record in records) == 1, 'one fresh source-bound final count is required'
@@ -357,7 +445,13 @@ def validate_evidence(root=ROOT):
         data = (root/path).read_bytes()
         assert hashlib.sha256(data).hexdigest() == record['sha256'], path
         if 'verification_results' in record and record.get('role') != 'split-pass':
-            assert record['verification_results'] in data.decode(), path
+            if record.get('kind') == 'proof-mutation-json':
+                import split_checkpoint as sc
+                result = sc.json_report(data.decode())['verification-results']
+                summary = f'verification results:: {result["verified"]} verified, {result["errors"]} errors'
+                assert summary == record['verification_results'], path
+            else:
+                assert record['verification_results'] in data.decode(), path
         for name,digest in record.get('source_archives_sha256',{}).items():
             assert '..' not in Path(name).parts and name.startswith('backups/'), name
             archive = (root/name).read_bytes()
@@ -401,7 +495,10 @@ def validate_evidence(root=ROOT):
         assert any(f'fn {q}(' in log for q in item.get('queries',[item['class']])) and 'resource limit (rlimit) exceeded' in log, item
         assert (root/item['source_snapshot']).stat().st_size < 1_000_000, item
     assert {'evidence/run-0507.txt','evidence/run-0508.txt','evidence/run-0510.txt'} <= paths
-    print(f'{len(records)} retained proof logs hash-checked without reading ignored runs/')
+    index_records = [r for r in records if r.get('role') == 'requirement-mutation-index']
+    assert len(index_records) == 1 and index_records[0]['path'] == 'evidence/mutation-index.json', 'one requirement-indexed mutation table is required'
+    validate_mutation_index(root, by_path)
+    print(f'{len(records)} retained evidence records hash-checked without reading ignored runs/')
 
 
 def main():

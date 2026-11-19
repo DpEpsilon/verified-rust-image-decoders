@@ -1,0 +1,37 @@
+command: ['env', 'VERIFY_SOURCE_TREE=e7a6c4565d2c7f2d1ca0f57a6c15a22edf5e0a1aff5f8873d55d015c524774f0', 'VERIFY_PASS=base', 'cargo', 'verus', 'verify', '--features', 'split', '--', '--num-threads', '2', '--no-cheating', '--output-json']
+    Checking inflate_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/target/debug/incremental/inflate_verus-0oufyc8v0k82m/s-hob1qotavn-0jhowtk-working`
+
+error[E0308]: mismatched types
+  --> src/adler.rs:21:5
+   |
+20 |   pub open spec fn deferred_b_bound_twice(n: nat) -> nat {
+   |                                                      --- expected `vstd::prelude::nat` because of return type
+21 | /     2 * (ADLER_MOD - 1) + 2 * n * (ADLER_MOD - 1)
+22 | |         + (u8::MAX as nat) * n * (n + 1)
+   | |________________________________________^ expected `nat`, found `int`
+
+For more information about this error, try `rustc --explain E0308`.
+{
+  "func-details": {},
+  "verification-results": {
+    "encountered-error": true,
+    "encountered-vir-error": false,
+    "success": false,
+    "verified": 0,
+    "errors": 0,
+    "is-verifying-entire-crate": true
+  },
+  "verus": {
+    "profile": "release",
+    "version": "0.2026.11.02.8bf68ee",
+    "platform": {
+      "os": "linux",
+      "arch": "x86_64"
+    },
+    "toolchain": "1.99.1-x86_64-unknown-linux-gnu (overridden by environment variable RUSTUP_TOOLCHAIN)",
+    "commit": "8bf68ee741df833ea5d0fe6a2255126fdea87e47"
+  }
+}
+warning: `inflate_verus` (lib) generated 1 warning
+error: could not compile `inflate_verus` (lib) due to 1 previous error; 1 warning emitted

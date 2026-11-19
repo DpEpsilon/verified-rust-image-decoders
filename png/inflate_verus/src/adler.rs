@@ -16,6 +16,26 @@ proof fn adler_format_ok()
         + (u8::MAX as nat) * ADLER_NMAX * (ADLER_NMAX + 1) <= 2 * (u32::MAX as nat)) by (compute);
 }
 
+/// Twice the worst-case deferred second accumulator, starting with reduced sums.
+pub open spec fn deferred_b_bound_twice(n: nat) -> nat {
+    (2 * (ADLER_MOD - 1) + 2 * n * (ADLER_MOD - 1)
+        + (u8::MAX as nat) * n * (n + 1)) as nat
+}
+
+/// ADLER_NMAX is safe; every larger deferral exceeds the u32 bound.
+pub proof fn lemma_adler_nmax_maximal(n: nat)
+    requires n > ADLER_NMAX,
+    ensures deferred_b_bound_twice(ADLER_NMAX as nat) <= 2 * (u32::MAX as nat),
+        deferred_b_bound_twice((ADLER_NMAX + 1) as nat) > 2 * (u32::MAX as nat),
+        deferred_b_bound_twice(n) > 2 * (u32::MAX as nat),
+{
+    adler_format_ok();
+    assert(deferred_b_bound_twice((ADLER_NMAX + 1) as nat) > 2 * (u32::MAX as nat)) by (compute);
+    assert(deferred_b_bound_twice(n) >= deferred_b_bound_twice((ADLER_NMAX + 1) as nat))
+        by (nonlinear_arith)
+        requires n > ADLER_NMAX, ADLER_MOD > 0;
+}
+
 proof fn lemma_bound_step(a: nat, b: nat, pending: nat, byte: nat)
     requires pending < ADLER_NMAX, byte <= u8::MAX,
         a <= ADLER_MOD - 1 + (u8::MAX as nat) * pending,

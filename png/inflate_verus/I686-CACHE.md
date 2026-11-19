@@ -42,10 +42,12 @@ env CARGO_BUILD_TARGET=i686-unknown-linux-gnu CARGO_TARGET_DIR=$PWD/target/i686-
 
 Each pass command therefore equals the host pass command, bound to the same source tree hash. `CARGO_TERM_VERBOSE` makes each pass log show the rustc line for `inflate_verus` with `--target i686-unknown-linux-gnu` and `--extern vstd=…/i686-unknown-linux-gnu/debug/deps/libvstd-a8222d889f5a22f0.rmeta`, and `Fresh vstd`. `tools/audit_witnesses.py` checks all three for the `target-replay-count` record.
 
-First replay, runs 603–608 (`evidence/checkpoint-0603.json`): base 372, config-cases 811, extended 677, classes-blocks 517, dynamic 452, fixed-policy 410, all 0 errors, on host tree hash `edcde0f4…6020`; unique total **1,379**, equal to host checkpoint 592.
+First replay, runs 603–608 (`evidence/checkpoint-0603.json`): base 372, config-cases 811, extended 677, classes-blocks 517, dynamic 452, fixed-policy 410, all 0 errors, on host tree hash `edcde0f4…6020`; unique total **1,379**, equal to host checkpoint 592. This is historical evidence after the M2 review repairs.
+
+Fresh M2-review replay, runs **623–628** (`evidence/checkpoint-0623.json`): base **374**, config-cases **813**, extended **679**, classes-blocks **519**, dynamic **454**, fixed-policy **412**, all 0 errors, on tree `f56fa5f7b8d7ac91cd1ef93a7715c0fccff8fce128e65c930fc6b7f26ff1c5df`; unique total **1,381**, equal to fresh host checkpoint **617–622**. The two added verified functions are the Adler bound specification and maximality lemma. Each pass ran Verus and produced a fresh JSON report, with the required verbose target/rmeta line and `Fresh vstd`; no vstd rebuild occurred. Host verifier time was 22 minutes 8 seconds; target time was 23 minutes 46 seconds. Final audit tests pass in 629 (46 tests), source/coverage controls in 630.
 
 The replay is fresh only while cargo has no cached result for a pass's features and sources in `target/i686-verify`. A second replay on an unchanged tree is a cargo replay and fails closed (no JSON report).
 
 ## Host cache check
 
-Runs 601 (before) and 609 (after) record the sha256, size and mtime of all 2,179 files under `target/debug`; the two listings are identical. `libvstd-01822e92e4f44378.vir` stays `49934e17…a533` and `.rmeta` `6cf84fc3…e618`, equal to the GIF copy.
+Runs 601 (before) and 609 (after) record the sha256, size and mtime of all 2,179 files under `target/debug`; the two listings are identical. For fresh replay 623–628, `evidence/m2-review-host-cache-before-i686.json` and `evidence/m2-review-host-cache-after-i686.json` agree on the sha256, size and nanosecond mtime of all **2,204** host-cache files. Both snapshots are hash-retained in the evidence manifest. `libvstd-01822e92e4f44378.vir` stays `49934e17…a533` and `.rmeta` `6cf84fc3…e618`, equal to the GIF copy.

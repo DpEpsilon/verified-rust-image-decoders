@@ -42,6 +42,7 @@ CASES = {
 
 
 FILE_CASES = {
+    'stored-truncation-drop-prefix': ('inflate.rs', 'proof { assert(cursor == z.len()); }\n                return Err(Status::Err(e));', 'proof { assert(cursor == z.len()); }\n                output.produced = 0;\n                return Err(Status::Err(e));'),
     'length-extra-width-plus-one': ('inflate.rs', 'br.get(LEN_EXTRA[index], w)', 'br.get(LEN_EXTRA[index] + 1, w)'),
     'distance-extra-width-plus-one': ('inflate.rs', 'br.get(DIST_EXTRA[ds], w)', 'br.get(DIST_EXTRA[ds] + 1, w)'),
     'bits-partial-eof-invent-buffered-bit': ('bits.rs', 'Err(e) => return Err(e),\n                };\n                proof {', 'Err(e) => { self.remaining = 1; return Err(e); },\n                };\n                proof {'),

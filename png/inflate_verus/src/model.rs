@@ -1519,7 +1519,7 @@ pub proof fn lemma_finish_dynamic(lengths: Seq<u8>, nlen: nat, ndist: nat, posit
     },
 {}
 
-/// Arithmetic ingredient for L-HDR-BITS, not yet tied to the real header loop.
+/// L-HDR-BITS arithmetic, tied to the real header loop's construction marker.
 /// Large repeats are symbol 18; all other entries obey 5*bits >= 2*entries.
 pub proof fn lemma_header_coding_cost(large: nat, large_entries: nat, other_entries: nat,
     large_bits: nat, other_bits: nat)

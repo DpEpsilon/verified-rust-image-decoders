@@ -1331,7 +1331,7 @@ fn entry<S: Segments>(src: &mut S, sink: Sink<'_>, limit: u64, o: InflateOptions
 /// all remaining runtime source fields are cursor state. SegmentSlices owns no
 /// other mutable borrow, so only out and the source cursor can change.
 /// An arbitrary Segments implementation may mutate state it owns: its value
-/// frame is not a universal effect restriction (proposed PNG erratum E2).
+/// frame is not a universal effect restriction (PNG erratum E2, approved with amendment).
 pub fn inflate_zlib_into<S: Segments>(src: &mut S, out: &mut [u8], o: InflateOptions) -> (r: InflateResult)
     requires old(src).wf(), old(src).pos() == 0,
     ensures final(src).wf(), final(src).concat() == old(src).concat(),
