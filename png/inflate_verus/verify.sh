@@ -1,5 +1,5 @@
 #!/bin/bash
-# M2 verifier entry point. One foreground run, at most 25 minutes, one cargo job.
+# M2 verifier entry point. Serial foreground passes, each at most 25 minutes, one cargo job.
 set -euo pipefail
 root="$(cd "$(dirname "$0")" && pwd -P)"
 export PATH="/opt/cargo/bin:/opt/verus:$PATH"
@@ -18,5 +18,11 @@ if pgrep -f '(cargo-verus verify|rust_verify .*--crate-name)' >/dev/null; then
   printf '%s\n' 'Another Verus invocation is already running.' >&2
   exit 2
 fi
-exec python3 -I "$root/tools/run_logged.py" --timeout 1500 --label "Verus: ${1:-checkpoint}" -- \
-  cargo verus verify -- --num-threads 2 --no-cheating
+# A checkpoint is the serial sequence of passes in tools/verify_passes.json.
+# Each pass compiles base plus its feature-gated witness modules and is its own
+# logged run with the unchanged 25-minute bound, two verifier threads and
+# --no-cheating. The lock above stays held on descriptor 9 across all passes.
+# `verify.sh --only PASS [label]` runs one pass, which is never a checkpoint.
+only=()
+if [ "${1:-}" = --only ]; then only=(--only "${2:?pass name}"); shift 2; fi
+exec python3 -I "$root/tools/verify_split.py" "${only[@]}" --label "${1:-checkpoint}"

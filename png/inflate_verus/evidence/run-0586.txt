@@ -1,0 +1,22 @@
+command: ['env', 'VERIFY_SOURCE_TREE=7952c72684f5d8727b9db1c1b31049736787ab18c3da992c9a09321fea212c91', 'VERIFY_PASS=core', 'cargo', 'verus', 'focus', '--', '--num-threads', '2', '--no-cheating', '--time-expanded', '--verify-root', '--verify-module', 'adler', '--verify-module', 'bits', '--verify-module', 'canonical', '--verify-module', 'classification', '--verify-module', 'huffman', '--verify-module', 'inflate', '--verify-module', 'limit_mono', '--verify-module', 'limits', '--verify-module', 'model', '--verify-module', 'segments']
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling verus_syn v0.0.0-2026-11-01-0251
+   Compiling verus_prettyplease v0.0.0-2026-11-01-0251
+   Compiling syn v2.0.119
+   Compiling equivalent v1.0.3
+   Compiling hashbrown v0.17.1
+   Compiling indexmap v2.14.2
+   Compiling synstructure v0.13.2
+   Compiling convert_case v0.4.0
+   Compiling vstd v0.0.0-2026-11-01-0251
+   Compiling verus_builtin_macros v0.0.0-2026-11-01-0251
+   Compiling verus_state_machines_macros v0.0.0-2026-11-01-0251
+    Checking verus_builtin v0.0.0-2026-11-01-0251
+    Checking inflate_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus)
+error: `--verify-root` is not allowed with `--no-cheating`
+error: could not compile `inflate_verus` (lib)
+
+Caused by:
+  process didn't exit successfully: `/opt/verus/verus /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc --crate-name inflate_verus --edition=2021 src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata -C embed-bitcode=no -C debuginfo=2 --warn=unexpected_cfgs --check-cfg 'cfg(verus_only)' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=9ba8703733f5164a -C extra-filename=-a4950485c1fc6ff8 --out-dir /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/target/verus-partial/debug/deps -C incremental=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/target/verus-partial/debug/incremental -L dependency=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/target/verus-partial/debug/deps --extern vstd=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/target/verus-partial/debug/deps/libvstd-01822e92e4f44378.rmeta -Z checksum-hash-algorithm=blake3` (exit status: 255)

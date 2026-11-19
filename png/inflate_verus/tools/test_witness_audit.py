@@ -2,6 +2,7 @@
 """Negative call-binding tests and a runs-free evidence checkout replay."""
 import contextlib
 import copy
+import hashlib
 import io
 import json
 from pathlib import Path
@@ -160,17 +161,93 @@ class WitnessAuditTests(unittest.TestCase):
         next(s for s in claims[0]['steps'] if s['symbol']>256)['distance']+=1
         with self.assertRaises(AssertionError):audit.validate_profile_transcriptions(claims,text,self.vectors)
 
+    @staticmethod
+    def checkout(root):
+        shutil.copytree(ROOT/'evidence',root/'evidence')
+        (root/'tools').mkdir();shutil.copy2(ROOT/'tools/witness_blocked.json',root/'tools/witness_blocked.json')
+        items=json.loads((ROOT/'evidence/historical-blocked.json').read_text())+json.loads((ROOT/'tools/witness_blocked.json').read_text())
+        for item in items:
+            dest=root/item['source_snapshot'];dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(ROOT/item['source_snapshot'],dest)
+        for record in json.loads((root/'evidence/manifest.json').read_text()):
+            for name in set(record.get('source_sha256',{})) | set(record.get('source_archives_sha256',{})):
+                dest=root/name;dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(ROOT/name,dest)
+
+    def split_case(self, edit, message):
+        """Apply edit(root, manifest, checkpoint_record) to a runs-free checkout, rehash
+        every edited evidence file, and require the named split check to fail."""
+        with tempfile.TemporaryDirectory(prefix='audit-split-',dir=ROOT/'backups') as temp:
+            root=Path(temp);self.checkout(root)
+            with contextlib.redirect_stdout(io.StringIO()):audit.validate_evidence(root)
+            manifest=json.loads((root/'evidence/manifest.json').read_text())
+            record=next(r for r in manifest if r.get('role')=='current-final-source-count')
+            self.assertEqual(record.get('kind'),'split-checkpoint')
+            edit(root,manifest,record)
+            for r in manifest:r['sha256']=hashlib.sha256((root/r['path']).read_bytes()).hexdigest()
+            (root/'evidence/manifest.json').write_text(json.dumps(manifest))
+            with self.assertRaisesRegex(AssertionError,message):
+                with contextlib.redirect_stdout(io.StringIO()):audit.validate_evidence(root)
+
+    @staticmethod
+    def edit_pass_log(root,record,index,old,new):
+        checkpoint=json.loads((root/record['path']).read_text())
+        log=root/f"evidence/run-{checkpoint['passes'][index]['run']:04d}.txt"
+        text=log.read_text();assert old in text,old
+        log.write_text(text.replace(old,new,1))
+
+    def test_split_checkpoint_missing_pass_is_rejected(self):
+        def edit(root,manifest,record):
+            path=root/record['path'];checkpoint=json.loads(path.read_text())
+            checkpoint['passes'].pop();record['pass_runs'].pop()
+            path.write_text(json.dumps(checkpoint))
+        self.split_case(edit,'checkpoint passes differ from the manifest')
+
+    def test_split_pass_with_errors_is_rejected(self):
+        def edit(root,manifest,record):
+            self.edit_pass_log(root,record,-1,'    "success": true,\n    "verified": ','    "success": false,\n    "verified": ')
+            self.edit_pass_log(root,record,-1,'\n    "errors": 0,\n','\n    "errors": 1,\n')
+        self.split_case(edit,'pass has errors')
+
+    def test_split_pass_on_different_source_tree_is_rejected(self):
+        def edit(root,manifest,record):
+            digest=json.loads((root/record['path']).read_text())['source_tree_sha256']
+            self.edit_pass_log(root,record,1,'VERIFY_SOURCE_TREE='+digest,'VERIFY_SOURCE_TREE='+'0'*64)
+        self.split_case(edit,'pass command or source tree differs')
+
+    def test_split_pass_cargo_replay_is_rejected(self):
+        def edit(root,manifest,record):
+            checkpoint=json.loads((root/record['path']).read_text())
+            log=root/f"evidence/run-{checkpoint['passes'][0]['run']:04d}.txt"
+            log.write_text(log.read_text().split('\n{\n',1)[0]+'\n')
+        self.split_case(edit,'need exactly one --output-json report')
+
+    def test_split_total_differing_from_monolithic_reference_is_rejected(self):
+        def edit(root,manifest,record):
+            ref=next(r for r in manifest if r.get('role')=='monolithic-reference-count')
+            count=int(ref['verification_results'].split()[2])
+            log=root/ref['path'];text=log.read_text()
+            log.write_text(text.replace(ref['verification_results'],f'verification results:: {count+1} verified, 0 errors'))
+            ref['verification_results']=f'verification results:: {count+1} verified, 0 errors'
+        self.split_case(edit,'differs from the monolithic reference')
+
+    def test_split_uncovered_module_is_rejected(self):
+        import split_checkpoint as sc
+        manifest=sc.load_manifest()
+        sc.check_coverage(manifest)
+        dropped=copy.deepcopy(manifest);dropped['passes'][-1]['modules'].pop()
+        with self.assertRaisesRegex(AssertionError,'verus modules in no pass'):sc.check_coverage(dropped)
+        with tempfile.TemporaryDirectory(prefix='audit-split-src-',dir=ROOT/'backups') as temp:
+            root=Path(temp)
+            shutil.copytree(ROOT/'src',root/'src');(root/'tools').mkdir()
+            shutil.copy2(ROOT/'Cargo.toml',root/'Cargo.toml');shutil.copy2(ROOT/sc.MANIFEST,root/sc.MANIFEST)
+            sc.check_coverage(manifest,root)
+            (root/'src/witness_extra.rs').write_text('use vstd::prelude::*;\nverus! {\nproof fn extra() {}\n}\n')
+            lib=root/'src/lib.rs';lib.write_text(lib.read_text().replace('mod witnesses;\n','mod witnesses;\n#[cfg(verus_only)]\nmod witness_extra;\n',1))
+            with self.assertRaisesRegex(AssertionError,'verus modules in no pass'):sc.check_coverage(manifest,root)
+
     def test_evidence_checkout_needs_no_runs_directory(self):
         with tempfile.TemporaryDirectory(prefix='audit-checkout-',dir=ROOT/'backups') as temp:
             root=Path(temp)
-            shutil.copytree(ROOT/'evidence',root/'evidence')
-            (root/'tools').mkdir();shutil.copy2(ROOT/'tools/witness_blocked.json',root/'tools/witness_blocked.json')
-            items=json.loads((ROOT/'evidence/historical-blocked.json').read_text())+json.loads((ROOT/'tools/witness_blocked.json').read_text())
-            for item in items:
-                dest=root/item['source_snapshot'];dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(ROOT/item['source_snapshot'],dest)
-            for record in json.loads((root/'evidence/manifest.json').read_text()):
-                for name in set(record.get('source_sha256',{})) | set(record.get('source_archives_sha256',{})):
-                    dest=root/name;dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(ROOT/name,dest)
+            self.checkout(root)
             self.assertFalse((root/'runs').exists())
             with contextlib.redirect_stdout(io.StringIO()):audit.validate_evidence(root)
             first=json.loads((root/'evidence/manifest.json').read_text())[0]

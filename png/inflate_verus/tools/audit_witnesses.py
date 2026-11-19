@@ -116,7 +116,9 @@ def validate_bindings(vectors, policy_vectors, source_overrides=None, manifest_o
     source_overrides = source_overrides or {}
     manifest_overrides = manifest_overrides or {}
     lib = source_overrides.get('lib.rs',(ROOT/'src/lib.rs').read_text())
-    active = set(re.findall(r'#\[cfg\(verus_only\)\]\s*(?:pub\s+)?mod\s+(\w+)\s*;',lib))
+    # A split-checkpoint gate (tools/split_checkpoint.py) only narrows which
+    # pass compiles the module; without features every gated module is active.
+    active = set(re.findall(r'#\[cfg\(verus_only\)\]\s*(?:#\[cfg\(any\(not\(feature = "split"\), feature = "split-[a-z0-9-]+"\)\)\]\s*)?(?:pub\s+)?mod\s+(\w+)\s*;',lib))
     def source(name):
         assert Path(name).stem in active, ('witness module is not active',name)
         return source_overrides[name] if name in source_overrides else (ROOT/'src'/name).read_text()
@@ -261,29 +263,111 @@ def validate_block_transcriptions(claims,text,vectors):
     return keys
 
 
+def strip_split_gates(lib):
+    """src/lib.rs as it reads without the split-checkpoint cfg gates."""
+    return re.sub(r'^#\[cfg\(any\(not\(feature = "split"\), feature = "split-[a-z0-9-]+"\)\)\]\n', '', lib, flags=re.M)
+
+
+def strip_split_features(cargo):
+    """Cargo.toml as it reads without the split-checkpoint [features] table."""
+    return re.sub(r'\n\[features\]\n(?:#[^\n]*\n|split[\w-]* = \[[^\n]*\]\n)*', '', cargo)
+
+
+def equivalent_monolithic_sources(root, sources):
+    """True when the reference run's sources equal the current tree, ignoring only
+    verify.sh and the split gates/features, which a feature-free build does not see."""
+    for name, digest in sources.items():
+        data = (root/name).read_bytes() if (root/name).exists() else b''
+        if name == 'src/lib.rs':
+            data = strip_split_gates(data.decode()).encode()
+        elif name == 'Cargo.toml':
+            data = strip_split_features(data.decode()).encode()
+        elif name == 'verify.sh':
+            continue
+        if hashlib.sha256(data).hexdigest() != digest:
+            return False
+    current = {str(p.relative_to(root)) for p in (root/'src').rglob('*.rs')}
+    return current == {n for n in sources if n.startswith('src/')}
+
+
+def validate_split_checkpoint(root, record, by_path):
+    """A split checkpoint: every manifest pass, 0 errors, one source tree, one unique total."""
+    import split_checkpoint as sc
+    checkpoint = json.loads((root/record['path']).read_text())
+    assert checkpoint['kind'] == 'split-checkpoint', record['path']
+    assert checkpoint['source_sha256'] == record['source_sha256'], 'checkpoint and manifest source bindings differ'
+    digest = sc.tree_hash(record['source_sha256'])
+    assert checkpoint['source_tree_sha256'] == digest, 'checkpoint tree hash does not match its source inventory'
+    manifest = sc.load_manifest(root)
+    sc.check_coverage(manifest, root)
+    names = [p['name'] for p in manifest['passes']]
+    assert [q['pass'] for q in checkpoint['passes']] == names, ('checkpoint passes differ from the manifest', names)
+    assert [q['run'] for q in checkpoint['passes']] == record['pass_runs'], 'pass runs differ'
+    logs = {}
+    for q in checkpoint['passes']:
+        path = f'evidence/run-{q["run"]:04d}.txt'
+        log_record = by_path.get(path)
+        assert log_record and log_record.get('role') == 'split-pass' and log_record.get('checkpoint') == record['path'], ('pass log not retained', path)
+        assert log_record['run'] == q['run'] and log_record['pass'] == q['pass'], path
+        logs[q['pass']] = (root/path).read_text()
+    counts, unique = sc.check_passes(manifest, logs, digest)
+    for q in checkpoint['passes']:
+        line = f'verification results:: {counts[q["pass"]]} verified, 0 errors'
+        assert q['verified'] == counts[q['pass']] and q['verification_results'] == line, q['pass']
+        assert by_path[f'evidence/run-{q["run"]:04d}.txt']['verification_results'] == line, q['pass']
+    summed = sum(counts.values())
+    assert checkpoint['verified_sum'] == record['verified_sum'] == summed, 'plain pass sum differs'
+    assert checkpoint['verified_unique_total'] == record['verified_unique_total'] == unique, 'unique total differs'
+    return unique
+
+
 def validate_evidence(root=ROOT):
     records = json.loads((root/'evidence/manifest.json').read_text())
     assert sum(record.get('role') == 'current-final-source-count' for record in records) == 1, 'one fresh source-bound final count is required'
+    assert sum(record.get('role') == 'monolithic-reference-count' for record in records) <= 1, 'at most one monolithic reference'
     paths = set()
+    by_path = {}
     for record in records:
         path = record['path']
         assert path.startswith('evidence/') and '..' not in Path(path).parts and path not in paths, path
         paths.add(path)
+        by_path[path] = record
         data = (root/path).read_bytes()
         assert hashlib.sha256(data).hexdigest() == record['sha256'], path
-        if 'verification_results' in record:
+        if 'verification_results' in record and record.get('role') != 'split-pass':
             assert record['verification_results'] in data.decode(), path
         for name,digest in record.get('source_archives_sha256',{}).items():
             assert '..' not in Path(name).parts and name.startswith('backups/'), name
             archive = (root/name).read_bytes()
             assert len(archive) < 1_000_000 and hashlib.sha256(archive).hexdigest() == digest, name
+    for record in records:
         if record.get('role') == 'current-final-source-count':
             sources = record['source_sha256']
-            actual = {str(p.relative_to(root)) for p in (root/'src').rglob('*.rs')} | {'Cargo.toml','Cargo.lock','verify.sh'}
+            if record.get('kind') == 'split-checkpoint':
+                import split_checkpoint as sc
+                actual = set(sc.source_inventory(root)) if (root/'src').exists() else set()
+            else:
+                actual = {str(p.relative_to(root)) for p in (root/'src').rglob('*.rs')} | {'Cargo.toml','Cargo.lock','verify.sh'}
             assert set(sources) == actual, 'final-count source inventory changed'
             for name,digest in sources.items():
                 assert '..' not in Path(name).parts
                 assert hashlib.sha256((root/name).read_bytes()).hexdigest() == digest, ('final-count source changed',name)
+            if record.get('kind') == 'split-checkpoint':
+                unique = validate_split_checkpoint(root, record, by_path)
+                reference = [r for r in records if r.get('role') == 'monolithic-reference-count']
+                if reference:
+                    # The split total is compared with the monolithic count, not
+                    # hidden: on equivalent sources both must count the same functions.
+                    ref = reference[0]
+                    assert equivalent_monolithic_sources(root, ref['source_sha256']), 'monolithic reference is not source-equivalent; drop or replace it'
+                    expected = int(re.fullmatch(r'verification results:: (\d+) verified, 0 errors', ref['verification_results'])[1])
+                    assert unique == expected, ('split unique total differs from the monolithic reference', unique, expected)
+    split_passes = [r for r in records if r.get('role') == 'split-pass']
+    current = [r for r in records if r.get('role') == 'current-final-source-count' and r.get('kind') == 'split-checkpoint']
+    for r in split_passes:
+        assert r['checkpoint'] in by_path, ('split pass of an unretained checkpoint', r['path'])
+        if current and r['checkpoint'] == current[0]['path']:
+            assert r['run'] in current[0]['pass_runs'], ('stray pass log for the current checkpoint', r['path'])
     for item in json.loads((root/'evidence/historical-blocked.json').read_text()) + json.loads((root/'tools/witness_blocked.json').read_text()):
         assert item['diagnostics'] in paths, item
         log = (root/item['diagnostics']).read_text()

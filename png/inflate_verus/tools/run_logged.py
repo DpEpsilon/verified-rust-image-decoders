@@ -35,6 +35,9 @@ def main():
     duration = time.monotonic() - start
     text = log.read_text()
     summaries = re.findall(r'^.*verification results.*$', text, re.M)
+    # `--output-json` (split-checkpoint passes) prints the same counts as JSON.
+    summaries += [f'verification results:: {v} verified, {e} errors' for v, e in re.findall(
+        r'^  "verification-results": \{\n(?:    "[\w-]+": \w+,\n)*?    "verified": (\d+),\n    "errors": (\d+),$', text, re.M)]
     summary = summaries[-1] if summaries else 'no verifier count (runtime/tooling command)'
     label = a.label.replace('\t', ' ').replace('\n', ' ')
     stamp = datetime.datetime.now(datetime.timezone.utc).isoformat()

@@ -1,0 +1,374 @@
+[split] source tree edcde0f42453250397937406815a67c41372a244b26b7e5f49bc7d11b54c6020; 6 pass(es)
+      "failed_proof_notes": []
+    },
+    "inflate_verus::model::OutputEffect::arrow_Error_error": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::model::be_value": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_checksum::sums": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_block_bridge::stored": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::canonical::first_codes::anon_const%0": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::limit_mono::compressed_shape": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::inflate::impl&%2::new::anon_const%0": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witnesses::stored_only::anon_const%0": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "vstd::slice::axiom_spec_slice_index": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    }
+  },
+  "verification-results": {
+    "encountered-error": false,
+    "encountered-vir-error": false,
+    "success": true,
+    "verified": 372,
+    "errors": 0,
+    "is-verifying-entire-crate": true
+  },
+  "verus": {
+    "profile": "release",
+    "version": "0.2026.11.02.8bf68ee",
+    "platform": {
+      "os": "linux",
+      "arch": "x86_64"
+    },
+    "toolchain": "1.99.1-x86_64-unknown-linux-gnu (overridden by environment variable RUSTUP_TOOLCHAIN)",
+    "commit": "8bf68ee741df833ea5d0fe6a2255126fdea87e47"
+  }
+}
+warning: `inflate_verus` (lib) generated 22 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 28.35s
+[run] 592, exit 0, 28.58s, /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/runs/0592.log
+[split] pass base: run 592, 28.58s, 372 verified, 0 errors
+      "failed_proof_notes": []
+    },
+    "inflate_verus::limit_mono::step_limit": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_config_cases::level6_filtered_trace": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_config_cases::excess_row_z": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_config_cases::empty_adam7_passes_shape": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_config_cases::policy_declared_beyond_part_0": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witnesses::check_at::anon_const%1": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::model::lemma_fixed_codes": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_config_cases::policy_declared_beyond_walk_4": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_config_cases::policy_excess_output_stays_an_error_trace_chunk_0": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    }
+  },
+  "verification-results": {
+    "encountered-error": false,
+    "encountered-vir-error": false,
+    "success": true,
+    "verified": 811,
+    "errors": 0,
+    "is-verifying-entire-crate": true
+  },
+  "verus": {
+    "profile": "release",
+    "version": "0.2026.11.02.8bf68ee",
+    "platform": {
+      "os": "linux",
+      "arch": "x86_64"
+    },
+    "toolchain": "1.99.1-x86_64-unknown-linux-gnu (overridden by environment variable RUSTUP_TOOLCHAIN)",
+    "commit": "8bf68ee741df833ea5d0fe6a2255126fdea87e47"
+  }
+}
+warning: `inflate_verus` (lib) generated 20 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 12m 38s
+[run] 593, exit 0, 759.19s, /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/runs/0593.log
+[split] pass config-cases: run 593, 759.19s, 811 verified, 0 errors
+      "failed_proof_notes": []
+    },
+    "vstd::utf8::decode_first_codepoint": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_extended::edge_ct3_d4_1x5::anon_const%0": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_extended::extended_ct4_d16_il0_9x10": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::model::DynamicHeader::arrow_lit": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_dynamic::profile": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::inflate::Output::previous": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::model::lengths_ok": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_extended::blend_operand_b": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::canonical::lemma_dead_prefix_representation": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    }
+  },
+  "verification-results": {
+    "encountered-error": false,
+    "encountered-vir-error": false,
+    "success": true,
+    "verified": 677,
+    "errors": 0,
+    "is-verifying-entire-crate": true
+  },
+  "verus": {
+    "profile": "release",
+    "version": "0.2026.11.02.8bf68ee",
+    "platform": {
+      "os": "linux",
+      "arch": "x86_64"
+    },
+    "toolchain": "1.99.1-x86_64-unknown-linux-gnu (overridden by environment variable RUSTUP_TOOLCHAIN)",
+    "commit": "8bf68ee741df833ea5d0fe6a2255126fdea87e47"
+  }
+}
+warning: `inflate_verus` (lib) generated 20 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4m 58s
+[run] 594, exit 0, 298.28s, /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/runs/0594.log
+[split] pass extended: run 594, 298.28s, 677 verified, 0 errors
+      "failed_proof_notes": []
+    },
+    "vstd::view::impl&%18::view": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "vstd::std_specs::slice::generic_slice_index_postcondition": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_classes::intent_ct4_d8_il0_17x2": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "verus_builtin::impl&%17::clone": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::model::lemma_admissible_dead_prefix": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::inflate::blocks": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_classes::intent_ct0_d8_il1_2x3": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_dynamic::profile_active": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "vstd::std_specs::slice::impl&%1::index_postcondition": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    }
+  },
+  "verification-results": {
+    "encountered-error": false,
+    "encountered-vir-error": false,
+    "success": true,
+    "verified": 517,
+    "errors": 0,
+    "is-verifying-entire-crate": true
+  },
+  "verus": {
+    "profile": "release",
+    "version": "0.2026.11.02.8bf68ee",
+    "platform": {
+      "os": "linux",
+      "arch": "x86_64"
+    },
+    "toolchain": "1.99.1-x86_64-unknown-linux-gnu (overridden by environment variable RUSTUP_TOOLCHAIN)",
+    "commit": "8bf68ee741df833ea5d0fe6a2255126fdea87e47"
+  }
+}
+warning: `inflate_verus` (lib) generated 20 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2m 13s
+[run] 595, exit 0, 133.79s, /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/runs/0595.log
+[split] pass classes-blocks: run 595, 133.79s, 517 verified, 0 errors
+      "failed_proof_notes": []
+    },
+    "vstd::std_specs::result::impl&%0::arrow_Ok_0": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_profiles::subframe_step_2": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_dynamic_cases::deflate_dynamic_single_dist_code_len1": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::InflateError::clone": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "core::panicking::panic_fmt": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "vstd::slice::impl&%2::spec_index": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "core::slice::impl&%0::len": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "vstd::utf8::third_last_continuation_byte": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "vstd::std_specs::range::impl&%11::spec_start_bound": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    }
+  },
+  "verification-results": {
+    "encountered-error": false,
+    "encountered-vir-error": false,
+    "success": true,
+    "verified": 452,
+    "errors": 0,
+    "is-verifying-entire-crate": true
+  },
+  "verus": {
+    "profile": "release",
+    "version": "0.2026.11.02.8bf68ee",
+    "platform": {
+      "os": "linux",
+      "arch": "x86_64"
+    },
+    "toolchain": "1.99.1-x86_64-unknown-linux-gnu (overridden by environment variable RUSTUP_TOOLCHAIN)",
+    "commit": "8bf68ee741df833ea5d0fe6a2255126fdea87e47"
+  }
+}
+warning: `inflate_verus` (lib) generated 20 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1m 27s
+[run] 596, exit 0, 87.37s, /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/runs/0596.log
+[split] pass dynamic: run 596, 87.37s, 452 verified, 0 errors
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_cases::deflate_distance_before_output::anon_const%0": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "vstd::arithmetic::div_mod::lemma_div_multiples_vanish": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::segments::SegmentSlices::work": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "vstd::slice::spec_slice_update": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "core::ops::index::Index::index": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "vstd::std_specs::result::impl&%0::arrow_Ok_0": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_policy_cases::second_stream::anon_const%1": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::model::remaining_mass": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    },
+    "inflate_verus::witness_policy_cases::second_stream::anon_const%6": {
+      "obligation_proof_notes": [],
+      "failed_proof_notes": []
+    }
+  },
+  "verification-results": {
+    "encountered-error": false,
+    "encountered-vir-error": false,
+    "success": true,
+    "verified": 410,
+    "errors": 0,
+    "is-verifying-entire-crate": true
+  },
+  "verus": {
+    "profile": "release",
+    "version": "0.2026.11.02.8bf68ee",
+    "platform": {
+      "os": "linux",
+      "arch": "x86_64"
+    },
+    "toolchain": "1.99.1-x86_64-unknown-linux-gnu (overridden by environment variable RUSTUP_TOOLCHAIN)",
+    "commit": "8bf68ee741df833ea5d0fe6a2255126fdea87e47"
+  }
+}
+warning: `inflate_verus` (lib) generated 20 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 50.25s
+[run] 597, exit 0, 50.46s, /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/runs/0597.log
+[split] pass fixed-policy: run 597, 50.46s, 410 verified, 0 errors
+[split] checkpoint /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/runs/checkpoint-0592.json: 6 passes, 0 errors; unique total 1379 verified (plain sum 3239 counts base 6 times); 1357.67s

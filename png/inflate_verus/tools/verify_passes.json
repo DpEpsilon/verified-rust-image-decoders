@@ -1,0 +1,86 @@
+{
+ "bound_seconds": 1500,
+ "target_seconds": 900,
+ "note": "Pass 'base' verifies the modules compiled in every pass: the crate root, core decoder/model modules and the witness modules that other witness modules import. Every other pass compiles base plus its own leaf witness modules, selected by its Cargo feature through #[cfg] gates in src/lib.rs. The unique total is base + sum over leaf passes of (pass count - base count).",
+ "monolithic_reference": {
+  "run": 582,
+  "verification_results": "verification results:: 1379 verified, 0 errors"
+ },
+ "passes": [
+  {
+   "name": "base",
+   "feature": "split",
+   "modules": [
+    "<root>",
+    "adler",
+    "bits",
+    "canonical",
+    "classification",
+    "huffman",
+    "inflate",
+    "limit_mono",
+    "limits",
+    "model",
+    "segments",
+    "witness_block_bridge",
+    "witness_checksum",
+    "witness_config",
+    "witness_dynamic",
+    "witness_layout",
+    "witness_literal_class",
+    "witness_match",
+    "witness_policy",
+    "witness_profile_bridge",
+    "witness_stored_bridge",
+    "witness_window",
+    "witnesses"
+   ]
+  },
+  {
+   "name": "config-cases",
+   "feature": "split-config-cases",
+   "modules": [
+    "witness_config_cases"
+   ]
+  },
+  {
+   "name": "extended",
+   "feature": "split-extended",
+   "modules": [
+    "witness_extended"
+   ]
+  },
+  {
+   "name": "classes-blocks",
+   "feature": "split-classes-blocks",
+   "modules": [
+    "witness_blocks",
+    "witness_classes"
+   ]
+  },
+  {
+   "name": "dynamic",
+   "feature": "split-dynamic",
+   "modules": [
+    "witness_d4",
+    "witness_dynamic_cases",
+    "witness_invalid_dynamic",
+    "witness_profiles",
+    "witness_repeats",
+    "witness_single_literal"
+   ]
+  },
+  {
+   "name": "fixed-policy",
+   "feature": "split-fixed-policy",
+   "modules": [
+    "witness_cases",
+    "witness_finish",
+    "witness_overlap",
+    "witness_policy_cases",
+    "witness_special",
+    "witness_window_cases"
+   ]
+  }
+ ]
+}

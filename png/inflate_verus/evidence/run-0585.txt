@@ -1,0 +1,13 @@
+command: ['env', 'VERIFY_SOURCE_TREE=394567faeef3b04cea7b2ef3e7bee53fd49d3b0c6bd8470959eef23b2880f710', 'VERIFY_PASS=core', 'cargo', 'verus', 'verify', '--', '--num-threads', '2', '--no-cheating', '--time-expanded', '--verify-root', '--verify-module', 'adler', '--verify-module', 'bits', '--verify-module', 'canonical', '--verify-module', 'classification', '--verify-module', 'huffman', '--verify-module', 'inflate', '--verify-module', 'limit_mono', '--verify-module', 'limits', '--verify-module', 'model', '--verify-module', 'segments']
+partial verification selector: `--verify-root`
+partial verification selector: `--verify-module`
+partial verification selector: `--verify-module`
+partial verification selector: `--verify-module`
+partial verification selector: `--verify-module`
+partial verification selector: `--verify-module`
+partial verification selector: `--verify-module`
+partial verification selector: `--verify-module`
+partial verification selector: `--verify-module`
+partial verification selector: `--verify-module`
+partial verification selector: `--verify-module`
+Error: Partial verification must use `cargo verus focus`

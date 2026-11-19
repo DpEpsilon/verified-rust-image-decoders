@@ -1,4 +1,14 @@
-# Current checkpoint: round 7 recovered at default limits
+# Current checkpoint: split verifier checkpoints
+
+2026-11-19. **Split checkpoint 592–597: 1,379 unique verified functions, 0 errors**, on the same proof sources as monolithic run 582. Core coverage is still 615/631. Run a checkpoint with `/home/ws/projects/verified-decoders/png/inflate_verus/verify.sh [label]`, which runs the six passes of `tools/verify_passes.json` serially under one lock. Each pass is bounded at 25 minutes with unchanged flags plus `--output-json`. `verify.sh --only PASS` runs one pass and is never a checkpoint.
+
+Passes select modules through Cargo features and `#[cfg]` gates in `src/lib.rs`, because the pinned Verus rejects `--verify-module`/`--verify-root` under `--no-cheating` (585–587). Per-pass counts and durations: base 372 (29 s), config-cases 811 (12 min 39 s), extended 677 (5 min), classes-blocks 517 (2 min 14 s), dynamic 452 (1 min 27 s), fixed-policy 410 (50 s). The plain sum 3,239 counts base six times; the unique total 1,379 is what the audit compares against reference 582. All 33 tests pass in 598; controls and the coverage check pass in 599.
+
+Open points: `config-cases` is a single module at 12 min 39 s, under 15 minutes but not well under, and it can only be divided by splitting `witness_config_cases.rs`. Cargo replays an unchanged pass without running Verus; the replay fails closed, so rerunning a checkpoint needs a changed Rust source. **Next logged run: 601.** All jobs have exited.
+
+---
+
+# Previous checkpoint: round 7 recovered at default limits
 
 2026-11-19. **Fresh final-source run 582: 1,379 verified, 0 errors. Core coverage: 615/631, up by 23.** All 21 first-fixed-block gaps and both remaining dynamic profiles now verify. The sixteen remaining malformed/ambiguous IHDR/fcTL instances lack legal independent R and remain uncredited. No legal-R stream is resource-blocked; `tools/witness_blocked.json` is empty and all 23 round-7 failed formulations remain in retained historical diagnostics.
 

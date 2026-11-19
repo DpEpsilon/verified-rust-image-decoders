@@ -8,6 +8,16 @@ description = "Allocation-free PNG zlib/DEFLATE core; M1a plain implementation"
 [dependencies]
 vstd = { version = "=0.0.0-2026-11-01-0251", default-features = false, features = ["alloc"] }
 
+[features]
+# Split-checkpoint pass selection (tools/verify_passes.json). Without any of
+# these features every witness module is compiled, as in a monolithic run.
+split = []
+split-config-cases = ["split"]
+split-extended = ["split"]
+split-classes-blocks = ["split"]
+split-dynamic = ["split"]
+split-fixed-policy = ["split"]
+
 [package.metadata.verus]
 verify = true
 

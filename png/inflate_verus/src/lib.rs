@@ -18,58 +18,74 @@ pub mod limits;
 pub mod model;
 pub mod segments;
 #[cfg(verus_only)]
+#[cfg(any(not(feature = "split"), feature = "split-fixed-policy"))]
 mod witness_cases;
 #[cfg(verus_only)]
+#[cfg(any(not(feature = "split"), feature = "split-classes-blocks"))]
 mod witness_classes;
 #[cfg(verus_only)]
 mod witness_checksum;
 #[cfg(verus_only)]
 mod witness_config;
 #[cfg(verus_only)]
+#[cfg(any(not(feature = "split"), feature = "split-config-cases"))]
 mod witness_config_cases;
 #[cfg(verus_only)]
 mod witness_profile_bridge;
 #[cfg(verus_only)]
+#[cfg(any(not(feature = "split"), feature = "split-dynamic"))]
 mod witness_profiles;
 #[cfg(verus_only)]
 mod witness_block_bridge;
 #[cfg(verus_only)]
+#[cfg(any(not(feature = "split"), feature = "split-classes-blocks"))]
 mod witness_blocks;
 #[cfg(verus_only)]
+#[cfg(any(not(feature = "split"), feature = "split-dynamic"))]
 mod witness_d4;
 #[cfg(verus_only)]
 mod witness_dynamic;
 #[cfg(verus_only)]
+#[cfg(any(not(feature = "split"), feature = "split-dynamic"))]
 mod witness_dynamic_cases;
 #[cfg(verus_only)]
+#[cfg(any(not(feature = "split"), feature = "split-extended"))]
 mod witness_extended;
 #[cfg(verus_only)]
 mod witness_stored_bridge;
 #[cfg(verus_only)]
+#[cfg(any(not(feature = "split"), feature = "split-fixed-policy"))]
 mod witness_finish;
 #[cfg(verus_only)]
 mod witness_layout;
 #[cfg(verus_only)]
+#[cfg(any(not(feature = "split"), feature = "split-dynamic"))]
 mod witness_invalid_dynamic;
 #[cfg(verus_only)]
 mod witness_literal_class;
 #[cfg(verus_only)]
 mod witness_match;
 #[cfg(verus_only)]
+#[cfg(any(not(feature = "split"), feature = "split-fixed-policy"))]
 mod witness_overlap;
 #[cfg(verus_only)]
 mod witness_policy;
 #[cfg(verus_only)]
+#[cfg(any(not(feature = "split"), feature = "split-fixed-policy"))]
 mod witness_policy_cases;
 #[cfg(verus_only)]
+#[cfg(any(not(feature = "split"), feature = "split-dynamic"))]
 mod witness_repeats;
 #[cfg(verus_only)]
+#[cfg(any(not(feature = "split"), feature = "split-dynamic"))]
 mod witness_single_literal;
 #[cfg(verus_only)]
+#[cfg(any(not(feature = "split"), feature = "split-fixed-policy"))]
 mod witness_special;
 #[cfg(verus_only)]
 mod witness_window;
 #[cfg(verus_only)]
+#[cfg(any(not(feature = "split"), feature = "split-fixed-policy"))]
 mod witness_window_cases;
 #[cfg(verus_only)]
 mod witnesses;

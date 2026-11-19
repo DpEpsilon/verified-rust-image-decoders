@@ -3,9 +3,10 @@
 
 The copy shares the pre-seeded target directory; this script never removes a
 source or target directory. Every verifier invocation uses the copied verify.sh,
-with its original flags, lock and timeout. Logs append to the main run inventory.
+with its original flags, lock and per-pass timeout. Logs append to the main run inventory.
 """
 import argparse
+import json
 from pathlib import Path
 import re
 import shutil
@@ -145,9 +146,12 @@ def main():
         (dest / name).symlink_to(ROOT / name, target_is_directory=name != 'RUNLOG.tsv')
     source = dest / 'src' / filename
     source.write_text(text.replace(before, after))
-    result = subprocess.run(['timeout', '25m', str(dest / 'verify.sh'),
+    # verify.sh runs the split passes serially, each bounded at 25 minutes, and
+    # stops at the first failing pass; bound the whole sequence accordingly.
+    passes = len(json.loads((dest / 'tools/verify_passes.json').read_text())['passes'])
+    result = subprocess.run(['timeout', f'{passes * 1530}s', str(dest / 'verify.sh'),
                              f'Proof mutation {args.case} (disposable source copy)'],
-                            timeout=1530)
+                            timeout=passes * 1530 + 30)
     row = (ROOT / 'RUNLOG.tsv').read_text().splitlines()[-1]
     match = re.search(r'verification results:: (\d+) verified, (\d+) errors', row)
     assert result.returncode != 0 and match and int(match[2]) > 0, row

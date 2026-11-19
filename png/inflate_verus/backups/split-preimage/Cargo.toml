@@ -1,0 +1,19 @@
+[package]
+name = "inflate_verus"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "Allocation-free PNG zlib/DEFLATE core; M1a plain implementation"
+
+[dependencies]
+vstd = { version = "=0.0.0-2026-11-01-0251", default-features = false, features = ["alloc"] }
+
+[package.metadata.verus]
+verify = true
+
+[[example]]
+name = "allocator_probe"
+crate-type = ["rlib"]
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(verus_only)'] }

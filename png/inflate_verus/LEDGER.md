@@ -1,5 +1,47 @@
 # Inflate proof ledger
 
+## Split verifier checkpoints, 2026-11-19
+
+**Split checkpoint 592–597: 1,379 unique verified functions, 0 errors, on one source tree** (tree hash `edcde0f4…6020`). This equals monolithic run 582. The six passes take 22 min 38 s in total; the longest takes 12 min 39 s, against 23 min 02 s for the single run 582 under the same 25-minute bound. No proof changed, and core coverage stays **615 / 631**.
+
+| Runs | Result |
+|---|---|
+| 585 | `cargo verus verify` refuses `--verify-module`/`--verify-root`: "Partial verification must use `cargo verus focus`" |
+| 586 | `cargo verus focus`: "`--verify-root` is not allowed with `--no-cheating`" (focus also builds vstd afresh under `target/verus-partial/`) |
+| 587 | "`--verify-module` is not allowed with `--no-cheating`" |
+| 588 | Base pass in a disposable copy: 372 verified, 0 errors, 29 s; `--time-expanded` names only the three slowest modules |
+| 589, 590 | Cargo replays of unchanged sources: no verifier output (fails closed) |
+| 591 | Base pass in a disposable copy with `--output-json`: per-function report, 372 verified |
+| 592 | Pass `base`: **372** verified, 0 errors, 28.58 s |
+| 593 | Pass `config-cases` (`witness_config_cases`): **811** verified, 0 errors, 759.19 s |
+| 594 | Pass `extended` (`witness_extended`): **677** verified, 0 errors, 298.28 s |
+| 595 | Pass `classes-blocks` (2 modules): **517** verified, 0 errors, 133.79 s |
+| 596 | Pass `dynamic` (6 modules): **452** verified, 0 errors, 87.37 s |
+| 597 | Pass `fixed-policy` (6 modules): **410** verified, 0 errors, 50.46 s |
+| 598 | All **33** audit tests pass: the 27 existing tests and six split-evidence negative tests |
+| 599 | Source/provenance/cap controls and the split coverage check pass |
+| 600 | Plain `cargo test --all-targets` passes with the gates present |
+
+### How passes select modules
+
+The pinned Verus cannot select modules under `--no-cheating`, so passes select modules at compile time. `src/lib.rs` adds one `#[cfg(any(not(feature = "split"), feature = "split-PASS"))]` line under the existing `#[cfg(verus_only)]` of each of the 16 leaf witness modules (modules that no other module imports). `Cargo.toml` adds a `[features]` table with `split` and the five `split-PASS` features. These are the only source changes. With the gate lines removed, `src/lib.rs` hashes to run 582's `e745b40b…`; with the table removed, `Cargo.toml` hashes to 582's `0d588588…`. Every other `src/*.rs` file is byte-identical to run 582. A build without features compiles every module, so a feature-free build is the same program as run 582's.
+
+Pass `base` (feature `split`) verifies 23 ungated modules: the crate root, the ten core modules and the twelve imported witness modules. Each leaf pass verifies base plus its own leaves. Every pass adds `--output-json`, which prints the verification results and lists every function of the crate. This is the only flag added; `--num-threads 2`, `--no-cheating`, `CARGO_BUILD_JOBS=1`, default solver limits, the 25-minute bound, the flock and the legacy-invocation checks are unchanged. `run_logged.py` turns the JSON counts into the usual `verification results::` RUNLOG summary.
+
+### Count reconciliation
+
+The plain sum of the six pass counts is 3,239, which counts base's 372 functions six times (5 × 372 = 1,860 extra). The unique total is 372 + (811 − 372) + (677 − 372) + (517 − 372) + (452 − 372) + (410 − 372) = 372 + 439 + 305 + 145 + 80 + 38 = **1,379**. The subtraction is valid because the audit checks that every pass lists the identical function set for each base module. The audit compares the unique total with monolithic reference 582 whenever the reference's sources are equivalent in the sense above, and rejects any difference.
+
+### Evidence and checks
+
+`tools/verify_passes.json` is the checked-in pass manifest, and `evidence/checkpoint-0592.json` records the per-pass durations that justify the grouping. `config-cases` holds the single module `witness_config_cases` and cannot be divided further without splitting that source file; at 12 min 39 s it is under 15 minutes but is not well under. `tools/split_checkpoint.py --check` fails if any module containing `verus!` code is in no pass or in two passes, if a manifest module has no `verus!` code, or if the manifest, the gates in `src/lib.rs` and the Cargo features disagree. Each pass command carries `VERIFY_SOURCE_TREE=<hash>` over all 46 bound files: `src/*.rs`, Cargo files, `verify.sh`, the manifest, `verify_split.py`, `split_checkpoint.py` and `run_logged.py`.
+
+`tools/audit_witnesses.py` accepts a split checkpoint as the final count. Pass logs 592–597 and the checkpoint record are retained in `evidence/` with hashes, and selector diagnostics 585–587 are retained as well. Run 582 becomes `monolithic-reference-count`. The audit checks that every manifest pass is present in order, each pass log is bound to the checkpoint's tree hash, each report shows 0 errors and `is-verifying-entire-crate`, each pass lists its own modules and base and no other pass's leaves, base function sets are equal across passes, and the stated sum and unique total are correct. The six new tests reject a missing pass, a pass with errors, a pass on a different source tree hash, a cargo replay, a unique total that differs from the monolithic reference, and an uncovered module (a manifest module dropped, and a new `verus!` module in no pass).
+
+`tools/proof_mutations.py` still calls the copied `verify.sh`. It now bounds the whole sequence at six × 25.5 minutes, and the driver stops at the first failing pass. A rerun on an unchanged tree replays cargo's cache and fails closed, as run 475 already did for monolithic runs, so a fresh checkpoint needs a changed Rust source. Disposable probe copies were removed. The focus probe left a new `target/verus-partial/` (172 MB). `target/debug` was not touched; its vstd `01822e92e4f44378` files still match the GIF copy. **Final count: split checkpoint 592–597, 1,379 unique verified, 0 errors. Tests: 598; controls: 599. Next logged run: 601.** No frozen, review or errata file, commit, push or edit outside the crate occurred.
+
+---
+
 ## Round 7 recovered: shared default-limit queries, 2026-11-19
 
 **Fresh final-source run 582: 1,379 verified, 0 errors.** Core coverage is **615 / 631**, up by **23** from 592. All 21 first-fixed-block gaps and both remaining dynamic profiles now pass at default solver limits. The only sixteen uncredited core instances lack a legal independent IHDR/fcTL R. No legal-R stream remains solver-resource blocked. This is a clean partial M2 checkpoint, not M2 sign-off.
