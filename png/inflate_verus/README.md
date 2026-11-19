@@ -1,6 +1,6 @@
 # Allocation-free PNG inflate
 
-Split checkpoint 592–597 reports **1,379 unique verified functions, 0 errors** on the current tree, equal to monolithic run 582 on the same proof sources.
+Split checkpoint 592–597 reports **1,379 unique verified functions, 0 errors** on the current tree, equal to monolithic run 582 on the same proof sources. The same checkpoint replayed for `i686-unknown-linux-gnu` (runs 603–608, against the pinned i686 vstd cache built once in run 602; see `I686-CACHE.md`) reports the same per-pass counts and 1,379 unique verified, 0 errors.
 
 ## Running a verifier checkpoint
 
@@ -14,7 +14,7 @@ Monolithic run 582 reported **1,379 verified, 0 errors**. Independent authored w
 
 Every witness/member/layout/policy claim has an audited exact public-call descriptor. Source controls pass in 599; all 33 negative, complete-pipeline, runs-free checkout and split-evidence tests pass in 598. Required evidence logs and source archives have retained hashes, and split checkpoint 592 binds the exact 46 source, build and checkpoint-tool files. Current resource-blocked metadata is empty; resolved default-limit attempts remain historical evidence.
 
-Production runtime bodies are unchanged from 5f697fa. Complete fresh runtime evidence 566–572 passes: thirteen tests, host/thumb instantiated allocator probes and symbols, all vector layouts, 10,000 generated streams and 10,000 corruptions, no unexpected differences. Eighteen policy records are proved as inflate outcomes outside the core numerator, not integrated PNG policy results. The historical mutation total is 67 after runs 580–581 kill a computed-length increment and rejection of legal window equality. This is not M2 sign-off; matching-cache i686 replay, caller integration and the signed allocation audit remain open.
+Production runtime bodies are unchanged from 5f697fa. Complete fresh runtime evidence 566–572 passes: thirteen tests, host/thumb instantiated allocator probes and symbols, all vector layouts, 10,000 generated streams and 10,000 corruptions, no unexpected differences. Eighteen policy records are proved as inflate outcomes outside the core numerator, not integrated PNG policy results. The historical mutation total is 67 after runs 580–581 kill a computed-length increment and rejection of legal window equality. This is not M2 sign-off; caller integration and the signed allocation audit remain open. The matching-cache i686 replay is done (603–608).
 
 ## Historical M1a implementation
 

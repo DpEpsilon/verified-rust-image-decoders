@@ -1,0 +1,158 @@
+{
+ "kind": "split-checkpoint",
+ "label": "i686-unknown-linux-gnu replay of split checkpoint 592 (CARGO_BUILD_TARGET, CARGO_TARGET_DIR=target/i686-verify, vstd a8222d889f5a22f0)",
+ "finished": "2026-11-19T12:11:23.894948+00:00",
+ "source_tree_sha256": "edcde0f42453250397937406815a67c41372a244b26b7e5f49bc7d11b54c6020",
+ "source_sha256": {
+  "Cargo.lock": "f4d52baebc4a41779dfc9a203b3bfce84a9d92103fac4eab2915e6637acf2921",
+  "Cargo.toml": "148bb3761c23d8846d0f5794c694211298e5b17fb46a10f8032242961baace63",
+  "src/adler.rs": "db061928f7e3c4ef4ff45e5ab48c92ede0569304a776d6a533b0036c5deff046",
+  "src/bits.rs": "d1d704186be0ffe3d6b817099525578fbbf174c560b2ad7b759989ec4f85cb2b",
+  "src/canonical.rs": "e43e178e41b6f899cfd9a34567c12c38190d91adc188d897ecdafd56d529dd05",
+  "src/classification.rs": "2f0ee7aa432c5702180d0b1e7683b2c3fd2a170dc9a8eeddbfd35cff7edde876",
+  "src/huffman.rs": "4b9f98bc39d57c3751c91d86fa4dbd5e50036a389cee0c0429067cfe0d423cb8",
+  "src/inflate.rs": "926287199b4123a17480f49470a688e2de4df1868410f37bde022c14d0abe86f",
+  "src/lib.rs": "6bf4e3bc0717b3d173d5311992ef2edb1ef06312d4090500eb5d7fb888595804",
+  "src/limit_mono.rs": "8a214a233b9fea93c52ef8a45a5d9a8382d2ea9cba30b4f23acc392d5d1fd982",
+  "src/limits.rs": "497f86d8b9fc71451601e3651c4cbd5fac75c1170d08ca3fd2e3bc3cd7fc54ea",
+  "src/model.rs": "d5619b1d0e7dcfe0e209082a653cdae215a254a6cbaeaae134dd7842a685a160",
+  "src/segments.rs": "f9a04d3a7fcfe5874064e0ca1fec9b88c21098dda134fd06788e80c5b8c5b663",
+  "src/witness_block_bridge.rs": "81681b5a0c6fed3fb6ea55da0b909c5d78f37cc02669a157e59c1c02f55c1f4b",
+  "src/witness_blocks.rs": "3f9b10a2e3be710c0aba65818b39f914ccfe66d7dca6092748a287fb283f74c4",
+  "src/witness_cases.rs": "9a734929cd88b29a63f0bde591ea9af19bd271528aa82e40cef66cac25f147b5",
+  "src/witness_checksum.rs": "d935017fb68f16cbac0fe318c9e2dc9fc9077dad83159fae43e3ef516c4a7ddd",
+  "src/witness_classes.rs": "a77413cb77045ac293b8e94278df392d5d352d8c5af0123d241f5948fe7697ff",
+  "src/witness_config.rs": "b6bef7c2681527ceea6dbdf8696074eeed4453cee252096d5ea74a304adf506d",
+  "src/witness_config_cases.rs": "3815b2c4d4ab003393653f1f96df33b599d5e2e4f244e913ec351086d0217a42",
+  "src/witness_d4.rs": "7d49e31c9303e9f8cfe77e6685d52a786c394fd698b2f8a88d2dae353b448e48",
+  "src/witness_dynamic.rs": "57269d72a363c753bdb027d2983cf9f216d0d22d69bf41f168a50930275260e4",
+  "src/witness_dynamic_cases.rs": "4d4fcd5c7f05a7a1a5310049b1002f4b2271db9b35217cbcd0565787e0215d9e",
+  "src/witness_extended.rs": "d2411d534c49b7f4ba5f011df5f91872522455d9f710ed9d5882e26c93f03cf6",
+  "src/witness_finish.rs": "e59edcb65ee2f9f339d6d3df5a28799cb137f7dd9b0a52d1419cbdbd3fca6ab5",
+  "src/witness_invalid_dynamic.rs": "caad81dd70f850be2d837a8c32bc7c85c10eb7aa94cf0d797984636ff1f671c5",
+  "src/witness_layout.rs": "9cf1aebc631902790fd76a02510691c6bb5e2b0b59b0138849b5dc6a87ca99f3",
+  "src/witness_literal_class.rs": "c86201eb6ffbdebc3d676b2ab51ddf220bb5d6155d2a4ab323296a8f6659236b",
+  "src/witness_match.rs": "515dec9968ed434a652a3ab84b891ff3bc8c125b12832873f0bdda5c0ae425ad",
+  "src/witness_overlap.rs": "bc74197a489a1677831019c82da4078d5c0095540d208a060d2aa89cb7cf42bd",
+  "src/witness_policy.rs": "51e1cf7d52e25f80e852826e2e28abe3dbf65023063f8da19335690f18d19294",
+  "src/witness_policy_cases.rs": "62bb4164aa71cbd69820c2d8acd8e99c8598d394631dd3f97a7295bc7df9241b",
+  "src/witness_profile_bridge.rs": "159950c14e5d8017928b239b2bb06a3db358162eb97a4cae7445246614c03c28",
+  "src/witness_profiles.rs": "fa2bd66377141bd73105bbed61d727559854d8834ef8f9746bbc3532f49c54e9",
+  "src/witness_repeats.rs": "28c32ff6ee92a777e8b0209e3f097d86dc18a179b2dd4a38788afa11e3cdcb90",
+  "src/witness_single_literal.rs": "5299652ae61fd046a1224aa4a63a9da36d349fcaa34442aa1a45797009320db0",
+  "src/witness_special.rs": "b90d35f7ec76ffad74f1501526608d21a5990191389d95d5949d960d5097b34b",
+  "src/witness_stored_bridge.rs": "31460ed5b6a098942adae3df4bb6ee858065ad2b8c49e2e4937b0dfcebcbc5ff",
+  "src/witness_window.rs": "29c04a7b7ebdc0e74a21eecd73e7870232679a663d60a94cfb74b6c505d7ac1b",
+  "src/witness_window_cases.rs": "afd90deb9e6b06df1e50ee80770941a7d4fa6892212eb8a48b6772560bf2ed0f",
+  "src/witnesses.rs": "c48fa769eb24964a12e63ec16369e416bdede1925c4f955a21e329426bc590ed",
+  "tools/run_logged.py": "d90b5b67b8ead5d363334bd78a8654b304ebb53b955bc161a70eb0a52fa532cb",
+  "tools/split_checkpoint.py": "44028ec2764dbf5044ef9686eab3440fff95db2684bb057e45e5b46b84038c60",
+  "tools/verify_passes.json": "9874b4174c704082d82c4cb779c71f07c16d4b836f75d524ecee30bf2a440143",
+  "tools/verify_split.py": "d5ed328450d5b4e631383b0844060a17fb9054323b942926d9d8939c06d92b88",
+  "verify.sh": "71134f0eaa03654804e2fa95337b5cc2a05e714963a8d0b6d47f66a3c85821e2"
+ },
+ "passes": [
+  {
+   "pass": "base",
+   "feature": "split",
+   "modules": [
+    "<root>",
+    "adler",
+    "bits",
+    "canonical",
+    "classification",
+    "huffman",
+    "inflate",
+    "limit_mono",
+    "limits",
+    "model",
+    "segments",
+    "witness_block_bridge",
+    "witness_checksum",
+    "witness_config",
+    "witness_dynamic",
+    "witness_layout",
+    "witness_literal_class",
+    "witness_match",
+    "witness_policy",
+    "witness_profile_bridge",
+    "witness_stored_bridge",
+    "witness_window",
+    "witnesses"
+   ],
+   "run": 603,
+   "seconds": 27.86,
+   "verified": 372,
+   "verification_results": "verification results:: 372 verified, 0 errors"
+  },
+  {
+   "pass": "config-cases",
+   "feature": "split-config-cases",
+   "modules": [
+    "witness_config_cases"
+   ],
+   "run": 604,
+   "seconds": 744.74,
+   "verified": 811,
+   "verification_results": "verification results:: 811 verified, 0 errors"
+  },
+  {
+   "pass": "extended",
+   "feature": "split-extended",
+   "modules": [
+    "witness_extended"
+   ],
+   "run": 605,
+   "seconds": 294.07,
+   "verified": 677,
+   "verification_results": "verification results:: 677 verified, 0 errors"
+  },
+  {
+   "pass": "classes-blocks",
+   "feature": "split-classes-blocks",
+   "modules": [
+    "witness_blocks",
+    "witness_classes"
+   ],
+   "run": 606,
+   "seconds": 157.68,
+   "verified": 517,
+   "verification_results": "verification results:: 517 verified, 0 errors"
+  },
+  {
+   "pass": "dynamic",
+   "feature": "split-dynamic",
+   "modules": [
+    "witness_d4",
+    "witness_dynamic_cases",
+    "witness_invalid_dynamic",
+    "witness_profiles",
+    "witness_repeats",
+    "witness_single_literal"
+   ],
+   "run": 607,
+   "seconds": 103.47,
+   "verified": 452,
+   "verification_results": "verification results:: 452 verified, 0 errors"
+  },
+  {
+   "pass": "fixed-policy",
+   "feature": "split-fixed-policy",
+   "modules": [
+    "witness_cases",
+    "witness_finish",
+    "witness_overlap",
+    "witness_policy_cases",
+    "witness_special",
+    "witness_window_cases"
+   ],
+   "run": 608,
+   "seconds": 56.15,
+   "verified": 410,
+   "verification_results": "verification results:: 410 verified, 0 errors"
+  }
+ ],
+ "verified_sum": 3239,
+ "verified_unique_total": 1379,
+ "seconds_total": 1383.97
+}

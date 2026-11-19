@@ -1,4 +1,12 @@
-# Current checkpoint: split verifier checkpoints
+# Current checkpoint: pinned i686 verifier replay
+
+2026-11-19. **i686 split checkpoint 603–608: 1,379 unique verified functions, 0 errors**, on the same source tree as host checkpoint 592–597; every pass count matches the host's. The owner-authorised i686 vstd cache was built once in run 602 under `target/i686-verify/` (vstd 1,950 verified, `libvstd-a8222d889f5a22f0`); `I686-CACHE.md` gives the commands and hashes. `target/debug` is unchanged (snapshots 601 and 609). Audit tests pass in 611 (37 tests), controls in 612.
+
+Pinned i686 replay is no longer open. Caller integration and the signed allocation audit remain open, so this is not M2 sign-off. A second i686 replay on an unchanged tree would be a cargo replay and fails closed. **Next logged run: 613.** All jobs have exited.
+
+---
+
+# Previous checkpoint: split verifier checkpoints
 
 2026-11-19. **Split checkpoint 592–597: 1,379 unique verified functions, 0 errors**, on the same proof sources as monolithic run 582. Core coverage is still 615/631. Run a checkpoint with `/home/ws/projects/verified-decoders/png/inflate_verus/verify.sh [label]`, which runs the six passes of `tools/verify_passes.json` serially under one lock. Each pass is bounded at 25 minutes with unchanged flags plus `--output-json`. `verify.sh --only PASS` runs one pass and is never a checkpoint.
 

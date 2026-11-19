@@ -321,6 +321,28 @@ def validate_split_checkpoint(root, record, by_path):
     return unique
 
 
+def validate_target_replay(root, record, final, by_path):
+    """A split checkpoint replayed for another target (I686-CACHE.md): the same
+    source tree and unique total as the current final count, every pass compiled
+    for record['target'] against the recorded vstd cache, and vstd not rebuilt."""
+    assert record.get('kind') == 'split-checkpoint' and final.get('kind') == 'split-checkpoint', record['path']
+    assert record['source_sha256'] == final['source_sha256'], 'target replay ran on a different source tree'
+    unique = validate_split_checkpoint(root, record, by_path)
+    assert unique == final['verified_unique_total'], ('target replay unique total differs from the final count', unique, final['verified_unique_total'])
+    target, vstd = record['target'], record['vstd_rmeta']
+    assert re.fullmatch(r'[a-z0-9_]+(-[a-z0-9_]+)+', target) and target != 'x86_64-unknown-linux-gnu', target
+    assert re.fullmatch(rf'target/[\w.-]+/{re.escape(target)}/debug/deps/libvstd-[0-9a-f]{{16}}\.rmeta', vstd), vstd
+    for run in record['pass_runs']:
+        text = (root/f'evidence/run-{run:04d}.txt').read_text()
+        crate = [l for l in text.splitlines() if l.lstrip().startswith('Running `') and '--crate-name inflate_verus ' in l]
+        assert len(crate) == 1, ('target replay pass needs one verbose inflate_verus rustc line', run, len(crate))
+        assert f' --target {target} ' in crate[0], ('target replay pass not compiled for the target', run)
+        assert re.search(rf' --extern vstd=/\S+/inflate_verus/{re.escape(vstd)} ', crate[0]), ('target replay pass used another vstd', run)
+        assert not re.search(r'^\s*Compiling vstd ', text, re.M), ('target replay pass rebuilt vstd', run)
+        assert re.search(r'^\s*Fresh vstd ', text, re.M), ('target replay pass does not show the cached vstd', run)
+    return unique
+
+
 def validate_evidence(root=ROOT):
     records = json.loads((root/'evidence/manifest.json').read_text())
     assert sum(record.get('role') == 'current-final-source-count' for record in records) == 1, 'one fresh source-bound final count is required'
@@ -362,12 +384,17 @@ def validate_evidence(root=ROOT):
                     assert equivalent_monolithic_sources(root, ref['source_sha256']), 'monolithic reference is not source-equivalent; drop or replace it'
                     expected = int(re.fullmatch(r'verification results:: (\d+) verified, 0 errors', ref['verification_results'])[1])
                     assert unique == expected, ('split unique total differs from the monolithic reference', unique, expected)
+    final = [r for r in records if r.get('role') == 'current-final-source-count']
+    for record in records:
+        if record.get('role') == 'target-replay-count':
+            validate_target_replay(root, record, final[0], by_path)
     split_passes = [r for r in records if r.get('role') == 'split-pass']
-    current = [r for r in records if r.get('role') == 'current-final-source-count' and r.get('kind') == 'split-checkpoint']
+    current = [r for r in records if r.get('role') in ('current-final-source-count', 'target-replay-count') and r.get('kind') == 'split-checkpoint']
     for r in split_passes:
         assert r['checkpoint'] in by_path, ('split pass of an unretained checkpoint', r['path'])
-        if current and r['checkpoint'] == current[0]['path']:
-            assert r['run'] in current[0]['pass_runs'], ('stray pass log for the current checkpoint', r['path'])
+        for c in current:
+            if r['checkpoint'] == c['path']:
+                assert r['run'] in c['pass_runs'], ('stray pass log for the current checkpoint', r['path'])
     for item in json.loads((root/'evidence/historical-blocked.json').read_text()) + json.loads((root/'tools/witness_blocked.json').read_text()):
         assert item['diagnostics'] in paths, item
         log = (root/item['diagnostics']).read_text()

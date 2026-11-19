@@ -1,5 +1,52 @@
 # Inflate proof ledger
 
+## Council decision: the sixteen instances without a legal independent R, 2026-11-19
+
+Decided by the council (option A, 4 of 4 in round 3; sealed report `/home/ws/projects/council/sealed/COUNCIL-REPORT-PNG-M2R.md`, sha256 `49827654a4a203a1931924d07e5c629bb6c6c25074caa22e73b986e8e80f1c48`). The recorded wording is the fable seat's round-3 text, verbatim, followed by the astra seat's scope sentence:
+
+M2 witness accounting, the sixteen instances without a legal independent R. This entry settles how M2 sign-off counts these sixteen instances and nothing else; it does not establish that the named M2 gates are complete. The frozen M2 witness gate is the record list at THEOREMS.md:193, and M2 sign-off separately requires every stream of every record named there to carry a model-versus-expected proof and a call of both public inflate entries at L = R, together with the T-SEG, window-size and INFL(RB) gates listed there. The 631-instance figure is the proof team's supplementary target, not the frozen gate. Of the 631 extracted core stream instances, 615 carry such a witness, with R computed from the record's IHDR or fcTL by tools/audit_witnesses.py independently of any decoder or oracle. The audit derives no legal R for the other 16: inventory indices 364, 381, 384-396 and 616 (two container/*, thirteen ihdr/* and one apng-bad/* record; index 616 is stream 1, the fdAT stream, of apng-bad/fctl-width-0). None of these records is named at THEOREMS.md:193; all are M3 gate records under THEOREMS.md:194. 'No legal R' is the audit's classification (not exactly one 13-byte IHDR, an IHDR field that fails P4, or a frame size outside 1..2^31-1); it is not a claim that the raster formula is undefined on every such header. The reference oracle computes no R for these records, and the frozen specification rejects each record in the walk before it decodes the stream. These 16 instances are outside the supplementary target by council decision. They are not witnessed, not resource-blocked and not credited: no fallback limit was assigned (neither R_p = 0, nor the formula applied to malformed fields, nor the generator's 14 and 18), and no witness of a byte-identical stream in another record is counted for them. For information only: their compressed bytes equal streams witnessed in 136 other instances at R = 14 (indices 364-396) and in 23 other instances at R = 18 (index 616). Of the 615 witnessed instances, 164 are in records whose frozen Strict expectation is a walk error; those witnesses remain in the numerator as standalone inflate outcomes at the audit's R, not as evidence that PNG decoding reaches inflate on those records. Coverage is reported as '615 of 631 extracted core stream instances witnessed; the other 16 have no legal independent R and are excluded by council decision', always with all three numbers. The ledger must not report 631 of 631, 615 of 615 without the 16 and the 631 beside it, 100 per cent of core streams, a solver-resource blocker for the 16, or whole-PNG conformance on any record from M2 evidence. The universal inflate refinement keeps its stated domain of streams, limits, supported option tuples and verified target. Open obligation L-WALK-FIRST, an M3 sign-off gate: for every input, under Strict each public PNG entry makes no inflate call and reserves no Raw buffer unless the walk (MW, or MWF_p for the constructor) succeeds; under every other claimed profile, each entry inflates only the streams that the profile's specified outcome decodes, and in particular never inflates the fdAT data of a frame whose fcTL failed its checks (under RecommendedBeta's static fallback the valid default image may be allocated and decoded; the rejected frame's stream may not). The frozen expectations of the 16 records are M3 witness gates under THEOREMS.md:194. M6 sign-off must establish that the integrated public PNG paths preserve the walk, allocation, rejection and recovery behaviour proved at M3. The ledger must link L-WALK-FIRST and each of these gates to its evidence and say which part Verus checks and which rests on inspection or runtime tests. M2 sign-off discharges none of them; they stay open until evidenced and block M3 or M6 sign-off, not M2.
+
+This decision permits M2 sign-off on this point only, subject to all remaining M2 obligations.
+
+---
+
+## Pinned i686 verifier replay, 2026-11-19
+
+**i686 split checkpoint 603–608: 1,379 unique verified functions, 0 errors**, on the host checkpoint's source tree (tree hash `edcde0f4…6020`). Every pass count equals host checkpoint 592–597, so the unique total equals it too. The owner authorised building the missing i686 vstd cache once; `I686-CACHE.md` records how to rebuild it.
+
+| Runs | Result |
+|---|---|
+| 601 | `target/debug` snapshot before: sha256, size and mtime of all 2,179 files |
+| 602 | i686 vstd cache built in `target/i686-verify/`: vstd **1,950 verified, 0 errors** (same as the host build), `libvstd-a8222d889f5a22f0` |
+| 603 | Pass `base` on i686: **372** verified, 0 errors, 27.86 s |
+| 604 | Pass `config-cases`: **811** verified, 0 errors, 744.74 s |
+| 605 | Pass `extended`: **677** verified, 0 errors, 294.07 s |
+| 606 | Pass `classes-blocks`: **517** verified, 0 errors, 157.68 s |
+| 607 | Pass `dynamic`: **452** verified, 0 errors, 103.47 s |
+| 608 | Pass `fixed-policy`: **410** verified, 0 errors, 56.15 s |
+| 609 | `target/debug` snapshot after: identical to 601 |
+| 610 | Audit tests: one new test failed on its own edit string (expected `--` after the target triple; rustc's next token is `-C`); test fixed, no audit change |
+| 611 | All **37** audit tests pass: the 33 existing tests and four target-replay negative tests |
+| 612 | Source/provenance/cap controls and the split coverage check pass |
+
+### How the cache was built
+
+The host cache `libvstd-01822e92e4f44378` comes from GIF run 1, a plain `cargo verus verify`: cargo-verus verifies vstd with `--is-vstd`, exports its `.vir`, and forwards no Verus arguments to it. A `--no-cheating` pass cannot build vstd, because `--is-vstd` is refused under `--no-cheating` (run 19); the host passes only work because cargo reuses the cached vstd. Run 602 (`tools/build_i686_vstd.sh`, under the verifier lock and the 25-minute bound) repeats that build with `CARGO_BUILD_TARGET=i686-unknown-linux-gnu` and `--fwd-verus-args-to roots`, so vstd again receives no forwarded arguments. The root crate receives only `--no-verify` and yields no count. Verus, vstd, rustc, `Cargo.lock` and vstd's features (`alloc` only) are unchanged. `CARGO_TARGET_DIR=target/i686-verify` keeps cargo's host-side proc macros and build scripts out of `target/debug`. The cache directory holds 273 MB: 210 MB of host-side units and 78 MB of i686 units. The `.vir` has 45,171,447 bytes and sha256 `2f705972…343f`.
+
+### How the replay ran
+
+`verify.sh`, `verify_split.py`, `split_checkpoint.py` and `run_logged.py` are unchanged, so the source tree hash and each pass command equal the host's. The target and cache directory come from the environment (`CARGO_BUILD_TARGET`, `CARGO_TARGET_DIR`). `CARGO_TERM_VERBOSE=true` makes each log show the `inflate_verus` rustc line with `--target i686-unknown-linux-gnu` and `--extern vstd=…/libvstd-a8222d889f5a22f0.rmeta`, plus `Fresh vstd`. Flags, bounds, flock, legacy-invocation check and one-at-a-time rule are unchanged. No cargo replay occurred: target/i686-verify had no earlier result for any `split*` feature, and each pass log holds its `--output-json` report.
+
+The counts match exactly, as expected: the crate does not fix `size_of usize`, so Verus already proves every obligation for a 32- or 64-bit `usize` on the host, and neither vstd nor the crate has a `target_pointer_width` or `target_arch` cfg.
+
+### Evidence and checks
+
+Logs 601–609, 611 and 612 and `evidence/checkpoint-0603.json` are retained in `evidence/` with hashes. The checkpoint record has the new role `target-replay-count`. For it, `tools/audit_witnesses.py` runs the existing split-checkpoint validation and also requires the source inventory and unique total of the current final count. It also requires, in every pass log, one verbose `inflate_verus` rustc line carrying the recorded target and vstd `.rmeta`, `Fresh vstd`, and no `Compiling vstd`. The four new tests reject a pass compiled without the target, a different vstd, a rebuilt vstd, and a different source tree.
+
+`target/debug` was not written: listings 601 and 609 agree byte for byte below their command lines, and `libvstd-01822e92e4f44378.vir`/`.rmeta` still hash to `49934e17…a533`/`6cf84fc3…e618`, equal to the GIF copy. **Final counts: host checkpoint 592–597 and i686 checkpoint 603–608, each 1,379 unique verified, 0 errors. Tests: 611; controls: 612. Next logged run: 613.** No frozen, review or errata file, proof or source file, commit, push or edit outside the crate occurred.
+
+---
+
 ## Split verifier checkpoints, 2026-11-19
 
 **Split checkpoint 592–597: 1,379 unique verified functions, 0 errors, on one source tree** (tree hash `edcde0f4…6020`). This equals monolithic run 582. The six passes take 22 min 38 s in total; the longest takes 12 min 39 s, against 23 min 02 s for the single run 582 under the same 25-minute bound. No proof changed, and core coverage stays **615 / 631**.

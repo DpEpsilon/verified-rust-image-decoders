@@ -244,6 +244,42 @@ class WitnessAuditTests(unittest.TestCase):
             lib=root/'src/lib.rs';lib.write_text(lib.read_text().replace('mod witnesses;\n','mod witnesses;\n#[cfg(verus_only)]\nmod witness_extra;\n',1))
             with self.assertRaisesRegex(AssertionError,'verus modules in no pass'):sc.check_coverage(manifest,root)
 
+    def replay_case(self, edit, message):
+        """Like split_case, for the target-replay (i686) checkpoint record."""
+        with tempfile.TemporaryDirectory(prefix='audit-replay-',dir=ROOT/'backups') as temp:
+            root=Path(temp);self.checkout(root)
+            with contextlib.redirect_stdout(io.StringIO()):audit.validate_evidence(root)
+            manifest=json.loads((root/'evidence/manifest.json').read_text())
+            record=next(r for r in manifest if r.get('role')=='target-replay-count')
+            edit(root,manifest,record)
+            for r in manifest:r['sha256']=hashlib.sha256((root/r['path']).read_bytes()).hexdigest()
+            (root/'evidence/manifest.json').write_text(json.dumps(manifest))
+            with self.assertRaisesRegex(AssertionError,message):
+                with contextlib.redirect_stdout(io.StringIO()):audit.validate_evidence(root)
+
+    def test_target_replay_compiled_for_host_is_rejected(self):
+        def edit(root,manifest,record):
+            self.edit_pass_log(root,record,2,f" --target {record['target']} ",' ')
+        self.replay_case(edit,'not compiled for the target')
+
+    def test_target_replay_with_other_vstd_is_rejected(self):
+        def edit(root,manifest,record):
+            record['vstd_rmeta']=record['vstd_rmeta'][:-len('0123456789abcdef.rmeta')]+'0123456789abcdef.rmeta'
+        self.replay_case(edit,'used another vstd')
+
+    def test_target_replay_rebuilding_vstd_is_rejected(self):
+        def edit(root,manifest,record):
+            checkpoint=json.loads((root/record['path']).read_text())
+            log=root/f"evidence/run-{checkpoint['passes'][0]['run']:04d}.txt"
+            first,rest=log.read_text().split('\n',1)
+            log.write_text(first+'\n   Compiling vstd v0.0.0-2026-11-01-0251\n'+rest)
+        self.replay_case(edit,'rebuilt vstd')
+
+    def test_target_replay_on_other_source_tree_is_rejected(self):
+        def edit(root,manifest,record):
+            record['source_sha256']=dict(record['source_sha256'],**{'src/lib.rs':'0'*64})
+        self.replay_case(edit,'different source tree')
+
     def test_evidence_checkout_needs_no_runs_directory(self):
         with tempfile.TemporaryDirectory(prefix='audit-checkout-',dir=ROOT/'backups') as temp:
             root=Path(temp)
