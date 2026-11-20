@@ -8,6 +8,14 @@ pub open spec fn bits(h: crate::model::Ihdr) -> nat {
     (if h.color_type==0 || h.color_type==3 {1nat}else if h.color_type==2 {3nat}else if h.color_type==4 {2nat}else{4nat}) * h.depth as nat
 }
 
+pub open spec fn output_count(h: crate::model::Ihdr,wide: bool) -> nat {
+    (if wide {8nat}else{4nat})*h.width as nat*h.height as nat
+}
+pub open spec fn image_buffers(h: crate::model::Ihdr,wide: bool,raw_bytes: Seq<u8>,output: Seq<u8>) -> bool {
+    raw_bytes.len()==raw(h.interlace,bits(h),h.width as nat,h.height as nat)
+    && output.len()==output_count(h,wide)
+}
+
 pub open spec fn span(n: nat, origin: nat, step: nat) -> nat {
     if n>origin {((n-origin+step-1)/(step as int)) as nat}else{0}
 }
@@ -83,8 +91,13 @@ pub proof fn coverage(w: nat,h: nat)
     assert(area_prefix(w,h,0)==0);
     assert(area_prefix(w,h,7)==a*p+b*p+c*q+d*r+e*s+f*t+w*u);
     assert(row_prefix(h,7)==2*p+q+r+s+t+u);
-    assert(a*p+b*p+c*q+d*r+e*s+f*t+w*u==w*h) by (nonlinear_arith)
-        requires a+b==c,c+d==e,e+f==w,p+q==r,r+s==t,t+u==h;
+    assert(a*p+b*p==c*p) by (nonlinear_arith) requires a+b==c;
+    assert(c*p+c*q==c*r) by (nonlinear_arith) requires p+q==r;
+    assert(c*r+d*r==e*r) by (nonlinear_arith) requires c+d==e;
+    assert(e*r+e*s==e*t) by (nonlinear_arith) requires r+s==t;
+    assert(e*t+f*t==w*t) by (nonlinear_arith) requires e+f==w;
+    assert(w*t+w*u==w*h) by (nonlinear_arith) requires t+u==h;
+    assert(a*p+b*p+c*q+d*r+e*s+f*t+w*u==w*h);
     assert(2*p+q+r+s+t+u==h+t+r+p);
     assert(t+r+p<=h+2);
 }

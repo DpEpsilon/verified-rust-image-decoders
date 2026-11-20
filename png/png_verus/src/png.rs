@@ -4,8 +4,8 @@
 //!
 //! Every entry point runs the structural walk to IEND first (`walk.rs`); only
 //! then does it reserve, through the sealed guard, in the order of SPEC P20.
-//! M1b: ordinary Rust. The guard calls pass `Tracked::assume_new()` logs, as
-//! GIF's M1 did; M3–M6 replace them with the sealed log and the proofs.
+//! M3 guard helpers borrow a real sealed log owned by each call's Trace.
+//! Complete public log/decoder composition remains separate from these helpers.
 
 use alloc::vec::Vec;
 
@@ -340,51 +340,124 @@ pub struct Still16 {
     pub info: Info,
 }
 
-/// The reservation requests a call made, in order (P20 `Req`), whether or not
-/// each succeeded. A fixed-size runtime record; the sealed `AllocLog` is its
-/// ghost counterpart once the proofs land.
-#[derive(Clone, Copy, Debug)]
+verus! {
+
+/// One public call's runtime request record and owned, sealed logical log.
 pub(crate) struct Trace {
     sites: [(AllocSite, usize); 3],
     n: usize,
+    log: Tracked<AllocLog>,
 }
-
 impl Trace {
-    fn new() -> Trace {
-        Trace { sites: [(AllocSite::Raw, 0); 3], n: 0 }
+    closed spec fn log_view(&self) -> Seq<(AllocSite,nat,bool)> {self.log@.view()}
+    closed spec fn prefix_recorded(&self, count: nat) -> bool {
+        count<=3 && count<=self.log_view().len()
+        && forall|i: int| 0<=i<count ==> self.sites@[i].0==self.log_view()[i].0
+            && self.sites@[i].1==self.log_view()[i].1
     }
-    fn record(&mut self, site: AllocSite, elements: usize) {
-        if self.n < 3 {
-            self.sites[self.n] = (site, elements);
-            self.n += 1;
-        }
+    closed spec fn wf(&self) -> bool {
+        self.n==self.log_view().len() && self.prefix_recorded(self.n as nat)
     }
-    /// The requests in order: the first `n` entries.
+    fn new() -> (r: Self)
+        ensures r.wf(),r.n==0,r.log_view()==Seq::<(AllocSite,nat,bool)>::empty(),
+    {
+        let tracked log=crate::alloc_guard::new_log();
+        Self {sites:[(AllocSite::Raw,0);3],n:0,log:Tracked(log)}
+    }
+    /// Record after the guard logs its success/failure; public return traces
+    /// include the request on both paths, without an unsealed log mutation.
+    fn record(&mut self, site: AllocSite, elements: usize)
+        requires old(self).n<3,old(self).log_view().len()==old(self).n+1,
+            old(self).prefix_recorded(old(self).n as nat),
+            old(self).log_view().last().0==site,old(self).log_view().last().1==elements,
+        ensures final(self).wf(),final(self).n==old(self).n+1,
+            final(self).log_view()==old(self).log_view(),
+    {
+        self.sites[self.n]=(site,elements);
+        self.n+=1;
+    }
     #[cfg(feature = "test-records")]
-    fn list(&self) -> ([(AllocSite, usize); 3], usize) {
-        (self.sites, self.n)
-    }
+    fn list(&self) -> (r: ([(AllocSite, usize); 3], usize))
+        ensures r==(self.sites,self.n),
+    {(self.sites,self.n)}
 }
+fn oom(o: OutOfMemory) -> (r: TryError)
+    ensures r==TryError::OutOfMemory(o),
+{TryError::OutOfMemory(o)}
 
-fn oom(o: OutOfMemory) -> TryError {
-    TryError::OutOfMemory(o)
-}
+} // verus!
 
 /// The checked still/ICC structural walk, before any reservation.
 fn still_walk(b: &[u8], pol: &Policy, ev: &mut Events) -> Result<Doc, TryError> {
     crate::callers::still(b,pol,ev)
 }
 
-/// `Raw` then `Output` (P20), after a successful walk. `out_bytes` is `4·N` or
-/// `8·N`; both requests are at most `MAX_BYTES` by `caps_ok`.
-fn reserve_image(doc: &Doc, out_bytes: usize, trace: &mut Trace) -> Result<(Vec<u8>, Vec<u8>), TryError> {
-    let r = raw_size(&doc.ihdr, doc.ihdr.w, doc.ihdr.h) as usize;
-    trace.record(AllocSite::Raw, r);
-    let raw = try_zeroed(AllocSite::Raw, r, Tracked::<&mut AllocLog>::assume_new()).map_err(oom)?;
-    trace.record(AllocSite::Output, out_bytes);
-    let out = try_zeroed(AllocSite::Output, out_bytes, Tracked::<&mut AllocLog>::assume_new()).map_err(oom)?;
-    Ok((raw, out))
+verus! {
+
+/// Actual Raw/Output prefix, borrowing this call's sealed log.
+fn reserve_image(doc: &Doc, out_bytes: usize, trace: &mut Trace) -> (r: Result<(Vec<u8>,Vec<u8>),TryError>)
+    requires doc.ihdr.wf(),1<=out_bytes<=crate::alloc_guard::MAX_BYTES,
+        old(trace).wf(),old(trace).n==0,
+    ensures final(trace).wf(),crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),
+        crate::alloc_guard::req_of_log(final(trace).log_view()).is_prefix_of(seq![
+            (AllocSite::Raw,crate::layout_model::raw(doc.ihdr.interlace,crate::layout_model::bits(doc.ihdr.view()),doc.ihdr.w as nat,doc.ihdr.h as nat)),
+            (AllocSite::Output,out_bytes as nat)]),
+        match r {Ok((raw,out))=>
+            raw@==Seq::new(crate::layout_model::raw(doc.ihdr.interlace,crate::layout_model::bits(doc.ihdr.view()),doc.ihdr.w as nat,doc.ihdr.h as nat),|_i: int|0u8)
+            && out@==Seq::new(out_bytes as nat,|_i: int|0u8)
+            && final(trace).log_view()==seq![(AllocSite::Raw,raw@.len(),true),(AllocSite::Output,out_bytes as nat,true)],
+            Err(TryError::Format(_))=>false,
+            Err(TryError::OutOfMemory(_))=>final(trace).log_view().len()==1 || final(trace).log_view().len()==2},
+{
+    let bytes=raw_size(&doc.ihdr,doc.ihdr.w,doc.ihdr.h);
+    proof {crate::limits::caps_ok();}
+    let n=bytes as usize;
+    let result=try_zeroed(AllocSite::Raw,n,Tracked(trace.log.borrow_mut()));
+    trace.record(AllocSite::Raw,n);
+    let raw=match result {Ok(v)=>v,Err(o)=>return Err(oom(o))};
+    let result=try_zeroed(AllocSite::Output,out_bytes,Tracked(trace.log.borrow_mut()));
+    trace.record(AllocSite::Output,out_bytes);
+    match result {Ok(out)=>Ok((raw,out)),Err(o)=>Err(oom(o))}
 }
+
+fn reserve_saved(n: usize, trace: &mut Trace) -> (r: Result<Vec<u8>,TryError>)
+    requires 1<=n<=crate::alloc_guard::MAX_BYTES,old(trace).wf(),old(trace).n==0,
+    ensures final(trace).wf(),crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),
+        final(trace).log_view()==seq![(AllocSite::Saved,n as nat,r.is_ok())],
+        match r {Ok(v)=>v@==Seq::new(n as nat,|_i: int|0u8),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let result=try_zeroed(AllocSite::Saved,n,Tracked(trace.log.borrow_mut()));
+    trace.record(AllocSite::Saved,n);
+    match result {Ok(v)=>Ok(v),Err(o)=>Err(oom(o))}
+}
+
+fn reserve_icc_window(trace: &mut Trace) -> (r: Result<Vec<u8>,TryError>)
+    requires old(trace).wf(),old(trace).n==0,
+    ensures final(trace).wf(),crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),
+        final(trace).log_view()==seq![(AllocSite::IccWindow,WINDOW_MAX as nat,r.is_ok())],
+        match r {Ok(v)=>v@==Seq::new(WINDOW_MAX as nat,|_i: int|0u8),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    proof {crate::limits::caps_ok();assert(1<=WINDOW_MAX) by (bit_vector);}
+    let result=try_zeroed(AllocSite::IccWindow,WINDOW_MAX,Tracked(trace.log.borrow_mut()));
+    trace.record(AllocSite::IccWindow,WINDOW_MAX);
+    match result {Ok(v)=>Ok(v),Err(o)=>Err(oom(o))}
+}
+
+fn reserve_icc(n: usize, trace: &mut Trace) -> (r: Result<Vec<u8>,TryError>)
+    requires n<=MAX_ICC,old(trace).wf(),old(trace).n==1,
+        crate::alloc_guard::all_ok(old(trace).log_view()),
+    ensures final(trace).wf(),crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),
+        final(trace).log_view()==old(trace).log_view().push((AllocSite::Icc,n as nat,r.is_ok())),
+        match r {Ok(v)=>v@==Seq::new(n as nat,|_i: int|0u8),Err(TryError::OutOfMemory(_))=>n>0,_=>false},
+{
+    proof {crate::limits::caps_ok();}
+    let result=if n==0 {try_empty(AllocSite::Icc,Tracked(trace.log.borrow_mut()))}
+        else {try_zeroed(AllocSite::Icc,n,Tracked(trace.log.borrow_mut()))};
+    trace.record(AllocSite::Icc,n);
+    match result {Ok(v)=>Ok(v),Err(o)=>Err(oom(o))}
+}
+
+} // verus!
 
 /// P15 for RGBA8 (`wide = false`) or RGBA16: walk, reserve, decode.
 fn still_impl(b: &[u8], pol: &Policy, wide: bool, ev: &mut Events, trace: &mut Trace) -> Result<(Doc, Vec<u8>), TryError> {
@@ -504,41 +577,75 @@ impl<'a> Frames<'a> {
         && self.doc.info.num_plays==match self.doc.actl {Some(a)=>Some(a.num_plays),None=>None}
     }
 
+    /// Storage lengths only; sample values and subframe-fit semantics are separate.
+    pub closed spec fn buffers_wf(&self) -> bool {
+        self.doc.ihdr.wf()
+        && crate::layout_model::image_buffers(self.doc.ihdr.view(),false,self.raw@,self.canvas@)
+        && match self.saved {None=>true,Some(v)=>v@.len()==self.canvas@.len()}
+    }
+
     fn from_decoded(b: &'a [u8], pol: Policy, mut doc: Doc,
         raw: Vec<u8>, canvas: Vec<u8>, base: Events) -> (r: Self)
         requires crate::frame_state::source_document(b@,doc),
-        ensures r.source_wf(),r.b==b,r.pol==pol,r.base==base,r.saved.is_none(),
+            crate::layout_model::image_buffers(doc.ihdr.view(),false,raw@,canvas@),
+        ensures r.source_wf(),r.buffers_wf(),r.b==b,r.pol==pol,r.base==base,r.saved.is_none(),
             r.raw@==raw@,r.canvas@==canvas@,
             r.doc.info.view()==crate::document_model::constructor_info(doc.view()),
             r.state.single()==doc.actl.is_none(),!r.state.done(),
     {
         crate::frame_state::constructor_info(b,&mut doc);
         let state=FrameState::new(b,&doc);
-        proof {reveal(Frames::source_wf);}
+        proof {reveal(Frames::source_wf);reveal(Frames::buffers_wf);reveal(crate::frame_state::source_document);}
         Self {b,pol,doc,raw,canvas,saved:None,base,state}
     }
 
     fn begin_source(&mut self) -> (r: Step<'a>)
         requires old(self).source_wf(),
-        ensures final(self).source_wf(),final(self).state.done(),
+        ensures final(self).source_wf(),
+            old(self).buffers_wf() ==> final(self).buffers_wf(),final(self).state.done(),
             final(self).doc==old(self).doc,final(self).b==old(self).b,
             final(self).raw==old(self).raw,final(self).canvas==old(self).canvas,
             final(self).saved==old(self).saved,final(self).base==old(self).base,
             match r {Step::Frame(job)=>job.wf(final(self).b@,final(self).doc),_=>true},
     {
-        proof {reveal(Frames::source_wf);}
+        proof {reveal(Frames::source_wf);reveal(Frames::buffers_wf);}
         self.state.begin_next(self.b,&self.doc)
     }
 
     fn commit_source(&mut self, resume: FrameState)
         requires old(self).source_wf(),resume.wf(old(self).b@,old(self).doc),
-        ensures final(self).source_wf(),final(self).state==resume,
+        ensures final(self).source_wf(),
+            old(self).buffers_wf() ==> final(self).buffers_wf(),final(self).state==resume,
             final(self).doc==old(self).doc,final(self).b==old(self).b,
             final(self).raw==old(self).raw,final(self).canvas==old(self).canvas,
             final(self).saved==old(self).saved,final(self).base==old(self).base,
     {
-        proof {reveal(Frames::source_wf);}
+        proof {reveal(Frames::source_wf);reveal(Frames::buffers_wf);}
         self.state=resume;
+    }
+
+    fn ensure_saved(&mut self, needed: bool, trace: &mut Trace) -> (r: Result<(),TryError>)
+        requires old(self).source_wf(),old(self).buffers_wf(),old(trace).wf(),old(trace).n==0,
+        ensures final(self).source_wf(),final(self).buffers_wf(),final(trace).wf(),
+            final(self).doc==old(self).doc,final(self).state==old(self).state,
+            final(self).raw==old(self).raw,final(self).canvas==old(self).canvas,
+            crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),
+            !needed || old(self).saved.is_some() ==> final(trace).log_view().len()==0,
+            needed && old(self).saved.is_none() ==> final(trace).log_view()==seq![(AllocSite::Saved,old(self).canvas@.len(),r.is_ok())],
+            r.is_ok() && needed ==> final(self).saved.is_some(),
+            r.is_err() ==> matches!(r,Err(TryError::OutOfMemory(_))) && final(self).saved.is_none(),
+    {
+        proof {reveal(Frames::source_wf);reveal(Frames::buffers_wf);crate::limits::caps_ok();}
+        if !needed || self.saved.is_some() {return Ok(());}
+        let n=self.canvas.len();
+        proof {
+            assert(4*(self.doc.ihdr.w as int)*(self.doc.ihdr.h as int)>=4) by (nonlinear_arith)
+                requires self.doc.ihdr.w>=1,self.doc.ihdr.h>=1;
+            assert(1<=n<=crate::alloc_guard::MAX_BYTES);
+        }
+        match reserve_saved(n,trace) {
+            Err(e)=>Err(e),Ok(v)=>{self.saved=Some(v);Ok(())},
+        }
     }
 
     pub closed spec fn info_value(&self) -> Info {self.doc.info}
@@ -553,10 +660,15 @@ impl<'a> Frames<'a> {
 /// Source/metadata composition only: supplied buffers are never decoded here.
 #[cfg(verus_only)]
 pub(crate) fn receiver_source_witness(b: &[u8], pol: &Policy, raw: Vec<u8>, canvas: Vec<u8>) {
+    hide(crate::frame_transport_model::result);
     let mut events=Events {r1:true,r3:true,r4:true};
     let result=crate::callers::frames(b,pol,&mut events);
     match result {Err(_)=>{},Ok(doc)=> {
         let ghost before=doc.view();
+        proof {reveal(crate::frame_state::source_document);}
+        let raw_len=raw_size(&doc.ihdr,doc.ihdr.w,doc.ihdr.h);
+        let out_len=crate::image::output_size(&doc.ihdr,false);
+        if raw.len() as u64!=raw_len || canvas.len()!=out_len {return;}
         let mut receiver=Frames::from_decoded(b,*pol,doc,raw,canvas,events);
         let info=receiver.info();
         proof {assert(info.view()==crate::document_model::constructor_info(before));}
@@ -599,8 +711,8 @@ impl<'a> Frames<'a> {
 
     fn with_record(b: &'a [u8], pol: Policy) -> Result<Frames<'a>, TryError> {
         let mut ev = Events::default();
-        let doc = crate::callers::frames(b,&pol,&mut ev)?;
         let mut trace = Trace::new();
+        let doc = crate::callers::frames(b,&pol,&mut ev)?;
         let out_bytes=crate::image::output_size(&doc.ihdr,false);
         let (mut raw, mut canvas) = reserve_image(&doc,out_bytes,&mut trace)?;
         let mut src = IdatReader::for_doc(b, &doc);
@@ -619,6 +731,7 @@ impl<'a> Frames<'a> {
     /// the sequence. Fused: after `Ok(None)` or any error every later call
     /// returns `Ok(None)` without allocating or decoding (D3).
     pub fn try_next(&mut self) -> Result<Option<FrameView<'_>>, TryError> {
+        let mut trace=Trace::new();
         let w = self.doc.ihdr.w;
         let h = self.doc.ihdr.h;
         match self.begin_source() {
@@ -640,13 +753,7 @@ impl<'a> Frames<'a> {
                 let prev = job.previous;
                 // Step S (P20, D9): Saved, once, at the start of the first
                 // reached call for a frame k > 0 with dispose_op = 2.
-                if k > 0 && f.dispose == 2 && self.saved.is_none() {
-                    let n = self.canvas.len();
-                    match try_zeroed(AllocSite::Saved, n, Tracked::<&mut AllocLog>::assume_new()) {
-                        Ok(v) => self.saved = Some(v),
-                        Err(o) => return Err(oom(o)),
-                    }
-                }
+                self.ensure_saved(k>0 && f.dispose==2,&mut trace)?;
                 // P14.3: frame k − 1's disposal.
                 if let Some(((px, py, pw, ph), op)) = prev {
                     if op == 1 {
@@ -723,8 +830,7 @@ fn icc_impl(b: &[u8], trace: &mut Trace) -> Result<Option<Vec<u8>>, TryError> {
     let parts: [&[u8]; 1] = [&b[o..o + n]];
     let opts = InflateOptions::STRICT;
     // First pass: measure into the WINDOW_MAX ring (D7).
-    trace.record(AllocSite::IccWindow, WINDOW_MAX);
-    let mut ring = try_zeroed(AllocSite::IccWindow, WINDOW_MAX, Tracked::<&mut AllocLog>::assume_new()).map_err(oom)?;
+    let mut ring=reserve_icc_window(trace)?;
     let m = {
         let mut src = match SegmentSlices::new(&parts) {
             Some(s) => s,
@@ -739,12 +845,7 @@ fn icc_impl(b: &[u8], trace: &mut Trace) -> Result<Option<Vec<u8>>, TryError> {
     };
     drop(ring);
     // Second pass into exactly m bytes; it ends Done (L-LIMIT-MONO).
-    trace.record(AllocSite::Icc, m);
-    let mut prof = if m == 0 {
-        try_empty(AllocSite::Icc, Tracked::<&mut AllocLog>::assume_new()).map_err(oom)?
-    } else {
-        try_zeroed(AllocSite::Icc, m, Tracked::<&mut AllocLog>::assume_new()).map_err(oom)?
-    };
+    let mut prof=reserve_icc(m,trace)?;
     let mut src = match SegmentSlices::new(&parts) {
         Some(s) => s,
         None => return Err(TryError::Format(Error::TruncatedZlib)),

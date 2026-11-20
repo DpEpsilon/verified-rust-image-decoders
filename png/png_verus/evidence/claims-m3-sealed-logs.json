@@ -1,0 +1,198 @@
+{
+  "milestone": "M3 real per-call sealed guard logs and allocated buffer predicates; not sign-off",
+  "base_commit": "32204d7",
+  "checkpoint": 173,
+  "verified": 362,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "runtime_and_source_controls_run": 174,
+  "no_new_trusted_items": true,
+  "claims": [
+    {
+      "row": "P20 / sealed log ownership",
+      "status": "component-proved on host",
+      "functions": [
+        "Trace::new",
+        "Trace::wf",
+        "Trace::prefix_recorded",
+        "Trace::record"
+      ],
+      "run": 173,
+      "statement": "each Trace owns one AllocLog minted by new_log; its runtime request prefix matches the owned sealed log; runtime recording never mutates the sealed log",
+      "binding": "one Trace is created for each still, constructor, iterator-next and ICC call; every guard borrows that Trace log; no assume_new remains in production source"
+    },
+    {
+      "row": "A-PNG-2 / Raw-Output allocation prefix",
+      "status": "component-proved on host",
+      "functions": [
+        "reserve_image"
+      ],
+      "run": 173,
+      "premises": [
+        "valid header",
+        "positive bounded Output count",
+        "fresh well-formed call Trace"
+      ],
+      "statement": "Raw then Output requests form the exact modeled prefix; success returns zeroed vectors of exact Raw/Output lengths; every result is log_tied, errors are only allocation failures, and prior successful reservations precede the failed one"
+    },
+    {
+      "row": "A-PNG-7 / Saved allocation helper",
+      "status": "component-proved on host",
+      "functions": [
+        "reserve_saved",
+        "Frames::ensure_saved"
+      ],
+      "run": 173,
+      "premises": [
+        "source_wf and buffers_wf",
+        "fresh well-formed call Trace"
+      ],
+      "statement": "no request if not needed or Saved already exists; otherwise exactly one Saved request of canvas length; success installs a correctly sized buffer, failure is tied to the failed request; source/buffer predicates and source state are preserved",
+      "qualifier": "the complete SavedAt_p/public call-index equation remains unproved"
+    },
+    {
+      "row": "ICC reservation components / P20 D7 D8",
+      "status": "component-proved on host",
+      "functions": [
+        "reserve_icc_window",
+        "reserve_icc"
+      ],
+      "run": 173,
+      "premises": [
+        "fresh Trace for Window",
+        "one successful prefix request and measured size <= MAX_ICC for Icc"
+      ],
+      "statement": "Window and profile requests append their exact site/size/status to the same owned log; successful vectors are zeroed at exact sizes; zero-byte Icc uses try_empty and cannot fail; allocation failures are log_tied",
+      "qualifier": "measurement, second-pass and whole public ICC composition remain ordinary Rust"
+    },
+    {
+      "row": "Frames allocated buffer layout",
+      "status": "component-proved on host",
+      "functions": [
+        "layout_model::output_count",
+        "layout_model::image_buffers",
+        "Frames::buffers_wf",
+        "Frames::from_decoded",
+        "Frames::begin_source",
+        "Frames::commit_source",
+        "Frames::ensure_saved"
+      ],
+      "run": 173,
+      "statement": "Raw length equals modeled full-image R, canvas length equals 4*W*H, Saved if present has canvas length; checked assembly establishes the predicate under supplied-buffer premises, source transitions preserve it, and Saved allocation maintains it",
+      "qualifier": "length/layout predicate only, not pixel correctness or subframe Raw fit"
+    },
+    {
+      "row": "Source receiver composition witness",
+      "status": "checked generic component",
+      "functions": [
+        "png::receiver_source_witness"
+      ],
+      "run": 173,
+      "statement": "supplied buffers are checked against actual verified size helpers before checked receiver assembly/accessor/begin/commit",
+      "qualifier": "no buffers are inflated in the witness"
+    },
+    {
+      "row": "A-PNG-2 complete G/Prog",
+      "status": "partial / full public composition remains open",
+      "functions": [],
+      "run": 173,
+      "unproved": [
+        "whole public *_logged entry equations and returned log binding",
+        "walk/default-decode or measurement/pixel-stage sequencing and exact result composition"
+      ]
+    },
+    {
+      "row": "A-PNG-7 complete public gate",
+      "status": "partial / full public composition remains open",
+      "functions": [],
+      "run": 173,
+      "unproved": [
+        "whole public *_logged entry equations and returned log binding",
+        "walk/default-decode or measurement/pixel-stage sequencing and exact result composition"
+      ]
+    },
+    {
+      "row": "L-WALK-FIRST",
+      "status": "partial / full public composition remains open",
+      "functions": [],
+      "run": 173,
+      "unproved": [
+        "whole public *_logged entry equations and returned log binding",
+        "walk/default-decode or measurement/pixel-stage sequencing and exact result composition"
+      ]
+    },
+    {
+      "row": "full returned-Info / Eq_new_p",
+      "status": "partial / full public composition remains open",
+      "functions": [],
+      "run": 173,
+      "unproved": [
+        "whole public *_logged entry equations and returned log binding",
+        "walk/default-decode or measurement/pixel-stage sequencing and exact result composition"
+      ]
+    },
+    {
+      "row": "whole public ICC equation",
+      "status": "partial / full public composition remains open",
+      "functions": [],
+      "run": 173,
+      "unproved": [
+        "whole public *_logged entry equations and returned log binding",
+        "walk/default-decode or measurement/pixel-stage sequencing and exact result composition"
+      ]
+    },
+    {
+      "row": "L-SEG-FRAME IDAT",
+      "status": "OPEN under approved E2",
+      "functions": [],
+      "run": 173,
+      "evidence": "reader-effects-open-0173.json"
+    },
+    {
+      "row": "L-SEG-FRAME fdAT",
+      "status": "OPEN under approved E2",
+      "functions": [],
+      "run": 173,
+      "evidence": "reader-effects-open-0173.json"
+    },
+    {
+      "row": "L-SEG-FRAME iCCP",
+      "status": "OPEN under approved E2",
+      "functions": [],
+      "run": 173,
+      "evidence": "reader-effects-open-0173.json"
+    },
+    {
+      "row": "Subframe / image / target assurance",
+      "status": "open",
+      "functions": [],
+      "run": 173,
+      "unproved": [
+        "subframe Raw monotonicity and validated fcTL rectangle transfer",
+        "full image/filter/sample/disposal semantics",
+        "aggregate work accounting",
+        "required frozen-record witness set and i686 replay"
+      ]
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0174.json"
+  },
+  "runtime_recording_note": "private fixed-size request record now updates after the guard returns; failed requests are still recorded before the error propagates, and public return traces remain tested identical",
+  "diagnostics": {
+    "169": "mechanical migration script rejected its own pre-write assertion; no source changed; verifier wrapper correctly refused cached zero-obligation replay",
+    "170": "Window guard needed explicit positivity of fixed DEFLATE WINDOW_MAX, not a new cap assumption",
+    "171": "all real sealed guard borrows verified at 355",
+    "172": "buffer-aware assembly required unfolding source header predicate; previous large area polynomial proof exceeded default limit",
+    "173": "explicit header fact and six checked distributive steps restored green at 362 without a limit change"
+  },
+  "spec_ambiguities": [],
+  "resume": "Compose actual public logged entry bodies around the owned Trace, returning/binding their logs; prove walk-before-reservation and complete A-PNG-2/A-PNG-7/returned-Info/ICC equations while retaining subframe fit and per-reader E2 obligations."
+}
