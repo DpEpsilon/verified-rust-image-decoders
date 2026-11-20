@@ -9,6 +9,8 @@
 //! section, exactly as the oracle's `_walk`.
 
 use crate::apng::{self, Control};
+use crate::critical::{self, CrcAction};
+use vstd::prelude::*;
 use crate::png::{Error, Events, Info, Meta, Time};
 use crate::policy::{
     AncillaryDuplicate, AncillaryOrder, AncillaryValues, ApngErrors, ApngInStill, CrcAncillary, Iend,
@@ -16,7 +18,6 @@ use crate::policy::{
 };
 
 pub(crate) use crate::framing::{be16, be32, frame_at};
-use crate::framing::chunk_at;
 
 pub(crate) use crate::kind::{kind_of, Kind};
 use crate::kind::{initial_seen, mark_seen, after_plte_seen};
@@ -62,6 +63,8 @@ pub(crate) enum Entry {
     Frames,
 }
 
+verus! {
+
 /// Why the walk stopped without a document.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub(crate) enum WalkFail {
@@ -70,6 +73,17 @@ pub(crate) enum WalkFail {
     /// (`sfail`, `apng_fail`); the caller re-walks with APNG off (R4).
     Fallback,
 }
+
+impl WalkFail {
+    pub(crate) open spec fn view(self) -> crate::critical_model::Failure {
+        match self {
+            Self::Format(e) => crate::critical_model::Failure::Format(e),
+            Self::Fallback => crate::critical_model::Failure::Fallback,
+        }
+    }
+}
+
+} // verus!
 
 impl From<Error> for WalkFail {
     fn from(e: Error) -> WalkFail {
@@ -103,60 +117,24 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
     let mut st = State { seen: initial_seen(), idat: 0, apng: Control::new() };
     let apng_on = !apng_off && !(entry == Entry::Still && pol.apng_in_still == ApngInStill::Ignore);
     let static_frames = pol.apng_errors == ApngErrors::Static && entry == Entry::Frames;
-    // sfail and apng_fail coincide for the values Strict and RecommendedBeta use.
-    let sfail = |e: Error| -> WalkFail { if static_frames { WalkFail::Fallback } else { WalkFail::Format(e) } };
     let mut p = after_ihdr;
     loop {
-        let (t, kind0, dpos, mut n, ok, p_end) = if p == b.len() {
-            if st.idat > 0 && pol.missing_iend == MissingIend::AtEof {
-                (*b"IEND", Kind::Iend, p, 0usize, true, p)
-            } else {
-                return Err(Error::MissingIend.into());
-            }
-        } else {
-            let c = chunk_at(b, p)?;
-            (c.ty, kind_of(&c.ty), c.data, c.len, c.crc_ok, c.next)
-        };
+        let candidate = critical::read(b,p,st.idat,pol.missing_iend == MissingIend::AtEof)?;
+        let c = candidate.chunk;
+        let (t,kind0,dpos,mut n,ok,p_end) = (c.ty,candidate.kind,c.data,c.len,c.crc_ok,c.next);
         advance_phase(&mut st.idat, kind0);
         let chunk_offset = p;
         p = p_end;
-        let mut anc = kind0.ancillary(&t);
-        let mut kind = kind0;
-        if !apng_on && kind.is_apng() {
-            kind = Kind::Unknown(true);
-            anc = true;
-        }
+        let (kind,anc) = critical::effective(kind0,kind0.ancillary(&t),apng_on);
         let d = &b[dpos..dpos + n];
-        if !ok {
-            if kind == Kind::Iend {
-                if pol.iend == Iend::Strict {
-                    return Err(Error::CrcMismatch.into());
-                }
-            } else if anc && !(kind0 == Kind::Fdat && pol.crc_ancillary == CrcAncillary::SkipExceptFdat) {
-                match pol.crc_ancillary {
-                    CrcAncillary::Reject => return Err(Error::CrcMismatch.into()),
-                    // Council M1BQ-Q2 (c): in the frames constructor's walk with
-                    // APNG on, a fcTL that this rule would drop for its CRC is
-                    // not dropped but is the APNG structural error `CrcMismatch`,
-                    // raised here, after framing and bounds and before its
-                    // sequence number is read. `sfail` makes it R4 under
-                    // `apng_errors = Static` and the error under `Reject`. The
-                    // walk site, not the name, selects recovery: the mandatory
-                    // `CrcMismatch` returns above and below never reach `sfail`.
-                    // `decode_still`, the ICC call and the R4 fallback's re-walk
-                    // (`apng_off`, where `kind` is no longer `Fctl`) drop it.
-                    CrcAncillary::SkipExceptFdat if kind == Kind::Fctl && entry == Entry::Frames => {
-                        return Err(sfail(Error::CrcMismatch));
-                    }
-                    CrcAncillary::SkipExceptFdat => {
-                        discard(&mut doc, kind, ev);
-                        continue;
-                    }
-                }
-            } else {
-                // IHDR, PLTE, IDAT, unknown critical; fdAT under SkipExceptFdat.
-                return Err(Error::CrcMismatch.into());
-            }
+        // M1b-Q2: only the enabled frames-walk CRC-drop site makes a bad
+        // fcTL structural; fdAT CRC remains mandatory even in Static fallback.
+        match critical::crc_rule(kind0,kind,anc,ok,
+            pol.crc_ancillary == CrcAncillary::SkipExceptFdat,
+            pol.iend == Iend::Lenient,entry == Entry::Frames) {
+            CrcAction::Keep => {},
+            CrcAction::Drop => { discard(&mut doc,kind,ev); continue; },
+            CrcAction::Fail(e,structural) => return Err(critical::route(e,structural,static_frames)),
         }
         // P5.1/P5.2/P5.3: the verified preamble preserves the exact first
         // error and the structural/non-structural recovery distinction.
@@ -176,7 +154,7 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
                 continue;
             }
             OrderAction::Fail(e, structural) => {
-                return Err(if structural { sfail(e) } else { WalkFail::Format(e) });
+                return Err(critical::route(e,structural,static_frames));
             }
         }
         let d = &d[..n];
@@ -195,30 +173,16 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
                 doc.info.palette_entries = entries;
             }
             Kind::Idat => {
-                if st.idat == 2 {
-                    return Err(Error::NonConsecutiveIdat.into());
-                }
-                if ct == 3 && doc.plte.is_none() {
-                    return Err(Error::MissingPalette.into());
-                }
-                if st.idat == 0 {
-                    if st.apng.begin_idat() {
-                        doc.info.default_is_frame = true;
-                    }
+                let first = critical::idat(&mut st.idat,ct,doc.plte.is_some())?;
+                if first {
+                    if st.apng.begin_idat() { doc.info.default_is_frame = true; }
                     doc.idat_first = chunk_offset;
                 }
-                st.idat = 1;
             }
             Kind::Iend => {
-                if st.idat == 0 {
-                    return Err(Error::MissingImageData.into());
-                }
                 let declared = doc.actl.map(|a| a.num_frames);
-                if let Err((e, structural)) = apng::finish(st.apng, declared) {
-                    return Err(if structural { sfail(e) } else { WalkFail::Format(e) });
-                }
-                if p != b.len() && pol.trailing == Trailing::Reject {
-                    return Err(Error::TrailingBytes.into());
+                if let Err((e,structural)) = critical::iend(st.idat,st.apng,declared,p,b.len(),pol.trailing == Trailing::Ignore) {
+                    return Err(critical::route(e,structural,static_frames));
                 }
                 doc.info.frame_count = st.apng.frames as u32;
                 return Ok(doc);
@@ -234,7 +198,7 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
             Kind::Actl => {
                 let (num_frames, num_plays) = match apng::actl(d) {
                     Ok(a) => a,
-                    Err((e, structural)) => return Err(if structural { sfail(e) } else { WalkFail::Format(e) }),
+                    Err((e, structural)) => return Err(critical::route(e,structural,static_frames)),
                 };
                 doc.actl = Some(Actl { num_frames, num_plays });
             }
@@ -242,21 +206,17 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
                 let (_, next) = match apng::fctl(d, doc.actl.is_some(), st.idat == 0,
                     doc.ihdr.w, doc.ihdr.h, st.apng) {
                     Ok(r) => r,
-                    Err((e, structural)) => return Err(if structural { sfail(e) } else { WalkFail::Format(e) }),
+                    Err((e, structural)) => return Err(critical::route(e,structural,static_frames)),
                 };
                 st.apng = next;
             }
             Kind::Fdat => {
                 st.apng = match apng::fdat(d, doc.actl.is_some(), st.idat == 0, st.apng) {
                     Ok(next) => next,
-                    Err((e, structural)) => return Err(if structural { sfail(e) } else { WalkFail::Format(e) }),
+                    Err((e, structural)) => return Err(critical::route(e,structural,static_frames)),
                 };
             }
-            Kind::Unknown(a) => {
-                if !a {
-                    return Err(Error::UnknownCriticalChunk.into());
-                }
-            }
+            Kind::Unknown(a) => { critical::unknown(a)?; }
             _ => match ancillary_values(kind, b, d, dpos, &mut doc, ct, depth) {
                 Ok(()) => {}
                 Err(e) => {

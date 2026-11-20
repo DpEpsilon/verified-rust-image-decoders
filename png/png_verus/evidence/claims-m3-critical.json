@@ -1,0 +1,171 @@
+{
+  "milestone": "M3 remaining critical/control components; not sign-off",
+  "base_commit": "c8477d0",
+  "checkpoint": 63,
+  "verified": 148,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "runtime_and_source_controls_run": 64,
+  "trusted_items_added": false,
+  "claims": [
+    {
+      "row": "L-CRC-TABLE",
+      "status": "discharged as corrected by approved ERRATA E5",
+      "functions": [
+        "crc::make_table",
+        "crc::TABLE initializer",
+        "crc::lemma_crc_table",
+        "crc::lemma_crc_update",
+        "crc::crc32",
+        "framing::crc_matches"
+      ],
+      "proof_run": 24,
+      "reverified_run": 63,
+      "owner_approval_commit": "8d36419",
+      "qualifier": "statement correction of table clause only; no full T6/M3 completion"
+    },
+    {
+      "row": "T6",
+      "component": "framed candidates, exact P3 first errors and EOF policy",
+      "status": "component-proved",
+      "functions": [
+        "critical::read",
+        "critical::Candidate::wf"
+      ],
+      "model": "critical_model::read",
+      "qualifier": "synthetic EOF is a bounded empty IEND candidate, not an on-wire Chunk::wf",
+      "run": 63
+    },
+    {
+      "row": "T6",
+      "component": "APNG effective type and CRC-policy decisions",
+      "status": "component-proved",
+      "functions": [
+        "critical::effective",
+        "critical::crc_rule"
+      ],
+      "model": "critical_model::{effective,crc_rule}",
+      "run": 63
+    },
+    {
+      "row": "L-REWALK policy / L-WALK-FIRST",
+      "component": "bad fcTL cannot pass enabled frames CRC site; fdAT remains mandatory",
+      "status": "local prerequisite proved; complete gates open",
+      "functions": [
+        "critical::crc_rule"
+      ],
+      "premises": [
+        "fcTL wire/effective type and frames-entry site",
+        "fdAT effective type is not IEND"
+      ],
+      "run": 63
+    },
+    {
+      "row": "T6",
+      "component": "IDAT first-error order and phase update",
+      "status": "component-proved",
+      "functions": [
+        "critical::idat"
+      ],
+      "model": "critical_model::idat",
+      "premises": [
+        "phase <= 2"
+      ],
+      "run": 63
+    },
+    {
+      "row": "T6",
+      "component": "IEND error composition and unknown-critical rejection",
+      "status": "component-proved",
+      "functions": [
+        "critical::iend",
+        "critical::unknown"
+      ],
+      "model": "critical_model::{iend,unknown}",
+      "run": 63
+    },
+    {
+      "row": "T6",
+      "component": "structural-site failure routing",
+      "status": "component-proved",
+      "functions": [
+        "critical::route",
+        "walk::WalkFail::view"
+      ],
+      "model": "critical_model::route",
+      "qualifier": "same error spelling may route differently; no error-name catch-all",
+      "run": 63
+    },
+    {
+      "row": "T6 / M3 witness gates",
+      "component": "concrete production-call bindings",
+      "status": "local witnesses proved; full whole-input gates incomplete",
+      "functions": [
+        "witness_critical::idat_first_error",
+        "witness_critical::iend_error_precedence",
+        "witness_critical::crc_structural_sites",
+        "witness_critical::eof_candidate_boundaries"
+      ],
+      "run": 63
+    },
+    {
+      "row": "T6 / T10-prefix",
+      "status": "partial",
+      "unproved": [
+        "complete independent MW/MW_p/MWF_p loop",
+        "loop invariant and helper premises",
+        "Info storage/discard representation",
+        "ghost document/range/frame trace",
+        "end-to-end first error and termination"
+      ],
+      "run": 63
+    },
+    {
+      "row": "T-SEG / L-REWALK Strict and policy",
+      "status": "earlier adapter reverified; complete document-to-reader selection open",
+      "run": 63
+    },
+    {
+      "row": "L-INFO-RANGE",
+      "status": "earlier local descriptor/rebase foundation reverified; complete returned-Info gate open",
+      "run": 63
+    },
+    {
+      "row": "A-PNG-2",
+      "status": "untouched complete gate; no public-entry/logged allocation theorem"
+    },
+    {
+      "row": "A-PNG-7",
+      "status": "untouched complete gate; no public-entry/logged allocation theorem"
+    },
+    {
+      "row": "L-WALK-FIRST",
+      "status": "untouched complete gate; no public-entry/logged allocation theorem"
+    }
+  ],
+  "crc_equation_status": {
+    "equations_proved": true,
+    "L_CRC_TABLE_discharge": "discharged as corrected by approved ERRATA E5",
+    "erratum_status": "APPROVED, owner decision 2026-11-20, commit 8d36419",
+    "proof_run": 24,
+    "reverified_run": 63,
+    "additional_lemma_required": false,
+    "literal_frozen_equation_claimed": false,
+    "T6_complete": false,
+    "ledger_state": "L-CRC-TABLE discharged as corrected by approved ERRATA E5: all 256 production-table entries equal `crc_bits(i, 8)` (no preset, no complement), and `crc32` equals preset-and-complemented `model::crc` on every slice. The frozen wording `TABLE[i] = Crc([i])` is false and is not claimed. T6 remains partial: the ordering walk and complete `MW` equality are not proved."
+  },
+  "runtime_counts_at_run_64": {
+    "strict": 599,
+    "caps": 13,
+    "policy_records": 234,
+    "total_records": 846,
+    "passed": 844,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0
+  },
+  "parallel_policy_work": "consumes d04a9a6 regeneration; no test or policy file edited by this dispatch",
+  "resume": "Full independent MW loop/range/frame trace and Info/caller invariants; then Strict/policy reader selection and logged allocation/walk-first/returned-Info gates."
+}

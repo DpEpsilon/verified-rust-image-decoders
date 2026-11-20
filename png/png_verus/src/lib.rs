@@ -22,6 +22,9 @@ mod apng;
 #[cfg(verus_only)]
 pub mod apng_model;
 mod crc;
+mod critical;
+#[cfg(verus_only)]
+pub mod critical_model;
 mod framing;
 mod header;
 mod image;
@@ -44,6 +47,8 @@ mod walk;
 mod witness_m3;
 #[cfg(verus_only)]
 mod witness_metadata;
+#[cfg(verus_only)]
+mod witness_critical;
 
 pub use alloc_guard::sites::TryError;
 pub use alloc_guard::{AllocSite, OutOfMemory};
