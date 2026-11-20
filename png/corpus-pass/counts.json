@@ -1,0 +1,54 @@
+{
+ "results_json_records": 748,
+ "results_json_by_kind": {
+  "vec": 516,
+  "probe": 177,
+  "wit": 55
+ },
+ "results_json_by_reference_over_4KiB": 14,
+ "results_json_inline": 734,
+ "vector_records": {
+  "spec-frozen/VECTORS.json": 599,
+  "limits-draft/VECTORS-CAPS.json": 13,
+  "policy-draft/VECTORS-POLICY.json": 198
+ },
+ "vector_records_padded": 2,
+ "bridge_steps": [
+  {
+   "claimed": "784",
+   "what": "now: Strict bridge after the review and council vectors (2026-11-17)",
+   "recomputed": 784,
+   "agrees": true
+  },
+  {
+   "claimed": "773",
+   "what": "without the 14 review/council vectors (11 distinct non-padded inputs)",
+   "recomputed": 773,
+   "agrees": true
+  },
+  {
+   "claimed": "767",
+   "what": "also without the 6 cap-boundary vectors of 2026-11-17",
+   "recomputed": 767,
+   "agrees": true
+  },
+  {
+   "claimed": "740",
+   "what": "also without the 198 profile vectors of VECTORS-POLICY.json",
+   "recomputed": 740,
+   "agrees": true
+  },
+  {
+   "claimed": "737",
+   "what": "also without the 3 OVER corner vectors of 2026-11-16",
+   "recomputed": 737,
+   "agrees": true
+  }
+ ],
+ "distinct_nonpadded_vectors_before_2026_11_16": 533,
+ "inline_distinct": 734,
+ "overlap_inline_and_those_vectors": 530,
+ "review_vectors_distinct_new_inputs": 11,
+ "policy_vectors_distinct_new_inputs": 27,
+ "records_now": 810
+}
