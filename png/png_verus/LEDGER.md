@@ -1,6 +1,29 @@
 # png_verus ledger
 
-M3 has begun; it is not signed off. The latest host checkpoint is **run 282: 1,138 verified, 0 errors**, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
+M3 has begun; it is not signed off. The latest host checkpoint is **run 288: 1,206 verified, 0 errors**, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
+
+## M3 continuation: eight category-(b) structural projections (2026-11-20)
+
+Base: `a38c0d6` (run 282, 1,138 verified). **Run 288: 1,206 verified, 0 errors** retains all eighty generated category-(a) names unchanged and proves eight full category-(b) model/preparation projections. Category-(a) coverage stays **105 of 115**; category-(b) projection coverage is **eight of sixteen**. These are **not final-data witnesses**. Run 289 passes runtime/source controls. This checkpoint is **not sign-off-ready**: ten category-(a) APNG records, eight category-(b) projections and final i686 replay remain open.
+
+| THEOREMS row/component | Checked functions at run 288 | Scope |
+|---|---|---|
+| Category-(b) M3 projection gate | `witness_m3_projection::{symbolic_*,model_*,projection_*}`, with each record/function/input indexed in `m3-projection-witness-inputs-0288.json` | Whole MW_p accepts the fixture with its projected header; actual `callers::still` preparation succeeds with that header and bounded Info descriptors; every executable witness also calls the actual public `try_decode_still` |
+| Final-data boundary | Every `projection_*` function and its per-record status | “M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile”; the actual public result has no asserted pixel/data error or success outcome |
+| Three accepted-header cap facts | `projection_ihdr_8192x8192_accepted_then_truncated_zlib`, `projection_ihdr_67108864x1_accepted_then_truncated_zlib`, `projection_ihdr_1x67108864_accepted_then_truncated_zlib` | Upgraded from header-only facts to full M3 walk/preparation projections; no TruncatedZlib result theorem is claimed |
+| Retained category-(a) and earlier host rows/E2 | Earlier requirement-indexed functions, rechecked at run 288; `reader-effects-0288.json` retains the three reader arguments | All eighty generated category-(a) names and both original source/tool files are unchanged; 105 public-error witnesses and all sixteen council cases remain complete at M3 |
+| Remaining category-(b) gates | None credited for the other records | Seven accepted-metadata cases and the APNG budget case remain open; their failed broader attempts receive no credit |
+| Remaining category-(a), i686 and stronger equations | None added | Ten APNG public-error gates and final copied-cache target replay remain open; no pixel/data/compositor/SavedAt equality claim |
+
+The eight projection names are `container/minimal-ok`, `container/unknown-ancillary-everywhere`, `container/reserved-bit-ancillary`, `plte/ok`, `order/splt-twice` and the three accepted-then-truncated-zlib cap records above. `complete_m3_projection` is separate from `complete_public_entry_witness` and `complete_final_data_witness`; category-(b) final-data witness credit remains zero. `m3-witness-status-0288.json` reports eight projection gates open and all sixteen final-data obligations deferred to M4–M6.
+
+The coordinator explicitly permitted moving to category (b) after reasonable effort on resistant category-(a) gates. The ten APNG records therefore remain recorded as open while this checkpoint advances independent work. Runs 284–285 retain the initial literal-input projection resource failures. Run 286 was stopped after repeated failures, without a final-count claim. Symbolic-input interfaces separate concrete certificates from successful-walk composition. Run 287 correctly rejects an interface missing sPLT's sample-depth premise; the final generator checks that byte at the concrete caller before instantiation. Run 288 verifies all selected projections at unchanged default limits, without trust or false-precondition interfaces.
+
+`generation-m3-projections-0288.json` records the exact eight-name projection command. Keep those eight names when extending projections, and retain the independent eighty-name category-(a) command from `generation-m3-walk-0282.json`. The projection generator's default fifteen-name expansion includes open accepted-metadata work; the 64-frame APNG budget projection is separate. Public expected dimensions come from frozen width/height fields; the three data-error cap records project only their independently checked IHDR. Frozen pixel runs and final errors are deliberately not asserted by these proofs.
+
+Run 289: 846 conformance passes, zero failures, two inherited unsupported-profile skips; fault injection passes; all seven council tests pass. Both scanners and their negative controls pass. Guard hashes, reservation-site counts, protected specifications/policies/dependency/test files and all production bodies remain unchanged. Every worker background task has exited or been stopped. No commit or push was made by the worker.
+
+No new specification ambiguity was found; the coordinator-approved category-(b) interpretation remains recorded for reviewer challenge. Next resume point: retain all eighty public-error names and the eight projections, finish the other eight projections, revisit the ten APNG error gates, then replay the final source using only the existing i686 cache copied into PNG-owned target. Never rebuild or write under inflate target. Declare sign-off-ready only after every M3 gate is discharged, not sign-off itself.
 
 ## M3 continuation: twenty-four APNG public-error witnesses (2026-11-20)
 

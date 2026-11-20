@@ -1,0 +1,249 @@
+[
+  {
+    "name": "container/minimal-ok",
+    "entry": "still",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "4241a1ad777d70c06f53b1fd5456c60965e585b689b3a0c146a41489a10cca89",
+    "frozen_expected": {
+      "width": 2,
+      "height": 2,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "c9493fff"
+        },
+        {
+          "count": 1,
+          "hex": "ca4b97ff"
+        },
+        {
+          "count": 1,
+          "hex": "e11a17ff"
+        },
+        {
+          "count": 1,
+          "hex": "fcf681ff"
+        }
+      ]
+    },
+    "category": "b",
+    "model_function": "model_container_minimal_ok",
+    "function": "projection_container_minimal_ok",
+    "complete_m3_projection": true,
+    "complete_final_data_witness": false,
+    "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+    "run": 288,
+    "module": "witness_m3_projection",
+    "symbolic_function": "symbolic_container_minimal_ok"
+  },
+  {
+    "name": "container/unknown-ancillary-everywhere",
+    "entry": "still",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "795589dd4ea801cde4ecfad7c590be5a38f74b9c5880a5056e3aa7a5592195d4",
+    "frozen_expected": {
+      "width": 2,
+      "height": 2,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "c9493fff"
+        },
+        {
+          "count": 1,
+          "hex": "ca4b97ff"
+        },
+        {
+          "count": 1,
+          "hex": "e11a17ff"
+        },
+        {
+          "count": 1,
+          "hex": "fcf681ff"
+        }
+      ]
+    },
+    "category": "b",
+    "model_function": "model_container_unknown_ancillary_everywhere",
+    "function": "projection_container_unknown_ancillary_everywhere",
+    "complete_m3_projection": true,
+    "complete_final_data_witness": false,
+    "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+    "run": 288,
+    "module": "witness_m3_projection",
+    "symbolic_function": "symbolic_container_unknown_ancillary_everywhere"
+  },
+  {
+    "name": "container/reserved-bit-ancillary",
+    "entry": "still",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "452c72ba98dfa375165bc3566371d8a4033b33dfaaccd2cc076de01fdb92f369",
+    "frozen_expected": {
+      "width": 2,
+      "height": 2,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "c9493fff"
+        },
+        {
+          "count": 1,
+          "hex": "ca4b97ff"
+        },
+        {
+          "count": 1,
+          "hex": "e11a17ff"
+        },
+        {
+          "count": 1,
+          "hex": "fcf681ff"
+        }
+      ]
+    },
+    "category": "b",
+    "model_function": "model_container_reserved_bit_ancillary",
+    "function": "projection_container_reserved_bit_ancillary",
+    "complete_m3_projection": true,
+    "complete_final_data_witness": false,
+    "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+    "run": 288,
+    "module": "witness_m3_projection",
+    "symbolic_function": "symbolic_container_reserved_bit_ancillary"
+  },
+  {
+    "name": "plte/ok",
+    "entry": "still",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "ff26649045e83671ff441925eb9521fd09c131e729fe50f9d6dd4d5dc02d2d1e",
+    "frozen_expected": {
+      "width": 2,
+      "height": 2,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "2fc228ff"
+        },
+        {
+          "count": 1,
+          "hex": "8b2c58ff"
+        },
+        {
+          "count": 1,
+          "hex": "e424caff"
+        },
+        {
+          "count": 1,
+          "hex": "8b2c58ff"
+        }
+      ]
+    },
+    "category": "b",
+    "model_function": "model_plte_ok",
+    "function": "projection_plte_ok",
+    "complete_m3_projection": true,
+    "complete_final_data_witness": false,
+    "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+    "run": 288,
+    "module": "witness_m3_projection",
+    "symbolic_function": "symbolic_plte_ok"
+  },
+  {
+    "name": "order/splt-twice",
+    "entry": "still",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "f7717ef3fc7fef73db28ccc326373d7af637e651220c325c9635ff7b13c2a58b",
+    "frozen_expected": {
+      "width": 2,
+      "height": 2,
+      "rgba_runs": [
+        {
+          "count": 1,
+          "hex": "c9493fff"
+        },
+        {
+          "count": 1,
+          "hex": "ca4b97ff"
+        },
+        {
+          "count": 1,
+          "hex": "e11a17ff"
+        },
+        {
+          "count": 1,
+          "hex": "fcf681ff"
+        }
+      ]
+    },
+    "category": "b",
+    "model_function": "model_order_splt_twice",
+    "function": "projection_order_splt_twice",
+    "complete_m3_projection": true,
+    "complete_final_data_witness": false,
+    "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+    "run": 288,
+    "module": "witness_m3_projection",
+    "symbolic_function": "symbolic_order_splt_twice"
+  },
+  {
+    "name": "ihdr/8192x8192-accepted-then-truncated-zlib",
+    "entry": "still",
+    "source": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+    "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+    "input_sha256": "73d73c52e40d53e283473cdff9917e9f5a8c76abe5e46c9aefe87f53d4e25c11",
+    "frozen_expected": {
+      "error": "TruncatedZlib"
+    },
+    "category": "b",
+    "model_function": "model_ihdr_8192x8192_accepted_then_truncated_zlib",
+    "function": "projection_ihdr_8192x8192_accepted_then_truncated_zlib",
+    "complete_m3_projection": true,
+    "complete_final_data_witness": false,
+    "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+    "run": 288,
+    "module": "witness_m3_projection",
+    "symbolic_function": "symbolic_ihdr_8192x8192_accepted_then_truncated_zlib"
+  },
+  {
+    "name": "ihdr/67108864x1-accepted-then-truncated-zlib",
+    "entry": "still",
+    "source": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+    "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+    "input_sha256": "6b278d96fd9687d21d1eaa47deda23cea0d88dfda9cda211b9abf0b0767d7c00",
+    "frozen_expected": {
+      "error": "TruncatedZlib"
+    },
+    "category": "b",
+    "model_function": "model_ihdr_67108864x1_accepted_then_truncated_zlib",
+    "function": "projection_ihdr_67108864x1_accepted_then_truncated_zlib",
+    "complete_m3_projection": true,
+    "complete_final_data_witness": false,
+    "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+    "run": 288,
+    "module": "witness_m3_projection",
+    "symbolic_function": "symbolic_ihdr_67108864x1_accepted_then_truncated_zlib"
+  },
+  {
+    "name": "ihdr/1x67108864-accepted-then-truncated-zlib",
+    "entry": "still",
+    "source": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+    "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+    "input_sha256": "3ead08341ebeab9885153bf76127393a3cbafba7e8cdd2d695a38b1d4704eca8",
+    "frozen_expected": {
+      "error": "TruncatedZlib"
+    },
+    "category": "b",
+    "model_function": "model_ihdr_1x67108864_accepted_then_truncated_zlib",
+    "function": "projection_ihdr_1x67108864_accepted_then_truncated_zlib",
+    "complete_m3_projection": true,
+    "complete_final_data_witness": false,
+    "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+    "run": 288,
+    "module": "witness_m3_projection",
+    "symbolic_function": "symbolic_ihdr_1x67108864_accepted_then_truncated_zlib"
+  }
+]

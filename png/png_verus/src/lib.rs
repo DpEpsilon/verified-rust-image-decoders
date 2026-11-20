@@ -72,6 +72,8 @@ mod witness_m3_frozen;
 #[cfg(verus_only)]
 mod witness_m3_walk_frozen;
 #[cfg(verus_only)]
+mod witness_m3_projection;
+#[cfg(verus_only)]
 mod witness_metadata;
 #[cfg(verus_only)]
 mod witness_critical;

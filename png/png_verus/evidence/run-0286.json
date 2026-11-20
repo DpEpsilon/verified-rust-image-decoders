@@ -1,0 +1,15 @@
+{
+  "kind": "M3-interrupted-attempt",
+  "run": 286,
+  "accepted": false,
+  "verified": 0,
+  "errors": null,
+  "reason": "Stopped repeated literal projection resource failures to move successful-walk composition into symbolic-input lemmas; no final count claim or solver-limit change.",
+  "reported_failed_functions": [
+    "model_container_reserved_bit_ancillary",
+    "model_container_unknown_ancillary_everywhere",
+    "model_order_splt_twice",
+    "model_plte_ok"
+  ],
+  "log_sha256": "9080388d5ba76e5d5e65c1e94953acc169aabf52a1f00e37e6033f162d5885b5"
+}

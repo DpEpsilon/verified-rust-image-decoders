@@ -1,0 +1,97 @@
+{
+  "milestone": "M3 eight category-b whole-walk/preparation projections; not sign-off-ready",
+  "base_commit": "a38c0d6",
+  "checkpoint": 288,
+  "verified": 1206,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "signoff_ready": false,
+  "no_new_trusted_items": true,
+  "runtime_public_api_unchanged": true,
+  "runtime_production_bodies_unchanged": true,
+  "runtime_and_source_controls_run": 289,
+  "claims": [
+    {
+      "row": "THEOREMS.md category-b M3 structural projection gate",
+      "status": "eight complete M3 projections; eight open; no final-data witness credit",
+      "functions": [
+        "witness_m3_projection::{symbolic_*,model_*,projection_*}"
+      ],
+      "run": 288,
+      "records": [
+        "container/minimal-ok",
+        "container/unknown-ancillary-everywhere",
+        "container/reserved-bit-ancillary",
+        "plte/ok",
+        "order/splt-twice",
+        "ihdr/8192x8192-accepted-then-truncated-zlib",
+        "ihdr/67108864x1-accepted-then-truncated-zlib",
+        "ihdr/1x67108864-accepted-then-truncated-zlib"
+      ],
+      "statement": "Each credited record proves full MW_p acceptance with its header projection, calls the actual checked public-entry preparation and proves success/projected header plus Info descriptor bounds, and calls the actual public still entry. No final data/pixel outcome is asserted. Every record retains the explicit M4\u2013M6 final-data label."
+    },
+    {
+      "row": "Three accepted-then-truncated-zlib cap records",
+      "status": "upgraded from header-only facts to complete M3 projections",
+      "functions": [
+        "witness_m3_projection::projection_ihdr_8192x8192_accepted_then_truncated_zlib",
+        "witness_m3_projection::projection_ihdr_67108864x1_accepted_then_truncated_zlib",
+        "witness_m3_projection::projection_ihdr_1x67108864_accepted_then_truncated_zlib"
+      ],
+      "run": 288,
+      "statement": "Whole structural walk succeeds and real preparation returns the bounded modeled document; the actual public still call has no asserted TruncatedZlib or success result. Final data outcome remains M4\u2013M6."
+    },
+    {
+      "row": "Retained category-a gate and earlier M3 host rows/E2",
+      "status": "105 category-a public-error witnesses retained; host components rechecked",
+      "functions": [
+        "witness_m3_frozen::header_*",
+        "witness_m3_walk_frozen::{model_*,symbolic_*,walk_*}",
+        "header::prefix",
+        "Frames::with_trace",
+        "Frames::try_next",
+        "DataReader::read",
+        "decode_image",
+        "decode_exact"
+      ],
+      "run": 288,
+      "statement": "All eighty generated category-a names and their source/tool files remain unchanged, plus the twenty-five header witnesses. Ten APNG category-a cases remain open. Earlier structural/allocation/Info/rewalk components and three E2 host arguments remain checked with no production changes."
+    },
+    {
+      "row": "Remaining category-b projections",
+      "status": "OPEN",
+      "functions": [],
+      "run": 288,
+      "records": [
+        "plte/suggested-palette-in-rgb",
+        "anc-ok/iCCP-303",
+        "anc-ok/tIME-7-after-idat",
+        "anc-ok/srgb-and-iccp-both",
+        "anc-ok/many-text",
+        "anc-ok/ztxt-with-corrupt-zlib-not-inflated",
+        "order/bkgd-hist-after-plte-before-idat-rgb",
+        "apng-bad/pixel-budget-exactly-2^30-then-zlib"
+      ],
+      "statement": "Seven accepted-metadata projections and the APNG budget projection remain open. Initial broader/failed attempts receive no projection credit."
+    },
+    {
+      "row": "Final i686 / M4\u2013M6 equations",
+      "status": "untouched/open",
+      "functions": [],
+      "run": 288,
+      "statement": "No cache copy or replay attempted; final replay must copy only into PNG-owned target, never rebuild or write under inflate target. No pixel/data/compositor/SavedAt equality claim."
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0289.json"
+  },
+  "spec_ambiguities": [],
+  "resume": "Retain all eighty category-a names and eight category-b projections; finish the other eight projections, revisit ten APNG category-a gates, then final copied-cache i686 replay."
+}

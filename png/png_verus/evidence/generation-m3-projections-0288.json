@@ -1,0 +1,25 @@
+{
+  "checkpoint": 288,
+  "base_commit": "a38c0d6",
+  "command": [
+    "python3",
+    "-I",
+    "/home/ws/projects/verified-decoders/png/png_verus/tools/generate_m3_projection_witnesses.py",
+    "--names",
+    "container/minimal-ok",
+    "container/unknown-ancillary-everywhere",
+    "container/reserved-bit-ancillary",
+    "plte/ok",
+    "order/splt-twice",
+    "ihdr/8192x8192-accepted-then-truncated-zlib",
+    "ihdr/67108864x1-accepted-then-truncated-zlib",
+    "ihdr/1x67108864-accepted-then-truncated-zlib"
+  ],
+  "selected_records": 8,
+  "generator_sha256": "01486f653b67d890e0c9a23797b5e2c5e60a77f0297cd17a5e6d083f957c1f58",
+  "generated_source_sha256": "a7ce7b1c6036c6f7757fd06a3f4ed75b0f29639b62b8d416a16ab4518311fc84",
+  "retained_category_a_generation": "generation-m3-walk-0282.json; all eighty names and both original files unchanged",
+  "expected_projection_source": "Frozen width/height fields when present; independent positive IHDR projection from fixture bytes for the three data-error cap records. Pixel runs and frozen final errors are not asserted by these M3 projections.",
+  "public_binding": "The checked callers::still preparation returns the modeled document with projected header and bounded Info descriptors; each executable witness also calls actual try_decode_still without asserting its final result.",
+  "generation_note": "Use the explicit eight-name command. The default fifteen-record expansion includes still-open accepted-metadata work; the APNG budget projection is separate."
+}
