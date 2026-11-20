@@ -15,7 +15,7 @@ entry is then amended in place of a new one by appending an "Owner decision" lin
 | E2 | APPROVED WITH AMENDMENT (2026-11-18, council) |
 | E3 | APPROVED (2026-11-20) |
 | E4 | APPROVED (2026-11-20) |
-| E5 | PROPOSED (2026-11-20, council PNG-Q6) |
+| E5 | APPROVED (2026-11-20, council PNG-Q6) |
 
 ## E1 — 2026-11-17: `inflate_verus` "no `alloc` dependency" (A-PNG-6) — APPROVED (2026-11-18)
 
@@ -100,7 +100,7 @@ Owner decision (2026-11-20): APPROVED. Recorded from the council's unanimous M1b
 
 Owner decision (2026-11-20): APPROVED, including the sentence on `Frames::try_new_logged`, which the owner adopted in addition to the council's unanimous M1b-Q5b wording (same sealed report).
 
-## E5 — 2026-11-20: T6, the table clause of L-CRC-TABLE (statement correction of one clause; the whole-message clause is unchanged) — PROPOSED
+## E5 — 2026-11-20: T6, the table clause of L-CRC-TABLE (statement correction of one clause; the whole-message clause is unchanged) — APPROVED (2026-11-20)
 
 Artifacts: `THEOREMS.md:116`, `THEOREMS.md:45`, `png_verus/src/crc.rs`. Decided by the council (PNG-Q6, option (a) amended, 4 of 4 seats in round 3, no dissent; sealed report `council/sealed/COUNCIL-REPORT-PNG-Q6.md`, sha256 `d901ee84901bc011133cf7f73d0ed979f7660ac299ea8d46d3ee438d502f6d49`, kept outside this repository). The text below is the fable seat's round-3 wording, verbatim.
 
@@ -115,3 +115,5 @@ Artifacts: `THEOREMS.md:116`, `THEOREMS.md:45`, `png_verus/src/crc.rs`. Decided 
 **If rejected.** T6 keeps a clause that no correct PNG table can satisfy, so L-CRC-TABLE, and therefore T6, cannot be reported as proved against the frozen manifest. The construction, update and whole-message proofs remain valid, and the ledger must keep recording the discrepancy instead of substituting the remainder meaning.
 
 **Must not be claimed.** No ledger, report or release note may say that `TABLE[i] = Crc([i])` is true or proved, that E5 is notation-only or changes no statement, that an unapproved E5 discharges L-CRC-TABLE, that Verus checks the relation `TABLE[i] XOR Crc([i]) = 0xD202EF8D`, or that E5 completes T6 or M3.
+
+Owner decision (2026-11-20): APPROVED. L-CRC-TABLE is discharged as corrected by this entry by the run-24 proofs; T6 remains partial.
