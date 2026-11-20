@@ -476,8 +476,9 @@ fn prepare_image(b: &[u8], pol: &Policy, frames: bool, wide: bool,
     requires old(trace).wf(),old(trace).n==0,
     ensures final(trace).wf(),crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),
         crate::allocation_model::image_prepared(b@,pol.walk_view(),frames,wide,prepared_image_view(r),final(ev).view(),final(trace).log_view()),
-        match r {Ok((doc,raw,out))=>doc.wf(b@) && crate::transport_model::idat_result(b@,doc.view())
+        match r {Ok((doc,raw,out))=>doc.wf(b@) && doc.ihdr.wf() && b.len()<=crate::limits::MAX_INPUT && crate::transport_model::idat_result(b@,doc.view())
             && crate::layout_model::image_buffers(doc.ihdr.view(),wide,raw@,out@)
+            && out.len()<=crate::alloc_guard::MAX_BYTES
             && raw@==Seq::new(raw@.len(),|_i: int|0u8) && out@==Seq::new(out@.len(),|_i: int|0u8)
             && (frames ==> crate::frame_state::source_document(b@,doc)),Err(_)=>true},
 {
@@ -517,6 +518,7 @@ fn image_preparation_logged(b: &[u8],pol: &Policy,frames: bool,wide: bool)
         crate::alloc_guard::sites::log_tied(r.0,r.2@.view()),
         match r.0 {Ok((doc,raw,out))=>doc.wf(b@) && crate::transport_model::idat_result(b@,doc.view())
             && crate::layout_model::image_buffers(doc.ihdr.view(),wide,raw@,out@)
+            && out.len()<=crate::alloc_guard::MAX_BYTES
             && raw@==Seq::new(raw@.len(),|_i: int|0u8) && out@==Seq::new(out@.len(),|_i: int|0u8)
             && (frames ==> crate::frame_state::source_document(b@,doc)),_=>true},
 {
@@ -541,51 +543,100 @@ fn icc_preparation_logged(b: &[u8])
     (result,ev,log)
 }
 
-} // verus!
-
 /// P15 for RGBA8 (`wide = false`) or RGBA16: walk, reserve, decode.
-fn still_impl(b: &[u8], pol: &Policy, wide: bool, ev: &mut Events, trace: &mut Trace) -> Result<(Doc, Vec<u8>), TryError> {
-    let (doc,mut raw,mut out)=prepare_image(b,pol,false,wide,ev,trace)?;
-    let mut src = IdatReader::for_doc(b, &doc);
-    let mut sink = if wide { Sink::Rgba16(&mut out) } else { Sink::Rgba8(&mut out) };
-    decode_image(&doc, b, &mut src, &mut raw, doc.ihdr.w, doc.ihdr.h, pol, ev, &mut sink).map_err(TryError::Format)?;
-    drop(raw);
-    Ok((doc, out))
+fn still_impl(b: &[u8],pol: &Policy,wide: bool,ev: &mut Events,trace: &mut Trace) -> (r: Result<(Doc,Vec<u8>),TryError>)
+    requires old(trace).wf(),old(trace).n==0,
+    ensures final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),false,wide,r,final(trace).log_view()),
+        match r {Ok((doc,out))=>doc.wf(b@) && crate::allocation_model::returned_info(b@,pol.walk_view(),false,doc.info.view())
+            && out.len()==crate::layout_model::output_count(doc.ihdr.view(),wide),_=>true},
+{
+    hide(Doc::wf);hide(crate::document_model::MW_p);hide(inflate_verus::model::Inflate);
+    let prepared=prepare_image(b,pol,false,wide,ev,trace);
+    proof {crate::allocation_model::prepared_exit::<(Doc,Vec<u8>)>(b@,pol.walk_view(),false,wide,prepared_image_view(prepared),ev.view(),trace.log_view());}
+    let (doc,mut raw,mut out)=match prepared {Ok(v)=>v,Err(e)=>return Err(e)};
+    proof {
+        crate::limits::caps_ok();crate::icc_model::short_log(trace.log_view());
+        assert(crate::allocation_model::returned_info(b@,pol.walk_view(),false,doc.info.view()));
+    }
+    let ghost output_len=out.len();
+    {
+        let mut src=IdatReader::for_doc(b,&doc);
+        let mut sink=Sink::image(&mut out,doc.ihdr.w,doc.ihdr.h,wide);
+        let decoded=decode_image(&doc,b,&mut src,&mut raw,doc.ihdr.w,doc.ihdr.h,pol,ev,&mut sink);
+        sink.finish();
+        match decoded {Err(e)=>return Err(TryError::Format(e)),Ok(())=>{}}
+
+    }
+    assert(out.len()==output_len);
+    assert(crate::allocation_model::returned_info(b@,pol.walk_view(),false,doc.info.view()));
+    Ok((doc,out))
 }
 
-fn still8(b: &[u8], pol: &Policy, ev: &mut Events, trace: &mut Trace) -> Result<Still, TryError> {
-    let (doc, rgba) = still_impl(b, pol, false, ev, trace)?;
+fn still8(b: &[u8],pol: &Policy,ev: &mut Events,trace: &mut Trace) -> (r: Result<Still,TryError>)
+    requires old(trace).wf(),old(trace).n==0,
+    ensures final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),false,false,r,final(trace).log_view()),
+        match r {Ok(s)=>s.info.ranges_wf(b.len() as nat) && crate::allocation_model::returned_info(b@,pol.walk_view(),false,s.info.view()),_=>true},
+{
+    let (doc,rgba)=match still_impl(b,pol,false,ev,trace) {Ok(v)=>v,Err(e)=>return Err(e)};
     Ok(assemble_still(doc,rgba))
 }
-
-fn still16(b: &[u8], pol: &Policy, ev: &mut Events, trace: &mut Trace) -> Result<Still16, TryError> {
-    let (doc, rgba16) = still_impl(b, pol, true, ev, trace)?;
-    Ok(assemble_still16(doc,rgba16))
+fn still16(b: &[u8],pol: &Policy,ev: &mut Events,trace: &mut Trace) -> (r: Result<Still16,TryError>)
+    requires old(trace).wf(),old(trace).n==0,
+    ensures final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),false,true,r,final(trace).log_view()),
+        match r {Ok(s)=>s.info.ranges_wf(b.len() as nat) && crate::allocation_model::returned_info(b@,pol.walk_view(),false,s.info.view()),_=>true},
+{
+    let (doc,rgba)=match still_impl(b,pol,true,ev,trace) {Ok(v)=>v,Err(e)=>return Err(e)};
+    Ok(assemble_still16(doc,rgba))
 }
 
-/// `decode_still` (P15): the default image as RGBA8, Strict.
-pub fn try_decode_still(b: &[u8]) -> Result<Still, TryError> {
-    still8(b, &STRICT, &mut Events::default(), &mut Trace::new())
+/// Strict RGBA8 public entry: checked walk-error dispatch and Info forwarding.
+pub fn try_decode_still(b: &[u8]) -> (r: Result<Still,TryError>)
+    ensures forall|e: Error,ev: crate::document_model::Events|
+        crate::document_model::MW_p(b@,crate::document_model::strict())==crate::document_model::Outcome::Error(e,ev)
+            ==> r==Err(TryError::Format(e)),
+        match r {Ok(s)=>s.info.ranges_within(b.len() as nat) && crate::allocation_model::returned_info(b@,crate::document_model::strict(),false,s.info.model_value()),_=>true},
+{
+    proof {crate::walk_policy::profiles_project_exactly();}
+    let mut ev=Events {r1:false,r3:false,r4:false};let mut trace=Trace::new();
+    let result=still8(b,&STRICT,&mut ev,&mut trace);
+    proof {if let Ok(s)=&result {s.info.public_observations(b.len() as nat);}}
+    result
+}
+pub fn try_decode_still16(b: &[u8]) -> (r: Result<Still16,TryError>)
+    ensures forall|e: Error,ev: crate::document_model::Events|
+        crate::document_model::MW_p(b@,crate::document_model::strict())==crate::document_model::Outcome::Error(e,ev)
+            ==> r==Err(TryError::Format(e)),
+        match r {Ok(s)=>s.info.ranges_within(b.len() as nat) && crate::allocation_model::returned_info(b@,crate::document_model::strict(),false,s.info.model_value()),_=>true},
+{
+    proof {crate::walk_policy::profiles_project_exactly();}
+    let mut ev=Events {r1:false,r3:false,r4:false};let mut trace=Trace::new();
+    let result=still16(b,&STRICT,&mut ev,&mut trace);
+    proof {if let Ok(s)=&result {s.info.public_observations(b.len() as nat);}}
+    result
 }
 
-/// `decode_still16` (P15, P13.3): the default image as RGBA16, Strict.
-pub fn try_decode_still16(b: &[u8]) -> Result<Still16, TryError> {
-    still16(b, &STRICT, &mut Events::default(), &mut Trace::new())
+pub fn try_decode_still_with_policy(b: &[u8],p: Profile) -> (r: Result<(Still,bool),TryError>)
+    ensures forall|e: Error,ev: crate::document_model::Events|
+        crate::document_model::MW_p(b@,p.walk_model())==crate::document_model::Outcome::Error(e,ev) ==> r==Err(TryError::Format(e)),
+        match r {Ok((s,_))=>s.info.ranges_within(b.len() as nat) && crate::allocation_model::returned_info(b@,p.walk_model(),false,s.info.model_value()),_=>true},
+{
+    let pol=p.checked_policy();let mut ev=Events {r1:false,r3:false,r4:false};let mut trace=Trace::new();
+    let s=match still8(b,&pol,&mut ev,&mut trace) {Ok(s)=>s,Err(e)=>return Err(e)};
+    proof {s.info.public_observations(b.len() as nat);}
+    Ok((s,ev.any()))
+}
+pub fn try_decode_still16_with_policy(b: &[u8],p: Profile) -> (r: Result<(Still16,bool),TryError>)
+    ensures forall|e: Error,ev: crate::document_model::Events|
+        crate::document_model::MW_p(b@,p.walk_model())==crate::document_model::Outcome::Error(e,ev) ==> r==Err(TryError::Format(e)),
+        match r {Ok((s,_))=>s.info.ranges_within(b.len() as nat) && crate::allocation_model::returned_info(b@,p.walk_model(),false,s.info.model_value()),_=>true},
+{
+    let pol=p.checked_policy();let mut ev=Events {r1:false,r3:false,r4:false};let mut trace=Trace::new();
+    let s=match still16(b,&pol,&mut ev,&mut trace) {Ok(s)=>s,Err(e)=>return Err(e)};
+    proof {s.info.public_observations(b.len() as nat);}
+    Ok((s,ev.any()))
 }
 
-/// The profiled RGBA8 still; the `bool` is `recovered` (OPTIONS.md R1–R5).
-pub fn try_decode_still_with_policy(b: &[u8], p: Profile) -> Result<(Still, bool), TryError> {
-    let mut ev = Events::default();
-    let s = still8(b, &p.policy(), &mut ev, &mut Trace::new())?;
-    Ok((s, ev.any()))
-}
-
-/// The profiled RGBA16 still (PNG-Q13 (i)); the `bool` is `recovered`.
-pub fn try_decode_still16_with_policy(b: &[u8], p: Profile) -> Result<(Still16, bool), TryError> {
-    let mut ev = Events::default();
-    let s = still16(b, &p.policy(), &mut ev, &mut Trace::new())?;
-    Ok((s, ev.any()))
-}
+} // verus!
 
 /// Test-only (feature `test-records`): the profiled RGBA8 still with its event
 /// names (sorted) and the request trace.

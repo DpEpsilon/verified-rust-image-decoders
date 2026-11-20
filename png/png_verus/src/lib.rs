@@ -7,8 +7,9 @@
 //! The segmented adapter, IDAT/fdAT transport and validated boundary selectors
 //! feed checked source-state transitions and fresh-event walk gates. The Strict
 //! ICC entry composes bounded measurement, exact-sized second-pass bytes and its
-//! returned sealed log. Image stages, complete still/frame receiver composition
-//! and their remaining logged equations remain ordinary Rust. A green run
+//! returned sealed log. The image continuation and public still entries have
+//! checked weak safety, walk-error and Info contracts. Pixel equality, public
+//! frame continuation and complete logged receiver equations remain open. A green run
 //! does not sign off M3. zlib/DEFLATE is the verified `inflate_verus` dependency.
 //!
 //! `no_std + alloc`, no `unsafe`, no recursion. Every heap allocation goes

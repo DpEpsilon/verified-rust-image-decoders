@@ -72,4 +72,32 @@ pub proof fn image_prealloc(b: Seq<u8>,pol: walk::Policy,frames: bool,wide: bool
     assert(log =~= Seq::empty());
 }
 
+/// M3 whole-call allocation/PreAlloc projection, independent of data/pixel outcomes.
+pub open spec fn image_call<T>(b: Seq<u8>,pol: walk::Policy,frames: bool,wide: bool,
+    result: Result<T,TryError>,log: Seq<(AllocSite,nat,bool)>) -> bool {
+    match image_walk(b,pol,frames) {
+        walk::Outcome::Error(e,_)=>result==Err(TryError::Format(e)) && log==Seq::<(AllocSite,nat,bool)>::empty(),
+        walk::Outcome::Done(doc,_)=>log_tied(result,log)
+            && crate::alloc_guard::req_of_log(log).is_prefix_of(image_requests(doc,wide))
+            && match result {
+                Err(TryError::OutOfMemory(_))=>1<=log.len()<=2,
+                _=>log==seq![(AllocSite::Raw,image_requests(doc,wide)[0].1,true),
+                    (AllocSite::Output,image_requests(doc,wide)[1].1,true)],
+            },
+        _=>false,
+    }
+}
+pub open spec fn returned_info(b: Seq<u8>,pol: walk::Policy,frames: bool,info: walk::Info) -> bool {
+    match image_walk(b,pol,frames) {walk::Outcome::Done(doc,_)=>info==doc.info,_=>false}
+}
+
+pub proof fn prepared_exit<T>(b: Seq<u8>,pol: walk::Policy,frames: bool,wide: bool,
+    prefix: Result<walk::Doc,TryError>,events: walk::Events,log: Seq<(AllocSite,nat,bool)>)
+    requires image_prepared(b,pol,frames,wide,prefix,events,log),
+    ensures match prefix {Err(e)=>image_call::<T>(b,pol,frames,wide,Err(e),log),_=>true},
+{
+    hide(walk::MW_p);hide(walk::MWF_p);
+    match image_walk(b,pol,frames) {walk::Outcome::Error(_,_)=>{assert(log =~= Seq::empty());},_=>{}}
+}
+
 } // verus!

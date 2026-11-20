@@ -38,6 +38,8 @@ pub(crate) fn pass(interlace: u8, w: u32, h: u32, k: usize) -> (r: Option<Pass>)
     ensures match r {
         None=>if interlace==0 {k!=0}else{k>=7 || layout::cols(w as nat,k as nat)==0 || layout::rows(h as nat,k as nat)==0},
         Some(p)=>1<=p.pw<=w && 1<=p.ph<=h && 1<=p.dx<=8 && 1<=p.dy<=8
+            && p.pw==layout::span(w as nat,p.x0 as nat,p.dx as nat)
+            && p.ph==layout::span(h as nat,p.y0 as nat,p.dy as nat)
             && if interlace==0 {k==0 && p.x0==0 && p.y0==0 && p.dx==1 && p.dy==1 && p.pw==w && p.ph==h}
             else{k<7 && (p.x0 as nat,p.y0 as nat,p.dx as nat,p.dy as nat)==layout::geometry(k as nat)
                 && p.pw==layout::cols(w as nat,k as nat) && p.ph==layout::rows(h as nat,k as nat)},
@@ -228,6 +230,25 @@ proof fn pixel_offset(w: nat,h: nat,x: nat,y: nat,bytes: nat,n: nat)
 }
 
 impl<'o> Sink<'o> {
+    /// The final contents of the original destination loan, not current pixels.
+    #[verifier::prophetic]
+    pub(crate) closed spec fn loan(self) -> Seq<u8> {
+        match self {Self::Rgba8(out)|Self::Rgba16(out)=>final(out)@,Self::Canvas {canvas,..}=>final(canvas)@}
+    }
+    /// End the nested destination loan so its owner recovers the final length.
+    pub(crate) fn finish(self)
+        ensures self.loan().len()==self.shape().1,
+            match self {
+            Self::Rgba8(out)|Self::Rgba16(out)=>final(out)@.len()==self.shape().1,
+            Self::Canvas {canvas,..}=>final(canvas)@.len()==self.shape().1,
+        },
+    {match self {Self::Rgba8(_)|Self::Rgba16(_)|Self::Canvas {..}=>{}}}
+    pub(crate) fn image(out: &'o mut [u8],w: u32,h: u32,wide: bool) -> (r: Self)
+        requires 1<=w<=crate::limits::PNG_WIRE_MAX,1<=h<=crate::limits::PNG_WIRE_MAX,
+            out.len()==(if wide {8nat}else{4nat})*(w as nat)*(h as nat),out.len()<=crate::alloc_guard::MAX_BYTES,
+        ensures r.wf(w,h),r.wide_view()==wide,r.shape().1==old(out).len(),r.loan()==final(out)@,
+            match r {Self::Rgba8(s)|Self::Rgba16(s)=>s@==old(out)@ && final(s)@==final(out)@,_=>false},
+    {if wide {Self::Rgba16(out)}else{Self::Rgba8(out)}}
     pub(crate) closed spec fn wide_view(self) -> bool {matches!(self,Self::Rgba16(_))}
     pub(crate) closed spec fn shape(self) -> (nat,nat,nat,nat,nat,bool) {
         match self {
@@ -252,7 +273,7 @@ impl<'o> Sink<'o> {
     fn put(&mut self, width: u32,height: u32, x: u32, y: u32, px: [u16; 4])
         requires old(self).wf(width,height),x<width,y<height,
             !old(self).wide_view() ==> forall|i: int| 0<=i<4 ==> (#[trigger] px@[i])<=u8::MAX,
-        ensures final(self).shape()==old(self).shape(),final(self).wf(width,height),
+        ensures final(self).shape()==old(self).shape(),final(self).wf(width,height),final(self).loan()==old(self).loan(),
     {
         proof {crate::limits::caps_ok();}
         match self {
@@ -585,56 +606,179 @@ impl<'b> Colour<'b> {
     }
 }
 
-} // verus!
+fn pass_coordinate(n: u32,origin: u32,step: u32,index: u32) -> (r: u32)
+    requires step>=1,index<layout::span(n as nat,origin as nat,step as nat),
+    ensures r<n,
+{
+    proof {layout::span_index(n as nat,origin as nat,step as nat,index as nat);}
+    origin+index*step
+}
 
-/// Decode one `w × h` image (P11–P13) whose zlib stream `src` yields, using
-/// `raw` (at least `R(w,h)` bytes, P20 `Raw`) and drawing into `sink`.
-pub(crate) fn decode_image<S: Segments>(
-    doc: &Doc,
-    b: &[u8],
-    src: &mut S,
-    raw: &mut [u8],
-    w: u32,
-    h: u32,
-    pol: &Policy,
-    ev: &mut Events,
-    sink: &mut Sink<'_>,
-) -> Result<(), Error> {
-    let ihdr = &doc.ihdr;
-    let r = raw_size(ihdr, w, h);
-    let raw = &mut raw[..r as usize];
-    let res = inflate_zlib_into(src, raw, pol.inflate_options());
-    image_status(res.status, res.produced, r)?;
-    let bpp = ihdr.bpp();
-    let wide = sink.wide();
-    let colour = Colour::new(doc, b);
-    let mut pos = 0usize;
-    let mut k = 0;
-    while k < pass_count(ihdr.interlace) {
-        if let Some(p) = pass(ihdr.interlace, w, h, k) {
-            let rb = row_bytes(ihdr, p.pw) as usize;
-            let mut row = 0u32;
-            while row < p.ph {
-                let ft = raw[pos];
-                if ft > 4 {
-                    return Err(Error::InvalidFilterType);
-                }
-                let (before, rest) = raw.split_at_mut(pos + 1);
-                let cur = &mut rest[..rb];
-                let prev = if row > 0 { Some(&before[pos - rb..pos]) } else { None };
-                unfilter(ft, cur, prev, bpp);
-                let y = p.y0 + row * p.dy;
-                let mut c = 0u32;
-                while c < p.pw {
-                    let px = colour.pixel(cur, c as usize, wide, pol, ev)?;
-                    sink.put(w,h, p.x0 + c * p.dx, y, px);
-                    c += 1;
-                }
-                pos += 1 + rb;
-                row += 1;
-            }
+/// Read a reconstructed row and write only within the selected destination.
+fn draw_row(colour: &Colour<'_>,line: &[u8],w: u32,h: u32,x0: u32,dx: u32,pw: u32,y: u32,
+    wide: bool,pol: &Policy,ev: &mut Events,sink: &mut Sink<'_>) -> (result: Result<(),Error>)
+    requires colour.wf(),old(sink).wf(w,h),wide==old(sink).wide_view(),
+        1<=pw<=w,1<=dx<=8,y<h,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
+        pw==layout::span(w as nat,x0 as nat,dx as nat),
+        line.len()==layout::scan_bytes(colour.channels()*(colour.depth as nat),pw as nat),
+    ensures final(sink).shape()==old(sink).shape(),final(sink).wf(w,h),final(sink).loan()==old(sink).loan(),
+        final(ev).r1==old(ev).r1,final(ev).r4==old(ev).r4,
+{
+    let mut c=0u32;
+    while c<pw
+        invariant c<=pw,colour.wf(),sink.wf(w,h),sink.shape()==old(sink).shape(),sink.loan()==old(sink).loan(),wide==sink.wide_view(),
+            1<=pw<=w,1<=dx<=8,y<h,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
+            pw==layout::span(w as nat,x0 as nat,dx as nat),
+            line.len()==layout::scan_bytes(colour.channels()*(colour.depth as nat),pw as nat),
+            ev.r1==old(ev).r1,ev.r4==old(ev).r4,
+        decreases pw-c,
+    {
+        proof {
+            assert((pw as int)*(colour.channels()*(colour.depth as nat))<=8*(line.len() as int));
+            assert((c as int+1)*colour.channels()*(colour.depth as int)<=8*(line.len() as int)) by (nonlinear_arith)
+                requires c<pw,(pw as int)*(colour.channels()*(colour.depth as nat))<=8*(line.len() as int),
+                    colour.channels()>=1,colour.depth>=1;
+            layout::span_index(w as nat,x0 as nat,dx as nat,c as nat);
+            assert((x0 as int)+(c as int)*(dx as int)<w);
         }
-        k += 1;
+        let px=match colour.pixel(line,c as usize,wide,pol,ev) {Ok(px)=>px,Err(e)=>return Err(e)};
+        sink.put(w,h,x0+c*dx,y,px);
+        c+=1;
     }
     Ok(())
 }
+
+proof fn row_extent(base: nat,rows: nat,bytes: nat,row: nat,limit: nat)
+    requires row<rows,base+rows*(1+bytes)<=limit,
+    ensures base+row*(1+bytes)+1+bytes<=limit,
+        row>0 ==> bytes<=base+row*(1+bytes),
+{
+    assert((row+1)*(1+bytes)<=rows*(1+bytes)) by (nonlinear_arith) requires row<rows,bytes>=0;
+    assert(row*(1+bytes)+1+bytes==(row+1)*(1+bytes)) by (nonlinear_arith);
+    assert(row>0 ==> bytes<=base+row*(1+bytes)) by (nonlinear_arith)
+        requires row>=0,base>=0,bytes>=0;
+}
+
+/// Weak safety/termination continuation; no filter/sample/pixel equation.
+fn decode_exact<S: Segments>(
+    doc: &Doc,b: &[u8],src: &mut S,raw: &mut [u8],w: u32,h: u32,
+    pol: &Policy,ev: &mut Events,sink: &mut Sink<'_>,
+) -> (result: Result<(),Error>)
+    requires doc.wf(b@),doc.ihdr.wf(),1<=w<=doc.ihdr.w,1<=h<=doc.ihdr.h,
+        old(src).wf(),old(src).pos()==0,old(sink).wf(w,h),
+        layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat)==old(raw).len(),
+    ensures final(src).wf(),final(src).concat()==old(src).concat(),
+        final(src).source_frame()==old(src).source_frame(),final(src).seg_count()==old(src).seg_count(),
+        final(src).pos()<=final(src).concat().len(),final(raw).len()==old(raw).len(),
+        final(sink).shape()==old(sink).shape(),final(sink).wf(w,h),final(sink).loan()==old(sink).loan(),
+        final(ev).r1==old(ev).r1,final(ev).r4==old(ev).r4,
+{
+    hide(Doc::wf);hide(inflate_verus::model::Inflate);
+    let ihdr=&doc.ihdr;
+    let r=raw_size(ihdr,w,h);
+    proof {crate::limits::caps_ok();}
+    let res=inflate_zlib_into(src,raw,pol.inflate_options());
+    match image_status(res.status,res.produced,r) {Err(e)=>return Err(e),Ok(())=>{}}
+    proof {
+        assert(4*(w as int)<=crate::alloc_guard::MAX_BYTES) by (nonlinear_arith)
+            requires 1<=w<=ihdr.w,1<=ihdr.h,4*(ihdr.w as int)*(ihdr.h as int)<=crate::limits::MAX_OUTPUT,
+                crate::limits::MAX_OUTPUT<=crate::alloc_guard::MAX_BYTES;
+    }
+    let bpp=ihdr.bpp();
+    let wide=sink.wide();
+    let colour=Colour::new(doc,b);
+    let mut pos=0usize;
+    let mut k=0usize;
+    while k<pass_count(ihdr.interlace)
+        invariant doc.wf(b@),ihdr==&doc.ihdr,ihdr.wf(),1<=w<=ihdr.w,1<=h<=ihdr.h,
+            k<=layout::count(ihdr.interlace),raw.len()==r,r==old(raw).len(),
+            r==layout::raw(ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat),r<=crate::alloc_guard::MAX_BYTES,
+            pos==layout::prefix(ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,k as nat),
+            colour.wf(),colour.ct==ihdr.ct,colour.depth==ihdr.depth,bpp>=1,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
+            sink.wf(w,h),sink.shape()==old(sink).shape(),sink.loan()==old(sink).loan(),wide==sink.wide_view(),
+            ev.r1==old(ev).r1,ev.r4==old(ev).r4,
+            src.wf(),src.concat()==old(src).concat(),src.source_frame()==old(src).source_frame(),
+            src.seg_count()==old(src).seg_count(),src.pos()<=src.concat().len(),
+        decreases layout::count(ihdr.interlace)-k,
+    {
+        if let Some(p)=pass(ihdr.interlace,w,h,k) {
+            let bytes=row_bytes(ihdr,p.pw);
+            let ghost base=pos as nat;
+            proof {
+                reveal_with_fuel(layout::prefix,2);
+                layout::monotone(ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,(k+1) as nat,layout::count(ihdr.interlace));
+                assert(layout::contribution(ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,k as nat)
+                    ==p.ph as int*(1+bytes as int));
+                assert(base+p.ph as int*(1+bytes as int)<=r);
+                assert(bytes<r) by (nonlinear_arith) requires base>=0,p.ph>=1,base+p.ph as int*(1+bytes as int)<=r;
+            }
+            let rb=bytes as usize;
+            let mut row=0u32;
+            while row<p.ph
+                invariant doc.wf(b@),ihdr==&doc.ihdr,ihdr.wf(),1<=w<=ihdr.w,1<=h<=ihdr.h,
+                    raw.len()==r,r==old(raw).len(),r<=crate::alloc_guard::MAX_BYTES,k<layout::count(ihdr.interlace),
+                    base==layout::prefix(ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,k as nat),
+                    row<=p.ph,1<=p.pw<=w,1<=p.ph<=h,1<=p.dx<=8,1<=p.dy<=8,
+                    p.pw==layout::span(w as nat,p.x0 as nat,p.dx as nat),p.ph==layout::span(h as nat,p.y0 as nat,p.dy as nat),
+                    rb==layout::scan_bytes(layout::bits(ihdr.view()),p.pw as nat),
+                    base+p.ph as int*(1+rb as int)<=r,pos==base+row as int*(1+rb as int),
+                    layout::prefix(ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,(k+1) as nat)==base+p.ph as int*(1+rb as int),
+                    ihdr.interlace==0 ==> (p.x0==0 && p.y0==0 && p.dx==1 && p.dy==1 && p.pw==w && p.ph==h),
+                    ihdr.interlace!=0 ==> ((p.x0 as nat,p.y0 as nat,p.dx as nat,p.dy as nat)==layout::geometry(k as nat)
+                        && p.pw==layout::cols(w as nat,k as nat) && p.ph==layout::rows(h as nat,k as nat)),
+                    colour.wf(),colour.ct==ihdr.ct,colour.depth==ihdr.depth,bpp>=1,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
+                    sink.wf(w,h),sink.shape()==old(sink).shape(),sink.loan()==old(sink).loan(),wide==sink.wide_view(),
+                    ev.r1==old(ev).r1,ev.r4==old(ev).r4,
+                    src.wf(),src.concat()==old(src).concat(),src.source_frame()==old(src).source_frame(),
+                    src.seg_count()==old(src).seg_count(),src.pos()<=src.concat().len(),
+                decreases p.ph-row,
+            {
+                proof {row_extent(base,p.ph as nat,rb as nat,row as nat,r as nat);}
+                let ft=raw[pos];
+                if ft>4 {return Err(Error::InvalidFilterType);}
+                let (before,rest)=raw.split_at_mut(pos+1);
+                let cur=&mut rest[..rb];
+                let prev=if row>0 {Some(&before[pos-rb..pos])}else{None};
+                unfilter(ft,cur,prev,bpp);
+                proof {
+                    assert(p.ph==layout::span(h as nat,p.y0 as nat,p.dy as nat));
+                    assert(p.pw==layout::span(w as nat,p.x0 as nat,p.dx as nat));
+                }
+                let y=pass_coordinate(h,p.y0,p.dy,row);
+                let row_result=draw_row(&colour,cur,w,h,p.x0,p.dx,p.pw,y,wide,pol,ev,sink);
+                match row_result {Err(e)=>return Err(e),Ok(())=>{}}
+                proof {
+                    assert(base+row as int*(1+rb as int)+1+rb as int==base+(row as int+1)*(1+rb as int)) by (nonlinear_arith);
+                }
+                pos+=1+rb;
+                row+=1;
+            }
+        } else {
+            proof {reveal_with_fuel(layout::prefix,2);}
+        }
+        k+=1;
+    }
+    Ok(())
+}
+
+/// Restrict writes to the proved Raw prefix without changing the caller's buffer length.
+pub(crate) fn decode_image<S: Segments>(
+    doc: &Doc,b: &[u8],src: &mut S,raw: &mut [u8],w: u32,h: u32,
+    pol: &Policy,ev: &mut Events,sink: &mut Sink<'_>,
+) -> (result: Result<(),Error>)
+    requires doc.wf(b@),doc.ihdr.wf(),1<=w<=doc.ihdr.w,1<=h<=doc.ihdr.h,
+        old(src).wf(),old(src).pos()==0,old(sink).wf(w,h),
+        layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat)<=old(raw).len(),
+    ensures final(src).wf(),final(src).concat()==old(src).concat(),
+        final(src).source_frame()==old(src).source_frame(),final(src).seg_count()==old(src).seg_count(),
+        final(src).pos()<=final(src).concat().len(),final(raw).len()==old(raw).len(),
+        final(sink).shape()==old(sink).shape(),final(sink).wf(w,h),final(sink).loan()==old(sink).loan(),
+        final(ev).r1==old(ev).r1,final(ev).r4==old(ev).r4,
+{
+    hide(Doc::wf);hide(inflate_verus::model::Inflate);
+    let r=raw_size(&doc.ihdr,w,h);
+    proof {crate::limits::caps_ok();}
+    decode_exact(doc,b,src,&mut raw[..r as usize],w,h,pol,ev,sink)
+}
+
+} // verus!

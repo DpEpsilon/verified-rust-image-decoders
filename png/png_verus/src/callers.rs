@@ -33,7 +33,7 @@ pub(crate) fn still(b: &[u8], pol: &Policy, ev: &mut Events) -> (r: Result<Doc,T
 pub(crate) fn frames(b: &[u8], pol: &Policy, ev: &mut Events) -> (r: Result<Doc,TryError>)
     ensures outcome(r,*final(ev))==model::MWF_p(b@,pol.walk_view()),
         !matches!(r,Err(TryError::OutOfMemory(_))),
-        match r {Ok(doc)=>doc.wf(b@) && doc.ihdr.wf() && crate::frame_state::source_document(b@,doc)
+        match r {Ok(doc)=>doc.wf(b@) && doc.ihdr.wf() && b.len()<=crate::limits::MAX_INPUT && crate::frame_state::source_document(b@,doc)
             && crate::transport_model::idat_result(b@,doc.view())
             && (final(ev).r4 ==> crate::frame_transport_model::default_only(doc.view())),Err(_)=>true},
 {

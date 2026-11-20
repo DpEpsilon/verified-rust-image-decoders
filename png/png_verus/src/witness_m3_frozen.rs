@@ -1,6 +1,6 @@
-//! Authored frozen-fixture model/header facts, not public-entry gates.
-//! Category (a) still needs checked public dispatch; category (b) also
-//! needs full checked walk preparation. No pixel/data outcome is claimed.
+//! Authored frozen-fixture header-error public witnesses and header facts.
+//! Header rejections call the actual checked public still entry.
+//! Accepted headers still need whole-walk/preparation projection; no pixel claim.
 use vstd::prelude::*;
 use crate::{model,header,png::Error,document_model as m,policy::STRICT,png::Events};
 
@@ -20,6 +20,8 @@ fn header_container_empty() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::BadSignature))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::BadSignature))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::BadSignature))));
 }
 
 // container/short-signature; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -37,6 +39,8 @@ fn header_container_short_signature() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::BadSignature))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::BadSignature))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::BadSignature))));
 }
 
 // container/bad-signature; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -54,6 +58,8 @@ fn header_container_bad_signature() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::BadSignature))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::BadSignature))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::BadSignature))));
 }
 
 // container/signature-only; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -71,6 +77,8 @@ fn header_container_signature_only() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::TruncatedChunk))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::TruncatedChunk))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::TruncatedChunk))));
 }
 
 // container/truncated-ihdr-header; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -88,6 +96,8 @@ fn header_container_truncated_ihdr_header() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::TruncatedChunk))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::TruncatedChunk))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::TruncatedChunk))));
 }
 
 // container/truncated-ihdr-crc; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -105,6 +115,8 @@ fn header_container_truncated_ihdr_crc() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::TruncatedChunk))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::TruncatedChunk))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::TruncatedChunk))));
 }
 
 // container/first-chunk-not-ihdr; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -122,6 +134,8 @@ fn header_container_first_chunk_not_ihdr() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::MissingIhdr))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::MissingIhdr))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::MissingIhdr))));
 }
 
 // container/ihdr-length-12; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -139,6 +153,8 @@ fn header_container_ihdr_length_12() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidChunkLength))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidChunkLength))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidChunkLength))));
 }
 
 // container/ihdr-crc; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -156,6 +172,8 @@ fn header_container_ihdr_crc() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::CrcMismatch))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::CrcMismatch))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::CrcMismatch))));
 }
 
 // ihdr/width-0; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -173,6 +191,8 @@ fn header_ihdr_width_0() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidDimensions))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidDimensions))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidDimensions))));
 }
 
 // ihdr/height-0; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -190,6 +210,8 @@ fn header_ihdr_height_0() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidDimensions))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidDimensions))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidDimensions))));
 }
 
 // ihdr/width-2_31; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -207,6 +229,8 @@ fn header_ihdr_width_2_31() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidDimensions))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidDimensions))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidDimensions))));
 }
 
 // ihdr/depth-3; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -224,6 +248,8 @@ fn header_ihdr_depth_3() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
 }
 
 // ihdr/rgb-depth-4; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -241,6 +267,8 @@ fn header_ihdr_rgb_depth_4() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
 }
 
 // ihdr/palette-depth-16; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -258,6 +286,8 @@ fn header_ihdr_palette_depth_16() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
 }
 
 // ihdr/ct-1; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -275,6 +305,8 @@ fn header_ihdr_ct_1() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
 }
 
 // ihdr/ct-5; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -292,6 +324,8 @@ fn header_ihdr_ct_5() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
 }
 
 // ihdr/ct-7; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -309,6 +343,8 @@ fn header_ihdr_ct_7() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
 }
 
 // ihdr/ga-depth-1; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -326,6 +362,8 @@ fn header_ihdr_ga_depth_1() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::InvalidColorTypeDepth))));
 }
 
 // ihdr/compression-1; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -343,6 +381,8 @@ fn header_ihdr_compression_1() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::UnsupportedCompressionMethod))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::UnsupportedCompressionMethod))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::UnsupportedCompressionMethod))));
 }
 
 // ihdr/filter-method-1; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -360,6 +400,8 @@ fn header_ihdr_filter_method_1() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::UnsupportedFilterMethod))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::UnsupportedFilterMethod))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::UnsupportedFilterMethod))));
 }
 
 // ihdr/interlace-2; spec-frozen/VECTORS.json sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
@@ -377,6 +419,8 @@ fn header_ihdr_interlace_2() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::UnsupportedInterlaceMethod))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::UnsupportedInterlaceMethod))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::UnsupportedInterlaceMethod))));
 }
 
 // ihdr/width-2_31-1-output; limits-draft/VECTORS-CAPS.json sha256 0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726
@@ -394,6 +438,8 @@ fn header_ihdr_width_2_31_1_output() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::OutputTooLarge))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::OutputTooLarge))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::OutputTooLarge))));
 }
 
 // ihdr/67108865x1-output; limits-draft/VECTORS-CAPS.json sha256 0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726
@@ -411,6 +457,8 @@ fn header_ihdr_67108865x1_output() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::OutputTooLarge))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::OutputTooLarge))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::OutputTooLarge))));
 }
 
 // ihdr/8192x8193-output; limits-draft/VECTORS-CAPS.json sha256 0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726
@@ -428,6 +476,8 @@ fn header_ihdr_8192x8193_output() {
     assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::OutputTooLarge))));
     let frames=crate::callers::frames(&b,&STRICT,&mut ev);
     assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::OutputTooLarge))));
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::OutputTooLarge))));
 }
 
 // ihdr/8192x8192-accepted-then-truncated-zlib; limits-draft/VECTORS-CAPS.json sha256 0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726

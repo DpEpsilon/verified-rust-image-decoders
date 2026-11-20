@@ -194,6 +194,17 @@ impl Profile {
     }
 }
 
+verus! {
+
+impl Profile {
+    pub closed spec fn walk_model(self) -> crate::document_model::Policy {
+        match self {Self::Strict=>STRICT.walk_view(),Self::RecommendedBeta=>RECOMMENDED_BETA.walk_view()}
+    }
+    pub(crate) fn checked_policy(self) -> (r: Policy)
+        ensures r==match self {Self::Strict=>STRICT,Self::RecommendedBeta=>RECOMMENDED_BETA},r.walk_view()==self.walk_model(),
+    {match self {Self::Strict=>STRICT,Self::RecommendedBeta=>RECOMMENDED_BETA}}
+}
+
 impl Policy {
     /// The five inflate fields (SPEC P10.6, PNG-Q12) as `inflate_verus` options.
     pub(crate) fn inflate_options(&self) -> inflate_verus::InflateOptions {
@@ -209,3 +220,5 @@ impl Policy {
         o
     }
 }
+
+} // verus!

@@ -1,0 +1,366 @@
+[
+  {
+    "name": "container/empty",
+    "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "BadSignature"
+    },
+    "function": "header_container_empty",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "container/short-signature",
+    "input_sha256": "214246cd551e66de7b92c04e55355d0b3751adc15ee8ecc4066e0e9a7c9d3599",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "BadSignature"
+    },
+    "function": "header_container_short_signature",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "container/bad-signature",
+    "input_sha256": "0847091084e5cb984968bc4275c6b8d8bb5d29449851f3581780097081bbc4e0",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "BadSignature"
+    },
+    "function": "header_container_bad_signature",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "container/signature-only",
+    "input_sha256": "4c4b6a3be1314ab86138bef4314dde022e600960d8689a2c8f8631802d20dab6",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "TruncatedChunk"
+    },
+    "function": "header_container_signature_only",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "container/truncated-ihdr-header",
+    "input_sha256": "c93e2a066c3fab6da4e7395e61c7d7d55e011c4f67ca6ea0ea2d5a78b3d332bc",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "TruncatedChunk"
+    },
+    "function": "header_container_truncated_ihdr_header",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "container/truncated-ihdr-crc",
+    "input_sha256": "83ffe1db8854aa67c1cdb162d49eef97e8d3ee2ad326e9a31a0f74000e53158e",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "TruncatedChunk"
+    },
+    "function": "header_container_truncated_ihdr_crc",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "container/first-chunk-not-ihdr",
+    "input_sha256": "1963e93dd035d1d2f7ac72be493b309c5cca35d3b8fca42fbb050433c0b4615a",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "MissingIhdr"
+    },
+    "function": "header_container_first_chunk_not_ihdr",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "container/ihdr-length-12",
+    "input_sha256": "55fac890fe401e38d21544fea4236bc22c8f09ddcba5b61fca1106c4e3d28ae0",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "InvalidChunkLength"
+    },
+    "function": "header_container_ihdr_length_12",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "container/ihdr-crc",
+    "input_sha256": "9929f7eba8453c24b82d9667837a12d2f776f77bdef5703ec00050d868797017",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "CrcMismatch"
+    },
+    "function": "header_container_ihdr_crc",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "ihdr/width-0",
+    "input_sha256": "2617efa39c7589cbfdcb0360786d08b789c2b0cd96c8cb563c12e87c6d78b8f3",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "InvalidDimensions"
+    },
+    "function": "header_ihdr_width_0",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "ihdr/height-0",
+    "input_sha256": "b5529c9d3398c54e226beeb07c578effce7fa54b3e9df654d7de9ba842888e23",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "InvalidDimensions"
+    },
+    "function": "header_ihdr_height_0",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "ihdr/width-2^31",
+    "input_sha256": "00643696041645d527132cab3b2c44ffe102590bbd2039163d1b35bd0e7e6bea",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "InvalidDimensions"
+    },
+    "function": "header_ihdr_width_2_31",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "ihdr/depth-3",
+    "input_sha256": "8b3829b2ac3a9a3fab63ca7e505b918ee7547326648a03485ad91d3a37ab1394",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "InvalidColorTypeDepth"
+    },
+    "function": "header_ihdr_depth_3",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "ihdr/rgb-depth-4",
+    "input_sha256": "d2ae4de664b8321a50e0909b17f7d9fe759a1840a2484178c86513966163b7ca",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "InvalidColorTypeDepth"
+    },
+    "function": "header_ihdr_rgb_depth_4",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "ihdr/palette-depth-16",
+    "input_sha256": "fffef0b0d6e2ba354127037ed9d44722677eea8dae803f19ed6c2fd7ad0ccb2f",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "InvalidColorTypeDepth"
+    },
+    "function": "header_ihdr_palette_depth_16",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "ihdr/ct-1",
+    "input_sha256": "2504a50f322ecd131bcb2d02c57fe197c16250d456521e7e58cf347d6dd5a60c",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "InvalidColorTypeDepth"
+    },
+    "function": "header_ihdr_ct_1",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "ihdr/ct-5",
+    "input_sha256": "cda12c6fe492065beb8cf15fd6810e23f53b7ba5e96b9f3073f8747e7c212b8e",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "InvalidColorTypeDepth"
+    },
+    "function": "header_ihdr_ct_5",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "ihdr/ct-7",
+    "input_sha256": "7c89bd55bd8222741d1bd8822c3c8015a340454b351ce1bffbab1e760e867ce9",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "InvalidColorTypeDepth"
+    },
+    "function": "header_ihdr_ct_7",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "ihdr/ga-depth-1",
+    "input_sha256": "57f8197d51b8a445b5dae870154f2cf68bc29050f36574d82a727482b360bf08",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "InvalidColorTypeDepth"
+    },
+    "function": "header_ihdr_ga_depth_1",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "ihdr/compression-1",
+    "input_sha256": "c3b2d1251feffda38d471eeeac90cbe66f8a02caad188c6c40f534e77acb0318",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "UnsupportedCompressionMethod"
+    },
+    "function": "header_ihdr_compression_1",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "ihdr/filter-method-1",
+    "input_sha256": "48d7c741f0a7e2793f70edf0209da40ee7dac9f46587a5582f51f9cd4a04f787",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "UnsupportedFilterMethod"
+    },
+    "function": "header_ihdr_filter_method_1",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "ihdr/interlace-2",
+    "input_sha256": "741d17ab23c7399f0c2dd12188c40130cd6cde3a05558a4a0fb1fe2cb1964a9e",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "frozen_expected": {
+      "error": "UnsupportedInterlaceMethod"
+    },
+    "function": "header_ihdr_interlace_2",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "ihdr/width-2^31-1-output",
+    "input_sha256": "a19bcadfc7173f9a3d90baa519cf3fd53f60105587880141cbaca4e218ae2ea3",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+    "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+    "frozen_expected": {
+      "error": "OutputTooLarge"
+    },
+    "function": "header_ihdr_width_2_31_1_output",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "ihdr/67108865x1-output",
+    "input_sha256": "593a6e817c4c0ce7758c73caf65c1f1ca5673e3d932b39fe8a6ed5acbe9c332b",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+    "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+    "frozen_expected": {
+      "error": "OutputTooLarge"
+    },
+    "function": "header_ihdr_67108865x1_output",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "ihdr/8192x8193-output",
+    "input_sha256": "3af211bfab305b1d5c654c21f9bccdd5313d4c5d94a2956a2978906df074ee83",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+    "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+    "frozen_expected": {
+      "error": "OutputTooLarge"
+    },
+    "function": "header_ihdr_8192x8193_output",
+    "status": "complete M3 category-a model/public-entry error witness",
+    "complete_public_entry_witness": true,
+    "category": "a"
+  },
+  {
+    "name": "ihdr/8192x8192-accepted-then-truncated-zlib",
+    "input_sha256": "73d73c52e40d53e283473cdff9917e9f5a8c76abe5e46c9aefe87f53d4e25c11",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+    "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+    "frozen_expected": {
+      "error": "TruncatedZlib"
+    },
+    "function": "header_ihdr_8192x8192_accepted_then_truncated_zlib",
+    "status": "partial accepted-header fact; full M3 preparation projection remains open",
+    "complete_public_entry_witness": false,
+    "category": "b"
+  },
+  {
+    "name": "ihdr/67108864x1-accepted-then-truncated-zlib",
+    "input_sha256": "6b278d96fd9687d21d1eaa47deda23cea0d88dfda9cda211b9abf0b0767d7c00",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+    "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+    "frozen_expected": {
+      "error": "TruncatedZlib"
+    },
+    "function": "header_ihdr_67108864x1_accepted_then_truncated_zlib",
+    "status": "partial accepted-header fact; full M3 preparation projection remains open",
+    "complete_public_entry_witness": false,
+    "category": "b"
+  },
+  {
+    "name": "ihdr/1x67108864-accepted-then-truncated-zlib",
+    "input_sha256": "3ead08341ebeab9885153bf76127393a3cbafba7e8cdd2d695a38b1d4704eca8",
+    "source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+    "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+    "frozen_expected": {
+      "error": "TruncatedZlib"
+    },
+    "function": "header_ihdr_1x67108864_accepted_then_truncated_zlib",
+    "status": "partial accepted-header fact; full M3 preparation projection remains open",
+    "complete_public_entry_witness": false,
+    "category": "b"
+  }
+]

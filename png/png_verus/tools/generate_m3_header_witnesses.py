@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate partial M3 model/header witnesses; never credit public-entry gates.
+"""Generate M3 header-error public witnesses and partial accepted-header facts.
 
 Inputs are the project's authored frozen fixtures, not third-party corpus bytes.
 Expectations come from each frozen record, never from a decoder or oracle.
@@ -22,9 +22,9 @@ PREFIX_CASES = {
 
 def main():
     lines = [
-        '//! Authored frozen-fixture model/header facts, not public-entry gates.',
-        '//! Category (a) still needs checked public dispatch; category (b) also',
-        '//! needs full checked walk preparation. No pixel/data outcome is claimed.',
+        '//! Authored frozen-fixture header-error public witnesses and header facts.',
+        '//! Header rejections call the actual checked public still entry.',
+        '//! Accepted headers still need whole-walk/preparation projection; no pixel claim.',
         'use vstd::prelude::*;',
         'use crate::{model,header,png::Error,document_model as m,policy::STRICT,png::Events};',
         '', 'verus! {',
@@ -69,16 +69,19 @@ def main():
                           '    let still=crate::callers::still(&b,&STRICT,&mut ev);',
                           f'    assert(matches!(still,Err(crate::alloc_guard::sites::TryError::Format(Error::{error}))));',
                           '    let frames=crate::callers::frames(&b,&STRICT,&mut ev);',
-                          f'    assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::{error}))));']
+                          f'    assert(matches!(frames,Err(crate::alloc_guard::sites::TryError::Format(Error::{error}))));',
+                          '    let public_result=crate::png::try_decode_still(&b);',
+                          f'    assert(matches!(public_result,Err(crate::alloc_guard::sites::TryError::Format(Error::{error}))));']
             lines += ['}', '']
             rows.append(dict(name=name,input_sha256=hashlib.sha256(data).hexdigest(),source=str(path),
                              source_sha256=digest,frozen_expected=record['expected'],function='header_'+ident,
-                             status='partial model/header fact; not a complete public-entry witness',
+                             status=('partial accepted-header fact; full M3 preparation projection remains open' if projected else 'complete M3 category-a model/public-entry error witness'),
+                             complete_public_entry_witness=not projected,
                              category='b' if projected else 'a'))
     lines += ['} // verus!', '']
     (ROOT/'src/witness_m3_frozen.rs').write_text('\n'.join(lines))
     (ROOT/'runs/m3-header-witness-inputs.json').write_text(json.dumps(rows,indent=2)+'\n')
-    print(f'Generated {len(rows)} partial frozen model/header witnesses.')
+    print(f'Generated {sum(not r["category"]=="b" for r in rows)} public header-error witnesses and {sum(r["category"]=="b" for r in rows)} partial header projections.')
 
 
 if __name__ == '__main__':

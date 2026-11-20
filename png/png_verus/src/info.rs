@@ -11,6 +11,11 @@ pub(crate) open spec fn slot<T>(value: Meta<T>, f: spec_fn(T)->m::Stored) -> m::
     match value {Meta::Absent=>m::Slot::Absent,Meta::Discarded=>m::Slot::Discarded,Meta::Present(v)=>m::Slot::Present(f(v))}
 }
 impl Info {
+    pub closed spec fn model_value(self) -> m::Info {self.view()}
+    pub closed spec fn ranges_within(self,input_len: nat) -> bool {self.ranges_wf(input_len)}
+    pub(crate) proof fn public_observations(self,input_len: nat)
+        ensures self.model_value()==self.view(),self.ranges_within(input_len)==self.ranges_wf(input_len),
+    {}
     /// sBIT is the only stored array with a runtime prefix count. bKGD's
     /// prefix is derived from color_type and is always one or three samples.
     pub(crate) open spec fn bkgd_count(self) -> nat {

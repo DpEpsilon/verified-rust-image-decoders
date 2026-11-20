@@ -207,4 +207,18 @@ pub proof fn raw_dimensions(interlace: u8,bits: nat,w: nat,h: nat,W: nat,H: nat)
     ensures raw(interlace,bits,w,h)<=raw(interlace,bits,W,H),
 {prefix_dimensions(interlace,bits,w,h,W,H,count(interlace));}
 
+/// Safety-only pass coordinate bound, not Adam7 coverage or bijection.
+pub proof fn span_index(n: nat,origin: nat,step: nat,index: nat)
+    requires step>=1,index<span(n,origin,step),
+    ensures origin+index*step<n,
+{
+    assert(n>origin);
+    vstd::arithmetic::div_mod::lemma_div_plus_one(n-origin-1,step as int);
+    vstd::arithmetic::div_mod::lemma_fundamental_div_mod(n-origin-1,step as int);
+    let quotient=(n-origin-1)/(step as int);
+    assert(index<=quotient);
+    assert((index as int)*(step as int)<=quotient*(step as int)) by (nonlinear_arith)
+        requires 0<=index<=quotient,step>=1;
+}
+
 } // verus!

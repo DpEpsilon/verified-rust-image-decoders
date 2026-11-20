@@ -1,0 +1,141 @@
+{
+  "milestone": "M3 checked weak decoder/public still dispatch and first public frozen gates; not sign-off-ready",
+  "base_commit": "f6f948c",
+  "checkpoint": 238,
+  "verified": 496,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "signoff_ready": false,
+  "no_new_trusted_items": true,
+  "runtime_public_api_unchanged": true,
+  "runtime_and_source_controls_run": 239,
+  "claims": [
+    {
+      "row": "Weak full image continuation / T1 component",
+      "status": "proved on host",
+      "functions": [
+        "layout_model::span_index",
+        "pass_coordinate",
+        "row_extent",
+        "draw_row",
+        "decode_exact",
+        "decode_image"
+      ],
+      "run": 238,
+      "statement": "All actual image traversal, filtering/conversion calls and destination writes are checked under genuine Doc/source/Raw/Sink premises, preserving source concat/frame/cursor, Raw length, Sink shape/loan and R1/R4 on success/error; no pixel equation."
+    },
+    {
+      "row": "M3 public still A-PNG-7 / L-WALK-FIRST dispatch",
+      "status": "proved still component; frame entries open",
+      "functions": [
+        "allocation_model::image_call",
+        "allocation_model::prepared_exit",
+        "still_impl",
+        "still8",
+        "still16",
+        "try_decode_still",
+        "try_decode_still16",
+        "try_decode_still_with_policy",
+        "try_decode_still16_with_policy"
+      ],
+      "run": 238,
+      "statement": "Actual public still bodies refine M3 walk-error/allocation-call projection. Modeled walk errors return exact Format before reservation/default decode with empty held real log; success walking consumes Raw/Output prefix without constraining later data/pixel result. Ordering uses checked early-return control flow and call-site binding, not a fabricated event log."
+    },
+    {
+      "row": "L-INFO-RANGE / successful public still Info",
+      "status": "proved on host for still entries",
+      "functions": [
+        "allocation_model::returned_info",
+        "Info::model_value",
+        "Info::ranges_within",
+        "Info::public_observations",
+        "assemble_still",
+        "assemble_still16",
+        "try_decode_still",
+        "try_decode_still16",
+        "try_decode_still_with_policy",
+        "try_decode_still16_with_policy"
+      ],
+      "run": 238,
+      "statement": "Successful still Info equals the mathematical walk Info and has bounded stored descriptors; descriptors require the original input slice. Full pixel/data outcome equality is not claimed."
+    },
+    {
+      "row": "Nested destination loan frame",
+      "status": "proved on host",
+      "functions": [
+        "Sink::image",
+        "Sink::loan",
+        "Sink::finish",
+        "Sink::put",
+        "draw_row",
+        "decode_exact",
+        "decode_image"
+      ],
+      "run": 238,
+      "statement": "The checked prophetic loan observation uses the existing final builtin to preserve the original output loan while current bytes change, linking the eventual owner slice and restoring its length; no trusted axiom or executable future prediction."
+    },
+    {
+      "row": "Stored Previous rectangle/disposal fit",
+      "status": "proved component on host",
+      "functions": [
+        "previous_fits",
+        "FrameState::wf",
+        "FrameJob::wf",
+        "FrameJob::select",
+        "resume_state"
+      ],
+      "run": 238,
+      "statement": "Stored previous rectangles have positive dimensions, nonwrapping canvas fit and disposal <=2 through initial/selected/resumed source states. Public disposal execution remains unverified."
+    },
+    {
+      "row": "THEOREMS.md:194 category-a public error witnesses",
+      "status": "25 complete M3 public-entry witnesses",
+      "functions": [
+        "witness_m3_frozen::header_*"
+      ],
+      "run": 238,
+      "statement": "Each credited record has its exact model-versus-frozen error proof and an actual checked public still call; includes fourteen of the council sixteen without assigning an R. See m3-witness-status-0238.json for names/functions/bytes/source hashes."
+    },
+    {
+      "row": "Remaining frozen M3 gates",
+      "status": "OPEN",
+      "functions": [],
+      "run": 238,
+      "statement": "Ninety category-a public-error gates, all sixteen category-b full walk/preparation projections, and the duplicate-IHDR/zero-width-fcTL council cases remain open. Three accepted-header facts remain partial and no final data witness credit is assigned."
+    },
+    {
+      "row": "A-PNG-2 / Frames public constructor and iterator dispatch",
+      "status": "OPEN",
+      "functions": [],
+      "run": 238,
+      "statement": "Public Frames construction/stepping remains ordinary Rust; existing checked source/receiver/Saved components and current/Previous fit await weak public-body composition."
+    },
+    {
+      "row": "E2 actual-entry binding",
+      "status": "partial / mandatory IDAT/fdAT gates open",
+      "functions": [],
+      "run": 238,
+      "statement": "Still IDAT construction-to-into binding is now checked; IDAT frame-constructor binding and fdAT public try_next binding remain open; prior iCCP host discharge retained. reader-effects-0238.json separates checked and inspected arguments."
+    },
+    {
+      "row": "Final i686 / M4\u2013M6 pixel equations",
+      "status": "untouched/open",
+      "functions": [],
+      "run": 238,
+      "statement": "No target replay or filter/sample/compositor equality theorem added; final replay must copy existing i686 vstd into PNG-owned target output, never rebuild/write under inflate target."
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0239.json"
+  },
+  "spec_ambiguities": [],
+  "new_annotation": "Sink::loan is a checked #[verifier::prophetic] spec definition over baseline final references, not a trusted item.",
+  "resume": "Check Frames::with_record/public constructors and try_next/disposal/Saved/canvas with the weak decoder and Previous-fit invariant, then remaining frozen a/b witnesses, E2 bindings and final copied-cache i686 replay."
+}

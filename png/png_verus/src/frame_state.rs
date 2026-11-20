@@ -10,6 +10,13 @@ use inflate_verus::Segments;
 verus! {
 
 pub(crate) type Previous = Option<((u32,u32,u32,u32),u8)>;
+pub(crate) open spec fn previous_fits(previous: Previous,header: crate::model::Ihdr) -> bool {
+    match previous {
+        None=>true,
+        Some(((x,y,w,h),dispose))=>1<=w && 1<=h && x as int+w as int<=header.width
+            && y as int+h as int<=header.height && dispose<=2,
+    }
+}
 
 #[derive(Clone,Copy)]
 pub(crate) enum Kind {
@@ -72,7 +79,8 @@ impl FrameState {
     pub(crate) open spec fn wf(self, b: Seq<u8>, doc: Doc) -> bool {
         source_document(b,doc) && match self.kind {
             Kind::Done=>true,Kind::Single=>doc.actl.is_none(),
-            Kind::Anim {index,cursor,..}=>doc.actl.is_some() && index<=doc.info.frame_count
+            Kind::Anim {index,cursor,previous}=>doc.actl.is_some() && index<=doc.info.frame_count
+                && previous_fits(previous,doc.ihdr.view())
                 && cursor==transport::cursor_for(b,doc.frame_ranges@,transport::header_end(b),index as nat),
         }
     }
@@ -123,6 +131,7 @@ impl<'a> FrameJob<'a> {
     #[verifier::spinoff_prover]
     fn select(b: &'a [u8], doc: &Doc, index: u32, cursor: usize, previous: Previous) -> (r: Self)
         requires source_document(b@,*doc),doc.actl.is_some(),index<doc.info.frame_count,
+            previous_fits(previous,doc.ihdr.view()),
             cursor==transport::cursor_for(b@,doc.frame_ranges@,transport::header_end(b@),index as nat),
         ensures r.wf(b@,*doc),r.index==index,
     {
@@ -135,6 +144,7 @@ impl<'a> FrameJob<'a> {
         let reader=if index==0 && doc.info.default_is_frame {None} else {
             Some(DataReader::for_frame(b,doc,index,start))
         };
+        proof {reveal(transport::control_record);}
         let effective_dispose=if index==0 && control.dispose==2 {1} else {control.dispose};
         let resume=resume_state(b,doc,index,start,control,effective_dispose);
         proof {reveal(FrameJob::wf);reveal(transport::control_record);}
@@ -144,6 +154,7 @@ impl<'a> FrameJob<'a> {
     #[verifier::opaque]
     pub(crate) open spec fn wf(self, b: Seq<u8>, doc: Doc) -> bool {
         self.index<doc.frame_ranges@.len() && self.resume.wf(b,doc)
+        && previous_fits(self.previous,doc.ihdr.view())
         && self.resume.index()==Some(self.index as nat+1)
         && transport::control_record(doc.frame_ranges@[self.index as int],self.control.view())
         && crate::walk_state::frame_fits(doc.frame_ranges@[self.index as int],doc.ihdr.view())
@@ -190,6 +201,8 @@ fn read_control(b: &[u8], offset: usize) -> (r: (Fctl,usize))
 fn resume_state(b: &[u8], doc: &Doc, index: u32, start: usize, control: Fctl, dispose: u8) -> (r: FrameState)
     requires source_document(b@,*doc),doc.actl.is_some(),index<doc.info.frame_count,
         start==transport::frame_start(b@,doc.frame_ranges@[index as int]),
+        1<=control.w,1<=control.h,control.x as int+control.w as int<=doc.ihdr.w,
+        control.y as int+control.h as int<=doc.ihdr.h,dispose<=2,
     ensures r.wf(b@,*doc),r.index()==Some(index as nat+1),
 {
     FrameState {kind:Kind::Anim {index:index+1,cursor:start,
