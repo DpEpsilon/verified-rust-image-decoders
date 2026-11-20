@@ -15,6 +15,7 @@ entry is then amended in place of a new one by appending an "Owner decision" lin
 | E2 | APPROVED WITH AMENDMENT (2026-11-18, council) |
 | E3 | APPROVED (2026-11-20) |
 | E4 | APPROVED (2026-11-20) |
+| E5 | PROPOSED (2026-11-20, council PNG-Q6) |
 
 ## E1 — 2026-11-17: `inflate_verus` "no `alloc` dependency" (A-PNG-6) — APPROVED (2026-11-18)
 
@@ -98,3 +99,19 @@ Owner decision (2026-11-20): APPROVED. Recorded from the council's unanimous M1b
 **If rejected.** `Frames` stays the one constructor whose unqualified name takes a profile, contrary to D1, and the code reverts to `try_new(b, p)`.
 
 Owner decision (2026-11-20): APPROVED, including the sentence on `Frames::try_new_logged`, which the owner adopted in addition to the council's unanimous M1b-Q5b wording (same sealed report).
+
+## E5 — 2026-11-20: T6, the table clause of L-CRC-TABLE (statement correction of one clause; the whole-message clause is unchanged) — PROPOSED
+
+Artifacts: `THEOREMS.md:116`, `THEOREMS.md:45`, `png_verus/src/crc.rs`. Decided by the council (PNG-Q6, option (a) amended, 4 of 4 seats in round 3, no dissent; sealed report `council/sealed/COUNCIL-REPORT-PNG-Q6.md`, sha256 `d901ee84901bc011133cf7f73d0ed979f7660ac299ea8d46d3ee438d502f6d49`, kept outside this repository). The text below is the fable seat's round-3 wording, verbatim.
+
+**Frozen text.** `THEOREMS.md:116` (T6): "CRC (L-CRC-TABLE): the executable's 256-entry table equals `Crc` on single bytes, and the table-driven update over `t ++ d` equals `Crc(t, d)`." `THEOREMS.md:45` defines `Crc(t, d)` "with preset and final complement". Under that definition the first clause is false for every entry: the table entry for index 0 is `0x00000000`, while `Crc` of the one-byte message `[0x00]` is `0xD202EF8D` (`witness_m3::crc_known_answers`).
+
+**Implementation.** `crc::make_table` and the static `TABLE` initializer prove `TABLE[i] == model::crc_bits(i as u32, 8)` for every integer `0 <= i < 256`, where `crc_bits(x, 8)` is eight rounds of reflected polynomial division by `EDB88320` with no preset and no final complement, defined bit by bit in `model.rs` without reading the table. `crc::crc32` proves, with no precondition, that its result equals `model::crc` (preset `0xFFFFFFFF`, final complement) on every slice, using `lemma_crc_table` and `lemma_crc_update`; `framing::crc_matches` applies it to the chunk's type and data bytes `t ++ d`.
+
+**Proposed erratum (statement correction of the table clause; the whole-message clause and the checked CRC are unchanged).** In T6, "the executable's 256-entry table equals `Crc` on single bytes" is replaced by: for every integer `i` with `0 <= i < 256`, entry `i` of the executable's production table equals eight rounds of reflected polynomial division of the 32-bit value `i` by `EDB88320`, defined bit by bit, with neither preset nor final complement. The clause "the table-driven update over `t ++ d` equals `Crc(t, d)`" stands as frozen, with `Crc` as defined at `THEOREMS.md:45`, including preset and final complement. L-CRC-TABLE is discharged by exactly these two statements, which the existing production-table, update and whole-message proofs establish in Verus against the bitwise model; no additional lemma is required. The frozen table clause as literally written is false and is not claimed. This is a statement correction, not a notation-only change; it takes effect only on owner approval, leaves the frozen files unedited, adds no obligation and does not complete T6 or M3.
+
+**Effect on users.** No executable behaviour, accepted input, `CrcMismatch` behaviour or whole-message CRC guarantee changes: every chunk's stored CRC is compared with the preset-and-complemented CRC-32 of its type and data bytes, as SPEC P3 step 4 requires, and that equation is proved for every input. The table is internal; the correction replaces a false assertion about it with the proved one. A reader of `THEOREMS.md` must read T6's table clause through this entry.
+
+**If rejected.** T6 keeps a clause that no correct PNG table can satisfy, so L-CRC-TABLE, and therefore T6, cannot be reported as proved against the frozen manifest. The construction, update and whole-message proofs remain valid, and the ledger must keep recording the discrepancy instead of substituting the remainder meaning.
+
+**Must not be claimed.** No ledger, report or release note may say that `TABLE[i] = Crc([i])` is true or proved, that E5 is notation-only or changes no statement, that an unapproved E5 discharges L-CRC-TABLE, that Verus checks the relation `TABLE[i] XOR Crc([i]) = 0xD202EF8D`, or that E5 completes T6 or M3.
