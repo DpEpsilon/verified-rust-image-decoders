@@ -18,7 +18,7 @@ pub(crate) open spec fn outcome(r: Result<Doc,TryError>, ev: Events) -> m::Outco
 pub(crate) fn still(b: &[u8], pol: &Policy, ev: &mut Events) -> (r: Result<Doc,TryError>)
     ensures outcome(r,*final(ev))==model::MW_p(b@,pol.walk_view()),
         !matches!(r,Err(TryError::OutOfMemory(_))),
-        match r {Ok(doc)=>doc.wf(b@) && doc.source_partition()
+        match r {Ok(doc)=>doc.wf(b@) && doc.ihdr.wf() && doc.source_partition()
             && crate::transport_model::idat_result(b@,doc.view())
             && b.len()<=crate::limits::MAX_INPUT && model::mh(b@).is_ok()
             && doc.info.frame_count==doc.frame_ranges@.len(),Err(_)=>true},
@@ -33,7 +33,7 @@ pub(crate) fn still(b: &[u8], pol: &Policy, ev: &mut Events) -> (r: Result<Doc,T
 pub(crate) fn frames(b: &[u8], pol: &Policy, ev: &mut Events) -> (r: Result<Doc,TryError>)
     ensures outcome(r,*final(ev))==model::MWF_p(b@,pol.walk_view()),
         !matches!(r,Err(TryError::OutOfMemory(_))),
-        match r {Ok(doc)=>crate::frame_state::source_document(b@,doc)
+        match r {Ok(doc)=>doc.wf(b@) && doc.ihdr.wf() && crate::frame_state::source_document(b@,doc)
             && crate::transport_model::idat_result(b@,doc.view())
             && (final(ev).r4 ==> crate::frame_transport_model::default_only(doc.view())),Err(_)=>true},
 {

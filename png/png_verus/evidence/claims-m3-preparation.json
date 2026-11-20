@@ -1,0 +1,178 @@
+{
+  "milestone": "M3 checked production walk-first preparations and returned owned logs; not sign-off",
+  "base_commit": "4706663",
+  "checkpoint": 180,
+  "verified": 370,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "runtime_and_source_controls_run": 181,
+  "no_new_trusted_items": true,
+  "claims": [
+    {
+      "row": "L-WALK-FIRST / A-PNG-7 actual preparation prefix",
+      "status": "component-proved on host",
+      "functions": [
+        "allocation_model::image_prepared",
+        "allocation_model::image_error_first",
+        "prepare_image"
+      ],
+      "run": 180,
+      "statement": "for every modeled walk error the checked preparation returns that exact Format error and events with an empty real log; Raw/Output reservations occur only after successful MW_p or MWF_p",
+      "binding": "actual still_impl and Frames::with_record now invoke this checked prefix before default decode",
+      "qualifier": "whole public decoder/constructor continuations remain ordinary Rust"
+    },
+    {
+      "row": "A-PNG-2 Raw/Output prefix / initialized storage",
+      "status": "component-proved on host",
+      "functions": [
+        "allocation_model::image_requests",
+        "prepare_image"
+      ],
+      "run": 180,
+      "statement": "successful preparation returns the exact modeled walk document, zeroed Raw/Output buffers at modeled lengths, selected-reader facts and a two-success request log; allocation errors have a tied failed prefix and no Format error replaces a successful walk"
+    },
+    {
+      "row": "ICC walk-first and missing-profile prefix",
+      "status": "component-proved on host",
+      "functions": [
+        "allocation_model::icc_prepared",
+        "allocation_model::icc_error_first",
+        "allocation_model::icc_absent",
+        "prepare_icc"
+      ],
+      "run": 180,
+      "statement": "exact Strict walk failure has the same Format error and empty log; absent iCCP returns None with empty log; present iCCP reserves Window only after walk success and before measurement",
+      "binding": "actual icc_impl now invokes prepare_icc before constructing the source and measuring",
+      "qualifier": "measurement, produced-count limit, second pass and complete public ICC result equation remain outside this prefix"
+    },
+    {
+      "row": "Returned/bound sealed preparation logs",
+      "status": "component-proved on host",
+      "functions": [
+        "Trace::into_log",
+        "image_preparation_logged",
+        "icc_preparation_logged"
+      ],
+      "run": 180,
+      "statement": "logged preparation wrappers return the owned AllocLog capability used by the shared production preparation, with the exact model relation, log_tied and initialized buffer/document facts",
+      "qualifier": "private preparation entry points, not complete public pixel/profile *_logged APIs"
+    },
+    {
+      "row": "T2/T6-to-allocation header premise",
+      "status": "proved on host",
+      "functions": [
+        "callers::still",
+        "callers::frames"
+      ],
+      "run": 180,
+      "statement": "checked walk gates expose valid header directly alongside document/source postconditions; the preparation composes these contracts without unfolding the entire walk model"
+    },
+    {
+      "row": "A-PNG-2 complete G/Prog/Eq_new_p",
+      "status": "partial / full continuation composition remains open",
+      "functions": [],
+      "run": 180,
+      "unproved": [
+        "full public logged result equations beyond preparation",
+        "default decode or ICC measure/second-pass exact outcome transfer",
+        "full returned-object and iterator SavedAt_p/terminal composition"
+      ]
+    },
+    {
+      "row": "A-PNG-7 complete public/iterator gate",
+      "status": "partial / full continuation composition remains open",
+      "functions": [],
+      "run": 180,
+      "unproved": [
+        "full public logged result equations beyond preparation",
+        "default decode or ICC measure/second-pass exact outcome transfer",
+        "full returned-object and iterator SavedAt_p/terminal composition"
+      ]
+    },
+    {
+      "row": "L-WALK-FIRST complete public bodies",
+      "status": "partial / full continuation composition remains open",
+      "functions": [],
+      "run": 180,
+      "unproved": [
+        "full public logged result equations beyond preparation",
+        "default decode or ICC measure/second-pass exact outcome transfer",
+        "full returned-object and iterator SavedAt_p/terminal composition"
+      ]
+    },
+    {
+      "row": "full returned-Info",
+      "status": "partial / full continuation composition remains open",
+      "functions": [],
+      "run": 180,
+      "unproved": [
+        "full public logged result equations beyond preparation",
+        "default decode or ICC measure/second-pass exact outcome transfer",
+        "full returned-object and iterator SavedAt_p/terminal composition"
+      ]
+    },
+    {
+      "row": "complete ICC / Eq_icc",
+      "status": "partial / full continuation composition remains open",
+      "functions": [],
+      "run": 180,
+      "unproved": [
+        "full public logged result equations beyond preparation",
+        "default decode or ICC measure/second-pass exact outcome transfer",
+        "full returned-object and iterator SavedAt_p/terminal composition"
+      ]
+    },
+    {
+      "row": "L-SEG-FRAME IDAT",
+      "status": "OPEN under approved E2",
+      "functions": [],
+      "run": 180,
+      "evidence": "reader-effects-open-0180.json"
+    },
+    {
+      "row": "L-SEG-FRAME fdAT",
+      "status": "OPEN under approved E2",
+      "functions": [],
+      "run": 180,
+      "evidence": "reader-effects-open-0180.json"
+    },
+    {
+      "row": "L-SEG-FRAME iCCP",
+      "status": "OPEN under approved E2",
+      "functions": [],
+      "run": 180,
+      "evidence": "reader-effects-open-0180.json"
+    },
+    {
+      "row": "Subframe / image / work / target assurance",
+      "status": "open",
+      "functions": [],
+      "run": 180,
+      "unproved": [
+        "subframe Raw monotonicity and fcTL rectangle transfer",
+        "pixel/filter/sample/disposal semantics",
+        "aggregate work bounds",
+        "remaining required record witnesses and i686 replay"
+      ]
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0181.json"
+  },
+  "diagnostics": {
+    "175": "private spec-view helpers must not be marked open",
+    "176": "general image preparation hit the default solver limit when component models expanded together",
+    "177": "exposed header well-formedness at checked walk gates and hid unrelated component definitions; all preparations/returned logs verified at 367",
+    "178": "explicit error-first/absent-profile lemmas and initialized result facts verified at 370",
+    "180-181": "final precise zlib-validation boundary comment, fresh 370/0 proof and final passing runtime controls"
+  },
+  "spec_ambiguities": [],
+  "resume": "Compose default-image decoding and ICC measurement/second pass with the checked preparations and their owned logs; expose and prove complete public logged equations, A-PNG-2/A-PNG-7, full L-WALK-FIRST and returned Info, retaining subframe fit and three E2 obligations."
+}

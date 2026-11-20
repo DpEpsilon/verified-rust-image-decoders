@@ -376,6 +376,9 @@ impl Trace {
         self.sites[self.n]=(site,elements);
         self.n+=1;
     }
+    fn into_log(self) -> (r: Tracked<AllocLog>)
+        ensures r@.view()==self.log_view(),
+    {self.log}
     #[cfg(feature = "test-records")]
     fn list(&self) -> (r: ([(AllocSite, usize); 3], usize))
         ensures r==(self.sites,self.n),
@@ -386,11 +389,6 @@ fn oom(o: OutOfMemory) -> (r: TryError)
 {TryError::OutOfMemory(o)}
 
 } // verus!
-
-/// The checked still/ICC structural walk, before any reservation.
-fn still_walk(b: &[u8], pol: &Policy, ev: &mut Events) -> Result<Doc, TryError> {
-    crate::callers::still(b,pol,ev)
-}
 
 verus! {
 
@@ -457,13 +455,86 @@ fn reserve_icc(n: usize, trace: &mut Trace) -> (r: Result<Vec<u8>,TryError>)
     match result {Ok(v)=>Ok(v),Err(o)=>Err(oom(o))}
 }
 
+spec fn prepared_image_view(r: Result<(Doc,Vec<u8>,Vec<u8>),TryError>) -> Result<crate::document_model::Doc,TryError> {
+    match r {Ok((doc,_,_))=>Ok(doc.view()),Err(e)=>Err(e)}
+}
+
+/// The actual still/constructor prefix: walk fully before either reservation.
+fn prepare_image(b: &[u8], pol: &Policy, frames: bool, wide: bool,
+    ev: &mut Events, trace: &mut Trace) -> (r: Result<(Doc,Vec<u8>,Vec<u8>),TryError>)
+    requires old(trace).wf(),old(trace).n==0,
+    ensures final(trace).wf(),crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),
+        crate::allocation_model::image_prepared(b@,pol.walk_view(),frames,wide,prepared_image_view(r),final(ev).view(),final(trace).log_view()),
+        match r {Ok((doc,raw,out))=>doc.wf(b@) && crate::transport_model::idat_result(b@,doc.view())
+            && crate::layout_model::image_buffers(doc.ihdr.view(),wide,raw@,out@)
+            && raw@==Seq::new(raw@.len(),|_i: int|0u8) && out@==Seq::new(out@.len(),|_i: int|0u8)
+            && (frames ==> crate::frame_state::source_document(b@,doc)),Err(_)=>true},
+{
+    hide(Doc::wf);hide(crate::transport_model::idat_result);hide(crate::layout_model::raw);
+    hide(crate::document_model::MWF_p);hide(crate::document_model::MW_p);
+    let result=if frames {crate::callers::frames(b,pol,ev)}else{crate::callers::still(b,pol,ev)};
+    let doc=match result {Err(e)=>return Err(e),Ok(doc)=>doc};
+    let out_bytes=crate::image::output_size(&doc.ihdr,wide);
+    match reserve_image(&doc,out_bytes,trace) {
+        Err(e)=>Err(e),Ok((raw,out))=>Ok((doc,raw,out)),
+    }
+}
+
+spec fn prepared_icc_view(r: Result<Option<(Doc,Vec<u8>)>,TryError>) -> Result<Option<crate::document_model::Doc>,TryError> {
+    match r {Ok(Some((doc,_)))=>Ok(Some(doc.view())),Ok(None)=>Ok(None),Err(e)=>Err(e)}
+}
+
+/// The actual ICC prefix: no profile means no reservation; otherwise Window
+/// precedes zlib validation, after the successful structural walk.
+fn prepare_icc(b: &[u8], ev: &mut Events, trace: &mut Trace) -> (r: Result<Option<(Doc,Vec<u8>)>,TryError>)
+    requires old(trace).wf(),old(trace).n==0,
+    ensures final(trace).wf(),crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),
+        crate::allocation_model::icc_prepared(b@,prepared_icc_view(r),final(ev).view(),final(trace).log_view()),
+        match r {Ok(Some((doc,ring)))=>doc.wf(b@) && doc.iccp.is_some()
+            && ring@==Seq::new(WINDOW_MAX as nat,|_i: int|0u8),_=>true},
+{
+    proof {crate::walk_policy::profiles_project_exactly();}
+    let doc=match crate::callers::still(b,&STRICT,ev) {Err(e)=>return Err(e),Ok(doc)=>doc};
+    if doc.iccp.is_none() {return Ok(None);}
+    match reserve_icc_window(trace) {Err(e)=>Err(e),Ok(ring)=>Ok(Some((doc,ring)))}
+}
+
+/// Returned logs are the owned capabilities used by the shared production prefix.
+fn image_preparation_logged(b: &[u8],pol: &Policy,frames: bool,wide: bool)
+    -> (r: (Result<(Doc,Vec<u8>,Vec<u8>),TryError>,Events,Tracked<AllocLog>))
+    ensures crate::allocation_model::image_prepared(b@,pol.walk_view(),frames,wide,prepared_image_view(r.0),r.1.view(),r.2@.view()),
+        crate::alloc_guard::sites::log_tied(r.0,r.2@.view()),
+        match r.0 {Ok((doc,raw,out))=>doc.wf(b@) && crate::transport_model::idat_result(b@,doc.view())
+            && crate::layout_model::image_buffers(doc.ihdr.view(),wide,raw@,out@)
+            && raw@==Seq::new(raw@.len(),|_i: int|0u8) && out@==Seq::new(out@.len(),|_i: int|0u8)
+            && (frames ==> crate::frame_state::source_document(b@,doc)),_=>true},
+{
+    let mut trace=Trace::new();
+    let mut ev=Events {r1:false,r3:false,r4:false};
+    let result=prepare_image(b,pol,frames,wide,&mut ev,&mut trace);
+    let log=trace.into_log();
+    (result,ev,log)
+}
+
+fn icc_preparation_logged(b: &[u8])
+    -> (r: (Result<Option<(Doc,Vec<u8>)>,TryError>,Events,Tracked<AllocLog>))
+    ensures crate::allocation_model::icc_prepared(b@,prepared_icc_view(r.0),r.1.view(),r.2@.view()),
+        crate::alloc_guard::sites::log_tied(r.0,r.2@.view()),
+        match r.0 {Ok(Some((doc,ring)))=>doc.wf(b@) && doc.iccp.is_some()
+            && ring@==Seq::new(WINDOW_MAX as nat,|_i: int|0u8),_=>true},
+{
+    let mut trace=Trace::new();
+    let mut ev=Events {r1:false,r3:false,r4:false};
+    let result=prepare_icc(b,&mut ev,&mut trace);
+    let log=trace.into_log();
+    (result,ev,log)
+}
+
 } // verus!
 
 /// P15 for RGBA8 (`wide = false`) or RGBA16: walk, reserve, decode.
 fn still_impl(b: &[u8], pol: &Policy, wide: bool, ev: &mut Events, trace: &mut Trace) -> Result<(Doc, Vec<u8>), TryError> {
-    let doc = still_walk(b, pol, ev)?;
-    let out_bytes=crate::image::output_size(&doc.ihdr,wide);
-    let (mut raw, mut out) = reserve_image(&doc,out_bytes,trace)?;
+    let (doc,mut raw,mut out)=prepare_image(b,pol,false,wide,ev,trace)?;
     let mut src = IdatReader::for_doc(b, &doc);
     let mut sink = if wide { Sink::Rgba16(&mut out) } else { Sink::Rgba8(&mut out) };
     decode_image(&doc, b, &mut src, &mut raw, doc.ihdr.w, doc.ihdr.h, pol, ev, &mut sink).map_err(TryError::Format)?;
@@ -712,9 +783,7 @@ impl<'a> Frames<'a> {
     fn with_record(b: &'a [u8], pol: Policy) -> Result<Frames<'a>, TryError> {
         let mut ev = Events::default();
         let mut trace = Trace::new();
-        let doc = crate::callers::frames(b,&pol,&mut ev)?;
-        let out_bytes=crate::image::output_size(&doc.ihdr,false);
-        let (mut raw, mut canvas) = reserve_image(&doc,out_bytes,&mut trace)?;
+        let (doc,mut raw,mut canvas)=prepare_image(b,&pol,true,false,&mut ev,&mut trace)?;
         let mut src = IdatReader::for_doc(b, &doc);
         decode_image(&doc, b, &mut src, &mut raw, doc.ihdr.w, doc.ihdr.h, &pol, &mut ev, &mut Sink::Rgba8(&mut canvas))
             .map_err(TryError::Format)?;
@@ -822,15 +891,10 @@ fn clear_rect(canvas: &mut [u8], cw: u32, x: u32, y: u32, w: u32, h: u32) {
 
 fn icc_impl(b: &[u8], trace: &mut Trace) -> Result<Option<Vec<u8>>, TryError> {
     let mut ev = Events::default();
-    let doc = still_walk(b, &STRICT, &mut ev)?;
-    let (o, n) = match doc.iccp {
-        None => return Ok(None),
-        Some(r) => r,
-    };
-    let parts: [&[u8]; 1] = [&b[o..o + n]];
-    let opts = InflateOptions::STRICT;
-    // First pass: measure into the WINDOW_MAX ring (D7).
-    let mut ring=reserve_icc_window(trace)?;
+    let (doc,mut ring)=match prepare_icc(b,&mut ev,trace)? {None=>return Ok(None),Some(ready)=>ready};
+    let (o,n)=match doc.iccp {Some(r)=>r,None=>return Ok(None)};
+    let parts: [&[u8];1]=[&b[o..o+n]];
+    let opts=InflateOptions::STRICT;
     let m = {
         let mut src = match SegmentSlices::new(&parts) {
             Some(s) => s,
