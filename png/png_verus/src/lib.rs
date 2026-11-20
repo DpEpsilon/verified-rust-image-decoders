@@ -2,10 +2,11 @@
 //! with the Strict and RecommendedBeta profiles of `../../policy-draft/OPTIONS.md`.
 //!
 //! M3 has begun (`../../PLAN.md`): the CRC, wire framing, header prefix,
-//! keyword helpers and segmented re-walk adapter are inside `verus!` and tied
-//! to independent sequence models. The policy ordering walk, image stages and
-//! public entry-point bodies remain ordinary Rust; a green run does not claim
-//! their verification. zlib/DEFLATE is the verified `inflate_verus` dependency.
+//! keywords, singleton/order preamble, APNG control transitions and segmented
+//! re-walk adapter are inside `verus!` and tied to independent models. The
+//! complete policy walk, remaining metadata values, image stages and public
+//! entry-point bodies remain ordinary Rust; a green run does not claim their
+//! verification. zlib/DEFLATE is the verified `inflate_verus` dependency.
 //!
 //! `no_std + alloc`, no `unsafe`, no recursion. Every heap allocation goes
 //! through `alloc_guard` (`Raw`, `Output`, `Saved`, `IccWindow`, `Icc`).
@@ -16,6 +17,9 @@
 extern crate alloc;
 
 pub mod alloc_guard;
+mod apng;
+#[cfg(verus_only)]
+pub mod apng_model;
 mod crc;
 mod framing;
 mod header;

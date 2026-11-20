@@ -1,0 +1,138 @@
+{
+  "milestone": "M3 APNG local transition checkpoint; not sign-off",
+  "base_commit": "7fca35d",
+  "checkpoint": 48,
+  "verified": 120,
+  "errors": 0,
+  "host_only": true,
+  "runtime_run": 49,
+  "source_controls_run": 49,
+  "trusted_items_added": false,
+  "claims": [
+    {
+      "row": "T6",
+      "component": "control initialization and invariant",
+      "status": "component-proved",
+      "functions": [
+        "apng::Control::new",
+        "apng::Control::wf"
+      ],
+      "model": "apng_model::initial",
+      "run": 48
+    },
+    {
+      "row": "T6",
+      "component": "acTL values and recovery site",
+      "status": "component-proved",
+      "functions": [
+        "apng::actl"
+      ],
+      "model": "apng_model::actl",
+      "run": 48
+    },
+    {
+      "row": "T6",
+      "component": "fcTL fields and exact transition errors",
+      "status": "component-proved",
+      "functions": [
+        "framing::be16",
+        "apng::Fctl::parse",
+        "apng::fctl"
+      ],
+      "model": "apng_model::{parse_fctl,fctl}",
+      "premises": [
+        "Control::wf",
+        "canvas dimensions <= PNG_WIRE_MAX"
+      ],
+      "run": 48
+    },
+    {
+      "row": "T6",
+      "component": "fdAT exact transition and empty-payload presence",
+      "status": "component-proved",
+      "functions": [
+        "apng::fdat"
+      ],
+      "model": "apng_model::fdat",
+      "premises": [
+        "Control::wf"
+      ],
+      "run": 48
+    },
+    {
+      "row": "T6",
+      "component": "first-IDAT and APNG IEND checks",
+      "status": "component-proved",
+      "functions": [
+        "apng::Control::begin_idat",
+        "apng::finish"
+      ],
+      "model": "apng_model::{begin_idat,finish}",
+      "run": 48
+    },
+    {
+      "row": "T6",
+      "component": "non-wrapping sequence and symbolic area/pixel arithmetic",
+      "status": "component-proved",
+      "functions": [
+        "apng::fctl",
+        "apng::fdat",
+        "apng::pixel_add_safe"
+      ],
+      "sequence": "u64; compare widened wire u32 before +1; invariant <= u32::MAX + 1",
+      "run": 48
+    },
+    {
+      "row": "T6 / M3 witness gates",
+      "component": "concrete production-transition calls",
+      "status": "local witnesses proved; whole-input gates incomplete",
+      "functions": [
+        "witness_m3::apng_error_precedence",
+        "witness_m3::apng_empty_payload_presence",
+        "witness_m3::apng_sequence_does_not_wrap"
+      ],
+      "qualifiers": [
+        "presence and boundary witnesses branch on MAX_TOTAL_PIXELS > 0",
+        "boundary witness directly constructs control state; not a whole current-cap PNG"
+      ],
+      "run": 48
+    },
+    {
+      "row": "T6 / T10-prefix",
+      "status": "partial",
+      "unproved": [
+        "whole-walk loop invariant and helper preconditions",
+        "remaining PLTE/tRNS/ancillary values",
+        "complete MW model and ghost range/frame trace",
+        "policy CRC/fallback composition"
+      ],
+      "run": 48
+    },
+    {
+      "row": "T-SEG / L-REWALK Strict and policy",
+      "status": "prior adapter reverified; complete document-to-reader selection remains open",
+      "run": 48
+    },
+    {
+      "row": "A-PNG-2",
+      "status": "untouched; no new theorem"
+    },
+    {
+      "row": "A-PNG-7",
+      "status": "untouched; no new theorem"
+    },
+    {
+      "row": "L-WALK-FIRST",
+      "status": "untouched; no new theorem"
+    },
+    {
+      "row": "L-INFO-RANGE",
+      "status": "untouched; no new theorem"
+    }
+  ],
+  "q6": "open and unchanged; no dependency",
+  "resume": "Remaining per-chunk value/metadata refinements, full MW range/frame composition, then Strict/policy reader selection and logged allocation gates.",
+  "resource_gate_controls_run": 47,
+  "verifier_threads": 2,
+  "resource_gate": "Exact process argv elements; shell waiter mentions excluded; process-inspection errors select one thread."
+}

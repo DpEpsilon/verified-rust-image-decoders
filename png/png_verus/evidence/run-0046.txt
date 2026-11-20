@@ -1,0 +1,273 @@
+command: ['cargo', 'test', '--all-targets', '--', '--nocapture', '--test-threads=1']
+warning: unused import: `C_SEG`
+ --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/segments.rs:2:21
+  |
+2 | use crate::limits::{C_SEG, SEGMENT_BYTES_MAX};
+  |                     ^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `origin_source`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/bits.rs:103:13
+    |
+103 |         let origin_source = Ghost(src.source_frame());
+    |             ^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_origin_source`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `w`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/bits.rs:122:35
+    |
+122 |     pub(crate) fn byte(&mut self, w: &mut Work) -> (r: Result<u8, InflateError>)
+    |                                   ^ help: if this is intentional, prefix it with an underscore: `_w`
+
+warning: unused variable: `table_work`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:127:21
+    |
+127 |         let (built, table_work) = crate::canonical::build_tables(lengths,
+    |                     ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_table_work`
+
+warning: unused variable: `live_work`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:149:13
+    |
+149 |         let live_work = crate::canonical::live_counts(Ghost(lengths@), &self.count, &mut self.live);
+    |             ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_live_work`
+
+warning: unused variable: `nlen`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:502:5
+    |
+502 |     nlen: usize, ndist: usize, w: &mut Work) -> (ret: (Result<(), E>, Ghost<nat>))
+    |     ^^^^ help: if this is intentional, prefix it with an underscore: `_nlen`
+
+warning: unused variable: `ndist`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:502:18
+    |
+502 |     nlen: usize, ndist: usize, w: &mut Work) -> (ret: (Result<(), E>, Ghost<nat>))
+    |                  ^^^^^ help: if this is intentional, prefix it with an underscore: `_ndist`
+
+warning: unused variable: `code_cost`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:770:27
+    |
+770 |         let (code_result, code_cost) = dynamic_code(&mut self.code, br, ncode, nlen, ndist, w);
+    |                           ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_code_cost`
+
+warning: unused variable: `length_cost`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:773:22
+    |
+773 |         let (result, length_cost) = self.dynamic_lengths(br, nlen, ndist, w);
+    |                      ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_length_cost`
+
+warning: unused variable: `n`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/lib.rs:195:34
+    |
+195 |     pub(crate) fn add(&mut self, n: usize)
+    |                                  ^ help: if this is intentional, prefix it with an underscore: `_n`
+
+warning: field `observed` is never read
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/lib.rs:185:9
+    |
+184 | pub(crate) struct Work {
+    |                   ---- field in this struct
+185 |     pub observed: Ghost<nat>,
+    |         ^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `bytes` is never read
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/adler.rs:83:16
+   |
+79 | pub(crate) struct Adler {
+   |                   ----- field in this struct
+...
+83 |     pub(crate) bytes: Ghost<Seq<u8>>,
+   |                ^^^^^
+
+warning: fields `origin_seg`, `origin_core`, `origin_rank`, `origin_count`, and `loop_work` are never read
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/bits.rs:37:16
+   |
+33 | pub(crate) struct Bits<'a, S: Segments> {
+   |                   ---- fields in this struct
+...
+37 |     pub(crate) origin_seg: Ghost<nat>,
+   |                ^^^^^^^^^^
+38 |     pub(crate) origin_core: Ghost<nat>,
+   |                ^^^^^^^^^^^
+39 |     pub(crate) origin_rank: Ghost<nat>,
+   |                ^^^^^^^^^^^
+40 |     pub(crate) origin_count: Ghost<nat>,
+   |                ^^^^^^^^^^^^
+...
+43 |     pub(crate) loop_work: Ghost<nat>,
+   |                ^^^^^^^^^
+
+warning: fields `lengths`, `kind`, `single_accept`, and `ready` are never read
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:18:16
+   |
+11 | pub(crate) struct Huffman {
+   |                   ------- fields in this struct
+...
+18 |     pub(crate) lengths: Ghost<Seq<u8>>,
+   |                ^^^^^^^
+19 |     pub(crate) kind: Ghost<Kind>,
+   |                ^^^^
+20 |     pub(crate) single_accept: Ghost<bool>,
+   |                ^^^^^^^^^^^^^
+21 |     pub(crate) ready: Ghost<bool>,
+   |                ^^^^^
+
+warning: fields `out` and `initial` are never read
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:190:5
+    |
+185 | struct Output<'a> {
+    |        ------ fields in this struct
+...
+190 |     out: Ghost<Seq<u8>>,
+    |     ^^^
+191 |     initial: Ghost<Seq<u8>>,
+    |     ^^^^^^^
+
+warning: fields `header_construction` and `header_table_start` are never read
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:406:5
+    |
+400 | struct Tables {
+    |        ------ fields in this struct
+...
+406 |     header_construction: Ghost<nat>,
+    |     ^^^^^^^^^^^^^^^^^^^
+407 |     header_table_start: Ghost<Option<nat>>,
+    |     ^^^^^^^^^^^^^^^^^^
+
+warning: fields `seg_work` and `read_work` are never read
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/segments.rs:102:5
+    |
+ 96 | pub struct SegmentSlices<'a> {
+    |            ------------- fields in this struct
+...
+102 |     seg_work: Ghost<nat>,
+    |     ^^^^^^^^
+103 |     read_work: Ghost<nat>,
+    |     ^^^^^^^^^
+
+warning: `inflate_verus` (lib) generated 17 warnings (run `cargo fix --lib -p inflate_verus` to apply 10 suggestions)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental/png_verus-1yqf017sokwqv/s-hobqt89m6h-0w8hx36-working`
+
+warning: unused import: `PNG_WIRE_MAX`
+ --> src/apng.rs:5:51
+  |
+5 | use crate::limits::{MAX_FRAMES, MAX_TOTAL_PIXELS, PNG_WIRE_MAX};
+  |                                                   ^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `PNG_WIRE_MAX`
+ --> src/header.rs:4:59
+  |
+4 | use crate::limits::{MAX_DIMENSION, MAX_INPUT, MAX_OUTPUT, PNG_WIRE_MAX};
+  |                                                           ^^^^^^^^^^^^
+
+warning: unused variable: `site`
+  --> src/alloc_guard/sites.rs:87:18
+   |
+87 | pub fn try_empty(site: AllocSite, Tracked(log): Tracked<&mut AllocLog>)
+   |                  ^^^^ help: if this is intentional, prefix it with an underscore: `_site`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `ev` is never read
+  --> src/alloc_guard/mod.rs:45:11
+   |
+44 | pub tracked struct AllocLog {
+   |                    -------- field in this struct
+45 |     ghost ev: Seq<(AllocSite, nat, bool)>,
+   |           ^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: fields `start`, `source`, `prefix`, `total`, `entered`, and `reads` are never read
+  --> src/reader.rs:51:5
+   |
+49 | pub(crate) struct DataReader<'a> {
+   |                   ---------- fields in this struct
+50 |     b: &'a [u8],
+51 |     start: usize,
+   |     ^^^^^
+...
+57 |     source: Ghost<Seq<u8>>,
+   |     ^^^^^^
+58 |     prefix: Ghost<Seq<u8>>,
+   |     ^^^^^^
+59 |     total: Ghost<nat>,
+   |     ^^^^^
+60 |     entered: Ghost<nat>,
+   |     ^^^^^^^
+61 |     reads: Ghost<nat>,
+   |     ^^^^^
+
+warning: `png_verus` (lib) generated 6 warnings (run `cargo fix --lib -p png_verus` to apply 3 suggestions)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental/png_verus-10de0rmy8e5nk/s-hobqt8sknr-1l3ak3v-working`
+
+warning: `png_verus` (lib test) generated 6 warnings (5 duplicates)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental/conformance-2fgcmkzxncheq/s-hobqt912z2-1d9blz6-working`
+
+warning: `png_verus` (test "conformance") generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental/png_probe-3ku4u0pj8rtks/s-hobqt9aj4d-1s3m8ta-working`
+
+warning: `png_verus` (example "png_probe" test) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental/m1bq_rulings-2f4iu7ljj5ywo/s-hobqt9epcx-0zid3ay-working`
+
+warning: `png_verus` (test "m1bq_rulings") generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental/fault_injection-39n0idsd1se3m/s-hobqt9ndja-0lpmfwi-working`
+
+warning: unused import: `Profile`
+  --> tests/fault_injection.rs:10:36
+   |
+10 | use png_verus::{AllocSite, Frames, Profile, TryError};
+   |                                    ^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `png_verus` (test "fault_injection") generated 2 warnings (run `cargo fix --test "fault_injection" -p png_verus` to apply 1 suggestion)
+    Finished `test` profile [optimized + debuginfo] target(s) in 0.28s
+     Running unittests src/lib.rs (target/debug/deps/png_verus-2ac9eb59a16f5c42)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/conformance.rs (target/debug/deps/conformance-7b991f96ebe7f529)
+
+running 1 test
+test vectors ... /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/../spec-frozen/VECTORS.json: 599 records, 599 pass, 0 fail, 0 skipped (profile not implemented)
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/../limits-draft/VECTORS-CAPS.json: 13 records, 13 pass, 0 fail, 0 skipped (profile not implemented)
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/../policy-draft/VECTORS-POLICY.json: 198 records, 196 pass, 0 fail, 2 skipped (profile not implemented)
+total: 808 pass, 0 fail, 2 skipped
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.28s
+
+     Running tests/fault_injection.rs (target/debug/deps/fault_injection-88b16583c11aaced)
+
+running 1 test
+test requests_and_failures ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/m1bq_rulings.rs (target/debug/deps/m1bq_rulings-6af234f36d0bf57b)
+
+running 7 tests
+test m1bq_policy_vectors_present ... ignored, pending phase 2: VECTORS-POLICY.json is regenerated from the updated policy_oracle.py
+test q1_ignoretail_fdat_frame ... ok
+test q1_ignoretail_still ... ok
+test q2_bad_actl_stays_dropped ... ok
+test q2_mixed_records ... ok
+test q2_recommended_beta ... ok
+test q5b_try_new_is_strict ... ok
+
+test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+     Running unittests examples/png_probe.rs (target/debug/examples/png_probe-64b351aaa554cc59)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

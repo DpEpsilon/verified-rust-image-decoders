@@ -16,8 +16,9 @@ pub(crate) fn be32(b: &[u8], p: usize) -> (r: u32)
 }
 
 #[inline]
-pub(crate) fn be16(b: &[u8], p: usize) -> u16
+pub(crate) fn be16(b: &[u8], p: usize) -> (r: u16)
     requires p <= b.len(), 2 <= b.len() - p,
+    ensures r == model::be16(b@, p as int),
 {
     ((b[p] as u16) << 8) | (b[p + 1] as u16)
 }

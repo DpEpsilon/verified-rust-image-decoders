@@ -10,6 +10,24 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def is_corpus_argv(argv):
+    # Exact argv elements distinguish a running script from a shell waiter
+    # whose -c string merely mentions the filename (and can match itself).
+    return any(arg.rsplit(b'/', 1)[-1] == b'corpus_pass.py' for arg in argv)
+
+
+def corpus_running():
+    for cmdline in Path('/proc').glob('[0-9]*/cmdline'):
+        try:
+            if is_corpus_argv(cmdline.read_bytes().split(b'\0')):
+                return True
+        except (FileNotFoundError, ProcessLookupError):
+            continue
+        except OSError:
+            return True  # Fail closed if a process cannot be inspected.
+    return False
+
+
 def inventory():
     paths = sorted((ROOT / 'src').rglob('*.rs'))
     paths += [ROOT / 'Cargo.toml', ROOT / 'Cargo.lock', ROOT / 'verify.sh']
@@ -28,8 +46,7 @@ def main():
     }
     if 'Version: 0.2026.11.02.8bf68ee\n' not in versions['verus']:
         raise SystemExit('Refusing an unpinned Verus version')
-    threads = 1 if subprocess.run(['pgrep', '-f', '[c]orpus_pass.py'],
-                                  stdout=subprocess.DEVNULL, timeout=10).returncode == 0 else 2
+    threads = 1 if corpus_running() else 2
     # No solver-limit overrides: use the pinned verifier's default limits.
     cmd = ['cargo', 'verus', 'verify', '-v', '--', '--num-threads', str(threads), '--no-cheating']
     result = subprocess.run(['python3', '-I', str(ROOT / 'tools/run_logged.py'),

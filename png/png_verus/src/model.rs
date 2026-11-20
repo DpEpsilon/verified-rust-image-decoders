@@ -38,6 +38,10 @@ pub struct WireChunk {
     pub next: nat,
 }
 
+pub open spec fn be16(bytes: Seq<u8>, p: int) -> u16 {
+    ((bytes[p] as u16) << 8u16) | bytes[p + 1] as u16
+}
+
 pub open spec fn be32(bytes: Seq<u8>, p: int) -> u32 {
     ((bytes[p] as u32) << 24u32) | ((bytes[p + 1] as u32) << 16u32)
         | ((bytes[p + 2] as u32) << 8u32) | bytes[p + 3] as u32

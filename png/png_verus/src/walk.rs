@@ -8,7 +8,7 @@
 //! P5.1 duplicates, P5.2 ordering, P5.3 fixed lengths, then the chunk's own
 //! section, exactly as the oracle's `_walk`.
 
-use crate::limits::{MAX_FRAMES, MAX_TOTAL_PIXELS};
+use crate::apng::{self, Control};
 use crate::png::{Error, Events, Info, Meta, Time};
 use crate::policy::{
     AncillaryDuplicate, AncillaryOrder, AncillaryValues, ApngErrors, ApngInStill, CrcAncillary, Iend,
@@ -84,12 +84,7 @@ struct State {
     seen: u32,
     /// 0 before the first IDAT, 1 in the IDAT run, 2 after it.
     idat: u8,
-    seq: u32,
-    /// The current frame: `(idat_based, fdat_seen)`.
-    cur: Option<(bool, bool)>,
-    frames: u64,
-    fctl_before_idat: bool,
-    pixels: u64,
+    apng: Control,
 }
 
 /// P2–P8, P14.1 under `pol`. `apng_off` is the re-walk of the R4 fallback, with
@@ -107,7 +102,7 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
         actl: None,
         info: Info::new(&ihdr),
     };
-    let mut st = State { seen: initial_seen(), idat: 0, seq: 0, cur: None, frames: 0, fctl_before_idat: false, pixels: 0 };
+    let mut st = State { seen: initial_seen(), idat: 0, apng: Control::new() };
     let apng_on = !apng_off && !(entry == Entry::Still && pol.apng_in_still == ApngInStill::Ignore);
     let static_frames = pol.apng_errors == ApngErrors::Static && entry == Entry::Frames;
     // sfail and apng_fail coincide for the values Strict and RecommendedBeta use.
@@ -222,8 +217,7 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
                     return Err(Error::MissingPalette.into());
                 }
                 if st.idat == 0 {
-                    if let Some(cur) = st.cur.as_mut() {
-                        cur.0 = true;
+                    if st.apng.begin_idat() {
                         doc.info.default_is_frame = true;
                     }
                     doc.idat_first = chunk_offset;
@@ -234,20 +228,14 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
                 if st.idat == 0 {
                     return Err(Error::MissingImageData.into());
                 }
-                if let Some((idat_based, fdat_seen)) = st.cur {
-                    if !idat_based && !fdat_seen {
-                        return Err(sfail(Error::MissingFrameData));
-                    }
-                }
-                if let Some(a) = doc.actl {
-                    if st.frames != a.num_frames as u64 {
-                        return Err(sfail(Error::FrameCountMismatch));
-                    }
+                let declared = doc.actl.map(|a| a.num_frames);
+                if let Err((e, structural)) = apng::finish(st.apng, declared) {
+                    return Err(if structural { sfail(e) } else { WalkFail::Format(e) });
                 }
                 if p != b.len() && pol.trailing == Trailing::Reject {
                     return Err(Error::TrailingBytes.into());
                 }
-                doc.info.frame_count = st.frames as u32;
+                doc.info.frame_count = st.apng.frames as u32;
                 return Ok(doc);
             }
             Kind::Trns => {
@@ -270,79 +258,25 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
                 doc.info.trns = Meta::Present(());
             }
             Kind::Actl => {
-                let nf = be32(d, 0);
-                let plays = be32(d, 4);
-                if nf == 0 {
-                    return Err(sfail(Error::InvalidAnimationControl));
-                }
-                if nf > MAX_FRAMES {
-                    return Err(Error::TooManyFrames.into());
-                }
-                doc.actl = Some(Actl { num_frames: nf, num_plays: plays });
+                let (num_frames, num_plays) = match apng::actl(d) {
+                    Ok(a) => a,
+                    Err((e, structural)) => return Err(if structural { sfail(e) } else { WalkFail::Format(e) }),
+                };
+                doc.actl = Some(Actl { num_frames, num_plays });
             }
             Kind::Fctl => {
-                if doc.actl.is_none() {
-                    return Err(sfail(Error::MissingAnimationControl));
-                }
-                if st.idat == 0 && st.fctl_before_idat {
-                    return Err(sfail(Error::ChunkOutOfOrder));
-                }
-                if n != 26 {
-                    return Err(sfail(Error::InvalidChunkLength));
-                }
-                if be32(d, 0) != st.seq {
-                    return Err(sfail(Error::SequenceError));
-                }
-                st.seq = st.seq.wrapping_add(1);
-                if let Some((idat_based, fdat_seen)) = st.cur {
-                    if !idat_based && !fdat_seen {
-                        return Err(sfail(Error::MissingFrameData));
-                    }
-                }
-                let f = Fctl::parse(d);
-                let (wd, hd) = (doc.ihdr.w as u64, doc.ihdr.h as u64);
-                if f.w == 0
-                    || f.h == 0
-                    || f.x as u64 + f.w as u64 > wd
-                    || f.y as u64 + f.h as u64 > hd
-                    || f.dispose > 2
-                    || f.blend > 1
-                {
-                    return Err(sfail(Error::InvalidFrameControl));
-                }
-                if st.idat == 0 && (f.x != 0 || f.y != 0 || f.w as u64 != wd || f.h as u64 != hd) {
-                    return Err(sfail(Error::InvalidFrameControl));
-                }
-                // w ≤ W, h ≤ H ≤ i32::MAX here, so w·h < u64::MAX / 4 and the running sum, at
-                // most MAX_TOTAL_PIXELS before the addition, stays in u64.
-                st.pixels += f.w as u64 * f.h as u64;
-                if st.pixels > MAX_TOTAL_PIXELS {
-                    return Err(Error::PixelBudgetExceeded.into());
-                }
-                if st.idat == 0 {
-                    st.fctl_before_idat = true;
-                }
-                st.cur = Some((false, false));
-                st.frames += 1;
+                let (_, next) = match apng::fctl(d, doc.actl.is_some(), st.idat == 0,
+                    doc.ihdr.w, doc.ihdr.h, st.apng) {
+                    Ok(r) => r,
+                    Err((e, structural)) => return Err(if structural { sfail(e) } else { WalkFail::Format(e) }),
+                };
+                st.apng = next;
             }
             Kind::Fdat => {
-                if doc.actl.is_none() {
-                    return Err(sfail(Error::MissingAnimationControl));
-                }
-                if st.idat == 0 {
-                    return Err(sfail(Error::ChunkOutOfOrder));
-                }
-                if n < 4 {
-                    return Err(sfail(Error::InvalidChunkLength));
-                }
-                if be32(d, 0) != st.seq {
-                    return Err(sfail(Error::SequenceError));
-                }
-                st.seq = st.seq.wrapping_add(1);
-                match st.cur.as_mut() {
-                    Some(cur) if !cur.0 => cur.1 = true,
-                    _ => return Err(sfail(Error::UnexpectedFrameData)),
-                }
+                st.apng = match apng::fdat(d, doc.actl.is_some(), st.idat == 0, st.apng) {
+                    Ok(next) => next,
+                    Err((e, structural)) => return Err(if structural { sfail(e) } else { WalkFail::Format(e) }),
+                };
             }
             Kind::Unknown(a) => {
                 if !a {
@@ -363,33 +297,7 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
     }
 }
 
-/// The parsed fields of a 26-byte fcTL (P14.1).
-#[derive(Clone, Copy, Debug)]
-pub(crate) struct Fctl {
-    pub w: u32,
-    pub h: u32,
-    pub x: u32,
-    pub y: u32,
-    pub delay_num: u16,
-    pub delay_den: u16,
-    pub dispose: u8,
-    pub blend: u8,
-}
-
-impl Fctl {
-    pub fn parse(d: &[u8]) -> Fctl {
-        Fctl {
-            w: be32(d, 4),
-            h: be32(d, 8),
-            x: be32(d, 12),
-            y: be32(d, 16),
-            delay_num: be16(d, 20),
-            delay_den: be16(d, 22),
-            dispose: d[24],
-            blend: d[25],
-        }
-    }
-}
+pub(crate) use crate::apng::Fctl;
 
 /// A chunk discarded by the profile (`policy_oracle.py` `drop`): R1 for tRNS in
 /// colour types 0, 2 and 3; the metadata item becomes `Discarded` unless an

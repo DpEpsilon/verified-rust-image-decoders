@@ -84,4 +84,97 @@ fn ordering_recovery_sites() {
     }
 }
 
+/// Direct production-transition calls, not a claim about a whole PNG file.
+fn apng_error_precedence() {
+    use crate::apng::{self, Control};
+    let empty: [u8; 0] = [];
+    let zero = [0u8; 4];
+    let state = Control::new();
+    let a = apng::fctl(&empty, false, true, 1, 1, state);
+    let b = apng::fdat(&empty, true, true, state);
+    let c = apng::fdat(&empty, true, false, state);
+    let d = apng::fdat(&zero, true, false, state);
+    proof {
+        assert(zero@ == seq![0u8, 0u8, 0u8, 0u8]);
+        assert(model::be32(seq![0u8, 0u8, 0u8, 0u8], 0) == 0u32) by (compute);
+        assert(matches!(a, Err((Error::MissingAnimationControl, true))));
+        assert(matches!(b, Err((Error::ChunkOutOfOrder, true))));
+        assert(matches!(c, Err((Error::InvalidChunkLength, true))));
+        assert(matches!(d, Err((Error::UnexpectedFrameData, true))));
+    }
+}
+
+/// A four-byte fdAT contributes frame-data presence even with no payload.
+fn apng_empty_payload_presence() {
+    use crate::apng::{self, Control};
+    use crate::apng_model as m;
+    if crate::limits::MAX_TOTAL_PIXELS == 0 { return; }
+    let d = [0u8,0,0,0, 0,0,0,1, 0,0,0,1, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0];
+    let seq_one = [0u8,0,0,1];
+    let r = apng::fctl(&d, true, false, 1, 1, Control::new());
+    proof {
+        assert(d@ == seq![0u8,0u8,0u8,0u8, 0u8,0u8,0u8,1u8, 0u8,0u8,0u8,1u8,
+            0u8,0u8,0u8,0u8, 0u8,0u8,0u8,0u8, 0u8,0u8,0u8,0u8, 0u8,0u8]);
+        assert(m::parse_fctl(seq![0u8,0u8,0u8,0u8, 0u8,0u8,0u8,1u8, 0u8,0u8,0u8,1u8,
+            0u8,0u8,0u8,0u8, 0u8,0u8,0u8,0u8, 0u8,0u8,0u8,0u8, 0u8,0u8])
+            == m::FrameControl { width: 1, height: 1, x: 0, y: 0,
+                delay_num: 0, delay_den: 0, dispose: 0, blend: 0 }) by (compute);
+        assert(model::be32(seq![0u8,0u8,0u8,0u8],0) == 0u32) by (compute);
+        assert(model::be32(d@, 0) == 0u32);
+        let ghost f = m::parse_fctl(d@);
+        assert(f.width == 1 && f.height == 1 && f.x == 0 && f.y == 0 && f.dispose == 0 && f.blend == 0);
+        assert(m::initial().sequence == 0 && m::initial().pixel_total == 0);
+        assert(matches!(m::initial().current, m::Current::None));
+        assert(1 <= crate::limits::MAX_TOTAL_PIXELS);
+        assert(d@.len() == 26);
+        assert(model::be32(d@, 0) as nat == m::initial().sequence);
+        assert(!matches!(m::initial().current, m::Current::Frame(false)));
+        assert(!(f.width == 0 || f.height == 0 || (f.x as nat) + (f.width as nat) > 1nat
+            || (f.y as nat) + (f.height as nat) > 1nat || f.dispose > 2 || f.blend > 1));
+        assert((f.width as nat) * (f.height as nat) == 1) by (nonlinear_arith)
+            requires f.width == 1, f.height == 1;
+        assert(m::initial().pixel_total + (f.width as nat) * (f.height as nat) <= crate::limits::MAX_TOTAL_PIXELS);
+        reveal(m::fctl);
+        assert(m::fctl(d@, true, false, 1, 1, m::initial()).is_ok());
+        assert(r.is_ok());
+    }
+    let (_, state) = match r { Ok(s) => s, Err(_) => return };
+    let before = apng::finish(state, Some(1));
+    let next = apng::fdat(&seq_one, true, false, state);
+    proof {
+        assert(seq_one@ == seq![0u8,0u8,0u8,1u8]);
+        assert(model::be32(seq![0u8,0u8,0u8,1u8],0) == 1u32) by (compute);
+        assert(matches!(before, Err((Error::MissingFrameData, true))));
+        assert(next.is_ok());
+    }
+    let next = match next { Ok(s) => s, Err(_) => return };
+    let after = apng::finish(next, Some(1));
+    proof { assert(after.is_ok()); assert(matches!(next.view().current, m::Current::Frame(true))); }
+}
+
+/// Accepting the largest wire sequence advances to a non-wire value. A
+/// following zero sequence is an error, not a wrapped continuation.
+fn apng_sequence_does_not_wrap() {
+    use crate::apng::{self, Control};
+    if crate::limits::MAX_TOTAL_PIXELS == 0 { return; }
+    let state = Control { seq: u32::MAX as u64, cur: Some((false, true)), frames: 1,
+        fctl_before_idat: false, pixels: 1 };
+    let last = [255u8; 4];
+    let zero = [0u8; 4];
+    let r = apng::fdat(&last, true, false, state);
+    proof {
+        assert(last@ == seq![255u8,255u8,255u8,255u8]);
+        assert(model::be32(seq![255u8,255u8,255u8,255u8],0) == u32::MAX) by (compute);
+        assert(r.is_ok());
+    }
+    let next = match r { Ok(s) => s, Err(_) => return };
+    proof { assert(next.seq == u32::MAX as int + 1); }
+    let r = apng::fdat(&zero, true, false, next);
+    proof {
+        assert(zero@ == seq![0u8,0u8,0u8,0u8]);
+        assert(model::be32(seq![0u8,0u8,0u8,0u8],0) == 0u32) by (compute);
+        assert(matches!(r, Err((Error::SequenceError, true))));
+    }
+}
+
 } // verus!
