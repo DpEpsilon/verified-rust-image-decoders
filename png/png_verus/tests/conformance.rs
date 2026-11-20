@@ -117,7 +117,7 @@ fn check(rec: &Value, b: &[u8], profile: Profile, profiled: bool) -> Result<(), 
             }
         }
         "frames" => {
-            let mut d = match (Frames::try_new(b, profile), want_err) {
+            let mut d = match (Frames::try_new_with_policy(b, profile), want_err) {
                 (Err(e), Some(w)) => {
                     return if err_name(&e) == w { Ok(()) } else { Err(format!("error {} expected {w}", err_name(&e))) };
                 }

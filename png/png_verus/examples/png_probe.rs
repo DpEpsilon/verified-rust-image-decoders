@@ -18,7 +18,7 @@ fn err(e: &TryError) -> Value {
 }
 
 fn frames(b: &[u8], p: Profile, policy: bool) -> Value {
-    let mut d = match Frames::try_new(b, p) {
+    let mut d = match Frames::try_new_with_policy(b, p) {
         Ok(d) => d,
         Err(e) => return err(&e),
     };

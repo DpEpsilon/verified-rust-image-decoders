@@ -421,6 +421,19 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
             } else if anc && !(kind0 == Kind::Fdat && pol.crc_ancillary == CrcAncillary::SkipExceptFdat) {
                 match pol.crc_ancillary {
                     CrcAncillary::Reject => return Err(Error::CrcMismatch.into()),
+                    // Council M1BQ-Q2 (c): in the frames constructor's walk with
+                    // APNG on, a fcTL that this rule would drop for its CRC is
+                    // not dropped but is the APNG structural error `CrcMismatch`,
+                    // raised here, after framing and bounds and before its
+                    // sequence number is read. `sfail` makes it R4 under
+                    // `apng_errors = Static` and the error under `Reject`. The
+                    // walk site, not the name, selects recovery: the mandatory
+                    // `CrcMismatch` returns above and below never reach `sfail`.
+                    // `decode_still`, the ICC call and the R4 fallback's re-walk
+                    // (`apng_off`, where `kind` is no longer `Fctl`) drop it.
+                    CrcAncillary::SkipExceptFdat if kind == Kind::Fctl && entry == Entry::Frames => {
+                        return Err(sfail(Error::CrcMismatch));
+                    }
                     CrcAncillary::SkipExceptFdat => {
                         discard(&mut doc, kind, ev);
                         continue;

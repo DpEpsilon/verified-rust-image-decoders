@@ -491,10 +491,32 @@ pub struct Frames<'a> {
 }
 
 impl<'a> Frames<'a> {
-    /// The walk (with the R4 fallback of `apng_errors = Static`), `Raw` and
-    /// `Output`, and the default image; its errors are the constructor's.
-    pub fn try_new(b: &'a [u8], p: Profile) -> Result<Frames<'a>, TryError> {
-        let pol = p.policy();
+    /// The Strict frame decoder (D1: the unqualified entry is Strict). Defined
+    /// as `try_new_with_policy(b, Profile::Strict)`, with the same errors and
+    /// guard requests (council M1BQ-Q5b; THEOREMS.md writes it
+    /// `Frames::try_new(b, Strict)`).
+    pub fn try_new(b: &'a [u8]) -> Result<Frames<'a>, TryError> {
+        Frames::try_new_with_policy(b, Profile::Strict)
+    }
+
+    /// The frame decoder under a named profile: the walk (with the R4 fallback
+    /// of `apng_errors = Static`), `Raw` and `Output`, and the default image;
+    /// its errors are the constructor's. THEOREMS.md writes it
+    /// `Frames::try_new(b, p)` (council M1BQ-Q5b).
+    pub fn try_new_with_policy(b: &'a [u8], p: Profile) -> Result<Frames<'a>, TryError> {
+        Frames::with_record(b, p.policy())
+    }
+
+    /// Test-only: the constructor under an arbitrary record (D1: arbitrary
+    /// records are never reachable from a consumer). Used for the council's
+    /// mixed-record cases (M1BQ-Q1 record scope, M1BQ-Q2).
+    #[cfg(feature = "test-records")]
+    #[doc(hidden)]
+    pub fn try_new_with_record(b: &'a [u8], pol: Policy) -> Result<Frames<'a>, TryError> {
+        Frames::with_record(b, pol)
+    }
+
+    fn with_record(b: &'a [u8], pol: Policy) -> Result<Frames<'a>, TryError> {
         let mut ev = Events::default();
         let doc = match walk(b, &pol, Entry::Frames, false, &mut ev) {
             Ok(d) => d,

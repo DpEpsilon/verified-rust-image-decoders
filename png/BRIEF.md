@@ -26,19 +26,28 @@ pub fn try_decode_still_with_policy(b: &[u8], p: Profile) -> Result<(Still, bool
 pub fn try_decode_still16_with_policy(b: &[u8], p: Profile) -> Result<(Still16, bool), TryError>;   // PNG-Q13 (i)
 pub struct Frames<'a> { /* borrowed input, canvas, Raw buffer, Saved, walk cursor */ }
 impl<'a> Frames<'a> {
-    pub fn try_new(b: &'a [u8], p: Profile) -> Result<Frames<'a>, TryError>;   // walk + default image
+    pub fn try_new(b: &'a [u8]) -> Result<Frames<'a>, TryError>;                // Strict: walk + default image
+    pub fn try_new_with_policy(b: &'a [u8], p: Profile) -> Result<Frames<'a>, TryError>;   // named profile
     pub fn info(&self) -> &Info;                                               // IHDR, colour chunks, num_plays
     pub fn try_next(&mut self) -> Result<Option<FrameView<'_>>, TryError>;     // fused after Err
 }
 pub struct FrameView<'f> { pub rgba: &'f [u8], pub rect: (u32, u32, u32, u32), pub delay: Option<(u16, u16)>,
                            pub dispose: u8, pub blend: u8, pub recovered: bool }
 pub fn try_icc_profile(b: &[u8]) -> Result<Option<Vec<u8>>, TryError>;   // P17, Strict
-pub fn try_icc_profile_with_policy(b: &[u8], p: Profile) -> Result<Icc, TryError>;  // Icc = Absent | Discarded | Failed(Error) | Present(Vec<u8>) (PNG-Q4)
-pub fn chunks(b: &[u8], p: Profile) -> ChunkIter<'_>;                    // borrowed (type, data, status) after a walk; text for glue (PNG-Q13 (ii))
+pub fn try_icc_profile_with_policy(b: &[u8], p: Profile) -> Result<Icc, TryError>;  // Icc = Absent | Discarded | Failed(Error) | Present(Vec<u8>) (PNG-Q4); P1, after MI_p (D14)
+pub fn chunks(b: &[u8], p: Profile) -> ChunkIter<'_>;                    // borrowed (type, data, status) after a walk; text for glue (PNG-Q13 (ii)); P1, after MChunks_p (D15); signature open
 pub enum ChunkStatus { Accepted, Discarded(DiscardReason) }              // DiscardReason: BadCrc | Misplaced | Duplicate | InvalidValue
 ```
 
 The 16-bit policy entry point and the chunk status are owner additions of 2026-11-16 (PNG-Q13); `policy_oracle.py` has no API-level model for them. `chunks` yields every chunk whose framing is valid, in file order, with a status, so glue cannot reinstate a chunk the profile discarded: only `Accepted` chunks have a verified CRC and a place the profile allows (under Strict every chunk is `Accepted` or the walk failed). Metadata access is three-valued (absent, discarded by the profile, present; the ICC profile also failed-to-decode), and a malformed ICC payload never blocks pixel decoding. `Info` carries the IHDR fields, palette entry count, tRNS presence, raw gAMA, cHRM, sRGB, cICP, mDCV, cLLI, sBIT, bKGD, pHYs and tIME values, the iCCP profile name and the eXIf byte range. `TryError` is `Format(Error) | OutOfMemory(OutOfMemory)` with the 62 error names of P18. Delay mapping (image: `den = 0 → 100`, milliseconds; glycin additionally `0 ms → 100 ms`) and loop translation belong to the glue.
+
+Representation and status, as the council ruled on the M1b questions (M1BQ, 2026-11-20; `png_verus/QUESTIONS.md` Q4, Q5):
+
+- **`Still16`.** `rgba16: Vec<u8>` holds `8·W·H` bytes in pixel order: four samples per pixel in R, G, B, A order, each 16-bit sample two bytes, most significant first (big-endian), on every host. Consumer glue converts when its destination requires another layout; on a little-endian host, reinterpreting the bytes as native `u16` is not a conversion. The bytes keep the shared, hash-pinned `alloc_guard` byte-identical across cores (no `u16` allocation site); T13's model sample `i` is `256·bytes[2i] + bytes[2i+1]` (ERRATA notation entry, proposed in `ERRATA-PROPOSED-M1BQ.md`).
+- **`Frames` constructors.** `Frames::try_new(b)` constructs Strict decoding and `Frames::try_new_with_policy(b, p)` takes a named profile, as D1 and PNG's still entries, GIF, DIB and TGA name them. Both use the same constructor implementation: `try_new(b)` is defined as `try_new_with_policy(b, Profile::Strict)`, with identical errors and guard requests. `Frames` does not implement `Iterator`: each returned frame view borrows the decoder's reusable canvas. `THEOREMS.md` writes `Frames::try_new(b, p)` for `try_new_with_policy(b, p)` and `Frames::try_new(b, Strict)` for `try_new(b)` (ERRATA notation entry, proposed); `MWF_p`, allocation order and frame semantics are unchanged.
+- **`Info` byte ranges.** `Info::iccp_name` and `Info::exif` are `(offset, length)` byte coordinates into the exact input slice passed to the entry point that returned the `Info`. They neither own nor retain that input and copy no metadata bytes, so `Info`, `Still` and `Still16` carry no input lifetime. The caller must retain the original input to resolve a pair; a pair applied to any other slice, even an in-bounds one, has no specified metadata meaning. That each returned pair is in bounds and denotes the model's range is the M3 gate L-INFO-RANGE (`PLAN.md`).
+- **Deferred to P1.** `chunks` and `try_icc_profile_with_policy` are absent from the crate (no stub, no `unimplemented!`) and are not cancelled; each is implemented at P1 after its model is in `policy-draft/policy_oracle.py` (`MChunks_p` and T-CHUNKS under D15; `MI_p` under D14). Until then PNG-Q4 and PNG-Q13 are delivered only in part: `Info`'s three-valued `Meta` and the Strict `try_icc_profile` exist; text chunks, per-chunk status and `Icc::Discarded | Failed` do not, and integration must claim none of them.
+- **`try_decode_still16_with_policy`.** A provisional implementation of D16 (`policy-draft/DECISIONS.md`): available, but covered by no conformance record, differential probe or M1b claim until P1's independent oracle and checks exist. Availability does not imply policy support.
 
 How the output model meets the consumers:
 

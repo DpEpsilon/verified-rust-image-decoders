@@ -11,7 +11,7 @@
 
 use inflate_verus::Segments;
 
-use crate::walk::{be32, crc_matches, frame_at};
+use crate::walk::{be32, frame_at};
 
 /// The IDAT run starting at the chunk at `first` (an IDAT chunk). The run ends
 /// at the first chunk that is not IDAT, or at the end of the input
@@ -70,11 +70,13 @@ impl<'a> Segments for IdatReader<'a> {
 }
 
 /// The data of one fdAT-based frame: the payloads (after the 4-byte sequence
-/// number) of the fdAT chunks from the chunk at `start` up to the next fcTL
-/// whose CRC matches, or IEND, or the end of the input. Other chunks are
-/// skipped; fdAT chunks of one frame need not be adjacent (P14.1). A fcTL with
-/// a bad CRC was discarded by the walk (`crc_ancillary = SkipExceptFdat`), so it
-/// does not end the frame here either.
+/// number) of the fdAT chunks from the chunk at `start` up to the next fcTL,
+/// or IEND, or the end of the input. Other chunks are skipped; fdAT chunks of
+/// one frame need not be adjacent (P14.1). No CRC is recomputed: a frames walk
+/// that succeeded verified the CRC of every fcTL (council M1BQ-Q2: a bad-CRC
+/// fcTL ends that walk with a structural error, R4 under RecommendedBeta, and
+/// the R4 fallback visits no fcTL), so the re-walk reads only lengths and
+/// types (policy form of L-REWALK, an M3 obligation).
 pub(crate) struct FdatReader<'a> {
     b: &'a [u8],
     pos: usize,
@@ -87,7 +89,7 @@ pub(crate) struct FdatReader<'a> {
 pub(crate) fn frame_boundary(b: &[u8], p: usize) -> Option<(bool, crate::walk::Chunk)> {
     match frame_at(b, p) {
         Ok(c) => {
-            let stop = &c.ty == b"IEND" || (&c.ty == b"fcTL" && crc_matches(b, &c));
+            let stop = &c.ty == b"IEND" || &c.ty == b"fcTL";
             Some((stop, c))
         }
         Err(_) => None,
@@ -140,8 +142,9 @@ impl<'a> Segments for FdatReader<'a> {
     }
 }
 
-/// The offset of the next fcTL with a matching CRC at or after `p`, before
-/// IEND; `None` when IEND or the end of the input comes first.
+/// The offset of the next fcTL at or after `p`, before IEND; `None` when IEND
+/// or the end of the input comes first. Its CRC was verified by the walk (see
+/// `FdatReader`).
 pub(crate) fn next_fctl(b: &[u8], mut p: usize) -> Option<usize> {
     loop {
         match frame_at(b, p) {
@@ -149,7 +152,7 @@ pub(crate) fn next_fctl(b: &[u8], mut p: usize) -> Option<usize> {
                 if &c.ty == b"IEND" {
                     return None;
                 }
-                if &c.ty == b"fcTL" && crc_matches(b, &c) {
+                if &c.ty == b"fcTL" {
                     return Some(p);
                 }
                 p = c.next;

@@ -157,7 +157,7 @@ fn requests_and_failures() {
     let n_frames = fr["expected"]["frames"].as_array().unwrap().len();
     let (cw, ch) = (fr["expected"]["width"].as_u64().unwrap() as usize, fr["expected"]["height"].as_u64().unwrap() as usize);
     arm(usize::MAX);
-    let mut d = Frames::try_new(&fb, Profile::Strict).unwrap();
+    let mut d = Frames::try_new(&fb).unwrap();
     let mut saved_at = None;
     for k in 0..n_frames {
         let before = COUNT.load(SeqCst);
@@ -173,7 +173,7 @@ fn requests_and_failures() {
     assert_eq!(saved_at, Some(k_prev));
     // Failing Saved: frames before k_prev are returned, then OutOfMemory once, then Ok(None).
     arm(2);
-    let mut d = Frames::try_new(&fb, Profile::Strict).unwrap();
+    let mut d = Frames::try_new(&fb).unwrap();
     for _ in 0..k_prev {
         assert!(d.try_next().unwrap().is_some());
     }

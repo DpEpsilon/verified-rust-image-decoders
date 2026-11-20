@@ -5,10 +5,10 @@
 //! its samples (P13) and place its pixels through the Adam7 map (P12) into a
 //! `Sink`. No row, palette-expansion or frame buffer is allocated.
 
-use inflate_verus::{inflate_zlib_into, InflateError, Segments, Status};
+use inflate_verus::{inflate_zlib_into, Segments, Status};
 
 use crate::png::{Error, Events};
-use crate::policy::{PaletteIndex, Policy, ZlibTail};
+use crate::policy::{PaletteIndex, Policy};
 use crate::walk::{be16, Doc, Ihdr};
 
 /// Adam7 passes `(x0, y0, dx, dy)` (P12).
@@ -142,7 +142,7 @@ impl<'o> Sink<'o> {
 
 /// Map an inflate status to the image result (P9–P11). `produced` bytes were
 /// written of a limit of `r`.
-fn image_status(status: Status, produced: u64, r: u64, pol: &Policy) -> Result<(), Error> {
+fn image_status(status: Status, produced: u64, r: u64) -> Result<(), Error> {
     match status {
         Status::Done => {
             if produced < r {
@@ -152,13 +152,10 @@ fn image_status(status: Status, produced: u64, r: u64, pol: &Policy) -> Result<(
             }
         }
         Status::Full => Err(Error::ExcessImageData),
-        // `inflate_verus` ignores bytes after a matching Adler-32 under
-        // IgnoreTail only when the output is exactly full (THEOREMS.md); with
-        // fewer than R bytes the policy model's result is TruncatedImageData
-        // (QUESTIONS.md Q1).
-        Status::Err(InflateError::TrailingZlibData) if pol.zlib_tail == ZlibTail::IgnoreTail && produced < r => {
-            Err(Error::TruncatedImageData)
-        }
+        // No inflate error is renamed (council M1BQ-Q1 (b)): under IgnoreTail
+        // `inflate_verus` ignores bytes after a matching Adler-32 only when the
+        // output is exactly R bytes, and a short stream followed by bytes stays
+        // TrailingZlibData, as under Strict.
         Status::Err(e) => Err(Error::from_inflate(e)),
     }
 }
@@ -338,7 +335,7 @@ pub(crate) fn decode_image<S: Segments>(
     let r = raw_size(ihdr, w, h);
     let raw = &mut raw[..r as usize];
     let res = inflate_zlib_into(src, raw, pol.inflate_options());
-    image_status(res.status, res.produced, r, pol)?;
+    image_status(res.status, res.produced, r)?;
     let bpp = ihdr.bpp();
     let wide = sink.wide();
     let colour = Colour::new(doc, b);
