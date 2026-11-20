@@ -1,0 +1,17 @@
+{
+  "checkpoint": 310,
+  "status": "UNVERIFIED preparation only; no budget gate credit",
+  "patch_script": "/home/ws/projects/verified-decoders/png/png_verus/runs/extend_split_budget.py",
+  "patch_script_sha256": "e417991ae745fc6d929b3c44cc1b39053ab6cd24a278566b81380ca4e6b3cd71",
+  "candidate_directory": "/home/ws/projects/verified-decoders/png/png_verus/runs/budget-candidate",
+  "candidate_source_hashes": {
+    "witness_m3_projection.rs": "e65de051093ec39e34b7b352b57786e4aa59a8745fa36f23e87e349b96fb6d6a",
+    "witness_m3_walk_frozen.rs": "a1d25ac6bba0eef2a7071bca4f5d9697ae5690567f01358d6aae0226002fd7e4"
+  },
+  "candidate_counts": {
+    "category_a": 90,
+    "category_b_projections": 16
+  },
+  "warning": "Candidate tools predate the final three literal-certificate helper repairs and corrected gamma selector. Do not overwrite current verified tools with candidate tools. Apply the extension patch to the current tools and regenerate to retain all checked fixes.",
+  "purpose": "One independently checked lemma per model step plus separate drive composition, including successful IEND for the exact-budget projection."
+}

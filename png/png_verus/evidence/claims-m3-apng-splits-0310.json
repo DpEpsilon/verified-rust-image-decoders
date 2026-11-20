@@ -1,0 +1,113 @@
+{
+  "milestone": "M3 eight additional APNG exact-error/public-entry witnesses; not sign-off-ready",
+  "base_commit": "f0934bc",
+  "checkpoint": 310,
+  "verified": 1448,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "signoff_ready": false,
+  "runtime_and_source_controls_run": 311,
+  "claims": [
+    {
+      "row": "THEOREMS.md category-a exact independent-model/frozen error and actual public-entry gate",
+      "status": "114/115 complete; eight additional APNG records",
+      "run": 310,
+      "records": [
+        "apng-bad/fewer-frames-than-declared",
+        "apng-bad/more-frames-than-declared",
+        "apng-bad/seq-gap",
+        "apng-bad/seq-gap-still",
+        "apng-bad/seq-fdat-repeats",
+        "apng-bad/fdat-len-3",
+        "apng-bad/fctl-no-fdat-then-iend",
+        "apng-bad/fctl-no-fdat-then-fctl"
+      ],
+      "functions": [
+        "model_apng_bad_fewer_frames_than_declared",
+        "model_apng_bad_more_frames_than_declared",
+        "model_apng_bad_seq_gap",
+        "model_apng_bad_seq_gap_still",
+        "model_apng_bad_seq_fdat_repeats",
+        "model_apng_bad_fdat_len_3",
+        "model_apng_bad_fctl_no_fdat_then_iend",
+        "model_apng_bad_fctl_no_fdat_then_fctl",
+        "walk_apng_bad_fewer_frames_than_declared",
+        "walk_apng_bad_more_frames_than_declared",
+        "walk_apng_bad_seq_gap",
+        "walk_apng_bad_seq_gap_still",
+        "walk_apng_bad_seq_fdat_repeats",
+        "walk_apng_bad_fdat_len_3",
+        "walk_apng_bad_fctl_no_fdat_then_iend",
+        "walk_apng_bad_fctl_no_fdat_then_fctl"
+      ],
+      "statement": "Each prefix has explicit independently checked state updates, one proof per model step, and a separate drive composition proof. Every literal certificate is checked; the executable witness invokes actual Frames::try_new or try_decode_still and proves the authored frozen error. Per-record step/composition/certificate functions and source/input hashes are indexed in m3-walk-witness-inputs-0310.json."
+    },
+    {
+      "row": "THEOREMS.md category-b M3 structural/header/preparation projection gate",
+      "status": "15/16 complete; unchanged from run 301, rechecked",
+      "run": 310,
+      "functions": [
+        "projection_container_minimal_ok",
+        "projection_container_unknown_ancillary_everywhere",
+        "projection_container_reserved_bit_ancillary",
+        "projection_plte_ok",
+        "projection_plte_suggested_palette_in_rgb",
+        "projection_anc_ok_iccp_303",
+        "projection_anc_ok_time_7_after_idat",
+        "projection_anc_ok_srgb_and_iccp_both",
+        "projection_anc_ok_many_text",
+        "projection_anc_ok_ztxt_with_corrupt_zlib_not_inflated",
+        "projection_order_splt_twice",
+        "projection_order_bkgd_hist_after_plte_before_idat_rgb",
+        "projection_ihdr_8192x8192_accepted_then_truncated_zlib",
+        "projection_ihdr_67108864x1_accepted_then_truncated_zlib",
+        "projection_ihdr_1x67108864_accepted_then_truncated_zlib"
+      ],
+      "statement": "All fifteen projections retain the explicit M4\u2013M6 final-data label. Whole MW_p accepts; actual preparation succeeds with projected header and bounded Info; actual public decoder is called without asserting its final result."
+    },
+    {
+      "row": "Earlier M3 host components and ERRATA E2",
+      "status": "retained/rechecked",
+      "run": 310,
+      "functions": [
+        "header::prefix",
+        "Frames::with_trace",
+        "Frames::try_next",
+        "DataReader::read",
+        "decode_image",
+        "decode_exact"
+      ],
+      "statement": "Production files unchanged. Separate IDAT/fdAT/iCCP checked contracts and explicit inspection/Rust-aliasing arguments remain in reader-effects-0310.json."
+    },
+    {
+      "row": "Remaining two M3 frozen-record gates",
+      "status": "OPEN",
+      "run": 310,
+      "records": [
+        "apng-bad/pixel-budget",
+        "apng-bad/pixel-budget-exactly-2^30-then-zlib"
+      ],
+      "functions": [],
+      "statement": "No new budget proof credit. A per-step candidate generator extension is prepared only under ignored runs, not applied to accepted source or verified."
+    },
+    {
+      "row": "Final i686 replay and M4\u2013M6 equations",
+      "status": "replay OPEN; final-data equations untouched",
+      "run": 310,
+      "functions": [],
+      "statement": "Read-only i686 cache preflight checked pinned files and snapshot source metadata; no cache copy or replay occurred. All sixteen category-b final-data outcomes remain M4\u2013M6 obligations."
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0311.json"
+  },
+  "spec_ambiguities": [],
+  "resume": "Retain 89 generated category-a names and fifteen projections; apply/rebuild the unverified budget split prototype against current generator, attempt both budget records with default limits, then copied-cache i686 replay via CARGO_BUILD_TARGET=i686-unknown-linux-gnu and full verify.sh."
+}

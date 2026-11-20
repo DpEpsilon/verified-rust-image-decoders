@@ -1,0 +1,58 @@
+{
+  "checkpoint": 310,
+  "newly_completed_records": [
+    "apng-bad/fewer-frames-than-declared",
+    "apng-bad/more-frames-than-declared",
+    "apng-bad/seq-gap",
+    "apng-bad/seq-gap-still",
+    "apng-bad/seq-fdat-repeats",
+    "apng-bad/fdat-len-3",
+    "apng-bad/fctl-no-fdat-then-iend",
+    "apng-bad/fctl-no-fdat-then-fctl"
+  ],
+  "runs": [
+    {
+      "run": 303,
+      "result": "header literal syntax rejected; no proof count"
+    },
+    {
+      "run": 304,
+      "result": "control-result literal syntax rejected; no proof count"
+    },
+    {
+      "run": 305,
+      "verified": 1430,
+      "errors": 15,
+      "result": "explicit states exposed frame/range sequence-equality obligations and concrete-caller resource limits"
+    },
+    {
+      "run": 306,
+      "verified": 1441,
+      "errors": 4,
+      "result": "per-step proofs close after explicit extensional sequence equality; three concrete callers and retained gamma ordering query exceed resources"
+    },
+    {
+      "run": 307,
+      "result": "literal-certificate postcondition syntax rejected; no proof count"
+    },
+    {
+      "run": 308,
+      "verified": 1447,
+      "errors": 1,
+      "result": "all eight APNG proofs close after separate literal-certificate helpers; retained gamma query still exceeds resources because isolation selector used wrong fixture-name case"
+    },
+    {
+      "run": 310,
+      "verified": 1448,
+      "errors": 0,
+      "result": "correct case-sensitive gamma isolation; full accepted checkpoint"
+    }
+  ],
+  "solver_limit_changes": false,
+  "new_trusted_items": false,
+  "open_budget_records": [
+    "apng-bad/pixel-budget",
+    "apng-bad/pixel-budget-exactly-2^30-then-zlib"
+  ],
+  "budget_preparation_evidence": "budget-split-preparation-0310.json"
+}

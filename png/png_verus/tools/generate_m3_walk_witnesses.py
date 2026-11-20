@@ -444,9 +444,135 @@ proof fn late_zero_width_control(b: Seq<u8>,h: crate::model::Ihdr)
 """
 
 
+
+def split_apng_steps(data, ident, facts, frames_entry, frozen_error):
+    """Suggest explicit states; independent per-step proofs check every update."""
+    requirements = []
+    i = 0
+    while i < len(facts):
+        line = facts[i]
+        if line.startswith('        assert forall|'):
+            expression = line.strip()[len('assert '):-len(' by {')]
+            requirements.append('('+expression.replace(f'bytes_{ident}()', 'b')+')')
+            i += 1
+            while facts[i] != '        }': i += 1
+        elif line.startswith('        assert('):
+            expression = line[len('        assert('):]
+            expression = expression.rsplit(') by ',1)[0] if ') by ' in expression else expression[:-2]
+            requirements.append(expression.replace(f'bytes_{ident}()', 'b'))
+            if line.endswith(' by {'):
+                i += 1
+                while facts[i] != '        }': i += 1
+        else: raise AssertionError(line)
+        i += 1
+    # Raw payload words discharge local transition certificates in the literal
+    # caller; composition needs only the resulting checked transitions.
+    requirements = list(dict.fromkeys(x for x in requirements
+        if 'crate::critical_model::read(' in x
+        or 'crate::walk_model::classify(' in x
+        or 'crate::apng_model::' in x
+        or 'u8 & 32u8' in x
+        or 'crate::model::be32(b,16)' in x
+        or 'crate::model::be32(b,20)' in x))
+    transitions = []
+    for line in apng_facts(data, ident):
+        if line.startswith('        assert(crate::apng_model::'):
+            expression = line[len('        assert('):].rsplit(') by ',1)[0]
+            transitions.append(expression.rsplit('==',1)[1])
+    width,height = int.from_bytes(data[16:20],'big'),int.from_bytes(data[20:24],'big')
+    prefix = 'split_'+ident
+    header = f'crate::model::Ihdr {{width:{width}u32,height:{height}u32,depth:{data[24]}u8,color_type:{data[25]}u8,interlace:{data[28]}u8}}'
+    req = [f'b.len()=={len(data)}',f'h==({header})', 'crate::model::mh(b)==Ok((h,33nat))',*requirements]
+    req = ['('+x+')' for x in req]
+    hides = ['    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::initial_info);hide(crate::walk_model::classify);']
+    hides += ['    '+''.join(f'hide(crate::apng_model::{method});' for method in ['actl','fctl','fdat','finish','begin_idat'] if any(f'crate::apng_model::{method}(' in x for x in requirements))]
+    control = 'crate::apng_model::initial()'
+    declared = 'None'
+    idat = []
+    frame_list = []
+    default_frame = False
+    phase = 'Before'
+    seen = 'set![crate::walk_model::Name::Ihdr]'
+    pos, stage, ti = 33, 0, 0
+    output = [f'spec fn {prefix}_state_0(h: crate::model::Ihdr) -> m::State {{m::initial(h,33,m::no_events())}}']
+    terminal_error = None
+    while pos+12<=len(data):
+        size=int.from_bytes(data[pos:pos+4],'big');tag=data[pos+4:pos+8];d=data[pos+8:pos+8+size]
+        assert tag in [b'acTL',b'fcTL',b'IDAT',b'fdAT',b'IEND']
+        value=transitions[ti];ti+=1
+        before=phase=='Before'
+        if phase=='During' and tag!=b'IDAT':phase='After'
+        error_match=re.match(r'Err\(\(Error::(\w+),(true|false)\)\)',value)
+        if error_match:
+            terminal_error=error_match.group(1)
+            assert terminal_error==frozen_error,(terminal_error,frozen_error)
+            result=f'm::Step::Error(Error::{terminal_error},m::no_events())'
+        else:
+            if tag==b'acTL':
+                declared='Some('+value[len('Ok('):-1]+')';seen='set![crate::walk_model::Name::Ihdr,crate::walk_model::Name::Actl]'
+            elif tag==b'IDAT':
+                control=value;phase='During';default_frame=bool(frame_list)
+                idat.append(f'crate::walk_model::Range {{offset:{pos+8}nat,len:{size}nat}}')
+            elif tag==b'fcTL':
+                match=re.fullmatch(r'Ok\(\((.*),(crate::apng_model::Control .*?)\)\)',value);assert match,value
+                control=match.group(2)
+                words=[int.from_bytes(d[j:j+4],'big') for j in [4,8,12,16]]
+                fields=f'control_offset:{pos}nat,width:{words[0]}u32,height:{words[1]}u32,x:{words[2]}u32,y:{words[3]}u32,delay_num:{int.from_bytes(d[20:22],"big")}u16,delay_den:{int.from_bytes(d[22:24],"big")}u16,dispose:{d[24]}u8,blend:{d[25]}u8'
+                frame_list.append([fields,'Idat' if before else 'Fdat',[]])
+            elif tag==b'fdAT':
+                control=value[len('Ok('):-1];assert frame_list[-1][1]=='Fdat'
+                frame_list[-1][2].append(f'crate::walk_model::Range {{offset:{pos+12}nat,len:{size-4}nat}}')
+            else:raise AssertionError('Successful IEND needs the projection interface')
+            fs=[]
+            for fields,source,ranges in frame_list:
+                source='crate::walk_model::Source::'+source+('' if source=='Idat' else '(seq!['+','.join(ranges)+'])')
+                fs.append('crate::walk_model::Frame {'+fields+',source:'+source+'}')
+            info='m::Info {default_is_frame:true,..s.doc.info}' if default_frame else 's.doc.info'
+            output += [f'spec fn {prefix}_state_{stage+1}(h: crate::model::Ihdr) -> m::State {{',
+                       '    let s=m::initial(h,33,m::no_events());',
+                       f'    m::State {{pos:{pos+size+12}nat,seen:{seen},phase:crate::walk_model::Phase::{phase},control:{control},',
+                       f'        doc:m::Doc {{actl:{declared},info:{info},idat:seq![{",".join(idat)}],frames:seq![{",".join(fs)}],..s.doc}},..s}}','}']
+            result=f'm::Step::Next({prefix}_state_{stage+1}(h))'
+        output += ['#[verifier::spinoff_prover]',f'proof fn {prefix}_step_{stage}(b: Seq<u8>,h: crate::model::Ihdr)',
+                   '    requires '+',\n        '.join(req)+',',
+                   f'    ensures m::step(b,m::strict(),{str(frames_entry).lower()},false,{prefix}_state_{stage}(h))=={result},',
+                   '{',*hides,'    reveal(m::step);reveal(m::ordered);reveal(m::own);']
+        if not error_match:
+            step=f'm::step(b,m::strict(),{str(frames_entry).lower()},false,{prefix}_state_{stage}(h))'
+            output += [f'    let actual=match {step} {{m::Step::Next(next)=>next,_=>{prefix}_state_{stage}(h)}};',
+                       f'    assert({step}==m::Step::Next(actual));',
+                       f'    let expected={prefix}_state_{stage+1}(h);',
+                       '    assert(actual.pos==expected.pos);',
+                       '    assert(actual.phase==expected.phase);',
+                       '    assert(actual.control==expected.control);',
+                       '    assert(actual.doc.info==expected.doc.info);',
+                       '    assert(actual.doc.frames =~= expected.doc.frames);',
+                       '    assert(actual.doc.idat =~= expected.doc.idat);']
+        output += ['}']
+        if terminal_error:break
+        pos+=size+12;stage+=1
+    assert terminal_error is not None
+    model='MWF_p' if frames_entry else 'MW_p'
+    f=str(frames_entry).lower()
+    output += ['#[verifier::spinoff_prover]',f'proof fn {prefix}_compose(b: Seq<u8>,h: crate::model::Ihdr)',
+               '    requires '+',\n        '.join(req)+',',
+               f'    ensures m::{model}(b,m::strict())==m::Outcome::Error(Error::{frozen_error},m::no_events()),',
+               '{',*hides,'    hide(m::drive);']
+    output += [f'    {prefix}_step_{n}(b,h);' for n in range(stage+1)]
+    output += [f'    m::drive_step(b,m::strict(),{f},false,{prefix}_state_{n}(h));' for n in reversed(range(stage+1))]
+    output += ['}','']
+    if ident in ['apng_bad_seq_gap','apng_bad_seq_gap_still','apng_bad_fctl_no_fdat_then_fctl']:
+        # Keep concrete byte computation outside the whole-walk composition query.
+        output += ['#[verifier::spinoff_prover]',f'proof fn literal_facts_{ident}()',
+                   '    ensures '+',\n        '.join('('+x.replace('b,',f'bytes_{ident}(),').replace('b.subrange(',f'bytes_{ident}().subrange(')+')' for x in requirements)+',',
+                   '{','    hide(crate::critical_model::read);hide(crate::walk_model::classify);',hides[1],*facts,'}','']
+    return output,[f'        {prefix}_compose(bytes_{ident}(),crate::model::mh(bytes_{ident}()).unwrap().0);']
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--all-a', action='store_true')
+    parser.add_argument('--split-apng', nargs='+', default=[])
     parser.add_argument('--names', nargs='+', default=DEFAULT_NAMES)
     args = parser.parse_args()
     inventory = json.loads((ROOT/'evidence/m3-witness-status-0248.json').read_text())
@@ -520,7 +646,13 @@ def main():
 
         control_hides = '    '+''.join(f'hide(crate::apng_model::{method});' for method in ['actl','fctl','fdat','finish']
                                       if any(f'crate::apng_model::{method}(' in line for line in facts))
-        symbolic = name.startswith('apng-bad/') and name not in ['apng-bad/fctl-width-0','apng-bad/seq-starts-at-1']
+        split = name in args.split_apng
+        if split:
+            helpers, composition = split_apng_steps(data,ident,facts,frames,error)
+            lines += helpers
+            if ident in ['apng_bad_seq_gap','apng_bad_seq_gap_still','apng_bad_fctl_no_fdat_then_fctl']:
+                facts = [f'        literal_facts_{ident}();']
+        symbolic = name.startswith('apng-bad/') and name not in ['apng-bad/fctl-width-0','apng-bad/seq-starts-at-1'] and not split
         if symbolic:
             requirements = []
             pure = []
@@ -561,19 +693,19 @@ def main():
         lines += [
             f'// {name.replace(chr(94), chr(95))}; fixture sha256 {digest}',
             f'spec fn bytes_{ident}() -> Seq<u8> {{seq![{values}]}}',
-            *(['#[verifier::spinoff_prover]'] if name == 'container/non-consecutive-idat' or name.startswith('apng-bad/') else []),
+            *(['#[verifier::spinoff_prover]'] if name in ['container/non-consecutive-idat','anc-bad/bkgd-index-3-of-3','order/gAMA-after-plte'] or name.startswith('apng-bad/') else []),
             f'proof fn model_{ident}()',
             f'    ensures m::{model}(bytes_{ident}(),m::strict())==m::Outcome::Error(Error::{error},m::no_events()),',
             '{',
             '    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);',
             *([control_hides] if name.startswith('apng-bad/') else []),
-            *([f'    hide(m::{model});'] if symbolic or name == 'apng-bad/seq-starts-at-1' else []),
+            *([f'    hide(m::{model});'] if symbolic or split or name == 'apng-bad/seq-starts-at-1' else []),
             f'        assert(crate::model::mh(bytes_{ident}())=={header}) by {{',
             '            reveal(crate::model::mh);',
             f'            assert(crate::model::mh(bytes_{ident}())=={header}) by (compute);',
             '        }',
             *facts,
-            *([] if symbolic or name in ['apng-bad/fctl-width-0','plte/257-entries','anc-bad/iccp-name-80','anc-bad/iccp-leading-space','order/iCCP-after-idat','apng-bad/seq-starts-at-1'] else ['        reveal(m::step);reveal(m::ordered);reveal(m::own);']),
+            *([] if symbolic or split or name in ['apng-bad/fctl-width-0','plte/257-entries','anc-bad/iccp-name-80','anc-bad/iccp-leading-space','order/iCCP-after-idat','apng-bad/seq-starts-at-1'] else ['        reveal(m::step);reveal(m::ordered);reveal(m::own);']),
             *composition,
             '}',
             f'fn walk_{ident}() {{',
