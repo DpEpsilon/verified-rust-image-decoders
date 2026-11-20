@@ -26,7 +26,7 @@ STRICT = {
     'blend': 'Exact', 'dispose_previous': 'Spec', 'apng16': 'Composite', 'subframe_interlace': 'Exact',
 }
 # RecommendedBeta (provisional): 15 of the 30 fields differ from Strict. Fourteen are full relaxations;
-# zlib_tail is narrowed (PNG-Q1: IgnoreTail ignores bytes after the Adler-32-checked end of the zlib stream
+# zlib_tail is narrowed (PNG-Q1, narrowed again by the council's M1b-Q1 ruling: IgnoreTail ignores bytes after a matching Adler-32 only when the output is exactly R bytes,
 # but surplus decompressed output stays ExcessImageData). crc_ancillary=SkipExceptFdat is PNG-Q2 (a bad CRC
 # on IHDR, PLTE, IDAT or fdAT is rejected); apng_errors=Static is PNG-Q11 (R4).
 RECOMMENDED_BETA = dict(STRICT, crc_ancillary='SkipExceptFdat', iend='Lenient', missing_iend='AtEof', trailing='Ignore',
@@ -155,7 +155,14 @@ def zlib_decompress(data, limit, limit_error, P, ev, partial=None, trace=None):
             trace['err_bit'] = (br.byte + 4) * 8          # zlib reads the whole Adler-32 before comparing
         fail('AdlerMismatch')
     if br.byte + 4 != len(data):
-        if P['zlib_tail'] == 'Reject' and P['stream_end'] != 'AtRaster':
+        if P['zlib_tail'] == 'IgnoreTail':
+            # Council ruling M1b-Q1 (b), 2026-11-20: the bytes after a matching Adler-32 are ignored only when the
+            # output is exactly `limit` (= R) bytes; a short stream with a tail is TrailingZlibData, as under Strict.
+            # For every record with zlib_tail=IgnoreTail, not only RecommendedBeta. (Image and frame streams only:
+            # this function is not used for the iCCP stream, whose tail handling is D14's.)
+            if len(out) != limit:
+                fail('TrailingZlibData')
+        elif P['zlib_tail'] == 'Reject' and P['stream_end'] != 'AtRaster':
             fail('TrailingZlibData')
     return bytes(out)
 
@@ -236,7 +243,8 @@ def _walk(b, P, ev, entry, box):
     def sfail(name):
         """An APNG structural error (PNG-Q11): under apng_errors=Static the frames entry point falls back to
         the default image (R4); otherwise it is the error itself. Allocation, resource (TooManyFrames,
-        PixelBudgetExceeded), critical-chunk (CrcMismatch) and inflate errors never come through here."""
+        PixelBudgetExceeded), critical-chunk and fdAT CRC failures (CrcMismatch) and inflate errors never come through
+        here; the one CrcMismatch that does is a bad-CRC fcTL in the frames walk (council ruling M1b-Q2)."""
         if P['apng_errors'] == 'Static' and entry == 'frames':
             raise ApngError(name, [], doc['actl'])
         fail(name)
@@ -294,6 +302,15 @@ def _walk(b, P, ev, entry, box):
                 # PNG-Q2: the chunk's framing and bounds were checked by chunk_at before this point
                 if P['crc_ancillary'] == 'Reject':
                     fail('CrcMismatch')
+                if (orig_t == b'fcTL' and t == b'fcTL' and entry == 'frames' and P['crc_ancillary'] == 'SkipExceptFdat'
+                        and P['apng_errors'] in ('Reject', 'Static')):
+                    # Council ruling M1b-Q2 (c), 2026-11-20, for records whose fields take Strict/RecommendedBeta
+                    # values: in the frames walk with APNG on, a fcTL this rule would drop for its CRC is the APNG
+                    # structural error CrcMismatch, raised here before its sequence number is read (R4 under Static,
+                    # the error under Reject). decode_still and the fallback's re-walk (APNG off: t is no longer
+                    # fcTL) drop it. The walk site, not the name, selects recovery: the mandatory CrcMismatch
+                    # failures above and below never reach sfail.
+                    sfail('CrcMismatch')
                 if P['crc_ancillary'] in ('Skip', 'SkipExceptFdat'):
                     drop(t, True)
                     continue

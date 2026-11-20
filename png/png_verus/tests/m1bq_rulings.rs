@@ -14,8 +14,9 @@
 //!   fallback's re-walk drop it; mandatory CRC failures are never caught.
 //! - Q5b (b): `Frames::try_new(b)` is `Frames::try_new_with_policy(b, Strict)`.
 //!
-//! One test, `m1bq_policy_vectors_present`, is ignored until phase 2 adds the
-//! RecommendedBeta records to `../policy-draft/VECTORS-POLICY.json`.
+//! `m1bq_policy_vectors_present` checks that `../policy-draft/VECTORS-POLICY.json`
+//! holds the RecommendedBeta records phase 2 added (their expectations are
+//! checked by `conformance.rs`).
 
 use png_verus::policy::{ApngErrors, CrcAncillary, Policy, ZlibTail, RECOMMENDED_BETA, STRICT};
 use png_verus::{Frames, Profile, TryError};
@@ -386,7 +387,6 @@ fn q5b_try_new_is_strict() {
 /// its still variant). Their expectations are checked by `conformance.rs`
 /// once present; this test only requires that they exist.
 #[test]
-#[ignore = "pending phase 2: VECTORS-POLICY.json is regenerated from the updated policy_oracle.py"]
 fn m1bq_policy_vectors_present() {
     let names: Vec<String> = records("policy-draft/VECTORS-POLICY.json")
         .iter()

@@ -225,6 +225,64 @@ bw.fixed_lit(257)
 bw.code(0, 5)
 pair('window/distance-before-output-stays-an-error', 'still', tiny(zwrap(bw.flush(), b'')), 'DistanceTooFar', 'DistanceTooFar')
 
+# --- council rulings on the M1b questions (2026-11-20), appended after every earlier record so those stay byte-identical.
+# M1b-Q1 (b): IgnoreTail ignores the bytes after a matching Adler-32 only when the output is exactly R bytes. A short stream
+# with a tail is TrailingZlibData, as under Strict; without a tail TruncatedImageData; a wrong Adler-32 is AdlerMismatch first.
+TSHORT = TINY_RAW[:2]                                  # one row of two: 2 of R = 4 bytes
+TSHORTZ = zwrap(stored(TSHORT), TSHORT)
+pair('zlib-tail/short-with-tail', 'still', tiny(TSHORTZ + b'\0\0'), 'TrailingZlibData', 'TrailingZlibData')
+pair('zlib-tail/short-no-tail', 'still', tiny(TSHORTZ), 'TruncatedImageData', 'TruncatedImageData')
+pair('zlib-tail/full-with-tail', 'still', tiny(TOKZ + b'\0\0'), 'TrailingZlibData', tiny_exp)
+pair('zlib-tail/short-then-second-stream', 'still', tiny(TSHORTZ + zwrap(stored(TINY_RAW[2:]), TINY_RAW[2:])),
+     'TrailingZlibData', 'TrailingZlibData')
+pair('zlib-tail/short-bad-adler-with-tail', 'still', tiny(zwrap(stored(TSHORT), TSHORT, adler=1) + b'\0'), 'AdlerMismatch', 'AdlerMismatch')
+# the same five streams as the data of fdAT frame 1 (2 x 2 RGBA8, R = 18): the iterator returns frame 0, then the stream's
+# result ends the sequence; an exactly-full stream with a tail is a second frame under RecommendedBeta
+FR1 = scan(F1, 2, 2, 6, 8, 0)
+FSHORT = FR1[:9]
+FSHORTZ = zwrap(stored(FSHORT), FSHORT)
+FFULLZ = zwrap(stored(FR1), FR1)
+QF = AHDR + actl(2) + fctl(0, AW, AH, 0, 0) + chunk(b'IDAT', Z0) + fctl(1, 2, 2, 0, 0)
+F_ONE = [((0, 0, AW, AH), F0, 0, 0)]
+F_TWO = F_ONE + [((0, 0, 2, 2), F1, 0, 0)]
+M_TWO = [((1, 10), 0, 0)] * 2
+
+
+def end_after_0(e):
+    return frames_exp(F_ONE, M_TWO[:1], end={'error': e})
+
+
+for nm, data, rb in [
+        ('fdat-short-with-tail', FSHORTZ + b'\0\0', 'TrailingZlibData'),
+        ('fdat-short-no-tail', FSHORTZ, 'TruncatedImageData'),
+        ('fdat-full-with-tail', FFULLZ + b'\0\0', None),
+        ('fdat-short-then-second-stream', FSHORTZ + zwrap(stored(FR1[9:]), FR1[9:]), 'TrailingZlibData'),
+        ('fdat-short-bad-adler-with-tail', zwrap(stored(FSHORT), FSHORT, adler=1) + b'\0', 'AdlerMismatch')]:
+    strict = end_after_0('TrailingZlibData' if rb is None else rb)
+    pair(f'zlib-tail/{nm}', 'frames', QF + fdat(2, data) + IEND, strict,
+         frames_exp(F_TWO, M_TWO) if rb is None else end_after_0(rb))
+
+# M1b-Q2 (c): in the frames constructor's walk, a fcTL whose CRC fails and which SkipExceptFdat would drop is the APNG
+# structural error CrcMismatch: R4 under Static. decode_still drops it (apng_in_still=Ignore), so the still is the default
+# image without an event. The default image is not part of the animation (acTL 1, the fcTL follows the IDAT).
+FCTL2_BADCRC = chunk(b'fcTL', struct.pack('>IIIIIHHBB', 2, 2, 2, 0, 0, 1, 10, 0, 0), crc=1)
+Q2H = G + actl(1) + chunk(b'IDAT', Z0) + fctl(0, 2, 2, 0, 0)
+ZB = zframe(rgba_frame(2, 2, [BLU]), 2, 2)
+Q2 = [
+    # the frame's stream split over two fdAT chunks around the bad fcTL, whose sequence number makes the second the next one
+    ('fctl-bad-crc-splice', Q2H + fdat(1, Z1[:len(Z1) // 2]) + FCTL2_BADCRC + fdat(2, Z1[len(Z1) // 2:]) + IEND, sexp(AW, AH, F0), ('R4',)),
+    # two complete streams: IgnoreTail would otherwise hide the second one behind the first
+    ('fctl-bad-crc-two-streams', Q2H + fdat(1, Z1) + FCTL2_BADCRC + fdat(2, ZB) + IEND, sexp(AW, AH, F0), ('R4',)),
+    # the fallback's re-walk still rejects a bad-CRC fdAT, and decode_still does too (SkipExceptFdat)
+    ('fctl-bad-crc-then-fdat-bad-crc', Q2H + fdat(1, Z1) + FCTL2_BADCRC + chunk(b'fdAT', struct.pack('>I', 2) + ZB, crc=1) + IEND,
+     'CrcMismatch', None),
+    # the fallback's re-walk validates the framing of every later chunk
+    ('fctl-bad-crc-then-bad-framing', Q2H + fdat(1, Z1) + FCTL2_BADCRC + chunk(b'ab1C', b'') + IEND, 'InvalidChunkType', None),
+]
+for nm, bb, still_rb, ev in Q2:
+    pair(f'apng-static/{nm}', 'frames', bb, 'CrcMismatch', R4 if ev else still_rb, ev=ev or ())
+    pair(f'apng-static/{nm}-still', 'still', bb, 'CrcMismatch', still_rb)
+
 POLICY = _GEN.V[START:]
 
 if __name__ == '__main__':
