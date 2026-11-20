@@ -1,6 +1,42 @@
 # png_verus ledger
 
-M3 has begun; it is not signed off. The latest host checkpoint is **run 316: 1,448 verified, 0 errors**, replayed on i686 at **run 318: 1,448 verified, 0 errors**, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
+M3 has begun; it is not signed off. The latest host checkpoint is **run 323: 1,448 verified, 0 errors**; existing **i686 run 318: 1,448 verified, 0 errors** verifies the identical accepted source, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
+
+## Final M3 sign-off candidate: two fixture gates blocked (2026-11-20)
+
+Base: `1122906`. **Run 323 freshly verifies 1,448 obligations with zero errors**, using full-crate `verify.sh`, `--no-cheating`, default limits, two threads and `Fresh vstd`. The accepted source has **no changes**: every one of its 54 proof-input paths and SHA256 hashes exactly matches the source of i686 run 318 (also 1,448/0). That target replay therefore remains applicable; no new i686 run is claimed. Native runtime/source controls pass in run 324. This is the final review candidate after the authorized bounded attempt, **not sign-off-ready and not signed off**.
+
+`final-candidate-m3-rows-0323.json` lists each component's exact scope, proof functions and evidence. Its accounting is:
+
+| M3 row/component | Final state at host 323 / identical-source i686 318 |
+|---|---|
+| T2; L-CRC-TABLE; T6 generic representation/chunk/walk equations | Discharged core proofs; the separate mandatory frozen-record assurance gate is not complete |
+| T10 walk-side prefix; L-WALK-FIRST; A-PNG-7 PreAlloc | Discharged at the agreed M3 structural/allocation scope |
+| A-PNG-2 constructor reservation prefix; T3 replacement/A-PNG-3 M3 request bounds; A-PNG-6 allocation audit component | Discharged at stated scope; no full Eq_new_p pixel or SavedAt equation is claimed |
+| T-SEG/L-SEG-PNG; Strict and policy L-REWALK; CRC-validated fcTL boundaries; Static default-only fallback | Discharged transport/source components; aggregate T12/L-REWALK-COST work equations are not promoted to M3 credit |
+| L-INFO-RANGE public metadata; separate E2 IDAT/fdAT/iCCP bindings | Discharged at recorded scope; E2 still combines checked contracts with explicit inspection/Rust-aliasing arguments, not a generic heap-effect theorem |
+| T1/T11 weak M3 continuation safety/termination component | Discharged; not the full future-API T1 row or data/pixel semantics |
+| Category-(a) required model/frozen/public-error witnesses | **114 of 115 discharged; `apng-bad/pixel-budget` not discharged** |
+| Category-(b) required M3 structural/header/preparation projections | **15 of 16 discharged; `apng-bad/pixel-budget-exactly-2^30-then-zlib` not discharged** |
+| Council sixteen M3 no-legal-R cases; final copied-cache i686 replay | Complete for the accepted source |
+| M4–M6 final data, pixels, compositor/disposal/SavedAt, complete iterator/work equations and later P1/P2 rows | Not claimed by this M3 candidate |
+
+The last attempt used the requested symbolic-index pattern. The generated candidate has one `fctl_step`, one `fdat_step`, an abstract prefix carrying only the frame-sequence length and source/control facts, and `finish` inducted on frame index `k` with variant `64-k`. The 64-frame payload remains symbolic in those proofs; no 64-state vector or 64 literal model steps are emitted. Separate short authored-chunk tables feed checked per-frame framing/CRC/control certificates. Runtime witness inputs are built through checked `append`/`build` loops from short chunks, not giant literals.
+
+Exactly four full-crate verifier runs were used, including final recovery:
+
+- Run 320 rejects an implementation mistake in the experimental generator: ordinary integer match patterns cannot match Verus `nat`.
+- Run 321, after changing those selections to comparisons, reports a missing manual trigger on a wire-read quantifier and the pinned verifier's ill-typed-AIR/fuel-slicing panic.
+- Run 322 supplies explicit read triggers and removes the redundant hide of the already opaque predicate. It reaches the unchanged 1,500-second full-run timeout with no final count. Its log reports neither a stack overflow nor a proof error, but that is not successful verification or evidence that any new lemma completed.
+- Run 323 restores the exact previously verified inputs and freshly verifies the accepted source at 1,448/0. The fourth-run budget is exhausted; no further verifier run was made.
+
+Both budget records remain uncredited. `budget-induction-attempts-0323.json` binds the attempts, source inventories and diagnostic limits. The unverified generator and generated candidate are preserved outside active `src`/`tools` under `runs`; the handwritten generator is snapshotted as reproducibility input in the evidence packet. No generated candidate tree or generated Rust candidate was added to the packet. No new source or trust from the experimental module remains active. Only PNG-owned package fingerprints were removed to force the fresh host invocation; no dependency or inflate cache was cleaned or rebuilt.
+
+The complete source-inventory equality to `checkpoint-0318.json` retains the prior i686 compiler/target/pinned-rmeta binding and copied-cache evidence. No fresh cross-target replay is needed for unchanged proof inputs, and none is implied by the new checkpoint number. Any future accepted source change still requires fresh host and i686 replay.
+
+Run 324: 846 native conformance passes, zero failures, two inherited unsupported-profile skips; fault injection and all seven council tests pass; both scanners and self-tests/negative controls pass. Production source, public API, all prior witness/projection source and bindings, runtime inputs/mtimes, guard hashes and protected specifications/caches remain unchanged. No solver limit or stack-size setting changed. All worker jobs exited; no commit or push was made.
+
+Every category-(b) record retains **M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile**. All sixteen final-data outcomes remain later-milestone obligations. No new specification ambiguity was identified. The two named budget assurance gates remain the only undischarged M3 fixture gates; this final candidate does not declare sign-off.
 
 ## M3 continuation: copied-cache i686 replay and bounded budget blockers (2026-11-20)
 

@@ -1,0 +1,321 @@
+{
+  "kind": "final M3 sign-off-candidate row accounting",
+  "checkpoint": 323,
+  "base_commit": "1122906",
+  "host_run": 323,
+  "host_verified": 1448,
+  "i686_run": 318,
+  "i686_verified": 1448,
+  "proof_source_unchanged": true,
+  "source_inventory_reference": "checkpoint-0318.json",
+  "source_input_count": 54,
+  "rows": [
+    {
+      "row": "T2",
+      "scope": "Exact independent header/first-error equation for all inputs",
+      "status": "discharged at stated M3 scope",
+      "functions": [
+        "header::prefix",
+        "header::parse_ihdr",
+        "header::area_cap_u64"
+      ],
+      "evidence": "claims-m3-start.json",
+      "host_run": 323,
+      "i686_run": 318
+    },
+    {
+      "row": "L-CRC-TABLE",
+      "scope": "Table construction/update/finalized CRC against bitwise model",
+      "status": "discharged at stated M3 scope",
+      "functions": [
+        "crc::make_table",
+        "crc::lemma_crc_table",
+        "crc::lemma_crc_update",
+        "crc::crc32"
+      ],
+      "evidence": "claims-m3-start.json",
+      "host_run": 323,
+      "i686_run": 318
+    },
+    {
+      "row": "T6",
+      "scope": "Internal representation, own-value stages, whole chunk and MW_p/MWF_p walk equations, exact first error and termination",
+      "status": "discharged at stated M3 scope",
+      "functions": [
+        "Doc::view",
+        "Doc::wf",
+        "State::view",
+        "State::wf",
+        "walk_own::run",
+        "walk_step::run",
+        "walk_step::ordered",
+        "walk::walk",
+        "walk::still",
+        "walk::frames",
+        "walk_policy::profiles_project_exactly"
+      ],
+      "evidence": "claims-m3-walk.json",
+      "host_run": 323,
+      "i686_run": 318,
+      "boundary": "The separate mandatory frozen-record assurance gate remains partial at the two named budget records; that does not add witness credit to the universal walk equation."
+    },
+    {
+      "row": "T10 prefix / L-WALK-FIRST / A-PNG-7 PreAlloc",
+      "scope": "Walk before reservation/inflate; exact walk Format error and empty actual log at checked entry dispatch",
+      "status": "discharged at stated M3 scope",
+      "functions": [
+        "prepare_image",
+        "allocation_model::image_prealloc",
+        "allocation_model::prepared_exit",
+        "still_impl",
+        "Frames::with_trace",
+        "Frames::try_next",
+        "icc_impl"
+      ],
+      "evidence": "claims-m3-frame-dispatch.json",
+      "host_run": 323,
+      "i686_run": 318,
+      "boundary": "Only walk-side precedence is claimed; later data error/pixel equivalences remain M4\u2013M6."
+    },
+    {
+      "row": "A-PNG-2 M3 component",
+      "scope": "Actual constructor Raw then Output allocation prefix, sealed per-call logs, OOM tied to real failed request and checked weak continuation",
+      "status": "discharged at stated M3 scope",
+      "functions": [
+        "Trace::new",
+        "Trace::record",
+        "reserve_image",
+        "Frames::with_trace",
+        "Frames::try_new",
+        "Frames::try_new_with_policy",
+        "allocation_model::image_call"
+      ],
+      "evidence": "claims-m3-frame-dispatch.json",
+      "host_run": 323,
+      "i686_run": 318,
+      "boundary": "This is the agreed M3 structural/allocation scope; full Eq_new_p default-image pixel equality is not claimed."
+    },
+    {
+      "row": "T3 replacement / A-PNG-3 M3 bounds",
+      "scope": "Request bounds and buffer layout before actual guard sites; fresh per-call Saved trace component",
+      "status": "discharged at stated M3 scope",
+      "functions": [
+        "limits::caps_ok",
+        "image::raw_budget",
+        "image::raw_size",
+        "image::output_size",
+        "layout_model::raw_bounds",
+        "layout_model::raw_dimensions",
+        "Frames::ensure_saved",
+        "reserve_icc_window",
+        "reserve_icc"
+      ],
+      "evidence": "claims-m3-sealed-logs.json",
+      "host_run": 323,
+      "i686_run": 318,
+      "boundary": "SavedAt/compositor/disposal equality and aggregate iterator-log equations remain later-milestone obligations."
+    },
+    {
+      "row": "A-PNG-6 M3 audit component",
+      "scope": "No unguarded allocation sites; reserved buffer lengths and permitted operations, build/scanner evidence",
+      "status": "discharged at stated M3 scope",
+      "functions": [
+        "decode_image",
+        "decode_exact",
+        "Frames::draw_selected",
+        "Frames::dispose_and_save"
+      ],
+      "evidence": "run-0324.log",
+      "host_run": 323,
+      "i686_run": 318,
+      "boundary": "Allocation absence and dependency capabilities include explicit source/build inspection, not a generic Verus heap-effect theorem."
+    },
+    {
+      "row": "T-SEG / L-SEG-PNG",
+      "scope": "IDAT/fdAT/iCCP reader invariants, exact read/EOF/stream/frame preservation, fresh cursors and container source/count premises",
+      "status": "discharged at stated M3 scope",
+      "functions": [
+        "DataReader::at",
+        "DataReader::read",
+        "DataReader::for_doc",
+        "DataReader::for_frame",
+        "SegmentSlices::read",
+        "frame_transport_model::read_frame"
+      ],
+      "evidence": "claims-m3-frame-transport.json",
+      "host_run": 323,
+      "i686_run": 318,
+      "boundary": "Complete public aggregate T12/L-REWALK-COST work equations are not promoted to M3 credit."
+    },
+    {
+      "row": "L-REWALK Strict and policy / CRC-validated boundaries / Static fallback",
+      "scope": "Selected IDAT/fdAT concatenations and fcTL boundaries; APNG-off fallback selects no animation sources",
+      "status": "discharged at stated M3 scope",
+      "functions": [
+        "transport_model::drive_idat",
+        "frame_transport_model::select_frame",
+        "frame_transport_model::constructor_frames",
+        "DataReader::for_doc",
+        "DataReader::for_frame",
+        "reader::next_selected_fctl",
+        "FrameJob::select",
+        "FrameState::begin_next"
+      ],
+      "evidence": "claims-m3-frame-transport.json",
+      "host_run": 323,
+      "i686_run": 318,
+      "boundary": "Source/transport equality only; no decoded-pixel or compositor equality."
+    },
+    {
+      "row": "L-INFO-RANGE",
+      "scope": "Returned public metadata ranges/model values and forwarded constructor Info, under the original-input condition",
+      "status": "discharged at stated M3 scope",
+      "functions": [
+        "Info::repr_wf",
+        "Info::present_ranges",
+        "Info::public_observations",
+        "allocation_model::returned_info",
+        "allocation_model::returned_frame_info",
+        "assemble_still",
+        "assemble_still16",
+        "Frames::info",
+        "Frames::try_next"
+      ],
+      "evidence": "claims-m3-frame-dispatch.json",
+      "host_run": 323,
+      "i686_run": 318
+    },
+    {
+      "row": "ERRATA E2 / L-SEG-FRAME IDAT",
+      "scope": "Separate actual call-site binding and preserved source frame",
+      "status": "discharged at stated M3 scope",
+      "functions": [
+        "DataReader::for_doc",
+        "DataReader::read",
+        "DataReader::frame_covers_noncursor",
+        "still_impl",
+        "Frames::with_trace",
+        "decode_image",
+        "decode_exact"
+      ],
+      "evidence": "reader-effects-0318.json",
+      "host_run": 323,
+      "i686_run": 318,
+      "boundary": "No-extra-effect exclusion remains explicit inspection and Rust shared-borrow reasoning, not a Verus heap-effect theorem."
+    },
+    {
+      "row": "ERRATA E2 / L-SEG-FRAME fdAT",
+      "scope": "Separate actual selected-frame binding and preserved source frame",
+      "status": "discharged at stated M3 scope",
+      "functions": [
+        "DataReader::for_frame",
+        "DataReader::read",
+        "FrameJob::select",
+        "Frames::draw_selected",
+        "decode_image",
+        "decode_exact"
+      ],
+      "evidence": "reader-effects-0318.json",
+      "host_run": 323,
+      "i686_run": 318,
+      "boundary": "Same checked-contract/inspection/Rust-aliasing distinction."
+    },
+    {
+      "row": "ERRATA E2 / L-SEG-FRAME iCCP",
+      "scope": "Separate measure/second-pass binding and preserved source frame",
+      "status": "discharged at stated M3 scope",
+      "functions": [
+        "SegmentSlices::read",
+        "measure_profile",
+        "write_profile",
+        "icc_impl",
+        "try_icc_profile"
+      ],
+      "evidence": "reader-effects-0318.json",
+      "host_run": 323,
+      "i686_run": 318,
+      "boundary": "Same checked-contract/inspection/Rust-aliasing distinction."
+    },
+    {
+      "row": "T1/T11 M3 weak continuation component",
+      "scope": "Termination, no panic/overflow, bounded writes, source/loan/buffer preservation in actual continuation/dispatch",
+      "status": "discharged at stated M3 scope",
+      "functions": [
+        "decode_image",
+        "decode_exact",
+        "Sink::canvas",
+        "Sink::finish",
+        "Frames::dispose_and_save",
+        "Frames::draw_selected",
+        "Frames::next_with_trace"
+      ],
+      "evidence": "claims-m3-frame-dispatch.json",
+      "host_run": 323,
+      "i686_run": 318,
+      "boundary": "Not the full T1 future-API row or any M4\u2013M6 data/pixel equation."
+    },
+    {
+      "row": "M3 category-(a) frozen-record/public-entry gate",
+      "scope": "114 of 115 records; explicit per-record function/input/expected bindings",
+      "status": "PARTIAL: apng-bad/pixel-budget not discharged",
+      "functions": [
+        "witness_m3_frozen::header_*",
+        "witness_m3_walk_frozen::{model_*,walk_*,split_*}"
+      ],
+      "evidence": "m3-witness-status-0323.json",
+      "host_run": 323,
+      "i686_run": 318
+    },
+    {
+      "row": "M3 category-(b) structural/preparation gate",
+      "scope": "15 of 16 records; actual preparation and public calls with projected header/Info bounds",
+      "status": "PARTIAL: apng-bad/pixel-budget-exactly-2^30-then-zlib not discharged",
+      "functions": [
+        "witness_m3_projection::{symbolic_*,model_*,projection_*}"
+      ],
+      "evidence": "m3-witness-status-0323.json",
+      "host_run": 323,
+      "i686_run": 318,
+      "boundary": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile."
+    },
+    {
+      "row": "Council sixteen M3 no-legal-R cases",
+      "scope": "All sixteen exact model/public-entry error witnesses retained",
+      "status": "discharged at stated M3 scope",
+      "functions": [
+        "witness_m3_frozen::header_*",
+        "witness_m3_walk_frozen::{model_*,walk_*}"
+      ],
+      "evidence": "m3-witness-status-0323.json",
+      "host_run": 323,
+      "i686_run": 318
+    },
+    {
+      "row": "Final i686 replay",
+      "scope": "Same accepted source, actual i686 target and pinned copied vstd, Fresh vstd, 1,448/0",
+      "status": "discharged at stated M3 scope",
+      "functions": [
+        "Entire registered PNG crate"
+      ],
+      "evidence": "i686-replay-0318.json",
+      "host_run": 323,
+      "i686_run": 318,
+      "boundary": "Existing run 318 remains applicable by exact source identity; run 323 freshly rechecks host. No new i686 run or i686 runtime execution is claimed."
+    }
+  ],
+  "not_discharged_m3": [
+    "apng-bad/pixel-budget",
+    "apng-bad/pixel-budget-exactly-2^30-then-zlib"
+  ],
+  "out_of_m3_scope_not_claimed": [
+    "All sixteen category-b final-data outcomes",
+    "Full Eq_still / Eq_new_p pixel equations",
+    "T-FILT / T-A7 image semantics",
+    "Full T8 compositor/disposal/SavedAt equations",
+    "Complete T-ITER / T12 / L-REWALK-COST aggregate work equations",
+    "Full future P1/P2 API/policy theorem rows"
+  ],
+  "signoff_ready": false,
+  "signoff_declared": false,
+  "spec_ambiguities": []
+}

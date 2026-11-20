@@ -1,0 +1,59 @@
+{
+  "kind": "final bounded symbolic-index budget attempt",
+  "base_commit": "1122906",
+  "full_crate_run_budget": 4,
+  "candidate_runs": [
+    320,
+    321,
+    322
+  ],
+  "final_native_replay_run": 323,
+  "records": [
+    "apng-bad/pixel-budget",
+    "apng-bad/pixel-budget-exactly-2^30-then-zlib"
+  ],
+  "complete_m3_budget_gates": 0,
+  "new_trusted_items": false,
+  "solver_or_stack_limit_changes": false,
+  "pattern": {
+    "symbolic_steps": [
+      "fctl_step",
+      "fdat_step"
+    ],
+    "induction": "finish, decreasing 64-k",
+    "payload": "arbitrary Seq<u8> in generic steps; prefix carries abstract frame sequence length rather than a literal 64-frame vector",
+    "certificates": "wire_0 through wire_64, independent framing/CRC/control facts from short authored chunk tables",
+    "input_builder": "checked append/build loops, short literal_pair and literal_prefix arrays; no giant runtime literal"
+  },
+  "attempts": [
+    {
+      "run": 320,
+      "outcome": "compile rejection: nat cannot be matched against ordinary integer patterns",
+      "verified": null,
+      "source_snapshot": "run-0320.json"
+    },
+    {
+      "run": 321,
+      "outcome": "missing explicit trigger on wire-read quantifier and pinned verifier ill-typed-AIR/fuel-slicing panic",
+      "verified": null,
+      "source_snapshot": "run-0321.json"
+    },
+    {
+      "run": 322,
+      "outcome": "unchanged 1500-second full-run deadline expired; no stack-overflow or proof-error diagnostic and no final count",
+      "verified": null,
+      "source_snapshot": "run-0322.json"
+    }
+  ],
+  "diagnostic_limit": "The third run produced no completed count or per-function success evidence. Do not claim the generic steps, induction, wire certificates or either budget witness as proved.",
+  "preserved_generator": "budget-induction-generator-0322.py",
+  "preserved_generator_sha256": "5b3bfc4aa486ad2d7ff8f989d799e179947f1743e5fb3d8f53be00f9186af425",
+  "generated_candidate_sha256": "c85e68dd2111c836696f43bc33c7716ce158aca3352e498d6f0a30eb280bb78a",
+  "generated_candidate_bytes": 206714,
+  "generated_candidate_not_added": true,
+  "registration_needed_for_reproduction": "#[cfg(verus_only)]\nmod witness_m3_budget_inductive;",
+  "accepted_source_restoration": "All 54 proof-input paths and hashes exactly match checkpoint-0318.json; the experimental module and generator were removed from active src/tools and preserved under runs.",
+  "retained_i686_run": 318,
+  "i686_replay_remains_applicable_by_exact_source_identity": true,
+  "new_spec_ambiguities": []
+}
