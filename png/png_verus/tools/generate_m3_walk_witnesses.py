@@ -101,12 +101,41 @@ def read_facts(data, ident, frozen_error):
                 expression = (f'crate::metadata_model::transparency({size}nat,{ct}u8,{entries}nat,false)'
                               f'==crate::metadata_model::Decision::{decision}')
                 facts += [f'        assert({expression}) by (compute);']
-            if tag == b'tEXt' and frozen_error != 'InvalidText':
-                nul = payload.index(0)
-                key = ','.join(f'{x}u8' for x in payload[:nul])
-                facts += [f'        assert(crate::model::first_nul({payload_expr},0)==Some({nul}nat)) by (compute);',
-                          f'        assert({payload_expr}.subrange(0,{nul})==seq![{key}]) by (compute);',
-                          f'        assert(crate::model::keyword(seq![{key}]));']
+            if tag in [b'iCCP',b'tEXt',b'zTXt',b'iTXt',b'sPLT']:
+                nul = payload.find(0)
+                expected_nul = 'None' if nul < 0 else f'Some({nul}nat)'
+                facts += [f'        assert(crate::model::first_nul({payload_expr},0)=={expected_nul}) by (compute);']
+                if nul >= 0:
+                    key_bytes = payload[:nul]
+                    key = ','.join(f'{x}u8' for x in key_bytes)
+                    valid = (1 <= len(key_bytes) <= 79 and key_bytes[0] != 32 and key_bytes[-1] != 32
+                             and all(32 <= x <= 126 or x >= 161 for x in key_bytes)
+                             and b'  ' not in key_bytes)
+                    facts += [f'        assert({payload_expr}.subrange(0,{nul})==seq![{key}]) by (compute);',
+                              f'        assert({"" if valid else "!"}crate::model::keyword(seq![{key}]));']
+                    if tag == b'iTXt':
+                        start = nul+3
+                        for _ in range(2):
+                            end = payload.find(0,start)
+                            expected_end = 'None' if end < 0 else f'Some({end}nat)'
+                            facts += [f'        assert(crate::model::first_nul({payload_expr},{start}nat)=={expected_end}) by (compute);']
+                            if end < 0:
+                                break
+                            start = end+1
+            if tag in [b'cICP',b'eXIf',b'tIME',b'iTXt',b'bKGD',b'sBIT']:
+                for index, value in enumerate(payload):
+                    facts += [f'        assert({payload_expr}[{index}]=={value}u8) by (compute);']
+            if tag == b'bKGD' and ct != 3:
+                count = size//2
+                facts += [f'        assert(crate::metadata_model::words16({payload_expr},{count}nat).len()=={count});']
+                for index in range(count):
+                    value = int.from_bytes(payload[2*index:2*index+2],'big')
+                    facts += [f'        assert(crate::model::be16({payload_expr},{2*index})=={value}u16) by (compute);',
+                              f'        assert(crate::metadata_model::words16({payload_expr},{count}nat)[{index}]=={value}u16);']
+            if tag in [b'cICP',b'eXIf',b'tIME'] and frozen_error in ['InvalidCicp','InvalidExif','InvalidTime']:
+                expression = (f'crate::metadata_model::parse(crate::walk_model::Name::{NAMES[tag]},{payload_expr},'
+                              f'{ct}u8,{depth}u8,{entries}nat)==crate::metadata_model::Outcome::Error(Error::{frozen_error})')
+                facts += [f'        assert({expression}) by (compute);']
             if tag == b'gAMA' and size == 4:
                 value = int.from_bytes(payload,'big')
                 outcome = 'Error(Error::InvalidGamma)' if value == 0 else f'Value(crate::metadata_model::Value::Gama({value}u32))'
@@ -140,6 +169,52 @@ def read_facts(data, ident, frozen_error):
 
 
 MODEL_HELPERS = r"""
+
+#[verifier::spinoff_prover]
+proof fn invalid_iccp_keyword(d: Seq<u8>,ct: u8,depth: u8,z: nat)
+    requires crate::model::valid_depth(ct,depth),crate::model::first_nul(d,0)==Some(z),
+        !crate::model::keyword(d.subrange(0,z as int)),
+    ensures crate::metadata_model::parse(crate::walk_model::Name::Iccp,d,ct,depth,0)==crate::metadata_model::Outcome::Error(Error::InvalidIccp),
+{
+    hide(crate::model::first_nul);hide(crate::model::keyword);
+}
+#[verifier::spinoff_prover]
+proof fn first_iccp_error(b: Seq<u8>,h: crate::model::Ihdr,length: nat)
+    requires 41+length<=b.len(),crate::model::mh(b)==Ok((h,33nat)),
+        crate::critical_model::read(b,33,crate::walk_model::Phase::Before,false)==Ok(crate::critical_model::Candidate {
+            ty:seq![105u8,67u8,67u8,80u8],data:41,len:length,next:45+length,crc_ok:true,synthetic:false}),
+        crate::metadata_model::parse(crate::walk_model::Name::Iccp,b.subrange(41,(41+length) as int),h.color_type,h.depth,0)==crate::metadata_model::Outcome::Error(Error::InvalidIccp),
+    ensures m::MW_p(b,m::strict())==m::Outcome::Error(Error::InvalidIccp,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::metadata_model::parse);hide(m::drive);hide(m::initial_info);
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+    let s=m::initial(h,33,m::no_events());
+    assert(m::step(b,m::strict(),false,false,s)==m::Step::Error(Error::InvalidIccp,m::no_events()));
+    m::drive_step(b,m::strict(),false,false,s);
+}
+#[verifier::spinoff_prover]
+proof fn idat_then_iccp_order(b: Seq<u8>,h: crate::model::Ihdr,idat_len: nat,iccp_len: nat)
+    requires 57+idat_len+iccp_len<=b.len(),h.color_type!=3,crate::model::mh(b)==Ok((h,33nat)),
+        crate::critical_model::read(b,33,crate::walk_model::Phase::Before,false)==Ok(crate::critical_model::Candidate {
+            ty:seq![73u8,68u8,65u8,84u8],data:41,len:idat_len,next:45+idat_len,crc_ok:true,synthetic:false}),
+        crate::critical_model::read(b,45+idat_len,crate::walk_model::Phase::During,false)==Ok(crate::critical_model::Candidate {
+            ty:seq![105u8,67u8,67u8,80u8],data:53+idat_len,len:iccp_len,next:57+idat_len+iccp_len,crc_ok:true,synthetic:false}),
+    ensures m::MW_p(b,m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);
+    let s0=m::initial(h,33,m::no_events());
+    let s1=m::State {pos:45+idat_len,phase:crate::walk_model::Phase::During,
+        control:crate::apng_model::begin_idat(s0.control),
+        doc:m::Doc {idat:s0.doc.idat.push(crate::walk_model::Range {offset:41,len:idat_len}),..s0.doc},..s0};
+    assert(m::step(b,m::strict(),false,false,s0)==m::Step::Next(s1)) by {
+        reveal(m::step);reveal(m::ordered);reveal(m::own);
+    }
+    assert(m::step(b,m::strict(),false,false,s1)==m::Step::Error(Error::ChunkOutOfOrder,m::no_events())) by {
+        reveal(m::step);reveal(m::ordered);reveal(m::own);
+    }
+    m::drive_step(b,m::strict(),false,false,s1);
+    m::drive_step(b,m::strict(),false,false,s0);
+}
 
 // This proof never expands the large palette payload; the caller checks its wire.
 #[verifier::spinoff_prover]
@@ -279,9 +354,18 @@ def main():
             composition = [f'        late_zero_width_control(bytes_{ident}(),crate::model::mh(bytes_{ident}()).unwrap().0);']
         if name == 'plte/257-entries':
             composition = [f'        first_palette_error(bytes_{ident}(),crate::model::mh(bytes_{ident}()).unwrap().0,771,Error::InvalidPalette);']
+        if name in ['anc-bad/iccp-name-80','anc-bad/iccp-leading-space']:
+            length = int.from_bytes(data[33:37],'big')
+            nul = data[41:41+length].index(0)
+            composition = [f'        invalid_iccp_keyword(bytes_{ident}().subrange(41,{41+length}),{data[25]}u8,{data[24]}u8,{nul}nat);',
+                           f'        first_iccp_error(bytes_{ident}(),crate::model::mh(bytes_{ident}()).unwrap().0,{length}nat);']
+        if name == 'order/iCCP-after-idat':
+            composition = [f'        idat_then_iccp_order(bytes_{ident}(),crate::model::mh(bytes_{ident}()).unwrap().0,22,287);']
+
         lines += [
             f'// {name.replace(chr(94), chr(95))}; fixture sha256 {digest}',
             f'spec fn bytes_{ident}() -> Seq<u8> {{seq![{values}]}}',
+            *(['#[verifier::spinoff_prover]'] if name == 'container/non-consecutive-idat' else []),
             f'proof fn model_{ident}()',
             f'    ensures m::{model}(bytes_{ident}(),m::strict())==m::Outcome::Error(Error::{error},m::no_events()),',
             '{',
@@ -291,7 +375,7 @@ def main():
             f'            assert(crate::model::mh(bytes_{ident}())=={header}) by (compute);',
             '        }',
             *facts,
-            *([] if name in ['apng-bad/fctl-width-0','plte/257-entries'] else ['        reveal(m::step);reveal(m::ordered);reveal(m::own);']),
+            *([] if name in ['apng-bad/fctl-width-0','plte/257-entries','anc-bad/iccp-name-80','anc-bad/iccp-leading-space','order/iCCP-after-idat'] else ['        reveal(m::step);reveal(m::ordered);reveal(m::own);']),
             *composition,
             '}',
             f'fn walk_{ident}() {{',

@@ -1,6 +1,27 @@
 # png_verus ledger
 
-M3 has begun; it is not signed off. The latest host checkpoint is **run 269: 721 verified, 0 errors**, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
+M3 has begun; it is not signed off. The latest host checkpoint is **run 273: 796 verified, 0 errors**, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
+
+## M3 continuation: fourteen metadata/order public-error witnesses (2026-11-20)
+
+Base: `20d5e43` (run 269, 721 verified). **Run 273: 796 verified, 0 errors** retains all 42 generated names and adds fourteen metadata/order records. Category-(a) coverage is now **81 of 115**, with **34 APNG records open**. All sixteen council M3 cases remain complete. Run 274 passes runtime/source controls. This checkpoint is **not sign-off-ready**: the 34 APNG witnesses, sixteen category-(b) projections and final i686 replay remain open.
+
+| THEOREMS row/component | Checked functions at run 273 | Scope |
+|---|---|---|
+| Frozen M3 category-(a) gate | `witness_m3_walk_frozen::{model_*,walk_*}`; every record/function/error is indexed in `m3-walk-witness-inputs-0273.json` | 56 generated pairs plus 25 retained header witnesses give 81 complete model-versus-frozen/public-entry error witnesses; the fourteen additions cover malformed metadata and metadata ordering |
+| Invalid iCCP keywords | `invalid_iccp_keyword`, `first_iccp_error`, `model_anc_bad_iccp_name_80`, `model_anc_bad_iccp_leading_space`, and their `walk_*` functions | Checked concrete first-NUL/keyword and wire facts instantiate symbolic parser/first-chunk lemmas; both actual public still calls return InvalidIccp; no profile decompression claim |
+| iCCP after IDAT | `idat_then_iccp_order`, `model_order_iccp_after_idat`, `walk_order_iccp_after_idat` | A symbolic checked IDAT prefix and ordering failure prove ChunkOutOfOrder at the actual public still entry, without expanding the large profile payload in transition solving |
+| Retained text/IDAT ordering | `model_container_non_consecutive_idat`, `walk_container_non_consecutive_idat` | Spinoff isolation restores the retained proof after the added helper context changed solver search; the actual call and frozen NonConsecutiveIdat expectation are unchanged |
+| Earlier M3 host rows and three E2 discharges | Earlier requirement-indexed functions, rechecked at run 273; `reader-effects-0273.json` retains their separate reader arguments | No production decoder, reader, allocation or public API change; host components remain proved while the complete M3 gate stays partial |
+| Remaining gates / M4–M6 | None added | 34 APNG category-(a) witnesses and all sixteen category-(b) full walk/preparation projections open; three accepted-header facts remain partial; final copied-cache i686 replay untouched; no pixel/data/compositor/SavedAt equation |
+
+Run 271 checked 790 obligations with three large-iCCP resource failures. The new symbolic keyword/parser, first-chunk and late-order lemmas discharge all three in run 272 (795 verified, one retained text-order resource failure). Run 273 isolates that retained model proof and verifies the complete source at unchanged default solver limits. No trust, false-precondition interface or solver-limit override was added.
+
+`generation-m3-walk-0273.json` records the exact 56-name regeneration command. Retain **all 56 names** when adding the remaining APNG records; the default two-name generator command does not reproduce this checkpoint. Public expected errors still come only from authored frozen fixture fields; all generated local word, first-NUL, keyword, sample and wire suggestions are checked against the independent specification.
+
+Run 274: 846 conformance passes, zero failures, two inherited unsupported-profile skips; allocation fault injection passes; all seven council tests pass. Both source scanners and their negative controls pass. Guard hashes and all six real reservation sites remain unchanged. Protected specifications, policies, dependency files, production bodies and tests remain unchanged. All three worker background verifier tasks exited; none remains running. The worker did not commit or push.
+
+No new specification ambiguity was found. The category-(b) label and reviewer-challenge interpretation remain unchanged: “M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile”. Next resume point: retain the 56 generated names, add the remaining 34 APNG category-(a) records, then the sixteen category-(b) projections and final i686 replay using only the copied existing cache. Declare sign-off-ready only after every M3 gate is discharged, not sign-off itself.
 
 ## M3 continuation: forty-two whole-walk/public-error witnesses and all council cases (2026-11-20)
 

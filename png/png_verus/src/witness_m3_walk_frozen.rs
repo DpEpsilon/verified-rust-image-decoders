@@ -6,6 +6,52 @@ use crate::{document_model as m,png::Error,alloc_guard::sites::TryError};
 verus! {
 
 
+#[verifier::spinoff_prover]
+proof fn invalid_iccp_keyword(d: Seq<u8>,ct: u8,depth: u8,z: nat)
+    requires crate::model::valid_depth(ct,depth),crate::model::first_nul(d,0)==Some(z),
+        !crate::model::keyword(d.subrange(0,z as int)),
+    ensures crate::metadata_model::parse(crate::walk_model::Name::Iccp,d,ct,depth,0)==crate::metadata_model::Outcome::Error(Error::InvalidIccp),
+{
+    hide(crate::model::first_nul);hide(crate::model::keyword);
+}
+#[verifier::spinoff_prover]
+proof fn first_iccp_error(b: Seq<u8>,h: crate::model::Ihdr,length: nat)
+    requires 41+length<=b.len(),crate::model::mh(b)==Ok((h,33nat)),
+        crate::critical_model::read(b,33,crate::walk_model::Phase::Before,false)==Ok(crate::critical_model::Candidate {
+            ty:seq![105u8,67u8,67u8,80u8],data:41,len:length,next:45+length,crc_ok:true,synthetic:false}),
+        crate::metadata_model::parse(crate::walk_model::Name::Iccp,b.subrange(41,(41+length) as int),h.color_type,h.depth,0)==crate::metadata_model::Outcome::Error(Error::InvalidIccp),
+    ensures m::MW_p(b,m::strict())==m::Outcome::Error(Error::InvalidIccp,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::metadata_model::parse);hide(m::drive);hide(m::initial_info);
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+    let s=m::initial(h,33,m::no_events());
+    assert(m::step(b,m::strict(),false,false,s)==m::Step::Error(Error::InvalidIccp,m::no_events()));
+    m::drive_step(b,m::strict(),false,false,s);
+}
+#[verifier::spinoff_prover]
+proof fn idat_then_iccp_order(b: Seq<u8>,h: crate::model::Ihdr,idat_len: nat,iccp_len: nat)
+    requires 57+idat_len+iccp_len<=b.len(),h.color_type!=3,crate::model::mh(b)==Ok((h,33nat)),
+        crate::critical_model::read(b,33,crate::walk_model::Phase::Before,false)==Ok(crate::critical_model::Candidate {
+            ty:seq![73u8,68u8,65u8,84u8],data:41,len:idat_len,next:45+idat_len,crc_ok:true,synthetic:false}),
+        crate::critical_model::read(b,45+idat_len,crate::walk_model::Phase::During,false)==Ok(crate::critical_model::Candidate {
+            ty:seq![105u8,67u8,67u8,80u8],data:53+idat_len,len:iccp_len,next:57+idat_len+iccp_len,crc_ok:true,synthetic:false}),
+    ensures m::MW_p(b,m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);
+    let s0=m::initial(h,33,m::no_events());
+    let s1=m::State {pos:45+idat_len,phase:crate::walk_model::Phase::During,
+        control:crate::apng_model::begin_idat(s0.control),
+        doc:m::Doc {idat:s0.doc.idat.push(crate::walk_model::Range {offset:41,len:idat_len}),..s0.doc},..s0};
+    assert(m::step(b,m::strict(),false,false,s0)==m::Step::Next(s1)) by {
+        reveal(m::step);reveal(m::ordered);reveal(m::own);
+    }
+    assert(m::step(b,m::strict(),false,false,s1)==m::Step::Error(Error::ChunkOutOfOrder,m::no_events())) by {
+        reveal(m::step);reveal(m::ordered);reveal(m::own);
+    }
+    m::drive_step(b,m::strict(),false,false,s1);
+    m::drive_step(b,m::strict(),false,false,s0);
+}
+
 // This proof never expands the large palette payload; the caller checks its wire.
 #[verifier::spinoff_prover]
 proof fn first_palette_error(b: Seq<u8>,h: crate::model::Ihdr,length: nat,error: Error)
@@ -857,6 +903,7 @@ fn walk_container_duplicate_ihdr() {
 
 // container/non-consecutive-idat; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
 spec fn bytes_container_non_consecutive_idat() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,5u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,246u8,96u8,63u8,133u8,0u8,0u8,0u8,3u8,116u8,69u8,88u8,116u8,97u8,0u8,98u8,220u8,73u8,162u8,59u8,0u8,0u8,0u8,17u8,73u8,68u8,65u8,84u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,167u8,128u8,111u8,134u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
 proof fn model_container_non_consecutive_idat()
     ensures m::MW_p(bytes_container_non_consecutive_idat(),m::strict())==m::Outcome::Error(Error::NonConsecutiveIdat,m::no_events()),
 {
@@ -1802,6 +1849,739 @@ fn walk_trns_in_rgba() {
     assert(matches!(public_result,Err(TryError::Format(Error::InvalidTransparency))));
 }
 
+// anc-bad/gamma-0; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_anc_bad_gamma_0() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,4u8,103u8,65u8,77u8,65u8,0u8,0u8,0u8,0u8,139u8,37u8,96u8,77u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+proof fn model_anc_bad_gamma_0()
+    ensures m::MW_p(bytes_anc_bad_gamma_0(),m::strict())==m::Outcome::Error(Error::InvalidGamma,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+        assert(crate::model::mh(bytes_anc_bad_gamma_0())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_gamma_0(),16),height:crate::model::be32(bytes_anc_bad_gamma_0(),20),depth:8,color_type:2,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_anc_bad_gamma_0())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_gamma_0(),16),height:crate::model::be32(bytes_anc_bad_gamma_0(),20),depth:8,color_type:2,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_gamma_0(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![103u8,65u8,77u8,65u8],data:41nat,len:4nat,next:49nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_gamma_0(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![103u8,65u8,77u8,65u8],data:41nat,len:4nat,next:49nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((103u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![103u8,65u8,77u8,65u8])==crate::walk_model::Name::Gama) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![103u8,65u8,77u8,65u8])==crate::walk_model::Name::Gama) by (compute);
+        }
+        assert(crate::metadata_model::parse(crate::walk_model::Name::Gama,bytes_anc_bad_gamma_0().subrange(41,45),2u8,8u8,0nat)==crate::metadata_model::Outcome::Error(Error::InvalidGamma)) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_gamma_0(),49nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:57nat,len:22nat,next:83nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_gamma_0(),49nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:57nat,len:22nat,next:83nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_gamma_0(),83nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:91nat,len:0nat,next:95nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_gamma_0(),83nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:91nat,len:0nat,next:95nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MW_p(bytes_anc_bad_gamma_0(),m::strict())==m::Outcome::Error(Error::InvalidGamma,m::no_events()));
+}
+fn walk_anc_bad_gamma_0() {
+    hide(m::MW_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,4u8,103u8,65u8,77u8,65u8,0u8,0u8,0u8,0u8,139u8,37u8,96u8,77u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_anc_bad_gamma_0());model_anc_bad_gamma_0();}
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidGamma))));
+}
+
+// anc-bad/iccp-name-80; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_anc_bad_iccp_name_80() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,1u8,110u8,105u8,67u8,67u8,80u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,0u8,0u8,120u8,156u8,99u8,96u8,100u8,98u8,102u8,97u8,101u8,99u8,231u8,224u8,228u8,226u8,230u8,225u8,229u8,227u8,23u8,16u8,20u8,18u8,22u8,17u8,21u8,19u8,151u8,144u8,148u8,146u8,150u8,145u8,149u8,147u8,87u8,80u8,84u8,82u8,86u8,81u8,85u8,83u8,215u8,208u8,212u8,210u8,214u8,209u8,213u8,211u8,55u8,48u8,52u8,50u8,54u8,49u8,53u8,51u8,183u8,176u8,180u8,178u8,182u8,177u8,181u8,179u8,119u8,112u8,116u8,114u8,118u8,113u8,117u8,115u8,247u8,240u8,244u8,242u8,246u8,241u8,245u8,243u8,15u8,8u8,12u8,10u8,14u8,9u8,13u8,11u8,143u8,136u8,140u8,138u8,142u8,137u8,141u8,139u8,79u8,72u8,76u8,74u8,78u8,73u8,77u8,75u8,207u8,200u8,204u8,202u8,206u8,201u8,205u8,203u8,47u8,40u8,44u8,42u8,46u8,41u8,45u8,43u8,175u8,168u8,172u8,170u8,174u8,169u8,173u8,171u8,111u8,104u8,108u8,106u8,110u8,105u8,109u8,107u8,239u8,232u8,236u8,234u8,238u8,233u8,237u8,235u8,159u8,48u8,113u8,210u8,228u8,41u8,83u8,167u8,77u8,159u8,49u8,115u8,214u8,236u8,57u8,115u8,231u8,205u8,95u8,176u8,112u8,209u8,226u8,37u8,75u8,151u8,45u8,95u8,177u8,114u8,213u8,234u8,53u8,107u8,215u8,173u8,223u8,176u8,113u8,211u8,230u8,45u8,91u8,183u8,109u8,223u8,177u8,115u8,215u8,238u8,61u8,123u8,247u8,237u8,63u8,112u8,240u8,208u8,225u8,35u8,71u8,143u8,29u8,63u8,113u8,242u8,212u8,233u8,51u8,103u8,207u8,157u8,191u8,112u8,241u8,210u8,229u8,43u8,87u8,175u8,93u8,191u8,113u8,243u8,214u8,237u8,59u8,119u8,239u8,221u8,127u8,240u8,240u8,209u8,227u8,39u8,79u8,159u8,61u8,127u8,241u8,242u8,213u8,235u8,55u8,111u8,223u8,189u8,255u8,240u8,241u8,211u8,231u8,47u8,95u8,191u8,125u8,255u8,241u8,243u8,215u8,239u8,63u8,127u8,255u8,253u8,103u8,24u8,245u8,255u8,136u8,246u8,63u8,0u8,160u8,98u8,126u8,144u8,40u8,21u8,183u8,164u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+proof fn model_anc_bad_iccp_name_80()
+    ensures m::MW_p(bytes_anc_bad_iccp_name_80(),m::strict())==m::Outcome::Error(Error::InvalidIccp,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+        assert(crate::model::mh(bytes_anc_bad_iccp_name_80())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_iccp_name_80(),16),height:crate::model::be32(bytes_anc_bad_iccp_name_80(),20),depth:8,color_type:2,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_anc_bad_iccp_name_80())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_iccp_name_80(),16),height:crate::model::be32(bytes_anc_bad_iccp_name_80(),20),depth:8,color_type:2,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_iccp_name_80(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![105u8,67u8,67u8,80u8],data:41nat,len:366nat,next:411nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_iccp_name_80(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![105u8,67u8,67u8,80u8],data:41nat,len:366nat,next:411nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((105u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![105u8,67u8,67u8,80u8])==crate::walk_model::Name::Iccp) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![105u8,67u8,67u8,80u8])==crate::walk_model::Name::Iccp) by (compute);
+        }
+        assert(crate::model::first_nul(bytes_anc_bad_iccp_name_80().subrange(41,407),0)==Some(80nat)) by (compute);
+        assert(bytes_anc_bad_iccp_name_80().subrange(41,407).subrange(0,80)==seq![110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8]) by (compute);
+        assert(!crate::model::keyword(seq![110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8]));
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_iccp_name_80(),411nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:419nat,len:22nat,next:445nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_iccp_name_80(),411nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:419nat,len:22nat,next:445nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_iccp_name_80(),445nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:453nat,len:0nat,next:457nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_iccp_name_80(),445nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:453nat,len:0nat,next:457nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        invalid_iccp_keyword(bytes_anc_bad_iccp_name_80().subrange(41,407),2u8,8u8,80nat);
+        first_iccp_error(bytes_anc_bad_iccp_name_80(),crate::model::mh(bytes_anc_bad_iccp_name_80()).unwrap().0,366nat);
+}
+fn walk_anc_bad_iccp_name_80() {
+    hide(m::MW_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,1u8,110u8,105u8,67u8,67u8,80u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,110u8,0u8,0u8,120u8,156u8,99u8,96u8,100u8,98u8,102u8,97u8,101u8,99u8,231u8,224u8,228u8,226u8,230u8,225u8,229u8,227u8,23u8,16u8,20u8,18u8,22u8,17u8,21u8,19u8,151u8,144u8,148u8,146u8,150u8,145u8,149u8,147u8,87u8,80u8,84u8,82u8,86u8,81u8,85u8,83u8,215u8,208u8,212u8,210u8,214u8,209u8,213u8,211u8,55u8,48u8,52u8,50u8,54u8,49u8,53u8,51u8,183u8,176u8,180u8,178u8,182u8,177u8,181u8,179u8,119u8,112u8,116u8,114u8,118u8,113u8,117u8,115u8,247u8,240u8,244u8,242u8,246u8,241u8,245u8,243u8,15u8,8u8,12u8,10u8,14u8,9u8,13u8,11u8,143u8,136u8,140u8,138u8,142u8,137u8,141u8,139u8,79u8,72u8,76u8,74u8,78u8,73u8,77u8,75u8,207u8,200u8,204u8,202u8,206u8,201u8,205u8,203u8,47u8,40u8,44u8,42u8,46u8,41u8,45u8,43u8,175u8,168u8,172u8,170u8,174u8,169u8,173u8,171u8,111u8,104u8,108u8,106u8,110u8,105u8,109u8,107u8,239u8,232u8,236u8,234u8,238u8,233u8,237u8,235u8,159u8,48u8,113u8,210u8,228u8,41u8,83u8,167u8,77u8,159u8,49u8,115u8,214u8,236u8,57u8,115u8,231u8,205u8,95u8,176u8,112u8,209u8,226u8,37u8,75u8,151u8,45u8,95u8,177u8,114u8,213u8,234u8,53u8,107u8,215u8,173u8,223u8,176u8,113u8,211u8,230u8,45u8,91u8,183u8,109u8,223u8,177u8,115u8,215u8,238u8,61u8,123u8,247u8,237u8,63u8,112u8,240u8,208u8,225u8,35u8,71u8,143u8,29u8,63u8,113u8,242u8,212u8,233u8,51u8,103u8,207u8,157u8,191u8,112u8,241u8,210u8,229u8,43u8,87u8,175u8,93u8,191u8,113u8,243u8,214u8,237u8,59u8,119u8,239u8,221u8,127u8,240u8,240u8,209u8,227u8,39u8,79u8,159u8,61u8,127u8,241u8,242u8,213u8,235u8,55u8,111u8,223u8,189u8,255u8,240u8,241u8,211u8,231u8,47u8,95u8,191u8,125u8,255u8,241u8,243u8,215u8,239u8,63u8,127u8,255u8,253u8,103u8,24u8,245u8,255u8,136u8,246u8,63u8,0u8,160u8,98u8,126u8,144u8,40u8,21u8,183u8,164u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_anc_bad_iccp_name_80());model_anc_bad_iccp_name_80();}
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidIccp))));
+}
+
+// anc-bad/iccp-leading-space; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_anc_bad_iccp_leading_space() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,1u8,32u8,105u8,67u8,67u8,80u8,32u8,110u8,0u8,0u8,120u8,156u8,99u8,96u8,100u8,98u8,102u8,97u8,101u8,99u8,231u8,224u8,228u8,226u8,230u8,225u8,229u8,227u8,23u8,16u8,20u8,18u8,22u8,17u8,21u8,19u8,151u8,144u8,148u8,146u8,150u8,145u8,149u8,147u8,87u8,80u8,84u8,82u8,86u8,81u8,85u8,83u8,215u8,208u8,212u8,210u8,214u8,209u8,213u8,211u8,55u8,48u8,52u8,50u8,54u8,49u8,53u8,51u8,183u8,176u8,180u8,178u8,182u8,177u8,181u8,179u8,119u8,112u8,116u8,114u8,118u8,113u8,117u8,115u8,247u8,240u8,244u8,242u8,246u8,241u8,245u8,243u8,15u8,8u8,12u8,10u8,14u8,9u8,13u8,11u8,143u8,136u8,140u8,138u8,142u8,137u8,141u8,139u8,79u8,72u8,76u8,74u8,78u8,73u8,77u8,75u8,207u8,200u8,204u8,202u8,206u8,201u8,205u8,203u8,47u8,40u8,44u8,42u8,46u8,41u8,45u8,43u8,175u8,168u8,172u8,170u8,174u8,169u8,173u8,171u8,111u8,104u8,108u8,106u8,110u8,105u8,109u8,107u8,239u8,232u8,236u8,234u8,238u8,233u8,237u8,235u8,159u8,48u8,113u8,210u8,228u8,41u8,83u8,167u8,77u8,159u8,49u8,115u8,214u8,236u8,57u8,115u8,231u8,205u8,95u8,176u8,112u8,209u8,226u8,37u8,75u8,151u8,45u8,95u8,177u8,114u8,213u8,234u8,53u8,107u8,215u8,173u8,223u8,176u8,113u8,211u8,230u8,45u8,91u8,183u8,109u8,223u8,177u8,115u8,215u8,238u8,61u8,123u8,247u8,237u8,63u8,112u8,240u8,208u8,225u8,35u8,71u8,143u8,29u8,63u8,113u8,242u8,212u8,233u8,51u8,103u8,207u8,157u8,191u8,112u8,241u8,210u8,229u8,43u8,87u8,175u8,93u8,191u8,113u8,243u8,214u8,237u8,59u8,119u8,239u8,221u8,127u8,240u8,240u8,209u8,227u8,39u8,79u8,159u8,61u8,127u8,241u8,242u8,213u8,235u8,55u8,111u8,223u8,189u8,255u8,240u8,241u8,211u8,231u8,47u8,95u8,191u8,125u8,255u8,241u8,243u8,215u8,239u8,63u8,127u8,255u8,253u8,103u8,24u8,245u8,255u8,136u8,246u8,63u8,0u8,160u8,98u8,126u8,144u8,6u8,100u8,201u8,135u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+proof fn model_anc_bad_iccp_leading_space()
+    ensures m::MW_p(bytes_anc_bad_iccp_leading_space(),m::strict())==m::Outcome::Error(Error::InvalidIccp,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+        assert(crate::model::mh(bytes_anc_bad_iccp_leading_space())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_iccp_leading_space(),16),height:crate::model::be32(bytes_anc_bad_iccp_leading_space(),20),depth:8,color_type:2,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_anc_bad_iccp_leading_space())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_iccp_leading_space(),16),height:crate::model::be32(bytes_anc_bad_iccp_leading_space(),20),depth:8,color_type:2,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_iccp_leading_space(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![105u8,67u8,67u8,80u8],data:41nat,len:288nat,next:333nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_iccp_leading_space(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![105u8,67u8,67u8,80u8],data:41nat,len:288nat,next:333nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((105u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![105u8,67u8,67u8,80u8])==crate::walk_model::Name::Iccp) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![105u8,67u8,67u8,80u8])==crate::walk_model::Name::Iccp) by (compute);
+        }
+        assert(crate::model::first_nul(bytes_anc_bad_iccp_leading_space().subrange(41,329),0)==Some(2nat)) by (compute);
+        assert(bytes_anc_bad_iccp_leading_space().subrange(41,329).subrange(0,2)==seq![32u8,110u8]) by (compute);
+        assert(!crate::model::keyword(seq![32u8,110u8]));
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_iccp_leading_space(),333nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:341nat,len:22nat,next:367nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_iccp_leading_space(),333nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:341nat,len:22nat,next:367nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_iccp_leading_space(),367nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:375nat,len:0nat,next:379nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_iccp_leading_space(),367nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:375nat,len:0nat,next:379nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        invalid_iccp_keyword(bytes_anc_bad_iccp_leading_space().subrange(41,329),2u8,8u8,2nat);
+        first_iccp_error(bytes_anc_bad_iccp_leading_space(),crate::model::mh(bytes_anc_bad_iccp_leading_space()).unwrap().0,288nat);
+}
+fn walk_anc_bad_iccp_leading_space() {
+    hide(m::MW_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,1u8,32u8,105u8,67u8,67u8,80u8,32u8,110u8,0u8,0u8,120u8,156u8,99u8,96u8,100u8,98u8,102u8,97u8,101u8,99u8,231u8,224u8,228u8,226u8,230u8,225u8,229u8,227u8,23u8,16u8,20u8,18u8,22u8,17u8,21u8,19u8,151u8,144u8,148u8,146u8,150u8,145u8,149u8,147u8,87u8,80u8,84u8,82u8,86u8,81u8,85u8,83u8,215u8,208u8,212u8,210u8,214u8,209u8,213u8,211u8,55u8,48u8,52u8,50u8,54u8,49u8,53u8,51u8,183u8,176u8,180u8,178u8,182u8,177u8,181u8,179u8,119u8,112u8,116u8,114u8,118u8,113u8,117u8,115u8,247u8,240u8,244u8,242u8,246u8,241u8,245u8,243u8,15u8,8u8,12u8,10u8,14u8,9u8,13u8,11u8,143u8,136u8,140u8,138u8,142u8,137u8,141u8,139u8,79u8,72u8,76u8,74u8,78u8,73u8,77u8,75u8,207u8,200u8,204u8,202u8,206u8,201u8,205u8,203u8,47u8,40u8,44u8,42u8,46u8,41u8,45u8,43u8,175u8,168u8,172u8,170u8,174u8,169u8,173u8,171u8,111u8,104u8,108u8,106u8,110u8,105u8,109u8,107u8,239u8,232u8,236u8,234u8,238u8,233u8,237u8,235u8,159u8,48u8,113u8,210u8,228u8,41u8,83u8,167u8,77u8,159u8,49u8,115u8,214u8,236u8,57u8,115u8,231u8,205u8,95u8,176u8,112u8,209u8,226u8,37u8,75u8,151u8,45u8,95u8,177u8,114u8,213u8,234u8,53u8,107u8,215u8,173u8,223u8,176u8,113u8,211u8,230u8,45u8,91u8,183u8,109u8,223u8,177u8,115u8,215u8,238u8,61u8,123u8,247u8,237u8,63u8,112u8,240u8,208u8,225u8,35u8,71u8,143u8,29u8,63u8,113u8,242u8,212u8,233u8,51u8,103u8,207u8,157u8,191u8,112u8,241u8,210u8,229u8,43u8,87u8,175u8,93u8,191u8,113u8,243u8,214u8,237u8,59u8,119u8,239u8,221u8,127u8,240u8,240u8,209u8,227u8,39u8,79u8,159u8,61u8,127u8,241u8,242u8,213u8,235u8,55u8,111u8,223u8,189u8,255u8,240u8,241u8,211u8,231u8,47u8,95u8,191u8,125u8,255u8,241u8,243u8,215u8,239u8,63u8,127u8,255u8,253u8,103u8,24u8,245u8,255u8,136u8,246u8,63u8,0u8,160u8,98u8,126u8,144u8,6u8,100u8,201u8,135u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_anc_bad_iccp_leading_space());model_anc_bad_iccp_leading_space();}
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidIccp))));
+}
+
+// anc-bad/cicp-matrix-1; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_anc_bad_cicp_matrix_1() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,4u8,99u8,73u8,67u8,80u8,1u8,13u8,1u8,1u8,133u8,114u8,10u8,115u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+proof fn model_anc_bad_cicp_matrix_1()
+    ensures m::MW_p(bytes_anc_bad_cicp_matrix_1(),m::strict())==m::Outcome::Error(Error::InvalidCicp,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+        assert(crate::model::mh(bytes_anc_bad_cicp_matrix_1())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_cicp_matrix_1(),16),height:crate::model::be32(bytes_anc_bad_cicp_matrix_1(),20),depth:8,color_type:2,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_anc_bad_cicp_matrix_1())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_cicp_matrix_1(),16),height:crate::model::be32(bytes_anc_bad_cicp_matrix_1(),20),depth:8,color_type:2,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_cicp_matrix_1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![99u8,73u8,67u8,80u8],data:41nat,len:4nat,next:49nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_cicp_matrix_1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![99u8,73u8,67u8,80u8],data:41nat,len:4nat,next:49nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((99u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![99u8,73u8,67u8,80u8])==crate::walk_model::Name::Cicp) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![99u8,73u8,67u8,80u8])==crate::walk_model::Name::Cicp) by (compute);
+        }
+        assert(bytes_anc_bad_cicp_matrix_1().subrange(41,45)[0]==1u8) by (compute);
+        assert(bytes_anc_bad_cicp_matrix_1().subrange(41,45)[1]==13u8) by (compute);
+        assert(bytes_anc_bad_cicp_matrix_1().subrange(41,45)[2]==1u8) by (compute);
+        assert(bytes_anc_bad_cicp_matrix_1().subrange(41,45)[3]==1u8) by (compute);
+        assert(crate::metadata_model::parse(crate::walk_model::Name::Cicp,bytes_anc_bad_cicp_matrix_1().subrange(41,45),2u8,8u8,0nat)==crate::metadata_model::Outcome::Error(Error::InvalidCicp)) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_cicp_matrix_1(),49nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:57nat,len:22nat,next:83nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_cicp_matrix_1(),49nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:57nat,len:22nat,next:83nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_cicp_matrix_1(),83nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:91nat,len:0nat,next:95nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_cicp_matrix_1(),83nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:91nat,len:0nat,next:95nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MW_p(bytes_anc_bad_cicp_matrix_1(),m::strict())==m::Outcome::Error(Error::InvalidCicp,m::no_events()));
+}
+fn walk_anc_bad_cicp_matrix_1() {
+    hide(m::MW_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,4u8,99u8,73u8,67u8,80u8,1u8,13u8,1u8,1u8,133u8,114u8,10u8,115u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_anc_bad_cicp_matrix_1());model_anc_bad_cicp_matrix_1();}
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidCicp))));
+}
+
+// anc-bad/bkgd-high-bits; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_anc_bad_bkgd_high_bits() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,6u8,98u8,75u8,71u8,68u8,1u8,0u8,0u8,0u8,0u8,0u8,50u8,31u8,104u8,218u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+proof fn model_anc_bad_bkgd_high_bits()
+    ensures m::MW_p(bytes_anc_bad_bkgd_high_bits(),m::strict())==m::Outcome::Error(Error::InvalidBackground,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+        assert(crate::model::mh(bytes_anc_bad_bkgd_high_bits())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_bkgd_high_bits(),16),height:crate::model::be32(bytes_anc_bad_bkgd_high_bits(),20),depth:8,color_type:2,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_anc_bad_bkgd_high_bits())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_bkgd_high_bits(),16),height:crate::model::be32(bytes_anc_bad_bkgd_high_bits(),20),depth:8,color_type:2,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_bkgd_high_bits(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![98u8,75u8,71u8,68u8],data:41nat,len:6nat,next:51nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_bkgd_high_bits(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![98u8,75u8,71u8,68u8],data:41nat,len:6nat,next:51nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((98u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![98u8,75u8,71u8,68u8])==crate::walk_model::Name::Bkgd) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![98u8,75u8,71u8,68u8])==crate::walk_model::Name::Bkgd) by (compute);
+        }
+        assert(bytes_anc_bad_bkgd_high_bits().subrange(41,47)[0]==1u8) by (compute);
+        assert(bytes_anc_bad_bkgd_high_bits().subrange(41,47)[1]==0u8) by (compute);
+        assert(bytes_anc_bad_bkgd_high_bits().subrange(41,47)[2]==0u8) by (compute);
+        assert(bytes_anc_bad_bkgd_high_bits().subrange(41,47)[3]==0u8) by (compute);
+        assert(bytes_anc_bad_bkgd_high_bits().subrange(41,47)[4]==0u8) by (compute);
+        assert(bytes_anc_bad_bkgd_high_bits().subrange(41,47)[5]==0u8) by (compute);
+        assert(crate::metadata_model::words16(bytes_anc_bad_bkgd_high_bits().subrange(41,47),3nat).len()==3);
+        assert(crate::model::be16(bytes_anc_bad_bkgd_high_bits().subrange(41,47),0)==256u16) by (compute);
+        assert(crate::metadata_model::words16(bytes_anc_bad_bkgd_high_bits().subrange(41,47),3nat)[0]==256u16);
+        assert(crate::model::be16(bytes_anc_bad_bkgd_high_bits().subrange(41,47),2)==0u16) by (compute);
+        assert(crate::metadata_model::words16(bytes_anc_bad_bkgd_high_bits().subrange(41,47),3nat)[1]==0u16);
+        assert(crate::model::be16(bytes_anc_bad_bkgd_high_bits().subrange(41,47),4)==0u16) by (compute);
+        assert(crate::metadata_model::words16(bytes_anc_bad_bkgd_high_bits().subrange(41,47),3nat)[2]==0u16);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_bkgd_high_bits(),51nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:59nat,len:22nat,next:85nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_bkgd_high_bits(),51nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:59nat,len:22nat,next:85nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_bkgd_high_bits(),85nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:93nat,len:0nat,next:97nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_bkgd_high_bits(),85nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:93nat,len:0nat,next:97nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MW_p(bytes_anc_bad_bkgd_high_bits(),m::strict())==m::Outcome::Error(Error::InvalidBackground,m::no_events()));
+}
+fn walk_anc_bad_bkgd_high_bits() {
+    hide(m::MW_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,6u8,98u8,75u8,71u8,68u8,1u8,0u8,0u8,0u8,0u8,0u8,50u8,31u8,104u8,218u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_anc_bad_bkgd_high_bits());model_anc_bad_bkgd_high_bits();}
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidBackground))));
+}
+
+// anc-bad/exif-len-3; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_anc_bad_exif_len_3() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,3u8,101u8,88u8,73u8,102u8,77u8,77u8,0u8,210u8,4u8,139u8,154u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+proof fn model_anc_bad_exif_len_3()
+    ensures m::MW_p(bytes_anc_bad_exif_len_3(),m::strict())==m::Outcome::Error(Error::InvalidExif,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+        assert(crate::model::mh(bytes_anc_bad_exif_len_3())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_exif_len_3(),16),height:crate::model::be32(bytes_anc_bad_exif_len_3(),20),depth:8,color_type:2,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_anc_bad_exif_len_3())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_exif_len_3(),16),height:crate::model::be32(bytes_anc_bad_exif_len_3(),20),depth:8,color_type:2,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_exif_len_3(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![101u8,88u8,73u8,102u8],data:41nat,len:3nat,next:48nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_exif_len_3(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![101u8,88u8,73u8,102u8],data:41nat,len:3nat,next:48nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((101u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![101u8,88u8,73u8,102u8])==crate::walk_model::Name::Exif) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![101u8,88u8,73u8,102u8])==crate::walk_model::Name::Exif) by (compute);
+        }
+        assert(bytes_anc_bad_exif_len_3().subrange(41,44)[0]==77u8) by (compute);
+        assert(bytes_anc_bad_exif_len_3().subrange(41,44)[1]==77u8) by (compute);
+        assert(bytes_anc_bad_exif_len_3().subrange(41,44)[2]==0u8) by (compute);
+        assert(crate::metadata_model::parse(crate::walk_model::Name::Exif,bytes_anc_bad_exif_len_3().subrange(41,44),2u8,8u8,0nat)==crate::metadata_model::Outcome::Error(Error::InvalidExif)) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_exif_len_3(),48nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:56nat,len:22nat,next:82nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_exif_len_3(),48nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:56nat,len:22nat,next:82nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_exif_len_3(),82nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:90nat,len:0nat,next:94nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_exif_len_3(),82nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:90nat,len:0nat,next:94nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MW_p(bytes_anc_bad_exif_len_3(),m::strict())==m::Outcome::Error(Error::InvalidExif,m::no_events()));
+}
+fn walk_anc_bad_exif_len_3() {
+    hide(m::MW_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,3u8,101u8,88u8,73u8,102u8,77u8,77u8,0u8,210u8,4u8,139u8,154u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_anc_bad_exif_len_3());model_anc_bad_exif_len_3();}
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidExif))));
+}
+
+// anc-bad/time-second-61; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_anc_bad_time_second_61() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,7u8,116u8,73u8,77u8,69u8,7u8,234u8,1u8,1u8,0u8,0u8,61u8,166u8,191u8,144u8,128u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+proof fn model_anc_bad_time_second_61()
+    ensures m::MW_p(bytes_anc_bad_time_second_61(),m::strict())==m::Outcome::Error(Error::InvalidTime,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+        assert(crate::model::mh(bytes_anc_bad_time_second_61())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_time_second_61(),16),height:crate::model::be32(bytes_anc_bad_time_second_61(),20),depth:8,color_type:2,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_anc_bad_time_second_61())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_time_second_61(),16),height:crate::model::be32(bytes_anc_bad_time_second_61(),20),depth:8,color_type:2,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_time_second_61(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![116u8,73u8,77u8,69u8],data:41nat,len:7nat,next:52nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_time_second_61(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![116u8,73u8,77u8,69u8],data:41nat,len:7nat,next:52nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((116u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![116u8,73u8,77u8,69u8])==crate::walk_model::Name::Time) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![116u8,73u8,77u8,69u8])==crate::walk_model::Name::Time) by (compute);
+        }
+        assert(bytes_anc_bad_time_second_61().subrange(41,48)[0]==7u8) by (compute);
+        assert(bytes_anc_bad_time_second_61().subrange(41,48)[1]==234u8) by (compute);
+        assert(bytes_anc_bad_time_second_61().subrange(41,48)[2]==1u8) by (compute);
+        assert(bytes_anc_bad_time_second_61().subrange(41,48)[3]==1u8) by (compute);
+        assert(bytes_anc_bad_time_second_61().subrange(41,48)[4]==0u8) by (compute);
+        assert(bytes_anc_bad_time_second_61().subrange(41,48)[5]==0u8) by (compute);
+        assert(bytes_anc_bad_time_second_61().subrange(41,48)[6]==61u8) by (compute);
+        assert(crate::metadata_model::parse(crate::walk_model::Name::Time,bytes_anc_bad_time_second_61().subrange(41,48),2u8,8u8,0nat)==crate::metadata_model::Outcome::Error(Error::InvalidTime)) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_time_second_61(),52nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:60nat,len:22nat,next:86nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_time_second_61(),52nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:60nat,len:22nat,next:86nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_time_second_61(),86nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:94nat,len:0nat,next:98nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_time_second_61(),86nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:94nat,len:0nat,next:98nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MW_p(bytes_anc_bad_time_second_61(),m::strict())==m::Outcome::Error(Error::InvalidTime,m::no_events()));
+}
+fn walk_anc_bad_time_second_61() {
+    hide(m::MW_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,7u8,116u8,73u8,77u8,69u8,7u8,234u8,1u8,1u8,0u8,0u8,61u8,166u8,191u8,144u8,128u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_anc_bad_time_second_61());model_anc_bad_time_second_61();}
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidTime))));
+}
+
+// anc-bad/text-keyword-double-space; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_anc_bad_text_keyword_double_space() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,6u8,116u8,69u8,88u8,116u8,97u8,32u8,32u8,98u8,0u8,120u8,161u8,31u8,173u8,18u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+proof fn model_anc_bad_text_keyword_double_space()
+    ensures m::MW_p(bytes_anc_bad_text_keyword_double_space(),m::strict())==m::Outcome::Error(Error::InvalidText,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+        assert(crate::model::mh(bytes_anc_bad_text_keyword_double_space())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_text_keyword_double_space(),16),height:crate::model::be32(bytes_anc_bad_text_keyword_double_space(),20),depth:8,color_type:2,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_anc_bad_text_keyword_double_space())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_text_keyword_double_space(),16),height:crate::model::be32(bytes_anc_bad_text_keyword_double_space(),20),depth:8,color_type:2,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_text_keyword_double_space(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![116u8,69u8,88u8,116u8],data:41nat,len:6nat,next:51nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_text_keyword_double_space(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![116u8,69u8,88u8,116u8],data:41nat,len:6nat,next:51nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((116u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![116u8,69u8,88u8,116u8])==crate::walk_model::Name::Text) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![116u8,69u8,88u8,116u8])==crate::walk_model::Name::Text) by (compute);
+        }
+        assert(crate::model::first_nul(bytes_anc_bad_text_keyword_double_space().subrange(41,47),0)==Some(4nat)) by (compute);
+        assert(bytes_anc_bad_text_keyword_double_space().subrange(41,47).subrange(0,4)==seq![97u8,32u8,32u8,98u8]) by (compute);
+        assert(!crate::model::keyword(seq![97u8,32u8,32u8,98u8]));
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_text_keyword_double_space(),51nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:59nat,len:22nat,next:85nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_text_keyword_double_space(),51nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:59nat,len:22nat,next:85nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_text_keyword_double_space(),85nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:93nat,len:0nat,next:97nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_text_keyword_double_space(),85nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:93nat,len:0nat,next:97nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MW_p(bytes_anc_bad_text_keyword_double_space(),m::strict())==m::Outcome::Error(Error::InvalidText,m::no_events()));
+}
+fn walk_anc_bad_text_keyword_double_space() {
+    hide(m::MW_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,6u8,116u8,69u8,88u8,116u8,97u8,32u8,32u8,98u8,0u8,120u8,161u8,31u8,173u8,18u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_anc_bad_text_keyword_double_space());model_anc_bad_text_keyword_double_space();}
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidText))));
+}
+
+// anc-bad/itxt-compressed-method-1; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_anc_bad_itxt_compressed_method_1() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,6u8,105u8,84u8,88u8,116u8,107u8,0u8,1u8,1u8,0u8,0u8,164u8,111u8,185u8,54u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+proof fn model_anc_bad_itxt_compressed_method_1()
+    ensures m::MW_p(bytes_anc_bad_itxt_compressed_method_1(),m::strict())==m::Outcome::Error(Error::InvalidText,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+        assert(crate::model::mh(bytes_anc_bad_itxt_compressed_method_1())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_itxt_compressed_method_1(),16),height:crate::model::be32(bytes_anc_bad_itxt_compressed_method_1(),20),depth:8,color_type:2,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_anc_bad_itxt_compressed_method_1())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_itxt_compressed_method_1(),16),height:crate::model::be32(bytes_anc_bad_itxt_compressed_method_1(),20),depth:8,color_type:2,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_itxt_compressed_method_1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![105u8,84u8,88u8,116u8],data:41nat,len:6nat,next:51nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_itxt_compressed_method_1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![105u8,84u8,88u8,116u8],data:41nat,len:6nat,next:51nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((105u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![105u8,84u8,88u8,116u8])==crate::walk_model::Name::Itxt) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![105u8,84u8,88u8,116u8])==crate::walk_model::Name::Itxt) by (compute);
+        }
+        assert(crate::model::first_nul(bytes_anc_bad_itxt_compressed_method_1().subrange(41,47),0)==Some(1nat)) by (compute);
+        assert(bytes_anc_bad_itxt_compressed_method_1().subrange(41,47).subrange(0,1)==seq![107u8]) by (compute);
+        assert(crate::model::keyword(seq![107u8]));
+        assert(crate::model::first_nul(bytes_anc_bad_itxt_compressed_method_1().subrange(41,47),4nat)==Some(4nat)) by (compute);
+        assert(crate::model::first_nul(bytes_anc_bad_itxt_compressed_method_1().subrange(41,47),5nat)==Some(5nat)) by (compute);
+        assert(bytes_anc_bad_itxt_compressed_method_1().subrange(41,47)[0]==107u8) by (compute);
+        assert(bytes_anc_bad_itxt_compressed_method_1().subrange(41,47)[1]==0u8) by (compute);
+        assert(bytes_anc_bad_itxt_compressed_method_1().subrange(41,47)[2]==1u8) by (compute);
+        assert(bytes_anc_bad_itxt_compressed_method_1().subrange(41,47)[3]==1u8) by (compute);
+        assert(bytes_anc_bad_itxt_compressed_method_1().subrange(41,47)[4]==0u8) by (compute);
+        assert(bytes_anc_bad_itxt_compressed_method_1().subrange(41,47)[5]==0u8) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_itxt_compressed_method_1(),51nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:59nat,len:22nat,next:85nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_itxt_compressed_method_1(),51nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:59nat,len:22nat,next:85nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_itxt_compressed_method_1(),85nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:93nat,len:0nat,next:97nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_itxt_compressed_method_1(),85nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:93nat,len:0nat,next:97nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MW_p(bytes_anc_bad_itxt_compressed_method_1(),m::strict())==m::Outcome::Error(Error::InvalidText,m::no_events()));
+}
+fn walk_anc_bad_itxt_compressed_method_1() {
+    hide(m::MW_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,6u8,105u8,84u8,88u8,116u8,107u8,0u8,1u8,1u8,0u8,0u8,164u8,111u8,185u8,54u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_anc_bad_itxt_compressed_method_1());model_anc_bad_itxt_compressed_method_1();}
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidText))));
+}
+
+// anc-bad/itxt-missing-separators; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_anc_bad_itxt_missing_separators() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,6u8,105u8,84u8,88u8,116u8,107u8,0u8,0u8,0u8,101u8,110u8,175u8,145u8,103u8,217u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+proof fn model_anc_bad_itxt_missing_separators()
+    ensures m::MW_p(bytes_anc_bad_itxt_missing_separators(),m::strict())==m::Outcome::Error(Error::InvalidText,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+        assert(crate::model::mh(bytes_anc_bad_itxt_missing_separators())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_itxt_missing_separators(),16),height:crate::model::be32(bytes_anc_bad_itxt_missing_separators(),20),depth:8,color_type:2,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_anc_bad_itxt_missing_separators())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_itxt_missing_separators(),16),height:crate::model::be32(bytes_anc_bad_itxt_missing_separators(),20),depth:8,color_type:2,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_itxt_missing_separators(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![105u8,84u8,88u8,116u8],data:41nat,len:6nat,next:51nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_itxt_missing_separators(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![105u8,84u8,88u8,116u8],data:41nat,len:6nat,next:51nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((105u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![105u8,84u8,88u8,116u8])==crate::walk_model::Name::Itxt) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![105u8,84u8,88u8,116u8])==crate::walk_model::Name::Itxt) by (compute);
+        }
+        assert(crate::model::first_nul(bytes_anc_bad_itxt_missing_separators().subrange(41,47),0)==Some(1nat)) by (compute);
+        assert(bytes_anc_bad_itxt_missing_separators().subrange(41,47).subrange(0,1)==seq![107u8]) by (compute);
+        assert(crate::model::keyword(seq![107u8]));
+        assert(crate::model::first_nul(bytes_anc_bad_itxt_missing_separators().subrange(41,47),4nat)==None) by (compute);
+        assert(bytes_anc_bad_itxt_missing_separators().subrange(41,47)[0]==107u8) by (compute);
+        assert(bytes_anc_bad_itxt_missing_separators().subrange(41,47)[1]==0u8) by (compute);
+        assert(bytes_anc_bad_itxt_missing_separators().subrange(41,47)[2]==0u8) by (compute);
+        assert(bytes_anc_bad_itxt_missing_separators().subrange(41,47)[3]==0u8) by (compute);
+        assert(bytes_anc_bad_itxt_missing_separators().subrange(41,47)[4]==101u8) by (compute);
+        assert(bytes_anc_bad_itxt_missing_separators().subrange(41,47)[5]==110u8) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_itxt_missing_separators(),51nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:59nat,len:22nat,next:85nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_itxt_missing_separators(),51nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:59nat,len:22nat,next:85nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_itxt_missing_separators(),85nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:93nat,len:0nat,next:97nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_itxt_missing_separators(),85nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:93nat,len:0nat,next:97nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MW_p(bytes_anc_bad_itxt_missing_separators(),m::strict())==m::Outcome::Error(Error::InvalidText,m::no_events()));
+}
+fn walk_anc_bad_itxt_missing_separators() {
+    hide(m::MW_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,6u8,105u8,84u8,88u8,116u8,107u8,0u8,0u8,0u8,101u8,110u8,175u8,145u8,103u8,217u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_anc_bad_itxt_missing_separators());model_anc_bad_itxt_missing_separators();}
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidText))));
+}
+
+// anc-bad/hist-without-plte; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_anc_bad_hist_without_plte() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,6u8,104u8,73u8,83u8,84u8,0u8,0u8,0u8,0u8,0u8,0u8,95u8,184u8,160u8,47u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+proof fn model_anc_bad_hist_without_plte()
+    ensures m::MW_p(bytes_anc_bad_hist_without_plte(),m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+        assert(crate::model::mh(bytes_anc_bad_hist_without_plte())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_hist_without_plte(),16),height:crate::model::be32(bytes_anc_bad_hist_without_plte(),20),depth:8,color_type:2,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_anc_bad_hist_without_plte())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_hist_without_plte(),16),height:crate::model::be32(bytes_anc_bad_hist_without_plte(),20),depth:8,color_type:2,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_hist_without_plte(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![104u8,73u8,83u8,84u8],data:41nat,len:6nat,next:51nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_hist_without_plte(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![104u8,73u8,83u8,84u8],data:41nat,len:6nat,next:51nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((104u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![104u8,73u8,83u8,84u8])==crate::walk_model::Name::Hist) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![104u8,73u8,83u8,84u8])==crate::walk_model::Name::Hist) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_hist_without_plte(),51nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:59nat,len:22nat,next:85nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_hist_without_plte(),51nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:59nat,len:22nat,next:85nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_hist_without_plte(),85nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:93nat,len:0nat,next:97nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_hist_without_plte(),85nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:93nat,len:0nat,next:97nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MW_p(bytes_anc_bad_hist_without_plte(),m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()));
+}
+fn walk_anc_bad_hist_without_plte() {
+    hide(m::MW_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,6u8,104u8,73u8,83u8,84u8,0u8,0u8,0u8,0u8,0u8,0u8,95u8,184u8,160u8,47u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_anc_bad_hist_without_plte());model_anc_bad_hist_without_plte();}
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::ChunkOutOfOrder))));
+}
+
+// anc-bad/bkgd-index-3-of-3; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_anc_bad_bkgd_index_3_of_3() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,3u8,0u8,0u8,0u8,69u8,104u8,253u8,22u8,0u8,0u8,0u8,9u8,80u8,76u8,84u8,69u8,47u8,194u8,40u8,139u8,44u8,88u8,228u8,36u8,202u8,64u8,183u8,32u8,36u8,0u8,0u8,0u8,1u8,98u8,75u8,71u8,68u8,3u8,17u8,12u8,76u8,242u8,0u8,0u8,0u8,14u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,96u8,96u8,100u8,100u8,250u8,15u8,0u8,1u8,16u8,1u8,4u8,216u8,172u8,32u8,210u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+proof fn model_anc_bad_bkgd_index_3_of_3()
+    ensures m::MW_p(bytes_anc_bad_bkgd_index_3_of_3(),m::strict())==m::Outcome::Error(Error::InvalidBackground,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+        assert(crate::model::mh(bytes_anc_bad_bkgd_index_3_of_3())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_bkgd_index_3_of_3(),16),height:crate::model::be32(bytes_anc_bad_bkgd_index_3_of_3(),20),depth:8,color_type:3,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_anc_bad_bkgd_index_3_of_3())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_bkgd_index_3_of_3(),16),height:crate::model::be32(bytes_anc_bad_bkgd_index_3_of_3(),20),depth:8,color_type:3,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_bkgd_index_3_of_3(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:9nat,next:54nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_bkgd_index_3_of_3(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:9nat,next:54nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((80u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by (compute);
+        }
+        assert(crate::metadata_model::palette(9nat,3u8,8u8,false,false,false,false)==crate::metadata_model::Decision::Keep(3nat)) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_bkgd_index_3_of_3(),54nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![98u8,75u8,71u8,68u8],data:62nat,len:1nat,next:67nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_bkgd_index_3_of_3(),54nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![98u8,75u8,71u8,68u8],data:62nat,len:1nat,next:67nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((98u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![98u8,75u8,71u8,68u8])==crate::walk_model::Name::Bkgd) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![98u8,75u8,71u8,68u8])==crate::walk_model::Name::Bkgd) by (compute);
+        }
+        assert(bytes_anc_bad_bkgd_index_3_of_3().subrange(62,63)[0]==3u8) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_bkgd_index_3_of_3(),67nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:75nat,len:14nat,next:93nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_bkgd_index_3_of_3(),67nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:75nat,len:14nat,next:93nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_bkgd_index_3_of_3(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:101nat,len:0nat,next:105nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_bkgd_index_3_of_3(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:101nat,len:0nat,next:105nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,5);
+        assert(m::MW_p(bytes_anc_bad_bkgd_index_3_of_3(),m::strict())==m::Outcome::Error(Error::InvalidBackground,m::no_events()));
+}
+fn walk_anc_bad_bkgd_index_3_of_3() {
+    hide(m::MW_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,3u8,0u8,0u8,0u8,69u8,104u8,253u8,22u8,0u8,0u8,0u8,9u8,80u8,76u8,84u8,69u8,47u8,194u8,40u8,139u8,44u8,88u8,228u8,36u8,202u8,64u8,183u8,32u8,36u8,0u8,0u8,0u8,1u8,98u8,75u8,71u8,68u8,3u8,17u8,12u8,76u8,242u8,0u8,0u8,0u8,14u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,96u8,96u8,100u8,100u8,250u8,15u8,0u8,1u8,16u8,1u8,4u8,216u8,172u8,32u8,210u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_anc_bad_bkgd_index_3_of_3());model_anc_bad_bkgd_index_3_of_3();}
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidBackground))));
+}
+
+// anc-bad/sbit-palette-9; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_anc_bad_sbit_palette_9() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,3u8,0u8,0u8,0u8,69u8,104u8,253u8,22u8,0u8,0u8,0u8,3u8,115u8,66u8,73u8,84u8,9u8,1u8,1u8,114u8,61u8,38u8,58u8,0u8,0u8,0u8,9u8,80u8,76u8,84u8,69u8,47u8,194u8,40u8,139u8,44u8,88u8,228u8,36u8,202u8,64u8,183u8,32u8,36u8,0u8,0u8,0u8,14u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,96u8,96u8,100u8,100u8,250u8,15u8,0u8,1u8,16u8,1u8,4u8,216u8,172u8,32u8,210u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+proof fn model_anc_bad_sbit_palette_9()
+    ensures m::MW_p(bytes_anc_bad_sbit_palette_9(),m::strict())==m::Outcome::Error(Error::InvalidSbit,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+        assert(crate::model::mh(bytes_anc_bad_sbit_palette_9())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_sbit_palette_9(),16),height:crate::model::be32(bytes_anc_bad_sbit_palette_9(),20),depth:8,color_type:3,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_anc_bad_sbit_palette_9())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_anc_bad_sbit_palette_9(),16),height:crate::model::be32(bytes_anc_bad_sbit_palette_9(),20),depth:8,color_type:3,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_sbit_palette_9(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![115u8,66u8,73u8,84u8],data:41nat,len:3nat,next:48nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_sbit_palette_9(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![115u8,66u8,73u8,84u8],data:41nat,len:3nat,next:48nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((115u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![115u8,66u8,73u8,84u8])==crate::walk_model::Name::Sbit) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![115u8,66u8,73u8,84u8])==crate::walk_model::Name::Sbit) by (compute);
+        }
+        assert(bytes_anc_bad_sbit_palette_9().subrange(41,44)[0]==9u8) by (compute);
+        assert(bytes_anc_bad_sbit_palette_9().subrange(41,44)[1]==1u8) by (compute);
+        assert(bytes_anc_bad_sbit_palette_9().subrange(41,44)[2]==1u8) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_sbit_palette_9(),48nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:56nat,len:9nat,next:69nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_sbit_palette_9(),48nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:56nat,len:9nat,next:69nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((80u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by (compute);
+        }
+        assert(crate::metadata_model::palette(9nat,3u8,8u8,false,false,false,false)==crate::metadata_model::Decision::Keep(3nat)) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_sbit_palette_9(),69nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:77nat,len:14nat,next:95nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_sbit_palette_9(),69nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:77nat,len:14nat,next:95nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_anc_bad_sbit_palette_9(),95nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:103nat,len:0nat,next:107nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_anc_bad_sbit_palette_9(),95nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:103nat,len:0nat,next:107nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,5);
+        assert(m::MW_p(bytes_anc_bad_sbit_palette_9(),m::strict())==m::Outcome::Error(Error::InvalidSbit,m::no_events()));
+}
+fn walk_anc_bad_sbit_palette_9() {
+    hide(m::MW_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,3u8,0u8,0u8,0u8,69u8,104u8,253u8,22u8,0u8,0u8,0u8,3u8,115u8,66u8,73u8,84u8,9u8,1u8,1u8,114u8,61u8,38u8,58u8,0u8,0u8,0u8,9u8,80u8,76u8,84u8,69u8,47u8,194u8,40u8,139u8,44u8,88u8,228u8,36u8,202u8,64u8,183u8,32u8,36u8,0u8,0u8,0u8,14u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,96u8,96u8,100u8,100u8,250u8,15u8,0u8,1u8,16u8,1u8,4u8,216u8,172u8,32u8,210u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_anc_bad_sbit_palette_9());model_anc_bad_sbit_palette_9();}
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidSbit))));
+}
+
 // order/gAMA-after-plte; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
 spec fn bytes_order_gama_after_plte() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,9u8,80u8,76u8,84u8,69u8,47u8,194u8,40u8,139u8,44u8,88u8,228u8,36u8,202u8,64u8,183u8,32u8,36u8,0u8,0u8,0u8,4u8,103u8,65u8,77u8,65u8,0u8,0u8,177u8,143u8,11u8,252u8,97u8,5u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
 proof fn model_order_gama_after_plte()
@@ -1973,6 +2753,57 @@ fn walk_order_gama_duplicate() {
     proof {assert(b@==bytes_order_gama_duplicate());model_order_gama_duplicate();}
     let public_result=crate::png::try_decode_still(&b);
     assert(matches!(public_result,Err(TryError::Format(Error::DuplicateChunk))));
+}
+
+// order/iCCP-after-idat; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_order_iccp_after_idat() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,1u8,31u8,105u8,67u8,67u8,80u8,110u8,0u8,0u8,120u8,156u8,99u8,96u8,100u8,98u8,102u8,97u8,101u8,99u8,231u8,224u8,228u8,226u8,230u8,225u8,229u8,227u8,23u8,16u8,20u8,18u8,22u8,17u8,21u8,19u8,151u8,144u8,148u8,146u8,150u8,145u8,149u8,147u8,87u8,80u8,84u8,82u8,86u8,81u8,85u8,83u8,215u8,208u8,212u8,210u8,214u8,209u8,213u8,211u8,55u8,48u8,52u8,50u8,54u8,49u8,53u8,51u8,183u8,176u8,180u8,178u8,182u8,177u8,181u8,179u8,119u8,112u8,116u8,114u8,118u8,113u8,117u8,115u8,247u8,240u8,244u8,242u8,246u8,241u8,245u8,243u8,15u8,8u8,12u8,10u8,14u8,9u8,13u8,11u8,143u8,136u8,140u8,138u8,142u8,137u8,141u8,139u8,79u8,72u8,76u8,74u8,78u8,73u8,77u8,75u8,207u8,200u8,204u8,202u8,206u8,201u8,205u8,203u8,47u8,40u8,44u8,42u8,46u8,41u8,45u8,43u8,175u8,168u8,172u8,170u8,174u8,169u8,173u8,171u8,111u8,104u8,108u8,106u8,110u8,105u8,109u8,107u8,239u8,232u8,236u8,234u8,238u8,233u8,237u8,235u8,159u8,48u8,113u8,210u8,228u8,41u8,83u8,167u8,77u8,159u8,49u8,115u8,214u8,236u8,57u8,115u8,231u8,205u8,95u8,176u8,112u8,209u8,226u8,37u8,75u8,151u8,45u8,95u8,177u8,114u8,213u8,234u8,53u8,107u8,215u8,173u8,223u8,176u8,113u8,211u8,230u8,45u8,91u8,183u8,109u8,223u8,177u8,115u8,215u8,238u8,61u8,123u8,247u8,237u8,63u8,112u8,240u8,208u8,225u8,35u8,71u8,143u8,29u8,63u8,113u8,242u8,212u8,233u8,51u8,103u8,207u8,157u8,191u8,112u8,241u8,210u8,229u8,43u8,87u8,175u8,93u8,191u8,113u8,243u8,214u8,237u8,59u8,119u8,239u8,221u8,127u8,240u8,240u8,209u8,227u8,39u8,79u8,159u8,61u8,127u8,241u8,242u8,213u8,235u8,55u8,111u8,223u8,189u8,255u8,240u8,241u8,211u8,231u8,47u8,95u8,191u8,125u8,255u8,241u8,243u8,215u8,239u8,63u8,127u8,255u8,253u8,103u8,24u8,245u8,255u8,136u8,246u8,63u8,0u8,160u8,98u8,126u8,144u8,87u8,120u8,19u8,156u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+proof fn model_order_iccp_after_idat()
+    ensures m::MW_p(bytes_order_iccp_after_idat(),m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+        assert(crate::model::mh(bytes_order_iccp_after_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_order_iccp_after_idat(),16),height:crate::model::be32(bytes_order_iccp_after_idat(),20),depth:8,color_type:2,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_order_iccp_after_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_order_iccp_after_idat(),16),height:crate::model::be32(bytes_order_iccp_after_idat(),20),depth:8,color_type:2,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_order_iccp_after_idat(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:22nat,next:67nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_order_iccp_after_idat(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:22nat,next:67nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_order_iccp_after_idat(),67nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![105u8,67u8,67u8,80u8],data:75nat,len:287nat,next:366nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_order_iccp_after_idat(),67nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![105u8,67u8,67u8,80u8],data:75nat,len:287nat,next:366nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((105u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![105u8,67u8,67u8,80u8])==crate::walk_model::Name::Iccp) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![105u8,67u8,67u8,80u8])==crate::walk_model::Name::Iccp) by (compute);
+        }
+        assert(crate::model::first_nul(bytes_order_iccp_after_idat().subrange(75,362),0)==Some(1nat)) by (compute);
+        assert(bytes_order_iccp_after_idat().subrange(75,362).subrange(0,1)==seq![110u8]) by (compute);
+        assert(crate::model::keyword(seq![110u8]));
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_order_iccp_after_idat(),366nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:374nat,len:0nat,next:378nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_order_iccp_after_idat(),366nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:374nat,len:0nat,next:378nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        idat_then_iccp_order(bytes_order_iccp_after_idat(),crate::model::mh(bytes_order_iccp_after_idat()).unwrap().0,22,287);
+}
+fn walk_order_iccp_after_idat() {
+    hide(m::MW_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,1u8,31u8,105u8,67u8,67u8,80u8,110u8,0u8,0u8,120u8,156u8,99u8,96u8,100u8,98u8,102u8,97u8,101u8,99u8,231u8,224u8,228u8,226u8,230u8,225u8,229u8,227u8,23u8,16u8,20u8,18u8,22u8,17u8,21u8,19u8,151u8,144u8,148u8,146u8,150u8,145u8,149u8,147u8,87u8,80u8,84u8,82u8,86u8,81u8,85u8,83u8,215u8,208u8,212u8,210u8,214u8,209u8,213u8,211u8,55u8,48u8,52u8,50u8,54u8,49u8,53u8,51u8,183u8,176u8,180u8,178u8,182u8,177u8,181u8,179u8,119u8,112u8,116u8,114u8,118u8,113u8,117u8,115u8,247u8,240u8,244u8,242u8,246u8,241u8,245u8,243u8,15u8,8u8,12u8,10u8,14u8,9u8,13u8,11u8,143u8,136u8,140u8,138u8,142u8,137u8,141u8,139u8,79u8,72u8,76u8,74u8,78u8,73u8,77u8,75u8,207u8,200u8,204u8,202u8,206u8,201u8,205u8,203u8,47u8,40u8,44u8,42u8,46u8,41u8,45u8,43u8,175u8,168u8,172u8,170u8,174u8,169u8,173u8,171u8,111u8,104u8,108u8,106u8,110u8,105u8,109u8,107u8,239u8,232u8,236u8,234u8,238u8,233u8,237u8,235u8,159u8,48u8,113u8,210u8,228u8,41u8,83u8,167u8,77u8,159u8,49u8,115u8,214u8,236u8,57u8,115u8,231u8,205u8,95u8,176u8,112u8,209u8,226u8,37u8,75u8,151u8,45u8,95u8,177u8,114u8,213u8,234u8,53u8,107u8,215u8,173u8,223u8,176u8,113u8,211u8,230u8,45u8,91u8,183u8,109u8,223u8,177u8,115u8,215u8,238u8,61u8,123u8,247u8,237u8,63u8,112u8,240u8,208u8,225u8,35u8,71u8,143u8,29u8,63u8,113u8,242u8,212u8,233u8,51u8,103u8,207u8,157u8,191u8,112u8,241u8,210u8,229u8,43u8,87u8,175u8,93u8,191u8,113u8,243u8,214u8,237u8,59u8,119u8,239u8,221u8,127u8,240u8,240u8,209u8,227u8,39u8,79u8,159u8,61u8,127u8,241u8,242u8,213u8,235u8,55u8,111u8,223u8,189u8,255u8,240u8,241u8,211u8,231u8,47u8,95u8,191u8,125u8,255u8,241u8,243u8,215u8,239u8,63u8,127u8,255u8,253u8,103u8,24u8,245u8,255u8,136u8,246u8,63u8,0u8,160u8,98u8,126u8,144u8,87u8,120u8,19u8,156u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_order_iccp_after_idat());model_order_iccp_after_idat();}
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::ChunkOutOfOrder))));
 }
 
 // order/pHYs-after-idat; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d

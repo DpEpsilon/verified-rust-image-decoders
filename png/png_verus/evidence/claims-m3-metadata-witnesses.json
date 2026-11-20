@@ -1,0 +1,91 @@
+{
+  "milestone": "M3 fourteen additional metadata/order public-error witnesses; not sign-off-ready",
+  "base_commit": "20d5e43",
+  "checkpoint": 273,
+  "verified": 796,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "signoff_ready": false,
+  "no_new_trusted_items": true,
+  "runtime_public_api_unchanged": true,
+  "runtime_production_bodies_unchanged": true,
+  "runtime_and_source_controls_run": 274,
+  "claims": [
+    {
+      "row": "THEOREMS.md category-a frozen gate",
+      "status": "81 complete of 115; 34 APNG cases open",
+      "functions": [
+        "witness_m3_frozen::header_*",
+        "witness_m3_walk_frozen::{model_*,walk_*}"
+      ],
+      "run": 273,
+      "statement": "Retains all prior 42 generated names and adds fourteen metadata/order model-versus-frozen error proofs plus actual public still calls. The per-record manifest names both functions, input/source hashes, public entry and exact frozen error."
+    },
+    {
+      "row": "Three large-iCCP error/order obligations",
+      "status": "proved on host",
+      "functions": [
+        "witness_m3_walk_frozen::invalid_iccp_keyword",
+        "witness_m3_walk_frozen::first_iccp_error",
+        "witness_m3_walk_frozen::idat_then_iccp_order",
+        "witness_m3_walk_frozen::model_anc_bad_iccp_name_80",
+        "witness_m3_walk_frozen::model_anc_bad_iccp_leading_space",
+        "witness_m3_walk_frozen::model_order_iccp_after_idat"
+      ],
+      "run": 273,
+      "statement": "Checked concrete wire, first-NUL and keyword facts instantiate symbolic parser/transition lemmas. The public witnesses call try_decode_still and prove InvalidIccp for both malformed keywords and ChunkOutOfOrder for the late profile. No profile decompression or M6 result equation is claimed."
+    },
+    {
+      "row": "Retained non-consecutive IDAT public-error witness",
+      "status": "proved on host",
+      "functions": [
+        "witness_m3_walk_frozen::model_container_non_consecutive_idat",
+        "witness_m3_walk_frozen::walk_container_non_consecutive_idat"
+      ],
+      "run": 273,
+      "statement": "Spinoff isolation restores the retained model proof after the added helper context changed solver search; the same actual public call and frozen error remain checked. Default solver limits are unchanged."
+    },
+    {
+      "row": "T2/T6/T10 prefix, A-PNG-2/A-PNG-7, L-WALK-FIRST/L-REWALK/L-INFO-RANGE, council sixteen and E2",
+      "status": "retained proved host components; complete M3 gate partial",
+      "functions": [
+        "header::prefix",
+        "Frames::with_trace",
+        "Frames::try_new",
+        "Frames::try_new_with_policy",
+        "Frames::try_next",
+        "DataReader::read",
+        "decode_image",
+        "decode_exact"
+      ],
+      "run": 273,
+      "statement": "All earlier code/proofs run again with no production changes. Council M3 coverage stays sixteen; M2 uncovered flags are unchanged. reader-effects-0273.json retains the three distinct host E2 arguments and their Verus/inspection/Rust-aliasing separation."
+    },
+    {
+      "row": "Remaining category-a APNG witnesses / category-b projections",
+      "status": "OPEN",
+      "functions": [],
+      "run": 273,
+      "statement": "Thirty-four APNG category-a records and all sixteen category-b full walk/preparation projections remain open. Three accepted-header facts remain partial. Category-b label remains: M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile."
+    },
+    {
+      "row": "Final i686 / M4\u2013M6 data and pixel equations",
+      "status": "untouched/open",
+      "functions": [],
+      "run": 273,
+      "statement": "No cache copy or target replay attempted. Final replay must copy existing i686 vstd into PNG-owned target only, never rebuild or write under inflate target. No pixel/data/compositor/SavedAt equality claim."
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0274.json"
+  },
+  "spec_ambiguities": [],
+  "resume": "Retain all 56 generated names, add the remaining 34 APNG category-a cases, then sixteen category-b projections with the M4\u2013M6 label, then final copied-cache i686 replay."
+}
