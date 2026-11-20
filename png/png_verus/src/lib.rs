@@ -5,9 +5,10 @@
 //! and APNG checks, raw Info storage and policy projection are verified
 //! against complete independent MW/MW_p/MWF_p transition/trace models.
 //! The segmented adapter, IDAT/fdAT transport and validated boundary selectors
-//! feed checked source-state transitions and fresh-event walk gates. Image stages,
-//! complete receiver composition, allocation sequencing and returned-object bodies
-//! remain ordinary Rust. A green run
+//! feed checked source-state transitions and fresh-event walk gates. The Strict
+//! ICC entry composes bounded measurement, exact-sized second-pass bytes and its
+//! returned sealed log. Image stages, complete still/frame receiver composition
+//! and their remaining logged equations remain ordinary Rust. A green run
 //! does not sign off M3. zlib/DEFLATE is the verified `inflate_verus` dependency.
 //!
 //! `no_std + alloc`, no `unsafe`, no recursion. Every heap allocation goes
@@ -39,6 +40,8 @@ pub mod frame_transport_model;
 mod framing;
 mod header;
 mod image;
+#[cfg(verus_only)]
+pub mod icc_model;
 mod info;
 mod keywords;
 #[cfg(verus_only)]
@@ -78,7 +81,7 @@ pub use alloc_guard::sites::TryError;
 pub use alloc_guard::{AllocSite, OutOfMemory};
 pub use png::{
     try_decode_still, try_decode_still16, try_decode_still16_with_policy, try_decode_still_with_policy,
-    try_icc_profile, Error, FrameView, Frames, Info, Meta, Still, Still16, Time,
+    try_icc_profile, try_icc_profile_logged, Error, FrameView, Frames, Info, Meta, Still, Still16, Time,
 };
 #[cfg(feature = "test-records")]
 pub use png::{try_decode_still16_traced, try_decode_still_traced, try_icc_profile_traced};

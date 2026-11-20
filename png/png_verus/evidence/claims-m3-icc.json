@@ -1,0 +1,136 @@
+{
+  "milestone": "M3 continuation: complete Strict ICC value/request composition; not sign-off",
+  "base_commit": "723ea4e",
+  "checkpoint": 191,
+  "verified": 382,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "no_new_trusted_items": true,
+  "runtime_and_source_controls_run": 192,
+  "claims": [
+    {
+      "row": "T9 ICC measuring count / P17",
+      "status": "proved on host",
+      "functions": [
+        "measure_profile",
+        "icc_model::measured"
+      ],
+      "run": 191,
+      "statement": "The actual single-segment measure call refines Strict Inflate over exactly the walked iCCP bytes; successful m equals modeled output length, m <= MAX_ICC and conversion to usize is lossless."
+    },
+    {
+      "row": "L-LIMIT-MONO / T9 ICC second pass",
+      "status": "proved on host",
+      "functions": [
+        "write_profile",
+        "inflate_verus::limit_mono::lemma_limit_mono"
+      ],
+      "run": 191,
+      "statement": "The actual fresh-source into call at length m returns Done with exactly the measuring model output, including m=0; the unchanged dependency supplies the checked limit-monotonicity theorem."
+    },
+    {
+      "row": "A-PNG-5 Eq_icc / G / Prog value-and-allocation equations",
+      "status": "proved on host",
+      "functions": [
+        "icc_model::MI",
+        "icc_model::requests",
+        "icc_model::complete",
+        "icc_model::site_bound",
+        "icc_impl",
+        "try_icc_profile",
+        "try_icc_profile_logged"
+      ],
+      "run": 191,
+      "statement": "The complete actual Strict ICC public path proves exact non-OOM bytes/None/Format result, tied allocation failure, request-prefix progress, exact non-OOM request sequence, per-site caps and positive failed request size; the logged entry returns its actual owned sealed log.",
+      "qualifier": "This is the complete checked value/request equation, not complete A-PNG-5 assurance/sign-off: E2 effect inspection, required witnesses and target assurance remain separate open gates."
+    },
+    {
+      "row": "A-PNG-7 / L-WALK-FIRST complete ICC public entry",
+      "status": "proved on host",
+      "functions": [
+        "icc_model::walk_error_first",
+        "icc_model::oom_requires_profile",
+        "icc_model::absent_profile",
+        "icc_impl",
+        "try_icc_profile_logged"
+      ],
+      "run": 191,
+      "statement": "A modeled Strict walk error produces the exact Format error and empty log; OOM requires successful walking with iCCP; absent iCCP returns None with an empty log."
+    },
+    {
+      "row": "T10 ICC order / D8 empty-profile request",
+      "status": "proved on host",
+      "functions": [
+        "icc_impl",
+        "reserve_icc",
+        "write_profile",
+        "icc_model::requests",
+        "icc_model::complete"
+      ],
+      "run": 191,
+      "statement": "Window precedes measurement; Icc follows only Done and has the measured size, including zero; zero-sized Icc cannot fail, and successful Icc reservation is followed by an infallible exact-byte second pass."
+    },
+    {
+      "row": "A-PNG-2 / A-PNG-7 still and frame entries / returned Info",
+      "status": "partial; unchanged beyond existing preparations",
+      "functions": [],
+      "run": 191,
+      "statement": "Default-image decoding, full still/frame logged equations, returned-object Info and iterator SavedAt_p/terminal composition remain open."
+    },
+    {
+      "row": "L-SEG-FRAME IDAT",
+      "status": "OPEN under approved E2",
+      "functions": [],
+      "run": 191,
+      "statement": "No complete reachable-type/helper-closure/every-read/no-extra-effect inspection or Rust-aliasing inference discharge was added. The refreshed manifest separates checked ICC call-site value/cursor/output premises from the remaining effect argument.",
+      "qualifier": "See reader-effects-open-0191.json."
+    },
+    {
+      "row": "L-SEG-FRAME fdAT",
+      "status": "OPEN under approved E2",
+      "functions": [],
+      "run": 191,
+      "statement": "No complete reachable-type/helper-closure/every-read/no-extra-effect inspection or Rust-aliasing inference discharge was added. The refreshed manifest separates checked ICC call-site value/cursor/output premises from the remaining effect argument.",
+      "qualifier": "See reader-effects-open-0191.json."
+    },
+    {
+      "row": "L-SEG-FRAME iCCP",
+      "status": "OPEN under approved E2",
+      "functions": [],
+      "run": 191,
+      "statement": "No complete reachable-type/helper-closure/every-read/no-extra-effect inspection or Rust-aliasing inference discharge was added. The refreshed manifest separates checked ICC call-site value/cursor/output premises from the remaining effect argument.",
+      "qualifier": "See reader-effects-open-0191.json."
+    },
+    {
+      "row": "Subframe / pixel / work / witness / target assurance",
+      "status": "untouched and open",
+      "functions": [],
+      "run": 191,
+      "statement": "Subframe Raw monotonicity and fcTL rectangle transfer, pixel/filter/sample/disposal semantics, aggregate work, remaining required witnesses and i686 replay remain open."
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0192.json"
+  },
+  "diagnostics": {
+    "182": "one-segment parts_prefix needs explicit zero/one unfolding",
+    "183": "373/0: concrete measure and into helpers",
+    "184": "unsupported core::mem::drop; no trusted specification added",
+    "185": "complete root needs preparation-exit transfer and named domain-cap fact",
+    "186": "explicit final MI/request equality needed",
+    "187": "378/0 complete ICC result/request equation",
+    "188": "380/0 cap and PreAlloc consequences",
+    "190": "strengthened no-zero-sized-OOM relation needs fixed Window positivity",
+    "191": "382/0 final per-site bounds, absent-profile consequence and fixed Window positivity"
+  },
+  "ownership_boundary": "Window leaves lexical scope before Icc reservation; this is not a verified live-heap/deallocation theorem.",
+  "spec_ambiguities": [],
+  "resume": "Bind default-image inflate/validation and receiver continuation to prepare_image and its actual log; complete still/frame public logged equations, A-PNG-2/A-PNG-7 and returned Info while keeping subframe fit, iterator terminal/SavedAt_p and all three E2 obligations explicit."
+}

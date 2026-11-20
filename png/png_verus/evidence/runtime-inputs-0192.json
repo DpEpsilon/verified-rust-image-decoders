@@ -1,0 +1,61 @@
+{
+  "run": 192,
+  "snapshot_time_ns": 1795165960299167834,
+  "inputs": [
+    {
+      "path": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "mtime_ns": 1795152533477816356
+    },
+    {
+      "path": "/home/ws/projects/verified-decoders/png/limits-frozen/VECTORS-CAPS.json",
+      "sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "mtime_ns": 1795152533477816356
+    },
+    {
+      "path": "/home/ws/projects/verified-decoders/png/png_verus/tests/conformance.rs",
+      "sha256": "d925d2a2ebe03028c498aaf98b49e6a1af57d327dab15bfb21beb87e1857f350",
+      "mtime_ns": 1795142952902151462
+    },
+    {
+      "path": "/home/ws/projects/verified-decoders/png/png_verus/tests/fault_injection.rs",
+      "sha256": "77a9519b4677496dbf99c708858d55c5d724ddbf7f547f3ea1624ef8aaa10878",
+      "mtime_ns": 1795151668907968564
+    },
+    {
+      "path": "/home/ws/projects/verified-decoders/png/png_verus/tests/m1bq_rulings.rs",
+      "sha256": "1dda97aec27e960f6b164199af10fbb9aac4e9edca88ba350e49ae7c1a5bf313",
+      "mtime_ns": 1795148925165898378
+    },
+    {
+      "path": "/home/ws/projects/verified-decoders/png/png_verus/tools/audit_alloc.sh",
+      "sha256": "12e0efd68eaee5726dd8cb18f2f6f8c66394fb40dfe852e325f1ba8f5a27dd01",
+      "mtime_ns": 1795089177467111897
+    },
+    {
+      "path": "/home/ws/projects/verified-decoders/png/png_verus/tools/lint_caps.sh",
+      "sha256": "a2cf960c3bc86c915fcb2cb94a34196f733340db3aaec792edc3ad7639c9bd2c",
+      "mtime_ns": 1795089113844199267
+    },
+    {
+      "path": "/home/ws/projects/verified-decoders/png/policy-draft/VECTORS-POLICY.json",
+      "sha256": "c591a79e28c2667201752ca79d9ff51c3cbb64270dbca5b41fbc546f8bf7122c",
+      "mtime_ns": 1795151624386900027
+    },
+    {
+      "path": "/home/ws/projects/verified-decoders/png/policy-frozen/VECTORS-POLICY.json",
+      "sha256": "c591a79e28c2667201752ca79d9ff51c3cbb64270dbca5b41fbc546f8bf7122c",
+      "mtime_ns": 1795151624386900027
+    },
+    {
+      "path": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "mtime_ns": 1794924259094640070
+    }
+  ],
+  "unchanged_from_prior_snapshot": "runtime-inputs-0181.json",
+  "inputs_unchanged_since_before_run_start": true,
+  "exit_code": 0,
+  "final_passing_runtime": true,
+  "checked_after_ns": 1795166005589977717
+}

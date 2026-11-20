@@ -5,7 +5,8 @@
 //! Every entry point runs the structural walk to IEND first (`walk.rs`); only
 //! then does it reserve, through the sealed guard, in the order of SPEC P20.
 //! M3 guard helpers borrow a real sealed log owned by each call's Trace.
-//! Complete public log/decoder composition remains separate from these helpers.
+//! The Strict ICC entry composes its full result/log equation; complete public
+//! still/frame log/decoder composition remains separate from these helpers.
 
 use alloc::vec::Vec;
 
@@ -163,7 +164,9 @@ impl Error {
     }
 
     /// The eleven inflate errors keep their names (P9, P10).
-    pub(crate) fn from_inflate(e: InflateError) -> Error {
+    pub(crate) fn from_inflate(e: InflateError) -> (r: Error)
+        ensures r==crate::icc_model::inflate_error(e),
+    {
         match e {
             InflateError::TruncatedZlib => Error::TruncatedZlib,
             InflateError::InvalidZlibHeader => Error::InvalidZlibHeader,
@@ -490,7 +493,7 @@ fn prepare_icc(b: &[u8], ev: &mut Events, trace: &mut Trace) -> (r: Result<Optio
     requires old(trace).wf(),old(trace).n==0,
     ensures final(trace).wf(),crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),
         crate::allocation_model::icc_prepared(b@,prepared_icc_view(r),final(ev).view(),final(trace).log_view()),
-        match r {Ok(Some((doc,ring)))=>doc.wf(b@) && doc.iccp.is_some()
+        match r {Ok(Some((doc,ring)))=>doc.wf(b@) && b.len()<=crate::limits::MAX_INPUT && doc.iccp.is_some()
             && ring@==Seq::new(WINDOW_MAX as nat,|_i: int|0u8),_=>true},
 {
     proof {crate::walk_policy::profiles_project_exactly();}
@@ -520,7 +523,7 @@ fn icc_preparation_logged(b: &[u8])
     -> (r: (Result<Option<(Doc,Vec<u8>)>,TryError>,Events,Tracked<AllocLog>))
     ensures crate::allocation_model::icc_prepared(b@,prepared_icc_view(r.0),r.1.view(),r.2@.view()),
         crate::alloc_guard::sites::log_tied(r.0,r.2@.view()),
-        match r.0 {Ok(Some((doc,ring)))=>doc.wf(b@) && doc.iccp.is_some()
+        match r.0 {Ok(Some((doc,ring)))=>doc.wf(b@) && b.len()<=crate::limits::MAX_INPUT && doc.iccp.is_some()
             && ring@==Seq::new(WINDOW_MAX as nat,|_i: int|0u8),_=>true},
 {
     let mut trace=Trace::new();
@@ -889,45 +892,124 @@ fn clear_rect(canvas: &mut [u8], cw: u32, x: u32, y: u32, w: u32, h: u32) {
 
 // ------------------------------------------------------------------ P17 ICC
 
-fn icc_impl(b: &[u8], trace: &mut Trace) -> Result<Option<Vec<u8>>, TryError> {
-    let mut ev = Events::default();
-    let (doc,mut ring)=match prepare_icc(b,&mut ev,trace)? {None=>return Ok(None),Some(ready)=>ready};
-    let (o,n)=match doc.iccp {Some(r)=>r,None=>return Ok(None)};
-    let parts: [&[u8];1]=[&b[o..o+n]];
-    let opts=InflateOptions::STRICT;
-    let m = {
-        let mut src = match SegmentSlices::new(&parts) {
-            Some(s) => s,
-            None => return Err(TryError::Format(Error::TruncatedZlib)),
-        };
-        let r = inflate_zlib_measure(&mut src, &mut ring, MAX_ICC, opts);
-        match r.status {
-            Status::Done => r.produced as usize,
-            Status::Full => return Err(TryError::Format(Error::IccProfileTooLarge)),
-            Status::Err(e) => return Err(TryError::Format(Error::from_inflate(e))),
-        }
-    };
-    drop(ring);
-    // Second pass into exactly m bytes; it ends Done (L-LIMIT-MONO).
-    let mut prof=reserve_icc(m,trace)?;
-    let mut src = match SegmentSlices::new(&parts) {
-        Some(s) => s,
-        None => return Err(TryError::Format(Error::TruncatedZlib)),
-    };
-    let r = inflate_zlib_into(&mut src, &mut prof, opts);
-    match r.status {
-        Status::Done => Ok(Some(prof)),
-        Status::Full => Err(TryError::Format(Error::IccProfileTooLarge)),
-        Status::Err(e) => Err(TryError::Format(Error::from_inflate(e))),
+verus! {
+
+/// Bind the measuring pass to exactly the supplied iCCP stream.
+fn measure_profile(bytes: &[u8],ring: &mut [u8]) -> (r: Result<usize,Error>)
+    requires bytes.len()<=inflate_verus::limits::SEGMENT_BYTES_MAX,old(ring).len()==WINDOW_MAX,
+    ensures final(ring).len()==WINDOW_MAX,
+        match r {
+            Ok(n)=>n<=MAX_ICC && crate::icc_model::measured(bytes@).status==inflate_verus::model::InflateStatus::Done
+                && n==crate::icc_model::measured(bytes@).out.len(),
+            Err(e)=>crate::icc_model::data(bytes@)==crate::icc_model::Outcome::Error(e),
+        },
+{
+    hide(inflate_verus::model::Inflate);
+    let parts: [&[u8];1]=[bytes];
+    proof {
+        assert(inflate_verus::segments::parts_prefix(parts@,0)==Seq::<u8>::empty());
+        assert(inflate_verus::segments::parts_prefix(parts@,1)==bytes@);
     }
+    let mut src=match SegmentSlices::new(&parts) {
+        Some(s)=>s,None=>{assert(false);return Err(Error::TruncatedZlib);},
+    };
+    let result=inflate_zlib_measure(&mut src,ring,MAX_ICC,InflateOptions::STRICT);
+    match result.status {
+        Status::Done=>{
+            proof {crate::limits::caps_ok();}
+            Ok(result.produced as usize)
+        },
+        Status::Full=>Err(Error::IccProfileTooLarge),
+        Status::Err(e)=>{
+            proof {
+                if let inflate_verus::model::InflateStatus::Error(f)=crate::icc_model::measured(bytes@).status {
+                    crate::icc_model::fault_agrees(e,f);
+                }
+            }
+            Err(Error::from_inflate(e))
+        },
+    }
+}
+
+/// A successful measurement makes the exact-sized second pass infallible.
+fn write_profile(bytes: &[u8],out: &mut [u8]) -> (r: Result<(),Error>)
+    requires bytes.len()<=inflate_verus::limits::SEGMENT_BYTES_MAX,
+        crate::icc_model::measured(bytes@).status==inflate_verus::model::InflateStatus::Done,
+        old(out).len()==crate::icc_model::measured(bytes@).out.len(),old(out).len()<=MAX_ICC,
+    ensures r==Ok(()),final(out)@==crate::icc_model::measured(bytes@).out,
+{
+    hide(inflate_verus::model::Inflate);
+    proof {inflate_verus::limit_mono::lemma_limit_mono(bytes@,MAX_ICC as nat,out.len() as nat,true,false);}
+    let parts: [&[u8];1]=[bytes];
+    proof {
+        assert(inflate_verus::segments::parts_prefix(parts@,0)==Seq::<u8>::empty());
+        assert(inflate_verus::segments::parts_prefix(parts@,1)==bytes@);
+    }
+    let mut src=match SegmentSlices::new(&parts) {
+        Some(s)=>s,None=>{assert(false);return Err(Error::TruncatedZlib);},
+    };
+    let result=inflate_zlib_into(&mut src,out,InflateOptions::STRICT);
+    match result.status {
+        Status::Done=>Ok(()),
+        Status::Full=>Err(Error::IccProfileTooLarge),
+        Status::Err(e)=>Err(Error::from_inflate(e)),
+    }
+}
+
+fn icc_impl(b: &[u8], trace: &mut Trace) -> (r: Result<Option<Vec<u8>>, TryError>)
+    requires old(trace).wf(),old(trace).n==0,
+    ensures final(trace).wf(),crate::icc_model::complete(b@,crate::icc_model::result_view(r),final(trace).log_view()),
+{
+    hide(inflate_verus::model::Inflate);
+    hide(crate::document_model::MW_p);
+    proof {crate::limits::caps_ok();}
+    let mut ev = Events {r1:false,r3:false,r4:false};
+    let (bytes,m)={
+        let prepared=prepare_icc(b,&mut ev,trace);
+        proof {crate::icc_model::prefix_exit(b@,prepared_icc_view(prepared),ev.view(),trace.log_view());}
+        let (doc,mut ring)=match prepared {Err(e)=>return Err(e),Ok(None)=>return Ok(None),Ok(Some(ready))=>ready};
+        proof {crate::limits::caps_ok();crate::icc_model::short_log(trace.log_view());}
+        let (o,n)=match doc.iccp {Some(r)=>r,None=>return Ok(None)};
+        let bytes=&b[o..o+n];
+        let m=match measure_profile(bytes,&mut ring) {Ok(n)=>n,Err(e)=>return Err(TryError::Format(e))};
+        proof {
+            assert(crate::icc_model::MI(b@)==crate::icc_model::Outcome::Profile(crate::icc_model::measured(bytes@).out));
+            assert(crate::icc_model::requests(b@)==seq![(AllocSite::IccWindow,WINDOW_MAX as nat),(AllocSite::Icc,m as nat)]);
+        }
+        (bytes,m)
+    }; // The measuring Window leaves scope before the profile reservation.
+    let reserved=reserve_icc(m,trace);
+    proof {crate::icc_model::short_log(trace.log_view());}
+    let mut prof=match reserved {Ok(v)=>v,Err(e)=>return Err(e)};
+    let written=write_profile(bytes,&mut prof);
+    proof {
+        assert(crate::alloc_guard::all_ok(trace.log_view()));
+        assert(crate::alloc_guard::req_of_log(trace.log_view())==crate::icc_model::requests(b@));
+    }
+    match written {Ok(())=>Ok(Some(prof)),Err(e)=>Err(TryError::Format(e))}
 }
 
 /// `icc_profile` (P17, Strict): `Ok(None)` without iCCP, otherwise the profile
 /// inflated with limit `MAX_ICC`. A damaged profile is an error of this call
 /// only; no pixel entry point inflates it.
-pub fn try_icc_profile(b: &[u8]) -> Result<Option<Vec<u8>>, TryError> {
-    icc_impl(b, &mut Trace::new())
+pub fn try_icc_profile(b: &[u8]) -> (r: Result<Option<Vec<u8>>, TryError>)
+    ensures !matches!(r,Err(TryError::OutOfMemory(_))) ==> crate::icc_model::eq(crate::icc_model::result_view(r),crate::icc_model::MI(b@)),
+{
+    let mut trace=Trace::new();
+    icc_impl(b,&mut trace)
 }
+
+/// The public ICC entry and the owned sealed log it actually used.
+pub fn try_icc_profile_logged(b: &[u8]) -> (r: (Result<Option<Vec<u8>>,TryError>,Tracked<AllocLog>))
+    ensures crate::icc_model::complete(b@,crate::icc_model::result_view(r.0),r.1@.view()),
+{
+    let mut trace=Trace::new();
+    let result=icc_impl(b,&mut trace);
+    let log=trace.into_log();
+    (result,log)
+}
+
+} // verus!
 
 /// Test-only: `try_icc_profile` with its request trace.
 #[cfg(feature = "test-records")]
