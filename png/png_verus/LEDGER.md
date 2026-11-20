@@ -1,6 +1,29 @@
 # png_verus ledger
 
-M3 has begun; it is not signed off. The latest host checkpoint is **run 273: 796 verified, 0 errors**, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
+M3 has begun; it is not signed off. The latest host checkpoint is **run 282: 1,138 verified, 0 errors**, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
+
+## M3 continuation: twenty-four APNG public-error witnesses (2026-11-20)
+
+Base: `52f14b0` (run 273, 796 verified). **Run 282: 1,138 verified, 0 errors** retains all 56 generated names and adds 24 APNG category-(a) records. Coverage is now **105 of 115**, with **ten APNG records open**. All sixteen council M3 cases remain complete. Run 283 passes runtime/source controls. This is a clean host checkpoint, **not sign-off-ready**: the ten APNG gates, sixteen category-(b) projections and final i686 replay remain open.
+
+| THEOREMS row/component | Checked functions at run 282 | Scope |
+|---|---|---|
+| Frozen M3 category-(a) gate | `witness_m3_walk_frozen::{model_*,symbolic_*,walk_*}` and retained `witness_m3_frozen::header_*`; per-record functions/errors are indexed in `m3-walk-witness-inputs-0282.json` | 80 generated pairs plus 25 retained header witnesses give 105 complete model-versus-frozen/actual-public-entry error witnesses; every prior generated name remains |
+| APNG local control certificates | Concrete `model_apng_bad_*` functions and their checked scalar/transition assertions | Pure actl/fctl/fdat/begin_idat/finish suggestions are checked against the independent model; central constants are read only to suggest certificates, never trusted as an executable oracle |
+| Literal-to-symbolic whole-walk composition | `symbolic_apng_bad_*`, instantiated by unconditional `model_apng_bad_*` functions | Each symbolic-input premise is discharged by the literal caller; scoped reveals keep control definitions opaque outside individual checks; no false-precondition interface, decoder stub or new trusted item |
+| Earlier M3 host components and E2 | Earlier requirement-indexed functions, rechecked at run 282; `reader-effects-0282.json` retains the separate IDAT/fdAT/iCCP host arguments | No production decoder, reader, allocation or public API change; complete milestone remains partial |
+| Remaining category-(a) APNG gates | None credited for the excluded records | Nine complex multi-frame/sequence suffixes and pixel-budget remain open; broader failed attempts receive no credit |
+| Category-(b), i686 and M4–M6 | None added | All sixteen full walk/preparation projections and final copied-cache i686 replay remain open; three accepted-header facts remain partial; no pixel/data/compositor/SavedAt equality claim |
+
+The remaining category-(a) names are `apng-bad/fewer-frames-than-declared`, `apng-bad/more-frames-than-declared`, `apng-bad/seq-starts-at-1`, `apng-bad/seq-gap`, `apng-bad/seq-gap-still`, `apng-bad/seq-fdat-repeats`, `apng-bad/fdat-len-3`, `apng-bad/fctl-no-fdat-then-iend`, `apng-bad/fctl-no-fdat-then-fctl` and `apng-bad/pixel-budget`. No independent R or data fallback was assigned to resolve them.
+
+Runs 275–276 were stopped after repeated literal-input APNG composition resource failures; their interrupted-attempt records and diagnostics remain retained without final-count claims. Symbolic-input interfaces reduce those queries; all concrete premises are checked before instantiation. Run 279 retains a verifier fuel-slicing internal error from hiding an unreachable control definition; the final generator hides only definitions actually referenced by that record's certificates. Runs 278 (1,321 verified, ten errors), 280 (1,324 verified, seven errors) and 281 (1,321 verified, ten errors) retain the unresolved suffix attempts. Run 282 verifies the selected 80-name batch with all prior names retained, under unchanged default limits. The excluded suffixes and pixel-budget receive no witness credit.
+
+`generation-m3-walk-0282.json` records the exact 80-name regeneration command. Retain **all 80 names** when adding the ten remaining APNG records; the default two-name command does not reproduce this checkpoint, and `--all-a` still includes open work. Public expected errors come only from the authored frozen fixtures. Host arithmetic and parsing code supplies certificate suggestions only; Verus independently checks their relation to the real specification. The generator is not a trusted decoder or model evaluator.
+
+Run 283: 846 conformance passes, zero failures, two inherited unsupported-profile skips; fault injection passes; all seven council tests pass. Both source scanners and their negative controls pass. Guard hashes, six sealed-log borrows, five zeroed sites and one empty site remain unchanged. Protected specifications, policies, dependency files, production bodies and tests remain unchanged. All worker background jobs have exited or been stopped. The worker did not commit or push.
+
+No new specification ambiguity was found. Next resume point: retain the 80 generated names, split the ten remaining APNG model/control/suffix proofs as needed without changing solver limits, then add the sixteen category-(b) projections with the explicit M4–M6 final-data label, then replay final source using only the existing i686 cache copied into PNG-owned target. Never rebuild or write under inflate target. Declare sign-off-ready only after every M3 gate is discharged, not sign-off itself.
 
 ## M3 continuation: fourteen metadata/order public-error witnesses (2026-11-20)
 

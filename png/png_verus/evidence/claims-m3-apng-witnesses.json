@@ -1,0 +1,90 @@
+{
+  "milestone": "M3 twenty-four additional APNG public-error witnesses; not sign-off-ready",
+  "base_commit": "52f14b0",
+  "checkpoint": 282,
+  "verified": 1138,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "signoff_ready": false,
+  "no_new_trusted_items": true,
+  "runtime_public_api_unchanged": true,
+  "runtime_production_bodies_unchanged": true,
+  "runtime_and_source_controls_run": 283,
+  "claims": [
+    {
+      "row": "THEOREMS.md category-a frozen-record gate",
+      "status": "105 complete of 115; ten APNG cases open",
+      "functions": [
+        "witness_m3_frozen::header_*",
+        "witness_m3_walk_frozen::{model_*,symbolic_*,walk_*}"
+      ],
+      "run": 282,
+      "statement": "Retains all 56 prior generated names and adds 24 APNG independent model/frozen error proofs with actual checked public entries selected by each frozen record. Per-record function names, source/input hashes and exact errors are indexed in m3-walk-witness-inputs-0282.json."
+    },
+    {
+      "row": "APNG local transition and literal-to-symbolic bindings",
+      "status": "proved selected components on host",
+      "functions": [
+        "witness_m3_walk_frozen::symbolic_apng_bad_*",
+        "witness_m3_walk_frozen::model_apng_bad_*"
+      ],
+      "run": 282,
+      "statement": "The generator suggests pure actl/fctl/fdat/begin_idat/finish transitions. Each concrete premise is checked against the independent specification before a symbolic-input model lemma composes the whole walk. Scoped reveals keep control definitions opaque outside their individual proofs. Generic premises are discharged by unconditional concrete model functions; no false-precondition interface or trusted parser is introduced.",
+      "untrusted_certificate_generator": "tools/generate_m3_walk_witnesses.py::apng_facts"
+    },
+    {
+      "row": "Earlier M3 host rows, council sixteen and E2",
+      "status": "retained proved host components; whole milestone partial",
+      "functions": [
+        "header::prefix",
+        "Frames::with_trace",
+        "Frames::try_new",
+        "Frames::try_new_with_policy",
+        "Frames::try_next",
+        "DataReader::read",
+        "decode_image",
+        "decode_exact"
+      ],
+      "run": 282,
+      "statement": "Earlier requirement-indexed code/proofs run again with no production changes. Council coverage remains sixteen at M3 and M2 uncovered flags remain unchanged. Three E2 host arguments retain the checked-contract/inspection/Rust-aliasing separation."
+    },
+    {
+      "row": "Remaining APNG category-a gates",
+      "status": "OPEN",
+      "functions": [],
+      "run": 282,
+      "records": [
+        "apng-bad/fewer-frames-than-declared",
+        "apng-bad/more-frames-than-declared",
+        "apng-bad/seq-starts-at-1",
+        "apng-bad/seq-gap",
+        "apng-bad/seq-gap-still",
+        "apng-bad/seq-fdat-repeats",
+        "apng-bad/fdat-len-3",
+        "apng-bad/fctl-no-fdat-then-iend",
+        "apng-bad/fctl-no-fdat-then-fctl",
+        "apng-bad/pixel-budget"
+      ],
+      "statement": "Nine complex multi-frame/sequence suffix records and pixel-budget remain open. Failed or interrupted broader runs receive no witness credit."
+    },
+    {
+      "row": "Sixteen category-b projections / final i686 / M4\u2013M6 equations",
+      "status": "untouched/open",
+      "functions": [],
+      "run": 282,
+      "statement": "All sixteen full walk/preparation projections and final copied-cache i686 replay remain open; three accepted-header facts remain partial. Category-b final-data outcomes retain their M4\u2013M6 label. No pixel/data/compositor/SavedAt equality claim; never rebuild or write under inflate target."
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0283.json"
+  },
+  "spec_ambiguities": [],
+  "resume": "Retain all 80 generated names, discharge the ten remaining APNG category-a records, then sixteen category-b projections and final copied-cache i686 replay."
+}

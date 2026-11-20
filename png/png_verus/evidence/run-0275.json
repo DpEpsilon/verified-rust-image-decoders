@@ -1,0 +1,23 @@
+{
+  "kind": "M3-interrupted-attempt",
+  "run": 275,
+  "accepted": false,
+  "verified": 0,
+  "errors": null,
+  "reason": "Stopped after repeated APNG model resource failures to isolate new APNG model proofs; no solver-limit change and no final count claim.",
+  "reported_failed_functions": [
+    "model_apng_bad_actl_after_idat",
+    "model_apng_bad_actl_duplicate",
+    "model_apng_bad_no_fctl_at_all",
+    "model_apng_bad_fewer_frames_than_declared",
+    "model_apng_bad_more_frames_than_declared",
+    "model_apng_bad_seq_starts_at_1",
+    "model_apng_bad_seq_gap",
+    "model_apng_bad_seq_gap_still",
+    "model_apng_bad_seq_fdat_repeats",
+    "model_apng_bad_fdat_before_fctl",
+    "model_apng_bad_fdat_for_idat_frame",
+    "model_apng_bad_fdat_for_idat_frame_still"
+  ],
+  "log_sha256": "4a131eef682e33e6223582ec8c2be8e8ccad1aa03ed09bedb4c58a4dcc0adbd5"
+}

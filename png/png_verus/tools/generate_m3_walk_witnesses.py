@@ -5,6 +5,7 @@ The status inventory chooses records; expectations come from the fixture itself.
 No decoder, policy oracle or third-party corpus supplies an expected result.
 """
 import argparse
+import ast
 import binascii
 import hashlib
 import json
@@ -17,6 +18,108 @@ NAMES = dict(zip(
     [b'IHDR',b'PLTE',b'IDAT',b'IEND',b'tRNS',b'cHRM',b'gAMA',b'iCCP',b'sBIT',b'sRGB',b'cICP',b'mDCv',b'cLLi',b'bKGD',b'hIST',b'pHYs',b'sPLT',b'eXIf',b'tIME',b'tEXt',b'zTXt',b'iTXt',b'acTL',b'fcTL',b'fdAT'],
     ['Ihdr','Plte','Idat','Iend','Trns','Chrm','Gama','Iccp','Sbit','Srgb','Cicp','Mdcv','Clli','Bkgd','Hist','Phys','Splt','Exif','Time','Text','Ztxt','Itxt','Actl','Fctl','Fdat']))
 
+
+
+
+def limit_hint(name):
+    """Read a central limit only to suggest a certificate; Verus checks it."""
+    text = (ROOT/'src/limits.rs').read_text()
+    expression = re.search(r'pub const '+name+r'\s*:[^=]+=(.*?);', text).group(1)
+    def value(node):
+        if isinstance(node, ast.Constant) and isinstance(node.value, int):
+            return node.value
+        assert isinstance(node, ast.BinOp)
+        left, right = value(node.left), value(node.right)
+        if isinstance(node.op, ast.LShift): return left << right
+        if isinstance(node.op, ast.RShift): return left >> right
+        if isinstance(node.op, ast.Add): return left + right
+        if isinstance(node.op, ast.Sub): return left - right
+        if isinstance(node.op, ast.Mult): return left * right
+        raise AssertionError('Unsupported central-limit expression')
+    return value(ast.parse(expression.strip(), mode='eval').body)
+
+
+def apng_facts(data, ident):
+    """Suggest pure local APNG transitions, never a public expected outcome."""
+    width, height = int.from_bytes(data[16:20], 'big'), int.from_bytes(data[20:24], 'big')
+    assert width < 32768 and height < 32768
+    facts = [f'        assert(crate::model::be32(bytes_{ident}(),16)=={width}u32) by (compute);',
+             f'        assert(crate::model::be32(bytes_{ident}(),20)=={height}u32) by (compute);']
+    sequence, current, frames, before_flag, pixels = 0, 'None', 0, False, 0
+    area_terms = []
+    declared, plays, had_idat = None, 0, False
+    def control():
+        total = '+'.join(area_terms) or '0nat'
+        return (f'crate::apng_model::Control {{sequence:{sequence}nat,current:crate::apng_model::Current::{current},'
+                f'frame_count:{frames}nat,fctl_before_idat:{str(before_flag).lower()},pixel_total:{total}}}')
+    pos = 33
+    while pos+12 <= len(data):
+        size = int.from_bytes(data[pos:pos+4], 'big')
+        if pos+size+12 > len(data): break
+        tag = data[pos+4:pos+8]
+        payload = data[pos+8:pos+8+size]
+        d = f'bytes_{ident}().subrange({pos+8},{pos+8+size})'
+        before = control()
+        before_idat = not had_idat
+        error, structural, value = None, True, None
+        if tag == b'acTL':
+            if size != 8: error = 'InvalidChunkLength'
+            else:
+                count = int.from_bytes(payload[:4],'big')
+                play = int.from_bytes(payload[4:8],'big')
+                if count == 0: error = 'InvalidAnimationControl'
+                elif count > limit_hint('MAX_FRAMES'):
+                    error, structural = 'TooManyFrames', False
+                else: declared, plays = count, play
+            expr = f'crate::apng_model::actl({d})'
+            value = (f'Err((Error::{error},{str(structural).lower()}))' if error else f'Ok(({declared}u32,{plays}u32))')
+        elif tag == b'IDAT':
+            if current != 'None': current = 'Default'
+            had_idat = True
+            expr, value = f'crate::apng_model::begin_idat({before})', control()
+        elif tag == b'fcTL':
+            expr = f'crate::apng_model::fctl({d},{str(declared is not None).lower()},{str(before_idat).lower()},{width}u32,{height}u32,{before})'
+            if declared is None: error = 'MissingAnimationControl'
+            elif before_idat and before_flag: error = 'ChunkOutOfOrder'
+            elif size != 26: error = 'InvalidChunkLength'
+            else:
+                seq,w,h,x,y = [int.from_bytes(payload[i:i+4],'big') for i in [0,4,8,12,16]]
+                delay_num, delay_den = int.from_bytes(payload[20:22],'big'), int.from_bytes(payload[22:24],'big')
+                dispose, blend = payload[24], payload[25]
+                if seq != sequence: error = 'SequenceError'
+                elif current == 'Frame(false)': error = 'MissingFrameData'
+                elif not w or not h or x+w > width or y+h > height or dispose > 2 or blend > 1: error = 'InvalidFrameControl'
+                elif before_idat and (x or y or w != width or h != height): error = 'InvalidFrameControl'
+                elif pixels+w*h > limit_hint('MAX_TOTAL_PIXELS'): error, structural = 'PixelBudgetExceeded', False
+                else:
+                    frame = (f'crate::apng_model::FrameControl {{width:{w}u32,height:{h}u32,x:{x}u32,y:{y}u32,'
+                             f'delay_num:{delay_num}u16,delay_den:{delay_den}u16,dispose:{dispose}u8,blend:{blend}u8}}')
+                    sequence += 1;current = 'Frame(false)';frames += 1;before_flag |= before_idat;pixels += w*h
+                    area_terms.append(f'({w}nat*{h}nat)')
+                    value = f'Ok(({frame},{control()}))'
+            if error: value = f'Err((Error::{error},{str(structural).lower()}))'
+        elif tag == b'fdAT':
+            expr = f'crate::apng_model::fdat({d},{str(declared is not None).lower()},{str(before_idat).lower()},{before})'
+            if declared is None: error = 'MissingAnimationControl'
+            elif before_idat: error = 'ChunkOutOfOrder'
+            elif size < 4: error = 'InvalidChunkLength'
+            elif int.from_bytes(payload[:4],'big') != sequence: error = 'SequenceError'
+            elif not current.startswith('Frame('): error = 'UnexpectedFrameData'
+            else:
+                sequence += 1;current = 'Frame(true)';value = f'Ok({control()})'
+            if error: value = f'Err((Error::{error},true))'
+        elif tag == b'IEND':
+            count = 'None' if declared is None else f'Some({declared}u32)'
+            expr = f'crate::apng_model::finish({before},{count})'
+            error = 'MissingFrameData' if current == 'Frame(false)' else ('FrameCountMismatch' if declared is not None and frames != declared else None)
+            value = f'Err((Error::{error},true))' if error else 'Ok(())'
+        if value is not None:
+            method = expr.split('crate::apng_model::',1)[1].split('(',1)[0]
+            facts += [f'        assert({expr}=={value}) by {{',
+                      f'            reveal(crate::apng_model::{method});',
+                      f'            assert({expr}=={value}) by (compute);', '        }']
+        pos += size+12
+    return facts
 
 
 def read_facts(data, ident, frozen_error):
@@ -330,10 +433,18 @@ def main():
         model = 'MWF_p' if frames else 'MW_p'
         public = 'crate::png::Frames::try_new' if frames else 'crate::png::try_decode_still'
         facts, sites = read_facts(data, ident, error)
+        if name.startswith('apng-bad/'):
+            facts += apng_facts(data, ident)
         header = (f'Ok((crate::model::Ihdr {{width:crate::model::be32(bytes_{ident}(),16),'
                   f'height:crate::model::be32(bytes_{ident}(),20),depth:{data[24]},'
                   f'color_type:{data[25]},interlace:{data[28]}}},33nat))')
-        steps_before_error = {'container/duplicate-ihdr': 0, 'apng-bad/fctl-width-0': 2}.get(name)
+        steps_before_error = {
+            'container/duplicate-ihdr':0,'apng-bad/fctl-width-0':2,
+            'apng-bad/fewer-frames-than-declared':5,'apng-bad/more-frames-than-declared':5,
+            'apng-bad/seq-fdat-repeats':5,'apng-bad/fdat-for-idat-frame':3,
+            'apng-bad/fdat-for-idat-frame-still':3,'apng-bad/fdat-len-3':4,
+            'apng-bad/fctl-no-fdat-then-iend':4,'apng-bad/fctl-no-fdat-then-fctl':4,
+        }.get(name)
         if steps_before_error is None:
             composition = [f'        reveal_with_fuel(m::drive,{sites+1});',
                            f'        assert(m::{model}(bytes_{ident}(),m::strict())==m::Outcome::Error(Error::{error},m::no_events()));']
@@ -362,20 +473,62 @@ def main():
         if name == 'order/iCCP-after-idat':
             composition = [f'        idat_then_iccp_order(bytes_{ident}(),crate::model::mh(bytes_{ident}()).unwrap().0,22,287);']
 
+        control_hides = '    '+''.join(f'hide(crate::apng_model::{method});' for method in ['actl','fctl','fdat','finish']
+                                      if any(f'crate::apng_model::{method}(' in line for line in facts))
+        symbolic = name.startswith('apng-bad/') and name != 'apng-bad/fctl-width-0'
+        if symbolic:
+            requirements = []
+            pure = []
+            i = 0
+            while i < len(facts):
+                line = facts[i]
+                if line.startswith('        assert forall|'):
+                    expression = line.strip()[len('assert '):-len(' by {')]
+                    requirements.append('('+expression.replace(f'bytes_{ident}()', 'b')+')')
+                    i += 1
+                    while facts[i] != '        }': i += 1
+                elif line.startswith('        assert('):
+                    expression = line[len('        assert('):]
+                    expression = expression.rsplit(') by ',1)[0] if ') by ' in expression else expression[:-2]
+                    if f'bytes_{ident}()' in expression:
+                        requirements.append(expression.replace(f'bytes_{ident}()', 'b'))
+                        if line.endswith(' by {'):
+                            i += 1
+                            while facts[i] != '        }': i += 1
+                    else:
+                        pure.append(line)
+                        if line.endswith(' by {'):
+                            i += 1
+                            while facts[i] != '        }':
+                                pure.append(facts[i]);i += 1
+                            pure.append(facts[i])
+                else:
+                    raise AssertionError(line)
+                i += 1
+            lines += ['#[verifier::spinoff_prover]',f'proof fn symbolic_{ident}(b: Seq<u8>)',
+                      f'    requires b.len()=={len(data)},crate::model::mh(b)=={header.replace(f"bytes_{ident}()", "b")},',
+                      *[f'        {r},' for r in requirements],
+                      f'    ensures m::{model}(b,m::strict())==m::Outcome::Error(Error::{error},m::no_events()),',
+                      '{','    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);',
+                      control_hides,*pure,'    reveal(m::step);reveal(m::ordered);reveal(m::own);',
+                      *[r.replace(f'bytes_{ident}()', 'b') for r in composition],'}','']
+            composition = [f'        symbolic_{ident}(bytes_{ident}());']
         lines += [
             f'// {name.replace(chr(94), chr(95))}; fixture sha256 {digest}',
             f'spec fn bytes_{ident}() -> Seq<u8> {{seq![{values}]}}',
-            *(['#[verifier::spinoff_prover]'] if name == 'container/non-consecutive-idat' else []),
+            *(['#[verifier::spinoff_prover]'] if name == 'container/non-consecutive-idat' or name.startswith('apng-bad/') else []),
             f'proof fn model_{ident}()',
             f'    ensures m::{model}(bytes_{ident}(),m::strict())==m::Outcome::Error(Error::{error},m::no_events()),',
             '{',
             '    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);',
+            *([control_hides] if name.startswith('apng-bad/') else []),
+            *([f'    hide(m::{model});'] if symbolic else []),
             f'        assert(crate::model::mh(bytes_{ident}())=={header}) by {{',
             '            reveal(crate::model::mh);',
             f'            assert(crate::model::mh(bytes_{ident}())=={header}) by (compute);',
             '        }',
             *facts,
-            *([] if name in ['apng-bad/fctl-width-0','plte/257-entries','anc-bad/iccp-name-80','anc-bad/iccp-leading-space','order/iCCP-after-idat'] else ['        reveal(m::step);reveal(m::ordered);reveal(m::own);']),
+            *([] if symbolic or name in ['apng-bad/fctl-width-0','plte/257-entries','anc-bad/iccp-name-80','anc-bad/iccp-leading-space','order/iCCP-after-idat'] else ['        reveal(m::step);reveal(m::ordered);reveal(m::own);']),
             *composition,
             '}',
             f'fn walk_{ident}() {{',

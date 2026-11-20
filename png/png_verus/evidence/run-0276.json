@@ -1,0 +1,19 @@
+{
+  "kind": "M3-interrupted-attempt",
+  "run": 276,
+  "accepted": false,
+  "verified": 0,
+  "errors": null,
+  "reason": "Stopped repeated literal-input APNG query failures to use checked symbolic-input model lemmas; no final count claim or solver-limit change.",
+  "reported_failed_functions": [
+    "model_apng_bad_actl_after_idat",
+    "model_apng_bad_actl_duplicate",
+    "model_apng_bad_actl_zero_frames",
+    "model_apng_bad_default_fctl_offset",
+    "model_apng_bad_default_fctl_smaller",
+    "model_apng_bad_fctl_blend_2",
+    "model_apng_bad_fctl_crc",
+    "model_apng_bad_fctl_dispose_3"
+  ],
+  "log_sha256": "30b91efec4e882380a56191ac71f10099c93784b630aafabe4cdbe28a527519d"
+}

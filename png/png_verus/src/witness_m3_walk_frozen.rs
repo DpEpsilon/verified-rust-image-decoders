@@ -2856,12 +2856,2125 @@ fn walk_order_phys_after_idat() {
     assert(matches!(public_result,Err(TryError::Format(Error::ChunkOutOfOrder))));
 }
 
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_actl_zero_frames(b: Seq<u8>)
+    requires b.len()==100,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==0,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:96nat,len:0nat,next:100nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Err((Error::InvalidAnimationControl,true)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidAnimationControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(0u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidAnimationControl,m::no_events()));
+}
+
+// apng-bad/actl-zero-frames; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_actl_zero_frames() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,137u8,77u8,192u8,16u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_actl_zero_frames()
+    ensures m::MWF_p(bytes_apng_bad_actl_zero_frames(),m::strict())==m::Outcome::Error(Error::InvalidAnimationControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_actl_zero_frames())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_actl_zero_frames(),16),height:crate::model::be32(bytes_apng_bad_actl_zero_frames(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_actl_zero_frames())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_actl_zero_frames(),16),height:crate::model::be32(bytes_apng_bad_actl_zero_frames(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_zero_frames(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_zero_frames(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_actl_zero_frames().subrange(41,49),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_actl_zero_frames().subrange(41,49),4)==0) by (compute);
+        assert(0u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_zero_frames(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_zero_frames(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_zero_frames(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:96nat,len:0nat,next:100nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_zero_frames(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:96nat,len:0nat,next:100nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_actl_zero_frames(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_actl_zero_frames(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_actl_zero_frames().subrange(41,49))==Err((Error::InvalidAnimationControl,true))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_actl_zero_frames().subrange(41,49))==Err((Error::InvalidAnimationControl,true))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by (compute);
+        }
+        symbolic_apng_bad_actl_zero_frames(bytes_apng_bad_actl_zero_frames());
+}
+fn walk_apng_bad_actl_zero_frames() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,137u8,77u8,192u8,16u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_actl_zero_frames());model_apng_bad_actl_zero_frames();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidAnimationControl))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_actl_zero_frames_still(b: Seq<u8>)
+    requires b.len()==100,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==0,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:96nat,len:0nat,next:100nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Err((Error::InvalidAnimationControl,true)),
+    ensures m::MW_p(b,m::strict())==m::Outcome::Error(Error::InvalidAnimationControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(0u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MW_p(b,m::strict())==m::Outcome::Error(Error::InvalidAnimationControl,m::no_events()));
+}
+
+// apng-bad/actl-zero-frames-still; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_actl_zero_frames_still() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,137u8,77u8,192u8,16u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_actl_zero_frames_still()
+    ensures m::MW_p(bytes_apng_bad_actl_zero_frames_still(),m::strict())==m::Outcome::Error(Error::InvalidAnimationControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::finish);
+    hide(m::MW_p);
+        assert(crate::model::mh(bytes_apng_bad_actl_zero_frames_still())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_actl_zero_frames_still(),16),height:crate::model::be32(bytes_apng_bad_actl_zero_frames_still(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_actl_zero_frames_still())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_actl_zero_frames_still(),16),height:crate::model::be32(bytes_apng_bad_actl_zero_frames_still(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_zero_frames_still(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_zero_frames_still(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_actl_zero_frames_still().subrange(41,49),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_actl_zero_frames_still().subrange(41,49),4)==0) by (compute);
+        assert(0u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_zero_frames_still(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_zero_frames_still(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_zero_frames_still(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:96nat,len:0nat,next:100nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_zero_frames_still(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:96nat,len:0nat,next:100nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_actl_zero_frames_still(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_actl_zero_frames_still(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_actl_zero_frames_still().subrange(41,49))==Err((Error::InvalidAnimationControl,true))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_actl_zero_frames_still().subrange(41,49))==Err((Error::InvalidAnimationControl,true))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by (compute);
+        }
+        symbolic_apng_bad_actl_zero_frames_still(bytes_apng_bad_actl_zero_frames_still());
+}
+fn walk_apng_bad_actl_zero_frames_still() {
+    hide(m::MW_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,137u8,77u8,192u8,16u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_actl_zero_frames_still());model_apng_bad_actl_zero_frames_still();}
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidAnimationControl))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_actl_after_idat(b: Seq<u8>)
+    requires b.len()==100,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:23nat,next:68nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,68nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:76nat,len:8nat,next:88nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(76,84),0)==1,
+        crate::model::be32(b.subrange(76,84),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:96nat,len:0nat,next:100nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(76,84))==Ok((1u32,0u32)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()));
+}
+
+// apng-bad/actl-after-idat; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_actl_after_idat() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_actl_after_idat()
+    ensures m::MWF_p(bytes_apng_bad_actl_after_idat(),m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_actl_after_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_actl_after_idat(),16),height:crate::model::be32(bytes_apng_bad_actl_after_idat(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_actl_after_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_actl_after_idat(),16),height:crate::model::be32(bytes_apng_bad_actl_after_idat(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_after_idat(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:23nat,next:68nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_after_idat(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:23nat,next:68nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_after_idat(),68nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:76nat,len:8nat,next:88nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_after_idat(),68nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:76nat,len:8nat,next:88nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_actl_after_idat().subrange(76,84),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_actl_after_idat().subrange(76,84),4)==0) by (compute);
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_after_idat(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:96nat,len:0nat,next:100nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_after_idat(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:96nat,len:0nat,next:100nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_actl_after_idat(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_actl_after_idat(),20)==3u32) by (compute);
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::actl(bytes_apng_bad_actl_after_idat().subrange(76,84))==Ok((1u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_actl_after_idat().subrange(76,84))==Ok((1u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+        symbolic_apng_bad_actl_after_idat(bytes_apng_bad_actl_after_idat());
+}
+fn walk_apng_bad_actl_after_idat() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_actl_after_idat());model_apng_bad_actl_after_idat();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::ChunkOutOfOrder))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_actl_duplicate(b: Seq<u8>)
+    requires b.len()==120,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==1,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:61nat,len:8nat,next:73nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(61,69),0)==1,
+        crate::model::be32(b.subrange(61,69),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,73nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:81nat,len:23nat,next:108nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,108nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:116nat,len:0nat,next:120nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Ok((1u32,0u32)),
+        crate::apng_model::actl(b.subrange(61,69))==Ok((1u32,0u32)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::DuplicateChunk,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,5);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::DuplicateChunk,m::no_events()));
+}
+
+// apng-bad/actl-duplicate; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_actl_duplicate() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_actl_duplicate()
+    ensures m::MWF_p(bytes_apng_bad_actl_duplicate(),m::strict())==m::Outcome::Error(Error::DuplicateChunk,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_actl_duplicate())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_actl_duplicate(),16),height:crate::model::be32(bytes_apng_bad_actl_duplicate(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_actl_duplicate())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_actl_duplicate(),16),height:crate::model::be32(bytes_apng_bad_actl_duplicate(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_duplicate(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_duplicate(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_actl_duplicate().subrange(41,49),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_actl_duplicate().subrange(41,49),4)==0) by (compute);
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_duplicate(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:61nat,len:8nat,next:73nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_duplicate(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:61nat,len:8nat,next:73nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_actl_duplicate().subrange(61,69),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_actl_duplicate().subrange(61,69),4)==0) by (compute);
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_duplicate(),73nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:81nat,len:23nat,next:108nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_duplicate(),73nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:81nat,len:23nat,next:108nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_duplicate(),108nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:116nat,len:0nat,next:120nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_duplicate(),108nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:116nat,len:0nat,next:120nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_actl_duplicate(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_actl_duplicate(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_actl_duplicate().subrange(41,49))==Ok((1u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_actl_duplicate().subrange(41,49))==Ok((1u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::actl(bytes_apng_bad_actl_duplicate().subrange(61,69))==Ok((1u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_actl_duplicate().subrange(61,69))==Ok((1u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+        symbolic_apng_bad_actl_duplicate(bytes_apng_bad_actl_duplicate());
+}
+fn walk_apng_bad_actl_duplicate() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_actl_duplicate());model_apng_bad_actl_duplicate();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::DuplicateChunk))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_actl_len_4(b: Seq<u8>)
+    requires b.len()==96,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:4nat,next:49nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,45),0)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,49nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:57nat,len:23nat,next:84nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,84nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:92nat,len:0nat,next:96nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,45))==Err((Error::InvalidChunkLength,true)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidChunkLength,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidChunkLength,m::no_events()));
+}
+
+// apng-bad/actl-len-4; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_actl_len_4() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,4u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,201u8,33u8,214u8,157u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_actl_len_4()
+    ensures m::MWF_p(bytes_apng_bad_actl_len_4(),m::strict())==m::Outcome::Error(Error::InvalidChunkLength,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_actl_len_4())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_actl_len_4(),16),height:crate::model::be32(bytes_apng_bad_actl_len_4(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_actl_len_4())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_actl_len_4(),16),height:crate::model::be32(bytes_apng_bad_actl_len_4(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_len_4(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:4nat,next:49nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_len_4(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:4nat,next:49nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_actl_len_4().subrange(41,45),0)==0) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_len_4(),49nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:57nat,len:23nat,next:84nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_len_4(),49nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:57nat,len:23nat,next:84nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_len_4(),84nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:92nat,len:0nat,next:96nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_len_4(),84nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:92nat,len:0nat,next:96nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_actl_len_4(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_actl_len_4(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_actl_len_4().subrange(41,45))==Err((Error::InvalidChunkLength,true))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_actl_len_4().subrange(41,45))==Err((Error::InvalidChunkLength,true))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by (compute);
+        }
+        symbolic_apng_bad_actl_len_4(bytes_apng_bad_actl_len_4());
+}
+fn walk_apng_bad_actl_len_4() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,4u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,201u8,33u8,214u8,157u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_actl_len_4());model_apng_bad_actl_len_4();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidChunkLength))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_fctl_without_actl(b: Seq<u8>)
+    requires b.len()==118,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:41nat,len:26nat,next:71nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,67),0)==0,
+        crate::model::be32(b.subrange(41,67),4)==4,
+        crate::model::be32(b.subrange(41,67),8)==3,
+        crate::model::be32(b.subrange(41,67),12)==0,
+        crate::model::be32(b.subrange(41,67),16)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,71nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:79nat,len:23nat,next:106nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,106nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:114nat,len:0nat,next:118nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::fctl(b.subrange(41,67),false,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::MissingAnimationControl,true)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::MissingAnimationControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::fctl);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert((4u64)*(3u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::MissingAnimationControl,m::no_events()));
+}
+
+// apng-bad/fctl-without-actl; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_fctl_without_actl() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,204u8,115u8,12u8,251u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_fctl_without_actl()
+    ensures m::MWF_p(bytes_apng_bad_fctl_without_actl(),m::strict())==m::Outcome::Error(Error::MissingAnimationControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::fctl);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_fctl_without_actl())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_without_actl(),16),height:crate::model::be32(bytes_apng_bad_fctl_without_actl(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_fctl_without_actl())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_without_actl(),16),height:crate::model::be32(bytes_apng_bad_fctl_without_actl(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_without_actl(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:41nat,len:26nat,next:71nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_without_actl(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:41nat,len:26nat,next:71nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_without_actl().subrange(41,67),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_without_actl().subrange(41,67),4)==4) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_without_actl().subrange(41,67),8)==3) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_without_actl().subrange(41,67),12)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_without_actl().subrange(41,67),16)==0) by (compute);
+        assert((4u64)*(3u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_without_actl(),71nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:79nat,len:23nat,next:106nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_without_actl(),71nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:79nat,len:23nat,next:106nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_without_actl(),106nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:114nat,len:0nat,next:118nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_without_actl(),106nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:114nat,len:0nat,next:118nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_without_actl(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_without_actl(),20)==3u32) by (compute);
+        assert(crate::apng_model::fctl(bytes_apng_bad_fctl_without_actl().subrange(41,67),false,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::MissingAnimationControl,true))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_fctl_without_actl().subrange(41,67),false,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::MissingAnimationControl,true))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by (compute);
+        }
+        symbolic_apng_bad_fctl_without_actl(bytes_apng_bad_fctl_without_actl());
+}
+fn walk_apng_bad_fctl_without_actl() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,204u8,115u8,12u8,251u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_fctl_without_actl());model_apng_bad_fctl_without_actl();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::MissingAnimationControl))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_fctl_without_actl_still(b: Seq<u8>)
+    requires b.len()==118,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:41nat,len:26nat,next:71nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,67),0)==0,
+        crate::model::be32(b.subrange(41,67),4)==4,
+        crate::model::be32(b.subrange(41,67),8)==3,
+        crate::model::be32(b.subrange(41,67),12)==0,
+        crate::model::be32(b.subrange(41,67),16)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,71nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:79nat,len:23nat,next:106nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,106nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:114nat,len:0nat,next:118nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::fctl(b.subrange(41,67),false,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::MissingAnimationControl,true)),
+    ensures m::MW_p(b,m::strict())==m::Outcome::Error(Error::MissingAnimationControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::fctl);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert((4u64)*(3u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MW_p(b,m::strict())==m::Outcome::Error(Error::MissingAnimationControl,m::no_events()));
+}
+
+// apng-bad/fctl-without-actl-still; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_fctl_without_actl_still() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,204u8,115u8,12u8,251u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_fctl_without_actl_still()
+    ensures m::MW_p(bytes_apng_bad_fctl_without_actl_still(),m::strict())==m::Outcome::Error(Error::MissingAnimationControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::fctl);hide(crate::apng_model::finish);
+    hide(m::MW_p);
+        assert(crate::model::mh(bytes_apng_bad_fctl_without_actl_still())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_without_actl_still(),16),height:crate::model::be32(bytes_apng_bad_fctl_without_actl_still(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_fctl_without_actl_still())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_without_actl_still(),16),height:crate::model::be32(bytes_apng_bad_fctl_without_actl_still(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_without_actl_still(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:41nat,len:26nat,next:71nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_without_actl_still(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:41nat,len:26nat,next:71nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_without_actl_still().subrange(41,67),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_without_actl_still().subrange(41,67),4)==4) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_without_actl_still().subrange(41,67),8)==3) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_without_actl_still().subrange(41,67),12)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_without_actl_still().subrange(41,67),16)==0) by (compute);
+        assert((4u64)*(3u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_without_actl_still(),71nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:79nat,len:23nat,next:106nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_without_actl_still(),71nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:79nat,len:23nat,next:106nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_without_actl_still(),106nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:114nat,len:0nat,next:118nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_without_actl_still(),106nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:114nat,len:0nat,next:118nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_without_actl_still(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_without_actl_still(),20)==3u32) by (compute);
+        assert(crate::apng_model::fctl(bytes_apng_bad_fctl_without_actl_still().subrange(41,67),false,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::MissingAnimationControl,true))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_fctl_without_actl_still().subrange(41,67),false,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::MissingAnimationControl,true))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by (compute);
+        }
+        symbolic_apng_bad_fctl_without_actl_still(bytes_apng_bad_fctl_without_actl_still());
+}
+fn walk_apng_bad_fctl_without_actl_still() {
+    hide(m::MW_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,204u8,115u8,12u8,251u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_fctl_without_actl_still());model_apng_bad_fctl_without_actl_still();}
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::MissingAnimationControl))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_fdat_without_actl(b: Seq<u8>)
+    requires b.len()==112,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:23nat,next:68nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,68nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:76nat,len:20nat,next:100nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(76,96),0)==0,
+        crate::model::be32(b.subrange(76,96),4)==2023514976,
+        crate::model::be32(b.subrange(76,96),8)==4161765772,
+        crate::model::be32(b.subrange(76,96),12)==1611270144,
+        crate::model::be32(b.subrange(76,96),16)==1071318524,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,100nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:108nat,len:0nat,next:112nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::fdat(b.subrange(76,96),false,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::MissingAnimationControl,true)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::MissingAnimationControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::MissingAnimationControl,m::no_events()));
+}
+
+// apng-bad/fdat-without-actl; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_fdat_without_actl() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,0u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,129u8,202u8,86u8,75u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_fdat_without_actl()
+    ensures m::MWF_p(bytes_apng_bad_fdat_without_actl(),m::strict())==m::Outcome::Error(Error::MissingAnimationControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_fdat_without_actl())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fdat_without_actl(),16),height:crate::model::be32(bytes_apng_bad_fdat_without_actl(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_fdat_without_actl())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fdat_without_actl(),16),height:crate::model::be32(bytes_apng_bad_fdat_without_actl(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_without_actl(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:23nat,next:68nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_without_actl(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:23nat,next:68nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_without_actl(),68nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:76nat,len:20nat,next:100nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_without_actl(),68nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:76nat,len:20nat,next:100nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_without_actl().subrange(76,96),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_without_actl().subrange(76,96),4)==2023514976) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_without_actl().subrange(76,96),8)==4161765772) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_without_actl().subrange(76,96),12)==1611270144) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_without_actl().subrange(76,96),16)==1071318524) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_without_actl(),100nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:108nat,len:0nat,next:112nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_without_actl(),100nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:108nat,len:0nat,next:112nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_without_actl(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_without_actl(),20)==3u32) by (compute);
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::fdat(bytes_apng_bad_fdat_without_actl().subrange(76,96),false,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::MissingAnimationControl,true))) by {
+            reveal(crate::apng_model::fdat);
+            assert(crate::apng_model::fdat(bytes_apng_bad_fdat_without_actl().subrange(76,96),false,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::MissingAnimationControl,true))) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by (compute);
+        }
+        symbolic_apng_bad_fdat_without_actl(bytes_apng_bad_fdat_without_actl());
+}
+fn walk_apng_bad_fdat_without_actl() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,0u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,129u8,202u8,86u8,75u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_fdat_without_actl());model_apng_bad_fdat_without_actl();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::MissingAnimationControl))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_no_fctl_at_all(b: Seq<u8>)
+    requires b.len()==100,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==1,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:96nat,len:0nat,next:100nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Ok((1u32,0u32)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::FrameCountMismatch,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::FrameCountMismatch,m::no_events()));
+}
+
+// apng-bad/no-fctl-at-all; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_no_fctl_at_all() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_no_fctl_at_all()
+    ensures m::MWF_p(bytes_apng_bad_no_fctl_at_all(),m::strict())==m::Outcome::Error(Error::FrameCountMismatch,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_no_fctl_at_all())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_no_fctl_at_all(),16),height:crate::model::be32(bytes_apng_bad_no_fctl_at_all(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_no_fctl_at_all())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_no_fctl_at_all(),16),height:crate::model::be32(bytes_apng_bad_no_fctl_at_all(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_no_fctl_at_all(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_no_fctl_at_all(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_no_fctl_at_all().subrange(41,49),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_no_fctl_at_all().subrange(41,49),4)==0) by (compute);
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_no_fctl_at_all(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_no_fctl_at_all(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_no_fctl_at_all(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:96nat,len:0nat,next:100nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_no_fctl_at_all(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:96nat,len:0nat,next:100nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_no_fctl_at_all(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_no_fctl_at_all(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_no_fctl_at_all().subrange(41,49))==Ok((1u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_no_fctl_at_all().subrange(41,49))==Ok((1u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+        symbolic_apng_bad_no_fctl_at_all(bytes_apng_bad_no_fctl_at_all());
+}
+fn walk_apng_bad_no_fctl_at_all() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_no_fctl_at_all());model_apng_bad_no_fctl_at_all();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::FrameCountMismatch))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_fdat_before_fctl(b: Seq<u8>)
+    requires b.len()==170,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==1,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:96nat,len:20nat,next:120nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(96,116),0)==0,
+        crate::model::be32(b.subrange(96,116),4)==2023514976,
+        crate::model::be32(b.subrange(96,116),8)==4161765772,
+        crate::model::be32(b.subrange(96,116),12)==1611270144,
+        crate::model::be32(b.subrange(96,116),16)==1071318524,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,120nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:128nat,len:26nat,next:158nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(128,154),0)==1,
+        crate::model::be32(b.subrange(128,154),4)==2,
+        crate::model::be32(b.subrange(128,154),8)==2,
+        crate::model::be32(b.subrange(128,154),12)==0,
+        crate::model::be32(b.subrange(128,154),16)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Ok((1u32,0u32)),
+        crate::apng_model::fdat(b.subrange(96,116),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::UnexpectedFrameData,true)),
+        crate::apng_model::fctl(b.subrange(128,154),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::UnexpectedFrameData,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert((2u64)*(2u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,6);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::UnexpectedFrameData,m::no_events()));
+}
+
+// apng-bad/fdat-before-fctl; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_fdat_before_fctl() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,0u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,129u8,202u8,86u8,75u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,115u8,39u8,54u8,212u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_fdat_before_fctl()
+    ensures m::MWF_p(bytes_apng_bad_fdat_before_fctl(),m::strict())==m::Outcome::Error(Error::UnexpectedFrameData,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_fdat_before_fctl())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fdat_before_fctl(),16),height:crate::model::be32(bytes_apng_bad_fdat_before_fctl(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_fdat_before_fctl())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fdat_before_fctl(),16),height:crate::model::be32(bytes_apng_bad_fdat_before_fctl(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_before_fctl(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_before_fctl(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_fctl().subrange(41,49),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_fctl().subrange(41,49),4)==0) by (compute);
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_before_fctl(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_before_fctl(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_before_fctl(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:96nat,len:20nat,next:120nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_before_fctl(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:96nat,len:20nat,next:120nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_fctl().subrange(96,116),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_fctl().subrange(96,116),4)==2023514976) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_fctl().subrange(96,116),8)==4161765772) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_fctl().subrange(96,116),12)==1611270144) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_fctl().subrange(96,116),16)==1071318524) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_before_fctl(),120nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:128nat,len:26nat,next:158nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_before_fctl(),120nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:128nat,len:26nat,next:158nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_fctl().subrange(128,154),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_fctl().subrange(128,154),4)==2) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_fctl().subrange(128,154),8)==2) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_fctl().subrange(128,154),12)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_fctl().subrange(128,154),16)==0) by (compute);
+        assert((2u64)*(2u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_before_fctl(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_before_fctl(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_fctl(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_fctl(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_fdat_before_fctl().subrange(41,49))==Ok((1u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_fdat_before_fctl().subrange(41,49))==Ok((1u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::fdat(bytes_apng_bad_fdat_before_fctl().subrange(96,116),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::UnexpectedFrameData,true))) by {
+            reveal(crate::apng_model::fdat);
+            assert(crate::apng_model::fdat(bytes_apng_bad_fdat_before_fctl().subrange(96,116),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::UnexpectedFrameData,true))) by (compute);
+        }
+        assert(crate::apng_model::fctl(bytes_apng_bad_fdat_before_fctl().subrange(128,154),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_fdat_before_fctl().subrange(128,154),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true))) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+        symbolic_apng_bad_fdat_before_fctl(bytes_apng_bad_fdat_before_fctl());
+}
+fn walk_apng_bad_fdat_before_fctl() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,0u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,129u8,202u8,86u8,75u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,115u8,39u8,54u8,212u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_fdat_before_fctl());model_apng_bad_fdat_before_fctl();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::UnexpectedFrameData))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_fdat_for_idat_frame(b: Seq<u8>)
+    requires b.len()==170,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==1,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(61,87),0)==0,
+        crate::model::be32(b.subrange(61,87),4)==4,
+        crate::model::be32(b.subrange(61,87),8)==3,
+        crate::model::be32(b.subrange(61,87),12)==0,
+        crate::model::be32(b.subrange(61,87),16)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:99nat,len:23nat,next:126nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(134,154),0)==1,
+        crate::model::be32(b.subrange(134,154),4)==2023514976,
+        crate::model::be32(b.subrange(134,154),8)==4161765772,
+        crate::model::be32(b.subrange(134,154),12)==1611270144,
+        crate::model::be32(b.subrange(134,154),16)==1071318524,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Ok((1u32,0u32)),
+        crate::apng_model::fctl(b.subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Ok((crate::apng_model::FrameControl {width:4u32,height:3u32,x:0u32,y:0u32,delay_num:1u16,delay_den:10u16,dispose:0u8,blend:0u8},crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})),
+        crate::apng_model::fdat(b.subrange(134,154),true,false,crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==Err((Error::UnexpectedFrameData,true)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::UnexpectedFrameData,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert((4u64)*(3u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)},Some(1u32))==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)},Some(1u32))==Ok(())) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        let ghost s0=m::initial(crate::model::mh(b).unwrap().0,33,m::no_events());
+        let ghost s1=match m::step(b,m::strict(),true,false,s0) {m::Step::Next(next)=>next,_=>s0};
+        assert(m::step(b,m::strict(),true,false,s0)==m::Step::Next(s1));
+        m::step_progress(b,m::strict(),true,false,s0);
+        let ghost s2=match m::step(b,m::strict(),true,false,s1) {m::Step::Next(next)=>next,_=>s1};
+        assert(m::step(b,m::strict(),true,false,s1)==m::Step::Next(s2));
+        m::step_progress(b,m::strict(),true,false,s1);
+        let ghost s3=match m::step(b,m::strict(),true,false,s2) {m::Step::Next(next)=>next,_=>s2};
+        assert(m::step(b,m::strict(),true,false,s2)==m::Step::Next(s3));
+        m::step_progress(b,m::strict(),true,false,s2);
+        assert(m::step(b,m::strict(),true,false,s3)==m::Step::Error(Error::UnexpectedFrameData,m::no_events()));
+        m::drive_step(b,m::strict(),true,false,s3);
+        assert(m::drive(b,m::strict(),true,false,s3)==m::Outcome::Error(Error::UnexpectedFrameData,m::no_events()));
+        m::drive_step(b,m::strict(),true,false,s2);
+        assert(m::drive(b,m::strict(),true,false,s2)==m::Outcome::Error(Error::UnexpectedFrameData,m::no_events()));
+        m::drive_step(b,m::strict(),true,false,s1);
+        assert(m::drive(b,m::strict(),true,false,s1)==m::Outcome::Error(Error::UnexpectedFrameData,m::no_events()));
+        m::drive_step(b,m::strict(),true,false,s0);
+        assert(m::drive(b,m::strict(),true,false,s0)==m::Outcome::Error(Error::UnexpectedFrameData,m::no_events()));
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::UnexpectedFrameData,m::no_events()));
+}
+
+// apng-bad/fdat-for-idat-frame; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_fdat_for_idat_frame() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,204u8,115u8,12u8,251u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_fdat_for_idat_frame()
+    ensures m::MWF_p(bytes_apng_bad_fdat_for_idat_frame(),m::strict())==m::Outcome::Error(Error::UnexpectedFrameData,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_fdat_for_idat_frame())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fdat_for_idat_frame(),16),height:crate::model::be32(bytes_apng_bad_fdat_for_idat_frame(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_fdat_for_idat_frame())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fdat_for_idat_frame(),16),height:crate::model::be32(bytes_apng_bad_fdat_for_idat_frame(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame().subrange(41,49),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame().subrange(41,49),4)==0) by (compute);
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame().subrange(61,87),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame().subrange(61,87),4)==4) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame().subrange(61,87),8)==3) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame().subrange(61,87),12)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame().subrange(61,87),16)==0) by (compute);
+        assert((4u64)*(3u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame(),91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:99nat,len:23nat,next:126nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame(),91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:99nat,len:23nat,next:126nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame().subrange(134,154),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame().subrange(134,154),4)==2023514976) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame().subrange(134,154),8)==4161765772) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame().subrange(134,154),12)==1611270144) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame().subrange(134,154),16)==1071318524) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_fdat_for_idat_frame().subrange(41,49))==Ok((1u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_fdat_for_idat_frame().subrange(41,49))==Ok((1u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::fctl(bytes_apng_bad_fdat_for_idat_frame().subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Ok((crate::apng_model::FrameControl {width:4u32,height:3u32,x:0u32,y:0u32,delay_num:1u16,delay_den:10u16,dispose:0u8,blend:0u8},crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_fdat_for_idat_frame().subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Ok((crate::apng_model::FrameControl {width:4u32,height:3u32,x:0u32,y:0u32,delay_num:1u16,delay_den:10u16,dispose:0u8,blend:0u8},crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}) by (compute);
+        }
+        assert(crate::apng_model::fdat(bytes_apng_bad_fdat_for_idat_frame().subrange(134,154),true,false,crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==Err((Error::UnexpectedFrameData,true))) by {
+            reveal(crate::apng_model::fdat);
+            assert(crate::apng_model::fdat(bytes_apng_bad_fdat_for_idat_frame().subrange(134,154),true,false,crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==Err((Error::UnexpectedFrameData,true))) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)},Some(1u32))==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)},Some(1u32))==Ok(())) by (compute);
+        }
+        symbolic_apng_bad_fdat_for_idat_frame(bytes_apng_bad_fdat_for_idat_frame());
+}
+fn walk_apng_bad_fdat_for_idat_frame() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,204u8,115u8,12u8,251u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_fdat_for_idat_frame());model_apng_bad_fdat_for_idat_frame();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::UnexpectedFrameData))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_fdat_for_idat_frame_still(b: Seq<u8>)
+    requires b.len()==170,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==1,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(61,87),0)==0,
+        crate::model::be32(b.subrange(61,87),4)==4,
+        crate::model::be32(b.subrange(61,87),8)==3,
+        crate::model::be32(b.subrange(61,87),12)==0,
+        crate::model::be32(b.subrange(61,87),16)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:99nat,len:23nat,next:126nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(134,154),0)==1,
+        crate::model::be32(b.subrange(134,154),4)==2023514976,
+        crate::model::be32(b.subrange(134,154),8)==4161765772,
+        crate::model::be32(b.subrange(134,154),12)==1611270144,
+        crate::model::be32(b.subrange(134,154),16)==1071318524,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Ok((1u32,0u32)),
+        crate::apng_model::fctl(b.subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Ok((crate::apng_model::FrameControl {width:4u32,height:3u32,x:0u32,y:0u32,delay_num:1u16,delay_den:10u16,dispose:0u8,blend:0u8},crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})),
+        crate::apng_model::fdat(b.subrange(134,154),true,false,crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==Err((Error::UnexpectedFrameData,true)),
+    ensures m::MW_p(b,m::strict())==m::Outcome::Error(Error::UnexpectedFrameData,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert((4u64)*(3u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)},Some(1u32))==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)},Some(1u32))==Ok(())) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        let ghost s0=m::initial(crate::model::mh(b).unwrap().0,33,m::no_events());
+        let ghost s1=match m::step(b,m::strict(),false,false,s0) {m::Step::Next(next)=>next,_=>s0};
+        assert(m::step(b,m::strict(),false,false,s0)==m::Step::Next(s1));
+        m::step_progress(b,m::strict(),false,false,s0);
+        let ghost s2=match m::step(b,m::strict(),false,false,s1) {m::Step::Next(next)=>next,_=>s1};
+        assert(m::step(b,m::strict(),false,false,s1)==m::Step::Next(s2));
+        m::step_progress(b,m::strict(),false,false,s1);
+        let ghost s3=match m::step(b,m::strict(),false,false,s2) {m::Step::Next(next)=>next,_=>s2};
+        assert(m::step(b,m::strict(),false,false,s2)==m::Step::Next(s3));
+        m::step_progress(b,m::strict(),false,false,s2);
+        assert(m::step(b,m::strict(),false,false,s3)==m::Step::Error(Error::UnexpectedFrameData,m::no_events()));
+        m::drive_step(b,m::strict(),false,false,s3);
+        assert(m::drive(b,m::strict(),false,false,s3)==m::Outcome::Error(Error::UnexpectedFrameData,m::no_events()));
+        m::drive_step(b,m::strict(),false,false,s2);
+        assert(m::drive(b,m::strict(),false,false,s2)==m::Outcome::Error(Error::UnexpectedFrameData,m::no_events()));
+        m::drive_step(b,m::strict(),false,false,s1);
+        assert(m::drive(b,m::strict(),false,false,s1)==m::Outcome::Error(Error::UnexpectedFrameData,m::no_events()));
+        m::drive_step(b,m::strict(),false,false,s0);
+        assert(m::drive(b,m::strict(),false,false,s0)==m::Outcome::Error(Error::UnexpectedFrameData,m::no_events()));
+        assert(m::MW_p(b,m::strict())==m::Outcome::Error(Error::UnexpectedFrameData,m::no_events()));
+}
+
+// apng-bad/fdat-for-idat-frame-still; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_fdat_for_idat_frame_still() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,204u8,115u8,12u8,251u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_fdat_for_idat_frame_still()
+    ensures m::MW_p(bytes_apng_bad_fdat_for_idat_frame_still(),m::strict())==m::Outcome::Error(Error::UnexpectedFrameData,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+    hide(m::MW_p);
+        assert(crate::model::mh(bytes_apng_bad_fdat_for_idat_frame_still())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still(),16),height:crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_fdat_for_idat_frame_still())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still(),16),height:crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame_still(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame_still(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still().subrange(41,49),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still().subrange(41,49),4)==0) by (compute);
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame_still(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame_still(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still().subrange(61,87),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still().subrange(61,87),4)==4) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still().subrange(61,87),8)==3) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still().subrange(61,87),12)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still().subrange(61,87),16)==0) by (compute);
+        assert((4u64)*(3u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame_still(),91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:99nat,len:23nat,next:126nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame_still(),91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:99nat,len:23nat,next:126nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame_still(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame_still(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still().subrange(134,154),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still().subrange(134,154),4)==2023514976) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still().subrange(134,154),8)==4161765772) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still().subrange(134,154),12)==1611270144) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still().subrange(134,154),16)==1071318524) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame_still(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_for_idat_frame_still(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_for_idat_frame_still(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_fdat_for_idat_frame_still().subrange(41,49))==Ok((1u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_fdat_for_idat_frame_still().subrange(41,49))==Ok((1u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::fctl(bytes_apng_bad_fdat_for_idat_frame_still().subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Ok((crate::apng_model::FrameControl {width:4u32,height:3u32,x:0u32,y:0u32,delay_num:1u16,delay_den:10u16,dispose:0u8,blend:0u8},crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_fdat_for_idat_frame_still().subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Ok((crate::apng_model::FrameControl {width:4u32,height:3u32,x:0u32,y:0u32,delay_num:1u16,delay_den:10u16,dispose:0u8,blend:0u8},crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}) by (compute);
+        }
+        assert(crate::apng_model::fdat(bytes_apng_bad_fdat_for_idat_frame_still().subrange(134,154),true,false,crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==Err((Error::UnexpectedFrameData,true))) by {
+            reveal(crate::apng_model::fdat);
+            assert(crate::apng_model::fdat(bytes_apng_bad_fdat_for_idat_frame_still().subrange(134,154),true,false,crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==Err((Error::UnexpectedFrameData,true))) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)},Some(1u32))==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)},Some(1u32))==Ok(())) by (compute);
+        }
+        symbolic_apng_bad_fdat_for_idat_frame_still(bytes_apng_bad_fdat_for_idat_frame_still());
+}
+fn walk_apng_bad_fdat_for_idat_frame_still() {
+    hide(m::MW_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,204u8,115u8,12u8,251u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_fdat_for_idat_frame_still());model_apng_bad_fdat_for_idat_frame_still();}
+    let public_result=crate::png::try_decode_still(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::UnexpectedFrameData))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_fdat_before_idat(b: Seq<u8>)
+    requires b.len()==170,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==1,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(61,87),0)==0,
+        crate::model::be32(b.subrange(61,87),4)==4,
+        crate::model::be32(b.subrange(61,87),8)==3,
+        crate::model::be32(b.subrange(61,87),12)==0,
+        crate::model::be32(b.subrange(61,87),16)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:99nat,len:20nat,next:123nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(99,119),0)==1,
+        crate::model::be32(b.subrange(99,119),4)==2023514976,
+        crate::model::be32(b.subrange(99,119),8)==4161765772,
+        crate::model::be32(b.subrange(99,119),12)==1611270144,
+        crate::model::be32(b.subrange(99,119),16)==1071318524,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,123nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:131nat,len:23nat,next:158nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Ok((1u32,0u32)),
+        crate::apng_model::fctl(b.subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Ok((crate::apng_model::FrameControl {width:4u32,height:3u32,x:0u32,y:0u32,delay_num:1u16,delay_den:10u16,dispose:0u8,blend:0u8},crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})),
+        crate::apng_model::fdat(b.subrange(99,119),true,true,crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==Err((Error::ChunkOutOfOrder,true)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert((4u64)*(3u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)},Some(1u32))==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)},Some(1u32))==Ok(())) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,6);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()));
+}
+
+// apng-bad/fdat-before-idat; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_fdat_before_idat() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,204u8,115u8,12u8,251u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_fdat_before_idat()
+    ensures m::MWF_p(bytes_apng_bad_fdat_before_idat(),m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_fdat_before_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fdat_before_idat(),16),height:crate::model::be32(bytes_apng_bad_fdat_before_idat(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_fdat_before_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fdat_before_idat(),16),height:crate::model::be32(bytes_apng_bad_fdat_before_idat(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_before_idat(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_before_idat(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_idat().subrange(41,49),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_idat().subrange(41,49),4)==0) by (compute);
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_before_idat(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_before_idat(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_idat().subrange(61,87),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_idat().subrange(61,87),4)==4) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_idat().subrange(61,87),8)==3) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_idat().subrange(61,87),12)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_idat().subrange(61,87),16)==0) by (compute);
+        assert((4u64)*(3u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_before_idat(),91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:99nat,len:20nat,next:123nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_before_idat(),91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:99nat,len:20nat,next:123nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_idat().subrange(99,119),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_idat().subrange(99,119),4)==2023514976) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_idat().subrange(99,119),8)==4161765772) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_idat().subrange(99,119),12)==1611270144) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_idat().subrange(99,119),16)==1071318524) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_before_idat(),123nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:131nat,len:23nat,next:158nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_before_idat(),123nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:131nat,len:23nat,next:158nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fdat_before_idat(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fdat_before_idat(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_idat(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fdat_before_idat(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_fdat_before_idat().subrange(41,49))==Ok((1u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_fdat_before_idat().subrange(41,49))==Ok((1u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::fctl(bytes_apng_bad_fdat_before_idat().subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Ok((crate::apng_model::FrameControl {width:4u32,height:3u32,x:0u32,y:0u32,delay_num:1u16,delay_den:10u16,dispose:0u8,blend:0u8},crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_fdat_before_idat().subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Ok((crate::apng_model::FrameControl {width:4u32,height:3u32,x:0u32,y:0u32,delay_num:1u16,delay_den:10u16,dispose:0u8,blend:0u8},crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}))) by (compute);
+        }
+        assert(crate::apng_model::fdat(bytes_apng_bad_fdat_before_idat().subrange(99,119),true,true,crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==Err((Error::ChunkOutOfOrder,true))) by {
+            reveal(crate::apng_model::fdat);
+            assert(crate::apng_model::fdat(bytes_apng_bad_fdat_before_idat().subrange(99,119),true,true,crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==Err((Error::ChunkOutOfOrder,true))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)},Some(1u32))==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)},Some(1u32))==Ok(())) by (compute);
+        }
+        symbolic_apng_bad_fdat_before_idat(bytes_apng_bad_fdat_before_idat());
+}
+fn walk_apng_bad_fdat_before_idat() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,204u8,115u8,12u8,251u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_fdat_before_idat());model_apng_bad_fdat_before_idat();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::ChunkOutOfOrder))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_two_fctl_before_idat(b: Seq<u8>)
+    requires b.len()==176,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==2,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(61,87),0)==0,
+        crate::model::be32(b.subrange(61,87),4)==4,
+        crate::model::be32(b.subrange(61,87),8)==3,
+        crate::model::be32(b.subrange(61,87),12)==0,
+        crate::model::be32(b.subrange(61,87),16)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:99nat,len:26nat,next:129nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(99,125),0)==1,
+        crate::model::be32(b.subrange(99,125),4)==4,
+        crate::model::be32(b.subrange(99,125),8)==3,
+        crate::model::be32(b.subrange(99,125),12)==0,
+        crate::model::be32(b.subrange(99,125),16)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,129nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:137nat,len:23nat,next:164nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,164nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:172nat,len:0nat,next:176nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Ok((2u32,0u32)),
+        crate::apng_model::fctl(b.subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Ok((crate::apng_model::FrameControl {width:4u32,height:3u32,x:0u32,y:0u32,delay_num:1u16,delay_den:10u16,dispose:0u8,blend:0u8},crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})),
+        crate::apng_model::fctl(b.subrange(99,125),true,true,4u32,3u32,crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==Err((Error::ChunkOutOfOrder,true)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(2u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert((4u64)*(3u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert((4u64)*(3u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)},Some(2u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)},Some(2u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,6);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()));
+}
+
+// apng-bad/two-fctl-before-idat; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_two_fctl_before_idat() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,0u8,243u8,141u8,147u8,112u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,204u8,115u8,12u8,251u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,87u8,0u8,230u8,47u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_two_fctl_before_idat()
+    ensures m::MWF_p(bytes_apng_bad_two_fctl_before_idat(),m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_two_fctl_before_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_two_fctl_before_idat(),16),height:crate::model::be32(bytes_apng_bad_two_fctl_before_idat(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_two_fctl_before_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_two_fctl_before_idat(),16),height:crate::model::be32(bytes_apng_bad_two_fctl_before_idat(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_two_fctl_before_idat(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_two_fctl_before_idat(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_two_fctl_before_idat().subrange(41,49),0)==2) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_two_fctl_before_idat().subrange(41,49),4)==0) by (compute);
+        assert(2u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_two_fctl_before_idat(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_two_fctl_before_idat(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_two_fctl_before_idat().subrange(61,87),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_two_fctl_before_idat().subrange(61,87),4)==4) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_two_fctl_before_idat().subrange(61,87),8)==3) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_two_fctl_before_idat().subrange(61,87),12)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_two_fctl_before_idat().subrange(61,87),16)==0) by (compute);
+        assert((4u64)*(3u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_two_fctl_before_idat(),91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:99nat,len:26nat,next:129nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_two_fctl_before_idat(),91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:99nat,len:26nat,next:129nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_two_fctl_before_idat().subrange(99,125),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_two_fctl_before_idat().subrange(99,125),4)==4) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_two_fctl_before_idat().subrange(99,125),8)==3) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_two_fctl_before_idat().subrange(99,125),12)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_two_fctl_before_idat().subrange(99,125),16)==0) by (compute);
+        assert((4u64)*(3u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_two_fctl_before_idat(),129nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:137nat,len:23nat,next:164nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_two_fctl_before_idat(),129nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:137nat,len:23nat,next:164nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_two_fctl_before_idat(),164nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:172nat,len:0nat,next:176nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_two_fctl_before_idat(),164nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:172nat,len:0nat,next:176nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_two_fctl_before_idat(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_two_fctl_before_idat(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_two_fctl_before_idat().subrange(41,49))==Ok((2u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_two_fctl_before_idat().subrange(41,49))==Ok((2u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::fctl(bytes_apng_bad_two_fctl_before_idat().subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Ok((crate::apng_model::FrameControl {width:4u32,height:3u32,x:0u32,y:0u32,delay_num:1u16,delay_den:10u16,dispose:0u8,blend:0u8},crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_two_fctl_before_idat().subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Ok((crate::apng_model::FrameControl {width:4u32,height:3u32,x:0u32,y:0u32,delay_num:1u16,delay_den:10u16,dispose:0u8,blend:0u8},crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}))) by (compute);
+        }
+        assert(crate::apng_model::fctl(bytes_apng_bad_two_fctl_before_idat().subrange(99,125),true,true,4u32,3u32,crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==Err((Error::ChunkOutOfOrder,true))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_two_fctl_before_idat().subrange(99,125),true,true,4u32,3u32,crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==Err((Error::ChunkOutOfOrder,true))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)})==crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)},Some(2u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Default,frame_count:1nat,fctl_before_idat:true,pixel_total:(4nat*3nat)},Some(2u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+        symbolic_apng_bad_two_fctl_before_idat(bytes_apng_bad_two_fctl_before_idat());
+}
+fn walk_apng_bad_two_fctl_before_idat() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,0u8,243u8,141u8,147u8,112u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,204u8,115u8,12u8,251u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,87u8,0u8,230u8,47u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_two_fctl_before_idat());model_apng_bad_two_fctl_before_idat();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::ChunkOutOfOrder))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_fctl_len_25(b: Seq<u8>)
+    requires b.len()==137,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==1,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:25nat,next:90nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(61,86),0)==0,
+        crate::model::be32(b.subrange(61,86),4)==0,
+        crate::model::be32(b.subrange(61,86),8)==0,
+        crate::model::be32(b.subrange(61,86),12)==0,
+        crate::model::be32(b.subrange(61,86),16)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,90nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:98nat,len:23nat,next:125nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,125nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:133nat,len:0nat,next:137nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Ok((1u32,0u32)),
+        crate::apng_model::fctl(b.subrange(61,86),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidChunkLength,true)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidChunkLength,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,5);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidChunkLength,m::no_events()));
+}
+
+// apng-bad/fctl-len-25; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_fctl_len_25() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,25u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,69u8,139u8,99u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_fctl_len_25()
+    ensures m::MWF_p(bytes_apng_bad_fctl_len_25(),m::strict())==m::Outcome::Error(Error::InvalidChunkLength,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_fctl_len_25())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_len_25(),16),height:crate::model::be32(bytes_apng_bad_fctl_len_25(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_fctl_len_25())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_len_25(),16),height:crate::model::be32(bytes_apng_bad_fctl_len_25(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_len_25(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_len_25(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_len_25().subrange(41,49),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_len_25().subrange(41,49),4)==0) by (compute);
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_len_25(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:25nat,next:90nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_len_25(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:25nat,next:90nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_len_25().subrange(61,86),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_len_25().subrange(61,86),4)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_len_25().subrange(61,86),8)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_len_25().subrange(61,86),12)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_len_25().subrange(61,86),16)==0) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_len_25(),90nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:98nat,len:23nat,next:125nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_len_25(),90nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:98nat,len:23nat,next:125nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_len_25(),125nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:133nat,len:0nat,next:137nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_len_25(),125nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:133nat,len:0nat,next:137nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_len_25(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_len_25(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_fctl_len_25().subrange(41,49))==Ok((1u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_fctl_len_25().subrange(41,49))==Ok((1u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::fctl(bytes_apng_bad_fctl_len_25().subrange(61,86),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidChunkLength,true))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_fctl_len_25().subrange(61,86),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidChunkLength,true))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+        symbolic_apng_bad_fctl_len_25(bytes_apng_bad_fctl_len_25());
+}
+fn walk_apng_bad_fctl_len_25() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,25u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,69u8,139u8,99u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_fctl_len_25());model_apng_bad_fctl_len_25();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidChunkLength))));
+}
+
 // apng-bad/fctl-width-0; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
 spec fn bytes_apng_bad_fctl_width_0() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,0u8,243u8,141u8,147u8,112u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,156u8,224u8,218u8,241u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
 proof fn model_apng_bad_fctl_width_0()
     ensures m::MWF_p(bytes_apng_bad_fctl_width_0(),m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()),
 {
     hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
         assert(crate::model::mh(bytes_apng_bad_fctl_width_0())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_width_0(),16),height:crate::model::be32(bytes_apng_bad_fctl_width_0(),20),depth:8,color_type:6,interlace:0},33nat))) by {
             reveal(crate::model::mh);
             assert(crate::model::mh(bytes_apng_bad_fctl_width_0())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_width_0(),16),height:crate::model::be32(bytes_apng_bad_fctl_width_0(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
@@ -2926,6 +5039,28 @@ proof fn model_apng_bad_fctl_width_0()
             reveal(crate::walk_model::classify);
             assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
         }
+        assert(crate::model::be32(bytes_apng_bad_fctl_width_0(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_width_0(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_fctl_width_0().subrange(41,49))==Ok((2u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_fctl_width_0().subrange(41,49))==Ok((2u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::fctl(bytes_apng_bad_fctl_width_0().subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_fctl_width_0().subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true))) by (compute);
+        }
+        assert(crate::apng_model::fdat(bytes_apng_bad_fctl_width_0().subrange(134,154),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true))) by {
+            reveal(crate::apng_model::fdat);
+            assert(crate::apng_model::fdat(bytes_apng_bad_fctl_width_0().subrange(134,154),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true))) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(2u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(2u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
         late_zero_width_control(bytes_apng_bad_fctl_width_0(),crate::model::mh(bytes_apng_bad_fctl_width_0()).unwrap().0);
 }
 fn walk_apng_bad_fctl_width_0() {
@@ -2934,6 +5069,1459 @@ fn walk_apng_bad_fctl_width_0() {
     proof {assert(b@==bytes_apng_bad_fctl_width_0());model_apng_bad_fctl_width_0();}
     let public_result=crate::png::Frames::try_new(&b);
     assert(matches!(public_result,Err(TryError::Format(Error::InvalidFrameControl))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_fctl_outside_x(b: Seq<u8>)
+    requires b.len()==170,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==1,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(96,122),0)==0,
+        crate::model::be32(b.subrange(96,122),4)==2,
+        crate::model::be32(b.subrange(96,122),8)==2,
+        crate::model::be32(b.subrange(96,122),12)==3,
+        crate::model::be32(b.subrange(96,122),16)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(134,154),0)==1,
+        crate::model::be32(b.subrange(134,154),4)==2023514976,
+        crate::model::be32(b.subrange(134,154),8)==4161765772,
+        crate::model::be32(b.subrange(134,154),12)==1611270144,
+        crate::model::be32(b.subrange(134,154),16)==1071318524,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Ok((1u32,0u32)),
+        crate::apng_model::fctl(b.subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true)),
+        crate::apng_model::fdat(b.subrange(134,154),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert((2u64)*(2u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,6);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()));
+}
+
+// apng-bad/fctl-outside-x; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_fctl_outside_x() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,113u8,182u8,186u8,1u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_fctl_outside_x()
+    ensures m::MWF_p(bytes_apng_bad_fctl_outside_x(),m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_fctl_outside_x())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_outside_x(),16),height:crate::model::be32(bytes_apng_bad_fctl_outside_x(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_fctl_outside_x())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_outside_x(),16),height:crate::model::be32(bytes_apng_bad_fctl_outside_x(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_outside_x(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_outside_x(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_x().subrange(41,49),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_x().subrange(41,49),4)==0) by (compute);
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_outside_x(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_outside_x(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_outside_x(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_outside_x(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_x().subrange(96,122),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_x().subrange(96,122),4)==2) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_x().subrange(96,122),8)==2) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_x().subrange(96,122),12)==3) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_x().subrange(96,122),16)==0) by (compute);
+        assert((2u64)*(2u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_outside_x(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_outside_x(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_x().subrange(134,154),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_x().subrange(134,154),4)==2023514976) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_x().subrange(134,154),8)==4161765772) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_x().subrange(134,154),12)==1611270144) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_x().subrange(134,154),16)==1071318524) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_outside_x(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_outside_x(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_x(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_x(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_fctl_outside_x().subrange(41,49))==Ok((1u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_fctl_outside_x().subrange(41,49))==Ok((1u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::fctl(bytes_apng_bad_fctl_outside_x().subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_fctl_outside_x().subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true))) by (compute);
+        }
+        assert(crate::apng_model::fdat(bytes_apng_bad_fctl_outside_x().subrange(134,154),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true))) by {
+            reveal(crate::apng_model::fdat);
+            assert(crate::apng_model::fdat(bytes_apng_bad_fctl_outside_x().subrange(134,154),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true))) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+        symbolic_apng_bad_fctl_outside_x(bytes_apng_bad_fctl_outside_x());
+}
+fn walk_apng_bad_fctl_outside_x() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,113u8,182u8,186u8,1u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_fctl_outside_x());model_apng_bad_fctl_outside_x();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidFrameControl))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_fctl_outside_y(b: Seq<u8>)
+    requires b.len()==170,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==1,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(96,122),0)==0,
+        crate::model::be32(b.subrange(96,122),4)==2,
+        crate::model::be32(b.subrange(96,122),8)==2,
+        crate::model::be32(b.subrange(96,122),12)==0,
+        crate::model::be32(b.subrange(96,122),16)==2,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(134,154),0)==1,
+        crate::model::be32(b.subrange(134,154),4)==2023514976,
+        crate::model::be32(b.subrange(134,154),8)==4161765772,
+        crate::model::be32(b.subrange(134,154),12)==1611270144,
+        crate::model::be32(b.subrange(134,154),16)==1071318524,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Ok((1u32,0u32)),
+        crate::apng_model::fctl(b.subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true)),
+        crate::apng_model::fdat(b.subrange(134,154),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert((2u64)*(2u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,6);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()));
+}
+
+// apng-bad/fctl-outside-y; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_fctl_outside_y() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,2u8,0u8,1u8,0u8,10u8,0u8,0u8,127u8,203u8,205u8,41u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_fctl_outside_y()
+    ensures m::MWF_p(bytes_apng_bad_fctl_outside_y(),m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_fctl_outside_y())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_outside_y(),16),height:crate::model::be32(bytes_apng_bad_fctl_outside_y(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_fctl_outside_y())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_outside_y(),16),height:crate::model::be32(bytes_apng_bad_fctl_outside_y(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_outside_y(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_outside_y(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_y().subrange(41,49),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_y().subrange(41,49),4)==0) by (compute);
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_outside_y(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_outside_y(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_outside_y(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_outside_y(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_y().subrange(96,122),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_y().subrange(96,122),4)==2) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_y().subrange(96,122),8)==2) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_y().subrange(96,122),12)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_y().subrange(96,122),16)==2) by (compute);
+        assert((2u64)*(2u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_outside_y(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_outside_y(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_y().subrange(134,154),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_y().subrange(134,154),4)==2023514976) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_y().subrange(134,154),8)==4161765772) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_y().subrange(134,154),12)==1611270144) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_y().subrange(134,154),16)==1071318524) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_outside_y(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_outside_y(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_y(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_outside_y(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_fctl_outside_y().subrange(41,49))==Ok((1u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_fctl_outside_y().subrange(41,49))==Ok((1u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::fctl(bytes_apng_bad_fctl_outside_y().subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_fctl_outside_y().subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true))) by (compute);
+        }
+        assert(crate::apng_model::fdat(bytes_apng_bad_fctl_outside_y().subrange(134,154),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true))) by {
+            reveal(crate::apng_model::fdat);
+            assert(crate::apng_model::fdat(bytes_apng_bad_fctl_outside_y().subrange(134,154),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true))) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+        symbolic_apng_bad_fctl_outside_y(bytes_apng_bad_fctl_outside_y());
+}
+fn walk_apng_bad_fctl_outside_y() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,2u8,0u8,1u8,0u8,10u8,0u8,0u8,127u8,203u8,205u8,41u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_fctl_outside_y());model_apng_bad_fctl_outside_y();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidFrameControl))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_fctl_offset_overflow_u32(b: Seq<u8>)
+    requires b.len()==170,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==1,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(96,122),0)==0,
+        crate::model::be32(b.subrange(96,122),4)==2,
+        crate::model::be32(b.subrange(96,122),8)==2,
+        crate::model::be32(b.subrange(96,122),12)==4294967295,
+        crate::model::be32(b.subrange(96,122),16)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(134,154),0)==1,
+        crate::model::be32(b.subrange(134,154),4)==2023514976,
+        crate::model::be32(b.subrange(134,154),8)==4161765772,
+        crate::model::be32(b.subrange(134,154),12)==1611270144,
+        crate::model::be32(b.subrange(134,154),16)==1071318524,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Ok((1u32,0u32)),
+        crate::apng_model::fctl(b.subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true)),
+        crate::apng_model::fdat(b.subrange(134,154),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert((2u64)*(2u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,6);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()));
+}
+
+// apng-bad/fctl-offset-overflow-u32; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_fctl_offset_overflow_u32() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,198u8,16u8,90u8,56u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_fctl_offset_overflow_u32()
+    ensures m::MWF_p(bytes_apng_bad_fctl_offset_overflow_u32(),m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_fctl_offset_overflow_u32())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32(),16),height:crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_fctl_offset_overflow_u32())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32(),16),height:crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_offset_overflow_u32(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_offset_overflow_u32(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32().subrange(41,49),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32().subrange(41,49),4)==0) by (compute);
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_offset_overflow_u32(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_offset_overflow_u32(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_offset_overflow_u32(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_offset_overflow_u32(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32().subrange(96,122),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32().subrange(96,122),4)==2) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32().subrange(96,122),8)==2) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32().subrange(96,122),12)==4294967295) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32().subrange(96,122),16)==0) by (compute);
+        assert((2u64)*(2u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_offset_overflow_u32(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_offset_overflow_u32(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32().subrange(134,154),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32().subrange(134,154),4)==2023514976) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32().subrange(134,154),8)==4161765772) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32().subrange(134,154),12)==1611270144) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32().subrange(134,154),16)==1071318524) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_offset_overflow_u32(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_offset_overflow_u32(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_offset_overflow_u32(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_fctl_offset_overflow_u32().subrange(41,49))==Ok((1u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_fctl_offset_overflow_u32().subrange(41,49))==Ok((1u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::fctl(bytes_apng_bad_fctl_offset_overflow_u32().subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_fctl_offset_overflow_u32().subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true))) by (compute);
+        }
+        assert(crate::apng_model::fdat(bytes_apng_bad_fctl_offset_overflow_u32().subrange(134,154),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true))) by {
+            reveal(crate::apng_model::fdat);
+            assert(crate::apng_model::fdat(bytes_apng_bad_fctl_offset_overflow_u32().subrange(134,154),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true))) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+        symbolic_apng_bad_fctl_offset_overflow_u32(bytes_apng_bad_fctl_offset_overflow_u32());
+}
+fn walk_apng_bad_fctl_offset_overflow_u32() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,198u8,16u8,90u8,56u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_fctl_offset_overflow_u32());model_apng_bad_fctl_offset_overflow_u32();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidFrameControl))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_fctl_dispose_3(b: Seq<u8>)
+    requires b.len()==170,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==1,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(96,122),0)==0,
+        crate::model::be32(b.subrange(96,122),4)==2,
+        crate::model::be32(b.subrange(96,122),8)==2,
+        crate::model::be32(b.subrange(96,122),12)==0,
+        crate::model::be32(b.subrange(96,122),16)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(134,154),0)==1,
+        crate::model::be32(b.subrange(134,154),4)==2023514976,
+        crate::model::be32(b.subrange(134,154),8)==4161765772,
+        crate::model::be32(b.subrange(134,154),12)==1611270144,
+        crate::model::be32(b.subrange(134,154),16)==1071318524,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Ok((1u32,0u32)),
+        crate::apng_model::fctl(b.subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true)),
+        crate::apng_model::fdat(b.subrange(134,154),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert((2u64)*(2u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,6);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()));
+}
+
+// apng-bad/fctl-dispose-3; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_fctl_dispose_3() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,3u8,0u8,195u8,121u8,143u8,195u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_fctl_dispose_3()
+    ensures m::MWF_p(bytes_apng_bad_fctl_dispose_3(),m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_fctl_dispose_3())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_dispose_3(),16),height:crate::model::be32(bytes_apng_bad_fctl_dispose_3(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_fctl_dispose_3())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_dispose_3(),16),height:crate::model::be32(bytes_apng_bad_fctl_dispose_3(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_dispose_3(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_dispose_3(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_dispose_3().subrange(41,49),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_dispose_3().subrange(41,49),4)==0) by (compute);
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_dispose_3(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_dispose_3(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_dispose_3(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_dispose_3(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_dispose_3().subrange(96,122),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_dispose_3().subrange(96,122),4)==2) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_dispose_3().subrange(96,122),8)==2) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_dispose_3().subrange(96,122),12)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_dispose_3().subrange(96,122),16)==0) by (compute);
+        assert((2u64)*(2u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_dispose_3(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_dispose_3(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_dispose_3().subrange(134,154),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_dispose_3().subrange(134,154),4)==2023514976) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_dispose_3().subrange(134,154),8)==4161765772) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_dispose_3().subrange(134,154),12)==1611270144) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_dispose_3().subrange(134,154),16)==1071318524) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_dispose_3(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_dispose_3(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_dispose_3(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_dispose_3(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_fctl_dispose_3().subrange(41,49))==Ok((1u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_fctl_dispose_3().subrange(41,49))==Ok((1u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::fctl(bytes_apng_bad_fctl_dispose_3().subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_fctl_dispose_3().subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true))) by (compute);
+        }
+        assert(crate::apng_model::fdat(bytes_apng_bad_fctl_dispose_3().subrange(134,154),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true))) by {
+            reveal(crate::apng_model::fdat);
+            assert(crate::apng_model::fdat(bytes_apng_bad_fctl_dispose_3().subrange(134,154),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true))) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+        symbolic_apng_bad_fctl_dispose_3(bytes_apng_bad_fctl_dispose_3());
+}
+fn walk_apng_bad_fctl_dispose_3() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,3u8,0u8,195u8,121u8,143u8,195u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_fctl_dispose_3());model_apng_bad_fctl_dispose_3();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidFrameControl))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_fctl_blend_2(b: Seq<u8>)
+    requires b.len()==170,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==1,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(96,122),0)==0,
+        crate::model::be32(b.subrange(96,122),4)==2,
+        crate::model::be32(b.subrange(96,122),8)==2,
+        crate::model::be32(b.subrange(96,122),12)==0,
+        crate::model::be32(b.subrange(96,122),16)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(134,154),0)==1,
+        crate::model::be32(b.subrange(134,154),4)==2023514976,
+        crate::model::be32(b.subrange(134,154),8)==4161765772,
+        crate::model::be32(b.subrange(134,154),12)==1611270144,
+        crate::model::be32(b.subrange(134,154),16)==1071318524,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Ok((1u32,0u32)),
+        crate::apng_model::fctl(b.subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true)),
+        crate::apng_model::fdat(b.subrange(134,154),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert((2u64)*(2u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,6);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()));
+}
+
+// apng-bad/fctl-blend-2; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_fctl_blend_2() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,2u8,6u8,90u8,189u8,44u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_fctl_blend_2()
+    ensures m::MWF_p(bytes_apng_bad_fctl_blend_2(),m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_fctl_blend_2())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_blend_2(),16),height:crate::model::be32(bytes_apng_bad_fctl_blend_2(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_fctl_blend_2())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_blend_2(),16),height:crate::model::be32(bytes_apng_bad_fctl_blend_2(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_blend_2(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_blend_2(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_blend_2().subrange(41,49),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_blend_2().subrange(41,49),4)==0) by (compute);
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_blend_2(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_blend_2(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_blend_2(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_blend_2(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_blend_2().subrange(96,122),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_blend_2().subrange(96,122),4)==2) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_blend_2().subrange(96,122),8)==2) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_blend_2().subrange(96,122),12)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_blend_2().subrange(96,122),16)==0) by (compute);
+        assert((2u64)*(2u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_blend_2(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_blend_2(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_blend_2().subrange(134,154),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_blend_2().subrange(134,154),4)==2023514976) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_blend_2().subrange(134,154),8)==4161765772) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_blend_2().subrange(134,154),12)==1611270144) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_blend_2().subrange(134,154),16)==1071318524) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_blend_2(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_blend_2(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_blend_2(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_blend_2(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_fctl_blend_2().subrange(41,49))==Ok((1u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_fctl_blend_2().subrange(41,49))==Ok((1u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::fctl(bytes_apng_bad_fctl_blend_2().subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_fctl_blend_2().subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true))) by (compute);
+        }
+        assert(crate::apng_model::fdat(bytes_apng_bad_fctl_blend_2().subrange(134,154),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true))) by {
+            reveal(crate::apng_model::fdat);
+            assert(crate::apng_model::fdat(bytes_apng_bad_fctl_blend_2().subrange(134,154),true,false,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::SequenceError,true))) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+        symbolic_apng_bad_fctl_blend_2(bytes_apng_bad_fctl_blend_2());
+}
+fn walk_apng_bad_fctl_blend_2() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,2u8,6u8,90u8,189u8,44u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_fctl_blend_2());model_apng_bad_fctl_blend_2();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidFrameControl))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_default_fctl_smaller(b: Seq<u8>)
+    requires b.len()==138,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==1,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(61,87),0)==0,
+        crate::model::be32(b.subrange(61,87),4)==2,
+        crate::model::be32(b.subrange(61,87),8)==2,
+        crate::model::be32(b.subrange(61,87),12)==0,
+        crate::model::be32(b.subrange(61,87),16)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:99nat,len:23nat,next:126nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:134nat,len:0nat,next:138nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Ok((1u32,0u32)),
+        crate::apng_model::fctl(b.subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert((2u64)*(2u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,5);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()));
+}
+
+// apng-bad/default-fctl-smaller; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_default_fctl_smaller() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,232u8,84u8,220u8,0u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_default_fctl_smaller()
+    ensures m::MWF_p(bytes_apng_bad_default_fctl_smaller(),m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_default_fctl_smaller())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_default_fctl_smaller(),16),height:crate::model::be32(bytes_apng_bad_default_fctl_smaller(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_default_fctl_smaller())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_default_fctl_smaller(),16),height:crate::model::be32(bytes_apng_bad_default_fctl_smaller(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_default_fctl_smaller(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_default_fctl_smaller(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_smaller().subrange(41,49),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_smaller().subrange(41,49),4)==0) by (compute);
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_default_fctl_smaller(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_default_fctl_smaller(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_smaller().subrange(61,87),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_smaller().subrange(61,87),4)==2) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_smaller().subrange(61,87),8)==2) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_smaller().subrange(61,87),12)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_smaller().subrange(61,87),16)==0) by (compute);
+        assert((2u64)*(2u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_default_fctl_smaller(),91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:99nat,len:23nat,next:126nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_default_fctl_smaller(),91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:99nat,len:23nat,next:126nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_default_fctl_smaller(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:134nat,len:0nat,next:138nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_default_fctl_smaller(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:134nat,len:0nat,next:138nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_smaller(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_smaller(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_default_fctl_smaller().subrange(41,49))==Ok((1u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_default_fctl_smaller().subrange(41,49))==Ok((1u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::fctl(bytes_apng_bad_default_fctl_smaller().subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_default_fctl_smaller().subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+        symbolic_apng_bad_default_fctl_smaller(bytes_apng_bad_default_fctl_smaller());
+}
+fn walk_apng_bad_default_fctl_smaller() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,232u8,84u8,220u8,0u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_default_fctl_smaller());model_apng_bad_default_fctl_smaller();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidFrameControl))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_default_fctl_offset(b: Seq<u8>)
+    requires b.len()==138,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==1,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(61,87),0)==0,
+        crate::model::be32(b.subrange(61,87),4)==3,
+        crate::model::be32(b.subrange(61,87),8)==3,
+        crate::model::be32(b.subrange(61,87),12)==1,
+        crate::model::be32(b.subrange(61,87),16)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:99nat,len:23nat,next:126nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:134nat,len:0nat,next:138nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Ok((1u32,0u32)),
+        crate::apng_model::fctl(b.subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert((3u64)*(3u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,5);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()));
+}
+
+// apng-bad/default-fctl-offset; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_default_fctl_offset() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,71u8,195u8,88u8,112u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_default_fctl_offset()
+    ensures m::MWF_p(bytes_apng_bad_default_fctl_offset(),m::strict())==m::Outcome::Error(Error::InvalidFrameControl,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_default_fctl_offset())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_default_fctl_offset(),16),height:crate::model::be32(bytes_apng_bad_default_fctl_offset(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_default_fctl_offset())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_default_fctl_offset(),16),height:crate::model::be32(bytes_apng_bad_default_fctl_offset(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_default_fctl_offset(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_default_fctl_offset(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_offset().subrange(41,49),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_offset().subrange(41,49),4)==0) by (compute);
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_default_fctl_offset(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_default_fctl_offset(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:61nat,len:26nat,next:91nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_offset().subrange(61,87),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_offset().subrange(61,87),4)==3) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_offset().subrange(61,87),8)==3) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_offset().subrange(61,87),12)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_offset().subrange(61,87),16)==0) by (compute);
+        assert((3u64)*(3u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_default_fctl_offset(),91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:99nat,len:23nat,next:126nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_default_fctl_offset(),91nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:99nat,len:23nat,next:126nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_default_fctl_offset(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:134nat,len:0nat,next:138nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_default_fctl_offset(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:134nat,len:0nat,next:138nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_offset(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_default_fctl_offset(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_default_fctl_offset().subrange(41,49))==Ok((1u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_default_fctl_offset().subrange(41,49))==Ok((1u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::fctl(bytes_apng_bad_default_fctl_offset().subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_default_fctl_offset().subrange(61,87),true,true,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Err((Error::InvalidFrameControl,true))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},Some(1u32))==Err((Error::FrameCountMismatch,true))) by (compute);
+        }
+        symbolic_apng_bad_default_fctl_offset(bytes_apng_bad_default_fctl_offset());
+}
+fn walk_apng_bad_default_fctl_offset() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,10u8,0u8,0u8,71u8,195u8,88u8,112u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_default_fctl_offset());model_apng_bad_default_fctl_offset();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::InvalidFrameControl))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_fctl_crc(b: Seq<u8>)
+    requires b.len()==170,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==1,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:false,synthetic:false})),
+        crate::model::be32(b.subrange(96,122),0)==0,
+        crate::model::be32(b.subrange(96,122),4)==2,
+        crate::model::be32(b.subrange(96,122),8)==2,
+        crate::model::be32(b.subrange(96,122),12)==0,
+        crate::model::be32(b.subrange(96,122),16)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(134,154),0)==1,
+        crate::model::be32(b.subrange(134,154),4)==2023514976,
+        crate::model::be32(b.subrange(134,154),8)==4161765772,
+        crate::model::be32(b.subrange(134,154),12)==1611270144,
+        crate::model::be32(b.subrange(134,154),16)==1071318524,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Ok((1u32,0u32)),
+        crate::apng_model::fctl(b.subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Ok((crate::apng_model::FrameControl {width:2u32,height:2u32,x:0u32,y:0u32,delay_num:1u16,delay_den:1u16,dispose:0u8,blend:0u8},crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:false,pixel_total:(2nat*2nat)})),
+        crate::apng_model::fdat(b.subrange(134,154),true,false,crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:false,pixel_total:(2nat*2nat)})==Ok(crate::apng_model::Control {sequence:2nat,current:crate::apng_model::Current::Frame(true),frame_count:1nat,fctl_before_idat:false,pixel_total:(2nat*2nat)}),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::CrcMismatch,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert((2u64)*(2u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:2nat,current:crate::apng_model::Current::Frame(true),frame_count:1nat,fctl_before_idat:false,pixel_total:(2nat*2nat)},Some(1u32))==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:2nat,current:crate::apng_model::Current::Frame(true),frame_count:1nat,fctl_before_idat:false,pixel_total:(2nat*2nat)},Some(1u32))==Ok(())) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,6);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::CrcMismatch,m::no_events()));
+}
+
+// apng-bad/fctl-crc; fixture sha256 641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d
+spec fn bytes_apng_bad_fctl_crc() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,1u8,0u8,0u8,0u8,0u8,0u8,5u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_fctl_crc()
+    ensures m::MWF_p(bytes_apng_bad_fctl_crc(),m::strict())==m::Outcome::Error(Error::CrcMismatch,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(crate::apng_model::fdat);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_fctl_crc())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_crc(),16),height:crate::model::be32(bytes_apng_bad_fctl_crc(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_fctl_crc())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_fctl_crc(),16),height:crate::model::be32(bytes_apng_bad_fctl_crc(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_crc(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_crc(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_crc().subrange(41,49),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_crc().subrange(41,49),4)==0) by (compute);
+        assert(1u32<=crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_crc(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_crc(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_crc(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:false,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_crc(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,99u8,84u8,76u8],data:96nat,len:26nat,next:126nat,crc_ok:false,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,99u8,84u8,76u8])==crate::walk_model::Name::Fctl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_crc().subrange(96,122),0)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_crc().subrange(96,122),4)==2) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_crc().subrange(96,122),8)==2) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_crc().subrange(96,122),12)==0) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_crc().subrange(96,122),16)==0) by (compute);
+        assert((2u64)*(2u64)<=crate::limits::MAX_TOTAL_PIXELS) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_crc(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_crc(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![102u8,100u8,65u8,84u8],data:134nat,len:20nat,next:158nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((102u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![102u8,100u8,65u8,84u8])==crate::walk_model::Name::Fdat) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_crc().subrange(134,154),0)==1) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_crc().subrange(134,154),4)==2023514976) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_crc().subrange(134,154),8)==4161765772) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_crc().subrange(134,154),12)==1611270144) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_crc().subrange(134,154),16)==1071318524) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_fctl_crc(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_fctl_crc(),158nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:166nat,len:0nat,next:170nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_fctl_crc(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_fctl_crc(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_fctl_crc().subrange(41,49))==Ok((1u32,0u32))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_fctl_crc().subrange(41,49))==Ok((1u32,0u32))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::fctl(bytes_apng_bad_fctl_crc().subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Ok((crate::apng_model::FrameControl {width:2u32,height:2u32,x:0u32,y:0u32,delay_num:1u16,delay_den:1u16,dispose:0u8,blend:0u8},crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:false,pixel_total:(2nat*2nat)}))) by {
+            reveal(crate::apng_model::fctl);
+            assert(crate::apng_model::fctl(bytes_apng_bad_fctl_crc().subrange(96,122),true,false,4u32,3u32,crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==Ok((crate::apng_model::FrameControl {width:2u32,height:2u32,x:0u32,y:0u32,delay_num:1u16,delay_den:1u16,dispose:0u8,blend:0u8},crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:false,pixel_total:(2nat*2nat)}))) by (compute);
+        }
+        assert(crate::apng_model::fdat(bytes_apng_bad_fctl_crc().subrange(134,154),true,false,crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:false,pixel_total:(2nat*2nat)})==Ok(crate::apng_model::Control {sequence:2nat,current:crate::apng_model::Current::Frame(true),frame_count:1nat,fctl_before_idat:false,pixel_total:(2nat*2nat)})) by {
+            reveal(crate::apng_model::fdat);
+            assert(crate::apng_model::fdat(bytes_apng_bad_fctl_crc().subrange(134,154),true,false,crate::apng_model::Control {sequence:1nat,current:crate::apng_model::Current::Frame(false),frame_count:1nat,fctl_before_idat:false,pixel_total:(2nat*2nat)})==Ok(crate::apng_model::Control {sequence:2nat,current:crate::apng_model::Current::Frame(true),frame_count:1nat,fctl_before_idat:false,pixel_total:(2nat*2nat)})) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:2nat,current:crate::apng_model::Current::Frame(true),frame_count:1nat,fctl_before_idat:false,pixel_total:(2nat*2nat)},Some(1u32))==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:2nat,current:crate::apng_model::Current::Frame(true),frame_count:1nat,fctl_before_idat:false,pixel_total:(2nat*2nat)},Some(1u32))==Ok(())) by (compute);
+        }
+        symbolic_apng_bad_fctl_crc(bytes_apng_bad_fctl_crc());
+}
+fn walk_apng_bad_fctl_crc() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,0u8,180u8,45u8,233u8,160u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,26u8,102u8,99u8,84u8,76u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,0u8,1u8,0u8,0u8,0u8,0u8,0u8,5u8,0u8,0u8,0u8,20u8,102u8,100u8,65u8,84u8,0u8,0u8,0u8,1u8,120u8,156u8,99u8,96u8,248u8,15u8,129u8,140u8,96u8,10u8,8u8,0u8,63u8,219u8,5u8,252u8,6u8,108u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_fctl_crc());model_apng_bad_fctl_crc();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::CrcMismatch))));
+}
+
+#[verifier::spinoff_prover]
+proof fn symbolic_apng_bad_actl_too_many_frames(b: Seq<u8>)
+    requires b.len()==100,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8,color_type:6,interlace:0},33nat)),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b.subrange(41,49),0)==65537,
+        crate::model::be32(b.subrange(41,49),4)==0,
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})),
+        (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:96nat,len:0nat,next:100nat,crc_ok:true,synthetic:false})),
+        crate::model::be32(b,16)==4u32,
+        crate::model::be32(b,20)==3u32,
+        crate::apng_model::actl(b.subrange(41,49))==Err((Error::TooManyFrames,false)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::TooManyFrames,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::finish);
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(65537u32>crate::limits::MAX_FRAMES) by (bit_vector);
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by (compute);
+        }
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+        reveal_with_fuel(m::drive,4);
+        assert(m::MWF_p(b,m::strict())==m::Outcome::Error(Error::TooManyFrames,m::no_events()));
+}
+
+// apng-bad/actl-too-many-frames; fixture sha256 0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726
+spec fn bytes_apng_bad_actl_too_many_frames() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,1u8,0u8,1u8,0u8,0u8,0u8,0u8,18u8,90u8,226u8,20u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+#[verifier::spinoff_prover]
+proof fn model_apng_bad_actl_too_many_frames()
+    ensures m::MWF_p(bytes_apng_bad_actl_too_many_frames(),m::strict())==m::Outcome::Error(Error::TooManyFrames,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
+    hide(crate::apng_model::actl);hide(crate::apng_model::finish);
+    hide(m::MWF_p);
+        assert(crate::model::mh(bytes_apng_bad_actl_too_many_frames())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_actl_too_many_frames(),16),height:crate::model::be32(bytes_apng_bad_actl_too_many_frames(),20),depth:8,color_type:6,interlace:0},33nat))) by {
+            reveal(crate::model::mh);
+            assert(crate::model::mh(bytes_apng_bad_actl_too_many_frames())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_actl_too_many_frames(),16),height:crate::model::be32(bytes_apng_bad_actl_too_many_frames(),20),depth:8,color_type:6,interlace:0},33nat))) by (compute);
+        }
+        assert((1u32 << 8u8)==256u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_too_many_frames(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_too_many_frames(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![97u8,99u8,84u8,76u8],data:41nat,len:8nat,next:53nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((97u8 & 32u8)==32u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![97u8,99u8,84u8,76u8])==crate::walk_model::Name::Actl) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_actl_too_many_frames().subrange(41,49),0)==65537) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_actl_too_many_frames().subrange(41,49),4)==0) by (compute);
+        assert(65537u32>crate::limits::MAX_FRAMES) by (bit_vector);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_too_many_frames(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_too_many_frames(),53nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:61nat,len:23nat,next:88nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_apng_bad_actl_too_many_frames(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:96nat,len:0nat,next:100nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_apng_bad_actl_too_many_frames(),88nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:96nat,len:0nat,next:100nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+        assert(crate::model::be32(bytes_apng_bad_actl_too_many_frames(),16)==4u32) by (compute);
+        assert(crate::model::be32(bytes_apng_bad_actl_too_many_frames(),20)==3u32) by (compute);
+        assert(crate::apng_model::actl(bytes_apng_bad_actl_too_many_frames().subrange(41,49))==Err((Error::TooManyFrames,false))) by {
+            reveal(crate::apng_model::actl);
+            assert(crate::apng_model::actl(bytes_apng_bad_actl_too_many_frames().subrange(41,49))==Err((Error::TooManyFrames,false))) by (compute);
+        }
+        assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by {
+            reveal(crate::apng_model::begin_idat);
+            assert(crate::apng_model::begin_idat(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat})==crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat}) by (compute);
+        }
+        assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by {
+            reveal(crate::apng_model::finish);
+            assert(crate::apng_model::finish(crate::apng_model::Control {sequence:0nat,current:crate::apng_model::Current::None,frame_count:0nat,fctl_before_idat:false,pixel_total:0nat},None)==Ok(())) by (compute);
+        }
+        symbolic_apng_bad_actl_too_many_frames(bytes_apng_bad_actl_too_many_frames());
+}
+fn walk_apng_bad_actl_too_many_frames() {
+    hide(m::MWF_p);
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,3u8,8u8,6u8,0u8,0u8,0u8,180u8,244u8,174u8,198u8,0u8,0u8,0u8,8u8,97u8,99u8,84u8,76u8,0u8,1u8,0u8,1u8,0u8,0u8,0u8,0u8,18u8,90u8,226u8,20u8,0u8,0u8,0u8,23u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,207u8,192u8,240u8,31u8,25u8,51u8,130u8,8u8,6u8,36u8,192u8,196u8,128u8,6u8,0u8,145u8,243u8,9u8,250u8,109u8,246u8,58u8,149u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_apng_bad_actl_too_many_frames());model_apng_bad_actl_too_many_frames();}
+    let public_result=crate::png::Frames::try_new(&b);
+    assert(matches!(public_result,Err(TryError::Format(Error::TooManyFrames))));
 }
 
 } // verus!
