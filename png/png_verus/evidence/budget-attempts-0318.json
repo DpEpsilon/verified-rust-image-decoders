@@ -1,0 +1,56 @@
+{
+  "checkpoint": 318,
+  "scope": "No budget witness or prefix credit; generated candidates excluded from accepted source",
+  "records": [
+    {
+      "name": "apng-bad/pixel-budget",
+      "input_bytes": 3719,
+      "category": "a",
+      "isolated_attempt": 314,
+      "status": "OPEN: native verifier stack overflow; no count"
+    },
+    {
+      "name": "apng-bad/pixel-budget-exactly-2^30-then-zlib",
+      "input_bytes": 3663,
+      "category": "b",
+      "isolated_attempt": 315,
+      "status": "OPEN: native verifier stack overflow; no count; final data remains M4\u2013M6"
+    }
+  ],
+  "attempts": [
+    {
+      "run": 312,
+      "selected": "both",
+      "change": "Apply per-step state/composition extension to current verified tools",
+      "outcome": "Resource limit in literal executable projection, then native stack overflow/SIGABRT; no final count"
+    },
+    {
+      "run": 313,
+      "selected": "both",
+      "change": "Separate actual public-entry/preparation helpers from unconditional literal-array wrappers; helper requires exact input equality, checked at wrapper",
+      "outcome": "Native stack overflow/SIGABRT; no final count; original executable-projection resource diagnostic absent"
+    },
+    {
+      "run": 314,
+      "selected": "overflow only; fifteen retained projections",
+      "outcome": "Native stack overflow/SIGABRT; no final count; unrelated retained PLTE-after-IDAT literal query also hit resources"
+    },
+    {
+      "run": 315,
+      "selected": "exact-budget only; eighty-nine retained public-error records",
+      "change": "Isolate all retained literal model proof queries",
+      "outcome": "Native stack overflow/SIGABRT; no final count"
+    }
+  ],
+  "clean_host_recovery": {
+    "run": 316,
+    "verified": 1448,
+    "errors": 0,
+    "budget_candidates_selected": false
+  },
+  "stack_or_solver_limit_changes": false,
+  "new_trusted_items": false,
+  "spec_ambiguities": [],
+  "diagnostic_limit": "The logs name no overflowing operation; do not attribute the crash to a particular lemma or claim checked prefixes without a completed proof run.",
+  "resume": "Reduce emitted literal/state-expression size or introduce smaller checked invariants before another budget attempt; do not raise stack/solver limits. Generator support remains untrusted and both records uncredited."
+}

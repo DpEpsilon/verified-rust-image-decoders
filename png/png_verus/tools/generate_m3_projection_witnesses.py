@@ -64,6 +64,7 @@ proof fn rgb_background_success(d: Seq<u8>,entries: nat)
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--names', nargs='+')
+    parser.add_argument('--split-budget', action='store_true')
     args = parser.parse_args()
     inventory = json.loads((ROOT/'evidence/m3-witness-status-0282.json').read_text())
     lines = ['//! Whole-walk/preparation projections from authored frozen fixtures.',
@@ -182,6 +183,9 @@ def main():
                 '        && m::store(doc,value,base).trns==doc.trns && m::store(doc,value,base).actl==doc.actl',
                 '        && m::store(doc,value,base).idat==doc.idat && m::store(doc,value,base).frames==doc.frames by {',
                 '        stored_structure(doc,value,base);','    }']
+        split_helpers = []
+        if frames and args.split_budget:
+            split_helpers, split_composition = certificates.split_apng_steps(data,ident,facts,True,None)
         symbolic_header = header.replace(f'bytes_{ident}()', 'b')
         composition = [f'    reveal_with_fuel(m::drive,{sites+1});']
         if name == 'plte/suggested-palette-in-rgb':
@@ -195,6 +199,9 @@ def main():
             for n in reversed(range(5)):
                 composition += [f'    m::drive_step(b,m::strict(),false,false,s{n});',
                                 f'    assert(accepted(m::drive(b,m::strict(),false,false,s{n}),{symbolic_header}));']
+        if split_helpers:
+            lines += split_helpers
+            composition = [x.replace(f'bytes_{ident}()', 'b') for x in split_composition]
         lines += ['#[verifier::spinoff_prover]',f'proof fn symbolic_{ident}(b: Seq<u8>)',
                   f'    requires b.len()=={len(data)},crate::model::mh(b)==Ok(({symbolic_header},33nat)),',
                   *[f'        {r},' for r in requirements],
@@ -202,6 +209,13 @@ def main():
                   '    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);',
                   parse_hide,control_hide,*structural_store,*pure,'    reveal(m::step);reveal(m::ordered);reveal(m::own);',
                   *composition,'}','']
+        entry_prefix = [f'fn projection_{ident}() {{',f'    hide(m::{model});',f'    let b=[{values}];',
+                        f'    proof {{assert(b@==bytes_{ident}());model_{ident}();}}']
+        entry_suffix = []
+        if frames and args.split_budget:
+            entry_prefix = [f'fn public_preparation_{ident}(b: &[u8])',f'    requires b@==bytes_{ident}(),','{',
+                            f'    hide(m::{model});hide(bytes_{ident});',f'    proof {{model_{ident}();}}']
+            entry_suffix = [f'fn projection_{ident}() {{',f'    let b=[{values}];',f'    public_preparation_{ident}(&b);','}','']
         lines += [f'// {name.replace(chr(94),chr(95))}; fixture sha256 {digest}',
                   f'spec fn bytes_{ident}() -> Seq<u8> {{seq![{values}]}}',
                   f'spec fn accepted_{ident}() -> bool {{{predicate}}}',
@@ -214,8 +228,7 @@ def main():
                   '        reveal(crate::model::mh);',
                   f'        assert(crate::model::mh(bytes_{ident}())==Ok(({header},33nat))) by (compute);','    }',
                   *facts,f'    symbolic_{ident}(bytes_{ident}());','}',
-                  f'// {LABEL}',f'fn projection_{ident}() {{',f'    hide(m::{model});',
-                  f'    let b=[{values}];',f'    proof {{assert(b@==bytes_{ident}());model_{ident}();}}',
+                  f'// {LABEL}',*entry_prefix,
                   '    let mut events=Events {r1:false,r3:false,r4:false};',
                   f'    let prepared=crate::callers::{preparation}(&b,&STRICT,&mut events);',
                   '    match prepared {',
@@ -223,7 +236,7 @@ def main():
                   '            assert(doc.info.ranges_wf(b.len() as nat)) by {reveal(crate::walk::Doc::wf);}',
                   '        },','        Err(_)=>{assert(false);},','    }',
                   '    // The actual public call has no asserted final data/pixel outcome.',
-                  f'    let _public_result={public}(&b);','}','']
+                  f'    let _public_result={public}(&b);','}','',*entry_suffix]
         rows.append(dict(name=name, entry=scheduled['entry'], source=str(path), source_sha256=digest,
                          input_sha256=hashlib.sha256(data).hexdigest(), frozen_expected=fixture['expected'],
                          category='b', model_function='model_'+ident, function='projection_'+ident,

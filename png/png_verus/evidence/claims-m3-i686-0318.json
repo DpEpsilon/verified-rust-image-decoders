@@ -1,0 +1,114 @@
+{
+  "milestone": "M3 copied-cache i686 replay and bounded budget blockers; not sign-off-ready",
+  "base_commit": "fe41765",
+  "checkpoint": 318,
+  "host_checkpoint": 316,
+  "verified": 1448,
+  "errors": 0,
+  "host_only": false,
+  "signoff_ready": false,
+  "runtime_and_source_controls_run": 319,
+  "claims": [
+    {
+      "row": "Final copied-cache i686 replay",
+      "status": "COMPLETE for accepted M3 source",
+      "runs": [
+        316,
+        318
+      ],
+      "functions": [
+        "Entire registered PNG crate; source inventory in i686-replay-0318.json"
+      ],
+      "statement": "The identical source verifies 1,448 primary PNG obligations on host and i686 with zero errors, no-cheating and default limits; the target invocation and pinned a822 rmeta are explicit in the log. Fresh vstd was reused from a copy; no dependency count is added."
+    },
+    {
+      "row": "THEOREMS.md category-a exact error/public-entry gates",
+      "status": "114/115 complete, unchanged coverage",
+      "runs": [
+        316,
+        318
+      ],
+      "functions": [
+        "witness_m3_frozen::header_*",
+        "witness_m3_walk_frozen::{model_*,walk_*,split_*}"
+      ],
+      "statement": "All 89 generated record/input/error/public-function bindings and twenty-five header witnesses remain. No pixel-budget credit is added."
+    },
+    {
+      "row": "THEOREMS.md category-b M3 structural/header/preparation projections",
+      "status": "15/16 complete, unchanged coverage",
+      "runs": [
+        316,
+        318
+      ],
+      "functions": [
+        "projection_container_minimal_ok",
+        "projection_container_unknown_ancillary_everywhere",
+        "projection_container_reserved_bit_ancillary",
+        "projection_plte_ok",
+        "projection_plte_suggested_palette_in_rgb",
+        "projection_anc_ok_iccp_303",
+        "projection_anc_ok_time_7_after_idat",
+        "projection_anc_ok_srgb_and_iccp_both",
+        "projection_anc_ok_many_text",
+        "projection_anc_ok_ztxt_with_corrupt_zlib_not_inflated",
+        "projection_order_splt_twice",
+        "projection_order_bkgd_hist_after_plte_before_idat_rgb",
+        "projection_ihdr_8192x8192_accepted_then_truncated_zlib",
+        "projection_ihdr_67108864x1_accepted_then_truncated_zlib",
+        "projection_ihdr_1x67108864_accepted_then_truncated_zlib"
+      ],
+      "statement": "Every record retains the M4\u2013M6 final-data label; actual preparation and public entry calls are retained, and no final data result is asserted."
+    },
+    {
+      "row": "Earlier M3 structural/allocation/Info/rewalk and ERRATA E2 components",
+      "status": "Retained, now rechecked on host and i686",
+      "runs": [
+        316,
+        318
+      ],
+      "functions": [
+        "header::prefix",
+        "Frames::with_trace",
+        "Frames::try_next",
+        "DataReader::read",
+        "decode_image",
+        "decode_exact"
+      ],
+      "statement": "Production sources unchanged; reader-effects-0318.json retains the separate checked-contract and inspection/Rust-aliasing arguments."
+    },
+    {
+      "row": "Two remaining M3 frozen-record gates",
+      "status": "OPEN; blocked by native verifier stack overflows",
+      "runs": [
+        312,
+        313,
+        314,
+        315
+      ],
+      "records": [
+        "apng-bad/pixel-budget",
+        "apng-bad/pixel-budget-exactly-2^30-then-zlib"
+      ],
+      "functions": [],
+      "statement": "Both records have separate bounded full-crate attempts. No final count, prefix proof credit, new trust or limit change. The accepted source excludes both candidates."
+    },
+    {
+      "row": "M4\u2013M6 final data/pixel equations",
+      "status": "untouched/open",
+      "functions": [],
+      "statement": "All sixteen category-b final-data outcomes remain open; no pixel, compositor, disposal or SavedAt equality claim."
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "target": "native x86_64 only"
+  },
+  "spec_ambiguities": [],
+  "resume": "Retain 89 generated public-error names and fifteen projections; only the two budget M3 fixture gates remain, with native stack-overflow blockers recorded. Any future source change requires a fresh host and i686 replay."
+}

@@ -1,0 +1,18 @@
+{
+  "checkpoint": 318,
+  "source_snapshot": "i686-cache-preflight-0310.json",
+  "source_root": "/home/ws/projects/verified-decoders/png/inflate_verus/target/i686-verify",
+  "source_file_set_unchanged": true,
+  "source_files_unchanged": 282,
+  "comparison": "Every filename, SHA256, size and nanosecond mtime matched before-copy and after-replay snapshots",
+  "host_vstd_pins_unchanged": true,
+  "copied_i686_vstd_pins_unchanged": {
+    "libvstd-a8222d889f5a22f0.vir": "2f705972fa0d742172662e678e70287dd7b326107c663e904d7905f517b9343f",
+    "libvstd-a8222d889f5a22f0.rmeta": "797e7a20193d953b3e208458a6db50f3a0d2ef36d1b8e6b8fac28dd35566ad1e",
+    "vstd-a8222d889f5a22f0.d": "760593acdf55856a304d71a9d0c736d88b8695e59da8ed49c975713514cb0fe1"
+  },
+  "copy_files": 281,
+  "copy_only": true,
+  "no_vstd_rebuild": true,
+  "verified_after_ns": 1795201659896386462
+}

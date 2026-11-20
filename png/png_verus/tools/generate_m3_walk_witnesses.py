@@ -496,6 +496,7 @@ def split_apng_steps(data, ident, facts, frames_entry, frozen_error):
     pos, stage, ti = 33, 0, 0
     output = [f'spec fn {prefix}_state_0(h: crate::model::Ihdr) -> m::State {{m::initial(h,33,m::no_events())}}']
     terminal_error = None
+    terminal_done = False
     while pos+12<=len(data):
         size=int.from_bytes(data[pos:pos+4],'big');tag=data[pos+4:pos+8];d=data[pos+8:pos+8+size]
         assert tag in [b'acTL',b'fcTL',b'IDAT',b'fdAT',b'IEND']
@@ -503,7 +504,13 @@ def split_apng_steps(data, ident, facts, frames_entry, frozen_error):
         before=phase=='Before'
         if phase=='During' and tag!=b'IDAT':phase='After'
         error_match=re.match(r'Err\(\(Error::(\w+),(true|false)\)\)',value)
-        if error_match:
+        done = tag==b'IEND' and value=='Ok(())'
+        if done:
+            assert frozen_error is None
+            terminal_done=True
+            state=f'{prefix}_state_{stage}(h)'
+            result=f'm::Step::Done(m::Doc {{info:m::Info {{frame_count:{state}.control.frame_count,..{state}.doc.info}},..{state}.doc}},m::no_events())'
+        elif error_match:
             terminal_error=error_match.group(1)
             assert terminal_error==frozen_error,(terminal_error,frozen_error)
             result=f'm::Step::Error(Error::{terminal_error},m::no_events())'
@@ -533,11 +540,21 @@ def split_apng_steps(data, ident, facts, frames_entry, frozen_error):
                        f'    m::State {{pos:{pos+size+12}nat,seen:{seen},phase:crate::walk_model::Phase::{phase},control:{control},',
                        f'        doc:m::Doc {{actl:{declared},info:{info},idat:seq![{",".join(idat)}],frames:seq![{",".join(fs)}],..s.doc}},..s}}','}']
             result=f'm::Step::Next({prefix}_state_{stage+1}(h))'
+        # Each step receives only its own wire/payload certificates; the root
+        # composition still receives and checks the complete certificate set.
+        payload=f'b.subrange({pos+8},{pos+8+size})'
+        wire=f'crate::critical_model::read(b,{pos}nat,'
+        step_req=[x for x in req if not re.search(r'\bb\b',x)
+                  or 'b.len()' in x or 'crate::model::mh(b)' in x
+                  or payload in x or wire in x]
+        step_hides=[hides[0], '    '+''.join(f'hide(crate::apng_model::{method});'
+                    for method in ['actl','fctl','fdat','finish','begin_idat']
+                    if any(f'crate::apng_model::{method}(' in x for x in step_req))]
         output += ['#[verifier::spinoff_prover]',f'proof fn {prefix}_step_{stage}(b: Seq<u8>,h: crate::model::Ihdr)',
-                   '    requires '+',\n        '.join(req)+',',
+                   '    requires '+',\n        '.join(step_req)+',',
                    f'    ensures m::step(b,m::strict(),{str(frames_entry).lower()},false,{prefix}_state_{stage}(h))=={result},',
-                   '{',*hides,'    reveal(m::step);reveal(m::ordered);reveal(m::own);']
-        if not error_match:
+                   '{',*step_hides,'    reveal(m::step);reveal(m::ordered);reveal(m::own);']
+        if not error_match and not done:
             step=f'm::step(b,m::strict(),{str(frames_entry).lower()},false,{prefix}_state_{stage}(h))'
             output += [f'    let actual=match {step} {{m::Step::Next(next)=>next,_=>{prefix}_state_{stage}(h)}};',
                        f'    assert({step}==m::Step::Next(actual));',
@@ -549,14 +566,17 @@ def split_apng_steps(data, ident, facts, frames_entry, frozen_error):
                        '    assert(actual.doc.frames =~= expected.doc.frames);',
                        '    assert(actual.doc.idat =~= expected.doc.idat);']
         output += ['}']
-        if terminal_error:break
+        if terminal_error or terminal_done:break
         pos+=size+12;stage+=1
-    assert terminal_error is not None
+    assert terminal_error is not None or terminal_done
     model='MWF_p' if frames_entry else 'MW_p'
     f=str(frames_entry).lower()
+    conclusion=(f'm::{model}(b,m::strict())==m::Outcome::Error(Error::{frozen_error},m::no_events())'
+                if frozen_error is not None else
+                f'match m::{model}(b,m::strict()) {{m::Outcome::Done(doc,ev)=>doc.ihdr==h && ev==m::no_events(),_=>false}}')
     output += ['#[verifier::spinoff_prover]',f'proof fn {prefix}_compose(b: Seq<u8>,h: crate::model::Ihdr)',
                '    requires '+',\n        '.join(req)+',',
-               f'    ensures m::{model}(b,m::strict())==m::Outcome::Error(Error::{frozen_error},m::no_events()),',
+               f'    ensures {conclusion},',
                '{',*hides,'    hide(m::drive);']
     output += [f'    {prefix}_step_{n}(b,h);' for n in range(stage+1)]
     output += [f'    m::drive_step(b,m::strict(),{f},false,{prefix}_state_{n}(h));' for n in reversed(range(stage+1))]
@@ -690,10 +710,22 @@ def main():
                       control_hides,*pure,'    reveal(m::step);reveal(m::ordered);reveal(m::own);',
                       *[r.replace(f'bytes_{ident}()', 'b') for r in composition],'}','']
             composition = [f'        symbolic_{ident}(bytes_{ident}());']
+        public_lines = [f'fn walk_{ident}() {{',f'    hide(m::{model});',f'    let b=[{values}];',
+                        f'    proof {{assert(b@==bytes_{ident}());model_{ident}();}}',
+                        f'    let public_result={public}(&b);',
+                        f'    assert(matches!(public_result,Err(TryError::Format(Error::{error}))));','}','']
+        if name == 'apng-bad/pixel-budget':
+            # The unconditional literal wrapper discharges this exact-input
+            # premise; the checked helper still calls the actual public entry.
+            public_lines = [f'fn public_entry_{ident}(b: &[u8])',f'    requires b@==bytes_{ident}(),','{',
+                            f'    hide(m::{model});hide(bytes_{ident});',
+                            f'    proof {{model_{ident}();}}',f'    let public_result={public}(b);',
+                            f'    assert(matches!(public_result,Err(TryError::Format(Error::{error}))));','}',
+                            f'fn walk_{ident}() {{',f'    let b=[{values}];',f'    public_entry_{ident}(&b);','}','']
         lines += [
             f'// {name.replace(chr(94), chr(95))}; fixture sha256 {digest}',
             f'spec fn bytes_{ident}() -> Seq<u8> {{seq![{values}]}}',
-            *(['#[verifier::spinoff_prover]'] if name in ['container/non-consecutive-idat','anc-bad/bkgd-index-3-of-3','order/gAMA-after-plte'] or name.startswith('apng-bad/') else []),
+            '#[verifier::spinoff_prover]',
             f'proof fn model_{ident}()',
             f'    ensures m::{model}(bytes_{ident}(),m::strict())==m::Outcome::Error(Error::{error},m::no_events()),',
             '{',
@@ -708,13 +740,7 @@ def main():
             *([] if symbolic or split or name in ['apng-bad/fctl-width-0','plte/257-entries','anc-bad/iccp-name-80','anc-bad/iccp-leading-space','order/iCCP-after-idat','apng-bad/seq-starts-at-1'] else ['        reveal(m::step);reveal(m::ordered);reveal(m::own);']),
             *composition,
             '}',
-            f'fn walk_{ident}() {{',
-            f'    hide(m::{model});',
-            f'    let b=[{values}];',
-            f'    proof {{assert(b@==bytes_{ident}());model_{ident}();}}',
-            f'    let public_result={public}(&b);',
-            f'    assert(matches!(public_result,Err(TryError::Format(Error::{error}))));',
-            '}', '',
+            *public_lines,
         ]
         rows.append(dict(name=name, entry=scheduled['entry'], function='walk_'+ident,
                          source=str(path), source_sha256=digest,

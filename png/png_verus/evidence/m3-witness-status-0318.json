@@ -1,0 +1,3358 @@
+{
+  "requirement": "THEOREMS.md:194 M3 frozen-record witness gates and council sixteen no-legal-R cases",
+  "checkpoint": 318,
+  "base_commit": "fe41765",
+  "required_records": 131,
+  "complete_public_entry_witnesses": 114,
+  "category_a": 115,
+  "category_b": 16,
+  "council_excluded_instances": 16,
+  "council_excluded_header_facts": 14,
+  "boundary_interpretation": "Coordinator interpretation: (a) walk/header/cap-decided outcomes require checked actual public entry error dispatch and exact frozen error. (b) structurally accepted/data-decided records require model proof at M3 walk/header projection and an executable call at the checked public preparation showing walk success/projected fields; final data remains M4\u2013M6. This accounting is for review to challenge, not a specification edit.",
+  "records": [
+    {
+      "name": "container/minimal-ok",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "4241a1ad777d70c06f53b1fd5456c60965e585b689b3a0c146a41489a10cca89",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "width": 2,
+        "height": 2,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "c9493fff"
+          },
+          {
+            "count": 1,
+            "hex": "ca4b97ff"
+          },
+          {
+            "count": 1,
+            "hex": "e11a17ff"
+          },
+          {
+            "count": 1,
+            "hex": "fcf681ff"
+          }
+        ]
+      },
+      "category": "b",
+      "complete_public_entry_witness": false,
+      "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+      "complete_m3_projection": true,
+      "complete_final_data_witness": false,
+      "projection_function": "projection_container_minimal_ok",
+      "projection_model_function": "model_container_minimal_ok",
+      "projection_symbolic_function": "symbolic_container_minimal_ok",
+      "projection_module": "witness_m3_projection",
+      "projection_verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/empty",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "input_bytes": 0,
+      "frozen_expected": {
+        "error": "BadSignature"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_container_empty",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/short-signature",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "214246cd551e66de7b92c04e55355d0b3751adc15ee8ecc4066e0e9a7c9d3599",
+      "input_bytes": 7,
+      "frozen_expected": {
+        "error": "BadSignature"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_container_short_signature",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/bad-signature",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "0847091084e5cb984968bc4275c6b8d8bb5d29449851f3581780097081bbc4e0",
+      "input_bytes": 8,
+      "frozen_expected": {
+        "error": "BadSignature"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_container_bad_signature",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/signature-only",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "4c4b6a3be1314ab86138bef4314dde022e600960d8689a2c8f8631802d20dab6",
+      "input_bytes": 8,
+      "frozen_expected": {
+        "error": "TruncatedChunk"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_container_signature_only",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/truncated-ihdr-header",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "c93e2a066c3fab6da4e7395e61c7d7d55e011c4f67ca6ea0ea2d5a78b3d332bc",
+      "input_bytes": 14,
+      "frozen_expected": {
+        "error": "TruncatedChunk"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_container_truncated_ihdr_header",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/truncated-ihdr-crc",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "83ffe1db8854aa67c1cdb162d49eef97e8d3ee2ad326e9a31a0f74000e53158e",
+      "input_bytes": 32,
+      "frozen_expected": {
+        "error": "TruncatedChunk"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_container_truncated_ihdr_crc",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/first-chunk-not-ihdr",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "1963e93dd035d1d2f7ac72be493b309c5cca35d3b8fca42fbb050433c0b4615a",
+      "input_bytes": 95,
+      "frozen_expected": {
+        "error": "MissingIhdr"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_container_first_chunk_not_ihdr",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/ihdr-length-12",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "55fac890fe401e38d21544fea4236bc22c8f09ddcba5b61fca1106c4e3d28ae0",
+      "input_bytes": 78,
+      "frozen_expected": {
+        "error": "InvalidChunkLength"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "council_excluded_M2_stream": {
+        "name": "container/ihdr-length-12",
+        "stream": 0,
+        "bytes": 22,
+        "covered": false,
+        "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL",
+        "inventory_index": 364
+      },
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_container_ihdr_length_12",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/ihdr-crc",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "9929f7eba8453c24b82d9667837a12d2f776f77bdef5703ec00050d868797017",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "CrcMismatch"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_container_ihdr_crc",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/idat-crc",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "5465ff537e12856df8e011de3aa79d488bb3537c8028c01061d04b1dd9266fd5",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "CrcMismatch"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_idat_crc",
+      "model_function": "model_container_idat_crc",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/ancillary-crc",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "b683639def34dc5f41afbcbbf1960bad64ef37513b09e511cb7314f055f8764d",
+      "input_bytes": 98,
+      "frozen_expected": {
+        "error": "CrcMismatch"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_ancillary_crc",
+      "model_function": "model_container_ancillary_crc",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/unknown-ancillary-crc",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "63bdc6491b27a9d78bcb9279b7d5a36da62bcb80bf0c668ffe15a6e3bf721a88",
+      "input_bytes": 94,
+      "frozen_expected": {
+        "error": "CrcMismatch"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_unknown_ancillary_crc",
+      "model_function": "model_container_unknown_ancillary_crc",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/iend-crc",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "1309b6839bdfd60a45667e7629ecdfea8c4655899b4608a07eb7330022b2ae41",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "CrcMismatch"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_iend_crc",
+      "model_function": "model_container_iend_crc",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/length-2^31",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "c2ed526a601666ba610678fa69139b9b49fe46df6725bb4f18f3ed25323cc34d",
+      "input_bytes": 49,
+      "frozen_expected": {
+        "error": "ChunkTooLong"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_length_2_31",
+      "model_function": "model_container_length_2_31",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/length-ffffffff",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "035ae21490cf92f10f08ebe7b3f58bd7a669113155083e43e68fb77892bba2fa",
+      "input_bytes": 41,
+      "frozen_expected": {
+        "error": "ChunkTooLong"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_length_ffffffff",
+      "model_function": "model_container_length_ffffffff",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/type-digit",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "e6f961007283b0d8d4f79f6d913b1217bc7bb43e7d16cc6541cb0724809a104b",
+      "input_bytes": 91,
+      "frozen_expected": {
+        "error": "InvalidChunkType"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_type_digit",
+      "model_function": "model_container_type_digit",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/type-space",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "56a9a46fffcc0ec9167535af324243209538e036343132293b6b6c9d8570dde5",
+      "input_bytes": 91,
+      "frozen_expected": {
+        "error": "InvalidChunkType"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_type_space",
+      "model_function": "model_container_type_space",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/truncated-mid-idat",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "b1782cc8123c7879d145ace0487771f31bbece2a5a11ed01087f72e7445a46c4",
+      "input_bytes": 61,
+      "frozen_expected": {
+        "error": "TruncatedChunk"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_truncated_mid_idat",
+      "model_function": "model_container_truncated_mid_idat",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/length-beyond-eof",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "b750d1ce52e2634084a2e5b836bfcf57d9d0e6e61375e37f4d4fd42beb1b9c2b",
+      "input_bytes": 67,
+      "frozen_expected": {
+        "error": "TruncatedChunk"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_length_beyond_eof",
+      "model_function": "model_container_length_beyond_eof",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/missing-iend",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "b25c8629828eb61567ece81de508d7af4962fa972e76dda31d1033c2d60f6ac8",
+      "input_bytes": 67,
+      "frozen_expected": {
+        "error": "MissingIend"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_missing_iend",
+      "model_function": "model_container_missing_iend",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/missing-iend-after-text",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "ea49db270d47d5936f885086b9ffddb8790ad0c94dd1cd14a8bc4fd0a39f83a5",
+      "input_bytes": 82,
+      "frozen_expected": {
+        "error": "MissingIend"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_missing_iend_after_text",
+      "model_function": "model_container_missing_iend_after_text",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/trailing-byte",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "2d03ba5a80566c84cea417e7e903d1398a4deae4eaa6be7dd101ed8d77d07ceb",
+      "input_bytes": 80,
+      "frozen_expected": {
+        "error": "TrailingBytes"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_trailing_byte",
+      "model_function": "model_container_trailing_byte",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/trailing-second-iend",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "6772423da84030f5c021466d44b99adcca5fb6466ea88b4f913c9d906ff159ee",
+      "input_bytes": 91,
+      "frozen_expected": {
+        "error": "TrailingBytes"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_trailing_second_iend",
+      "model_function": "model_container_trailing_second_iend",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/iend-length-1",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "1b4ce733cc9f4a0c5f640994a66c6b72c2c765d74e7a5890c5d47f119346d722",
+      "input_bytes": 80,
+      "frozen_expected": {
+        "error": "InvalidChunkLength"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_iend_length_1",
+      "model_function": "model_container_iend_length_1",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/no-idat",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "3c482c66e7967406a7d07590ff0b9d35df7e64da974391e40e21abe5f72b0e51",
+      "input_bytes": 45,
+      "frozen_expected": {
+        "error": "MissingImageData"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_no_idat",
+      "model_function": "model_container_no_idat",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/unknown-critical",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "85f61d063c619de93c0ead9dd868371338d9ed3045793b3d7d5fa5c84c0ef40f",
+      "input_bytes": 91,
+      "frozen_expected": {
+        "error": "UnknownCriticalChunk"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_unknown_critical",
+      "model_function": "model_container_unknown_critical",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/reserved-bit-on-critical",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "9ec43b7f840441c463f2c379bc17aa404d4b6c66111db8acfcad6531dc886db5",
+      "input_bytes": 91,
+      "frozen_expected": {
+        "error": "UnknownCriticalChunk"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_reserved_bit_on_critical",
+      "model_function": "model_container_reserved_bit_on_critical",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/unknown-ancillary-everywhere",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "795589dd4ea801cde4ecfad7c590be5a38f74b9c5880a5056e3aa7a5592195d4",
+      "input_bytes": 106,
+      "frozen_expected": {
+        "width": 2,
+        "height": 2,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "c9493fff"
+          },
+          {
+            "count": 1,
+            "hex": "ca4b97ff"
+          },
+          {
+            "count": 1,
+            "hex": "e11a17ff"
+          },
+          {
+            "count": 1,
+            "hex": "fcf681ff"
+          }
+        ]
+      },
+      "category": "b",
+      "complete_public_entry_witness": false,
+      "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+      "complete_m3_projection": true,
+      "complete_final_data_witness": false,
+      "projection_function": "projection_container_unknown_ancillary_everywhere",
+      "projection_model_function": "model_container_unknown_ancillary_everywhere",
+      "projection_symbolic_function": "symbolic_container_unknown_ancillary_everywhere",
+      "projection_module": "witness_m3_projection",
+      "projection_verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/reserved-bit-ancillary",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "452c72ba98dfa375165bc3566371d8a4033b33dfaaccd2cc076de01fdb92f369",
+      "input_bytes": 92,
+      "frozen_expected": {
+        "width": 2,
+        "height": 2,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "c9493fff"
+          },
+          {
+            "count": 1,
+            "hex": "ca4b97ff"
+          },
+          {
+            "count": 1,
+            "hex": "e11a17ff"
+          },
+          {
+            "count": 1,
+            "hex": "fcf681ff"
+          }
+        ]
+      },
+      "category": "b",
+      "complete_public_entry_witness": false,
+      "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+      "complete_m3_projection": true,
+      "complete_final_data_witness": false,
+      "projection_function": "projection_container_reserved_bit_ancillary",
+      "projection_model_function": "model_container_reserved_bit_ancillary",
+      "projection_symbolic_function": "symbolic_container_reserved_bit_ancillary",
+      "projection_module": "witness_m3_projection",
+      "projection_verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/duplicate-ihdr",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "f6c0a35f275438fda30de30415b358f97725cfa0a2548b30aa843e7b3b2bdc84",
+      "input_bytes": 104,
+      "frozen_expected": {
+        "error": "DuplicateChunk"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "council_excluded_M2_stream": {
+        "name": "container/duplicate-ihdr",
+        "stream": 0,
+        "bytes": 22,
+        "covered": false,
+        "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL",
+        "inventory_index": 381
+      },
+      "function": "walk_container_duplicate_ihdr",
+      "model_function": "model_container_duplicate_ihdr",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/non-consecutive-idat",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "a53f1e7965052a687843f6dda27d7a91bd42164c7a7b799734ed9bfae538962e",
+      "input_bytes": 106,
+      "frozen_expected": {
+        "error": "NonConsecutiveIdat"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_non_consecutive_idat",
+      "model_function": "model_container_non_consecutive_idat",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "container/idat-after-iend",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "4376ce515a9e7b4c3823a060825444bafca7673d810ac81cdb56c53c6906d594",
+      "input_bytes": 113,
+      "frozen_expected": {
+        "error": "TrailingBytes"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_container_idat_after_iend",
+      "model_function": "model_container_idat_after_iend",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/width-0",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "2617efa39c7589cbfdcb0360786d08b789c2b0cd96c8cb563c12e87c6d78b8f3",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "InvalidDimensions"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "council_excluded_M2_stream": {
+        "name": "ihdr/width-0",
+        "stream": 0,
+        "bytes": 22,
+        "covered": false,
+        "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL",
+        "inventory_index": 384
+      },
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_ihdr_width_0",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/height-0",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "b5529c9d3398c54e226beeb07c578effce7fa54b3e9df654d7de9ba842888e23",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "InvalidDimensions"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "council_excluded_M2_stream": {
+        "name": "ihdr/height-0",
+        "stream": 0,
+        "bytes": 22,
+        "covered": false,
+        "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL",
+        "inventory_index": 385
+      },
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_ihdr_height_0",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/width-2^31",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "00643696041645d527132cab3b2c44ffe102590bbd2039163d1b35bd0e7e6bea",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "InvalidDimensions"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "council_excluded_M2_stream": {
+        "name": "ihdr/width-2^31",
+        "stream": 0,
+        "bytes": 22,
+        "covered": false,
+        "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL",
+        "inventory_index": 386
+      },
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_ihdr_width_2_31",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/depth-3",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "8b3829b2ac3a9a3fab63ca7e505b918ee7547326648a03485ad91d3a37ab1394",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "InvalidColorTypeDepth"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "council_excluded_M2_stream": {
+        "name": "ihdr/depth-3",
+        "stream": 0,
+        "bytes": 22,
+        "covered": false,
+        "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL",
+        "inventory_index": 387
+      },
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_ihdr_depth_3",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/rgb-depth-4",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "d2ae4de664b8321a50e0909b17f7d9fe759a1840a2484178c86513966163b7ca",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "InvalidColorTypeDepth"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "council_excluded_M2_stream": {
+        "name": "ihdr/rgb-depth-4",
+        "stream": 0,
+        "bytes": 22,
+        "covered": false,
+        "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL",
+        "inventory_index": 388
+      },
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_ihdr_rgb_depth_4",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/palette-depth-16",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "fffef0b0d6e2ba354127037ed9d44722677eea8dae803f19ed6c2fd7ad0ccb2f",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "InvalidColorTypeDepth"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "council_excluded_M2_stream": {
+        "name": "ihdr/palette-depth-16",
+        "stream": 0,
+        "bytes": 22,
+        "covered": false,
+        "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL",
+        "inventory_index": 389
+      },
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_ihdr_palette_depth_16",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/ct-1",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "2504a50f322ecd131bcb2d02c57fe197c16250d456521e7e58cf347d6dd5a60c",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "InvalidColorTypeDepth"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "council_excluded_M2_stream": {
+        "name": "ihdr/ct-1",
+        "stream": 0,
+        "bytes": 22,
+        "covered": false,
+        "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL",
+        "inventory_index": 390
+      },
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_ihdr_ct_1",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/ct-5",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "cda12c6fe492065beb8cf15fd6810e23f53b7ba5e96b9f3073f8747e7c212b8e",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "InvalidColorTypeDepth"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "council_excluded_M2_stream": {
+        "name": "ihdr/ct-5",
+        "stream": 0,
+        "bytes": 22,
+        "covered": false,
+        "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL",
+        "inventory_index": 391
+      },
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_ihdr_ct_5",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/ct-7",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "7c89bd55bd8222741d1bd8822c3c8015a340454b351ce1bffbab1e760e867ce9",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "InvalidColorTypeDepth"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "council_excluded_M2_stream": {
+        "name": "ihdr/ct-7",
+        "stream": 0,
+        "bytes": 22,
+        "covered": false,
+        "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL",
+        "inventory_index": 392
+      },
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_ihdr_ct_7",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/ga-depth-1",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "57f8197d51b8a445b5dae870154f2cf68bc29050f36574d82a727482b360bf08",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "InvalidColorTypeDepth"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "council_excluded_M2_stream": {
+        "name": "ihdr/ga-depth-1",
+        "stream": 0,
+        "bytes": 22,
+        "covered": false,
+        "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL",
+        "inventory_index": 393
+      },
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_ihdr_ga_depth_1",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/compression-1",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "c3b2d1251feffda38d471eeeac90cbe66f8a02caad188c6c40f534e77acb0318",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "UnsupportedCompressionMethod"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "council_excluded_M2_stream": {
+        "name": "ihdr/compression-1",
+        "stream": 0,
+        "bytes": 22,
+        "covered": false,
+        "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL",
+        "inventory_index": 394
+      },
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_ihdr_compression_1",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/filter-method-1",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "48d7c741f0a7e2793f70edf0209da40ee7dac9f46587a5582f51f9cd4a04f787",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "UnsupportedFilterMethod"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "council_excluded_M2_stream": {
+        "name": "ihdr/filter-method-1",
+        "stream": 0,
+        "bytes": 22,
+        "covered": false,
+        "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL",
+        "inventory_index": 395
+      },
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_ihdr_filter_method_1",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/interlace-2",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "741d17ab23c7399f0c2dd12188c40130cd6cde3a05558a4a0fb1fe2cb1964a9e",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "UnsupportedInterlaceMethod"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "council_excluded_M2_stream": {
+        "name": "ihdr/interlace-2",
+        "stream": 0,
+        "bytes": 22,
+        "covered": false,
+        "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL",
+        "inventory_index": 396
+      },
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_ihdr_interlace_2",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "plte/ok",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "ff26649045e83671ff441925eb9521fd09c131e729fe50f9d6dd4d5dc02d2d1e",
+      "input_bytes": 92,
+      "frozen_expected": {
+        "width": 2,
+        "height": 2,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "2fc228ff"
+          },
+          {
+            "count": 1,
+            "hex": "8b2c58ff"
+          },
+          {
+            "count": 1,
+            "hex": "e424caff"
+          },
+          {
+            "count": 1,
+            "hex": "8b2c58ff"
+          }
+        ]
+      },
+      "category": "b",
+      "complete_public_entry_witness": false,
+      "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+      "complete_m3_projection": true,
+      "complete_final_data_witness": false,
+      "projection_function": "projection_plte_ok",
+      "projection_model_function": "model_plte_ok",
+      "projection_symbolic_function": "symbolic_plte_ok",
+      "projection_module": "witness_m3_projection",
+      "projection_verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "plte/missing",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "5eb08d113d38b3768f502518f83f9c926233ebb89957e619c9863e0b263ea242",
+      "input_bytes": 71,
+      "frozen_expected": {
+        "error": "MissingPalette"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_plte_missing",
+      "model_function": "model_plte_missing",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "plte/after-idat",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "7207ae6aec56558290415fb8b2b7a5b9b476dd870e74f64dea89837740f5786a",
+      "input_bytes": 92,
+      "frozen_expected": {
+        "error": "MissingPalette"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_plte_after_idat",
+      "model_function": "model_plte_after_idat",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "plte/after-idat-rgb",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "6cde4158bab3933a85b321c0592dbfed905136410467b80891c0e5a56316e15f",
+      "input_bytes": 100,
+      "frozen_expected": {
+        "error": "ChunkOutOfOrder"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_plte_after_idat_rgb",
+      "model_function": "model_plte_after_idat_rgb",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "plte/duplicate",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "630e8ed80c2b32761bb27889bbbe2a02b501852101f3176d17155eb30a599c46",
+      "input_bytes": 113,
+      "frozen_expected": {
+        "error": "DuplicateChunk"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_plte_duplicate",
+      "model_function": "model_plte_duplicate",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "plte/length-8",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "5329674330dbbd6f0fa3f1584b77aa71a80dc84ca3d37a35e07ea746e9c779f2",
+      "input_bytes": 91,
+      "frozen_expected": {
+        "error": "InvalidPalette"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_plte_length_8",
+      "model_function": "model_plte_length_8",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "plte/length-0",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "5b3403919f01aa35d79befc79ad89bddba07676e7ad9c5035a26ac1c6563895b",
+      "input_bytes": 83,
+      "frozen_expected": {
+        "error": "InvalidPalette"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_plte_length_0",
+      "model_function": "model_plte_length_0",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "plte/257-entries",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "8ab3c286e85925d6393a6eabfd8a7f145e8cb3f32d67c153f7e712003c6b71f8",
+      "input_bytes": 854,
+      "frozen_expected": {
+        "error": "InvalidPalette"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_plte_257_entries",
+      "model_function": "model_plte_257_entries",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "plte/5-entries-depth-2",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "f2078683833252d761a3e59f3b396cf48be0f11cfa633fa39a305d5b0b2d106c",
+      "input_bytes": 96,
+      "frozen_expected": {
+        "error": "InvalidPalette"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_plte_5_entries_depth_2",
+      "model_function": "model_plte_5_entries_depth_2",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "plte/in-greyscale",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "2a34db8f6846da8ff765928dfb7a427ffcf97389f08e200b4ab3095845a1283b",
+      "input_bytes": 90,
+      "frozen_expected": {
+        "error": "UnexpectedPalette"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_plte_in_greyscale",
+      "model_function": "model_plte_in_greyscale",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "plte/in-grey-alpha",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "039f8501bc6a80e8f17358a3174debd0bbb7a8becdbc499f32d78d0031587ab4",
+      "input_bytes": 94,
+      "frozen_expected": {
+        "error": "UnexpectedPalette"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_plte_in_grey_alpha",
+      "model_function": "model_plte_in_grey_alpha",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "plte/suggested-palette-in-rgb",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "3c90d101acc8a855fa0a6b4b217c4193149e1dcf99294be03317f037b0bee059",
+      "input_bytes": 1121,
+      "frozen_expected": {
+        "width": 2,
+        "height": 2,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "c9493fff"
+          },
+          {
+            "count": 1,
+            "hex": "ca4b97ff"
+          },
+          {
+            "count": 1,
+            "hex": "e11a17ff"
+          },
+          {
+            "count": 1,
+            "hex": "fcf681ff"
+          }
+        ]
+      },
+      "category": "b",
+      "complete_public_entry_witness": false,
+      "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+      "complete_m3_projection": true,
+      "complete_final_data_witness": false,
+      "projection_function": "projection_plte_suggested_palette_in_rgb",
+      "projection_model_function": "model_plte_suggested_palette_in_rgb",
+      "projection_symbolic_function": "symbolic_plte_suggested_palette_in_rgb",
+      "projection_module": "witness_m3_projection",
+      "projection_verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "trns/before-plte",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "360604c30d7dc44aff14e0c6ede2f338d003eb34fc2f9d3dd2be24d4a85955e9",
+      "input_bytes": 105,
+      "frozen_expected": {
+        "error": "ChunkOutOfOrder"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_trns_before_plte",
+      "model_function": "model_trns_before_plte",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "trns/after-idat",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "4356a8e3ef0b9b5465dcae77f419df6732541fb2095d97eaf74a106a279940f5",
+      "input_bytes": 97,
+      "frozen_expected": {
+        "error": "ChunkOutOfOrder"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_trns_after_idat",
+      "model_function": "model_trns_after_idat",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "trns/duplicate",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "d769514bcfcc4af9712b164dbbd9914547eb2984188541ab601ff696ff87d596",
+      "input_bytes": 115,
+      "frozen_expected": {
+        "error": "DuplicateChunk"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_trns_duplicate",
+      "model_function": "model_trns_duplicate",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "trns/palette-too-long",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "b350aedade5f0c15203741e54fa6d19dceeae3d8567ddf722f87850407821a99",
+      "input_bytes": 108,
+      "frozen_expected": {
+        "error": "InvalidTransparency"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_trns_palette_too_long",
+      "model_function": "model_trns_palette_too_long",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "trns/rgb-length-2",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "ebac8580975bb5f6e6cc8fe950d7faa5876621f26567cb6398f82c0a2f1c83ab",
+      "input_bytes": 93,
+      "frozen_expected": {
+        "error": "InvalidTransparency"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_trns_rgb_length_2",
+      "model_function": "model_trns_rgb_length_2",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "trns/in-rgba",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "17267ac28d8937aa8e55143b77a33c73ac0bf4ea9e22a56393559979836553ca",
+      "input_bytes": 86,
+      "frozen_expected": {
+        "error": "InvalidTransparency"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_trns_in_rgba",
+      "model_function": "model_trns_in_rgba",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-ok/iCCP-303",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "aa04c884cf3cf109bd2c9966e7647e769fb89a8b4c02bb4b4ddb3c9c1e8784b7",
+      "input_bytes": 394,
+      "frozen_expected": {
+        "width": 2,
+        "height": 2,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "c9493fff"
+          },
+          {
+            "count": 1,
+            "hex": "ca4b97ff"
+          },
+          {
+            "count": 1,
+            "hex": "e11a17ff"
+          },
+          {
+            "count": 1,
+            "hex": "fcf681ff"
+          }
+        ]
+      },
+      "category": "b",
+      "complete_public_entry_witness": false,
+      "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+      "complete_m3_projection": true,
+      "complete_final_data_witness": false,
+      "projection_function": "projection_anc_ok_iccp_303",
+      "projection_model_function": "model_anc_ok_iccp_303",
+      "projection_symbolic_function": "symbolic_anc_ok_iccp_303",
+      "projection_module": "witness_m3_projection",
+      "projection_verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-ok/tIME-7-after-idat",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "2942b85f0220141f1d47c70bc1b2035f83ce95b90e8a673041f262220701846e",
+      "input_bytes": 98,
+      "frozen_expected": {
+        "width": 2,
+        "height": 2,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "c9493fff"
+          },
+          {
+            "count": 1,
+            "hex": "ca4b97ff"
+          },
+          {
+            "count": 1,
+            "hex": "e11a17ff"
+          },
+          {
+            "count": 1,
+            "hex": "fcf681ff"
+          }
+        ]
+      },
+      "category": "b",
+      "complete_public_entry_witness": false,
+      "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+      "complete_m3_projection": true,
+      "complete_final_data_witness": false,
+      "projection_function": "projection_anc_ok_time_7_after_idat",
+      "projection_model_function": "model_anc_ok_time_7_after_idat",
+      "projection_symbolic_function": "symbolic_anc_ok_time_7_after_idat",
+      "projection_module": "witness_m3_projection",
+      "projection_verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-ok/srgb-and-iccp-both",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "1001bfac85601fdb5a0f219fd6d1d7fbc59d9ea9c297b27264ea86360f86be22",
+      "input_bytes": 391,
+      "frozen_expected": {
+        "width": 2,
+        "height": 2,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "c9493fff"
+          },
+          {
+            "count": 1,
+            "hex": "ca4b97ff"
+          },
+          {
+            "count": 1,
+            "hex": "e11a17ff"
+          },
+          {
+            "count": 1,
+            "hex": "fcf681ff"
+          }
+        ]
+      },
+      "category": "b",
+      "complete_public_entry_witness": false,
+      "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+      "complete_m3_projection": true,
+      "complete_final_data_witness": false,
+      "projection_function": "projection_anc_ok_srgb_and_iccp_both",
+      "projection_model_function": "model_anc_ok_srgb_and_iccp_both",
+      "projection_symbolic_function": "symbolic_anc_ok_srgb_and_iccp_both",
+      "projection_module": "witness_m3_projection",
+      "projection_verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-ok/many-text",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "7262a950813a1dd166a672b8315f4fdb56702cf89c79a4b6460ba23e7a5d7407",
+      "input_bytes": 159,
+      "frozen_expected": {
+        "width": 2,
+        "height": 2,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "c9493fff"
+          },
+          {
+            "count": 1,
+            "hex": "ca4b97ff"
+          },
+          {
+            "count": 1,
+            "hex": "e11a17ff"
+          },
+          {
+            "count": 1,
+            "hex": "fcf681ff"
+          }
+        ]
+      },
+      "category": "b",
+      "complete_public_entry_witness": false,
+      "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+      "complete_m3_projection": true,
+      "complete_final_data_witness": false,
+      "projection_function": "projection_anc_ok_many_text",
+      "projection_model_function": "model_anc_ok_many_text",
+      "projection_symbolic_function": "symbolic_anc_ok_many_text",
+      "projection_module": "witness_m3_projection",
+      "projection_verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-ok/ztxt-with-corrupt-zlib-not-inflated",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "e0b14ac39dd76b3e39589fde98361b9978e9634d88d6e28d4144312c74534dd1",
+      "input_bytes": 101,
+      "frozen_expected": {
+        "width": 2,
+        "height": 2,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "c9493fff"
+          },
+          {
+            "count": 1,
+            "hex": "ca4b97ff"
+          },
+          {
+            "count": 1,
+            "hex": "e11a17ff"
+          },
+          {
+            "count": 1,
+            "hex": "fcf681ff"
+          }
+        ]
+      },
+      "category": "b",
+      "complete_public_entry_witness": false,
+      "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+      "complete_m3_projection": true,
+      "complete_final_data_witness": false,
+      "projection_function": "projection_anc_ok_ztxt_with_corrupt_zlib_not_inflated",
+      "projection_model_function": "model_anc_ok_ztxt_with_corrupt_zlib_not_inflated",
+      "projection_symbolic_function": "symbolic_anc_ok_ztxt_with_corrupt_zlib_not_inflated",
+      "projection_module": "witness_m3_projection",
+      "projection_verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-bad/gamma-0",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "b1605d40b7e25730f1497327cc337ab52c38d07cb7d79f77a5b589144809abc5",
+      "input_bytes": 95,
+      "frozen_expected": {
+        "error": "InvalidGamma"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_anc_bad_gamma_0",
+      "model_function": "model_anc_bad_gamma_0",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-bad/iccp-name-80",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "c25df079278db98dee052e961668f2150608db0bb31c305d2bf9bee11762608b",
+      "input_bytes": 457,
+      "frozen_expected": {
+        "error": "InvalidIccp"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_anc_bad_iccp_name_80",
+      "model_function": "model_anc_bad_iccp_name_80",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-bad/iccp-leading-space",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "58e09b1d4a07eb32fa777139c9a77f5e2911b8f1277a9d01bd5b2fda01b9c59d",
+      "input_bytes": 379,
+      "frozen_expected": {
+        "error": "InvalidIccp"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_anc_bad_iccp_leading_space",
+      "model_function": "model_anc_bad_iccp_leading_space",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-bad/cicp-matrix-1",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "c9a282554b2d694a68ea8d09d7ea797c061f213cc84f35ef824c232c89a553c6",
+      "input_bytes": 95,
+      "frozen_expected": {
+        "error": "InvalidCicp"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_anc_bad_cicp_matrix_1",
+      "model_function": "model_anc_bad_cicp_matrix_1",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-bad/bkgd-high-bits",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "6e95c5eaa89c528cf31f21235f4a8501c3ce54a8ffb91a8ed6d4978a4d8e5b7b",
+      "input_bytes": 97,
+      "frozen_expected": {
+        "error": "InvalidBackground"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_anc_bad_bkgd_high_bits",
+      "model_function": "model_anc_bad_bkgd_high_bits",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-bad/exif-len-3",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "6039ecabbf576ea254c22308eb4f5c1baecb01295ab3f00978b78e69248248b1",
+      "input_bytes": 94,
+      "frozen_expected": {
+        "error": "InvalidExif"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_anc_bad_exif_len_3",
+      "model_function": "model_anc_bad_exif_len_3",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-bad/time-second-61",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "5223ca0e2ceb48b5774ab6f5d31d8ef3518c402990dcc14938aa354acf4ea63d",
+      "input_bytes": 98,
+      "frozen_expected": {
+        "error": "InvalidTime"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_anc_bad_time_second_61",
+      "model_function": "model_anc_bad_time_second_61",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-bad/text-keyword-double-space",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "06e5838876309d276fdd5fc3165cefb410e0990ede5a4cdb0e4c598d0cbe2df6",
+      "input_bytes": 97,
+      "frozen_expected": {
+        "error": "InvalidText"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_anc_bad_text_keyword_double_space",
+      "model_function": "model_anc_bad_text_keyword_double_space",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-bad/itxt-compressed-method-1",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "5ac2f507ce03be90e530b673762d367d1c9132188f61d3c0977493ca462e77e4",
+      "input_bytes": 97,
+      "frozen_expected": {
+        "error": "InvalidText"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_anc_bad_itxt_compressed_method_1",
+      "model_function": "model_anc_bad_itxt_compressed_method_1",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-bad/itxt-missing-separators",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "1eff62b3c735c4a41552b49cad96a1c0b38c9bc1ca2f3b66f8bb75fb4ed81c34",
+      "input_bytes": 97,
+      "frozen_expected": {
+        "error": "InvalidText"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_anc_bad_itxt_missing_separators",
+      "model_function": "model_anc_bad_itxt_missing_separators",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-bad/hist-without-plte",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "c4e757cb582d2d200b64605450607588504405f5b5f44ebe9661c6411da3254d",
+      "input_bytes": 97,
+      "frozen_expected": {
+        "error": "ChunkOutOfOrder"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_anc_bad_hist_without_plte",
+      "model_function": "model_anc_bad_hist_without_plte",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-bad/bkgd-index-3-of-3",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "b04245845b1ce851c153979cee6ee76366e0e51b1f6608ef8bd9bc3bf4c09491",
+      "input_bytes": 105,
+      "frozen_expected": {
+        "error": "InvalidBackground"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_anc_bad_bkgd_index_3_of_3",
+      "model_function": "model_anc_bad_bkgd_index_3_of_3",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "anc-bad/sbit-palette-9",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "e04b4c5ea4d87dc37a7b0da4b7da529db21cba8fb5d1c42f239e8873a81dbec3",
+      "input_bytes": 107,
+      "frozen_expected": {
+        "error": "InvalidSbit"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_anc_bad_sbit_palette_9",
+      "model_function": "model_anc_bad_sbit_palette_9",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "order/gAMA-after-plte",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "75ab56cde56734deae46dbba7470693667d042605d5afd2417416c911ae3f887",
+      "input_bytes": 116,
+      "frozen_expected": {
+        "error": "ChunkOutOfOrder"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_order_gama_after_plte",
+      "model_function": "model_order_gama_after_plte",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "order/gAMA-after-idat",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "7809df3ec35b0f741f3a16772653f3b599956b26a7e3321fc967b01aa955d581",
+      "input_bytes": 95,
+      "frozen_expected": {
+        "error": "ChunkOutOfOrder"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_order_gama_after_idat",
+      "model_function": "model_order_gama_after_idat",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "order/gAMA-duplicate",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "57138108b0daa3a1107d4b3615cfc0faf305683bd85387fe9ff72015972e114d",
+      "input_bytes": 111,
+      "frozen_expected": {
+        "error": "DuplicateChunk"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_order_gama_duplicate",
+      "model_function": "model_order_gama_duplicate",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "order/iCCP-after-idat",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "b7816ba75fdb2bd4359748182b8fc9756150ed24e1d84fbfe9876ecce44d0094",
+      "input_bytes": 378,
+      "frozen_expected": {
+        "error": "ChunkOutOfOrder"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_order_iccp_after_idat",
+      "model_function": "model_order_iccp_after_idat",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "order/pHYs-after-idat",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "0e2b1ac6a7ca4f127d7398574bc33c468662787ce325b473a66d308350a18e65",
+      "input_bytes": 100,
+      "frozen_expected": {
+        "error": "ChunkOutOfOrder"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_order_phys_after_idat",
+      "model_function": "model_order_phys_after_idat",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "order/splt-twice",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "f7717ef3fc7fef73db28ccc326373d7af637e651220c325c9635ff7b13c2a58b",
+      "input_bytes": 109,
+      "frozen_expected": {
+        "width": 2,
+        "height": 2,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "c9493fff"
+          },
+          {
+            "count": 1,
+            "hex": "ca4b97ff"
+          },
+          {
+            "count": 1,
+            "hex": "e11a17ff"
+          },
+          {
+            "count": 1,
+            "hex": "fcf681ff"
+          }
+        ]
+      },
+      "category": "b",
+      "complete_public_entry_witness": false,
+      "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+      "complete_m3_projection": true,
+      "complete_final_data_witness": false,
+      "projection_function": "projection_order_splt_twice",
+      "projection_model_function": "model_order_splt_twice",
+      "projection_symbolic_function": "symbolic_order_splt_twice",
+      "projection_module": "witness_m3_projection",
+      "projection_verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "order/bkgd-hist-after-plte-before-idat-rgb",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "5b6875eccbef14c69bf90ef492fd6c33d12313a3957cbb871e7d3c499ea1aab6",
+      "input_bytes": 136,
+      "frozen_expected": {
+        "width": 2,
+        "height": 2,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "c9493fff"
+          },
+          {
+            "count": 1,
+            "hex": "ca4b97ff"
+          },
+          {
+            "count": 1,
+            "hex": "e11a17ff"
+          },
+          {
+            "count": 1,
+            "hex": "fcf681ff"
+          }
+        ]
+      },
+      "category": "b",
+      "complete_public_entry_witness": false,
+      "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+      "complete_m3_projection": true,
+      "complete_final_data_witness": false,
+      "projection_function": "projection_order_bkgd_hist_after_plte_before_idat_rgb",
+      "projection_model_function": "model_order_bkgd_hist_after_plte_before_idat_rgb",
+      "projection_symbolic_function": "symbolic_order_bkgd_hist_after_plte_before_idat_rgb",
+      "projection_module": "witness_m3_projection",
+      "projection_verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/actl-zero-frames",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "86bd715d7f6b85f8b86ca9197bf3be51a62dcd8a451632656d3af2dbd6582595",
+      "input_bytes": 100,
+      "frozen_expected": {
+        "error": "InvalidAnimationControl"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_actl_zero_frames",
+      "model_function": "model_apng_bad_actl_zero_frames",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_actl_zero_frames",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/actl-zero-frames-still",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "86bd715d7f6b85f8b86ca9197bf3be51a62dcd8a451632656d3af2dbd6582595",
+      "input_bytes": 100,
+      "frozen_expected": {
+        "error": "InvalidAnimationControl"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_actl_zero_frames_still",
+      "model_function": "model_apng_bad_actl_zero_frames_still",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_actl_zero_frames_still",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/actl-after-idat",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "3fea56366d662bdff0ea3f2493fd9426d481c53932530041b80825cb2a43bed9",
+      "input_bytes": 100,
+      "frozen_expected": {
+        "error": "ChunkOutOfOrder"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_actl_after_idat",
+      "model_function": "model_apng_bad_actl_after_idat",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_actl_after_idat",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/actl-duplicate",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "def4062a8211bb0ba1b2d9cc53f171d8a67c57e1dc053b27aadabeeb840698b9",
+      "input_bytes": 120,
+      "frozen_expected": {
+        "error": "DuplicateChunk"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_actl_duplicate",
+      "model_function": "model_apng_bad_actl_duplicate",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_actl_duplicate",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/actl-len-4",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "03626c1079f86a9e3b197f10325393e8417950d83c7ed8c901ab9f5b080b4b55",
+      "input_bytes": 96,
+      "frozen_expected": {
+        "error": "InvalidChunkLength"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_actl_len_4",
+      "model_function": "model_apng_bad_actl_len_4",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_actl_len_4",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fctl-without-actl",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "c5be587ca37f17d718cc8106de21092f80179018fe4e546048fb74629be1c362",
+      "input_bytes": 118,
+      "frozen_expected": {
+        "error": "MissingAnimationControl"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fctl_without_actl",
+      "model_function": "model_apng_bad_fctl_without_actl",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_fctl_without_actl",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fctl-without-actl-still",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "c5be587ca37f17d718cc8106de21092f80179018fe4e546048fb74629be1c362",
+      "input_bytes": 118,
+      "frozen_expected": {
+        "error": "MissingAnimationControl"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fctl_without_actl_still",
+      "model_function": "model_apng_bad_fctl_without_actl_still",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_fctl_without_actl_still",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fdat-without-actl",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "e0b69bd1278480d88cdbf68ac10317288e78cc4488e8f765ec956427dc0d3ba5",
+      "input_bytes": 112,
+      "frozen_expected": {
+        "error": "MissingAnimationControl"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fdat_without_actl",
+      "model_function": "model_apng_bad_fdat_without_actl",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_fdat_without_actl",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/no-fctl-at-all",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "826324e013ee0a4042e74db3ee66a7ce3bd5116bd5e989bed1477d033445b492",
+      "input_bytes": 100,
+      "frozen_expected": {
+        "error": "FrameCountMismatch"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_no_fctl_at_all",
+      "model_function": "model_apng_bad_no_fctl_at_all",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_no_fctl_at_all",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fewer-frames-than-declared",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "1d24547d318b3b3e43e90a30c4e295b0302077c8b8ab8066eb59879cedb773b1",
+      "input_bytes": 208,
+      "frozen_expected": {
+        "error": "FrameCountMismatch"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fewer_frames_than_declared",
+      "model_function": "model_apng_bad_fewer_frames_than_declared",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "split_step_functions": [
+        "split_apng_bad_fewer_frames_than_declared_step_0",
+        "split_apng_bad_fewer_frames_than_declared_step_1",
+        "split_apng_bad_fewer_frames_than_declared_step_2",
+        "split_apng_bad_fewer_frames_than_declared_step_3",
+        "split_apng_bad_fewer_frames_than_declared_step_4",
+        "split_apng_bad_fewer_frames_than_declared_step_5"
+      ],
+      "split_composition_function": "split_apng_bad_fewer_frames_than_declared_compose",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/more-frames-than-declared",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "99dc6413b2a0c83d015d75849464725dd62b3d736479444f49f1e69fed779689",
+      "input_bytes": 208,
+      "frozen_expected": {
+        "error": "FrameCountMismatch"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_more_frames_than_declared",
+      "model_function": "model_apng_bad_more_frames_than_declared",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "split_step_functions": [
+        "split_apng_bad_more_frames_than_declared_step_0",
+        "split_apng_bad_more_frames_than_declared_step_1",
+        "split_apng_bad_more_frames_than_declared_step_2",
+        "split_apng_bad_more_frames_than_declared_step_3",
+        "split_apng_bad_more_frames_than_declared_step_4",
+        "split_apng_bad_more_frames_than_declared_step_5"
+      ],
+      "split_composition_function": "split_apng_bad_more_frames_than_declared_compose",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/seq-starts-at-1",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "488e046490fb8c0b8ea3ab0a6da7980706b75afb31b5449d87a9688eede34491",
+      "input_bytes": 208,
+      "frozen_expected": {
+        "error": "SequenceError"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_seq_starts_at_1",
+      "model_function": "model_apng_bad_seq_starts_at_1",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/seq-gap",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "001aee93eec90426166fc115d07d5695f29ba52088db89ec0ef8db5c1276362f",
+      "input_bytes": 208,
+      "frozen_expected": {
+        "error": "SequenceError"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_seq_gap",
+      "model_function": "model_apng_bad_seq_gap",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "split_step_functions": [
+        "split_apng_bad_seq_gap_step_0",
+        "split_apng_bad_seq_gap_step_1",
+        "split_apng_bad_seq_gap_step_2",
+        "split_apng_bad_seq_gap_step_3"
+      ],
+      "split_composition_function": "split_apng_bad_seq_gap_compose",
+      "literal_certificate_function": "literal_facts_apng_bad_seq_gap",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/seq-gap-still",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "001aee93eec90426166fc115d07d5695f29ba52088db89ec0ef8db5c1276362f",
+      "input_bytes": 208,
+      "frozen_expected": {
+        "error": "SequenceError"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_seq_gap_still",
+      "model_function": "model_apng_bad_seq_gap_still",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "split_step_functions": [
+        "split_apng_bad_seq_gap_still_step_0",
+        "split_apng_bad_seq_gap_still_step_1",
+        "split_apng_bad_seq_gap_still_step_2",
+        "split_apng_bad_seq_gap_still_step_3"
+      ],
+      "split_composition_function": "split_apng_bad_seq_gap_still_compose",
+      "literal_certificate_function": "literal_facts_apng_bad_seq_gap_still",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/seq-fdat-repeats",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "a557816274283917133f3dd878666999eec988573289cbe6cc75da8eea9a09bb",
+      "input_bytes": 224,
+      "frozen_expected": {
+        "error": "SequenceError"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_seq_fdat_repeats",
+      "model_function": "model_apng_bad_seq_fdat_repeats",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "split_step_functions": [
+        "split_apng_bad_seq_fdat_repeats_step_0",
+        "split_apng_bad_seq_fdat_repeats_step_1",
+        "split_apng_bad_seq_fdat_repeats_step_2",
+        "split_apng_bad_seq_fdat_repeats_step_3",
+        "split_apng_bad_seq_fdat_repeats_step_4",
+        "split_apng_bad_seq_fdat_repeats_step_5"
+      ],
+      "split_composition_function": "split_apng_bad_seq_fdat_repeats_compose",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fdat-before-fctl",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "11983c95c981bdb8ebced4f6249180776c02a59ec3667ef1a5bf05cf1fa2a1ed",
+      "input_bytes": 170,
+      "frozen_expected": {
+        "error": "UnexpectedFrameData"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fdat_before_fctl",
+      "model_function": "model_apng_bad_fdat_before_fctl",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_fdat_before_fctl",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fdat-for-idat-frame",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "ab3cf523b85843a4d0de4511ce0c65d07c9da0b4b9be168833e64e6a448938d2",
+      "input_bytes": 170,
+      "frozen_expected": {
+        "error": "UnexpectedFrameData"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fdat_for_idat_frame",
+      "model_function": "model_apng_bad_fdat_for_idat_frame",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_fdat_for_idat_frame",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fdat-for-idat-frame-still",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "ab3cf523b85843a4d0de4511ce0c65d07c9da0b4b9be168833e64e6a448938d2",
+      "input_bytes": 170,
+      "frozen_expected": {
+        "error": "UnexpectedFrameData"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fdat_for_idat_frame_still",
+      "model_function": "model_apng_bad_fdat_for_idat_frame_still",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_fdat_for_idat_frame_still",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fdat-before-idat",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "da76d43d6874f14e5d5dd3fd8a1677b107cf70751a48bc4b0999415a329109e3",
+      "input_bytes": 170,
+      "frozen_expected": {
+        "error": "ChunkOutOfOrder"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fdat_before_idat",
+      "model_function": "model_apng_bad_fdat_before_idat",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_fdat_before_idat",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fdat-len-3",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "6ef74a7ac9b1edde428f01c7ed3b2d4e99b2a5d5e6319e95f4d6ed3277ca5145",
+      "input_bytes": 191,
+      "frozen_expected": {
+        "error": "InvalidChunkLength"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fdat_len_3",
+      "model_function": "model_apng_bad_fdat_len_3",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "split_step_functions": [
+        "split_apng_bad_fdat_len_3_step_0",
+        "split_apng_bad_fdat_len_3_step_1",
+        "split_apng_bad_fdat_len_3_step_2",
+        "split_apng_bad_fdat_len_3_step_3",
+        "split_apng_bad_fdat_len_3_step_4"
+      ],
+      "split_composition_function": "split_apng_bad_fdat_len_3_compose",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fctl-no-fdat-then-iend",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "e5d4a7163e19e47a2949abac2ea2adb48a36e0174aa9596c961d246ea16c5a35",
+      "input_bytes": 176,
+      "frozen_expected": {
+        "error": "MissingFrameData"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fctl_no_fdat_then_iend",
+      "model_function": "model_apng_bad_fctl_no_fdat_then_iend",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "split_step_functions": [
+        "split_apng_bad_fctl_no_fdat_then_iend_step_0",
+        "split_apng_bad_fctl_no_fdat_then_iend_step_1",
+        "split_apng_bad_fctl_no_fdat_then_iend_step_2",
+        "split_apng_bad_fctl_no_fdat_then_iend_step_3",
+        "split_apng_bad_fctl_no_fdat_then_iend_step_4"
+      ],
+      "split_composition_function": "split_apng_bad_fctl_no_fdat_then_iend_compose",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fctl-no-fdat-then-fctl",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "c25aca5e1b370e590366dc4252a09f3f29881911f77d36d84b4f89f0abddc906",
+      "input_bytes": 246,
+      "frozen_expected": {
+        "error": "MissingFrameData"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fctl_no_fdat_then_fctl",
+      "model_function": "model_apng_bad_fctl_no_fdat_then_fctl",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "split_step_functions": [
+        "split_apng_bad_fctl_no_fdat_then_fctl_step_0",
+        "split_apng_bad_fctl_no_fdat_then_fctl_step_1",
+        "split_apng_bad_fctl_no_fdat_then_fctl_step_2",
+        "split_apng_bad_fctl_no_fdat_then_fctl_step_3",
+        "split_apng_bad_fctl_no_fdat_then_fctl_step_4"
+      ],
+      "split_composition_function": "split_apng_bad_fctl_no_fdat_then_fctl_compose",
+      "literal_certificate_function": "literal_facts_apng_bad_fctl_no_fdat_then_fctl",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/two-fctl-before-idat",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "504e0c42b92f0ca65d945da930acd1109fc60015137d487d28f8e20af53d473d",
+      "input_bytes": 176,
+      "frozen_expected": {
+        "error": "ChunkOutOfOrder"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_two_fctl_before_idat",
+      "model_function": "model_apng_bad_two_fctl_before_idat",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_two_fctl_before_idat",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fctl-len-25",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "0a22ce626a1daaf5d7fbaa94df0b875156c12207a7134fb8669ccb04f1c8d265",
+      "input_bytes": 137,
+      "frozen_expected": {
+        "error": "InvalidChunkLength"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fctl_len_25",
+      "model_function": "model_apng_bad_fctl_len_25",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_fctl_len_25",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fctl-width-0",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "312d3200a15f2bcce8696565e9fc32bf5ac351c164ced3572744c53430cfeef3",
+      "input_bytes": 170,
+      "frozen_expected": {
+        "error": "InvalidFrameControl"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "council_excluded_M2_stream": {
+        "name": "apng-bad/fctl-width-0",
+        "stream": 1,
+        "bytes": 16,
+        "covered": false,
+        "reason": "no legal independent image/frame R; malformed or ambiguous IHDR/fcTL",
+        "inventory_index": 616
+      },
+      "function": "walk_apng_bad_fctl_width_0",
+      "model_function": "model_apng_bad_fctl_width_0",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fctl-outside-x",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "899ab51e21777cede35b2cd3d5bc3511ab646824a5c9e1c7153c44f5e6e6da92",
+      "input_bytes": 170,
+      "frozen_expected": {
+        "error": "InvalidFrameControl"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fctl_outside_x",
+      "model_function": "model_apng_bad_fctl_outside_x",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_fctl_outside_x",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fctl-outside-y",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "d992a03c5ba90a3bead83cf769fa1f5c3e31e75b50bcac17d07d123e8b8154ef",
+      "input_bytes": 170,
+      "frozen_expected": {
+        "error": "InvalidFrameControl"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fctl_outside_y",
+      "model_function": "model_apng_bad_fctl_outside_y",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_fctl_outside_y",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fctl-offset-overflow-u32",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "5e936ae42507a51c5f55f29bc12be71daf88d0a5a9a1e09e69c8540039d9965b",
+      "input_bytes": 170,
+      "frozen_expected": {
+        "error": "InvalidFrameControl"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fctl_offset_overflow_u32",
+      "model_function": "model_apng_bad_fctl_offset_overflow_u32",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_fctl_offset_overflow_u32",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fctl-dispose-3",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "5b29df17245b7a76b95d0fa1b0f82c07de65f87bc654b310c3210e6174304008",
+      "input_bytes": 170,
+      "frozen_expected": {
+        "error": "InvalidFrameControl"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fctl_dispose_3",
+      "model_function": "model_apng_bad_fctl_dispose_3",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_fctl_dispose_3",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fctl-blend-2",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "9f2e962deab22ad1100bd693022e864e1f60dc33cc7cd15b6498ed7f307d0278",
+      "input_bytes": 170,
+      "frozen_expected": {
+        "error": "InvalidFrameControl"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fctl_blend_2",
+      "model_function": "model_apng_bad_fctl_blend_2",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_fctl_blend_2",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/default-fctl-smaller",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "54b3bf23723504c4b3284ac369e63bf67d820db0a1e30b16739bf3305a70a11e",
+      "input_bytes": 138,
+      "frozen_expected": {
+        "error": "InvalidFrameControl"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_default_fctl_smaller",
+      "model_function": "model_apng_bad_default_fctl_smaller",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_default_fctl_smaller",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/default-fctl-offset",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "dfae3818db3a3f03fe4e50261e98ef9c440ffc96633e5bae8a6c252ebe6865e9",
+      "input_bytes": 138,
+      "frozen_expected": {
+        "error": "InvalidFrameControl"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_default_fctl_offset",
+      "model_function": "model_apng_bad_default_fctl_offset",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_default_fctl_offset",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/fctl-crc",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "b81442c4bbbf5934757cea8896e9a5d68ac08dd29efb9c03602004a0e9310c4b",
+      "input_bytes": 170,
+      "frozen_expected": {
+        "error": "CrcMismatch"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_fctl_crc",
+      "model_function": "model_apng_bad_fctl_crc",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_fctl_crc",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/width-2^31-1-output",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "input_sha256": "a19bcadfc7173f9a3d90baa519cf3fd53f60105587880141cbaca4e218ae2ea3",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "OutputTooLarge"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_ihdr_width_2_31_1_output",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/67108865x1-output",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "input_sha256": "593a6e817c4c0ce7758c73caf65c1f1ca5673e3d932b39fe8a6ed5acbe9c332b",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "OutputTooLarge"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_ihdr_67108865x1_output",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/8192x8193-output",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "input_sha256": "3af211bfab305b1d5c654c21f9bccdd5313d4c5d94a2956a2978906df074ee83",
+      "input_bytes": 79,
+      "frozen_expected": {
+        "error": "OutputTooLarge"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "PROVED M3 category-a model-versus-frozen error and actual checked public try_decode_still call",
+      "public_entry": "crate::png::try_decode_still",
+      "proof": {
+        "function": "header_ihdr_8192x8193_output",
+        "run": 238,
+        "scope": "M3 category-a exact model/frozen error and actual public try_decode_still call"
+      },
+      "last_full_recheck_run": 318,
+      "verified_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/8192x8192-accepted-then-truncated-zlib",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "input_sha256": "73d73c52e40d53e283473cdff9917e9f5a8c76abe5e46c9aefe87f53d4e25c11",
+      "input_bytes": 59,
+      "frozen_expected": {
+        "error": "TruncatedZlib"
+      },
+      "category": "b",
+      "complete_public_entry_witness": false,
+      "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+      "partial_proof": {
+        "function": "header_ihdr_8192x8192_accepted_then_truncated_zlib",
+        "run": 238,
+        "scope": "partial accepted-header fact; full M3 preparation projection remains open"
+      },
+      "complete_m3_projection": true,
+      "complete_final_data_witness": false,
+      "projection_function": "projection_ihdr_8192x8192_accepted_then_truncated_zlib",
+      "projection_model_function": "model_ihdr_8192x8192_accepted_then_truncated_zlib",
+      "projection_symbolic_function": "symbolic_ihdr_8192x8192_accepted_then_truncated_zlib",
+      "projection_module": "witness_m3_projection",
+      "projection_verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/67108864x1-accepted-then-truncated-zlib",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "input_sha256": "6b278d96fd9687d21d1eaa47deda23cea0d88dfda9cda211b9abf0b0767d7c00",
+      "input_bytes": 59,
+      "frozen_expected": {
+        "error": "TruncatedZlib"
+      },
+      "category": "b",
+      "complete_public_entry_witness": false,
+      "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+      "partial_proof": {
+        "function": "header_ihdr_67108864x1_accepted_then_truncated_zlib",
+        "run": 238,
+        "scope": "partial accepted-header fact; full M3 preparation projection remains open"
+      },
+      "complete_m3_projection": true,
+      "complete_final_data_witness": false,
+      "projection_function": "projection_ihdr_67108864x1_accepted_then_truncated_zlib",
+      "projection_model_function": "model_ihdr_67108864x1_accepted_then_truncated_zlib",
+      "projection_symbolic_function": "symbolic_ihdr_67108864x1_accepted_then_truncated_zlib",
+      "projection_module": "witness_m3_projection",
+      "projection_verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "ihdr/1x67108864-accepted-then-truncated-zlib",
+      "entry": "still",
+      "source": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "input_sha256": "3ead08341ebeab9885153bf76127393a3cbafba7e8cdd2d695a38b1d4704eca8",
+      "input_bytes": 59,
+      "frozen_expected": {
+        "error": "TruncatedZlib"
+      },
+      "category": "b",
+      "complete_public_entry_witness": false,
+      "status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile",
+      "partial_proof": {
+        "function": "header_ihdr_1x67108864_accepted_then_truncated_zlib",
+        "run": 238,
+        "scope": "partial accepted-header fact; full M3 preparation projection remains open"
+      },
+      "complete_m3_projection": true,
+      "complete_final_data_witness": false,
+      "projection_function": "projection_ihdr_1x67108864_accepted_then_truncated_zlib",
+      "projection_model_function": "model_ihdr_1x67108864_accepted_then_truncated_zlib",
+      "projection_symbolic_function": "symbolic_ihdr_1x67108864_accepted_then_truncated_zlib",
+      "projection_module": "witness_m3_projection",
+      "projection_verified_run": 318,
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/actl-too-many-frames",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "input_sha256": "86ee3c3e861d928de55494e7a9eca3c81b1c85dac86e520480a0bb876c148f60",
+      "input_bytes": 100,
+      "frozen_expected": {
+        "error": "TooManyFrames"
+      },
+      "category": "a",
+      "complete_public_entry_witness": true,
+      "status": "complete M3 category-a whole-model/public-entry error witness",
+      "function": "walk_apng_bad_actl_too_many_frames",
+      "model_function": "model_apng_bad_actl_too_many_frames",
+      "proof_module": "witness_m3_walk_frozen",
+      "verified_run": 318,
+      "symbolic_function": "symbolic_apng_bad_actl_too_many_frames",
+      "last_full_recheck_run": 318,
+      "host_recheck_run": 316,
+      "i686_recheck_run": 318
+    },
+    {
+      "name": "apng-bad/pixel-budget",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "input_sha256": "33f2f6d2b7c7e26b8900d9f6a517e838e18e909c13c46013e357ed7b22de7e83",
+      "input_bytes": 3719,
+      "frozen_expected": {
+        "error": "PixelBudgetExceeded"
+      },
+      "category": "a",
+      "complete_public_entry_witness": false,
+      "status": "OPEN: isolated full-crate per-step attempt aborted with native verifier stack overflow; no final count or proof credit",
+      "attempt_runs": [
+        312,
+        313,
+        314
+      ]
+    },
+    {
+      "name": "apng-bad/pixel-budget-exactly-2^30-then-zlib",
+      "entry": "frames",
+      "source": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "input_sha256": "75467e58503fb4d0326326ee28cea19de260800bc91e2b92c060024fb32c8f0f",
+      "input_bytes": 3663,
+      "frozen_expected": {
+        "error": "TruncatedZlib"
+      },
+      "category": "b",
+      "complete_public_entry_witness": false,
+      "status": "OPEN: isolated full-crate per-step attempt aborted with native verifier stack overflow; no final count or proof credit",
+      "attempt_runs": [
+        312,
+        313,
+        315
+      ],
+      "complete_m3_projection": false,
+      "complete_final_data_witness": false,
+      "final_data_status": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile"
+    }
+  ],
+  "council_excluded_public_entry_witnesses": 16,
+  "category_a_open": 1,
+  "category_b_open": 1,
+  "complete_m3_category_b_projections": 15,
+  "category_b_final_data_open": 16,
+  "m3_structural_witnesses_complete": 129,
+  "host_checkpoint": 316,
+  "target_replay_complete": true,
+  "target_verified_run": 318,
+  "target": "i686-unknown-linux-gnu",
+  "historical_model_header_fact_records": 28
+}
