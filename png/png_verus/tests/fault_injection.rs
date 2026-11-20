@@ -7,7 +7,7 @@
 //!
 //! One `#[test]` function: the allocator's state is global.
 
-use png_verus::{AllocSite, Frames, Profile, TryError};
+use png_verus::{AllocSite, Frames, TryError};
 use serde_json::Value;
 use std::alloc::{GlobalAlloc, Layout, System};
 use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering::SeqCst};

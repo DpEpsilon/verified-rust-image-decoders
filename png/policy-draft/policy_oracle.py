@@ -25,16 +25,19 @@ STRICT = {
     'image_data_error': 'Reject', 'depth16': 'Round', 'apng_in_still': 'Validate', 'apng_errors': 'Reject',
     'blend': 'Exact', 'dispose_previous': 'Spec', 'apng16': 'Composite', 'subframe_interlace': 'Exact',
 }
-# RecommendedBeta (provisional): 15 of the 30 fields differ from Strict. Fourteen are full relaxations;
+# RecommendedBeta (provisional): 13 of the 30 fields differ from Strict (council RB-S2, 2026-11-20: missing_iend and
+# trns_invalid reverted to Strict's Reject). Twelve are full relaxations;
 # zlib_tail is narrowed (PNG-Q1, narrowed again by the council's M1b-Q1 ruling: IgnoreTail ignores bytes after a matching Adler-32 only when the output is exactly R bytes,
 # but surplus decompressed output stays ExcessImageData). crc_ancillary=SkipExceptFdat is PNG-Q2 (a bad CRC
 # on IHDR, PLTE, IDAT or fdAT is rejected); apng_errors=Static is PNG-Q11 (R4).
-RECOMMENDED_BETA = dict(STRICT, crc_ancillary='SkipExceptFdat', iend='Lenient', missing_iend='AtEof', trailing='Ignore',
+RECOMMENDED_BETA = dict(STRICT, crc_ancillary='SkipExceptFdat', iend='Lenient', trailing='Ignore',
                         ancillary_order='Drop', ancillary_duplicate='FirstWins', ancillary_values='Drop',
-                        trns_invalid='Drop', plte_unexpected='Ignore', palette_size='Allow', palette_index='Black',
+                        plte_unexpected='Ignore', palette_size='Allow', palette_index='Black',
                         zlib_tail='IgnoreTail', window='Ignore', apng_in_still='Ignore', apng_errors='Static')
 # The two compatibility profiles keep the field values they were fitted with (draft 0.1's RecommendedBeta).
-_DRAFT01 = dict(RECOMMENDED_BETA, crc_ancillary='Skip', zlib_tail='Ignore', apng_errors='Reject')
+# missing_iend and trns_invalid keep draft 0.1's AtEof and Drop here (RB-S2 reverted them in RecommendedBeta only).
+_DRAFT01 = dict(RECOMMENDED_BETA, crc_ancillary='Skip', zlib_tail='Ignore', apng_errors='Reject', missing_iend='AtEof',
+                trns_invalid='Drop')
 GDK = dict(_DRAFT01, reserved_bit='RejectBeforeIdat', zlib_tail='StopAtRaster', eof='GdkPartial', image_data_error='GdkGrey', depth16='HighByte',
            apng_errors='Static', apng_in_still='Ignore')
 GDK['apng'] = 'Off'

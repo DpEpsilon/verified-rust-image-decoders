@@ -158,8 +158,9 @@ pair('apng-static/structural-error-and-default-image-adler-error', 'frames',
 pair('iend/bad-crc', 'still', doc(IDAT_OK, chunk(b'IEND', b'', crc=0)), 'CrcMismatch', T22())
 pair('iend/length-1', 'still', doc(IDAT_OK, chunk(b'IEND', b'\0')), 'InvalidChunkLength', T22())
 # missing_iend=AtEof: EOF at a chunk boundary after the first IDAT acts as IEND
-pair('missing-iend/after-idat', 'still', doc(IDAT_OK), 'MissingIend', T22())
-pair('missing-iend/after-text', 'still', doc(IDAT_OK, chunk(b'tEXt', b'a\0b')), 'MissingIend', T22())
+# council RB-S2 (2026-11-20): RecommendedBeta keeps missing_iend=Reject; both records stay and expect MissingIend
+pair('missing-iend/after-idat', 'still', doc(IDAT_OK), 'MissingIend', 'MissingIend')
+pair('missing-iend/after-text', 'still', doc(IDAT_OK, chunk(b'tEXt', b'a\0b')), 'MissingIend', 'MissingIend')
 # trailing=Ignore
 pair('trailing/byte', 'still', TOK + b'\0', 'TrailingBytes', T22())
 pair('trailing/second-png', 'still', TOK + TOK, 'TrailingBytes', T22())
@@ -178,12 +179,13 @@ pair('ancillary-values/gamma-0', 'still', doc(chunk(b'gAMA', bytes(4)), IDAT_OK,
 pair('ancillary-values/gama-len-3', 'still', doc(chunk(b'gAMA', bytes(3)), IDAT_OK, IEND), 'InvalidChunkLength', T22())
 pair('ancillary-values/srgb-intent-4', 'still', doc(chunk(b'sRGB', b'\4'), IDAT_OK, IEND), 'InvalidSrgb', T22())
 pair('ancillary-values/phys-unit-2', 'still', doc(chunk(b'pHYs', struct.pack('>IIB', 1, 1, 2)), IDAT_OK, IEND), 'InvalidPhys', T22())
-# trns_invalid=Drop (R1 for colour types 0, 2, 3)
+# council RB-S2 (2026-11-20): RecommendedBeta keeps trns_invalid=Reject (Drop stays a record value for GdkCompat); the three
+# records stay and expect InvalidTransparency
 pair('trns-invalid/palette-too-long', 'still', P3 + chunk(b'PLTE', PL3) + chunk(b'tRNS', b'\0' * 4) + P3IDAT + IEND, 'InvalidTransparency',
-     sexp(2, 2, P3EXP), ev=('R1',))
-pair('trns-invalid/rgb-length-2', 'still', doc(chunk(b'tRNS', bytes(2)), IDAT_OK, IEND), 'InvalidTransparency', T22(), ev=('R1',))
+     'InvalidTransparency')
+pair('trns-invalid/rgb-length-2', 'still', doc(chunk(b'tRNS', bytes(2)), IDAT_OK, IEND), 'InvalidTransparency', 'InvalidTransparency')
 G1 = SIG + ihdr(2, 2, 8, 4) + chunk(b'tRNS', bytes(2)) + chunk(b'IDAT', z(scan([(1, 2)] * 4, 2, 2, 4, 8, 0))) + IEND
-pair('trns-invalid/in-grey-alpha', 'still', G1, 'InvalidTransparency', sexp(2, 2, [rgba_of((1, 2), 4, 8)] * 4))
+pair('trns-invalid/in-grey-alpha', 'still', G1, 'InvalidTransparency', 'InvalidTransparency')
 # plte_unexpected=Ignore
 GV = [(1,), (2,), (3,), (4,)]
 GI = SIG + ihdr(2, 2, 8, 0) + chunk(b'PLTE', PL3) + chunk(b'IDAT', z(scan(GV, 2, 2, 0, 8, 0))) + IEND
@@ -282,6 +284,11 @@ Q2 = [
 for nm, bb, still_rb, ev in Q2:
     pair(f'apng-static/{nm}', 'frames', bb, 'CrcMismatch', R4 if ev else still_rb, ev=ev or ())
     pair(f'apng-static/{nm}-still', 'still', bb, 'CrcMismatch', still_rb)
+
+# council RB-S2 Q4b (2026-11-20): ancillary_order=Drop kept; the one misplacement real files show is eXIf after the first
+# IDAT. A valid eXIf chunk (valid CRC) between the last IDAT and IEND of the minimal Strict-valid still: Strict
+# ChunkOutOfOrder; RecommendedBeta the pixels of the same file without the eXIf chunk, no event, recovered = false.
+pair('ancillary-order/exif-after-idat', 'still', doc(IDAT_OK, chunk(b'eXIf', b'MM\0*' + bytes(4)), IEND), 'ChunkOutOfOrder', T22())
 
 POLICY = _GEN.V[START:]
 

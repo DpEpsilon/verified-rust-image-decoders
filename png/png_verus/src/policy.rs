@@ -15,6 +15,10 @@
 //! row edits that constant (and, for a value no profile used before, the
 //! field's enum).
 
+use vstd::prelude::*;
+
+verus! {
+
 /// A decoding profile. `Strict` is PNG-CORE-SPEC 1.0; `RecommendedBeta` is the
 /// provisional lenient profile (unfrozen). Obligation R: on every input Strict
 /// accepts, RecommendedBeta returns the identical RGBA with `recovered = false`.
@@ -157,18 +161,17 @@ pub const STRICT: Policy = Policy {
 };
 
 /// RecommendedBeta (provisional, policy draft 0.2, NOT frozen; held out of
-/// Stage 1): Strict with fifteen fields changed, fourteen full relaxations and
-/// the narrowed `zlib_tail = IgnoreTail` (PNG-Q1, Q2, Q11). The only place
+/// Stage 1): Strict with thirteen fields changed, twelve full relaxations and
+/// the narrowed `zlib_tail = IgnoreTail` (PNG-Q1, Q2, Q11; council RB-S2 kept
+/// `missing_iend` and `trns_invalid` at Strict's `Reject`). The only place
 /// these rows are written.
 pub const RECOMMENDED_BETA: Policy = Policy {
     crc_ancillary: CrcAncillary::SkipExceptFdat,
     iend: Iend::Lenient,
-    missing_iend: MissingIend::AtEof,
     trailing: Trailing::Ignore,
     ancillary_order: AncillaryOrder::Drop,
     ancillary_duplicate: AncillaryDuplicate::FirstWins,
     ancillary_values: AncillaryValues::Drop,
-    trns_invalid: TrnsInvalid::Drop,
     plte_unexpected: PlteUnexpected::Ignore,
     palette_size: PaletteSize::Allow,
     palette_index: PaletteIndex::Black,
@@ -178,6 +181,8 @@ pub const RECOMMENDED_BETA: Policy = Policy {
     apng_errors: ApngErrors::Static,
     ..STRICT
 };
+
+} // verus!
 
 impl Profile {
     /// The record a profile selects.

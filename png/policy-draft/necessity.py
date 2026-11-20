@@ -26,10 +26,10 @@ PAIRS = {'GdkCompat-2.42.12': (('still', 'gdk-loader'),),
 def rows():
     out = []
     for r in V.RESULTS:
-        out.append((r['name'], V.RP.resolve(r), r['runners']))
+        out.append((r['name'], V.resolve(r), r['runners']))
     for data in (V.HELDOUT, V.HELDOUT_B):
         for r in data or []:
-            out.append((r['name'], V.RP.resolve(r), r['runners']))
+            out.append((r['name'], V.resolve(r), r['runners']))
     return out
 
 
