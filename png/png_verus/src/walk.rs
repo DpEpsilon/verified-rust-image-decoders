@@ -8,77 +8,15 @@
 //! P5.1 duplicates, P5.2 ordering, P5.3 fixed lengths, then the chunk's own
 //! section, exactly as the oracle's `_walk`.
 
-use crate::crc::crc32;
-use crate::limits::{MAX_DIMENSION, MAX_FRAMES, MAX_INPUT, MAX_OUTPUT, MAX_TOTAL_PIXELS};
+use crate::limits::{MAX_FRAMES, MAX_TOTAL_PIXELS};
 use crate::png::{Error, Events, Info, Meta, Time};
 use crate::policy::{
     AncillaryDuplicate, AncillaryOrder, AncillaryValues, ApngErrors, ApngInStill, CrcAncillary, Iend,
     MissingIend, PaletteSize, PlteUnexpected, Policy, Trailing, TrnsInvalid,
 };
 
-pub(crate) const SIGNATURE: [u8; 8] = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A];
-
-#[inline]
-pub(crate) fn be32(b: &[u8], p: usize) -> u32 {
-    ((b[p] as u32) << 24) | ((b[p + 1] as u32) << 16) | ((b[p + 2] as u32) << 8) | (b[p + 3] as u32)
-}
-
-#[inline]
-pub(crate) fn be16(b: &[u8], p: usize) -> u16 {
-    ((b[p] as u16) << 8) | (b[p + 1] as u16)
-}
-
-/// One framed chunk (P3): its type, the offset and length of its data, the
-/// offset of the next chunk and whether its CRC matched.
-#[derive(Clone, Copy)]
-pub(crate) struct Chunk {
-    pub ty: [u8; 4],
-    pub data: usize,
-    pub len: usize,
-    pub next: usize,
-    pub crc_ok: bool,
-}
-
-fn letter(c: u8) -> bool {
-    (0x41..=0x5A).contains(&c) || (0x61..=0x7A).contains(&c)
-}
-
-/// P3 steps 1–3: the framing of the chunk at `p`, without its CRC (`crc_ok` is
-/// `false`). The re-walking readers use it on chunks the walk already checked.
-pub(crate) fn frame_at(b: &[u8], p: usize) -> Result<Chunk, Error> {
-    let len = b.len();
-    if p > len || len - p < 8 {
-        return Err(Error::TruncatedChunk);
-    }
-    let n = be32(b, p);
-    let ty = [b[p + 4], b[p + 5], b[p + 6], b[p + 7]];
-    // The PNG wire limit on chunk lengths (P3 step 1), `i32::MAX`.
-    if n > i32::MAX as u32 {
-        return Err(Error::ChunkTooLong);
-    }
-    if !(letter(ty[0]) && letter(ty[1]) && letter(ty[2]) && letter(ty[3])) {
-        return Err(Error::InvalidChunkType);
-    }
-    let n = n as usize;
-    // `p + 12 + n <= |b|`, written without overflow: `len - p - 8 >= n + 4`.
-    if ((len - p - 8) as u64) < n as u64 + 4 {
-        return Err(Error::TruncatedChunk);
-    }
-    Ok(Chunk { ty, data: p + 8, len: n, next: p + 12 + n, crc_ok: false })
-}
-
-/// P3 step 4: the CRC-32 over the type and data equals the stored value.
-pub(crate) fn crc_matches(b: &[u8], c: &Chunk) -> bool {
-    crc32(&b[c.data - 4..c.data + c.len]) == be32(b, c.data + c.len)
-}
-
-/// P3 steps 1–4: framing as `frame_at`, plus the CRC comparison (reported, not
-/// failed: the caller applies `crc_critical`/`crc_ancillary`).
-pub(crate) fn chunk_at(b: &[u8], p: usize) -> Result<Chunk, Error> {
-    let mut c = frame_at(b, p)?;
-    c.crc_ok = crc_matches(b, &c);
-    Ok(c)
-}
+pub(crate) use crate::framing::{be16, be32, frame_at};
+use crate::framing::chunk_at;
 
 /// The chunk types the walk distinguishes. `Unknown(ancillary)` keeps bit 5 of
 /// byte 0 (P3, P5.5).
@@ -181,73 +119,7 @@ impl Kind {
 
 const AFTER_PLTE_BITS: u32 = (1 << 2) | (1 << 11) | (1 << 12);
 
-/// The IHDR fields the pixel stages need (P4).
-#[derive(Clone, Copy, Debug)]
-pub(crate) struct Ihdr {
-    pub w: u32,
-    pub h: u32,
-    pub depth: u8,
-    pub ct: u8,
-    pub interlace: u8,
-}
-
-impl Ihdr {
-    /// `C(ct)` (P4).
-    pub fn channels(&self) -> u32 {
-        match self.ct {
-            0 => 1,
-            2 => 3,
-            3 => 1,
-            4 => 2,
-            _ => 4,
-        }
-    }
-    /// `B = C·d` bits per pixel.
-    pub fn bits_pp(&self) -> u32 {
-        self.channels() * self.depth as u32
-    }
-    /// Filter byte distance `bpp = max(1, B/8)`.
-    pub fn bpp(&self) -> usize {
-        let b = (self.bits_pp() / 8) as usize;
-        if b == 0 { 1 } else { b }
-    }
-}
-
-fn valid_depth(ct: u8, d: u8) -> bool {
-    match ct {
-        0 => matches!(d, 1 | 2 | 4 | 8 | 16),
-        2 | 4 | 6 => matches!(d, 8 | 16),
-        3 => matches!(d, 1 | 2 | 4 | 8),
-        _ => false,
-    }
-}
-
-/// P4, in order.
-fn parse_ihdr(d: &[u8]) -> Result<Ihdr, Error> {
-    let w = be32(d, 0);
-    let h = be32(d, 4);
-    let (depth, ct, cm, fm, im) = (d[8], d[9], d[10], d[11], d[12]);
-    if !(1 <= w && w <= MAX_DIMENSION && 1 <= h && h <= MAX_DIMENSION) {
-        return Err(Error::InvalidDimensions);
-    }
-    // `4·W·H ≤ MAX_OUTPUT` exactly in u64: W, H ≤ i32::MAX, so 4·W·H < u64::MAX.
-    if 4 * (w as u64) * (h as u64) > MAX_OUTPUT {
-        return Err(Error::OutputTooLarge);
-    }
-    if !valid_depth(ct, depth) {
-        return Err(Error::InvalidColorTypeDepth);
-    }
-    if cm != 0 {
-        return Err(Error::UnsupportedCompressionMethod);
-    }
-    if fm != 0 {
-        return Err(Error::UnsupportedFilterMethod);
-    }
-    if im > 1 {
-        return Err(Error::UnsupportedInterlaceMethod);
-    }
-    Ok(Ihdr { w, h, depth, ct, interlace: im })
-}
+pub(crate) use crate::header::Ihdr;
 
 /// acTL (P14.1).
 #[derive(Clone, Copy, Debug)]
@@ -302,43 +174,7 @@ impl From<Error> for WalkFail {
     }
 }
 
-/// P8.2 keywords: 1–79 bytes of `20–7E` or `A1–FF`, no leading, trailing or
-/// consecutive spaces.
-fn valid_keyword(k: &[u8]) -> bool {
-    if k.is_empty() || k.len() > 79 {
-        return false;
-    }
-    let mut prev_space = false;
-    for &c in k {
-        if !((0x20..=0x7E).contains(&c) || c >= 0xA1) {
-            return false;
-        }
-        if c == 0x20 && prev_space {
-            return false;
-        }
-        prev_space = c == 0x20;
-    }
-    k[0] != 0x20 && k[k.len() - 1] != 0x20
-}
-
-fn find_nul(d: &[u8], from: usize) -> Option<usize> {
-    let mut i = from;
-    while i < d.len() {
-        if d[i] == 0 {
-            return Some(i);
-        }
-        i += 1;
-    }
-    None
-}
-
-/// `split_keyword`: the offset of the keyword's terminating NUL.
-fn split_keyword(d: &[u8], err: Error) -> Result<usize, Error> {
-    match find_nul(d, 0) {
-        Some(z) if valid_keyword(&d[..z]) => Ok(z),
-        _ => Err(err),
-    }
-}
+use crate::keywords::{find_nul, split_keyword};
 
 /// The per-walk state (P5): a fixed-size record.
 struct State {
@@ -356,23 +192,7 @@ struct State {
 /// P2–P8, P14.1 under `pol`. `apng_off` is the re-walk of the R4 fallback, with
 /// acTL, fcTL and fdAT treated as unknown ancillary chunks (`apng = Off`).
 pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mut Events) -> Result<Doc, WalkFail> {
-    if b.len() as u64 > MAX_INPUT {
-        return Err(Error::FileTooLarge.into());
-    }
-    if b.len() < 8 || b[..8] != SIGNATURE {
-        return Err(Error::BadSignature.into());
-    }
-    let c = chunk_at(b, 8)?;
-    if !c.crc_ok {
-        return Err(Error::CrcMismatch.into());
-    }
-    if &c.ty != b"IHDR" {
-        return Err(Error::MissingIhdr.into());
-    }
-    if c.len != 13 {
-        return Err(Error::InvalidChunkLength.into());
-    }
-    let ihdr = parse_ihdr(&b[c.data..c.data + 13])?;
+    let (ihdr, after_ihdr) = crate::header::prefix(b)?;
     let ct = ihdr.ct;
     let depth = ihdr.depth;
     let mut doc = Doc {
@@ -389,7 +209,7 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
     let static_frames = pol.apng_errors == ApngErrors::Static && entry == Entry::Frames;
     // sfail and apng_fail coincide for the values Strict and RecommendedBeta use.
     let sfail = |e: Error| -> WalkFail { if static_frames { WalkFail::Fallback } else { WalkFail::Format(e) } };
-    let mut p = c.next;
+    let mut p = after_ihdr;
     loop {
         let (t, kind0, dpos, mut n, ok, p_end) = if p == b.len() {
             if st.idat > 0 && pol.missing_iend == MissingIend::AtEof {

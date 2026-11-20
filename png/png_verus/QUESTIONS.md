@@ -1,4 +1,4 @@
-# png_verus M1b: open questions
+# png_verus: open questions
 
 Items where the frozen spec, the draft policy texts and `inflate_verus` leave a choice, or where the implementation found something the texts did not anticipate. In each case M1b follows the most literal reading, named below; nothing in `spec-frozen/`, `THEOREMS.md`, `ERRATA.md` or `REVIEW-*.md` was edited.
 
@@ -36,3 +36,9 @@ This bears on the council's L-WALK-FIRST obligation ("never inflates the fdAT da
 - `Frames::try_new(b, p)` takes the profile, as BRIEF.md's API block writes it; there is no separate Strict-only constructor. `Frames` is not an `Iterator` (each view borrows the canvas), like GIF's. **Resolved (council M1b-Q5b, (b)):** renamed: `Frames::try_new(b)` is Strict and `Frames::try_new_with_policy(b, p)` takes a named profile; "not an `Iterator`" stands. Done in `src/png.rs`, the tests, `examples/png_probe.rs` and the leniency `verified` runner; constructor notation entry proposed in `../ERRATA-PROPOSED-M1BQ.md`.
 - `Info` byte ranges (iCCP name, eXIf) are `(offset, length)` pairs into the caller's input, so `Still` carries no lifetime. **Resolved (council M1b-Q5c, (a)):** kept, with the new M3 sign-off gate L-INFO-RANGE (`LEDGER.md`, `../PLAN.md`); checked accessors are optional and not required now.
 - The RecommendedBeta RGBA16 entry (`try_decode_still16_with_policy`, PNG-Q13 (i)) has no oracle; M1b draws a substituted palette index (R3) as `(0, 0, 0, 65535)` and otherwise applies P13.3 with RecommendedBeta's walk and inflate options. **Resolved (council M1b-Q5d, (a)):** the entry is retained and its rule adopted as D16's model text (`../policy-draft/DECISIONS.md`); it remains unmodelled and outside every supported-policy claim until P1's independent evidence exists (`LEDGER.md`).
+
+## Q6. Does T6's “table equals Crc on single bytes” mean the unfinalized polynomial remainder?
+
+T6 describes both a 256-entry table equal to `Crc` on single bytes and a table-driven update equal to the preset-and-complemented message CRC. Those are different functions: the production table has `TABLE[0] = 0`, whereas the specified ISO CRC of the one-byte message `[0]` is `0xD202_EF8D` (both the bitwise model and the actual `crc32` call are checked in `witness_m3::crc_known_answers`, run 24).
+
+Does the council intend the table clause to say `TABLE[i] = crc_bits(i, 8)` with neither preset nor complement, while the whole-message clause retains both? The M3 checkpoint proves exactly those two equations in `crc::make_table`, the static `TABLE` initializer, `crc::lemma_crc_update` and `crc::crc32`, against `model.rs`'s independent bitwise definition. It does not claim the literal, false equation `TABLE[i] = crc([i])`. No manifest or frozen-spec wording was changed; T6 remains partial regardless of this question because the ordering walk is not proved.

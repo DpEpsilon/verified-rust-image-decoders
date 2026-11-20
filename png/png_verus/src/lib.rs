@@ -1,11 +1,11 @@
 //! PNG/APNG decoder core (PNG-CORE-SPEC 1.0, Stage 1, `../../spec-frozen/SPEC.md`),
 //! with the Strict and RecommendedBeta profiles of `../../policy-draft/OPTIONS.md`.
 //!
-//! Milestone M1b (`../../PLAN.md`): the plain implementation. The decoder is
-//! ordinary Rust outside `verus!` blocks; only the data types the sealed
-//! allocation guard names (`png::Error`), the cap lemma and the guard itself are
-//! inside `verus!`. zlib/DEFLATE is the verified `inflate_verus` crate. Later
-//! milestones (M3–M6, P1) add the model and the proofs.
+//! M3 has begun (`../../PLAN.md`): the CRC, wire framing, header prefix,
+//! keyword helpers and segmented re-walk adapter are inside `verus!` and tied
+//! to independent sequence models. The policy ordering walk, image stages and
+//! public entry-point bodies remain ordinary Rust; a green run does not claim
+//! their verification. zlib/DEFLATE is the verified `inflate_verus` dependency.
 //!
 //! `no_std + alloc`, no `unsafe`, no recursion. Every heap allocation goes
 //! through `alloc_guard` (`Raw`, `Output`, `Saved`, `IccWindow`, `Icc`).
@@ -17,12 +17,19 @@ extern crate alloc;
 
 pub mod alloc_guard;
 mod crc;
+mod framing;
+mod header;
 mod image;
+mod keywords;
+#[cfg(verus_only)]
+pub mod model;
 pub mod limits;
 pub mod png;
 pub mod policy;
 mod reader;
 mod walk;
+#[cfg(verus_only)]
+mod witness_m3;
 
 pub use alloc_guard::sites::TryError;
 pub use alloc_guard::{AllocSite, OutOfMemory};

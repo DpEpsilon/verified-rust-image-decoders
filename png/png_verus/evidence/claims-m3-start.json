@@ -1,0 +1,129 @@
+{
+  "milestone": "M3 start, not sign-off",
+  "checkpoint": 24,
+  "verified": 78,
+  "errors": 0,
+  "claims": [
+    {
+      "requirement": "T2",
+      "status": "header-refinement-proved-host; witness-gates-incomplete",
+      "functions": [
+        "header::prefix",
+        "header::parse_ihdr",
+        "header::area_cap_u64"
+      ],
+      "model": "model::mh",
+      "run": 24
+    },
+    {
+      "requirement": "L-CRC-TABLE",
+      "status": "polynomial-remainder-table-and-finalized-CRC-proved; wording-question-Q6",
+      "functions": [
+        "crc::make_table",
+        "crc::TABLE initializer",
+        "crc::lemma_crc_table",
+        "crc::lemma_crc_update",
+        "crc::crc32"
+      ],
+      "model": "model::{crc_bit,crc_bits,crc_register,crc}",
+      "run": 24
+    },
+    {
+      "requirement": "T6",
+      "status": "partial",
+      "proved": [
+        "wire framing and CRC comparison",
+        "keyword validity and first-NUL split"
+      ],
+      "functions": [
+        "framing::frame_at",
+        "framing::chunk_at",
+        "framing::crc_matches",
+        "keywords::valid_keyword",
+        "keywords::find_nul",
+        "keywords::split_keyword"
+      ],
+      "untouched": [
+        "ordering automaton",
+        "per-chunk values",
+        "APNG state",
+        "MW equality"
+      ],
+      "run": 24
+    },
+    {
+      "requirement": "T-SEG",
+      "status": "adapter-proved; integrated-row-partial",
+      "functions": [
+        "reader::DataReader::at",
+        "reader::DataReader::read",
+        "reader::segment_at",
+        "model::reader_shape"
+      ],
+      "unproved": [
+        "MW range selection",
+        "callers discharge constructor input bound",
+        "frame-span delta cost"
+      ],
+      "run": 24
+    },
+    {
+      "requirement": "L-REWALK",
+      "status": "partial-transport-only",
+      "functions": [
+        "reader::segment_at",
+        "reader::DataReader::read"
+      ],
+      "unproved": [
+        "Strict MW ranges",
+        "policy CRC-validated fcTL selection",
+        "Static selects no fdAT stream"
+      ],
+      "run": 24
+    },
+    {
+      "requirement": "T10-prefix",
+      "status": "partial-local-first-error-only",
+      "functions": [
+        "header::prefix",
+        "framing::frame_at",
+        "keywords::split_keyword"
+      ],
+      "unproved": [
+        "whole-walk before allocation/inflate"
+      ],
+      "run": 24
+    },
+    {
+      "requirement": "A-PNG-2",
+      "status": "untouched; no new proof claim"
+    },
+    {
+      "requirement": "A-PNG-7",
+      "status": "untouched; no new proof claim"
+    },
+    {
+      "requirement": "L-WALK-FIRST",
+      "status": "untouched; no new proof claim"
+    },
+    {
+      "requirement": "L-INFO-RANGE",
+      "status": "untouched; no new proof claim"
+    },
+    {
+      "requirement": "M3-witness-gates",
+      "status": "incomplete",
+      "functions": [
+        "witness_m3::crc_known_answers",
+        "witness_m3::header_error_precedence"
+      ],
+      "run": 24,
+      "note": "Not the full frozen-record witness set at THEOREMS.md:194"
+    }
+  ],
+  "runtime_run": 25,
+  "source_lint_run": 23,
+  "replay_negative_control_run": 20,
+  "host_only": true,
+  "trusted_items_added": false
+}

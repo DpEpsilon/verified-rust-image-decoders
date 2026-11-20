@@ -1,0 +1,50 @@
+{
+  "kind": "M3-checkpoint",
+  "run": 20,
+  "command": [
+    "cargo",
+    "verus",
+    "verify",
+    "-v",
+    "--",
+    "--num-threads",
+    "1",
+    "--no-cheating"
+  ],
+  "threads": 1,
+  "versions": {
+    "verus": "Verus\n  Version: 0.2026.11.02.8bf68ee\n  Profile: release\n  Platform: linux_x86_64\n  Toolchain: 1.99.1-x86_64-unknown-linux-gnu (overridden by environment variable RUSTUP_TOOLCHAIN)",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo_verus_binary_sha256": "c2a647bc0376f9de2d1598c387ab75ffc26c9862e0d19ba295a3954fce47d5dd",
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+    "vstd": "0.0.0-2026-11-01-0251; default-features=false; features=[alloc]"
+  },
+  "source_sha256": {
+    "src/alloc_guard/mod.rs": "add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137",
+    "src/alloc_guard/sites.rs": "dcd747cf7721c33ff00fbffd83ca8838d12803f99c2fb896b8077f25f5d8a281",
+    "src/crc.rs": "12fa39331208c143bc9acae6d1064d1ad3e995fc583de626b82103e8f771c4cb",
+    "src/framing.rs": "abb645c9c6a42bc10bd92ec2ee55d3d11fa632572106310b30b99dd0543329cf",
+    "src/header.rs": "b20f56e8d5fc8caac414c599fcabb0945b0af9ea0d9ae507039b6d93a7721c64",
+    "src/image.rs": "d617062622320eefdc4b2fa20966eaf5571968b7fd23fd79f1688e43aeaca713",
+    "src/keywords.rs": "f773dbbbed19acc97cd20771207ba7578d56ad6cc7248eb07e3e7015dfc015db",
+    "src/lib.rs": "ba12964e1c61ed87ed4056b2ba8587407d3cee1bc7d9383b59c4e6f157ef9d2b",
+    "src/limits.rs": "ffe6e408b28cdc468ae9b4c96ab23528a6a7ca2b652c410091bddac94d68a76f",
+    "src/model.rs": "9be68bdb66805b32da3b80771d7255adcf039d00d387d902e67314b664735ad4",
+    "src/png.rs": "6e0556de77800ae70c1d8ebfc0c7e0cca2fe4c298dd7ff85b1f5455fb8ed1a53",
+    "src/policy.rs": "1fa9ecac57005bc064adcccefb7a9fbcd8d63ee528dbe1abdf327f1e8eb4b895",
+    "src/reader.rs": "f0970c342d2e1021687f3d7c629d89d0b83eccda761886756cdedb7920a750f6",
+    "src/walk.rs": "fbd2f328aa538d1d76ed3252464b73d8b87817504d7f521a763b6a7115a91ed1",
+    "src/witness_m3.rs": "295af863c4eafea024393c13db06583182318dac1c26df7941c65c9eedc7c749",
+    "Cargo.toml": "fa9c2b6e0a9c6ab351267a717996f59ff01a713a96b24c8a7d2b623872973d4e",
+    "Cargo.lock": "7e54ff7c1d10f204229f1e6a1e96b84e85fcb123d448482f49c16817c5212176",
+    "verify.sh": "9bdef0c80a5049f8dee74408b75b9a3738c0c700165306f36034a7293f3e3da8",
+    "tools/probe_diff.py": "27938506cd72ecbd8e1d5adf9bd89ed9a37a435744ee6251478e2e8c2a3b1bf8",
+    "tools/run_logged.py": "04394ca66b3c9a8d68b13ee5fc7e7c16de409ca2f8151ada6746c7601825836c",
+    "tools/verify_m3.py": "09064561ac64f0be2ff9f5d4519ef975a6b6b669c856a4269aadf8658abf4990"
+  },
+  "source_unchanged": true,
+  "verified": 0,
+  "errors": null,
+  "accepted": false,
+  "log_sha256": "813a8e2685c6836823b72d2481ef71e60e2a19e9b37b58d040d8e210a93fa130"
+}

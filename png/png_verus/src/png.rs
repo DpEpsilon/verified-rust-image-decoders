@@ -92,8 +92,6 @@ pub enum Error {
     IccProfileTooLarge,
 }
 
-} // verus!
-
 impl Error {
     /// The P18 spelling. `'static`, never allocates.
     pub fn name(&self) -> &'static str {
@@ -180,6 +178,8 @@ impl Error {
         }
     }
 }
+
+} // verus!
 
 /// The `recovered` events reachable in RecommendedBeta (OPTIONS.md R1, R3,
 /// R4; R2 and R5 are unreachable there). Strict never sets one.
@@ -641,7 +641,7 @@ impl<'a> Frames<'a> {
                         }
                     }
                 } else {
-                    let mut src = FdatReader::new(self.b, c.next);
+                    let mut src = FdatReader::new_fdat(self.b, c.next);
                     let mut sink = Sink::Canvas { canvas: &mut self.canvas, cw: w, fx: f.x, fy: f.y, over: f.blend == 1 };
                     if let Err(e) = decode_image(&self.doc, self.b, &mut src, &mut self.raw, f.w, f.h, &self.pol, &mut fev, &mut sink) {
                         return Err(TryError::Format(e));

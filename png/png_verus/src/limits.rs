@@ -12,6 +12,9 @@ use vstd::prelude::*;
 
 verus! {
 
+/// Format limit for chunk lengths and IHDR/fcTL dimensions, not a resource cap.
+pub const PNG_WIRE_MAX: u32 = 0x7fff_ffff;
+
 /// Input bytes (P2): `|b| > MAX_INPUT` is `FileTooLarge`. 2^30 (draft value).
 pub const MAX_INPUT: u64 = 1 << 30;
 
@@ -41,8 +44,15 @@ pub proof fn caps_ok()
         2 * (MAX_OUTPUT as int) <= crate::alloc_guard::MAX_BYTES as int,
         1 <= MAX_ICC <= crate::alloc_guard::MAX_BYTES as int,
         MAX_INPUT <= 0x1000_0000_0000_0000u64,
+        1 <= MAX_FRAMES <= 0xffff_ffffu32,
         MAX_TOTAL_PIXELS <= 0x4000_0000_0000_0000u64,
+        crate::alloc_guard::MAX_BYTES <= 0x7fff_ffffusize,
+        inflate_verus::limits::WINDOW_MAX <= crate::alloc_guard::MAX_BYTES,
 {
+    assert(MAX_INPUT <= 0x1000_0000_0000_0000u64) by (bit_vector);
+    assert(1 <= MAX_FRAMES <= 0xffff_ffffu32) by (bit_vector);
+    assert(MAX_TOTAL_PIXELS <= 0x4000_0000_0000_0000u64) by (bit_vector);
+    assert(inflate_verus::limits::WINDOW_MAX <= crate::alloc_guard::MAX_BYTES) by (bit_vector);
 }
 
 } // verus!

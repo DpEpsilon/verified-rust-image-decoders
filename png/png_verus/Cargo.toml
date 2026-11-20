@@ -8,7 +8,9 @@ edition = "2021"
 [dependencies]
 vstd = { version = "=0.0.0-2026-11-01-0251", default-features = false, features = ["alloc"] }
 # The verified, allocation-free zlib/DEFLATE core (PNG-CORE-SPEC P9-P10). Never edited from here.
-inflate_verus = { path = "../inflate_verus" }
+# The split base contains all production code and public-entry proofs; the
+# optional split leaves add only M2 witness proofs, not executable behaviour.
+inflate_verus = { path = "../inflate_verus", features = ["split"] }
 
 [features]
 # Test-only: exposes the internal event set and the request trace, so
