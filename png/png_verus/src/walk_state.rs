@@ -30,6 +30,12 @@ impl Doc {
             iccp:optional_range(self.iccp),actl:match self.actl {None=>None,Some(a)=>Some(a.view())},
             info:self.info.view(),idat:self.idat_ranges@,frames:self.frame_ranges@}
     }
+    pub(crate) open spec fn source_partition(self) -> bool {
+        let frames=self.frame_ranges@;
+        (self.info.default_is_frame ==> frames.len()>0)
+        && forall|i: int| 0<=i<frames.len() ==> ((match (#[trigger] frames[i]).source {Source::Idat=>true,_=>false})
+            == (i==0 && self.info.default_is_frame))
+    }
     pub(crate) open spec fn wf(self, b: Seq<u8>) -> bool {
         self.ihdr.wf() && self.ihdr.w<=crate::limits::PNG_WIRE_MAX && self.ihdr.h<=crate::limits::PNG_WIRE_MAX
         && self.info.view().header==self.ihdr.view()
@@ -57,8 +63,17 @@ impl State {
         m::State {pos:pos as nat,seen:crate::kind::seen_view(self.seen),phase:phase_view(self.idat),
             control:self.apng.view(),doc:doc.view(),events:events.view()}
     }
+    pub(crate) open spec fn source_roles(self, doc: Doc) -> bool {
+        let frames=doc.frame_ranges@;
+        self.apng.cur.is_some()==(frames.len()>0)
+        && (self.apng.fctl_before_idat ==> frames.len()>0)
+        && (self.idat==0 && frames.len()>0 ==> self.apng.fctl_before_idat)
+        && doc.info.default_is_frame==(self.idat!=0 && self.apng.fctl_before_idat)
+        && (forall|i: int| 0<=i<frames.len() ==> ((match (#[trigger] frames[i]).source {Source::Idat=>true,_=>false})
+            == (i==0 && self.apng.fctl_before_idat)))
+    }
     pub(crate) open spec fn wf(self, doc: Doc, b: Seq<u8>) -> bool {
-        doc.wf(b) && self.idat<=2 && self.apng.wf()
+        doc.wf(b) && self.idat<=2 && self.apng.wf() && self.source_roles(doc)
         && (self.idat==0)==(doc.idat_ranges@.len()==0)
         && self.apng.frames==doc.frame_ranges@.len()
         && (doc.actl.is_none() ==> self.apng.frames==0)

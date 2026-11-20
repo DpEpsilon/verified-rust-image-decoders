@@ -4,8 +4,8 @@
 //! M3 has begun (`../../PLAN.md`): the actual structural walk, local value
 //! and APNG checks, raw Info storage and policy projection are verified
 //! against complete independent MW/MW_p/MWF_p transition/trace models.
-//! The segmented adapter and selected-IDAT byte/count transport are verified;
-//! fdAT/frame-boundary selection remains open. Image stages, public allocation
+//! The segmented adapter, IDAT/fdAT transport and validated boundary selectors
+//! are verified under their cursor/index contracts. Image stages, public allocation
 //! sequencing and returned-object bodies remain ordinary Rust. A green run
 //! does not sign off M3. zlib/DEFLATE is the verified `inflate_verus` dependency.
 //!
@@ -29,6 +29,8 @@ pub mod critical_model;
 pub mod document_model;
 #[cfg(verus_only)]
 pub mod transport_model;
+#[cfg(verus_only)]
+pub mod frame_transport_model;
 mod framing;
 mod header;
 mod image;
@@ -62,6 +64,8 @@ mod witness_critical;
 mod witness_document;
 #[cfg(verus_only)]
 mod witness_walk;
+#[cfg(verus_only)]
+mod witness_frame;
 
 pub use alloc_guard::sites::TryError;
 pub use alloc_guard::{AllocSite, OutOfMemory};

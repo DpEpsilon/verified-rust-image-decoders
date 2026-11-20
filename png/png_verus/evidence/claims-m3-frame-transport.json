@@ -1,0 +1,204 @@
+{
+  "milestone": "M3 host fdAT transport and validated selection component; not sign-off",
+  "base_commit": "ff3a2d7",
+  "checkpoint": 124,
+  "verified": 290,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "runtime_and_source_controls_run": 125,
+  "no_new_trusted_items": true,
+  "claims": [
+    {
+      "row": "L-REWALK Strict / policy: fdAT model",
+      "status": "component-proved on host",
+      "functions": [
+        "frame_transport_model::read_frame",
+        "frame_transport_model::own_frame_effect",
+        "frame_transport_model::ordered_frame_effect",
+        "frame_transport_model::active_step_shape",
+        "frame_transport_model::close_frame",
+        "frame_transport_model::append_frame",
+        "frame_transport_model::advance_frame",
+        "frame_transport_model::update_frame",
+        "frame_transport_model::finish_frames",
+        "frame_transport_model::step_frames",
+        "frame_transport_model::drive_frames",
+        "frame_transport_model::start_frames"
+      ],
+      "run": 124,
+      "domain": "all modeled policies and initial events, Frames entry with APNG enabled",
+      "statement": "every successful active walk has canonical fcTL links, validated control sites and closed fdAT streams equal to the concatenation of the corresponding source ranges; fdAT strips its sequence word; skipped chunks contribute empty reader segments"
+    },
+    {
+      "row": "L-REWALK Strict / policy: validated boundaries",
+      "status": "component-proved on host",
+      "functions": [
+        "frame_transport_model::select_frame",
+        "reader::next_fctl",
+        "reader::next_selected_fctl"
+      ],
+      "run": 124,
+      "premises": [
+        "Doc::wf",
+        "active frame-transport result",
+        "index < ghost frame count",
+        "cursor == cursor_for at index"
+      ],
+      "statement": "the scanner returns the selected control_offset, with framing, length 26, CRC and raw control-field correspondence inherited from the successful walk; active acceptance cannot skip a malformed or bad-CRC fcTL boundary"
+    },
+    {
+      "row": "L-REWALK Strict / policy: production fdAT",
+      "status": "component-proved on host",
+      "functions": [
+        "DataReader::for_frame"
+      ],
+      "run": 124,
+      "premises": [
+        "Doc::wf and source_partition",
+        "input length <= MAX_INPUT",
+        "active frame-transport result",
+        "index < ghost frame count",
+        "index > 0 or default image is not a frame",
+        "start == selected frame_start"
+      ],
+      "statement": "fresh reader concat equals modeled frame_stream; exact wire reader_count includes skipped chunks, range count is only a lower bound; 12*seg_count <= input length",
+      "binding": "the production frame iterator calls next_selected_fctl and for_frame; its cursor/index lifecycle remains ordinary Rust and unverified"
+    },
+    {
+      "row": "L-REWALK Strict / policy: Static default-only source",
+      "status": "component-proved on host",
+      "functions": [
+        "frame_transport_model::own_off",
+        "frame_transport_model::ordered_off",
+        "frame_transport_model::step_off",
+        "frame_transport_model::drive_off",
+        "frame_transport_model::start_off",
+        "frame_transport_model::constructor_frames",
+        "walk::walk",
+        "walk::frames"
+      ],
+      "run": 124,
+      "statement": "successful APNG-off walks have no acTL, no animation frame trace and default_is_frame false; the fresh-event frames wrapper propagates this when R4 is set; selected IDAT equality remains available"
+    },
+    {
+      "row": "T6-to-reader source/count premises",
+      "status": "proved on host",
+      "functions": [
+        "State::source_roles",
+        "Doc::source_partition",
+        "walk_own::run",
+        "walk_step::run",
+        "walk::walk",
+        "walk::still",
+        "walk::frames"
+      ],
+      "run": 124,
+      "statement": "successful terminal walk frame_count equals ghost frame count; only frame zero can use IDAT, exactly when default_is_frame; R3/R4 are preserved by the generic step and walk"
+    },
+    {
+      "row": "T-SEG / L-SEG-PNG: fdAT constructor and skipped segments",
+      "status": "component-proved on host",
+      "functions": [
+        "DataReader::for_frame",
+        "frame_transport_model::read_frame"
+      ],
+      "run": 124,
+      "statement": "reader_count charges one segment per non-boundary chunk, including metadata and zero-byte fdAT payloads; Segments source/step guarantees remain verified",
+      "qualifier": "does not prove complete public or aggregate re-walk work accounting"
+    },
+    {
+      "row": "T-SEG / L-REWALK: whole-input empty fdAT witness",
+      "status": "production-call witness proved on host",
+      "functions": [
+        "witness_frame::accepted",
+        "witness_frame::empty_fdat_with_metadata"
+      ],
+      "run": 124,
+      "statement": "locally synthesized 143-byte structural APNG passes actual frames walk, selects fcTL at 65 and reader start 103; metadata plus one empty fdAT gives two segments, three advances through EOF and zero core steps",
+      "qualifier": "guarded by named caps; empty compressed data does not witness successful image inflation"
+    },
+    {
+      "row": "L-REWALK complete Strict / policy",
+      "status": "partial",
+      "functions": [],
+      "run": 124,
+      "unproved": [
+        "public frame iterator cursor/index and receiver-state lifecycle",
+        "formal public caller discharge of fresh events and selection premises"
+      ]
+    },
+    {
+      "row": "L-REWALK-COST",
+      "status": "untouched complete work-accounting gate",
+      "functions": [],
+      "run": 124,
+      "unproved": [
+        "scanner core-step accounting and aggregate public re-walk work bound"
+      ]
+    },
+    {
+      "row": "T6 / T10 prefix / public returned Info",
+      "status": "partial",
+      "functions": [],
+      "run": 124,
+      "statement": "existing complete internal walk equations and raw Info representation remain verified; source partition and frame count now strengthen the internal result",
+      "unproved": [
+        "complete public returned-Info theorem",
+        "remaining required frozen-record witnesses",
+        "i686 replay and milestone assurance"
+      ]
+    },
+    {
+      "row": "A-PNG-2",
+      "status": "untouched complete public-entry/logged gate",
+      "functions": [],
+      "run": 124
+    },
+    {
+      "row": "A-PNG-7",
+      "status": "untouched complete public-entry/logged gate",
+      "functions": [],
+      "run": 124
+    },
+    {
+      "row": "L-WALK-FIRST",
+      "status": "untouched complete public-entry/logged gate",
+      "functions": [],
+      "run": 124
+    },
+    {
+      "row": "complete public returned-Info",
+      "status": "untouched complete public-entry/logged gate",
+      "functions": [],
+      "run": 124
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "strict": 599,
+    "caps": 13,
+    "policy": 236,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0125.json"
+  },
+  "diagnostics": {
+    "108": "split active-step shape at default rlimit",
+    "109": "explicit sequence extensionality and fdAT minimum length",
+    "111": "renamed reserved identifier invariant to span_inv",
+    "112": "revealed the framing-error step branch",
+    "114": "split next-fcTL/next-fdAT/next-other/done induction cases",
+    "116": "replaced trigger inside matches macro with ordinary match",
+    "117": "cursor progress only on continuation, not synthetic-EOF termination",
+    "119": "explicit one-element fdAT source update equality",
+    "121": "isolated inherited segmented-read proof with spinoff_prover; solver limits and trust unchanged"
+  },
+  "erased_provenance": "walk_model::Frame.control_offset stores original fcTL offset only in ghost models/traces; no runtime frame list or public field added",
+  "crc_status": "L-CRC-TABLE remains discharged through owner-approved E5; no new CRC equation or trust change",
+  "spec_ambiguities": [],
+  "resume": "Verify public still/frame/ICC callers: frame cursor/index lifecycle and fresh events, then sealed allocation logs, A-PNG-2/A-PNG-7, L-WALK-FIRST and complete public returned-Info."
+}

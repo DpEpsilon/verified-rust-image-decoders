@@ -1,6 +1,7 @@
 //! Borrowed lengths-and-types re-walks. The verified adapter implements M2's
 //! complete Segments contract; for_doc also proves exact selected-IDAT bytes
-//! and segment count. fdAT selection remains a separate L-REWALK obligation.
+//! and segment count. for_frame and next_selected_fctl bind active-animation
+//! sources and validated boundaries under explicit cursor/index premises.
 //! No re-walk recomputes a CRC.
 use vstd::prelude::*;
 use inflate_verus::Segments;
@@ -9,6 +10,8 @@ use inflate_verus::limits::SEGMENT_BYTES_MAX;
 use crate::framing::frame_at;
 #[cfg(verus_only)]
 use crate::model::{self, reader_bytes, reader_count};
+#[cfg(verus_only)]
+use crate::{frame_transport_model as frame,walk_model::Source};
 
 verus! {
 
@@ -107,6 +110,26 @@ impl<'a> DataReader<'a> {
         Self::new(b,doc.idat_first)
     }
 
+    /// A modeled fdAT frame, selected after its validated fcTL header.
+    pub(crate) fn for_frame(b: &'a [u8], doc: &crate::walk::Doc, index: u32, start: usize) -> (r: Self)
+        requires doc.wf(b@),doc.source_partition(),b.len()<=crate::limits::MAX_INPUT,
+            frame::result(b@,doc.view(),frame::header_end(b@)),index<doc.frame_ranges@.len(),
+            index>0 || !doc.info.default_is_frame,
+            start==frame::frame_start(b@,doc.frame_ranges@[index as int]),
+        ensures r.wf(),r.pos()==0,r.seg_steps()==0,r.core_steps()==0,r.seg_index()==0,r.advance_rank()==0,
+            crate::document_model::frame_stream(b@,doc.view(),index as nat)==Some(r.concat()),
+            r.seg_count()==reader_count(b@,start as nat,true),12*r.seg_count()<=b.len(),
+            match doc.frame_ranges@[index as int].source {Source::Idat=>false,Source::Fdat(ranges)=>r.seg_count()>=ranges.len()},
+    {
+        proof {
+            crate::limits::caps_ok();
+            frame::select_frame(b@,doc.view(),frame::header_end(b@),index as nat);
+            let selected=doc.frame_ranges@[index as int];
+            assert(!matches!(selected.source,Source::Idat));
+        }
+        Self::new_fdat(b,start)
+    }
+
     /// A fresh fdAT-span cursor, stopping at the next fcTL or IEND.
     pub(crate) fn new_fdat(b: &'a [u8], start: usize) -> (r: Self)
         requires b.len() <= SEGMENT_BYTES_MAX,
@@ -145,6 +168,8 @@ impl<'a> Segments for DataReader<'a> {
 
     proof fn lemma_wf(&self) {}
 
+    // Isolate this inherited adapter proof; its solver limits stay unchanged.
+    #[verifier::spinoff_prover]
     fn read(&mut self) -> (r: Option<u8>) {
         let ghost initial = *self;
         loop
@@ -207,21 +232,36 @@ impl<'a> Segments for DataReader<'a> {
 
 /// Find a frame boundary using only lengths and types. CRC validation belongs
 /// to the successful frames walk, not to this re-walk.
-pub(crate) fn next_fctl(b: &[u8], mut p: usize) -> (r: Option<usize>)
-    ensures r.is_some() ==> r.unwrap() < b.len(),
+pub(crate) fn next_fctl(b: &[u8], start: usize) -> (r: Option<usize>)
+    ensures match r {None=>frame::next_frame(b@,start as nat).is_none(),Some(q)=>q<b.len()
+        && frame::next_frame(b@,start as nat)==Some(q as nat)},
 {
+    let mut p=start;
+    proof {frame::next_frame_bounds(b@,start as nat);}
     loop
+        invariant frame::next_frame(b@,start as nat)==frame::next_frame(b@,p as nat),
         decreases if p <= b.len() { b.len() - p + 1 } else { 0 },
     {
-        match frame_at(b, p) {
-            Ok(c) => {
-                if type_is(&c.ty, b'I', b'E', b'N', b'D') { return None; }
-                if type_is(&c.ty, b'f', b'c', b'T', b'L') { return Some(p); }
-                p = c.next;
-            },
-            Err(_) => return None,
+        match frame_at(b,p) {
+            Ok(c)=> {
+                if type_is(&c.ty,b'I',b'E',b'N',b'D') {return None;}
+                if type_is(&c.ty,b'f',b'c',b'T',b'L') {return Some(p);}
+                p=c.next;
+            },Err(_)=>return None,
         }
     }
+}
+
+/// The active-animation cursor selects exactly its modeled fcTL, with the
+/// framing/length/CRC facts inherited from the successful walk, not rescanned.
+pub(crate) fn next_selected_fctl(b: &[u8], doc: &crate::walk::Doc, index: u32, cursor: usize) -> (r: Option<usize>)
+    requires doc.wf(b@),frame::result(b@,doc.view(),frame::header_end(b@)),index<doc.frame_ranges@.len(),
+        cursor==frame::cursor_for(b@,doc.frame_ranges@,frame::header_end(b@),index as nat),
+    ensures r.is_some(),r.unwrap()<b.len(),r.unwrap()==doc.frame_ranges@[index as int].control_offset,
+        frame::valid_site(b@,doc.frame_ranges@[index as int]),
+{
+    proof {frame::select_frame(b@,doc.view(),frame::header_end(b@),index as nat);}
+    next_fctl(b,cursor)
 }
 
 } // verus!

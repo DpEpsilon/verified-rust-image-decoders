@@ -106,13 +106,17 @@ pub(crate) open spec fn outcome_view(result: Result<Doc,WalkFail>, events: Event
 }
 
 pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mut Events) -> (r: Result<Doc,WalkFail>)
-    ensures outcome_view(r,*final(ev))==crate::document_model::start(b@,pol.walk_view(),
+    ensures final(ev).r3==old(ev).r3,final(ev).r4==old(ev).r4,
+        outcome_view(r,*final(ev))==crate::document_model::start(b@,pol.walk_view(),
         matches!(entry,Entry::Frames),apng_off,old(ev).view()),
         crate::document_model::start(b@,pol.walk_view(),matches!(entry,Entry::Frames),apng_off,old(ev).view())
             != crate::document_model::Outcome::OutsideDomain,
         (!matches!(entry,Entry::Frames) || !pol.walk_view().static_apng_errors) ==> !matches!(r,Err(WalkFail::Fallback)),
         match r {Ok(doc)=>doc.wf(b@) && crate::transport_model::idat_result(b@,doc.view())
-            && b.len()<=crate::limits::MAX_INPUT,Err(_)=>true},
+            && b.len()<=crate::limits::MAX_INPUT && doc.source_partition()
+            && doc.info.frame_count==doc.frame_ranges@.len()
+            && (matches!(entry,Entry::Frames) && !apng_off ==> crate::frame_transport_model::result(b@,doc.view(),crate::frame_transport_model::header_end(b@)))
+            && (apng_off ==> crate::frame_transport_model::default_only(doc.view())),Err(_)=>true},
 {
     let (ihdr,after_ihdr)=match crate::header::prefix(b) {
         Err(e)=>return Err(WalkFail::Format(e)),Ok(h)=>h,
@@ -123,6 +127,7 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
     let mut pos=after_ihdr;
     loop
         invariant state.wf(doc,b@),pos<=b.len(),rules.view()==pol.walk_view(),
+            ev.r3==old(ev).r3,ev.r4==old(ev).r4,
             crate::document_model::start(b@,pol.walk_view(),matches!(entry,Entry::Frames),apng_off,old(ev).view())
                 ==crate::document_model::drive(b@,rules.view(),matches!(entry,Entry::Frames),apng_off,state.view(doc,pos,*ev)),
         decreases b.len()-pos,
@@ -130,7 +135,11 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
         proof {crate::document_model::drive_step(b@,rules.view(),matches!(entry,Entry::Frames),apng_off,state.view(doc,pos,*ev));}
         match crate::walk_step::run(b,rules,entry,apng_off,&mut pos,&mut doc,&mut state,ev) {
             Err(e)=>return Err(e),Ok(true)=> {
-                proof {crate::transport_model::start_idat(b@,pol.walk_view(),matches!(entry,Entry::Frames),apng_off,old(ev).view());}
+                proof {
+                    crate::transport_model::start_idat(b@,pol.walk_view(),matches!(entry,Entry::Frames),apng_off,old(ev).view());
+                    if matches!(entry,Entry::Frames) && !apng_off {crate::frame_transport_model::start_frames(b@,pol.walk_view(),old(ev).view());}
+                    if apng_off {crate::frame_transport_model::start_off(b@,pol.walk_view(),matches!(entry,Entry::Frames),old(ev).view());}
+                }
                 return Ok(doc);
             },Ok(false)=>{},
         }
@@ -148,7 +157,8 @@ pub(crate) fn still(b: &[u8], pol: &Policy, ev: &mut Events) -> (r: Result<Doc,E
     ensures data_outcome(r,*final(ev))==crate::model::MW_p(b@,pol.walk_view()),
         crate::model::MW_p(b@,pol.walk_view()) != crate::document_model::Outcome::OutsideDomain,
         match r {Ok(doc)=>doc.wf(b@) && crate::transport_model::idat_result(b@,doc.view())
-            && b.len()<=crate::limits::MAX_INPUT,Err(_)=>true},
+            && b.len()<=crate::limits::MAX_INPUT && doc.source_partition()
+            && doc.info.frame_count==doc.frame_ranges@.len(),Err(_)=>true},
 {
     match walk(b,pol,Entry::Still,false,ev) {
         Ok(doc)=>Ok(doc),Err(WalkFail::Format(e))=>Err(e),Err(WalkFail::Fallback)=>{assert(false);Err(Error::MissingAnimationControl)},
@@ -161,7 +171,10 @@ pub(crate) fn frames(b: &[u8], pol: &Policy, ev: &mut Events) -> (r: Result<Doc,
     ensures data_outcome(r,*final(ev))==crate::model::MWF_p(b@,pol.walk_view()),
         crate::model::MWF_p(b@,pol.walk_view()) != crate::document_model::Outcome::OutsideDomain,
         match r {Ok(doc)=>doc.wf(b@) && crate::transport_model::idat_result(b@,doc.view())
-            && b.len()<=crate::limits::MAX_INPUT,Err(_)=>true},
+            && b.len()<=crate::limits::MAX_INPUT && doc.source_partition()
+            && doc.info.frame_count==doc.frame_ranges@.len()
+            && (doc.actl.is_some() ==> crate::frame_transport_model::result(b@,doc.view(),crate::frame_transport_model::header_end(b@)))
+            && (final(ev).r4 ==> crate::frame_transport_model::default_only(doc.view())),Err(_)=>true},
 {
     match walk(b,pol,Entry::Frames,false,ev) {
         Ok(doc)=>Ok(doc),Err(WalkFail::Format(e))=>Err(e),Err(WalkFail::Fallback)=> {

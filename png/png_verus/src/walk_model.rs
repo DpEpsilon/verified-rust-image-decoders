@@ -69,6 +69,8 @@ pub open spec fn advance_phase(phase: Phase, name: Name) -> Phase {
 pub struct Range { pub offset: nat, pub len: nat }
 pub enum Source { Idat, Fdat(Seq<Range>) }
 pub struct Frame {
+    /// fcTL header offset in the original input, for erased re-walk provenance.
+    pub control_offset: nat,
     pub width: u32, pub height: u32, pub x: u32, pub y: u32,
     pub delay_num: u16, pub delay_den: u16, pub dispose: u8, pub blend: u8,
     pub source: Source,

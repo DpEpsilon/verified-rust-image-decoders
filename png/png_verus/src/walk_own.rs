@@ -27,9 +27,12 @@ pub(crate) fn run(b: &[u8], base: usize, size: usize, chunk_offset: usize, pos: 
         matches!(kind,Kind::Idat) ==> chunk_offset+8==base,
     ensures result_view(r,*final(doc),*final(state),pos,*final(ev))==m::own(b@,rules.view(),static_frames,
         old(state).view(*old(doc),pos,*old(ev)),kind.view(),base as nat,size as nat),
+        final(ev).r3==old(ev).r3,final(ev).r4==old(ev).r4,
         !static_frames ==> !matches!(r,Err(WalkFail::Fallback)),
         r.is_ok() ==> final(doc).wf(b@),
-        r==Ok(false) ==> final(state).wf(*final(doc),b@),
+        r.is_ok() ==> final(state).wf(*final(doc),b@),
+        r==Ok(true) ==> final(doc).info.frame_count==final(doc).frame_ranges@.len()
+            && final(doc).source_partition() && final(state).idat!=0,
 {
     match kind {
         Kind::Ihdr=>run_ihdr(b,base,size,chunk_offset,pos,kind,rules,static_frames,doc,state,ev),
@@ -52,9 +55,12 @@ fn run_ihdr(_b: &[u8], _base: usize, _size: usize, _chunk_offset: usize, _pos: u
         matches!(_kind,Kind::Idat) ==> _chunk_offset+8==_base,
     ensures result_view(r,*final(_doc),*final(_state),_pos,*final(_ev))==m::own(_b@,_rules.view(),_static_frames,
         old(_state).view(*old(_doc),_pos,*old(_ev)),_kind.view(),_base as nat,_size as nat),
+        final(_ev).r3==old(_ev).r3,final(_ev).r4==old(_ev).r4,
         !_static_frames ==> !matches!(r,Err(WalkFail::Fallback)),
         r.is_ok() ==> final(_doc).wf(_b@),
-        r==Ok(false) ==> final(_state).wf(*final(_doc),_b@),
+        r.is_ok() ==> final(_state).wf(*final(_doc),_b@),
+        r==Ok(true) ==> final(_doc).info.frame_count==final(_doc).frame_ranges@.len()
+            && final(_doc).source_partition() && final(_state).idat!=0,
 {
     let ghost original_doc=*_doc;
     let ghost original_state=*_state;
@@ -70,9 +76,12 @@ fn run_plte(_b: &[u8], base: usize, size: usize, _chunk_offset: usize, _pos: usi
         matches!(kind,Kind::Idat) ==> _chunk_offset+8==base,
     ensures result_view(r,*final(doc),*final(state),_pos,*final(_ev))==m::own(_b@,rules.view(),_static_frames,
         old(state).view(*old(doc),_pos,*old(_ev)),kind.view(),base as nat,size as nat),
+        final(_ev).r3==old(_ev).r3,final(_ev).r4==old(_ev).r4,
         !_static_frames ==> !matches!(r,Err(WalkFail::Fallback)),
         r.is_ok() ==> final(doc).wf(_b@),
-        r==Ok(false) ==> final(state).wf(*final(doc),_b@),
+        r.is_ok() ==> final(state).wf(*final(doc),_b@),
+        r==Ok(true) ==> final(doc).info.frame_count==final(doc).frame_ranges@.len()
+            && final(doc).source_partition() && final(state).idat!=0,
 {
     let ghost original_doc=*doc;
     let ghost original_state=*state;
@@ -100,9 +109,12 @@ fn run_idat(_b: &[u8], _base: usize, _size: usize, chunk_offset: usize, _pos: us
         matches!(_kind,Kind::Idat) ==> chunk_offset+8==_base,
     ensures result_view(r,*final(doc),*final(state),_pos,*final(_ev))==m::own(_b@,_rules.view(),_static_frames,
         old(state).view(*old(doc),_pos,*old(_ev)),_kind.view(),_base as nat,_size as nat),
+        final(_ev).r3==old(_ev).r3,final(_ev).r4==old(_ev).r4,
         !_static_frames ==> !matches!(r,Err(WalkFail::Fallback)),
         r.is_ok() ==> final(doc).wf(_b@),
-        r==Ok(false) ==> final(state).wf(*final(doc),_b@),
+        r.is_ok() ==> final(state).wf(*final(doc),_b@),
+        r==Ok(true) ==> final(doc).info.frame_count==final(doc).frame_ranges@.len()
+            && final(doc).source_partition() && final(state).idat!=0,
 {
     let ghost original_doc=*doc;
     let ghost original_state=*state;
@@ -135,9 +147,12 @@ fn run_iend(b: &[u8], _base: usize, _size: usize, _chunk_offset: usize, pos: usi
         matches!(_kind,Kind::Idat) ==> _chunk_offset+8==_base,
     ensures result_view(r,*final(doc),*final(state),pos,*final(_ev))==m::own(b@,rules.view(),static_frames,
         old(state).view(*old(doc),pos,*old(_ev)),_kind.view(),_base as nat,_size as nat),
+        final(_ev).r3==old(_ev).r3,final(_ev).r4==old(_ev).r4,
         !static_frames ==> !matches!(r,Err(WalkFail::Fallback)),
         r.is_ok() ==> final(doc).wf(b@),
-        r==Ok(false) ==> final(state).wf(*final(doc),b@),
+        r.is_ok() ==> final(state).wf(*final(doc),b@),
+        r==Ok(true) ==> final(doc).info.frame_count==final(doc).frame_ranges@.len()
+            && final(doc).source_partition() && final(state).idat!=0,
 {
     let ghost original_doc=*doc;
     let ghost original_state=*state;
@@ -159,9 +174,12 @@ fn run_trns(_b: &[u8], base: usize, size: usize, _chunk_offset: usize, _pos: usi
         matches!(kind,Kind::Idat) ==> _chunk_offset+8==base,
     ensures result_view(r,*final(doc),*final(_state),_pos,*final(ev))==m::own(_b@,rules.view(),_static_frames,
         old(_state).view(*old(doc),_pos,*old(ev)),kind.view(),base as nat,size as nat),
+        final(ev).r3==old(ev).r3,final(ev).r4==old(ev).r4,
         !_static_frames ==> !matches!(r,Err(WalkFail::Fallback)),
         r.is_ok() ==> final(doc).wf(_b@),
-        r==Ok(false) ==> final(_state).wf(*final(doc),_b@),
+        r.is_ok() ==> final(_state).wf(*final(doc),_b@),
+        r==Ok(true) ==> final(doc).info.frame_count==final(doc).frame_ranges@.len()
+            && final(doc).source_partition() && final(_state).idat!=0,
 {
     let ghost original_doc=*doc;
     let ghost original_state=*_state;
@@ -189,9 +207,12 @@ fn run_actl(b: &[u8], base: usize, size: usize, _chunk_offset: usize, _pos: usiz
         matches!(_kind,Kind::Idat) ==> _chunk_offset+8==base,
     ensures result_view(r,*final(doc),*final(_state),_pos,*final(_ev))==m::own(b@,_rules.view(),static_frames,
         old(_state).view(*old(doc),_pos,*old(_ev)),_kind.view(),base as nat,size as nat),
+        final(_ev).r3==old(_ev).r3,final(_ev).r4==old(_ev).r4,
         !static_frames ==> !matches!(r,Err(WalkFail::Fallback)),
         r.is_ok() ==> final(doc).wf(b@),
-        r==Ok(false) ==> final(_state).wf(*final(doc),b@),
+        r.is_ok() ==> final(_state).wf(*final(doc),b@),
+        r==Ok(true) ==> final(doc).info.frame_count==final(doc).frame_ranges@.len()
+            && final(doc).source_partition() && final(_state).idat!=0,
 {
     let ghost original_doc=*doc;
     let ghost original_state=*_state;
@@ -216,9 +237,12 @@ fn run_fctl(b: &[u8], base: usize, size: usize, _chunk_offset: usize, _pos: usiz
         matches!(_kind,Kind::Idat) ==> _chunk_offset+8==base,
     ensures result_view(r,*final(doc),*final(state),_pos,*final(_ev))==m::own(b@,_rules.view(),static_frames,
         old(state).view(*old(doc),_pos,*old(_ev)),_kind.view(),base as nat,size as nat),
+        final(_ev).r3==old(_ev).r3,final(_ev).r4==old(_ev).r4,
         !static_frames ==> !matches!(r,Err(WalkFail::Fallback)),
         r.is_ok() ==> final(doc).wf(b@),
-        r==Ok(false) ==> final(state).wf(*final(doc),b@),
+        r.is_ok() ==> final(state).wf(*final(doc),b@),
+        r==Ok(true) ==> final(doc).info.frame_count==final(doc).frame_ranges@.len()
+            && final(doc).source_partition() && final(state).idat!=0,
 {
     let ghost original_doc=*doc;
     let ghost original_state=*state;
@@ -230,7 +254,7 @@ fn run_fctl(b: &[u8], base: usize, size: usize, _chunk_offset: usize, _pos: usiz
     };
     state.apng=next;
     proof {
-        let frame=names::Frame {width:_f.w,height:_f.h,x:_f.x,y:_f.y,delay_num:_f.delay_num,delay_den:_f.delay_den,
+        let frame=names::Frame {control_offset:(base as int-8) as nat,width:_f.w,height:_f.h,x:_f.x,y:_f.y,delay_num:_f.delay_num,delay_den:_f.delay_den,
             dispose:_f.dispose,blend:_f.blend,source:if state.idat==0 {Source::Idat}else{Source::Fdat(Seq::empty())}};
         walk_state::frame_push(doc.frame_ranges@,frame,b@.len());
         doc.frame_ranges=Ghost(doc.frame_ranges@.push(frame));
@@ -249,9 +273,12 @@ fn run_fdat(b: &[u8], base: usize, size: usize, _chunk_offset: usize, _pos: usiz
         matches!(_kind,Kind::Idat) ==> _chunk_offset+8==base,
     ensures result_view(r,*final(doc),*final(state),_pos,*final(_ev))==m::own(b@,_rules.view(),static_frames,
         old(state).view(*old(doc),_pos,*old(_ev)),_kind.view(),base as nat,size as nat),
+        final(_ev).r3==old(_ev).r3,final(_ev).r4==old(_ev).r4,
         !static_frames ==> !matches!(r,Err(WalkFail::Fallback)),
         r.is_ok() ==> final(doc).wf(b@),
-        r==Ok(false) ==> final(state).wf(*final(doc),b@),
+        r.is_ok() ==> final(state).wf(*final(doc),b@),
+        r==Ok(true) ==> final(doc).info.frame_count==final(doc).frame_ranges@.len()
+            && final(doc).source_partition() && final(state).idat!=0,
 {
     let ghost original_doc=*doc;
     let ghost original_state=*state;
@@ -291,9 +318,12 @@ fn run_unknown(_b: &[u8], _base: usize, _size: usize, _chunk_offset: usize, _pos
         matches!(kind,Kind::Idat) ==> _chunk_offset+8==_base,
     ensures result_view(r,*final(_doc),*final(_state),_pos,*final(_ev))==m::own(_b@,_rules.view(),_static_frames,
         old(_state).view(*old(_doc),_pos,*old(_ev)),kind.view(),_base as nat,_size as nat),
+        final(_ev).r3==old(_ev).r3,final(_ev).r4==old(_ev).r4,
         !_static_frames ==> !matches!(r,Err(WalkFail::Fallback)),
         r.is_ok() ==> final(_doc).wf(_b@),
-        r==Ok(false) ==> final(_state).wf(*final(_doc),_b@),
+        r.is_ok() ==> final(_state).wf(*final(_doc),_b@),
+        r==Ok(true) ==> final(_doc).info.frame_count==final(_doc).frame_ranges@.len()
+            && final(_doc).source_partition() && final(_state).idat!=0,
 {
     let ghost original_doc=*_doc;
     let ghost original_state=*_state;
@@ -317,9 +347,12 @@ fn run_ancillary(b: &[u8], base: usize, size: usize, _chunk_offset: usize, _pos:
         matches!(kind,Kind::Idat) ==> _chunk_offset+8==base,
     ensures result_view(r,*final(doc),*final(_state),_pos,*final(ev))==m::own(b@,rules.view(),_static_frames,
         old(_state).view(*old(doc),_pos,*old(ev)),kind.view(),base as nat,size as nat),
+        final(ev).r3==old(ev).r3,final(ev).r4==old(ev).r4,
         !_static_frames ==> !matches!(r,Err(WalkFail::Fallback)),
         r.is_ok() ==> final(doc).wf(b@),
-        r==Ok(false) ==> final(_state).wf(*final(doc),b@),
+        r.is_ok() ==> final(_state).wf(*final(doc),b@),
+        r==Ok(true) ==> final(doc).info.frame_count==final(doc).frame_ranges@.len()
+            && final(doc).source_partition() && final(_state).idat!=0,
 {
     let ghost original_doc=*doc;
     let ghost original_state=*_state;

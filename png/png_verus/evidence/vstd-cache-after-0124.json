@@ -1,0 +1,23 @@
+[
+  {
+    "source": "/home/ws/projects/verified-decoders/png/inflate_verus/target/debug/deps/libvstd-01822e92e4f44378.rmeta",
+    "copy": "/home/ws/projects/verified-decoders/png/png_verus/target/debug/deps/libvstd-01822e92e4f44378.rmeta",
+    "sha256": "6cf84fc37d8dac1e1cd2fa9b0308eca6f4ae0e9ff96a3cb329f8b776547ce618",
+    "copy_sha256": "6cf84fc37d8dac1e1cd2fa9b0308eca6f4ae0e9ff96a3cb329f8b776547ce618",
+    "source_mtime_ns": 1794734297887549457
+  },
+  {
+    "source": "/home/ws/projects/verified-decoders/png/inflate_verus/target/debug/deps/libvstd-01822e92e4f44378.vir",
+    "copy": "/home/ws/projects/verified-decoders/png/png_verus/target/debug/deps/libvstd-01822e92e4f44378.vir",
+    "sha256": "49934e1761f92df9d380921b59b8cae9c6ecbe92768ffbafc3f57820629ca533",
+    "copy_sha256": "49934e1761f92df9d380921b59b8cae9c6ecbe92768ffbafc3f57820629ca533",
+    "source_mtime_ns": 1794734309087953715
+  },
+  {
+    "source": "/home/ws/projects/verified-decoders/png/inflate_verus/target/debug/deps/vstd-01822e92e4f44378.d",
+    "copy": "/home/ws/projects/verified-decoders/png/png_verus/target/debug/deps/vstd-01822e92e4f44378.d",
+    "sha256": "81b0c8ddd777d228057cd4b21943587c360da02e5a3c19b5a5c5978aa8bf0837",
+    "copy_sha256": "81b0c8ddd777d228057cd4b21943587c360da02e5a3c19b5a5c5978aa8bf0837",
+    "source_mtime_ns": 1794734328962151418
+  }
+]

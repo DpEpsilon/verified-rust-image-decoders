@@ -1,0 +1,23 @@
+{
+  "checkpoint": 124,
+  "verified": 290,
+  "errors": 0,
+  "runtime_run": 125,
+  "source_inventory_matches": true,
+  "source_file_count": 43,
+  "fresh_vstd_no_rebuild": true,
+  "source_and_copy_cache_matches": true,
+  "runtime_inputs_unchanged": true,
+  "sealed_guard_hashes_unchanged": true,
+  "no_new_trusted_items": true,
+  "no_tracked_protected_path_changes": true,
+  "whitespace_check_passed": true,
+  "runlog_sha256": "1d6799d3b4dc323690428b80c842aac348bbe7815653c9b57b5b27c64fccbb11",
+  "ledger_sha256": "d09f775307b579b402b55f4eccdc4e9391208972781b9a1152875a5f4c4ae80f",
+  "new_source_files": [
+    "/home/ws/projects/verified-decoders/png/png_verus/src/frame_transport_model.rs",
+    "/home/ws/projects/verified-decoders/png/png_verus/src/witness_frame.rs"
+  ],
+  "background_jobs_started": 0,
+  "worker_commit_or_push": false
+}

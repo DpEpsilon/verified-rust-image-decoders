@@ -87,7 +87,7 @@ proof fn empty_fdat_trace() {
     let b=seq![0u8,0u8,0u8,0u8];
     let h=crate::model::Ihdr {width:1,height:1,depth:8,color_type:2,interlace:0};
     let initial=m::initial(h,4,m::no_events());
-    let frame=Frame {width:1,height:1,x:0,y:0,delay_num:0,delay_den:0,dispose:0,blend:0,
+    let frame=Frame {control_offset:0,width:1,height:1,x:0,y:0,delay_num:0,delay_den:0,dispose:0,blend:0,
         source:Source::Fdat(Seq::empty())};
     let state=m::State {phase:Phase::After,control:apng::Control {sequence:0,current:apng::Current::Frame(false),
         frame_count:1,fctl_before_idat:false,pixel_total:1},

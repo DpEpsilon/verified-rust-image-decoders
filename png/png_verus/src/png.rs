@@ -17,7 +17,7 @@ use crate::alloc_guard::{try_zeroed, AllocLog, AllocSite, OutOfMemory};
 use crate::image::{decode_image, raw_size, Sink};
 use crate::limits::MAX_ICC;
 use crate::policy::{Policy, Profile, STRICT};
-use crate::reader::{next_fctl, FdatReader, IdatReader};
+use crate::reader::{next_selected_fctl, FdatReader, IdatReader};
 use crate::walk::{frame_at, Doc, Fctl, Ihdr};
 
 use vstd::prelude::*;
@@ -584,7 +584,7 @@ impl<'a> Frames<'a> {
                     self.state = FState::Done;
                     return Ok(None);
                 }
-                let fpos = match next_fctl(self.b, cursor) {
+                let fpos = match next_selected_fctl(self.b,&self.doc,k,cursor) {
                     Some(q) => q,
                     None => {
                         self.state = FState::Done;
@@ -643,7 +643,7 @@ impl<'a> Frames<'a> {
                         }
                     }
                 } else {
-                    let mut src = FdatReader::new_fdat(self.b, c.next);
+                    let mut src = FdatReader::for_frame(self.b,&self.doc,k,c.next);
                     let mut sink = Sink::Canvas { canvas: &mut self.canvas, cw: w, fx: f.x, fy: f.y, over: f.blend == 1 };
                     if let Err(e) = decode_image(&self.doc, self.b, &mut src, &mut self.raw, f.w, f.h, &self.pol, &mut fev, &mut sink) {
                         return Err(TryError::Format(e));

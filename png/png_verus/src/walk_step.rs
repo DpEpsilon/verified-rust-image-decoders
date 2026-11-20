@@ -15,8 +15,12 @@ pub(crate) fn run(b: &[u8], rules: Rules, entry: Entry, apng_off: bool,
             ==m::step(b@,rules.view(),matches!(entry,Entry::Frames),apng_off,
                 old(state).view(*old(doc),*old(pos),*old(ev))),
         (!matches!(entry,Entry::Frames) || !rules.static_apng_errors) ==> !matches!(r,Err(WalkFail::Fallback)),
+        final(ev).r3==old(ev).r3,final(ev).r4==old(ev).r4,
+        r==Ok(true) ==> final(doc).info.frame_count==final(doc).frame_ranges@.len()
+            && final(doc).source_partition() && final(state).idat!=0,
         r.is_ok() ==> final(doc).wf(b@),
-        r==Ok(false) ==> final(state).wf(*final(doc),b@) && *old(pos)+12<=*final(pos),
+        r.is_ok() ==> final(state).wf(*final(doc),b@),
+        r==Ok(false) ==> *old(pos)+12<=*final(pos),
 {
     let ghost original=state.view(*doc,*pos,*ev);
     proof {m::step_progress(b@,rules.view(),matches!(entry,Entry::Frames),apng_off,original);reveal(m::step);}
@@ -55,8 +59,11 @@ fn ordered(b: &[u8], rules: Rules, static_frames: bool, kind: Kind, anc: bool,
         ==m::ordered(b@,rules.view(),static_frames,old(state).view(*old(doc),pos,*old(ev)),
             kind.view(),anc,base as nat,length as nat),
         !static_frames ==> !matches!(r,Err(WalkFail::Fallback)),
+        final(ev).r3==old(ev).r3,final(ev).r4==old(ev).r4,
+        r==Ok(true) ==> final(doc).info.frame_count==final(doc).frame_ranges@.len()
+            && final(doc).source_partition() && final(state).idat!=0,
         r.is_ok() ==> final(doc).wf(b@),
-        r==Ok(false) ==> final(state).wf(*final(doc),b@),
+        r.is_ok() ==> final(state).wf(*final(doc),b@),
 {
     proof {reveal(m::ordered);}
     let size=match ordering::preamble(state.seen,state.idat,doc.plte.is_some(),doc.ihdr.ct,kind,anc,length,rules.order) {

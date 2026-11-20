@@ -164,7 +164,7 @@ pub open spec fn own(b: Seq<u8>, policy: Policy, static_frames: bool,
                 doc.ihdr.width,doc.ihdr.height,state.control) {
                 Err((e,s))=>failure(state,e,s,static_frames),
                 Ok((f,c))=>Step::Next(State {control:c,doc:Doc {frames:doc.frames.push(Frame {
-                    width:f.width,height:f.height,x:f.x,y:f.y,delay_num:f.delay_num,delay_den:f.delay_den,
+                    control_offset:(data-8) as nat,width:f.width,height:f.height,x:f.x,y:f.y,delay_num:f.delay_num,delay_den:f.delay_den,
                     dispose:f.dispose,blend:f.blend,source:if matches!(state.phase,Phase::Before) {
                         Source::Idat
                     } else {Source::Fdat(Seq::empty())}}),..doc},..state}),
