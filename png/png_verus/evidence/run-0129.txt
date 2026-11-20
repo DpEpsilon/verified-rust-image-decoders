@@ -1,0 +1,734 @@
+command: ['cargo', 'verus', 'verify', '-v', '--', '--num-threads', '2', '--no-cheating']
+verbosity level = 1; forwarding 0 `-v` arg(s) to Cargo
+verbosity level = 1; forwarding 0 `-v` arg(s) to Cargo
+verbosity level = 1; keeping Verus non-verbose
+forwarding Verus args to crates: <all>
+running cargo command:
+cd "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus" &&  __VERUS_DRIVER_ARGS_FOR_inflate_verus-0.1.0-02e0bd8a5665="__VERUS_DRIVER_ARGS_SEP__--VIA-CARGO__VERUS_DRIVER_ARGS_SEP__import-dep-if-present=vstd__VERUS_DRIVER_ARGS_SEP__--VIA-CARGO__VERUS_DRIVER_ARGS_SEP__import-dep-if-present=inflate_verus__VERUS_DRIVER_ARGS_SEP__--num-threads__VERUS_DRIVER_ARGS_SEP__2__VERUS_DRIVER_ARGS_SEP__--no-cheating"  __VERUS_DRIVER_ARGS_FOR_png_verus-0.1.0-d81f5b1329ad="__VERUS_DRIVER_ARGS_SEP__--VIA-CARGO__VERUS_DRIVER_ARGS_SEP__import-dep-if-present=inflate_verus__VERUS_DRIVER_ARGS_SEP__--VIA-CARGO__VERUS_DRIVER_ARGS_SEP__import-dep-if-present=png_verus__VERUS_DRIVER_ARGS_SEP__--VIA-CARGO__VERUS_DRIVER_ARGS_SEP__import-dep-if-present=vstd__VERUS_DRIVER_ARGS_SEP__--VIA-CARGO__VERUS_DRIVER_ARGS_SEP__import-dep-if-present=png_verus__VERUS_DRIVER_ARGS_SEP__--num-threads__VERUS_DRIVER_ARGS_SEP__2__VERUS_DRIVER_ARGS_SEP__--no-cheating"  __VERUS_DRIVER_ARGS_FOR_vstd-0.0.0-2026-11-01-0251-9aa547e050e4="__VERUS_DRIVER_ARGS_SEP__--is-vstd__VERUS_DRIVER_ARGS_SEP__--VIA-CARGO__VERUS_DRIVER_ARGS_SEP__import-dep-if-present=vstd__VERUS_DRIVER_ARGS_SEP__--num-threads__VERUS_DRIVER_ARGS_SEP__2__VERUS_DRIVER_ARGS_SEP__--no-cheating"  __VERUS_DRIVER_ARGS__="__VERUS_DRIVER_ARGS_SEP__--VIA-CARGO__VERUS_DRIVER_ARGS_SEP__compile-when-not-primary-package"  __VERUS_DRIVER_IS_BUILTIN_MACROS_verus_builtin_macros-0.0.0-2026-11-01-0251-d679971799ae="1"  __VERUS_DRIVER_IS_BUILTIN_verus_builtin-0.0.0-2026-11-01-0251-404448521000="1" CARGO_UNSTABLE_CHECKSUM_FRESHNESS="true" RUSTC_BOOTSTRAP="1" RUSTC_WRAPPER="/opt/verus/verus" __CARGO_DEFAULT_LIB_METADATA="verus-0.2026.11.02.8bf68ee" __VERUS_DRIVER_VERIFY_inflate_verus-0.1.0-02e0bd8a5665="1" __VERUS_DRIVER_VERIFY_png_verus-0.1.0-d81f5b1329ad="1" __VERUS_DRIVER_VERIFY_vstd-0.0.0-2026-11-01-0251-9aa547e050e4="1" __VERUS_DRIVER_VIA_CARGO__="1" "/opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/cargo" "check"
+       Fresh unicode-ident v1.0.27
+       Fresh proc-macro2 v1.0.107
+       Fresh quote v1.0.47
+       Fresh verus_syn v0.0.0-2026-11-01-0251
+       Fresh syn v2.0.119
+       Fresh hashbrown v0.17.1
+       Fresh equivalent v1.0.3
+       Fresh indexmap v2.14.2
+       Fresh synstructure v0.13.2
+       Fresh verus_prettyplease v0.0.0-2026-11-01-0251
+       Fresh convert_case v0.4.0
+       Fresh verus_builtin_macros v0.0.0-2026-11-01-0251
+       Fresh verus_state_machines_macros v0.0.0-2026-11-01-0251
+       Fresh verus_builtin v0.0.0-2026-11-01-0251
+       Fresh vstd v0.0.0-2026-11-01-0251
+       Fresh inflate_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus)
+warning: using ==> in `assert forall` does not currently assume the antecedent in the body; consider using `implies` instead of `==>`
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_layout.rs:50:13
+   |
+50 |             assert forall|j:int| 0 <= j < i ==> before[j]@ == parts@[j]@ by {}
+   |             ^^^^^^
+   |
+   = help: to suppress this warning, use `#[verifier::allow(assert_forall_implication)]` on the surrounding function, datatype, or module or `#![verifier::allow(assert_forall_implication)]` in the module or crate
+   = help: if you didn't mean to assume the antecedent, we're very curious to hear why! To tell us, please open an issue on the Verus issue tracker on github with the title `Don't always make assert forall assume the antecedent`. If no one opens such an issue, we'll soon change the behavior of Verus to always assume the antecedent of the outermost implication
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:161:8
+    |
+161 |       && (forall|s: int| 0 <= s < lengths.len() && lengths[s] > 0 ==>
+    |  ________^
+162 | |         symbols[m::symbol_slot(lengths, s) as int] == s)
+    | |________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:161:50
+    |
+161 |     && (forall|s: int| 0 <= s < lengths.len() && lengths[s] > 0 ==>
+    |                                                  ^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:162:17
+    |
+162 |         symbols[m::symbol_slot(lengths, s) as int] == s)
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:103:5
+    |
+103 | /     exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+104 | |         && prefix(bits, cw(lengths, s).unwrap())
+    | |________________________________________________^
+
+note:   trigger 1 of 1:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:103:46
+    |
+103 |     exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                              ^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:68:9
+   |
+68 |         forall|n: int| 0 <= n <= MAX_CODE_BITS ==> old(next)@[n] == offsets[n],
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:68:69
+   |
+68 |         forall|n: int| 0 <= n <= MAX_CODE_BITS ==> old(next)@[n] == offsets[n],
+   |                                                                     ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:71:9
+   |
+71 | /         forall|n: int| 1 <= n <= MAX_CODE_BITS ==>
+72 | |             final(next)@[n] == offsets[n] + m::bl_count(lengths@, n as nat),
+   | |___________________________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:72:13
+   |
+72 |             final(next)@[n] == offsets[n] + m::bl_count(lengths@, n as nat),
+   |             ^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:73:9
+   |
+73 | /         forall|s: int| 0 <= s < lengths.len() && lengths@[s] > 0 ==>
+74 | |             final(symbols)@[m::symbol_slot(lengths@, s) as int] == s,
+   | |____________________________________________________________________^
+
+note:   trigger 1 of 2:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:73:50
+   |
+73 |         forall|s: int| 0 <= s < lengths.len() && lengths@[s] > 0 ==>
+   |                                                  ^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:74:29
+   |
+74 |             final(symbols)@[m::symbol_slot(lengths@, s) as int] == s,
+   |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:119:17
+    |
+119 |                 assert forall|t: int| 0 <= t < s + 1 && lengths@[t] > 0 implies
+    |                 ^^^^^^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:119:57
+    |
+119 |                 assert forall|t: int| 0 <= t < s + 1 && lengths@[t] > 0 implies
+    |                                                         ^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:120:30
+    |
+120 |                     symbols@[m::symbol_slot(lengths@, t) as int] == t by {
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:144:13
+    |
+144 |             assert forall|n: int| 1 <= n <= MAX_CODE_BITS implies
+    |             ^^^^^^
+
+note:   trigger 1 of 1:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:145:17
+    |
+145 |                 next@[n] == offsets[n] + m::count_prefix(lengths@, n as nat, (s + 1) as nat) by {}
+    |                 ^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:93:13
+   |
+93 | /             forall|n: int| 1 <= n <= MAX_CODE_BITS ==>
+94 | |                 next@[n] == offsets[n] + m::count_prefix(lengths@, n as nat, s as nat),
+   | |______________________________________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:94:17
+   |
+94 |                 next@[n] == offsets[n] + m::count_prefix(lengths@, n as nat, s as nat),
+   |                 ^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:95:13
+   |
+95 | /             forall|t: int| 0 <= t < s && lengths@[t] > 0 ==>
+96 | |                 symbols@[m::symbol_slot(lengths@, t) as int] == t,
+   | |_________________________________________________________________^
+
+note:   trigger 1 of 2:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:95:42
+   |
+95 |             forall|t: int| 0 <= t < s && lengths@[t] > 0 ==>
+   |                                          ^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:96:26
+   |
+96 |                 symbols@[m::symbol_slot(lengths@, t) as int] == t,
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:746:5
+    |
+746 | /     exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+747 | |         && bits.len() < lengths[s] && prefix(bits, cw(lengths, s).unwrap())
+    | |___________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:746:46
+    |
+746 |     exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                              ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:747:25
+    |
+747 |         && bits.len() < lengths[s] && prefix(bits, cw(lengths, s).unwrap())
+    |                         ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:265:21
+    |
+265 |               let s = choose|s: int| 0 <= s < lengths.len() && m::cw(lengths, s).is_some()
+    |  _____________________^
+266 | |                 && bits.len() < lengths[s] && m::prefix(bits, m::cw(lengths, s).unwrap());
+    | |_________________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:265:62
+    |
+265 |             let s = choose|s: int| 0 <= s < lengths.len() && m::cw(lengths, s).is_some()
+    |                                                              ^^^^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:266:33
+    |
+266 |                 && bits.len() < lengths[s] && m::prefix(bits, m::cw(lengths, s).unwrap());
+    |                                 ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:939:17
+    |
+939 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+940 | |             && prefix(bits, cw(lengths, s).unwrap());
+    | |____________________________________________________^
+
+note:   trigger 1 of 1:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:939:58
+    |
+939 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:719:13
+    |
+719 |       ensures exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _____________^
+720 | |         && lengths[s] >= n && prefix(msb_bits(code, n), cw(lengths, s).unwrap()),
+    | |________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:719:54
+    |
+719 |     ensures exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                      ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:720:12
+    |
+720 |         && lengths[s] >= n && prefix(msb_bits(code, n), cw(lengths, s).unwrap()),
+    |            ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:738:17
+    |
+738 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+739 | |             && lengths[s] >= n + 1 && prefix(msb_bits(2 * code, n + 1), cw(lengths, s).unwrap());
+    | |________________________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:738:58
+    |
+738 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:739:16
+    |
+739 |             && lengths[s] >= n + 1 && prefix(msb_bits(2 * code, n + 1), cw(lengths, s).unwrap());
+    |                ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:758:17
+    |
+758 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+759 | |             && n < lengths[s] && prefix(msb_bits(code, n), cw(lengths, s).unwrap());
+    | |___________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:758:58
+    |
+758 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:759:20
+    |
+759 |             && n < lengths[s] && prefix(msb_bits(code, n), cw(lengths, s).unwrap());
+    |                    ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:775:17
+    |
+775 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+776 | |             && lengths[s] >= n + 1 && prefix(msb_bits(2 * code, n + 1), cw(lengths, s).unwrap());
+    | |________________________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:775:58
+    |
+775 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:776:16
+    |
+776 |             && lengths[s] >= n + 1 && prefix(msb_bits(2 * code, n + 1), cw(lengths, s).unwrap());
+    |                ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:834:9
+    |
+834 | /         (forall|s: int| 0 <= s < lengths.len() && lengths[s] > 0 ==>
+835 | |             cw(lengths, s) == Some(seq![false])),
+    | |________________________________________________^
+
+note:   trigger 1 of 1:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:835:13
+    |
+835 |             cw(lengths, s) == Some(seq![false])),
+    |             ^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:841:5
+    |
+841 |     assert forall|s: int| 0 <= s < lengths.len() && lengths[s] > 0 implies
+    |     ^^^^^^
+
+note:   trigger 1 of 1:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:842:9
+    |
+842 |         cw(lengths, s) == Some(seq![false]) by {
+    |         ^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:862:17
+    |
+862 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+863 | |             && prefix(msb_bits(code, n), cw(lengths, s).unwrap());
+    | |_________________________________________________________________^
+
+note:   trigger 1 of 1:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:862:58
+    |
+862 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:871:17
+    |
+871 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+872 | |             && n < lengths[s] && prefix(msb_bits(code, n), cw(lengths, s).unwrap());
+    | |___________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:871:58
+    |
+871 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:872:20
+    |
+872 |             && n < lengths[s] && prefix(msb_bits(code, n), cw(lengths, s).unwrap());
+    |                    ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1046:17
+     |
+1046 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+     |  _________________^
+1047 | |             && lengths[s] >= 0 && prefix(msb_bits(0, 0), cw(lengths, s).unwrap());
+     | |_________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1046:58
+     |
+1046 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+     |                                                          ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1047:16
+     |
+1047 |             && lengths[s] >= 0 && prefix(msb_bits(0, 0), cw(lengths, s).unwrap());
+     |                ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_config.rs:84:13
+   |
+84 |       ensures forall|j:int| a <= j < b ==> ts[j].symbol != 256 && ts[j].after <= limit
+   |  _____________^
+85 | |         && (ts[j].symbol < 256 || ts[j].distance <= window),
+   | |___________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_config.rs:84:42
+   |
+84 |     ensures forall|j:int| a <= j < b ==> ts[j].symbol != 256 && ts[j].after <= limit
+   |                                          ^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_config.rs:92:9
+   |
+92 | /         forall|j:int| k <= j < b ==> ts[j].symbol != 256 && ts[j].after <= limit
+93 | |             && (ts[j].symbol < 256 || ts[j].distance <= window),
+   | |_______________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_config.rs:92:38
+   |
+92 |         forall|j:int| k <= j < b ==> ts[j].symbol != 256 && ts[j].after <= limit
+   |                                      ^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_dynamic.rs:30:13
+   |
+30 |       ensures forall|j: int| a <= j < b ==> m::MDec(code, z, positions[j]) ==
+   |  _____________^
+31 | |         (m::Decoded::Symbol { symbol: values[j] as nat, position: positions[j+1] }),
+   | |___________________________________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_dynamic.rs:31:39
+   |
+31 |         (m::Decoded::Symbol { symbol: values[j] as nat, position: positions[j+1] }),
+   |                                       ^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_dynamic.rs:52:9
+   |
+52 | /         forall|j: int| k <= j < values.len() ==> m::MDec(code, z, positions[j]) ==
+53 | |             (m::Decoded::Symbol { symbol: values[j] as nat, position: positions[j+1] }),
+   | |_______________________________________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_dynamic.rs:53:43
+   |
+53 |             (m::Decoded::Symbol { symbol: values[j] as nat, position: positions[j+1] }),
+   |                                           ^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_layout.rs:23:9
+   |
+23 |         forall|j:int| 0 <= j < k ==> a[j]@ == b[j]@,
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 2:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_layout.rs:23:38
+   |
+23 |         forall|j:int| 0 <= j < k ==> a[j]@ == b[j]@,
+   |                                      ^^^^
+
+note:   trigger 2 of 2:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_layout.rs:23:47
+   |
+23 |         forall|j:int| 0 <= j < k ==> a[j]@ == b[j]@,
+   |                                               ^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_layout.rs:50:13
+   |
+50 |             assert forall|j:int| 0 <= j < i ==> before[j]@ == parts@[j]@ by {}
+   |             ^^^^^^
+
+note:   trigger 1 of 1:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_layout.rs:50:49
+   |
+50 |             assert forall|j:int| 0 <= j < i ==> before[j]@ == parts@[j]@ by {}
+   |                                                 ^^^^^^^^^
+
+note: Verus printed one or more automatically chosen quantifier triggers
+      because it had low confidence in the chosen triggers.
+      To suppress these messages, do one of the following:
+        (1) manually annotate a single desired trigger using `#[trigger]`
+            (example: `forall|i: int, j: int| f(i) && #[trigger] g(i) && #[trigger] h(j)`),
+        (2) manually annotate multiple desired triggers using `#![trigger ...]`
+            (example: `forall|i: int| #![trigger f(i)] #![trigger g(i)] f(i) && g(i)`),
+        (3) accept the automatically chosen trigger using `#![auto]`
+            (example: `forall|i: int, j: int| #![auto] f(i) && g(i) && h(j)`)
+        (4) use the `--triggers-mode silent` command-line option to suppress all printing of triggers.
+      (Note: triggers are used by the underlying SMT theorem prover to instantiate quantifiers;
+      the theorem prover instantiates a quantifier whenever some expression matches the
+      pattern specified by one of the quantifier's triggers.)
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:103:5
+    |
+103 | /     exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+104 | |         && prefix(bits, cw(lengths, s).unwrap())
+    | |________________________________________________^
+
+warning: function `Kraft` should have a snake case name
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:51:18
+   |
+51 | pub open spec fn Kraft(lengths: Seq<u8>) -> nat {
+   |                  ^^^^^ help: convert the identifier to snake case (notice the capitalization): `kraft`
+   |
+   = note: `#[warn(non_snake_case)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: function `MDec` should have a snake case name
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:127:18
+    |
+127 | pub open spec fn MDec(lengths: Seq<u8>, z: Seq<u8>, start: nat) -> Decoded {
+    |                  ^^^^ help: convert the identifier to snake case: `mdec`
+
+warning: function `MEmit` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1108:18
+     |
+1108 | pub open spec fn MEmit(out: Seq<u8>, limit: nat, byte: u8) -> OutputEffect {
+     |                  ^^^^^ help: convert the identifier to snake case: `memit`
+
+warning: function `MCopy` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1126:18
+     |
+1126 | pub open spec fn MCopy(out: Seq<u8>, limit: nat, window: nat, distance: nat, count: nat) -> OutputEffect {
+     |                  ^^^^^ help: convert the identifier to snake case: `mcopy`
+
+warning: function `MStoredPayload` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1151:18
+     |
+1151 | pub open spec fn MStoredPayload(z: Seq<u8>, cursor: nat, out: Seq<u8>, limit: nat, count: nat) -> StoredEffect
+     |                  ^^^^^^^^^^^^^^ help: convert the identifier to snake case: `mstored_payload`
+
+warning: function `lemma_MCopy_shape` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1207:14
+     |
+1207 | pub proof fn lemma_MCopy_shape(out: Seq<u8>, limit: nat, window: nat, distance: nat, count: nat)
+     |              ^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `lemma_mcopy_shape`
+
+warning: function `Adler` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1293:18
+     |
+1293 | pub open spec fn Adler(out: Seq<u8>) -> nat {
+     |                  ^^^^^ help: convert the identifier to snake case: `adler`
+
+warning: function `MDynamicLengths` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1414:18
+     |
+1414 | pub open spec fn MDynamicLengths(z: Seq<u8>, position: nat, code: Seq<u8>, lengths: Seq<u8>,
+     |                  ^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `mdynamic_lengths`
+
+warning: function `MDynamicCL` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1459:18
+     |
+1459 | pub open spec fn MDynamicCL(z: Seq<u8>, position: nat, code: Seq<u8>, i: nat, ncode: nat,
+     |                  ^^^^^^^^^^ help: convert the identifier to snake case: `mdynamic_cl`
+
+warning: function `MDynamic` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1479:18
+     |
+1479 | pub open spec fn MDynamic(z: Seq<u8>, position: nat, single_accept: bool) -> DynamicHeader {
+     |                  ^^^^^^^^ help: convert the identifier to snake case: `mdynamic`
+
+warning: function `MStoredBlock` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1539:18
+     |
+1539 | pub open spec fn MStoredBlock(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat) -> StoredEffect {
+     |                  ^^^^^^^^^^^^ help: convert the identifier to snake case: `mstored_block`
+
+warning: function `MMatch` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1584:18
+     |
+1584 | pub open spec fn MMatch(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+     |                  ^^^^^^ help: convert the identifier to snake case: `mmatch`
+
+warning: function `MCompressedStep` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1620:18
+     |
+1620 | pub open spec fn MCompressedStep(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+     |                  ^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `mcompressed_step`
+
+warning: function `MCompressed` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1640:18
+     |
+1640 | pub open spec fn MCompressed(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+     |                  ^^^^^^^^^^^ help: convert the identifier to snake case: `mcompressed`
+
+warning: function `MOneBlock` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1658:18
+     |
+1658 | pub open spec fn MOneBlock(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+     |                  ^^^^^^^^^ help: convert the identifier to snake case: `mone_block`
+
+warning: function `MBlk` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1679:18
+     |
+1679 | pub open spec fn MBlk(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+     |                  ^^^^ help: convert the identifier to snake case: `mblk`
+
+warning: function `MFinish` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1710:18
+     |
+1710 | pub open spec fn MFinish(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+     |                  ^^^^^^^ help: convert the identifier to snake case: `mfinish`
+
+warning: function `MEnvelope` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1727:18
+     |
+1727 | pub open spec fn MEnvelope(z: Seq<u8>, limit: nat, enforce_window: bool,
+     |                  ^^^^^^^^^ help: convert the identifier to snake case: `menvelope`
+
+warning: function `Inflate` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1749:18
+     |
+1749 | pub open spec fn Inflate(z: Seq<u8>, limit: nat, enforce_window: bool,
+     |                  ^^^^^^^ help: convert the identifier to snake case (notice the capitalization): `inflate`
+
+warning: `inflate_verus` (lib) generated 20 warnings
+       Dirty png_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus): file size changed (2218 != 2248) for `src/lib.rs`
+    Checking png_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus)
+     Running `/opt/verus/verus /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc --crate-name png_verus --edition=2021 src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata -C embed-bitcode=no -C debuginfo=2 --warn=unexpected_cfgs --check-cfg 'cfg(verus_only)' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values("test-records"))' -C metadata=62e1b03dc42d9725 -C extra-filename=-d6636dff8becff5c --out-dir /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps -C incremental=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental -L dependency=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps --extern inflate_verus=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps/libinflate_verus-6b33f8ba620de9a9.rmeta --extern vstd=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps/libvstd-01822e92e4f44378.rmeta -Z checksum-hash-algorithm=blake3`
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental/png_verus-23rwh3rmi7pd6/s-hobwbwz24v-1l1p28i-working`
+
+warning: unused doc comment
+  --> src/walk.rs:96:1
+   |
+96 | / /// P2–P8, P14.1 under `pol`. `apng_off` is the re-walk of the R4 fallback, with
+97 | | /// acTL, fcTL and fdAT treated as unknown ancillary chunks (`apng = Off`).
+   | |_--------------------------------------------------------------------------^
+   |   |
+   |   rustdoc does not generate documentation for macro invocations
+   |
+   = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+   = note: `#[warn(unused_doc_comments)]` (part of `#[warn(unused)]`) on by default
+
+warning: autoderive Clone impl does not take the form Verus expects; continuing, but without adding a specification for the derived Clone impl
+   --> src/png.rs:222:10
+    |
+222 | #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+    |          ^^^^^
+    |
+    = help: to suppress this warning, use `#[verifier::allow(autoderive_clone_without_spec)]` on the surrounding function, datatype, or module or `#![verifier::allow(autoderive_clone_without_spec)]` in the module or crate
+
+error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details
+   --> src/frame_state.rs:127:1
+    |
+127 | fn select_control(b: &[u8], doc: &Doc, index: u32, cursor: usize) -> (r: (Fctl,usize))
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details
+  --> src/frame_state.rs:95:5
+   |
+95 |     fn select(b: &'a [u8], doc: &Doc, index: u32, cursor: usize, previous: Previous) -> (r: Self)
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details
+  --> src/frame_state.rs:66:5
+   |
+66 |     pub(crate) fn take<'a>(&mut self, b: &'a [u8], doc: &Doc) -> (r: Step<'a>)
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/alloc_guard/mod.rs:108:5
+    |
+108 |     forall|j: int| 0 <= j < l.len() ==> l[j].2
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/alloc_guard/mod.rs:108:41
+    |
+108 |     forall|j: int| 0 <= j < l.len() ==> l[j].2
+    |                                         ^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/kind.rs:201:5
+    |
+201 |     assert forall|other: mw::Name| seen_view(mask | (1u32 << i)).contains(other)
+    |     ^^^^^^
+
+note:   trigger 1 of 1:
+   --> src/kind.rs:202:12
+    |
+202 |         == seen_view(mask).insert(name).contains(other) by {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> src/walk_state.rs:88:31
+   |
+88 |         ensures r.wf(*doc,b@),forall|p: usize,ev: Events| r.view(*doc,p,ev)==m::initial(doc.ihdr.view(),p as nat,ev.view()),
+   |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+  --> src/walk_state.rs:88:59
+   |
+88 |         ensures r.wf(*doc,b@),forall|p: usize,ev: Events| r.view(*doc,p,ev)==m::initial(doc.ihdr.view(),p as nat,ev.view()),
+   |                                                           ^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> src/walk_state.rs:115:42
+    |
+115 |               Ok(())=>final(doc).wf(b@) && exists|value: crate::metadata_model::Value|
+    |  __________________________________________^
+116 | |                 crate::metadata_model::parse(kind.view(),b@.subrange(base as int,base as int+size as int),
+117 | |                     old(doc).ihdr.ct,old(doc).ihdr.depth,m::entries(old(doc).view()))==crate::metadata_model::Outcome::Value(value)
+118 | |                 && final(doc).view()==m::store(old(doc).view(),value,base as nat),
+    | |_________________________________________________________________________________^
+
+note:   trigger 1 of 1:
+   --> src/walk_state.rs:118:39
+    |
+118 |                 && final(doc).view()==m::store(old(doc).view(),value,base as nat),
+    |                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> src/alloc_guard/sites.rs:75:16
+   |
+75 |             && (forall|j: int| 0 <= j < l.len() - 1 ==> l[j].2)
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+  --> src/alloc_guard/sites.rs:75:57
+   |
+75 |             && (forall|j: int| 0 <= j < l.len() - 1 ==> l[j].2)
+   |                                                         ^^^^
+
+note: Verus printed one or more automatically chosen quantifier triggers
+      because it had low confidence in the chosen triggers.
+      To suppress these messages, do one of the following:
+        (1) manually annotate a single desired trigger using `#[trigger]`
+            (example: `forall|i: int, j: int| f(i) && #[trigger] g(i) && #[trigger] h(j)`),
+        (2) manually annotate multiple desired triggers using `#![trigger ...]`
+            (example: `forall|i: int| #![trigger f(i)] #![trigger g(i)] f(i) && g(i)`),
+        (3) accept the automatically chosen trigger using `#![auto]`
+            (example: `forall|i: int, j: int| #![auto] f(i) && g(i) && h(j)`)
+        (4) use the `--triggers-mode silent` command-line option to suppress all printing of triggers.
+      (Note: triggers are used by the underlying SMT theorem prover to instantiate quantifiers;
+      the theorem prover instantiates a quantifier whenever some expression matches the
+      pattern specified by one of the quantifier's triggers.)
+  --> src/alloc_guard/sites.rs:75:16
+   |
+75 |             && (forall|j: int| 0 <= j < l.len() - 1 ==> l[j].2)
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+verification results:: 295 verified, 3 errors
+warning: `png_verus` (lib) generated 3 warnings
+error: could not compile `png_verus` (lib) due to 3 previous errors; 3 warnings emitted
+
+Caused by:
+  process didn't exit successfully: `/opt/verus/verus /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc --crate-name png_verus --edition=2021 src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata -C embed-bitcode=no -C debuginfo=2 --warn=unexpected_cfgs --check-cfg 'cfg(verus_only)' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values("test-records"))' -C metadata=62e1b03dc42d9725 -C extra-filename=-d6636dff8becff5c --out-dir /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps -C incremental=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental -L dependency=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps --extern inflate_verus=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps/libinflate_verus-6b33f8ba620de9a9.rmeta --extern vstd=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps/libvstd-01822e92e4f44378.rmeta -Z checksum-hash-algorithm=blake3` (exit status: 1)

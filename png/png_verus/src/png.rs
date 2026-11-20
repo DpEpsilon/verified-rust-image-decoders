@@ -17,8 +17,9 @@ use crate::alloc_guard::{try_zeroed, AllocLog, AllocSite, OutOfMemory};
 use crate::image::{decode_image, raw_size, Sink};
 use crate::limits::MAX_ICC;
 use crate::policy::{Policy, Profile, STRICT};
-use crate::reader::{next_selected_fctl, FdatReader, IdatReader};
-use crate::walk::{frame_at, Doc, Fctl, Ihdr};
+use crate::reader::IdatReader;
+use crate::frame_state::{FrameState, Step};
+use crate::walk::{Doc, Ihdr};
 
 use vstd::prelude::*;
 
@@ -371,7 +372,7 @@ fn oom(o: OutOfMemory) -> TryError {
 
 /// The checked still/ICC structural walk, before any reservation.
 fn still_walk(b: &[u8], pol: &Policy, ev: &mut Events) -> Result<Doc, TryError> {
-    crate::walk::still(b,pol,ev).map_err(TryError::Format)
+    crate::callers::still(b,pol,ev)
 }
 
 /// `Raw` then `Output` (P20), after a successful walk. `out_bytes` is `4·N` or
@@ -478,18 +479,6 @@ impl FrameView<'_> {
     }
 }
 
-#[derive(Clone, Copy)]
-enum FState {
-    /// No acTL, or the R4 fallback: the default image is the only frame.
-    Single,
-    /// The animation: `k` frames returned so far; the next fcTL is searched
-    /// from `cursor`; `prev` is frame `k − 1`'s rectangle and effective
-    /// disposal.
-    Anim { k: u32, cursor: usize, prev: Option<((u32, u32, u32, u32), u8)> },
-    /// After `Ok(None)` or any returned error (fused, D3).
-    Done,
-}
-
 /// The frame decoder (P16). Borrows the input; owns `Raw` (filtered data of the
 /// full image, reused by every frame), `Output` (the canvas) and, from step S
 /// on, `Saved`. Not an `Iterator`: each view borrows the canvas.
@@ -501,7 +490,7 @@ pub struct Frames<'a> {
     canvas: Vec<u8>,
     saved: Option<Vec<u8>>,
     base: Events,
-    state: FState,
+    state: FrameState,
 }
 
 impl<'a> Frames<'a> {
@@ -532,7 +521,7 @@ impl<'a> Frames<'a> {
 
     fn with_record(b: &'a [u8], pol: Policy) -> Result<Frames<'a>, TryError> {
         let mut ev = Events::default();
-        let doc = crate::walk::frames(b,&pol,&mut ev).map_err(TryError::Format)?;
+        let doc = crate::callers::frames(b,&pol,&mut ev)?;
         let mut trace = Trace::new();
         let n = doc.ihdr.w as usize * doc.ihdr.h as usize;
         let (mut raw, mut canvas) = reserve_image(&doc, 4 * n, &mut trace)?;
@@ -540,17 +529,14 @@ impl<'a> Frames<'a> {
         decode_image(&doc, b, &mut src, &mut raw, doc.ihdr.w, doc.ihdr.h, &pol, &mut ev, &mut Sink::Rgba8(&mut canvas))
             .map_err(TryError::Format)?;
         let mut doc = doc;
-        let state = match doc.actl {
-            None => FState::Single,
-            Some(a) => {
-                doc.info.num_plays = Some(a.num_plays);
-                if !doc.info.default_is_frame {
-                    // A default image outside the animation is validated, not shown (P16).
-                    canvas.fill(0);
-                }
-                FState::Anim { k: 0, cursor: frame_at(b, 8).map(|c| c.next).unwrap_or(b.len()), prev: None }
+        if let Some(a) = doc.actl {
+            doc.info.num_plays = Some(a.num_plays);
+            if !doc.info.default_is_frame {
+                // A default image outside the animation is validated, not shown (P16).
+                canvas.fill(0);
             }
-        };
+        }
+        let state = FrameState::new(b, &doc);
         Ok(Frames { b, pol, doc, raw, canvas, saved: None, base: ev, state })
     }
 
@@ -565,10 +551,9 @@ impl<'a> Frames<'a> {
     pub fn try_next(&mut self) -> Result<Option<FrameView<'_>>, TryError> {
         let w = self.doc.ihdr.w;
         let h = self.doc.ihdr.h;
-        match self.state {
-            FState::Done => Ok(None),
-            FState::Single => {
-                self.state = FState::Done;
+        match self.state.begin_next(self.b, &self.doc) {
+            Step::Done => Ok(None),
+            Step::Single => {
                 Ok(Some(FrameView {
                     rgba: &self.canvas,
                     rect: (0, 0, w, h),
@@ -579,28 +564,10 @@ impl<'a> Frames<'a> {
                     events: self.base,
                 }))
             }
-            FState::Anim { k, cursor, prev } => {
-                if k >= self.doc.info.frame_count {
-                    self.state = FState::Done;
-                    return Ok(None);
-                }
-                let fpos = match next_selected_fctl(self.b,&self.doc,k,cursor) {
-                    Some(q) => q,
-                    None => {
-                        self.state = FState::Done;
-                        return Ok(None);
-                    }
-                };
-                // The walk checked this chunk's framing, length 26 and CRC.
-                let c = match frame_at(self.b, fpos) {
-                    Ok(c) if c.len == 26 => c,
-                    _ => {
-                        self.state = FState::Done;
-                        return Ok(None);
-                    }
-                };
-                let f = Fctl::parse(&self.b[c.data..c.data + 26]);
-                self.state = FState::Done;
+            Step::Frame(job) => {
+                let k = job.index;
+                let f = job.control;
+                let prev = job.previous;
                 // Step S (P20, D9): Saved, once, at the start of the first
                 // reached call for a frame k > 0 with dispose_op = 2.
                 if k > 0 && f.dispose == 2 && self.saved.is_none() {
@@ -620,14 +587,14 @@ impl<'a> Frames<'a> {
                         }
                     }
                 }
-                let op = if k == 0 && f.dispose == 2 { 1 } else { f.dispose };
+                let op = job.effective_dispose;
                 if op == 2 {
                     if let Some(s) = self.saved.as_mut() {
                         s.copy_from_slice(&self.canvas);
                     }
                 }
                 let mut fev = self.base;
-                if k == 0 && self.doc.info.default_is_frame {
+                if job.reader.is_none() {
                     // Frame 0 is the default image, already on the canvas. OVER onto
                     // the transparent canvas equals the source except that a pixel
                     // with alpha 0 becomes (0,0,0,0) (P14.4 with d = (0,0,0,0)).
@@ -643,13 +610,13 @@ impl<'a> Frames<'a> {
                         }
                     }
                 } else {
-                    let mut src = FdatReader::for_frame(self.b,&self.doc,k,c.next);
+                    let mut src = job.reader.unwrap();
                     let mut sink = Sink::Canvas { canvas: &mut self.canvas, cw: w, fx: f.x, fy: f.y, over: f.blend == 1 };
                     if let Err(e) = decode_image(&self.doc, self.b, &mut src, &mut self.raw, f.w, f.h, &self.pol, &mut fev, &mut sink) {
                         return Err(TryError::Format(e));
                     }
                 }
-                self.state = FState::Anim { k: k + 1, cursor: c.next, prev: Some(((f.x, f.y, f.w, f.h), op)) };
+                self.state = job.resume;
                 Ok(Some(FrameView {
                     rgba: &self.canvas,
                     rect: (f.x, f.y, f.w, f.h),

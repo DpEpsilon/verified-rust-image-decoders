@@ -1,0 +1,24 @@
+{
+  "checkpoint": 142,
+  "verified": 301,
+  "errors": 0,
+  "runtime_run": 143,
+  "source_inventory_matches": true,
+  "source_file_count": 45,
+  "fresh_vstd_no_rebuild": true,
+  "source_and_copy_cache_matches": true,
+  "runtime_inputs_unchanged": true,
+  "sealed_guard_hashes_unchanged": true,
+  "no_new_trusted_items": true,
+  "no_tracked_protected_path_changes": true,
+  "whitespace_check_passed": true,
+  "runlog_sha256": "7142bb1b0fa36ba07cce08ecf02451d6e1a8ff81efa5d266f421083ae21f7383",
+  "ledger_sha256": "cdc33ad33b0eac16fb2c49931d2cb04d3dc68526854414ce4683b1fc32a2194f",
+  "new_source_files": [
+    "/home/ws/projects/verified-decoders/png/png_verus/src/callers.rs",
+    "/home/ws/projects/verified-decoders/png/png_verus/src/frame_state.rs"
+  ],
+  "background_jobs_started": 0,
+  "worker_commit_or_push": false,
+  "scope": "checked fresh-event walk gates and source-state transition subsystem, not whole public receiver/logged gates"
+}

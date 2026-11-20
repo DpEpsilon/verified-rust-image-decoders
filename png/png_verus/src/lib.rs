@@ -5,8 +5,9 @@
 //! and APNG checks, raw Info storage and policy projection are verified
 //! against complete independent MW/MW_p/MWF_p transition/trace models.
 //! The segmented adapter, IDAT/fdAT transport and validated boundary selectors
-//! are verified under their cursor/index contracts. Image stages, public allocation
-//! sequencing and returned-object bodies remain ordinary Rust. A green run
+//! feed checked source-state transitions and fresh-event walk gates. Image stages,
+//! public receiver composition, allocation sequencing and returned-object bodies
+//! remain ordinary Rust. A green run
 //! does not sign off M3. zlib/DEFLATE is the verified `inflate_verus` dependency.
 //!
 //! `no_std + alloc`, no `unsafe`, no recursion. Every heap allocation goes
@@ -22,6 +23,8 @@ mod apng;
 #[cfg(verus_only)]
 pub mod apng_model;
 mod crc;
+mod callers;
+mod frame_state;
 mod critical;
 #[cfg(verus_only)]
 pub mod critical_model;

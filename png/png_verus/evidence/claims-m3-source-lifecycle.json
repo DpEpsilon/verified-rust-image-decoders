@@ -1,0 +1,160 @@
+{
+  "milestone": "M3 checked fresh walk gates and source-state lifecycle; not sign-off",
+  "base_commit": "ce23c4f",
+  "checkpoint": 142,
+  "verified": 301,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "runtime_and_source_controls_run": 143,
+  "no_new_trusted_items": true,
+  "claims": [
+    {
+      "row": "T6 / MW_p / MWF_p public walk-prefix binding",
+      "status": "component-proved on host",
+      "functions": [
+        "callers::still",
+        "callers::frames"
+      ],
+      "run": 142,
+      "statement": "checked production gates initialize R1/R3/R4 to false inside verified code, establish the existing walk preconditions without an incoming-event premise, return exact modeled walk outcomes and never return OutOfMemory",
+      "binding": "still and ICC share callers::still through still_walk; Frames::with_record uses callers::frames",
+      "qualifier": "does not prove whole public entry bodies or log non-interference"
+    },
+    {
+      "row": "L-REWALK public source-state initialization",
+      "status": "component-proved on host",
+      "functions": [
+        "FrameState::new"
+      ],
+      "run": 142,
+      "premises": [
+        "source_document on the same input/document"
+      ],
+      "statement": "Single iff acTL absent; otherwise animation index zero and canonical IHDR-end cursor; initial source state is well formed and not Done"
+    },
+    {
+      "row": "L-REWALK cursor/index transitions",
+      "status": "component-proved on host",
+      "functions": [
+        "FrameState::begin_next",
+        "FrameJob::select",
+        "frame_state::select_control",
+        "frame_state::read_control",
+        "frame_state::resume_state"
+      ],
+      "run": 142,
+      "premises": [
+        "FrameState::wf on the same immutable input/document"
+      ],
+      "statement": "each active selection discharges the validated fcTL and fdAT constructor premises, matches raw modeled control fields, selects default-frame reuse iff frame zero/default_is_frame, and supplies a well-formed resume state at index+1 and the selected fcTL end; increment cannot wrap",
+      "binding": "all public iterator source-state creation, index/cursor advancement and reader selection use these checked functions"
+    },
+    {
+      "row": "T-SEG / L-REWALK selected frame reader",
+      "status": "component-proved on host",
+      "functions": [
+        "FrameJob::select"
+      ],
+      "run": 142,
+      "statement": "a supplied fdAT reader is fresh and its concat equals the modeled frame_stream; None means only default frame zero is reused",
+      "qualifier": "under source-state/document invariants; image semantics remain ordinary Rust"
+    },
+    {
+      "row": "A-PNG-7 terminal / iterator fusion source component",
+      "status": "component-proved on host",
+      "functions": [
+        "FrameState::begin_next"
+      ],
+      "run": 142,
+      "statement": "begin_next sets Done before returning any source job; retaining that receiver handles abort; a Done receiver returns Done, and Single is consumed once",
+      "qualifier": "complete public receiver invariant, terminal allocation-log theorem and image/disposal bodies are not verified"
+    },
+    {
+      "row": "T6 / L-REWALK / terminal source witness",
+      "status": "production-transition witness proved on host",
+      "functions": [
+        "witness_frame::source_lifecycle"
+      ],
+      "run": 142,
+      "statement": "existing locally synthesized structural APNG clears deliberately dirty incoming events, selects fdAT frame zero and a valid index-one resume state, leaves abort state fused, and returns Done at exhaustion and repeatedly thereafter",
+      "qualifier": "this is not successful image inflation or a full public Frames::try_next proof"
+    },
+    {
+      "row": "L-REWALK complete Strict / policy",
+      "status": "partial",
+      "functions": [],
+      "run": 142,
+      "unproved": [
+        "whole public Frames receiver invariant and its preservation across image/allocation/disposal bodies",
+        "constructor num_plays update and source_document preservation formally composed with FrameState::new"
+      ]
+    },
+    {
+      "row": "A-PNG-2",
+      "status": "complete gate remains open; no sealed-log/work/returned-object theorem added",
+      "functions": [],
+      "run": 142
+    },
+    {
+      "row": "A-PNG-7",
+      "status": "complete gate remains open; no sealed-log/work/returned-object theorem added",
+      "functions": [],
+      "run": 142
+    },
+    {
+      "row": "L-WALK-FIRST",
+      "status": "complete gate remains open; no sealed-log/work/returned-object theorem added",
+      "functions": [],
+      "run": 142
+    },
+    {
+      "row": "complete public returned-Info",
+      "status": "complete gate remains open; no sealed-log/work/returned-object theorem added",
+      "functions": [],
+      "run": 142
+    },
+    {
+      "row": "L-REWALK-COST",
+      "status": "complete gate remains open; no sealed-log/work/returned-object theorem added",
+      "functions": [],
+      "run": 142
+    },
+    {
+      "row": "T6 / M3 assurance",
+      "status": "partial",
+      "functions": [],
+      "run": 142,
+      "statement": "earlier complete internal walk/transport proofs remain enabled",
+      "unproved": [
+        "remaining required frozen-record witnesses",
+        "i686 replay",
+        "image/pixel semantics and full milestone assurance"
+      ]
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0143.json"
+  },
+  "diagnostics": {
+    "126-131": "source-state VCs exceeded default rlimit; split control parsing/job/resume and abstracted the document/job predicates",
+    "128": "reveal requires concrete type name, not Self",
+    "132": "hide headers must precede body statements",
+    "133-134": "abstract component contracts avoided redundant Doc/reader model expansion; 134 verified 300",
+    "135-137": "optional constructor Info preservation attempt hit parse/default-rlimit issues; removed from this checkpoint, returned-Info remains open",
+    "138": "lifecycle witness verified at 301",
+    "139": "normal Cargo rejected a cfg-only model type in an exec Ghost parameter; replaced that interface with a raw framed-control parser",
+    "140": "Cargo-compatible version verified at 301",
+    "141": "runtime tests passed but conservative allocation scanner rejected custom method name take; renamed begin_next without weakening scanner",
+    "142-143": "final verification and all runtime/source controls pass"
+  },
+  "runtime_order_note": "fresh reader construction now occurs with source selection before Saved reservation/disposal; construction performs no allocation, scan or decode, and public error/request order remains tested",
+  "spec_ambiguities": [],
+  "resume": "Compose the public Frames receiver invariant, including preservation across its ordinary num_plays update; then migrate sealed allocation logs and prove A-PNG-2/A-PNG-7, L-WALK-FIRST and complete public returned-Info. Keep pixel/disposal/cost/target gates explicit."
+}

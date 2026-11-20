@@ -121,6 +121,8 @@ proof fn accepted()
 fn empty_fdat_with_metadata() {
     let b=[137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,1,0,0,0,1,8,2,0,0,0,144,119,83,222,0,0,0,8,97,99,84,76,0,0,0,1,0,0,0,0,180,45,233,160,0,0,0,0,73,68,65,84,53,175,6,30,0,0,0,26,102,99,84,76,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,106,136,156,182,0,0,0,0,118,112,65,103,1,85,194,179,0,0,0,4,102,100,65,84,0,0,0,1,114,207,158,247,0,0,0,0,73,69,78,68,174,66,96,130];
     if b.len() as u64<=crate::limits::MAX_INPUT && crate::limits::MAX_TOTAL_PIXELS>0 {
+        proof {assert(b@==file());}
+        source_lifecycle(&b);
         let mut events=Events {r1:false,r3:false,r4:false};
         let result=crate::walk::frames(&b,&STRICT,&mut events);
         proof {assert(b@==file());crate::walk_policy::profiles_project_exactly();accepted();assert(result.is_ok());}
@@ -143,6 +145,41 @@ fn empty_fdat_with_metadata() {
             proof {assert(eof.is_none());assert(reader.seg_steps()==3 && reader.core_steps()==0);}
         }}
     }
+}
+
+/// Checked production transitions, independent of the unverified image work.
+fn source_lifecycle(b: &[u8])
+    requires b@==file(),b.len()<=crate::limits::MAX_INPUT,crate::limits::MAX_TOTAL_PIXELS>0,
+{
+    let mut events=Events {r1:true,r3:true,r4:true};
+    let result=crate::callers::frames(b,&STRICT,&mut events);
+    proof {crate::walk_policy::profiles_project_exactly();accepted();assert(result.is_ok());}
+    match result {Err(_)=>{},Ok(doc)=> {
+        proof {assert(events.view()==m::no_events());}
+        let mut state=crate::frame_state::FrameState::new(b,&doc);
+        let selected=state.begin_next(b,&doc);
+        match selected {
+            crate::frame_state::Step::Done=>{assert(false);},
+            crate::frame_state::Step::Single=>{assert(false);},
+            crate::frame_state::Step::Frame(job)=> {
+                proof {
+                    reveal(crate::frame_state::FrameJob::wf);
+                    assert(job.index==0 && job.reader.is_some());
+                    assert(job.control.w==1 && job.control.h==1);
+                    assert(job.resume.index()==Some(1nat));
+                }
+                // An image/allocation failure can leave the receiver here:
+                // begin_next has already fused it, without committing job.resume.
+                let aborted=state.begin_next(b,&doc);
+                proof {assert(matches!(aborted,crate::frame_state::Step::Done));}
+                state=job.resume;
+                let end=state.begin_next(b,&doc);
+                proof {assert(matches!(end,crate::frame_state::Step::Done));}
+                let fused=state.begin_next(b,&doc);
+                proof {assert(matches!(fused,crate::frame_state::Step::Done));}
+            },
+        }
+    }}
 }
 
 } // verus!
