@@ -41,7 +41,7 @@ impl Doc {
         && self.info.view().header==self.ihdr.view()
         && self.info.palette_entries==m::entries(self.view()) && m::entries(self.view())<=256
         && bounded(self.plte,b.len()) && bounded(self.trns,b.len()) && bounded(self.iccp,b.len())
-        && self.info.ranges_wf(b.len())
+        && self.info.ranges_wf(b.len()) && self.info.repr_wf()
         && ranges_valid(self.idat_ranges@,b.len()) && frames_valid(self.frame_ranges@,b.len())
         && if self.idat_ranges@.len()==0 {self.idat_first==0} else {
             8<=self.idat_ranges@[0].offset && self.idat_first+8==self.idat_ranges@[0].offset

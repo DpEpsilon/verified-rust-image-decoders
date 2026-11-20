@@ -287,7 +287,7 @@ pub struct Info {
 
 impl Info {
     pub(crate) fn new(h: &Ihdr) -> (r: Info)
-        ensures r.view() == crate::document_model::initial_info(h.view()),r.ranges_wf(0),
+        ensures r.view() == crate::document_model::initial_info(h.view()),r.ranges_wf(0),r.repr_wf(),
     {
         let r=Info {
             width: h.w,
@@ -482,6 +482,8 @@ impl FrameView<'_> {
 /// The frame decoder (P16). Borrows the input; owns `Raw` (filtered data of the
 /// full image, reused by every frame), `Output` (the canvas) and, from step S
 /// on, `Saved`. Not an `Iterator`: each view borrows the canvas.
+verus! {
+
 pub struct Frames<'a> {
     b: &'a [u8],
     pol: Policy,
@@ -492,6 +494,82 @@ pub struct Frames<'a> {
     base: Events,
     state: FrameState,
 }
+
+impl<'a> Frames<'a> {
+    /// Source/metadata invariant only; buffer layout and pixel semantics are
+    /// separate obligations of the image and allocation stages.
+    #[verifier::opaque]
+    pub closed spec fn source_wf(&self) -> bool {
+        self.state.wf(self.b@,self.doc)
+        && self.doc.info.num_plays==match self.doc.actl {Some(a)=>Some(a.num_plays),None=>None}
+    }
+
+    fn from_decoded(b: &'a [u8], pol: Policy, mut doc: Doc,
+        raw: Vec<u8>, canvas: Vec<u8>, base: Events) -> (r: Self)
+        requires crate::frame_state::source_document(b@,doc),
+        ensures r.source_wf(),r.b==b,r.pol==pol,r.base==base,r.saved.is_none(),
+            r.raw@==raw@,r.canvas@==canvas@,
+            r.doc.info.view()==crate::document_model::constructor_info(doc.view()),
+            r.state.single()==doc.actl.is_none(),!r.state.done(),
+    {
+        crate::frame_state::constructor_info(b,&mut doc);
+        let state=FrameState::new(b,&doc);
+        proof {reveal(Frames::source_wf);}
+        Self {b,pol,doc,raw,canvas,saved:None,base,state}
+    }
+
+    fn begin_source(&mut self) -> (r: Step<'a>)
+        requires old(self).source_wf(),
+        ensures final(self).source_wf(),final(self).state.done(),
+            final(self).doc==old(self).doc,final(self).b==old(self).b,
+            final(self).raw==old(self).raw,final(self).canvas==old(self).canvas,
+            final(self).saved==old(self).saved,final(self).base==old(self).base,
+            match r {Step::Frame(job)=>job.wf(final(self).b@,final(self).doc),_=>true},
+    {
+        proof {reveal(Frames::source_wf);}
+        self.state.begin_next(self.b,&self.doc)
+    }
+
+    fn commit_source(&mut self, resume: FrameState)
+        requires old(self).source_wf(),resume.wf(old(self).b@,old(self).doc),
+        ensures final(self).source_wf(),final(self).state==resume,
+            final(self).doc==old(self).doc,final(self).b==old(self).b,
+            final(self).raw==old(self).raw,final(self).canvas==old(self).canvas,
+            final(self).saved==old(self).saved,final(self).base==old(self).base,
+    {
+        proof {reveal(Frames::source_wf);}
+        self.state=resume;
+    }
+
+    pub closed spec fn info_value(&self) -> Info {self.doc.info}
+
+    /// IHDR, the colour chunks and raw num_plays (P8.3).
+    pub fn info(&self) -> (r: &Info)
+        ensures *r==self.info_value(),
+    {&self.doc.info}
+
+}
+
+/// Source/metadata composition only: supplied buffers are never decoded here.
+#[cfg(verus_only)]
+pub(crate) fn receiver_source_witness(b: &[u8], pol: &Policy, raw: Vec<u8>, canvas: Vec<u8>) {
+    let mut events=Events {r1:true,r3:true,r4:true};
+    let result=crate::callers::frames(b,pol,&mut events);
+    match result {Err(_)=>{},Ok(doc)=> {
+        let ghost before=doc.view();
+        let mut receiver=Frames::from_decoded(b,*pol,doc,raw,canvas,events);
+        let info=receiver.info();
+        proof {assert(info.view()==crate::document_model::constructor_info(before));}
+        let step=receiver.begin_source();
+        match step {Step::Frame(job)=> {
+            proof {reveal(crate::frame_state::FrameJob::wf);}
+            receiver.commit_source(job.resume);
+            proof {assert(receiver.source_wf());}
+        },_=>{assert(receiver.source_wf());}}
+    }}
+}
+
+} // verus!
 
 impl<'a> Frames<'a> {
     /// The Strict frame decoder (D1: the unqualified entry is Strict). Defined
@@ -528,21 +606,13 @@ impl<'a> Frames<'a> {
         let mut src = IdatReader::for_doc(b, &doc);
         decode_image(&doc, b, &mut src, &mut raw, doc.ihdr.w, doc.ihdr.h, &pol, &mut ev, &mut Sink::Rgba8(&mut canvas))
             .map_err(TryError::Format)?;
-        let mut doc = doc;
-        if let Some(a) = doc.actl {
-            doc.info.num_plays = Some(a.num_plays);
+        if doc.actl.is_some() {
             if !doc.info.default_is_frame {
                 // A default image outside the animation is validated, not shown (P16).
                 canvas.fill(0);
             }
         }
-        let state = FrameState::new(b, &doc);
-        Ok(Frames { b, pol, doc, raw, canvas, saved: None, base: ev, state })
-    }
-
-    /// IHDR, the colour chunks and `num_plays` (P8.3).
-    pub fn info(&self) -> &Info {
-        &self.doc.info
+        Ok(Frames::from_decoded(b,pol,doc,raw,canvas,ev))
     }
 
     /// The next frame, `Ok(None)` after the last one, or the error that ends
@@ -551,7 +621,7 @@ impl<'a> Frames<'a> {
     pub fn try_next(&mut self) -> Result<Option<FrameView<'_>>, TryError> {
         let w = self.doc.ihdr.w;
         let h = self.doc.ihdr.h;
-        match self.state.begin_next(self.b, &self.doc) {
+        match self.begin_source() {
             Step::Done => Ok(None),
             Step::Single => {
                 Ok(Some(FrameView {
@@ -616,7 +686,7 @@ impl<'a> Frames<'a> {
                         return Err(TryError::Format(e));
                     }
                 }
-                self.state = job.resume;
+                self.commit_source(job.resume);
                 Ok(Some(FrameView {
                     rgba: &self.canvas,
                     rect: (f.x, f.y, f.w, f.h),

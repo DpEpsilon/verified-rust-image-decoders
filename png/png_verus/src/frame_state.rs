@@ -39,6 +39,30 @@ pub(crate) open spec fn source_document(b: Seq<u8>, doc: Doc) -> bool {
     && (doc.actl.is_some() ==> transport::result(b,doc.view(),transport::header_end(b)))
 }
 
+/// Carry a concrete num_plays-only update through the source predicates.
+pub(crate) proof fn plays_preserve_source(b: Seq<u8>, before: Doc, after: Doc, plays: Option<u32>)
+    requires source_document(b,before),after==(Doc {info:before.info.with_plays(plays),..before}),
+    ensures source_document(b,after),after.view()==(m::Doc {info:m::Info {num_plays:plays,..before.view().info},..before.view()}),
+{
+    hide(crate::png::Info::view);
+    hide(transport::result);
+    reveal(source_document);
+    crate::png::Info::plays_view(before.info,plays);
+    transport::result_same_frames(b,before.view(),after.view(),transport::header_end(b));
+}
+
+pub(crate) fn constructor_info(b: &[u8], doc: &mut Doc)
+    requires source_document(b@,*old(doc)),
+    ensures source_document(b@,*final(doc)),
+        final(doc).info.view()==m::constructor_info(old(doc).view()),
+        *final(doc)==(Doc {info:old(doc).info.with_plays(match old(doc).actl {Some(a)=>Some(a.num_plays),None=>None}),..*old(doc)}),
+{
+    let ghost before=*doc;
+    let plays=match doc.actl {Some(a)=>Some(a.num_plays),None=>None};
+    doc.info.set_num_plays(plays);
+    proof {plays_preserve_source(b@,before,*doc,plays);}
+}
+
 impl FrameState {
     pub(crate) open spec fn index(self) -> Option<nat> {
         match self.kind {Kind::Anim {index,..}=>Some(index as nat),_=>None}
@@ -57,6 +81,7 @@ impl FrameState {
         ensures r.wf(b@,*doc),r.single()==doc.actl.is_none(),
             doc.actl.is_some() ==> r.index()==Some(0nat),!r.done(),
     {
+        hide(Doc::wf);hide(Doc::source_partition);hide(transport::result);
         proof {reveal(source_document);}
         if doc.actl.is_none() {Self {kind:Kind::Single}} else {
             let c=match frame_at(b,8) {Ok(c)=>c,Err(_)=>{assert(false);return Self {kind:Kind::Done};}};

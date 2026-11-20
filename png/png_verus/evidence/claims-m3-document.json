@@ -58,13 +58,13 @@
     },
     {
       "row": "T6 Info representation",
-      "status": "initialization proved; representation defined",
+      "status": "initialization proved; complete representation claim narrowed after review",
       "functions": [
         "Info::new",
         "Info::view",
         "document_model::initial_info"
       ],
-      "binding": "actual Doc uses Info::new; all exposed fields and 13 metadata slots are represented; unused sBIT/bKGD padding excluded",
+      "binding": "actual Doc uses Info::new; scalar/fixed-size fields and 13 metadata slots have a defined view, but run 79 did not carry the sBIT prefix-count domain through Info/Doc well-formedness; complete exposed-field representation was not proved at that checkpoint",
       "run": 79
     },
     {
@@ -186,5 +186,12 @@
     "72": "explicit bKGD sequence-length facts needed",
     "78": "exact profile projection detected concurrent RB adjustment"
   },
-  "resume": "Executable loop invariant against document_model::State and no-OutsideDomain reachability; branch refinement, synthetic EOF, Strict/policy reader selection, then logged allocation/walk-first/returned-Info."
+  "resume": "Executable loop invariant against document_model::State and no-OutsideDomain reachability; branch refinement, synthetic EOF, Strict/policy reader selection, then logged allocation/walk-first/returned-Info.",
+  "claim_correction": {
+    "reason": "independent M3 review found missing stored sBIT prefix-count invariant",
+    "original_sha256": "f88a82f62a9d8766e8bbe44591eceb816e4f586a57bb5a931355bb639cffffc2",
+    "original_retained_as": "claims-m3-document-pre-repr-correction.json",
+    "fix_checkpoint": 151,
+    "qualifier": "the new representation invariant does not retroactively strengthen run 79"
+  }
 }

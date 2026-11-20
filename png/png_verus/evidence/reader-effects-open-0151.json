@@ -1,0 +1,183 @@
+{
+  "requirement": "approved ERRATA E2 L-SEG-FRAME, per reader, mandatory before M3 sign-off",
+  "checkpoint": 151,
+  "readers": [
+    {
+      "reader": "IDAT",
+      "status": "OPEN",
+      "representation": {
+        "type": {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+          "line": 53
+        },
+        "read": {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+          "line": 173
+        },
+        "source_frame": {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+          "line": 154
+        },
+        "noncursor_runtime_fields": [
+          "b",
+          "start",
+          "fdat"
+        ],
+        "cursor_runtime_fields": [
+          "pos",
+          "end",
+          "next",
+          "done"
+        ],
+        "erased_observations": [
+          "source",
+          "prefix",
+          "total",
+          "entered",
+          "reads"
+        ]
+      },
+      "constructors": [
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 394
+        },
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 606
+        }
+      ],
+      "caller_bindings": [
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 396
+        },
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 607
+        }
+      ],
+      "inflate_zlib_into": {
+        "path": "/home/ws/projects/verified-decoders/png/png_verus/src/image.rs",
+        "line": 337
+      }
+    },
+    {
+      "reader": "fdAT",
+      "status": "OPEN",
+      "representation": {
+        "type": {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+          "line": 53
+        },
+        "read": {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+          "line": 173
+        },
+        "source_frame": {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+          "line": 154
+        },
+        "noncursor_runtime_fields": [
+          "b",
+          "start",
+          "fdat"
+        ],
+        "cursor_runtime_fields": [
+          "pos",
+          "end",
+          "next",
+          "done"
+        ],
+        "erased_observations": [
+          "source",
+          "prefix",
+          "total",
+          "entered",
+          "reads"
+        ]
+      },
+      "constructors": [
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/frame_state.rs",
+          "line": 134
+        }
+      ],
+      "caller_bindings": [
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 685
+        }
+      ],
+      "inflate_zlib_into": {
+        "path": "/home/ws/projects/verified-decoders/png/png_verus/src/image.rs",
+        "line": 337
+      }
+    },
+    {
+      "reader": "iCCP",
+      "status": "OPEN",
+      "representation": {
+        "type": {
+          "path": "/home/ws/projects/verified-decoders/png/inflate_verus/src/segments.rs",
+          "line": 96
+        },
+        "read": {
+          "path": "/home/ws/projects/verified-decoders/png/inflate_verus/src/segments.rs",
+          "line": 173
+        },
+        "source_frame": {
+          "path": "/home/ws/projects/verified-decoders/png/inflate_verus/src/segments.rs",
+          "line": 155
+        },
+        "noncursor_runtime_fields": [
+          "parts"
+        ],
+        "cursor_runtime_fields": [
+          "index",
+          "offset",
+          "position",
+          "end_reported"
+        ],
+        "erased_observations": [
+          "seg_work",
+          "read_work"
+        ]
+      },
+      "constructors": [
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 729
+        },
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 748
+        }
+      ],
+      "inflate_zlib_measure": {
+        "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+        "line": 733
+      },
+      "inflate_zlib_into": {
+        "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+        "line": 752
+      }
+    }
+  ],
+  "checked_component": "DataReader read remains checked under --no-cheating with inherited Segments frame/concat/cursor/work contracts; the SegmentSlices implementation and contracts are imported from the unchanged verified dependency",
+  "inspection_and_binding_still_required": [
+    "inventory every reachable runtime field/type and exclude mutable references/raw pointers/interior mutability/I/O capabilities",
+    "audit the complete concrete read helper closure and absence of unsafe/trust bypass/static mutable state/I/O",
+    "show source_frame covers every non-cursor field and enumerated cursor fields implement only traversal/EOF bookkeeping",
+    "establish condition (iv) for every reachable read including None, then bind the result to each actual inflate call and its verified entry preconditions"
+  ],
+  "inference_boundary": "type/representation inspection and the inference to no other observable effect use trusted Rust aliasing rules; do not describe that inference as a Verus theorem",
+  "qualifier": "this is an open-gate inventory, not an E2 discharge or a claim of the generic no-extra-effect restriction",
+  "source_sha256": {
+    "/home/ws/projects/verified-decoders/png/inflate_verus/src/segments.rs": "f9a04d3a7fcfe5874064e0ca1fec9b88c21098dda134fd06788e80c5b8c5b663",
+    "/home/ws/projects/verified-decoders/png/png_verus/src/frame_state.rs": "38bb83ff893ab18abdec84e1a340eff4e63e996bc7fe3f643c6ec61ef9b57caf",
+    "/home/ws/projects/verified-decoders/png/png_verus/src/image.rs": "d617062622320eefdc4b2fa20966eaf5571968b7fd23fd79f1688e43aeaca713",
+    "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs": "bef29acd23dc5e453ad1abedf05152774de1f28d3fcca0a2a2518848de472c27",
+    "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs": "43a3907f0b882d4434b8c2beb10c7c5943c19f7234a5425c4fdd53cca17f2d08"
+  }
+}

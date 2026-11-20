@@ -1,0 +1,185 @@
+{
+  "milestone": "M3 source receiver and Info representation checkpoint; not sign-off",
+  "base_commit": "b07454b",
+  "checkpoint": 151,
+  "verified": 312,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "runtime_and_source_controls_run": 152,
+  "no_new_trusted_items": true,
+  "claims": [
+    {
+      "row": "T6 / returned-Info num_plays mutation",
+      "status": "component-proved on host",
+      "functions": [
+        "Info::set_num_plays",
+        "Info::plays_view",
+        "frame_state::plays_preserve_source",
+        "frame_state::constructor_info",
+        "frame_transport_model::result_same_frames"
+      ],
+      "run": 151,
+      "statement": "the concrete setter changes only num_plays; its model view changes only num_plays; source_document, range bounds and representation bounds survive; the constructor value is raw acTL plays or None"
+    },
+    {
+      "row": "T6 / Frames source receiver initialization",
+      "status": "component-proved on host",
+      "functions": [
+        "Frames::from_decoded",
+        "Frames::source_wf"
+      ],
+      "run": 151,
+      "premises": [
+        "source_document for the supplied input/document"
+      ],
+      "statement": "checked assembly finishes num_plays, establishes the source/metadata receiver invariant and initial source cursor, stores no Saved buffer, and preserves supplied Raw/canvas contents and base events",
+      "qualifier": "source_wf deliberately does not assert buffer layout, decoded pixel correctness or allocation history"
+    },
+    {
+      "row": "L-REWALK / public source receiver transitions",
+      "status": "component-proved on host",
+      "functions": [
+        "Frames::begin_source",
+        "Frames::commit_source"
+      ],
+      "run": 151,
+      "premises": [
+        "source_wf",
+        "for commit: supplied resume state is well formed for the same input/document"
+      ],
+      "statement": "checked begin fuses the source state and packages a modeled frame job; checked commit preserves source/metadata well-formedness; both preserve document, input and owned buffers",
+      "qualifier": "whole public try_next body remains ordinary Rust; buffer/disposal/image and logged composition are not verified"
+    },
+    {
+      "row": "returned-Info accessor / model projection",
+      "status": "component-proved on host",
+      "functions": [
+        "document_model::constructor_info",
+        "Frames::from_decoded",
+        "Frames::info",
+        "Frames::info_value",
+        "png::receiver_source_witness"
+      ],
+      "run": 151,
+      "statement": "checked assembly stores the constructor Info projection of its input document; info returns exactly that stored concrete Info; the generic checked composition witness connects fresh walk success, assembly, accessor and one begin/commit cycle",
+      "qualifier": "the witness uses supplied buffers without decoding them; this is not complete Eq_new_p or public returned-Info sign-off"
+    },
+    {
+      "row": "T6 Info representation / independent-review medium finding",
+      "status": "fixed on host",
+      "functions": [
+        "Info::repr_wf",
+        "Info::prefix_domains",
+        "Info::new",
+        "info::store",
+        "info::parse_and_store",
+        "info::discard",
+        "Info::plays_view",
+        "Doc::wf"
+      ],
+      "run": 151,
+      "statement": "stored Present sBIT has prefix count <= 4; bKGD derives a one- or three-sample prefix within its three-element array; init/store/parse/discard/num_plays updates preserve the representation predicate, and Doc::wf carries it through the complete walk",
+      "qualifier": "palette count already has its separate Doc::wf bound and frame_count has the ghost frame-trace relation; neither is a counted prefix of a fixed stored metadata array"
+    },
+    {
+      "row": "Historical T6 exposed-fields claim",
+      "status": "corrected scope",
+      "functions": [],
+      "run": 151,
+      "statement": "run-79 claim no longer asserts complete exposed-field representation without the stored sBIT count premise; the original claim bytes are retained and the correction is recorded",
+      "evidence": "claim-correction-0151.json"
+    },
+    {
+      "row": "L-SEG-FRAME IDAT / DataReader",
+      "status": "OPEN under approved E2",
+      "functions": [],
+      "run": 151,
+      "required": "per-reader representation/read/call-site argument in E2 prescribed form, separating Verus frame/cursor checks from inspection and trusted Rust aliasing inference",
+      "evidence": "reader-effects-open-0151.json"
+    },
+    {
+      "row": "L-SEG-FRAME fdAT / DataReader",
+      "status": "OPEN under approved E2",
+      "functions": [],
+      "run": 151,
+      "required": "per-reader representation/read/call-site argument in E2 prescribed form, separating Verus frame/cursor checks from inspection and trusted Rust aliasing inference",
+      "evidence": "reader-effects-open-0151.json"
+    },
+    {
+      "row": "L-SEG-FRAME iCCP / SegmentSlices",
+      "status": "OPEN under approved E2",
+      "functions": [],
+      "run": 151,
+      "required": "per-reader representation/read/call-site argument in E2 prescribed form, separating Verus frame/cursor checks from inspection and trusted Rust aliasing inference",
+      "evidence": "reader-effects-open-0151.json"
+    },
+    {
+      "row": "A-PNG-2",
+      "status": "complete public sealed-log gate remains open",
+      "functions": [],
+      "run": 151
+    },
+    {
+      "row": "A-PNG-7",
+      "status": "complete public sealed-log gate remains open",
+      "functions": [],
+      "run": 151
+    },
+    {
+      "row": "L-WALK-FIRST",
+      "status": "complete public sealed-log gate remains open",
+      "functions": [],
+      "run": 151
+    },
+    {
+      "row": "complete returned-Info / Eq_new_p",
+      "status": "partial",
+      "functions": [],
+      "run": 151,
+      "unproved": [
+        "whole public constructor allocation/default-decode composition",
+        "complete public returned-object equation; only receiver assembly/projection/accessor components proved"
+      ]
+    },
+    {
+      "row": "L-REWALK / L-REWALK-COST / M3 assurance",
+      "status": "partial",
+      "functions": [],
+      "run": 151,
+      "unproved": [
+        "full public receiver buffer/layout/image/disposal composition",
+        "aggregate work accounting",
+        "remaining required record witnesses",
+        "i686 replay"
+      ]
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0152.json"
+  },
+  "diagnostics": {
+    "144": "narrow concrete setter plus separate view/source lemmas verified at 306",
+    "145": "kept private receiver fields private; public accessor uses a closed Info observation rather than exposing Doc",
+    "146-147": "checked assembly/begin/commit/accessor and generic composition verified at 310/311",
+    "148": "added representation invariant shifted source initializer beyond default rlimit",
+    "149": "abstract component contracts restored green at 312; no solver-limit change",
+    "150": "runtime tests passed but allocation scanner rejected new Vec::new in a cfg-only composition witness",
+    "151-152": "witness now accepts supplied buffers; final proof and all runtime/source controls pass"
+  },
+  "review_findings": {
+    "medium_sbit_count": "fixed with explicit preserved Info::repr_wf in Doc::wf; historical claim narrowed with original bytes retained",
+    "low_E2_inventory": "per-reader L-SEG-FRAME open rows and line-indexed open inventory added; no no-extra-effect discharge claimed"
+  },
+  "spec_ambiguities": [],
+  "resume": "Verify buffer/layout premises and migrate real per-call sealed allocation logs into public still/frame/ICC flows; prove A-PNG-2/A-PNG-7, L-WALK-FIRST and full returned-Info composition, and separately discharge each approved-E2 L-SEG-FRAME row in the recorded form.",
+  "observed_shared_commits": [
+    "bd8a85d"
+  ]
+}

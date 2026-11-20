@@ -411,4 +411,12 @@ pub proof fn select_frame(b: Seq<u8>, doc: m::Doc, root: nat, index: nat)
         valid_site(b,doc.frames[index as int]),closed_frame(b,doc.frames[index as int]),
 {}
 
+/// Frame transport depends on the frame trace, not the public Info projection.
+pub proof fn result_same_frames(b: Seq<u8>, before: m::Doc, after: m::Doc, root: nat)
+    requires before.frames==after.frames,
+    ensures result(b,before,root)==result(b,after,root),
+{
+    hide(valid_site);hide(closed_frame);hide(linked);
+}
+
 } // verus!

@@ -6,7 +6,7 @@
 //! against complete independent MW/MW_p/MWF_p transition/trace models.
 //! The segmented adapter, IDAT/fdAT transport and validated boundary selectors
 //! feed checked source-state transitions and fresh-event walk gates. Image stages,
-//! public receiver composition, allocation sequencing and returned-object bodies
+//! complete receiver composition, allocation sequencing and returned-object bodies
 //! remain ordinary Rust. A green run
 //! does not sign off M3. zlib/DEFLATE is the verified `inflate_verus` dependency.
 //!

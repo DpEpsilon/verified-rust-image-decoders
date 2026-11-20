@@ -1,0 +1,8 @@
+{
+  "path": "claims-m3-document.json",
+  "old_sha256": "f88a82f62a9d8766e8bbe44591eceb816e4f586a57bb5a931355bb639cffffc2",
+  "new_sha256": "d64aa60a7ceb023e11f57a0bf6d745dac5c2f05a8631a20e51fc9ae6474a0a07",
+  "old_content_retained_as": "claims-m3-document-pre-repr-correction.json",
+  "requested_by": "coordinator, independent-review follow-up",
+  "fix_checkpoint": 151
+}

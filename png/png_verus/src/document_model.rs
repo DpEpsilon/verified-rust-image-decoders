@@ -25,6 +25,10 @@ pub struct Doc {
     pub info: Info,
     pub idat: Seq<Range>, pub frames: Seq<Frame>,
 }
+/// P16's public Info projection after the constructor validates its default image.
+pub open spec fn constructor_info(doc: Doc) -> Info {
+    Info {num_plays:match doc.actl {Some((_,plays))=>Some(plays),None=>None},..doc.info}
+}
 pub struct Events { pub r1: bool, pub r3: bool, pub r4: bool }
 /// Only choices used by the structural walk. Pixel/inflate choices have no
 /// effect here. The executable policy projection needs its own refinement.
