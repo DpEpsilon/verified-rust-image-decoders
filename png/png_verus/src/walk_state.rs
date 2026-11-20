@@ -21,6 +21,21 @@ pub(crate) open spec fn frames_valid(frames: Seq<names::Frame>, len: nat) -> boo
         Source::Idat=>true,Source::Fdat(ranges)=>ranges_valid(ranges,len),
     }
 }
+pub(crate) open spec fn frame_fits(f: names::Frame,h: crate::model::Ihdr) -> bool {
+    1<=f.width && 1<=f.height && f.x as int+f.width as int<=h.width
+    && f.y as int+f.height as int<=h.height && f.dispose<=2 && f.blend<=1
+}
+pub(crate) open spec fn frames_fit(frames: Seq<names::Frame>,h: crate::model::Ihdr) -> bool {
+    forall|i: int| 0<=i<frames.len() ==> frame_fits(#[trigger] frames[i],h)
+}
+pub(crate) proof fn fit_push(frames: Seq<names::Frame>,f: names::Frame,h: crate::model::Ihdr)
+    requires frames_fit(frames,h),frame_fits(f,h),
+    ensures frames_fit(frames.push(f),h),
+{}
+pub(crate) proof fn fit_update(frames: Seq<names::Frame>,f: names::Frame,h: crate::model::Ihdr)
+    requires frames.len()>0,frames_fit(frames,h),frame_fits(f,h),
+    ensures frames_fit(frames.update(frames.len()-1,f),h),
+{}
 impl Actl {
     pub(crate) open spec fn view(self) -> (u32,u32) {(self.num_frames,self.num_plays)}
 }
@@ -43,10 +58,15 @@ impl Doc {
         && bounded(self.plte,b.len()) && bounded(self.trns,b.len()) && bounded(self.iccp,b.len())
         && self.info.ranges_wf(b.len()) && self.info.repr_wf()
         && ranges_valid(self.idat_ranges@,b.len()) && frames_valid(self.frame_ranges@,b.len())
+        && frames_fit(self.frame_ranges@,self.ihdr.view())
         && if self.idat_ranges@.len()==0 {self.idat_first==0} else {
             8<=self.idat_ranges@[0].offset && self.idat_first+8==self.idat_ranges@[0].offset
         }
     }
+    pub(crate) proof fn selected_frame_fits(self,b: Seq<u8>,index: nat)
+        requires self.wf(b),index<self.frame_ranges@.len(),
+        ensures frame_fits(self.frame_ranges@[index as int],self.ihdr.view()),
+    {}
     pub(crate) fn new(ihdr: Ihdr, b: &[u8]) -> (r: Self)
         requires ihdr.wf(),
         ensures r.wf(b@),r.view()==m::initial(ihdr.view(),0,m::no_events()).doc,

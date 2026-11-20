@@ -159,4 +159,52 @@ pub proof fn raw_bounds(interlace: u8,bits: nat,w: nat,h: nat)
     }
 }
 
+/// Pass extents and rounded scanline lengths preserve dimension order.
+pub proof fn span_monotone(lo: nat,hi: nat,origin: nat,step: nat)
+    requires lo<=hi,step>=1,
+    ensures span(lo,origin,step)<=span(hi,origin,step),
+{
+    if lo>origin {
+        assert(lo-origin+step-1<=hi-origin+step-1);
+        vstd::arithmetic::div_mod::lemma_div_is_ordered(lo-origin+step-1,hi-origin+step-1,step as int);
+    }
+}
+pub proof fn contribution_monotone(interlace: u8,bits: nat,w: nat,h: nat,W: nat,H: nat,k: nat)
+    requires w<=W,h<=H,
+    ensures contribution(interlace,bits,w,h,k)<=contribution(interlace,bits,W,H,k),
+{
+    if interlace==0 {
+        assert(w*bits<=W*bits) by (nonlinear_arith) requires w<=W;
+        assert(scan_bytes(bits,w)<=scan_bytes(bits,W));
+        assert(h*(1+scan_bytes(bits,w))<=H*(1+scan_bytes(bits,W))) by (nonlinear_arith)
+            requires h<=H,scan_bytes(bits,w)<=scan_bytes(bits,W);
+    } else if k<7 {
+        let g=geometry(k);
+        span_monotone(w,W,g.0,g.2);span_monotone(h,H,g.1,g.3);
+        let pw=cols(w,k);let ph=rows(h,k);let PW=cols(W,k);let PH=rows(H,k);
+        assert(pw*bits<=PW*bits) by (nonlinear_arith) requires pw<=PW;
+        assert(scan_bytes(bits,pw)<=scan_bytes(bits,PW));
+        if pw>0 && ph>0 {
+            assert(ph*(1+scan_bytes(bits,pw))<=PH*(1+scan_bytes(bits,PW))) by (nonlinear_arith)
+                requires ph<=PH,scan_bytes(bits,pw)<=scan_bytes(bits,PW);
+        }
+    }
+}
+pub proof fn prefix_dimensions(interlace: u8,bits: nat,w: nat,h: nat,W: nat,H: nat,n: nat)
+    requires w<=W,h<=H,
+    ensures prefix(interlace,bits,w,h,n)<=prefix(interlace,bits,W,H,n),
+    decreases n,
+{
+    reveal_with_fuel(prefix,2);
+    if n>0 {
+        prefix_dimensions(interlace,bits,w,h,W,H,(n-1) as nat);
+        contribution_monotone(interlace,bits,w,h,W,H,(n-1) as nat);
+    }
+}
+/// L-R-MONO: every fitting subframe reuses a prefix of the full-image Raw.
+pub proof fn raw_dimensions(interlace: u8,bits: nat,w: nat,h: nat,W: nat,H: nat)
+    requires w<=W,h<=H,
+    ensures raw(interlace,bits,w,h)<=raw(interlace,bits,W,H),
+{prefix_dimensions(interlace,bits,w,h,W,H,count(interlace));}
+
 } // verus!

@@ -69,6 +69,14 @@ pub(crate) type IdatReader<'a> = DataReader<'a>;
 pub(crate) type FdatReader<'a> = DataReader<'a>;
 
 impl<'a> DataReader<'a> {
+    /// Complete runtime non-cursor equality, for both Some and None reads.
+    pub closed spec fn preserves_noncursor(self,before: Self) -> bool {
+        self.b==before.b && self.start==before.start && self.fdat==before.fdat
+    }
+    pub(crate) proof fn frame_covers_noncursor(before: Self,after: Self)
+        requires after.source_frame()==before.source_frame(),
+        ensures after.preserves_noncursor(before),
+    {}
     fn at(b: &'a [u8], start: usize, fdat: bool) -> (r: Self)
         requires b.len() <= SEGMENT_BYTES_MAX,
         ensures r.wf(), r.pos() == 0, r.seg_steps() == 0, r.core_steps() == 0,

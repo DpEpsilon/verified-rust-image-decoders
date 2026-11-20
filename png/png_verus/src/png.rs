@@ -323,6 +323,8 @@ impl Info {
 
 } // verus!
 
+verus! {
+
 /// The default image as RGBA8 (P15): `4·width·height` bytes, top row first,
 /// non-premultiplied.
 #[derive(Debug, Clone)]
@@ -343,7 +345,13 @@ pub struct Still16 {
     pub info: Info,
 }
 
-verus! {
+/// No byte-range metadata changes while assembling the returned still.
+fn assemble_still(doc: Doc,rgba: Vec<u8>) -> (r: Still)
+    ensures r.width==doc.ihdr.w,r.height==doc.ihdr.h,r.info==doc.info,r.rgba==rgba,
+{Still {width:doc.ihdr.w,height:doc.ihdr.h,rgba,info:doc.info}}
+fn assemble_still16(doc: Doc,rgba16: Vec<u8>) -> (r: Still16)
+    ensures r.width==doc.ihdr.w,r.height==doc.ihdr.h,r.info==doc.info,r.rgba16==rgba16,
+{Still16 {width:doc.ihdr.w,height:doc.ihdr.h,rgba16,info:doc.info}}
 
 /// One public call's runtime request record and owned, sealed logical log.
 pub(crate) struct Trace {
@@ -547,12 +555,12 @@ fn still_impl(b: &[u8], pol: &Policy, wide: bool, ev: &mut Events, trace: &mut T
 
 fn still8(b: &[u8], pol: &Policy, ev: &mut Events, trace: &mut Trace) -> Result<Still, TryError> {
     let (doc, rgba) = still_impl(b, pol, false, ev, trace)?;
-    Ok(Still { width: doc.ihdr.w, height: doc.ihdr.h, rgba, info: doc.info })
+    Ok(assemble_still(doc,rgba))
 }
 
 fn still16(b: &[u8], pol: &Policy, ev: &mut Events, trace: &mut Trace) -> Result<Still16, TryError> {
     let (doc, rgba16) = still_impl(b, pol, true, ev, trace)?;
-    Ok(Still16 { width: doc.ihdr.w, height: doc.ihdr.h, rgba16, info: doc.info })
+    Ok(assemble_still16(doc,rgba16))
 }
 
 /// `decode_still` (P15): the default image as RGBA8, Strict.

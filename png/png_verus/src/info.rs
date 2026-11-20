@@ -44,6 +44,19 @@ impl Info {
         (match self.iccp_name {Meta::Present((p,n))=>p+n<=input_len,_=>true})
         && (match self.exif {Meta::Present((p,n))=>p+n<=input_len,_=>true})
     }
+    /// L-INFO-RANGE for both stored byte-range fields, in subtraction form.
+    pub(crate) proof fn present_ranges(self,input_len: nat)
+        requires self.ranges_wf(input_len),
+        ensures match self.iccp_name {
+            Meta::Present((p,n))=>p<=input_len && n<=input_len-p
+                && self.view().slots[Name::Iccp]==m::Slot::Present(m::Stored::Bytes(Range {offset:p as nat,len:n as nat})),
+            _=>true,
+        },match self.exif {
+            Meta::Present((p,n))=>p<=input_len && n<=input_len-p
+                && self.view().slots[Name::Exif]==m::Slot::Present(m::Stored::Bytes(Range {offset:p as nat,len:n as nat})),
+            _=>true,
+        },
+    {}
     pub(crate) open spec fn view(self) -> m::Info {
         m::Info {header:crate::model::Ihdr {width:self.width,height:self.height,depth:self.bit_depth,
             color_type:self.color_type,interlace:self.interlace},palette_entries:self.palette_entries as nat,

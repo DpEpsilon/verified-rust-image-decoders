@@ -130,12 +130,14 @@ impl<'a> FrameJob<'a> {
         hide(Doc::wf);hide(Doc::source_partition);hide(transport::result);
         proof {reveal(source_document);}
         let (control,start)=select_control(b,doc,index,cursor);
+        proof {doc.selected_frame_fits(b@,index as nat);}
+
         let reader=if index==0 && doc.info.default_is_frame {None} else {
             Some(DataReader::for_frame(b,doc,index,start))
         };
         let effective_dispose=if index==0 && control.dispose==2 {1} else {control.dispose};
         let resume=resume_state(b,doc,index,start,control,effective_dispose);
-        proof {reveal(FrameJob::wf);}
+        proof {reveal(FrameJob::wf);reveal(transport::control_record);}
         Self {index,control,previous,effective_dispose,reader,resume}
     }
 
@@ -144,6 +146,10 @@ impl<'a> FrameJob<'a> {
         self.index<doc.frame_ranges@.len() && self.resume.wf(b,doc)
         && self.resume.index()==Some(self.index as nat+1)
         && transport::control_record(doc.frame_ranges@[self.index as int],self.control.view())
+        && crate::walk_state::frame_fits(doc.frame_ranges@[self.index as int],doc.ihdr.view())
+        && 1<=self.control.w<=doc.ihdr.w && 1<=self.control.h<=doc.ihdr.h
+        && self.control.x as int+self.control.w as int<=doc.ihdr.w
+        && self.control.y as int+self.control.h as int<=doc.ihdr.h
         && self.effective_dispose==(if self.index==0 && self.control.dispose==2 {1}else{self.control.dispose})
         && match self.reader {
             None=>self.index==0 && doc.info.default_is_frame,

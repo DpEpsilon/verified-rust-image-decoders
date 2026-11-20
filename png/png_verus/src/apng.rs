@@ -91,7 +91,8 @@ pub(crate) fn fctl(d: &[u8], actl_present: bool, before_idat: bool,
     requires state.wf(), width <= PNG_WIRE_MAX, height <= PNG_WIRE_MAX,
     ensures match r {
         Err(e) => m::fctl(d@, actl_present, before_idat, width, height, state.view()) == Err(e),
-        Ok((f, next)) => next.wf()
+        Ok((f, next)) => next.wf() && 1<=f.w && 1<=f.h
+            && f.x as int+f.w as int<=width && f.y as int+f.h as int<=height && f.dispose<=2 && f.blend<=1
             && m::fctl(d@, actl_present, before_idat, width, height, state.view()) == Ok((f.view(), next.view())),
     },
 {

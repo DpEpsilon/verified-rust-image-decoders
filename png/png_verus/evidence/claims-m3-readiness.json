@@ -1,0 +1,138 @@
+{
+  "milestone": "M3 independent components and partial gate accounting; not sign-off-ready",
+  "base_commit": "c648b7a",
+  "checkpoint": 201,
+  "verified": 428,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "signoff_ready": false,
+  "runtime_and_source_controls_run": 202,
+  "claims": [
+    {
+      "row": "fcTL rectangle transfer / L-REWALK source premises",
+      "status": "proved on host",
+      "functions": [
+        "apng::fctl",
+        "walk_state::frame_fits",
+        "walk_state::frames_fit",
+        "walk_state::fit_push",
+        "walk_state::fit_update",
+        "Doc::selected_frame_fits",
+        "FrameJob::select",
+        "FrameJob::wf"
+      ],
+      "run": 201,
+      "statement": "Every retained executable selected control has positive bounded dimensions, nonwrapping canvas-fit rectangle and valid disposal/blend."
+    },
+    {
+      "row": "L-R-MONO / subframe Raw fit",
+      "status": "proved on host",
+      "functions": [
+        "layout_model::span_monotone",
+        "layout_model::contribution_monotone",
+        "layout_model::prefix_dimensions",
+        "layout_model::raw_dimensions",
+        "image::raw_size"
+      ],
+      "run": 201,
+      "statement": "Actual subframe raw_size cannot exceed full-image Raw; no pixel-coordinate/filter equality claim."
+    },
+    {
+      "row": "A-PNG-7 checked preparation PreAlloc",
+      "status": "proved component; public dispatch open",
+      "functions": [
+        "allocation_model::image_prealloc",
+        "prepare_image",
+        "image_preparation_logged"
+      ],
+      "run": 201,
+      "statement": "MW_p/MWF_p errors produce exact Format/events and literally empty log at the checked preparation; no complete public still/Frames error-dispatch credit."
+    },
+    {
+      "row": "L-INFO-RANGE stored values/forwarding",
+      "status": "proved components; whole continuation partly inspected",
+      "functions": [
+        "Info::present_ranges",
+        "assemble_still",
+        "assemble_still16"
+      ],
+      "run": 201,
+      "statement": "Subtraction-form bounds and exact model slot identity hold; still assemblers preserve Info. Doc immutability/forwarding through ordinary image code is inspection; original-input caller precondition remains."
+    },
+    {
+      "row": "L-SEG-FRAME iCCP",
+      "status": "host discharge: checked contracts plus prescribed inspection",
+      "functions": [
+        "SegmentSlices::read",
+        "measure_profile",
+        "write_profile",
+        "icc_impl",
+        "try_icc_profile",
+        "try_icc_profile_logged"
+      ],
+      "run": 201,
+      "statement": "reader-effects-0201.json separates conditions (i)-(iv), checked actual call-site premises and the inspection/trusted Rust-aliasing no-extra-effect inference."
+    },
+    {
+      "row": "L-SEG-FRAME IDAT",
+      "status": "OPEN: actual entry binding needs weak continuation",
+      "functions": [
+        "DataReader::frame_covers_noncursor",
+        "DataReader::read"
+      ],
+      "run": 201,
+      "statement": "Representation/helper/frame/every-read arguments recorded; actual decode_image/public continuation remains ordinary Rust."
+    },
+    {
+      "row": "L-SEG-FRAME fdAT",
+      "status": "OPEN: actual entry binding needs weak continuation",
+      "functions": [
+        "DataReader::frame_covers_noncursor",
+        "DataReader::read"
+      ],
+      "run": 201,
+      "statement": "Representation/helper/frame/every-read arguments recorded; actual decode_image/public continuation remains ordinary Rust."
+    },
+    {
+      "row": "THEOREMS.md:194 frozen M3 gates",
+      "status": "OPEN: 28 partial header facts, zero complete public-entry witnesses",
+      "functions": [
+        "witness_m3_frozen::header_*"
+      ],
+      "run": 201,
+      "statement": "All 131 records (115 category a, 16 category b), original expected fields and all sixteen council-excluded cases are inventoried; fourteen council cases have partial header facts only."
+    },
+    {
+      "row": "A-PNG-2 / public L-WALK-FIRST / category-a public dispatch",
+      "status": "OPEN",
+      "functions": [],
+      "run": 201,
+      "statement": "About 480 existing lines across 27 functions need genuine weak safety/termination/buffer/log contracts. No external_body, assume_specification, false-precondition interface or verus-only success stub is permitted. Pixel equality remains M4\u2013M6."
+    },
+    {
+      "row": "Final i686 M3 replay",
+      "status": "untouched/open",
+      "functions": [],
+      "run": 201,
+      "statement": "Final readiness must replay using a copy of the existing inflate i686 vstd cache in PNG-owned target output; no cache rebuild/write under inflate target occurred."
+    }
+  ],
+  "witness_boundary": "Coordinator category (a)/(b) interpretation recorded in LEDGER.md for reviewer challenge; no frozen specification edit.",
+  "runtime": {
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0202.json"
+  },
+  "spec_ambiguities": [],
+  "continuation_estimate": {
+    "existing_lines_approx": 480,
+    "functions": 27,
+    "additional_contract_and_invariant_lines": "not estimated"
+  },
+  "resume": "Check weak image/default/frame continuations and public dispatch; finish category-a errors, category-b full walk/preparation projections, IDAT/fdAT E2 bindings and final copied-cache i686 replay."
+}

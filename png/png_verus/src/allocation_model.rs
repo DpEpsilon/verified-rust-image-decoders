@@ -62,4 +62,14 @@ pub proof fn icc_absent(b: Seq<u8>,result: Result<Option<walk::Doc>,TryError>,ev
     ensures result==Ok(None),events==ev,log.len()==0,
 {}
 
+/// M3 PreAlloc for both actual still and constructor preparation branches.
+pub proof fn image_prealloc(b: Seq<u8>,pol: walk::Policy,frames: bool,wide: bool,
+    result: Result<walk::Doc,TryError>,events: walk::Events,log: Seq<(AllocSite,nat,bool)>,e: crate::png::Error,ev: walk::Events)
+    requires image_prepared(b,pol,frames,wide,result,events,log),image_walk(b,pol,frames)==walk::Outcome::Error(e,ev),
+    ensures result==Err(TryError::Format(e)),events==ev,log==Seq::<(AllocSite,nat,bool)>::empty(),
+{
+    image_error_first(b,pol,frames,wide,result,events,log,e,ev);
+    assert(log =~= Seq::empty());
+}
+
 } // verus!

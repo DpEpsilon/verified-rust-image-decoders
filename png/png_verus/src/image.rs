@@ -87,9 +87,10 @@ pub(crate) fn raw_size(ihdr: &Ihdr, w: u32, h: u32) -> (r: u64)
     requires ihdr.wf(),1<=w<=ihdr.w,1<=h<=ihdr.h,
     ensures r==layout::raw(ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat),
         1<=r<=crate::alloc_guard::MAX_BYTES,
+        r<=layout::raw(ihdr.interlace,layout::bits(ihdr.view()),ihdr.w as nat,ihdr.h as nat),
 {
     let bits=ihdr.bits_pp();
-    proof {raw_budget(*ihdr,w,h);}
+    proof {raw_budget(*ihdr,w,h);layout::raw_dimensions(ihdr.interlace,bits as nat,w as nat,h as nat,ihdr.w as nat,ihdr.h as nat);}
     let mut r=0u64;
     let mut k=0usize;
     while k<pass_count(ihdr.interlace)

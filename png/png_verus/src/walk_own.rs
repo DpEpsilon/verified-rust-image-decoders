@@ -257,6 +257,7 @@ fn run_fctl(b: &[u8], base: usize, size: usize, _chunk_offset: usize, _pos: usiz
         let frame=names::Frame {control_offset:(base as int-8) as nat,width:_f.w,height:_f.h,x:_f.x,y:_f.y,delay_num:_f.delay_num,delay_den:_f.delay_den,
             dispose:_f.dispose,blend:_f.blend,source:if state.idat==0 {Source::Idat}else{Source::Fdat(Seq::empty())}};
         walk_state::frame_push(doc.frame_ranges@,frame,b@.len());
+        walk_state::fit_push(doc.frame_ranges@,frame,doc.ihdr.view());
         doc.frame_ranges=Ghost(doc.frame_ranges@.push(frame));
     }
     proof {
@@ -299,6 +300,7 @@ fn run_fdat(b: &[u8], base: usize, size: usize, _chunk_offset: usize, _pos: usiz
                 walk_state::range_push(ranges,range,b@.len());
                 let changed=names::Frame {source:Source::Fdat(ranges.push(range)),..frame};
                 walk_state::last_frame_update(frames,changed,b@.len());
+                walk_state::fit_update(frames,changed,doc.ihdr.view());
                 doc.frame_ranges=Ghost(frames.update(frames.len()-1,changed));
             },
         }
