@@ -151,3 +151,5 @@ The glycin column differs from image only on interlaced APNG subframes (`subfram
 - D5: profile names carry the measured library version and are immutable once frozen; `RecommendedBeta` is the owner's name for the provisional recommended profile.
 - D6 (2026-11-16): compatibility profiles are deferred until Strict and RecommendedBeta are proved, then frozen opt-in after a held-out re-measurement and a per-field necessity check; their targets are libpng 1.6.48 through gdk-pixbuf 2.42.12's loader and png 0.18.1 through image 0.25.10. Retargeting to `gdk_pixbuf_new_from_file` is a different contract with a different name (PNG-Q14).
 - Open: PNG-Q16 in `QUESTIONS.md`, and the items listed in `DECISIONS.md`.
+
+**Conservative records (D21).** A record is conservative when it meets obligation R as `THEOREMS.md` P-R states it (proved simulation obligations, not a property of field values). RecommendedBeta is the only record declared conservative. GdkCompat-2.42.12 and ImageCrateCompat-0.25.10 are not conservative and are outside obligation R.

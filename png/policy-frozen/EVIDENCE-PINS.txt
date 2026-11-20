@@ -1,0 +1,22 @@
+# validate.py's external evidence at the Stage-2 freeze (2026-11-20), re-review finding 2: pinned by path and hash, not copied.
+# These are draft-side files that may change later; a mismatch here records drift since the freeze, not a broken freeze.
+55078d0466956f57943fd7f9fa1faeba9bc23ac2b82b763d7236fe2e1b36e06e  ../policy-draft/probes/heldout_def.py
+44a0a6a4d9c631497211a7cafcdd891d59fc904b32da5020d849c86857174c6a  ../policy-draft/probes/icc_probes.py
+2af159fd860d6a8b8fa7278a5d082a098d0b4344a134fc324c6c763751342bf5  ../policy-draft/probes/probes_crash_private.py
+e492fb43897f791c59122210be8bd8be397715bf6411adb9fa7cae6d1674d727  ../policy-draft/probes/probes_def.py
+c968918539fc6b5a95cf6147aefda98807e46aeb8bcd33798f0c66ac65531ccb  ../policy-draft/probes/probes_def_full_local.py
+f99c46bfa72ac8835f643c63a19d50fdc6df9fb79238072c1ec0f901f36d6647  ../policy-draft/probes/probes_public.py
+4e8993a439fa9f765955d00562eb68075a6d814d79f75d0e68557a468076a751  ../policy-draft/probes/run_probes.py
+94435a1b4a535e723580a1ad58067c91561e8d073880cceb8cff12ac46fc747c  ../policy-draft/probes/results-glycin.json
+d9ff24862eaeb083ab5505baa5f35a1bfc995822b53eaed7a7f492405d7536fb  ../policy-draft/probes/results-heldout.json
+06e7b48b8ecf879a0eeaca791947f224478bf492361660e726bffda51938008b  ../policy-draft/probes/results-heldoutB.json
+402102fa0ad7c8cb097d17151ffeb9ad7094d749a8bba4eb419394ec03c0b8e2  ../policy-draft/probes/results-icc.json
+b168c4a79b8452c6d170e4bf191caad0364ac879eb0dec500fe4771f929043ea  ../policy-draft/probes/results-large.json
+dbad37e30cb546b3a1839eff5102b551896a19ff0b98fe1e6bc22d403fcecd0e  ../policy-draft/probes/results.json
+641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d  ../spec-draft/VECTORS.json
+0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726  ../limits-draft/VECTORS-CAPS.json
+c591a79e28c2667201752ca79d9ff51c3cbb64270dbca5b41fbc546f8bf7122c  ../policy-draft/VECTORS-POLICY.json
+4f6977f9f9703eec0f7e37db8820ebeab0082ca3e5affd87b0e3ec652e0e2072  ../policy-draft/DECISIONS.md
+78e6c6de8e4571dacf11f6a83f75e641fa590ed125f3df1a28be1cc1a32a5da7  ../corpus-pass/REPORT.md
+98542ad3f2ffda6ea6c99d4dc05591de504c8cc541debfaa78b1cbffd6f86c50  ../corpus-pass/results.json
+a20541f166cadc5fc46ccb02b1ce498e84b02d535d8284c05f97b40bd3c39d39  ../corpus-pass/HOLDOUT.tsv

@@ -1,0 +1,13 @@
+# PNG RecommendedBeta and the policy record (frozen 2026-11-20), Stage 2; compatibility profiles NOT frozen (PNG-Q14);
+# policy_oracle.py imports ../spec-draft/png_oracle.py by path: its hash and Stage 1's are recorded.
+# THEOREMS-POLICY-DELTA.md is copied from ../policy-draft/; EVIDENCE-PINS.txt pins validate.py's external evidence.
+9d87fc42f5642de7801515d331d994cc241eeccaea888e013a9a9c136f0245b0  OPTIONS.md
+9009eb2f9715435a693216aa9f58a07b1940ac4ed6ba28ddb05c2b6645db9a8a  policy_oracle.py
+08cb49536c4b47a253f20ba5fce1fbdf70d63fd6eaf350478d51ee0bbe9bd063  validate.py
+047359b43d70bf1e4445c6b57c26ebb3eb5b2d697b43fed26664bbccc1be9600  gen_vectors_policy.py
+c591a79e28c2667201752ca79d9ff51c3cbb64270dbca5b41fbc546f8bf7122c  VECTORS-POLICY.json
+d8755674597c3af98cbf1480be8e28329e24c1fa5bb26432050bfd925abb9efc  THEOREMS-POLICY-DELTA.md
+44a5053874affb1656285124501436b829126a6c6b010f4e926c696b4170add5  EVIDENCE-PINS.txt
+5a6a4ce2cf56219b7f4a9a1ef77201fe61a694f16e80b7941482f3f1a6452d2c  ../spec-draft/png_oracle.py
+96af445102d75b508c043b1d94a4aa3dbe32d274e3b4fdcbc4faf3be8936ad13  ../spec-frozen/FREEZE.txt
+09ca521147adb029d2fbeb47237a69a3b8a66938eebf8089f3ad0c4a471e370d  ../limits-frozen/FREEZE.txt

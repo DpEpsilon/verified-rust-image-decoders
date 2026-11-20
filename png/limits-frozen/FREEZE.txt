@@ -1,0 +1,6 @@
+# PNG cap values (frozen 2026-11-20), Stage 2, after the M0-corpus review; inside the Stage-1 envelope; pins Stage 1:
+712c211f82d628c9e373701a07bac1ec3635535963aef42f862777ca385eb33b  LIMITS.md
+8a5f9b43b3b845b47e3e5693284cfd3c31d2927ca9228dc498c67b1ba42c7b08  limits.py
+35c4cd5cdbb8c2b37ebd80678ced6e3c3a3c0d238fb19862061c8f98ba874e90  gen_vectors_caps.py
+0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726  VECTORS-CAPS.json
+96af445102d75b508c043b1d94a4aa3dbe32d274e3b4fdcbc4faf3be8936ad13  ../spec-frozen/FREEZE.txt
