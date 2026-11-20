@@ -7,12 +7,14 @@ at the end with their date and the artifact they concern. An entry marked PROPOS
 has not been applied: it takes effect only after the owner approves it, and the
 entry is then amended in place of a new one by appending an "Owner decision" line.
 
-## Index and status (as of 2026-11-18)
+## Index and status (as of 2026-11-20)
 
 | Erratum | Status |
 |---|---|
 | E1 | APPROVED (2026-11-18) |
 | E2 | APPROVED WITH AMENDMENT (2026-11-18, council) |
+| E3 | APPROVED (2026-11-20) |
+| E4 | APPROVED (2026-11-20) |
 
 ## E1 — 2026-11-17: `inflate_verus` "no `alloc` dependency" (A-PNG-6) — APPROVED (2026-11-18)
 
@@ -65,3 +67,34 @@ APPROVED WITH AMENDMENT (2026-11-18). The amended text below replaces the "Propo
 Council decision (2026-11-18): APPROVED WITH AMENDMENT, 4 of 4 seats in all three rounds (sealed report `council/sealed/COUNCIL-REPORT-PNG-E2.md`, sha256 `a408ffce8f2fa60e8299eaac23782e07c30f8cec14211cb033ea30260a05f1c3`, kept outside this repository). Decided by the council under the project's delegation of minor specification calls. Of the four seats' texts, the coordinator adopted the most complete one, which keeps condition (iv) as a behavioural obligation (two seats' position) rather than only a recording obligation. Recorded dissent: one seat would allow readers holding mutable borrows when a complete representation-and-call argument establishes the same restriction; one seat notes L-SEG-FRAME rests on Rust's aliasing rules rather than a single Verus theorem.
 
 **Amended replacement for the T-INFL(a) effect clause.** "For calls satisfying the verified entry contract, both entries preserve `concat()` and the reader's declared `source_frame()`, and leave the cursor within `0..|Z|`; the final cursor position is otherwise unspecified. Preservation of an implementation-selected frame does not establish preservation of omitted mutable referents or exclude other external effects. For `S = SegmentSlices`, `inflate_zlib_into` changes only output bytes and source cursor state. T-SEG alone gives no corresponding no-extra-effect guarantee for other implementations; the caller supplying another `S` must account for effects of `S::read` outside its cursor and declared frame. L-SEG-FRAME is a per-reader obligation, discharged at M3 together with L-SEG-PNG; M3 cannot be signed off while it is open for any IDAT, fdAT or iCCP reader. A reader type R satisfies L-SEG-FRAME when: (i) R and every type reachable from its fields contain no `&mut` reference, no raw pointer, no interior-mutability type (`Cell`, `RefCell`, atomics, `UnsafeCell` or a wrapper of one) and no I/O capability; (ii) R's `read` and every function it calls are safe Rust verified by Verus under `--no-cheating`, with no `unsafe`, `external_body`, `assume_specification`, static mutable state or I/O; (iii) `source_frame` returns every field of R that is not cursor state, the ledger lists each cursor-state field by name, and those fields implement only traversal or end-of-input bookkeeping; and (iv) for every reachable call to R's concrete `read`, including calls returning `None`, only those enumerated cursor-state fields change and no other externally observable effect occurs. The M3 evidence must record file and line for the type definition, concrete implementation, checked obligations and actual `inflate_zlib_into` and `inflate_zlib_measure` call sites, separately for IDAT, fdAT and iCCP, and must distinguish what Verus checks from what rests on inspection; the inspection argument must not be described as a Verus theorem. Once L-SEG-FRAME is discharged for R and connected to those call sites, the instantiated `inflate_zlib_into` call changes only output bytes and source cursor state. `SegmentSlices` is the first discharge of L-SEG-FRAME, recorded in the same form: Verus checks frame preservation, the structural conditions are checked against its type definition and verifier-enforced safe Rust, and the inference to no other observable effect rests on Rust's aliasing rules, which the project trusts and Verus does not prove. For `inflate_zlib_measure`, the same statements hold with `ring` in place of `out`; `ring`'s contents afterwards remain unspecified; this adds an effect restriction that frozen clause (b) did not state. Return values are excluded from these state-effect restrictions. Approval resolves only this statement mismatch: it neither completes M2 nor discharges the M3 reader obligations. No integrated PNG verification or release report may claim the no-extra-effect guarantee before the corresponding reader and call-site obligations are discharged, and no report may claim the original universal restriction for arbitrary T-SEG readers."
+
+## E3 — 2026-11-20: T13, the samples of `Still16::rgba16` (notation) — APPROVED (2026-11-20)
+
+**Frozen text.** `THEOREMS.md:124` (T13) states its RGBA16 clauses over samples: "`|rgba16| = 4·W·H` samples, `8·W·H ≤ 2·MAX_OUTPUT` bytes", and L-16-8 relates "every 8-bit sample" to "the 16-bit sample `x`". `THEOREMS.md:60` gives `MS16(b)` the field `rgba16`. Neither fixes how the executable lays out a 16-bit sample.
+
+**Implementation.** `png_verus`'s `Still16::rgba16` is a `Vec<u8>` of `8·W·H` bytes: four samples per pixel in R, G, B, A order, each sample two bytes, most significant first (big-endian), on every host. The council kept this representation (M1b-Q5a, option (a)) because the shared, hash-pinned `alloc_guard` reserves bytes and stays byte-identical across cores (a `Vec<u16>` would need a second element type in the guard), and native-order bytes would make the output depend on the host.
+
+**Proposed erratum (notation, no statement changes).** T13's model sample `i` of `rgba16` corresponds to `256·bytes[2i] + bytes[2i+1]` of the executable's `Still16::rgba16`, and `|bytes| = 8·W·H`, representing `4·W·H` samples. T13 for the executable is proved through this relation: the output byte length is `8·W·H`, and decoding adjacent byte pairs as big-endian yields exactly P13.3's sample sequence. The `Output` allocation remains byte-counted and the shared allocation guard remains unchanged. This records the representation relation without changing T13's sample semantics.
+
+**Effect on users.** None on decoded values. Consumer glue converts when its destination needs another layout; on a little-endian host, reinterpreting the bytes as native `u16` is not a conversion (`BRIEF.md`).
+
+**If rejected.** T13's 16-bit clauses have no stated link to the public byte field, and the M6 proof must fix one anyway.
+
+Owner decision (2026-11-20): APPROVED. Recorded from the council's unanimous M1b-Q5a ruling (sealed report `council/sealed/COUNCIL-REPORT-PNG-M1BQ.md`, sha256 `094a6e2b582b87ba86eb188c47ddce05088cee17ce0c1dab076c55c6c7d9c6cd`, kept outside this repository).
+
+
+## E4 — 2026-11-20: `Frames` constructor names (notation) — APPROVED (2026-11-20)
+
+**Frozen text.** `THEOREMS.md:94` (the request table) and `:143` (T-ITER's setup) write `Frames::try_new(b, p)`; `:119` (T9) writes `c = Frames::try_new(b, Strict)`; `:100` and `:157` (A-PNG-2) write the logged form `Frames::try_new_logged(b, p)`. `BRIEF.md` briefed the single constructor `try_new(b, p)`.
+
+**Implementation.** Following D1 (`policy-draft/OPTIONS.md`: stable entry points are Strict, profiled ones take a named profile) and PNG's still entries and the GIF, DIB and TGA constructors, the council renamed the constructor (M1b-Q5b, option (b)): `Frames::try_new(b)` constructs Strict decoding and `Frames::try_new_with_policy(b, p)` takes a named profile. Both use the same constructor implementation; `try_new(b)` is defined as `try_new_with_policy(b, Profile::Strict)`, including identical errors and guard requests. `Frames` still does not implement `Iterator`, because each returned frame view borrows the decoder's reusable canvas. `png_verus`, its tests, its probe example and the leniency `verified` runner use the new names.
+
+**Proposed erratum (notation, no statement changes).** In `THEOREMS.md`, `Frames::try_new(b, p)` denotes the executable `Frames::try_new_with_policy(b, p)`, and `Frames::try_new(b, Strict)` denotes the Strict wrapper `Frames::try_new(b)`. This naming correspondence changes neither `MWF_p`, nor allocation order, nor frame semantics. Provisional callers and unfrozen API documentation are updated consistently.
+
+*Addition for the owner's decision (not in the council's wording):* the logged form `Frames::try_new_logged(b, p)` (`THEOREMS.md:100`, `:157`) is read the same way, as the logged form of `try_new_with_policy(b, p)`, with `try_new_logged(b, Strict)` the logged form of `try_new(b)`. No logged entry exists in the M1b code; the sentence keeps the two spellings from diverging when M3–M6 add them.
+
+**Effect on users.** Callers of the provisional two-argument `try_new` change their source; decoding and allocation behaviour are unchanged.
+
+**If rejected.** `Frames` stays the one constructor whose unqualified name takes a profile, contrary to D1, and the code reverts to `try_new(b, p)`.
+
+Owner decision (2026-11-20): APPROVED, including the sentence on `Frames::try_new_logged`, which the owner adopted in addition to the council's unanimous M1b-Q5b wording (same sealed report).
