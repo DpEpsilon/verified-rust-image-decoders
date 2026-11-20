@@ -1,0 +1,105 @@
+{
+  "milestone": "M3 continuation: genuine weak image-helper contracts; not sign-off-ready",
+  "base_commit": "3593450",
+  "checkpoint": 213,
+  "verified": 466,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "signoff_ready": false,
+  "no_new_trusted_items": true,
+  "public_api_unchanged": true,
+  "runtime_and_source_controls_run": 214,
+  "claims": [
+    {
+      "row": "Weak image status/filter arithmetic prerequisites / T1 component",
+      "status": "proved on host",
+      "functions": [
+        "image_status",
+        "abs_small",
+        "paeth",
+        "unfilter"
+      ],
+      "run": 213,
+      "statement": "Actual leaf code has checked bounds/arithmetic and terminating loops; row lengths are preserved. No filter reconstruction equation is claimed."
+    },
+    {
+      "row": "Weak sample/channel/scaling prerequisites",
+      "status": "proved on host",
+      "functions": [
+        "packed_access",
+        "sample",
+        "sample_channel",
+        "scale"
+      ],
+      "run": 213,
+      "statement": "Packed/16-bit accesses, channel-index products, finite shifts/nonzero divisors and lossless bounded sample scaling are checked without a pixel-model equality."
+    },
+    {
+      "row": "Weak Colour prerequisites",
+      "status": "proved on host",
+      "functions": [
+        "Colour::wf",
+        "Colour::channels",
+        "Colour::new",
+        "Colour::pixel"
+      ],
+      "run": 213,
+      "statement": "Actual palette/tRNS ranges, bounded key loop, sample/palette accesses, selected channel bounds and R1/R4 preservation are checked. No colour-value equality is claimed."
+    },
+    {
+      "row": "Weak Sink and OVER prerequisites",
+      "status": "proved on host",
+      "functions": [
+        "over",
+        "pixel_offset",
+        "Sink::wf",
+        "Sink::shape",
+        "Sink::wide_view",
+        "Sink::wide",
+        "Sink::put"
+      ],
+      "run": 213,
+      "statement": "Actual arithmetic, byte offsets, channel loops and writes within RGBA8/RGBA16/canvas footprints are checked; destination shape/wf is preserved. No blending/pixel equality is claimed."
+    },
+    {
+      "row": "A-PNG-2 / public L-WALK-FIRST / category-a error dispatch",
+      "status": "OPEN",
+      "functions": [],
+      "run": 213,
+      "statement": "The central decode_image pass/row/pixel loop and public/default/frame continuations are still ordinary Rust. Their genuine weak safety contracts must precede actual public-entry witnesses."
+    },
+    {
+      "row": "THEOREMS.md:194 categories a/b / council sixteen",
+      "status": "unchanged/open",
+      "functions": [],
+      "run": 213,
+      "statement": "The prior 131-record inventory and 28 partial header facts remain enabled, with zero complete public-entry witnesses credited; frozen expectations and coordinator boundary interpretation are unchanged."
+    },
+    {
+      "row": "E2 IDAT/fdAT actual-entry bindings",
+      "status": "OPEN",
+      "functions": [],
+      "run": 213,
+      "statement": "Actual into remains in ordinary decode_image; reader-effects-0213.json refreshes source hash/location only. The prior iCCP host argument is retained."
+    },
+    {
+      "row": "Final i686 / M4\u2013M6 pixel semantics",
+      "status": "untouched/open",
+      "functions": [],
+      "run": 213,
+      "statement": "No i686 replay or pixel-equivalence theorem was added; final target replay must use copied existing cache in PNG-owned target output."
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0214.json"
+  },
+  "spec_ambiguities": [],
+  "resume": "Check decode_image with Doc/source/Raw/Sink premises, source and buffer/shape preservation, exact layout-prefix row invariants and bounded pass coordinates; then default/public/frame weak dispatch, category-a errors, category-b projections, E2 bindings and final copied-cache i686 replay."
+}

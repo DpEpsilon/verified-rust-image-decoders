@@ -1,0 +1,293 @@
+{
+  "requirement": "ERRATA E2 approved amendment, conditions (i)-(iv), separate reader/call-site arguments",
+  "checkpoint": 213,
+  "verified": 466,
+  "errors": 0,
+  "no_cheating": true,
+  "readers": [
+    {
+      "reader": "IDAT",
+      "status": "OPEN: concrete effect argument recorded; formal actual-entry binding awaits checked weak continuation",
+      "representation": {
+        "type": {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+          "line": 53
+        },
+        "read": {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+          "line": 181
+        },
+        "source_frame": {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+          "line": 162
+        },
+        "frame_coverage": {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+          "line": 76
+        },
+        "noncursor_runtime_fields": [
+          "b",
+          "start",
+          "fdat"
+        ],
+        "cursor_runtime_fields": [
+          "pos",
+          "end",
+          "next",
+          "done"
+        ],
+        "erased_fields": [
+          "source",
+          "prefix",
+          "total",
+          "entered",
+          "reads"
+        ],
+        "reachable_runtime_types": [
+          "shared slice reference &[u8]",
+          "u8",
+          "usize",
+          "bool"
+        ],
+        "runtime_helper_closure": [
+          {
+            "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+            "line": 28
+          },
+          {
+            "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+            "line": 18
+          },
+          {
+            "path": "/home/ws/projects/verified-decoders/png/png_verus/src/framing.rs",
+            "line": 50
+          },
+          {
+            "path": "/home/ws/projects/verified-decoders/png/png_verus/src/framing.rs",
+            "line": 11
+          },
+          {
+            "path": "/home/ws/projects/verified-decoders/png/png_verus/src/framing.rs",
+            "line": 43
+          }
+        ]
+      },
+      "condition_i_inspection": "DataReader stores one shared immutable byte slice, scalar cursor/source fields and erased Ghost observations. The reachable runtime types contain no mutable reference, raw-pointer field, Cell/RefCell/atomic/UnsafeCell wrapper or I/O capability. Rust slice representation machinery is not a reader-owned raw-pointer capability; this is the same safe shared-borrow interpretation as the approved SegmentSlices precedent.",
+      "condition_ii_checked_and_inspected": "DataReader::read, segment_at, type_is, frame_at, be32 and letter are safe checked Verus functions under --no-cheating. Runtime operations beyond these helpers are scalar operations, slice length/indexing and Option/Result construction. No runtime call recomputes CRC, allocates, accesses static mutable state or performs I/O; proof/model calls erase. No unsafe/external_body/assume_specification bypass occurs in the read closure.",
+      "condition_iii_checked": "Segments source_frame is exactly (b,start,fdat). The inherited read postcondition preserves it; frame_covers_noncursor proves it covers every non-cursor runtime field. pos/end delimit the current payload, next locates the next chunk, done records EOF; these fields implement only traversal or EOF bookkeeping.",
+      "condition_iv_checked_and_inspected": "The read loop preserves the complete source frame on every return under its checked wf premise. A byte return increments pos; chunk advance changes pos/end/next; first EOF changes done; repeated EOF changes no runtime field. All other writes target erased observations or local variables. With only an immutable shared input borrow and no other effect capability, safe Rust aliasing excludes changes to input bytes or external state. This last no-extra-effect inference is an inspection/Rust-aliasing argument, not a Verus heap-effect theorem.",
+      "inflate_zlib_into": {
+        "path": "/home/ws/projects/verified-decoders/png/png_verus/src/image.rs",
+        "line": 606
+      },
+      "remaining_binding": "The actual into call remains in ordinary decode_image. Source constructors and FrameJob contracts prove wf/freshness and transport, but the public/default/frame continuation has not yet been checked end to end; do not credit this inventory as the complete E2 call-site discharge.",
+      "constructors": [
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 549
+        },
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 798
+        }
+      ],
+      "caller_bindings": [
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 551
+        },
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 799
+        }
+      ],
+      "inflate_zlib_measure": null,
+      "measure_binding": "No image-path measure call exists; IDAT/fdAT use only into."
+    },
+    {
+      "reader": "fdAT",
+      "status": "OPEN: concrete effect argument recorded; formal actual-entry binding awaits checked weak continuation",
+      "representation": {
+        "type": {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+          "line": 53
+        },
+        "read": {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+          "line": 181
+        },
+        "source_frame": {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+          "line": 162
+        },
+        "frame_coverage": {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+          "line": 76
+        },
+        "noncursor_runtime_fields": [
+          "b",
+          "start",
+          "fdat"
+        ],
+        "cursor_runtime_fields": [
+          "pos",
+          "end",
+          "next",
+          "done"
+        ],
+        "erased_fields": [
+          "source",
+          "prefix",
+          "total",
+          "entered",
+          "reads"
+        ],
+        "reachable_runtime_types": [
+          "shared slice reference &[u8]",
+          "u8",
+          "usize",
+          "bool"
+        ],
+        "runtime_helper_closure": [
+          {
+            "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+            "line": 28
+          },
+          {
+            "path": "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs",
+            "line": 18
+          },
+          {
+            "path": "/home/ws/projects/verified-decoders/png/png_verus/src/framing.rs",
+            "line": 50
+          },
+          {
+            "path": "/home/ws/projects/verified-decoders/png/png_verus/src/framing.rs",
+            "line": 11
+          },
+          {
+            "path": "/home/ws/projects/verified-decoders/png/png_verus/src/framing.rs",
+            "line": 43
+          }
+        ]
+      },
+      "condition_i_inspection": "DataReader stores one shared immutable byte slice, scalar cursor/source fields and erased Ghost observations. The reachable runtime types contain no mutable reference, raw-pointer field, Cell/RefCell/atomic/UnsafeCell wrapper or I/O capability. Rust slice representation machinery is not a reader-owned raw-pointer capability; this is the same safe shared-borrow interpretation as the approved SegmentSlices precedent.",
+      "condition_ii_checked_and_inspected": "DataReader::read, segment_at, type_is, frame_at, be32 and letter are safe checked Verus functions under --no-cheating. Runtime operations beyond these helpers are scalar operations, slice length/indexing and Option/Result construction. No runtime call recomputes CRC, allocates, accesses static mutable state or performs I/O; proof/model calls erase. No unsafe/external_body/assume_specification bypass occurs in the read closure.",
+      "condition_iii_checked": "Segments source_frame is exactly (b,start,fdat). The inherited read postcondition preserves it; frame_covers_noncursor proves it covers every non-cursor runtime field. pos/end delimit the current payload, next locates the next chunk, done records EOF; these fields implement only traversal or EOF bookkeeping.",
+      "condition_iv_checked_and_inspected": "The read loop preserves the complete source frame on every return under its checked wf premise. A byte return increments pos; chunk advance changes pos/end/next; first EOF changes done; repeated EOF changes no runtime field. All other writes target erased observations or local variables. With only an immutable shared input borrow and no other effect capability, safe Rust aliasing excludes changes to input bytes or external state. This last no-extra-effect inference is an inspection/Rust-aliasing argument, not a Verus heap-effect theorem.",
+      "inflate_zlib_into": {
+        "path": "/home/ws/projects/verified-decoders/png/png_verus/src/image.rs",
+        "line": 606
+      },
+      "remaining_binding": "The actual into call remains in ordinary decode_image. Source constructors and FrameJob contracts prove wf/freshness and transport, but the public/default/frame continuation has not yet been checked end to end; do not credit this inventory as the complete E2 call-site discharge.",
+      "constructors": [
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/frame_state.rs",
+          "line": 136
+        }
+      ],
+      "caller_bindings": [
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 872
+        }
+      ],
+      "inflate_zlib_measure": null,
+      "measure_binding": "No image-path measure call exists; IDAT/fdAT use only into."
+    },
+    {
+      "reader": "iCCP",
+      "status": "DISCHARGED ON HOST at run 201 by checked contracts plus the explicit inspection/Rust-aliasing argument",
+      "type": {
+        "path": "/home/ws/projects/verified-decoders/png/inflate_verus/src/segments.rs",
+        "line": 96
+      },
+      "read": {
+        "path": "/home/ws/projects/verified-decoders/png/inflate_verus/src/segments.rs",
+        "line": 67
+      },
+      "source_frame": {
+        "path": "/home/ws/projects/verified-decoders/png/inflate_verus/src/segments.rs",
+        "line": 155
+      },
+      "noncursor_runtime_fields": [
+        "parts"
+      ],
+      "cursor_runtime_fields": [
+        "index",
+        "offset",
+        "position",
+        "end_reported"
+      ],
+      "erased_fields": [
+        "seg_work",
+        "read_work"
+      ],
+      "reachable_runtime_types": [
+        "shared slice of shared immutable byte slices &[&[u8]]",
+        "u8",
+        "usize",
+        "u64",
+        "bool"
+      ],
+      "condition_i_inspection": "parts and its reachable slices contain only shared immutable references and byte/scalar values; no mutable reference, raw-pointer field, interior-mutability wrapper or I/O capability is reachable.",
+      "condition_ii_checked_and_inspected": "The unchanged verified dependency checks concrete SegmentSlices::read under --no-cheating. Its runtime closure uses only scalar operations, immutable slice length/indexing and Option construction; lemma_parts_byte and observation writes erase. There is no unsafe/trust bypass, static mutable state, allocation or I/O in that closure.",
+      "condition_iii_checked": "source_frame returns the complete parts borrow; read additionally ensures preserves_noncursor. index and offset select traversal position, position counts consumed bytes, and end_reported records the final EOF advance.",
+      "condition_iv_checked_and_inspected": "Every byte return changes only offset/position; segment advance changes index/offset; the first final EOF changes end_reported; repeated EOF changes no runtime field. The checked loop/frame postconditions cover Some and None. No other owned effect capability exists. Rust shared-borrow/aliasing rules supply the inference that external/input state cannot change; Verus does not prove that general heap-effect inference.",
+      "constructors": [
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 921
+        },
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 956
+        }
+      ],
+      "inflate_zlib_measure": {
+        "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+        "line": 924
+      },
+      "inflate_zlib_into": {
+        "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+        "line": 959
+      },
+      "actual_entry_bindings": [
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 906
+        },
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 943
+        },
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 967
+        },
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 1003
+        },
+        {
+          "path": "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs",
+          "line": 1011
+        }
+      ],
+      "binding_checked": "The actual ICC public bodies are checked. prepare_icc provides the walked bounded range and MAX_INPUT bound; both helper bodies prove that a fresh wf SegmentSlices cursor concatenates exactly that range. measure checks Window length; into checks the measured exact profile length. Rust borrows keep input shared and output/ring disjoint. Both actual inflate calls satisfy their verified entry preconditions."
+    }
+  ],
+  "scope": "iCCP host discharge; IDAT and fdAT remain OPEN because their actual public/image continuation binding is not checked. i686/final-M3 assurance is separate.",
+  "source_sha256": {
+    "/home/ws/projects/verified-decoders/png/png_verus/src/reader.rs": "e1e7c97ce7b862639e31dc28e765074c14da2eabe591df8592573b56748b8f0d",
+    "/home/ws/projects/verified-decoders/png/png_verus/src/framing.rs": "d4ba2feb5f1996f64e5f919bdb6e6bcbdb6122eb674dcf453cfdb78e3bc9f3a2",
+    "/home/ws/projects/verified-decoders/png/inflate_verus/src/segments.rs": "f9a04d3a7fcfe5874064e0ca1fec9b88c21098dda134fd06788e80c5b8c5b663",
+    "/home/ws/projects/verified-decoders/png/inflate_verus/src/inflate.rs": "ab4a748d24c86b29d72656ce6fb5f59d02503041cdcdc04e941a3191ebf70bfc",
+    "/home/ws/projects/verified-decoders/png/inflate_verus/src/lib.rs": "f25508019508c71722e845fa1f303bd09633e978be22ce5b97fd3c0c0d13357d",
+    "/home/ws/projects/verified-decoders/png/png_verus/src/frame_state.rs": "2ad1cce752dd3179583ec0db1c3b42a463dc363321683ada8c1fd5c4edf9a4e5",
+    "/home/ws/projects/verified-decoders/png/png_verus/src/png.rs": "504d2c97f9922e96f22854c8e3aec22d4209bff912d7561a4d72d0ce46ad8b6b",
+    "/home/ws/projects/verified-decoders/png/png_verus/src/image.rs": "e6fd9e2b855e3bb5540804d22b773ece3dda520ed185b417c44ad5e5b7b31fbf"
+  },
+  "trusted_basis": "Baseline Rust shared-borrow/aliasing rules and verified library primitive specifications; no new trusted item or universal generic-Segments no-extra-effect assertion.",
+  "supersedes_inventory": "reader-effects-0201.json"
+}

@@ -167,6 +167,8 @@ proof fn raw_budget(ihdr: Ihdr,w: u32,h: u32)
 
 } // verus!
 
+verus! {
+
 /// Where converted pixels go.
 pub(crate) enum Sink<'o> {
     /// RGBA8 still: `out` is `4·W·H` bytes.
@@ -190,11 +192,22 @@ pub(crate) fn over(s: [u8; 4], d: [u8; 4]) -> [u8; 4] {
     }
     let da = d[3] as u32;
     // A ∈ [255, 65025]; each numerator N ≤ 255·A, so every result is ≤ 255.
+    proof {assert(0<255*(sa as int)+(da as int)*(255-sa as int)<=130050) by (nonlinear_arith)
+        requires 1<=sa<255,da<=255;}
     let a = 255 * sa + da * (255 - sa);
     let mut o = [0u8; 4];
     let mut i = 0;
-    while i < 3 {
-        let num = 255 * sa * s[i] as u32 + da * (255 - sa) * d[i] as u32;
+    while i < 3
+        invariant i<=3,1<=sa<255,da<=255,a==255*sa+da*(255-sa),0<a<=130050,
+        decreases 3-i,
+    {
+        let sc=s[i] as u32;
+        let dc=d[i] as u32;
+        proof {
+            assert(255*(sa as int)*(sc as int)+(da as int)*(255-sa as int)*(dc as int)<=33162750) by (nonlinear_arith)
+                requires 1<=sa<255,da<=255,sc<=255,dc<=255;
+        }
+        let num = 255 * sa * sc + da * (255 - sa) * dc;
         o[i] = ((2 * num + a) / (2 * a)) as u8;
         i += 1;
     }
@@ -202,30 +215,82 @@ pub(crate) fn over(s: [u8; 4], d: [u8; 4]) -> [u8; 4] {
     o
 }
 
+proof fn pixel_offset(w: nat,h: nat,x: nat,y: nat,bytes: nat,n: nat)
+    requires x<w,y<h,bytes>=1,bytes*w*h<=n<=crate::alloc_guard::MAX_BYTES,
+    ensures y*w<=usize::MAX,y*w+x<=usize::MAX,bytes*(y*w+x)+bytes<=n<=usize::MAX,
+{
+    crate::limits::caps_ok();
+    assert(y*w+x+1<=w*h) by (nonlinear_arith) requires 0<=y<h,0<=x<w;
+    assert(bytes*(y*w+x+1)<=bytes*w*h) by (nonlinear_arith)
+        requires y*w+x+1<=w*h,bytes>=1;
+    assert(bytes*(y*w+x)+bytes==bytes*(y*w+x+1)) by (nonlinear_arith);
+    assert(y*w+x<=bytes*(y*w+x)) by (nonlinear_arith) requires bytes>=1,0<=y,0<=w,0<=x;
+}
+
 impl<'o> Sink<'o> {
+    pub(crate) closed spec fn wide_view(self) -> bool {matches!(self,Self::Rgba16(_))}
+    pub(crate) closed spec fn shape(self) -> (nat,nat,nat,nat,nat,bool) {
+        match self {
+            Self::Rgba8(out)=>(0,out@.len(),0,0,0,false),
+            Self::Rgba16(out)=>(1,out@.len(),0,0,0,false),
+            Self::Canvas {canvas,cw,fx,fy,over}=>(2,canvas@.len(),cw as nat,fx as nat,fy as nat,over),
+        }
+    }
+    pub(crate) closed spec fn wf(self,w: u32,h: u32) -> bool {
+        1<=w<=crate::limits::PNG_WIRE_MAX && 1<=h<=crate::limits::PNG_WIRE_MAX
+        && match self {
+            Self::Rgba8(out)=>out@.len()==4*(w as nat)*(h as nat) && out@.len()<=crate::alloc_guard::MAX_BYTES,
+            Self::Rgba16(out)=>out@.len()==8*(w as nat)*(h as nat) && out@.len()<=crate::alloc_guard::MAX_BYTES,
+            Self::Canvas {canvas,cw,fx,fy,..}=>1<=cw<=crate::limits::PNG_WIRE_MAX
+                && fx as int+w as int<=cw && fy as int+h as int<=crate::limits::PNG_WIRE_MAX
+                && 4*(fy as int+h as int)*(cw as int)<=canvas@.len()<=crate::alloc_guard::MAX_BYTES,
+        }
+    }
     /// Place pixel `(x, y)` of the image being decoded (16-bit channel values;
     /// the RGBA8 sinks receive values already converted to 8 bits).
     #[inline]
-    fn put(&mut self, width: u32, x: u32, y: u32, px: [u16; 4]) {
+    fn put(&mut self, width: u32,height: u32, x: u32, y: u32, px: [u16; 4])
+        requires old(self).wf(width,height),x<width,y<height,
+            !old(self).wide_view() ==> forall|i: int| 0<=i<4 ==> (#[trigger] px@[i])<=u8::MAX,
+        ensures final(self).shape()==old(self).shape(),final(self).wf(width,height),
+    {
+        proof {crate::limits::caps_ok();}
         match self {
             Sink::Rgba8(out) => {
+                proof {pixel_offset(width as nat,height as nat,x as nat,y as nat,4,out.len() as nat);}
                 let o = 4 * (y as usize * width as usize + x as usize);
+                let ghost n=out.len();
                 let mut i = 0;
-                while i < 4 {
+                while i < 4
+                    invariant i<=4,o+4<=out.len(),out.len()==n,n==4*(width as nat)*(height as nat),n<=crate::alloc_guard::MAX_BYTES,forall|j: int| 0<=j<4 ==> (#[trigger] px@[j])<=u8::MAX,
+                    decreases 4-i,
+                {
                     out[o + i] = px[i] as u8;
                     i += 1;
                 }
             }
             Sink::Rgba16(out) => {
+                proof {pixel_offset(width as nat,height as nat,x as nat,y as nat,8,out.len() as nat);}
                 let o = 8 * (y as usize * width as usize + x as usize);
+                let ghost n=out.len();
                 let mut i = 0;
-                while i < 4 {
-                    out[o + 2 * i] = (px[i] >> 8) as u8;
-                    out[o + 2 * i + 1] = px[i] as u8;
+                while i < 4
+                    invariant i<=4,o+8<=out.len(),out.len()==n,n==8*(width as nat)*(height as nat),n<=crate::alloc_guard::MAX_BYTES,
+                    decreases 4-i,
+                {
+                    let word=px[i];
+                    proof {assert(word>>8<=u8::MAX as u16 && (word&255)<=u8::MAX as u16) by (bit_vector);}
+                    out[o+2*i]=(word>>8) as u8;
+                    out[o+2*i+1]=(word&255) as u8;
                     i += 1;
                 }
             }
             Sink::Canvas { canvas, cw, fx, fy, over: ov } => {
+                proof {
+                    let stride=*cw as nat;let rows=*fy as nat+height as nat;
+                    assert(4*stride*rows==4*rows*stride) by (nonlinear_arith);
+                    pixel_offset(*cw as nat,*fy as nat+height as nat,*fx as nat+x as nat,*fy as nat+y as nat,4,canvas.len() as nat);
+                }
                 let o = 4 * ((*fy + y) as usize * *cw as usize + (*fx + x) as usize);
                 let s = [px[0] as u8, px[1] as u8, px[2] as u8, px[3] as u8];
                 let r = if *ov { over(s, [canvas[o], canvas[o + 1], canvas[o + 2], canvas[o + 3]]) } else { s };
@@ -234,14 +299,22 @@ impl<'o> Sink<'o> {
         }
     }
 
-    fn wide(&self) -> bool {
+    fn wide(&self) -> (r: bool)
+        ensures r==self.wide_view(),
+    {
         matches!(self, Sink::Rgba16(_))
     }
 }
 
+} // verus!
+
 /// Map an inflate status to the image result (P9–P11). `produced` bytes were
 /// written of a limit of `r`.
-fn image_status(status: Status, produced: u64, r: u64) -> Result<(), Error> {
+verus! {
+
+fn image_status(status: Status, produced: u64, r: u64) -> (result: Result<(), Error>)
+    ensures result.is_ok() ==> produced>=r,
+{
     match status {
         Status::Done => {
             if produced < r {
@@ -259,12 +332,18 @@ fn image_status(status: Status, produced: u64, r: u64) -> Result<(), Error> {
     }
 }
 
+/// Absolute value only in the proved Paeth arithmetic domain.
+fn abs_small(v: i16) -> (r: i16)
+    requires -510<=v<=510,
+    ensures 0<=r<=510,
+{if v<0 {-v}else{v}}
+
 #[inline]
 fn paeth(a: u8, b: u8, c: u8) -> u8 {
     let p = a as i16 + b as i16 - c as i16;
-    let pa = (p - a as i16).abs();
-    let pb = (p - b as i16).abs();
-    let pc = (p - c as i16).abs();
+    let pa = abs_small(p - a as i16);
+    let pb = abs_small(p - b as i16);
+    let pc = abs_small(p - c as i16);
     if pa <= pb && pa <= pc {
         a
     } else if pb <= pc {
@@ -277,10 +356,16 @@ fn paeth(a: u8, b: u8, c: u8) -> u8 {
 /// Reconstruct one scanline in place (P11): `cur` is the filtered row after its
 /// filter byte, `prev` the reconstructed previous row of the same pass (`None`
 /// for the pass's first scanline, read as zeros).
-fn unfilter(ft: u8, cur: &mut [u8], prev: Option<&[u8]>, bpp: usize) {
+fn unfilter(ft: u8, cur: &mut [u8], prev: Option<&[u8]>, bpp: usize)
+    requires 1<=bpp,match prev {Some(p)=>old(cur).len()<=p.len(),None=>true},
+    ensures final(cur).len()==old(cur).len(),
+{
     let n = cur.len();
     let mut i = 0;
-    while i < n {
+    while i < n
+        invariant i<=n,n==cur.len(),1<=bpp,match prev {Some(p)=>n<=p.len(),None=>true},
+        decreases n-i,
+    {
         let a = if i >= bpp { cur[i - bpp] } else { 0 };
         let b = match prev {
             Some(p) => p[i],
@@ -302,25 +387,83 @@ fn unfilter(ft: u8, cur: &mut [u8], prev: Option<&[u8]>, bpp: usize) {
     }
 }
 
+proof fn packed_access(n: usize,i: usize,depth: u8)
+    requires depth==1 || depth==2 || depth==4,(i as int+1)*(depth as int)<=8*(n as int),
+    ensures 1<=8int/(depth as int),(i as int)/(8int/(depth as int))<n,
+        1<=(depth as int)*((i as int)%(8int/(depth as int))+1)<=8,
+{
+    if depth==1 {assert(i/8<n);}
+    else if depth==2 {assert(i/4<n);}
+    else {assert(depth==4);assert(i/2<n);}
+}
+
 /// P13.1: sample `i` of a reconstructed scanline.
 #[inline]
-fn sample(line: &[u8], depth: u8, i: usize) -> u16 {
+fn sample(line: &[u8], depth: u8, i: usize) -> (r: u16)
+    requires depth==1 || depth==2 || depth==4 || depth==8 || depth==16,
+        (i as int+1)*(depth as int)<=8*(line.len() as int),
+    ensures r as u32<=(1u32<<depth)-1,
+{
+    proof {
+        assert((depth==16 ==> (1u32<<depth)==u16::MAX as u32+1) && (depth==8 ==> (1u32<<depth)==256u32)) by (bit_vector);
+    }
     match depth {
         16 => be16(line, 2 * i),
         8 => line[i] as u16,
         _ => {
             let per = 8 / depth as usize;
+            proof {
+                assert(depth==1 || depth==2 || depth==4);
+                packed_access(line.len(),i,depth);
+                assert(per>=1);
+                assert(i/per<line.len());
+                assert(1<=depth as int*((i%per) as int+1)<=8);
+                assert((1u8<<depth)>0) by (bit_vector) requires 1<=depth<=4;
+                assert(((1u8<<depth)-1) as u32==(1u32<<depth)-1) by (bit_vector) requires 1<=depth<=4;
+            }
             let byte = line[i / per];
             let shift = 8 - depth as usize * (i % per + 1);
-            ((byte >> shift) & ((1u8 << depth) - 1)) as u16
+            let mask=(1u8<<depth)-1;
+            let value=(byte>>shift)&mask;
+            proof {assert(value<=mask) by (bit_vector) requires value==((byte>>shift)&mask),shift<8;}
+            value as u16
         }
     }
 }
 
+/// Safety-only channel-index factoring; no sample-value equation is claimed.
+fn sample_channel(line: &[u8],depth: u8,x: usize,channels: usize,channel: usize) -> (r: u16)
+    requires depth==1 || depth==2 || depth==4 || depth==8 || depth==16,
+        1<=channels<=4,channel<channels,4*(x as int+1)<=crate::alloc_guard::MAX_BYTES,
+        (x as int+1)*(channels as int)*(depth as int)<=8*(line.len() as int),
+    ensures r as u32<=(1u32<<depth)-1,
+{
+    proof {
+        crate::limits::caps_ok();
+        assert((x as int)*(channels as int)+(channel as int)<4*(x as int+1)) by (nonlinear_arith)
+            requires 0<=x,1<=channels<=4,0<=channel<channels;
+        assert((x as int*channels as int+channel as int+1)*(depth as int)
+            <=(x as int+1)*(channels as int)*(depth as int)) by (nonlinear_arith)
+            requires 0<=x,0<=depth,0<=channel<channels;
+    }
+    sample(line,depth,channels*x+channel)
+}
+
 /// P13.2 `s8` and P13.3 `s16`.
 #[inline]
-fn scale(v: u16, depth: u8, wide: bool) -> u16 {
+fn scale(v: u16, depth: u8, wide: bool) -> (r: u16)
+    requires 1<=depth<=16,v as u32<=(1u32<<depth)-1,
+    ensures r<=if wide {u16::MAX}else{255},
+{
+    proof {assert(2<=(1u32<<depth)) by (bit_vector) requires 1<=depth<=16;}
     let v = v as u32;
+    let denominator=(1u32<<depth)-1;
+    proof {
+        let top=if wide {65535int}else{255int};
+        assert(v as int*top<=denominator as int*top) by (nonlinear_arith) requires 0<=v<=denominator,0<=top;
+        vstd::arithmetic::div_mod::lemma_div_is_ordered(v as int*top,denominator as int*top,denominator as int);
+        vstd::arithmetic::div_mod::lemma_div_multiples_vanish(top,denominator as int);
+    }
     if wide {
         (v * 65535 / ((1u32 << depth) - 1)) as u16
     } else if depth == 16 {
@@ -340,19 +483,37 @@ struct Colour<'b> {
 }
 
 impl<'b> Colour<'b> {
-    fn new(doc: &Doc, b: &'b [u8]) -> Colour<'b> {
+    closed spec fn wf(self) -> bool {crate::model::valid_depth(self.ct,self.depth)}
+    closed spec fn channels(self) -> nat {if self.ct==0 || self.ct==3 {1nat}else if self.ct==2 {3nat}else if self.ct==4 {2nat}else{4nat}}
+    fn new(doc: &Doc, b: &'b [u8]) -> (r: Colour<'b>)
+        requires doc.wf(b@),
+        ensures r.wf(),r.ct==doc.ihdr.ct,r.depth==doc.ihdr.depth,
+    {
         let plte = match doc.plte {
-            Some((o, n)) => &b[o..o + n],
+            Some((o, n)) => {
+                assert(o as int+n as int<=b.len());
+                &b[o..o+n]
+            },
             None => &b[0..0],
         };
-        let trns = doc.trns.map(|(o, n)| &b[o..o + n]);
+        let trns=match doc.trns {Some((o,n))=>{
+            assert(o as int+n as int<=b.len());Some(&b[o..o+n])
+        },None=>None};
         let mut key = [0u16; 3];
         if let Some(t) = trns {
             if doc.ihdr.ct == 0 || doc.ihdr.ct == 2 {
-                let mask: u32 = (1u32 << doc.ihdr.depth) - 1;
+                let depth=doc.ihdr.depth;
+                proof {assert(2<=(1u32<<depth)) by (bit_vector) requires 1<=depth<=16;}
+                let mask: u32 = (1u32 << depth) - 1;
                 let mut j = 0;
-                while j + 1 < t.len() && j / 2 < 3 {
-                    key[j / 2] = (be16(t, j) as u32 & mask) as u16;
+                while j + 1 < t.len() && j / 2 < 3
+                    invariant j<=6,j%2==0,
+                    decreases 6-j,
+                {
+                    let word=be16(t,j);
+                    let masked=word as u32&mask;
+                    proof {assert(masked<=word as u32) by (bit_vector) requires masked==(word as u32&mask);}
+                    key[j/2]=masked as u16;
                     j += 2;
                 }
             }
@@ -362,7 +523,14 @@ impl<'b> Colour<'b> {
 
     /// P13.2/P13.3: pixel `x` of a reconstructed scanline.
     #[inline]
-    fn pixel(&self, line: &[u8], x: usize, wide: bool, pol: &Policy, ev: &mut Events) -> Result<[u16; 4], Error> {
+    fn pixel(&self, line: &[u8], x: usize, wide: bool, pol: &Policy, ev: &mut Events) -> (r: Result<[u16; 4], Error>)
+        requires self.wf(),4*(x as int+1)<=crate::alloc_guard::MAX_BYTES,
+            (x as int+1)*self.channels()*(self.depth as int)<=8*(line.len() as int),
+        ensures final(ev).r1==old(ev).r1,final(ev).r4==old(ev).r4,
+            match r {Ok(px)=>forall|i: int| 0<=i<4 ==> (#[trigger] px@[i])<=if wide {u16::MAX}else{255},Err(_)=>true},
+    {
+        proof {crate::limits::caps_ok();}
+
         let top: u16 = if wide { 65535 } else { 255 };
         let d = self.depth;
         match self.ct {
@@ -373,9 +541,9 @@ impl<'b> Colour<'b> {
                 Ok([s, s, s, a])
             }
             2 => {
-                let r = sample(line, d, 3 * x);
-                let g = sample(line, d, 3 * x + 1);
-                let bl = sample(line, d, 3 * x + 2);
+                let r = sample_channel(line,d,x,3,0);
+                let g = sample_channel(line,d,x,3,1);
+                let bl = sample_channel(line,d,x,3,2);
                 let a = if self.trns.is_some() && self.key == [r, g, bl] { 0 } else { top };
                 Ok([scale(r, d, wide), scale(g, d, wide), scale(bl, d, wide), a])
             }
@@ -403,19 +571,21 @@ impl<'b> Colour<'b> {
                 ])
             }
             4 => {
-                let g = scale(sample(line, d, 2 * x), d, wide);
-                let a = scale(sample(line, d, 2 * x + 1), d, wide);
+                let g = scale(sample_channel(line,d,x,2,0), d, wide);
+                let a = scale(sample_channel(line,d,x,2,1), d, wide);
                 Ok([g, g, g, a])
             }
             _ => Ok([
-                scale(sample(line, d, 4 * x), d, wide),
-                scale(sample(line, d, 4 * x + 1), d, wide),
-                scale(sample(line, d, 4 * x + 2), d, wide),
-                scale(sample(line, d, 4 * x + 3), d, wide),
+                scale(sample_channel(line,d,x,4,0), d, wide),
+                scale(sample_channel(line,d,x,4,1), d, wide),
+                scale(sample_channel(line,d,x,4,2), d, wide),
+                scale(sample_channel(line,d,x,4,3), d, wide),
             ]),
         }
     }
 }
+
+} // verus!
 
 /// Decode one `w × h` image (P11–P13) whose zlib stream `src` yields, using
 /// `raw` (at least `R(w,h)` bytes, P20 `Raw`) and drawing into `sink`.
@@ -457,7 +627,7 @@ pub(crate) fn decode_image<S: Segments>(
                 let mut c = 0u32;
                 while c < p.pw {
                     let px = colour.pixel(cur, c as usize, wide, pol, ev)?;
-                    sink.put(w, p.x0 + c * p.dx, y, px);
+                    sink.put(w,h, p.x0 + c * p.dx, y, px);
                     c += 1;
                 }
                 pos += 1 + rb;

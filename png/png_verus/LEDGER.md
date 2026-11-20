@@ -1,6 +1,33 @@
 # png_verus ledger
 
-M3 has begun; it is not signed off. The latest host checkpoint is **run 201: 428 verified, 0 errors**, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
+M3 has begun; it is not signed off. The latest host checkpoint is **run 213: 466 verified, 0 errors**, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
+
+## M3 continuation: weak image-helper safety contracts (2026-11-20)
+
+Base: `3593450` (run 201, 428 verified). Final **run 213: 466 verified, 0 errors** brings all ten existing image helpers below decode_image into checked code, with weak safety contracts rather than pixel equations. The central decode_image pass/row/pixel loop and public still/frame continuation remain ordinary Rust. This is a clean intermediate checkpoint, **not M3 sign-off-ready**.
+
+| THEOREMS row/component | Checked functions at run 213 | Scope |
+|---|---|---|
+| Weak image continuation prerequisites / T1 component | `image_status`, `abs_small`, `paeth`, `unfilter` | Checked arithmetic, array/slice accesses, loop termination and row-length preservation; successful status handling implies produced >= requested |
+| Weak sample/channel prerequisites | `packed_access`, `sample`, `sample_channel`, `scale` | Checked packed-byte and 16-bit access domains, channel-index products, nonzero divisors/shifts, lossless narrowing and bounded 8/16-bit results |
+| Weak colour-context prerequisite | `Colour::{wf,channels,new,pixel}` | Checked actual palette/tRNS slicing, bounded key construction, sample/palette accesses, output channel bounds and preservation of R1/R4 events |
+| Weak destination/compositor prerequisite | `over`, `pixel_offset`, `Sink::{wf,shape,wide_view,wide,put}` | Checked arithmetic, termination and writes inside RGBA8/RGBA16/canvas footprints; put preserves destination shape and well-formedness |
+| A-PNG-2 / public L-WALK-FIRST / category-(a) dispatch | No complete public dispatch theorem added | OPEN: decode_image and public/default/frame continuation still need checked weak contracts |
+| Frozen M3 category-(a)/(b) gates | Existing 28 partial header facts remain enabled | Unchanged: all 131 required records remain inventoried, zero complete public-entry witnesses credited |
+| E2 IDAT/fdAT actual-entry bindings | Refreshed locations/hashes in `evidence/reader-effects-0213.json` | OPEN: actual into call remains in ordinary decode_image; iCCP host argument from the previous checkpoint is retained |
+| Final i686 / M4–M6 equality | No target replay or pixel-equality theorem added | Untouched/open; final copied-cache target replay remains required |
+
+The contracts permit strengthening later without replacing the algorithms. Colour::pixel returns either an Error or four channels within the selected byte/sample range; it does not establish colour correctness. Sink::put preserves mode, length and geometry and confines writes to the destination; it does not establish pixel identity or blending equality. OVER now has checked finite-width arithmetic and a terminating channel loop, not a theorem of the P14.4 formula. Unfilter has checked memory access and length preservation, not filter reconstruction equality.
+
+Three small runtime refactorings support the weak contracts without changing public API or allocation sites. abs_small implements absolute value only in Paeth's proved bounded arithmetic domain. sample_channel factors the original channels*x+channel index and calls the same sample helper. RGBA16's low-byte write now masks before narrowing, explicitly expressing the original cast's low-byte operation. Colour construction replaces Option::map with a direct match and checks the same borrowed ranges; scale names its denominator. No pixel-model result, trusted item, false-precondition interface or verifier-only success stub was introduced.
+
+Runs 203–206 establish the leaf contracts: explicit packed-access cases, scalar mask facts and ordered-division bounds yield 443 verified. Runs 207–210 add colour slicing and channel-index transfer; run 210 verifies 451. Runs 211–213 add Sink footprints, explicit bounded offset products and loop length invariants; run 213 verifies 466. Solver limits stay unchanged. The concrete read implementations and allocation guards were not edited.
+
+Final **run 214** passes all Cargo targets, fault injection, all seven council tests and both source-lint negative-control suites: **848 records, 846 passed, zero failed, two inherited P2 skips**. Runtime inputs match before/after hashes/mtimes. Cargo reports Fresh vstd without rebuilding it, pinned cache source hashes/mtimes and copied hashes are unchanged, and the final source inventory matches run 213. All six physical guard borrows still use the real owned log; sealed guard hashes and allocation-site counts are unchanged. No protected/frozen/review/test edit, worker commit/push or background job occurred; no new specification ambiguity was found.
+
+The remaining continuation is now the central decode_image function (about fifty existing lines with nested pass, row and pixel loops), followed by the still/default/public and frame/view/disposal bodies (about two hundred existing lines). Roughly seventeen existing functions remain before added contracts/invariants. decode_image needs a real contract from Doc/source/Raw/Sink well-formedness to source-frame/cursor preservation, buffer-length/shape preservation, bounded writes and either Error or success. Its loops must relate pos and row stride to the exact layout prefix and prove pass coordinates land inside the selected rectangle; no pixel-equality claim is needed. The checked helpers now supply every image leaf call used there.
+
+Evidence: `evidence/checkpoint-0213.json`, `evidence/claims-m3-weak-image.json`, `evidence/runtime-inputs-0214.json`, `evidence/reader-effects-0213.json`, cache comparison, final audit and SHA256SUMS. Resume with the weak decode_image loop contract, then checked default/public/frame dispatch, category-(a) public-error witnesses, category-(b) full walk/preparation projections, IDAT/fdAT E2 bindings and final copied-cache i686 replay. The coordinator's witness-boundary interpretation below remains unchanged.
 
 ## M3 continuation: subframe fit, range forwarding and honest frozen-gate accounting (2026-11-20)
 
