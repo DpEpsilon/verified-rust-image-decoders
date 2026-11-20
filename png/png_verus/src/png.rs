@@ -390,7 +390,7 @@ fn still_impl(b: &[u8], pol: &Policy, wide: bool, ev: &mut Events, trace: &mut T
     let doc = still_walk(b, pol, ev)?;
     let n = doc.ihdr.w as usize * doc.ihdr.h as usize;
     let (mut raw, mut out) = reserve_image(&doc, if wide { 8 * n } else { 4 * n }, trace)?;
-    let mut src = IdatReader::new(b, doc.idat_first);
+    let mut src = IdatReader::for_doc(b, &doc);
     let mut sink = if wide { Sink::Rgba16(&mut out) } else { Sink::Rgba8(&mut out) };
     decode_image(&doc, b, &mut src, &mut raw, doc.ihdr.w, doc.ihdr.h, pol, ev, &mut sink).map_err(TryError::Format)?;
     drop(raw);
@@ -536,7 +536,7 @@ impl<'a> Frames<'a> {
         let mut trace = Trace::new();
         let n = doc.ihdr.w as usize * doc.ihdr.h as usize;
         let (mut raw, mut canvas) = reserve_image(&doc, 4 * n, &mut trace)?;
-        let mut src = IdatReader::new(b, doc.idat_first);
+        let mut src = IdatReader::for_doc(b, &doc);
         decode_image(&doc, b, &mut src, &mut raw, doc.ihdr.w, doc.ihdr.h, &pol, &mut ev, &mut Sink::Rgba8(&mut canvas))
             .map_err(TryError::Format)?;
         let mut doc = doc;

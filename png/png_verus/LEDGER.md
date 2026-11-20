@@ -1,8 +1,34 @@
 # png_verus ledger
 
-M3 has begun; it is not signed off. The latest host checkpoint is **run 98: 240 verified, 0 errors**, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
+M3 has begun; it is not signed off. The latest host checkpoint is **run 106: 252 verified, 0 errors**, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
 
-## M3 continuation: executable whole-walk refinement (2026-11-20)
+## M3 continuation: selected-IDAT reader transport (2026-11-20)
+
+Base: `01f50e5` (run 98, 240 verified). Run **102** proves the independent IDAT byte/count transport induction (250); run **104** binds the production reader constructor (252). Final **run 106: 252 verified, 0 errors** includes the strengthened fresh-reader ranks and the whole-file empty-segment witness. All earlier proof bodies remain enabled. This closes the IDAT transport component, not fdAT/frame selection or complete L-REWALK.
+
+| THEOREMS row/component | Checked statement and actual production binding | State at run 106 |
+|---|---|---|
+| L-REWALK Strict / policy, IDAT model | `transport_model::{concat_append,read_idat,own_idat_effect,ordered_idat_effect,stopped,appended,step_idat,drive_idat,start_idat}` prove that successful start results have an IDAT trace whose concatenation equals reader_bytes at its first chunk, and whose range count equals reader_count | Proved on host for every modeled policy, either entry and either APNG-off flag |
+| L-REWALK Strict / policy, production IDAT | `DataReader::for_doc` returns a fresh reader whose concat is exactly `document_model::default_stream(b,doc.view())`, whose segment count is the ghost IDAT range count, and whose charged segment bound remains `12 * seg_count <= input.len()` | Proved under successful-walk postconditions; both production IdatReader call sites now use for_doc |
+| T6-to-reader premise discharge | `walk::{walk,still,frames}` now guarantee selected-IDAT transport and the input-length bound on success; `limits::caps_ok` proves the named `MAX_INPUT <= SEGMENT_BYTES_MAX` bridge | Proved without a new assumption or cap-value use outside limits.rs |
+| T-SEG fresh adapter observations | `DataReader::{at,new,new_fdat,for_doc}` expose exact reader_count and fresh zero segment index/advance rank in addition to their prior contracts | Proved constructor refinements; no runtime state change |
+| T-SEG / L-REWALK empty IDAT witness | `witness_walk::empty_idat_document` calls the actual walk and selected reader, then reads EOF from one zero-byte IDAT segment; seg_count remains 1, seg_steps becomes 2 and core_steps remains 0 | Proved whole-input production-call binding |
+| L-REWALK complete Strict / policy | No fdAT-frame-to-reader equality or complete validated-fcTL cursor theorem was added | Partial rows; IDAT component now proved |
+| A-PNG-2 / A-PNG-7 / L-WALK-FIRST / public returned Info | No public-entry sealed-log, allocation/inflate-sequencing or complete returned-object theorem was added | Untouched complete gates |
+
+All new proof claims refer to **run 106**. The independent transport invariant distinguishes before-IDAT, during-IDAT and after-IDAT. During the run, the full reader stream equals the accepted payload prefix followed by the reader's remaining suffix; after a non-IDAT chunk, the suffix is empty. The count equation runs alongside byte equality, so an empty payload still adds one segment. The proof uses phase advancement before CRC-policy discard, mandatory IDAT CRC handling, the prohibition on accepted nonconsecutive IDAT, and the exact cursor-preservation facts of the own/ordered stages. It includes synthetic EOF without treating it as an on-wire chunk.
+
+The induction is over the complete mathematical drive; it does not add a second executable parsing algorithm. start_idat applies to active frames walks and APNG-off walks, so the checked frames wrapper propagates the IDAT theorem through Static fallback as well as first-walk success. The production for_doc constructor uses the actual first-IDAT offset relation from Doc::wf, instantiates the inherited Segments adapter and recomputes no CRC. Public callers remain ordinary Rust, but their actual reader construction now calls this proved constructor. The full public caller/log theorem is still open.
+
+No resource-cap value changed. caps_ok now exposes the existing input-domain compatibility directly by name; the equality between the fixed M2 segment-domain constant and the manifest's shared input-domain bound is proved inside limits.rs. The reader proof consumes that named fact, rather than assuming the copied dependency's input precondition.
+
+Run **107** passes all Cargo targets, fault injection, all seven council tests and both source-lint negative controls: **848 records, 846 passed, zero failed, two inherited P2 skips**. The pinned vstd source hashes/mtimes and copied artifact hashes remain unchanged, as do the sealed guard hashes. Verification uses two threads, one Cargo job, the pinned toolchain, --no-cheating, default solver limits and Fresh vstd. No protected file, test, new trust item or background job was introduced. No new spec ambiguity was found or resolved.
+
+Evidence is retained in `evidence/checkpoint-0106.json`, `evidence/claims-m3-idat-transport.json`, `evidence/runtime-inputs-0107.json`, selected complete transcripts, cache comparison and SHA256SUMS. This remains a host checkpoint, not T6/M3 sign-off or a 32-bit replay.
+
+Resume with fdAT transport and validated frame-boundary selection. Unlike IDAT, fdAT reader_count includes skipped non-fdAT chunks as charged empty segments, so it must not be equated to the count of fdAT payload ranges alone. Connect each selected fcTL/start cursor to its frame's modeled payloads, prove that successful enabled frames walks cannot skip invalid fcTL boundaries, and account separately for Static fallback's default-only source. Then migrate the public still/frame/ICC callers with fresh events and sealed allocation logs, followed by walk-first and complete returned-Info gates.
+
+## Earlier M3 continuation: executable whole-walk refinement (2026-11-20)
 
 Continuation from run 79 (207 verified), still based on `3fb56cd`; concurrent commits `2c9aa33` and `e0cac73` apply the council's RB record and Stage-2 freeze. This dispatch did not edit their policy/test/frozen artifacts. The final checkpoint is **run 98: 240 verified, 0 errors**. Intermediate green runs establish state initialization (81, 215), own-value branches (84, 228), complete chunk steps (86, 231), the actual loop (88, 233), named still/constructor walks (89, 235) and the positive whole-file witness (93, 240).
 

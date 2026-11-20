@@ -1,6 +1,7 @@
 //! Whole-input production-walk witness using locally synthesized bytes.
 //! Empty compressed data is structurally valid, not a successful pixel stream.
 use vstd::prelude::*;
+use inflate_verus::Segments;
 use crate::{walk,png::{Events,Error},policy::STRICT,document_model as m,model};
 use crate::walk_model::{Phase,Range};
 
@@ -77,7 +78,20 @@ fn empty_idat_document() {
             assert(doc.view().idat==seq![Range {offset:41,len:0}]);
             assert(doc.frame_ranges@.len()==0);
             assert(!events.r1 && !events.r3 && !events.r4);
-        }},
+        }
+            let mut reader=crate::reader::IdatReader::for_doc(&b,&doc);
+            proof {
+                crate::transport_model::concat_append(b@,Seq::<Range>::empty(),Range {offset:41,len:0});
+                assert(b@.subrange(41,41)==Seq::<u8>::empty());
+                assert(reader.concat()==Seq::<u8>::empty());
+                assert(reader.seg_count()==1);
+            }
+            let eof=reader.read();
+            proof {
+                assert(eof.is_none());
+                assert(reader.seg_count()==1 && reader.seg_steps()==2 && reader.core_steps()==0);
+            }
+        },
     }
 }
 

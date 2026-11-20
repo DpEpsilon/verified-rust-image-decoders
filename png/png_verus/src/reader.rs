@@ -1,6 +1,7 @@
 //! Borrowed lengths-and-types re-walks. The verified adapter implements M2's
-//! complete Segments contract; equality with MW's selected ranges remains a
-//! separate L-REWALK obligation. No re-walk recomputes a CRC.
+//! complete Segments contract; for_doc also proves exact selected-IDAT bytes
+//! and segment count. fdAT selection remains a separate L-REWALK obligation.
+//! No re-walk recomputes a CRC.
 use vstd::prelude::*;
 use inflate_verus::Segments;
 #[cfg(verus_only)]
@@ -68,7 +69,9 @@ impl<'a> DataReader<'a> {
     fn at(b: &'a [u8], start: usize, fdat: bool) -> (r: Self)
         requires b.len() <= SEGMENT_BYTES_MAX,
         ensures r.wf(), r.pos() == 0, r.seg_steps() == 0, r.core_steps() == 0,
+            r.seg_index()==0,r.advance_rank()==0,
             r.concat() == reader_bytes(b@, start as nat, fdat),
+            r.seg_count()==reader_count(b@,start as nat,fdat),
             r.seg_count() == reader_count(b@, start as nat, fdat),
             12 * r.seg_count() <= b.len(),
     {
@@ -83,15 +86,34 @@ impl<'a> DataReader<'a> {
     pub(crate) fn new(b: &'a [u8], first: usize) -> (r: Self)
         requires b.len() <= SEGMENT_BYTES_MAX,
         ensures r.wf(), r.pos() == 0, r.seg_steps() == 0, r.core_steps() == 0,
+            r.seg_index()==0,r.advance_rank()==0,
             r.concat() == reader_bytes(b@, first as nat, false),
+            r.seg_count()==reader_count(b@,first as nat,false),
             12 * r.seg_count() <= b.len(),
     { Self::at(b, first, false) }
+
+    /// Fresh IDAT reader selected by a successful structural walk. Equality
+    /// includes zero-length payloads in the segment count, without a CRC scan.
+    pub(crate) fn for_doc(b: &'a [u8], doc: &crate::walk::Doc) -> (r: Self)
+        requires doc.wf(b@),crate::transport_model::idat_result(b@,doc.view()),b.len()<=crate::limits::MAX_INPUT,
+        ensures r.wf(),r.pos()==0,r.seg_steps()==0,r.core_steps()==0,r.seg_index()==0,r.advance_rank()==0,
+            crate::document_model::default_stream(b@,doc.view())==Some(r.concat()),
+            r.seg_count()==doc.idat_ranges@.len(),12*r.seg_count()<=b.len(),
+    {
+        proof {
+            crate::limits::caps_ok();
+            assert(doc.idat_first==crate::transport_model::first_cursor(doc.idat_ranges@));
+        }
+        Self::new(b,doc.idat_first)
+    }
 
     /// A fresh fdAT-span cursor, stopping at the next fcTL or IEND.
     pub(crate) fn new_fdat(b: &'a [u8], start: usize) -> (r: Self)
         requires b.len() <= SEGMENT_BYTES_MAX,
         ensures r.wf(), r.pos() == 0, r.seg_steps() == 0, r.core_steps() == 0,
+            r.seg_index()==0,r.advance_rank()==0,
             r.concat() == reader_bytes(b@, start as nat, true),
+            r.seg_count()==reader_count(b@,start as nat,true),
             12 * r.seg_count() <= b.len(),
     { Self::at(b, start, true) }
 }

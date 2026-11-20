@@ -1,0 +1,131 @@
+{
+  "milestone": "M3 selected-IDAT transport component; fdAT/complete L-REWALK remain open",
+  "base_commit": "01f50e5",
+  "checkpoint": 106,
+  "verified": 252,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "runtime_and_source_controls_run": 107,
+  "no_new_trusted_items": true,
+  "claims": [
+    {
+      "row": "L-REWALK Strict and policy, IDAT model",
+      "status": "component-proved on host",
+      "functions": [
+        "transport_model::concat_append",
+        "transport_model::read_idat",
+        "transport_model::own_idat_effect",
+        "transport_model::ordered_idat_effect",
+        "transport_model::stopped",
+        "transport_model::appended",
+        "transport_model::step_idat",
+        "transport_model::drive_idat",
+        "transport_model::start_idat"
+      ],
+      "domain": "every modeled policy, either entry, either APNG-off flag and arbitrary initial events",
+      "claim": "successful start results have range concatenation equal to reader_bytes at the first IDAT chunk and trace count equal to reader_count",
+      "run": 106
+    },
+    {
+      "row": "L-REWALK Strict and policy, production IDAT",
+      "status": "component-proved on host",
+      "functions": [
+        "DataReader::for_doc"
+      ],
+      "premises": [
+        "Doc::wf on original input",
+        "selected-IDAT postcondition from a successful walk",
+        "input length <= MAX_INPUT"
+      ],
+      "binding": "both production IdatReader call sites use for_doc",
+      "claim": "fresh reader concat equals modeled default_stream; segment count equals IDAT range count; 12*seg_count <= input length",
+      "run": 106
+    },
+    {
+      "row": "T6-to-reader premise discharge",
+      "status": "proved on host",
+      "functions": [
+        "walk::walk",
+        "walk::still",
+        "walk::frames",
+        "limits::caps_ok"
+      ],
+      "claim": "walk success guarantees IDAT transport and input bound; named MAX_INPUT <= SEGMENT_BYTES_MAX bridge discharges constructor domain without a new assumption",
+      "qualifier": "resource cap values unchanged; fixed domain equality proved only in limits.rs",
+      "run": 106
+    },
+    {
+      "row": "T-SEG constructor observations",
+      "status": "proved on host",
+      "functions": [
+        "DataReader::at",
+        "DataReader::new",
+        "DataReader::new_fdat",
+        "DataReader::for_doc"
+      ],
+      "claim": "exact reader_count, fresh zero segment index/rank and inherited source/step contracts",
+      "run": 106
+    },
+    {
+      "row": "T-SEG / L-REWALK empty IDAT witness",
+      "status": "production-call witness proved on host",
+      "functions": [
+        "witness_walk::empty_idat_document"
+      ],
+      "claim": "whole synthesized container feeds the selected reader one zero-byte IDAT; EOF preserves count 1, charges two segment advances and zero core steps",
+      "run": 106
+    },
+    {
+      "row": "L-REWALK complete Strict and policy",
+      "status": "partial",
+      "unproved": [
+        "fdAT frame range concatenation equality",
+        "selected/validated fcTL boundary and cursor correspondence",
+        "complete Static default-only source selection theorem"
+      ],
+      "qualifier": "IDAT equality itself applies to APNG-off fallback results; no complete animation-source claim",
+      "run": 106
+    },
+    {
+      "row": "T6 full walk / L-INFO-RANGE internal",
+      "status": "previous host walk equation and internal document bounds remain verified; complete public/target/witness gates unchanged",
+      "run": 106
+    },
+    {
+      "row": "A-PNG-2",
+      "status": "untouched complete public-entry/logged gate"
+    },
+    {
+      "row": "A-PNG-7",
+      "status": "untouched complete public-entry/logged gate"
+    },
+    {
+      "row": "L-WALK-FIRST",
+      "status": "untouched complete public-entry/logged gate"
+    },
+    {
+      "row": "complete public returned-Info",
+      "status": "untouched complete public-entry/logged gate"
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "strict": 599,
+    "caps": 13,
+    "policy": 236,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0107.json"
+  },
+  "diagnostics": {
+    "100": "explicit recursive concatenation and prefix/cursor facts needed",
+    "101": "IDAT ancillary-bit constant required bit-vector proof; ordered-stage cursor preservation supplied exact tail cursor",
+    "103": "named input-domain bridge and explicit constructor reader_count contract needed"
+  },
+  "crc_status": "L-CRC-TABLE remains discharged through approved E5; no new CRC trust or equation change",
+  "resume": "fdAT transport, validated frame-boundary/cursor selection and Static default-only source; then public fresh-event/sealed-log allocation callers, walk-first and complete returned-Info."
+}
