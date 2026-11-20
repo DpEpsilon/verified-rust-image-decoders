@@ -1,6 +1,32 @@
 # png_verus ledger
 
-M3 has begun; it is not signed off. The latest host checkpoint is **run 248: 518 verified, 0 errors**, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
+M3 has begun; it is not signed off. The latest host checkpoint is **run 269: 721 verified, 0 errors**, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
+
+## M3 continuation: forty-two whole-walk/public-error witnesses and all council cases (2026-11-20)
+
+Base: `c525a72` (run 248, 518 verified). **Run 269: 721 verified, 0 errors** adds 42 complete category-(a) witnesses, bringing the total to **67 of 115**, with **48 open**. All sixteen council cases now have M3 public-error witnesses. Run 270 passes runtime/source controls. This is a clean host checkpoint, **not sign-off-ready**: the remaining category-(a) records, sixteen category-(b) projections and final i686 replay remain open.
+
+| THEOREMS row/component | Checked functions at run 269 | Scope |
+|---|---|---|
+| Frozen M3 category-(a) gate | `witness_m3_walk_frozen::{model_*,walk_*}`, with every record/function/error indexed in `evidence/m3-walk-witness-inputs-0269.json`; retained `witness_m3_frozen::header_*` | Each new record proves the exact independent MW_p/MWF_p error against the authored frozen expectation and calls its actual checked public entry; 42 new plus 25 retained witnesses, not runtime-only credit |
+| Council duplicate IHDR | `model_container_duplicate_ihdr`, `walk_container_duplicate_ihdr` | Exact DuplicateChunk at actual `try_decode_still`; the full walk, not the valid first header alone, decides the error |
+| Council zero-width fcTL | `zero_actl_step`, `zero_idat_step`, `zero_fctl_step`, `late_zero_width_control`, `model_apng_bad_fctl_width_0`, `walk_apng_bad_fctl_width_0` | Exact InvalidFrameControl at actual `Frames::try_new`; checked symbolic prefix states and an explicit two-frame/MAX_FRAMES bit-vector proof discharge the concrete call premises |
+| Large palette witness | `first_palette_error`, `model_plte_257_entries`, `walk_plte_257_entries` | Checked concrete wire/CRC facts instantiate a symbolic first-palette error lemma, keeping the large payload outside transition solving |
+| T2/T6/T10 prefix, A-PNG-2/A-PNG-7, L-WALK-FIRST/L-REWALK/L-INFO-RANGE and E2 | Earlier requirement-indexed functions, rechecked at run 269; `reader-effects-0269.json` retains the separate IDAT/fdAT/iCCP host arguments | Retained proved host components; no production decoder, reader or allocation body changed |
+| Remaining frozen gates | None added for the other records | 48 category-(a) public-error witnesses and all sixteen category-(b) full model/preparation projections open; three accepted-header facts remain partial; final data outcomes remain M4–M6 obligations |
+| Final i686 / stronger M4–M6 equations | None added | Untouched/open; replay final source using the existing cache copied into PNG-owned target, never rebuild or write under inflate target; no pixel/data/compositor/SavedAt equality claim |
+
+The sixteen council cases receive no fabricated independent R or inflate fallback. Their historical M2 uncovered flags stay unchanged; `m3-witness-status-0269.json` records the new M3 credit separately. The category-(b) label remains “M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile”. No category-(b) final-data witness credit is assigned.
+
+`tools/generate_m3_walk_witnesses.py` reads authored fixture bytes and their frozen public-error fields. Its framing, CRC, tag, palette/transparency and small-word suggestions are only intermediate certificates: the generated proofs check each suggestion against the independent model. No decoder or policy oracle supplies a public expected error, and a wrong intermediate suggestion fails verification. Checked literal tag-classification certificates removed the broad dispatch solver failures. Model proofs and actual executable public calls are separate functions; neither replaces a decoder body with a stub.
+
+`evidence/generation-m3-walk-0269.json` records the exact 42-name regeneration command and source hashes. **Do not regenerate this checkpoint with the generator's default two-name selection**: use the recorded command, retaining these 42 names when adding more records. `--all-a` expands the remaining work; the broad ninety-record attempt was not a verified checkpoint. The generator's stable catalog is the run-248 witness inventory.
+
+Runs 250, 263 and 267 were stopped after expensive monolithic computation or repeated known composition failures; their diagnostics and explicit interrupted-attempt records are retained, without a final-count claim. The other failed attempts remain recorded. Computing a quantified keyword predicate exposed verifier polymorphism errors in runs 265–266; the final proofs use checked first-NUL and keyword subproofs. Run 268 checked 719 obligations with one remaining large-palette resource failure; the symbolic palette lemma removes that failure at run 269. Solver limits remain unchanged, and no trust, false-precondition interface or new trusted item was added.
+
+Run 270: 846 conformance passes, zero failures, two inherited unsupported-profile skips; allocation fault injection passes; all seven council tests pass. Both source scanners and their negative controls pass. The six real sealed-log reservation borrows, five zeroed sites, one empty site and guard hashes are unchanged. All protected specification, policy, dependency, test and guard files remain unchanged. All worker background tasks have exited or been stopped. No commit or push was made by the worker.
+
+No new specification ambiguity was found; the previously recorded coordinator-approved witness-boundary interpretation remains available for reviewer challenge. Next resume point: retain the 42-name batch and add the remaining 48 category-(a) records, then the sixteen category-(b) projections with their M4–M6 label, then the copied-cache i686 replay. Declare sign-off-ready only after every M3 gate is discharged; do not declare sign-off.
 
 ## M3 continuation: checked Frames construction, stepping and E2 host bindings (2026-11-20)
 

@@ -1,0 +1,1206 @@
+command: ['cargo', 'verus', 'verify', '-v', '--', '--num-threads', '2', '--no-cheating']
+verbosity level = 1; forwarding 0 `-v` arg(s) to Cargo
+verbosity level = 1; forwarding 0 `-v` arg(s) to Cargo
+verbosity level = 1; keeping Verus non-verbose
+forwarding Verus args to crates: <all>
+running cargo command:
+cd "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus" &&  __VERUS_DRIVER_ARGS_FOR_inflate_verus-0.1.0-02e0bd8a5665="__VERUS_DRIVER_ARGS_SEP__--VIA-CARGO__VERUS_DRIVER_ARGS_SEP__import-dep-if-present=vstd__VERUS_DRIVER_ARGS_SEP__--VIA-CARGO__VERUS_DRIVER_ARGS_SEP__import-dep-if-present=inflate_verus__VERUS_DRIVER_ARGS_SEP__--num-threads__VERUS_DRIVER_ARGS_SEP__2__VERUS_DRIVER_ARGS_SEP__--no-cheating"  __VERUS_DRIVER_ARGS_FOR_png_verus-0.1.0-d81f5b1329ad="__VERUS_DRIVER_ARGS_SEP__--VIA-CARGO__VERUS_DRIVER_ARGS_SEP__import-dep-if-present=inflate_verus__VERUS_DRIVER_ARGS_SEP__--VIA-CARGO__VERUS_DRIVER_ARGS_SEP__import-dep-if-present=png_verus__VERUS_DRIVER_ARGS_SEP__--VIA-CARGO__VERUS_DRIVER_ARGS_SEP__import-dep-if-present=vstd__VERUS_DRIVER_ARGS_SEP__--VIA-CARGO__VERUS_DRIVER_ARGS_SEP__import-dep-if-present=png_verus__VERUS_DRIVER_ARGS_SEP__--num-threads__VERUS_DRIVER_ARGS_SEP__2__VERUS_DRIVER_ARGS_SEP__--no-cheating"  __VERUS_DRIVER_ARGS_FOR_vstd-0.0.0-2026-11-01-0251-9aa547e050e4="__VERUS_DRIVER_ARGS_SEP__--is-vstd__VERUS_DRIVER_ARGS_SEP__--VIA-CARGO__VERUS_DRIVER_ARGS_SEP__import-dep-if-present=vstd__VERUS_DRIVER_ARGS_SEP__--num-threads__VERUS_DRIVER_ARGS_SEP__2__VERUS_DRIVER_ARGS_SEP__--no-cheating"  __VERUS_DRIVER_ARGS__="__VERUS_DRIVER_ARGS_SEP__--VIA-CARGO__VERUS_DRIVER_ARGS_SEP__compile-when-not-primary-package"  __VERUS_DRIVER_IS_BUILTIN_MACROS_verus_builtin_macros-0.0.0-2026-11-01-0251-d679971799ae="1"  __VERUS_DRIVER_IS_BUILTIN_verus_builtin-0.0.0-2026-11-01-0251-404448521000="1" CARGO_UNSTABLE_CHECKSUM_FRESHNESS="true" RUSTC_BOOTSTRAP="1" RUSTC_WRAPPER="/opt/verus/verus" __CARGO_DEFAULT_LIB_METADATA="verus-0.2026.11.02.8bf68ee" __VERUS_DRIVER_VERIFY_inflate_verus-0.1.0-02e0bd8a5665="1" __VERUS_DRIVER_VERIFY_png_verus-0.1.0-d81f5b1329ad="1" __VERUS_DRIVER_VERIFY_vstd-0.0.0-2026-11-01-0251-9aa547e050e4="1" __VERUS_DRIVER_VIA_CARGO__="1" "/opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/cargo" "check"
+       Fresh unicode-ident v1.0.27
+       Fresh proc-macro2 v1.0.107
+       Fresh quote v1.0.47
+       Fresh verus_syn v0.0.0-2026-11-01-0251
+       Fresh syn v2.0.119
+       Fresh hashbrown v0.17.1
+       Fresh equivalent v1.0.3
+       Fresh indexmap v2.14.2
+       Fresh synstructure v0.13.2
+       Fresh verus_prettyplease v0.0.0-2026-11-01-0251
+       Fresh convert_case v0.4.0
+       Fresh verus_builtin_macros v0.0.0-2026-11-01-0251
+       Fresh verus_state_machines_macros v0.0.0-2026-11-01-0251
+       Fresh verus_builtin v0.0.0-2026-11-01-0251
+       Fresh vstd v0.0.0-2026-11-01-0251
+       Fresh inflate_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus)
+warning: using ==> in `assert forall` does not currently assume the antecedent in the body; consider using `implies` instead of `==>`
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_layout.rs:50:13
+   |
+50 |             assert forall|j:int| 0 <= j < i ==> before[j]@ == parts@[j]@ by {}
+   |             ^^^^^^
+   |
+   = help: to suppress this warning, use `#[verifier::allow(assert_forall_implication)]` on the surrounding function, datatype, or module or `#![verifier::allow(assert_forall_implication)]` in the module or crate
+   = help: if you didn't mean to assume the antecedent, we're very curious to hear why! To tell us, please open an issue on the Verus issue tracker on github with the title `Don't always make assert forall assume the antecedent`. If no one opens such an issue, we'll soon change the behavior of Verus to always assume the antecedent of the outermost implication
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:161:8
+    |
+161 |       && (forall|s: int| 0 <= s < lengths.len() && lengths[s] > 0 ==>
+    |  ________^
+162 | |         symbols[m::symbol_slot(lengths, s) as int] == s)
+    | |________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:161:50
+    |
+161 |     && (forall|s: int| 0 <= s < lengths.len() && lengths[s] > 0 ==>
+    |                                                  ^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:162:17
+    |
+162 |         symbols[m::symbol_slot(lengths, s) as int] == s)
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:103:5
+    |
+103 | /     exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+104 | |         && prefix(bits, cw(lengths, s).unwrap())
+    | |________________________________________________^
+
+note:   trigger 1 of 1:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:103:46
+    |
+103 |     exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                              ^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:68:9
+   |
+68 |         forall|n: int| 0 <= n <= MAX_CODE_BITS ==> old(next)@[n] == offsets[n],
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:68:69
+   |
+68 |         forall|n: int| 0 <= n <= MAX_CODE_BITS ==> old(next)@[n] == offsets[n],
+   |                                                                     ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:71:9
+   |
+71 | /         forall|n: int| 1 <= n <= MAX_CODE_BITS ==>
+72 | |             final(next)@[n] == offsets[n] + m::bl_count(lengths@, n as nat),
+   | |___________________________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:72:13
+   |
+72 |             final(next)@[n] == offsets[n] + m::bl_count(lengths@, n as nat),
+   |             ^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:73:9
+   |
+73 | /         forall|s: int| 0 <= s < lengths.len() && lengths@[s] > 0 ==>
+74 | |             final(symbols)@[m::symbol_slot(lengths@, s) as int] == s,
+   | |____________________________________________________________________^
+
+note:   trigger 1 of 2:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:73:50
+   |
+73 |         forall|s: int| 0 <= s < lengths.len() && lengths@[s] > 0 ==>
+   |                                                  ^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:74:29
+   |
+74 |             final(symbols)@[m::symbol_slot(lengths@, s) as int] == s,
+   |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:119:17
+    |
+119 |                 assert forall|t: int| 0 <= t < s + 1 && lengths@[t] > 0 implies
+    |                 ^^^^^^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:119:57
+    |
+119 |                 assert forall|t: int| 0 <= t < s + 1 && lengths@[t] > 0 implies
+    |                                                         ^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:120:30
+    |
+120 |                     symbols@[m::symbol_slot(lengths@, t) as int] == t by {
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:144:13
+    |
+144 |             assert forall|n: int| 1 <= n <= MAX_CODE_BITS implies
+    |             ^^^^^^
+
+note:   trigger 1 of 1:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:145:17
+    |
+145 |                 next@[n] == offsets[n] + m::count_prefix(lengths@, n as nat, (s + 1) as nat) by {}
+    |                 ^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:93:13
+   |
+93 | /             forall|n: int| 1 <= n <= MAX_CODE_BITS ==>
+94 | |                 next@[n] == offsets[n] + m::count_prefix(lengths@, n as nat, s as nat),
+   | |______________________________________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:94:17
+   |
+94 |                 next@[n] == offsets[n] + m::count_prefix(lengths@, n as nat, s as nat),
+   |                 ^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:95:13
+   |
+95 | /             forall|t: int| 0 <= t < s && lengths@[t] > 0 ==>
+96 | |                 symbols@[m::symbol_slot(lengths@, t) as int] == t,
+   | |_________________________________________________________________^
+
+note:   trigger 1 of 2:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:95:42
+   |
+95 |             forall|t: int| 0 <= t < s && lengths@[t] > 0 ==>
+   |                                          ^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/canonical.rs:96:26
+   |
+96 |                 symbols@[m::symbol_slot(lengths@, t) as int] == t,
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:746:5
+    |
+746 | /     exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+747 | |         && bits.len() < lengths[s] && prefix(bits, cw(lengths, s).unwrap())
+    | |___________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:746:46
+    |
+746 |     exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                              ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:747:25
+    |
+747 |         && bits.len() < lengths[s] && prefix(bits, cw(lengths, s).unwrap())
+    |                         ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:265:21
+    |
+265 |               let s = choose|s: int| 0 <= s < lengths.len() && m::cw(lengths, s).is_some()
+    |  _____________________^
+266 | |                 && bits.len() < lengths[s] && m::prefix(bits, m::cw(lengths, s).unwrap());
+    | |_________________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:265:62
+    |
+265 |             let s = choose|s: int| 0 <= s < lengths.len() && m::cw(lengths, s).is_some()
+    |                                                              ^^^^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:266:33
+    |
+266 |                 && bits.len() < lengths[s] && m::prefix(bits, m::cw(lengths, s).unwrap());
+    |                                 ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:939:17
+    |
+939 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+940 | |             && prefix(bits, cw(lengths, s).unwrap());
+    | |____________________________________________________^
+
+note:   trigger 1 of 1:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:939:58
+    |
+939 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:719:13
+    |
+719 |       ensures exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _____________^
+720 | |         && lengths[s] >= n && prefix(msb_bits(code, n), cw(lengths, s).unwrap()),
+    | |________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:719:54
+    |
+719 |     ensures exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                      ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:720:12
+    |
+720 |         && lengths[s] >= n && prefix(msb_bits(code, n), cw(lengths, s).unwrap()),
+    |            ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:738:17
+    |
+738 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+739 | |             && lengths[s] >= n + 1 && prefix(msb_bits(2 * code, n + 1), cw(lengths, s).unwrap());
+    | |________________________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:738:58
+    |
+738 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:739:16
+    |
+739 |             && lengths[s] >= n + 1 && prefix(msb_bits(2 * code, n + 1), cw(lengths, s).unwrap());
+    |                ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:758:17
+    |
+758 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+759 | |             && n < lengths[s] && prefix(msb_bits(code, n), cw(lengths, s).unwrap());
+    | |___________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:758:58
+    |
+758 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:759:20
+    |
+759 |             && n < lengths[s] && prefix(msb_bits(code, n), cw(lengths, s).unwrap());
+    |                    ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:775:17
+    |
+775 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+776 | |             && lengths[s] >= n + 1 && prefix(msb_bits(2 * code, n + 1), cw(lengths, s).unwrap());
+    | |________________________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:775:58
+    |
+775 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:776:16
+    |
+776 |             && lengths[s] >= n + 1 && prefix(msb_bits(2 * code, n + 1), cw(lengths, s).unwrap());
+    |                ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:834:9
+    |
+834 | /         (forall|s: int| 0 <= s < lengths.len() && lengths[s] > 0 ==>
+835 | |             cw(lengths, s) == Some(seq![false])),
+    | |________________________________________________^
+
+note:   trigger 1 of 1:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:835:13
+    |
+835 |             cw(lengths, s) == Some(seq![false])),
+    |             ^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:841:5
+    |
+841 |     assert forall|s: int| 0 <= s < lengths.len() && lengths[s] > 0 implies
+    |     ^^^^^^
+
+note:   trigger 1 of 1:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:842:9
+    |
+842 |         cw(lengths, s) == Some(seq![false]) by {
+    |         ^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:862:17
+    |
+862 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+863 | |             && prefix(msb_bits(code, n), cw(lengths, s).unwrap());
+    | |_________________________________________________________________^
+
+note:   trigger 1 of 1:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:862:58
+    |
+862 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:871:17
+    |
+871 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |  _________________^
+872 | |             && n < lengths[s] && prefix(msb_bits(code, n), cw(lengths, s).unwrap());
+    | |___________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:871:58
+    |
+871 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+    |                                                          ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:872:20
+    |
+872 |             && n < lengths[s] && prefix(msb_bits(code, n), cw(lengths, s).unwrap());
+    |                    ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1046:17
+     |
+1046 |           let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+     |  _________________^
+1047 | |             && lengths[s] >= 0 && prefix(msb_bits(0, 0), cw(lengths, s).unwrap());
+     | |_________________________________________________________________________________^
+
+note:   trigger 1 of 2:
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1046:58
+     |
+1046 |         let s = choose|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+     |                                                          ^^^^^^^^^^^^^^
+
+note:   trigger 2 of 2:
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1047:16
+     |
+1047 |             && lengths[s] >= 0 && prefix(msb_bits(0, 0), cw(lengths, s).unwrap());
+     |                ^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_config.rs:84:13
+   |
+84 |       ensures forall|j:int| a <= j < b ==> ts[j].symbol != 256 && ts[j].after <= limit
+   |  _____________^
+85 | |         && (ts[j].symbol < 256 || ts[j].distance <= window),
+   | |___________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_config.rs:84:42
+   |
+84 |     ensures forall|j:int| a <= j < b ==> ts[j].symbol != 256 && ts[j].after <= limit
+   |                                          ^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_config.rs:92:9
+   |
+92 | /         forall|j:int| k <= j < b ==> ts[j].symbol != 256 && ts[j].after <= limit
+93 | |             && (ts[j].symbol < 256 || ts[j].distance <= window),
+   | |_______________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_config.rs:92:38
+   |
+92 |         forall|j:int| k <= j < b ==> ts[j].symbol != 256 && ts[j].after <= limit
+   |                                      ^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_dynamic.rs:30:13
+   |
+30 |       ensures forall|j: int| a <= j < b ==> m::MDec(code, z, positions[j]) ==
+   |  _____________^
+31 | |         (m::Decoded::Symbol { symbol: values[j] as nat, position: positions[j+1] }),
+   | |___________________________________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_dynamic.rs:31:39
+   |
+31 |         (m::Decoded::Symbol { symbol: values[j] as nat, position: positions[j+1] }),
+   |                                       ^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_dynamic.rs:52:9
+   |
+52 | /         forall|j: int| k <= j < values.len() ==> m::MDec(code, z, positions[j]) ==
+53 | |             (m::Decoded::Symbol { symbol: values[j] as nat, position: positions[j+1] }),
+   | |_______________________________________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_dynamic.rs:53:43
+   |
+53 |             (m::Decoded::Symbol { symbol: values[j] as nat, position: positions[j+1] }),
+   |                                           ^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_layout.rs:23:9
+   |
+23 |         forall|j:int| 0 <= j < k ==> a[j]@ == b[j]@,
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 2:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_layout.rs:23:38
+   |
+23 |         forall|j:int| 0 <= j < k ==> a[j]@ == b[j]@,
+   |                                      ^^^^
+
+note:   trigger 2 of 2:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_layout.rs:23:47
+   |
+23 |         forall|j:int| 0 <= j < k ==> a[j]@ == b[j]@,
+   |                                               ^^^^
+
+note: automatically chose triggers for this expression:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_layout.rs:50:13
+   |
+50 |             assert forall|j:int| 0 <= j < i ==> before[j]@ == parts@[j]@ by {}
+   |             ^^^^^^
+
+note:   trigger 1 of 1:
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_layout.rs:50:49
+   |
+50 |             assert forall|j:int| 0 <= j < i ==> before[j]@ == parts@[j]@ by {}
+   |                                                 ^^^^^^^^^
+
+note: Verus printed one or more automatically chosen quantifier triggers
+      because it had low confidence in the chosen triggers.
+      To suppress these messages, do one of the following:
+        (1) manually annotate a single desired trigger using `#[trigger]`
+            (example: `forall|i: int, j: int| f(i) && #[trigger] g(i) && #[trigger] h(j)`),
+        (2) manually annotate multiple desired triggers using `#![trigger ...]`
+            (example: `forall|i: int| #![trigger f(i)] #![trigger g(i)] f(i) && g(i)`),
+        (3) accept the automatically chosen trigger using `#![auto]`
+            (example: `forall|i: int, j: int| #![auto] f(i) && g(i) && h(j)`)
+        (4) use the `--triggers-mode silent` command-line option to suppress all printing of triggers.
+      (Note: triggers are used by the underlying SMT theorem prover to instantiate quantifiers;
+      the theorem prover instantiates a quantifier whenever some expression matches the
+      pattern specified by one of the quantifier's triggers.)
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:103:5
+    |
+103 | /     exists|s: int| 0 <= s < lengths.len() && cw(lengths, s).is_some()
+104 | |         && prefix(bits, cw(lengths, s).unwrap())
+    | |________________________________________________^
+
+warning: function `Kraft` should have a snake case name
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:51:18
+   |
+51 | pub open spec fn Kraft(lengths: Seq<u8>) -> nat {
+   |                  ^^^^^ help: convert the identifier to snake case (notice the capitalization): `kraft`
+   |
+   = note: `#[warn(non_snake_case)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: function `MDec` should have a snake case name
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:127:18
+    |
+127 | pub open spec fn MDec(lengths: Seq<u8>, z: Seq<u8>, start: nat) -> Decoded {
+    |                  ^^^^ help: convert the identifier to snake case: `mdec`
+
+warning: function `MEmit` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1108:18
+     |
+1108 | pub open spec fn MEmit(out: Seq<u8>, limit: nat, byte: u8) -> OutputEffect {
+     |                  ^^^^^ help: convert the identifier to snake case: `memit`
+
+warning: function `MCopy` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1126:18
+     |
+1126 | pub open spec fn MCopy(out: Seq<u8>, limit: nat, window: nat, distance: nat, count: nat) -> OutputEffect {
+     |                  ^^^^^ help: convert the identifier to snake case: `mcopy`
+
+warning: function `MStoredPayload` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1151:18
+     |
+1151 | pub open spec fn MStoredPayload(z: Seq<u8>, cursor: nat, out: Seq<u8>, limit: nat, count: nat) -> StoredEffect
+     |                  ^^^^^^^^^^^^^^ help: convert the identifier to snake case: `mstored_payload`
+
+warning: function `lemma_MCopy_shape` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1207:14
+     |
+1207 | pub proof fn lemma_MCopy_shape(out: Seq<u8>, limit: nat, window: nat, distance: nat, count: nat)
+     |              ^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `lemma_mcopy_shape`
+
+warning: function `Adler` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1293:18
+     |
+1293 | pub open spec fn Adler(out: Seq<u8>) -> nat {
+     |                  ^^^^^ help: convert the identifier to snake case: `adler`
+
+warning: function `MDynamicLengths` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1414:18
+     |
+1414 | pub open spec fn MDynamicLengths(z: Seq<u8>, position: nat, code: Seq<u8>, lengths: Seq<u8>,
+     |                  ^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `mdynamic_lengths`
+
+warning: function `MDynamicCL` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1459:18
+     |
+1459 | pub open spec fn MDynamicCL(z: Seq<u8>, position: nat, code: Seq<u8>, i: nat, ncode: nat,
+     |                  ^^^^^^^^^^ help: convert the identifier to snake case: `mdynamic_cl`
+
+warning: function `MDynamic` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1479:18
+     |
+1479 | pub open spec fn MDynamic(z: Seq<u8>, position: nat, single_accept: bool) -> DynamicHeader {
+     |                  ^^^^^^^^ help: convert the identifier to snake case: `mdynamic`
+
+warning: function `MStoredBlock` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1539:18
+     |
+1539 | pub open spec fn MStoredBlock(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat) -> StoredEffect {
+     |                  ^^^^^^^^^^^^ help: convert the identifier to snake case: `mstored_block`
+
+warning: function `MMatch` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1584:18
+     |
+1584 | pub open spec fn MMatch(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+     |                  ^^^^^^ help: convert the identifier to snake case: `mmatch`
+
+warning: function `MCompressedStep` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1620:18
+     |
+1620 | pub open spec fn MCompressedStep(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+     |                  ^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `mcompressed_step`
+
+warning: function `MCompressed` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1640:18
+     |
+1640 | pub open spec fn MCompressed(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+     |                  ^^^^^^^^^^^ help: convert the identifier to snake case: `mcompressed`
+
+warning: function `MOneBlock` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1658:18
+     |
+1658 | pub open spec fn MOneBlock(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+     |                  ^^^^^^^^^ help: convert the identifier to snake case: `mone_block`
+
+warning: function `MBlk` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1679:18
+     |
+1679 | pub open spec fn MBlk(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+     |                  ^^^^ help: convert the identifier to snake case: `mblk`
+
+warning: function `MFinish` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1710:18
+     |
+1710 | pub open spec fn MFinish(z: Seq<u8>, position: nat, out: Seq<u8>, limit: nat,
+     |                  ^^^^^^^ help: convert the identifier to snake case: `mfinish`
+
+warning: function `MEnvelope` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1727:18
+     |
+1727 | pub open spec fn MEnvelope(z: Seq<u8>, limit: nat, enforce_window: bool,
+     |                  ^^^^^^^^^ help: convert the identifier to snake case: `menvelope`
+
+warning: function `Inflate` should have a snake case name
+    --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/model.rs:1749:18
+     |
+1749 | pub open spec fn Inflate(z: Seq<u8>, limit: nat, enforce_window: bool,
+     |                  ^^^^^^^ help: convert the identifier to snake case (notice the capitalization): `inflate`
+
+warning: `inflate_verus` (lib) generated 20 warnings
+       Dirty png_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus): file size changed (15809 != 192111) for `src/witness_m3_walk_frozen.rs`
+    Checking png_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus)
+     Running `/opt/verus/verus /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc --crate-name png_verus --edition=2021 src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata -C embed-bitcode=no -C debuginfo=2 --warn=unexpected_cfgs --check-cfg 'cfg(verus_only)' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values("test-records"))' -C metadata=62e1b03dc42d9725 -C extra-filename=-d6636dff8becff5c --out-dir /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps -C incremental=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental -L dependency=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps --extern inflate_verus=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps/libinflate_verus-6b33f8ba620de9a9.rmeta --extern vstd=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps/libvstd-01822e92e4f44378.rmeta -Z checksum-hash-algorithm=blake3`
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental/png_verus-23rwh3rmi7pd6/s-hoc745pdof-19l5a7c-working`
+
+warning: unused doc comment
+   --> src/image.rs:339:1
+    |
+339 | / /// Map an inflate status to the image result (P9–P11). `produced` bytes were
+340 | | /// written of a limit of `r`.
+    | |_-----------------------------^
+    |   |
+    |   rustdoc does not generate documentation for macro invocations
+    |
+    = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+    = note: `#[warn(unused_doc_comments)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused doc comment
+  --> src/walk.rs:96:1
+   |
+96 | / /// P2–P8, P14.1 under `pol`. `apng_off` is the re-walk of the R4 fallback, with
+97 | | /// acTL, fcTL and fdAT treated as unknown ancillary chunks (`apng = Off`).
+   | |_--------------------------------------------------------------------------^
+   |   |
+   |   rustdoc does not generate documentation for macro invocations
+   |
+   = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+
+warning: autoderive Clone impl does not take the form Verus expects; continuing, but without adding a specification for the derived Clone impl
+   --> src/png.rs:225:10
+    |
+225 | #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+    |          ^^^^^
+    |
+    = help: to suppress this warning, use `#[verifier::allow(autoderive_clone_without_spec)]` on the surrounding function, datatype, or module or `#![verifier::allow(autoderive_clone_without_spec)]` in the module or crate
+
+warning: Verus does not currently support autoderive Clone impl when the clone is not a copy; continuing, but without adding a specification for the derived Clone impl
+   --> src/png.rs:330:17
+    |
+330 | #[derive(Debug, Clone)]
+    |                 ^^^^^
+    |
+    = help: to suppress this warning, use `#[verifier::allow(autoderive_clone_without_spec)]` on the surrounding function, datatype, or module or `#![verifier::allow(autoderive_clone_without_spec)]` in the module or crate
+
+warning: Verus does not currently support autoderive Clone impl when the clone is not a copy; continuing, but without adding a specification for the derived Clone impl
+   --> src/png.rs:340:17
+    |
+340 | #[derive(Debug, Clone)]
+    |                 ^^^^^
+    |
+    = help: to suppress this warning, use `#[verifier::allow(autoderive_clone_without_spec)]` on the surrounding function, datatype, or module or `#![verifier::allow(autoderive_clone_without_spec)]` in the module or crate
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+  --> src/witness_m3_walk_frozen.rs:80:11
+   |
+80 |       proof {
+   |  ___________^
+81 | |         assert(crate::model::mh(bytes_container_idat_crc())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_container_idat...
+82 | |             reveal(crate::model::mh);
+83 | |             assert(crate::model::mh(bytes_container_idat_crc())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_container_...
+...  |
+98 | |         assert(m::MW_p(bytes_container_idat_crc(),m::strict())==m::Outcome::Error(Error::CrcMismatch,m::no_events()));
+99 | |     }
+   | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:116:11
+    |
+116 |       proof {
+    |  ___________^
+117 | |         assert(crate::model::mh(bytes_container_ancillary_crc())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_containe...
+118 | |             reveal(crate::model::mh);
+119 | |             assert(crate::model::mh(bytes_container_ancillary_crc())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_cont...
+...   |
+140 | |         assert(m::MW_p(bytes_container_ancillary_crc(),m::strict())==m::Outcome::Error(Error::CrcMismatch,m::no_events()));
+141 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:158:11
+    |
+158 |       proof {
+    |  ___________^
+159 | |         assert(crate::model::mh(bytes_container_unknown_ancillary_crc())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_...
+160 | |             reveal(crate::model::mh);
+161 | |             assert(crate::model::mh(bytes_container_unknown_ancillary_crc())==Ok((crate::model::Ihdr {width:crate::model::be32(by...
+...   |
+181 | |         assert(m::MW_p(bytes_container_unknown_ancillary_crc(),m::strict())==m::Outcome::Error(Error::CrcMismatch,m::no_events()));
+182 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:199:11
+    |
+199 |       proof {
+    |  ___________^
+200 | |         assert(crate::model::mh(bytes_container_iend_crc())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_container_ien...
+201 | |             reveal(crate::model::mh);
+202 | |             assert(crate::model::mh(bytes_container_iend_crc())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_container...
+...   |
+217 | |         assert(m::MW_p(bytes_container_iend_crc(),m::strict())==m::Outcome::Error(Error::CrcMismatch,m::no_events()));
+218 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:235:11
+    |
+235 |       proof {
+    |  ___________^
+236 | |         assert(crate::model::mh(bytes_container_length_2_31())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_container_...
+237 | |             reveal(crate::model::mh);
+238 | |             assert(crate::model::mh(bytes_container_length_2_31())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_contai...
+...   |
+248 | |         assert(m::MW_p(bytes_container_length_2_31(),m::strict())==m::Outcome::Error(Error::ChunkTooLong,m::no_events()));
+249 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:266:11
+    |
+266 |       proof {
+    |  ___________^
+267 | |         assert(crate::model::mh(bytes_container_length_ffffffff())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_contai...
+268 | |             reveal(crate::model::mh);
+269 | |             assert(crate::model::mh(bytes_container_length_ffffffff())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_co...
+...   |
+279 | |         assert(m::MW_p(bytes_container_length_ffffffff(),m::strict())==m::Outcome::Error(Error::ChunkTooLong,m::no_events()));
+280 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:297:11
+    |
+297 |       proof {
+    |  ___________^
+298 | |         assert(crate::model::mh(bytes_container_type_digit())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_container_t...
+299 | |             reveal(crate::model::mh);
+300 | |             assert(crate::model::mh(bytes_container_type_digit())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_contain...
+...   |
+310 | |         assert(m::MW_p(bytes_container_type_digit(),m::strict())==m::Outcome::Error(Error::InvalidChunkType,m::no_events()));
+311 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:328:11
+    |
+328 |       proof {
+    |  ___________^
+329 | |         assert(crate::model::mh(bytes_container_type_space())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_container_t...
+330 | |             reveal(crate::model::mh);
+331 | |             assert(crate::model::mh(bytes_container_type_space())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_contain...
+...   |
+341 | |         assert(m::MW_p(bytes_container_type_space(),m::strict())==m::Outcome::Error(Error::InvalidChunkType,m::no_events()));
+342 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:359:11
+    |
+359 |       proof {
+    |  ___________^
+360 | |         assert(crate::model::mh(bytes_container_truncated_mid_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_con...
+361 | |             reveal(crate::model::mh);
+362 | |             assert(crate::model::mh(bytes_container_truncated_mid_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes...
+...   |
+372 | |         assert(m::MW_p(bytes_container_truncated_mid_idat(),m::strict())==m::Outcome::Error(Error::TruncatedChunk,m::no_events()));
+373 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:390:11
+    |
+390 |       proof {
+    |  ___________^
+391 | |         assert(crate::model::mh(bytes_container_length_beyond_eof())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_cont...
+392 | |             reveal(crate::model::mh);
+393 | |             assert(crate::model::mh(bytes_container_length_beyond_eof())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_...
+...   |
+403 | |         assert(m::MW_p(bytes_container_length_beyond_eof(),m::strict())==m::Outcome::Error(Error::TruncatedChunk,m::no_events()));
+404 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:421:11
+    |
+421 |       proof {
+    |  ___________^
+422 | |         assert(crate::model::mh(bytes_container_missing_iend())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_container...
+423 | |             reveal(crate::model::mh);
+424 | |             assert(crate::model::mh(bytes_container_missing_iend())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_conta...
+...   |
+438 | |         assert(m::MW_p(bytes_container_missing_iend(),m::strict())==m::Outcome::Error(Error::MissingIend,m::no_events()));
+439 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:456:11
+    |
+456 |       proof {
+    |  ___________^
+457 | |         assert(crate::model::mh(bytes_container_missing_iend_after_text())==Ok((crate::model::Ihdr {width:crate::model::be32(byte...
+458 | |             reveal(crate::model::mh);
+459 | |             assert(crate::model::mh(bytes_container_missing_iend_after_text())==Ok((crate::model::Ihdr {width:crate::model::be32(...
+...   |
+479 | |         assert(m::MW_p(bytes_container_missing_iend_after_text(),m::strict())==m::Outcome::Error(Error::MissingIend,m::no_events(...
+480 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:497:11
+    |
+497 |       proof {
+    |  ___________^
+498 | |         assert(crate::model::mh(bytes_container_trailing_byte())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_containe...
+499 | |             reveal(crate::model::mh);
+500 | |             assert(crate::model::mh(bytes_container_trailing_byte())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_cont...
+...   |
+515 | |         assert(m::MW_p(bytes_container_trailing_byte(),m::strict())==m::Outcome::Error(Error::TrailingBytes,m::no_events()));
+516 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:533:11
+    |
+533 |       proof {
+    |  ___________^
+534 | |         assert(crate::model::mh(bytes_container_trailing_second_iend())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_c...
+535 | |             reveal(crate::model::mh);
+536 | |             assert(crate::model::mh(bytes_container_trailing_second_iend())==Ok((crate::model::Ihdr {width:crate::model::be32(byt...
+...   |
+551 | |         assert(m::MW_p(bytes_container_trailing_second_iend(),m::strict())==m::Outcome::Error(Error::TrailingBytes,m::no_events()));
+552 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:569:11
+    |
+569 |       proof {
+    |  ___________^
+570 | |         assert(crate::model::mh(bytes_container_iend_length_1())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_containe...
+571 | |             reveal(crate::model::mh);
+572 | |             assert(crate::model::mh(bytes_container_iend_length_1())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_cont...
+...   |
+587 | |         assert(m::MW_p(bytes_container_iend_length_1(),m::strict())==m::Outcome::Error(Error::InvalidChunkLength,m::no_events()));
+588 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:605:11
+    |
+605 |       proof {
+    |  ___________^
+606 | |         assert(crate::model::mh(bytes_container_no_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_container_no_i...
+607 | |             reveal(crate::model::mh);
+608 | |             assert(crate::model::mh(bytes_container_no_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_container_...
+...   |
+618 | |         assert(m::MW_p(bytes_container_no_idat(),m::strict())==m::Outcome::Error(Error::MissingImageData,m::no_events()));
+619 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:636:11
+    |
+636 |       proof {
+    |  ___________^
+637 | |         assert(crate::model::mh(bytes_container_unknown_critical())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_conta...
+638 | |             reveal(crate::model::mh);
+639 | |             assert(crate::model::mh(bytes_container_unknown_critical())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_c...
+...   |
+659 | |         assert(m::MW_p(bytes_container_unknown_critical(),m::strict())==m::Outcome::Error(Error::UnknownCriticalChunk,m::no_event...
+660 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:677:11
+    |
+677 |       proof {
+    |  ___________^
+678 | |         assert(crate::model::mh(bytes_container_reserved_bit_on_critical())==Ok((crate::model::Ihdr {width:crate::model::be32(byt...
+679 | |             reveal(crate::model::mh);
+680 | |             assert(crate::model::mh(bytes_container_reserved_bit_on_critical())==Ok((crate::model::Ihdr {width:crate::model::be32...
+...   |
+700 | |         assert(m::MW_p(bytes_container_reserved_bit_on_critical(),m::strict())==m::Outcome::Error(Error::UnknownCriticalChunk,m::...
+701 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:718:11
+    |
+718 |       proof {
+    |  ___________^
+719 | |         assert(crate::model::mh(bytes_container_duplicate_ihdr())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_contain...
+720 | |             reveal(crate::model::mh);
+721 | |             assert(crate::model::mh(bytes_container_duplicate_ihdr())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_con...
+...   |
+744 | |         assert(m::MW_p(bytes_container_duplicate_ihdr(),m::strict())==m::Outcome::Error(Error::DuplicateChunk,m::no_events()));
+745 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:762:11
+    |
+762 |       proof {
+    |  ___________^
+763 | |         assert(crate::model::mh(bytes_container_non_consecutive_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_c...
+764 | |             reveal(crate::model::mh);
+765 | |             assert(crate::model::mh(bytes_container_non_consecutive_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(byt...
+...   |
+791 | |         assert(m::MW_p(bytes_container_non_consecutive_idat(),m::strict())==m::Outcome::Error(Error::NonConsecutiveIdat,m::no_eve...
+792 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:809:11
+    |
+809 |       proof {
+    |  ___________^
+810 | |         assert(crate::model::mh(bytes_container_idat_after_iend())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_contai...
+811 | |             reveal(crate::model::mh);
+812 | |             assert(crate::model::mh(bytes_container_idat_after_iend())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_co...
+...   |
+827 | |         assert(m::MW_p(bytes_container_idat_after_iend(),m::strict())==m::Outcome::Error(Error::TrailingBytes,m::no_events()));
+828 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:845:11
+    |
+845 |       proof {
+    |  ___________^
+846 | |         assert(crate::model::mh(bytes_plte_missing())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_missing(),16),...
+847 | |             reveal(crate::model::mh);
+848 | |             assert(crate::model::mh(bytes_plte_missing())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_missing(),...
+...   |
+863 | |         assert(m::MW_p(bytes_plte_missing(),m::strict())==m::Outcome::Error(Error::MissingPalette,m::no_events()));
+864 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:881:11
+    |
+881 |       proof {
+    |  ___________^
+882 | |         assert(crate::model::mh(bytes_plte_after_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_after_idat(...
+883 | |             reveal(crate::model::mh);
+884 | |             assert(crate::model::mh(bytes_plte_after_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_after_i...
+...   |
+905 | |         assert(m::MW_p(bytes_plte_after_idat(),m::strict())==m::Outcome::Error(Error::MissingPalette,m::no_events()));
+906 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:923:11
+    |
+923 |       proof {
+    |  ___________^
+924 | |         assert(crate::model::mh(bytes_plte_after_idat_rgb())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_after_i...
+925 | |             reveal(crate::model::mh);
+926 | |             assert(crate::model::mh(bytes_plte_after_idat_rgb())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_aft...
+...   |
+947 | |         assert(m::MW_p(bytes_plte_after_idat_rgb(),m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()));
+948 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+   --> src/witness_m3_walk_frozen.rs:965:11
+    |
+965 |       proof {
+    |  ___________^
+966 | |         assert(crate::model::mh(bytes_plte_duplicate())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_duplicate(),...
+967 | |             reveal(crate::model::mh);
+968 | |             assert(crate::model::mh(bytes_plte_duplicate())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_duplicat...
+...   |
+995 | |         assert(m::MW_p(bytes_plte_duplicate(),m::strict())==m::Outcome::Error(Error::DuplicateChunk,m::no_events()));
+996 | |     }
+    | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+    --> src/witness_m3_walk_frozen.rs:1013:11
+     |
+1013 |       proof {
+     |  ___________^
+1014 | |         assert(crate::model::mh(bytes_plte_length_8())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_length_8(),1...
+1015 | |             reveal(crate::model::mh);
+1016 | |             assert(crate::model::mh(bytes_plte_length_8())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_length_8...
+...    |
+1037 | |         assert(m::MW_p(bytes_plte_length_8(),m::strict())==m::Outcome::Error(Error::InvalidPalette,m::no_events()));
+1038 | |     }
+     | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+    --> src/witness_m3_walk_frozen.rs:1055:11
+     |
+1055 |       proof {
+     |  ___________^
+1056 | |         assert(crate::model::mh(bytes_plte_length_0())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_length_0(),1...
+1057 | |             reveal(crate::model::mh);
+1058 | |             assert(crate::model::mh(bytes_plte_length_0())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_length_0...
+...    |
+1079 | |         assert(m::MW_p(bytes_plte_length_0(),m::strict())==m::Outcome::Error(Error::InvalidPalette,m::no_events()));
+1080 | |     }
+     | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+    --> src/witness_m3_walk_frozen.rs:1097:11
+     |
+1097 |       proof {
+     |  ___________^
+1098 | |         assert(crate::model::mh(bytes_plte_257_entries())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_257_entri...
+1099 | |             reveal(crate::model::mh);
+1100 | |             assert(crate::model::mh(bytes_plte_257_entries())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_257_e...
+...    |
+1121 | |         assert(m::MW_p(bytes_plte_257_entries(),m::strict())==m::Outcome::Error(Error::InvalidPalette,m::no_events()));
+1122 | |     }
+     | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+    --> src/witness_m3_walk_frozen.rs:1139:11
+     |
+1139 |       proof {
+     |  ___________^
+1140 | |         assert(crate::model::mh(bytes_plte_5_entries_depth_2())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_5_e...
+1141 | |             reveal(crate::model::mh);
+1142 | |             assert(crate::model::mh(bytes_plte_5_entries_depth_2())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte...
+...    |
+1163 | |         assert(m::MW_p(bytes_plte_5_entries_depth_2(),m::strict())==m::Outcome::Error(Error::InvalidPalette,m::no_events()));
+1164 | |     }
+     | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+    --> src/witness_m3_walk_frozen.rs:1181:11
+     |
+1181 |       proof {
+     |  ___________^
+1182 | |         assert(crate::model::mh(bytes_plte_in_greyscale())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_in_greys...
+1183 | |             reveal(crate::model::mh);
+1184 | |             assert(crate::model::mh(bytes_plte_in_greyscale())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_in_g...
+...    |
+1205 | |         assert(m::MW_p(bytes_plte_in_greyscale(),m::strict())==m::Outcome::Error(Error::UnexpectedPalette,m::no_events()));
+1206 | |     }
+     | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+    --> src/witness_m3_walk_frozen.rs:1223:11
+     |
+1223 |       proof {
+     |  ___________^
+1224 | |         assert(crate::model::mh(bytes_plte_in_grey_alpha())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_in_grey...
+1225 | |             reveal(crate::model::mh);
+1226 | |             assert(crate::model::mh(bytes_plte_in_grey_alpha())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_plte_in_...
+...    |
+1247 | |         assert(m::MW_p(bytes_plte_in_grey_alpha(),m::strict())==m::Outcome::Error(Error::UnexpectedPalette,m::no_events()));
+1248 | |     }
+     | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+    --> src/witness_m3_walk_frozen.rs:1265:11
+     |
+1265 |       proof {
+     |  ___________^
+1266 | |         assert(crate::model::mh(bytes_trns_before_plte())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_trns_before_pl...
+1267 | |             reveal(crate::model::mh);
+1268 | |             assert(crate::model::mh(bytes_trns_before_plte())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_trns_befor...
+...    |
+1295 | |         assert(m::MW_p(bytes_trns_before_plte(),m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()));
+1296 | |     }
+     | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+    --> src/witness_m3_walk_frozen.rs:1313:11
+     |
+1313 |       proof {
+     |  ___________^
+1314 | |         assert(crate::model::mh(bytes_trns_after_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_trns_after_idat...
+1315 | |             reveal(crate::model::mh);
+1316 | |             assert(crate::model::mh(bytes_trns_after_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_trns_after_...
+...    |
+1337 | |         assert(m::MW_p(bytes_trns_after_idat(),m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()));
+1338 | |     }
+     | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+    --> src/witness_m3_walk_frozen.rs:1355:11
+     |
+1355 |       proof {
+     |  ___________^
+1356 | |         assert(crate::model::mh(bytes_trns_duplicate())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_trns_duplicate()...
+1357 | |             reveal(crate::model::mh);
+1358 | |             assert(crate::model::mh(bytes_trns_duplicate())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_trns_duplica...
+...    |
+1385 | |         assert(m::MW_p(bytes_trns_duplicate(),m::strict())==m::Outcome::Error(Error::DuplicateChunk,m::no_events()));
+1386 | |     }
+     | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+    --> src/witness_m3_walk_frozen.rs:1403:11
+     |
+1403 |       proof {
+     |  ___________^
+1404 | |         assert(crate::model::mh(bytes_trns_palette_too_long())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_trns_pale...
+1405 | |             reveal(crate::model::mh);
+1406 | |             assert(crate::model::mh(bytes_trns_palette_too_long())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_trns_...
+...    |
+1433 | |         assert(m::MW_p(bytes_trns_palette_too_long(),m::strict())==m::Outcome::Error(Error::InvalidTransparency,m::no_events()));
+1434 | |     }
+     | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+    --> src/witness_m3_walk_frozen.rs:1451:11
+     |
+1451 |       proof {
+     |  ___________^
+1452 | |         assert(crate::model::mh(bytes_trns_rgb_length_2())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_trns_rgb_leng...
+1453 | |             reveal(crate::model::mh);
+1454 | |             assert(crate::model::mh(bytes_trns_rgb_length_2())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_trns_rgb_...
+...    |
+1475 | |         assert(m::MW_p(bytes_trns_rgb_length_2(),m::strict())==m::Outcome::Error(Error::InvalidTransparency,m::no_events()));
+1476 | |     }
+     | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+    --> src/witness_m3_walk_frozen.rs:1493:11
+     |
+1493 |       proof {
+     |  ___________^
+1494 | |         assert(crate::model::mh(bytes_trns_in_rgba())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_trns_in_rgba(),16)...
+1495 | |             reveal(crate::model::mh);
+1496 | |             assert(crate::model::mh(bytes_trns_in_rgba())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_trns_in_rgba()...
+...    |
+1517 | |         assert(m::MW_p(bytes_trns_in_rgba(),m::strict())==m::Outcome::Error(Error::InvalidTransparency,m::no_events()));
+1518 | |     }
+     | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+    --> src/witness_m3_walk_frozen.rs:1535:11
+     |
+1535 |       proof {
+     |  ___________^
+1536 | |         assert(crate::model::mh(bytes_order_gama_after_plte())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_order_gam...
+1537 | |             reveal(crate::model::mh);
+1538 | |             assert(crate::model::mh(bytes_order_gama_after_plte())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_order...
+...    |
+1565 | |         assert(m::MW_p(bytes_order_gama_after_plte(),m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()));
+1566 | |     }
+     | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+    --> src/witness_m3_walk_frozen.rs:1583:11
+     |
+1583 |       proof {
+     |  ___________^
+1584 | |         assert(crate::model::mh(bytes_order_gama_after_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_order_gam...
+1585 | |             reveal(crate::model::mh);
+1586 | |             assert(crate::model::mh(bytes_order_gama_after_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_order...
+...    |
+1607 | |         assert(m::MW_p(bytes_order_gama_after_idat(),m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()));
+1608 | |     }
+     | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+    --> src/witness_m3_walk_frozen.rs:1625:11
+     |
+1625 |       proof {
+     |  ___________^
+1626 | |         assert(crate::model::mh(bytes_order_gama_duplicate())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_order_gama...
+1627 | |             reveal(crate::model::mh);
+1628 | |             assert(crate::model::mh(bytes_order_gama_duplicate())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_order_...
+...    |
+1655 | |         assert(m::MW_p(bytes_order_gama_duplicate(),m::strict())==m::Outcome::Error(Error::DuplicateChunk,m::no_events()));
+1656 | |     }
+     | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+    --> src/witness_m3_walk_frozen.rs:1673:11
+     |
+1673 |       proof {
+     |  ___________^
+1674 | |         assert(crate::model::mh(bytes_order_phys_after_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_order_phy...
+1675 | |             reveal(crate::model::mh);
+1676 | |             assert(crate::model::mh(bytes_order_phys_after_idat())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_order...
+...    |
+1696 | |         assert(m::MW_p(bytes_order_phys_after_idat(),m::strict())==m::Outcome::Error(Error::ChunkOutOfOrder,m::no_events()));
+1697 | |     }
+     | |_____^
+
+error: Verus currently supports proof blocks inside spec code only for spec functions with `decreases`
+    --> src/witness_m3_walk_frozen.rs:1714:11
+     |
+1714 |       proof {
+     |  ___________^
+1715 | |         assert(crate::model::mh(bytes_apng_bad_fctl_width_0())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_bad_...
+1716 | |             reveal(crate::model::mh);
+1717 | |             assert(crate::model::mh(bytes_apng_bad_fctl_width_0())==Ok((crate::model::Ihdr {width:crate::model::be32(bytes_apng_...
+...    |
+1759 | |         late_zero_width_control(bytes_apng_bad_fctl_width_0(),crate::model::mh(bytes_apng_bad_fctl_width_0()).unwrap().0);
+1760 | |     }
+     | |_____^
+
+warning: `png_verus` (lib) generated 6 warnings
+error: could not compile `png_verus` (lib) due to 42 previous errors; 6 warnings emitted
+
+Caused by:
+  process didn't exit successfully: `/opt/verus/verus /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc --crate-name png_verus --edition=2021 src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata -C embed-bitcode=no -C debuginfo=2 --warn=unexpected_cfgs --check-cfg 'cfg(verus_only)' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values("test-records"))' -C metadata=62e1b03dc42d9725 -C extra-filename=-d6636dff8becff5c --out-dir /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps -C incremental=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental -L dependency=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps --extern inflate_verus=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps/libinflate_verus-6b33f8ba620de9a9.rmeta --extern vstd=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps/libvstd-01822e92e4f44378.rmeta -Z checksum-hash-algorithm=blake3` (exit status: 1)

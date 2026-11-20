@@ -1,0 +1,716 @@
+[
+  {
+    "name": "container/idat-crc",
+    "entry": "still",
+    "function": "walk_container_idat_crc",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "5465ff537e12856df8e011de3aa79d488bb3537c8028c01061d04b1dd9266fd5",
+    "frozen_expected": {
+      "error": "CrcMismatch"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_idat_crc",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/ancillary-crc",
+    "entry": "still",
+    "function": "walk_container_ancillary_crc",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "b683639def34dc5f41afbcbbf1960bad64ef37513b09e511cb7314f055f8764d",
+    "frozen_expected": {
+      "error": "CrcMismatch"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_ancillary_crc",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/unknown-ancillary-crc",
+    "entry": "still",
+    "function": "walk_container_unknown_ancillary_crc",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "63bdc6491b27a9d78bcb9279b7d5a36da62bcb80bf0c668ffe15a6e3bf721a88",
+    "frozen_expected": {
+      "error": "CrcMismatch"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_unknown_ancillary_crc",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/iend-crc",
+    "entry": "still",
+    "function": "walk_container_iend_crc",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "1309b6839bdfd60a45667e7629ecdfea8c4655899b4608a07eb7330022b2ae41",
+    "frozen_expected": {
+      "error": "CrcMismatch"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_iend_crc",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/length-2^31",
+    "entry": "still",
+    "function": "walk_container_length_2_31",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "c2ed526a601666ba610678fa69139b9b49fe46df6725bb4f18f3ed25323cc34d",
+    "frozen_expected": {
+      "error": "ChunkTooLong"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_length_2_31",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/length-ffffffff",
+    "entry": "still",
+    "function": "walk_container_length_ffffffff",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "035ae21490cf92f10f08ebe7b3f58bd7a669113155083e43e68fb77892bba2fa",
+    "frozen_expected": {
+      "error": "ChunkTooLong"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_length_ffffffff",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/type-digit",
+    "entry": "still",
+    "function": "walk_container_type_digit",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "e6f961007283b0d8d4f79f6d913b1217bc7bb43e7d16cc6541cb0724809a104b",
+    "frozen_expected": {
+      "error": "InvalidChunkType"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_type_digit",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/type-space",
+    "entry": "still",
+    "function": "walk_container_type_space",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "56a9a46fffcc0ec9167535af324243209538e036343132293b6b6c9d8570dde5",
+    "frozen_expected": {
+      "error": "InvalidChunkType"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_type_space",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/truncated-mid-idat",
+    "entry": "still",
+    "function": "walk_container_truncated_mid_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "b1782cc8123c7879d145ace0487771f31bbece2a5a11ed01087f72e7445a46c4",
+    "frozen_expected": {
+      "error": "TruncatedChunk"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_truncated_mid_idat",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/length-beyond-eof",
+    "entry": "still",
+    "function": "walk_container_length_beyond_eof",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "b750d1ce52e2634084a2e5b836bfcf57d9d0e6e61375e37f4d4fd42beb1b9c2b",
+    "frozen_expected": {
+      "error": "TruncatedChunk"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_length_beyond_eof",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/missing-iend",
+    "entry": "still",
+    "function": "walk_container_missing_iend",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "b25c8629828eb61567ece81de508d7af4962fa972e76dda31d1033c2d60f6ac8",
+    "frozen_expected": {
+      "error": "MissingIend"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_missing_iend",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/missing-iend-after-text",
+    "entry": "still",
+    "function": "walk_container_missing_iend_after_text",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "ea49db270d47d5936f885086b9ffddb8790ad0c94dd1cd14a8bc4fd0a39f83a5",
+    "frozen_expected": {
+      "error": "MissingIend"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_missing_iend_after_text",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/trailing-byte",
+    "entry": "still",
+    "function": "walk_container_trailing_byte",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "2d03ba5a80566c84cea417e7e903d1398a4deae4eaa6be7dd101ed8d77d07ceb",
+    "frozen_expected": {
+      "error": "TrailingBytes"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_trailing_byte",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/trailing-second-iend",
+    "entry": "still",
+    "function": "walk_container_trailing_second_iend",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "6772423da84030f5c021466d44b99adcca5fb6466ea88b4f913c9d906ff159ee",
+    "frozen_expected": {
+      "error": "TrailingBytes"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_trailing_second_iend",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/iend-length-1",
+    "entry": "still",
+    "function": "walk_container_iend_length_1",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "1b4ce733cc9f4a0c5f640994a66c6b72c2c765d74e7a5890c5d47f119346d722",
+    "frozen_expected": {
+      "error": "InvalidChunkLength"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_iend_length_1",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/no-idat",
+    "entry": "still",
+    "function": "walk_container_no_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "3c482c66e7967406a7d07590ff0b9d35df7e64da974391e40e21abe5f72b0e51",
+    "frozen_expected": {
+      "error": "MissingImageData"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_no_idat",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/unknown-critical",
+    "entry": "still",
+    "function": "walk_container_unknown_critical",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "85f61d063c619de93c0ead9dd868371338d9ed3045793b3d7d5fa5c84c0ef40f",
+    "frozen_expected": {
+      "error": "UnknownCriticalChunk"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_unknown_critical",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/reserved-bit-on-critical",
+    "entry": "still",
+    "function": "walk_container_reserved_bit_on_critical",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "9ec43b7f840441c463f2c379bc17aa404d4b6c66111db8acfcad6531dc886db5",
+    "frozen_expected": {
+      "error": "UnknownCriticalChunk"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_reserved_bit_on_critical",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/duplicate-ihdr",
+    "entry": "still",
+    "function": "walk_container_duplicate_ihdr",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "f6c0a35f275438fda30de30415b358f97725cfa0a2548b30aa843e7b3b2bdc84",
+    "frozen_expected": {
+      "error": "DuplicateChunk"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_duplicate_ihdr",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/non-consecutive-idat",
+    "entry": "still",
+    "function": "walk_container_non_consecutive_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "a53f1e7965052a687843f6dda27d7a91bd42164c7a7b799734ed9bfae538962e",
+    "frozen_expected": {
+      "error": "NonConsecutiveIdat"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_non_consecutive_idat",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "container/idat-after-iend",
+    "entry": "still",
+    "function": "walk_container_idat_after_iend",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "4376ce515a9e7b4c3823a060825444bafca7673d810ac81cdb56c53c6906d594",
+    "frozen_expected": {
+      "error": "TrailingBytes"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_container_idat_after_iend",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "plte/missing",
+    "entry": "still",
+    "function": "walk_plte_missing",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "5eb08d113d38b3768f502518f83f9c926233ebb89957e619c9863e0b263ea242",
+    "frozen_expected": {
+      "error": "MissingPalette"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_plte_missing",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "plte/after-idat",
+    "entry": "still",
+    "function": "walk_plte_after_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "7207ae6aec56558290415fb8b2b7a5b9b476dd870e74f64dea89837740f5786a",
+    "frozen_expected": {
+      "error": "MissingPalette"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_plte_after_idat",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "plte/after-idat-rgb",
+    "entry": "still",
+    "function": "walk_plte_after_idat_rgb",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "6cde4158bab3933a85b321c0592dbfed905136410467b80891c0e5a56316e15f",
+    "frozen_expected": {
+      "error": "ChunkOutOfOrder"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_plte_after_idat_rgb",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "plte/duplicate",
+    "entry": "still",
+    "function": "walk_plte_duplicate",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "630e8ed80c2b32761bb27889bbbe2a02b501852101f3176d17155eb30a599c46",
+    "frozen_expected": {
+      "error": "DuplicateChunk"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_plte_duplicate",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "plte/length-8",
+    "entry": "still",
+    "function": "walk_plte_length_8",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "5329674330dbbd6f0fa3f1584b77aa71a80dc84ca3d37a35e07ea746e9c779f2",
+    "frozen_expected": {
+      "error": "InvalidPalette"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_plte_length_8",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "plte/length-0",
+    "entry": "still",
+    "function": "walk_plte_length_0",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "5b3403919f01aa35d79befc79ad89bddba07676e7ad9c5035a26ac1c6563895b",
+    "frozen_expected": {
+      "error": "InvalidPalette"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_plte_length_0",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "plte/257-entries",
+    "entry": "still",
+    "function": "walk_plte_257_entries",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "8ab3c286e85925d6393a6eabfd8a7f145e8cb3f32d67c153f7e712003c6b71f8",
+    "frozen_expected": {
+      "error": "InvalidPalette"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_plte_257_entries",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "plte/5-entries-depth-2",
+    "entry": "still",
+    "function": "walk_plte_5_entries_depth_2",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "f2078683833252d761a3e59f3b396cf48be0f11cfa633fa39a305d5b0b2d106c",
+    "frozen_expected": {
+      "error": "InvalidPalette"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_plte_5_entries_depth_2",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "plte/in-greyscale",
+    "entry": "still",
+    "function": "walk_plte_in_greyscale",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "2a34db8f6846da8ff765928dfb7a427ffcf97389f08e200b4ab3095845a1283b",
+    "frozen_expected": {
+      "error": "UnexpectedPalette"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_plte_in_greyscale",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "plte/in-grey-alpha",
+    "entry": "still",
+    "function": "walk_plte_in_grey_alpha",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "039f8501bc6a80e8f17358a3174debd0bbb7a8becdbc499f32d78d0031587ab4",
+    "frozen_expected": {
+      "error": "UnexpectedPalette"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_plte_in_grey_alpha",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "trns/before-plte",
+    "entry": "still",
+    "function": "walk_trns_before_plte",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "360604c30d7dc44aff14e0c6ede2f338d003eb34fc2f9d3dd2be24d4a85955e9",
+    "frozen_expected": {
+      "error": "ChunkOutOfOrder"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_trns_before_plte",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "trns/after-idat",
+    "entry": "still",
+    "function": "walk_trns_after_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "4356a8e3ef0b9b5465dcae77f419df6732541fb2095d97eaf74a106a279940f5",
+    "frozen_expected": {
+      "error": "ChunkOutOfOrder"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_trns_after_idat",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "trns/duplicate",
+    "entry": "still",
+    "function": "walk_trns_duplicate",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "d769514bcfcc4af9712b164dbbd9914547eb2984188541ab601ff696ff87d596",
+    "frozen_expected": {
+      "error": "DuplicateChunk"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_trns_duplicate",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "trns/palette-too-long",
+    "entry": "still",
+    "function": "walk_trns_palette_too_long",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "b350aedade5f0c15203741e54fa6d19dceeae3d8567ddf722f87850407821a99",
+    "frozen_expected": {
+      "error": "InvalidTransparency"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_trns_palette_too_long",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "trns/rgb-length-2",
+    "entry": "still",
+    "function": "walk_trns_rgb_length_2",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "ebac8580975bb5f6e6cc8fe950d7faa5876621f26567cb6398f82c0a2f1c83ab",
+    "frozen_expected": {
+      "error": "InvalidTransparency"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_trns_rgb_length_2",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "trns/in-rgba",
+    "entry": "still",
+    "function": "walk_trns_in_rgba",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "17267ac28d8937aa8e55143b77a33c73ac0bf4ea9e22a56393559979836553ca",
+    "frozen_expected": {
+      "error": "InvalidTransparency"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_trns_in_rgba",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "order/gAMA-after-plte",
+    "entry": "still",
+    "function": "walk_order_gama_after_plte",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "75ab56cde56734deae46dbba7470693667d042605d5afd2417416c911ae3f887",
+    "frozen_expected": {
+      "error": "ChunkOutOfOrder"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_order_gama_after_plte",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "order/gAMA-after-idat",
+    "entry": "still",
+    "function": "walk_order_gama_after_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "7809df3ec35b0f741f3a16772653f3b599956b26a7e3321fc967b01aa955d581",
+    "frozen_expected": {
+      "error": "ChunkOutOfOrder"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_order_gama_after_idat",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "order/gAMA-duplicate",
+    "entry": "still",
+    "function": "walk_order_gama_duplicate",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "57138108b0daa3a1107d4b3615cfc0faf305683bd85387fe9ff72015972e114d",
+    "frozen_expected": {
+      "error": "DuplicateChunk"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_order_gama_duplicate",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "order/pHYs-after-idat",
+    "entry": "still",
+    "function": "walk_order_phys_after_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "0e2b1ac6a7ca4f127d7398574bc33c468662787ce325b473a66d308350a18e65",
+    "frozen_expected": {
+      "error": "ChunkOutOfOrder"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_order_phys_after_idat",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  },
+  {
+    "name": "apng-bad/fctl-width-0",
+    "entry": "frames",
+    "function": "walk_apng_bad_fctl_width_0",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "312d3200a15f2bcce8696565e9fc32bf5ac351c164ced3572744c53430cfeef3",
+    "frozen_expected": {
+      "error": "InvalidFrameControl"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness",
+    "model_function": "model_apng_bad_fctl_width_0",
+    "run": 269,
+    "module": "witness_m3_walk_frozen"
+  }
+]

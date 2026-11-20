@@ -1,0 +1,10 @@
+{
+  "kind": "M3-interrupted-attempt",
+  "run": 250,
+  "accepted": false,
+  "verified": 0,
+  "errors": null,
+  "source_unchanged_during_run": true,
+  "reason": "Worker stopped expensive monolithic whole-walk compute evaluation to replace it with checked chunk-read certificates and SMT walk composition; no solver-limit change. TaskStop confirmed and no worker process remains.",
+  "log_sha256": "476605b637c7b0147ac5795b37af51913b76b11af17b6eb4e8f2f6e8d5f5df53"
+}

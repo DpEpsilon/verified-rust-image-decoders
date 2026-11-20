@@ -1,0 +1,84 @@
+{
+  "milestone": "M3 forty-two additional whole-walk/public-error witnesses; not sign-off-ready",
+  "base_commit": "c525a72",
+  "checkpoint": 269,
+  "verified": 721,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "signoff_ready": false,
+  "no_new_trusted_items": true,
+  "runtime_public_api_unchanged": true,
+  "runtime_production_bodies_unchanged": true,
+  "runtime_and_source_controls_run": 270,
+  "claims": [
+    {
+      "row": "THEOREMS.md frozen-record category-a gate",
+      "status": "67 complete of 115; 48 open",
+      "functions": [
+        "witness_m3_frozen::header_*",
+        "witness_m3_walk_frozen::{model_*,walk_*}"
+      ],
+      "run": 269,
+      "statement": "Forty-two additional records have exact independent MW_p/MWF_p-versus-frozen error proofs and calls of their actual checked public entry, plus the twenty-five retained header witnesses. m3-walk-witness-inputs-0269.json indexes each new model function, executable witness, fixture bytes and expected error."
+    },
+    {
+      "row": "Council sixteen no-legal-R M3 gate",
+      "status": "all sixteen complete on host",
+      "functions": [
+        "witness_m3_walk_frozen::model_container_duplicate_ihdr",
+        "witness_m3_walk_frozen::walk_container_duplicate_ihdr",
+        "witness_m3_walk_frozen::model_apng_bad_fctl_width_0",
+        "witness_m3_walk_frozen::walk_apng_bad_fctl_width_0",
+        "witness_m3_walk_frozen::zero_actl_step",
+        "witness_m3_walk_frozen::zero_idat_step",
+        "witness_m3_walk_frozen::zero_fctl_step",
+        "witness_m3_walk_frozen::late_zero_width_control",
+        "witness_m3_frozen::header_*"
+      ],
+      "run": 269,
+      "statement": "Duplicate IHDR returns exact DuplicateChunk through the public still call; zero-width fcTL returns exact InvalidFrameControl through Frames::try_new after a checked symbolic prefix. Together with the retained fourteen header errors, all sixteen council cases have M3 public-error witnesses. M2 uncovered flags remain unchanged; no arbitrary R or inflate fallback is assigned."
+    },
+    {
+      "row": "T2/T6/T10 prefix, A-PNG-2/A-PNG-7, L-WALK-FIRST/L-REWALK/L-INFO-RANGE, three E2 host discharges",
+      "status": "retained proved host components; complete M3 gate partial",
+      "functions": [
+        "header::prefix",
+        "Frames::with_trace",
+        "Frames::try_new",
+        "Frames::try_new_with_policy",
+        "Frames::try_next",
+        "DataReader::read",
+        "decode_image",
+        "decode_exact"
+      ],
+      "run": 269,
+      "statement": "All earlier checked code/proofs run again without production changes. Prior requirement-indexed claims remain in LEDGER and claims-m3-frame-dispatch.json; reader-effects-0269.json retains the three distinct host E2 arguments and their Verus/inspection/Rust-aliasing separation."
+    },
+    {
+      "row": "Remaining category-a gates and category-b projections",
+      "status": "OPEN",
+      "functions": [],
+      "run": 269,
+      "statement": "Forty-eight category-a public-error witnesses and all sixteen category-b full walk/preparation projections remain open. Three category-b accepted-header facts remain partial; no final data outcome witness credit is assigned. Required label remains: M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile."
+    },
+    {
+      "row": "Final i686 / M4\u2013M6 data and pixel equations",
+      "status": "untouched/open",
+      "functions": [],
+      "run": 269,
+      "statement": "No target replay or cache copy attempted. Final source replay must copy existing i686 vstd into PNG-owned target, never rebuild or write under inflate target. No pixel/data/compositor/SavedAt equality claim."
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0270.json"
+  },
+  "spec_ambiguities": [],
+  "resume": "Add the remaining forty-eight category-a witnesses, then sixteen category-b projections with M4\u2013M6 label, then final copied-cache i686 replay."
+}

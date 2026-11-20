@@ -1,0 +1,19 @@
+{
+  "kind": "M3-interrupted-attempt",
+  "run": 267,
+  "accepted": false,
+  "verified": 0,
+  "errors": null,
+  "source_unchanged_during_run": true,
+  "reason": "Stopped repeated model-composition resource failures to add checked literal type-classification certificates. No final count or witness credit; TaskStop confirmed; solver limits unchanged.",
+  "reported_failed_functions": [
+    "model_container_missing_iend_after_text",
+    "model_container_unknown_critical",
+    "model_container_reserved_bit_on_critical",
+    "model_container_non_consecutive_idat",
+    "model_container_idat_after_iend",
+    "model_plte_after_idat_rgb",
+    "model_plte_257_entries"
+  ],
+  "log_sha256": "ca9be6cd3c3d78d5224b8fedbcd10a6d494351369cf5727703b743edd552891f"
+}
