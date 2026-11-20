@@ -661,6 +661,8 @@ pub fn try_decode_still16_traced(b: &[u8], p: Profile) -> (Result<(Still16, [Opt
 
 // ------------------------------------------------------------------ P16 frames
 
+verus! {
+
 /// One frame (P16): the whole canvas after the frame is composited, borrowed
 /// from the decoder, plus the frame's fields. `rect` is `(x, y, w, h)`; `delay`
 /// is the raw `(delay_num, delay_den)` (`None` without acTL).
@@ -688,8 +690,6 @@ impl FrameView<'_> {
 /// The frame decoder (P16). Borrows the input; owns `Raw` (filtered data of the
 /// full image, reused by every frame), `Output` (the canvas) and, from step S
 /// on, `Saved`. Not an `Iterator`: each view borrows the canvas.
-verus! {
-
 pub struct Frames<'a> {
     b: &'a [u8],
     pol: Policy,
@@ -723,7 +723,7 @@ impl<'a> Frames<'a> {
             crate::layout_model::image_buffers(doc.ihdr.view(),false,raw@,canvas@),
         ensures r.source_wf(),r.buffers_wf(),r.b==b,r.pol==pol,r.base==base,r.saved.is_none(),
             r.raw@==raw@,r.canvas@==canvas@,
-            r.doc.info.view()==crate::document_model::constructor_info(doc.view()),
+            r.doc.info.view()==crate::document_model::constructor_info(doc.view()),r.doc.info.ranges_wf(b.len() as nat),
             r.state.single()==doc.actl.is_none(),!r.state.done(),
     {
         crate::frame_state::constructor_info(b,&mut doc);
@@ -739,6 +739,7 @@ impl<'a> Frames<'a> {
             final(self).doc==old(self).doc,final(self).b==old(self).b,
             final(self).raw==old(self).raw,final(self).canvas==old(self).canvas,
             final(self).saved==old(self).saved,final(self).base==old(self).base,
+            final(self).pol==old(self).pol,
             match r {Step::Frame(job)=>job.wf(final(self).b@,final(self).doc),_=>true},
     {
         proof {reveal(Frames::source_wf);reveal(Frames::buffers_wf);}
@@ -752,6 +753,7 @@ impl<'a> Frames<'a> {
             final(self).doc==old(self).doc,final(self).b==old(self).b,
             final(self).raw==old(self).raw,final(self).canvas==old(self).canvas,
             final(self).saved==old(self).saved,final(self).base==old(self).base,
+            final(self).pol==old(self).pol,
     {
         proof {reveal(Frames::source_wf);reveal(Frames::buffers_wf);}
         self.state=resume;
@@ -762,6 +764,7 @@ impl<'a> Frames<'a> {
         ensures final(self).source_wf(),final(self).buffers_wf(),final(trace).wf(),
             final(self).doc==old(self).doc,final(self).state==old(self).state,
             final(self).raw==old(self).raw,final(self).canvas==old(self).canvas,
+            final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
             crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),
             !needed || old(self).saved.is_some() ==> final(trace).log_view().len()==0,
             needed && old(self).saved.is_none() ==> final(trace).log_view()==seq![(AllocSite::Saved,old(self).canvas@.len(),r.is_ok())],
@@ -814,23 +817,48 @@ pub(crate) fn receiver_source_witness(b: &[u8], pol: &Policy, raw: Vec<u8>, canv
     }}
 }
 
-} // verus!
+fn zero_all(out: &mut [u8])
+    ensures final(out).len()==old(out).len(),
+{
+    let n=out.len();let mut i=0usize;
+    while i<n
+        invariant i<=n,out.len()==n,
+        decreases n-i,
+    {out[i]=0;i+=1;}
+}
 
 impl<'a> Frames<'a> {
     /// The Strict frame decoder (D1: the unqualified entry is Strict). Defined
     /// as `try_new_with_policy(b, Profile::Strict)`, with the same errors and
     /// guard requests (council M1BQ-Q5b; THEOREMS.md writes it
     /// `Frames::try_new(b, Strict)`).
-    pub fn try_new(b: &'a [u8]) -> Result<Frames<'a>, TryError> {
-        Frames::try_new_with_policy(b, Profile::Strict)
+    pub fn try_new(b: &'a [u8]) -> (r: Result<Frames<'a>,TryError>)
+        ensures match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf()
+            && receiver.info_value().ranges_within(b.len() as nat)
+            && crate::allocation_model::returned_frame_info(b@,crate::document_model::strict(),receiver.info_value().model_value()),_=>true},
+            forall|e: Error,ev: crate::document_model::Events| crate::document_model::MWF_p(b@,crate::document_model::strict())
+                ==crate::document_model::Outcome::Error(e,ev) ==> r==Err(TryError::Format(e)),
+    {
+        proof {crate::walk_policy::profiles_project_exactly();}
+        let result=Self::with_record(b,STRICT);
+        proof {if let Ok(receiver)=&result {receiver.info_value().public_observations(b.len() as nat);}}
+        result
     }
 
     /// The frame decoder under a named profile: the walk (with the R4 fallback
     /// of `apng_errors = Static`), `Raw` and `Output`, and the default image;
     /// its errors are the constructor's. THEOREMS.md writes it
     /// `Frames::try_new(b, p)` (council M1BQ-Q5b).
-    pub fn try_new_with_policy(b: &'a [u8], p: Profile) -> Result<Frames<'a>, TryError> {
-        Frames::with_record(b, p.policy())
+    pub fn try_new_with_policy(b: &'a [u8],p: Profile) -> (r: Result<Frames<'a>,TryError>)
+        ensures match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf()
+            && receiver.info_value().ranges_within(b.len() as nat)
+            && crate::allocation_model::returned_frame_info(b@,p.walk_model(),receiver.info_value().model_value()),_=>true},
+            forall|e: Error,ev: crate::document_model::Events| crate::document_model::MWF_p(b@,p.walk_model())
+                ==crate::document_model::Outcome::Error(e,ev) ==> r==Err(TryError::Format(e)),
+    {
+        let pol=p.checked_policy();let result=Self::with_record(b,pol);
+        proof {if let Ok(receiver)=&result {receiver.info_value().public_observations(b.len() as nat);}}
+        result
     }
 
     /// Test-only: the constructor under an arbitrary record (D1: arbitrary
@@ -842,112 +870,198 @@ impl<'a> Frames<'a> {
         Frames::with_record(b, pol)
     }
 
-    fn with_record(b: &'a [u8], pol: Policy) -> Result<Frames<'a>, TryError> {
-        let mut ev = Events::default();
-        let mut trace = Trace::new();
-        let (doc,mut raw,mut canvas)=prepare_image(b,&pol,true,false,&mut ev,&mut trace)?;
-        let mut src = IdatReader::for_doc(b, &doc);
-        decode_image(&doc, b, &mut src, &mut raw, doc.ihdr.w, doc.ihdr.h, &pol, &mut ev, &mut Sink::Rgba8(&mut canvas))
-            .map_err(TryError::Format)?;
-        if doc.actl.is_some() {
-            if !doc.info.default_is_frame {
-                // A default image outside the animation is validated, not shown (P16).
-                canvas.fill(0);
-            }
-        }
-        Ok(Frames::from_decoded(b,pol,doc,raw,canvas,ev))
+    fn with_record(b: &'a [u8],pol: Policy) -> (r: Result<Frames<'a>,TryError>)
+        ensures match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf()
+            && receiver.doc.info.ranges_wf(b.len() as nat)
+            && crate::allocation_model::returned_frame_info(b@,pol.walk_view(),receiver.info_value().view()),_=>true},
+            forall|e: Error,ev: crate::document_model::Events| crate::document_model::MWF_p(b@,pol.walk_view())
+                ==crate::document_model::Outcome::Error(e,ev) ==> r==Err(TryError::Format(e)),
+    {
+        let mut trace=Trace::new();
+        Self::with_trace(b,pol,&mut trace)
     }
 
+    fn with_trace(b: &'a [u8],pol: Policy,trace: &mut Trace) -> (r: Result<Frames<'a>,TryError>)
+        requires old(trace).wf(),old(trace).n==0,
+        ensures final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),true,false,r,final(trace).log_view()),
+            match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf()
+                && receiver.doc.info.ranges_wf(b.len() as nat)
+                && crate::allocation_model::returned_frame_info(b@,pol.walk_view(),receiver.info_value().view()),_=>true},
+    {
+        hide(Doc::wf);hide(crate::document_model::MWF_p);hide(inflate_verus::model::Inflate);
+        let mut ev=Events {r1:false,r3:false,r4:false};
+        let prepared=prepare_image(b,&pol,true,false,&mut ev,trace);
+        proof {crate::allocation_model::prepared_exit::<Frames<'a>>(b@,pol.walk_view(),true,false,prepared_image_view(prepared),ev.view(),trace.log_view());}
+        let (doc,mut raw,mut canvas)=match prepared {Ok(v)=>v,Err(e)=>return Err(e)};
+        proof {crate::limits::caps_ok();crate::icc_model::short_log(trace.log_view());}
+        let ghost before=doc.view();
+        let ghost output_len=canvas.len();
+        {
+            let mut src=IdatReader::for_doc(b,&doc);
+            let mut sink=Sink::image(&mut canvas,doc.ihdr.w,doc.ihdr.h,false);
+            let decoded=decode_image(&doc,b,&mut src,&mut raw,doc.ihdr.w,doc.ihdr.h,&pol,&mut ev,&mut sink);
+            sink.finish();
+            match decoded {Err(e)=>return Err(TryError::Format(e)),Ok(())=>{}}
+        }
+        assert(canvas.len()==output_len);
+        if doc.actl.is_some() && !doc.info.default_is_frame {zero_all(&mut canvas);}
+        let receiver=Frames::from_decoded(b,pol,doc,raw,canvas,ev);
+        assert(crate::allocation_model::returned_frame_info(b@,pol.walk_view(),receiver.info_value().view()));
+        Ok(receiver)
+    }
+}
+
+impl<'a> Frames<'a> {
     /// The next frame, `Ok(None)` after the last one, or the error that ends
     /// the sequence. Fused: after `Ok(None)` or any error every later call
     /// returns `Ok(None)` without allocating or decoding (D3).
-    pub fn try_next(&mut self) -> Result<Option<FrameView<'_>>, TryError> {
+    pub fn try_next(&mut self) -> (r: Result<Option<FrameView<'_>>,TryError>)
+        requires old(self).source_wf(),old(self).buffers_wf(),
+        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).info_value()==old(self).info_value(),
+    {
         let mut trace=Trace::new();
-        let w = self.doc.ihdr.w;
-        let h = self.doc.ihdr.h;
-        match self.begin_source() {
-            Step::Done => Ok(None),
-            Step::Single => {
-                Ok(Some(FrameView {
-                    rgba: &self.canvas,
-                    rect: (0, 0, w, h),
-                    delay: None,
-                    dispose: 0,
-                    blend: 0,
-                    recovered: self.base.any(),
-                    events: self.base,
-                }))
-            }
-            Step::Frame(job) => {
-                let k = job.index;
-                let f = job.control;
-                let prev = job.previous;
-                // Step S (P20, D9): Saved, once, at the start of the first
-                // reached call for a frame k > 0 with dispose_op = 2.
-                self.ensure_saved(k>0 && f.dispose==2,&mut trace)?;
-                // P14.3: frame k − 1's disposal.
-                if let Some(((px, py, pw, ph), op)) = prev {
-                    if op == 1 {
-                        clear_rect(&mut self.canvas, w, px, py, pw, ph);
-                    } else if op == 2 {
-                        if let Some(s) = &self.saved {
-                            self.canvas.copy_from_slice(s);
+        self.next_with_trace(&mut trace)
+    }
+
+    proof fn source_context(&self)
+        requires self.source_wf(),
+        ensures self.doc.wf(self.b@),self.b.len()<=crate::limits::MAX_INPUT,
+    {
+        reveal(Frames::source_wf);reveal(crate::frame_state::source_document);
+    }
+
+    /// Safety-only disposal and snapshot; no SavedAt or canvas equation.
+    fn dispose_and_save(&mut self,prev: crate::frame_state::Previous,op: u8)
+        requires old(self).source_wf(),old(self).buffers_wf(),
+            crate::frame_state::previous_fits(prev,old(self).doc.ihdr.view()),
+        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).doc==old(self).doc,
+            final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
+            final(self).state==old(self).state,final(self).raw==old(self).raw,
+    {
+        proof {reveal(Frames::source_wf);reveal(Frames::buffers_wf);crate::limits::caps_ok();}
+        let w=self.doc.ihdr.w;let h=self.doc.ihdr.h;
+                if let Some(((px,py,pw,ph),op))=prev {
+                    if op==1 {
+                        proof {
+                            assert(4*(py as int+ph as int)*(w as int)<=self.canvas.len()) by (nonlinear_arith)
+                                requires py as int+ph as int<=h,0<=w,self.canvas.len()==4*(w as int)*(h as int);
                         }
+                        clear_rect(&mut self.canvas,w,px,py,pw,ph);
+                    }else if op==2 {
+                        if let Some(s)=&self.saved {self.canvas.copy_from_slice(s);}
                     }
                 }
-                let op = job.effective_dispose;
-                if op == 2 {
-                    if let Some(s) = self.saved.as_mut() {
-                        s.copy_from_slice(&self.canvas);
-                    }
+                if op==2 {
+                    if let Some(s)=self.saved.as_mut() {s.copy_from_slice(&self.canvas);}
                 }
-                let mut fev = self.base;
+    }
+
+    /// Weak selected-image continuation: preserve layout and source metadata.
+    fn draw_selected(&mut self,job: crate::frame_state::FrameJob<'a>) -> (r: Result<Events,TryError>)
+        requires old(self).source_wf(),old(self).buffers_wf(),job.wf(old(self).b@,old(self).doc),
+        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).doc==old(self).doc,
+            final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
+            final(self).state==old(self).state,final(self).saved==old(self).saved,
+            r.is_err() ==> matches!(r,Err(TryError::Format(_))),
+    {
+        hide(Doc::wf);hide(crate::document_model::frame_stream);
+        hide(crate::frame_transport_model::control_record);hide(crate::frame_transport_model::cursor_for);
+        proof {reveal(Frames::source_wf);reveal(Frames::buffers_wf);reveal(crate::frame_state::FrameJob::wf);crate::limits::caps_ok();self.source_context();}
+        let w=self.doc.ihdr.w;let h=self.doc.ihdr.h;let f=job.control;
+                let mut fev=self.base;
                 if job.reader.is_none() {
-                    // Frame 0 is the default image, already on the canvas. OVER onto
-                    // the transparent canvas equals the source except that a pixel
-                    // with alpha 0 becomes (0,0,0,0) (P14.4 with d = (0,0,0,0)).
-                    if f.blend == 1 {
-                        let mut i = 0;
-                        while i + 3 < self.canvas.len() {
-                            if self.canvas[i + 3] == 0 {
-                                self.canvas[i] = 0;
-                                self.canvas[i + 1] = 0;
-                                self.canvas[i + 2] = 0;
-                            }
-                            i += 4;
-                        }
+                    if f.blend==1 {zero_alpha_rgb(&mut self.canvas);}
+                }else {
+                    let mut src=job.reader.unwrap();
+                    proof {
+                        assert(4*(f.y as int+f.h as int)*(w as int)<=self.canvas.len()) by (nonlinear_arith)
+                            requires f.y as int+f.h as int<=h,0<=w,self.canvas.len()==4*(w as int)*(h as int);
                     }
-                } else {
-                    let mut src = job.reader.unwrap();
-                    let mut sink = Sink::Canvas { canvas: &mut self.canvas, cw: w, fx: f.x, fy: f.y, over: f.blend == 1 };
-                    if let Err(e) = decode_image(&self.doc, self.b, &mut src, &mut self.raw, f.w, f.h, &self.pol, &mut fev, &mut sink) {
-                        return Err(TryError::Format(e));
-                    }
+                    let mut sink=Sink::canvas(&mut self.canvas,w,f.x,f.y,f.w,f.h,f.blend==1);
+                    proof {crate::layout_model::raw_dimensions(self.doc.ihdr.interlace,crate::layout_model::bits(self.doc.ihdr.view()),
+                        f.w as nat,f.h as nat,w as nat,h as nat);}
+                    let decoded=decode_image(&self.doc,self.b,&mut src,&mut self.raw,f.w,f.h,&self.pol,&mut fev,&mut sink);
+                    sink.finish();
+                    match decoded {Err(e)=>return Err(TryError::Format(e)),Ok(())=>{}}
                 }
-                self.commit_source(job.resume);
-                Ok(Some(FrameView {
-                    rgba: &self.canvas,
-                    rect: (f.x, f.y, f.w, f.h),
-                    delay: Some((f.delay_num, f.delay_den)),
-                    dispose: f.dispose,
-                    blend: f.blend,
-                    recovered: fev.any(),
-                    events: fev,
-                }))
-            }
+        Ok(fev)
+    }
+
+    fn next_with_trace(&mut self,trace: &mut Trace) -> (r: Result<Option<FrameView<'_>>,TryError>)
+        requires old(self).source_wf(),old(self).buffers_wf(),old(trace).wf(),old(trace).n==0,
+        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).doc==old(self).doc,
+            final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
+            final(trace).wf(),crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),final(trace).log_view().len()<=1,
+            forall|i: int| 0<=i<final(trace).log_view().len() ==> (#[trigger] final(trace).log_view()[i]).0==AllocSite::Saved
+                && final(trace).log_view()[i].1==old(self).canvas.len(),
+    {
+        hide(Doc::wf);hide(crate::document_model::frame_stream);
+        hide(crate::frame_transport_model::control_record);hide(crate::frame_transport_model::cursor_for);
+        let w=self.doc.ihdr.w;let h=self.doc.ihdr.h;
+        match self.begin_source() {
+            Step::Done=>Ok(None),
+            Step::Single=>Ok(Some(FrameView {rgba:&self.canvas,rect:(0,0,w,h),delay:None,dispose:0,blend:0,recovered:self.base.any(),events:self.base})),
+            Step::Frame(job)=>{
+                proof {reveal(crate::frame_state::FrameJob::wf);}
+                let k=job.index;let f=job.control;let resume=job.resume;
+                match self.ensure_saved(k>0 && f.dispose==2,trace) {Ok(())=>{},Err(e)=>return Err(e)}
+                self.dispose_and_save(job.previous,job.effective_dispose);
+                let fev=match self.draw_selected(job) {Ok(ev)=>ev,Err(e)=>return Err(e)};
+                self.commit_source(resume);
+                Ok(Some(FrameView {rgba:&self.canvas,rect:(f.x,f.y,f.w,f.h),delay:Some((f.delay_num,f.delay_den)),
+                    dispose:f.dispose,blend:f.blend,recovered:fev.any(),events:fev}))
+            },
         }
     }
 }
 
-/// P14.3 disposal 1: the rectangle becomes `(0,0,0,0)`.
-fn clear_rect(canvas: &mut [u8], cw: u32, x: u32, y: u32, w: u32, h: u32) {
-    let mut row = 0;
-    while row < h {
-        let o = 4 * ((y + row) as usize * cw as usize + x as usize);
-        canvas[o..o + 4 * w as usize].fill(0);
-        row += 1;
+fn zero_alpha_rgb(canvas: &mut [u8])
+    requires old(canvas).len()<=crate::alloc_guard::MAX_BYTES,
+    ensures final(canvas).len()==old(canvas).len(),
+{
+    proof {crate::limits::caps_ok();}
+    let n=canvas.len();let mut i=0usize;
+    while i+3<n
+        invariant i<=n,canvas.len()==n,n<=crate::alloc_guard::MAX_BYTES,
+        decreases n-i,
+    {
+        if canvas[i+3]==0 {canvas[i]=0;canvas[i+1]=0;canvas[i+2]=0;}
+        i+=4;
     }
 }
+
+proof fn rectangle_row(cw: nat,x: nat,y: nat,w: nat,h: nat,row: nat,n: nat)
+    requires cw>=1,x+w<=cw,row<h,4*(y+h)*cw<=n<=crate::alloc_guard::MAX_BYTES,
+    ensures (y+row)*cw+x<=usize::MAX,4*((y+row)*cw+x)+4*w<=n,
+{
+    crate::limits::caps_ok();
+    assert((y+row)*cw+x+w<=(y+row+1)*cw) by (nonlinear_arith) requires x+w<=cw;
+    assert((y+row+1)*cw<=(y+h)*cw) by (nonlinear_arith) requires row<h,cw>=1;
+    assert(4*((y+row)*cw+x)+4*w<=4*(y+h)*cw) by (nonlinear_arith)
+        requires (y+row)*cw+x+w<=(y+row+1)*cw,(y+row+1)*cw<=(y+h)*cw;
+}
+
+/// Safety only: bounded rectangle clearing, not a disposal pixel equation.
+fn clear_rect(canvas: &mut [u8],cw: u32,x: u32,y: u32,w: u32,h: u32)
+    requires cw>=1,x as int+w as int<=cw,y as int+h as int<=u32::MAX,
+        4*(y as int+h as int)*(cw as int)<=old(canvas).len()<=crate::alloc_guard::MAX_BYTES,
+    ensures final(canvas).len()==old(canvas).len(),
+{
+    proof {crate::limits::caps_ok();}
+    let n=canvas.len();let mut row=0u32;
+    while row<h
+        invariant row<=h,canvas.len()==n,cw>=1,x as int+w as int<=cw,y as int+h as int<=u32::MAX,
+            4*(y as int+h as int)*(cw as int)<=n<=crate::alloc_guard::MAX_BYTES,
+        decreases h-row,
+    {
+        proof {rectangle_row(cw as nat,x as nat,y as nat,w as nat,h as nat,row as nat,n as nat);}
+        let o=4*((y+row) as usize*cw as usize+x as usize);
+        zero_all(&mut canvas[o..o+4*w as usize]);
+        row+=1;
+    }
+}
+
+} // verus!
 
 // ------------------------------------------------------------------ P17 ICC
 

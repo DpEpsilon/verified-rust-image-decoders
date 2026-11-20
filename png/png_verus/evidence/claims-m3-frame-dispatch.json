@@ -1,0 +1,175 @@
+{
+  "milestone": "M3 checked frame construction/stepping, weak continuation and E2 host bindings; not sign-off-ready",
+  "base_commit": "06356c4",
+  "checkpoint": 248,
+  "verified": 518,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "signoff_ready": false,
+  "no_new_trusted_items": true,
+  "runtime_public_api_unchanged": true,
+  "runtime_and_source_controls_run": 249,
+  "claims": [
+    {
+      "row": "A-PNG-2 / M3 frame constructor allocation prefix",
+      "status": "proved on host",
+      "functions": [
+        "Frames::try_new",
+        "Frames::try_new_with_policy",
+        "Frames::with_record",
+        "Frames::with_trace",
+        "allocation_model::image_call",
+        "allocation_model::prepared_exit"
+      ],
+      "run": 248,
+      "statement": "Actual constructor walk errors return exact Format with empty sealed allocation log before default decoding; walk success permits tied Raw/Output request prefix with exact modeled sizes and OOM-site binding. Later data/pixel result is deliberately unconstrained; no Eq_new claim."
+    },
+    {
+      "row": "A-PNG-7 / frame L-WALK-FIRST",
+      "status": "proved M3 host component",
+      "functions": [
+        "prepare_image",
+        "walk::walk_for_frames",
+        "Frames::with_trace",
+        "Frames::try_new",
+        "Frames::try_new_with_policy",
+        "Frames::try_next",
+        "Frames::next_with_trace"
+      ],
+      "run": 248,
+      "statement": "Checked preparation precedes actual default-image decoder/reservations, and errors return before them. Every successful receiver is built with checked structural/source invariants; stepping preserves them and supplies selected-reader premises to the real decoder. No invented pixel-event trace."
+    },
+    {
+      "row": "L-INFO-RANGE / successful constructor Info",
+      "status": "proved on host",
+      "functions": [
+        "allocation_model::returned_frame_info",
+        "Frames::from_decoded",
+        "Frames::with_trace",
+        "Frames::try_new",
+        "Frames::try_new_with_policy",
+        "Frames::try_next"
+      ],
+      "run": 248,
+      "statement": "Successful constructor Info equals constructor_info of the MWF_p document and has bounded descriptors; try_next preserves Info on success and error."
+    },
+    {
+      "row": "Weak frame safety / T1 component",
+      "status": "proved on host",
+      "functions": [
+        "Frames::source_context",
+        "Frames::dispose_and_save",
+        "Frames::draw_selected",
+        "Frames::next_with_trace",
+        "Frames::try_next",
+        "Sink::canvas",
+        "Sink::finish",
+        "layout_model::raw_dimensions",
+        "rectangle_row",
+        "clear_rect",
+        "zero_all",
+        "zero_alpha_rgb"
+      ],
+      "run": 248,
+      "statement": "Actual Previous disposal, Saved snapshot, default-frame handling and fdAT decode check termination and byte bounds. Rectangle fit justifies clear/canvas footprints, Raw monotonicity justifies reuse, and nested loan finish restores canvas length. No pixel/filter/sample/disposal/compositor/SavedAt equation."
+    },
+    {
+      "row": "Saved per-call allocation component",
+      "status": "proved on host",
+      "functions": [
+        "Frames::ensure_saved",
+        "Frames::next_with_trace",
+        "Frames::try_next"
+      ],
+      "run": 248,
+      "statement": "Fresh per-call real sealed log contains at most one canvas-sized Saved request; log_tied relates OOM to that request. No cumulative iterator-log or full terminal equation."
+    },
+    {
+      "row": "E2 / L-SEG-FRAME, IDAT",
+      "status": "host discharge; final target replay open",
+      "functions": [
+        "DataReader::for_doc",
+        "DataReader::read",
+        "DataReader::frame_covers_noncursor",
+        "still_impl",
+        "Frames::with_trace",
+        "decode_image",
+        "decode_exact"
+      ],
+      "run": 248,
+      "statement": "Both actual still and frame-constructor into bindings checked. See reader-effects-0248.json for representation, safe helper closure, complete source frame, every-read/EOF contracts, actual entry locations, and separate inspection/Rust-aliasing inference."
+    },
+    {
+      "row": "E2 / L-SEG-FRAME, fdAT",
+      "status": "host discharge; final target replay open",
+      "functions": [
+        "DataReader::for_frame",
+        "DataReader::read",
+        "DataReader::frame_covers_noncursor",
+        "FrameJob::select",
+        "Frames::try_next",
+        "Frames::next_with_trace",
+        "Frames::draw_selected",
+        "decode_image",
+        "decode_exact"
+      ],
+      "run": 248,
+      "statement": "Actual selected-frame into binding checked through public try_next and the weak drawing continuation. See reader-effects-0248.json for the separate Verus and inspection/Rust-aliasing arguments."
+    },
+    {
+      "row": "E2 / L-SEG-FRAME, iCCP",
+      "status": "retained host discharge; final target replay open",
+      "functions": [
+        "SegmentSlices::read",
+        "measure_profile",
+        "write_profile",
+        "icc_impl",
+        "try_icc_profile"
+      ],
+      "run": 248,
+      "statement": "Prior complete host discharge rechecked with refreshed source locations/hashes; no new ICC integration claim."
+    },
+    {
+      "row": "T2/T6/T10 prefix, Strict/policy L-REWALK, still dispatch/Info",
+      "status": "retained proved components; complete M3 gate partial",
+      "functions": [
+        "header::prefix",
+        "walk::walk_for_frames",
+        "try_decode_still",
+        "try_decode_still16",
+        "try_decode_still_with_policy",
+        "try_decode_still16_with_policy"
+      ],
+      "run": 248,
+      "statement": "Earlier requirement-indexed claims remain in LEDGER and prior evidence; all prior proofs run again. Remaining frozen witness and final-target gates prevent M3 sign-off."
+    },
+    {
+      "row": "THEOREMS.md frozen-record witnesses",
+      "status": "partial / unchanged",
+      "functions": [
+        "witness_m3_frozen::header_*"
+      ],
+      "run": 248,
+      "statement": "25 of 115 category-a public witnesses complete; 90 category-a and all 16 category-b full walk/preparation projections open. Three category-b accepted-header facts only. Fourteen of sixteen council cases complete; duplicate-IHDR and zero-width-fcTL still open. m3-witness-status-0248.json retains the reviewer-challenge interpretation."
+    },
+    {
+      "row": "Final i686 / M4\u2013M6 equations",
+      "status": "untouched/open",
+      "functions": [],
+      "run": 248,
+      "statement": "Final source replay must copy the existing i686 vstd cache into PNG-owned target; never rebuild/write under inflate target. No pixel/data/disposal/compositor equality claim."
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0249.json"
+  },
+  "spec_ambiguities": [],
+  "resume": "Remaining category-a public-error witnesses starting with duplicate-IHDR/zero-width-fcTL, category-b full walk/preparation projections, then final copied-cache i686 replay."
+}

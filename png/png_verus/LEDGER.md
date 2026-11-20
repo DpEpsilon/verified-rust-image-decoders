@@ -1,6 +1,34 @@
 # png_verus ledger
 
-M3 has begun; it is not signed off. The latest host checkpoint is **run 238: 496 verified, 0 errors**, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
+M3 has begun; it is not signed off. The latest host checkpoint is **run 248: 518 verified, 0 errors**, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
+
+## M3 continuation: checked Frames construction, stepping and E2 host bindings (2026-11-20)
+
+Base: `06356c4` (run 238, 496 verified). **Run 248: 518 verified, 0 errors** checks both public frame constructors and `try_next` through genuine weak image/disposal continuations. Run 240 first checked the constructors (502 verified, zero errors). Run 249 passes runtime/source controls. This is a clean host checkpoint, **not M3 sign-off**.
+
+| THEOREMS row/component | Checked functions at run 248 | Scope |
+|---|---|---|
+| A-PNG-2, M3 structural/allocation prefix | `Frames::{try_new,try_new_with_policy,with_record,with_trace}`, `allocation_model::{image_call,prepared_exit}` | Both public constructors use the actual checked MWF_p preparation before Raw/Output reservations and default decoding; exact walk errors have an empty real sealed log; after walk success the log has the tied Raw/Output prefix, including OOM exits; no Eq_new pixel/data equation |
+| A-PNG-7 / complete frame L-WALK-FIRST composition | `Frames::{with_trace,try_new,try_new_with_policy}`, `prepare_image`, `walk::walk_for_frames`, `decode_image` | The checked early return on preparation failure precedes reservation and default decode; every successful receiver originates from this checked constructor; later `try_next` uses that receiver's checked source/document invariants |
+| L-INFO-RANGE and frame Info forwarding | `allocation_model::returned_frame_info`, `Frames::{from_decoded,with_trace,try_new,try_new_with_policy,try_next}` | Successful constructor Info equals constructor_info(MWF_p document), including raw num_plays, and its descriptors stay within input length; `try_next` preserves Info on every exit |
+| Weak frame safety / T1 component | `Frames::{source_context,dispose_and_save,draw_selected,next_with_trace,try_next}`, `Sink::{canvas,finish}`, `layout_model::raw_dimensions`, `rectangle_row`, `clear_rect`, `zero_all`, `zero_alpha_rgb` | Positive fitting current and stored Previous rectangles justify byte footprints; Raw monotonicity justifies subframe reuse; all actual disposal, snapshot, draw and dispatch branches check termination, bounds and buffer/source preservation; no filter, sample, compositing, disposal or SavedAt equation |
+| Saved per-call log component | `Frames::{ensure_saved,next_with_trace,try_next}` | The fresh actual per-call trace has at most one Saved request at the canvas length and ties OOM to that request; no cumulative iterator trace or full terminal equation |
+| E2 / IDAT L-SEG-FRAME | `DataReader::{read,frame_covers_noncursor,for_doc}`, `Frames::with_trace`, `still_impl`, `decode_image`, `decode_exact` | Host discharge now includes both actual still and frame-constructor paths to the real into call; checked source frame covers all non-cursor fields on byte and EOF reads, with the separately stated inspection/Rust-aliasing argument |
+| E2 / fdAT L-SEG-FRAME | `DataReader::{read,frame_covers_noncursor,for_frame}`, `FrameJob::select`, `Frames::{begin_source,draw_selected,next_with_trace,try_next}`, `decode_image`, `decode_exact` | Host discharge now includes selected reader freshness, actual public frame dispatch, canvas and Raw premises at the real into call, plus the separately stated inspection/Rust-aliasing argument |
+| E2 / iCCP L-SEG-FRAME | `SegmentSlices::read`, `measure_profile`, `write_profile`, `icc_impl`, `try_icc_profile` | Prior host discharge retained and current source locations/hashes refreshed; no additional M6 claim |
+| T2/T6/T10 prefix, Strict/policy L-REWALK, still allocation/Info | Existing requirement-indexed claims in earlier sections, rechecked at run 248 | Retained components; the complete M3 gate is still partial because the remaining frozen witnesses and target replay are open |
+| Frozen witness gate | `witness_m3_frozen::header_*`, rechecked at run 248 | Unchanged: 25 of 115 category-(a) records complete, 90 open; all 16 category-(b) full walk/preparation projections open; three have accepted-header facts only; 14 of the council sixteen complete |
+| Final i686 / M4–M6 equations | None added | Untouched/open: copy existing i686 vstd into PNG-owned target for final replay; no rebuild or write under inflate target; no pixel/data equality claimed |
+
+`evidence/claims-m3-frame-dispatch.json` indexes these claims; `evidence/reader-effects-0248.json` records the three distinct E2 arguments and their actual call sites. E2's shared-borrow/no-external-effect inference is inspection plus Rust aliasing, not a Verus universal heap-effect theorem. The final i686 replay remains open.
+
+Runs 241–243 retained failed stepping attempts. Run 244 and runs 246–247 retained verifier internal errors from spinoff fuel slicing of hidden definitions; run 245 retained the original broad stepping solver-limit failure. Splitting actual disposal and drawing into independently checked weak helpers removed that solver-limit failure at unchanged default limits. The final functions use the standard prover; no trust, solver-limit change or false-precondition interface was added.
+
+Run 249: 846 conformance passes, zero failures, two inherited unsupported-profile skips; allocation fault injection passes; all seven council tests pass. Both source scanners and their negative controls pass; the six sealed reservation sites and guard hashes are unchanged. Runtime fixture/test hashes and pinned cache hashes/mtimes match the prior audited packet. No protected specification, dependency, policy, test or guard file changed. No background job was started, and the worker did not commit or push.
+
+No new specification ambiguity was found. The coordinator-approved category-(a)/(b) interpretation remains a reviewer question, not a frozen-spec edit. The remaining council cases are still `container/duplicate-ihdr` and `apng-bad/fctl-width-0`; neither receives a fabricated R or data-fallback outcome.
+
+Next resume point: complete the remaining category-(a) model/public-error witnesses, starting with those two council cases, then the sixteen category-(b) model/preparation projections with their explicit M4–M6 final-data label. Replay the final source on i686 using only the copied existing cache after the witness work. Do not declare sign-off.
 
 ## M3 continuation: checked image/still dispatch and first public frozen witnesses (2026-11-20)
 

@@ -249,6 +249,13 @@ impl<'o> Sink<'o> {
         ensures r.wf(w,h),r.wide_view()==wide,r.shape().1==old(out).len(),r.loan()==final(out)@,
             match r {Self::Rgba8(s)|Self::Rgba16(s)=>s@==old(out)@ && final(s)@==final(out)@,_=>false},
     {if wide {Self::Rgba16(out)}else{Self::Rgba8(out)}}
+    pub(crate) fn canvas(canvas: &'o mut [u8],cw: u32,fx: u32,fy: u32,w: u32,h: u32,over: bool) -> (r: Self)
+        requires 1<=cw<=crate::limits::PNG_WIRE_MAX,1<=w<=crate::limits::PNG_WIRE_MAX,1<=h<=crate::limits::PNG_WIRE_MAX,
+            fx as int+w as int<=cw,fy as int+h as int<=crate::limits::PNG_WIRE_MAX,
+            4*(fy as int+h as int)*(cw as int)<=canvas.len()<=crate::alloc_guard::MAX_BYTES,
+        ensures r.wf(w,h),!r.wide_view(),r.shape().1==old(canvas).len(),r.loan()==final(canvas)@,
+    {Self::Canvas {canvas,cw,fx,fy,over}}
+
     pub(crate) closed spec fn wide_view(self) -> bool {matches!(self,Self::Rgba16(_))}
     pub(crate) closed spec fn shape(self) -> (nat,nat,nat,nat,nat,bool) {
         match self {

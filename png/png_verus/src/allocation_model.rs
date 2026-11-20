@@ -100,4 +100,8 @@ pub proof fn prepared_exit<T>(b: Seq<u8>,pol: walk::Policy,frames: bool,wide: bo
     match image_walk(b,pol,frames) {walk::Outcome::Error(_,_)=>{assert(log =~= Seq::empty());},_=>{}}
 }
 
+pub open spec fn returned_frame_info(b: Seq<u8>,pol: walk::Policy,info: walk::Info) -> bool {
+    match image_walk(b,pol,true) {walk::Outcome::Done(doc,_)=>info==walk::constructor_info(doc),_=>false}
+}
+
 } // verus!
