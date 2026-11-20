@@ -1,0 +1,36 @@
+{
+  "run": 80,
+  "inputs_unchanged_since_before_run_start": true,
+  "inputs": [
+    {
+      "path": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+      "sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "mtime_ns": 1794924259094640070
+    },
+    {
+      "path": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "mtime_ns": 1794924260009912361
+    },
+    {
+      "path": "/home/ws/projects/verified-decoders/png/policy-draft/VECTORS-POLICY.json",
+      "sha256": "c591a79e28c2667201752ca79d9ff51c3cbb64270dbca5b41fbc546f8bf7122c",
+      "mtime_ns": 1795151624386900027
+    },
+    {
+      "path": "/home/ws/projects/verified-decoders/png/png_verus/tests/conformance.rs",
+      "sha256": "d925d2a2ebe03028c498aaf98b49e6a1af57d327dab15bfb21beb87e1857f350",
+      "mtime_ns": 1795142952902151462
+    },
+    {
+      "path": "/home/ws/projects/verified-decoders/png/png_verus/tests/fault_injection.rs",
+      "sha256": "77a9519b4677496dbf99c708858d55c5d724ddbf7f547f3ea1624ef8aaa10878",
+      "mtime_ns": 1795151668907968564
+    },
+    {
+      "path": "/home/ws/projects/verified-decoders/png/png_verus/tests/m1bq_rulings.rs",
+      "sha256": "1dda97aec27e960f6b164199af10fbb9aac4e9edca88ba350e49ae7c1a5bf313",
+      "mtime_ns": 1795148925165898378
+    }
+  ]
+}

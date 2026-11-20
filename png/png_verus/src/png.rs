@@ -18,7 +18,7 @@ use crate::image::{decode_image, raw_size, Sink};
 use crate::limits::MAX_ICC;
 use crate::policy::{Policy, Profile, STRICT};
 use crate::reader::{next_fctl, FdatReader, IdatReader};
-use crate::walk::{frame_at, walk, Doc, Entry, Fctl, Ihdr, WalkFail};
+use crate::walk::{frame_at, Doc, Fctl, Ihdr};
 
 use vstd::prelude::*;
 
@@ -181,6 +181,8 @@ impl Error {
 
 } // verus!
 
+verus! {
+
 /// The `recovered` events reachable in RecommendedBeta (OPTIONS.md R1, R3,
 /// R4; R2 and R5 are unreachable there). Strict never sets one.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -191,6 +193,15 @@ pub(crate) struct Events {
 }
 
 impl Events {
+    pub(crate) open spec fn view(self) -> crate::document_model::Events {
+        crate::document_model::Events {r1:self.r1,r3:self.r3,r4:self.r4}
+    }
+    pub(crate) fn discard_trns(&mut self, kind: crate::kind::Kind, ct: u8)
+        ensures final(self).r1 == (old(self).r1 || (kind.view()==crate::walk_model::Name::Trns && (ct==0 || ct==2 || ct==3))),
+            final(self).r3==old(self).r3,final(self).r4==old(self).r4,
+    {
+        if matches!(kind,crate::kind::Kind::Trns) && (ct==0 || ct==2 || ct==3) {self.r1=true;}
+    }
     pub(crate) fn any(&self) -> bool {
         self.r1 || self.r3 || self.r4
     }
@@ -215,7 +226,9 @@ pub enum Meta<T> {
 }
 
 impl<T> Meta<T> {
-    pub(crate) fn discard(&mut self) {
+    pub(crate) fn discard(&mut self)
+        ensures *final(self) == match *old(self) {Self::Absent=>Self::Discarded,other=>other},
+    {
         if let Meta::Absent = self {
             *self = Meta::Discarded;
         }
@@ -272,8 +285,10 @@ pub struct Info {
 }
 
 impl Info {
-    pub(crate) fn new(h: &Ihdr) -> Info {
-        Info {
+    pub(crate) fn new(h: &Ihdr) -> (r: Info)
+        ensures r.view() == crate::document_model::initial_info(h.view()),r.ranges_wf(0),
+    {
+        let r=Info {
             width: h.w,
             height: h.h,
             bit_depth: h.depth,
@@ -296,9 +311,13 @@ impl Info {
             num_plays: None,
             frame_count: 0,
             default_is_frame: false,
-        }
+        };
+        proof { assert(r.view().slots =~= crate::document_model::initial_info(h.view()).slots); }
+        r
     }
 }
+
+} // verus!
 
 /// The default image as RGBA8 (P15): `4·width·height` bytes, top row first,
 /// non-premultiplied.
@@ -350,14 +369,9 @@ fn oom(o: OutOfMemory) -> TryError {
     TryError::OutOfMemory(o)
 }
 
-/// The still walk: `Fallback` is produced only for the frames entry.
+/// The checked still/ICC structural walk, before any reservation.
 fn still_walk(b: &[u8], pol: &Policy, ev: &mut Events) -> Result<Doc, TryError> {
-    match walk(b, pol, Entry::Still, false, ev) {
-        Ok(d) => Ok(d),
-        Err(WalkFail::Format(e)) => Err(TryError::Format(e)),
-        // `walk` returns Fallback only when `entry == Entry::Frames`.
-        Err(WalkFail::Fallback) => Err(TryError::Format(Error::MissingAnimationControl)),
-    }
+    crate::walk::still(b,pol,ev).map_err(TryError::Format)
 }
 
 /// `Raw` then `Output` (P20), after a successful walk. `out_bytes` is `4·N` or
@@ -518,19 +532,7 @@ impl<'a> Frames<'a> {
 
     fn with_record(b: &'a [u8], pol: Policy) -> Result<Frames<'a>, TryError> {
         let mut ev = Events::default();
-        let doc = match walk(b, &pol, Entry::Frames, false, &mut ev) {
-            Ok(d) => d,
-            Err(WalkFail::Format(e)) => return Err(TryError::Format(e)),
-            Err(WalkFail::Fallback) => {
-                ev.r4 = true;
-                match walk(b, &pol, Entry::Frames, true, &mut ev) {
-                    Ok(d) => d,
-                    Err(WalkFail::Format(e)) => return Err(TryError::Format(e)),
-                    // With APNG off no APNG structural error exists.
-                    Err(WalkFail::Fallback) => return Err(TryError::Format(Error::MissingAnimationControl)),
-                }
-            }
-        };
+        let doc = crate::walk::frames(b,&pol,&mut ev).map_err(TryError::Format)?;
         let mut trace = Trace::new();
         let n = doc.ihdr.w as usize * doc.ihdr.h as usize;
         let (mut raw, mut canvas) = reserve_image(&doc, 4 * n, &mut trace)?;

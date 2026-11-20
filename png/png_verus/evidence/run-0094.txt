@@ -1,0 +1,653 @@
+command: ['bash', '-c', 'cargo test --all-targets -- --nocapture --test-threads=1 && tools/lint_caps.sh --self-test && tools/audit_alloc.sh --self-test']
+warning: unused import: `C_SEG`
+ --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/segments.rs:2:21
+  |
+2 | use crate::limits::{C_SEG, SEGMENT_BYTES_MAX};
+  |                     ^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `origin_source`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/bits.rs:103:13
+    |
+103 |         let origin_source = Ghost(src.source_frame());
+    |             ^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_origin_source`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `w`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/bits.rs:122:35
+    |
+122 |     pub(crate) fn byte(&mut self, w: &mut Work) -> (r: Result<u8, InflateError>)
+    |                                   ^ help: if this is intentional, prefix it with an underscore: `_w`
+
+warning: unused variable: `table_work`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:127:21
+    |
+127 |         let (built, table_work) = crate::canonical::build_tables(lengths,
+    |                     ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_table_work`
+
+warning: unused variable: `live_work`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:149:13
+    |
+149 |         let live_work = crate::canonical::live_counts(Ghost(lengths@), &self.count, &mut self.live);
+    |             ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_live_work`
+
+warning: unused variable: `nlen`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:502:5
+    |
+502 |     nlen: usize, ndist: usize, w: &mut Work) -> (ret: (Result<(), E>, Ghost<nat>))
+    |     ^^^^ help: if this is intentional, prefix it with an underscore: `_nlen`
+
+warning: unused variable: `ndist`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:502:18
+    |
+502 |     nlen: usize, ndist: usize, w: &mut Work) -> (ret: (Result<(), E>, Ghost<nat>))
+    |                  ^^^^^ help: if this is intentional, prefix it with an underscore: `_ndist`
+
+warning: unused variable: `code_cost`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:770:27
+    |
+770 |         let (code_result, code_cost) = dynamic_code(&mut self.code, br, ncode, nlen, ndist, w);
+    |                           ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_code_cost`
+
+warning: unused variable: `length_cost`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:773:22
+    |
+773 |         let (result, length_cost) = self.dynamic_lengths(br, nlen, ndist, w);
+    |                      ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_length_cost`
+
+warning: unused variable: `n`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/lib.rs:195:34
+    |
+195 |     pub(crate) fn add(&mut self, n: usize)
+    |                                  ^ help: if this is intentional, prefix it with an underscore: `_n`
+
+warning: field `observed` is never read
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/lib.rs:185:9
+    |
+184 | pub(crate) struct Work {
+    |                   ---- field in this struct
+185 |     pub observed: Ghost<nat>,
+    |         ^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `bytes` is never read
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/adler.rs:83:16
+   |
+79 | pub(crate) struct Adler {
+   |                   ----- field in this struct
+...
+83 |     pub(crate) bytes: Ghost<Seq<u8>>,
+   |                ^^^^^
+
+warning: fields `origin_seg`, `origin_core`, `origin_rank`, `origin_count`, and `loop_work` are never read
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/bits.rs:37:16
+   |
+33 | pub(crate) struct Bits<'a, S: Segments> {
+   |                   ---- fields in this struct
+...
+37 |     pub(crate) origin_seg: Ghost<nat>,
+   |                ^^^^^^^^^^
+38 |     pub(crate) origin_core: Ghost<nat>,
+   |                ^^^^^^^^^^^
+39 |     pub(crate) origin_rank: Ghost<nat>,
+   |                ^^^^^^^^^^^
+40 |     pub(crate) origin_count: Ghost<nat>,
+   |                ^^^^^^^^^^^^
+...
+43 |     pub(crate) loop_work: Ghost<nat>,
+   |                ^^^^^^^^^
+
+warning: fields `lengths`, `kind`, `single_accept`, and `ready` are never read
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:18:16
+   |
+11 | pub(crate) struct Huffman {
+   |                   ------- fields in this struct
+...
+18 |     pub(crate) lengths: Ghost<Seq<u8>>,
+   |                ^^^^^^^
+19 |     pub(crate) kind: Ghost<Kind>,
+   |                ^^^^
+20 |     pub(crate) single_accept: Ghost<bool>,
+   |                ^^^^^^^^^^^^^
+21 |     pub(crate) ready: Ghost<bool>,
+   |                ^^^^^
+
+warning: fields `out` and `initial` are never read
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:190:5
+    |
+185 | struct Output<'a> {
+    |        ------ fields in this struct
+...
+190 |     out: Ghost<Seq<u8>>,
+    |     ^^^
+191 |     initial: Ghost<Seq<u8>>,
+    |     ^^^^^^^
+
+warning: fields `header_construction` and `header_table_start` are never read
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:406:5
+    |
+400 | struct Tables {
+    |        ------ fields in this struct
+...
+406 |     header_construction: Ghost<nat>,
+    |     ^^^^^^^^^^^^^^^^^^^
+407 |     header_table_start: Ghost<Option<nat>>,
+    |     ^^^^^^^^^^^^^^^^^^
+
+warning: fields `seg_work` and `read_work` are never read
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/segments.rs:102:5
+    |
+ 96 | pub struct SegmentSlices<'a> {
+    |            ------------- fields in this struct
+...
+102 |     seg_work: Ghost<nat>,
+    |     ^^^^^^^^
+103 |     read_work: Ghost<nat>,
+    |     ^^^^^^^^^
+
+warning: `inflate_verus` (lib) generated 17 warnings (run `cargo fix --lib -p inflate_verus` to apply 10 suggestions)
+   Compiling png_verus v0.1.0 (/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental/png_verus-1yqf017sokwqv/s-hobu17ozb8-091htl6-working`
+
+error[E0433]: cannot find module or crate `walk_state` in this scope
+   --> src/walk_own.rs:185:23
+    |
+185 |             if !keep {walk_state::discard(doc,kind,ev);return Ok(false);}
+    |                       ^^^^^^^^^^ use of unresolved module or unlinked crate `walk_state`
+    |
+help: to make use of source file src/walk_state.rs, use `mod walk_state` in this file to declare the module
+   --> src/lib.rs:19:1
+    |
+ 19 + mod walk_state;
+    |
+help: consider importing this module
+    |
+  3 + use crate::walk_state;
+    |
+
+error[E0433]: cannot find module or crate `walk_state` in this scope
+   --> src/walk_own.rs:351:11
+    |
+351 |     match walk_state::ancillary_values(kind,b,base,size,doc) {
+    |           ^^^^^^^^^^ use of unresolved module or unlinked crate `walk_state`
+    |
+help: to make use of source file src/walk_state.rs, use `mod walk_state` in this file to declare the module
+   --> src/lib.rs:19:1
+    |
+ 19 + mod walk_state;
+    |
+help: consider importing this module
+    |
+  3 + use crate::walk_state;
+    |
+
+error[E0433]: cannot find module or crate `walk_state` in this scope
+   --> src/walk_own.rs:353:46
+    |
+353 |                 if rules.order.drop_invalid {walk_state::discard(doc,kind,ev);return Ok(false);}
+    |                                              ^^^^^^^^^^ use of unresolved module or unlinked crate `walk_state`
+    |
+help: to make use of source file src/walk_state.rs, use `mod walk_state` in this file to declare the module
+   --> src/lib.rs:19:1
+    |
+ 19 + mod walk_state;
+    |
+help: consider importing this module
+    |
+  3 + use crate::walk_state;
+    |
+
+warning: unused import: `PNG_WIRE_MAX`
+ --> src/apng.rs:5:51
+  |
+5 | use crate::limits::{MAX_FRAMES, MAX_TOTAL_PIXELS, PNG_WIRE_MAX};
+  |                                                   ^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `PNG_WIRE_MAX`
+ --> src/header.rs:4:59
+  |
+4 | use crate::limits::{MAX_DIMENSION, MAX_INPUT, MAX_OUTPUT, PNG_WIRE_MAX};
+  |                                                           ^^^^^^^^^^^^
+
+warning: unused doc comment
+  --> src/walk.rs:96:1
+   |
+96 | / /// P2–P8, P14.1 under `pol`. `apng_off` is the re-walk of the R4 fallback, with
+97 | | /// acTL, fcTL and fdAT treated as unknown ancillary chunks (`apng = Off`).
+   | |_--------------------------------------------------------------------------^
+   |   |
+   |   rustdoc does not generate documentation for macro invocations
+   |
+   = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+   = note: `#[warn(unused_doc_comments)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `be32`
+  --> src/walk.rs:16:39
+   |
+16 | pub(crate) use crate::framing::{be16, be32, frame_at};
+   |                                       ^^^^
+
+warning: unused imports: `Kind` and `kind_of`
+  --> src/walk.rs:18:30
+   |
+18 | pub(crate) use crate::kind::{kind_of, Kind};
+   |                              ^^^^^^^  ^^^^
+
+warning: unused variable: `site`
+  --> src/alloc_guard/sites.rs:87:18
+   |
+87 | pub fn try_empty(site: AllocSite, Tracked(log): Tracked<&mut AllocLog>)
+   |                  ^^^^ help: if this is intentional, prefix it with an underscore: `_site`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `entries`
+  --> src/metadata.rs:58:38
+   |
+58 | fn sbit(d: &[u8], ct: u8, depth: u8, entries: usize) -> (r: Result<Value,Error>)
+   |                                      ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_entries`
+
+warning: unused variable: `b`
+   --> src/metadata.rs:280:22
+    |
+280 | pub(crate) fn rebase(b: &[u8], base: usize, size: usize, start: usize, count: usize) -> (r: (usize,usize))
+    |                      ^ help: if this is intentional, prefix it with an underscore: `_b`
+
+warning: unused variable: `size`
+   --> src/metadata.rs:280:45
+    |
+280 | pub(crate) fn rebase(b: &[u8], base: usize, size: usize, start: usize, count: usize) -> (r: (usize,usize))
+    |                                             ^^^^ help: if this is intentional, prefix it with an underscore: `_size`
+
+warning: unused variable: `b`
+  --> src/walk_state.rs:44:35
+   |
+44 |     pub(crate) fn new(ihdr: Ihdr, b: &[u8]) -> (r: Self)
+   |                                   ^ help: if this is intentional, prefix it with an underscore: `_b`
+
+warning: unused variable: `doc`
+  --> src/walk_state.rs:71:23
+   |
+71 |     pub(crate) fn new(doc: &Doc, b: &[u8]) -> (r: Self)
+   |                       ^^^ help: if this is intentional, prefix it with an underscore: `_doc`
+
+warning: unused variable: `b`
+  --> src/walk_state.rs:71:34
+   |
+71 |     pub(crate) fn new(doc: &Doc, b: &[u8]) -> (r: Self)
+   |                                  ^ help: if this is intentional, prefix it with an underscore: `_b`
+
+warning: unused variable: `chunk_offset`
+  --> src/walk_own.rs:48:49
+   |
+48 | fn run_ihdr(b: &[u8], base: usize, size: usize, chunk_offset: usize, pos: usize,
+   |                                                 ^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_chunk_offset`
+
+warning: unused variable: `pos`
+  --> src/walk_own.rs:48:70
+   |
+48 | fn run_ihdr(b: &[u8], base: usize, size: usize, chunk_offset: usize, pos: usize,
+   |                                                                      ^^^ help: if this is intentional, prefix it with an underscore: `_pos`
+
+warning: unused variable: `kind`
+  --> src/walk_own.rs:49:5
+   |
+49 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+   |     ^^^^ help: if this is intentional, prefix it with an underscore: `_kind`
+
+warning: unused variable: `rules`
+  --> src/walk_own.rs:49:17
+   |
+49 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+   |                 ^^^^^ help: if this is intentional, prefix it with an underscore: `_rules`
+
+warning: unused variable: `static_frames`
+  --> src/walk_own.rs:49:31
+   |
+49 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+   |                               ^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_static_frames`
+
+warning: unused variable: `state`
+  --> src/walk_own.rs:49:67
+   |
+49 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+   |                                                                   ^^^^^ help: if this is intentional, prefix it with an underscore: `_state`
+
+warning: unused variable: `ev`
+  --> src/walk_own.rs:49:86
+   |
+49 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+   |                                                                                      ^^ help: if this is intentional, prefix it with an underscore: `_ev`
+
+warning: unused variable: `d`
+  --> src/walk_own.rs:62:9
+   |
+62 |     let d=&b[base..base+size];
+   |         ^ help: if this is intentional, prefix it with an underscore: `_d`
+
+warning: unused variable: `ct`
+  --> src/walk_own.rs:63:9
+   |
+63 |     let ct=doc.ihdr.ct;
+   |         ^^ help: if this is intentional, prefix it with an underscore: `_ct`
+
+warning: unused variable: `depth`
+  --> src/walk_own.rs:64:9
+   |
+64 |     let depth=doc.ihdr.depth;
+   |         ^^^^^ help: if this is intentional, prefix it with an underscore: `_depth`
+
+warning: unused variable: `chunk_offset`
+  --> src/walk_own.rs:69:49
+   |
+69 | fn run_plte(b: &[u8], base: usize, size: usize, chunk_offset: usize, pos: usize,
+   |                                                 ^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_chunk_offset`
+
+warning: unused variable: `pos`
+  --> src/walk_own.rs:69:70
+   |
+69 | fn run_plte(b: &[u8], base: usize, size: usize, chunk_offset: usize, pos: usize,
+   |                                                                      ^^^ help: if this is intentional, prefix it with an underscore: `_pos`
+
+warning: unused variable: `kind`
+  --> src/walk_own.rs:70:5
+   |
+70 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+   |     ^^^^ help: if this is intentional, prefix it with an underscore: `_kind`
+
+warning: unused variable: `static_frames`
+  --> src/walk_own.rs:70:31
+   |
+70 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+   |                               ^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_static_frames`
+
+warning: unused variable: `ev`
+  --> src/walk_own.rs:70:86
+   |
+70 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+   |                                                                                      ^^ help: if this is intentional, prefix it with an underscore: `_ev`
+
+warning: unused variable: `d`
+  --> src/walk_own.rs:83:9
+   |
+83 |     let d=&b[base..base+size];
+   |         ^ help: if this is intentional, prefix it with an underscore: `_d`
+
+warning: unused variable: `pos`
+   --> src/walk_own.rs:100:70
+    |
+100 | fn run_idat(b: &[u8], base: usize, size: usize, chunk_offset: usize, pos: usize,
+    |                                                                      ^^^ help: if this is intentional, prefix it with an underscore: `_pos`
+
+warning: unused variable: `kind`
+   --> src/walk_own.rs:101:5
+    |
+101 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |     ^^^^ help: if this is intentional, prefix it with an underscore: `_kind`
+
+warning: unused variable: `rules`
+   --> src/walk_own.rs:101:17
+    |
+101 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |                 ^^^^^ help: if this is intentional, prefix it with an underscore: `_rules`
+
+warning: unused variable: `static_frames`
+   --> src/walk_own.rs:101:31
+    |
+101 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |                               ^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_static_frames`
+
+warning: unused variable: `ev`
+   --> src/walk_own.rs:101:86
+    |
+101 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |                                                                                      ^^ help: if this is intentional, prefix it with an underscore: `_ev`
+
+warning: unused variable: `d`
+   --> src/walk_own.rs:114:9
+    |
+114 |     let d=&b[base..base+size];
+    |         ^ help: if this is intentional, prefix it with an underscore: `_d`
+
+warning: unused variable: `depth`
+   --> src/walk_own.rs:116:9
+    |
+116 |     let depth=doc.ihdr.depth;
+    |         ^^^^^ help: if this is intentional, prefix it with an underscore: `_depth`
+
+warning: unused variable: `chunk_offset`
+   --> src/walk_own.rs:137:49
+    |
+137 | fn run_iend(b: &[u8], base: usize, size: usize, chunk_offset: usize, pos: usize,
+    |                                                 ^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_chunk_offset`
+
+warning: unused variable: `kind`
+   --> src/walk_own.rs:138:5
+    |
+138 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |     ^^^^ help: if this is intentional, prefix it with an underscore: `_kind`
+
+warning: unused variable: `ev`
+   --> src/walk_own.rs:138:86
+    |
+138 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |                                                                                      ^^ help: if this is intentional, prefix it with an underscore: `_ev`
+
+warning: unused variable: `d`
+   --> src/walk_own.rs:151:9
+    |
+151 |     let d=&b[base..base+size];
+    |         ^ help: if this is intentional, prefix it with an underscore: `_d`
+
+warning: unused variable: `ct`
+   --> src/walk_own.rs:152:9
+    |
+152 |     let ct=doc.ihdr.ct;
+    |         ^^ help: if this is intentional, prefix it with an underscore: `_ct`
+
+warning: unused variable: `depth`
+   --> src/walk_own.rs:153:9
+    |
+153 |     let depth=doc.ihdr.depth;
+    |         ^^^^^ help: if this is intentional, prefix it with an underscore: `_depth`
+
+warning: unused variable: `chunk_offset`
+   --> src/walk_own.rs:196:49
+    |
+196 | fn run_actl(b: &[u8], base: usize, size: usize, chunk_offset: usize, pos: usize,
+    |                                                 ^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_chunk_offset`
+
+warning: unused variable: `pos`
+   --> src/walk_own.rs:196:70
+    |
+196 | fn run_actl(b: &[u8], base: usize, size: usize, chunk_offset: usize, pos: usize,
+    |                                                                      ^^^ help: if this is intentional, prefix it with an underscore: `_pos`
+
+warning: unused variable: `kind`
+   --> src/walk_own.rs:197:5
+    |
+197 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |     ^^^^ help: if this is intentional, prefix it with an underscore: `_kind`
+
+warning: unused variable: `rules`
+   --> src/walk_own.rs:197:17
+    |
+197 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |                 ^^^^^ help: if this is intentional, prefix it with an underscore: `_rules`
+
+warning: unused variable: `state`
+   --> src/walk_own.rs:197:67
+    |
+197 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |                                                                   ^^^^^ help: if this is intentional, prefix it with an underscore: `_state`
+
+warning: unused variable: `ev`
+   --> src/walk_own.rs:197:86
+    |
+197 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |                                                                                      ^^ help: if this is intentional, prefix it with an underscore: `_ev`
+
+warning: unused variable: `ct`
+   --> src/walk_own.rs:211:9
+    |
+211 |     let ct=doc.ihdr.ct;
+    |         ^^ help: if this is intentional, prefix it with an underscore: `_ct`
+
+warning: unused variable: `depth`
+   --> src/walk_own.rs:212:9
+    |
+212 |     let depth=doc.ihdr.depth;
+    |         ^^^^^ help: if this is intentional, prefix it with an underscore: `_depth`
+
+warning: unused variable: `chunk_offset`
+   --> src/walk_own.rs:225:49
+    |
+225 | fn run_fctl(b: &[u8], base: usize, size: usize, chunk_offset: usize, pos: usize,
+    |                                                 ^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_chunk_offset`
+
+warning: unused variable: `pos`
+   --> src/walk_own.rs:225:70
+    |
+225 | fn run_fctl(b: &[u8], base: usize, size: usize, chunk_offset: usize, pos: usize,
+    |                                                                      ^^^ help: if this is intentional, prefix it with an underscore: `_pos`
+
+warning: unused variable: `kind`
+   --> src/walk_own.rs:226:5
+    |
+226 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |     ^^^^ help: if this is intentional, prefix it with an underscore: `_kind`
+
+warning: unused variable: `rules`
+   --> src/walk_own.rs:226:17
+    |
+226 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |                 ^^^^^ help: if this is intentional, prefix it with an underscore: `_rules`
+
+warning: unused variable: `ev`
+   --> src/walk_own.rs:226:86
+    |
+226 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |                                                                                      ^^ help: if this is intentional, prefix it with an underscore: `_ev`
+
+warning: unused variable: `ct`
+   --> src/walk_own.rs:240:9
+    |
+240 |     let ct=doc.ihdr.ct;
+    |         ^^ help: if this is intentional, prefix it with an underscore: `_ct`
+
+warning: unused variable: `depth`
+   --> src/walk_own.rs:241:9
+    |
+241 |     let depth=doc.ihdr.depth;
+    |         ^^^^^ help: if this is intentional, prefix it with an underscore: `_depth`
+
+warning: unused variable: `f`
+   --> src/walk_own.rs:243:10
+    |
+243 |     let (f,next)=match apng::fctl(d,doc.actl.is_some(),state.idat==0,doc.ihdr.w,doc.ihdr.h,state.apng) {
+    |          ^ help: if this is intentional, prefix it with an underscore: `_f`
+
+warning: unused variable: `chunk_offset`
+   --> src/walk_own.rs:260:49
+    |
+260 | fn run_fdat(b: &[u8], base: usize, size: usize, chunk_offset: usize, pos: usize,
+    |                                                 ^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_chunk_offset`
+
+warning: unused variable: `pos`
+   --> src/walk_own.rs:260:70
+    |
+260 | fn run_fdat(b: &[u8], base: usize, size: usize, chunk_offset: usize, pos: usize,
+    |                                                                      ^^^ help: if this is intentional, prefix it with an underscore: `_pos`
+
+warning: unused variable: `kind`
+   --> src/walk_own.rs:261:5
+    |
+261 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |     ^^^^ help: if this is intentional, prefix it with an underscore: `_kind`
+
+warning: unused variable: `rules`
+   --> src/walk_own.rs:261:17
+    |
+261 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |                 ^^^^^ help: if this is intentional, prefix it with an underscore: `_rules`
+
+warning: unused variable: `ev`
+   --> src/walk_own.rs:261:86
+    |
+261 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |                                                                                      ^^ help: if this is intentional, prefix it with an underscore: `_ev`
+
+warning: unused variable: `ct`
+   --> src/walk_own.rs:275:9
+    |
+275 |     let ct=doc.ihdr.ct;
+    |         ^^ help: if this is intentional, prefix it with an underscore: `_ct`
+
+warning: unused variable: `depth`
+   --> src/walk_own.rs:276:9
+    |
+276 |     let depth=doc.ihdr.depth;
+    |         ^^^^^ help: if this is intentional, prefix it with an underscore: `_depth`
+
+warning: unused variable: `chunk_offset`
+   --> src/walk_own.rs:304:52
+    |
+304 | fn run_unknown(b: &[u8], base: usize, size: usize, chunk_offset: usize, pos: usize,
+    |                                                    ^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_chunk_offset`
+
+warning: unused variable: `pos`
+   --> src/walk_own.rs:304:73
+    |
+304 | fn run_unknown(b: &[u8], base: usize, size: usize, chunk_offset: usize, pos: usize,
+    |                                                                         ^^^ help: if this is intentional, prefix it with an underscore: `_pos`
+
+warning: unused variable: `rules`
+   --> src/walk_own.rs:305:17
+    |
+305 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |                 ^^^^^ help: if this is intentional, prefix it with an underscore: `_rules`
+
+warning: unused variable: `static_frames`
+   --> src/walk_own.rs:305:31
+    |
+305 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |                               ^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_static_frames`
+
+warning: unused variable: `state`
+   --> src/walk_own.rs:305:67
+    |
+305 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |                                                                   ^^^^^ help: if this is intentional, prefix it with an underscore: `_state`
+
+warning: unused variable: `ev`
+   --> src/walk_own.rs:305:86
+    |
+305 |     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
+    |                                                                                      ^^ help: if this is intentional, prefix it with an underscore: `_ev`
+
+warning: unused variable: `d`
+   --> src/walk_own.rs:318:9
+    |
+318 |     let d=&b[base..base+size];
+    |         ^ help: if this is intentional, prefix it with an underscore: `_d`
+
+warning: unused variable: `ct`
+   --> src/walk_own.rs:319:9
+    |
+319 |     let ct=doc.ihdr.ct;
+    |         ^^ help: if this is intentional, prefix it with an underscore: `_ct`
+
+warning: unused variable: `depth`
+   --> src/walk_own.rs:320:9
+    |
+320 |     let depth=doc.ihdr.depth;
+    |         ^^^^^ help: if this is intentional, prefix it with an underscore: `_depth`
+
+For more information about this error, try `rustc --explain E0433`.
+warning: `png_verus` (lib) generated 74 warnings
+error: could not compile `png_verus` (lib) due to 3 previous errors; 74 warnings emitted

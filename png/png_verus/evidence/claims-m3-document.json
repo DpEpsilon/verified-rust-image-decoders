@@ -1,0 +1,190 @@
+{
+  "milestone": "M3 full mathematical document walk and checked raw Info storage; not sign-off",
+  "base_commit": "3fb56cd",
+  "checkpoint": 79,
+  "verified": 207,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "runtime_and_source_controls_run": 80,
+  "no_new_trusted_items": true,
+  "claims": [
+    {
+      "row": "T6",
+      "status": "complete definitions; executable refinement open",
+      "functions": [
+        "document_model::initial",
+        "document_model::own",
+        "document_model::step",
+        "document_model::drive",
+        "document_model::start",
+        "model::MW",
+        "model::MW_p",
+        "model::MWF_p"
+      ],
+      "defined_state": [
+        "independent singleton set",
+        "natural control counters",
+        "raw metadata slots and ranges",
+        "IDAT payload sequence",
+        "frames with Idat/Fdat range sources",
+        "recovery events and fresh-document Static fallback"
+      ],
+      "run": 79
+    },
+    {
+      "row": "T6 termination component",
+      "status": "model-level proved; executable transfer open",
+      "functions": [
+        "document_model::own_position",
+        "document_model::eof_terminal",
+        "document_model::step_progress",
+        "document_model::drive_step"
+      ],
+      "claim": "own preserves cursor; exact EOF cannot Next; every Next advances at least 12 bytes within input; recursive driver has unguarded step equation",
+      "run": 79
+    },
+    {
+      "row": "T6 policy projection",
+      "status": "component-proved",
+      "functions": [
+        "Policy::walk_view",
+        "Policy::walk_rules",
+        "walk_policy::Rules::view",
+        "walk_policy::profiles_project_exactly"
+      ],
+      "binding": "actual walk consumes the checked rule record for every represented record; both declared profile constants match independent model records",
+      "run": 79
+    },
+    {
+      "row": "T6 Info representation",
+      "status": "initialization proved; representation defined",
+      "functions": [
+        "Info::new",
+        "Info::view",
+        "document_model::initial_info"
+      ],
+      "binding": "actual Doc uses Info::new; all exposed fields and 13 metadata slots are represented; unused sBIT/bKGD padding excluded",
+      "run": 79
+    },
+    {
+      "row": "T6 P8 storage",
+      "status": "component-proved",
+      "functions": [
+        "info::parsed_compatible",
+        "info::store",
+        "info::parse_and_store"
+      ],
+      "premises": [
+        "valid Info colour/depth",
+        "palette entries <= 256",
+        "base/size form a bounded input span"
+      ],
+      "binding": "actual ancillary_values calls parse_and_store; errors preserve physical Info; success equals model raw storage/rebase and returns bounded profile descriptor",
+      "run": 79
+    },
+    {
+      "row": "T6 discard/events",
+      "status": "component-proved",
+      "functions": [
+        "Meta::discard",
+        "info::discard",
+        "Events::discard_trns"
+      ],
+      "binding": "actual discard wrapper calls both checked updates; only Absent becomes Discarded; Present survives; R1 uses tRNS colour-type site and R3/R4 are preserved",
+      "run": 79
+    },
+    {
+      "row": "L-INFO-RANGE",
+      "status": "local initialization/storage/discard preservation proved; complete gate partial",
+      "functions": [
+        "Info::new",
+        "Info::ranges_wf",
+        "info::store",
+        "info::parse_and_store",
+        "info::discard"
+      ],
+      "premises": [
+        "previous Info ranges valid for the supplied input bound",
+        "parser/span premises above"
+      ],
+      "run": 79
+    },
+    {
+      "row": "L-REWALK Strict and policy",
+      "status": "complete concatenation definitions; reader selection equality open",
+      "functions": [
+        "document_model::concat_ranges",
+        "document_model::default_stream",
+        "document_model::frame_stream"
+      ],
+      "qualifier": "bad descriptors map to internal OutsideDomain; empty fdAT payloads remain in trace",
+      "run": 79
+    },
+    {
+      "row": "T6 / M3 witnesses",
+      "status": "local production-call and mathematical witnesses proved; whole-input gates incomplete",
+      "functions": [
+        "witness_document::stored_metadata_and_discard",
+        "witness_document::borrowed_metadata_ranges",
+        "witness_document::policy_projection_calls",
+        "witness_document::empty_fdat_trace"
+      ],
+      "run": 79
+    },
+    {
+      "row": "T6 / T10-prefix",
+      "status": "partial",
+      "unproved": [
+        "executable loop invariant and step/drive refinement",
+        "ghost trace relation to first-IDAT pointer and frame re-walk cursors",
+        "Doc assembly and all helper premises",
+        "initialized reachability excludes internal OutsideDomain",
+        "whole-input exact first errors and executable termination"
+      ],
+      "run": 79
+    },
+    {
+      "row": "A-PNG-2",
+      "status": "untouched complete public-entry/logged gate"
+    },
+    {
+      "row": "A-PNG-7",
+      "status": "untouched complete public-entry/logged gate"
+    },
+    {
+      "row": "L-WALK-FIRST",
+      "status": "untouched complete public-entry/logged gate"
+    },
+    {
+      "row": "complete returned-Info theorem",
+      "status": "untouched complete public-entry/logged gate"
+    }
+  ],
+  "crc_status": "L-CRC-TABLE discharged as corrected by approved E5 (8d36419); unchanged earlier proofs enabled; T6 remains partial",
+  "runtime": {
+    "strict": 599,
+    "caps": 13,
+    "policy": 236,
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0080.json"
+  },
+  "parallel_work": {
+    "production_RB_record": "other agent changed missing_iend and trns_invalid to inherited Reject; this dispatch did not edit either record value",
+    "tests_and_policy_vectors": "other agent owns changes; consumed regenerated bundle",
+    "model_RB_flags": "updated only the independent model after run 78 detected the changed production record",
+    "policy_rs_owned_change": "verus macro wrapper and import only"
+  },
+  "diagnostics": {
+    "75": "pinned Verus interpreter panic on by(compute) of executable array variable; corrected to literal-sequence computation",
+    "69": "explicit extensional map equalities needed",
+    "72": "explicit bKGD sequence-length facts needed",
+    "78": "exact profile projection detected concurrent RB adjustment"
+  },
+  "resume": "Executable loop invariant against document_model::State and no-OutsideDomain reachability; branch refinement, synthetic EOF, Strict/policy reader selection, then logged allocation/walk-first/returned-Info."
+}

@@ -1,13 +1,13 @@
 //! PNG/APNG decoder core (PNG-CORE-SPEC 1.0, Stage 1, `../../spec-frozen/SPEC.md`),
 //! with the Strict and RecommendedBeta profiles of `../../policy-draft/OPTIONS.md`.
 //!
-//! M3 has begun (`../../PLAN.md`): the CRC, wire framing, header prefix,
-//! keywords, singleton/order preamble, P6–P8 value parsers, APNG control
-//! transitions, metadata-range rebasing and segmented re-walk adapter are
-//! inside `verus!` and tied to independent models. The complete policy walk,
-//! Info storage, image stages and public entry-point bodies remain ordinary
-//! Rust; a green run does not claim their verification. zlib/DEFLATE is the
-//! verified `inflate_verus` dependency.
+//! M3 has begun (`../../PLAN.md`): the actual structural walk, local value
+//! and APNG checks, raw Info storage and policy projection are verified
+//! against complete independent MW/MW_p/MWF_p transition/trace models.
+//! The segmented reader adapter is verified separately; equality between its
+//! bytes and MW-selected streams remains open. Image stages, public allocation
+//! sequencing and returned-object bodies remain ordinary Rust. A green run
+//! does not sign off M3. zlib/DEFLATE is the verified `inflate_verus` dependency.
 //!
 //! `no_std + alloc`, no `unsafe`, no recursion. Every heap allocation goes
 //! through `alloc_guard` (`Raw`, `Output`, `Saved`, `IccWindow`, `Icc`).
@@ -25,9 +25,12 @@ mod crc;
 mod critical;
 #[cfg(verus_only)]
 pub mod critical_model;
+#[cfg(verus_only)]
+pub mod document_model;
 mod framing;
 mod header;
 mod image;
+mod info;
 mod keywords;
 mod kind;
 mod metadata;
@@ -43,12 +46,20 @@ pub mod png;
 pub mod policy;
 mod reader;
 mod walk;
+mod walk_policy;
+mod walk_state;
+mod walk_own;
+mod walk_step;
 #[cfg(verus_only)]
 mod witness_m3;
 #[cfg(verus_only)]
 mod witness_metadata;
 #[cfg(verus_only)]
 mod witness_critical;
+#[cfg(verus_only)]
+mod witness_document;
+#[cfg(verus_only)]
+mod witness_walk;
 
 pub use alloc_guard::sites::TryError;
 pub use alloc_guard::{AllocSite, OutOfMemory};

@@ -1,6 +1,7 @@
 //! Independent P3 checksum definition: reflected polynomial division, one bit
 //! at a time. The model never reads the executable lookup table.
 use vstd::prelude::*;
+pub use crate::document_model::{MW,MW_p,MWF_p};
 
 verus! {
 

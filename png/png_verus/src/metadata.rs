@@ -1,4 +1,4 @@
-//! Verified P6–P8 value validation, separate from the plain Info storage layer.
+//! Verified P6–P8 value validation, separate from the checked Info storage layer.
 //! Fixed-size arrays hold raw metadata values; variable data remains borrowed
 //! through relative byte-range descriptors. No payload is inflated here.
 use vstd::prelude::*;

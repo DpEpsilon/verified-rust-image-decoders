@@ -1,6 +1,6 @@
 //! Independent P5/P14 control-state vocabulary and P5 preamble. Singleton
 //! membership is a mathematical set; no executable bit positions occur here.
-//! This is a component of MW, not yet the complete document walk.
+//! The complete document/trace walk is defined in document_model.
 use vstd::prelude::*;
 use crate::png::Error;
 

@@ -1,0 +1,213 @@
+{
+  "milestone": "M3 host executable whole-walk refinement; not sign-off",
+  "base_commit": "3fb56cd",
+  "continuation_from_checkpoint": 79,
+  "observed_shared_commits": [
+    "2c9aa33",
+    "e0cac73"
+  ],
+  "checkpoint": 98,
+  "verified": 240,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "runtime_and_source_controls_run": 99,
+  "no_new_trusted_items": true,
+  "claims": [
+    {
+      "row": "T6 state/document representation",
+      "status": "proved on host",
+      "functions": [
+        "Doc::view",
+        "Doc::wf",
+        "Doc::new",
+        "Doc::palette_entries",
+        "State::view",
+        "State::wf",
+        "State::new"
+      ],
+      "invariant": [
+        "header/Info equality",
+        "palette count and payload consistency",
+        "bounded metadata/IDAT/fdAT ranges",
+        "phase/control well-formedness",
+        "frame-count/source agreement",
+        "first-IDAT pointer relation"
+      ],
+      "binding": "actual production initialization and state",
+      "run": 98
+    },
+    {
+      "row": "T6 own-stage composition",
+      "status": "proved on host",
+      "functions": [
+        "walk_own::run",
+        "walk_own::run_ihdr",
+        "walk_own::run_plte",
+        "walk_own::run_idat",
+        "walk_own::run_iend",
+        "walk_own::run_trns",
+        "walk_own::run_actl",
+        "walk_own::run_fctl",
+        "walk_own::run_fdat",
+        "walk_own::run_unknown",
+        "walk_own::run_ancillary",
+        "walk_state::discard",
+        "walk_state::ancillary_values"
+      ],
+      "model": "document_model::own",
+      "binding": "actual step dispatches here; checked helper premises follow from State::wf",
+      "run": 98
+    },
+    {
+      "row": "T6 whole chunk step",
+      "status": "proved on host",
+      "functions": [
+        "walk_step::run",
+        "walk_step::ordered"
+      ],
+      "model": [
+        "document_model::step",
+        "document_model::ordered"
+      ],
+      "claim": "exact next/done/error/fallback and events; every successful continuation preserves invariant and advances at least 12 bytes",
+      "run": 98
+    },
+    {
+      "row": "T6 full generic walk equation",
+      "status": "proved on host; complete T6 assurance gates remain open",
+      "functions": [
+        "walk::walk",
+        "walk::outcome_view"
+      ],
+      "model": "document_model::start",
+      "domain": "every host Rust byte slice, every represented policy, either entry, either APNG-off flag and arbitrary initial recovery events",
+      "claim": "exact full document or first error/fallback and final event equality; returned Doc is well formed",
+      "run": 98
+    },
+    {
+      "row": "T6 MW_p and Strict specialization",
+      "status": "proved on host",
+      "functions": [
+        "walk::still",
+        "walk_policy::profiles_project_exactly"
+      ],
+      "model": [
+        "model::MW_p",
+        "model::MW"
+      ],
+      "premise": "fresh recovery events",
+      "binding": "png::still_walk now calls checked walk::still, used by production still/ICC paths",
+      "run": 98
+    },
+    {
+      "row": "T6 MWF_p constructor walk",
+      "status": "proved on host",
+      "functions": [
+        "walk::frames"
+      ],
+      "model": "model::MWF_p",
+      "premise": "fresh recovery events",
+      "binding": "Frames::with_record now calls checked wrapper, including preservation of first-walk events, R4 and fresh APNG-off document",
+      "run": 98
+    },
+    {
+      "row": "T6 termination and reachable domain",
+      "status": "proved on host",
+      "functions": [
+        "walk::walk",
+        "walk::still",
+        "walk::frames",
+        "walk_step::run",
+        "document_model::step_progress"
+      ],
+      "claim": "loop decreases remaining bytes; synthetic EOF cannot continue without progress; explicit no-OutsideDomain postconditions for initialized walks on Rust slices",
+      "qualifier": "does not exclude OutsideDomain for arbitrary fabricated mathematical states",
+      "run": 98
+    },
+    {
+      "row": "L-INFO-RANGE",
+      "status": "internal returned-Doc theorem proved; complete public returned-Info gate partial",
+      "functions": [
+        "Doc::wf",
+        "walk_state::ancillary_values",
+        "walk_own::run",
+        "walk::walk"
+      ],
+      "claim": "full modeled Info storage/discard included in walk equality and successful Doc ranges bounded",
+      "run": 98
+    },
+    {
+      "row": "T6 whole-input witness",
+      "status": "one synthesized production-call witness proved; frozen-record set incomplete",
+      "functions": [
+        "witness_walk::prefix",
+        "witness_walk::idat_step",
+        "witness_walk::iend_step",
+        "witness_walk::accepted",
+        "witness_walk::empty_idat_document"
+      ],
+      "claim": "57-byte 1x1 RGB structural acceptance with first IDAT at 33, empty payload range at 41 and no frame trace, under named MAX_INPUT guard",
+      "qualifier": "empty compressed data does not imply pixel success; bytes synthesized locally, not a third-party corpus",
+      "run": 98
+    },
+    {
+      "row": "T10 prefix",
+      "status": "complete walk-side first-error equality proved; public allocation/inflate order partial",
+      "functions": [
+        "walk::walk",
+        "walk::still",
+        "walk::frames"
+      ],
+      "run": 98
+    },
+    {
+      "row": "T-SEG / L-REWALK Strict and policy",
+      "status": "adapter remains verified; document-to-reader stream selection still open",
+      "run": 98
+    },
+    {
+      "row": "A-PNG-2",
+      "status": "untouched complete public-entry/logged gate"
+    },
+    {
+      "row": "A-PNG-7",
+      "status": "untouched complete public-entry/logged gate"
+    },
+    {
+      "row": "L-WALK-FIRST",
+      "status": "untouched complete public-entry/logged gate"
+    },
+    {
+      "row": "complete public returned-Info theorem",
+      "status": "untouched complete public-entry/logged gate"
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "strict": 599,
+    "caps": 13,
+    "policy": 236,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0099.json"
+  },
+  "crc_status": "L-CRC-TABLE remains discharged as corrected by approved E5; historical pending-full-walk wording describes earlier checkpoints, not run98; no T6/M3 sign-off",
+  "remaining": [
+    "reader_bytes equals selected IDAT/fdAT concatenations, Strict and policy/Static",
+    "public fresh-event/logged allocation caller proofs",
+    "walk-first/inflate-sequencing and full returned-Info",
+    "complete required frozen-record witnesses and i686 replay"
+  ],
+  "diagnostics": {
+    "82": "monolithic own branch budget exceeded; split per kind",
+    "85": "complete-step budget exceeded; factored independent ordered P5/own stage",
+    "90": "whole-file witness budget exceeded; split prefix/step/driver facts",
+    "94": "normal Cargo caught runtime walk_state import incorrectly cfg-gated; fixed unconditional runtime import"
+  },
+  "parallel_work": "RB record/council test/policy/vector/freeze edits belong to other agents; no protected file or test edited here",
+  "resume": "Connect verified readers to model-selected streams, then migrate public callers with fresh events/sealed allocation logs and complete walk-first/returned-Info gates."
+}
