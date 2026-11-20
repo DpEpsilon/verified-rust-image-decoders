@@ -389,8 +389,8 @@ fn reserve_image(doc: &Doc, out_bytes: usize, trace: &mut Trace) -> Result<(Vec<
 /// P15 for RGBA8 (`wide = false`) or RGBA16: walk, reserve, decode.
 fn still_impl(b: &[u8], pol: &Policy, wide: bool, ev: &mut Events, trace: &mut Trace) -> Result<(Doc, Vec<u8>), TryError> {
     let doc = still_walk(b, pol, ev)?;
-    let n = doc.ihdr.w as usize * doc.ihdr.h as usize;
-    let (mut raw, mut out) = reserve_image(&doc, if wide { 8 * n } else { 4 * n }, trace)?;
+    let out_bytes=crate::image::output_size(&doc.ihdr,wide);
+    let (mut raw, mut out) = reserve_image(&doc,out_bytes,trace)?;
     let mut src = IdatReader::for_doc(b, &doc);
     let mut sink = if wide { Sink::Rgba16(&mut out) } else { Sink::Rgba8(&mut out) };
     decode_image(&doc, b, &mut src, &mut raw, doc.ihdr.w, doc.ihdr.h, pol, ev, &mut sink).map_err(TryError::Format)?;
@@ -601,8 +601,8 @@ impl<'a> Frames<'a> {
         let mut ev = Events::default();
         let doc = crate::callers::frames(b,&pol,&mut ev)?;
         let mut trace = Trace::new();
-        let n = doc.ihdr.w as usize * doc.ihdr.h as usize;
-        let (mut raw, mut canvas) = reserve_image(&doc, 4 * n, &mut trace)?;
+        let out_bytes=crate::image::output_size(&doc.ihdr,false);
+        let (mut raw, mut canvas) = reserve_image(&doc,out_bytes,&mut trace)?;
         let mut src = IdatReader::for_doc(b, &doc);
         decode_image(&doc, b, &mut src, &mut raw, doc.ihdr.w, doc.ihdr.h, &pol, &mut ev, &mut Sink::Rgba8(&mut canvas))
             .map_err(TryError::Format)?;

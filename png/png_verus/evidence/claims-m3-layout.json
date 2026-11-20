@@ -1,0 +1,169 @@
+{
+  "milestone": "M3 production buffer-size arithmetic checkpoint; not sign-off",
+  "base_commit": "d5fe80a",
+  "checkpoint": 167,
+  "verified": 347,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "runtime_and_source_controls_run": 168,
+  "no_new_trusted_items": true,
+  "claims": [
+    {
+      "row": "P11 / P12 layout arithmetic model",
+      "status": "component-proved on host",
+      "functions": [
+        "layout_model::span_bounds",
+        "layout_model::axis_splits",
+        "layout_model::coverage",
+        "layout_model::scan_bound",
+        "layout_model::interlaced_prefix_bound",
+        "layout_model::monotone",
+        "layout_model::raw_bounds"
+      ],
+      "run": 167,
+      "domain": "positive dimensions; interlace 0/1; bits per pixel <= 64",
+      "statement": "seven Adam7 pass areas sum to W*H; pass row counts are bounded by 2*H+2; exact modeled Raw size is positive and <= 10*W*H+2",
+      "qualifier": "area-count equality is not a coordinate-bijection or pixel-semantics theorem"
+    },
+    {
+      "row": "T2-to-layout sample-width bridge",
+      "status": "proved on host",
+      "functions": [
+        "Ihdr::channels",
+        "Ihdr::bits_pp"
+      ],
+      "run": 167,
+      "statement": "actual channels/depth multiplication equals the independent layout bit-width model; valid IHDR gives at most 64 bits per pixel"
+    },
+    {
+      "row": "P11 / P12 production layout refinement",
+      "status": "component-proved on host",
+      "functions": [
+        "image::pass",
+        "image::pass_count",
+        "image::row_bytes",
+        "image::raw_size"
+      ],
+      "run": 167,
+      "premises": [
+        "Ihdr::wf",
+        "1 <= subimage width <= header width",
+        "1 <= subimage height <= header height"
+      ],
+      "statement": "actual nonempty pass geometry and dimensions match the model, row bytes equal ceil(pw*B/8), and the terminating Raw-size loop equals the independent P11 sum without arithmetic overflow"
+    },
+    {
+      "row": "A-PNG-2 / still Raw reservation domain",
+      "status": "component-proved on host",
+      "functions": [
+        "image::raw_budget",
+        "image::raw_size",
+        "limits::caps_ok"
+      ],
+      "run": 167,
+      "statement": "4*W*H <= MAX_OUTPUT yields Raw <= 5*MAX_OUTPUT/2+2 <= MAX_BYTES; the actual Raw byte count is positive and fits usize, including the manifest 32-bit range premise",
+      "qualifier": "host proof using symbolic named caps, not an i686 replay or complete public logged theorem"
+    },
+    {
+      "row": "Output reservation domain, RGBA8 / RGBA16",
+      "status": "component-proved on host",
+      "functions": [
+        "image::output_size"
+      ],
+      "run": 167,
+      "statement": "actual Output bytes equal 4*W*H or 8*W*H, are positive, fit usize and are <= MAX_BYTES; no truncation assumption",
+      "binding": "production still_impl and Frames::with_record now call output_size instead of unchecked usize products"
+    },
+    {
+      "row": "buffer/receiver layout composition",
+      "status": "partial",
+      "functions": [],
+      "run": 167,
+      "unproved": [
+        "bind allocated Raw/canvas/Saved lengths and initialized contents to receiver invariants",
+        "subframe Raw monotonicity and transfer of validated fcTL rectangle bounds to image call premises",
+        "whole public caller precondition discharge"
+      ]
+    },
+    {
+      "row": "A-PNG-2",
+      "status": "complete per-public-call sealed-log/composition gate remains open",
+      "functions": [],
+      "run": 167
+    },
+    {
+      "row": "A-PNG-7",
+      "status": "complete per-public-call sealed-log/composition gate remains open",
+      "functions": [],
+      "run": 167
+    },
+    {
+      "row": "L-WALK-FIRST",
+      "status": "complete per-public-call sealed-log/composition gate remains open",
+      "functions": [],
+      "run": 167
+    },
+    {
+      "row": "complete public returned-Info",
+      "status": "complete per-public-call sealed-log/composition gate remains open",
+      "functions": [],
+      "run": 167
+    },
+    {
+      "row": "L-SEG-FRAME IDAT",
+      "status": "OPEN under approved E2",
+      "functions": [],
+      "run": 167,
+      "evidence": "reader-effects-open-0167.json",
+      "qualifier": "existing frame/cursor checks do not establish the full representation/inspection/effect/call-site obligation"
+    },
+    {
+      "row": "L-SEG-FRAME fdAT",
+      "status": "OPEN under approved E2",
+      "functions": [],
+      "run": 167,
+      "evidence": "reader-effects-open-0167.json",
+      "qualifier": "existing frame/cursor checks do not establish the full representation/inspection/effect/call-site obligation"
+    },
+    {
+      "row": "L-SEG-FRAME iCCP",
+      "status": "OPEN under approved E2",
+      "functions": [],
+      "run": 167,
+      "evidence": "reader-effects-open-0167.json",
+      "qualifier": "existing frame/cursor checks do not establish the full representation/inspection/effect/call-site obligation"
+    },
+    {
+      "row": "T8 / full P12 image semantics / L-REWALK-COST / M3 assurance",
+      "status": "partial or untouched complete gates",
+      "functions": [],
+      "run": 167,
+      "unproved": [
+        "coordinate mapping/filter/sample/compositing semantics",
+        "aggregate work accounting",
+        "remaining required frozen-record witnesses",
+        "i686 replay and milestone sign-off"
+      ]
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0168.json"
+  },
+  "diagnostics": {
+    "153-154": "natural arithmetic casts and conditional geometry in pinned Verus",
+    "155-159": "explicit recursion unfolding, geometry identities and polynomial composition; independent model green at 330",
+    "160": "crate-local Ihdr method visibility aligned with strengthened field/view contracts",
+    "161-164": "pass spans proved through existing vstd quotient lemmas; production Raw size green at 341",
+    "165-167": "explicit product bounds and associativity prove exact Output count/conversion; final 347"
+  },
+  "solver_note": "axis_splits uses an isolated prover context; no solver limit changed; existing vstd lemmas used without building vstd",
+  "spec_ambiguities": [],
+  "resume": "Use the checked Raw/Output size contracts to migrate real sealed per-call logs through still/frame/ICC public flows; bind buffer lengths/content and prove A-PNG-2/A-PNG-7, L-WALK-FIRST, returned-Info and each approved-E2 reader obligation. Keep subframe geometry/Raw monotonicity and image semantics explicit."
+}

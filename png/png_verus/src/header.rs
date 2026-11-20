@@ -26,13 +26,14 @@ impl Ihdr {
         && 4 * (self.w as int) * (self.h as int) <= MAX_OUTPUT
         && model::valid_depth(self.ct, self.depth) && self.interlace <= 1
     }
-    pub fn channels(&self) -> (r: u32)
-        ensures 1 <= r <= 4,
+    pub(crate) fn channels(&self) -> (r: u32)
+        ensures 1 <= r <= 4,r==if self.ct==0 || self.ct==3 {1int}else if self.ct==2 {3int}else if self.ct==4 {2int}else{4int},
     {
         match self.ct { 0 => 1, 2 => 3, 3 => 1, 4 => 2, _ => 4 }
     }
-    pub fn bits_pp(&self) -> (r: u32)
-        ensures r <= 4 * 255,
+    pub(crate) fn bits_pp(&self) -> (r: u32)
+        ensures r <= 4 * 255,r==crate::layout_model::bits(self.view()),
+            self.wf() ==> r<=64,
     {
         let channels = self.channels();
         let depth = self.depth as u32;

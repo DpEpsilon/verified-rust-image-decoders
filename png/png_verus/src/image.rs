@@ -10,6 +10,11 @@ use inflate_verus::{inflate_zlib_into, Segments, Status};
 use crate::png::{Error, Events};
 use crate::policy::{PaletteIndex, Policy};
 use crate::walk::{be16, Doc, Ihdr};
+use vstd::prelude::*;
+#[cfg(verus_only)]
+use crate::layout_model as layout;
+
+verus! {
 
 /// Adam7 passes `(x0, y0, dx, dy)` (P12).
 pub(crate) const ADAM7: [(u32, u32, u32, u32); 7] =
@@ -28,7 +33,16 @@ pub(crate) struct Pass {
 
 /// The `k`-th pass of a `w × h` image (`k = 0` only without interlace), or
 /// `None` when it is empty: `pw = ⌈(w − x0)/dx⌉` if `w > x0`, else 0 (P12).
-pub(crate) fn pass(interlace: u8, w: u32, h: u32, k: usize) -> Option<Pass> {
+pub(crate) fn pass(interlace: u8, w: u32, h: u32, k: usize) -> (r: Option<Pass>)
+    requires 1<=w<=crate::limits::PNG_WIRE_MAX,1<=h<=crate::limits::PNG_WIRE_MAX,interlace<=1,
+    ensures match r {
+        None=>if interlace==0 {k!=0}else{k>=7 || layout::cols(w as nat,k as nat)==0 || layout::rows(h as nat,k as nat)==0},
+        Some(p)=>1<=p.pw<=w && 1<=p.ph<=h && 1<=p.dx<=8 && 1<=p.dy<=8
+            && if interlace==0 {k==0 && p.x0==0 && p.y0==0 && p.dx==1 && p.dy==1 && p.pw==w && p.ph==h}
+            else{k<7 && (p.x0 as nat,p.y0 as nat,p.dx as nat,p.dy as nat)==layout::geometry(k as nat)
+                && p.pw==layout::cols(w as nat,k as nat) && p.ph==layout::rows(h as nat,k as nat)},
+    },
+ {
     if interlace == 0 {
         return if k == 0 { Some(Pass { x0: 0, y0: 0, dx: 1, dy: 1, pw: w, ph: h }) } else { None };
     }
@@ -36,6 +50,13 @@ pub(crate) fn pass(interlace: u8, w: u32, h: u32, k: usize) -> Option<Pass> {
         return None;
     }
     let (x0, y0, dx, dy) = ADAM7[k];
+    proof {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {}
+        assert((x0 as nat,y0 as nat,dx as nat,dy as nat)==layout::geometry(k as nat));
+        layout::span_bounds(w as nat,x0 as nat,dx as nat);
+        layout::span_bounds(h as nat,y0 as nat,dy as nat);
+    }
+
     let pw = if w > x0 { (w - x0 + dx - 1) / dx } else { 0 };
     let ph = if h > y0 { (h - y0 + dy - 1) / dy } else { 0 };
     if pw == 0 || ph == 0 {
@@ -44,29 +65,106 @@ pub(crate) fn pass(interlace: u8, w: u32, h: u32, k: usize) -> Option<Pass> {
     Some(Pass { x0, y0, dx, dy, pw, ph })
 }
 
-pub(crate) fn pass_count(interlace: u8) -> usize {
+pub(crate) fn pass_count(interlace: u8) -> (r: usize)
+    ensures r==layout::count(interlace),1<=r<=7,
+{
     if interlace == 0 { 1 } else { 7 }
 }
 
 /// Bytes of one scanline of `pw` pixels after its filter byte, `⌈pw·B/8⌉`.
-pub(crate) fn row_bytes(ihdr: &Ihdr, pw: u32) -> u64 {
+pub(crate) fn row_bytes(ihdr: &Ihdr, pw: u32) -> (r: u64)
+    requires ihdr.wf(),pw<=crate::limits::PNG_WIRE_MAX,
+    ensures r==layout::scan_bytes(layout::bits(ihdr.view()),pw as nat),r<=8*(pw as int),
+{
+    proof {layout::scan_bound(layout::bits(ihdr.view()),pw as nat);}
     (pw as u64 * ihdr.bits_pp() as u64 + 7) / 8
 }
 
 /// `R(w,h)`, P11: the sum over the non-empty passes of `ph·(1 + row bytes)`.
 /// Callers pass `w ≤ W`, `h ≤ H` with `4·W·H ≤ MAX_OUTPUT`, so the sum is at
 /// most `2·MAX_OUTPUT + MAX_OUTPUT/2 + 2` and fits `u64` (and one reservation).
-pub(crate) fn raw_size(ihdr: &Ihdr, w: u32, h: u32) -> u64 {
-    let mut r = 0u64;
-    let mut k = 0;
-    while k < pass_count(ihdr.interlace) {
-        if let Some(p) = pass(ihdr.interlace, w, h, k) {
-            r += p.ph as u64 * (1 + row_bytes(ihdr, p.pw));
+pub(crate) fn raw_size(ihdr: &Ihdr, w: u32, h: u32) -> (r: u64)
+    requires ihdr.wf(),1<=w<=ihdr.w,1<=h<=ihdr.h,
+    ensures r==layout::raw(ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat),
+        1<=r<=crate::alloc_guard::MAX_BYTES,
+{
+    let bits=ihdr.bits_pp();
+    proof {raw_budget(*ihdr,w,h);}
+    let mut r=0u64;
+    let mut k=0usize;
+    while k<pass_count(ihdr.interlace)
+        invariant ihdr.wf(),1<=w<=ihdr.w,1<=h<=ihdr.h,bits==layout::bits(ihdr.view()),
+            bits<=64,k<=layout::count(ihdr.interlace),
+            r==layout::prefix(ihdr.interlace,bits as nat,w as nat,h as nat,k as nat),
+            layout::raw(ihdr.interlace,bits as nat,w as nat,h as nat)<=crate::alloc_guard::MAX_BYTES,
+        decreases layout::count(ihdr.interlace)-k,
+    {
+        if let Some(p)=pass(ihdr.interlace,w,h,k) {
+            let rb=row_bytes(ihdr,p.pw);
+            proof {
+                reveal_with_fuel(layout::prefix,2);
+                layout::monotone(ihdr.interlace,bits as nat,w as nat,h as nat,(k+1) as nat,layout::count(ihdr.interlace));
+                assert(layout::contribution(ihdr.interlace,bits as nat,w as nat,h as nat,k as nat)
+                    ==p.ph as int*(1+rb as int));
+            }
+            r+=p.ph as u64*(1+rb);
+        } else {
+            proof {assert(layout::contribution(ihdr.interlace,bits as nat,w as nat,h as nat,k as nat)==0);}
         }
-        k += 1;
+        k+=1;
     }
     r
 }
+
+/// Byte-counted Output request for RGBA8 or big-endian RGBA16.
+pub(crate) fn output_size(ihdr: &Ihdr, wide: bool) -> (r: usize)
+    requires ihdr.wf(),
+    ensures r==(if wide {8int}else{4int})*(ihdr.w as int)*(ihdr.h as int),
+        1<=r<=crate::alloc_guard::MAX_BYTES,
+{
+    proof {
+        crate::limits::caps_ok();
+        assert(1<=8*(ihdr.w as int)*(ihdr.h as int)<=2*crate::limits::MAX_OUTPUT) by (nonlinear_arith)
+            requires 1<=ihdr.w,1<=ihdr.h,4*(ihdr.w as int)*(ihdr.h as int)<=crate::limits::MAX_OUTPUT;
+        assert(1<=4*(ihdr.w as int)*(ihdr.h as int)<=crate::limits::MAX_OUTPUT) by (nonlinear_arith)
+            requires 1<=ihdr.w,1<=ihdr.h,4*(ihdr.w as int)*(ihdr.h as int)<=crate::limits::MAX_OUTPUT;
+    }
+    proof {
+        assert(1<=(ihdr.w as int)*(ihdr.h as int)<=crate::alloc_guard::MAX_BYTES) by (nonlinear_arith)
+            requires 1<=ihdr.w,1<=ihdr.h,8*(ihdr.w as int)*(ihdr.h as int)<=2*crate::limits::MAX_OUTPUT,
+                2*crate::limits::MAX_OUTPUT<=crate::alloc_guard::MAX_BYTES;
+    }
+    let n=ihdr.w as u64*ihdr.h as u64;
+    proof {
+        assert(1<=8*(n as int)<=crate::alloc_guard::MAX_BYTES) by (nonlinear_arith)
+            requires n==(ihdr.w as int)*(ihdr.h as int),1<=ihdr.w,1<=ihdr.h,
+                8*(ihdr.w as int)*(ihdr.h as int)<=2*crate::limits::MAX_OUTPUT,
+                2*crate::limits::MAX_OUTPUT<=crate::alloc_guard::MAX_BYTES;
+    }
+    let bytes=if wide {8*n}else{4*n};
+    proof {
+        assert(bytes==(if wide {8int}else{4int})*(n as int));
+        assert(bytes==(if wide {8int}else{4int})*(ihdr.w as int)*(ihdr.h as int)) by (nonlinear_arith)
+            requires n==(ihdr.w as int)*(ihdr.h as int),bytes==(if wide {8int}else{4int})*(n as int);
+    }
+    bytes as usize
+}
+
+proof fn raw_budget(ihdr: Ihdr,w: u32,h: u32)
+    requires ihdr.wf(),1<=w<=ihdr.w,1<=h<=ihdr.h,
+    ensures 1<=layout::raw(ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat)<=crate::alloc_guard::MAX_BYTES,
+        w<=crate::limits::PNG_WIRE_MAX,h<=crate::limits::PNG_WIRE_MAX,
+{
+    crate::limits::caps_ok();
+    assert(layout::bits(ihdr.view())<=64);
+    layout::raw_bounds(ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat);
+    assert(4*(w as int)*(h as int)<=crate::limits::MAX_OUTPUT) by (nonlinear_arith)
+        requires 1<=w<=ihdr.w,1<=h<=ihdr.h,4*(ihdr.w as int)*(ihdr.h as int)<=crate::limits::MAX_OUTPUT;
+    assert(10*(w as int)*(h as int)+2<=5*(crate::limits::MAX_OUTPUT as int)/2+2) by (nonlinear_arith)
+        requires 4*(w as int)*(h as int)<=crate::limits::MAX_OUTPUT;
+}
+
+} // verus!
 
 /// Where converted pixels go.
 pub(crate) enum Sink<'o> {

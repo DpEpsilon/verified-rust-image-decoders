@@ -1,0 +1,22 @@
+{
+  "checkpoint": 167,
+  "verified": 347,
+  "errors": 0,
+  "runtime_run": 168,
+  "base_commit": "d5fe80a",
+  "source_inventory_matches": true,
+  "source_file_count": 46,
+  "fresh_vstd_no_rebuild": true,
+  "source_and_copy_cache_matches": true,
+  "runtime_inputs_unchanged": true,
+  "sealed_guard_hashes_unchanged": true,
+  "no_new_trusted_items": true,
+  "no_worker_protected_path_changes": true,
+  "whitespace_check_passed": true,
+  "runlog_sha256": "5143ebf7ab84e5cb092cc7b1a174dab9408ac441b6df77915130939893635d43",
+  "ledger_sha256": "3102f3d6cee0f39bb9590dbdc95dc4031e7a93f2c157a0deceb7d59a75087955",
+  "new_source_file": "/home/ws/projects/verified-decoders/png/png_verus/src/layout_model.rs",
+  "background_jobs_started": 0,
+  "worker_commit_or_push": false,
+  "scope": "exact production Raw/Output byte counts and guard-domain premises; per-call sealed logs, buffer fits, E2 reader effects and public composition remain open"
+}

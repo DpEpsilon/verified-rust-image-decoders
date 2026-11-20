@@ -39,6 +39,8 @@ mod header;
 mod image;
 mod info;
 mod keywords;
+#[cfg(verus_only)]
+pub mod layout_model;
 mod kind;
 mod metadata;
 #[cfg(verus_only)]
