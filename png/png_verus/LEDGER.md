@@ -1,8 +1,33 @@
 # png_verus ledger
 
-M3 has begun; it is not signed off. The final host checkpoint is **run 24: 78 verified, 0 errors**, with `--no-cheating`, default solver limits and one verifier thread. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
+M3 has begun; it is not signed off. The latest host checkpoint is **run 33: 104 verified, 0 errors**, with `--no-cheating`, default solver limits and one verifier thread. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
 
-## M3 checkpoint (2026-11-20)
+## M3 continuation: singleton representation and P5 preamble (2026-11-20)
+
+Base: committed checkpoint `8e05689` (run 24, 78 verified). This continuation reaches run **33, 104 verified, 0 errors**; the prior proof bodies also run in that checkpoint. Runs 28 (97), 30 (100) and 31 (102) were intermediate green checkpoints. This is a local chunk-stage checkpoint, not whole-walk or policy sign-off.
+
+| THEOREMS row/component | Checked statement and concrete binding | State at run 33 |
+|---|---|---|
+| T6 type classification | `kind::kind_of` equals independent `walk_model::classify` on every four-byte type; `Kind::ancillary` has a checked ancillary-bit contract; the real walk uses both | Proved component |
+| T6 singleton representation | `kind::{index_facts,index_unique,lemma_insert}` relate the executable bit assignments to a finite set of independent model names; `initial_seen`, `mark_seen`, `seen_contains` prove initialization, insertion and duplicate lookup; `after_plte_seen` proves PLTE's three-bit test equals membership of tRNS/bKGD/hIST | Proved component; all actual walk mask initialization/update/read sites now use these helpers |
+| T6 IDAT phase | `ordering::advance_phase` equals `walk_model::advance_phase` and preserves the three-state domain; the real walk invokes it before CRC-policy discard | Proved component; even a subsequently dropped ancillary chunk ends the IDAT run |
+| T6 P5 preamble | `ordering::preamble` equals independent `walk_model::order` on duplicate, ancillary-order and fixed-length checks, in that exact first-error order, for every combination of its five rule flags; the result also preserves the APNG structural/non-structural recovery-site flag and never increases the payload length | Proved component; the real walk invokes it in place of the former P5.1–P5.3 code |
+| T6 complete walk / T10 prefix | `witness_m3::{ordering_precedence,ordering_recovery_sites}` bind actual helper calls to duplicate-before-order-before-length errors, duplicate discard, acTL's structural error despite drop settings, lenient IEND length, and phase advancement before discard | Partial rows; CRC-policy selection, per-chunk value branches, APNG transitions and the complete MW loop are still outside the proof |
+| MW control-state vocabulary | `walk_model::State` uses a singleton set, the independent phase enum, a natural sequence/pixel count, APNG current/frame state and ghost IDAT/fdAT payload-range/frame sequences; `walk_model::initial` defines their initial values | Defined only; this is not a complete MW function or an APNG transition theorem |
+| T-SEG / L-REWALK, Strict and policy | The prior adapter theorem remains verified, but no document-to-reader range theorem was added | Unchanged partial rows |
+| A-PNG-2 / A-PNG-7 / L-WALK-FIRST / L-INFO-RANGE | No public-entry or allocation theorem was added | Untouched |
+
+Every new proof claim above names its function and **run 33**. `evidence/checkpoint-0033.json` and `evidence/claims-m3-order.json` retain the source binding and requirement index; selected complete run transcripts and the cache preservation comparison are hash-listed in `evidence/SHA256SUMS`. Q6 remains open and no new claim depends on its answer. No new trusted item or proof bypass was added.
+
+The policy-record-to-five-flags projection still executes in the plain walk; inspection and runtime tests cover that wiring, not a universal public-policy theorem. PLTE's own ordering/value branch follows the verified preamble and remains unproved, although its mask-membership test is now checked. CRC selection still precedes the preamble and retains the M1b-Q2 bad-fcTL handling. Discarding an ignored duplicate PLTE now passes through `discard`; that function does nothing for PLTE and does not set an event, so the result is unchanged.
+
+Proof convention found during this migration: a derived enum `PartialEq` call does not automatically supply the structural-equality contract needed here. The verified code uses enum constructor tests (`matches!`) instead; it does not add an assumed equality specification or a trust annotation.
+
+Validation: run **34**, all Cargo test targets, gives 808 conformance records passed, zero failed and the two inherited P2 skips; fault injection passes; council tests give six passed and one inherited phase-2 presence test ignored. Run **35** passes both source lints and their negative controls; guard hashes remain unchanged. Verus still uses one thread and Cargo one build job while corpus-pass process references exist; every verbose verification reports `Fresh vstd`. No tests, protected files, policy vectors or inflate files were edited, and no background job was started.
+
+Next resume point: implement the model and executable refinements for the per-chunk value and APNG transition stages, then assemble the complete `MW`/`MW_p`/`MWF_p` loop with ghost ranges. Preserve the existing singleton insertion point: after the preamble succeeds but before per-chunk values, including a chunk whose later value rule discards it. The APNG sequence field is still the original executable `u32` with wrapping increments: its refinement to the model's natural counter must not assume that the current draft MAX_INPUT numeral prevents wrap; either derive a symbolic reachable bound or widen/check the executable counter. After complete selection equality, connect MW's ranges to the existing reader adapter separately for Strict and policy selection, then migrate logged entry points for the allocation and walk-first gates.
+
+## Earlier M3 checkpoint (2026-11-20)
 
 The root crate now completes a nonzero, zero-error Verus run. This is not a claim that all existing code is under `verus!`: the CRC, wire framing, complete header prefix, keyword helpers, error-name helpers, allocation guard and re-walk adapter are verified; `walk.rs`'s ordering/policy loop, `image.rs`, the public entry-point bodies and allocation sequencing remain ordinary Rust. `model.rs` defines the independent bitwise CRC, P3 framing, `mh` header prefix, keywords and a lengths-and-types reader stream. It does **not** yet define the complete `MW`/`MW_p`/`MWF_p` document model.
 

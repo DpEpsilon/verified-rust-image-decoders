@@ -21,6 +21,10 @@ mod framing;
 mod header;
 mod image;
 mod keywords;
+mod kind;
+mod ordering;
+#[cfg(verus_only)]
+pub mod walk_model;
 #[cfg(verus_only)]
 pub mod model;
 pub mod limits;

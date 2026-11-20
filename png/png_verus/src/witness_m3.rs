@@ -44,4 +44,44 @@ fn header_error_precedence() {
     }
 }
 
+/// Concrete production calls pin duplicate > ordering > fixed-length order.
+fn ordering_precedence() {
+    use crate::kind::{Kind, initial_seen, mark_seen};
+    use crate::ordering::{preamble, OrderAction, Rules};
+    let strict = Rules { first_duplicate_wins: false, drop_misordered: false,
+        drop_invalid: false, ignore_unexpected_plte: false, lenient_iend: false };
+    let mut seen = initial_seen();
+    mark_seen(&mut seen, Kind::Gama);
+    let duplicate = preamble(seen, 2, true, 2, Kind::Gama, true, 3, strict);
+    let order = preamble(seen, 2, true, 2, Kind::Phys, true, 8, strict);
+    let length = preamble(seen, 0, false, 2, Kind::Phys, true, 8, strict);
+    proof {
+        assert(matches!(duplicate, OrderAction::Fail(Error::DuplicateChunk, false)));
+        assert(matches!(order, OrderAction::Fail(Error::ChunkOutOfOrder, false)));
+        assert(matches!(length, OrderAction::Fail(Error::InvalidChunkLength, false)));
+    }
+}
+
+/// Recovery selection is indexed by the chunk/stage, not by the error name.
+fn ordering_recovery_sites() {
+    use crate::kind::{Kind, initial_seen, mark_seen};
+    use crate::ordering::{advance_phase, preamble, OrderAction, Rules};
+    let drop = Rules { first_duplicate_wins: true, drop_misordered: true,
+        drop_invalid: true, ignore_unexpected_plte: true, lenient_iend: true };
+    let mut seen = initial_seen();
+    mark_seen(&mut seen, Kind::Gama);
+    let duplicate = preamble(seen, 2, true, 2, Kind::Gama, true, 3, drop);
+    let actl = preamble(seen, 2, true, 2, Kind::Actl, true, 7, drop);
+    let iend = preamble(seen, 1, false, 2, Kind::Iend, false, 9, drop);
+    let mut idat = 1u8;
+    advance_phase(&mut idat, Kind::Gama);
+    let skipped = preamble(seen, idat, false, 2, Kind::Phys, true, 9, drop);
+    proof {
+        assert(matches!(duplicate, OrderAction::Drop));
+        assert(matches!(actl, OrderAction::Fail(Error::ChunkOutOfOrder, true)));
+        assert(matches!(iend, OrderAction::Keep(0)));
+        assert(idat == 2 && matches!(skipped, OrderAction::Drop));
+    }
+}
+
 } // verus!

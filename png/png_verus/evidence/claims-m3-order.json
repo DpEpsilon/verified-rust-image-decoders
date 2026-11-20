@@ -1,0 +1,130 @@
+{
+  "milestone": "M3 continuation, not sign-off",
+  "base_commit": "8e05689",
+  "checkpoint": 33,
+  "verified": 104,
+  "errors": 0,
+  "host_only": true,
+  "runtime_run": 34,
+  "source_controls_run": 35,
+  "new_trusted_items": false,
+  "claims": [
+    {
+      "row": "T6",
+      "component": "type classification and ancillary bit",
+      "status": "component-proved",
+      "functions": [
+        "kind::kind_of",
+        "kind::Kind::ancillary"
+      ],
+      "model": "walk_model::classify",
+      "run": 33
+    },
+    {
+      "row": "T6",
+      "component": "singleton finite-set representation",
+      "status": "component-proved",
+      "functions": [
+        "kind::index_facts",
+        "kind::index_unique",
+        "kind::lemma_insert",
+        "kind::initial_seen",
+        "kind::mark_seen",
+        "kind::seen_contains",
+        "kind::after_plte_seen"
+      ],
+      "model": "walk_model::singleton; kind::seen_view representation",
+      "run": 33
+    },
+    {
+      "row": "T6",
+      "component": "IDAT phase transition before CRC discard",
+      "status": "component-proved",
+      "functions": [
+        "ordering::advance_phase"
+      ],
+      "model": "walk_model::advance_phase",
+      "run": 33
+    },
+    {
+      "row": "T6",
+      "component": "duplicate / ancillary-order / fixed-length first error and recovery site",
+      "status": "component-proved; whole-row-partial",
+      "functions": [
+        "ordering::preamble"
+      ],
+      "model": "walk_model::order",
+      "rule_domain": "all combinations of five bool flags",
+      "run": 33
+    },
+    {
+      "row": "T6 / T10-prefix",
+      "component": "concrete production-call witnesses",
+      "status": "partial; full M3 gates open",
+      "functions": [
+        "witness_m3::ordering_precedence",
+        "witness_m3::ordering_recovery_sites"
+      ],
+      "run": 33
+    },
+    {
+      "row": "MW",
+      "component": "independent control state, ghost frame/payload ranges, initial state",
+      "status": "vocabulary-defined-only; complete model and APNG transitions unproved",
+      "items": [
+        "walk_model::State",
+        "walk_model::Frame",
+        "walk_model::Range",
+        "walk_model::Source",
+        "walk_model::initial"
+      ],
+      "run": 33
+    },
+    {
+      "row": "T2 / L-CRC-TABLE",
+      "status": "prior scoped equations reverified; Q6 remains open",
+      "functions": [
+        "header::prefix",
+        "crc::make_table",
+        "crc::lemma_crc_update",
+        "crc::crc32"
+      ],
+      "run": 33
+    },
+    {
+      "row": "T-SEG / L-REWALK Strict and policy",
+      "status": "prior adapter reverified; document-to-reader selection still open",
+      "functions": [
+        "reader::DataReader::read"
+      ],
+      "run": 33
+    },
+    {
+      "row": "A-PNG-2",
+      "status": "untouched; no new theorem"
+    },
+    {
+      "row": "A-PNG-7",
+      "status": "untouched; no new theorem"
+    },
+    {
+      "row": "L-WALK-FIRST",
+      "status": "untouched; no new theorem"
+    },
+    {
+      "row": "L-INFO-RANGE",
+      "status": "untouched; no new theorem"
+    }
+  ],
+  "unproved_wiring": [
+    "policy record to preamble flags",
+    "complete loop invariant",
+    "PLTE own ordering/value branch",
+    "per-chunk value branches",
+    "APNG sequence/frame/pixel transitions",
+    "MW ghost range selection",
+    "Strict and policy reader-selection equality",
+    "public logged entry points"
+  ],
+  "resume": "Per-chunk values and APNG transitions, then complete MW loop. Do not justify u32 wrapping sequence counter using draft cap numerals."
+}

@@ -1,0 +1,16 @@
+command: ['bash', '-c', 'tools/lint_caps.sh --self-test && tools/audit_alloc.sh --self-test']
+symbolic caps: clean (exponents 30|31|28|16|30|24|26|29)
+symbolic caps: scratch-copy positive/negative controls passed
+scanned: crc.rs framing.rs header.rs image.rs keywords.rs kind.rs lib.rs limits.rs model.rs ordering.rs png.rs policy.rs reader.rs walk.rs walk_model.rs witness_m3.rs (alloc_guard/ and cfg(test)-only module subtrees excluded)
+alloc_scan --allow-reserved: clean
+alloc_scan (no suppression): clean
+guard reservation call sites: Raw 1, Output 1, Saved 1, IccWindow 1, Icc 1, empty Icc 1 (expected 1 each); try_zeroed calls in production: 5 (expected 5), try_empty: 1 (expected 1)
+alloc_guard/mod.rs hash OK
+alloc_guard/sites.rs hash OK
+--- scanner self-test ---
+self-test: OK (44 allocating constructs flagged, also beside conditional ghost contracts in both modes; cfg(test) registration controls; 26 real sources clean in both modes)
+symbolic caps: clean (exponents 30|31|28|16|30|24|26|29)
+symbolic caps: scratch-copy positive/negative controls passed
+negative gate self-test OK: exec v.push(x) flagged
+negative gate self-test OK: exec vec! flagged
+OK

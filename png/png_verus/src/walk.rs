@@ -18,106 +18,9 @@ use crate::policy::{
 pub(crate) use crate::framing::{be16, be32, frame_at};
 use crate::framing::chunk_at;
 
-/// The chunk types the walk distinguishes. `Unknown(ancillary)` keeps bit 5 of
-/// byte 0 (P3, P5.5).
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-pub(crate) enum Kind {
-    Ihdr, Plte, Idat, Iend, Trns, Chrm, Gama, Iccp, Sbit, Srgb, Cicp, Mdcv, Clli, Bkgd, Hist, Phys, Splt,
-    Exif, Time, Text, Ztxt, Itxt, Actl, Fctl, Fdat, Unknown(bool),
-}
-
-pub(crate) fn kind_of(t: &[u8; 4]) -> Kind {
-    match t {
-        b"IHDR" => Kind::Ihdr,
-        b"PLTE" => Kind::Plte,
-        b"IDAT" => Kind::Idat,
-        b"IEND" => Kind::Iend,
-        b"tRNS" => Kind::Trns,
-        b"cHRM" => Kind::Chrm,
-        b"gAMA" => Kind::Gama,
-        b"iCCP" => Kind::Iccp,
-        b"sBIT" => Kind::Sbit,
-        b"sRGB" => Kind::Srgb,
-        b"cICP" => Kind::Cicp,
-        b"mDCV" => Kind::Mdcv,
-        b"cLLI" => Kind::Clli,
-        b"bKGD" => Kind::Bkgd,
-        b"hIST" => Kind::Hist,
-        b"pHYs" => Kind::Phys,
-        b"sPLT" => Kind::Splt,
-        b"eXIf" => Kind::Exif,
-        b"tIME" => Kind::Time,
-        b"tEXt" => Kind::Text,
-        b"zTXt" => Kind::Ztxt,
-        b"iTXt" => Kind::Itxt,
-        b"acTL" => Kind::Actl,
-        b"fcTL" => Kind::Fctl,
-        b"fdAT" => Kind::Fdat,
-        _ => Kind::Unknown(t[0] & 0x20 != 0),
-    }
-}
-
-impl Kind {
-    fn ancillary(self, t: &[u8; 4]) -> bool {
-        match self {
-            Kind::Unknown(a) => a,
-            _ => t[0] & 0x20 != 0,
-        }
-    }
-    /// The bit of the singleton set (P5.1); `None` for types that may repeat.
-    fn single_bit(self) -> Option<u32> {
-        let i = match self {
-            Kind::Ihdr => 0,
-            Kind::Plte => 1,
-            Kind::Trns => 2,
-            Kind::Chrm => 3,
-            Kind::Gama => 4,
-            Kind::Iccp => 5,
-            Kind::Sbit => 6,
-            Kind::Srgb => 7,
-            Kind::Cicp => 8,
-            Kind::Mdcv => 9,
-            Kind::Clli => 10,
-            Kind::Bkgd => 11,
-            Kind::Hist => 12,
-            Kind::Phys => 13,
-            Kind::Exif => 14,
-            Kind::Time => 15,
-            Kind::Actl => 16,
-            _ => return None,
-        };
-        Some(1u32 << i)
-    }
-    fn before_plte(self) -> bool {
-        matches!(self, Kind::Chrm | Kind::Gama | Kind::Iccp | Kind::Sbit | Kind::Srgb | Kind::Cicp | Kind::Mdcv | Kind::Clli)
-    }
-    fn after_plte(self) -> bool {
-        matches!(self, Kind::Bkgd | Kind::Hist | Kind::Trns)
-    }
-    fn before_idat(self) -> bool {
-        matches!(self, Kind::Exif | Kind::Phys | Kind::Splt | Kind::Actl)
-    }
-    fn fixed_len(self) -> Option<usize> {
-        match self {
-            Kind::Gama => Some(4),
-            Kind::Chrm => Some(32),
-            Kind::Srgb => Some(1),
-            Kind::Cicp => Some(4),
-            Kind::Mdcv => Some(24),
-            Kind::Clli => Some(8),
-            Kind::Phys => Some(9),
-            Kind::Time => Some(7),
-            Kind::Actl => Some(8),
-            Kind::Iend => Some(0),
-            _ => None,
-        }
-    }
-    fn is_apng(self) -> bool {
-        matches!(self, Kind::Actl | Kind::Fctl | Kind::Fdat)
-    }
-}
-
-const AFTER_PLTE_BITS: u32 = (1 << 2) | (1 << 11) | (1 << 12);
+pub(crate) use crate::kind::{kind_of, Kind};
+use crate::kind::{initial_seen, mark_seen, after_plte_seen};
+use crate::ordering::{advance_phase, preamble, OrderAction, Rules as OrderRules};
 
 pub(crate) use crate::header::Ihdr;
 
@@ -204,7 +107,7 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
         actl: None,
         info: Info::new(&ihdr),
     };
-    let mut st = State { seen: 1, idat: 0, seq: 0, cur: None, frames: 0, fctl_before_idat: false, pixels: 0 };
+    let mut st = State { seen: initial_seen(), idat: 0, seq: 0, cur: None, frames: 0, fctl_before_idat: false, pixels: 0 };
     let apng_on = !apng_off && !(entry == Entry::Still && pol.apng_in_still == ApngInStill::Ignore);
     let static_frames = pol.apng_errors == ApngErrors::Static && entry == Entry::Frames;
     // sfail and apng_fail coincide for the values Strict and RecommendedBeta use.
@@ -221,9 +124,7 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
             let c = chunk_at(b, p)?;
             (c.ty, kind_of(&c.ty), c.data, c.len, c.crc_ok, c.next)
         };
-        if st.idat == 1 && kind0 != Kind::Idat {
-            st.idat = 2;
-        }
+        advance_phase(&mut st.idat, kind0);
         let chunk_offset = p;
         p = p_end;
         let mut anc = kind0.ancillary(&t);
@@ -264,65 +165,35 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
                 return Err(Error::CrcMismatch.into());
             }
         }
-        // ---- P5.1 duplicates
-        if let Some(bit) = kind.single_bit() {
-            if st.seen & bit != 0 {
-                if anc && pol.ancillary_duplicate == AncillaryDuplicate::FirstWins {
-                    discard(&mut doc, kind, ev);
-                    continue;
-                }
-                if kind == Kind::Plte && pol.plte_unexpected == PlteUnexpected::Ignore && (ct == 0 || ct == 4) {
-                    continue;
-                }
-                if kind.is_apng() {
-                    return Err(sfail(Error::DuplicateChunk));
-                }
-                return Err(Error::DuplicateChunk.into());
+        // P5.1/P5.2/P5.3: the verified preamble preserves the exact first
+        // error and the structural/non-structural recovery distinction.
+        let rules = OrderRules {
+            first_duplicate_wins: pol.ancillary_duplicate == AncillaryDuplicate::FirstWins,
+            drop_misordered: pol.ancillary_order == AncillaryOrder::Drop,
+            drop_invalid: pol.ancillary_values == AncillaryValues::Drop,
+            ignore_unexpected_plte: pol.plte_unexpected == PlteUnexpected::Ignore,
+            lenient_iend: pol.iend == Iend::Lenient,
+        };
+        match preamble(st.seen, st.idat, doc.plte.is_some(), ct, kind, anc, n, rules) {
+            OrderAction::Keep(length) => n = length,
+            OrderAction::Drop => {
+                // Ignored PLTE in grey/grey-alpha has no metadata/event to
+                // discard; this is also what the original branch did.
+                discard(&mut doc, kind, ev);
+                continue;
             }
-        }
-        // ---- P5.2 ordering
-        let plte_seen = doc.plte.is_some();
-        let misplaced = (kind.before_plte() && (plte_seen || st.idat != 0))
-            || (kind.after_plte() && (st.idat != 0 || (!plte_seen && (ct == 3 || kind == Kind::Hist))))
-            || (kind.before_idat() && st.idat != 0);
-        if misplaced {
-            if kind == Kind::Actl {
-                return Err(sfail(Error::ChunkOutOfOrder));
-            }
-            match pol.ancillary_order {
-                AncillaryOrder::Drop => {
-                    discard(&mut doc, kind, ev);
-                    continue;
-                }
-                AncillaryOrder::Reject => return Err(Error::ChunkOutOfOrder.into()),
-            }
-        }
-        // ---- P5.3 fixed lengths
-        if kind == Kind::Iend && n != 0 && pol.iend == Iend::Lenient {
-            n = 0;
-        }
-        if let Some(fl) = kind.fixed_len() {
-            if n != fl {
-                if anc && kind != Kind::Actl && pol.ancillary_values == AncillaryValues::Drop {
-                    discard(&mut doc, kind, ev);
-                    continue;
-                }
-                if kind == Kind::Actl {
-                    return Err(sfail(Error::InvalidChunkLength));
-                }
-                return Err(Error::InvalidChunkLength.into());
+            OrderAction::Fail(e, structural) => {
+                return Err(if structural { sfail(e) } else { WalkFail::Format(e) });
             }
         }
         let d = &d[..n];
-        if let Some(bit) = kind.single_bit() {
-            st.seen |= bit;
-        }
+        mark_seen(&mut st.seen, kind);
         // ---- the chunk's own section
         match kind {
             Kind::Ihdr => return Err(Error::DuplicateChunk.into()),
             Kind::Plte => {
                 // P6, P5.2 (PLTE after IDAT or after bKGD/hIST/tRNS)
-                if st.idat != 0 || st.seen & AFTER_PLTE_BITS != 0 {
+                if st.idat != 0 || after_plte_seen(st.seen) {
                     if pol.plte_unexpected == PlteUnexpected::Ignore && ct != 3 {
                         continue;
                     }
