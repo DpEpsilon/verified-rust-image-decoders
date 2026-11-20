@@ -77,8 +77,6 @@ impl From<Error> for WalkFail {
     }
 }
 
-use crate::keywords::{find_nul, split_keyword};
-
 /// The per-walk state (P5): a fixed-size record.
 struct State {
     seen: u32,
@@ -187,27 +185,14 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
         match kind {
             Kind::Ihdr => return Err(Error::DuplicateChunk.into()),
             Kind::Plte => {
-                // P6, P5.2 (PLTE after IDAT or after bKGD/hIST/tRNS)
-                if st.idat != 0 || after_plte_seen(st.seen) {
-                    if pol.plte_unexpected == PlteUnexpected::Ignore && ct != 3 {
-                        continue;
-                    }
-                    return Err(Error::ChunkOutOfOrder.into());
-                }
-                if ct == 0 || ct == 4 {
-                    if pol.plte_unexpected == PlteUnexpected::Ignore {
-                        continue;
-                    }
-                    return Err(Error::UnexpectedPalette.into());
-                }
-                if n == 0 || n % 3 != 0 || n > 768 {
-                    return Err(Error::InvalidPalette.into());
-                }
-                if ct == 3 && n / 3 > (1usize << depth) && pol.palette_size == PaletteSize::Reject {
-                    return Err(Error::InvalidPalette.into());
-                }
-                doc.plte = Some((dpos, n));
-                doc.info.palette_entries = (n / 3) as u32;
+                let entries = match crate::metadata::palette(n,ct,depth,st.idat != 0,
+                    after_plte_seen(st.seen), pol.plte_unexpected == PlteUnexpected::Ignore,
+                    pol.palette_size == PaletteSize::Allow)? {
+                    Some(entries) => entries,
+                    None => continue,
+                };
+                doc.plte = Some((dpos,n));
+                doc.info.palette_entries = entries;
             }
             Kind::Idat => {
                 if st.idat == 2 {
@@ -239,22 +224,11 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
                 return Ok(doc);
             }
             Kind::Trns => {
-                let e = doc.palette_entries();
-                let bad = ct == 4
-                    || ct == 6
-                    || (ct == 0 && n != 2)
-                    || (ct == 2 && n != 6)
-                    || (ct == 3 && !(1 <= n && n <= e));
-                if bad {
-                    match pol.trns_invalid {
-                        TrnsInvalid::Drop => {
-                            discard(&mut doc, kind, ev);
-                            continue;
-                        }
-                        TrnsInvalid::Reject => return Err(Error::InvalidTransparency.into()),
-                    }
+                if !crate::metadata::transparency(n,ct,doc.palette_entries(),pol.trns_invalid == TrnsInvalid::Drop)? {
+                    discard(&mut doc,kind,ev);
+                    continue;
                 }
-                doc.trns = Some((dpos, n));
+                doc.trns = Some((dpos,n));
                 doc.info.trns = Meta::Present(());
             }
             Kind::Actl => {
@@ -283,7 +257,7 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
                     return Err(Error::UnknownCriticalChunk.into());
                 }
             }
-            _ => match ancillary_values(kind, d, dpos, &mut doc, ct, depth) {
+            _ => match ancillary_values(kind, b, d, dpos, &mut doc, ct, depth) {
                 Ok(()) => {}
                 Err(e) => {
                     if pol.ancillary_values == AncillaryValues::Drop {
@@ -327,157 +301,28 @@ fn discard(doc: &mut Doc, kind: Kind, ev: &mut Events) {
 }
 
 /// P8.1 value rules, and the raw values for `Info` (P8.3).
-fn ancillary_values(kind: Kind, d: &[u8], dpos: usize, doc: &mut Doc, ct: u8, depth: u8) -> Result<(), Error> {
-    let n = d.len();
-    match kind {
-        Kind::Gama => {
-            let g = be32(d, 0);
-            if g == 0 {
-                return Err(Error::InvalidGamma);
-            }
-            doc.info.gama = Meta::Present(g);
-        }
-        Kind::Chrm => {
-            let mut v = [0u32; 8];
-            for (i, x) in v.iter_mut().enumerate() {
-                *x = be32(d, 4 * i);
-            }
-            doc.info.chrm = Meta::Present(v);
-        }
-        Kind::Srgb => {
-            if d[0] > 3 {
-                return Err(Error::InvalidSrgb);
-            }
-            doc.info.srgb = Meta::Present(d[0]);
-        }
-        Kind::Iccp => {
-            let z = split_keyword(d, Error::InvalidIccp)?;
-            if z + 1 >= n || d[z + 1] != 0 {
-                return Err(Error::InvalidIccp);
-            }
-            doc.iccp = Some((dpos + z + 2, n - z - 2));
-            doc.info.iccp_name = Meta::Present((dpos, z));
-        }
-        Kind::Sbit => {
-            let want = match ct {
-                0 => 1,
-                2 | 3 => 3,
-                4 => 2,
-                _ => 4,
-            };
-            if n != want {
-                return Err(Error::InvalidChunkLength);
-            }
-            let top = if ct == 3 { 8 } else { depth };
-            let mut v = [0u8; 4];
-            for (i, &x) in d.iter().enumerate() {
-                if !(1 <= x && x <= top) {
-                    return Err(Error::InvalidSbit);
-                }
-                v[i] = x;
-            }
-            doc.info.sbit = Meta::Present((v, n as u8));
-        }
-        Kind::Cicp => {
-            if d[2] != 0 || d[3] > 1 {
-                return Err(Error::InvalidCicp);
-            }
-            doc.info.cicp = Meta::Present([d[0], d[1], d[2], d[3]]);
-        }
-        Kind::Mdcv => {
-            let mut v = [0u8; 24];
-            v.copy_from_slice(d);
-            doc.info.mdcv = Meta::Present(v);
-        }
-        Kind::Clli => {
-            doc.info.clli = Meta::Present([be32(d, 0), be32(d, 4)]);
-        }
-        Kind::Bkgd => {
-            let want = match ct {
-                0 | 4 => 2,
-                2 | 6 => 6,
-                _ => 1,
-            };
-            if n != want {
-                return Err(Error::InvalidChunkLength);
-            }
-            let mut v = [0u16; 3];
-            if ct == 3 {
-                if d[0] as usize >= doc.palette_entries() {
-                    return Err(Error::InvalidBackground);
-                }
-                v[0] = d[0] as u16;
-            } else {
-                let mut i = 0;
-                while i < n {
-                    let x = be16(d, i);
-                    if (x as u32) >> depth != 0 {
-                        return Err(Error::InvalidBackground);
-                    }
-                    v[i / 2] = x;
-                    i += 2;
-                }
-            }
-            doc.info.bkgd = Meta::Present(v);
-        }
-        Kind::Hist => {
-            if n != 2 * doc.palette_entries() {
-                return Err(Error::InvalidHistogram);
-            }
-        }
-        Kind::Phys => {
-            if d[8] > 1 {
-                return Err(Error::InvalidPhys);
-            }
-            doc.info.phys = Meta::Present((be32(d, 0), be32(d, 4), d[8]));
-        }
-        Kind::Splt => {
-            let z = split_keyword(d, Error::InvalidSplt)?;
-            if z + 1 >= n || !(d[z + 1] == 8 || d[z + 1] == 16) {
-                return Err(Error::InvalidSplt);
-            }
-            let entry = if d[z + 1] == 8 { 6 } else { 10 };
-            if (n - z - 2) % entry != 0 {
-                return Err(Error::InvalidSplt);
-            }
-        }
-        Kind::Exif => {
-            if n < 4 || !(d[..4] == *b"II*\0" || d[..4] == *b"MM\0*") {
-                return Err(Error::InvalidExif);
-            }
-            doc.info.exif = Meta::Present((dpos, n));
-        }
-        Kind::Time => {
-            let (y, mo, dd, hh, mi, ss) = (be16(d, 0), d[2], d[3], d[4], d[5], d[6]);
-            if !((1..=12).contains(&mo) && (1..=31).contains(&dd) && hh <= 23 && mi <= 59 && ss <= 60) {
-                return Err(Error::InvalidTime);
-            }
-            doc.info.time = Meta::Present(Time { year: y, month: mo, day: dd, hour: hh, minute: mi, second: ss });
-        }
-        Kind::Text => {
-            split_keyword(d, Error::InvalidText)?;
-        }
-        Kind::Ztxt => {
-            let z = split_keyword(d, Error::InvalidText)?;
-            if z + 1 >= n || d[z + 1] != 0 {
-                return Err(Error::InvalidText);
-            }
-        }
-        Kind::Itxt => {
-            let z = split_keyword(d, Error::InvalidText)?;
-            if z + 2 >= n || d[z + 1] > 1 || (d[z + 1] == 1 && d[z + 2] != 0) {
-                return Err(Error::InvalidText);
-            }
-            match find_nul(d, z + 3) {
-                Some(z2) => {
-                    if find_nul(d, z2 + 1).is_none() {
-                        return Err(Error::InvalidText);
-                    }
-                }
-                None => return Err(Error::InvalidText),
-            }
-        }
-        _ => {}
+fn ancillary_values(kind: Kind, b: &[u8], d: &[u8], dpos: usize, doc: &mut Doc, ct: u8, depth: u8) -> Result<(), Error> {
+    use crate::metadata::Value;
+    let value = crate::metadata::parse(kind,d,ct,depth,doc.palette_entries())?;
+    match value {
+        Value::Ignored => {},
+        Value::Gama(g) => doc.info.gama = Meta::Present(g),
+        Value::Chrm(v) => doc.info.chrm = Meta::Present(v),
+        Value::Srgb(v) => doc.info.srgb = Meta::Present(v),
+        Value::Iccp {name_len,profile_start,profile_len} => {
+            doc.iccp = Some(crate::metadata::rebase(b,dpos,d.len(),profile_start,profile_len));
+            doc.info.iccp_name = Meta::Present(crate::metadata::rebase(b,dpos,d.len(),0,name_len));
+        },
+        Value::Sbit(v,n) => doc.info.sbit = Meta::Present((v,n)),
+        Value::Cicp(v) => doc.info.cicp = Meta::Present(v),
+        Value::Mdcv(v) => doc.info.mdcv = Meta::Present(v),
+        Value::Clli(a,b) => doc.info.clli = Meta::Present([a,b]),
+        Value::Bkgd(v,_) => doc.info.bkgd = Meta::Present(v),
+        Value::Phys(x,y,u) => doc.info.phys = Meta::Present((x,y,u)),
+        Value::Exif(n) => doc.info.exif = Meta::Present(crate::metadata::rebase(b,dpos,d.len(),0,n)),
+        Value::Time(year,month,day,hour,minute,second) => {
+            doc.info.time = Meta::Present(Time {year,month,day,hour,minute,second});
+        },
     }
     Ok(())
 }

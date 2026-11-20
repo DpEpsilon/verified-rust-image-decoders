@@ -1,0 +1,140 @@
+{
+  "milestone": "M3 P6-P8 value component checkpoint; not sign-off",
+  "base_commit": "b82549a",
+  "checkpoint": 59,
+  "verified": 136,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "runtime_and_source_controls_run": 60,
+  "trusted_items_added": false,
+  "claims": [
+    {
+      "row": "T6",
+      "component": "P6 PLTE value/order and policy decisions",
+      "status": "component-proved",
+      "functions": [
+        "metadata::palette"
+      ],
+      "model": "metadata_model::palette",
+      "premises": [
+        "valid IHDR colour/depth"
+      ],
+      "run": 59
+    },
+    {
+      "row": "T6",
+      "component": "P7 tRNS keep/drop/error decisions",
+      "status": "component-proved",
+      "functions": [
+        "metadata::transparency"
+      ],
+      "model": "metadata_model::transparency",
+      "premises": [
+        "valid colour type",
+        "palette entries <= 256"
+      ],
+      "run": 59
+    },
+    {
+      "row": "T6",
+      "component": "all 17 P8 ancillary value errors and raw values",
+      "status": "component-proved",
+      "functions": [
+        "metadata::parse",
+        "metadata::sbit",
+        "metadata::bkgd",
+        "metadata::keyword_method"
+      ],
+      "model": "metadata_model::parse",
+      "premises": [
+        "valid IHDR colour/depth",
+        "palette entries <= 256"
+      ],
+      "run": 59
+    },
+    {
+      "row": "T6",
+      "component": "logical metadata representation and relative descriptor bounds",
+      "status": "parser-postcondition-proved",
+      "functions": [
+        "metadata::Value::view",
+        "metadata::Value::wf",
+        "metadata::parse"
+      ],
+      "qualifier": "logical sBIT/bKGD prefix only; not unused array padding or complete returned Info",
+      "run": 59
+    },
+    {
+      "row": "L-INFO-RANGE",
+      "component": "bounded byte-preserving range rebasing",
+      "status": "local-component-proved; whole gate partial",
+      "functions": [
+        "metadata::rebase"
+      ],
+      "premises": [
+        "chunk span bounded in actual input",
+        "descriptor bounded in payload"
+      ],
+      "unproved": [
+        "plain caller precondition discharge",
+        "Info storage/discard relation",
+        "returned ranges equal MW_p assignments"
+      ],
+      "run": 59
+    },
+    {
+      "row": "T6 / M3 witness gates",
+      "component": "concrete production-call bindings",
+      "status": "local witnesses proved; full whole-input gates incomplete",
+      "functions": [
+        "witness_metadata::palette_transparency_decisions",
+        "witness_metadata::metadata_sample_ranges",
+        "witness_metadata::metadata_text_methods",
+        "witness_metadata::metadata_relative_ranges"
+      ],
+      "run": 59
+    },
+    {
+      "row": "T6 / T10-prefix",
+      "status": "partial",
+      "unproved": [
+        "full independent MW/MW_p/MWF_p loop",
+        "whole-walk error composition and invariants",
+        "ghost range/frame trace",
+        "remaining inline critical/EOF/IEND policy checks"
+      ],
+      "run": 59
+    },
+    {
+      "row": "T-SEG / L-REWALK Strict and policy",
+      "status": "earlier adapter reverified; document-to-reader selection open",
+      "run": 59
+    },
+    {
+      "row": "A-PNG-2",
+      "status": "untouched; no new entry/log theorem"
+    },
+    {
+      "row": "A-PNG-7",
+      "status": "untouched; no new entry/log theorem"
+    },
+    {
+      "row": "L-WALK-FIRST",
+      "status": "untouched; no new entry/log theorem"
+    }
+  ],
+  "runtime_counts_at_run_60": {
+    "strict": 599,
+    "caps": 13,
+    "policy_records": 198,
+    "passed": 808,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 6,
+    "council_ignored": 1
+  },
+  "parallel_policy_work": "not edited or claimed; run 60 still consumes the old 198-record policy bundle",
+  "q6": "open and unchanged; no dependency",
+  "resume": "Full MW loop/range/frame composition and Info storage representation; then Strict/policy reader selection and logged allocation/walk-first/returned-Info gates."
+}

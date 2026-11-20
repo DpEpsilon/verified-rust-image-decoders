@@ -2,11 +2,12 @@
 //! with the Strict and RecommendedBeta profiles of `../../policy-draft/OPTIONS.md`.
 //!
 //! M3 has begun (`../../PLAN.md`): the CRC, wire framing, header prefix,
-//! keywords, singleton/order preamble, APNG control transitions and segmented
-//! re-walk adapter are inside `verus!` and tied to independent models. The
-//! complete policy walk, remaining metadata values, image stages and public
-//! entry-point bodies remain ordinary Rust; a green run does not claim their
-//! verification. zlib/DEFLATE is the verified `inflate_verus` dependency.
+//! keywords, singleton/order preamble, P6–P8 value parsers, APNG control
+//! transitions, metadata-range rebasing and segmented re-walk adapter are
+//! inside `verus!` and tied to independent models. The complete policy walk,
+//! Info storage, image stages and public entry-point bodies remain ordinary
+//! Rust; a green run does not claim their verification. zlib/DEFLATE is the
+//! verified `inflate_verus` dependency.
 //!
 //! `no_std + alloc`, no `unsafe`, no recursion. Every heap allocation goes
 //! through `alloc_guard` (`Raw`, `Output`, `Saved`, `IccWindow`, `Icc`).
@@ -26,6 +27,9 @@ mod header;
 mod image;
 mod keywords;
 mod kind;
+mod metadata;
+#[cfg(verus_only)]
+pub mod metadata_model;
 mod ordering;
 #[cfg(verus_only)]
 pub mod walk_model;
@@ -38,6 +42,8 @@ mod reader;
 mod walk;
 #[cfg(verus_only)]
 mod witness_m3;
+#[cfg(verus_only)]
+mod witness_metadata;
 
 pub use alloc_guard::sites::TryError;
 pub use alloc_guard::{AllocSite, OutOfMemory};

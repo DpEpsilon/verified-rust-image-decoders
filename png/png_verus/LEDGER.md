@@ -1,8 +1,37 @@
 # png_verus ledger
 
-M3 has begun; it is not signed off. The latest host checkpoint is **run 48: 120 verified, 0 errors**, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
+M3 has begun; it is not signed off. The latest host checkpoint is **run 59: 136 verified, 0 errors**, with `--no-cheating`, default solver limits and two verifier threads after the corpus script ended. `inflate_verus` remains an unmodified path dependency. Its target directory was read only to copy the pinned vstd cache into this crate's target directory.
 
-## M3 continuation: APNG control transitions (2026-11-20)
+## M3 continuation: P6–P8 values and local metadata ranges (2026-11-20)
+
+Base: `b82549a` (run 48, 120 verified). Intermediate green checkpoints: 53 (129), 54 (131), 55 (132), 58 (136). Final **run 59: 136 verified, 0 errors**, including all earlier proof bodies. This checkpoint completes the local P6–P8 value validators, not their whole-walk composition.
+
+| THEOREMS row/component | Checked statement and production binding | State at run 59 |
+|---|---|---|
+| T6 P6 PLTE | `metadata::palette` equals independent `metadata_model::palette` on ordering, unexpected grey palettes, positive/multiple-of-three/maximum length, indexed-depth entry count and policy keep/drop/error; kept entry counts are in `1..=256` and equal `length/3` | Proved component under valid IHDR colour/depth |
+| T6 P7 tRNS | `metadata::transparency` equals independent keep/drop/error decisions for grey/RGB/indexed lengths and alpha-bearing colour types | Proved component under valid colour type and palette count at most 256 |
+| T6 P8 ancillary values | `metadata::parse`, with `sbit`, `bkgd` and `keyword_method`, equals independent `metadata_model::parse` for every payload in the valid colour/depth and palette-count domain; all 17 P8 types are covered, including exact errors and raw values | Proved component; the real `ancillary_values` calls this parser before storing Info |
+| T6 metadata representation | `metadata::Value::view` relates fixed-size arrays to logical raw-value sequences and relative descriptors; `Value::wf` bounds the iCCP name/profile ranges and eXIf extent | Proved parser postcondition; unused sBIT/bKGD array padding is not part of the logical value view |
+| L-INFO-RANGE local arithmetic/content component | `metadata::rebase` produces a bounded absolute input range and proves byte equality with the corresponding subrange of the actual borrowed chunk span, without reading or copying variable payload data; actual iCCP and eXIf storage uses it | Proved under explicit input-span/relative-range premises; the complete returned-Info gate is still partial |
+| T6 / M3 concrete call bindings | `witness_metadata::{palette_transparency_decisions,metadata_sample_ranges,metadata_text_methods,metadata_relative_ranges}` bind production calls to palette/transparency decisions, sBIT/bKGD errors, iTXt flag/method semantics, zTXt non-inflation and rebased iCCP bytes | Proved local witnesses, not the complete whole-input M3 witness gates |
+| T6 complete MW / T10 prefix | All local value components now have refinements, but no theorem composes the entire walk and exact error/range/frame trace | Partial rows |
+| T-SEG / L-REWALK Strict and policy | Earlier adapter theorem remains verified; no document-to-reader range-selection theorem was added | Unchanged partial rows |
+| A-PNG-2 / A-PNG-7 / L-WALK-FIRST | No public-entry/logged allocation theorem was added | Untouched |
+| L-INFO-RANGE complete returned object | The plain Info store, policy discard state and equality of every returned range with MW_p remain unproved; the caller must still supply the original input when interpreting ranges | Partial local foundation only, not gate completion |
+
+Every new proof claim above refers to **run 59**. P8 covers gAMA, cHRM, sRGB, iCCP, sBIT, cICP, mDCV, cLLI, bKGD, hIST, pHYs, sPLT, eXIf, tIME, tEXt, zTXt and iTXt. Compressed profile/text data is not inflated by any value parser. Uncompressed iTXt ignores its method byte, compressed iTXt requires method zero, and both language/translated-keyword terminators remain mandatory. bKGD values are range-checked rather than masked; tRNS's later sample comparison/masking remains outside this structural validator.
+
+The walk now separates value validation from plain `Info` storage. The parser returns constant-size raw values or payload-relative descriptors; iCCP/eXIf descriptor rebasing uses the original borrowed input. The local contracts require a valid IHDR colour/depth pair, a palette count at most 256, and correctly bounded chunk spans when rebasing. Header/PLTE guards and framing provide those facts by inspection, but the whole-walk induction and all caller-precondition discharges are not proved yet. The model returns internal `OutsideDomain` on invalid component domains; that is not a new public format error. Singleton insertion still happens after the P5 preamble and before these value rules, even when a rule later drops the chunk.
+
+The first monolithic parser proof hit the unchanged default solver limit. Splitting the sBIT and bKGD loop refinements into named functions, retaining exact shape/domain facts as loop invariants and instantiating the failing sample's index resolved it; no solver-limit or trust change was made. The iCCP/text length checks use subtraction after the keyword bound so offset additions cannot overflow. No acceptance policy was changed and no new spec ambiguity was resolved; Q6 remains open and unused.
+
+Run **60** passes all Cargo targets and both source-lint negative-control suites. At that run the vector files still contain 599 Strict + 13 cap + 198 policy records: **808 pass, zero fail, two inherited P2 skips**; fault injection passes; council tests give six passes and the inherited phase-2 presence check ignored. The parallel policy-oracle/vector/presence-test work is not edited or claimed by this dispatch. Both guard hashes and the copied vstd source hashes/mtimes remain unchanged; verification uses two threads, one Cargo job, the pinned toolchain, `--no-cheating` and default solver limits with explicit `Fresh vstd`. No background job was started.
+
+Evidence: `evidence/checkpoint-0059.json`, `evidence/claims-m3-values.json`, retained complete transcripts and the updated `evidence/SHA256SUMS`. No test or protected file was edited, and no new trusted item or proof bypass was added.
+
+Next resume point: assemble the full independent MW/MW_p/MWF_p loop and document/range/frame trace from the checked header, framing/CRC, P5 preamble, P6–P8 values and APNG transitions. Prove the actual loop invariant, including colour/depth validity, palette count/range consistency, APNG control invariants, and chunk-span bounds used by `metadata::rebase`; verify Info storage/discard representation rather than treating the parsed Value as the returned object. Then connect selected ranges to the reader adapter separately for Strict and policy, followed by logged allocation/walk-first/returned-Info gates. The remaining inline critical checks include IDAT MissingPalette/NonConsecutiveIdat, IEND MissingImageData/trailing bytes, unknown-critical rejection and EOF/IEND policy composition.
+
+## Earlier M3 continuation: APNG control transitions (2026-11-20)
 
 Base: `7fca35d` (run 33, 104 verified). Run **37** first verifies the local APNG transition bodies (116 verified); run **48** includes their concrete call witnesses (**120 verified, 0 errors**). Earlier proof bodies remain enabled in run 48. This is another local chunk-stage checkpoint, not the complete MW walk.
 
