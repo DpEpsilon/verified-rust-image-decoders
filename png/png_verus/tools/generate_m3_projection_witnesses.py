@@ -18,6 +18,49 @@ spec.loader.exec_module(certificates)
 LABEL = 'M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile'
 
 
+
+METADATA_HELPERS = r"""
+
+#[verifier::spinoff_prover]
+proof fn stored_structure(doc: m::Doc,value: crate::metadata_model::Value,base: nat)
+    ensures m::store(doc,value,base).ihdr==doc.ihdr,m::store(doc,value,base).plte==doc.plte,
+        m::store(doc,value,base).trns==doc.trns,m::store(doc,value,base).actl==doc.actl,
+        m::store(doc,value,base).idat==doc.idat,m::store(doc,value,base).frames==doc.frames,
+{}
+#[verifier::spinoff_prover]
+proof fn iccp_success(d: Seq<u8>,z: nat)
+    requires crate::model::first_nul(d,0)==Some(z),crate::model::keyword(d.subrange(0,z as int)),
+        z+1<d.len(),d[z as int+1]==0,
+    ensures crate::metadata_model::parse(crate::walk_model::Name::Iccp,d,2,8,0)==crate::metadata_model::Outcome::Value(
+        crate::metadata_model::Value::Iccp {name_len:z,profile_start:z+2,profile_len:(d.len()-z-2) as nat}),
+{
+    hide(crate::model::first_nul);hide(crate::model::keyword);
+}
+#[verifier::spinoff_prover]
+proof fn text_success(d: Seq<u8>,z: nat)
+    requires crate::model::first_nul(d,0)==Some(z),crate::model::keyword(d.subrange(0,z as int)),
+    ensures crate::metadata_model::parse(crate::walk_model::Name::Text,d,2,8,0)==crate::metadata_model::Outcome::Value(crate::metadata_model::Value::Ignored),
+{
+    hide(crate::model::first_nul);hide(crate::model::keyword);
+}
+#[verifier::spinoff_prover]
+proof fn ztxt_success(d: Seq<u8>,z: nat)
+    requires crate::model::first_nul(d,0)==Some(z),crate::model::keyword(d.subrange(0,z as int)),
+        z+1<d.len(),d[z as int+1]==0,
+    ensures crate::metadata_model::parse(crate::walk_model::Name::Ztxt,d,2,8,0)==crate::metadata_model::Outcome::Value(crate::metadata_model::Value::Ignored),
+{
+    hide(crate::model::first_nul);hide(crate::model::keyword);
+}
+#[verifier::spinoff_prover]
+proof fn rgb_background_success(d: Seq<u8>,entries: nat)
+    requires d.len()==6,entries<=256,
+        forall|i: int| 0<=i<3 ==> (#[trigger] crate::metadata_model::words16(d,3)[i] as nat)<(1u32<<8u8) as nat,
+    ensures crate::metadata_model::parse(crate::walk_model::Name::Bkgd,d,2,8,entries)==crate::metadata_model::Outcome::Value(
+        crate::metadata_model::Value::Bkgd(crate::metadata_model::words16(d,3))),
+{}
+"""
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--names', nargs='+')
@@ -27,7 +70,7 @@ def main():
              '//! M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile.',
              'use vstd::prelude::*;',
              'use crate::{document_model as m,png::Events,policy::STRICT};',
-             '', 'verus! {', 'spec fn accepted(outcome: m::Outcome,h: crate::model::Ihdr) -> bool {match outcome {m::Outcome::Done(doc,ev)=>doc.ihdr==h && ev==m::no_events(),_=>false}}']
+             '', 'verus! {', METADATA_HELPERS, 'spec fn accepted(outcome: m::Outcome,h: crate::model::Ihdr) -> bool {match outcome {m::Outcome::Done(doc,ev)=>doc.ihdr==h && ev==m::no_events(),_=>false}}']
     rows = []
     for scheduled in inventory['records']:
         if scheduled['category'] != 'b':
@@ -44,13 +87,19 @@ def main():
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
         ident = re.sub('[^a-zA-Z0-9]', '_', name).lower()
         values = ','.join(f'{x}u8' for x in data)
-        assert scheduled['entry'] == 'still'
+        frames = scheduled['entry'] == 'frames'
+        model = 'MWF_p' if frames else 'MW_p'
+        preparation = 'frames' if frames else 'still'
+        public = 'crate::png::Frames::try_new' if frames else 'crate::png::try_decode_still'
         width = str(fixture['expected']['width']) if 'width' in fixture['expected'] else f'crate::model::be32(bytes_{ident}(),16)'
         height = str(fixture['expected']['height']) if 'height' in fixture['expected'] else f'crate::model::be32(bytes_{ident}(),20)'
         header = (f'crate::model::Ihdr {{width:{width},height:{height},depth:{data[24]}u8,'
                   f'color_type:{data[25]}u8,interlace:{data[28]}u8}}')
         facts, sites = certificates.read_facts(data, ident, '')
+        if frames:
+            facts += certificates.apng_facts(data, ident)
         pos = 33
+        entries = 0
         while pos+12 <= len(data):
             size = int.from_bytes(data[pos:pos+4],'big')
             if pos+12+size > len(data): break
@@ -59,15 +108,53 @@ def main():
                 nul = payload.find(0)
                 if nul >= 0 and nul+1 < size:
                     facts += [f'        assert(bytes_{ident}().subrange({pos+8},{pos+8+size})[{nul+1}]=={payload[nul+1]}u8) by (compute);']
+            d = f'bytes_{ident}().subrange({pos+8},{pos+8+size})'
+            if tag == b'PLTE':entries = size//3
+            value, helper, compute = None, None, False
+            if tag == b'iCCP':
+                z = payload.index(0)
+                value = f'Iccp {{name_len:{z},profile_start:{z+2},profile_len:{size-z-2}}}'
+                helper = f'iccp_success({d},{z}nat);'
+            elif tag in [b'tEXt',b'zTXt',b'sPLT',b'hIST']:
+                value = 'Ignored'
+                if tag == b'tEXt':helper = f'text_success({d},{payload.index(0)}nat);'
+                if tag == b'zTXt':helper = f'ztxt_success({d},{payload.index(0)}nat);'
+                if tag == b'hIST':compute = True
+            elif tag == b'tIME':
+                year = int.from_bytes(payload[:2],'big')
+                value = 'Time('+','.join([f'{year}u16']+[f'{x}u8' for x in payload[2:]])+')'
+                compute = True
+            elif tag == b'sRGB':
+                value = f'Srgb({payload[0]}u8)'
+                compute = True
+            elif tag == b'bKGD' and data[25] == 2:
+                value = f'Bkgd(crate::metadata_model::words16({d},3))'
+                helper = f'rgb_background_success({d},{entries}nat);'
+                facts += [f'        assert forall|i: int| 0<=i<3 implies (#[trigger] crate::metadata_model::words16({d},3)[i] as nat)<(1u32<<8u8) as nat by {{']
+                for index in range(3):
+                    number = int.from_bytes(payload[2*index:2*index+2],'big')
+                    branch = 'if' if index == 0 else 'else if'
+                    facts += [f'            {branch} i=={index} {{assert(crate::metadata_model::words16({d},3)[i]=={number}u16);}}']
+                facts += ['        }']
+            if value is not None:
+                expression = (f'crate::metadata_model::parse(crate::walk_model::Name::{certificates.NAMES[tag]},'
+                              f'{d},2u8,8u8,{entries}nat)==crate::metadata_model::Outcome::Value(crate::metadata_model::Value::{value})')
+                facts += [f'        assert({expression}) by {{', '            reveal(crate::metadata_model::parse);']
+                if helper:facts += [f'            {helper}']
+                elif compute:facts += [f'            assert({expression}) by (compute);']
+                facts += ['        }']
             pos += size+12
 
-        predicate = f'accepted(m::MW_p(bytes_{ident}(),m::strict()),{header})'
+        parse_hide = '    hide(crate::metadata_model::parse);' if any('crate::metadata_model::parse(' in line for line in facts) else ''
+        control_hide = '    '+''.join(f'hide(crate::apng_model::{method});' for method in ['actl','fctl','fdat','finish']
+                                     if any(f'crate::apng_model::{method}(' in line for line in facts))
+        predicate = f'accepted(m::{model}(bytes_{ident}(),m::strict()),{header})'
         requirements, pure, i = [], [], 0
         while i < len(facts):
             line = facts[i]
             if line.startswith('        assert forall|'):
                 expression = line.strip()[len('assert '):-len(' by {')]
-                requirements.append('('+expression.replace(f'bytes_{ident}()', 'b')+')')
+                requirements.append('('+expression.replace(f'bytes_{ident}()', 'b').replace(' implies ',' ==> ')+')')
                 i += 1
                 while facts[i] != '        }': i += 1
             elif line.startswith('        assert('):
@@ -86,41 +173,64 @@ def main():
                         pure.append(facts[i])
             else:raise AssertionError(line)
             i += 1
+        structural_store = []
+        if name in ['plte/suggested-palette-in-rgb','order/bkgd-hist-after-plte-before-idat-rgb']:
+            structural_store = [
+                '    hide(m::store);',
+                '    assert forall|doc: m::Doc,value: crate::metadata_model::Value,base: nat|',
+                '        (#[trigger] m::store(doc,value,base)).ihdr==doc.ihdr && m::store(doc,value,base).plte==doc.plte',
+                '        && m::store(doc,value,base).trns==doc.trns && m::store(doc,value,base).actl==doc.actl',
+                '        && m::store(doc,value,base).idat==doc.idat && m::store(doc,value,base).frames==doc.frames by {',
+                '        stored_structure(doc,value,base);','    }']
         symbolic_header = header.replace(f'bytes_{ident}()', 'b')
+        composition = [f'    reveal_with_fuel(m::drive,{sites+1});']
+        if name == 'plte/suggested-palette-in-rgb':
+            composition = [f'    let ghost s0=m::initial(crate::model::mh(b).unwrap().0,33,m::no_events());']
+            for n in range(4):
+                step = f'm::step(b,m::strict(),false,false,s{n})'
+                composition += [f'    let ghost s{n+1}=match {step} {{m::Step::Next(next)=>next,_=>s{n}}};',
+                                f'    assert({step}==m::Step::Next(s{n+1}));',
+                                f'    m::step_progress(b,m::strict(),false,false,s{n});']
+            composition += [f'    assert(match m::step(b,m::strict(),false,false,s4) {{m::Step::Done(doc,ev)=>doc.ihdr=={symbolic_header} && ev==m::no_events(),_=>false}});']
+            for n in reversed(range(5)):
+                composition += [f'    m::drive_step(b,m::strict(),false,false,s{n});',
+                                f'    assert(accepted(m::drive(b,m::strict(),false,false,s{n}),{symbolic_header}));']
         lines += ['#[verifier::spinoff_prover]',f'proof fn symbolic_{ident}(b: Seq<u8>)',
                   f'    requires b.len()=={len(data)},crate::model::mh(b)==Ok(({symbolic_header},33nat)),',
                   *[f'        {r},' for r in requirements],
-                  f'    ensures accepted(m::MW_p(b,m::strict()),{symbolic_header}),','{',
+                  f'    ensures accepted(m::{model}(b,m::strict()),{symbolic_header}),','{',
                   '    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);',
-                  *pure,'    reveal(m::step);reveal(m::ordered);reveal(m::own);',
-                  f'    reveal_with_fuel(m::drive,{sites+1});','}','']
+                  parse_hide,control_hide,*structural_store,*pure,'    reveal(m::step);reveal(m::ordered);reveal(m::own);',
+                  *composition,'}','']
         lines += [f'// {name.replace(chr(94),chr(95))}; fixture sha256 {digest}',
                   f'spec fn bytes_{ident}() -> Seq<u8> {{seq![{values}]}}',
                   f'spec fn accepted_{ident}() -> bool {{{predicate}}}',
                   '#[verifier::spinoff_prover]',
                   f'proof fn model_{ident}()',f'    ensures accepted_{ident}(),','{',
-                  '    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);hide(m::MW_p);',
+                  '    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);',
+                  f'    hide(m::{model});',
+                  parse_hide,control_hide,
                   f'    assert(crate::model::mh(bytes_{ident}())==Ok(({header},33nat))) by {{',
                   '        reveal(crate::model::mh);',
                   f'        assert(crate::model::mh(bytes_{ident}())==Ok(({header},33nat))) by (compute);','    }',
                   *facts,f'    symbolic_{ident}(bytes_{ident}());','}',
-                  f'// {LABEL}',f'fn projection_{ident}() {{','    hide(m::MW_p);',
+                  f'// {LABEL}',f'fn projection_{ident}() {{',f'    hide(m::{model});',
                   f'    let b=[{values}];',f'    proof {{assert(b@==bytes_{ident}());model_{ident}();}}',
                   '    let mut events=Events {r1:false,r3:false,r4:false};',
-                  '    let prepared=crate::callers::still(&b,&STRICT,&mut events);',
+                  f'    let prepared=crate::callers::{preparation}(&b,&STRICT,&mut events);',
                   '    match prepared {',
                   f'        Ok(doc)=>{{assert(doc.ihdr.view()=={header});',
                   '            assert(doc.info.ranges_wf(b.len() as nat)) by {reveal(crate::walk::Doc::wf);}',
                   '        },','        Err(_)=>{assert(false);},','    }',
                   '    // The actual public call has no asserted final data/pixel outcome.',
-                  '    let _public_result=crate::png::try_decode_still(&b);','}','']
+                  f'    let _public_result={public}(&b);','}','']
         rows.append(dict(name=name, entry=scheduled['entry'], source=str(path), source_sha256=digest,
                          input_sha256=hashlib.sha256(data).hexdigest(), frozen_expected=fixture['expected'],
                          category='b', model_function='model_'+ident, function='projection_'+ident,
                          complete_m3_projection=True, complete_final_data_witness=False, status=LABEL))
     assert rows
     lines += ['} // verus!', '']
-    (ROOT/'src/witness_m3_projection.rs').write_text('\n'.join(lines))
+    (ROOT/'src/witness_m3_projection.rs').write_text('\n'.join(line.rstrip() for line in lines))
     (ROOT/'runs/m3-projection-witness-inputs.json').write_text(json.dumps(rows,indent=2)+'\n')
     print(f'Generated {len(rows)} M3 whole-walk/preparation projections, no final-data witnesses.')
 

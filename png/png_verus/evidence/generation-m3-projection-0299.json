@@ -1,0 +1,31 @@
+{
+  "checkpoint": 299,
+  "base_commit": "5e6f573",
+  "command": [
+    "python3",
+    "-I",
+    "/home/ws/projects/verified-decoders/png/png_verus/tools/generate_m3_projection_witnesses.py",
+    "--names",
+    "container/minimal-ok",
+    "container/unknown-ancillary-everywhere",
+    "container/reserved-bit-ancillary",
+    "plte/ok",
+    "plte/suggested-palette-in-rgb",
+    "anc-ok/iCCP-303",
+    "anc-ok/tIME-7-after-idat",
+    "anc-ok/srgb-and-iccp-both",
+    "anc-ok/many-text",
+    "anc-ok/ztxt-with-corrupt-zlib-not-inflated",
+    "order/splt-twice",
+    "order/bkgd-hist-after-plte-before-idat-rgb",
+    "ihdr/8192x8192-accepted-then-truncated-zlib",
+    "ihdr/67108864x1-accepted-then-truncated-zlib",
+    "ihdr/1x67108864-accepted-then-truncated-zlib"
+  ],
+  "selected_records": 15,
+  "generator_sha256": "cb9df674aca9710c773d20bf4095444849f6f16ce3e660229e789a0067287afa",
+  "generated_source_sha256": "342c7d805a8a1d173848a32f6cdde99a06919fe351230954a392c3fdd4ea5c27",
+  "byte_for_byte_regeneration_checked": true,
+  "regeneration_directory": "/home/ws/projects/verified-decoders/png/png_verus/runs/regeneration-0299",
+  "scope": "M3 projection only; final data outcome is an M4\u2013M6 witness obligation, runtime-conformance-tested meanwhile"
+}

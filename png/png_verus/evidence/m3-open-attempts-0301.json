@@ -1,0 +1,168 @@
+{
+  "checkpoint": 301,
+  "attempts": [
+    {
+      "name": "apng-bad/fewer-frames-than-declared",
+      "status": "OPEN; no proof credit",
+      "resource_failures": [
+        {
+          "run": 278,
+          "diagnostic": "error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details\n    --> src/witness_m3_walk_frozen.rs:3828:7\n     |\n3828 | proof fn model_apng_bad_fewer_frames_than_declared()\n     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nerror: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details"
+        },
+        {
+          "run": 278,
+          "diagnostic": "error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details\n    --> src/witness_m3_walk_frozen.rs:3750:7\n     |\n3750 | proof fn symbolic_apng_bad_fewer_frames_than_declared(b: Seq<u8>)\n     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nerror: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details"
+        },
+        {
+          "run": 280,
+          "diagnostic": "error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details\n    --> src/witness_m3_walk_frozen.rs:3906:7\n     |\n3906 | proof fn symbolic_apng_bad_fewer_frames_than_declared(b: Seq<u8>)\n     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nerror: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details"
+        }
+      ],
+      "verifier_stack_overflow": false,
+      "next_attempt": "Split per-record model steps and drive composition under unchanged limits"
+    },
+    {
+      "name": "apng-bad/more-frames-than-declared",
+      "status": "OPEN; no proof credit",
+      "resource_failures": [
+        {
+          "run": 275,
+          "diagnostic": "error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details\n    --> src/witness_m3_walk_frozen.rs:3507:7\n     |\n3507 | proof fn model_apng_bad_more_frames_than_declared()\n     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nerror: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details"
+        },
+        {
+          "run": 281,
+          "diagnostic": "error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details\n    --> src/witness_m3_walk_frozen.rs:4150:7\n     |\n4150 | proof fn symbolic_apng_bad_more_frames_than_declared(b: Seq<u8>)\n     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nerror: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details"
+        }
+      ],
+      "verifier_stack_overflow": false,
+      "next_attempt": "Split per-record model steps and drive composition under unchanged limits"
+    },
+    {
+      "name": "apng-bad/seq-gap",
+      "status": "OPEN; no proof credit",
+      "resource_failures": [
+        {
+          "run": 275,
+          "diagnostic": "error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details\n    --> src/witness_m3_walk_frozen.rs:3717:7\n     |\n3717 | proof fn model_apng_bad_seq_gap()\n     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nerror: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details"
+        }
+      ],
+      "verifier_stack_overflow": false,
+      "next_attempt": "Split per-record model steps and drive composition under unchanged limits"
+    },
+    {
+      "name": "apng-bad/seq-gap-still",
+      "status": "OPEN; no proof credit",
+      "resource_failures": [
+        {
+          "run": 281,
+          "diagnostic": "error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details\n    --> src/witness_m3_walk_frozen.rs:4884:7\n     |\n4884 | proof fn model_apng_bad_seq_gap_still()\n     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nerror: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details"
+        }
+      ],
+      "verifier_stack_overflow": false,
+      "next_attempt": "Split per-record model steps and drive composition under unchanged limits"
+    },
+    {
+      "name": "apng-bad/seq-fdat-repeats",
+      "status": "OPEN; no proof credit",
+      "resource_failures": [
+        {
+          "run": 275,
+          "diagnostic": "error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details\n    --> src/witness_m3_walk_frozen.rs:3927:7\n     |\n3927 | proof fn model_apng_bad_seq_fdat_repeats()\n     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nerror: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details"
+        },
+        {
+          "run": 278,
+          "diagnostic": "error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details\n    --> src/witness_m3_walk_frozen.rs:4650:7\n     |\n4650 | proof fn symbolic_apng_bad_seq_fdat_repeats(b: Seq<u8>)\n     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nerror: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details"
+        },
+        {
+          "run": 280,
+          "diagnostic": "error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details\n    --> src/witness_m3_walk_frozen.rs:4936:7\n     |\n4936 | proof fn symbolic_apng_bad_seq_fdat_repeats(b: Seq<u8>)\n     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nnote: automatically chose triggers for this expression:"
+        }
+      ],
+      "verifier_stack_overflow": false,
+      "next_attempt": "Split per-record model steps and drive composition under unchanged limits"
+    },
+    {
+      "name": "apng-bad/fdat-len-3",
+      "status": "OPEN; no proof credit",
+      "resource_failures": [
+        {
+          "run": 281,
+          "diagnostic": "error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details\n    --> src/witness_m3_walk_frozen.rs:5999:7\n     |\n5999 | proof fn symbolic_apng_bad_fdat_len_3(b: Seq<u8>)\n     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nerror: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details"
+        }
+      ],
+      "verifier_stack_overflow": false,
+      "next_attempt": "Split per-record model steps and drive composition under unchanged limits"
+    },
+    {
+      "name": "apng-bad/fctl-no-fdat-then-iend",
+      "status": "OPEN; no proof credit",
+      "resource_failures": [
+        {
+          "run": 278,
+          "diagnostic": "error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details\n    --> src/witness_m3_walk_frozen.rs:5623:7\n     |\n5623 | proof fn symbolic_apng_bad_fctl_no_fdat_then_iend(b: Seq<u8>)\n     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nerror: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details"
+        }
+      ],
+      "verifier_stack_overflow": false,
+      "next_attempt": "Split per-record model steps and drive composition under unchanged limits"
+    },
+    {
+      "name": "apng-bad/fctl-no-fdat-then-fctl",
+      "status": "OPEN; no proof credit",
+      "resource_failures": [
+        {
+          "run": 280,
+          "diagnostic": "error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details\n    --> src/witness_m3_walk_frozen.rs:6330:7\n     |\n6330 | proof fn model_apng_bad_fctl_no_fdat_then_fctl()\n     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nerror: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details"
+        },
+        {
+          "run": 281,
+          "diagnostic": "error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details\n    --> src/witness_m3_walk_frozen.rs:6540:7\n     |\n6540 | proof fn model_apng_bad_fctl_no_fdat_then_fctl()\n     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nerror: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details"
+        },
+        {
+          "run": 281,
+          "diagnostic": "error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details\n    --> src/witness_m3_walk_frozen.rs:6419:7\n     |\n6419 | proof fn symbolic_apng_bad_fctl_no_fdat_then_fctl(b: Seq<u8>)\n     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nerror: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details"
+        }
+      ],
+      "verifier_stack_overflow": false,
+      "next_attempt": "Split per-record model steps and drive composition under unchanged limits"
+    },
+    {
+      "name": "apng-bad/pixel-budget",
+      "status": "OPEN; no proof credit",
+      "resource_failures": [],
+      "verifier_stack_overflow": false,
+      "next_attempt": "Split per-record model steps and drive composition under unchanged limits",
+      "diagnostic_note": "No exact per-record resource-limit diagnostic found in these retained logs; do not infer one from the exact-budget category-b name. A dedicated split attempt remains required."
+    },
+    {
+      "name": "apng-bad/pixel-budget-exactly-2^30-then-zlib",
+      "status": "OPEN; no proof credit",
+      "resource_failures": [
+        {
+          "run": 294,
+          "diagnostic": "error: function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details\n    --> src/witness_m3_projection.rs:5381:1\n     |\n5381 | fn projection_apng_bad_pixel_budget_exactly_2_30_then_zlib() {\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+        }
+      ],
+      "verifier_stack_overflow": true,
+      "next_attempt": "Split per-record model steps and drive composition under unchanged limits"
+    }
+  ],
+  "resolved_sequence_record": {
+    "name": "apng-bad/seq-starts-at-1",
+    "failed_broad_helper_run": 295,
+    "verified_split_run": 301,
+    "functions": [
+      "first_sequence_actl_step",
+      "first_sequence_fctl_step",
+      "first_control_sequence_error",
+      "model_apng_bad_seq_starts_at_1",
+      "walk_apng_bad_seq_starts_at_1"
+    ]
+  },
+  "budget_scope": "Run 294 resource failure in executable projection plus verifier stack overflow; no final-data assertion or limit change",
+  "diagnostic_cache_ruling": "Coordinator judged run 297 immaterial: ignored PNG-owned cache only, protected dependency caches untouched. Partial cache deleted; no more focus or partial selectors.",
+  "generation_regression": {
+    "run": 298,
+    "cause": "Split-helper replacement accidentally removed three retained ICC helper definitions",
+    "fix": "Restore the exact retained definitions from HEAD; full run 301 passes"
+  }
+}

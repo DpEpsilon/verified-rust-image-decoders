@@ -1,0 +1,1136 @@
+[
+  {
+    "name": "container/idat-crc",
+    "entry": "still",
+    "function": "walk_container_idat_crc",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "5465ff537e12856df8e011de3aa79d488bb3537c8028c01061d04b1dd9266fd5",
+    "frozen_expected": {
+      "error": "CrcMismatch"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/ancillary-crc",
+    "entry": "still",
+    "function": "walk_container_ancillary_crc",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "b683639def34dc5f41afbcbbf1960bad64ef37513b09e511cb7314f055f8764d",
+    "frozen_expected": {
+      "error": "CrcMismatch"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/unknown-ancillary-crc",
+    "entry": "still",
+    "function": "walk_container_unknown_ancillary_crc",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "63bdc6491b27a9d78bcb9279b7d5a36da62bcb80bf0c668ffe15a6e3bf721a88",
+    "frozen_expected": {
+      "error": "CrcMismatch"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/iend-crc",
+    "entry": "still",
+    "function": "walk_container_iend_crc",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "1309b6839bdfd60a45667e7629ecdfea8c4655899b4608a07eb7330022b2ae41",
+    "frozen_expected": {
+      "error": "CrcMismatch"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/length-2^31",
+    "entry": "still",
+    "function": "walk_container_length_2_31",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "c2ed526a601666ba610678fa69139b9b49fe46df6725bb4f18f3ed25323cc34d",
+    "frozen_expected": {
+      "error": "ChunkTooLong"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/length-ffffffff",
+    "entry": "still",
+    "function": "walk_container_length_ffffffff",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "035ae21490cf92f10f08ebe7b3f58bd7a669113155083e43e68fb77892bba2fa",
+    "frozen_expected": {
+      "error": "ChunkTooLong"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/type-digit",
+    "entry": "still",
+    "function": "walk_container_type_digit",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "e6f961007283b0d8d4f79f6d913b1217bc7bb43e7d16cc6541cb0724809a104b",
+    "frozen_expected": {
+      "error": "InvalidChunkType"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/type-space",
+    "entry": "still",
+    "function": "walk_container_type_space",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "56a9a46fffcc0ec9167535af324243209538e036343132293b6b6c9d8570dde5",
+    "frozen_expected": {
+      "error": "InvalidChunkType"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/truncated-mid-idat",
+    "entry": "still",
+    "function": "walk_container_truncated_mid_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "b1782cc8123c7879d145ace0487771f31bbece2a5a11ed01087f72e7445a46c4",
+    "frozen_expected": {
+      "error": "TruncatedChunk"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/length-beyond-eof",
+    "entry": "still",
+    "function": "walk_container_length_beyond_eof",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "b750d1ce52e2634084a2e5b836bfcf57d9d0e6e61375e37f4d4fd42beb1b9c2b",
+    "frozen_expected": {
+      "error": "TruncatedChunk"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/missing-iend",
+    "entry": "still",
+    "function": "walk_container_missing_iend",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "b25c8629828eb61567ece81de508d7af4962fa972e76dda31d1033c2d60f6ac8",
+    "frozen_expected": {
+      "error": "MissingIend"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/missing-iend-after-text",
+    "entry": "still",
+    "function": "walk_container_missing_iend_after_text",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "ea49db270d47d5936f885086b9ffddb8790ad0c94dd1cd14a8bc4fd0a39f83a5",
+    "frozen_expected": {
+      "error": "MissingIend"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/trailing-byte",
+    "entry": "still",
+    "function": "walk_container_trailing_byte",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "2d03ba5a80566c84cea417e7e903d1398a4deae4eaa6be7dd101ed8d77d07ceb",
+    "frozen_expected": {
+      "error": "TrailingBytes"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/trailing-second-iend",
+    "entry": "still",
+    "function": "walk_container_trailing_second_iend",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "6772423da84030f5c021466d44b99adcca5fb6466ea88b4f913c9d906ff159ee",
+    "frozen_expected": {
+      "error": "TrailingBytes"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/iend-length-1",
+    "entry": "still",
+    "function": "walk_container_iend_length_1",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "1b4ce733cc9f4a0c5f640994a66c6b72c2c765d74e7a5890c5d47f119346d722",
+    "frozen_expected": {
+      "error": "InvalidChunkLength"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/no-idat",
+    "entry": "still",
+    "function": "walk_container_no_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "3c482c66e7967406a7d07590ff0b9d35df7e64da974391e40e21abe5f72b0e51",
+    "frozen_expected": {
+      "error": "MissingImageData"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/unknown-critical",
+    "entry": "still",
+    "function": "walk_container_unknown_critical",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "85f61d063c619de93c0ead9dd868371338d9ed3045793b3d7d5fa5c84c0ef40f",
+    "frozen_expected": {
+      "error": "UnknownCriticalChunk"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/reserved-bit-on-critical",
+    "entry": "still",
+    "function": "walk_container_reserved_bit_on_critical",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "9ec43b7f840441c463f2c379bc17aa404d4b6c66111db8acfcad6531dc886db5",
+    "frozen_expected": {
+      "error": "UnknownCriticalChunk"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/duplicate-ihdr",
+    "entry": "still",
+    "function": "walk_container_duplicate_ihdr",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "f6c0a35f275438fda30de30415b358f97725cfa0a2548b30aa843e7b3b2bdc84",
+    "frozen_expected": {
+      "error": "DuplicateChunk"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/non-consecutive-idat",
+    "entry": "still",
+    "function": "walk_container_non_consecutive_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "a53f1e7965052a687843f6dda27d7a91bd42164c7a7b799734ed9bfae538962e",
+    "frozen_expected": {
+      "error": "NonConsecutiveIdat"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "container/idat-after-iend",
+    "entry": "still",
+    "function": "walk_container_idat_after_iend",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "4376ce515a9e7b4c3823a060825444bafca7673d810ac81cdb56c53c6906d594",
+    "frozen_expected": {
+      "error": "TrailingBytes"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "plte/missing",
+    "entry": "still",
+    "function": "walk_plte_missing",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "5eb08d113d38b3768f502518f83f9c926233ebb89957e619c9863e0b263ea242",
+    "frozen_expected": {
+      "error": "MissingPalette"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "plte/after-idat",
+    "entry": "still",
+    "function": "walk_plte_after_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "7207ae6aec56558290415fb8b2b7a5b9b476dd870e74f64dea89837740f5786a",
+    "frozen_expected": {
+      "error": "MissingPalette"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "plte/after-idat-rgb",
+    "entry": "still",
+    "function": "walk_plte_after_idat_rgb",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "6cde4158bab3933a85b321c0592dbfed905136410467b80891c0e5a56316e15f",
+    "frozen_expected": {
+      "error": "ChunkOutOfOrder"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "plte/duplicate",
+    "entry": "still",
+    "function": "walk_plte_duplicate",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "630e8ed80c2b32761bb27889bbbe2a02b501852101f3176d17155eb30a599c46",
+    "frozen_expected": {
+      "error": "DuplicateChunk"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "plte/length-8",
+    "entry": "still",
+    "function": "walk_plte_length_8",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "5329674330dbbd6f0fa3f1584b77aa71a80dc84ca3d37a35e07ea746e9c779f2",
+    "frozen_expected": {
+      "error": "InvalidPalette"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "plte/length-0",
+    "entry": "still",
+    "function": "walk_plte_length_0",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "5b3403919f01aa35d79befc79ad89bddba07676e7ad9c5035a26ac1c6563895b",
+    "frozen_expected": {
+      "error": "InvalidPalette"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "plte/257-entries",
+    "entry": "still",
+    "function": "walk_plte_257_entries",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "8ab3c286e85925d6393a6eabfd8a7f145e8cb3f32d67c153f7e712003c6b71f8",
+    "frozen_expected": {
+      "error": "InvalidPalette"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "plte/5-entries-depth-2",
+    "entry": "still",
+    "function": "walk_plte_5_entries_depth_2",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "f2078683833252d761a3e59f3b396cf48be0f11cfa633fa39a305d5b0b2d106c",
+    "frozen_expected": {
+      "error": "InvalidPalette"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "plte/in-greyscale",
+    "entry": "still",
+    "function": "walk_plte_in_greyscale",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "2a34db8f6846da8ff765928dfb7a427ffcf97389f08e200b4ab3095845a1283b",
+    "frozen_expected": {
+      "error": "UnexpectedPalette"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "plte/in-grey-alpha",
+    "entry": "still",
+    "function": "walk_plte_in_grey_alpha",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "039f8501bc6a80e8f17358a3174debd0bbb7a8becdbc499f32d78d0031587ab4",
+    "frozen_expected": {
+      "error": "UnexpectedPalette"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "trns/before-plte",
+    "entry": "still",
+    "function": "walk_trns_before_plte",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "360604c30d7dc44aff14e0c6ede2f338d003eb34fc2f9d3dd2be24d4a85955e9",
+    "frozen_expected": {
+      "error": "ChunkOutOfOrder"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "trns/after-idat",
+    "entry": "still",
+    "function": "walk_trns_after_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "4356a8e3ef0b9b5465dcae77f419df6732541fb2095d97eaf74a106a279940f5",
+    "frozen_expected": {
+      "error": "ChunkOutOfOrder"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "trns/duplicate",
+    "entry": "still",
+    "function": "walk_trns_duplicate",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "d769514bcfcc4af9712b164dbbd9914547eb2984188541ab601ff696ff87d596",
+    "frozen_expected": {
+      "error": "DuplicateChunk"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "trns/palette-too-long",
+    "entry": "still",
+    "function": "walk_trns_palette_too_long",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "b350aedade5f0c15203741e54fa6d19dceeae3d8567ddf722f87850407821a99",
+    "frozen_expected": {
+      "error": "InvalidTransparency"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "trns/rgb-length-2",
+    "entry": "still",
+    "function": "walk_trns_rgb_length_2",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "ebac8580975bb5f6e6cc8fe950d7faa5876621f26567cb6398f82c0a2f1c83ab",
+    "frozen_expected": {
+      "error": "InvalidTransparency"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "trns/in-rgba",
+    "entry": "still",
+    "function": "walk_trns_in_rgba",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "17267ac28d8937aa8e55143b77a33c73ac0bf4ea9e22a56393559979836553ca",
+    "frozen_expected": {
+      "error": "InvalidTransparency"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "anc-bad/gamma-0",
+    "entry": "still",
+    "function": "walk_anc_bad_gamma_0",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "b1605d40b7e25730f1497327cc337ab52c38d07cb7d79f77a5b589144809abc5",
+    "frozen_expected": {
+      "error": "InvalidGamma"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "anc-bad/iccp-name-80",
+    "entry": "still",
+    "function": "walk_anc_bad_iccp_name_80",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "c25df079278db98dee052e961668f2150608db0bb31c305d2bf9bee11762608b",
+    "frozen_expected": {
+      "error": "InvalidIccp"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "anc-bad/iccp-leading-space",
+    "entry": "still",
+    "function": "walk_anc_bad_iccp_leading_space",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "58e09b1d4a07eb32fa777139c9a77f5e2911b8f1277a9d01bd5b2fda01b9c59d",
+    "frozen_expected": {
+      "error": "InvalidIccp"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "anc-bad/cicp-matrix-1",
+    "entry": "still",
+    "function": "walk_anc_bad_cicp_matrix_1",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "c9a282554b2d694a68ea8d09d7ea797c061f213cc84f35ef824c232c89a553c6",
+    "frozen_expected": {
+      "error": "InvalidCicp"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "anc-bad/bkgd-high-bits",
+    "entry": "still",
+    "function": "walk_anc_bad_bkgd_high_bits",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "6e95c5eaa89c528cf31f21235f4a8501c3ce54a8ffb91a8ed6d4978a4d8e5b7b",
+    "frozen_expected": {
+      "error": "InvalidBackground"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "anc-bad/exif-len-3",
+    "entry": "still",
+    "function": "walk_anc_bad_exif_len_3",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "6039ecabbf576ea254c22308eb4f5c1baecb01295ab3f00978b78e69248248b1",
+    "frozen_expected": {
+      "error": "InvalidExif"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "anc-bad/time-second-61",
+    "entry": "still",
+    "function": "walk_anc_bad_time_second_61",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "5223ca0e2ceb48b5774ab6f5d31d8ef3518c402990dcc14938aa354acf4ea63d",
+    "frozen_expected": {
+      "error": "InvalidTime"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "anc-bad/text-keyword-double-space",
+    "entry": "still",
+    "function": "walk_anc_bad_text_keyword_double_space",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "06e5838876309d276fdd5fc3165cefb410e0990ede5a4cdb0e4c598d0cbe2df6",
+    "frozen_expected": {
+      "error": "InvalidText"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "anc-bad/itxt-compressed-method-1",
+    "entry": "still",
+    "function": "walk_anc_bad_itxt_compressed_method_1",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "5ac2f507ce03be90e530b673762d367d1c9132188f61d3c0977493ca462e77e4",
+    "frozen_expected": {
+      "error": "InvalidText"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "anc-bad/itxt-missing-separators",
+    "entry": "still",
+    "function": "walk_anc_bad_itxt_missing_separators",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "1eff62b3c735c4a41552b49cad96a1c0b38c9bc1ca2f3b66f8bb75fb4ed81c34",
+    "frozen_expected": {
+      "error": "InvalidText"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "anc-bad/hist-without-plte",
+    "entry": "still",
+    "function": "walk_anc_bad_hist_without_plte",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "c4e757cb582d2d200b64605450607588504405f5b5f44ebe9661c6411da3254d",
+    "frozen_expected": {
+      "error": "ChunkOutOfOrder"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "anc-bad/bkgd-index-3-of-3",
+    "entry": "still",
+    "function": "walk_anc_bad_bkgd_index_3_of_3",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "b04245845b1ce851c153979cee6ee76366e0e51b1f6608ef8bd9bc3bf4c09491",
+    "frozen_expected": {
+      "error": "InvalidBackground"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "anc-bad/sbit-palette-9",
+    "entry": "still",
+    "function": "walk_anc_bad_sbit_palette_9",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "e04b4c5ea4d87dc37a7b0da4b7da529db21cba8fb5d1c42f239e8873a81dbec3",
+    "frozen_expected": {
+      "error": "InvalidSbit"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "order/gAMA-after-plte",
+    "entry": "still",
+    "function": "walk_order_gama_after_plte",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "75ab56cde56734deae46dbba7470693667d042605d5afd2417416c911ae3f887",
+    "frozen_expected": {
+      "error": "ChunkOutOfOrder"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "order/gAMA-after-idat",
+    "entry": "still",
+    "function": "walk_order_gama_after_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "7809df3ec35b0f741f3a16772653f3b599956b26a7e3321fc967b01aa955d581",
+    "frozen_expected": {
+      "error": "ChunkOutOfOrder"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "order/gAMA-duplicate",
+    "entry": "still",
+    "function": "walk_order_gama_duplicate",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "57138108b0daa3a1107d4b3615cfc0faf305683bd85387fe9ff72015972e114d",
+    "frozen_expected": {
+      "error": "DuplicateChunk"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "order/iCCP-after-idat",
+    "entry": "still",
+    "function": "walk_order_iccp_after_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "b7816ba75fdb2bd4359748182b8fc9756150ed24e1d84fbfe9876ecce44d0094",
+    "frozen_expected": {
+      "error": "ChunkOutOfOrder"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "order/pHYs-after-idat",
+    "entry": "still",
+    "function": "walk_order_phys_after_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "0e2b1ac6a7ca4f127d7398574bc33c468662787ce325b473a66d308350a18e65",
+    "frozen_expected": {
+      "error": "ChunkOutOfOrder"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/actl-zero-frames",
+    "entry": "frames",
+    "function": "walk_apng_bad_actl_zero_frames",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "86bd715d7f6b85f8b86ca9197bf3be51a62dcd8a451632656d3af2dbd6582595",
+    "frozen_expected": {
+      "error": "InvalidAnimationControl"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/actl-zero-frames-still",
+    "entry": "still",
+    "function": "walk_apng_bad_actl_zero_frames_still",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "86bd715d7f6b85f8b86ca9197bf3be51a62dcd8a451632656d3af2dbd6582595",
+    "frozen_expected": {
+      "error": "InvalidAnimationControl"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/actl-after-idat",
+    "entry": "frames",
+    "function": "walk_apng_bad_actl_after_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "3fea56366d662bdff0ea3f2493fd9426d481c53932530041b80825cb2a43bed9",
+    "frozen_expected": {
+      "error": "ChunkOutOfOrder"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/actl-duplicate",
+    "entry": "frames",
+    "function": "walk_apng_bad_actl_duplicate",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "def4062a8211bb0ba1b2d9cc53f171d8a67c57e1dc053b27aadabeeb840698b9",
+    "frozen_expected": {
+      "error": "DuplicateChunk"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/actl-len-4",
+    "entry": "frames",
+    "function": "walk_apng_bad_actl_len_4",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "03626c1079f86a9e3b197f10325393e8417950d83c7ed8c901ab9f5b080b4b55",
+    "frozen_expected": {
+      "error": "InvalidChunkLength"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/fctl-without-actl",
+    "entry": "frames",
+    "function": "walk_apng_bad_fctl_without_actl",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "c5be587ca37f17d718cc8106de21092f80179018fe4e546048fb74629be1c362",
+    "frozen_expected": {
+      "error": "MissingAnimationControl"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/fctl-without-actl-still",
+    "entry": "still",
+    "function": "walk_apng_bad_fctl_without_actl_still",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "c5be587ca37f17d718cc8106de21092f80179018fe4e546048fb74629be1c362",
+    "frozen_expected": {
+      "error": "MissingAnimationControl"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/fdat-without-actl",
+    "entry": "frames",
+    "function": "walk_apng_bad_fdat_without_actl",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "e0b69bd1278480d88cdbf68ac10317288e78cc4488e8f765ec956427dc0d3ba5",
+    "frozen_expected": {
+      "error": "MissingAnimationControl"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/no-fctl-at-all",
+    "entry": "frames",
+    "function": "walk_apng_bad_no_fctl_at_all",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "826324e013ee0a4042e74db3ee66a7ce3bd5116bd5e989bed1477d033445b492",
+    "frozen_expected": {
+      "error": "FrameCountMismatch"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/seq-starts-at-1",
+    "entry": "frames",
+    "function": "walk_apng_bad_seq_starts_at_1",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "488e046490fb8c0b8ea3ab0a6da7980706b75afb31b5449d87a9688eede34491",
+    "frozen_expected": {
+      "error": "SequenceError"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/fdat-before-fctl",
+    "entry": "frames",
+    "function": "walk_apng_bad_fdat_before_fctl",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "11983c95c981bdb8ebced4f6249180776c02a59ec3667ef1a5bf05cf1fa2a1ed",
+    "frozen_expected": {
+      "error": "UnexpectedFrameData"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/fdat-for-idat-frame",
+    "entry": "frames",
+    "function": "walk_apng_bad_fdat_for_idat_frame",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "ab3cf523b85843a4d0de4511ce0c65d07c9da0b4b9be168833e64e6a448938d2",
+    "frozen_expected": {
+      "error": "UnexpectedFrameData"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/fdat-for-idat-frame-still",
+    "entry": "still",
+    "function": "walk_apng_bad_fdat_for_idat_frame_still",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "ab3cf523b85843a4d0de4511ce0c65d07c9da0b4b9be168833e64e6a448938d2",
+    "frozen_expected": {
+      "error": "UnexpectedFrameData"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/fdat-before-idat",
+    "entry": "frames",
+    "function": "walk_apng_bad_fdat_before_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "da76d43d6874f14e5d5dd3fd8a1677b107cf70751a48bc4b0999415a329109e3",
+    "frozen_expected": {
+      "error": "ChunkOutOfOrder"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/two-fctl-before-idat",
+    "entry": "frames",
+    "function": "walk_apng_bad_two_fctl_before_idat",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "504e0c42b92f0ca65d945da930acd1109fc60015137d487d28f8e20af53d473d",
+    "frozen_expected": {
+      "error": "ChunkOutOfOrder"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/fctl-len-25",
+    "entry": "frames",
+    "function": "walk_apng_bad_fctl_len_25",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "0a22ce626a1daaf5d7fbaa94df0b875156c12207a7134fb8669ccb04f1c8d265",
+    "frozen_expected": {
+      "error": "InvalidChunkLength"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/fctl-width-0",
+    "entry": "frames",
+    "function": "walk_apng_bad_fctl_width_0",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "312d3200a15f2bcce8696565e9fc32bf5ac351c164ced3572744c53430cfeef3",
+    "frozen_expected": {
+      "error": "InvalidFrameControl"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/fctl-outside-x",
+    "entry": "frames",
+    "function": "walk_apng_bad_fctl_outside_x",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "899ab51e21777cede35b2cd3d5bc3511ab646824a5c9e1c7153c44f5e6e6da92",
+    "frozen_expected": {
+      "error": "InvalidFrameControl"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/fctl-outside-y",
+    "entry": "frames",
+    "function": "walk_apng_bad_fctl_outside_y",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "d992a03c5ba90a3bead83cf769fa1f5c3e31e75b50bcac17d07d123e8b8154ef",
+    "frozen_expected": {
+      "error": "InvalidFrameControl"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/fctl-offset-overflow-u32",
+    "entry": "frames",
+    "function": "walk_apng_bad_fctl_offset_overflow_u32",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "5e936ae42507a51c5f55f29bc12be71daf88d0a5a9a1e09e69c8540039d9965b",
+    "frozen_expected": {
+      "error": "InvalidFrameControl"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/fctl-dispose-3",
+    "entry": "frames",
+    "function": "walk_apng_bad_fctl_dispose_3",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "5b29df17245b7a76b95d0fa1b0f82c07de65f87bc654b310c3210e6174304008",
+    "frozen_expected": {
+      "error": "InvalidFrameControl"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/fctl-blend-2",
+    "entry": "frames",
+    "function": "walk_apng_bad_fctl_blend_2",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "9f2e962deab22ad1100bd693022e864e1f60dc33cc7cd15b6498ed7f307d0278",
+    "frozen_expected": {
+      "error": "InvalidFrameControl"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/default-fctl-smaller",
+    "entry": "frames",
+    "function": "walk_apng_bad_default_fctl_smaller",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "54b3bf23723504c4b3284ac369e63bf67d820db0a1e30b16739bf3305a70a11e",
+    "frozen_expected": {
+      "error": "InvalidFrameControl"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/default-fctl-offset",
+    "entry": "frames",
+    "function": "walk_apng_bad_default_fctl_offset",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "dfae3818db3a3f03fe4e50261e98ef9c440ffc96633e5bae8a6c252ebe6865e9",
+    "frozen_expected": {
+      "error": "InvalidFrameControl"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/fctl-crc",
+    "entry": "frames",
+    "function": "walk_apng_bad_fctl_crc",
+    "source": "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json",
+    "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "input_sha256": "b81442c4bbbf5934757cea8896e9a5d68ac08dd29efb9c03602004a0e9310c4b",
+    "frozen_expected": {
+      "error": "CrcMismatch"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  },
+  {
+    "name": "apng-bad/actl-too-many-frames",
+    "entry": "frames",
+    "function": "walk_apng_bad_actl_too_many_frames",
+    "source": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+    "source_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+    "input_sha256": "86ee3c3e861d928de55494e7a9eca3c81b1c85dac86e520480a0bb876c148f60",
+    "frozen_expected": {
+      "error": "TooManyFrames"
+    },
+    "category": "a",
+    "complete_public_entry_witness": true,
+    "status": "complete M3 category-a whole-model/public-entry error witness"
+  }
+]

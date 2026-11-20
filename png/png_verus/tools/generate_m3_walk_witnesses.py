@@ -273,6 +273,49 @@ def read_facts(data, ident, frozen_error):
 
 MODEL_HELPERS = r"""
 
+// Per-record sequence prefix, with each model step checked separately.
+spec fn first_sequence_state(h: crate::model::Ihdr) -> m::State {
+    let s=m::initial(h,33,m::no_events());
+    m::State {pos:53,seen:s.seen.insert(crate::walk_model::Name::Actl),doc:m::Doc {actl:Some((2u32,0u32)),..s.doc},..s}
+}
+#[verifier::spinoff_prover]
+proof fn first_sequence_actl_step(b: Seq<u8>,h: crate::model::Ihdr)
+    requires 91<=b.len(),
+        crate::critical_model::read(b,33,crate::walk_model::Phase::Before,false)==Ok(crate::critical_model::Candidate {
+            ty:seq![97u8,99u8,84u8,76u8],data:41,len:8,next:53,crc_ok:true,synthetic:false}),
+        crate::apng_model::actl(b.subrange(41,49))==Ok((2u32,0u32)),
+    ensures m::step(b,m::strict(),true,false,m::initial(h,33,m::no_events()))==m::Step::Next(first_sequence_state(h)),
+{
+    hide(crate::critical_model::read);hide(crate::apng_model::actl);hide(m::initial_info);
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+}
+#[verifier::spinoff_prover]
+proof fn first_sequence_fctl_step(b: Seq<u8>,h: crate::model::Ihdr)
+    requires 91<=b.len(),h.width==4,h.height==3,
+        crate::critical_model::read(b,53,crate::walk_model::Phase::Before,false)==Ok(crate::critical_model::Candidate {
+            ty:seq![102u8,99u8,84u8,76u8],data:61,len:26,next:91,crc_ok:true,synthetic:false}),
+        crate::apng_model::fctl(b.subrange(61,87),true,true,4,3,crate::apng_model::initial())==Err((crate::png::Error::SequenceError,true)),
+    ensures m::step(b,m::strict(),true,false,first_sequence_state(h))==m::Step::Error(Error::SequenceError,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::apng_model::fctl);hide(m::initial_info);
+    reveal(m::step);reveal(m::ordered);reveal(m::own);
+}
+#[verifier::spinoff_prover]
+proof fn first_control_sequence_error(b: Seq<u8>,h: crate::model::Ihdr)
+    requires 91<=b.len(),h.width==4,h.height==3,crate::model::mh(b)==Ok((h,33nat)),
+        crate::critical_model::read(b,33,crate::walk_model::Phase::Before,false)==Ok(crate::critical_model::Candidate {
+            ty:seq![97u8,99u8,84u8,76u8],data:41,len:8,next:53,crc_ok:true,synthetic:false}),
+        crate::critical_model::read(b,53,crate::walk_model::Phase::Before,false)==Ok(crate::critical_model::Candidate {
+            ty:seq![102u8,99u8,84u8,76u8],data:61,len:26,next:91,crc_ok:true,synthetic:false}),
+        crate::apng_model::actl(b.subrange(41,49))==Ok((2u32,0u32)),
+        crate::apng_model::fctl(b.subrange(61,87),true,true,4,3,crate::apng_model::initial())==Err((crate::png::Error::SequenceError,true)),
+    ensures m::MWF_p(b,m::strict())==m::Outcome::Error(Error::SequenceError,m::no_events()),
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::apng_model::actl);hide(crate::apng_model::fctl);hide(m::drive);hide(m::initial_info);
+    first_sequence_actl_step(b,h);first_sequence_fctl_step(b,h);
+    m::drive_step(b,m::strict(),true,false,first_sequence_state(h));
+    m::drive_step(b,m::strict(),true,false,m::initial(h,33,m::no_events()));
+}
 #[verifier::spinoff_prover]
 proof fn invalid_iccp_keyword(d: Seq<u8>,ct: u8,depth: u8,z: nat)
     requires crate::model::valid_depth(ct,depth),crate::model::first_nul(d,0)==Some(z),
@@ -472,10 +515,12 @@ def main():
                            f'        first_iccp_error(bytes_{ident}(),crate::model::mh(bytes_{ident}()).unwrap().0,{length}nat);']
         if name == 'order/iCCP-after-idat':
             composition = [f'        idat_then_iccp_order(bytes_{ident}(),crate::model::mh(bytes_{ident}()).unwrap().0,22,287);']
+        if name == 'apng-bad/seq-starts-at-1':
+            composition = [f'        first_control_sequence_error(bytes_{ident}(),crate::model::mh(bytes_{ident}()).unwrap().0);']
 
         control_hides = '    '+''.join(f'hide(crate::apng_model::{method});' for method in ['actl','fctl','fdat','finish']
                                       if any(f'crate::apng_model::{method}(' in line for line in facts))
-        symbolic = name.startswith('apng-bad/') and name != 'apng-bad/fctl-width-0'
+        symbolic = name.startswith('apng-bad/') and name not in ['apng-bad/fctl-width-0','apng-bad/seq-starts-at-1']
         if symbolic:
             requirements = []
             pure = []
@@ -522,13 +567,13 @@ def main():
             '{',
             '    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);',
             *([control_hides] if name.startswith('apng-bad/') else []),
-            *([f'    hide(m::{model});'] if symbolic else []),
+            *([f'    hide(m::{model});'] if symbolic or name == 'apng-bad/seq-starts-at-1' else []),
             f'        assert(crate::model::mh(bytes_{ident}())=={header}) by {{',
             '            reveal(crate::model::mh);',
             f'            assert(crate::model::mh(bytes_{ident}())=={header}) by (compute);',
             '        }',
             *facts,
-            *([] if symbolic or name in ['apng-bad/fctl-width-0','plte/257-entries','anc-bad/iccp-name-80','anc-bad/iccp-leading-space','order/iCCP-after-idat'] else ['        reveal(m::step);reveal(m::ordered);reveal(m::own);']),
+            *([] if symbolic or name in ['apng-bad/fctl-width-0','plte/257-entries','anc-bad/iccp-name-80','anc-bad/iccp-leading-space','order/iCCP-after-idat','apng-bad/seq-starts-at-1'] else ['        reveal(m::step);reveal(m::ordered);reveal(m::own);']),
             *composition,
             '}',
             f'fn walk_{ident}() {{',

@@ -1,0 +1,117 @@
+{
+  "milestone": "M3 fifteen category-b projections and one additional category-a sequence error; not sign-off-ready",
+  "base_commit": "5e6f573",
+  "checkpoint": 301,
+  "verified": 1306,
+  "errors": 0,
+  "verifier_threads": 2,
+  "host_only": true,
+  "signoff_ready": false,
+  "runtime_and_source_controls_run": 302,
+  "claims": [
+    {
+      "row": "THEOREMS.md category-b M3 structural projection gate",
+      "status": "15 complete; one open; zero final-data witness credit",
+      "run": 301,
+      "functions": [
+        "projection_container_minimal_ok",
+        "projection_container_unknown_ancillary_everywhere",
+        "projection_container_reserved_bit_ancillary",
+        "projection_plte_ok",
+        "projection_plte_suggested_palette_in_rgb",
+        "projection_anc_ok_iccp_303",
+        "projection_anc_ok_time_7_after_idat",
+        "projection_anc_ok_srgb_and_iccp_both",
+        "projection_anc_ok_many_text",
+        "projection_anc_ok_ztxt_with_corrupt_zlib_not_inflated",
+        "projection_order_splt_twice",
+        "projection_order_bkgd_hist_after_plte_before_idat_rgb",
+        "projection_ihdr_8192x8192_accepted_then_truncated_zlib",
+        "projection_ihdr_67108864x1_accepted_then_truncated_zlib",
+        "projection_ihdr_1x67108864_accepted_then_truncated_zlib"
+      ],
+      "records": [
+        "container/minimal-ok",
+        "container/unknown-ancillary-everywhere",
+        "container/reserved-bit-ancillary",
+        "plte/ok",
+        "plte/suggested-palette-in-rgb",
+        "anc-ok/iCCP-303",
+        "anc-ok/tIME-7-after-idat",
+        "anc-ok/srgb-and-iccp-both",
+        "anc-ok/many-text",
+        "anc-ok/ztxt-with-corrupt-zlib-not-inflated",
+        "order/splt-twice",
+        "order/bkgd-hist-after-plte-before-idat-rgb",
+        "ihdr/8192x8192-accepted-then-truncated-zlib",
+        "ihdr/67108864x1-accepted-then-truncated-zlib",
+        "ihdr/1x67108864-accepted-then-truncated-zlib"
+      ],
+      "statement": "Each literal model proof establishes whole MW_p acceptance with the independently projected header; actual callers::still preparation succeeds with that header and bounded Info descriptors; the witness also calls the actual public still decoder without asserting its final outcome. Per-record model/symbolic functions and fixture hashes are bound in m3-projection-witness-inputs-0301.json."
+    },
+    {
+      "row": "THEOREMS.md category-a exact error/public-entry gate",
+      "status": "106/115 complete, including seq-starts-at-1",
+      "run": 301,
+      "functions": [
+        "witness_m3_frozen::header_*",
+        "witness_m3_walk_frozen::{model_*,symbolic_*,walk_*}",
+        "first_sequence_actl_step",
+        "first_sequence_fctl_step",
+        "first_control_sequence_error"
+      ],
+      "statement": "The sequence fixture proves exact SequenceError from MWF_p and actual checked Frames::try_new. All eighty prior generated records and twenty-five header witnesses are retained."
+    },
+    {
+      "row": "Earlier M3 structural/allocation/Info/rewalk host components and ERRATA E2",
+      "status": "retained; rechecked",
+      "run": 301,
+      "functions": [
+        "header::prefix",
+        "Frames::with_trace",
+        "Frames::try_next",
+        "DataReader::read",
+        "decode_image",
+        "decode_exact"
+      ],
+      "statement": "Production sources unchanged from the committed run-288 checkpoint; separate IDAT/fdAT/iCCP checked contracts and inspection/Rust-aliasing arguments retained in reader-effects-0301.json."
+    },
+    {
+      "row": "Remaining M3 frozen-record gates",
+      "status": "OPEN",
+      "run": 301,
+      "functions": [],
+      "records": [
+        "apng-bad/fewer-frames-than-declared",
+        "apng-bad/more-frames-than-declared",
+        "apng-bad/seq-gap",
+        "apng-bad/seq-gap-still",
+        "apng-bad/seq-fdat-repeats",
+        "apng-bad/fdat-len-3",
+        "apng-bad/fctl-no-fdat-then-iend",
+        "apng-bad/fctl-no-fdat-then-fctl",
+        "apng-bad/pixel-budget",
+        "apng-bad/pixel-budget-exactly-2^30-then-zlib"
+      ],
+      "statement": "Nine category-a APNG records and the exact-budget category-b projection remain uncredited; retained failed attempts are indexed in m3-open-attempts-0301.json."
+    },
+    {
+      "row": "Final copied-cache i686 replay and M4\u2013M6 data/pixel equations",
+      "status": "untouched/open",
+      "run": 301,
+      "functions": [],
+      "statement": "No i686 replay attempted. All sixteen category-b final-data outcomes remain deferred; no pixel, compositor, disposal or SavedAt equality claim."
+    }
+  ],
+  "runtime": {
+    "records": 848,
+    "passed": 846,
+    "failed": 0,
+    "skipped": 2,
+    "council_passed": 7,
+    "council_ignored": 0,
+    "input_hash_evidence": "runtime-inputs-0302.json"
+  },
+  "spec_ambiguities": [],
+  "resume": "Keep eighty-one generated category-a records and fifteen still projections; bounded split attempts for nine remaining APNG gates and exact-budget projection, then copied-cache i686 replay."
+}

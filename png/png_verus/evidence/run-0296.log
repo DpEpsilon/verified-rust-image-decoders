@@ -1,0 +1,4 @@
+command: ['cargo', 'verus', 'verify', '-v', '--', '--num-threads', '2', '--no-cheating', '--verify-only-module', 'witness_m3_walk_frozen', '--verify-function', 'first_*sequence*']
+partial verification selector: `--verify-only-module`
+partial verification selector: `--verify-function`
+Error: Partial verification must use `cargo verus focus`
