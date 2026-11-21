@@ -1,0 +1,26 @@
+{
+  "status": "Generated witnesses; verification credit is recorded separately in LEDGER.md",
+  "generator": "tools/generate_m4_complete_witnesses.py",
+  "records": [
+    {
+      "name": "precedence/index-row0-before-filter-row1",
+      "gate": "complete at M4",
+      "expected_error": "PaletteIndexOutOfRange",
+      "source": "spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "ef7e193ed076cb52c3254caa07d46b37851941df8aef56af722509e2eba466c2",
+      "model_function": "model_precedence_index_row0_before_filter_row1",
+      "public_function": "public_precedence_index_row0_before_filter_row1"
+    },
+    {
+      "name": "interlace/1x1-filter-bytes-for-empty-passes",
+      "gate": "complete at M4",
+      "expected_error": "ExcessImageData",
+      "source": "spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "74797a48388d533461c1b195b88b33eadf2ada820f6da6efce95d1e668de6437",
+      "model_function": "model_interlace_1x1_filter_bytes_for_empty_passes",
+      "public_function": "public_interlace_1x1_filter_bytes_for_empty_passes"
+    }
+  ]
+}

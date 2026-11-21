@@ -41,6 +41,8 @@ pub mod frame_transport_model;
 mod framing;
 #[cfg(verus_only)]
 pub mod filter_model;
+#[cfg(verus_only)]
+pub mod raster_model;
 mod header;
 mod image;
 #[cfg(verus_only)]
@@ -67,6 +69,10 @@ mod walk_policy;
 mod walk_state;
 mod walk_own;
 mod walk_step;
+#[cfg(verus_only)]
+mod m4_fixed_witness_model;
+#[cfg(verus_only)]
+mod witness_m4_complete;
 #[cfg(verus_only)]
 mod witness_m3;
 #[cfg(verus_only)]

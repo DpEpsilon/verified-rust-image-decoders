@@ -20,6 +20,8 @@ use crate::limits::MAX_ICC;
 use crate::policy::{Policy, Profile, STRICT};
 use crate::reader::IdatReader;
 use crate::frame_state::{FrameState, Step};
+#[cfg(verus_only)]
+use crate::raster_model as raster;
 use crate::walk::{Doc, Ihdr};
 
 use vstd::prelude::*;
@@ -550,11 +552,14 @@ fn still_impl(b: &[u8],pol: &Policy,wide: bool,ev: &mut Events,trace: &mut Trace
         match r {Ok((doc,out))=>doc.wf(b@) && crate::allocation_model::returned_info(b@,pol.walk_view(),false,doc.info.view())
             && out.len()==crate::layout_model::output_count(doc.ihdr.view(),wide),_=>true},
         crate::allocation_model::propagated_inflate_error(b@,*pol,false,r),
+        raster::fmt_eq(b@,*pol,wide,r),
+        match r {Ok((doc,out))=>raster::shape_matches(b@,*pol,wide,doc.ihdr.w,doc.ihdr.h,out.len() as nat),_=>true},
 {
     hide(Doc::wf);hide(crate::document_model::MW_p);hide(inflate_verus::model::Inflate);
     let prepared=prepare_image(b,pol,false,wide,ev,trace);
     proof {crate::allocation_model::prepared_exit::<(Doc,Vec<u8>)>(b@,pol.walk_view(),false,wide,prepared_image_view(prepared),ev.view(),trace.log_view());}
     proof {crate::allocation_model::prepared_inflate_error::<(Doc,Vec<u8>)>(b@,*pol,false,wide,prepared_image_view(prepared),ev.view(),trace.log_view());}
+    proof {raster::prepared_result::<(Doc,Vec<u8>)>(b@,*pol,wide,prepared_image_view(prepared),ev.view(),trace.log_view());}
     let (doc,mut raw,mut out)=match prepared {Ok(v)=>v,Err(e)=>return Err(e)};
     proof {
         crate::limits::caps_ok();crate::icc_model::short_log(trace.log_view());
@@ -565,6 +570,7 @@ fn still_impl(b: &[u8],pol: &Policy,wide: bool,ev: &mut Events,trace: &mut Trace
         let mut src=IdatReader::for_doc(b,&doc);
         let mut sink=Sink::image(&mut out,doc.ihdr.w,doc.ihdr.h,wide);
         let decoded=decode_image(&doc,b,&mut src,&mut raw,doc.ihdr.w,doc.ihdr.h,pol,ev,&mut sink);
+        assert(raster::document_data(b@,doc.view(),*pol)==Some(decoded));
         sink.finish();
         match decoded {Err(e)=>return Err(TryError::Format(e)),Ok(())=>{}}
 
@@ -579,6 +585,8 @@ fn still8(b: &[u8],pol: &Policy,ev: &mut Events,trace: &mut Trace) -> (r: Result
     ensures final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),false,false,r,final(trace).log_view()),
         match r {Ok(s)=>s.info.ranges_wf(b.len() as nat) && crate::allocation_model::returned_info(b@,pol.walk_view(),false,s.info.view()),_=>true},
         crate::allocation_model::propagated_inflate_error(b@,*pol,false,r),
+        raster::fmt_eq(b@,*pol,false,r),
+        match r {Ok(s)=>raster::shape_matches(b@,*pol,false,s.width,s.height,s.rgba.len() as nat),_=>true},
 {
     let (doc,rgba)=match still_impl(b,pol,false,ev,trace) {Ok(v)=>v,Err(e)=>return Err(e)};
     Ok(assemble_still(doc,rgba))
@@ -587,6 +595,8 @@ fn still16(b: &[u8],pol: &Policy,ev: &mut Events,trace: &mut Trace) -> (r: Resul
     requires old(trace).wf(),old(trace).n==0,
     ensures final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),false,true,r,final(trace).log_view()),
         match r {Ok(s)=>s.info.ranges_wf(b.len() as nat) && crate::allocation_model::returned_info(b@,pol.walk_view(),false,s.info.view()),_=>true},
+        raster::fmt_eq(b@,*pol,true,r),
+        match r {Ok(s)=>raster::shape_matches(b@,*pol,true,s.width,s.height,s.rgba16.len() as nat),_=>true},
 {
     let (doc,rgba)=match still_impl(b,pol,true,ev,trace) {Ok(v)=>v,Err(e)=>return Err(e)};
     Ok(assemble_still16(doc,rgba))
@@ -599,6 +609,8 @@ pub fn try_decode_still(b: &[u8]) -> (r: Result<Still,TryError>)
             ==> r==Err(TryError::Format(e)),
         match r {Ok(s)=>s.info.ranges_within(b.len() as nat) && crate::allocation_model::returned_info(b@,crate::document_model::strict(),false,s.info.model_value()),_=>true},
         crate::allocation_model::propagated_inflate_error(b@,STRICT,false,r),
+        raster::fmt_eq(b@,STRICT,false,r),
+        match r {Ok(s)=>raster::shape_matches(b@,STRICT,false,s.width,s.height,s.rgba.len() as nat),_=>true},
 {
     proof {crate::walk_policy::profiles_project_exactly();}
     let mut ev=Events {r1:false,r3:false,r4:false};let mut trace=Trace::new();
@@ -607,7 +619,9 @@ pub fn try_decode_still(b: &[u8]) -> (r: Result<Still,TryError>)
     result
 }
 pub fn try_decode_still16(b: &[u8]) -> (r: Result<Still16,TryError>)
-    ensures forall|e: Error,ev: crate::document_model::Events|
+    ensures raster::fmt_eq(b@,STRICT,true,r),
+        match r {Ok(s)=>raster::shape_matches(b@,STRICT,true,s.width,s.height,s.rgba16.len() as nat),_=>true},
+        forall|e: Error,ev: crate::document_model::Events|
         crate::document_model::MW_p(b@,crate::document_model::strict())==crate::document_model::Outcome::Error(e,ev)
             ==> r==Err(TryError::Format(e)),
         match r {Ok(s)=>s.info.ranges_within(b.len() as nat) && crate::allocation_model::returned_info(b@,crate::document_model::strict(),false,s.info.model_value()),_=>true},
@@ -620,7 +634,9 @@ pub fn try_decode_still16(b: &[u8]) -> (r: Result<Still16,TryError>)
 }
 
 pub fn try_decode_still_with_policy(b: &[u8],p: Profile) -> (r: Result<(Still,bool),TryError>)
-    ensures forall|e: Error,ev: crate::document_model::Events|
+    ensures raster::fmt_eq(b@,raster::profile(p),false,r),
+        match r {Ok((s,_))=>raster::shape_matches(b@,raster::profile(p),false,s.width,s.height,s.rgba.len() as nat),_=>true},
+        forall|e: Error,ev: crate::document_model::Events|
         crate::document_model::MW_p(b@,p.walk_model())==crate::document_model::Outcome::Error(e,ev) ==> r==Err(TryError::Format(e)),
         match r {Ok((s,_))=>s.info.ranges_within(b.len() as nat) && crate::allocation_model::returned_info(b@,p.walk_model(),false,s.info.model_value()),_=>true},
 {
@@ -630,7 +646,9 @@ pub fn try_decode_still_with_policy(b: &[u8],p: Profile) -> (r: Result<(Still,bo
     Ok((s,ev.any()))
 }
 pub fn try_decode_still16_with_policy(b: &[u8],p: Profile) -> (r: Result<(Still16,bool),TryError>)
-    ensures forall|e: Error,ev: crate::document_model::Events|
+    ensures raster::fmt_eq(b@,raster::profile(p),true,r),
+        match r {Ok((s,_))=>raster::shape_matches(b@,raster::profile(p),true,s.width,s.height,s.rgba16.len() as nat),_=>true},
+        forall|e: Error,ev: crate::document_model::Events|
         crate::document_model::MW_p(b@,p.walk_model())==crate::document_model::Outcome::Error(e,ev) ==> r==Err(TryError::Format(e)),
         match r {Ok((s,_))=>s.info.ranges_within(b.len() as nat) && crate::allocation_model::returned_info(b@,p.walk_model(),false,s.info.model_value()),_=>true},
 {
@@ -972,6 +990,7 @@ impl<'a> Frames<'a> {
             final(self).state==old(self).state,final(self).saved==old(self).saved,
             r.is_err() ==> matches!(r,Err(TryError::Format(_))),
     {
+        hide(raster::data);hide(raster::completed);hide(raster::inflated);
         hide(Doc::wf);hide(crate::document_model::frame_stream);
         hide(crate::frame_transport_model::control_record);hide(crate::frame_transport_model::cursor_for);
         proof {reveal(Frames::source_wf);reveal(Frames::buffers_wf);reveal(crate::frame_state::FrameJob::wf);crate::limits::caps_ok();self.source_context();}

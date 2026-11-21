@@ -245,4 +245,19 @@ pub proof fn first_invalid_intro(input: Seq<u8>,state: Seq<u8>,interlace: u8,bit
     }
 }
 
+/// Filter None is the identity on every prefix; a bridge for authored witnesses.
+pub proof fn mf_none(input: Seq<u8>,prev: Option<Seq<u8>>,bpp: nat,n: nat)
+    requires n<=input.len(),
+    ensures mf(0,input,prev,bpp,n)==input.take(n as int),
+    decreases n,
+{
+    reveal_with_fuel(mf,2);
+    if n>0 {
+        mf_none(input,prev,bpp,(n-1) as nat);
+        let i=(n-1) as nat;
+        assert(byte(0,input[i as int],left(mf(0,input,prev,bpp,i),bpp,i),above(prev,i),above_left(prev,bpp,i))==input[i as int]);
+        assert(input.take(n as int) =~= input.take(i as int).push(input[i as int]));
+    } else {assert(input.take(0) =~= Seq::<u8>::empty());}
+}
+
 } // verus!

@@ -1,0 +1,2 @@
+command: ['python3', '-I', 'tools/generate_m4_complete_witnesses.py']
+Generated 2 complete-error candidates; no verification credit from generation.

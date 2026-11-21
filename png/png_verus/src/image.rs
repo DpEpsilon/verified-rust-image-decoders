@@ -15,6 +15,8 @@ use vstd::prelude::*;
 use crate::layout_model as layout;
 #[cfg(verus_only)]
 use crate::filter_model as filters;
+#[cfg(verus_only)]
+use crate::raster_model as raster;
 
 verus! {
 
@@ -392,6 +394,11 @@ pub(crate) proof fn two_byte_zlib_error(limit: nat,pol: Policy)
 }
 fn image_status(status: Status, produced: u64, r: u64) -> (result: Result<(), Error>)
     ensures result.is_ok() ==> produced>=r,
+        result==match status {
+            Status::Done=>if produced<r {Err(Error::TruncatedImageData)}else{Ok(())},
+            Status::Full=>Err(Error::ExcessImageData),
+            Status::Err(e)=>Err(crate::icc_model::inflate_error(e)),
+        },
         match status {Status::Err(e)=>result==Err(crate::icc_model::inflate_error(e)),_=>true},
 {
     match status {
@@ -572,6 +579,7 @@ fn sample(line: &[u8], depth: u8, i: usize) -> (r: u16)
     requires depth==1 || depth==2 || depth==4 || depth==8 || depth==16,
         (i as int+1)*(depth as int)<=8*(line.len() as int),
     ensures r as u32<=(1u32<<depth)-1,
+        depth!=16 ==> r as nat==raster::palette_sample(line@,depth,i as nat) as nat,
 {
     proof {
         assert((depth==16 ==> (1u32<<depth)==u16::MAX as u32+1) && (depth==8 ==> (1u32<<depth)==256u32)) by (bit_vector);
@@ -583,6 +591,8 @@ fn sample(line: &[u8], depth: u8, i: usize) -> (r: u16)
             let per = 8 / depth as usize;
             proof {
                 assert(depth==1 || depth==2 || depth==4);
+                assert(per==if depth==1 {8usize}else if depth==2 {4usize}else{2usize}) by (bit_vector)
+                    requires per==8usize/(depth as usize),depth==1 || depth==2 || depth==4;
                 packed_access(line.len(),i,depth);
                 assert(per>=1);
                 assert(i/per<line.len());
@@ -594,7 +604,19 @@ fn sample(line: &[u8], depth: u8, i: usize) -> (r: u16)
             let shift = 8 - depth as usize * (i % per + 1);
             let mask=(1u8<<depth)-1;
             let value=(byte>>shift)&mask;
-            proof {assert(value<=mask) by (bit_vector) requires value==((byte>>shift)&mask),shift<8;}
+            proof {
+                assert(value<=mask) by (bit_vector) requires value==((byte>>shift)&mask),shift<8;
+                assert(mask==if depth==1 {1u8}else if depth==2 {3u8}else{15u8}) by (bit_vector)
+                    requires mask==(1u8<<depth)-1,depth==1 || depth==2 || depth==4;
+                if depth==1 {assert(per==8 && shift==7-i%8);}
+                else if depth==2 {assert(per==4 && shift==6-2*(i%4));}
+                else {
+                    assert(depth==4);assert(per==2);
+                    assert(shift==4-4*(i%2)) by (nonlinear_arith)
+                        requires shift==8-4*(i%2+1);
+                }
+                assert(value==raster::palette_sample(line@,depth,i as nat));
+            }
             value as u16
         }
     }
@@ -657,6 +679,7 @@ impl<'b> Colour<'b> {
     fn new(doc: &Doc, b: &'b [u8]) -> (r: Colour<'b>)
         requires doc.wf(b@),
         ensures r.wf(),r.ct==doc.ihdr.ct,r.depth==doc.ihdr.depth,
+            r.plte.len()/3==crate::document_model::entries(doc.view()),
     {
         let plte = match doc.plte {
             Some((o, n)) => {
@@ -696,7 +719,9 @@ impl<'b> Colour<'b> {
         requires self.wf(),4*(x as int+1)<=crate::alloc_guard::MAX_BYTES,
             (x as int+1)*self.channels()*(self.depth as int)<=8*(line.len() as int),
         ensures final(ev).r1==old(ev).r1,final(ev).r4==old(ev).r4,
-            match r {Ok(px)=>forall|i: int| 0<=i<4 ==> (#[trigger] px@[i])<=if wide {u16::MAX}else{255},Err(_)=>true},
+            match r {Ok(px)=>forall|i: int| 0<=i<4 ==> (#[trigger] px@[i])<=if wide {u16::MAX}else{255},Err(e)=>e==Error::PaletteIndexOutOfRange},
+            r.is_err()==(self.ct==3 && pol.palette_index==PaletteIndex::Reject
+                && raster::palette_sample(line@,self.depth,x as nat) as nat>=self.plte.len()/3),
     {
         proof {crate::limits::caps_ok();}
 
@@ -771,6 +796,10 @@ fn draw_row(colour: &Colour<'_>,line: &[u8],w: u32,h: u32,x0: u32,dx: u32,pw: u3
         line.len()==layout::scan_bytes(colour.channels()*(colour.depth as nat),pw as nat),
     ensures final(sink).shape()==old(sink).shape(),final(sink).wf(w,h),final(sink).loan()==old(sink).loan(),
         final(ev).r1==old(ev).r1,final(ev).r4==old(ev).r4,
+        result==if colour.ct==3 && pol.palette_index==PaletteIndex::Reject
+            && !raster::palette_valid(line@,colour.depth,pw as nat,(colour.plte.len()/3) as nat) {
+                Err(Error::PaletteIndexOutOfRange)
+            }else{Ok(())},
 {
     let mut c=0u32;
     while c<pw
@@ -779,6 +808,8 @@ fn draw_row(colour: &Colour<'_>,line: &[u8],w: u32,h: u32,x0: u32,dx: u32,pw: u3
             pw==layout::span(w as nat,x0 as nat,dx as nat),
             line.len()==layout::scan_bytes(colour.channels()*(colour.depth as nat),pw as nat),
             ev.r1==old(ev).r1,ev.r4==old(ev).r4,
+            colour.ct==3 && pol.palette_index==PaletteIndex::Reject ==>
+                forall|x: nat| x<c ==> (#[trigger] raster::palette_sample(line@,colour.depth,x) as nat)<colour.plte.len()/3,
         decreases pw-c,
     {
         proof {
@@ -807,8 +838,11 @@ proof fn row_extent(base: nat,rows: nat,bytes: nat,row: nat,limit: nat)
         requires row>=0,base>=0,bytes>=0;
 }
 
-/// Each Raw pass carries MF row and filter-order invariants. Conversion values
-/// and exported image-result equality remain open.
+pub(crate) open spec fn raster_context(doc: Doc,w: u32,h: u32,pol: Policy) -> raster::Raster {
+    raster::shape(doc.ihdr.view(),w as nat,h as nat,crate::document_model::entries(doc.view()),pol)
+}
+
+/// Whole-raster data result and MF trace; converted colour values remain M5.
 fn decode_exact<S: Segments>(
     doc: &Doc,b: &[u8],src: &mut S,raw: &mut [u8],w: u32,h: u32,
     pol: &Policy,ev: &mut Events,sink: &mut Sink<'_>,
@@ -823,8 +857,15 @@ fn decode_exact<S: Segments>(
         final(ev).r1==old(ev).r1,final(ev).r4==old(ev).r4,
         match inflate_error(old(src).concat(),layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat),*pol) {
             Some(e)=>result==Err(e),None=>true},
+        raster::data(old(src).concat(),raster_context(*doc,w,h,*pol),*pol)==Some(result),
+        result.is_ok() ==> raster::completed(
+            raster::inflated(old(src).concat(),raster_context(*doc,w,h,*pol),*pol).out,
+            final(raw)@,
+            raster_context(*doc,w,h,*pol),raster::count(raster_context(*doc,w,h,*pol))),
 {
     hide(Doc::wf);hide(inflate_verus::model::Inflate);
+    let ghost ctx=raster_context(*doc,w,h,*pol);
+    let ghost envelope=raster::inflated(old(src).concat(),ctx,*pol);
     let ihdr=&doc.ihdr;
     let r=raw_size(ihdr,w,h);
     proof {crate::limits::caps_ok();}
@@ -838,10 +879,22 @@ fn decode_exact<S: Segments>(
             match res.status {Status::Err(e)=>{crate::icc_model::fault_agrees(e,f);},_=>{assert(false);},}
             assert(checked==Err(crate::icc_model::fault(f)));
         }
+        match envelope.status {
+            inflate_verus::model::InflateStatus::Done=>{
+                if res.produced<r {assert(raster::data(old(src).concat(),ctx,*pol)==Some(checked));}
+            },
+            inflate_verus::model::InflateStatus::Full=>{assert(checked==Err(Error::ExcessImageData));},
+            inflate_verus::model::InflateStatus::Error(_)=>{assert(checked.is_err());},
+            inflate_verus::model::InflateStatus::OutsideDomain=>{assert(false);},
+        }
+        assert(checked.is_err() ==> raster::data(old(src).concat(),ctx,*pol)==Some(checked));
     }
     match checked {Err(e)=>return Err(e),Ok(())=>{}}
     assert(data_fault==None);
     proof {
+        assert(envelope.status==inflate_verus::model::InflateStatus::Done);
+        assert(envelope.out.len()==r);
+        assert(raw@ =~= envelope.out);
         assert(4*(w as int)<=crate::alloc_guard::MAX_BYTES) by (nonlinear_arith)
             requires 1<=w<=ihdr.w,1<=ihdr.h,4*(ihdr.w as int)*(ihdr.h as int)<=crate::limits::MAX_OUTPUT,
                 crate::limits::MAX_OUTPUT<=crate::alloc_guard::MAX_BYTES;
@@ -850,6 +903,8 @@ fn decode_exact<S: Segments>(
     let wide=sink.wide();
     let colour=Colour::new(doc,b);
     let ghost inflated=raw@;
+    let ghost target=raster::scan(inflated,ctx,0);
+    assert(raster::data(old(src).concat(),ctx,*pol)==Some(target));
     let mut pos=0usize;
     let mut k=0usize;
     while k<pass_count(ihdr.interlace)
@@ -858,6 +913,9 @@ fn decode_exact<S: Segments>(
             r==layout::raw(ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat),r<=crate::alloc_guard::MAX_BYTES,
             pos==layout::prefix(ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,k as nat),
             inflated.len()==r,forall|j: int| pos<=j<r ==> #[trigger] raw@[j]==inflated[j],
+            ctx==raster_context(*doc,w,h,*pol),inflated==raster::inflated(old(src).concat(),ctx,*pol).out,
+            target==raster::scan(inflated,ctx,k as nat),raster::data(old(src).concat(),ctx,*pol)==Some(target),
+            raster::completed(inflated,raw@,ctx,k as nat),colour.plte.len()/3==ctx.entries,
             filters::valid_prefix(inflated,ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,k as nat),
             colour.wf(),colour.ct==ihdr.ct,colour.depth==ihdr.depth,bpp>=1,bpp==filters::bpp(layout::bits(ihdr.view())),4*(w as int)<=crate::alloc_guard::MAX_BYTES,
             sink.wf(w,h),sink.shape()==old(sink).shape(),sink.loan()==old(sink).loan(),wide==sink.wide_view(),
@@ -868,6 +926,7 @@ fn decode_exact<S: Segments>(
             src.seg_count()==old(src).seg_count(),src.pos()<=src.concat().len(),
         decreases layout::count(ihdr.interlace)-k,
     {
+        proof {raster::scan_step(inflated,ctx,k as nat);}
         if let Some(p)=pass(ihdr.interlace,w,h,k) {
             let bytes=row_bytes(ihdr,p.pw);
             let ghost base=pos as nat;
@@ -888,6 +947,10 @@ fn decode_exact<S: Segments>(
                     base==layout::prefix(ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,k as nat),
                     row<=p.ph,1<=p.pw<=w,1<=p.ph<=h,1<=p.dx<=8,1<=p.dy<=8,
                     inflated.len()==r,filters::pass_ready(inflated,raw@,base,rb as nat,bpp as nat,row as nat),
+                    ctx==raster_context(*doc,w,h,*pol),inflated==raster::inflated(old(src).concat(),ctx,*pol).out,
+                    target==raster::chain(raster::pass_result(inflated,ctx,k as nat,row as nat),raster::scan(inflated,ctx,k as nat+1)),
+                    raster::data(old(src).concat(),ctx,*pol)==Some(target),raster::completed(inflated,raw@,ctx,k as nat),
+                    colour.plte.len()/3==ctx.entries,
                     filters::valid_prefix(inflated,ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,k as nat),
                     p.pw==layout::span(w as nat,p.x0 as nat,p.dx as nat),p.ph==layout::span(h as nat,p.y0 as nat,p.dy as nat),
                     rb==layout::scan_bytes(layout::bits(ihdr.view()),p.pw as nat),
@@ -905,7 +968,11 @@ fn decode_exact<S: Segments>(
                     src.seg_count()==old(src).seg_count(),src.pos()<=src.concat().len(),
                 decreases p.ph-row,
             {
-                proof {row_extent(base,p.ph as nat,rb as nat,row as nat,r as nat);}
+                proof {
+                    row_extent(base,p.ph as nat,rb as nat,row as nat,r as nat);
+                    raster::pass_step(inflated,ctx,k as nat,row as nat);
+                }
+                let ghost before_step=raw@;
                 match unfilter_raw_row(raw,pos,rb,bpp,Ghost(base),row,Ghost(inflated)) {
                     Err(e)=>{
                         proof {
@@ -913,19 +980,29 @@ fn decode_exact<S: Segments>(
                                 w as nat,h as nat,k as nat,row as nat,bpp as nat);
                             assert(filters::first_invalid(inflated,ihdr.interlace,layout::bits(ihdr.view()),
                                 w as nat,h as nat,k as nat,row as nat));
+                            assert(raster::row_result(inflated,ctx,k as nat,row as nat)==Err(e));
+                            assert(target==Err(e));
                         }
                         return Err(e);
                     },
                     Ok(())=>{}
                 }
+                proof {
+                    assert forall|j: int| 0<=j<raster::base(ctx,k as nat) implies #[trigger] raw@[j]==before_step[j] by {}
+                    raster::preserve_completed(inflated,before_step,raw@,ctx,k as nat);
+                    assert(filters::row_data(raw@,base,rb as nat,row as nat)==raster::line(inflated,ctx,k as nat,row as nat));
+                    assert(inflated[pos as int]<=4);
+                }
                 let cur=&raw[pos+1..pos+1+rb];
                 proof {
+                    assert(cur@==raster::line(inflated,ctx,k as nat,row as nat));
                     assert(p.ph==layout::span(h as nat,p.y0 as nat,p.dy as nat));
                     assert(p.pw==layout::span(w as nat,p.x0 as nat,p.dx as nat));
                 }
                 let y=pass_coordinate(h,p.y0,p.dy,row);
                 let row_result=draw_row(&colour,cur,w,h,p.x0,p.dx,p.pw,y,wide,pol,ev,sink);
-                match row_result {Err(e)=>return Err(e),Ok(())=>{}}
+                assert(row_result==raster::row_result(inflated,ctx,k as nat,row as nat));
+                match row_result {Err(e)=>{assert(target==Err(e));return Err(e);},Ok(())=>{}}
                 proof {
                     assert(base+row as int*(1+rb as int)+1+rb as int==base+(row as int+1)*(1+rb as int)) by (nonlinear_arith);
                 }
@@ -935,11 +1012,15 @@ fn decode_exact<S: Segments>(
             proof {
                 filters::valid_pass_from_rows(inflated,raw@,ihdr.interlace,layout::bits(ihdr.view()),
                     w as nat,h as nat,k as nat,bpp as nat);
+                raster::pass_step(inflated,ctx,k as nat,row as nat);
+                raster::complete_pass(inflated,raw@,ctx,k as nat);
             }
         } else {
             proof {
                 reveal_with_fuel(layout::prefix,2);
                 assert(filters::valid_pass(inflated,ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,k as nat));
+                raster::pass_step(inflated,ctx,k as nat,0);
+                raster::complete_empty(inflated,raw@,ctx,k as nat);
             }
         }
         proof {
@@ -947,6 +1028,7 @@ fn decode_exact<S: Segments>(
         }
         k+=1;
     }
+    proof {raster::scan_step(inflated,ctx,k as nat);assert(target==Ok(()));}
     Ok(())
 }
 
@@ -965,11 +1047,24 @@ pub(crate) fn decode_image<S: Segments>(
         final(ev).r1==old(ev).r1,final(ev).r4==old(ev).r4,
         match inflate_error(old(src).concat(),layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat),*pol) {
             Some(e)=>result==Err(e),None=>true},
+        raster::data(old(src).concat(),raster_context(*doc,w,h,*pol),*pol)==Some(result),
+        result.is_ok() ==> raster::completed(
+            raster::inflated(old(src).concat(),raster_context(*doc,w,h,*pol),*pol).out,
+            final(raw)@.take(raster::raw(raster_context(*doc,w,h,*pol)) as int),
+            raster_context(*doc,w,h,*pol),raster::count(raster_context(*doc,w,h,*pol))),
 {
     hide(Doc::wf);hide(inflate_verus::model::Inflate);
     let r=raw_size(&doc.ihdr,w,h);
     proof {crate::limits::caps_ok();}
-    decode_exact(doc,b,src,&mut raw[..r as usize],w,h,pol,ev,sink)
+    let ghost prefix_after;
+    let result;
+    {
+        let prefix=&mut raw[..r as usize];
+        result=decode_exact(doc,b,src,prefix,w,h,pol,ev,sink);
+        proof {prefix_after=prefix@;}
+    }
+    proof {assert(raw@.take(r as int) =~= prefix_after);}
+    result
 }
 
 } // verus!
