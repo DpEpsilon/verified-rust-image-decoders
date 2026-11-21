@@ -1,5 +1,17 @@
 # png_verus ledger
 
+## M3 status under ERRATA E6 (2026-11-21)
+
+M3 OPEN, pending the sign-off review. Component proofs complete. Accepted checkpoint `65e1bb4`: direct full-crate host run 343 and i686 run 344 each verify **2,350, 0 errors** on identical source (`--no-cheating`, default solver limits, `RUST_MIN_STACK=268435456` recorded in RUNLOG.tsv, launched by `tools/direct_verify.py`; direct control 339 reproduced the Cargo result 1,452/0 on the previous source). Witness gates as amended by E6: 119 of 119 complete M3 witnesses proved (the three `ihdr/*-accepted-then-truncated-zlib` records since `f857add`, `apng-bad/pixel-budget` and `apng-bad/pixel-budget-exactly-2^30-then-zlib` since `65e1bb4`); 12 of 12 M3 projections proved; 12 complete witnesses deferred to M6 by E6 clause 2, 0 of 12 proved. Not signed off.
+
+Cargo `verify.sh` cannot check this source: run 351 has `Fresh vstd` but overflows the default verifier worker-thread stack, and the stack size can only be raised through `RUST_MIN_STACK`, which dirties the copied vstd cache (runs 325, 345). The direct launcher is the accepted path for the budget witnesses under the verifier-resource rule below.
+
+Superseded 2026-11-21 by ERRATA E6 (council PNG-Q8). The label 'M3 projection only; final data outcome is an M4–M6 witness obligation' is replaced for the twelve records of E6 clause 2 by 'M3 projection; complete witness due at M6 (E6)'. The three `ihdr/*-accepted-then-truncated-zlib` records and `apng-bad/pixel-budget-exactly-2^30-then-zlib` are not projection records: their complete witness is an M3 gate. A projection is never counted as a complete witness in any total.
+
+Council PNG-Q8, 2026-11-21: the resume note of `evidence/budget-attempts-0318.json` ('do not raise stack/solver limits') is superseded for the native stack only. A witness proved under a raised native verifier stack is accepted when the run is the full crate under `--no-cheating` with default solver limits on hashed source, RUNLOG.tsv records the stack value beside the run number, and the result is reproduced on i686 or the ledger records why it cannot be. Solver limits stay at their defaults. A stack overflow, panic or timeout earns no proof credit.
+
+## Earlier status (superseded by the section above)
+
 M3 is not signed off. The latest host checkpoint is **run 332: 1,452 verified, 0 errors**; copied-cache **i686 run 333: 1,452 verified, 0 errors** checks the identical 54-path proof-input inventory. Both runs use `Fresh vstd`, `--no-cheating`, default solver limits, two verifier threads and a 64 MiB shell stack with `RUST_MIN_STACK` absent. `inflate_verus` and its target remain unmodified. No i686 runtime execution is claimed.
 
 ## Final M3 sign-off candidate: two fixture gates blocked (2026-11-20)
