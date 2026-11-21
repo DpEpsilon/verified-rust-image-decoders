@@ -553,6 +553,10 @@ def split_apng_steps(data, ident, facts, frames_entry, frozen_error):
         output += ['#[verifier::spinoff_prover]',f'proof fn {prefix}_step_{stage}(b: Seq<u8>,h: crate::model::Ihdr)',
                    '    requires '+',\n        '.join(step_req)+',',
                    f'    ensures m::step(b,m::strict(),{str(frames_entry).lower()},false,{prefix}_state_{stage}(h))=={result},',
+                   *([f'        {prefix}_state_{stage}(h).pos<=b.len(),'] if ident.startswith('apng_bad_pixel_budget') else []),
+                   *([f'        {prefix}_state_{stage}(h).doc.ihdr==h,',
+                      f'        {prefix}_state_{stage}(h).doc.idat==seq![crate::walk_model::Range {{offset:61nat,len:2nat}}],']
+                     if done and ident.startswith('apng_bad_pixel_budget') else []),
                    '{',*step_hides,'    reveal(m::step);reveal(m::ordered);reveal(m::own);']
         if not error_match and not done:
             step=f'm::step(b,m::strict(),{str(frames_entry).lower()},false,{prefix}_state_{stage}(h))'
@@ -574,18 +578,40 @@ def split_apng_steps(data, ident, facts, frames_entry, frozen_error):
     conclusion=(f'm::{model}(b,m::strict())==m::Outcome::Error(Error::{frozen_error},m::no_events())'
                 if frozen_error is not None else
                 f'match m::{model}(b,m::strict()) {{m::Outcome::Done(doc,ev)=>doc.ihdr==h && doc.idat==seq![crate::walk_model::Range {{offset:61nat,len:2nat}}] && ev==m::no_events(),_=>false}}')
-    output += ['#[verifier::spinoff_prover]',f'proof fn {prefix}_compose(b: Seq<u8>,h: crate::model::Ihdr)',
-               '    requires '+',\n        '.join(req)+',',
-               f'    ensures {conclusion},',
-               '{',*hides,'    hide(m::drive);']
-    output += [f'    {prefix}_step_{n}(b,h);' for n in range(stage+1)]
-    output += [f'    m::drive_step(b,m::strict(),{f},false,{prefix}_state_{n}(h));' for n in reversed(range(stage+1))]
-    output += ['}','']
-    if ident in ['apng_bad_seq_gap','apng_bad_seq_gap_still','apng_bad_fctl_no_fdat_then_fctl']:
+    if ident.startswith('apng_bad_pixel_budget'):
+        # Keep every full walk checked, but join only eight transition equations
+        # per query. Opaque state descriptors avoid expanding irrelevant frame
+        # vectors; checked step contracts export the required position bounds.
+        thin_hides=[line.replace('hide(m::initial_info);','') for line in hides]
+        for start in reversed(range(0,stage+1,8)):
+            stop=min(start+8,stage+1)
+            drive=f'm::drive(b,m::strict(),{f},false,{prefix}_state_{start}(h))'
+            suffix_goal=conclusion.replace(f'm::{model}(b,m::strict())',drive)
+            output += ['#[verifier::spinoff_prover]',f'proof fn {prefix}_suffix_{start}(b: Seq<u8>,h: crate::model::Ihdr)',
+                       '    requires '+',\n        '.join(req)+',',f'    ensures {suffix_goal},',
+                       '{',*thin_hides,'    hide(m::drive);',
+                       '    '+''.join(f'hide({prefix}_state_{n});' for n in range(start,min(stop,stage)+1))]
+            output += [f'    {prefix}_step_{n}(b,h);' for n in range(start,stop)]
+            if stop<=stage:output += [f'    {prefix}_suffix_{stop}(b,h);']
+            output += [f'    m::drive_step(b,m::strict(),{f},false,{prefix}_state_{n}(h));'
+                       for n in reversed(range(start,stop))]
+            output += ['}','']
+        output += ['#[verifier::spinoff_prover]',f'proof fn {prefix}_compose(b: Seq<u8>,h: crate::model::Ihdr)',
+                   '    requires '+',\n        '.join(req)+',',f'    ensures {conclusion},',
+                   '{',*thin_hides,'    hide(m::drive);',f'    {prefix}_suffix_0(b,h);','}','']
+    else:
+        output += ['#[verifier::spinoff_prover]',f'proof fn {prefix}_compose(b: Seq<u8>,h: crate::model::Ihdr)',
+                   '    requires '+',\n        '.join(req)+',',f'    ensures {conclusion},',
+                   '{',*hides,'    hide(m::drive);']
+        output += [f'    {prefix}_step_{n}(b,h);' for n in range(stage+1)]
+        output += [f'    m::drive_step(b,m::strict(),{f},false,{prefix}_state_{n}(h));' for n in reversed(range(stage+1))]
+        output += ['}','']
+    if ident in ['apng_bad_seq_gap','apng_bad_seq_gap_still','apng_bad_fctl_no_fdat_then_fctl','apng_bad_pixel_budget','apng_bad_pixel_budget_exactly_2_30_then_zlib']:
         # Keep concrete byte computation outside the whole-walk composition query.
         output += ['#[verifier::spinoff_prover]',f'proof fn literal_facts_{ident}()',
                    '    ensures '+',\n        '.join('('+x.replace('b,',f'bytes_{ident}(),').replace('b.subrange(',f'bytes_{ident}().subrange(')+')' for x in requirements)+',',
-                   '{','    hide(crate::critical_model::read);hide(crate::walk_model::classify);',hides[1],*facts,'}','']
+                   '{','    hide(crate::critical_model::read);hide(crate::walk_model::classify);',
+                   *([f'    hide(bytes_{ident});'] if ident.startswith('apng_bad_pixel_budget') else []),hides[1],*facts,'}','']
     return output,[f'        {prefix}_compose(bytes_{ident}(),crate::model::mh(bytes_{ident}()).unwrap().0);']
 
 
@@ -670,7 +696,7 @@ def main():
         if split:
             helpers, composition = split_apng_steps(data,ident,facts,frames,error)
             lines += helpers
-            if ident in ['apng_bad_seq_gap','apng_bad_seq_gap_still','apng_bad_fctl_no_fdat_then_fctl']:
+            if ident in ['apng_bad_seq_gap','apng_bad_seq_gap_still','apng_bad_fctl_no_fdat_then_fctl','apng_bad_pixel_budget','apng_bad_pixel_budget_exactly_2_30_then_zlib']:
                 facts = [f'        literal_facts_{ident}();']
         symbolic = name.startswith('apng-bad/') and name not in ['apng-bad/fctl-width-0','apng-bad/seq-starts-at-1'] and not split
         if symbolic:
@@ -730,6 +756,7 @@ def main():
             f'    ensures m::{model}(bytes_{ident}(),m::strict())==m::Outcome::Error(Error::{error},m::no_events()),',
             '{',
             '    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);',
+            *([f'    hide(bytes_{ident});'] if ident=='apng_bad_pixel_budget' else []),
             *([control_hides] if name.startswith('apng-bad/') else []),
             *([f'    hide(m::{model});'] if symbolic or split or name == 'apng-bad/seq-starts-at-1' else []),
             f'        assert(crate::model::mh(bytes_{ident}())=={header}) by {{',
@@ -737,6 +764,8 @@ def main():
             f'            assert(crate::model::mh(bytes_{ident}())=={header}) by (compute);',
             '        }',
             *facts,
+            *([f'        assert(bytes_{ident}().len()=={len(data)}) by (compute);']
+              if ident=='apng_bad_pixel_budget' else []),
             *([] if symbolic or split or name in ['apng-bad/fctl-width-0','plte/257-entries','anc-bad/iccp-name-80','anc-bad/iccp-leading-space','order/iCCP-after-idat','apng-bad/seq-starts-at-1'] else ['        reveal(m::step);reveal(m::ordered);reveal(m::own);']),
             *composition,
             '}',

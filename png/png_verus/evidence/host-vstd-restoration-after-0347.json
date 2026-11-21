@@ -1,0 +1,20 @@
+{
+ "kind": "coordinator restoration of PNG-owned host vstd cache after run 345",
+ "source_root": "/home/ws/projects/verified-decoders/png/inflate_verus/target/debug",
+ "copy_root": "/home/ws/projects/verified-decoders/png/png_verus/target/debug",
+ "restored": [
+  ".fingerprint/vstd-01822e92e4f44378/invoked.timestamp",
+  ".fingerprint/vstd-01822e92e4f44378/lib-vstd",
+  ".fingerprint/vstd-cd53d8cc110e2a10/run-build-script-build-script-build",
+  ".fingerprint/vstd-cd53d8cc110e2a10/run-build-script-build-script-build.json",
+  "build/vstd-4f9fb55783e359aa/build-script-build",
+  "build/vstd-cd53d8cc110e2a10/invoked.timestamp",
+  "build/vstd-cd53d8cc110e2a10/output",
+  "build/vstd-cd53d8cc110e2a10/root-output",
+  "build/vstd-cd53d8cc110e2a10/stderr"
+ ],
+ "all_20_match_after": true,
+ "source_unchanged": true,
+ "copy_only": true,
+ "restored_ns": 1795233454510281405
+}

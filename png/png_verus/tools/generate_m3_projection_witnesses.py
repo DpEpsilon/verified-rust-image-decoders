@@ -190,6 +190,13 @@ def main():
         split_helpers = []
         if frames and args.split_budget:
             split_helpers, split_composition = certificates.split_apng_steps(data,ident,facts,True,None)
+            # The composition interface needs checked transitions, not every
+            # raw payload word. Keep the short default-stream fact separately.
+            requirements=[x for x in requirements if
+                'crate::critical_model::read(' in x or 'crate::walk_model::classify(' in x
+                or 'crate::apng_model::' in x or 'u8 & 32u8' in x
+                or 'crate::model::be32(b,16)' in x or 'crate::model::be32(b,20)' in x
+                or f'b.subrange({data_offset},{data_offset+2})' in x]
         symbolic_header = header.replace(f'bytes_{ident}()', 'b')
         composition = [f'    reveal_with_fuel(m::drive,{sites+1});']
         if name == 'plte/suggested-palette-in-rgb':
@@ -233,11 +240,16 @@ def main():
                   f'proof fn model_{ident}()',f'    ensures accepted_{ident}(),',*([f'        {error_post.replace("b,STRICT",f"bytes_{ident}(),STRICT")},'] if strong_error else []),'{',
                   '    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);',
                   f'    hide(m::{model});',
+                  *([f'    hide(bytes_{ident});'] if frames and args.split_budget else []),
                   parse_hide,control_hide,
                   f'    assert(crate::model::mh(bytes_{ident}())==Ok(({header},33nat))) by {{',
                   '        reveal(crate::model::mh);',
                   f'        assert(crate::model::mh(bytes_{ident}())==Ok(({header},33nat))) by (compute);','    }',
-                  *facts,f'    symbolic_{ident}(bytes_{ident}());','}',
+                  *([f'    literal_facts_{ident}();',
+                     f'    assert(bytes_{ident}().subrange({data_offset},{data_offset+2})==seq![120u8,1u8]) by (compute);',
+                     f'    assert(bytes_{ident}().len()=={len(data)}) by (compute);']
+                    if frames and args.split_budget else facts),
+                  f'    symbolic_{ident}(bytes_{ident}());','}',
                   f'// {LABEL}',*entry_prefix,
                   '    let mut events=Events {r1:false,r3:false,r4:false};',
                   f'    let prepared=crate::callers::{preparation}(&b,&STRICT,&mut events);',

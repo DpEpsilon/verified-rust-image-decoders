@@ -1,0 +1,50 @@
+{
+  "kind": "M3-two-budget-witness-direct-checkpoint-with-Cargo-blocker",
+  "host_run": 343,
+  "i686_run": 344,
+  "verified_each": 2350,
+  "errors_each": 0,
+  "accepted_direct_runs": true,
+  "budget_attempts_used": 1,
+  "solver_limits_changed": false,
+  "rust_min_stack_bytes": 268435456,
+  "source_inventory_matches_both_direct_runs": true,
+  "vstd_source_and_copy_artifact_pins_unchanged": true,
+  "proofs": {
+    "apng-bad/pixel-budget": [
+      "witness_m3_walk_frozen::model_apng_bad_pixel_budget",
+      "witness_m3_walk_frozen::split_apng_bad_pixel_budget_compose",
+      "witness_m3_walk_frozen::public_entry_apng_bad_pixel_budget",
+      "witness_m3_walk_frozen::walk_apng_bad_pixel_budget"
+    ],
+    "apng-bad/pixel-budget-exactly-2^30-then-zlib": [
+      "witness_m3_projection::model_apng_bad_pixel_budget_exactly_2_30_then_zlib",
+      "witness_m3_projection::split_apng_bad_pixel_budget_exactly_2_30_then_zlib_compose",
+      "witness_m3_projection::public_preparation_apng_bad_pixel_budget_exactly_2_30_then_zlib",
+      "witness_m3_projection::projection_apng_bad_pixel_budget_exactly_2_30_then_zlib"
+    ]
+  },
+  "cargo_confirmation_runs": [
+    345,
+    346,
+    347
+  ],
+  "cargo_confirmation_accepted": false,
+  "cargo_failure": "Cargo marks PNG-owned cached vstd dirty after build-script environment changes and then refuses --is-vstd with --no-cheating; none reaches PNG verification. The required Fresh vstd Cargo checkpoint has not been obtained.",
+  "runtime_controls": {
+    "cargo_test_release": 348,
+    "lint_caps": 349,
+    "audit_alloc": 350,
+    "all_exit_zero": true
+  },
+  "cache_note": "Cargo changed the mtime of its PNG-owned 55-byte output-lib-vstd diagnostic during unsuccessful runs; worker made no direct edits and did not rebuild vstd. Source and copied vstd .rmeta/.vir/.d artifact hashes and mtimes remain pinned.",
+  "generator_change": "Removed hide(m::step) from cross-module suffix lemmas; no new trusted item.",
+  "selection": {
+    "walk_records": 90,
+    "baseline_walk_records_preserved": 89,
+    "projection_records": 16,
+    "baseline_projection_records_preserved": 15
+  },
+  "scope_or_category_reclassified": false,
+  "committed_or_pushed": false
+}
