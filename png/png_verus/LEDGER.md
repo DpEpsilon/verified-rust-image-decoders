@@ -2,6 +2,8 @@
 
 ## M3 status under ERRATA E6 (2026-11-21)
 
+**Update after E7 (2026-11-21).** Erratum E7 (council PNG-M3-RT, owner-approved) makes the two ImageCrateCompat-0.25.10 records runtime gates of P2. `tests/conformance.rs` now fails unless the skipped records are exactly those two, each occurring once (negative control: a wrong E7 name fails the test). Enforcing run 357 (`evidence/e7-conformance-0357.log`): 846 of 848 records pass, 0 fail, 2 skipped (808 of the original 810); the 2 skipped are the ImageCrateCompat-0.25.10 records, never run. Current accepted proof checkpoint: `3ec33c2`, direct host run 352 and i686 run 353, 2,350 verified, 0 errors. Every M3 gate as amended by E6 and E7 has its evidence recorded; M3 awaits the owner's sign-off. Not signed off.
+
 M3 OPEN, pending the sign-off review. Component proofs complete. Accepted checkpoint `65e1bb4`: direct full-crate host run 343 and i686 run 344 each verify **2,350, 0 errors** on identical source (`--no-cheating`, default solver limits, `RUST_MIN_STACK=268435456` recorded in RUNLOG.tsv, launched by `tools/direct_verify.py`; direct control 339 reproduced the Cargo result 1,452/0 on the previous source). Witness gates as amended by E6: 119 of 119 complete M3 witnesses proved (the three `ihdr/*-accepted-then-truncated-zlib` records since `f857add`, `apng-bad/pixel-budget` and `apng-bad/pixel-budget-exactly-2^30-then-zlib` since `65e1bb4`); 12 of 12 M3 projections proved; 12 complete witnesses deferred to M6 by E6 clause 2, 0 of 12 proved. Not signed off.
 
 Cargo `verify.sh` cannot check this source: run 351 has `Fresh vstd` but overflows the default verifier worker-thread stack, and the stack size can only be raised through `RUST_MIN_STACK`, which dirties the copied vstd cache (runs 325, 345). The direct launcher is the accepted path for the budget witnesses under the verifier-resource rule below.
@@ -809,6 +811,8 @@ Resume at the fixed-size ordering automaton and independent `MW` document model:
 At the M1b checkpoint no Verus run had been made; the following records retain their original runtime/inspection scope.
 
 M1b done, with one scoped exception (the two `ImageCrateCompat-0.25.10` records, P2, `QUESTIONS.md` Q3).
+
+Correction, 2026-11-21 (E7): M1b was recorded as done with 808 of 810 records passing and 2 skipped. `PLAN.md:25` and `THEOREMS.md:264` required all 810 to pass, and no erratum or ruling authorised the exception when this section was written; Q3 was open. E7, approved by the owner on 2026-11-21, supplies that authority: the two ImageCrateCompat-0.25.10 records are gates of P2. M1b's status then stands as: done, every record but those two passing, those two never run.
 
 | Gate (PLAN.md M1b) | Result |
 |---|---|

@@ -354,3 +354,4 @@
 354	2026-11-21T05:01:27.152258+00:00	exit=0	1.89s	M3 E6 bindings release runtime tests	no verifier count (runtime/tooling command)	/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/runs/0354.log
 355	2026-11-21T05:01:33.068410+00:00	exit=0	0.48s	M3 E6 bindings cap source lint	no verifier count (runtime/tooling command)	/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/runs/0355.log
 356	2026-11-21T05:02:03.877899+00:00	exit=0	30.76s	M3 E6 bindings allocation source audit	no verifier count (runtime/tooling command)	/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/runs/0356.log
+357	2026-11-21T05:19:26.747241+00:00	exit=0	2.88s	E7 enforcing conformance run: cargo test --release (all targets), exact-two-skip check	no verifier count (runtime/tooling command)	/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/runs/0357.log

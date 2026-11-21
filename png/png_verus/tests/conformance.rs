@@ -233,19 +233,29 @@ struct Tally {
     pass: usize,
     skip: usize,
     fail: Vec<String>,
+    skipped: Vec<String>,
+    names: Vec<String>,
 }
+
+/// ERRATA E7: the only records that may be skipped before P2 (ImageCrateCompat-0.25.10).
+const E7_SKIPS: [&str; 2] = [
+    "policy/crc-ancillary/fdat-frames/image-crate-compat",
+    "policy/crc-ancillary/fdat-still/image-crate-compat",
+];
 
 fn run_file(path: &PathBuf) -> Tally {
     let text = std::fs::read_to_string(path).unwrap_or_else(|e| panic!("{}: {e}", path.display()));
     let recs: Vec<Value> = serde_json::from_str(&text).expect("json");
-    let mut t = Tally { pass: 0, skip: 0, fail: Vec::new() };
+    let mut t = Tally { pass: 0, skip: 0, fail: Vec::new(), skipped: Vec::new(), names: Vec::new() };
     for rec in &recs {
         let name = rec["name"].as_str().unwrap();
+        t.names.push(name.to_string());
         let (profile, profiled) = match rec.get("profile").and_then(|p| p.as_str()) {
             None | Some("Strict") => (Profile::Strict, false),
             Some("RecommendedBeta") => (Profile::RecommendedBeta, true),
             Some(_) => {
                 t.skip += 1;
+                t.skipped.push(name.to_string());
                 continue;
             }
         };
@@ -285,12 +295,28 @@ fn vectors() {
     }
     let mut failed = 0;
     let (mut pass, mut skip) = (0, 0);
+    let enforce_e7 = std::env::var("PNG_VECTORS").is_err();
+    let (mut skipped, mut names): (Vec<String>, Vec<String>) = (Vec::new(), Vec::new());
     for f in &files {
         let t = run_file(f);
         failed += t.fail.len();
         pass += t.pass;
         skip += t.skip;
+        skipped.extend(t.skipped);
+        names.extend(t.names);
     }
     println!("total: {pass} pass, {failed} fail, {skip} skipped");
     assert_eq!(failed, 0, "{failed} records failed");
+    if enforce_e7 {
+        for n in E7_SKIPS {
+            let k = names.iter().filter(|m| m.as_str() == n).count();
+            assert_eq!(k, 1, "E7 record {n} occurs {k} times, expected exactly once");
+        }
+        let mut got = skipped.clone();
+        got.sort();
+        let mut want: Vec<String> = E7_SKIPS.iter().map(|s| s.to_string()).collect();
+        want.sort();
+        assert_eq!(got, want, "skipped records must be exactly the two E7 records");
+        println!("E7 check: skipped records are exactly the two ImageCrateCompat-0.25.10 records");
+    }
 }

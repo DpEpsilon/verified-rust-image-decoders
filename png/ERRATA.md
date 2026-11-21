@@ -16,7 +16,8 @@ entry is then amended in place of a new one by appending an "Owner decision" lin
 | E3 | APPROVED (2026-11-20) |
 | E4 | APPROVED (2026-11-20) |
 | E5 | APPROVED (2026-11-20, council PNG-Q6) |
-| E6 | APPROVED (2026-11-21, council PNG-Q8, M3 witness scope) |
+| E6 | APPROVED (2026-11-21, council PNG-Q8, M3 witness scope); one sentence corrected by E7 |
+| E7 | APPROVED (2026-11-21, council PNG-M3-RT) |
 
 ## E1 — 2026-11-17: `inflate_verus` "no `alloc` dependency" (A-PNG-6) — APPROVED (2026-11-18)
 
@@ -151,3 +152,35 @@ Artifacts: `THEOREMS.md:189–197`, `THEOREMS.md:258–264`, `PLAN.md:27`, `PLAN
 **Must not be claimed.** No ledger, report or release note may say that M3 is complete or signed off under the frozen gates, that all 131 M3 witnesses are proved, or that any of the twelve deferred records is formally shown to decode to its frozen result before its M6 witness exists. Nor may either side of the pixel-budget boundary be described as having a proved witness, or a projection, a runtime pass or a failed verifier run be counted as a proof, while the proof is missing.
 
 Owner decision (2026-11-21): APPROVED, with the council majority's wording ("go with the consensus"). Since the candidate above, `f857add` (host run 332, i686 run 333) proves the complete witnesses of the three `ihdr/*-accepted-then-truncated-zlib` records; `apng-bad/pixel-budget` and `apng-bad/pixel-budget-exactly-2^30-then-zlib` remain open M3 gates.
+
+Correction (2026-11-21, E7 clause 6): the Implementation sentence "All 810 records pass runtime conformance, which discharges no proof obligation." is corrected to "Of the 810 records, 808 pass runtime conformance and 2 (the ImageCrateCompat-0.25.10 records of E7) are skipped." E6 is otherwise unchanged.
+
+## E7 — 2026-11-21: runtime conformance gate, the two ImageCrateCompat-0.25.10 records (gate scheduling: two runtime records reassigned from M1b and every later milestone to P2; correction of one sentence of E6's Implementation text; no theorem statement, expected result or record list changes) — APPROVED (2026-11-21)
+
+Artifacts: `THEOREMS.md:189`, `THEOREMS.md:264`, `PLAN.md:25`, `PLAN.md:41`, `png_verus/tests/conformance.rs`, the E6 Implementation text. Decided by the council (PNG-M3-RT, option (a), 4 of 4 seats in all three rounds, no dissent; sealed report `council/sealed/COUNCIL-REPORT-PNG-M3-RT.md`, sha256 `e24fa735c2e6c005ed2c234e0ecd6235206fb95117c085b4cb82b760e9f46ec7`, kept outside this repository). Prompted by `REVIEW-ASTRA-M3-SIGNOFF.md`. The text below is the fable seat's round-3 wording, verbatim, except that its heading's status is replaced by the owner's decision below.
+
+**Frozen text.** `THEOREMS.md:264`: "its runtime conformance subset passing, and from M1b on all 810 records of the three files;". `THEOREMS.md:189` counts 2 ImageCrateCompat-0.25.10 records among the 810. `PLAN.md:25`: "Done when all 810 records pass, [...]". `PLAN.md:41` schedules the ImageCrateCompat-0.25.10 profile, including `ImageRs` after-IDAT and `Prefix`, for P2. E6 clause 5 (`ERRATA.md:139`): "Runtime conformance of all 810 records, including every record named here, stays a gate of every milestone throughout." E6 Implementation (`ERRATA.md:129`): "All 810 records pass runtime conformance, which discharges no proof obligation."
+
+**Implementation.** Two of the 810 records, `policy/crc-ancillary/fdat-frames/image-crate-compat` and `policy/crc-ancillary/fdat-still/image-crate-compat`, are labelled `ImageCrateCompat-0.25.10` and need `crc_ancillary = Skip`, `apng_errors = Prefix` and `after_idat = ImageRs`. None of these values exists in `png_verus/src/policy.rs`, and `Profile` has the two variants `Strict` and `RecommendedBeta`. `png_verus/tests/conformance.rs:244–250` skips any record with another profile label, and `:294–295` fail the test only on a failed record. Every recorded conformance run from M1b (commit `30f53f2`) to run 334 therefore reports the same two records as skipped: of the 810 records named in `THEOREMS.md:189`, 808 pass and 2 are skipped; of the 848 records in the three files today, 846 pass and the same 2 are skipped (`png_verus/evidence/run-0334.log:465–468`). The two records have never been run. The frozen text is inconsistent with itself: it gates all 810 records from M1b on and implements the profile of two of them only at P2. M1b was recorded as done with the two skips disclosed and without an approved gate amendment; the M2 sign-off claimed no whole-PNG conformance and is silent on the gate. E6's sentence "All 810 records pass runtime conformance" is false; it repeats `council/packet/PNG-Q8.md:105`, which omitted the two skips that `png_verus/LEDGER.md:49` records for run 324. Neither record is among the records E6 names, so the correction does not touch the basis of E6's clauses 1–4 and 6.
+
+**Proposed erratum.** 1. The two records named above are runtime conformance gates of P2 and of every milestone after it, and of no milestone before it. At P2 each must run and pass under the ImageCrateCompat-0.25.10 profile as P2 implements it, selected through `Profile`.
+
+2. For M1b, M2, M3, M4, M5, M6 and P1, `THEOREMS.md:264`, `PLAN.md:25` and E6 clause 5 are read as: every record of the three files other than these two passes, and these two are counted and reported as skipped. For M1b and M2 this reading applies retrospectively; their ledger sections receive correction notes and their evidence is unchanged.
+
+3. From M3 until the P2 profile is implemented, the conformance test fails unless each of these two record names occurs exactly once in the three files and the set of skipped records is exactly these two names; from P2 on it fails on any skipped record. It prints the per-file and total tallies, and the sign-off run of each milestone is recorded in `RUNLOG.tsv` with that tally. M3 cannot be signed off before one such run is recorded; approval of this entry alone signs off nothing.
+
+4. A run of either record under any record other than the P2 profile, including Strict or RecommendedBeta with the three field values replaced, is not that record passing and discharges no gate.
+
+5. P2 cannot be signed off, and no release may claim ImageCrateCompat-0.25.10 conformance, while either record is skipped, fails, or passes only under a stand-in. If the profile P2 implements gives either record a result other than its frozen expected result, that difference needs its own erratum; the expected result is not edited.
+
+6. E6's sentence "All 810 records pass runtime conformance" is corrected to: "Of the 810 records, 808 pass runtime conformance and 2 (the ImageCrateCompat-0.25.10 records of E7) are skipped." E6 is otherwise unchanged, including its M6 witness and release conditions.
+
+7. No theorem statement, expected result, record or record label changes, and this entry permits no other skip or deferral.
+
+**Effect on users.** None on any caller of the current crate: a caller can select only `Strict` and `RecommendedBeta`, and every record with those labels, or with none, passes. Until P2 there is no evidence of any kind, runtime or formal, about ImageCrateCompat-0.25.10 behaviour in `png_verus`, and the profile is not offered.
+
+**If rejected.** M3 stays open, and M1b does not meet `PLAN.md:25`, until both records run and pass. That requires the P2 profile, or a further ruling on a record carrying the three field values, before M4 starts. E6's sentence "All 810 records pass runtime conformance" remains false whatever is decided about scheduling.
+
+**Must not be claimed.** That all 810 records, or all 848, pass runtime conformance at any milestone before P2. That either record has been run, tested or passed, or that a skip, an oracle result or a stand-in run is a pass. That `png_verus` implements, conforms to or has been tested against ImageCrateCompat-0.25.10 in any part. That M1b, M2 or M3 met `THEOREMS.md:264` or `PLAN.md:25` as literally written. That a runtime result is a proof.
+
+Owner decision (2026-11-21): APPROVED.

@@ -24,6 +24,8 @@ This bears on the council's L-WALK-FIRST obligation ("never inflates the fdAT da
 
 `policy/crc-ancillary/fdat-frames/image-crate-compat` and `.../fdat-still/image-crate-compat` need `crc_ancillary = Skip`, `apng_errors = Prefix` and `after_idat = ImageRs`, which belong to the compatibility profiles (P2, out of scope for M1b). `tests/conformance.rs` counts them as skipped, never as passed: 808 of 810 records pass, 2 are skipped. GIF ran its two compatibility records under a test-only record; that is possible here at P2, once those three field values exist.
 
+**Resolved (council PNG-M3-RT, erratum E7, owner-approved 2026-11-21).** Decided 2026-11-21 by the council (PNG-M3-RT), recorded as erratum E7: both records are runtime gates of P2 under the full ImageCrateCompat-0.25.10 profile and of no earlier milestone. Until P2 they are counted and reported as skipped, the conformance test fails on any other skip and if either record is absent or duplicated, and a run under a test-only record with the three field values does not count as either record passing. The GIF stand-in is not adopted for PNG.
+
 ## Q4. API items of BRIEF.md without a model
 
 `chunks(b, p)` with `ChunkStatus` and `try_icc_profile_with_policy` (PNG-Q4, Q13) are not implemented: SPEC P8.3 and P17 keep them outside the Stage-1 model, and PLAN.md P1 says they "need models first (D14–D16)". `Info` already carries the three-valued `Meta` (`Absent | Discarded | Present`) per item; under Strict nothing is ever `Discarded`.
