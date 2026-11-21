@@ -1,5 +1,11 @@
 # png_verus ledger
 
+## M3 signed off (2026-11-21)
+
+M3 SIGNED OFF under E6 and E7 at `9a8c2b7`, run 357. Witness gates as amended by E6: 119 of 119 complete M3 witnesses and 12 of 12 projections proved; 12 complete witnesses deferred to M6, 0 of 12 proved. Runtime conformance as amended by E7: 846 of 848 records pass, 0 fail, 2 skipped (808 of the original 810); the 2 ImageCrateCompat-0.25.10 records have never been run and are gates of P2. This is not 810 passes.
+
+Proof checkpoint: source `3ec33c2`, direct full-crate host run 352 and i686 run 353, each 2,350 verified, 0 errors (`--no-cheating`, default solver limits, `RUST_MIN_STACK=268435456` recorded in RUNLOG.tsv). The owner signed off on 2026-11-21, answering the sign-off question put after `9a8c2b7`. The sections below record the state before sign-off; their "Not signed off" statements are superseded by this one.
+
 ## M3 status under ERRATA E6 (2026-11-21)
 
 **Update after E7 (2026-11-21).** Erratum E7 (council PNG-M3-RT, owner-approved) makes the two ImageCrateCompat-0.25.10 records runtime gates of P2. `tests/conformance.rs` now fails unless the skipped records are exactly those two, each occurring once (negative control: a wrong E7 name fails the test). Enforcing run 357 (`evidence/e7-conformance-0357.log`): 846 of 848 records pass, 0 fail, 2 skipped (808 of the original 810); the 2 skipped are the ImageCrateCompat-0.25.10 records, never run. Current accepted proof checkpoint: `3ec33c2`, direct host run 352 and i686 run 353, 2,350 verified, 0 errors. Every M3 gate as amended by E6 and E7 has its evidence recorded; M3 awaits the owner's sign-off. Not signed off.
