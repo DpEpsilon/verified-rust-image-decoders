@@ -1,0 +1,768 @@
+{
+  "basis": "THEOREMS.md:195 and ERRATA E6 clause 7; gate assignment only, no witness credit",
+  "complete_M4_witnesses_proved": 0,
+  "M4_projections_proved": 0,
+  "M6_complete_pixel_witnesses_proved": 0,
+  "records": [
+    {
+      "name": "filter/0-ct0-d1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 73
+    },
+    {
+      "name": "filter/0-ct0-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 94
+    },
+    {
+      "name": "filter/0-ct0-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 118
+    },
+    {
+      "name": "filter/0-ct2-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 144
+    },
+    {
+      "name": "filter/0-ct2-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 216
+    },
+    {
+      "name": "filter/0-ct4-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 120
+    },
+    {
+      "name": "filter/0-ct6-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 264
+    },
+    {
+      "name": "filter/1-ct0-d1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 73
+    },
+    {
+      "name": "filter/1-ct0-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 94
+    },
+    {
+      "name": "filter/1-ct0-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 120
+    },
+    {
+      "name": "filter/1-ct2-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 144
+    },
+    {
+      "name": "filter/1-ct2-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 216
+    },
+    {
+      "name": "filter/1-ct4-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 120
+    },
+    {
+      "name": "filter/1-ct6-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 264
+    },
+    {
+      "name": "filter/2-ct0-d1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 73
+    },
+    {
+      "name": "filter/2-ct0-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 94
+    },
+    {
+      "name": "filter/2-ct0-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 120
+    },
+    {
+      "name": "filter/2-ct2-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 144
+    },
+    {
+      "name": "filter/2-ct2-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 216
+    },
+    {
+      "name": "filter/2-ct4-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 120
+    },
+    {
+      "name": "filter/2-ct6-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 264
+    },
+    {
+      "name": "filter/3-ct0-d1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 73
+    },
+    {
+      "name": "filter/3-ct0-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 94
+    },
+    {
+      "name": "filter/3-ct0-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 120
+    },
+    {
+      "name": "filter/3-ct2-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 144
+    },
+    {
+      "name": "filter/3-ct2-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 216
+    },
+    {
+      "name": "filter/3-ct4-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 120
+    },
+    {
+      "name": "filter/3-ct6-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 264
+    },
+    {
+      "name": "filter/4-ct0-d1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 73
+    },
+    {
+      "name": "filter/4-ct0-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 94
+    },
+    {
+      "name": "filter/4-ct0-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 120
+    },
+    {
+      "name": "filter/4-ct2-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 144
+    },
+    {
+      "name": "filter/4-ct2-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 216
+    },
+    {
+      "name": "filter/4-ct4-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 120
+    },
+    {
+      "name": "filter/4-ct6-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 264
+    },
+    {
+      "name": "image/filter-type-5",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "complete at M4",
+      "proof_status": "unproved",
+      "expected_error": "InvalidFilterType",
+      "input_bytes": 1062
+    },
+    {
+      "name": "image/filter-type-255",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "complete at M4",
+      "proof_status": "unproved",
+      "expected_error": "InvalidFilterType",
+      "input_bytes": 1062
+    },
+    {
+      "name": "precedence/adler-before-filter",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "complete at M4",
+      "proof_status": "unproved",
+      "expected_error": "AdlerMismatch",
+      "input_bytes": 1062
+    },
+    {
+      "name": "precedence/index-row0-before-filter-row1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "complete at M4",
+      "proof_status": "unproved",
+      "expected_error": "PaletteIndexOutOfRange",
+      "input_bytes": 95
+    },
+    {
+      "name": "interlace/ct0-d1-1x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 67
+    },
+    {
+      "name": "interlace/ct6-d16-1x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 74
+    },
+    {
+      "name": "interlace/ct3-d4-1x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 127
+    },
+    {
+      "name": "interlace/ct0-d1-1x2",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 69
+    },
+    {
+      "name": "interlace/ct6-d16-1x2",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 84
+    },
+    {
+      "name": "interlace/ct3-d4-1x2",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 129
+    },
+    {
+      "name": "interlace/ct0-d1-2x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 69
+    },
+    {
+      "name": "interlace/ct6-d16-2x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 84
+    },
+    {
+      "name": "interlace/ct3-d4-2x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 129
+    },
+    {
+      "name": "interlace/ct0-d1-1x5",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 75
+    },
+    {
+      "name": "interlace/ct6-d16-1x5",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 113
+    },
+    {
+      "name": "interlace/ct3-d4-1x5",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 135
+    },
+    {
+      "name": "interlace/ct0-d1-5x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 73
+    },
+    {
+      "name": "interlace/ct6-d16-5x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 112
+    },
+    {
+      "name": "interlace/ct3-d4-5x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 133
+    },
+    {
+      "name": "interlace/ct0-d1-2x2",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 71
+    },
+    {
+      "name": "interlace/ct6-d16-2x2",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 101
+    },
+    {
+      "name": "interlace/ct3-d4-2x2",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 131
+    },
+    {
+      "name": "interlace/ct0-d1-3x3",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 77
+    },
+    {
+      "name": "interlace/ct6-d16-3x3",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 146
+    },
+    {
+      "name": "interlace/ct3-d4-3x3",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 138
+    },
+    {
+      "name": "interlace/ct0-d1-4x4",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 79
+    },
+    {
+      "name": "interlace/ct6-d16-4x4",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 203
+    },
+    {
+      "name": "interlace/ct3-d4-4x4",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 141
+    },
+    {
+      "name": "interlace/ct0-d1-5x5",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 84
+    },
+    {
+      "name": "interlace/ct6-d16-5x5",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 279
+    },
+    {
+      "name": "interlace/ct3-d4-5x5",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 153
+    },
+    {
+      "name": "interlace/ct0-d1-8x8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 95
+    },
+    {
+      "name": "interlace/ct6-d16-8x8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 595
+    },
+    {
+      "name": "interlace/ct3-d4-8x8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 176
+    },
+    {
+      "name": "interlace/ct0-d1-9x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 73
+    },
+    {
+      "name": "interlace/ct6-d16-9x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 144
+    },
+    {
+      "name": "interlace/ct3-d4-9x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 134
+    },
+    {
+      "name": "interlace/ct0-d1-1x9",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 83
+    },
+    {
+      "name": "interlace/ct6-d16-1x9",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 149
+    },
+    {
+      "name": "interlace/ct3-d4-1x9",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "unproved",
+      "expected_error": null,
+      "input_bytes": 143
+    },
+    {
+      "name": "interlace/1x1-filter-bytes-for-empty-passes",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "complete at M4",
+      "proof_status": "unproved",
+      "expected_error": "ExcessImageData",
+      "input_bytes": 69
+    }
+  ]
+}

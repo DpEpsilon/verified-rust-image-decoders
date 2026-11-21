@@ -1,5 +1,109 @@
 # png_verus ledger
 
+## M4 Adam7 arithmetic component checkpoint (2026-11-21)
+
+**M4 OPEN; not signed off.** On the working tree based on `9a8c2b7`, direct full-crate host run **369** and i686 run **373** each verify **2,378, 0 errors**, with `--no-cheating`, default solver limits and `RUST_MIN_STACK=268435456` only in the direct verifier process. Both runs check the identical proof-input inventory and confirm unchanged proof inputs, imported inflate artifacts and all source/copied vstd pins; no Cargo verification or new vstd build occurred. `evidence/m4-host-0369.json` and `evidence/m4-i686-0373.json` bind the accepted inventories and commands; their paired `.log` files contain the verifier diagnostics. `evidence/m4-adam7-checkpoint-0369-0373.json` maps the component proofs, runtime gates and open obligations.
+
+| Component | Verified scope at host 369 / i686 373 |
+|---|---|
+| `pass_size`; executable `image::pass` | Branch-free `(n + step - 1 - origin) / step` equals the case-split extent for positive dimensions and `origin < step`, including empty passes; the executable now uses that formula |
+| `adam7_area` | Exact seven-pass area `sum(pw * ph) = w * h`, using the existing checked halving identities and `coverage` proof |
+| `adam7_bijection` | Explicit residue/quotient inverse recovers every image coordinate and every source cell; pass coordinates stay in the image for every positive PNG wire dimension |
+| `filter_overhead`, `interlaced_raw_bound`, `raw_scanline_bound`; executable `raw_size` | `S` counts rows only in non-empty passes; `8*S <= 15*h + 29`, `S <= 2*h + 2`, `R <= 8*w*h + S`; the stronger `R` bound is an executable postcondition; existing L-R-MONO and allocation-cap proofs remain checked |
+| `scanline_len_u64`; executable `row_bytes` | `pw*B < 2^37`, the rounded row length including its filter byte fits `u64`, and executable row-byte arithmetic equals the layout model |
+| `canvas_offset_bound`, `canvas_offset_injective` | Mathematical byte offset plus 3 stays below `4*W*H` for a fitting rectangle; equal pixel offsets imply equal coordinates; existing `pixel_offset`/`Sink::put` executable bounds remain checked |
+
+This is a component checkpoint, not a discharge of T-FILT, the whole T-A7 row or M4's assurance gates. Still open: `paeth_ties`, the five bytewise MF equations, `unfilter_in_place`, the reconstructed predecessor-row/Raw relation, and the stream-order filter/palette error witnesses. `rect_sum_unnarrowed` is not claimed: **QUESTIONS.md Q7** records that the frozen `2*PNG_WIRE_MAX` bound lacks an operand domain at the pre-validation fcTL test. No restricted substitute is credited as the frozen lemma, and no protected theorem or specification was edited. No new proof-sensitivity mutation or independent ghost-code sign-off review is claimed.
+
+M4 witnesses are separately scheduled below under E6: **0 of 5 complete M4 witnesses, 0 of 71 M4 projections**, and 0 of the 71 deferred complete pixel witnesses proved. Layout lemmas and runtime passes are not counted as witnesses. All 76 records are listed by name; the five error records, including `precedence/index-row0-before-filter-row1`, require complete M4 witnesses and are not deferred to M6.
+
+Runtime/source gates on the final proof-input source: run **370** passes release tests, fault injection, all seven council tests, both source lints and their self-tests/negative controls, and the native `no_std` library build. Conformance is **846 of 848 pass, 0 fail, 2 skipped**, with the skipped set checked to be exactly E7's two ImageCrateCompat records. Run **371** passes 10,000 generated inflate streams and 10,000 single-bit corruptions, 0 unexpected differences, through the existing read-only `inflate_runner`; no inflate target or verifier cache was built or cleaned. Run **372** confirms protected files unchanged; whitespace checks pass. No i686 runtime execution is claimed.
+
+`tools/direct_verify.py --verify-module ...` now supports development-only module checks without invoking Cargo or building dependencies. Verus requires dropping `--no-cheating` for module selection; those runs are explicitly labeled NO CREDIT, record their effective arguments and always have `accepted=false`. The full replay retains `--no-cheating`, default solver limits, command/import/toolchain bindings and before/after cache pins. No development-only run is credited above.
+
+## M4 witness gate assignment under E6 (2026-11-21)
+
+This is an assignment list, not proof credit. All 76 gates below are **unproved** at this component checkpoint: 0 of 5 complete M4 witnesses and 0 of 71 M4 projections. The 71 complete pixel-result witnesses are due at M6 under E6 clause 1; 0 of 71 are proved. An M4 projection must still prove the model's restricted result and call the public entry point; layout arithmetic alone is not a projection witness. `evidence/m4-witness-schedule.json` binds each assignment to its authored fixture file and hash. The 76 records pass runtime conformance, which discharges no witness gate.
+
+| Record | Required gate (all unproved) |
+|---|---|
+| `filter/0-ct0-d1` | projection at M4, complete at M6 |
+| `filter/0-ct0-d8` | projection at M4, complete at M6 |
+| `filter/0-ct0-d16` | projection at M4, complete at M6 |
+| `filter/0-ct2-d8` | projection at M4, complete at M6 |
+| `filter/0-ct2-d16` | projection at M4, complete at M6 |
+| `filter/0-ct4-d8` | projection at M4, complete at M6 |
+| `filter/0-ct6-d16` | projection at M4, complete at M6 |
+| `filter/1-ct0-d1` | projection at M4, complete at M6 |
+| `filter/1-ct0-d8` | projection at M4, complete at M6 |
+| `filter/1-ct0-d16` | projection at M4, complete at M6 |
+| `filter/1-ct2-d8` | projection at M4, complete at M6 |
+| `filter/1-ct2-d16` | projection at M4, complete at M6 |
+| `filter/1-ct4-d8` | projection at M4, complete at M6 |
+| `filter/1-ct6-d16` | projection at M4, complete at M6 |
+| `filter/2-ct0-d1` | projection at M4, complete at M6 |
+| `filter/2-ct0-d8` | projection at M4, complete at M6 |
+| `filter/2-ct0-d16` | projection at M4, complete at M6 |
+| `filter/2-ct2-d8` | projection at M4, complete at M6 |
+| `filter/2-ct2-d16` | projection at M4, complete at M6 |
+| `filter/2-ct4-d8` | projection at M4, complete at M6 |
+| `filter/2-ct6-d16` | projection at M4, complete at M6 |
+| `filter/3-ct0-d1` | projection at M4, complete at M6 |
+| `filter/3-ct0-d8` | projection at M4, complete at M6 |
+| `filter/3-ct0-d16` | projection at M4, complete at M6 |
+| `filter/3-ct2-d8` | projection at M4, complete at M6 |
+| `filter/3-ct2-d16` | projection at M4, complete at M6 |
+| `filter/3-ct4-d8` | projection at M4, complete at M6 |
+| `filter/3-ct6-d16` | projection at M4, complete at M6 |
+| `filter/4-ct0-d1` | projection at M4, complete at M6 |
+| `filter/4-ct0-d8` | projection at M4, complete at M6 |
+| `filter/4-ct0-d16` | projection at M4, complete at M6 |
+| `filter/4-ct2-d8` | projection at M4, complete at M6 |
+| `filter/4-ct2-d16` | projection at M4, complete at M6 |
+| `filter/4-ct4-d8` | projection at M4, complete at M6 |
+| `filter/4-ct6-d16` | projection at M4, complete at M6 |
+| `image/filter-type-5` | complete at M4 |
+| `image/filter-type-255` | complete at M4 |
+| `precedence/adler-before-filter` | complete at M4 |
+| `precedence/index-row0-before-filter-row1` | complete at M4 |
+| `interlace/ct0-d1-1x1` | projection at M4, complete at M6 |
+| `interlace/ct6-d16-1x1` | projection at M4, complete at M6 |
+| `interlace/ct3-d4-1x1` | projection at M4, complete at M6 |
+| `interlace/ct0-d1-1x2` | projection at M4, complete at M6 |
+| `interlace/ct6-d16-1x2` | projection at M4, complete at M6 |
+| `interlace/ct3-d4-1x2` | projection at M4, complete at M6 |
+| `interlace/ct0-d1-2x1` | projection at M4, complete at M6 |
+| `interlace/ct6-d16-2x1` | projection at M4, complete at M6 |
+| `interlace/ct3-d4-2x1` | projection at M4, complete at M6 |
+| `interlace/ct0-d1-1x5` | projection at M4, complete at M6 |
+| `interlace/ct6-d16-1x5` | projection at M4, complete at M6 |
+| `interlace/ct3-d4-1x5` | projection at M4, complete at M6 |
+| `interlace/ct0-d1-5x1` | projection at M4, complete at M6 |
+| `interlace/ct6-d16-5x1` | projection at M4, complete at M6 |
+| `interlace/ct3-d4-5x1` | projection at M4, complete at M6 |
+| `interlace/ct0-d1-2x2` | projection at M4, complete at M6 |
+| `interlace/ct6-d16-2x2` | projection at M4, complete at M6 |
+| `interlace/ct3-d4-2x2` | projection at M4, complete at M6 |
+| `interlace/ct0-d1-3x3` | projection at M4, complete at M6 |
+| `interlace/ct6-d16-3x3` | projection at M4, complete at M6 |
+| `interlace/ct3-d4-3x3` | projection at M4, complete at M6 |
+| `interlace/ct0-d1-4x4` | projection at M4, complete at M6 |
+| `interlace/ct6-d16-4x4` | projection at M4, complete at M6 |
+| `interlace/ct3-d4-4x4` | projection at M4, complete at M6 |
+| `interlace/ct0-d1-5x5` | projection at M4, complete at M6 |
+| `interlace/ct6-d16-5x5` | projection at M4, complete at M6 |
+| `interlace/ct3-d4-5x5` | projection at M4, complete at M6 |
+| `interlace/ct0-d1-8x8` | projection at M4, complete at M6 |
+| `interlace/ct6-d16-8x8` | projection at M4, complete at M6 |
+| `interlace/ct3-d4-8x8` | projection at M4, complete at M6 |
+| `interlace/ct0-d1-9x1` | projection at M4, complete at M6 |
+| `interlace/ct6-d16-9x1` | projection at M4, complete at M6 |
+| `interlace/ct3-d4-9x1` | projection at M4, complete at M6 |
+| `interlace/ct0-d1-1x9` | projection at M4, complete at M6 |
+| `interlace/ct6-d16-1x9` | projection at M4, complete at M6 |
+| `interlace/ct3-d4-1x9` | projection at M4, complete at M6 |
+| `interlace/1x1-filter-bytes-for-empty-passes` | complete at M4 |
+
 ## M3 signed off (2026-11-21)
 
 M3 SIGNED OFF under E6 and E7 at `9a8c2b7`, run 357. Witness gates as amended by E6: 119 of 119 complete M3 witnesses and 12 of 12 projections proved; 12 complete witnesses deferred to M6, 0 of 12 proved. Runtime conformance as amended by E7: 846 of 848 records pass, 0 fail, 2 skipped (808 of the original 810); the 2 ImageCrateCompat-0.25.10 records have never been run and are gates of P2. This is not 810 passes.

@@ -88,6 +88,8 @@ def main():
     parser.add_argument('--target', choices=['host', 'i686'], required=True)
     parser.add_argument('--stack-mib', type=int, required=True)
     parser.add_argument('--expect-count', type=int)
+    parser.add_argument('--verify-module', action='append', default=[],
+                        help='Development only: verify selected modules; earns no checkpoint credit')
     parser.add_argument('--check-bindings', action='store_true',
                         help='Check all replay bindings without invoking the verifier')
     parser.add_argument('--pin-file', type=Path, default=BINDINGS,
@@ -134,6 +136,13 @@ def main():
     env = {key: value for key, value in os.environ.items()
            if not key.lstrip().startswith('__VERUS_DRIVER_') and key != 'RUST_MIN_STACK'}
     env.update(recorded_env)
+    if args.verify_module:
+        # Verus forbids module selection with --no-cheating. This diagnostic
+        # mode drops that flag, never earns credit, and never invokes Cargo.
+        env[primary] = env[primary].replace('__VERUS_DRIVER_ARGS_SEP__--no-cheating', '')
+    for module in args.verify_module:
+        assert re.fullmatch(r'[A-Za-z_][A-Za-z_0-9:]*(?:\*)?', module), module
+        env[primary] += '__VERUS_DRIVER_ARGS_SEP__--verify-module__VERUS_DRIVER_ARGS_SEP__' + module
     # Preserve stable Cargo process context without inheriting dead jobserver
     # descriptors or invoking any Cargo process/build script.
     captured = json.loads((ROOT / 'runs/cargo-primary-environment-capture.json').read_text())
@@ -158,7 +167,9 @@ def main():
     else:
         env.pop('CARGO_BUILD_TARGET', None)
     before = helper['inventory']()
-    label = (f'Direct full PNG {args.target}: RUST_MIN_STACK={env["RUST_MIN_STACK"]} bytes; '
+    scope = ('development modules ' + ','.join(args.verify_module) + ' (NO CREDIT)'
+             if args.verify_module else 'full PNG')
+    label = (f'Direct {scope} {args.target}: RUST_MIN_STACK={env["RUST_MIN_STACK"]} bytes; '
              f'RLIMIT_STACK={resource.getrlimit(resource.RLIMIT_STACK)}; '
              f'exact run-{baseline} primary command; no Cargo; default solver limits')
     result = subprocess.run(['python3', '-I', str(ROOT / 'tools/run_logged.py'),
@@ -167,15 +178,22 @@ def main():
     print(result.stdout, end='')
     run = int(re.findall(r'^\[run\] (\d+), exit', result.stdout, re.M)[-1])
     log = (ROOT / 'runs' / f'{run:04d}.log').read_text()
-    counts = re.findall(r'^verification results:: (\d+) verified, (\d+) errors$', log, re.M)
+    summary_pattern = (r'^verification results:: (\d+) verified, (\d+) errors'
+                       r' \(partial verification with `--verify-\*`\)$'
+                       if args.verify_module else
+                       r'^verification results:: (\d+) verified, (\d+) errors$')
+    counts = re.findall(summary_pattern, log, re.M)
     same_source = before == helper['inventory']()
     same_bindings = bindings == check_bindings(args.pin_file, args.target, command)
     same_pins = dependencies == pins()
     verified, errors = (map(int, counts[-1]) if counts else (0, None))
-    accepted = (result.returncode == 0 and len(counts) == 1 and verified > 0 and errors == 0
-                and same_source and same_bindings and same_pins
-                and (args.expect_count is None or verified == args.expect_count))
-    record = {'kind': 'direct-full-crate-checkpoint', 'run': run, 'target': args.target,
+    succeeded = (result.returncode == 0 and len(counts) == 1 and verified > 0 and errors == 0
+                 and same_source and same_bindings and same_pins
+                 and (args.expect_count is None or verified == args.expect_count))
+    accepted = succeeded and not args.verify_module
+    record = {'kind': 'direct-development-modules' if args.verify_module else 'direct-full-crate-checkpoint',
+              'verify_modules': args.verify_module, 'effective_primary_driver_args': env[primary],
+              'run': run, 'target': args.target,
               'recorded_primary_command_run': baseline, 'command': command,
               'recorded_driver_environment': recorded_env,
               'cargo_environment_capture_sha256': digest(ROOT / 'runs/cargo-primary-environment-capture.json'),
@@ -190,8 +208,9 @@ def main():
               'verified': verified, 'errors': errors, 'expected_count': args.expect_count,
               'accepted': accepted, 'log_sha256': hashlib.sha256(log.encode()).hexdigest()}
     (ROOT / 'runs' / f'{run:04d}.json').write_text(json.dumps(record, indent=2) + '\n')
-    print(f'[direct checkpoint] run {run}: {verified} verified, {errors} errors; accepted={accepted}')
-    return 0 if accepted else (result.returncode or 1)
+    print(f'[direct {"development" if args.verify_module else "checkpoint"}] run {run}: '
+          f'{verified} verified, {errors} errors; accepted={accepted}')
+    return 0 if succeeded else (result.returncode or 1)
 
 
 if __name__ == '__main__':

@@ -57,10 +57,12 @@ pub(crate) fn pass(interlace: u8, w: u32, h: u32, k: usize) -> (r: Option<Pass>)
         assert((x0 as nat,y0 as nat,dx as nat,dy as nat)==layout::geometry(k as nat));
         layout::span_bounds(w as nat,x0 as nat,dx as nat);
         layout::span_bounds(h as nat,y0 as nat,dy as nat);
+        layout::pass_size(w as nat,x0 as nat,dx as nat);
+        layout::pass_size(h as nat,y0 as nat,dy as nat);
     }
 
-    let pw = if w > x0 { (w - x0 + dx - 1) / dx } else { 0 };
-    let ph = if h > y0 { (h - y0 + dy - 1) / dy } else { 0 };
+    let pw = (w + dx - 1 - x0) / dx;
+    let ph = (h + dy - 1 - y0) / dy;
     if pw == 0 || ph == 0 {
         return None;
     }
@@ -77,8 +79,12 @@ pub(crate) fn pass_count(interlace: u8) -> (r: usize)
 pub(crate) fn row_bytes(ihdr: &Ihdr, pw: u32) -> (r: u64)
     requires ihdr.wf(),pw<=crate::limits::PNG_WIRE_MAX,
     ensures r==layout::scan_bytes(layout::bits(ihdr.view()),pw as nat),r<=8*(pw as int),
+        1+r<=u64::MAX,
 {
-    proof {layout::scan_bound(layout::bits(ihdr.view()),pw as nat);}
+    proof {
+        layout::scan_bound(layout::bits(ihdr.view()),pw as nat);
+        layout::scanline_len_u64(layout::bits(ihdr.view()),pw as nat);
+    }
     (pw as u64 * ihdr.bits_pp() as u64 + 7) / 8
 }
 
@@ -90,9 +96,14 @@ pub(crate) fn raw_size(ihdr: &Ihdr, w: u32, h: u32) -> (r: u64)
     ensures r==layout::raw(ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat),
         1<=r<=crate::alloc_guard::MAX_BYTES,
         r<=layout::raw(ihdr.interlace,layout::bits(ihdr.view()),ihdr.w as nat,ihdr.h as nat),
+        r<=8*(w as nat)*(h as nat)+layout::scanlines(ihdr.interlace,w as nat,h as nat),
 {
     let bits=ihdr.bits_pp();
-    proof {raw_budget(*ihdr,w,h);layout::raw_dimensions(ihdr.interlace,bits as nat,w as nat,h as nat,ihdr.w as nat,ihdr.h as nat);}
+    proof {
+        raw_budget(*ihdr,w,h);
+        layout::raw_dimensions(ihdr.interlace,bits as nat,w as nat,h as nat,ihdr.w as nat,ihdr.h as nat);
+        layout::raw_scanline_bound(ihdr.interlace,bits as nat,w as nat,h as nat);
+    }
     let mut r=0u64;
     let mut k=0usize;
     while k<pass_count(ihdr.interlace)
@@ -653,7 +664,7 @@ impl<'b> Colour<'b> {
 
 fn pass_coordinate(n: u32,origin: u32,step: u32,index: u32) -> (r: u32)
     requires step>=1,index<layout::span(n as nat,origin as nat,step as nat),
-    ensures r<n,
+    ensures r<n,r==origin as nat+index as nat*step as nat,
 {
     proof {layout::span_index(n as nat,origin as nat,step as nat,index as nat);}
     origin+index*step
