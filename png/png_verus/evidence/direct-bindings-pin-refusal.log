@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/tools/direct_verify.py", line 195, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/tools/direct_verify.py", line 108, in main
+    bindings = check_bindings(args.pin_file, args.target, command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/tools/direct_verify.py", line 59, in check_bindings
+    assert actual == expected['manifests'], 'Cargo manifests/lockfile changed'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Cargo manifests/lockfile changed

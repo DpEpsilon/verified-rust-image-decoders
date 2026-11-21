@@ -19,6 +19,7 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+BINDINGS = ROOT / 'evidence/direct-verify-bindings.json'
 
 
 def digest(path):
@@ -43,11 +44,54 @@ def pins():
     return result
 
 
+def check_bindings(pin_file, target, command):
+    """Reject replay when Cargo inputs, toolchain or imported inflate files drift."""
+    expected = json.loads(pin_file.read_text())
+    assert expected['recorded_primary_command_run'][target] == (332 if target == 'host' else 333)
+    assert expected['command_sha256'][target] == hashlib.sha256(
+        json.dumps(command, separators=(',', ':')).encode()).hexdigest(), 'Recorded command changed'
+    manifests = {
+        'Cargo.toml': ROOT / 'Cargo.toml',
+        'Cargo.lock': ROOT / 'Cargo.lock',
+        '../inflate_verus/Cargo.toml': ROOT.parent / 'inflate_verus/Cargo.toml',
+    }
+    actual = {name: digest(path) if path.exists() else None for name, path in manifests.items()}
+    assert actual == expected['manifests'], 'Cargo manifests/lockfile changed'
+    version_env = dict(os.environ, PATH='/opt/cargo/bin:/opt/verus:' + os.environ.get('PATH', ''))
+    versions = {
+        'verus': subprocess.check_output([command[0], '--version'], text=True, timeout=10,
+                                         env=version_env).strip(),
+        'rustc': subprocess.check_output([command[1], '--version'], text=True, timeout=10,
+                                         env=version_env).strip(),
+    }
+    # Keep verify_m3.py's explicit Verus version gate, in addition to exact pins.
+    if 'Version: 0.2026.11.02.8bf68ee\n' not in versions['verus']:
+        raise SystemExit('Refusing an unpinned Verus version')
+    assert versions == expected['versions'], 'Verifier toolchain changed'
+    externs = [command[i + 1].split('=', 1)[1] for i, value in enumerate(command[:-1])
+               if value == '--extern' and command[i + 1].startswith('inflate_verus=')]
+    assert len(externs) == 1, 'Expected exactly one inflate --extern'
+    imported = Path(externs[0])
+    assert imported.suffix in ('.rmeta', '.rlib')
+    actual_artifacts = {}
+    for suffix in ('.rmeta', '.rlib', '.vir'):
+        path = imported.with_suffix(suffix)
+        if path.exists():
+            actual_artifacts[str(path)] = digest(path)
+    assert str(imported) in actual_artifacts and str(imported.with_suffix('.vir')) in actual_artifacts
+    assert actual_artifacts == expected['inflate_artifacts'][target], 'Imported inflate artifacts changed'
+    return {'manifests': actual, 'versions': versions, 'inflate_artifacts': actual_artifacts}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--target', choices=['host', 'i686'], required=True)
     parser.add_argument('--stack-mib', type=int, required=True)
     parser.add_argument('--expect-count', type=int)
+    parser.add_argument('--check-bindings', action='store_true',
+                        help='Check all replay bindings without invoking the verifier')
+    parser.add_argument('--pin-file', type=Path, default=BINDINGS,
+                        help='Binding file to check (default: committed evidence pin)')
     args = parser.parse_args()
     assert 1 <= args.stack_mib <= 1024
     helper = runpy.run_path(str(ROOT / 'tools/verify_m3.py'))
@@ -64,6 +108,11 @@ def main():
     assert command[command.index('--crate-name') + 1] == 'png_verus'
     assert not any('verify-only' in value or 'rlimit' in value for value in command)
     assert ('--target' in command) == (args.target == 'i686')
+    bindings = check_bindings(args.pin_file, args.target, command)
+    dependencies = pins()
+    if args.check_bindings:
+        print(f'[direct bindings] {args.target}: manifests, toolchain, inflate imports and vstd pins match')
+        return 0
     env_line = next(line for line in text.splitlines() if line.startswith('cd ') and ' && ' in line)
     assignments = shlex.split(env_line.split(' && ', 1)[1])
     recorded_env = {}
@@ -109,7 +158,6 @@ def main():
     else:
         env.pop('CARGO_BUILD_TARGET', None)
     before = helper['inventory']()
-    dependencies = pins()
     label = (f'Direct full PNG {args.target}: RUST_MIN_STACK={env["RUST_MIN_STACK"]} bytes; '
              f'RLIMIT_STACK={resource.getrlimit(resource.RLIMIT_STACK)}; '
              f'exact run-{baseline} primary command; no Cargo; default solver limits')
@@ -121,10 +169,11 @@ def main():
     log = (ROOT / 'runs' / f'{run:04d}.log').read_text()
     counts = re.findall(r'^verification results:: (\d+) verified, (\d+) errors$', log, re.M)
     same_source = before == helper['inventory']()
+    same_bindings = bindings == check_bindings(args.pin_file, args.target, command)
     same_pins = dependencies == pins()
     verified, errors = (map(int, counts[-1]) if counts else (0, None))
     accepted = (result.returncode == 0 and len(counts) == 1 and verified > 0 and errors == 0
-                and same_source and same_pins
+                and same_source and same_bindings and same_pins
                 and (args.expect_count is None or verified == args.expect_count))
     record = {'kind': 'direct-full-crate-checkpoint', 'run': run, 'target': args.target,
               'recorded_primary_command_run': baseline, 'command': command,
@@ -134,6 +183,8 @@ def main():
               'RUST_MIN_STACK': env['RUST_MIN_STACK'],
               'RLIMIT_STACK': resource.getrlimit(resource.RLIMIT_STACK),
               'source_sha256': before, 'source_unchanged': same_source,
+              'binding_pin_sha256': digest(args.pin_file), 'bindings_before_after': bindings,
+              'bindings_unchanged': same_bindings,
               'vstd_pins_before_after': dependencies, 'vstd_pins_unchanged': same_pins,
               'cargo_invoked': False, 'solver_limits_changed': False,
               'verified': verified, 'errors': errors, 'expected_count': args.expect_count,

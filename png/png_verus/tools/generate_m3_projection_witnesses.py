@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Generate category-b whole-walk/preparation projections, not pixel witnesses.
+"""Generate category-b whole-walk/preparation witnesses under E6.
 
-Public expected dimensions come from the authored fixture. For records whose
-frozen final result is a data error, only the independent header is projected.
+The twelve pixel-result records have M3 projections and complete witnesses due
+at M6. Four TruncatedZlib records have complete M3 public-error witnesses.
 """
 import argparse
 import hashlib
@@ -15,7 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('walk_certificates', ROOT/'tools/generate_m3_walk_witnesses.py')
 certificates = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(certificates)
-LABEL = 'M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile'
+LABEL = 'M3 projection; complete witness due at M6 (E6)'
+COMPLETE_LABEL = 'Complete M3 public TruncatedZlib witness (E6)'
 
 
 
@@ -68,7 +69,7 @@ def main():
     args = parser.parse_args()
     inventory = json.loads((ROOT/'evidence/m3-witness-status-0282.json').read_text())
     lines = ['//! Whole-walk/preparation projections from authored frozen fixtures.',
-             '//! M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile.',
+             '//! Twelve pixel-result records have M3 projections; complete witnesses due at M6 (E6). Four TruncatedZlib records have complete M3 witnesses.',
              'use vstd::prelude::*;',
              'use crate::{document_model as m,png::Events,policy::STRICT};',
              '', 'verus! {', METADATA_HELPERS, 'spec fn accepted(outcome: m::Outcome,h: crate::model::Ihdr) -> bool {match outcome {m::Outcome::Done(doc,ev)=>doc.ihdr==h && ev==m::no_events(),_=>false}}']
@@ -250,7 +251,7 @@ def main():
                      f'    assert(bytes_{ident}().len()=={len(data)}) by (compute);']
                     if frames and args.split_budget else facts),
                   f'    symbolic_{ident}(bytes_{ident}());','}',
-                  f'// {LABEL}',*entry_prefix,
+                  f'// {COMPLETE_LABEL if strong_error else LABEL}',*entry_prefix,
                   '    let mut events=Events {r1:false,r3:false,r4:false};',
                   f'    let prepared=crate::callers::{preparation}(&b,&STRICT,&mut events);',
                   '    match prepared {',
@@ -267,12 +268,13 @@ def main():
         rows.append(dict(name=name, entry=scheduled['entry'], source=str(path), source_sha256=digest,
                          input_sha256=hashlib.sha256(data).hexdigest(), frozen_expected=fixture['expected'],
                          category='b', model_function='model_'+ident, function='projection_'+ident,
-                         complete_m3_projection=True, complete_final_data_witness=False, status=LABEL))
+                         complete_m3_projection=True, complete_final_data_witness=strong_error,
+                         status=COMPLETE_LABEL if strong_error else LABEL))
     assert rows
     lines += ['} // verus!', '']
     (ROOT/'src/witness_m3_projection.rs').write_text('\n'.join(line.rstrip() for line in lines))
     (ROOT/'runs/m3-projection-witness-inputs.json').write_text(json.dumps(rows,indent=2)+'\n')
-    print(f'Generated {len(rows)} M3 whole-walk/preparation projections, no final-data witnesses.')
+    print(f'Generated {len(rows)} M3 records: {sum(r["complete_final_data_witness"] for r in rows)} complete TruncatedZlib witnesses, {sum(not r["complete_final_data_witness"] for r in rows)} pixel-result projections due at M6 (E6).')
 
 
 if __name__ == '__main__':

@@ -1,0 +1,29 @@
+{
+  "recorded_primary_command_run": {
+    "host": 332,
+    "i686": 333
+  },
+  "command_sha256": {
+    "host": "7f86f7bc5f685b349b65c4f8ebed4f8cacef39a62f152e6410fa9e92d64c137b",
+    "i686": "75cc99ab95de2ee74a841918baee7528b7f1f5d5640f12583bd01f468fc264e7"
+  },
+  "manifests": {
+    "Cargo.toml": "fa9c2b6e0a9c6ab351267a717996f59ff01a713a96b24c8a7d2b623872973d4e",
+    "Cargo.lock": "7e54ff7c1d10f204229f1e6a1e96b84e85fcb123d448482f49c16817c5212176",
+    "../inflate_verus/Cargo.toml": "148bb3761c23d8846d0f5794c694211298e5b17fb46a10f8032242961baace63"
+  },
+  "versions": {
+    "verus": "Verus\n  Version: 0.2026.11.02.8bf68ee\n  Profile: release\n  Platform: linux_x86_64\n  Toolchain: 1.99.1-x86_64-unknown-linux-gnu (overridden by environment variable RUSTUP_TOOLCHAIN)",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)"
+  },
+  "inflate_artifacts": {
+    "host": {
+      "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps/libinflate_verus-6b33f8ba620de9a9.rmeta": "a21fe5aa126a9ffd616002d84520a264010c51d731dca28dc769cb1ef3ffbd78",
+      "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps/libinflate_verus-6b33f8ba620de9a9.vir": "8023fff9ddaf6d5178d1eec1c0db4deae322e93d669ab2e77bd6bebd08ac73f0"
+    },
+    "i686": {
+      "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/i686-unknown-linux-gnu/debug/deps/libinflate_verus-d6e62f2a98ea2994.rmeta": "0ef354c26c6de61d5ae511226dc7e1f935f50d7c0bfdd21c55c23ae5ea71b017",
+      "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/i686-unknown-linux-gnu/debug/deps/libinflate_verus-d6e62f2a98ea2994.vir": "26a893b779a77bdddbcbcc6e482ec1e6d457a13a47876e4dee18be1fef8d5596"
+    }
+  }
+}

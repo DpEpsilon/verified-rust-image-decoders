@@ -1,0 +1,2 @@
+command: ['tools/lint_caps.sh']
+symbolic caps: clean (exponents 30|31|28|16|30|24|26|29)

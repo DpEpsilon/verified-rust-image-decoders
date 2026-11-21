@@ -1,5 +1,5 @@
 //! Whole-walk/preparation projections from authored frozen fixtures.
-//! M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile.
+//! Twelve pixel-result records have M3 projections; complete witnesses due at M6 (E6). Four TruncatedZlib records have complete M3 witnesses.
 use vstd::prelude::*;
 use crate::{document_model as m,png::Events,policy::STRICT};
 
@@ -105,7 +105,7 @@ proof fn model_container_minimal_ok()
         }
     symbolic_container_minimal_ok(bytes_container_minimal_ok());
 }
-// M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
+// M3 projection; complete witness due at M6 (E6)
 fn projection_container_minimal_ok() {
     hide(m::MW_p);
     let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
@@ -213,7 +213,7 @@ proof fn model_container_unknown_ancillary_everywhere()
         }
     symbolic_container_unknown_ancillary_everywhere(bytes_container_unknown_ancillary_everywhere());
 }
-// M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
+// M3 projection; complete witness due at M6 (E6)
 fn projection_container_unknown_ancillary_everywhere() {
     hide(m::MW_p);
     let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,3u8,97u8,98u8,67u8,100u8,120u8,121u8,122u8,74u8,73u8,23u8,198u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,97u8,98u8,99u8,100u8,237u8,130u8,205u8,17u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
@@ -306,7 +306,7 @@ proof fn model_container_reserved_bit_ancillary()
         }
     symbolic_container_reserved_bit_ancillary(bytes_container_reserved_bit_ancillary());
 }
-// M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
+// M3 projection; complete witness due at M6 (E6)
 fn projection_container_reserved_bit_ancillary() {
     hide(m::MW_p);
     let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,1u8,122u8,122u8,122u8,122u8,49u8,172u8,170u8,51u8,75u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
@@ -401,7 +401,7 @@ proof fn model_plte_ok()
         }
     symbolic_plte_ok(bytes_plte_ok());
 }
-// M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
+// M3 projection; complete witness due at M6 (E6)
 fn projection_plte_ok() {
     hide(m::MW_p);
     let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,3u8,0u8,0u8,0u8,69u8,104u8,253u8,22u8,0u8,0u8,0u8,9u8,80u8,76u8,84u8,69u8,47u8,194u8,40u8,139u8,44u8,88u8,228u8,36u8,202u8,64u8,183u8,32u8,36u8,0u8,0u8,0u8,14u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,96u8,96u8,100u8,100u8,250u8,15u8,0u8,1u8,16u8,1u8,4u8,216u8,172u8,32u8,210u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
@@ -598,7 +598,7 @@ proof fn model_plte_suggested_palette_in_rgb()
         }
     symbolic_plte_suggested_palette_in_rgb(bytes_plte_suggested_palette_in_rgb());
 }
-// M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
+// M3 projection; complete witness due at M6 (E6)
 fn projection_plte_suggested_palette_in_rgb() {
     hide(m::MW_p);
     let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,2u8,88u8,80u8,76u8,84u8,69u8,217u8,5u8,126u8,229u8,40u8,28u8,92u8,184u8,223u8,213u8,121u8,238u8,109u8,36u8,77u8,4u8,167u8,27u8,166u8,48u8,111u8,49u8,91u8,221u8,89u8,53u8,190u8,63u8,235u8,76u8,90u8,66u8,129u8,96u8,87u8,99u8,39u8,127u8,211u8,1u8,24u8,51u8,79u8,48u8,95u8,25u8,251u8,236u8,141u8,58u8,166u8,39u8,245u8,176u8,238u8,21u8,176u8,218u8,3u8,95u8,44u8,200u8,190u8,150u8,158u8,3u8,203u8,176u8,192u8,177u8,86u8,198u8,222u8,55u8,22u8,49u8,216u8,137u8,191u8,32u8,64u8,11u8,236u8,238u8,221u8,93u8,106u8,153u8,119u8,70u8,160u8,70u8,148u8,150u8,144u8,89u8,193u8,82u8,205u8,5u8,90u8,208u8,139u8,82u8,184u8,18u8,158u8,37u8,15u8,12u8,185u8,71u8,81u8,180u8,11u8,151u8,95u8,249u8,148u8,227u8,205u8,172u8,235u8,189u8,229u8,52u8,2u8,44u8,166u8,182u8,186u8,227u8,37u8,103u8,130u8,94u8,104u8,184u8,196u8,230u8,13u8,127u8,235u8,164u8,217u8,129u8,6u8,224u8,233u8,236u8,72u8,246u8,169u8,246u8,62u8,80u8,88u8,219u8,152u8,231u8,189u8,105u8,160u8,27u8,215u8,164u8,173u8,35u8,140u8,75u8,214u8,92u8,33u8,84u8,15u8,83u8,66u8,220u8,58u8,109u8,174u8,187u8,145u8,26u8,93u8,11u8,244u8,15u8,150u8,157u8,165u8,108u8,14u8,34u8,101u8,70u8,42u8,210u8,68u8,224u8,234u8,58u8,144u8,7u8,8u8,200u8,112u8,114u8,9u8,227u8,95u8,168u8,194u8,121u8,243u8,15u8,246u8,20u8,171u8,24u8,54u8,128u8,113u8,96u8,45u8,80u8,75u8,94u8,243u8,169u8,254u8,241u8,217u8,214u8,102u8,180u8,124u8,54u8,47u8,156u8,179u8,173u8,102u8,209u8,90u8,28u8,66u8,17u8,60u8,126u8,113u8,193u8,193u8,66u8,150u8,139u8,200u8,94u8,162u8,111u8,143u8,200u8,56u8,253u8,248u8,90u8,238u8,150u8,233u8,78u8,42u8,134u8,186u8,216u8,70u8,219u8,58u8,151u8,73u8,56u8,238u8,38u8,222u8,47u8,178u8,181u8,4u8,136u8,214u8,241u8,102u8,191u8,39u8,49u8,55u8,195u8,188u8,50u8,105u8,210u8,89u8,27u8,49u8,27u8,141u8,39u8,245u8,231u8,35u8,162u8,106u8,53u8,66u8,44u8,203u8,2u8,112u8,205u8,234u8,232u8,133u8,0u8,87u8,145u8,15u8,0u8,125u8,215u8,173u8,105u8,7u8,91u8,227u8,195u8,221u8,8u8,191u8,160u8,132u8,214u8,106u8,143u8,215u8,2u8,98u8,88u8,220u8,115u8,213u8,193u8,166u8,32u8,233u8,198u8,77u8,22u8,163u8,234u8,97u8,166u8,220u8,183u8,61u8,91u8,16u8,231u8,70u8,168u8,57u8,36u8,111u8,154u8,180u8,231u8,115u8,221u8,117u8,210u8,228u8,244u8,152u8,199u8,195u8,219u8,60u8,15u8,195u8,114u8,200u8,222u8,241u8,5u8,154u8,61u8,251u8,237u8,87u8,7u8,200u8,90u8,30u8,146u8,116u8,162u8,211u8,33u8,75u8,247u8,91u8,245u8,163u8,252u8,212u8,218u8,231u8,68u8,20u8,108u8,86u8,62u8,179u8,124u8,34u8,164u8,253u8,8u8,165u8,157u8,17u8,198u8,157u8,168u8,130u8,98u8,106u8,84u8,83u8,32u8,16u8,240u8,55u8,94u8,26u8,86u8,170u8,69u8,120u8,114u8,244u8,241u8,223u8,14u8,212u8,227u8,219u8,218u8,82u8,90u8,212u8,102u8,200u8,191u8,175u8,62u8,1u8,118u8,236u8,85u8,111u8,228u8,181u8,36u8,156u8,216u8,90u8,236u8,19u8,246u8,19u8,182u8,40u8,196u8,221u8,94u8,247u8,11u8,241u8,38u8,236u8,90u8,45u8,63u8,248u8,237u8,144u8,82u8,35u8,143u8,89u8,30u8,100u8,154u8,194u8,162u8,16u8,140u8,82u8,88u8,69u8,53u8,106u8,170u8,117u8,126u8,213u8,72u8,33u8,243u8,176u8,253u8,209u8,23u8,227u8,0u8,194u8,26u8,251u8,229u8,54u8,130u8,184u8,87u8,126u8,228u8,255u8,39u8,216u8,35u8,81u8,111u8,215u8,222u8,86u8,250u8,173u8,226u8,86u8,44u8,120u8,253u8,66u8,1u8,217u8,1u8,43u8,145u8,75u8,132u8,77u8,196u8,237u8,112u8,162u8,123u8,156u8,80u8,214u8,90u8,240u8,154u8,205u8,49u8,148u8,210u8,253u8,245u8,117u8,255u8,99u8,48u8,82u8,20u8,48u8,201u8,131u8,237u8,156u8,171u8,200u8,8u8,88u8,124u8,80u8,131u8,125u8,108u8,63u8,37u8,245u8,67u8,214u8,20u8,107u8,218u8,0u8,0u8,0u8,6u8,98u8,75u8,71u8,68u8,0u8,1u8,0u8,2u8,0u8,3u8,94u8,174u8,23u8,27u8,0u8,0u8,1u8,144u8,104u8,73u8,83u8,84u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,93u8,124u8,21u8,200u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
@@ -704,7 +704,7 @@ proof fn model_anc_ok_iccp_303()
         }
     symbolic_anc_ok_iccp_303(bytes_anc_ok_iccp_303());
 }
-// M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
+// M3 projection; complete witness due at M6 (E6)
 fn projection_anc_ok_iccp_303() {
     hide(m::MW_p);
     let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,1u8,47u8,105u8,67u8,67u8,80u8,115u8,82u8,71u8,66u8,32u8,73u8,69u8,67u8,54u8,49u8,57u8,54u8,54u8,45u8,50u8,46u8,49u8,0u8,0u8,120u8,156u8,99u8,96u8,100u8,98u8,102u8,97u8,101u8,99u8,231u8,224u8,228u8,226u8,230u8,225u8,229u8,227u8,23u8,16u8,20u8,18u8,22u8,17u8,21u8,19u8,151u8,144u8,148u8,146u8,150u8,145u8,149u8,147u8,87u8,80u8,84u8,82u8,86u8,81u8,85u8,83u8,215u8,208u8,212u8,210u8,214u8,209u8,213u8,211u8,55u8,48u8,52u8,50u8,54u8,49u8,53u8,51u8,183u8,176u8,180u8,178u8,182u8,177u8,181u8,179u8,119u8,112u8,116u8,114u8,118u8,113u8,117u8,115u8,247u8,240u8,244u8,242u8,246u8,241u8,245u8,243u8,15u8,8u8,12u8,10u8,14u8,9u8,13u8,11u8,143u8,136u8,140u8,138u8,142u8,137u8,141u8,139u8,79u8,72u8,76u8,74u8,78u8,73u8,77u8,75u8,207u8,200u8,204u8,202u8,206u8,201u8,205u8,203u8,47u8,40u8,44u8,42u8,46u8,41u8,45u8,43u8,175u8,168u8,172u8,170u8,174u8,169u8,173u8,171u8,111u8,104u8,108u8,106u8,110u8,105u8,109u8,107u8,239u8,232u8,236u8,234u8,238u8,233u8,237u8,235u8,159u8,48u8,113u8,210u8,228u8,41u8,83u8,167u8,77u8,159u8,49u8,115u8,214u8,236u8,57u8,115u8,231u8,205u8,95u8,176u8,112u8,209u8,226u8,37u8,75u8,151u8,45u8,95u8,177u8,114u8,213u8,234u8,53u8,107u8,215u8,173u8,223u8,176u8,113u8,211u8,230u8,45u8,91u8,183u8,109u8,223u8,177u8,115u8,215u8,238u8,61u8,123u8,247u8,237u8,63u8,112u8,240u8,208u8,225u8,35u8,71u8,143u8,29u8,63u8,113u8,242u8,212u8,233u8,51u8,103u8,207u8,157u8,191u8,112u8,241u8,210u8,229u8,43u8,87u8,175u8,93u8,191u8,113u8,243u8,214u8,237u8,59u8,119u8,239u8,221u8,127u8,240u8,240u8,209u8,227u8,39u8,79u8,159u8,61u8,127u8,241u8,242u8,213u8,235u8,55u8,111u8,223u8,189u8,255u8,240u8,241u8,211u8,231u8,47u8,95u8,191u8,125u8,255u8,241u8,243u8,215u8,239u8,63u8,127u8,255u8,253u8,103u8,24u8,245u8,255u8,136u8,246u8,63u8,0u8,160u8,98u8,126u8,144u8,16u8,123u8,222u8,207u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
@@ -816,7 +816,7 @@ proof fn model_anc_ok_time_7_after_idat()
         }
     symbolic_anc_ok_time_7_after_idat(bytes_anc_ok_time_7_after_idat());
 }
-// M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
+// M3 projection; complete witness due at M6 (E6)
 fn projection_anc_ok_time_7_after_idat() {
     hide(m::MW_p);
     let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,7u8,116u8,73u8,77u8,69u8,7u8,234u8,11u8,14u8,23u8,59u8,60u8,230u8,176u8,242u8,44u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
@@ -942,7 +942,7 @@ proof fn model_anc_ok_srgb_and_iccp_both()
         }
     symbolic_anc_ok_srgb_and_iccp_both(bytes_anc_ok_srgb_and_iccp_both());
 }
-// M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
+// M3 projection; complete witness due at M6 (E6)
 fn projection_anc_ok_srgb_and_iccp_both() {
     hide(m::MW_p);
     let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,1u8,115u8,82u8,71u8,66u8,1u8,217u8,201u8,44u8,127u8,0u8,0u8,1u8,31u8,105u8,67u8,67u8,80u8,120u8,0u8,0u8,120u8,156u8,99u8,96u8,100u8,98u8,102u8,97u8,101u8,99u8,231u8,224u8,228u8,226u8,230u8,225u8,229u8,227u8,23u8,16u8,20u8,18u8,22u8,17u8,21u8,19u8,151u8,144u8,148u8,146u8,150u8,145u8,149u8,147u8,87u8,80u8,84u8,82u8,86u8,81u8,85u8,83u8,215u8,208u8,212u8,210u8,214u8,209u8,213u8,211u8,55u8,48u8,52u8,50u8,54u8,49u8,53u8,51u8,183u8,176u8,180u8,178u8,182u8,177u8,181u8,179u8,119u8,112u8,116u8,114u8,118u8,113u8,117u8,115u8,247u8,240u8,244u8,242u8,246u8,241u8,245u8,243u8,15u8,8u8,12u8,10u8,14u8,9u8,13u8,11u8,143u8,136u8,140u8,138u8,142u8,137u8,141u8,139u8,79u8,72u8,76u8,74u8,78u8,73u8,77u8,75u8,207u8,200u8,204u8,202u8,206u8,201u8,205u8,203u8,47u8,40u8,44u8,42u8,46u8,41u8,45u8,43u8,175u8,168u8,172u8,170u8,174u8,169u8,173u8,171u8,111u8,104u8,108u8,106u8,110u8,105u8,109u8,107u8,239u8,232u8,236u8,234u8,238u8,233u8,237u8,235u8,159u8,48u8,113u8,210u8,228u8,41u8,83u8,167u8,77u8,159u8,49u8,115u8,214u8,236u8,57u8,115u8,231u8,205u8,95u8,176u8,112u8,209u8,226u8,37u8,75u8,151u8,45u8,95u8,177u8,114u8,213u8,234u8,53u8,107u8,215u8,173u8,223u8,176u8,113u8,211u8,230u8,45u8,91u8,183u8,109u8,223u8,177u8,115u8,215u8,238u8,61u8,123u8,247u8,237u8,63u8,112u8,240u8,208u8,225u8,35u8,71u8,143u8,29u8,63u8,113u8,242u8,212u8,233u8,51u8,103u8,207u8,157u8,191u8,112u8,241u8,210u8,229u8,43u8,87u8,175u8,93u8,191u8,113u8,243u8,214u8,237u8,59u8,119u8,239u8,221u8,127u8,240u8,240u8,209u8,227u8,39u8,79u8,159u8,61u8,127u8,241u8,242u8,213u8,235u8,55u8,111u8,223u8,189u8,255u8,240u8,241u8,211u8,231u8,47u8,95u8,191u8,125u8,255u8,241u8,243u8,215u8,239u8,63u8,127u8,255u8,253u8,103u8,24u8,245u8,255u8,136u8,246u8,63u8,0u8,160u8,98u8,126u8,144u8,17u8,127u8,182u8,55u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
@@ -1150,7 +1150,7 @@ proof fn model_anc_ok_many_text()
         }
     symbolic_anc_ok_many_text(bytes_anc_ok_many_text());
 }
-// M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
+// M3 projection; complete witness due at M6 (E6)
 fn projection_anc_ok_many_text() {
     hide(m::MW_p);
     let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,4u8,116u8,69u8,88u8,116u8,107u8,48u8,0u8,118u8,198u8,174u8,151u8,211u8,0u8,0u8,0u8,4u8,116u8,69u8,88u8,116u8,107u8,49u8,0u8,118u8,199u8,108u8,253u8,228u8,0u8,0u8,0u8,4u8,116u8,69u8,88u8,116u8,107u8,50u8,0u8,118u8,197u8,42u8,67u8,189u8,0u8,0u8,0u8,4u8,116u8,69u8,88u8,116u8,107u8,51u8,0u8,118u8,196u8,232u8,41u8,138u8,0u8,0u8,0u8,4u8,116u8,69u8,88u8,116u8,107u8,52u8,0u8,118u8,193u8,167u8,63u8,15u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
@@ -1256,7 +1256,7 @@ proof fn model_anc_ok_ztxt_with_corrupt_zlib_not_inflated()
         }
     symbolic_anc_ok_ztxt_with_corrupt_zlib_not_inflated(bytes_anc_ok_ztxt_with_corrupt_zlib_not_inflated());
 }
-// M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
+// M3 projection; complete witness due at M6 (E6)
 fn projection_anc_ok_ztxt_with_corrupt_zlib_not_inflated() {
     hide(m::MW_p);
     let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,10u8,122u8,84u8,88u8,116u8,107u8,0u8,0u8,103u8,97u8,114u8,98u8,97u8,103u8,101u8,188u8,174u8,84u8,233u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
@@ -1388,7 +1388,7 @@ proof fn model_order_splt_twice()
         }
     symbolic_order_splt_twice(bytes_order_splt_twice());
 }
-// M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
+// M3 projection; complete witness due at M6 (E6)
 fn projection_order_splt_twice() {
     hide(m::MW_p);
     let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,3u8,115u8,80u8,76u8,84u8,97u8,0u8,8u8,210u8,192u8,25u8,167u8,0u8,0u8,0u8,3u8,115u8,80u8,76u8,84u8,98u8,0u8,8u8,208u8,134u8,167u8,254u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
@@ -1562,7 +1562,7 @@ proof fn model_order_bkgd_hist_after_plte_before_idat_rgb()
         }
     symbolic_order_bkgd_hist_after_plte_before_idat_rgb(bytes_order_bkgd_hist_after_plte_before_idat_rgb());
 }
-// M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
+// M3 projection; complete witness due at M6 (E6)
 fn projection_order_bkgd_hist_after_plte_before_idat_rgb() {
     hide(m::MW_p);
     let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,8u8,2u8,0u8,0u8,0u8,253u8,212u8,154u8,115u8,0u8,0u8,0u8,9u8,80u8,76u8,84u8,69u8,47u8,194u8,40u8,139u8,44u8,88u8,228u8,36u8,202u8,64u8,183u8,32u8,36u8,0u8,0u8,0u8,6u8,104u8,73u8,83u8,84u8,0u8,0u8,0u8,0u8,0u8,0u8,95u8,184u8,160u8,47u8,0u8,0u8,0u8,6u8,98u8,75u8,71u8,68u8,0u8,0u8,0u8,0u8,0u8,0u8,249u8,67u8,187u8,127u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,56u8,233u8,105u8,127u8,202u8,123u8,58u8,227u8,67u8,41u8,113u8,233u8,59u8,89u8,0u8,40u8,65u8,5u8,114u8,253u8,235u8,23u8,167u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
@@ -1649,7 +1649,7 @@ proof fn model_ihdr_8192x8192_accepted_then_truncated_zlib()
         assert(bytes_ihdr_8192x8192_accepted_then_truncated_zlib().subrange(41,43)==seq![120u8,1u8]) by (compute);
     symbolic_ihdr_8192x8192_accepted_then_truncated_zlib(bytes_ihdr_8192x8192_accepted_then_truncated_zlib());
 }
-// M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
+// Complete M3 public TruncatedZlib witness (E6)
 fn projection_ihdr_8192x8192_accepted_then_truncated_zlib() {
     hide(m::MW_p);
     let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,32u8,0u8,0u8,0u8,32u8,0u8,8u8,6u8,0u8,0u8,0u8,114u8,170u8,202u8,89u8,0u8,0u8,0u8,2u8,73u8,68u8,65u8,84u8,120u8,1u8,236u8,26u8,126u8,210u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
@@ -1740,7 +1740,7 @@ proof fn model_ihdr_67108864x1_accepted_then_truncated_zlib()
         assert(bytes_ihdr_67108864x1_accepted_then_truncated_zlib().subrange(41,43)==seq![120u8,1u8]) by (compute);
     symbolic_ihdr_67108864x1_accepted_then_truncated_zlib(bytes_ihdr_67108864x1_accepted_then_truncated_zlib());
 }
-// M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
+// Complete M3 public TruncatedZlib witness (E6)
 fn projection_ihdr_67108864x1_accepted_then_truncated_zlib() {
     hide(m::MW_p);
     let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,4u8,0u8,0u8,0u8,0u8,0u8,0u8,1u8,8u8,6u8,0u8,0u8,0u8,48u8,110u8,197u8,33u8,0u8,0u8,0u8,2u8,73u8,68u8,65u8,84u8,120u8,1u8,236u8,26u8,126u8,210u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
@@ -1831,7 +1831,7 @@ proof fn model_ihdr_1x67108864_accepted_then_truncated_zlib()
         assert(bytes_ihdr_1x67108864_accepted_then_truncated_zlib().subrange(41,43)==seq![120u8,1u8]) by (compute);
     symbolic_ihdr_1x67108864_accepted_then_truncated_zlib(bytes_ihdr_1x67108864_accepted_then_truncated_zlib());
 }
-// M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
+// Complete M3 public TruncatedZlib witness (E6)
 fn projection_ihdr_1x67108864_accepted_then_truncated_zlib() {
     hide(m::MW_p);
     let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,4u8,0u8,0u8,0u8,8u8,6u8,0u8,0u8,0u8,137u8,165u8,70u8,32u8,0u8,0u8,0u8,2u8,73u8,68u8,65u8,84u8,120u8,1u8,236u8,26u8,126u8,210u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
@@ -15695,7 +15695,7 @@ proof fn model_apng_bad_pixel_budget_exactly_2_30_then_zlib()
     assert(bytes_apng_bad_pixel_budget_exactly_2_30_then_zlib().len()==3663) by (compute);
     symbolic_apng_bad_pixel_budget_exactly_2_30_then_zlib(bytes_apng_bad_pixel_budget_exactly_2_30_then_zlib());
 }
-// M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
+// Complete M3 public TruncatedZlib witness (E6)
 fn public_preparation_apng_bad_pixel_budget_exactly_2_30_then_zlib(b: &[u8])
     requires b@==bytes_apng_bad_pixel_budget_exactly_2_30_then_zlib(),
 {
