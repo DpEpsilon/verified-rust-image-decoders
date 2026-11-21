@@ -1,0 +1,309 @@
+{
+  "kind": "M3 checked error-propagation checkpoint; not sign-off",
+  "host_run": 332,
+  "host_verified": 1452,
+  "i686_run": 333,
+  "i686_verified": 1452,
+  "errors": 0,
+  "source_input_count": 54,
+  "host_i686_source_inventory_equal": true,
+  "source_unchanged_after_native_controls": true,
+  "new_exact_public_error_witnesses": "public-error-verification-0332.json",
+  "new_witness_count": 3,
+  "runtime_controls_run": 334,
+  "runtime_evidence": "runtime-inputs-0334.json",
+  "retained_rechecked_components": [
+    {
+      "row": "T2",
+      "functions": [
+        "header::prefix",
+        "header::parse_ihdr",
+        "header::area_cap_u64"
+      ],
+      "host_run": 332,
+      "i686_run": 333,
+      "component_scope_unchanged": true,
+      "prior_scope_reference": "final-candidate-m3-rows-0323.json",
+      "assurance_boundary": "No additional scope claimed."
+    },
+    {
+      "row": "L-CRC-TABLE",
+      "functions": [
+        "crc::make_table",
+        "crc::lemma_crc_table",
+        "crc::lemma_crc_update",
+        "crc::crc32"
+      ],
+      "host_run": 332,
+      "i686_run": 333,
+      "component_scope_unchanged": true,
+      "prior_scope_reference": "final-candidate-m3-rows-0323.json",
+      "assurance_boundary": "No additional scope claimed."
+    },
+    {
+      "row": "T6",
+      "functions": [
+        "Doc::view",
+        "Doc::wf",
+        "State::view",
+        "State::wf",
+        "walk_own::run",
+        "walk_step::run",
+        "walk_step::ordered",
+        "walk::walk",
+        "walk::still",
+        "walk::frames",
+        "walk_policy::profiles_project_exactly"
+      ],
+      "host_run": 332,
+      "i686_run": 333,
+      "component_scope_unchanged": true,
+      "prior_scope_reference": "final-candidate-m3-rows-0323.json",
+      "assurance_boundary": "The separate mandatory frozen-record assurance gate remains partial at the two named budget records; that does not add witness credit to the universal walk equation."
+    },
+    {
+      "row": "T10 prefix / L-WALK-FIRST / A-PNG-7 PreAlloc",
+      "functions": [
+        "prepare_image",
+        "allocation_model::image_prealloc",
+        "allocation_model::prepared_exit",
+        "still_impl",
+        "Frames::with_trace",
+        "Frames::try_next",
+        "icc_impl"
+      ],
+      "host_run": 332,
+      "i686_run": 333,
+      "component_scope_unchanged": true,
+      "prior_scope_reference": "final-candidate-m3-rows-0323.json",
+      "assurance_boundary": "Only walk-side precedence is claimed; later data error/pixel equivalences remain M4\u2013M6."
+    },
+    {
+      "row": "A-PNG-2 M3 component",
+      "functions": [
+        "Trace::new",
+        "Trace::record",
+        "reserve_image",
+        "Frames::with_trace",
+        "Frames::try_new",
+        "Frames::try_new_with_policy",
+        "allocation_model::image_call"
+      ],
+      "host_run": 332,
+      "i686_run": 333,
+      "component_scope_unchanged": true,
+      "prior_scope_reference": "final-candidate-m3-rows-0323.json",
+      "assurance_boundary": "This is the agreed M3 structural/allocation scope; full Eq_new_p default-image pixel equality is not claimed."
+    },
+    {
+      "row": "T3 replacement / A-PNG-3 M3 bounds",
+      "functions": [
+        "limits::caps_ok",
+        "image::raw_budget",
+        "image::raw_size",
+        "image::output_size",
+        "layout_model::raw_bounds",
+        "layout_model::raw_dimensions",
+        "Frames::ensure_saved",
+        "reserve_icc_window",
+        "reserve_icc"
+      ],
+      "host_run": 332,
+      "i686_run": 333,
+      "component_scope_unchanged": true,
+      "prior_scope_reference": "final-candidate-m3-rows-0323.json",
+      "assurance_boundary": "SavedAt/compositor/disposal equality and aggregate iterator-log equations remain later-milestone obligations."
+    },
+    {
+      "row": "A-PNG-6 M3 audit component",
+      "functions": [
+        "decode_image",
+        "decode_exact",
+        "Frames::draw_selected",
+        "Frames::dispose_and_save"
+      ],
+      "host_run": 332,
+      "i686_run": 333,
+      "component_scope_unchanged": true,
+      "prior_scope_reference": "final-candidate-m3-rows-0323.json",
+      "assurance_boundary": "Allocation absence and dependency capabilities include explicit source/build inspection, not a generic Verus heap-effect theorem."
+    },
+    {
+      "row": "T-SEG / L-SEG-PNG",
+      "functions": [
+        "DataReader::at",
+        "DataReader::read",
+        "DataReader::for_doc",
+        "DataReader::for_frame",
+        "SegmentSlices::read",
+        "frame_transport_model::read_frame"
+      ],
+      "host_run": 332,
+      "i686_run": 333,
+      "component_scope_unchanged": true,
+      "prior_scope_reference": "final-candidate-m3-rows-0323.json",
+      "assurance_boundary": "Complete public aggregate T12/L-REWALK-COST work equations are not promoted to M3 credit."
+    },
+    {
+      "row": "L-REWALK Strict and policy / CRC-validated boundaries / Static fallback",
+      "functions": [
+        "transport_model::drive_idat",
+        "frame_transport_model::select_frame",
+        "frame_transport_model::constructor_frames",
+        "DataReader::for_doc",
+        "DataReader::for_frame",
+        "reader::next_selected_fctl",
+        "FrameJob::select",
+        "FrameState::begin_next"
+      ],
+      "host_run": 332,
+      "i686_run": 333,
+      "component_scope_unchanged": true,
+      "prior_scope_reference": "final-candidate-m3-rows-0323.json",
+      "assurance_boundary": "Source/transport equality only; no decoded-pixel or compositor equality."
+    },
+    {
+      "row": "L-INFO-RANGE",
+      "functions": [
+        "Info::repr_wf",
+        "Info::present_ranges",
+        "Info::public_observations",
+        "allocation_model::returned_info",
+        "allocation_model::returned_frame_info",
+        "assemble_still",
+        "assemble_still16",
+        "Frames::info",
+        "Frames::try_next"
+      ],
+      "host_run": 332,
+      "i686_run": 333,
+      "component_scope_unchanged": true,
+      "prior_scope_reference": "final-candidate-m3-rows-0323.json",
+      "assurance_boundary": "No additional scope claimed."
+    },
+    {
+      "row": "ERRATA E2 / L-SEG-FRAME IDAT",
+      "functions": [
+        "DataReader::for_doc",
+        "DataReader::read",
+        "DataReader::frame_covers_noncursor",
+        "still_impl",
+        "Frames::with_trace",
+        "decode_image",
+        "decode_exact"
+      ],
+      "host_run": 332,
+      "i686_run": 333,
+      "component_scope_unchanged": true,
+      "prior_scope_reference": "final-candidate-m3-rows-0323.json",
+      "assurance_boundary": "No-extra-effect exclusion remains explicit inspection and Rust shared-borrow reasoning, not a Verus heap-effect theorem."
+    },
+    {
+      "row": "ERRATA E2 / L-SEG-FRAME fdAT",
+      "functions": [
+        "DataReader::for_frame",
+        "DataReader::read",
+        "FrameJob::select",
+        "Frames::draw_selected",
+        "decode_image",
+        "decode_exact"
+      ],
+      "host_run": 332,
+      "i686_run": 333,
+      "component_scope_unchanged": true,
+      "prior_scope_reference": "final-candidate-m3-rows-0323.json",
+      "assurance_boundary": "Same checked-contract/inspection/Rust-aliasing distinction."
+    },
+    {
+      "row": "ERRATA E2 / L-SEG-FRAME iCCP",
+      "functions": [
+        "SegmentSlices::read",
+        "measure_profile",
+        "write_profile",
+        "icc_impl",
+        "try_icc_profile"
+      ],
+      "host_run": 332,
+      "i686_run": 333,
+      "component_scope_unchanged": true,
+      "prior_scope_reference": "final-candidate-m3-rows-0323.json",
+      "assurance_boundary": "Same checked-contract/inspection/Rust-aliasing distinction."
+    },
+    {
+      "row": "T1/T11 M3 weak continuation component",
+      "functions": [
+        "decode_image",
+        "decode_exact",
+        "Sink::canvas",
+        "Sink::finish",
+        "Frames::dispose_and_save",
+        "Frames::draw_selected",
+        "Frames::next_with_trace"
+      ],
+      "host_run": 332,
+      "i686_run": 333,
+      "component_scope_unchanged": true,
+      "prior_scope_reference": "final-candidate-m3-rows-0323.json",
+      "assurance_boundary": "Not the full T1 future-API row or any M4\u2013M6 data/pixel equation."
+    },
+    {
+      "row": "Council sixteen M3 no-legal-R cases",
+      "functions": [
+        "witness_m3_frozen::header_*",
+        "witness_m3_walk_frozen::{model_*,walk_*}"
+      ],
+      "host_run": 332,
+      "i686_run": 333,
+      "component_scope_unchanged": true,
+      "prior_scope_reference": "final-candidate-m3-rows-0323.json",
+      "assurance_boundary": "No additional scope claimed."
+    }
+  ],
+  "partial": [
+    {
+      "requirement": "M3 frozen-record public-error gate",
+      "record": "apng-bad/pixel-budget",
+      "status": "unproved; no active generated candidate"
+    },
+    {
+      "requirement": "M3 frozen-record public-result gate",
+      "record": "apng-bad/pixel-budget-exactly-2^30-then-zlib",
+      "status": "unproved; no active generated candidate"
+    },
+    {
+      "requirement": "other twelve historically category-b records",
+      "status": "structural projections retained; E6 scope change not applied by this worker"
+    }
+  ],
+  "untouched": [
+    "success-pixel/filter/sample equality",
+    "compositor/disposal/SavedAt equations",
+    "complete iterator/work equations",
+    "later P1/P2 scope"
+  ],
+  "historical_category_accounting_not_reclassified": {
+    "category_a_public_error_records": 114,
+    "category_a_required": 115,
+    "category_b_structural_projections": 15,
+    "category_b_required": 16
+  },
+  "canonical_claim_wording_changed": false,
+  "category_labels_changed": false,
+  "M3_signoff_ready": false,
+  "M3_signed_off": false,
+  "cached_vstd_diagnostic_replay": {
+    "path": "/home/ws/projects/verified-decoders/png/png_verus/target/debug/.fingerprint/vstd-01822e92e4f44378/output-lib-vstd",
+    "mtime_ns": 1795222744791651637,
+    "sha256": "b81036bd89ab0bb6bb3a45bec1a803c0b77c1be49c792fa66dff2bdf95c5dd78",
+    "origin_run": 325,
+    "new_vstd_build": false
+  },
+  "cache_after": "i686-cache-after-0333.json",
+  "budget_stop": "budget-thread-stack-stop-0331.json",
+  "spec_ambiguities_unilaterally_resolved": [],
+  "next_resume": "Retain accepted host/i686 source; resolve budget proof worker-stack/decomposition blocker and await coordinator E6 application before changing canonical claim wording.",
+  "final_cache_pin_record": "cache-pins-after-0334.json",
+  "validated_evidence_hash_count": 707,
+  "background_jobs_remaining": false,
+  "commit_or_push_performed": false
+}

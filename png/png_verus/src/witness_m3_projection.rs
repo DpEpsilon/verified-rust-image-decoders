@@ -1584,7 +1584,9 @@ proof fn symbolic_ihdr_8192x8192_accepted_then_truncated_zlib(b: Seq<u8>)
     requires b.len()==59,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8u8,color_type:6u8,interlace:0u8},33nat)),
         (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:2nat,next:47nat,crc_ok:true,synthetic:false})),
         (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,47nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:55nat,len:0nat,next:59nat,crc_ok:true,synthetic:false})),
+        b.subrange(41,43)==seq![120u8,1u8],
     ensures accepted(m::MW_p(b,m::strict()),crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8u8,color_type:6u8,interlace:0u8}),
+        crate::allocation_model::first_inflate_error(b,STRICT,false)==Some(crate::png::Error::TruncatedZlib),
 {
     hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
 
@@ -1602,6 +1604,11 @@ proof fn symbolic_ihdr_8192x8192_accepted_then_truncated_zlib(b: Seq<u8>)
         }
     reveal(m::step);reveal(m::ordered);reveal(m::own);
     reveal_with_fuel(m::drive,3);
+    crate::walk_policy::profiles_project_exactly();
+    match m::MW_p(b,m::strict()) {
+        m::Outcome::Done(doc,ev)=>{crate::allocation_model::short_default_error(b,doc,STRICT,41nat);crate::allocation_model::walk_inflate_error(b,STRICT,false,doc,ev);},
+        _=>{assert(false);},
+    }
 }
 
 // ihdr/8192x8192-accepted-then-truncated-zlib; fixture sha256 0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726
@@ -1610,6 +1617,7 @@ spec fn accepted_ihdr_8192x8192_accepted_then_truncated_zlib() -> bool {accepted
 #[verifier::spinoff_prover]
 proof fn model_ihdr_8192x8192_accepted_then_truncated_zlib()
     ensures accepted_ihdr_8192x8192_accepted_then_truncated_zlib(),
+        crate::allocation_model::first_inflate_error(bytes_ihdr_8192x8192_accepted_then_truncated_zlib(),STRICT,false)==Some(crate::png::Error::TruncatedZlib),
 {
     hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
     hide(m::MW_p);
@@ -1638,6 +1646,7 @@ proof fn model_ihdr_8192x8192_accepted_then_truncated_zlib()
             reveal(crate::walk_model::classify);
             assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
         }
+        assert(bytes_ihdr_8192x8192_accepted_then_truncated_zlib().subrange(41,43)==seq![120u8,1u8]) by (compute);
     symbolic_ihdr_8192x8192_accepted_then_truncated_zlib(bytes_ihdr_8192x8192_accepted_then_truncated_zlib());
 }
 // M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
@@ -1653,8 +1662,12 @@ fn projection_ihdr_8192x8192_accepted_then_truncated_zlib() {
         },
         Err(_)=>{assert(false);},
     }
-    // The actual public call has no asserted final data/pixel outcome.
     let _public_result=crate::png::try_decode_still(&b);
+    match _public_result {
+        Err(crate::alloc_guard::sites::TryError::OutOfMemory(_))=>{},
+        Err(crate::alloc_guard::sites::TryError::Format(e))=>{assert(e==crate::png::Error::TruncatedZlib);},
+        Ok(_)=>{assert(false);},
+    }
 }
 
 #[verifier::spinoff_prover]
@@ -1662,7 +1675,9 @@ proof fn symbolic_ihdr_67108864x1_accepted_then_truncated_zlib(b: Seq<u8>)
     requires b.len()==59,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8u8,color_type:6u8,interlace:0u8},33nat)),
         (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:2nat,next:47nat,crc_ok:true,synthetic:false})),
         (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,47nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:55nat,len:0nat,next:59nat,crc_ok:true,synthetic:false})),
+        b.subrange(41,43)==seq![120u8,1u8],
     ensures accepted(m::MW_p(b,m::strict()),crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8u8,color_type:6u8,interlace:0u8}),
+        crate::allocation_model::first_inflate_error(b,STRICT,false)==Some(crate::png::Error::TruncatedZlib),
 {
     hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
 
@@ -1680,6 +1695,11 @@ proof fn symbolic_ihdr_67108864x1_accepted_then_truncated_zlib(b: Seq<u8>)
         }
     reveal(m::step);reveal(m::ordered);reveal(m::own);
     reveal_with_fuel(m::drive,3);
+    crate::walk_policy::profiles_project_exactly();
+    match m::MW_p(b,m::strict()) {
+        m::Outcome::Done(doc,ev)=>{crate::allocation_model::short_default_error(b,doc,STRICT,41nat);crate::allocation_model::walk_inflate_error(b,STRICT,false,doc,ev);},
+        _=>{assert(false);},
+    }
 }
 
 // ihdr/67108864x1-accepted-then-truncated-zlib; fixture sha256 0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726
@@ -1688,6 +1708,7 @@ spec fn accepted_ihdr_67108864x1_accepted_then_truncated_zlib() -> bool {accepte
 #[verifier::spinoff_prover]
 proof fn model_ihdr_67108864x1_accepted_then_truncated_zlib()
     ensures accepted_ihdr_67108864x1_accepted_then_truncated_zlib(),
+        crate::allocation_model::first_inflate_error(bytes_ihdr_67108864x1_accepted_then_truncated_zlib(),STRICT,false)==Some(crate::png::Error::TruncatedZlib),
 {
     hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
     hide(m::MW_p);
@@ -1716,6 +1737,7 @@ proof fn model_ihdr_67108864x1_accepted_then_truncated_zlib()
             reveal(crate::walk_model::classify);
             assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
         }
+        assert(bytes_ihdr_67108864x1_accepted_then_truncated_zlib().subrange(41,43)==seq![120u8,1u8]) by (compute);
     symbolic_ihdr_67108864x1_accepted_then_truncated_zlib(bytes_ihdr_67108864x1_accepted_then_truncated_zlib());
 }
 // M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
@@ -1731,8 +1753,12 @@ fn projection_ihdr_67108864x1_accepted_then_truncated_zlib() {
         },
         Err(_)=>{assert(false);},
     }
-    // The actual public call has no asserted final data/pixel outcome.
     let _public_result=crate::png::try_decode_still(&b);
+    match _public_result {
+        Err(crate::alloc_guard::sites::TryError::OutOfMemory(_))=>{},
+        Err(crate::alloc_guard::sites::TryError::Format(e))=>{assert(e==crate::png::Error::TruncatedZlib);},
+        Ok(_)=>{assert(false);},
+    }
 }
 
 #[verifier::spinoff_prover]
@@ -1740,7 +1766,9 @@ proof fn symbolic_ihdr_1x67108864_accepted_then_truncated_zlib(b: Seq<u8>)
     requires b.len()==59,crate::model::mh(b)==Ok((crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8u8,color_type:6u8,interlace:0u8},33nat)),
         (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:2nat,next:47nat,crc_ok:true,synthetic:false})),
         (forall|phase: crate::walk_model::Phase| crate::critical_model::read(b,47nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:55nat,len:0nat,next:59nat,crc_ok:true,synthetic:false})),
+        b.subrange(41,43)==seq![120u8,1u8],
     ensures accepted(m::MW_p(b,m::strict()),crate::model::Ihdr {width:crate::model::be32(b,16),height:crate::model::be32(b,20),depth:8u8,color_type:6u8,interlace:0u8}),
+        crate::allocation_model::first_inflate_error(b,STRICT,false)==Some(crate::png::Error::TruncatedZlib),
 {
     hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
 
@@ -1758,6 +1786,11 @@ proof fn symbolic_ihdr_1x67108864_accepted_then_truncated_zlib(b: Seq<u8>)
         }
     reveal(m::step);reveal(m::ordered);reveal(m::own);
     reveal_with_fuel(m::drive,3);
+    crate::walk_policy::profiles_project_exactly();
+    match m::MW_p(b,m::strict()) {
+        m::Outcome::Done(doc,ev)=>{crate::allocation_model::short_default_error(b,doc,STRICT,41nat);crate::allocation_model::walk_inflate_error(b,STRICT,false,doc,ev);},
+        _=>{assert(false);},
+    }
 }
 
 // ihdr/1x67108864-accepted-then-truncated-zlib; fixture sha256 0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726
@@ -1766,6 +1799,7 @@ spec fn accepted_ihdr_1x67108864_accepted_then_truncated_zlib() -> bool {accepte
 #[verifier::spinoff_prover]
 proof fn model_ihdr_1x67108864_accepted_then_truncated_zlib()
     ensures accepted_ihdr_1x67108864_accepted_then_truncated_zlib(),
+        crate::allocation_model::first_inflate_error(bytes_ihdr_1x67108864_accepted_then_truncated_zlib(),STRICT,false)==Some(crate::png::Error::TruncatedZlib),
 {
     hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);
     hide(m::MW_p);
@@ -1794,6 +1828,7 @@ proof fn model_ihdr_1x67108864_accepted_then_truncated_zlib()
             reveal(crate::walk_model::classify);
             assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
         }
+        assert(bytes_ihdr_1x67108864_accepted_then_truncated_zlib().subrange(41,43)==seq![120u8,1u8]) by (compute);
     symbolic_ihdr_1x67108864_accepted_then_truncated_zlib(bytes_ihdr_1x67108864_accepted_then_truncated_zlib());
 }
 // M3 projection only; final data outcome is an M4–M6 witness obligation, runtime-conformance-tested meanwhile
@@ -1809,8 +1844,12 @@ fn projection_ihdr_1x67108864_accepted_then_truncated_zlib() {
         },
         Err(_)=>{assert(false);},
     }
-    // The actual public call has no asserted final data/pixel outcome.
     let _public_result=crate::png::try_decode_still(&b);
+    match _public_result {
+        Err(crate::alloc_guard::sites::TryError::OutOfMemory(_))=>{},
+        Err(crate::alloc_guard::sites::TryError::Format(e))=>{assert(e==crate::png::Error::TruncatedZlib);},
+        Ok(_)=>{assert(false);},
+    }
 }
 
 } // verus!

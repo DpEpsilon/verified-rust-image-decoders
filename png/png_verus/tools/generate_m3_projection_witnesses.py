@@ -92,6 +92,8 @@ def main():
         model = 'MWF_p' if frames else 'MW_p'
         preparation = 'frames' if frames else 'still'
         public = 'crate::png::Frames::try_new' if frames else 'crate::png::try_decode_still'
+        strong_error = (name.startswith('ihdr/') and name.endswith('accepted-then-truncated-zlib')) or (frames and args.split_budget)
+        data_offset = 61 if frames else 41
         width = str(fixture['expected']['width']) if 'width' in fixture['expected'] else f'crate::model::be32(bytes_{ident}(),16)'
         height = str(fixture['expected']['height']) if 'height' in fixture['expected'] else f'crate::model::be32(bytes_{ident}(),20)'
         header = (f'crate::model::Ihdr {{width:{width},height:{height},depth:{data[24]}u8,'
@@ -99,6 +101,8 @@ def main():
         facts, sites = certificates.read_facts(data, ident, '')
         if frames:
             facts += certificates.apng_facts(data, ident)
+        if strong_error:
+            facts += [f'        assert(bytes_{ident}().subrange({data_offset},{data_offset+2})==seq![120u8,1u8]) by (compute);']
         pos = 33
         entries = 0
         while pos+12 <= len(data):
@@ -202,10 +206,16 @@ def main():
         if split_helpers:
             lines += split_helpers
             composition = [x.replace(f'bytes_{ident}()', 'b') for x in split_composition]
+        if strong_error:
+            composition += ['    crate::walk_policy::profiles_project_exactly();',
+                f'    match m::{model}(b,m::strict()) {{',
+                f'        m::Outcome::Done(doc,ev)=>{{crate::allocation_model::short_default_error(b,doc,STRICT,{data_offset}nat);crate::allocation_model::walk_inflate_error(b,STRICT,{str(frames).lower()},doc,ev);}},',
+                '        _=>{assert(false);},','    }']
+        error_post = f'crate::allocation_model::first_inflate_error(b,STRICT,{str(frames).lower()})==Some(crate::png::Error::TruncatedZlib)'
         lines += ['#[verifier::spinoff_prover]',f'proof fn symbolic_{ident}(b: Seq<u8>)',
                   f'    requires b.len()=={len(data)},crate::model::mh(b)==Ok(({symbolic_header},33nat)),',
                   *[f'        {r},' for r in requirements],
-                  f'    ensures accepted(m::{model}(b,m::strict()),{symbolic_header}),','{',
+                  f'    ensures accepted(m::{model}(b,m::strict()),{symbolic_header}),',*([f'        {error_post},'] if strong_error else []),'{',
                   '    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);',
                   parse_hide,control_hide,*structural_store,*pure,'    reveal(m::step);reveal(m::ordered);reveal(m::own);',
                   *composition,'}','']
@@ -220,7 +230,7 @@ def main():
                   f'spec fn bytes_{ident}() -> Seq<u8> {{seq![{values}]}}',
                   f'spec fn accepted_{ident}() -> bool {{{predicate}}}',
                   '#[verifier::spinoff_prover]',
-                  f'proof fn model_{ident}()',f'    ensures accepted_{ident}(),','{',
+                  f'proof fn model_{ident}()',f'    ensures accepted_{ident}(),',*([f'        {error_post.replace("b,STRICT",f"bytes_{ident}(),STRICT")},'] if strong_error else []),'{',
                   '    hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);',
                   f'    hide(m::{model});',
                   parse_hide,control_hide,
@@ -235,8 +245,13 @@ def main():
                   f'        Ok(doc)=>{{assert(doc.ihdr.view()=={header});',
                   '            assert(doc.info.ranges_wf(b.len() as nat)) by {reveal(crate::walk::Doc::wf);}',
                   '        },','        Err(_)=>{assert(false);},','    }',
-                  '    // The actual public call has no asserted final data/pixel outcome.',
-                  f'    let _public_result={public}(&b);','}','',*entry_suffix]
+                  *(['    // The actual public call has no asserted final data/pixel outcome.'] if not strong_error else []),
+                  f'    let _public_result={public}(&b);',
+                  *(['    match _public_result {',
+                     '        Err(crate::alloc_guard::sites::TryError::OutOfMemory(_))=>{},',
+                     '        Err(crate::alloc_guard::sites::TryError::Format(e))=>{assert(e==crate::png::Error::TruncatedZlib);},',
+                     '        Ok(_)=>{assert(false);},','    }'] if strong_error else []),
+                  '}','',*entry_suffix]
         rows.append(dict(name=name, entry=scheduled['entry'], source=str(path), source_sha256=digest,
                          input_sha256=hashlib.sha256(data).hexdigest(), frozen_expected=fixture['expected'],
                          category='b', model_function='model_'+ident, function='projection_'+ident,

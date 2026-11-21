@@ -1,0 +1,132 @@
+{
+  "source_root": "/home/ws/projects/verified-decoders/png/inflate_verus/target/debug",
+  "copy_root": "/home/ws/projects/verified-decoders/png/png_verus/target/debug",
+  "files": [
+    {
+      "path": ".fingerprint/vstd-01822e92e4f44378/dep-lib-vstd",
+      "sha256": "9911fad22897eb8cbc8c2f757650952e6fc597c158362d9385dc354ed2fc7ba9",
+      "bytes": 27,
+      "mtime_ns": 1794734297887549457
+    },
+    {
+      "path": ".fingerprint/vstd-01822e92e4f44378/invoked.timestamp",
+      "sha256": "5a109e6643e8d3e88642e3f35e85d2a83e639d07523aa6e99166c48178e965c3",
+      "bytes": 48,
+      "mtime_ns": 1794734297887549457
+    },
+    {
+      "path": ".fingerprint/vstd-01822e92e4f44378/lib-vstd",
+      "sha256": "d0c9dd83cbb2721ab581222bdc8ac2978d031154a72fd0a608f6e2f92a48d6e7",
+      "bytes": 16,
+      "mtime_ns": 1794734330175413789
+    },
+    {
+      "path": ".fingerprint/vstd-01822e92e4f44378/lib-vstd.json",
+      "sha256": "c4a9dce188afd827cbbb0a4b8212e4922d53f7dbbd805464aa2ce8c18fa7c098",
+      "bytes": 731,
+      "mtime_ns": 1794734330175976172
+    },
+    {
+      "path": ".fingerprint/vstd-4f9fb55783e359aa/build-script-build-script-build",
+      "sha256": "eccea6c749537f29595fc555bfdf89a1211dd7777195e11cdc1a46eeb6a3dd0a",
+      "bytes": 16,
+      "mtime_ns": 1794734289267363113
+    },
+    {
+      "path": ".fingerprint/vstd-4f9fb55783e359aa/build-script-build-script-build.json",
+      "sha256": "5cbd2cd34c89142bdd599bf6c40ffe6bef37b893e8ba79d157fcf46a006ae090",
+      "bytes": 470,
+      "mtime_ns": 1794734289268035936
+    },
+    {
+      "path": ".fingerprint/vstd-4f9fb55783e359aa/dep-build-script-build-script-build",
+      "sha256": "93a4afc37518a1bf7830744017176e1d1946e5df993e47159069839f61fe49ab",
+      "bytes": 14,
+      "mtime_ns": 1794734287974505438
+    },
+    {
+      "path": ".fingerprint/vstd-4f9fb55783e359aa/invoked.timestamp",
+      "sha256": "5a109e6643e8d3e88642e3f35e85d2a83e639d07523aa6e99166c48178e965c3",
+      "bytes": 48,
+      "mtime_ns": 1794734287974505438
+    },
+    {
+      "path": ".fingerprint/vstd-cd53d8cc110e2a10/run-build-script-build-script-build",
+      "sha256": "5942d6cdfa92a7a6c86dd78061af1ab65361971b73be51851b4ed5c9bff41aaf",
+      "bytes": 16,
+      "mtime_ns": 1794734289284205582
+    },
+    {
+      "path": ".fingerprint/vstd-cd53d8cc110e2a10/run-build-script-build-script-build.json",
+      "sha256": "7aefc5136e4d241a2a47f8526ddf933a9cc2130b79ffc061134a4b1aa0ee3b1a",
+      "bytes": 289,
+      "mtime_ns": 1794734289285012206
+    },
+    {
+      "path": "build/vstd-4f9fb55783e359aa/build-script-build",
+      "sha256": "8fa7e61ea01bce4ce47170d0ff466b7a72c211b1893a2e208d90a9ec42c935f0",
+      "bytes": 4542464,
+      "mtime_ns": 1795093458297423930
+    },
+    {
+      "path": "build/vstd-4f9fb55783e359aa/build_script_build-4f9fb55783e359aa",
+      "sha256": "8fa7e61ea01bce4ce47170d0ff466b7a72c211b1893a2e208d90a9ec42c935f0",
+      "bytes": 4542464,
+      "mtime_ns": 1794734289238516918
+    },
+    {
+      "path": "build/vstd-4f9fb55783e359aa/build_script_build-4f9fb55783e359aa.d",
+      "sha256": "22fd01106553e4979a01fdb447ce6587ebf51ec08037f56f4a091ff3d23debce",
+      "bytes": 817,
+      "mtime_ns": 1794734288050557135
+    },
+    {
+      "path": "build/vstd-cd53d8cc110e2a10/invoked.timestamp",
+      "sha256": "5a109e6643e8d3e88642e3f35e85d2a83e639d07523aa6e99166c48178e965c3",
+      "bytes": 48,
+      "mtime_ns": 1794734289271110330
+    },
+    {
+      "path": "build/vstd-cd53d8cc110e2a10/output",
+      "sha256": "6bdb08a3eaef3b75f89b853530a45920662605135e58ef363bd37b2640f54e9d",
+      "bytes": 82,
+      "mtime_ns": 1794734289271110330
+    },
+    {
+      "path": "build/vstd-cd53d8cc110e2a10/root-output",
+      "sha256": "23b73af118653a133edfce2103d3e33c154efcffe98050392cad2ee986899eed",
+      "bytes": 128,
+      "mtime_ns": 1794734289283377448
+    },
+    {
+      "path": "build/vstd-cd53d8cc110e2a10/stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1794734289282581284
+    },
+    {
+      "path": "deps/libvstd-01822e92e4f44378.rmeta",
+      "sha256": "6cf84fc37d8dac1e1cd2fa9b0308eca6f4ae0e9ff96a3cb329f8b776547ce618",
+      "bytes": 6584614,
+      "mtime_ns": 1794734297887549457
+    },
+    {
+      "path": "deps/libvstd-01822e92e4f44378.vir",
+      "sha256": "49934e1761f92df9d380921b59b8cae9c6ecbe92768ffbafc3f57820629ca533",
+      "bytes": 45238588,
+      "mtime_ns": 1794734309087953715
+    },
+    {
+      "path": "deps/vstd-01822e92e4f44378.d",
+      "sha256": "81b0c8ddd777d228057cd4b21943587c360da02e5a3c19b5a5c5978aa8bf0837",
+      "bytes": 62682,
+      "mtime_ns": 1794734328962151418
+    }
+  ],
+  "pinned_artifacts_checked_before_after": true,
+  "source_bytes_sizes_mtimes_unchanged": true,
+  "copy_only": true,
+  "no_links": true,
+  "no_source_cache_writes": true,
+  "restored_ns": 1795223376007063718
+}

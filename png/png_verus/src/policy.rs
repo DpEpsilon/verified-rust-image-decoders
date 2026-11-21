@@ -207,7 +207,10 @@ impl Profile {
 
 impl Policy {
     /// The five inflate fields (SPEC P10.6, PNG-Q12) as `inflate_verus` options.
-    pub(crate) fn inflate_options(&self) -> inflate_verus::InflateOptions {
+    pub(crate) fn inflate_options(&self) -> (r: inflate_verus::InflateOptions)
+        ensures (r.window==inflate_verus::Window::Enforce)==(self.window==Window::Enforce),
+            (r.zlib_tail==inflate_verus::ZlibTail::IgnoreTail)==(self.zlib_tail==ZlibTail::IgnoreTail),
+    {
         let mut o = inflate_verus::InflateOptions::STRICT;
         o.zlib_tail = match self.zlib_tail {
             ZlibTail::Reject => inflate_verus::ZlibTail::Reject,

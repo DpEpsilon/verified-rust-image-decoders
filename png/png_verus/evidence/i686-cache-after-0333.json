@@ -1,0 +1,40 @@
+{
+  "host_run": 332,
+  "i686_run": 333,
+  "source_pin_reference": "i686-preflight-0332.json",
+  "i686_pinned_source_files_checked": 281,
+  "all_i686_source_hashes_sizes_mtimes_unchanged": true,
+  "host_vstd_pinned_source_files_checked": 20,
+  "all_host_source_hashes_sizes_mtimes_unchanged": true,
+  "copied_i686_vstd_artifacts": [
+    {
+      "source": "/home/ws/projects/verified-decoders/png/inflate_verus/target/i686-verify/i686-unknown-linux-gnu/debug/deps/libvstd-a8222d889f5a22f0.rmeta",
+      "copy": "/home/ws/projects/verified-decoders/png/png_verus/target/i686-unknown-linux-gnu/debug/deps/libvstd-a8222d889f5a22f0.rmeta",
+      "sha256": "797e7a20193d953b3e208458a6db50f3a0d2ef36d1b8e6b8fac28dd35566ad1e",
+      "source_mtime_ns": 1795088726418440277,
+      "copy_mtime_ns": 1795088726418440277,
+      "not_linked": true
+    },
+    {
+      "source": "/home/ws/projects/verified-decoders/png/inflate_verus/target/i686-verify/i686-unknown-linux-gnu/debug/deps/libvstd-a8222d889f5a22f0.vir",
+      "copy": "/home/ws/projects/verified-decoders/png/png_verus/target/i686-unknown-linux-gnu/debug/deps/libvstd-a8222d889f5a22f0.vir",
+      "sha256": "2f705972fa0d742172662e678e70287dd7b326107c663e904d7905f517b9343f",
+      "source_mtime_ns": 1795088743199387261,
+      "copy_mtime_ns": 1795088743199387261,
+      "not_linked": true
+    },
+    {
+      "source": "/home/ws/projects/verified-decoders/png/inflate_verus/target/i686-verify/i686-unknown-linux-gnu/debug/deps/vstd-a8222d889f5a22f0.d",
+      "copy": "/home/ws/projects/verified-decoders/png/png_verus/target/i686-unknown-linux-gnu/debug/deps/vstd-a8222d889f5a22f0.d",
+      "sha256": "760593acdf55856a304d71a9d0c736d88b8695e59da8ed49c975713514cb0fe1",
+      "source_mtime_ns": 1795088769010709489,
+      "copy_mtime_ns": 1795088769010709489,
+      "not_linked": true
+    }
+  ],
+  "no_new_cache_copy_needed": true,
+  "copy_only_existing_cache_reuse": true,
+  "no_vstd_check_or_compile_invocation_in_verifier_logs": true,
+  "source_inventory_equal": true,
+  "checked_ns": 1795225989862642878
+}

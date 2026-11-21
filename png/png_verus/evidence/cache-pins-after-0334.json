@@ -1,0 +1,13 @@
+{
+  "after_runtime_run": 334,
+  "host_checkpoint": 332,
+  "i686_checkpoint": 333,
+  "i686_source_pinned_files_unchanged": 281,
+  "host_source_pinned_files_unchanged": 20,
+  "source_hashes_sizes_mtimes_unchanged": true,
+  "cached_run325_diagnostic_unchanged": true,
+  "cached_diagnostic_path": "/home/ws/projects/verified-decoders/png/png_verus/target/debug/.fingerprint/vstd-01822e92e4f44378/output-lib-vstd",
+  "cached_diagnostic_sha256": "b81036bd89ab0bb6bb3a45bec1a803c0b77c1be49c792fa66dff2bdf95c5dd78",
+  "cached_diagnostic_mtime_ns": 1795222744791651637,
+  "checked_ns": 1795226130653997125
+}

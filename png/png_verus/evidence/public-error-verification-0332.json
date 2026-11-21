@@ -1,0 +1,108 @@
+{
+  "kind": "checked-public-error-verification",
+  "requirement": "THEOREMS.md M3 frozen-record witness gate; three authored truncated-zlib cap records",
+  "host_checkpoint": 332,
+  "host_verified": 1452,
+  "host_errors": 0,
+  "i686_replay_pending": false,
+  "records": [
+    {
+      "name": "ihdr/8192x8192-accepted-then-truncated-zlib",
+      "historical_category_unchanged": "b",
+      "fixture": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "fixture_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "input_sha256": "73d73c52e40d53e283473cdff9917e9f5a8c76abe5e46c9aefe87f53d4e25c11",
+      "frozen_expected": {
+        "error": "TruncatedZlib"
+      },
+      "literal_model_proof": "witness_m3_projection::model_ihdr_8192x8192_accepted_then_truncated_zlib",
+      "symbolic_proof": "witness_m3_projection::symbolic_ihdr_8192x8192_accepted_then_truncated_zlib",
+      "actual_public_call_witness": "witness_m3_projection::projection_ihdr_8192x8192_accepted_then_truncated_zlib",
+      "public_entry": "png::try_decode_still",
+      "verified_result": "Err(TryError::Format(Error::TruncatedZlib)) unless an actual Raw/Output reservation fails and returns OutOfMemory",
+      "host_run": 332,
+      "i686_run": 333
+    },
+    {
+      "name": "ihdr/67108864x1-accepted-then-truncated-zlib",
+      "historical_category_unchanged": "b",
+      "fixture": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "fixture_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "input_sha256": "6b278d96fd9687d21d1eaa47deda23cea0d88dfda9cda211b9abf0b0767d7c00",
+      "frozen_expected": {
+        "error": "TruncatedZlib"
+      },
+      "literal_model_proof": "witness_m3_projection::model_ihdr_67108864x1_accepted_then_truncated_zlib",
+      "symbolic_proof": "witness_m3_projection::symbolic_ihdr_67108864x1_accepted_then_truncated_zlib",
+      "actual_public_call_witness": "witness_m3_projection::projection_ihdr_67108864x1_accepted_then_truncated_zlib",
+      "public_entry": "png::try_decode_still",
+      "verified_result": "Err(TryError::Format(Error::TruncatedZlib)) unless an actual Raw/Output reservation fails and returns OutOfMemory",
+      "host_run": 332,
+      "i686_run": 333
+    },
+    {
+      "name": "ihdr/1x67108864-accepted-then-truncated-zlib",
+      "historical_category_unchanged": "b",
+      "fixture": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "fixture_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "input_sha256": "3ead08341ebeab9885153bf76127393a3cbafba7e8cdd2d695a38b1d4704eca8",
+      "frozen_expected": {
+        "error": "TruncatedZlib"
+      },
+      "literal_model_proof": "witness_m3_projection::model_ihdr_1x67108864_accepted_then_truncated_zlib",
+      "symbolic_proof": "witness_m3_projection::symbolic_ihdr_1x67108864_accepted_then_truncated_zlib",
+      "actual_public_call_witness": "witness_m3_projection::projection_ihdr_1x67108864_accepted_then_truncated_zlib",
+      "public_entry": "png::try_decode_still",
+      "verified_result": "Err(TryError::Format(Error::TruncatedZlib)) unless an actual Raw/Output reservation fails and returns OutOfMemory",
+      "host_run": 332,
+      "i686_run": 333
+    }
+  ],
+  "checked_error_propagation_functions": [
+    "policy::Policy::inflate_options",
+    "image::image_status",
+    "image::decode_exact",
+    "image::decode_image",
+    "image::two_byte_zlib_error",
+    "allocation_model::short_default_error",
+    "allocation_model::walk_inflate_error",
+    "allocation_model::prepared_inflate_error",
+    "png::still_impl",
+    "png::still8",
+    "png::try_decode_still"
+  ],
+  "also_checked_frame_constructor_error_propagation": [
+    "png::Frames::with_trace",
+    "png::Frames::with_record",
+    "png::Frames::try_new"
+  ],
+  "allocation_exception_bound_by": [
+    "allocation_model::image_call",
+    "allocation_model::image_prepared",
+    "alloc_guard::sites::Trace",
+    "png::still_impl"
+  ],
+  "budget_records_unproved": [
+    "apng-bad/pixel-budget",
+    "apng-bad/pixel-budget-exactly-2^30-then-zlib"
+  ],
+  "other_twelve_records_scope_change_not_applied": true,
+  "canonical_claim_wording_changed": false,
+  "category_labels_changed": false,
+  "pixel_or_success_data_claim_added": false,
+  "M3_signoff_or_ready_claimed": false,
+  "source_inventory_reference": "checkpoint-0332.json",
+  "cached_vstd_diagnostic_replay": {
+    "path": "/home/ws/projects/verified-decoders/png/png_verus/target/debug/.fingerprint/vstd-01822e92e4f44378/output-lib-vstd",
+    "mtime_ns": 1795222744791651637,
+    "sha256": "b81036bd89ab0bb6bb3a45bec1a803c0b77c1be49c792fa66dff2bdf95c5dd78",
+    "origin_run": 325,
+    "new_vstd_build": false
+  },
+  "worker_stack_option_search": "runs/thread-stack-option-help-corrected.json",
+  "budget_stop_record": "runs/budget-thread-stack-stop-0331.json",
+  "i686_checkpoint": 333,
+  "i686_verified": 1452,
+  "i686_errors": 0,
+  "host_i686_source_inventory_equal": true
+}

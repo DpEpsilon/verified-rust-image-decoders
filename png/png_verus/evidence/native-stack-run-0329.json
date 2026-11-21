@@ -1,0 +1,12 @@
+{
+  "renewed_host_attempt": 2,
+  "prior_host_attempt": 328,
+  "shell_ulimit_stack_kib": 65536,
+  "rlimit_stack_bytes": [
+    67108864,
+    67108864
+  ],
+  "RUST_MIN_STACK_present": false,
+  "solver_limits_unchanged": true,
+  "verification_timeout_seconds": 1500
+}

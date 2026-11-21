@@ -1,0 +1,19 @@
+{
+  "kind": "cached-diagnostic-explanation",
+  "cached_output": "/home/ws/projects/verified-decoders/png/png_verus/target/debug/.fingerprint/vstd-01822e92e4f44378/output-lib-vstd",
+  "sha256": "b81036bd89ab0bb6bb3a45bec1a803c0b77c1be49c792fa66dff2bdf95c5dd78",
+  "mtime_ns": 1795222744791651637,
+  "text": "error: `--is-vstd` is not allowed with `--no-cheating`\n",
+  "source_cache_counterpart_exists": false,
+  "left_untouched_under_copy_only_restoration": true,
+  "origin": "run 325 failed PNG-owned vstd compile; Cargo replays cached diagnostics even when vstd is Fresh",
+  "subsequent_runs": [
+    326,
+    327,
+    328,
+    329,
+    330,
+    331
+  ],
+  "not_evidence_of_new_vstd_check_or_compile": true
+}

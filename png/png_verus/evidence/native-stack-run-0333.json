@@ -1,0 +1,15 @@
+{
+  "kind": "required-i686-replay-outside-host-proof-budget",
+  "host_checkpoint": 332,
+  "target": "i686-unknown-linux-gnu",
+  "shell_ulimit_stack_kib": 65536,
+  "rlimit_stack_bytes": [
+    67108864,
+    67108864
+  ],
+  "RUST_MIN_STACK_present": false,
+  "solver_limits_unchanged": true,
+  "verification_timeout_seconds": 1500,
+  "cache_preflight": "i686-preflight-0332.json",
+  "no_vstd_rebuild_allowed": true
+}

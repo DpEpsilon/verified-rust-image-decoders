@@ -549,10 +549,12 @@ fn still_impl(b: &[u8],pol: &Policy,wide: bool,ev: &mut Events,trace: &mut Trace
     ensures final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),false,wide,r,final(trace).log_view()),
         match r {Ok((doc,out))=>doc.wf(b@) && crate::allocation_model::returned_info(b@,pol.walk_view(),false,doc.info.view())
             && out.len()==crate::layout_model::output_count(doc.ihdr.view(),wide),_=>true},
+        crate::allocation_model::propagated_inflate_error(b@,*pol,false,r),
 {
     hide(Doc::wf);hide(crate::document_model::MW_p);hide(inflate_verus::model::Inflate);
     let prepared=prepare_image(b,pol,false,wide,ev,trace);
     proof {crate::allocation_model::prepared_exit::<(Doc,Vec<u8>)>(b@,pol.walk_view(),false,wide,prepared_image_view(prepared),ev.view(),trace.log_view());}
+    proof {crate::allocation_model::prepared_inflate_error::<(Doc,Vec<u8>)>(b@,*pol,false,wide,prepared_image_view(prepared),ev.view(),trace.log_view());}
     let (doc,mut raw,mut out)=match prepared {Ok(v)=>v,Err(e)=>return Err(e)};
     proof {
         crate::limits::caps_ok();crate::icc_model::short_log(trace.log_view());
@@ -576,6 +578,7 @@ fn still8(b: &[u8],pol: &Policy,ev: &mut Events,trace: &mut Trace) -> (r: Result
     requires old(trace).wf(),old(trace).n==0,
     ensures final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),false,false,r,final(trace).log_view()),
         match r {Ok(s)=>s.info.ranges_wf(b.len() as nat) && crate::allocation_model::returned_info(b@,pol.walk_view(),false,s.info.view()),_=>true},
+        crate::allocation_model::propagated_inflate_error(b@,*pol,false,r),
 {
     let (doc,rgba)=match still_impl(b,pol,false,ev,trace) {Ok(v)=>v,Err(e)=>return Err(e)};
     Ok(assemble_still(doc,rgba))
@@ -595,6 +598,7 @@ pub fn try_decode_still(b: &[u8]) -> (r: Result<Still,TryError>)
         crate::document_model::MW_p(b@,crate::document_model::strict())==crate::document_model::Outcome::Error(e,ev)
             ==> r==Err(TryError::Format(e)),
         match r {Ok(s)=>s.info.ranges_within(b.len() as nat) && crate::allocation_model::returned_info(b@,crate::document_model::strict(),false,s.info.model_value()),_=>true},
+        crate::allocation_model::propagated_inflate_error(b@,STRICT,false,r),
 {
     proof {crate::walk_policy::profiles_project_exactly();}
     let mut ev=Events {r1:false,r3:false,r4:false};let mut trace=Trace::new();
@@ -838,6 +842,7 @@ impl<'a> Frames<'a> {
             && crate::allocation_model::returned_frame_info(b@,crate::document_model::strict(),receiver.info_value().model_value()),_=>true},
             forall|e: Error,ev: crate::document_model::Events| crate::document_model::MWF_p(b@,crate::document_model::strict())
                 ==crate::document_model::Outcome::Error(e,ev) ==> r==Err(TryError::Format(e)),
+        crate::allocation_model::propagated_inflate_error(b@,STRICT,true,r),
     {
         proof {crate::walk_policy::profiles_project_exactly();}
         let result=Self::with_record(b,STRICT);
@@ -876,6 +881,7 @@ impl<'a> Frames<'a> {
             && crate::allocation_model::returned_frame_info(b@,pol.walk_view(),receiver.info_value().view()),_=>true},
             forall|e: Error,ev: crate::document_model::Events| crate::document_model::MWF_p(b@,pol.walk_view())
                 ==crate::document_model::Outcome::Error(e,ev) ==> r==Err(TryError::Format(e)),
+        crate::allocation_model::propagated_inflate_error(b@,pol,true,r),
     {
         let mut trace=Trace::new();
         Self::with_trace(b,pol,&mut trace)
@@ -887,11 +893,13 @@ impl<'a> Frames<'a> {
             match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf()
                 && receiver.doc.info.ranges_wf(b.len() as nat)
                 && crate::allocation_model::returned_frame_info(b@,pol.walk_view(),receiver.info_value().view()),_=>true},
+        crate::allocation_model::propagated_inflate_error(b@,pol,true,r),
     {
         hide(Doc::wf);hide(crate::document_model::MWF_p);hide(inflate_verus::model::Inflate);
         let mut ev=Events {r1:false,r3:false,r4:false};
         let prepared=prepare_image(b,&pol,true,false,&mut ev,trace);
         proof {crate::allocation_model::prepared_exit::<Frames<'a>>(b@,pol.walk_view(),true,false,prepared_image_view(prepared),ev.view(),trace.log_view());}
+        proof {crate::allocation_model::prepared_inflate_error::<Frames<'a>>(b@,pol,true,false,prepared_image_view(prepared),ev.view(),trace.log_view());}
         let (doc,mut raw,mut canvas)=match prepared {Ok(v)=>v,Err(e)=>return Err(e)};
         proof {crate::limits::caps_ok();crate::icc_model::short_log(trace.log_view());}
         let ghost before=doc.view();

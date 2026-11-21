@@ -1,0 +1,23 @@
+{
+  "proof_attempt": 3,
+  "previous_proof_attempts": [
+    329,
+    331
+  ],
+  "visibility_only_runs": [
+    326,
+    327,
+    328
+  ],
+  "cancelled_frontend_run": 330,
+  "shell_ulimit_stack_kib": 65536,
+  "rlimit_stack_bytes": [
+    67108864,
+    67108864
+  ],
+  "RUST_MIN_STACK_present": false,
+  "solver_limits_unchanged": true,
+  "verification_timeout_seconds": 1500,
+  "budget_candidates_excluded": true,
+  "three_cap_public_error_witnesses_retained": true
+}

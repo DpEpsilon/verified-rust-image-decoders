@@ -1,0 +1,23 @@
+{
+  "scope": "Installed pinned Verus/rustc documented command-line options",
+  "verus_help_exit": 0,
+  "rustc_unstable_help_exit": 0,
+  "documented_compiler_or_verifier_worker_stack_size_option_found": false,
+  "verus_supported_thread_control": "--num-threads changes worker count, not stack size",
+  "rustc_stack_options_describe_generated_code_not_compiler_workers": true,
+  "RUST_MIN_STACK_not_changed_for_build_or_verification": true,
+  "conclusion": "Do not infer that a larger main-thread ulimit repairs the unnamed worker-thread overflow; no further shell-only budget retry is justified.",
+  "help_outputs": [
+    {
+      "path": "/home/ws/projects/verified-decoders/png/png_verus/runs/thread-stack-option-help-5.log",
+      "sha256": "2f0f2c158478d449dc84d3d8d1a0efb8c5e8e73f70a46108b3810120e2e67ea7"
+    },
+    {
+      "path": "/home/ws/projects/verified-decoders/png/png_verus/runs/thread-stack-option-help-6.log",
+      "sha256": "e649b50f6d687be0b45fce3b204090a82efe03c3ab9c3c325a7be71039a53b0c"
+    }
+  ],
+  "cancelled_run": 330,
+  "cancelled_before_primary_proof_diagnostic": true,
+  "budgets_excluded_for_cap_checkpoint": 331
+}

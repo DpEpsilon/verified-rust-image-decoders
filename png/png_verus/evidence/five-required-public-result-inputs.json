@@ -1,0 +1,116 @@
+{
+  "records": [
+    {
+      "name": "ihdr/8192x8192-accepted-then-truncated-zlib",
+      "historical_category_unchanged": "b",
+      "fixture": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "fixture_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "input_sha256": "73d73c52e40d53e283473cdff9917e9f5a8c76abe5e46c9aefe87f53d4e25c11",
+      "bytes": 59,
+      "idat": [
+        {
+          "offset": 41,
+          "len": 2,
+          "hex": "7801"
+        }
+      ],
+      "fctl_count": 0,
+      "fixture_expectation": {
+        "entry": "still",
+        "expected": {
+          "error": "TruncatedZlib"
+        }
+      }
+    },
+    {
+      "name": "ihdr/67108864x1-accepted-then-truncated-zlib",
+      "historical_category_unchanged": "b",
+      "fixture": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "fixture_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "input_sha256": "6b278d96fd9687d21d1eaa47deda23cea0d88dfda9cda211b9abf0b0767d7c00",
+      "bytes": 59,
+      "idat": [
+        {
+          "offset": 41,
+          "len": 2,
+          "hex": "7801"
+        }
+      ],
+      "fctl_count": 0,
+      "fixture_expectation": {
+        "entry": "still",
+        "expected": {
+          "error": "TruncatedZlib"
+        }
+      }
+    },
+    {
+      "name": "ihdr/1x67108864-accepted-then-truncated-zlib",
+      "historical_category_unchanged": "b",
+      "fixture": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "fixture_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "input_sha256": "3ead08341ebeab9885153bf76127393a3cbafba7e8cdd2d695a38b1d4704eca8",
+      "bytes": 59,
+      "idat": [
+        {
+          "offset": 41,
+          "len": 2,
+          "hex": "7801"
+        }
+      ],
+      "fctl_count": 0,
+      "fixture_expectation": {
+        "entry": "still",
+        "expected": {
+          "error": "TruncatedZlib"
+        }
+      }
+    },
+    {
+      "name": "apng-bad/pixel-budget",
+      "historical_category_unchanged": "a",
+      "fixture": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "fixture_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "input_sha256": "33f2f6d2b7c7e26b8900d9f6a517e838e18e909c13c46013e357ed7b22de7e83",
+      "bytes": 3719,
+      "idat": [
+        {
+          "offset": 61,
+          "len": 2,
+          "hex": "7801"
+        }
+      ],
+      "fctl_count": 65,
+      "fixture_expectation": {
+        "entry": "frames",
+        "expected": {
+          "error": "PixelBudgetExceeded"
+        }
+      }
+    },
+    {
+      "name": "apng-bad/pixel-budget-exactly-2^30-then-zlib",
+      "historical_category_unchanged": "b",
+      "fixture": "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json",
+      "fixture_sha256": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726",
+      "input_sha256": "75467e58503fb4d0326326ee28cea19de260800bc91e2b92c060024fb32c8f0f",
+      "bytes": 3663,
+      "idat": [
+        {
+          "offset": 61,
+          "len": 2,
+          "hex": "7801"
+        }
+      ],
+      "fctl_count": 64,
+      "fixture_expectation": {
+        "entry": "frames",
+        "expected": {
+          "error": "TruncatedZlib"
+        }
+      }
+    }
+  ],
+  "claim_wording_changed": false,
+  "proof_credit": false
+}

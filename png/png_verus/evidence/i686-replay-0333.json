@@ -1,0 +1,17 @@
+{
+  "host_checkpoint": 332,
+  "i686_checkpoint": 333,
+  "host_verified": 1452,
+  "i686_verified": 1452,
+  "errors": 0,
+  "source_inventory_equal": true,
+  "source_input_count": 54,
+  "actual_target": "i686-unknown-linux-gnu",
+  "primary_invocation": "     Running `/opt/verus/verus /opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc --crate-name png_verus --edition=2021 src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata -C embed-bitcode=no -C debuginfo=2 --warn=unexpected_cfgs --check-cfg 'cfg(verus_only)' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values(\"test-records\"))' -C metadata=5c3b969ee3967189 -C extra-filename=-7ce9581c783ceb76 --out-dir /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/i686-unknown-linux-gnu/debug/deps --target i686-unknown-linux-gnu -C incremental=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/i686-unknown-linux-gnu/debug/incremental -L dependency=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/i686-unknown-linux-gnu/debug/deps -L dependency=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps --extern inflate_verus=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/i686-unknown-linux-gnu/debug/deps/libinflate_verus-d6e62f2a98ea2994.rmeta --extern vstd=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/i686-unknown-linux-gnu/debug/deps/libvstd-a8222d889f5a22f0.rmeta -Z checksum-hash-algorithm=blake3`",
+  "vstd_artifact": "libvstd-a8222d889f5a22f0.rmeta",
+  "Fresh_vstd": true,
+  "no_i686_runtime_execution_claim": true,
+  "native_stack_record": "native-stack-run-0333.json",
+  "cache_after_record": "i686-cache-after-0333.json",
+  "cached_host_vstd_diagnostic": "vstd-cached-diagnostic-after-0325.json"
+}

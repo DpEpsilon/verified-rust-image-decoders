@@ -573,7 +573,7 @@ def split_apng_steps(data, ident, facts, frames_entry, frozen_error):
     f=str(frames_entry).lower()
     conclusion=(f'm::{model}(b,m::strict())==m::Outcome::Error(Error::{frozen_error},m::no_events())'
                 if frozen_error is not None else
-                f'match m::{model}(b,m::strict()) {{m::Outcome::Done(doc,ev)=>doc.ihdr==h && ev==m::no_events(),_=>false}}')
+                f'match m::{model}(b,m::strict()) {{m::Outcome::Done(doc,ev)=>doc.ihdr==h && doc.idat==seq![crate::walk_model::Range {{offset:61nat,len:2nat}}] && ev==m::no_events(),_=>false}}')
     output += ['#[verifier::spinoff_prover]',f'proof fn {prefix}_compose(b: Seq<u8>,h: crate::model::Ihdr)',
                '    requires '+',\n        '.join(req)+',',
                f'    ensures {conclusion},',

@@ -1,0 +1,39 @@
+[
+  {
+    "command": [
+      "/opt/verus/verus",
+      "--help"
+    ],
+    "standalone_help_only": true,
+    "no_cargo_or_build_scripts": true,
+    "bootstrap_for_help": false,
+    "exit": 0,
+    "output": "/home/ws/projects/verified-decoders/png/png_verus/runs/thread-stack-option-help-5.log",
+    "matching_lines": [
+      "        --num-threads INTEGER",
+      "                        Number of threads to use for verification. Default: 17"
+    ]
+  },
+  {
+    "command": [
+      "/opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc",
+      "-Z",
+      "help"
+    ],
+    "standalone_help_only": true,
+    "no_cargo_or_build_scripts": true,
+    "bootstrap_for_help": true,
+    "exit": 0,
+    "output": "/home/ws/projects/verified-decoders/png/png_verus/runs/thread-stack-option-help-6.log",
+    "matching_lines": [
+      "    -Z                              emit-stack-sizes=val -- emit a section containing stack size metadata (default: no)",
+      "    -Z                              has-thread-local=val -- explicitly enable the `cfg(target_thread_local)` directive",
+      "    -Z                                  packed-stack=val -- use packed stack frames (s390x only) (default: no)",
+      "    -Z                 proc-macro-execution-strategy=val -- how to run proc-macro code (default: same-thread)",
+      "    -Z                                       regparm=val -- On x86-32 targets, setting this to N causes the compiler to pass N arguments in registers EAX, EDX, and ECX instead of on the stack for\"C\", \"cdecl\", and \"stdcall\" fn.It is UNSOUND to link together crates that use different values for this flag!",
+      "    -Z                          split-dwarf-inlining=val -- provide minimal debug info in the object/executable to facilitate online symbolication/stack traces in the absence of .dwo/.dwp files when using Split DWARF",
+      "    -Z                               stack-protector=val -- control stack smash protection strategy (`rustc --print stack-protector-strategies` for details)",
+      "    -Z                                       threads=val -- use `--jobs-frontend` instead"
+    ]
+  }
+]

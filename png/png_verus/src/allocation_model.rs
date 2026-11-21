@@ -104,4 +104,48 @@ pub open spec fn returned_frame_info(b: Seq<u8>,pol: walk::Policy,info: walk::In
     match image_walk(b,pol,true) {walk::Outcome::Done(doc,_)=>info==walk::constructor_info(doc),_=>false}
 }
 
+
+/// Inflate failures only; this relation makes no pixel-success claim.
+pub(crate) open spec fn doc_inflate_error(b: Seq<u8>,doc: walk::Doc,pol: crate::policy::Policy) -> Option<crate::png::Error> {
+    match walk::default_stream(b,doc) {
+        Some(z)=>crate::image::inflate_error(z,layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr),
+            doc.ihdr.width as nat,doc.ihdr.height as nat),pol),None=>None,
+    }
+}
+pub closed spec fn first_inflate_error(b: Seq<u8>,pol: crate::policy::Policy,frames: bool) -> Option<crate::png::Error> {
+    match image_walk(b,pol.walk_view(),frames) {
+        walk::Outcome::Done(doc,_)=>doc_inflate_error(b,doc,pol),_=>None,
+    }
+}
+pub(crate) proof fn walk_inflate_error(b: Seq<u8>,pol: crate::policy::Policy,frames: bool,
+    doc: walk::Doc,events: walk::Events)
+    requires image_walk(b,pol.walk_view(),frames)==walk::Outcome::Done(doc,events),
+    ensures first_inflate_error(b,pol,frames)==doc_inflate_error(b,doc,pol),
+{
+    hide(walk::MW_p);hide(walk::MWF_p);hide(crate::image::inflate_error);
+}
+pub open spec fn propagated_inflate_error<T>(b: Seq<u8>,pol: crate::policy::Policy,frames: bool,result: Result<T,TryError>) -> bool {
+    match first_inflate_error(b,pol,frames) {
+        Some(e)=>match result {Err(TryError::OutOfMemory(_))=>true,_=>result==Err(TryError::Format(e))},None=>true,
+    }
+}
+pub(crate) proof fn short_default_error(b: Seq<u8>,doc: walk::Doc,pol: crate::policy::Policy,offset: nat)
+    requires doc.idat==seq![crate::walk_model::Range {offset:offset,len:2}],offset+2<=b.len(),
+        b.subrange(offset as int,(offset+2) as int)==seq![120u8,1u8],
+    ensures doc_inflate_error(b,doc,pol)==Some(crate::png::Error::TruncatedZlib),
+{
+    reveal_with_fuel(walk::concat_ranges,3);
+    crate::image::two_byte_zlib_error(layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr),doc.ihdr.width as nat,doc.ihdr.height as nat),pol);
+}
+pub(crate) proof fn prepared_inflate_error<T>(b: Seq<u8>,pol: crate::policy::Policy,frames: bool,wide: bool,
+    result: Result<walk::Doc,TryError>,events: walk::Events,log: Seq<(AllocSite,nat,bool)>)
+    requires image_prepared(b,pol.walk_view(),frames,wide,result,events,log),
+    ensures match result {
+        Ok(doc)=>first_inflate_error(b,pol,frames)==doc_inflate_error(b,doc,pol),
+        Err(e)=>propagated_inflate_error::<T>(b,pol,frames,Err(e)),
+    },
+{
+    hide(walk::MW_p);hide(walk::MWF_p);hide(crate::image::inflate_error);
+}
+
 } // verus!

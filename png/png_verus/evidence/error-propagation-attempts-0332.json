@@ -1,0 +1,107 @@
+{
+  "kind": "bounded-native-stack-and-error-propagation-attempts",
+  "actual_host_proof_attempts": [
+    329,
+    331,
+    332
+  ],
+  "visibility_only_runs": [
+    326,
+    327,
+    328
+  ],
+  "cancelled_frontend_run": 330,
+  "prior_cache_incident": 325,
+  "accepted_host": 332,
+  "runs": [
+    {
+      "run": 325,
+      "stage": "tracked-environment cache invalidation before PNG",
+      "accepted": false,
+      "primary_verified": 0,
+      "primary_errors": null,
+      "source_unchanged": true,
+      "source_inventory_sha256": "4bb907725ead7704d9fe26522ef667a50ce8a813341b20f44f2f21846b4a5c19",
+      "log_sha256": "1f0a171255aa53adfc8a4544e4147a176c1f32579a3e0abe05c7c190ab6ddd53"
+    },
+    {
+      "run": 326,
+      "stage": "visibility check; no primary proofs",
+      "accepted": false,
+      "primary_verified": 0,
+      "primary_errors": null,
+      "source_unchanged": true,
+      "source_inventory_sha256": "adef03257d5fe038ad28b79baa68c715cf7169cc161bd65369bf0d67d919cdf8",
+      "log_sha256": "2540807bca82620312840801e98e7b8db84e7fd21f9b739982a22f241a937402"
+    },
+    {
+      "run": 327,
+      "stage": "visibility check; no primary proofs",
+      "accepted": false,
+      "primary_verified": 0,
+      "primary_errors": null,
+      "source_unchanged": true,
+      "source_inventory_sha256": "90ad4aa25265fcdab8ad355dd34e543cad6445c917687a9ccd8306521e9cfd6d",
+      "log_sha256": "c49b25558a4bab22e036a171e3f26adc1b79529d8accb418607618dbb0fe69da"
+    },
+    {
+      "run": 328,
+      "stage": "closed-body visibility check; no primary proofs",
+      "accepted": false,
+      "primary_verified": 0,
+      "primary_errors": null,
+      "source_unchanged": true,
+      "source_inventory_sha256": "dff5de1db0bbce0741574ffe1590e2d9c8cdd9cbc600376e1bfff0d14604a5bc",
+      "log_sha256": "09249d476e8ac2437ea35bba4c03ef56f5287edf4730f2b2d72e0a462d15b554"
+    },
+    {
+      "run": 329,
+      "stage": "proof computation recursion failure and unnamed-thread stack overflow",
+      "accepted": false,
+      "primary_verified": 0,
+      "primary_errors": null,
+      "source_unchanged": true,
+      "source_inventory_sha256": "f15bf217581e695842e6ab34f67df86427e3650768bd15c45bdec22b81fb5aec",
+      "log_sha256": "d73c27f48f513f9fc0600c2f71772907ef3a168b5c49dba493e0a4159493bfc1"
+    },
+    {
+      "run": 330,
+      "stage": "cancelled during frontend after coordinator thread-stack warning",
+      "accepted": false,
+      "primary_verified": 0,
+      "primary_errors": null,
+      "source_unchanged": true,
+      "source_inventory_sha256": "137f4d4cae816ceef86226edeb2e4b66984963179627e6a7ff41fffeef8cd6b9",
+      "log_sha256": "0c66f9523e2f6e7febb7d6e0bef95db288d479abd98103619b8f53a3a0c82529"
+    },
+    {
+      "run": 331,
+      "stage": "full run: two missing window-cap assertions in one proof function",
+      "accepted": false,
+      "primary_verified": 1451,
+      "primary_errors": 1,
+      "source_unchanged": true,
+      "source_inventory_sha256": "5fdda1b8ae395d0320e1ed70a6bba031e50e143a5a6955647633e37eafc1d424",
+      "log_sha256": "9629fffb81ef3c2394996df1f59606d97928491e30605e8c530aad2dac4d4750"
+    },
+    {
+      "run": 332,
+      "stage": "accepted full host checkpoint",
+      "accepted": true,
+      "primary_verified": 1452,
+      "primary_errors": 0,
+      "source_unchanged": true,
+      "source_inventory_sha256": "94f563ac661405f74f3875f272f7576e1fb60994cd19b41c863623ca3ac4018d",
+      "log_sha256": "863785b0c89b28502d422583f168625a7480cd6a7d9e1779a416400cb2628cb3"
+    }
+  ],
+  "solver_limits_changed": false,
+  "verification_timeout_seconds": 1500,
+  "no_new_trust": true,
+  "both_budget_records_unproved": true,
+  "budget_stack_stop": "budget-thread-stack-stop-0331.json",
+  "source_vstd_restoration": "host-vstd-restoration-after-0325.json",
+  "replayed_diagnostic": "vstd-cached-diagnostic-after-0325.json",
+  "claim_wording_and_category_labels_changed": false,
+  "i686_replay_outside_host_attempt_budget": 333
+}

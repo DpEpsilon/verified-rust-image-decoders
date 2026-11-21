@@ -340,8 +340,46 @@ impl<'o> Sink<'o> {
 /// written of a limit of `r`.
 verus! {
 
+pub(crate) open spec fn inflate_error(z: Seq<u8>,limit: nat,pol: Policy) -> Option<Error> {
+    match inflate_verus::model::Inflate(z,limit,pol.window==crate::policy::Window::Enforce,
+        pol.zlib_tail==crate::policy::ZlibTail::IgnoreTail).status {
+        inflate_verus::model::InflateStatus::Error(f)=>Some(crate::icc_model::fault(f)),_=>None,
+    }
+}
+pub(crate) proof fn two_byte_zlib_error(limit: nat,pol: Policy)
+    ensures inflate_error(seq![120u8,1u8],limit,pol)==Some(Error::TruncatedZlib),
+{
+    hide(inflate_verus::model::Inflate);hide(inflate_verus::model::MEnvelope);
+    hide(inflate_verus::model::MBlk);hide(inflate_verus::model::MOneBlock);
+    hide(inflate_verus::model::window_size);
+    let z=seq![120u8,1u8];
+    let empty=Seq::<u8>::empty();
+    let fault=inflate_verus::model::StoredEffect::Error {
+        error:inflate_verus::model::InflateFault::TruncatedZlib,out:empty,position:16nat};
+    assert(inflate_verus::limits::WINDOW_MAX==32768) by (compute);
+    assert(inflate_verus::model::pow2(15)==32768) by (compute);
+    assert(inflate_verus::model::window_size(7,pol.window==crate::policy::Window::Enforce)==32768) by {
+        reveal(inflate_verus::model::window_size);
+    }
+    assert(inflate_verus::model::MOneBlock(z,16,empty,limit,32768,true)==(false,fault)) by {
+        reveal(inflate_verus::model::MOneBlock);
+    }
+    assert(inflate_verus::model::MBlk(z,16,empty,limit,32768,true)==fault) by {
+        reveal(inflate_verus::model::MBlk);
+    }
+    assert(inflate_verus::model::MEnvelope(z,limit,pol.window==crate::policy::Window::Enforce,
+        pol.zlib_tail==crate::policy::ZlibTail::IgnoreTail)==fault) by {
+        reveal(inflate_verus::model::MEnvelope);
+    }
+    assert(inflate_verus::model::Inflate(z,limit,pol.window==crate::policy::Window::Enforce,
+        pol.zlib_tail==crate::policy::ZlibTail::IgnoreTail).status
+        ==inflate_verus::model::InflateStatus::Error(inflate_verus::model::InflateFault::TruncatedZlib)) by {
+        reveal(inflate_verus::model::Inflate);
+    }
+}
 fn image_status(status: Status, produced: u64, r: u64) -> (result: Result<(), Error>)
     ensures result.is_ok() ==> produced>=r,
+        match status {Status::Err(e)=>result==Err(crate::icc_model::inflate_error(e)),_=>true},
 {
     match status {
         Status::Done => {
@@ -679,13 +717,26 @@ fn decode_exact<S: Segments>(
         final(src).pos()<=final(src).concat().len(),final(raw).len()==old(raw).len(),
         final(sink).shape()==old(sink).shape(),final(sink).wf(w,h),final(sink).loan()==old(sink).loan(),
         final(ev).r1==old(ev).r1,final(ev).r4==old(ev).r4,
+        match inflate_error(old(src).concat(),layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat),*pol) {
+            Some(e)=>result==Err(e),None=>true},
 {
     hide(Doc::wf);hide(inflate_verus::model::Inflate);
     let ihdr=&doc.ihdr;
     let r=raw_size(ihdr,w,h);
     proof {crate::limits::caps_ok();}
+    let ghost data_fault=inflate_error(old(src).concat(),layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat),*pol);
     let res=inflate_zlib_into(src,raw,pol.inflate_options());
-    match image_status(res.status,res.produced,r) {Err(e)=>return Err(e),Ok(())=>{}}
+    let checked=image_status(res.status,res.produced,r);
+    proof {
+        let expected=inflate_verus::model::Inflate(old(src).concat(),r as nat,
+            pol.window==crate::policy::Window::Enforce,pol.zlib_tail==crate::policy::ZlibTail::IgnoreTail);
+        if let inflate_verus::model::InflateStatus::Error(f)=expected.status {
+            match res.status {Status::Err(e)=>{crate::icc_model::fault_agrees(e,f);},_=>{assert(false);},}
+            assert(checked==Err(crate::icc_model::fault(f)));
+        }
+    }
+    match checked {Err(e)=>return Err(e),Ok(())=>{}}
+    assert(data_fault==None);
     proof {
         assert(4*(w as int)<=crate::alloc_guard::MAX_BYTES) by (nonlinear_arith)
             requires 1<=w<=ihdr.w,1<=ihdr.h,4*(ihdr.w as int)*(ihdr.h as int)<=crate::limits::MAX_OUTPUT,
@@ -704,6 +755,8 @@ fn decode_exact<S: Segments>(
             colour.wf(),colour.ct==ihdr.ct,colour.depth==ihdr.depth,bpp>=1,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
             sink.wf(w,h),sink.shape()==old(sink).shape(),sink.loan()==old(sink).loan(),wide==sink.wide_view(),
             ev.r1==old(ev).r1,ev.r4==old(ev).r4,
+            data_fault==None,
+            data_fault==inflate_error(old(src).concat(),layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat),*pol),
             src.wf(),src.concat()==old(src).concat(),src.source_frame()==old(src).source_frame(),
             src.seg_count()==old(src).seg_count(),src.pos()<=src.concat().len(),
         decreases layout::count(ihdr.interlace)-k,
@@ -736,6 +789,8 @@ fn decode_exact<S: Segments>(
                     colour.wf(),colour.ct==ihdr.ct,colour.depth==ihdr.depth,bpp>=1,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
                     sink.wf(w,h),sink.shape()==old(sink).shape(),sink.loan()==old(sink).loan(),wide==sink.wide_view(),
                     ev.r1==old(ev).r1,ev.r4==old(ev).r4,
+                    data_fault==None,
+                    data_fault==inflate_error(old(src).concat(),layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat),*pol),
                     src.wf(),src.concat()==old(src).concat(),src.source_frame()==old(src).source_frame(),
                     src.seg_count()==old(src).seg_count(),src.pos()<=src.concat().len(),
                 decreases p.ph-row,
@@ -781,6 +836,8 @@ pub(crate) fn decode_image<S: Segments>(
         final(src).pos()<=final(src).concat().len(),final(raw).len()==old(raw).len(),
         final(sink).shape()==old(sink).shape(),final(sink).wf(w,h),final(sink).loan()==old(sink).loan(),
         final(ev).r1==old(ev).r1,final(ev).r4==old(ev).r4,
+        match inflate_error(old(src).concat(),layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat),*pol) {
+            Some(e)=>result==Err(e),None=>true},
 {
     hide(Doc::wf);hide(inflate_verus::model::Inflate);
     let r=raw_size(&doc.ihdr,w,h);

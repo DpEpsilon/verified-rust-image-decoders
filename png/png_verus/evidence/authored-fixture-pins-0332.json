@@ -1,0 +1,10 @@
+{
+  "checked_records": 104,
+  "authored_fixture_sources": {
+    "/home/ws/projects/verified-decoders/png/spec-frozen/VECTORS.json": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+    "/home/ws/projects/verified-decoders/png/limits-draft/VECTORS-CAPS.json": "0e80fe9140a18411a00581298a05c50061c80cfb162990770c3a2df6c3965726"
+  },
+  "source_hashes_match_generator_inventories": true,
+  "three_cap_sources_match_historical_pins": true,
+  "no_fixture_written": true
+}
