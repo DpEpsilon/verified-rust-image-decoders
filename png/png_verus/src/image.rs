@@ -13,6 +13,8 @@ use crate::walk::{be16, Doc, Ihdr};
 use vstd::prelude::*;
 #[cfg(verus_only)]
 use crate::layout_model as layout;
+#[cfg(verus_only)]
+use crate::filter_model as filters;
 
 verus! {
 
@@ -412,11 +414,13 @@ fn image_status(status: Status, produced: u64, r: u64) -> (result: Result<(), Er
 /// Absolute value only in the proved Paeth arithmetic domain.
 fn abs_small(v: i16) -> (r: i16)
     requires -510<=v<=510,
-    ensures 0<=r<=510,
+    ensures 0<=r<=510,r as int==filters::abs(v as int),
 {if v<0 {-v}else{v}}
 
 #[inline]
-fn paeth(a: u8, b: u8, c: u8) -> u8 {
+fn paeth(a: u8, b: u8, c: u8) -> (r: u8)
+    ensures r==filters::paeth(a,b,c),
+{
     let p = a as i16 + b as i16 - c as i16;
     let pa = abs_small(p - a as i16);
     let pb = abs_small(p - b as i16);
@@ -430,17 +434,47 @@ fn paeth(a: u8, b: u8, c: u8) -> u8 {
     }
 }
 
-/// Reconstruct one scanline in place (P11): `cur` is the filtered row after its
-/// filter byte, `prev` the reconstructed previous row of the same pass (`None`
-/// for the pass's first scanline, read as zeros).
-fn unfilter(ft: u8, cur: &mut [u8], prev: Option<&[u8]>, bpp: usize)
-    requires 1<=bpp,match prev {Some(p)=>old(cur).len()<=p.len(),None=>true},
-    ensures final(cur).len()==old(cur).len(),
+/// P11 Average adds the operands in u16 before division, never in u8.
+#[inline]
+fn average(a: u8,b: u8) -> (r: u8)
+    ensures r as nat==(a as nat+b as nat)/2,
 {
+    let sum=a as u16+b as u16;
+    proof {assert((sum>>1)==sum/2u16) by (bit_vector);}
+    (sum>>1) as u8
+}
+
+#[inline]
+fn filter_byte(ft: u8,x: u8,a: u8,b: u8,c: u8) -> (r: u8)
+    requires ft<=4,
+    ensures r==filters::byte(ft,x,a,b,c),
+{
+    let predictor=match ft {0=>0,1=>a,2=>b,3=>average(a,b),_=>paeth(a,b,c)};
+    proof {assert(predictor as nat==filters::predictor(ft,a,b,c));}
+    let result=x.wrapping_add(predictor);
+    proof {assert(result as nat==(x as nat+predictor as nat)%256);}
+    result
+}
+
+spec fn previous_view(prev: Option<&[u8]>) -> Option<Seq<u8>> {
+    match prev {Some(p)=>Some(p@),None=>None}
+}
+
+/// MF equality, with the reconstructed prefix and untouched input suffix as invariants.
+fn unfilter(ft: u8, cur: &mut [u8], prev: Option<&[u8]>, bpp: usize)
+    requires ft<=4,1<=bpp,match prev {Some(p)=>old(cur).len()<=p.len(),None=>true},
+    ensures final(cur).len()==old(cur).len(),
+        final(cur)@==filters::mf(ft,old(cur)@,previous_view(prev),bpp as nat,old(cur).len() as nat),
+{
+    let ghost input=cur@;
+    let ghost prior=previous_view(prev);
+    proof {filters::in_place_start(ft,input,prior,bpp as nat);}
     let n = cur.len();
     let mut i = 0;
     while i < n
-        invariant i<=n,n==cur.len(),1<=bpp,match prev {Some(p)=>n<=p.len(),None=>true},
+        invariant i<=n,n==cur.len(),n==input.len(),ft<=4,1<=bpp,
+            match prev {Some(p)=>n<=p.len(),None=>true},prior==previous_view(prev),
+            filters::ready(ft,input,prior,bpp as nat,cur@,i as nat),
         decreases n-i,
     {
         let a = if i >= bpp { cur[i - bpp] } else { 0 };
@@ -453,15 +487,73 @@ fn unfilter(ft: u8, cur: &mut [u8], prev: Option<&[u8]>, bpp: usize)
             _ => 0,
         };
         let x = cur[i];
-        cur[i] = match ft {
-            0 => x,
-            1 => x.wrapping_add(a),
-            2 => x.wrapping_add(b),
-            3 => x.wrapping_add(((a as u16 + b as u16) >> 1) as u8),
-            _ => x.wrapping_add(paeth(a, b, c)),
-        };
+        let value=filter_byte(ft,x,a,b,c);
+        proof {
+            assert(a==filters::left(cur@,bpp as nat,i as nat));
+            assert(b==filters::above(prior,i as nat));
+            assert(c==filters::above_left(prior,bpp as nat,i as nat));
+            filters::unfilter_in_place(ft,input,prior,bpp as nat,cur@,i as nat);
+        }
+        cur[i]=value;
         i += 1;
     }
+    proof {filters::in_place_done(ft,input,prior,bpp as nat,cur@);}
+}
+
+/// Reconstruct one Raw row from the preceding reconstructed row in this pass.
+/// Prefix/suffix frame conditions exclude writes to previous rows and unread bytes.
+fn unfilter_raw_row(raw: &mut [u8],pos: usize,rb: usize,bpp: usize,
+    base: Ghost<nat>,row: u32,original: Ghost<Seq<u8>>) -> (result: Result<(),Error>)
+    requires bpp>=1,pos as nat+1+rb as nat<=old(raw).len(),
+        pos as nat==filters::position(base@,rb as nat,row as nat),
+        filters::pass_ready(original@,old(raw)@,base@,rb as nat,bpp as nat,row as nat),
+    ensures final(raw).len()==old(raw).len(),
+        forall|j: int| 0<=j<=pos ==> #[trigger] final(raw)@[j]==old(raw)@[j],
+        forall|j: int| pos as int+1+rb as int<=j<old(raw).len() ==> #[trigger] final(raw)@[j]==old(raw)@[j],
+        match result {
+            Ok(())=>filters::pass_ready(original@,final(raw)@,base@,rb as nat,bpp as nat,row as nat+1),
+            Err(e)=>e==Error::InvalidFilterType && final(raw)@==old(raw)@ && original@[pos as int]>4,
+        },
+{
+    let ghost before_raw=raw@;
+    let ft=raw[pos];
+    proof {assert(ft==original@[pos as int]);}
+    if ft>4 {return Err(Error::InvalidFilterType);}
+    proof {
+        assert(filters::position(base@,rb as nat,row as nat+1)==pos as nat+1+rb as nat) by (nonlinear_arith)
+            requires pos as nat==filters::position(base@,rb as nat,row as nat);
+        if row>0 {
+            assert(rb<=pos) by (nonlinear_arith)
+                requires pos==base@+row as nat*(1+rb as nat),row>=1;
+            assert(filters::position(base@,rb as nat,(row-1) as nat)+1==pos-rb) by (nonlinear_arith)
+                requires pos==base@+row as nat*(1+rb as nat),row>=1;
+            assert(filters::row_data(before_raw,base@,rb as nat,(row-1) as nat)
+                ==filters::pass_row(original@,base@,rb as nat,bpp as nat,(row-1) as nat));
+        }
+        filters::pass_row_equation(original@,base@,rb as nat,bpp as nat,row as nat);
+    }
+    {
+        let (before,rest)=raw.split_at_mut(pos+1);
+        let cur=&mut rest[..rb];
+        let prev=if row>0 {Some(&before[pos-rb..pos])}else{None};
+        proof {
+            assert(previous_view(prev)==filters::previous_row(original@,base@,rb as nat,bpp as nat,row as nat));
+            assert(cur@==filters::row_data(original@,base@,rb as nat,row as nat)) by {
+                assert forall|j: int| 0<=j<rb implies
+                    #[trigger] cur@[j]==filters::row_data(original@,base@,rb as nat,row as nat)[j] by {}
+            }
+        }
+        unfilter(ft,cur,prev,bpp);
+        assert(cur@==filters::pass_row(original@,base@,rb as nat,bpp as nat,row as nat));
+    }
+    proof {
+        assert(filters::row_data(raw@,base@,rb as nat,row as nat)
+            ==filters::pass_row(original@,base@,rb as nat,bpp as nat,row as nat));
+        assert forall|j: int| 0<=j<=pos implies #[trigger] raw@[j]==before_raw[j] by {}
+        assert forall|j: int| pos as int+1+rb as int<=j<raw.len() implies #[trigger] raw@[j]==before_raw[j] by {}
+        filters::advance_pass(original@,before_raw,raw@,base@,rb as nat,bpp as nat,row as nat);
+    }
+    Ok(())
 }
 
 proof fn packed_access(n: usize,i: usize,depth: u8)
@@ -715,7 +807,8 @@ proof fn row_extent(base: nat,rows: nat,bytes: nat,row: nat,limit: nat)
         requires row>=0,base>=0,bytes>=0;
 }
 
-/// Weak safety/termination continuation; no filter/sample/pixel equation.
+/// Each Raw pass carries MF row and filter-order invariants. Conversion values
+/// and exported image-result equality remain open.
 fn decode_exact<S: Segments>(
     doc: &Doc,b: &[u8],src: &mut S,raw: &mut [u8],w: u32,h: u32,
     pol: &Policy,ev: &mut Events,sink: &mut Sink<'_>,
@@ -756,6 +849,7 @@ fn decode_exact<S: Segments>(
     let bpp=ihdr.bpp();
     let wide=sink.wide();
     let colour=Colour::new(doc,b);
+    let ghost inflated=raw@;
     let mut pos=0usize;
     let mut k=0usize;
     while k<pass_count(ihdr.interlace)
@@ -763,7 +857,9 @@ fn decode_exact<S: Segments>(
             k<=layout::count(ihdr.interlace),raw.len()==r,r==old(raw).len(),
             r==layout::raw(ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat),r<=crate::alloc_guard::MAX_BYTES,
             pos==layout::prefix(ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,k as nat),
-            colour.wf(),colour.ct==ihdr.ct,colour.depth==ihdr.depth,bpp>=1,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
+            inflated.len()==r,forall|j: int| pos<=j<r ==> #[trigger] raw@[j]==inflated[j],
+            filters::valid_prefix(inflated,ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,k as nat),
+            colour.wf(),colour.ct==ihdr.ct,colour.depth==ihdr.depth,bpp>=1,bpp==filters::bpp(layout::bits(ihdr.view())),4*(w as int)<=crate::alloc_guard::MAX_BYTES,
             sink.wf(w,h),sink.shape()==old(sink).shape(),sink.loan()==old(sink).loan(),wide==sink.wide_view(),
             ev.r1==old(ev).r1,ev.r4==old(ev).r4,
             data_fault==None,
@@ -784,12 +880,15 @@ fn decode_exact<S: Segments>(
                 assert(bytes<r) by (nonlinear_arith) requires base>=0,p.ph>=1,base+p.ph as int*(1+bytes as int)<=r;
             }
             let rb=bytes as usize;
+            proof {filters::pass_start(inflated,raw@,base,rb as nat,bpp as nat);}
             let mut row=0u32;
             while row<p.ph
                 invariant doc.wf(b@),ihdr==&doc.ihdr,ihdr.wf(),1<=w<=ihdr.w,1<=h<=ihdr.h,
                     raw.len()==r,r==old(raw).len(),r<=crate::alloc_guard::MAX_BYTES,k<layout::count(ihdr.interlace),
                     base==layout::prefix(ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,k as nat),
                     row<=p.ph,1<=p.pw<=w,1<=p.ph<=h,1<=p.dx<=8,1<=p.dy<=8,
+                    inflated.len()==r,filters::pass_ready(inflated,raw@,base,rb as nat,bpp as nat,row as nat),
+                    filters::valid_prefix(inflated,ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,k as nat),
                     p.pw==layout::span(w as nat,p.x0 as nat,p.dx as nat),p.ph==layout::span(h as nat,p.y0 as nat,p.dy as nat),
                     rb==layout::scan_bytes(layout::bits(ihdr.view()),p.pw as nat),
                     base+p.ph as int*(1+rb as int)<=r,pos==base+row as int*(1+rb as int),
@@ -797,7 +896,7 @@ fn decode_exact<S: Segments>(
                     ihdr.interlace==0 ==> (p.x0==0 && p.y0==0 && p.dx==1 && p.dy==1 && p.pw==w && p.ph==h),
                     ihdr.interlace!=0 ==> ((p.x0 as nat,p.y0 as nat,p.dx as nat,p.dy as nat)==layout::geometry(k as nat)
                         && p.pw==layout::cols(w as nat,k as nat) && p.ph==layout::rows(h as nat,k as nat)),
-                    colour.wf(),colour.ct==ihdr.ct,colour.depth==ihdr.depth,bpp>=1,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
+                    colour.wf(),colour.ct==ihdr.ct,colour.depth==ihdr.depth,bpp>=1,bpp==filters::bpp(layout::bits(ihdr.view())),4*(w as int)<=crate::alloc_guard::MAX_BYTES,
                     sink.wf(w,h),sink.shape()==old(sink).shape(),sink.loan()==old(sink).loan(),wide==sink.wide_view(),
                     ev.r1==old(ev).r1,ev.r4==old(ev).r4,
                     data_fault==None,
@@ -807,12 +906,19 @@ fn decode_exact<S: Segments>(
                 decreases p.ph-row,
             {
                 proof {row_extent(base,p.ph as nat,rb as nat,row as nat,r as nat);}
-                let ft=raw[pos];
-                if ft>4 {return Err(Error::InvalidFilterType);}
-                let (before,rest)=raw.split_at_mut(pos+1);
-                let cur=&mut rest[..rb];
-                let prev=if row>0 {Some(&before[pos-rb..pos])}else{None};
-                unfilter(ft,cur,prev,bpp);
+                match unfilter_raw_row(raw,pos,rb,bpp,Ghost(base),row,Ghost(inflated)) {
+                    Err(e)=>{
+                        proof {
+                            filters::first_invalid_intro(inflated,raw@,ihdr.interlace,layout::bits(ihdr.view()),
+                                w as nat,h as nat,k as nat,row as nat,bpp as nat);
+                            assert(filters::first_invalid(inflated,ihdr.interlace,layout::bits(ihdr.view()),
+                                w as nat,h as nat,k as nat,row as nat));
+                        }
+                        return Err(e);
+                    },
+                    Ok(())=>{}
+                }
+                let cur=&raw[pos+1..pos+1+rb];
                 proof {
                     assert(p.ph==layout::span(h as nat,p.y0 as nat,p.dy as nat));
                     assert(p.pw==layout::span(w as nat,p.x0 as nat,p.dx as nat));
@@ -826,8 +932,18 @@ fn decode_exact<S: Segments>(
                 pos+=1+rb;
                 row+=1;
             }
+            proof {
+                filters::valid_pass_from_rows(inflated,raw@,ihdr.interlace,layout::bits(ihdr.view()),
+                    w as nat,h as nat,k as nat,bpp as nat);
+            }
         } else {
-            proof {reveal_with_fuel(layout::prefix,2);}
+            proof {
+                reveal_with_fuel(layout::prefix,2);
+                assert(filters::valid_pass(inflated,ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,k as nat));
+            }
+        }
+        proof {
+            filters::valid_prefix_extend(inflated,ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,k as nat);
         }
         k+=1;
     }

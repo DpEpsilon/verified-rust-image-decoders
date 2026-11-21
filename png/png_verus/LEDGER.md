@@ -1,5 +1,24 @@
 # png_verus ledger
 
+## M4 MF and Raw-row component checkpoint (2026-11-21)
+
+**M4 OPEN; not signed off.** On the working tree based on `e0399db`, direct full-crate host run **383** and i686 run **384** each verify **2,401, 0 errors**, with `--no-cheating`, default solver limits and `RUST_MIN_STACK=268435456` only in the direct verifier processes. Both runs check identical proof inputs and retain unchanged source inventories, import bindings and source/copied vstd pins. `evidence/m4-mf-host-0383.json` and `evidence/m4-mf-i686-0384.json`, with their paired `.log` files, bind the accepted checkpoints. `evidence/m4-mf-checkpoint-0383-0384.json` maps the proofs and residual obligations. This section supersedes the older arithmetic checkpoint's list of open local unfiltering obligations, not its witness accounting.
+
+| Component | Verified scope at host 383 / i686 384 |
+|---|---|
+| `filter_model::mf`; executable `image::filter_byte` and `unfilter` | Exact MF row equality for all five filters and all byte operands; the left predictor reads the reconstructed prefix, while each filtered byte comes from the untouched input suffix |
+| `filter_model::paeth_ties`; executable `abs_small`, `paeth`, `average` | Paeth's i16 distances equal the independent integer model, including ties preferring a then b; Average adds in u16 before division by two |
+| `filter_model::unfilter_in_place` | One byte write extends MF by one byte and preserves every other byte; `unfilter` carries the reconstructed-prefix/untouched-suffix invariant through its entire loop |
+| `filter_model::pass_row`, `pass_ready`; executable `image::unfilter_raw_row` | Raw's predecessor slice `[pos-rb,pos)` equals the previous reconstructed row of this pass, precedes the current slice `[pos+1,pos+1+rb)`, and remains unchanged; a pass's first row uses zero predictors; the helper preserves its Raw prefix and unread suffix |
+| `filter_model::first_invalid`; actual `decode_exact` scanline loops | The error branch proves that this filter byte is greater than four and every earlier filter byte in pass/row stream order is valid; empty passes contribute no filter byte; row conversion still occurs before the next row's filter check |
+| `header::Ihdr::bpp` | Exact `max(1,B/8)` equation, retained in both scanline-loop invariants; the method's visibility now matches its crate-private receiver, with no public API change |
+
+These are row contracts and checked scanline-loop assertions, **not new public still/image outcome equations**. Exporting the whole-image reconstruction trace and public filter/palette error results remains open. No pixel-conversion equation, complete M4 witness or M4 projection is credited by this checkpoint: **0 of 5 complete M4 witnesses, 0 of 71 M4 projections**, and 0 of the 71 deferred complete pixel witnesses are proved. The per-record E6 assignment table below remains current. `precedence/index-row0-before-filter-row1` still requires a complete M4 witness; it is not deferred to M6. No new proof-sensitivity mutation or independent ghost-code sign-off review is claimed.
+
+Runtime/source run **381** passes release tests, fault injection, all seven council tests, both source lints and self-tests/negative controls, and the native `no_std` build. Conformance: **846 of 848 pass, 0 fail, exactly the two E7 skips**. The unchanged inflate dependency retains run **371** (10,000 generated streams and 10,000 single-bit corruptions, 0 unexpected differences); no fresh differential is claimed here. Run **382** checks protected files and `QUESTIONS.md` unchanged. Q7 / `rect_sum_unnarrowed` is untouched and remains coordinator-owned. No vstd or verifier-cache rebuild, Cargo verification, commit, push or i686 runtime execution occurred.
+
+Development module runs **374, 376, 377, 379 and 380** earn no credit; 380's 107/0 result is partial verification only. Only full-crate runs 383 and 384 are credited above.
+
 ## M4 Adam7 arithmetic component checkpoint (2026-11-21)
 
 **M4 OPEN; not signed off.** On the working tree based on `9a8c2b7`, direct full-crate host run **369** and i686 run **373** each verify **2,378, 0 errors**, with `--no-cheating`, default solver limits and `RUST_MIN_STACK=268435456` only in the direct verifier process. Both runs check the identical proof-input inventory and confirm unchanged proof inputs, imported inflate artifacts and all source/copied vstd pins; no Cargo verification or new vstd build occurred. `evidence/m4-host-0369.json` and `evidence/m4-i686-0373.json` bind the accepted inventories and commands; their paired `.log` files contain the verifier diagnostics. `evidence/m4-adam7-checkpoint-0369-0373.json` maps the component proofs, runtime gates and open obligations.

@@ -41,8 +41,8 @@ impl Ihdr {
             requires channels <= 4, depth <= 255;
         channels * depth
     }
-    pub fn bpp(&self) -> (r: usize)
-        ensures r >= 1,
+    pub(crate) fn bpp(&self) -> (r: usize)
+        ensures r >= 1,r==crate::filter_model::bpp(crate::layout_model::bits(self.view())),
     {
         let b = (self.bits_pp() / 8) as usize;
         if b == 0 { 1 } else { b }

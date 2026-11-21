@@ -39,6 +39,8 @@ pub mod transport_model;
 #[cfg(verus_only)]
 pub mod frame_transport_model;
 mod framing;
+#[cfg(verus_only)]
+pub mod filter_model;
 mod header;
 mod image;
 #[cfg(verus_only)]
