@@ -7,7 +7,7 @@ at the end with their date and the artifact they concern. An entry marked PROPOS
 has not been applied: it takes effect only after the owner approves it, and the
 entry is then amended in place of a new one by appending an "Owner decision" line.
 
-## Index and status (as of 2026-11-20)
+## Index and status (as of 2026-11-21)
 
 | Erratum | Status |
 |---|---|
@@ -16,6 +16,7 @@ entry is then amended in place of a new one by appending an "Owner decision" lin
 | E3 | APPROVED (2026-11-20) |
 | E4 | APPROVED (2026-11-20) |
 | E5 | APPROVED (2026-11-20, council PNG-Q6) |
+| E6 | APPROVED (2026-11-21, council PNG-Q8, M3 witness scope) |
 
 ## E1 — 2026-11-17: `inflate_verus` "no `alloc` dependency" (A-PNG-6) — APPROVED (2026-11-18)
 
@@ -117,3 +118,36 @@ Artifacts: `THEOREMS.md:116`, `THEOREMS.md:45`, `png_verus/src/crc.rs`. Decided 
 **Must not be claimed.** No ledger, report or release note may say that `TABLE[i] = Crc([i])` is true or proved, that E5 is notation-only or changes no statement, that an unapproved E5 discharges L-CRC-TABLE, that Verus checks the relation `TABLE[i] XOR Crc([i]) = 0xD202EF8D`, or that E5 completes T6 or M3.
 
 Owner decision (2026-11-20): APPROVED. L-CRC-TABLE is discharged as corrected by this entry by the run-24 proofs; T6 remains partial.
+
+
+## E6 — 2026-11-21: M3 witness gate, pixel results decided after the chunk walk (gate scheduling: twelve final-outcome witnesses reassigned to M6; no theorem statement, expected result or record list changes) — APPROVED (2026-11-21)
+
+Artifacts: `THEOREMS.md:189–197`, `THEOREMS.md:258–264`, `PLAN.md:27`, `PLAN.md:37`, `png_verus/LEDGER.md`, `png_verus/src/witness_m3_projection.rs`. Decided by the council (PNG-Q8, M3 witness scope; not the earlier owner decision PNG-Q8 on `blend = ImageF32` cited at `PLAN.md:41`): option (c), 4 of 4 seats in round 3. Three seats (fable, astra, opus45) agree on every record; kimi would move the `TruncatedZlib` part of `apng-bad/pixel-budget-exactly-2^30-then-zlib` to M6, and astra would prefer M5 deadlines and no clause 7. Sealed report `council/sealed/COUNCIL-REPORT-PNG-Q8.md`, sha256 `83e7e0c41dd085e924ff0f6df1bbaff55edfe72aa49602cd9f7a373d5a3c4cb0`, kept outside this repository. Prompted by `REVIEW-ASTRA-M3.md`. The text below is the fable seat's round-3 wording, verbatim, except that its heading's approval status is replaced by the owner's decision below.
+
+**Frozen text.** `THEOREMS.md:189` requires agreement with each record's frozen `expected`. `THEOREMS.md:191` requires for each witness gate 'a model-versus-expected proof and an executable-versus-model call at the public entry point'. `THEOREMS.md:194` lists 131 records under M3. `THEOREMS.md:263` makes a milestone complete only when 'its witness gates (above) proved'. Sixteen of the 131 records are structurally accepted by the chunk walk and have a frozen expected result decided after inflate: twelve have a pixel result, which is decided by T-FILT (M4, `:117`), T4 (M5, `:114`) and T9 (M6, `:119`); four end in `TruncatedZlib`, an error of the M2 inflate on a two-byte stream. The frozen files remain unchanged.
+
+**Implementation.** At 8bdac4e, 114 of the 115 witnesses for records decided before inflate are complete; the open one is `apng-bad/pixel-budget`, which has no witness. The M3 witnesses for the sixteen structurally accepted records prove the model's walk/header projection and call the public entry's checked preparation; they do not assert the public result (fifteen done, `apng-bad/pixel-budget-exactly-2^30-then-zlib` open). No final-outcome witness exists for any of the sixteen. All 810 records pass runtime conformance, which discharges no proof obligation. The coordinator's interpretation at `png_verus/LEDGER.md:315` does not discharge the frozen gate and is superseded by this entry.
+
+**Proposed erratum.** 1. Rule. A witness gate of milestone Mk for a record whose frozen expected result is a pixel or frame result depending on a theorem row assigned to a later milestone is discharged in two parts: at Mk, a projection witness (the model's result restricted to the equations of milestones up to Mk agrees with the same restriction of the frozen expected result, and a call at the public entry point proves that restriction of the executable's behaviour); at M6, the complete witness of `THEOREMS.md:191` for the unrestricted frozen result. Every other record gets no projection: its complete witness is due at Mk.
+
+2. M3, moved to M6: the complete witnesses of `container/minimal-ok`, `container/unknown-ancillary-everywhere`, `container/reserved-bit-ancillary`, `plte/ok`, `plte/suggested-palette-in-rgb`, `anc-ok/iCCP-303`, `anc-ok/tIME-7-after-idat`, `anc-ok/srgb-and-iccp-both`, `anc-ok/many-text`, `anc-ok/ztxt-with-corrupt-zlib-not-inflated`, `order/splt-twice` and `order/bkgd-hist-after-plte-before-idat-rgb`. Their projection witnesses remain M3 gates.
+
+3. M3, not moved: the complete witnesses of the other 119 records. Among them: `ihdr/8192x8192-accepted-then-truncated-zlib`, `ihdr/67108864x1-accepted-then-truncated-zlib` and `ihdr/1x67108864-accepted-then-truncated-zlib`, each proving that the public still entry returns `Err(Format(TruncatedZlib))` or `Err(OutOfMemory(_))`; `apng-bad/pixel-budget-exactly-2^30-then-zlib`, proving structural acceptance at exactly `MAX_TOTAL_PIXELS` and that the public frames constructor returns `Err(Format(TruncatedZlib))` or `Err(OutOfMemory(_))`; and `apng-bad/pixel-budget`, proving `PixelBudgetExceeded` from the public frames constructor before any inflate, with no allocation exception.
+
+4. A failed, aborted or timed-out proof attempt moves no obligation and earns no credit. Moving any record not named in clause 2 needs a further approved erratum that names it.
+
+5. Runtime conformance of all 810 records, including every record named here, stays a gate of every milestone throughout.
+
+6. M6 cannot be signed off, and no release made, while any witness moved by this entry is unproved. A moved witness proved before M6 is credited when proved.
+
+7. The rule of clause 1 applies to the M4 and M5 gate lists (`THEOREMS.md:195–196`); before each of those sign-off reviews the ledger lists every record by name as 'complete at Mk' or 'projection at Mk, complete at M6'. No further erratum is needed for that listing; any other change to a gate is.
+
+**Effect on users.** None on decoder behaviour, on any theorem statement or on any frozen expected result. The amended M3 checkpoint certifies less than the frozen one: the complete non-vacuity witnesses for twelve pixel-result records are proved at M6 instead of M3, before any release; until then those twelve final results are supported by runtime conformance and, for the walk, by the M3 projections. A reader of an M3 sign-off must not read it as proof that these twelve records decode to their frozen pixels.
+
+**If rejected.** M3 stays open until all 131 complete witnesses are proved, which requires the T-FILT, T4 and T9 proofs for the None and Sub filters and for RGB8 and 8-bit palette conversion to be done under M3; M4 and M5 work may proceed but no milestone after M2 can be signed off before that.
+
+**Plan reading** (`PLAN.md` is not edited). `PLAN.md:27` (M3) is read with the M3 witness gates as amended by clauses 2–3 above. `PLAN.md:37` (M6), 'Witnesses (`model_vectors.rs`, the M3–M6 gates of `THEOREMS.md`)', is read to include the twelve complete witnesses of clause 2 as M6 sign-off gates.
+
+**Must not be claimed.** No ledger, report or release note may say that M3 is complete or signed off under the frozen gates, that all 131 M3 witnesses are proved, or that any of the twelve deferred records is formally shown to decode to its frozen result before its M6 witness exists. Nor may either side of the pixel-budget boundary be described as having a proved witness, or a projection, a runtime pass or a failed verifier run be counted as a proof, while the proof is missing.
+
+Owner decision (2026-11-21): APPROVED, with the council majority's wording ("go with the consensus"). Since the candidate above, `f857add` (host run 332, i686 run 333) proves the complete witnesses of the three `ihdr/*-accepted-then-truncated-zlib` records; `apng-bad/pixel-budget` and `apng-bad/pixel-budget-exactly-2^30-then-zlib` remain open M3 gates.
