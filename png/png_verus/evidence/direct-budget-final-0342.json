@@ -1,0 +1,73 @@
+{
+  "kind": "bounded-direct-budget-work-final",
+  "accepted_control": 339,
+  "control_verified": 1452,
+  "control_errors": 0,
+  "actual_budget_proof_attempts": [
+    340,
+    342
+  ],
+  "frontend_only_launch": 341,
+  "budget_attempt_340": {
+    "verified": 2310,
+    "errors": 4,
+    "native_stack_overflow": false,
+    "per_function_diagnosis": [
+      {
+        "message": "function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details",
+        "file": "src/witness_m3_projection.rs",
+        "line_in_attempt_340": 8633,
+        "function_declaration": "proof fn model_apng_bad_pixel_budget_exactly_2_30_then_zlib()"
+      },
+      {
+        "message": "function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details",
+        "file": "src/witness_m3_projection.rs",
+        "line_in_attempt_340": 6688,
+        "function_declaration": "proof fn split_apng_bad_pixel_budget_exactly_2_30_then_zlib_compose(b: Seq<u8>,h: crate::model::Ihdr)"
+      },
+      {
+        "message": "function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details",
+        "file": "src/witness_m3_walk_frozen.rs",
+        "line_in_attempt_340": 14980,
+        "function_declaration": "proof fn model_apng_bad_pixel_budget()"
+      },
+      {
+        "message": "function body check: resource limit (rlimit) exceeded; consider rerunning with `--profile` for more details",
+        "file": "src/witness_m3_walk_frozen.rs",
+        "line_in_attempt_340": 14428,
+        "function_declaration": "proof fn split_apng_bad_pixel_budget_compose(b: Seq<u8>,h: crate::model::Ihdr)"
+      }
+    ]
+  },
+  "budget_attempt_342": {
+    "verified": 0,
+    "count_emitted": false,
+    "failure": "internal ill-typed AIR: undeclared fuel%png_verus!t%document_model.step.",
+    "panic_context_function": "witness_m3_projection::split_apng_bad_pixel_budget_exactly_2_30_then_zlib_suffix_0",
+    "localization_basis": "fuel list names exact-budget state_0 through state_8, matching suffix_0; the panic does not print an explicit current-function label",
+    "worker_thread_panics_followed": true
+  },
+  "RUST_MIN_STACK_bytes": 268435456,
+  "solver_limits_changed": false,
+  "timeout_seconds": 1500,
+  "no_budget_witness_credit": true,
+  "budget_records_remain_full_M3_requirements": true,
+  "i686_direct_and_final_Cargo_confirmations_not_run": "No budget host attempt was clean, so the required precondition was not met.",
+  "restored_exact_control_339_source_inventory": true,
+  "current_proof_input_count": 55,
+  "original_accepted_Rust_source_reference": [
+    332,
+    333
+  ],
+  "native_runtime_control_reference": 334,
+  "unverified_handwritten_decomposition_generators": "runs/budget-decomposition-0342",
+  "canonical_claim_wording_and_categories_changed": false,
+  "additional_commit_or_push_by_worker": false,
+  "new_budget_attempts_authorized_and_used": 2,
+  "handwritten_generator_evidence": {
+    "budget-decomposition-generator-walk-0342.py": "435094db85a8f14bdc0e1f1bafe3cce9f99c7196326e9fe5e501d57e5d318623",
+    "budget-decomposition-generator-projection-0342.py": "542b2966c68b610db58e5f359e513b990a0ee68fd7f5c39bdb65c60b80d08377",
+    "direct-budget-selection-0339.json": "9ec4b2e54291e4de8431dbd4ade96b0b19cfeedf82506767aa5ed40c64daff6b"
+  },
+  "generated_Rust_candidate_tree_in_evidence": false
+}

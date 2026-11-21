@@ -1,0 +1,32 @@
+{
+  "kind": "direct-driver-environment-diagnosis",
+  "observed_primary_process_run": 338,
+  "inspection_runs": [
+    336,
+    337,
+    338
+  ],
+  "proof_queries_attempted_in_inspections": false,
+  "run336_cargo_fresh_no_primary_invocation": true,
+  "runs337_338_primary_terminated": true,
+  "root_cause": "Human-readable Command output contains six environment keys beginning with a literal ASCII space; shlex reconstruction lost that space.",
+  "whitespace_bearing_keys": [
+    " __VERUS_DRIVER_ARGS_FOR_inflate_verus-0.1.0-02e0bd8a5665",
+    " __VERUS_DRIVER_ARGS_FOR_png_verus-0.1.0-d81f5b1329ad",
+    " __VERUS_DRIVER_ARGS_FOR_vstd-0.0.0-2026-11-01-0251-9aa547e050e4",
+    " __VERUS_DRIVER_ARGS__",
+    " __VERUS_DRIVER_IS_BUILTIN_MACROS_verus_builtin_macros-0.0.0-2026-11-01-0251-d679971799ae",
+    " __VERUS_DRIVER_IS_BUILTIN_verus_builtin-0.0.0-2026-11-01-0251-404448521000"
+  ],
+  "recorded_primary_arguments_match_capture": true,
+  "captured_global_arguments_have_only_extra_logging_v": true,
+  "extern_adjacent_vir_files_exist": true,
+  "OUT_DIR_not_present_for_primary_png": true,
+  "primary_identity_context": "Cargo package name/version/manifest directory and recorded VERIFY package key are preserved; -C metadata and __CARGO_DEFAULT_LIB_METADATA are unchanged.",
+  "no_vstd_file_or_production_source_modified": true,
+  "only_png_primary_fingerprint_directories_moved_to_backups": [
+    "/home/ws/.cache/png-direct-environment-primary-fingerprint-backup",
+    "/home/ws/.cache/png-direct-environment-primary-fingerprint-backup-2"
+  ],
+  "captured_environment_sha256": "23d2e421ba7280f2a8ea9865c928cafa19b61613a335f1c71bac54c1bf893d4d"
+}

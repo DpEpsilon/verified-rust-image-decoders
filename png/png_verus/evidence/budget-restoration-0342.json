@@ -1,0 +1,19 @@
+{
+  "kind": "post-budget-source-restoration",
+  "control": 339,
+  "verified": 1452,
+  "errors": 0,
+  "all_55_current_source_hashes_equal_accepted_control": true,
+  "restored_paths": [
+    "tools/generate_m3_walk_witnesses.py",
+    "tools/generate_m3_projection_witnesses.py",
+    "src/witness_m3_walk_frozen.rs",
+    "src/witness_m3_projection.rs"
+  ],
+  "base_commit_for_restored_bytes": "f857add",
+  "unverified_handwritten_generators_preserved_at": "/home/ws/projects/verified-decoders/png/png_verus/runs/budget-decomposition-0342",
+  "generated_candidate_tree_staged": false,
+  "new_proof_or_replay_claim": false,
+  "budget_records_unproved": true,
+  "vstd_source_copy_artifact_pins_unchanged": true
+}

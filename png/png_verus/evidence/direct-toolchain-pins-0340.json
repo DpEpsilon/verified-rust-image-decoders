@@ -1,0 +1,14 @@
+{
+  "reference_checkpoint": 332,
+  "applies_to_direct_control": 339,
+  "applies_to_budget_attempt": 340,
+  "verus_version": "Verus\n  Version: 0.2026.11.02.8bf68ee\n  Profile: release\n  Platform: linux_x86_64\n  Toolchain: 1.99.1-x86_64-unknown-linux-gnu (overridden by environment variable RUSTUP_TOOLCHAIN)",
+  "rustc_version": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "matches_pinned_baseline_versions": true,
+  "binary_sha256": {
+    "/opt/verus/verus": "1208c995c8e5244577693eba311d34bc2050c4acf984e10c4c7baf2003abff14",
+    "/opt/verus/rust_verify": "30d4325219c3d84b8d7512087a9068939687f740409d2bcf25cdc3174adb19c6",
+    "/opt/verus/z3": "e583c4186a45e72411fa2cb2048401eed03f0f8e5f24694676a8f6271a50b765",
+    "/opt/verus/cargo-verus": "c2a647bc0376f9de2d1598c387ab75ffc26c9862e0d19ba295a3954fce47d5dd"
+  }
+}

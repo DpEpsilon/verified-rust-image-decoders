@@ -71,15 +71,31 @@ def main():
         if '=' not in value or value.startswith('/'):
             break
         key, val = value.split('=', 1)
+        # Command's display is not shell-round-trippable: Cargo preserves a
+        # leading space in these six driver variable names. Kernel environment
+        # capture 338 confirms the exact spelling; it is part of the key.
+        if key.startswith(('__VERUS_DRIVER_ARGS', '__VERUS_DRIVER_IS_BUILTIN')):
+            key = ' ' + key
         recorded_env[key] = val
-    primary = '__VERUS_DRIVER_ARGS_FOR_png_verus-0.1.0-d81f5b1329ad'
+    primary = ' __VERUS_DRIVER_ARGS_FOR_png_verus-0.1.0-d81f5b1329ad'
     assert primary in recorded_env
     assert '--no-cheating' in recorded_env[primary]
     assert '--num-threads__VERUS_DRIVER_ARGS_SEP__2' in recorded_env[primary]
     assert 'rlimit' not in recorded_env[primary]
     env = {key: value for key, value in os.environ.items()
-           if not key.startswith('__VERUS_DRIVER_') and key != 'RUST_MIN_STACK'}
+           if not key.lstrip().startswith('__VERUS_DRIVER_') and key != 'RUST_MIN_STACK'}
     env.update(recorded_env)
+    # Preserve stable Cargo process context without inheriting dead jobserver
+    # descriptors or invoking any Cargo process/build script.
+    captured = json.loads((ROOT / 'runs/cargo-primary-environment-capture.json').read_text())
+    captured_env = captured['environment']
+    assert captured_env[primary] == recorded_env[primary]
+    for key, value in captured_env.items():
+        if key.startswith('CARGO_') and key not in ('CARGO_MAKEFLAGS', 'CARGO_BUILD_TARGET'):
+            env[key] = value
+    for key in ('LD_LIBRARY_PATH', 'RUSTUP_TOOLCHAIN'):
+        if key in captured_env:
+            env[key] = captured_env[key]
     env.update({'PATH': '/opt/cargo/bin:/opt/verus:' + env.get('PATH', ''),
                 'CARGO_MANIFEST_DIR': str(ROOT.resolve()),
                 'CARGO_MANIFEST_PATH': str(ROOT.resolve() / 'Cargo.toml'),
@@ -112,7 +128,10 @@ def main():
                 and (args.expect_count is None or verified == args.expect_count))
     record = {'kind': 'direct-full-crate-checkpoint', 'run': run, 'target': args.target,
               'recorded_primary_command_run': baseline, 'command': command,
-              'recorded_driver_environment': recorded_env, 'RUST_MIN_STACK': env['RUST_MIN_STACK'],
+              'recorded_driver_environment': recorded_env,
+              'cargo_environment_capture_sha256': digest(ROOT / 'runs/cargo-primary-environment-capture.json'),
+              'effective_cargo_context': {k: v for k, v in env.items() if k.startswith('CARGO_')},
+              'RUST_MIN_STACK': env['RUST_MIN_STACK'],
               'RLIMIT_STACK': resource.getrlimit(resource.RLIMIT_STACK),
               'source_sha256': before, 'source_unchanged': same_source,
               'vstd_pins_before_after': dependencies, 'vstd_pins_unchanged': same_pins,
