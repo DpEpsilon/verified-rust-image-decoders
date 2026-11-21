@@ -1,0 +1,217 @@
+{
+  "milestone": "M4",
+  "status": "All five complete M4 error witnesses verified; all 71 M4 projections open; M4 not signed off",
+  "started_base_commit": "87da5a9",
+  "current_head": "87da5a9154de802f62f92f0ae96865c8d96cfb03",
+  "full_runs": [
+    {
+      "run": 420,
+      "target": "host",
+      "verified": 2526,
+      "errors": 0,
+      "accepted": true,
+      "stack_bytes": 268435456,
+      "wall_timeout_seconds": 3600
+    },
+    {
+      "run": 421,
+      "target": "i686",
+      "verified": 2526,
+      "errors": 0,
+      "accepted": true,
+      "stack_bytes": 268435456,
+      "wall_timeout_seconds": 3600
+    }
+  ],
+  "proof_input_inventories_identical": true,
+  "source_sha256": {
+    "src/alloc_guard/mod.rs": "add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137",
+    "src/alloc_guard/sites.rs": "dcd747cf7721c33ff00fbffd83ca8838d12803f99c2fb896b8077f25f5d8a281",
+    "src/allocation_model.rs": "fe3580490a7131e9695ea9db222a7e53a755725302734217af399dabc43ff669",
+    "src/apng.rs": "4352bde4ca4e8743dd5206cef8ce1a80b335df69b2e5e7114b6f40e67dfa1bf9",
+    "src/apng_model.rs": "41cf7792881764ac134877d68a2951b373b58eec52b58197396161633e3c9e78",
+    "src/callers.rs": "7fcec072f7166647c2f92e06fe52a6b357a0faf420179251ae0cda71028363c5",
+    "src/crc.rs": "12fa39331208c143bc9acae6d1064d1ad3e995fc583de626b82103e8f771c4cb",
+    "src/critical.rs": "be227d2d6e997f26c1fb39268e61e6a325e58721693e1ce6972aeb07bbfe05fb",
+    "src/critical_model.rs": "7411fc10bc6603ca28f83f8a57093ec0ccac3b0308691cda1a630634f54135c3",
+    "src/document_model.rs": "2e10c3f659b1c03142d0c30016492baca91e23c7d514ce19d625a832985b7442",
+    "src/filter_model.rs": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a",
+    "src/frame_state.rs": "8ce6190be38be5b302f49b66cee25ee7083e95002fb4a33f6f1846b0daa6ae80",
+    "src/frame_transport_model.rs": "d960e0a8939e8abd17969eabd5208fa4a4d43396155c0a70542051bd8ad52af1",
+    "src/framing.rs": "d4ba2feb5f1996f64e5f919bdb6e6bcbdb6122eb674dcf453cfdb78e3bc9f3a2",
+    "src/header.rs": "a3eaeeaf7afa01edea5ca221f4dc7e41e35d52414e6603bfea73998b18ebc6c6",
+    "src/icc_model.rs": "b877e18151158336f0acb9495935e6c0b557481cbe4e9cc7f4623ce5af682152",
+    "src/image.rs": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28",
+    "src/info.rs": "7afd03a27746de594d18952605f006fe397e018e02727ebc8552aaf29fcfce8f",
+    "src/keywords.rs": "f773dbbbed19acc97cd20771207ba7578d56ad6cc7248eb07e3e7015dfc015db",
+    "src/kind.rs": "18db75564b35c643212d0eb650f42e58da6d0f8795a89bf01f011913c1469f01",
+    "src/layout_model.rs": "393b1eb3c440e7231dca3cce3dd52524e9c7f84503d0f434ad93e151c58c2821",
+    "src/lib.rs": "551637e4d0f73afec57635bb285a12f77d7d133d607c9fee6f0f6c238620b393",
+    "src/limits.rs": "ce4a4b191330d922ac3265c19d5b66f01b8d67132af2adb239677ae35fac7f44",
+    "src/m4_checksum_witness_model.rs": "c5229b8f965158f4258da1cc95328fb0270e6e2ab8df65d1cf1c2468d9da8bac",
+    "src/m4_crc_witness_model.rs": "72037e10c90354c61774024ff2b3d42062690b8bb4e3d1fbcb807d607cd0f4ab",
+    "src/m4_fixed_witness_model.rs": "f360b2d2b340285f75fc3f35ded8fc5f6b12200b0d30d25969b69d12c23e619e",
+    "src/m4_trace_witness_model.rs": "71152f0aa8554d9e63ae15038aebf6c37da329200db1f8ec5b045ab9264564de",
+    "src/metadata.rs": "cf7865da39e338b412754af16ce5fedffa2dbd06ec474c47198e96fd68396a15",
+    "src/metadata_model.rs": "77f221b2249d6fa19f579c56178ae64fb7e8d42bcad30222deb97314667bb298",
+    "src/model.rs": "e38e5144373bbf97f15149bc3b11e77cf2be3998496a9090922356ff510f2a6c",
+    "src/ordering.rs": "e1caef5c7f1b50fae9c6ed46838c7408789446c860a48165d294b40ad05bf470",
+    "src/png.rs": "00294b995c1d5807c9d347eb64758fcf3c4f1ab9ee414487f72264b19e3b3fae",
+    "src/policy.rs": "5190593c4ee6f70c45ff0ef1f8dba4e964eb39aa62c70beccbd4ea7794f40b5a",
+    "src/raster_model.rs": "4c4643e9e95411c28226efea8ab9a35d68f3fd11e60f6c1af401e6ba49646da4",
+    "src/reader.rs": "e1e7c97ce7b862639e31dc28e765074c14da2eabe591df8592573b56748b8f0d",
+    "src/transport_model.rs": "d73f38fe818884c615ceeea3c8941ac71d39417a07d0828bc41efc57e7dd6685",
+    "src/walk.rs": "fa7f58c2cf160dc5ab383ac0ff0019ecd7be856212d220dba807091e1abeb26b",
+    "src/walk_model.rs": "3210215551e50da9ed31f288c9dcc72e73ccd93863955cc0275982aa7ba8f774",
+    "src/walk_own.rs": "7ce2d0204d255c67cdeba9a0ff6e073def639f6b593f2692a89247c3ef931e3e",
+    "src/walk_policy.rs": "8b20a35f467710097ab0d92652f1f6f3d3d8a10cb07be013ee8044038d8a5226",
+    "src/walk_state.rs": "72beb3b162d6499f5b6b2247197718a575670e21a5958ac39bc60188c81b4e02",
+    "src/walk_step.rs": "b58c2888fd5a56eb70957db031f85cf87ef70c653ed35f08a56fef34ef24cff8",
+    "src/witness_critical.rs": "5406a4824783efdfc109f5c0ad97547212bc775b54014c23819ae54768b5342e",
+    "src/witness_document.rs": "aca306a719fdcd9967dfd0f1ea795b0f07cbd950aeb1146471c6c84ce0dda82d",
+    "src/witness_frame.rs": "b06e127e5bf7d966203d704d3e1a315af10ee51663d3f41ddfa3f707c7f56903",
+    "src/witness_m3.rs": "51dc0a313921b731a7e9442136906aac4827fb2074e4d0db8154fecb1c320550",
+    "src/witness_m3_frozen.rs": "f5c83f82281d688fa562f879ce5737ebb790d6ae03dc72ebac5d992003d19364",
+    "src/witness_m3_projection.rs": "7c13be4700c012a22fa4968d20201491318a04fb206f9f700ca19c522c5137d6",
+    "src/witness_m3_walk_frozen.rs": "c26f8eada47ac257edd2d13ce22925606e6a2442df945b0a49bae01468304313",
+    "src/witness_m4_complete.rs": "b3bd36e3dc3a1ff28e6ed250fa7b00d909f708b6f49a09e8b27cf17d1056e4d0",
+    "src/witness_metadata.rs": "4e7bc8910b1bcb410cb3e926b5f1d70287f121e80152546ab3a5f7ce82a13a24",
+    "src/witness_walk.rs": "53a8fb71e2dd22d34979865ceb32e42f196fcd82d503aceba36d263b9bfa8b30",
+    "Cargo.toml": "fa9c2b6e0a9c6ab351267a717996f59ff01a713a96b24c8a7d2b623872973d4e",
+    "Cargo.lock": "7e54ff7c1d10f204229f1e6a1e96b84e85fcb123d448482f49c16817c5212176",
+    "verify.sh": "9bdef0c80a5049f8dee74408b75b9a3738c0c700165306f36034a7293f3e3da8",
+    "tools/direct_verify.py": "a2fa56f7ae35ac42c3120aba9be81d4bf10d0ac61a5636c0de41a2a19fc5791c",
+    "tools/generate_m3_header_witnesses.py": "f684eca52528a8551d78c011d70fcb030100c40558397fba77fd9b5e72c7eb58",
+    "tools/generate_m3_projection_witnesses.py": "647d675e65062bf4713df5ca8ae98c76c91a7b70bd69b3495c274be50ae090aa",
+    "tools/generate_m3_walk_witnesses.py": "e29d72ec2e0d233d71cab2a2283b335780a15f4ebaeb3901bd44093616bc52df",
+    "tools/generate_m4_complete_witnesses.py": "7fc9e890b302f45287c01f4c618d551c350ea972b8afbba8df4068c9630ef497",
+    "tools/m4_trace_certificates.py": "793d1f5589cf476fda63534a8dfd95332bf5c5b3f5187538279d8c253522d5e9",
+    "tools/probe_diff.py": "27938506cd72ecbd8e1d5adf9bd89ed9a37a435744ee6251478e2e8c2a3b1bf8",
+    "tools/run_logged.py": "3f5ade7203e8686447a7d40307055d7fc96c727a533341cb2143af1f7244e66d",
+    "tools/verify_m3.py": "e2484f0a88cb1d7c480825125138a926da892625fcff8a7685f9ed36285c89a8"
+  },
+  "full_no_cheating": true,
+  "default_solver_limits": true,
+  "source_imports_and_vstd_pins_unchanged": true,
+  "wall_clock_change": {
+    "authorised_by_coordinator": true,
+    "old_upper_bound_seconds": 1500,
+    "new_upper_bound_seconds": 3600,
+    "run_logged_upper_bound_seconds": 3600,
+    "direct_logged_verifier_timeout_seconds": 3600,
+    "direct_python_wait_seconds": 3620,
+    "RUNLOG_announcement_run": 403,
+    "solver_limits_changed": false
+  },
+  "new_complete_M4_witnesses": [
+    "image/filter-type-5",
+    "image/filter-type-255",
+    "precedence/adler-before-filter"
+  ],
+  "complete_M4_witnesses": [
+    "image/filter-type-255",
+    "image/filter-type-5",
+    "interlace/1x1-filter-bytes-for-empty-passes",
+    "precedence/adler-before-filter",
+    "precedence/index-row0-before-filter-row1"
+  ],
+  "retained_complete_witness_checkpoint": [
+    400,
+    401
+  ],
+  "proved_components": {
+    "image/filter-type-5": "Exact independent-model InvalidFilterType at row-three filter byte after valid rows zero through two; actual public still call with explicit OutOfMemory.",
+    "image/filter-type-255": "The same exact first-invalid-filter result for byte 255.",
+    "precedence/adler-before-filter": "Exact independent-model AdlerMismatch before invalid first-row filter 9; actual public still call with explicit OutOfMemory.",
+    "m4_fixed_witness_model::fixed_dist_decode": "Locally reverified distance canonical-word arithmetic using public M2 model lemmas.",
+    "m4_trace_witness_model": "Checked authored fixed-token wire positions, literal/copy effects and complete MCompressed composition.",
+    "m4_checksum_witness_model": "Balanced sums equal the independent M2 Adler definition.",
+    "m4_crc_witness_model": "Short bitwise CRC folds compose into the original P3 crc_register recurrence for long chunks."
+  },
+  "certificate_provenance": {
+    "input_file": "../inflate_verus/tools/witness_config.json",
+    "input_sha256": "f2cf8c3069a21767825cfacc53fc76833199e7d9c6f2ce66c031fc19a8f4d370",
+    "fields_read": [
+      "members",
+      "raw",
+      "steps",
+      "trace_chunks",
+      "intent",
+      "adler"
+    ],
+    "M2_call_outcomes_read": false,
+    "private_imported_witness_proofs_used": false,
+    "decoder_or_oracle_expectations_used": false,
+    "expected_PNG_errors_source": "../spec-frozen/VECTORS.json"
+  },
+  "witness_gates": {
+    "schedule_file": "m4-witness-schedule.json",
+    "current_status_file": "m4-witness-status-0420-0421.json",
+    "complete_M4_due": 5,
+    "complete_M4_proved": 5,
+    "M4_projections_due": 71,
+    "M4_projections_proved": 0,
+    "M6_complete_pixel_witnesses_due": 71,
+    "M6_complete_pixel_witnesses_proved": 0
+  },
+  "runtime": {
+    "run": 418,
+    "conformance": {
+      "pass": 846,
+      "fail": 0,
+      "total": 848,
+      "skip": 2,
+      "skipped_names": [
+        "policy/crc-ancillary/fdat-frames/image-crate-compat",
+        "policy/crc-ancillary/fdat-still/image-crate-compat"
+      ]
+    },
+    "fault_injection": true,
+    "council_tests": 7,
+    "cap_lint_and_negative_controls": true,
+    "allocation_audit_and_negative_controls": true,
+    "native_no_std_build": true,
+    "i686_runtime_executed": false
+  },
+  "retained_inflate_differential": {
+    "run": 371,
+    "streams": 10000,
+    "single_bit_corruptions": 10000,
+    "unexpected_differences": 0,
+    "dependency_unchanged": true,
+    "fresh_differential_run_claimed": false
+  },
+  "protected_file_and_Q7_control_run": 419,
+  "final_binding_protected_file_and_Q7_control_run": 422,
+  "Q7_modified": false,
+  "cargo_verification_invoked": false,
+  "new_vstd_or_verifier_cache_built": false,
+  "development_runs_no_credit": [
+    404,
+    408,
+    410,
+    412,
+    415,
+    417
+  ],
+  "cancelled_candidate_runs": [
+    404,
+    408
+  ],
+  "not_claimed": [
+    "Any of the 71 M4 projection witnesses",
+    "Converted-pixel/composition equality",
+    "Independent ghost-code sign-off review",
+    "New proof-sensitivity mutation evidence"
+  ],
+  "remaining": [
+    "All 71 M4 projection witnesses",
+    "All 71 M4-related complete pixel-result witnesses due at M6",
+    "Converted-pixel/composition equations",
+    "Q7 / rect_sum_unnarrowed remains coordinator-owned",
+    "Milestone sign-off review and sensitivity gates"
+  ],
+  "historical_schedule_and_two_record_index_preserved": true,
+  "ledger_sha256": "5d7bbcc4941563a426389336db6f24935f386612aae2d196a18cf085d41835a4",
+  "committed_or_pushed": false
+}

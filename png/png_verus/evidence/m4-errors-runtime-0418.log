@@ -1,0 +1,957 @@
+command: ['bash', '-c', 'cargo test --release -- --nocapture && bash tools/lint_caps.sh --self-test && bash tools/audit_alloc.sh --self-test && cargo build --release --lib']
+warning: unused import: `C_SEG`
+ --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/segments.rs:2:21
+  |
+2 | use crate::limits::{C_SEG, SEGMENT_BYTES_MAX};
+  |                     ^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `origin_source`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/bits.rs:103:13
+    |
+103 |         let origin_source = Ghost(src.source_frame());
+    |             ^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_origin_source`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `w`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/bits.rs:122:35
+    |
+122 |     pub(crate) fn byte(&mut self, w: &mut Work) -> (r: Result<u8, InflateError>)
+    |                                   ^ help: if this is intentional, prefix it with an underscore: `_w`
+
+warning: unused variable: `table_work`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:127:21
+    |
+127 |         let (built, table_work) = crate::canonical::build_tables(lengths,
+    |                     ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_table_work`
+
+warning: unused variable: `live_work`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:149:13
+    |
+149 |         let live_work = crate::canonical::live_counts(Ghost(lengths@), &self.count, &mut self.live);
+    |             ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_live_work`
+
+warning: unused variable: `nlen`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:502:5
+    |
+502 |     nlen: usize, ndist: usize, w: &mut Work) -> (ret: (Result<(), E>, Ghost<nat>))
+    |     ^^^^ help: if this is intentional, prefix it with an underscore: `_nlen`
+
+warning: unused variable: `ndist`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:502:18
+    |
+502 |     nlen: usize, ndist: usize, w: &mut Work) -> (ret: (Result<(), E>, Ghost<nat>))
+    |                  ^^^^^ help: if this is intentional, prefix it with an underscore: `_ndist`
+
+warning: unused variable: `code_cost`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:770:27
+    |
+770 |         let (code_result, code_cost) = dynamic_code(&mut self.code, br, ncode, nlen, ndist, w);
+    |                           ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_code_cost`
+
+warning: unused variable: `length_cost`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:773:22
+    |
+773 |         let (result, length_cost) = self.dynamic_lengths(br, nlen, ndist, w);
+    |                      ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_length_cost`
+
+warning: unused variable: `n`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/lib.rs:195:34
+    |
+195 |     pub(crate) fn add(&mut self, n: usize)
+    |                                  ^ help: if this is intentional, prefix it with an underscore: `_n`
+
+warning: field `observed` is never read
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/lib.rs:185:9
+    |
+184 | pub(crate) struct Work {
+    |                   ---- field in this struct
+185 |     pub observed: Ghost<nat>,
+    |         ^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `bytes` is never read
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/adler.rs:83:16
+   |
+79 | pub(crate) struct Adler {
+   |                   ----- field in this struct
+...
+83 |     pub(crate) bytes: Ghost<Seq<u8>>,
+   |                ^^^^^
+
+warning: fields `origin_seg`, `origin_core`, `origin_rank`, `origin_count`, and `loop_work` are never read
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/bits.rs:37:16
+   |
+33 | pub(crate) struct Bits<'a, S: Segments> {
+   |                   ---- fields in this struct
+...
+37 |     pub(crate) origin_seg: Ghost<nat>,
+   |                ^^^^^^^^^^
+38 |     pub(crate) origin_core: Ghost<nat>,
+   |                ^^^^^^^^^^^
+39 |     pub(crate) origin_rank: Ghost<nat>,
+   |                ^^^^^^^^^^^
+40 |     pub(crate) origin_count: Ghost<nat>,
+   |                ^^^^^^^^^^^^
+...
+43 |     pub(crate) loop_work: Ghost<nat>,
+   |                ^^^^^^^^^
+
+warning: fields `lengths`, `kind`, `single_accept`, and `ready` are never read
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:18:16
+   |
+11 | pub(crate) struct Huffman {
+   |                   ------- fields in this struct
+...
+18 |     pub(crate) lengths: Ghost<Seq<u8>>,
+   |                ^^^^^^^
+19 |     pub(crate) kind: Ghost<Kind>,
+   |                ^^^^
+20 |     pub(crate) single_accept: Ghost<bool>,
+   |                ^^^^^^^^^^^^^
+21 |     pub(crate) ready: Ghost<bool>,
+   |                ^^^^^
+
+warning: fields `out` and `initial` are never read
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:190:5
+    |
+185 | struct Output<'a> {
+    |        ------ fields in this struct
+...
+190 |     out: Ghost<Seq<u8>>,
+    |     ^^^
+191 |     initial: Ghost<Seq<u8>>,
+    |     ^^^^^^^
+
+warning: fields `header_construction` and `header_table_start` are never read
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:406:5
+    |
+400 | struct Tables {
+    |        ------ fields in this struct
+...
+406 |     header_construction: Ghost<nat>,
+    |     ^^^^^^^^^^^^^^^^^^^
+407 |     header_table_start: Ghost<Option<nat>>,
+    |     ^^^^^^^^^^^^^^^^^^
+
+warning: fields `seg_work` and `read_work` are never read
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/segments.rs:102:5
+    |
+ 96 | pub struct SegmentSlices<'a> {
+    |            ------------- fields in this struct
+...
+102 |     seg_work: Ghost<nat>,
+    |     ^^^^^^^^
+103 |     read_work: Ghost<nat>,
+    |     ^^^^^^^^^
+
+warning: `inflate_verus` (lib) generated 17 warnings (run `cargo fix --lib -p inflate_verus` to apply 10 suggestions)
+warning: unused import: `PNG_WIRE_MAX`
+ --> src/apng.rs:5:51
+  |
+5 | use crate::limits::{MAX_FRAMES, MAX_TOTAL_PIXELS, PNG_WIRE_MAX};
+  |                                                   ^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `PNG_WIRE_MAX`
+ --> src/header.rs:4:59
+  |
+4 | use crate::limits::{MAX_DIMENSION, MAX_INPUT, MAX_OUTPUT, PNG_WIRE_MAX};
+  |                                                           ^^^^^^^^^^^^
+
+warning: unused doc comment
+   --> src/image.rs:354:1
+    |
+354 | / /// Map an inflate status to the image result (P9–P11). `produced` bytes were
+355 | | /// written of a limit of `r`.
+    | |_-----------------------------^
+    |   |
+    |   rustdoc does not generate documentation for macro invocations
+    |
+    = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+    = note: `#[warn(unused_doc_comments)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused doc comment
+  --> src/walk.rs:96:1
+   |
+96 | / /// P2–P8, P14.1 under `pol`. `apng_off` is the re-walk of the R4 fallback, with
+97 | | /// acTL, fcTL and fdAT treated as unknown ancillary chunks (`apng = Off`).
+   | |_--------------------------------------------------------------------------^
+   |   |
+   |   rustdoc does not generate documentation for macro invocations
+   |
+   = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+
+warning: unused imports: `be32` and `frame_at`
+  --> src/walk.rs:16:39
+   |
+16 | pub(crate) use crate::framing::{be16, be32, frame_at};
+   |                                       ^^^^  ^^^^^^^^
+
+warning: unused imports: `Kind` and `kind_of`
+  --> src/walk.rs:18:30
+   |
+18 | pub(crate) use crate::kind::{kind_of, Kind};
+   |                              ^^^^^^^  ^^^^
+
+warning: unused import: `crate::apng::Fctl`
+   --> src/walk.rs:192:16
+    |
+192 | pub(crate) use crate::apng::Fctl;
+    |                ^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `site`
+  --> src/alloc_guard/sites.rs:87:18
+   |
+87 | pub fn try_empty(site: AllocSite, Tracked(log): Tracked<&mut AllocLog>)
+   |                  ^^^^ help: if this is intentional, prefix it with an underscore: `_site`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `b`
+  --> src/frame_state.rs:61:32
+   |
+61 | pub(crate) fn constructor_info(b: &[u8], doc: &mut Doc)
+   |                                ^ help: if this is intentional, prefix it with an underscore: `_b`
+
+warning: unused variable: `b`
+   --> src/frame_state.rs:201:17
+    |
+201 | fn resume_state(b: &[u8], doc: &Doc, index: u32, start: usize, control: Fctl, dispose: u8) -> (r: FrameState)
+    |                 ^ help: if this is intentional, prefix it with an underscore: `_b`
+
+warning: unused variable: `doc`
+   --> src/frame_state.rs:201:27
+    |
+201 | fn resume_state(b: &[u8], doc: &Doc, index: u32, start: usize, control: Fctl, dispose: u8) -> (r: FrameState)
+    |                           ^^^ help: if this is intentional, prefix it with an underscore: `_doc`
+
+warning: unused variable: `bits`
+   --> src/image.rs:105:9
+    |
+105 |     let bits=ihdr.bits_pp();
+    |         ^^^^ help: if this is intentional, prefix it with an underscore: `_bits`
+
+warning: unused variable: `w`
+   --> src/image.rs:261:43
+    |
+261 |     pub(crate) fn image(out: &'o mut [u8],w: u32,h: u32,wide: bool) -> (r: Self)
+    |                                           ^ help: if this is intentional, prefix it with an underscore: `_w`
+
+warning: unused variable: `h`
+   --> src/image.rs:261:50
+    |
+261 |     pub(crate) fn image(out: &'o mut [u8],w: u32,h: u32,wide: bool) -> (r: Self)
+    |                                                  ^ help: if this is intentional, prefix it with an underscore: `_h`
+
+warning: unused variable: `w`
+   --> src/image.rs:267:71
+    |
+267 |     pub(crate) fn canvas(canvas: &'o mut [u8],cw: u32,fx: u32,fy: u32,w: u32,h: u32,over: bool) -> (r: Self)
+    |                                                                       ^ help: if this is intentional, prefix it with an underscore: `_w`
+
+warning: unused variable: `h`
+   --> src/image.rs:267:78
+    |
+267 |     pub(crate) fn canvas(canvas: &'o mut [u8],cw: u32,fx: u32,fy: u32,w: u32,h: u32,over: bool) -> (r: Self)
+    |                                                                              ^ help: if this is intentional, prefix it with an underscore: `_h`
+
+warning: unused variable: `height`
+   --> src/image.rs:295:34
+    |
+295 |     fn put(&mut self, width: u32,height: u32, x: u32, y: u32, px: [u16; 4])
+    |                                  ^^^^^^ help: if this is intentional, prefix it with an underscore: `_height`
+
+warning: unused variable: `base`
+   --> src/image.rs:513:5
+    |
+513 |     base: Ghost<nat>,row: u32,original: Ghost<Seq<u8>>) -> (result: Result<(),Error>)
+    |     ^^^^ help: if this is intentional, prefix it with an underscore: `_base`
+
+warning: unused variable: `original`
+   --> src/image.rs:513:31
+    |
+513 |     base: Ghost<nat>,row: u32,original: Ghost<Seq<u8>>) -> (result: Result<(),Error>)
+    |                               ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_original`
+
+warning: unused variable: `denominator`
+   --> src/image.rs:651:9
+    |
+651 |     let denominator=(1u32<<depth)-1;
+    |         ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_denominator`
+
+warning: unused variable: `n`
+   --> src/image.rs:782:20
+    |
+782 | fn pass_coordinate(n: u32,origin: u32,step: u32,index: u32) -> (r: u32)
+    |                    ^ help: if this is intentional, prefix it with an underscore: `_n`
+
+warning: unused variable: `entries`
+  --> src/metadata.rs:58:38
+   |
+58 | fn sbit(d: &[u8], ct: u8, depth: u8, entries: usize) -> (r: Result<Value,Error>)
+   |                                      ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_entries`
+
+warning: unused variable: `b`
+   --> src/metadata.rs:280:22
+    |
+280 | pub(crate) fn rebase(b: &[u8], base: usize, size: usize, start: usize, count: usize) -> (r: (usize,usize))
+    |                      ^ help: if this is intentional, prefix it with an underscore: `_b`
+
+warning: unused variable: `size`
+   --> src/metadata.rs:280:45
+    |
+280 | pub(crate) fn rebase(b: &[u8], base: usize, size: usize, start: usize, count: usize) -> (r: (usize,usize))
+    |                                             ^^^^ help: if this is intentional, prefix it with an underscore: `_size`
+
+warning: unused variable: `h`
+   --> src/png.rs:968:35
+    |
+968 |         let w=self.doc.ihdr.w;let h=self.doc.ihdr.h;
+    |                                   ^ help: if this is intentional, prefix it with an underscore: `_h`
+
+warning: unused variable: `h`
+   --> src/png.rs:997:35
+    |
+997 |         let w=self.doc.ihdr.w;let h=self.doc.ihdr.h;let f=job.control;
+    |                                   ^ help: if this is intentional, prefix it with an underscore: `_h`
+
+warning: unused variable: `n`
+    --> src/png.rs:1078:9
+     |
+1078 |     let n=canvas.len();let mut row=0u32;
+     |         ^ help: if this is intentional, prefix it with an underscore: `_n`
+
+warning: unused variable: `doc`
+   --> src/reader.rs:122:42
+    |
+122 |     pub(crate) fn for_frame(b: &'a [u8], doc: &crate::walk::Doc, index: u32, start: usize) -> (r: Self)
+    |                                          ^^^ help: if this is intentional, prefix it with an underscore: `_doc`
+
+warning: unused variable: `index`
+   --> src/reader.rs:122:66
+    |
+122 |     pub(crate) fn for_frame(b: &'a [u8], doc: &crate::walk::Doc, index: u32, start: usize) -> (r: Self)
+    |                                                                  ^^^^^ help: if this is intentional, prefix it with an underscore: `_index`
+
+warning: unused variable: `doc`
+   --> src/reader.rs:265:44
+    |
+265 | pub(crate) fn next_selected_fctl(b: &[u8], doc: &crate::walk::Doc, index: u32, cursor: usize) -> (r: Option<usize>)
+    |                                            ^^^ help: if this is intentional, prefix it with an underscore: `_doc`
+
+warning: unused variable: `index`
+   --> src/reader.rs:265:68
+    |
+265 | pub(crate) fn next_selected_fctl(b: &[u8], doc: &crate::walk::Doc, index: u32, cursor: usize) -> (r: Option<usize>)
+    |                                                                    ^^^^^ help: if this is intentional, prefix it with an underscore: `_index`
+
+warning: unused variable: `b`
+  --> src/walk_state.rs:70:35
+   |
+70 |     pub(crate) fn new(ihdr: Ihdr, b: &[u8]) -> (r: Self)
+   |                                   ^ help: if this is intentional, prefix it with an underscore: `_b`
+
+warning: unused variable: `doc`
+   --> src/walk_state.rs:106:23
+    |
+106 |     pub(crate) fn new(doc: &Doc, b: &[u8]) -> (r: Self)
+    |                       ^^^ help: if this is intentional, prefix it with an underscore: `_doc`
+
+warning: unused variable: `b`
+   --> src/walk_state.rs:106:34
+    |
+106 |     pub(crate) fn new(doc: &Doc, b: &[u8]) -> (r: Self)
+    |                                  ^ help: if this is intentional, prefix it with an underscore: `_b`
+
+warning: unused variable: `kind`
+  --> src/walk_own.rs:73:5
+   |
+73 |     kind: Kind, rules: Rules, _static_frames: bool, doc: &mut Doc, state: &mut State, _ev: &mut Events)
+   |     ^^^^ help: if this is intentional, prefix it with an underscore: `_kind`
+
+warning: field `ev` is never read
+  --> src/alloc_guard/mod.rs:45:11
+   |
+44 | pub tracked struct AllocLog {
+   |                    -------- field in this struct
+45 |     ghost ev: Seq<(AllocSite, nat, bool)>,
+   |           ^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `synthetic` is never read
+  --> src/critical.rs:13:16
+   |
+10 | pub(crate) struct Candidate {
+   |                   --------- field in this struct
+...
+13 |     pub(crate) synthetic: Ghost<bool>,
+   |                ^^^^^^^^^
+
+warning: field `1` is never read
+  --> src/metadata.rs:17:86
+   |
+17 |     Sbit([u8; 4], u8), Cicp([u8; 4]), Mdcv([u8; 24]), Clli(u32, u32), Bkgd([u16; 3], u8),
+   |                                                                       ----           ^^
+   |                                                                       |
+   |                                                                       field in this variant
+   |
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or remove the field
+   |
+17 -     Sbit([u8; 4], u8), Cicp([u8; 4]), Mdcv([u8; 24]), Clli(u32, u32), Bkgd([u16; 3], u8),
+17 +     Sbit([u8; 4], u8), Cicp([u8; 4]), Mdcv([u8; 24]), Clli(u32, u32), Bkgd([u16; 3], ()),
+   |
+
+warning: function `image_preparation_logged` is never used
+   --> src/png.rs:517:4
+    |
+517 | fn image_preparation_logged(b: &[u8],pol: &Policy,frames: bool,wide: bool)
+    |    ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `icc_preparation_logged` is never used
+   --> src/png.rs:534:4
+    |
+534 | fn icc_preparation_logged(b: &[u8])
+    |    ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: fields `start`, `source`, `prefix`, `total`, `entered`, and `reads` are never read
+  --> src/reader.rs:55:5
+   |
+53 | pub(crate) struct DataReader<'a> {
+   |                   ---------- fields in this struct
+54 |     b: &'a [u8],
+55 |     start: usize,
+   |     ^^^^^
+...
+61 |     source: Ghost<Seq<u8>>,
+   |     ^^^^^^
+62 |     prefix: Ghost<Seq<u8>>,
+   |     ^^^^^^
+63 |     total: Ghost<nat>,
+   |     ^^^^^
+64 |     entered: Ghost<nat>,
+   |     ^^^^^^^
+65 |     reads: Ghost<nat>,
+   |     ^^^^^
+
+warning: type alias `FdatReader` is never used
+  --> src/reader.rs:69:17
+   |
+69 | pub(crate) type FdatReader<'a> = DataReader<'a>;
+   |                 ^^^^^^^^^^
+
+warning: `png_verus` (lib) generated 42 warnings (run `cargo fix --lib -p png_verus` to apply 33 suggestions)
+warning: `png_verus` (lib test) generated 42 warnings (42 duplicates)
+    Finished `release` profile [optimized] target(s) in 0.53s
+     Running unittests src/lib.rs (target/release/deps/png_verus-e585c36e59e329ae)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/conformance.rs (target/release/deps/conformance-db0876f0b88d5cbe)
+
+running 1 test
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/../spec-frozen/VECTORS.json: 599 records, 599 pass, 0 fail, 0 skipped (profile not implemented)
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/../limits-draft/VECTORS-CAPS.json: 13 records, 13 pass, 0 fail, 0 skipped (profile not implemented)
+/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/../policy-draft/VECTORS-POLICY.json: 236 records, 234 pass, 0 fail, 2 skipped (profile not implemented)
+total: 846 pass, 0 fail, 2 skipped
+E7 check: skipped records are exactly the two ImageCrateCompat-0.25.10 records
+test vectors ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.76s
+
+     Running tests/fault_injection.rs (target/release/deps/fault_injection-b2526c879e86955d)
+
+running 1 test
+test requests_and_failures ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+     Running tests/m1bq_rulings.rs (target/release/deps/m1bq_rulings-b17d4274e0c2486c)
+
+running 7 tests
+test q1_ignoretail_fdat_frame ... ok
+test q2_bad_actl_stays_dropped ... ok
+test q1_ignoretail_still ... ok
+test q2_recommended_beta ... ok
+test q2_mixed_records ... ok
+test m1bq_policy_vectors_present ... ok
+test q5b_try_new_is_strict ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+
+   Doc-tests png_verus
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+symbolic caps: clean (exponents 30|31|28|16|30|24|26|29)
+symbolic caps: scratch-copy positive/negative controls passed
+scanned: allocation_model.rs apng.rs apng_model.rs callers.rs crc.rs critical.rs critical_model.rs document_model.rs filter_model.rs frame_state.rs frame_transport_model.rs framing.rs header.rs icc_model.rs image.rs info.rs keywords.rs kind.rs layout_model.rs lib.rs limits.rs m4_checksum_witness_model.rs m4_crc_witness_model.rs m4_fixed_witness_model.rs m4_trace_witness_model.rs metadata.rs metadata_model.rs model.rs ordering.rs png.rs policy.rs raster_model.rs reader.rs transport_model.rs walk.rs walk_model.rs walk_own.rs walk_policy.rs walk_state.rs walk_step.rs witness_critical.rs witness_document.rs witness_frame.rs witness_m3.rs witness_m3_frozen.rs witness_m3_projection.rs witness_m3_walk_frozen.rs witness_m4_complete.rs witness_metadata.rs witness_walk.rs (alloc_guard/ and cfg(test)-only module subtrees excluded)
+alloc_scan --allow-reserved: clean
+alloc_scan (no suppression): clean
+guard reservation call sites: Raw 1, Output 1, Saved 1, IccWindow 1, Icc 1, empty Icc 1 (expected 1 each); try_zeroed calls in production: 5 (expected 5), try_empty: 1 (expected 1)
+alloc_guard/mod.rs hash OK
+alloc_guard/sites.rs hash OK
+--- scanner self-test ---
+self-test: OK (44 allocating constructs flagged, also beside conditional ghost contracts in both modes; cfg(test) registration controls; 26 real sources clean in both modes)
+symbolic caps: clean (exponents 30|31|28|16|30|24|26|29)
+symbolic caps: scratch-copy positive/negative controls passed
+negative gate self-test OK: exec v.push(x) flagged
+negative gate self-test OK: exec vec! flagged
+OK
+warning: unused import: `C_SEG`
+ --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/segments.rs:2:21
+  |
+2 | use crate::limits::{C_SEG, SEGMENT_BYTES_MAX};
+  |                     ^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `origin_source`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/bits.rs:103:13
+    |
+103 |         let origin_source = Ghost(src.source_frame());
+    |             ^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_origin_source`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `w`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/bits.rs:122:35
+    |
+122 |     pub(crate) fn byte(&mut self, w: &mut Work) -> (r: Result<u8, InflateError>)
+    |                                   ^ help: if this is intentional, prefix it with an underscore: `_w`
+
+warning: unused variable: `table_work`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:127:21
+    |
+127 |         let (built, table_work) = crate::canonical::build_tables(lengths,
+    |                     ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_table_work`
+
+warning: unused variable: `live_work`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:149:13
+    |
+149 |         let live_work = crate::canonical::live_counts(Ghost(lengths@), &self.count, &mut self.live);
+    |             ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_live_work`
+
+warning: unused variable: `nlen`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:502:5
+    |
+502 |     nlen: usize, ndist: usize, w: &mut Work) -> (ret: (Result<(), E>, Ghost<nat>))
+    |     ^^^^ help: if this is intentional, prefix it with an underscore: `_nlen`
+
+warning: unused variable: `ndist`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:502:18
+    |
+502 |     nlen: usize, ndist: usize, w: &mut Work) -> (ret: (Result<(), E>, Ghost<nat>))
+    |                  ^^^^^ help: if this is intentional, prefix it with an underscore: `_ndist`
+
+warning: unused variable: `code_cost`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:770:27
+    |
+770 |         let (code_result, code_cost) = dynamic_code(&mut self.code, br, ncode, nlen, ndist, w);
+    |                           ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_code_cost`
+
+warning: unused variable: `length_cost`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:773:22
+    |
+773 |         let (result, length_cost) = self.dynamic_lengths(br, nlen, ndist, w);
+    |                      ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_length_cost`
+
+warning: unused variable: `n`
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/lib.rs:195:34
+    |
+195 |     pub(crate) fn add(&mut self, n: usize)
+    |                                  ^ help: if this is intentional, prefix it with an underscore: `_n`
+
+warning: field `observed` is never read
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/lib.rs:185:9
+    |
+184 | pub(crate) struct Work {
+    |                   ---- field in this struct
+185 |     pub observed: Ghost<nat>,
+    |         ^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `bytes` is never read
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/adler.rs:83:16
+   |
+79 | pub(crate) struct Adler {
+   |                   ----- field in this struct
+...
+83 |     pub(crate) bytes: Ghost<Seq<u8>>,
+   |                ^^^^^
+
+warning: fields `origin_seg`, `origin_core`, `origin_rank`, `origin_count`, and `loop_work` are never read
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/bits.rs:37:16
+   |
+33 | pub(crate) struct Bits<'a, S: Segments> {
+   |                   ---- fields in this struct
+...
+37 |     pub(crate) origin_seg: Ghost<nat>,
+   |                ^^^^^^^^^^
+38 |     pub(crate) origin_core: Ghost<nat>,
+   |                ^^^^^^^^^^^
+39 |     pub(crate) origin_rank: Ghost<nat>,
+   |                ^^^^^^^^^^^
+40 |     pub(crate) origin_count: Ghost<nat>,
+   |                ^^^^^^^^^^^^
+...
+43 |     pub(crate) loop_work: Ghost<nat>,
+   |                ^^^^^^^^^
+
+warning: fields `lengths`, `kind`, `single_accept`, and `ready` are never read
+  --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/huffman.rs:18:16
+   |
+11 | pub(crate) struct Huffman {
+   |                   ------- fields in this struct
+...
+18 |     pub(crate) lengths: Ghost<Seq<u8>>,
+   |                ^^^^^^^
+19 |     pub(crate) kind: Ghost<Kind>,
+   |                ^^^^
+20 |     pub(crate) single_accept: Ghost<bool>,
+   |                ^^^^^^^^^^^^^
+21 |     pub(crate) ready: Ghost<bool>,
+   |                ^^^^^
+
+warning: fields `out` and `initial` are never read
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:190:5
+    |
+185 | struct Output<'a> {
+    |        ------ fields in this struct
+...
+190 |     out: Ghost<Seq<u8>>,
+    |     ^^^
+191 |     initial: Ghost<Seq<u8>>,
+    |     ^^^^^^^
+
+warning: fields `header_construction` and `header_table_start` are never read
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/inflate.rs:406:5
+    |
+400 | struct Tables {
+    |        ------ fields in this struct
+...
+406 |     header_construction: Ghost<nat>,
+    |     ^^^^^^^^^^^^^^^^^^^
+407 |     header_table_start: Ghost<Option<nat>>,
+    |     ^^^^^^^^^^^^^^^^^^
+
+warning: fields `seg_work` and `read_work` are never read
+   --> /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/segments.rs:102:5
+    |
+ 96 | pub struct SegmentSlices<'a> {
+    |            ------------- fields in this struct
+...
+102 |     seg_work: Ghost<nat>,
+    |     ^^^^^^^^
+103 |     read_work: Ghost<nat>,
+    |     ^^^^^^^^^
+
+warning: `inflate_verus` (lib) generated 17 warnings (run `cargo fix --lib -p inflate_verus` to apply 10 suggestions)
+warning: unused import: `PNG_WIRE_MAX`
+ --> src/apng.rs:5:51
+  |
+5 | use crate::limits::{MAX_FRAMES, MAX_TOTAL_PIXELS, PNG_WIRE_MAX};
+  |                                                   ^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `PNG_WIRE_MAX`
+ --> src/header.rs:4:59
+  |
+4 | use crate::limits::{MAX_DIMENSION, MAX_INPUT, MAX_OUTPUT, PNG_WIRE_MAX};
+  |                                                           ^^^^^^^^^^^^
+
+warning: unused doc comment
+   --> src/image.rs:354:1
+    |
+354 | / /// Map an inflate status to the image result (P9–P11). `produced` bytes were
+355 | | /// written of a limit of `r`.
+    | |_-----------------------------^
+    |   |
+    |   rustdoc does not generate documentation for macro invocations
+    |
+    = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+    = note: `#[warn(unused_doc_comments)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused doc comment
+  --> src/walk.rs:96:1
+   |
+96 | / /// P2–P8, P14.1 under `pol`. `apng_off` is the re-walk of the R4 fallback, with
+97 | | /// acTL, fcTL and fdAT treated as unknown ancillary chunks (`apng = Off`).
+   | |_--------------------------------------------------------------------------^
+   |   |
+   |   rustdoc does not generate documentation for macro invocations
+   |
+   = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+
+warning: unused imports: `be32` and `frame_at`
+  --> src/walk.rs:16:39
+   |
+16 | pub(crate) use crate::framing::{be16, be32, frame_at};
+   |                                       ^^^^  ^^^^^^^^
+
+warning: unused imports: `Kind` and `kind_of`
+  --> src/walk.rs:18:30
+   |
+18 | pub(crate) use crate::kind::{kind_of, Kind};
+   |                              ^^^^^^^  ^^^^
+
+warning: unused import: `crate::apng::Fctl`
+   --> src/walk.rs:192:16
+    |
+192 | pub(crate) use crate::apng::Fctl;
+    |                ^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `site`
+  --> src/alloc_guard/sites.rs:87:18
+   |
+87 | pub fn try_empty(site: AllocSite, Tracked(log): Tracked<&mut AllocLog>)
+   |                  ^^^^ help: if this is intentional, prefix it with an underscore: `_site`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `b`
+  --> src/frame_state.rs:61:32
+   |
+61 | pub(crate) fn constructor_info(b: &[u8], doc: &mut Doc)
+   |                                ^ help: if this is intentional, prefix it with an underscore: `_b`
+
+warning: unused variable: `b`
+   --> src/frame_state.rs:201:17
+    |
+201 | fn resume_state(b: &[u8], doc: &Doc, index: u32, start: usize, control: Fctl, dispose: u8) -> (r: FrameState)
+    |                 ^ help: if this is intentional, prefix it with an underscore: `_b`
+
+warning: unused variable: `doc`
+   --> src/frame_state.rs:201:27
+    |
+201 | fn resume_state(b: &[u8], doc: &Doc, index: u32, start: usize, control: Fctl, dispose: u8) -> (r: FrameState)
+    |                           ^^^ help: if this is intentional, prefix it with an underscore: `_doc`
+
+warning: unused variable: `bits`
+   --> src/image.rs:105:9
+    |
+105 |     let bits=ihdr.bits_pp();
+    |         ^^^^ help: if this is intentional, prefix it with an underscore: `_bits`
+
+warning: unused variable: `w`
+   --> src/image.rs:261:43
+    |
+261 |     pub(crate) fn image(out: &'o mut [u8],w: u32,h: u32,wide: bool) -> (r: Self)
+    |                                           ^ help: if this is intentional, prefix it with an underscore: `_w`
+
+warning: unused variable: `h`
+   --> src/image.rs:261:50
+    |
+261 |     pub(crate) fn image(out: &'o mut [u8],w: u32,h: u32,wide: bool) -> (r: Self)
+    |                                                  ^ help: if this is intentional, prefix it with an underscore: `_h`
+
+warning: unused variable: `w`
+   --> src/image.rs:267:71
+    |
+267 |     pub(crate) fn canvas(canvas: &'o mut [u8],cw: u32,fx: u32,fy: u32,w: u32,h: u32,over: bool) -> (r: Self)
+    |                                                                       ^ help: if this is intentional, prefix it with an underscore: `_w`
+
+warning: unused variable: `h`
+   --> src/image.rs:267:78
+    |
+267 |     pub(crate) fn canvas(canvas: &'o mut [u8],cw: u32,fx: u32,fy: u32,w: u32,h: u32,over: bool) -> (r: Self)
+    |                                                                              ^ help: if this is intentional, prefix it with an underscore: `_h`
+
+warning: unused variable: `height`
+   --> src/image.rs:295:34
+    |
+295 |     fn put(&mut self, width: u32,height: u32, x: u32, y: u32, px: [u16; 4])
+    |                                  ^^^^^^ help: if this is intentional, prefix it with an underscore: `_height`
+
+warning: unused variable: `base`
+   --> src/image.rs:513:5
+    |
+513 |     base: Ghost<nat>,row: u32,original: Ghost<Seq<u8>>) -> (result: Result<(),Error>)
+    |     ^^^^ help: if this is intentional, prefix it with an underscore: `_base`
+
+warning: unused variable: `original`
+   --> src/image.rs:513:31
+    |
+513 |     base: Ghost<nat>,row: u32,original: Ghost<Seq<u8>>) -> (result: Result<(),Error>)
+    |                               ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_original`
+
+warning: unused variable: `denominator`
+   --> src/image.rs:651:9
+    |
+651 |     let denominator=(1u32<<depth)-1;
+    |         ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_denominator`
+
+warning: unused variable: `n`
+   --> src/image.rs:782:20
+    |
+782 | fn pass_coordinate(n: u32,origin: u32,step: u32,index: u32) -> (r: u32)
+    |                    ^ help: if this is intentional, prefix it with an underscore: `_n`
+
+warning: unused variable: `entries`
+  --> src/metadata.rs:58:38
+   |
+58 | fn sbit(d: &[u8], ct: u8, depth: u8, entries: usize) -> (r: Result<Value,Error>)
+   |                                      ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_entries`
+
+warning: unused variable: `b`
+   --> src/metadata.rs:280:22
+    |
+280 | pub(crate) fn rebase(b: &[u8], base: usize, size: usize, start: usize, count: usize) -> (r: (usize,usize))
+    |                      ^ help: if this is intentional, prefix it with an underscore: `_b`
+
+warning: unused variable: `size`
+   --> src/metadata.rs:280:45
+    |
+280 | pub(crate) fn rebase(b: &[u8], base: usize, size: usize, start: usize, count: usize) -> (r: (usize,usize))
+    |                                             ^^^^ help: if this is intentional, prefix it with an underscore: `_size`
+
+warning: unused variable: `h`
+   --> src/png.rs:968:35
+    |
+968 |         let w=self.doc.ihdr.w;let h=self.doc.ihdr.h;
+    |                                   ^ help: if this is intentional, prefix it with an underscore: `_h`
+
+warning: unused variable: `h`
+   --> src/png.rs:997:35
+    |
+997 |         let w=self.doc.ihdr.w;let h=self.doc.ihdr.h;let f=job.control;
+    |                                   ^ help: if this is intentional, prefix it with an underscore: `_h`
+
+warning: unused variable: `n`
+    --> src/png.rs:1078:9
+     |
+1078 |     let n=canvas.len();let mut row=0u32;
+     |         ^ help: if this is intentional, prefix it with an underscore: `_n`
+
+warning: unused variable: `doc`
+   --> src/reader.rs:122:42
+    |
+122 |     pub(crate) fn for_frame(b: &'a [u8], doc: &crate::walk::Doc, index: u32, start: usize) -> (r: Self)
+    |                                          ^^^ help: if this is intentional, prefix it with an underscore: `_doc`
+
+warning: unused variable: `index`
+   --> src/reader.rs:122:66
+    |
+122 |     pub(crate) fn for_frame(b: &'a [u8], doc: &crate::walk::Doc, index: u32, start: usize) -> (r: Self)
+    |                                                                  ^^^^^ help: if this is intentional, prefix it with an underscore: `_index`
+
+warning: unused variable: `doc`
+   --> src/reader.rs:265:44
+    |
+265 | pub(crate) fn next_selected_fctl(b: &[u8], doc: &crate::walk::Doc, index: u32, cursor: usize) -> (r: Option<usize>)
+    |                                            ^^^ help: if this is intentional, prefix it with an underscore: `_doc`
+
+warning: unused variable: `index`
+   --> src/reader.rs:265:68
+    |
+265 | pub(crate) fn next_selected_fctl(b: &[u8], doc: &crate::walk::Doc, index: u32, cursor: usize) -> (r: Option<usize>)
+    |                                                                    ^^^^^ help: if this is intentional, prefix it with an underscore: `_index`
+
+warning: unused variable: `b`
+  --> src/walk_state.rs:70:35
+   |
+70 |     pub(crate) fn new(ihdr: Ihdr, b: &[u8]) -> (r: Self)
+   |                                   ^ help: if this is intentional, prefix it with an underscore: `_b`
+
+warning: unused variable: `doc`
+   --> src/walk_state.rs:106:23
+    |
+106 |     pub(crate) fn new(doc: &Doc, b: &[u8]) -> (r: Self)
+    |                       ^^^ help: if this is intentional, prefix it with an underscore: `_doc`
+
+warning: unused variable: `b`
+   --> src/walk_state.rs:106:34
+    |
+106 |     pub(crate) fn new(doc: &Doc, b: &[u8]) -> (r: Self)
+    |                                  ^ help: if this is intentional, prefix it with an underscore: `_b`
+
+warning: unused variable: `kind`
+  --> src/walk_own.rs:73:5
+   |
+73 |     kind: Kind, rules: Rules, _static_frames: bool, doc: &mut Doc, state: &mut State, _ev: &mut Events)
+   |     ^^^^ help: if this is intentional, prefix it with an underscore: `_kind`
+
+warning: field `ev` is never read
+  --> src/alloc_guard/mod.rs:45:11
+   |
+44 | pub tracked struct AllocLog {
+   |                    -------- field in this struct
+45 |     ghost ev: Seq<(AllocSite, nat, bool)>,
+   |           ^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `synthetic` is never read
+  --> src/critical.rs:13:16
+   |
+10 | pub(crate) struct Candidate {
+   |                   --------- field in this struct
+...
+13 |     pub(crate) synthetic: Ghost<bool>,
+   |                ^^^^^^^^^
+
+warning: field `1` is never read
+  --> src/metadata.rs:17:86
+   |
+17 |     Sbit([u8; 4], u8), Cicp([u8; 4]), Mdcv([u8; 24]), Clli(u32, u32), Bkgd([u16; 3], u8),
+   |                                                                       ----           ^^
+   |                                                                       |
+   |                                                                       field in this variant
+   |
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or remove the field
+   |
+17 -     Sbit([u8; 4], u8), Cicp([u8; 4]), Mdcv([u8; 24]), Clli(u32, u32), Bkgd([u16; 3], u8),
+17 +     Sbit([u8; 4], u8), Cicp([u8; 4]), Mdcv([u8; 24]), Clli(u32, u32), Bkgd([u16; 3], ()),
+   |
+
+warning: function `image_preparation_logged` is never used
+   --> src/png.rs:517:4
+    |
+517 | fn image_preparation_logged(b: &[u8],pol: &Policy,frames: bool,wide: bool)
+    |    ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `icc_preparation_logged` is never used
+   --> src/png.rs:534:4
+    |
+534 | fn icc_preparation_logged(b: &[u8])
+    |    ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: fields `start`, `source`, `prefix`, `total`, `entered`, and `reads` are never read
+  --> src/reader.rs:55:5
+   |
+53 | pub(crate) struct DataReader<'a> {
+   |                   ---------- fields in this struct
+54 |     b: &'a [u8],
+55 |     start: usize,
+   |     ^^^^^
+...
+61 |     source: Ghost<Seq<u8>>,
+   |     ^^^^^^
+62 |     prefix: Ghost<Seq<u8>>,
+   |     ^^^^^^
+63 |     total: Ghost<nat>,
+   |     ^^^^^
+64 |     entered: Ghost<nat>,
+   |     ^^^^^^^
+65 |     reads: Ghost<nat>,
+   |     ^^^^^
+
+warning: type alias `FdatReader` is never used
+  --> src/reader.rs:69:17
+   |
+69 | pub(crate) type FdatReader<'a> = DataReader<'a>;
+   |                 ^^^^^^^^^^
+
+warning: `png_verus` (lib) generated 42 warnings (run `cargo fix --lib -p png_verus` to apply 33 suggestions)
+    Finished `release` profile [optimized] target(s) in 0.30s

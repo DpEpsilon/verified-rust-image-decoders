@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Generate two complete M4 error witnesses from authored frozen fixtures.
+"""Generate five complete M4 error witnesses from authored frozen fixtures.
 
 Errors come from each frozen expected field, never from an oracle. The palette
 raster certificate is the explicit rawp of spec-frozen/gen_vectors.py:701.
 Every certificate is checked against the independent Verus models. This script
 neither invokes a decoder nor imports the fixture generator.
 """
+import binascii
 import hashlib
 import importlib.util
 import json
@@ -18,16 +19,52 @@ sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT.parent / 'spec-frozen/VECTORS.json'
 NAMES = {'precedence/index-row0-before-filter-row1',
-         'interlace/1x1-filter-bytes-for-empty-passes'}
+         'interlace/1x1-filter-bytes-for-empty-passes',
+         'image/filter-type-5','image/filter-type-255','precedence/adler-before-filter'}
 
 
 def seq(data):
     return 'seq![' + ','.join(f'{x}u8' for x in data) + ']'
 
 
+
+def crc_certificate(data,ident,start,end):
+    """Check short bitwise CRC segments, then compose the original P3 recurrence."""
+    span=data[start:end];expr=f'bytes_{ident}().subrange({start},{end})'
+    value=binascii.crc32(span)
+    lines=['#[verifier::spinoff_prover]',f'proof fn crc_{ident}()',
+           f'    ensures crate::model::crc({expr})=={value}u32,','{',
+           '    hide(crate::model::crc_register);hide(crc_cert::fold);',
+           f'    assert(crate::model::crc_register({expr}.take(0))==0xffff_ffffu32) by {{',
+           f'        assert({expr}.take(0) =~= Seq::<u8>::empty());',
+           '        reveal_with_fuel(crate::model::crc_register,1);','    }']
+    for lo in range(0,len(span),64):
+        hi=min(lo+64,len(span))
+        before=binascii.crc32(span[:lo]) ^ 0xffffffff
+        after=binascii.crc32(span[:hi]) ^ 0xffffffff
+        lines += [f'    assert(crc_cert::fold({before}u32,{expr}.subrange({lo},{hi}))=={after}u32) by (compute);',
+                  f'    crc_cert::suffix({expr}.take({lo}),{expr}.subrange({lo},{hi}));',
+                  f'    assert({expr}.take({lo})+{expr}.subrange({lo},{hi}) =~= {expr}.take({hi}));',
+                  f'    assert(crate::model::crc_register({expr}.take({hi}))=={after}u32);']
+    lines += [f'    assert({expr}.take({len(span)}) =~= {expr});',
+              f'    assert(({binascii.crc32(span)^0xffffffff}u32 ^ 0xffff_ffffu32)=={value}u32) by (compute);','}']
+    return lines
+
+
 def walk_certificate(cert,data,ident,header,znode,entries):
     """Reuse M3's checked chunk facts; never compute the entire recursive walk."""
     facts, sites = cert.read_facts(data,ident,'')
+    crc_code=[]
+    if len(data)>1000:
+        start,end=37,len(data)-16
+        assert data[37:41]==b'IDAT'
+        span=data[start:end];value=binascii.crc32(span)
+        crc_code=crc_certificate(data,ident,start,end)
+        old=f'            assert(crate::critical_model::read(bytes_{ident}(),33nat,phase,false)=='
+        hit=[j for j,x in enumerate(facts) if x.startswith(old)]
+        assert len(hit)==1
+        j=hit[0]
+        facts[j:j+1]=[f'            assert(crate::model::frame(bytes_{ident}(),33nat)==Ok(crate::model::WireChunk {{ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:{len(span)-4}nat,next:{end+4}nat}})) by (compute);',f'            assert(crate::model::be32(bytes_{ident}(),{end})=={value}u32) by (compute);',f'            crc_{ident}();']
     requirements, pure, i = [], [], 0
     while i < len(facts):
         line = facts[i]
@@ -58,7 +95,7 @@ def walk_certificate(cert,data,ident,header,znode,entries):
     payload = f'b.subrange({pos+8},{pos+8+size})=={znode}'
     requirements.append(payload)
     hidden='    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);'
-    symbolic=['#[verifier::spinoff_prover]',f'proof fn walk_{ident}(b: Seq<u8>)',
+    symbolic=[*crc_code,'#[verifier::spinoff_prover]',f'proof fn walk_{ident}(b: Seq<u8>)',
               f'    requires b.len()=={len(data)},crate::model::mh(b)==Ok(({header},33nat)),',
               *['        '+x+',' for x in requirements],
               f'    ensures r::default_case(b,{header},{znode},{entries}nat),','{',hidden,
@@ -112,12 +149,16 @@ def inflate_certificate(ident,znode,anode,error):
 def main():
     spec=importlib.util.spec_from_file_location('m3_chunk_certificates',ROOT/'tools/generate_m3_walk_witnesses.py')
     cert=importlib.util.module_from_spec(spec);spec.loader.exec_module(cert)
+    trace_spec=importlib.util.spec_from_file_location('m4_trace_certificates',ROOT/'tools/m4_trace_certificates.py')
+    trace=importlib.util.module_from_spec(trace_spec);trace_spec.loader.exec_module(trace)
     sha = hashlib.sha256(SOURCE.read_bytes()).hexdigest()
     lines = ['//! Authored frozen-fixture complete M4 error witnesses.',
              '//! Model-versus-expected plus the actual public still call; OOM remains explicit.',
              'use vstd::prelude::*;',
              'use crate::{raster_model as r,filter_model as f,png::Error,policy::STRICT,m4_fixed_witness_model as fixed};',
              'use inflate_verus::model as zm;',
+             'use crate::m4_crc_witness_model as crc_cert;',
+             'use crate::{m4_trace_witness_model as t,m4_checksum_witness_model as c};',
              'verus! {']
     rows = []
     for record in json.loads(SOURCE.read_text()):
@@ -146,17 +187,30 @@ def main():
                   f'color_type:{data[25]}u8,interlace:{data[28]}u8}}')
         b, zs, h, shape = (f'bytes_{ident}()', f'z_{ident}()', f'h_{ident}()', f'a_{ident}()')
         symbolic,concrete,hidden=walk_certificate(cert,data,ident,header,zs,entries)
+        inflation=(trace.certificate(ident,zs,shape,name) if name.startswith('image/filter-type-') or name=='precedence/adler-before-filter' else inflate_certificate(ident,zs,shape,error))
         lines += [f'// {name}; frozen fixture file sha256 {sha}',
                   f'spec fn bytes_{ident}() -> Seq<u8> {{{seq(data)}}}',
                   f'spec fn z_{ident}() -> Seq<u8> {{{seq(z)}}}',
                   f'spec fn h_{ident}() -> crate::model::Ihdr {{{header}}}',
                   f'spec fn a_{ident}() -> r::Raster {{r::shape({h},{width}nat,{height}nat,{entries}nat,STRICT)}}',
-                  *symbolic,*inflate_certificate(ident,zs,shape,error),'#[verifier::spinoff_prover]', f'proof fn model_{ident}()',
+                  *symbolic,*inflation,'#[verifier::spinoff_prover]', f'proof fn model_{ident}()',
                   f'    ensures r::still({b},STRICT,false)==r::Projection::Error(Error::{error}),', '{',
-                  '    hide(r::data);',hidden,*concrete]
+                  '    hide(r::data);',*( [f'    hide(bytes_{ident});hide(z_{ident});hide(raw_{ident});hide(ts_{ident});'] if error=='InvalidFilterType' else []),hidden,*( [f'    assert({b}.len()=={len(data)}nat) by (compute);'] if error=='InvalidFilterType' else []),*concrete]
         lines += [f'    inflate_{ident}();']
+        if error=='InvalidFilterType':lines += [f'    shape_{ident}();']
         if error == 'ExcessImageData':
             lines += [f'    assert(r::raw({shape})==2nat) by (compute);']
+        elif error == 'InvalidFilterType':
+            value=5 if name.endswith('-5') else 255
+            raw=f'raw_{ident}()'
+            lines += [f'    let input={raw};',f'    assert({raw}[0]==0u8 && {raw}[93]==1u8 && {raw}[186]==2u8 && {raw}[279]=={value}u8) by (compute);',f'    assert(r::base({shape},0)==0nat && r::rb({shape},0)==92nat && r::ph({shape},0)==11nat && r::count({shape})==1nat && r::raw({shape})==1023nat) by (compute);']
+            for row in range(4):
+                result='Ok(())' if row<3 else 'Err(Error::InvalidFilterType)'
+                lines += [f'    assert(r::row_result(input,{shape},0,{row}nat)=={result});']
+            lines += [f'    r::pass_step(input,{shape},0,{row}nat);' for row in reversed(range(4))]
+            lines += [f'    r::scan_step(input,{shape},1);',f'    r::scan_step(input,{shape},0);']
+        elif error == 'AdlerMismatch':
+            pass
         else:
             assert error == 'PaletteIndexOutOfRange' and width == 2 and height == 2 and entries == 4
             # Authored rawp, not a decoder-derived expectation or output.
@@ -185,7 +239,7 @@ def main():
     assert {r['name'] for r in rows} == NAMES
     lines += ['} // verus!', '']
     (ROOT/'src/witness_m4_complete.rs').write_text('\n'.join(lines))
-    (ROOT/'evidence/m4-complete-witness-index.json').write_text(json.dumps({
+    (ROOT/'evidence/m4-complete-witness-index-0005.json').write_text(json.dumps({
         'status':'Generated witnesses; verification credit is recorded separately in LEDGER.md',
         'generator':'tools/generate_m4_complete_witnesses.py','records':rows},indent=2)+'\n')
     print('Generated',len(rows),'complete-error candidates; no verification credit from generation.')

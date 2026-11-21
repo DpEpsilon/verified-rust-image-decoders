@@ -1,0 +1,2 @@
+command: ['python3', '-I', '/home/ws/projects/verified-decoders/png/png_verus/tools/generate_m4_complete_witnesses.py']
+Generated 5 complete-error candidates; no verification credit from generation.

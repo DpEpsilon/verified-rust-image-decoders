@@ -1,0 +1,5 @@
+command: ['bash', '-c', 'bash /home/ws/projects/verified-decoders/png/png_verus/tools/lint_caps.sh && bash /home/ws/projects/verified-decoders/png/png_verus/tools/audit_alloc.sh']
+127:    assert((57416857nat%65521)*65536+(1+119234nat)%65521==1340985810nat) by (compute);
+328:    assert((57602857nat%65521)*65536+(1+119484nat)%65521==648729292nat) by (compute);
+529:    assert((57424576nat%65521)*65536+(1+119241nat)%65521==1846858201nat) by (compute);
+copied cap numeral in /__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/src/witness_m4_complete.rs

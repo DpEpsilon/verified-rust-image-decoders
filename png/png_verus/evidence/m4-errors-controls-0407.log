@@ -1,0 +1,9 @@
+command: ['bash', '-c', 'bash /home/ws/projects/verified-decoders/png/png_verus/tools/lint_caps.sh && bash /home/ws/projects/verified-decoders/png/png_verus/tools/audit_alloc.sh']
+symbolic caps: clean (exponents 30|31|28|16|30|24|26|29)
+scanned: allocation_model.rs apng.rs apng_model.rs callers.rs crc.rs critical.rs critical_model.rs document_model.rs filter_model.rs frame_state.rs frame_transport_model.rs framing.rs header.rs icc_model.rs image.rs info.rs keywords.rs kind.rs layout_model.rs lib.rs limits.rs m4_checksum_witness_model.rs m4_fixed_witness_model.rs m4_trace_witness_model.rs metadata.rs metadata_model.rs model.rs ordering.rs png.rs policy.rs raster_model.rs reader.rs transport_model.rs walk.rs walk_model.rs walk_own.rs walk_policy.rs walk_state.rs walk_step.rs witness_critical.rs witness_document.rs witness_frame.rs witness_m3.rs witness_m3_frozen.rs witness_m3_projection.rs witness_m3_walk_frozen.rs witness_m4_complete.rs witness_metadata.rs witness_walk.rs (alloc_guard/ and cfg(test)-only module subtrees excluded)
+alloc_scan --allow-reserved: clean
+alloc_scan (no suppression): clean
+guard reservation call sites: Raw 1, Output 1, Saved 1, IccWindow 1, Icc 1, empty Icc 1 (expected 1 each); try_zeroed calls in production: 5 (expected 5), try_empty: 1 (expected 1)
+alloc_guard/mod.rs hash OK
+alloc_guard/sites.rs hash OK
+OK

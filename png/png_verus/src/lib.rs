@@ -72,6 +72,12 @@ mod walk_step;
 #[cfg(verus_only)]
 mod m4_fixed_witness_model;
 #[cfg(verus_only)]
+mod m4_trace_witness_model;
+#[cfg(verus_only)]
+mod m4_checksum_witness_model;
+#[cfg(verus_only)]
+mod m4_crc_witness_model;
+#[cfg(verus_only)]
 mod witness_m4_complete;
 #[cfg(verus_only)]
 mod witness_m3;

@@ -171,10 +171,10 @@ def main():
              if args.verify_module else 'full PNG')
     label = (f'Direct {scope} {args.target}: RUST_MIN_STACK={env["RUST_MIN_STACK"]} bytes; '
              f'RLIMIT_STACK={resource.getrlimit(resource.RLIMIT_STACK)}; '
-             f'exact run-{baseline} primary command; no Cargo; default solver limits')
+             f'wall_timeout=3600s; exact run-{baseline} primary command; no Cargo; default solver limits')
     result = subprocess.run(['python3', '-I', str(ROOT / 'tools/run_logged.py'),
-                             '--timeout', '1500', '--label', label, '--', *command],
-                            cwd=ROOT, env=env, stdout=subprocess.PIPE, text=True, timeout=1520)
+                             '--timeout', '3600', '--label', label, '--', *command],
+                            cwd=ROOT, env=env, stdout=subprocess.PIPE, text=True, timeout=3620)
     print(result.stdout, end='')
     run = int(re.findall(r'^\[run\] (\d+), exit', result.stdout, re.M)[-1])
     log = (ROOT / 'runs' / f'{run:04d}.log').read_text()
@@ -204,7 +204,7 @@ def main():
               'binding_pin_sha256': digest(args.pin_file), 'bindings_before_after': bindings,
               'bindings_unchanged': same_bindings,
               'vstd_pins_before_after': dependencies, 'vstd_pins_unchanged': same_pins,
-              'cargo_invoked': False, 'solver_limits_changed': False,
+              'cargo_invoked': False, 'solver_limits_changed': False, 'wall_timeout_seconds': 3600,
               'verified': verified, 'errors': errors, 'expected_count': args.expect_count,
               'accepted': accepted, 'log_sha256': hashlib.sha256(log.encode()).hexdigest()}
     (ROOT / 'runs' / f'{run:04d}.json').write_text(json.dumps(record, indent=2) + '\n')

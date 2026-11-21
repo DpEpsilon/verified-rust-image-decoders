@@ -1,0 +1,56 @@
+{
+  "status": "Generated witnesses; verification credit is recorded separately in LEDGER.md",
+  "generator": "tools/generate_m4_complete_witnesses.py",
+  "records": [
+    {
+      "name": "image/filter-type-5",
+      "gate": "complete at M4",
+      "expected_error": "InvalidFilterType",
+      "source": "spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "8513898663c6915b5d6052845eb131e909fd6eefe3a4c9a490c0575af9026453",
+      "model_function": "model_image_filter_type_5",
+      "public_function": "public_image_filter_type_5"
+    },
+    {
+      "name": "image/filter-type-255",
+      "gate": "complete at M4",
+      "expected_error": "InvalidFilterType",
+      "source": "spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "2df3ca17454215ae9bd6f6fd1a6dbc1a52647c425b2623a0ed2060cbeb866b2c",
+      "model_function": "model_image_filter_type_255",
+      "public_function": "public_image_filter_type_255"
+    },
+    {
+      "name": "precedence/adler-before-filter",
+      "gate": "complete at M4",
+      "expected_error": "AdlerMismatch",
+      "source": "spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "5297bc14ac614a061527f5bd13cb2a04a58d94d04ce7a42ed0286907220e5fb4",
+      "model_function": "model_precedence_adler_before_filter",
+      "public_function": "public_precedence_adler_before_filter"
+    },
+    {
+      "name": "precedence/index-row0-before-filter-row1",
+      "gate": "complete at M4",
+      "expected_error": "PaletteIndexOutOfRange",
+      "source": "spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "ef7e193ed076cb52c3254caa07d46b37851941df8aef56af722509e2eba466c2",
+      "model_function": "model_precedence_index_row0_before_filter_row1",
+      "public_function": "public_precedence_index_row0_before_filter_row1"
+    },
+    {
+      "name": "interlace/1x1-filter-bytes-for-empty-passes",
+      "gate": "complete at M4",
+      "expected_error": "ExcessImageData",
+      "source": "spec-frozen/VECTORS.json",
+      "source_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "74797a48388d533461c1b195b88b33eadf2ada820f6da6efce95d1e668de6437",
+      "model_function": "model_interlace_1x1_filter_bytes_for_empty_passes",
+      "public_function": "public_interlace_1x1_filter_bytes_for_empty_passes"
+    }
+  ]
+}

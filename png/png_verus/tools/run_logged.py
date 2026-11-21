@@ -19,7 +19,7 @@ def main():
     p.add_argument('command', nargs=argparse.REMAINDER)
     a = p.parse_args()
     command = a.command[1:] if a.command[:1] == ['--'] else a.command
-    assert command and 0 < a.timeout <= 1500
+    assert command and 0 < a.timeout <= 3600
     runs = ROOT / 'runs'
     runs.mkdir(exist_ok=True)
     nums = [int(f.stem) for f in runs.glob('[0-9][0-9][0-9][0-9].log')]

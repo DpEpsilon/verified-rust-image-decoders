@@ -157,4 +157,33 @@ pub(crate) proof fn envelope(z: Seq<u8>,limit: nat,effect: m::StoredEffect,finis
     reveal(m::MEnvelope);
 }
 
+proof fn dist_counts(n: nat, k: nat)
+    requires k <= inflate_verus::limits::FIXED_DIST_COUNT,
+    ensures m::count_prefix(m::fixed_dist_lengths(), n, k) == if n == 5 { k } else { 0nat },
+    decreases k,
+{
+    if k > 0 { dist_counts(n, (k - 1) as nat); }
+}
+
+proof fn dist_next(n: nat)
+    requires n <= 5,
+    ensures m::next_code(m::fixed_dist_lengths(), n) == 0,
+    decreases n,
+{
+    if n > 0 { dist_next((n - 1) as nat); dist_counts((n - 1) as nat, inflate_verus::limits::FIXED_DIST_COUNT as nat); }
+}
+
+pub(crate) proof fn fixed_dist_decode(z: Seq<u8>, start: nat, s: int)
+    requires 0 <= s < inflate_verus::limits::FIXED_DIST_COUNT, start + 5 <= 8 * z.len(),
+        wire_word(z, start, 5) == m::msb_bits(s as nat, 5),
+    ensures m::MDec(m::fixed_dist_lengths(), z, start)
+        == (m::Decoded::Symbol { symbol: s as nat, position: start + 5 }),
+{
+    m::lemma_fixed_codes(true);
+    dist_next(5); dist_counts(5, s as nat);
+    assert(m::cw(m::fixed_dist_lengths(), s) == Some(m::msb_bits(s as nat, 5)));
+    follow_word(m::fixed_dist_lengths(), z, start, s, 0);
+}
+
+
 } // verus!
