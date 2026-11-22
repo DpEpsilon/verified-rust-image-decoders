@@ -286,4 +286,111 @@ pub proof fn draw_matches_MC(c: Context,line: Seq<u8>,count: nat,rows: Seq<Seq<u
     }
 }
 
+/// Logical destination geometry, independent of the executable Sink enum.
+pub open spec fn is_wide(shape: (nat,nat,nat,nat,nat,bool)) -> bool {shape.0==1}
+pub open spec fn pixel_bytes(shape: (nat,nat,nat,nat,nat,bool)) -> nat {if shape.0==1 {8}else{4}}
+pub open spec fn grid_width(shape: (nat,nat,nat,nat,nat,bool),w: nat) -> nat {if shape.0==2 {shape.2}else{w}}
+pub open spec fn grid_x(shape: (nat,nat,nat,nat,nat,bool)) -> nat {if shape.0==2 {shape.3}else{0}}
+pub open spec fn grid_y(shape: (nat,nat,nat,nat,nat,bool)) -> nat {if shape.0==2 {shape.4}else{0}}
+pub open spec fn geometry(shape: (nat,nat,nat,nat,nat,bool),w: nat,h: nat,n: nat) -> bool {
+    w>=1 && h>=1 && shape.0<=2 && shape.1==n
+    && grid_width(shape,w)>=1 && grid_x(shape)+w<=grid_width(shape,w)
+    && pixel_bytes(shape)*(grid_y(shape)+h)*grid_width(shape,w)<=n
+}
+pub open spec fn observe(shape: (nat,nat,nat,nat,nat,bool),bytes: Seq<u8>,w: nat,x: nat,y: nat) -> Seq<u8> {
+    let o=destination_offset(shape,w,x,y);
+    bytes.subrange(o as int,(o+pixel_bytes(shape)) as int)
+}
+pub open spec fn converted(shape: (nat,nat,nat,nat,nat,bool),px: Seq<u16>,dest: Seq<u8>) -> Seq<u8> {
+    if shape.0==2 && shape.5 {crate::composite_model::over(physical(px,false),dest)}else{physical(px,shape.0==1)}
+}
+pub proof fn destination_grid(shape: (nat,nat,nat,nat,nat,bool),w: nat,x: nat,y: nat)
+    ensures destination_offset(shape,w,x,y)==pixel_bytes(shape)*((grid_y(shape)+y)*grid_width(shape,w)+grid_x(shape)+x),
+{
+    if shape.0==2 {}else if shape.0==1 {}else{}
+}
+pub proof fn observed_bounds(shape: (nat,nat,nat,nat,nat,bool),w: nat,h: nat,n: nat,x: nat,y: nat)
+    requires geometry(shape,w,h,n),x<w,y<h,
+    ensures destination_offset(shape,w,x,y)+pixel_bytes(shape)<=n,
+{
+    let W=grid_width(shape,w);let fx=grid_x(shape);let fy=grid_y(shape);let b=pixel_bytes(shape);
+    let index=(fy+y)*W+fx+x;
+    assert(index+1<=(fy+h)*W) by (nonlinear_arith)
+        requires fx+w<=W,x<w,y<h,W>=1,index==(fy+y)*W+fx+x;
+    assert(b*(index+1)<=n) by (nonlinear_arith)
+        requires index+1<=(fy+h)*W,b*(fy+h)*W<=n,b>=1;
+    destination_grid(shape,w,x,y);
+}
+
+/// Distinct pixels have disjoint physical byte intervals, not merely
+/// different starting addresses; this covers both four- and eight-byte pixels.
+pub proof fn pixel_intervals(shape: (nat,nat,nat,nat,nat,bool),w: nat,h: nat,n: nat,x: nat,y: nat,X: nat,Y: nat)
+    requires geometry(shape,w,h,n),x<w,y<h,X<w,Y<h,x!=X || y!=Y,
+    ensures destination_offset(shape,w,x,y)+pixel_bytes(shape)<=destination_offset(shape,w,X,Y)
+        || destination_offset(shape,w,X,Y)+pixel_bytes(shape)<=destination_offset(shape,w,x,y),
+{
+    let W=grid_width(shape,w);let fx=grid_x(shape);let fy=grid_y(shape);let b=pixel_bytes(shape);
+    let i=(fy+y)*W+fx+x;let j=(fy+Y)*W+fx+X;
+    if i==j {
+        assert(crate::layout_model::canvas_offset(W,fx,fy,x,y)==crate::layout_model::canvas_offset(W,fx,fy,X,Y));
+        crate::layout_model::canvas_offset_injective(W,fx,fy,w,h,x,y,X,Y);
+        assert(false);
+    }
+    destination_grid(shape,w,x,y);
+    destination_grid(shape,w,X,Y);
+    if i<j {assert(b*i+b<=b*j) by (nonlinear_arith) requires i<j,b>=1;}
+    else {assert(b*j+b<=b*i) by (nonlinear_arith) requires j<i,b>=1;}
+}
+
+/// Observe an actual placement at any image pixel. OVER reads this pixel's
+/// old destination; every different pixel is unchanged.
+pub proof fn place_observe(shape: (nat,nat,nat,nat,nat,bool),before: Seq<u8>,w: nat,h: nat,x: nat,y: nat,X: nat,Y: nat,px: Seq<u16>)
+    requires geometry(shape,w,h,before.len()),x<w,y<h,X<w,Y<h,px.len()==4,
+    ensures observe(shape,place(shape,before,w,x,y,px),w,X,Y)
+        ==if x==X && y==Y {converted(shape,px,observe(shape,before,w,X,Y))}else{observe(shape,before,w,X,Y)},
+{
+    observed_bounds(shape,w,h,before.len(),x,y);observed_bounds(shape,w,h,before.len(),X,Y);
+    let after=place(shape,before,w,x,y,px);
+    let o=destination_offset(shape,w,x,y);let q=destination_offset(shape,w,X,Y);let b=pixel_bytes(shape);
+    if x==X && y==Y {
+        assert(observe(shape,after,w,X,Y)=~=converted(shape,px,observe(shape,before,w,X,Y)));
+    }else{
+        pixel_intervals(shape,w,h,before.len(),x,y,X,Y);
+        assert(observe(shape,after,w,X,Y)=~=observe(shape,before,w,X,Y));
+    }
+}
+
+pub open spec fn row_contains(x0: nat,dx: nat,y: nat,n: nat,X: nat,Y: nat) -> bool {
+    Y==y && X%dx==x0 && X/dx<n
+}
+/// A row places each covered pixel once. In particular its OVER destination
+/// is the row's initial pixel, not the result of an earlier row-column write.
+pub proof fn render_row_observe(rows: Seq<Seq<u16>>,shape: (nat,nat,nat,nat,nat,bool),before: Seq<u8>,w: nat,h: nat,x0: nat,dx: nat,y: nat,n: nat,X: nat,Y: nat)
+    requires geometry(shape,w,h,before.len()),dx>=1,x0<dx,y<h,X<w,Y<h,
+        n<=rows.len(),n<=crate::layout_model::span(w,x0,dx),
+        forall|c: int| 0<=c<n ==> (#[trigger] rows[c]).len()==4,
+    ensures render_row(rows,shape,before,w,x0,dx,y,n).len()==before.len(),
+        observe(shape,render_row(rows,shape,before,w,x0,dx,y,n),w,X,Y)
+            ==if row_contains(x0,dx,y,n,X,Y) {converted(shape,rows[(X/dx) as int],observe(shape,before,w,X,Y))}
+                else{observe(shape,before,w,X,Y)},
+    decreases n,
+{
+    reveal_with_fuel(render_row,2);
+    if n>0 {
+        let k=(n-1) as nat;
+        render_row_observe(rows,shape,before,w,h,x0,dx,y,k,X,Y);
+        crate::layout_model::span_index(w,x0,dx,k);
+        crate::layout_model::axis_forward(x0,dx,k);
+        let prior=render_row(rows,shape,before,w,x0,dx,y,k);
+        place_observe(shape,prior,w,h,x0+k*dx,y,X,Y,rows[k as int]);
+        if X==x0+k*dx && Y==y {
+            assert(!row_contains(x0,dx,y,k,X,Y));
+        }else if row_contains(x0,dx,y,n,X,Y) {
+            crate::layout_model::axis_forward(x0,dx,X/dx);
+            vstd::arithmetic::div_mod::lemma_fundamental_div_mod(X as int,dx as int);
+            assert(X/dx<k);
+        }
+    }
+}
+
 }

@@ -21,6 +21,8 @@ use crate::raster_model as raster;
 use crate::colour_model as colour;
 #[cfg(verus_only)]
 use crate::composite_model as composite;
+#[cfg(verus_only)]
+use crate::paint_model as paint;
 
 verus! {
 
@@ -253,6 +255,18 @@ proof fn pixel_offset(w: nat,h: nat,x: nat,y: nat,bytes: nat,n: nat)
 }
 
 impl<'o> Sink<'o> {
+    proof fn pixel_geometry(&self,w: u32,h: u32)
+        requires self.wf(w,h),
+        ensures colour::geometry(self.shape(),w as nat,h as nat,self.pixels().len()),
+            self.shape().1==self.pixels().len(),self.wide_view()==(self.shape().0==1),
+    {
+        match self {
+            Self::Rgba8(out)=>{assert(4*(h as nat)*(w as nat)==4*(w as nat)*(h as nat)) by (nonlinear_arith);},
+            Self::Rgba16(out)=>{assert(8*(h as nat)*(w as nat)==8*(w as nat)*(h as nat)) by (nonlinear_arith);},
+            Self::Canvas {..}=>{},
+        }
+    }
+
     /// Current bytes, distinct from the prophetic final destination loan.
     pub(crate) closed spec fn pixels(self) -> Seq<u8> {
         match self {Self::Rgba8(out)|Self::Rgba16(out)=>out@,Self::Canvas {canvas,..}=>canvas@}
@@ -273,7 +287,9 @@ impl<'o> Sink<'o> {
     pub(crate) fn image(out: &'o mut [u8],w: u32,h: u32,wide: bool) -> (r: Self)
         requires 1<=w<=crate::limits::PNG_WIRE_MAX,1<=h<=crate::limits::PNG_WIRE_MAX,
             out.len()==(if wide {8nat}else{4nat})*(w as nat)*(h as nat),out.len()<=crate::alloc_guard::MAX_BYTES,
-        ensures r.wf(w,h),r.wide_view()==wide,r.shape().1==old(out).len(),r.loan()==final(out)@,
+        ensures r.wf(w,h),r.wide_view()==wide,
+            r.shape()==(if wide {1nat}else{0nat},old(out).len() as nat,0nat,0nat,0nat,false),
+            r.pixels()==old(out)@,r.loan()==final(out)@,
             match r {Self::Rgba8(s)|Self::Rgba16(s)=>s@==old(out)@ && final(s)@==final(out)@,_=>false},
     {if wide {Self::Rgba16(out)}else{Self::Rgba8(out)}}
     pub(crate) fn canvas(canvas: &'o mut [u8],cw: u32,fx: u32,fy: u32,w: u32,h: u32,over: bool) -> (r: Self)
@@ -304,6 +320,7 @@ impl<'o> Sink<'o> {
     /// Place pixel `(x, y)` of the image being decoded (16-bit channel values;
     /// the RGBA8 sinks receive values already converted to 8 bits).
     #[inline]
+    #[verifier::spinoff_prover]
     fn put(&mut self, width: u32,height: u32, x: u32, y: u32, px: [u16; 4])
         requires old(self).wf(width,height),x<width,y<height,
             !old(self).wide_view() ==> forall|i: int| 0<=i<4 ==> (#[trigger] px@[i])<=u8::MAX,
@@ -958,6 +975,11 @@ fn decode_exact<S: Segments>(
         final(src).pos()<=final(src).concat().len(),final(raw).len()==old(raw).len(),
         final(sink).shape()==old(sink).shape(),final(sink).wf(w,h),final(sink).loan()==old(sink).loan(),
         composite::drawing_frame(old(sink).pixels(),final(sink).pixels(),old(sink).shape(),w as nat,h as nat),
+        result.is_ok() ==> paint::progress(
+            raster::inflated(old(src).concat(),raster_context(*doc,w,h,*pol),*pol).out,
+            raster_context(*doc,w,h,*pol),colour::from_doc(doc.view(),b@),old(sink).shape(),
+            old(sink).pixels(),final(sink).pixels(),raster::count(raster_context(*doc,w,h,*pol)),0,
+            pol.palette_index==PaletteIndex::Black),
         final(ev).r1==old(ev).r1,final(ev).r4==old(ev).r4,
         match inflate_error(old(src).concat(),layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat),*pol) {
             Some(e)=>result==Err(e),None=>true},
@@ -1011,6 +1033,11 @@ fn decode_exact<S: Segments>(
     let colour=Colour::new(doc,b);
     let ghost inflated=raw@;
     let ghost target=raster::scan(inflated,ctx,0);
+    let ghost conversion=colour.view();
+    proof {
+        sink.pixel_geometry(w,h);
+        paint::start(inflated,ctx,conversion,drawing_shape,before_pixels,pol.palette_index==PaletteIndex::Black);
+    }
     assert(raster::data(old(src).concat(),ctx,*pol)==Some(target));
     let mut pos=0usize;
     let mut k=0usize;
@@ -1028,6 +1055,9 @@ fn decode_exact<S: Segments>(
             sink.wf(w,h),sink.shape()==old(sink).shape(),sink.loan()==old(sink).loan(),wide==sink.wide_view(),
             before_pixels==old(sink).pixels(),drawing_shape==sink.shape(),
             composite::drawing_frame(before_pixels,sink.pixels(),drawing_shape,w as nat,h as nat),
+            colour.view()==conversion,conversion==colour::from_doc(doc.view(),b@),
+            wide==(drawing_shape.0==1),colour::geometry(drawing_shape,w as nat,h as nat,before_pixels.len()),
+            paint::progress(inflated,ctx,conversion,drawing_shape,before_pixels,sink.pixels(),k as nat,0,pol.palette_index==PaletteIndex::Black),
             ev.r1==old(ev).r1,ev.r4==old(ev).r4,
             data_fault==None,
             data_fault==inflate_error(old(src).concat(),layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat),*pol),
@@ -1072,6 +1102,9 @@ fn decode_exact<S: Segments>(
                     sink.wf(w,h),sink.shape()==old(sink).shape(),sink.loan()==old(sink).loan(),wide==sink.wide_view(),
             before_pixels==old(sink).pixels(),drawing_shape==sink.shape(),
             composite::drawing_frame(before_pixels,sink.pixels(),drawing_shape,w as nat,h as nat),
+                    colour.view()==conversion,conversion==colour::from_doc(doc.view(),b@),
+                    wide==(drawing_shape.0==1),colour::geometry(drawing_shape,w as nat,h as nat,before_pixels.len()),
+                    paint::progress(inflated,ctx,conversion,drawing_shape,before_pixels,sink.pixels(),k as nat,row as nat,pol.palette_index==PaletteIndex::Black),
                     ev.r1==old(ev).r1,ev.r4==old(ev).r4,
                     data_fault==None,
                     data_fault==inflate_error(old(src).concat(),layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat),*pol),
@@ -1117,6 +1150,12 @@ fn decode_exact<S: Segments>(
                 assert(row_result==raster::row_result(inflated,ctx,k as nat,row as nat));
                 match row_result {Err(e)=>{assert(target==Err(e));return Err(e);},Ok(())=>{}}
                 proof {
+                    let rows=colour::MC(conversion,cur@,p.pw as nat,wide,pol.palette_index==PaletteIndex::Black).get_Ok_0();
+                    assert(paint::pass_geometry(ctx,k as nat)==(p.x0 as nat,p.y0 as nat,p.dx as nat,p.dy as nat));
+                    paint::row_step(inflated,ctx,conversion,drawing_shape,before_pixels,prior_pixels,sink.pixels(),
+                        k as nat,row as nat,pol.palette_index==PaletteIndex::Black,rows);
+                }
+                proof {
                     assert(base+row as int*(1+rb as int)+1+rb as int==base+(row as int+1)*(1+rb as int)) by (nonlinear_arith);
                 }
                 pos+=1+rb;
@@ -1127,6 +1166,7 @@ fn decode_exact<S: Segments>(
                     w as nat,h as nat,k as nat,bpp as nat);
                 raster::pass_step(inflated,ctx,k as nat,row as nat);
                 raster::complete_pass(inflated,raw@,ctx,k as nat);
+                paint::pass_finished(inflated,ctx,conversion,drawing_shape,before_pixels,sink.pixels(),k as nat,pol.palette_index==PaletteIndex::Black);
             }
         } else {
             proof {
@@ -1134,6 +1174,7 @@ fn decode_exact<S: Segments>(
                 assert(filters::valid_pass(inflated,ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,k as nat));
                 raster::pass_step(inflated,ctx,k as nat,0);
                 raster::complete_empty(inflated,raw@,ctx,k as nat);
+                paint::empty_pass(inflated,ctx,conversion,drawing_shape,before_pixels,sink.pixels(),k as nat,pol.palette_index==PaletteIndex::Black);
             }
         }
         proof {
@@ -1158,6 +1199,11 @@ pub(crate) fn decode_image<S: Segments>(
         final(src).pos()<=final(src).concat().len(),final(raw).len()==old(raw).len(),
         final(sink).shape()==old(sink).shape(),final(sink).wf(w,h),final(sink).loan()==old(sink).loan(),
         composite::drawing_frame(old(sink).pixels(),final(sink).pixels(),old(sink).shape(),w as nat,h as nat),
+        result.is_ok() ==> paint::progress(
+            raster::inflated(old(src).concat(),raster_context(*doc,w,h,*pol),*pol).out,
+            raster_context(*doc,w,h,*pol),colour::from_doc(doc.view(),b@),old(sink).shape(),
+            old(sink).pixels(),final(sink).pixels(),raster::count(raster_context(*doc,w,h,*pol)),0,
+            pol.palette_index==PaletteIndex::Black),
         final(ev).r1==old(ev).r1,final(ev).r4==old(ev).r4,
         match inflate_error(old(src).concat(),layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat),*pol) {
             Some(e)=>result==Err(e),None=>true},

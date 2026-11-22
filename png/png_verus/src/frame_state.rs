@@ -161,6 +161,15 @@ impl<'a> FrameJob<'a> {
         Self {index,control,previous,effective_dispose,reader,resume}
     }
 
+    pub(crate) proof fn reused_source(self,b: Seq<u8>,doc: Doc)
+        requires self.wf(b,doc),self.reader.is_none(),
+        ensures m::frame_stream(b,doc.view(),self.index as nat)==m::default_stream(b,doc.view()),
+    {
+        reveal(FrameJob::wf);reveal(source_document);
+        doc.selected_reuse_geometry(b);
+        m::reused_stream(b,doc.view());
+    }
+
     /// Export disposal/storage metadata without exposing frame-stream models.
     pub(crate) proof fn storage_context(self,b: Seq<u8>,doc: Doc)
         requires self.wf(b,doc),
@@ -174,7 +183,7 @@ impl<'a> FrameJob<'a> {
             self.effective_dispose<=2,
             self.effective_dispose==(if self.index==0 && self.control.dispose==2 {1}else{self.control.dispose}),
             doc.frame_ranges@[self.index as int].dispose==self.control.dispose,
-            self.reader.is_none() ==> self.index==0 && self.control.x==0 && self.control.y==0
+            self.reader.is_none() ==> doc.info.default_is_frame && self.index==0 && self.control.x==0 && self.control.y==0
                 && self.control.w==doc.ihdr.w && self.control.h==doc.ihdr.h,
     {
         reveal(FrameJob::wf);

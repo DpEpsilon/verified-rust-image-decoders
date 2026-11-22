@@ -24,6 +24,10 @@ use crate::frame_state::{FrameState, Step};
 use crate::raster_model as raster;
 #[cfg(verus_only)]
 use crate::composite_model as composite;
+#[cfg(verus_only)]
+use crate::paint_model as paint;
+#[cfg(verus_only)]
+use inflate_verus::Segments;
 use crate::walk::{Doc, Ihdr};
 
 use vstd::prelude::*;
@@ -746,6 +750,21 @@ impl<'a> Frames<'a> {
         && (match self.state.index() {Some(k)=>self.saved.is_some()==crate::frame_transport_model::saved_before(self.doc.frame_ranges@,k),None=>true})
     }
 
+    /// Current pixels have the constructor's independent default/initial values.
+    pub closed spec fn initial_pixels(&self) -> bool {
+        paint::initial_canvas(self.b@,self.doc.view(),self.pol,self.canvas@)
+    }
+
+    pub closed spec fn initial_wf(&self) -> bool {
+        (self.state.single() || self.state.index()==Some(0nat) ==> self.initial_pixels())
+        && (self.state.index()==Some(0nat) ==> self.state.previous()==None)
+    }
+    proof fn initial_context(&self)
+        requires self.initial_wf(),
+        ensures self.state.single() || self.state.index()==Some(0nat) ==> self.initial_pixels(),
+            self.state.index()==Some(0nat) ==> self.state.previous()==None,
+    {}
+
     closed spec fn restores_previous(&self,previous: crate::frame_state::Previous) -> bool {
         match previous {
             Some(((x,y,w,h),2))=>composite::saved_before_frame(self.canvas@,self.saved_pixels(),self.snapshot@,
@@ -772,11 +791,14 @@ impl<'a> Frames<'a> {
             crate::layout_model::image_buffers(doc.ihdr.view(),false,raw@,canvas@),
         ensures r.source_wf(),r.buffers_wf(),r.b==b,r.pol==pol,r.base==base,r.saved.is_none(),
             r.raw@==raw@,r.canvas@==canvas@,
+            paint::initial_canvas(b@,doc.view(),pol,canvas@) ==> r.initial_pixels() && r.initial_wf(),
             r.doc.info.view()==crate::document_model::constructor_info(doc.view()),r.doc.info.ranges_wf(b.len() as nat),
             r.state.single()==doc.actl.is_none(),!r.state.done(),r.state.previous()==None,
             r.state.index()==if doc.actl.is_some() {Some(0nat)}else{None},
     {
+        let ghost original_doc=doc.view();
         crate::frame_state::constructor_info(b,&mut doc);
+        proof {paint::initial_metadata_preserved(b@,original_doc,doc.view(),pol,canvas@);}
         let state=FrameState::new(b,&doc);
         proof {crate::frame_transport_model::saved_before_start(doc.frame_ranges@);}
         proof {reveal(Frames::source_wf);reveal(Frames::buffers_wf);reveal(crate::frame_state::source_document);}
@@ -899,7 +921,7 @@ impl<'a> Frames<'a> {
     /// guard requests (council M1BQ-Q5b; THEOREMS.md writes it
     /// `Frames::try_new(b, Strict)`).
     pub fn try_new(b: &'a [u8]) -> (r: Result<Frames<'a>,TryError>)
-        ensures match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf()
+        ensures match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf()
             && receiver.info_value().ranges_within(b.len() as nat)
             && crate::allocation_model::returned_frame_info(b@,crate::document_model::strict(),receiver.info_value().model_value()),_=>true},
             forall|e: Error,ev: crate::document_model::Events| crate::document_model::MWF_p(b@,crate::document_model::strict())
@@ -917,7 +939,7 @@ impl<'a> Frames<'a> {
     /// its errors are the constructor's. THEOREMS.md writes it
     /// `Frames::try_new(b, p)` (council M1BQ-Q5b).
     pub fn try_new_with_policy(b: &'a [u8],p: Profile) -> (r: Result<Frames<'a>,TryError>)
-        ensures match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf()
+        ensures match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf()
             && receiver.info_value().ranges_within(b.len() as nat)
             && crate::allocation_model::returned_frame_info(b@,p.walk_model(),receiver.info_value().model_value()),_=>true},
             forall|e: Error,ev: crate::document_model::Events| crate::document_model::MWF_p(b@,p.walk_model())
@@ -938,7 +960,7 @@ impl<'a> Frames<'a> {
     }
 
     fn with_record(b: &'a [u8],pol: Policy) -> (r: Result<Frames<'a>,TryError>)
-        ensures match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf()
+        ensures match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf()
             && receiver.doc.info.ranges_wf(b.len() as nat)
             && crate::allocation_model::returned_frame_info(b@,pol.walk_view(),receiver.info_value().view()),_=>true},
             forall|e: Error,ev: crate::document_model::Events| crate::document_model::MWF_p(b@,pol.walk_view())
@@ -952,7 +974,7 @@ impl<'a> Frames<'a> {
     fn with_trace(b: &'a [u8],pol: Policy,trace: &mut Trace) -> (r: Result<Frames<'a>,TryError>)
         requires old(trace).wf(),old(trace).n==0,
         ensures final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),true,false,r,final(trace).log_view()),
-            match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf()
+            match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf()
                 && receiver.doc.info.ranges_wf(b.len() as nat)
                 && crate::allocation_model::returned_frame_info(b@,pol.walk_view(),receiver.info_value().view()),_=>true},
         crate::allocation_model::propagated_inflate_error(b@,pol,true,r),
@@ -966,15 +988,28 @@ impl<'a> Frames<'a> {
         proof {crate::limits::caps_ok();crate::icc_model::short_log(trace.log_view());}
         let ghost before=doc.view();
         let ghost output_len=canvas.len();
+        let ghost default_z;
         {
             let mut src=IdatReader::for_doc(b,&doc);
+            proof {default_z=src.concat();}
             let mut sink=Sink::image(&mut canvas,doc.ihdr.w,doc.ihdr.h,false);
+            let ghost before_pixels=sink.pixels();
             let decoded=decode_image(&doc,b,&mut src,&mut raw,doc.ihdr.w,doc.ihdr.h,&pol,&mut ev,&mut sink);
+            let ghost after_pixels=sink.pixels();
             sink.finish();
+            proof {assert(canvas@==after_pixels);}
             match decoded {Err(e)=>return Err(TryError::Format(e)),Ok(())=>{}}
+            proof {
+                paint::image_from_progress(raster::inflated(default_z,paint::default_raster(doc.view(),pol),pol).out,
+                    paint::default_raster(doc.view(),pol),crate::colour_model::from_doc(doc.view(),b@),before_pixels,after_pixels,false,
+                    pol.palette_index==crate::policy::PaletteIndex::Black);
+            }
         }
         assert(canvas.len()==output_len);
-        if doc.actl.is_some() && !doc.info.default_is_frame {zero_all(&mut canvas);}
+        if doc.actl.is_some() && !doc.info.default_is_frame {
+            zero_all(&mut canvas);
+            proof {paint::initial_transparent(b@,doc.view(),pol,canvas@);}
+        }else{proof {paint::initial_decoded(b@,doc.view(),pol,canvas@,default_z);}}
         let receiver=Frames::from_decoded(b,pol,doc,raw,canvas,ev);
         assert(crate::allocation_model::returned_frame_info(b@,pol.walk_view(),receiver.info_value().view()));
         Ok(receiver)
@@ -986,8 +1021,8 @@ impl<'a> Frames<'a> {
     /// the sequence. Fused: after `Ok(None)` or any error every later call
     /// returns `Ok(None)` without allocating or decoding (D3).
     pub fn try_next(&mut self) -> (r: Result<Option<FrameView<'_>>,TryError>)
-        requires old(self).source_wf(),old(self).buffers_wf(),
-        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).info_value()==old(self).info_value(),
+        requires old(self).source_wf(),old(self).buffers_wf(),old(self).initial_wf(),
+        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).initial_wf(),final(self).info_value()==old(self).info_value(),
     {
         let mut trace=Trace::new();
         self.next_with_trace(&mut trace)
@@ -1020,6 +1055,7 @@ impl<'a> Frames<'a> {
         ensures final(self).source_wf(),final(self).buffers_wf(),final(self).doc==old(self).doc,
             final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
             final(self).state==old(self).state,final(self).raw==old(self).raw,
+            prev.is_none() ==> final(self).canvas@==old(self).canvas@,
             final(self).saved.is_some()==old(self).saved.is_some(),
             composite::dispose_regions(old(self).canvas@,old(self).saved_pixels(),old(self).doc.ihdr.w as nat,previous_regions(prev))==Some(final(self).canvas@),
             op!=2 ==> final(self).saved==old(self).saved && final(self).snapshot==old(self).snapshot,
@@ -1062,13 +1098,46 @@ impl<'a> Frames<'a> {
         }
     }
 
+    /// Keep the independent IDAT source/normalization equation out of the
+    /// query that also handles fdAT inflation and the Saved invariant.
+    proof fn reused_values(&self,job: crate::frame_state::FrameJob<'a>,before: Seq<u8>)
+        requires self.source_wf(),self.buffers_wf(),job.wf(self.b@,self.doc),job.reader.is_none(),
+            paint::initial_canvas(self.b@,self.doc.view(),self.pol,before),
+            self.canvas@==if job.control.blend==1 {composite::zero_alpha(before)}else{before},
+        ensures composite::drawing_frame(before,self.canvas@,
+                (2,before.len(),self.doc.ihdr.w as nat,job.control.x as nat,job.control.y as nat,job.control.blend==1),
+                job.control.w as nat,job.control.h as nat),
+            match crate::document_model::frame_stream(self.b@,self.doc.view(),job.index as nat) {
+                Some(z)=>paint::progress(raster::inflated(z,crate::image::raster_context(self.doc,job.control.w,job.control.h,self.pol),self.pol).out,
+                    crate::image::raster_context(self.doc,job.control.w,job.control.h,self.pol),crate::colour_model::from_doc(self.doc.view(),self.b@),
+                    (2,before.len(),self.doc.ihdr.w as nat,job.control.x as nat,job.control.y as nat,job.control.blend==1),
+                    Seq::new(before.len(),|j: int| 0u8),self.canvas@,
+                    raster::count(crate::image::raster_context(self.doc,job.control.w,job.control.h,self.pol)),0,
+                    self.pol.palette_index==crate::policy::PaletteIndex::Black),
+                None=>false,
+            },
+    {
+        hide(raster::inflated);hide(Doc::wf);hide(crate::document_model::frame_stream);
+        reveal(Frames::source_wf);reveal(Frames::buffers_wf);
+        job.storage_context(self.b@,self.doc);job.reused_source(self.b@,self.doc);
+        self.doc.info.animation_view();
+        paint::initial_default_source(self.b@,self.doc.view(),self.pol,before);
+        let z=crate::document_model::default_stream(self.b@,self.doc.view()).unwrap();
+        paint::reuse_progress(raster::inflated(z,paint::default_raster(self.doc.view(),self.pol),self.pol).out,
+            paint::default_raster(self.doc.view(),self.pol),crate::colour_model::from_doc(self.doc.view(),self.b@),before,
+            job.control.blend==1,self.pol.palette_index==crate::policy::PaletteIndex::Black);
+        composite::full_drawing_frame(before,self.canvas@,self.doc.ihdr.w as nat,self.doc.ihdr.h as nat,job.control.blend==1);
+    }
+
     /// Weak selected-image continuation: preserve layout and source metadata.
+    #[verifier::spinoff_prover]
     fn draw_selected(&mut self,job: crate::frame_state::FrameJob<'a>) -> (r: Result<Events,TryError>)
         requires old(self).source_wf(),old(self).buffers_wf(),old(self).state.done(),job.wf(old(self).b@,old(self).doc),
             job.effective_dispose==2 ==> old(self).snapshot@==Some(old(self).canvas@)
                 && match old(self).saved {Some(v)=>composite::snapshot_effect(v@,old(self).canvas@,old(self).doc.ihdr.w as nat,
                     composite::rect(job.control.x,job.control.y,job.control.w,job.control.h)),None=>false},
             job.effective_dispose==2 ==> old(self).saved.is_some(),
+            job.reader.is_none() ==> old(self).initial_pixels(),
         ensures final(self).source_wf(),final(self).buffers_wf(),final(self).doc==old(self).doc,
             final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
             final(self).state==old(self).state,final(self).saved==old(self).saved,final(self).snapshot==old(self).snapshot,
@@ -1076,6 +1145,15 @@ impl<'a> Frames<'a> {
                 (2,old(self).canvas@.len(),old(self).doc.ihdr.w as nat,job.control.x as nat,job.control.y as nat,job.control.blend==1),
                 job.control.w as nat,job.control.h as nat),
             final(self).restores_previous(Some(((job.control.x,job.control.y,job.control.w,job.control.h),job.effective_dispose))),
+            r.is_ok() ==> match crate::document_model::frame_stream(old(self).b@,old(self).doc.view(),job.index as nat) {
+                Some(z)=>paint::progress(raster::inflated(z,crate::image::raster_context(old(self).doc,job.control.w,job.control.h,old(self).pol),old(self).pol).out,
+                    crate::image::raster_context(old(self).doc,job.control.w,job.control.h,old(self).pol),crate::colour_model::from_doc(old(self).doc.view(),old(self).b@),
+                    (2,old(self).canvas@.len(),old(self).doc.ihdr.w as nat,job.control.x as nat,job.control.y as nat,job.control.blend==1),
+                    if job.reader.is_none() {Seq::new(old(self).canvas@.len(),|j: int| 0u8)}else{old(self).canvas@},
+                    final(self).canvas@,raster::count(crate::image::raster_context(old(self).doc,job.control.w,job.control.h,old(self).pol)),0,
+                    old(self).pol.palette_index==crate::policy::PaletteIndex::Black),
+                None=>false,
+            },
             r.is_err() ==> matches!(r,Err(TryError::Format(_))),
     {
         hide(raster::data);hide(raster::completed);hide(raster::inflated);
@@ -1087,8 +1165,8 @@ impl<'a> Frames<'a> {
         let ghost geometry=(2nat,before.len(),w as nat,f.x as nat,f.y as nat,f.blend==1);
                 let mut fev=self.base;
                 if job.reader.is_none() {
-                    if f.blend==1 {zero_alpha_rgb(&mut self.canvas);}
-                    proof {composite::full_drawing_frame(before,self.canvas@,w as nat,h as nat,f.blend==1);}
+                    normalize_reused(&mut self.canvas,f.blend==1);
+                    proof {self.reused_values(job,before);}
                 }else {
                     let mut src=job.reader.unwrap();
                     proof {
@@ -1119,26 +1197,44 @@ impl<'a> Frames<'a> {
     fn finish_job(&mut self,job: crate::frame_state::FrameJob<'a>) -> (r: Result<Events,TryError>)
         requires old(self).source_wf(),old(self).buffers_wf(),old(self).state.done(),job.wf(old(self).b@,old(self).doc),
             old(self).restores_previous(job.previous),
+            job.reader.is_none() ==> old(self).initial_pixels() && job.previous.is_none(),
             crate::frame_state::previous_needs_saved(job.previous) || job.effective_dispose==2 ==> old(self).saved.is_some(),
             old(self).saved.is_some()==crate::frame_transport_model::saved_before(old(self).doc.frame_ranges@,job.index as nat+1),
-        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).doc==old(self).doc,
+        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).initial_wf(),final(self).doc==old(self).doc,
             final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
             final(self).saved.is_some()==old(self).saved.is_some(),
             r.is_err() ==> final(self).state.done() && matches!(r,Err(TryError::Format(_))),
             r.is_ok() ==> final(self).state==job.resume,
+            r.is_ok() ==> match crate::document_model::frame_stream(old(self).b@,old(self).doc.view(),job.index as nat) {
+                Some(z)=>paint::MK(z,crate::image::raster_context(old(self).doc,job.control.w,job.control.h,old(self).pol),
+                    crate::colour_model::from_doc(old(self).doc.view(),old(self).b@),old(self).pol,old(self).doc.ihdr.w as nat,
+                    composite::rect(job.control.x,job.control.y,job.control.w,job.control.h),job.control.blend==1,
+                    previous_regions(job.previous),old(self).snapshot@,old(self).canvas@,final(self).canvas@,job.reader.is_none()),
+                None=>false,
+            },
     {
         hide(Doc::wf);hide(crate::frame_transport_model::control_record);
         proof {job.storage_context(self.b@,self.doc);}
         let f=job.control;let resume=job.resume;
+        let ghost reuse=job.reader.is_none();
+        let ghost original=self.canvas@;
+        let ghost reference=self.snapshot@;
+        proof {paint::reference_disposal(original,self.saved_pixels(),reference,self.doc.ihdr.w as nat,previous_regions(job.previous));}
         self.dispose_and_save(job.previous,(f.x,f.y,f.w,f.h),job.effective_dispose);
         let events=match self.draw_selected(job) {Ok(events)=>events,Err(e)=>return Err(e)};
+        proof {
+            if reuse {
+                let zero=Seq::new(original.len(),|j: int| 0u8);
+                composite::full_drawing_frame(zero,self.canvas@,self.doc.ihdr.w as nat,self.doc.ihdr.h as nat,f.blend==1);
+            }
+        }
         self.commit_source(resume);
         Ok(events)
     }
 
     fn next_with_trace(&mut self,trace: &mut Trace) -> (r: Result<Option<FrameView<'_>>,TryError>)
-        requires old(self).source_wf(),old(self).buffers_wf(),old(trace).wf(),old(trace).n==0,
-        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).doc==old(self).doc,
+        requires old(self).source_wf(),old(self).buffers_wf(),old(self).initial_wf(),old(trace).wf(),old(trace).n==0,
+        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).initial_wf(),final(self).doc==old(self).doc,
             final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
             final(trace).wf(),crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),final(trace).log_view().len()<=1,
             forall|i: int| 0<=i<final(trace).log_view().len() ==> (#[trigger] final(trace).log_view()[i]).0==AllocSite::Saved
@@ -1151,7 +1247,7 @@ impl<'a> Frames<'a> {
                 {seq![(AllocSite::Saved,old(self).canvas@.len(),final(self).saved.is_some())]}
                 else {Seq::<(AllocSite,nat,bool)>::empty()},
     {
-        hide(Frames::buffers_wf);
+        hide(Frames::buffers_wf);hide(paint::MK);
         hide(composite::dispose_regions);hide(composite::snapshot_effect);
         hide(composite::copy_rect);hide(composite::clear_rect);
         hide(Doc::wf);hide(crate::document_model::frame_stream);
@@ -1159,7 +1255,7 @@ impl<'a> Frames<'a> {
         let ghost prior_state=self.state;
         let ghost prior_saved=self.saved.is_some();
         let ghost wanted=self.saved_call();
-        proof {self.saved_context();}
+        proof {self.saved_context();self.initial_context();}
         let w=self.doc.ihdr.w;let h=self.doc.ihdr.h;
         match self.begin_source() {
             Step::Done=>Ok(None),
@@ -1172,7 +1268,10 @@ impl<'a> Frames<'a> {
                     assert(prior_saved==crate::frame_transport_model::saved_before(self.doc.frame_ranges@,job.index as nat));
                 }
                 let k=job.index;let f=job.control;let resume=job.resume;
-                proof {assert(wanted==(k>0 && f.dispose==2));}
+                proof {
+                    assert(wanted==(k>0 && f.dispose==2));
+                    if job.reader.is_none() {assert(k==0);assert(job.previous.is_none());assert(self.initial_pixels());}
+                }
                 match self.ensure_saved(k>0 && f.dispose==2,trace) {Ok(())=>{},Err(e)=>return Err(e)}
                 let fev=match self.finish_job(job) {Ok(ev)=>ev,Err(e)=>return Err(e)};
                 Ok(Some(FrameView {rgba:&self.canvas,rect:(f.x,f.y,f.w,f.h),delay:Some((f.delay_num,f.delay_den)),
@@ -1181,6 +1280,13 @@ impl<'a> Frames<'a> {
         }
     }
 }
+
+/// Expose only the complete normalization equation to the combined frame query.
+fn normalize_reused(canvas: &mut [u8],blend: bool)
+    requires old(canvas).len()<=crate::alloc_guard::MAX_BYTES,
+    ensures final(canvas).len()==old(canvas).len(),
+        final(canvas)@==if blend {composite::zero_alpha(old(canvas)@)}else{old(canvas)@},
+{if blend {zero_alpha_rgb(canvas);}}
 
 fn zero_alpha_rgb(canvas: &mut [u8])
     requires old(canvas).len()<=crate::alloc_guard::MAX_BYTES,

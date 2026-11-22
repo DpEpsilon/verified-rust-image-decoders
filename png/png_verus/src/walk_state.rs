@@ -73,6 +73,7 @@ impl Doc {
         requires self.wf(b),self.source_partition(),self.info.default_is_frame,
         ensures self.frame_ranges@.len()>0,self.frame_ranges@[0].x==0,self.frame_ranges@[0].y==0,
             self.frame_ranges@[0].width==self.ihdr.w,self.frame_ranges@[0].height==self.ihdr.h,
+            match self.frame_ranges@[0].source {Source::Idat=>true,_=>false},
     {
         self.selected_frame_fits(b,0);
     }

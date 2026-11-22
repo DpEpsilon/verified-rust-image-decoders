@@ -1,5 +1,29 @@
 # png_verus ledger
 
+## M5 per-position source pixels and MK checkpoint (2026-11-22)
+
+**T8 per-step MK pixel values, including initial/default pixels, verified; M5 OPEN.** Canonical host **519** and i686 **520** each verify **3,442, zero errors**, with every generated witness enabled, `--no-cheating`, default solver limits, 256 MiB direct-process stacks and the authorised 3,600-second process cap. Their identical 73-file inventories match the current tree; imports and existing vstd hashes/mtimes remain unchanged. Wall times are **30m45s host** and **27m41s i686**. Base `6383ddb`; `evidence/m5-t8-values-checkpoint-0519-0520.json` records scope and anchors.
+
+| Component | Checked relation |
+|---|---|
+| Independent source pixels | `paint_model::source_pixel` uses the Adam7 inverse cell, independent MF row reconstruction from the mathematical inflate output, and independent MC conversion from the original document/input colour ranges |
+| Physical observation | `place_observe` and `render_row_observe` prove exact destination pixel blocks for RGBA8, big-endian RGBA16 and canvas; distinct pixels have disjoint byte intervals |
+| Complete raster values | Actual nested `decode_exact` loops maintain per-position paint progress; every visited source cell is successful MC and has its exact SOURCE/OVER value, while every unvisited pixel retains its original destination |
+| OVER destination | Adam7 inverse/bijection and row-column injectivity prove each source pixel is placed once, so OVER reads that pixel's pre-frame destination, not a prior same-frame write |
+| Initial/default pixels | The real constructor's decode proves independent default-image RGBA values; only a default image outside the animation clears the initial canvas to transparent black |
+| Reused IDAT frame | The initial-state invariant comes from the constructor and is preserved by the public iterator; reused IDAT pixels equal SOURCE or integer OVER on a conceptual transparent canvas, including zero-alpha RGB normalization |
+| Per-step compositor | Actual `finish_job` proves `paint_model::MK`: previous NONE/BACKGROUND/reference-based PREVIOUS disposal, independent source-frame pixels, the complete per-position paint relation and the outside-rectangle footprint |
+
+The source pixel definition calls no executable decoder and uses no expected-vector constants. Successful progress includes source-pixel success, rather than allowing an error fallback to fabricate channels. `MK` is a relational equality stated per source position plus the canvas-byte footprint; it uses the actual prior canvas and the causally recorded pre-previous-frame reference. The earlier restore-effect invariant supplies that reference without specifying Saved's layout. Frame 0 PREVIOUS remains BACKGROUND, and exhaustion still does not apply the last disposal.
+
+The constructor now proves the independent initial-pixel property, and the public iterator's additional initial-state invariant is established by every real constructor and preserved through completed/error states. The source-only supplied-buffer witness remains source-only: it gains initial-pixel validity only when its supplied buffer satisfies the independent initial-canvas predicate. No arbitrary buffer is granted pixel correctness. Per-step MK is not the M6 integrated whole-call-sequence `MFr` theorem or complete MS/MS16 API equality.
+
+Runtime **518** is bound to the accepted source and passes release/fault tests, all seven council tests, cap/allocation self-tests and native no_std. E7 remains **846/848 pass, zero failures, exactly two unrun compatibility skips**. Control **521** validates source/import/vstd pins, protected files against `6383ddb`, restored scratch trees, whitespace and no verifier/solver processes. Default-limit proof repairs use checked defining-module bridges and query isolation, never raised limits.
+
+As directed, development logs and selected-source snapshots remain under `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-work/6383ddb-20261122` outside the repo; none is copied into this checkpoint's evidence. Accepted full-run metadata/logs, final-source runtime binding/log, final control and the compact checkpoint packet are retained. The accepted source inventory and existing direct-launch tooling suffice to replay the full canonical runs.
+
+MFr-based SavedAt reachability, cumulative A-PNG-4 log ownership, all **37 M5 witnesses** and E6 classifications, M5 verifier kills and review gates remain open. Frames still owns no cumulative sealed allocation log; the exact real call-owned Trace log is not claimed as one. No new witness or mutation credit is added. No protected file or question changed, no new vstd/cache was built, and no Cargo verification, commit or push occurred. M5 is not signed off or sign-off-ready; M4's 71 complete pixel witnesses remain due at M6.
+
 ## M5 whole-frame footprint and saved-reference checkpoint (2026-11-22)
 
 **Whole-frame drawing footprint, IDAT normalization and saved-before-frame effect verified; full T8/M5 OPEN.** Canonical host **500** and i686 **501** each verify **3,408, zero errors**, with all generated witnesses enabled, `--no-cheating`, default solver limits, 256 MiB direct-process stacks and the authorised 3,600-second process cap. Their identical 72-file inventories match the current tree; import bindings and existing vstd hashes/mtimes remain unchanged. Wall times are **28m11s host** and **27m42s i686**. The base is `12e7193`; `evidence/m5-t8-paint-checkpoint-0500-0501.json` records the scope and proof anchors. The sandbox restart preserved every required input under `/home/ws`; replay requires no `/tmp` file.

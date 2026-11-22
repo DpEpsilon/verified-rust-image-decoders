@@ -16,6 +16,9 @@ impl Info {
     pub(crate) proof fn public_observations(self,input_len: nat)
         ensures self.model_value()==self.view(),self.ranges_within(input_len)==self.ranges_wf(input_len),
     {}
+    pub(crate) proof fn animation_view(self)
+        ensures self.view().default_is_frame==self.default_is_frame,self.view().frame_count==self.frame_count,
+    {}
     /// sBIT is the only stored array with a runtime prefix count. bKGD's
     /// prefix is derived from color_type and is always one or three samples.
     pub(crate) open spec fn bkgd_count(self) -> nat {

@@ -390,4 +390,9 @@ pub(crate) proof fn palette_default_walk(b: Seq<u8>,h: crate::model::Ihdr,z: Seq
 }
 
 
+pub proof fn reused_stream(b: Seq<u8>,doc: Doc)
+    requires doc.frames.len()>0,match doc.frames[0].source {Source::Idat=>true,_=>false},
+    ensures frame_stream(b,doc,0)==default_stream(b,doc),
+{}
+
 } // verus!
