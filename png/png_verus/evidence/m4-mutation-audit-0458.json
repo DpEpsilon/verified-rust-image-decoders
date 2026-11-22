@@ -1,0 +1,74 @@
+{
+  "kind": "M4 mutation evidence audit; not a verifier run or ghost-code review",
+  "mutation_index_sha256": "4b1849abaaa1040de968da97911c663ea3fa694ab45217c6bc9f16ed155b344b",
+  "audit_script_sha256": "89f665b7fbb5ffd3c8752f4606ae6e48a4ca9648d6fc76dae2f67319a9762e6f",
+  "base_commit": "b8c6629bd2e60134537e4f3339140b8ff207b8bb",
+  "canonical_source_tree_sha256": "d0a34a4c7a4aece55fd61f0c8fb6f170e490b8afbb97316b560f41f3963b6a65",
+  "canonical_source_inventory_count": 70,
+  "full_checkpoint_inputs_unchanged": 69,
+  "canonical_source_matches_before": true,
+  "canonical_rust_source_matches_base_commit": true,
+  "archives_and_restored_scratch_copies": [
+    {
+      "run": 452,
+      "selector": "unmutated-base-control",
+      "archive_files_checked": 70,
+      "compiled_source_tree_sha256": "32f5345bc41668e174d50f7e84b8cd8cf0dbe5c7711878e25e5c8bea0b94affb",
+      "restored_scratch_matches_canonical": true
+    },
+    {
+      "run": 453,
+      "selector": "paeth-pb-strict",
+      "archive_files_checked": 70,
+      "compiled_source_tree_sha256": "052991f6b2b323ff4013f4026e497ad26a0490927d3badf7c2d59f9ee1db3d0c",
+      "restored_scratch_matches_canonical": true
+    },
+    {
+      "run": 454,
+      "selector": "average-round-up",
+      "archive_files_checked": 70,
+      "compiled_source_tree_sha256": "216144e677110670331807a5d7035b9eb0908b9423e172d0da1b712498bde99e",
+      "restored_scratch_matches_canonical": true
+    },
+    {
+      "run": 455,
+      "selector": "rgb8-sub-bpp-one",
+      "archive_files_checked": 70,
+      "compiled_source_tree_sha256": "17ba9993a93b0f40ccca860dac2d2692322d4a45287cdea381b81c571d8c893f",
+      "restored_scratch_matches_canonical": true
+    },
+    {
+      "run": 456,
+      "selector": "adam7-empty-pass-filter-byte",
+      "archive_files_checked": 70,
+      "compiled_source_tree_sha256": "06e9f0967cf98552ef05f705b9a79f6d3f2abdc222f710639c02447383808c05",
+      "restored_scratch_matches_canonical": true
+    },
+    {
+      "run": 457,
+      "selector": "adam7-swap-passes-4-5-one-based",
+      "archive_files_checked": 70,
+      "compiled_source_tree_sha256": "54b04bebd6aeba2ac7fd63e15a475866ff4c2926b146709d6a0ce03d833d8497",
+      "restored_scratch_matches_canonical": true
+    }
+  ],
+  "negative_controls_rejected": [
+    "wrong metadata hash",
+    "wrong archive hash",
+    "wrong log hash",
+    "wrong function",
+    "wrong diagnostic",
+    "missing no-cheating",
+    "false restoration",
+    "passing mutant summary",
+    "altered generated-leaf selector"
+  ],
+  "host_and_i686_bindings_checked": true,
+  "vstd_hashes_and_mtimes_unchanged": true,
+  "protected_owner_baseline": "605bebd",
+  "protected_files_unchanged": true,
+  "whitespace_clean": true,
+  "active_verifier_or_solver_processes": [],
+  "accepted_checkpoint": false,
+  "sign_off_claimed": false
+}

@@ -3395,8 +3395,8 @@
       "number": 19,
       "change": "Paeth uses pb < pc instead of <=",
       "fixture": "filter/4-ct2-d8",
-      "status": "NOT RUN: no verifier-kill credit",
-      "required_evidence": "Disposable implementation-side copy, all theorems enabled, retained failing verifier diagnostics; runtime failure alone does not count.",
+      "status": "VERIFIER-KILLED: M2-style base pass, semantic proof failure",
+      "required_evidence": "Met by exact archived implementation-side scratch copy with unchanged model/contracts, --no-cheating/default limits, and retained semantic verifier diagnostics. Six independent generated witness leaves omitted under M2 accepted base-pass precedent; no module/function verification filters; no new full-crate checkpoint credit.",
       "proof_references": [
         {
           "symbol": "image::paeth",
@@ -3410,14 +3410,24 @@
           "line": 21,
           "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
         }
-      ]
+      ],
+      "selector": "paeth-pb-strict",
+      "run": 453,
+      "failed_function": "image::paeth",
+      "diagnostic": "error: postcondition not satisfied\n   --> src/image.rs:429:13\n    |\n429 |       ensures r==filters::paeth(a,b,c),\n    |               ^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n435 | /     if pa <= pb && pa <= pc {\n436 | |         a\n437 | |     } else if pb < pc {\n438 | |         b\n439 | |     } else {\n440 | |         c\n441 | |     }\n    | |_____- at the end of the function body\n\n",
+      "metadata_file": "evidence/m4-mutation-19-0453.json",
+      "metadata_sha256": "b503ca1dba491a1a21a5817d5c55d0dfa36212570047c1c4234142c923aa7a7a",
+      "log": "evidence/m4-mutation-19-0453.log",
+      "log_sha256": "7359ccf8c8bc74e6415c28ed28b18560ccc60768648252dd564bec6e3d915760",
+      "source_archive": "evidence/m4-mutation-paeth-pb-strict-source.tar.gz",
+      "source_archive_sha256": "4e29ac88dfae4e00ef99d93c6d43a67a27ff6e3eb0a88f114710f8911af1463f"
     },
     {
       "number": 20,
       "change": "Average rounds up rather than taking the floor",
       "fixture": "filter/3-ct0-d8",
-      "status": "NOT RUN: no verifier-kill credit",
-      "required_evidence": "Disposable implementation-side copy, all theorems enabled, retained failing verifier diagnostics; runtime failure alone does not count.",
+      "status": "VERIFIER-KILLED: M2-style base pass, semantic proof failure",
+      "required_evidence": "Met by exact archived implementation-side scratch copy with unchanged model/contracts, --no-cheating/default limits, and retained semantic verifier diagnostics. Six independent generated witness leaves omitted under M2 accepted base-pass precedent; no module/function verification filters; no new full-crate checkpoint credit.",
       "proof_references": [
         {
           "symbol": "image::average",
@@ -3431,14 +3441,24 @@
           "line": 455,
           "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
         }
-      ]
+      ],
+      "selector": "average-round-up",
+      "run": 454,
+      "failed_function": "image::average",
+      "diagnostic": "error: postcondition not satisfied\n   --> src/image.rs:447:13\n    |\n447 |     ensures r as nat==(a as nat+b as nat)/2,\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n451 |     ((sum+1)>>1) as u8\n    |     ------------ at the end of the function body\n\n",
+      "metadata_file": "evidence/m4-mutation-20-0454.json",
+      "metadata_sha256": "84fbde7309f1988ee16c3ce6537ee4d680d102d3609a47519401d0fff084d575",
+      "log": "evidence/m4-mutation-20-0454.log",
+      "log_sha256": "3367f7e853aa05ba99fef90cdcda74945783aad7bb47bfa04a87ac4196e61fea",
+      "source_archive": "evidence/m4-mutation-average-round-up-source.tar.gz",
+      "source_archive_sha256": "fa1523a882ea3e0de637d28a6664e3bc9aa40e114a98060439f76de3aa79d8f5"
     },
     {
       "number": 21,
       "change": "RGB8 Sub uses bpp=1",
       "fixture": "filter/1-ct2-d8",
-      "status": "NOT RUN: no verifier-kill credit",
-      "required_evidence": "Disposable implementation-side copy, all theorems enabled, retained failing verifier diagnostics; runtime failure alone does not count.",
+      "status": "VERIFIER-KILLED: M2-style base pass, semantic proof failure",
+      "required_evidence": "Met by exact archived implementation-side scratch copy with unchanged model/contracts, --no-cheating/default limits, and retained semantic verifier diagnostics. Six independent generated witness leaves omitted under M2 accepted base-pass precedent; no module/function verification filters; no new full-crate checkpoint credit.",
       "proof_references": [
         {
           "symbol": "header::Ihdr::bpp",
@@ -3458,14 +3478,24 @@
           "line": 846,
           "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
         }
-      ]
+      ],
+      "selector": "rgb8-sub-bpp-one",
+      "run": 455,
+      "failed_function": "image::unfilter",
+      "diagnostic": "error: assertion failed\n   --> src/image.rs:499:20\n    |\n499 |             assert(a==filters::left(cur@,bpp as nat,i as nat));\n    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed\n\n",
+      "metadata_file": "evidence/m4-mutation-21-0455.json",
+      "metadata_sha256": "2cc641f765e24c5197786fe7cf35253520814e2b735406cfa970af1f9ad229e6",
+      "log": "evidence/m4-mutation-21-0455.log",
+      "log_sha256": "a729c74c61cacf4dc94d021464a5a2af2141be3521554416453a953e8aa37fb0",
+      "source_archive": "evidence/m4-mutation-rgb8-sub-bpp-one-source.tar.gz",
+      "source_archive_sha256": "888a7f3c110742c3904f2a66b2eb3cddc4c056ffdb754f668be46ad726eadb6a"
     },
     {
       "number": 22,
       "change": "Count a filter byte for empty Adam7 passes",
       "fixture": "interlace/1x1-filter-bytes-for-empty-passes",
-      "status": "NOT RUN: no verifier-kill credit",
-      "required_evidence": "Disposable implementation-side copy, all theorems enabled, retained failing verifier diagnostics; runtime failure alone does not count.",
+      "status": "VERIFIER-KILLED: M2-style base pass, semantic proof failure",
+      "required_evidence": "Met by exact archived implementation-side scratch copy with unchanged model/contracts, --no-cheating/default limits, and retained semantic verifier diagnostics. Six independent generated witness leaves omitted under M2 accepted base-pass precedent; no module/function verification filters; no new full-crate checkpoint credit.",
       "proof_references": [
         {
           "symbol": "image::raw_size",
@@ -3485,14 +3515,24 @@
           "line": 391,
           "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
         }
-      ]
+      ],
+      "selector": "adam7-empty-pass-filter-byte",
+      "run": 456,
+      "failed_function": "image::raw_size",
+      "diagnostic": "error: invariant not satisfied at end of loop body\n   --> src/image.rs:116:13\n    |\n116 |             r==layout::prefix(ihdr.interlace,bits as nat,w as nat,h as nat,k as nat),\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n",
+      "metadata_file": "evidence/m4-mutation-22-0456.json",
+      "metadata_sha256": "ee183151f4b48509849f73e44426d7056896ed9804b7ec48e9e251a6ad8d622e",
+      "log": "evidence/m4-mutation-22-0456.log",
+      "log_sha256": "618f6a3b75d1e05f3f134a16cbfde4a2d795268be0e1397cc30c52c6522f60f4",
+      "source_archive": "evidence/m4-mutation-adam7-empty-pass-filter-byte-source.tar.gz",
+      "source_archive_sha256": "b20ca249dfe82b60be4f090a18d0c9e935cafc3e7f60cde7479edbc3c98798d3"
     },
     {
       "number": 23,
       "change": "Swap Adam7 passes 4 and 5 in the implementation",
       "fixture": "interlace/ct0-d1-5x5",
-      "status": "NOT RUN: no verifier-kill credit",
-      "required_evidence": "Disposable implementation-side copy, all theorems enabled, retained failing verifier diagnostics; runtime failure alone does not count.",
+      "status": "VERIFIER-KILLED: M2-style base pass, semantic proof failure",
+      "required_evidence": "Met by exact archived implementation-side scratch copy with unchanged model/contracts, --no-cheating/default limits, and retained semantic verifier diagnostics. Six independent generated witness leaves omitted under M2 accepted base-pass precedent; no module/function verification filters; no new full-crate checkpoint credit.",
       "proof_references": [
         {
           "symbol": "image::ADAM7",
@@ -3512,7 +3552,17 @@
           "line": 315,
           "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
         }
-      ]
+      ],
+      "selector": "adam7-swap-passes-4-5-one-based",
+      "run": 457,
+      "failed_function": "image::pass",
+      "diagnostic": "error: assertion failed\n  --> src/image.rs:61:16\n   |\n61 |         assert((x0 as nat,y0 as nat,dx as nat,dy as nat)==layout::geometry(k as nat));\n   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed\n\n",
+      "metadata_file": "evidence/m4-mutation-23-0457.json",
+      "metadata_sha256": "218c7cf1578b3b54f9e44f01a3bec69e01355bd328131f4dd6fe9f52fee9414c",
+      "log": "evidence/m4-mutation-23-0457.log",
+      "log_sha256": "99c41b7c11fcda90fc836856600117775e0c198dda624044b7bf20b95fbf4a2a",
+      "source_archive": "evidence/m4-mutation-adam7-swap-passes-4-5-one-based-source.tar.gz",
+      "source_archive_sha256": "5e19e94424cea7c4cc66fe6af17acdda2093b28a194f435b33cd4adde30108ad"
     }
   ],
   "allocation_mutation_schedule": {
@@ -3594,7 +3644,7 @@
     {
       "gate": "Milestone mutations killed by verifier failure",
       "manifest_lines": "THEOREMS.md:256 and :266; mutation list :214 onward",
-      "status": "NOT MET",
+      "status": "MET FOR M4 MUTATIONS 19\u201323",
       "M4_related_mutations": [
         19,
         20,
@@ -3602,9 +3652,23 @@
         22,
         23
       ],
-      "verifier_kills_evidenced_in_this_work": 0,
-      "qualification": "Runtime failures, source-lint negative controls and development solver failures are not mutation kills.",
-      "required": "Disposable implementation-side copies with all theorems enabled and retained failing verifier diagnostics."
+      "verifier_kills_evidenced_in_this_work": 5,
+      "qualification": "Semantic proof failures in the intended changed functions; no runtime, lint, type-check, resource-limit, panic or timeout kill credited. Base pass follows M2 precedent; it omits six independent generated witness leaves but retains all implementation, independent-model, common proof and manual witness modules. No new full-crate checkpoint credit.",
+      "required": "Satisfied for this M4 scope; all-forty and alloc-delta mutation completion remains due at M6.",
+      "passing_base_control_run": 452,
+      "mutation_runs": [
+        453,
+        454,
+        455,
+        456,
+        457
+      ],
+      "audit_control_run": 458,
+      "evidence": [
+        "mutation-index.json",
+        "m4-mutation-audit-0458.json",
+        "m4-mutation-audit-0458.log"
+      ]
     },
     {
       "gate": "CAPS-SYM",
@@ -3655,8 +3719,7 @@
     }
   ],
   "M4_signoff_blockers": [
-    "Independent ghost-code reader review of exact T-FILT/T-A7 coverage, domains, model independence and absence of exclusions",
-    "Retained verifier-kill diagnostics for M4-related mutations 19 through 23"
+    "Independent ghost-code reader review of exact T-FILT/T-A7 coverage, domains, model independence and absence of exclusions"
   ],
   "later_scheduled_gates": [
     "All 71 M4-related complete pixel-result witnesses due at M6",
@@ -3667,7 +3730,6 @@
   "limitations": [
     "Milestone sign-off or sign-off-readiness",
     "Independent ghost-code sign-off review",
-    "Verifier-killed M4 mutations",
     "CAPS-SYM perturbation replays",
     "Any complete M4-related pixel-result witness due at M6",
     "Converted-pixel/composition equality",
@@ -3675,5 +3737,30 @@
   ],
   "proof_map_file": "m4-proof-map.json",
   "proof_map_sha256": "1bb37a0f382bf0175538cc8f077b905bb7058d02edb54a1289681a5aa7ebdfec",
-  "ledger_sha256": "2f35e8a4331eb59406767a49a6ba03ebbe1ba6825e029658b0c325064203ecff"
+  "ledger_sha256": "0ed9c0bb02cb632d8bb0aeb4184dc77035c88a79751bd21b3097b88e4a4e44d5",
+  "mutation_evidence": {
+    "index_file": "mutation-index.json",
+    "index_sha256": "4b1849abaaa1040de968da97911c663ea3fa694ab45217c6bc9f16ed155b344b",
+    "base_commit": "b8c6629bd2e60134537e4f3339140b8ff207b8bb",
+    "source_scope": "Exact 70-file scratch inventories; the added input is tools/run_m4_mutations.py. The original 69 proof inputs remain byte-identical to accepted functional full runs 449/450. Canonical Rust source was never mutated.",
+    "canonical_source_tree_sha256": "d0a34a4c7a4aece55fd61f0c8fb6f170e490b8afbb97316b560f41f3963b6a65",
+    "launcher_file": "tools/run_m4_mutations.py",
+    "launcher_sha256": "3009d1458a2263322a8409e156e082128038d63c906583f0acc7c3448f71547b",
+    "passing_base_control_run": 452,
+    "verifier_kill_runs": [
+      453,
+      454,
+      455,
+      456,
+      457
+    ],
+    "final_restoration_and_archive_audit_run": 458,
+    "audit_file": "m4-mutation-audit-0458.json",
+    "audit_sha256": "5c4ba7f87a969f578b2647e0546dc05ffee7b09af3ad164f5b1f7bf8484c2672",
+    "audit_script": "m4-mutation-audit.py",
+    "audit_script_sha256": "89f665b7fbb5ffd3c8752f4606ae6e48a4ca9648d6fc76dae2f67319a9762e6f",
+    "accepted_checkpoint": false,
+    "independent_ghost_code_review_completed": false
+  },
+  "historical_artifact_qualification": "m4-proof-map.json and m4-interlace-checkpoint-0449-0450.json retain their exact runs-449/450 state, including then-unrun mutations and the then-current ledger hash. Their proof maps/full-run evidence remain valid because the original 69 proof inputs are unchanged. This packet and mutation-index.json supersede only their mutation status; this packet ledger_sha256 binds the updated ledger."
 }
