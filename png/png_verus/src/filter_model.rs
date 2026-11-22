@@ -260,4 +260,41 @@ pub proof fn mf_none(input: Seq<u8>,prev: Option<Seq<u8>>,bpp: nat,n: nat)
     } else {assert(input.take(0) =~= Seq::<u8>::empty());}
 }
 
+/// Untrusted row hints are accepted only when every independent MF byte equation holds.
+pub open spec fn encoded_row(ft: u8,input: Seq<u8>,prev: Option<Seq<u8>>,bpp: nat,hint: Seq<u8>,a: nat,b: nat) -> bool
+    decreases b-a,
+{
+    if a>=b {true}else if b==a+1 {
+        hint[a as int]==byte(ft,input[a as int],left(hint,bpp,a),above(prev,a),above_left(prev,bpp,a))
+    }else{let mid=(a+(b-a)/2) as nat;encoded_row(ft,input,prev,bpp,hint,a,mid) && encoded_row(ft,input,prev,bpp,hint,mid,b)}
+}
+pub proof fn encoded_row_quant(ft: u8,input: Seq<u8>,prev: Option<Seq<u8>>,bpp: nat,hint: Seq<u8>,a: nat,b: nat)
+    requires a<=b<=hint.len(),hint.len()==input.len(),encoded_row(ft,input,prev,bpp,hint,a,b),
+    ensures forall|j: int| a<=j<b ==> #[trigger] hint[j]==byte(ft,input[j],left(hint,bpp,j as nat),above(prev,j as nat),above_left(prev,bpp,j as nat)),
+    decreases b-a,
+{
+    if a<b && b!=a+1 {let mid=(a+(b-a)/2) as nat;encoded_row_quant(ft,input,prev,bpp,hint,a,mid);encoded_row_quant(ft,input,prev,bpp,hint,mid,b);}
+}
+pub proof fn mf_from_encoded(ft: u8,input: Seq<u8>,prev: Option<Seq<u8>>,bpp: nat,hint: Seq<u8>,n: nat)
+    requires bpp>=1,n<=hint.len(),hint.len()==input.len(),
+        forall|j: int| 0<=j<n ==> #[trigger] hint[j]==byte(ft,input[j],left(hint,bpp,j as nat),above(prev,j as nat),above_left(prev,bpp,j as nat)),
+    ensures mf(ft,input,prev,bpp,n)==hint.take(n as int),
+    decreases n,
+{
+    reveal_with_fuel(mf,2);
+    if n>0 {
+        mf_from_encoded(ft,input,prev,bpp,hint,(n-1) as nat);
+        let j=(n-1) as nat;
+        assert(left(hint.take(j as int),bpp,j)==left(hint,bpp,j));
+        assert(hint.take(j as int).push(hint[j as int])=~=hint.take(n as int));
+    }else{assert(hint.take(0)=~=Seq::<u8>::empty());}
+}
+pub proof fn checked_row_hint(ft: u8,input: Seq<u8>,prev: Option<Seq<u8>>,bpp: nat,hint: Seq<u8>)
+    requires bpp>=1,hint.len()==input.len(),encoded_row(ft,input,prev,bpp,hint,0,hint.len()),
+    ensures mf(ft,input,prev,bpp,hint.len())==hint,
+{
+    encoded_row_quant(ft,input,prev,bpp,hint,0,hint.len());mf_from_encoded(ft,input,prev,bpp,hint,hint.len());
+    assert(hint.take(hint.len() as int)=~=hint);
+}
+
 } // verus!

@@ -1,5 +1,67 @@
 # png_verus ledger
 
+## M5 witness checkpoint (2026-11-22; host 586, i686 588)
+
+**All 37 M5 witness gates proved under E6; M5 remains OPEN.** Canonical host **586** and i686 **588** each verify **4,514, zero errors**, with every generated leaf enabled, `--no-cheating`, default solver limits, 256 MiB direct-process stacks and the authorised 3,600-second process cap. Both runs bind the same 82-file inventory and unchanged imports/vstd hashes and mtimes. Wall times are **32m23s host** and **31m44s i686**. Base `ebcb2d9`. This is a witness checkpoint, not the M5 sign-off packet.
+
+The named list below and both witness indexes record **2 complete standalone palette-error witnesses and 35 pixel/frame projection witnesses**: 24 still/still16 records and 13 frame records. Each proof connects the frozen expected restriction to the independent model, then calls the real public entry. The frame witnesses repeatedly call the real iterator, check actual returned-frame count and the terminal error/IEND, and keep genuine OOM explicit. No complete RGBA canvas, per-frame control-payload equality, T-ITER/Prog_ITER or T-PLAYS result is credited. All 35 unrestricted outcomes remain due at M6.
+
+Public constructor contracts now export the independent data/control constructor result and exact input/policy origin. Public next contracts export the data/control result tag, exact format error and preserved source observations. The successful call's public history phase distinguishes an active animation from the completed static-frame path. Defining-module bridge lemmas connect these observations to the actual preparation, default decode and call-history transitions. Terminal/static dispatch is isolated to stay within default solver limits; runtime branch behavior is unchanged.
+
+Certificate generators reuse authored M2 raw/token intentions and two existing authored dynamic profiles, reverified here against public independent M2 models rather than importing private theorems. Palette row hints pass every independent MF byte equation before use; they supply no expected outcome. Symbolic per-chunk APNG composition and isolated metadata facts avoid oversized queries. Development failures, frontend/interpreter panics and solver-resource failures are not mutation kills. The earlier all-record generation failed and left seed files in place; run 572 checked only those seeds and earns no gate credit.
+
+Final-source runtime **587** passes release/fault/council tests, cap/allocation self-tests and native no_std. E7 remains **846 pass / 848 total, zero failures, exactly the two unrun ImageCrateCompat skips**. Final control **589** checks both canonical inventories, protected files against `ebcb2d9`, imports/cache pins, restored development copies, whitespace and no active verifier/solver. No protected file or question changed; no vstd/cache build, Cargo verification, commit or push occurred. Development logs and source archives stay outside the repo under `/home/ws/m5-proof-work/ebcb2d9-20261122`.
+
+M5 verifier mutation kills, independent ghost-code review and the M5 sign-off packet remain open. M5 is not signed off or sign-off-ready. The compact checkpoint JSON indexes accepted verification, runtime and final-control evidence; a projection is not a complete pixel/frame witness.
+
+## M5 witness gate assignments (2026-11-22)
+
+**Assignments verified in canonical host 586 and i686 588, under E6.** The E6 clause-7 assignments below cover exactly the 37 frozen M5 gates: 24 still/still16 records and 13 frame records. Two standalone palette-index errors require complete witnesses at M5. The other 35 records have pixel/frame results whose unrestricted equality depends on T9, T-ITER or T-PLAYS at M6.
+
+The still/still16 projection checks independent-model data success, dimensions and physical RGBA byte length, then checks the same restriction through the real public still entry. It does not check channel equality. The frames projection checks constructor/default-data success, dimensions, actual returned-frame count and terminal format-error/IEND, through the real public constructor and repeated `try_next` calls. It does not check complete canvas or frame-control payload equality. Actual allocation failure remains explicit and subject to the public allocation contracts.
+
+`evidence/m5-still-witness-index.json` and `evidence/m5-frames-witness-index.json` bind each record to its literal model proof, actual public call, frozen input hash and authored certificate source. Only accepted canonical full-crate runs 586/588 earn the witness credit: 2 of 2 complete-error witnesses and 35 of 35 projections. Generation and scratch development runs earn none. All 35 unrestricted witnesses remain M6 obligations; 0 of 35 are credited by this projection list. M5 remains open, not signed off or sign-off-ready.
+
+| Frozen record | E6 clause-7 assignment |
+|---|---|
+| `ok16/ct0-d1-il0-7x5` | projection at M5, complete at M6 |
+| `ok/ct0-d2-il1-7x5` | projection at M5, complete at M6 |
+| `ok/ct3-d4-il0-9x10` | projection at M5, complete at M6 |
+| `ok16/ct3-d8-il1-7x5` | projection at M5, complete at M6 |
+| `ok/ct4-d16-il1-9x10` | projection at M5, complete at M6 |
+| `ok/ct6-d16-il0-17x2` | projection at M5, complete at M6 |
+| `ok16/ct6-d16-il1-7x5` | projection at M5, complete at M6 |
+| `trns/grey-d1-masked` | projection at M5, complete at M6 |
+| `trns/grey-d16` | projection at M5, complete at M6 |
+| `trns/rgb-d16-low-byte-differs` | projection at M5, complete at M6 |
+| `trns16/palette-d8-16-3` | projection at M5, complete at M6 |
+| `trns16/palette-d8-16-16` | projection at M5, complete at M6 |
+| `trns16/palette-d4-16-1` | projection at M5, complete at M6 |
+| `trns/palette-d1-2-entries-2-alpha` | projection at M5, complete at M6 |
+| `trns16/palette-d1-2-2` | projection at M5, complete at M6 |
+| `depth16/rounding-boundaries` | projection at M5, complete at M6 |
+| `image/palette-index-out-of-range` | complete at M5 |
+| `image/palette-index-out-of-range-d2` | complete at M5 |
+| `plte/suggested-palette-in-rgb` | projection at M5, complete at M6 |
+| `apng/still-is-default-image` | projection at M5, complete at M6 |
+| `apng/default-not-in-animation-still` | projection at M5, complete at M6 |
+| `apng/frame1-error-still-unaffected` | projection at M5, complete at M6 |
+| `apng/empty-fdat-payload-still` | projection at M5, complete at M6 |
+| `apng/empty-fdat-then-data-still` | projection at M5, complete at M6 |
+| `apng/default-is-frame0-dispose-bg-blend-over` | projection at M5, complete at M6 |
+| `apng/default-not-in-animation` | projection at M5, complete at M6 |
+| `apng/dispose-previous-first-frame-and-later` | projection at M5, complete at M6 |
+| `apng/blend-over-arithmetic` | projection at M5, complete at M6 |
+| `apng/blend-over-transparent-source` | projection at M5, complete at M6 |
+| `apng/blend-over-transparent-destination` | projection at M5, complete at M6 |
+| `apng/blend-over-zero-result-alpha` | projection at M5, complete at M6 |
+| `apng/interlaced-subframe` | projection at M5, complete at M6 |
+| `apng/static-file-as-frames` | projection at M5, complete at M6 |
+| `apng/frame1-adler-error-ends` | projection at M5, complete at M6 |
+| `apng/frame1-truncated-data-ends` | projection at M5, complete at M6 |
+| `apng/empty-fdat-payload` | projection at M5, complete at M6 |
+| `apng/empty-fdat-then-data` | projection at M5, complete at M6 |
+
 ## M5 MFr SavedAt reachability and allocation clauses checkpoint (2026-11-22)
 
 **Mathematical SavedAt reachability and A-PNG-4 clauses 1-2 verified; M5 OPEN.** Canonical host **555** and i686 **557** each verify **3,497, zero errors**, with every generated witness enabled, `--no-cheating`, default solver limits, 256 MiB direct-process stacks and the authorised 3,600-second process cap. Their identical 75-file inventories match the final tree; existing import bindings and vstd hashes/mtimes remain unchanged. Wall times are **28m56s host** and **28m32s i686**. Base `81e22e0`; `evidence/m5-savedat-log-checkpoint-0555-0557.json` records scope and proof anchors.

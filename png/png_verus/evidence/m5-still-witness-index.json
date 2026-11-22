@@ -1,0 +1,521 @@
+{
+  "status": "Proved at M5 under E6: complete errors and restricted pixel/frame projections; no unrestricted M6 result credit",
+  "generator": "tools/generate_m5_still_witnesses.py",
+  "records": [
+    {
+      "name": "ok16/ct0-d1-il0-7x5",
+      "entry": "still16",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 7,
+        "height": 5,
+        "bytes": 280
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "6d8e0650c9d0c859001cba7720564a99210ceb00ee643d0cf4a4afc2012d602e",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
+      "model_function": "model_ok16_ct0_d1_il0_7x5",
+      "public_function": "public_ok16_ct0_d1_il0_7x5",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 119,
+      "public_function_line": 151
+    },
+    {
+      "name": "ok/ct0-d2-il1-7x5",
+      "entry": "still",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 7,
+        "height": 5,
+        "bytes": 140
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "b0944271cbe726e82d419723e2c278b38ded9dfc6d79918d377bb65b39b99d66",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
+      "model_function": "model_ok_ct0_d2_il1_7x5",
+      "public_function": "public_ok_ct0_d2_il1_7x5",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 311,
+      "public_function_line": 343
+    },
+    {
+      "name": "ok/ct3-d4-il0-9x10",
+      "entry": "still",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 9,
+        "height": 10,
+        "bytes": 360
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "fbaba1cc7632eeb45ab0752ed81d06fc2367408b72c228cb036d40f9609f5457",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
+      "model_function": "model_ok_ct3_d4_il0_9x10",
+      "public_function": "public_ok_ct3_d4_il0_9x10",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 662,
+      "public_function_line": 706
+    },
+    {
+      "name": "ok16/ct3-d8-il1-7x5",
+      "entry": "still16",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 7,
+        "height": 5,
+        "bytes": 280
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "fc3e75c42c41a19ff312e9d07abe366db907c88a3dcb85a6b582d73d34dbc6c6",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
+      "model_function": "model_ok16_ct3_d8_il1_7x5",
+      "public_function": "public_ok16_ct3_d8_il1_7x5",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 1054,
+      "public_function_line": 1098
+    },
+    {
+      "name": "ok/ct4-d16-il1-9x10",
+      "entry": "still",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 9,
+        "height": 10,
+        "bytes": 360
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "b7193d5b1e00160a560309bb5841387aa8d5f46eb43350565c7efe6031e5aaee",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_ok_ct4_d16_il1_9x10",
+      "public_function": "public_ok_ct4_d16_il1_9x10",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 1308,
+      "public_function_line": 1342
+    },
+    {
+      "name": "ok/ct6-d16-il0-17x2",
+      "entry": "still",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 17,
+        "height": 2,
+        "bytes": 136
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "2ec917b26108a4b3e1364b4c18a27176a6a52481aebbd074dfb3fd64a4fcbab4",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_ok_ct6_d16_il0_17x2",
+      "public_function": "public_ok_ct6_d16_il0_17x2",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 1472,
+      "public_function_line": 1506
+    },
+    {
+      "name": "ok16/ct6-d16-il1-7x5",
+      "entry": "still16",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 7,
+        "height": 5,
+        "bytes": 280
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "fa198b7762e537132a7e49f23299c3b710a75e863013b9dc0465e93cbef0b760",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_ok16_ct6_d16_il1_7x5",
+      "public_function": "public_ok16_ct6_d16_il1_7x5",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 1681,
+      "public_function_line": 1715
+    },
+    {
+      "name": "trns/grey-d1-masked",
+      "entry": "still",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 5,
+        "height": 3,
+        "bytes": 60
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "56c7a3187ccc55dad19ec21b0c0631b6165fbc60f6897dfe4349c66fd18bcb90",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_trns_grey_d1_masked",
+      "public_function": "public_trns_grey_d1_masked",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 1834,
+      "public_function_line": 1876
+    },
+    {
+      "name": "trns/grey-d16",
+      "entry": "still",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 5,
+        "height": 3,
+        "bytes": 60
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "d51fcef34af6ddb9ec5352938cb2db1fa7b73e5279b91a867e6a6700b97d6244",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_trns_grey_d16",
+      "public_function": "public_trns_grey_d16",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 1984,
+      "public_function_line": 2026
+    },
+    {
+      "name": "trns/rgb-d16-low-byte-differs",
+      "entry": "still",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 4,
+        "height": 4,
+        "bytes": 64
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "1488e80ffa51764c2dbdcd25fbe40ed9d3ac8051211ca437cb25504ca6767925",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_trns_rgb_d16_low_byte_differs",
+      "public_function": "public_trns_rgb_d16_low_byte_differs",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 2157,
+      "public_function_line": 2201
+    },
+    {
+      "name": "trns16/palette-d8-16-3",
+      "entry": "still16",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 4,
+        "height": 3,
+        "bytes": 96
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "2a0d5b8190e993cc162e3e4792a68683c47aad969b5254998780ac78c96f70c2",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_trns16_palette_d8_16_3",
+      "public_function": "public_trns16_palette_d8_16_3",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 2363,
+      "public_function_line": 2415
+    },
+    {
+      "name": "trns16/palette-d8-16-16",
+      "entry": "still16",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 4,
+        "height": 3,
+        "bytes": 96
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "007e8441fe09eb2bd20c85577861a542bbe90585e0d23a686ea0b4faa114cb96",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_trns16_palette_d8_16_16",
+      "public_function": "public_trns16_palette_d8_16_16",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 2577,
+      "public_function_line": 2629
+    },
+    {
+      "name": "trns16/palette-d4-16-1",
+      "entry": "still16",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 4,
+        "height": 3,
+        "bytes": 96
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "ecd1d643fb5411966ace900ab2f977fcf3bf62eff409a84c655090a687706291",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_trns16_palette_d4_16_1",
+      "public_function": "public_trns16_palette_d4_16_1",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 2791,
+      "public_function_line": 2843
+    },
+    {
+      "name": "trns/palette-d1-2-entries-2-alpha",
+      "entry": "still",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 4,
+        "height": 3,
+        "bytes": 48
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "75d95dc397398515b4d8b5361bcc7e1583bfcdff65a1ffeab6ba142069a292a7",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_trns_palette_d1_2_entries_2_alpha",
+      "public_function": "public_trns_palette_d1_2_entries_2_alpha",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 3005,
+      "public_function_line": 3057
+    },
+    {
+      "name": "trns16/palette-d1-2-2",
+      "entry": "still16",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 4,
+        "height": 3,
+        "bytes": 96
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "75d95dc397398515b4d8b5361bcc7e1583bfcdff65a1ffeab6ba142069a292a7",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_trns16_palette_d1_2_2",
+      "public_function": "public_trns16_palette_d1_2_2",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 3219,
+      "public_function_line": 3271
+    },
+    {
+      "name": "depth16/rounding-boundaries",
+      "entry": "still",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 12,
+        "height": 1,
+        "bytes": 48
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "fea427c1fcf1d7740b46a34102802717bb6f990e6957d241440373cce2b6a2d6",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/src/witness_profiles.rs",
+      "certificate_source_sha256": "fa2bd66377141bd73105bbed61d727559854d8834ef8f9746bbc3532f49c54e9",
+      "model_function": "model_depth16_rounding_boundaries",
+      "public_function": "public_depth16_rounding_boundaries",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 3326,
+      "public_function_line": 3358
+    },
+    {
+      "name": "image/palette-index-out-of-range",
+      "entry": "still",
+      "gate_assignment": "complete at M5",
+      "projection": "exact standalone error",
+      "expected_projection": {
+        "error": "PaletteIndexOutOfRange"
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "521e3a6397bed10b03154874026d6f947d96619c064f5ce90dfc8000e6fce84c",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_image_palette_index_out_of_range",
+      "public_function": "public_image_palette_index_out_of_range",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 3493,
+      "public_function_line": 3535
+    },
+    {
+      "name": "image/palette-index-out-of-range-d2",
+      "entry": "still",
+      "gate_assignment": "complete at M5",
+      "projection": "exact standalone error",
+      "expected_projection": {
+        "error": "PaletteIndexOutOfRange"
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "1d03e379b085e4ed1da142d68305dcd900b644b6354ba67cbcf3445f5f05e705",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_image_palette_index_out_of_range_d2",
+      "public_function": "public_image_palette_index_out_of_range_d2",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 3656,
+      "public_function_line": 3698
+    },
+    {
+      "name": "plte/suggested-palette-in-rgb",
+      "entry": "still",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 2,
+        "height": 2,
+        "bytes": 16
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "3c90d101acc8a855fa0a6b4b217c4193149e1dcf99294be03317f037b0bee059",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
+      "model_function": "model_plte_suggested_palette_in_rgb",
+      "public_function": "public_plte_suggested_palette_in_rgb",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 4219,
+      "public_function_line": 4299
+    },
+    {
+      "name": "apng/still-is-default-image",
+      "entry": "still",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 4,
+        "height": 3,
+        "bytes": 48
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "736773e563e9682f9c0cc0225046b078345c981692e262e1612da0515211b5d5",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_apng_still_is_default_image",
+      "public_function": "public_apng_still_is_default_image",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 4968,
+      "public_function_line": 4979
+    },
+    {
+      "name": "apng/default-not-in-animation-still",
+      "entry": "still",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 4,
+        "height": 3,
+        "bytes": 48
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "f4a127920280d3ef4349059ed5fa8f21a2a8f72aabf3b9f67b964560969071b3",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_apng_default_not_in_animation_still",
+      "public_function": "public_apng_default_not_in_animation_still",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 5524,
+      "public_function_line": 5535
+    },
+    {
+      "name": "apng/frame1-error-still-unaffected",
+      "entry": "still",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 4,
+        "height": 3,
+        "bytes": 48
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "f3419711483bca6f8401ee8d9f8e85c0047633f4a64affc5c50be5336d34ba10",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_apng_frame1_error_still_unaffected",
+      "public_function": "public_apng_frame1_error_still_unaffected",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 6017,
+      "public_function_line": 6028
+    },
+    {
+      "name": "apng/empty-fdat-payload-still",
+      "entry": "still",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 1,
+        "height": 1,
+        "bytes": 4
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "0abc5f8508bea7ae9c9a76a348f9c4529a2ae8970d363da25c5a6703b97a6071",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_apng_empty_fdat_payload_still",
+      "public_function": "public_apng_empty_fdat_payload_still",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 6500,
+      "public_function_line": 6511
+    },
+    {
+      "name": "apng/empty-fdat-then-data-still",
+      "entry": "still",
+      "gate_assignment": "projection at M5, complete at M6",
+      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
+      "expected_projection": {
+        "width": 4,
+        "height": 3,
+        "bytes": 48
+      },
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "4b27729ed92fd8b75048fdee31959536565fdf8166aa9b23c6861c922477bfca",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_extended.json",
+      "certificate_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "model_function": "model_apng_empty_fdat_then_data_still",
+      "public_function": "public_apng_empty_fdat_then_data_still",
+      "source_file": "src/witness_m5_still.rs",
+      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+      "model_function_line": 7053,
+      "public_function_line": 7064
+    }
+  ],
+  "full_runs": [
+    {
+      "run": 586,
+      "target": "host",
+      "verified": 4514
+    },
+    {
+      "run": 588,
+      "target": "i686",
+      "verified": 4514
+    }
+  ],
+  "full_no_cheating": true,
+  "default_solver_limits": true,
+  "wall_timeout_seconds": 3600
+}

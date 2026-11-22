@@ -32,6 +32,14 @@ pub mod allocation_model;
 pub mod iterator_log_model;
 #[cfg(verus_only)]
 pub mod iterator_data_model;
+#[cfg(verus_only)]
+mod m5_stream_witness_model;
+#[cfg(verus_only)]
+mod m5_dynamic_witness_model;
+#[cfg(verus_only)]
+mod witness_m5_still;
+#[cfg(verus_only)]
+mod witness_m5_frames;
 mod frame_state;
 mod critical;
 #[cfg(verus_only)]

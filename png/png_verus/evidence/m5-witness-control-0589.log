@@ -1,0 +1,44 @@
+command: ['python3', '-I', '/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-work/ebcb2d9-20261122/final_t8_control.py', '--host', '586', '--i686', '588']
+{
+  "kind": "M5 decoder-held cumulative sealed log post-checkpoint control; no new verifier credit",
+  "base_commit": "ebcb2d9e6cbc54f0b54a67a157d21ed2e66dbb22",
+  "full_runs": [
+    586,
+    588
+  ],
+  "source_inventory_count": 82,
+  "source_inventory_matches_both_full_runs": true,
+  "host_and_i686_bindings_unchanged": true,
+  "vstd_hashes_and_mtimes_unchanged": true,
+  "restored_development_runs": [
+    572,
+    573,
+    575,
+    576,
+    577,
+    578,
+    579,
+    583,
+    585,
+    559,
+    560,
+    561,
+    562,
+    563,
+    564,
+    580,
+    581,
+    582,
+    565,
+    566,
+    567,
+    568,
+    569,
+    570,
+    571
+  ],
+  "protected_files_unchanged": true,
+  "whitespace_clean": true,
+  "active_verifier_or_solver_processes": [],
+  "accepted_checkpoint": false
+}

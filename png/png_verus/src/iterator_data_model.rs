@@ -420,4 +420,88 @@ pub proof fn requests_step(b: Seq<u8>,p: Policy,n: nat)
     assert(requests_p(b,p,n+1)=~=requests_p(b,p,n)+request_p(b,p,n));
 }
 
+/// Delete pixels, not constructor success/error, from P16's public result.
+pub open spec fn constructor_eq<T>(b: Seq<u8>,p: Policy,result: Result<T,crate::alloc_guard::TryError>) -> bool {
+    if matches!(result,Err(crate::alloc_guard::TryError::OutOfMemory(_))) {true}else{
+        match MFr_data_p(b,p) {
+            Outcome::ConstructorError(e)=>result==Err(crate::alloc_guard::TryError::Format(e)),
+            Outcome::Frames(_)=>result.is_ok(),
+            Outcome::OutsideDomain=>false,
+        }
+    }
+}
+pub(crate) proof fn prepared_constructor<T>(b: Seq<u8>,p: Policy,result: Result<d::Doc,crate::alloc_guard::TryError>,ev: d::Events,log: Seq<(crate::alloc_guard::AllocSite,nat,bool)>)
+    requires crate::allocation_model::image_prepared(b,p.walk_view(),true,false,result,ev,log),
+    ensures match result {Err(e)=>constructor_eq::<T>(b,p,Err(e)),_=>true},
+{hide(d::MWF_p);hide(r::document_data);reveal(MFr_data_p);}
+pub proof fn constructor_data_error<T>(b: Seq<u8>,doc: d::Doc,p: Policy,e: Error)
+    requires from_walk(b,constructor_doc(doc),p),r::document_data(b,doc,p)==Some(Err(e)),
+    ensures constructor_eq::<T>(b,p,Err(crate::alloc_guard::TryError::Format(e))),
+{
+    hide(d::MWF_p);hide(r::document_data);reveal(from_walk);reveal(MFr_data_p);constructor_default(b,doc,p);
+}
+pub proof fn constructor_ready<T>(b: Seq<u8>,doc: d::Doc,p: Policy,result: Result<T,crate::alloc_guard::TryError>)
+    requires from_walk(b,doc,p),default_success(b,doc,p),result.is_ok(),
+    ensures constructor_eq(b,p,result),
+{canonical_saved_at(b,doc,p);}
+/// P16 call-result tags/errors only; a frame's pixel payload is not projected.
+pub enum Call {Frame,End,Format(Error),Oom}
+pub open spec fn kind<T>(result: Result<Option<T>,crate::alloc_guard::TryError>) -> Call {
+    match result {Ok(Some(_))=>Call::Frame,Ok(None)=>Call::End,Err(crate::alloc_guard::TryError::Format(e))=>Call::Format(e),_=>Call::Oom}
+}
+pub open spec fn error_kind(e: crate::alloc_guard::TryError) -> Call {
+    match e {crate::alloc_guard::TryError::Format(e)=>Call::Format(e),_=>Call::Oom}
+}
+#[verifier::opaque]
+pub open spec fn call_eq(b: Seq<u8>,doc: d::Doc,p: Policy,h: History,result: Call) -> bool {
+    match result {
+        Call::Oom=>true,
+        Call::Format(e)=>matches!(h.phase,Phase::Active) && h.returned<count(doc) && frame_data(b,doc,p,h.returned)==Some(Err(e)),
+        Call::Frame=>matches!(h.phase,Phase::Active) && h.returned<count(doc) && frame_ok(b,doc,p,h.returned),
+        Call::End=>!matches!(h.phase,Phase::Active) || h.returned==count(doc),
+    }
+}
+pub proof fn call_intro(b: Seq<u8>,doc: d::Doc,p: Policy,h: History,result: Call)
+    requires match result {
+        Call::Oom=>true,
+        Call::Format(e)=>matches!(h.phase,Phase::Active) && h.returned<count(doc) && frame_data(b,doc,p,h.returned)==Some(Err(e)),
+        Call::Frame=>matches!(h.phase,Phase::Active) && h.returned<count(doc) && frame_ok(b,doc,p,h.returned),
+        Call::End=>!matches!(h.phase,Phase::Active) || h.returned==count(doc),
+    },
+    ensures call_eq(b,doc,p,h,result),
+{reveal(call_eq);}
+pub proof fn call_context(b: Seq<u8>,doc: d::Doc,p: Policy,h: History,result: Call)
+    requires call_eq(b,doc,p,h,result),
+    ensures match result {
+        Call::Oom=>true,
+        Call::Format(e)=>matches!(h.phase,Phase::Active) && h.returned<count(doc) && frame_data(b,doc,p,h.returned)==Some(Err(e)),
+        Call::Frame=>matches!(h.phase,Phase::Active) && h.returned<count(doc) && frame_ok(b,doc,p,h.returned),
+        Call::End=>!matches!(h.phase,Phase::Active) || h.returned==count(doc),
+    },
+{reveal(call_eq);}
+
+pub proof fn call_transition(b: Seq<u8>,doc: d::Doc,p: Policy,before: History,after: History,call: Call)
+    requires history_wf(b,doc,p,before),history_wf(b,doc,p,after),
+        match call {
+            Call::Frame=>matches!(before.phase,Phase::Active) && after.returned==before.returned+1,
+            Call::Format(e)=>matches!(before.phase,Phase::Active) && after.phase==Phase::Format(e) && after.returned==before.returned,
+            Call::End=>matches!(before.phase,Phase::Active) ==> matches!(after.phase,Phase::Iend) && after.returned==before.returned,
+            Call::Oom=>true,
+        },
+    ensures call_eq(b,doc,p,before,call),
+{
+    hide(r::document_data);history_context(b,doc,p,before);history_context(b,doc,p,after);
+    if matches!(call,Call::Frame) {assert(frame_ok(b,doc,p,before.returned));}
+    call_intro(b,doc,p,before,call);
+}
+
+pub proof fn suffix_step(b: Seq<u8>,doc: d::Doc,p: Policy,start: nat)
+    ensures suffix(b,doc,p,start)==if start>=count(doc) {Projection {frames:count(doc),end:End::Iend}}else{match frame_data(b,doc,p,start) {
+        Some(Ok(_))=>suffix(b,doc,p,start+1),Some(Err(e))=>Projection {frames:start,end:End::Format(e)},None=>Projection {frames:start,end:End::OutsideDomain}}},
+{reveal_with_fuel(suffix,2);}
+pub(crate) proof fn from_walk_exact(b: Seq<u8>,actual: d::Doc,p: Policy,original: d::Doc,ev: d::Events)
+    requires from_walk(b,actual,p),d::MWF_p(b,p.walk_view())==d::Outcome::Done(original,ev),
+    ensures actual==constructor_doc(original),
+{hide(d::MWF_p);reveal(from_walk);}
+
 }
