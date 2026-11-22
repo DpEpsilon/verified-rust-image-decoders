@@ -40,6 +40,10 @@ pub mod transport_model;
 pub mod frame_transport_model;
 mod framing;
 #[cfg(verus_only)]
+pub mod colour_model;
+#[cfg(verus_only)]
+pub mod composite_model;
+#[cfg(verus_only)]
 pub mod filter_model;
 #[cfg(verus_only)]
 pub mod raster_model;

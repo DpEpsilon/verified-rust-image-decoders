@@ -1,0 +1,17 @@
+command: ['python3', '-I', '/home/ws/m5-proof-work/cafce7b-20261122/final_control.py']
+{
+  "kind": "M5 post-checkpoint source/import/cache/protected control",
+  "base_commit": "cafce7b134dfbf73febb74ddccc6e01a0b2f4b7c",
+  "full_runs": [
+    465,
+    466
+  ],
+  "source_inventory_count": 72,
+  "source_inventory_matches_both_full_runs": true,
+  "host_and_i686_bindings_unchanged": true,
+  "source_and_copied_vstd_hashes_and_mtimes_unchanged": true,
+  "protected_files_unchanged": true,
+  "whitespace_clean": true,
+  "active_verifier_or_solver_processes": [],
+  "new_verifier_credit": false
+}

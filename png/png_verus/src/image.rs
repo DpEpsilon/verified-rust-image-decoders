@@ -17,6 +17,10 @@ use crate::layout_model as layout;
 use crate::filter_model as filters;
 #[cfg(verus_only)]
 use crate::raster_model as raster;
+#[cfg(verus_only)]
+use crate::colour_model as colour;
+#[cfg(verus_only)]
+use crate::composite_model as composite;
 
 verus! {
 
@@ -199,7 +203,11 @@ pub(crate) enum Sink<'o> {
 
 /// P14.4: exact straight-alpha OVER on 8-bit samples with half-up rounding.
 #[inline]
-pub(crate) fn over(s: [u8; 4], d: [u8; 4]) -> [u8; 4] {
+pub(crate) fn over(s: [u8; 4], d: [u8; 4]) -> (r: [u8; 4])
+    ensures r@==composite::over(s@,d@),
+        forall|c: int| 0<=c<4 ==> #[trigger] r@[c] as int==composite::over_component(s@,d@,c),
+{
+    proof {composite::over_equations(s@,d@);}
     let sa = s[3] as u32;
     if sa == 255 {
         return s;
@@ -209,26 +217,26 @@ pub(crate) fn over(s: [u8; 4], d: [u8; 4]) -> [u8; 4] {
     }
     let da = d[3] as u32;
     // A ∈ [255, 65025]; each numerator N ≤ 255·A, so every result is ≤ 255.
-    proof {assert(0<255*(sa as int)+(da as int)*(255-sa as int)<=130050) by (nonlinear_arith)
-        requires 1<=sa<255,da<=255;}
+    proof {composite::over_bounds(s[3],d[3],0,0);}
     let a = 255 * sa + da * (255 - sa);
     let mut o = [0u8; 4];
     let mut i = 0;
     while i < 3
-        invariant i<=3,1<=sa<255,da<=255,a==255*sa+da*(255-sa),0<a<=130050,
+        invariant i<=3,1<=sa<255,da<=255,
+            sa==s@[3] as u32,da==d@[3] as u32,
+            a as int==composite::alpha(s@[3],d@[3]),255<=a<=65025,
+            forall|c: int| 0<=c<i ==> #[trigger] o@[c] as int==composite::over_component(s@,d@,c),
         decreases 3-i,
     {
         let sc=s[i] as u32;
         let dc=d[i] as u32;
-        proof {
-            assert(255*(sa as int)*(sc as int)+(da as int)*(255-sa as int)*(dc as int)<=33162750) by (nonlinear_arith)
-                requires 1<=sa<255,da<=255,sc<=255,dc<=255;
-        }
+        proof {composite::over_bounds(s[3],d[3],s[i as int],d[i as int]);}
         let num = 255 * sa * sc + da * (255 - sa) * dc;
         o[i] = ((2 * num + a) / (2 * a)) as u8;
         i += 1;
     }
     o[3] = ((2 * a + 255) / 510) as u8;
+    proof {assert(o@=~=composite::over(s@,d@));}
     o
 }
 
@@ -645,7 +653,18 @@ fn sample_channel(line: &[u8],depth: u8,x: usize,channels: usize,channel: usize)
 fn scale(v: u16, depth: u8, wide: bool) -> (r: u16)
     requires 1<=depth<=16,v as u32<=(1u32<<depth)-1,
     ensures r<=if wide {u16::MAX}else{255},
+        colour::depth(depth) ==> r as int==if wide {colour::s16(v as int,depth)}else{colour::s8(v as int,depth)},
 {
+    proof {
+        if colour::depth(depth) {
+            colour::depth_values(depth);
+            colour::scale16_exact(v as int,depth);
+            if depth<=8 {
+                colour::scale8_exact(v as int,depth);
+                colour::scale16_257(v as int,depth);
+            } else {colour::round16(v as int);}
+        }
+    }
     proof {assert(2<=(1u32<<depth)) by (bit_vector) requires 1<=depth<=16;}
     let v = v as u32;
     let denominator=(1u32<<depth)-1;
