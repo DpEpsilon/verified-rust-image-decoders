@@ -25,6 +25,38 @@ pub open spec fn control_record(frame: Frame, control: crate::apng_model::FrameC
     && frame.delay_num==control.delay_num && frame.delay_den==control.delay_den
     && frame.dispose==control.dispose && frame.blend==control.blend
 }
+/// Metadata-only prefix: a qualifying PREVIOUS frame precedes call k.
+/// Reachability of call k comes from the iterator, not this predicate.
+#[verifier::opaque]
+pub open spec fn saved_before(frames: Seq<Frame>,k: nat) -> bool {
+    exists|i: int| 1<=i<k && i<frames.len() && (#[trigger] frames[i]).dispose==2
+}
+pub proof fn saved_before_step(frames: Seq<Frame>,k: nat)
+    requires k<frames.len(),
+    ensures saved_before(frames,k+1)==(saved_before(frames,k) || k>0 && frames[k as int].dispose==2),
+{
+    reveal(saved_before);
+    if saved_before(frames,k+1) {
+        let i=choose|i: int| 1<=i<k+1 && i<frames.len() && (#[trigger] frames[i]).dispose==2;
+        if i<k {assert(saved_before(frames,k));}
+    }
+    if saved_before(frames,k) {
+        let i=choose|i: int| 1<=i<k && i<frames.len() && (#[trigger] frames[i]).dispose==2;
+        assert(saved_before(frames,k+1));
+    }
+    if k>0 && frames[k as int].dispose==2 {assert(saved_before(frames,k+1));}
+}
+
+pub proof fn saved_before_start(frames: Seq<Frame>)
+    ensures !saved_before(frames,0),!saved_before(frames,1),
+{reveal(saved_before);}
+
+/// Defining-module bridge; a caller may keep control_record hidden.
+pub proof fn control_dispose(frame: Frame,control: crate::apng_model::FrameControl)
+    requires control_record(frame,control),
+    ensures frame.dispose==control.dispose,
+{}
+
 pub open spec fn valid_site(b: Seq<u8>, frame: Frame) -> bool {
     match model::frame(b,frame.control_offset) {
         Err(_)=>false,Ok(c)=>c.ty==seq![b'f',b'c',b'T',b'L'] && c.len==26

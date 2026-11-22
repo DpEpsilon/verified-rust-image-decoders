@@ -10,6 +10,9 @@ use inflate_verus::Segments;
 verus! {
 
 pub(crate) type Previous = Option<((u32,u32,u32,u32),u8)>;
+pub(crate) open spec fn previous_needs_saved(previous: Previous) -> bool {
+    match previous {Some((_,op))=>op==2,None=>false}
+}
 pub(crate) open spec fn previous_fits(previous: Previous,header: crate::model::Ihdr) -> bool {
     match previous {
         None=>true,
@@ -74,6 +77,9 @@ impl FrameState {
     pub(crate) open spec fn index(self) -> Option<nat> {
         match self.kind {Kind::Anim {index,..}=>Some(index as nat),_=>None}
     }
+    pub(crate) open spec fn previous(self) -> Previous {
+        match self.kind {Kind::Anim {previous,..}=>previous,_=>None}
+    }
     pub(crate) open spec fn done(self) -> bool {matches!(self.kind,Kind::Done)}
     pub(crate) open spec fn single(self) -> bool {matches!(self.kind,Kind::Single)}
     pub(crate) open spec fn wf(self, b: Seq<u8>, doc: Doc) -> bool {
@@ -87,7 +93,7 @@ impl FrameState {
     pub(crate) fn new(b: &[u8], doc: &Doc) -> (r: Self)
         requires source_document(b@,*doc),
         ensures r.wf(b@,*doc),r.single()==doc.actl.is_none(),
-            doc.actl.is_some() ==> r.index()==Some(0nat),!r.done(),
+            doc.actl.is_some() ==> r.index()==Some(0nat),!r.done(),r.previous()==None,
     {
         hide(Doc::wf);hide(Doc::source_partition);hide(transport::result);
         proof {reveal(source_document);}
@@ -105,7 +111,8 @@ impl FrameState {
             match r {
                 Step::Done=>old(self).done() || (old(self).index()==Some(doc.info.frame_count as nat)),
                 Step::Single=>old(self).single(),
-                Step::Frame(job)=>job.wf(b@,*doc) && old(self).index()==Some(job.index as nat),
+                Step::Frame(job)=>job.wf(b@,*doc) && old(self).index()==Some(job.index as nat)
+                    && job.previous==old(self).previous(),
             },
             old(self).done() ==> matches!(r,Step::Done),
             old(self).single() ==> matches!(r,Step::Single),
@@ -133,7 +140,7 @@ impl<'a> FrameJob<'a> {
         requires source_document(b@,*doc),doc.actl.is_some(),index<doc.info.frame_count,
             previous_fits(previous,doc.ihdr.view()),
             cursor==transport::cursor_for(b@,doc.frame_ranges@,transport::header_end(b@),index as nat),
-        ensures r.wf(b@,*doc),r.index==index,
+        ensures r.wf(b@,*doc),r.index==index,r.previous==previous,
     {
         hide(m::frame_stream);hide(transport::control_record);hide(transport::frame_start);hide(model::mh);
         hide(Doc::wf);hide(Doc::source_partition);hide(transport::result);
@@ -151,11 +158,31 @@ impl<'a> FrameJob<'a> {
         Self {index,control,previous,effective_dispose,reader,resume}
     }
 
+    /// Export disposal/storage metadata without exposing frame-stream models.
+    pub(crate) proof fn storage_context(self,b: Seq<u8>,doc: Doc)
+        requires self.wf(b,doc),
+        ensures self.index<doc.frame_ranges@.len(),self.resume.wf(b,doc),
+            self.resume.index()==Some(self.index as nat+1),
+            self.resume.previous()==Some(((self.control.x,self.control.y,self.control.w,self.control.h),self.effective_dispose)),
+            previous_fits(self.previous,doc.ihdr.view()),
+            1<=self.control.w,1<=self.control.h,
+            self.control.x as int+self.control.w as int<=doc.ihdr.w,
+            self.control.y as int+self.control.h as int<=doc.ihdr.h,
+            self.effective_dispose<=2,
+            self.effective_dispose==(if self.index==0 && self.control.dispose==2 {1}else{self.control.dispose}),
+            doc.frame_ranges@[self.index as int].dispose==self.control.dispose,
+    {
+        reveal(FrameJob::wf);
+        transport::control_dispose(doc.frame_ranges@[self.index as int],self.control.view());
+    }
+
     #[verifier::opaque]
     pub(crate) open spec fn wf(self, b: Seq<u8>, doc: Doc) -> bool {
         self.index<doc.frame_ranges@.len() && self.resume.wf(b,doc)
         && previous_fits(self.previous,doc.ihdr.view())
         && self.resume.index()==Some(self.index as nat+1)
+        && self.resume.previous()==Some(((self.control.x,self.control.y,self.control.w,self.control.h),self.effective_dispose))
+        && self.effective_dispose<=2
         && transport::control_record(doc.frame_ranges@[self.index as int],self.control.view())
         && crate::walk_state::frame_fits(doc.frame_ranges@[self.index as int],doc.ihdr.view())
         && 1<=self.control.w<=doc.ihdr.w && 1<=self.control.h<=doc.ihdr.h
@@ -204,6 +231,7 @@ fn resume_state(b: &[u8], doc: &Doc, index: u32, start: usize, control: Fctl, di
         1<=control.w,1<=control.h,control.x as int+control.w as int<=doc.ihdr.w,
         control.y as int+control.h as int<=doc.ihdr.h,dispose<=2,
     ensures r.wf(b@,*doc),r.index()==Some(index as nat+1),
+        r.previous()==Some(((control.x,control.y,control.w,control.h),dispose)),
 {
     FrameState {kind:Kind::Anim {index:index+1,cursor:start,
         previous:Some(((control.x,control.y,control.w,control.h),dispose))}}

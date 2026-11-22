@@ -72,4 +72,136 @@ pub proof fn over_equations(s: Seq<u8>,d: Seq<u8>)
     if s[3]==0 {assert(over(s,d)=~=d);}
 }
 
+/// Canvas-byte geometry used to prove the concrete rectangle implementation.
+/// This is not a specification of Saved's otherwise unspecified layout.
+pub struct Rect {pub x: nat,pub y: nat,pub w: nat,pub h: nat}
+pub open spec fn rect(x: u32,y: u32,w: u32,h: u32) -> Rect {
+    Rect {x:x as nat,y:y as nat,w:w as nat,h:h as nat}
+}
+pub open spec fn row_base(cw: nat,r: Rect,row: nat) -> nat {4*((r.y+row)*cw+r.x)}
+pub open spec fn inside_rows(cw: nat,r: Rect,rows: nat,j: int) -> bool {
+    0<=j && r.y<=j/((4*cw) as int)<r.y+rows && 4*r.x<=j%((4*cw) as int)<4*(r.x+r.w)
+}
+pub open spec fn inside(cw: nat,r: Rect,j: int) -> bool {inside_rows(cw,r,r.h,j)}
+pub open spec fn copy_rows(before: Seq<u8>,source: Seq<u8>,cw: nat,r: Rect,rows: nat) -> Seq<u8> {
+    Seq::new(before.len(),|j: int| if inside_rows(cw,r,rows,j) {source[j]}else{before[j]})
+}
+pub open spec fn copy_rect(before: Seq<u8>,source: Seq<u8>,cw: nat,r: Rect) -> Seq<u8> {
+    copy_rows(before,source,cw,r,r.h)
+}
+pub open spec fn clear_rows(before: Seq<u8>,cw: nat,r: Rect,rows: nat) -> Seq<u8> {
+    Seq::new(before.len(),|j: int| if inside_rows(cw,r,rows,j) {0u8}else{before[j]})
+}
+pub open spec fn clear_rect(before: Seq<u8>,cw: nat,r: Rect) -> Seq<u8> {
+    clear_rows(before,cw,r,r.h)
+}
+
+/// An executed rectangle byte load/store has this quotient and remainder.
+pub proof fn rectangle_access(cw: nat,r: Rect,row: nat,col: nat)
+    requires cw>=1,r.x+r.w<=cw,col<4*r.w,
+    ensures (row_base(cw,r,row)+col)/(4*cw)==r.y+row,
+        (row_base(cw,r,row)+col)%(4*cw)==4*r.x+col,
+        row<r.h ==> inside(cw,r,(row_base(cw,r,row)+col) as int),
+{
+    let at=row_base(cw,r,row)+col;
+    let den=4*cw;
+    let rem=4*r.x+col;
+    assert(0<=rem<den) by (nonlinear_arith)
+        requires r.x+r.w<=cw,col<4*r.w,rem==4*r.x+col,den==4*cw;
+    assert(at==(r.y+row)*den+rem) by (nonlinear_arith)
+        requires at==4*((r.y+row)*cw+r.x)+col,den==4*cw,rem==4*r.x+col;
+    lemma_fundamental_div_mod_converse(at as int,den as int,(r.y+row) as int,rem as int);
+}
+
+/// One physical row interval is exactly one quotient and its column range.
+proof fn row_interval(cw: nat,r: Rect,row: nat,j: int)
+    requires cw>=1,r.x+r.w<=cw,0<=j,
+    ensures (row_base(cw,r,row)<=j<row_base(cw,r,row)+4*r.w)
+        == (j/((4*cw) as int)==r.y+row && 4*r.x<=j%((4*cw) as int)<4*(r.x+r.w)),
+{
+    let base=row_base(cw,r,row);
+    if base<=j<base+4*r.w {
+        rectangle_access(cw,r,row,(j-base) as nat);
+    }else if j/((4*cw) as int)==r.y+row && 4*r.x<=j%((4*cw) as int)<4*(r.x+r.w) {
+        lemma_fundamental_div_mod(j,(4*cw) as int);
+        assert(j==base+(j%((4*cw) as int)-4*r.x)) by (nonlinear_arith)
+            requires j==(4*cw)*(r.y+row)+j%((4*cw) as int),base==4*((r.y+row)*cw+r.x);
+    }
+}
+
+pub proof fn rows_step(cw: nat,r: Rect,row: nat,j: int)
+    requires cw>=1,r.x+r.w<=cw,0<=j,
+    ensures inside_rows(cw,r,row+1,j)==(inside_rows(cw,r,row,j)
+        || row_base(cw,r,row)<=j<row_base(cw,r,row)+4*r.w),
+{
+    row_interval(cw,r,row,j);
+}
+
+/// Finish a row after an implementation has copied precisely its byte span.
+pub proof fn copy_row_finished(before: Seq<u8>,source: Seq<u8>,after: Seq<u8>,cw: nat,r: Rect,row: nat)
+    requires cw>=1,r.x+r.w<=cw,after.len()==before.len(),
+        forall|j: int| 0<=j<before.len() ==> #[trigger] after[j]
+            == if inside_rows(cw,r,row,j) || row_base(cw,r,row)<=j<row_base(cw,r,row)+4*r.w
+                {source[j]}else{before[j]},
+    ensures after==copy_rows(before,source,cw,r,row+1),
+{
+    assert forall|j: int| 0<=j<before.len() implies after[j]==copy_rows(before,source,cw,r,row+1)[j] by {
+        rows_step(cw,r,row,j);
+    }
+    assert(after=~=copy_rows(before,source,cw,r,row+1));
+}
+
+pub proof fn clear_row_finished(before: Seq<u8>,prior: Seq<u8>,after: Seq<u8>,cw: nat,r: Rect,row: nat)
+    requires cw>=1,r.x+r.w<=cw,after.len()==before.len(),prior==clear_rows(before,cw,r,row),
+        forall|j: int| 0<=j<before.len() ==> #[trigger] after[j]
+            == if row_base(cw,r,row)<=j<row_base(cw,r,row)+4*r.w {0u8}else{prior[j]},
+    ensures after==clear_rows(before,cw,r,row+1),
+{
+    assert forall|j: int| 0<=j<before.len() implies after[j]==clear_rows(before,cw,r,row+1)[j] by {
+        rows_step(cw,r,row,j);
+    }
+    assert(after=~=clear_rows(before,cw,r,row+1));
+}
+
+/// E1 form: arbitrary prior Saved bytes cannot affect a matching restore.
+/// The conclusion describes only the restore effect, not Saved's layout.
+pub proof fn matching_restore(drawn: Seq<u8>,before: Seq<u8>,arbitrary: Seq<u8>,cw: nat,r: Rect)
+    requires drawn.len()==before.len(),arbitrary.len()==before.len(),
+    ensures copy_rect(drawn,copy_rect(arbitrary,before,cw,r),cw,r)==copy_rect(drawn,before,cw,r),
+{
+    assert(copy_rect(drawn,copy_rect(arbitrary,before,cw,r),cw,r)=~=copy_rect(drawn,before,cw,r));
+}
+
+/// A matching restore recovers the entire old canvas when drawing touched
+/// only that rectangle; Saved outside the read footprint is irrelevant.
+pub proof fn restore_before(drawn: Seq<u8>,before: Seq<u8>,arbitrary: Seq<u8>,cw: nat,r: Rect)
+    requires drawn.len()==before.len(),arbitrary.len()==before.len(),
+        forall|j: int| 0<=j<before.len() && !inside(cw,r,j) ==> #[trigger] drawn[j]==before[j],
+    ensures copy_rect(drawn,copy_rect(arbitrary,before,cw,r),cw,r)==before,
+{
+    matching_restore(drawn,before,arbitrary,cw,r);
+    assert(copy_rect(drawn,before,cw,r)=~=before);
+}
+
+/// Auxiliary pre-paint region semantics. Absence of a required snapshot is
+/// outside the restore domain; the receiver invariant proves its presence.
+pub open spec fn dispose_regions(before: Seq<u8>,saved: Option<Seq<u8>>,cw: nat,previous: Option<(Rect,u8)>) -> Option<Seq<u8>> {
+    match previous {
+        Some((r,1))=>Some(clear_rect(before,cw,r)),
+        Some((r,2))=>match saved {Some(s)=>Some(copy_rect(before,s,cw,r)),None=>None},
+        _=>Some(before),
+    }
+}
+
+/// State a snapshot solely through a restore observation, not a storage layout.
+pub open spec fn snapshot_effect(saved: Seq<u8>,reference: Seq<u8>,cw: nat,r: Rect) -> bool {
+    copy_rect(reference,saved,cw,r)==reference
+}
+pub proof fn snapshot_effect_on_drawn(drawn: Seq<u8>,saved: Seq<u8>,reference: Seq<u8>,cw: nat,r: Rect)
+    requires drawn.len()==reference.len(),saved.len()==reference.len(),snapshot_effect(saved,reference,cw,r),
+    ensures copy_rect(drawn,saved,cw,r)==copy_rect(drawn,reference,cw,r),
+{
+    assert(copy_rect(drawn,saved,cw,r)=~=copy_rect(drawn,reference,cw,r));
+}
+
 }

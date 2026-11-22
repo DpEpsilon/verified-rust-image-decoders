@@ -1,0 +1,55 @@
+command: ['python3', '-I', '-c', 'import json,os,sys;os.chdir(sys.argv[1]);a=json.loads(sys.argv[2]);os.execvpe(a[0],a,os.environ)', '/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-work/0826ec8-20261122/t8-base-03', '["/opt/verus/verus", "/opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc", "--crate-name", "png_verus", "--edition=2021", "src/lib.rs", "--error-format=json", "--json=diagnostic-rendered-ansi,artifacts,future-incompat", "--crate-type", "lib", "--emit=dep-info,metadata", "-C", "embed-bitcode=no", "-C", "debuginfo=2", "--warn=unexpected_cfgs", "--check-cfg", "cfg(verus_only)", "--check-cfg", "cfg(docsrs,test)", "--check-cfg", "cfg(feature, values(\\"test-records\\"))", "-C", "metadata=62e1b03dc42d9725", "-C", "extra-filename=-d6636dff8becff5c", "--out-dir", "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps", "-C", "incremental=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental", "-L", "dependency=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps", "--extern", "inflate_verus=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps/libinflate_verus-6b33f8ba620de9a9.rmeta", "--extern", "vstd=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps/libvstd-01822e92e4f44378.rmeta", "-Z", "checksum-hash-algorithm=blake3"]']
+{"$message_type":"diagnostic","message":"hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental/png_verus-23rwh3rmi7pd6/s-hoe61ygzeu-0cek7z5-working`","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental/png_verus-23rwh3rmi7pd6/s-hoe61ygzeu-0cek7z5-working`\u001b[0m\n\n"}
+{"$message_type":"artifact","artifact":"/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps/png_verus-d6636dff8becff5c.d","emit":"dep-info"}
+{"$message_type":"diagnostic","message":"unused doc comment","code":{"code":"unused_doc_comments","explanation":null},"level":"warning","spans":[{"file_name":"src/image.rs","byte_start":17883,"byte_end":17913,"line_start":379,"line_end":379,"column_start":1,"column_end":31,"is_primary":false,"text":[{"text":"/// written of a limit of `r`.","highlight_start":1,"highlight_end":31}],"label":"rustdoc does not generate documentation for macro invocations","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"src/image.rs","byte_start":17803,"byte_end":17913,"line_start":378,"line_end":379,"column_start":1,"column_end":31,"is_primary":true,"text":[{"text":"/// Map an inflate status to the image result (P9–P11). `produced` bytes were","highlight_start":1,"highlight_end":78},{"text":"/// written of a limit of `r`.","highlight_start":1,"highlight_end":31}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"to document an item produced by a macro, the macro must produce the documentation as part of its expansion","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"`#[warn(unused_doc_comments)]` (part of `#[warn(unused)]`) on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: unused doc comment\u001b[0m\n   \u001b[1m\u001b[94m--> \u001b[0msrc/image.rs:378:1\n    \u001b[1m\u001b[94m|\u001b[0m\n\u001b[1m\u001b[94m378\u001b[0m \u001b[1m\u001b[94m|\u001b[0m \u001b[1m\u001b[33m/\u001b[0m /// Map an inflate status to the image result (P9–P11). `produced` bytes were\n\u001b[1m\u001b[94m379\u001b[0m \u001b[1m\u001b[94m|\u001b[0m \u001b[1m\u001b[33m|\u001b[0m /// written of a limit of `r`.\n    \u001b[1m\u001b[94m|\u001b[0m \u001b[1m\u001b[33m|_\u001b[0m\u001b[1m\u001b[94m-----------------------------\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n    \u001b[1m\u001b[94m|\u001b[0m   \u001b[1m\u001b[94m|\u001b[0m\n    \u001b[1m\u001b[94m|\u001b[0m   \u001b[1m\u001b[94mrustdoc does not generate documentation for macro invocations\u001b[0m\n    \u001b[1m\u001b[94m|\u001b[0m\n    \u001b[1m\u001b[94m= \u001b[0m\u001b[1mhelp\u001b[0m: to document an item produced by a macro, the macro must produce the documentation as part of its expansion\n    \u001b[1m\u001b[94m= \u001b[0m\u001b[1mnote\u001b[0m: `#[warn(unused_doc_comments)]` (part of `#[warn(unused)]`) on by default\n\n"}
+{"$message_type":"diagnostic","message":"unused doc comment","code":{"code":"unused_doc_comments","explanation":null},"level":"warning","spans":[{"file_name":"src/walk.rs","byte_start":2977,"byte_end":3052,"line_start":97,"line_end":97,"column_start":1,"column_end":76,"is_primary":false,"text":[{"text":"/// acTL, fcTL and fdAT treated as unknown ancillary chunks (`apng = Off`).","highlight_start":1,"highlight_end":76}],"label":"rustdoc does not generate documentation for macro invocations","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"src/walk.rs","byte_start":2894,"byte_end":3052,"line_start":96,"line_end":97,"column_start":1,"column_end":76,"is_primary":true,"text":[{"text":"/// P2–P8, P14.1 under `pol`. `apng_off` is the re-walk of the R4 fallback, with","highlight_start":1,"highlight_end":81},{"text":"/// acTL, fcTL and fdAT treated as unknown ancillary chunks (`apng = Off`).","highlight_start":1,"highlight_end":76}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"to document an item produced by a macro, the macro must produce the documentation as part of its expansion","code":null,"level":"help","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: unused doc comment\u001b[0m\n  \u001b[1m\u001b[94m--> \u001b[0msrc/walk.rs:96:1\n   \u001b[1m\u001b[94m|\u001b[0m\n\u001b[1m\u001b[94m96\u001b[0m \u001b[1m\u001b[94m|\u001b[0m \u001b[1m\u001b[33m/\u001b[0m /// P2–P8, P14.1 under `pol`. `apng_off` is the re-walk of the R4 fallback, with\n\u001b[1m\u001b[94m97\u001b[0m \u001b[1m\u001b[94m|\u001b[0m \u001b[1m\u001b[33m|\u001b[0m /// acTL, fcTL and fdAT treated as unknown ancillary chunks (`apng = Off`).\n   \u001b[1m\u001b[94m|\u001b[0m \u001b[1m\u001b[33m|_\u001b[0m\u001b[1m\u001b[94m--------------------------------------------------------------------------\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n   \u001b[1m\u001b[94m|\u001b[0m   \u001b[1m\u001b[94m|\u001b[0m\n   \u001b[1m\u001b[94m|\u001b[0m   \u001b[1m\u001b[94mrustdoc does not generate documentation for macro invocations\u001b[0m\n   \u001b[1m\u001b[94m|\u001b[0m\n   \u001b[1m\u001b[94m= \u001b[0m\u001b[1mhelp\u001b[0m: to document an item produced by a macro, the macro must produce the documentation as part of its expansion\n\n"}
+{"$message_type":"diagnostic","message":"function is marked `open` but not marked `pub`; for the body of a function to be visible, the function symbol must also be visible","code":null,"level":"error","spans":[{"file_name":"src/png.rs","byte_start":54530,"byte_end":54621,"line_start":1101,"line_end":1101,"column_start":11,"column_end":102,"is_primary":true,"text":[{"text":"open spec fn previous_regions(previous: crate::frame_state::Previous) -> Option<(composite::Rect,u8)> {","highlight_start":11,"highlight_end":102}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[],"rendered":"\u001b[1m\u001b[91merror\u001b[0m\u001b[1m: function is marked `open` but not marked `pub`; for the body of a function to be visible, the function symbol must also be visible\u001b[0m\n    \u001b[1m\u001b[94m--> \u001b[0msrc/png.rs:1101:11\n     \u001b[1m\u001b[94m|\u001b[0m\n\u001b[1m\u001b[94m1101\u001b[0m \u001b[1m\u001b[94m|\u001b[0m open spec fn previous_regions(previous: crate::frame_state::Previous) -> Option<(composite::Rect,u8)> {\n     \u001b[1m\u001b[94m|\u001b[0m           \u001b[1m\u001b[91m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\n"}
+{"$message_type":"diagnostic","message":"aborting due to 1 previous error; 3 warnings emitted","code":null,"level":"error","spans":[],"children":[],"rendered":"\u001b[1m\u001b[91merror\u001b[0m\u001b[1m: aborting due to 1 previous error; 3 warnings emitted\u001b[0m\n\n"}
+{
+  "func-details": {},
+  "verification-results": {
+    "encountered-error": true,
+    "encountered-vir-error": true,
+    "success": false
+  },
+  "times-ms": {
+    "verus-build": {
+      "profile": "release",
+      "version": "0.2026.11.02.8bf68ee"
+    },
+    "num-threads": 1,
+    "total": 6215,
+    "estimated-cpu-time": 6215,
+    "rust": {
+      "total": 1960,
+      "init-and-types": 1960,
+      "trait-conflicts": 0,
+      "compile": 0
+    },
+    "verification": {
+      "total": 3573,
+      "vir": {
+        "total": 3573,
+        "hir": 0,
+        "import": 3573,
+        "rust-to-vir": 0
+      }
+    },
+    "total-verify": 0,
+    "total-verify-module-times": [],
+    "air": {
+      "total": 0,
+      "module-times": []
+    }
+  },
+  "verus": {
+    "profile": "release",
+    "version": "0.2026.11.02.8bf68ee",
+    "platform": {
+      "os": "linux",
+      "arch": "x86_64"
+    },
+    "toolchain": "1.99.1-x86_64-unknown-linux-gnu (overridden by environment variable RUSTUP_TOOLCHAIN)",
+    "commit": "8bf68ee741df833ea5d0fe6a2255126fdea87e47"
+  }
+}

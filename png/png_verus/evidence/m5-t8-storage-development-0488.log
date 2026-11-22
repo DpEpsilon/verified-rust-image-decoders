@@ -1,0 +1,64 @@
+command: ['python3', '-I', '-c', 'import json,os,sys;os.chdir(sys.argv[1]);a=json.loads(sys.argv[2]);os.execvpe(a[0],a,os.environ)', '/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-work/0826ec8-20261122/t8-base-07', '["/opt/verus/verus", "/opt/rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/bin/rustc", "--crate-name", "png_verus", "--edition=2021", "src/lib.rs", "--error-format=json", "--json=diagnostic-rendered-ansi,artifacts,future-incompat", "--crate-type", "lib", "--emit=dep-info,metadata", "-C", "embed-bitcode=no", "-C", "debuginfo=2", "--warn=unexpected_cfgs", "--check-cfg", "cfg(verus_only)", "--check-cfg", "cfg(docsrs,test)", "--check-cfg", "cfg(feature, values(\\"test-records\\"))", "-C", "metadata=62e1b03dc42d9725", "-C", "extra-filename=-d6636dff8becff5c", "--out-dir", "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps", "-C", "incremental=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental", "-L", "dependency=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps", "--extern", "inflate_verus=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps/libinflate_verus-6b33f8ba620de9a9.rmeta", "--extern", "vstd=/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/deps/libvstd-01822e92e4f44378.rmeta", "-Z", "checksum-hash-algorithm=blake3"]']
+{"$message_type":"diagnostic","message":"hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental/png_verus-23rwh3rmi7pd6/s-hoe6dpyaoc-1i6ukux-working`","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/png_verus/target/debug/incremental/png_verus-23rwh3rmi7pd6/s-hoe6dpyaoc-1i6ukux-working`\u001b[0m\n\n"}
+{"$message_type":"diagnostic","message":"Self is not supported in reveal/hide, use the type name instead, or <T as X> for functions in trait impls","code":null,"level":"error","spans":[{"file_name":"src/frame_state.rs","byte_start":8122,"byte_end":8128,"line_start":175,"line_end":175,"column_start":9,"column_end":15,"is_primary":true,"text":[{"text":"        reveal(Self::wf);","highlight_start":9,"highlight_end":15}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[],"rendered":"\u001b[1m\u001b[91merror\u001b[0m\u001b[1m: Self is not supported in reveal/hide, use the type name instead, or <T as X> for functions in trait impls\u001b[0m\n   \u001b[1m\u001b[94m--> \u001b[0msrc/frame_state.rs:175:9\n    \u001b[1m\u001b[94m|\u001b[0m\n\u001b[1m\u001b[94m175\u001b[0m \u001b[1m\u001b[94m|\u001b[0m         reveal(Self::wf);\n    \u001b[1m\u001b[94m|\u001b[0m         \u001b[1m\u001b[91m^^^^^^\u001b[0m\n\n"}
+{"$message_type":"diagnostic","message":"aborting due to 1 previous error; 1 warning emitted","code":null,"level":"error","spans":[],"children":[],"rendered":"\u001b[1m\u001b[91merror\u001b[0m\u001b[1m: aborting due to 1 previous error; 1 warning emitted\u001b[0m\n\n"}
+{
+  "func-details": {},
+  "verification-results": {
+    "encountered-error": true,
+    "encountered-vir-error": false,
+    "success": false,
+    "verified": 0,
+    "errors": 0,
+    "is-verifying-entire-crate": true
+  },
+  "times-ms": {
+    "verus-build": {
+      "profile": "release",
+      "version": "0.2026.11.02.8bf68ee"
+    },
+    "num-threads": 1,
+    "total": 1982,
+    "estimated-cpu-time": 1982,
+    "rust": {
+      "total": 1924,
+      "init-and-types": 1924,
+      "trait-conflicts": 0,
+      "compile": 0
+    },
+    "verification": {
+      "total": 0,
+      "vir": {
+        "total": 0,
+        "hir": 0,
+        "import": 0,
+        "rust-to-vir": 0
+      }
+    },
+    "total-verify": 0,
+    "total-verify-module-times": [],
+    "air": {
+      "total": 0,
+      "module-times": []
+    },
+    "smt": {
+      "total": 0,
+      "smt-init": 0,
+      "rlimit-init": 0,
+      "smt-init-module-times": [],
+      "smt-run": 0,
+      "rlimit-run": 0,
+      "smt-run-module-times": []
+    }
+  },
+  "verus": {
+    "profile": "release",
+    "version": "0.2026.11.02.8bf68ee",
+    "platform": {
+      "os": "linux",
+      "arch": "x86_64"
+    },
+    "toolchain": "1.99.1-x86_64-unknown-linux-gnu (overridden by environment variable RUSTUP_TOOLCHAIN)",
+    "commit": "8bf68ee741df833ea5d0fe6a2255126fdea87e47"
+  }
+}

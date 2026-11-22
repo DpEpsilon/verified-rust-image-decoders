@@ -1,0 +1,27 @@
+command: ['python3', '-I', '/home/ws/m5-proof-work/0826ec8-20261122/final_t8_control.py', '--host', '490', '--i686', '492']
+{
+  "kind": "T8 storage/protocol post-checkpoint control; no new verifier credit",
+  "base_commit": "0826ec8f4606bbff184f058eae4c0abba8c12105",
+  "full_runs": [
+    490,
+    492
+  ],
+  "source_inventory_count": 72,
+  "source_inventory_matches_both_full_runs": true,
+  "host_and_i686_bindings_unchanged": true,
+  "vstd_hashes_and_mtimes_unchanged": true,
+  "restored_development_runs": [
+    481,
+    482,
+    484,
+    485,
+    486,
+    488,
+    489
+  ],
+  "frontend_only_run_483_scratch_restored": true,
+  "protected_files_unchanged": true,
+  "whitespace_clean": true,
+  "active_verifier_or_solver_processes": [],
+  "accepted_checkpoint": false
+}
