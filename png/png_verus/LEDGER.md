@@ -1,5 +1,9 @@
 # png_verus ledger
 
+## M4 signed off (2026-11-22)
+
+M4 SIGNED OFF under E6, E7 and E8 at `6649262`. Proof checkpoint: full-crate host run 449 and i686 run 450, each 3,346 verified, 0 errors (`--no-cheating`, default solver limits, `RUST_MIN_STACK=268435456`, 3,600 s process cap). Witness gates as amended by E6: 5 of 5 complete M4 witnesses and 71 of 71 M4 projections proved; the 71 complete pixel-result witnesses are due at M6, 0 of 71 proved. E8 (`rect_sum_unnarrowed`, `rect_sum_wire_bound`) proved and used in `apng::fctl`. Mutations 19–23 killed by verifier failure (runs 453–457, control 452). Runtime conformance as amended by E7: 846 of 848 records pass, 0 fail, 2 skipped (run 447); the 2 ImageCrateCompat-0.25.10 records have never been run and are gates of P2. Independent review: `../REVIEW-ASTRA-M4.md`, no findings. The owner signed off on 2026-11-22. The sections below record the state before sign-off; their "not signed off" statements are superseded by this one.
+
 ## M4 proof-sensitivity evidence (2026-11-22; runs 452–458)
 
 **M4 OPEN; not signed off or sign-off-ready.** All five M4 implementation mutations, requirements **19–23**, are killed by semantic verifier failures. The requirement-indexed `evidence/mutation-index.json` records the exact selectors, revision, archived source inventories, edits, failed functions, rendered diagnostics, commands and retained logs. This section and the updated `evidence/m4-signoff-packet-0449-0450.json` supersede the earlier mutation-gap assessment. Independent ghost-code reader review remains pending and is the coordinator's to commission.
