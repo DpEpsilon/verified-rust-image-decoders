@@ -7,7 +7,7 @@ at the end with their date and the artifact they concern. An entry marked PROPOS
 has not been applied: it takes effect only after the owner approves it, and the
 entry is then amended in place of a new one by appending an "Owner decision" line.
 
-## Index and status (as of 2026-11-21)
+## Index and status (as of 2026-11-22)
 
 | Erratum | Status |
 |---|---|
@@ -18,6 +18,7 @@ entry is then amended in place of a new one by appending an "Owner decision" lin
 | E5 | APPROVED (2026-11-20, council PNG-Q6) |
 | E6 | APPROVED (2026-11-21, council PNG-Q8, M3 witness scope); one sentence corrected by E7 |
 | E7 | APPROVED (2026-11-21, council PNG-M3-RT) |
+| E8 | APPROVED (2026-11-22, owner, no council; statement correction of `rect_sum_unnarrowed`) |
 
 ## E1 — 2026-11-17: `inflate_verus` "no `alloc` dependency" (A-PNG-6) — APPROVED (2026-11-18)
 
@@ -184,3 +185,17 @@ Artifacts: `THEOREMS.md:189`, `THEOREMS.md:264`, `PLAN.md:25`, `PLAN.md:41`, `pn
 **Must not be claimed.** That all 810 records, or all 848, pass runtime conformance at any milestone before P2. That either record has been run, tested or passed, or that a skip, an oracle result or a stand-in run is a pass. That `png_verus` implements, conforms to or has been tested against ImageCrateCompat-0.25.10 in any part. That M1b, M2 or M3 met `THEOREMS.md:264` or `PLAN.md:25` as literally written. That a runtime result is a proof.
 
 Owner decision (2026-11-21): APPROVED.
+
+## E8 — 2026-11-22: `rect_sum_unnarrowed`, the operand domain of the fcTL rectangle sum (statement correction of one arithmetic lemma; T-A7 and the executable are unchanged) — APPROVED (2026-11-22)
+
+Artifacts: `THEOREMS.md:185`, `THEOREMS.md:115`, `png_verus/src/apng.rs` (`fctl`), `png_verus/QUESTIONS.md` Q7. Owner decision without a council: "No need to send to the council, just correct the lemma".
+
+**Frozen text.** `THEOREMS.md:185` lists `rect_sum_unnarrowed` (`x + w ≤ 2·PNG_WIRE_MAX` in `u64`). SPEC P14.1 tests the fcTL rectangle `x + w > W` with no earlier bound on the `u32` fields `x` and `w`, and T-A7 (`:115`) requires that test on `u64` sums of `u32` values (`apng-bad/fctl-offset-overflow-u32`). On that domain the stated bound is false: `x = u32::MAX`, `w = 1` gives 4,294,967,296, which exceeds `2·PNG_WIRE_MAX` = 4,294,967,294.
+
+**Correction.** `rect_sum_unnarrowed` is replaced by two clauses: (a) for all `u32` values `x` and `w`, the `u64` sum `x as u64 + w as u64` equals the mathematical sum `x + w` and satisfies `x + w ≤ 2·u32::MAX < 2^64`, so the rectangle test of P14.1 is decided on the exact sum; (b) when `x ≤ PNG_WIRE_MAX` and `w ≤ PNG_WIRE_MAX`, `x + w ≤ 2·PNG_WIRE_MAX`. The same applies to `y` and `h`. Clause (b) is the frozen bound on the domain where it holds; clause (a) is the bound the pre-validation test needs.
+
+**Effect on users.** None. The executable already widens both operands to `u64` before adding them, and its model-equivalence proof covers every fcTL field value; no accepted input, error or allocation changes.
+
+**Must not be claimed.** That `x + w ≤ 2·PNG_WIRE_MAX` holds for arbitrary fcTL field values, or that the frozen lemma as written was proved. The lemma is discharged only by a full-crate run that proves both clauses.
+
+Owner decision (2026-11-22): APPROVED.
