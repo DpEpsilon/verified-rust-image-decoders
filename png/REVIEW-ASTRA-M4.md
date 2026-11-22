@@ -1,0 +1,21 @@
+# M4 sign-off review (GPT-6 Astra, 2026-11-22)
+
+Scope: committed state 6649262 of png/png_verus. Read-only review; Astra ran no verifier, cargo or decoder and edited no file. Saved verbatim by the coordinating session.
+
+No blocking, medium or low findings at `6649262`. I reviewed the committed sources and retained evidence read-only; I ran no verifier, Cargo command or decoder.
+
+- T-FILT covers all byte operands, the five filter equations, widened Average/Paeth arithmetic, tie order, reconstructed predecessors and preservation of unread bytes through the actual raster loop (`/home/ws/projects/verified-decoders/png/png_verus/src/filter_model.rs:8–175`; `/home/ws/projects/verified-decoders/png/png_verus/src/image.rs:421–563,910–1032`).
+- T-A7 covers the full stated wire-dimension domain through branch-free pass sizes, halving identities, exact area, a two-sided inverse, both scanline-count bounds, the Raw-size bound and monotonicity, widened scanline arithmetic, and bounded/injective canvas offsets (`/home/ws/projects/verified-decoders/png/png_verus/src/layout_model.rs:59–103,163–443`).
+- The executable uses the proved geometry and address arithmetic without restricting the mathematical layout theorems to the allocation cap (`/home/ws/projects/verified-decoders/png/png_verus/src/image.rs:40–134,295–340,782–825`).
+
+The filter, raster and layout models define mathematical equations independently of the executable; the executable establishes its relation to those equations. I found no prohibited trust shortcut, false-precondition interface or verifier-only replacement for production code. The public still entry carries the raster result and dimensions/byte-count contracts (`/home/ws/projects/verified-decoders/png/png_verus/src/raster_model.rs:54–74,131–192`; `/home/ws/projects/verified-decoders/png/png_verus/src/png.rs:548–619`).
+
+I cross-checked all 76 generated model/public witness pairs against the frozen input bytes and expected results. Their top-level model proofs and public-call witnesses have no preconditions. The ledger correctly assigns five complete error witnesses and 71 projections under E6; the projections prove success/error, width, height and physical byte count, not channel values. All 71 complete pixel-result witnesses remain due at M6 (`/home/ws/projects/verified-decoders/png/png_verus/LEDGER.md:51–130`; `/home/ws/projects/verified-decoders/png/png_verus/src/witness_m4_filter_projection.rs:158–163`; `/home/ws/projects/verified-decoders/png/png_verus/src/witness_m4_complete.rs:1029–1068`).
+
+I independently matched all 69 recorded checkpoint inputs to the reviewed tree and checked the retained log hashes. Runs 449/450 each report 3,346 verified and zero errors. The six mutation archives contain only the declared module omissions and implementation edits. Control 452 passes; runs 453–457 each exit 1 with one semantic verifier failure in the intended function. Omitting the six generated witness leaves does not weaken these particular kills: the retained implementation, models and contracts establish the failing obligations, and no retained module depends on those leaves. These runs earn mutation credit, not replacement full-crate proof credit (`/home/ws/projects/verified-decoders/png/png_verus/RUNLOG.tsv:448–457`; `/home/ws/projects/verified-decoders/png/png_verus/tools/run_m4_mutations.py:22–35`).
+
+E8’s arbitrary-`u32` and wire-bounded clauses are both proved and called for both axes in `fctl`, respectively before and after rectangle validation (`/home/ws/projects/verified-decoders/png/png_verus/src/layout_model.rs:445–460`; `/home/ws/projects/verified-decoders/png/png_verus/src/apng.rs:105–117`).
+
+The retained assurance evidence reports 846 runtime passes and exactly the two E7 skips—not compatibility passes—plus allocation fault/trace tests, source audits and the native build; differential run 371 reports zero unexpected differences (`/home/ws/projects/verified-decoders/png/png_verus/evidence/m4-interlace-runtime-0447.log:461–510,959`; `/home/ws/projects/verified-decoders/png/png_verus/runs/0371.log:17`).
+
+Sign off M4 at `6649262` under the frozen requirements as amended by E6–E8; the 71 complete pixel witnesses remain M6 obligations.
