@@ -1,0 +1,27 @@
+command: ['python3', '-I', '/home/ws/m5-proof-work/ca8be3d-20261122/final_t8_control.py', '--host', '531', '--i686', '533']
+{
+  "kind": "M5 decoder-held cumulative sealed log post-checkpoint control; no new verifier credit",
+  "base_commit": "ca8be3db1093deac5cb527c17822860201e5f624",
+  "full_runs": [
+    531,
+    533
+  ],
+  "source_inventory_count": 74,
+  "source_inventory_matches_both_full_runs": true,
+  "host_and_i686_bindings_unchanged": true,
+  "vstd_hashes_and_mtimes_unchanged": true,
+  "restored_development_runs": [
+    522,
+    523,
+    524,
+    525,
+    526,
+    528,
+    529,
+    530
+  ],
+  "protected_files_unchanged": true,
+  "whitespace_clean": true,
+  "active_verifier_or_solver_processes": [],
+  "accepted_checkpoint": false
+}

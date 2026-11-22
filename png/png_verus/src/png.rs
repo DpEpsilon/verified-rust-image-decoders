@@ -27,6 +27,8 @@ use crate::composite_model as composite;
 #[cfg(verus_only)]
 use crate::paint_model as paint;
 #[cfg(verus_only)]
+use crate::iterator_log_model as iterlog;
+#[cfg(verus_only)]
 use inflate_verus::Segments;
 use crate::walk::{Doc, Ihdr};
 
@@ -437,14 +439,13 @@ fn reserve_image(doc: &Doc, out_bytes: usize, trace: &mut Trace) -> (r: Result<(
     match result {Ok(out)=>Ok((raw,out)),Err(o)=>Err(oom(o))}
 }
 
-fn reserve_saved(n: usize, trace: &mut Trace) -> (r: Result<Vec<u8>,TryError>)
-    requires 1<=n<=crate::alloc_guard::MAX_BYTES,old(trace).wf(),old(trace).n==0,
-    ensures final(trace).wf(),crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),
-        final(trace).log_view()==seq![(AllocSite::Saved,n as nat,r.is_ok())],
+fn reserve_saved(n: usize,Tracked(log): Tracked<&mut AllocLog>) -> (r: Result<Vec<u8>,TryError>)
+    requires 1<=n<=crate::alloc_guard::MAX_BYTES,old(log).view().len()==2,crate::alloc_guard::all_ok(old(log).view()),
+    ensures final(log).view()==old(log).view().push((AllocSite::Saved,n as nat,r.is_ok())),
+        crate::alloc_guard::sites::log_tied(r,final(log).view()),
         match r {Ok(v)=>v@==Seq::new(n as nat,|_i: int|0u8),Err(TryError::OutOfMemory(_))=>true,_=>false},
 {
-    let result=try_zeroed(AllocSite::Saved,n,Tracked(trace.log.borrow_mut()));
-    trace.record(AllocSite::Saved,n);
+    let result=try_zeroed(AllocSite::Saved,n,Tracked(log));
     match result {Ok(v)=>Ok(v),Err(o)=>Err(oom(o))}
 }
 
@@ -727,11 +728,31 @@ pub struct Frames<'a> {
     saved: Option<Vec<u8>>,
     /// Erased reference captured from the actual canvas before frame painting.
     snapshot: Ghost<Option<Seq<u8>>>,
+    log: Tracked<AllocLog>,
     base: Events,
     state: FrameState,
 }
 
+pub closed spec fn constructor_log(result: &(Result<Frames<'_>,TryError>,Tracked<Option<AllocLog>>)) -> Seq<(AllocSite,nat,bool)> {
+    match result.0 {Ok(receiver)=>receiver.log_view(),Err(_)=>match result.1@ {Some(log)=>log.view(),None=>Seq::empty()}}
+}
+
 impl<'a> Frames<'a> {
+    pub closed spec fn saved_present(&self) -> bool {self.saved.is_some()}
+    pub closed spec fn canvas_len(&self) -> nat {self.canvas@.len()}
+    pub closed spec fn is_done(&self) -> bool {self.state.done()}
+    pub closed spec fn log_view(&self) -> Seq<(AllocSite,nat,bool)> {self.log@.view()}
+    pub closed spec fn allocation_wf(&self) -> bool {
+        iterlog::wf(self.log_view(),self.raw@.len(),self.canvas@.len(),self.saved.is_some(),self.state.done())
+    }
+    proof fn allocation_context(&self)
+        requires self.allocation_wf(),
+        ensures self.log_view().len()==2 || self.log_view().len()==3,
+            self.log_view().take(2)==iterlog::initial(self.raw@.len(),self.canvas@.len()),
+            crate::alloc_guard::all_ok(self.log_view())==(self.log_view().len()==2 || self.saved.is_some()),
+            !self.state.done() && self.saved.is_none() ==> self.log_view().len()==2,
+    {iterlog::all_ok_cases(self.log_view(),self.raw@.len(),self.canvas@.len(),self.saved.is_some(),self.state.done());}
+
     /// Source/metadata invariant only; buffer layout and pixel semantics are
     /// separate obligations of the image and allocation stages.
     #[verifier::opaque]
@@ -774,7 +795,7 @@ impl<'a> Frames<'a> {
     }
 
     /// The current reached call qualifies; prior qualifiers are captured by buffers_wf.
-    closed spec fn saved_call(&self) -> bool {
+    pub closed spec fn saved_call(&self) -> bool {
         match self.state.index() {
             Some(k)=>0<k<self.doc.frame_ranges@.len() && self.doc.frame_ranges@[k as int].dispose==2,
             None=>false,
@@ -789,7 +810,7 @@ impl<'a> Frames<'a> {
         raw: Vec<u8>, canvas: Vec<u8>, base: Events) -> (r: Self)
         requires crate::frame_state::source_document(b@,doc),
             crate::layout_model::image_buffers(doc.ihdr.view(),false,raw@,canvas@),
-        ensures r.source_wf(),r.buffers_wf(),r.b==b,r.pol==pol,r.base==base,r.saved.is_none(),
+        ensures r.source_wf(),r.buffers_wf(),r.log_view()==Seq::<(AllocSite,nat,bool)>::empty(),r.b==b,r.pol==pol,r.base==base,r.saved.is_none(),
             r.raw@==raw@,r.canvas@==canvas@,
             paint::initial_canvas(b@,doc.view(),pol,canvas@) ==> r.initial_pixels() && r.initial_wf(),
             r.doc.info.view()==crate::document_model::constructor_info(doc.view()),r.doc.info.ranges_wf(b.len() as nat),
@@ -802,12 +823,16 @@ impl<'a> Frames<'a> {
         let state=FrameState::new(b,&doc);
         proof {crate::frame_transport_model::saved_before_start(doc.frame_ranges@);}
         proof {reveal(Frames::source_wf);reveal(Frames::buffers_wf);reveal(crate::frame_state::source_document);}
-        Self {b,pol,doc,raw,canvas,saved:None,snapshot:Ghost(None),base,state}
+        {
+            let tracked log=crate::alloc_guard::new_log();
+            Self {b,pol,doc,raw,canvas,saved:None,snapshot:Ghost(None),log:Tracked(log),base,state}
+        }
     }
 
     fn begin_source(&mut self) -> (r: Step<'a>)
         requires old(self).source_wf(),
-        ensures final(self).source_wf(),
+        ensures final(self).source_wf(),final(self).log_view()==old(self).log_view(),
+            old(self).allocation_wf() ==> final(self).allocation_wf(),
             old(self).buffers_wf() ==> final(self).buffers_wf(),final(self).state.done(),
             final(self).doc==old(self).doc,final(self).b==old(self).b,
             final(self).raw==old(self).raw,final(self).canvas==old(self).canvas,
@@ -827,10 +852,12 @@ impl<'a> Frames<'a> {
     }
 
     fn commit_source(&mut self, resume: FrameState)
-        requires old(self).source_wf(),resume.wf(old(self).b@,old(self).doc),old(self).restores_previous(resume.previous()),
+        requires old(self).source_wf(),
+            old(self).allocation_wf() ==> crate::alloc_guard::all_ok(old(self).log_view()),resume.wf(old(self).b@,old(self).doc),old(self).restores_previous(resume.previous()),
             crate::frame_state::previous_needs_saved(resume.previous()) ==> old(self).saved.is_some(),
             match resume.index() {Some(k)=>old(self).saved.is_some()==crate::frame_transport_model::saved_before(old(self).doc.frame_ranges@,k),None=>true},
-        ensures final(self).source_wf(),
+        ensures final(self).source_wf(),final(self).log_view()==old(self).log_view(),
+            old(self).allocation_wf() ==> final(self).allocation_wf(),
             old(self).buffers_wf() ==> final(self).buffers_wf(),final(self).state==resume,
             final(self).doc==old(self).doc,final(self).b==old(self).b,
             final(self).raw==old(self).raw,final(self).canvas==old(self).canvas,
@@ -842,22 +869,26 @@ impl<'a> Frames<'a> {
         self.state=resume;
     }
 
-    fn ensure_saved(&mut self, needed: bool, trace: &mut Trace) -> (r: Result<(),TryError>)
-        requires old(self).source_wf(),old(self).buffers_wf(),old(self).state.done(),old(trace).wf(),old(trace).n==0,
-        ensures final(self).source_wf(),final(self).buffers_wf(),final(trace).wf(),
+    fn ensure_saved(&mut self,needed: bool) -> (r: Result<(),TryError>)
+        requires old(self).source_wf(),old(self).buffers_wf(),old(self).allocation_wf(),old(self).state.done(),
+            needed && old(self).saved.is_none() ==> old(self).log_view().len()==2,
+        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).allocation_wf(),
             final(self).doc==old(self).doc,final(self).state==old(self).state,
             final(self).raw==old(self).raw,final(self).canvas==old(self).canvas,
             final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
             final(self).snapshot==old(self).snapshot,
-            crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),
-            !needed || old(self).saved.is_some() ==> final(trace).log_view().len()==0,
-            needed && old(self).saved.is_none() ==> final(trace).log_view()==seq![(AllocSite::Saved,old(self).canvas@.len(),r.is_ok())],
+            !needed || old(self).saved.is_some() ==> final(self).log_view()==old(self).log_view(),
+            needed && old(self).saved.is_none() ==> final(self).log_view()==old(self).log_view().push((AllocSite::Saved,old(self).canvas@.len(),r.is_ok())),
             r.is_ok() && needed ==> final(self).saved.is_some(),
             r.is_ok() ==> final(self).saved.is_some()==(old(self).saved.is_some() || needed),
             old(self).saved.is_some() || !needed ==> final(self).saved==old(self).saved,
             r.is_err() ==> matches!(r,Err(TryError::OutOfMemory(_))) && final(self).saved.is_none(),
+            r.is_err() ==> crate::alloc_guard::sites::log_tied(r,final(self).log_view()),
     {
-        proof {reveal(Frames::source_wf);reveal(Frames::buffers_wf);crate::limits::caps_ok();}
+        proof {
+            reveal(Frames::source_wf);reveal(Frames::buffers_wf);
+            self.allocation_context();reveal(Frames::allocation_wf);crate::limits::caps_ok();
+        }
         if !needed || self.saved.is_some() {return Ok(());}
         let n=self.canvas.len();
         proof {
@@ -865,9 +896,12 @@ impl<'a> Frames<'a> {
                 requires self.doc.ihdr.w>=1,self.doc.ihdr.h>=1;
             assert(1<=n<=crate::alloc_guard::MAX_BYTES);
         }
-        match reserve_saved(n,trace) {
-            Err(e)=>Err(e),Ok(v)=>{self.saved=Some(v);Ok(())},
-        }
+        proof {iterlog::all_ok_cases(self.log_view(),self.raw@.len(),self.canvas@.len(),self.saved.is_some(),self.state.done());}
+        let ghost prior=self.log_view();
+        let result=reserve_saved(n,Tracked(self.log.borrow_mut()));
+        proof {iterlog::append_saved(prior,self.raw@.len(),n as nat,result.is_ok());}
+        match result {Err(e)=>Err(e),Ok(v)=>{self.saved=Some(v);Ok(())}}
+
     }
 
     pub closed spec fn info_value(&self) -> Info {self.doc.info}
@@ -921,7 +955,7 @@ impl<'a> Frames<'a> {
     /// guard requests (council M1BQ-Q5b; THEOREMS.md writes it
     /// `Frames::try_new(b, Strict)`).
     pub fn try_new(b: &'a [u8]) -> (r: Result<Frames<'a>,TryError>)
-        ensures match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf()
+        ensures match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf() && receiver.allocation_wf()
             && receiver.info_value().ranges_within(b.len() as nat)
             && crate::allocation_model::returned_frame_info(b@,crate::document_model::strict(),receiver.info_value().model_value()),_=>true},
             forall|e: Error,ev: crate::document_model::Events| crate::document_model::MWF_p(b@,crate::document_model::strict())
@@ -939,7 +973,7 @@ impl<'a> Frames<'a> {
     /// its errors are the constructor's. THEOREMS.md writes it
     /// `Frames::try_new(b, p)` (council M1BQ-Q5b).
     pub fn try_new_with_policy(b: &'a [u8],p: Profile) -> (r: Result<Frames<'a>,TryError>)
-        ensures match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf()
+        ensures match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf() && receiver.allocation_wf()
             && receiver.info_value().ranges_within(b.len() as nat)
             && crate::allocation_model::returned_frame_info(b@,p.walk_model(),receiver.info_value().model_value()),_=>true},
             forall|e: Error,ev: crate::document_model::Events| crate::document_model::MWF_p(b@,p.walk_model())
@@ -959,16 +993,55 @@ impl<'a> Frames<'a> {
         Frames::with_record(b, pol)
     }
 
+    pub fn try_new_logged(b: &'a [u8]) -> (r: (Result<Frames<'a>,TryError>,Tracked<Option<AllocLog>>))
+        ensures crate::allocation_model::image_call(b@,crate::document_model::strict(),true,false,r.0,constructor_log(&r)),
+            match r.0 {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_wf() && receiver.allocation_wf() && r.1@.is_none(),Err(_)=>r.1@.is_some()},
+    {
+        proof {crate::walk_policy::profiles_project_exactly();}
+        Self::with_logged(b,STRICT)
+    }
+
+    /// The named-profile constructor moves its actual sealed log into the
+    /// decoder on success and returns that log alongside an error on failure.
+    pub fn try_new_with_policy_logged(b: &'a [u8],p: Profile)
+        -> (r: (Result<Frames<'a>,TryError>,Tracked<Option<AllocLog>>))
+        ensures crate::allocation_model::image_call(b@,p.walk_model(),true,false,r.0,constructor_log(&r)),
+            match r.0 {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels()
+                && receiver.initial_wf() && receiver.allocation_wf() && r.1@.is_none(),Err(_)=>r.1@.is_some()},
+    {Self::with_logged(b,p.checked_policy())}
+
+    fn with_logged(b: &'a [u8],pol: Policy) -> (r: (Result<Frames<'a>,TryError>,Tracked<Option<AllocLog>>))
+        ensures crate::allocation_model::image_call(b@,pol.walk_view(),true,false,r.0,constructor_log(&r)),
+            match r.0 {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf() && receiver.allocation_wf()
+                && receiver.doc.info.ranges_wf(b.len() as nat)
+                && crate::allocation_model::returned_frame_info(b@,pol.walk_view(),receiver.info_value().view()) && r.1@.is_none(),Err(_)=>r.1@.is_some()},
+            forall|e: Error,ev: crate::document_model::Events| crate::document_model::MWF_p(b@,pol.walk_view())
+                ==crate::document_model::Outcome::Error(e,ev) ==> r.0==Err(TryError::Format(e)),
+            crate::allocation_model::propagated_inflate_error(b@,pol,true,r.0),
+    {
+        proof {reveal(Frames::source_wf);}
+        let mut trace=Trace::new();
+        let result=Self::with_trace(b,pol,&mut trace);
+        let owned=trace.into_log();
+        match result {
+            Ok(mut receiver)=>{
+                receiver.log=owned;
+                proof {iterlog::initial_wf(receiver.raw@.len(),receiver.canvas@.len());}
+                (Ok(receiver),Tracked(None))
+            },
+            Err(e)=>{let tracked log=owned.get();(Err(e),Tracked(Some(log)))},
+        }
+    }
+
     fn with_record(b: &'a [u8],pol: Policy) -> (r: Result<Frames<'a>,TryError>)
-        ensures match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf()
+        ensures match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf() && receiver.allocation_wf()
             && receiver.doc.info.ranges_wf(b.len() as nat)
             && crate::allocation_model::returned_frame_info(b@,pol.walk_view(),receiver.info_value().view()),_=>true},
             forall|e: Error,ev: crate::document_model::Events| crate::document_model::MWF_p(b@,pol.walk_view())
                 ==crate::document_model::Outcome::Error(e,ev) ==> r==Err(TryError::Format(e)),
         crate::allocation_model::propagated_inflate_error(b@,pol,true,r),
     {
-        let mut trace=Trace::new();
-        Self::with_trace(b,pol,&mut trace)
+        Self::with_logged(b,pol).0
     }
 
     fn with_trace(b: &'a [u8],pol: Policy,trace: &mut Trace) -> (r: Result<Frames<'a>,TryError>)
@@ -976,7 +1049,9 @@ impl<'a> Frames<'a> {
         ensures final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),true,false,r,final(trace).log_view()),
             match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf()
                 && receiver.doc.info.ranges_wf(b.len() as nat)
-                && crate::allocation_model::returned_frame_info(b@,pol.walk_view(),receiver.info_value().view()),_=>true},
+                && crate::allocation_model::returned_frame_info(b@,pol.walk_view(),receiver.info_value().view())
+                && receiver.saved.is_none() && !receiver.state.done()
+                && final(trace).log_view()==iterlog::initial(receiver.raw@.len(),receiver.canvas@.len()),_=>true},
         crate::allocation_model::propagated_inflate_error(b@,pol,true,r),
     {
         hide(Doc::wf);hide(crate::document_model::MWF_p);hide(inflate_verus::model::Inflate);
@@ -1021,11 +1096,17 @@ impl<'a> Frames<'a> {
     /// the sequence. Fused: after `Ok(None)` or any error every later call
     /// returns `Ok(None)` without allocating or decoding (D3).
     pub fn try_next(&mut self) -> (r: Result<Option<FrameView<'_>>,TryError>)
-        requires old(self).source_wf(),old(self).buffers_wf(),old(self).initial_wf(),
-        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).initial_wf(),final(self).info_value()==old(self).info_value(),
+        requires old(self).source_wf(),old(self).buffers_wf(),old(self).initial_wf(),old(self).allocation_wf(),
+        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).initial_wf(),final(self).allocation_wf(),final(self).info_value()==old(self).info_value(),
+            final(self).log_view().len()<=3,
+            final(self).log_view()==old(self).log_view()+if old(self).saved_call() && !old(self).saved_present()
+                {seq![(AllocSite::Saved,old(self).canvas_len(),final(self).saved_present())]}else{Seq::<(AllocSite,nat,bool)>::empty()},
+            r.is_err() ==> final(self).is_done(),
+            old(self).is_done() ==> matches!(r,Ok(None)) && final(self).log_view()==old(self).log_view(),
+            old(self).saved_present() ==> final(self).saved_present() && final(self).log_view()==old(self).log_view(),
+            matches!(r,Err(TryError::OutOfMemory(_))) ==> crate::alloc_guard::sites::log_tied(r,final(self).log_view()),
     {
-        let mut trace=Trace::new();
-        self.next_with_trace(&mut trace)
+        self.next_logged()
     }
 
     proof fn source_context(&self)
@@ -1047,12 +1128,14 @@ impl<'a> Frames<'a> {
 
     /// Exact pre-paint rectangle disposal and snapshot restore effect. The
     /// integrated MK relation to preceding source-frame pixels remains separate.
+    #[verifier::spinoff_prover]
     fn dispose_and_save(&mut self,prev: crate::frame_state::Previous,current: (u32,u32,u32,u32),op: u8)
         requires old(self).source_wf(),old(self).buffers_wf(),old(self).state.done(),old(self).restores_previous(prev),
             crate::frame_state::previous_fits(prev,old(self).doc.ihdr.view()),
             crate::frame_state::previous_fits(Some((current,op)),old(self).doc.ihdr.view()),
             crate::frame_state::previous_needs_saved(prev) || op==2 ==> old(self).saved.is_some(),
-        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).doc==old(self).doc,
+        ensures final(self).source_wf(),final(self).log_view()==old(self).log_view(),
+            old(self).allocation_wf() ==> final(self).allocation_wf(),final(self).buffers_wf(),final(self).doc==old(self).doc,
             final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
             final(self).state==old(self).state,final(self).raw==old(self).raw,
             prev.is_none() ==> final(self).canvas@==old(self).canvas@,
@@ -1138,7 +1221,8 @@ impl<'a> Frames<'a> {
                     composite::rect(job.control.x,job.control.y,job.control.w,job.control.h)),None=>false},
             job.effective_dispose==2 ==> old(self).saved.is_some(),
             job.reader.is_none() ==> old(self).initial_pixels(),
-        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).doc==old(self).doc,
+        ensures final(self).source_wf(),final(self).log_view()==old(self).log_view(),
+            old(self).allocation_wf() ==> final(self).allocation_wf(),final(self).buffers_wf(),final(self).doc==old(self).doc,
             final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
             final(self).state==old(self).state,final(self).saved==old(self).saved,final(self).snapshot==old(self).snapshot,
             composite::drawing_frame(old(self).canvas@,final(self).canvas@,
@@ -1195,12 +1279,13 @@ impl<'a> Frames<'a> {
 
     /// Paint/dispose state composition is separate from the allocation-log query.
     fn finish_job(&mut self,job: crate::frame_state::FrameJob<'a>) -> (r: Result<Events,TryError>)
-        requires old(self).source_wf(),old(self).buffers_wf(),old(self).state.done(),job.wf(old(self).b@,old(self).doc),
+        requires old(self).source_wf(),old(self).allocation_wf(),crate::alloc_guard::all_ok(old(self).log_view()),old(self).buffers_wf(),old(self).state.done(),job.wf(old(self).b@,old(self).doc),
             old(self).restores_previous(job.previous),
             job.reader.is_none() ==> old(self).initial_pixels() && job.previous.is_none(),
             crate::frame_state::previous_needs_saved(job.previous) || job.effective_dispose==2 ==> old(self).saved.is_some(),
             old(self).saved.is_some()==crate::frame_transport_model::saved_before(old(self).doc.frame_ranges@,job.index as nat+1),
-        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).initial_wf(),final(self).doc==old(self).doc,
+        ensures final(self).source_wf(),final(self).log_view()==old(self).log_view(),
+            old(self).allocation_wf() ==> final(self).allocation_wf(),final(self).buffers_wf(),final(self).initial_wf(),final(self).doc==old(self).doc,
             final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
             final(self).saved.is_some()==old(self).saved.is_some(),
             r.is_err() ==> final(self).state.done() && matches!(r,Err(TryError::Format(_))),
@@ -1232,30 +1317,44 @@ impl<'a> Frames<'a> {
         Ok(events)
     }
 
-    fn next_with_trace(&mut self,trace: &mut Trace) -> (r: Result<Option<FrameView<'_>>,TryError>)
-        requires old(self).source_wf(),old(self).buffers_wf(),old(self).initial_wf(),old(trace).wf(),old(trace).n==0,
-        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).initial_wf(),final(self).doc==old(self).doc,
+    /// Keep per-position paint-model terms out of the cumulative-log query.
+    fn finish_iteration(&mut self,job: crate::frame_state::FrameJob<'a>) -> (r: Result<Events,TryError>)
+        requires old(self).source_wf(),old(self).allocation_wf(),crate::alloc_guard::all_ok(old(self).log_view()),old(self).buffers_wf(),old(self).state.done(),job.wf(old(self).b@,old(self).doc),
+            old(self).restores_previous(job.previous),
+            job.reader.is_none() ==> old(self).initial_pixels() && job.previous.is_none(),
+            crate::frame_state::previous_needs_saved(job.previous) || job.effective_dispose==2 ==> old(self).saved.is_some(),
+            old(self).saved.is_some()==crate::frame_transport_model::saved_before(old(self).doc.frame_ranges@,job.index as nat+1),
+        ensures final(self).source_wf(),final(self).log_view()==old(self).log_view(),
+            old(self).allocation_wf() ==> final(self).allocation_wf(),final(self).buffers_wf(),final(self).initial_wf(),final(self).doc==old(self).doc,
             final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
-            final(trace).wf(),crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),final(trace).log_view().len()<=1,
-            forall|i: int| 0<=i<final(trace).log_view().len() ==> (#[trigger] final(trace).log_view()[i]).0==AllocSite::Saved
-                && final(trace).log_view()[i].1==old(self).canvas.len(),
-            old(self).saved.is_some() ==> final(self).saved.is_some() && final(trace).log_view().len()==0,
+            final(self).saved.is_some()==old(self).saved.is_some(),
+            r.is_err() ==> final(self).state.done() && matches!(r,Err(TryError::Format(_))),
+            r.is_ok() ==> final(self).state==job.resume,
+    {
+        self.finish_job(job)
+    }
+
+    #[verifier::spinoff_prover]
+    fn next_logged(&mut self) -> (r: Result<Option<FrameView<'_>>,TryError>)
+        requires old(self).source_wf(),old(self).buffers_wf(),old(self).initial_wf(),old(self).allocation_wf(),
+        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).initial_wf(),final(self).allocation_wf(),
+            final(self).doc==old(self).doc,final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
+            final(self).log_view().len()<=3,
+            old(self).saved.is_some() ==> final(self).saved.is_some() && final(self).log_view()==old(self).log_view(),
             r.is_err() ==> final(self).state.done(),
             matches!(r,Ok(None)) ==> final(self).canvas==old(self).canvas && final(self).saved==old(self).saved,
-            old(self).state.done() ==> matches!(r,Ok(None)) && final(trace).log_view().len()==0,
-            final(trace).log_view()==if old(self).saved_call() && old(self).saved.is_none()
+            old(self).state.done() ==> matches!(r,Ok(None)) && final(self).log_view()==old(self).log_view(),
+            r.is_err() && matches!(r,Err(TryError::OutOfMemory(_))) ==> crate::alloc_guard::sites::log_tied(r,final(self).log_view()),
+            final(self).log_view()==old(self).log_view()+if old(self).saved_call() && old(self).saved.is_none()
                 {seq![(AllocSite::Saved,old(self).canvas@.len(),final(self).saved.is_some())]}
                 else {Seq::<(AllocSite,nat,bool)>::empty()},
     {
-        hide(Frames::buffers_wf);hide(paint::MK);
-        hide(composite::dispose_regions);hide(composite::snapshot_effect);
-        hide(composite::copy_rect);hide(composite::clear_rect);
-        hide(Doc::wf);hide(crate::document_model::frame_stream);
-        hide(crate::frame_transport_model::control_record);hide(crate::frame_transport_model::cursor_for);
+        hide(Frames::buffers_wf);hide(Frames::allocation_wf);
         let ghost prior_state=self.state;
         let ghost prior_saved=self.saved.is_some();
         let ghost wanted=self.saved_call();
-        proof {self.saved_context();self.initial_context();}
+        let ghost before_log=self.log_view();
+        proof {self.saved_context();self.initial_context();self.allocation_context();}
         let w=self.doc.ihdr.w;let h=self.doc.ihdr.h;
         match self.begin_source() {
             Step::Done=>Ok(None),
@@ -1269,11 +1368,16 @@ impl<'a> Frames<'a> {
                 }
                 let k=job.index;let f=job.control;let resume=job.resume;
                 proof {
+                    assert(!prior_state.done());
+                    if !prior_saved {assert(before_log.len()==2);}
+                }
+                proof {
                     assert(wanted==(k>0 && f.dispose==2));
                     if job.reader.is_none() {assert(k==0);assert(job.previous.is_none());assert(self.initial_pixels());}
                 }
-                match self.ensure_saved(k>0 && f.dispose==2,trace) {Ok(())=>{},Err(e)=>return Err(e)}
-                let fev=match self.finish_job(job) {Ok(ev)=>ev,Err(e)=>return Err(e)};
+                match self.ensure_saved(k>0 && f.dispose==2) {Ok(())=>{},Err(e)=>return Err(e)}
+                proof {self.allocation_context();assert(crate::alloc_guard::all_ok(self.log_view()));}
+                let fev=match self.finish_iteration(job) {Ok(ev)=>ev,Err(e)=>return Err(e)};
                 Ok(Some(FrameView {rgba:&self.canvas,rect:(f.x,f.y,f.w,f.h),delay:Some((f.delay_num,f.delay_den)),
                     dispose:f.dispose,blend:f.blend,recovered:fev.any(),events:fev}))
             },
