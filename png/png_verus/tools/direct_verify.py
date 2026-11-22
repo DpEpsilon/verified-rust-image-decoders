@@ -90,6 +90,8 @@ def main():
     parser.add_argument('--expect-count', type=int)
     parser.add_argument('--verify-module', action='append', default=[],
                         help='Development only: verify selected modules; earns no checkpoint credit')
+    parser.add_argument('--timing-json', action='store_true',
+                        help='Development only: collect expanded timing JSON; earns no checkpoint credit')
     parser.add_argument('--check-bindings', action='store_true',
                         help='Check all replay bindings without invoking the verifier')
     parser.add_argument('--pin-file', type=Path, default=BINDINGS,
@@ -143,6 +145,9 @@ def main():
     for module in args.verify_module:
         assert re.fullmatch(r'[A-Za-z_][A-Za-z_0-9:]*(?:\*)?', module), module
         env[primary] += '__VERUS_DRIVER_ARGS_SEP__--verify-module__VERUS_DRIVER_ARGS_SEP__' + module
+    if args.timing_json:
+        for flag in ('--time', '--time-expanded', '--output-json'):
+            env[primary] += '__VERUS_DRIVER_ARGS_SEP__' + flag
     # Preserve stable Cargo process context without inheriting dead jobserver
     # descriptors or invoking any Cargo process/build script.
     captured = json.loads((ROOT / 'runs/cargo-primary-environment-capture.json').read_text())
@@ -167,7 +172,8 @@ def main():
     else:
         env.pop('CARGO_BUILD_TARGET', None)
     before = helper['inventory']()
-    scope = ('development modules ' + ','.join(args.verify_module) + ' (NO CREDIT)'
+    scope = ('development timing JSON (NO CREDIT)' if args.timing_json else
+             'development modules ' + ','.join(args.verify_module) + ' (NO CREDIT)'
              if args.verify_module else 'full PNG')
     label = (f'Direct {scope} {args.target}: RUST_MIN_STACK={env["RUST_MIN_STACK"]} bytes; '
              f'RLIMIT_STACK={resource.getrlimit(resource.RLIMIT_STACK)}; '
@@ -183,6 +189,21 @@ def main():
                        if args.verify_module else
                        r'^verification results:: (\d+) verified, (\d+) errors$')
     counts = re.findall(summary_pattern, log, re.M)
+    timing_report = None
+    if args.timing_json:
+        decoder = json.JSONDecoder()
+        reports = []
+        for start in re.finditer(r'^\{', log, re.M):
+            try:
+                value, _ = decoder.raw_decode(log[start.start():])
+            except ValueError:
+                continue
+            if isinstance(value, dict) and 'verification-results' in value:
+                reports.append(value)
+        if len(reports) == 1:
+            timing_report = reports[0]
+            result_counts = timing_report['verification-results']
+            counts = [(str(result_counts['verified']), str(result_counts['errors']))]
     same_source = before == helper['inventory']()
     same_bindings = bindings == check_bindings(args.pin_file, args.target, command)
     same_pins = dependencies == pins()
@@ -190,8 +211,10 @@ def main():
     succeeded = (result.returncode == 0 and len(counts) == 1 and verified > 0 and errors == 0
                  and same_source and same_bindings and same_pins
                  and (args.expect_count is None or verified == args.expect_count))
-    accepted = succeeded and not args.verify_module
-    record = {'kind': 'direct-development-modules' if args.verify_module else 'direct-full-crate-checkpoint',
+    accepted = succeeded and not args.verify_module and not args.timing_json
+    record = {'kind': 'direct-development-timing' if args.timing_json else
+                     'direct-development-modules' if args.verify_module else 'direct-full-crate-checkpoint',
+              'timing_json': args.timing_json, 'timing_report': timing_report,
               'verify_modules': args.verify_module, 'effective_primary_driver_args': env[primary],
               'run': run, 'target': args.target,
               'recorded_primary_command_run': baseline, 'command': command,
@@ -208,7 +231,7 @@ def main():
               'verified': verified, 'errors': errors, 'expected_count': args.expect_count,
               'accepted': accepted, 'log_sha256': hashlib.sha256(log.encode()).hexdigest()}
     (ROOT / 'runs' / f'{run:04d}.json').write_text(json.dumps(record, indent=2) + '\n')
-    print(f'[direct {"development" if args.verify_module else "checkpoint"}] run {run}: '
+    print(f'[direct {"development" if args.verify_module or args.timing_json else "checkpoint"}] run {run}: '
           f'{verified} verified, {errors} errors; accepted={accepted}')
     return 0 if succeeded else (result.returncode or 1)
 

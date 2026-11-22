@@ -1,0 +1,470 @@
+{
+  "milestone": "M5",
+  "status": "T4 row conversion discharged; M5 open, not signed off or sign-off-ready",
+  "started_base_commit": "d8a3d5c98c1ae0d891ef1fec6a49a7465f0fb652",
+  "full_runs": [
+    {
+      "run": 477,
+      "target": "host",
+      "file": "m5-t4-host-0477.json",
+      "sha256": "2e23d364bea19a026510693bee27bea683c5d96b27a1422aafd99e11f8b9a2de",
+      "verified": 3370,
+      "errors": 0,
+      "seconds": 1651.13
+    },
+    {
+      "run": 478,
+      "target": "i686",
+      "file": "m5-t4-i686-0478.json",
+      "sha256": "8fadf63468c3f948c650b4cf1def87d9a025986295f3409556ca3801bd283252",
+      "verified": 3370,
+      "errors": 0,
+      "seconds": 1746.94
+    }
+  ],
+  "source_sha256": {
+    "src/alloc_guard/mod.rs": "add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137",
+    "src/alloc_guard/sites.rs": "dcd747cf7721c33ff00fbffd83ca8838d12803f99c2fb896b8077f25f5d8a281",
+    "src/allocation_model.rs": "fe3580490a7131e9695ea9db222a7e53a755725302734217af399dabc43ff669",
+    "src/apng.rs": "66ded77182d6727a27d5e83a68139b72e608e88862bc8e96e7553d4c9930d053",
+    "src/apng_model.rs": "41cf7792881764ac134877d68a2951b373b58eec52b58197396161633e3c9e78",
+    "src/callers.rs": "7fcec072f7166647c2f92e06fe52a6b357a0faf420179251ae0cda71028363c5",
+    "src/colour_model.rs": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb",
+    "src/composite_model.rs": "2770eb47e5b4f0fbc3433c23fcfd9cda00014d4f0f965645cf54e3afb52633b7",
+    "src/crc.rs": "12fa39331208c143bc9acae6d1064d1ad3e995fc583de626b82103e8f771c4cb",
+    "src/critical.rs": "be227d2d6e997f26c1fb39268e61e6a325e58721693e1ce6972aeb07bbfe05fb",
+    "src/critical_model.rs": "7411fc10bc6603ca28f83f8a57093ec0ccac3b0308691cda1a630634f54135c3",
+    "src/document_model.rs": "01bfc283789ad70f28f642bebfd2a3a3b2db362ef27d26bd8441618afc713f23",
+    "src/filter_model.rs": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a",
+    "src/frame_state.rs": "8ce6190be38be5b302f49b66cee25ee7083e95002fb4a33f6f1846b0daa6ae80",
+    "src/frame_transport_model.rs": "d960e0a8939e8abd17969eabd5208fa4a4d43396155c0a70542051bd8ad52af1",
+    "src/framing.rs": "d4ba2feb5f1996f64e5f919bdb6e6bcbdb6122eb674dcf453cfdb78e3bc9f3a2",
+    "src/header.rs": "a3eaeeaf7afa01edea5ca221f4dc7e41e35d52414e6603bfea73998b18ebc6c6",
+    "src/icc_model.rs": "b877e18151158336f0acb9495935e6c0b557481cbe4e9cc7f4623ce5af682152",
+    "src/image.rs": "388fc10f41f80a6b92fdb393d837f1151cc63bd3ed79c466dcfcdd7a8f8b7c3b",
+    "src/info.rs": "7afd03a27746de594d18952605f006fe397e018e02727ebc8552aaf29fcfce8f",
+    "src/keywords.rs": "f773dbbbed19acc97cd20771207ba7578d56ad6cc7248eb07e3e7015dfc015db",
+    "src/kind.rs": "18db75564b35c643212d0eb650f42e58da6d0f8795a89bf01f011913c1469f01",
+    "src/layout_model.rs": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c",
+    "src/lib.rs": "f388581874e58c6e839a1fb3538f8e7c73f39c730bea80f62b36d8f52ed90b0f",
+    "src/limits.rs": "ce4a4b191330d922ac3265c19d5b66f01b8d67132af2adb239677ae35fac7f44",
+    "src/m4_checksum_witness_model.rs": "c5229b8f965158f4258da1cc95328fb0270e6e2ab8df65d1cf1c2468d9da8bac",
+    "src/m4_crc_witness_model.rs": "72037e10c90354c61774024ff2b3d42062690b8bb4e3d1fbcb807d607cd0f4ab",
+    "src/m4_fixed_witness_model.rs": "f360b2d2b340285f75fc3f35ded8fc5f6b12200b0d30d25969b69d12c23e619e",
+    "src/m4_stream_witness_model.rs": "e5b2e17cfab80448b91f89e2504d9c5883554c34b34830efae6f111416e00068",
+    "src/m4_trace_witness_model.rs": "71152f0aa8554d9e63ae15038aebf6c37da329200db1f8ec5b045ab9264564de",
+    "src/metadata.rs": "cf7865da39e338b412754af16ce5fedffa2dbd06ec474c47198e96fd68396a15",
+    "src/metadata_model.rs": "77f221b2249d6fa19f579c56178ae64fb7e8d42bcad30222deb97314667bb298",
+    "src/model.rs": "e38e5144373bbf97f15149bc3b11e77cf2be3998496a9090922356ff510f2a6c",
+    "src/ordering.rs": "e1caef5c7f1b50fae9c6ed46838c7408789446c860a48165d294b40ad05bf470",
+    "src/png.rs": "00294b995c1d5807c9d347eb64758fcf3c4f1ab9ee414487f72264b19e3b3fae",
+    "src/policy.rs": "5190593c4ee6f70c45ff0ef1f8dba4e964eb39aa62c70beccbd4ea7794f40b5a",
+    "src/raster_model.rs": "0cf7fdafb1a8fc4afb68b6919b5feebb2acd5bea1107aa687ba4ca4d62ac23fd",
+    "src/reader.rs": "e1e7c97ce7b862639e31dc28e765074c14da2eabe591df8592573b56748b8f0d",
+    "src/transport_model.rs": "d73f38fe818884c615ceeea3c8941ac71d39417a07d0828bc41efc57e7dd6685",
+    "src/walk.rs": "fa7f58c2cf160dc5ab383ac0ff0019ecd7be856212d220dba807091e1abeb26b",
+    "src/walk_model.rs": "3210215551e50da9ed31f288c9dcc72e73ccd93863955cc0275982aa7ba8f774",
+    "src/walk_own.rs": "7ce2d0204d255c67cdeba9a0ff6e073def639f6b593f2692a89247c3ef931e3e",
+    "src/walk_policy.rs": "8b20a35f467710097ab0d92652f1f6f3d3d8a10cb07be013ee8044038d8a5226",
+    "src/walk_state.rs": "72beb3b162d6499f5b6b2247197718a575670e21a5958ac39bc60188c81b4e02",
+    "src/walk_step.rs": "b58c2888fd5a56eb70957db031f85cf87ef70c653ed35f08a56fef34ef24cff8",
+    "src/witness_critical.rs": "5406a4824783efdfc109f5c0ad97547212bc775b54014c23819ae54768b5342e",
+    "src/witness_document.rs": "aca306a719fdcd9967dfd0f1ea795b0f07cbd950aeb1146471c6c84ce0dda82d",
+    "src/witness_frame.rs": "b06e127e5bf7d966203d704d3e1a315af10ee51663d3f41ddfa3f707c7f56903",
+    "src/witness_m3.rs": "51dc0a313921b731a7e9442136906aac4827fb2074e4d0db8154fecb1c320550",
+    "src/witness_m3_frozen.rs": "f5c83f82281d688fa562f879ce5737ebb790d6ae03dc72ebac5d992003d19364",
+    "src/witness_m3_projection.rs": "7c13be4700c012a22fa4968d20201491318a04fb206f9f700ca19c522c5137d6",
+    "src/witness_m3_walk_frozen.rs": "c26f8eada47ac257edd2d13ce22925606e6a2442df945b0a49bae01468304313",
+    "src/witness_m4_complete.rs": "b3bd36e3dc3a1ff28e6ed250fa7b00d909f708b6f49a09e8b27cf17d1056e4d0",
+    "src/witness_m4_filter_projection.rs": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947",
+    "src/witness_m4_interlace_projection.rs": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9",
+    "src/witness_metadata.rs": "4e7bc8910b1bcb410cb3e926b5f1d70287f121e80152546ab3a5f7ce82a13a24",
+    "src/witness_walk.rs": "53a8fb71e2dd22d34979865ceb32e42f196fcd82d503aceba36d263b9bfa8b30",
+    "Cargo.toml": "fa9c2b6e0a9c6ab351267a717996f59ff01a713a96b24c8a7d2b623872973d4e",
+    "Cargo.lock": "7e54ff7c1d10f204229f1e6a1e96b84e85fcb123d448482f49c16817c5212176",
+    "verify.sh": "9bdef0c80a5049f8dee74408b75b9a3738c0c700165306f36034a7293f3e3da8",
+    "tools/direct_verify.py": "5dbe236d0a16cac0036fc6ee7b5f22bc395ad09858560f82ea929a4afbfd6552",
+    "tools/generate_m3_header_witnesses.py": "f684eca52528a8551d78c011d70fcb030100c40558397fba77fd9b5e72c7eb58",
+    "tools/generate_m3_projection_witnesses.py": "647d675e65062bf4713df5ca8ae98c76c91a7b70bd69b3495c274be50ae090aa",
+    "tools/generate_m3_walk_witnesses.py": "e29d72ec2e0d233d71cab2a2283b335780a15f4ebaeb3901bd44093616bc52df",
+    "tools/generate_m4_complete_witnesses.py": "aad73676b077267973c8cfbf347bd72043701adb6fd67d0bd7d8ff9b4ffaf6ff",
+    "tools/generate_m4_filter_projections.py": "106eb8da9e41e0642459bffbf614cc11ab42098228e1e5e1c04276d3ea1e444c",
+    "tools/generate_m4_interlace_projections.py": "93f9797b3e4b93f7cdac564a8eb5470e0710a0b3b1960f55ca2316c8350afef8",
+    "tools/m4_trace_certificates.py": "793d1f5589cf476fda63534a8dfd95332bf5c5b3f5187538279d8c253522d5e9",
+    "tools/probe_diff.py": "27938506cd72ecbd8e1d5adf9bd89ed9a37a435744ee6251478e2e8c2a3b1bf8",
+    "tools/run_logged.py": "3f5ade7203e8686447a7d40307055d7fc96c727a533341cb2143af1f7244e66d",
+    "tools/run_m4_mutations.py": "3009d1458a2263322a8409e156e082128038d63c906583f0acc7c3448f71547b",
+    "tools/verify_m3.py": "e2484f0a88cb1d7c480825125138a926da892625fcff8a7685f9ed36285c89a8"
+  },
+  "full_no_cheating": true,
+  "default_solver_limits": true,
+  "wall_timeout_seconds": 3600,
+  "all_canonical_generated_witnesses_enabled": true,
+  "T4_clauses": [
+    {
+      "clause": "Reachable header and all fifteen format domains",
+      "proof": "Colour::wf retains model::valid_depth; Colour::new proves its cached-key invariant from executed reads/masks."
+    },
+    {
+      "clause": "MSB-first packed samples, big-endian sixteen-bit samples, padding ignored after reconstruction",
+      "proof": "image::sample and sample_channel return colour_model::sample; MC converts only the requested pixel/channel indices, not trailing padding."
+    },
+    {
+      "clause": "Exact low-depth and sixteen-bit scaling, rounding and scale16_257",
+      "proof": "Existing named colour_model lemmas are reverified and called by actual image::scale."
+    },
+    {
+      "clause": "Borrowed validated PLTE/tRNS input ranges",
+      "proof": "Colour::new returns view()==colour_model::from_doc(doc.view(),b@); explicit sequence equalities bind the actual borrowed slices."
+    },
+    {
+      "clause": "tRNS low-bit masks and unscaled comparison, including all three full RGB16 words",
+      "proof": "Constructor prefix invariants establish each cached key from the original tRNS word and mask; Colour::pixel matches the model pixel equations."
+    },
+    {
+      "clause": "Palette index guard, bounded borrowed-range reads and alpha defaults",
+      "proof": "Colour::pixel retains its exact first-index error condition and matches the independent palette lookup/default-alpha equations."
+    },
+    {
+      "clause": "RGBA16 palette/tRNS byte multiplication by 257 and physical representation",
+      "proof": "Model/native pixel equations agree; physical_word proves that the two big-endian output bytes reconstruct every sixteen-bit channel."
+    },
+    {
+      "clause": "Exact row MC8/MC16 success or palette error",
+      "proof": "MC_pixel and draw_matches_MC connect the model row cells to render_row; actual draw_row returns the exact model error or renders the complete MC row."
+    },
+    {
+      "clause": "Sink equations and byte-write footprints",
+      "proof": "Actual Sink::put equals colour_model::place for RGBA8, RGBA16 and canvas; every byte outside the selected pixel is preserved."
+    },
+    {
+      "clause": "Row placement and first palette error in scan order",
+      "proof": "draw_row maintains the exact rendered-prefix equation and its existing valid-palette prefix invariant; it returns on the first failing pixel."
+    },
+    {
+      "clause": "Executable bounds, casts, intermediate arithmetic and termination",
+      "proof": "Full host/i686 no-cheating runs check the unchanged runtime guards, loop variants and all strengthened row/byte contracts."
+    }
+  ],
+  "proof_functions": [
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::depth_values",
+      "line": 17,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::scale8_exact",
+      "line": 43,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::scale16_exact",
+      "line": 56,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::round16",
+      "line": 70,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::scale16_257",
+      "line": 77,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::from_doc",
+      "line": 95,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::sample",
+      "line": 105,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::key",
+      "line": 111,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::pixel",
+      "line": 126,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::MC",
+      "line": 193,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::physical_word",
+      "line": 171,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::physical",
+      "line": 178,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::place",
+      "line": 182,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::draw_prefix",
+      "line": 205,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::draw_start",
+      "line": 217,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::draw_step",
+      "line": 220,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::MC_pixel",
+      "line": 228,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::render_row",
+      "line": 241,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/colour_model.rs",
+      "symbol": "colour_model::draw_matches_MC",
+      "line": 251,
+      "sha256": "d76905eeae33b2743f83af65207d21d0f69f8d6031d154a67b23876dd2a324cb"
+    },
+    {
+      "file": "src/image.rs",
+      "symbol": "image::sample",
+      "line": 602,
+      "sha256": "388fc10f41f80a6b92fdb393d837f1151cc63bd3ed79c466dcfcdd7a8f8b7c3b"
+    },
+    {
+      "file": "src/image.rs",
+      "symbol": "image::sample_channel",
+      "line": 651,
+      "sha256": "388fc10f41f80a6b92fdb393d837f1151cc63bd3ed79c466dcfcdd7a8f8b7c3b"
+    },
+    {
+      "file": "src/image.rs",
+      "symbol": "image::scale",
+      "line": 671,
+      "sha256": "388fc10f41f80a6b92fdb393d837f1151cc63bd3ed79c466dcfcdd7a8f8b7c3b"
+    },
+    {
+      "file": "src/image.rs",
+      "symbol": "image::Colour::new",
+      "line": 723,
+      "sha256": "388fc10f41f80a6b92fdb393d837f1151cc63bd3ed79c466dcfcdd7a8f8b7c3b"
+    },
+    {
+      "file": "src/image.rs",
+      "symbol": "image::Colour::pixel",
+      "line": 787,
+      "sha256": "388fc10f41f80a6b92fdb393d837f1151cc63bd3ed79c466dcfcdd7a8f8b7c3b"
+    },
+    {
+      "file": "src/image.rs",
+      "symbol": "image::Sink::put",
+      "line": 307,
+      "sha256": "388fc10f41f80a6b92fdb393d837f1151cc63bd3ed79c466dcfcdd7a8f8b7c3b"
+    },
+    {
+      "file": "src/image.rs",
+      "symbol": "image::draw_row",
+      "line": 865,
+      "sha256": "388fc10f41f80a6b92fdb393d837f1151cc63bd3ed79c466dcfcdd7a8f8b7c3b"
+    }
+  ],
+  "fifteen_sample_formats": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      0,
+      8
+    ],
+    [
+      0,
+      16
+    ],
+    [
+      2,
+      8
+    ],
+    [
+      2,
+      16
+    ],
+    [
+      3,
+      1
+    ],
+    [
+      3,
+      2
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      3,
+      8
+    ],
+    [
+      4,
+      8
+    ],
+    [
+      4,
+      16
+    ],
+    [
+      6,
+      8
+    ],
+    [
+      6,
+      16
+    ]
+  ],
+  "MC_notation": "colour_model::MC(...,wide=false/true,...) is MC8/MC16; render_row places its returned cells. Native pixel vectors use u16 containers also for byte-bounded RGBA8 values.",
+  "toolchain": {
+    "verus": "Verus\n  Version: 0.2026.11.02.8bf68ee\n  Profile: release\n  Platform: linux_x86_64\n  Toolchain: 1.99.1-x86_64-unknown-linux-gnu (overridden by environment variable RUSTUP_TOOLCHAIN)",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)"
+  },
+  "vstd_version": "0.0.0-2026-11-01-0251",
+  "timing_comparison": {
+    "file": "m5-timing-comparison.json",
+    "sha256": "83154320863c7668251b5e8361875a7c7b0648369a94e4f73f07ec419ef3c105",
+    "full_runs_no_credit": [
+      470,
+      471
+    ],
+    "focused_run_no_credit": 469,
+    "predicted_full_seconds": 2280,
+    "source_regression_of_nine_minutes_reproduced": false,
+    "common_witness_resource_counts_identical": 1306
+  },
+  "development_runs_no_credit": [
+    472,
+    473,
+    474,
+    475,
+    476
+  ],
+  "development_base_scope": "Scratch copies only; six independent generated witness leaves omitted under M4 base precedent; all implementation/model/common proof/manual witness modules retained; all scratches restored; no milestone credit.",
+  "runtime": {
+    "run": 479,
+    "file": "m5-t4-runtime-0479.log",
+    "pass": 846,
+    "total": 848,
+    "fail": 0,
+    "skip": 2,
+    "skipped_names": [
+      "policy/crc-ancillary/fdat-frames/image-crate-compat",
+      "policy/crc-ancillary/fdat-still/image-crate-compat"
+    ],
+    "either_compatibility_record_executed": false,
+    "fault_injection": true,
+    "council_tests": 7,
+    "cap_lint_and_negative_controls": true,
+    "allocation_audit_and_negative_controls": true,
+    "native_no_std_build": true,
+    "i686_runtime_executed": false
+  },
+  "final_control": {
+    "run": 480,
+    "file": "m5-t4-controls-0480.log"
+  },
+  "protected_baseline_commit": "d8a3d5c98c1ae0d891ef1fec6a49a7465f0fb652",
+  "protected_files_or_questions_modified": false,
+  "M5_witnesses_credited_here": 0,
+  "M5_witnesses_remaining": 37,
+  "E6_clause_7_ledger_classification_done": false,
+  "remaining_M5": [
+    "T8 disposal rectangles, matching save/restore read footprints and per-position MK equality",
+    "D9 SavedAt reservation timing and the M5 allocation/iterator-log component",
+    "All 37 M5 witness gates and their E6 clause-7 complete/projection ledger classifications",
+    "M5 verifier-kill evidence, independent review and remaining assurance gates"
+  ],
+  "not_claimed": [
+    "M5 sign-off or sign-off-readiness",
+    "Full T8/disposal/MK/SavedAt",
+    "Integrated MS/MS16 equality or T13/L-16-8",
+    "Any new complete or projection witness",
+    "Any M5 mutation kill",
+    "CAPS-SYM or M6 all-forty/alloc-delta mutation completion"
+  ],
+  "retained_inflate_differential": {
+    "run": 371,
+    "streams": 10000,
+    "single_bit_corruptions": 10000,
+    "unexpected_differences": 0,
+    "fresh_run_claimed": false
+  },
+  "cargo_verification_invoked": false,
+  "new_vstd_or_verifier_cache_built": false,
+  "ledger_sha256": "c8939b07319119f8704c3be607ea8405628f6e6ad98467374c34923203ebcde5",
+  "committed_or_pushed": false,
+  "development_archives": [
+    {
+      "run": 474,
+      "file": "m5-t4-base-01-source.tar.gz",
+      "sha256": "c02b1e3e924f90e6616e96e21c61a5bdb06c5a476cf78ffedbdad7b39616b7a2"
+    },
+    {
+      "run": 475,
+      "file": "m5-t4-base-02-source.tar.gz",
+      "sha256": "c3b211a189891fce621eec32ef0a5997375da19fef8682af4cc188d5bcaa81e4"
+    },
+    {
+      "run": 476,
+      "file": "m5-t4-base-03-source.tar.gz",
+      "sha256": "f2aa8d57a11366cb4d93b493d5ad919c806abe316939eef43500ac9c7ed58986"
+    }
+  ],
+  "final_control_script": {
+    "file": "m5-t4-final-control.py",
+    "sha256": "ac6103917a38c8e7bdc8bb65ed9b69aa04531af3686e186c71db8fb0c0d1691c"
+  },
+  "development_replay_qualification": "The retained development driver ran from /home/ws/m5-proof-work/d8a3d5c-20261122; copy it back there for the recorded path-dependent replay. The exact selected sources are separately archived. Development sources were restored after each run; only canonical full replays earn credit."
+}

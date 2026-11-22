@@ -253,6 +253,10 @@ proof fn pixel_offset(w: nat,h: nat,x: nat,y: nat,bytes: nat,n: nat)
 }
 
 impl<'o> Sink<'o> {
+    /// Current bytes, distinct from the prophetic final destination loan.
+    closed spec fn pixels(self) -> Seq<u8> {
+        match self {Self::Rgba8(out)|Self::Rgba16(out)=>out@,Self::Canvas {canvas,..}=>canvas@}
+    }
     /// The final contents of the original destination loan, not current pixels.
     #[verifier::prophetic]
     pub(crate) closed spec fn loan(self) -> Seq<u8> {
@@ -304,37 +308,47 @@ impl<'o> Sink<'o> {
         requires old(self).wf(width,height),x<width,y<height,
             !old(self).wide_view() ==> forall|i: int| 0<=i<4 ==> (#[trigger] px@[i])<=u8::MAX,
         ensures final(self).shape()==old(self).shape(),final(self).wf(width,height),final(self).loan()==old(self).loan(),
+            final(self).pixels()==colour::place(old(self).shape(),old(self).pixels(),width as nat,x as nat,y as nat,px@),
     {
         proof {crate::limits::caps_ok();}
+        let ghost original=self.pixels();
+        let ghost geometry=self.shape();
         match self {
             Sink::Rgba8(out) => {
                 proof {pixel_offset(width as nat,height as nat,x as nat,y as nat,4,out.len() as nat);}
                 let o = 4 * (y as usize * width as usize + x as usize);
                 let ghost n=out.len();
+                let ghost before=out@;
                 let mut i = 0;
                 while i < 4
-                    invariant i<=4,o+4<=out.len(),out.len()==n,n==4*(width as nat)*(height as nat),n<=crate::alloc_guard::MAX_BYTES,forall|j: int| 0<=j<4 ==> (#[trigger] px@[j])<=u8::MAX,
+                    invariant i<=4,o+4<=out.len(),out.len()==n,n==4*(width as nat)*(height as nat),n<=crate::alloc_guard::MAX_BYTES,
+                        forall|j: int| 0<=j<4 ==> (#[trigger] px@[j])<=u8::MAX,
+                        forall|j: int| 0<=j<n ==> #[trigger] out@[j]==if o<=j<o+i {(px@[j-o]) as u8}else{before[j]},
                     decreases 4-i,
                 {
                     out[o + i] = px[i] as u8;
                     i += 1;
                 }
+                proof {assert(out@=~=colour::place(geometry,original,width as nat,x as nat,y as nat,px@));}
             }
             Sink::Rgba16(out) => {
                 proof {pixel_offset(width as nat,height as nat,x as nat,y as nat,8,out.len() as nat);}
                 let o = 8 * (y as usize * width as usize + x as usize);
                 let ghost n=out.len();
+                let ghost before=out@;
                 let mut i = 0;
                 while i < 4
                     invariant i<=4,o+8<=out.len(),out.len()==n,n==8*(width as nat)*(height as nat),n<=crate::alloc_guard::MAX_BYTES,
+                        forall|j: int| 0<=j<n ==> #[trigger] out@[j]==if o<=j<o+2*i {colour::physical(px@,true)[j-o]}else{before[j]},
                     decreases 4-i,
                 {
                     let word=px[i];
-                    proof {assert(word>>8<=u8::MAX as u16 && (word&255)<=u8::MAX as u16) by (bit_vector);}
+                    proof {colour::physical_word(word);}
                     out[o+2*i]=(word>>8) as u8;
                     out[o+2*i+1]=(word&255) as u8;
                     i += 1;
                 }
+                proof {assert(out@=~=colour::place(geometry,original,width as nat,x as nat,y as nat,px@));}
             }
             Sink::Canvas { canvas, cw, fx, fy, over: ov } => {
                 proof {
@@ -343,9 +357,11 @@ impl<'o> Sink<'o> {
                     pixel_offset(*cw as nat,*fy as nat+height as nat,*fx as nat+x as nat,*fy as nat+y as nat,4,canvas.len() as nat);
                 }
                 let o = 4 * ((*fy + y) as usize * *cw as usize + (*fx + x) as usize);
+                let ghost before=canvas@;
                 let s = [px[0] as u8, px[1] as u8, px[2] as u8, px[3] as u8];
                 let r = if *ov { over(s, [canvas[o], canvas[o + 1], canvas[o + 2], canvas[o + 3]]) } else { s };
                 canvas[o..o + 4].copy_from_slice(&r);
+                proof {assert(canvas@=~=colour::place(geometry,original,width as nat,x as nat,y as nat,px@));}
             }
         }
     }
@@ -588,6 +604,7 @@ fn sample(line: &[u8], depth: u8, i: usize) -> (r: u16)
         (i as int+1)*(depth as int)<=8*(line.len() as int),
     ensures r as u32<=(1u32<<depth)-1,
         depth!=16 ==> r as nat==raster::palette_sample(line@,depth,i as nat) as nat,
+        r==colour::sample(line@,depth,i as nat),
 {
     proof {
         assert((depth==16 ==> (1u32<<depth)==u16::MAX as u32+1) && (depth==8 ==> (1u32<<depth)==256u32)) by (bit_vector);
@@ -630,12 +647,13 @@ fn sample(line: &[u8], depth: u8, i: usize) -> (r: u16)
     }
 }
 
-/// Safety-only channel-index factoring; no sample-value equation is claimed.
+/// Bind the checked channel index to P13.1's independent sample equation.
 fn sample_channel(line: &[u8],depth: u8,x: usize,channels: usize,channel: usize) -> (r: u16)
     requires depth==1 || depth==2 || depth==4 || depth==8 || depth==16,
         1<=channels<=4,channel<channels,4*(x as int+1)<=crate::alloc_guard::MAX_BYTES,
         (x as int+1)*(channels as int)*(depth as int)<=8*(line.len() as int),
     ensures r as u32<=(1u32<<depth)-1,
+        r==colour::sample(line@,depth,channels as nat*x as nat+channel as nat),
 {
     proof {
         crate::limits::caps_ok();
@@ -693,12 +711,20 @@ struct Colour<'b> {
 }
 
 impl<'b> Colour<'b> {
-    closed spec fn wf(self) -> bool {crate::model::valid_depth(self.ct,self.depth)}
+    closed spec fn view(self) -> colour::Context {
+        colour::Context {ct:self.ct,depth:self.depth,plte:self.plte@,
+            trns:match self.trns {Some(t)=>Some(t@),None=>None}}
+    }
+    closed spec fn wf(self) -> bool {
+        crate::model::valid_depth(self.ct,self.depth)
+        && forall|j: int| 0<=j<3 ==> #[trigger] self.key@[j]==colour::key(self.view(),j as nat)
+    }
     closed spec fn channels(self) -> nat {if self.ct==0 || self.ct==3 {1nat}else if self.ct==2 {3nat}else if self.ct==4 {2nat}else{4nat}}
     fn new(doc: &Doc, b: &'b [u8]) -> (r: Colour<'b>)
         requires doc.wf(b@),
         ensures r.wf(),r.ct==doc.ihdr.ct,r.depth==doc.ihdr.depth,
             r.plte.len()/3==crate::document_model::entries(doc.view()),
+            r.view()==colour::from_doc(doc.view(),b@),
     {
         let plte = match doc.plte {
             Some((o, n)) => {
@@ -718,7 +744,10 @@ impl<'b> Colour<'b> {
                 let mask: u32 = (1u32 << depth) - 1;
                 let mut j = 0;
                 while j + 1 < t.len() && j / 2 < 3
-                    invariant j<=6,j%2==0,
+                    invariant j<=6,j%2==0,j<=t.len(),
+                        forall|q: int| 0<=q<3 ==> #[trigger] key@[q]==if 2*q<j {
+                            (crate::model::be16(t@,2*q) as u32&mask) as u16
+                        }else{0u16},
                     decreases 6-j,
                 {
                     let word=be16(t,j);
@@ -729,7 +758,28 @@ impl<'b> Colour<'b> {
                 }
             }
         }
-        Colour { ct: doc.ihdr.ct, depth: doc.ihdr.depth, plte, trns, key }
+        let r=Colour { ct: doc.ihdr.ct, depth: doc.ihdr.depth, plte, trns, key };
+        proof {
+            assert forall|q: int| 0<=q<3 implies #[trigger] r.key@[q]==colour::key(r.view(),q as nat) by {}
+            match doc.plte {
+                None=>{assert(r.plte@=~=Seq::<u8>::empty());}
+                Some((o,n))=>{assert(r.plte@=~=b@.subrange(o as int,o as int+n as int));}
+            }
+            match doc.trns {
+                None=>{assert(r.view().trns==None);}
+                Some((o,n))=>{
+                    if let Some(t)=r.trns {
+                        assert(t@=~=b@.subrange(o as int,o as int+n as int));
+                    }
+                    assert(r.view().trns==Some(b@.subrange(o as int,o as int+n as int)));
+                }
+            }
+            assert(r.view().ct==colour::from_doc(doc.view(),b@).ct);
+            assert(r.view().depth==colour::from_doc(doc.view(),b@).depth);
+            assert(r.view().plte==colour::from_doc(doc.view(),b@).plte);
+            assert(r.view().trns==colour::from_doc(doc.view(),b@).trns);
+        }
+        r
     }
 
     /// P13.2/P13.3: pixel `x` of a reconstructed scanline.
@@ -741,9 +791,14 @@ impl<'b> Colour<'b> {
             match r {Ok(px)=>forall|i: int| 0<=i<4 ==> (#[trigger] px@[i])<=if wide {u16::MAX}else{255},Err(e)=>e==Error::PaletteIndexOutOfRange},
             r.is_err()==(self.ct==3 && pol.palette_index==PaletteIndex::Reject
                 && raster::palette_sample(line@,self.depth,x as nat) as nat>=self.plte.len()/3),
+            match r {
+                Ok(px)=>colour::pixel(self.view(),line@,x as nat,wide,pol.palette_index==PaletteIndex::Black)==Ok(px@),
+                Err(e)=>colour::pixel(self.view(),line@,x as nat,wide,pol.palette_index==PaletteIndex::Black)==Err(e),
+            },
     {
         proof {crate::limits::caps_ok();}
 
+        proof {reveal(Colour::wf);reveal(Colour::view);}
         let top: u16 = if wide { 65535 } else { 255 };
         let d = self.depth;
         match self.ct {
@@ -819,10 +874,21 @@ fn draw_row(colour: &Colour<'_>,line: &[u8],w: u32,h: u32,x0: u32,dx: u32,pw: u3
             && !raster::palette_valid(line@,colour.depth,pw as nat,(colour.plte.len()/3) as nat) {
                 Err(Error::PaletteIndexOutOfRange)
             }else{Ok(())},
+        result.is_ok() ==> final(sink).pixels()==colour::draw_prefix(colour.view(),line@,old(sink).shape(),old(sink).pixels(),w as nat,x0 as nat,dx as nat,y as nat,pw as nat,wide,pol.palette_index==PaletteIndex::Black),
+        result.is_ok()==colour::MC(colour.view(),line@,pw as nat,wide,pol.palette_index==PaletteIndex::Black).is_ok(),
+        match colour::MC(colour.view(),line@,pw as nat,wide,pol.palette_index==PaletteIndex::Black) {
+            Err(e)=>result==Err(e),
+            Ok(rows)=>result==Ok(()) && final(sink).pixels()==colour::render_row(rows,old(sink).shape(),old(sink).pixels(),w as nat,x0 as nat,dx as nat,y as nat,pw as nat),
+        },
 {
+    let ghost before=sink.pixels();
+    let ghost geometry=sink.shape();
+    proof {colour::draw_start(colour.view(),line@,geometry,before,w as nat,x0 as nat,dx as nat,y as nat,wide,pol.palette_index==PaletteIndex::Black);}
     let mut c=0u32;
     while c<pw
         invariant c<=pw,colour.wf(),sink.wf(w,h),sink.shape()==old(sink).shape(),sink.loan()==old(sink).loan(),wide==sink.wide_view(),
+            geometry==sink.shape(),before==old(sink).pixels(),
+            sink.pixels()==colour::draw_prefix(colour.view(),line@,geometry,before,w as nat,x0 as nat,dx as nat,y as nat,c as nat,wide,pol.palette_index==PaletteIndex::Black),
             1<=pw<=w,1<=dx<=8,y<h,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
             pw==layout::span(w as nat,x0 as nat,dx as nat),
             line.len()==layout::scan_bytes(colour.channels()*(colour.depth as nat),pw as nat),
@@ -840,8 +906,19 @@ fn draw_row(colour: &Colour<'_>,line: &[u8],w: u32,h: u32,x0: u32,dx: u32,pw: u3
             assert((x0 as int)+(c as int)*(dx as int)<w);
         }
         let px=match colour.pixel(line,c as usize,wide,pol,ev) {Ok(px)=>px,Err(e)=>return Err(e)};
+        proof {colour::draw_step(colour.view(),line@,geometry,before,w as nat,x0 as nat,dx as nat,y as nat,c as nat,wide,pol.palette_index==PaletteIndex::Black,px@);}
+        let ghost prior=sink.pixels();
         sink.put(w,h,x0+c*dx,y,px);
+        proof {
+            assert(sink.pixels()==colour::place(geometry,prior,w as nat,x0 as nat+c as nat*dx as nat,y as nat,px@));
+            assert(sink.pixels()==colour::draw_prefix(colour.view(),line@,geometry,before,w as nat,x0 as nat,dx as nat,y as nat,c as nat+1,wide,pol.palette_index==PaletteIndex::Black));
+        }
         c+=1;
+    }
+    proof {
+        if let Ok(rows)=colour::MC(colour.view(),line@,pw as nat,wide,pol.palette_index==PaletteIndex::Black) {
+            colour::draw_matches_MC(colour.view(),line@,pw as nat,rows,geometry,before,w as nat,x0 as nat,dx as nat,y as nat,pw as nat,wide,pol.palette_index==PaletteIndex::Black);
+        }
     }
     Ok(())
 }
@@ -861,7 +938,7 @@ pub(crate) open spec fn raster_context(doc: Doc,w: u32,h: u32,pol: Policy) -> ra
     raster::shape(doc.ihdr.view(),w as nat,h as nat,crate::document_model::entries(doc.view()),pol)
 }
 
-/// Whole-raster data result and MF trace; converted colour values remain M5.
+/// Whole-raster data result and MF trace; T4 row/sink equations are checked separately.
 fn decode_exact<S: Segments>(
     doc: &Doc,b: &[u8],src: &mut S,raw: &mut [u8],w: u32,h: u32,
     pol: &Policy,ev: &mut Events,sink: &mut Sink<'_>,

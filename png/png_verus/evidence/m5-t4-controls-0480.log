@@ -1,0 +1,18 @@
+command: ['python3', '-I', '/home/ws/m5-proof-work/d8a3d5c-20261122/final_t4_control.py', '--host', '477', '--i686', '478']
+{
+  "kind": "T4 post-checkpoint control, no new verifier credit",
+  "base_commit": "d8a3d5c98c1ae0d891ef1fec6a49a7465f0fb652",
+  "full_runs": [
+    477,
+    478
+  ],
+  "source_inventory_count": 72,
+  "source_inventory_matches_both_full_runs": true,
+  "host_and_i686_bindings_unchanged": true,
+  "vstd_hashes_and_mtimes_unchanged": true,
+  "development_scratch_trees_restored": true,
+  "protected_files_unchanged": true,
+  "whitespace_clean": true,
+  "active_verifier_or_solver_processes": [],
+  "accepted_checkpoint": false
+}
