@@ -442,4 +442,22 @@ pub proof fn canvas_offset_injective(W: nat,fx: nat,fy: nat,w: nat,h: nat,x: nat
         ((fy+Y)*W+fx+X) as int,W as int,(fy+Y) as int,(fx+X) as int);
 }
 
+/// E8(a): widening both arbitrary wire fields preserves the exact sum.
+pub proof fn rect_sum_unnarrowed(x: u32,w: u32)
+    ensures
+        x as nat+w as nat<=2*(u32::MAX as nat),
+        2*(u32::MAX as nat)<u64::MAX as nat+1,
+        x as u64+w as u64==x as int+w as int,
+        (((x as u64+w as u64) as u64) as nat)==x as nat+w as nat,
+{}
+
+/// E8(b): the smaller frozen bound applies only to wire-bounded operands.
+pub proof fn rect_sum_wire_bound(x: u32,w: u32)
+    requires x<=crate::limits::PNG_WIRE_MAX,w<=crate::limits::PNG_WIRE_MAX,
+    ensures x as nat+w as nat<=2*(crate::limits::PNG_WIRE_MAX as nat),
+        (((x as u64+w as u64) as u64) as nat)<=2*(crate::limits::PNG_WIRE_MAX as nat),
+{
+    rect_sum_unnarrowed(x,w);
+}
+
 } // verus!

@@ -1,0 +1,15 @@
+command: ['python3', '-I', '-c', 'import hashlib,json;from pathlib import Path;r=Path("/home/ws/projects/verified-decoders/png/png_verus");p=r/"runs/0428.log";d={"run":428,"kind":"session-interrupted-full-run","accepted":False,"verification_summary_seen":{"verified":2926,"errors":0},"logged_exit_record_present":False,"launcher_record_present":False,"reason":"Session ended before the logged exit and launcher source/import/vstd before-after record survived; no verification credit","log_sha256":hashlib.sha256(p.read_bytes()).hexdigest(),"resumed_protected_baseline_commit":"605bebd"};(r/"evidence/m4-filter-interrupted-0428.json").write_text(json.dumps(d,indent=2)+"\\n");print(json.dumps(d,indent=2))']
+{
+  "run": 428,
+  "kind": "session-interrupted-full-run",
+  "accepted": false,
+  "verification_summary_seen": {
+    "verified": 2926,
+    "errors": 0
+  },
+  "logged_exit_record_present": false,
+  "launcher_record_present": false,
+  "reason": "Session ended before the logged exit and launcher source/import/vstd before-after record survived; no verification credit",
+  "log_sha256": "f5bf43734388ac4cd7fa93dbda3742720f4e61216bbcdb6e9dbf27aa931ce67d",
+  "resumed_protected_baseline_commit": "605bebd"
+}

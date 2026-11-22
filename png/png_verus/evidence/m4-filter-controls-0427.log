@@ -1,0 +1,1 @@
+command: ['bash', '-c', 'git -C /home/ws/projects/verified-decoders diff --exit-code -- png/THEOREMS.md png/ERRATA.md ":(glob)png/REVIEW-*.md" png/spec-frozen png/limits-frozen png/policy-frozen png/png_verus/QUESTIONS.md && git -C /home/ws/projects/verified-decoders diff --check']

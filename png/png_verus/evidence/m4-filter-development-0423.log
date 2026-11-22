@@ -1,0 +1,2 @@
+command: ['python3', '-I', '/home/ws/projects/verified-decoders/png/png_verus/tools/generate_m4_filter_projections.py']
+Generated 35 M4 filter projection candidates, zero complete pixel witnesses; no credit from generation.

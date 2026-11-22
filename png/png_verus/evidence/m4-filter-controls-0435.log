@@ -1,0 +1,3 @@
+command: ['bash', '-c', 'python3 -I /home/ws/projects/verified-decoders/png/png_verus/tools/direct_verify.py --target host --stack-mib 256 --check-bindings && python3 -I /home/ws/projects/verified-decoders/png/png_verus/tools/direct_verify.py --target i686 --stack-mib 256 --check-bindings && git -C /home/ws/projects/verified-decoders diff --exit-code 605bebd -- png/THEOREMS.md png/ERRATA.md ":(glob)png/REVIEW-*.md" png/spec-frozen png/limits-frozen png/policy-frozen png/png_verus/QUESTIONS.md && git -C /home/ws/projects/verified-decoders diff --check']
+[direct bindings] host: manifests, toolchain, inflate imports and vstd pins match
+[direct bindings] i686: manifests, toolchain, inflate imports and vstd pins match

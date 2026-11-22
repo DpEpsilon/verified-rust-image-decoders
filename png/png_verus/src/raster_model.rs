@@ -222,4 +222,15 @@ pub(crate) proof fn default_error(b: Seq<u8>,h: crate::model::Ihdr,z: Seq<u8>,en
     still_walk(b,crate::policy::STRICT,false);
 }
 
+pub(crate) proof fn default_ready(b: Seq<u8>,h: crate::model::Ihdr,z: Seq<u8>,entries: nat,wide: bool)
+    requires default_case(b,h,z,entries),
+        data(z,shape(h,h.width as nat,h.height as nat,entries,crate::policy::STRICT),crate::policy::STRICT)==Some(Ok(())),
+    ensures still(b,crate::policy::STRICT,wide)==(Projection::Ready {
+        width:h.width,height:h.height,bytes:l::output_count(h,wide)}),
+{
+    hide(crate::document_model::MW_p);hide(data);
+    crate::walk_policy::profiles_project_exactly();
+    still_walk(b,crate::policy::STRICT,wide);
+}
+
 } // verus!

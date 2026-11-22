@@ -103,9 +103,17 @@ pub(crate) fn fctl(d: &[u8], actl_present: bool, before_idat: bool,
     let seq = state.seq + 1;
     if let Some((false, false)) = state.cur { return Err((Error::MissingFrameData, true)); }
     let f = Fctl::parse(d);
+    proof {
+        crate::layout_model::rect_sum_unnarrowed(f.x,f.w);
+        crate::layout_model::rect_sum_unnarrowed(f.y,f.h);
+    }
     if f.w == 0 || f.h == 0 || f.x as u64 + f.w as u64 > width as u64
         || f.y as u64 + f.h as u64 > height as u64 || f.dispose > 2 || f.blend > 1 {
         return Err((Error::InvalidFrameControl, true));
+    }
+    proof {
+        crate::layout_model::rect_sum_wire_bound(f.x,f.w);
+        crate::layout_model::rect_sum_wire_bound(f.y,f.h);
     }
     if before_idat && (f.x != 0 || f.y != 0 || f.w != width || f.h != height) {
         return Err((Error::InvalidFrameControl, true));
