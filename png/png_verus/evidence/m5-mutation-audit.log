@@ -1,0 +1,79 @@
+command: ['python3', '-I', '/home/ws/m5-proof-mutations/764899a-20261122/audit_mutations.py']
+{
+  "kind": "M5 mutation/final-source audit; no new functional verification credit",
+  "base_commit": "764899abcd959da26306bee78949c1be8148e391",
+  "full_runs": [
+    586,
+    588
+  ],
+  "full_verified_each": 4514,
+  "source_inventory_count": 82,
+  "functional_source_unchanged": true,
+  "mutation_controls": [
+    {
+      "run": 590,
+      "verified": 837,
+      "number": 0
+    },
+    {
+      "run": 595,
+      "verified": 838,
+      "number": 124
+    }
+  ],
+  "kills": [
+    {
+      "number": 24,
+      "run": 596,
+      "function": "trns_samples_equal"
+    },
+    {
+      "number": 25,
+      "run": 597,
+      "function": "scale"
+    },
+    {
+      "number": 26,
+      "run": 598,
+      "function": "select"
+    },
+    {
+      "number": 27,
+      "run": 599,
+      "function": "dispose_and_save"
+    },
+    {
+      "number": 28,
+      "run": 600,
+      "function": "over"
+    },
+    {
+      "number": 29,
+      "run": 601,
+      "function": "ensure_saved"
+    },
+    {
+      "number": 30,
+      "run": 602,
+      "function": "prepare_image"
+    },
+    {
+      "number": 32,
+      "run": 603,
+      "function": "selected_logged"
+    }
+  ],
+  "uncredited_attempts": [
+    592,
+    591,
+    593
+  ],
+  "restored_scratch_count": 13,
+  "archives_hash_checked_outside_repo": true,
+  "prepared_control_and_mutant_differ_only_in_intended_implementation_file": true,
+  "bindings_and_vstd_hashes_mtimes_unchanged": true,
+  "protected_files_unchanged": true,
+  "whitespace_clean": true,
+  "runtime_run": 594,
+  "active_verifier_or_solver_processes": []
+}

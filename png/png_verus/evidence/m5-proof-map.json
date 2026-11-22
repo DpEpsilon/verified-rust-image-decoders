@@ -1,0 +1,935 @@
+{
+  "status": "VERIFIED COMPONENT MAP; INDEPENDENT COVERAGE/INDEPENDENCE REVIEW PENDING",
+  "base_commit": "764899abcd959da26306bee78949c1be8148e391",
+  "theorems_source": "../THEOREMS.md",
+  "theorems_sha256": "3bacbc703c97ac988efcbd95e7d49bcfab5a5c9d706c2b10e6b4c784abb67351",
+  "errata_source": "../ERRATA.md",
+  "errata_sha256": "4fb18a760bd09f453de70c6d94d5b35dcb9f1f826c506bef3414e659b3413da7",
+  "full_runs": [
+    586,
+    588
+  ],
+  "T4": [
+    {
+      "clause": "T4.1",
+      "requirement": "Validated IHDR/PLTE/tRNS context comes from the whole mathematical walk and borrowed input ranges.",
+      "proof_anchors": [
+        {
+          "file": "src/image.rs",
+          "function": "Colour::new",
+          "line": 740,
+          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+        },
+        {
+          "file": "src/colour_model.rs",
+          "function": "from_doc",
+          "line": 95,
+          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+        },
+        {
+          "file": "src/image.rs",
+          "function": "Colour::pixel",
+          "line": 804,
+          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    },
+    {
+      "clause": "T4.2",
+      "requirement": "All fifteen legal colour/depth formats use MSB-first sub-byte or big-endian 16-bit samples; padding is outside the pixel domain.",
+      "proof_anchors": [
+        {
+          "file": "src/image.rs",
+          "function": "packed_access",
+          "line": 607,
+          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+        },
+        {
+          "file": "src/image.rs",
+          "function": "sample",
+          "line": 619,
+          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+        },
+        {
+          "file": "src/image.rs",
+          "function": "sample_channel",
+          "line": 668,
+          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+        },
+        {
+          "file": "src/colour_model.rs",
+          "function": "sample",
+          "line": 105,
+          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    },
+    {
+      "clause": "T4.3",
+      "requirement": "Low-depth RGBA8 scaling is exact and has zero remainder.",
+      "proof_anchors": [
+        {
+          "file": "src/colour_model.rs",
+          "function": "scale8_exact",
+          "line": 43,
+          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+        },
+        {
+          "file": "src/image.rs",
+          "function": "scale",
+          "line": 688,
+          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    },
+    {
+      "clause": "T4.4",
+      "requirement": "RGBA16 scaling is exact for all five depths.",
+      "proof_anchors": [
+        {
+          "file": "src/colour_model.rs",
+          "function": "scale16_exact",
+          "line": 56,
+          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+        },
+        {
+          "file": "src/image.rs",
+          "function": "scale",
+          "line": 688,
+          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    },
+    {
+      "clause": "T4.5",
+      "requirement": "Every 16-bit sample uses the specified half-up rounding identity for RGBA8.",
+      "proof_anchors": [
+        {
+          "file": "src/colour_model.rs",
+          "function": "round16",
+          "line": 70,
+          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+        },
+        {
+          "file": "src/image.rs",
+          "function": "scale",
+          "line": 688,
+          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    },
+    {
+      "clause": "T4.6",
+      "requirement": "tRNS keys are masked to their low d bits and compared with complete unscaled samples, with all three RGB keys tested.",
+      "proof_anchors": [
+        {
+          "file": "src/colour_model.rs",
+          "function": "key",
+          "line": 111,
+          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+        },
+        {
+          "file": "src/colour_model.rs",
+          "function": "pixel",
+          "line": 126,
+          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+        },
+        {
+          "file": "src/image.rs",
+          "function": "Colour::new",
+          "line": 740,
+          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+        },
+        {
+          "file": "src/image.rs",
+          "function": "Colour::pixel",
+          "line": 804,
+          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    },
+    {
+      "clause": "T4.7",
+      "requirement": "Palette index bounds precede borrowed PLTE reads; missing alpha defaults to 255 and 16-bit palette/alpha bytes scale by 257.",
+      "proof_anchors": [
+        {
+          "file": "src/image.rs",
+          "function": "Colour::pixel",
+          "line": 804,
+          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+        },
+        {
+          "file": "src/colour_model.rs",
+          "function": "pixel",
+          "line": 126,
+          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+        },
+        {
+          "file": "src/colour_model.rs",
+          "function": "scale16_257",
+          "line": 77,
+          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    },
+    {
+      "clause": "T4.8",
+      "requirement": "Actual row conversion equals the independent MC channel/physical-byte equations at every destination pixel.",
+      "proof_anchors": [
+        {
+          "file": "src/image.rs",
+          "function": "Sink::put",
+          "line": 324,
+          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+        },
+        {
+          "file": "src/image.rs",
+          "function": "draw_row",
+          "line": 882,
+          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+        },
+        {
+          "file": "src/colour_model.rs",
+          "function": "draw_matches_MC",
+          "line": 276,
+          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+        },
+        {
+          "file": "src/colour_model.rs",
+          "function": "render_row_observe",
+          "line": 368,
+          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+        },
+        {
+          "file": "src/colour_model.rs",
+          "function": "physical",
+          "line": 178,
+          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending",
+      "qualification": "This row-level T4 result is not the unrestricted public MS/MS16 equality assigned to T9/T13 at M6."
+    }
+  ],
+  "T8": [
+    {
+      "clause": "T8.1",
+      "requirement": "Each selected job carries the preceding effective disposal and exact bounded frame geometry.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_state.rs",
+          "function": "State::begin_next",
+          "line": 108,
+          "sha256": "5333992f1e4b3a7973669691dba5f2b81534398fd60a71da454c7aece29c6c41"
+        },
+        {
+          "file": "src/frame_state.rs",
+          "function": "FrameJob::select",
+          "line": 139,
+          "sha256": "5333992f1e4b3a7973669691dba5f2b81534398fd60a71da454c7aece29c6c41"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    },
+    {
+      "clause": "T8.2",
+      "requirement": "Disposal NONE leaves bytes unchanged and BACKGROUND clears precisely the preceding rectangle in all RGBA channels.",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "Frames::dispose_and_save",
+          "line": 1311,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "clear_rect",
+          "line": 1780,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/composite_model.rs",
+          "function": "dispose_regions",
+          "line": 188,
+          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+        },
+        {
+          "file": "src/composite_model.rs",
+          "function": "clear_row_finished",
+          "line": 154,
+          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    },
+    {
+      "clause": "T8.3",
+      "requirement": "PREVIOUS on frame zero becomes BACKGROUND, not NONE.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_state.rs",
+          "function": "FrameJob::select",
+          "line": 139,
+          "sha256": "5333992f1e4b3a7973669691dba5f2b81534398fd60a71da454c7aece29c6c41"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    },
+    {
+      "clause": "T8.4",
+      "requirement": "PREVIOUS restores the entire pre-frame reference canvas through the matching saved-rectangle effect, without prescribing Saved layout.",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "Frames::restores_previous",
+          "line": 935,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "Frames::dispose_and_save",
+          "line": 1311,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/composite_model.rs",
+          "function": "saved_before_frame_restore",
+          "line": 288,
+          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+        },
+        {
+          "file": "src/paint_model.rs",
+          "function": "reference_disposal",
+          "line": 252,
+          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    },
+    {
+      "clause": "T8.5",
+      "requirement": "Every Saved restore source load lies inside the rectangle written by the matching save.",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "copy_rect",
+          "line": 1808,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/composite_model.rs",
+          "function": "rectangle_access",
+          "line": 100,
+          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+        },
+        {
+          "file": "src/composite_model.rs",
+          "function": "matching_restore",
+          "line": 168,
+          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+        },
+        {
+          "file": "src/composite_model.rs",
+          "function": "saved_before_frame",
+          "line": 285,
+          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    },
+    {
+      "clause": "T8.6",
+      "requirement": "The exhausted/fused dispatcher returns without applying the last frame disposal.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_state.rs",
+          "function": "State::begin_next",
+          "line": 108,
+          "sha256": "5333992f1e4b3a7973669691dba5f2b81534398fd60a71da454c7aece29c6c41"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "Frames::begin_source",
+          "line": 979,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "Frames::terminal_logged",
+          "line": 1616,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    },
+    {
+      "clause": "T8.7",
+      "requirement": "SOURCE and OVER use independent MC8 source pixels and the exact integer MOver equations.",
+      "proof_anchors": [
+        {
+          "file": "src/image.rs",
+          "function": "over",
+          "line": 208,
+          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+        },
+        {
+          "file": "src/image.rs",
+          "function": "Sink::put",
+          "line": 324,
+          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+        },
+        {
+          "file": "src/colour_model.rs",
+          "function": "place",
+          "line": 182,
+          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+        },
+        {
+          "file": "src/composite_model.rs",
+          "function": "over_equations",
+          "line": 60,
+          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    },
+    {
+      "clause": "T8.8",
+      "requirement": "T-OVER covers every byte operand, both alpha fast paths, positive divisor A, half-up channels/alpha, BLEND_MAX and u32 intermediate bounds.",
+      "proof_anchors": [
+        {
+          "file": "src/composite_model.rs",
+          "function": "over_bounds",
+          "line": 29,
+          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+        },
+        {
+          "file": "src/composite_model.rs",
+          "function": "over_equations",
+          "line": 60,
+          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+        },
+        {
+          "file": "src/image.rs",
+          "function": "over",
+          "line": 208,
+          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    },
+    {
+      "clause": "T8.9",
+      "requirement": "Each successful production frame job establishes the independent per-position MK relation, source coordinates and rectangle write footprint.",
+      "proof_anchors": [
+        {
+          "file": "src/paint_model.rs",
+          "function": "source_coordinate",
+          "line": 15,
+          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+        },
+        {
+          "file": "src/paint_model.rs",
+          "function": "pass_coordinate",
+          "line": 29,
+          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+        },
+        {
+          "file": "src/paint_model.rs",
+          "function": "complete_pixels",
+          "line": 138,
+          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+        },
+        {
+          "file": "src/paint_model.rs",
+          "function": "MK",
+          "line": 260,
+          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "Frames::draw_selected",
+          "line": 1396,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "Frames::finish_job",
+          "line": 1463,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending",
+      "qualification": "MK is a checked one-step pixel/disposal relation. Complete public MFr canvas/control-payload equality and Prog_ITER remain M6 obligations."
+    },
+    {
+      "clause": "T8.10",
+      "requirement": "Constructor canvas is transparent when the default is not an animation frame, otherwise it contains independently decoded default pixels; reused frame zero preserves the same MK source.",
+      "proof_anchors": [
+        {
+          "file": "src/paint_model.rs",
+          "function": "initial_transparent",
+          "line": 189,
+          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+        },
+        {
+          "file": "src/paint_model.rs",
+          "function": "initial_decoded",
+          "line": 195,
+          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+        },
+        {
+          "file": "src/paint_model.rs",
+          "function": "initial_default_source",
+          "line": 207,
+          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "Frames::with_trace",
+          "line": 1201,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "normalize_reused",
+          "line": 1719,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/composite_model.rs",
+          "function": "over_transparent",
+          "line": 235,
+          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    }
+  ],
+  "A_PNG_3_M5": [
+    {
+      "clause": "A-PNG-3.M5",
+      "requirement": "Saved has canvas size and fits MAX_BYTES; a decoder requests it at most once and its cumulative log has at most three entries.",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "Frames::ensure_saved",
+          "line": 1019,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "Frames::allocation_wf",
+          "line": 891,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "Frames::allocation_clauses",
+          "line": 858,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/iterator_log_model.rs",
+          "function": "wf",
+          "line": 8,
+          "sha256": "c1c98ee64701b3dcbc10acf12cd9bc242954214f27b0c44e203c7b52ec7239bd"
+        },
+        {
+          "file": "src/iterator_log_model.rs",
+          "function": "append_saved",
+          "line": 17,
+          "sha256": "c1c98ee64701b3dcbc10acf12cd9bc242954214f27b0c44e203c7b52ec7239bd"
+        },
+        {
+          "file": "src/iterator_data_model.rs",
+          "function": "log_properties",
+          "line": 352,
+          "sha256": "4ee5558fcb3ab7f741b36809d0e44cef5bbf153f162b0771c477909f64886ea9"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    }
+  ],
+  "A_PNG_4": [
+    {
+      "clause": "A-PNG-4.1",
+      "requirement": "The actual decoder owns the cumulative sealed log; without OOM its requests equal the pure-input initial requests plus the one reached Saved request, all successful.",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "Frames::with_logged",
+          "line": 1162,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "Frames::allocation_clauses",
+          "line": 858,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/iterator_data_model.rs",
+          "function": "SavedAt_p",
+          "line": 308,
+          "sha256": "4ee5558fcb3ab7f741b36809d0e44cef5bbf153f162b0771c477909f64886ea9"
+        },
+        {
+          "file": "src/iterator_data_model.rs",
+          "function": "saved_at_projection",
+          "line": 102,
+          "sha256": "4ee5558fcb3ab7f741b36809d0e44cef5bbf153f162b0771c477909f64886ea9"
+        },
+        {
+          "file": "src/iterator_data_model.rs",
+          "function": "requests_p",
+          "line": 374,
+          "sha256": "4ee5558fcb3ab7f741b36809d0e44cef5bbf153f162b0771c477909f64886ea9"
+        },
+        {
+          "file": "src/iterator_data_model.rs",
+          "function": "log_properties",
+          "line": 352,
+          "sha256": "4ee5558fcb3ab7f741b36809d0e44cef5bbf153f162b0771c477909f64886ea9"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "Frames::try_next",
+          "line": 1265,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    },
+    {
+      "clause": "A-PNG-4.2",
+      "requirement": "Saved OOM occurs at mathematical SavedAt, retains the exact failed Saved suffix after successful constructor entries, exposes no frame and fuses all subsequent calls without new requests or decoding.",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "Frames::ensure_saved",
+          "line": 1019,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "Frames::selected_logged",
+          "line": 1522,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "Frames::terminal_logged",
+          "line": 1616,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "Frames::allocation_clauses",
+          "line": 858,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "Frames::try_next",
+          "line": 1265,
+          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+        },
+        {
+          "file": "src/iterator_data_model.rs",
+          "function": "history_oom",
+          "line": 173,
+          "sha256": "4ee5558fcb3ab7f741b36809d0e44cef5bbf153f162b0771c477909f64886ea9"
+        },
+        {
+          "file": "src/iterator_data_model.rs",
+          "function": "history_fused",
+          "line": 181,
+          "sha256": "4ee5558fcb3ab7f741b36809d0e44cef5bbf153f162b0771c477909f64886ea9"
+        },
+        {
+          "file": "src/iterator_data_model.rs",
+          "function": "oom_log",
+          "line": 391,
+          "sha256": "4ee5558fcb3ab7f741b36809d0e44cef5bbf153f162b0771c477909f64886ea9"
+        }
+      ],
+      "verified_in_full_runs": [
+        586,
+        588
+      ],
+      "independent_coverage_review": "pending"
+    },
+    {
+      "clause": "A-PNG-4.Prog_ITER",
+      "status": "DUE AT M6; NOT CLAIMED",
+      "requirement": "All entries Ok implies T-ITER items 1\u20133, including complete returned canvas and control payloads."
+    }
+  ],
+  "M5_named_lemmas": [
+    {
+      "name": "scale8_exact",
+      "proof_anchors": [
+        {
+          "file": "src/colour_model.rs",
+          "function": "scale8_exact",
+          "line": 43,
+          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+        }
+      ],
+      "scope": "Universal integral low-depth scaling"
+    },
+    {
+      "name": "scale16_exact",
+      "proof_anchors": [
+        {
+          "file": "src/colour_model.rs",
+          "function": "scale16_exact",
+          "line": 56,
+          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+        }
+      ],
+      "scope": "Universal integral five-depth scaling"
+    },
+    {
+      "name": "round16",
+      "proof_anchors": [
+        {
+          "file": "src/colour_model.rs",
+          "function": "round16",
+          "line": 70,
+          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+        }
+      ],
+      "scope": "Universal 16-bit half-up identity"
+    },
+    {
+      "name": "scale16_257",
+      "proof_anchors": [
+        {
+          "file": "src/colour_model.rs",
+          "function": "scale16_257",
+          "line": 77,
+          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+        }
+      ],
+      "scope": "Low-depth channel identity only; not integrated L-16-8"
+    },
+    {
+      "name": "T-OVER/over_bounds",
+      "proof_anchors": [
+        {
+          "file": "src/composite_model.rs",
+          "function": "over_bounds",
+          "line": 29,
+          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+        }
+      ],
+      "scope": "Byte-domain arithmetic and intermediate/result bounds"
+    },
+    {
+      "name": "Saved matching restore",
+      "proof_anchors": [
+        {
+          "file": "src/composite_model.rs",
+          "function": "saved_before_frame_restore",
+          "line": 288,
+          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+        }
+      ],
+      "scope": "Restore effect, not a prescribed saved-buffer layout"
+    },
+    {
+      "name": "Saved footprint",
+      "proof_anchors": [
+        {
+          "file": "src/composite_model.rs",
+          "function": "rectangle_access",
+          "line": 100,
+          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+        }
+      ],
+      "scope": "Actual source-load membership in matching saved rectangle"
+    },
+    {
+      "name": "MK per-position",
+      "proof_anchors": [
+        {
+          "file": "src/paint_model.rs",
+          "function": "MK",
+          "line": 260,
+          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+        }
+      ],
+      "scope": "Independent source coordinate/channel/disposal predicate"
+    },
+    {
+      "name": "MFr data reachability",
+      "proof_anchors": [
+        {
+          "file": "src/iterator_data_model.rs",
+          "function": "saved_at_projection",
+          "line": 102,
+          "sha256": "4ee5558fcb3ab7f741b36809d0e44cef5bbf153f162b0771c477909f64886ea9"
+        }
+      ],
+      "scope": "Reached first qualifying Saved call, including its own data failure"
+    },
+    {
+      "name": "Cumulative requests",
+      "proof_anchors": [
+        {
+          "file": "src/iterator_data_model.rs",
+          "function": "requests_p",
+          "line": 374,
+          "sha256": "4ee5558fcb3ab7f741b36809d0e44cef5bbf153f162b0771c477909f64886ea9"
+        }
+      ],
+      "scope": "Mathematical per-call cumulative allocation projection"
+    }
+  ],
+  "retained_arithmetic_dependencies": [
+    {
+      "file": "src/limits.rs",
+      "function": "caps_ok",
+      "line": 39,
+      "sha256": "ce4a4b191330d922ac3265c19d5b66f01b8d67132af2adb239677ae35fac7f44"
+    },
+    {
+      "file": "src/header.rs",
+      "function": "area_cap_u64",
+      "line": 64,
+      "sha256": "a3eaeeaf7afa01edea5ca221f4dc7e41e35d52414e6603bfea73998b18ebc6c6"
+    },
+    {
+      "file": "src/layout_model.rs",
+      "function": "canvas_offset_bound",
+      "line": 419,
+      "sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+    },
+    {
+      "file": "src/layout_model.rs",
+      "function": "rect_sum_unnarrowed",
+      "line": 446,
+      "sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+    },
+    {
+      "file": "src/png.rs",
+      "function": "rectangle_row",
+      "line": 1767,
+      "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+    },
+    {
+      "file": "src/image.rs",
+      "function": "pixel_offset",
+      "line": 245,
+      "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+    },
+    {
+      "file": "src/image.rs",
+      "function": "raw_budget",
+      "line": 177,
+      "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+    },
+    {
+      "file": "src/frame_transport_model.rs",
+      "function": "saved_before_exact",
+      "line": 454,
+      "sha256": "b47c908d3208c24173c9d631873a2f3f4e71f1bf01dc7075b90a0a5568e4b1e9"
+    }
+  ],
+  "not_claimed": [
+    "Unrestricted MS/MS16/MFr public results or T9/T-ITER/T-PLAYS/T13",
+    "A-PNG-4 Prog_ITER",
+    "Integrated L-16-8",
+    "P1/P2 universal policy completion",
+    "An independent ghost-code review already performed"
+  ]
+}

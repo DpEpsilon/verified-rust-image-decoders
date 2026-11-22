@@ -1942,51 +1942,282 @@
     {
       "number": 24,
       "requirement": "Compare the 16-bit tRNS key on the high byte only: `trns/rgb-d16-low-byte-differs`, T4.",
-      "milestone": "outside this M4 evidence batch",
-      "status": "not-credited-here",
-      "mutants": []
+      "milestone": "M5 proof-sensitivity batch",
+      "status": "verifier-killed",
+      "mutants": [
+        {
+          "number": 24,
+          "selector": "trns16-localized-high-byte-v4",
+          "run": 596,
+          "record": "evidence/m5-mutation-24-0596.json",
+          "record_sha256": "9fe8edced5d2ca17863c1f72e9e88c469235e279bcf402f6bb8efd79f435628a",
+          "log": "evidence/m5-mutation-24-0596.log",
+          "log_sha256": "6f327faa28356a7702f926e38ad86689f959e2990b127ab9644abe23ccee7c77",
+          "expected_failed_function": "trns_samples_equal",
+          "verified": 837,
+          "errors": 1,
+          "verifier_killed": true,
+          "accepted_mutation_control": false,
+          "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+          "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+          "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+          "compiled_source_tree_sha256": "a7c6c7f0a29ea420120a7efc45d496ec3163105e1302ae524a83fbe741c7de4d",
+          "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-trns16-localized-high-byte-v4-source.tar.gz",
+          "archive_sha256": "c39951a99583718b7fe300f30e019a341b5cb5ff8e52df1ab4037fa50e0f05fd",
+          "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+          "prepared_control_run": 595,
+          "semantic_diagnostics": [
+            {
+              "function": "trns_samples_equal",
+              "message": "postcondition not satisfied",
+              "diagnostic": "error: postcondition not satisfied\n   --> src/image.rs:689:13\n    |\n689 |     ensures r==(key[0] == pixel[0] && key[1] == pixel[1] && key[2] == pixel[2]),\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n690 | {\n691 |     if d==16 {key[0]/256==pixel[0]/256 && key[1]/256==pixel[1]/256 && key[2]/256==pixel[2]/256}else{key[0] == pixel[0] && key[1] == pixel[1] && key[2] == pixel[2]}\n    |     --------------------------------------------------------------------------------------------------------------------------------------------------------------- at the end of the function body\n\n"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 25,
       "requirement": "Strip instead of round 16-bit samples: `depth16/rounding-boundaries`, `round16`, T4.",
-      "milestone": "outside this M4 evidence batch",
-      "status": "not-credited-here",
-      "mutants": []
+      "milestone": "M5 proof-sensitivity batch",
+      "status": "verifier-killed",
+      "mutants": [
+        {
+          "number": 25,
+          "selector": "sample16-strip",
+          "run": 597,
+          "record": "evidence/m5-mutation-25-0597.json",
+          "record_sha256": "0dd652bfb732109f51b7cb63c25d0783c4d781531f16eab3bf94c78c5203fa13",
+          "log": "evidence/m5-mutation-25-0597.log",
+          "log_sha256": "355c15a1d9ecaf853d6c84ad001e6bac6def248520a83cca0d7771c34be90eef",
+          "expected_failed_function": "scale",
+          "verified": 836,
+          "errors": 1,
+          "verifier_killed": true,
+          "accepted_mutation_control": false,
+          "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+          "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+          "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+          "compiled_source_tree_sha256": "7530a0a3336d06b5effc586a7c784ff14f019db9b9d042948229ddca91f43f51",
+          "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-sample16-strip-source.tar.gz",
+          "archive_sha256": "0e11f423376714d3e2d64964bf819cb70a6aa19128a3c387e6c60b5b7bb2d5ad",
+          "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+          "prepared_control_run": 590,
+          "semantic_diagnostics": [
+            {
+              "function": "scale",
+              "message": "postcondition not satisfied",
+              "diagnostic": "error: postcondition not satisfied\n   --> src/image.rs:690:13\n    |\n690 |       ensures r<=if wide {u16::MAX}else{255},\n    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n712 | /     if wide {\n713 | |         (v * 65535 / ((1u32 << depth) - 1)) as u16\n714 | |     } else if depth == 16 {\n715 | |         (v >> 8) as u16\n716 | |     } else {\n717 | |         (v * 255 / ((1u32 << depth) - 1)) as u16\n718 | |     }\n    | |_____- at the end of the function body\n\n"
+            },
+            {
+              "function": "scale",
+              "message": "postcondition not satisfied",
+              "diagnostic": "error: postcondition not satisfied\n   --> src/image.rs:691:9\n    |\n691 |           colour::depth(depth) ==> r as int==if wide {colour::s16(v as int,depth)}else{colour::s8(v as int,depth)},\n    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n712 | /     if wide {\n713 | |         (v * 65535 / ((1u32 << depth) - 1)) as u16\n714 | |     } else if depth == 16 {\n715 | |         (v >> 8) as u16\n716 | |     } else {\n717 | |         (v * 255 / ((1u32 << depth) - 1)) as u16\n718 | |     }\n    | |_____- at the end of the function body\n\n"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 26,
       "requirement": "Treat PREVIOUS on frame 0 as NONE: `apng/dispose-previous-first-frame-and-later`, T8.",
-      "milestone": "outside this M4 evidence batch",
-      "status": "not-credited-here",
-      "mutants": []
+      "milestone": "M5 proof-sensitivity batch",
+      "status": "verifier-killed",
+      "mutants": [
+        {
+          "number": 26,
+          "selector": "previous-frame-zero-none",
+          "run": 598,
+          "record": "evidence/m5-mutation-26-0598.json",
+          "record_sha256": "8ce755d41fd70d483dff14ad2199704d97c6159099b83ac5405321b105647121",
+          "log": "evidence/m5-mutation-26-0598.log",
+          "log_sha256": "d2c8a5e918dbca73931f01d75dcd39625e39e5874925c014870ff1791b98ed46",
+          "expected_failed_function": "select",
+          "verified": 836,
+          "errors": 1,
+          "verifier_killed": true,
+          "accepted_mutation_control": false,
+          "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+          "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+          "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+          "compiled_source_tree_sha256": "15e7619942a5c8490ba356b0ff0fb1fb9b31a39759ee04c5f7a397448feaf1d2",
+          "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-previous-frame-zero-none-source.tar.gz",
+          "archive_sha256": "fc67971e8980ffc961bf12209c0f49e8b024e6096339100a95fcac0889a846b8",
+          "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+          "prepared_control_run": 590,
+          "semantic_diagnostics": [
+            {
+              "function": "select",
+              "message": "postcondition not satisfied",
+              "diagnostic": "error: postcondition not satisfied\n   --> src/frame_state.rs:143:17\n    |\n143 |         ensures r.wf(b@,*doc),r.index==index,r.previous==previous,\n    |                 ^^^^^^^^^^^^^ failed this postcondition\n...\n161 |         Self {index,control,previous,effective_dispose,reader,resume}\n    |         ------------------------------------------------------------- at the end of the function body\n\n"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 27,
       "requirement": "Save only the rectangle but restore the whole canvas for PREVIOUS: `apng/dispose-previous-first-frame-and-later`, T8 (D10: \"restore the whole canvas\" alone is equivalent to the spec when the save copies the whole canvas, so it is not a mutation).",
-      "milestone": "outside this M4 evidence batch",
-      "status": "not-credited-here",
-      "mutants": []
+      "milestone": "M5 proof-sensitivity batch",
+      "status": "verifier-killed",
+      "mutants": [
+        {
+          "number": 27,
+          "selector": "save-rectangle-restore-canvas",
+          "run": 599,
+          "record": "evidence/m5-mutation-27-0599.json",
+          "record_sha256": "245627910bff8222a8cbcc410f8687bdc6b6a7d1d5512123f7758884f59a6923",
+          "log": "evidence/m5-mutation-27-0599.log",
+          "log_sha256": "169d775e11402040f5c4a5f577bdf5a0b0c65b2a37c564f204cd998514e7b8a5",
+          "expected_failed_function": "dispose_and_save",
+          "verified": 836,
+          "errors": 1,
+          "verifier_killed": true,
+          "accepted_mutation_control": false,
+          "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+          "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+          "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+          "compiled_source_tree_sha256": "06085396d64b70e81455c3761120e955d83848f84143f01f43759d263b0cc4fd",
+          "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-save-rectangle-restore-canvas-source.tar.gz",
+          "archive_sha256": "cbff324e1ecc904df1100e3393d2e4cfdb17e10e30e7c9636f2a90b0230c3a42",
+          "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+          "prepared_control_run": 590,
+          "semantic_diagnostics": [
+            {
+              "function": "dispose_and_save",
+              "message": "precondition not satisfied",
+              "diagnostic": "error: precondition not satisfied\n    --> src/png.rs:1341:45\n     |\n1341 |                 if let Some(s)=&self.saved {copy_rect(&mut self.canvas,s,w,0,0,w,h);}\n     |                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n...\n1811 |         4*(y as int+h as int)*(cw as int)<=old(canvas).len()<=crate::alloc_guard::MAX_BYTES,\n     |         ----------------------------------------------------------------------------------- failed precondition\n\n"
+            },
+            {
+              "function": "dispose_and_save",
+              "message": "assertion failed",
+              "diagnostic": "error: assertion failed\n    --> src/png.rs:1344:23\n     |\n1344 |         proof {assert(disposed==Some(self.canvas@));}\n     |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed\n\n"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 28,
       "requirement": "OVER with truncation instead of half-up rounding: `apng/blend-over-arithmetic`, `over_bounds`, T8.",
-      "milestone": "outside this M4 evidence batch",
-      "status": "not-credited-here",
-      "mutants": []
+      "milestone": "M5 proof-sensitivity batch",
+      "status": "verifier-killed",
+      "mutants": [
+        {
+          "number": 28,
+          "selector": "over-truncate-colour",
+          "run": 600,
+          "record": "evidence/m5-mutation-28-0600.json",
+          "record_sha256": "03ceb0f748c87e60bbbf4a3280150a94a4d995a38c9eccecce9affecd86116ad",
+          "log": "evidence/m5-mutation-28-0600.log",
+          "log_sha256": "37ea52dadc27287de289a2b7fa2af70ead4c1c6ffbbb1e3dfa668bebc7c11652",
+          "expected_failed_function": "over",
+          "verified": 836,
+          "errors": 1,
+          "verifier_killed": true,
+          "accepted_mutation_control": false,
+          "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+          "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+          "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+          "compiled_source_tree_sha256": "f7e5f85f5f0af6a51ce88f562db2bd32a986e8515f4699065c2bedb9d522ed29",
+          "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-over-truncate-colour-source.tar.gz",
+          "archive_sha256": "20e8d3b099e2a09d17ef8e870ef01c7ecece6dcaa78bdf84443bdf45ba4c0b76",
+          "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+          "prepared_control_run": 590,
+          "semantic_diagnostics": [
+            {
+              "function": "over",
+              "message": "invariant not satisfied at end of loop body",
+              "diagnostic": "error: invariant not satisfied at end of loop body\n   --> src/image.rs:230:13\n    |\n230 |             forall|c: int| 0<=c<i ==> #[trigger] o@[c] as int==composite::over_component(s@,d@,c),\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 29,
       "requirement": "Reserve `Saved` for every PREVIOUS frame: A-PNG-3 (`|L|` bound), A-PNG-4.",
-      "milestone": "outside this M4 evidence batch",
-      "status": "not-credited-here",
-      "mutants": []
+      "milestone": "M5 proof-sensitivity batch",
+      "status": "verifier-killed",
+      "mutants": [
+        {
+          "number": 29,
+          "selector": "saved-reserve-every-previous",
+          "run": 601,
+          "record": "evidence/m5-mutation-29-0601.json",
+          "record_sha256": "bdc21d0c3f686274dd9b3cf782dde588d509c521cf293ee33c3c7c421dd029ee",
+          "log": "evidence/m5-mutation-29-0601.log",
+          "log_sha256": "2d0e30a1106b4d984dd5c3840e156fed6b92f821cdf0f3201082975c384f4c06",
+          "expected_failed_function": "ensure_saved",
+          "verified": 836,
+          "errors": 1,
+          "verifier_killed": true,
+          "accepted_mutation_control": false,
+          "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+          "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+          "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+          "compiled_source_tree_sha256": "0b0770c25e79429c35e3cc7f535598863ac4170032511f6ab00b36055fbf2908",
+          "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-saved-reserve-every-previous-source.tar.gz",
+          "archive_sha256": "72074d05ef69fa283e0462785963a637ea60216780fcdd8fe07bdc70c123936a",
+          "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+          "prepared_control_run": 590,
+          "semantic_diagnostics": [
+            {
+              "function": "ensure_saved",
+              "message": "precondition not satisfied",
+              "diagnostic": "error: precondition not satisfied\n    --> src/png.rs:1049:20\n     |\n 451 |     requires 1<=n<=crate::alloc_guard::MAX_BYTES,old(log).view().len()==2,crate::alloc_guard::all_ok(old(log).view()),\n     |                                                  ------------------------ failed precondition\n...\n1049 |         let result=reserve_saved(n,Tracked(self.log.borrow_mut()));\n     |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n"
+            },
+            {
+              "function": "ensure_saved",
+              "message": "precondition not satisfied",
+              "diagnostic": "error: precondition not satisfied\n    --> src/png.rs:1050:16\n     |\n1050 |         proof {iterlog::append_saved(prior,self.raw@.len(),n as nat,result.is_ok());}\n     |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n    ::: src/iterator_log_model.rs:18:14\n     |\n  18 |     requires log==initial(raw,out),\n     |              --------------------- failed precondition\n\n"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 30,
       "requirement": "Reserve `Saved` on the still path: A-PNG-1 (`req(L) = Req_still`).",
-      "milestone": "outside this M4 evidence batch",
-      "status": "not-credited-here",
-      "mutants": []
+      "milestone": "M5 proof-sensitivity batch",
+      "status": "verifier-killed",
+      "mutants": [
+        {
+          "number": 30,
+          "selector": "saved-on-still-path",
+          "run": 602,
+          "record": "evidence/m5-mutation-30-0602.json",
+          "record_sha256": "1d4968291e44356c39f7266a2ed7e43a11cee93e3e3b7cf4a262b444c9fd7c43",
+          "log": "evidence/m5-mutation-30-0602.log",
+          "log_sha256": "2964f72560c0e09f0b8dc0df0d8ff4bac4442530d91b2d2dfdf737df71958ed7",
+          "expected_failed_function": "prepare_image",
+          "verified": 836,
+          "errors": 1,
+          "verifier_killed": true,
+          "accepted_mutation_control": false,
+          "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+          "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+          "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+          "compiled_source_tree_sha256": "0917b4de7859781ab958b312d35758b0cf88ea34a86689b86bf71c35eebbed96",
+          "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-saved-on-still-path-source.tar.gz",
+          "archive_sha256": "d1b02b20768d216841e2d1db14926e384a51da417204f3435e2ee647cbc7b585",
+          "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+          "prepared_control_run": 590,
+          "semantic_diagnostics": [
+            {
+              "function": "prepare_image",
+              "message": "postcondition not satisfied",
+              "diagnostic": "error: postcondition not satisfied\n   --> src/png.rs:495:9\n    |\n495 | ...   crate::allocation_model::image_prepared(b@,pol.walk_view(),frames,wide,prepared_image_view(r),final(ev).view(),final(trace).log_view()),\n    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n512 | ...           match extra {Err(o)=>return Err(oom(o)),Ok(_)=>{}}\n    |                                    ------------------ at this exit\n\n"
+            },
+            {
+              "function": "prepare_image",
+              "message": "postcondition not satisfied",
+              "diagnostic": "error: postcondition not satisfied\n   --> src/png.rs:495:9\n    |\n495 |           crate::allocation_model::image_prepared(b@,pol.walk_view(),frames,wide,prepared_image_view(r),final(ev).view(),final(trace).log_view()),\n    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n501 | / {\n502 | |     hide(Doc::wf);hide(crate::transport_model::idat_result);hide(crate::layout_model::raw);\n503 | |     hide(crate::document_model::MWF_p);hide(crate::document_model::MW_p);\n504 | |     let result=if frames {crate::callers::frames(b,pol,ev)}else{crate::callers::still(b,pol,ev)};\n...   |\n517 | | }\n    | |_- at the end of the function body\n\n"
+            }
+          ]
+        }
+      ],
+      "scope_qualification": "No complete A-PNG-1/MS/MS16 claim; this kills an erroneous Saved request on the still path."
     },
     {
       "number": 31,
@@ -1998,9 +2229,40 @@
     {
       "number": 32,
       "requirement": "Return `OutOfMemory` after a later successful call, or keep decoding after a `Saved` failure: A-PNG-4 clause 2, T-ITER item 4.",
-      "milestone": "outside this M4 evidence batch",
-      "status": "not-credited-here",
-      "mutants": []
+      "milestone": "M5 proof-sensitivity batch",
+      "status": "verifier-killed",
+      "mutants": [
+        {
+          "number": 32,
+          "selector": "continue-after-saved-failure",
+          "run": 603,
+          "record": "evidence/m5-mutation-32-0603.json",
+          "record_sha256": "2bc2c867c4774e7777e4bccc955365e30afe61cf24013d73f1cbc04bd48c91d8",
+          "log": "evidence/m5-mutation-32-0603.log",
+          "log_sha256": "f183b6fb45eb0ded00e672ccbbbce58b7445e7ef94ffe7d42c5eb77a6ac4ed6c",
+          "expected_failed_function": "selected_logged",
+          "verified": 836,
+          "errors": 1,
+          "verifier_killed": true,
+          "accepted_mutation_control": false,
+          "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+          "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+          "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+          "compiled_source_tree_sha256": "61e7bc22760c720541051675ca660edfdff270dc5d2a881f830348d4e5f9e273",
+          "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-continue-after-saved-failure-source.tar.gz",
+          "archive_sha256": "926162d8c07154af23770e6b10c33498f754e33a88366c2d1d9e48fdb7709962",
+          "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+          "prepared_control_run": 590,
+          "semantic_diagnostics": [
+            {
+              "function": "selected_logged",
+              "message": "assertion failed",
+              "diagnostic": "error: assertion failed\n    --> src/png.rs:1592:57\n     |\n1592 |                 proof {self.allocation_context();assert(crate::alloc_guard::all_ok(self.log_view()));}\n     |                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed\n\n"
+            }
+          ]
+        }
+      ],
+      "scope_qualification": "M5 A-PNG-4 clause 2; complete M6 T-ITER payload equality is not claimed."
     },
     {
       "number": 33,
@@ -2066,9 +2328,42 @@
       "reason": "The first scratch-path guard compared a resolved volume path with unresolved /home/ws. Resolving /home/ws fixed the guard before the baseline and five recorded verifier runs.",
       "verifier_invoked": false,
       "kill_credited": false
+    },
+    {
+      "run": 592,
+      "number": 24,
+      "selector": "trns16-high-byte-only-div",
+      "kill_credited": false,
+      "verified": 835,
+      "errors": 2,
+      "reason": "Resource-limit diagnostics or an unproved localization control; no semantic-only kill credited.",
+      "record_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-24-0592.json",
+      "log_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-24-0592.log"
+    },
+    {
+      "run": 591,
+      "number": 24,
+      "selector": "trns16-high-byte-only",
+      "kill_credited": false,
+      "verified": 836,
+      "errors": 1,
+      "reason": "Resource-limit diagnostics or an unproved localization control; no semantic-only kill credited.",
+      "record_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-24-0591.json",
+      "log_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-24-0591.log"
+    },
+    {
+      "run": 593,
+      "number": 124,
+      "selector": "unmutated-trns-localization-control",
+      "kill_credited": false,
+      "verified": 836,
+      "errors": 2,
+      "reason": "Resource-limit diagnostics or an unproved localization control; no semantic-only kill credited.",
+      "record_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-124-0593.json",
+      "log_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-124-0593.log"
     }
   ],
-  "verifier_kill_total_here": 5,
+  "verifier_kill_total_here": 13,
   "final_control": {
     "run": 458,
     "file": "evidence/m4-mutation-audit-0458.json",
@@ -2078,10 +2373,385 @@
     "Independent ghost-code reader review, commissioned by the coordinator"
   ],
   "not_claimed": [
+    "M5 sign-off or sign-off-readiness",
+    "A new functional full-crate checkpoint from mutation-base runs",
+    "M6 all-40 or alloc-delta mutation completion",
+    "M6 unrestricted pixel/frame witness completion"
+  ],
+  "historical_M4_not_claimed": [
     "M4 sign-off or sign-off-readiness",
     "A new full-crate milestone checkpoint",
     "Mutation credit for requirements outside 19\u201323",
     "M6 all-40 or alloc-delta mutation completion",
     "Complete M4-related pixel-result witnesses due at M6"
-  ]
+  ],
+  "historical_fields_qualification": "Pre-existing root selector/control/checkpoint/final-control and remaining_M4 fields describe the historical M4 batch. Original M4 mutation records remain unchanged. M5_batch is the current M5 evidence.",
+  "M5_batch": {
+    "base_commit": "764899abcd959da26306bee78949c1be8148e391",
+    "status": "EIGHT SEMANTIC-ONLY VERIFIER KILLS; INDEPENDENT REVIEW PENDING",
+    "functional_checkpoint": {
+      "host_run": 586,
+      "i686_run": 588,
+      "verified_each": 4514,
+      "file": "evidence/m5-witness-checkpoint-0586-0588.json",
+      "sha256": "f2712641fa547bb0743588951a2e4a7cb16fb45f9c3b2077a143a295c9f5c45e"
+    },
+    "passing_controls": [
+      {
+        "number": 0,
+        "selector": "unmutated-base-control",
+        "run": 590,
+        "record": "evidence/m5-mutation-00-0590.json",
+        "record_sha256": "63cb7f20c1dbfc1b9b496888670f878efa10dfdd7429d79d38c22783243f39e3",
+        "log": "evidence/m5-mutation-00-0590.log",
+        "log_sha256": "e0d17790c4f6a21a376052c6b3a896f8d2cb89e6cae371417bd3d6f076d6a771",
+        "expected_failed_function": null,
+        "verified": 837,
+        "errors": 0,
+        "verifier_killed": false,
+        "accepted_mutation_control": true,
+        "selector_definitions": "evidence/m5-mutation-runner.py",
+        "selector_definitions_sha256": "cea9b6dddf677fcd580fd921e251ad6660a98791be45437142133a92a99ba57f",
+        "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+        "compiled_source_tree_sha256": "2cc4ee7634caa4e6f4eb6cb447454aeca47ee5a76710885893510171d0261015",
+        "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-unmutated-base-control-source.tar.gz",
+        "archive_sha256": "49c50f34b08900c7a6bff534924754ee6997a28de54fe605b09608bffe3a522c",
+        "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+        "prepared_control_run": null,
+        "semantic_diagnostics": []
+      },
+      {
+        "number": 124,
+        "selector": "unmutated-trns-localization-control-v4",
+        "run": 595,
+        "record": "evidence/m5-mutation-124-0595.json",
+        "record_sha256": "45a1ec37019263f9843b6424fba3a571c25505ed283e242ee6793a01ba645eea",
+        "log": "evidence/m5-mutation-124-0595.log",
+        "log_sha256": "47b1b9b035372f6621f8ba97734ded7677e03b97ef39b20113bfb2eedbd45f4a",
+        "expected_failed_function": null,
+        "verified": 838,
+        "errors": 0,
+        "verifier_killed": false,
+        "accepted_mutation_control": true,
+        "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+        "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+        "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+        "compiled_source_tree_sha256": "4b5e775e0e08bb9a947c79f6ee4fc9387a89fd87c3ea3d5aaeb7c9f5dc12d263",
+        "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-unmutated-trns-localization-control-v4-source.tar.gz",
+        "archive_sha256": "2d21ece7d7bebc353dd719d02f5b62a845c90cebf6450dfd0f92888252d3a4b1",
+        "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+        "prepared_control_run": null,
+        "semantic_diagnostics": []
+      }
+    ],
+    "mutations": [
+      {
+        "number": 24,
+        "selector": "trns16-localized-high-byte-v4",
+        "run": 596,
+        "record": "evidence/m5-mutation-24-0596.json",
+        "record_sha256": "9fe8edced5d2ca17863c1f72e9e88c469235e279bcf402f6bb8efd79f435628a",
+        "log": "evidence/m5-mutation-24-0596.log",
+        "log_sha256": "6f327faa28356a7702f926e38ad86689f959e2990b127ab9644abe23ccee7c77",
+        "expected_failed_function": "trns_samples_equal",
+        "verified": 837,
+        "errors": 1,
+        "verifier_killed": true,
+        "accepted_mutation_control": false,
+        "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+        "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+        "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+        "compiled_source_tree_sha256": "a7c6c7f0a29ea420120a7efc45d496ec3163105e1302ae524a83fbe741c7de4d",
+        "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-trns16-localized-high-byte-v4-source.tar.gz",
+        "archive_sha256": "c39951a99583718b7fe300f30e019a341b5cb5ff8e52df1ab4037fa50e0f05fd",
+        "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+        "prepared_control_run": 595,
+        "semantic_diagnostics": [
+          {
+            "function": "trns_samples_equal",
+            "message": "postcondition not satisfied",
+            "diagnostic": "error: postcondition not satisfied\n   --> src/image.rs:689:13\n    |\n689 |     ensures r==(key[0] == pixel[0] && key[1] == pixel[1] && key[2] == pixel[2]),\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n690 | {\n691 |     if d==16 {key[0]/256==pixel[0]/256 && key[1]/256==pixel[1]/256 && key[2]/256==pixel[2]/256}else{key[0] == pixel[0] && key[1] == pixel[1] && key[2] == pixel[2]}\n    |     --------------------------------------------------------------------------------------------------------------------------------------------------------------- at the end of the function body\n\n"
+          }
+        ]
+      },
+      {
+        "number": 25,
+        "selector": "sample16-strip",
+        "run": 597,
+        "record": "evidence/m5-mutation-25-0597.json",
+        "record_sha256": "0dd652bfb732109f51b7cb63c25d0783c4d781531f16eab3bf94c78c5203fa13",
+        "log": "evidence/m5-mutation-25-0597.log",
+        "log_sha256": "355c15a1d9ecaf853d6c84ad001e6bac6def248520a83cca0d7771c34be90eef",
+        "expected_failed_function": "scale",
+        "verified": 836,
+        "errors": 1,
+        "verifier_killed": true,
+        "accepted_mutation_control": false,
+        "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+        "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+        "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+        "compiled_source_tree_sha256": "7530a0a3336d06b5effc586a7c784ff14f019db9b9d042948229ddca91f43f51",
+        "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-sample16-strip-source.tar.gz",
+        "archive_sha256": "0e11f423376714d3e2d64964bf819cb70a6aa19128a3c387e6c60b5b7bb2d5ad",
+        "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+        "prepared_control_run": 590,
+        "semantic_diagnostics": [
+          {
+            "function": "scale",
+            "message": "postcondition not satisfied",
+            "diagnostic": "error: postcondition not satisfied\n   --> src/image.rs:690:13\n    |\n690 |       ensures r<=if wide {u16::MAX}else{255},\n    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n712 | /     if wide {\n713 | |         (v * 65535 / ((1u32 << depth) - 1)) as u16\n714 | |     } else if depth == 16 {\n715 | |         (v >> 8) as u16\n716 | |     } else {\n717 | |         (v * 255 / ((1u32 << depth) - 1)) as u16\n718 | |     }\n    | |_____- at the end of the function body\n\n"
+          },
+          {
+            "function": "scale",
+            "message": "postcondition not satisfied",
+            "diagnostic": "error: postcondition not satisfied\n   --> src/image.rs:691:9\n    |\n691 |           colour::depth(depth) ==> r as int==if wide {colour::s16(v as int,depth)}else{colour::s8(v as int,depth)},\n    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n712 | /     if wide {\n713 | |         (v * 65535 / ((1u32 << depth) - 1)) as u16\n714 | |     } else if depth == 16 {\n715 | |         (v >> 8) as u16\n716 | |     } else {\n717 | |         (v * 255 / ((1u32 << depth) - 1)) as u16\n718 | |     }\n    | |_____- at the end of the function body\n\n"
+          }
+        ]
+      },
+      {
+        "number": 26,
+        "selector": "previous-frame-zero-none",
+        "run": 598,
+        "record": "evidence/m5-mutation-26-0598.json",
+        "record_sha256": "8ce755d41fd70d483dff14ad2199704d97c6159099b83ac5405321b105647121",
+        "log": "evidence/m5-mutation-26-0598.log",
+        "log_sha256": "d2c8a5e918dbca73931f01d75dcd39625e39e5874925c014870ff1791b98ed46",
+        "expected_failed_function": "select",
+        "verified": 836,
+        "errors": 1,
+        "verifier_killed": true,
+        "accepted_mutation_control": false,
+        "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+        "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+        "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+        "compiled_source_tree_sha256": "15e7619942a5c8490ba356b0ff0fb1fb9b31a39759ee04c5f7a397448feaf1d2",
+        "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-previous-frame-zero-none-source.tar.gz",
+        "archive_sha256": "fc67971e8980ffc961bf12209c0f49e8b024e6096339100a95fcac0889a846b8",
+        "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+        "prepared_control_run": 590,
+        "semantic_diagnostics": [
+          {
+            "function": "select",
+            "message": "postcondition not satisfied",
+            "diagnostic": "error: postcondition not satisfied\n   --> src/frame_state.rs:143:17\n    |\n143 |         ensures r.wf(b@,*doc),r.index==index,r.previous==previous,\n    |                 ^^^^^^^^^^^^^ failed this postcondition\n...\n161 |         Self {index,control,previous,effective_dispose,reader,resume}\n    |         ------------------------------------------------------------- at the end of the function body\n\n"
+          }
+        ]
+      },
+      {
+        "number": 27,
+        "selector": "save-rectangle-restore-canvas",
+        "run": 599,
+        "record": "evidence/m5-mutation-27-0599.json",
+        "record_sha256": "245627910bff8222a8cbcc410f8687bdc6b6a7d1d5512123f7758884f59a6923",
+        "log": "evidence/m5-mutation-27-0599.log",
+        "log_sha256": "169d775e11402040f5c4a5f577bdf5a0b0c65b2a37c564f204cd998514e7b8a5",
+        "expected_failed_function": "dispose_and_save",
+        "verified": 836,
+        "errors": 1,
+        "verifier_killed": true,
+        "accepted_mutation_control": false,
+        "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+        "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+        "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+        "compiled_source_tree_sha256": "06085396d64b70e81455c3761120e955d83848f84143f01f43759d263b0cc4fd",
+        "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-save-rectangle-restore-canvas-source.tar.gz",
+        "archive_sha256": "cbff324e1ecc904df1100e3393d2e4cfdb17e10e30e7c9636f2a90b0230c3a42",
+        "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+        "prepared_control_run": 590,
+        "semantic_diagnostics": [
+          {
+            "function": "dispose_and_save",
+            "message": "precondition not satisfied",
+            "diagnostic": "error: precondition not satisfied\n    --> src/png.rs:1341:45\n     |\n1341 |                 if let Some(s)=&self.saved {copy_rect(&mut self.canvas,s,w,0,0,w,h);}\n     |                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n...\n1811 |         4*(y as int+h as int)*(cw as int)<=old(canvas).len()<=crate::alloc_guard::MAX_BYTES,\n     |         ----------------------------------------------------------------------------------- failed precondition\n\n"
+          },
+          {
+            "function": "dispose_and_save",
+            "message": "assertion failed",
+            "diagnostic": "error: assertion failed\n    --> src/png.rs:1344:23\n     |\n1344 |         proof {assert(disposed==Some(self.canvas@));}\n     |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed\n\n"
+          }
+        ]
+      },
+      {
+        "number": 28,
+        "selector": "over-truncate-colour",
+        "run": 600,
+        "record": "evidence/m5-mutation-28-0600.json",
+        "record_sha256": "03ceb0f748c87e60bbbf4a3280150a94a4d995a38c9eccecce9affecd86116ad",
+        "log": "evidence/m5-mutation-28-0600.log",
+        "log_sha256": "37ea52dadc27287de289a2b7fa2af70ead4c1c6ffbbb1e3dfa668bebc7c11652",
+        "expected_failed_function": "over",
+        "verified": 836,
+        "errors": 1,
+        "verifier_killed": true,
+        "accepted_mutation_control": false,
+        "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+        "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+        "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+        "compiled_source_tree_sha256": "f7e5f85f5f0af6a51ce88f562db2bd32a986e8515f4699065c2bedb9d522ed29",
+        "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-over-truncate-colour-source.tar.gz",
+        "archive_sha256": "20e8d3b099e2a09d17ef8e870ef01c7ecece6dcaa78bdf84443bdf45ba4c0b76",
+        "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+        "prepared_control_run": 590,
+        "semantic_diagnostics": [
+          {
+            "function": "over",
+            "message": "invariant not satisfied at end of loop body",
+            "diagnostic": "error: invariant not satisfied at end of loop body\n   --> src/image.rs:230:13\n    |\n230 |             forall|c: int| 0<=c<i ==> #[trigger] o@[c] as int==composite::over_component(s@,d@,c),\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n"
+          }
+        ]
+      },
+      {
+        "number": 29,
+        "selector": "saved-reserve-every-previous",
+        "run": 601,
+        "record": "evidence/m5-mutation-29-0601.json",
+        "record_sha256": "bdc21d0c3f686274dd9b3cf782dde588d509c521cf293ee33c3c7c421dd029ee",
+        "log": "evidence/m5-mutation-29-0601.log",
+        "log_sha256": "2d0e30a1106b4d984dd5c3840e156fed6b92f821cdf0f3201082975c384f4c06",
+        "expected_failed_function": "ensure_saved",
+        "verified": 836,
+        "errors": 1,
+        "verifier_killed": true,
+        "accepted_mutation_control": false,
+        "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+        "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+        "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+        "compiled_source_tree_sha256": "0b0770c25e79429c35e3cc7f535598863ac4170032511f6ab00b36055fbf2908",
+        "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-saved-reserve-every-previous-source.tar.gz",
+        "archive_sha256": "72074d05ef69fa283e0462785963a637ea60216780fcdd8fe07bdc70c123936a",
+        "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+        "prepared_control_run": 590,
+        "semantic_diagnostics": [
+          {
+            "function": "ensure_saved",
+            "message": "precondition not satisfied",
+            "diagnostic": "error: precondition not satisfied\n    --> src/png.rs:1049:20\n     |\n 451 |     requires 1<=n<=crate::alloc_guard::MAX_BYTES,old(log).view().len()==2,crate::alloc_guard::all_ok(old(log).view()),\n     |                                                  ------------------------ failed precondition\n...\n1049 |         let result=reserve_saved(n,Tracked(self.log.borrow_mut()));\n     |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n"
+          },
+          {
+            "function": "ensure_saved",
+            "message": "precondition not satisfied",
+            "diagnostic": "error: precondition not satisfied\n    --> src/png.rs:1050:16\n     |\n1050 |         proof {iterlog::append_saved(prior,self.raw@.len(),n as nat,result.is_ok());}\n     |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n    ::: src/iterator_log_model.rs:18:14\n     |\n  18 |     requires log==initial(raw,out),\n     |              --------------------- failed precondition\n\n"
+          }
+        ]
+      },
+      {
+        "number": 30,
+        "selector": "saved-on-still-path",
+        "run": 602,
+        "record": "evidence/m5-mutation-30-0602.json",
+        "record_sha256": "1d4968291e44356c39f7266a2ed7e43a11cee93e3e3b7cf4a262b444c9fd7c43",
+        "log": "evidence/m5-mutation-30-0602.log",
+        "log_sha256": "2964f72560c0e09f0b8dc0df0d8ff4bac4442530d91b2d2dfdf737df71958ed7",
+        "expected_failed_function": "prepare_image",
+        "verified": 836,
+        "errors": 1,
+        "verifier_killed": true,
+        "accepted_mutation_control": false,
+        "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+        "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+        "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+        "compiled_source_tree_sha256": "0917b4de7859781ab958b312d35758b0cf88ea34a86689b86bf71c35eebbed96",
+        "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-saved-on-still-path-source.tar.gz",
+        "archive_sha256": "d1b02b20768d216841e2d1db14926e384a51da417204f3435e2ee647cbc7b585",
+        "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+        "prepared_control_run": 590,
+        "semantic_diagnostics": [
+          {
+            "function": "prepare_image",
+            "message": "postcondition not satisfied",
+            "diagnostic": "error: postcondition not satisfied\n   --> src/png.rs:495:9\n    |\n495 | ...   crate::allocation_model::image_prepared(b@,pol.walk_view(),frames,wide,prepared_image_view(r),final(ev).view(),final(trace).log_view()),\n    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n512 | ...           match extra {Err(o)=>return Err(oom(o)),Ok(_)=>{}}\n    |                                    ------------------ at this exit\n\n"
+          },
+          {
+            "function": "prepare_image",
+            "message": "postcondition not satisfied",
+            "diagnostic": "error: postcondition not satisfied\n   --> src/png.rs:495:9\n    |\n495 |           crate::allocation_model::image_prepared(b@,pol.walk_view(),frames,wide,prepared_image_view(r),final(ev).view(),final(trace).log_view()),\n    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n501 | / {\n502 | |     hide(Doc::wf);hide(crate::transport_model::idat_result);hide(crate::layout_model::raw);\n503 | |     hide(crate::document_model::MWF_p);hide(crate::document_model::MW_p);\n504 | |     let result=if frames {crate::callers::frames(b,pol,ev)}else{crate::callers::still(b,pol,ev)};\n...   |\n517 | | }\n    | |_- at the end of the function body\n\n"
+          }
+        ]
+      },
+      {
+        "number": 32,
+        "selector": "continue-after-saved-failure",
+        "run": 603,
+        "record": "evidence/m5-mutation-32-0603.json",
+        "record_sha256": "2bc2c867c4774e7777e4bccc955365e30afe61cf24013d73f1cbc04bd48c91d8",
+        "log": "evidence/m5-mutation-32-0603.log",
+        "log_sha256": "f183b6fb45eb0ded00e672ccbbbce58b7445e7ef94ffe7d42c5eb77a6ac4ed6c",
+        "expected_failed_function": "selected_logged",
+        "verified": 836,
+        "errors": 1,
+        "verifier_killed": true,
+        "accepted_mutation_control": false,
+        "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+        "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+        "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+        "compiled_source_tree_sha256": "61e7bc22760c720541051675ca660edfdff270dc5d2a881f830348d4e5f9e273",
+        "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-continue-after-saved-failure-source.tar.gz",
+        "archive_sha256": "926162d8c07154af23770e6b10c33498f754e33a88366c2d1d9e48fdb7709962",
+        "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+        "prepared_control_run": 590,
+        "semantic_diagnostics": [
+          {
+            "function": "selected_logged",
+            "message": "assertion failed",
+            "diagnostic": "error: assertion failed\n    --> src/png.rs:1592:57\n     |\n1592 |                 proof {self.allocation_context();assert(crate::alloc_guard::all_ok(self.log_view()));}\n     |                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed\n\n"
+          }
+        ]
+      }
+    ],
+    "base_scope": "All implementation, independent-model and common proof modules retained; no --verify-* filters; not a milestone checkpoint.",
+    "omitted_independent_generated_leaves": [
+      "witness_m3_frozen",
+      "witness_m3_walk_frozen",
+      "witness_m3_projection",
+      "witness_m4_complete",
+      "witness_m4_filter_projection",
+      "witness_m4_interlace_projection",
+      "witness_m5_still",
+      "witness_m5_frames"
+    ],
+    "full_no_cheating": true,
+    "solver_limits_changed": false,
+    "wall_timeout_seconds": 3600,
+    "stack_bytes": 268435456,
+    "mutation_24_localization": "Only in scratch: extract the three unscaled key comparisons into a native helper with the same element-wise equality contract. Control 595 proves all original implementation contracts plus that helper. Run 596 changes only its native comparison to high-byte-only. No existing model, contract or proof body is weakened.",
+    "excluded_attempts": [
+      {
+        "run": 592,
+        "number": 24,
+        "selector": "trns16-high-byte-only-div",
+        "kill_credited": false,
+        "verified": 835,
+        "errors": 2,
+        "reason": "Resource-limit diagnostics or an unproved localization control; no semantic-only kill credited.",
+        "record_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-24-0592.json",
+        "log_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-24-0592.log"
+      },
+      {
+        "run": 591,
+        "number": 24,
+        "selector": "trns16-high-byte-only",
+        "kill_credited": false,
+        "verified": 836,
+        "errors": 1,
+        "reason": "Resource-limit diagnostics or an unproved localization control; no semantic-only kill credited.",
+        "record_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-24-0591.json",
+        "log_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-24-0591.log"
+      },
+      {
+        "run": 593,
+        "number": 124,
+        "selector": "unmutated-trns-localization-control",
+        "kill_credited": false,
+        "verified": 836,
+        "errors": 2,
+        "reason": "Resource-limit diagnostics or an unproved localization control; no semantic-only kill credited.",
+        "record_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-124-0593.json",
+        "log_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-124-0593.log"
+      }
+    ],
+    "audit_run": 604,
+    "audit_file": "evidence/m5-mutation-audit.json",
+    "archive_policy": "Exact mutated archives stay outside the repository. Recorded base commit, source maps, preparation steps, mutation and driver context reconstruct them without those archives.",
+    "new_full_crate_credit": false
+  }
 }

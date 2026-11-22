@@ -1,0 +1,20 @@
+command: ['python3', '-I', '/home/ws/m5-proof-mutations/764899a-20261122/check_packet.py']
+{
+  "kind": "Completed M5 review-packet integrity control; no verifier credit",
+  "functional_runs": [
+    586,
+    588
+  ],
+  "verified_each": 4514,
+  "source_inventory_count": 82,
+  "source_unchanged": true,
+  "proof_map_anchor_hashes_and_lines_match": true,
+  "witnesses": 37,
+  "complete_errors": 2,
+  "projections": 35,
+  "M5_semantic_only_mutation_kills": 8,
+  "validated_evidence_hashes": 1099,
+  "independent_review_pending": true,
+  "signed_off": false,
+  "active_verifier_or_solver_processes": []
+}
