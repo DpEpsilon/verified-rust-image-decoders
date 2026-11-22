@@ -1,5 +1,111 @@
 # png_verus ledger
 
+## M4 witness closure and review packet (2026-11-22)
+
+**M4 OPEN; not signed off or sign-off-ready.** On the working tree based on `cf68952`, direct full-crate host run **449** and i686 run **450** each verify **3,346, 0 errors**, with `--no-cheating`, default solver limits, 256 MiB direct-process stacks and the authorised 3,600-second process cap. Both accepted runs bind the same 69 proof inputs, which match the current tree, and retain unchanged source inventories, import bindings and source/copied vstd pins. Each run finishes in about 19 minutes; no budget-driven restructuring was needed. `evidence/m4-interlace-host-0449.json` and `evidence/m4-interlace-i686-0450.json`, with paired logs, bind the checkpoint; `evidence/m4-interlace-checkpoint-0449-0450.json` records its scope. This section supersedes earlier M4 witness counts, not the remaining assurance gates.
+
+The 36 new `interlace/*` projections prove independent-model agreement with the frozen success, width, height and physical byte count, then call actual public `try_decode_still`, with OutOfMemory explicit. They count no filter byte for an empty pass. The 12 indexed cases have depth four and sixteen palette entries; `raster_model::{nibble_bound,palette_full4}` proves index validity without asserting reconstructed channel values. `document_model::palette_default_walk` checks the generic PLTE/IDAT/IEND composition in its defining module; the raster and witness callers use its checked contract. Authored M2 raw/token intentions supply stored, fixed-literal and fixed-match certificates, not expected call outcomes or decoder/oracle expectations.
+
+Current E6 accounting: **5 of 5 complete M4 error witnesses and 71 of 71 M4 projection witnesses proved**. All **71 M4-related complete pixel-result witnesses remain due at M6; 0 of 71 are proved**. The record-by-record list below and `evidence/m4-witness-status-0449-0450.json` preserve the E6 clause-7 assignments. A projection is not a complete pixel witness, and this checkpoint proves no new conversion/composition equality. Both E8 clauses remain proved and their names are mapped in the review packet; the false original rectangle bound is not claimed for arbitrary fcTL fields.
+
+`evidence/m4-signoff-packet-0449-0450.json` is a review packet, **not sign-off**. It contains the 76-record E6 list, the full-run/toolchain bindings, every T-FILT/T-A7 clause and named M4 lemma mapped to source proof functions, and the assurance-gate assessment. `evidence/m4-proof-map.json` supplies 12 T-FILT clause maps, 13 T-A7 clause maps, 12 M4 named-lemma groups, supporting arithmetic dependencies and source hashes/line anchors. These maps require an independent ghost-code reader to confirm exact theorem coverage and model independence.
+
+| Assurance gate (THEOREMS.md:255–270, as amended) | Current evidence and limitation |
+|---|---|
+| Milestone theorem rows plus ghost-code reader | Full functional verification and proof maps are present; independent M4 ghost-code review is **not completed**, so the combined gate is not met |
+| Witness gates | **Met under E6:** five complete M4 error witnesses and 71 M4 projections; complete pixel witnesses remain M6 gates |
+| Runtime conformance | **Met under E7:** run 447 reports 846/848 pass, zero failures, exactly the two unrun compatibility skips |
+| Inflate differential | **Retained met:** unchanged dependency run 371 covers 10,000 streams and 10,000 single-bit corruptions, zero unexpected differences; no fresh differential claimed |
+| Proof-sensitivity mutations | **Not met:** verifier-kill evidence for M4 mutations 19–23 is absent; runtime tests and lint negative controls do not count as mutation kills; the M6 all-40 and alloc-delta sets are not claimed |
+| CAPS-SYM | **Not run; due at M6:** passing the cap numeral lint is not evidence of zero-proof-edit cap-perturbation replays |
+| Allocation audit, fault injection and logical/physical trace | **Met at retained M3 implemented scope:** fresh run 447 rechecks all five sites with the source audit and physical-request/log tests; no later pixel/iterator allocation equation is newly claimed |
+| Native no_std and source lints | **Met at native scope:** run 447 builds PNG with the unchanged no_std inflate dependency and passes cap/allocation lints with negative controls; no new standalone/freestanding or i686 runtime build is claimed |
+
+M4 proof-sensitivity work still needed: mutation **19** (Paeth `pb < pc`), **20** (Average rounds up), **21** (RGB8 Sub uses bpp one), **22** (filter byte for empty Adam7 passes), and **23** (swapped Adam7 passes). Each needs a disposable implementation-side copy, all theorems enabled and retained failing verifier diagnostics. No mutation was performed by this worker. Independent ghost-code review and these mutation kills remain the M4 sign-off blockers; CAPS-SYM, all forty mutations plus alloc-delta mutations, and the deferred full pixel witnesses remain later gates as scheduled.
+
+Fresh runtime/source run **447** passes release tests, fault injection, all seven council tests, source self-tests/negative controls and native no_std build. Protected-file controls **448/451** use owner E8 commit `605bebd`; 451 also rechecks both targets' import/vstd bindings and whitespace. `ERRATA.md`, `QUESTIONS.md` and every protected file remain unchanged by this worker. Development checks **438/440** exposed default-resource-limit failures in repeated symbolic palette walks, **442** required explicit read triggers, and **444** hit the known unused-fuel AIR bug; defining-module abstraction and removing unused caller fuel headers resolve them. Development run **446** passes 440/0 but earns no credit. Only accepted full-crate runs 449/450 earn the new credit above. No dependency/cache rebuild, Cargo verification, i686 runtime execution, commit or push occurred; no worker-started background job remains running.
+
+### E6 clause-7 per-record list at runs 449/450
+
+| Record | Required gate | M4 status | Complete pixel status |
+|---|---|---|---|
+| `filter/0-ct0-d1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/0-ct0-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/0-ct0-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/0-ct2-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/0-ct2-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/0-ct4-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/0-ct6-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/1-ct0-d1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/1-ct0-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/1-ct0-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/1-ct2-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/1-ct2-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/1-ct4-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/1-ct6-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/2-ct0-d1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/2-ct0-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/2-ct0-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/2-ct2-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/2-ct2-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/2-ct4-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/2-ct6-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/3-ct0-d1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/3-ct0-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/3-ct0-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/3-ct2-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/3-ct2-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/3-ct4-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/3-ct6-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/4-ct0-d1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/4-ct0-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/4-ct0-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/4-ct2-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/4-ct2-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/4-ct4-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/4-ct6-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `image/filter-type-5` | complete at M4 | Proved | Not applicable |
+| `image/filter-type-255` | complete at M4 | Proved | Not applicable |
+| `precedence/adler-before-filter` | complete at M4 | Proved | Not applicable |
+| `precedence/index-row0-before-filter-row1` | complete at M4 | Proved | Not applicable |
+| `interlace/ct0-d1-1x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct6-d16-1x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct3-d4-1x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct0-d1-1x2` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct6-d16-1x2` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct3-d4-1x2` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct0-d1-2x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct6-d16-2x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct3-d4-2x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct0-d1-1x5` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct6-d16-1x5` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct3-d4-1x5` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct0-d1-5x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct6-d16-5x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct3-d4-5x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct0-d1-2x2` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct6-d16-2x2` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct3-d4-2x2` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct0-d1-3x3` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct6-d16-3x3` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct3-d4-3x3` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct0-d1-4x4` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct6-d16-4x4` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct3-d4-4x4` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct0-d1-5x5` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct6-d16-5x5` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct3-d4-5x5` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct0-d1-8x8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct6-d16-8x8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct3-d4-8x8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct0-d1-9x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct6-d16-9x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct3-d4-9x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct0-d1-1x9` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct6-d16-1x9` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct3-d4-1x9` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/1x1-filter-bytes-for-empty-passes` | complete at M4 | Proved | Not applicable |
+
 ## M4 filter projections and E8 checkpoint (2026-11-22)
 
 **M4 OPEN; not signed off.** Direct full-crate host run **433** and i686 run **434** each verify **2,928, 0 errors**, with `--no-cheating`, default solver limits, 256 MiB direct-process stacks and the coordinator-authorised 3,600-second process cap. Both accepted runs bind the same 67 proof inputs, which match the current tree, and retain unchanged source inventories, import bindings and source/copied vstd pins. Batch 1 began at `0530155`; after the owner's E8 commit, protected-file controls use **`605bebd`** as their baseline. `evidence/m4-filter-host-0433.json` and `evidence/m4-filter-i686-0434.json`, with paired logs, bind the checkpoint. `evidence/m4-filter-checkpoint-0433-0434.json` maps the proved scope. This section supersedes earlier M4 witness counts and Q7's former unresolved status.

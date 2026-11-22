@@ -1,0 +1,2 @@
+command: ['python3', '-I', '/home/ws/projects/verified-decoders/png/png_verus/tools/generate_m4_interlace_projections.py']
+Generated 36 Adam7 M4 projection candidates; zero complete pixel witnesses; no credit from generation.

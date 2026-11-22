@@ -1,0 +1,2284 @@
+{
+  "basis": "E6 clauses 1 and 7; unchanged 76-record assignment list; all M4 gates proved by accepted full-crate runs 449/450, no complete pixel credit",
+  "schedule_sha256": "24cc9099a7af1068b5f3500aac8e35e96581290c73143ff66b7c48fd94a7ab9d",
+  "accepted_full_runs": [
+    449,
+    450
+  ],
+  "complete_M4_witnesses_proved": 5,
+  "M4_projections_proved": 71,
+  "M4_projections_remaining": 0,
+  "M6_complete_pixel_witnesses_proved": 0,
+  "records": [
+    {
+      "name": "filter/0-ct0-d1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 73,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_0_ct0_d1",
+        "line": 122,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_0_ct0_d1",
+        "line": 158,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "367335b1bf990802d6f7d90d6c45706e605d318e999463eaa50a4e25a01a6343",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/0-ct0-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 94,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_0_ct0_d8",
+        "line": 280,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_0_ct0_d8",
+        "line": 316,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "46a25eaa7ea817b40d4236419118ded40af5e5927eed487ef99606e847d07f51",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/0-ct0-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 118,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_0_ct0_d16",
+        "line": 438,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_0_ct0_d16",
+        "line": 474,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "e3873cbde1d30d3f4a3d4de9f0e0f4a0b7c089305227424264a1c56a237e822f",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/0-ct2-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 144,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_0_ct2_d8",
+        "line": 589,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_0_ct2_d8",
+        "line": 625,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "d5dbfb008e302dc80664625c797dc834ac1235a896e9a9f2e1291a3b75c9c14b",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/0-ct2-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 216,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_0_ct2_d16",
+        "line": 740,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_0_ct2_d16",
+        "line": 776,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "f9fe6a67a46ad9530e9a4aed22a7a2b731f2f2db6faf2ca379f1a84ff73c632c",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/0-ct4-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 120,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_0_ct4_d8",
+        "line": 891,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_0_ct4_d8",
+        "line": 927,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "452daf74a9cb0f08f7c2fb6b85fd7c585ff9f72ee5a8c1b017f9f2f9699ac96e",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/0-ct6-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 264,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_0_ct6_d16",
+        "line": 1042,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_0_ct6_d16",
+        "line": 1078,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "f68ee3aa060108778c0459c3842641878ab7d184aefadfef4b69bcbf75f3af2a",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/1-ct0-d1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 73,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_1_ct0_d1",
+        "line": 1200,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_1_ct0_d1",
+        "line": 1236,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "6a7ce79d2d7e033926023d23b1f21c523dfe1384c35b7d47f8d3128acc3d227f",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/1-ct0-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 94,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_1_ct0_d8",
+        "line": 1358,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_1_ct0_d8",
+        "line": 1394,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "4a0ad4c0e502ad87ae952fc1ab1aaa0b5c821d5d7b8d2bf5f17ff5c60c808a64",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/1-ct0-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 120,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_1_ct0_d16",
+        "line": 1509,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_1_ct0_d16",
+        "line": 1545,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "05224b1f2628a591c5564e6048f3165be1040b05fca3ec4aeba452cb2d2c41de",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/1-ct2-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 144,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_1_ct2_d8",
+        "line": 1660,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_1_ct2_d8",
+        "line": 1696,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "675a5236b6e7e734d560fafa5e91f109b3f5a72729393476d8968f3e52f3e4d4",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/1-ct2-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 216,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_1_ct2_d16",
+        "line": 1811,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_1_ct2_d16",
+        "line": 1847,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "9d545ec1e92fa5cfae6055dcaa5619c4f1739184a941ab9d0c3a790f7ef57676",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/1-ct4-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 120,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_1_ct4_d8",
+        "line": 1962,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_1_ct4_d8",
+        "line": 1998,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "97b9226499e3607c62634244f441c324bb70c057e45dea54dfd3580f6e222003",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/1-ct6-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 264,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_1_ct6_d16",
+        "line": 2113,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_1_ct6_d16",
+        "line": 2149,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "91f204f90811ebb2d8c384298e7150a328ccfbdad9a9f828b26722ff5343b0b3",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/2-ct0-d1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 73,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_2_ct0_d1",
+        "line": 2271,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_2_ct0_d1",
+        "line": 2307,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "7d7f58be972287841396b4b1c38854381ade3f11950b1def5bcffdebeb97c047",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/2-ct0-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 94,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_2_ct0_d8",
+        "line": 2429,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_2_ct0_d8",
+        "line": 2465,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "e62215d01b46918aba25d96781ab64848f4e69c689e5512e91afd91905736f6b",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/2-ct0-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 120,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_2_ct0_d16",
+        "line": 2580,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_2_ct0_d16",
+        "line": 2616,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "39de1288cf6e43c64be501320449920dbe680ea86543b732de191b291c65a332",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/2-ct2-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 144,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_2_ct2_d8",
+        "line": 2731,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_2_ct2_d8",
+        "line": 2767,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "5b4240f9ba6ea1dc2a185d5a115fea76006acf4455ab5fa93084d20c096e275b",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/2-ct2-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 216,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_2_ct2_d16",
+        "line": 2882,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_2_ct2_d16",
+        "line": 2918,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "0a7fdace7787764a556225def6f382082e74c963c9e28712ae3e539eddf4e5b9",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/2-ct4-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 120,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_2_ct4_d8",
+        "line": 3033,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_2_ct4_d8",
+        "line": 3069,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "e03a776e1b11fe3a19ac1901701c3ac01e8456a45ca8428e29b36b3f3cff3f2c",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/2-ct6-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 264,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_2_ct6_d16",
+        "line": 3184,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_2_ct6_d16",
+        "line": 3220,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "fe8c4c8a3b9734f785149f1c2ca4e1b6c339d77ac083b857f0adf48f50582ddc",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/3-ct0-d1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 73,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_3_ct0_d1",
+        "line": 3342,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_3_ct0_d1",
+        "line": 3378,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "eb14e12a71eeda7d4739d90d2aa469baad2f274aaf5f1d2218c074fb5c6ff4e7",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/3-ct0-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 94,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_3_ct0_d8",
+        "line": 3500,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_3_ct0_d8",
+        "line": 3536,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "e03fd1820d0cc25ca2c00c18e9a342e38a511c16e4cf34fcf09e0f48719c7a47",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/3-ct0-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 120,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_3_ct0_d16",
+        "line": 3651,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_3_ct0_d16",
+        "line": 3687,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "5500707372e87d5e29f806183e59dd9950e5a8cfb7bf2a68312d3f210c16d1e4",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/3-ct2-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 144,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_3_ct2_d8",
+        "line": 3802,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_3_ct2_d8",
+        "line": 3838,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "7523cbeacd185d4c0351aa0991a235e524630e419e34a99b192379ac2231093a",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/3-ct2-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 216,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_3_ct2_d16",
+        "line": 3953,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_3_ct2_d16",
+        "line": 3989,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "5966f00a6a82d9c90831ff5fca1cd2e628276c33c4557b652138efe268d729b6",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/3-ct4-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 120,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_3_ct4_d8",
+        "line": 4104,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_3_ct4_d8",
+        "line": 4140,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "d8094d0b4b89b1c0afcbf7445f338731ff674b5f61638bc051f056343d64f9ba",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/3-ct6-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 264,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_3_ct6_d16",
+        "line": 4255,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_3_ct6_d16",
+        "line": 4291,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "dc2d12689767459819a6365e0425fa3864c14a944e33f889be1469cea891fb03",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/4-ct0-d1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 73,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_4_ct0_d1",
+        "line": 4413,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_4_ct0_d1",
+        "line": 4449,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "7960412b55ab2a7e52a570d073403e722859da2e8a42e6a5fcc2584494ef93c2",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/4-ct0-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 94,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_4_ct0_d8",
+        "line": 4571,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_4_ct0_d8",
+        "line": 4607,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "3df57738f47ed564e1f81dca1b705a833ab6d69fcd2862411e7f55550ae763a6",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/4-ct0-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 120,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_4_ct0_d16",
+        "line": 4722,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_4_ct0_d16",
+        "line": 4758,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "678584912dca8f5244b7aed772460200bba16d8a38d30427930a4709b4298e9d",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/4-ct2-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 144,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_4_ct2_d8",
+        "line": 4873,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_4_ct2_d8",
+        "line": 4909,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "880034e99eb8c6dd5cd682e5f9fd380a1c663e5c3be4f00524a77e2e0b707ad0",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/4-ct2-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 216,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_4_ct2_d16",
+        "line": 5024,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_4_ct2_d16",
+        "line": 5060,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "3f81b8ef52a4fc6d9cc02cb409337017967250d9c5e22898a74979b46b987cdf",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/4-ct4-d8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 120,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_4_ct4_d8",
+        "line": 5175,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_4_ct4_d8",
+        "line": 5211,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "b58be1ac252e72f9c5d803a7d58c5146353402207d51fcfb08eeebc7410bca47",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "filter/4-ct6-d16",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 264,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-filter-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "model_filter_4_ct6_d16",
+        "line": 5326,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_filter_projection.rs",
+        "function": "public_filter_4_ct6_d16",
+        "line": 5362,
+        "source_sha256": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947"
+      },
+      "input_sha256": "3296e7aaeabc75fca4095c6f3284c48bdf99e2ba3aa826b5a9803eea0912d5eb",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "image/filter-type-5",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "complete at M4",
+      "proof_status": "complete M4 witness proved",
+      "expected_error": "InvalidFilterType",
+      "input_bytes": 1062,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-complete-witness-index-0005.json",
+      "model_proof": {
+        "file": "src/witness_m4_complete.rs",
+        "function": "model_image_filter_type_5",
+        "line": 234,
+        "source_sha256": "b3bd36e3dc3a1ff28e6ed250fa7b00d909f708b6f49a09e8b27cf17d1056e4d0"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_complete.rs",
+        "function": "public_image_filter_type_5",
+        "line": 286,
+        "source_sha256": "b3bd36e3dc3a1ff28e6ed250fa7b00d909f708b6f49a09e8b27cf17d1056e4d0"
+      },
+      "input_sha256": "8513898663c6915b5d6052845eb131e909fd6eefe3a4c9a490c0575af9026453"
+    },
+    {
+      "name": "image/filter-type-255",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "complete at M4",
+      "proof_status": "complete M4 witness proved",
+      "expected_error": "InvalidFilterType",
+      "input_bytes": 1062,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-complete-witness-index-0005.json",
+      "model_proof": {
+        "file": "src/witness_m4_complete.rs",
+        "function": "model_image_filter_type_255",
+        "line": 517,
+        "source_sha256": "b3bd36e3dc3a1ff28e6ed250fa7b00d909f708b6f49a09e8b27cf17d1056e4d0"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_complete.rs",
+        "function": "public_image_filter_type_255",
+        "line": 569,
+        "source_sha256": "b3bd36e3dc3a1ff28e6ed250fa7b00d909f708b6f49a09e8b27cf17d1056e4d0"
+      },
+      "input_sha256": "2df3ca17454215ae9bd6f6fd1a6dbc1a52647c425b2623a0ed2060cbeb866b2c"
+    },
+    {
+      "name": "precedence/adler-before-filter",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "complete at M4",
+      "proof_status": "complete M4 witness proved",
+      "expected_error": "AdlerMismatch",
+      "input_bytes": 1062,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-complete-witness-index-0005.json",
+      "model_proof": {
+        "file": "src/witness_m4_complete.rs",
+        "function": "model_precedence_adler_before_filter",
+        "line": 800,
+        "source_sha256": "b3bd36e3dc3a1ff28e6ed250fa7b00d909f708b6f49a09e8b27cf17d1056e4d0"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_complete.rs",
+        "function": "public_precedence_adler_before_filter",
+        "line": 836,
+        "source_sha256": "b3bd36e3dc3a1ff28e6ed250fa7b00d909f708b6f49a09e8b27cf17d1056e4d0"
+      },
+      "input_sha256": "5297bc14ac614a061527f5bd13cb2a04a58d94d04ce7a42ed0286907220e5fb4"
+    },
+    {
+      "name": "precedence/index-row0-before-filter-row1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "complete at M4",
+      "proof_status": "complete M4 witness proved",
+      "expected_error": "PaletteIndexOutOfRange",
+      "input_bytes": 95,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-complete-witness-index-0005.json",
+      "model_proof": {
+        "file": "src/witness_m4_complete.rs",
+        "function": "model_precedence_index_row0_before_filter_row1",
+        "line": 918,
+        "source_sha256": "b3bd36e3dc3a1ff28e6ed250fa7b00d909f708b6f49a09e8b27cf17d1056e4d0"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_complete.rs",
+        "function": "public_precedence_index_row0_before_filter_row1",
+        "line": 971,
+        "source_sha256": "b3bd36e3dc3a1ff28e6ed250fa7b00d909f708b6f49a09e8b27cf17d1056e4d0"
+      },
+      "input_sha256": "ef7e193ed076cb52c3254caa07d46b37851941df8aef56af722509e2eba466c2"
+    },
+    {
+      "name": "interlace/ct0-d1-1x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 67,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct0_d1_1x1",
+        "line": 132,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct0_d1_1x1",
+        "line": 168,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "97942e86d58ebd8b062841df3174b01f394b74d1de07277f83a6035902853e60",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct6-d16-1x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 74,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct6_d16_1x1",
+        "line": 300,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct6_d16_1x1",
+        "line": 336,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "ea817b0e575813ae87a7ac2e3f668bd327720427af3e0ee7d29becc27f5ae48d",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct3-d4-1x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 127,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct3_d4_1x1",
+        "line": 457,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct3_d4_1x1",
+        "line": 503,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "47294d516ee97bd8456c9459070c92b2f872fd635701e5d1435ad636d4a35416",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct0-d1-1x2",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 69,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct0_d1_1x2",
+        "line": 638,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct0_d1_1x2",
+        "line": 674,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "622af03be0402602f5bfa6855e31d6308f47184c8348ffb53686efd5e4fb8864",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct6-d16-1x2",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 84,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct6_d16_1x2",
+        "line": 809,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct6_d16_1x2",
+        "line": 845,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "152de571a54fdcb9cccfda6139e075d0dab6131342cec8779bb090d9d8ba3c35",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct3-d4-1x2",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 129,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct3_d4_1x2",
+        "line": 970,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct3_d4_1x2",
+        "line": 1016,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "7ba0a018e446b1ef09bb3f73d77ff6c4ef03c487f6ea786d8ac40bb52e9392ce",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct0-d1-2x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 69,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct0_d1_2x1",
+        "line": 1151,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct0_d1_2x1",
+        "line": 1187,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "d41a2b28dd48199f062b793bd6c1e992d314f5f250f8f6de4516f2361802bf0d",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct6-d16-2x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 84,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct6_d16_2x1",
+        "line": 1322,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct6_d16_2x1",
+        "line": 1358,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "fcc9234ce3ca094a554e86bb3e2f35b5528e0698cf67e18a2e86db069c8fd1f4",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct3-d4-2x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 129,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct3_d4_2x1",
+        "line": 1483,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct3_d4_2x1",
+        "line": 1529,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "85d4addf1984f708d3f0cfe5c9d566ea60ee08932af51169be625548366962fd",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct0-d1-1x5",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 75,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct0_d1_1x5",
+        "line": 1673,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct0_d1_1x5",
+        "line": 1709,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "6acb5d716e1499670072871a3a868d1e09052636f98998ec656ee8485e006569",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct6-d16-1x5",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 113,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct6_d16_1x5",
+        "line": 1846,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct6_d16_1x5",
+        "line": 1882,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "db4a860dbcc1c05f0ca186746941c77ee0141602676f398d34245831b5660e44",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct3-d4-1x5",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 135,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct3_d4_1x5",
+        "line": 2019,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct3_d4_1x5",
+        "line": 2065,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "6d7b9564bfd88ac8281755743dd596ea2e8680c25e7f4c4c6c6feef797477f6a",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct0-d1-5x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 73,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct0_d1_5x1",
+        "line": 2206,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct0_d1_5x1",
+        "line": 2242,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "f443d945ef0cd87b7457b37a4bb2a3edca5d372094dabce9f674e128aa4bbb51",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct6-d16-5x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 112,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct6_d16_5x1",
+        "line": 2376,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct6_d16_5x1",
+        "line": 2412,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "d50bb5bda6904e710b47e039c05f186605702a9d7c76fd2fec05b448ddc3eaf0",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct3-d4-5x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 133,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct3_d4_5x1",
+        "line": 2545,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct3_d4_5x1",
+        "line": 2591,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "a47ab4b0fd7e0244e758ff4f2d4a8813e164a9b55b0c0510a0db2a1c4e26c89e",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct0-d1-2x2",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 71,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct0_d1_2x2",
+        "line": 2729,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct0_d1_2x2",
+        "line": 2765,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "d3fad894a27ee2ea9ab8092e37da19476e4946b2eac45bd539ea61fa67ea298c",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct6-d16-2x2",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 101,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct6_d16_2x2",
+        "line": 2903,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct6_d16_2x2",
+        "line": 2939,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "bc7bb97695c4e2b0ebc102d689bc29e3751954dfe53ac3ba3fd4ba0b65c929d9",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct3-d4-2x2",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 131,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct3_d4_2x2",
+        "line": 3068,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct3_d4_2x2",
+        "line": 3114,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "611607f599fd7bd53e84dd7dc87db8ca9cb1726381b71f6d6474882a21addb5f",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct0-d1-3x3",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 77,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct0_d1_3x3",
+        "line": 3261,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct0_d1_3x3",
+        "line": 3297,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "784d582f7ab11b5b91bc3347462b15011c6b278e36897d5d997ce141010a6438",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct6-d16-3x3",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 146,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct6_d16_3x3",
+        "line": 3437,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct6_d16_3x3",
+        "line": 3473,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "07e935e7d6bca82fe35520791916bba57cbaee5c78d0dc045e4f704388e244b3",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct3-d4-3x3",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 138,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct3_d4_3x3",
+        "line": 3614,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct3_d4_3x3",
+        "line": 3660,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "b12d5801c055dad67eec3343666d85294018fee1f190588641521336f938d8bc",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct0-d1-4x4",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 79,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct0_d1_4x4",
+        "line": 3810,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct0_d1_4x4",
+        "line": 3846,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "f02d14caf63b73f2607a88ef56f68edd4bf4f083792475793867e9f9bee12092",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct6-d16-4x4",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 203,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct6_d16_4x4",
+        "line": 3989,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct6_d16_4x4",
+        "line": 4025,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "c9e90bb3db4b322ebe1a94741e3b9bedb1e9c172fdf618fe07cc9eb1de348a60",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct3-d4-4x4",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 141,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct3_d4_4x4",
+        "line": 4170,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct3_d4_4x4",
+        "line": 4216,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "efcdace28e3f5625a7a61445b7b29a3787cb17456472dc9d1c9ab54e37cdb63e",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct0-d1-5x5",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 84,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct0_d1_5x5",
+        "line": 4378,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct0_d1_5x5",
+        "line": 4414,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "f48de539c6230043f6279dc0bf4f5efdc0aee04733b438ead1d8aef690595494",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct6-d16-5x5",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 279,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct6_d16_5x5",
+        "line": 4569,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct6_d16_5x5",
+        "line": 4605,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "228d1282db5a495d81b2796170ecb81510b0fe43fe5e799d9ded2d5f11701e89",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct3-d4-5x5",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 153,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct3_d4_5x5",
+        "line": 4766,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct3_d4_5x5",
+        "line": 4812,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "78436f651007f918a9fe8050561fed35bdf409b2b2a954ba8c33291eb98bfb01",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct0-d1-8x8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 95,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct0_d1_8x8",
+        "line": 4986,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct0_d1_8x8",
+        "line": 5022,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "f98c713ad55b90049203fbaecf2725e2bd73ea2bfa4517cbcdb3d245aa9ec62b",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct6-d16-8x8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 595,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct6_d16_8x8",
+        "line": 5237,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct6_d16_8x8",
+        "line": 5275,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "9e1cf4ff9fd5c7d74be2f5e68e83131ae63e5cd1d6762fb3aa5338717af25558",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct3-d4-8x8",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 176,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct3_d4_8x8",
+        "line": 5445,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct3_d4_8x8",
+        "line": 5491,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "7e75a6a5ce65daa1942006f1f6363bb4f979ecfa64feed957c44d19066ccf948",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct0-d1-9x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 73,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct0_d1_9x1",
+        "line": 5632,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct0_d1_9x1",
+        "line": 5668,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "6b9c43360409bd4f5519233b48c7949a87c84c68d5f70b11eda7beb563030327",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct6-d16-9x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 144,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct6_d16_9x1",
+        "line": 5802,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct6_d16_9x1",
+        "line": 5838,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "53ee5c9763d41f05b6e5f215fe78434c8ba54c3b809cd1575ee00503038945a1",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct3-d4-9x1",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 134,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct3_d4_9x1",
+        "line": 5971,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct3_d4_9x1",
+        "line": 6017,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "a45b5c615ab83c8e67b15a70617eefbd9a0a43dfc4d6c1cf2bfde928c4b6ae82",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct0-d1-1x9",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 83,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct0_d1_1x9",
+        "line": 6173,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct0_d1_1x9",
+        "line": 6209,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "5548a436a0a5fb92cddc28d42739d01264b45485b253366529b1328e55f91f08",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct6-d16-1x9",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 149,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct6_d16_1x9",
+        "line": 6358,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct6_d16_1x9",
+        "line": 6394,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "67f207c3079a7cb43a3b54b0446a3a3b092f755a0dca6049b83f3cd4676c16fd",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/ct3-d4-1x9",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "projection at M4, complete at M6",
+      "proof_status": "M4 projection proved; complete at M6 unproved",
+      "expected_error": null,
+      "input_bytes": 143,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-interlace-projection-index.json",
+      "model_proof": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "model_interlace_ct3_d4_1x9",
+        "line": 6547,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_interlace_projection.rs",
+        "function": "public_interlace_ct3_d4_1x9",
+        "line": 6593,
+        "source_sha256": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9"
+      },
+      "input_sha256": "4cf621a5a2ad4834eb89d102bfcb44e8dac0df4c13a5104967e8a096c42a9539",
+      "projection_proof_status": "proved",
+      "complete_at_M6_proof_status": "unproved"
+    },
+    {
+      "name": "interlace/1x1-filter-bytes-for-empty-passes",
+      "entry": "still",
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "gate_assignment": "complete at M4",
+      "proof_status": "complete M4 witness proved",
+      "expected_error": "ExcessImageData",
+      "input_bytes": 69,
+      "accepted_full_runs": [
+        449,
+        450
+      ],
+      "index_file": "m4-complete-witness-index-0005.json",
+      "model_proof": {
+        "file": "src/witness_m4_complete.rs",
+        "function": "model_interlace_1x1_filter_bytes_for_empty_passes",
+        "line": 1029,
+        "source_sha256": "b3bd36e3dc3a1ff28e6ed250fa7b00d909f708b6f49a09e8b27cf17d1056e4d0"
+      },
+      "public_entry_witness": {
+        "file": "src/witness_m4_complete.rs",
+        "function": "public_interlace_1x1_filter_bytes_for_empty_passes",
+        "line": 1064,
+        "source_sha256": "b3bd36e3dc3a1ff28e6ed250fa7b00d909f708b6f49a09e8b27cf17d1056e4d0"
+      },
+      "input_sha256": "74797a48388d533461c1b195b88b33eadf2ada820f6da6efce95d1e668de6437"
+    }
+  ]
+}

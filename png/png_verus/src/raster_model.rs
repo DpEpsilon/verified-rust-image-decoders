@@ -37,6 +37,20 @@ pub open spec fn palette_sample(line: Seq<u8>,depth: u8,x: nat) -> u8 {
 pub open spec fn palette_valid(line: Seq<u8>,depth: u8,width: nat,entries: nat) -> bool {
     forall|x: nat| x<width ==> (#[trigger] palette_sample(line,depth,x) as nat)<entries
 }
+pub proof fn nibble_bound(byte: u8,shift: u8)
+    ensures ((byte>>shift)&15u8)<16u8,
+{
+    assert(((byte>>shift)&15u8)<16u8) by (bit_vector);
+}
+/// A full four-bit palette cannot reject any reconstructed sample value.
+pub proof fn palette_full4(line: Seq<u8>,width: nat)
+    ensures palette_valid(line,4u8,width,16nat),
+{
+    assert forall|x: nat| x<width implies (#[trigger] palette_sample(line,4u8,x) as nat)<16nat by {
+        nibble_bound(line[(x/2) as int],(4-4*(x%2)) as u8);
+    }
+}
+
 pub open spec fn row_result(input: Seq<u8>,a: Raster,k: nat,row: nat) -> Result<(),Error> {
     if input[f::position(base(a,k),rb(a,k),row) as int]>4 {Err(Error::InvalidFilterType)}
     else if a.ihdr.color_type==3 && a.reject_index && !palette_valid(line(input,a,k,row),a.ihdr.depth,pw(a,k),a.entries) {
@@ -212,6 +226,23 @@ pub(crate) open spec fn default_case(b: Seq<u8>,h: crate::model::Ihdr,z: Seq<u8>
         _=>false,
     }
 }
+/// Abstract the header and payload while composing the three palette chunks.
+pub(crate) proof fn palette_default_case(b: Seq<u8>,h: crate::model::Ihdr,z: Seq<u8>,n: nat)
+    requires b.len()==117+n,h.color_type==3,h.depth==4,
+        crate::model::mh(b)==Ok((h,33nat)),
+        forall|phase: crate::walk_model::Phase| #[trigger] crate::critical_model::read(b,33,phase,false)==Ok(
+            crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41,len:48,next:93,crc_ok:true,synthetic:false}),
+        forall|phase: crate::walk_model::Phase| #[trigger] crate::critical_model::read(b,93,phase,false)==Ok(
+            crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101,len:n,next:105+n,crc_ok:true,synthetic:false}),
+        forall|phase: crate::walk_model::Phase| #[trigger] crate::critical_model::read(b,105+n,phase,false)==Ok(
+            crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:113+n,len:0,next:117+n,crc_ok:true,synthetic:false}),
+        b.subrange(101,(101+n) as int)==z,
+    ensures default_case(b,h,z,16),
+{
+    hide(crate::document_model::MW_p);
+    crate::document_model::palette_default_walk(b,h,z,n);
+}
+
 pub(crate) proof fn default_error(b: Seq<u8>,h: crate::model::Ihdr,z: Seq<u8>,entries: nat,e: Error)
     requires default_case(b,h,z,entries),
         data(z,shape(h,h.width as nat,h.height as nat,entries,crate::policy::STRICT),crate::policy::STRICT)==Some(Err(e)),

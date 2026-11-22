@@ -1,0 +1,1170 @@
+{
+  "status": "M4 proof-to-requirement review map, not sign-off; accepted-run linkage belongs to the checkpoint/review packet",
+  "theorems_source": "../THEOREMS.md",
+  "theorems_sha256": "3bacbc703c97ac988efcbd95e7d49bcfab5a5c9d706c2b10e6b4c784abb67351",
+  "errata_source": "../ERRATA.md",
+  "errata_sha256": "4fb18a760bd09f453de70c6d94d5b35dcb9f1f826c506bef3414e659b3413da7",
+  "T_FILT": [
+    {
+      "id": "TFILT-bpp-domain",
+      "requirement": "Byte operands are u8; bpp is max(1,B/8) for every reachable header/pass.",
+      "proof_references": [
+        {
+          "symbol": "filter_model::bpp",
+          "file": "src/filter_model.rs",
+          "line": 8,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "header::Ihdr::bits_pp",
+          "file": "src/header.rs",
+          "line": 34,
+          "source_sha256": "a3eaeeaf7afa01edea5ca221f4dc7e41e35d52414e6603bfea73998b18ebc6c6"
+        },
+        {
+          "symbol": "header::Ihdr::bpp",
+          "file": "src/header.rs",
+          "line": 44,
+          "source_sha256": "a3eaeeaf7afa01edea5ca221f4dc7e41e35d52414e6603bfea73998b18ebc6c6"
+        },
+        {
+          "symbol": "image::decode_exact",
+          "file": "src/image.rs",
+          "line": 846,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TFILT-None",
+      "requirement": "None reconstructs the filtered byte unchanged.",
+      "proof_references": [
+        {
+          "symbol": "filter_model::predictor",
+          "file": "src/filter_model.rs",
+          "line": 30,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "filter_model::byte",
+          "file": "src/filter_model.rs",
+          "line": 34,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "filter_model::mf",
+          "file": "src/filter_model.rs",
+          "line": 48,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "image::filter_byte",
+          "file": "src/image.rs",
+          "line": 455,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::unfilter",
+          "file": "src/image.rs",
+          "line": 471,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TFILT-Sub",
+      "requirement": "Sub adds the reconstructed byte bpp positions to the left, or zero before the row starts.",
+      "proof_references": [
+        {
+          "symbol": "filter_model::left",
+          "file": "src/filter_model.rs",
+          "line": 37,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "filter_model::predictor",
+          "file": "src/filter_model.rs",
+          "line": 30,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "filter_model::mf",
+          "file": "src/filter_model.rs",
+          "line": 48,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "image::filter_byte",
+          "file": "src/image.rs",
+          "line": 455,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::unfilter",
+          "file": "src/image.rs",
+          "line": 471,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TFILT-Up",
+      "requirement": "Up adds the reconstructed byte above in the same pass, or zero for the first row.",
+      "proof_references": [
+        {
+          "symbol": "filter_model::above",
+          "file": "src/filter_model.rs",
+          "line": 40,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "filter_model::pass_row",
+          "file": "src/filter_model.rs",
+          "line": 113,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "image::filter_byte",
+          "file": "src/image.rs",
+          "line": 455,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::unfilter_raw_row",
+          "file": "src/image.rs",
+          "line": 512,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TFILT-Average",
+      "requirement": "Average computes a+b in u16 and adds its floor-divided half modulo 256.",
+      "proof_references": [
+        {
+          "symbol": "filter_model::predictor",
+          "file": "src/filter_model.rs",
+          "line": 30,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "filter_model::byte",
+          "file": "src/filter_model.rs",
+          "line": 34,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "image::average",
+          "file": "src/image.rs",
+          "line": 446,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::filter_byte",
+          "file": "src/image.rs",
+          "line": 455,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TFILT-Paeth-distances",
+      "requirement": "Paeth p and absolute distances use i16 and equal the independent integer model.",
+      "proof_references": [
+        {
+          "symbol": "filter_model::distances",
+          "file": "src/filter_model.rs",
+          "line": 11,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "filter_model::paeth",
+          "file": "src/filter_model.rs",
+          "line": 15,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "image::abs_small",
+          "file": "src/image.rs",
+          "line": 422,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::paeth",
+          "file": "src/image.rs",
+          "line": 428,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TFILT-Paeth-ties",
+      "requirement": "Paeth ties prefer a, then b, then c.",
+      "proof_references": [
+        {
+          "symbol": "filter_model::paeth_ties",
+          "file": "src/filter_model.rs",
+          "line": 21,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "image::paeth",
+          "file": "src/image.rs",
+          "line": 428,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TFILT-mod-256",
+      "requirement": "Every reconstructed byte is the mathematical byte equation modulo 256.",
+      "proof_references": [
+        {
+          "symbol": "filter_model::byte",
+          "file": "src/filter_model.rs",
+          "line": 34,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "filter_model::mf",
+          "file": "src/filter_model.rs",
+          "line": 48,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "image::filter_byte",
+          "file": "src/image.rs",
+          "line": 455,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::unfilter",
+          "file": "src/image.rs",
+          "line": 471,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TFILT-previous-Raw-row",
+      "requirement": "The predecessor slice [pos-rb,pos) is the previous reconstructed row of this pass; it precedes [pos+1,pos+1+rb); pass row zero uses zero predictors.",
+      "proof_references": [
+        {
+          "symbol": "filter_model::previous_row",
+          "file": "src/filter_model.rs",
+          "line": 119,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "filter_model::pass_row_equation",
+          "file": "src/filter_model.rs",
+          "line": 122,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "filter_model::pass_ready",
+          "file": "src/filter_model.rs",
+          "line": 133,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "image::unfilter_raw_row",
+          "file": "src/image.rs",
+          "line": 512,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TFILT-in-place-frame",
+      "requirement": "One-byte reconstruction extends MF and preserves other bytes; reconstructed prefixes and unread filtered suffixes remain correct.",
+      "proof_references": [
+        {
+          "symbol": "filter_model::ready",
+          "file": "src/filter_model.rs",
+          "line": 66,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "filter_model::unfilter_in_place",
+          "file": "src/filter_model.rs",
+          "line": 80,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "filter_model::in_place_done",
+          "file": "src/filter_model.rs",
+          "line": 103,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "image::unfilter",
+          "file": "src/image.rs",
+          "line": 471,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::unfilter_raw_row",
+          "file": "src/image.rs",
+          "line": 512,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TFILT-first-invalid",
+      "requirement": "InvalidFilterType is returned at the first invalid filter reached in pass/row stream order; an earlier row palette error can terminate before a later bad filter, as P11 requires.",
+      "proof_references": [
+        {
+          "symbol": "filter_model::first_invalid",
+          "file": "src/filter_model.rs",
+          "line": 218,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "filter_model::first_invalid_intro",
+          "file": "src/filter_model.rs",
+          "line": 226,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        },
+        {
+          "symbol": "raster_model::row_result",
+          "file": "src/raster_model.rs",
+          "line": 54,
+          "source_sha256": "0cf7fdafb1a8fc4afb68b6919b5feebb2acd5bea1107aa687ba4ca4d62ac23fd"
+        },
+        {
+          "symbol": "raster_model::pass_result",
+          "file": "src/raster_model.rs",
+          "line": 63,
+          "source_sha256": "0cf7fdafb1a8fc4afb68b6919b5feebb2acd5bea1107aa687ba4ca4d62ac23fd"
+        },
+        {
+          "symbol": "raster_model::scan",
+          "file": "src/raster_model.rs",
+          "line": 69,
+          "source_sha256": "0cf7fdafb1a8fc4afb68b6919b5feebb2acd5bea1107aa687ba4ca4d62ac23fd"
+        },
+        {
+          "symbol": "image::decode_exact",
+          "file": "src/image.rs",
+          "line": 846,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TFILT-whole-image",
+      "requirement": "On success final Raw contains the independent original-input MF row in every non-empty pass; later pass writes preserve earlier completed rows.",
+      "proof_references": [
+        {
+          "symbol": "raster_model::completed",
+          "file": "src/raster_model.rs",
+          "line": 84,
+          "source_sha256": "0cf7fdafb1a8fc4afb68b6919b5feebb2acd5bea1107aa687ba4ca4d62ac23fd"
+        },
+        {
+          "symbol": "raster_model::preserve_completed",
+          "file": "src/raster_model.rs",
+          "line": 97,
+          "source_sha256": "0cf7fdafb1a8fc4afb68b6919b5feebb2acd5bea1107aa687ba4ca4d62ac23fd"
+        },
+        {
+          "symbol": "raster_model::complete_pass",
+          "file": "src/raster_model.rs",
+          "line": 113,
+          "source_sha256": "0cf7fdafb1a8fc4afb68b6919b5feebb2acd5bea1107aa687ba4ca4d62ac23fd"
+        },
+        {
+          "symbol": "image::decode_exact",
+          "file": "src/image.rs",
+          "line": 846,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::decode_image",
+          "file": "src/image.rs",
+          "line": 1036,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    }
+  ],
+  "T_A7": [
+    {
+      "id": "TA7-pass-size",
+      "requirement": "Branch-free pass extents equal the case-split ceil formula on positive PNG wire dimensions without underflow.",
+      "proof_references": [
+        {
+          "symbol": "layout_model::pass_size",
+          "file": "src/layout_model.rs",
+          "line": 225,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "layout_model::span",
+          "file": "src/layout_model.rs",
+          "line": 19,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "image::pass",
+          "file": "src/image.rs",
+          "line": 40,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::ADAM7",
+          "file": "src/image.rs",
+          "line": 24,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TA7-halving",
+      "requirement": "The d=1,2,4 even/odd halving identities telescope pass extents.",
+      "proof_references": [
+        {
+          "symbol": "layout_model::axis_splits",
+          "file": "src/layout_model.rs",
+          "line": 59,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "layout_model::coverage",
+          "file": "src/layout_model.rs",
+          "line": 76,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TA7-area",
+      "requirement": "The seven pass areas sum exactly to w*h.",
+      "proof_references": [
+        {
+          "symbol": "layout_model::coverage",
+          "file": "src/layout_model.rs",
+          "line": 76,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "layout_model::adam7_area",
+          "file": "src/layout_model.rs",
+          "line": 237,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TA7-bijection",
+      "requirement": "Pass cells map bijectively to image coordinates; the two-sided inverse covers all positive PNG wire dimensions.",
+      "proof_references": [
+        {
+          "symbol": "layout_model::cell",
+          "file": "src/layout_model.rs",
+          "line": 242,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "layout_model::point",
+          "file": "src/layout_model.rs",
+          "line": 245,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "layout_model::point_inverse",
+          "file": "src/layout_model.rs",
+          "line": 283,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "layout_model::cell_inverse",
+          "file": "src/layout_model.rs",
+          "line": 299,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "layout_model::adam7_bijection",
+          "file": "src/layout_model.rs",
+          "line": 315,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "image::pass",
+          "file": "src/image.rs",
+          "line": 40,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::pass_coordinate",
+          "file": "src/image.rs",
+          "line": 782,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TA7-filter-overhead-tight",
+      "requirement": "S counts only rows of non-empty passes and satisfies 8*S <= 15*h+29.",
+      "proof_references": [
+        {
+          "symbol": "layout_model::filter_rows",
+          "file": "src/layout_model.rs",
+          "line": 338,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "layout_model::filter_rows_bound",
+          "file": "src/layout_model.rs",
+          "line": 346,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "layout_model::filter_overhead",
+          "file": "src/layout_model.rs",
+          "line": 352,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "image::raw_size",
+          "file": "src/image.rs",
+          "line": 98,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TA7-filter-overhead-simple",
+      "requirement": "S <= 2*h+2.",
+      "proof_references": [
+        {
+          "symbol": "layout_model::coverage",
+          "file": "src/layout_model.rs",
+          "line": 76,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "layout_model::filter_overhead",
+          "file": "src/layout_model.rs",
+          "line": 352,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TA7-R-bound",
+      "requirement": "For B<=64, mathematical Raw size R <= 8*w*h+S; actual Raw calculation/allocation uses checked header/frame domains.",
+      "proof_references": [
+        {
+          "symbol": "layout_model::raw_filter_bound",
+          "file": "src/layout_model.rs",
+          "line": 361,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "layout_model::interlaced_raw_bound",
+          "file": "src/layout_model.rs",
+          "line": 375,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "layout_model::raw_scanline_bound",
+          "file": "src/layout_model.rs",
+          "line": 391,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "image::raw_size",
+          "file": "src/image.rs",
+          "line": 98,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::raw_budget",
+          "file": "src/image.rs",
+          "line": 171,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TA7-R-monotone",
+      "requirement": "R is monotone in width and height; holding either dimension equal gives each individual monotonicity clause.",
+      "proof_references": [
+        {
+          "symbol": "layout_model::span_monotone",
+          "file": "src/layout_model.rs",
+          "line": 163,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "layout_model::contribution_monotone",
+          "file": "src/layout_model.rs",
+          "line": 172,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "layout_model::prefix_dimensions",
+          "file": "src/layout_model.rs",
+          "line": 193,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "layout_model::raw_dimensions",
+          "file": "src/layout_model.rs",
+          "line": 205,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TA7-scanline-u64",
+      "requirement": "pw*B < 2^37 and 1+ceil(pw*B/8) fits u64.",
+      "proof_references": [
+        {
+          "symbol": "layout_model::scanline_len_u64",
+          "file": "src/layout_model.rs",
+          "line": 407,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "image::row_bytes",
+          "file": "src/image.rs",
+          "line": 83,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::raw_size",
+          "file": "src/image.rs",
+          "line": 98,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TA7-canvas-offset-bound",
+      "requirement": "For a fitting frame pixel, 4*((fy+y)*W+fx+x)+3 < 4*W*H; actual 4/8-byte writes have checked offsets and buffer bounds.",
+      "proof_references": [
+        {
+          "symbol": "layout_model::canvas_offset",
+          "file": "src/layout_model.rs",
+          "line": 416,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "layout_model::canvas_offset_bound",
+          "file": "src/layout_model.rs",
+          "line": 419,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "image::pixel_offset",
+          "file": "src/image.rs",
+          "line": 235,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::Sink::canvas",
+          "file": "src/image.rs",
+          "line": 267,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::Sink::put",
+          "file": "src/image.rs",
+          "line": 295,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::draw_row",
+          "file": "src/image.rs",
+          "line": 791,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TA7-offset-injective",
+      "requirement": "Distinct pixels have distinct offsets; pass-map bijection and checked executable coordinate arithmetic tie the image grid to write addresses.",
+      "proof_references": [
+        {
+          "symbol": "layout_model::canvas_offset_injective",
+          "file": "src/layout_model.rs",
+          "line": 430,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "layout_model::adam7_bijection",
+          "file": "src/layout_model.rs",
+          "line": 315,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "image::pass_coordinate",
+          "file": "src/image.rs",
+          "line": 782,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::Sink::put",
+          "file": "src/image.rs",
+          "line": 295,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TA7-rect-E8-a",
+      "requirement": "Arbitrary u32 x/w and y/h widen to exact u64 sums, bounded by twice u32::MAX below 2^64.",
+      "proof_references": [
+        {
+          "symbol": "layout_model::rect_sum_unnarrowed",
+          "file": "src/layout_model.rs",
+          "line": 446,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "apng::fctl",
+          "file": "src/apng.rs",
+          "line": 89,
+          "source_sha256": "66ded77182d6727a27d5e83a68139b72e608e88862bc8e96e7553d4c9930d053"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "TA7-rect-E8-b",
+      "requirement": "The twice-PNG_WIRE_MAX bound applies only when both operands satisfy that bound; actual fctl calls it after rectangle validation.",
+      "proof_references": [
+        {
+          "symbol": "layout_model::rect_sum_wire_bound",
+          "file": "src/layout_model.rs",
+          "line": 455,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "symbol": "apng::fctl",
+          "file": "src/apng.rs",
+          "line": 89,
+          "source_sha256": "66ded77182d6727a27d5e83a68139b72e608e88862bc8e96e7553d4c9930d053"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    }
+  ],
+  "M4_named_lemmas": {
+    "pass_size": [
+      {
+        "symbol": "layout_model::pass_size",
+        "file": "src/layout_model.rs",
+        "line": 225,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      },
+      {
+        "symbol": "image::pass",
+        "file": "src/image.rs",
+        "line": 40,
+        "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+      }
+    ],
+    "adam7_area": [
+      {
+        "symbol": "layout_model::axis_splits",
+        "file": "src/layout_model.rs",
+        "line": 59,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      },
+      {
+        "symbol": "layout_model::coverage",
+        "file": "src/layout_model.rs",
+        "line": 76,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      },
+      {
+        "symbol": "layout_model::adam7_area",
+        "file": "src/layout_model.rs",
+        "line": 237,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      }
+    ],
+    "adam7_bijection": [
+      {
+        "symbol": "layout_model::point_inverse",
+        "file": "src/layout_model.rs",
+        "line": 283,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      },
+      {
+        "symbol": "layout_model::cell_inverse",
+        "file": "src/layout_model.rs",
+        "line": 299,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      },
+      {
+        "symbol": "layout_model::adam7_bijection",
+        "file": "src/layout_model.rs",
+        "line": 315,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      }
+    ],
+    "paeth_ties": [
+      {
+        "symbol": "filter_model::paeth_ties",
+        "file": "src/filter_model.rs",
+        "line": 21,
+        "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+      },
+      {
+        "symbol": "image::paeth",
+        "file": "src/image.rs",
+        "line": 428,
+        "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+      }
+    ],
+    "unfilter_in_place": [
+      {
+        "symbol": "filter_model::unfilter_in_place",
+        "file": "src/filter_model.rs",
+        "line": 80,
+        "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+      },
+      {
+        "symbol": "image::unfilter",
+        "file": "src/image.rs",
+        "line": 471,
+        "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+      },
+      {
+        "symbol": "image::unfilter_raw_row",
+        "file": "src/image.rs",
+        "line": 512,
+        "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+      }
+    ],
+    "L-R-MONO": [
+      {
+        "symbol": "layout_model::span_monotone",
+        "file": "src/layout_model.rs",
+        "line": 163,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      },
+      {
+        "symbol": "layout_model::contribution_monotone",
+        "file": "src/layout_model.rs",
+        "line": 172,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      },
+      {
+        "symbol": "layout_model::prefix_dimensions",
+        "file": "src/layout_model.rs",
+        "line": 193,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      },
+      {
+        "symbol": "layout_model::raw_dimensions",
+        "file": "src/layout_model.rs",
+        "line": 205,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      }
+    ],
+    "scanline_len_u64": [
+      {
+        "symbol": "layout_model::scanline_len_u64",
+        "file": "src/layout_model.rs",
+        "line": 407,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      },
+      {
+        "symbol": "image::row_bytes",
+        "file": "src/image.rs",
+        "line": 83,
+        "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+      }
+    ],
+    "canvas_offset_bound": [
+      {
+        "symbol": "layout_model::canvas_offset_bound",
+        "file": "src/layout_model.rs",
+        "line": 419,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      },
+      {
+        "symbol": "image::pixel_offset",
+        "file": "src/image.rs",
+        "line": 235,
+        "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+      },
+      {
+        "symbol": "image::Sink::put",
+        "file": "src/image.rs",
+        "line": 295,
+        "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+      }
+    ],
+    "canvas_offset_injective": [
+      {
+        "symbol": "layout_model::canvas_offset_injective",
+        "file": "src/layout_model.rs",
+        "line": 430,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      },
+      {
+        "symbol": "layout_model::adam7_bijection",
+        "file": "src/layout_model.rs",
+        "line": 315,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      }
+    ],
+    "filter_overhead": [
+      {
+        "symbol": "layout_model::filter_rows_bound",
+        "file": "src/layout_model.rs",
+        "line": 346,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      },
+      {
+        "symbol": "layout_model::filter_overhead",
+        "file": "src/layout_model.rs",
+        "line": 352,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      }
+    ],
+    "rect_sum_unnarrowed_E8_a": [
+      {
+        "symbol": "layout_model::rect_sum_unnarrowed",
+        "file": "src/layout_model.rs",
+        "line": 446,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      },
+      {
+        "symbol": "apng::fctl",
+        "file": "src/apng.rs",
+        "line": 89,
+        "source_sha256": "66ded77182d6727a27d5e83a68139b72e608e88862bc8e96e7553d4c9930d053"
+      }
+    ],
+    "rect_sum_wire_bound_E8_b": [
+      {
+        "symbol": "layout_model::rect_sum_wire_bound",
+        "file": "src/layout_model.rs",
+        "line": 455,
+        "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+      },
+      {
+        "symbol": "apng::fctl",
+        "file": "src/apng.rs",
+        "line": 89,
+        "source_sha256": "66ded77182d6727a27d5e83a68139b72e608e88862bc8e96e7553d4c9930d053"
+      }
+    ]
+  },
+  "retained_arithmetic_dependencies": [
+    {
+      "id": "area_cap_u64",
+      "requirement": "The checked M3 header product is exact in u64 before OutputTooLarge.",
+      "proof_references": [
+        {
+          "symbol": "header::area_cap_u64",
+          "file": "src/header.rs",
+          "line": 64,
+          "source_sha256": "a3eaeeaf7afa01edea5ca221f4dc7e41e35d52414e6603bfea73998b18ebc6c6"
+        },
+        {
+          "symbol": "header::parse_ihdr",
+          "file": "src/header.rs",
+          "line": 73,
+          "source_sha256": "a3eaeeaf7afa01edea5ca221f4dc7e41e35d52414e6603bfea73998b18ebc6c6"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    },
+    {
+      "id": "product_dimension_bound",
+      "requirement": "The successful header invariant 4*w*h <= MAX_OUTPUT supplies the equivalent product bound for Raw budgeting.",
+      "proof_references": [
+        {
+          "symbol": "header::Ihdr::wf",
+          "file": "src/header.rs",
+          "line": 24,
+          "source_sha256": "a3eaeeaf7afa01edea5ca221f4dc7e41e35d52414e6603bfea73998b18ebc6c6"
+        },
+        {
+          "symbol": "header::parse_ihdr",
+          "file": "src/header.rs",
+          "line": 73,
+          "source_sha256": "a3eaeeaf7afa01edea5ca221f4dc7e41e35d52414e6603bfea73998b18ebc6c6"
+        },
+        {
+          "symbol": "image::raw_budget",
+          "file": "src/image.rs",
+          "line": 171,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "limits::caps_ok",
+          "file": "src/limits.rs",
+          "line": 39,
+          "source_sha256": "ce4a4b191330d922ac3265c19d5b66f01b8d67132af2adb239677ae35fac7f44"
+        }
+      ],
+      "review_status": "Verified-code mapping for independent ghost-reader review; not sign-off"
+    }
+  ],
+  "M4_related_mutations": [
+    {
+      "number": 19,
+      "change": "Paeth uses pb < pc instead of <=",
+      "fixture": "filter/4-ct2-d8",
+      "status": "NOT RUN: no verifier-kill credit",
+      "required_evidence": "Disposable implementation-side copy, all theorems enabled, retained failing verifier diagnostics; runtime failure alone does not count.",
+      "proof_references": [
+        {
+          "symbol": "image::paeth",
+          "file": "src/image.rs",
+          "line": 428,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "filter_model::paeth_ties",
+          "file": "src/filter_model.rs",
+          "line": 21,
+          "source_sha256": "8139ab5ed4077fbdd0984d4081ffc65204571ee5197e0f16a065eb1b60728a0a"
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "change": "Average rounds up rather than taking the floor",
+      "fixture": "filter/3-ct0-d8",
+      "status": "NOT RUN: no verifier-kill credit",
+      "required_evidence": "Disposable implementation-side copy, all theorems enabled, retained failing verifier diagnostics; runtime failure alone does not count.",
+      "proof_references": [
+        {
+          "symbol": "image::average",
+          "file": "src/image.rs",
+          "line": 446,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::filter_byte",
+          "file": "src/image.rs",
+          "line": 455,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "change": "RGB8 Sub uses bpp=1",
+      "fixture": "filter/1-ct2-d8",
+      "status": "NOT RUN: no verifier-kill credit",
+      "required_evidence": "Disposable implementation-side copy, all theorems enabled, retained failing verifier diagnostics; runtime failure alone does not count.",
+      "proof_references": [
+        {
+          "symbol": "header::Ihdr::bpp",
+          "file": "src/header.rs",
+          "line": 44,
+          "source_sha256": "a3eaeeaf7afa01edea5ca221f4dc7e41e35d52414e6603bfea73998b18ebc6c6"
+        },
+        {
+          "symbol": "image::unfilter",
+          "file": "src/image.rs",
+          "line": 471,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::decode_exact",
+          "file": "src/image.rs",
+          "line": 846,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "change": "Count a filter byte for empty Adam7 passes",
+      "fixture": "interlace/1x1-filter-bytes-for-empty-passes",
+      "status": "NOT RUN: no verifier-kill credit",
+      "required_evidence": "Disposable implementation-side copy, all theorems enabled, retained failing verifier diagnostics; runtime failure alone does not count.",
+      "proof_references": [
+        {
+          "symbol": "image::raw_size",
+          "file": "src/image.rs",
+          "line": 98,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::pass",
+          "file": "src/image.rs",
+          "line": 40,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "layout_model::raw_scanline_bound",
+          "file": "src/layout_model.rs",
+          "line": 391,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "change": "Swap Adam7 passes 4 and 5 in the implementation",
+      "fixture": "interlace/ct0-d1-5x5",
+      "status": "NOT RUN: no verifier-kill credit",
+      "required_evidence": "Disposable implementation-side copy, all theorems enabled, retained failing verifier diagnostics; runtime failure alone does not count.",
+      "proof_references": [
+        {
+          "symbol": "image::ADAM7",
+          "file": "src/image.rs",
+          "line": 24,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "image::pass",
+          "file": "src/image.rs",
+          "line": 40,
+          "source_sha256": "5417fbd1ce9e4908a19a27a8a027af17b4cd51bd50bb5870529926a6c65c0f28"
+        },
+        {
+          "symbol": "layout_model::adam7_bijection",
+          "file": "src/layout_model.rs",
+          "line": 315,
+          "source_sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        }
+      ]
+    }
+  ],
+  "not_claimed": [
+    "A completed independent ghost-code review",
+    "A verifier-killed mutation",
+    "Converted-pixel/compositor equality",
+    "The false original rectangle bound on arbitrary fields",
+    "Milestone sign-off"
+  ]
+}

@@ -351,4 +351,43 @@ pub proof fn step_progress(b: Seq<u8>, policy: Policy, frames_entry: bool, apng_
     }
 }
 
+/// Abstract the header and payload while composing the three palette chunks.
+pub(crate) proof fn palette_default_walk(b: Seq<u8>,h: crate::model::Ihdr,z: Seq<u8>,n: nat)
+    requires b.len()==117+n,h.color_type==3,h.depth==4,
+        crate::model::mh(b)==Ok((h,33nat)),
+        forall|phase: crate::walk_model::Phase| #[trigger] crate::critical_model::read(b,33,phase,false)==Ok(
+            crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41,len:48,next:93,crc_ok:true,synthetic:false}),
+        forall|phase: crate::walk_model::Phase| #[trigger] crate::critical_model::read(b,93,phase,false)==Ok(
+            crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101,len:n,next:105+n,crc_ok:true,synthetic:false}),
+        forall|phase: crate::walk_model::Phase| #[trigger] crate::critical_model::read(b,105+n,phase,false)==Ok(
+            crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:113+n,len:0,next:117+n,crc_ok:true,synthetic:false}),
+        b.subrange(101,(101+n) as int)==z,
+    ensures match MW_p(b,strict()) {
+        Outcome::Done(doc,_)=>doc.ihdr==h && entries(doc)==16 && default_stream(b,doc)==Some(z),
+        _=>false,
+    },
+{
+    hide(crate::critical_model::read);hide(crate::model::mh);
+    hide(drive);hide(initial_info);
+    hide(crate::walk_model::classify);
+    assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by {
+        reveal(crate::walk_model::classify);
+        assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by (compute);
+    }
+    assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+        reveal(crate::walk_model::classify);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+    }
+    assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+        reveal(crate::walk_model::classify);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+    }
+    assert(crate::metadata_model::palette(48,3,4,false,false,false,false)==crate::metadata_model::Decision::Keep(16)) by (compute);
+    assert((80u8&32u8)==0u8 && (73u8&32u8)==0u8) by (bit_vector);
+    reveal(step);reveal(ordered);reveal(own);
+    reveal_with_fuel(drive,4);
+    reveal_with_fuel(concat_ranges,3);
+}
+
+
 } // verus!

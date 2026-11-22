@@ -29,19 +29,19 @@ def seq(xs):
     return 'seq![' + ','.join(f'{x}u8' for x in xs) + ']'
 
 
-def stream_certificate(ident, z, source):
+def stream_certificate(ident, z, source, include_scan=True):
     raw, steps = source['raw'], source['steps']
     n = len(raw)
     zf, rf, tf = f'z_{ident}()', f'raw_{ident}()', f'ts_{ident}()'
     encoding = source['encoding']
-    assert encoding in ('stored', 'fixed-literals')
+    assert encoding in ('stored', 'fixed-literals', 'fixed-matches')
     sb = sum(raw)
     sp = n + sum((n-j)*v for j, v in enumerate(raw))
     checksum = (sp % 65521) * 65536 + (1+sb) % 65521
     cursor = 7+n if encoding == 'stored' else (steps[-1]['next']+7)//8
     assert cursor+4 == len(z)
     lines = [f'spec fn raw_{ident}() -> Seq<u8> {{{seq(raw)}}}']
-    if encoding == 'fixed-literals':
+    if encoding != 'stored':
         ts = 'seq![' + ','.join('t::Step {' + ','.join(f'{k}:{v}nat' for k,v in s.items()) + '}' for s in steps) + ']'
         lines += [f'spec fn ts_{ident}() -> Seq<t::Step> {{{ts}}}',
                   '#[verifier::spinoff_prover]', f'proof fn trace_{ident}()',
@@ -86,7 +86,10 @@ def stream_certificate(ident, z, source):
         lines += [f'    stream::stored_stream({zf},{rf},{n}nat,120nat,{z[1]}nat,{checksum}nat);']
     else:
         lines += [f'    trace_{ident}();', f'    stream::fixed_stream({zf},{rf},{tf},{n}nat,{z[1]}nat,{checksum}nat);']
-    lines += ['}', '#[verifier::spinoff_prover]', f'proof fn scan_{ident}()',
+    lines += ['}']
+    if not include_scan:
+        return lines
+    lines += ['#[verifier::spinoff_prover]', f'proof fn scan_{ident}()',
               f'    ensures r::scan({rf},a_{ident}(),0)==Ok(()),', '{',
               f'    hide(raw_{ident});',
               f'    assert(r::base(a_{ident}(),0)==0nat && r::ph(a_{ident}(),0)==4nat && r::count(a_{ident}())==1nat) by (compute);',

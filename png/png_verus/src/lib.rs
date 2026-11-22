@@ -82,6 +82,8 @@ mod m4_stream_witness_model;
 #[cfg(verus_only)]
 mod witness_m4_filter_projection;
 #[cfg(verus_only)]
+mod witness_m4_interlace_projection;
+#[cfg(verus_only)]
 mod witness_m4_complete;
 #[cfg(verus_only)]
 mod witness_m3;

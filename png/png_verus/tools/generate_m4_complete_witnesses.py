@@ -55,7 +55,7 @@ def walk_certificate(cert,data,ident,header,znode,entries):
     """Reuse M3's checked chunk facts; never compute the entire recursive walk."""
     facts, sites = cert.read_facts(data,ident,'')
     crc_code=[]
-    if len(data)>1000:
+    if len(data)>512:
         start,end=37,len(data)-16
         assert data[37:41]==b'IDAT'
         span=data[start:end];value=binascii.crc32(span)
@@ -99,9 +99,17 @@ def walk_certificate(cert,data,ident,header,znode,entries):
               f'    requires b.len()=={len(data)},crate::model::mh(b)==Ok(({header},33nat)),',
               *['        '+x+',' for x in requirements],
               f'    ensures r::default_case(b,{header},{znode},{entries}nat),','{',hidden,
-              *pure,'    reveal(crate::document_model::step);reveal(crate::document_model::ordered);reveal(crate::document_model::own);',
+              f'    hide(z_{ident});',*pure,'    reveal(crate::document_model::step);reveal(crate::document_model::ordered);reveal(crate::document_model::own);',
               f'    reveal_with_fuel(crate::document_model::drive,{sites+1});',
               '    reveal_with_fuel(crate::document_model::concat_ranges,3);','}']
+    if entries==16 and data[24]==4 and data[25]==3:
+        hidden='    hide(crate::critical_model::read);hide(crate::model::mh);'
+        symbolic=['#[verifier::spinoff_prover]',f'proof fn walk_{ident}(b: Seq<u8>)',
+                  f'    requires b.len()=={len(data)},crate::model::mh(b)==Ok(({header},33nat)),',
+                  *['        '+x+',' for x in requirements],
+                  f'    ensures r::default_case(b,{header},{znode},{entries}nat),','{',hidden,
+                  f'    hide(z_{ident});',
+                  f'    r::palette_default_case(b,{header},{znode},{size}nat);','}']
     concrete=[f'    assert(crate::model::mh(bytes_{ident}())==Ok(({header},33nat))) by {{',
               '        reveal(crate::model::mh);',
               f'        assert(crate::model::mh(bytes_{ident}())==Ok(({header},33nat))) by (compute);','    }',
