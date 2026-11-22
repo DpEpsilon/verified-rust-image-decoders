@@ -187,6 +187,31 @@ pub open spec fn place(shape: (nat,nat,nat,nat,nat,bool),before: Seq<u8>,width: 
     Seq::new(before.len(),|j: int| if o<=j<o+data.len() {data[j-o]}else{before[j]})
 }
 
+/// Every byte of a placed canvas pixel lies inside the frame rectangle.
+pub proof fn place_drawing_frame(shape: (nat,nat,nat,nat,nat,bool),before: Seq<u8>,w: nat,h: nat,x: nat,y: nat,px: Seq<u16>)
+    requires x<w,y<h,px.len()==4,before.len()==shape.1,
+        shape.0==2 ==> shape.2>=1 && shape.3+w<=shape.2,
+    ensures crate::composite_model::drawing_frame(before,place(shape,before,w,x,y,px),shape,w,h),
+{
+    let after=place(shape,before,w,x,y,px);
+    let o=destination_offset(shape,w,x,y);
+    assert forall|j: int| 0<=j<before.len() && !crate::composite_model::drawing_region(shape,w,h,j)
+        implies #[trigger] after[j]==before[j] by {
+        if shape.0==2 && o<=j<o+4 {
+            let r=crate::composite_model::Rect {x:shape.3,y:shape.4,w,h};
+            let col=(4*x+j-o) as nat;
+            assert(col<4*w) by (nonlinear_arith) requires x<w,o<=j<o+4,col==4*x+j-o;
+            let base=crate::composite_model::row_base(shape.2,r,y);
+            assert(base==4*((shape.4+y)*shape.2+shape.3));
+            assert(base+col==j) by (nonlinear_arith)
+                requires o==4*((shape.4+y)*shape.2+shape.3+x),col==4*x+j-o,
+                    base==4*((shape.4+y)*shape.2+shape.3);
+            crate::composite_model::rectangle_access(shape.2,r,y,col);
+        }
+    }
+    crate::composite_model::drawing_frame_intro(before,after,shape,w,h);
+}
+
 /// The mathematical row conversion: first palette error, or one RGBA value
 /// per pixel. The input sample width decides which bits are pixels; trailing
 /// padding never becomes another sample.

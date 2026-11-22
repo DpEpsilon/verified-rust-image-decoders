@@ -1,5 +1,27 @@
 # png_verus ledger
 
+## M5 whole-frame footprint and saved-reference checkpoint (2026-11-22)
+
+**Whole-frame drawing footprint, IDAT normalization and saved-before-frame effect verified; full T8/M5 OPEN.** Canonical host **500** and i686 **501** each verify **3,408, zero errors**, with all generated witnesses enabled, `--no-cheating`, default solver limits, 256 MiB direct-process stacks and the authorised 3,600-second process cap. Their identical 72-file inventories match the current tree; import bindings and existing vstd hashes/mtimes remain unchanged. Wall times are **28m11s host** and **27m42s i686**. The base is `12e7193`; `evidence/m5-t8-paint-checkpoint-0500-0501.json` records the scope and proof anchors. The sandbox restart preserved every required input under `/home/ws`; replay requires no `/tmp` file.
+
+| Component | Checked relation |
+|---|---|
+| Whole-frame drawing footprint | Actual `draw_row`, both nested loops in `decode_exact`, and the Raw-prefix `decode_image` wrapper preserve every canvas byte outside the supplied frame rectangle, on success and partial-data errors |
+| Actual destination loan | `Sink::finish` equates the ended destination loan with its current pixels, so the footprint applies to the caller's actual recovered canvas rather than an unrelated sequence |
+| IDAT reuse geometry | The already-executed before-IDAT fcTL guard exports full-canvas geometry; the document/frame invariants and selector transport this fact into the reused IDAT job |
+| Zero-alpha reuse | Actual `zero_alpha_rgb` equals the complete normalization sequence; every complete pixel equals integer `MOver(source, transparent_black)`, including alpha zero, alpha 255 and all intermediate alphas |
+| Actual saved-before-frame reference | An erased reference captures the actual disposed canvas before the current frame's first paint write; the receiver invariant states Saved only through the canvas its matching restore produces |
+| Temporal restore | Actual PREVIOUS disposal returns exactly that recorded pre-paint canvas; drawing's proved footprint and the snapshot observation establish the invariant for the next successful resume |
+| Error paths and logs | Partial frame-data errors preserve the drawing footprint and remain fused; the real per-call Saved log equation remains checked, with paint/restore composition separated from its solver query |
+
+The snapshot reference is assigned from the actual canvas after preceding disposal and before current-frame painting. It is not assigned from a desired model result. `saved_before_frame` relates concrete Saved only through `copy_rect(canvas, Saved, matching_rectangle) == reference`; no values outside the restore footprint or public Saved-layout promise are asserted. The invariant is established by actual save, actual painting and actual cached-rectangle resume. Frame 0 PREVIOUS still acts as BACKGROUND, and exhausted calls still do not apply the last disposal.
+
+This checkpoint composes the **whole-frame footprint**, not every whole-frame MC pixel value. It does not yet establish full per-position `MK` against independent source-frame pixels, the initial/default pixel-value refinement, MFr-based SavedAt reachability or cumulative A-PNG-4 log ownership. Frames still owns only the new erased canvas reference, not a cumulative sealed allocation log; the actual call-owned Trace log remains distinct. All 37 M5 witnesses and their E6 classifications remain open, with no new witness or mutation credit.
+
+Development source copies omitted only the six previously accepted generated witness leaves and earned no credit; canonical replays omit nothing. Default-limit failures were repaired through narrow defining-module interfaces and a separate painting continuation, not raised solver limits. The executable changes are a private continuation refactor and an erased snapshot field; fcTL acceptance checks, sample conversion, byte writes and allocation requests are unchanged. Full native runtime **499** is bound to the accepted source and passes release/fault tests, seven council tests, cap/allocation self-tests and native no_std. E7 remains **846/848 pass, zero failures, exactly the two unrun compatibility skips**. Control **502** validates source/import/vstd pins, protected files against `12e7193`, restored scratches, whitespace and no verifier/solver processes.
+
+No protected file or question changed, no new vstd/cache was built, and no Cargo verification, commit or push occurred. This is a component checkpoint, not M5 sign-off or sign-off readiness. M4's 71 complete pixel-result witnesses remain due at M6.
+
 ## M5 rectangle-storage and Saved-call checkpoint (2026-11-22)
 
 **T8 storage/operational Saved component verified; full T8 and M5 OPEN, not signed off.** Canonical host **490** and i686 **492** each verify **3,390, 0 errors**, with every generated witness enabled, `--no-cheating`, default solver limits, 256 MiB direct-process stacks and the authorised 3,600-second process cap. Their identical 72-file inventories match the current tree; import bindings and existing vstd hashes/mtimes remain unchanged. Wall times are **27m47s host** and **28m23s i686**. The source base is `0826ec8`. `evidence/m5-t8-storage-checkpoint-0490-0492.json` records anchors, exact scope and remaining obligations.

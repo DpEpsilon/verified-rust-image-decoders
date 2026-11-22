@@ -721,6 +721,8 @@ pub struct Frames<'a> {
     raw: Vec<u8>,
     canvas: Vec<u8>,
     saved: Option<Vec<u8>>,
+    /// Erased reference captured from the actual canvas before frame painting.
+    snapshot: Ghost<Option<Seq<u8>>>,
     base: Events,
     state: FrameState,
 }
@@ -740,7 +742,16 @@ impl<'a> Frames<'a> {
         && crate::layout_model::image_buffers(self.doc.ihdr.view(),false,self.raw@,self.canvas@)
         && (match self.saved {None=>true,Some(v)=>v@.len()==self.canvas@.len()})
         && (crate::frame_state::previous_needs_saved(self.state.previous()) ==> self.saved.is_some())
+        && self.restores_previous(self.state.previous())
         && (match self.state.index() {Some(k)=>self.saved.is_some()==crate::frame_transport_model::saved_before(self.doc.frame_ranges@,k),None=>true})
+    }
+
+    closed spec fn restores_previous(&self,previous: crate::frame_state::Previous) -> bool {
+        match previous {
+            Some(((x,y,w,h),2))=>composite::saved_before_frame(self.canvas@,self.saved_pixels(),self.snapshot@,
+                self.doc.ihdr.w as nat,composite::rect(x,y,w,h)),
+            _=>true,
+        }
     }
 
     /// The current reached call qualifies; prior qualifiers are captured by buffers_wf.
@@ -769,7 +780,7 @@ impl<'a> Frames<'a> {
         let state=FrameState::new(b,&doc);
         proof {crate::frame_transport_model::saved_before_start(doc.frame_ranges@);}
         proof {reveal(Frames::source_wf);reveal(Frames::buffers_wf);reveal(crate::frame_state::source_document);}
-        Self {b,pol,doc,raw,canvas,saved:None,base,state}
+        Self {b,pol,doc,raw,canvas,saved:None,snapshot:Ghost(None),base,state}
     }
 
     fn begin_source(&mut self) -> (r: Step<'a>)
@@ -780,10 +791,12 @@ impl<'a> Frames<'a> {
             final(self).raw==old(self).raw,final(self).canvas==old(self).canvas,
             final(self).saved==old(self).saved,final(self).base==old(self).base,
             final(self).pol==old(self).pol,
+            final(self).snapshot==old(self).snapshot,
             old(self).state.done() ==> matches!(r,Step::Done),
             match r {Step::Done=>old(self).state.done() || old(self).state.index()==Some(old(self).doc.info.frame_count as nat),
                 Step::Single=>old(self).state.single(),Step::Frame(_)=>true},
             match r {Step::Frame(job)=>job.wf(final(self).b@,final(self).doc)
+                && (old(self).buffers_wf() ==> final(self).restores_previous(job.previous))
                 && job.previous==old(self).state.previous() && old(self).state.index()==Some(job.index as nat)
                 && (old(self).buffers_wf() && crate::frame_state::previous_needs_saved(job.previous) ==> final(self).saved.is_some()),_=>true},
     {
@@ -792,7 +805,7 @@ impl<'a> Frames<'a> {
     }
 
     fn commit_source(&mut self, resume: FrameState)
-        requires old(self).source_wf(),resume.wf(old(self).b@,old(self).doc),
+        requires old(self).source_wf(),resume.wf(old(self).b@,old(self).doc),old(self).restores_previous(resume.previous()),
             crate::frame_state::previous_needs_saved(resume.previous()) ==> old(self).saved.is_some(),
             match resume.index() {Some(k)=>old(self).saved.is_some()==crate::frame_transport_model::saved_before(old(self).doc.frame_ranges@,k),None=>true},
         ensures final(self).source_wf(),
@@ -801,6 +814,7 @@ impl<'a> Frames<'a> {
             final(self).raw==old(self).raw,final(self).canvas==old(self).canvas,
             final(self).saved==old(self).saved,final(self).base==old(self).base,
             final(self).pol==old(self).pol,
+            final(self).snapshot==old(self).snapshot,
     {
         proof {reveal(Frames::source_wf);reveal(Frames::buffers_wf);}
         self.state=resume;
@@ -812,6 +826,7 @@ impl<'a> Frames<'a> {
             final(self).doc==old(self).doc,final(self).state==old(self).state,
             final(self).raw==old(self).raw,final(self).canvas==old(self).canvas,
             final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
+            final(self).snapshot==old(self).snapshot,
             crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),
             !needed || old(self).saved.is_some() ==> final(trace).log_view().len()==0,
             needed && old(self).saved.is_none() ==> final(trace).log_view()==seq![(AllocSite::Saved,old(self).canvas@.len(),r.is_ok())],
@@ -998,7 +1013,7 @@ impl<'a> Frames<'a> {
     /// Exact pre-paint rectangle disposal and snapshot restore effect. The
     /// integrated MK relation to preceding source-frame pixels remains separate.
     fn dispose_and_save(&mut self,prev: crate::frame_state::Previous,current: (u32,u32,u32,u32),op: u8)
-        requires old(self).source_wf(),old(self).buffers_wf(),
+        requires old(self).source_wf(),old(self).buffers_wf(),old(self).state.done(),old(self).restores_previous(prev),
             crate::frame_state::previous_fits(prev,old(self).doc.ihdr.view()),
             crate::frame_state::previous_fits(Some((current,op)),old(self).doc.ihdr.view()),
             crate::frame_state::previous_needs_saved(prev) || op==2 ==> old(self).saved.is_some(),
@@ -1007,7 +1022,10 @@ impl<'a> Frames<'a> {
             final(self).state==old(self).state,final(self).raw==old(self).raw,
             final(self).saved.is_some()==old(self).saved.is_some(),
             composite::dispose_regions(old(self).canvas@,old(self).saved_pixels(),old(self).doc.ihdr.w as nat,previous_regions(prev))==Some(final(self).canvas@),
-            op!=2 ==> final(self).saved==old(self).saved,
+            op!=2 ==> final(self).saved==old(self).saved && final(self).snapshot==old(self).snapshot,
+            op==2 ==> final(self).snapshot@==Some(final(self).canvas@),
+            crate::frame_state::previous_needs_saved(prev) ==> old(self).snapshot@.is_some()
+                && final(self).canvas@==old(self).snapshot@.unwrap(),
             op==2 ==> match final(self).saved {Some(s)=>composite::snapshot_effect(s@,final(self).canvas@,
                 old(self).doc.ihdr.w as nat,composite::rect(current.0,current.1,current.2,current.3)),None=>false},
     {
@@ -1021,11 +1039,13 @@ impl<'a> Frames<'a> {
             }
             if dispose==1 {clear_rect(&mut self.canvas,w,px,py,pw,ph);}
             else if dispose==2 {
+                proof {composite::saved_before_frame_restore(self.canvas@,self.saved_pixels(),self.snapshot@,w as nat,composite::rect(px,py,pw,ph));}
                 if let Some(s)=&self.saved {copy_rect(&mut self.canvas,s,w,px,py,pw,ph);}
             }
         }
         proof {assert(disposed==Some(self.canvas@));}
         if op==2 {
+            proof {self.snapshot=Ghost(Some(self.canvas@));}
             let (x,y,rw,rh)=current;
             proof {
                 assert(4*(y as int+rh as int)*(w as int)<=self.canvas.len()) by (nonlinear_arith)
@@ -1044,21 +1064,31 @@ impl<'a> Frames<'a> {
 
     /// Weak selected-image continuation: preserve layout and source metadata.
     fn draw_selected(&mut self,job: crate::frame_state::FrameJob<'a>) -> (r: Result<Events,TryError>)
-        requires old(self).source_wf(),old(self).buffers_wf(),job.wf(old(self).b@,old(self).doc),
+        requires old(self).source_wf(),old(self).buffers_wf(),old(self).state.done(),job.wf(old(self).b@,old(self).doc),
+            job.effective_dispose==2 ==> old(self).snapshot@==Some(old(self).canvas@)
+                && match old(self).saved {Some(v)=>composite::snapshot_effect(v@,old(self).canvas@,old(self).doc.ihdr.w as nat,
+                    composite::rect(job.control.x,job.control.y,job.control.w,job.control.h)),None=>false},
             job.effective_dispose==2 ==> old(self).saved.is_some(),
         ensures final(self).source_wf(),final(self).buffers_wf(),final(self).doc==old(self).doc,
             final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
-            final(self).state==old(self).state,final(self).saved==old(self).saved,
+            final(self).state==old(self).state,final(self).saved==old(self).saved,final(self).snapshot==old(self).snapshot,
+            composite::drawing_frame(old(self).canvas@,final(self).canvas@,
+                (2,old(self).canvas@.len(),old(self).doc.ihdr.w as nat,job.control.x as nat,job.control.y as nat,job.control.blend==1),
+                job.control.w as nat,job.control.h as nat),
+            final(self).restores_previous(Some(((job.control.x,job.control.y,job.control.w,job.control.h),job.effective_dispose))),
             r.is_err() ==> matches!(r,Err(TryError::Format(_))),
     {
         hide(raster::data);hide(raster::completed);hide(raster::inflated);
         hide(Doc::wf);hide(crate::document_model::frame_stream);
         hide(crate::frame_transport_model::control_record);hide(crate::frame_transport_model::cursor_for);
         proof {reveal(Frames::source_wf);reveal(Frames::buffers_wf);reveal(crate::frame_state::FrameJob::wf);crate::limits::caps_ok();self.source_context();}
+        let ghost before=self.canvas@;
         let w=self.doc.ihdr.w;let h=self.doc.ihdr.h;let f=job.control;
+        let ghost geometry=(2nat,before.len(),w as nat,f.x as nat,f.y as nat,f.blend==1);
                 let mut fev=self.base;
                 if job.reader.is_none() {
                     if f.blend==1 {zero_alpha_rgb(&mut self.canvas);}
+                    proof {composite::full_drawing_frame(before,self.canvas@,w as nat,h as nat,f.blend==1);}
                 }else {
                     let mut src=job.reader.unwrap();
                     proof {
@@ -1069,10 +1099,41 @@ impl<'a> Frames<'a> {
                     proof {crate::layout_model::raw_dimensions(self.doc.ihdr.interlace,crate::layout_model::bits(self.doc.ihdr.view()),
                         f.w as nat,f.h as nat,w as nat,h as nat);}
                     let decoded=decode_image(&self.doc,self.b,&mut src,&mut self.raw,f.w,f.h,&self.pol,&mut fev,&mut sink);
+                    let ghost after=sink.pixels();
                     sink.finish();
-                    match decoded {Err(e)=>return Err(TryError::Format(e)),Ok(())=>{}}
+                    proof {assert(self.canvas@==after);}
+                    match decoded {Err(e)=>{
+                        proof {
+                            if job.effective_dispose==2 {composite::drawing_restores_before(before,self.canvas@,self.saved_pixels().unwrap(),w as nat,composite::rect(f.x,f.y,f.w,f.h),f.blend==1);}
+                        }
+                        return Err(TryError::Format(e));
+                    },Ok(())=>{}}
                 }
+        proof {
+            if job.effective_dispose==2 {composite::drawing_restores_before(before,self.canvas@,self.saved_pixels().unwrap(),w as nat,composite::rect(f.x,f.y,f.w,f.h),f.blend==1);}
+        }
         Ok(fev)
+    }
+
+    /// Paint/dispose state composition is separate from the allocation-log query.
+    fn finish_job(&mut self,job: crate::frame_state::FrameJob<'a>) -> (r: Result<Events,TryError>)
+        requires old(self).source_wf(),old(self).buffers_wf(),old(self).state.done(),job.wf(old(self).b@,old(self).doc),
+            old(self).restores_previous(job.previous),
+            crate::frame_state::previous_needs_saved(job.previous) || job.effective_dispose==2 ==> old(self).saved.is_some(),
+            old(self).saved.is_some()==crate::frame_transport_model::saved_before(old(self).doc.frame_ranges@,job.index as nat+1),
+        ensures final(self).source_wf(),final(self).buffers_wf(),final(self).doc==old(self).doc,
+            final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
+            final(self).saved.is_some()==old(self).saved.is_some(),
+            r.is_err() ==> final(self).state.done() && matches!(r,Err(TryError::Format(_))),
+            r.is_ok() ==> final(self).state==job.resume,
+    {
+        hide(Doc::wf);hide(crate::frame_transport_model::control_record);
+        proof {job.storage_context(self.b@,self.doc);}
+        let f=job.control;let resume=job.resume;
+        self.dispose_and_save(job.previous,(f.x,f.y,f.w,f.h),job.effective_dispose);
+        let events=match self.draw_selected(job) {Ok(events)=>events,Err(e)=>return Err(e)};
+        self.commit_source(resume);
+        Ok(events)
     }
 
     fn next_with_trace(&mut self,trace: &mut Trace) -> (r: Result<Option<FrameView<'_>>,TryError>)
@@ -1113,9 +1174,7 @@ impl<'a> Frames<'a> {
                 let k=job.index;let f=job.control;let resume=job.resume;
                 proof {assert(wanted==(k>0 && f.dispose==2));}
                 match self.ensure_saved(k>0 && f.dispose==2,trace) {Ok(())=>{},Err(e)=>return Err(e)}
-                self.dispose_and_save(job.previous,(f.x,f.y,f.w,f.h),job.effective_dispose);
-                let fev=match self.draw_selected(job) {Ok(ev)=>ev,Err(e)=>return Err(e)};
-                self.commit_source(resume);
+                let fev=match self.finish_job(job) {Ok(ev)=>ev,Err(e)=>return Err(e)};
                 Ok(Some(FrameView {rgba:&self.canvas,rect:(f.x,f.y,f.w,f.h),delay:Some((f.delay_num,f.delay_den)),
                     dispose:f.dispose,blend:f.blend,recovered:fev.any(),events:fev}))
             },
@@ -1125,16 +1184,38 @@ impl<'a> Frames<'a> {
 
 fn zero_alpha_rgb(canvas: &mut [u8])
     requires old(canvas).len()<=crate::alloc_guard::MAX_BYTES,
-    ensures final(canvas).len()==old(canvas).len(),
+    ensures final(canvas)@==composite::zero_alpha(old(canvas)@),
+        forall|p: nat| 4*p+4<=old(canvas).len() ==> #[trigger] final(canvas)@.subrange((4*p) as int,(4*p+4) as int)
+            ==composite::over(old(canvas)@.subrange((4*p) as int,(4*p+4) as int),seq![0u8,0u8,0u8,0u8]),
 {
     proof {crate::limits::caps_ok();}
+    let ghost before=canvas@;
     let n=canvas.len();let mut i=0usize;
     while i+3<n
-        invariant i<=n,canvas.len()==n,n<=crate::alloc_guard::MAX_BYTES,
+        invariant i<=n,i%4==0,canvas.len()==n,n<=crate::alloc_guard::MAX_BYTES,before.len()==n,
+            forall|j: int| 0<=j<n ==> #[trigger] canvas[j]
+                ==if j<i && j%4<3 && before[4*(j/4)+3]==0 {0u8}else{before[j]},
         decreases n-i,
     {
+        let ghost prior=canvas@;
         if canvas[i+3]==0 {canvas[i]=0;canvas[i+1]=0;canvas[i+2]=0;}
+        proof {
+            assert forall|j: int| 0<=j<n implies #[trigger] canvas[j]
+                ==if j<i+4 && j%4<3 && before[4*(j/4)+3]==0 {0u8}else{before[j]} by {
+                if i<=j<i+4 {composite::pixel_block(i as nat,j);}
+            }
+        }
         i+=4;
+    }
+    proof {
+        assert forall|j: int| 0<=j<n implies canvas@[j]==composite::zero_alpha(before)[j] by {
+            if j>=i {composite::pixel_block(i as nat,j);}
+        }
+        assert(canvas@=~=composite::zero_alpha(before));
+        assert forall|p: nat| 4*p+4<=before.len() implies #[trigger] canvas@.subrange((4*p) as int,(4*p+4) as int)
+            ==composite::over(before.subrange((4*p) as int,(4*p+4) as int),seq![0u8,0u8,0u8,0u8]) by {
+            composite::zero_alpha_pixel(before,p);
+        }
     }
 }
 

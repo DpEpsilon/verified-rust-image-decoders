@@ -24,6 +24,7 @@ pub(crate) open spec fn frames_valid(frames: Seq<names::Frame>, len: nat) -> boo
 pub(crate) open spec fn frame_fits(f: names::Frame,h: crate::model::Ihdr) -> bool {
     1<=f.width && 1<=f.height && f.x as int+f.width as int<=h.width
     && f.y as int+f.height as int<=h.height && f.dispose<=2 && f.blend<=1
+    && (matches!(f.source,Source::Idat) ==> f.x==0 && f.y==0 && f.width==h.width && f.height==h.height)
 }
 pub(crate) open spec fn frames_fit(frames: Seq<names::Frame>,h: crate::model::Ihdr) -> bool {
     forall|i: int| 0<=i<frames.len() ==> frame_fits(#[trigger] frames[i],h)
@@ -67,6 +68,14 @@ impl Doc {
         requires self.wf(b),index<self.frame_ranges@.len(),
         ensures frame_fits(self.frame_ranges@[index as int],self.ihdr.view()),
     {}
+    /// The executed before-IDAT fcTL guard established full-canvas geometry.
+    pub(crate) proof fn selected_reuse_geometry(self,b: Seq<u8>)
+        requires self.wf(b),self.source_partition(),self.info.default_is_frame,
+        ensures self.frame_ranges@.len()>0,self.frame_ranges@[0].x==0,self.frame_ranges@[0].y==0,
+            self.frame_ranges@[0].width==self.ihdr.w,self.frame_ranges@[0].height==self.ihdr.h,
+    {
+        self.selected_frame_fits(b,0);
+    }
     pub(crate) fn new(ihdr: Ihdr, b: &[u8]) -> (r: Self)
         requires ihdr.wf(),
         ensures r.wf(b@),r.view()==m::initial(ihdr.view(),0,m::no_events()).doc,

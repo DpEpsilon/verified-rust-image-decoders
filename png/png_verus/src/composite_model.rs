@@ -204,4 +204,119 @@ pub proof fn snapshot_effect_on_drawn(drawn: Seq<u8>,saved: Seq<u8>,reference: S
     assert(copy_rect(drawn,saved,cw,r)=~=copy_rect(drawn,reference,cw,r));
 }
 
+/// Byte positions writable by a decoded image. Canvas destinations use the
+/// frame rectangle; a still destination owns its entire output slice.
+pub open spec fn drawing_region(shape: (nat,nat,nat,nat,nat,bool),w: nat,h: nat,j: int) -> bool {
+    if shape.0==2 {inside(shape.2,Rect {x:shape.3,y:shape.4,w,h},j)}else{0<=j<shape.1}
+}
+#[verifier::opaque]
+pub open spec fn drawing_frame(before: Seq<u8>,after: Seq<u8>,shape: (nat,nat,nat,nat,nat,bool),w: nat,h: nat) -> bool {
+    before.len()==after.len() && forall|j: int| 0<=j<before.len() && !drawing_region(shape,w,h,j)
+        ==> #[trigger] after[j]==before[j]
+}
+pub proof fn drawing_frame_intro(before: Seq<u8>,after: Seq<u8>,shape: (nat,nat,nat,nat,nat,bool),w: nat,h: nat)
+    requires before.len()==after.len(),forall|j: int| 0<=j<before.len() && !drawing_region(shape,w,h,j)
+        ==> #[trigger] after[j]==before[j],
+    ensures drawing_frame(before,after,shape,w,h),
+{reveal(drawing_frame);}
+pub proof fn drawing_frame_start(before: Seq<u8>,shape: (nat,nat,nat,nat,nat,bool),w: nat,h: nat)
+    ensures drawing_frame(before,before,shape,w,h),
+{reveal(drawing_frame);}
+pub proof fn drawing_frame_transitive(before: Seq<u8>,middle: Seq<u8>,after: Seq<u8>,shape: (nat,nat,nat,nat,nat,bool),w: nat,h: nat)
+    requires drawing_frame(before,middle,shape,w,h),drawing_frame(middle,after,shape,w,h),
+    ensures drawing_frame(before,after,shape,w,h),
+{reveal(drawing_frame);}
+
+/// The IDAT reuse path applies OVER to the already-decoded source on an
+/// initially transparent canvas. Transparent source RGB must become zero.
+pub open spec fn zero_alpha(before: Seq<u8>) -> Seq<u8> {
+    Seq::new(before.len(),|j: int| if 4*(j/4)+3<before.len() && j%4<3 && before[4*(j/4)+3]==0 {0u8}else{before[j]})
+}
+pub proof fn over_transparent(source: Seq<u8>)
+    requires source.len()==4,
+    ensures over(source,seq![0u8,0u8,0u8,0u8])==if source[3]==0 {seq![0u8,0u8,0u8,0u8]}else{source},
+{
+    let empty=seq![0u8,0u8,0u8,0u8];
+    over_equations(source,empty);
+    if source[3]!=0 && source[3]!=255 {
+        let a=alpha(source[3],0);
+        assert(a==255*(source[3] as int));
+        assert forall|c: int| 0<=c<3 implies over(source,empty)[c]==source[c] by {
+            over_bounds(source[3],0,source[c],0);
+            assert(numerator(source[3],0,source[c],0)==a*(source[c] as int)) by (nonlinear_arith)
+                requires a==255*(source[3] as int);
+            assert(2*numerator(source[3],0,source[c],0)+a==(source[c] as int)*(2*a)+a) by (nonlinear_arith)
+                requires numerator(source[3],0,source[c],0)==a*(source[c] as int);
+            lemma_fundamental_div_mod_converse_div(2*numerator(source[3],0,source[c],0)+a,2*a,source[c] as int,a);
+        }
+        assert(2*a+255==(source[3] as int)*510+255) by (nonlinear_arith)
+            requires a==255*(source[3] as int);
+        lemma_fundamental_div_mod_converse_div(2*a+255,510,source[3] as int,255);
+        assert(over(source,empty)=~=source);
+    }
+}
+
+pub proof fn pixel_block(base: nat,j: int)
+    requires base%4==0,base<=j<base+4,
+    ensures 4*(j/4)==base,j%4==j-base,
+{
+    lemma_fundamental_div_mod(base as int,4);
+    lemma_fundamental_div_mod_converse(j,4,(base/4) as int,j-base);
+}
+/// A full-canvas frame has no valid byte outside its drawing region.
+pub proof fn full_drawing_frame(before: Seq<u8>,after: Seq<u8>,cw: nat,h: nat,blend: bool)
+    requires cw>=1,before.len()==4*cw*h,after.len()==before.len(),
+    ensures drawing_frame(before,after,(2,before.len(),cw,0,0,blend),cw,h),
+{
+    assert forall|j: int| 0<=j<before.len() implies inside(cw,Rect {x:0,y:0,w:cw,h},j) by {
+        let den=(4*cw) as int;
+        lemma_fundamental_div_mod(j,den);
+        lemma_mod_pos_bound(j,den);
+        lemma_div_pos_is_pos(j,den);
+        assert(j/den<h) by (nonlinear_arith)
+            requires j==den*(j/den)+j%den,0<=j%den<den,den>0,j<den*h;
+    }
+    drawing_frame_intro(before,after,(2,before.len(),cw,0,0,blend),cw,h);
+}
+
+/// A previous-frame reference is related to concrete Saved only by the
+/// canvas that restoration produces. No Saved-layout equation is asserted.
+#[verifier::opaque]
+pub open spec fn saved_before_frame(canvas: Seq<u8>,saved: Option<Seq<u8>>,reference: Option<Seq<u8>>,cw: nat,r: Rect) -> bool {
+    match (saved,reference) {(Some(s),Some(before))=>copy_rect(canvas,s,cw,r)==before,_=>false}
+}
+pub proof fn saved_before_frame_restore(canvas: Seq<u8>,saved: Option<Seq<u8>>,reference: Option<Seq<u8>>,cw: nat,r: Rect)
+    requires saved_before_frame(canvas,saved,reference,cw,r),
+    ensures saved.is_some(),reference.is_some(),copy_rect(canvas,saved.unwrap(),cw,r)==reference.unwrap(),
+{reveal(saved_before_frame);}
+
+/// Whole-frame footprint plus the actual pre-paint snapshot restores the
+/// observed canvas to the actual canvas from before this frame's first write.
+pub proof fn drawing_restores_before(before: Seq<u8>,after: Seq<u8>,saved: Seq<u8>,cw: nat,r: Rect,blend: bool)
+    requires saved.len()==before.len(),snapshot_effect(saved,before,cw,r),
+        drawing_frame(before,after,(2,before.len(),cw,r.x,r.y,blend),r.w,r.h),
+    ensures saved_before_frame(after,Some(saved),Some(before),cw,r),
+{
+    reveal(drawing_frame);reveal(saved_before_frame);
+    snapshot_effect_on_drawn(after,saved,before,cw,r);
+    assert(copy_rect(after,before,cw,r)=~=before);
+}
+
+/// Every complete normalized pixel is exactly OVER on transparent black.
+pub proof fn zero_alpha_pixel(before: Seq<u8>,p: nat)
+    requires 4*p+4<=before.len(),
+    ensures zero_alpha(before).subrange((4*p) as int,(4*p+4) as int)
+        ==over(before.subrange((4*p) as int,(4*p+4) as int),seq![0u8,0u8,0u8,0u8]),
+{
+    let source=before.subrange((4*p) as int,(4*p+4) as int);
+    over_transparent(source);
+    assert((4*p)%4==0);
+    assert forall|c: int| 0<=c<4 implies #[trigger] zero_alpha(before)[4*p+c]
+        ==if source[3]==0 {0u8}else{source[c]} by {
+        pixel_block(4*p,4*p+c);
+    }
+    assert(zero_alpha(before).subrange((4*p) as int,(4*p+4) as int)=~=
+        if source[3]==0 {seq![0u8,0u8,0u8,0u8]}else{source});
+}
+
 }

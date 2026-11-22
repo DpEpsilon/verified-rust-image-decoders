@@ -146,7 +146,10 @@ impl<'a> FrameJob<'a> {
         hide(Doc::wf);hide(Doc::source_partition);hide(transport::result);
         proof {reveal(source_document);}
         let (control,start)=select_control(b,doc,index,cursor);
-        proof {doc.selected_frame_fits(b@,index as nat);}
+        proof {
+            doc.selected_frame_fits(b@,index as nat);
+            if index==0 && doc.info.default_is_frame {doc.selected_reuse_geometry(b@);}
+        }
 
         let reader=if index==0 && doc.info.default_is_frame {None} else {
             Some(DataReader::for_frame(b,doc,index,start))
@@ -171,6 +174,8 @@ impl<'a> FrameJob<'a> {
             self.effective_dispose<=2,
             self.effective_dispose==(if self.index==0 && self.control.dispose==2 {1}else{self.control.dispose}),
             doc.frame_ranges@[self.index as int].dispose==self.control.dispose,
+            self.reader.is_none() ==> self.index==0 && self.control.x==0 && self.control.y==0
+                && self.control.w==doc.ihdr.w && self.control.h==doc.ihdr.h,
     {
         reveal(FrameJob::wf);
         transport::control_dispose(doc.frame_ranges@[self.index as int],self.control.view());
@@ -190,7 +195,8 @@ impl<'a> FrameJob<'a> {
         && self.control.y as int+self.control.h as int<=doc.ihdr.h
         && self.effective_dispose==(if self.index==0 && self.control.dispose==2 {1}else{self.control.dispose})
         && match self.reader {
-            None=>self.index==0 && doc.info.default_is_frame,
+            None=>self.index==0 && doc.info.default_is_frame
+                && self.control.x==0 && self.control.y==0 && self.control.w==doc.ihdr.w && self.control.h==doc.ihdr.h,
             Some(reader)=>!(self.index==0 && doc.info.default_is_frame)
                 && reader.wf() && reader.pos()==0 && reader.seg_steps()==0 && reader.core_steps()==0
                 && m::frame_stream(b,doc.view(),self.index as nat)==Some(reader.concat()),
