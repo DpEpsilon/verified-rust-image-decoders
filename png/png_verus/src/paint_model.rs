@@ -160,6 +160,7 @@ pub open spec fn image_pixels(input: Seq<u8>,a: r::Raster,colour: c::Context,sta
         (#[trigger] source_pixel(input,a,colour,x,y,wide,black)).is_ok()
         && c::observe(shape,state,a.width,x,y)==c::physical(source_pixel(input,a,colour,x,y,wide,black).get_Ok_0(),wide)
 }
+#[verifier::spinoff_prover]
 pub proof fn image_from_progress(input: Seq<u8>,a: r::Raster,colour: c::Context,before: Seq<u8>,state: Seq<u8>,wide: bool,black: bool)
     requires domain(a),before.len()==(if wide {8nat}else{4nat})*a.width*a.height,
         progress(input,a,colour,(if wide {1nat}else{0nat},before.len(),0nat,0nat,0nat,false),before,state,r::count(a),0,black),

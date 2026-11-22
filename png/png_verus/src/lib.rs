@@ -30,6 +30,8 @@ mod callers;
 pub mod allocation_model;
 #[cfg(verus_only)]
 pub mod iterator_log_model;
+#[cfg(verus_only)]
+pub mod iterator_data_model;
 mod frame_state;
 mod critical;
 #[cfg(verus_only)]

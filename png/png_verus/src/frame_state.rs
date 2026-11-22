@@ -170,6 +170,28 @@ impl<'a> FrameJob<'a> {
         m::reused_stream(b,doc.view());
     }
 
+    /// Relate the selected source and dimensions to the independent data model.
+    pub(crate) proof fn data_context(self,b: Seq<u8>,doc: Doc,p: crate::policy::Policy)
+        requires self.wf(b,doc),
+        ensures doc.actl.is_some(),self.index<crate::iterator_data_model::count(doc.view()),
+            crate::iterator_data_model::frame_data(b,doc.view(),p,self.index as nat)==match m::frame_stream(b,doc.view(),self.index as nat) {
+                Some(z)=>crate::raster_model::data(z,crate::image::raster_context(doc,self.control.w,self.control.h,p),p),None=>None},
+            self.reader.is_none() ==> crate::iterator_data_model::frame_data(b,doc.view(),p,self.index as nat)==crate::raster_model::document_data(b,doc.view(),p),
+    {
+        hide(crate::raster_model::data);
+        reveal(FrameJob::wf);
+        crate::iterator_data_model::frame_rule(b,doc.view(),p,self.index as nat);
+        if self.reader.is_none() {self.reused_source(b,doc);}
+    }
+
+    pub(crate) proof fn reuse_data_context(self,b: Seq<u8>,doc: Doc,p: crate::policy::Policy)
+        requires self.wf(b,doc),crate::iterator_data_model::default_success(b,doc.view(),p),
+        ensures doc.actl.is_some(),self.index<crate::iterator_data_model::count(doc.view()),
+            self.reader.is_none() ==> crate::iterator_data_model::frame_ok(b,doc.view(),p,self.index as nat),
+    {
+        self.data_context(b,doc,p);crate::iterator_data_model::default_context(b,doc.view(),p);
+    }
+
     /// Export disposal/storage metadata without exposing frame-stream models.
     pub(crate) proof fn storage_context(self,b: Seq<u8>,doc: Doc)
         requires self.wf(b,doc),
@@ -192,7 +214,7 @@ impl<'a> FrameJob<'a> {
 
     #[verifier::opaque]
     pub(crate) open spec fn wf(self, b: Seq<u8>, doc: Doc) -> bool {
-        self.index<doc.frame_ranges@.len() && self.resume.wf(b,doc)
+        doc.actl.is_some() && self.index<doc.frame_ranges@.len() && self.resume.wf(b,doc)
         && previous_fits(self.previous,doc.ihdr.view())
         && self.resume.index()==Some(self.index as nat+1)
         && self.resume.previous()==Some(((self.control.x,self.control.y,self.control.w,self.control.h),self.effective_dispose))

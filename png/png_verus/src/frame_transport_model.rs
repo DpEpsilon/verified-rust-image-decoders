@@ -451,4 +451,19 @@ pub proof fn result_same_frames(b: Seq<u8>, before: m::Doc, after: m::Doc, root:
     hide(valid_site);hide(closed_frame);hide(linked);
 }
 
+pub proof fn saved_before_exact(frames: Seq<Frame>,k: nat)
+    ensures saved_before(frames,k)==(exists|i: nat| 1<=i<k && i<frames.len() && (#[trigger] frames[i as int]).dispose==2),
+{
+    reveal(saved_before);
+    if saved_before(frames,k) {
+        let i=choose|i: int| 1<=i<k && i<frames.len() && (#[trigger] frames[i]).dispose==2;
+        assert(i as nat as int==i);
+        assert(exists|j: nat| 1<=j<k && j<frames.len() && (#[trigger] frames[j as int]).dispose==2);
+    }
+    if exists|i: nat| 1<=i<k && i<frames.len() && (#[trigger] frames[i as int]).dispose==2 {
+        let i=choose|i: nat| 1<=i<k && i<frames.len() && (#[trigger] frames[i as int]).dispose==2;
+        assert(saved_before(frames,k));
+    }
+}
+
 } // verus!
