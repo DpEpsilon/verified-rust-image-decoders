@@ -1,0 +1,678 @@
+{
+  "title": "Strict Iterator Executable Checkpoint",
+  "scope": "Strict iterator equivalence complete at M6 2a; named-policy pending 2b",
+  "status": "STRICT EXECUTABLE ITERATOR COMPLETE; NAMED-POLICY PENDING 2b; INDEPENDENT ACCEPTANCE PENDING",
+  "base_commit": "45fae63c5b5dfd7f07a41cdc1a1dba9e5a95f276",
+  "source_sha256": {
+    "src/alloc_guard/mod.rs": "add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137",
+    "src/alloc_guard/sites.rs": "dcd747cf7721c33ff00fbffd83ca8838d12803f99c2fb896b8077f25f5d8a281",
+    "src/allocation_model.rs": "ec08a85968f07ec6d3a36a31501a6c17411a4314c49f2b332cf45c71bc5be8b6",
+    "src/apng.rs": "cddbd5681a19c87195da6a2a0f89624fcfdf991b595d9377166d8c16753aefb5",
+    "src/apng_model.rs": "41cf7792881764ac134877d68a2951b373b58eec52b58197396161633e3c9e78",
+    "src/callers.rs": "7fcec072f7166647c2f92e06fe52a6b357a0faf420179251ae0cda71028363c5",
+    "src/colour_model.rs": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743",
+    "src/composite_model.rs": "f839e81caada0430bc873b33d977d20f439cd1cc58aea027d687c4dc80819fd7",
+    "src/crc.rs": "12fa39331208c143bc9acae6d1064d1ad3e995fc583de626b82103e8f771c4cb",
+    "src/critical.rs": "be227d2d6e997f26c1fb39268e61e6a325e58721693e1ce6972aeb07bbfe05fb",
+    "src/critical_model.rs": "7411fc10bc6603ca28f83f8a57093ec0ccac3b0308691cda1a630634f54135c3",
+    "src/document_model.rs": "e2d842013e32a8e103d9470b6bb485bfba73d889d5c5ebceb5bc80df94728efc",
+    "src/filter_model.rs": "4b51aabbc3be98e9a98b46a67ab6982d6b5ac630978075f15cdfe68c7de66faf",
+    "src/frame_activity.rs": "92a0c506a7c771c113b54525b33659517d1bda695f3e1791cf9e2442b7bbc44d",
+    "src/frame_canvas_model.rs": "96ded6d4586f6be32f87f06094928b2fa819309239be43bbd6948ededbd49a24",
+    "src/frame_equivalence.rs": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09",
+    "src/frame_model.rs": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903",
+    "src/frame_state.rs": "b27c1fef8ec36182eca3c0717428bde63a2ed795abc5e2a31b6fb79e62f5f604",
+    "src/frame_transport_model.rs": "af02bc900d1154599f00bda0b172d69c55b57a5b6faf6b61389957fa070379df",
+    "src/framing.rs": "d4ba2feb5f1996f64e5f919bdb6e6bcbdb6122eb674dcf453cfdb78e3bc9f3a2",
+    "src/header.rs": "a3eaeeaf7afa01edea5ca221f4dc7e41e35d52414e6603bfea73998b18ebc6c6",
+    "src/icc_model.rs": "b877e18151158336f0acb9495935e6c0b557481cbe4e9cc7f4623ce5af682152",
+    "src/image.rs": "a8dc272f6308e6400d94a08f96af82cf7c3a4fbcf08a931655e8f30b494d7482",
+    "src/info.rs": "12e5a8e0a4df399642fccbcd26656c485a1aa2e5c680544305b8d05c2a3b5e72",
+    "src/iterator_canvas_model.rs": "c3e3a2f9f6d00da17b907808c942ffe2e1dc575e9327335d2addee89c2b49283",
+    "src/iterator_data_model.rs": "6215e540ae88b17513d6091f1140ca4574b50dcfe47d2dcacc6ac01f139b68ff",
+    "src/iterator_log_model.rs": "c1c98ee64701b3dcbc10acf12cd9bc242954214f27b0c44e203c7b52ec7239bd",
+    "src/keywords.rs": "f773dbbbed19acc97cd20771207ba7578d56ad6cc7248eb07e3e7015dfc015db",
+    "src/kind.rs": "18db75564b35c643212d0eb650f42e58da6d0f8795a89bf01f011913c1469f01",
+    "src/layout_model.rs": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c",
+    "src/lib.rs": "8bcb23cdef1ea2f3f8b2f1bb084282a347abb004d14a6be465803d5ac0f578d7",
+    "src/limits.rs": "ce4a4b191330d922ac3265c19d5b66f01b8d67132af2adb239677ae35fac7f44",
+    "src/m4_checksum_witness_model.rs": "c5229b8f965158f4258da1cc95328fb0270e6e2ab8df65d1cf1c2468d9da8bac",
+    "src/m4_crc_witness_model.rs": "72037e10c90354c61774024ff2b3d42062690b8bb4e3d1fbcb807d607cd0f4ab",
+    "src/m4_fixed_witness_model.rs": "f360b2d2b340285f75fc3f35ded8fc5f6b12200b0d30d25969b69d12c23e619e",
+    "src/m4_stream_witness_model.rs": "e5b2e17cfab80448b91f89e2504d9c5883554c34b34830efae6f111416e00068",
+    "src/m4_trace_witness_model.rs": "71152f0aa8554d9e63ae15038aebf6c37da329200db1f8ec5b045ab9264564de",
+    "src/m5_dynamic_witness_model.rs": "25fe5c1e668556c6fd4c9f94040fee369348744c7f266cb8c236095d01c3f556",
+    "src/m5_stream_witness_model.rs": "442b13d12cb2a3f36399f5b8394397ec0616b0e9796ba1681c93f726be45fb53",
+    "src/metadata.rs": "cf7865da39e338b412754af16ce5fedffa2dbd06ec474c47198e96fd68396a15",
+    "src/metadata_model.rs": "77f221b2249d6fa19f579c56178ae64fb7e8d42bcad30222deb97314667bb298",
+    "src/model.rs": "e38e5144373bbf97f15149bc3b11e77cf2be3998496a9090922356ff510f2a6c",
+    "src/ordering.rs": "e1caef5c7f1b50fae9c6ed46838c7408789446c860a48165d294b40ad05bf470",
+    "src/paint_model.rs": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045",
+    "src/png.rs": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb",
+    "src/policy.rs": "5190593c4ee6f70c45ff0ef1f8dba4e964eb39aa62c70beccbd4ea7794f40b5a",
+    "src/policy_still_equivalence.rs": "ff48686439a2468d2998ba8d170c884b5bf6e96b2859e21f93e0314d77d9f85a",
+    "src/policy_still_model.rs": "009bd1aaab00338a89cf70e64cda17d8a769b3bc5d0d919cb8808eeb8f5600cd",
+    "src/raster_model.rs": "0cf7fdafb1a8fc4afb68b6919b5feebb2acd5bea1107aa687ba4ca4d62ac23fd",
+    "src/reader.rs": "e1e7c97ce7b862639e31dc28e765074c14da2eabe591df8592573b56748b8f0d",
+    "src/still_equivalence.rs": "85ae187980ee58d49f189e664efe92b13dfa5ef75922d6c4b3282411f296fbb2",
+    "src/still_model.rs": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8",
+    "src/still_recovery.rs": "635d5303455378c8e3db3414bf0298638001051f0386f7455318633d9de5c791",
+    "src/still_samples.rs": "ca6da72ca81d2c187a24badcd65ed05594ae3336ac767859e4fe4433677f898d",
+    "src/transport_model.rs": "d73f38fe818884c615ceeea3c8941ac71d39417a07d0828bc41efc57e7dd6685",
+    "src/walk.rs": "fa7f58c2cf160dc5ab383ac0ff0019ecd7be856212d220dba807091e1abeb26b",
+    "src/walk_model.rs": "3210215551e50da9ed31f288c9dcc72e73ccd93863955cc0275982aa7ba8f774",
+    "src/walk_own.rs": "8a222d7b4d181ff50259dc24dda5f12d6e73a36378b475be1e2b443fdae59769",
+    "src/walk_policy.rs": "8b20a35f467710097ab0d92652f1f6f3d3d8a10cb07be013ee8044038d8a5226",
+    "src/walk_state.rs": "2d169dd2d6b9416ad34869c98b0aa34fe25e2a9f4e8d22147ea9e9253f13a1d7",
+    "src/walk_step.rs": "b58c2888fd5a56eb70957db031f85cf87ef70c653ed35f08a56fef34ef24cff8",
+    "src/witness_critical.rs": "5406a4824783efdfc109f5c0ad97547212bc775b54014c23819ae54768b5342e",
+    "src/witness_document.rs": "aca306a719fdcd9967dfd0f1ea795b0f07cbd950aeb1146471c6c84ce0dda82d",
+    "src/witness_frame.rs": "b06e127e5bf7d966203d704d3e1a315af10ee51663d3f41ddfa3f707c7f56903",
+    "src/witness_m3.rs": "51dc0a313921b731a7e9442136906aac4827fb2074e4d0db8154fecb1c320550",
+    "src/witness_m3_frozen.rs": "f5c83f82281d688fa562f879ce5737ebb790d6ae03dc72ebac5d992003d19364",
+    "src/witness_m3_projection.rs": "7c13be4700c012a22fa4968d20201491318a04fb206f9f700ca19c522c5137d6",
+    "src/witness_m3_walk_frozen.rs": "c26f8eada47ac257edd2d13ce22925606e6a2442df945b0a49bae01468304313",
+    "src/witness_m4_complete.rs": "b3bd36e3dc3a1ff28e6ed250fa7b00d909f708b6f49a09e8b27cf17d1056e4d0",
+    "src/witness_m4_filter_projection.rs": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947",
+    "src/witness_m4_interlace_projection.rs": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9",
+    "src/witness_m5_frames.rs": "07213c59d2cfccf7c9a2a0cfb8192ce1535ae0e09603e93e7649abc6f1acb30c",
+    "src/witness_m5_still.rs": "1fe5315f9d8cea5d93f33d239ac7e1ad70a520040c97488b0def08a570618d22",
+    "src/witness_metadata.rs": "4e7bc8910b1bcb410cb3e926b5f1d70287f121e80152546ab3a5f7ce82a13a24",
+    "src/witness_walk.rs": "53a8fb71e2dd22d34979865ceb32e42f196fcd82d503aceba36d263b9bfa8b30",
+    "Cargo.toml": "fa9c2b6e0a9c6ab351267a717996f59ff01a713a96b24c8a7d2b623872973d4e",
+    "Cargo.lock": "7e54ff7c1d10f204229f1e6a1e96b84e85fcb123d448482f49c16817c5212176",
+    "verify.sh": "9bdef0c80a5049f8dee74408b75b9a3738c0c700165306f36034a7293f3e3da8",
+    "tools/direct_verify.py": "5dbe236d0a16cac0036fc6ee7b5f22bc395ad09858560f82ea929a4afbfd6552",
+    "tools/generate_m3_header_witnesses.py": "f684eca52528a8551d78c011d70fcb030100c40558397fba77fd9b5e72c7eb58",
+    "tools/generate_m3_projection_witnesses.py": "647d675e65062bf4713df5ca8ae98c76c91a7b70bd69b3495c274be50ae090aa",
+    "tools/generate_m3_walk_witnesses.py": "e29d72ec2e0d233d71cab2a2283b335780a15f4ebaeb3901bd44093616bc52df",
+    "tools/generate_m4_complete_witnesses.py": "aad73676b077267973c8cfbf347bd72043701adb6fd67d0bd7d8ff9b4ffaf6ff",
+    "tools/generate_m4_filter_projections.py": "106eb8da9e41e0642459bffbf614cc11ab42098228e1e5e1c04276d3ea1e444c",
+    "tools/generate_m4_interlace_projections.py": "93f9797b3e4b93f7cdac564a8eb5470e0710a0b3b1960f55ca2316c8350afef8",
+    "tools/generate_m5_dynamic_certificates.py": "ed3fbb34ca444a8337866f5c84b88148ec23d5a259eface69272cbb62cacc326",
+    "tools/generate_m5_frames_witnesses.py": "1b07722cc061ba4fab44c95abc129e7e787a884815cefe71905b3a1a29766061",
+    "tools/generate_m5_still_witnesses.py": "0fdb62b90e27a69f8d2f94ec867d90628e8ef2256d2fed89a76559fb807007e1",
+    "tools/m4_trace_certificates.py": "793d1f5589cf476fda63534a8dfd95332bf5c5b3f5187538279d8c253522d5e9",
+    "tools/probe_diff.py": "27938506cd72ecbd8e1d5adf9bd89ed9a37a435744ee6251478e2e8c2a3b1bf8",
+    "tools/run_logged.py": "3f5ade7203e8686447a7d40307055d7fc96c727a533341cb2143af1f7244e66d",
+    "tools/run_m4_mutations.py": "3009d1458a2263322a8409e156e082128038d63c906583f0acc7c3448f71547b",
+    "tools/run_m5_review_mutations.py": "2622adc92125692c09883f5c7c857c37cf8aff399e23cc7b3e12593bda61387a",
+    "tools/verify_m3.py": "e2484f0a88cb1d7c480825125138a926da892625fcff8a7685f9ed36285c89a8"
+  },
+  "functional_checkpoint": [
+    {
+      "run": 735,
+      "target": "host",
+      "verified": 6245,
+      "record": {
+        "file": "evidence/m6-2ae-host-0735.json",
+        "sha256": "77222c61293085af4e0c935c687269fe5264f2b7218eb30cb284d7353a0ffbb6"
+      },
+      "log": {
+        "file": "evidence/m6-2ae-host-0735.log.gz",
+        "sha256": "9ec9c874c06b8ea5c0349457b3ef0ce7f49a6de19df86f3338557a6b2e9a9311",
+        "source_log_sha256": "5811832171791bf51fba861ca68fb268bb41f64567b44e6496141b91fd715ee7",
+        "normalized_text_sha256": "5811832171791bf51fba861ca68fb268bb41f64567b44e6496141b91fd715ee7",
+        "original_eof_suffix_hex": "0a",
+        "reconstruction": "decompress if gzip, remove retained final LF, append original_eof_suffix_hex bytes",
+        "compression": "gzip"
+      }
+    },
+    {
+      "run": 736,
+      "target": "i686",
+      "verified": 6245,
+      "record": {
+        "file": "evidence/m6-2ae-i686-0736.json",
+        "sha256": "ccf6780d52708c9e3b83fdef42268abbc2d8edf594dcaa14ffe5f0538705fa72"
+      },
+      "log": {
+        "file": "evidence/m6-2ae-i686-0736.log.gz",
+        "sha256": "c37c869affdbadfa6292b3e7a063b66a55ed451be12ba78417d24d96ce198ac1",
+        "source_log_sha256": "7f4662efcb38dae0d91373902288e2c99fbcbc178b1e8a66019c9bafd03713b5",
+        "normalized_text_sha256": "7f4662efcb38dae0d91373902288e2c99fbcbc178b1e8a66019c9bafd03713b5",
+        "original_eof_suffix_hex": "0a",
+        "reconstruction": "decompress if gzip, remove retained final LF, append original_eof_suffix_hex bytes",
+        "compression": "gzip"
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "STRICT-CONSTRUCTOR",
+      "claim": "Ordinary/logged Strict constructors refine the complete MFr constructor result. Non-OOM format errors are equivalent, and success establishes complete model-Info equality and the complete public receiver invariant. Logged G/Prog use the actual sealed Raw/Output log; ordinary OOM retains (site,elements) membership before discarding that log.",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "try_new",
+          "line": 1582,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_new_logged",
+          "line": 1624,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "with_logged",
+          "line": 1644,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "with_record",
+          "line": 1684,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "constructor_complete",
+          "line": 28,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "allocation_complete",
+          "line": 45,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "failure_member",
+          "line": 187,
+          "sha256": "85ae187980ee58d49f189e664efe92b13dfa5ef75922d6c4b3282411f296fbb2"
+        }
+      ],
+      "verified_in_full_runs": [
+        735,
+        736
+      ]
+    },
+    {
+      "id": "STRICT-ITERATOR",
+      "claim": "Every public try_next preserves the complete Strict boundary invariant for arbitrary reachable states, not a bounded unrolling. Each actual FrameView equals the canonical MFr record in every canvas byte, rectangle, raw delay pair, raw disposal and raw blend; terminal format errors occur once and IEND returns None. The independent M5-to-canonical fold remains unchanged.",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "strict_iterator_wf",
+          "line": 1474,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "bind_strict",
+          "line": 1430,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_next",
+          "line": 1770,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "complete_call",
+          "line": 1444,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "establish",
+          "line": 85,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "call_complete",
+          "line": 164,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_state.rs",
+          "function": "raw_controls",
+          "line": 267,
+          "sha256": "b27c1fef8ec36182eca3c0717428bde63a2ed795abc5e2a31b6fb79e62f5f604"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "model_observations",
+          "line": 965,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        }
+      ],
+      "verified_in_full_runs": [
+        735,
+        736
+      ]
+    },
+    {
+      "id": "INFO-PLAYS",
+      "claim": "info() retains complete model-Info equality at frozen P8.3 granularity in every reachable Strict state. Raw acTL num_plays is unchanged; static delay is None and animated delay is the untranslated fcTL pair, including a zero denominator.",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "info",
+          "line": 1530,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "strict_plays",
+          "line": 1511,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "raw_num_plays",
+          "line": 1510,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "info_complete",
+          "line": 116,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "metadata_properties",
+          "line": 358,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_state.rs",
+          "function": "raw_controls",
+          "line": 267,
+          "sha256": "b27c1fef8ec36182eca3c0717428bde63a2ed795abc5e2a31b6fb79e62f5f604"
+        }
+      ],
+      "verified_in_full_runs": [
+        735,
+        736
+      ]
+    },
+    {
+      "id": "CUMULATIVE-G",
+      "claim": "The actual cumulative request list is Req_new plus exactly one full-canvas Saved request once the zero-based SavedAt call has been reached. An OOM result identifies the actual sealed failed Saved entry, exposes no frame, fixes its failure index at SavedAt, and retains exactly that failed log on every later call.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "G_iter",
+          "line": 200,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "canonical_requests",
+          "line": 191,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "strict_allocation_history",
+          "line": 1485,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "allocation_clauses",
+          "line": 1175,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "selected_logged",
+          "line": 2067,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_next",
+          "line": 1770,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "finite_fusion",
+          "line": 266,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        }
+      ],
+      "verified_in_full_runs": [
+        735,
+        736
+      ]
+    },
+    {
+      "id": "PROG-ITER",
+      "claim": "All entries in the cumulative log Ok implies no earlier result was OOM and the complete Strict frame/control/terminal correspondence holds. finite_progress proves the arbitrary finite-sequence consequence from the checked public step contracts and sticky OOM history; it does not add an allocation-success premise to ordinary correctness or totality.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "Prog_ITER",
+          "line": 208,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "finite_progress",
+          "line": 228,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "oom_stays",
+          "line": 217,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "complete_call",
+          "line": 1444,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_next",
+          "line": 1770,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        }
+      ],
+      "verified_in_full_runs": [
+        735,
+        736
+      ]
+    },
+    {
+      "id": "CHECKED-NO-WORK",
+      "claim": "A single sealed erased activity trace is threaded through each actual public call. Checked observations occur immediately before selection/re-walk, Saved reservation, disposal/save, decode, reused-canvas normalization and resume-state commit. Terminal calls have zero in every activity counter, independently of output/log equality. The source control checks all six actual-site bindings, trace forwarding, absence of resets and five return snapshots.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_activity.rs",
+          "function": "recorded",
+          "line": 8,
+          "sha256": "92a0c506a7c771c113b54525b33659517d1bda695f3e1791cf9e2442b7bbc44d"
+        },
+        {
+          "file": "src/frame_activity.rs",
+          "function": "record",
+          "line": 26,
+          "sha256": "92a0c506a7c771c113b54525b33659517d1bda695f3e1791cf9e2442b7bbc44d"
+        },
+        {
+          "file": "src/frame_activity.rs",
+          "function": "idle_excludes_work",
+          "line": 31,
+          "sha256": "92a0c506a7c771c113b54525b33659517d1bda695f3e1791cf9e2442b7bbc44d"
+        },
+        {
+          "file": "src/frame_state.rs",
+          "function": "begin_next_observed",
+          "line": 147,
+          "sha256": "b27c1fef8ec36182eca3c0717428bde63a2ed795abc5e2a31b6fb79e62f5f604"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "next_logged",
+          "line": 2370,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "terminal_no_work",
+          "line": 1501,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "fused_state",
+          "line": 1506,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "finite_fusion",
+          "line": 266,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        }
+      ],
+      "verified_in_full_runs": [
+        735,
+        736
+      ]
+    },
+    {
+      "id": "ITERATOR-T13",
+      "claim": "Every returned native FrameView borrows the decoder single canvas and has exactly 4*W*H <= MAX_OUTPUT bytes. A pixel outside the union of rectangles drawn so far is zero in all four channels. Constructor Raw >= 2 and Raw/Output maxima are proved before reservation; Saved is the bounded full canvas. Native ghost carriers are zero-sized and introduce no frame/canvas allocation.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "returned_resources",
+          "line": 250,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "returned_untouched",
+          "line": 256,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "resources_complete",
+          "line": 211,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "canvas_geometry",
+          "line": 1048,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "prepare_image",
+          "line": 507,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "ensure_saved",
+          "line": 1368,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "header_request_bounds",
+          "line": 55,
+          "sha256": "85ae187980ee58d49f189e664efe92b13dfa5ef75922d6c4b3282411f296fbb2"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_next",
+          "line": 1770,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        }
+      ],
+      "verified_in_full_runs": [
+        735,
+        736
+      ]
+    }
+  ],
+  "dependency_graph": [
+    {
+      "edge": "accepted mathematical MFr/canonical fold -> complete receiver relation",
+      "meaning": "The accepted 2a-M definitions and totality certificate are unchanged. Native call history is used only to prove equality with the independently defined value, never to define it."
+    },
+    {
+      "edge": "accepted source/data/ownership/M5 trace invariants -> establish -> strict_iterator_wf",
+      "meaning": "Constructors and every completed public step derive the complete invariant without measuring future frame data. A partially failed private working canvas is not equated with a returned display canvas; the successful returned trace remains exact."
+    },
+    {
+      "edge": "actual native result + actual appended canvas + raw selected controls -> call_complete",
+      "meaning": "FrameView creation follows the checked equality proof and borrows the same canvas. Format, IEND and failed-Saved branches compose their actual transitions; OOM identity comes from the sealed failed log."
+    },
+    {
+      "edge": "accepted cumulative requests/log and sticky history -> G_iter/Prog_ITER -> finite_progress/finite_fusion",
+      "meaning": "The Saved threshold is inclusive at the first failing qualifying frame. Arbitrary finite-sequence induction excludes earlier OOM when the final cumulative log is all Ok, and fixes all later terminal results/logs/work after a terminal transition."
+    },
+    {
+      "edge": "actual selection/reservation/disposal/decode/normalization/resume sites -> one sealed activity trace -> checked terminal zero counters",
+      "meaning": "Only recording increments trace counters. The actual iterator threads one trace and snapshots it before every return; no-work is not inferred from identical results or logs. The companion source control pins the six site bindings and forwarding."
+    }
+  ],
+  "proof_map": {
+    "file": "evidence/m6-2ae-proof-map.json",
+    "sha256": "0b4e2dd98f4e1854f8f35c4e5751e38bb47b1eb6f8c306ddf40bfd89dbe75634"
+  },
+  "activity_control": {
+    "file": "evidence/m6-2ae-activity-control.py",
+    "sha256": "c640ce6674008c8a8e7c9003c670aaf5da443ffcbc63cb32503978b5864a923b"
+  },
+  "full_no_cheating": true,
+  "default_solver_limits": true,
+  "process_timeout_seconds": 3600,
+  "host_warning_seconds": 2880,
+  "stack_bytes": 268435456,
+  "all_generated_witnesses_enabled": true,
+  "full_run_wall_seconds": {
+    "host": 2360.54,
+    "i686": 2098.4
+  },
+  "runtime_evidence": {
+    "record": {
+      "file": "evidence/m6-2ae-runtime-0733.json",
+      "sha256": "90b7b63c581686d2e049ba3ef53587a59b8b1b3bfe4929b29b59699475ccb66a"
+    },
+    "log": {
+      "file": "evidence/m6-2ae-runtime-0733.log",
+      "sha256": "d40815ad367a0234158bff43bec10f5f6722cf225ad249dc6ea79e93e23b7c39",
+      "source_log_sha256": "d40815ad367a0234158bff43bec10f5f6722cf225ad249dc6ea79e93e23b7c39",
+      "normalized_text_sha256": "d40815ad367a0234158bff43bec10f5f6722cf225ad249dc6ea79e93e23b7c39",
+      "original_eof_suffix_hex": "0a",
+      "reconstruction": "decompress if gzip, remove retained final LF, append original_eof_suffix_hex bytes",
+      "compression": "none"
+    },
+    "pass": 846,
+    "total": 848,
+    "fail": 0,
+    "never_run_skips": [
+      "policy/crc-ancillary/fdat-frames/image-crate-compat",
+      "policy/crc-ancillary/fdat-still/image-crate-compat"
+    ]
+  },
+  "public_errors_evidence": {
+    "record": {
+      "file": "evidence/m6-2ae-public-errors-0734.json",
+      "sha256": "dfcad96a850dccfa293e1746c143351a3e17b9383382157d37c9b1a79eddc488"
+    },
+    "log": {
+      "file": "evidence/m6-2ae-public-errors-0734.log",
+      "sha256": "107aec8f9985108a61c0ae5d6dcefa3b00564616ec760eab4de66a9924360006",
+      "source_log_sha256": "cf9c8f08e53369c7659b9e9be6b4ddf63706b2faa074726a7a99a2a86a37a474",
+      "normalized_text_sha256": "107aec8f9985108a61c0ae5d6dcefa3b00564616ec760eab4de66a9924360006",
+      "original_eof_suffix_hex": "0a0a",
+      "reconstruction": "decompress if gzip, remove retained final LF, append original_eof_suffix_hex bytes",
+      "compression": "none"
+    },
+    "pass": 72,
+    "fail": 0,
+    "skip": 0,
+    "frozen_E7_credit": false,
+    "verifier_credit": false
+  },
+  "final_control_evidence": {
+    "record": {
+      "file": "evidence/m6-2ae-final-control-0737.json",
+      "sha256": "9befaa4e4eefccd3641a664e9703b2f40c9a64a8dafe2c8c6095d4c0328ccd27"
+    },
+    "log": {
+      "file": "evidence/m6-2ae-final-control-0737.log",
+      "sha256": "b60965d24e27442693f4ac6a6c5bcf482db1991749836ef71c731e9b148da30a",
+      "source_log_sha256": "b60965d24e27442693f4ac6a6c5bcf482db1991749836ef71c731e9b148da30a",
+      "normalized_text_sha256": "b60965d24e27442693f4ac6a6c5bcf482db1991749836ef71c731e9b148da30a",
+      "original_eof_suffix_hex": "0a",
+      "reconstruction": "decompress if gzip, remove retained final LF, append original_eof_suffix_hex bytes",
+      "compression": "none"
+    }
+  },
+  "integrity_record": "evidence/m6-2ae-integrity.json",
+  "integrity_log": "evidence/m6-2ae-integrity.log",
+  "ledger_sha256": "281844d4df167413709939ab877d9e9cfcee4f707f6ca9352c1c7447259f948e",
+  "whitespace_control": {
+    "file": "evidence/m6-2ae-whitespace-control.py",
+    "sha256": "46f1a30f042d2cd456e24a5971fa2902c0788db98ad9f7f1e983bf9ef3cad5e5",
+    "scope": "tracked diff from base plus new 2a-E source/evidence and retained 1a-E evidence, including decompressed logs"
+  },
+  "historical_packets_unchanged": [
+    {
+      "file": "evidence/m5-signoff-packet.json",
+      "sha256": "0630a0676e8dac3b23dc2504f6fd8eb5659b9fc0ba1dfbac902380d339d136b5"
+    },
+    {
+      "file": "evidence/m5-proof-map.json",
+      "sha256": "f6d498091f28852e93410c285b36cd68089eacadc2ad38950c65d6b4b759526c"
+    },
+    {
+      "file": "evidence/m6-1am-packet.json",
+      "sha256": "4f1b10f0001aaeffdf91d23ce0728823a6c0f125cd1cc9e5e906756970d537a7"
+    },
+    {
+      "file": "evidence/m6-1am-proof-map.json",
+      "sha256": "3765801384e2e8f85e3d2fc26a3bb485bbf4359db065d2a1fcdfc811460855b2"
+    },
+    {
+      "file": "evidence/m6-1ae-packet.json",
+      "sha256": "1d3d714c34ef049a77811e2cbddfbbcec940e162274825f6eab94b160501baa0"
+    },
+    {
+      "file": "evidence/m6-1ae-proof-map.json",
+      "sha256": "ce2d7518605e2963bf79ace4d6aa3ba448cc8353d35a27e417b0b8bc085d4848"
+    },
+    {
+      "file": "evidence/m6-1b-packet.json",
+      "sha256": "bf2d700e7dbdb45d629e4fa11e1c5eae925374d19cc599d00942729b2dcdceb4"
+    },
+    {
+      "file": "evidence/m6-1b-proof-map.json",
+      "sha256": "97919186ee21c7e605b490b602ff2a6dd039c8715d220485686581b7bafd7fbf"
+    },
+    {
+      "file": "evidence/m6-2am-packet.json",
+      "sha256": "0092bb702c4edccae29a847ba084798e9b2580eccd326c3fce30345e5cb07561"
+    },
+    {
+      "file": "evidence/m6-2am-proof-map.json",
+      "sha256": "72f6137614e5f87fd5d6d822420d28aa373b96d64a08c224a7b8e875da32369d"
+    }
+  ],
+  "public_T_ITER_claimed": true,
+  "public_A_PNG_2_claimed": true,
+  "new_public_A_PNG_4_claimed": true,
+  "public_T_PLAYS_claimed": true,
+  "named_policy_iterator_claimed": false,
+  "milestone_M6_signed_off": false,
+  "release_ready": false,
+  "witness_classification_unchanged": {
+    "complete_errors": 2,
+    "M5_content_projections": 35
+  },
+  "mutations_run": false,
+  "CAPS_SYM_run": false,
+  "new_trust_declarations": false,
+  "new_verifier_cache_built": false,
+  "protected_files_or_questions_modified": false,
+  "committed_or_pushed": false,
+  "remaining_work": [
+    "Named-policy iterator models/events (2b-M)",
+    "Named-policy executable iterator equivalence (2b-E)",
+    "ICC equivalence",
+    "Witness completion",
+    "Mutation campaign",
+    "CAPS-SYM"
+  ]
+}

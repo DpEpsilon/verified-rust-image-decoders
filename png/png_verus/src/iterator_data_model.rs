@@ -504,4 +504,18 @@ pub(crate) proof fn from_walk_exact(b: Seq<u8>,actual: d::Doc,p: Policy,original
     ensures actual==constructor_doc(original),
 {hide(d::MWF_p);reveal(from_walk);}
 
+/// Defining-module bridge for complete constructor refinement.
+pub(crate) proof fn constructor_projection(b: Seq<u8>,p: Policy)
+    ensures MFr_data_p(b,p)==match d::MWF_p(b,p.walk_view()) {
+        d::Outcome::Error(e,_)=>Outcome::ConstructorError(e),
+        d::Outcome::Done(original,_)=>{
+            let doc=constructor_doc(original);
+            match r::document_data(b,doc,p) {
+                Some(Ok(_))=>Outcome::Frames(MFr_data(b,doc,p)),
+                Some(Err(e))=>Outcome::ConstructorError(e),None=>Outcome::OutsideDomain,
+            }
+        },_=>Outcome::OutsideDomain,
+    },
+{hide(d::MWF_p);hide(r::document_data);reveal(MFr_data_p);}
+
 }

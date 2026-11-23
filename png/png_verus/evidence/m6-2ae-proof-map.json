@@ -1,0 +1,420 @@
+{
+  "title": "Strict Iterator Proof Map",
+  "scope": "Strict iterator equivalence complete at M6 2a; named-policy pending 2b",
+  "checkpoint": "2a-E complete Strict executable iterator",
+  "base_commit": "45fae63c5b5dfd7f07a41cdc1a1dba9e5a95f276",
+  "full_runs": [
+    735,
+    736
+  ],
+  "claims": [
+    {
+      "id": "STRICT-CONSTRUCTOR",
+      "claim": "Ordinary/logged Strict constructors refine the complete MFr constructor result. Non-OOM format errors are equivalent, and success establishes complete model-Info equality and the complete public receiver invariant. Logged G/Prog use the actual sealed Raw/Output log; ordinary OOM retains (site,elements) membership before discarding that log.",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "try_new",
+          "line": 1582,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_new_logged",
+          "line": 1624,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "with_logged",
+          "line": 1644,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "with_record",
+          "line": 1684,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "constructor_complete",
+          "line": 28,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "allocation_complete",
+          "line": 45,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "failure_member",
+          "line": 187,
+          "sha256": "85ae187980ee58d49f189e664efe92b13dfa5ef75922d6c4b3282411f296fbb2"
+        }
+      ],
+      "verified_in_full_runs": [
+        735,
+        736
+      ]
+    },
+    {
+      "id": "STRICT-ITERATOR",
+      "claim": "Every public try_next preserves the complete Strict boundary invariant for arbitrary reachable states, not a bounded unrolling. Each actual FrameView equals the canonical MFr record in every canvas byte, rectangle, raw delay pair, raw disposal and raw blend; terminal format errors occur once and IEND returns None. The independent M5-to-canonical fold remains unchanged.",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "strict_iterator_wf",
+          "line": 1474,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "bind_strict",
+          "line": 1430,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_next",
+          "line": 1770,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "complete_call",
+          "line": 1444,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "establish",
+          "line": 85,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "call_complete",
+          "line": 164,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_state.rs",
+          "function": "raw_controls",
+          "line": 267,
+          "sha256": "b27c1fef8ec36182eca3c0717428bde63a2ed795abc5e2a31b6fb79e62f5f604"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "model_observations",
+          "line": 965,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        }
+      ],
+      "verified_in_full_runs": [
+        735,
+        736
+      ]
+    },
+    {
+      "id": "INFO-PLAYS",
+      "claim": "info() retains complete model-Info equality at frozen P8.3 granularity in every reachable Strict state. Raw acTL num_plays is unchanged; static delay is None and animated delay is the untranslated fcTL pair, including a zero denominator.",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "info",
+          "line": 1530,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "strict_plays",
+          "line": 1511,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "raw_num_plays",
+          "line": 1510,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "info_complete",
+          "line": 116,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "metadata_properties",
+          "line": 358,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_state.rs",
+          "function": "raw_controls",
+          "line": 267,
+          "sha256": "b27c1fef8ec36182eca3c0717428bde63a2ed795abc5e2a31b6fb79e62f5f604"
+        }
+      ],
+      "verified_in_full_runs": [
+        735,
+        736
+      ]
+    },
+    {
+      "id": "CUMULATIVE-G",
+      "claim": "The actual cumulative request list is Req_new plus exactly one full-canvas Saved request once the zero-based SavedAt call has been reached. An OOM result identifies the actual sealed failed Saved entry, exposes no frame, fixes its failure index at SavedAt, and retains exactly that failed log on every later call.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "G_iter",
+          "line": 200,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "canonical_requests",
+          "line": 191,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "strict_allocation_history",
+          "line": 1485,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "allocation_clauses",
+          "line": 1175,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "selected_logged",
+          "line": 2067,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_next",
+          "line": 1770,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "finite_fusion",
+          "line": 266,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        }
+      ],
+      "verified_in_full_runs": [
+        735,
+        736
+      ]
+    },
+    {
+      "id": "PROG-ITER",
+      "claim": "All entries in the cumulative log Ok implies no earlier result was OOM and the complete Strict frame/control/terminal correspondence holds. finite_progress proves the arbitrary finite-sequence consequence from the checked public step contracts and sticky OOM history; it does not add an allocation-success premise to ordinary correctness or totality.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "Prog_ITER",
+          "line": 208,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "finite_progress",
+          "line": 228,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "oom_stays",
+          "line": 217,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "complete_call",
+          "line": 1444,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_next",
+          "line": 1770,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        }
+      ],
+      "verified_in_full_runs": [
+        735,
+        736
+      ]
+    },
+    {
+      "id": "CHECKED-NO-WORK",
+      "claim": "A single sealed erased activity trace is threaded through each actual public call. Checked observations occur immediately before selection/re-walk, Saved reservation, disposal/save, decode, reused-canvas normalization and resume-state commit. Terminal calls have zero in every activity counter, independently of output/log equality. The source control checks all six actual-site bindings, trace forwarding, absence of resets and five return snapshots.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_activity.rs",
+          "function": "recorded",
+          "line": 8,
+          "sha256": "92a0c506a7c771c113b54525b33659517d1bda695f3e1791cf9e2442b7bbc44d"
+        },
+        {
+          "file": "src/frame_activity.rs",
+          "function": "record",
+          "line": 26,
+          "sha256": "92a0c506a7c771c113b54525b33659517d1bda695f3e1791cf9e2442b7bbc44d"
+        },
+        {
+          "file": "src/frame_activity.rs",
+          "function": "idle_excludes_work",
+          "line": 31,
+          "sha256": "92a0c506a7c771c113b54525b33659517d1bda695f3e1791cf9e2442b7bbc44d"
+        },
+        {
+          "file": "src/frame_state.rs",
+          "function": "begin_next_observed",
+          "line": 147,
+          "sha256": "b27c1fef8ec36182eca3c0717428bde63a2ed795abc5e2a31b6fb79e62f5f604"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "next_logged",
+          "line": 2370,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "terminal_no_work",
+          "line": 1501,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "fused_state",
+          "line": 1506,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "finite_fusion",
+          "line": 266,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        }
+      ],
+      "verified_in_full_runs": [
+        735,
+        736
+      ]
+    },
+    {
+      "id": "ITERATOR-T13",
+      "claim": "Every returned native FrameView borrows the decoder single canvas and has exactly 4*W*H <= MAX_OUTPUT bytes. A pixel outside the union of rectangles drawn so far is zero in all four channels. Constructor Raw >= 2 and Raw/Output maxima are proved before reservation; Saved is the bounded full canvas. Native ghost carriers are zero-sized and introduce no frame/canvas allocation.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "returned_resources",
+          "line": 250,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "returned_untouched",
+          "line": 256,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "resources_complete",
+          "line": 211,
+          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "canvas_geometry",
+          "line": 1048,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "prepare_image",
+          "line": 507,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "ensure_saved",
+          "line": 1368,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "header_request_bounds",
+          "line": 55,
+          "sha256": "85ae187980ee58d49f189e664efe92b13dfa5ef75922d6c4b3282411f296fbb2"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_next",
+          "line": 1770,
+          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+        }
+      ],
+      "verified_in_full_runs": [
+        735,
+        736
+      ]
+    }
+  ],
+  "dependency_graph": [
+    {
+      "edge": "accepted mathematical MFr/canonical fold -> complete receiver relation",
+      "meaning": "The accepted 2a-M definitions and totality certificate are unchanged. Native call history is used only to prove equality with the independently defined value, never to define it."
+    },
+    {
+      "edge": "accepted source/data/ownership/M5 trace invariants -> establish -> strict_iterator_wf",
+      "meaning": "Constructors and every completed public step derive the complete invariant without measuring future frame data. A partially failed private working canvas is not equated with a returned display canvas; the successful returned trace remains exact."
+    },
+    {
+      "edge": "actual native result + actual appended canvas + raw selected controls -> call_complete",
+      "meaning": "FrameView creation follows the checked equality proof and borrows the same canvas. Format, IEND and failed-Saved branches compose their actual transitions; OOM identity comes from the sealed failed log."
+    },
+    {
+      "edge": "accepted cumulative requests/log and sticky history -> G_iter/Prog_ITER -> finite_progress/finite_fusion",
+      "meaning": "The Saved threshold is inclusive at the first failing qualifying frame. Arbitrary finite-sequence induction excludes earlier OOM when the final cumulative log is all Ok, and fixes all later terminal results/logs/work after a terminal transition."
+    },
+    {
+      "edge": "actual selection/reservation/disposal/decode/normalization/resume sites -> one sealed activity trace -> checked terminal zero counters",
+      "meaning": "Only recording increments trace counters. The actual iterator threads one trace and snapshots it before every return; no-work is not inferred from identical results or logs. The companion source control pins the six site bindings and forwarding."
+    }
+  ],
+  "public_T_ITER_claimed": true,
+  "public_A_PNG_2_claimed": true,
+  "new_public_A_PNG_4_claimed": true,
+  "public_T_PLAYS_claimed": true,
+  "named_policy_iterator_claimed": false,
+  "remaining_work": [
+    "Named-policy iterator models/events (2b-M)",
+    "Named-policy executable iterator equivalence (2b-E)",
+    "ICC equivalence",
+    "Witness completion",
+    "Mutation campaign",
+    "CAPS-SYM"
+  ],
+  "activity_control": {
+    "file": "evidence/m6-2ae-activity-control.py",
+    "sha256": "c640ce6674008c8a8e7c9003c670aaf5da443ffcbc63cb32503978b5864a923b"
+  },
+  "imported_M2_contracts": {
+    "source": "../inflate_verus/src/inflate.rs",
+    "source_sha256": "ab4a748d24c86b29d72656ce6fb5f59d02503041cdcdc04e941a3191ebf70bfc",
+    "unchanged_since_base": true
+  }
+}

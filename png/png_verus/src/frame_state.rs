@@ -139,6 +139,28 @@ impl FrameState {
                 None=>true,
             },
     {
+        let tracked mut activity=crate::frame_activity::Trace::new();
+        self.begin_next_observed(b,doc,Tracked(&mut activity))
+    }
+
+    #[verifier::spinoff_prover]
+    pub(crate) fn begin_next_observed<'a>(&mut self, b: &'a [u8], doc: &Doc,Tracked(activity): Tracked<&mut crate::png::IteratorActivity>) -> (r: Step<'a>)
+        requires old(self).wf(b@,*doc),
+        ensures final(activity).view()==if matches!(r,Step::Frame(_)) {crate::frame_activity::recorded(old(activity).view(),crate::frame_activity::Site::Select)}else{old(activity).view()},
+            final(self).wf(b@,*doc),final(self).done(),
+            match r {
+                Step::Done=>old(self).done() || (old(self).index()==Some(doc.info.frame_count as nat)),
+                Step::Single=>old(self).single(),
+                Step::Frame(job)=>job.wf(b@,*doc) && old(self).index()==Some(job.index as nat)
+                    && job.previous==old(self).previous(),
+            },
+            old(self).done() ==> matches!(r,Step::Done),
+            old(self).single() ==> matches!(r,Step::Single),
+            match old(self).index() {
+                Some(k)=>if k<doc.info.frame_count {matches!(r,Step::Frame(_))}else{matches!(r,Step::Done)},
+                None=>true,
+            },
+    {
         let prior=self.kind;
         self.kind=Kind::Done;
         match prior {
@@ -146,6 +168,7 @@ impl FrameState {
             Kind::Single=>Step::Single,
             Kind::Anim {index,cursor,previous}=> {
                 if index>=doc.info.frame_count {return Step::Done;}
+                proof {activity.record(crate::frame_activity::Site::Select);}
                 Step::Frame(FrameJob::select(b,doc,index,cursor,previous))
             },
         }
@@ -238,6 +261,21 @@ impl<'a> FrameJob<'a> {
     {
         reveal(FrameJob::wf);
         transport::control_dispose(doc.frame_ranges@[self.index as int],self.control.view());
+    }
+
+    /// Retain raw controls; the canvas proof separately uses effective disposal.
+    pub(crate) proof fn raw_controls(self,b: Seq<u8>,doc: Doc)
+        requires self.wf(b,doc),
+        ensures doc.actl.is_some(),self.index<doc.frame_ranges@.len(),
+            doc.frame_ranges@[self.index as int].delay_num==self.control.delay_num,
+            doc.frame_ranges@[self.index as int].delay_den==self.control.delay_den,
+            doc.frame_ranges@[self.index as int].dispose==self.control.dispose,
+            doc.frame_ranges@[self.index as int].blend==self.control.blend,
+            crate::iterator_canvas_model::rectangle(doc.view(),self.index as nat)
+                ==crate::composite_model::rect(self.control.x,self.control.y,self.control.w,self.control.h),
+    {
+        reveal(FrameJob::wf);
+        transport::control_fields(doc.frame_ranges@[self.index as int],self.control.view());
     }
 
     pub(crate) proof fn canvas_context(self,b: Seq<u8>,doc: Doc,p: crate::policy::Policy)
