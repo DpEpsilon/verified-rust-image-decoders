@@ -814,6 +814,7 @@ impl<'b> Colour<'b> {
         requires self.wf(),4*(x as int+1)<=crate::alloc_guard::MAX_BYTES,
             (x as int+1)*self.channels()*(self.depth as int)<=8*(line.len() as int),
         ensures final(ev).r1==old(ev).r1,final(ev).r4==old(ev).r4,
+            final(ev).r3==(old(ev).r3 || crate::still_recovery::pixel(self.ct,self.depth,(self.plte.len()/3) as nat,line@,x as nat,pol.palette_index==PaletteIndex::Black)),
             match r {Ok(px)=>forall|i: int| 0<=i<4 ==> (#[trigger] px@[i])<=if wide {u16::MAX}else{255},Err(e)=>e==Error::PaletteIndexOutOfRange},
             r.is_err()==(self.ct==3 && pol.palette_index==PaletteIndex::Reject
                 && raster::palette_sample(line@,self.depth,x as nat) as nat>=self.plte.len()/3),
@@ -898,6 +899,8 @@ fn draw_row(colour: &Colour<'_>,line: &[u8],w: u32,h: u32,x0: u32,dx: u32,pw: u3
     ensures final(sink).shape()==old(sink).shape(),final(sink).wf(w,h),final(sink).loan()==old(sink).loan(),
         composite::drawing_frame(old(sink).pixels(),final(sink).pixels(),old(sink).shape(),w as nat,h as nat),
         final(ev).r1==old(ev).r1,final(ev).r4==old(ev).r4,
+        result.is_ok() ==> final(ev).r3==(old(ev).r3 || (pol.palette_index==PaletteIndex::Black && colour.ct==3
+            && !raster::palette_valid(line@,colour.depth,pw as nat,(colour.plte.len()/3) as nat))),
         result==if colour.ct==3 && pol.palette_index==PaletteIndex::Reject
             && !raster::palette_valid(line@,colour.depth,pw as nat,(colour.plte.len()/3) as nat) {
                 Err(Error::PaletteIndexOutOfRange)
@@ -917,6 +920,7 @@ fn draw_row(colour: &Colour<'_>,line: &[u8],w: u32,h: u32,x0: u32,dx: u32,pw: u3
     let ghost geometry=sink.shape();
     proof {composite::drawing_frame_start(before,geometry,w as nat,h as nat);}
     proof {colour::draw_start(colour.view(),line@,geometry,before,w as nat,x0 as nat,dx as nat,y as nat,wide,pol.palette_index==PaletteIndex::Black);}
+    proof {crate::still_recovery::row_start(colour.ct,colour.depth,(colour.plte.len()/3) as nat,line@,pol.palette_index==PaletteIndex::Black);}
     let mut c=0u32;
     while c<pw
         invariant c<=pw,colour.wf(),sink.wf(w,h),sink.shape()==old(sink).shape(),sink.loan()==old(sink).loan(),wide==sink.wide_view(),
@@ -928,6 +932,7 @@ fn draw_row(colour: &Colour<'_>,line: &[u8],w: u32,h: u32,x0: u32,dx: u32,pw: u3
             pw==layout::span(w as nat,x0 as nat,dx as nat),
             line.len()==layout::scan_bytes(colour.channels()*(colour.depth as nat),pw as nat),
             ev.r1==old(ev).r1,ev.r4==old(ev).r4,
+            ev.r3==(old(ev).r3 || crate::still_recovery::row_prefix(colour.ct,colour.depth,(colour.plte.len()/3) as nat,line@,c as nat,pol.palette_index==PaletteIndex::Black)),
             colour.ct==3 && pol.palette_index==PaletteIndex::Reject ==>
                 forall|x: nat| x<c ==> (#[trigger] raster::palette_sample(line@,colour.depth,x) as nat)<colour.plte.len()/3,
         decreases pw-c,
@@ -940,6 +945,7 @@ fn draw_row(colour: &Colour<'_>,line: &[u8],w: u32,h: u32,x0: u32,dx: u32,pw: u3
             layout::span_index(w as nat,x0 as nat,dx as nat,c as nat);
             assert((x0 as int)+(c as int)*(dx as int)<w);
         }
+        proof {crate::still_recovery::row_step(colour.ct,colour.depth,(colour.plte.len()/3) as nat,line@,c as nat,pol.palette_index==PaletteIndex::Black);}
         let px=match colour.pixel(line,c as usize,wide,pol,ev) {Ok(px)=>px,Err(e)=>return Err(e)};
         proof {colour::draw_step(colour.view(),line@,geometry,before,w as nat,x0 as nat,dx as nat,y as nat,c as nat,wide,pol.palette_index==PaletteIndex::Black,px@);}
         let ghost prior=sink.pixels();
@@ -955,6 +961,7 @@ fn draw_row(colour: &Colour<'_>,line: &[u8],w: u32,h: u32,x0: u32,dx: u32,pw: u3
         c+=1;
     }
     proof {
+        crate::still_recovery::row_complete(colour.ct,colour.depth,(colour.plte.len()/3) as nat,line@,pw as nat,pol.palette_index==PaletteIndex::Black);
         if let Some(Ok(rows))=colour::MC(colour.view(),line@,pw as nat,wide,pol.palette_index==PaletteIndex::Black) {
             colour::draw_matches_MC(colour.view(),line@,pw as nat,rows,geometry,before,w as nat,x0 as nat,dx as nat,y as nat,pw as nat,wide,pol.palette_index==PaletteIndex::Black);
         }
@@ -996,6 +1003,8 @@ fn decode_exact<S: Segments>(
             old(sink).pixels(),final(sink).pixels(),raster::count(raster_context(*doc,w,h,*pol)),0,
             pol.palette_index==PaletteIndex::Black),
         final(ev).r1==old(ev).r1,final(ev).r4==old(ev).r4,
+        result.is_ok() ==> final(ev).r3==(old(ev).r3 || crate::still_recovery::R3(
+            raster::inflated(old(src).concat(),raster_context(*doc,w,h,*pol),*pol).out,raster_context(*doc,w,h,*pol))),
         match inflate_error(old(src).concat(),layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat),*pol) {
             Some(e)=>result==Err(e),None=>true},
         raster::data(old(src).concat(),raster_context(*doc,w,h,*pol),*pol)==Some(result),
@@ -1056,6 +1065,7 @@ fn decode_exact<S: Segments>(
         paint::start(inflated,ctx,conversion,drawing_shape,before_pixels,pol.palette_index==PaletteIndex::Black);
     }
     assert(raster::data(old(src).concat(),ctx,*pol)==Some(target));
+    proof {crate::still_recovery::start(inflated,ctx);}
     let mut pos=0usize;
     let mut k=0usize;
     while k<pass_count(ihdr.interlace)
@@ -1077,6 +1087,7 @@ fn decode_exact<S: Segments>(
             wide==(drawing_shape.0==1),colour::geometry(drawing_shape,w as nat,h as nat,before_pixels.len()),
             paint::progress(inflated,ctx,conversion,drawing_shape,before_pixels,sink.pixels(),k as nat,0,pol.palette_index==PaletteIndex::Black),
             ev.r1==old(ev).r1,ev.r4==old(ev).r4,
+            ev.r3==(old(ev).r3 || crate::still_recovery::prefix(inflated,ctx,k as nat,0)),
             data_fault==None,
             data_fault==inflate_error(old(src).concat(),layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat),*pol),
             src.wf(),src.concat()==old(src).concat(),src.source_frame()==old(src).source_frame(),
@@ -1125,6 +1136,7 @@ fn decode_exact<S: Segments>(
                     wide==(drawing_shape.0==1),colour::geometry(drawing_shape,w as nat,h as nat,before_pixels.len()),
                     paint::progress(inflated,ctx,conversion,drawing_shape,before_pixels,sink.pixels(),k as nat,row as nat,pol.palette_index==PaletteIndex::Black),
                     ev.r1==old(ev).r1,ev.r4==old(ev).r4,
+                    ev.r3==(old(ev).r3 || crate::still_recovery::prefix(inflated,ctx,k as nat,row as nat)),
                     data_fault==None,
                     data_fault==inflate_error(old(src).concat(),layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat),*pol),
                     src.wf(),src.concat()==old(src).concat(),src.source_frame()==old(src).source_frame(),
@@ -1169,6 +1181,7 @@ fn decode_exact<S: Segments>(
                 assert(row_result==raster::row_result(inflated,ctx,k as nat,row as nat));
                 match row_result {Err(e)=>{assert(target==Err(e));return Err(e);},Ok(())=>{}}
                 proof {
+                    crate::still_recovery::step(inflated,ctx,k as nat,row as nat);
                     let rows=colour::MC(conversion,cur@,p.pw as nat,wide,pol.palette_index==PaletteIndex::Black).get_Some_0().get_Ok_0();
                     assert(paint::pass_geometry(ctx,k as nat)==(p.x0 as nat,p.y0 as nat,p.dx as nat,p.dy as nat));
                     paint::row_step(inflated,ctx,conversion,drawing_shape,before_pixels,prior_pixels,sink.pixels(),
@@ -1186,6 +1199,7 @@ fn decode_exact<S: Segments>(
                 raster::pass_step(inflated,ctx,k as nat,row as nat);
                 raster::complete_pass(inflated,raw@,ctx,k as nat);
                 paint::pass_finished(inflated,ctx,conversion,drawing_shape,before_pixels,sink.pixels(),k as nat,pol.palette_index==PaletteIndex::Black);
+                crate::still_recovery::pass_finished(inflated,ctx,k as nat);
             }
         } else {
             proof {
@@ -1194,6 +1208,7 @@ fn decode_exact<S: Segments>(
                 raster::pass_step(inflated,ctx,k as nat,0);
                 raster::complete_empty(inflated,raw@,ctx,k as nat);
                 paint::empty_pass(inflated,ctx,conversion,drawing_shape,before_pixels,sink.pixels(),k as nat,pol.palette_index==PaletteIndex::Black);
+                crate::still_recovery::empty_pass(inflated,ctx,k as nat);
             }
         }
         proof {
@@ -1224,6 +1239,8 @@ pub(crate) fn decode_image<S: Segments>(
             old(sink).pixels(),final(sink).pixels(),raster::count(raster_context(*doc,w,h,*pol)),0,
             pol.palette_index==PaletteIndex::Black),
         final(ev).r1==old(ev).r1,final(ev).r4==old(ev).r4,
+        result.is_ok() ==> final(ev).r3==(old(ev).r3 || crate::still_recovery::R3(
+            raster::inflated(old(src).concat(),raster_context(*doc,w,h,*pol),*pol).out,raster_context(*doc,w,h,*pol))),
         match inflate_error(old(src).concat(),layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat),*pol) {
             Some(e)=>result==Err(e),None=>true},
         raster::data(old(src).concat(),raster_context(*doc,w,h,*pol),*pol)==Some(result),

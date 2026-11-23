@@ -62,6 +62,12 @@ pub mod still_model;
 #[cfg(verus_only)]
 pub mod still_equivalence;
 #[cfg(verus_only)]
+pub mod still_recovery;
+#[cfg(verus_only)]
+pub mod policy_still_model;
+#[cfg(verus_only)]
+pub mod policy_still_equivalence;
+#[cfg(verus_only)]
 pub mod paint_model;
 #[cfg(verus_only)]
 pub mod composite_model;
@@ -133,7 +139,7 @@ mod witness_frame;
 pub use alloc_guard::sites::TryError;
 pub use alloc_guard::{AllocSite, OutOfMemory};
 pub use png::{
-    try_decode_still, try_decode_still_logged, try_decode_still16, try_decode_still16_logged, try_decode_still16_with_policy, try_decode_still_with_policy,
+    try_decode_still, try_decode_still_logged, try_decode_still16, try_decode_still16_logged, try_decode_still16_with_policy, try_decode_still16_with_policy_logged, try_decode_still_with_policy, try_decode_still_with_policy_logged,
     try_icc_profile, try_icc_profile_logged, Error, FrameView, Frames, Info, Meta, Still, Still16, Time,
 };
 #[cfg(feature = "test-records")]

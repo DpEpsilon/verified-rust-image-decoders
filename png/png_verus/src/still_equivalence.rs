@@ -34,7 +34,7 @@ pub open spec fn request_bounds(b: Seq<u8>,wide: bool) -> bool {
     match d::MW_p(b,d::strict()) {
         d::Outcome::Done(doc,_)=>{
             let req=a::image_requests(doc,wide);
-            1<=req[0].1<=2*(crate::limits::MAX_OUTPUT as nat)+crate::limits::MAX_OUTPUT as nat/2+2
+            2<=req[0].1<=2*(crate::limits::MAX_OUTPUT as nat)+crate::limits::MAX_OUTPUT as nat/2+2
             && req[0].1<=crate::alloc_guard::MAX_BYTES
             && 1<=req[1].1<=(if wide {2nat}else{1nat})*crate::limits::MAX_OUTPUT
             && req[1].1<=crate::alloc_guard::MAX_BYTES
@@ -54,13 +54,14 @@ pub(crate) proof fn document_context(b: Seq<u8>,doc: crate::walk::Doc)
 /// either guard call; the bounds do not depend on allocation success.
 pub proof fn header_request_bounds(h: crate::model::Ihdr,wide: bool)
     requires m::checked_header(h),
-    ensures 1<=crate::layout_model::raw(h.interlace,crate::layout_model::bits(h),h.width as nat,h.height as nat)
+    ensures 2<=crate::layout_model::raw(h.interlace,crate::layout_model::bits(h),h.width as nat,h.height as nat)
         <=2*(crate::limits::MAX_OUTPUT as nat)+crate::limits::MAX_OUTPUT as nat/2+2,
         crate::layout_model::raw(h.interlace,crate::layout_model::bits(h),h.width as nat,h.height as nat)<=crate::alloc_guard::MAX_BYTES,
         1<=crate::layout_model::output_count(h,wide)<=(if wide {2nat}else{1nat})*crate::limits::MAX_OUTPUT,
         crate::layout_model::output_count(h,wide)<=crate::alloc_guard::MAX_BYTES,
 {
     crate::limits::caps_ok();m::output_bound(h.width as nat,h.height as nat,wide);
+    raw_minimum(h);
     let count=crate::layout_model::output_count(h,wide);
     let factor=if wide {8nat}else{4nat};
     assert(count==factor*(h.width as nat)*(h.height as nat));
@@ -152,4 +153,47 @@ pub proof fn allocation_complete(b: Seq<u8>,wide: bool,result: Result<m::Value,T
         },_=>{},
     }
 }
+/// The first nonempty pass has a filter byte and at least one sample byte.
+pub proof fn raw_minimum(h: crate::model::Ihdr)
+    requires m::checked_header(h),
+    ensures 2<=crate::layout_model::raw(h.interlace,crate::layout_model::bits(h),h.width as nat,h.height as nat),
+{
+    use crate::layout_model as l;
+    let bits=l::bits(h);let w=h.width as nat;let height=h.height as nat;
+    assert(bits>=1);
+    if h.interlace==0 {
+        reveal_with_fuel(l::prefix,2);
+        assert(w*bits>=1) by (nonlinear_arith) requires w>=1,bits>=1;
+        assert(l::scan_bytes(bits,w)>=1);
+        assert(height*(1+l::scan_bytes(bits,w))>=2) by (nonlinear_arith)
+            requires height>=1,l::scan_bytes(bits,w)>=1;
+    }else{
+        let cols=l::cols(w,0);let rows=l::rows(height,0);
+        assert(cols>=1 && rows>=1);
+        assert(cols*bits>=1) by (nonlinear_arith) requires cols>=1,bits>=1;
+        assert(l::scan_bytes(bits,cols)>=1);
+        assert(l::contribution(1,bits,w,height,0)==rows*(1+l::scan_bytes(bits,cols)));
+        assert(l::contribution(1,bits,w,height,0)>=2) by (nonlinear_arith)
+            requires rows>=1,cols>=1,l::scan_bytes(bits,cols)>=1,
+                l::contribution(1,bits,w,height,0)==rows*(1+l::scan_bytes(bits,cols));
+        reveal_with_fuel(l::prefix,2);
+        l::monotone(1,bits,w,height,1,7);
+    }
+}
+pub open spec fn oom_member<T>(req: Seq<(AllocSite,nat)>,result: Result<T,TryError>) -> bool {
+    match result {Err(TryError::OutOfMemory(o))=>req.contains((o.site_spec(),o.elements_spec() as nat)),_=>true}
+}
+/// Preserve the failed request identity when an ordinary entry drops its log.
+pub proof fn failure_member<T>(req: Seq<(AllocSite,nat)>,result: Result<T,TryError>,log: Seq<(AllocSite,nat,bool)>)
+    requires crate::alloc_guard::sites::log_tied(result,log),crate::alloc_guard::req_of_log(log).is_prefix_of(req),
+    ensures oom_member(req,result),
+{
+    if let Err(TryError::OutOfMemory(o))=result {
+        let j=log.len()-1;let actual=crate::alloc_guard::req_of_log(log);
+        assert(0<=j<actual.len());assert(actual[j]==req[j]);
+        assert(req[j]==(o.site_spec(),o.elements_spec() as nat));
+        assert(req.contains((o.site_spec(),o.elements_spec() as nat)));
+    }
+}
+
 }

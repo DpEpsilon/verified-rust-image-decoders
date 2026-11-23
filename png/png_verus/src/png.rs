@@ -230,7 +230,9 @@ impl Events {
     {
         if matches!(kind,crate::kind::Kind::Trns) && (ct==0 || ct==2 || ct==3) {self.r1=true;}
     }
-    pub(crate) fn any(&self) -> bool {
+    pub(crate) fn any(&self) -> (r: bool)
+        ensures r==(self.r1 || self.r3 || self.r4),
+    {
         self.r1 || self.r3 || self.r4
     }
     /// The event names in sorted order (`None` for an event that did not occur).
@@ -497,7 +499,8 @@ spec fn prepared_image_view(r: Result<(Doc,Vec<u8>,Vec<u8>),TryError>) -> Result
 fn prepare_image(b: &[u8], pol: &Policy, frames: bool, wide: bool,
     ev: &mut Events, trace: &mut Trace) -> (r: Result<(Doc,Vec<u8>,Vec<u8>),TryError>)
     requires old(trace).wf(),old(trace).n==0,
-    ensures !frames && *pol==STRICT ==> crate::still_equivalence::header_facts(b@,wide),
+    ensures !frames ==> crate::policy_still_equivalence::header_facts(b@,*pol,wide),
+        !frames && *pol==STRICT ==> crate::still_equivalence::header_facts(b@,wide),
         final(trace).wf(),crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),
         crate::allocation_model::image_prepared(b@,pol.walk_view(),frames,wide,prepared_image_view(r),final(ev).view(),final(trace).log_view()),
         match r {Ok((doc,raw,out))=>doc.wf(b@) && (doc.ihdr.ct==3 ==> doc.plte.is_some()) && doc.ihdr.wf() && b.len()<=crate::limits::MAX_INPUT && crate::transport_model::idat_result(b@,doc.view())
@@ -518,6 +521,16 @@ fn prepare_image(b: &[u8], pol: &Policy, frames: bool, wide: bool,
                     assert(crate::still_equivalence::header_facts(b@,wide));
                 },Err(_)=>{assert(crate::still_equivalence::header_facts(b@,wide));},
             }
+        }
+    }
+    proof {
+        if !frames {
+            crate::policy_still_model::walk_exact(*pol);
+            match &result {
+                Ok(doc)=>{crate::still_equivalence::header_request_bounds(doc.ihdr.view(),wide);},
+                Err(_)=>{},
+            }
+            assert(crate::policy_still_equivalence::header_facts(b@,*pol,wide));
         }
     }
     let doc=match result {Err(e)=>return Err(e),Ok(doc)=>doc};
@@ -582,7 +595,9 @@ fn icc_preparation_logged(b: &[u8])
 /// P15 for RGBA8 (`wide = false`) or RGBA16: walk, reserve, decode.
 fn still_impl(b: &[u8],pol: &Policy,wide: bool,ev: &mut Events,trace: &mut Trace) -> (r: Result<(Doc,Vec<u8>),TryError>)
     requires old(trace).wf(),old(trace).n==0,
-    ensures *pol==STRICT ==> crate::still_equivalence::header_facts(b@,wide),
+    ensures crate::policy_still_equivalence::header_facts(b@,*pol,wide),
+        match r {Ok(_)=>crate::policy_still_model::events_match(b@,*pol,final(ev).view()),_=>true},
+        *pol==STRICT ==> crate::still_equivalence::header_facts(b@,wide),
         *pol==STRICT ==> match r {Ok(_)=>crate::still_model::walk_context(b@),_=>true},
         match r {Ok((_,out))=>paint::still_pixels(b@,*pol,wide,out@),_=>true},
         final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),false,wide,r,final(trace).log_view()),
@@ -614,6 +629,12 @@ fn still_impl(b: &[u8],pol: &Policy,wide: bool,ev: &mut Events,trace: &mut Trace
         let decoded=decode_image(&doc,b,&mut src,&mut raw,doc.ihdr.w,doc.ihdr.h,pol,ev,&mut sink);
         assert(raster::document_data(b@,doc.view(),*pol)==Some(decoded));
         proof {
+            if decoded.is_ok() {
+                crate::policy_still_model::walk_exact(*pol);
+                assert(crate::policy_still_model::events_match(b@,*pol,ev.view()));
+            }
+        }
+        proof {
             if *pol==STRICT {
                 crate::still_equivalence::document_context(b@,doc);
                 assert(crate::still_model::walk_context(b@));
@@ -637,7 +658,9 @@ fn still_impl(b: &[u8],pol: &Policy,wide: bool,ev: &mut Events,trace: &mut Trace
 
 fn still8(b: &[u8],pol: &Policy,ev: &mut Events,trace: &mut Trace) -> (r: Result<Still,TryError>)
     requires old(trace).wf(),old(trace).n==0,
-    ensures *pol==STRICT ==> crate::still_equivalence::header_facts(b@,false),
+    ensures crate::policy_still_equivalence::header_facts(b@,*pol,false),
+        match r {Ok(_)=>crate::policy_still_model::events_match(b@,*pol,final(ev).view()),_=>true},
+        *pol==STRICT ==> crate::still_equivalence::header_facts(b@,false),
         *pol==STRICT ==> match r {Ok(_)=>crate::still_model::walk_context(b@),_=>true},
         match r {Ok(s)=>paint::still_pixels(b@,*pol,false,s.rgba@),_=>true},
         final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),false,false,r,final(trace).log_view()),
@@ -651,7 +674,9 @@ fn still8(b: &[u8],pol: &Policy,ev: &mut Events,trace: &mut Trace) -> (r: Result
 }
 fn still16(b: &[u8],pol: &Policy,ev: &mut Events,trace: &mut Trace) -> (r: Result<Still16,TryError>)
     requires old(trace).wf(),old(trace).n==0,
-    ensures *pol==STRICT ==> crate::still_equivalence::header_facts(b@,true),
+    ensures crate::policy_still_equivalence::header_facts(b@,*pol,true),
+        match r {Ok(_)=>crate::policy_still_model::events_match(b@,*pol,final(ev).view()),_=>true},
+        *pol==STRICT ==> crate::still_equivalence::header_facts(b@,true),
         *pol==STRICT ==> match r {Ok(_)=>crate::still_model::walk_context(b@),_=>true},
         match r {Ok(s)=>paint::still_pixels(b@,*pol,true,s.rgba16@),_=>true},
         final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),false,true,r,final(trace).log_view()),
@@ -665,7 +690,8 @@ fn still16(b: &[u8],pol: &Policy,ev: &mut Events,trace: &mut Trace) -> (r: Resul
 
 /// Strict RGBA8 public entry: checked walk-error dispatch and Info forwarding.
 pub fn try_decode_still(b: &[u8]) -> (r: Result<Still,TryError>)
-    ensures crate::still_equivalence::eq(b@,false,crate::still_equivalence::native8(r)),
+    ensures crate::still_equivalence::oom_member(crate::still_equivalence::requests(b@,false),r),
+        crate::still_equivalence::eq(b@,false,crate::still_equivalence::native8(r)),
         match crate::still_equivalence::native8(r) {Ok(value)=>crate::still_equivalence::success_package(b@,false,value),_=>true},
         match r {Ok(s)=>paint::still_pixels(b@,STRICT,false,s.rgba@),_=>true},
         forall|e: Error,ev: crate::document_model::Events|
@@ -675,10 +701,15 @@ pub fn try_decode_still(b: &[u8]) -> (r: Result<Still,TryError>)
         crate::allocation_model::propagated_inflate_error(b@,STRICT,false,r),
         raster::fmt_eq(b@,STRICT,false,r),
         match r {Ok(s)=>raster::shape_matches(b@,STRICT,false,s.width,s.height,s.rgba.len() as nat),_=>true},
-{try_decode_still_logged(b).0}
+{
+    let (result,log)=try_decode_still_logged(b);
+    proof {crate::still_equivalence::failure_member(crate::still_equivalence::requests(b@,false),result,log@.view());}
+    result
+}
 
 pub fn try_decode_still16(b: &[u8]) -> (r: Result<Still16,TryError>)
-    ensures crate::still_equivalence::eq(b@,true,crate::still_equivalence::native16(r)),
+    ensures crate::still_equivalence::oom_member(crate::still_equivalence::requests(b@,true),r),
+        crate::still_equivalence::eq(b@,true,crate::still_equivalence::native16(r)),
         match crate::still_equivalence::native16(r) {Ok(value)=>crate::still_equivalence::success_package(b@,true,value),_=>true},
         match r {Ok(s)=>paint::still_pixels(b@,STRICT,true,s.rgba16@),_=>true},
         raster::fmt_eq(b@,STRICT,true,r),
@@ -687,7 +718,11 @@ pub fn try_decode_still16(b: &[u8]) -> (r: Result<Still16,TryError>)
         crate::document_model::MW_p(b@,crate::document_model::strict())==crate::document_model::Outcome::Error(e,ev)
             ==> r==Err(TryError::Format(e)),
         match r {Ok(s)=>s.info.ranges_within(b.len() as nat) && crate::allocation_model::returned_info(b@,crate::document_model::strict(),false,s.info.model_value()),_=>true},
-{try_decode_still16_logged(b).0}
+{
+    let (result,log)=try_decode_still16_logged(b);
+    proof {crate::still_equivalence::failure_member(crate::still_equivalence::requests(b@,true),result,log@.view());}
+    result
+}
 
 /// Strict result and the owned sealed log used by this same call.
 pub fn try_decode_still_logged(b: &[u8]) -> (r: (Result<Still,TryError>,Tracked<AllocLog>))
@@ -751,30 +786,99 @@ pub fn try_decode_still16_logged(b: &[u8]) -> (r: (Result<Still16,TryError>,Trac
 }
 
 pub fn try_decode_still_with_policy(b: &[u8],p: Profile) -> (r: Result<(Still,bool),TryError>)
-    ensures match r {Ok((s,_))=>paint::still_pixels(b@,raster::profile(p),false,s.rgba@),_=>true},
+    ensures crate::still_equivalence::oom_member(crate::policy_still_equivalence::requests(b@,raster::profile(p),false),r),
+        crate::policy_still_equivalence::eq(b@,raster::profile(p),false,crate::policy_still_equivalence::native8(r)),
+        match r {Ok((s,_))=>paint::still_pixels(b@,raster::profile(p),false,s.rgba@),_=>true},
         raster::fmt_eq(b@,raster::profile(p),false,r),
         match r {Ok((s,_))=>raster::shape_matches(b@,raster::profile(p),false,s.width,s.height,s.rgba.len() as nat),_=>true},
         forall|e: Error,ev: crate::document_model::Events|
         crate::document_model::MW_p(b@,p.walk_model())==crate::document_model::Outcome::Error(e,ev) ==> r==Err(TryError::Format(e)),
         match r {Ok((s,_))=>s.info.ranges_within(b.len() as nat) && crate::allocation_model::returned_info(b@,p.walk_model(),false,s.info.model_value()),_=>true},
 {
-    let pol=p.checked_policy();let mut ev=Events {r1:false,r3:false,r4:false};let mut trace=Trace::new();
-    let s=match still8(b,&pol,&mut ev,&mut trace) {Ok(s)=>s,Err(e)=>return Err(e)};
-    proof {s.info.public_observations(b.len() as nat);}
-    Ok((s,ev.any()))
+    let (result,log)=try_decode_still_with_policy_logged(b,p);
+    proof {crate::still_equivalence::failure_member(crate::policy_still_equivalence::requests(b@,raster::profile(p),false),result,log@.view());}
+    result
 }
+
+/// Named-policy complete result and the sealed log from this same decode.
+pub fn try_decode_still_with_policy_logged(b: &[u8],p: Profile) -> (r: (Result<(Still,bool),TryError>,Tracked<AllocLog>))
+    ensures crate::policy_still_equivalence::G(b@,raster::profile(p),false,crate::policy_still_equivalence::native8(r.0),r.1@.view()),
+        crate::policy_still_equivalence::Prog(b@,raster::profile(p),false,crate::policy_still_equivalence::native8(r.0),r.1@.view()),
+        crate::still_equivalence::only_still_sites(r.1@.view()),
+        match r.0 {Ok((s,_))=>paint::still_pixels(b@,raster::profile(p),false,s.rgba@),_=>true},
+        raster::fmt_eq(b@,raster::profile(p),false,r.0),
+        match r.0 {Ok((s,_))=>raster::shape_matches(b@,raster::profile(p),false,s.width,s.height,s.rgba.len() as nat),_=>true},
+        forall|e: Error,ev: crate::document_model::Events|
+        crate::document_model::MW_p(b@,p.walk_model())==crate::document_model::Outcome::Error(e,ev) ==> r.0==Err(TryError::Format(e)),
+        match r.0 {Ok((s,_))=>s.info.ranges_within(b.len() as nat) && crate::allocation_model::returned_info(b@,p.walk_model(),false,s.info.model_value()),_=>true},
+{
+    let pol=p.checked_policy();let mut ev=Events {r1:false,r3:false,r4:false};let mut trace=Trace::new();
+    let decoded=still8(b,&pol,&mut ev,&mut trace);
+    let result=match decoded {
+        Ok(s)=>{
+            proof {s.info.public_observations(b.len() as nat);}
+            Ok((s,ev.any()))
+        },Err(e)=>Err(e),
+    };
+    proof {
+        crate::policy_still_model::walk_exact(pol);
+        let logical=crate::policy_still_equivalence::native8(result);
+        assert(raster::fmt_eq(b@,pol,false,logical));
+        if logical.is_ok() {crate::policy_still_equivalence::bind_recovery(b@,pol,ev.view());}
+        crate::policy_still_equivalence::complete(b@,pol,false,logical);
+        assert(crate::allocation_model::image_call(b@,pol.walk_view(),false,false,logical,trace.log_view()));
+        crate::policy_still_equivalence::allocation_complete(b@,pol,false,logical,trace.log_view());
+    }
+    let log=trace.into_log();
+    (result,log)
+}
+
 pub fn try_decode_still16_with_policy(b: &[u8],p: Profile) -> (r: Result<(Still16,bool),TryError>)
-    ensures match r {Ok((s,_))=>paint::still_pixels(b@,raster::profile(p),true,s.rgba16@),_=>true},
+    ensures crate::still_equivalence::oom_member(crate::policy_still_equivalence::requests(b@,raster::profile(p),true),r),
+        crate::policy_still_equivalence::eq(b@,raster::profile(p),true,crate::policy_still_equivalence::native16(r)),
+        match r {Ok((s,_))=>paint::still_pixels(b@,raster::profile(p),true,s.rgba16@),_=>true},
         raster::fmt_eq(b@,raster::profile(p),true,r),
         match r {Ok((s,_))=>raster::shape_matches(b@,raster::profile(p),true,s.width,s.height,s.rgba16.len() as nat),_=>true},
         forall|e: Error,ev: crate::document_model::Events|
         crate::document_model::MW_p(b@,p.walk_model())==crate::document_model::Outcome::Error(e,ev) ==> r==Err(TryError::Format(e)),
         match r {Ok((s,_))=>s.info.ranges_within(b.len() as nat) && crate::allocation_model::returned_info(b@,p.walk_model(),false,s.info.model_value()),_=>true},
 {
+    let (result,log)=try_decode_still16_with_policy_logged(b,p);
+    proof {crate::still_equivalence::failure_member(crate::policy_still_equivalence::requests(b@,raster::profile(p),true),result,log@.view());}
+    result
+}
+
+/// Named-policy complete result and the sealed log from this same decode.
+pub fn try_decode_still16_with_policy_logged(b: &[u8],p: Profile) -> (r: (Result<(Still16,bool),TryError>,Tracked<AllocLog>))
+    ensures crate::policy_still_equivalence::G(b@,raster::profile(p),true,crate::policy_still_equivalence::native16(r.0),r.1@.view()),
+        crate::policy_still_equivalence::Prog(b@,raster::profile(p),true,crate::policy_still_equivalence::native16(r.0),r.1@.view()),
+        crate::still_equivalence::only_still_sites(r.1@.view()),
+        match r.0 {Ok((s,_))=>paint::still_pixels(b@,raster::profile(p),true,s.rgba16@),_=>true},
+        raster::fmt_eq(b@,raster::profile(p),true,r.0),
+        match r.0 {Ok((s,_))=>raster::shape_matches(b@,raster::profile(p),true,s.width,s.height,s.rgba16.len() as nat),_=>true},
+        forall|e: Error,ev: crate::document_model::Events|
+        crate::document_model::MW_p(b@,p.walk_model())==crate::document_model::Outcome::Error(e,ev) ==> r.0==Err(TryError::Format(e)),
+        match r.0 {Ok((s,_))=>s.info.ranges_within(b.len() as nat) && crate::allocation_model::returned_info(b@,p.walk_model(),false,s.info.model_value()),_=>true},
+{
     let pol=p.checked_policy();let mut ev=Events {r1:false,r3:false,r4:false};let mut trace=Trace::new();
-    let s=match still16(b,&pol,&mut ev,&mut trace) {Ok(s)=>s,Err(e)=>return Err(e)};
-    proof {s.info.public_observations(b.len() as nat);}
-    Ok((s,ev.any()))
+    let decoded=still16(b,&pol,&mut ev,&mut trace);
+    let result=match decoded {
+        Ok(s)=>{
+            proof {s.info.public_observations(b.len() as nat);}
+            Ok((s,ev.any()))
+        },Err(e)=>Err(e),
+    };
+    proof {
+        crate::policy_still_model::walk_exact(pol);
+        let logical=crate::policy_still_equivalence::native16(result);
+        assert(raster::fmt_eq(b@,pol,true,logical));
+        if logical.is_ok() {crate::policy_still_equivalence::bind_recovery(b@,pol,ev.view());}
+        crate::policy_still_equivalence::complete(b@,pol,true,logical);
+        assert(crate::allocation_model::image_call(b@,pol.walk_view(),false,true,logical,trace.log_view()));
+        crate::policy_still_equivalence::allocation_complete(b@,pol,true,logical,trace.log_view());
+    }
+    let log=trace.into_log();
+    (result,log)
 }
 
 } // verus!
