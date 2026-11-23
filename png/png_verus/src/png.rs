@@ -499,7 +499,7 @@ fn prepare_image(b: &[u8], pol: &Policy, frames: bool, wide: bool,
     requires old(trace).wf(),old(trace).n==0,
     ensures final(trace).wf(),crate::alloc_guard::sites::log_tied(r,final(trace).log_view()),
         crate::allocation_model::image_prepared(b@,pol.walk_view(),frames,wide,prepared_image_view(r),final(ev).view(),final(trace).log_view()),
-        match r {Ok((doc,raw,out))=>doc.wf(b@) && doc.ihdr.wf() && b.len()<=crate::limits::MAX_INPUT && crate::transport_model::idat_result(b@,doc.view())
+        match r {Ok((doc,raw,out))=>doc.wf(b@) && (doc.ihdr.ct==3 ==> doc.plte.is_some()) && doc.ihdr.wf() && b.len()<=crate::limits::MAX_INPUT && crate::transport_model::idat_result(b@,doc.view())
             && crate::layout_model::image_buffers(doc.ihdr.view(),wide,raw@,out@)
             && out.len()<=crate::alloc_guard::MAX_BYTES
             && raw@==Seq::new(raw@.len(),|_i: int|0u8) && out@==Seq::new(out@.len(),|_i: int|0u8)
@@ -509,6 +509,7 @@ fn prepare_image(b: &[u8], pol: &Policy, frames: bool, wide: bool,
     hide(crate::document_model::MWF_p);hide(crate::document_model::MW_p);
     let result=if frames {crate::callers::frames(b,pol,ev)}else{crate::callers::still(b,pol,ev)};
     let doc=match result {Err(e)=>return Err(e),Ok(doc)=>doc};
+    proof {if frames {crate::frame_state::source_palette(b@,doc);}}
     let out_bytes=crate::image::output_size(&doc.ihdr,wide);
     match reserve_image(&doc,out_bytes,trace) {
         Err(e)=>Err(e),Ok((raw,out))=>Ok((doc,raw,out)),
@@ -1309,6 +1310,7 @@ impl<'a> Frames<'a> {
         Self::with_logged(b,pol).0
     }
 
+    #[verifier::spinoff_prover]
     fn with_trace(b: &'a [u8],pol: Policy,trace: &mut Trace) -> (r: Result<Frames<'a>,TryError>)
         requires old(trace).wf(),old(trace).n==0,
         ensures iterdata::constructor_eq(b@,pol,r),final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),true,false,r,final(trace).log_view()),
@@ -1409,7 +1411,7 @@ impl<'a> Frames<'a> {
 
     proof fn source_context(&self)
         requires self.source_wf(),
-        ensures self.doc.wf(self.b@),self.b.len()<=crate::limits::MAX_INPUT,
+        ensures self.doc.wf(self.b@),self.doc.ihdr.ct==3 ==> self.doc.plte.is_some(),self.b.len()<=crate::limits::MAX_INPUT,
             self.doc.info.frame_count==self.doc.frame_ranges@.len(),
     {
         reveal(Frames::source_wf);reveal(crate::frame_state::source_document);

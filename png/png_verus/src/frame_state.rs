@@ -49,6 +49,11 @@ pub(crate) open spec fn source_document(b: Seq<u8>, doc: Doc) -> bool {
     && (doc.actl.is_some() ==> transport::result(b,doc.view(),transport::header_end(b)))
 }
 
+pub(crate) proof fn source_palette(b: Seq<u8>,doc: Doc)
+    requires source_document(b,doc),
+    ensures doc.ihdr.ct==3 ==> doc.plte.is_some(),
+{hide(Doc::wf);hide(transport::result);reveal(source_document);}
+
 pub(crate) proof fn source_frame_count(b: Seq<u8>,doc: Doc)
     requires source_document(b,doc),
     ensures doc.info.frame_count==doc.frame_ranges@.len(),

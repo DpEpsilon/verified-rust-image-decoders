@@ -24,6 +24,7 @@ pub(crate) fn run(b: &[u8], base: usize, size: usize, chunk_offset: usize, pos: 
     kind: Kind, rules: Rules, static_frames: bool, doc: &mut Doc, state: &mut State, ev: &mut Events)
     -> (r: Result<bool,WalkFail>)
     requires old(state).wf(*old(doc),b@),pos<=b.len(),base<=b.len(),size<=b.len()-base,
+        matches!(kind,Kind::Trns) ==> crate::kind::seen_view(old(state).seen).contains(names::Name::Trns),
         matches!(kind,Kind::Idat) ==> chunk_offset+8==base,
     ensures result_view(r,*final(doc),*final(state),pos,*final(ev))==m::own(b@,rules.view(),static_frames,
         old(state).view(*old(doc),pos,*old(ev)),kind.view(),base as nat,size as nat),
@@ -170,7 +171,7 @@ fn run_iend(b: &[u8], _base: usize, _size: usize, _chunk_offset: usize, pos: usi
 fn run_trns(_b: &[u8], base: usize, size: usize, _chunk_offset: usize, _pos: usize,
     kind: Kind, rules: Rules, _static_frames: bool, doc: &mut Doc, _state: &mut State, ev: &mut Events)
     -> (r: Result<bool,WalkFail>)
-    requires matches!(kind,Kind::Trns),old(_state).wf(*old(doc),_b@),_pos<=_b.len(),base<=_b.len(),size<=_b.len()-base,
+    requires matches!(kind,Kind::Trns),crate::kind::seen_view(old(_state).seen).contains(names::Name::Trns),old(_state).wf(*old(doc),_b@),_pos<=_b.len(),base<=_b.len(),size<=_b.len()-base,
         matches!(kind,Kind::Idat) ==> _chunk_offset+8==base,
     ensures result_view(r,*final(doc),*final(_state),_pos,*final(ev))==m::own(_b@,rules.view(),_static_frames,
         old(_state).view(*old(doc),_pos,*old(ev)),kind.view(),base as nat,size as nat),

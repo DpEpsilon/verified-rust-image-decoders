@@ -1,0 +1,26 @@
+command: ['python3', '-I', '/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-mc-domain-r2/24e9e9b-20261123/check_review_integrity.py']
+{
+  "kind": "M5 review-fix packet integrity control; no sign-off claim",
+  "full_runs": [
+    640,
+    643
+  ],
+  "verified_each": 6102,
+  "source_inventory_count": 84,
+  "verified_evidence_hashes": 1124,
+  "packet_sha256": "f5c350d7af78765f77f25cd09ddf2cbc4e34da9c537d5c93e38d4bba928fcd46",
+  "proof_map_anchors_match_current_accepted_source": true,
+  "frozen_gate_classifications": {
+    "complete_errors": 2,
+    "content_projections": 35
+  },
+  "historical_24_localized_only": true,
+  "canonical_replacement_run": 633,
+  "runtime_pass_total_skip": [
+    846,
+    848,
+    2
+  ],
+  "vstd_pins_unchanged": true,
+  "ledger_hash_matches": true
+}

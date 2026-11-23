@@ -741,16 +741,17 @@ impl<'b> Colour<'b> {
             trns:match self.trns {Some(t)=>Some(t@),None=>None}}
     }
     closed spec fn wf(self) -> bool {
-        crate::model::valid_depth(self.ct,self.depth)
+        colour::context_domain(self.view())
         && forall|j: int| 0<=j<3 ==> #[trigger] self.key@[j]==colour::key(self.view(),j as nat)
     }
     closed spec fn channels(self) -> nat {if self.ct==0 || self.ct==3 {1nat}else if self.ct==2 {3nat}else if self.ct==4 {2nat}else{4nat}}
     fn new(doc: &Doc, b: &'b [u8]) -> (r: Colour<'b>)
-        requires doc.wf(b@),
+        requires doc.wf(b@),doc.ihdr.ct==3 ==> doc.plte.is_some(),
         ensures r.wf(),r.ct==doc.ihdr.ct,r.depth==doc.ihdr.depth,
             r.plte.len()/3==crate::document_model::entries(doc.view()),
             r.view()==colour::from_doc(doc.view(),b@),
     {
+        proof {doc.colour_context(b@);}
         let plte = match doc.plte {
             Some((o, n)) => {
                 assert(o as int+n as int<=b.len());
@@ -890,7 +891,7 @@ fn pass_coordinate(n: u32,origin: u32,step: u32,index: u32) -> (r: u32)
 fn draw_row(colour: &Colour<'_>,line: &[u8],w: u32,h: u32,x0: u32,dx: u32,pw: u32,y: u32,
     wide: bool,pol: &Policy,ev: &mut Events,sink: &mut Sink<'_>) -> (result: Result<(),Error>)
     requires colour.wf(),old(sink).wf(w,h),wide==old(sink).wide_view(),
-        1<=pw<=w,1<=dx<=8,y<h,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
+        1<=pw<=w<=crate::limits::PNG_WIRE_MAX,1<=dx<=8,y<h,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
         pw==layout::span(w as nat,x0 as nat,dx as nat),
         line.len()==layout::scan_bytes(colour.channels()*(colour.depth as nat),pw as nat),
     ensures final(sink).shape()==old(sink).shape(),final(sink).wf(w,h),final(sink).loan()==old(sink).loan(),
@@ -901,6 +902,7 @@ fn draw_row(colour: &Colour<'_>,line: &[u8],w: u32,h: u32,x0: u32,dx: u32,pw: u3
                 Err(Error::PaletteIndexOutOfRange)
             }else{Ok(())},
         result.is_ok() ==> final(sink).pixels()==colour::draw_prefix(colour.view(),line@,old(sink).shape(),old(sink).pixels(),w as nat,x0 as nat,dx as nat,y as nat,pw as nat,wide,pol.palette_index==PaletteIndex::Black),
+        colour::row_domain(colour.view(),line@,pw as nat),
         colour::MC(colour.view(),line@,pw as nat,wide,pol.palette_index==PaletteIndex::Black).is_some(),
         result.is_ok()==colour::MC(colour.view(),line@,pw as nat,wide,pol.palette_index==PaletteIndex::Black).get_Some_0().is_ok(),
         match colour::MC(colour.view(),line@,pw as nat,wide,pol.palette_index==PaletteIndex::Black) {
@@ -920,7 +922,7 @@ fn draw_row(colour: &Colour<'_>,line: &[u8],w: u32,h: u32,x0: u32,dx: u32,pw: u3
             geometry==sink.shape(),before==old(sink).pixels(),
             composite::drawing_frame(before,sink.pixels(),geometry,w as nat,h as nat),
             sink.pixels()==colour::draw_prefix(colour.view(),line@,geometry,before,w as nat,x0 as nat,dx as nat,y as nat,c as nat,wide,pol.palette_index==PaletteIndex::Black),
-            1<=pw<=w,1<=dx<=8,y<h,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
+            1<=pw<=w<=crate::limits::PNG_WIRE_MAX,1<=dx<=8,y<h,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
             pw==layout::span(w as nat,x0 as nat,dx as nat),
             line.len()==layout::scan_bytes(colour.channels()*(colour.depth as nat),pw as nat),
             ev.r1==old(ev).r1,ev.r4==old(ev).r4,
@@ -978,7 +980,7 @@ fn decode_exact<S: Segments>(
     doc: &Doc,b: &[u8],src: &mut S,raw: &mut [u8],w: u32,h: u32,
     pol: &Policy,ev: &mut Events,sink: &mut Sink<'_>,
 ) -> (result: Result<(),Error>)
-    requires doc.wf(b@),doc.ihdr.wf(),1<=w<=doc.ihdr.w,1<=h<=doc.ihdr.h,
+    requires doc.wf(b@),doc.ihdr.ct==3 ==> doc.plte.is_some(),doc.ihdr.wf(),1<=w<=doc.ihdr.w,1<=h<=doc.ihdr.h,
         old(src).wf(),old(src).pos()==0,old(sink).wf(w,h),
         layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat)==old(raw).len(),
     ensures final(src).wf(),final(src).concat()==old(src).concat(),
@@ -1202,7 +1204,7 @@ pub(crate) fn decode_image<S: Segments>(
     doc: &Doc,b: &[u8],src: &mut S,raw: &mut [u8],w: u32,h: u32,
     pol: &Policy,ev: &mut Events,sink: &mut Sink<'_>,
 ) -> (result: Result<(),Error>)
-    requires doc.wf(b@),doc.ihdr.wf(),1<=w<=doc.ihdr.w,1<=h<=doc.ihdr.h,
+    requires doc.wf(b@),doc.ihdr.ct==3 ==> doc.plte.is_some(),doc.ihdr.wf(),1<=w<=doc.ihdr.w,1<=h<=doc.ihdr.h,
         old(src).wf(),old(src).pos()==0,old(sink).wf(w,h),
         layout::raw(doc.ihdr.interlace,layout::bits(doc.ihdr.view()),w as nat,h as nat)<=old(raw).len(),
     ensures final(src).wf(),final(src).concat()==old(src).concat(),

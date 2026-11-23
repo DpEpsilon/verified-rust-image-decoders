@@ -215,8 +215,22 @@ pub proof fn place_drawing_frame(shape: (nat,nat,nat,nat,nat,bool),before: Seq<u
 /// The mathematical row conversion: first palette error, or one RGBA value
 /// per pixel. The input sample width decides which bits are pixels; trailing
 /// padding never becomes another sample.
+/// Length rules retained by every validated policy. PaletteSize::Allow can
+/// exceed 2^depth entries, but never 256; MC has no palette-size policy input.
+pub open spec fn chunk_lengths(ct: u8,depth: u8,palette: nat,trns: Option<nat>) -> bool {
+    crate::model::valid_depth(ct,depth)
+    && (if ct==0 || ct==4 {palette==0}else{palette<=768 && palette%3==0})
+    && match trns {
+        None=>true,
+        Some(n)=>if ct==0 {n==2}else if ct==2 {n==6}else if ct==3 {1<=n<=palette/3}else{false},
+    }
+}
+pub open spec fn context_domain(c: Context) -> bool {
+    chunk_lengths(c.ct,c.depth,c.plte.len(),match c.trns {Some(t)=>Some(t.len()),None=>None})
+    && (c.ct==3 ==> c.plte.len()>0)
+}
 pub open spec fn row_domain(c: Context,line: Seq<u8>,width: nat) -> bool {
-    crate::model::valid_depth(c.ct,c.depth) && width>=1
+    context_domain(c) && 1<=width<=crate::limits::PNG_WIRE_MAX
         && line.len()==crate::layout_model::scan_bytes(channels(c)*c.depth as nat,width)
 }
 /// None is the internal OutsideDomain marker, not a PNG format error.
@@ -232,6 +246,43 @@ pub open spec fn MC(c: Context,line: Seq<u8>,width: nat,wide: bool,black: bool)
 }
 pub proof fn MC_empty_rgba_outside()
     ensures MC(Context {ct:6,depth:8,plte:Seq::empty(),trns:None},Seq::empty(),1,false,false)==None,
+{}
+
+pub proof fn MC_invalid_context_outside(c: Context,line: Seq<u8>,width: nat,wide: bool,black: bool)
+    requires !context_domain(c),
+    ensures MC(c,line,width,wide,black)==None,
+{}
+pub proof fn MC_oversized_width_outside(c: Context,line: Seq<u8>,width: nat,wide: bool,black: bool)
+    requires width>crate::limits::PNG_WIRE_MAX,
+    ensures MC(c,line,width,wide,black)==None,
+{}
+pub proof fn MC_empty_grey_trns_outside()
+    ensures MC(Context {ct:0,depth:8,plte:Seq::empty(),trns:Some(Seq::empty())},seq![0u8],1,false,false)==None,
+        crate::metadata_model::transparency(0,0,0,false)==crate::metadata_model::Decision::Error(crate::png::Error::InvalidTransparency),
+{}
+pub proof fn MC_matching_oversized_rgba_outside()
+    ensures MC(Context {ct:6,depth:8,plte:Seq::empty(),trns:None},
+        Seq::new(4*(crate::limits::PNG_WIRE_MAX as nat+1),|i: int|0u8),
+        crate::limits::PNG_WIRE_MAX as nat+1,false,false)==None,
+{}
+pub proof fn MC_policy_large_palette_domain()
+    ensures context_domain(Context {ct:3,depth:1,plte:Seq::new(12,|i: int|0u8),trns:None}),
+        crate::metadata_model::palette(12,3,1,false,false,false,true)==crate::metadata_model::Decision::Keep(4),
+        crate::metadata_model::palette(12,3,1,false,false,false,false)==crate::metadata_model::Decision::Error(crate::png::Error::InvalidPalette),
+{
+    assert((1u32<<1u8)==2u32) by (compute);
+    assert(crate::metadata_model::palette(12,3,1,false,false,false,false)==crate::metadata_model::Decision::Error(crate::png::Error::InvalidPalette)) by (compute);
+}
+pub proof fn MC_invalid_transparency_lengths(ct: u8,depth: u8,palette: Seq<u8>,trns: Seq<u8>,line: Seq<u8>,width: nat)
+    requires (ct==0 && trns.len()!=2) || (ct==2 && trns.len()!=6)
+        || (ct==3 && !(1<=trns.len()<=palette.len()/3)) || ct==4 || ct==6,
+    ensures MC(Context {ct,depth,plte:palette,trns:Some(trns)},line,width,false,false)==None,
+{}
+pub proof fn MC_invalid_palette_lengths(ct: u8,depth: u8,palette: Seq<u8>,trns: Option<Seq<u8>>,line: Seq<u8>,width: nat)
+    requires ((ct==0 || ct==4) && palette.len()!=0)
+        || ((ct==2 || ct==3 || ct==6) && (palette.len()>768 || palette.len()%3!=0))
+        || (ct==3 && palette.len()==0),
+    ensures MC(Context {ct,depth,plte:palette,trns},line,width,false,false)==None,
 {}
 
 /// Place a prefix of MC's row in scanline order, using immutable canvas values

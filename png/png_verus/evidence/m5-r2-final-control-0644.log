@@ -1,0 +1,28 @@
+command: ['python3', '-I', '/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-mc-domain-r2/24e9e9b-20261123/final_review_control.py', '--host', '640', '--i686', '643']
+{
+  "kind": "M5 Astra review-fix final source/control; no independent-review sign-off",
+  "base_commit": "24e9e9b3898cbc2c71bde7ebcc635f2d8d096c09",
+  "full_runs": [
+    640,
+    643
+  ],
+  "verified_each": 6102,
+  "source_inventory_count": 84,
+  "source_inventory_matches_both_full_runs": true,
+  "runtime_run": 641,
+  "host_and_i686_bindings_unchanged": true,
+  "vstd_hashes_and_mtimes_unchanged": true,
+  "restored_development_runs": [
+    636,
+    637,
+    638,
+    639
+  ],
+  "protected_files_unchanged": true,
+  "whitespace_clean": true,
+  "frozen_input_literals_matched": 37,
+  "complete_error_classifications": 2,
+  "content_projection_classifications": 35,
+  "active_verifier_or_solver_processes": [],
+  "accepted_checkpoint": false
+}

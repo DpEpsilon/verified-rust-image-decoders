@@ -48,6 +48,7 @@ impl Doc {
     }
     pub(crate) open spec fn source_partition(self) -> bool {
         let frames=self.frame_ranges@;
+        (self.ihdr.ct==3 ==> self.plte.is_some()) &&
         (self.info.default_is_frame ==> frames.len()>0)
         && forall|i: int| 0<=i<frames.len() ==> ((match (#[trigger] frames[i]).source {Source::Idat=>true,_=>false})
             == (i==0 && self.info.default_is_frame))
@@ -56,6 +57,10 @@ impl Doc {
         self.ihdr.wf() && self.ihdr.w<=crate::limits::PNG_WIRE_MAX && self.ihdr.h<=crate::limits::PNG_WIRE_MAX
         && self.info.view().header==self.ihdr.view()
         && self.info.palette_entries==m::entries(self.view()) && m::entries(self.view())<=256
+        && (match self.plte {Some((_,n))=>n>=3,None=>true})
+        && crate::colour_model::chunk_lengths(self.ihdr.ct,self.ihdr.depth,
+            match self.plte {Some((_,n))=>n as nat,None=>0},match self.trns {Some((_,n))=>Some(n as nat),None=>None})
+        && (self.idat_ranges@.len()>0 && self.ihdr.ct==3 ==> self.plte.is_some())
         && bounded(self.plte,b.len()) && bounded(self.trns,b.len()) && bounded(self.iccp,b.len())
         && self.info.ranges_wf(b.len()) && self.info.repr_wf()
         && ranges_valid(self.idat_ranges@,b.len()) && frames_valid(self.frame_ranges@,b.len())
@@ -64,6 +69,10 @@ impl Doc {
             8<=self.idat_ranges@[0].offset && self.idat_first+8==self.idat_ranges@[0].offset
         }
     }
+    pub(crate) proof fn colour_context(self,b: Seq<u8>)
+        requires self.wf(b),self.ihdr.ct==3 ==> self.plte.is_some(),
+        ensures crate::colour_model::context_domain(crate::colour_model::from_doc(self.view(),b)),
+    {}
     pub(crate) proof fn selected_frame_fits(self,b: Seq<u8>,index: nat)
         requires self.wf(b),index<self.frame_ranges@.len(),
         ensures frame_fits(self.frame_ranges@[index as int],self.ihdr.view()),
@@ -105,6 +114,7 @@ impl State {
     pub(crate) open spec fn wf(self, doc: Doc, b: Seq<u8>) -> bool {
         doc.wf(b) && self.idat<=2 && self.apng.wf() && self.source_roles(doc)
         && (self.idat==0)==(doc.idat_ranges@.len()==0)
+        && (doc.trns.is_some() ==> crate::kind::seen_view(self.seen).contains(names::Name::Trns))
         && self.apng.frames==doc.frame_ranges@.len()
         && (doc.actl.is_none() ==> self.apng.frames==0)
         && match self.apng.view().current {
