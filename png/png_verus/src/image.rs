@@ -685,6 +685,14 @@ fn sample_channel(line: &[u8],depth: u8,x: usize,channels: usize,channel: usize)
 
 /// P13.2 `s8` and P13.3 `s16`.
 #[inline]
+/// Exact comparison of the three masked, unscaled P13 RGB samples.
+/// The depth parameter records the source domain; equality never strips a byte.
+fn trns_samples_equal(_depth: u8,key: [u16;3],pixel: [u16;3]) -> (r: bool)
+    ensures r==(key[0]==pixel[0] && key[1]==pixel[1] && key[2]==pixel[2]),
+{
+    key[0]==pixel[0] && key[1]==pixel[1] && key[2]==pixel[2]
+}
+
 fn scale(v: u16, depth: u8, wide: bool) -> (r: u16)
     requires 1<=depth<=16,v as u32<=(1u32<<depth)-1,
     ensures r<=if wide {u16::MAX}else{255},
@@ -829,7 +837,7 @@ impl<'b> Colour<'b> {
                 let r = sample_channel(line,d,x,3,0);
                 let g = sample_channel(line,d,x,3,1);
                 let bl = sample_channel(line,d,x,3,2);
-                let a = if self.trns.is_some() && self.key == [r, g, bl] { 0 } else { top };
+                let a = if self.trns.is_some() && trns_samples_equal(d,self.key,[r,g,bl]) { 0 } else { top };
                 Ok([scale(r, d, wide), scale(g, d, wide), scale(bl, d, wide), a])
             }
             3 => {
@@ -893,12 +901,15 @@ fn draw_row(colour: &Colour<'_>,line: &[u8],w: u32,h: u32,x0: u32,dx: u32,pw: u3
                 Err(Error::PaletteIndexOutOfRange)
             }else{Ok(())},
         result.is_ok() ==> final(sink).pixels()==colour::draw_prefix(colour.view(),line@,old(sink).shape(),old(sink).pixels(),w as nat,x0 as nat,dx as nat,y as nat,pw as nat,wide,pol.palette_index==PaletteIndex::Black),
-        result.is_ok()==colour::MC(colour.view(),line@,pw as nat,wide,pol.palette_index==PaletteIndex::Black).is_ok(),
+        colour::MC(colour.view(),line@,pw as nat,wide,pol.palette_index==PaletteIndex::Black).is_some(),
+        result.is_ok()==colour::MC(colour.view(),line@,pw as nat,wide,pol.palette_index==PaletteIndex::Black).get_Some_0().is_ok(),
         match colour::MC(colour.view(),line@,pw as nat,wide,pol.palette_index==PaletteIndex::Black) {
-            Err(e)=>result==Err(e),
-            Ok(rows)=>result==Ok(()) && final(sink).pixels()==colour::render_row(rows,old(sink).shape(),old(sink).pixels(),w as nat,x0 as nat,dx as nat,y as nat,pw as nat),
+            Some(Err(e))=>result==Err(e),
+            Some(Ok(rows))=>result==Ok(()) && final(sink).pixels()==colour::render_row(rows,old(sink).shape(),old(sink).pixels(),w as nat,x0 as nat,dx as nat,y as nat,pw as nat),
+            None=>false,
         },
 {
+    proof {reveal(Colour::wf);reveal(Colour::view);reveal(Colour::channels);}
     let ghost before=sink.pixels();
     let ghost geometry=sink.shape();
     proof {composite::drawing_frame_start(before,geometry,w as nat,h as nat);}
@@ -940,7 +951,7 @@ fn draw_row(colour: &Colour<'_>,line: &[u8],w: u32,h: u32,x0: u32,dx: u32,pw: u3
         c+=1;
     }
     proof {
-        if let Ok(rows)=colour::MC(colour.view(),line@,pw as nat,wide,pol.palette_index==PaletteIndex::Black) {
+        if let Some(Ok(rows))=colour::MC(colour.view(),line@,pw as nat,wide,pol.palette_index==PaletteIndex::Black) {
             colour::draw_matches_MC(colour.view(),line@,pw as nat,rows,geometry,before,w as nat,x0 as nat,dx as nat,y as nat,pw as nat,wide,pol.palette_index==PaletteIndex::Black);
         }
     }
@@ -1150,7 +1161,7 @@ fn decode_exact<S: Segments>(
                 assert(row_result==raster::row_result(inflated,ctx,k as nat,row as nat));
                 match row_result {Err(e)=>{assert(target==Err(e));return Err(e);},Ok(())=>{}}
                 proof {
-                    let rows=colour::MC(conversion,cur@,p.pw as nat,wide,pol.palette_index==PaletteIndex::Black).get_Ok_0();
+                    let rows=colour::MC(conversion,cur@,p.pw as nat,wide,pol.palette_index==PaletteIndex::Black).get_Some_0().get_Ok_0();
                     assert(paint::pass_geometry(ctx,k as nat)==(p.x0 as nat,p.y0 as nat,p.dx as nat,p.dy as nat));
                     paint::row_step(inflated,ctx,conversion,drawing_shape,before_pixels,prior_pixels,sink.pixels(),
                         k as nat,row as nat,pol.palette_index==PaletteIndex::Black,rows);

@@ -466,4 +466,12 @@ pub proof fn saved_before_exact(frames: Seq<Frame>,k: nat)
     }
 }
 
+/// Full canonical-control bridge for M5 cross-call compositor provenance.
+pub proof fn control_fields(frame: Frame,control: crate::apng_model::FrameControl)
+    requires control_record(frame,control),
+    ensures frame.width==control.width,frame.height==control.height,frame.x==control.x,frame.y==control.y,
+        frame.delay_num==control.delay_num,frame.delay_den==control.delay_den,
+        frame.dispose==control.dispose,frame.blend==control.blend,
+{}
+
 } // verus!

@@ -33,6 +33,8 @@ pub mod iterator_log_model;
 #[cfg(verus_only)]
 pub mod iterator_data_model;
 #[cfg(verus_only)]
+pub mod iterator_canvas_model;
+#[cfg(verus_only)]
 mod m5_stream_witness_model;
 #[cfg(verus_only)]
 mod m5_dynamic_witness_model;

@@ -1,45 +1,76 @@
 {
-  "title": "PNG M5 review packet",
-  "status": "PACKET COMPLETE; INDEPENDENT REVIEW PENDING; NOT SIGNED OFF",
+  "title": "M5 review-fix packet",
+  "status": "PACKET COMPLETE; M5 HELD PENDING INDEPENDENT RE-REVIEW",
   "sign_off_claimed": false,
   "sign_off_ready": false,
   "release_ready": false,
-  "base_commit": "764899abcd959da26306bee78949c1be8148e391",
-  "functional_checkpoint": {
-    "host_run": 586,
-    "i686_run": 588,
-    "verified_each": 4514,
-    "errors_each": 0,
-    "file": "evidence/m5-witness-checkpoint-0586-0588.json",
-    "sha256": "f2712641fa547bb0743588951a2e4a7cb16fb45f9c3b2077a143a295c9f5c45e"
+  "base_commit": "2711b13103d969c3f0464403d7dbc7ba355cba2d",
+  "working_source_qualification": "The coordinator has not yet committed these fixes; the accepted canonical source inventory, not the parent commit alone, identifies the verified source.",
+  "previous_review": {
+    "file": "../REVIEW-ASTRA-M5.md",
+    "sha256": "2cc579e38db7a058e27466972e03bc360b36f4d5cb3f6c8eab9eefeeff48e8b1",
+    "disposition": "Held at 207605d; all five findings addressed here for re-review"
   },
+  "functional_checkpoint": [
+    {
+      "run": 630,
+      "target": "host",
+      "verified": 6093,
+      "record": {
+        "file": "evidence/m5-review-host-0630.json",
+        "sha256": "36fe41a09f02749f77f495988543dad4d8d818c1f6333ca87717fa2c9ae12608"
+      },
+      "log": {
+        "file": "evidence/m5-review-host-0630.log.gz",
+        "sha256": "4aa0fa6595d76fc02ff24dafb3d98489860aa85a9dda04e2df71edd67c43cbae",
+        "compression": "gzip",
+        "uncompressed_sha256": "afbba8d5b695726ef88aae921569b981ae72221e5ac3d494733a9de720fa2110"
+      }
+    },
+    {
+      "run": 631,
+      "target": "i686",
+      "verified": 6093,
+      "record": {
+        "file": "evidence/m5-review-i686-0631.json",
+        "sha256": "e8d93def465e494556ad38027bc17573a37aba62ac25f71f7d9c069c449749f4"
+      },
+      "log": {
+        "file": "evidence/m5-review-i686-0631.log.gz",
+        "sha256": "18acf6fbcbf19f01f6ea860b8d1577d211820233d1a03e3c996e83f9ca78e429",
+        "compression": "gzip",
+        "uncompressed_sha256": "54ecb3147f1c36ce7f81e7d0068dc1887edac60f63fac6b01264f72370b73835"
+      }
+    }
+  ],
   "source_sha256": {
     "src/alloc_guard/mod.rs": "add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137",
     "src/alloc_guard/sites.rs": "dcd747cf7721c33ff00fbffd83ca8838d12803f99c2fb896b8077f25f5d8a281",
-    "src/allocation_model.rs": "fe3580490a7131e9695ea9db222a7e53a755725302734217af399dabc43ff669",
+    "src/allocation_model.rs": "ec08a85968f07ec6d3a36a31501a6c17411a4314c49f2b332cf45c71bc5be8b6",
     "src/apng.rs": "cddbd5681a19c87195da6a2a0f89624fcfdf991b595d9377166d8c16753aefb5",
     "src/apng_model.rs": "41cf7792881764ac134877d68a2951b373b58eec52b58197396161633e3c9e78",
     "src/callers.rs": "7fcec072f7166647c2f92e06fe52a6b357a0faf420179251ae0cda71028363c5",
-    "src/colour_model.rs": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b",
-    "src/composite_model.rs": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07",
+    "src/colour_model.rs": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763",
+    "src/composite_model.rs": "f839e81caada0430bc873b33d977d20f439cd1cc58aea027d687c4dc80819fd7",
     "src/crc.rs": "12fa39331208c143bc9acae6d1064d1ad3e995fc583de626b82103e8f771c4cb",
     "src/critical.rs": "be227d2d6e997f26c1fb39268e61e6a325e58721693e1ce6972aeb07bbfe05fb",
     "src/critical_model.rs": "7411fc10bc6603ca28f83f8a57093ec0ccac3b0308691cda1a630634f54135c3",
     "src/document_model.rs": "e2d842013e32a8e103d9470b6bb485bfba73d889d5c5ebceb5bc80df94728efc",
     "src/filter_model.rs": "4b51aabbc3be98e9a98b46a67ab6982d6b5ac630978075f15cdfe68c7de66faf",
-    "src/frame_state.rs": "5333992f1e4b3a7973669691dba5f2b81534398fd60a71da454c7aece29c6c41",
-    "src/frame_transport_model.rs": "b47c908d3208c24173c9d631873a2f3f4e71f1bf01dc7075b90a0a5568e4b1e9",
+    "src/frame_state.rs": "1cee5ba5ac8ac52031251b9bc2f0eec8c347b3564313646d2f30ff93c8d461f2",
+    "src/frame_transport_model.rs": "af02bc900d1154599f00bda0b172d69c55b57a5b6faf6b61389957fa070379df",
     "src/framing.rs": "d4ba2feb5f1996f64e5f919bdb6e6bcbdb6122eb674dcf453cfdb78e3bc9f3a2",
     "src/header.rs": "a3eaeeaf7afa01edea5ca221f4dc7e41e35d52414e6603bfea73998b18ebc6c6",
     "src/icc_model.rs": "b877e18151158336f0acb9495935e6c0b557481cbe4e9cc7f4623ce5af682152",
-    "src/image.rs": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549",
+    "src/image.rs": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998",
     "src/info.rs": "12e5a8e0a4df399642fccbcd26656c485a1aa2e5c680544305b8d05c2a3b5e72",
+    "src/iterator_canvas_model.rs": "c3e3a2f9f6d00da17b907808c942ffe2e1dc575e9327335d2addee89c2b49283",
     "src/iterator_data_model.rs": "4ee5558fcb3ab7f741b36809d0e44cef5bbf153f162b0771c477909f64886ea9",
     "src/iterator_log_model.rs": "c1c98ee64701b3dcbc10acf12cd9bc242954214f27b0c44e203c7b52ec7239bd",
     "src/keywords.rs": "f773dbbbed19acc97cd20771207ba7578d56ad6cc7248eb07e3e7015dfc015db",
     "src/kind.rs": "18db75564b35c643212d0eb650f42e58da6d0f8795a89bf01f011913c1469f01",
     "src/layout_model.rs": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c",
-    "src/lib.rs": "5fcc58ca927c4249d45053381d7e002dfa49a80d50348e5ec68226a7ef3e410c",
+    "src/lib.rs": "4e0eaec31ea51d77e1e476307d78232219662d00580bbc9981e987c3377e8f65",
     "src/limits.rs": "ce4a4b191330d922ac3265c19d5b66f01b8d67132af2adb239677ae35fac7f44",
     "src/m4_checksum_witness_model.rs": "c5229b8f965158f4258da1cc95328fb0270e6e2ab8df65d1cf1c2468d9da8bac",
     "src/m4_crc_witness_model.rs": "72037e10c90354c61774024ff2b3d42062690b8bb4e3d1fbcb807d607cd0f4ab",
@@ -52,8 +83,8 @@
     "src/metadata_model.rs": "77f221b2249d6fa19f579c56178ae64fb7e8d42bcad30222deb97314667bb298",
     "src/model.rs": "e38e5144373bbf97f15149bc3b11e77cf2be3998496a9090922356ff510f2a6c",
     "src/ordering.rs": "e1caef5c7f1b50fae9c6ed46838c7408789446c860a48165d294b40ad05bf470",
-    "src/paint_model.rs": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1",
-    "src/png.rs": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f",
+    "src/paint_model.rs": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045",
+    "src/png.rs": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b",
     "src/policy.rs": "5190593c4ee6f70c45ff0ef1f8dba4e964eb39aa62c70beccbd4ea7794f40b5a",
     "src/raster_model.rs": "0cf7fdafb1a8fc4afb68b6919b5feebb2acd5bea1107aa687ba4ca4d62ac23fd",
     "src/reader.rs": "e1e7c97ce7b862639e31dc28e765074c14da2eabe591df8592573b56748b8f0d",
@@ -74,8 +105,8 @@
     "src/witness_m4_complete.rs": "b3bd36e3dc3a1ff28e6ed250fa7b00d909f708b6f49a09e8b27cf17d1056e4d0",
     "src/witness_m4_filter_projection.rs": "de1690db19da6bab1f51dfa9afbdaab3a4e83f55655531c485680f9f3b513947",
     "src/witness_m4_interlace_projection.rs": "f5069ce343eea379f4b997d64f78496a7012fae9d193dfea2fb8f65282ffd1a9",
-    "src/witness_m5_frames.rs": "6bc09fc0e5578c0a9aaf4abbf54dc7ade417412ec863612f419be17d61ccca35",
-    "src/witness_m5_still.rs": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3",
+    "src/witness_m5_frames.rs": "07213c59d2cfccf7c9a2a0cfb8192ce1535ae0e09603e93e7649abc6f1acb30c",
+    "src/witness_m5_still.rs": "1fe5315f9d8cea5d93f33d239ac7e1ad70a520040c97488b0def08a570618d22",
     "src/witness_metadata.rs": "4e7bc8910b1bcb410cb3e926b5f1d70287f121e80152546ab3a5f7ce82a13a24",
     "src/witness_walk.rs": "53a8fb71e2dd22d34979865ceb32e42f196fcd82d503aceba36d263b9bfa8b30",
     "Cargo.toml": "fa9c2b6e0a9c6ab351267a717996f59ff01a713a96b24c8a7d2b623872973d4e",
@@ -89,12 +120,13 @@
     "tools/generate_m4_filter_projections.py": "106eb8da9e41e0642459bffbf614cc11ab42098228e1e5e1c04276d3ea1e444c",
     "tools/generate_m4_interlace_projections.py": "93f9797b3e4b93f7cdac564a8eb5470e0710a0b3b1960f55ca2316c8350afef8",
     "tools/generate_m5_dynamic_certificates.py": "ed3fbb34ca444a8337866f5c84b88148ec23d5a259eface69272cbb62cacc326",
-    "tools/generate_m5_frames_witnesses.py": "23622d88f609f3338732efc952d1e3e71298ba237649a71225b1845d4d04645f",
-    "tools/generate_m5_still_witnesses.py": "8d4bfbde8390525edfd9f3c85d25e5f849fbfab39f31fecd5a596036e6c61997",
+    "tools/generate_m5_frames_witnesses.py": "1b07722cc061ba4fab44c95abc129e7e787a884815cefe71905b3a1a29766061",
+    "tools/generate_m5_still_witnesses.py": "0fdb62b90e27a69f8d2f94ec867d90628e8ef2256d2fed89a76559fb807007e1",
     "tools/m4_trace_certificates.py": "793d1f5589cf476fda63534a8dfd95332bf5c5b3f5187538279d8c253522d5e9",
     "tools/probe_diff.py": "27938506cd72ecbd8e1d5adf9bd89ed9a37a435744ee6251478e2e8c2a3b1bf8",
     "tools/run_logged.py": "3f5ade7203e8686447a7d40307055d7fc96c727a533341cb2143af1f7244e66d",
     "tools/run_m4_mutations.py": "3009d1458a2263322a8409e156e082128038d63c906583f0acc7c3448f71547b",
+    "tools/run_m5_review_mutations.py": "2622adc92125692c09883f5c7c857c37cf8aff399e23cc7b3e12593bda61387a",
     "tools/verify_m3.py": "e2484f0a88cb1d7c480825125138a926da892625fcff8a7685f9ed36285c89a8"
   },
   "toolchain": {
@@ -114,25 +146,25 @@
         {
           "file": "src/image.rs",
           "function": "Colour::new",
-          "line": 740,
-          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+          "line": 748,
+          "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
         },
         {
           "file": "src/colour_model.rs",
           "function": "from_doc",
           "line": 95,
-          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
         },
         {
           "file": "src/image.rs",
           "function": "Colour::pixel",
-          "line": 804,
-          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+          "line": 812,
+          "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     },
@@ -144,30 +176,30 @@
           "file": "src/image.rs",
           "function": "packed_access",
           "line": 607,
-          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+          "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
         },
         {
           "file": "src/image.rs",
           "function": "sample",
           "line": 619,
-          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+          "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
         },
         {
           "file": "src/image.rs",
           "function": "sample_channel",
           "line": 668,
-          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+          "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
         },
         {
           "file": "src/colour_model.rs",
           "function": "sample",
           "line": 105,
-          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     },
@@ -179,18 +211,18 @@
           "file": "src/colour_model.rs",
           "function": "scale8_exact",
           "line": 43,
-          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
         },
         {
           "file": "src/image.rs",
           "function": "scale",
-          "line": 688,
-          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+          "line": 696,
+          "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     },
@@ -202,18 +234,18 @@
           "file": "src/colour_model.rs",
           "function": "scale16_exact",
           "line": 56,
-          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
         },
         {
           "file": "src/image.rs",
           "function": "scale",
-          "line": 688,
-          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+          "line": 696,
+          "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     },
@@ -225,18 +257,18 @@
           "file": "src/colour_model.rs",
           "function": "round16",
           "line": 70,
-          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
         },
         {
           "file": "src/image.rs",
           "function": "scale",
-          "line": 688,
-          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+          "line": 696,
+          "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     },
@@ -248,30 +280,36 @@
           "file": "src/colour_model.rs",
           "function": "key",
           "line": 111,
-          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
         },
         {
           "file": "src/colour_model.rs",
           "function": "pixel",
           "line": 126,
-          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
         },
         {
           "file": "src/image.rs",
           "function": "Colour::new",
-          "line": 740,
-          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+          "line": 748,
+          "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
         },
         {
           "file": "src/image.rs",
           "function": "Colour::pixel",
-          "line": 804,
-          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+          "line": 812,
+          "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
+        },
+        {
+          "file": "src/image.rs",
+          "function": "trns_samples_equal",
+          "line": 690,
+          "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     },
@@ -282,92 +320,175 @@
         {
           "file": "src/image.rs",
           "function": "Colour::pixel",
-          "line": 804,
-          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+          "line": 812,
+          "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
         },
         {
           "file": "src/colour_model.rs",
           "function": "pixel",
           "line": 126,
-          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
         },
         {
           "file": "src/colour_model.rs",
           "function": "scale16_257",
           "line": 77,
-          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     },
     {
       "clause": "T4.8",
-      "requirement": "Actual row conversion equals the independent MC channel/physical-byte equations at every destination pixel.",
+      "requirement": "Actual row conversion and successful public still/still16 pixels obey the independent MC channel and physical-byte equations at every position.",
       "proof_anchors": [
         {
           "file": "src/image.rs",
           "function": "Sink::put",
           "line": 324,
-          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+          "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
         },
         {
           "file": "src/image.rs",
           "function": "draw_row",
-          "line": 882,
-          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+          "line": 890,
+          "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
         },
         {
           "file": "src/colour_model.rs",
           "function": "draw_matches_MC",
-          "line": 276,
-          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+          "line": 285,
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
         },
         {
           "file": "src/colour_model.rs",
           "function": "render_row_observe",
-          "line": 368,
-          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+          "line": 377,
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
         },
         {
           "file": "src/colour_model.rs",
           "function": "physical",
           "line": 178,
-          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
+        },
+        {
+          "file": "src/paint_model.rs",
+          "function": "still_pixels",
+          "line": 280,
+          "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
+        },
+        {
+          "file": "src/paint_model.rs",
+          "function": "image_observe",
+          "line": 329,
+          "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "still_impl",
+          "line": 570,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_decode_still",
+          "line": 642,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_decode_still16",
+          "line": 658,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending",
-      "qualification": "This row-level T4 result is not the unrestricted public MS/MS16 equality assigned to T9/T13 at M6."
+      "qualification": "The 22 successful still/still16 witnesses assert every frozen physical output byte. Full Still/Still16 record equality, including unrestricted info, remains M6."
+    },
+    {
+      "clause": "T4.Domain",
+      "requirement": "MC returns internal OutsideDomain (None), not a PNG format error, when the row has an invalid depth/colour pair, zero width or a non-exact scanline byte length.",
+      "proof_anchors": [
+        {
+          "file": "src/colour_model.rs",
+          "function": "row_domain",
+          "line": 218,
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
+        },
+        {
+          "file": "src/colour_model.rs",
+          "function": "MC",
+          "line": 223,
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
+        },
+        {
+          "file": "src/colour_model.rs",
+          "function": "MC_empty_rgba_outside",
+          "line": 233,
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
+        }
+      ],
+      "verified_in_full_runs": [
+        630,
+        631
+      ],
+      "independent_coverage_review": "pending"
     }
   ],
   "T8": [
     {
       "clause": "T8.1",
-      "requirement": "Each selected job carries the preceding effective disposal and exact bounded frame geometry.",
+      "requirement": "The active native cache is exactly frame k\u22121\u2019s rectangle and effective disposal, not merely a bounded rectangle.",
       "proof_anchors": [
         {
           "file": "src/frame_state.rs",
           "function": "State::begin_next",
-          "line": 108,
-          "sha256": "5333992f1e4b3a7973669691dba5f2b81534398fd60a71da454c7aece29c6c41"
+          "line": 114,
+          "sha256": "1cee5ba5ac8ac52031251b9bc2f0eec8c347b3564313646d2f30ff93c8d461f2"
         },
         {
           "file": "src/frame_state.rs",
           "function": "FrameJob::select",
-          "line": 139,
-          "sha256": "5333992f1e4b3a7973669691dba5f2b81534398fd60a71da454c7aece29c6c41"
+          "line": 145,
+          "sha256": "1cee5ba5ac8ac52031251b9bc2f0eec8c347b3564313646d2f30ff93c8d461f2"
+        },
+        {
+          "file": "src/frame_state.rs",
+          "function": "resume_state",
+          "line": 287,
+          "sha256": "1cee5ba5ac8ac52031251b9bc2f0eec8c347b3564313646d2f30ff93c8d461f2"
+        },
+        {
+          "file": "src/frame_state.rs",
+          "function": "canvas_context",
+          "line": 222,
+          "sha256": "1cee5ba5ac8ac52031251b9bc2f0eec8c347b3564313646d2f30ff93c8d461f2"
+        },
+        {
+          "file": "src/iterator_canvas_model.rs",
+          "function": "previous",
+          "line": 19,
+          "sha256": "c3e3a2f9f6d00da17b907808c942ffe2e1dc575e9327335d2addee89c2b49283"
+        },
+        {
+          "file": "src/iterator_canvas_model.rs",
+          "function": "effective",
+          "line": 10,
+          "sha256": "c3e3a2f9f6d00da17b907808c942ffe2e1dc575e9327335d2addee89c2b49283"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     },
@@ -378,31 +499,31 @@
         {
           "file": "src/png.rs",
           "function": "Frames::dispose_and_save",
-          "line": 1311,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 1430,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/png.rs",
           "function": "clear_rect",
-          "line": 1780,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 2026,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/composite_model.rs",
           "function": "dispose_regions",
           "line": 188,
-          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+          "sha256": "f839e81caada0430bc873b33d977d20f439cd1cc58aea027d687c4dc80819fd7"
         },
         {
           "file": "src/composite_model.rs",
           "function": "clear_row_finished",
           "line": 154,
-          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+          "sha256": "f839e81caada0430bc873b33d977d20f439cd1cc58aea027d687c4dc80819fd7"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     },
@@ -413,48 +534,78 @@
         {
           "file": "src/frame_state.rs",
           "function": "FrameJob::select",
-          "line": 139,
-          "sha256": "5333992f1e4b3a7973669691dba5f2b81534398fd60a71da454c7aece29c6c41"
+          "line": 145,
+          "sha256": "1cee5ba5ac8ac52031251b9bc2f0eec8c347b3564313646d2f30ff93c8d461f2"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     },
     {
       "clause": "T8.4",
-      "requirement": "PREVIOUS restores the entire pre-frame reference canvas through the matching saved-rectangle effect, without prescribing Saved layout.",
+      "requirement": "PREVIOUS restores the canvas independently derived before drawing frame k\u22121, after the preceding disposal; no Saved layout is prescribed.",
       "proof_anchors": [
         {
           "file": "src/png.rs",
           "function": "Frames::restores_previous",
-          "line": 935,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 1035,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/png.rs",
           "function": "Frames::dispose_and_save",
-          "line": 1311,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 1430,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/composite_model.rs",
           "function": "saved_before_frame_restore",
           "line": 288,
-          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+          "sha256": "f839e81caada0430bc873b33d977d20f439cd1cc58aea027d687c4dc80819fd7"
         },
         {
           "file": "src/paint_model.rs",
           "function": "reference_disposal",
-          "line": 252,
-          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+          "line": 259,
+          "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
+        },
+        {
+          "file": "src/iterator_canvas_model.rs",
+          "function": "before_draw",
+          "line": 39,
+          "sha256": "c3e3a2f9f6d00da17b907808c942ffe2e1dc575e9327335d2addee89c2b49283"
+        },
+        {
+          "file": "src/iterator_canvas_model.rs",
+          "function": "reference",
+          "line": 36,
+          "sha256": "c3e3a2f9f6d00da17b907808c942ffe2e1dc575e9327335d2addee89c2b49283"
+        },
+        {
+          "file": "src/iterator_canvas_model.rs",
+          "function": "wf",
+          "line": 75,
+          "sha256": "c3e3a2f9f6d00da17b907808c942ffe2e1dc575e9327335d2addee89c2b49283"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "pixel_wf",
+          "line": 807,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "pixels_returned",
+          "line": 846,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     },
@@ -465,31 +616,31 @@
         {
           "file": "src/png.rs",
           "function": "copy_rect",
-          "line": 1808,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 2054,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/composite_model.rs",
           "function": "rectangle_access",
           "line": 100,
-          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+          "sha256": "f839e81caada0430bc873b33d977d20f439cd1cc58aea027d687c4dc80819fd7"
         },
         {
           "file": "src/composite_model.rs",
           "function": "matching_restore",
           "line": 168,
-          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+          "sha256": "f839e81caada0430bc873b33d977d20f439cd1cc58aea027d687c4dc80819fd7"
         },
         {
           "file": "src/composite_model.rs",
           "function": "saved_before_frame",
           "line": 285,
-          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+          "sha256": "f839e81caada0430bc873b33d977d20f439cd1cc58aea027d687c4dc80819fd7"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     },
@@ -500,25 +651,25 @@
         {
           "file": "src/frame_state.rs",
           "function": "State::begin_next",
-          "line": 108,
-          "sha256": "5333992f1e4b3a7973669691dba5f2b81534398fd60a71da454c7aece29c6c41"
+          "line": 114,
+          "sha256": "1cee5ba5ac8ac52031251b9bc2f0eec8c347b3564313646d2f30ff93c8d461f2"
         },
         {
           "file": "src/png.rs",
           "function": "Frames::begin_source",
-          "line": 979,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 1088,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/png.rs",
           "function": "Frames::terminal_logged",
-          "line": 1616,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 1836,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     },
@@ -530,30 +681,30 @@
           "file": "src/image.rs",
           "function": "over",
           "line": 208,
-          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+          "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
         },
         {
           "file": "src/image.rs",
           "function": "Sink::put",
           "line": 324,
-          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+          "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
         },
         {
           "file": "src/colour_model.rs",
           "function": "place",
           "line": 182,
-          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
         },
         {
           "file": "src/composite_model.rs",
           "function": "over_equations",
           "line": 60,
-          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+          "sha256": "f839e81caada0430bc873b33d977d20f439cd1cc58aea027d687c4dc80819fd7"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     },
@@ -565,74 +716,116 @@
           "file": "src/composite_model.rs",
           "function": "over_bounds",
           "line": 29,
-          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+          "sha256": "f839e81caada0430bc873b33d977d20f439cd1cc58aea027d687c4dc80819fd7"
         },
         {
           "file": "src/composite_model.rs",
           "function": "over_equations",
           "line": 60,
-          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+          "sha256": "f839e81caada0430bc873b33d977d20f439cd1cc58aea027d687c4dc80819fd7"
         },
         {
           "file": "src/image.rs",
           "function": "over",
           "line": 208,
-          "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+          "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     },
     {
       "clause": "T8.9",
-      "requirement": "Each successful production frame job establishes the independent per-position MK relation, source coordinates and rectangle write footprint.",
+      "requirement": "Every actual public Ok(Some(view)) exports the canonical per-position MK step on view.pixels(), with the previous control and independent before-draw restore reference carried across calls.",
       "proof_anchors": [
         {
           "file": "src/paint_model.rs",
           "function": "source_coordinate",
           "line": 15,
-          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+          "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
         },
         {
           "file": "src/paint_model.rs",
           "function": "pass_coordinate",
           "line": 29,
-          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+          "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
         },
         {
           "file": "src/paint_model.rs",
           "function": "complete_pixels",
-          "line": 138,
-          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+          "line": 145,
+          "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
         },
         {
           "file": "src/paint_model.rs",
           "function": "MK",
-          "line": 260,
-          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+          "line": 268,
+          "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
         },
         {
           "file": "src/png.rs",
           "function": "Frames::draw_selected",
-          "line": 1396,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 1515,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/png.rs",
           "function": "Frames::finish_job",
-          "line": 1463,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 1582,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
+        },
+        {
+          "file": "src/iterator_canvas_model.rs",
+          "function": "step",
+          "line": 45,
+          "sha256": "c3e3a2f9f6d00da17b907808c942ffe2e1dc575e9327335d2addee89c2b49283"
+        },
+        {
+          "file": "src/iterator_canvas_model.rs",
+          "function": "append_wf",
+          "line": 124,
+          "sha256": "c3e3a2f9f6d00da17b907808c942ffe2e1dc575e9327335d2addee89c2b49283"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "finish_iteration",
+          "line": 1632,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "completed_selected",
+          "line": 1742,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "selected_logged",
+          "line": 1659,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "next_logged",
+          "line": 1920,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_next",
+          "line": 1376,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending",
-      "qualification": "MK is a checked one-step pixel/disposal relation. Complete public MFr canvas/control-payload equality and Prog_ITER remain M6 obligations."
+      "qualification": "The public step and the 13 frozen frame projections include every returned canvas byte. Unrestricted returned frame records, complete MFr equality and Prog_ITER remain M6."
     },
     {
       "clause": "T8.10",
@@ -641,43 +834,55 @@
         {
           "file": "src/paint_model.rs",
           "function": "initial_transparent",
-          "line": 189,
-          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+          "line": 196,
+          "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
         },
         {
           "file": "src/paint_model.rs",
           "function": "initial_decoded",
-          "line": 195,
-          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+          "line": 202,
+          "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
         },
         {
           "file": "src/paint_model.rs",
           "function": "initial_default_source",
-          "line": 207,
-          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+          "line": 214,
+          "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
         },
         {
           "file": "src/png.rs",
           "function": "Frames::with_trace",
-          "line": 1201,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 1312,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/png.rs",
           "function": "normalize_reused",
-          "line": 1719,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 1965,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/composite_model.rs",
           "function": "over_transparent",
           "line": 235,
-          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+          "sha256": "f839e81caada0430bc873b33d977d20f439cd1cc58aea027d687c4dc80819fd7"
+        },
+        {
+          "file": "src/iterator_canvas_model.rs",
+          "function": "static_step",
+          "line": 107,
+          "sha256": "c3e3a2f9f6d00da17b907808c942ffe2e1dc575e9327335d2addee89c2b49283"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "terminal_logged",
+          "line": 1836,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     }
@@ -685,25 +890,25 @@
   "A_PNG_3_M5": [
     {
       "clause": "A-PNG-3.M5",
-      "requirement": "Saved has canvas size and fits MAX_BYTES; a decoder requests it at most once and its cumulative log has at most three entries.",
+      "requirement": "Saved has canvas size 4WH \u2264 MAX_OUTPUT \u2264 MAX_BYTES; a decoder requests it at most once and its cumulative log has at most three entries.",
       "proof_anchors": [
         {
           "file": "src/png.rs",
           "function": "Frames::ensure_saved",
-          "line": 1019,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 1128,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/png.rs",
           "function": "Frames::allocation_wf",
-          "line": 891,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 991,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/png.rs",
           "function": "Frames::allocation_clauses",
-          "line": 858,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 958,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/iterator_log_model.rs",
@@ -722,11 +927,29 @@
           "function": "log_properties",
           "line": 352,
           "sha256": "4ee5558fcb3ab7f741b36809d0e44cef5bbf153f162b0771c477909f64886ea9"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "canvas_geometry",
+          "line": 831,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
+        },
+        {
+          "file": "src/layout_model.rs",
+          "function": "image_buffers",
+          "line": 14,
+          "sha256": "dc425ca2292b8a6311a9709f88c82dce84c33c50d6100aea2593dd64a22d908c"
+        },
+        {
+          "file": "src/header.rs",
+          "function": "area_cap_u64",
+          "line": 64,
+          "sha256": "a3eaeeaf7afa01edea5ca221f4dc7e41e35d52414e6603bfea73998b18ebc6c6"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     }
@@ -739,14 +962,14 @@
         {
           "file": "src/png.rs",
           "function": "Frames::with_logged",
-          "line": 1162,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 1271,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/png.rs",
           "function": "Frames::allocation_clauses",
-          "line": 858,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 958,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/iterator_data_model.rs",
@@ -775,13 +998,13 @@
         {
           "file": "src/png.rs",
           "function": "Frames::try_next",
-          "line": 1265,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 1376,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     },
@@ -792,32 +1015,32 @@
         {
           "file": "src/png.rs",
           "function": "Frames::ensure_saved",
-          "line": 1019,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 1128,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/png.rs",
           "function": "Frames::selected_logged",
-          "line": 1522,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 1659,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/png.rs",
           "function": "Frames::terminal_logged",
-          "line": 1616,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 1836,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/png.rs",
           "function": "Frames::allocation_clauses",
-          "line": 858,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 958,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/png.rs",
           "function": "Frames::try_next",
-          "line": 1265,
-          "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+          "line": 1376,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
         },
         {
           "file": "src/iterator_data_model.rs",
@@ -839,8 +1062,8 @@
         }
       ],
       "verified_in_full_runs": [
-        586,
-        588
+        630,
+        631
       ],
       "independent_coverage_review": "pending"
     },
@@ -858,7 +1081,7 @@
           "file": "src/colour_model.rs",
           "function": "scale8_exact",
           "line": 43,
-          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
         }
       ],
       "scope": "Universal integral low-depth scaling"
@@ -870,7 +1093,7 @@
           "file": "src/colour_model.rs",
           "function": "scale16_exact",
           "line": 56,
-          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
         }
       ],
       "scope": "Universal integral five-depth scaling"
@@ -882,7 +1105,7 @@
           "file": "src/colour_model.rs",
           "function": "round16",
           "line": 70,
-          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
         }
       ],
       "scope": "Universal 16-bit half-up identity"
@@ -894,7 +1117,7 @@
           "file": "src/colour_model.rs",
           "function": "scale16_257",
           "line": 77,
-          "sha256": "9ebe57b193e9932ee02d9db47f3ea60dce9a5c8b676c6381bfe3f6c3483b8e7b"
+          "sha256": "c0a24071c0c1459f35dd499549e5a9b454ef9eeffc6e5adaa5553df335e76763"
         }
       ],
       "scope": "Low-depth channel identity only; not integrated L-16-8"
@@ -906,7 +1129,7 @@
           "file": "src/composite_model.rs",
           "function": "over_bounds",
           "line": 29,
-          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+          "sha256": "f839e81caada0430bc873b33d977d20f439cd1cc58aea027d687c4dc80819fd7"
         }
       ],
       "scope": "Byte-domain arithmetic and intermediate/result bounds"
@@ -918,7 +1141,7 @@
           "file": "src/composite_model.rs",
           "function": "saved_before_frame_restore",
           "line": 288,
-          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+          "sha256": "f839e81caada0430bc873b33d977d20f439cd1cc58aea027d687c4dc80819fd7"
         }
       ],
       "scope": "Restore effect, not a prescribed saved-buffer layout"
@@ -930,7 +1153,7 @@
           "file": "src/composite_model.rs",
           "function": "rectangle_access",
           "line": 100,
-          "sha256": "9c6889daa22e0a25ea31f90c25cdc501c9ff9a5f3a2f1e9c5f03a42932561b07"
+          "sha256": "f839e81caada0430bc873b33d977d20f439cd1cc58aea027d687c4dc80819fd7"
         }
       ],
       "scope": "Actual source-load membership in matching saved rectangle"
@@ -941,8 +1164,8 @@
         {
           "file": "src/paint_model.rs",
           "function": "MK",
-          "line": 260,
-          "sha256": "77b704a1b62276bb198b79f61c5d04c1a463b62a8debf3b71c8bb49f4d7a96d1"
+          "line": 268,
+          "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
         }
       ],
       "scope": "Independent source coordinate/channel/disposal predicate"
@@ -970,6 +1193,54 @@
         }
       ],
       "scope": "Mathematical per-call cumulative allocation projection"
+    },
+    {
+      "name": "Independent pre-draw canvas history",
+      "proof_anchors": [
+        {
+          "file": "src/iterator_canvas_model.rs",
+          "function": "wf",
+          "line": 75,
+          "sha256": "c3e3a2f9f6d00da17b907808c942ffe2e1dc575e9327335d2addee89c2b49283"
+        }
+      ],
+      "scope": "Every before[j] is derived from canonical prior disposal and already checked returned canvases"
+    },
+    {
+      "name": "Public iterator pixel invariant",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "pixel_context",
+          "line": 812,
+          "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
+        }
+      ],
+      "scope": "Active/current canvas and PREVIOUS restore source are tied to the independent history"
+    },
+    {
+      "name": "Public physical output projection",
+      "proof_anchors": [
+        {
+          "file": "src/paint_model.rs",
+          "function": "still_pixels",
+          "line": 280,
+          "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
+        }
+      ],
+      "scope": "Successful public still/still16 bytes obey independent source-pixel equations"
+    },
+    {
+      "name": "Physical block extensionality",
+      "proof_anchors": [
+        {
+          "file": "src/paint_model.rs",
+          "function": "pixel_blocks_equal",
+          "line": 346,
+          "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
+        }
+      ],
+      "scope": "Agreement of every physical RGBA block implies equality of output bytes"
     }
   ],
   "retained_arithmetic_dependencies": [
@@ -1000,542 +1271,317 @@
     {
       "file": "src/png.rs",
       "function": "rectangle_row",
-      "line": 1767,
-      "sha256": "513c2ea380474c0818201ab8a190d8357c6133033dbe84eff337a07571a1ec2f"
+      "line": 2013,
+      "sha256": "ebba1960ef7d5fcebf13f81f0c737a7b26e39ea071ddcfbed29205bf40983e1b"
     },
     {
       "file": "src/image.rs",
       "function": "pixel_offset",
       "line": 245,
-      "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+      "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
     },
     {
       "file": "src/image.rs",
       "function": "raw_budget",
       "line": 177,
-      "sha256": "506b082cf16cc53d5a1c7a997260eb1de38913a6435b38375adb422d814b8549"
+      "sha256": "d7bcb03787420115940f4e707d50d6c9ca34d1c430e5330ec95c5c2ee43d4998"
     },
     {
       "file": "src/frame_transport_model.rs",
       "function": "saved_before_exact",
       "line": 454,
-      "sha256": "b47c908d3208c24173c9d631873a2f3f4e71f1bf01dc7075b90a0a5568e4b1e9"
+      "sha256": "af02bc900d1154599f00bda0b172d69c55b57a5b6faf6b61389957fa070379df"
     }
   ],
   "proof_map_file": "evidence/m5-proof-map.json",
-  "proof_map_sha256": "b2d850275383192c370ece6bf2f72c3fc78b5b8847fad1fed2b0c196f7aa32c8",
+  "proof_map_sha256": "9c23253e3f034eaabd9c111dc71015fd3f7cfa54ff18a1da3b13b721e9b61be3",
   "E6_clause_7_per_record_list": [
     {
       "name": "ok16/ct0-d1-il0-7x5",
       "entry": "still16",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_ok16_ct0_d1_il0_7x5",
-      "public_function": "public_ok16_ct0_d1_il0_7x5",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "ok/ct0-d2-il1-7x5",
       "entry": "still",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_ok_ct0_d2_il1_7x5",
-      "public_function": "public_ok_ct0_d2_il1_7x5",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "ok/ct3-d4-il0-9x10",
       "entry": "still",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_ok_ct3_d4_il0_9x10",
-      "public_function": "public_ok_ct3_d4_il0_9x10",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "ok16/ct3-d8-il1-7x5",
       "entry": "still16",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_ok16_ct3_d8_il1_7x5",
-      "public_function": "public_ok16_ct3_d8_il1_7x5",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "ok/ct4-d16-il1-9x10",
       "entry": "still",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_ok_ct4_d16_il1_9x10",
-      "public_function": "public_ok_ct4_d16_il1_9x10",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "ok/ct6-d16-il0-17x2",
       "entry": "still",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_ok_ct6_d16_il0_17x2",
-      "public_function": "public_ok_ct6_d16_il0_17x2",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "ok16/ct6-d16-il1-7x5",
       "entry": "still16",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_ok16_ct6_d16_il1_7x5",
-      "public_function": "public_ok16_ct6_d16_il1_7x5",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "trns/grey-d1-masked",
       "entry": "still",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_trns_grey_d1_masked",
-      "public_function": "public_trns_grey_d1_masked",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "trns/grey-d16",
       "entry": "still",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_trns_grey_d16",
-      "public_function": "public_trns_grey_d16",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "trns/rgb-d16-low-byte-differs",
       "entry": "still",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_trns_rgb_d16_low_byte_differs",
-      "public_function": "public_trns_rgb_d16_low_byte_differs",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "trns16/palette-d8-16-3",
       "entry": "still16",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_trns16_palette_d8_16_3",
-      "public_function": "public_trns16_palette_d8_16_3",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "trns16/palette-d8-16-16",
       "entry": "still16",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_trns16_palette_d8_16_16",
-      "public_function": "public_trns16_palette_d8_16_16",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "trns16/palette-d4-16-1",
       "entry": "still16",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_trns16_palette_d4_16_1",
-      "public_function": "public_trns16_palette_d4_16_1",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "trns/palette-d1-2-entries-2-alpha",
       "entry": "still",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_trns_palette_d1_2_entries_2_alpha",
-      "public_function": "public_trns_palette_d1_2_entries_2_alpha",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "trns16/palette-d1-2-2",
       "entry": "still16",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_trns16_palette_d1_2_2",
-      "public_function": "public_trns16_palette_d1_2_2",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "depth16/rounding-boundaries",
       "entry": "still",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_depth16_rounding_boundaries",
-      "public_function": "public_depth16_rounding_boundaries",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "image/palette-index-out-of-range",
       "entry": "still",
-      "gate_assignment": "complete at M5",
-      "projection": "exact standalone error",
-      "model_function": "model_image_palette_index_out_of_range",
-      "public_function": "public_image_palette_index_out_of_range",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "complete at M5",
+      "observation": "exact standalone error"
     },
     {
       "name": "image/palette-index-out-of-range-d2",
       "entry": "still",
-      "gate_assignment": "complete at M5",
-      "projection": "exact standalone error",
-      "model_function": "model_image_palette_index_out_of_range_d2",
-      "public_function": "public_image_palette_index_out_of_range_d2",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "complete at M5",
+      "observation": "exact standalone error"
     },
     {
       "name": "plte/suggested-palette-in-rgb",
       "entry": "still",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_plte_suggested_palette_in_rgb",
-      "public_function": "public_plte_suggested_palette_in_rgb",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "apng/still-is-default-image",
       "entry": "still",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_apng_still_is_default_image",
-      "public_function": "public_apng_still_is_default_image",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "apng/default-not-in-animation-still",
       "entry": "still",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_apng_default_not_in_animation_still",
-      "public_function": "public_apng_default_not_in_animation_still",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "apng/frame1-error-still-unaffected",
       "entry": "still",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_apng_frame1_error_still_unaffected",
-      "public_function": "public_apng_frame1_error_still_unaffected",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "apng/empty-fdat-payload-still",
       "entry": "still",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_apng_empty_fdat_payload_still",
-      "public_function": "public_apng_empty_fdat_payload_still",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "apng/empty-fdat-then-data-still",
       "entry": "still",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "data success, dimensions and physical RGBA byte length; no channel equality",
-      "model_function": "model_apng_empty_fdat_then_data_still",
-      "public_function": "public_apng_empty_fdat_then_data_still",
-      "source_file": "src/witness_m5_still.rs",
-      "source_sha256": "b821c4c6d4b4609f7512ea12dd292cf2a6b54759720ba15f1e076fe1e4ea50e3"
+      "classification": "projection at M5, complete at M6",
+      "observation": "data success, dimensions and every frozen physical RGBA byte through T4"
     },
     {
       "name": "apng/default-is-frame0-dispose-bg-blend-over",
       "entry": "frames",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "constructor/data success, dimensions, returned-frame count and terminal error/IEND; no canvas/control-payload equality",
-      "model_function": "model_apng_default_is_frame0_dispose_bg_blend_over",
-      "public_function": "public_apng_default_is_frame0_dispose_bg_blend_over",
-      "source_file": "src/witness_m5_frames.rs",
-      "source_sha256": "6bc09fc0e5578c0a9aaf4abbf54dc7ade417412ec863612f419be17d61ccca35"
+      "classification": "projection at M5, complete at M6",
+      "observation": "constructor/data success, dimensions, returned-frame count, every frozen canvas byte through MK and terminal error/IEND; full frame records remain due at M6"
     },
     {
       "name": "apng/default-not-in-animation",
       "entry": "frames",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "constructor/data success, dimensions, returned-frame count and terminal error/IEND; no canvas/control-payload equality",
-      "model_function": "model_apng_default_not_in_animation",
-      "public_function": "public_apng_default_not_in_animation",
-      "source_file": "src/witness_m5_frames.rs",
-      "source_sha256": "6bc09fc0e5578c0a9aaf4abbf54dc7ade417412ec863612f419be17d61ccca35"
+      "classification": "projection at M5, complete at M6",
+      "observation": "constructor/data success, dimensions, returned-frame count, every frozen canvas byte through MK and terminal error/IEND; full frame records remain due at M6"
     },
     {
       "name": "apng/dispose-previous-first-frame-and-later",
       "entry": "frames",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "constructor/data success, dimensions, returned-frame count and terminal error/IEND; no canvas/control-payload equality",
-      "model_function": "model_apng_dispose_previous_first_frame_and_later",
-      "public_function": "public_apng_dispose_previous_first_frame_and_later",
-      "source_file": "src/witness_m5_frames.rs",
-      "source_sha256": "6bc09fc0e5578c0a9aaf4abbf54dc7ade417412ec863612f419be17d61ccca35"
+      "classification": "projection at M5, complete at M6",
+      "observation": "constructor/data success, dimensions, returned-frame count, every frozen canvas byte through MK and terminal error/IEND; full frame records remain due at M6"
     },
     {
       "name": "apng/blend-over-arithmetic",
       "entry": "frames",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "constructor/data success, dimensions, returned-frame count and terminal error/IEND; no canvas/control-payload equality",
-      "model_function": "model_apng_blend_over_arithmetic",
-      "public_function": "public_apng_blend_over_arithmetic",
-      "source_file": "src/witness_m5_frames.rs",
-      "source_sha256": "6bc09fc0e5578c0a9aaf4abbf54dc7ade417412ec863612f419be17d61ccca35"
+      "classification": "projection at M5, complete at M6",
+      "observation": "constructor/data success, dimensions, returned-frame count, every frozen canvas byte through MK and terminal error/IEND; full frame records remain due at M6"
     },
     {
       "name": "apng/blend-over-transparent-source",
       "entry": "frames",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "constructor/data success, dimensions, returned-frame count and terminal error/IEND; no canvas/control-payload equality",
-      "model_function": "model_apng_blend_over_transparent_source",
-      "public_function": "public_apng_blend_over_transparent_source",
-      "source_file": "src/witness_m5_frames.rs",
-      "source_sha256": "6bc09fc0e5578c0a9aaf4abbf54dc7ade417412ec863612f419be17d61ccca35"
+      "classification": "projection at M5, complete at M6",
+      "observation": "constructor/data success, dimensions, returned-frame count, every frozen canvas byte through MK and terminal error/IEND; full frame records remain due at M6"
     },
     {
       "name": "apng/blend-over-transparent-destination",
       "entry": "frames",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "constructor/data success, dimensions, returned-frame count and terminal error/IEND; no canvas/control-payload equality",
-      "model_function": "model_apng_blend_over_transparent_destination",
-      "public_function": "public_apng_blend_over_transparent_destination",
-      "source_file": "src/witness_m5_frames.rs",
-      "source_sha256": "6bc09fc0e5578c0a9aaf4abbf54dc7ade417412ec863612f419be17d61ccca35"
+      "classification": "projection at M5, complete at M6",
+      "observation": "constructor/data success, dimensions, returned-frame count, every frozen canvas byte through MK and terminal error/IEND; full frame records remain due at M6"
     },
     {
       "name": "apng/blend-over-zero-result-alpha",
       "entry": "frames",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "constructor/data success, dimensions, returned-frame count and terminal error/IEND; no canvas/control-payload equality",
-      "model_function": "model_apng_blend_over_zero_result_alpha",
-      "public_function": "public_apng_blend_over_zero_result_alpha",
-      "source_file": "src/witness_m5_frames.rs",
-      "source_sha256": "6bc09fc0e5578c0a9aaf4abbf54dc7ade417412ec863612f419be17d61ccca35"
+      "classification": "projection at M5, complete at M6",
+      "observation": "constructor/data success, dimensions, returned-frame count, every frozen canvas byte through MK and terminal error/IEND; full frame records remain due at M6"
     },
     {
       "name": "apng/interlaced-subframe",
       "entry": "frames",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "constructor/data success, dimensions, returned-frame count and terminal error/IEND; no canvas/control-payload equality",
-      "model_function": "model_apng_interlaced_subframe",
-      "public_function": "public_apng_interlaced_subframe",
-      "source_file": "src/witness_m5_frames.rs",
-      "source_sha256": "6bc09fc0e5578c0a9aaf4abbf54dc7ade417412ec863612f419be17d61ccca35"
+      "classification": "projection at M5, complete at M6",
+      "observation": "constructor/data success, dimensions, returned-frame count, every frozen canvas byte through MK and terminal error/IEND; full frame records remain due at M6"
     },
     {
       "name": "apng/static-file-as-frames",
       "entry": "frames",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "constructor/data success, dimensions, returned-frame count and terminal error/IEND; no canvas/control-payload equality",
-      "model_function": "model_apng_static_file_as_frames",
-      "public_function": "public_apng_static_file_as_frames",
-      "source_file": "src/witness_m5_frames.rs",
-      "source_sha256": "6bc09fc0e5578c0a9aaf4abbf54dc7ade417412ec863612f419be17d61ccca35"
+      "classification": "projection at M5, complete at M6",
+      "observation": "constructor/data success, dimensions, returned-frame count, every frozen canvas byte through MK and terminal error/IEND; full frame records remain due at M6"
     },
     {
       "name": "apng/frame1-adler-error-ends",
       "entry": "frames",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "constructor/data success, dimensions, returned-frame count and terminal error/IEND; no canvas/control-payload equality",
-      "model_function": "model_apng_frame1_adler_error_ends",
-      "public_function": "public_apng_frame1_adler_error_ends",
-      "source_file": "src/witness_m5_frames.rs",
-      "source_sha256": "6bc09fc0e5578c0a9aaf4abbf54dc7ade417412ec863612f419be17d61ccca35"
+      "classification": "projection at M5, complete at M6",
+      "observation": "constructor/data success, dimensions, returned-frame count, every frozen canvas byte through MK and terminal error/IEND; full frame records remain due at M6"
     },
     {
       "name": "apng/frame1-truncated-data-ends",
       "entry": "frames",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "constructor/data success, dimensions, returned-frame count and terminal error/IEND; no canvas/control-payload equality",
-      "model_function": "model_apng_frame1_truncated_data_ends",
-      "public_function": "public_apng_frame1_truncated_data_ends",
-      "source_file": "src/witness_m5_frames.rs",
-      "source_sha256": "6bc09fc0e5578c0a9aaf4abbf54dc7ade417412ec863612f419be17d61ccca35"
+      "classification": "projection at M5, complete at M6",
+      "observation": "constructor/data success, dimensions, returned-frame count, every frozen canvas byte through MK and terminal error/IEND; full frame records remain due at M6"
     },
     {
       "name": "apng/empty-fdat-payload",
       "entry": "frames",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "constructor/data success, dimensions, returned-frame count and terminal error/IEND; no canvas/control-payload equality",
-      "model_function": "model_apng_empty_fdat_payload",
-      "public_function": "public_apng_empty_fdat_payload",
-      "source_file": "src/witness_m5_frames.rs",
-      "source_sha256": "6bc09fc0e5578c0a9aaf4abbf54dc7ade417412ec863612f419be17d61ccca35"
+      "classification": "projection at M5, complete at M6",
+      "observation": "constructor/data success, dimensions, returned-frame count, every frozen canvas byte through MK and terminal error/IEND; full frame records remain due at M6"
     },
     {
       "name": "apng/empty-fdat-then-data",
       "entry": "frames",
-      "gate_assignment": "projection at M5, complete at M6",
-      "projection": "constructor/data success, dimensions, returned-frame count and terminal error/IEND; no canvas/control-payload equality",
-      "model_function": "model_apng_empty_fdat_then_data",
-      "public_function": "public_apng_empty_fdat_then_data",
-      "source_file": "src/witness_m5_frames.rs",
-      "source_sha256": "6bc09fc0e5578c0a9aaf4abbf54dc7ade417412ec863612f419be17d61ccca35"
+      "classification": "projection at M5, complete at M6",
+      "observation": "constructor/data success, dimensions, returned-frame count, every frozen canvas byte through MK and terminal error/IEND; full frame records remain due at M6"
     }
   ],
-  "assurance_gates": [
+  "witness_indexes": [
     {
-      "gate": "Every M5 theorem row, checked by the independent ghost-code reader",
-      "status": "COMPUTATIONAL VERIFICATION/MAP PRESENT; INDEPENDENT REVIEW PENDING",
-      "full_runs": [
-        586,
-        588
-      ],
-      "verified_each": 4514,
-      "no_functional_exclusions": true,
-      "proof_map": "evidence/m5-proof-map.json",
-      "qualification": "Zero verifier errors are not an independent frozen-statement coverage, model-independence or non-vacuity review."
+      "file": "evidence/m5-still-witness-index.json",
+      "sha256": "c637f66eb1f63026158b5860257734c150f70c1e88ac50e481ca6f349f7bfadd"
     },
     {
-      "gate": "M5 witness gates",
-      "status": "MET UNDER E6",
-      "complete_error_witnesses": 2,
-      "projection_witnesses": 35,
-      "unrestricted_outcomes_due_M6": 35,
-      "unrestricted_outcomes_credited": 0
-    },
-    {
-      "gate": "Runtime conformance",
-      "status": "MET UNDER E7",
-      "run": 594,
-      "pass": 846,
-      "total": 848,
-      "fail": 0,
-      "skip": 2,
-      "never_run_skips": [
-        "policy/crc-ancillary/fdat-frames/image-crate-compat",
-        "policy/crc-ancillary/fdat-still/image-crate-compat"
-      ]
-    },
-    {
-      "gate": "Inflate differential",
-      "status": "RETAINED UNCHANGED-DEPENDENCY EVIDENCE",
-      "run": 371,
-      "streams": 10000,
-      "single_bit_corruptions": 10000,
-      "unexpected_differences": 0,
-      "fresh_run": false,
-      "file": "evidence/m4-inflate-differential-0371.log",
-      "sha256": "dfb6e6ff512388061df55483a9373fc57235a703ebc2ce033c47f8b2cf4bdea4"
-    },
-    {
-      "gate": "M5 proof-sensitivity mutations",
-      "status": "MET FOR THIS BATCH; LOCALIZATION CONTROL EXPLICIT",
-      "numbers": [
-        24,
-        25,
-        26,
-        27,
-        28,
-        29,
-        30,
-        32
-      ],
-      "kills": 8,
-      "passing_controls": [
-        590,
-        595
-      ],
-      "runs": [
-        596,
-        597,
-        598,
-        599,
-        600,
-        601,
-        602,
-        603
-      ],
-      "audit_run": 604,
-      "index": "evidence/mutation-index.json",
-      "no_resource_type_panic_timeout_or_runtime_kill_credited": true,
-      "functional_checkpoint_credit": false
-    },
-    {
-      "gate": "CAPS-SYM",
-      "status": "DUE AT M6; NOT RUN",
-      "zero_proof_edit_cap_perturbation_replays": 0
-    },
-    {
-      "gate": "Allocation audit, fault injection and logical/physical trace",
-      "status": "FRESH CONTROLS PLUS CHECKED M5 CUMULATIVE LOG",
-      "run": 594,
-      "sites": [
-        "Raw",
-        "Output",
-        "Saved",
-        "IccWindow",
-        "Icc"
-      ],
-      "fault_injection_source": "tests/fault_injection.rs",
-      "source_sha256": "77a9519b4677496dbf99c708858d55c5d724ddbf7f547f3ea1624ef8aaa10878",
-      "new_M5_scope": "Actual owned cumulative Saved log and A-PNG-4 clauses 1\u20132",
-      "not_claimed": [
-        "A generic heap-effect theorem beyond E2",
-        "M6 Prog_ITER/full public pixel equality"
-      ]
-    },
-    {
-      "gate": "Native no_std and source lints",
-      "status": "MET AT NATIVE BUILD SCOPE",
-      "run": 594,
-      "no_std_roots": [
-        "src/lib.rs",
-        "../inflate_verus/src/lib.rs"
-      ],
-      "not_claimed": [
-        "Fresh standalone inflate build",
-        "Freestanding build",
-        "i686 runtime execution"
-      ]
+      "file": "evidence/m5-frames-witness-index.json",
+      "sha256": "892658e434a3fd27fed1f0af892a0943757d038b0ba636abbbffbeeb8c6cc3d9"
     }
   ],
+  "witness_totals": {
+    "complete_palette_errors": 2,
+    "physical_pixel_or_canvas_projections": 35,
+    "unrestricted_results_still_due_at_M6": 35
+  },
   "mutation_index": "evidence/mutation-index.json",
-  "mutation_index_sha256": "7b3e2f0f1448a347d2a09772d92847dcc4adebe3c701c0bd3fa7eb3008d28abb",
-  "mutation_24_localization": "Only in scratch: extract the three unscaled key comparisons into a native helper with the same element-wise equality contract. Control 595 proves all original implementation contracts plus that helper. Run 596 changes only its native comparison to high-byte-only. No existing model, contract or proof body is weakened.",
-  "runtime_evidence": "evidence/m5-signoff-runtime-0594.json",
-  "audit_evidence": "evidence/m5-mutation-audit.json",
-  "independent_review_blockers": [
-    "Exact M5 frozen-clause coverage, model independence and non-vacuity checked by an independent ghost-code reader"
-  ],
-  "later_scheduled_gates": [
-    "35 unrestricted M5 pixel/frame witnesses and the carried M3/M4 witness deferrals at M6",
-    "Complete public MS/MS16/MFr and T-ITER/T-PLAYS/T13; A-PNG-4 Prog_ITER; integrated L-16-8",
-    "CAPS-SYM at M6",
-    "All forty implementation mutations and the alloc-delta set at M6",
-    "Remaining P1/P2 obligations and the two never-run ImageCrateCompat records"
-  ],
-  "milestone_deferral_counts_not_disjoint": true,
-  "ledger_sha256": "2ca4a5d3a74b1b2e4bf3c9f247cad0105e01bd01c1081423e8eb1a2f8fd65c0b",
-  "canonical_functional_source_modified": false,
+  "mutation_index_sha256": "9d83bb5145a9f7731238fa53b7dcf0a9dd0aa4ddd33f7a47a4d58cfc2cf4e2d8",
+  "mutation_24": {
+    "historical_596_credit": "localized only",
+    "canonical_replacement_run": 633,
+    "canonical_control_run": 632,
+    "failed_function": "trns_samples_equal",
+    "scratch_preparation": null
+  },
+  "runtime_evidence": {
+    "record": {
+      "file": "evidence/m5-review-runtime-0629.json",
+      "sha256": "d4d66010e94ae585d176330701656ceecb8a4871e19caada76a8b64e1382b32a"
+    },
+    "log": {
+      "file": "evidence/m5-review-runtime-0629.log",
+      "sha256": "30945b7da4a989e4c47184cb385290bb39faeb248d4f59f62b5940a3a764137a"
+    },
+    "pass": 846,
+    "total": 848,
+    "fail": 0,
+    "never_run_skips": [
+      "policy/crc-ancillary/fdat-frames/image-crate-compat",
+      "policy/crc-ancillary/fdat-still/image-crate-compat"
+    ]
+  },
+  "final_control_evidence": {
+    "record": {
+      "file": "evidence/m5-review-final-control-0634.json",
+      "sha256": "661e521a5cb29beae8e3a2a5babd3aa6e443ab557ed62966a1993e5818e47dc5"
+    },
+    "log": {
+      "file": "evidence/m5-review-final-control-0634.log",
+      "sha256": "c68097eac29c8cf69f939c71267de32ad7a27ea1fb65097b5e7dd19950882155"
+    }
+  },
+  "integrity_control_record": "evidence/m5-review-integrity.json",
+  "integrity_control_log": "evidence/m5-review-integrity.log",
+  "ledger_sha256": "efead095e50f6b729a73c3b9ddc32804368ba521064f8fdc4863b39b4aa0bff0",
   "protected_files_or_questions_modified": false,
   "new_vstd_or_verifier_cache_built": false,
   "cargo_verification_invoked": false,
   "committed_or_pushed": false,
-  "historical_artifact_qualification": "Older M4 packets refer to their historical mutation-index hash. This extended index preserves their original M4 records and adds the M5 batch; older packets are not rewritten.",
-  "packet_integrity_control_run": 605,
-  "packet_integrity_control_log": "evidence/m5-packet-integrity-0605.log"
+  "remaining_gates": [
+    "Independent acceptance of the corrected M5 packet",
+    "Complete unrestricted MS/MS16/MFr result records at M6",
+    "T9/T-ITER/T-PLAYS/T13 and A-PNG-4 Prog_ITER",
+    "Integrated L-16-8",
+    "Unimplemented ImageCrateCompat conformance remains exactly two E7 skips"
+  ]
 }

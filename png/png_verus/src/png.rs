@@ -31,6 +31,8 @@ use crate::iterator_log_model as iterlog;
 #[cfg(verus_only)]
 use crate::iterator_data_model as iterdata;
 #[cfg(verus_only)]
+use crate::iterator_canvas_model as canvas_model;
+#[cfg(verus_only)]
 use inflate_verus::Segments;
 use crate::walk::{Doc, Ihdr};
 
@@ -41,6 +43,10 @@ use vstd::prelude::*;
 type CallHistory = crate::iterator_data_model::History;
 #[cfg(not(verus_only))]
 type CallHistory = ();
+#[cfg(verus_only)]
+type CallCanvas = crate::iterator_canvas_model::Trace;
+#[cfg(not(verus_only))]
+type CallCanvas = ();
 
 verus! {
 
@@ -563,7 +569,8 @@ fn icc_preparation_logged(b: &[u8])
 /// P15 for RGBA8 (`wide = false`) or RGBA16: walk, reserve, decode.
 fn still_impl(b: &[u8],pol: &Policy,wide: bool,ev: &mut Events,trace: &mut Trace) -> (r: Result<(Doc,Vec<u8>),TryError>)
     requires old(trace).wf(),old(trace).n==0,
-    ensures final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),false,wide,r,final(trace).log_view()),
+    ensures match r {Ok((_,out))=>paint::still_pixels(b@,*pol,wide,out@),_=>true},
+        final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),false,wide,r,final(trace).log_view()),
         match r {Ok((doc,out))=>doc.wf(b@) && crate::allocation_model::returned_info(b@,pol.walk_view(),false,doc.info.view())
             && out.len()==crate::layout_model::output_count(doc.ihdr.view(),wide),_=>true},
         crate::allocation_model::propagated_inflate_error(b@,*pol,false,r),
@@ -579,25 +586,38 @@ fn still_impl(b: &[u8],pol: &Policy,wide: bool,ev: &mut Events,trace: &mut Trace
     proof {
         crate::limits::caps_ok();crate::icc_model::short_log(trace.log_view());
         assert(crate::allocation_model::returned_info(b@,pol.walk_view(),false,doc.info.view()));
+        crate::allocation_model::prepared_still_document(b@,pol.walk_view(),wide,doc.view(),ev.view(),trace.log_view());
     }
+    let ghost walked_events=ev.view();
     let ghost output_len=out.len();
+    let ghost default_z=crate::document_model::default_stream(b@,doc.view()).unwrap();
     {
         let mut src=IdatReader::for_doc(b,&doc);
         let mut sink=Sink::image(&mut out,doc.ihdr.w,doc.ihdr.h,wide);
+        let ghost before_pixels=sink.pixels();
+        let ghost after_pixels;
         let decoded=decode_image(&doc,b,&mut src,&mut raw,doc.ihdr.w,doc.ihdr.h,pol,ev,&mut sink);
         assert(raster::document_data(b@,doc.view(),*pol)==Some(decoded));
+        proof {after_pixels=sink.pixels();}
         sink.finish();
         match decoded {Err(e)=>return Err(TryError::Format(e)),Ok(())=>{}}
+        proof {
+            paint::image_from_progress(raster::inflated(default_z,paint::default_raster(doc.view(),*pol),*pol).out,
+                paint::default_raster(doc.view(),*pol),crate::colour_model::from_doc(doc.view(),b@),before_pixels,after_pixels,wide,
+                pol.palette_index==crate::policy::PaletteIndex::Black);
+        }
 
     }
     assert(out.len()==output_len);
     assert(crate::allocation_model::returned_info(b@,pol.walk_view(),false,doc.info.view()));
+    proof {paint::still_pixels_intro(b@,doc.view(),*pol,wide,out@,default_z,walked_events);}
     Ok((doc,out))
 }
 
 fn still8(b: &[u8],pol: &Policy,ev: &mut Events,trace: &mut Trace) -> (r: Result<Still,TryError>)
     requires old(trace).wf(),old(trace).n==0,
-    ensures final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),false,false,r,final(trace).log_view()),
+    ensures match r {Ok(s)=>paint::still_pixels(b@,*pol,false,s.rgba@),_=>true},
+        final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),false,false,r,final(trace).log_view()),
         match r {Ok(s)=>s.info.ranges_wf(b.len() as nat) && crate::allocation_model::returned_info(b@,pol.walk_view(),false,s.info.view()),_=>true},
         crate::allocation_model::propagated_inflate_error(b@,*pol,false,r),
         raster::fmt_eq(b@,*pol,false,r),
@@ -608,7 +628,8 @@ fn still8(b: &[u8],pol: &Policy,ev: &mut Events,trace: &mut Trace) -> (r: Result
 }
 fn still16(b: &[u8],pol: &Policy,ev: &mut Events,trace: &mut Trace) -> (r: Result<Still16,TryError>)
     requires old(trace).wf(),old(trace).n==0,
-    ensures final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),false,true,r,final(trace).log_view()),
+    ensures match r {Ok(s)=>paint::still_pixels(b@,*pol,true,s.rgba16@),_=>true},
+        final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),false,true,r,final(trace).log_view()),
         match r {Ok(s)=>s.info.ranges_wf(b.len() as nat) && crate::allocation_model::returned_info(b@,pol.walk_view(),false,s.info.view()),_=>true},
         raster::fmt_eq(b@,*pol,true,r),
         match r {Ok(s)=>raster::shape_matches(b@,*pol,true,s.width,s.height,s.rgba16.len() as nat),_=>true},
@@ -619,7 +640,8 @@ fn still16(b: &[u8],pol: &Policy,ev: &mut Events,trace: &mut Trace) -> (r: Resul
 
 /// Strict RGBA8 public entry: checked walk-error dispatch and Info forwarding.
 pub fn try_decode_still(b: &[u8]) -> (r: Result<Still,TryError>)
-    ensures forall|e: Error,ev: crate::document_model::Events|
+    ensures match r {Ok(s)=>paint::still_pixels(b@,STRICT,false,s.rgba@),_=>true},
+        forall|e: Error,ev: crate::document_model::Events|
         crate::document_model::MW_p(b@,crate::document_model::strict())==crate::document_model::Outcome::Error(e,ev)
             ==> r==Err(TryError::Format(e)),
         match r {Ok(s)=>s.info.ranges_within(b.len() as nat) && crate::allocation_model::returned_info(b@,crate::document_model::strict(),false,s.info.model_value()),_=>true},
@@ -634,7 +656,8 @@ pub fn try_decode_still(b: &[u8]) -> (r: Result<Still,TryError>)
     result
 }
 pub fn try_decode_still16(b: &[u8]) -> (r: Result<Still16,TryError>)
-    ensures raster::fmt_eq(b@,STRICT,true,r),
+    ensures match r {Ok(s)=>paint::still_pixels(b@,STRICT,true,s.rgba16@),_=>true},
+        raster::fmt_eq(b@,STRICT,true,r),
         match r {Ok(s)=>raster::shape_matches(b@,STRICT,true,s.width,s.height,s.rgba16.len() as nat),_=>true},
         forall|e: Error,ev: crate::document_model::Events|
         crate::document_model::MW_p(b@,crate::document_model::strict())==crate::document_model::Outcome::Error(e,ev)
@@ -649,7 +672,8 @@ pub fn try_decode_still16(b: &[u8]) -> (r: Result<Still16,TryError>)
 }
 
 pub fn try_decode_still_with_policy(b: &[u8],p: Profile) -> (r: Result<(Still,bool),TryError>)
-    ensures raster::fmt_eq(b@,raster::profile(p),false,r),
+    ensures match r {Ok((s,_))=>paint::still_pixels(b@,raster::profile(p),false,s.rgba@),_=>true},
+        raster::fmt_eq(b@,raster::profile(p),false,r),
         match r {Ok((s,_))=>raster::shape_matches(b@,raster::profile(p),false,s.width,s.height,s.rgba.len() as nat),_=>true},
         forall|e: Error,ev: crate::document_model::Events|
         crate::document_model::MW_p(b@,p.walk_model())==crate::document_model::Outcome::Error(e,ev) ==> r==Err(TryError::Format(e)),
@@ -661,7 +685,8 @@ pub fn try_decode_still_with_policy(b: &[u8],p: Profile) -> (r: Result<(Still,bo
     Ok((s,ev.any()))
 }
 pub fn try_decode_still16_with_policy(b: &[u8],p: Profile) -> (r: Result<(Still16,bool),TryError>)
-    ensures raster::fmt_eq(b@,raster::profile(p),true,r),
+    ensures match r {Ok((s,_))=>paint::still_pixels(b@,raster::profile(p),true,s.rgba16@),_=>true},
+        raster::fmt_eq(b@,raster::profile(p),true,r),
         match r {Ok((s,_))=>raster::shape_matches(b@,raster::profile(p),true,s.width,s.height,s.rgba16.len() as nat),_=>true},
         forall|e: Error,ev: crate::document_model::Events|
         crate::document_model::MW_p(b@,p.walk_model())==crate::document_model::Outcome::Error(e,ev) ==> r==Err(TryError::Format(e)),
@@ -726,6 +751,7 @@ impl FrameView<'_> {
 
 impl<'f> FrameView<'f> {
     pub closed spec fn byte_len(&self) -> nat {self.rgba@.len()}
+    pub closed spec fn pixels(&self) -> Seq<u8> {self.rgba@}
 }
 
 
@@ -742,6 +768,7 @@ pub struct Frames<'a> {
     /// Erased reference captured from the actual canvas before frame painting.
     snapshot: Ghost<Option<Seq<u8>>>,
     history: Ghost<CallHistory>,
+    pixel_history: Ghost<CallCanvas>,
     log: Tracked<AllocLog>,
     base: Events,
     state: FrameState,
@@ -762,6 +789,79 @@ impl<'a> Frames<'a> {
     pub closed spec fn model_document(&self) -> crate::document_model::Doc {self.doc.view()}
     pub closed spec fn model_policy(&self) -> Policy {self.pol}
     pub closed spec fn raw_len(&self) -> nat {self.raw@.len()}
+    pub closed spec fn canvas_pixels(&self) -> Seq<u8> {self.canvas@}
+    pub closed spec fn restore_reference(&self) -> Option<Seq<u8>> {self.snapshot@}
+    pub closed spec fn canvas_trace(&self) -> canvas_model::Trace {self.pixel_history@}
+    pub closed spec fn previous_control(&self) -> Option<((u32,u32,u32,u32),u8)> {self.state.previous()}
+    closed spec fn pixel_conditions(&self) -> bool {
+        canvas_model::wf(self.b@,self.doc.view(),self.pol,self.pixel_history@)
+        && self.pixel_history@.after.len()==self.history@.returned
+        && ((matches!(self.history_view().phase,iterdata::Phase::Active) || matches!(self.history_view().phase,iterdata::Phase::Iend))
+            ==> self.canvas@==canvas_model::canvas_before(self.pixel_history@,self.history@.returned))
+        && (matches!(self.history_view().phase,iterdata::Phase::Active) ==> match canvas_model::previous(self.doc.view(),self.history@.returned) {
+            Some((_,2))=>self.snapshot@==canvas_model::reference(self.pixel_history@,self.history@.returned),_=>true})
+    }
+    /// Public-boundary pixel history: the reference is the derived before-draw
+    /// canvas of the preceding frame, not an arbitrary saved-buffer witness.
+    #[verifier::opaque]
+    pub closed spec fn pixel_wf(&self) -> bool {self.pixel_conditions()}
+    proof fn close_pixels(&self)
+        requires self.pixel_conditions(),
+        ensures self.pixel_wf(),
+    {reveal(Frames::pixel_wf);}
+    pub proof fn pixel_context(&self)
+        requires self.pixel_wf(),
+        ensures canvas_model::wf(self.model_input(),self.model_document(),self.model_policy(),self.canvas_trace()),
+            self.canvas_trace().after.len()==self.history_view().returned,
+            (matches!(self.history_view().phase,iterdata::Phase::Active) || matches!(self.history_view().phase,iterdata::Phase::Iend))
+                ==> self.canvas_pixels()==canvas_model::canvas_before(self.canvas_trace(),self.history_view().returned),
+            (matches!(self.history_view().phase,iterdata::Phase::Active) || matches!(self.history_view().phase,iterdata::Phase::Iend))
+                ==> self.canvas_pixels().len()==4*(self.model_document().ihdr.width as nat)*(self.model_document().ihdr.height as nat),
+            matches!(self.history_view().phase,iterdata::Phase::Active) ==> match canvas_model::previous(self.model_document(),self.history_view().returned) {
+                Some((_,2))=>self.restore_reference()==canvas_model::reference(self.canvas_trace(),self.history_view().returned),_=>true},
+    {reveal(Frames::pixel_wf);canvas_model::current_len(self.b@,self.doc.view(),self.pol,self.pixel_history@);}
+
+    proof fn pixels_preserve_iterator(before: Frames<'a>,after: Frames<'a>)
+        requires before.iterator_wf(),after.b==before.b,after.doc==before.doc,after.pol==before.pol,
+            after.raw==before.raw,after.canvas==before.canvas,after.state==before.state,
+            after.history==before.history,after.log==before.log,
+        ensures after.iterator_wf(),
+    {reveal(Frames::iterator_wf);}
+
+    pub proof fn canvas_geometry(&self)
+        requires self.buffers_wf(),
+        ensures paint::domain(paint::default_raster(self.model_document(),self.model_policy())),
+            self.canvas_pixels().len()==4*(self.model_document().ihdr.width as nat)*(self.model_document().ihdr.height as nat),1<=self.model_document().ihdr.width,
+    {crate::limits::caps_ok();}
+
+    proof fn pixels_idle(before: Frames<'a>,after: Frames<'a>)
+        requires before.pixel_wf(),after.b==before.b,after.doc==before.doc,after.pol==before.pol,
+            after.pixel_history==before.pixel_history,after.history@.returned==before.history@.returned,
+            (matches!(after.history_view().phase,iterdata::Phase::Active) || matches!(after.history_view().phase,iterdata::Phase::Iend))
+                ==> (matches!(before.history_view().phase,iterdata::Phase::Active) || matches!(before.history_view().phase,iterdata::Phase::Iend)) && after.canvas@==before.canvas@,
+            matches!(after.history_view().phase,iterdata::Phase::Active) ==> matches!(before.history_view().phase,iterdata::Phase::Active) && after.snapshot==before.snapshot,
+        ensures after.pixel_wf(),
+    {before.pixel_context();after.close_pixels();}
+
+    proof fn pixels_returned(before: Frames<'a>,after: Frames<'a>)
+        requires before.pixel_wf(),before.buffers_wf(),after.b==before.b,after.doc==before.doc,after.pol==before.pol,
+            after.canvas@.len()==before.canvas@.len(),
+            before.history@.returned<iterdata::count(before.doc.view()),
+            canvas_model::step(before.b@,before.doc.view(),before.pol,before.history@.returned,before.canvas@,
+                canvas_model::reference(before.pixel_history@,before.history@.returned),after.canvas@),
+            after.pixel_history@==canvas_model::append(before.doc.view(),before.pixel_history@,after.canvas@),
+            after.history@.returned==before.history@.returned+1,
+            matches!(before.history_view().phase,iterdata::Phase::Active),
+            matches!(after.history_view().phase,iterdata::Phase::Active) || matches!(after.history_view().phase,iterdata::Phase::Iend),
+            match canvas_model::previous(after.doc.view(),after.history@.returned) {
+                Some((_,2))=>after.snapshot@==Some(canvas_model::before_draw(before.doc.view(),before.pixel_history@,before.history@.returned)),_=>true},
+        ensures after.pixel_wf(),
+    {
+        before.pixel_context();canvas_model::context(before.b@,before.doc.view(),before.pol,before.pixel_history@);
+        canvas_model::append_wf(before.b@,before.doc.view(),before.pol,before.pixel_history@,after.canvas@);
+        after.close_pixels();
+    }
+
     closed spec fn native_history(&self,h: iterdata::History) -> bool {
         match h.phase {
             iterdata::Phase::Active=>if self.doc.actl.is_some() {self.state.index()==Some(h.returned)}else{self.state.single() && h.returned==0},
@@ -957,14 +1057,15 @@ impl<'a> Frames<'a> {
         requires crate::frame_state::source_document(b@,doc),
             crate::layout_model::image_buffers(doc.ihdr.view(),false,raw@,canvas@),
         ensures r.source_wf(),r.buffers_wf(),r.history@==iterdata::initial(),r.native_history(iterdata::initial()),r.log_view()==Seq::<(AllocSite,nat,bool)>::empty(),r.b==b,r.pol==pol,r.base==base,r.saved.is_none(),
-            r.raw@==raw@,r.canvas@==canvas@,
-            paint::initial_canvas(b@,doc.view(),pol,canvas@) ==> r.initial_pixels() && r.initial_wf(),
+            r.raw@==raw@,r.canvas@==canvas@,r.pixel_history@==canvas_model::empty(canvas@),
+            paint::initial_canvas(b@,doc.view(),pol,canvas@) ==> r.initial_pixels() && r.initial_wf() && r.pixel_wf(),
             r.doc.view()==iterdata::constructor_doc(doc.view()),
             r.doc.info.view()==crate::document_model::constructor_info(doc.view()),r.doc.info.ranges_wf(b.len() as nat),
             r.state.single()==doc.actl.is_none(),!r.state.done(),r.state.previous()==None,
             r.state.index()==if doc.actl.is_some() {Some(0nat)}else{None},
     {
         let ghost original_doc=doc.view();
+        let ghost original_pixels=canvas@;
         crate::frame_state::constructor_info(b,&mut doc);
         proof {paint::initial_metadata_preserved(b@,original_doc,doc.view(),pol,canvas@);}
         let state=FrameState::new(b,&doc);
@@ -972,13 +1073,21 @@ impl<'a> Frames<'a> {
         proof {reveal(Frames::source_wf);reveal(Frames::buffers_wf);reveal(crate::frame_state::source_document);}
         {
             let tracked log=crate::alloc_guard::new_log();
-            Self {b,pol,doc,raw,canvas,saved:None,snapshot:Ghost(None),history:Ghost(iterdata::initial()),log:Tracked(log),base,state}
+            let r=Self {b,pol,doc,raw,canvas,saved:None,snapshot:Ghost(None),history:Ghost(iterdata::initial()),
+                pixel_history:Ghost(canvas_model::empty(original_pixels)),log:Tracked(log),base,state};
+            proof {
+                if paint::initial_canvas(b@,original_doc,pol,original_pixels) {
+                    canvas_model::initial(b@,r.doc.view(),pol,original_pixels);
+                    r.close_pixels();
+                }
+            }
+            r
         }
     }
 
     fn begin_source(&mut self) -> (r: Step<'a>)
         requires old(self).source_wf(),
-        ensures final(self).source_wf(),final(self).history==old(self).history,final(self).log_view()==old(self).log_view(),
+        ensures final(self).source_wf(),final(self).history==old(self).history,final(self).pixel_history==old(self).pixel_history,final(self).log_view()==old(self).log_view(),
             old(self).allocation_wf() ==> final(self).allocation_wf(),
             old(self).buffers_wf() ==> final(self).buffers_wf(),final(self).state.done(),
             final(self).doc==old(self).doc,final(self).b==old(self).b,
@@ -1003,7 +1112,7 @@ impl<'a> Frames<'a> {
             old(self).allocation_wf() ==> crate::alloc_guard::all_ok(old(self).log_view()),resume.wf(old(self).b@,old(self).doc),old(self).restores_previous(resume.previous()),
             crate::frame_state::previous_needs_saved(resume.previous()) ==> old(self).saved.is_some(),
             match resume.index() {Some(k)=>old(self).saved.is_some()==crate::frame_transport_model::saved_before(old(self).doc.frame_ranges@,k),None=>true},
-        ensures final(self).source_wf(),final(self).history==old(self).history,final(self).log_view()==old(self).log_view(),
+        ensures final(self).source_wf(),final(self).history==old(self).history,final(self).pixel_history==old(self).pixel_history,final(self).log_view()==old(self).log_view(),
             old(self).allocation_wf() ==> final(self).allocation_wf(),
             old(self).buffers_wf() ==> final(self).buffers_wf(),final(self).state==resume,
             final(self).doc==old(self).doc,final(self).b==old(self).b,
@@ -1019,7 +1128,7 @@ impl<'a> Frames<'a> {
     fn ensure_saved(&mut self,needed: bool) -> (r: Result<(),TryError>)
         requires old(self).source_wf(),old(self).buffers_wf(),old(self).allocation_wf(),old(self).state.done(),
             needed && old(self).saved.is_none() ==> old(self).log_view().len()==2,
-        ensures final(self).source_wf(),final(self).history==old(self).history,final(self).buffers_wf(),final(self).allocation_wf(),
+        ensures final(self).source_wf(),final(self).history==old(self).history,final(self).pixel_history==old(self).pixel_history,final(self).buffers_wf(),final(self).allocation_wf(),
             final(self).doc==old(self).doc,final(self).state==old(self).state,
             final(self).raw==old(self).raw,final(self).canvas==old(self).canvas,
             final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
@@ -1042,7 +1151,7 @@ impl<'a> Frames<'a> {
         proof {
             assert(4*(self.doc.ihdr.w as int)*(self.doc.ihdr.h as int)>=4) by (nonlinear_arith)
                 requires self.doc.ihdr.w>=1,self.doc.ihdr.h>=1;
-            assert(1<=n<=crate::alloc_guard::MAX_BYTES);
+            assert(1<=n<=crate::limits::MAX_OUTPUT<=crate::alloc_guard::MAX_BYTES);
         }
         proof {iterlog::all_ok_cases(self.log_view(),self.raw@.len(),self.canvas@.len(),self.saved.is_some(),self.state.done());}
         let ghost prior=self.log_view();
@@ -1103,7 +1212,7 @@ impl<'a> Frames<'a> {
     /// guard requests (council M1BQ-Q5b; THEOREMS.md writes it
     /// `Frames::try_new(b, Strict)`).
     pub fn try_new(b: &'a [u8]) -> (r: Result<Frames<'a>,TryError>)
-        ensures iterdata::constructor_eq(b@,STRICT,r),match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf() && receiver.allocation_wf() && receiver.default_data_ok() && receiver.iterator_wf() && receiver.history_view()==iterdata::initial() && receiver.model_input()==b@ && receiver.model_policy()==STRICT
+        ensures iterdata::constructor_eq(b@,STRICT,r),match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf() && receiver.pixel_wf() && receiver.allocation_wf() && receiver.default_data_ok() && receiver.iterator_wf() && receiver.history_view()==iterdata::initial() && receiver.model_input()==b@ && receiver.model_policy()==STRICT
             && receiver.info_value().ranges_within(b.len() as nat)
             && crate::allocation_model::returned_frame_info(b@,crate::document_model::strict(),receiver.info_value().model_value()),_=>true},
             forall|e: Error,ev: crate::document_model::Events| crate::document_model::MWF_p(b@,crate::document_model::strict())
@@ -1121,7 +1230,7 @@ impl<'a> Frames<'a> {
     /// its errors are the constructor's. THEOREMS.md writes it
     /// `Frames::try_new(b, p)` (council M1BQ-Q5b).
     pub fn try_new_with_policy(b: &'a [u8],p: Profile) -> (r: Result<Frames<'a>,TryError>)
-        ensures iterdata::constructor_eq(b@,raster::profile(p),r),match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf() && receiver.allocation_wf() && receiver.default_data_ok() && receiver.iterator_wf() && receiver.history_view()==iterdata::initial() && receiver.model_input()==b@ && receiver.model_policy()==raster::profile(p)
+        ensures iterdata::constructor_eq(b@,raster::profile(p),r),match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf() && receiver.pixel_wf() && receiver.allocation_wf() && receiver.default_data_ok() && receiver.iterator_wf() && receiver.history_view()==iterdata::initial() && receiver.model_input()==b@ && receiver.model_policy()==raster::profile(p)
             && receiver.info_value().ranges_within(b.len() as nat)
             && crate::allocation_model::returned_frame_info(b@,p.walk_model(),receiver.info_value().model_value()),_=>true},
             forall|e: Error,ev: crate::document_model::Events| crate::document_model::MWF_p(b@,p.walk_model())
@@ -1143,7 +1252,7 @@ impl<'a> Frames<'a> {
 
     pub fn try_new_logged(b: &'a [u8]) -> (r: (Result<Frames<'a>,TryError>,Tracked<Option<AllocLog>>))
         ensures iterdata::constructor_eq(b@,STRICT,r.0),crate::allocation_model::image_call(b@,crate::document_model::strict(),true,false,r.0,constructor_log(&r)),
-            match r.0 {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_wf() && receiver.allocation_wf() && receiver.default_data_ok() && receiver.iterator_wf() && receiver.history_view()==iterdata::initial() && receiver.model_input()==b@ && receiver.model_policy()==STRICT && r.1@.is_none(),Err(_)=>r.1@.is_some()},
+            match r.0 {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_wf() && receiver.pixel_wf() && receiver.allocation_wf() && receiver.default_data_ok() && receiver.iterator_wf() && receiver.history_view()==iterdata::initial() && receiver.model_input()==b@ && receiver.model_policy()==STRICT && r.1@.is_none(),Err(_)=>r.1@.is_some()},
     {
         proof {crate::walk_policy::profiles_project_exactly();}
         Self::with_logged(b,STRICT)
@@ -1155,13 +1264,13 @@ impl<'a> Frames<'a> {
         -> (r: (Result<Frames<'a>,TryError>,Tracked<Option<AllocLog>>))
         ensures iterdata::constructor_eq(b@,raster::profile(p),r.0),crate::allocation_model::image_call(b@,p.walk_model(),true,false,r.0,constructor_log(&r)),
             match r.0 {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels()
-                && receiver.initial_wf() && receiver.allocation_wf() && receiver.default_data_ok() && receiver.iterator_wf() && receiver.history_view()==iterdata::initial() && receiver.model_input()==b@ && receiver.model_policy()==raster::profile(p) && r.1@.is_none(),Err(_)=>r.1@.is_some()},
+                && receiver.initial_wf() && receiver.pixel_wf() && receiver.allocation_wf() && receiver.default_data_ok() && receiver.iterator_wf() && receiver.history_view()==iterdata::initial() && receiver.model_input()==b@ && receiver.model_policy()==raster::profile(p) && r.1@.is_none(),Err(_)=>r.1@.is_some()},
     {Self::with_logged(b,p.checked_policy())}
 
     #[verifier::spinoff_prover]
     fn with_logged(b: &'a [u8],pol: Policy) -> (r: (Result<Frames<'a>,TryError>,Tracked<Option<AllocLog>>))
         ensures iterdata::constructor_eq(b@,pol,r.0),crate::allocation_model::image_call(b@,pol.walk_view(),true,false,r.0,constructor_log(&r)),
-            match r.0 {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf() && receiver.allocation_wf() && receiver.default_data_ok() && receiver.iterator_wf() && receiver.history_view()==iterdata::initial() && receiver.model_input()==b@ && receiver.model_policy()==pol
+            match r.0 {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf() && receiver.pixel_wf() && receiver.allocation_wf() && receiver.default_data_ok() && receiver.iterator_wf() && receiver.history_view()==iterdata::initial() && receiver.model_input()==b@ && receiver.model_policy()==pol
                 && receiver.doc.info.ranges_wf(b.len() as nat)
                 && crate::allocation_model::returned_frame_info(b@,pol.walk_view(),receiver.info_value().view()) && r.1@.is_none(),Err(_)=>r.1@.is_some()},
             forall|e: Error,ev: crate::document_model::Events| crate::document_model::MWF_p(b@,pol.walk_view())
@@ -1174,12 +1283,14 @@ impl<'a> Frames<'a> {
         let owned=trace.into_log();
         match result {
             Ok(mut receiver)=>{
+                proof {receiver.pixel_context();}
                 receiver.log=owned;
                 proof {
                     iterlog::initial_wf(receiver.raw@.len(),receiver.canvas@.len());
                     iterdata::default_context(b@,receiver.doc.view(),pol);
                     iterdata::history_initial(b@,receiver.doc.view(),pol);
                     receiver.close_iterator();
+                    receiver.close_pixels();
                 }
                 (Ok(receiver),Tracked(None))
             },
@@ -1188,7 +1299,7 @@ impl<'a> Frames<'a> {
     }
 
     fn with_record(b: &'a [u8],pol: Policy) -> (r: Result<Frames<'a>,TryError>)
-        ensures iterdata::constructor_eq(b@,pol,r),match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf() && receiver.allocation_wf() && receiver.default_data_ok() && receiver.iterator_wf() && receiver.history_view()==iterdata::initial() && receiver.model_input()==b@ && receiver.model_policy()==pol
+        ensures iterdata::constructor_eq(b@,pol,r),match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf() && receiver.pixel_wf() && receiver.allocation_wf() && receiver.default_data_ok() && receiver.iterator_wf() && receiver.history_view()==iterdata::initial() && receiver.model_input()==b@ && receiver.model_policy()==pol
             && receiver.doc.info.ranges_wf(b.len() as nat)
             && crate::allocation_model::returned_frame_info(b@,pol.walk_view(),receiver.info_value().view()),_=>true},
             forall|e: Error,ev: crate::document_model::Events| crate::document_model::MWF_p(b@,pol.walk_view())
@@ -1201,7 +1312,7 @@ impl<'a> Frames<'a> {
     fn with_trace(b: &'a [u8],pol: Policy,trace: &mut Trace) -> (r: Result<Frames<'a>,TryError>)
         requires old(trace).wf(),old(trace).n==0,
         ensures iterdata::constructor_eq(b@,pol,r),final(trace).wf(),crate::allocation_model::image_call(b@,pol.walk_view(),true,false,r,final(trace).log_view()),
-            match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf()
+            match r {Ok(receiver)=>receiver.source_wf() && receiver.buffers_wf() && receiver.initial_pixels() && receiver.initial_wf() && receiver.pixel_wf()
                 && receiver.doc.info.ranges_wf(b.len() as nat)
                 && crate::allocation_model::returned_frame_info(b@,pol.walk_view(),receiver.info_value().view())
                 && receiver.saved.is_none() && !receiver.state.done() && receiver.history@==iterdata::initial() && receiver.native_history(iterdata::initial()) && receiver.b==b && receiver.pol==pol
@@ -1263,8 +1374,16 @@ impl<'a> Frames<'a> {
     /// the sequence. Fused: after `Ok(None)` or any error every later call
     /// returns `Ok(None)` without allocating or decoding (D3).
     pub fn try_next(&mut self) -> (r: Result<Option<FrameView<'_>>,TryError>)
-        requires old(self).source_wf(),old(self).iterator_wf(),old(self).buffers_wf(),old(self).initial_wf(),old(self).allocation_wf(),old(self).default_data_ok(),
-        ensures final(self).source_wf(),
+        requires old(self).pixel_wf(),old(self).source_wf(),old(self).iterator_wf(),old(self).buffers_wf(),old(self).initial_wf(),old(self).allocation_wf(),old(self).default_data_ok(),
+        ensures final(self).pixel_wf(),
+            match r {
+                Ok(Some(view))=>view.pixels()==final(self).canvas_pixels()
+                    && canvas_model::step(old(self).model_input(),old(self).model_document(),old(self).model_policy(),old(self).history_view().returned,
+                        old(self).canvas_pixels(),canvas_model::reference(old(self).canvas_trace(),old(self).history_view().returned),view.pixels())
+                    && final(self).canvas_trace()==canvas_model::append(old(self).model_document(),old(self).canvas_trace(),view.pixels()),
+                _=>final(self).canvas_trace()==old(self).canvas_trace(),
+            },
+            final(self).source_wf(),
             iterdata::call_eq(old(self).model_input(),old(self).model_document(),old(self).model_policy(),old(self).history_view(),iterdata::kind(r)),
             final(self).model_input()==old(self).model_input(),final(self).model_document()==old(self).model_document(),final(self).model_policy()==old(self).model_policy(),
             matches!(r,Ok(Some(_))) ==> final(self).history_view().returned==old(self).history_view().returned+1,
@@ -1313,7 +1432,7 @@ impl<'a> Frames<'a> {
             crate::frame_state::previous_fits(prev,old(self).doc.ihdr.view()),
             crate::frame_state::previous_fits(Some((current,op)),old(self).doc.ihdr.view()),
             crate::frame_state::previous_needs_saved(prev) || op==2 ==> old(self).saved.is_some(),
-        ensures final(self).source_wf(),final(self).history==old(self).history,final(self).log_view()==old(self).log_view(),
+        ensures final(self).source_wf(),final(self).history==old(self).history,final(self).pixel_history==old(self).pixel_history,final(self).log_view()==old(self).log_view(),
             old(self).allocation_wf() ==> final(self).allocation_wf(),final(self).buffers_wf(),final(self).doc==old(self).doc,
             final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
             final(self).state==old(self).state,final(self).raw==old(self).raw,
@@ -1401,7 +1520,7 @@ impl<'a> Frames<'a> {
             job.effective_dispose==2 ==> old(self).saved.is_some(),
             job.reader.is_none() ==> iterdata::frame_ok(old(self).b@,old(self).doc.view(),old(self).pol,job.index as nat),
             job.reader.is_none() ==> old(self).initial_pixels(),
-        ensures final(self).source_wf(),final(self).history==old(self).history,iterdata::result_eq(old(self).b@,old(self).doc.view(),old(self).pol,job.index as nat,r),final(self).log_view()==old(self).log_view(),
+        ensures final(self).source_wf(),final(self).history==old(self).history,final(self).pixel_history==old(self).pixel_history,iterdata::result_eq(old(self).b@,old(self).doc.view(),old(self).pol,job.index as nat,r),final(self).log_view()==old(self).log_view(),
             old(self).allocation_wf() ==> final(self).allocation_wf(),final(self).buffers_wf(),final(self).doc==old(self).doc,
             final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
             final(self).state==old(self).state,final(self).saved==old(self).saved,final(self).snapshot==old(self).snapshot,
@@ -1467,12 +1586,15 @@ impl<'a> Frames<'a> {
             job.reader.is_none() ==> old(self).initial_pixels() && job.previous.is_none(),
             crate::frame_state::previous_needs_saved(job.previous) || job.effective_dispose==2 ==> old(self).saved.is_some(),
             old(self).saved.is_some()==crate::frame_transport_model::saved_before(old(self).doc.frame_ranges@,job.index as nat+1),
-        ensures final(self).source_wf(),final(self).history==old(self).history,iterdata::result_eq(old(self).b@,old(self).doc.view(),old(self).pol,job.index as nat,r),final(self).log_view()==old(self).log_view(),
+        ensures final(self).source_wf(),final(self).history==old(self).history,final(self).pixel_history==old(self).pixel_history,iterdata::result_eq(old(self).b@,old(self).doc.view(),old(self).pol,job.index as nat,r),final(self).log_view()==old(self).log_view(),
             old(self).allocation_wf() ==> final(self).allocation_wf(),final(self).buffers_wf(),final(self).initial_wf(),final(self).doc==old(self).doc,
             final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
             final(self).saved.is_some()==old(self).saved.is_some(),
             r.is_err() ==> final(self).state.done() && matches!(r,Err(TryError::Format(_))),
             r.is_ok() ==> final(self).state==job.resume,
+            job.effective_dispose==2 ==> final(self).snapshot@==Some(paint::disposed_reference(old(self).canvas@,old(self).snapshot@,
+                old(self).doc.ihdr.w as nat,previous_regions(job.previous))),
+
             r.is_ok() ==> match crate::document_model::frame_stream(old(self).b@,old(self).doc.view(),job.index as nat) {
                 Some(z)=>paint::MK(z,crate::image::raster_context(old(self).doc,job.control.w,job.control.h,old(self).pol),
                     crate::colour_model::from_doc(old(self).doc.view(),old(self).b@),old(self).pol,old(self).doc.ihdr.w as nat,
@@ -1496,6 +1618,12 @@ impl<'a> Frames<'a> {
                 composite::full_drawing_frame(zero,self.canvas@,self.doc.ihdr.w as nat,self.doc.ihdr.h as nat,f.blend==1);
             }
         }
+        proof {
+            let z=crate::document_model::frame_stream(self.b@,self.doc.view(),job.index as nat).unwrap();
+            paint::mk_intro(z,crate::image::raster_context(self.doc,f.w,f.h,self.pol),crate::colour_model::from_doc(self.doc.view(),self.b@),
+                self.pol,self.doc.ihdr.w as nat,composite::rect(f.x,f.y,f.w,f.h),f.blend==1,previous_regions(job.previous),reference,
+                original,self.canvas@,reuse);
+        }
         self.commit_source(resume);
         Ok(events)
     }
@@ -1508,12 +1636,21 @@ impl<'a> Frames<'a> {
             job.reader.is_none() ==> old(self).initial_pixels() && job.previous.is_none(),
             crate::frame_state::previous_needs_saved(job.previous) || job.effective_dispose==2 ==> old(self).saved.is_some(),
             old(self).saved.is_some()==crate::frame_transport_model::saved_before(old(self).doc.frame_ranges@,job.index as nat+1),
-        ensures final(self).source_wf(),final(self).raw@.len()==old(self).raw@.len(),final(self).canvas@.len()==old(self).canvas@.len(),final(self).history==old(self).history,iterdata::result_eq(old(self).b@,old(self).doc.view(),old(self).pol,job.index as nat,r),final(self).log_view()==old(self).log_view(),
+        ensures final(self).source_wf(),final(self).raw@.len()==old(self).raw@.len(),final(self).canvas@.len()==old(self).canvas@.len(),final(self).history==old(self).history,final(self).pixel_history==old(self).pixel_history,iterdata::result_eq(old(self).b@,old(self).doc.view(),old(self).pol,job.index as nat,r),final(self).log_view()==old(self).log_view(),
             old(self).allocation_wf() ==> final(self).allocation_wf(),final(self).buffers_wf(),final(self).initial_wf(),final(self).doc==old(self).doc,
             final(self).b==old(self).b,final(self).pol==old(self).pol,final(self).base==old(self).base,
             final(self).saved.is_some()==old(self).saved.is_some(),
             r.is_err() ==> final(self).state.done() && matches!(r,Err(TryError::Format(_))),
             r.is_ok() ==> final(self).state==job.resume,
+            job.effective_dispose==2 ==> final(self).snapshot@==Some(paint::disposed_reference(old(self).canvas@,old(self).snapshot@,
+                old(self).doc.ihdr.w as nat,previous_regions(job.previous))),
+            r.is_ok() ==> match crate::document_model::frame_stream(old(self).b@,old(self).doc.view(),job.index as nat) {
+                Some(z)=>paint::MK(z,crate::image::raster_context(old(self).doc,job.control.w,job.control.h,old(self).pol),
+                    crate::colour_model::from_doc(old(self).doc.view(),old(self).b@),old(self).pol,old(self).doc.ihdr.w as nat,
+                    composite::rect(job.control.x,job.control.y,job.control.w,job.control.h),job.control.blend==1,
+                    previous_regions(job.previous),old(self).snapshot@,old(self).canvas@,final(self).canvas@,job.reader.is_none()),
+                None=>false,
+            },
     {
         self.finish_job(job)
     }
@@ -1521,14 +1658,22 @@ impl<'a> Frames<'a> {
     #[verifier::spinoff_prover]
     fn selected_logged(&mut self,job: crate::frame_state::FrameJob<'a>,Ghost(prior_receiver): Ghost<Frames<'a>>)
         -> (r: Result<Option<FrameView<'_>>,TryError>)
-        requires old(self).source_wf(),old(self).buffers_wf(),old(self).allocation_wf(),old(self).state.done(),
+        requires prior_receiver.pixel_wf(),old(self).source_wf(),old(self).buffers_wf(),old(self).allocation_wf(),old(self).state.done(),
             prior_receiver.source_wf(),prior_receiver.buffers_wf(),prior_receiver.initial_wf(),prior_receiver.allocation_wf(),prior_receiver.default_data_ok(),prior_receiver.iterator_wf(),
             old(self).doc==prior_receiver.doc,old(self).b==prior_receiver.b,old(self).pol==prior_receiver.pol,old(self).base==prior_receiver.base,
             old(self).raw==prior_receiver.raw,old(self).canvas==prior_receiver.canvas,old(self).saved==prior_receiver.saved,old(self).snapshot==prior_receiver.snapshot,
-            old(self).history==prior_receiver.history,old(self).log_view()==prior_receiver.log_view(),
+            old(self).history==prior_receiver.history,old(self).pixel_history==prior_receiver.pixel_history,old(self).log_view()==prior_receiver.log_view(),
             job.wf(old(self).b@,old(self).doc),prior_receiver.state.index()==Some(job.index as nat),job.previous==prior_receiver.state.previous(),
             old(self).restores_previous(job.previous),crate::frame_state::previous_needs_saved(job.previous) ==> old(self).saved.is_some(),
-        ensures final(self).source_wf(),
+        ensures final(self).pixel_wf(),
+            match r {
+                Ok(Some(view))=>view.pixels()==final(self).canvas_pixels()
+                    && canvas_model::step(prior_receiver.model_input(),prior_receiver.model_document(),prior_receiver.model_policy(),prior_receiver.history_view().returned,
+                        prior_receiver.canvas_pixels(),canvas_model::reference(prior_receiver.canvas_trace(),prior_receiver.history_view().returned),view.pixels())
+                    && final(self).canvas_trace()==canvas_model::append(prior_receiver.model_document(),prior_receiver.canvas_trace(),view.pixels()),
+                _=>final(self).canvas_trace()==prior_receiver.canvas_trace(),
+            },
+            final(self).source_wf(),
             iterdata::call_eq(prior_receiver.model_input(),prior_receiver.model_document(),prior_receiver.model_policy(),prior_receiver.history_view(),iterdata::kind(r)),
             final(self).model_input()==prior_receiver.model_input(),final(self).model_document()==prior_receiver.model_document(),final(self).model_policy()==prior_receiver.model_policy(),
             matches!(r,Ok(Some(_))) ==> final(self).history_view().returned==prior_receiver.history_view().returned+1,
@@ -1553,7 +1698,7 @@ impl<'a> Frames<'a> {
                 {seq![(AllocSite::Saved,prior_receiver.canvas@.len(),final(self).saved.is_some())]}
                 else {Seq::<(AllocSite,nat,bool)>::empty()},
     {
-        hide(Frames::buffers_wf);hide(Frames::allocation_wf);hide(iterdata::result_eq);
+        hide(Frames::buffers_wf);hide(Frames::allocation_wf);
         hide(iterdata::is_saved_at);hide(iterdata::prefix);hide(iterdata::frame_ok);hide(raster::document_data);
         let ghost prior_history=prior_receiver.history@;
         let ghost prior_state=prior_receiver.state;
@@ -1585,11 +1730,75 @@ impl<'a> Frames<'a> {
                 proof {
                     iterdata::history_oom(self.b@,self.doc.view(),self.pol,prior_history);
                     let ghost before_history_update=*self;
-                    self.history=Ghost(next_history);Frames::history_preserves_state(before_history_update,*self);Frames::compose_call(prior_receiver,*self,iterdata::Call::Oom);
+                    self.history=Ghost(next_history);Frames::history_preserves_state(before_history_update,*self);Frames::compose_call(prior_receiver,*self,iterdata::Call::Oom);Frames::pixels_idle(prior_receiver,*self);
                 }
                 return Err(e);
                 }}
                 proof {self.allocation_context();assert(crate::alloc_guard::all_ok(self.log_view()));}
+                self.completed_selected(job,Ghost(prior_receiver))
+    }
+
+    #[verifier::spinoff_prover]
+    fn completed_selected(&mut self,job: crate::frame_state::FrameJob<'a>,Ghost(prior_receiver): Ghost<Frames<'a>>)
+        -> (r: Result<Option<FrameView<'_>>,TryError>)
+        requires prior_receiver.pixel_wf(),old(self).source_wf(),old(self).buffers_wf(),old(self).allocation_wf(),old(self).state.done(),
+            crate::alloc_guard::all_ok(old(self).log_view()),
+            prior_receiver.source_wf(),prior_receiver.buffers_wf(),prior_receiver.initial_wf(),prior_receiver.allocation_wf(),prior_receiver.default_data_ok(),prior_receiver.iterator_wf(),
+            old(self).doc==prior_receiver.doc,old(self).b==prior_receiver.b,old(self).pol==prior_receiver.pol,old(self).base==prior_receiver.base,
+            old(self).raw==prior_receiver.raw,old(self).canvas==prior_receiver.canvas,old(self).snapshot==prior_receiver.snapshot,
+            old(self).history==prior_receiver.history,old(self).pixel_history==prior_receiver.pixel_history,
+            old(self).log_view()==prior_receiver.log_view()+if prior_receiver.saved_call() && prior_receiver.saved.is_none()
+                {seq![(AllocSite::Saved,prior_receiver.canvas@.len(),true)]}else{Seq::<(AllocSite,nat,bool)>::empty()},
+            old(self).saved.is_some()==(prior_receiver.saved.is_some() || prior_receiver.saved_call()),
+            job.wf(old(self).b@,old(self).doc),prior_receiver.state.index()==Some(job.index as nat),job.previous==prior_receiver.state.previous(),
+            old(self).restores_previous(job.previous),crate::frame_state::previous_needs_saved(job.previous) || job.effective_dispose==2 ==> old(self).saved.is_some(),
+            old(self).saved.is_some()==crate::frame_transport_model::saved_before(old(self).doc.frame_ranges@,job.index as nat+1),
+            job.reader.is_none() ==> old(self).initial_pixels(),
+        ensures final(self).pixel_wf(),
+            match r {
+                Ok(Some(view))=>view.pixels()==final(self).canvas_pixels()
+                    && canvas_model::step(prior_receiver.model_input(),prior_receiver.model_document(),prior_receiver.model_policy(),prior_receiver.history_view().returned,
+                        prior_receiver.canvas_pixels(),canvas_model::reference(prior_receiver.canvas_trace(),prior_receiver.history_view().returned),view.pixels())
+                    && final(self).canvas_trace()==canvas_model::append(prior_receiver.model_document(),prior_receiver.canvas_trace(),view.pixels()),
+                _=>final(self).canvas_trace()==prior_receiver.canvas_trace(),
+            },
+            final(self).source_wf(),
+            iterdata::call_eq(prior_receiver.model_input(),prior_receiver.model_document(),prior_receiver.model_policy(),prior_receiver.history_view(),iterdata::kind(r)),
+            final(self).model_input()==prior_receiver.model_input(),final(self).model_document()==prior_receiver.model_document(),final(self).model_policy()==prior_receiver.model_policy(),
+            matches!(r,Ok(Some(_))) ==> final(self).history_view().returned==prior_receiver.history_view().returned+1,
+            matches!(r,Ok(Some(_))) ==> final(self).history_view().phase==if prior_receiver.model_document().actl.is_some() {iterdata::Phase::Active}else{iterdata::Phase::Iend},
+            !matches!(r,Ok(Some(_))) ==> final(self).history_view().returned==prior_receiver.history_view().returned,
+            matches!(r,Ok(None)) ==> final(self).is_done(),
+            r.is_ok() ==> matches!(r,Ok(Some(_))),
+            crate::alloc_guard::req_of_log(final(self).log_view())==crate::alloc_guard::req_of_log(prior_receiver.log_view())+iterdata::request_p(prior_receiver.model_input(),prior_receiver.model_policy(),prior_receiver.call_count()),final(self).iterator_wf(),final(self).call_count()==prior_receiver.call_count()+1,
+            matches!(r,Err(TryError::OutOfMemory(_))) ==> iterdata::is_oom(final(self).history_view())
+                && iterdata::SavedAt_p(prior_receiver.model_input(),prior_receiver.model_policy())==Some(prior_receiver.call_count()),
+            !iterdata::is_oom(prior_receiver.history_view()) && !matches!(r,Err(TryError::OutOfMemory(_))) ==> !iterdata::is_oom(final(self).history_view()),
+            iterdata::is_oom(prior_receiver.history_view()) ==> iterdata::is_oom(final(self).history_view()) && final(self).history_view().returned==prior_receiver.history_view().returned && matches!(r,Ok(None)) && final(self).log_view()==prior_receiver.log_view(),
+            final(self).buffers_wf(),final(self).initial_wf(),final(self).allocation_wf(),
+            final(self).doc==prior_receiver.doc,final(self).b==prior_receiver.b,final(self).pol==prior_receiver.pol,final(self).base==prior_receiver.base,
+            final(self).log_view().len()<=3,
+            prior_receiver.saved.is_some() ==> final(self).saved.is_some() && final(self).log_view()==prior_receiver.log_view(),
+            r.is_err() ==> final(self).state.done(),
+            matches!(r,Ok(None)) ==> final(self).canvas==prior_receiver.canvas && final(self).saved==prior_receiver.saved,
+            prior_receiver.state.done() ==> matches!(r,Ok(None)) && final(self).log_view()==prior_receiver.log_view(),
+            r.is_err() && matches!(r,Err(TryError::OutOfMemory(_))) ==> crate::alloc_guard::sites::log_tied(r,final(self).log_view()),
+            final(self).log_view()==prior_receiver.log_view()+if prior_receiver.saved_call() && prior_receiver.saved.is_none()
+                {seq![(AllocSite::Saved,prior_receiver.canvas@.len(),final(self).saved.is_some())]}
+                else {Seq::<(AllocSite,nat,bool)>::empty()},
+    {
+        hide(Frames::buffers_wf);hide(Frames::allocation_wf);hide(iterdata::result_eq);
+        hide(iterdata::is_saved_at);hide(iterdata::prefix);hide(iterdata::frame_ok);hide(raster::document_data);
+        let ghost prior_history=prior_receiver.history@;
+        let f=job.control;
+        let ghost prior_pixels=prior_receiver.canvas@;
+        let ghost prior_reference=prior_receiver.snapshot@;
+        proof {
+            prior_receiver.pixel_context();job.canvas_context(self.b@,self.doc,self.pol);
+            prior_receiver.execution_context();prior_receiver.request_context();prior_receiver.saved_context();prior_receiver.initial_context();prior_receiver.allocation_context();
+            iterdata::history_context(self.b@,self.doc.view(),self.pol,prior_history);
+            job.storage_context(self.b@,self.doc);job.reuse_data_context(self.b@,self.doc,self.pol);
+        }
                 let painted=self.finish_iteration(job);
                 proof {iterdata::result_context(self.b@,self.doc.view(),self.pol,job.index as nat,painted);}
                 let fev=match painted {Ok(ev)=>ev,Err(e)=>{
@@ -1598,15 +1807,26 @@ impl<'a> Frames<'a> {
                 proof {
                     iterdata::history_format(self.b@,self.doc.view(),self.pol,prior_history,fault);
                     let ghost before_history_update=*self;
-                    self.history=Ghost(next_history);Frames::history_preserves_state(before_history_update,*self);Frames::compose_call(prior_receiver,*self,iterdata::Call::Format(fault));
+                    self.history=Ghost(next_history);Frames::history_preserves_state(before_history_update,*self);Frames::compose_call(prior_receiver,*self,iterdata::Call::Format(fault));Frames::pixels_idle(prior_receiver,*self);
                 }
                 return Err(e);
                 }};
+                proof {
+                    let z=crate::document_model::frame_stream(self.b@,self.doc.view(),job.index as nat).unwrap();
+                    canvas_model::step_intro(self.b@,self.doc.view(),self.pol,job.index as nat,z,prior_pixels,prior_reference,self.canvas@);
+                    canvas_model::reference_irrelevant(self.b@,self.doc.view(),self.pol,job.index as nat,prior_pixels,prior_reference,
+                        canvas_model::reference(prior_receiver.pixel_history@,job.index as nat),self.canvas@);
+                }
                 let ghost next_history=iterdata::History {calls:prior_history.calls+1,returned:prior_history.returned+1,phase:iterdata::Phase::Active};
                 proof {
                     iterdata::history_success(self.b@,self.doc.view(),self.pol,prior_history,false);
                     let ghost before_history_update=*self;
                     self.history=Ghost(next_history);Frames::history_preserves_state(before_history_update,*self);Frames::compose_call(prior_receiver,*self,iterdata::Call::Frame);
+                    let ghost before_pixels_update=*self;
+                    self.pixel_history=Ghost(canvas_model::append(self.doc.view(),prior_receiver.pixel_history@,self.canvas@));
+                    Frames::history_preserves_state(before_pixels_update,*self);
+                    Frames::pixels_preserve_iterator(before_pixels_update,*self);
+                    Frames::pixels_returned(prior_receiver,*self);
                 }
                 Ok(Some(FrameView {rgba:&self.canvas,rect:(f.x,f.y,f.w,f.h),delay:Some((f.delay_num,f.delay_den)),
                     dispose:f.dispose,blend:f.blend,recovered:fev.any(),events:fev}))
@@ -1615,14 +1835,22 @@ impl<'a> Frames<'a> {
     #[verifier::spinoff_prover]
     fn terminal_logged(&mut self,single: bool,Ghost(prior_receiver): Ghost<Frames<'a>>)
         -> (r: Result<Option<FrameView<'_>>,TryError>)
-        requires old(self).source_wf(),old(self).buffers_wf(),old(self).allocation_wf(),old(self).state.done(),
+        requires prior_receiver.pixel_wf(),old(self).source_wf(),old(self).buffers_wf(),old(self).allocation_wf(),old(self).state.done(),
             prior_receiver.source_wf(),prior_receiver.buffers_wf(),prior_receiver.initial_wf(),prior_receiver.allocation_wf(),prior_receiver.default_data_ok(),prior_receiver.iterator_wf(),
             old(self).doc==prior_receiver.doc,old(self).b==prior_receiver.b,old(self).pol==prior_receiver.pol,old(self).base==prior_receiver.base,
             old(self).raw==prior_receiver.raw,old(self).canvas==prior_receiver.canvas,old(self).saved==prior_receiver.saved,old(self).snapshot==prior_receiver.snapshot,
-            old(self).history==prior_receiver.history,old(self).log_view()==prior_receiver.log_view(),
+            old(self).history==prior_receiver.history,old(self).pixel_history==prior_receiver.pixel_history,old(self).log_view()==prior_receiver.log_view(),
             single ==> prior_receiver.state.single(),
             !single ==> prior_receiver.state.done() || prior_receiver.state.index()==Some(prior_receiver.doc.info.frame_count as nat),
-        ensures final(self).source_wf(),
+        ensures final(self).pixel_wf(),
+            match r {
+                Ok(Some(view))=>view.pixels()==final(self).canvas_pixels()
+                    && canvas_model::step(prior_receiver.model_input(),prior_receiver.model_document(),prior_receiver.model_policy(),prior_receiver.history_view().returned,
+                        prior_receiver.canvas_pixels(),canvas_model::reference(prior_receiver.canvas_trace(),prior_receiver.history_view().returned),view.pixels())
+                    && final(self).canvas_trace()==canvas_model::append(prior_receiver.model_document(),prior_receiver.canvas_trace(),view.pixels()),
+                _=>final(self).canvas_trace()==prior_receiver.canvas_trace(),
+            },
+            final(self).source_wf(),
             iterdata::call_eq(prior_receiver.model_input(),prior_receiver.model_document(),prior_receiver.model_policy(),prior_receiver.history_view(),iterdata::kind(r)),
             final(self).model_input()==prior_receiver.model_input(),final(self).model_document()==prior_receiver.model_document(),final(self).model_policy()==prior_receiver.model_policy(),
             matches!(r,Ok(Some(_))) ==> final(self).history_view().returned==prior_receiver.history_view().returned+1,
@@ -1654,17 +1882,27 @@ impl<'a> Frames<'a> {
         let ghost wanted=prior_receiver.saved_call();
         let ghost before_log=prior_receiver.log_view();
         proof {
+            prior_receiver.pixel_context();
             prior_receiver.execution_context();prior_receiver.request_context();prior_receiver.saved_context();prior_receiver.initial_context();prior_receiver.allocation_context();
             iterdata::history_context(self.b@,self.doc.view(),self.pol,prior_history);
         }
         let w=self.doc.ihdr.w;let h=self.doc.ihdr.h;
         if single {
-                proof {iterdata::static_ready(self.b@,self.doc.view(),self.pol);}
+                proof {
+                    iterdata::static_ready(self.b@,self.doc.view(),self.pol);
+                    self.canvas_geometry();
+                    canvas_model::static_step(self.b@,self.doc.view(),self.pol,self.canvas@);
+                }
                 let ghost next_history=iterdata::History {calls:prior_history.calls+1,returned:prior_history.returned+1,phase:iterdata::Phase::Iend};
                 proof {
                     iterdata::history_success(self.b@,self.doc.view(),self.pol,prior_history,true);
                     let ghost before_history_update=*self;
                     self.history=Ghost(next_history);Frames::history_preserves_state(before_history_update,*self);Frames::compose_call(prior_receiver,*self,iterdata::Call::Frame);
+                    let ghost before_pixels_update=*self;
+                    self.pixel_history=Ghost(canvas_model::append(self.doc.view(),prior_receiver.pixel_history@,self.canvas@));
+                    Frames::history_preserves_state(before_pixels_update,*self);
+                    Frames::pixels_preserve_iterator(before_pixels_update,*self);
+                    Frames::pixels_returned(prior_receiver,*self);
                 }
                 Ok(Some(FrameView {rgba:&self.canvas,rect:(0,0,w,h),delay:None,dispose:0,blend:0,recovered:self.base.any(),events:self.base}))
         }else{
@@ -1672,7 +1910,7 @@ impl<'a> Frames<'a> {
                 proof {
                     if matches!(prior_history.phase,iterdata::Phase::Active) {iterdata::history_end(self.b@,self.doc.view(),self.pol,prior_history);}else{iterdata::history_fused(self.b@,self.doc.view(),self.pol,prior_history);}
                     let ghost before_history_update=*self;
-                    self.history=Ghost(next_history);Frames::history_preserves_state(before_history_update,*self);Frames::compose_call(prior_receiver,*self,iterdata::Call::End);
+                    self.history=Ghost(next_history);Frames::history_preserves_state(before_history_update,*self);Frames::compose_call(prior_receiver,*self,iterdata::Call::End);Frames::pixels_idle(prior_receiver,*self);
                 }
                 Ok(None)
         }
@@ -1680,8 +1918,16 @@ impl<'a> Frames<'a> {
 
     #[verifier::spinoff_prover]
     fn next_logged(&mut self) -> (r: Result<Option<FrameView<'_>>,TryError>)
-        requires old(self).source_wf(),old(self).iterator_wf(),iterdata::default_success(old(self).b@,old(self).doc.view(),old(self).pol),old(self).buffers_wf(),old(self).initial_wf(),old(self).allocation_wf(),
-        ensures final(self).source_wf(),
+        requires old(self).pixel_wf(),old(self).source_wf(),old(self).iterator_wf(),iterdata::default_success(old(self).b@,old(self).doc.view(),old(self).pol),old(self).buffers_wf(),old(self).initial_wf(),old(self).allocation_wf(),
+        ensures final(self).pixel_wf(),
+            match r {
+                Ok(Some(view))=>view.pixels()==final(self).canvas_pixels()
+                    && canvas_model::step(old(self).model_input(),old(self).model_document(),old(self).model_policy(),old(self).history_view().returned,
+                        old(self).canvas_pixels(),canvas_model::reference(old(self).canvas_trace(),old(self).history_view().returned),view.pixels())
+                    && final(self).canvas_trace()==canvas_model::append(old(self).model_document(),old(self).canvas_trace(),view.pixels()),
+                _=>final(self).canvas_trace()==old(self).canvas_trace(),
+            },
+            final(self).source_wf(),
             iterdata::call_eq(old(self).model_input(),old(self).model_document(),old(self).model_policy(),old(self).history_view(),iterdata::kind(r)),
             final(self).model_input()==old(self).model_input(),final(self).model_document()==old(self).model_document(),final(self).model_policy()==old(self).model_policy(),
             matches!(r,Ok(Some(_))) ==> final(self).history_view().returned==old(self).history_view().returned+1,

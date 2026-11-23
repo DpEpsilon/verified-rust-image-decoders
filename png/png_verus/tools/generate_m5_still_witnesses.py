@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""M5 still data/shape projections and two complete palette-error witnesses.
+"""M5 still physical-pixel projections and two complete palette-error witnesses.
 
 Frozen expected fields alone supply outcomes. M2 authored raw/token intentions
 supply inflate certificates; extra traces come from its forward encoder, never
@@ -159,7 +159,7 @@ def walk_certificate(root,walk,cert,b,ident,header,znode,entries):
  if any(t==b'acTL' for p,t,d in chunks(b)):
   frames=load('m5_shared_apng_walk',root/'tools/generate_m5_frames_witnesses.py');symbolic=frames.walk_certificate(None,walk,b,ident,header,False)
   doc=f'doc_{ident}()';bf=f'bytes_{ident}()'
-  symbolic+=['#[verifier::spinoff_prover]',f'proof fn project_walk_{ident}() ensures r::default_case({bf},{header},{znode},{entries}nat),','{',f'    walk_{ident}();',f'    assert(m::entries({doc})=={entries}nat) by (compute);',f'    assert(m::default_stream({bf},{doc})==Some({znode})) by (compute);','}']
+  symbolic+=['#[verifier::spinoff_prover]',f'proof fn project_walk_{ident}() ensures r::default_case({bf},{header},{znode},{entries}nat),{range_goal(bf,b)},','{',f'    walk_{ident}();',f'    assert(m::entries({doc})=={entries}nat) by (compute);',f'    assert(m::default_stream({bf},{doc})==Some({znode})) by (compute);','}']
   return symbolic,[f'    project_walk_{ident}();'],''
  facts,sites,extra=wire_facts(root,walk,cert,b,ident)
  if ident=='plte_suggested_palette_in_rgb':
@@ -188,7 +188,7 @@ def walk_certificate(root,walk,cert,b,ident,header,znode,entries):
   i+=1
  p,tag,z=next((p,t,d) for p,t,d in chunks(b) if t==b'IDAT');payload=f'b.subrange({p+8},{p+8+len(z)})=={znode}';req.append(payload)
  hidden='    '+('hide(crate::metadata_model::parse);' if ident=='plte_suggested_palette_in_rgb' else '')+'hide(crate::critical_model::read);hide(crate::model::mh);hide(m::drive);hide(m::initial_info);hide(crate::walk_model::classify);'
- symbolic=extra+['#[verifier::spinoff_prover]',f'proof fn walk_{ident}(b: Seq<u8>)','    requires '+',\n        '.join([f'b.len()=={len(b)}',f'crate::model::mh(b)==Ok(({header},33nat))']+req)+',',f'    ensures r::default_case(b,{header},{znode},{entries}nat),','{',hidden,*pure,'    reveal(m::step);reveal(m::ordered);reveal(m::own);',f'    reveal_with_fuel(m::drive,{sites+1});','    reveal_with_fuel(m::concat_ranges,3);','}']
+ symbolic=extra+['#[verifier::spinoff_prover]',f'proof fn walk_{ident}(b: Seq<u8>)','    requires '+',\n        '.join([f'b.len()=={len(b)}',f'crate::model::mh(b)==Ok(({header},33nat))']+req)+',',f'    ensures r::default_case(b,{header},{znode},{entries}nat),{range_goal("b",b)},','{',hidden,*pure,'    reveal(m::step);reveal(m::ordered);reveal(m::own);',f'    reveal_with_fuel(m::drive,{sites+1});','    reveal_with_fuel(m::concat_ranges,3);','}']
  if ident=='plte_suggested_palette_in_rgb':
   states=[f'm::initial({header},33,m::no_events())',
    f'let s=plte_rgb_state_0();m::State {{pos:645nat,seen:s.seen.insert(crate::walk_model::Name::Plte),doc:m::Doc {{plte:Some(crate::walk_model::Range {{offset:41nat,len:600nat}}),info:m::Info {{palette_entries:200nat,..s.doc.info}},..s.doc}},..s}}',
@@ -206,25 +206,82 @@ def walk_certificate(root,walk,cert,b,ident,header,znode,entries):
   for j in range(5):
    end=f'm::Step::Next(plte_rgb_state_{j+1}())' if j<4 else 'm::Step::Done(m::Doc {info:m::Info {frame_count:0nat,..plte_rgb_state_4().doc.info},..plte_rgb_state_4().doc},m::no_events())'
    extra +=['#[verifier::spinoff_prover]',f'proof fn plte_rgb_step_{j}(b: Seq<u8>)','    requires '+common+',',f'    ensures m::step(b,m::strict(),false,false,plte_rgb_state_{j}())=={end},','{',hidden.replace('hide(m::drive);',''),*pure,'    reveal(m::step);reveal(m::ordered);reveal(m::own);','}']
-  symbolic=extra+['#[verifier::spinoff_prover]',f'proof fn walk_{ident}(b: Seq<u8>)','    requires '+common+',',f'    ensures r::default_case(b,{header},{znode},{entries}nat),','{','    hide(m::drive);hide(crate::critical_model::read);hide(crate::metadata_model::parse);hide(crate::model::mh);']
+  symbolic=extra+['#[verifier::spinoff_prover]',f'proof fn walk_{ident}(b: Seq<u8>)','    requires '+common+',',f'    ensures r::default_case(b,{header},{znode},{entries}nat),{range_goal("b",b)},','{','    hide(m::drive);hide(crate::critical_model::read);hide(crate::metadata_model::parse);hide(crate::model::mh);']
   symbolic +=[f'    plte_rgb_step_{j}(b);' for j in range(5)]
   symbolic +=[f'    m::drive_step(b,m::strict(),false,false,plte_rgb_state_{j}());' for j in reversed(range(5))]
   symbolic +=['    reveal_with_fuel(m::concat_ranges,3);','}']
  concrete=[f'    assert(crate::model::mh(bytes_{ident}())==Ok(({header},33nat))) by {{reveal(crate::model::mh);assert(crate::model::mh(bytes_{ident}())==Ok(({header},33nat))) by (compute);}}',*facts,f'    assert({payload.replace("b.subrange",f"bytes_{ident}().subrange")}) by (compute);',f'    walk_{ident}(bytes_{ident}());']
+ if ident=='trns16_palette_d8_16_3':
+  start=next(i for i,l in enumerate(symbolic) if l.startswith(f'proof fn walk_{ident}('));body=symbolic.index('{',start);end=len(symbolic);fn=symbolic[start:end];post=next(i for i,l in enumerate(fn) if l.strip().startswith('ensures '));shape=f'    ensures r::default_case(b,{header},{znode},{entries}nat),';ranges=f'    ensures {range_goal("b",b)},';shape_fn=fn.copy();shape_fn[0]=shape_fn[0].replace(f'walk_{ident}',f'walk_shape_{ident}');shape_fn[post]=shape;range_fn=fn.copy();range_fn[0]=range_fn[0].replace(f'walk_{ident}',f'walk_ranges_{ident}');range_fn[post]=ranges;wrapper=fn[:body-start+1]+[f'    walk_shape_{ident}(b);walk_ranges_{ident}(b);','}'];symbolic=symbolic[:start]+shape_fn+['#[verifier::spinoff_prover]']+range_fn+['#[verifier::spinoff_prover]']+wrapper
  return symbolic,concrete,hidden
+
+def optional_range(data,tag):
+ item=next(((pos+8,len(d)) for pos,t,d in chunks(data) if t==tag),None)
+ return 'None' if item is None else f'Some(crate::walk_model::Range {{offset:{item[0]}nat,len:{item[1]}nat}})'
+def range_goal(b,data):
+ return f'match m::MW_p({b},m::strict()) {{m::Outcome::Done(doc,_)=>doc.plte=={optional_range(data,b"PLTE")} && doc.trns=={optional_range(data,b"tRNS")},_=>false}}'
+def colour_definition(ident,data,ct,depth):
+ plte=next((d for _,t,d in chunks(data) if t==b'PLTE'),b'');trns=next((d for _,t,d in chunks(data) if t==b'tRNS'),None)
+ tv='None' if trns is None else 'Some('+seq(trns)+')'
+ return f'spec fn colour_{ident}() -> crate::colour_model::Context {{crate::colour_model::Context {{ct:{ct}u8,depth:{depth}u8,plte:{seq(plte)},trns:{tv}'+ '}}'
+def expanded_expected(expected,wide=False):
+ return b''.join(bytes.fromhex(q['hex'])*q['count'] for q in expected['rgba16_runs' if wide else 'rgba_runs'])
+def row_hints(ident,raw,w,h,ct,depth,il):
+ bits={0:1,2:3,3:1,4:2,6:4}[ct]*depth;bpp=max(1,bits//8);base=0;out=[];points={}
+ for k,(gx,gy,dx,dy) in enumerate(A7 if il else [(0,0,1,1)]):
+  pw=max(0,(w+dx-1-gx)//dx);ph=max(0,(h+dy-1-gy)//dy);rb=(pw*bits+7)//8;prev=None
+  if not pw or not ph:continue
+  for row in range(ph):
+   pos=base+row*(1+rb);ft=raw[pos];hint=untrusted_row(ft,raw[pos+1:pos+1+rb],prev,bpp);name=f'row_{ident}_{k}_{row}';pv='None' if prev is None else 'Some('+seq(prev)+')';line=f'r::line(raw_{ident}(),a_{ident}(),{k}nat,{row}nat)';src=f'f::row_data(raw_{ident}(),{base}nat,{rb}nat,{row}nat)'
+   out+=['#[verifier::spinoff_prover]',f'proof fn {name}() ensures {line}=={seq(hint)},','{',f'    hide(raw_{ident});']
+   out +=[f'    assert(raw_{ident}().len()=={len(raw)}nat) by (compute);',f'    assert(raw_{ident}()[{pos}]=={ft}u8) by (compute);',f'    assert(r::base(a_{ident}(),{k}nat)=={base}nat && r::rb(a_{ident}(),{k}nat)=={rb}nat && f::bpp(r::bits(a_{ident}()))=={bpp}nat) by (compute);',f'    assert({src}=={seq(raw[pos+1:pos+1+rb])}) by (compute);']
+   if row:out+=[f'    row_{ident}_{k}_{row-1}();']
+   out +=[f'    f::pass_row_equation(raw_{ident}(),{base}nat,{rb}nat,{bpp}nat,{row}nat);',f'    assert(f::previous_row(raw_{ident}(),{base}nat,{rb}nat,{bpp}nat,{row}nat)=={pv});',f'    assert(f::encoded_row({ft}u8,{src},{pv},{bpp}nat,{seq(hint)},0,{rb}nat)) by (compute);',f'    f::checked_row_hint({ft}u8,{src},{pv},{bpp}nat,{seq(hint)});','}']
+   for col in range(pw):points[(gx+col*dx,gy+row*dy)]=(k,col,row,hint,name)
+   prev=hint
+  base+=ph*(1+rb)
+ assert base==len(raw) and len(points)==w*h
+ return out,points
+
+def still_content_certificate(ident,data,raw,w,h,ct,depth,il,entries,wide,expected):
+ bf,hf,zf,af,rf,cf,ef=(f'{x}_{ident}()' for x in ['bytes','h','z','a','raw','colour','expected']);B=8 if wide else 4;N=w*h;wideword=str(wide).lower();rgba=expanded_expected(expected,wide);out=[colour_definition(ident,data,ct,depth),f'spec fn expected_{ident}() -> Seq<u8> {{{seq(rgba)}}}'];rows,points=row_hints(ident,raw,w,h,ct,depth,il);out+=rows
+ for i in range(N):
+  x,y=i%w,i//w;k,col,row,hint,rname=points[(x,y)];px=f'crate::colour_model::pixel({cf},{seq(hint)},{col}nat,{wideword},false)';piece=seq(rgba[B*i:B*(i+1)]);goal=f'{px}.is_ok() && crate::colour_model::physical({px}.get_Ok_0(),{wideword})=={piece}'
+  channels=[int.from_bytes(rgba[B*i+2*j:B*i+2*j+2],'big') for j in range(4)] if wide else list(rgba[B*i:B*i+B]);v='seq!['+','.join(f'{v}u16' for v in channels)+']';physical=f'crate::colour_model::physical({v},{wideword})'
+  out +=['#[verifier::spinoff_prover]',f'proof fn colour_pixel_{ident}_{i}() ensures {goal},','{',f'    crate::colour_model::depth_values({depth}u8);',f'    assert({px}==Ok({v})) by (compute);']
+  for j,vb in enumerate(rgba[B*i:B*(i+1)]):out +=[f'    assert({physical}[{j}]=={vb}u8) by (compute);']
+  out +=[f'    let physical_bytes={physical};let expected_bytes={piece};',f'    assert forall|j: int| 0<=j<{B} implies #[trigger] physical_bytes[j]==expected_bytes[j] by {{']
+  out +=['        '+('if' if j==0 else 'else if')+f' j=={j} {{}}' for j in range(B-1)];out +=[f'        else {{assert(j=={B-1});}}','    }',f'    assert({physical}=~={piece});','}']
+ blocks=list(range(0,N,2))
+ for block,lo in enumerate(blocks):
+  hi=min(lo+2,N);goal=f'forall|i: nat| {lo}<=i<{hi} ==> #[trigger] actual.subrange(({B}*i) as int,({B}*(i+1)) as int)=={ef}.subrange(({B}*i) as int,({B}*(i+1)) as int)'
+  out+=['#[verifier::spinoff_prover]',f'proof fn content_{ident}_{block}(actual: Seq<u8>)',f'    requires crate::paint_model::still_pixels({bf},STRICT,{wideword},actual),',f'    ensures actual.len()=={B*N}nat,{goal},','{',f'    hide(bytes_{ident});hide(z_{ident});hide(raw_{ident});hide(expected_{ident});hide(crate::colour_model::pixel);',f'    model_{ident}();inflate_{ident}();',f'    assert(r::raw({af})=={len(raw)}nat) by (compute);',*[f'    assert({bf}.subrange({pos+8},{pos+8+len(d)})=={seq(d)}) by (compute);' for pos,t,d in chunks(data) if t in [b'PLTE',b'tRNS']],f'    assert(match m::MW_p({bf},m::strict()) {{m::Outcome::Done(doc,_)=>crate::colour_model::from_doc(doc,{bf})=={cf},_=>false}}) by {{',f'        assert(match m::MW_p({bf},m::strict()) {{m::Outcome::Done(doc,_)=>doc.plte=={optional_range(data,b"PLTE")} && doc.trns=={optional_range(data,b"tRNS")},_=>false}});','    }',f'    crate::paint_model::still_projection_context({bf},{wideword},actual,{hf},{zf},{entries}nat,{cf});']
+  used=set()
+  for i in range(lo,hi):
+   x,y=i%w,i//w;k,col,row,hint,rname=points[(x,y)]
+   if rname not in used:out +=[f'    {rname}();'];used.add(rname)
+   src=f'crate::paint_model::source_pixel({rf},{af},{cf},{x}nat,{y}nat,{wideword},false)';px=f'crate::colour_model::pixel({cf},{seq(hint)},{col}nat,{wideword},false)';piece=seq(rgba[B*i:B*(i+1)])
+   out +=[f'    assert(crate::paint_model::source_cell({af},{x}nat,{y}nat)==({k}nat,{col}nat,{row}nat)) by (compute);',f'    assert({src}=={px});',f'    colour_pixel_{ident}_{i}();',f'    crate::paint_model::image_observe({rf},{af},{cf},actual,{wideword},false,{x}nat,{y}nat);',f'    assert({ef}.subrange({B*i},{B*(i+1)})=={piece}) by (compute);',f'    assert(actual.subrange({B*i},{B*(i+1)})=={ef}.subrange({B*i},{B*(i+1)}));']
+  out +=[f'    assert forall|i: nat| {lo}<=i<{hi} implies #[trigger] actual.subrange(({B}*i) as int,({B}*(i+1)) as int)=={ef}.subrange(({B}*i) as int,({B}*(i+1)) as int) by {{']
+  out +=['        '+('if' if i==lo else 'else if')+f' i=={i} {{}}' for i in range(lo,hi-1)];out +=[f'        else {{assert(i=={hi-1});}}' if hi-lo>1 else f'        assert(i=={lo});','    }','}']
+ out +=['#[verifier::spinoff_prover]',f'proof fn content_{ident}(actual: Seq<u8>)',f'    requires crate::paint_model::still_pixels({bf},STRICT,{wideword},actual),',f'    ensures actual=={ef},','{',f'    hide(expected_{ident});']
+ out +=[f'    content_{ident}_{block}(actual);' for block in range(len(blocks))];out +=[f'    assert({ef}.len()=={B*N}nat) by (compute);',f'    assert forall|i: nat| i<{N} implies #[trigger] actual.subrange(({B}*i) as int,({B}*(i+1)) as int)=={ef}.subrange(({B}*i) as int,({B}*(i+1)) as int) by {{']
+ out +=['        '+('if' if block==0 else 'else if')+f' i<{min(lo+2,N)} {{}}' for block,lo in enumerate(blocks[:-1])];out +=[f'        else {{assert({blocks[-1]}<=i);}}' if len(blocks)>1 else '', '    }',f'    crate::paint_model::pixel_blocks_equal(actual,{ef},{B}nat,{N}nat);','}']
+ return out
 
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--root',type=Path,default=Path(__file__).resolve().parents[1]);ap.add_argument('--names',nargs='*');a=ap.parse_args();root=a.root;fixture=root.parent/'spec-frozen/VECTORS.json';records={r['name']:r for r in json.loads(fixture.read_text())};selected=[r for r in records.values() if (r['name'] in NAMES or r['name'].startswith(('trns16/','apng/'))) and r['entry'] in ['still','still16'] and (not a.names or r['name'] in a.names)]
  fw,author=forward_library(root);walk=load('m5_existing_walk',root/'tools/generate_m3_walk_witnesses.py');cert=load('m5_existing_crc',root/'tools/generate_m4_complete_witnesses.py');fixture_sha=digest(fixture)
- out=['//! M5 data/shape projections and complete bad-index errors; pixel results deferred by E6.','use vstd::prelude::*;','use crate::{document_model as m,raster_model as r,filter_model as f,png::Error,policy::STRICT,','    m4_trace_witness_model as t,m4_checksum_witness_model as c,m4_stream_witness_model as stream,m5_stream_witness_model as ms,m4_crc_witness_model as crc_cert};','use inflate_verus::model as zm;','verus! {'];index=[]
+ out=['//! M5 physical-pixel projections and complete bad-index errors; complete records remain due at M6.','use vstd::prelude::*;','use crate::{document_model as m,raster_model as r,filter_model as f,png::Error,policy::STRICT,','    m4_trace_witness_model as t,m4_checksum_witness_model as c,m4_stream_witness_model as stream,m5_stream_witness_model as ms,m4_crc_witness_model as crc_cert};','use inflate_verus::model as zm;','verus! {'];index=[]
  for record in selected:
   name=record['name'];ident=re.sub('[^a-zA-Z0-9]','_',name).lower();data=bytes.fromhex(record['input_hex']);ih=data[16:29];w,h=int.from_bytes(ih[:4],'big'),int.from_bytes(ih[4:8],'big');depth,ct,il=ih[8],ih[9],ih[12];entries=next((len(d)//3 for p,t,d in chunks(data) if t==b'PLTE'),0);z=streams(data)[0];source=source_for(root,records,name,z,fw);raw=source['raw'];wide=record['entry']=='still16';error=record['expected'].get('error');header=f'crate::model::Ihdr {{width:{w}u32,height:{h}u32,depth:{depth}u8,color_type:{ct}u8,interlace:{il}u8}}';hf=f'h_{ident}()';af=f'a_{ident}()';zf=f'z_{ident}()';bf=f'bytes_{ident}()'
   expected=record['expected'];expected_bytes=sum(q['count']*(len(q['hex'])//2) for q in expected.get('rgba16_runs',expected.get('rgba_runs',[]))) if not error else None
   goal=f'r::Projection::Error(Error::{error})' if error else f'(r::Projection::Ready {{width:{expected["width"]}u32,height:{expected["height"]}u32,bytes:{expected_bytes}nat}})'
   symbolic,concrete,hidden=walk_certificate(root,walk,cert,data,ident,hf,zf,entries)
-  out +=[f'// {name}; frozen SHA256 {fixture_sha}',f'spec fn bytes_{ident}() -> Seq<u8> {{{seq(data)}}}',f'spec fn h_{ident}() -> crate::model::Ihdr {{{header}}}',f'spec fn a_{ident}() -> r::Raster {{r::shape({hf},{w}nat,{h}nat,{entries}nat,STRICT)}}',*stream_certificate(ident,z,source,len(raw)),*symbolic,*scan_certificate(ident,raw,w,h,ct,depth,il,entries,error),'#[verifier::spinoff_prover]',f'proof fn model_{ident}() ensures r::still({bf},STRICT,{str(wide).lower()})=={goal},','{',f'    hide(bytes_{ident});hide(z_{ident});hide(raw_{ident});hide(r::data);',hidden,f'    assert({bf}.len()=={len(data)}nat) by (compute);',*concrete,f'    inflate_{ident}();scan_{ident}();',f'    assert(r::raw({af})=={len(raw)}nat) by (compute);',f'    assert(r::data({zf},{af},STRICT)==Some('+('Err(Error::'+error+')' if error else 'Ok(())')+')) by {reveal(r::data);};',f'    r::default_error({bf},{hf},{zf},{entries}nat,Error::{error});' if error else f'    r::default_ready({bf},{hf},{zf},{entries}nat,{str(wide).lower()});','}',f'fn public_{ident}() {{','    let b=['+','.join(f'{v}u8' for v in data)+'];',f'    proof {{assert(b@=={bf});model_{ident}();}}','    let result=crate::png::'+('try_decode_still16' if wide else 'try_decode_still')+'(&b);']
+  out +=[f'// {name}; frozen SHA256 {fixture_sha}',f'spec fn bytes_{ident}() -> Seq<u8> {{{seq(data)}}}',f'spec fn h_{ident}() -> crate::model::Ihdr {{{header}}}',f'spec fn a_{ident}() -> r::Raster {{r::shape({hf},{w}nat,{h}nat,{entries}nat,STRICT)}}',*stream_certificate(ident,z,source,len(raw)),*symbolic,*scan_certificate(ident,raw,w,h,ct,depth,il,entries,error),*(still_content_certificate(ident,data,raw,w,h,ct,depth,il,entries,wide,expected) if not error else []),'#[verifier::spinoff_prover]',f'proof fn model_{ident}() ensures r::still({bf},STRICT,{str(wide).lower()})=={goal},r::default_case({bf},{hf},{zf},{entries}nat),{range_goal(bf,data)},','{',f'    hide(bytes_{ident});hide(z_{ident});hide(raw_{ident});hide(r::data);',hidden,f'    assert({bf}.len()=={len(data)}nat) by (compute);',*concrete,f'    inflate_{ident}();scan_{ident}();',f'    assert(r::raw({af})=={len(raw)}nat) by (compute);',f'    assert(r::data({zf},{af},STRICT)==Some('+('Err(Error::'+error+')' if error else 'Ok(())')+')) by {reveal(r::data);};',f'    r::default_error({bf},{hf},{zf},{entries}nat,Error::{error});' if error else f'    r::default_ready({bf},{hf},{zf},{entries}nat,{str(wide).lower()});','}',f'fn public_{ident}() {{','    let b=['+','.join(f'{v}u8' for v in data)+'];',f'    proof {{assert(b@=={bf});model_{ident}();}}','    let result=crate::png::'+('try_decode_still16' if wide else 'try_decode_still')+'(&b);']
   if error:out+=['    assert(match result {Err(crate::alloc_guard::TryError::OutOfMemory(_))=>true,_=>result==Err(crate::alloc_guard::TryError::Format(Error::'+error+'))});']
   else:out +=[f'    assert(match result {{Ok(s)=>s.width=={expected["width"]}u32 && s.height=={expected["height"]}u32 && s.'+('rgba16' if wide else 'rgba')+f'@.len()=={expected_bytes}nat,Err(crate::alloc_guard::TryError::OutOfMemory(_))=>true,_=>false}});']
-  out+=['}'];index.append(dict(name=name,entry=record['entry'],gate_assignment='complete at M5' if error else 'projection at M5, complete at M6',projection='exact standalone error' if error else 'data success, dimensions and physical RGBA byte length; no channel equality',expected_projection={'error':error} if error else {'width':expected['width'],'height':expected['height'],'bytes':expected_bytes},fixture_sha256=fixture_sha,input_sha256=hashlib.sha256(data).hexdigest(),certificate_source=source['source_path'],certificate_source_sha256=source['source_sha256'],model_function=f'model_{ident}',public_function=f'public_{ident}'))
+  if not error:out +=['    if let Ok(s)=result {',f'        proof {{content_{ident}(s.'+('rgba16' if wide else 'rgba')+'@);}',f'        assert(s.'+('rgba16' if wide else 'rgba')+f'@==expected_{ident}());','    }']
+  out+=['}'];index.append(dict(name=name,entry=record['entry'],gate_assignment='complete at M5' if error else 'projection at M5, complete at M6',projection='exact standalone error' if error else 'data success, dimensions and every frozen physical RGBA byte through T4',expected_projection={'error':error} if error else {'width':expected['width'],'height':expected['height'],'bytes':expected_bytes,'physical_rgba_sha256':hashlib.sha256(expanded_expected(expected,wide)).hexdigest()},fixture_sha256=fixture_sha,input_sha256=hashlib.sha256(data).hexdigest(),certificate_source=source['source_path'],certificate_source_sha256=source['source_sha256'],model_function=f'model_{ident}',public_function=f'public_{ident}'))
  out+=['} // verus!',''];(root/'src/witness_m5_still.rs').write_text('\n'.join(out));(root/'evidence/m5-still-witness-index.json').write_text(json.dumps({'status':'Generated candidates; verification credit recorded separately','generator':'tools/generate_m5_still_witnesses.py','records':index},indent=2)+'\n');print('Generated',len(index),'M5 still candidates; no proof credit from generation.')
 if __name__=='__main__':main()

@@ -148,4 +148,9 @@ pub(crate) proof fn prepared_inflate_error<T>(b: Seq<u8>,pol: crate::policy::Pol
     hide(walk::MW_p);hide(walk::MWF_p);hide(crate::image::inflate_error);
 }
 
+pub(crate) proof fn prepared_still_document(b: Seq<u8>,pol: walk::Policy,wide: bool,doc: walk::Doc,ev: walk::Events,log: Seq<(AllocSite,nat,bool)>)
+    requires image_prepared(b,pol,false,wide,Ok(doc),ev,log),
+    ensures walk::MW_p(b,pol)==walk::Outcome::Done(doc,ev),
+{hide(walk::MW_p);hide(walk::MWF_p);}
+
 } // verus!

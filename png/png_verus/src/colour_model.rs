@@ -215,15 +215,24 @@ pub proof fn place_drawing_frame(shape: (nat,nat,nat,nat,nat,bool),before: Seq<u
 /// The mathematical row conversion: first palette error, or one RGBA value
 /// per pixel. The input sample width decides which bits are pixels; trailing
 /// padding never becomes another sample.
+pub open spec fn row_domain(c: Context,line: Seq<u8>,width: nat) -> bool {
+    crate::model::valid_depth(c.ct,c.depth) && width>=1
+        && line.len()==crate::layout_model::scan_bytes(channels(c)*c.depth as nat,width)
+}
+/// None is the internal OutsideDomain marker, not a PNG format error.
 pub open spec fn MC(c: Context,line: Seq<u8>,width: nat,wide: bool,black: bool)
-    -> Result<Seq<Seq<u16>>,crate::png::Error>
+    -> Option<Result<Seq<Seq<u16>>,crate::png::Error>>
 {
-    if c.ct==3 && !black && !crate::raster_model::palette_valid(line,c.depth,width,c.plte.len()/3) {
-        Err(crate::png::Error::PaletteIndexOutOfRange)
+    if !row_domain(c,line,width) {None}
+    else if c.ct==3 && !black && !crate::raster_model::palette_valid(line,c.depth,width,c.plte.len()/3) {
+        Some(Err(crate::png::Error::PaletteIndexOutOfRange))
     } else {
-        Ok(Seq::new(width,|x: int| match pixel(c,line,x as nat,wide,black) {Ok(px)=>px,_=>Seq::empty()}))
+        Some(Ok(Seq::new(width,|x: int| match pixel(c,line,x as nat,wide,black) {Ok(px)=>px,_=>Seq::empty()})))
     }
 }
+pub proof fn MC_empty_rgba_outside()
+    ensures MC(Context {ct:6,depth:8,plte:Seq::empty(),trns:None},Seq::empty(),1,false,false)==None,
+{}
 
 /// Place a prefix of MC's row in scanline order, using immutable canvas values
 /// at each blend. Error rows have no successful output equation.
@@ -251,7 +260,7 @@ pub proof fn draw_step(c: Context,line: Seq<u8>,shape: (nat,nat,nat,nat,nat,bool
 
 /// Every cell of a successful MC row is exactly its independent pixel result.
 pub proof fn MC_pixel(c: Context,line: Seq<u8>,count: nat,wide: bool,black: bool,x: nat,rows: Seq<Seq<u16>>)
-    requires crate::model::valid_depth(c.ct,c.depth),x<count,MC(c,line,count,wide,black)==Ok(rows),
+    requires crate::model::valid_depth(c.ct,c.depth),x<count,MC(c,line,count,wide,black)==Some(Ok(rows)),
     ensures rows.len()==count,pixel(c,line,x,wide,black)==Ok(rows[x as int]),rows[x as int].len()==4,
 {
     if c.ct==3 && !black {
@@ -274,7 +283,7 @@ pub closed spec fn render_row(rows: Seq<Seq<u16>>,shape: (nat,nat,nat,nat,nat,bo
 
 /// The actual row loop's prefix equation is the rendering of MC8/MC16.
 pub proof fn draw_matches_MC(c: Context,line: Seq<u8>,count: nat,rows: Seq<Seq<u16>>,shape: (nat,nat,nat,nat,nat,bool),before: Seq<u8>,width: nat,x0: nat,dx: nat,y: nat,n: nat,wide: bool,black: bool)
-    requires crate::model::valid_depth(c.ct,c.depth),n<=count,MC(c,line,count,wide,black)==Ok(rows),
+    requires crate::model::valid_depth(c.ct,c.depth),n<=count,MC(c,line,count,wide,black)==Some(Ok(rows)),
     ensures draw_prefix(c,line,shape,before,width,x0,dx,y,n,wide,black)==render_row(rows,shape,before,width,x0,dx,y,n),
     decreases n,
 {
@@ -392,5 +401,10 @@ pub proof fn render_row_observe(rows: Seq<Seq<u16>>,shape: (nat,nat,nat,nat,nat,
         }
     }
 }
+
+pub(crate) proof fn observed_slice(shape: (nat,nat,nat,nat,nat,bool),state: Seq<u8>,w: nat,x: nat,y: nat)
+    ensures observe(shape,state,w,x,y)==state.subrange(destination_offset(shape,w,x,y) as int,
+        (destination_offset(shape,w,x,y)+pixel_bytes(shape)) as int),
+{}
 
 }

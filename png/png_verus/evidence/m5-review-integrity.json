@@ -1,0 +1,26 @@
+{
+  "kind": "M5 review-fix packet integrity control; no sign-off claim",
+  "full_runs": [
+    630,
+    631
+  ],
+  "verified_each": 6093,
+  "source_inventory_count": 84,
+  "verified_evidence_hashes": 1112,
+  "packet_sha256": "2ed506791a0a179492812cfe372bf254f885cf5741bc7985574afe04019c7138",
+  "proof_map_anchors_match_current_accepted_source": true,
+  "frozen_gate_classifications": {
+    "complete_errors": 2,
+    "content_projections": 35
+  },
+  "historical_24_localized_only": true,
+  "canonical_replacement_run": 633,
+  "runtime_pass_total_skip": [
+    846,
+    848,
+    2
+  ],
+  "vstd_pins_unchanged": true,
+  "ledger_hash_matches": true,
+  "run": 635
+}

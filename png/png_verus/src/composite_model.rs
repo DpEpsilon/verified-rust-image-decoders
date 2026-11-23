@@ -319,4 +319,10 @@ pub proof fn zero_alpha_pixel(before: Seq<u8>,p: nat)
         if source[3]==0 {seq![0u8,0u8,0u8,0u8]}else{source});
 }
 
+pub(crate) proof fn drawing_frame_context(before: Seq<u8>,after: Seq<u8>,shape: (nat,nat,nat,nat,nat,bool),w: nat,h: nat)
+    requires drawing_frame(before,after,shape,w,h),
+    ensures before.len()==after.len(),forall|j: int| 0<=j<before.len() && !drawing_region(shape,w,h,j)
+        ==> #[trigger] after[j]==before[j],
+{reveal(drawing_frame);}
+
 }

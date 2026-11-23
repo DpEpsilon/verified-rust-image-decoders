@@ -49,6 +49,11 @@ pub(crate) open spec fn source_document(b: Seq<u8>, doc: Doc) -> bool {
     && (doc.actl.is_some() ==> transport::result(b,doc.view(),transport::header_end(b)))
 }
 
+pub(crate) proof fn source_frame_count(b: Seq<u8>,doc: Doc)
+    requires source_document(b,doc),
+    ensures doc.info.frame_count==doc.frame_ranges@.len(),
+{hide(Doc::wf);hide(transport::result);reveal(source_document);}
+
 /// Carry a concrete num_plays-only update through the source predicates.
 pub(crate) proof fn plays_preserve_source(b: Seq<u8>, before: Doc, after: Doc, plays: Option<u32>)
     requires source_document(b,before),after==(Doc {info:before.info.with_plays(plays),..before}),
@@ -87,6 +92,7 @@ impl FrameState {
             Kind::Done=>true,Kind::Single=>doc.actl.is_none(),
             Kind::Anim {index,cursor,previous}=>doc.actl.is_some() && index<=doc.info.frame_count
                 && previous_fits(previous,doc.ihdr.view())
+                && previous==crate::iterator_canvas_model::previous(doc.view(),index as nat)
                 && cursor==transport::cursor_for(b,doc.frame_ranges@,transport::header_end(b),index as nat),
         }
     }
@@ -139,6 +145,7 @@ impl<'a> FrameJob<'a> {
     fn select(b: &'a [u8], doc: &Doc, index: u32, cursor: usize, previous: Previous) -> (r: Self)
         requires source_document(b@,*doc),doc.actl.is_some(),index<doc.info.frame_count,
             previous_fits(previous,doc.ihdr.view()),
+            previous==crate::iterator_canvas_model::previous(doc.view(),index as nat),
             cursor==transport::cursor_for(b@,doc.frame_ranges@,transport::header_end(b@),index as nat),
         ensures r.wf(b@,*doc),r.index==index,r.previous==previous,
     {
@@ -212,10 +219,25 @@ impl<'a> FrameJob<'a> {
         transport::control_dispose(doc.frame_ranges@[self.index as int],self.control.view());
     }
 
+    pub(crate) proof fn canvas_context(self,b: Seq<u8>,doc: Doc,p: crate::policy::Policy)
+        requires self.wf(b,doc),
+        ensures self.previous==crate::iterator_canvas_model::previous(doc.view(),self.index as nat),
+            crate::iterator_canvas_model::rectangle(doc.view(),self.index as nat)==crate::composite_model::rect(self.control.x,self.control.y,self.control.w,self.control.h),
+            crate::iterator_canvas_model::blend(doc.view(),self.index as nat)==(self.control.blend==1),
+            crate::iterator_canvas_model::effective(doc.view(),self.index as nat)==self.effective_dispose,
+            crate::iterator_canvas_model::reuse(doc.view(),self.index as nat)==self.reader.is_none(),
+            crate::image::raster_context(doc,self.control.w,self.control.h,p)==crate::iterator_canvas_model::shape(doc.view(),p,self.index as nat),
+            self.resume.previous()==crate::iterator_canvas_model::previous(doc.view(),self.index as nat+1),
+    {
+        reveal(FrameJob::wf);
+        transport::control_fields(doc.frame_ranges@[self.index as int],self.control.view());
+    }
+
     #[verifier::opaque]
     pub(crate) open spec fn wf(self, b: Seq<u8>, doc: Doc) -> bool {
         doc.actl.is_some() && self.index<doc.frame_ranges@.len() && self.resume.wf(b,doc)
         && previous_fits(self.previous,doc.ihdr.view())
+        && self.previous==crate::iterator_canvas_model::previous(doc.view(),self.index as nat)
         && self.resume.index()==Some(self.index as nat+1)
         && self.resume.previous()==Some(((self.control.x,self.control.y,self.control.w,self.control.h),self.effective_dispose))
         && self.effective_dispose<=2
@@ -267,9 +289,17 @@ fn resume_state(b: &[u8], doc: &Doc, index: u32, start: usize, control: Fctl, di
         start==transport::frame_start(b@,doc.frame_ranges@[index as int]),
         1<=control.w,1<=control.h,control.x as int+control.w as int<=doc.ihdr.w,
         control.y as int+control.h as int<=doc.ihdr.h,dispose<=2,
+        transport::control_record(doc.frame_ranges@[index as int],control.view()),
+        dispose==(if index==0 && control.dispose==2 {1}else{control.dispose}),
     ensures r.wf(b@,*doc),r.index()==Some(index as nat+1),
         r.previous()==Some(((control.x,control.y,control.w,control.h),dispose)),
 {
+    proof {
+        source_frame_count(b@,*doc);
+        transport::control_fields(doc.frame_ranges@[index as int],control.view());
+        assert((index as nat)<doc.frame_ranges@.len());
+        assert(crate::iterator_canvas_model::previous(doc.view(),index as nat+1)==Some(((control.x,control.y,control.w,control.h),dispose)));
+    }
     FrameState {kind:Kind::Anim {index:index+1,cursor:start,
         previous:Some(((control.x,control.y,control.w,control.h),dispose))}}
 }

@@ -2387,14 +2387,44 @@
   ],
   "historical_fields_qualification": "Pre-existing root selector/control/checkpoint/final-control and remaining_M4 fields describe the historical M4 batch. Original M4 mutation records remain unchanged. M5_batch is the current M5 evidence.",
   "M5_batch": {
-    "base_commit": "764899abcd959da26306bee78949c1be8148e391",
-    "status": "EIGHT SEMANTIC-ONLY VERIFIER KILLS; INDEPENDENT REVIEW PENDING",
+    "base_commit": "2711b13103d969c3f0464403d7dbc7ba355cba2d",
+    "status": "EIGHT CANONICAL CONTRACT SENSITIVITY RESULTS; HISTORICAL 24 LOCALIZED-ONLY; INDEPENDENT RE-REVIEW REQUIRED",
     "functional_checkpoint": {
-      "host_run": 586,
-      "i686_run": 588,
-      "verified_each": 4514,
-      "file": "evidence/m5-witness-checkpoint-0586-0588.json",
-      "sha256": "f2712641fa547bb0743588951a2e4a7cb16fb45f9c3b2077a143a295c9f5c45e"
+      "host_run": 630,
+      "i686_run": 631,
+      "verified_each": 6093,
+      "records": [
+        {
+          "run": 630,
+          "target": "host",
+          "verified": 6093,
+          "record": {
+            "file": "evidence/m5-review-host-0630.json",
+            "sha256": "36fe41a09f02749f77f495988543dad4d8d818c1f6333ca87717fa2c9ae12608"
+          },
+          "log": {
+            "file": "evidence/m5-review-host-0630.log.gz",
+            "sha256": "4aa0fa6595d76fc02ff24dafb3d98489860aa85a9dda04e2df71edd67c43cbae",
+            "compression": "gzip",
+            "uncompressed_sha256": "afbba8d5b695726ef88aae921569b981ae72221e5ac3d494733a9de720fa2110"
+          }
+        },
+        {
+          "run": 631,
+          "target": "i686",
+          "verified": 6093,
+          "record": {
+            "file": "evidence/m5-review-i686-0631.json",
+            "sha256": "e8d93def465e494556ad38027bc17573a37aba62ac25f71f7d9c069c449749f4"
+          },
+          "log": {
+            "file": "evidence/m5-review-i686-0631.log.gz",
+            "sha256": "18acf6fbcbf19f01f6ea860b8d1577d211820233d1a03e3c996e83f9ca78e429",
+            "compression": "gzip",
+            "uncompressed_sha256": "54ecb3147f1c36ce7f81e7d0068dc1887edac60f63fac6b01264f72370b73835"
+          }
+        }
+      ]
     },
     "passing_controls": [
       {
@@ -2418,7 +2448,8 @@
         "archive_sha256": "49c50f34b08900c7a6bff534924754ee6997a28de54fe605b09608bffe3a522c",
         "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
         "prepared_control_run": null,
-        "semantic_diagnostics": []
+        "semantic_diagnostics": [],
+        "base_commit": "764899abcd959da26306bee78949c1be8148e391"
       },
       {
         "number": 124,
@@ -2441,36 +2472,110 @@
         "archive_sha256": "2d21ece7d7bebc353dd719d02f5b62a845c90cebf6450dfd0f92888252d3a4b1",
         "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
         "prepared_control_run": null,
+        "semantic_diagnostics": [],
+        "base_commit": "764899abcd959da26306bee78949c1be8148e391"
+      },
+      {
+        "number": 0,
+        "selector": "unmutated-review-base-control",
+        "base_commit": "2711b13103d969c3f0464403d7dbc7ba355cba2d",
+        "run": 632,
+        "record": "evidence/m5-mutation-00-0632.json",
+        "record_sha256": "419d0ffa2c98fa2bf4885719556c30b1ab326ef088a92d1cf61fd1e204d4b27c",
+        "log": "evidence/m5-mutation-00-0632.log",
+        "log_sha256": "a1c4e1a6d845cb5536503d81c52b64881278250a23898244ce2b73dc5da62a7b",
+        "expected_failed_function": null,
+        "verified": 873,
+        "errors": 0,
+        "verifier_killed": false,
+        "accepted_mutation_control": true,
+        "canonical_contract_credit": false,
+        "scratch_preparation": null,
+        "selector_definitions": "tools/run_m5_review_mutations.py",
+        "selector_definitions_sha256": "2622adc92125692c09883f5c7c857c37cf8aff399e23cc7b3e12593bda61387a",
+        "canonical_source_tree_sha256": "00507e738913ecd3187070fe2592da95492d2fdb1bff56f987aed69158a84b9b",
+        "compiled_source_tree_sha256": "e9143198ee194cdddb0a7460081478ff1b22c49e14aff09941359cea07e62f99",
+        "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-review-fixes/2711b13-20261122/mutations/m5-mutation-unmutated-review-base-control-source.tar.gz",
+        "archive_sha256": "e5fd24f378f1467a39745e985d183e4a53fdd58b26d53b3e6dbba8e60be40eba",
+        "replay": "Use the coordinator commit matching canonical_source_sha256; base_commit identifies its parent while these fixes are uncommitted. Alternatively use the retained source archive. Apply only the recorded implementation mutation and generated-leaf omissions; check compiled_source_sha256 and replay the pinned command/environment.",
+        "prepared_control_run": null,
         "semantic_diagnostics": []
       }
     ],
     "mutations": [
       {
         "number": 24,
-        "selector": "trns16-localized-high-byte-v4",
-        "run": 596,
-        "record": "evidence/m5-mutation-24-0596.json",
-        "record_sha256": "9fe8edced5d2ca17863c1f72e9e88c469235e279bcf402f6bb8efd79f435628a",
-        "log": "evidence/m5-mutation-24-0596.log",
-        "log_sha256": "6f327faa28356a7702f926e38ad86689f959e2990b127ab9644abe23ccee7c77",
+        "selector": "canonical-trns16-high-byte",
+        "base_commit": "2711b13103d969c3f0464403d7dbc7ba355cba2d",
+        "run": 633,
+        "record": "evidence/m5-mutation-24-0633.json",
+        "record_sha256": "c7dface851bd0ebbc93398bfa72107fbe285f4271d189d3c06a678a8984b7991",
+        "log": "evidence/m5-mutation-24-0633.log",
+        "log_sha256": "0dd12ce823fe42332795e88b8890219f70e2aec7f13a8f92e9717ac0c7685ee3",
         "expected_failed_function": "trns_samples_equal",
-        "verified": 837,
+        "verified": 872,
         "errors": 1,
         "verifier_killed": true,
         "accepted_mutation_control": false,
-        "selector_definitions": "evidence/m5-mutation-runner-v4.py",
-        "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
-        "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
-        "compiled_source_tree_sha256": "a7c6c7f0a29ea420120a7efc45d496ec3163105e1302ae524a83fbe741c7de4d",
-        "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-trns16-localized-high-byte-v4-source.tar.gz",
-        "archive_sha256": "c39951a99583718b7fe300f30e019a341b5cb5ff8e52df1ab4037fa50e0f05fd",
-        "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
-        "prepared_control_run": 595,
+        "canonical_contract_credit": true,
+        "scratch_preparation": null,
+        "selector_definitions": "tools/run_m5_review_mutations.py",
+        "selector_definitions_sha256": "2622adc92125692c09883f5c7c857c37cf8aff399e23cc7b3e12593bda61387a",
+        "canonical_source_tree_sha256": "00507e738913ecd3187070fe2592da95492d2fdb1bff56f987aed69158a84b9b",
+        "compiled_source_tree_sha256": "8dae293c80e2e37cfecd22010287f05d6f33ba8732fff30374c941e5bfd03a39",
+        "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-review-fixes/2711b13-20261122/mutations/m5-mutation-canonical-trns16-high-byte-source.tar.gz",
+        "archive_sha256": "a6bbfc0a7617055f5b6b2ea46c24c0961e0eb0035e5ad6c1f5ea02f7b4fb05e3",
+        "replay": "Use the coordinator commit matching canonical_source_sha256; base_commit identifies its parent while these fixes are uncommitted. Alternatively use the retained source archive. Apply only the recorded implementation mutation and generated-leaf omissions; check compiled_source_sha256 and replay the pinned command/environment.",
+        "prepared_control_run": 632,
         "semantic_diagnostics": [
           {
-            "function": "trns_samples_equal",
+            "failed_function": "trns_samples_equal",
             "message": "postcondition not satisfied",
-            "diagnostic": "error: postcondition not satisfied\n   --> src/image.rs:689:13\n    |\n689 |     ensures r==(key[0] == pixel[0] && key[1] == pixel[1] && key[2] == pixel[2]),\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n690 | {\n691 |     if d==16 {key[0]/256==pixel[0]/256 && key[1]/256==pixel[1]/256 && key[2]/256==pixel[2]/256}else{key[0] == pixel[0] && key[1] == pixel[1] && key[2] == pixel[2]}\n    |     --------------------------------------------------------------------------------------------------------------------------------------------------------------- at the end of the function body\n\n"
+            "diagnostic": "error: postcondition not satisfied\n   --> src/image.rs:691:13\n    |\n691 |     ensures r==(key[0]==pixel[0] && key[1]==pixel[1] && key[2]==pixel[2]),\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n692 | {\n693 |     if _depth==16 {key[0]/256==pixel[0]/256 && key[1]/256==pixel[1]/256 && key[2]/256==pixel[2]/256}else{key[0]==pixel[0] && key[1]==pixel[1] && key[2]==pixel[2]}\n    |     -------------------------------------------------------------------------------------------------------------------------------------------------------------- at the end of the function body\n\n",
+            "spans": [
+              {
+                "file_name": "src/image.rs",
+                "byte_start": 31942,
+                "byte_end": 32100,
+                "line_start": 693,
+                "line_end": 693,
+                "column_start": 5,
+                "column_end": 163,
+                "is_primary": false,
+                "text": [
+                  {
+                    "text": "    if _depth==16 {key[0]/256==pixel[0]/256 && key[1]/256==pixel[1]/256 && key[2]/256==pixel[2]/256}else{key[0]==pixel[0] && key[1]==pixel[1] && key[2]==pixel[2]}",
+                    "highlight_start": 5,
+                    "highlight_end": 163
+                  }
+                ],
+                "label": "at the end of the function body",
+                "suggested_replacement": null,
+                "suggestion_applicability": null,
+                "expansion": null
+              },
+              {
+                "file_name": "src/image.rs",
+                "byte_start": 31873,
+                "byte_end": 31934,
+                "line_start": 691,
+                "line_end": 691,
+                "column_start": 13,
+                "column_end": 74,
+                "is_primary": true,
+                "text": [
+                  {
+                    "text": "    ensures r==(key[0]==pixel[0] && key[1]==pixel[1] && key[2]==pixel[2]),",
+                    "highlight_start": 13,
+                    "highlight_end": 74
+                  }
+                ],
+                "label": "failed this postcondition",
+                "suggested_replacement": null,
+                "suggestion_applicability": null,
+                "expansion": null
+              }
+            ]
           }
         ]
       },
@@ -2506,7 +2611,8 @@
             "message": "postcondition not satisfied",
             "diagnostic": "error: postcondition not satisfied\n   --> src/image.rs:691:9\n    |\n691 |           colour::depth(depth) ==> r as int==if wide {colour::s16(v as int,depth)}else{colour::s8(v as int,depth)},\n    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n712 | /     if wide {\n713 | |         (v * 65535 / ((1u32 << depth) - 1)) as u16\n714 | |     } else if depth == 16 {\n715 | |         (v >> 8) as u16\n716 | |     } else {\n717 | |         (v * 255 / ((1u32 << depth) - 1)) as u16\n718 | |     }\n    | |_____- at the end of the function body\n\n"
           }
-        ]
+        ],
+        "base_commit": "764899abcd959da26306bee78949c1be8148e391"
       },
       {
         "number": 26,
@@ -2535,7 +2641,8 @@
             "message": "postcondition not satisfied",
             "diagnostic": "error: postcondition not satisfied\n   --> src/frame_state.rs:143:17\n    |\n143 |         ensures r.wf(b@,*doc),r.index==index,r.previous==previous,\n    |                 ^^^^^^^^^^^^^ failed this postcondition\n...\n161 |         Self {index,control,previous,effective_dispose,reader,resume}\n    |         ------------------------------------------------------------- at the end of the function body\n\n"
           }
-        ]
+        ],
+        "base_commit": "764899abcd959da26306bee78949c1be8148e391"
       },
       {
         "number": 27,
@@ -2569,7 +2676,8 @@
             "message": "assertion failed",
             "diagnostic": "error: assertion failed\n    --> src/png.rs:1344:23\n     |\n1344 |         proof {assert(disposed==Some(self.canvas@));}\n     |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed\n\n"
           }
-        ]
+        ],
+        "base_commit": "764899abcd959da26306bee78949c1be8148e391"
       },
       {
         "number": 28,
@@ -2598,7 +2706,8 @@
             "message": "invariant not satisfied at end of loop body",
             "diagnostic": "error: invariant not satisfied at end of loop body\n   --> src/image.rs:230:13\n    |\n230 |             forall|c: int| 0<=c<i ==> #[trigger] o@[c] as int==composite::over_component(s@,d@,c),\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n"
           }
-        ]
+        ],
+        "base_commit": "764899abcd959da26306bee78949c1be8148e391"
       },
       {
         "number": 29,
@@ -2632,7 +2741,8 @@
             "message": "precondition not satisfied",
             "diagnostic": "error: precondition not satisfied\n    --> src/png.rs:1050:16\n     |\n1050 |         proof {iterlog::append_saved(prior,self.raw@.len(),n as nat,result.is_ok());}\n     |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n    ::: src/iterator_log_model.rs:18:14\n     |\n  18 |     requires log==initial(raw,out),\n     |              --------------------- failed precondition\n\n"
           }
-        ]
+        ],
+        "base_commit": "764899abcd959da26306bee78949c1be8148e391"
       },
       {
         "number": 30,
@@ -2666,7 +2776,8 @@
             "message": "postcondition not satisfied",
             "diagnostic": "error: postcondition not satisfied\n   --> src/png.rs:495:9\n    |\n495 |           crate::allocation_model::image_prepared(b@,pol.walk_view(),frames,wide,prepared_image_view(r),final(ev).view(),final(trace).log_view()),\n    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n...\n501 | / {\n502 | |     hide(Doc::wf);hide(crate::transport_model::idat_result);hide(crate::layout_model::raw);\n503 | |     hide(crate::document_model::MWF_p);hide(crate::document_model::MW_p);\n504 | |     let result=if frames {crate::callers::frames(b,pol,ev)}else{crate::callers::still(b,pol,ev)};\n...   |\n517 | | }\n    | |_- at the end of the function body\n\n"
           }
-        ]
+        ],
+        "base_commit": "764899abcd959da26306bee78949c1be8148e391"
       },
       {
         "number": 32,
@@ -2695,7 +2806,8 @@
             "message": "assertion failed",
             "diagnostic": "error: assertion failed\n    --> src/png.rs:1592:57\n     |\n1592 |                 proof {self.allocation_context();assert(crate::alloc_guard::all_ok(self.log_view()));}\n     |                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ assertion failed\n\n"
           }
-        ]
+        ],
+        "base_commit": "764899abcd959da26306bee78949c1be8148e391"
       }
     ],
     "base_scope": "All implementation, independent-model and common proof modules retained; no --verify-* filters; not a milestone checkpoint.",
@@ -2713,7 +2825,7 @@
     "solver_limits_changed": false,
     "wall_timeout_seconds": 3600,
     "stack_bytes": 268435456,
-    "mutation_24_localization": "Only in scratch: extract the three unscaled key comparisons into a native helper with the same element-wise equality contract. Control 595 proves all original implementation contracts plus that helper. Run 596 changes only its native comparison to high-byte-only. No existing model, contract or proof body is weakened.",
+    "mutation_24_localization": "Historical 595/596 proves localized equality only. The replacement changes only the native body of the canonical production trns_samples_equal function; its exact full-sample equality contract is included in both fresh full-crate runs. No scratch-only postcondition or extraction is added.",
     "excluded_attempts": [
       {
         "run": 592,
@@ -2724,7 +2836,10 @@
         "errors": 2,
         "reason": "Resource-limit diagnostics or an unproved localization control; no semantic-only kill credited.",
         "record_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-24-0592.json",
-        "log_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-24-0592.log"
+        "log_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-24-0592.log",
+        "credit_scope": "Localized comparison only; not canonical-contract sensitivity credit",
+        "canonical_contract_credit": false,
+        "review": "../REVIEW-ASTRA-M5.md:9; clean canonical replacement required"
       },
       {
         "run": 591,
@@ -2735,7 +2850,10 @@
         "errors": 1,
         "reason": "Resource-limit diagnostics or an unproved localization control; no semantic-only kill credited.",
         "record_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-24-0591.json",
-        "log_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-24-0591.log"
+        "log_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-24-0591.log",
+        "credit_scope": "Localized comparison only; not canonical-contract sensitivity credit",
+        "canonical_contract_credit": false,
+        "review": "../REVIEW-ASTRA-M5.md:9; clean canonical replacement required"
       },
       {
         "run": 593,
@@ -2749,9 +2867,58 @@
         "log_retained_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/excluded-evidence/m5-mutation-124-0593.log"
       }
     ],
-    "audit_run": 604,
-    "audit_file": "evidence/m5-mutation-audit.json",
-    "archive_policy": "Exact mutated archives stay outside the repository. Recorded base commit, source maps, preparation steps, mutation and driver context reconstruct them without those archives.",
-    "new_full_crate_credit": false
+    "archive_policy": "Historical archives remain under the original mutation work directory; fresh canonical control/replacement archives remain under /home/ws/m5-review-fixes/2711b13-20261122/mutations. No development archive is added to evidence.",
+    "new_full_crate_credit": false,
+    "canonical_contract_kills_after_review": 8,
+    "localized_only_kills_after_review": 1,
+    "historical_functional_checkpoint": {
+      "host_run": 586,
+      "i686_run": 588,
+      "verified_each": 4514,
+      "file": "evidence/m5-witness-checkpoint-0586-0588.json",
+      "sha256": "f2712641fa547bb0743588951a2e4a7cb16fb45f9c3b2077a143a295c9f5c45e"
+    },
+    "historical_audit": {
+      "run": 604,
+      "file": "evidence/m5-mutation-audit.json",
+      "base_commit": "764899abcd959da26306bee78949c1be8148e391"
+    },
+    "localized_only_mutations": [
+      {
+        "number": 24,
+        "selector": "trns16-localized-high-byte-v4",
+        "run": 596,
+        "record": "evidence/m5-mutation-24-0596.json",
+        "record_sha256": "9fe8edced5d2ca17863c1f72e9e88c469235e279bcf402f6bb8efd79f435628a",
+        "log": "evidence/m5-mutation-24-0596.log",
+        "log_sha256": "6f327faa28356a7702f926e38ad86689f959e2990b127ab9644abe23ccee7c77",
+        "expected_failed_function": "trns_samples_equal",
+        "verified": 837,
+        "errors": 1,
+        "verifier_killed": true,
+        "accepted_mutation_control": false,
+        "selector_definitions": "evidence/m5-mutation-runner-v4.py",
+        "selector_definitions_sha256": "fce7a9a230debfaad1b4db7644287c64e6619b824279609724b6029b54d2ce9e",
+        "canonical_source_tree_sha256": "69334b66a60c2241d3bdacc1cf26dfbe55225b83d089f979773430eab144694e",
+        "compiled_source_tree_sha256": "a7c6c7f0a29ea420120a7efc45d496ec3163105e1302ae524a83fbe741c7de4d",
+        "archive_outside_repo": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m5-proof-mutations/764899a-20261122/m5-mutation-trns16-localized-high-byte-v4-source.tar.gz",
+        "archive_sha256": "c39951a99583718b7fe300f30e019a341b5cb5ff8e52df1ab4037fa50e0f05fd",
+        "replay": "Checkout base_commit, check canonical_source_sha256, apply the exact mutation and listed generated-leaf omissions, check compiled_source_sha256, then use recorded command/environment. Archives remain outside the repository.",
+        "prepared_control_run": 595,
+        "semantic_diagnostics": [
+          {
+            "function": "trns_samples_equal",
+            "message": "postcondition not satisfied",
+            "diagnostic": "error: postcondition not satisfied\n   --> src/image.rs:689:13\n    |\n689 |     ensures r==(key[0] == pixel[0] && key[1] == pixel[1] && key[2] == pixel[2]),\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ failed this postcondition\n690 | {\n691 |     if d==16 {key[0]/256==pixel[0]/256 && key[1]/256==pixel[1]/256 && key[2]/256==pixel[2]/256}else{key[0] == pixel[0] && key[1] == pixel[1] && key[2] == pixel[2]}\n    |     --------------------------------------------------------------------------------------------------------------------------------------------------------------- at the end of the function body\n\n"
+          }
+        ],
+        "credit_scope": "Localized scratch comparison only, as classified by Astra",
+        "canonical_contract_credit": false,
+        "review": "../REVIEW-ASTRA-M5.md:9; clean canonical replacement required",
+        "base_commit": "764899abcd959da26306bee78949c1be8148e391"
+      }
+    ],
+    "review_fix_mutation_24": true,
+    "other_sensitivity_scope": "25\u201330 and 32 retain their accepted historical committed-source sensitivity scope; they are not claimed as newly rerun mutants of this final source."
   }
 }
