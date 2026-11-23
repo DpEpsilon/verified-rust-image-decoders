@@ -49,6 +49,13 @@ pub(crate) open spec fn source_document(b: Seq<u8>, doc: Doc) -> bool {
     && (doc.actl.is_some() ==> transport::result(b,doc.view(),transport::header_end(b)))
 }
 
+/// Expose the existing source invariant to allocation-free model certificates.
+pub(crate) proof fn source_context(b: Seq<u8>,doc: Doc)
+    requires source_document(b,doc),
+    ensures doc.wf(b),doc.source_partition(),b.len()<=crate::limits::MAX_INPUT,
+        doc.info.frame_count==doc.frame_ranges@.len(),
+{reveal(source_document);}
+
 pub(crate) proof fn source_palette(b: Seq<u8>,doc: Doc)
     requires source_document(b,doc),
     ensures doc.ihdr.ct==3 ==> doc.plte.is_some(),
@@ -181,6 +188,15 @@ impl<'a> FrameJob<'a> {
         doc.selected_reuse_geometry(b);
         m::reused_stream(b,doc.view());
     }
+
+    /// Selected-source facts for the fixed-window measuring certificate.
+    pub(crate) proof fn measure_context(self,b: Seq<u8>,doc: Doc)
+        requires self.wf(b,doc),
+        ensures self.index<doc.frame_ranges@.len(),self.resume.wf(b,doc),self.resume.index()==Some(self.index as nat+1),
+            1<=self.control.w<=doc.ihdr.w,1<=self.control.h<=doc.ihdr.h,
+            match self.reader {Some(reader)=>reader.wf() && reader.pos()==0
+                && m::frame_stream(b,doc.view(),self.index as nat)==Some(reader.concat()),None=>true},
+    {reveal(FrameJob::wf);}
 
     /// Relate the selected source and dimensions to the independent data model.
     pub(crate) proof fn data_context(self,b: Seq<u8>,doc: Doc,p: crate::policy::Policy)

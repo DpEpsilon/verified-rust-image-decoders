@@ -1,0 +1,441 @@
+{
+  "title": "Strict Iterator Model Map",
+  "scope": "Strict iterator models complete at M6 2a-M; public T-ITER pending 2a-E; named-policy pending 2b",
+  "checkpoint": "2a-M model-side only",
+  "base_commit": "412c5c212b705d3c7b6e762205a1b34f45179ea4",
+  "full_runs": [
+    710,
+    713
+  ],
+  "claims": [
+    {
+      "id": "MFR-COMPLETE",
+      "claim": "MFr independently constructs the complete Strict constructor result: model Info, raw num_plays, returned-frame prefix, every whole-canvas byte, rectangle, raw delay/dispose/blend and the terminal Iend or first frame-data error. The native history is not an input to the definitions.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_model.rs",
+          "function": "MFr",
+          "line": 26,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "from_document",
+          "line": 16,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "record",
+          "line": 10,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "summary_prefix",
+          "line": 49,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        }
+      ],
+      "verified_in_full_runs": [
+        710,
+        713
+      ]
+    },
+    {
+      "id": "CANONICAL-FOLD",
+      "claim": "The fold starts at transparent black and computes each before-draw canvas by canonical preceding-frame disposal, then paints independent P11/P13 source pixels with canonical SOURCE/OVER. It keeps the prior before-draw reference independently from Saved and never applies the last frame disposal after its display.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_canvas_model.rs",
+          "function": "draw",
+          "line": 10,
+          "sha256": "96ded6d4586f6be32f87f06094928b2fa819309239be43bbd6948ededbd49a24"
+        },
+        {
+          "file": "src/frame_canvas_model.rs",
+          "function": "prepared",
+          "line": 19,
+          "sha256": "96ded6d4586f6be32f87f06094928b2fa819309239be43bbd6948ededbd49a24"
+        },
+        {
+          "file": "src/frame_canvas_model.rs",
+          "function": "paint",
+          "line": 24,
+          "sha256": "96ded6d4586f6be32f87f06094928b2fa819309239be43bbd6948ededbd49a24"
+        },
+        {
+          "file": "src/frame_canvas_model.rs",
+          "function": "fold",
+          "line": 29,
+          "sha256": "96ded6d4586f6be32f87f06094928b2fa819309239be43bbd6948ededbd49a24"
+        },
+        {
+          "file": "src/iterator_canvas_model.rs",
+          "function": "effective",
+          "line": 10,
+          "sha256": "c3e3a2f9f6d00da17b907808c942ffe2e1dc575e9327335d2addee89c2b49283"
+        },
+        {
+          "file": "src/iterator_canvas_model.rs",
+          "function": "previous",
+          "line": 19,
+          "sha256": "c3e3a2f9f6d00da17b907808c942ffe2e1dc575e9327335d2addee89c2b49283"
+        }
+      ],
+      "verified_in_full_runs": [
+        710,
+        713
+      ]
+    },
+    {
+      "id": "MK-DETERMINISM",
+      "claim": "The accepted M5 MK relation uniquely determines the pointwise canonical paint result at every byte, using accepted source-pixel observations inside the rectangle and the drawing footprint outside it. No canvas is chosen from MK.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_canvas_model.rs",
+          "function": "mk_deterministic",
+          "line": 49,
+          "sha256": "96ded6d4586f6be32f87f06094928b2fa819309239be43bbd6948ededbd49a24"
+        },
+        {
+          "file": "src/paint_model.rs",
+          "function": "mk_context",
+          "line": 312,
+          "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
+        },
+        {
+          "file": "src/paint_model.rs",
+          "function": "pixel_observe",
+          "line": 373,
+          "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
+        },
+        {
+          "file": "src/composite_model.rs",
+          "function": "drawing_frame_context",
+          "line": 322,
+          "sha256": "f839e81caada0430bc873b33d977d20f439cd1cc58aea027d687c4dc80819fd7"
+        }
+      ],
+      "verified_in_full_runs": [
+        710,
+        713
+      ]
+    },
+    {
+      "id": "HISTORY-COMPOSITION",
+      "claim": "For every length of an accepted M5 canvas trace, induction identifies each actual before-draw/reference and returned canvas with the independently computed fold. With the independent successful data prefix, that trace equals the corresponding complete MFr frame prefix. This is a model-side composition theorem, not a newly exported public T-ITER contract.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_canvas_model.rs",
+          "function": "history_prefix",
+          "line": 134,
+          "sha256": "96ded6d4586f6be32f87f06094928b2fa819309239be43bbd6948ededbd49a24"
+        },
+        {
+          "file": "src/frame_canvas_model.rs",
+          "function": "history_complete",
+          "line": 177,
+          "sha256": "96ded6d4586f6be32f87f06094928b2fa819309239be43bbd6948ededbd49a24"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "successful_prefix_bound",
+          "line": 318,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "history_result_prefix",
+          "line": 334,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        }
+      ],
+      "verified_in_full_runs": [
+        710,
+        713
+      ]
+    },
+    {
+      "id": "TOTALITY",
+      "claim": "For every actual input slice, no constructor or terminal OutsideDomain marker is reachable. The certificate walks, selects validated sources and measures them through existing contracts using one fixed WINDOW_MAX stack window. It never assumes successful frame data, allocation success or a valid input, and never constructs a native canvas/frame output.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_model.rs",
+          "function": "total",
+          "line": 172,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "model_totality",
+          "line": 186,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "measure_data",
+          "line": 153,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "document_context",
+          "line": 125,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "suffix_total",
+          "line": 37,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_state.rs",
+          "function": "source_context",
+          "line": 53,
+          "sha256": "2e8042f2017ae3e5e5610150bcb2cb5eec68bcf46ca0d34cc135fa2d394095fb"
+        },
+        {
+          "file": "src/frame_state.rs",
+          "function": "measure_context",
+          "line": 193,
+          "sha256": "2e8042f2017ae3e5e5610150bcb2cb5eec68bcf46ca0d34cc135fa2d394095fb"
+        }
+      ],
+      "verified_in_full_runs": [
+        710,
+        713
+      ]
+    },
+    {
+      "id": "SOURCE-READINESS",
+      "claim": "For every returned model frame and every local source pixel, the accepted P13 source-pixel result is Ok. The selectors used by the canonical paint therefore do not leave returned pixels unconstrained.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_model.rs",
+          "function": "frame_source_ok",
+          "line": 270,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "pixel_ready",
+          "line": 417,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "returned_sources",
+          "line": 421,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "returned_source_properties",
+          "line": 429,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "source_pixel_ok",
+          "line": 79,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        }
+      ],
+      "verified_in_full_runs": [
+        710,
+        713
+      ]
+    },
+    {
+      "id": "SAVED-INCLUSIVE",
+      "claim": "The existing frozen global SavedAt projects exactly onto the complete frame prefix with k <= returned-frame count, not k < count. A least qualifying PREVIOUS frame whose data fails at k has SavedAt=k, exactly k returned frames and the same terminal error; reservation may precede and displace that error.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_model.rs",
+          "function": "saved_at_complete",
+          "line": 90,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "terminal_saved",
+          "line": 287,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "saved_at_global",
+          "line": 387,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/iterator_data_model.rs",
+          "function": "canonical_saved_at",
+          "line": 317,
+          "sha256": "4ee5558fcb3ab7f741b36809d0e44cef5bbf153f162b0771c477909f64886ea9"
+        },
+        {
+          "file": "src/iterator_data_model.rs",
+          "function": "saved_at_projection",
+          "line": 102,
+          "sha256": "4ee5558fcb3ab7f741b36809d0e44cef5bbf153f162b0771c477909f64886ea9"
+        }
+      ],
+      "verified_in_full_runs": [
+        710,
+        713
+      ]
+    },
+    {
+      "id": "RESOURCES-TRANSPARENCY",
+      "claim": "Every model frame has exactly 4*W*H physical bytes bounded by MAX_OUTPUT. Every channel of a pixel outside all rectangles drawn so far is zero. Raw is at least two bytes and obeys the accepted maximum/MAX_BYTES bounds; all fitting subframes use a Raw prefix; Output/Saved have the bounded full-canvas size.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_model.rs",
+          "function": "resources",
+          "line": 72,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "complete_resources",
+          "line": 77,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "request_bounds",
+          "line": 249,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "resource_bounds",
+          "line": 257,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_canvas_model.rs",
+          "function": "lengths",
+          "line": 85,
+          "sha256": "96ded6d4586f6be32f87f06094928b2fa819309239be43bbd6948ededbd49a24"
+        },
+        {
+          "file": "src/frame_canvas_model.rs",
+          "function": "untouched",
+          "line": 107,
+          "sha256": "96ded6d4586f6be32f87f06094928b2fa819309239be43bbd6948ededbd49a24"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "untouched_pixel",
+          "line": 366,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        }
+      ],
+      "verified_in_full_runs": [
+        710,
+        713
+      ]
+    },
+    {
+      "id": "RAW-METADATA",
+      "claim": "The model Info comparison has frozen P8.3 granularity. num_plays is None without acTL and otherwise the raw u32; delay is None for a static frame and otherwise the raw fcTL u16 pair. Returned dispose/blend remain raw, distinct from frame-zero effective disposal used by the fold.",
+      "proof_anchors": [
+        {
+          "file": "src/frame_model.rs",
+          "function": "metadata",
+          "line": 346,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "metadata_properties",
+          "line": 358,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "record",
+          "line": 10,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        },
+        {
+          "file": "src/document_model.rs",
+          "function": "constructor_info",
+          "line": 29,
+          "sha256": "e2d842013e32a8e103d9470b6bb485bfba73d889d5c5ebceb5bc80df94728efc"
+        },
+        {
+          "file": "src/frame_model.rs",
+          "function": "model_theorems",
+          "line": 304,
+          "sha256": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903"
+        }
+      ],
+      "verified_in_full_runs": [
+        710,
+        713
+      ]
+    }
+  ],
+  "dependency_graph": [
+    {
+      "edge": "MFr/record -> mathematical MWF, default/frame data prefix, canonical fold",
+      "meaning": "Definitions depend on input, checked mathematical document/control fields, P11/P13 source equations and canonical disposal/OVER. They do not call native decoders, inspect a history, invoke the certificate or choose an MK output."
+    },
+    {
+      "edge": "canonical fold -> prepared prior model state + independent source pixels -> new pointwise draw",
+      "meaning": "The displayed canvas and before-draw reference are computed recursively from model state alone. M5 geometry/control helpers read mathematical Doc fields, not native Trace/Saved state."
+    },
+    {
+      "edge": "accepted MK -> mk_deterministic -> canonical draw equality",
+      "meaning": "Existing M5 full-pixel observations and footprint determine every byte. This theorem points from the accepted relation to an already defined function; it does not define the function from the relation."
+    },
+    {
+      "edge": "M5 trace wf + independent data prefix -> induction -> complete MFr prefix equality",
+      "meaning": "For reused frame zero the native initial decoded buffer is not identified with logical transparent black; the accepted reuse equation supplies that bridge. Later references use the independently derived preceding before-draw canvas, not arbitrary Saved contents."
+    },
+    {
+      "edge": "model_totality -> callers::frames + constructor_info + checked FrameState selection contracts",
+      "meaning": "The certificate receives either an actual walk error or a checked document. It selects all structurally validated frame sources, even if earlier measured data fails, solely to exclude internal domain markers; it does not simulate or replace the shipping iterator."
+    },
+    {
+      "edge": "model_totality -> measure_data -> raw_size + inflate_zlib_measure/status_eq contracts",
+      "meaning": "One fixed WINDOW_MAX stack window is reused with actual source readers and exact frame limits. status_eq excludes OutsideDomain for every native status, including format errors and Full; no successful-inflate or allocation premise is assumed."
+    },
+    {
+      "edge": "two defining-module proof bridges -> existing opaque source/job invariants",
+      "meaning": "Only source_context and measure_context are added to frame_state.rs. They reveal existing invariant facts in their defining module; existing algorithms, contracts and public APIs are unchanged."
+    },
+    {
+      "edge": "model_theorems -> checked totality certificate + pure metadata/source/resource lemmas",
+      "meaning": "The theorem has no input or allocation-success precondition. Constructor and terminal domain markers are both excluded; keeping a terminal marker in the internal projection avoids requiring a future-frame shipping prepass in 2a-E."
+    }
+  ],
+  "public_T_ITER_claimed": false,
+  "public_A_PNG_2_claimed": false,
+  "new_public_A_PNG_4_claimed": false,
+  "public_T_PLAYS_claimed": false,
+  "named_policy_iterator_claimed": false,
+  "remaining_work": [
+    "Strict executable iterator equivalence (2a-E)",
+    "Named-policy iterator models/events (2b-M)",
+    "Named-policy executable iterator equivalence (2b-E)",
+    "ICC equivalence",
+    "Witness completion",
+    "Mutation campaign",
+    "CAPS-SYM"
+  ],
+  "imported_M2_contracts": {
+    "source": "../inflate_verus/src/inflate.rs",
+    "source_sha256": "ab4a748d24c86b29d72656ce6fb5f59d02503041cdcdc04e941a3191ebf70bfc",
+    "functions": [
+      "inflate_zlib_measure",
+      "status_eq"
+    ],
+    "unchanged_since_base": true
+  }
+}
