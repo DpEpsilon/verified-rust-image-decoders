@@ -164,4 +164,130 @@ pub proof fn absent_profile(b: Seq<u8>,result: Result<Option<Seq<u8>>,TryError>,
     assert(log =~= Seq::empty());
 }
 
+/// These facts concern the independent P17 model, not an allocation trace.
+pub open spec fn total(b: Seq<u8>) -> bool {
+    !matches!(MI(b),Outcome::OutsideDomain)
+}
+pub open spec fn walk_context(b: Seq<u8>) -> bool {
+    match walk::MW_p(b,walk::strict()) {
+        walk::Outcome::Done(doc,_)=>match doc.iccp {
+            Some(r)=>r.offset+r.len<=b.len() && stream(b,doc).len()<=crate::limits::MAX_INPUT
+                && !matches!(measured(stream(b,doc)).status,z::InflateStatus::OutsideDomain)
+                && measured(stream(b,doc)).out.len()<=crate::limits::MAX_ICC,
+            None=>true,
+        },
+        walk::Outcome::Error(_,_)=>true,
+        _=>false,
+    }
+}
+pub open spec fn resources(value: Outcome) -> bool {
+    match value {Outcome::Profile(bytes)=>bytes.len()<=crate::limits::MAX_ICC,_=>true}
+}
+pub open spec fn request_bounds(b: Seq<u8>) -> bool {
+    requests(b).len()<=2 && forall|j: int| 0<=j<requests(b).len()
+        ==> site_bound((#[trigger] requests(b)[j]).0,requests(b)[j].1)
+}
+/// Walk failure and profile absence precede any measuring reservation.
+pub proof fn model_prefix(b: Seq<u8>)
+    ensures match walk::MW_p(b,walk::strict()) {
+        walk::Outcome::Error(e,_)=>MI(b)==Outcome::Error(e) && requests(b)==Seq::<(AllocSite,nat)>::empty(),
+        walk::Outcome::Done(doc,_)=>doc.iccp.is_none()
+            ==> MI(b)==Outcome::Absent && requests(b)==Seq::<(AllocSite,nat)>::empty(),
+        _=>true,
+    },
+{}
+/// Full is decided by the bounded measuring pass, before any Icc request.
+pub proof fn model_payload(b: Seq<u8>,doc: walk::Doc,ev: walk::Events)
+    requires walk::MW_p(b,walk::strict())==walk::Outcome::Done(doc,ev),doc.iccp.is_some(),
+    ensures match measured(stream(b,doc)).status {
+        z::InflateStatus::Done=>MI(b)==Outcome::Profile(measured(stream(b,doc)).out)
+            && requests(b)==seq![(AllocSite::IccWindow,inflate_verus::limits::WINDOW_MAX as nat),
+                (AllocSite::Icc,measured(stream(b,doc)).out.len())],
+        z::InflateStatus::Full=>MI(b)==Outcome::Error(Error::IccProfileTooLarge)
+            && requests(b)==seq![(AllocSite::IccWindow,inflate_verus::limits::WINDOW_MAX as nat)],
+        z::InflateStatus::Error(e)=>MI(b)==Outcome::Error(fault(e))
+            && requests(b)==seq![(AllocSite::IccWindow,inflate_verus::limits::WINDOW_MAX as nat)],
+        z::InflateStatus::OutsideDomain=>MI(b)==Outcome::OutsideDomain,
+    },
+{}
+/// A zlib format fault is never the ICC output-limit result.
+pub proof fn fault_not_profile_cap(e: z::InflateFault)
+    ensures fault(e)!=Error::IccProfileTooLarge,
+{}
+pub proof fn model_cap_precedence(b: Seq<u8>,doc: walk::Doc,ev: walk::Events)
+    requires walk::MW_p(b,walk::strict())==walk::Outcome::Done(doc,ev),doc.iccp.is_some(),
+    ensures (MI(b)==Outcome::Error(Error::IccProfileTooLarge))
+        == (measured(stream(b,doc)).status==z::InflateStatus::Full),
+{
+    if let z::InflateStatus::Error(e)=measured(stream(b,doc)).status {fault_not_profile_cap(e);}
+}
+pub proof fn model_resources(b: Seq<u8>)
+    requires walk_context(b),
+    ensures total(b),resources(MI(b)),request_bounds(b),
+{
+    hide(z::Inflate);hide(walk::MW_p);
+    crate::limits::caps_ok();
+    match walk::MW_p(b,walk::strict()) {
+        walk::Outcome::Done(doc,_)=>{
+            assert forall|j: int| 0<=j<requests(b).len() implies
+                site_bound((#[trigger] requests(b)[j]).0,requests(b)[j].1) by {
+                if j==0 {}else{assert(j==1);}
+            }
+        },_=>{},
+    }
+}
+/// Instantiate accepted M2 L-LIMIT-MONO at the exact successful count m.
+/// No native writer, allocation-success premise or new inflate proof appears.
+pub proof fn exact_second_pass(bytes: Seq<u8>)
+    requires measured(bytes).status==z::InflateStatus::Done,
+        measured(bytes).out.len()<=crate::limits::MAX_ICC,
+    ensures z::Inflate(bytes,measured(bytes).out.len(),true,false).status==z::InflateStatus::Done,
+        z::Inflate(bytes,measured(bytes).out.len(),true,false).out==measured(bytes).out,
+{
+    inflate_verus::limit_mono::lemma_limit_mono(bytes,crate::limits::MAX_ICC as nat,measured(bytes).out.len(),true,false);
+}
+/// Allocation-free totality certificate, separate from the model definition.
+/// The actual Strict walk and M2 measurement use one fixed stack window;
+/// neither this certificate nor MI calls the public ICC allocator pipeline.
+#[verifier::spinoff_prover]
+pub fn model_totality(b: &[u8])
+    ensures total(b@),walk_context(b@),resources(MI(b@)),request_bounds(b@),
+{
+    hide(walk::MW_p);hide(z::Inflate);
+    proof {crate::walk_policy::profiles_project_exactly();crate::limits::caps_ok();}
+    let mut ev=crate::png::Events {r1:false,r3:false,r4:false};
+    let result=crate::callers::still(b,&crate::policy::STRICT,&mut ev);
+    match result {
+        Err(_)=>{},
+        Ok(doc)=>{
+            if let Some((o,n))=doc.iccp {
+                let bytes=&b[o..o+n];
+                let parts: [&[u8];1]=[bytes];
+                proof {
+                    assert(inflate_verus::segments::parts_prefix(parts@,0)==Seq::<u8>::empty());
+                    assert(inflate_verus::segments::parts_prefix(parts@,1)==bytes@);
+                }
+                let mut source=match inflate_verus::SegmentSlices::new(&parts) {
+                    Some(s)=>s,None=>{assert(false);return;},
+                };
+                let mut window=[0u8;inflate_verus::limits::WINDOW_MAX];
+                proof {
+                    vstd::array::array_len_matches_n(&window);
+                    assert(inflate_verus::limits::WINDOW_MAX==32768usize) by (compute);
+                }
+                let ring=vstd::array::ref_mut_array_unsizing_coercion(&mut window);
+                let measured_result=inflate_verus::inflate_zlib_measure(&mut source,ring,crate::limits::MAX_ICC,inflate_verus::InflateOptions::STRICT);
+                proof {
+                    let bytes_view=bytes@;
+                    assert(bytes_view==stream(b@,doc.view()));
+                    assert(inflate_verus::status_eq(measured_result.status,measured(bytes_view).status));
+                    assert(!matches!(measured(bytes_view).status,z::InflateStatus::OutsideDomain));
+                    assert(measured(bytes_view).out.len()<=crate::limits::MAX_ICC);
+                }
+            }
+        },
+    }
+    proof {model_resources(b@);}
+}
+
 } // verus!

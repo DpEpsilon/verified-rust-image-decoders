@@ -1,0 +1,278 @@
+{
+  "title": "Strict ICC Model Proof Map",
+  "scope": "Strict ICC model complete at M6 ICC-S-M; executable integration pending ICC-S-E; named-policy ICC (MI_p, D14) is P1/Stage-2, out of M6 scope.",
+  "checkpoint": "ICC-S-M",
+  "base_commit": "3442569f7e4bb5d6ccabaef0dd276fab909e2b4a",
+  "full_runs": [
+    754,
+    757
+  ],
+  "claims": [
+    {
+      "id": "STRICT-ICC-TOTALITY",
+      "claim": "For every actual byte slice, without a valid-input or allocation-success antecedent, the independent Strict MI excludes OutsideDomain. A checked actual Strict walk plus one fixed stack window instantiates the accepted M2 total measuring contract. The certificate calls neither the public ICC entry nor any allocator; the shipping decoder never executes it.",
+      "proof_anchors": [
+        {
+          "file": "src/icc_model.rs",
+          "function": "MI",
+          "line": 59,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "model_totality",
+          "line": 253,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "walk_context",
+          "line": 171,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "model_resources",
+          "line": 224,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        },
+        {
+          "file": "src/callers.rs",
+          "function": "still",
+          "line": 18,
+          "sha256": "7947c17987fd6d941b32278718e647c03b3c341b68e1902f38e2d79173127fbd"
+        }
+      ],
+      "verified_in_full_runs": [
+        754,
+        757
+      ]
+    },
+    {
+      "id": "STRICT-ICC-PREFIX",
+      "claim": "The independent P17 model completes the entire Strict structural walk before profile inflation. A walk error preserves its exact error and has no request; no iCCP returns Absent and has no request. ICC does not decode default-image pixels.",
+      "proof_anchors": [
+        {
+          "file": "src/icc_model.rs",
+          "function": "MI",
+          "line": 59,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "model_prefix",
+          "line": 191,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "requests",
+          "line": 72,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        }
+      ],
+      "verified_in_full_runs": [
+        754,
+        757
+      ]
+    },
+    {
+      "id": "STRICT-ICC-REQUESTS",
+      "claim": "A present profile requests IccWindow(WINDOW_MAX), followed by Icc(m) if and only if measurement ends Done, with m exactly the model output length. A measurement error or Full has only the Window request; m=0 remains an explicit Icc(0) request. There are at most two requests, both within their exact site bounds and MAX_BYTES. Every returned model profile is at most MAX_ICC bytes.",
+      "proof_anchors": [
+        {
+          "file": "src/icc_model.rs",
+          "function": "data_requests",
+          "line": 66,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "model_payload",
+          "line": 200,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "request_bounds",
+          "line": 186,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "model_resources",
+          "line": 224,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "resources",
+          "line": 183,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        }
+      ],
+      "verified_in_full_runs": [
+        754,
+        757
+      ]
+    },
+    {
+      "id": "STRICT-ICC-CAP-PRECEDENCE",
+      "claim": "After successful walk with a present profile, IccProfileTooLarge occurs exactly when the MAX_ICC Strict measurement returns Full. Inflater format faults map to their exact PNG errors, never IccProfileTooLarge, and no Icc reservation precedes that measuring decision.",
+      "proof_anchors": [
+        {
+          "file": "src/icc_model.rs",
+          "function": "data",
+          "line": 47,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "fault_not_profile_cap",
+          "line": 214,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "model_cap_precedence",
+          "line": 217,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "model_payload",
+          "line": 200,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        }
+      ],
+      "verified_in_full_runs": [
+        754,
+        757
+      ]
+    },
+    {
+      "id": "STRICT-ICC-EXACT-SECOND-PASS",
+      "claim": "For a successful measurement bounded by MAX_ICC, instantiate the already accepted M2 L-LIMIT-MONO with small=m=the model output length and large=MAX_ICC. The exact-sized second model pass is Done with identical bytes, including m=0. This is composition of an imported theorem, not a new DEFLATE or monotonicity proof.",
+      "proof_anchors": [
+        {
+          "file": "src/icc_model.rs",
+          "function": "exact_second_pass",
+          "line": 241,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "measured",
+          "line": 43,
+          "sha256": "35d593f4b0762abffd0a63d9e9992ab258adf9788b8d15d3997f1d14db5686ec"
+        }
+      ],
+      "verified_in_full_runs": [
+        754,
+        757
+      ]
+    }
+  ],
+  "dependency_graph": [
+    {
+      "from": "independent mathematical MW_p and Inflate",
+      "to": "existing MI/data/requests",
+      "meaning": "Definitions are unchanged and refer to neither native ICC results nor the new certificate."
+    },
+    {
+      "from": "accepted native Strict callers::still and native M2 measurement contracts",
+      "to": "allocation-free model_totality",
+      "meaning": "The checked walk supplies the exact bounded iCCP subrange; a fresh one-segment reader and a fixed stack window supply a total M2 status/count witness without any successful allocation premise."
+    },
+    {
+      "from": "model_totality walk_context",
+      "to": "model_resources, total MI, request_bounds",
+      "meaning": "The measured status is not OutsideDomain and its output is at most MAX_ICC; pure composition proves model totality and complete request caps."
+    },
+    {
+      "from": "accepted M2 L-LIMIT-MONO",
+      "to": "exact_second_pass",
+      "meaning": "Choose small equal to the successful measured output length. No imported M2 algorithm or contract is weakened, reproved or replaced."
+    },
+    {
+      "from": "independent MI and accepted sealed-log complete relation",
+      "to": "future ICC-S-E public executable exports",
+      "meaning": "This checkpoint leaves the native pipeline unchanged. Ordinary OOM membership and explicit Eq/G/Prog public integration remain ICC-S-E; neither is used to define or certify MI."
+    }
+  ],
+  "dependency_dag": {
+    "MI": [
+      "MW_p",
+      "data"
+    ],
+    "data": [
+      "measured",
+      "fault"
+    ],
+    "measured": [
+      "M2::Inflate"
+    ],
+    "requests": [
+      "MW_p",
+      "data_requests"
+    ],
+    "data_requests": [
+      "measured"
+    ],
+    "walk_context": [
+      "MW_p",
+      "stream",
+      "measured"
+    ],
+    "model_resources": [
+      "walk_context",
+      "MI",
+      "requests",
+      "site_bound",
+      "resources",
+      "caps_ok"
+    ],
+    "model_totality": [
+      "native Strict walk",
+      "SegmentSlices::new",
+      "M2::inflate_zlib_measure",
+      "model_resources"
+    ],
+    "native Strict walk": [
+      "MW_p"
+    ],
+    "M2::inflate_zlib_measure": [
+      "M2::Inflate"
+    ],
+    "exact_second_pass": [
+      "M2::lemma_limit_mono",
+      "measured"
+    ],
+    "M2::lemma_limit_mono": [
+      "M2::Inflate"
+    ]
+  },
+  "acyclic": true,
+  "imported_M2_contracts": [
+    {
+      "file": "../inflate_verus/src/inflate.rs",
+      "sha256": "ab4a748d24c86b29d72656ce6fb5f59d02503041cdcdc04e941a3191ebf70bfc",
+      "unchanged_since_base": true
+    },
+    {
+      "file": "../inflate_verus/src/limit_mono.rs",
+      "sha256": "8a214a233b9fea93c52ef8a45a5d9a8382d2ea9cba30b4f23acc392d5d1fd982",
+      "unchanged_since_base": true
+    }
+  ],
+  "ordinary_ICC_OOM_membership_pending_ICC_S_E": true,
+  "named_policy_ICC_scope": "P1/Stage-2, out of M6 scope; MI_p and its API are not defined",
+  "named_policy_iterator": "2b paused pending owner event-scope and milestone-placement decisions",
+  "remaining_work": [
+    "ICC-S-E: complete Strict public exports and ordinary OOM request membership",
+    "E6 witness completion: 35 M5 content projections and 12 M3 projections",
+    "Remaining T10 precedence, if not already covered",
+    "40-mutation campaign and alloc-delta mutation set",
+    "CAPS-SYM"
+  ]
+}
