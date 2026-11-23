@@ -78,4 +78,9 @@ pub proof fn empty_pass(input: Seq<u8>,a: r::Raster,k: nat)
     ensures prefix(input,a,k,0)==prefix(input,a,k+1,0),
 {reveal(prefix);}
 pub open spec fn R3(input: Seq<u8>,a: r::Raster) -> bool {prefix(input,a,r::count(a),0)}
+/// Reject never enters the Black recovery branch, for any raster data.
+pub proof fn reject_inert(input: Seq<u8>,a: r::Raster)
+    requires a.reject_index,
+    ensures !R3(input,a),
+{reveal(prefix);}
 }

@@ -1,15 +1,15 @@
 {
   "title": "Strict Iterator Executable Checkpoint",
   "scope": "Strict iterator equivalence complete at M6 2a; named-policy pending 2b",
-  "status": "STRICT EXECUTABLE ITERATOR COMPLETE; NAMED-POLICY PENDING 2b; INDEPENDENT ACCEPTANCE PENDING",
-  "base_commit": "45fae63c5b5dfd7f07a41cdc1a1dba9e5a95f276",
+  "status": "CORRECTED STRICT EXECUTABLE ITERATOR COMPLETE; NAMED-POLICY PENDING 2b; ASTRA RE-CHECK PENDING",
+  "base_commit": "42665f5bbf63a46dfbf67ea1ef7347fb6953fb51",
   "source_sha256": {
     "src/alloc_guard/mod.rs": "add634bc74ff7feed568c90d5cc8c504538b4d4b80420e7fc9228fceecc2a137",
     "src/alloc_guard/sites.rs": "dcd747cf7721c33ff00fbffd83ca8838d12803f99c2fb896b8077f25f5d8a281",
     "src/allocation_model.rs": "ec08a85968f07ec6d3a36a31501a6c17411a4314c49f2b332cf45c71bc5be8b6",
     "src/apng.rs": "cddbd5681a19c87195da6a2a0f89624fcfdf991b595d9377166d8c16753aefb5",
     "src/apng_model.rs": "41cf7792881764ac134877d68a2951b373b58eec52b58197396161633e3c9e78",
-    "src/callers.rs": "7fcec072f7166647c2f92e06fe52a6b357a0faf420179251ae0cda71028363c5",
+    "src/callers.rs": "7947c17987fd6d941b32278718e647c03b3c341b68e1902f38e2d79173127fbd",
     "src/colour_model.rs": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743",
     "src/composite_model.rs": "f839e81caada0430bc873b33d977d20f439cd1cc58aea027d687c4dc80819fd7",
     "src/crc.rs": "12fa39331208c143bc9acae6d1064d1ad3e995fc583de626b82103e8f771c4cb",
@@ -19,7 +19,7 @@
     "src/filter_model.rs": "4b51aabbc3be98e9a98b46a67ab6982d6b5ac630978075f15cdfe68c7de66faf",
     "src/frame_activity.rs": "92a0c506a7c771c113b54525b33659517d1bda695f3e1791cf9e2442b7bbc44d",
     "src/frame_canvas_model.rs": "96ded6d4586f6be32f87f06094928b2fa819309239be43bbd6948ededbd49a24",
-    "src/frame_equivalence.rs": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09",
+    "src/frame_equivalence.rs": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9",
     "src/frame_model.rs": "54f6efd15e5a2bd211ba7f5a56e9958d35f4336753e9f2a14f65098a6f1e2903",
     "src/frame_state.rs": "b27c1fef8ec36182eca3c0717428bde63a2ed795abc5e2a31b6fb79e62f5f604",
     "src/frame_transport_model.rs": "af02bc900d1154599f00bda0b172d69c55b57a5b6faf6b61389957fa070379df",
@@ -48,7 +48,7 @@
     "src/model.rs": "e38e5144373bbf97f15149bc3b11e77cf2be3998496a9090922356ff510f2a6c",
     "src/ordering.rs": "e1caef5c7f1b50fae9c6ed46838c7408789446c860a48165d294b40ad05bf470",
     "src/paint_model.rs": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045",
-    "src/png.rs": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb",
+    "src/png.rs": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650",
     "src/policy.rs": "5190593c4ee6f70c45ff0ef1f8dba4e964eb39aa62c70beccbd4ea7794f40b5a",
     "src/policy_still_equivalence.rs": "ff48686439a2468d2998ba8d170c884b5bf6e96b2859e21f93e0314d77d9f85a",
     "src/policy_still_model.rs": "009bd1aaab00338a89cf70e64cda17d8a769b3bc5d0d919cb8808eeb8f5600cd",
@@ -56,15 +56,15 @@
     "src/reader.rs": "e1e7c97ce7b862639e31dc28e765074c14da2eabe591df8592573b56748b8f0d",
     "src/still_equivalence.rs": "85ae187980ee58d49f189e664efe92b13dfa5ef75922d6c4b3282411f296fbb2",
     "src/still_model.rs": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8",
-    "src/still_recovery.rs": "635d5303455378c8e3db3414bf0298638001051f0386f7455318633d9de5c791",
+    "src/still_recovery.rs": "7b35168274a2c28f3806636a9ccc8f9dd1ea3a4b5e256cbf75f68b3ff403a46f",
     "src/still_samples.rs": "ca6da72ca81d2c187a24badcd65ed05594ae3336ac767859e4fe4433677f898d",
     "src/transport_model.rs": "d73f38fe818884c615ceeea3c8941ac71d39417a07d0828bc41efc57e7dd6685",
-    "src/walk.rs": "fa7f58c2cf160dc5ab383ac0ff0019ecd7be856212d220dba807091e1abeb26b",
+    "src/walk.rs": "a33042ef9e5c6beb256478421248c39c5a9e8d46dfa792f26a82b874e4be5938",
     "src/walk_model.rs": "3210215551e50da9ed31f288c9dcc72e73ccd93863955cc0275982aa7ba8f774",
-    "src/walk_own.rs": "8a222d7b4d181ff50259dc24dda5f12d6e73a36378b475be1e2b443fdae59769",
+    "src/walk_own.rs": "08a4262fe3cd262fff549701beeb5be206df726e34a01fd9809ab496b7a9fb80",
     "src/walk_policy.rs": "8b20a35f467710097ab0d92652f1f6f3d3d8a10cb07be013ee8044038d8a5226",
     "src/walk_state.rs": "2d169dd2d6b9416ad34869c98b0aa34fe25e2a9f4e8d22147ea9e9253f13a1d7",
-    "src/walk_step.rs": "b58c2888fd5a56eb70957db031f85cf87ef70c653ed35f08a56fef34ef24cff8",
+    "src/walk_step.rs": "96b9f5f4c67a0658ef206e18c1fe580b9229c889ffad04bfc92df0ae384fb552",
     "src/witness_critical.rs": "5406a4824783efdfc109f5c0ad97547212bc775b54014c23819ae54768b5342e",
     "src/witness_document.rs": "aca306a719fdcd9967dfd0f1ea795b0f07cbd950aeb1146471c6c84ce0dda82d",
     "src/witness_frame.rs": "b06e127e5bf7d966203d704d3e1a315af10ee51663d3f41ddfa3f707c7f56903",
@@ -101,36 +101,36 @@
   },
   "functional_checkpoint": [
     {
-      "run": 735,
+      "run": 747,
       "target": "host",
-      "verified": 6245,
+      "verified": 6248,
       "record": {
-        "file": "evidence/m6-2ae-host-0735.json",
-        "sha256": "77222c61293085af4e0c935c687269fe5264f2b7218eb30cb284d7353a0ffbb6"
+        "file": "evidence/m6-2ae-r1-host-0747.json",
+        "sha256": "4840d2aeedf8b8a14ccc40f46b30a2daa03ef68ff48e5d46e94632c67da1ddff"
       },
       "log": {
-        "file": "evidence/m6-2ae-host-0735.log.gz",
-        "sha256": "9ec9c874c06b8ea5c0349457b3ef0ce7f49a6de19df86f3338557a6b2e9a9311",
-        "source_log_sha256": "5811832171791bf51fba861ca68fb268bb41f64567b44e6496141b91fd715ee7",
-        "normalized_text_sha256": "5811832171791bf51fba861ca68fb268bb41f64567b44e6496141b91fd715ee7",
+        "file": "evidence/m6-2ae-r1-host-0747.log.gz",
+        "sha256": "fe5726f573d7451dd11bb3d0ed40129dcfa070a0b12b6f7cb28e2b4d84cf5d73",
+        "source_log_sha256": "0fbafd24b666063b225d1d76497d12d4a949c21fef7f1831563e0d1e33ef8028",
+        "normalized_text_sha256": "0fbafd24b666063b225d1d76497d12d4a949c21fef7f1831563e0d1e33ef8028",
         "original_eof_suffix_hex": "0a",
         "reconstruction": "decompress if gzip, remove retained final LF, append original_eof_suffix_hex bytes",
         "compression": "gzip"
       }
     },
     {
-      "run": 736,
+      "run": 748,
       "target": "i686",
-      "verified": 6245,
+      "verified": 6248,
       "record": {
-        "file": "evidence/m6-2ae-i686-0736.json",
-        "sha256": "ccf6780d52708c9e3b83fdef42268abbc2d8edf594dcaa14ffe5f0538705fa72"
+        "file": "evidence/m6-2ae-r1-i686-0748.json",
+        "sha256": "51440cc8bee319c8f1991ec8dfb34cf1475ea260bfab92ca309cf5213f8b023a"
       },
       "log": {
-        "file": "evidence/m6-2ae-i686-0736.log.gz",
-        "sha256": "c37c869affdbadfa6292b3e7a063b66a55ed451be12ba78417d24d96ce198ac1",
-        "source_log_sha256": "7f4662efcb38dae0d91373902288e2c99fbcbc178b1e8a66019c9bafd03713b5",
-        "normalized_text_sha256": "7f4662efcb38dae0d91373902288e2c99fbcbc178b1e8a66019c9bafd03713b5",
+        "file": "evidence/m6-2ae-r1-i686-0748.log.gz",
+        "sha256": "b0301dfbef0ea0cf4200a6b928c4502e4bf1a48c3677aeff9e4512fc5bc1eb16",
+        "source_log_sha256": "f2b5b5e994c519bfa76f3dc7d64fcca6ecb0e0daf4dfe5b7cdab96f1d8393dc0",
+        "normalized_text_sha256": "f2b5b5e994c519bfa76f3dc7d64fcca6ecb0e0daf4dfe5b7cdab96f1d8393dc0",
         "original_eof_suffix_hex": "0a",
         "reconstruction": "decompress if gzip, remove retained final LF, append original_eof_suffix_hex bytes",
         "compression": "gzip"
@@ -139,44 +139,120 @@
   ],
   "claims": [
     {
+      "id": "STRICT-RECOVERED-FALSE",
+      "claim": "Every actual public Strict FrameView has recovered=false. Native walk contracts prove the Strict-disabled CRC/order/tRNS/fallback event-pushing branches preserve empty events. Reject disables Black recovery for every raster. The constructor and preserved Strict event invariant retain the empty base; the actual unchanged image decoder preserves it on success, and both actual any() return sites prove false. native_call_eq and Prog_ITER_native include this bit; no named-policy per-frame event model is defined.",
+      "proof_anchors": [
+        {
+          "file": "src/walk_own.rs",
+          "function": "run",
+          "line": 23,
+          "sha256": "08a4262fe3cd262fff549701beeb5be206df726e34a01fd9809ab496b7a9fb80"
+        },
+        {
+          "file": "src/walk_step.rs",
+          "function": "run",
+          "line": 10,
+          "sha256": "96b9f5f4c67a0658ef206e18c1fe580b9229c889ffad04bfc92df0ae384fb552"
+        },
+        {
+          "file": "src/walk.rs",
+          "function": "walk",
+          "line": 108,
+          "sha256": "a33042ef9e5c6beb256478421248c39c5a9e8d46dfa792f26a82b874e4be5938"
+        },
+        {
+          "file": "src/callers.rs",
+          "function": "frames",
+          "line": 35,
+          "sha256": "7947c17987fd6d941b32278718e647c03b3c341b68e1902f38e2d79173127fbd"
+        },
+        {
+          "file": "src/still_recovery.rs",
+          "function": "reject_inert",
+          "line": 82,
+          "sha256": "7b35168274a2c28f3806636a9ccc8f9dd1ea3a4b5e256cbf75f68b3ff403a46f"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "strict_events_wf",
+          "line": 1231,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "decode_frame_image",
+          "line": 2484,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "completed_selected",
+          "line": 2213,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "terminal_logged",
+          "line": 2324,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "native_call_eq",
+          "line": 288,
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "Prog_ITER_native",
+          "line": 293,
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
+        }
+      ],
+      "verified_in_full_runs": [
+        747,
+        748
+      ]
+    },
+    {
       "id": "STRICT-CONSTRUCTOR",
       "claim": "Ordinary/logged Strict constructors refine the complete MFr constructor result. Non-OOM format errors are equivalent, and success establishes complete model-Info equality and the complete public receiver invariant. Logged G/Prog use the actual sealed Raw/Output log; ordinary OOM retains (site,elements) membership before discarding that log.",
       "proof_anchors": [
         {
           "file": "src/png.rs",
           "function": "try_new",
-          "line": 1582,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1596,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "try_new_logged",
-          "line": 1624,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1640,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "with_logged",
-          "line": 1644,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1662,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "with_record",
-          "line": 1684,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1703,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "constructor_complete",
           "line": 28,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "allocation_complete",
           "line": 45,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/still_equivalence.rs",
@@ -186,49 +262,55 @@
         }
       ],
       "verified_in_full_runs": [
-        735,
-        736
+        747,
+        748
       ]
     },
     {
       "id": "STRICT-ITERATOR",
-      "claim": "Every public try_next preserves the complete Strict boundary invariant for arbitrary reachable states, not a bounded unrolling. Each actual FrameView equals the canonical MFr record in every canvas byte, rectangle, raw delay pair, raw disposal and raw blend; terminal format errors occur once and IEND returns None. The independent M5-to-canonical fold remains unchanged.",
+      "claim": "Every public try_next preserves the complete Strict boundary invariant for arbitrary reachable states, not a bounded unrolling. Each actual FrameView equals the canonical MFr record in every canvas byte, rectangle, raw delay pair, raw disposal, raw blend and recovered=false; terminal format errors occur once and IEND returns None. The independent M5-to-canonical fold remains unchanged.",
       "proof_anchors": [
         {
           "file": "src/png.rs",
           "function": "strict_iterator_wf",
-          "line": 1474,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1484,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "bind_strict",
-          "line": 1430,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1440,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "try_next",
-          "line": 1770,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1796,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "complete_call",
-          "line": 1444,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1454,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "establish",
           "line": 85,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "call_complete",
           "line": 164,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "native_call_eq",
+          "line": 288,
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_state.rs",
@@ -239,13 +321,13 @@
         {
           "file": "src/png.rs",
           "function": "model_observations",
-          "line": 965,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 967,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         }
       ],
       "verified_in_full_runs": [
-        735,
-        736
+        747,
+        748
       ]
     },
     {
@@ -255,26 +337,26 @@
         {
           "file": "src/png.rs",
           "function": "info",
-          "line": 1530,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1544,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "strict_plays",
-          "line": 1511,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1521,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "raw_num_plays",
-          "line": 1510,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1520,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "info_complete",
           "line": 116,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_model.rs",
@@ -290,8 +372,8 @@
         }
       ],
       "verified_in_full_runs": [
-        735,
-        736
+        747,
+        748
       ]
     },
     {
@@ -302,48 +384,48 @@
           "file": "src/frame_equivalence.rs",
           "function": "G_iter",
           "line": 200,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "canonical_requests",
           "line": 191,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/png.rs",
           "function": "strict_allocation_history",
-          "line": 1485,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1495,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "allocation_clauses",
-          "line": 1175,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1177,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "selected_logged",
-          "line": 2067,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 2107,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "try_next",
-          "line": 1770,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1796,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "finite_fusion",
           "line": 266,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         }
       ],
       "verified_in_full_runs": [
-        735,
-        736
+        747,
+        748
       ]
     },
     {
@@ -352,43 +434,49 @@
       "proof_anchors": [
         {
           "file": "src/frame_equivalence.rs",
+          "function": "Prog_ITER_native",
+          "line": 293,
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
           "function": "Prog_ITER",
           "line": 208,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "finite_progress",
           "line": 228,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "oom_stays",
           "line": 217,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/png.rs",
           "function": "complete_call",
-          "line": 1444,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1454,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "try_next",
-          "line": 1770,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1796,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         }
       ],
       "verified_in_full_runs": [
-        735,
-        736
+        747,
+        748
       ]
     },
     {
       "id": "CHECKED-NO-WORK",
-      "claim": "A single sealed erased activity trace is threaded through each actual public call. Checked observations occur immediately before selection/re-walk, Saved reservation, disposal/save, decode, reused-canvas normalization and resume-state commit. Terminal calls have zero in every activity counter, independently of output/log equality. The source control checks all six actual-site bindings, trace forwarding, absence of resets and five return snapshots.",
+      "claim": "A single sealed erased activity trace is threaded through each actual public call. Checked observations occur immediately before selection/re-walk, Saved reservation, disposal/save, decode, reused-canvas normalization and resume-state commit. Terminal calls have zero in every activity counter, independently of output/log equality. The source control checks all six actual-site bindings, trace forwarding, absence of resets and five return snapshots. Seven executable-body allowlists cover the fused dispatch/helpers and transparent decoder forwarding; two in-memory negative controls reject direct or hidden CRC-loop helper calls. FrameState uses a behavior-preserving executable forwarding refactor plus erased observation, not a proof-only change.",
       "proof_anchors": [
         {
           "file": "src/frame_activity.rs",
@@ -417,31 +505,31 @@
         {
           "file": "src/png.rs",
           "function": "next_logged",
-          "line": 2370,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 2426,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "terminal_no_work",
-          "line": 1501,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1511,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "fused_state",
-          "line": 1506,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1516,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "finite_fusion",
           "line": 266,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         }
       ],
       "verified_in_full_runs": [
-        735,
-        736
+        747,
+        748
       ]
     },
     {
@@ -452,37 +540,37 @@
           "file": "src/frame_equivalence.rs",
           "function": "returned_resources",
           "line": 250,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "returned_untouched",
           "line": 256,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "resources_complete",
           "line": 211,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/png.rs",
           "function": "canvas_geometry",
-          "line": 1048,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1050,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "prepare_image",
           "line": 507,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "ensure_saved",
-          "line": 1368,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1378,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/still_equivalence.rs",
@@ -493,17 +581,21 @@
         {
           "file": "src/png.rs",
           "function": "try_next",
-          "line": 1770,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1796,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         }
       ],
       "verified_in_full_runs": [
-        735,
-        736
+        747,
+        748
       ]
     }
   ],
   "dependency_graph": [
+    {
+      "edge": "Strict-disabled event-pushing guards -> empty constructor/base events -> Reject image guard -> actual recovered=false",
+      "meaning": "The proof strengthens existing native walk contracts without changing their executable bodies. Reject makes the existing Black-recovery predicate false. The thin frame decode wrapper forwards to the actual unchanged decoder once, then composes its existing event contract; the public native result/progress predicates include recovered=false."
+    },
     {
       "edge": "accepted mathematical MFr/canonical fold -> complete receiver relation",
       "meaning": "The accepted 2a-M definitions and totality certificate are unchanged. Native call history is used only to prove equality with the independently defined value, never to define it."
@@ -527,11 +619,11 @@
   ],
   "proof_map": {
     "file": "evidence/m6-2ae-proof-map.json",
-    "sha256": "0b4e2dd98f4e1854f8f35c4e5751e38bb47b1eb6f8c306ddf40bfd89dbe75634"
+    "sha256": "28ea62532dfd6553eb917396dcb145d06efe946d46ac0c46b488bcaaabb2b177"
   },
   "activity_control": {
     "file": "evidence/m6-2ae-activity-control.py",
-    "sha256": "c640ce6674008c8a8e7c9003c670aaf5da443ffcbc63cb32503978b5864a923b"
+    "sha256": "5f1741c05713305d6f426e3f6364883083b066f2e6c12e00fe13214345ff1a5f"
   },
   "full_no_cheating": true,
   "default_solver_limits": true,
@@ -540,19 +632,19 @@
   "stack_bytes": 268435456,
   "all_generated_witnesses_enabled": true,
   "full_run_wall_seconds": {
-    "host": 2360.54,
-    "i686": 2098.4
+    "host": 1986.03,
+    "i686": 2027.44
   },
   "runtime_evidence": {
     "record": {
-      "file": "evidence/m6-2ae-runtime-0733.json",
-      "sha256": "90b7b63c581686d2e049ba3ef53587a59b8b1b3bfe4929b29b59699475ccb66a"
+      "file": "evidence/m6-2ae-r1-runtime-0745.json",
+      "sha256": "67a5435a5ec595f1b07fe9e99b7c228c07315ec14729aeb2cc85393625199edb"
     },
     "log": {
-      "file": "evidence/m6-2ae-runtime-0733.log",
-      "sha256": "d40815ad367a0234158bff43bec10f5f6722cf225ad249dc6ea79e93e23b7c39",
-      "source_log_sha256": "d40815ad367a0234158bff43bec10f5f6722cf225ad249dc6ea79e93e23b7c39",
-      "normalized_text_sha256": "d40815ad367a0234158bff43bec10f5f6722cf225ad249dc6ea79e93e23b7c39",
+      "file": "evidence/m6-2ae-r1-runtime-0745.log",
+      "sha256": "4354c06d9afc3dccdbd12b85d74298ea93bedb70d4879a51728ec238bfc30b25",
+      "source_log_sha256": "4354c06d9afc3dccdbd12b85d74298ea93bedb70d4879a51728ec238bfc30b25",
+      "normalized_text_sha256": "4354c06d9afc3dccdbd12b85d74298ea93bedb70d4879a51728ec238bfc30b25",
       "original_eof_suffix_hex": "0a",
       "reconstruction": "decompress if gzip, remove retained final LF, append original_eof_suffix_hex bytes",
       "compression": "none"
@@ -567,14 +659,14 @@
   },
   "public_errors_evidence": {
     "record": {
-      "file": "evidence/m6-2ae-public-errors-0734.json",
-      "sha256": "dfcad96a850dccfa293e1746c143351a3e17b9383382157d37c9b1a79eddc488"
+      "file": "evidence/m6-2ae-r1-public-errors-0746.json",
+      "sha256": "a5c8325885057173cf9a0837f2da85642490cbef48183f23b21dc4e5ca33d0ed"
     },
     "log": {
-      "file": "evidence/m6-2ae-public-errors-0734.log",
-      "sha256": "107aec8f9985108a61c0ae5d6dcefa3b00564616ec760eab4de66a9924360006",
-      "source_log_sha256": "cf9c8f08e53369c7659b9e9be6b4ddf63706b2faa074726a7a99a2a86a37a474",
-      "normalized_text_sha256": "107aec8f9985108a61c0ae5d6dcefa3b00564616ec760eab4de66a9924360006",
+      "file": "evidence/m6-2ae-r1-public-errors-0746.log",
+      "sha256": "596b2102477360b3377c943905af889b8726dcad516649840447365c064ab94f",
+      "source_log_sha256": "f660d172790554bcb4a37408691b44f00007f77e2c3fa41ffc5ad89abd46ec2a",
+      "normalized_text_sha256": "596b2102477360b3377c943905af889b8726dcad516649840447365c064ab94f",
       "original_eof_suffix_hex": "0a0a",
       "reconstruction": "decompress if gzip, remove retained final LF, append original_eof_suffix_hex bytes",
       "compression": "none"
@@ -587,22 +679,22 @@
   },
   "final_control_evidence": {
     "record": {
-      "file": "evidence/m6-2ae-final-control-0737.json",
-      "sha256": "9befaa4e4eefccd3641a664e9703b2f40c9a64a8dafe2c8c6095d4c0328ccd27"
+      "file": "evidence/m6-2ae-r1-final-control-0749.json",
+      "sha256": "f28a72b48a25f040c9c99f73791269674bdf569465039da523f24b54a3e322b7"
     },
     "log": {
-      "file": "evidence/m6-2ae-final-control-0737.log",
-      "sha256": "b60965d24e27442693f4ac6a6c5bcf482db1991749836ef71c731e9b148da30a",
-      "source_log_sha256": "b60965d24e27442693f4ac6a6c5bcf482db1991749836ef71c731e9b148da30a",
-      "normalized_text_sha256": "b60965d24e27442693f4ac6a6c5bcf482db1991749836ef71c731e9b148da30a",
+      "file": "evidence/m6-2ae-r1-final-control-0749.log",
+      "sha256": "82f4b90287fe437ecd9954eb76b5248f9bbe2826e267f046c9493edaf869b87b",
+      "source_log_sha256": "82f4b90287fe437ecd9954eb76b5248f9bbe2826e267f046c9493edaf869b87b",
+      "normalized_text_sha256": "82f4b90287fe437ecd9954eb76b5248f9bbe2826e267f046c9493edaf869b87b",
       "original_eof_suffix_hex": "0a",
       "reconstruction": "decompress if gzip, remove retained final LF, append original_eof_suffix_hex bytes",
       "compression": "none"
     }
   },
-  "integrity_record": "evidence/m6-2ae-integrity.json",
-  "integrity_log": "evidence/m6-2ae-integrity.log",
-  "ledger_sha256": "281844d4df167413709939ab877d9e9cfcee4f707f6ca9352c1c7447259f948e",
+  "integrity_record": "evidence/m6-2ae-r1-integrity.json",
+  "integrity_log": "evidence/m6-2ae-r1-integrity.log",
+  "ledger_sha256": "1c9fb45bf6cc802009617e04a714c4b0c61f5ba9ee326225a0a89d73c1e1df27",
   "whitespace_control": {
     "file": "evidence/m6-2ae-whitespace-control.py",
     "sha256": "46f1a30f042d2cd456e24a5971fa2902c0788db98ad9f7f1e983bf9ef3cad5e5",
@@ -674,5 +766,19 @@
     "Witness completion",
     "Mutation campaign",
     "CAPS-SYM"
-  ]
+  ],
+  "review_correction": {
+    "review_commit": "42665f5bbf63a46dfbf67ea1ef7347fb6953fb51",
+    "held_commit": "ac57dd9",
+    "strict_recovered_false_proved": true,
+    "named_policy_event_model_needed": false,
+    "terminal_executable_body_allowlists": 7,
+    "negative_hidden_helper_controls": 2,
+    "frame_state_description": "behavior-preserving executable forwarding refactor plus erased observation",
+    "superseded_current_artifact_sha256": {
+      "m6-2ae-activity-control.py": "c640ce6674008c8a8e7c9003c670aaf5da443ffcbc63cb32503978b5864a923b",
+      "m6-2ae-packet.json": "4572c5f8a96bb8579d2224f2235259f353763b5335eead5fddc2668543b5e7f9",
+      "m6-2ae-proof-map.json": "0b4e2dd98f4e1854f8f35c4e5751e38bb47b1eb6f8c306ddf40bfd89dbe75634"
+    }
+  }
 }

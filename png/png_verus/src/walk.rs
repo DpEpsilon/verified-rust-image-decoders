@@ -106,7 +106,8 @@ pub(crate) open spec fn outcome_view(result: Result<Doc,WalkFail>, events: Event
 }
 
 pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mut Events) -> (r: Result<Doc,WalkFail>)
-    ensures final(ev).r3==old(ev).r3,final(ev).r4==old(ev).r4,
+    ensures pol.walk_view()==crate::document_model::strict() ==> final(ev).r1==old(ev).r1,
+        final(ev).r3==old(ev).r3,final(ev).r4==old(ev).r4,
         outcome_view(r,*final(ev))==crate::document_model::start(b@,pol.walk_view(),
         matches!(entry,Entry::Frames),apng_off,old(ev).view()),
         crate::document_model::start(b@,pol.walk_view(),matches!(entry,Entry::Frames),apng_off,old(ev).view())
@@ -128,6 +129,7 @@ pub(crate) fn walk(b: &[u8], pol: &Policy, entry: Entry, apng_off: bool, ev: &mu
     loop
         invariant state.wf(doc,b@),pos<=b.len(),rules.view()==pol.walk_view(),
             ev.r3==old(ev).r3,ev.r4==old(ev).r4,
+            pol.walk_view()==crate::document_model::strict() ==> ev.r1==old(ev).r1,
             crate::document_model::start(b@,pol.walk_view(),matches!(entry,Entry::Frames),apng_off,old(ev).view())
                 ==crate::document_model::drive(b@,rules.view(),matches!(entry,Entry::Frames),apng_off,state.view(doc,pos,*ev)),
         decreases b.len()-pos,
@@ -154,7 +156,8 @@ pub(crate) open spec fn data_outcome(result: Result<Doc,Error>, events: Events) 
 /// The actual still/ICC walk entry, with fresh recovery events.
 pub(crate) fn still(b: &[u8], pol: &Policy, ev: &mut Events) -> (r: Result<Doc,Error>)
     requires old(ev).view()==crate::document_model::no_events(),
-    ensures data_outcome(r,*final(ev))==crate::model::MW_p(b@,pol.walk_view()),
+    ensures pol.walk_view()==crate::document_model::strict() ==> final(ev).view()==crate::document_model::no_events(),
+        data_outcome(r,*final(ev))==crate::model::MW_p(b@,pol.walk_view()),
         crate::model::MW_p(b@,pol.walk_view()) != crate::document_model::Outcome::OutsideDomain,
         match r {Ok(doc)=>doc.wf(b@) && crate::transport_model::idat_result(b@,doc.view())
             && b.len()<=crate::limits::MAX_INPUT && doc.source_partition()
@@ -168,7 +171,8 @@ pub(crate) fn still(b: &[u8], pol: &Policy, ev: &mut Events) -> (r: Result<Doc,E
 /// The actual constructor walk, including a fresh APNG-off R4 re-walk.
 pub(crate) fn frames(b: &[u8], pol: &Policy, ev: &mut Events) -> (r: Result<Doc,Error>)
     requires old(ev).view()==crate::document_model::no_events(),
-    ensures data_outcome(r,*final(ev))==crate::model::MWF_p(b@,pol.walk_view()),
+    ensures pol.walk_view()==crate::document_model::strict() ==> final(ev).view()==crate::document_model::no_events(),
+        data_outcome(r,*final(ev))==crate::model::MWF_p(b@,pol.walk_view()),
         crate::model::MWF_p(b@,pol.walk_view()) != crate::document_model::Outcome::OutsideDomain,
         match r {Ok(doc)=>doc.wf(b@) && crate::transport_model::idat_result(b@,doc.view())
             && b.len()<=crate::limits::MAX_INPUT && doc.source_partition()

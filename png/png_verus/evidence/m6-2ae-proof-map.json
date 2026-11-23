@@ -1,13 +1,89 @@
 {
   "title": "Strict Iterator Proof Map",
   "scope": "Strict iterator equivalence complete at M6 2a; named-policy pending 2b",
-  "checkpoint": "2a-E complete Strict executable iterator",
-  "base_commit": "45fae63c5b5dfd7f07a41cdc1a1dba9e5a95f276",
+  "checkpoint": "2a-E R1 corrected complete Strict executable iterator",
+  "base_commit": "42665f5bbf63a46dfbf67ea1ef7347fb6953fb51",
   "full_runs": [
-    735,
-    736
+    747,
+    748
   ],
   "claims": [
+    {
+      "id": "STRICT-RECOVERED-FALSE",
+      "claim": "Every actual public Strict FrameView has recovered=false. Native walk contracts prove the Strict-disabled CRC/order/tRNS/fallback event-pushing branches preserve empty events. Reject disables Black recovery for every raster. The constructor and preserved Strict event invariant retain the empty base; the actual unchanged image decoder preserves it on success, and both actual any() return sites prove false. native_call_eq and Prog_ITER_native include this bit; no named-policy per-frame event model is defined.",
+      "proof_anchors": [
+        {
+          "file": "src/walk_own.rs",
+          "function": "run",
+          "line": 23,
+          "sha256": "08a4262fe3cd262fff549701beeb5be206df726e34a01fd9809ab496b7a9fb80"
+        },
+        {
+          "file": "src/walk_step.rs",
+          "function": "run",
+          "line": 10,
+          "sha256": "96b9f5f4c67a0658ef206e18c1fe580b9229c889ffad04bfc92df0ae384fb552"
+        },
+        {
+          "file": "src/walk.rs",
+          "function": "walk",
+          "line": 108,
+          "sha256": "a33042ef9e5c6beb256478421248c39c5a9e8d46dfa792f26a82b874e4be5938"
+        },
+        {
+          "file": "src/callers.rs",
+          "function": "frames",
+          "line": 35,
+          "sha256": "7947c17987fd6d941b32278718e647c03b3c341b68e1902f38e2d79173127fbd"
+        },
+        {
+          "file": "src/still_recovery.rs",
+          "function": "reject_inert",
+          "line": 82,
+          "sha256": "7b35168274a2c28f3806636a9ccc8f9dd1ea3a4b5e256cbf75f68b3ff403a46f"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "strict_events_wf",
+          "line": 1231,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "decode_frame_image",
+          "line": 2484,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "completed_selected",
+          "line": 2213,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "terminal_logged",
+          "line": 2324,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "native_call_eq",
+          "line": 288,
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "Prog_ITER_native",
+          "line": 293,
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
+        }
+      ],
+      "verified_in_full_runs": [
+        747,
+        748
+      ]
+    },
     {
       "id": "STRICT-CONSTRUCTOR",
       "claim": "Ordinary/logged Strict constructors refine the complete MFr constructor result. Non-OOM format errors are equivalent, and success establishes complete model-Info equality and the complete public receiver invariant. Logged G/Prog use the actual sealed Raw/Output log; ordinary OOM retains (site,elements) membership before discarding that log.",
@@ -15,38 +91,38 @@
         {
           "file": "src/png.rs",
           "function": "try_new",
-          "line": 1582,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1596,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "try_new_logged",
-          "line": 1624,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1640,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "with_logged",
-          "line": 1644,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1662,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "with_record",
-          "line": 1684,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1703,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "constructor_complete",
           "line": 28,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "allocation_complete",
           "line": 45,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/still_equivalence.rs",
@@ -56,49 +132,55 @@
         }
       ],
       "verified_in_full_runs": [
-        735,
-        736
+        747,
+        748
       ]
     },
     {
       "id": "STRICT-ITERATOR",
-      "claim": "Every public try_next preserves the complete Strict boundary invariant for arbitrary reachable states, not a bounded unrolling. Each actual FrameView equals the canonical MFr record in every canvas byte, rectangle, raw delay pair, raw disposal and raw blend; terminal format errors occur once and IEND returns None. The independent M5-to-canonical fold remains unchanged.",
+      "claim": "Every public try_next preserves the complete Strict boundary invariant for arbitrary reachable states, not a bounded unrolling. Each actual FrameView equals the canonical MFr record in every canvas byte, rectangle, raw delay pair, raw disposal, raw blend and recovered=false; terminal format errors occur once and IEND returns None. The independent M5-to-canonical fold remains unchanged.",
       "proof_anchors": [
         {
           "file": "src/png.rs",
           "function": "strict_iterator_wf",
-          "line": 1474,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1484,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "bind_strict",
-          "line": 1430,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1440,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "try_next",
-          "line": 1770,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1796,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "complete_call",
-          "line": 1444,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1454,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "establish",
           "line": 85,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "call_complete",
           "line": 164,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
+          "function": "native_call_eq",
+          "line": 288,
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_state.rs",
@@ -109,13 +191,13 @@
         {
           "file": "src/png.rs",
           "function": "model_observations",
-          "line": 965,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 967,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         }
       ],
       "verified_in_full_runs": [
-        735,
-        736
+        747,
+        748
       ]
     },
     {
@@ -125,26 +207,26 @@
         {
           "file": "src/png.rs",
           "function": "info",
-          "line": 1530,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1544,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "strict_plays",
-          "line": 1511,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1521,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "raw_num_plays",
-          "line": 1510,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1520,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "info_complete",
           "line": 116,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_model.rs",
@@ -160,8 +242,8 @@
         }
       ],
       "verified_in_full_runs": [
-        735,
-        736
+        747,
+        748
       ]
     },
     {
@@ -172,48 +254,48 @@
           "file": "src/frame_equivalence.rs",
           "function": "G_iter",
           "line": 200,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "canonical_requests",
           "line": 191,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/png.rs",
           "function": "strict_allocation_history",
-          "line": 1485,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1495,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "allocation_clauses",
-          "line": 1175,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1177,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "selected_logged",
-          "line": 2067,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 2107,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "try_next",
-          "line": 1770,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1796,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "finite_fusion",
           "line": 266,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         }
       ],
       "verified_in_full_runs": [
-        735,
-        736
+        747,
+        748
       ]
     },
     {
@@ -222,43 +304,49 @@
       "proof_anchors": [
         {
           "file": "src/frame_equivalence.rs",
+          "function": "Prog_ITER_native",
+          "line": 293,
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
+        },
+        {
+          "file": "src/frame_equivalence.rs",
           "function": "Prog_ITER",
           "line": 208,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "finite_progress",
           "line": 228,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "oom_stays",
           "line": 217,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/png.rs",
           "function": "complete_call",
-          "line": 1444,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1454,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "try_next",
-          "line": 1770,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1796,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         }
       ],
       "verified_in_full_runs": [
-        735,
-        736
+        747,
+        748
       ]
     },
     {
       "id": "CHECKED-NO-WORK",
-      "claim": "A single sealed erased activity trace is threaded through each actual public call. Checked observations occur immediately before selection/re-walk, Saved reservation, disposal/save, decode, reused-canvas normalization and resume-state commit. Terminal calls have zero in every activity counter, independently of output/log equality. The source control checks all six actual-site bindings, trace forwarding, absence of resets and five return snapshots.",
+      "claim": "A single sealed erased activity trace is threaded through each actual public call. Checked observations occur immediately before selection/re-walk, Saved reservation, disposal/save, decode, reused-canvas normalization and resume-state commit. Terminal calls have zero in every activity counter, independently of output/log equality. The source control checks all six actual-site bindings, trace forwarding, absence of resets and five return snapshots. Seven executable-body allowlists cover the fused dispatch/helpers and transparent decoder forwarding; two in-memory negative controls reject direct or hidden CRC-loop helper calls. FrameState uses a behavior-preserving executable forwarding refactor plus erased observation, not a proof-only change.",
       "proof_anchors": [
         {
           "file": "src/frame_activity.rs",
@@ -287,31 +375,31 @@
         {
           "file": "src/png.rs",
           "function": "next_logged",
-          "line": 2370,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 2426,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "terminal_no_work",
-          "line": 1501,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1511,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "fused_state",
-          "line": 1506,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1516,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "finite_fusion",
           "line": 266,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         }
       ],
       "verified_in_full_runs": [
-        735,
-        736
+        747,
+        748
       ]
     },
     {
@@ -322,37 +410,37 @@
           "file": "src/frame_equivalence.rs",
           "function": "returned_resources",
           "line": 250,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "returned_untouched",
           "line": 256,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/frame_equivalence.rs",
           "function": "resources_complete",
           "line": 211,
-          "sha256": "da003bee6033c7c5708643c498e93446b21c740c42fc3b25015cc5806408fb09"
+          "sha256": "dfc7cbfe256e94666d32a2789f335ac9e34eb3234732f8d5e95ad4cead86bba9"
         },
         {
           "file": "src/png.rs",
           "function": "canvas_geometry",
-          "line": 1048,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1050,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "prepare_image",
           "line": 507,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/png.rs",
           "function": "ensure_saved",
-          "line": 1368,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1378,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         },
         {
           "file": "src/still_equivalence.rs",
@@ -363,17 +451,21 @@
         {
           "file": "src/png.rs",
           "function": "try_next",
-          "line": 1770,
-          "sha256": "2319ca03d51922c7864b40d3ffde55835df9d7eff1fea086a016344e1d582bdb"
+          "line": 1796,
+          "sha256": "270c5baf9187d8bd85687a54bf9008abfed6d333a4a45a0257c55fd11bd44650"
         }
       ],
       "verified_in_full_runs": [
-        735,
-        736
+        747,
+        748
       ]
     }
   ],
   "dependency_graph": [
+    {
+      "edge": "Strict-disabled event-pushing guards -> empty constructor/base events -> Reject image guard -> actual recovered=false",
+      "meaning": "The proof strengthens existing native walk contracts without changing their executable bodies. Reject makes the existing Black-recovery predicate false. The thin frame decode wrapper forwards to the actual unchanged decoder once, then composes its existing event contract; the public native result/progress predicates include recovered=false."
+    },
     {
       "edge": "accepted mathematical MFr/canonical fold -> complete receiver relation",
       "meaning": "The accepted 2a-M definitions and totality certificate are unchanged. Native call history is used only to prove equality with the independently defined value, never to define it."
@@ -410,7 +502,7 @@
   ],
   "activity_control": {
     "file": "evidence/m6-2ae-activity-control.py",
-    "sha256": "c640ce6674008c8a8e7c9003c670aaf5da443ffcbc63cb32503978b5864a923b"
+    "sha256": "5f1741c05713305d6f426e3f6364883083b066f2e6c12e00fe13214345ff1a5f"
   },
   "imported_M2_contracts": {
     "source": "../inflate_verus/src/inflate.rs",

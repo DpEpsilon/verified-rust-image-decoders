@@ -283,4 +283,16 @@ pub proof fn finite_fusion(histories: Seq<data::History>,calls: Seq<Call>,logs: 
         }
     }
 }
+/// Full public Strict result: the five-field unprofiled record and the
+/// additional recovery bit exposed by the native FrameView.
+pub open spec fn native_call_eq(b: Seq<u8>,doc: d::Doc,h: data::History,
+    result: Result<Option<crate::png::FrameView<'_>>,TryError>) -> bool {
+    call_eq(b,doc,h,native_call(result))
+    && match result {Ok(Some(view))=>!view.is_recovered(),_=>true}
+}
+pub open spec fn Prog_ITER_native(b: Seq<u8>,doc: d::Doc,h: data::History,
+    result: Result<Option<crate::png::FrameView<'_>>,TryError>,log: Seq<(AllocSite,nat,bool)>) -> bool {
+    crate::alloc_guard::all_ok(log) ==> !matches!(result,Err(TryError::OutOfMemory(_)))
+        && native_call_eq(b,doc,h,result)
+}
 }

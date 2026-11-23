@@ -10,7 +10,8 @@ verus! {
 pub(crate) fn run(b: &[u8], rules: Rules, entry: Entry, apng_off: bool,
     pos: &mut usize, doc: &mut Doc, state: &mut State, ev: &mut Events) -> (r: Result<bool,WalkFail>)
     requires old(state).wf(*old(doc),b@),*old(pos)<=b.len(),
-    ensures *final(pos)<=b.len(),
+    ensures rules.view()==crate::document_model::strict() ==> final(ev).r1==old(ev).r1,
+        *final(pos)<=b.len(),
         crate::walk_own::result_view(r,*final(doc),*final(state),*final(pos),*final(ev))
             ==m::step(b@,rules.view(),matches!(entry,Entry::Frames),apng_off,
                 old(state).view(*old(doc),*old(pos),*old(ev))),
@@ -55,7 +56,8 @@ fn ordered(b: &[u8], rules: Rules, static_frames: bool, kind: Kind, anc: bool,
     doc: &mut Doc, state: &mut State, ev: &mut Events) -> (r: Result<bool,WalkFail>)
     requires old(state).wf(*old(doc),b@),pos<=b.len(),base<=b.len(),length<=b.len()-base,
         matches!(kind,Kind::Idat) ==> chunk_offset+8==base,
-    ensures crate::walk_own::result_view(r,*final(doc),*final(state),pos,*final(ev))
+    ensures rules.view()==crate::document_model::strict() ==> final(ev).r1==old(ev).r1,
+        crate::walk_own::result_view(r,*final(doc),*final(state),pos,*final(ev))
         ==m::ordered(b@,rules.view(),static_frames,old(state).view(*old(doc),pos,*old(ev)),
             kind.view(),anc,base as nat,length as nat),
         !static_frames ==> !matches!(r,Err(WalkFail::Fallback)),
