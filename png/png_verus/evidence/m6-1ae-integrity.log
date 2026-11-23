@@ -1,0 +1,53 @@
+command: ['python3', '-I', '/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m6-still-1a-exec/144905d-20261123/check_exec_integrity.py']
+{
+  "kind": "M6 1a-E Strict still integrity; independent acceptance pending",
+  "full_runs": [
+    683,
+    686
+  ],
+  "verified_each": 6151,
+  "source_inventory_count": 87,
+  "verified_evidence_hashes_before_integrity_seal": 1165,
+  "packet_sha256": "1d3d714c34ef049a77811e2cbddfbbcec940e162274825f6eab94b160501baa0",
+  "strict_public_equivalence_claimed": true,
+  "strict_A_PNG_1_claimed": true,
+  "named_policy_equivalence_claimed": false,
+  "milestone_M6_signed_off": false,
+  "foundation_sources_unchanged": true,
+  "acyclic_reviewed_foundation_reused": true,
+  "new_retained_logs_exactly_reconstruct_originals": true,
+  "native_runtime": [
+    846,
+    848,
+    2
+  ],
+  "public_error_calls": 72,
+  "ledger_hash_matches": true,
+  "vstd_pins_unchanged": true,
+  "whitespace_clean": true,
+  "whitespace_scope": "tracked diff from base and all new 1a-E source/evidence, including decompressed logs",
+  "whitespace_base": "144905d33242726949955b8c6ac66412e0e3e4f3",
+  "whitespace_files_checked": [
+    "LEDGER.md",
+    "RUNLOG.tsv",
+    "evidence/SHA256SUMS",
+    "evidence/m6-1ae-final-control-0687.json",
+    "evidence/m6-1ae-final-control-0687.log",
+    "evidence/m6-1ae-host-0683.json",
+    "evidence/m6-1ae-host-0683.log.gz",
+    "evidence/m6-1ae-i686-0686.json",
+    "evidence/m6-1ae-i686-0686.log.gz",
+    "evidence/m6-1ae-packet.json",
+    "evidence/m6-1ae-proof-map.json",
+    "evidence/m6-1ae-public-errors-0685.json",
+    "evidence/m6-1ae-public-errors-0685.log",
+    "evidence/m6-1ae-runtime-0684.json",
+    "evidence/m6-1ae-runtime-0684.log",
+    "evidence/m6-1ae-whitespace-control.py",
+    "src/lib.rs",
+    "src/png.rs",
+    "src/still_equivalence.rs"
+  ],
+  "whitespace_self_test_rejects_trailing_blank_lines": true,
+  "historical_exception_unchanged": "evidence/m6-1am-public-errors-0675.log"
+}

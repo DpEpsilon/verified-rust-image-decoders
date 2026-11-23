@@ -1,0 +1,324 @@
+{
+  "title": "M6 Strict Still Map",
+  "scope": "Strict still equivalence complete at M6 1a; named-policy recovered pending 1b",
+  "checkpoint": "1a-E executable integration",
+  "base_commit": "144905d33242726949955b8c6ac66412e0e3e4f3",
+  "full_runs": [
+    683,
+    686
+  ],
+  "claims": [
+    {
+      "id": "STRICT-COMPLETE",
+      "claim": "For either Strict public entry, Ok unconditionally implies complete model success; every non-OOM result has exact W, H, Info, every physical RGBA byte and operationally first format error against MS or MS16. No input-validity or allocation-success precondition exists.",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "try_decode_still",
+          "line": 667,
+          "sha256": "fbe1e4606bf4e1ae45664334bcc232330091edbe72ba07d24314605bfedb7766"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_decode_still16",
+          "line": 680,
+          "sha256": "fbe1e4606bf4e1ae45664334bcc232330091edbe72ba07d24314605bfedb7766"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "eq",
+          "line": 20,
+          "sha256": "49d9752fa1d1914d46239dbc517dcbc5929252c081887b65b33f0cf1ccbb6cc9"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "complete",
+          "line": 78,
+          "sha256": "49d9752fa1d1914d46239dbc517dcbc5929252c081887b65b33f0cf1ccbb6cc9"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "native8",
+          "line": 13,
+          "sha256": "49d9752fa1d1914d46239dbc517dcbc5929252c081887b65b33f0cf1ccbb6cc9"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "native16",
+          "line": 16,
+          "sha256": "49d9752fa1d1914d46239dbc517dcbc5929252c081887b65b33f0cf1ccbb6cc9"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "MS",
+          "line": 47,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "MS16",
+          "line": 48,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        }
+      ],
+      "verified_in_full_runs": [
+        683,
+        686
+      ]
+    },
+    {
+      "id": "STRICT-LOGGED-G",
+      "claim": "The two new Strict logged entries return the owned sealed log from the same actual decode. G clauses 1-3 establish full non-OOM equality and complete successful requests, actual last-failure/OOM binding, request-prefix order and per-site maxima.",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "try_decode_still_logged",
+          "line": 693,
+          "sha256": "fbe1e4606bf4e1ae45664334bcc232330091edbe72ba07d24314605bfedb7766"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_decode_still16_logged",
+          "line": 724,
+          "sha256": "fbe1e4606bf4e1ae45664334bcc232330091edbe72ba07d24314605bfedb7766"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "G",
+          "line": 112,
+          "sha256": "49d9752fa1d1914d46239dbc517dcbc5929252c081887b65b33f0cf1ccbb6cc9"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "allocation_complete",
+          "line": 129,
+          "sha256": "49d9752fa1d1914d46239dbc517dcbc5929252c081887b65b33f0cf1ccbb6cc9"
+        },
+        {
+          "file": "src/allocation_model.rs",
+          "function": "image_call",
+          "line": 76,
+          "sha256": "ec08a85968f07ec6d3a36a31501a6c17411a4314c49f2b332cf45c71bc5be8b6"
+        },
+        {
+          "file": "src/alloc_guard/sites.rs",
+          "function": "log_tied",
+          "line": 68,
+          "sha256": "dcd747cf7721c33ff00fbffd83ca8838d12803f99c2fb896b8077f25f5d8a281"
+        }
+      ],
+      "verified_in_full_runs": [
+        683,
+        686
+      ]
+    },
+    {
+      "id": "STRICT-PROG",
+      "claim": "If every actual logged reservation succeeds, neither Strict logged entry returns OOM, the entire request list is issued and the complete MS/MS16 result relation holds.",
+      "proof_anchors": [
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "Prog",
+          "line": 121,
+          "sha256": "49d9752fa1d1914d46239dbc517dcbc5929252c081887b65b33f0cf1ccbb6cc9"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "allocation_complete",
+          "line": 129,
+          "sha256": "49d9752fa1d1914d46239dbc517dcbc5929252c081887b65b33f0cf1ccbb6cc9"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_decode_still_logged",
+          "line": 693,
+          "sha256": "fbe1e4606bf4e1ae45664334bcc232330091edbe72ba07d24314605bfedb7766"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_decode_still16_logged",
+          "line": 724,
+          "sha256": "fbe1e4606bf4e1ae45664334bcc232330091edbe72ba07d24314605bfedb7766"
+        }
+      ],
+      "verified_in_full_runs": [
+        683,
+        686
+      ]
+    },
+    {
+      "id": "STRICT-REQUESTS",
+      "claim": "The model request list is Raw then Output after a successful strict walk, otherwise empty. Every actual prefix has at most two entries and cannot contain Saved, IccWindow or Icc; the same holds after a failing reservation.",
+      "proof_anchors": [
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "requests",
+          "line": 30,
+          "sha256": "49d9752fa1d1914d46239dbc517dcbc5929252c081887b65b33f0cf1ccbb6cc9"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "only_still_sites",
+          "line": 125,
+          "sha256": "49d9752fa1d1914d46239dbc517dcbc5929252c081887b65b33f0cf1ccbb6cc9"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "allocation_complete",
+          "line": 129,
+          "sha256": "49d9752fa1d1914d46239dbc517dcbc5929252c081887b65b33f0cf1ccbb6cc9"
+        },
+        {
+          "file": "src/allocation_model.rs",
+          "function": "image_requests",
+          "line": 11,
+          "sha256": "ec08a85968f07ec6d3a36a31501a6c17411a4314c49f2b332cf45c71bc5be8b6"
+        }
+      ],
+      "verified_in_full_runs": [
+        683,
+        686
+      ]
+    },
+    {
+      "id": "STRICT-BOUNDS-BEFORE-RESERVATION",
+      "claim": "The actual checked header establishes request maxima before prepare_image enters reserve_image: Raw <= 2*MAX_OUTPUT + MAX_OUTPUT/2 + 2 and Output <= MAX_OUTPUT (8-bit) or 2*MAX_OUTPUT (16-bit), each <= MAX_BYTES. The proofs do not depend on reservation success.",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "prepare_image",
+          "line": 497,
+          "sha256": "fbe1e4606bf4e1ae45664334bcc232330091edbe72ba07d24314605bfedb7766"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "header_request_bounds",
+          "line": 55,
+          "sha256": "49d9752fa1d1914d46239dbc517dcbc5929252c081887b65b33f0cf1ccbb6cc9"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "header_facts",
+          "line": 44,
+          "sha256": "49d9752fa1d1914d46239dbc517dcbc5929252c081887b65b33f0cf1ccbb6cc9"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "request_bounds",
+          "line": 33,
+          "sha256": "49d9752fa1d1914d46239dbc517dcbc5929252c081887b65b33f0cf1ccbb6cc9"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "reserve_image",
+          "line": 431,
+          "sha256": "fbe1e4606bf4e1ae45664334bcc232330091edbe72ba07d24314605bfedb7766"
+        }
+      ],
+      "verified_in_full_runs": [
+        683,
+        686
+      ]
+    },
+    {
+      "id": "STRICT-NATIVE-T13",
+      "claim": "Every successful native Strict result satisfies exact complete model equality, checked dimensions and physical-byte resources, and the committed result-facing P13 grey/alpha/indexed palette package. Existing E3 and L-16-8 model theorems apply to these exact byte sequences; no native u16 representation replaces RGBA16 bytes.",
+      "proof_anchors": [
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "success_package",
+          "line": 27,
+          "sha256": "49d9752fa1d1914d46239dbc517dcbc5929252c081887b65b33f0cf1ccbb6cc9"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "success",
+          "line": 103,
+          "sha256": "49d9752fa1d1914d46239dbc517dcbc5929252c081887b65b33f0cf1ccbb6cc9"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "T13",
+          "line": 412,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "resources",
+          "line": 52,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "bind_model_properties",
+          "line": 431,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "coupled",
+          "line": 270,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "model_theorems",
+          "line": 464,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        }
+      ],
+      "verified_in_full_runs": [
+        683,
+        686
+      ]
+    }
+  ],
+  "dependency_graph": [
+    {
+      "edge": "Strict entries -> corresponding logged entry -> still8/still16 -> unchanged still decode pipeline",
+      "meaning": "Each ordinary entry returns its logged entry result. Each logged entry runs exactly one native decode and seals that same Trace; no model certificate or second decode executes."
+    },
+    {
+      "edge": "complete -> accepted M4 error/shape + M5 Info/physical-content contracts -> committed image_complete",
+      "meaning": "The bridge composes already checked observations into independently defined MS/MS16 values. It does not reopen inflation, filtering, colour conversion or compositor algorithms."
+    },
+    {
+      "edge": "native success -> actual checked document_context + committed model colour/T13 lemmas",
+      "meaning": "The real walk/decode discharges each bridge precondition. There is no allocation-success or model-success antecedent on a public entry."
+    },
+    {
+      "edge": "prepare_image actual checked header -> header_request_bounds -> reserve_image",
+      "meaning": "The bound proof is textually before the first reservation, applies to both eventual failures and successes, and uses named caps."
+    },
+    {
+      "edge": "allocation_complete -> existing image_call + sealed log_tied/request-prefix contracts",
+      "meaning": "The relation uses the actual returned failure and exact Raw/Output log. Prefix index observations establish the explicit site exclusion; no second or synthetic log is supplied."
+    },
+    {
+      "edge": "historical 1a-M independent definitions/acyclic totality -> unchanged reviewed foundation",
+      "meaning": "Astra accepted this foundation in 144905d. still_model.rs and still_samples.rs are unchanged. Existing M2/M4/M5 contracts predate the models; the certificate is not invoked in production."
+    }
+  ],
+  "strict_public_equivalence_claimed": true,
+  "strict_A_PNG_1_claimed": true,
+  "named_policy_equivalence_claimed": false,
+  "full_T9_or_T13_milestone_claimed": false,
+  "foundation_review": {
+    "file": "../REVIEW-ASTRA-M6-1aM.md",
+    "sha256": "2b1c5d6b31d2e96c186b6b943cfa8f8e61b5386ea1685ea4f317219962789884",
+    "commit": "144905d33242726949955b8c6ac66412e0e3e4f3",
+    "verdict": "sound foundation for 1a-E; no pending foundation fix"
+  },
+  "foundation_proof_map": {
+    "file": "evidence/m6-1am-proof-map.json",
+    "sha256": "3765801384e2e8f85e3d2fc26a3bb485bbf4359db065d2a1fcdfc811460855b2",
+    "historical_unchanged": true
+  },
+  "not_started": [
+    "Named-policy complete equivalence and exact recovered (1b)",
+    "Iterator and ICC equivalence",
+    "Witness completion",
+    "Mutation campaign",
+    "CAPS-SYM"
+  ]
+}
