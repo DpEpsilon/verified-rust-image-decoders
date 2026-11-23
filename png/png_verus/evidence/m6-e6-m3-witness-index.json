@@ -1,0 +1,234 @@
+{
+  "status": "Generated candidates; no proof credit from generation",
+  "generator": "tools/generate_m6_m3_witnesses.py",
+  "records": [
+    {
+      "name": "container/minimal-ok",
+      "entry": "still",
+      "gate_assignment": "complete at M6",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "4241a1ad777d70c06f53b1fd5456c60965e585b689b3a0c146a41489a10cca89",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "model_function": "model_complete_container_minimal_ok",
+      "public_function": "public_complete_container_minimal_ok",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
+      "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
+    },
+    {
+      "name": "container/unknown-ancillary-everywhere",
+      "entry": "still",
+      "gate_assignment": "complete at M6",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "795589dd4ea801cde4ecfad7c590be5a38f74b9c5880a5056e3aa7a5592195d4",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "model_function": "model_complete_container_unknown_ancillary_everywhere",
+      "public_function": "public_complete_container_unknown_ancillary_everywhere",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
+      "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
+    },
+    {
+      "name": "container/reserved-bit-ancillary",
+      "entry": "still",
+      "gate_assignment": "complete at M6",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "452c72ba98dfa375165bc3566371d8a4033b33dfaaccd2cc076de01fdb92f369",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "model_function": "model_complete_container_reserved_bit_ancillary",
+      "public_function": "public_complete_container_reserved_bit_ancillary",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
+      "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
+    },
+    {
+      "name": "plte/ok",
+      "entry": "still",
+      "gate_assignment": "complete at M6",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "ff26649045e83671ff441925eb9521fd09c131e729fe50f9d6dd4d5dc02d2d1e",
+      "expected_rgba_sha256": "b32a765c35de8bcaf5857c5f9fdd71a8a90e4f188196534fb2dac7d037070407",
+      "model_function": "model_complete_plte_ok",
+      "public_function": "public_complete_plte_ok",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
+      "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
+    },
+    {
+      "name": "plte/suggested-palette-in-rgb",
+      "entry": "still",
+      "gate_assignment": "complete at M6",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "3c90d101acc8a855fa0a6b4b217c4193149e1dcf99294be03317f037b0bee059",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "model_function": "model_complete_plte_suggested_palette_in_rgb",
+      "public_function": "public_complete_plte_suggested_palette_in_rgb",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
+      "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
+    },
+    {
+      "name": "anc-ok/iCCP-303",
+      "entry": "still",
+      "gate_assignment": "complete at M6",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "aa04c884cf3cf109bd2c9966e7647e769fb89a8b4c02bb4b4ddb3c9c1e8784b7",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "model_function": "model_complete_anc_ok_iccp_303",
+      "public_function": "public_complete_anc_ok_iccp_303",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
+      "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
+    },
+    {
+      "name": "anc-ok/tIME-7-after-idat",
+      "entry": "still",
+      "gate_assignment": "complete at M6",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "2942b85f0220141f1d47c70bc1b2035f83ce95b90e8a673041f262220701846e",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "model_function": "model_complete_anc_ok_time_7_after_idat",
+      "public_function": "public_complete_anc_ok_time_7_after_idat",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
+      "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
+    },
+    {
+      "name": "anc-ok/srgb-and-iccp-both",
+      "entry": "still",
+      "gate_assignment": "complete at M6",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "1001bfac85601fdb5a0f219fd6d1d7fbc59d9ea9c297b27264ea86360f86be22",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "model_function": "model_complete_anc_ok_srgb_and_iccp_both",
+      "public_function": "public_complete_anc_ok_srgb_and_iccp_both",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
+      "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
+    },
+    {
+      "name": "anc-ok/many-text",
+      "entry": "still",
+      "gate_assignment": "complete at M6",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "7262a950813a1dd166a672b8315f4fdb56702cf89c79a4b6460ba23e7a5d7407",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "model_function": "model_complete_anc_ok_many_text",
+      "public_function": "public_complete_anc_ok_many_text",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
+      "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
+    },
+    {
+      "name": "anc-ok/ztxt-with-corrupt-zlib-not-inflated",
+      "entry": "still",
+      "gate_assignment": "complete at M6",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "e0b14ac39dd76b3e39589fde98361b9978e9634d88d6e28d4144312c74534dd1",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "model_function": "model_complete_anc_ok_ztxt_with_corrupt_zlib_not_inflated",
+      "public_function": "public_complete_anc_ok_ztxt_with_corrupt_zlib_not_inflated",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
+      "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
+    },
+    {
+      "name": "order/splt-twice",
+      "entry": "still",
+      "gate_assignment": "complete at M6",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "f7717ef3fc7fef73db28ccc326373d7af637e651220c325c9635ff7b13c2a58b",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "model_function": "model_complete_order_splt_twice",
+      "public_function": "public_complete_order_splt_twice",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
+      "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
+    },
+    {
+      "name": "order/bkgd-hist-after-plte-before-idat-rgb",
+      "entry": "still",
+      "gate_assignment": "complete at M6",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_source": "spec-frozen/VECTORS.json",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "5b6875eccbef14c69bf90ef492fd6c33d12313a3957cbb871e7d3c499ea1aab6",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "model_function": "model_complete_order_bkgd_hist_after_plte_before_idat_rgb",
+      "public_function": "public_complete_order_bkgd_hist_after_plte_before_idat_rgb",
+      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
+      "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
+    }
+  ]
+}

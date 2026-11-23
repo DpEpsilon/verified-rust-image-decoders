@@ -1,0 +1,583 @@
+{
+  "title": "Complete M3 Witnesses",
+  "scope": "E6-M3 complete: twelve moved M3 witnesses; remaining E6 groups pending.",
+  "checkpoint": "E6-M3",
+  "base_commit": "680230a4acf8a108ef63fb1c75bddf3c2038e9be",
+  "full_runs": [
+    774,
+    777
+  ],
+  "claims": [
+    {
+      "id": "container/minimal-ok",
+      "claim": "The full independent MS result has exactly the frozen width, height and every RGBA byte. The real ordinary public entry on the same frozen bytes returns that complete result or an actual OOM whose failed tuple belongs to Req; its result also retains complete executable-versus-model equality. No input/allocation-success premise is added.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "4241a1ad777d70c06f53b1fd5456c60965e585b689b3a0c146a41489a10cca89",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "model_complete_container_minimal_ok",
+          "line": 322,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "public_complete_container_minimal_ok",
+          "line": 336,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "expected_container_minimal_ok",
+          "line": 72,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "pixels_container_minimal_ok",
+          "line": 291,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        }
+      ],
+      "verified_in_full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "id": "container/unknown-ancillary-everywhere",
+      "claim": "The full independent MS result has exactly the frozen width, height and every RGBA byte. The real ordinary public entry on the same frozen bytes returns that complete result or an actual OOM whose failed tuple belongs to Req; its result also retains complete executable-versus-model equality. No input/allocation-success premise is added.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "795589dd4ea801cde4ecfad7c590be5a38f74b9c5880a5056e3aa7a5592195d4",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "model_complete_container_unknown_ancillary_everywhere",
+          "line": 629,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "public_complete_container_unknown_ancillary_everywhere",
+          "line": 643,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "expected_container_unknown_ancillary_everywhere",
+          "line": 349,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "pixels_container_unknown_ancillary_everywhere",
+          "line": 598,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        }
+      ],
+      "verified_in_full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "id": "container/reserved-bit-ancillary",
+      "claim": "The full independent MS result has exactly the frozen width, height and every RGBA byte. The real ordinary public entry on the same frozen bytes returns that complete result or an actual OOM whose failed tuple belongs to Req; its result also retains complete executable-versus-model equality. No input/allocation-success premise is added.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "452c72ba98dfa375165bc3566371d8a4033b33dfaaccd2cc076de01fdb92f369",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "model_complete_container_reserved_bit_ancillary",
+          "line": 921,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "public_complete_container_reserved_bit_ancillary",
+          "line": 935,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "expected_container_reserved_bit_ancillary",
+          "line": 656,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "pixels_container_reserved_bit_ancillary",
+          "line": 890,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        }
+      ],
+      "verified_in_full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "id": "plte/ok",
+      "claim": "The full independent MS result has exactly the frozen width, height and every RGBA byte. The real ordinary public entry on the same frozen bytes returns that complete result or an actual OOM whose failed tuple belongs to Req; its result also retains complete executable-versus-model equality. No input/allocation-success premise is added.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "ff26649045e83671ff441925eb9521fd09c131e729fe50f9d6dd4d5dc02d2d1e",
+      "expected_rgba_sha256": "b32a765c35de8bcaf5857c5f9fdd71a8a90e4f188196534fb2dac7d037070407",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "model_complete_plte_ok",
+          "line": 1235,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "public_complete_plte_ok",
+          "line": 1250,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "expected_plte_ok",
+          "line": 948,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "pixels_plte_ok",
+          "line": 1204,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        }
+      ],
+      "verified_in_full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "id": "plte/suggested-palette-in-rgb",
+      "claim": "The full independent MS result has exactly the frozen width, height and every RGBA byte. The real ordinary public entry on the same frozen bytes returns that complete result or an actual OOM whose failed tuple belongs to Req; its result also retains complete executable-versus-model equality. No input/allocation-success premise is added.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "3c90d101acc8a855fa0a6b4b217c4193149e1dcf99294be03317f037b0bee059",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "model_complete_plte_suggested_palette_in_rgb",
+          "line": 2004,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "public_complete_plte_suggested_palette_in_rgb",
+          "line": 2019,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "expected_plte_suggested_palette_in_rgb",
+          "line": 1263,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "pixels_plte_suggested_palette_in_rgb",
+          "line": 1973,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        }
+      ],
+      "verified_in_full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "id": "anc-ok/iCCP-303",
+      "claim": "The full independent MS result has exactly the frozen width, height and every RGBA byte. The real ordinary public entry on the same frozen bytes returns that complete result or an actual OOM whose failed tuple belongs to Req; its result also retains complete executable-versus-model equality. No input/allocation-success premise is added.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "aa04c884cf3cf109bd2c9966e7647e769fb89a8b4c02bb4b4ddb3c9c1e8784b7",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "model_complete_anc_ok_iccp_303",
+          "line": 2344,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "public_complete_anc_ok_iccp_303",
+          "line": 2358,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "expected_anc_ok_iccp_303",
+          "line": 2032,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "pixels_anc_ok_iccp_303",
+          "line": 2313,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        }
+      ],
+      "verified_in_full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "id": "anc-ok/tIME-7-after-idat",
+      "claim": "The full independent MS result has exactly the frozen width, height and every RGBA byte. The real ordinary public entry on the same frozen bytes returns that complete result or an actual OOM whose failed tuple belongs to Req; its result also retains complete executable-versus-model equality. No input/allocation-success premise is added.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "2942b85f0220141f1d47c70bc1b2035f83ce95b90e8a673041f262220701846e",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "model_complete_anc_ok_time_7_after_idat",
+          "line": 2655,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "public_complete_anc_ok_time_7_after_idat",
+          "line": 2669,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "expected_anc_ok_time_7_after_idat",
+          "line": 2371,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "pixels_anc_ok_time_7_after_idat",
+          "line": 2624,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        }
+      ],
+      "verified_in_full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "id": "anc-ok/srgb-and-iccp-both",
+      "claim": "The full independent MS result has exactly the frozen width, height and every RGBA byte. The real ordinary public entry on the same frozen bytes returns that complete result or an actual OOM whose failed tuple belongs to Req; its result also retains complete executable-versus-model equality. No input/allocation-success premise is added.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "1001bfac85601fdb5a0f219fd6d1d7fbc59d9ea9c297b27264ea86360f86be22",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "model_complete_anc_ok_srgb_and_iccp_both",
+          "line": 3014,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "public_complete_anc_ok_srgb_and_iccp_both",
+          "line": 3028,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "expected_anc_ok_srgb_and_iccp_both",
+          "line": 2682,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "pixels_anc_ok_srgb_and_iccp_both",
+          "line": 2983,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        }
+      ],
+      "verified_in_full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "id": "anc-ok/many-text",
+      "claim": "The full independent MS result has exactly the frozen width, height and every RGBA byte. The real ordinary public entry on the same frozen bytes returns that complete result or an actual OOM whose failed tuple belongs to Req; its result also retains complete executable-versus-model equality. No input/allocation-success premise is added.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "7262a950813a1dd166a672b8315f4fdb56702cf89c79a4b6460ba23e7a5d7407",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "model_complete_anc_ok_many_text",
+          "line": 3421,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "public_complete_anc_ok_many_text",
+          "line": 3435,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "expected_anc_ok_many_text",
+          "line": 3041,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "pixels_anc_ok_many_text",
+          "line": 3390,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        }
+      ],
+      "verified_in_full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "id": "anc-ok/ztxt-with-corrupt-zlib-not-inflated",
+      "claim": "The full independent MS result has exactly the frozen width, height and every RGBA byte. The real ordinary public entry on the same frozen bytes returns that complete result or an actual OOM whose failed tuple belongs to Req; its result also retains complete executable-versus-model equality. No input/allocation-success premise is added.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "e0b14ac39dd76b3e39589fde98361b9978e9634d88d6e28d4144312c74534dd1",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "model_complete_anc_ok_ztxt_with_corrupt_zlib_not_inflated",
+          "line": 3726,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "public_complete_anc_ok_ztxt_with_corrupt_zlib_not_inflated",
+          "line": 3740,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "expected_anc_ok_ztxt_with_corrupt_zlib_not_inflated",
+          "line": 3448,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "pixels_anc_ok_ztxt_with_corrupt_zlib_not_inflated",
+          "line": 3695,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        }
+      ],
+      "verified_in_full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "id": "order/splt-twice",
+      "claim": "The full independent MS result has exactly the frozen width, height and every RGBA byte. The real ordinary public entry on the same frozen bytes returns that complete result or an actual OOM whose failed tuple belongs to Req; its result also retains complete executable-versus-model equality. No input/allocation-success premise is added.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "f7717ef3fc7fef73db28ccc326373d7af637e651220c325c9635ff7b13c2a58b",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "model_complete_order_splt_twice",
+          "line": 4057,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "public_complete_order_splt_twice",
+          "line": 4071,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "expected_order_splt_twice",
+          "line": 3753,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "pixels_order_splt_twice",
+          "line": 4026,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        }
+      ],
+      "verified_in_full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "id": "order/bkgd-hist-after-plte-before-idat-rgb",
+      "claim": "The full independent MS result has exactly the frozen width, height and every RGBA byte. The real ordinary public entry on the same frozen bytes returns that complete result or an actual OOM whose failed tuple belongs to Req; its result also retains complete executable-versus-model equality. No input/allocation-success premise is added.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "5b6875eccbef14c69bf90ef492fd6c33d12313a3957cbb871e7d3c499ea1aab6",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "model_complete_order_bkgd_hist_after_plte_before_idat_rgb",
+          "line": 4741,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "public_complete_order_bkgd_hist_after_plte_before_idat_rgb",
+          "line": 4756,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "expected_order_bkgd_hist_after_plte_before_idat_rgb",
+          "line": 4084,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "pixels_order_bkgd_hist_after_plte_before_idat_rgb",
+          "line": 4710,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        }
+      ],
+      "verified_in_full_runs": [
+        774,
+        777
+      ]
+    }
+  ],
+  "dependency_graph": [
+    {
+      "from": "accepted independent mathematical walk/Inflate/filter/color/MS definitions",
+      "to": "literal walk/inflate/filter and canonical-pixel certificates",
+      "meaning": "Frozen input supplies wire facts; existing authored trace hints are checked by accepted model lemmas. Expected width, height and RGBA bytes come only from the frozen expected field, never from a decoder."
+    },
+    {
+      "from": "checked concrete certificates and compose_complete",
+      "to": "twelve independent model_complete witnesses",
+      "meaning": "Each pure theorem proves MS Done with all frozen result fields, independently of the allocator and without calling an executable."
+    },
+    {
+      "from": "independent complete model witness and accepted M6 ordinary still Eq/OOM-membership contracts",
+      "to": "twelve real public_complete witnesses",
+      "meaning": "Each executable witness calls try_decode_still exactly once on the actual frozen byte array; it returns a full result or the actual permitted OOM. No forged header/state or verifier-only executable substitute is used."
+    }
+  ],
+  "dependency_dag": {
+    "model_complete": [
+      "literal wire/walk certificates",
+      "accepted Inflate/filter/color certificates",
+      "canonical expected-pixel proofs",
+      "compose_complete"
+    ],
+    "compose_complete": [
+      "independent MS definition"
+    ],
+    "independent MS definition": [
+      "independent walk/data/image definitions"
+    ],
+    "public_complete": [
+      "model_complete",
+      "actual try_decode_still"
+    ],
+    "actual try_decode_still": [
+      "accepted M6 native refinement",
+      "actual decoder body"
+    ],
+    "accepted M6 native refinement": [
+      "independent MS definition"
+    ]
+  },
+  "acyclic": true,
+  "coverage": {
+    "file": "evidence/m6-e6-m3-coverage.json",
+    "sha256": "d1af46471ed7fe91d4e2762bbffde6afd0b39d0f5797d771823c09712b07a74c"
+  },
+  "generator": {
+    "file": "tools/generate_m6_m3_witnesses.py",
+    "sha256": "88b7ea74c672639f164332fd3baf67d0fa0a33e9608d7288d8a9ec08566913e1"
+  },
+  "witness_index": {
+    "file": "evidence/m6-e6-m3-witness-index.json",
+    "sha256": "703082f35be052d5459e2f4d29af3db3f19c304fe0a02e33b7372ad99f1fa922"
+  },
+  "accepted_equivalences_unchanged": [
+    "still 1a Strict",
+    "iterator 2a Strict",
+    "ICC-S Strict"
+  ],
+  "remaining_work": [
+    "E6-M5-S: 22 assignments, including the one M3 overlap already complete",
+    "E6-M5-F: 13 frame records",
+    "E6-M4-FILT: 35 filter records",
+    "E6-M4-A7: 36 interlace records",
+    "Remaining T10 precedence, then mutation sets and CAPS-SYM"
+  ]
+}

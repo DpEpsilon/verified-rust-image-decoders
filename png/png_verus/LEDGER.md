@@ -1,5 +1,34 @@
 # png_verus ledger
 
+## M6 E6-M3 — twelve complete moved M3 witnesses (2026-11-23)
+
+**All twelve E6 clause-2 records are complete at M6.** Fresh full host **774** and i686 **777** each verify **6,621, zero errors**, against identical 96-file inventories with all generated leaves, `--no-cheating`, default solver limits, 256 MiB stacks and **3,600-second process caps per target**. Wall times are **37m18s host** and **37m30s i686**; the host warning threshold remains 48 minutes. Independent checkpoint review and overall M6 sign-off remain pending.
+
+Each record has a pure independent MS-versus-frozen proof for the full width, height and every RGBA byte, and an executable-versus-model call to the real ordinary `try_decode_still` on the same frozen byte array. These are the entire frozen expected fields, not a restricted raster or walk projection. The executable witness explicitly retains the actual ordinary OOM exception and failed `(site,elements)` membership in Req; no allocation-success premise enters the model theorem. The new proof module composes accepted M3/M2/filter/color certificates and the accepted M6 Strict still refinement; it does not change or reprove those algorithms or equivalence contracts. A small generic composition lemma unfolds the existing independent MS definition, and finite canonical-pixel certificates check the frozen bytes. The metadata certificate uses accepted parser helpers and checked per-chunk transitions where necessary to remain within default solver limits.
+
+The generator obtains expected dimensions/RGBA bytes only from `spec-frozen/VECTORS.json`, never from an executable, oracle or hand-written expected values. Existing authored inflate/filter hints remain untrusted until the proof checks them. Final control regenerates the module and index in an isolated output tree and verifies exact source/index reproduction. Generation and scratch development earn no witness credit. Development **773** checks 1401/0 with eight generated leaves omitted; only the two full runs above credit these witnesses.
+
+| Frozen record | Current E6 assignment | Complete model / actual public-entry witness |
+|---|---|---|
+| `container/minimal-ok` | complete at M6 | `model_complete_container_minimal_ok` / `public_complete_container_minimal_ok` |
+| `container/unknown-ancillary-everywhere` | complete at M6 | `model_complete_container_unknown_ancillary_everywhere` / `public_complete_container_unknown_ancillary_everywhere` |
+| `container/reserved-bit-ancillary` | complete at M6 | `model_complete_container_reserved_bit_ancillary` / `public_complete_container_reserved_bit_ancillary` |
+| `plte/ok` | complete at M6 | `model_complete_plte_ok` / `public_complete_plte_ok` |
+| `plte/suggested-palette-in-rgb` | complete at M6 | `model_complete_plte_suggested_palette_in_rgb` / `public_complete_plte_suggested_palette_in_rgb` |
+| `anc-ok/iCCP-303` | complete at M6 | `model_complete_anc_ok_iccp_303` / `public_complete_anc_ok_iccp_303` |
+| `anc-ok/tIME-7-after-idat` | complete at M6 | `model_complete_anc_ok_time_7_after_idat` / `public_complete_anc_ok_time_7_after_idat` |
+| `anc-ok/srgb-and-iccp-both` | complete at M6 | `model_complete_anc_ok_srgb_and_iccp_both` / `public_complete_anc_ok_srgb_and_iccp_both` |
+| `anc-ok/many-text` | complete at M6 | `model_complete_anc_ok_many_text` / `public_complete_anc_ok_many_text` |
+| `anc-ok/ztxt-with-corrupt-zlib-not-inflated` | complete at M6 | `model_complete_anc_ok_ztxt_with_corrupt_zlib_not_inflated` / `public_complete_anc_ok_ztxt_with_corrupt_zlib_not_inflated` |
+| `order/splt-twice` | complete at M6 | `model_complete_order_splt_twice` / `public_complete_order_splt_twice` |
+| `order/bkgd-hist-after-plte-before-idat-rgb` | complete at M6 | `model_complete_order_bkgd_hist_after_plte_before_idat_rgb` / `public_complete_order_bkgd_hist_after_plte_before_idat_rgb` |
+
+This current table supersedes historical unproved/deferred notes for these twelve names. `plte/suggested-palette-in-rgb` also discharges its M5 assignment; the M5 per-record listing below is updated to complete at M6. The full E6 schedule has **118 assignments over 117 distinct moved records**. This checkpoint completes **12 distinct records and 13 assignments**, leaving **105 distinct records** across E6-M5-S, E6-M5-F, E6-M4-FILT and E6-M4-A7. All five previously complete M4 and both previously complete M5 error witnesses remain complete and unchanged. `m6-e6-m3-coverage.json` lists every moved record and retained complete error; E6 clause 6 still blocks M6 sign-off until the remaining groups complete.
+
+Runtime **775** passes release/fault/council tests, cap/allocation self-tests and no_std; E7 remains **846/848, zero failures**, with exactly the two prescribed skips. Public-error control **776** is **72/72**. Final control **778** binds the full source inventories, twelve independent/full-public witness pairs, all frozen expected bytes, generator reproduction, actual OOM membership, unchanged accepted foundations, cache/import pins, restored scratches, whitespace and reversible retained logs. All historical evidence hashes remain unchanged. New evidence uses `m6-e6-m3-`; drivers and development archives remain outside the repository under `/home/ws/m6-e6-m3/680230a-20261123`.
+
+New code files are `tools/generate_m6_m3_witnesses.py` and `src/witness_m6_m3.rs`; `src/lib.rs` adds only a `cfg(verus_only)` module registration. No shipping decoder/equivalence/guard, protected/QUESTIONS file, historical witness classification or verifier cache changed. No trust shortcut, Cargo verification, mutation campaign, CAPS-SYM, commit or push occurred. Iterator 2b remains paused.
+
 ## M6 ICC-S-E — complete Strict ICC public equivalence (2026-11-23)
 
 **Strict ICC equivalence complete at M6; named-policy ICC P1/Stage-2.** Fresh full host **761** and i686 **764** each verify **6,257, zero errors**, against identical 94-file inventories with all generated leaves, `--no-cheating`, default solver limits, 256 MiB stacks and **3,600-second process caps per target**. Wall times are **33m08s host** and **32m42s i686**; the host warning threshold is 48 minutes. Independent combined model/executable review and overall M6 sign-off remain pending.
@@ -226,7 +255,7 @@ The still/still16 projection checks independent-model data success, dimensions a
 | `depth16/rounding-boundaries` | projection at M5, complete at M6 |
 | `image/palette-index-out-of-range` | complete at M5 |
 | `image/palette-index-out-of-range-d2` | complete at M5 |
-| `plte/suggested-palette-in-rgb` | projection at M5, complete at M6 |
+| `plte/suggested-palette-in-rgb` | complete at M6 (E6-M3) |
 | `apng/still-is-default-image` | projection at M5, complete at M6 |
 | `apng/default-not-in-animation-still` | projection at M5, complete at M6 |
 | `apng/frame1-error-still-unaffected` | projection at M5, complete at M6 |
