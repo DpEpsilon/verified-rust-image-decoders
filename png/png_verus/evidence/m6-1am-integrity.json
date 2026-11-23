@@ -1,0 +1,26 @@
+{
+  "kind": "M6 1a-M model-only integrity; no public T9/A-PNG-1 claim",
+  "full_runs": [
+    673,
+    676
+  ],
+  "verified_each": 6142,
+  "source_inventory_count": 86,
+  "verified_evidence_hashes": 1150,
+  "packet_sha256": "4f1b10f0001aaeffdf91d23ce0728823a6c0f125cd1cc9e5e906756970d537a7",
+  "model_definitions_independent": true,
+  "totality_dependency_graph_explicit_and_existing_sources_unchanged": true,
+  "unconditional_model_certificate": true,
+  "T13_is_result_facing": true,
+  "public_T9_claimed": false,
+  "public_A_PNG_1_claimed": false,
+  "native_runtime": [
+    846,
+    848,
+    2
+  ],
+  "public_error_calls": 72,
+  "ledger_hash_matches": true,
+  "vstd_pins_unchanged": true,
+  "run": 678
+}

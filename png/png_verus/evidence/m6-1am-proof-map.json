@@ -1,0 +1,374 @@
+{
+  "title": "M6 Strict Model Map",
+  "scope": "Strict models complete at M6 stage 1a-M; public Strict T9/A-PNG-1 pending 1a-E; named-policy recovered pending 1b",
+  "checkpoint": "1a-M model/proof only",
+  "public_T9_claimed": false,
+  "public_A_PNG_1_claimed": false,
+  "base_commit": "6c6760eea0d39d3a7ac97eb76cdb26418748d4fd",
+  "full_runs": [
+    673,
+    676
+  ],
+  "claims": [
+    {
+      "id": "MODELS",
+      "claim": "MS/MS16 are deterministic complete records of W, H, all Info fields and every physical RGBA byte, or the operationally first PNG error. Definitions call only the independent mathematical walk, raster data/error order and source-pixel equations.",
+      "proof_anchors": [
+        {
+          "file": "src/still_model.rs",
+          "function": "MS",
+          "line": 47,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "MS16",
+          "line": 48,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "MS_wide",
+          "line": 31,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "image",
+          "line": 23,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        }
+      ],
+      "verified_in_full_runs": [
+        673,
+        676
+      ]
+    },
+    {
+      "id": "TOTAL",
+      "claim": "For every actual input slice on either target, the complete models do not return their internal OutsideDomain marker; no input-size, successful-allocation or successful-decode antecedent is required.",
+      "proof_anchors": [
+        {
+          "file": "src/still_model.rs",
+          "function": "total",
+          "line": 169,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "model_totality",
+          "line": 184,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "model_theorems",
+          "line": 464,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        }
+      ],
+      "verified_in_full_runs": [
+        673,
+        676
+      ]
+    },
+    {
+      "id": "BYTES",
+      "claim": "The complete canonical image equals every physical byte sequence satisfying the accepted M5 per-pixel relation; this is a checked extensional whole-buffer theorem, not a selected-witness projection.",
+      "proof_anchors": [
+        {
+          "file": "src/still_model.rs",
+          "function": "canonical_observe",
+          "line": 100,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "image_complete",
+          "line": 142,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/paint_model.rs",
+          "function": "image_observe",
+          "line": 329,
+          "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
+        },
+        {
+          "file": "src/paint_model.rs",
+          "function": "pixel_blocks_equal",
+          "line": 346,
+          "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
+        }
+      ],
+      "verified_in_full_runs": [
+        673,
+        676
+      ]
+    },
+    {
+      "id": "E3",
+      "claim": "MS16 stores 8*W*H physical bytes. Sample i equals 256*bytes[2*i]+bytes[2*i+1] and is exactly its P13.3 source sample.",
+      "proof_anchors": [
+        {
+          "file": "src/still_model.rs",
+          "function": "sample_relation",
+          "line": 233,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "image_pair_at",
+          "line": 239,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "image_pair",
+          "line": 257,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "block_samples",
+          "line": 307,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/colour_model.rs",
+          "function": "physical_word",
+          "line": 171,
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
+        }
+      ],
+      "verified_in_full_runs": [
+        673,
+        676
+      ]
+    },
+    {
+      "id": "L-16-8",
+      "claim": "Unconditionally for every input slice, MS/MS16 have the same first error or both succeed with equal W, H and Info; each RGBA8 sample is floor((sample16+128)/257). The successful low-depth package additionally proves sample16=257*sample8.",
+      "proof_anchors": [
+        {
+          "file": "src/still_model.rs",
+          "function": "coupled",
+          "line": 270,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "pair_when_total",
+          "line": 281,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "model_theorems",
+          "line": 464,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_samples.rs",
+          "function": "pixel_pair",
+          "line": 80,
+          "sha256": "ca6da72ca81d2c187a24badcd65ed05594ae3336ac767859e4fe4433677f898d"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "pixel_package",
+          "line": 340,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        }
+      ],
+      "verified_in_full_runs": [
+        673,
+        676
+      ]
+    },
+    {
+      "id": "T13-MODEL",
+      "claim": "Every successful model result has checked dimensions, 4*W*H RGBA8 bytes bounded by MAX_OUTPUT or 8*W*H RGBA16 bytes bounded by 2*MAX_OUTPUT, grey RGB replication, exact opacity/key-alpha cases and indexed PLTE/tRNS samples through the physical-byte relation.",
+      "proof_anchors": [
+        {
+          "file": "src/still_model.rs",
+          "function": "resources",
+          "line": 52,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "T13",
+          "line": 412,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "ready",
+          "line": 375,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "bind_model_properties",
+          "line": 431,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "P13",
+          "line": 378,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "model_colour_properties",
+          "line": 389,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "data_pixel_properties",
+          "line": 352,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_samples.rs",
+          "function": "colour_properties",
+          "line": 103,
+          "sha256": "ca6da72ca81d2c187a24badcd65ed05594ae3336ac767859e4fe4433677f898d"
+        },
+        {
+          "file": "src/still_samples.rs",
+          "function": "pixel_properties",
+          "line": 117,
+          "sha256": "ca6da72ca81d2c187a24badcd65ed05594ae3336ac767859e4fe4433677f898d"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "model_theorems",
+          "line": 464,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        }
+      ],
+      "verified_in_full_runs": [
+        673,
+        676
+      ]
+    },
+    {
+      "id": "ORDER",
+      "claim": "Successful mathematical scans imply success of the source pixel selected by the Adam7 coordinate map; an earlier filter/index/data error remains the shared first error.",
+      "proof_anchors": [
+        {
+          "file": "src/still_model.rs",
+          "function": "successful_scan_pass",
+          "line": 67,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "successful_pass_row",
+          "line": 59,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/still_model.rs",
+          "function": "source_pixel_ok",
+          "line": 79,
+          "sha256": "cf9feb9ad986cd6967c125ec2712513b414d44a9646213d0f2023d9180da07e8"
+        },
+        {
+          "file": "src/raster_model.rs",
+          "function": "row_result",
+          "line": 54,
+          "sha256": "0cf7fdafb1a8fc4afb68b6919b5feebb2acd5bea1107aa687ba4ca4d62ac23fd"
+        },
+        {
+          "file": "src/raster_model.rs",
+          "function": "document_data",
+          "line": 149,
+          "sha256": "0cf7fdafb1a8fc4afb68b6919b5feebb2acd5bea1107aa687ba4ca4d62ac23fd"
+        }
+      ],
+      "verified_in_full_runs": [
+        673,
+        676
+      ]
+    }
+  ],
+  "dependency_graph": [
+    {
+      "edge": "model definitions -> existing mathematical MW/raster/colour/paint definitions",
+      "meaning": "The MS/MS16 definitions do not call model_totality/model_theorems, native still decoders or a result oracle."
+    },
+    {
+      "edge": "model_totality -> callers::still contract",
+      "meaning": "The existing allocation-free walk contract excludes MW OutsideDomain/Fallback and supplies the checked document, header, colour context and selected-IDAT provenance."
+    },
+    {
+      "edge": "model_totality -> IdatReader::for_doc + image::raw_size contracts",
+      "meaning": "The actual input slice selects exactly the modeled default IDAT concatenation and bounded raw limit, without a Raw reservation."
+    },
+    {
+      "edge": "model_totality -> inflate_zlib_measure/status_eq contracts",
+      "meaning": "A fixed WINDOW_MAX stack array supplies the measuring ring. The existing status_eq contract rules out Inflate OutsideDomain; no pixel/output buffer is allocated and there is no allocation-success assumption."
+    },
+    {
+      "edge": "model_totality -> pinned vstd array length/unsizing contracts",
+      "meaning": "Only existing standard-library array contracts are instantiated; WINDOW_MAX is checked by compute. No new axiom, assume_specification, external_body or success replacement is introduced."
+    },
+    {
+      "edge": "model_theorems -> model_totality + pure coupling/colour lemmas",
+      "meaning": "The final theorem has no precondition. The pure pair_when_total precondition is discharged by the checked harness, not assumed."
+    },
+    {
+      "edge": "M2/M4/M5 -> no dependency on new model modules",
+      "meaning": "All pre-existing source files are unchanged except lib.rs module registration; the earlier contracts predate MS/MS16, so the totality argument is acyclic."
+    }
+  ],
+  "existing_contract_anchors": [
+    {
+      "file": "src/callers.rs",
+      "function": "still",
+      "line": 18,
+      "sha256": "7fcec072f7166647c2f92e06fe52a6b357a0faf420179251ae0cda71028363c5"
+    },
+    {
+      "file": "src/reader.rs",
+      "function": "for_doc",
+      "line": 108,
+      "sha256": "e1e7c97ce7b862639e31dc28e765074c14da2eabe591df8592573b56748b8f0d"
+    },
+    {
+      "file": "src/image.rs",
+      "function": "raw_size",
+      "line": 104,
+      "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
+    },
+    {
+      "file": "src/paint_model.rs",
+      "function": "source_coordinate",
+      "line": 15,
+      "sha256": "4c582478ca07af238a2604d1be3dd894506371d6aa6c8dc4a49e2c16d98d5045"
+    }
+  ],
+  "imported_M2_contracts": {
+    "crate": "inflate_verus",
+    "functions": [
+      "inflate_zlib_measure",
+      "status_eq"
+    ],
+    "source": "../inflate_verus/src/inflate.rs",
+    "source_sha256": "ab4a748d24c86b29d72656ce6fb5f59d02503041cdcdc04e941a3191ebf70bfc",
+    "unchanged_since_base": true
+  },
+  "not_started": [
+    "Strict public/logged still equivalence (1a-E)",
+    "Named-policy recovered equivalence (1b)",
+    "Iterator and ICC equivalence",
+    "Witness completion",
+    "Mutation campaign",
+    "CAPS-SYM"
+  ]
+}

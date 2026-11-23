@@ -56,6 +56,10 @@ mod framing;
 #[cfg(verus_only)]
 pub mod colour_model;
 #[cfg(verus_only)]
+pub mod still_samples;
+#[cfg(verus_only)]
+pub mod still_model;
+#[cfg(verus_only)]
 pub mod paint_model;
 #[cfg(verus_only)]
 pub mod composite_model;
