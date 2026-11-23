@@ -290,4 +290,82 @@ pub fn model_totality(b: &[u8])
     proof {model_resources(b@);}
 }
 
+/// Frozen ICC request/result names; OOM remains outside format equality.
+pub open spec fn Req_icc(b: Seq<u8>) -> Seq<(AllocSite,nat)> {requests(b)}
+pub open spec fn icc_eq(b: Seq<u8>,result: Result<Option<Seq<u8>>,TryError>) -> bool {
+    match result {Err(TryError::OutOfMemory(_))=>true,_=>eq(result,MI(b))}
+}
+pub open spec fn ordered_log(log: Seq<(AllocSite,nat,bool)>) -> bool {
+    log.len()<=2
+    && (log.len()>0 ==> log[0].0==AllocSite::IccWindow && log[0].1==inflate_verus::limits::WINDOW_MAX)
+    && (log.len()>1 ==> log[1].0==AllocSite::Icc)
+}
+/// An Icc allocation failure can displace only successful profile bytes.
+pub open spec fn profile_oom(b: Seq<u8>,result: Result<Option<Seq<u8>>,TryError>) -> bool {
+    match result {
+        Err(TryError::OutOfMemory(o))=>o.site_spec()==AllocSite::Icc ==> match MI(b) {
+            Outcome::Profile(bytes)=>bytes.len()==o.elements_spec() && bytes.len()>0,
+            _=>false,
+        },_=>true,
+    }
+}
+pub open spec fn oom_walk(b: Seq<u8>,result: Result<Option<Seq<u8>>,TryError>) -> bool {
+    match result {
+        Err(TryError::OutOfMemory(_))=>match walk::MW_p(b,walk::strict()) {
+            walk::Outcome::Done(doc,_)=>doc.iccp.is_some(),_=>false,
+        },_=>true,
+    }
+}
+pub open spec fn G(b: Seq<u8>,result: Result<Option<Seq<u8>>,TryError>,log: Seq<(AllocSite,nat,bool)>) -> bool {
+    complete(b,result,log) && icc_eq(b,result) && ordered_log(log)
+    && profile_oom(b,result) && oom_walk(b,result)
+}
+pub open spec fn Prog(b: Seq<u8>,result: Result<Option<Seq<u8>>,TryError>,log: Seq<(AllocSite,nat,bool)>) -> bool {
+    crate::alloc_guard::all_ok(log) ==> !matches!(result,Err(TryError::OutOfMemory(_)))
+        && eq(result,MI(b)) && crate::alloc_guard::req_of_log(log)==Req_icc(b)
+}
+pub proof fn request_order(b: Seq<u8>,log: Seq<(AllocSite,nat,bool)>)
+    requires crate::alloc_guard::req_of_log(log).is_prefix_of(Req_icc(b)),
+    ensures ordered_log(log),
+{
+    hide(z::Inflate);hide(walk::MW_p);
+    assert(requests(b).len()<=2);
+    assert(log.len()<=2);
+    short_log(log);
+    match walk::MW_p(b,walk::strict()) {
+        walk::Outcome::Done(doc,_)=>{
+            if log.len()>0 {
+                assert(doc.iccp.is_some());
+                assert(crate::alloc_guard::req_of_log(log)[0]==requests(b)[0]);
+            }
+            if log.len()>1 {assert(crate::alloc_guard::req_of_log(log)[1]==requests(b)[1]);}
+        },_=>{},
+    }
+}
+/// Derive public clauses from the existing actual sealed-log contract.
+pub proof fn allocation_complete(b: Seq<u8>,result: Result<Option<Seq<u8>>,TryError>,log: Seq<(AllocSite,nat,bool)>)
+    requires complete(b,result,log),
+    ensures G(b,result,log),Prog(b,result,log),
+        crate::still_equivalence::oom_member(Req_icc(b),result),
+{
+    hide(z::Inflate);hide(walk::MW_p);
+    request_order(b,log);
+    crate::still_equivalence::failure_member(Req_icc(b),result,log);
+    if let Err(TryError::OutOfMemory(o))=result {
+        oom_requires_profile(b,result,log);
+        if o.site_spec()==AllocSite::Icc {
+            assert(log.len()==2);
+            assert(log[1].1==o.elements_spec());
+            match walk::MW_p(b,walk::strict()) {
+                walk::Outcome::Done(doc,_)=>{
+                    assert(doc.iccp.is_some());
+                    assert(requests(b).len()==2);
+                    assert(measured(stream(b,doc)).status==z::InflateStatus::Done);
+                    assert(crate::alloc_guard::req_of_log(log)[1]==requests(b)[1]);
+                },_=>{},
+            }
+        }
+    }
+}
+
 } // verus!

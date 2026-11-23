@@ -2761,18 +2761,28 @@ fn icc_impl(b: &[u8], trace: &mut Trace) -> (r: Result<Option<Vec<u8>>, TryError
 /// only; no pixel entry point inflates it.
 pub fn try_icc_profile(b: &[u8]) -> (r: Result<Option<Vec<u8>>, TryError>)
     ensures !matches!(r,Err(TryError::OutOfMemory(_))) ==> crate::icc_model::eq(crate::icc_model::result_view(r),crate::icc_model::MI(b@)),
+        crate::icc_model::icc_eq(b@,crate::icc_model::result_view(r)),
+        crate::still_equivalence::oom_member(crate::icc_model::Req_icc(b@),r),
+        crate::icc_model::oom_walk(b@,crate::icc_model::result_view(r)),
+        crate::icc_model::profile_oom(b@,crate::icc_model::result_view(r)),
 {
-    let mut trace=Trace::new();
-    icc_impl(b,&mut trace)
+    let (result,log)=try_icc_profile_logged(b);
+    proof {crate::still_equivalence::failure_member(crate::icc_model::Req_icc(b@),result,log@.view());}
+    result
 }
 
 /// The public ICC entry and the owned sealed log it actually used.
 pub fn try_icc_profile_logged(b: &[u8]) -> (r: (Result<Option<Vec<u8>>,TryError>,Tracked<AllocLog>))
     ensures crate::icc_model::complete(b@,crate::icc_model::result_view(r.0),r.1@.view()),
+        crate::icc_model::G(b@,crate::icc_model::result_view(r.0),r.1@.view()),
+        crate::icc_model::Prog(b@,crate::icc_model::result_view(r.0),r.1@.view()),
+        crate::alloc_guard::sites::log_tied(r.0,r.1@.view()),
+        crate::still_equivalence::oom_member(crate::icc_model::Req_icc(b@),r.0),
 {
     let mut trace=Trace::new();
     let result=icc_impl(b,&mut trace);
     let log=trace.into_log();
+    proof {crate::icc_model::allocation_complete(b@,crate::icc_model::result_view(result),log@.view());}
     (result,log)
 }
 

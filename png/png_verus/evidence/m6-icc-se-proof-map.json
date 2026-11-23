@@ -1,0 +1,611 @@
+{
+  "title": "Strict ICC Equivalence Proof Map",
+  "scope": "Strict ICC equivalence complete at M6; named-policy ICC P1/Stage-2.",
+  "checkpoint": "ICC-S-E",
+  "base_commit": "80ac439feb747626c97a936d7e81d8cdf20e6e93",
+  "full_runs": [
+    761,
+    764
+  ],
+  "claims": [
+    {
+      "id": "STRICT-ICC-TOTALITY",
+      "claim": "For every actual byte slice, without a valid-input or allocation-success antecedent, the independent Strict MI excludes OutsideDomain. A checked actual Strict walk plus one fixed stack window instantiates the accepted M2 total measuring contract. The certificate calls neither the public ICC entry nor any allocator; the shipping decoder never executes it.",
+      "proof_anchors": [
+        {
+          "file": "src/icc_model.rs",
+          "function": "MI",
+          "line": 59,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "model_totality",
+          "line": 253,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "walk_context",
+          "line": 171,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "model_resources",
+          "line": 224,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/callers.rs",
+          "function": "still",
+          "line": 18,
+          "sha256": "7947c17987fd6d941b32278718e647c03b3c341b68e1902f38e2d79173127fbd"
+        }
+      ],
+      "verified_in_full_runs": [
+        761,
+        764
+      ]
+    },
+    {
+      "id": "STRICT-ICC-PREFIX",
+      "claim": "The independent P17 model completes the entire Strict structural walk before profile inflation. A walk error preserves its exact error and has no request; no iCCP returns Absent and has no request. ICC does not decode default-image pixels.",
+      "proof_anchors": [
+        {
+          "file": "src/icc_model.rs",
+          "function": "MI",
+          "line": 59,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "model_prefix",
+          "line": 191,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "requests",
+          "line": 72,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        }
+      ],
+      "verified_in_full_runs": [
+        761,
+        764
+      ]
+    },
+    {
+      "id": "STRICT-ICC-REQUESTS",
+      "claim": "A present profile requests IccWindow(WINDOW_MAX), followed by Icc(m) if and only if measurement ends Done, with m exactly the model output length. A measurement error or Full has only the Window request; m=0 remains an explicit Icc(0) request. There are at most two requests, both within their exact site bounds and MAX_BYTES. Every returned model profile is at most MAX_ICC bytes.",
+      "proof_anchors": [
+        {
+          "file": "src/icc_model.rs",
+          "function": "data_requests",
+          "line": 66,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "model_payload",
+          "line": 200,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "request_bounds",
+          "line": 186,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "model_resources",
+          "line": 224,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "resources",
+          "line": 183,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        }
+      ],
+      "verified_in_full_runs": [
+        761,
+        764
+      ]
+    },
+    {
+      "id": "STRICT-ICC-CAP-PRECEDENCE",
+      "claim": "After successful walk with a present profile, IccProfileTooLarge occurs exactly when the MAX_ICC Strict measurement returns Full. Inflater format faults map to their exact PNG errors, never IccProfileTooLarge, and no Icc reservation precedes that measuring decision.",
+      "proof_anchors": [
+        {
+          "file": "src/icc_model.rs",
+          "function": "data",
+          "line": 47,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "fault_not_profile_cap",
+          "line": 214,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "model_cap_precedence",
+          "line": 217,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "model_payload",
+          "line": 200,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        }
+      ],
+      "verified_in_full_runs": [
+        761,
+        764
+      ]
+    },
+    {
+      "id": "STRICT-ICC-EXACT-SECOND-PASS",
+      "claim": "For a successful measurement bounded by MAX_ICC, instantiate the already accepted M2 L-LIMIT-MONO with small=m=the model output length and large=MAX_ICC. The exact-sized second model pass is Done with identical bytes, including m=0. This is composition of an imported theorem, not a new DEFLATE or monotonicity proof.",
+      "proof_anchors": [
+        {
+          "file": "src/icc_model.rs",
+          "function": "exact_second_pass",
+          "line": 241,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "measured",
+          "line": 43,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        }
+      ],
+      "verified_in_full_runs": [
+        761,
+        764
+      ]
+    },
+    {
+      "id": "STRICT-ICC-PUBLIC-EQ",
+      "claim": "The actual ordinary try_icc_profile returns exactly MI absence, every profile byte or the same first format error for every non-OOM result. icc_eq and Req_icc name the frozen relations. The ordinary entry forwards to the logged entry exactly once; neither entry executes the allocation-free totality certificate.",
+      "proof_anchors": [
+        {
+          "file": "src/icc_model.rs",
+          "function": "icc_eq",
+          "line": 295,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "Req_icc",
+          "line": 294,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_icc_profile",
+          "line": 2762,
+          "sha256": "30e79f74af57e19b58fcedfd77cea0766aba9e8721bc6692b85433f0414ac5c3"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_icc_profile_logged",
+          "line": 2775,
+          "sha256": "30e79f74af57e19b58fcedfd77cea0766aba9e8721bc6692b85433f0414ac5c3"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "icc_impl",
+          "line": 2726,
+          "sha256": "30e79f74af57e19b58fcedfd77cea0766aba9e8721bc6692b85433f0414ac5c3"
+        }
+      ],
+      "verified_in_full_runs": [
+        761,
+        764
+      ]
+    },
+    {
+      "id": "STRICT-ICC-PUBLIC-G-PROG",
+      "claim": "try_icc_profile_logged explicitly exports G and Prog using its actual owned sealed log. Complete non-OOM calls use exactly Req_icc and all-Ok entries; OOM identifies the actual failed last entry and successful prefix. Every actual request obeys its site bound, with Window first and Icc second, and no more than two entries.",
+      "proof_anchors": [
+        {
+          "file": "src/icc_model.rs",
+          "function": "complete",
+          "line": 97,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "G",
+          "line": 319,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "Prog",
+          "line": 323,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "ordered_log",
+          "line": 298,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "request_order",
+          "line": 327,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "allocation_complete",
+          "line": 346,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_icc_profile_logged",
+          "line": 2775,
+          "sha256": "30e79f74af57e19b58fcedfd77cea0766aba9e8721bc6692b85433f0414ac5c3"
+        }
+      ],
+      "verified_in_full_runs": [
+        761,
+        764
+      ]
+    },
+    {
+      "id": "STRICT-ICC-ORDINARY-OOM",
+      "claim": "The ordinary public postcondition explicitly exports (o.site,o.elements) membership in Req_icc for every OOM. The wrapper derives it from the actual returned sealed capability with the existing failure_member lemma before discarding the log. It also exports successful walking with a present iCCP and profile_oom; OOM is not merely true-in-the-format-relation.",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "try_icc_profile",
+          "line": 2762,
+          "sha256": "30e79f74af57e19b58fcedfd77cea0766aba9e8721bc6692b85433f0414ac5c3"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "try_icc_profile_logged",
+          "line": 2775,
+          "sha256": "30e79f74af57e19b58fcedfd77cea0766aba9e8721bc6692b85433f0414ac5c3"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "oom_walk",
+          "line": 312,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "allocation_complete",
+          "line": 346,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "failure_member",
+          "line": 187,
+          "sha256": "85ae187980ee58d49f189e664efe92b13dfa5ef75922d6c4b3282411f296fbb2"
+        },
+        {
+          "file": "src/still_equivalence.rs",
+          "function": "oom_member",
+          "line": 183,
+          "sha256": "85ae187980ee58d49f189e664efe92b13dfa5ef75922d6c4b3282411f296fbb2"
+        }
+      ],
+      "verified_in_full_runs": [
+        761,
+        764
+      ]
+    },
+    {
+      "id": "STRICT-ICC-TWO-PASS",
+      "claim": "The unchanged native measuring pass uses a fresh concrete reader of exactly the checked iCCP bytes and exports m equal to the model output length on Done. The unchanged write_profile invokes accepted M2 L-LIMIT-MONO, then uses a fresh reader of the same immutable bytes and output length m. It proves Ok and identical bytes, including m=0; no format error can escape from the second pass.",
+      "proof_anchors": [
+        {
+          "file": "src/png.rs",
+          "function": "prepare_icc",
+          "line": 570,
+          "sha256": "30e79f74af57e19b58fcedfd77cea0766aba9e8721bc6692b85433f0414ac5c3"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "measure_profile",
+          "line": 2665,
+          "sha256": "30e79f74af57e19b58fcedfd77cea0766aba9e8721bc6692b85433f0414ac5c3"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "write_profile",
+          "line": 2702,
+          "sha256": "30e79f74af57e19b58fcedfd77cea0766aba9e8721bc6692b85433f0414ac5c3"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "icc_impl",
+          "line": 2726,
+          "sha256": "30e79f74af57e19b58fcedfd77cea0766aba9e8721bc6692b85433f0414ac5c3"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "exact_second_pass",
+          "line": 241,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        }
+      ],
+      "verified_in_full_runs": [
+        761,
+        764
+      ]
+    },
+    {
+      "id": "STRICT-ICC-ALLOCATION-PRECEDENCE",
+      "claim": "Window is requested only after the whole walk succeeds with a present profile and before any measuring error. Icc is requested only after Done, at exact count m. An Icc-site OOM proves MI is a successful positive-length profile of exactly that count, so Icc failure displaces no format error. Empty profiles use the accepted nonallocating try_empty adapter, logging Icc(0,true); zero-element OOM is excluded.",
+      "proof_anchors": [
+        {
+          "file": "src/icc_model.rs",
+          "function": "profile_oom",
+          "line": 304,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "allocation_complete",
+          "line": 346,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "walk_error_first",
+          "line": 140,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/icc_model.rs",
+          "function": "absent_profile",
+          "line": 157,
+          "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "reserve_icc_window",
+          "line": 476,
+          "sha256": "30e79f74af57e19b58fcedfd77cea0766aba9e8721bc6692b85433f0414ac5c3"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "reserve_icc",
+          "line": 488,
+          "sha256": "30e79f74af57e19b58fcedfd77cea0766aba9e8721bc6692b85433f0414ac5c3"
+        },
+        {
+          "file": "src/png.rs",
+          "function": "icc_impl",
+          "line": 2726,
+          "sha256": "30e79f74af57e19b58fcedfd77cea0766aba9e8721bc6692b85433f0414ac5c3"
+        },
+        {
+          "file": "src/alloc_guard/sites.rs",
+          "function": "try_empty",
+          "line": 87,
+          "sha256": "dcd747cf7721c33ff00fbffd83ca8838d12803f99c2fb896b8077f25f5d8a281"
+        }
+      ],
+      "verified_in_full_runs": [
+        761,
+        764
+      ]
+    }
+  ],
+  "dependency_graph": [
+    {
+      "from": "independent mathematical MW_p and Inflate",
+      "to": "existing MI/data/requests",
+      "meaning": "Definitions are unchanged and refer to neither native ICC results nor the new certificate."
+    },
+    {
+      "from": "accepted native Strict callers::still and native M2 measurement contracts",
+      "to": "allocation-free model_totality",
+      "meaning": "The checked walk supplies the exact bounded iCCP subrange; a fresh one-segment reader and a fixed stack window supply a total M2 status/count witness without any successful allocation premise."
+    },
+    {
+      "from": "model_totality walk_context",
+      "to": "model_resources, total MI, request_bounds",
+      "meaning": "The measured status is not OutsideDomain and its output is at most MAX_ICC; pure composition proves model totality and complete request caps."
+    },
+    {
+      "from": "accepted M2 L-LIMIT-MONO",
+      "to": "exact_second_pass",
+      "meaning": "Choose small equal to the successful measured output length. No imported M2 algorithm or contract is weakened, reproved or replaced."
+    },
+    {
+      "from": "unchanged actual icc_impl and existing complete relation",
+      "to": "allocation_complete -> public logged G/Prog",
+      "meaning": "This composes the existing sealed result/log facts with explicit request order and Icc-OOM successful-profile consequences, without weakening or rerunning the inflater."
+    },
+    {
+      "from": "actual owned logged result/capability",
+      "to": "ordinary failure_member -> exported OOM membership",
+      "meaning": "The ordinary wrapper uses the exact result and log of its sole logged call, derives the failed tuple membership, then returns that result. It does not synthesize or replay a log."
+    },
+    {
+      "from": "accepted measure_profile/write_profile contracts and M2 L-LIMIT-MONO",
+      "to": "actual two-pass exact count, bytes and infallible second pass",
+      "meaning": "Both existing reader instances start fresh on the same immutable checked bytes; second-pass length is exactly m. These contracts and the core executable body are unchanged."
+    }
+  ],
+  "dependency_dag": {
+    "MI": [
+      "MW_p",
+      "data"
+    ],
+    "data": [
+      "measured",
+      "fault"
+    ],
+    "measured": [
+      "M2::Inflate"
+    ],
+    "requests": [
+      "MW_p",
+      "data_requests"
+    ],
+    "data_requests": [
+      "measured"
+    ],
+    "walk_context": [
+      "MW_p",
+      "stream",
+      "measured"
+    ],
+    "model_resources": [
+      "walk_context",
+      "MI",
+      "requests",
+      "site_bound",
+      "resources",
+      "caps_ok"
+    ],
+    "model_totality": [
+      "native Strict walk",
+      "SegmentSlices::new",
+      "M2::inflate_zlib_measure",
+      "model_resources"
+    ],
+    "native Strict walk": [
+      "MW_p"
+    ],
+    "M2::inflate_zlib_measure": [
+      "M2::Inflate"
+    ],
+    "exact_second_pass": [
+      "M2::lemma_limit_mono",
+      "measured"
+    ],
+    "M2::lemma_limit_mono": [
+      "M2::Inflate"
+    ],
+    "Req_icc": [
+      "requests"
+    ],
+    "icc_eq": [
+      "MI"
+    ],
+    "request_order": [
+      "Req_icc",
+      "short_log"
+    ],
+    "allocation_complete": [
+      "complete",
+      "request_order",
+      "still_equivalence::failure_member",
+      "oom_requires_profile"
+    ],
+    "complete": [
+      "MI",
+      "requests",
+      "sealed log_tied"
+    ],
+    "G": [
+      "complete",
+      "icc_eq",
+      "ordered_log",
+      "profile_oom",
+      "oom_walk"
+    ],
+    "Prog": [
+      "MI",
+      "Req_icc",
+      "sealed log_tied"
+    ],
+    "actual icc_impl": [
+      "actual prepare_icc",
+      "measure_profile",
+      "reserve_icc",
+      "write_profile"
+    ],
+    "measure_profile": [
+      "M2::inflate_zlib_measure",
+      "measured"
+    ],
+    "write_profile": [
+      "M2::lemma_limit_mono",
+      "M2::inflate_zlib_into",
+      "measured"
+    ],
+    "M2::inflate_zlib_into": [
+      "M2::Inflate"
+    ],
+    "actual prepare_icc": [
+      "native Strict walk",
+      "reserve_icc_window"
+    ],
+    "try_icc_profile_logged": [
+      "actual icc_impl",
+      "allocation_complete"
+    ],
+    "try_icc_profile": [
+      "try_icc_profile_logged",
+      "still_equivalence::failure_member"
+    ]
+  },
+  "acyclic": true,
+  "imported_M2_contracts": [
+    {
+      "file": "../inflate_verus/src/inflate.rs",
+      "sha256": "ab4a748d24c86b29d72656ce6fb5f59d02503041cdcdc04e941a3191ebf70bfc",
+      "unchanged_since_base": true
+    },
+    {
+      "file": "../inflate_verus/src/limit_mono.rs",
+      "sha256": "8a214a233b9fea93c52ef8a45a5d9a8382d2ea9cba30b4f23acc392d5d1fd982",
+      "unchanged_since_base": true
+    }
+  ],
+  "ownership_fact": {
+    "classification": "ownership fact, not a verified allocator clause or allocator-capacity/overhead theorem",
+    "bound": "WINDOW_MAX + m bytes of owned ICC buffer data",
+    "argument": "The measuring ring is owned inside the inner lexical block of icc_impl and drops at that block end. reserve_icc(m) runs only afterwards. Thus the two requested buffer lengths cannot overlap; the stated sum is a conservative upper bound. m=0 reserves no profile allocation.",
+    "source_anchors": [
+      {
+        "file": "src/png.rs",
+        "function": "icc_impl",
+        "line": 2726,
+        "sha256": "30e79f74af57e19b58fcedfd77cea0766aba9e8721bc6692b85433f0414ac5c3"
+      },
+      {
+        "file": "src/png.rs",
+        "function": "reserve_icc",
+        "line": 488,
+        "sha256": "30e79f74af57e19b58fcedfd77cea0766aba9e8721bc6692b85433f0414ac5c3"
+      }
+    ]
+  },
+  "source_audit_facts": {
+    "classification": "source audit facts, with source-bound formal helper contracts",
+    "ICC_entry_only_payload_errors": "Only private measure_profile/write_profile construct Err(IccProfileTooLarge), and each has only its icc_impl call site. write_profile proves Ok under the measured-count preconditions; the apparent error arms cannot execute there. The pixel pipeline and all other executable bodies are unchanged.",
+    "D8": "The unchanged PNG try_empty adapter implements the zero-element request: it logs (Icc,0,true), returns an empty Vec and makes no allocator call. No guard algorithm or allocation site changes.",
+    "ordinary_forwarding": "The sole executable change is ordinary try_icc_profile forwarding once to try_icc_profile_logged. The remainder of the erased png.rs body matches the committed baseline."
+  },
+  "ordinary_ICC_OOM_membership_exported": true,
+  "named_policy_ICC_scope": "P1/Stage-2, out of M6 scope; MI_p and its API are not defined",
+  "named_policy_iterator": "2b remains paused",
+  "remaining_work": [
+    "E6 witness completion: 35 M5 content projections and 12 M3 projections",
+    "Remaining T10 precedence, if not already covered",
+    "40-mutation campaign and alloc-delta mutation set",
+    "CAPS-SYM"
+  ]
+}
