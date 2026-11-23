@@ -1,16 +1,16 @@
 {
   "status": "REVIEW-FIX COMPONENT MAP; FRESH FULL-CRATE RUNS PASS; INDEPENDENT RE-REVIEW REQUIRED",
-  "base_commit": "24e9e9b3898cbc2c71bde7ebcc635f2d8d096c09",
+  "base_commit": "96398311a8fb5be7dc6a28f7cd240b9bc806a150",
   "theorems_source": "../THEOREMS.md",
   "theorems_sha256": "3bacbc703c97ac988efcbd95e7d49bcfab5a5c9d706c2b10e6b4c784abb67351",
   "errata_source": "../ERRATA.md",
   "errata_sha256": "4fb18a760bd09f453de70c6d94d5b35dcb9f1f826c506bef3414e659b3413da7",
   "full_runs": [
-    640,
-    643
+    648,
+    651
   ],
-  "previous_review": "../REVIEW-ASTRA-M5-R2.md",
-  "previous_review_disposition": "One remaining MC domain finding corrected here; independent acceptance remains pending.",
+  "previous_review": "../REVIEW-ASTRA-M5-R3.md",
+  "previous_review_disposition": "Remaining row dimension/output-cap finding corrected here; independent acceptance remains pending.",
   "T4": [
     {
       "clause": "T4.1",
@@ -20,24 +20,24 @@
           "file": "src/image.rs",
           "function": "Colour::new",
           "line": 748,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         },
         {
           "file": "src/colour_model.rs",
           "function": "from_doc",
           "line": 95,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/image.rs",
           "function": "Colour::pixel",
           "line": 813,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     },
@@ -49,30 +49,30 @@
           "file": "src/image.rs",
           "function": "packed_access",
           "line": 607,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         },
         {
           "file": "src/image.rs",
           "function": "sample",
           "line": 619,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         },
         {
           "file": "src/image.rs",
           "function": "sample_channel",
           "line": 668,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         },
         {
           "file": "src/colour_model.rs",
           "function": "sample",
           "line": 105,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     },
@@ -84,18 +84,18 @@
           "file": "src/colour_model.rs",
           "function": "scale8_exact",
           "line": 43,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/image.rs",
           "function": "scale",
           "line": 696,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     },
@@ -107,18 +107,18 @@
           "file": "src/colour_model.rs",
           "function": "scale16_exact",
           "line": 56,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/image.rs",
           "function": "scale",
           "line": 696,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     },
@@ -130,18 +130,18 @@
           "file": "src/colour_model.rs",
           "function": "round16",
           "line": 70,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/image.rs",
           "function": "scale",
           "line": 696,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     },
@@ -153,36 +153,36 @@
           "file": "src/colour_model.rs",
           "function": "key",
           "line": 111,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/colour_model.rs",
           "function": "pixel",
           "line": 126,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/image.rs",
           "function": "Colour::new",
           "line": 748,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         },
         {
           "file": "src/image.rs",
           "function": "Colour::pixel",
           "line": 813,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         },
         {
           "file": "src/image.rs",
           "function": "trns_samples_equal",
           "line": 690,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     },
@@ -194,24 +194,24 @@
           "file": "src/image.rs",
           "function": "Colour::pixel",
           "line": 813,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         },
         {
           "file": "src/colour_model.rs",
           "function": "pixel",
           "line": 126,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/colour_model.rs",
           "function": "scale16_257",
           "line": 77,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     },
@@ -223,31 +223,31 @@
           "file": "src/image.rs",
           "function": "Sink::put",
           "line": 324,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         },
         {
           "file": "src/image.rs",
           "function": "draw_row",
           "line": 891,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         },
         {
           "file": "src/colour_model.rs",
           "function": "draw_matches_MC",
-          "line": 336,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "line": 351,
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/colour_model.rs",
           "function": "render_row_observe",
-          "line": 428,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "line": 443,
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/colour_model.rs",
           "function": "physical",
           "line": 178,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/paint_model.rs",
@@ -281,87 +281,111 @@
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending",
       "qualification": "The 22 successful still/still16 witnesses assert every frozen physical output byte. Full Still/Still16 record equality, including unrestricted info, remains M6."
     },
     {
       "clause": "T4.Domain",
-      "requirement": "MC returns internal OutsideDomain (None), never a PNG format error, for invalid colour/depth pairs, unreachable PLTE/tRNS contexts, zero or above-PNG_WIRE_MAX widths, and non-exact scanline byte lengths. Every validated native draw_row call proves row_domain.",
+      "requirement": "MC returns internal OutsideDomain (None), never a PNG format error, for invalid colour/depth pairs, unreachable PLTE/tRNS contexts, zero or above-PNG_WIRE_MAX/MAX_DIMENSION widths, rows with 4*width above MAX_OUTPUT, and non-exact scanline byte lengths. Every validated native draw_row call proves row_domain.",
       "proof_anchors": [
         {
           "file": "src/colour_model.rs",
           "function": "chunk_lengths",
           "line": 220,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/colour_model.rs",
           "function": "context_domain",
           "line": 228,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/colour_model.rs",
           "function": "row_domain",
           "line": 232,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/colour_model.rs",
           "function": "MC",
-          "line": 237,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "line": 238,
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/colour_model.rs",
           "function": "MC_empty_rgba_outside",
-          "line": 247,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "line": 248,
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/colour_model.rs",
           "function": "MC_empty_grey_trns_outside",
-          "line": 259,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "line": 260,
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/colour_model.rs",
           "function": "MC_matching_oversized_rgba_outside",
-          "line": 263,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "line": 264,
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/colour_model.rs",
           "function": "MC_invalid_context_outside",
-          "line": 251,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "line": 252,
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/colour_model.rs",
           "function": "MC_oversized_width_outside",
-          "line": 255,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "line": 256,
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/colour_model.rs",
           "function": "MC_invalid_transparency_lengths",
-          "line": 276,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "line": 291,
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/colour_model.rs",
           "function": "MC_invalid_palette_lengths",
-          "line": 281,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "line": 296,
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/colour_model.rs",
           "function": "MC_policy_large_palette_domain",
-          "line": 268,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "line": 283,
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
+        },
+        {
+          "file": "src/colour_model.rs",
+          "function": "MC_capped_width_outside",
+          "line": 269,
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
+        },
+        {
+          "file": "src/colour_model.rs",
+          "function": "MC_matching_over_area_grey_outside",
+          "line": 273,
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
+        },
+        {
+          "file": "src/image.rs",
+          "function": "decode_exact",
+          "line": 981,
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
+        },
+        {
+          "file": "src/header.rs",
+          "function": "parse_ihdr",
+          "line": 73,
+          "sha256": "a3eaeeaf7afa01edea5ca221f4dc7e41e35d52414e6603bfea73998b18ebc6c6"
         },
         {
           "file": "src/walk_state.rs",
@@ -379,13 +403,13 @@
           "file": "src/image.rs",
           "function": "new",
           "line": 748,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         },
         {
           "file": "src/image.rs",
           "function": "draw_row",
           "line": 891,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         },
         {
           "file": "src/walk_own.rs",
@@ -395,8 +419,8 @@
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending",
       "qualification": "PaletteSize::Allow permits more than 2^depth entries, up to 256; MC has no palette-size policy argument. The context domain admits that reachable policy case while Strict validation still returns InvalidPalette. Empty suggested-palette sequences represent absence; present empty wire PLTE remains InvalidPalette."
@@ -445,8 +469,8 @@
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     },
@@ -480,8 +504,8 @@
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     },
@@ -497,8 +521,8 @@
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     },
@@ -562,8 +586,8 @@
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     },
@@ -597,8 +621,8 @@
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     },
@@ -626,8 +650,8 @@
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     },
@@ -639,19 +663,19 @@
           "file": "src/image.rs",
           "function": "over",
           "line": 208,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         },
         {
           "file": "src/image.rs",
           "function": "Sink::put",
           "line": 324,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         },
         {
           "file": "src/colour_model.rs",
           "function": "place",
           "line": 182,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         },
         {
           "file": "src/composite_model.rs",
@@ -661,8 +685,8 @@
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     },
@@ -686,12 +710,12 @@
           "file": "src/image.rs",
           "function": "over",
           "line": 208,
-          "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+          "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     },
@@ -779,8 +803,8 @@
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending",
       "qualification": "The public step and the 13 frozen frame projections include every returned canvas byte. Unrestricted returned frame records, complete MFr equality and Prog_ITER remain M6."
@@ -839,8 +863,8 @@
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     }
@@ -906,8 +930,8 @@
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     }
@@ -961,8 +985,8 @@
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     },
@@ -1020,8 +1044,8 @@
         }
       ],
       "verified_in_full_runs": [
-        640,
-        643
+        648,
+        651
       ],
       "independent_coverage_review": "pending"
     },
@@ -1039,7 +1063,7 @@
           "file": "src/colour_model.rs",
           "function": "scale8_exact",
           "line": 43,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         }
       ],
       "scope": "Universal integral low-depth scaling"
@@ -1051,7 +1075,7 @@
           "file": "src/colour_model.rs",
           "function": "scale16_exact",
           "line": 56,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         }
       ],
       "scope": "Universal integral five-depth scaling"
@@ -1063,7 +1087,7 @@
           "file": "src/colour_model.rs",
           "function": "round16",
           "line": 70,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         }
       ],
       "scope": "Universal 16-bit half-up identity"
@@ -1075,7 +1099,7 @@
           "file": "src/colour_model.rs",
           "function": "scale16_257",
           "line": 77,
-          "sha256": "aec6a05464d7ed0b8709d2541692d41a4d973c5e135f32ebb4a7d207e1141265"
+          "sha256": "533fd347928cbd52df89d8c8a38830a2675e525fac377c28afcaff2029cbc743"
         }
       ],
       "scope": "Low-depth channel identity only; not integrated L-16-8"
@@ -1236,13 +1260,13 @@
       "file": "src/image.rs",
       "function": "pixel_offset",
       "line": 245,
-      "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+      "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
     },
     {
       "file": "src/image.rs",
       "function": "raw_budget",
       "line": 177,
-      "sha256": "cc8067171950e1ab81b49a363025d77f3835ece234911fe869acab6b9ea7228f"
+      "sha256": "b8b55ad1e220c26c5a62a70921338789cd03c6dccf04e0e3cdbf5001248d1898"
     },
     {
       "file": "src/frame_transport_model.rs",

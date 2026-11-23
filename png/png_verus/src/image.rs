@@ -891,7 +891,8 @@ fn pass_coordinate(n: u32,origin: u32,step: u32,index: u32) -> (r: u32)
 fn draw_row(colour: &Colour<'_>,line: &[u8],w: u32,h: u32,x0: u32,dx: u32,pw: u32,y: u32,
     wide: bool,pol: &Policy,ev: &mut Events,sink: &mut Sink<'_>) -> (result: Result<(),Error>)
     requires colour.wf(),old(sink).wf(w,h),wide==old(sink).wide_view(),
-        1<=pw<=w<=crate::limits::PNG_WIRE_MAX,1<=dx<=8,y<h,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
+        1<=pw<=w<=crate::limits::PNG_WIRE_MAX,w<=crate::limits::MAX_DIMENSION,1<=dx<=8,y<h,
+        4*(w as int)<=crate::limits::MAX_OUTPUT,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
         pw==layout::span(w as nat,x0 as nat,dx as nat),
         line.len()==layout::scan_bytes(colour.channels()*(colour.depth as nat),pw as nat),
     ensures final(sink).shape()==old(sink).shape(),final(sink).wf(w,h),final(sink).loan()==old(sink).loan(),
@@ -922,7 +923,8 @@ fn draw_row(colour: &Colour<'_>,line: &[u8],w: u32,h: u32,x0: u32,dx: u32,pw: u3
             geometry==sink.shape(),before==old(sink).pixels(),
             composite::drawing_frame(before,sink.pixels(),geometry,w as nat,h as nat),
             sink.pixels()==colour::draw_prefix(colour.view(),line@,geometry,before,w as nat,x0 as nat,dx as nat,y as nat,c as nat,wide,pol.palette_index==PaletteIndex::Black),
-            1<=pw<=w<=crate::limits::PNG_WIRE_MAX,1<=dx<=8,y<h,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
+            1<=pw<=w<=crate::limits::PNG_WIRE_MAX,w<=crate::limits::MAX_DIMENSION,1<=dx<=8,y<h,
+            4*(w as int)<=crate::limits::MAX_OUTPUT,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
             pw==layout::span(w as nat,x0 as nat,dx as nat),
             line.len()==layout::scan_bytes(colour.channels()*(colour.depth as nat),pw as nat),
             ev.r1==old(ev).r1,ev.r4==old(ev).r4,
@@ -1037,6 +1039,8 @@ fn decode_exact<S: Segments>(
         assert(envelope.status==inflate_verus::model::InflateStatus::Done);
         assert(envelope.out.len()==r);
         assert(raw@ =~= envelope.out);
+        assert(4*(w as int)<=crate::limits::MAX_OUTPUT) by (nonlinear_arith)
+            requires 1<=w<=ihdr.w,1<=ihdr.h,4*(ihdr.w as int)*(ihdr.h as int)<=crate::limits::MAX_OUTPUT;
         assert(4*(w as int)<=crate::alloc_guard::MAX_BYTES) by (nonlinear_arith)
             requires 1<=w<=ihdr.w,1<=ihdr.h,4*(ihdr.w as int)*(ihdr.h as int)<=crate::limits::MAX_OUTPUT,
                 crate::limits::MAX_OUTPUT<=crate::alloc_guard::MAX_BYTES;
@@ -1064,7 +1068,8 @@ fn decode_exact<S: Segments>(
             target==raster::scan(inflated,ctx,k as nat),raster::data(old(src).concat(),ctx,*pol)==Some(target),
             raster::completed(inflated,raw@,ctx,k as nat),colour.plte.len()/3==ctx.entries,
             filters::valid_prefix(inflated,ihdr.interlace,layout::bits(ihdr.view()),w as nat,h as nat,k as nat),
-            colour.wf(),colour.ct==ihdr.ct,colour.depth==ihdr.depth,bpp>=1,bpp==filters::bpp(layout::bits(ihdr.view())),4*(w as int)<=crate::alloc_guard::MAX_BYTES,
+            colour.wf(),colour.ct==ihdr.ct,colour.depth==ihdr.depth,bpp>=1,bpp==filters::bpp(layout::bits(ihdr.view())),
+            4*(w as int)<=crate::limits::MAX_OUTPUT,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
             sink.wf(w,h),sink.shape()==old(sink).shape(),sink.loan()==old(sink).loan(),wide==sink.wide_view(),
             before_pixels==old(sink).pixels(),drawing_shape==sink.shape(),
             composite::drawing_frame(before_pixels,sink.pixels(),drawing_shape,w as nat,h as nat),
@@ -1111,7 +1116,8 @@ fn decode_exact<S: Segments>(
                     ihdr.interlace==0 ==> (p.x0==0 && p.y0==0 && p.dx==1 && p.dy==1 && p.pw==w && p.ph==h),
                     ihdr.interlace!=0 ==> ((p.x0 as nat,p.y0 as nat,p.dx as nat,p.dy as nat)==layout::geometry(k as nat)
                         && p.pw==layout::cols(w as nat,k as nat) && p.ph==layout::rows(h as nat,k as nat)),
-                    colour.wf(),colour.ct==ihdr.ct,colour.depth==ihdr.depth,bpp>=1,bpp==filters::bpp(layout::bits(ihdr.view())),4*(w as int)<=crate::alloc_guard::MAX_BYTES,
+                    colour.wf(),colour.ct==ihdr.ct,colour.depth==ihdr.depth,bpp>=1,bpp==filters::bpp(layout::bits(ihdr.view())),
+                    4*(w as int)<=crate::limits::MAX_OUTPUT,4*(w as int)<=crate::alloc_guard::MAX_BYTES,
                     sink.wf(w,h),sink.shape()==old(sink).shape(),sink.loan()==old(sink).loan(),wide==sink.wide_view(),
             before_pixels==old(sink).pixels(),drawing_shape==sink.shape(),
             composite::drawing_frame(before_pixels,sink.pixels(),drawing_shape,w as nat,h as nat),

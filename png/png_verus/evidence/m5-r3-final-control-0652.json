@@ -1,0 +1,26 @@
+{
+  "kind": "M5 Astra review-fix final source/control; no independent-review sign-off",
+  "base_commit": "96398311a8fb5be7dc6a28f7cd240b9bc806a150",
+  "full_runs": [
+    648,
+    651
+  ],
+  "verified_each": 6106,
+  "source_inventory_count": 84,
+  "source_inventory_matches_both_full_runs": true,
+  "runtime_run": 649,
+  "host_and_i686_bindings_unchanged": true,
+  "vstd_hashes_and_mtimes_unchanged": true,
+  "restored_development_runs": [
+    646,
+    647
+  ],
+  "protected_files_unchanged": true,
+  "whitespace_clean": true,
+  "frozen_input_literals_matched": 37,
+  "complete_error_classifications": 2,
+  "content_projection_classifications": 35,
+  "active_verifier_or_solver_processes": [],
+  "accepted_checkpoint": false,
+  "run": 652
+}

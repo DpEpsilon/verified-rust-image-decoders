@@ -231,6 +231,7 @@ pub open spec fn context_domain(c: Context) -> bool {
 }
 pub open spec fn row_domain(c: Context,line: Seq<u8>,width: nat) -> bool {
     context_domain(c) && 1<=width<=crate::limits::PNG_WIRE_MAX
+        && width<=crate::limits::MAX_DIMENSION && 4*width<=crate::limits::MAX_OUTPUT
         && line.len()==crate::layout_model::scan_bytes(channels(c)*c.depth as nat,width)
 }
 /// None is the internal OutsideDomain marker, not a PNG format error.
@@ -264,6 +265,20 @@ pub proof fn MC_matching_oversized_rgba_outside()
     ensures MC(Context {ct:6,depth:8,plte:Seq::empty(),trns:None},
         Seq::new(4*(crate::limits::PNG_WIRE_MAX as nat+1),|i: int|0u8),
         crate::limits::PNG_WIRE_MAX as nat+1,false,false)==None,
+{}
+pub proof fn MC_capped_width_outside(c: Context,line: Seq<u8>,width: nat,wide: bool,black: bool)
+    requires width>crate::limits::MAX_DIMENSION || 4*width>crate::limits::MAX_OUTPUT,
+    ensures MC(c,line,width,wide,black)==None,
+{}
+pub proof fn MC_matching_over_area_grey_outside()
+    ensures {
+        let width=crate::limits::MAX_OUTPUT as nat/4+1;
+        let line=Seq::new(width,|i: int|0u8);
+        1<=width<=crate::limits::MAX_DIMENSION && width<=crate::limits::PNG_WIRE_MAX
+        && 4*width>crate::limits::MAX_OUTPUT
+        && line.len()==crate::layout_model::scan_bytes(8,width)
+        && MC(Context {ct:0,depth:8,plte:Seq::empty(),trns:None},line,width,false,false)==None
+    },
 {}
 pub proof fn MC_policy_large_palette_domain()
     ensures context_domain(Context {ct:3,depth:1,plte:Seq::new(12,|i: int|0u8),trns:None}),
@@ -448,6 +463,9 @@ pub proof fn render_row_observe(rows: Seq<Seq<u16>>,shape: (nat,nat,nat,nat,nat,
         }else if row_contains(x0,dx,y,n,X,Y) {
             crate::layout_model::axis_forward(x0,dx,X/dx);
             vstd::arithmetic::div_mod::lemma_fundamental_div_mod(X as int,dx as int);
+            assert(X==x0+(X/dx)*dx) by (nonlinear_arith)
+                requires X==(dx as int)*(X/dx)+(X%dx),X%dx==x0;
+            if X/dx==k {assert(X==x0+k*dx);assert(false);}
             assert(X/dx<k);
         }
     }
