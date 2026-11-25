@@ -1,0 +1,3918 @@
+{
+  "status": "Generated candidates; verification credit recorded separately",
+  "generator": "tools/generate_m6_m4_filter_remaining_witnesses.py",
+  "batch": "E6-M4-FILT",
+  "original_certificate_prefix_sha256": "50328f9c70db7783de64992721a2c958c621477c1dbd711458934f849f0dcd45",
+  "records": [
+    {
+      "name": "filter/0-ct0-d1",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "367335b1bf990802d6f7d90d6c45706e605d318e999463eaa50a4e25a01a6343",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 4,
+            "hex": "000000ff"
+          },
+          {
+            "count": 2,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 1,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 4,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 2,
+            "hex": "000000ff"
+          },
+          {
+            "count": 2,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 1,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 2,
+            "hex": "000000ff"
+          },
+          {
+            "count": 3,
+            "hex": "ffffffff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "13839da1f69cdf83f858e033cbd01ecab385c43124e81bee49e9d89ffdf0ae74",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_0_ct0_d1",
+      "public_function": "public_complete_filter_0_ct0_d1",
+      "bridge_function": "e6_complete_filter_0_ct0_d1",
+      "row_function": "e6_rows_filter_0_ct0_d1",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/1-ct0-d8",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "4a0ad4c0e502ad87ae952fc1ab1aaa0b5c821d5d7b8d2bf5f17ff5c60c808a64",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "5c5c5cff"
+          },
+          {
+            "count": 1,
+            "hex": "414141ff"
+          },
+          {
+            "count": 1,
+            "hex": "b6b6b6ff"
+          },
+          {
+            "count": 1,
+            "hex": "8f8f8fff"
+          },
+          {
+            "count": 1,
+            "hex": "939393ff"
+          },
+          {
+            "count": 1,
+            "hex": "ecececff"
+          },
+          {
+            "count": 1,
+            "hex": "636363ff"
+          },
+          {
+            "count": 1,
+            "hex": "7d7d7dff"
+          },
+          {
+            "count": 1,
+            "hex": "9d9d9dff"
+          },
+          {
+            "count": 1,
+            "hex": "646464ff"
+          },
+          {
+            "count": 1,
+            "hex": "363636ff"
+          },
+          {
+            "count": 1,
+            "hex": "696969ff"
+          },
+          {
+            "count": 1,
+            "hex": "646464ff"
+          },
+          {
+            "count": 1,
+            "hex": "111111ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 1,
+            "hex": "d4d4d4ff"
+          },
+          {
+            "count": 1,
+            "hex": "585858ff"
+          },
+          {
+            "count": 1,
+            "hex": "222222ff"
+          },
+          {
+            "count": 1,
+            "hex": "9a9a9aff"
+          },
+          {
+            "count": 1,
+            "hex": "474747ff"
+          },
+          {
+            "count": 1,
+            "hex": "5f5f5fff"
+          },
+          {
+            "count": 1,
+            "hex": "7c7c7cff"
+          },
+          {
+            "count": 1,
+            "hex": "4d4d4dff"
+          },
+          {
+            "count": 1,
+            "hex": "7a7a7aff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "6db9d4829b20f568c7d1fb89d7b6cba5375ecae0190cc59201a41a41c1885e2f",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_1_ct0_d8",
+      "public_function": "public_complete_filter_1_ct0_d8",
+      "bridge_function": "e6_complete_filter_1_ct0_d8",
+      "row_function": "e6_rows_filter_1_ct0_d8",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/2-ct0-d16",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "39de1288cf6e43c64be501320449920dbe680ea86543b732de191b291c65a332",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "acacacff"
+          },
+          {
+            "count": 1,
+            "hex": "919191ff"
+          },
+          {
+            "count": 1,
+            "hex": "d3d3d3ff"
+          },
+          {
+            "count": 1,
+            "hex": "6d6d6dff"
+          },
+          {
+            "count": 1,
+            "hex": "6a6a6aff"
+          },
+          {
+            "count": 1,
+            "hex": "8d8d8dff"
+          },
+          {
+            "count": 1,
+            "hex": "a5a5a5ff"
+          },
+          {
+            "count": 1,
+            "hex": "f3f3f3ff"
+          },
+          {
+            "count": 1,
+            "hex": "292929ff"
+          },
+          {
+            "count": 1,
+            "hex": "7f7f7fff"
+          },
+          {
+            "count": 1,
+            "hex": "090909ff"
+          },
+          {
+            "count": 1,
+            "hex": "4a4a4aff"
+          },
+          {
+            "count": 1,
+            "hex": "444444ff"
+          },
+          {
+            "count": 1,
+            "hex": "a6a6a6ff"
+          },
+          {
+            "count": 1,
+            "hex": "656565ff"
+          },
+          {
+            "count": 1,
+            "hex": "858585ff"
+          },
+          {
+            "count": 1,
+            "hex": "636363ff"
+          },
+          {
+            "count": 1,
+            "hex": "a3a3a3ff"
+          },
+          {
+            "count": 1,
+            "hex": "999999ff"
+          },
+          {
+            "count": 1,
+            "hex": "323232ff"
+          },
+          {
+            "count": 1,
+            "hex": "bebebeff"
+          },
+          {
+            "count": 1,
+            "hex": "444444ff"
+          },
+          {
+            "count": 1,
+            "hex": "a7a7a7ff"
+          },
+          {
+            "count": 1,
+            "hex": "dededeff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "92fcda5274a1e47d87fbd7251c119f3b16d7a0773ba6d2ae94f227e359251d91",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_2_ct0_d16",
+      "public_function": "public_complete_filter_2_ct0_d16",
+      "bridge_function": "e6_complete_filter_2_ct0_d16",
+      "row_function": "e6_rows_filter_2_ct0_d16",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/3-ct2-d8",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "7523cbeacd185d4c0351aa0991a235e524630e419e34a99b192379ac2231093a",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "32279fff"
+          },
+          {
+            "count": 1,
+            "hex": "bfde4bff"
+          },
+          {
+            "count": 1,
+            "hex": "c4397dff"
+          },
+          {
+            "count": 1,
+            "hex": "1a6e11ff"
+          },
+          {
+            "count": 1,
+            "hex": "c7e502ff"
+          },
+          {
+            "count": 1,
+            "hex": "b88a67ff"
+          },
+          {
+            "count": 1,
+            "hex": "db79cdff"
+          },
+          {
+            "count": 1,
+            "hex": "a6533cff"
+          },
+          {
+            "count": 1,
+            "hex": "0a2b11ff"
+          },
+          {
+            "count": 1,
+            "hex": "55b75fff"
+          },
+          {
+            "count": 1,
+            "hex": "0ab287ff"
+          },
+          {
+            "count": 1,
+            "hex": "154d4eff"
+          },
+          {
+            "count": 1,
+            "hex": "501f66ff"
+          },
+          {
+            "count": 1,
+            "hex": "5c6a9eff"
+          },
+          {
+            "count": 1,
+            "hex": "2a034eff"
+          },
+          {
+            "count": 1,
+            "hex": "c3d216ff"
+          },
+          {
+            "count": 1,
+            "hex": "49045bff"
+          },
+          {
+            "count": 1,
+            "hex": "5d898cff"
+          },
+          {
+            "count": 1,
+            "hex": "ae528aff"
+          },
+          {
+            "count": 1,
+            "hex": "2cff22ff"
+          },
+          {
+            "count": 1,
+            "hex": "0dd8e5ff"
+          },
+          {
+            "count": 1,
+            "hex": "31cd90ff"
+          },
+          {
+            "count": 1,
+            "hex": "4cd8a8ff"
+          },
+          {
+            "count": 1,
+            "hex": "b0f19cff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "947965893a787209973de1f9c6aa455cbd10f4e568128bb4f30e91fa28b6b194",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_3_ct2_d8",
+      "public_function": "public_complete_filter_3_ct2_d8",
+      "bridge_function": "e6_complete_filter_3_ct2_d8",
+      "row_function": "e6_rows_filter_3_ct2_d8",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/4-ct2-d16",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "3f81b8ef52a4fc6d9cc02cb409337017967250d9c5e22898a74979b46b987cdf",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "816778ff"
+          },
+          {
+            "count": 1,
+            "hex": "07a9e6ff"
+          },
+          {
+            "count": 1,
+            "hex": "20d2edff"
+          },
+          {
+            "count": 1,
+            "hex": "e8a9eeff"
+          },
+          {
+            "count": 1,
+            "hex": "b78746ff"
+          },
+          {
+            "count": 1,
+            "hex": "9e370fff"
+          },
+          {
+            "count": 1,
+            "hex": "11cec7ff"
+          },
+          {
+            "count": 1,
+            "hex": "2c5db8ff"
+          },
+          {
+            "count": 1,
+            "hex": "e0cd24ff"
+          },
+          {
+            "count": 1,
+            "hex": "538792ff"
+          },
+          {
+            "count": 1,
+            "hex": "04e773ff"
+          },
+          {
+            "count": 1,
+            "hex": "a61c49ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffce02ff"
+          },
+          {
+            "count": 1,
+            "hex": "a78e00ff"
+          },
+          {
+            "count": 1,
+            "hex": "e28aeaff"
+          },
+          {
+            "count": 1,
+            "hex": "1086a7ff"
+          },
+          {
+            "count": 1,
+            "hex": "78a3e0ff"
+          },
+          {
+            "count": 1,
+            "hex": "355cbbff"
+          },
+          {
+            "count": 1,
+            "hex": "507d0eff"
+          },
+          {
+            "count": 1,
+            "hex": "3a325eff"
+          },
+          {
+            "count": 1,
+            "hex": "60a3d3ff"
+          },
+          {
+            "count": 1,
+            "hex": "519872ff"
+          },
+          {
+            "count": 1,
+            "hex": "b6e33dff"
+          },
+          {
+            "count": 1,
+            "hex": "4c206aff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "cbf18777c31845d1d3de7003a61911b59931219dd4ba072caaccddf3b91a2d4d",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_4_ct2_d16",
+      "public_function": "public_complete_filter_4_ct2_d16",
+      "bridge_function": "e6_complete_filter_4_ct2_d16",
+      "row_function": "e6_rows_filter_4_ct2_d16",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/1-ct4-d8",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "97b9226499e3607c62634244f441c324bb70c057e45dea54dfd3580f6e222003",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "4f4f4f41"
+          },
+          {
+            "count": 1,
+            "hex": "6868689e"
+          },
+          {
+            "count": 1,
+            "hex": "0a0a0a97"
+          },
+          {
+            "count": 1,
+            "hex": "696969de"
+          },
+          {
+            "count": 1,
+            "hex": "47474752"
+          },
+          {
+            "count": 1,
+            "hex": "2b2b2bc1"
+          },
+          {
+            "count": 1,
+            "hex": "a4a4a470"
+          },
+          {
+            "count": 1,
+            "hex": "e2e2e27d"
+          },
+          {
+            "count": 1,
+            "hex": "b9b9b933"
+          },
+          {
+            "count": 1,
+            "hex": "5f5f5f48"
+          },
+          {
+            "count": 1,
+            "hex": "070707af"
+          },
+          {
+            "count": 1,
+            "hex": "5b5b5b78"
+          },
+          {
+            "count": 1,
+            "hex": "50505047"
+          },
+          {
+            "count": 1,
+            "hex": "11111184"
+          },
+          {
+            "count": 1,
+            "hex": "73737341"
+          },
+          {
+            "count": 1,
+            "hex": "dcdcdcfb"
+          },
+          {
+            "count": 1,
+            "hex": "dfdfdfa1"
+          },
+          {
+            "count": 1,
+            "hex": "83838398"
+          },
+          {
+            "count": 1,
+            "hex": "25252545"
+          },
+          {
+            "count": 1,
+            "hex": "272727c6"
+          },
+          {
+            "count": 1,
+            "hex": "888888ea"
+          },
+          {
+            "count": 1,
+            "hex": "0d0d0dff"
+          },
+          {
+            "count": 1,
+            "hex": "4d4d4dda"
+          },
+          {
+            "count": 1,
+            "hex": "828282cb"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "fbba74e3a359f172f3380f2b04ff7b932c67e8d45e84dd8bbba6be72fd75f6e2",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_1_ct4_d8",
+      "public_function": "public_complete_filter_1_ct4_d8",
+      "bridge_function": "e6_complete_filter_1_ct4_d8",
+      "row_function": "e6_rows_filter_1_ct4_d8",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/4-ct6-d16",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "3296e7aaeabc75fca4095c6f3284c48bdf99e2ba3aa826b5a9803eea0912d5eb",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "346f17a5"
+          },
+          {
+            "count": 1,
+            "hex": "eb56c618"
+          },
+          {
+            "count": 1,
+            "hex": "5503a83c"
+          },
+          {
+            "count": 1,
+            "hex": "03d94c7c"
+          },
+          {
+            "count": 1,
+            "hex": "76ac164b"
+          },
+          {
+            "count": 1,
+            "hex": "a44b6d65"
+          },
+          {
+            "count": 1,
+            "hex": "5d4078b3"
+          },
+          {
+            "count": 1,
+            "hex": "760dd9eb"
+          },
+          {
+            "count": 1,
+            "hex": "6653bfbe"
+          },
+          {
+            "count": 1,
+            "hex": "61f83f6b"
+          },
+          {
+            "count": 1,
+            "hex": "7bdb4904"
+          },
+          {
+            "count": 1,
+            "hex": "df809918"
+          },
+          {
+            "count": 1,
+            "hex": "28a868fd"
+          },
+          {
+            "count": 1,
+            "hex": "463a8641"
+          },
+          {
+            "count": 1,
+            "hex": "548b1638"
+          },
+          {
+            "count": 1,
+            "hex": "616f3d22"
+          },
+          {
+            "count": 1,
+            "hex": "a94c1d0a"
+          },
+          {
+            "count": 1,
+            "hex": "37b65ed8"
+          },
+          {
+            "count": 1,
+            "hex": "bac42b84"
+          },
+          {
+            "count": 1,
+            "hex": "d5d32d28"
+          },
+          {
+            "count": 1,
+            "hex": "940e1531"
+          },
+          {
+            "count": 1,
+            "hex": "237e5009"
+          },
+          {
+            "count": 1,
+            "hex": "f6a8dd15"
+          },
+          {
+            "count": 1,
+            "hex": "c6f7fce0"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "bfc85b1128705b4c67082abc5dafeb1459c9c003a2be65cb02646767a2edc965",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_4_ct6_d16",
+      "public_function": "public_complete_filter_4_ct6_d16",
+      "bridge_function": "e6_complete_filter_4_ct6_d16",
+      "row_function": "e6_rows_filter_4_ct6_d16",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/0-ct0-d8",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "46a25eaa7ea817b40d4236419118ded40af5e5927eed487ef99606e847d07f51",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 1,
+            "hex": "616161ff"
+          },
+          {
+            "count": 1,
+            "hex": "070707ff"
+          },
+          {
+            "count": 1,
+            "hex": "b4b4b4ff"
+          },
+          {
+            "count": 1,
+            "hex": "7a7a7aff"
+          },
+          {
+            "count": 1,
+            "hex": "313131ff"
+          },
+          {
+            "count": 1,
+            "hex": "1e1e1eff"
+          },
+          {
+            "count": 1,
+            "hex": "d9d9d9ff"
+          },
+          {
+            "count": 1,
+            "hex": "edededff"
+          },
+          {
+            "count": 1,
+            "hex": "fbfbfbff"
+          },
+          {
+            "count": 1,
+            "hex": "7f7f7fff"
+          },
+          {
+            "count": 1,
+            "hex": "6e6e6eff"
+          },
+          {
+            "count": 1,
+            "hex": "3e3e3eff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 1,
+            "hex": "171717ff"
+          },
+          {
+            "count": 1,
+            "hex": "0d0d0dff"
+          },
+          {
+            "count": 1,
+            "hex": "dadadaff"
+          },
+          {
+            "count": 1,
+            "hex": "050505ff"
+          },
+          {
+            "count": 1,
+            "hex": "747474ff"
+          },
+          {
+            "count": 1,
+            "hex": "d2d2d2ff"
+          },
+          {
+            "count": 1,
+            "hex": "fbfbfbff"
+          },
+          {
+            "count": 1,
+            "hex": "777777ff"
+          },
+          {
+            "count": 1,
+            "hex": "a7a7a7ff"
+          },
+          {
+            "count": 1,
+            "hex": "434343ff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "74edfc8b47109cdb1754aded92ff0a969c524f0f1e2a5d6efb321bce644e486e",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_0_ct0_d8",
+      "public_function": "public_complete_filter_0_ct0_d8",
+      "bridge_function": "e6_complete_filter_0_ct0_d8",
+      "row_function": "e6_rows_filter_0_ct0_d8",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/0-ct0-d16",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "e3873cbde1d30d3f4a3d4de9f0e0f4a0b7c089305227424264a1c56a237e822f",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "f8f8f8ff"
+          },
+          {
+            "count": 1,
+            "hex": "d2d2d2ff"
+          },
+          {
+            "count": 1,
+            "hex": "e8e8e8ff"
+          },
+          {
+            "count": 1,
+            "hex": "8d8d8dff"
+          },
+          {
+            "count": 1,
+            "hex": "434343ff"
+          },
+          {
+            "count": 2,
+            "hex": "383838ff"
+          },
+          {
+            "count": 1,
+            "hex": "b9b9b9ff"
+          },
+          {
+            "count": 1,
+            "hex": "636363ff"
+          },
+          {
+            "count": 1,
+            "hex": "808080ff"
+          },
+          {
+            "count": 1,
+            "hex": "2a2a2aff"
+          },
+          {
+            "count": 1,
+            "hex": "565656ff"
+          },
+          {
+            "count": 1,
+            "hex": "050505ff"
+          },
+          {
+            "count": 1,
+            "hex": "080808ff"
+          },
+          {
+            "count": 1,
+            "hex": "d5d5d5ff"
+          },
+          {
+            "count": 1,
+            "hex": "636363ff"
+          },
+          {
+            "count": 1,
+            "hex": "6e6e6eff"
+          },
+          {
+            "count": 1,
+            "hex": "999999ff"
+          },
+          {
+            "count": 1,
+            "hex": "ddddddff"
+          },
+          {
+            "count": 1,
+            "hex": "363636ff"
+          },
+          {
+            "count": 1,
+            "hex": "b6b6b6ff"
+          },
+          {
+            "count": 1,
+            "hex": "868686ff"
+          },
+          {
+            "count": 1,
+            "hex": "818181ff"
+          },
+          {
+            "count": 1,
+            "hex": "828282ff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "1ff73966e6a620fbe8cb16b718fd5a30a75da98cdac31bfca41ad2d7f6a8987c",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_0_ct0_d16",
+      "public_function": "public_complete_filter_0_ct0_d16",
+      "bridge_function": "e6_complete_filter_0_ct0_d16",
+      "row_function": "e6_rows_filter_0_ct0_d16",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/0-ct2-d8",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "d5dbfb008e302dc80664625c797dc834ac1235a896e9a9f2e1291a3b75c9c14b",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "82c988ff"
+          },
+          {
+            "count": 1,
+            "hex": "4b0029ff"
+          },
+          {
+            "count": 1,
+            "hex": "8b0a18ff"
+          },
+          {
+            "count": 1,
+            "hex": "510b96ff"
+          },
+          {
+            "count": 1,
+            "hex": "4c700bff"
+          },
+          {
+            "count": 1,
+            "hex": "c0f094ff"
+          },
+          {
+            "count": 1,
+            "hex": "26fcbaff"
+          },
+          {
+            "count": 1,
+            "hex": "474f20ff"
+          },
+          {
+            "count": 1,
+            "hex": "47486fff"
+          },
+          {
+            "count": 1,
+            "hex": "d77f3dff"
+          },
+          {
+            "count": 1,
+            "hex": "1830dfff"
+          },
+          {
+            "count": 1,
+            "hex": "952e75ff"
+          },
+          {
+            "count": 1,
+            "hex": "42c6e0ff"
+          },
+          {
+            "count": 1,
+            "hex": "fe07bcff"
+          },
+          {
+            "count": 1,
+            "hex": "ef2deaff"
+          },
+          {
+            "count": 1,
+            "hex": "d68ee2ff"
+          },
+          {
+            "count": 1,
+            "hex": "469ae3ff"
+          },
+          {
+            "count": 1,
+            "hex": "c22b72ff"
+          },
+          {
+            "count": 1,
+            "hex": "f67231ff"
+          },
+          {
+            "count": 1,
+            "hex": "90eb8cff"
+          },
+          {
+            "count": 1,
+            "hex": "5c353dff"
+          },
+          {
+            "count": 1,
+            "hex": "dadb2cff"
+          },
+          {
+            "count": 1,
+            "hex": "fad1dcff"
+          },
+          {
+            "count": 1,
+            "hex": "5187b2ff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "86dd838b04ea3716debd853687faccca89dac1496c2e25806398e330887a65fe",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_0_ct2_d8",
+      "public_function": "public_complete_filter_0_ct2_d8",
+      "bridge_function": "e6_complete_filter_0_ct2_d8",
+      "row_function": "e6_rows_filter_0_ct2_d8",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/0-ct2-d16",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "f9fe6a67a46ad9530e9a4aed22a7a2b731f2f2db6faf2ca379f1a84ff73c632c",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "c32b52ff"
+          },
+          {
+            "count": 1,
+            "hex": "fdded5ff"
+          },
+          {
+            "count": 1,
+            "hex": "1e7ab9ff"
+          },
+          {
+            "count": 1,
+            "hex": "89b20cff"
+          },
+          {
+            "count": 1,
+            "hex": "b80ba7ff"
+          },
+          {
+            "count": 1,
+            "hex": "4867b9ff"
+          },
+          {
+            "count": 1,
+            "hex": "70da7dff"
+          },
+          {
+            "count": 1,
+            "hex": "f86a0dff"
+          },
+          {
+            "count": 1,
+            "hex": "da6742ff"
+          },
+          {
+            "count": 1,
+            "hex": "d2103dff"
+          },
+          {
+            "count": 1,
+            "hex": "1a72f6ff"
+          },
+          {
+            "count": 1,
+            "hex": "6c2458ff"
+          },
+          {
+            "count": 1,
+            "hex": "cbe126ff"
+          },
+          {
+            "count": 1,
+            "hex": "9eae3aff"
+          },
+          {
+            "count": 1,
+            "hex": "c8906eff"
+          },
+          {
+            "count": 1,
+            "hex": "c8befbff"
+          },
+          {
+            "count": 1,
+            "hex": "3ca545ff"
+          },
+          {
+            "count": 1,
+            "hex": "47799dff"
+          },
+          {
+            "count": 1,
+            "hex": "06715eff"
+          },
+          {
+            "count": 1,
+            "hex": "c5d5e3ff"
+          },
+          {
+            "count": 1,
+            "hex": "596ec1ff"
+          },
+          {
+            "count": 1,
+            "hex": "865630ff"
+          },
+          {
+            "count": 1,
+            "hex": "13e39fff"
+          },
+          {
+            "count": 1,
+            "hex": "e10cf4ff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "e97a7222831733fdc0a0a5b22bbf97f6af8b1c3d3989f635e2425767fbf8c9b6",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_0_ct2_d16",
+      "public_function": "public_complete_filter_0_ct2_d16",
+      "bridge_function": "e6_complete_filter_0_ct2_d16",
+      "row_function": "e6_rows_filter_0_ct2_d16",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/0-ct4-d8",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "452daf74a9cb0f08f7c2fb6b85fd7c585ff9f72ee5a8c1b017f9f2f9699ac96e",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "848484b6"
+          },
+          {
+            "count": 1,
+            "hex": "d5d5d50d"
+          },
+          {
+            "count": 1,
+            "hex": "b3b3b375"
+          },
+          {
+            "count": 1,
+            "hex": "5c5c5cf0"
+          },
+          {
+            "count": 1,
+            "hex": "2222223a"
+          },
+          {
+            "count": 1,
+            "hex": "f4f4f4c3"
+          },
+          {
+            "count": 1,
+            "hex": "0a0a0a9a"
+          },
+          {
+            "count": 1,
+            "hex": "020202c0"
+          },
+          {
+            "count": 1,
+            "hex": "7272723a"
+          },
+          {
+            "count": 1,
+            "hex": "444444cd"
+          },
+          {
+            "count": 1,
+            "hex": "abababaa"
+          },
+          {
+            "count": 1,
+            "hex": "1515150e"
+          },
+          {
+            "count": 1,
+            "hex": "d4d4d400"
+          },
+          {
+            "count": 1,
+            "hex": "ccccccfa"
+          },
+          {
+            "count": 1,
+            "hex": "cbcbcbcd"
+          },
+          {
+            "count": 1,
+            "hex": "bbbbbba3"
+          },
+          {
+            "count": 1,
+            "hex": "4c4c4cca"
+          },
+          {
+            "count": 1,
+            "hex": "0f0f0f14"
+          },
+          {
+            "count": 1,
+            "hex": "a2a2a2cf"
+          },
+          {
+            "count": 1,
+            "hex": "606060bf"
+          },
+          {
+            "count": 1,
+            "hex": "5151519f"
+          },
+          {
+            "count": 1,
+            "hex": "808080e3"
+          },
+          {
+            "count": 1,
+            "hex": "26262696"
+          },
+          {
+            "count": 1,
+            "hex": "3e3e3e21"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "3bb041b6a5fa3eba46f3c03c7eefca871387e8362868133e03153aca1e78b2dc",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_0_ct4_d8",
+      "public_function": "public_complete_filter_0_ct4_d8",
+      "bridge_function": "e6_complete_filter_0_ct4_d8",
+      "row_function": "e6_rows_filter_0_ct4_d8",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/0-ct6-d16",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "f68ee3aa060108778c0459c3842641878ab7d184aefadfef4b69bcbf75f3af2a",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "f210af8a"
+          },
+          {
+            "count": 1,
+            "hex": "8ef45f40"
+          },
+          {
+            "count": 1,
+            "hex": "872ba9ad"
+          },
+          {
+            "count": 1,
+            "hex": "96a492c8"
+          },
+          {
+            "count": 1,
+            "hex": "b6b9696a"
+          },
+          {
+            "count": 1,
+            "hex": "969eb7ba"
+          },
+          {
+            "count": 1,
+            "hex": "a957d079"
+          },
+          {
+            "count": 1,
+            "hex": "7ffcd307"
+          },
+          {
+            "count": 1,
+            "hex": "bb6a33e8"
+          },
+          {
+            "count": 1,
+            "hex": "04e92ecc"
+          },
+          {
+            "count": 1,
+            "hex": "b9c35cfb"
+          },
+          {
+            "count": 1,
+            "hex": "e6c96ae5"
+          },
+          {
+            "count": 1,
+            "hex": "d28da434"
+          },
+          {
+            "count": 1,
+            "hex": "dd937a63"
+          },
+          {
+            "count": 1,
+            "hex": "e4de2270"
+          },
+          {
+            "count": 1,
+            "hex": "3c6daa33"
+          },
+          {
+            "count": 1,
+            "hex": "851a9495"
+          },
+          {
+            "count": 1,
+            "hex": "3aedbe1f"
+          },
+          {
+            "count": 1,
+            "hex": "557fb0d9"
+          },
+          {
+            "count": 1,
+            "hex": "330bcd2c"
+          },
+          {
+            "count": 1,
+            "hex": "c7de2955"
+          },
+          {
+            "count": 1,
+            "hex": "a458eafe"
+          },
+          {
+            "count": 1,
+            "hex": "71630a5e"
+          },
+          {
+            "count": 1,
+            "hex": "00d166ee"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "d6353208b1ebefc00d189ee6b1a20103db59924a3e565beea6d6fea34c731064",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_0_ct6_d16",
+      "public_function": "public_complete_filter_0_ct6_d16",
+      "bridge_function": "e6_complete_filter_0_ct6_d16",
+      "row_function": "e6_rows_filter_0_ct6_d16",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/1-ct0-d1",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "6a7ce79d2d7e033926023d23b1f21c523dfe1384c35b7d47f8d3128acc3d227f",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 2,
+            "hex": "000000ff"
+          },
+          {
+            "count": 5,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 2,
+            "hex": "000000ff"
+          },
+          {
+            "count": 4,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 3,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 4,
+            "hex": "000000ff"
+          },
+          {
+            "count": 2,
+            "hex": "ffffffff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "dc0b3aeb2c7b571b6d9832e7e8be849351eefb5e5aec8fc6a26957d8bbcd945d",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_1_ct0_d1",
+      "public_function": "public_complete_filter_1_ct0_d1",
+      "bridge_function": "e6_complete_filter_1_ct0_d1",
+      "row_function": "e6_rows_filter_1_ct0_d1",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/1-ct0-d16",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "05224b1f2628a591c5564e6048f3165be1040b05fca3ec4aeba452cb2d2c41de",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "c2c2c2ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 1,
+            "hex": "848484ff"
+          },
+          {
+            "count": 1,
+            "hex": "929292ff"
+          },
+          {
+            "count": 1,
+            "hex": "e6e6e6ff"
+          },
+          {
+            "count": 1,
+            "hex": "060606ff"
+          },
+          {
+            "count": 1,
+            "hex": "696969ff"
+          },
+          {
+            "count": 1,
+            "hex": "6e6e6eff"
+          },
+          {
+            "count": 1,
+            "hex": "8e8e8eff"
+          },
+          {
+            "count": 1,
+            "hex": "dbdbdbff"
+          },
+          {
+            "count": 1,
+            "hex": "e3e3e3ff"
+          },
+          {
+            "count": 1,
+            "hex": "898989ff"
+          },
+          {
+            "count": 1,
+            "hex": "0e0e0eff"
+          },
+          {
+            "count": 1,
+            "hex": "404040ff"
+          },
+          {
+            "count": 1,
+            "hex": "efefefff"
+          },
+          {
+            "count": 1,
+            "hex": "f5f5f5ff"
+          },
+          {
+            "count": 1,
+            "hex": "b6b6b6ff"
+          },
+          {
+            "count": 1,
+            "hex": "acacacff"
+          },
+          {
+            "count": 1,
+            "hex": "bebebeff"
+          },
+          {
+            "count": 1,
+            "hex": "0b0b0bff"
+          },
+          {
+            "count": 1,
+            "hex": "222222ff"
+          },
+          {
+            "count": 1,
+            "hex": "b7b7b7ff"
+          },
+          {
+            "count": 1,
+            "hex": "b8b8b8ff"
+          },
+          {
+            "count": 1,
+            "hex": "e5e5e5ff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "ce451c7908fd688601d47722a831cc5ad3dba629c8b9c1f0b79d93a5a68e8061",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_1_ct0_d16",
+      "public_function": "public_complete_filter_1_ct0_d16",
+      "bridge_function": "e6_complete_filter_1_ct0_d16",
+      "row_function": "e6_rows_filter_1_ct0_d16",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/1-ct2-d8",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "675a5236b6e7e734d560fafa5e91f109b3f5a72729393476d8968f3e52f3e4d4",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "7fd3ccff"
+          },
+          {
+            "count": 1,
+            "hex": "bb4177ff"
+          },
+          {
+            "count": 1,
+            "hex": "13c68cff"
+          },
+          {
+            "count": 1,
+            "hex": "e337acff"
+          },
+          {
+            "count": 1,
+            "hex": "0c7da1ff"
+          },
+          {
+            "count": 1,
+            "hex": "6c24f8ff"
+          },
+          {
+            "count": 1,
+            "hex": "ce3fa1ff"
+          },
+          {
+            "count": 1,
+            "hex": "09f0d8ff"
+          },
+          {
+            "count": 1,
+            "hex": "bb1402ff"
+          },
+          {
+            "count": 1,
+            "hex": "1a076dff"
+          },
+          {
+            "count": 1,
+            "hex": "a405cdff"
+          },
+          {
+            "count": 1,
+            "hex": "96dbbdff"
+          },
+          {
+            "count": 1,
+            "hex": "210f3dff"
+          },
+          {
+            "count": 1,
+            "hex": "748fedff"
+          },
+          {
+            "count": 1,
+            "hex": "3b6223ff"
+          },
+          {
+            "count": 1,
+            "hex": "962c97ff"
+          },
+          {
+            "count": 1,
+            "hex": "2571d9ff"
+          },
+          {
+            "count": 1,
+            "hex": "3796e3ff"
+          },
+          {
+            "count": 1,
+            "hex": "d062a9ff"
+          },
+          {
+            "count": 1,
+            "hex": "6d0b12ff"
+          },
+          {
+            "count": 1,
+            "hex": "b28dddff"
+          },
+          {
+            "count": 1,
+            "hex": "cfaba8ff"
+          },
+          {
+            "count": 1,
+            "hex": "7c54c9ff"
+          },
+          {
+            "count": 1,
+            "hex": "606f63ff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "75a4ab6bb29b9dc895841b75a7916578675c300f75f150fc66c57a6998f6ca92",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_1_ct2_d8",
+      "public_function": "public_complete_filter_1_ct2_d8",
+      "bridge_function": "e6_complete_filter_1_ct2_d8",
+      "row_function": "e6_rows_filter_1_ct2_d8",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/1-ct2-d16",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "9d545ec1e92fa5cfae6055dcaa5619c4f1739184a941ab9d0c3a790f7ef57676",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "bb2a24ff"
+          },
+          {
+            "count": 1,
+            "hex": "a41c18ff"
+          },
+          {
+            "count": 1,
+            "hex": "93a513ff"
+          },
+          {
+            "count": 1,
+            "hex": "d5be17ff"
+          },
+          {
+            "count": 1,
+            "hex": "8fd3faff"
+          },
+          {
+            "count": 1,
+            "hex": "8bfd06ff"
+          },
+          {
+            "count": 1,
+            "hex": "e5af26ff"
+          },
+          {
+            "count": 1,
+            "hex": "29794aff"
+          },
+          {
+            "count": 1,
+            "hex": "3ab45bff"
+          },
+          {
+            "count": 1,
+            "hex": "f8705bff"
+          },
+          {
+            "count": 1,
+            "hex": "501632ff"
+          },
+          {
+            "count": 1,
+            "hex": "93008eff"
+          },
+          {
+            "count": 1,
+            "hex": "a94811ff"
+          },
+          {
+            "count": 1,
+            "hex": "8b5452ff"
+          },
+          {
+            "count": 1,
+            "hex": "c85ed1ff"
+          },
+          {
+            "count": 1,
+            "hex": "485dc3ff"
+          },
+          {
+            "count": 1,
+            "hex": "fad332ff"
+          },
+          {
+            "count": 1,
+            "hex": "02cc92ff"
+          },
+          {
+            "count": 1,
+            "hex": "cb8fc5ff"
+          },
+          {
+            "count": 1,
+            "hex": "116b9dff"
+          },
+          {
+            "count": 1,
+            "hex": "b42e74ff"
+          },
+          {
+            "count": 1,
+            "hex": "da72f0ff"
+          },
+          {
+            "count": 1,
+            "hex": "ed4ac2ff"
+          },
+          {
+            "count": 1,
+            "hex": "a6d31eff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "8158d2082bc7b16d260f58d3d62b958704ca0f6b68d66e34e97518454762ec74",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_1_ct2_d16",
+      "public_function": "public_complete_filter_1_ct2_d16",
+      "bridge_function": "e6_complete_filter_1_ct2_d16",
+      "row_function": "e6_rows_filter_1_ct2_d16",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/1-ct6-d16",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "91f204f90811ebb2d8c384298e7150a328ccfbdad9a9f828b26722ff5343b0b3",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "6c78d29e"
+          },
+          {
+            "count": 1,
+            "hex": "2fbb80aa"
+          },
+          {
+            "count": 1,
+            "hex": "7782025f"
+          },
+          {
+            "count": 1,
+            "hex": "e47f93c1"
+          },
+          {
+            "count": 1,
+            "hex": "ebab468b"
+          },
+          {
+            "count": 1,
+            "hex": "9c82bd34"
+          },
+          {
+            "count": 1,
+            "hex": "826dc259"
+          },
+          {
+            "count": 1,
+            "hex": "81f32928"
+          },
+          {
+            "count": 1,
+            "hex": "12b4f119"
+          },
+          {
+            "count": 1,
+            "hex": "74ba9e77"
+          },
+          {
+            "count": 1,
+            "hex": "9ec74a19"
+          },
+          {
+            "count": 1,
+            "hex": "9c796d1d"
+          },
+          {
+            "count": 1,
+            "hex": "9becef82"
+          },
+          {
+            "count": 1,
+            "hex": "928cace0"
+          },
+          {
+            "count": 1,
+            "hex": "970ec6ae"
+          },
+          {
+            "count": 1,
+            "hex": "d106127e"
+          },
+          {
+            "count": 1,
+            "hex": "23934055"
+          },
+          {
+            "count": 1,
+            "hex": "12418b45"
+          },
+          {
+            "count": 1,
+            "hex": "96a8fc14"
+          },
+          {
+            "count": 1,
+            "hex": "b62b471d"
+          },
+          {
+            "count": 1,
+            "hex": "cd3e91af"
+          },
+          {
+            "count": 1,
+            "hex": "d2f9607a"
+          },
+          {
+            "count": 1,
+            "hex": "48182ef0"
+          },
+          {
+            "count": 1,
+            "hex": "f3074d9c"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "cc69a0b71863dc35cd1dcaf3e392d2ca29f94b947dd60b1c4c19f92e30e63c4f",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_1_ct6_d16",
+      "public_function": "public_complete_filter_1_ct6_d16",
+      "bridge_function": "e6_complete_filter_1_ct6_d16",
+      "row_function": "e6_rows_filter_1_ct6_d16",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/2-ct0-d1",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "7d7f58be972287841396b4b1c38854381ade3f11950b1def5bcffdebeb97c047",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 1,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 1,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 2,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 1,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 1,
+            "hex": "000000ff"
+          },
+          {
+            "count": 5,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 2,
+            "hex": "000000ff"
+          },
+          {
+            "count": 2,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 1,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 2,
+            "hex": "000000ff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "cf9083217aa9d3e80e33ea3ecf906b134f362d7f32e5af1d2f7e201ebbc69c84",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_2_ct0_d1",
+      "public_function": "public_complete_filter_2_ct0_d1",
+      "bridge_function": "e6_complete_filter_2_ct0_d1",
+      "row_function": "e6_rows_filter_2_ct0_d1",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/2-ct0-d8",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "e62215d01b46918aba25d96781ab64848f4e69c689e5512e91afd91905736f6b",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "3e3e3eff"
+          },
+          {
+            "count": 1,
+            "hex": "e5e5e5ff"
+          },
+          {
+            "count": 1,
+            "hex": "4c4c4cff"
+          },
+          {
+            "count": 1,
+            "hex": "161616ff"
+          },
+          {
+            "count": 1,
+            "hex": "fbfbfbff"
+          },
+          {
+            "count": 1,
+            "hex": "282828ff"
+          },
+          {
+            "count": 1,
+            "hex": "0c0c0cff"
+          },
+          {
+            "count": 1,
+            "hex": "edededff"
+          },
+          {
+            "count": 1,
+            "hex": "848484ff"
+          },
+          {
+            "count": 1,
+            "hex": "bdbdbdff"
+          },
+          {
+            "count": 1,
+            "hex": "4f4f4fff"
+          },
+          {
+            "count": 1,
+            "hex": "858585ff"
+          },
+          {
+            "count": 1,
+            "hex": "c5c5c5ff"
+          },
+          {
+            "count": 1,
+            "hex": "343434ff"
+          },
+          {
+            "count": 1,
+            "hex": "5b5b5bff"
+          },
+          {
+            "count": 1,
+            "hex": "141414ff"
+          },
+          {
+            "count": 1,
+            "hex": "f1f1f1ff"
+          },
+          {
+            "count": 1,
+            "hex": "3a3a3aff"
+          },
+          {
+            "count": 1,
+            "hex": "bebebeff"
+          },
+          {
+            "count": 1,
+            "hex": "d4d4d4ff"
+          },
+          {
+            "count": 1,
+            "hex": "474747ff"
+          },
+          {
+            "count": 1,
+            "hex": "ecececff"
+          },
+          {
+            "count": 1,
+            "hex": "ddddddff"
+          },
+          {
+            "count": 1,
+            "hex": "dbdbdbff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "95767048ea049eb122627648bfd00f15b094345619974e4f9a7b5e81f07fb9df",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_2_ct0_d8",
+      "public_function": "public_complete_filter_2_ct0_d8",
+      "bridge_function": "e6_complete_filter_2_ct0_d8",
+      "row_function": "e6_rows_filter_2_ct0_d8",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/2-ct2-d8",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "5b4240f9ba6ea1dc2a185d5a115fea76006acf4455ab5fa93084d20c096e275b",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "e1566cff"
+          },
+          {
+            "count": 1,
+            "hex": "718e5dff"
+          },
+          {
+            "count": 1,
+            "hex": "28336cff"
+          },
+          {
+            "count": 1,
+            "hex": "03ad36ff"
+          },
+          {
+            "count": 1,
+            "hex": "26e37bff"
+          },
+          {
+            "count": 1,
+            "hex": "00bcb2ff"
+          },
+          {
+            "count": 1,
+            "hex": "12cedeff"
+          },
+          {
+            "count": 1,
+            "hex": "7709b1ff"
+          },
+          {
+            "count": 1,
+            "hex": "d5b163ff"
+          },
+          {
+            "count": 1,
+            "hex": "ade1b7ff"
+          },
+          {
+            "count": 1,
+            "hex": "266ba0ff"
+          },
+          {
+            "count": 1,
+            "hex": "e69a10ff"
+          },
+          {
+            "count": 1,
+            "hex": "7317fbff"
+          },
+          {
+            "count": 1,
+            "hex": "0c20d8ff"
+          },
+          {
+            "count": 1,
+            "hex": "eeb44bff"
+          },
+          {
+            "count": 1,
+            "hex": "aed835ff"
+          },
+          {
+            "count": 1,
+            "hex": "4dd919ff"
+          },
+          {
+            "count": 1,
+            "hex": "82d584ff"
+          },
+          {
+            "count": 1,
+            "hex": "18b0a8ff"
+          },
+          {
+            "count": 1,
+            "hex": "ff8d5fff"
+          },
+          {
+            "count": 1,
+            "hex": "74ed8cff"
+          },
+          {
+            "count": 1,
+            "hex": "9fe9bfff"
+          },
+          {
+            "count": 1,
+            "hex": "9fcedcff"
+          },
+          {
+            "count": 1,
+            "hex": "1596f3ff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "e9e950c9b36237824a5a14bb575fe50dd0a653cfbeb5ac096757506b7c1053af",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_2_ct2_d8",
+      "public_function": "public_complete_filter_2_ct2_d8",
+      "bridge_function": "e6_complete_filter_2_ct2_d8",
+      "row_function": "e6_rows_filter_2_ct2_d8",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/2-ct2-d16",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "0a7fdace7787764a556225def6f382082e74c963c9e28712ae3e539eddf4e5b9",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "7b0ee2ff"
+          },
+          {
+            "count": 1,
+            "hex": "bd5427ff"
+          },
+          {
+            "count": 1,
+            "hex": "f0acf4ff"
+          },
+          {
+            "count": 1,
+            "hex": "e875feff"
+          },
+          {
+            "count": 1,
+            "hex": "8d198aff"
+          },
+          {
+            "count": 1,
+            "hex": "bf379fff"
+          },
+          {
+            "count": 1,
+            "hex": "d2acfdff"
+          },
+          {
+            "count": 1,
+            "hex": "cfa7deff"
+          },
+          {
+            "count": 1,
+            "hex": "c991acff"
+          },
+          {
+            "count": 1,
+            "hex": "de7f04ff"
+          },
+          {
+            "count": 1,
+            "hex": "20deddff"
+          },
+          {
+            "count": 1,
+            "hex": "9cb3d7ff"
+          },
+          {
+            "count": 1,
+            "hex": "b0a23cff"
+          },
+          {
+            "count": 1,
+            "hex": "630c3fff"
+          },
+          {
+            "count": 1,
+            "hex": "f2e877ff"
+          },
+          {
+            "count": 1,
+            "hex": "93d81dff"
+          },
+          {
+            "count": 1,
+            "hex": "91d223ff"
+          },
+          {
+            "count": 1,
+            "hex": "5134faff"
+          },
+          {
+            "count": 1,
+            "hex": "7f8fbaff"
+          },
+          {
+            "count": 1,
+            "hex": "75a561ff"
+          },
+          {
+            "count": 1,
+            "hex": "c2048eff"
+          },
+          {
+            "count": 1,
+            "hex": "1857ebff"
+          },
+          {
+            "count": 1,
+            "hex": "fc1c81ff"
+          },
+          {
+            "count": 1,
+            "hex": "0ea910ff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "a571a507b004429acaeb2d00e15d1b3da702e78dca67ea3e9a441cadfbf37677",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_2_ct2_d16",
+      "public_function": "public_complete_filter_2_ct2_d16",
+      "bridge_function": "e6_complete_filter_2_ct2_d16",
+      "row_function": "e6_rows_filter_2_ct2_d16",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/2-ct4-d8",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "e03a776e1b11fe3a19ac1901701c3ac01e8456a45ca8428e29b36b3f3cff3f2c",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "1a1a1a92"
+          },
+          {
+            "count": 1,
+            "hex": "44444495"
+          },
+          {
+            "count": 1,
+            "hex": "b5b5b521"
+          },
+          {
+            "count": 1,
+            "hex": "8484842d"
+          },
+          {
+            "count": 1,
+            "hex": "8e8e8e4d"
+          },
+          {
+            "count": 1,
+            "hex": "1212128f"
+          },
+          {
+            "count": 1,
+            "hex": "c8c8c881"
+          },
+          {
+            "count": 1,
+            "hex": "4a4a4aad"
+          },
+          {
+            "count": 1,
+            "hex": "363636b4"
+          },
+          {
+            "count": 1,
+            "hex": "111111b1"
+          },
+          {
+            "count": 1,
+            "hex": "3333336f"
+          },
+          {
+            "count": 1,
+            "hex": "efefef07"
+          },
+          {
+            "count": 1,
+            "hex": "b2b2b253"
+          },
+          {
+            "count": 1,
+            "hex": "aaaaaa86"
+          },
+          {
+            "count": 1,
+            "hex": "1616169b"
+          },
+          {
+            "count": 1,
+            "hex": "47474783"
+          },
+          {
+            "count": 1,
+            "hex": "434343b8"
+          },
+          {
+            "count": 1,
+            "hex": "f7f7f719"
+          },
+          {
+            "count": 1,
+            "hex": "242424c4"
+          },
+          {
+            "count": 1,
+            "hex": "47474700"
+          },
+          {
+            "count": 1,
+            "hex": "2424245f"
+          },
+          {
+            "count": 1,
+            "hex": "2c2c2cd0"
+          },
+          {
+            "count": 1,
+            "hex": "ffffff8f"
+          },
+          {
+            "count": 1,
+            "hex": "767676ac"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "1112dc0e5eff99cfc74d8faeb9f043130a4b2cfb541712d7f56834083aaed2fb",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_2_ct4_d8",
+      "public_function": "public_complete_filter_2_ct4_d8",
+      "bridge_function": "e6_complete_filter_2_ct4_d8",
+      "row_function": "e6_rows_filter_2_ct4_d8",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/2-ct6-d16",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "fe8c4c8a3b9734f785149f1c2ca4e1b6c339d77ac083b857f0adf48f50582ddc",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "cb9638d7"
+          },
+          {
+            "count": 1,
+            "hex": "d76ac103"
+          },
+          {
+            "count": 1,
+            "hex": "8465a8ae"
+          },
+          {
+            "count": 1,
+            "hex": "656d3798"
+          },
+          {
+            "count": 1,
+            "hex": "8a6f0d20"
+          },
+          {
+            "count": 1,
+            "hex": "13079ab6"
+          },
+          {
+            "count": 1,
+            "hex": "1cefc924"
+          },
+          {
+            "count": 1,
+            "hex": "352d8b46"
+          },
+          {
+            "count": 1,
+            "hex": "8c2d3e7e"
+          },
+          {
+            "count": 1,
+            "hex": "3892c991"
+          },
+          {
+            "count": 1,
+            "hex": "f3019ed4"
+          },
+          {
+            "count": 1,
+            "hex": "603f38ba"
+          },
+          {
+            "count": 1,
+            "hex": "8103f72f"
+          },
+          {
+            "count": 1,
+            "hex": "cd9ba091"
+          },
+          {
+            "count": 1,
+            "hex": "0443b637"
+          },
+          {
+            "count": 1,
+            "hex": "bf415a7e"
+          },
+          {
+            "count": 1,
+            "hex": "f0534f78"
+          },
+          {
+            "count": 1,
+            "hex": "51d20c3a"
+          },
+          {
+            "count": 1,
+            "hex": "f1eee9e9"
+          },
+          {
+            "count": 1,
+            "hex": "3a0ce6a6"
+          },
+          {
+            "count": 1,
+            "hex": "4b0771d2"
+          },
+          {
+            "count": 1,
+            "hex": "992ddc3a"
+          },
+          {
+            "count": 1,
+            "hex": "1d18fcf9"
+          },
+          {
+            "count": 1,
+            "hex": "182e160d"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "d98cb9e81509a89c48daa00416726b7161bbbbd88dd0aae7fd1eced329590f09",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_2_ct6_d16",
+      "public_function": "public_complete_filter_2_ct6_d16",
+      "bridge_function": "e6_complete_filter_2_ct6_d16",
+      "row_function": "e6_rows_filter_2_ct6_d16",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/3-ct0-d1",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "eb14e12a71eeda7d4739d90d2aa469baad2f274aaf5f1d2218c074fb5c6ff4e7",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 2,
+            "hex": "000000ff"
+          },
+          {
+            "count": 2,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 2,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 1,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 1,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 2,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 2,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 2,
+            "hex": "000000ff"
+          },
+          {
+            "count": 3,
+            "hex": "ffffffff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "07d1fc81d38e489ee65c28f6dd8ca1fb2c4996d7f99dcb6b127100e74a99becb",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_3_ct0_d1",
+      "public_function": "public_complete_filter_3_ct0_d1",
+      "bridge_function": "e6_complete_filter_3_ct0_d1",
+      "row_function": "e6_rows_filter_3_ct0_d1",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/3-ct0-d8",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "e03fd1820d0cc25ca2c00c18e9a342e38a511c16e4cf34fcf09e0f48719c7a47",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "595959ff"
+          },
+          {
+            "count": 1,
+            "hex": "262626ff"
+          },
+          {
+            "count": 1,
+            "hex": "9e9e9eff"
+          },
+          {
+            "count": 1,
+            "hex": "bdbdbdff"
+          },
+          {
+            "count": 1,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "3a3a3aff"
+          },
+          {
+            "count": 1,
+            "hex": "090909ff"
+          },
+          {
+            "count": 1,
+            "hex": "eeeeeeff"
+          },
+          {
+            "count": 1,
+            "hex": "393939ff"
+          },
+          {
+            "count": 1,
+            "hex": "0d0d0dff"
+          },
+          {
+            "count": 1,
+            "hex": "979797ff"
+          },
+          {
+            "count": 1,
+            "hex": "d4d4d4ff"
+          },
+          {
+            "count": 1,
+            "hex": "090909ff"
+          },
+          {
+            "count": 1,
+            "hex": "8b8b8bff"
+          },
+          {
+            "count": 1,
+            "hex": "292929ff"
+          },
+          {
+            "count": 1,
+            "hex": "909090ff"
+          },
+          {
+            "count": 1,
+            "hex": "3b3b3bff"
+          },
+          {
+            "count": 1,
+            "hex": "828282ff"
+          },
+          {
+            "count": 1,
+            "hex": "b3b3b3ff"
+          },
+          {
+            "count": 1,
+            "hex": "202020ff"
+          },
+          {
+            "count": 1,
+            "hex": "626262ff"
+          },
+          {
+            "count": 1,
+            "hex": "151515ff"
+          },
+          {
+            "count": 1,
+            "hex": "c7c7c7ff"
+          },
+          {
+            "count": 1,
+            "hex": "f8f8f8ff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "cdc6245806be105c6b0299b3c7fc1548db9bac3e86e98e315c2cfe562f48ae40",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_3_ct0_d8",
+      "public_function": "public_complete_filter_3_ct0_d8",
+      "bridge_function": "e6_complete_filter_3_ct0_d8",
+      "row_function": "e6_rows_filter_3_ct0_d8",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/3-ct0-d16",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "5500707372e87d5e29f806183e59dd9950e5a8cfb7bf2a68312d3f210c16d1e4",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "060606ff"
+          },
+          {
+            "count": 2,
+            "hex": "747474ff"
+          },
+          {
+            "count": 1,
+            "hex": "282828ff"
+          },
+          {
+            "count": 1,
+            "hex": "2d2d2dff"
+          },
+          {
+            "count": 1,
+            "hex": "bdbdbdff"
+          },
+          {
+            "count": 1,
+            "hex": "272727ff"
+          },
+          {
+            "count": 1,
+            "hex": "383838ff"
+          },
+          {
+            "count": 1,
+            "hex": "949494ff"
+          },
+          {
+            "count": 1,
+            "hex": "2b2b2bff"
+          },
+          {
+            "count": 1,
+            "hex": "232323ff"
+          },
+          {
+            "count": 1,
+            "hex": "030303ff"
+          },
+          {
+            "count": 1,
+            "hex": "aaaaaaff"
+          },
+          {
+            "count": 1,
+            "hex": "7a7a7aff"
+          },
+          {
+            "count": 1,
+            "hex": "f3f3f3ff"
+          },
+          {
+            "count": 1,
+            "hex": "020202ff"
+          },
+          {
+            "count": 1,
+            "hex": "a8a8a8ff"
+          },
+          {
+            "count": 1,
+            "hex": "c0c0c0ff"
+          },
+          {
+            "count": 1,
+            "hex": "dbdbdbff"
+          },
+          {
+            "count": 1,
+            "hex": "d8d8d8ff"
+          },
+          {
+            "count": 1,
+            "hex": "5d5d5dff"
+          },
+          {
+            "count": 1,
+            "hex": "454545ff"
+          },
+          {
+            "count": 1,
+            "hex": "d6d6d6ff"
+          },
+          {
+            "count": 1,
+            "hex": "7a7a7aff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "87a87912c9b1db87314ae3e4468e58413ba2aab56b022dc10c6f271e593fc47e",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_3_ct0_d16",
+      "public_function": "public_complete_filter_3_ct0_d16",
+      "bridge_function": "e6_complete_filter_3_ct0_d16",
+      "row_function": "e6_rows_filter_3_ct0_d16",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/3-ct2-d16",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "5966f00a6a82d9c90831ff5fca1cd2e628276c33c4557b652138efe268d729b6",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "58a889ff"
+          },
+          {
+            "count": 1,
+            "hex": "6aeb44ff"
+          },
+          {
+            "count": 1,
+            "hex": "408464ff"
+          },
+          {
+            "count": 1,
+            "hex": "223b1aff"
+          },
+          {
+            "count": 1,
+            "hex": "421d54ff"
+          },
+          {
+            "count": 1,
+            "hex": "58e848ff"
+          },
+          {
+            "count": 1,
+            "hex": "3f11c8ff"
+          },
+          {
+            "count": 1,
+            "hex": "89400fff"
+          },
+          {
+            "count": 1,
+            "hex": "e678a7ff"
+          },
+          {
+            "count": 1,
+            "hex": "f4744dff"
+          },
+          {
+            "count": 1,
+            "hex": "a6b9d4ff"
+          },
+          {
+            "count": 1,
+            "hex": "feef1fff"
+          },
+          {
+            "count": 1,
+            "hex": "559b55ff"
+          },
+          {
+            "count": 1,
+            "hex": "413447ff"
+          },
+          {
+            "count": 1,
+            "hex": "806b05ff"
+          },
+          {
+            "count": 1,
+            "hex": "0f0640ff"
+          },
+          {
+            "count": 1,
+            "hex": "6d27a7ff"
+          },
+          {
+            "count": 1,
+            "hex": "da6841ff"
+          },
+          {
+            "count": 1,
+            "hex": "c78ec4ff"
+          },
+          {
+            "count": 1,
+            "hex": "340642ff"
+          },
+          {
+            "count": 1,
+            "hex": "2a929aff"
+          },
+          {
+            "count": 1,
+            "hex": "fa7f0cff"
+          },
+          {
+            "count": 1,
+            "hex": "b57551ff"
+          },
+          {
+            "count": 1,
+            "hex": "a92fa9ff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "1eafc20f550d224a663b334fdcb4287223807f1fcf63c9e7bc9525187be842ef",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_3_ct2_d16",
+      "public_function": "public_complete_filter_3_ct2_d16",
+      "bridge_function": "e6_complete_filter_3_ct2_d16",
+      "row_function": "e6_rows_filter_3_ct2_d16",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/3-ct4-d8",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "d8094d0b4b89b1c0afcbf7445f338731ff674b5f61638bc051f056343d64f9ba",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "36363692"
+          },
+          {
+            "count": 1,
+            "hex": "2323234a"
+          },
+          {
+            "count": 1,
+            "hex": "383838b6"
+          },
+          {
+            "count": 1,
+            "hex": "0e0e0e55"
+          },
+          {
+            "count": 1,
+            "hex": "cbcbcb4f"
+          },
+          {
+            "count": 1,
+            "hex": "a6a6a662"
+          },
+          {
+            "count": 1,
+            "hex": "404040e1"
+          },
+          {
+            "count": 1,
+            "hex": "e8e8e8ee"
+          },
+          {
+            "count": 1,
+            "hex": "969696e9"
+          },
+          {
+            "count": 1,
+            "hex": "86868626"
+          },
+          {
+            "count": 1,
+            "hex": "39393912"
+          },
+          {
+            "count": 1,
+            "hex": "e0e0e035"
+          },
+          {
+            "count": 1,
+            "hex": "aaaaaa4f"
+          },
+          {
+            "count": 1,
+            "hex": "313131bd"
+          },
+          {
+            "count": 1,
+            "hex": "ccccccbd"
+          },
+          {
+            "count": 1,
+            "hex": "fdfdfd41"
+          },
+          {
+            "count": 1,
+            "hex": "565656a8"
+          },
+          {
+            "count": 1,
+            "hex": "afafaff7"
+          },
+          {
+            "count": 1,
+            "hex": "d4d4d415"
+          },
+          {
+            "count": 1,
+            "hex": "e9e9e99c"
+          },
+          {
+            "count": 1,
+            "hex": "8f8f8f9f"
+          },
+          {
+            "count": 1,
+            "hex": "212121a1"
+          },
+          {
+            "count": 1,
+            "hex": "0e0e0e1e"
+          },
+          {
+            "count": 1,
+            "hex": "5c5c5cd8"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "fca142aaf656e1d4bd2947d16f5da5bb7417ded513de951641e36b8491ff275e",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_3_ct4_d8",
+      "public_function": "public_complete_filter_3_ct4_d8",
+      "bridge_function": "e6_complete_filter_3_ct4_d8",
+      "row_function": "e6_rows_filter_3_ct4_d8",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/3-ct6-d16",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "dc2d12689767459819a6365e0425fa3864c14a944e33f889be1469cea891fb03",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "cc596898"
+          },
+          {
+            "count": 1,
+            "hex": "a7f6d9d5"
+          },
+          {
+            "count": 1,
+            "hex": "8d94d332"
+          },
+          {
+            "count": 1,
+            "hex": "1de5caec"
+          },
+          {
+            "count": 1,
+            "hex": "7c8ef77e"
+          },
+          {
+            "count": 1,
+            "hex": "1ed2f3fb"
+          },
+          {
+            "count": 1,
+            "hex": "7b37a116"
+          },
+          {
+            "count": 1,
+            "hex": "73de4ad6"
+          },
+          {
+            "count": 1,
+            "hex": "bd3c4cc1"
+          },
+          {
+            "count": 1,
+            "hex": "f4072842"
+          },
+          {
+            "count": 1,
+            "hex": "1e165021"
+          },
+          {
+            "count": 1,
+            "hex": "a0691969"
+          },
+          {
+            "count": 1,
+            "hex": "d2f1bf3e"
+          },
+          {
+            "count": 1,
+            "hex": "6b15b0f3"
+          },
+          {
+            "count": 1,
+            "hex": "b3eb8b9a"
+          },
+          {
+            "count": 1,
+            "hex": "3aee40e1"
+          },
+          {
+            "count": 1,
+            "hex": "37580520"
+          },
+          {
+            "count": 1,
+            "hex": "ea6bed68"
+          },
+          {
+            "count": 1,
+            "hex": "03e10412"
+          },
+          {
+            "count": 1,
+            "hex": "658e3b2b"
+          },
+          {
+            "count": 1,
+            "hex": "d28549a5"
+          },
+          {
+            "count": 1,
+            "hex": "ccc1c186"
+          },
+          {
+            "count": 1,
+            "hex": "eb5c8327"
+          },
+          {
+            "count": 1,
+            "hex": "8d59c5d5"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "2aea8a55bcacb1136506677cf6cf294bcc5b8b9a8a8a1c6b6d5e39fe5f8c78d5",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_3_ct6_d16",
+      "public_function": "public_complete_filter_3_ct6_d16",
+      "bridge_function": "e6_complete_filter_3_ct6_d16",
+      "row_function": "e6_rows_filter_3_ct6_d16",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/4-ct0-d1",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "7960412b55ab2a7e52a570d073403e722859da2e8a42e6a5fcc2584494ef93c2",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 2,
+            "hex": "000000ff"
+          },
+          {
+            "count": 2,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 1,
+            "hex": "000000ff"
+          },
+          {
+            "count": 3,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 3,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 1,
+            "hex": "000000ff"
+          },
+          {
+            "count": 3,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 1,
+            "hex": "000000ff"
+          },
+          {
+            "count": 2,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 1,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          },
+          {
+            "count": 2,
+            "hex": "000000ff"
+          },
+          {
+            "count": 1,
+            "hex": "ffffffff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "4535791ec2fac25c53c2824f34d31806f4c70bd3d9305f16438bd4450ae9da6b",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_4_ct0_d1",
+      "public_function": "public_complete_filter_4_ct0_d1",
+      "bridge_function": "e6_complete_filter_4_ct0_d1",
+      "row_function": "e6_rows_filter_4_ct0_d1",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/4-ct0-d8",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "3df57738f47ed564e1f81dca1b705a833ab6d69fcd2862411e7f55550ae763a6",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "4e4e4eff"
+          },
+          {
+            "count": 1,
+            "hex": "a9a9a9ff"
+          },
+          {
+            "count": 1,
+            "hex": "494949ff"
+          },
+          {
+            "count": 1,
+            "hex": "e0e0e0ff"
+          },
+          {
+            "count": 1,
+            "hex": "656565ff"
+          },
+          {
+            "count": 1,
+            "hex": "0f0f0fff"
+          },
+          {
+            "count": 1,
+            "hex": "ccccccff"
+          },
+          {
+            "count": 1,
+            "hex": "969696ff"
+          },
+          {
+            "count": 1,
+            "hex": "363636ff"
+          },
+          {
+            "count": 1,
+            "hex": "e8e8e8ff"
+          },
+          {
+            "count": 1,
+            "hex": "9c9c9cff"
+          },
+          {
+            "count": 1,
+            "hex": "8c8c8cff"
+          },
+          {
+            "count": 1,
+            "hex": "121212ff"
+          },
+          {
+            "count": 1,
+            "hex": "3c3c3cff"
+          },
+          {
+            "count": 1,
+            "hex": "ecececff"
+          },
+          {
+            "count": 1,
+            "hex": "c0c0c0ff"
+          },
+          {
+            "count": 1,
+            "hex": "0e0e0eff"
+          },
+          {
+            "count": 1,
+            "hex": "8c8c8cff"
+          },
+          {
+            "count": 1,
+            "hex": "858585ff"
+          },
+          {
+            "count": 1,
+            "hex": "e0e0e0ff"
+          },
+          {
+            "count": 1,
+            "hex": "9d9d9dff"
+          },
+          {
+            "count": 1,
+            "hex": "202020ff"
+          },
+          {
+            "count": 1,
+            "hex": "101010ff"
+          },
+          {
+            "count": 1,
+            "hex": "494949ff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "e7ef4b303f580c9f912b6db56841fd34bfdbafcf0f3289b519ce98354dae34b3",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_4_ct0_d8",
+      "public_function": "public_complete_filter_4_ct0_d8",
+      "bridge_function": "e6_complete_filter_4_ct0_d8",
+      "row_function": "e6_rows_filter_4_ct0_d8",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/4-ct0-d16",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "678584912dca8f5244b7aed772460200bba16d8a38d30427930a4709b4298e9d",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "e5e5e5ff"
+          },
+          {
+            "count": 1,
+            "hex": "080808ff"
+          },
+          {
+            "count": 1,
+            "hex": "070707ff"
+          },
+          {
+            "count": 1,
+            "hex": "1d1d1dff"
+          },
+          {
+            "count": 1,
+            "hex": "636363ff"
+          },
+          {
+            "count": 1,
+            "hex": "d2d2d2ff"
+          },
+          {
+            "count": 1,
+            "hex": "989898ff"
+          },
+          {
+            "count": 1,
+            "hex": "595959ff"
+          },
+          {
+            "count": 1,
+            "hex": "dcdcdcff"
+          },
+          {
+            "count": 1,
+            "hex": "f5f5f5ff"
+          },
+          {
+            "count": 1,
+            "hex": "282828ff"
+          },
+          {
+            "count": 1,
+            "hex": "979797ff"
+          },
+          {
+            "count": 1,
+            "hex": "595959ff"
+          },
+          {
+            "count": 1,
+            "hex": "bdbdbdff"
+          },
+          {
+            "count": 1,
+            "hex": "9b9b9bff"
+          },
+          {
+            "count": 1,
+            "hex": "303030ff"
+          },
+          {
+            "count": 1,
+            "hex": "0a0a0aff"
+          },
+          {
+            "count": 1,
+            "hex": "8c8c8cff"
+          },
+          {
+            "count": 1,
+            "hex": "070707ff"
+          },
+          {
+            "count": 1,
+            "hex": "ccccccff"
+          },
+          {
+            "count": 1,
+            "hex": "3f3f3fff"
+          },
+          {
+            "count": 1,
+            "hex": "b3b3b3ff"
+          },
+          {
+            "count": 1,
+            "hex": "050505ff"
+          },
+          {
+            "count": 1,
+            "hex": "acacacff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "a3b375b96263ebba84d30d5482ec899ca7657e2111c677a906e63a74aa4bd31d",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_4_ct0_d16",
+      "public_function": "public_complete_filter_4_ct0_d16",
+      "bridge_function": "e6_complete_filter_4_ct0_d16",
+      "row_function": "e6_rows_filter_4_ct0_d16",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/4-ct2-d8",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "880034e99eb8c6dd5cd682e5f9fd380a1c663e5c3be4f00524a77e2e0b707ad0",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "659a14ff"
+          },
+          {
+            "count": 1,
+            "hex": "55034cff"
+          },
+          {
+            "count": 1,
+            "hex": "1a48f8ff"
+          },
+          {
+            "count": 1,
+            "hex": "971ca9ff"
+          },
+          {
+            "count": 1,
+            "hex": "aa9637ff"
+          },
+          {
+            "count": 1,
+            "hex": "cc56f7ff"
+          },
+          {
+            "count": 1,
+            "hex": "db14e8ff"
+          },
+          {
+            "count": 1,
+            "hex": "ad9df3ff"
+          },
+          {
+            "count": 1,
+            "hex": "9892edff"
+          },
+          {
+            "count": 1,
+            "hex": "05b9adff"
+          },
+          {
+            "count": 1,
+            "hex": "337266ff"
+          },
+          {
+            "count": 1,
+            "hex": "09e29bff"
+          },
+          {
+            "count": 1,
+            "hex": "fef589ff"
+          },
+          {
+            "count": 1,
+            "hex": "332527ff"
+          },
+          {
+            "count": 1,
+            "hex": "2dee4aff"
+          },
+          {
+            "count": 1,
+            "hex": "8b93e1ff"
+          },
+          {
+            "count": 1,
+            "hex": "0357e5ff"
+          },
+          {
+            "count": 1,
+            "hex": "9ff89dff"
+          },
+          {
+            "count": 1,
+            "hex": "659b1fff"
+          },
+          {
+            "count": 1,
+            "hex": "9950f6ff"
+          },
+          {
+            "count": 1,
+            "hex": "660747ff"
+          },
+          {
+            "count": 1,
+            "hex": "d60352ff"
+          },
+          {
+            "count": 1,
+            "hex": "fb9d4fff"
+          },
+          {
+            "count": 1,
+            "hex": "fb9cb7ff"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "3a313070d052c525b8c854f4e96898ba143641776906d77e89ce26394a02f95f",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_4_ct2_d8",
+      "public_function": "public_complete_filter_4_ct2_d8",
+      "bridge_function": "e6_complete_filter_4_ct2_d8",
+      "row_function": "e6_rows_filter_4_ct2_d8",
+      "fresh_pixels": 24
+    },
+    {
+      "name": "filter/4-ct4-d8",
+      "entry": "still",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "b58be1ac252e72f9c5d803a7d58c5146353402207d51fcfb08eeebc7410bca47",
+      "expected": {
+        "width": 6,
+        "height": 4,
+        "rgba_runs": [
+          {
+            "count": 1,
+            "hex": "2121215a"
+          },
+          {
+            "count": 1,
+            "hex": "393939c6"
+          },
+          {
+            "count": 1,
+            "hex": "ababab22"
+          },
+          {
+            "count": 1,
+            "hex": "8888881f"
+          },
+          {
+            "count": 1,
+            "hex": "545454cd"
+          },
+          {
+            "count": 1,
+            "hex": "98989876"
+          },
+          {
+            "count": 1,
+            "hex": "a0a0a01e"
+          },
+          {
+            "count": 1,
+            "hex": "f8f8f82e"
+          },
+          {
+            "count": 1,
+            "hex": "0909096b"
+          },
+          {
+            "count": 1,
+            "hex": "6f6f6fbc"
+          },
+          {
+            "count": 1,
+            "hex": "28282819"
+          },
+          {
+            "count": 1,
+            "hex": "4d4d4dba"
+          },
+          {
+            "count": 1,
+            "hex": "65656598"
+          },
+          {
+            "count": 1,
+            "hex": "0c0c0c27"
+          },
+          {
+            "count": 1,
+            "hex": "6464642d"
+          },
+          {
+            "count": 1,
+            "hex": "2c2c2ceb"
+          },
+          {
+            "count": 1,
+            "hex": "bdbdbd3b"
+          },
+          {
+            "count": 1,
+            "hex": "2e2e2e42"
+          },
+          {
+            "count": 1,
+            "hex": "d9d9d953"
+          },
+          {
+            "count": 1,
+            "hex": "999999ed"
+          },
+          {
+            "count": 1,
+            "hex": "50505057"
+          },
+          {
+            "count": 1,
+            "hex": "dfdfdf9f"
+          },
+          {
+            "count": 1,
+            "hex": "969696a7"
+          },
+          {
+            "count": 1,
+            "hex": "414141a7"
+          }
+        ]
+      },
+      "expected_rgba_sha256": "d9f819cd3b851a109a2ae4b523beec9622584d471f7374e5891750d260f58660",
+      "certificate_source": "png/png_verus/src/witness_m4_filter_projection.rs",
+      "intermediate_hint_source": "png/inflate_verus/tools/witness_extended.json",
+      "intermediate_hint_source_sha256": "62b590a2b88f4f80c38dac6c003e21028c73679e93fa2ee53909593b778ed8fb",
+      "hints_are_not_expected_values": true,
+      "model_function": "model_complete_filter_4_ct4_d8",
+      "public_function": "public_complete_filter_4_ct4_d8",
+      "bridge_function": "e6_complete_filter_4_ct4_d8",
+      "row_function": "e6_rows_filter_4_ct4_d8",
+      "fresh_pixels": 24
+    }
+  ]
+}

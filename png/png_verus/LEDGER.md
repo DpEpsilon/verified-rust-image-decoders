@@ -1,5 +1,55 @@
 # png_verus ledger
 
+## M6 E6-M4-FILT — all 35 filter records complete (2026-11-25)
+
+**All 35 filter records are complete at M6: the 28 remaining records extend accepted C1 additively.** Full host **820** and i686 **823** each verify **6,984, zero errors**, against identical 106-file inventories with every existing leaf, `--no-cheating`, default solver limits, 256 MiB stacks and unchanged 3,600-second process caps. Times are **49m22s host** and **49m56s i686**. The checkpoint adds **168 goals** to accepted C1. Independent acceptance remains pending.
+
+Each record proves every frozen dimension and all 96 RGBA bytes against independent complete MS, then makes a real ordinary `png::try_decode_still` call retaining full native/model equality and actual OOM request membership. The 35 records contain **840 pixels and 3,360 physical RGBA bytes**; 28 records with 672 pixels and 2,688 bytes are newly complete. Expected values come only from frozen VECTORS; reconstruction hints remain untrusted and checked through unchanged filter contracts. Every accepted C1 function, shared row lemma and document-model corollary remains byte-for-byte unchanged. Only generated witness tails append; no original model, public contract or native body changes.
+
+The independent auditor checks all 35 full output literals, exact public function names and actual native byte arrays, and rejects changed pixel/width/height literals. It independently specifies the full E6 FILT batch set, rejects duplicate index entries before summing, requires exact schedule equality, and rejects duplicate/omitted/unexpected-index negative controls, resolving the low finding in the passing Astra C1 review. These literal controls are not a decoder mutation campaign. The new generator reproduces both complete Rust modules and its repository-relative index as raw bytes. All 1,329 historical evidence hashes remain unchanged.
+
+| Frozen record | Current E6 assignment | Complete model / ordinary public witness |
+|---|---|---|
+| `filter/0-ct0-d1` | complete at M6 | `model_complete_filter_0_ct0_d1` / `public_complete_filter_0_ct0_d1` |
+| `filter/1-ct0-d8` | complete at M6 | `model_complete_filter_1_ct0_d8` / `public_complete_filter_1_ct0_d8` |
+| `filter/2-ct0-d16` | complete at M6 | `model_complete_filter_2_ct0_d16` / `public_complete_filter_2_ct0_d16` |
+| `filter/3-ct2-d8` | complete at M6 | `model_complete_filter_3_ct2_d8` / `public_complete_filter_3_ct2_d8` |
+| `filter/4-ct2-d16` | complete at M6 | `model_complete_filter_4_ct2_d16` / `public_complete_filter_4_ct2_d16` |
+| `filter/1-ct4-d8` | complete at M6 | `model_complete_filter_1_ct4_d8` / `public_complete_filter_1_ct4_d8` |
+| `filter/4-ct6-d16` | complete at M6 | `model_complete_filter_4_ct6_d16` / `public_complete_filter_4_ct6_d16` |
+| `filter/0-ct0-d8` | complete at M6 | `model_complete_filter_0_ct0_d8` / `public_complete_filter_0_ct0_d8` |
+| `filter/0-ct0-d16` | complete at M6 | `model_complete_filter_0_ct0_d16` / `public_complete_filter_0_ct0_d16` |
+| `filter/0-ct2-d8` | complete at M6 | `model_complete_filter_0_ct2_d8` / `public_complete_filter_0_ct2_d8` |
+| `filter/0-ct2-d16` | complete at M6 | `model_complete_filter_0_ct2_d16` / `public_complete_filter_0_ct2_d16` |
+| `filter/0-ct4-d8` | complete at M6 | `model_complete_filter_0_ct4_d8` / `public_complete_filter_0_ct4_d8` |
+| `filter/0-ct6-d16` | complete at M6 | `model_complete_filter_0_ct6_d16` / `public_complete_filter_0_ct6_d16` |
+| `filter/1-ct0-d1` | complete at M6 | `model_complete_filter_1_ct0_d1` / `public_complete_filter_1_ct0_d1` |
+| `filter/1-ct0-d16` | complete at M6 | `model_complete_filter_1_ct0_d16` / `public_complete_filter_1_ct0_d16` |
+| `filter/1-ct2-d8` | complete at M6 | `model_complete_filter_1_ct2_d8` / `public_complete_filter_1_ct2_d8` |
+| `filter/1-ct2-d16` | complete at M6 | `model_complete_filter_1_ct2_d16` / `public_complete_filter_1_ct2_d16` |
+| `filter/1-ct6-d16` | complete at M6 | `model_complete_filter_1_ct6_d16` / `public_complete_filter_1_ct6_d16` |
+| `filter/2-ct0-d1` | complete at M6 | `model_complete_filter_2_ct0_d1` / `public_complete_filter_2_ct0_d1` |
+| `filter/2-ct0-d8` | complete at M6 | `model_complete_filter_2_ct0_d8` / `public_complete_filter_2_ct0_d8` |
+| `filter/2-ct2-d8` | complete at M6 | `model_complete_filter_2_ct2_d8` / `public_complete_filter_2_ct2_d8` |
+| `filter/2-ct2-d16` | complete at M6 | `model_complete_filter_2_ct2_d16` / `public_complete_filter_2_ct2_d16` |
+| `filter/2-ct4-d8` | complete at M6 | `model_complete_filter_2_ct4_d8` / `public_complete_filter_2_ct4_d8` |
+| `filter/2-ct6-d16` | complete at M6 | `model_complete_filter_2_ct6_d16` / `public_complete_filter_2_ct6_d16` |
+| `filter/3-ct0-d1` | complete at M6 | `model_complete_filter_3_ct0_d1` / `public_complete_filter_3_ct0_d1` |
+| `filter/3-ct0-d8` | complete at M6 | `model_complete_filter_3_ct0_d8` / `public_complete_filter_3_ct0_d8` |
+| `filter/3-ct0-d16` | complete at M6 | `model_complete_filter_3_ct0_d16` / `public_complete_filter_3_ct0_d16` |
+| `filter/3-ct2-d16` | complete at M6 | `model_complete_filter_3_ct2_d16` / `public_complete_filter_3_ct2_d16` |
+| `filter/3-ct4-d8` | complete at M6 | `model_complete_filter_3_ct4_d8` / `public_complete_filter_3_ct4_d8` |
+| `filter/3-ct6-d16` | complete at M6 | `model_complete_filter_3_ct6_d16` / `public_complete_filter_3_ct6_d16` |
+| `filter/4-ct0-d1` | complete at M6 | `model_complete_filter_4_ct0_d1` / `public_complete_filter_4_ct0_d1` |
+| `filter/4-ct0-d8` | complete at M6 | `model_complete_filter_4_ct0_d8` / `public_complete_filter_4_ct0_d8` |
+| `filter/4-ct0-d16` | complete at M6 | `model_complete_filter_4_ct0_d16` / `public_complete_filter_4_ct0_d16` |
+| `filter/4-ct2-d8` | complete at M6 | `model_complete_filter_4_ct2_d8` / `public_complete_filter_4_ct2_d8` |
+| `filter/4-ct4-d8` | complete at M6 | `model_complete_filter_4_ct4_d8` / `public_complete_filter_4_ct4_d8` |
+
+Coverage completes **81 distinct moved records and 82 assignments**, leaving **36 A7 records**. The seven prior complete errors remain unchanged. Before completing A7, run a small calibration spanning Adam7 coordinate/scatter composition, indexed palette observations and pass granularity, with full host+i686 assurance, then report measured/prospective accumulated times and hold. E6 clause 6 and M6 sign-off remain blocked; 2b remains paused.
+
+Runtime **821** passes release/fault/council tests, cap/allocation self-tests and no_std; frozen conformance is **846/848** with exactly two prescribed skips. Public-error control **822** passes **72/72**. Final control **824** checks source inventories, pins, independent literals, raw reproduction, C1 prefix preservation and historical hashes. The source-bound timing summary distinguishes full acceptance from diagnostic-only timings; no selected-module run earns checkpoint credit. No protected/QUESTIONS edit, trust shortcut, guard/solver/process-limit change, cache build, mutation/CAPS-SYM methodology change, commit or push occurred. Durable drivers remain under `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m6-e6-m4-filt/16cb22f-20261125`.
+
 ## M6 E6-M4-FILT-C1 — seven-record row-proof calibration (2026-11-25)
 
 **Seven filter records are complete at M6; hold before the remaining M4 records.** Full host **812** and i686 **815** each verify **6,816, zero errors**, against identical 105-file inventories with all existing generated leaves, `--no-cheating`, default solver limits, 256 MiB stacks and unchanged **3,600-second process caps per target**. The checkpoint adds **55 goals** to the accepted 6,761-goal E6-M5-F baseline. Wall times are **47m24s host** and **50m09s i686**; the host warning threshold remains 48 minutes. Independent checkpoint review and overall M6 sign-off remain pending.
@@ -577,39 +627,39 @@ Fresh runtime/source run **447** passes release tests, fault injection, all seve
 | Record | Required gate | M4 status | Complete pixel status |
 |---|---|---|---|
 | `filter/0-ct0-d1` | complete at M6 (E6-M4-FILT-C1) | Proved | Proved (full C1 gates) |
-| `filter/0-ct0-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/0-ct0-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/0-ct2-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/0-ct2-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/0-ct4-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/0-ct6-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/1-ct0-d1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/0-ct0-d8` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/0-ct0-d16` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/0-ct2-d8` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/0-ct2-d16` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/0-ct4-d8` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/0-ct6-d16` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/1-ct0-d1` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
 | `filter/1-ct0-d8` | complete at M6 (E6-M4-FILT-C1) | Proved | Proved (full C1 gates) |
-| `filter/1-ct0-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/1-ct2-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/1-ct2-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/1-ct0-d16` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/1-ct2-d8` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/1-ct2-d16` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
 | `filter/1-ct4-d8` | complete at M6 (E6-M4-FILT-C1) | Proved | Proved (full C1 gates) |
-| `filter/1-ct6-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/2-ct0-d1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/2-ct0-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/1-ct6-d16` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/2-ct0-d1` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/2-ct0-d8` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
 | `filter/2-ct0-d16` | complete at M6 (E6-M4-FILT-C1) | Proved | Proved (full C1 gates) |
-| `filter/2-ct2-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/2-ct2-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/2-ct4-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/2-ct6-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/3-ct0-d1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/3-ct0-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/3-ct0-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/2-ct2-d8` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/2-ct2-d16` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/2-ct4-d8` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/2-ct6-d16` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/3-ct0-d1` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/3-ct0-d8` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/3-ct0-d16` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
 | `filter/3-ct2-d8` | complete at M6 (E6-M4-FILT-C1) | Proved | Proved (full C1 gates) |
-| `filter/3-ct2-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/3-ct4-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/3-ct6-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/4-ct0-d1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/4-ct0-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/4-ct0-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/4-ct2-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/3-ct2-d16` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/3-ct4-d8` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/3-ct6-d16` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/4-ct0-d1` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/4-ct0-d8` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/4-ct0-d16` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
+| `filter/4-ct2-d8` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
 | `filter/4-ct2-d16` | complete at M6 (E6-M4-FILT-C1) | Proved | Proved (full C1 gates) |
-| `filter/4-ct4-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/4-ct4-d8` | complete at M6 (E6-M4-FILT) | Proved | Proved (full FILT gates) |
 | `filter/4-ct6-d16` | complete at M6 (E6-M4-FILT-C1) | Proved | Proved (full C1 gates) |
 | `image/filter-type-5` | complete at M4 | Proved | Not applicable |
 | `image/filter-type-255` | complete at M4 | Proved | Not applicable |
@@ -762,39 +812,39 @@ This is an assignment list, not proof credit. All 76 gates below are **unproved*
 | Record | Required gate (all unproved) |
 |---|---|
 | `filter/0-ct0-d1` | complete at M6 (E6-M4-FILT-C1) |
-| `filter/0-ct0-d8` | projection at M4, complete at M6 |
-| `filter/0-ct0-d16` | projection at M4, complete at M6 |
-| `filter/0-ct2-d8` | projection at M4, complete at M6 |
-| `filter/0-ct2-d16` | projection at M4, complete at M6 |
-| `filter/0-ct4-d8` | projection at M4, complete at M6 |
-| `filter/0-ct6-d16` | projection at M4, complete at M6 |
-| `filter/1-ct0-d1` | projection at M4, complete at M6 |
+| `filter/0-ct0-d8` | complete at M6 (E6-M4-FILT) |
+| `filter/0-ct0-d16` | complete at M6 (E6-M4-FILT) |
+| `filter/0-ct2-d8` | complete at M6 (E6-M4-FILT) |
+| `filter/0-ct2-d16` | complete at M6 (E6-M4-FILT) |
+| `filter/0-ct4-d8` | complete at M6 (E6-M4-FILT) |
+| `filter/0-ct6-d16` | complete at M6 (E6-M4-FILT) |
+| `filter/1-ct0-d1` | complete at M6 (E6-M4-FILT) |
 | `filter/1-ct0-d8` | complete at M6 (E6-M4-FILT-C1) |
-| `filter/1-ct0-d16` | projection at M4, complete at M6 |
-| `filter/1-ct2-d8` | projection at M4, complete at M6 |
-| `filter/1-ct2-d16` | projection at M4, complete at M6 |
+| `filter/1-ct0-d16` | complete at M6 (E6-M4-FILT) |
+| `filter/1-ct2-d8` | complete at M6 (E6-M4-FILT) |
+| `filter/1-ct2-d16` | complete at M6 (E6-M4-FILT) |
 | `filter/1-ct4-d8` | complete at M6 (E6-M4-FILT-C1) |
-| `filter/1-ct6-d16` | projection at M4, complete at M6 |
-| `filter/2-ct0-d1` | projection at M4, complete at M6 |
-| `filter/2-ct0-d8` | projection at M4, complete at M6 |
+| `filter/1-ct6-d16` | complete at M6 (E6-M4-FILT) |
+| `filter/2-ct0-d1` | complete at M6 (E6-M4-FILT) |
+| `filter/2-ct0-d8` | complete at M6 (E6-M4-FILT) |
 | `filter/2-ct0-d16` | complete at M6 (E6-M4-FILT-C1) |
-| `filter/2-ct2-d8` | projection at M4, complete at M6 |
-| `filter/2-ct2-d16` | projection at M4, complete at M6 |
-| `filter/2-ct4-d8` | projection at M4, complete at M6 |
-| `filter/2-ct6-d16` | projection at M4, complete at M6 |
-| `filter/3-ct0-d1` | projection at M4, complete at M6 |
-| `filter/3-ct0-d8` | projection at M4, complete at M6 |
-| `filter/3-ct0-d16` | projection at M4, complete at M6 |
+| `filter/2-ct2-d8` | complete at M6 (E6-M4-FILT) |
+| `filter/2-ct2-d16` | complete at M6 (E6-M4-FILT) |
+| `filter/2-ct4-d8` | complete at M6 (E6-M4-FILT) |
+| `filter/2-ct6-d16` | complete at M6 (E6-M4-FILT) |
+| `filter/3-ct0-d1` | complete at M6 (E6-M4-FILT) |
+| `filter/3-ct0-d8` | complete at M6 (E6-M4-FILT) |
+| `filter/3-ct0-d16` | complete at M6 (E6-M4-FILT) |
 | `filter/3-ct2-d8` | complete at M6 (E6-M4-FILT-C1) |
-| `filter/3-ct2-d16` | projection at M4, complete at M6 |
-| `filter/3-ct4-d8` | projection at M4, complete at M6 |
-| `filter/3-ct6-d16` | projection at M4, complete at M6 |
-| `filter/4-ct0-d1` | projection at M4, complete at M6 |
-| `filter/4-ct0-d8` | projection at M4, complete at M6 |
-| `filter/4-ct0-d16` | projection at M4, complete at M6 |
-| `filter/4-ct2-d8` | projection at M4, complete at M6 |
+| `filter/3-ct2-d16` | complete at M6 (E6-M4-FILT) |
+| `filter/3-ct4-d8` | complete at M6 (E6-M4-FILT) |
+| `filter/3-ct6-d16` | complete at M6 (E6-M4-FILT) |
+| `filter/4-ct0-d1` | complete at M6 (E6-M4-FILT) |
+| `filter/4-ct0-d8` | complete at M6 (E6-M4-FILT) |
+| `filter/4-ct0-d16` | complete at M6 (E6-M4-FILT) |
+| `filter/4-ct2-d8` | complete at M6 (E6-M4-FILT) |
 | `filter/4-ct2-d16` | complete at M6 (E6-M4-FILT-C1) |
-| `filter/4-ct4-d8` | projection at M4, complete at M6 |
+| `filter/4-ct4-d8` | complete at M6 (E6-M4-FILT) |
 | `filter/4-ct6-d16` | complete at M6 (E6-M4-FILT-C1) |
 | `image/filter-type-5` | complete at M4 |
 | `image/filter-type-255` | complete at M4 |

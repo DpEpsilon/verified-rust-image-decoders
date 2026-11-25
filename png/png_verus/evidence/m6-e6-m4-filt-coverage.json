@@ -1,0 +1,1226 @@
+{
+  "basis": "ERRATA E6 clauses 1,2,6,7; M3/M4/M5 moved witness schedules; all expectations from spec-frozen/VECTORS.json",
+  "full_runs": [
+    820,
+    823
+  ],
+  "moved_assignments": 118,
+  "distinct_moved_records": 117,
+  "completed_distinct_records": 81,
+  "completed_assignments": 82,
+  "remaining_distinct_records": 36,
+  "retained_complete_errors": [
+    {
+      "name": "image/filter-type-5",
+      "status": "complete at M4; unchanged"
+    },
+    {
+      "name": "image/filter-type-255",
+      "status": "complete at M4; unchanged"
+    },
+    {
+      "name": "precedence/adler-before-filter",
+      "status": "complete at M4; unchanged"
+    },
+    {
+      "name": "precedence/index-row0-before-filter-row1",
+      "status": "complete at M4; unchanged"
+    },
+    {
+      "name": "interlace/1x1-filter-bytes-for-empty-passes",
+      "status": "complete at M4; unchanged"
+    },
+    {
+      "name": "image/palette-index-out-of-range",
+      "status": "complete at M5; unchanged"
+    },
+    {
+      "name": "image/palette-index-out-of-range-d2",
+      "status": "complete at M5; unchanged"
+    }
+  ],
+  "records": [
+    {
+      "name": "anc-ok/iCCP-303",
+      "assignments": [
+        "E6-M3"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "name": "anc-ok/many-text",
+      "assignments": [
+        "E6-M3"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "name": "anc-ok/srgb-and-iccp-both",
+      "assignments": [
+        "E6-M3"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "name": "anc-ok/tIME-7-after-idat",
+      "assignments": [
+        "E6-M3"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "name": "anc-ok/ztxt-with-corrupt-zlib-not-inflated",
+      "assignments": [
+        "E6-M3"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "name": "apng/blend-over-arithmetic",
+      "assignments": [
+        "E6-M5-F"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "name": "apng/blend-over-transparent-destination",
+      "assignments": [
+        "E6-M5-F"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "name": "apng/blend-over-transparent-source",
+      "assignments": [
+        "E6-M5-F"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "name": "apng/blend-over-zero-result-alpha",
+      "assignments": [
+        "E6-M5-F"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "name": "apng/default-is-frame0-dispose-bg-blend-over",
+      "assignments": [
+        "E6-M5-F"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "name": "apng/default-not-in-animation",
+      "assignments": [
+        "E6-M5-F"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "name": "apng/default-not-in-animation-still",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "apng/dispose-previous-first-frame-and-later",
+      "assignments": [
+        "E6-M5-F"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "name": "apng/empty-fdat-payload",
+      "assignments": [
+        "E6-M5-F"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "name": "apng/empty-fdat-payload-still",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "apng/empty-fdat-then-data",
+      "assignments": [
+        "E6-M5-F"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "name": "apng/empty-fdat-then-data-still",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "apng/frame1-adler-error-ends",
+      "assignments": [
+        "E6-M5-F"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "name": "apng/frame1-error-still-unaffected",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "apng/frame1-truncated-data-ends",
+      "assignments": [
+        "E6-M5-F"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "name": "apng/interlaced-subframe",
+      "assignments": [
+        "E6-M5-F"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "name": "apng/static-file-as-frames",
+      "assignments": [
+        "E6-M5-F"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "name": "apng/still-is-default-image",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "container/minimal-ok",
+      "assignments": [
+        "E6-M3"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "name": "container/reserved-bit-ancillary",
+      "assignments": [
+        "E6-M3"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "name": "container/unknown-ancillary-everywhere",
+      "assignments": [
+        "E6-M3"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "name": "depth16/rounding-boundaries",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "filter/0-ct0-d1",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        812,
+        815
+      ]
+    },
+    {
+      "name": "filter/0-ct0-d16",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/0-ct0-d8",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/0-ct2-d16",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/0-ct2-d8",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/0-ct4-d8",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/0-ct6-d16",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/1-ct0-d1",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/1-ct0-d16",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/1-ct0-d8",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        812,
+        815
+      ]
+    },
+    {
+      "name": "filter/1-ct2-d16",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/1-ct2-d8",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/1-ct4-d8",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        812,
+        815
+      ]
+    },
+    {
+      "name": "filter/1-ct6-d16",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/2-ct0-d1",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/2-ct0-d16",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        812,
+        815
+      ]
+    },
+    {
+      "name": "filter/2-ct0-d8",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/2-ct2-d16",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/2-ct2-d8",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/2-ct4-d8",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/2-ct6-d16",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/3-ct0-d1",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/3-ct0-d16",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/3-ct0-d8",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/3-ct2-d16",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/3-ct2-d8",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        812,
+        815
+      ]
+    },
+    {
+      "name": "filter/3-ct4-d8",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/3-ct6-d16",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/4-ct0-d1",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/4-ct0-d16",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/4-ct0-d8",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/4-ct2-d16",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        812,
+        815
+      ]
+    },
+    {
+      "name": "filter/4-ct2-d8",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/4-ct4-d8",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        820,
+        823
+      ]
+    },
+    {
+      "name": "filter/4-ct6-d16",
+      "assignments": [
+        "E6-M4-FILT"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        812,
+        815
+      ]
+    },
+    {
+      "name": "interlace/ct0-d1-1x1",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct0-d1-1x2",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct0-d1-1x5",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct0-d1-1x9",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct0-d1-2x1",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct0-d1-2x2",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct0-d1-3x3",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct0-d1-4x4",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct0-d1-5x1",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct0-d1-5x5",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct0-d1-8x8",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct0-d1-9x1",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct3-d4-1x1",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct3-d4-1x2",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct3-d4-1x5",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct3-d4-1x9",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct3-d4-2x1",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct3-d4-2x2",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct3-d4-3x3",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct3-d4-4x4",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct3-d4-5x1",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct3-d4-5x5",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct3-d4-8x8",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct3-d4-9x1",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct6-d16-1x1",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct6-d16-1x2",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct6-d16-1x5",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct6-d16-1x9",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct6-d16-2x1",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct6-d16-2x2",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct6-d16-3x3",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct6-d16-4x4",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct6-d16-5x1",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct6-d16-5x5",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct6-d16-8x8",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "interlace/ct6-d16-9x1",
+      "assignments": [
+        "E6-M4-A7"
+      ],
+      "status": "pending complete M6 witness",
+      "full_runs": []
+    },
+    {
+      "name": "ok/ct0-d2-il1-7x5",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "ok/ct3-d4-il0-9x10",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "ok/ct4-d16-il1-9x10",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "ok/ct6-d16-il0-17x2",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "ok16/ct0-d1-il0-7x5",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "ok16/ct3-d8-il1-7x5",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "ok16/ct6-d16-il1-7x5",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "order/bkgd-hist-after-plte-before-idat-rgb",
+      "assignments": [
+        "E6-M3"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "name": "order/splt-twice",
+      "assignments": [
+        "E6-M3"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "name": "plte/ok",
+      "assignments": [
+        "E6-M3"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        774,
+        777
+      ]
+    },
+    {
+      "name": "plte/suggested-palette-in-rgb",
+      "assignments": [
+        "E6-M3",
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "trns/grey-d1-masked",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "trns/grey-d16",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "trns/palette-d1-2-entries-2-alpha",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "trns/rgb-d16-low-byte-differs",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "trns16/palette-d1-2-2",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "trns16/palette-d4-16-1",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "trns16/palette-d8-16-16",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "name": "trns16/palette-d8-16-3",
+      "assignments": [
+        "E6-M5-S"
+      ],
+      "status": "complete at M6",
+      "full_runs": [
+        785,
+        788
+      ]
+    }
+  ],
+  "clause_6_all_moved_witnesses_complete": false,
+  "milestone_M6_signoff_allowed_by_E6": false
+}
