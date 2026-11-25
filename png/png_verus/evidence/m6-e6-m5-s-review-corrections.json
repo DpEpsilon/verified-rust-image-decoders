@@ -1,0 +1,19 @@
+{
+  "review_base": "a8bead987cb9cfdf7a0ac117ee0c7b18f784d8b9",
+  "file": "evidence/m6-e6-m3-witness-index.json",
+  "before_sha256": "703082f35be052d5459e2f4d29af3db3f19c304fe0a02e33b7372ad99f1fa922",
+  "after_sha256": "d6ab4a8d1445ef7ea91b1a14efc0aad5f6d0c33b804fe323a3609154b67de373",
+  "Rust_witness_unchanged": true,
+  "reason": "Astra E6-M3 LOW portability: repository-relative certificate paths; raw index reproduction in the E6-M5-S full seal",
+  "old_packet_and_map_are_historical_snapshots": true,
+  "old_index_bytes_retained_in_git_at": "a8bead987cb9cfdf7a0ac117ee0c7b18f784d8b9",
+  "M3_Rust_unchanged": true,
+  "old_run_778_compared_index_after_path_resolution": true,
+  "new_control_compares_Rust_and_index_raw_bytes": true,
+  "independent_literal_control": {
+    "file": "evidence/m6-e6-m5-s-fixture-control.py",
+    "sha256": "1c00e2410350b44fad95ffb7b8f7bfe3ffc4ae339ecc908f98c730dd02c7afc0"
+  },
+  "M5_expected_bytes_independently_audited": 2712,
+  "M3_expected_bytes_independently_audited": 192
+}

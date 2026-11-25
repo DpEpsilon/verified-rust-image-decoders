@@ -1,0 +1,951 @@
+{
+  "title": "Complete Still Witnesses",
+  "scope": "E6-M5-S complete: 22 still assignments, 21 fresh witnesses and one committed overlap; remaining E6 groups pending.",
+  "checkpoint": "E6-M5-S",
+  "base_commit": "a8bead987cb9cfdf7a0ac117ee0c7b18f784d8b9",
+  "full_runs": [
+    785,
+    788
+  ],
+  "claims": [
+    {
+      "id": "ok16/ct0-d1-il0-7x5",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba16_runs"
+      ],
+      "entry": "still16",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "6d8e0650c9d0c859001cba7720564a99210ceb00ee643d0cf4a4afc2012d602e",
+      "expected_rgba_sha256": "d488b328ca0ae649d645779796e9d4c52dddb8410e40d8306e9154323b96b44e",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_ok16_ct0_d1_il0_7x5",
+          "line": 10,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_ok16_ct0_d1_il0_7x5",
+          "line": 15,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_ok16_ct0_d1_il0_7x5",
+          "line": 28361,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "ok/ct0-d2-il1-7x5",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "entry": "still",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "b0944271cbe726e82d419723e2c278b38ded9dfc6d79918d377bb65b39b99d66",
+      "expected_rgba_sha256": "79b60878d1940a50875818ba5c10f54c40b9c52a7da5661bc9d2dcb34c0ca73b",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_ok_ct0_d2_il1_7x5",
+          "line": 28,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_ok_ct0_d2_il1_7x5",
+          "line": 33,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_ok_ct0_d2_il1_7x5",
+          "line": 28383,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "ok/ct3-d4-il0-9x10",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "entry": "still",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "fbaba1cc7632eeb45ab0752ed81d06fc2367408b72c228cb036d40f9609f5457",
+      "expected_rgba_sha256": "fb20b40d47da218ed524712713686ce8b2e03508f65b25bab635e988f78627c6",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_ok_ct3_d4_il0_9x10",
+          "line": 46,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_ok_ct3_d4_il0_9x10",
+          "line": 51,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_ok_ct3_d4_il0_9x10",
+          "line": 28405,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "ok16/ct3-d8-il1-7x5",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba16_runs"
+      ],
+      "entry": "still16",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "fc3e75c42c41a19ff312e9d07abe366db907c88a3dcb85a6b582d73d34dbc6c6",
+      "expected_rgba_sha256": "181a6357fd7c815b3694de9123f6c674e25dcedcaa7626a00077a9b9755b6e2a",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_ok16_ct3_d8_il1_7x5",
+          "line": 64,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_ok16_ct3_d8_il1_7x5",
+          "line": 69,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_ok16_ct3_d8_il1_7x5",
+          "line": 28428,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "ok/ct4-d16-il1-9x10",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "entry": "still",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "b7193d5b1e00160a560309bb5841387aa8d5f46eb43350565c7efe6031e5aaee",
+      "expected_rgba_sha256": "bdf9472ceddfa0f1e722d1c8d91656e5f1163726f6e03c48f6ec9eb62e2aa77f",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_ok_ct4_d16_il1_9x10",
+          "line": 82,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_ok_ct4_d16_il1_9x10",
+          "line": 87,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_ok_ct4_d16_il1_9x10",
+          "line": 28451,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "ok/ct6-d16-il0-17x2",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "entry": "still",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "2ec917b26108a4b3e1364b4c18a27176a6a52481aebbd074dfb3fd64a4fcbab4",
+      "expected_rgba_sha256": "167e4dfbac5ffd644a1c6bd34727fe681bfca687fe6421f1608657a5f8e7ec48",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_ok_ct6_d16_il0_17x2",
+          "line": 100,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_ok_ct6_d16_il0_17x2",
+          "line": 105,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_ok_ct6_d16_il0_17x2",
+          "line": 28473,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "ok16/ct6-d16-il1-7x5",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba16_runs"
+      ],
+      "entry": "still16",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "fa198b7762e537132a7e49f23299c3b710a75e863013b9dc0465e93cbef0b760",
+      "expected_rgba_sha256": "ae83964928b0d5d569cdcf8df5c0b284055aca2c97d4c7ca37a770fa736519e4",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_ok16_ct6_d16_il1_7x5",
+          "line": 118,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_ok16_ct6_d16_il1_7x5",
+          "line": 123,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_ok16_ct6_d16_il1_7x5",
+          "line": 28495,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "trns/grey-d1-masked",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "entry": "still",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "56c7a3187ccc55dad19ec21b0c0631b6165fbc60f6897dfe4349c66fd18bcb90",
+      "expected_rgba_sha256": "d8096621ac5dce5aa6a5a190f91ebd6dae2ee6323b7fab95de50ea2cba5983f7",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_trns_grey_d1_masked",
+          "line": 136,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_trns_grey_d1_masked",
+          "line": 141,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_trns_grey_d1_masked",
+          "line": 28517,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "trns/grey-d16",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "entry": "still",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "d51fcef34af6ddb9ec5352938cb2db1fa7b73e5279b91a867e6a6700b97d6244",
+      "expected_rgba_sha256": "a78f9a3e9c37ca97f4bea7295d61c30bf38874cf2f438823013e35bdccf2efb1",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_trns_grey_d16",
+          "line": 154,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_trns_grey_d16",
+          "line": 159,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_trns_grey_d16",
+          "line": 28540,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "trns/rgb-d16-low-byte-differs",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "entry": "still",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "1488e80ffa51764c2dbdcd25fbe40ed9d3ac8051211ca437cb25504ca6767925",
+      "expected_rgba_sha256": "b756456c9656ab60110c36384fa37c37bd3229b3a6738903c175d6611d78b5ae",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_trns_rgb_d16_low_byte_differs",
+          "line": 172,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_trns_rgb_d16_low_byte_differs",
+          "line": 177,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_trns_rgb_d16_low_byte_differs",
+          "line": 28563,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "trns16/palette-d8-16-3",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba16_runs"
+      ],
+      "entry": "still16",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "2a0d5b8190e993cc162e3e4792a68683c47aad969b5254998780ac78c96f70c2",
+      "expected_rgba_sha256": "088f33d0c6a8caa7fec21beaefe6fdcaebf316c88ec1b77d30562ceb8f8b5c01",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_trns16_palette_d8_16_3",
+          "line": 190,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_trns16_palette_d8_16_3",
+          "line": 195,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_trns16_palette_d8_16_3",
+          "line": 28586,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "trns16/palette-d8-16-16",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba16_runs"
+      ],
+      "entry": "still16",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "007e8441fe09eb2bd20c85577861a542bbe90585e0d23a686ea0b4faa114cb96",
+      "expected_rgba_sha256": "d8bf7974eaf555e7c85226079fd656577d15740c3c658bbfc7eee76da6cb1926",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_trns16_palette_d8_16_16",
+          "line": 208,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_trns16_palette_d8_16_16",
+          "line": 213,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_trns16_palette_d8_16_16",
+          "line": 28610,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "trns16/palette-d4-16-1",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba16_runs"
+      ],
+      "entry": "still16",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "ecd1d643fb5411966ace900ab2f977fcf3bf62eff409a84c655090a687706291",
+      "expected_rgba_sha256": "550b42306248a208beaa504cca768a363790be7114093df874ce677df291d8f3",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_trns16_palette_d4_16_1",
+          "line": 226,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_trns16_palette_d4_16_1",
+          "line": 231,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_trns16_palette_d4_16_1",
+          "line": 28634,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "trns/palette-d1-2-entries-2-alpha",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "entry": "still",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "75d95dc397398515b4d8b5361bcc7e1583bfcdff65a1ffeab6ba142069a292a7",
+      "expected_rgba_sha256": "5443c3fb3edb8331da0e42e5f873f45088ccb467499e4dbe6fef544da304cf87",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_trns_palette_d1_2_entries_2_alpha",
+          "line": 244,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_trns_palette_d1_2_entries_2_alpha",
+          "line": 249,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_trns_palette_d1_2_entries_2_alpha",
+          "line": 28658,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "trns16/palette-d1-2-2",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba16_runs"
+      ],
+      "entry": "still16",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "75d95dc397398515b4d8b5361bcc7e1583bfcdff65a1ffeab6ba142069a292a7",
+      "expected_rgba_sha256": "bb74f2a170b0c52baa7ae0a9f5d128c4e8c224d7aaefc489a77b4455a8c7149e",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_trns16_palette_d1_2_2",
+          "line": 262,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_trns16_palette_d1_2_2",
+          "line": 267,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_trns16_palette_d1_2_2",
+          "line": 28682,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "depth16/rounding-boundaries",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "entry": "still",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "fea427c1fcf1d7740b46a34102802717bb6f990e6957d241440373cce2b6a2d6",
+      "expected_rgba_sha256": "3394abbe10270d82e9c7bfa7b9f464449b85b83d5fe1caf97d1906b58cd4da3c",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_depth16_rounding_boundaries",
+          "line": 280,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_depth16_rounding_boundaries",
+          "line": 285,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_depth16_rounding_boundaries",
+          "line": 28706,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "plte/suggested-palette-in-rgb",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "entry": "still",
+      "fresh_witness": false,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "3c90d101acc8a855fa0a6b4b217c4193149e1dcf99294be03317f037b0bee059",
+      "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "model_complete_plte_suggested_palette_in_rgb",
+          "line": 2004,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        },
+        {
+          "file": "src/witness_m6_m3.rs",
+          "function": "public_complete_plte_suggested_palette_in_rgb",
+          "line": 2019,
+          "sha256": "69803cb225f40e98966951e7c363bf57637a61076b4ab9a538303790fdb28a80"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "apng/still-is-default-image",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "entry": "still",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "736773e563e9682f9c0cc0225046b078345c981692e262e1612da0515211b5d5",
+      "expected_rgba_sha256": "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_apng_still_is_default_image",
+          "line": 298,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_apng_still_is_default_image",
+          "line": 303,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_apng_still_is_default_image",
+          "line": 28728,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "apng/default-not-in-animation-still",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "entry": "still",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "f4a127920280d3ef4349059ed5fa8f21a2a8f72aabf3b9f67b964560969071b3",
+      "expected_rgba_sha256": "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_apng_default_not_in_animation_still",
+          "line": 316,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_apng_default_not_in_animation_still",
+          "line": 321,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_apng_default_not_in_animation_still",
+          "line": 28750,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "apng/frame1-error-still-unaffected",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "entry": "still",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "f3419711483bca6f8401ee8d9f8e85c0047633f4a64affc5c50be5336d34ba10",
+      "expected_rgba_sha256": "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_apng_frame1_error_still_unaffected",
+          "line": 334,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_apng_frame1_error_still_unaffected",
+          "line": 339,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_apng_frame1_error_still_unaffected",
+          "line": 28772,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "apng/empty-fdat-payload-still",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "entry": "still",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "0abc5f8508bea7ae9c9a76a348f9c4529a2ae8970d363da25c5a6703b97a6071",
+      "expected_rgba_sha256": "85b0134ceffc9fbba06039e7645b449c566f4379bd4a1770e1beefeb919e9e8d",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_apng_empty_fdat_payload_still",
+          "line": 352,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_apng_empty_fdat_payload_still",
+          "line": 357,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_apng_empty_fdat_payload_still",
+          "line": 28794,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    },
+    {
+      "id": "apng/empty-fdat-then-data-still",
+      "claim": "The independent complete MS/MS16 result equals every frozen expected field and physical RGBA byte. The actual ordinary public entry on the frozen byte array preserves complete executable/model equality and actual OOM request membership. The committed M3 overlap is cross-checked, not regenerated.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "entry": "still",
+      "fresh_witness": true,
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "4b27729ed92fd8b75048fdee31959536565fdf8166aa9b23c6861c922477bfca",
+      "expected_rgba_sha256": "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d",
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "model_complete_apng_empty_fdat_then_data_still",
+          "line": 370,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m6_m5_still.rs",
+          "function": "public_complete_apng_empty_fdat_then_data_still",
+          "line": 375,
+          "sha256": "6d4cda96c3e7b000320e075727428ebef9b0f2de9b6dbb42aaa4210c8180b7cb"
+        },
+        {
+          "file": "src/witness_m5_still.rs",
+          "function": "e6_bridge_apng_empty_fdat_then_data_still",
+          "line": 28816,
+          "sha256": "8b81298fb2413037b64d2868c7f7e57ef24c79aba7bdc446c6f078ef12bc5899"
+        }
+      ],
+      "verified_in_full_runs": [
+        785,
+        788
+      ]
+    }
+  ],
+  "dependency_graph": [
+    {
+      "from": "unchanged image_pixels definition",
+      "to": "defining-module image_pixels_intro",
+      "meaning": "Only reveal the existing length and per-coordinate source-success/physical-observation premises. The opaque predicate, its quantifier, algorithms and existing contracts are unchanged."
+    },
+    {
+      "from": "accepted source_pixel_ok and canonical_observe",
+      "to": "canonical_image -> existing image_pixels_intro/still_pixels_intro",
+      "meaning": "The proof-only helper instantiates accepted lemmas; it neither restates them as axioms nor invokes an executable."
+    },
+    {
+      "from": "unchanged original M5 model/inflate/scan/content certificate prefix",
+      "to": "21 appended thin bridges -> 21 new independent model witnesses",
+      "meaning": "Frozen input/expected literals bind the bridge parameters. Successful data certificates establish the generic helper premises; existing content lemmas identify every canonical model byte with the frozen literal."
+    },
+    {
+      "from": "independent model witnesses and accepted Strict ordinary still Eq/OOM contracts",
+      "to": "21 real public entry witnesses",
+      "meaning": "Each function calls its actual still/still16 entry exactly once on the frozen input, preserving OOM membership. One committed M3 overlap is cross-checked rather than redefined."
+    }
+  ],
+  "dependency_dag": {
+    "image_pixels_intro": [
+      "unchanged image_pixels definition"
+    ],
+    "canonical_image": [
+      "accepted source_pixel_ok",
+      "accepted canonical_observe",
+      "image_pixels_intro"
+    ],
+    "canonical_still": [
+      "canonical_image",
+      "existing still_pixels_intro",
+      "independent MS definition"
+    ],
+    "thin M5 bridges": [
+      "unchanged M5 model/inflate/scan/content certificates",
+      "canonical_still"
+    ],
+    "new complete model witnesses": [
+      "thin M5 bridges"
+    ],
+    "new public witnesses": [
+      "new complete model witnesses",
+      "accepted M6 ordinary still refinement"
+    ],
+    "accepted M6 ordinary still refinement": [
+      "independent MS definition"
+    ]
+  },
+  "acyclic": true,
+  "opaque_bridge": {
+    "predicate_unchanged": true,
+    "existing_premises_only": true,
+    "anchors": [
+      {
+        "file": "src/paint_model.rs",
+        "function": "image_pixels",
+        "line": 163,
+        "sha256": "f96d96a38af5bf710c9ed04c3aec512449393481605ee6ad957a36346023eb44"
+      },
+      {
+        "file": "src/paint_model.rs",
+        "function": "image_pixels_intro",
+        "line": 380,
+        "sha256": "f96d96a38af5bf710c9ed04c3aec512449393481605ee6ad957a36346023eb44"
+      },
+      {
+        "file": "src/witness_m6_still_model.rs",
+        "function": "canonical_image",
+        "line": 7,
+        "sha256": "6acb42616f741876ab0e8e33208d53e5ccf5cf67ef90e3d4966d1fe1f15d8035"
+      },
+      {
+        "file": "src/witness_m6_still_model.rs",
+        "function": "canonical_still",
+        "line": 27,
+        "sha256": "6acb42616f741876ab0e8e33208d53e5ccf5cf67ef90e3d4966d1fe1f15d8035"
+      }
+    ]
+  },
+  "coverage": {
+    "file": "evidence/m6-e6-m5-s-coverage.json",
+    "sha256": "b5744d9ea0c493e423dbcafc850293709ea996f38801b926d488a361d42a60fd"
+  },
+  "witness_index": {
+    "file": "evidence/m6-e6-m5-s-witness-index.json",
+    "sha256": "7c5d1990bbc9f3cc2d8f6c91f31ac9c80ad7f7183b5ecab9834ec11d089688b3"
+  },
+  "generator": {
+    "file": "tools/generate_m6_m5_still_witnesses.py",
+    "sha256": "93e7aae7754b0ddb2a8f45e761375f11482750c4d3e7c9c84f22215566bc9cb5"
+  },
+  "review_corrections": {
+    "file": "evidence/m6-e6-m5-s-review-corrections.json",
+    "sha256": "1ad42289b01c1f9d35390903c6df0997284e16888722259bc4ac8a9e7de0cd8c"
+  },
+  "independent_literal_control": {
+    "file": "evidence/m6-e6-m5-s-fixture-control.py",
+    "sha256": "1c00e2410350b44fad95ffb7b8f7bfe3ffc4ae339ecc908f98c730dd02c7afc0"
+  },
+  "M3_and_M5_indices_raw_byte_reproducible": true,
+  "remaining_work": [
+    "E6-M5-F: 13 frame records",
+    "E6-M4-FILT: 35 filter records",
+    "E6-M4-A7: 36 interlace records",
+    "Remaining T10 precedence, then mutation sets and CAPS-SYM"
+  ]
+}

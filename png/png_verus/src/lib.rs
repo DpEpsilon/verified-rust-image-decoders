@@ -52,6 +52,10 @@ mod witness_m5_still;
 mod witness_m5_frames;
 #[cfg(verus_only)]
 mod witness_m6_m3;
+#[cfg(verus_only)]
+mod witness_m6_still_model;
+#[cfg(verus_only)]
+mod witness_m6_m5_still;
 mod frame_state;
 mod critical;
 #[cfg(verus_only)]

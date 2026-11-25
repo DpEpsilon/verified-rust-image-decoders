@@ -376,4 +376,14 @@ pub(crate) proof fn pixel_observe(input: Seq<u8>,a: r::Raster,colour: c::Context
         c::observe(shape,state,a.width,x,y)==c::converted(shape,source_pixel(input,a,colour,x,y,c::is_wide(shape),black).get_Ok_0(),c::observe(shape,before,a.width,x,y)),
 {complete_pixels(input,a,colour,shape,before,state,black);}
 
+/// Defining-module introduction bridge for the existing opaque image predicate.
+pub(crate) proof fn image_pixels_intro(input: Seq<u8>,a: r::Raster,colour: c::Context,state: Seq<u8>,wide: bool,black: bool)
+    requires state.len()==(if wide {8nat}else{4nat})*a.width*a.height,
+        forall|x: nat,y: nat| x<a.width && y<a.height ==>
+            (#[trigger] source_pixel(input,a,colour,x,y,wide,black)).is_ok()
+            && c::observe((if wide {1nat}else{0nat},state.len(),0nat,0nat,0nat,false),state,a.width,x,y)
+                ==c::physical(source_pixel(input,a,colour,x,y,wide,black).get_Ok_0(),wide),
+    ensures image_pixels(input,a,colour,state,wide,black),
+{reveal(image_pixels);}
+
 }

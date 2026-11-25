@@ -1,12 +1,53 @@
 # png_verus ledger
 
+## M6 E6-M5-S — complete still/still16 content witnesses (2026-11-25)
+
+**All 22 still/still16 assignments are complete at M6: 21 fresh witness pairs and one cross-checked E6-M3 overlap.** Full host **785** and i686 **788** each verify **6,687, zero errors**, against identical 99-file inventories with all generated leaves, `--no-cheating`, default solver limits, 256 MiB stacks and **3,600-second process caps per target**. Wall times are **48m35s host** and **51m06s i686**; the host warning threshold remains 48 minutes. Independent checkpoint review and overall M6 sign-off remain pending.
+
+Every fresh record has a pure independent MS/MS16-versus-frozen proof over the full width, height and physical RGBA byte array, followed by a real ordinary public-entry call retaining complete executable/model equality and actual OOM request membership. Expected values come only from `spec-frozen/VECTORS.json`. The original M5 certificate prefix remains byte-for-byte unchanged; thin appended bridges reuse its model, inflate, scan and content proofs. The proof-only composition helper instantiates accepted `source_pixel_ok`, `canonical_observe` and `still_pixels_intro`. The defining-module `image_pixels_intro` bridge reveals exactly the existing observation premises; the opaque predicate, its quantifier, algorithms and existing contracts are unchanged. No native decoder or M6 equivalence code changed.
+
+The independent fixture control does not import a generator or its expansion/printer. It independently expands all **2,712 expected bytes** across the assignments, including **seven still16 records**, checks the physical big-endian byte order, and rejects a swapped nonidentical sixteen-bit pair in an in-memory literal-only negative control. No decoder/corpus mutation campaign runs. Both M3 and M5 generators reproduce their Rust and index files as raw bytes in an isolated output tree, without normalizing either comparison.
+
+This checkpoint incorporates Astra's E6-M3 evidence-control findings. The M3 generator/index now emits repository-relative certificate paths; the committed M3 Rust witness remains byte-for-byte unchanged. The historical run-778 wording below is corrected: that run reproduced Rust bytes but compared its index only after resolving paths. The reviewed old/new index hashes and path-only correction are recorded in `m6-e6-m5-s-review-corrections.json`; only that historical index hash is updated. Earlier packets/maps remain snapshots of their original runs, recoverable with their original index from Git. The new complete seal checks the portable index and independent literal audit; no separate M3 proof replay is claimed.
+
+| Frozen record | Current E6 assignment | Complete model / actual public-entry witness |
+|---|---|---|
+| `ok16/ct0-d1-il0-7x5` | complete at M6 | `model_complete_ok16_ct0_d1_il0_7x5` / `public_complete_ok16_ct0_d1_il0_7x5` |
+| `ok/ct0-d2-il1-7x5` | complete at M6 | `model_complete_ok_ct0_d2_il1_7x5` / `public_complete_ok_ct0_d2_il1_7x5` |
+| `ok/ct3-d4-il0-9x10` | complete at M6 | `model_complete_ok_ct3_d4_il0_9x10` / `public_complete_ok_ct3_d4_il0_9x10` |
+| `ok16/ct3-d8-il1-7x5` | complete at M6 | `model_complete_ok16_ct3_d8_il1_7x5` / `public_complete_ok16_ct3_d8_il1_7x5` |
+| `ok/ct4-d16-il1-9x10` | complete at M6 | `model_complete_ok_ct4_d16_il1_9x10` / `public_complete_ok_ct4_d16_il1_9x10` |
+| `ok/ct6-d16-il0-17x2` | complete at M6 | `model_complete_ok_ct6_d16_il0_17x2` / `public_complete_ok_ct6_d16_il0_17x2` |
+| `ok16/ct6-d16-il1-7x5` | complete at M6 | `model_complete_ok16_ct6_d16_il1_7x5` / `public_complete_ok16_ct6_d16_il1_7x5` |
+| `trns/grey-d1-masked` | complete at M6 | `model_complete_trns_grey_d1_masked` / `public_complete_trns_grey_d1_masked` |
+| `trns/grey-d16` | complete at M6 | `model_complete_trns_grey_d16` / `public_complete_trns_grey_d16` |
+| `trns/rgb-d16-low-byte-differs` | complete at M6 | `model_complete_trns_rgb_d16_low_byte_differs` / `public_complete_trns_rgb_d16_low_byte_differs` |
+| `trns16/palette-d8-16-3` | complete at M6 | `model_complete_trns16_palette_d8_16_3` / `public_complete_trns16_palette_d8_16_3` |
+| `trns16/palette-d8-16-16` | complete at M6 | `model_complete_trns16_palette_d8_16_16` / `public_complete_trns16_palette_d8_16_16` |
+| `trns16/palette-d4-16-1` | complete at M6 | `model_complete_trns16_palette_d4_16_1` / `public_complete_trns16_palette_d4_16_1` |
+| `trns/palette-d1-2-entries-2-alpha` | complete at M6 | `model_complete_trns_palette_d1_2_entries_2_alpha` / `public_complete_trns_palette_d1_2_entries_2_alpha` |
+| `trns16/palette-d1-2-2` | complete at M6 | `model_complete_trns16_palette_d1_2_2` / `public_complete_trns16_palette_d1_2_2` |
+| `depth16/rounding-boundaries` | complete at M6 | `model_complete_depth16_rounding_boundaries` / `public_complete_depth16_rounding_boundaries` |
+| `plte/suggested-palette-in-rgb` | complete at M6 (committed E6-M3 overlap) | `model_complete_plte_suggested_palette_in_rgb` / `public_complete_plte_suggested_palette_in_rgb` |
+| `apng/still-is-default-image` | complete at M6 | `model_complete_apng_still_is_default_image` / `public_complete_apng_still_is_default_image` |
+| `apng/default-not-in-animation-still` | complete at M6 | `model_complete_apng_default_not_in_animation_still` / `public_complete_apng_default_not_in_animation_still` |
+| `apng/frame1-error-still-unaffected` | complete at M6 | `model_complete_apng_frame1_error_still_unaffected` / `public_complete_apng_frame1_error_still_unaffected` |
+| `apng/empty-fdat-payload-still` | complete at M6 | `model_complete_apng_empty_fdat_payload_still` / `public_complete_apng_empty_fdat_payload_still` |
+| `apng/empty-fdat-then-data-still` | complete at M6 | `model_complete_apng_empty_fdat_then_data_still` / `public_complete_apng_empty_fdat_then_data_still` |
+
+The per-record M5 assignment listing below now reads complete at M6 for all 22 names. The M3 overlap is not redone. Coverage now completes **33 distinct moved records and 34 assignments**, leaving **84 distinct records** across E6-M5-F, E6-M4-FILT and E6-M4-A7. All seven previously complete M4/M5 errors remain complete and unchanged; E6 clause 6 still blocks M6 sign-off.
+
+Runtime **786** passes release/fault/council tests, cap/allocation self-tests and no_std; E7 remains **846/848, zero failures**, with exactly the prescribed two skips. Public-error control **787** is **72/72**. Final control **790** binds full inventories, 21 new complete model/public pairs, one committed overlap, independent literal/byte-order audit, swapped-word rejection, raw M3/M5 reproduction, the authorized path-only correction, immutable certificate prefixes, unchanged native/equivalence foundations, cache/import pins, whitespace and reversible retained logs. Selected-module development runs 782–784 earn no checkpoint credit. Drivers and archives remain outside the repository under `/home/ws/m6-e6-m5-s/a8bead9-20261125`.
+
+New code files are `tools/generate_m6_m5_still_witnesses.py`, `src/witness_m6_still_model.rs` and `src/witness_m6_m5_still.rs`. Existing source changes are proof-only lib registrations, the defining-module introduction bridge, appended M5 proof bridges and the M3 generator's portable-path correction. No protected/QUESTIONS edit, trust shortcut, guard change, cache build, Cargo verification, named-policy iterator work, mutation campaign, CAPS-SYM, commit or push occurred. E6-M5-F is next; 2b remains paused.
+
 ## M6 E6-M3 — twelve complete moved M3 witnesses (2026-11-23)
 
 **All twelve E6 clause-2 records are complete at M6.** Fresh full host **774** and i686 **777** each verify **6,621, zero errors**, against identical 96-file inventories with all generated leaves, `--no-cheating`, default solver limits, 256 MiB stacks and **3,600-second process caps per target**. Wall times are **37m18s host** and **37m30s i686**; the host warning threshold remains 48 minutes. Independent checkpoint review and overall M6 sign-off remain pending.
 
 Each record has a pure independent MS-versus-frozen proof for the full width, height and every RGBA byte, and an executable-versus-model call to the real ordinary `try_decode_still` on the same frozen byte array. These are the entire frozen expected fields, not a restricted raster or walk projection. The executable witness explicitly retains the actual ordinary OOM exception and failed `(site,elements)` membership in Req; no allocation-success premise enters the model theorem. The new proof module composes accepted M3/M2/filter/color certificates and the accepted M6 Strict still refinement; it does not change or reprove those algorithms or equivalence contracts. A small generic composition lemma unfolds the existing independent MS definition, and finite canonical-pixel certificates check the frozen bytes. The metadata certificate uses accepted parser helpers and checked per-chunk transitions where necessary to remain within default solver limits.
 
-The generator obtains expected dimensions/RGBA bytes only from `spec-frozen/VECTORS.json`, never from an executable, oracle or hand-written expected values. Existing authored inflate/filter hints remain untrusted until the proof checks them. Final control regenerates the module and index in an isolated output tree and verifies exact source/index reproduction. Generation and scratch development earn no witness credit. Development **773** checks 1401/0 with eight generated leaves omitted; only the two full runs above credit these witnesses.
+The generator obtains expected dimensions/RGBA bytes only from `spec-frozen/VECTORS.json`, never from an executable, oracle or hand-written expected values. Existing authored inflate/filter hints remain untrusted until the proof checks them. Run 778 reproduced the Rust module byte for byte, but compared the index only after resolving certificate paths; it did not establish byte-for-byte index reproduction. The E6-M5-S correction replaces absolute certificate paths with repository-relative paths and requires raw-byte reproduction of both Rust and index. Generation and scratch development earn no witness credit. Development **773** checks 1401/0 with eight generated leaves omitted; only the two full runs above credit these witnesses.
 
 | Frozen record | Current E6 assignment | Complete model / actual public-entry witness |
 |---|---|---|
@@ -237,30 +278,30 @@ The still/still16 projection checks independent-model data success, dimensions a
 
 | Frozen record | E6 clause-7 assignment |
 |---|---|
-| `ok16/ct0-d1-il0-7x5` | projection at M5, complete at M6 |
-| `ok/ct0-d2-il1-7x5` | projection at M5, complete at M6 |
-| `ok/ct3-d4-il0-9x10` | projection at M5, complete at M6 |
-| `ok16/ct3-d8-il1-7x5` | projection at M5, complete at M6 |
-| `ok/ct4-d16-il1-9x10` | projection at M5, complete at M6 |
-| `ok/ct6-d16-il0-17x2` | projection at M5, complete at M6 |
-| `ok16/ct6-d16-il1-7x5` | projection at M5, complete at M6 |
-| `trns/grey-d1-masked` | projection at M5, complete at M6 |
-| `trns/grey-d16` | projection at M5, complete at M6 |
-| `trns/rgb-d16-low-byte-differs` | projection at M5, complete at M6 |
-| `trns16/palette-d8-16-3` | projection at M5, complete at M6 |
-| `trns16/palette-d8-16-16` | projection at M5, complete at M6 |
-| `trns16/palette-d4-16-1` | projection at M5, complete at M6 |
-| `trns/palette-d1-2-entries-2-alpha` | projection at M5, complete at M6 |
-| `trns16/palette-d1-2-2` | projection at M5, complete at M6 |
-| `depth16/rounding-boundaries` | projection at M5, complete at M6 |
+| `ok16/ct0-d1-il0-7x5` | complete at M6 (E6-M5-S) |
+| `ok/ct0-d2-il1-7x5` | complete at M6 (E6-M5-S) |
+| `ok/ct3-d4-il0-9x10` | complete at M6 (E6-M5-S) |
+| `ok16/ct3-d8-il1-7x5` | complete at M6 (E6-M5-S) |
+| `ok/ct4-d16-il1-9x10` | complete at M6 (E6-M5-S) |
+| `ok/ct6-d16-il0-17x2` | complete at M6 (E6-M5-S) |
+| `ok16/ct6-d16-il1-7x5` | complete at M6 (E6-M5-S) |
+| `trns/grey-d1-masked` | complete at M6 (E6-M5-S) |
+| `trns/grey-d16` | complete at M6 (E6-M5-S) |
+| `trns/rgb-d16-low-byte-differs` | complete at M6 (E6-M5-S) |
+| `trns16/palette-d8-16-3` | complete at M6 (E6-M5-S) |
+| `trns16/palette-d8-16-16` | complete at M6 (E6-M5-S) |
+| `trns16/palette-d4-16-1` | complete at M6 (E6-M5-S) |
+| `trns/palette-d1-2-entries-2-alpha` | complete at M6 (E6-M5-S) |
+| `trns16/palette-d1-2-2` | complete at M6 (E6-M5-S) |
+| `depth16/rounding-boundaries` | complete at M6 (E6-M5-S) |
 | `image/palette-index-out-of-range` | complete at M5 |
 | `image/palette-index-out-of-range-d2` | complete at M5 |
 | `plte/suggested-palette-in-rgb` | complete at M6 (E6-M3) |
-| `apng/still-is-default-image` | projection at M5, complete at M6 |
-| `apng/default-not-in-animation-still` | projection at M5, complete at M6 |
-| `apng/frame1-error-still-unaffected` | projection at M5, complete at M6 |
-| `apng/empty-fdat-payload-still` | projection at M5, complete at M6 |
-| `apng/empty-fdat-then-data-still` | projection at M5, complete at M6 |
+| `apng/still-is-default-image` | complete at M6 (E6-M5-S) |
+| `apng/default-not-in-animation-still` | complete at M6 (E6-M5-S) |
+| `apng/frame1-error-still-unaffected` | complete at M6 (E6-M5-S) |
+| `apng/empty-fdat-payload-still` | complete at M6 (E6-M5-S) |
+| `apng/empty-fdat-then-data-still` | complete at M6 (E6-M5-S) |
 | `apng/default-is-frame0-dispose-bg-blend-over` | projection at M5, complete at M6 |
 | `apng/default-not-in-animation` | projection at M5, complete at M6 |
 | `apng/dispose-previous-first-frame-and-later` | projection at M5, complete at M6 |

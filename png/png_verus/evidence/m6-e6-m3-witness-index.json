@@ -17,7 +17,7 @@
       "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
       "model_function": "model_complete_container_minimal_ok",
       "public_function": "public_complete_container_minimal_ok",
-      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source": "png/inflate_verus/tools/witness_classes.json",
       "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
       "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
     },
@@ -36,7 +36,7 @@
       "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
       "model_function": "model_complete_container_unknown_ancillary_everywhere",
       "public_function": "public_complete_container_unknown_ancillary_everywhere",
-      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source": "png/inflate_verus/tools/witness_classes.json",
       "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
       "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
     },
@@ -55,7 +55,7 @@
       "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
       "model_function": "model_complete_container_reserved_bit_ancillary",
       "public_function": "public_complete_container_reserved_bit_ancillary",
-      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source": "png/inflate_verus/tools/witness_classes.json",
       "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
       "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
     },
@@ -74,7 +74,7 @@
       "expected_rgba_sha256": "b32a765c35de8bcaf5857c5f9fdd71a8a90e4f188196534fb2dac7d037070407",
       "model_function": "model_complete_plte_ok",
       "public_function": "public_complete_plte_ok",
-      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source": "png/inflate_verus/tools/witness_classes.json",
       "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
       "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
     },
@@ -93,7 +93,7 @@
       "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
       "model_function": "model_complete_plte_suggested_palette_in_rgb",
       "public_function": "public_complete_plte_suggested_palette_in_rgb",
-      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source": "png/inflate_verus/tools/witness_classes.json",
       "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
       "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
     },
@@ -112,7 +112,7 @@
       "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
       "model_function": "model_complete_anc_ok_iccp_303",
       "public_function": "public_complete_anc_ok_iccp_303",
-      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source": "png/inflate_verus/tools/witness_classes.json",
       "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
       "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
     },
@@ -131,7 +131,7 @@
       "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
       "model_function": "model_complete_anc_ok_time_7_after_idat",
       "public_function": "public_complete_anc_ok_time_7_after_idat",
-      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source": "png/inflate_verus/tools/witness_classes.json",
       "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
       "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
     },
@@ -150,7 +150,7 @@
       "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
       "model_function": "model_complete_anc_ok_srgb_and_iccp_both",
       "public_function": "public_complete_anc_ok_srgb_and_iccp_both",
-      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source": "png/inflate_verus/tools/witness_classes.json",
       "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
       "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
     },
@@ -169,7 +169,7 @@
       "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
       "model_function": "model_complete_anc_ok_many_text",
       "public_function": "public_complete_anc_ok_many_text",
-      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source": "png/inflate_verus/tools/witness_classes.json",
       "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
       "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
     },
@@ -188,7 +188,7 @@
       "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
       "model_function": "model_complete_anc_ok_ztxt_with_corrupt_zlib_not_inflated",
       "public_function": "public_complete_anc_ok_ztxt_with_corrupt_zlib_not_inflated",
-      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source": "png/inflate_verus/tools/witness_classes.json",
       "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
       "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
     },
@@ -207,7 +207,7 @@
       "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
       "model_function": "model_complete_order_splt_twice",
       "public_function": "public_complete_order_splt_twice",
-      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source": "png/inflate_verus/tools/witness_classes.json",
       "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
       "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
     },
@@ -226,7 +226,7 @@
       "expected_rgba_sha256": "dfb161f26034c5c45a826c5d45379d720421321ac233c679985519070d43b5a6",
       "model_function": "model_complete_order_bkgd_hist_after_plte_before_idat_rgb",
       "public_function": "public_complete_order_bkgd_hist_after_plte_before_idat_rgb",
-      "certificate_source": "/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/projects/verified-decoders/png/inflate_verus/tools/witness_classes.json",
+      "certificate_source": "png/inflate_verus/tools/witness_classes.json",
       "certificate_source_sha256": "8450adbbe6a5cbc5246022fa2f62f8077a9b97bc31ee8a2a4e2e60618851689d",
       "allocation_exception": "actual ordinary-entry OOM membership in Req; every non-OOM result equals the complete frozen width, height and RGBA bytes"
     }
