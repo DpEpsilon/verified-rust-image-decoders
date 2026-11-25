@@ -25,6 +25,15 @@ pub open spec fn constructor_eq<T>(b: Seq<u8>,result: Result<T,TryError>) -> boo
         Ok(_)=>matches!(m::MFr(b),m::Outcome::Done(_)),
     }
 }
+pub(crate) proof fn observe_constructor<T>(b: Seq<u8>,result: Result<T,TryError>)
+    requires constructor_eq(b,result),
+    ensures match result {
+        Err(TryError::Format(e))=>m::MFr(b)==m::Outcome::Error(e),
+        Ok(_)=>matches!(m::MFr(b),m::Outcome::Done(_)),
+        _=>true,
+    },
+{reveal(constructor_eq);}
+
 pub proof fn constructor_complete<T>(b: Seq<u8>,result: Result<T,TryError>)
     requires data::constructor_eq(b,STRICT,result),
     ensures constructor_eq(b,result),
@@ -147,6 +156,24 @@ pub open spec fn call_eq(b: Seq<u8>,doc: d::Doc,h: data::History,call: Call) -> 
         }
     }
 }
+/// Defining-module observation of the unchanged complete call relation.
+pub(crate) proof fn observe_call(b: Seq<u8>,doc: d::Doc,h: data::History,call: Call)
+    requires call_eq(b,doc,h,call),
+    ensures if !matches!(h.phase,data::Phase::Active) {matches!(call,Call::End)}else{
+        match call {
+            Call::Oom(o)=>data::SavedAt_p(b,STRICT)==Some(h.calls) && o.site_spec()==AllocSite::Saved
+                && o.elements_spec() as nat==canvas::bytes(doc),
+            _=>match m::MFr(b) {
+                m::Outcome::Done(value)=>if h.returned<value.frames.len() {
+                    match call {Call::Frame(frame)=>frame==value.frames[h.returned as int],_=>false}
+                }else if h.returned==value.frames.len() {
+                    match value.end {data::End::Iend=>matches!(call,Call::End),data::End::Format(e)=>match call {Call::Format(actual)=>actual==e,_=>false},_=>false}
+                }else{false},_=>false,
+            },
+        }
+    },
+{reveal(call_eq);}
+
 /// A checked walk identifies the complete model's document without measuring
 /// any future frame or assuming that future frame data succeeds.
 pub proof fn document_projection(b: Seq<u8>,doc: d::Doc)

@@ -21215,4 +21215,947 @@ fn public_apng_empty_fdat_then_data() {
     proof {id::call_context(b@,id::constructor_doc(doc_apng_empty_fdat_then_data()),STRICT,before,id::kind(next));}
     match next {Ok(None)=>{},Err(TryError::OutOfMemory(_))=>return,_=>{assert(false);return;}}
 }
+// E6-M5-F generated proof bridges; original M5 certificates above are unchanged.
+
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_default_is_frame0_dispose_bg_blend_over_0()
+    ensures crate::frame_canvas_model::fold(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),1nat).canvas==expected_apng_default_is_frame0_dispose_bg_blend_over_0(),crate::frame_canvas_model::fold(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),1nat).before_draw==before_draw_apng_default_is_frame0_dispose_bg_blend_over_0(),
+{
+    hide(bytes_apng_default_is_frame0_dispose_bg_blend_over);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_default_is_frame0_dispose_bg_blend_over();data_apng_default_is_frame0_dispose_bg_blend_over_s0();inflate_apng_default_is_frame0_dispose_bg_blend_over_s0();scan_apng_default_is_frame0_dispose_bg_blend_over_s0();
+    assert(id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()).ihdr==h_apng_default_is_frame0_dispose_bg_blend_over()) by (compute);
+    assert(h_apng_default_is_frame0_dispose_bg_blend_over().width==4u32 && h_apng_default_is_frame0_dispose_bg_blend_over().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()))==48nat);
+    assert(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()))=~=Seq::new(48nat,|j: int|0u8));
+    assert(crate::iterator_canvas_model::stream(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),0nat)==Some(z_apng_default_is_frame0_dispose_bg_blend_over_s0())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),STRICT,0nat)==a_apng_default_is_frame0_dispose_bg_blend_over_s0()) by (compute);
+    assert(r::raw(a_apng_default_is_frame0_dispose_bg_blend_over_s0())==raw_apng_default_is_frame0_dispose_bg_blend_over_s0().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),0nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),bytes_apng_default_is_frame0_dispose_bg_blend_over())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),0nat);
+    crate::frame_canvas_model::lengths(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),0nat);
+    content_apng_default_is_frame0_dispose_bg_blend_over_0(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over())),None,crate::frame_canvas_model::fold(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),1nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),1nat);
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_default_is_frame0_dispose_bg_blend_over_1()
+    ensures crate::frame_canvas_model::fold(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),2nat).canvas==expected_apng_default_is_frame0_dispose_bg_blend_over_1(),crate::frame_canvas_model::fold(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),2nat).before_draw==before_draw_apng_default_is_frame0_dispose_bg_blend_over_1(),
+{
+    hide(bytes_apng_default_is_frame0_dispose_bg_blend_over);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_default_is_frame0_dispose_bg_blend_over();data_apng_default_is_frame0_dispose_bg_blend_over_s1();inflate_apng_default_is_frame0_dispose_bg_blend_over_s1();scan_apng_default_is_frame0_dispose_bg_blend_over_s1();
+    e6_canvas_apng_default_is_frame0_dispose_bg_blend_over_0();
+    assert(id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()).ihdr==h_apng_default_is_frame0_dispose_bg_blend_over()) by (compute);
+    assert(h_apng_default_is_frame0_dispose_bg_blend_over().width==4u32 && h_apng_default_is_frame0_dispose_bg_blend_over().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()))==48nat);
+    assert(crate::iterator_canvas_model::stream(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),1nat)==Some(z_apng_default_is_frame0_dispose_bg_blend_over_s1())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),STRICT,1nat)==a_apng_default_is_frame0_dispose_bg_blend_over_s1()) by (compute);
+    assert(r::raw(a_apng_default_is_frame0_dispose_bg_blend_over_s1())==raw_apng_default_is_frame0_dispose_bg_blend_over_s1().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),1nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),bytes_apng_default_is_frame0_dispose_bg_blend_over())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),1nat);
+    crate::frame_canvas_model::lengths(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),1nat);
+    content_apng_default_is_frame0_dispose_bg_blend_over_1(crate::frame_canvas_model::fold(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),1nat).canvas,Some(crate::frame_canvas_model::fold(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),1nat).before_draw),crate::frame_canvas_model::fold(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),2nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),2nat);
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_default_is_frame0_dispose_bg_blend_over_2()
+    ensures crate::frame_canvas_model::fold(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),3nat).canvas==expected_apng_default_is_frame0_dispose_bg_blend_over_2(),crate::frame_canvas_model::fold(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),3nat).before_draw==before_draw_apng_default_is_frame0_dispose_bg_blend_over_2(),
+{
+    hide(bytes_apng_default_is_frame0_dispose_bg_blend_over);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_default_is_frame0_dispose_bg_blend_over();data_apng_default_is_frame0_dispose_bg_blend_over_s2();inflate_apng_default_is_frame0_dispose_bg_blend_over_s2();scan_apng_default_is_frame0_dispose_bg_blend_over_s2();
+    e6_canvas_apng_default_is_frame0_dispose_bg_blend_over_1();
+    assert(id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()).ihdr==h_apng_default_is_frame0_dispose_bg_blend_over()) by (compute);
+    assert(h_apng_default_is_frame0_dispose_bg_blend_over().width==4u32 && h_apng_default_is_frame0_dispose_bg_blend_over().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()))==48nat);
+    assert(crate::iterator_canvas_model::stream(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),2nat)==Some(z_apng_default_is_frame0_dispose_bg_blend_over_s2())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),STRICT,2nat)==a_apng_default_is_frame0_dispose_bg_blend_over_s2()) by (compute);
+    assert(r::raw(a_apng_default_is_frame0_dispose_bg_blend_over_s2())==raw_apng_default_is_frame0_dispose_bg_blend_over_s2().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),2nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),bytes_apng_default_is_frame0_dispose_bg_blend_over())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),2nat);
+    crate::frame_canvas_model::lengths(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),2nat);
+    content_apng_default_is_frame0_dispose_bg_blend_over_2(crate::frame_canvas_model::fold(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),2nat).canvas,Some(crate::frame_canvas_model::fold(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),2nat).before_draw),crate::frame_canvas_model::fold(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),3nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),3nat);
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_complete_apng_default_is_frame0_dispose_bg_blend_over()
+    ensures match crate::frame_model::MFr(crate::witness_m6_m5_frames::e6_bytes_apng_default_is_frame0_dispose_bg_blend_over()) {crate::frame_model::Outcome::Done(value)=>crate::witness_m6_m5_frames::expected_value_apng_default_is_frame0_dispose_bg_blend_over(value),_=>false},
+        crate::frame_equivalence::requests(crate::witness_m6_m5_frames::e6_bytes_apng_default_is_frame0_dispose_bg_blend_over()).is_prefix_of(id::requests_p(crate::witness_m6_m5_frames::e6_bytes_apng_default_is_frame0_dispose_bg_blend_over(),STRICT,4nat)),
+{
+    hide(bytes_apng_default_is_frame0_dispose_bg_blend_over);
+    model_apng_default_is_frame0_dispose_bg_blend_over();
+    crate::frame_equivalence::canonical_requests(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),4nat);
+    assert(bytes_apng_default_is_frame0_dispose_bg_blend_over()==crate::witness_m6_m5_frames::e6_bytes_apng_default_is_frame0_dispose_bg_blend_over()) by (compute);
+    id::suffix_step(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),STRICT,3nat);
+    id::suffix_step(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),STRICT,2nat);
+    id::suffix_step(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),STRICT,1nat);
+    id::suffix_step(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),STRICT,0nat);
+    e6_canvas_apng_default_is_frame0_dispose_bg_blend_over_0();
+    assert(expected_apng_default_is_frame0_dispose_bg_blend_over_0()==crate::witness_m6_m5_frames::e6_expected_apng_default_is_frame0_dispose_bg_blend_over_0()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),0nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_default_is_frame0_dispose_bg_blend_over()[0].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),0nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_default_is_frame0_dispose_bg_blend_over()[0].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),0nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_default_is_frame0_dispose_bg_blend_over()[0].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),0nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_default_is_frame0_dispose_bg_blend_over()[0].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),0nat)==crate::witness_m6_m5_frames::expected_frames_apng_default_is_frame0_dispose_bg_blend_over()[0]);
+    e6_canvas_apng_default_is_frame0_dispose_bg_blend_over_1();
+    assert(expected_apng_default_is_frame0_dispose_bg_blend_over_1()==crate::witness_m6_m5_frames::e6_expected_apng_default_is_frame0_dispose_bg_blend_over_1()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),1nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_default_is_frame0_dispose_bg_blend_over()[1].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),1nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_default_is_frame0_dispose_bg_blend_over()[1].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),1nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_default_is_frame0_dispose_bg_blend_over()[1].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),1nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_default_is_frame0_dispose_bg_blend_over()[1].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),1nat)==crate::witness_m6_m5_frames::expected_frames_apng_default_is_frame0_dispose_bg_blend_over()[1]);
+    e6_canvas_apng_default_is_frame0_dispose_bg_blend_over_2();
+    assert(expected_apng_default_is_frame0_dispose_bg_blend_over_2()==crate::witness_m6_m5_frames::e6_expected_apng_default_is_frame0_dispose_bg_blend_over_2()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),2nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_default_is_frame0_dispose_bg_blend_over()[2].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),2nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_default_is_frame0_dispose_bg_blend_over()[2].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),2nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_default_is_frame0_dispose_bg_blend_over()[2].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),2nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_default_is_frame0_dispose_bg_blend_over()[2].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),2nat)==crate::witness_m6_m5_frames::expected_frames_apng_default_is_frame0_dispose_bg_blend_over()[2]);
+    assert(id::MFr_data(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over()),STRICT)==(id::Projection {frames:3nat,end:id::End::Iend}));
+    let value=match crate::frame_model::from_document(bytes_apng_default_is_frame0_dispose_bg_blend_over(),id::constructor_doc(doc_apng_default_is_frame0_dispose_bg_blend_over())) {crate::frame_model::Outcome::Done(value)=>value,_=>{assert(false);return;}};
+    assert(value.frames.len()==3nat);
+    assert forall|k: int| 0<=k<3 implies #[trigger] value.frames[k]==crate::witness_m6_m5_frames::expected_frames_apng_default_is_frame0_dispose_bg_blend_over()[k] by {
+        if k==0 {}
+        if k==1 {}
+        if k==2 {}
+    }
+    assert(value.frames=~=crate::witness_m6_m5_frames::expected_frames_apng_default_is_frame0_dispose_bg_blend_over());
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_default_not_in_animation_0()
+    ensures crate::frame_canvas_model::fold(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),1nat).canvas==expected_apng_default_not_in_animation_0(),crate::frame_canvas_model::fold(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),1nat).before_draw==before_draw_apng_default_not_in_animation_0(),
+{
+    hide(bytes_apng_default_not_in_animation);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_default_not_in_animation();data_apng_default_not_in_animation_s1();inflate_apng_default_not_in_animation_s1();scan_apng_default_not_in_animation_s1();
+    assert(id::constructor_doc(doc_apng_default_not_in_animation()).ihdr==h_apng_default_not_in_animation()) by (compute);
+    assert(h_apng_default_not_in_animation().width==4u32 && h_apng_default_not_in_animation().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_default_not_in_animation()))==48nat);
+    assert(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_default_not_in_animation()))=~=Seq::new(48nat,|j: int|0u8));
+    assert(crate::iterator_canvas_model::stream(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),0nat)==Some(z_apng_default_not_in_animation_s1())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_default_not_in_animation()),STRICT,0nat)==a_apng_default_not_in_animation_s1()) by (compute);
+    assert(r::raw(a_apng_default_not_in_animation_s1())==raw_apng_default_not_in_animation_s1().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_default_not_in_animation()),0nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_default_not_in_animation()),bytes_apng_default_not_in_animation())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),0nat);
+    crate::frame_canvas_model::lengths(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),0nat);
+    content_apng_default_not_in_animation_0(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_default_not_in_animation())),None,crate::frame_canvas_model::fold(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),1nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),1nat);
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_default_not_in_animation_1()
+    ensures crate::frame_canvas_model::fold(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),2nat).canvas==expected_apng_default_not_in_animation_1(),crate::frame_canvas_model::fold(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),2nat).before_draw==before_draw_apng_default_not_in_animation_1(),
+{
+    hide(bytes_apng_default_not_in_animation);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_default_not_in_animation();data_apng_default_not_in_animation_s2();inflate_apng_default_not_in_animation_s2();scan_apng_default_not_in_animation_s2();
+    e6_canvas_apng_default_not_in_animation_0();
+    assert(id::constructor_doc(doc_apng_default_not_in_animation()).ihdr==h_apng_default_not_in_animation()) by (compute);
+    assert(h_apng_default_not_in_animation().width==4u32 && h_apng_default_not_in_animation().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_default_not_in_animation()))==48nat);
+    assert(crate::iterator_canvas_model::stream(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),1nat)==Some(z_apng_default_not_in_animation_s2())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_default_not_in_animation()),STRICT,1nat)==a_apng_default_not_in_animation_s2()) by (compute);
+    assert(r::raw(a_apng_default_not_in_animation_s2())==raw_apng_default_not_in_animation_s2().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_default_not_in_animation()),1nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_default_not_in_animation()),bytes_apng_default_not_in_animation())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),1nat);
+    crate::frame_canvas_model::lengths(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),1nat);
+    content_apng_default_not_in_animation_1(crate::frame_canvas_model::fold(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),1nat).canvas,Some(crate::frame_canvas_model::fold(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),1nat).before_draw),crate::frame_canvas_model::fold(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),2nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),2nat);
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_complete_apng_default_not_in_animation()
+    ensures match crate::frame_model::MFr(crate::witness_m6_m5_frames::e6_bytes_apng_default_not_in_animation()) {crate::frame_model::Outcome::Done(value)=>crate::witness_m6_m5_frames::expected_value_apng_default_not_in_animation(value),_=>false},
+        crate::frame_equivalence::requests(crate::witness_m6_m5_frames::e6_bytes_apng_default_not_in_animation()).is_prefix_of(id::requests_p(crate::witness_m6_m5_frames::e6_bytes_apng_default_not_in_animation(),STRICT,3nat)),
+{
+    hide(bytes_apng_default_not_in_animation);
+    model_apng_default_not_in_animation();
+    crate::frame_equivalence::canonical_requests(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),3nat);
+    assert(bytes_apng_default_not_in_animation()==crate::witness_m6_m5_frames::e6_bytes_apng_default_not_in_animation()) by (compute);
+    id::suffix_step(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),STRICT,2nat);
+    id::suffix_step(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),STRICT,1nat);
+    id::suffix_step(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),STRICT,0nat);
+    e6_canvas_apng_default_not_in_animation_0();
+    assert(expected_apng_default_not_in_animation_0()==crate::witness_m6_m5_frames::e6_expected_apng_default_not_in_animation_0()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),0nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_default_not_in_animation()[0].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),0nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_default_not_in_animation()[0].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),0nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_default_not_in_animation()[0].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),0nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_default_not_in_animation()[0].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),0nat)==crate::witness_m6_m5_frames::expected_frames_apng_default_not_in_animation()[0]);
+    e6_canvas_apng_default_not_in_animation_1();
+    assert(expected_apng_default_not_in_animation_1()==crate::witness_m6_m5_frames::e6_expected_apng_default_not_in_animation_1()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),1nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_default_not_in_animation()[1].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),1nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_default_not_in_animation()[1].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),1nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_default_not_in_animation()[1].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),1nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_default_not_in_animation()[1].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),1nat)==crate::witness_m6_m5_frames::expected_frames_apng_default_not_in_animation()[1]);
+    assert(id::MFr_data(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation()),STRICT)==(id::Projection {frames:2nat,end:id::End::Iend}));
+    let value=match crate::frame_model::from_document(bytes_apng_default_not_in_animation(),id::constructor_doc(doc_apng_default_not_in_animation())) {crate::frame_model::Outcome::Done(value)=>value,_=>{assert(false);return;}};
+    assert(value.frames.len()==2nat);
+    assert forall|k: int| 0<=k<2 implies #[trigger] value.frames[k]==crate::witness_m6_m5_frames::expected_frames_apng_default_not_in_animation()[k] by {
+        if k==0 {}
+        if k==1 {}
+    }
+    assert(value.frames=~=crate::witness_m6_m5_frames::expected_frames_apng_default_not_in_animation());
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_dispose_previous_first_frame_and_later_0()
+    ensures crate::frame_canvas_model::fold(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),1nat).canvas==expected_apng_dispose_previous_first_frame_and_later_0(),crate::frame_canvas_model::fold(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),1nat).before_draw==before_draw_apng_dispose_previous_first_frame_and_later_0(),
+{
+    hide(bytes_apng_dispose_previous_first_frame_and_later);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_dispose_previous_first_frame_and_later();data_apng_dispose_previous_first_frame_and_later_s0();inflate_apng_dispose_previous_first_frame_and_later_s0();scan_apng_dispose_previous_first_frame_and_later_s0();
+    assert(id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()).ihdr==h_apng_dispose_previous_first_frame_and_later()) by (compute);
+    assert(h_apng_dispose_previous_first_frame_and_later().width==4u32 && h_apng_dispose_previous_first_frame_and_later().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()))==48nat);
+    assert(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()))=~=Seq::new(48nat,|j: int|0u8));
+    assert(crate::iterator_canvas_model::stream(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),0nat)==Some(z_apng_dispose_previous_first_frame_and_later_s0())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),STRICT,0nat)==a_apng_dispose_previous_first_frame_and_later_s0()) by (compute);
+    assert(r::raw(a_apng_dispose_previous_first_frame_and_later_s0())==raw_apng_dispose_previous_first_frame_and_later_s0().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),0nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),bytes_apng_dispose_previous_first_frame_and_later())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),0nat);
+    crate::frame_canvas_model::lengths(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),0nat);
+    content_apng_dispose_previous_first_frame_and_later_0(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later())),None,crate::frame_canvas_model::fold(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),1nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),1nat);
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_dispose_previous_first_frame_and_later_1()
+    ensures crate::frame_canvas_model::fold(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),2nat).canvas==expected_apng_dispose_previous_first_frame_and_later_1(),crate::frame_canvas_model::fold(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),2nat).before_draw==before_draw_apng_dispose_previous_first_frame_and_later_1(),
+{
+    hide(bytes_apng_dispose_previous_first_frame_and_later);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_dispose_previous_first_frame_and_later();data_apng_dispose_previous_first_frame_and_later_s1();inflate_apng_dispose_previous_first_frame_and_later_s1();scan_apng_dispose_previous_first_frame_and_later_s1();
+    e6_canvas_apng_dispose_previous_first_frame_and_later_0();
+    assert(id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()).ihdr==h_apng_dispose_previous_first_frame_and_later()) by (compute);
+    assert(h_apng_dispose_previous_first_frame_and_later().width==4u32 && h_apng_dispose_previous_first_frame_and_later().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()))==48nat);
+    assert(crate::iterator_canvas_model::stream(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),1nat)==Some(z_apng_dispose_previous_first_frame_and_later_s1())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),STRICT,1nat)==a_apng_dispose_previous_first_frame_and_later_s1()) by (compute);
+    assert(r::raw(a_apng_dispose_previous_first_frame_and_later_s1())==raw_apng_dispose_previous_first_frame_and_later_s1().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),1nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),bytes_apng_dispose_previous_first_frame_and_later())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),1nat);
+    crate::frame_canvas_model::lengths(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),1nat);
+    content_apng_dispose_previous_first_frame_and_later_1(crate::frame_canvas_model::fold(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),1nat).canvas,Some(crate::frame_canvas_model::fold(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),1nat).before_draw),crate::frame_canvas_model::fold(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),2nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),2nat);
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_dispose_previous_first_frame_and_later_2()
+    ensures crate::frame_canvas_model::fold(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),3nat).canvas==expected_apng_dispose_previous_first_frame_and_later_2(),crate::frame_canvas_model::fold(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),3nat).before_draw==before_draw_apng_dispose_previous_first_frame_and_later_2(),
+{
+    hide(bytes_apng_dispose_previous_first_frame_and_later);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_dispose_previous_first_frame_and_later();data_apng_dispose_previous_first_frame_and_later_s2();inflate_apng_dispose_previous_first_frame_and_later_s2();scan_apng_dispose_previous_first_frame_and_later_s2();
+    e6_canvas_apng_dispose_previous_first_frame_and_later_1();
+    assert(id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()).ihdr==h_apng_dispose_previous_first_frame_and_later()) by (compute);
+    assert(h_apng_dispose_previous_first_frame_and_later().width==4u32 && h_apng_dispose_previous_first_frame_and_later().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()))==48nat);
+    assert(crate::iterator_canvas_model::stream(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),2nat)==Some(z_apng_dispose_previous_first_frame_and_later_s2())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),STRICT,2nat)==a_apng_dispose_previous_first_frame_and_later_s2()) by (compute);
+    assert(r::raw(a_apng_dispose_previous_first_frame_and_later_s2())==raw_apng_dispose_previous_first_frame_and_later_s2().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),2nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),bytes_apng_dispose_previous_first_frame_and_later())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),2nat);
+    crate::frame_canvas_model::lengths(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),2nat);
+    content_apng_dispose_previous_first_frame_and_later_2(crate::frame_canvas_model::fold(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),2nat).canvas,Some(crate::frame_canvas_model::fold(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),2nat).before_draw),crate::frame_canvas_model::fold(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),3nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),3nat);
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_complete_apng_dispose_previous_first_frame_and_later()
+    ensures match crate::frame_model::MFr(crate::witness_m6_m5_frames::e6_bytes_apng_dispose_previous_first_frame_and_later()) {crate::frame_model::Outcome::Done(value)=>crate::witness_m6_m5_frames::expected_value_apng_dispose_previous_first_frame_and_later(value),_=>false},
+        crate::frame_equivalence::requests(crate::witness_m6_m5_frames::e6_bytes_apng_dispose_previous_first_frame_and_later()).is_prefix_of(id::requests_p(crate::witness_m6_m5_frames::e6_bytes_apng_dispose_previous_first_frame_and_later(),STRICT,4nat)),
+{
+    hide(bytes_apng_dispose_previous_first_frame_and_later);
+    model_apng_dispose_previous_first_frame_and_later();
+    crate::frame_equivalence::canonical_requests(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),4nat);
+    assert(bytes_apng_dispose_previous_first_frame_and_later()==crate::witness_m6_m5_frames::e6_bytes_apng_dispose_previous_first_frame_and_later()) by (compute);
+    id::suffix_step(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),STRICT,3nat);
+    id::suffix_step(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),STRICT,2nat);
+    id::suffix_step(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),STRICT,1nat);
+    id::suffix_step(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),STRICT,0nat);
+    e6_canvas_apng_dispose_previous_first_frame_and_later_0();
+    assert(expected_apng_dispose_previous_first_frame_and_later_0()==crate::witness_m6_m5_frames::e6_expected_apng_dispose_previous_first_frame_and_later_0()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),0nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_dispose_previous_first_frame_and_later()[0].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),0nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_dispose_previous_first_frame_and_later()[0].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),0nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_dispose_previous_first_frame_and_later()[0].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),0nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_dispose_previous_first_frame_and_later()[0].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),0nat)==crate::witness_m6_m5_frames::expected_frames_apng_dispose_previous_first_frame_and_later()[0]);
+    e6_canvas_apng_dispose_previous_first_frame_and_later_1();
+    assert(expected_apng_dispose_previous_first_frame_and_later_1()==crate::witness_m6_m5_frames::e6_expected_apng_dispose_previous_first_frame_and_later_1()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),1nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_dispose_previous_first_frame_and_later()[1].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),1nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_dispose_previous_first_frame_and_later()[1].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),1nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_dispose_previous_first_frame_and_later()[1].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),1nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_dispose_previous_first_frame_and_later()[1].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),1nat)==crate::witness_m6_m5_frames::expected_frames_apng_dispose_previous_first_frame_and_later()[1]);
+    e6_canvas_apng_dispose_previous_first_frame_and_later_2();
+    assert(expected_apng_dispose_previous_first_frame_and_later_2()==crate::witness_m6_m5_frames::e6_expected_apng_dispose_previous_first_frame_and_later_2()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),2nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_dispose_previous_first_frame_and_later()[2].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),2nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_dispose_previous_first_frame_and_later()[2].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),2nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_dispose_previous_first_frame_and_later()[2].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),2nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_dispose_previous_first_frame_and_later()[2].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),2nat)==crate::witness_m6_m5_frames::expected_frames_apng_dispose_previous_first_frame_and_later()[2]);
+    assert(id::MFr_data(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later()),STRICT)==(id::Projection {frames:3nat,end:id::End::Iend}));
+    let value=match crate::frame_model::from_document(bytes_apng_dispose_previous_first_frame_and_later(),id::constructor_doc(doc_apng_dispose_previous_first_frame_and_later())) {crate::frame_model::Outcome::Done(value)=>value,_=>{assert(false);return;}};
+    assert(value.frames.len()==3nat);
+    assert forall|k: int| 0<=k<3 implies #[trigger] value.frames[k]==crate::witness_m6_m5_frames::expected_frames_apng_dispose_previous_first_frame_and_later()[k] by {
+        if k==0 {}
+        if k==1 {}
+        if k==2 {}
+    }
+    assert(value.frames=~=crate::witness_m6_m5_frames::expected_frames_apng_dispose_previous_first_frame_and_later());
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_blend_over_arithmetic_0()
+    ensures crate::frame_canvas_model::fold(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),1nat).canvas==expected_apng_blend_over_arithmetic_0(),crate::frame_canvas_model::fold(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),1nat).before_draw==before_draw_apng_blend_over_arithmetic_0(),
+{
+    hide(bytes_apng_blend_over_arithmetic);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_blend_over_arithmetic();data_apng_blend_over_arithmetic_s1();inflate_apng_blend_over_arithmetic_s1();scan_apng_blend_over_arithmetic_s1();
+    assert(id::constructor_doc(doc_apng_blend_over_arithmetic()).ihdr==h_apng_blend_over_arithmetic()) by (compute);
+    assert(h_apng_blend_over_arithmetic().width==4u32 && h_apng_blend_over_arithmetic().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_blend_over_arithmetic()))==48nat);
+    assert(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_blend_over_arithmetic()))=~=Seq::new(48nat,|j: int|0u8));
+    assert(crate::iterator_canvas_model::stream(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),0nat)==Some(z_apng_blend_over_arithmetic_s1())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_blend_over_arithmetic()),STRICT,0nat)==a_apng_blend_over_arithmetic_s1()) by (compute);
+    assert(r::raw(a_apng_blend_over_arithmetic_s1())==raw_apng_blend_over_arithmetic_s1().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_blend_over_arithmetic()),0nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_blend_over_arithmetic()),bytes_apng_blend_over_arithmetic())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),0nat);
+    crate::frame_canvas_model::lengths(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),0nat);
+    content_apng_blend_over_arithmetic_0(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_blend_over_arithmetic())),None,crate::frame_canvas_model::fold(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),1nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),1nat);
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_blend_over_arithmetic_1()
+    ensures crate::frame_canvas_model::fold(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),2nat).canvas==expected_apng_blend_over_arithmetic_1(),crate::frame_canvas_model::fold(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),2nat).before_draw==before_draw_apng_blend_over_arithmetic_1(),
+{
+    hide(bytes_apng_blend_over_arithmetic);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_blend_over_arithmetic();data_apng_blend_over_arithmetic_s2();inflate_apng_blend_over_arithmetic_s2();scan_apng_blend_over_arithmetic_s2();
+    e6_canvas_apng_blend_over_arithmetic_0();
+    assert(id::constructor_doc(doc_apng_blend_over_arithmetic()).ihdr==h_apng_blend_over_arithmetic()) by (compute);
+    assert(h_apng_blend_over_arithmetic().width==4u32 && h_apng_blend_over_arithmetic().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_blend_over_arithmetic()))==48nat);
+    assert(crate::iterator_canvas_model::stream(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),1nat)==Some(z_apng_blend_over_arithmetic_s2())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_blend_over_arithmetic()),STRICT,1nat)==a_apng_blend_over_arithmetic_s2()) by (compute);
+    assert(r::raw(a_apng_blend_over_arithmetic_s2())==raw_apng_blend_over_arithmetic_s2().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_blend_over_arithmetic()),1nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_blend_over_arithmetic()),bytes_apng_blend_over_arithmetic())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),1nat);
+    crate::frame_canvas_model::lengths(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),1nat);
+    content_apng_blend_over_arithmetic_1(crate::frame_canvas_model::fold(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),1nat).canvas,Some(crate::frame_canvas_model::fold(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),1nat).before_draw),crate::frame_canvas_model::fold(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),2nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),2nat);
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_complete_apng_blend_over_arithmetic()
+    ensures match crate::frame_model::MFr(crate::witness_m6_m5_frames::e6_bytes_apng_blend_over_arithmetic()) {crate::frame_model::Outcome::Done(value)=>crate::witness_m6_m5_frames::expected_value_apng_blend_over_arithmetic(value),_=>false},
+        crate::frame_equivalence::requests(crate::witness_m6_m5_frames::e6_bytes_apng_blend_over_arithmetic()).is_prefix_of(id::requests_p(crate::witness_m6_m5_frames::e6_bytes_apng_blend_over_arithmetic(),STRICT,3nat)),
+{
+    hide(bytes_apng_blend_over_arithmetic);
+    model_apng_blend_over_arithmetic();
+    crate::frame_equivalence::canonical_requests(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),3nat);
+    assert(bytes_apng_blend_over_arithmetic()==crate::witness_m6_m5_frames::e6_bytes_apng_blend_over_arithmetic()) by (compute);
+    id::suffix_step(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),STRICT,2nat);
+    id::suffix_step(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),STRICT,1nat);
+    id::suffix_step(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),STRICT,0nat);
+    e6_canvas_apng_blend_over_arithmetic_0();
+    assert(expected_apng_blend_over_arithmetic_0()==crate::witness_m6_m5_frames::e6_expected_apng_blend_over_arithmetic_0()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),0nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_arithmetic()[0].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),0nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_arithmetic()[0].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),0nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_arithmetic()[0].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),0nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_arithmetic()[0].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),0nat)==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_arithmetic()[0]);
+    e6_canvas_apng_blend_over_arithmetic_1();
+    assert(expected_apng_blend_over_arithmetic_1()==crate::witness_m6_m5_frames::e6_expected_apng_blend_over_arithmetic_1()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),1nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_arithmetic()[1].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),1nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_arithmetic()[1].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),1nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_arithmetic()[1].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),1nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_arithmetic()[1].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),1nat)==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_arithmetic()[1]);
+    assert(id::MFr_data(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic()),STRICT)==(id::Projection {frames:2nat,end:id::End::Iend}));
+    let value=match crate::frame_model::from_document(bytes_apng_blend_over_arithmetic(),id::constructor_doc(doc_apng_blend_over_arithmetic())) {crate::frame_model::Outcome::Done(value)=>value,_=>{assert(false);return;}};
+    assert(value.frames.len()==2nat);
+    assert forall|k: int| 0<=k<2 implies #[trigger] value.frames[k]==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_arithmetic()[k] by {
+        if k==0 {}
+        if k==1 {}
+    }
+    assert(value.frames=~=crate::witness_m6_m5_frames::expected_frames_apng_blend_over_arithmetic());
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_blend_over_transparent_source_0()
+    ensures crate::frame_canvas_model::fold(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),1nat).canvas==expected_apng_blend_over_transparent_source_0(),crate::frame_canvas_model::fold(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),1nat).before_draw==before_draw_apng_blend_over_transparent_source_0(),
+{
+    hide(bytes_apng_blend_over_transparent_source);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_blend_over_transparent_source();data_apng_blend_over_transparent_source_s1();inflate_apng_blend_over_transparent_source_s1();scan_apng_blend_over_transparent_source_s1();
+    assert(id::constructor_doc(doc_apng_blend_over_transparent_source()).ihdr==h_apng_blend_over_transparent_source()) by (compute);
+    assert(h_apng_blend_over_transparent_source().width==4u32 && h_apng_blend_over_transparent_source().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_blend_over_transparent_source()))==48nat);
+    assert(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_blend_over_transparent_source()))=~=Seq::new(48nat,|j: int|0u8));
+    assert(crate::iterator_canvas_model::stream(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),0nat)==Some(z_apng_blend_over_transparent_source_s1())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_blend_over_transparent_source()),STRICT,0nat)==a_apng_blend_over_transparent_source_s1()) by (compute);
+    assert(r::raw(a_apng_blend_over_transparent_source_s1())==raw_apng_blend_over_transparent_source_s1().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_blend_over_transparent_source()),0nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_blend_over_transparent_source()),bytes_apng_blend_over_transparent_source())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),0nat);
+    crate::frame_canvas_model::lengths(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),0nat);
+    content_apng_blend_over_transparent_source_0(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_blend_over_transparent_source())),None,crate::frame_canvas_model::fold(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),1nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),1nat);
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_blend_over_transparent_source_1()
+    ensures crate::frame_canvas_model::fold(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),2nat).canvas==expected_apng_blend_over_transparent_source_1(),crate::frame_canvas_model::fold(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),2nat).before_draw==before_draw_apng_blend_over_transparent_source_1(),
+{
+    hide(bytes_apng_blend_over_transparent_source);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_blend_over_transparent_source();data_apng_blend_over_transparent_source_s2();inflate_apng_blend_over_transparent_source_s2();scan_apng_blend_over_transparent_source_s2();
+    e6_canvas_apng_blend_over_transparent_source_0();
+    assert(id::constructor_doc(doc_apng_blend_over_transparent_source()).ihdr==h_apng_blend_over_transparent_source()) by (compute);
+    assert(h_apng_blend_over_transparent_source().width==4u32 && h_apng_blend_over_transparent_source().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_blend_over_transparent_source()))==48nat);
+    assert(crate::iterator_canvas_model::stream(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),1nat)==Some(z_apng_blend_over_transparent_source_s2())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_blend_over_transparent_source()),STRICT,1nat)==a_apng_blend_over_transparent_source_s2()) by (compute);
+    assert(r::raw(a_apng_blend_over_transparent_source_s2())==raw_apng_blend_over_transparent_source_s2().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_blend_over_transparent_source()),1nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_blend_over_transparent_source()),bytes_apng_blend_over_transparent_source())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),1nat);
+    crate::frame_canvas_model::lengths(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),1nat);
+    content_apng_blend_over_transparent_source_1(crate::frame_canvas_model::fold(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),1nat).canvas,Some(crate::frame_canvas_model::fold(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),1nat).before_draw),crate::frame_canvas_model::fold(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),2nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),2nat);
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_complete_apng_blend_over_transparent_source()
+    ensures match crate::frame_model::MFr(crate::witness_m6_m5_frames::e6_bytes_apng_blend_over_transparent_source()) {crate::frame_model::Outcome::Done(value)=>crate::witness_m6_m5_frames::expected_value_apng_blend_over_transparent_source(value),_=>false},
+        crate::frame_equivalence::requests(crate::witness_m6_m5_frames::e6_bytes_apng_blend_over_transparent_source()).is_prefix_of(id::requests_p(crate::witness_m6_m5_frames::e6_bytes_apng_blend_over_transparent_source(),STRICT,3nat)),
+{
+    hide(bytes_apng_blend_over_transparent_source);
+    model_apng_blend_over_transparent_source();
+    crate::frame_equivalence::canonical_requests(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),3nat);
+    assert(bytes_apng_blend_over_transparent_source()==crate::witness_m6_m5_frames::e6_bytes_apng_blend_over_transparent_source()) by (compute);
+    id::suffix_step(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),STRICT,2nat);
+    id::suffix_step(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),STRICT,1nat);
+    id::suffix_step(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),STRICT,0nat);
+    e6_canvas_apng_blend_over_transparent_source_0();
+    assert(expected_apng_blend_over_transparent_source_0()==crate::witness_m6_m5_frames::e6_expected_apng_blend_over_transparent_source_0()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),0nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_source()[0].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),0nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_source()[0].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),0nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_source()[0].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),0nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_source()[0].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),0nat)==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_source()[0]);
+    e6_canvas_apng_blend_over_transparent_source_1();
+    assert(expected_apng_blend_over_transparent_source_1()==crate::witness_m6_m5_frames::e6_expected_apng_blend_over_transparent_source_1()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),1nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_source()[1].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),1nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_source()[1].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),1nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_source()[1].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),1nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_source()[1].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),1nat)==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_source()[1]);
+    assert(id::MFr_data(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source()),STRICT)==(id::Projection {frames:2nat,end:id::End::Iend}));
+    let value=match crate::frame_model::from_document(bytes_apng_blend_over_transparent_source(),id::constructor_doc(doc_apng_blend_over_transparent_source())) {crate::frame_model::Outcome::Done(value)=>value,_=>{assert(false);return;}};
+    assert(value.frames.len()==2nat);
+    assert forall|k: int| 0<=k<2 implies #[trigger] value.frames[k]==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_source()[k] by {
+        if k==0 {}
+        if k==1 {}
+    }
+    assert(value.frames=~=crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_source());
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_blend_over_transparent_destination_0()
+    ensures crate::frame_canvas_model::fold(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),1nat).canvas==expected_apng_blend_over_transparent_destination_0(),crate::frame_canvas_model::fold(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),1nat).before_draw==before_draw_apng_blend_over_transparent_destination_0(),
+{
+    hide(bytes_apng_blend_over_transparent_destination);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_blend_over_transparent_destination();data_apng_blend_over_transparent_destination_s1();inflate_apng_blend_over_transparent_destination_s1();scan_apng_blend_over_transparent_destination_s1();
+    assert(id::constructor_doc(doc_apng_blend_over_transparent_destination()).ihdr==h_apng_blend_over_transparent_destination()) by (compute);
+    assert(h_apng_blend_over_transparent_destination().width==4u32 && h_apng_blend_over_transparent_destination().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_blend_over_transparent_destination()))==48nat);
+    assert(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_blend_over_transparent_destination()))=~=Seq::new(48nat,|j: int|0u8));
+    assert(crate::iterator_canvas_model::stream(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),0nat)==Some(z_apng_blend_over_transparent_destination_s1())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_blend_over_transparent_destination()),STRICT,0nat)==a_apng_blend_over_transparent_destination_s1()) by (compute);
+    assert(r::raw(a_apng_blend_over_transparent_destination_s1())==raw_apng_blend_over_transparent_destination_s1().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_blend_over_transparent_destination()),0nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_blend_over_transparent_destination()),bytes_apng_blend_over_transparent_destination())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),0nat);
+    crate::frame_canvas_model::lengths(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),0nat);
+    content_apng_blend_over_transparent_destination_0(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_blend_over_transparent_destination())),None,crate::frame_canvas_model::fold(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),1nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),1nat);
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_blend_over_transparent_destination_1()
+    ensures crate::frame_canvas_model::fold(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),2nat).canvas==expected_apng_blend_over_transparent_destination_1(),crate::frame_canvas_model::fold(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),2nat).before_draw==before_draw_apng_blend_over_transparent_destination_1(),
+{
+    hide(bytes_apng_blend_over_transparent_destination);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_blend_over_transparent_destination();data_apng_blend_over_transparent_destination_s2();inflate_apng_blend_over_transparent_destination_s2();scan_apng_blend_over_transparent_destination_s2();
+    e6_canvas_apng_blend_over_transparent_destination_0();
+    assert(id::constructor_doc(doc_apng_blend_over_transparent_destination()).ihdr==h_apng_blend_over_transparent_destination()) by (compute);
+    assert(h_apng_blend_over_transparent_destination().width==4u32 && h_apng_blend_over_transparent_destination().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_blend_over_transparent_destination()))==48nat);
+    assert(crate::iterator_canvas_model::stream(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),1nat)==Some(z_apng_blend_over_transparent_destination_s2())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_blend_over_transparent_destination()),STRICT,1nat)==a_apng_blend_over_transparent_destination_s2()) by (compute);
+    assert(r::raw(a_apng_blend_over_transparent_destination_s2())==raw_apng_blend_over_transparent_destination_s2().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_blend_over_transparent_destination()),1nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_blend_over_transparent_destination()),bytes_apng_blend_over_transparent_destination())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),1nat);
+    crate::frame_canvas_model::lengths(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),1nat);
+    content_apng_blend_over_transparent_destination_1(crate::frame_canvas_model::fold(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),1nat).canvas,Some(crate::frame_canvas_model::fold(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),1nat).before_draw),crate::frame_canvas_model::fold(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),2nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),2nat);
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_complete_apng_blend_over_transparent_destination()
+    ensures match crate::frame_model::MFr(crate::witness_m6_m5_frames::e6_bytes_apng_blend_over_transparent_destination()) {crate::frame_model::Outcome::Done(value)=>crate::witness_m6_m5_frames::expected_value_apng_blend_over_transparent_destination(value),_=>false},
+        crate::frame_equivalence::requests(crate::witness_m6_m5_frames::e6_bytes_apng_blend_over_transparent_destination()).is_prefix_of(id::requests_p(crate::witness_m6_m5_frames::e6_bytes_apng_blend_over_transparent_destination(),STRICT,3nat)),
+{
+    hide(bytes_apng_blend_over_transparent_destination);
+    model_apng_blend_over_transparent_destination();
+    crate::frame_equivalence::canonical_requests(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),3nat);
+    assert(bytes_apng_blend_over_transparent_destination()==crate::witness_m6_m5_frames::e6_bytes_apng_blend_over_transparent_destination()) by (compute);
+    id::suffix_step(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),STRICT,2nat);
+    id::suffix_step(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),STRICT,1nat);
+    id::suffix_step(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),STRICT,0nat);
+    e6_canvas_apng_blend_over_transparent_destination_0();
+    assert(expected_apng_blend_over_transparent_destination_0()==crate::witness_m6_m5_frames::e6_expected_apng_blend_over_transparent_destination_0()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),0nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_destination()[0].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),0nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_destination()[0].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),0nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_destination()[0].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),0nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_destination()[0].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),0nat)==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_destination()[0]);
+    e6_canvas_apng_blend_over_transparent_destination_1();
+    assert(expected_apng_blend_over_transparent_destination_1()==crate::witness_m6_m5_frames::e6_expected_apng_blend_over_transparent_destination_1()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),1nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_destination()[1].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),1nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_destination()[1].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),1nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_destination()[1].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),1nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_destination()[1].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),1nat)==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_destination()[1]);
+    assert(id::MFr_data(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination()),STRICT)==(id::Projection {frames:2nat,end:id::End::Iend}));
+    let value=match crate::frame_model::from_document(bytes_apng_blend_over_transparent_destination(),id::constructor_doc(doc_apng_blend_over_transparent_destination())) {crate::frame_model::Outcome::Done(value)=>value,_=>{assert(false);return;}};
+    assert(value.frames.len()==2nat);
+    assert forall|k: int| 0<=k<2 implies #[trigger] value.frames[k]==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_destination()[k] by {
+        if k==0 {}
+        if k==1 {}
+    }
+    assert(value.frames=~=crate::witness_m6_m5_frames::expected_frames_apng_blend_over_transparent_destination());
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_blend_over_zero_result_alpha_0()
+    ensures crate::frame_canvas_model::fold(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),1nat).canvas==expected_apng_blend_over_zero_result_alpha_0(),crate::frame_canvas_model::fold(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),1nat).before_draw==before_draw_apng_blend_over_zero_result_alpha_0(),
+{
+    hide(bytes_apng_blend_over_zero_result_alpha);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_blend_over_zero_result_alpha();data_apng_blend_over_zero_result_alpha_s1();inflate_apng_blend_over_zero_result_alpha_s1();scan_apng_blend_over_zero_result_alpha_s1();
+    assert(id::constructor_doc(doc_apng_blend_over_zero_result_alpha()).ihdr==h_apng_blend_over_zero_result_alpha()) by (compute);
+    assert(h_apng_blend_over_zero_result_alpha().width==4u32 && h_apng_blend_over_zero_result_alpha().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_blend_over_zero_result_alpha()))==48nat);
+    assert(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_blend_over_zero_result_alpha()))=~=Seq::new(48nat,|j: int|0u8));
+    assert(crate::iterator_canvas_model::stream(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),0nat)==Some(z_apng_blend_over_zero_result_alpha_s1())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),STRICT,0nat)==a_apng_blend_over_zero_result_alpha_s1()) by (compute);
+    assert(r::raw(a_apng_blend_over_zero_result_alpha_s1())==raw_apng_blend_over_zero_result_alpha_s1().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),0nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),bytes_apng_blend_over_zero_result_alpha())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),0nat);
+    crate::frame_canvas_model::lengths(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),0nat);
+    content_apng_blend_over_zero_result_alpha_0(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_blend_over_zero_result_alpha())),None,crate::frame_canvas_model::fold(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),1nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),1nat);
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_blend_over_zero_result_alpha_1()
+    ensures crate::frame_canvas_model::fold(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),2nat).canvas==expected_apng_blend_over_zero_result_alpha_1(),crate::frame_canvas_model::fold(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),2nat).before_draw==before_draw_apng_blend_over_zero_result_alpha_1(),
+{
+    hide(bytes_apng_blend_over_zero_result_alpha);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_blend_over_zero_result_alpha();data_apng_blend_over_zero_result_alpha_s2();inflate_apng_blend_over_zero_result_alpha_s2();scan_apng_blend_over_zero_result_alpha_s2();
+    e6_canvas_apng_blend_over_zero_result_alpha_0();
+    assert(id::constructor_doc(doc_apng_blend_over_zero_result_alpha()).ihdr==h_apng_blend_over_zero_result_alpha()) by (compute);
+    assert(h_apng_blend_over_zero_result_alpha().width==4u32 && h_apng_blend_over_zero_result_alpha().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_blend_over_zero_result_alpha()))==48nat);
+    assert(crate::iterator_canvas_model::stream(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),1nat)==Some(z_apng_blend_over_zero_result_alpha_s2())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),STRICT,1nat)==a_apng_blend_over_zero_result_alpha_s2()) by (compute);
+    assert(r::raw(a_apng_blend_over_zero_result_alpha_s2())==raw_apng_blend_over_zero_result_alpha_s2().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),1nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),bytes_apng_blend_over_zero_result_alpha())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),1nat);
+    crate::frame_canvas_model::lengths(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),1nat);
+    content_apng_blend_over_zero_result_alpha_1(crate::frame_canvas_model::fold(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),1nat).canvas,Some(crate::frame_canvas_model::fold(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),1nat).before_draw),crate::frame_canvas_model::fold(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),2nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),2nat);
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_complete_apng_blend_over_zero_result_alpha()
+    ensures match crate::frame_model::MFr(crate::witness_m6_m5_frames::e6_bytes_apng_blend_over_zero_result_alpha()) {crate::frame_model::Outcome::Done(value)=>crate::witness_m6_m5_frames::expected_value_apng_blend_over_zero_result_alpha(value),_=>false},
+        crate::frame_equivalence::requests(crate::witness_m6_m5_frames::e6_bytes_apng_blend_over_zero_result_alpha()).is_prefix_of(id::requests_p(crate::witness_m6_m5_frames::e6_bytes_apng_blend_over_zero_result_alpha(),STRICT,3nat)),
+{
+    hide(bytes_apng_blend_over_zero_result_alpha);
+    model_apng_blend_over_zero_result_alpha();
+    crate::frame_equivalence::canonical_requests(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),3nat);
+    assert(bytes_apng_blend_over_zero_result_alpha()==crate::witness_m6_m5_frames::e6_bytes_apng_blend_over_zero_result_alpha()) by (compute);
+    id::suffix_step(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),STRICT,2nat);
+    id::suffix_step(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),STRICT,1nat);
+    id::suffix_step(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),STRICT,0nat);
+    e6_canvas_apng_blend_over_zero_result_alpha_0();
+    assert(expected_apng_blend_over_zero_result_alpha_0()==crate::witness_m6_m5_frames::e6_expected_apng_blend_over_zero_result_alpha_0()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),0nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_zero_result_alpha()[0].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),0nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_zero_result_alpha()[0].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),0nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_zero_result_alpha()[0].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),0nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_zero_result_alpha()[0].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),0nat)==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_zero_result_alpha()[0]);
+    e6_canvas_apng_blend_over_zero_result_alpha_1();
+    assert(expected_apng_blend_over_zero_result_alpha_1()==crate::witness_m6_m5_frames::e6_expected_apng_blend_over_zero_result_alpha_1()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),1nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_zero_result_alpha()[1].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),1nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_zero_result_alpha()[1].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),1nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_zero_result_alpha()[1].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),1nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_zero_result_alpha()[1].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),1nat)==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_zero_result_alpha()[1]);
+    assert(id::MFr_data(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha()),STRICT)==(id::Projection {frames:2nat,end:id::End::Iend}));
+    let value=match crate::frame_model::from_document(bytes_apng_blend_over_zero_result_alpha(),id::constructor_doc(doc_apng_blend_over_zero_result_alpha())) {crate::frame_model::Outcome::Done(value)=>value,_=>{assert(false);return;}};
+    assert(value.frames.len()==2nat);
+    assert forall|k: int| 0<=k<2 implies #[trigger] value.frames[k]==crate::witness_m6_m5_frames::expected_frames_apng_blend_over_zero_result_alpha()[k] by {
+        if k==0 {}
+        if k==1 {}
+    }
+    assert(value.frames=~=crate::witness_m6_m5_frames::expected_frames_apng_blend_over_zero_result_alpha());
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_interlaced_subframe_0()
+    ensures crate::frame_canvas_model::fold(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),1nat).canvas==expected_apng_interlaced_subframe_0(),crate::frame_canvas_model::fold(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),1nat).before_draw==before_draw_apng_interlaced_subframe_0(),
+{
+    hide(bytes_apng_interlaced_subframe);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_interlaced_subframe();data_apng_interlaced_subframe_s0();inflate_apng_interlaced_subframe_s0();scan_apng_interlaced_subframe_s0();
+    assert(id::constructor_doc(doc_apng_interlaced_subframe()).ihdr==h_apng_interlaced_subframe()) by (compute);
+    assert(h_apng_interlaced_subframe().width==4u32 && h_apng_interlaced_subframe().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_interlaced_subframe()))==48nat);
+    assert(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_interlaced_subframe()))=~=Seq::new(48nat,|j: int|0u8));
+    assert(crate::iterator_canvas_model::stream(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),0nat)==Some(z_apng_interlaced_subframe_s0())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_interlaced_subframe()),STRICT,0nat)==a_apng_interlaced_subframe_s0()) by (compute);
+    assert(r::raw(a_apng_interlaced_subframe_s0())==raw_apng_interlaced_subframe_s0().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_interlaced_subframe()),0nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_interlaced_subframe()),bytes_apng_interlaced_subframe())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),0nat);
+    crate::frame_canvas_model::lengths(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),0nat);
+    content_apng_interlaced_subframe_0(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_interlaced_subframe())),None,crate::frame_canvas_model::fold(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),1nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),1nat);
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_interlaced_subframe_1()
+    ensures crate::frame_canvas_model::fold(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),2nat).canvas==expected_apng_interlaced_subframe_1(),crate::frame_canvas_model::fold(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),2nat).before_draw==before_draw_apng_interlaced_subframe_1(),
+{
+    hide(bytes_apng_interlaced_subframe);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_interlaced_subframe();data_apng_interlaced_subframe_s1();inflate_apng_interlaced_subframe_s1();scan_apng_interlaced_subframe_s1();
+    e6_canvas_apng_interlaced_subframe_0();
+    assert(id::constructor_doc(doc_apng_interlaced_subframe()).ihdr==h_apng_interlaced_subframe()) by (compute);
+    assert(h_apng_interlaced_subframe().width==4u32 && h_apng_interlaced_subframe().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_interlaced_subframe()))==48nat);
+    assert(crate::iterator_canvas_model::stream(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),1nat)==Some(z_apng_interlaced_subframe_s1())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_interlaced_subframe()),STRICT,1nat)==a_apng_interlaced_subframe_s1()) by (compute);
+    assert(r::raw(a_apng_interlaced_subframe_s1())==raw_apng_interlaced_subframe_s1().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_interlaced_subframe()),1nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_interlaced_subframe()),bytes_apng_interlaced_subframe())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),1nat);
+    crate::frame_canvas_model::lengths(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),1nat);
+    content_apng_interlaced_subframe_1(crate::frame_canvas_model::fold(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),1nat).canvas,Some(crate::frame_canvas_model::fold(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),1nat).before_draw),crate::frame_canvas_model::fold(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),2nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),2nat);
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_complete_apng_interlaced_subframe()
+    ensures match crate::frame_model::MFr(crate::witness_m6_m5_frames::e6_bytes_apng_interlaced_subframe()) {crate::frame_model::Outcome::Done(value)=>crate::witness_m6_m5_frames::expected_value_apng_interlaced_subframe(value),_=>false},
+        crate::frame_equivalence::requests(crate::witness_m6_m5_frames::e6_bytes_apng_interlaced_subframe()).is_prefix_of(id::requests_p(crate::witness_m6_m5_frames::e6_bytes_apng_interlaced_subframe(),STRICT,3nat)),
+{
+    hide(bytes_apng_interlaced_subframe);
+    model_apng_interlaced_subframe();
+    crate::frame_equivalence::canonical_requests(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),3nat);
+    assert(bytes_apng_interlaced_subframe()==crate::witness_m6_m5_frames::e6_bytes_apng_interlaced_subframe()) by (compute);
+    id::suffix_step(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),STRICT,2nat);
+    id::suffix_step(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),STRICT,1nat);
+    id::suffix_step(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),STRICT,0nat);
+    e6_canvas_apng_interlaced_subframe_0();
+    assert(expected_apng_interlaced_subframe_0()==crate::witness_m6_m5_frames::e6_expected_apng_interlaced_subframe_0()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),0nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_interlaced_subframe()[0].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),0nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_interlaced_subframe()[0].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),0nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_interlaced_subframe()[0].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),0nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_interlaced_subframe()[0].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),0nat)==crate::witness_m6_m5_frames::expected_frames_apng_interlaced_subframe()[0]);
+    e6_canvas_apng_interlaced_subframe_1();
+    assert(expected_apng_interlaced_subframe_1()==crate::witness_m6_m5_frames::e6_expected_apng_interlaced_subframe_1()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),1nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_interlaced_subframe()[1].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),1nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_interlaced_subframe()[1].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),1nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_interlaced_subframe()[1].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),1nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_interlaced_subframe()[1].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),1nat)==crate::witness_m6_m5_frames::expected_frames_apng_interlaced_subframe()[1]);
+    assert(id::MFr_data(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe()),STRICT)==(id::Projection {frames:2nat,end:id::End::Iend}));
+    let value=match crate::frame_model::from_document(bytes_apng_interlaced_subframe(),id::constructor_doc(doc_apng_interlaced_subframe())) {crate::frame_model::Outcome::Done(value)=>value,_=>{assert(false);return;}};
+    assert(value.frames.len()==2nat);
+    assert forall|k: int| 0<=k<2 implies #[trigger] value.frames[k]==crate::witness_m6_m5_frames::expected_frames_apng_interlaced_subframe()[k] by {
+        if k==0 {}
+        if k==1 {}
+    }
+    assert(value.frames=~=crate::witness_m6_m5_frames::expected_frames_apng_interlaced_subframe());
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_static_file_as_frames_0()
+    ensures crate::frame_canvas_model::fold(bytes_apng_static_file_as_frames(),id::constructor_doc(doc_apng_static_file_as_frames()),1nat).canvas==expected_apng_static_file_as_frames_0(),crate::frame_canvas_model::fold(bytes_apng_static_file_as_frames(),id::constructor_doc(doc_apng_static_file_as_frames()),1nat).before_draw==before_draw_apng_static_file_as_frames_0(),
+{
+    hide(bytes_apng_static_file_as_frames);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_static_file_as_frames();data_apng_static_file_as_frames_s0();inflate_apng_static_file_as_frames_s0();scan_apng_static_file_as_frames_s0();
+    assert(id::constructor_doc(doc_apng_static_file_as_frames()).ihdr==h_apng_static_file_as_frames()) by (compute);
+    assert(h_apng_static_file_as_frames().width==4u32 && h_apng_static_file_as_frames().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_static_file_as_frames()))==48nat);
+    assert(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_static_file_as_frames()))=~=Seq::new(48nat,|j: int|0u8));
+    assert(crate::iterator_canvas_model::stream(bytes_apng_static_file_as_frames(),id::constructor_doc(doc_apng_static_file_as_frames()),0nat)==Some(z_apng_static_file_as_frames_s0())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_static_file_as_frames()),STRICT,0nat)==a_apng_static_file_as_frames_s0()) by (compute);
+    assert(r::raw(a_apng_static_file_as_frames_s0())==raw_apng_static_file_as_frames_s0().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_static_file_as_frames()),0nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_static_file_as_frames()),bytes_apng_static_file_as_frames())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_static_file_as_frames(),id::constructor_doc(doc_apng_static_file_as_frames()),0nat);
+    crate::frame_canvas_model::lengths(bytes_apng_static_file_as_frames(),id::constructor_doc(doc_apng_static_file_as_frames()),0nat);
+    content_apng_static_file_as_frames_0(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_static_file_as_frames())),None,crate::frame_canvas_model::fold(bytes_apng_static_file_as_frames(),id::constructor_doc(doc_apng_static_file_as_frames()),1nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_static_file_as_frames(),id::constructor_doc(doc_apng_static_file_as_frames()),1nat);
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_complete_apng_static_file_as_frames()
+    ensures match crate::frame_model::MFr(crate::witness_m6_m5_frames::e6_bytes_apng_static_file_as_frames()) {crate::frame_model::Outcome::Done(value)=>crate::witness_m6_m5_frames::expected_value_apng_static_file_as_frames(value),_=>false},
+        crate::frame_equivalence::requests(crate::witness_m6_m5_frames::e6_bytes_apng_static_file_as_frames()).is_prefix_of(id::requests_p(crate::witness_m6_m5_frames::e6_bytes_apng_static_file_as_frames(),STRICT,2nat)),
+{
+    hide(bytes_apng_static_file_as_frames);
+    model_apng_static_file_as_frames();
+    crate::frame_equivalence::canonical_requests(bytes_apng_static_file_as_frames(),id::constructor_doc(doc_apng_static_file_as_frames()),2nat);
+    assert(bytes_apng_static_file_as_frames()==crate::witness_m6_m5_frames::e6_bytes_apng_static_file_as_frames()) by (compute);
+    id::suffix_step(bytes_apng_static_file_as_frames(),id::constructor_doc(doc_apng_static_file_as_frames()),STRICT,1nat);
+    id::suffix_step(bytes_apng_static_file_as_frames(),id::constructor_doc(doc_apng_static_file_as_frames()),STRICT,0nat);
+    e6_canvas_apng_static_file_as_frames_0();
+    assert(expected_apng_static_file_as_frames_0()==crate::witness_m6_m5_frames::e6_expected_apng_static_file_as_frames_0()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_static_file_as_frames(),id::constructor_doc(doc_apng_static_file_as_frames()),0nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_static_file_as_frames()[0].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_static_file_as_frames(),id::constructor_doc(doc_apng_static_file_as_frames()),0nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_static_file_as_frames()[0].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_static_file_as_frames(),id::constructor_doc(doc_apng_static_file_as_frames()),0nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_static_file_as_frames()[0].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_static_file_as_frames(),id::constructor_doc(doc_apng_static_file_as_frames()),0nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_static_file_as_frames()[0].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_static_file_as_frames(),id::constructor_doc(doc_apng_static_file_as_frames()),0nat)==crate::witness_m6_m5_frames::expected_frames_apng_static_file_as_frames()[0]);
+    assert(id::MFr_data(bytes_apng_static_file_as_frames(),id::constructor_doc(doc_apng_static_file_as_frames()),STRICT)==(id::Projection {frames:1nat,end:id::End::Iend}));
+    let value=match crate::frame_model::from_document(bytes_apng_static_file_as_frames(),id::constructor_doc(doc_apng_static_file_as_frames())) {crate::frame_model::Outcome::Done(value)=>value,_=>{assert(false);return;}};
+    assert(value.frames.len()==1nat);
+    assert forall|k: int| 0<=k<1 implies #[trigger] value.frames[k]==crate::witness_m6_m5_frames::expected_frames_apng_static_file_as_frames()[k] by {
+        if k==0 {}
+    }
+    assert(value.frames=~=crate::witness_m6_m5_frames::expected_frames_apng_static_file_as_frames());
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_frame1_adler_error_ends_0()
+    ensures crate::frame_canvas_model::fold(bytes_apng_frame1_adler_error_ends(),id::constructor_doc(doc_apng_frame1_adler_error_ends()),1nat).canvas==expected_apng_frame1_adler_error_ends_0(),crate::frame_canvas_model::fold(bytes_apng_frame1_adler_error_ends(),id::constructor_doc(doc_apng_frame1_adler_error_ends()),1nat).before_draw==before_draw_apng_frame1_adler_error_ends_0(),
+{
+    hide(bytes_apng_frame1_adler_error_ends);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_frame1_adler_error_ends();data_apng_frame1_adler_error_ends_s0();inflate_apng_frame1_adler_error_ends_s0();scan_apng_frame1_adler_error_ends_s0();
+    assert(id::constructor_doc(doc_apng_frame1_adler_error_ends()).ihdr==h_apng_frame1_adler_error_ends()) by (compute);
+    assert(h_apng_frame1_adler_error_ends().width==4u32 && h_apng_frame1_adler_error_ends().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_frame1_adler_error_ends()))==48nat);
+    assert(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_frame1_adler_error_ends()))=~=Seq::new(48nat,|j: int|0u8));
+    assert(crate::iterator_canvas_model::stream(bytes_apng_frame1_adler_error_ends(),id::constructor_doc(doc_apng_frame1_adler_error_ends()),0nat)==Some(z_apng_frame1_adler_error_ends_s0())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_frame1_adler_error_ends()),STRICT,0nat)==a_apng_frame1_adler_error_ends_s0()) by (compute);
+    assert(r::raw(a_apng_frame1_adler_error_ends_s0())==raw_apng_frame1_adler_error_ends_s0().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_frame1_adler_error_ends()),0nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_frame1_adler_error_ends()),bytes_apng_frame1_adler_error_ends())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_frame1_adler_error_ends(),id::constructor_doc(doc_apng_frame1_adler_error_ends()),0nat);
+    crate::frame_canvas_model::lengths(bytes_apng_frame1_adler_error_ends(),id::constructor_doc(doc_apng_frame1_adler_error_ends()),0nat);
+    content_apng_frame1_adler_error_ends_0(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_frame1_adler_error_ends())),None,crate::frame_canvas_model::fold(bytes_apng_frame1_adler_error_ends(),id::constructor_doc(doc_apng_frame1_adler_error_ends()),1nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_frame1_adler_error_ends(),id::constructor_doc(doc_apng_frame1_adler_error_ends()),1nat);
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_complete_apng_frame1_adler_error_ends()
+    ensures match crate::frame_model::MFr(crate::witness_m6_m5_frames::e6_bytes_apng_frame1_adler_error_ends()) {crate::frame_model::Outcome::Done(value)=>crate::witness_m6_m5_frames::expected_value_apng_frame1_adler_error_ends(value),_=>false},
+        crate::frame_equivalence::requests(crate::witness_m6_m5_frames::e6_bytes_apng_frame1_adler_error_ends()).is_prefix_of(id::requests_p(crate::witness_m6_m5_frames::e6_bytes_apng_frame1_adler_error_ends(),STRICT,2nat)),
+{
+    hide(bytes_apng_frame1_adler_error_ends);
+    model_apng_frame1_adler_error_ends();
+    crate::frame_equivalence::canonical_requests(bytes_apng_frame1_adler_error_ends(),id::constructor_doc(doc_apng_frame1_adler_error_ends()),2nat);
+    assert(bytes_apng_frame1_adler_error_ends()==crate::witness_m6_m5_frames::e6_bytes_apng_frame1_adler_error_ends()) by (compute);
+    id::suffix_step(bytes_apng_frame1_adler_error_ends(),id::constructor_doc(doc_apng_frame1_adler_error_ends()),STRICT,1nat);
+    id::suffix_step(bytes_apng_frame1_adler_error_ends(),id::constructor_doc(doc_apng_frame1_adler_error_ends()),STRICT,0nat);
+    e6_canvas_apng_frame1_adler_error_ends_0();
+    assert(expected_apng_frame1_adler_error_ends_0()==crate::witness_m6_m5_frames::e6_expected_apng_frame1_adler_error_ends_0()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_frame1_adler_error_ends(),id::constructor_doc(doc_apng_frame1_adler_error_ends()),0nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_frame1_adler_error_ends()[0].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_frame1_adler_error_ends(),id::constructor_doc(doc_apng_frame1_adler_error_ends()),0nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_frame1_adler_error_ends()[0].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_frame1_adler_error_ends(),id::constructor_doc(doc_apng_frame1_adler_error_ends()),0nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_frame1_adler_error_ends()[0].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_frame1_adler_error_ends(),id::constructor_doc(doc_apng_frame1_adler_error_ends()),0nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_frame1_adler_error_ends()[0].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_frame1_adler_error_ends(),id::constructor_doc(doc_apng_frame1_adler_error_ends()),0nat)==crate::witness_m6_m5_frames::expected_frames_apng_frame1_adler_error_ends()[0]);
+    assert(id::MFr_data(bytes_apng_frame1_adler_error_ends(),id::constructor_doc(doc_apng_frame1_adler_error_ends()),STRICT)==(id::Projection {frames:1nat,end:id::End::Format(Error::AdlerMismatch)}));
+    let value=match crate::frame_model::from_document(bytes_apng_frame1_adler_error_ends(),id::constructor_doc(doc_apng_frame1_adler_error_ends())) {crate::frame_model::Outcome::Done(value)=>value,_=>{assert(false);return;}};
+    assert(value.frames.len()==1nat);
+    assert forall|k: int| 0<=k<1 implies #[trigger] value.frames[k]==crate::witness_m6_m5_frames::expected_frames_apng_frame1_adler_error_ends()[k] by {
+        if k==0 {}
+    }
+    assert(value.frames=~=crate::witness_m6_m5_frames::expected_frames_apng_frame1_adler_error_ends());
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_frame1_truncated_data_ends_0()
+    ensures crate::frame_canvas_model::fold(bytes_apng_frame1_truncated_data_ends(),id::constructor_doc(doc_apng_frame1_truncated_data_ends()),1nat).canvas==expected_apng_frame1_truncated_data_ends_0(),crate::frame_canvas_model::fold(bytes_apng_frame1_truncated_data_ends(),id::constructor_doc(doc_apng_frame1_truncated_data_ends()),1nat).before_draw==before_draw_apng_frame1_truncated_data_ends_0(),
+{
+    hide(bytes_apng_frame1_truncated_data_ends);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_frame1_truncated_data_ends();data_apng_frame1_truncated_data_ends_s0();inflate_apng_frame1_truncated_data_ends_s0();scan_apng_frame1_truncated_data_ends_s0();
+    assert(id::constructor_doc(doc_apng_frame1_truncated_data_ends()).ihdr==h_apng_frame1_truncated_data_ends()) by (compute);
+    assert(h_apng_frame1_truncated_data_ends().width==4u32 && h_apng_frame1_truncated_data_ends().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_frame1_truncated_data_ends()))==48nat);
+    assert(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_frame1_truncated_data_ends()))=~=Seq::new(48nat,|j: int|0u8));
+    assert(crate::iterator_canvas_model::stream(bytes_apng_frame1_truncated_data_ends(),id::constructor_doc(doc_apng_frame1_truncated_data_ends()),0nat)==Some(z_apng_frame1_truncated_data_ends_s0())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_frame1_truncated_data_ends()),STRICT,0nat)==a_apng_frame1_truncated_data_ends_s0()) by (compute);
+    assert(r::raw(a_apng_frame1_truncated_data_ends_s0())==raw_apng_frame1_truncated_data_ends_s0().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_frame1_truncated_data_ends()),0nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_frame1_truncated_data_ends()),bytes_apng_frame1_truncated_data_ends())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_frame1_truncated_data_ends(),id::constructor_doc(doc_apng_frame1_truncated_data_ends()),0nat);
+    crate::frame_canvas_model::lengths(bytes_apng_frame1_truncated_data_ends(),id::constructor_doc(doc_apng_frame1_truncated_data_ends()),0nat);
+    content_apng_frame1_truncated_data_ends_0(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_frame1_truncated_data_ends())),None,crate::frame_canvas_model::fold(bytes_apng_frame1_truncated_data_ends(),id::constructor_doc(doc_apng_frame1_truncated_data_ends()),1nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_frame1_truncated_data_ends(),id::constructor_doc(doc_apng_frame1_truncated_data_ends()),1nat);
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_complete_apng_frame1_truncated_data_ends()
+    ensures match crate::frame_model::MFr(crate::witness_m6_m5_frames::e6_bytes_apng_frame1_truncated_data_ends()) {crate::frame_model::Outcome::Done(value)=>crate::witness_m6_m5_frames::expected_value_apng_frame1_truncated_data_ends(value),_=>false},
+        crate::frame_equivalence::requests(crate::witness_m6_m5_frames::e6_bytes_apng_frame1_truncated_data_ends()).is_prefix_of(id::requests_p(crate::witness_m6_m5_frames::e6_bytes_apng_frame1_truncated_data_ends(),STRICT,2nat)),
+{
+    hide(bytes_apng_frame1_truncated_data_ends);
+    model_apng_frame1_truncated_data_ends();
+    crate::frame_equivalence::canonical_requests(bytes_apng_frame1_truncated_data_ends(),id::constructor_doc(doc_apng_frame1_truncated_data_ends()),2nat);
+    assert(bytes_apng_frame1_truncated_data_ends()==crate::witness_m6_m5_frames::e6_bytes_apng_frame1_truncated_data_ends()) by (compute);
+    id::suffix_step(bytes_apng_frame1_truncated_data_ends(),id::constructor_doc(doc_apng_frame1_truncated_data_ends()),STRICT,1nat);
+    id::suffix_step(bytes_apng_frame1_truncated_data_ends(),id::constructor_doc(doc_apng_frame1_truncated_data_ends()),STRICT,0nat);
+    e6_canvas_apng_frame1_truncated_data_ends_0();
+    assert(expected_apng_frame1_truncated_data_ends_0()==crate::witness_m6_m5_frames::e6_expected_apng_frame1_truncated_data_ends_0()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_frame1_truncated_data_ends(),id::constructor_doc(doc_apng_frame1_truncated_data_ends()),0nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_frame1_truncated_data_ends()[0].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_frame1_truncated_data_ends(),id::constructor_doc(doc_apng_frame1_truncated_data_ends()),0nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_frame1_truncated_data_ends()[0].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_frame1_truncated_data_ends(),id::constructor_doc(doc_apng_frame1_truncated_data_ends()),0nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_frame1_truncated_data_ends()[0].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_frame1_truncated_data_ends(),id::constructor_doc(doc_apng_frame1_truncated_data_ends()),0nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_frame1_truncated_data_ends()[0].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_frame1_truncated_data_ends(),id::constructor_doc(doc_apng_frame1_truncated_data_ends()),0nat)==crate::witness_m6_m5_frames::expected_frames_apng_frame1_truncated_data_ends()[0]);
+    assert(id::MFr_data(bytes_apng_frame1_truncated_data_ends(),id::constructor_doc(doc_apng_frame1_truncated_data_ends()),STRICT)==(id::Projection {frames:1nat,end:id::End::Format(Error::TruncatedImageData)}));
+    let value=match crate::frame_model::from_document(bytes_apng_frame1_truncated_data_ends(),id::constructor_doc(doc_apng_frame1_truncated_data_ends())) {crate::frame_model::Outcome::Done(value)=>value,_=>{assert(false);return;}};
+    assert(value.frames.len()==1nat);
+    assert forall|k: int| 0<=k<1 implies #[trigger] value.frames[k]==crate::witness_m6_m5_frames::expected_frames_apng_frame1_truncated_data_ends()[k] by {
+        if k==0 {}
+    }
+    assert(value.frames=~=crate::witness_m6_m5_frames::expected_frames_apng_frame1_truncated_data_ends());
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_empty_fdat_payload_0()
+    ensures crate::frame_canvas_model::fold(bytes_apng_empty_fdat_payload(),id::constructor_doc(doc_apng_empty_fdat_payload()),1nat).canvas==expected_apng_empty_fdat_payload_0(),crate::frame_canvas_model::fold(bytes_apng_empty_fdat_payload(),id::constructor_doc(doc_apng_empty_fdat_payload()),1nat).before_draw==before_draw_apng_empty_fdat_payload_0(),
+{
+    hide(bytes_apng_empty_fdat_payload);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_empty_fdat_payload();data_apng_empty_fdat_payload_s0();inflate_apng_empty_fdat_payload_s0();scan_apng_empty_fdat_payload_s0();
+    assert(id::constructor_doc(doc_apng_empty_fdat_payload()).ihdr==h_apng_empty_fdat_payload()) by (compute);
+    assert(h_apng_empty_fdat_payload().width==1u32 && h_apng_empty_fdat_payload().height==1u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_empty_fdat_payload()))==4nat);
+    assert(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_empty_fdat_payload()))=~=Seq::new(4nat,|j: int|0u8));
+    assert(crate::iterator_canvas_model::stream(bytes_apng_empty_fdat_payload(),id::constructor_doc(doc_apng_empty_fdat_payload()),0nat)==Some(z_apng_empty_fdat_payload_s0())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_empty_fdat_payload()),STRICT,0nat)==a_apng_empty_fdat_payload_s0()) by (compute);
+    assert(r::raw(a_apng_empty_fdat_payload_s0())==raw_apng_empty_fdat_payload_s0().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_empty_fdat_payload()),0nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_empty_fdat_payload()),bytes_apng_empty_fdat_payload())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_empty_fdat_payload(),id::constructor_doc(doc_apng_empty_fdat_payload()),0nat);
+    crate::frame_canvas_model::lengths(bytes_apng_empty_fdat_payload(),id::constructor_doc(doc_apng_empty_fdat_payload()),0nat);
+    content_apng_empty_fdat_payload_0(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_empty_fdat_payload())),None,crate::frame_canvas_model::fold(bytes_apng_empty_fdat_payload(),id::constructor_doc(doc_apng_empty_fdat_payload()),1nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_empty_fdat_payload(),id::constructor_doc(doc_apng_empty_fdat_payload()),1nat);
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_complete_apng_empty_fdat_payload()
+    ensures match crate::frame_model::MFr(crate::witness_m6_m5_frames::e6_bytes_apng_empty_fdat_payload()) {crate::frame_model::Outcome::Done(value)=>crate::witness_m6_m5_frames::expected_value_apng_empty_fdat_payload(value),_=>false},
+        crate::frame_equivalence::requests(crate::witness_m6_m5_frames::e6_bytes_apng_empty_fdat_payload()).is_prefix_of(id::requests_p(crate::witness_m6_m5_frames::e6_bytes_apng_empty_fdat_payload(),STRICT,2nat)),
+{
+    hide(bytes_apng_empty_fdat_payload);
+    model_apng_empty_fdat_payload();
+    crate::frame_equivalence::canonical_requests(bytes_apng_empty_fdat_payload(),id::constructor_doc(doc_apng_empty_fdat_payload()),2nat);
+    assert(bytes_apng_empty_fdat_payload()==crate::witness_m6_m5_frames::e6_bytes_apng_empty_fdat_payload()) by (compute);
+    id::suffix_step(bytes_apng_empty_fdat_payload(),id::constructor_doc(doc_apng_empty_fdat_payload()),STRICT,1nat);
+    id::suffix_step(bytes_apng_empty_fdat_payload(),id::constructor_doc(doc_apng_empty_fdat_payload()),STRICT,0nat);
+    e6_canvas_apng_empty_fdat_payload_0();
+    assert(expected_apng_empty_fdat_payload_0()==crate::witness_m6_m5_frames::e6_expected_apng_empty_fdat_payload_0()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_empty_fdat_payload(),id::constructor_doc(doc_apng_empty_fdat_payload()),0nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_payload()[0].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_empty_fdat_payload(),id::constructor_doc(doc_apng_empty_fdat_payload()),0nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_payload()[0].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_empty_fdat_payload(),id::constructor_doc(doc_apng_empty_fdat_payload()),0nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_payload()[0].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_empty_fdat_payload(),id::constructor_doc(doc_apng_empty_fdat_payload()),0nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_payload()[0].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_empty_fdat_payload(),id::constructor_doc(doc_apng_empty_fdat_payload()),0nat)==crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_payload()[0]);
+    assert(id::MFr_data(bytes_apng_empty_fdat_payload(),id::constructor_doc(doc_apng_empty_fdat_payload()),STRICT)==(id::Projection {frames:1nat,end:id::End::Format(Error::TruncatedZlib)}));
+    let value=match crate::frame_model::from_document(bytes_apng_empty_fdat_payload(),id::constructor_doc(doc_apng_empty_fdat_payload())) {crate::frame_model::Outcome::Done(value)=>value,_=>{assert(false);return;}};
+    assert(value.frames.len()==1nat);
+    assert forall|k: int| 0<=k<1 implies #[trigger] value.frames[k]==crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_payload()[k] by {
+        if k==0 {}
+    }
+    assert(value.frames=~=crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_payload());
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_empty_fdat_then_data_0()
+    ensures crate::frame_canvas_model::fold(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),1nat).canvas==expected_apng_empty_fdat_then_data_0(),crate::frame_canvas_model::fold(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),1nat).before_draw==before_draw_apng_empty_fdat_then_data_0(),
+{
+    hide(bytes_apng_empty_fdat_then_data);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_empty_fdat_then_data();data_apng_empty_fdat_then_data_s0();inflate_apng_empty_fdat_then_data_s0();scan_apng_empty_fdat_then_data_s0();
+    assert(id::constructor_doc(doc_apng_empty_fdat_then_data()).ihdr==h_apng_empty_fdat_then_data()) by (compute);
+    assert(h_apng_empty_fdat_then_data().width==4u32 && h_apng_empty_fdat_then_data().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_empty_fdat_then_data()))==48nat);
+    assert(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_empty_fdat_then_data()))=~=Seq::new(48nat,|j: int|0u8));
+    assert(crate::iterator_canvas_model::stream(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),0nat)==Some(z_apng_empty_fdat_then_data_s0())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_empty_fdat_then_data()),STRICT,0nat)==a_apng_empty_fdat_then_data_s0()) by (compute);
+    assert(r::raw(a_apng_empty_fdat_then_data_s0())==raw_apng_empty_fdat_then_data_s0().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_empty_fdat_then_data()),0nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_empty_fdat_then_data()),bytes_apng_empty_fdat_then_data())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),0nat);
+    crate::frame_canvas_model::lengths(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),0nat);
+    content_apng_empty_fdat_then_data_0(crate::frame_canvas_model::zero(id::constructor_doc(doc_apng_empty_fdat_then_data())),None,crate::frame_canvas_model::fold(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),1nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),1nat);
+}
+#[verifier::spinoff_prover]
+proof fn e6_canvas_apng_empty_fdat_then_data_1()
+    ensures crate::frame_canvas_model::fold(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),2nat).canvas==expected_apng_empty_fdat_then_data_1(),crate::frame_canvas_model::fold(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),2nat).before_draw==before_draw_apng_empty_fdat_then_data_1(),
+{
+    hide(bytes_apng_empty_fdat_then_data);hide(r::inflated);hide(crate::colour_model::pixel);
+    model_apng_empty_fdat_then_data();data_apng_empty_fdat_then_data_s1();inflate_apng_empty_fdat_then_data_s1();scan_apng_empty_fdat_then_data_s1();
+    e6_canvas_apng_empty_fdat_then_data_0();
+    assert(id::constructor_doc(doc_apng_empty_fdat_then_data()).ihdr==h_apng_empty_fdat_then_data()) by (compute);
+    assert(h_apng_empty_fdat_then_data().width==4u32 && h_apng_empty_fdat_then_data().height==3u32) by (compute);
+    assert(crate::frame_canvas_model::bytes(id::constructor_doc(doc_apng_empty_fdat_then_data()))==48nat);
+    assert(crate::iterator_canvas_model::stream(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),1nat)==Some(z_apng_empty_fdat_then_data_s1())) by (compute);
+    assert(crate::iterator_canvas_model::shape(id::constructor_doc(doc_apng_empty_fdat_then_data()),STRICT,1nat)==a_apng_empty_fdat_then_data_s1()) by (compute);
+    assert(r::raw(a_apng_empty_fdat_then_data_s1())==raw_apng_empty_fdat_then_data_s1().len()) by (compute);
+    assert(crate::frame_canvas_model::geometry(id::constructor_doc(doc_apng_empty_fdat_then_data()),1nat)) by (compute);
+    assert(crate::colour_model::from_doc(id::constructor_doc(doc_apng_empty_fdat_then_data()),bytes_apng_empty_fdat_then_data())==crate::colour_model::Context {ct:6u8,depth:8u8,plte:Seq::empty(),trns:None}) by (compute);
+    assert(crate::model::valid_depth(6u8,8u8)) by (compute);
+    crate::witness_m6_frame_model::canonical_step(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),1nat);
+    crate::frame_canvas_model::lengths(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),1nat);
+    content_apng_empty_fdat_then_data_1(crate::frame_canvas_model::fold(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),1nat).canvas,Some(crate::frame_canvas_model::fold(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),1nat).before_draw),crate::frame_canvas_model::fold(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),2nat).canvas);
+    crate::frame_canvas_model::fold_step(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),2nat);
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_complete_apng_empty_fdat_then_data()
+    ensures match crate::frame_model::MFr(crate::witness_m6_m5_frames::e6_bytes_apng_empty_fdat_then_data()) {crate::frame_model::Outcome::Done(value)=>crate::witness_m6_m5_frames::expected_value_apng_empty_fdat_then_data(value),_=>false},
+        crate::frame_equivalence::requests(crate::witness_m6_m5_frames::e6_bytes_apng_empty_fdat_then_data()).is_prefix_of(id::requests_p(crate::witness_m6_m5_frames::e6_bytes_apng_empty_fdat_then_data(),STRICT,3nat)),
+{
+    hide(bytes_apng_empty_fdat_then_data);
+    model_apng_empty_fdat_then_data();
+    crate::frame_equivalence::canonical_requests(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),3nat);
+    assert(bytes_apng_empty_fdat_then_data()==crate::witness_m6_m5_frames::e6_bytes_apng_empty_fdat_then_data()) by (compute);
+    id::suffix_step(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),STRICT,2nat);
+    id::suffix_step(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),STRICT,1nat);
+    id::suffix_step(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),STRICT,0nat);
+    e6_canvas_apng_empty_fdat_then_data_0();
+    assert(expected_apng_empty_fdat_then_data_0()==crate::witness_m6_m5_frames::e6_expected_apng_empty_fdat_then_data_0()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),0nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_then_data()[0].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),0nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_then_data()[0].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),0nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_then_data()[0].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),0nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_then_data()[0].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),0nat)==crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_then_data()[0]);
+    e6_canvas_apng_empty_fdat_then_data_1();
+    assert(expected_apng_empty_fdat_then_data_1()==crate::witness_m6_m5_frames::e6_expected_apng_empty_fdat_then_data_1()) by (compute);
+    assert(crate::frame_model::record(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),1nat).rect==crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_then_data()[1].rect) by (compute);
+    assert(crate::frame_model::record(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),1nat).delay==crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_then_data()[1].delay) by (compute);
+    assert(crate::frame_model::record(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),1nat).dispose==crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_then_data()[1].dispose) by (compute);
+    assert(crate::frame_model::record(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),1nat).blend==crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_then_data()[1].blend) by (compute);
+    assert(crate::frame_model::record(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),1nat)==crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_then_data()[1]);
+    assert(id::MFr_data(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data()),STRICT)==(id::Projection {frames:2nat,end:id::End::Iend}));
+    let value=match crate::frame_model::from_document(bytes_apng_empty_fdat_then_data(),id::constructor_doc(doc_apng_empty_fdat_then_data())) {crate::frame_model::Outcome::Done(value)=>value,_=>{assert(false);return;}};
+    assert(value.frames.len()==2nat);
+    assert forall|k: int| 0<=k<2 implies #[trigger] value.frames[k]==crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_then_data()[k] by {
+        if k==0 {}
+        if k==1 {}
+    }
+    assert(value.frames=~=crate::witness_m6_m5_frames::expected_frames_apng_empty_fdat_then_data());
+}
 } // verus!

@@ -1,0 +1,892 @@
+{
+  "title": "Complete Frame Witnesses",
+  "scope": "E6-M5-F complete: 13 frame records with full independent results and ordinary iterator transcripts; remaining M4 E6 groups pending.",
+  "checkpoint": "E6-M5-F",
+  "base_commit": "1151356bbc8532e4c762c03e0a9e0627d1066e09",
+  "full_runs": [
+    799,
+    802
+  ],
+  "claims": [
+    {
+      "id": "apng/default-is-frame0-dispose-bg-blend-over",
+      "entry": "frames",
+      "claim": "Independent complete MFr equals every frozen canvas byte, rectangle, raw delay pair, dispose/blend field, plays and terminal result. The ordinary constructor/iterator retains native observations of the full frame sequence and terminal result, with actual OOM membership and Strict recovered=false.",
+      "expected_keys": [
+        "width",
+        "height",
+        "num_plays",
+        "end",
+        "frames"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "736773e563e9682f9c0cc0225046b078345c981692e262e1612da0515211b5d5",
+      "expected_canvas_sha256": [
+        "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d",
+        "6e7c9db19d56f28c9fc922824f671c02e9fe1c0208e12a99c9c3762e445f1be7",
+        "62396b167345876a40b2608cf9121ef0ea5fbcef28c9242bdc22342ffc176d60"
+      ],
+      "returned_frames": 3,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "model_complete_apng_default_is_frame0_dispose_bg_blend_over",
+          "line": 18,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "public_complete_apng_default_is_frame0_dispose_bg_blend_over",
+          "line": 25,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_complete_apng_default_is_frame0_dispose_bg_blend_over",
+          "line": 21284,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_default_is_frame0_dispose_bg_blend_over_0",
+          "line": 21221,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_default_is_frame0_dispose_bg_blend_over_1",
+          "line": 21242,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_default_is_frame0_dispose_bg_blend_over_2",
+          "line": 21263,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        }
+      ],
+      "verified_in_full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "id": "apng/default-not-in-animation",
+      "entry": "frames",
+      "claim": "Independent complete MFr equals every frozen canvas byte, rectangle, raw delay pair, dispose/blend field, plays and terminal result. The ordinary constructor/iterator retains native observations of the full frame sequence and terminal result, with actual OOM membership and Strict recovered=false.",
+      "expected_keys": [
+        "width",
+        "height",
+        "num_plays",
+        "end",
+        "frames"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "f4a127920280d3ef4349059ed5fa8f21a2a8f72aabf3b9f67b964560969071b3",
+      "expected_canvas_sha256": [
+        "3ee60e9640c4200ddd1def904e03a1c8ec3d05858017b926849baa5cdf612581",
+        "58bf91640e83dcf67a9bc50d4117ff0b785053eba9b84bb66e3ec6c11dcb203e"
+      ],
+      "returned_frames": 2,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "model_complete_apng_default_not_in_animation",
+          "line": 47,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "public_complete_apng_default_not_in_animation",
+          "line": 54,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_complete_apng_default_not_in_animation",
+          "line": 21370,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_default_not_in_animation_0",
+          "line": 21328,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_default_not_in_animation_1",
+          "line": 21349,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        }
+      ],
+      "verified_in_full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "id": "apng/dispose-previous-first-frame-and-later",
+      "entry": "frames",
+      "claim": "Independent complete MFr equals every frozen canvas byte, rectangle, raw delay pair, dispose/blend field, plays and terminal result. The ordinary constructor/iterator retains native observations of the full frame sequence and terminal result, with actual OOM membership and Strict recovered=false.",
+      "expected_keys": [
+        "width",
+        "height",
+        "num_plays",
+        "end",
+        "frames"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "81e08e42aa9193b549d0a32b6dc1d0fd942d5d0fb26909da6c4de3371ac32875",
+      "expected_canvas_sha256": [
+        "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d",
+        "3ee60e9640c4200ddd1def904e03a1c8ec3d05858017b926849baa5cdf612581",
+        "5ec7e3d8a845a1aa84fe6eb327eb5cf594b752b6c382e0248a8c6cf5baaa3b8e"
+      ],
+      "returned_frames": 3,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "model_complete_apng_dispose_previous_first_frame_and_later",
+          "line": 77,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "public_complete_apng_dispose_previous_first_frame_and_later",
+          "line": 84,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_complete_apng_dispose_previous_first_frame_and_later",
+          "line": 21468,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_dispose_previous_first_frame_and_later_0",
+          "line": 21405,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_dispose_previous_first_frame_and_later_1",
+          "line": 21426,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_dispose_previous_first_frame_and_later_2",
+          "line": 21447,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        }
+      ],
+      "verified_in_full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "id": "apng/blend-over-arithmetic",
+      "entry": "frames",
+      "claim": "Independent complete MFr equals every frozen canvas byte, rectangle, raw delay pair, dispose/blend field, plays and terminal result. The ordinary constructor/iterator retains native observations of the full frame sequence and terminal result, with actual OOM membership and Strict recovered=false.",
+      "expected_keys": [
+        "width",
+        "height",
+        "num_plays",
+        "end",
+        "frames"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "66d70df7863815d5e0e7153d986a237280307e4b4ce784b1747779d82f838687",
+      "expected_canvas_sha256": [
+        "d5a527ac6783c17b4e6facba47c29f7897cb075506b7b65f4c926620d88cb8c5",
+        "243d06f035acb43f108ceb01295ab0b190a727f7b782ac6b21b723aa234364df"
+      ],
+      "returned_frames": 2,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "model_complete_apng_blend_over_arithmetic",
+          "line": 106,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "public_complete_apng_blend_over_arithmetic",
+          "line": 113,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_complete_apng_blend_over_arithmetic",
+          "line": 21554,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_blend_over_arithmetic_0",
+          "line": 21512,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_blend_over_arithmetic_1",
+          "line": 21533,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        }
+      ],
+      "verified_in_full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "id": "apng/blend-over-transparent-source",
+      "entry": "frames",
+      "claim": "Independent complete MFr equals every frozen canvas byte, rectangle, raw delay pair, dispose/blend field, plays and terminal result. The ordinary constructor/iterator retains native observations of the full frame sequence and terminal result, with actual OOM membership and Strict recovered=false.",
+      "expected_keys": [
+        "width",
+        "height",
+        "num_plays",
+        "end",
+        "frames"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "6af008e75d0239a27c99684fa6342e5c87d5f952ee1aff5cfbaea05aa7a071f3",
+      "expected_canvas_sha256": [
+        "643d98cac114c2a59d3c44c3030502cffeba9f0f70fa638d3d11c800e3adc700",
+        "643d98cac114c2a59d3c44c3030502cffeba9f0f70fa638d3d11c800e3adc700"
+      ],
+      "returned_frames": 2,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "model_complete_apng_blend_over_transparent_source",
+          "line": 135,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "public_complete_apng_blend_over_transparent_source",
+          "line": 142,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_complete_apng_blend_over_transparent_source",
+          "line": 21631,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_blend_over_transparent_source_0",
+          "line": 21589,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_blend_over_transparent_source_1",
+          "line": 21610,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        }
+      ],
+      "verified_in_full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "id": "apng/blend-over-transparent-destination",
+      "entry": "frames",
+      "claim": "Independent complete MFr equals every frozen canvas byte, rectangle, raw delay pair, dispose/blend field, plays and terminal result. The ordinary constructor/iterator retains native observations of the full frame sequence and terminal result, with actual OOM membership and Strict recovered=false.",
+      "expected_keys": [
+        "width",
+        "height",
+        "num_plays",
+        "end",
+        "frames"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "952b8ddb2500e027f176b607f347dc86373a152d44fdf6fd89c64f7849ccd71a",
+      "expected_canvas_sha256": [
+        "2c27d3df9bd0c7864e6ce5d59d6295920326d1414bdda08ec52c28421782813e",
+        "ba67955e663ca042c051a0115e6e9950adf3c4cfff2728b77be6caebcf7e16fe"
+      ],
+      "returned_frames": 2,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "model_complete_apng_blend_over_transparent_destination",
+          "line": 164,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "public_complete_apng_blend_over_transparent_destination",
+          "line": 171,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_complete_apng_blend_over_transparent_destination",
+          "line": 21708,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_blend_over_transparent_destination_0",
+          "line": 21666,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_blend_over_transparent_destination_1",
+          "line": 21687,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        }
+      ],
+      "verified_in_full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "id": "apng/blend-over-zero-result-alpha",
+      "entry": "frames",
+      "claim": "Independent complete MFr equals every frozen canvas byte, rectangle, raw delay pair, dispose/blend field, plays and terminal result. The ordinary constructor/iterator retains native observations of the full frame sequence and terminal result, with actual OOM membership and Strict recovered=false.",
+      "expected_keys": [
+        "width",
+        "height",
+        "num_plays",
+        "end",
+        "frames"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "54eaf979d786e59b3d116e14b23d954bef468092aaabe818c0af523fd03f6ee3",
+      "expected_canvas_sha256": [
+        "f509df2cf594eaa7410cc5167c6b27b45cf8b10834d30dd16bb373bbc0b86f3d",
+        "f509df2cf594eaa7410cc5167c6b27b45cf8b10834d30dd16bb373bbc0b86f3d"
+      ],
+      "returned_frames": 2,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "model_complete_apng_blend_over_zero_result_alpha",
+          "line": 193,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "public_complete_apng_blend_over_zero_result_alpha",
+          "line": 200,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_complete_apng_blend_over_zero_result_alpha",
+          "line": 21785,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_blend_over_zero_result_alpha_0",
+          "line": 21743,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_blend_over_zero_result_alpha_1",
+          "line": 21764,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        }
+      ],
+      "verified_in_full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "id": "apng/interlaced-subframe",
+      "entry": "frames",
+      "claim": "Independent complete MFr equals every frozen canvas byte, rectangle, raw delay pair, dispose/blend field, plays and terminal result. The ordinary constructor/iterator retains native observations of the full frame sequence and terminal result, with actual OOM membership and Strict recovered=false.",
+      "expected_keys": [
+        "width",
+        "height",
+        "num_plays",
+        "end",
+        "frames"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "b5779054eb4274e967dada11eda96db2f0e0a6e84234f2c18180bdc695cda8b1",
+      "expected_canvas_sha256": [
+        "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d",
+        "e8292610826bcb9cd0db9ecdbf85cea5ad639b57962dcd6bf9ab5c245a381e4a"
+      ],
+      "returned_frames": 2,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "model_complete_apng_interlaced_subframe",
+          "line": 222,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "public_complete_apng_interlaced_subframe",
+          "line": 229,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_complete_apng_interlaced_subframe",
+          "line": 21862,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_interlaced_subframe_0",
+          "line": 21820,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_interlaced_subframe_1",
+          "line": 21841,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        }
+      ],
+      "verified_in_full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "id": "apng/static-file-as-frames",
+      "entry": "frames",
+      "claim": "Independent complete MFr equals every frozen canvas byte, rectangle, raw delay pair, dispose/blend field, plays and terminal result. The ordinary constructor/iterator retains native observations of the full frame sequence and terminal result, with actual OOM membership and Strict recovered=false.",
+      "expected_keys": [
+        "width",
+        "height",
+        "num_plays",
+        "end",
+        "frames"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "2b455d08f6a2b54aef546d62a10fb7697b1b70586eaeb688538ae5ce163b2ae4",
+      "expected_canvas_sha256": [
+        "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d"
+      ],
+      "returned_frames": 1,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "model_complete_apng_static_file_as_frames",
+          "line": 250,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "public_complete_apng_static_file_as_frames",
+          "line": 257,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_complete_apng_static_file_as_frames",
+          "line": 21918,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_static_file_as_frames_0",
+          "line": 21897,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        }
+      ],
+      "verified_in_full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "id": "apng/frame1-adler-error-ends",
+      "entry": "frames",
+      "claim": "Independent complete MFr equals every frozen canvas byte, rectangle, raw delay pair, dispose/blend field, plays and terminal result. The ordinary constructor/iterator retains native observations of the full frame sequence and terminal result, with actual OOM membership and Strict recovered=false.",
+      "expected_keys": [
+        "width",
+        "height",
+        "num_plays",
+        "end",
+        "frames"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "f3419711483bca6f8401ee8d9f8e85c0047633f4a64affc5c50be5336d34ba10",
+      "expected_canvas_sha256": [
+        "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d"
+      ],
+      "returned_frames": 1,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "model_complete_apng_frame1_adler_error_ends",
+          "line": 278,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "public_complete_apng_frame1_adler_error_ends",
+          "line": 285,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_complete_apng_frame1_adler_error_ends",
+          "line": 21965,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_frame1_adler_error_ends_0",
+          "line": 21944,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        }
+      ],
+      "verified_in_full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "id": "apng/frame1-truncated-data-ends",
+      "entry": "frames",
+      "claim": "Independent complete MFr equals every frozen canvas byte, rectangle, raw delay pair, dispose/blend field, plays and terminal result. The ordinary constructor/iterator retains native observations of the full frame sequence and terminal result, with actual OOM membership and Strict recovered=false.",
+      "expected_keys": [
+        "width",
+        "height",
+        "num_plays",
+        "end",
+        "frames"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "0f22f84ff557d9fcbd6431832a0d51eb8059c08b876439d07b0727404ea1d6bb",
+      "expected_canvas_sha256": [
+        "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d"
+      ],
+      "returned_frames": 1,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "model_complete_apng_frame1_truncated_data_ends",
+          "line": 306,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "public_complete_apng_frame1_truncated_data_ends",
+          "line": 313,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_complete_apng_frame1_truncated_data_ends",
+          "line": 22012,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_frame1_truncated_data_ends_0",
+          "line": 21991,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        }
+      ],
+      "verified_in_full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "id": "apng/empty-fdat-payload",
+      "entry": "frames",
+      "claim": "Independent complete MFr equals every frozen canvas byte, rectangle, raw delay pair, dispose/blend field, plays and terminal result. The ordinary constructor/iterator retains native observations of the full frame sequence and terminal result, with actual OOM membership and Strict recovered=false.",
+      "expected_keys": [
+        "width",
+        "height",
+        "num_plays",
+        "end",
+        "frames"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "0abc5f8508bea7ae9c9a76a348f9c4529a2ae8970d363da25c5a6703b97a6071",
+      "expected_canvas_sha256": [
+        "85b0134ceffc9fbba06039e7645b449c566f4379bd4a1770e1beefeb919e9e8d"
+      ],
+      "returned_frames": 1,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "model_complete_apng_empty_fdat_payload",
+          "line": 334,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "public_complete_apng_empty_fdat_payload",
+          "line": 341,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_complete_apng_empty_fdat_payload",
+          "line": 22059,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_empty_fdat_payload_0",
+          "line": 22038,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        }
+      ],
+      "verified_in_full_runs": [
+        799,
+        802
+      ]
+    },
+    {
+      "id": "apng/empty-fdat-then-data",
+      "entry": "frames",
+      "claim": "Independent complete MFr equals every frozen canvas byte, rectangle, raw delay pair, dispose/blend field, plays and terminal result. The ordinary constructor/iterator retains native observations of the full frame sequence and terminal result, with actual OOM membership and Strict recovered=false.",
+      "expected_keys": [
+        "width",
+        "height",
+        "num_plays",
+        "end",
+        "frames"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "4b27729ed92fd8b75048fdee31959536565fdf8166aa9b23c6861c922477bfca",
+      "expected_canvas_sha256": [
+        "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d",
+        "4b04712019e36f071428fbd5473888522788ea47a4136c2b4b9dc071f2dcb3bc"
+      ],
+      "returned_frames": 2,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "model_complete_apng_empty_fdat_then_data",
+          "line": 363,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m6_m5_frames.rs",
+          "function": "public_complete_apng_empty_fdat_then_data",
+          "line": 370,
+          "sha256": "2229d9ea5b24bdaf68b8e88739ee9fcd274deaf6c48a3193b8da9a3f3970dd32"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_complete_apng_empty_fdat_then_data",
+          "line": 22127,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_empty_fdat_then_data_0",
+          "line": 22085,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        },
+        {
+          "file": "src/witness_m5_frames.rs",
+          "function": "e6_canvas_apng_empty_fdat_then_data_1",
+          "line": 22106,
+          "sha256": "cd6eecb0fc142516be4439e2a6bd6d4702121af5df58defbe91ee69269b500f9"
+        }
+      ],
+      "verified_in_full_runs": [
+        799,
+        802
+      ]
+    }
+  ],
+  "dependency_graph": [
+    {
+      "source": "complete model witnesses",
+      "depends_on": [
+        "thin M5 complete bridges"
+      ]
+    },
+    {
+      "source": "thin M5 complete bridges",
+      "depends_on": [
+        "independent MFr definition",
+        "canonical canvas instantiation",
+        "unchanged M5 content/data/walk certificates"
+      ]
+    },
+    {
+      "source": "canonical canvas instantiation",
+      "depends_on": [
+        "independent canonical fold/draw",
+        "accepted source_pixel_ok and pixel_pair",
+        "complete_progress_intro",
+        "existing mk_intro and step_intro"
+      ]
+    },
+    {
+      "source": "complete_progress_intro",
+      "depends_on": [
+        "unchanged progress observation predicate",
+        "accepted source_coordinate"
+      ]
+    },
+    {
+      "source": "public frozen-input witnesses",
+      "depends_on": [
+        "complete model witnesses",
+        "ordinary iterator transcript driver"
+      ]
+    },
+    {
+      "source": "ordinary iterator transcript driver",
+      "depends_on": [
+        "accepted M6 Strict constructor/native call contracts",
+        "reveal-only constructor/call observations",
+        "complete native Info/FrameView model observations"
+      ]
+    },
+    {
+      "source": "reveal-only constructor/call observations",
+      "depends_on": [
+        "unchanged accepted complete constructor/call relations"
+      ]
+    },
+    {
+      "source": "accepted M6 Strict constructor/native call contracts",
+      "depends_on": [
+        "independent MFr definition",
+        "accepted M5/2a native refinements"
+      ]
+    }
+  ],
+  "dependency_dag": {
+    "complete model witnesses": [
+      "thin M5 complete bridges"
+    ],
+    "thin M5 complete bridges": [
+      "independent MFr definition",
+      "canonical canvas instantiation",
+      "unchanged M5 content/data/walk certificates"
+    ],
+    "canonical canvas instantiation": [
+      "independent canonical fold/draw",
+      "accepted source_pixel_ok and pixel_pair",
+      "complete_progress_intro",
+      "existing mk_intro and step_intro"
+    ],
+    "complete_progress_intro": [
+      "unchanged progress observation predicate",
+      "accepted source_coordinate"
+    ],
+    "public frozen-input witnesses": [
+      "complete model witnesses",
+      "ordinary iterator transcript driver"
+    ],
+    "ordinary iterator transcript driver": [
+      "accepted M6 Strict constructor/native call contracts",
+      "reveal-only constructor/call observations",
+      "complete native Info/FrameView model observations"
+    ],
+    "reveal-only constructor/call observations": [
+      "unchanged accepted complete constructor/call relations"
+    ],
+    "accepted M6 Strict constructor/native call contracts": [
+      "independent MFr definition",
+      "accepted M5/2a native refinements"
+    ]
+  },
+  "acyclic": true,
+  "bridges": {
+    "predicates_and_existing_contracts_unchanged": true,
+    "progress_introduction_only_existing_observations": true,
+    "constructor_and_call_observations_reveal_only": true,
+    "anchors": [
+      {
+        "file": "src/paint_model.rs",
+        "function": "complete_progress_intro",
+        "line": 304,
+        "sha256": "2e052bdb77ae6cbf7092fb963ff6f5d14eb192f820e9761f0b9eca9238447191"
+      },
+      {
+        "file": "src/frame_equivalence.rs",
+        "function": "observe_constructor",
+        "line": 28,
+        "sha256": "71a22cab31189d78a3927b505b36fd63cad6497df0a82455ed1edc5f5f18a835"
+      },
+      {
+        "file": "src/frame_equivalence.rs",
+        "function": "observe_call",
+        "line": 160,
+        "sha256": "71a22cab31189d78a3927b505b36fd63cad6497df0a82455ed1edc5f5f18a835"
+      },
+      {
+        "file": "src/witness_m6_frame_model.rs",
+        "function": "draw_observe",
+        "line": 20,
+        "sha256": "6b265274480bc8e6591fc867fbd7820bb6efc5f89864b86d2d198cf18e553587"
+      },
+      {
+        "file": "src/witness_m6_frame_model.rs",
+        "function": "canonical_step",
+        "line": 66,
+        "sha256": "6b265274480bc8e6591fc867fbd7820bb6efc5f89864b86d2d198cf18e553587"
+      },
+      {
+        "file": "src/witness_m6_frame_model.rs",
+        "function": "exercise",
+        "line": 128,
+        "sha256": "6b265274480bc8e6591fc867fbd7820bb6efc5f89864b86d2d198cf18e553587"
+      },
+      {
+        "file": "src/witness_m6_frame_model.rs",
+        "function": "observed_result",
+        "line": 112,
+        "sha256": "6b265274480bc8e6591fc867fbd7820bb6efc5f89864b86d2d198cf18e553587"
+      }
+    ]
+  },
+  "ordinary_transcript": {
+    "real_public_constructor": "Frames::try_new",
+    "real_public_calls": "Frames::try_next",
+    "native_frame_observation": "seen.push(view.model_value())",
+    "checks_recovered_false": true,
+    "retains_exact_native_Info": true,
+    "retains_terminal_format_errors": true,
+    "OOM_request_membership": true,
+    "extra_fused_call_checks_unchanged_log_and_idle_work": true,
+    "allocation_success_antecedent": false
+  },
+  "coverage": {
+    "file": "evidence/m6-e6-m5-f-coverage.json",
+    "sha256": "c68127c36c85e014e5fedaafae5ae3e193ed320f4ac6c0e72fa67697be3e22e8"
+  },
+  "witness_index": {
+    "file": "evidence/m6-e6-m5-f-witness-index.json",
+    "sha256": "aa399d66ed7057a16834c3f69065a247de2aaabe9721f9accfa106fd01157cb1"
+  },
+  "generator": {
+    "file": "tools/generate_m6_m5_frames_witnesses.py",
+    "sha256": "2de9553e468f4010c0f58223bc520f187de7d4b90ca6b12ff128e8948041a2a6"
+  },
+  "independent_literal_control": {
+    "file": "evidence/m6-e6-m5-f-fixture-control.py",
+    "sha256": "a139e732ad758d9d7891b5b2d1550f5005b1fa789afda1856b03895f854f6595"
+  },
+  "raw_byte_reproducible": true,
+  "remaining_work": [
+    "E6-M4-FILT: 35 records; cap-trajectory decision first",
+    "E6-M4-A7: 36 records",
+    "Remaining T10, mutation sets and CAPS-SYM; 2b paused"
+  ]
+}

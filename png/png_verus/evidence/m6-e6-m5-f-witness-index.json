@@ -1,0 +1,1233 @@
+{
+  "status": "Generated; verification credit recorded separately",
+  "generator": "tools/generate_m6_m5_frames_witnesses.py",
+  "original_certificate_prefix_sha256": "c67abb5abaebdcde32540ea5bd281546b7703f6f40c769093bd42d585541137f",
+  "records": [
+    {
+      "name": "apng/default-is-frame0-dispose-bg-blend-over",
+      "entry": "frames",
+      "model_function": "model_complete_apng_default_is_frame0_dispose_bg_blend_over",
+      "public_function": "public_complete_apng_default_is_frame0_dispose_bg_blend_over",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "736773e563e9682f9c0cc0225046b078345c981692e262e1612da0515211b5d5",
+      "expected": {
+        "width": 4,
+        "height": 3,
+        "num_plays": 2,
+        "end": "iend",
+        "frames": [
+          {
+            "rect": [
+              0,
+              0,
+              4,
+              3
+            ],
+            "delay": [
+              5,
+              0
+            ],
+            "dispose": 0,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 12,
+                "hex": "ff0000ff"
+              }
+            ]
+          },
+          {
+            "rect": [
+              1,
+              1,
+              2,
+              2
+            ],
+            "delay": [
+              1,
+              10
+            ],
+            "dispose": 1,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 5,
+                "hex": "ff0000ff"
+              },
+              {
+                "count": 2,
+                "hex": "00ff00ff"
+              },
+              {
+                "count": 2,
+                "hex": "ff0000ff"
+              },
+              {
+                "count": 2,
+                "hex": "00ff00ff"
+              },
+              {
+                "count": 1,
+                "hex": "ff0000ff"
+              }
+            ]
+          },
+          {
+            "rect": [
+              0,
+              0,
+              2,
+              1
+            ],
+            "delay": [
+              3,
+              100
+            ],
+            "dispose": 0,
+            "blend": 1,
+            "rgba_runs": [
+              {
+                "count": 2,
+                "hex": "7f0080ff"
+              },
+              {
+                "count": 3,
+                "hex": "ff0000ff"
+              },
+              {
+                "count": 2,
+                "hex": "00000000"
+              },
+              {
+                "count": 2,
+                "hex": "ff0000ff"
+              },
+              {
+                "count": 2,
+                "hex": "00000000"
+              },
+              {
+                "count": 1,
+                "hex": "ff0000ff"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_canvas_sha256": [
+        "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d",
+        "6e7c9db19d56f28c9fc922824f671c02e9fe1c0208e12a99c9c3762e445f1be7",
+        "62396b167345876a40b2608cf9121ef0ea5fbcef28c9242bdc22342ffc176d60"
+      ],
+      "certificate_source": "png/png_verus/src/witness_m5_frames.rs"
+    },
+    {
+      "name": "apng/default-not-in-animation",
+      "entry": "frames",
+      "model_function": "model_complete_apng_default_not_in_animation",
+      "public_function": "public_complete_apng_default_not_in_animation",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "f4a127920280d3ef4349059ed5fa8f21a2a8f72aabf3b9f67b964560969071b3",
+      "expected": {
+        "width": 4,
+        "height": 3,
+        "num_plays": 0,
+        "end": "iend",
+        "frames": [
+          {
+            "rect": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "delay": [
+              1,
+              1
+            ],
+            "dispose": 0,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 2,
+                "hex": "00ff00ff"
+              },
+              {
+                "count": 2,
+                "hex": "00000000"
+              },
+              {
+                "count": 2,
+                "hex": "00ff00ff"
+              },
+              {
+                "count": 6,
+                "hex": "00000000"
+              }
+            ]
+          },
+          {
+            "rect": [
+              2,
+              2,
+              2,
+              1
+            ],
+            "delay": [
+              1,
+              1
+            ],
+            "dispose": 0,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 2,
+                "hex": "00ff00ff"
+              },
+              {
+                "count": 2,
+                "hex": "00000000"
+              },
+              {
+                "count": 2,
+                "hex": "00ff00ff"
+              },
+              {
+                "count": 4,
+                "hex": "00000000"
+              },
+              {
+                "count": 2,
+                "hex": "0000ff80"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_canvas_sha256": [
+        "3ee60e9640c4200ddd1def904e03a1c8ec3d05858017b926849baa5cdf612581",
+        "58bf91640e83dcf67a9bc50d4117ff0b785053eba9b84bb66e3ec6c11dcb203e"
+      ],
+      "certificate_source": "png/png_verus/src/witness_m5_frames.rs"
+    },
+    {
+      "name": "apng/dispose-previous-first-frame-and-later",
+      "entry": "frames",
+      "model_function": "model_complete_apng_dispose_previous_first_frame_and_later",
+      "public_function": "public_complete_apng_dispose_previous_first_frame_and_later",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "81e08e42aa9193b549d0a32b6dc1d0fd942d5d0fb26909da6c4de3371ac32875",
+      "expected": {
+        "width": 4,
+        "height": 3,
+        "num_plays": 0,
+        "end": "iend",
+        "frames": [
+          {
+            "rect": [
+              0,
+              0,
+              4,
+              3
+            ],
+            "delay": [
+              1,
+              1
+            ],
+            "dispose": 2,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 12,
+                "hex": "ff0000ff"
+              }
+            ]
+          },
+          {
+            "rect": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "delay": [
+              1,
+              1
+            ],
+            "dispose": 2,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 2,
+                "hex": "00ff00ff"
+              },
+              {
+                "count": 2,
+                "hex": "00000000"
+              },
+              {
+                "count": 2,
+                "hex": "00ff00ff"
+              },
+              {
+                "count": 6,
+                "hex": "00000000"
+              }
+            ]
+          },
+          {
+            "rect": [
+              1,
+              1,
+              2,
+              1
+            ],
+            "delay": [
+              1,
+              1
+            ],
+            "dispose": 0,
+            "blend": 1,
+            "rgba_runs": [
+              {
+                "count": 5,
+                "hex": "00000000"
+              },
+              {
+                "count": 2,
+                "hex": "0000ff80"
+              },
+              {
+                "count": 5,
+                "hex": "00000000"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_canvas_sha256": [
+        "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d",
+        "3ee60e9640c4200ddd1def904e03a1c8ec3d05858017b926849baa5cdf612581",
+        "5ec7e3d8a845a1aa84fe6eb327eb5cf594b752b6c382e0248a8c6cf5baaa3b8e"
+      ],
+      "certificate_source": "png/png_verus/src/witness_m5_frames.rs"
+    },
+    {
+      "name": "apng/blend-over-arithmetic",
+      "entry": "frames",
+      "model_function": "model_complete_apng_blend_over_arithmetic",
+      "public_function": "public_complete_apng_blend_over_arithmetic",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "66d70df7863815d5e0e7153d986a237280307e4b4ce784b1747779d82f838687",
+      "expected": {
+        "width": 4,
+        "height": 3,
+        "num_plays": 0,
+        "end": "iend",
+        "frames": [
+          {
+            "rect": [
+              0,
+              0,
+              3,
+              2
+            ],
+            "delay": [
+              1,
+              10
+            ],
+            "dispose": 0,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 1,
+                "hex": "fa054d00"
+              },
+              {
+                "count": 1,
+                "hex": "fa054dff"
+              },
+              {
+                "count": 1,
+                "hex": "fa054d80"
+              },
+              {
+                "count": 1,
+                "hex": "00000000"
+              },
+              {
+                "count": 1,
+                "hex": "fa054d03"
+              },
+              {
+                "count": 1,
+                "hex": "fa054dc8"
+              },
+              {
+                "count": 1,
+                "hex": "fa054d5a"
+              },
+              {
+                "count": 5,
+                "hex": "00000000"
+              }
+            ]
+          },
+          {
+            "rect": [
+              1,
+              1,
+              3,
+              2
+            ],
+            "delay": [
+              1,
+              10
+            ],
+            "dispose": 0,
+            "blend": 1,
+            "rgba_runs": [
+              {
+                "count": 1,
+                "hex": "fa054d00"
+              },
+              {
+                "count": 1,
+                "hex": "fa054dff"
+              },
+              {
+                "count": 1,
+                "hex": "fa054d80"
+              },
+              {
+                "count": 1,
+                "hex": "00000000"
+              },
+              {
+                "count": 1,
+                "hex": "fa054d03"
+              },
+              {
+                "count": 1,
+                "hex": "fa054dc8"
+              },
+              {
+                "count": 1,
+                "hex": "f7074c5b"
+              },
+              {
+                "count": 1,
+                "hex": "0ac81e7f"
+              },
+              {
+                "count": 1,
+                "hex": "00000000"
+              },
+              {
+                "count": 1,
+                "hex": "0ac81efe"
+              },
+              {
+                "count": 1,
+                "hex": "c80a6340"
+              },
+              {
+                "count": 1,
+                "hex": "010203c8"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_canvas_sha256": [
+        "d5a527ac6783c17b4e6facba47c29f7897cb075506b7b65f4c926620d88cb8c5",
+        "243d06f035acb43f108ceb01295ab0b190a727f7b782ac6b21b723aa234364df"
+      ],
+      "certificate_source": "png/png_verus/src/witness_m5_frames.rs"
+    },
+    {
+      "name": "apng/blend-over-transparent-source",
+      "entry": "frames",
+      "model_function": "model_complete_apng_blend_over_transparent_source",
+      "public_function": "public_complete_apng_blend_over_transparent_source",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "6af008e75d0239a27c99684fa6342e5c87d5f952ee1aff5cfbaea05aa7a071f3",
+      "expected": {
+        "width": 4,
+        "height": 3,
+        "num_plays": 0,
+        "end": "iend",
+        "frames": [
+          {
+            "rect": [
+              0,
+              0,
+              4,
+              3
+            ],
+            "delay": [
+              1,
+              10
+            ],
+            "dispose": 0,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 1,
+                "hex": "0a141eff"
+              },
+              {
+                "count": 1,
+                "hex": "0a141e80"
+              },
+              {
+                "count": 1,
+                "hex": "0a141e01"
+              },
+              {
+                "count": 1,
+                "hex": "ffffffff"
+              },
+              {
+                "count": 1,
+                "hex": "0a141eff"
+              },
+              {
+                "count": 1,
+                "hex": "0a141e80"
+              },
+              {
+                "count": 1,
+                "hex": "0a141e01"
+              },
+              {
+                "count": 1,
+                "hex": "ffffffff"
+              },
+              {
+                "count": 1,
+                "hex": "0a141eff"
+              },
+              {
+                "count": 1,
+                "hex": "0a141e80"
+              },
+              {
+                "count": 1,
+                "hex": "0a141e01"
+              },
+              {
+                "count": 1,
+                "hex": "ffffffff"
+              }
+            ]
+          },
+          {
+            "rect": [
+              0,
+              0,
+              4,
+              3
+            ],
+            "delay": [
+              1,
+              10
+            ],
+            "dispose": 0,
+            "blend": 1,
+            "rgba_runs": [
+              {
+                "count": 1,
+                "hex": "0a141eff"
+              },
+              {
+                "count": 1,
+                "hex": "0a141e80"
+              },
+              {
+                "count": 1,
+                "hex": "0a141e01"
+              },
+              {
+                "count": 1,
+                "hex": "ffffffff"
+              },
+              {
+                "count": 1,
+                "hex": "0a141eff"
+              },
+              {
+                "count": 1,
+                "hex": "0a141e80"
+              },
+              {
+                "count": 1,
+                "hex": "0a141e01"
+              },
+              {
+                "count": 1,
+                "hex": "ffffffff"
+              },
+              {
+                "count": 1,
+                "hex": "0a141eff"
+              },
+              {
+                "count": 1,
+                "hex": "0a141e80"
+              },
+              {
+                "count": 1,
+                "hex": "0a141e01"
+              },
+              {
+                "count": 1,
+                "hex": "ffffffff"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_canvas_sha256": [
+        "643d98cac114c2a59d3c44c3030502cffeba9f0f70fa638d3d11c800e3adc700",
+        "643d98cac114c2a59d3c44c3030502cffeba9f0f70fa638d3d11c800e3adc700"
+      ],
+      "certificate_source": "png/png_verus/src/witness_m5_frames.rs"
+    },
+    {
+      "name": "apng/blend-over-transparent-destination",
+      "entry": "frames",
+      "model_function": "model_complete_apng_blend_over_transparent_destination",
+      "public_function": "public_complete_apng_blend_over_transparent_destination",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "952b8ddb2500e027f176b607f347dc86373a152d44fdf6fd89c64f7849ccd71a",
+      "expected": {
+        "width": 4,
+        "height": 3,
+        "num_plays": 0,
+        "end": "iend",
+        "frames": [
+          {
+            "rect": [
+              0,
+              0,
+              4,
+              3
+            ],
+            "delay": [
+              1,
+              10
+            ],
+            "dispose": 0,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 1,
+                "hex": "0a630000"
+              },
+              {
+                "count": 1,
+                "hex": "14620700"
+              },
+              {
+                "count": 1,
+                "hex": "1e610e00"
+              },
+              {
+                "count": 1,
+                "hex": "28601500"
+              },
+              {
+                "count": 1,
+                "hex": "325f1c00"
+              },
+              {
+                "count": 1,
+                "hex": "3c5e2300"
+              },
+              {
+                "count": 1,
+                "hex": "465d2a00"
+              },
+              {
+                "count": 1,
+                "hex": "505c3100"
+              },
+              {
+                "count": 1,
+                "hex": "5a5b3800"
+              },
+              {
+                "count": 1,
+                "hex": "645a3f00"
+              },
+              {
+                "count": 1,
+                "hex": "6e594600"
+              },
+              {
+                "count": 1,
+                "hex": "78584d00"
+              }
+            ]
+          },
+          {
+            "rect": [
+              0,
+              0,
+              4,
+              3
+            ],
+            "delay": [
+              1,
+              10
+            ],
+            "dispose": 0,
+            "blend": 1,
+            "rgba_runs": [
+              {
+                "count": 1,
+                "hex": "c8320001"
+              },
+              {
+                "count": 1,
+                "hex": "c7330302"
+              },
+              {
+                "count": 1,
+                "hex": "c6340640"
+              },
+              {
+                "count": 1,
+                "hex": "c535097f"
+              },
+              {
+                "count": 1,
+                "hex": "c4360c80"
+              },
+              {
+                "count": 1,
+                "hex": "c3370f81"
+              },
+              {
+                "count": 1,
+                "hex": "c23812c8"
+              },
+              {
+                "count": 1,
+                "hex": "c13915fd"
+              },
+              {
+                "count": 1,
+                "hex": "c03a18fe"
+              },
+              {
+                "count": 1,
+                "hex": "bf3b1b01"
+              },
+              {
+                "count": 1,
+                "hex": "be3c1e80"
+              },
+              {
+                "count": 1,
+                "hex": "bd3d21fe"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_canvas_sha256": [
+        "2c27d3df9bd0c7864e6ce5d59d6295920326d1414bdda08ec52c28421782813e",
+        "ba67955e663ca042c051a0115e6e9950adf3c4cfff2728b77be6caebcf7e16fe"
+      ],
+      "certificate_source": "png/png_verus/src/witness_m5_frames.rs"
+    },
+    {
+      "name": "apng/blend-over-zero-result-alpha",
+      "entry": "frames",
+      "model_function": "model_complete_apng_blend_over_zero_result_alpha",
+      "public_function": "public_complete_apng_blend_over_zero_result_alpha",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "54eaf979d786e59b3d116e14b23d954bef468092aaabe818c0af523fd03f6ee3",
+      "expected": {
+        "width": 4,
+        "height": 3,
+        "num_plays": 0,
+        "end": "iend",
+        "frames": [
+          {
+            "rect": [
+              0,
+              0,
+              4,
+              3
+            ],
+            "delay": [
+              1,
+              10
+            ],
+            "dispose": 0,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 1,
+                "hex": "0a630000"
+              },
+              {
+                "count": 1,
+                "hex": "14620700"
+              },
+              {
+                "count": 1,
+                "hex": "1e610e00"
+              },
+              {
+                "count": 1,
+                "hex": "28601500"
+              },
+              {
+                "count": 1,
+                "hex": "325f1c00"
+              },
+              {
+                "count": 1,
+                "hex": "3c5e2300"
+              },
+              {
+                "count": 1,
+                "hex": "465d2a00"
+              },
+              {
+                "count": 1,
+                "hex": "505c3100"
+              },
+              {
+                "count": 1,
+                "hex": "5a5b3800"
+              },
+              {
+                "count": 1,
+                "hex": "00000000"
+              },
+              {
+                "count": 1,
+                "hex": "ffffff00"
+              },
+              {
+                "count": 1,
+                "hex": "00000000"
+              }
+            ]
+          },
+          {
+            "rect": [
+              0,
+              0,
+              4,
+              3
+            ],
+            "delay": [
+              1,
+              10
+            ],
+            "dispose": 0,
+            "blend": 1,
+            "rgba_runs": [
+              {
+                "count": 1,
+                "hex": "0a630000"
+              },
+              {
+                "count": 1,
+                "hex": "14620700"
+              },
+              {
+                "count": 1,
+                "hex": "1e610e00"
+              },
+              {
+                "count": 1,
+                "hex": "28601500"
+              },
+              {
+                "count": 1,
+                "hex": "325f1c00"
+              },
+              {
+                "count": 1,
+                "hex": "3c5e2300"
+              },
+              {
+                "count": 1,
+                "hex": "465d2a00"
+              },
+              {
+                "count": 1,
+                "hex": "505c3100"
+              },
+              {
+                "count": 1,
+                "hex": "5a5b3800"
+              },
+              {
+                "count": 1,
+                "hex": "00000000"
+              },
+              {
+                "count": 1,
+                "hex": "ffffff00"
+              },
+              {
+                "count": 1,
+                "hex": "00000000"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_canvas_sha256": [
+        "f509df2cf594eaa7410cc5167c6b27b45cf8b10834d30dd16bb373bbc0b86f3d",
+        "f509df2cf594eaa7410cc5167c6b27b45cf8b10834d30dd16bb373bbc0b86f3d"
+      ],
+      "certificate_source": "png/png_verus/src/witness_m5_frames.rs"
+    },
+    {
+      "name": "apng/interlaced-subframe",
+      "entry": "frames",
+      "model_function": "model_complete_apng_interlaced_subframe",
+      "public_function": "public_complete_apng_interlaced_subframe",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "b5779054eb4274e967dada11eda96db2f0e0a6e84234f2c18180bdc695cda8b1",
+      "expected": {
+        "width": 4,
+        "height": 3,
+        "num_plays": 0,
+        "end": "iend",
+        "frames": [
+          {
+            "rect": [
+              0,
+              0,
+              4,
+              3
+            ],
+            "delay": [
+              1,
+              10
+            ],
+            "dispose": 0,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 12,
+                "hex": "ff0000ff"
+              }
+            ]
+          },
+          {
+            "rect": [
+              1,
+              0,
+              3,
+              3
+            ],
+            "delay": [
+              1,
+              10
+            ],
+            "dispose": 0,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 2,
+                "hex": "ff0000ff"
+              },
+              {
+                "count": 1,
+                "hex": "00ff00ff"
+              },
+              {
+                "count": 1,
+                "hex": "0000ffff"
+              },
+              {
+                "count": 1,
+                "hex": "ff0000ff"
+              },
+              {
+                "count": 1,
+                "hex": "0000ff80"
+              },
+              {
+                "count": 1,
+                "hex": "ff0000ff"
+              },
+              {
+                "count": 1,
+                "hex": "00ff00ff"
+              },
+              {
+                "count": 1,
+                "hex": "ff0000ff"
+              },
+              {
+                "count": 1,
+                "hex": "0000ffff"
+              },
+              {
+                "count": 1,
+                "hex": "0000ff80"
+              },
+              {
+                "count": 1,
+                "hex": "ff0000ff"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_canvas_sha256": [
+        "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d",
+        "e8292610826bcb9cd0db9ecdbf85cea5ad639b57962dcd6bf9ab5c245a381e4a"
+      ],
+      "certificate_source": "png/png_verus/src/witness_m5_frames.rs"
+    },
+    {
+      "name": "apng/static-file-as-frames",
+      "entry": "frames",
+      "model_function": "model_complete_apng_static_file_as_frames",
+      "public_function": "public_complete_apng_static_file_as_frames",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "2b455d08f6a2b54aef546d62a10fb7697b1b70586eaeb688538ae5ce163b2ae4",
+      "expected": {
+        "width": 4,
+        "height": 3,
+        "num_plays": null,
+        "end": "iend",
+        "frames": [
+          {
+            "rect": [
+              0,
+              0,
+              4,
+              3
+            ],
+            "delay": null,
+            "dispose": 0,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 12,
+                "hex": "ff0000ff"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_canvas_sha256": [
+        "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d"
+      ],
+      "certificate_source": "png/png_verus/src/witness_m5_frames.rs"
+    },
+    {
+      "name": "apng/frame1-adler-error-ends",
+      "entry": "frames",
+      "model_function": "model_complete_apng_frame1_adler_error_ends",
+      "public_function": "public_complete_apng_frame1_adler_error_ends",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "f3419711483bca6f8401ee8d9f8e85c0047633f4a64affc5c50be5336d34ba10",
+      "expected": {
+        "width": 4,
+        "height": 3,
+        "num_plays": 0,
+        "end": {
+          "error": "AdlerMismatch"
+        },
+        "frames": [
+          {
+            "rect": [
+              0,
+              0,
+              4,
+              3
+            ],
+            "delay": [
+              1,
+              10
+            ],
+            "dispose": 0,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 12,
+                "hex": "ff0000ff"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_canvas_sha256": [
+        "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d"
+      ],
+      "certificate_source": "png/png_verus/src/witness_m5_frames.rs"
+    },
+    {
+      "name": "apng/frame1-truncated-data-ends",
+      "entry": "frames",
+      "model_function": "model_complete_apng_frame1_truncated_data_ends",
+      "public_function": "public_complete_apng_frame1_truncated_data_ends",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "0f22f84ff557d9fcbd6431832a0d51eb8059c08b876439d07b0727404ea1d6bb",
+      "expected": {
+        "width": 4,
+        "height": 3,
+        "num_plays": 0,
+        "end": {
+          "error": "TruncatedImageData"
+        },
+        "frames": [
+          {
+            "rect": [
+              0,
+              0,
+              4,
+              3
+            ],
+            "delay": [
+              1,
+              10
+            ],
+            "dispose": 0,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 12,
+                "hex": "ff0000ff"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_canvas_sha256": [
+        "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d"
+      ],
+      "certificate_source": "png/png_verus/src/witness_m5_frames.rs"
+    },
+    {
+      "name": "apng/empty-fdat-payload",
+      "entry": "frames",
+      "model_function": "model_complete_apng_empty_fdat_payload",
+      "public_function": "public_complete_apng_empty_fdat_payload",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "0abc5f8508bea7ae9c9a76a348f9c4529a2ae8970d363da25c5a6703b97a6071",
+      "expected": {
+        "width": 1,
+        "height": 1,
+        "num_plays": 0,
+        "end": {
+          "error": "TruncatedZlib"
+        },
+        "frames": [
+          {
+            "rect": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "delay": [
+              1,
+              10
+            ],
+            "dispose": 0,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 1,
+                "hex": "0a141eff"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_canvas_sha256": [
+        "85b0134ceffc9fbba06039e7645b449c566f4379bd4a1770e1beefeb919e9e8d"
+      ],
+      "certificate_source": "png/png_verus/src/witness_m5_frames.rs"
+    },
+    {
+      "name": "apng/empty-fdat-then-data",
+      "entry": "frames",
+      "model_function": "model_complete_apng_empty_fdat_then_data",
+      "public_function": "public_complete_apng_empty_fdat_then_data",
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "4b27729ed92fd8b75048fdee31959536565fdf8166aa9b23c6861c922477bfca",
+      "expected": {
+        "width": 4,
+        "height": 3,
+        "num_plays": 0,
+        "end": "iend",
+        "frames": [
+          {
+            "rect": [
+              0,
+              0,
+              4,
+              3
+            ],
+            "delay": [
+              1,
+              10
+            ],
+            "dispose": 0,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 12,
+                "hex": "ff0000ff"
+              }
+            ]
+          },
+          {
+            "rect": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "delay": [
+              1,
+              10
+            ],
+            "dispose": 0,
+            "blend": 0,
+            "rgba_runs": [
+              {
+                "count": 2,
+                "hex": "00ff00ff"
+              },
+              {
+                "count": 2,
+                "hex": "ff0000ff"
+              },
+              {
+                "count": 2,
+                "hex": "00ff00ff"
+              },
+              {
+                "count": 6,
+                "hex": "ff0000ff"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_canvas_sha256": [
+        "f2c059094ad04f3e4046d2fd2d4a86d9da67c439c4e659791ffe8e64d906302d",
+        "4b04712019e36f071428fbd5473888522788ea47a4136c2b4b9dc071f2dcb3bc"
+      ],
+      "certificate_source": "png/png_verus/src/witness_m5_frames.rs"
+    }
+  ]
+}

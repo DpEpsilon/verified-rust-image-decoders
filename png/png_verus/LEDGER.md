@@ -1,5 +1,39 @@
 # png_verus ledger
 
+## M6 E6-M5-F — complete frame content witnesses (2026-11-25)
+
+**All 13 frame content records are complete at M6.** Full host **799** and i686 **802** each verify **6,761, zero errors**, against identical 102-file inventories with all generated leaves, `--no-cheating`, default solver limits, 256 MiB stacks and unchanged **3,600-second process caps per target**. Wall times are **49m34s host** and **46m43s i686**. The host warning threshold remains 48 minutes; independent checkpoint review and overall M6 sign-off remain pending.
+
+Each pure model witness proves the independent complete MFr result against every frozen canvas byte, rectangle, raw delay pair (including denominator zero), dispose/blend control, plays and terminal IEND/format error. The generator reads every expected field only from `spec-frozen/VECTORS.json`. The original M5 certificate prefix remains byte-for-byte unchanged. Appended bridges instantiate its accepted model/data/scan/content contracts on the canonical frame fold; they do not reopen the M2/M4/M5 algorithms.
+
+The proof-only composition helper proves that the independent canonical draw satisfies the existing MK observation and footprint premises. Its defining-module `complete_progress_intro` bridge reveals the unchanged progress predicate and uses accepted source-coordinate bounds to show every source coordinate is visited at completion. The two defining-module constructor/call observation bridges reveal the unchanged accepted 2a relations. No existing model definition, certificate body, public contract or native decoder body changes.
+
+Every public witness supplies the actual frozen byte array to a shared ordinary iterator driver. That driver calls `Frames::try_new` once, calls `Frames::try_next` for every expected frame and the terminal result, and retains ghost observations by appending each actual `FrameView::model_value`. The checked transcript exports exact native Info, the full native frame sequence, the actual terminal format error or IEND, and actual ordinary OOM request membership. The driver checks Strict `recovered=false` and one additional fused call with an unchanged log and idle native work. No model proof assumes successful allocation, and no executable expected canvas replaces a native call.
+
+The independent fixture auditor imports neither a generator nor a decoder. It checks **24 complete canvases and 1,108 physical bytes**, every control, plays and terminal field. Seven in-memory literal-only negative controls reject a changed canvas byte, rectangle, raw delay denominator, dispose, blend, plays and terminal result; these are not a decoder mutation campaign. The generator reproduces both Rust modules and its repository-relative index as raw bytes in an isolated output tree. All historical evidence hashes remain unchanged, including the reviewed M3 index correction already accepted in E6-M5-S.
+
+| Frozen record | Current E6 assignment | Complete model / ordinary iterator witness |
+|---|---|---|
+| `apng/default-is-frame0-dispose-bg-blend-over` | complete at M6 | `model_complete_apng_default_is_frame0_dispose_bg_blend_over` / `public_complete_apng_default_is_frame0_dispose_bg_blend_over` |
+| `apng/default-not-in-animation` | complete at M6 | `model_complete_apng_default_not_in_animation` / `public_complete_apng_default_not_in_animation` |
+| `apng/dispose-previous-first-frame-and-later` | complete at M6 | `model_complete_apng_dispose_previous_first_frame_and_later` / `public_complete_apng_dispose_previous_first_frame_and_later` |
+| `apng/blend-over-arithmetic` | complete at M6 | `model_complete_apng_blend_over_arithmetic` / `public_complete_apng_blend_over_arithmetic` |
+| `apng/blend-over-transparent-source` | complete at M6 | `model_complete_apng_blend_over_transparent_source` / `public_complete_apng_blend_over_transparent_source` |
+| `apng/blend-over-transparent-destination` | complete at M6 | `model_complete_apng_blend_over_transparent_destination` / `public_complete_apng_blend_over_transparent_destination` |
+| `apng/blend-over-zero-result-alpha` | complete at M6 | `model_complete_apng_blend_over_zero_result_alpha` / `public_complete_apng_blend_over_zero_result_alpha` |
+| `apng/interlaced-subframe` | complete at M6 | `model_complete_apng_interlaced_subframe` / `public_complete_apng_interlaced_subframe` |
+| `apng/static-file-as-frames` | complete at M6 | `model_complete_apng_static_file_as_frames` / `public_complete_apng_static_file_as_frames` |
+| `apng/frame1-adler-error-ends` | complete at M6 | `model_complete_apng_frame1_adler_error_ends` / `public_complete_apng_frame1_adler_error_ends` |
+| `apng/frame1-truncated-data-ends` | complete at M6 | `model_complete_apng_frame1_truncated_data_ends` / `public_complete_apng_frame1_truncated_data_ends` |
+| `apng/empty-fdat-payload` | complete at M6 | `model_complete_apng_empty_fdat_payload` / `public_complete_apng_empty_fdat_payload` |
+| `apng/empty-fdat-then-data` | complete at M6 | `model_complete_apng_empty_fdat_then_data` / `public_complete_apng_empty_fdat_then_data` |
+
+Coverage now completes **46 distinct moved records and 47 assignments**, leaving **71 distinct records** in E6-M4-FILT (35) and E6-M4-A7 (36). All seven prior complete M4/M5 errors remain complete and unchanged. E6 clause 6 still blocks M6 sign-off. Before starting E6-M4-FILT, report the measured cap trajectory and structural options to the coordinator; do not change the gate or any limit.
+
+Runtime **800** passes release/fault/council tests, cap/allocation self-tests and no_std; E7 remains **846/848, zero failures**, with exactly the prescribed two skips. Public-error control **801** passes **72/72**. Final control **803** binds both full inventories, the complete model/native transcripts, independent fixture audit, raw reproduction, unchanged certificate prefix and accepted definitions/contracts, historical hashes, pins and whitespace. Diagnostic selected-module runs earn no checkpoint credit. Durable drivers and development archives remain outside the repository under `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m6-e6-m5-f/1151356-20261125`.
+
+New code files are `tools/generate_m6_m5_frames_witnesses.py`, `src/witness_m6_frame_model.rs` and `src/witness_m6_m5_frames.rs`. Existing source changes are proof-only registrations, the progress introduction and relation observations, and appended M5 bridges. No protected/QUESTIONS edit, trust shortcut, guard or solver/process-limit change, cache build, Cargo verification, named-policy iterator work, mutation campaign, CAPS-SYM, worker commit or push occurred. Named-policy iterator 2b remains paused.
+
 ## M6 E6-M5-S — complete still/still16 content witnesses (2026-11-25)
 
 **All 22 still/still16 assignments are complete at M6: 21 fresh witness pairs and one cross-checked E6-M3 overlap.** Full host **785** and i686 **788** each verify **6,687, zero errors**, against identical 99-file inventories with all generated leaves, `--no-cheating`, default solver limits, 256 MiB stacks and **3,600-second process caps per target**. Wall times are **48m35s host** and **51m06s i686**; the host warning threshold remains 48 minutes. Independent checkpoint review and overall M6 sign-off remain pending.
@@ -302,19 +336,19 @@ The still/still16 projection checks independent-model data success, dimensions a
 | `apng/frame1-error-still-unaffected` | complete at M6 (E6-M5-S) |
 | `apng/empty-fdat-payload-still` | complete at M6 (E6-M5-S) |
 | `apng/empty-fdat-then-data-still` | complete at M6 (E6-M5-S) |
-| `apng/default-is-frame0-dispose-bg-blend-over` | projection at M5, complete at M6 |
-| `apng/default-not-in-animation` | projection at M5, complete at M6 |
-| `apng/dispose-previous-first-frame-and-later` | projection at M5, complete at M6 |
-| `apng/blend-over-arithmetic` | projection at M5, complete at M6 |
-| `apng/blend-over-transparent-source` | projection at M5, complete at M6 |
-| `apng/blend-over-transparent-destination` | projection at M5, complete at M6 |
-| `apng/blend-over-zero-result-alpha` | projection at M5, complete at M6 |
-| `apng/interlaced-subframe` | projection at M5, complete at M6 |
-| `apng/static-file-as-frames` | projection at M5, complete at M6 |
-| `apng/frame1-adler-error-ends` | projection at M5, complete at M6 |
-| `apng/frame1-truncated-data-ends` | projection at M5, complete at M6 |
-| `apng/empty-fdat-payload` | projection at M5, complete at M6 |
-| `apng/empty-fdat-then-data` | projection at M5, complete at M6 |
+| `apng/default-is-frame0-dispose-bg-blend-over` | complete at M6 (E6-M5-F) |
+| `apng/default-not-in-animation` | complete at M6 (E6-M5-F) |
+| `apng/dispose-previous-first-frame-and-later` | complete at M6 (E6-M5-F) |
+| `apng/blend-over-arithmetic` | complete at M6 (E6-M5-F) |
+| `apng/blend-over-transparent-source` | complete at M6 (E6-M5-F) |
+| `apng/blend-over-transparent-destination` | complete at M6 (E6-M5-F) |
+| `apng/blend-over-zero-result-alpha` | complete at M6 (E6-M5-F) |
+| `apng/interlaced-subframe` | complete at M6 (E6-M5-F) |
+| `apng/static-file-as-frames` | complete at M6 (E6-M5-F) |
+| `apng/frame1-adler-error-ends` | complete at M6 (E6-M5-F) |
+| `apng/frame1-truncated-data-ends` | complete at M6 (E6-M5-F) |
+| `apng/empty-fdat-payload` | complete at M6 (E6-M5-F) |
+| `apng/empty-fdat-then-data` | complete at M6 (E6-M5-F) |
 
 ## M5 MFr SavedAt reachability and allocation clauses checkpoint (2026-11-22)
 

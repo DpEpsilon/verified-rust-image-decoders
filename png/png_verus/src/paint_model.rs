@@ -300,6 +300,22 @@ pub(crate) proof fn still_pixels_context(b: Seq<u8>,p: crate::policy::Policy,wid
         p.palette_index==crate::policy::PaletteIndex::Black),
 {reveal(still_pixels);}
 
+/// Introduction from complete source observations; the progress predicate is unchanged.
+pub(crate) proof fn complete_progress_intro(input: Seq<u8>,a: r::Raster,colour: c::Context,
+    shape: (nat,nat,nat,nat,nat,bool),before: Seq<u8>,state: Seq<u8>,black: bool)
+    requires domain(a),before.len()==state.len(),
+        forall|x: nat,y: nat| x<a.width && y<a.height ==>
+            (#[trigger] source_pixel(input,a,colour,x,y,c::is_wide(shape),black)).is_ok()
+            && c::observe(shape,state,a.width,x,y)==c::converted(shape,
+                source_pixel(input,a,colour,x,y,c::is_wide(shape),black).get_Ok_0(),
+                c::observe(shape,before,a.width,x,y)),
+    ensures progress(input,a,colour,shape,before,state,r::count(a),0,black),
+{
+    reveal(progress);
+    assert forall|x: nat,y: nat| x<a.width && y<a.height implies
+        #[trigger] visited(a,x,y,r::count(a),0) by {source_coordinate(a,x,y);}
+}
+
 pub proof fn mk_intro(z: Seq<u8>,a: r::Raster,colour: c::Context,p: crate::policy::Policy,cw: nat,rect: crate::composite_model::Rect,blend: bool,
     previous: Option<(crate::composite_model::Rect,u8)>,reference: Option<Seq<u8>>,before: Seq<u8>,after: Seq<u8>,reuse: bool)
     requires progress(r::inflated(z,a,p).out,a,colour,(2nat,before.len(),cw,rect.x,rect.y,blend),
