@@ -1,0 +1,448 @@
+{
+  "title": "Seven Complete Filter Witnesses",
+  "scope": "E6-M4-FILT-C1 complete: seven filter records using shared canonical row equations; remaining 28 FILT and 36 A7 records pending; hold for calibration decision.",
+  "checkpoint": "E6-M4-FILT-C1",
+  "base_commit": "ff3a28fb53e09e95029a97520697c4d7db3266cf",
+  "full_runs": [
+    812,
+    815
+  ],
+  "claims": [
+    {
+      "id": "filter/0-ct0-d1",
+      "entry": "still",
+      "claim": "Independent complete MS equals all frozen dimensions and RGBA bytes; an ordinary try_decode_still call retains full native/model equality and actual OOM membership.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "367335b1bf990802d6f7d90d6c45706e605d318e999463eaa50a4e25a01a6343",
+      "expected_rgba_sha256": "13839da1f69cdf83f858e033cbd01ecab385c43124e81bee49e9d89ffdf0ae74",
+      "pixels": 24,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m4_filter.rs",
+          "function": "model_complete_filter_0_ct0_d1",
+          "line": 10,
+          "sha256": "b903c92328f1837021eabd1ff154ae23e83a97bcf9aa0053a20d410ddddf3d2f"
+        },
+        {
+          "file": "src/witness_m6_m4_filter.rs",
+          "function": "public_complete_filter_0_ct0_d1",
+          "line": 16,
+          "sha256": "b903c92328f1837021eabd1ff154ae23e83a97bcf9aa0053a20d410ddddf3d2f"
+        },
+        {
+          "file": "src/witness_m4_filter_projection.rs",
+          "function": "e6_complete_filter_0_ct0_d1",
+          "line": 5520,
+          "sha256": "75f891c64bc99cb6f9cae5178400ddff5e515f48c1c89a961efd3b8bd882a9ac"
+        },
+        {
+          "file": "src/witness_m4_filter_projection.rs",
+          "function": "e6_rows_filter_0_ct0_d1",
+          "line": 5377,
+          "sha256": "75f891c64bc99cb6f9cae5178400ddff5e515f48c1c89a961efd3b8bd882a9ac"
+        }
+      ],
+      "verified_in_full_runs": [
+        812,
+        815
+      ]
+    },
+    {
+      "id": "filter/1-ct0-d8",
+      "entry": "still",
+      "claim": "Independent complete MS equals all frozen dimensions and RGBA bytes; an ordinary try_decode_still call retains full native/model equality and actual OOM membership.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "4a0ad4c0e502ad87ae952fc1ab1aaa0b5c821d5d7b8d2bf5f17ff5c60c808a64",
+      "expected_rgba_sha256": "6db9d4829b20f568c7d1fb89d7b6cba5375ecae0190cc59201a41a41c1885e2f",
+      "pixels": 24,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m4_filter.rs",
+          "function": "model_complete_filter_1_ct0_d8",
+          "line": 30,
+          "sha256": "b903c92328f1837021eabd1ff154ae23e83a97bcf9aa0053a20d410ddddf3d2f"
+        },
+        {
+          "file": "src/witness_m6_m4_filter.rs",
+          "function": "public_complete_filter_1_ct0_d8",
+          "line": 36,
+          "sha256": "b903c92328f1837021eabd1ff154ae23e83a97bcf9aa0053a20d410ddddf3d2f"
+        },
+        {
+          "file": "src/witness_m4_filter_projection.rs",
+          "function": "e6_complete_filter_1_ct0_d8",
+          "line": 5713,
+          "sha256": "75f891c64bc99cb6f9cae5178400ddff5e515f48c1c89a961efd3b8bd882a9ac"
+        },
+        {
+          "file": "src/witness_m4_filter_projection.rs",
+          "function": "e6_rows_filter_1_ct0_d8",
+          "line": 5570,
+          "sha256": "75f891c64bc99cb6f9cae5178400ddff5e515f48c1c89a961efd3b8bd882a9ac"
+        }
+      ],
+      "verified_in_full_runs": [
+        812,
+        815
+      ]
+    },
+    {
+      "id": "filter/2-ct0-d16",
+      "entry": "still",
+      "claim": "Independent complete MS equals all frozen dimensions and RGBA bytes; an ordinary try_decode_still call retains full native/model equality and actual OOM membership.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "39de1288cf6e43c64be501320449920dbe680ea86543b732de191b291c65a332",
+      "expected_rgba_sha256": "92fcda5274a1e47d87fbd7251c119f3b16d7a0773ba6d2ae94f227e359251d91",
+      "pixels": 24,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m4_filter.rs",
+          "function": "model_complete_filter_2_ct0_d16",
+          "line": 50,
+          "sha256": "b903c92328f1837021eabd1ff154ae23e83a97bcf9aa0053a20d410ddddf3d2f"
+        },
+        {
+          "file": "src/witness_m6_m4_filter.rs",
+          "function": "public_complete_filter_2_ct0_d16",
+          "line": 56,
+          "sha256": "b903c92328f1837021eabd1ff154ae23e83a97bcf9aa0053a20d410ddddf3d2f"
+        },
+        {
+          "file": "src/witness_m4_filter_projection.rs",
+          "function": "e6_complete_filter_2_ct0_d16",
+          "line": 5906,
+          "sha256": "75f891c64bc99cb6f9cae5178400ddff5e515f48c1c89a961efd3b8bd882a9ac"
+        },
+        {
+          "file": "src/witness_m4_filter_projection.rs",
+          "function": "e6_rows_filter_2_ct0_d16",
+          "line": 5763,
+          "sha256": "75f891c64bc99cb6f9cae5178400ddff5e515f48c1c89a961efd3b8bd882a9ac"
+        }
+      ],
+      "verified_in_full_runs": [
+        812,
+        815
+      ]
+    },
+    {
+      "id": "filter/3-ct2-d8",
+      "entry": "still",
+      "claim": "Independent complete MS equals all frozen dimensions and RGBA bytes; an ordinary try_decode_still call retains full native/model equality and actual OOM membership.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "7523cbeacd185d4c0351aa0991a235e524630e419e34a99b192379ac2231093a",
+      "expected_rgba_sha256": "947965893a787209973de1f9c6aa455cbd10f4e568128bb4f30e91fa28b6b194",
+      "pixels": 24,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m4_filter.rs",
+          "function": "model_complete_filter_3_ct2_d8",
+          "line": 70,
+          "sha256": "b903c92328f1837021eabd1ff154ae23e83a97bcf9aa0053a20d410ddddf3d2f"
+        },
+        {
+          "file": "src/witness_m6_m4_filter.rs",
+          "function": "public_complete_filter_3_ct2_d8",
+          "line": 76,
+          "sha256": "b903c92328f1837021eabd1ff154ae23e83a97bcf9aa0053a20d410ddddf3d2f"
+        },
+        {
+          "file": "src/witness_m4_filter_projection.rs",
+          "function": "e6_complete_filter_3_ct2_d8",
+          "line": 6099,
+          "sha256": "75f891c64bc99cb6f9cae5178400ddff5e515f48c1c89a961efd3b8bd882a9ac"
+        },
+        {
+          "file": "src/witness_m4_filter_projection.rs",
+          "function": "e6_rows_filter_3_ct2_d8",
+          "line": 5956,
+          "sha256": "75f891c64bc99cb6f9cae5178400ddff5e515f48c1c89a961efd3b8bd882a9ac"
+        }
+      ],
+      "verified_in_full_runs": [
+        812,
+        815
+      ]
+    },
+    {
+      "id": "filter/4-ct2-d16",
+      "entry": "still",
+      "claim": "Independent complete MS equals all frozen dimensions and RGBA bytes; an ordinary try_decode_still call retains full native/model equality and actual OOM membership.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "3f81b8ef52a4fc6d9cc02cb409337017967250d9c5e22898a74979b46b987cdf",
+      "expected_rgba_sha256": "cbf18777c31845d1d3de7003a61911b59931219dd4ba072caaccddf3b91a2d4d",
+      "pixels": 24,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m4_filter.rs",
+          "function": "model_complete_filter_4_ct2_d16",
+          "line": 90,
+          "sha256": "b903c92328f1837021eabd1ff154ae23e83a97bcf9aa0053a20d410ddddf3d2f"
+        },
+        {
+          "file": "src/witness_m6_m4_filter.rs",
+          "function": "public_complete_filter_4_ct2_d16",
+          "line": 96,
+          "sha256": "b903c92328f1837021eabd1ff154ae23e83a97bcf9aa0053a20d410ddddf3d2f"
+        },
+        {
+          "file": "src/witness_m4_filter_projection.rs",
+          "function": "e6_complete_filter_4_ct2_d16",
+          "line": 6292,
+          "sha256": "75f891c64bc99cb6f9cae5178400ddff5e515f48c1c89a961efd3b8bd882a9ac"
+        },
+        {
+          "file": "src/witness_m4_filter_projection.rs",
+          "function": "e6_rows_filter_4_ct2_d16",
+          "line": 6149,
+          "sha256": "75f891c64bc99cb6f9cae5178400ddff5e515f48c1c89a961efd3b8bd882a9ac"
+        }
+      ],
+      "verified_in_full_runs": [
+        812,
+        815
+      ]
+    },
+    {
+      "id": "filter/1-ct4-d8",
+      "entry": "still",
+      "claim": "Independent complete MS equals all frozen dimensions and RGBA bytes; an ordinary try_decode_still call retains full native/model equality and actual OOM membership.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "97b9226499e3607c62634244f441c324bb70c057e45dea54dfd3580f6e222003",
+      "expected_rgba_sha256": "fbba74e3a359f172f3380f2b04ff7b932c67e8d45e84dd8bbba6be72fd75f6e2",
+      "pixels": 24,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m4_filter.rs",
+          "function": "model_complete_filter_1_ct4_d8",
+          "line": 110,
+          "sha256": "b903c92328f1837021eabd1ff154ae23e83a97bcf9aa0053a20d410ddddf3d2f"
+        },
+        {
+          "file": "src/witness_m6_m4_filter.rs",
+          "function": "public_complete_filter_1_ct4_d8",
+          "line": 116,
+          "sha256": "b903c92328f1837021eabd1ff154ae23e83a97bcf9aa0053a20d410ddddf3d2f"
+        },
+        {
+          "file": "src/witness_m4_filter_projection.rs",
+          "function": "e6_complete_filter_1_ct4_d8",
+          "line": 6485,
+          "sha256": "75f891c64bc99cb6f9cae5178400ddff5e515f48c1c89a961efd3b8bd882a9ac"
+        },
+        {
+          "file": "src/witness_m4_filter_projection.rs",
+          "function": "e6_rows_filter_1_ct4_d8",
+          "line": 6342,
+          "sha256": "75f891c64bc99cb6f9cae5178400ddff5e515f48c1c89a961efd3b8bd882a9ac"
+        }
+      ],
+      "verified_in_full_runs": [
+        812,
+        815
+      ]
+    },
+    {
+      "id": "filter/4-ct6-d16",
+      "entry": "still",
+      "claim": "Independent complete MS equals all frozen dimensions and RGBA bytes; an ordinary try_decode_still call retains full native/model equality and actual OOM membership.",
+      "expected_keys": [
+        "width",
+        "height",
+        "rgba_runs"
+      ],
+      "fixture_sha256": "641d9b0fb7d941688591cb07b1b8461b613dcaaaa2c34fb5807f6cfbc5fe763d",
+      "input_sha256": "3296e7aaeabc75fca4095c6f3284c48bdf99e2ba3aa826b5a9803eea0912d5eb",
+      "expected_rgba_sha256": "bfc85b1128705b4c67082abc5dafeb1459c9c003a2be65cb02646767a2edc965",
+      "pixels": 24,
+      "proof_anchors": [
+        {
+          "file": "src/witness_m6_m4_filter.rs",
+          "function": "model_complete_filter_4_ct6_d16",
+          "line": 130,
+          "sha256": "b903c92328f1837021eabd1ff154ae23e83a97bcf9aa0053a20d410ddddf3d2f"
+        },
+        {
+          "file": "src/witness_m6_m4_filter.rs",
+          "function": "public_complete_filter_4_ct6_d16",
+          "line": 136,
+          "sha256": "b903c92328f1837021eabd1ff154ae23e83a97bcf9aa0053a20d410ddddf3d2f"
+        },
+        {
+          "file": "src/witness_m4_filter_projection.rs",
+          "function": "e6_complete_filter_4_ct6_d16",
+          "line": 6678,
+          "sha256": "75f891c64bc99cb6f9cae5178400ddff5e515f48c1c89a961efd3b8bd882a9ac"
+        },
+        {
+          "file": "src/witness_m4_filter_projection.rs",
+          "function": "e6_rows_filter_4_ct6_d16",
+          "line": 6535,
+          "sha256": "75f891c64bc99cb6f9cae5178400ddff5e515f48c1c89a961efd3b8bd882a9ac"
+        }
+      ],
+      "verified_in_full_runs": [
+        812,
+        815
+      ]
+    }
+  ],
+  "dependency_dag": {
+    "complete MS witnesses": [
+      "complete still composition",
+      "unchanged M4 walk/inflate/data certificates",
+      "four-row certificates",
+      "bare colour composition"
+    ],
+    "complete still composition": [
+      "unchanged MS definition",
+      "image from rows"
+    ],
+    "image from rows": [
+      "canonical MS byte equation",
+      "row byte equation",
+      "integer coordinate bounds"
+    ],
+    "four-row certificates": [
+      "unchanged pass_row_equation and checked_row_hint",
+      "canonical colour_model pixel equation",
+      "frozen expected byte literals",
+      "bounded row equality"
+    ],
+    "bare colour composition": [
+      "unchanged drive_step",
+      "strict framed-step colour observation"
+    ],
+    "strict framed-step colour observation": [
+      "strict ordered-step colour observation",
+      "unchanged framing/CRC definitions"
+    ],
+    "strict ordered-step colour observation": [
+      "strict own-value colour observation",
+      "unchanged ordering definition"
+    ],
+    "strict own-value colour observation": [
+      "unchanged own-value definition"
+    ],
+    "ordinary public witnesses": [
+      "complete MS witnesses",
+      "accepted Strict still equivalence and OOM request contract",
+      "ordinary png::try_decode_still"
+    ]
+  },
+  "acyclic": true,
+  "bridges": {
+    "predicates_and_existing_contracts_unchanged": true,
+    "canonical_row_equation_not_executable_converter": true,
+    "untrusted_hints_checked_by_unchanged_filter_contracts": true,
+    "anchors": [
+      {
+        "file": "src/witness_m6_rows_model.rs",
+        "function": "row_bytes8",
+        "line": 8,
+        "sha256": "79d373a46333189ea4b8c081f9ce181ddfdd2ce317ce1f5c049bd8f2c0962d76"
+      },
+      {
+        "file": "src/witness_m6_rows_model.rs",
+        "function": "image_from_rows",
+        "line": 15,
+        "sha256": "79d373a46333189ea4b8c081f9ce181ddfdd2ce317ce1f5c049bd8f2c0962d76"
+      },
+      {
+        "file": "src/witness_m6_rows_model.rs",
+        "function": "bounded_row_equal",
+        "line": 53,
+        "sha256": "79d373a46333189ea4b8c081f9ce181ddfdd2ce317ce1f5c049bd8f2c0962d76"
+      },
+      {
+        "file": "src/witness_m6_rows_model.rs",
+        "function": "complete_still",
+        "line": 127,
+        "sha256": "79d373a46333189ea4b8c081f9ce181ddfdd2ce317ce1f5c049bd8f2c0962d76"
+      },
+      {
+        "file": "src/witness_m6_rows_model.rs",
+        "function": "bare_colour",
+        "line": 155,
+        "sha256": "79d373a46333189ea4b8c081f9ce181ddfdd2ce317ce1f5c049bd8f2c0962d76"
+      },
+      {
+        "file": "src/document_model.rs",
+        "function": "witness_own_colour",
+        "line": 398,
+        "sha256": "6c073342e7c3909e0865ad045e10b93cc431afd0b8e0cd0fe502bd14b7077e1c"
+      },
+      {
+        "file": "src/document_model.rs",
+        "function": "witness_ordered_colour",
+        "line": 409,
+        "sha256": "6c073342e7c3909e0865ad045e10b93cc431afd0b8e0cd0fe502bd14b7077e1c"
+      },
+      {
+        "file": "src/document_model.rs",
+        "function": "witness_step_colour",
+        "line": 426,
+        "sha256": "6c073342e7c3909e0865ad045e10b93cc431afd0b8e0cd0fe502bd14b7077e1c"
+      }
+    ]
+  },
+  "ordinary_public": {
+    "real_public_call": "png::try_decode_still",
+    "full_native_model_equality": true,
+    "OOM_request_membership": true,
+    "allocation_success_antecedent": false
+  },
+  "coverage": {
+    "file": "evidence/m6-e6-m4-filt-c1-coverage.json",
+    "sha256": "581fd0a6f299a10d6ab17a702c9fd4321dd8b4319ad7fe6065ec19b15b47db96"
+  },
+  "witness_index": {
+    "file": "evidence/m6-e6-m4-filt-c1-witness-index.json",
+    "sha256": "bc1ee4fd96e8f5de52ddf6b741230f5e4683463c75f2e142fa56dac83a81585a"
+  },
+  "generator": {
+    "file": "tools/generate_m6_m4_filter_witnesses.py",
+    "sha256": "c9c1b1a64170ebbf2c74d6b2733c4931f38db2196aa41da3c2f8ffdfc91bed7c"
+  },
+  "independent_literal_control": {
+    "file": "evidence/m6-e6-m4-filt-c1-fixture-control.py",
+    "sha256": "03536f32c12a8790b17356f60065dd5427166469211fac66d77add65baaa156d"
+  },
+  "raw_byte_reproducible": true,
+  "remaining_work": [
+    "Hold for calibration decision",
+    "28 FILT records",
+    "36 A7 records",
+    "Remaining T10, full-crate mutation sets and CAPS-SYM; 2b paused"
+  ]
+}

@@ -390,6 +390,60 @@ pub(crate) proof fn palette_default_walk(b: Seq<u8>,h: crate::model::Ihdr,z: Seq
 }
 
 
+// E6-M4 shared colour-field observations; existing transition contracts are unchanged.
+pub(crate) open spec fn witness_colour_eq(a: Doc,b: Doc) -> bool {
+    a.ihdr==b.ihdr && a.plte==b.plte && a.trns==b.trns
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn witness_own_colour(b: Seq<u8>,state: State,name: Name,data: nat,length: nat)
+    requires name==Name::Idat || name==Name::Iend,
+    ensures match own(b,strict(),false,state,name,data,length) {
+        Step::Next(next)=>name!=Name::Iend && next.pos==state.pos && witness_colour_eq(next.doc,state.doc),
+        Step::Done(doc,_)=>witness_colour_eq(doc,state.doc),_=>true,
+    },
+{
+    hide(critical::idat);hide(critical::iend);
+    reveal(own);
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn witness_ordered_colour(b: Seq<u8>,state: State,name: Name,data: nat,length: nat)
+    requires name==Name::Idat || name==Name::Iend,
+    ensures match ordered(b,strict(),false,state,name,false,data,length) {
+        Step::Next(next)=>name!=Name::Iend && next.pos==state.pos && witness_colour_eq(next.doc,state.doc),
+        Step::Done(doc,_)=>witness_colour_eq(doc,state.doc),_=>true,
+    },
+{
+    hide(order::singleton);
+    reveal(ordered);
+    let action=order::order(state.seen,state.phase,state.doc.plte.is_some(),state.doc.ihdr.color_type,name,false,length,strict().order);
+    assert(!matches!(action,order::OrderAction::Drop));
+    if let order::OrderAction::Keep(n)=action {
+        let next=State {seen:if order::singleton(name) {state.seen.insert(name)}else{state.seen},..state};
+        witness_own_colour(b,next,name,data,n);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn witness_step_colour(b: Seq<u8>,state: State,chunk: critical::Candidate)
+    requires critical::read(b,state.pos,state.phase,false)==Ok(chunk),chunk.crc_ok,
+        chunk.ty==seq![73u8,68u8,65u8,84u8] || chunk.ty==seq![73u8,69u8,78u8,68u8],
+    ensures match step(b,strict(),false,false,state) {
+        Step::Next(next)=>chunk.ty!=seq![73u8,69u8,78u8,68u8]
+            && next.pos==chunk.next && witness_colour_eq(next.doc,state.doc),
+        Step::Done(doc,_)=>witness_colour_eq(doc,state.doc),_=>true,
+    },
+{
+    hide(critical::read);hide(order::classify);
+    reveal(step);
+    let name=if chunk.ty==seq![73u8,68u8,65u8,84u8] {Name::Idat}else{Name::Iend};
+    assert(order::classify(seq![73u8,68u8,65u8,84u8])==Name::Idat) by (compute);
+    assert(order::classify(seq![73u8,69u8,78u8,68u8])==Name::Iend) by (compute);
+    assert((73u8 & 32u8)==0u8) by (bit_vector);
+    assert(order::classify(chunk.ty)==name);
+    let next=State {pos:chunk.next,phase:order::advance_phase(state.phase,name),..state};
+    witness_ordered_colour(b,next,name,chunk.data,chunk.len);
+}
+// End E6-M4 shared colour-field observations.
+
 pub proof fn reused_stream(b: Seq<u8>,doc: Doc)
     requires doc.frames.len()>0,match doc.frames[0].source {Source::Idat=>true,_=>false},
     ensures frame_stream(b,doc,0)==default_stream(b,doc),

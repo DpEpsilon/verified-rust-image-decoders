@@ -1,5 +1,31 @@
 # png_verus ledger
 
+## M6 E6-M4-FILT-C1 — seven-record row-proof calibration (2026-11-25)
+
+**Seven filter records are complete at M6; hold before the remaining M4 records.** Full host **812** and i686 **815** each verify **6,816, zero errors**, against identical 105-file inventories with all existing generated leaves, `--no-cheating`, default solver limits, 256 MiB stacks and unchanged **3,600-second process caps per target**. The checkpoint adds **55 goals** to the accepted 6,761-goal E6-M5-F baseline. Wall times are **47m24s host** and **50m09s i686**; the host warning threshold remains 48 minutes. Independent checkpoint review and overall M6 sign-off remain pending.
+
+The seven records cover all seven filter formats and all five filters, including Paeth RGB16 and RGBA16. Each complete independent MS proof checks both frozen dimensions and all **96 RGBA bytes per record: 168 pixels and 672 physical bytes**. One four-row proof per record checks untrusted intermediate scanline hints against unchanged filter-model contracts, evaluates each mathematical colour byte, and composes finite row equality with a shared canonical MS row equation. Expected bytes come only from `spec-frozen/VECTORS.json`, never from the hints or a decoder. The generic row helper is proof-only; it does not replace an executable converter.
+
+Three additive defining-module observations prove preservation of header, PLTE and tRNS across the existing strict IDAT/IEND ownership, ordering and framed-step definitions. A separate two-step composition observes the bare file's actual colour context; the original M4 certificate independently establishes walk success. Every original M4 certificate remains byte-for-byte unchanged, and no existing model, contract or native body changes. Each ordinary witness calls `png::try_decode_still` on the real frozen byte array and retains the accepted unrestricted model/native relation and actual OOM request membership. No proof assumes successful allocation.
+
+The independent fixture auditor imports neither generator nor decoder, checks every literal and actual native byte array, and rejects changed pixel, width and height literals. These three literal-only controls are not a decoder mutation campaign. The generator reproduces both Rust modules and the repository-relative index as raw bytes. All 1,309 historical evidence hashes remain unchanged.
+
+| Frozen record | Current E6 assignment | Complete model / ordinary public witness |
+|---|---|---|
+| `filter/0-ct0-d1` | complete at M6 | `model_complete_filter_0_ct0_d1` / `public_complete_filter_0_ct0_d1` |
+| `filter/1-ct0-d8` | complete at M6 | `model_complete_filter_1_ct0_d8` / `public_complete_filter_1_ct0_d8` |
+| `filter/2-ct0-d16` | complete at M6 | `model_complete_filter_2_ct0_d16` / `public_complete_filter_2_ct0_d16` |
+| `filter/3-ct2-d8` | complete at M6 | `model_complete_filter_3_ct2_d8` / `public_complete_filter_3_ct2_d8` |
+| `filter/4-ct2-d16` | complete at M6 | `model_complete_filter_4_ct2_d16` / `public_complete_filter_4_ct2_d16` |
+| `filter/1-ct4-d8` | complete at M6 | `model_complete_filter_1_ct4_d8` / `public_complete_filter_1_ct4_d8` |
+| `filter/4-ct6-d16` | complete at M6 | `model_complete_filter_4_ct6_d16` / `public_complete_filter_4_ct6_d16` |
+
+Coverage now completes **53 distinct moved records and 54 assignments**, leaving **64 distinct records: 28 FILT and 36 A7**. The seven prior complete errors remain unchanged. E6 clause 6 and M6 sign-off remain blocked. The source-bound calibration evidence records measured full-run times, diagnostic shared/per-record costs, projections for all 35 FILT and accumulated 36 A7 records, and a representative full-crate mutant run. Diagnostic timing and selected-module runs earn no checkpoint credit. Baseline timing variation and unimplemented A7 scatter proofs remain explicit uncertainties; neither timeout nor a filtered run counts as mutant rejection.
+
+Runtime **813** passes release/fault/council tests, cap/allocation self-tests and no_std; E7 remains **846/848, zero failures**, with exactly the prescribed two skips. Public-error control **814** passes **72/72**. Final control **817** binds full inventories, independent literal auditing, raw reproduction, unchanged original certificates/definitions/contracts, historical hashes, vstd pins and whitespace. Durable drivers and development archives remain outside the repository under `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m6-e6-m4-filt-cal/ff3a28f-20261125`.
+
+No protected/QUESTIONS edit, trust shortcut, guard change, solver/process-limit change, cache build, Cargo verification, named-policy iterator work, mutation campaign, CAPS-SYM, worker commit or push occurred. The coordinator must decide the next M4 scope from the measured calibration before implementation resumes; named-policy iterator 2b remains paused.
+
 ## M6 E6-M5-F — complete frame content witnesses (2026-11-25)
 
 **All 13 frame content records are complete at M6.** Full host **799** and i686 **802** each verify **6,761, zero errors**, against identical 102-file inventories with all generated leaves, `--no-cheating`, default solver limits, 256 MiB stacks and unchanged **3,600-second process caps per target**. Wall times are **49m34s host** and **46m43s i686**. The host warning threshold remains 48 minutes; independent checkpoint review and overall M6 sign-off remain pending.
@@ -550,7 +576,7 @@ Fresh runtime/source run **447** passes release tests, fault injection, all seve
 
 | Record | Required gate | M4 status | Complete pixel status |
 |---|---|---|---|
-| `filter/0-ct0-d1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/0-ct0-d1` | complete at M6 (E6-M4-FILT-C1) | Proved | Proved (full C1 gates) |
 | `filter/0-ct0-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `filter/0-ct0-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `filter/0-ct2-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
@@ -558,15 +584,15 @@ Fresh runtime/source run **447** passes release tests, fault injection, all seve
 | `filter/0-ct4-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `filter/0-ct6-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `filter/1-ct0-d1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/1-ct0-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/1-ct0-d8` | complete at M6 (E6-M4-FILT-C1) | Proved | Proved (full C1 gates) |
 | `filter/1-ct0-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `filter/1-ct2-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `filter/1-ct2-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/1-ct4-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/1-ct4-d8` | complete at M6 (E6-M4-FILT-C1) | Proved | Proved (full C1 gates) |
 | `filter/1-ct6-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `filter/2-ct0-d1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `filter/2-ct0-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/2-ct0-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/2-ct0-d16` | complete at M6 (E6-M4-FILT-C1) | Proved | Proved (full C1 gates) |
 | `filter/2-ct2-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `filter/2-ct2-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `filter/2-ct4-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
@@ -574,7 +600,7 @@ Fresh runtime/source run **447** passes release tests, fault injection, all seve
 | `filter/3-ct0-d1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `filter/3-ct0-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `filter/3-ct0-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/3-ct2-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/3-ct2-d8` | complete at M6 (E6-M4-FILT-C1) | Proved | Proved (full C1 gates) |
 | `filter/3-ct2-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `filter/3-ct4-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `filter/3-ct6-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
@@ -582,9 +608,9 @@ Fresh runtime/source run **447** passes release tests, fault injection, all seve
 | `filter/4-ct0-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `filter/4-ct0-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `filter/4-ct2-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/4-ct2-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/4-ct2-d16` | complete at M6 (E6-M4-FILT-C1) | Proved | Proved (full C1 gates) |
 | `filter/4-ct4-d8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `filter/4-ct6-d16` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `filter/4-ct6-d16` | complete at M6 (E6-M4-FILT-C1) | Proved | Proved (full C1 gates) |
 | `image/filter-type-5` | complete at M4 | Proved | Not applicable |
 | `image/filter-type-255` | complete at M4 | Proved | Not applicable |
 | `precedence/adler-before-filter` | complete at M4 | Proved | Not applicable |
@@ -735,7 +761,7 @@ This is an assignment list, not proof credit. All 76 gates below are **unproved*
 
 | Record | Required gate (all unproved) |
 |---|---|
-| `filter/0-ct0-d1` | projection at M4, complete at M6 |
+| `filter/0-ct0-d1` | complete at M6 (E6-M4-FILT-C1) |
 | `filter/0-ct0-d8` | projection at M4, complete at M6 |
 | `filter/0-ct0-d16` | projection at M4, complete at M6 |
 | `filter/0-ct2-d8` | projection at M4, complete at M6 |
@@ -743,15 +769,15 @@ This is an assignment list, not proof credit. All 76 gates below are **unproved*
 | `filter/0-ct4-d8` | projection at M4, complete at M6 |
 | `filter/0-ct6-d16` | projection at M4, complete at M6 |
 | `filter/1-ct0-d1` | projection at M4, complete at M6 |
-| `filter/1-ct0-d8` | projection at M4, complete at M6 |
+| `filter/1-ct0-d8` | complete at M6 (E6-M4-FILT-C1) |
 | `filter/1-ct0-d16` | projection at M4, complete at M6 |
 | `filter/1-ct2-d8` | projection at M4, complete at M6 |
 | `filter/1-ct2-d16` | projection at M4, complete at M6 |
-| `filter/1-ct4-d8` | projection at M4, complete at M6 |
+| `filter/1-ct4-d8` | complete at M6 (E6-M4-FILT-C1) |
 | `filter/1-ct6-d16` | projection at M4, complete at M6 |
 | `filter/2-ct0-d1` | projection at M4, complete at M6 |
 | `filter/2-ct0-d8` | projection at M4, complete at M6 |
-| `filter/2-ct0-d16` | projection at M4, complete at M6 |
+| `filter/2-ct0-d16` | complete at M6 (E6-M4-FILT-C1) |
 | `filter/2-ct2-d8` | projection at M4, complete at M6 |
 | `filter/2-ct2-d16` | projection at M4, complete at M6 |
 | `filter/2-ct4-d8` | projection at M4, complete at M6 |
@@ -759,7 +785,7 @@ This is an assignment list, not proof credit. All 76 gates below are **unproved*
 | `filter/3-ct0-d1` | projection at M4, complete at M6 |
 | `filter/3-ct0-d8` | projection at M4, complete at M6 |
 | `filter/3-ct0-d16` | projection at M4, complete at M6 |
-| `filter/3-ct2-d8` | projection at M4, complete at M6 |
+| `filter/3-ct2-d8` | complete at M6 (E6-M4-FILT-C1) |
 | `filter/3-ct2-d16` | projection at M4, complete at M6 |
 | `filter/3-ct4-d8` | projection at M4, complete at M6 |
 | `filter/3-ct6-d16` | projection at M4, complete at M6 |
@@ -767,9 +793,9 @@ This is an assignment list, not proof credit. All 76 gates below are **unproved*
 | `filter/4-ct0-d8` | projection at M4, complete at M6 |
 | `filter/4-ct0-d16` | projection at M4, complete at M6 |
 | `filter/4-ct2-d8` | projection at M4, complete at M6 |
-| `filter/4-ct2-d16` | projection at M4, complete at M6 |
+| `filter/4-ct2-d16` | complete at M6 (E6-M4-FILT-C1) |
 | `filter/4-ct4-d8` | projection at M4, complete at M6 |
-| `filter/4-ct6-d16` | projection at M4, complete at M6 |
+| `filter/4-ct6-d16` | complete at M6 (E6-M4-FILT-C1) |
 | `image/filter-type-5` | complete at M4 |
 | `image/filter-type-255` | complete at M4 |
 | `precedence/adler-before-filter` | complete at M4 |
