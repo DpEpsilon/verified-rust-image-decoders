@@ -1,5 +1,29 @@
 # png_verus ledger
 
+## M6 E6-M4-A7-C1 — five-record Adam7 calibration (2026-11-27)
+
+**Five interlace records are complete at M6; hold before the remaining 31 A7 records.** Full host **832** and i686 **835** each verify **7,046, zero errors**, against identical 109-file inventories with every existing leaf, `--no-cheating`, default solver limits, 256 MiB stacks and unchanged 3,600-second process caps. Times are **52m54s host** and **53m16s i686**. The checkpoint adds **62 goals** to accepted 35-FILT. Independent acceptance remains pending.
+
+The batch covers 8x8 grey1, indexed4 and RGBA16, a 1x9 RGBA16 strip and a degenerate 1x1 indexed image: **202 pixels and 808 physical RGBA bytes**. Each independent complete MS witness proves both dimensions and every frozen output byte, then calls ordinary `png::try_decode_still` on the actual byte array with unrestricted model/native equality and actual OOM request membership. Expected values come only from frozen VECTORS; reconstruction hints remain untrusted and are checked against unchanged filter contracts.
+
+The new generic composition calls the accepted Adam7 `paint_model::source_coordinate` theorem, which identifies the canonical inverse pass/column/row and its forward image coordinates. Each pass row proves colour equality against a strided selection of the full frozen output. The generic proof links each physical output byte to that selected source cell; it does not reuse the noninterlaced image proof. Twenty-six nonempty-pass certificates expose the cost and budget margin of pass-level granularity. A defining-module observation identifies the actual initial PLTE range and absent tRNS; two trailing actual transitions preserve those fields. Existing C1 lemmas, document-model definitions, native decoder bodies and all original M4 certificates remain unchanged.
+
+The independent auditor specifies the five-name schedule independently, rejects duplicate index entries before summing and requires exact set equality. It checks every output literal and native byte array and rejects changed pixel/width/height literals plus duplicate/omitted/unexpected-index controls. These literal controls are not a decoder mutation campaign. The generator reproduces both generated Rust modules and its repository-relative index as raw bytes. All 1,349 historical evidence hashes remain unchanged.
+
+A separate diagnostic-only resource probe checks **all 144 nonempty-pass colour certificates across all 36 frozen A7 records** at default limits. Every pass fits below 30,000,000 units; RGBA16 8x8 pass 7 remains the largest at **26,076,955**, leaving **3,923,045 units (13.08%)**. The largest pass among the other 31 records uses **3,915,465 units**. No finer row splitting is required for this measured frozen schedule. Those 31 records received only temporary pass/spec probes, not complete-model/public witnesses; the driver restored byte-identical five-record canonical inputs before both acceptance runs. The resource report binds the diagnostic variant separately and supplies no checkpoint credit.
+
+| Frozen record | Current E6 assignment | Complete model / ordinary public witness |
+|---|---|---|
+| `interlace/ct0-d1-8x8` | complete at M6 | `model_complete_interlace_ct0_d1_8x8` / `public_complete_interlace_ct0_d1_8x8` |
+| `interlace/ct6-d16-8x8` | complete at M6 | `model_complete_interlace_ct6_d16_8x8` / `public_complete_interlace_ct6_d16_8x8` |
+| `interlace/ct3-d4-8x8` | complete at M6 | `model_complete_interlace_ct3_d4_8x8` / `public_complete_interlace_ct3_d4_8x8` |
+| `interlace/ct6-d16-1x9` | complete at M6 | `model_complete_interlace_ct6_d16_1x9` / `public_complete_interlace_ct6_d16_1x9` |
+| `interlace/ct3-d4-1x1` | complete at M6 | `model_complete_interlace_ct3_d4_1x1` / `public_complete_interlace_ct3_d4_1x1` |
+
+Coverage completes **86 distinct moved records and 87 assignments**, leaving **31 A7 records**; all seven prior complete errors remain unchanged. The source-bound calibration records actual full-run and shared/pass costs, projected accumulated A7 crate time and representative full-crate mutant cost. Only the unfiltered full replays earn checkpoint credit. The coordinator must decide the remaining A7 scope from these measured numbers; E6 clause 6 and M6 sign-off remain blocked, and 2b stays paused.
+
+Runtime **833** passes release/fault/council tests, cap/allocation self-tests and no_std; frozen conformance remains **846/848** with exactly the two prescribed skips. Public-error control **834** passes **72/72**. Final control **836** binds source inventories, actual Adam7 mapping and palette observations, independent literals/schedules, raw reproduction, original prefix preservation and historical hashes. No protected/QUESTIONS edit, trust shortcut, guard/solver/process-limit change, cache build, mutation/CAPS-SYM methodology change, commit or push occurred. Durable drivers remain under `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m6-e6-m4-a7-cal/0a07e94-20261127`.
+
 ## M6 E6-M4-FILT — all 35 filter records complete (2026-11-25)
 
 **All 35 filter records are complete at M6: the 28 remaining records extend accepted C1 additively.** Full host **820** and i686 **823** each verify **6,984, zero errors**, against identical 106-file inventories with every existing leaf, `--no-cheating`, default solver limits, 256 MiB stacks and unchanged 3,600-second process caps. Times are **49m22s host** and **49m56s i686**. The checkpoint adds **168 goals** to accepted C1. Independent acceptance remains pending.
@@ -667,7 +691,7 @@ Fresh runtime/source run **447** passes release tests, fault injection, all seve
 | `precedence/index-row0-before-filter-row1` | complete at M4 | Proved | Not applicable |
 | `interlace/ct0-d1-1x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `interlace/ct6-d16-1x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct3-d4-1x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct3-d4-1x1` | complete at M6 (E6-M4-A7-C1) | Proved | Proved (full A7 calibration gates) |
 | `interlace/ct0-d1-1x2` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `interlace/ct6-d16-1x2` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `interlace/ct3-d4-1x2` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
@@ -692,14 +716,14 @@ Fresh runtime/source run **447** passes release tests, fault injection, all seve
 | `interlace/ct0-d1-5x5` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `interlace/ct6-d16-5x5` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `interlace/ct3-d4-5x5` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct0-d1-8x8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct6-d16-8x8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct3-d4-8x8` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct0-d1-8x8` | complete at M6 (E6-M4-A7-C1) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct6-d16-8x8` | complete at M6 (E6-M4-A7-C1) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct3-d4-8x8` | complete at M6 (E6-M4-A7-C1) | Proved | Proved (full A7 calibration gates) |
 | `interlace/ct0-d1-9x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `interlace/ct6-d16-9x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `interlace/ct3-d4-9x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `interlace/ct0-d1-1x9` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct6-d16-1x9` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct6-d16-1x9` | complete at M6 (E6-M4-A7-C1) | Proved | Proved (full A7 calibration gates) |
 | `interlace/ct3-d4-1x9` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
 | `interlace/1x1-filter-bytes-for-empty-passes` | complete at M4 | Proved | Not applicable |
 
@@ -852,7 +876,7 @@ This is an assignment list, not proof credit. All 76 gates below are **unproved*
 | `precedence/index-row0-before-filter-row1` | complete at M4 |
 | `interlace/ct0-d1-1x1` | projection at M4, complete at M6 |
 | `interlace/ct6-d16-1x1` | projection at M4, complete at M6 |
-| `interlace/ct3-d4-1x1` | projection at M4, complete at M6 |
+| `interlace/ct3-d4-1x1` | complete at M6 (E6-M4-A7-C1) |
 | `interlace/ct0-d1-1x2` | projection at M4, complete at M6 |
 | `interlace/ct6-d16-1x2` | projection at M4, complete at M6 |
 | `interlace/ct3-d4-1x2` | projection at M4, complete at M6 |
@@ -877,14 +901,14 @@ This is an assignment list, not proof credit. All 76 gates below are **unproved*
 | `interlace/ct0-d1-5x5` | projection at M4, complete at M6 |
 | `interlace/ct6-d16-5x5` | projection at M4, complete at M6 |
 | `interlace/ct3-d4-5x5` | projection at M4, complete at M6 |
-| `interlace/ct0-d1-8x8` | projection at M4, complete at M6 |
-| `interlace/ct6-d16-8x8` | projection at M4, complete at M6 |
-| `interlace/ct3-d4-8x8` | projection at M4, complete at M6 |
+| `interlace/ct0-d1-8x8` | complete at M6 (E6-M4-A7-C1) |
+| `interlace/ct6-d16-8x8` | complete at M6 (E6-M4-A7-C1) |
+| `interlace/ct3-d4-8x8` | complete at M6 (E6-M4-A7-C1) |
 | `interlace/ct0-d1-9x1` | projection at M4, complete at M6 |
 | `interlace/ct6-d16-9x1` | projection at M4, complete at M6 |
 | `interlace/ct3-d4-9x1` | projection at M4, complete at M6 |
 | `interlace/ct0-d1-1x9` | projection at M4, complete at M6 |
-| `interlace/ct6-d16-1x9` | projection at M4, complete at M6 |
+| `interlace/ct6-d16-1x9` | complete at M6 (E6-M4-A7-C1) |
 | `interlace/ct3-d4-1x9` | projection at M4, complete at M6 |
 | `interlace/1x1-filter-bytes-for-empty-passes` | complete at M4 |
 

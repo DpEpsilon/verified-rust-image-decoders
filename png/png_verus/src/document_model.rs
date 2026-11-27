@@ -444,6 +444,26 @@ pub(crate) proof fn witness_step_colour(b: Seq<u8>,state: State,chunk: critical:
 }
 // End E6-M4 shared colour-field observations.
 
+// E6-M4-A7-C1 initial palette observation; all earlier definitions are unchanged.
+#[verifier::spinoff_prover]
+pub(crate) proof fn witness_initial_palette_colour(b: Seq<u8>,h: crate::model::Ihdr)
+    requires b.len()>=93,h.color_type==3,h.depth==4,
+        critical::read(b,33,Phase::Before,false)==Ok(critical::Candidate {
+            ty:seq![80u8,76u8,84u8,69u8],data:41,len:48,next:93,crc_ok:true,synthetic:false}),
+    ensures match step(b,strict(),false,false,initial(h,33,no_events())) {
+        Step::Next(next)=>next.pos==93 && next.doc.ihdr==h
+            && next.doc.plte==Some(Range {offset:41,len:48}) && next.doc.trns==None,
+        Step::Done(_,_)=>false,_=>true,
+    },
+{
+    hide(critical::read);hide(order::classify);hide(initial_info);
+    assert(order::classify(seq![80u8,76u8,84u8,69u8])==Name::Plte) by (compute);
+    assert((80u8 & 32u8)==0u8) by (bit_vector);
+    assert(meta::palette(48,3,4,false,false,false,false)==meta::Decision::Keep(16)) by (compute);
+    reveal(step);reveal(ordered);reveal(own);
+}
+// End E6-M4-A7-C1 initial palette observation.
+
 pub proof fn reused_stream(b: Seq<u8>,doc: Doc)
     requires doc.frames.len()>0,match doc.frames[0].source {Source::Idat=>true,_=>false},
     ensures frame_stream(b,doc,0)==default_stream(b,doc),

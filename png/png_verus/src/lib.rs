@@ -64,6 +64,10 @@ mod witness_m6_m5_frames;
 mod witness_m6_rows_model;
 #[cfg(verus_only)]
 mod witness_m6_m4_filter;
+#[cfg(verus_only)]
+mod witness_m6_a7_model;
+#[cfg(verus_only)]
+mod witness_m6_m4_a7;
 mod frame_state;
 mod critical;
 #[cfg(verus_only)]
