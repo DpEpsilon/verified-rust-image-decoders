@@ -469,4 +469,79 @@ pub proof fn reused_stream(b: Seq<u8>,doc: Doc)
     ensures frame_stream(b,doc,0)==default_stream(b,doc),
 {}
 
+// T10 range observations; the transition definitions above remain unchanged.
+#[verifier::spinoff_prover]
+pub(crate) proof fn precedence_own(b: Seq<u8>,policy: Policy,static_frames: bool,state: State,name: Name,data: nat,length: nat)
+    ensures match own(b,policy,static_frames,state,name,data,length) {Step::Error(e,_)=>e!=Error::IccProfileTooLarge,_=>true},
+{
+    hide(meta::parse);hide(meta::palette);hide(meta::transparency);
+    hide(apng::actl);hide(apng::fctl);hide(apng::fdat);hide(apng::finish);
+    hide(critical::idat);hide(critical::iend);hide(critical::unknown);
+    let d=b.subrange(data as int,(data+length) as int);
+    let doc=state.doc;let declared=match doc.actl {None=>None,Some(a)=>Some(a.0)};
+    crate::precedence_walk::metadata(name,d,doc.ihdr.color_type,doc.ihdr.depth,entries(doc));
+    crate::precedence_walk::palette(length,doc.ihdr.color_type,doc.ihdr.depth,!matches!(state.phase,Phase::Before),
+        state.seen.contains(Name::Trns)||state.seen.contains(Name::Bkgd)||state.seen.contains(Name::Hist),
+        policy.order.ignore_unexpected_plte,policy.allow_large_palette);
+    crate::precedence_walk::transparency(length,doc.ihdr.color_type,entries(doc),policy.drop_invalid_trns);
+    crate::precedence_walk::animation(d,doc.actl.is_some(),matches!(state.phase,Phase::Before),doc.ihdr.width,doc.ihdr.height,state.control,declared);
+    crate::precedence_walk::critical(b,state.pos,state.phase,policy.allow_eof_iend,doc.ihdr.color_type,doc.plte.is_some(),
+        state.control,declared,state.pos,policy.ignore_trailing,match name {Name::Unknown(anc)=>anc,_=>false});
+    reveal(own);
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn precedence_ordered(b: Seq<u8>,policy: Policy,static_frames: bool,state: State,name: Name,ancillary: bool,data: nat,length: nat)
+    ensures match ordered(b,policy,static_frames,state,name,ancillary,data,length) {Step::Error(e,_)=>e!=Error::IccProfileTooLarge,_=>true},
+{
+    hide(order::order);reveal(ordered);
+    crate::precedence_walk::ordering(state.seen,state.phase,state.doc.plte.is_some(),state.doc.ihdr.color_type,name,ancillary,length,policy.order);
+    if let order::OrderAction::Keep(n)=order::order(state.seen,state.phase,state.doc.plte.is_some(),state.doc.ihdr.color_type,name,ancillary,length,policy.order) {
+        precedence_own(b,policy,static_frames,State {seen:if order::singleton(name) {state.seen.insert(name)}else{state.seen},..state},name,data,n);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn precedence_step(b: Seq<u8>,policy: Policy,frames: bool,off: bool,state: State)
+    ensures match step(b,policy,frames,off,state) {Step::Error(e,_)=>e!=Error::IccProfileTooLarge,_=>true},
+{
+    hide(critical::read);hide(critical::crc_rule);hide(order::classify);reveal(step);
+    crate::precedence_walk::critical(b,state.pos,state.phase,policy.allow_eof_iend,0,false,state.control,None,0,false,false);
+    if let Ok(c)=critical::read(b,state.pos,state.phase,policy.allow_eof_iend) {
+        let wire=order::classify(c.ty);
+        let (name,anc)=critical::effective(wire,matches!(wire,Name::Unknown(true)) || (c.ty.len()==4 && c.ty[0]&0x20u8!=0),
+            !off && !(!frames && policy.ignore_apng_in_still));
+        crate::precedence_walk::crc(wire,name,anc,c.crc_ok,policy.skip_ancillary_crc,policy.order.lenient_iend,frames);
+        precedence_ordered(b,policy,frames && policy.static_apng_errors,
+            State {pos:c.next,phase:order::advance_phase(state.phase,wire),..state},name,anc,c.data,c.len);
+    }
+}
+pub(crate) proof fn precedence_drive(b: Seq<u8>,policy: Policy,frames: bool,off: bool,state: State)
+    ensures match drive(b,policy,frames,off,state) {Outcome::Error(e,_)=>e!=Error::IccProfileTooLarge,_=>true},
+    decreases b.len()-state.pos,
+{
+    precedence_step(b,policy,frames,off,state);
+    if state.pos<=b.len() {
+        drive_step(b,policy,frames,off,state);
+        if let Step::Next(next)=step(b,policy,frames,off,state) {
+            step_progress(b,policy,frames,off,state);precedence_drive(b,policy,frames,off,next);
+        }
+    }
+}
+pub(crate) proof fn precedence_start(b: Seq<u8>,policy: Policy,frames: bool,off: bool,ev: Events)
+    ensures match start(b,policy,frames,off,ev) {Outcome::Error(e,_)=>e!=Error::IccProfileTooLarge,_=>true},
+{
+    hide(model::mh);crate::precedence_walk::header(b);
+    if let Ok((h,pos))=model::mh(b) {precedence_drive(b,policy,frames,off,initial(h,pos,ev));}
+}
+pub(crate) proof fn precedence_walk(b: Seq<u8>)
+    ensures match MW_p(b,strict()) {Outcome::Error(e,_)=>e!=Error::IccProfileTooLarge,_=>true},
+        match MWF_p(b,strict()) {Outcome::Error(e,_)=>e!=Error::IccProfileTooLarge,_=>true},
+{
+    hide(start);
+    precedence_start(b,strict(),false,false,no_events());
+    precedence_start(b,strict(),true,false,no_events());
+    if let Outcome::Fallback(ev)=start(b,strict(),true,false,no_events()) {
+        precedence_start(b,strict(),true,true,Events {r4:true,..ev});
+    }
+}
+
 } // verus!

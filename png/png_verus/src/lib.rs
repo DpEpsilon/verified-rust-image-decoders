@@ -43,6 +43,14 @@ pub mod frame_equivalence;
 #[cfg(verus_only)]
 pub mod frame_activity;
 #[cfg(verus_only)]
+mod precedence_model;
+#[cfg(verus_only)]
+mod precedence_walk;
+#[cfg(verus_only)]
+mod precedence;
+#[cfg(verus_only)]
+mod precedence_public;
+#[cfg(verus_only)]
 mod m5_stream_witness_model;
 #[cfg(verus_only)]
 mod m5_dynamic_witness_model;

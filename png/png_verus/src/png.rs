@@ -1506,6 +1506,15 @@ impl<'a> Frames<'a> {
         crate::walk_policy::profiles_project_exactly();iterdata::from_walk_rule(self.b@,self.doc.view(),STRICT);
         crate::frame_equivalence::resources_complete(self.b@,self.doc.view(),self.doc.info.model_value(),self.pixel_history@,self.history@);
     }
+    /// T10 observes the established history without executing another walk.
+    pub proof fn precedence_context(&self)
+        requires self.strict_iterator_wf(),
+        ensures iterdata::history_wf(self.model_input(),self.model_document(),STRICT,self.history_view()),
+            iterdata::from_walk(self.model_input(),self.model_document(),STRICT),
+    {
+        self.strict_iterator_context();self.iterator_context();self.strict_context();
+        crate::frame_equivalence::context(self.model_input(),self.model_document(),self.info_value().model_value(),self.canvas_trace(),self.history_view());
+    }
     /// Work absence follows from the actual site's observation, not from the
     /// returned value or from equality of allocation logs.
     pub proof fn terminal_no_work(&self)

@@ -1,0 +1,38 @@
+command: ['python3', '-I', '/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m6-t10/3694dfd-20261127/integrity.py']
+{
+  "kind": "M6 T10 integrity; hold for independent acceptance",
+  "passed": true,
+  "verified_each": 7375,
+  "goal_delta": 46,
+  "full_runs": [
+    {
+      "run": 852,
+      "target": "host",
+      "verified": 7375
+    },
+    {
+      "run": 855,
+      "target": "i686",
+      "verified": 7375
+    }
+  ],
+  "wall_seconds": {
+    "host": 3287.59,
+    "i686": 3287.65
+  },
+  "source_inventory_count": 114,
+  "historical_hashes_unchanged": 1393,
+  "evidence_hashes_valid": 1407,
+  "errors_covered": 62,
+  "default_solver_budget": 30000000,
+  "process_timeout_seconds": 3600,
+  "mandatory_stop_seconds": 3480,
+  "exact_log_reconstruction": true,
+  "native_algorithms_unchanged": true,
+  "allocation_success_antecedent": false,
+  "acyclic_dependency_graph": true,
+  "M6_signed_off": false,
+  "mutations_run": false,
+  "CAPS_SYM_run": false,
+  "named_policy_iterator_started": false
+}

@@ -1,0 +1,399 @@
+{
+  "title": "Strict Error Precedence",
+  "base_commit": "3694dfd42f9eb288809b7b0c4fd7f76cdff35e83",
+  "scope": "Frozen THEOREMS.md T10, Strict M6; no named-policy iterator work",
+  "errors": [
+    "FileTooLarge",
+    "BadSignature",
+    "TruncatedChunk",
+    "ChunkTooLong",
+    "InvalidChunkType",
+    "CrcMismatch",
+    "MissingIhdr",
+    "InvalidChunkLength",
+    "InvalidDimensions",
+    "OutputTooLarge",
+    "InvalidColorTypeDepth",
+    "UnsupportedCompressionMethod",
+    "UnsupportedFilterMethod",
+    "UnsupportedInterlaceMethod",
+    "UnknownCriticalChunk",
+    "DuplicateChunk",
+    "ChunkOutOfOrder",
+    "MissingPalette",
+    "UnexpectedPalette",
+    "InvalidPalette",
+    "NonConsecutiveIdat",
+    "MissingImageData",
+    "MissingIend",
+    "TrailingBytes",
+    "InvalidTransparency",
+    "InvalidGamma",
+    "InvalidSrgb",
+    "InvalidIccp",
+    "InvalidSbit",
+    "InvalidCicp",
+    "InvalidBackground",
+    "InvalidHistogram",
+    "InvalidPhys",
+    "InvalidSplt",
+    "InvalidExif",
+    "InvalidTime",
+    "InvalidText",
+    "MissingAnimationControl",
+    "InvalidAnimationControl",
+    "TooManyFrames",
+    "InvalidFrameControl",
+    "SequenceError",
+    "UnexpectedFrameData",
+    "MissingFrameData",
+    "FrameCountMismatch",
+    "PixelBudgetExceeded",
+    "InvalidZlibHeader",
+    "UnsupportedZlibMethod",
+    "ZlibPresetDictionary",
+    "InvalidBlockType",
+    "StoredLengthMismatch",
+    "InvalidCodeLengths",
+    "InvalidSymbol",
+    "DistanceTooFar",
+    "TruncatedZlib",
+    "AdlerMismatch",
+    "TrailingZlibData",
+    "TruncatedImageData",
+    "ExcessImageData",
+    "InvalidFilterType",
+    "PaletteIndexOutOfRange",
+    "IccProfileTooLarge"
+  ],
+  "arbitrary_Error_quantification": true,
+  "operational_order_not_enum_rank": true,
+  "anchors": [
+    {
+      "file": "src/precedence_model.rs",
+      "function": "first_row",
+      "line": 9,
+      "sha256": "a1e3da16d4b3c1cf0cb7f8c289aae7c30c5aa7d01626824b322c200a1c3286b4"
+    },
+    {
+      "file": "src/precedence_model.rs",
+      "function": "data_at",
+      "line": 15,
+      "sha256": "a1e3da16d4b3c1cf0cb7f8c289aae7c30c5aa7d01626824b322c200a1c3286b4"
+    },
+    {
+      "file": "src/precedence_model.rs",
+      "function": "row_first",
+      "line": 30,
+      "sha256": "a1e3da16d4b3c1cf0cb7f8c289aae7c30c5aa7d01626824b322c200a1c3286b4"
+    },
+    {
+      "file": "src/precedence_model.rs",
+      "function": "scan_first",
+      "line": 46,
+      "sha256": "a1e3da16d4b3c1cf0cb7f8c289aae7c30c5aa7d01626824b322c200a1c3286b4"
+    },
+    {
+      "file": "src/precedence_model.rs",
+      "function": "row_selected",
+      "line": 67,
+      "sha256": "a1e3da16d4b3c1cf0cb7f8c289aae7c30c5aa7d01626824b322c200a1c3286b4"
+    },
+    {
+      "file": "src/precedence_model.rs",
+      "function": "scan_selected",
+      "line": 76,
+      "sha256": "a1e3da16d4b3c1cf0cb7f8c289aae7c30c5aa7d01626824b322c200a1c3286b4"
+    },
+    {
+      "file": "src/precedence_model.rs",
+      "function": "data_first",
+      "line": 91,
+      "sha256": "a1e3da16d4b3c1cf0cb7f8c289aae7c30c5aa7d01626824b322c200a1c3286b4"
+    },
+    {
+      "file": "src/precedence_model.rs",
+      "function": "data_selected",
+      "line": 104,
+      "sha256": "a1e3da16d4b3c1cf0cb7f8c289aae7c30c5aa7d01626824b322c200a1c3286b4"
+    },
+    {
+      "file": "src/precedence_model.rs",
+      "function": "data_precedence",
+      "line": 111,
+      "sha256": "a1e3da16d4b3c1cf0cb7f8c289aae7c30c5aa7d01626824b322c200a1c3286b4"
+    },
+    {
+      "file": "src/precedence_model.rs",
+      "function": "row_error_kind",
+      "line": 122,
+      "sha256": "a1e3da16d4b3c1cf0cb7f8c289aae7c30c5aa7d01626824b322c200a1c3286b4"
+    },
+    {
+      "file": "src/precedence_model.rs",
+      "function": "data_not_profile_cap",
+      "line": 127,
+      "sha256": "a1e3da16d4b3c1cf0cb7f8c289aae7c30c5aa7d01626824b322c200a1c3286b4"
+    },
+    {
+      "file": "src/document_model.rs",
+      "function": "precedence_own",
+      "line": 474,
+      "sha256": "56fa7d205d5c7cc71b24b38378d8b10d92f44286eae99f6fa02bf951e19db7ad"
+    },
+    {
+      "file": "src/document_model.rs",
+      "function": "precedence_ordered",
+      "line": 493,
+      "sha256": "56fa7d205d5c7cc71b24b38378d8b10d92f44286eae99f6fa02bf951e19db7ad"
+    },
+    {
+      "file": "src/document_model.rs",
+      "function": "precedence_step",
+      "line": 503,
+      "sha256": "56fa7d205d5c7cc71b24b38378d8b10d92f44286eae99f6fa02bf951e19db7ad"
+    },
+    {
+      "file": "src/document_model.rs",
+      "function": "precedence_drive",
+      "line": 517,
+      "sha256": "56fa7d205d5c7cc71b24b38378d8b10d92f44286eae99f6fa02bf951e19db7ad"
+    },
+    {
+      "file": "src/document_model.rs",
+      "function": "precedence_start",
+      "line": 529,
+      "sha256": "56fa7d205d5c7cc71b24b38378d8b10d92f44286eae99f6fa02bf951e19db7ad"
+    },
+    {
+      "file": "src/document_model.rs",
+      "function": "precedence_walk",
+      "line": 535,
+      "sha256": "56fa7d205d5c7cc71b24b38378d8b10d92f44286eae99f6fa02bf951e19db7ad"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "still_at",
+      "line": 14,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "constructor_at",
+      "line": 21,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "still_first",
+      "line": 37,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "still_selected",
+      "line": 48,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "constructor_first",
+      "line": 59,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "constructor_selected",
+      "line": 70,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "still_error_iff",
+      "line": 83,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "constructor_error_iff",
+      "line": 96,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "still_oom",
+      "line": 110,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "constructor_oom",
+      "line": 130,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "frame_at",
+      "line": 149,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "frame_first",
+      "line": 155,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "iterator_error",
+      "line": 167,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "saved_oom",
+      "line": 183,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "icc_at",
+      "line": 203,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "icc_error_iff",
+      "line": 211,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "icc_oom",
+      "line": 226,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence.rs",
+      "function": "no_second_error",
+      "line": 247,
+      "sha256": "c0831c2aebbdebccfc49c1f0917c89b149d97a2b8c4629318072cce80e67eaa8"
+    },
+    {
+      "file": "src/precedence_public.rs",
+      "function": "still8",
+      "line": 7,
+      "sha256": "b808c4984495f099178902e3b4c4d6b2b2e273549b1edc3dee4aa88fc0ef4a25"
+    },
+    {
+      "file": "src/precedence_public.rs",
+      "function": "still16",
+      "line": 20,
+      "sha256": "b808c4984495f099178902e3b4c4d6b2b2e273549b1edc3dee4aa88fc0ef4a25"
+    },
+    {
+      "file": "src/precedence_public.rs",
+      "function": "constructor",
+      "line": 33,
+      "sha256": "b808c4984495f099178902e3b4c4d6b2b2e273549b1edc3dee4aa88fc0ef4a25"
+    },
+    {
+      "file": "src/precedence_public.rs",
+      "function": "iterator",
+      "line": 47,
+      "sha256": "b808c4984495f099178902e3b4c4d6b2b2e273549b1edc3dee4aa88fc0ef4a25"
+    },
+    {
+      "file": "src/precedence_public.rs",
+      "function": "profile",
+      "line": 76,
+      "sha256": "b808c4984495f099178902e3b4c4d6b2b2e273549b1edc3dee4aa88fc0ef4a25"
+    },
+    {
+      "file": "src/png.rs",
+      "function": "precedence_context",
+      "line": 1510,
+      "sha256": "7d4a4a81bb2a111a884029e308bc389d62c6f014ece61c80c22682db80bdbd28"
+    },
+    {
+      "file": "src/png.rs",
+      "function": "try_decode_still_logged",
+      "line": 748,
+      "sha256": "7d4a4a81bb2a111a884029e308bc389d62c6f014ece61c80c22682db80bdbd28"
+    },
+    {
+      "file": "src/png.rs",
+      "function": "try_decode_still16_logged",
+      "line": 779,
+      "sha256": "7d4a4a81bb2a111a884029e308bc389d62c6f014ece61c80c22682db80bdbd28"
+    },
+    {
+      "file": "src/png.rs",
+      "function": "try_icc_profile_logged",
+      "line": 2784,
+      "sha256": "7d4a4a81bb2a111a884029e308bc389d62c6f014ece61c80c22682db80bdbd28"
+    },
+    {
+      "file": "src/icc_model.rs",
+      "function": "exact_second_pass",
+      "line": 241,
+      "sha256": "618e4f176eaafcda0178873009a135635991367270786a72185f0c31384c493c"
+    },
+    {
+      "file": "src/frame_equivalence.rs",
+      "function": "finite_fusion",
+      "line": 293,
+      "sha256": "71a22cab31189d78a3927b505b36fd63cad6497df0a82455ed1edc5f5f18a835"
+    }
+  ],
+  "dependency_dag": {
+    "actual public bindings": [
+      "complete accepted native contracts",
+      "T10 arbitrary-error iff and operational origins",
+      "T10 allocation displacement"
+    ],
+    "T10 arbitrary-error iff and operational origins": [
+      "unchanged MW/MS/MFr/MI definitions",
+      "first data point and converse",
+      "walk range observations",
+      "accepted iterator history and suffix steps"
+    ],
+    "first data point and converse": [
+      "unchanged M2 inflate status",
+      "accepted raster pass_step and scan_step",
+      "per-row filter before palette branch"
+    ],
+    "walk range observations": [
+      "unchanged framing/header/metadata/APNG/critical/ordering definitions",
+      "well-founded unchanged drive"
+    ],
+    "T10 allocation displacement": [
+      "actual sealed logs and accepted reservation order",
+      "canonical reached SavedAt and successful prefix",
+      "accepted ICC exact_second_pass"
+    ],
+    "accepted ICC exact_second_pass": [
+      "accepted M2 L-LIMIT-MONO"
+    ],
+    "no second error": [
+      "actual try_next terminal phase/log/idle-work contracts",
+      "accepted arbitrary finite_fusion"
+    ],
+    "no partial still": [
+      "complete accepted native/MS value equality",
+      "single public Result"
+    ]
+  },
+  "all_existing_contracts_unchanged": true,
+  "allocation_success_antecedent": false,
+  "all_existing_witnesses_included": true,
+  "full_runs": [
+    852,
+    855
+  ],
+  "remaining": [
+    "Coordinator acceptance",
+    "Owner decision on full-crate mutation and CAPS-SYM cost",
+    "Named-policy iterator 2b remains paused"
+  ]
+}
